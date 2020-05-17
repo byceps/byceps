@@ -14,8 +14,8 @@ from byceps.util.iterables import find
 
 
 @pytest.fixture
-def order(admin_app, shop, order_number_sequence_id, orderer, empty_cart):
-    order, _ = order_service.place_order(shop.id, orderer, empty_cart)
+def order(admin_app, storefront, orderer, empty_cart):
+    order, _ = order_service.place_order(storefront.id, orderer, empty_cart)
     yield order
     order_service.delete_order(order.id)
 

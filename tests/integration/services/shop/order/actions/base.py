@@ -13,12 +13,12 @@ def get_tickets_for_order(order):
     return ticket_service.find_tickets_created_by_order(order.order_number)
 
 
-def place_order(shop_id, orderer, articles_with_quantity):
+def place_order(storefront_id, orderer, articles_with_quantity):
     cart = Cart()
     for article, quantity in articles_with_quantity:
         cart.add_item(article, quantity)
 
-    order, _ = order_service.place_order(shop_id, orderer, cart)
+    order, _ = order_service.place_order(storefront_id, orderer, cart)
 
     return order
 

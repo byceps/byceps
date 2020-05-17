@@ -115,7 +115,7 @@ def order():
     orderer = form.get_orderer(g.current_user.id)
 
     try:
-        order = _place_order(shop.id, orderer, cart)
+        order = _place_order(storefront.id, orderer, cart)
     except order_service.OrderFailed:
         flash_error('Die Bestellung ist fehlgeschlagen.')
         return order_form(form)
@@ -222,7 +222,7 @@ def order_single(article_id):
     cart = _create_cart_from_article_compilation(article_compilation)
 
     try:
-        order = _place_order(shop.id, orderer, cart)
+        order = _place_order(storefront.id, orderer, cart)
     except order_service.OrderFailed:
         flash_error('Die Bestellung ist fehlgeschlagen.')
         return order_form(form)
@@ -261,8 +261,8 @@ def _create_cart_from_article_compilation(
     return cart
 
 
-def _place_order(shop_id, orderer, cart):
-    order, event = order_service.place_order(shop_id, orderer, cart)
+def _place_order(storefront_id, orderer, cart):
+    order, event = order_service.place_order(storefront_id, orderer, cart)
 
     order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 

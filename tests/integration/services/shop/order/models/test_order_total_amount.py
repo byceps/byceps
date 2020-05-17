@@ -40,18 +40,16 @@ def article3(shop):
     article_service.delete_article(article_id)
 
 
-def test_without_any_items(party_app, shop, order_number_sequence_id, orderer):
-    order = place_order(shop.id, orderer, [])
+def test_without_any_items(party_app, storefront, orderer):
+    order = place_order(storefront.id, orderer, [])
 
     assert order.total_amount == Decimal('0.00')
 
     order_service.delete_order(order.id)
 
 
-def test_with_single_item(
-    party_app, shop, order_number_sequence_id, orderer, article1
-):
-    order = place_order(shop.id, orderer, [
+def test_with_single_item(party_app, storefront, orderer, article1):
+    order = place_order(storefront.id, orderer, [
         (article1, 1),
     ])
 
@@ -62,14 +60,13 @@ def test_with_single_item(
 
 def test_with_multiple_items(
     party_app,
-    shop,
-    order_number_sequence_id,
+    storefront,
     orderer,
     article1,
     article2,
     article3,
 ):
-    order = place_order(shop.id, orderer, [
+    order = place_order(storefront.id, orderer, [
         (article1, 3),
         (article2, 1),
         (article3, 4),
@@ -96,11 +93,11 @@ def create_article(shop_id, number, price):
     )
 
 
-def place_order(shop_id, orderer, articles):
+def place_order(storefront_id, orderer, articles):
     cart = Cart()
     for article, quantity in articles:
         cart.add_item(article, quantity)
 
-    order, _ = order_service.place_order(shop_id, orderer, cart)
+    order, _ = order_service.place_order(storefront_id, orderer, cart)
 
     return order

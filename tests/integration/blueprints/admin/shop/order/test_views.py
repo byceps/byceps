@@ -18,7 +18,6 @@ from byceps.services.shop.order.transfer.models import (
     PaymentMethod,
     PaymentState,
 )
-from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.user import command_service as user_command_service
 
 from testfixtures.shop_order import create_orderer
@@ -33,15 +32,6 @@ from tests.helpers import (
 from tests.integration.services.shop.helpers import (
     create_article as _create_article,
 )
-
-
-@pytest.fixture(scope='module')
-def order_number_sequence(shop) -> None:
-    sequence_id = sequence_service.create_order_number_sequence(
-        shop.id, 'order-'
-    )
-    yield
-    sequence_service.delete_order_number_sequence(sequence_id)
 
 
 @pytest.fixture(scope='module')
@@ -106,16 +96,17 @@ def test_cancel_before_paid(
     order_email_service_mock,
     order_canceled_signal_send_mock,
     admin_app,
-    shop,
+    storefront,
     article1,
-    order_number_sequence,
     admin,
     orderer,
 ):
     article_before = article1
 
     quantified_articles_to_order = {(article_before, 3)}
-    placed_order = place_order(shop.id, orderer, quantified_articles_to_order)
+    placed_order = place_order(
+        storefront.id, orderer, quantified_articles_to_order
+    )
     order_before = get_order(placed_order.id)
 
     assert article_before.quantity == 5
@@ -159,16 +150,17 @@ def test_cancel_before_paid_without_sending_email(
     order_email_service_mock,
     order_canceled_signal_send_mock,
     admin_app,
-    shop,
+    storefront,
     article2,
-    order_number_sequence,
     admin,
     orderer,
 ):
     article_before = article2
 
     quantified_articles_to_order = {(article_before, 3)}
-    placed_order = place_order(shop.id, orderer, quantified_articles_to_order)
+    placed_order = place_order(
+        storefront.id, orderer, quantified_articles_to_order
+    )
 
     url = f'/admin/shop/orders/{placed_order.id}/cancel'
     form_data = {
@@ -200,12 +192,11 @@ def test_mark_order_as_paid(
     order_email_service_mock,
     order_paid_signal_send_mock,
     admin_app,
-    shop,
-    order_number_sequence,
+    storefront,
     admin,
     orderer,
 ):
-    placed_order = place_order(shop.id, orderer, [])
+    placed_order = place_order(storefront.id, orderer, [])
     order_before = get_order(placed_order.id)
 
     assert_payment_is_open(order_before)
@@ -246,16 +237,17 @@ def test_cancel_after_paid(
     order_paid_signal_send_mock,
     order_canceled_signal_send_mock,
     admin_app,
-    shop,
+    storefront,
     article3,
-    order_number_sequence,
     admin,
     orderer,
 ):
     article_before = article3
 
     quantified_articles_to_order = {(article_before, 3)}
-    placed_order = place_order(shop.id, orderer, quantified_articles_to_order)
+    placed_order = place_order(
+        storefront.id, orderer, quantified_articles_to_order
+    )
     order_before = get_order(placed_order.id)
 
     assert article_before.quantity == 5
@@ -313,13 +305,13 @@ def create_article(shop_id, item_number, quantity):
     )
 
 
-def place_order(shop_id, orderer, quantified_articles):
+def place_order(storefront_id, orderer, quantified_articles):
     cart = Cart()
 
     for article, quantity_to_order in quantified_articles:
         cart.add_item(article, quantity_to_order)
 
-    order, _ = order_service.place_order(shop_id, orderer, cart)
+    order, _ = order_service.place_order(storefront_id, orderer, cart)
 
     return order
 

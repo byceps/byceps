@@ -14,8 +14,7 @@ from .base import get_tickets_for_order, mark_order_as_paid, place_order
 def test_create_tickets(
     admin_app,
     party,
-    shop,
-    order_number_sequence_id,
+    storefront,
     article,
     ticket_category,
     admin_user,
@@ -28,7 +27,7 @@ def test_create_tickets(
     )
 
     articles_with_quantity = [(article, ticket_quantity)]
-    order = place_order(shop.id, orderer, articles_with_quantity)
+    order = place_order(storefront.id, orderer, articles_with_quantity)
 
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0

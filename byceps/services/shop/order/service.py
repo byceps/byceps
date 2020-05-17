@@ -22,6 +22,8 @@ from ..sequence import service as sequence_service
 from ..shop.models import Shop
 from ..shop import service as shop_service
 from ..shop.transfer.models import ShopID
+from ..storefront import service as storefront_service
+from ..storefront.transfer.models import StorefrontID
 
 from .models.order import Order as DbOrder
 from .models.order_event import OrderEvent as DbOrderEvent
@@ -42,17 +44,18 @@ class OrderFailed(Exception):
 
 
 def place_order(
-    shop_id: ShopID,
+    storefront_id: StorefrontID,
     orderer: Orderer,
     cart: Cart,
     *,
     created_at: Optional[datetime] = None,
 ) -> Tuple[Order, ShopOrderPlaced]:
     """Place an order for one or more articles."""
-    shop = shop_service.get_shop(shop_id)
+    storefront = storefront_service.get_storefront(storefront_id)
+    shop = shop_service.get_shop(storefront.shop_id)
 
-    order_number_sequence = sequence_service.find_order_number_sequence_for_shop(
-        shop.id
+    order_number_sequence = sequence_service.find_order_number_sequence(
+        storefront.order_number_sequence_id
     )
     order_number = sequence_service.generate_order_number(
         order_number_sequence.id

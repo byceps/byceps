@@ -171,29 +171,6 @@ def find_order_number_sequences_for_shop(
     return _find_number_sequences(shop_id, Purpose.order)
 
 
-def find_order_number_sequence_for_shop(
-    shop_id: ShopID,
-) -> Optional[NumberSequence]:
-    """Return the order number sequence for that shop, or `None` if
-    the sequence is not defined or the shop does not exist.
-    """
-    return _find_number_sequence(shop_id, Purpose.order)
-
-
-def _find_number_sequence(
-    shop_id: ShopID, purpose: Purpose
-) -> Optional[NumberSequence]:
-    sequence = DbNumberSequence.query \
-        .filter_by(shop_id=shop_id) \
-        .filter_by(_purpose=purpose.name) \
-        .one_or_none()
-
-    if sequence is None:
-        return None
-
-    return _db_entity_to_number_sequence(sequence)
-
-
 def _find_number_sequences(
     shop_id: ShopID, purpose: Purpose
 ) -> List[NumberSequence]:

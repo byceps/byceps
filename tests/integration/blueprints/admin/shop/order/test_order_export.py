@@ -16,6 +16,7 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
+from byceps.services.shop.storefront import service as storefront_service
 
 from tests.helpers import (
     create_permissions,
@@ -123,20 +124,36 @@ def orderer(make_user):
 
 
 @pytest.fixture
-def order_number_sequence(shop) -> None:
+def order_number_sequence_id(shop) -> None:
     sequence_id = sequence_service.create_order_number_sequence(
         shop.id, 'LR-08-B', value=26
     )
-    yield
+
+    yield sequence_id
+
     sequence_service.delete_order_number_sequence(sequence_id)
 
 
 @pytest.fixture
-def order(shop, order_number_sequence, cart, orderer):
+def storefront(shop, order_number_sequence_id) -> None:
+    storefront = storefront_service.create_storefront(
+        f'{shop.id}-storefront',
+        shop.id,
+        order_number_sequence_id,
+        closed=False,
+    )
+
+    yield storefront
+
+    storefront_service.delete_storefront(storefront.id)
+
+
+@pytest.fixture
+def order(storefront, cart, orderer):
     created_at = datetime(2015, 2, 26, 12, 26, 24)  # UTC
 
     order, _ = order_service.place_order(
-        shop.id, orderer, cart, created_at=created_at
+        storefront.id, orderer, cart, created_at=created_at
     )
 
     yield order
@@ -145,7 +162,7 @@ def order(shop, order_number_sequence, cart, orderer):
 
 
 @freeze_time('2015-04-15 07:54:18')  # UTC
-def test_serialize_existing_order(admin_app, shop, order, admin_user):
+def test_serialize_existing_order(admin_app, order, admin_user):
     filename = 'testfixtures/shop/order_export.xml'
     with codecs.open(filename, encoding='iso-8859-1') as f:
         expected = f.read().rstrip()
@@ -162,7 +179,7 @@ def test_serialize_existing_order(admin_app, shop, order, admin_user):
 
 
 @freeze_time('2015-04-15 07:54:18')  # UTC
-def test_serialize_unknown_order(admin_app, shop, admin_user):
+def test_serialize_unknown_order(admin_app, admin_user):
     unknown_order_id = '00000000-0000-0000-0000-000000000000'
 
     url = f'/admin/shop/orders/{unknown_order_id}/export'

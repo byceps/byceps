@@ -12,6 +12,7 @@ from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentMethod
 from byceps.services.shop.sequence import service as sequence_service
+from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.user import command_service as user_command_service
 
@@ -27,29 +28,51 @@ def customer(admin_app):
         'Vorbild', email_address='vorbild@users.test'
     )
     user_id = user.id
+
     yield user
+
     user_command_service.delete_account(user_id, user_id, 'clean up')
 
 
 @pytest.fixture
-def order(shop, customer, order_admin):
-    order_number_sequence_id = sequence_service.create_order_number_sequence(
+def order_number_sequence_id(shop) -> None:
+    sequence_id = sequence_service.create_order_number_sequence(
         shop.id, 'AC-14-B', value=21
     )
 
+    yield sequence_id
+
+    sequence_service.delete_order_number_sequence(sequence_id)
+
+
+@pytest.fixture
+def storefront(shop, order_number_sequence_id) -> None:
+    storefront = storefront_service.create_storefront(
+        f'{shop.id}-storefront',
+        shop.id,
+        order_number_sequence_id,
+        closed=False,
+    )
+
+    yield storefront
+
+    storefront_service.delete_storefront(storefront.id)
+
+
+@pytest.fixture
+def order(storefront, customer, order_admin):
     email_footer_snippet_id = create_email_footer_snippet(
-        shop.id, order_admin.id
+        storefront.shop_id, order_admin.id
     )
 
     created_at = datetime(2014, 9, 23, 18, 40, 53)
 
-    order = place_order_with_items(shop.id, customer, created_at, [])
+    order = place_order_with_items(storefront.id, customer, created_at, [])
 
     yield order
 
     snippet_service.delete_snippet(email_footer_snippet_id)
     order_service.delete_order(order.id)
-    sequence_service.delete_order_number_sequence(order_number_sequence_id)
 
 
 @patch('byceps.email.send')

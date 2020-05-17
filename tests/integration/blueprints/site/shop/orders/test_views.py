@@ -132,7 +132,7 @@ def order(storefront1, user1):
     orderer = create_orderer(user1)
     cart = Cart()
 
-    order, _ = order_service.place_order(storefront1.shop_id, orderer, cart)
+    order, _ = order_service.place_order(storefront1.id, orderer, cart)
 
     yield order
 

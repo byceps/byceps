@@ -10,7 +10,7 @@ from testfixtures.shop_order import create_orderer
 
 
 def place_order_with_items(
-    shop_id, user, created_at=None, items_with_quantity=None
+    storefront_id, user, created_at=None, items_with_quantity=None
 ):
     orderer = create_orderer(user)
 
@@ -21,7 +21,7 @@ def place_order_with_items(
             cart.add_item(article, quantity)
 
     order, _ = order_service.place_order(
-        shop_id, orderer, cart, created_at=created_at
+        storefront_id, orderer, cart, created_at=created_at
     )
 
     return order
