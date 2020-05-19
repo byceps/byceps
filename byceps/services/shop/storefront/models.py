@@ -6,9 +6,12 @@ byceps.services.shop.storefront.models
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from ....database import db
 from ....util.instances import ReprBuilder
 
+from ..catalog.transfer.models import CatalogID
 from ..sequence.transfer.models import NumberSequenceID
 from ..shop.transfer.models import ShopID
 
@@ -25,6 +28,7 @@ class Storefront(db.Model):
 
     id = db.Column(db.UnicodeText, primary_key=True)
     shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)
+    catalog_id = db.Column(db.UnicodeText, db.ForeignKey('shop_catalogs.id'), nullable=True)
     order_number_sequence_id = db.Column(db.Uuid, db.ForeignKey('shop_sequences.id'), nullable=False)
     closed = db.Column(db.Boolean, nullable=False)
 
@@ -34,9 +38,12 @@ class Storefront(db.Model):
         shop_id: ShopID,
         order_number_sequence_id: NumberSequenceID,
         closed: bool,
+        *,
+        catalog_id: Optional[CatalogID] = None,
     ) -> None:
         self.id = storefront_id
         self.shop_id = shop_id
+        self.catalog_id = catalog_id
         self.order_number_sequence_id = order_number_sequence_id
         self.closed = closed
 

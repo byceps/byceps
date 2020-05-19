@@ -24,6 +24,10 @@
       <td><a href="{{ url_for('shop_shop_admin.view_for_shop', shop_id=shop.id) }}">{{ shop.title }}</a></td>
     </tr>
     <tr>
+      <th>Katalog</th>
+      <td>{{ storefront.catalog_id|fallback }}</td>
+    </tr>
+    <tr>
       <th>Bestellnummer-Präfix</th>
       <td>{{ order_number_prefix }}</td>
     </tr>

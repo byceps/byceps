@@ -8,6 +8,7 @@ byceps.blueprints.admin.shop.storefront.views
 
 from flask import abort, request
 
+from .....services.shop.catalog import service as catalog_service
 from .....services.shop.sequence import service as sequence_service
 from .....services.shop.shop import service as shop_service
 from .....services.shop.storefront import service as storefront_service
@@ -80,12 +81,14 @@ def create_form(shop_id, erroneous_form=None):
     """Show form to create a storefront."""
     shop = _get_shop_or_404(shop_id)
 
+    catalogs = catalog_service.get_all_catalogs()
     order_number_sequences = sequence_service.find_order_number_sequences_for_shop(
         shop.id
     )
     order_number_sequence_available = bool(order_number_sequences)
 
     form = erroneous_form if erroneous_form else StorefrontCreateForm()
+    form.set_catalog_choices(catalogs)
     form.set_order_number_sequence_choices(order_number_sequences)
 
     return {
@@ -103,6 +106,8 @@ def create(shop_id):
 
     form = StorefrontCreateForm(request.form)
 
+    catalogs = catalog_service.get_all_catalogs()
+
     order_number_sequences = sequence_service.find_order_number_sequences_for_shop(
         shop.id
     )
@@ -112,11 +117,13 @@ def create(shop_id):
         )
         return create_form(shop_id, form)
 
+    form.set_catalog_choices(catalogs)
     form.set_order_number_sequence_choices(order_number_sequences)
     if not form.validate():
         return create_form(shop_id, form)
 
     storefront_id = form.id.data.strip()
+    catalog_id = form.catalog_id.data
     order_number_sequence_id = form.order_number_sequence_id.data
 
     if not order_number_sequence_id:
@@ -140,7 +147,11 @@ def create(shop_id):
         abort(500, e.message)
 
     storefront = storefront_service.create_storefront(
-        storefront_id, shop.id, order_number_sequence.id, closed=False
+        storefront_id,
+        shop.id,
+        order_number_sequence.id,
+        closed=False,
+        catalog_id=catalog_id,
     )
 
     flash_success(f'Storefront "{storefront.id}" wurde angelegt.')
@@ -156,6 +167,7 @@ def update_form(storefront_id, erroneous_form=None):
 
     shop = shop_service.get_shop(storefront.shop_id)
 
+    catalogs = catalog_service.get_all_catalogs()
     order_number_sequences = sequence_service.find_order_number_sequences_for_shop(
         shop.id
     )
@@ -165,6 +177,7 @@ def update_form(storefront_id, erroneous_form=None):
         if erroneous_form
         else StorefrontUpdateForm(obj=storefront)
     )
+    form.set_catalog_choices(catalogs)
     form.set_order_number_sequence_choices(order_number_sequences)
 
     return {
@@ -180,20 +193,23 @@ def update(storefront_id):
     """Update a storefront."""
     storefront = _get_storefront_or_404(storefront_id)
 
+    catalogs = catalog_service.get_all_catalogs()
     order_number_sequences = sequence_service.find_order_number_sequences_for_shop(
         storefront.shop_id
     )
 
     form = StorefrontUpdateForm(request.form)
+    form.set_catalog_choices(catalogs)
     form.set_order_number_sequence_choices(order_number_sequences)
     if not form.validate():
         return update_form(storefront_id, form)
 
     order_number_sequence_id = form.order_number_sequence_id.data
+    catalog_id = form.catalog_id.data
     closed = form.closed.data
 
     storefront = storefront_service.update_storefront(
-        storefront.id, order_number_sequence_id, closed
+        storefront.id, catalog_id, order_number_sequence_id, closed
     )
 
     flash_success(f'Storefront "{storefront.id}" wurde aktualisiert.')

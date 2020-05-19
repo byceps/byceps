@@ -10,6 +10,7 @@ from typing import List, Optional, Set
 
 from ....database import db
 
+from ..catalog.transfer.models import CatalogID
 from ..sequence.transfer.models import NumberSequenceID
 from ..shop.transfer.models import ShopID
 
@@ -26,10 +27,16 @@ def create_storefront(
     shop_id: ShopID,
     order_number_sequence_id: NumberSequenceID,
     closed: bool,
+    *,
+    catalog_id: Optional[CatalogID] = None,
 ) -> Storefront:
     """Create a storefront."""
     storefront = DbStorefront(
-        storefront_id, shop_id, order_number_sequence_id, closed
+        storefront_id,
+        shop_id,
+        order_number_sequence_id,
+        closed,
+        catalog_id=catalog_id,
     )
 
     db.session.add(storefront)
@@ -40,12 +47,14 @@ def create_storefront(
 
 def update_storefront(
     storefront_id: StorefrontID,
+    catalog_id: CatalogID,
     order_number_sequence_id: NumberSequenceID,
     closed: bool,
 ) -> Storefront:
     """Update a storefront."""
     storefront = _get_db_storefront(storefront_id)
 
+    storefront.catalog_id = catalog_id
     storefront.order_number_sequence_id = order_number_sequence_id
     storefront.closed = closed
 
@@ -135,6 +144,7 @@ def _db_entity_to_storefront(storefront: DbStorefront) -> Storefront:
     return Storefront(
         storefront.id,
         storefront.shop_id,
+        storefront.catalog_id,
         storefront.order_number_sequence_id,
         storefront.closed,
     )

@@ -16,7 +16,8 @@
 
   <form action="{{ url_for('.update', storefront_id=storefront.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.order_number_sequence_id, required='required', autofocus='autofocus') }}
+      {{ form_field(form.catalog_id, required='required', autofocus='autofocus') }}
+      {{ form_field(form.order_number_sequence_id, required='required') }}
       {{ form_field_checkbox(form.closed, form.closed.label.text) }}
     {% endcall %}
 
