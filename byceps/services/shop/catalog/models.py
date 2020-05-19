@@ -13,7 +13,7 @@ from .transfer.models import CatalogID
 
 
 class Catalog(db.Model):
-    """A catalog to offer product."""
+    """A catalog to offer articles."""
 
     __tablename__ = 'shop_catalogs'
 
