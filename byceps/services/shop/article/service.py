@@ -75,8 +75,9 @@ def attach_article(
     article_to_attach: DbArticle, quantity: int, article_to_attach_to: DbArticle
 ) -> None:
     """Attach an article to another article."""
-    attached_article = DbAttachedArticle(article_to_attach, quantity,
-                                         article_to_attach_to)
+    attached_article = DbAttachedArticle(
+        article_to_attach, quantity, article_to_attach_to
+    )
 
     db.session.add(attached_article)
     db.session.commit()
@@ -120,7 +121,7 @@ def find_article_with_details(article_id: ArticleID) -> Optional[DbArticle]:
 
 
 def find_attached_article(
-    attached_article_id: AttachedArticleID
+    attached_article_id: AttachedArticleID,
 ) -> Optional[DbAttachedArticle]:
     """Return the attached article with that ID, or `None` if not found."""
     return DbAttachedArticle.query.get(attached_article_id)
@@ -173,7 +174,7 @@ def _get_articles_for_shop_query(shop_id: ShopID) -> BaseQuery:
 
 
 def get_article_compilation_for_orderable_articles(
-    shop_id: ShopID
+    shop_id: ShopID,
 ) -> ArticleCompilation:
     """Return a compilation of the articles which can be ordered from
     that shop, less the ones that are only orderable in a dedicated
@@ -246,7 +247,7 @@ def get_attachable_articles(article: DbArticle) -> Sequence[DbArticle]:
 
 
 def sum_ordered_articles_by_payment_state(
-    shop_ids: Set[ShopID]
+    shop_ids: Set[ShopID],
 ) -> List[Tuple[ShopID, ArticleNumber, str, PaymentState, int]]:
     """Sum ordered articles for those shops, grouped by order payment state."""
     subquery = db.session \
@@ -279,8 +280,13 @@ def sum_ordered_articles_by_payment_state(
 
     quantities = {}
 
-    for shop_id, article_number, description, payment_state_name, quantity \
-            in rows:
+    for (
+        shop_id,
+        article_number,
+        description,
+        payment_state_name,
+        quantity,
+    ) in rows:
         if payment_state_name is None:
             continue
 
@@ -290,8 +296,9 @@ def sum_ordered_articles_by_payment_state(
         quantities[key] = quantity
 
     def generate():
-        for shop_id, article_number, description \
-                in sorted(shop_ids_and_article_numbers_and_descriptions):
+        for shop_id, article_number, description in sorted(
+            shop_ids_and_article_numbers_and_descriptions
+        ):
             for payment_state in PaymentState:
                 key = (shop_id, article_number, description, payment_state)
                 quantity = quantities.get(key, 0)
