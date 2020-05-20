@@ -11,13 +11,13 @@ from typing import List, Sequence
 
 from ....util.instances import ReprBuilder
 
-from ..article.models.article import Article
+from ..article.models.article import Article as DbArticle
 
 
 class CartItem:
     """An article with a quantity."""
 
-    def __init__(self, article: Article, quantity: int) -> None:
+    def __init__(self, article: DbArticle, quantity: int) -> None:
         if quantity < 1:
             raise ValueError('Quantity must be a positive number.')
 
@@ -39,7 +39,7 @@ class Cart:
     def __init__(self) -> None:
         self._items: List[CartItem] = []
 
-    def add_item(self, article: Article, quantity: int) -> None:
+    def add_item(self, article: DbArticle, quantity: int) -> None:
         item = CartItem(article, quantity)
         self._items.append(item)
 

@@ -8,7 +8,7 @@ testfixtures.shop_article
 
 from decimal import Decimal
 
-from byceps.services.shop.article.models.article import Article
+from byceps.services.shop.article.models.article import Article as DbArticle
 
 
 ANY_ARTICLE_ITEM_NUMBER = 'AEC-05-A00009'
@@ -31,7 +31,7 @@ def create_article(
     if tax_rate is None:
         tax_rate = Decimal('0.19')
 
-    return Article(
+    return DbArticle(
         shop_id,
         item_number,
         description,

@@ -10,7 +10,7 @@ from decimal import Decimal
 
 from .....database import db, generate_uuid
 
-from ...article.models.article import Article
+from ...article.models.article import Article as DbArticle
 from ...article.transfer.models import ArticleNumber
 
 from ..transfer.models import OrderItem as OrderItemTransferObject
@@ -27,7 +27,7 @@ class OrderItem(db.Model):
     order_number = db.Column(db.UnicodeText, db.ForeignKey('shop_orders.order_number'), index=True, nullable=False)
     order = db.relationship(Order, backref='items')
     article_number = db.Column(db.UnicodeText, db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
-    article = db.relationship(Article, backref='order_items')
+    article = db.relationship(DbArticle, backref='order_items')
     description = db.Column(db.UnicodeText, nullable=False)
     unit_price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)

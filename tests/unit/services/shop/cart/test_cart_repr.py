@@ -5,7 +5,7 @@
 
 from decimal import Decimal
 
-from byceps.services.shop.article.models.article import Article
+from byceps.services.shop.article.models.article import Article as DbArticle
 from byceps.services.shop.cart.models import Cart
 
 
@@ -15,10 +15,10 @@ def test_cart_empty_repr():
 
 
 def test_cart_filled_repr():
-    article1 = Article(
+    article1 = DbArticle(
         'leshop', 'a-001', 'Article #1', Decimal('19.99'), Decimal('0.19'), 99
     )
-    article2 = Article(
+    article2 = DbArticle(
         'leshop', 'a-002', 'Article #2', Decimal('24.99'), Decimal('0.19'), 99
     )
 

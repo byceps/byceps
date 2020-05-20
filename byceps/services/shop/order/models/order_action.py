@@ -12,7 +12,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 
 from .....database import db, generate_uuid
 
-from ...article.models.article import Article
+from ...article.models.article import Article as DbArticle
 from ...article.transfer.models import ArticleNumber
 
 from ..transfer.models import PaymentState
@@ -30,7 +30,7 @@ class OrderAction(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     article_number = db.Column(db.UnicodeText, db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
-    article = db.relationship(Article, backref='order_actions')
+    article = db.relationship(DbArticle, backref='order_actions')
     _payment_state = db.Column('payment_state', db.UnicodeText, index=True, nullable=False)
     procedure = db.Column(db.UnicodeText, nullable=False)
     parameters = db.Column(db.JSONB, nullable=False)

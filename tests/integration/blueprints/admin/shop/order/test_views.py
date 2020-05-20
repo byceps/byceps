@@ -10,7 +10,7 @@ import pytest
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid
 from byceps.services.authorization import service as authorization_service
 from byceps.services.shop.article import service as article_service
-from byceps.services.shop.article.models.article import Article
+from byceps.services.shop.article.models.article import Article as DbArticle
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.order import service as order_service
@@ -127,7 +127,7 @@ def test_cancel_before_paid(
         order_afterwards, None, PaymentState.canceled_before_paid, admin.id
     )
 
-    article_afterwards = Article.query.get(article_before.id)
+    article_afterwards = DbArticle.query.get(article_before.id)
     assert article_afterwards.quantity == 8
 
     order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_called_once_with(
@@ -276,7 +276,7 @@ def test_cancel_after_paid(
         admin.id,
     )
 
-    article_afterwards = Article.query.get(article_before.id)
+    article_afterwards = DbArticle.query.get(article_before.id)
     assert article_afterwards.quantity == 8
 
     order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_called_once_with(

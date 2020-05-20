@@ -16,7 +16,7 @@ from ....database import db, paginate, Pagination
 from ....events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ....typing import UserID
 
-from ..article.models.article import Article
+from ..article.models.article import Article as DbArticle
 from ..cart.models import Cart
 from ..sequence import service as sequence_service
 from ..shop.models import Shop
@@ -126,7 +126,7 @@ def _add_items_from_cart_to_order(
         quantity = cart_item.quantity
         line_amount = cart_item.line_amount
 
-        article.quantity = Article.quantity - quantity
+        article.quantity = DbArticle.quantity - quantity
 
         yield DbOrderItem(
             order,
@@ -267,7 +267,7 @@ def cancel_order(
 
     # Make the reserved quantity of articles available again.
     for item in order.items:
-        item.article.quantity = Article.quantity + item.quantity
+        item.article.quantity = DbArticle.quantity + item.quantity
 
     db.session.commit()
 

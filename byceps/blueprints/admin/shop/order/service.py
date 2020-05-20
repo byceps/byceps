@@ -10,7 +10,7 @@ from dataclasses import dataclass
 import dataclasses
 from typing import Dict, Iterator, Sequence
 
-from .....services.shop.article.models.article import Article
+from .....services.shop.article.models.article import Article as DbArticle
 from .....services.shop.article import service as article_service
 from .....services.shop.article.transfer.models import ArticleNumber
 from .....services.shop.order.models.order_event import (
@@ -46,7 +46,7 @@ def extend_order_tuples_with_orderer(
         yield OrderWithOrderer(*values)
 
 
-def get_articles_by_item_number(order: Order) -> Dict[ArticleNumber, Article]:
+def get_articles_by_item_number(order: Order) -> Dict[ArticleNumber, DbArticle]:
     numbers = {item.article_number for item in order.items}
 
     articles = article_service.get_articles_by_numbers(numbers)

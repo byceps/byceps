@@ -11,7 +11,7 @@ from typing import Callable, Sequence, Set
 from ....database import db
 from ....typing import UserID
 
-from ..article.models.article import Article
+from ..article.models.article import Article as DbArticle
 from ..article.transfer.models import ArticleNumber
 from ..shop.transfer.models import ShopID
 
@@ -69,7 +69,7 @@ def delete_actions(article_number: ArticleNumber) -> None:
 def get_actions(shop_id: ShopID) -> Sequence[OrderAction]:
     """Return all order actions defined for articles of that shop."""
     return OrderAction.query \
-        .join(Article).filter(Article.shop_id == shop_id) \
+        .join(DbArticle).filter(DbArticle.shop_id == shop_id) \
         .all()
 
 

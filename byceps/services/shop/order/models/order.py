@@ -17,7 +17,6 @@ from .....util.instances import ReprBuilder
 
 from ....user.models.user import User
 
-from ...article.models.article import Article
 from ...shop.transfer.models import ShopID
 
 from ..transfer.models import (
