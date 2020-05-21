@@ -257,7 +257,7 @@ def update(article_id):
     if available_until:
         available_until = local_tz_to_utc(available_until)
 
-    article_service.update_article(
+    article = article_service.update_article(
         article.id,
         description,
         price,
@@ -358,7 +358,7 @@ def _get_shop_or_404(shop_id):
 
 
 def _get_article_or_404(article_id):
-    article = article_service.find_article(article_id)
+    article = article_service.find_db_article(article_id)
 
     if article is None:
         abort(404)

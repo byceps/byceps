@@ -21,7 +21,12 @@ from ..shop.transfer.models import ShopID
 from .models.article import Article as DbArticle
 from .models.attached_article import AttachedArticle as DbAttachedArticle
 from .models.compilation import ArticleCompilation, ArticleCompilationItem
-from .transfer.models import ArticleID, ArticleNumber, AttachedArticleID
+from .transfer.models import (
+    Article,
+    ArticleID,
+    ArticleNumber,
+    AttachedArticleID,
+)
 
 
 class UnknownArticleId(ValueError):
@@ -35,7 +40,7 @@ def create_article(
     price: Decimal,
     tax_rate: Decimal,
     quantity: int,
-) -> DbArticle:
+) -> Article:
     """Create an article."""
     article = DbArticle(
         shop_id, item_number, description, price, tax_rate, quantity
@@ -44,7 +49,7 @@ def create_article(
     db.session.add(article)
     db.session.commit()
 
-    return article
+    return _db_entity_to_article(article)
 
 
 def update_article(
@@ -59,7 +64,7 @@ def update_article(
     not_directly_orderable: bool,
     requires_separate_order: bool,
     shipping_required: bool,
-) -> None:
+) -> Article:
     """Update the article."""
     article = _get_db_article(article_id)
 
@@ -75,6 +80,8 @@ def update_article(
     article.shipping_required = shipping_required
 
     db.session.commit()
+
+    return _db_entity_to_article(article)
 
 
 def attach_article(
@@ -133,12 +140,14 @@ def delete_article(article_id: ArticleID) -> None:
     db.session.commit()
 
 
-def find_article(article_id: ArticleID) -> Optional[DbArticle]:
+def find_article(article_id: ArticleID) -> Optional[Article]:
     """Return the article with that ID, or `None` if not found."""
-    return DbArticle.query.get(article_id)
+    article = find_db_article(article_id)
+
+    return _db_entity_to_article(article)
 
 
-def get_article(article_id: ArticleID) -> DbArticle:
+def get_article(article_id: ArticleID) -> Article:
     """Return the article with that ID.
 
     Raise an exception if not found.
@@ -151,12 +160,19 @@ def get_article(article_id: ArticleID) -> DbArticle:
     return article
 
 
+def find_db_article(article_id: ArticleID) -> Optional[DbArticle]:
+    """Return the database entity for the article with that ID, or
+    `None` if not found.
+    """
+    return DbArticle.query.get(article_id)
+
+
 def _get_db_article(article_id: ArticleID) -> DbArticle:
     """Return the database entity for the article with that id.
 
     Raise an exception if not found.
     """
-    article = DbArticle.query.get(article_id)
+    article = find_db_article(article_id)
 
     if article is None:
         raise UnknownArticleId(article_id)
@@ -183,20 +199,24 @@ def find_attached_article(
 
 def get_articles_by_numbers(
     article_numbers: Set[ArticleNumber]
-) -> Sequence[DbArticle]:
+) -> Set[Article]:
     """Return the articles with those numbers."""
     if not article_numbers:
         return []
 
-    return DbArticle.query \
+    rows = DbArticle.query \
         .filter(DbArticle.item_number.in_(article_numbers)) \
         .all()
 
+    return {_db_entity_to_article(row) for row in rows}
 
-def get_articles_for_shop(shop_id: ShopID) -> Sequence[DbArticle]:
+
+def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
     """Return all articles for that shop, ordered by article number."""
     return _get_articles_for_shop_query(shop_id) \
         .all()
+
+    return [_db_entity_to_article(row) for row in rows]
 
 
 def get_articles_for_shop_paginated(
@@ -271,7 +291,7 @@ def _add_attached_articles(
         )
 
 
-def get_attachable_articles(article_id: ArticleID) -> Sequence[DbArticle]:
+def get_attachable_articles(article_id: ArticleID) -> Set[Article]:
     """Return the articles that can be attached to that article."""
     article = _get_db_article(article_id)
 
@@ -283,11 +303,13 @@ def get_attachable_articles(article_id: ArticleID) -> Sequence[DbArticle]:
 
     unattachable_article_ids = {article.id for article in unattachable_articles}
 
-    return DbArticle.query \
+    rows = DbArticle.query \
         .for_shop(article.shop_id) \
         .filter(db.not_(DbArticle.id.in_(unattachable_article_ids))) \
         .order_by(DbArticle.item_number) \
         .all()
+
+    return {_db_entity_to_article(row) for row in rows}
 
 
 def sum_ordered_articles_by_payment_state(
@@ -350,3 +372,21 @@ def sum_ordered_articles_by_payment_state(
                 yield shop_id, article_number, description, payment_state, quantity
 
     return list(generate())
+
+
+def _db_entity_to_article(article: DbArticle) -> Article:
+    return Article(
+        article.id,
+        article.shop_id,
+        article.item_number,
+        article.description,
+        article.price,
+        article.tax_rate,
+        article.available_from,
+        article.available_until,
+        article.quantity,
+        article.max_quantity_per_order,
+        article.not_directly_orderable,
+        article.requires_separate_order,
+        article.shipping_required,
+    )

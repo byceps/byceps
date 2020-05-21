@@ -242,7 +242,7 @@ def _get_storefront_or_404():
 
 
 def _get_article_or_404(article_id):
-    article = article_service.find_article(article_id)
+    article = article_service.find_db_article(article_id)
 
     if article is None:
         abort(404)

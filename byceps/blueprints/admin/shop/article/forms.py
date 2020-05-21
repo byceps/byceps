@@ -67,5 +67,6 @@ class ArticleAttachmentCreateForm(LocalizedForm):
             (str(article.id), to_label(article))
             for article in attachable_articles
         ]
+        choices.sort(key=lambda choice: choice[1])
 
         self.article_to_attach_id.choices = choices
