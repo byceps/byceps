@@ -100,15 +100,15 @@ def test_cancel_before_paid(
     admin,
     orderer,
 ):
-    article_before = article1
+    article = article1
 
-    quantified_articles_to_order = {(article_before, 3)}
+    quantified_articles_to_order = {(article, 3)}
     placed_order = place_order(
         storefront.id, orderer, quantified_articles_to_order
     )
     order_before = get_order(placed_order.id)
 
-    assert article_before.quantity == 5
+    assert get_article_quantity(article.id) == 5
 
     assert_payment_is_open(order_before)
 
@@ -126,8 +126,7 @@ def test_cancel_before_paid(
         order_afterwards, None, PaymentState.canceled_before_paid, admin.id
     )
 
-    article_afterwards = get_article(article_before.id)
-    assert article_afterwards.quantity == 8
+    assert get_article_quantity(article.id) == 8
 
     order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_called_once_with(
         placed_order.id
@@ -154,9 +153,9 @@ def test_cancel_before_paid_without_sending_email(
     admin,
     orderer,
 ):
-    article_before = article2
+    article = article2
 
-    quantified_articles_to_order = {(article_before, 3)}
+    quantified_articles_to_order = {(article, 3)}
     placed_order = place_order(
         storefront.id, orderer, quantified_articles_to_order
     )
@@ -241,15 +240,15 @@ def test_cancel_after_paid(
     admin,
     orderer,
 ):
-    article_before = article3
+    article = article3
 
-    quantified_articles_to_order = {(article_before, 3)}
+    quantified_articles_to_order = {(article, 3)}
     placed_order = place_order(
         storefront.id, orderer, quantified_articles_to_order
     )
     order_before = get_order(placed_order.id)
 
-    assert article_before.quantity == 5
+    assert get_article_quantity(article.id) == 5
 
     assert_payment_is_open(order_before)
 
@@ -275,8 +274,7 @@ def test_cancel_after_paid(
         admin.id,
     )
 
-    article_afterwards = get_article(article_before.id)
-    assert article_afterwards.quantity == 8
+    assert get_article_quantity(article.id) == 8
 
     order_email_service_mock.send_email_for_canceled_order_to_orderer.assert_called_once_with(
         placed_order.id
@@ -304,8 +302,9 @@ def create_article(shop_id, item_number, quantity):
     )
 
 
-def get_article(article_id):
-    return article_service.get_article(article_id)
+def get_article_quantity(article_id):
+    article = article_service.get_article(article_id)
+    return article.quantity
 
 
 def place_order(storefront_id, orderer, quantified_articles):

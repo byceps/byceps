@@ -102,8 +102,7 @@ def test_order(
     orderer,
     article,
 ):
-    article_before = get_article(article.id)
-    assert article_before.quantity == 5
+    assert get_article_quantity(article.id) == 5
 
     url = '/shop/order'
     article_quantity_key = f'article_{article.id}'
@@ -114,8 +113,7 @@ def test_order(
     with http_client(party_app, user_id=orderer.id) as client:
         response = client.post(url, data=form_data)
 
-    article_afterwards = get_article(article.id)
-    assert article_afterwards.quantity == 2
+    assert get_article_quantity(article.id) == 2
 
     order = Order.query.filter_by(placed_by=orderer).one()
     assert_order(order, 'AEC-01-B00005', 1)
@@ -124,8 +122,8 @@ def test_order(
     assert_order_item(
         first_order_item,
         article.id,
-        article_before.price,
-        article_before.tax_rate,
+        article.price,
+        article.tax_rate,
         3,
     )
 
@@ -163,8 +161,7 @@ def test_order_single(
     orderer,
     article,
 ):
-    article_before = get_article(article.id)
-    assert article_before.quantity == 5
+    assert get_article_quantity(article.id) == 5
 
     url = f'/shop/order_single/{article.id!s}'
     form_data = {
@@ -174,8 +171,7 @@ def test_order_single(
     with http_client(party_app, user_id=orderer.id) as client:
         response = client.post(url, data=form_data)
 
-    article_afterwards = get_article(article.id)
-    assert article_afterwards.quantity == 4
+    assert get_article_quantity(article.id) == 4
 
     order = Order.query.filter_by(placed_by=orderer).one()
     assert_order(order, 'AEC-01-B00005', 1)
@@ -184,8 +180,8 @@ def test_order_single(
     assert_order_item(
         first_order_item,
         article.id,
-        article_before.price,
-        article_before.tax_rate,
+        article.price,
+        article.tax_rate,
         1,
     )
 
@@ -215,8 +211,9 @@ def test_order_single(
 # helpers
 
 
-def get_article(article_id):
-    return article_service.get_article(article_id)
+def get_article_quantity(article_id):
+    article = article_service.get_article(article_id)
+    return article.quantity
 
 
 def assert_response_headers(response, order_detail_page_url):
