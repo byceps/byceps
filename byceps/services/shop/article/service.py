@@ -133,6 +133,19 @@ def find_article(article_id: ArticleID) -> Optional[DbArticle]:
     return DbArticle.query.get(article_id)
 
 
+def get_article(article_id: ArticleID) -> DbArticle:
+    """Return the article with that ID.
+
+    Raise an exception if not found.
+    """
+    article = find_article(article_id)
+
+    if article is None:
+        raise UnknownArticleId(article_id)
+
+    return article
+
+
 def _get_db_article(article_id: ArticleID) -> DbArticle:
     """Return the database entity for the article with that id.
 

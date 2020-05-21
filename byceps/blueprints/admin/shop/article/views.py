@@ -312,7 +312,7 @@ def attachment_create(article_id):
         return attachment_create_form(article_id, form)
 
     article_to_attach_id = form.article_to_attach_id.data
-    article_to_attach = article_service.find_article(article_to_attach_id)
+    article_to_attach = article_service.get_article(article_to_attach_id)
     quantity = form.quantity.data
 
     article_service.attach_article(article_to_attach, quantity, article)
