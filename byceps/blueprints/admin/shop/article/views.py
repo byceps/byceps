@@ -340,7 +340,7 @@ def attachment_remove(article_id):
     article = attached_article.article
     attached_to_article = attached_article.attached_to_article
 
-    article_service.unattach_article(attached_article)
+    article_service.unattach_article(attached_article.id)
 
     flash_success(
         f'Artikel "{article.item_number}" ist nun nicht mehr '

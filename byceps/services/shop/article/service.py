@@ -91,9 +91,12 @@ def attach_article(
     db.session.commit()
 
 
-def unattach_article(attached_article: DbArticle) -> None:
+def unattach_article(attached_article_id: AttachedArticleID) -> None:
     """Unattach an article from another."""
-    db.session.delete(attached_article)
+    db.session.query(DbAttachedArticle) \
+        .filter_by(id=attached_article_id) \
+        .delete()
+
     db.session.commit()
 
 
