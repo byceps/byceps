@@ -8,12 +8,24 @@ byceps.services.shop.catalog.transfer.models
 
 from dataclasses import dataclass
 from typing import NewType
+from uuid import UUID
 
 
 CatalogID = NewType('CatalogID', str)
+
+
+CollectionID = NewType('CollectionID', UUID)
 
 
 @dataclass(frozen=True)
 class Catalog:
     id: CatalogID
     title: str
+
+
+@dataclass(frozen=True)
+class Collection:
+    id: CollectionID
+    catalog_id: CatalogID
+    title: str
+    position: int
