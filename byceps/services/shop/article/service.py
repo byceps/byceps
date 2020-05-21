@@ -78,11 +78,13 @@ def update_article(
 
 
 def attach_article(
-    article_to_attach: DbArticle, quantity: int, article_to_attach_to: DbArticle
+    article_number_to_attach: ArticleNumber,
+    quantity: int,
+    article_number_to_attach_to: ArticleNumber,
 ) -> None:
     """Attach an article to another article."""
     attached_article = DbAttachedArticle(
-        article_to_attach, quantity, article_to_attach_to
+        article_number_to_attach, quantity, article_number_to_attach_to
     )
 
     db.session.add(attached_article)

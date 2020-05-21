@@ -315,7 +315,9 @@ def attachment_create(article_id):
     article_to_attach = article_service.get_article(article_to_attach_id)
     quantity = form.quantity.data
 
-    article_service.attach_article(article_to_attach, quantity, article)
+    article_service.attach_article(
+        article_to_attach.item_number, quantity, article.item_number
+    )
 
     flash_success(
         f'Der Artikel "{article_to_attach.item_number}" '

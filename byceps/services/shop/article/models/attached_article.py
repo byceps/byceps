@@ -8,6 +8,8 @@ byceps.services.shop.article.models.attached_article
 
 from .....database import db, generate_uuid
 
+from ..transfer.models import ArticleNumber
+
 from .article import Article as DbArticle
 
 
@@ -33,8 +35,11 @@ class AttachedArticle(db.Model):
                                           backref=db.backref('attached_articles', collection_class=set))
 
     def __init__(
-        self, article: DbArticle, quantity: int, attached_to_article: DbArticle
+        self,
+        article_number: ArticleNumber,
+        quantity: int,
+        attached_to_article_number: ArticleNumber,
     ) -> None:
-        self.article = article
+        self.article_number = article_number
         self.quantity = quantity
-        self.attached_to_article = attached_to_article
+        self.attached_to_article_number = attached_to_article_number
