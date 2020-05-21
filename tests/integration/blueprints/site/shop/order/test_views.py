@@ -8,7 +8,6 @@ from unittest.mock import patch
 import pytest
 
 from byceps.events.shop import ShopOrderPlaced
-from byceps.services.shop.article.models.article import Article as DbArticle
 from byceps.services.shop.article import service as article_service
 from byceps.services.shop.order.models.order import Order
 from byceps.services.shop.order import service as order_service
@@ -217,7 +216,7 @@ def test_order_single(
 
 
 def get_article(article_id):
-    return DbArticle.query.get(article_id)
+    return article_service.get_article(article_id)
 
 
 def assert_response_headers(response, order_detail_page_url):
