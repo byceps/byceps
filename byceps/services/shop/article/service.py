@@ -8,7 +8,7 @@ byceps.services.shop.article.service
 
 from datetime import datetime
 from decimal import Decimal
-from typing import Dict, List, Optional, Sequence, Set, Tuple
+from typing import List, Optional, Sequence, Set, Tuple
 
 from ....database import BaseQuery, db, Pagination
 
@@ -168,20 +168,6 @@ def find_attached_article(
 ) -> Optional[DbAttachedArticle]:
     """Return the attached article with that ID, or `None` if not found."""
     return DbAttachedArticle.query.get(attached_article_id)
-
-
-def get_article_count_by_shop_id() -> Dict[ShopID, int]:
-    """Return article count (including 0) per shop, indexed by shop ID."""
-    shop_ids_and_article_counts = db.session \
-        .query(
-            DbShop.id,
-            db.func.count(DbArticle.shop_id)
-        ) \
-        .outerjoin(DbArticle) \
-        .group_by(DbShop.id) \
-        .all()
-
-    return dict(shop_ids_and_article_counts)
 
 
 def get_articles_by_numbers(
