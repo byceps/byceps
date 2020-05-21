@@ -62,16 +62,16 @@ def place_order(
     )
 
     order = _build_order(shop.id, order_number, orderer, created_at)
-
-    order_items = list(_add_items_from_cart_to_order(cart, order))
+    order_items = list(_build_order_items(cart, order))
     order.total_amount = cart.calculate_total_amount()
-
     order.shipping_required = any(
         item.shipping_required for item in order_items
     )
 
     db.session.add(order)
     db.session.add_all(order_items)
+
+    _reduce_article_stock(cart)
 
     try:
         db.session.commit()
@@ -97,7 +97,7 @@ def _build_order(
     orderer: Orderer,
     created_at: datetime,
 ) -> DbOrder:
-    """Create an order of one or more articles."""
+    """Build an order."""
     return DbOrder(
         shop_id,
         order_number,
@@ -112,21 +112,14 @@ def _build_order(
     )
 
 
-def _add_items_from_cart_to_order(
+def _build_order_items(
     cart: Cart, order: DbOrder
 ) -> Iterator[DbOrderItem]:
-    """Add the items from the cart to the order.
-
-    Reduce the article's quantity accordingly.
-
-    Yield the created order items.
-    """
+    """Build order items from the cart's content."""
     for cart_item in cart.get_items():
         article = cart_item.article
         quantity = cart_item.quantity
         line_amount = cart_item.line_amount
-
-        article.quantity = DbArticle.quantity - quantity
 
         yield DbOrderItem(
             order,
@@ -138,6 +131,15 @@ def _add_items_from_cart_to_order(
             line_amount,
             article.shipping_required,
         )
+
+
+def _reduce_article_stock(cart: Cart) -> None:
+    """Reduce article stock according to what is in the cart."""
+    for cart_item in cart.get_items():
+        article = cart_item.article
+        quantity = cart_item.quantity
+
+        article.quantity = DbArticle.quantity - quantity
 
 
 def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
