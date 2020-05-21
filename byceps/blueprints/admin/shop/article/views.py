@@ -284,7 +284,7 @@ def attachment_create_form(article_id, erroneous_form=None):
 
     shop = shop_service.get_shop(article.shop_id)
 
-    attachable_articles = article_service.get_attachable_articles(article)
+    attachable_articles = article_service.get_attachable_articles(article.id)
 
     form = erroneous_form if erroneous_form else ArticleAttachmentCreateForm(
         quantity=0)
@@ -303,7 +303,7 @@ def attachment_create(article_id):
     """Attach an article to another article."""
     article = _get_article_or_404(article_id)
 
-    attachable_articles = article_service.get_attachable_articles(article)
+    attachable_articles = article_service.get_attachable_articles(article.id)
 
     form = ArticleAttachmentCreateForm(request.form)
     form.set_article_to_attach_choices(attachable_articles)

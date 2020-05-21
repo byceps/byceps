@@ -271,8 +271,10 @@ def _add_attached_articles(
         )
 
 
-def get_attachable_articles(article: DbArticle) -> Sequence[DbArticle]:
+def get_attachable_articles(article_id: ArticleID) -> Sequence[DbArticle]:
     """Return the articles that can be attached to that article."""
+    article = _get_db_article(article_id)
+
     attached_articles = {
         attached.article for attached in article.attached_articles
     }
