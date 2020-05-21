@@ -258,7 +258,7 @@ def update(article_id):
         available_until = local_tz_to_utc(available_until)
 
     article_service.update_article(
-        article,
+        article.id,
         description,
         price,
         tax_rate,

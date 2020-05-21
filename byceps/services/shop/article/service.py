@@ -24,6 +24,10 @@ from .models.compilation import ArticleCompilation, ArticleCompilationItem
 from .transfer.models import ArticleID, ArticleNumber, AttachedArticleID
 
 
+class UnknownArticleId(ValueError):
+    pass
+
+
 def create_article(
     shop_id: ShopID,
     item_number: ArticleNumber,
@@ -44,7 +48,7 @@ def create_article(
 
 
 def update_article(
-    article: DbArticle,
+    article_id: ArticleID,
     description: str,
     price: Decimal,
     tax_rate: Decimal,
@@ -57,6 +61,8 @@ def update_article(
     shipping_required: bool,
 ) -> None:
     """Update the article."""
+    article = _get_db_article(article_id)
+
     article.description = description
     article.price = price
     article.tax_rate = tax_rate
@@ -132,6 +138,19 @@ def delete_article(article_id: ArticleID) -> None:
 def find_article(article_id: ArticleID) -> Optional[DbArticle]:
     """Return the article with that ID, or `None` if not found."""
     return DbArticle.query.get(article_id)
+
+
+def _get_db_article(article_id: ArticleID) -> DbArticle:
+    """Return the database entity for the article with that id.
+
+    Raise an exception if not found.
+    """
+    article = DbArticle.query.get(article_id)
+
+    if article is None:
+        raise UnknownArticleId(article_id)
+
+    return article
 
 
 def find_article_with_details(article_id: ArticleID) -> Optional[DbArticle]:
@@ -223,11 +242,13 @@ def get_article_compilation_for_orderable_articles(
 
 
 def get_article_compilation_for_single_article(
-    article: DbArticle, *, fixed_quantity: Optional[int] = None
+    article_id: ArticleID, *, fixed_quantity: Optional[int] = None
 ) -> ArticleCompilation:
     """Return a compilation built from just the given article plus the
     articles attached to it (if any).
     """
+    article = _get_db_article(article_id)
+
     compilation = ArticleCompilation()
 
     compilation.append(

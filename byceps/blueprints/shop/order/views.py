@@ -147,7 +147,7 @@ def order_single_form(article_id, erroneous_form=None):
         }
 
     article_compilation = article_service.get_article_compilation_for_single_article(
-        article, fixed_quantity=1
+        article.id, fixed_quantity=1
     )
 
     country_names = country_service.get_country_names()
@@ -200,7 +200,7 @@ def order_single(article_id):
         return order_single_form(article.id)
 
     article_compilation = article_service.get_article_compilation_for_single_article(
-        article, fixed_quantity=quantity
+        article.id, fixed_quantity=quantity
     )
 
     user = g.current_user
