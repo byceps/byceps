@@ -16,7 +16,7 @@ from ....database import db, paginate, Pagination
 from ....events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ....typing import UserID
 
-from ..article.models.article import Article as DbArticle
+from ..article import service as article_service
 from ..cart.models import Cart
 from ..sequence import service as sequence_service
 from ..shop.models import Shop
@@ -139,7 +139,7 @@ def _reduce_article_stock(cart: Cart) -> None:
         article = cart_item.article
         quantity = cart_item.quantity
 
-        article.quantity = DbArticle.quantity - quantity
+        article_service.decrease_quantity(article.id, quantity, commit=False)
 
 
 def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
@@ -269,7 +269,9 @@ def cancel_order(
 
     # Make the reserved quantity of articles available again.
     for item in order.items:
-        item.article.quantity = DbArticle.quantity + item.quantity
+        article_service.increase_quantity(
+            item.article.id, item.quantity, commit=False
+        )
 
     db.session.commit()
 

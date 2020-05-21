@@ -96,6 +96,30 @@ def unattach_article(attached_article: DbArticle) -> None:
     db.session.commit()
 
 
+def increase_quantity(
+    article_id: ArticleID, quantity_to_increase_by: int, *, commit: bool = True
+) -> None:
+    """Increase article quantity by the given value."""
+    db.session.query(DbArticle) \
+        .filter_by(id=article_id) \
+        .update({'quantity': DbArticle.quantity + quantity_to_increase_by})
+
+    if commit:
+        db.session.commit()
+
+
+def decrease_quantity(
+    article_id: ArticleID, quantity_to_decrease_by: int, *, commit: bool = True
+) -> None:
+    """Decrease article quantity by the given value."""
+    db.session.query(DbArticle) \
+        .filter_by(id=article_id) \
+        .update({'quantity': DbArticle.quantity - quantity_to_decrease_by})
+
+    if commit:
+        db.session.commit()
+
+
 def delete_article(article_id: ArticleID) -> None:
     """Delete an article."""
     db.session.query(DbArticle) \
