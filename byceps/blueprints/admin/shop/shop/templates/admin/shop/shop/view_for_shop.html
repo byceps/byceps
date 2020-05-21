@@ -20,11 +20,6 @@
 
   <div class="row row--equal-sized-centered-columns row--space-between row--wrap bigstats">
     <div class="column-auto">
-      <a class="button button--clear" href="{{ url_for('shop_article_admin.index_for_shop', shop_id=shop.id) }}">
-        {{- render_bigstats_item(article_count, 'Artikel') -}}
-      </a>
-    </div>
-    <div class="column-auto">
       <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open') }}">
         {{- render_bigstats_item(order_counts_by_payment_state[PaymentState.open], 'Bestellungen<br>'|safe ~ render_order_payment_state(PaymentState.open)) -}}
       </a>

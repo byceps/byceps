@@ -89,13 +89,6 @@ def attach_article(
     db.session.commit()
 
 
-def count_articles_for_shop(shop_id: ShopID) -> int:
-    """Return the number of articles that are assigned to that shop."""
-    return DbArticle.query \
-        .for_shop(shop_id) \
-        .count()
-
-
 def unattach_article(attached_article: DbArticle) -> None:
     """Unattach an article from another."""
     db.session.delete(attached_article)

@@ -70,7 +70,6 @@ def view_for_shop(shop_id):
     """Show the shop."""
     shop = _get_shop_or_404(shop_id)
 
-    article_count = article_service.count_articles_for_shop(shop.id)
     order_counts_by_payment_state = order_service.count_orders_per_payment_state(
         shop.id
     )
@@ -82,7 +81,6 @@ def view_for_shop(shop_id):
     return {
         'shop': shop,
 
-        'article_count': article_count,
         'order_counts_by_payment_state': order_counts_by_payment_state,
         'PaymentState': PaymentState,
 
