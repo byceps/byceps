@@ -1,40 +1,43 @@
 onDomReady(function() {
 
   // Log in.
-  const login_form = document.getElementById('login-form')
-  if (login_form !== null) {
-    login_form.addEventListener('submit', function(event) {
+  const loginForm = document.getElementById('login-form');
+  if (loginForm !== null) {
+    loginForm.addEventListener('submit', function(event) {
       event.preventDefault();
 
-      const login_failed_notice = document.getElementById('login-failed-notice');
-      login_failed_notice.classList.add('hidden');
+      const loginFailedNotice = document.getElementById('login-failed-notice');
+      loginFailedNotice.classList.add('hidden');
 
-      $.ajax({
-        type: 'POST',
-        url: login_form.getAttribute('action'),
-        data: $(this).serializeArray(),
-        success: function(data, text_status, xhr) {
+      const authUrl = loginForm.getAttribute('action');
+      const formData = new FormData(loginForm);
+
+      fetch(authUrl, {
+        method: 'POST',
+        body: formData,
+      })
+        .then(response => {
+          if (!response.ok) {
+            loginFailedNotice.classList.remove('hidden');
+            return;
+          }
+
           // Redirect to location specified via header.
-          var redirect_url = _get_location(xhr);
-          if (redirect_url !== null) {
-            location.href = redirect_url;
+          const redirectUrl = response.headers.get('Location');
+          if (redirectUrl !== null) {
+            location.href = redirectUrl;
             return;
           }
 
           // Redirect to referrer if available.
-          var referrer = document.createElement('a');
+          const referrer = document.createElement('a');
           referrer.href = document.referrer;
           // Exclude selected referrer paths.
           if (/^\/(authentication|consent)\//.test(referrer.pathname)) {
             referrer.pathname = '/';
           }
           location.href = (referrer.hostname == location.hostname) ? referrer.pathname : '/';
-        },
-        error: function() {
-          login_failed_notice.classList.remove('hidden');
-        },
-        dataType: 'text'
-      });
+        });
     });
   }
 
