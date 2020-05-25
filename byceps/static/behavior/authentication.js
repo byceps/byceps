@@ -47,9 +47,10 @@ onDomReady(function() {
       anchor.addEventListener('click', function(event) {
         if (confirm('Wirklich abmelden?')) {
           const href = anchor.getAttribute('href');
-          send_post_request(href, function() {
-            location.href = '/authentication/login';
-          });
+          fetch(href, {method: 'POST'})
+            .then(response => {
+              location.href = '/authentication/login';
+            });
         };
 
         event.preventDefault();

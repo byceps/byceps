@@ -18,14 +18,6 @@ function onDomReady(callback) {
 // ---------------------------------------------------------------------
 // XHR requests
 
-function send_post_request(url, onload_callback, onerror_callback) {
-  const request = new XMLHttpRequest();
-  request.open('POST', url);
-  request.onload = onload_callback;
-  request.onerror = onerror_callback;
-  request.send();
-}
-
 function post_on_click(selector) {
   _request_on_click(selector, 'POST');
 }
