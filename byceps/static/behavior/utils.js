@@ -89,8 +89,7 @@ function _confirmed_request_on_click_then_reload(selector, confirmation_label, m
 function _ajax_then_redirect_to_location_response_header(method, request_url) {
   _ajax(method, request_url, function(xhr, text_status) {
     if (text_status == 'nocontent') {
-      var redirect_url = _get_location(xhr);
-      location.href = redirect_url;
+      location.href = xhr.getResponseHeader('Location');
     }
   });
 }
@@ -109,10 +108,6 @@ function _ajax(method, request_url, on_complete) {
     url: request_url,
     complete: on_complete
   });
-}
-
-function _get_location(xhr) {
-  return xhr.getResponseHeader('Location');
 }
 
 
