@@ -11,6 +11,8 @@ from sqlalchemy.ext.orderinglist import ordering_list
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
+from ..article.transfer.models import ArticleNumber
+
 from .transfer.models import CatalogID, CollectionID
 
 
@@ -63,3 +65,32 @@ class Collection(db.Model):
             .add_with_lookup('catalog_id') \
             .add_with_lookup('title') \
             .build()
+
+
+class CatalogArticle(db.Model):
+    """The assignment of an article to a collection."""
+
+    __tablename__ = 'shop_catalog_articles'
+    __table_args__ = (
+        db.UniqueConstraint('collection_id', 'article_number'),
+    )
+
+    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    collection_id = db.Column(db.Uuid, db.ForeignKey('shop_catalog_collections.id'), index=True, nullable=False)
+    article_number = db.Column(db.UnicodeText, db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
+    position = db.Column(db.Integer, nullable=False)
+
+    collection = db.relationship(
+        Collection,
+        backref=db.backref(
+            'catalog_articles',
+            order_by=position,
+            collection_class=ordering_list('position', count_from=1),
+        ),
+    )
+
+    def __init__(
+        self, collection_id: CollectionID, article_number: ArticleNumber
+    ) -> None:
+        self.collection_id = collection_id
+        self.article_number = article_number

@@ -10,8 +10,20 @@ from typing import List, Optional
 
 from ....database import db
 
-from .models import Catalog as DbCatalog, Collection as DbCollection
-from .transfer.models import Catalog, CatalogID, Collection, CollectionID
+from ..article.transfer.models import ArticleNumber
+
+from .models import (
+    Catalog as DbCatalog,
+    CatalogArticle as DbCatalogArticle,
+    Collection as DbCollection,
+)
+from .transfer.models import (
+    Catalog,
+    CatalogArticleID,
+    CatalogID,
+    Collection,
+    CollectionID,
+)
 
 
 # catalog
@@ -102,3 +114,33 @@ def _db_entity_to_collection(collection: DbCollection) -> Collection:
         collection.position,
         [],
     )
+
+
+# article assignment
+
+
+def add_article_to_collection(
+    article_number: ArticleNumber, collection_id: CollectionID
+) -> CatalogArticleID:
+    """Add article to collection."""
+    collection = DbCollection.query.get(collection_id)
+    if collection is None:
+        raise ValueError(f'Unknown collection ID "{collection_id}"')
+
+    catalog_article = DbCatalogArticle(collection_id, article_number)
+
+    collection.catalog_articles.append(catalog_article)
+    db.session.commit()
+
+    return catalog_article.id
+
+
+def remove_article_from_collection(
+    catalog_article_id: CatalogArticleID,
+) -> None:
+    """Remove article from collection."""
+    db.session.query(DbCatalogArticle) \
+        .filter_by(id=catalog_article_id) \
+        .delete()
+
+    db.session.commit()
