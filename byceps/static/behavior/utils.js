@@ -92,27 +92,27 @@ function _onClickCallbackWithHref(selector, callback) {
 }
 
 function _ajax_then_redirect_to_location_response_header(method, request_url) {
-  _ajax(method, request_url, function(xhr, text_status) {
-    if (text_status == 'nocontent') {
-      location.href = xhr.getResponseHeader('Location');
+  _ajax(method, request_url, function(response) {
+    if (response.status == 204) {
+      const redirectUrl = response.headers.get('Location');
+      if (redirectUrl !== null) {
+        location.href = redirectUrl;
+      }
     }
   });
 }
 
 function _ajax_then_reload(method, request_url) {
-  _ajax(method, request_url, function(xhr, text_status) {
-    if (text_status == 'nocontent') {
+  _ajax(method, request_url, function(response) {
+    if (response.status == 204) {
       location.href = location.href;
     }
   });
 }
 
-function _ajax(method, request_url, on_complete) {
-  $.ajax({
-    type: method,
-    url: request_url,
-    complete: on_complete
-  });
+function _ajax(method, url, on_complete) {
+  fetch(url, {method: method})
+    .then(response => on_complete(response));
 }
 
 
