@@ -53,14 +53,12 @@
           <br>{{ render_icon('info') }} {{ 'separat zu bestellen'|dim }}
           {%- endif %}
 
-          {%- set time_range = article.availability_range %}
-
-          {%- if time_range.hasLowerBound() %}
-          <br>{{ render_icon('time') }} {{ 'ab ' + render_datetime(time_range.lowerEndpoint()|utc_to_local_tz, smart=False)|dim }}
+          {%- if article.available_from %}
+          <br>{{ render_icon('time') }} {{ 'ab ' + render_datetime(article.available_from|utc_to_local_tz, smart=False)|dim }}
           {%- endif %}
 
-          {%- if time_range.hasUpperBound() %}
-          <br>{{ render_icon('time') }} {{ 'bis ' + render_datetime(time_range.upperEndpoint()|utc_to_local_tz, smart=False)|dim }}
+          {%- if article.available_until %}
+          <br>{{ render_icon('time') }} {{ 'bis ' + render_datetime(article.available_until|utc_to_local_tz, smart=False)|dim }}
           {%- endif %}
         </td>
         <td class="nowrap number">
