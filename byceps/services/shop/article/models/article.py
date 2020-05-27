@@ -8,10 +8,7 @@ byceps.services.shop.article.models.article
 
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Optional
-
-from Ranger import Range
-from Ranger.src.Range.Cut import Cut
+from typing import Optional
 
 from .....database import BaseQuery, db, generate_uuid
 from .....util.instances import ReprBuilder
@@ -96,27 +93,13 @@ class Article(db.Model):
         return str(percentage).replace('.', ',')
 
     @property
-    def availability_range(self) -> Range:
-        """Assemble the date/time range of the articles availability."""
-        start = self.available_from
-        end = self.available_until
-
-        if start:
-            if end:
-                return Range.closedOpen(start, end)
-            else:
-                return Range.atLeast(start)
-        else:
-            if end:
-                return Range.lessThan(end)
-            else:
-                return range_all(datetime)
-
-    @property
     def is_available(self) -> bool:
         """Return `True` if the article is available at this moment in time."""
+        start = self.available_from
+        end = self.available_until
         now = datetime.utcnow()
-        return self.availability_range.contains(now)
+
+        return (start is None or start <= now) and (end is None or now < end)
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
@@ -126,10 +109,3 @@ class Article(db.Model):
             .add_with_lookup('description') \
             .add_with_lookup('quantity') \
             .build()
-
-
-def range_all(theType: Any) -> Range:
-    """Create a range than contains every value of the given type."""
-    return Range(
-        Cut.belowAll(theType=theType),
-        Cut.aboveAll(theType=theType))
