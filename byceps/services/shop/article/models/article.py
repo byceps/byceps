@@ -92,15 +92,6 @@ class Article(db.Model):
         percentage = (self.tax_rate * 100).quantize(Decimal('.0'))
         return str(percentage).replace('.', ',')
 
-    @property
-    def is_available(self) -> bool:
-        """Return `True` if the article is available at this moment in time."""
-        start = self.available_from
-        end = self.available_until
-        now = datetime.utcnow()
-
-        return (start is None or start <= now) and (end is None or now < end)
-
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \

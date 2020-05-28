@@ -8,6 +8,8 @@ from datetime import datetime
 from freezegun import freeze_time
 import pytest
 
+from byceps.services.shop.article.service import is_article_available_now
+
 from testfixtures.shop_article import create_article as _create_article
 
 
@@ -26,7 +28,7 @@ def test_is_available_with_start_and_end(now, expected):
         datetime(2014, 9, 23, 18, 0, 0))
 
     with freeze_time(now):
-        assert article.is_available == expected
+        assert is_article_available_now(article) == expected
 
 
 @pytest.mark.parametrize('now, expected', [
@@ -44,7 +46,7 @@ def test_is_available_with_start_and_without_end(now, expected):
         None)
 
     with freeze_time(now):
-        assert article.is_available == expected
+        assert is_article_available_now(article) == expected
 
 
 @pytest.mark.parametrize('now, expected', [
@@ -62,7 +64,7 @@ def test_is_available_without_start_and_with_end(now, expected):
         datetime(2014, 9, 23, 18, 0, 0))
 
     with freeze_time(now):
-        assert article.is_available == expected
+        assert is_article_available_now(article) == expected
 
 
 @pytest.mark.parametrize('now, expected', [
@@ -80,7 +82,7 @@ def test_is_available_without_start_and_without_end(now, expected):
         None)
 
     with freeze_time(now):
-        assert article.is_available == expected
+        assert is_article_available_now(article) == expected
 
 
 def create_article(available_from, available_until):

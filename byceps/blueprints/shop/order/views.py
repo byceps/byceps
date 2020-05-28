@@ -166,7 +166,9 @@ def order_single_form(article_id, erroneous_form=None):
             'article': None,
         }
 
-    if article.quantity < 1 or not article.is_available:
+    if article.quantity < 1 or not article_service.is_article_available_now(
+        article
+    ):
         flash_error('Der Artikel ist nicht verfügbar.')
         return {
             'form': form,
@@ -209,7 +211,9 @@ def order_single(article_id):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')
         return order_single_form(article.id)
 
-    if article.quantity < 1 or not article.is_available:
+    if article.quantity < 1 or not article_service.is_article_available_now(
+        article
+    ):
         flash_error('Der Artikel ist nicht verfügbar.')
         return order_single_form(article.id)
 
@@ -251,7 +255,7 @@ def _get_article_or_404(article_id):
 
 
 def _create_cart_from_article_compilation(
-    article_compilation: ArticleCompilation
+    article_compilation: ArticleCompilation,
 ) -> Cart:
     cart = Cart()
 

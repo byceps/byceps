@@ -312,6 +312,16 @@ def get_attachable_articles(article_id: ArticleID) -> Set[Article]:
     return {_db_entity_to_article(row) for row in rows}
 
 
+def is_article_available_now(article: Article) -> bool:
+    """Return `True` if the article is available at this moment in time."""
+    start = article.available_from
+    end = article.available_until
+
+    now = datetime.utcnow()
+
+    return (start is None or start <= now) and (end is None or now < end)
+
+
 def sum_ordered_articles_by_payment_state(
     shop_ids: Set[ShopID],
 ) -> List[Tuple[ShopID, ArticleNumber, str, PaymentState, int]]:
