@@ -85,13 +85,6 @@ class Article(db.Model):
         self.available_until = available_until
         self.quantity = quantity
 
-    @property
-    def tax_rate_as_percentage(self) -> str:
-        # Keep a digit after the decimal point in case
-        # the tax rate is a fractional number.
-        percentage = (self.tax_rate * 100).quantize(Decimal('.0'))
-        return str(percentage).replace('.', ',')
-
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \

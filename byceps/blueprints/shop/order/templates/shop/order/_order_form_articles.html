@@ -40,7 +40,7 @@
             <br><em>derzeit nicht verfügbar</em>
             {%- endif -%}
           </td>
-          <td class="number">{{ item.article.tax_rate_as_percentage }}&thinsp;%</td>
+          <td class="number">{{ item.article.tax_rate|tax_rate_as_percentage }}&thinsp;%</td>
           <td class="number">{{ item.article.price|format_euro_amount }}</td>
         </tr>
           {%- endwith %}

@@ -63,7 +63,7 @@
         </td>
         <td class="nowrap number">
           {{- article.price|format_euro_amount }}<br>
-          {{- '%s&thinsp;%%'|safe|format(article.tax_rate_as_percentage)|dim -}}
+          {{- '%s&thinsp;%%'|safe|format(article.tax_rate|tax_rate_as_percentage)|dim -}}
         </td>
         <td class="number bignumber{% if article.quantity == 0 %} dimmed{% endif %}">{{ article.quantity }}</td>
       </tr>
