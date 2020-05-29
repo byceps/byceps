@@ -251,7 +251,9 @@ def get_article_compilation_for_orderable_articles(
     compilation = ArticleCompilation()
 
     for article in orderable_articles:
-        compilation.append(ArticleCompilationItem(article))
+        compilation.append(
+            ArticleCompilationItem(_db_entity_to_article(article))
+        )
 
         _add_attached_articles(compilation, article.attached_articles)
 
@@ -269,7 +271,9 @@ def get_article_compilation_for_single_article(
     compilation = ArticleCompilation()
 
     compilation.append(
-        ArticleCompilationItem(article, fixed_quantity=fixed_quantity)
+        ArticleCompilationItem(
+            _db_entity_to_article(article), fixed_quantity=fixed_quantity
+        )
     )
 
     _add_attached_articles(compilation, article.attached_articles)
@@ -285,7 +289,7 @@ def _add_attached_articles(
     for attached_article in attached_articles:
         compilation.append(
             ArticleCompilationItem(
-                attached_article.article,
+                _db_entity_to_article(attached_article.article),
                 fixed_quantity=attached_article.quantity,
             )
         )

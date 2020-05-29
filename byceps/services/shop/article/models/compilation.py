@@ -8,12 +8,12 @@ byceps.services.shop.article.models.compilation
 
 from typing import Iterator, List, Optional
 
-from .article import Article as DbArticle
+from ..transfer.models import Article
 
 
 class ArticleCompilationItem:
     def __init__(
-        self, article: DbArticle, *, fixed_quantity: Optional[int] = None
+        self, article: Article, *, fixed_quantity: Optional[int] = None
     ) -> None:
         if (fixed_quantity is not None) and fixed_quantity < 1:
             raise ValueError(
