@@ -16,9 +16,9 @@ from _util import app_context
 
 
 @click.command()
-@click.argument('shop_id',)
+@click.argument('shop_id')
 @click.argument('title')
-@click.argument('email_config_id',)
+@click.argument('email_config_id')
 @click.argument('article_prefix')
 @click.argument('order_prefix')
 def execute(shop_id, title, email_config_id, article_prefix, order_prefix):
