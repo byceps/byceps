@@ -21,12 +21,12 @@
       {%- if form.consent_to_terms %}
       {{ form_field(form.terms_version_id, show_label=False, required='required') }}
       {{ form_field_checkbox(form.consent_to_terms,
-        'Ich akzeptiere die <a href="%s" target="_blank">Allgemeinen Geschäftsbedingungen</a>.'|format(url_for('terms.view_current'))
+        'Ich akzeptiere die <a href="%s" target="_blank">Allgemeinen Geschäftsbedingungen</a>.'|format(url_for('terms.view_current'))|safe
       ) }}
       {%- endif %}
       {%- if form.consent_to_privacy_policy %}
       {{ form_field_checkbox(form.consent_to_privacy_policy,
-        'Ich akzeptiere die <a href="%s" target="_blank">Datenschutzbestimmungen</a>.'|format(url_for_snippet('privacy_policy'))
+        'Ich akzeptiere die <a href="%s" target="_blank">Datenschutzbestimmungen</a>.'|format(url_for_snippet('privacy_policy'))|safe
       ) }}
       {%- endif %}
       {%- if form.subscribe_to_newsletter %}
