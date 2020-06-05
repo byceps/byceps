@@ -40,9 +40,11 @@ def execute(user_ids):
 def generate_delete_statements_for_users(
     user_ids: Iterable[UserID],
 ) -> Iterator[str]:
+    users = user_service.find_users(user_ids)
+    existing_user_ids = {u.id for u in users}
+
     for user_id in user_ids:
-        user = user_service.find_user(user_id)
-        if not user:
+        if user_id not in existing_user_ids:
             click.secho(
                 # Mask as SQL comment in case STDERR output, is copied and
                 # pasted/piped with the actual SQL statements into a RDBMS.
