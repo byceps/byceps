@@ -8,10 +8,12 @@ Requirements
 * Python_ 3.7 or higher
 * PostgreSQL_ 9.6 or higher
 * Redis_ 2.8 or higher
+* GIT
 
 .. _Python: http://www.python.org/
 .. _PostgreSQL: http://www.postgresql.org/
 .. _Redis: http://redis.io/
+.. _GIT: https://git-scm.com/
 
 
 Debian
@@ -37,7 +39,7 @@ user):
 .. code-block:: sh
 
     # aptitude update
-    # aptitude install postgresql-11 python3.7 python3.7-dev python3.7-venv redis-server
+    # aptitude install postgresql-11 python3.7 python3.7-dev python3.7-venv redis-server git
 
 Refer to the Debian documentation for further details.
 
