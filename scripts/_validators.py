@@ -54,10 +54,7 @@ def validate_site(ctx, param, site_id: SiteID) -> Site:
 
 
 def validate_user_id(ctx, param, user_id: UserID) -> User:
-    try:
-        user_id = UUID(user_id)
-    except ValueError as e:
-        raise click.BadParameter(f'Invalid user ID "{user_id}": {e}')
+    user_id = validate_user_id_format(ctx, param, user_id)
 
     user = user_service.find_user(user_id)
 
@@ -65,6 +62,13 @@ def validate_user_id(ctx, param, user_id: UserID) -> User:
         raise click.BadParameter(f'Unknown user ID "{user_id}".')
 
     return user
+
+
+def validate_user_id_format(ctx, param, user_id: UserID) -> UserID:
+    try:
+        return UUID(user_id)
+    except ValueError as e:
+        raise click.BadParameter(f'Invalid user ID "{user_id}": {e}')
 
 
 def validate_user_screen_name(ctx, param, screen_name: str) -> DbUser:

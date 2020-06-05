@@ -9,37 +9,54 @@ Might fail for example if a user posted in a discussion board.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Iterable, Iterator, List
+
 import click
 
+from byceps.services.user import service as user_service
+from byceps.typing import UserID
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
-from _validators import validate_user_id
+from _validators import validate_user_id_format
 
 
-def validate_user_ids(ctx, param, user_ids):
+def validate_user_ids(ctx, param, user_ids: Iterable[UserID]) -> List[UserID]:
     def _validate():
         for user_id in user_ids:
-            yield validate_user_id(ctx, param, user_id)
+            yield validate_user_id_format(ctx, param, user_id)
 
     return list(_validate())
 
 
 @click.command()
-@click.argument('users', callback=validate_user_ids, nargs=-1, required=True)
-def execute(users):
-    statements = generate_delete_statements_for_users(users)
+@click.argument('user_ids', callback=validate_user_ids, nargs=-1, required=True)
+def execute(user_ids):
+    statements = generate_delete_statements_for_users(user_ids)
     for statement in statements:
         print(statement)
 
 
-def generate_delete_statements_for_users(users):
-    for user in users:
-        yield from generate_delete_statements_for_user(user.id)
+def generate_delete_statements_for_users(
+    user_ids: Iterable[UserID],
+) -> Iterator[str]:
+    for user_id in user_ids:
+        user = user_service.find_user(user_id)
+        if not user:
+            click.secho(
+                # Mask as SQL comment in case STDERR output, is copied and
+                # pasted/piped with the actual SQL statements into a RDBMS.
+                f'-- Skipping unknown user ID "{user_id}".',
+                fg='yellow',
+                err=True,
+            )
+            continue
+
+        yield from generate_delete_statements_for_user(user_id)
         yield ''  # empty line
 
 
-def generate_delete_statements_for_user(user_id):
+def generate_delete_statements_for_user(user_id: UserID) -> Iterator[str]:
     for table, user_id_column in [
         ('authn_credentials', 'user_id'),
         ('authn_session_tokens', 'user_id'),
