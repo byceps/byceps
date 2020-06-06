@@ -575,7 +575,7 @@ def view_events(user_id):
     """Show user's events."""
     user = _get_user_or_404(user_id)
 
-    events = service.get_events(user.id)
+    events = list(service.get_events(user.id))
 
     return {
         'user': user,

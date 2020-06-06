@@ -1,4 +1,5 @@
 {% extends 'layouts/admin/user.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/order.html' import render_order_link %}
 {% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link, render_user_flag_deleted, render_user_flag_suspended %}
 {% from 'macros/admin/user_badge.html' import render_user_badge_linked %}
@@ -24,7 +25,7 @@
 
 {%- include 'admin/user/_view_head.html' %}
 
-  <h2>Ereignisse</h2>
+  <h2>Ereignisse {{ render_extra_in_heading(events|length) }}</h2>
   <div class="events">
     {%- for event in events|sort(attribute='occurred_at', reverse=True) %}
       {%- with %}
