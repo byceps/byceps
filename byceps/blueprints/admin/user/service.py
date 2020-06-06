@@ -119,7 +119,7 @@ def get_users_created_since(
 
 
 def _db_entity_to_user_with_creation_details(
-    user: DbUser
+    user: DbUser,
 ) -> UserWithCreationDetails:
     is_orga = False  # Not interesting here.
     full_name = user.detail.full_name if user.detail is not None else None
@@ -139,7 +139,7 @@ def _db_entity_to_user_with_creation_details(
 
 
 def get_parties_and_tickets(
-    user_id: UserID
+    user_id: UserID,
 ) -> List[Tuple[Party, List[DbTicket]]]:
     """Return tickets the user uses or manages, and the related parties."""
     tickets = ticket_service.find_tickets_related_to_user(user_id)
@@ -160,7 +160,7 @@ def get_parties_and_tickets(
 
 
 def _group_tickets_by_party_id(
-    tickets: Sequence[DbTicket]
+    tickets: Sequence[DbTicket],
 ) -> Dict[PartyID, List[DbTicket]]:
     tickets_by_party_id: Dict[PartyID, List[DbTicket]] = defaultdict(list)
 
@@ -183,7 +183,7 @@ def get_attended_parties(user_id: UserID) -> List[Party]:
 
 
 def get_newsletter_subscriptions(
-    user_id: UserID
+    user_id: UserID,
 ) -> Iterator[Tuple[NewsletterList, bool]]:
     lists = newsletter_service.get_all_lists()
     for list_ in lists:
@@ -250,7 +250,7 @@ def _fake_consent_events(user_id: UserID) -> Iterator[UserEvent]:
 
 
 def _fake_newsletter_subscription_update_events(
-    user_id: UserID
+    user_id: UserID,
 ) -> Iterator[UserEvent]:
     """Yield the user's newsletter subscription updates as volatile events."""
     lists = newsletter_service.get_all_lists()
@@ -288,30 +288,31 @@ def _get_additional_data(
     event: UserEvent, users_by_id: Dict[str, User]
 ) -> Iterator[Tuple[str, Any]]:
     if event.event_type in {
-            'user-created',
-            'user-deleted',
-            'user-details-updated',
-            'user-email-address-changed',
-            'user-email-address-invalidated',
-            'user-initialized',
-            'user-screen-name-changed',
-            'user-suspended',
-            'user-unsuspended',
-            'password-updated',
-            'user-avatar-updated',
-            'consent-expressed',
-            'newsletter-requested',
-            'newsletter-declined',
-            'order-placed',
-            'orgaflag-added',
-            'orgaflag-removed',
-            'privacy-policy-accepted',
-            'role-assigned',
-            'role-deassigned',
-            'user-badge-awarded',
+        'user-created',
+        'user-deleted',
+        'user-details-updated',
+        'user-email-address-changed',
+        'user-email-address-invalidated',
+        'user-initialized',
+        'user-screen-name-changed',
+        'user-suspended',
+        'user-unsuspended',
+        'password-updated',
+        'user-avatar-updated',
+        'consent-expressed',
+        'newsletter-requested',
+        'newsletter-declined',
+        'order-placed',
+        'orgaflag-added',
+        'orgaflag-removed',
+        'privacy-policy-accepted',
+        'role-assigned',
+        'role-deassigned',
+        'user-badge-awarded',
     }:
         yield from _get_additional_data_for_user_initiated_event(
-            event, users_by_id)
+            event, users_by_id
+        )
 
     if event.event_type == 'user-badge-awarded':
         badge = user_badge_service.find_badge(event.data['badge_id'])
