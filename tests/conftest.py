@@ -22,6 +22,7 @@ from tests.helpers import (
     create_party,
     create_site,
     create_user,
+    create_user_with_detail,
     DEFAULT_EMAIL_CONFIG_ID,
 )
 
@@ -89,6 +90,21 @@ def make_user(admin_app):
 
     def _wrapper(*args, **kwargs):
         user = create_user(*args, **kwargs)
+        user_ids.add(user.id)
+        return user
+
+    yield _wrapper
+
+    for user_id in user_ids:
+        user_command_service.delete_account(user_id, user_id, 'clean up')
+
+
+@pytest.fixture(scope='module')
+def make_user_with_detail(admin_app):
+    user_ids = set()
+
+    def _wrapper(*args, **kwargs):
+        user = create_user_with_detail(*args, **kwargs)
         user_ids.add(user.id)
         return user
 

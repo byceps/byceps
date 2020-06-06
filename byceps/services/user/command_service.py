@@ -7,13 +7,14 @@ byceps.services.user.command_service
 """
 
 from datetime import date
-from typing import Optional
+from typing import Any, Optional
 
 from ...database import db
 from ...events.user import (
     UserAccountDeleted,
     UserAccountSuspended,
     UserAccountUnsuspended,
+    UserDetailsUpdated,
     UserEmailAddressChanged,
     UserScreenNameChanged,
 )
@@ -24,6 +25,7 @@ from ..authorization import service as authorization_service
 
 from . import event_service
 from .models.detail import UserDetail as DbUserDetail
+from .models.event import UserEventData
 from .models.user import User as DbUser
 from . import service as user_service
 
@@ -227,9 +229,19 @@ def update_user_details(
     city: str,
     street: str,
     phone_number: str,
-) -> None:
+    initiator_id: UserID,
+) -> UserDetailsUpdated:
     """Update the user's details."""
     detail = _get_user_detail(user_id)
+
+    old_first_names = detail.first_names
+    old_last_name = detail.last_name
+    old_date_of_birth = detail.date_of_birth
+    old_country = detail.country
+    old_zip_code = detail.zip_code
+    old_city = detail.city
+    old_street = detail.street
+    old_phone_number = detail.phone_number
 
     detail.first_names = first_names
     detail.last_name = last_name
@@ -240,7 +252,45 @@ def update_user_details(
     detail.street = street
     detail.phone_number = phone_number
 
+    event_data = {
+        'initiator_id': str(initiator_id),
+    }
+    _add_if_different(event_data, 'first_names', old_first_names, first_names)
+    _add_if_different(event_data, 'last_name', old_last_name, last_name)
+    _add_if_different(
+        event_data, 'date_of_birth', old_date_of_birth, date_of_birth
+    )
+    _add_if_different(event_data, 'country', old_country, country)
+    _add_if_different(event_data, 'zip_code', old_zip_code, zip_code)
+    _add_if_different(event_data, 'city', old_city, city)
+    _add_if_different(event_data, 'street', old_street, street)
+    _add_if_different(
+        event_data, 'phone_number', old_phone_number, phone_number
+    )
+    event = event_service.build_event(
+        'user-details-updated', user_id, event_data
+    )
+    db.session.add(event)
+
     db.session.commit()
+
+    return UserDetailsUpdated(
+        occurred_at=event.occurred_at,
+        user_id=event.user_id,
+        initiator_id=initiator_id,
+    )
+
+
+def _add_if_different(
+    event_data: UserEventData, base_key_name: str, old_value: str, new_value
+) -> None:
+    if old_value != new_value:
+        event_data[f'old_{base_key_name}'] = _to_str_if_not_none(old_value)
+        event_data[f'new_{base_key_name}'] = _to_str_if_not_none(new_value)
+
+
+def _to_str_if_not_none(value: Any) -> Optional[str]:
+    return str(value) if (value is not None) else None
 
 
 def set_user_detail_extra(user_id: UserID, key: str, value: str) -> None:

@@ -123,6 +123,7 @@ def details_update():
         city,
         street,
         phone_number,
+        current_user.id,  # initiator_id
     )
 
     flash_success('Deine Daten wurden gespeichert.')
