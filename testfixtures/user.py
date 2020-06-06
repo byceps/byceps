@@ -45,6 +45,9 @@ def create_user(
     return user
 
 
+DEFAULT_DATE_OF_BIRTH = date(1993, 2, 15)
+
+
 def create_user_with_detail(
     screen_name='Faith',
     *,
@@ -55,7 +58,12 @@ def create_user_with_detail(
     deleted=False,
     first_names='John Joseph',
     last_name='Doe',
-    date_of_birth=None,
+    date_of_birth=DEFAULT_DATE_OF_BIRTH,
+    country='State of Mind',
+    zip_code='31337',
+    city='Atrocity',
+    street='Elite Street 1337',
+    phone_number='555-CALL-ME-MAYBE',
 ):
     user = create_user(
         screen_name,
@@ -69,11 +77,11 @@ def create_user_with_detail(
     detail = UserDetail(user=user)
     detail.first_names = first_names
     detail.last_name = last_name
-    detail.date_of_birth = (date_of_birth if date_of_birth else date(1993, 2, 15))
-    detail.country = 'State of Mind'
-    detail.zip_code = '31337'
-    detail.city = 'Atrocity'
-    detail.street = 'Elite Street 1337'
-    detail.phone_number = '555-CALL-ME-MAYBE'
+    detail.date_of_birth = date_of_birth
+    detail.country = country
+    detail.zip_code = zip_code
+    detail.city = city
+    detail.street = street
+    detail.phone_number = phone_number
 
     return user
