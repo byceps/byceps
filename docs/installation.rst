@@ -8,12 +8,12 @@ Requirements
 * Python_ 3.7 or higher
 * PostgreSQL_ 9.6 or higher
 * Redis_ 2.8 or higher
-* GIT
+* Git_ (for downloading and updating BYCEPS, but not strictly for running it)
 
 .. _Python: http://www.python.org/
 .. _PostgreSQL: http://www.postgresql.org/
 .. _Redis: http://redis.io/
-.. _GIT: https://git-scm.com/
+.. _Git: https://git-scm.com/
 
 
 Debian
@@ -24,6 +24,7 @@ Debian
 The following packages are available as part of the current (as of
 August 2019) Debian "Buster" release:
 
+* ``git``
 * ``postgresql-11``
 * ``python3.7``
 * ``python3.7-dev``
@@ -39,7 +40,7 @@ user):
 .. code-block:: sh
 
     # aptitude update
-    # aptitude install postgresql-11 python3.7 python3.7-dev python3.7-venv redis-server git
+    # aptitude install git postgresql-11 python3.7 python3.7-dev python3.7-venv redis-server
 
 Refer to the Debian documentation for further details.
 
