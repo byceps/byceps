@@ -122,6 +122,22 @@
             hat die E-Mail-Adresse {{ event.data.email_address }} <strong>invalidiert</strong>.
             <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
           {%- endset %}
+        {%- elif event.event == 'user-details-updated' %}
+          {%- set icon_name = 'edit' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            hat persönliche Daten von
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
+            geändert.
+            <blockquote><table>
+            {%- for key, value in event.details.items()|sort %}
+              <tr>
+                <th>{{ key }}</th>
+                <td>{{ value|fallback }}</td>
+              </tr>
+            {%- endfor %}
+            </table></blockquote>
+          {%- endset %}
         {%- elif event.event == 'password-updated' %}
           {%- set icon_name = 'password' %}
           {%- set body %}

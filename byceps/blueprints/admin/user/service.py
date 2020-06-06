@@ -290,6 +290,7 @@ def _get_additional_data(
     if event.event_type in {
             'user-created',
             'user-deleted',
+            'user-details-updated',
             'user-email-address-changed',
             'user-email-address-invalidated',
             'user-initialized',
@@ -315,6 +316,14 @@ def _get_additional_data(
     if event.event_type == 'user-badge-awarded':
         badge = user_badge_service.find_badge(event.data['badge_id'])
         yield 'badge', badge
+
+    if event.event_type == 'user-details-updated':
+        details = {
+            k: v
+            for k, v in event.data.items()
+            if k.startswith('old_') or k.startswith('new_')
+        }
+        yield 'details', details
 
 
 def _get_additional_data_for_user_initiated_event(
