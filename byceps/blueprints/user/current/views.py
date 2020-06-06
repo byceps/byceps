@@ -21,6 +21,7 @@ from ....util.views import redirect_to
 from ...authentication.decorators import login_required
 
 from ..creation.views import _find_newsletter_list_for_brand
+from .. import signals
 
 from .forms import DetailsForm
 
@@ -113,7 +114,7 @@ def details_update():
     street = form.street.data.strip()
     phone_number = form.phone_number.data.strip()
 
-    user_command_service.update_user_details(
+    event = user_command_service.update_user_details(
         current_user.id,
         first_names,
         last_name,
@@ -127,6 +128,9 @@ def details_update():
     )
 
     flash_success('Deine Daten wurden gespeichert.')
+
+    signals.details_updated.send(None, event=event)
+
     return redirect_to('.view')
 
 

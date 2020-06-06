@@ -12,6 +12,7 @@ from blinker import Namespace
 user_signals = Namespace()
 
 
+details_updated = user_signals.signal('user-details-updated')
 email_address_changed = user_signals.signal('email-address-changed')
 email_address_confirmed = user_signals.signal('email-address-confirmed')
 email_address_invalidated = user_signals.signal('email-address-invalidated')
