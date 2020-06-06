@@ -48,7 +48,7 @@ def generate_delete_statements_for_users(
             click.secho(
                 # Mask as SQL comment in case STDERR output, is copied and
                 # pasted/piped with the actual SQL statements into a RDBMS.
-                f'-- Skipping unknown user ID "{user_id}".',
+                f'-- Skipping unknown user ID "{user_id}".\n',
                 fg='yellow',
                 err=True,
             )
