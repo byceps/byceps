@@ -14,7 +14,7 @@ from ...services.authentication.password import service as password_service
 from ...util.l10n import LocalizedForm
 
 
-MINIMUM_PASSWORD_LENGTH = 10
+MINIMUM_PASSWORD_LENGTH = 8
 MAXIMUM_PASSWORD_LENGTH = 100
 
 
