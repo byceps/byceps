@@ -44,12 +44,14 @@ def inject_template_variables():
 
 
 @blueprint.app_template_global()
-def url_for_site_file(filename) -> Optional[str]:
+def url_for_site_file(filename, **kwargs) -> Optional[str]:
     """Render URL for a static file local to the current site."""
     if g.site_id is None:
         return None
 
-    return f'/sites/{g.site_id}/{filename}'
+    return url_for(
+        'static_site_file', site_id=g.site_id, filename=filename, **kwargs
+    )
 
 
 @blueprint.app_template_global()
