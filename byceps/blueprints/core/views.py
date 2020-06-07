@@ -49,9 +49,7 @@ def url_for_site_file(filename, **kwargs) -> Optional[str]:
     if g.site_id is None:
         return None
 
-    return url_for(
-        'static_site_file', site_id=g.site_id, filename=filename, **kwargs
-    )
+    return url_for('site_file', site_id=g.site_id, filename=filename, **kwargs)
 
 
 @blueprint.app_template_global()
