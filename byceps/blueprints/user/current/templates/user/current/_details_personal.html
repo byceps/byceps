@@ -3,6 +3,10 @@
 
   <h2>Persönliche Daten</h2>
   <table class="index">
+    <colgroup>
+      <col style="width: {{ label_column_width }};">
+      <col style="min-width: {{ data_column_min_width }};">
+    </colgroup>
     <tr>
       <th>Voller Name</th>
       <td>{{ user.detail.full_name|fallback }}</td>
