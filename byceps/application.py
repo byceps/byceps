@@ -194,7 +194,6 @@ def _get_blueprints_debug() -> Iterator[BlueprintReg]:
 def _add_static_file_url_rules(app: Flask) -> None:
     """Add URL rules to for static files."""
     for rule_prefix, endpoint in [
-        ('/party', 'party_file'),
         ('/site', 'site_file'),
     ]:
         rule = rule_prefix + '/<path:filename>'
