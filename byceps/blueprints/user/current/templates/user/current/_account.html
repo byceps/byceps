@@ -1,5 +1,6 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_screen_name %}
+{% from 'macros/user_avatar.html' import render_user_avatar_128 %}
 
 
   <h2>Benutzerkonto</h2>
@@ -11,5 +12,23 @@
     <tr>
       <th>E-Mail-Adresse</th>
       <td>{{ user.email_address if user.email_address else 'nicht angegeben'|dim }}</td>
+    </tr>
+    <tr>
+      <th>Avatar</th>
+      <td>
+        <div style="margin-bottom: 0.5rem;">
+          {{ render_user_avatar_128(user) }}
+        </div>
+
+        <div class="dropdown">
+          <button class="dropdown-toggle button button--compact"><span>Bearbeiten</span> {{ render_icon('caret-down') -}}</button>
+          <ol>
+            <li><a href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} Hochladen</a></li>
+            {%- if user.avatar %}
+            <li><a data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} Entfernen</a></li>
+            {%- endif %}
+          </ol>
+        </div>
+      </td>
     </tr>
   </table>
