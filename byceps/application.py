@@ -200,14 +200,6 @@ def _add_static_file_url_rules(app: Flask) -> None:
         build_only=True,
     )
 
-    for rule_prefix, endpoint in [
-        ('/site', 'site_file'),
-    ]:
-        rule = rule_prefix + '/<path:filename>'
-        app.add_url_rule(
-            rule, endpoint=endpoint, methods=['GET'], build_only=True
-        )
-
 
 def init_app(app: Flask) -> None:
     """Initialize the application after is has been created."""
