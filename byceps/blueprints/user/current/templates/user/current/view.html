@@ -1,10 +1,22 @@
 {% extends 'layout/base_auto.html' %}
+{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user' %}
 {% set title = 'Deine Daten' %}
 
 {% block body %}
 
   <h1>{{ title }}</h1>
+
+  <div style="float: right; margin-left: 40px;">
+    <div class="dropdown left">
+      <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('caret-down') }}</button>
+      <ol>
+        <li><a href="{{ url_for('.change_screen_name_form') }}">{{ render_icon('edit') }} Benutzername ändern</a></li>
+        <li><a href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} Persönliche Daten ändern</a></li>
+        <li><a href="{{ url_for('authentication.password_update_form') }}">{{ render_icon('password') }} Passwort ändern</a></li>
+      </ol>
+    </div>
+  </div>
 
 {%- include 'user/current/_account.html' %}
 {%- include 'user/current/_profile.html' %}
