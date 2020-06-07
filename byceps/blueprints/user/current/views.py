@@ -23,7 +23,7 @@ from ...authentication.decorators import login_required
 from ..creation.views import _find_newsletter_list_for_brand
 from .. import signals
 
-from .forms import DetailsForm
+from .forms import DetailsForm, ChangeScreenNameForm
 
 
 blueprint = create_blueprint('user_current', __name__)
@@ -77,6 +77,43 @@ def view_as_json():
         'screen_name': user.screen_name,
         'avatar_url': user.avatar_url,
     })
+
+
+@blueprint.route('/me/screen_name')
+@templated
+def change_screen_name_form(erroneous_form=None):
+    """Show a form to change the current user's screen name."""
+    _get_current_user_or_404()
+
+    form = erroneous_form if erroneous_form else ChangeScreenNameForm()
+
+    return {
+        'form': form,
+    }
+
+
+@blueprint.route('/me/screen_name', methods=['POST'])
+def change_screen_name():
+    """Change the current user's screen name."""
+    current_user = _get_current_user_or_404()
+
+    form = ChangeScreenNameForm(request.form)
+    if not form.validate():
+        return change_screen_name_form(form)
+
+    old_screen_name = current_user.screen_name
+    new_screen_name = form.screen_name.data.strip()
+    initiator_id = current_user.id
+
+    event = user_command_service.change_screen_name(
+        current_user.id, new_screen_name, initiator_id
+    )
+
+    signals.screen_name_changed.send(None, event=event)
+
+    flash_success(f'Dein Benutzername wurde zu "{new_screen_name}" geändert.')
+
+    return redirect_to('.view')
 
 
 @blueprint.route('/me/details')

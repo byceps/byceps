@@ -6,7 +6,7 @@
   <table class="index">
     <tr>
       <th>Benutzername</th>
-      <td>{{ render_user_screen_name(user) }}</td>
+      <td>{{ render_user_screen_name(user) }}<br><a class="button button--compact" href="{{ url_for('.change_screen_name_form') }}">{{ render_icon('edit') }} <span>ändern</span></a></td>
     </tr>
     <tr>
       <th>E-Mail-Adresse</th>
