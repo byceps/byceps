@@ -7,8 +7,9 @@ byceps.blueprints.core.views
 """
 
 from datetime import date, datetime
+from typing import Optional
 
-from flask import g, render_template
+from flask import g, render_template, url_for
 
 from ... import config
 from ...services.party import service as party_service
@@ -40,6 +41,15 @@ def inject_template_variables():
         'today': date.today(),
         'Navigation': Navigation,
     }
+
+
+@blueprint.app_template_global()
+def url_for_site_file(filename) -> Optional[str]:
+    """Render URL for a static file local to the current site."""
+    if g.site_id is None:
+        return None
+
+    return f'/sites/{g.site_id}/{filename}'
 
 
 @blueprint.app_template_global()

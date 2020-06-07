@@ -11,6 +11,6 @@
 {%- if title is not none %}<span title="{{ title }}">{% endif -%}
 <svg class="icon"
   {%- if color %} style="fill: {{ color }}"{% endif -%}
-><use xlink:href="{{ url_for('site_file', filename='style/icons.svg') }}#{{ name }}"/></svg>
+><use xlink:href="{{ url_for_site_file('style/icons.svg') }}#{{ name }}"/></svg>
 {%- if title is not none %}</span>{% endif -%}
 {%- endmacro %}
