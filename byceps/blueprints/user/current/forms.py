@@ -7,10 +7,11 @@ byceps.blueprints.user.current.forms
 """
 
 from flask import g
-from wtforms import DateField, StringField
+from wtforms import DateField, PasswordField, StringField
 from wtforms.fields.html5 import TelField
 from wtforms.validators import InputRequired, Length, Optional
 
+from ....services.authentication.password import service as password_service
 from ....services.user import screen_name_validator, service as user_service
 from ....util.l10n import LocalizedForm
 
@@ -24,6 +25,7 @@ class ChangeScreenNameForm(LocalizedForm):
                max=screen_name_validator.MAX_LENGTH),
         ScreenNameValidator(),
     ])
+    password = PasswordField('Aktuelles Passwort', [InputRequired()])
 
     @staticmethod
     def validate_screen_name(form, field):
@@ -32,6 +34,14 @@ class ChangeScreenNameForm(LocalizedForm):
 
         if user_service.is_screen_name_already_assigned(field.data):
             raise ValueError('Dieser Benutzername kann nicht verwendet werden.')
+
+    @staticmethod
+    def validate_password(form, field):
+        user_id = g.current_user.id
+        password = field.data
+
+        if not password_service.is_password_valid_for_user(user_id, password):
+            raise ValueError('Das Passwort ist nicht korrekt.')
 
 
 class DetailsForm(LocalizedForm):
