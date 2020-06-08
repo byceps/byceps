@@ -214,9 +214,11 @@ def init_app(app: Flask) -> None:
             # Set up site-aware template context processor.
             app._site_context_processors = {}
             app.context_processor(_get_site_template_context)
-        elif site_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
-            import rq_dashboard
 
+        _load_announce_signal_handlers()
+
+        if site_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
+            import rq_dashboard
             app.register_blueprint(
                 rq_dashboard.blueprint, url_prefix='/admin/rq'
             )
@@ -297,3 +299,17 @@ def _find_site_template_context_processor(
         return None
 
     return context_processor
+
+
+def _load_announce_signal_handlers() -> None:
+    """Import modules containing handlers so they connect to the
+    corresponding signals.
+    """
+    from .announce.irc import (
+        board,
+        news,
+        shop_order,
+        snippet,
+        user,
+        user_badge,
+    )
