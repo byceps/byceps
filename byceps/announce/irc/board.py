@@ -248,8 +248,7 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
 
     # Ignore selected topics.
     if str(posting.topic_id) in {
-        '6ca347b2-555e-4f46-b107-9b6a1c7b421c',
-        'f57d9627-c0fc-4219-834f-981f0508e213',
+        #'1ef52ab6-ed7c-46d8-90c9-e2d4675c0634',  # example
     }:
         return
 
