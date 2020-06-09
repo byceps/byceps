@@ -15,7 +15,7 @@ from flask import current_app
 import requests
 
 
-DEFAULT_BOT_URL = 'http://127.0.0.1:12345/'
+DEFAULT_WEBHOOK_URL = 'http://127.0.0.1:12345/'
 DEFAULT_ENABLED = False
 DEFAULT_DELAY_IN_SECONDS = 2
 DEFAULT_TEXT_PREFIX = '[BYCEPS] '
@@ -34,7 +34,9 @@ def send_message(channels: List[str], text: str) -> None:
 
     text = text_prefix + text
 
-    url = current_app.config.get('IRC_BOT_URL', DEFAULT_BOT_URL)
+    url = current_app.config.get(
+        'ANNOUNCE_IRC_WEBHOOK_URL', DEFAULT_WEBHOOK_URL
+    )
     data = {'channels': channels, 'text': text}
 
     # Delay a bit as an attempt to avoid getting kicked from server
