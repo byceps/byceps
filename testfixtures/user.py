@@ -23,6 +23,7 @@ def create_user(
     initialized=True,
     suspended=False,
     deleted=False,
+    legacy_id=None,
 ):
     if not user_id:
         user_id = generate_uuid()
@@ -41,6 +42,7 @@ def create_user(
     user.initialized = initialized
     user.suspended = suspended
     user.deleted = deleted
+    user.legacy_id = legacy_id
 
     return user
 
@@ -56,6 +58,7 @@ def create_user_with_detail(
     initialized=True,
     suspended=False,
     deleted=False,
+    legacy_id=None,
     first_names='John Joseph',
     last_name='Doe',
     date_of_birth=DEFAULT_DATE_OF_BIRTH,
@@ -72,6 +75,7 @@ def create_user_with_detail(
         initialized=initialized,
         suspended=suspended,
         deleted=deleted,
+        legacy_id=legacy_id,
     )
 
     detail = UserDetail(user=user)

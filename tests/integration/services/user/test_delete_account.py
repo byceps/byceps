@@ -39,10 +39,9 @@ def test_delete_account(admin_app, permission, role, admin_user):
     email_address = 'timedout@users.test'
     legacy_id = 22299
 
-    user = create_user_with_detail(screen_name, email_address=email_address)
-
-    user.legacy_id = legacy_id
-    db.session.commit()
+    user = create_user_with_detail(
+        screen_name, email_address=email_address, legacy_id=legacy_id
+    )
 
     user_id = user.id
 
