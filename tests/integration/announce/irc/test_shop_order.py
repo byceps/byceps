@@ -20,12 +20,10 @@ from byceps.services.user import command_service as user_command_service
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import create_brand, create_user, create_user_with_detail
-
 from .helpers import assert_submitted_data, CHANNEL_ORGA_LOG, mocked_irc_bot
 
 
-def test_shop_order_placed_announced(placed_order):
+def test_shop_order_placed_announced(app, placed_order):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_text = 'Ken_von_Kaufkraft hat Bestellung ORDER-00001 aufgegeben.'
 
@@ -41,7 +39,7 @@ def test_shop_order_placed_announced(placed_order):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_shop_order_canceled_announced(canceled_order, shop_admin):
+def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00002 '
@@ -60,7 +58,7 @@ def test_shop_order_canceled_announced(canceled_order, shop_admin):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_shop_order_paid_announced(paid_order, shop_admin):
+def test_shop_order_paid_announced(app, paid_order, shop_admin):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00003 '
@@ -83,8 +81,8 @@ def test_shop_order_paid_announced(paid_order, shop_admin):
 
 
 @pytest.fixture(scope='module')
-def orderer(app):
-    user = create_user_with_detail('Ken_von_Kaufkraft')
+def orderer(make_user_with_detail):
+    user = make_user_with_detail('Ken_von_Kaufkraft')
     user_id = user.id
     yield create_orderer(user)
     user_command_service.delete_account(user_id, user_id, 'clean up')
@@ -129,7 +127,7 @@ def storefront(shop, order_number_sequence_id) -> None:
 
 
 @pytest.fixture
-def placed_order(app, storefront, orderer):
+def placed_order(storefront, orderer):
     order, _ = order_service.place_order(storefront.id, orderer, Cart())
 
     yield order
@@ -138,14 +136,14 @@ def placed_order(app, storefront, orderer):
 
 
 @pytest.fixture
-def canceled_order(app, placed_order, shop_admin):
+def canceled_order(placed_order, shop_admin):
     order_service.cancel_order(placed_order.id, shop_admin.id, 'Kein Geld!')
 
     return placed_order
 
 
 @pytest.fixture
-def paid_order(app, placed_order, shop_admin):
+def paid_order(placed_order, shop_admin):
     order_service.mark_order_as_paid(
         placed_order.id, PaymentMethod.bank_transfer, shop_admin.id
     )

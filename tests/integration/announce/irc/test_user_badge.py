@@ -7,15 +7,13 @@ from byceps.announce.irc import user_badge  # Load signal handlers.
 from byceps.blueprints.user_badge import signals
 from byceps.services.user_badge import command_service as badge_command_service
 
-from tests.helpers import create_user
-
 from .helpers import assert_submitted_data, CHANNEL_ORGA_LOG, mocked_irc_bot
 
 
 EXPECTED_CHANNELS = [CHANNEL_ORGA_LOG]
 
 
-def test_user_badge_awarding_announced_without_initiator(app):
+def test_user_badge_awarding_announced_without_initiator(app, make_user):
     expected_text = (
         'Jemand hat das Abzeichen "First Post!" an Erster verliehen.'
     )
@@ -24,7 +22,7 @@ def test_user_badge_awarding_announced_without_initiator(app):
         'first-post', 'First Post!', 'first-post.svg'
     )
 
-    user = create_user('Erster')
+    user = make_user('Erster')
 
     _, event = badge_command_service.award_badge_to_user(badge.id, user.id)
 
@@ -34,7 +32,7 @@ def test_user_badge_awarding_announced_without_initiator(app):
         assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
-def test_user_badge_awarding_announced_with_initiator(app, admin_user):
+def test_user_badge_awarding_announced_with_initiator(app, make_user, admin_user):
     expected_text = (
         'Admin hat das Abzeichen "Glanzleistung" an PathFinder verliehen.'
     )
@@ -43,7 +41,7 @@ def test_user_badge_awarding_announced_with_initiator(app, admin_user):
         'glnzlstng', 'Glanzleistung', 'glanz.svg'
     )
 
-    user = create_user('PathFinder')
+    user = make_user('PathFinder')
 
     _, event = badge_command_service.award_badge_to_user(
         badge.id, user.id, initiator_id=admin_user.id

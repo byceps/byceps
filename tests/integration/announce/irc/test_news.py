@@ -15,8 +15,6 @@ from byceps.services.news import (
     service as news_service,
 )
 
-from tests.helpers import create_brand, create_user
-
 from .helpers import (
     assert_submitted_data,
     CHANNEL_ORGA_LOG,
@@ -25,7 +23,7 @@ from .helpers import (
 )
 
 
-def test_published_news_item_announced(item):
+def test_published_news_item_announced(app, item):
     expected_channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
     expected_text = 'ACME Entertainment Convention: ' \
         + 'Die News "Zieh dir das rein!" wurde veröffentlicht. ' \
@@ -43,8 +41,7 @@ def test_published_news_item_announced(item):
 
 
 @pytest.fixture(scope='module')
-def channel(app):
-    brand = create_brand()
+def channel(brand):
     channel_id = f'{brand.id}-test'
     url_prefix = 'https://acme.example.com/news/'
 
@@ -52,8 +49,8 @@ def channel(app):
 
 
 @pytest.fixture(scope='module')
-def editor(app):
-    return create_user('Karla_Kolumna')
+def editor(make_user):
+    return make_user('Karla_Kolumna')
 
 
 @pytest.fixture(scope='module')

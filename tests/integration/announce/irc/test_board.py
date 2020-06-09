@@ -29,8 +29,6 @@ from byceps.services.board import (
     topic_command_service,
 )
 
-from tests.helpers import create_brand, create_user
-
 from .helpers import (
     assert_submitted_data,
     CHANNEL_ORGA_LOG,
@@ -39,7 +37,7 @@ from .helpers import (
 )
 
 
-def test_announce_topic_created(topic):
+def test_announce_topic_created(app, topic):
     expected_channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -56,7 +54,7 @@ def test_announce_topic_created(topic):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_topic_hidden(topic, moderator):
+def test_announce_topic_hidden(app, topic, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -77,7 +75,7 @@ def test_announce_topic_hidden(topic, moderator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_topic_unhidden(topic, moderator):
+def test_announce_topic_unhidden(app, topic, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -98,7 +96,7 @@ def test_announce_topic_unhidden(topic, moderator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_topic_locked(topic, moderator):
+def test_announce_topic_locked(app, topic, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -119,7 +117,7 @@ def test_announce_topic_locked(topic, moderator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_topic_unlocked(topic, moderator):
+def test_announce_topic_unlocked(app, topic, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -140,7 +138,7 @@ def test_announce_topic_unlocked(topic, moderator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_topic_pinned(topic, moderator):
+def test_announce_topic_pinned(app, topic, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -161,7 +159,7 @@ def test_announce_topic_pinned(topic, moderator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_topic_unpinned(topic, moderator):
+def test_announce_topic_unpinned(app, topic, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -183,7 +181,7 @@ def test_announce_topic_unpinned(topic, moderator):
 
 
 def test_announce_topic_moved(
-    topic, category, another_category, board, moderator
+    app, topic, category, another_category, board, moderator
 ):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
@@ -207,7 +205,7 @@ def test_announce_topic_moved(
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_posting_created(posting):
+def test_announce_posting_created(app, posting):
     expected_channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
@@ -227,7 +225,7 @@ def test_announce_posting_created(posting):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_posting_hidden(posting, moderator):
+def test_announce_posting_hidden(app, posting, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
@@ -249,7 +247,7 @@ def test_announce_posting_hidden(posting, moderator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_posting_unhidden(posting, moderator):
+def test_announce_posting_unhidden(app, posting, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
@@ -275,41 +273,50 @@ def test_announce_posting_unhidden(posting, moderator):
 
 
 @pytest.fixture(scope='module')
-def creator(app):
-    return create_user('TheShadow999')
+def creator(make_user):
+    return make_user('TheShadow999')
 
 
 @pytest.fixture(scope='module')
-def moderator(app):
-    return create_user('ElBosso')
+def moderator(make_user):
+    return make_user('ElBosso')
 
 
 @pytest.fixture(scope='module')
-def board(app):
-    brand = create_brand()
-    return board_service.create_board(brand.id, 'some-board')
+def board(brand):
+    board = board_service.create_board(brand.id, 'some-board')
+    yield board
+    board_service.delete_board(board.id)
 
 
 @pytest.fixture(scope='module')
 def category(board):
-    return _create_category(board.id, number=1)
+    category = _create_category(board.id, number=1)
+    yield category
+    category_command_service.delete_category(category.id)
 
 
 @pytest.fixture(scope='module')
 def another_category(board):
-    return _create_category(board.id, number=2)
+    category = _create_category(board.id, number=2)
+    yield category
+    category_command_service.delete_category(category.id)
 
 
 @pytest.fixture(scope='module')
 def topic(category, creator):
-    return _create_topic(
+    topic = _create_topic(
         category.id, creator.id, number=192, title='Brötchen zum Frühstück'
     )
+    yield topic
+    topic_command_service.delete_topic(topic.id)
 
 
 @pytest.fixture(scope='module')
 def posting(topic, creator):
-    return _create_posting(topic.id, creator.id)
+    posting = _create_posting(topic.id, creator.id)
+    yield posting
+    posting_command_service.delete_posting(posting.id)
 
 
 def _create_category(board_id, *, number=1):

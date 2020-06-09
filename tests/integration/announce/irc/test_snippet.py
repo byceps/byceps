@@ -10,15 +10,15 @@ from byceps.blueprints.snippet import signals
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 
-from tests.helpers import create_user
-
 from .helpers import assert_submitted_data, CHANNEL_ORGA_LOG, mocked_irc_bot
 
 
 EXPECTED_CHANNELS = [CHANNEL_ORGA_LOG]
 
 
-def test_announce_snippet_document_created(created_document_version_and_event):
+def test_announce_snippet_document_created(
+    app, created_document_version_and_event
+):
     expected_text = 'Dr.Schnipsel hat das Snippet-Dokument "overview" ' \
                     'im Scope "site/acme-2019-website" angelegt.'
 
@@ -30,7 +30,9 @@ def test_announce_snippet_document_created(created_document_version_and_event):
         assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
-def test_announce_snippet_fragment_created(created_fragment_version_and_event):
+def test_announce_snippet_fragment_created(
+    app, created_fragment_version_and_event
+):
     expected_text = 'Dr.Schnipsel hat das Snippet-Fragment "team_intro" ' \
                     'im Scope "site/acme-2019-website" angelegt.'
 
@@ -42,7 +44,9 @@ def test_announce_snippet_fragment_created(created_fragment_version_and_event):
         assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
-def test_announce_snippet_document_updated(updated_document_version_and_event):
+def test_announce_snippet_document_updated(
+    app, updated_document_version_and_event
+):
     expected_text = 'Dr.Schnipsel hat das Snippet-Dokument "overview" ' \
                     'im Scope "site/acme-2019-website" aktualisiert.'
 
@@ -54,7 +58,9 @@ def test_announce_snippet_document_updated(updated_document_version_and_event):
         assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
-def test_announce_snippet_fragment_updated(updated_fragment_version_and_event):
+def test_announce_snippet_fragment_updated(
+    app, updated_fragment_version_and_event
+):
     expected_text = 'Dr.Schnipsel hat das Snippet-Fragment "team_intro" ' \
                     'im Scope "site/acme-2019-website" aktualisiert.'
 
@@ -75,8 +81,8 @@ def scope():
 
 
 @pytest.fixture(scope='module')
-def editor(app):
-    return create_user('Dr.Schnipsel')
+def editor(make_user):
+    return make_user('Dr.Schnipsel')
 
 
 @pytest.fixture(scope='module')
