@@ -8,6 +8,10 @@ import pytest
 
 @pytest.fixture(scope='module')
 def app(admin_app):
-    admin_app.config['ANNOUNCE_IRC_ENABLED'] = True
-    admin_app.config['ANNOUNCE_IRC_TEXT_PREFIX'] = ''
+    admin_app.config.update({
+        'ANNOUNCE_IRC_ENABLED': True,
+        'ANNOUNCE_IRC_TEXT_PREFIX': '',
+        'ANNOUNCE_IRC_DELAY': 0,
+    })
+
     yield admin_app
