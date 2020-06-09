@@ -17,9 +17,7 @@ import requests
 
 DEFAULT_BOT_URL = 'http://127.0.0.1:12345/'
 DEFAULT_ENABLED = False
-
-DELAY_IN_SECONDS = 2
-
+DEFAULT_DELAY_IN_SECONDS = 2
 DEFAULT_TEXT_PREFIX = '[BYCEPS] '
 
 
@@ -41,6 +39,9 @@ def send_message(channels: List[str], text: str) -> None:
 
     # Delay a bit as an attempt to avoid getting kicked from server
     # because of flooding.
-    sleep(DELAY_IN_SECONDS)
+    delay = int(
+        current_app.config.get('ANNOUNCE_IRC_DELAY', DEFAULT_DELAY_IN_SECONDS)
+    )
+    sleep(delay)
 
     requests.post(url, json=data)  # Ignore response code for now.
