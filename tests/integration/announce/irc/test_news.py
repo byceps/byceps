@@ -45,7 +45,13 @@ def channel(brand):
     channel_id = f'{brand.id}-test'
     url_prefix = 'https://acme.example.com/news/'
 
-    return news_channel_service.create_channel(brand.id, channel_id, url_prefix)
+    channel = news_channel_service.create_channel(
+        brand.id, channel_id, url_prefix
+    )
+
+    yield channel
+
+    news_channel_service.delete_channel(channel_id)
 
 
 @pytest.fixture(scope='module')
@@ -59,4 +65,8 @@ def item(channel, editor):
     title = 'Zieh dir das rein!'
     body = 'any body'
 
-    return news_service.create_item(channel.id, slug, editor.id, title, body)
+    item = news_service.create_item(channel.id, slug, editor.id, title, body)
+
+    yield item
+
+    news_service.delete_item(item.id)
