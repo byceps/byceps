@@ -18,6 +18,11 @@ from byceps.services.user_badge.models.awarding import (
 from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
 
+@pytest.fixture
+def admin_user(make_user):
+    return make_user('BadgeAwardingAdmin')
+
+
 @pytest.fixture(scope='module')
 def user1(make_user):
     return make_user('Stullenandi')

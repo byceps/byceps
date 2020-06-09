@@ -35,8 +35,3 @@ def ticket_manager(make_user):
 @pytest.fixture(scope='module')
 def ticket_owner(make_user):
     return make_user('TicketOwner')
-
-
-@pytest.fixture(scope='module')
-def ticket_user(make_user):
-    return make_user('TicketUser')

@@ -10,6 +10,11 @@ from byceps.services.user import event_service
 from byceps.services.user import service as user_service
 
 
+@pytest.fixture(scope='module')
+def admin_user(make_user):
+    return make_user('SuspensionAdmin')
+
+
 @pytest.fixture
 def cheater(make_user):
     return make_user('Cheater')

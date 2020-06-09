@@ -3,11 +3,18 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
+
 from byceps.events.user import UserScreenNameChanged
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
 from tests.helpers import create_user
+
+
+@pytest.fixture(scope='module')
+def admin_user(make_user):
+    return make_user('ScreenNameAddressAdmin')
 
 
 def test_change_screen_name_with_reason(admin_app, admin_user):

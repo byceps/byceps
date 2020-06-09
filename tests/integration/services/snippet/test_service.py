@@ -26,12 +26,12 @@ def party2(brand):
     party_service.delete_party(party.id)
 
 
-def test_current_party_is_considered(party1, party2, admin_user):
+def test_current_party_is_considered(party1, party2, make_user):
     scope_site2014 = Scope.for_site(party1.id)
     scope_site2015 = Scope.for_site(party2.id)
 
     name = 'info'
-    creator = admin_user
+    creator = make_user('PartySnippetEditor')
 
     fragment_info2014_version = create_fragment(
         scope_site2014, name, creator.id

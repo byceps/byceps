@@ -12,6 +12,11 @@ from byceps.services.user import event_service
 
 
 @pytest.fixture(scope='module')
+def admin_user(make_user):
+    return make_user('UserInitializingAdmin')
+
+
+@pytest.fixture(scope='module')
 def uninitialized_user_created_online(make_user):
     return make_user('CreatedOnline', initialized=False)
 
