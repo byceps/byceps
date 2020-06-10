@@ -10,11 +10,9 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
-from byceps.services.user import command_service as user_command_service
 
-from testfixtures.shop_order import create_orderer as _create_orderer
+from testfixtures.shop_order import create_orderer
 
-from tests.helpers import create_user_with_detail
 from tests.integration.services.shop.helpers import create_shop
 
 
@@ -58,24 +56,16 @@ def storefront2(email_config):
     shop_service.delete_shop(shop.id)
 
 
-@pytest.fixture
-def orderer1(admin_app):
-    orderer = create_orderer('Orderer1')
-
-    yield orderer
-
-    user_id = orderer.user_id
-    user_command_service.delete_account(user_id, user_id, 'clean up')
+@pytest.fixture(scope='module')
+def orderer1(make_user_with_detail):
+    user = make_user_with_detail('Orderer1')
+    return create_orderer(user)
 
 
-@pytest.fixture
-def orderer2(admin_app):
-    orderer = create_orderer('Orderer2')
-
-    yield orderer
-
-    user_id = orderer.user_id
-    user_command_service.delete_account(user_id, user_id, 'clean up')
+@pytest.fixture(scope='module')
+def orderer2(make_user_with_detail):
+    user = make_user_with_detail('Orderer2')
+    return create_orderer(user)
 
 
 def test_get_orders_placed_by_user(
@@ -101,11 +91,6 @@ def test_get_orders_placed_by_user(
 
 
 # helpers
-
-
-def create_orderer(screen_name):
-    user = create_user_with_detail(screen_name)
-    return _create_orderer(user)
 
 
 def place_order(storefront_id, orderer):

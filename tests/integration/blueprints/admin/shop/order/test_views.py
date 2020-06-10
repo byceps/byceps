@@ -17,14 +17,11 @@ from byceps.services.shop.order.transfer.models import (
     PaymentMethod,
     PaymentState,
 )
-from byceps.services.user import command_service as user_command_service
-
 from testfixtures.shop_order import create_orderer
 
 from tests.helpers import (
     create_permissions,
     create_role_with_permissions_assigned,
-    create_user_with_detail,
     http_client,
     login_user,
 )
@@ -82,11 +79,9 @@ def article3(shop):
 
 
 @pytest.fixture(scope='module')
-def orderer():
-    user = create_user_with_detail('Besteller')
-    user_id = user.id
-    yield create_orderer(user)
-    user_command_service.delete_account(user_id, user_id, 'clean up')
+def orderer(make_user_with_detail):
+    user = make_user_with_detail('Besteller')
+    return create_orderer(user)
 
 
 @patch('byceps.blueprints.shop.order.signals.order_canceled.send')

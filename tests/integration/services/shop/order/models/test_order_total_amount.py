@@ -11,6 +11,8 @@ from byceps.services.shop.article import service as article_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
 
+from testfixtures.shop_order import create_orderer
+
 from tests.integration.services.shop.helpers import (
     create_article as _create_article,
 )
@@ -38,6 +40,11 @@ def article3(shop):
     article_id = article.id
     yield article
     article_service.delete_article(article_id)
+
+
+@pytest.fixture(scope='module')
+def orderer(make_user_with_detail):
+    return create_orderer(make_user_with_detail('TotalAmountOrderer'))
 
 
 def test_without_any_items(party_app, storefront, orderer):

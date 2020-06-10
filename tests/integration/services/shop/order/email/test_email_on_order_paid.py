@@ -14,24 +14,18 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.snippet import service as snippet_service
-from byceps.services.user import command_service as user_command_service
 
-from tests.helpers import create_user_with_detail, current_user_set
+from tests.helpers import current_user_set
 from tests.integration.services.shop.helpers import create_shop_fragment
 
 from .base import place_order_with_items
 
 
 @pytest.fixture
-def customer(admin_app):
-    user = create_user_with_detail(
+def customer(make_user_with_detail):
+    return make_user_with_detail(
         'Vorbild', email_address='vorbild@users.test'
     )
-    user_id = user.id
-
-    yield user
-
-    user_command_service.delete_account(user_id, user_id, 'clean up')
 
 
 @pytest.fixture

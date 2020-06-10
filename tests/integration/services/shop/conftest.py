@@ -9,11 +9,6 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
-from byceps.services.user import command_service as user_command_service
-
-from testfixtures.shop_order import create_orderer
-
-from tests.helpers import create_user_with_detail
 
 
 @pytest.fixture
@@ -46,13 +41,6 @@ def storefront(shop, order_number_sequence_id) -> None:
     yield storefront
 
     storefront_service.delete_storefront(storefront.id)
-
-
-@pytest.fixture
-def orderer():
-    user = create_user_with_detail('Besteller')
-    yield create_orderer(user)
-    user_command_service.delete_account(user.id, user.id, 'clean up')
 
 
 @pytest.fixture

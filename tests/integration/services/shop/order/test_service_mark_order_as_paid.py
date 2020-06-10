@@ -12,6 +12,13 @@ from byceps.services.shop.order.transfer.models import (
 )
 from byceps.util.iterables import find
 
+from testfixtures.shop_order import create_orderer
+
+
+@pytest.fixture(scope='module')
+def orderer(make_user_with_detail):
+    return create_orderer(make_user_with_detail('PayingOrderer'))
+
 
 @pytest.fixture
 def order(admin_app, storefront, orderer, empty_cart):

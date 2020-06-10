@@ -13,6 +13,8 @@ from byceps.services.shop.order.models.order import Order as DbOrder
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentState
 
+from testfixtures.shop_order import create_orderer
+
 from tests.integration.services.shop.helpers import create_article
 
 
@@ -22,6 +24,11 @@ def article(shop):
     article_id = article.id
     yield article
     article_service.delete_article(article_id)
+
+
+@pytest.fixture
+def orderer(make_user_with_detail):
+    return create_orderer(make_user_with_detail('ArticlesForStatsOrderer'))
 
 
 def test_count_ordered_articles(admin_app, storefront, article, orderer):

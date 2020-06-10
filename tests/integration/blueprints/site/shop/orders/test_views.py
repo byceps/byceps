@@ -13,16 +13,10 @@ from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
-from byceps.services.user import command_service as user_command_service
 
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import (
-    create_site,
-    create_user_with_detail,
-    http_client,
-    login_user,
-)
+from tests.helpers import create_site, http_client, login_user
 from tests.integration.services.shop.helpers import (
     create_shop,
     create_shop_fragment,
@@ -113,18 +107,14 @@ def site2(storefront2):
     site_service.delete_site(site.id)
 
 
-@pytest.fixture
-def user1(admin_app):
-    user = create_user_with_detail('User1')
-    yield user
-    user_command_service.delete_account(user.id, user.id, 'clean up')
+@pytest.fixture(scope='module')
+def user1(make_user_with_detail):
+    return make_user_with_detail('OrdersUser1')
 
 
-@pytest.fixture
-def user2(admin_app):
-    user = create_user_with_detail('User2')
-    yield user
-    user_command_service.delete_account(user.id, user.id, 'clean up')
+@pytest.fixture(scope='module')
+def user2(make_user_with_detail):
+    return make_user_with_detail('OrdersUser2')
 
 
 @pytest.fixture
