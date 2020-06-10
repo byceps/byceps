@@ -12,22 +12,25 @@ from byceps.services.site import service as site_service
 from tests.helpers import create_site, http_client, login_user
 
 
-@pytest.fixture
-def site1(admin_app, make_email_config):
+@pytest.fixture(scope='module')
+def site1(make_email_config):
     email_config = make_email_config(
         'acme-noreply',
         sender_address='noreply@acmecon.test',
         sender_name='ACME Entertainment Convention',
     )
     site = create_site(
-        server_name='www.acmecon.test', email_config_id=email_config.id
+        site_id='acmecon-website-1',
+        title='ACMECon Website #1',
+        server_name='www1.acmecon.test',
+        email_config_id=email_config.id,
     )
     yield site
     site_service.delete_site(site.id)
 
 
-@pytest.fixture
-def site2(admin_app, make_email_config):
+@pytest.fixture(scope='module')
+def site2(make_email_config):
     email_config = make_email_config(
         'acme-noreply-with-contact-address',
         sender_address='noreply@acmecon.test',
@@ -35,17 +38,38 @@ def site2(admin_app, make_email_config):
         contact_address='help@acmecon.test',
     )
     site = create_site(
-        server_name='www.acmecon.test', email_config_id=email_config.id
+        site_id='acmecon-website-2',
+        title='ACMECon Website #2',
+        server_name='www2.acmecon.test',
+        email_config_id=email_config.id,
     )
     yield site
     site_service.delete_site(site.id)
+
+
+@pytest.fixture
+def site1_app(site1, make_party_app):
+    app = make_party_app(SITE_ID=site1.id)
+    with app.app_context():
+        yield app
+
+
+@pytest.fixture(scope='module')
+def site2_app(site2, make_party_app):
+    app = make_party_app(SITE_ID=site2.id)
+    with app.app_context():
+        yield app
+
+
+USER_ID_ALICE = 'a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8'
+USER_ID_BOB = '11d72bab-3646-4199-b96c-e5e4c6f972bc'
 
 
 @pytest.fixture(scope='module')
 def user_alice(make_user):
     return make_user(
         'Alice',
-        user_id='a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8',
+        user_id=USER_ID_ALICE,
         email_address='alice@users.test',
     )
 
@@ -54,17 +78,17 @@ def user_alice(make_user):
 def user_bob(make_user):
     return make_user(
         'Bob',
-        user_id='11d72bab-3646-4199-b96c-e5e4c6f972bc',
+        user_id=USER_ID_BOB,
         email_address='bob@users.test',
     )
 
 
 @patch('byceps.email.send')
 def test_send_when_logged_in_without_brand_contact_address(
-    send_email_mock, party_app, site1, user_alice, user_bob
+    send_email_mock, site1_app, site1, user_alice, user_bob
 ):
-    sender = user_alice
-    recipient = user_bob
+    sender_id = USER_ID_ALICE
+    recipient_id = USER_ID_BOB
     text = '''\
 Hi Bob,
 
@@ -74,13 +98,13 @@ kthxbye,
 Alice
 '''
 
-    expected_response_location = f'http://www.acmecon.test/users/{recipient.id}'
+    expected_response_location = f'http://www.acmecon.test/users/{recipient_id}'
 
     expected_email_sender = (
         'ACME Entertainment Convention <noreply@acmecon.test>'
     )
     expected_email_recipients = ['Bob <bob@users.test>']
-    expected_email_subject = 'Mitteilung von Alice (über www.acmecon.test)'
+    expected_email_subject = 'Mitteilung von Alice (über www1.acmecon.test)'
     expected_email_body = '''\
 Hallo Bob,
 
@@ -102,11 +126,11 @@ Alice
 ---8<-------------------------------------
 
 -- 
-Diese Mitteilung wurde über die Website www.acmecon.test gesendet.\
+Diese Mitteilung wurde über die Website www1.acmecon.test gesendet.\
 '''
 
     response = send_request(
-        party_app, recipient.id, text, current_user_id=sender.id
+        site1_app, recipient_id, text, current_user_id=sender_id
     )
 
     assert response.status_code == 302
@@ -122,10 +146,10 @@ Diese Mitteilung wurde über die Website www.acmecon.test gesendet.\
 
 @patch('byceps.email.send')
 def test_send_when_logged_in_with_brand_contact_address(
-    send_email_mock, party_app, site2, user_alice, user_bob,
+    send_email_mock, site2_app, site2, user_alice, user_bob,
 ):
-    sender = user_bob
-    recipient = user_alice
+    sender_id = USER_ID_BOB
+    recipient_id = USER_ID_ALICE
     text = '''\
 Hey Alice,
 
@@ -135,13 +159,13 @@ Best,
 Bob
 '''
 
-    expected_response_location = f'http://www.acmecon.test/users/{recipient.id}'
+    expected_response_location = f'http://www.acmecon.test/users/{recipient_id}'
 
     expected_email_sender = (
         'ACME Entertainment Convention <noreply@acmecon.test>'
     )
     expected_email_recipients = ['Alice <alice@users.test>']
-    expected_email_subject = 'Mitteilung von Bob (über www.acmecon.test)'
+    expected_email_subject = 'Mitteilung von Bob (über www2.acmecon.test)'
     expected_email_body = '''\
 Hallo Alice,
 
@@ -163,12 +187,12 @@ Bob
 ---8<-------------------------------------
 
 -- 
-Diese Mitteilung wurde über die Website www.acmecon.test gesendet.
+Diese Mitteilung wurde über die Website www2.acmecon.test gesendet.
 Bei Fragen kontaktiere uns bitte per E-Mail an: help@acmecon.test\
 '''
 
     response = send_request(
-        party_app, recipient.id, text, current_user_id=sender.id
+        site2_app, recipient_id, text, current_user_id=sender_id
     )
 
     assert response.status_code == 302
@@ -182,11 +206,11 @@ Bei Fragen kontaktiere uns bitte per E-Mail an: help@acmecon.test\
     )
 
 
-def test_send_when_not_logged_in(party_app, site1):
+def test_send_when_not_logged_in(site1_app, site1):
     recipient_id = '8e5037f6-3ca1-4981-b1e4-1998cbdf58e2'
     text = 'Hello, Eve!'
 
-    response = send_request(party_app, recipient_id, text)
+    response = send_request(site1_app, recipient_id, text)
 
     assert response.status_code == 302
     assert response.location == 'http://www.acmecon.test/authentication/login'
