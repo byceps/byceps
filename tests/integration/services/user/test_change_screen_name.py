@@ -9,20 +9,18 @@ from byceps.events.user import UserScreenNameChanged
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
-from tests.helpers import create_user
-
 
 @pytest.fixture(scope='module')
 def admin_user(make_user):
     return make_user('ScreenNameAddressAdmin')
 
 
-def test_change_screen_name_with_reason(admin_app, admin_user):
+def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     old_screen_name = 'Zero_Cool'
     new_screen_name = 'Crash_Override'
     reason = 'Do not reveal to Acid Burn.'
 
-    user_id = create_user(old_screen_name).id
+    user_id = make_user(old_screen_name).id
 
     user_before = user_command_service._get_user(user_id)
     assert user_before.screen_name == old_screen_name
@@ -59,14 +57,12 @@ def test_change_screen_name_with_reason(admin_app, admin_user):
         'reason': reason,
     }
 
-    user_command_service.delete_account(user_id, user_id, 'clean up')
 
-
-def test_change_screen_name_without_reason(admin_app, admin_user):
+def test_change_screen_name_without_reason(admin_app, make_user, admin_user):
     old_screen_name = 'NameWithTyop'
     new_screen_name = 'NameWithoutTypo'
 
-    user_id = create_user(old_screen_name).id
+    user_id = make_user(old_screen_name).id
 
     # -------------------------------- #
 
@@ -87,5 +83,3 @@ def test_change_screen_name_without_reason(admin_app, admin_user):
         'new_screen_name': new_screen_name,
         'initiator_id': str(admin_user.id),
     }
-
-    user_command_service.delete_account(user_id, user_id, 'clean up')

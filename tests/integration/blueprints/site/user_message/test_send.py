@@ -8,9 +8,8 @@ from unittest.mock import patch
 import pytest
 
 from byceps.services.site import service as site_service
-from byceps.services.user import command_service as user_command_service
 
-from tests.helpers import create_site, create_user, http_client, login_user
+from tests.helpers import create_site, http_client, login_user
 
 
 @pytest.fixture
@@ -43,27 +42,21 @@ def site2(admin_app, make_email_config):
 
 
 @pytest.fixture(scope='module')
-def user_alice(party_app):
-    user = create_user(
+def user_alice(make_user):
+    return make_user(
         'Alice',
         user_id='a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8',
         email_address='alice@users.test',
     )
-    user_id = user.id
-    yield user
-    user_command_service.delete_account(user_id, user_id, 'clean up')
 
 
 @pytest.fixture(scope='module')
-def user_bob(party_app):
-    user = create_user(
+def user_bob(make_user):
+    return make_user(
         'Bob',
         user_id='11d72bab-3646-4199-b96c-e5e4c6f972bc',
         email_address='bob@users.test',
     )
-    user_id = user.id
-    yield user
-    user_command_service.delete_account(user_id, user_id, 'clean up')
 
 
 @patch('byceps.email.send')

@@ -5,14 +5,7 @@
 
 import pytest
 
-from byceps.services.user import command_service as user_command_service
-
-from tests.helpers import create_user
-
 
 @pytest.fixture
-def order_admin(admin_app):
-    user = create_user('ShopOrderAdmin')
-    user_id = user.id
-    yield user
-    user_command_service.delete_account(user_id, user_id, 'clean up')
+def order_admin(make_user):
+    return make_user('ShopOrderAdmin')
