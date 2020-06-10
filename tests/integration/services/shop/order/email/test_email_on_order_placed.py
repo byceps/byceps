@@ -26,6 +26,11 @@ from .base import place_order_with_items
 
 
 @pytest.fixture
+def order_admin(make_user):
+    return make_user('PlacedEmailShopOrderAdmin')
+
+
+@pytest.fixture
 def customer(make_user_with_detail):
     return make_user_with_detail(
         'Interessent', email_address='interessent@users.test'
