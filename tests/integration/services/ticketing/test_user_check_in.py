@@ -99,10 +99,9 @@ def test_check_in_user_with_ticket_user_already_checked_in(
 def test_check_in_suspended_user(
     admin_app, ticket, ticketing_admin, make_user
 ):
-    ticket_user = make_user('SuspendedTicketUser')
+    ticket_user = make_user('SuspendedTicketUser', suspended=True)
 
     ticket.used_by_id = ticket_user.id
-    ticket_user.suspended = True
     db.session.commit()
 
     with raises(UserAccountSuspended):
