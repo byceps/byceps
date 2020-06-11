@@ -7,6 +7,7 @@ import pytest
 
 from byceps.database import db
 from byceps.services.authorization import service as authorization_service
+from byceps.services.user import service as user_service
 from byceps.services.verification_token.models import Purpose, Token
 
 from tests.helpers import http_client
@@ -48,7 +49,7 @@ def test_confirm_email_address_with_valid_token(party_app, user1, role):
     # -------------------------------- #
 
     assert response.status_code == 302
-    assert user.initialized
+    assert is_user_initialized(user.id)
     assert get_role_ids(user.id) == {'board_user'}
 
 
@@ -65,7 +66,7 @@ def test_confirm_email_address_with_unknown_token(party_app, site, user2, role):
     # -------------------------------- #
 
     assert response.status_code == 404
-    assert not user.initialized
+    assert not is_user_initialized(user.id)
     assert get_role_ids(user.id) == set()
 
 
@@ -76,6 +77,11 @@ def confirm(app, verification_token):
     url = f'/users/email_address/confirmation/{verification_token.token}'
     with http_client(app) as client:
         return client.get(url)
+
+
+def is_user_initialized(user_id) -> bool:
+    user = user_service.get_db_user(user_id)
+    return bool(user.initialized)
 
 
 def get_role_ids(user_id):
