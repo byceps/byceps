@@ -14,8 +14,9 @@ from ...typing import PartyID, UserID
 from ..orga_team.models import OrgaTeam, Membership as OrgaTeamMembership
 from ..user_avatar.models import Avatar, AvatarSelection
 
+from .models.detail import UserDetail as DbUserDetail
 from .models.user import AnonymousUser, User as DbUser
-from .transfer.models import User
+from .transfer.models import User, UserDetail, UserWithDetail
 
 
 class UserIdRejected(Exception):
@@ -224,6 +225,36 @@ def _db_entity_to_user(user: DbUser) -> User:
         user.deleted,
         avatar_url,
         is_orga,
+    )
+
+
+def _db_entity_to_user_detail(detail: DbUserDetail) -> UserDetail:
+    return UserDetail(
+        detail.first_names,
+        detail.last_name,
+        detail.date_of_birth,
+        detail.country,
+        detail.zip_code,
+        detail.city,
+        detail.street,
+        detail.phone_number,
+        detail.internal_comment,
+        detail.extras,
+    )
+
+
+def _db_entity_to_user_with_detail(user: DbUser) -> User:
+    user_dto = _db_entity_to_user(user)
+    detail_dto = _db_entity_to_user_detail(user.detail)
+
+    return UserWithDetail(
+        user_dto.id,
+        user_dto.screen_name,
+        user_dto.suspended,
+        user_dto.deleted,
+        user_dto.avatar_url,
+        user_dto.is_orga,
+        detail_dto,
     )
 
 

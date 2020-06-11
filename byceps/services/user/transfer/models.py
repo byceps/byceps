@@ -7,7 +7,8 @@ byceps.services.user.transfer.models
 """
 
 from dataclasses import dataclass
-from typing import Optional
+from datetime import date
+from typing import Any, Dict, Optional
 
 from ....typing import UserID
 
@@ -20,3 +21,22 @@ class User:
     deleted: bool
     avatar_url: Optional[str]
     is_orga: bool
+
+
+@dataclass(frozen=True)
+class UserDetail:
+    first_names: Optional[str]
+    last_name: Optional[str]
+    date_of_birth: Optional[date]
+    country: Optional[str]
+    zip_code: Optional[str]
+    city: Optional[str]
+    street: Optional[str]
+    phone_number: Optional[str]
+    internal_comment: Optional[str]
+    extras: Dict[str, Any]
+
+
+@dataclass(frozen=True)
+class UserWithDetail(User):
+    detail: UserDetail
