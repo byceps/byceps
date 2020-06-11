@@ -81,11 +81,11 @@ def test_screen_name_change_announced(app, make_user):
 def test_email_address_invalidated_announced(app, make_user):
     expected_text = (
         'BounceWatchman hat die E-Mail-Adresse '
-        'des Benutzerkontos "Bob" invalidiert.'
+        'des Benutzerkontos "Faker" invalidiert.'
     )
 
     admin = make_user('BounceWatchman')
-    user = make_user('Bob')
+    user = make_user('Faker')
 
     with mocked_irc_bot() as mock:
         event = UserEmailAddressInvalidated(
