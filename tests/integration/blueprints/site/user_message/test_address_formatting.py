@@ -23,7 +23,7 @@ def test_recipient_formatting(make_user, site, params):
 
 
 @pytest.fixture(params=[
-    ('Alice', 'alice@users.test', 'Alice <alice@users.test>'),
+    ('Alicia', 'alicia@users.test', 'Alicia <alicia@users.test>'),
     ('<AngleInvestor>', 'angleinvestor@users.test', '"<AngleInvestor>" <angleinvestor@users.test>'),
     ('-=]YOLO[=-', 'yolo@users.test', '"-=]YOLO[=-" <yolo@users.test>'),
 ])
