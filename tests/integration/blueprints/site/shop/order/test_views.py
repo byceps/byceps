@@ -115,7 +115,7 @@ def test_order(
 
     assert get_article_quantity(article.id) == 2
 
-    order = Order.query.filter_by(placed_by=orderer).one()
+    order = Order.query.filter_by(placed_by_id=orderer.id).one()
     assert_order(order, 'AEC-01-B00005', 1)
 
     first_order_item = order.items[0]
@@ -173,7 +173,7 @@ def test_order_single(
 
     assert get_article_quantity(article.id) == 4
 
-    order = Order.query.filter_by(placed_by=orderer).one()
+    order = Order.query.filter_by(placed_by_id=orderer.id).one()
     assert_order(order, 'AEC-01-B00005', 1)
 
     first_order_item = order.items[0]
