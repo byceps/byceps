@@ -58,8 +58,9 @@ def test_account_created_by_admin_announced(app, make_user):
 
 
 def test_screen_name_change_announced(app, make_user):
-    expected_text = 'ElAdmin hat das Benutzerkonto "DrJekyll" ' \
-                    'in "MrHyde" umbenannt.'
+    expected_text = (
+        'ElAdmin hat das Benutzerkonto "DrJekyll" in "MrHyde" umbenannt.'
+    )
 
     admin = make_user('ElAdmin')
     user = make_user('DrJekyll')
@@ -78,8 +79,10 @@ def test_screen_name_change_announced(app, make_user):
 
 
 def test_email_address_invalidated_announced(app, make_user):
-    expected_text = 'BounceWatchman hat die E-Mail-Adresse ' \
-                    'des Benutzerkontos "Bob" invalidiert.'
+    expected_text = (
+        'BounceWatchman hat die E-Mail-Adresse '
+        'des Benutzerkontos "Bob" invalidiert.'
+    )
 
     admin = make_user('BounceWatchman')
     user = make_user('Bob')
@@ -94,8 +97,10 @@ def test_email_address_invalidated_announced(app, make_user):
 
 
 def test_user_details_updated_announced(app, make_user):
-    expected_text = 'Chameleon hat die persönlichen Daten ' \
-                    'des Benutzerkontos "Chameleon" geändert.'
+    expected_text = (
+        'Chameleon hat die persönlichen Daten '
+        'des Benutzerkontos "Chameleon" geändert.'
+    )
 
     user = make_user('Chameleon')
 
@@ -139,16 +144,18 @@ def test_unsuspended_account_announced(app, make_user):
 
 
 def test_deleted_account_announced(app, make_user):
-    expected_text = 'UberDude hat das Benutzerkonto mit der ID ' \
-                    '"76b0c57f-8909-4b02-90c9-96e0a817f738" gelöscht.'
+    expected_text = (
+        'UberDude hat das Benutzerkonto mit der ID '
+        '"76b0c57f-8909-4b02-90c9-96e0a817f738" gelöscht.'
+    )
 
     admin = make_user('UberDude')
-    user = make_user('Snake',
-                       user_id='76b0c57f-8909-4b02-90c9-96e0a817f738')
+    user = make_user('Snake', user_id='76b0c57f-8909-4b02-90c9-96e0a817f738')
 
     with mocked_irc_bot() as mock:
-        user_command_service.delete_account(user.id, admin.id,
-                                            'specious reason')
+        user_command_service.delete_account(
+            user.id, admin.id, 'specious reason'
+        )
 
         event = UserAccountDeleted(
             occurred_at=now(), user_id=user.id, initiator_id=admin.id

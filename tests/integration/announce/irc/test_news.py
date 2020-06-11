@@ -24,9 +24,11 @@ from .helpers import (
 
 def test_published_news_item_announced(app, item):
     expected_channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
-    expected_text = 'ACME Entertainment Convention: ' \
-        + 'Die News "Zieh dir das rein!" wurde veröffentlicht. ' \
+    expected_text = (
+        'ACME Entertainment Convention: '
+        + 'Die News "Zieh dir das rein!" wurde veröffentlicht. '
         + 'https://acme.example.com/news/zieh-dir-das-rein'
+    )
 
     with mocked_irc_bot() as mock:
         event = NewsItemPublished(occurred_at=now(), item_id=item.id)

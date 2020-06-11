@@ -32,7 +32,9 @@ def test_user_badge_awarding_announced_without_initiator(app, make_user):
         assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
-def test_user_badge_awarding_announced_with_initiator(app, make_user, admin_user):
+def test_user_badge_awarding_announced_with_initiator(
+    app, make_user, admin_user
+):
     expected_text = (
         'Admin hat das Abzeichen "Glanzleistung" an PathFinder verliehen.'
     )

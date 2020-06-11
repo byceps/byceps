@@ -19,8 +19,10 @@ EXPECTED_CHANNELS = [CHANNEL_ORGA_LOG]
 def test_announce_snippet_document_created(
     app, created_document_version_and_event
 ):
-    expected_text = 'Dr.Schnipsel hat das Snippet-Dokument "overview" ' \
-                    'im Scope "site/acme-2019-website" angelegt.'
+    expected_text = (
+        'Dr.Schnipsel hat das Snippet-Dokument "overview" '
+        'im Scope "site/acme-2019-website" angelegt.'
+    )
 
     _, event = created_document_version_and_event
 
@@ -33,8 +35,10 @@ def test_announce_snippet_document_created(
 def test_announce_snippet_fragment_created(
     app, created_fragment_version_and_event
 ):
-    expected_text = 'Dr.Schnipsel hat das Snippet-Fragment "team_intro" ' \
-                    'im Scope "site/acme-2019-website" angelegt.'
+    expected_text = (
+        'Dr.Schnipsel hat das Snippet-Fragment "team_intro" '
+        'im Scope "site/acme-2019-website" angelegt.'
+    )
 
     _, event = created_fragment_version_and_event
 
@@ -47,8 +51,10 @@ def test_announce_snippet_fragment_created(
 def test_announce_snippet_document_updated(
     app, updated_document_version_and_event
 ):
-    expected_text = 'Dr.Schnipsel hat das Snippet-Dokument "overview" ' \
-                    'im Scope "site/acme-2019-website" aktualisiert.'
+    expected_text = (
+        'Dr.Schnipsel hat das Snippet-Dokument "overview" '
+        'im Scope "site/acme-2019-website" aktualisiert.'
+    )
 
     _, event = updated_document_version_and_event
 
@@ -61,8 +67,10 @@ def test_announce_snippet_document_updated(
 def test_announce_snippet_fragment_updated(
     app, updated_fragment_version_and_event
 ):
-    expected_text = 'Dr.Schnipsel hat das Snippet-Fragment "team_intro" ' \
-                    'im Scope "site/acme-2019-website" aktualisiert.'
+    expected_text = (
+        'Dr.Schnipsel hat das Snippet-Fragment "team_intro" '
+        'im Scope "site/acme-2019-website" aktualisiert.'
+    )
 
     _, event = updated_fragment_version_and_event
 
