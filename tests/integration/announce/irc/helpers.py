@@ -4,6 +4,7 @@
 """
 
 from contextlib import contextmanager
+from datetime import datetime
 
 from requests_mock import Mocker
 
@@ -12,6 +13,10 @@ BOT_URL = 'http://127.0.0.1:12345'
 
 CHANNEL_ORGA_LOG = '#acmeparty-internal-log'
 CHANNEL_PUBLIC = '#acmeparty'
+
+
+def now() -> datetime:
+    return datetime.utcnow()
 
 
 @contextmanager

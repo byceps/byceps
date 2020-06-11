@@ -3,8 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
-
 from byceps.announce.irc import user  # Load signal handlers.
 import byceps.blueprints.user.signals as user_signals
 from byceps.events.user import (
@@ -23,6 +21,7 @@ from .helpers import (
     CHANNEL_ORGA_LOG,
     CHANNEL_PUBLIC,
     mocked_irc_bot,
+    now,
 )
 
 
@@ -36,7 +35,7 @@ def test_account_created_announced(app, make_user):
 
     with mocked_irc_bot() as mock:
         event = UserAccountCreated(
-            occurred_at=user.created_at, user_id=user.id, initiator_id=None
+            occurred_at=now(), user_id=user.id, initiator_id=None
         )
         user_signals.account_created.send(None, event=event)
 
@@ -51,7 +50,7 @@ def test_account_created_by_admin_announced(app, make_user):
 
     with mocked_irc_bot() as mock:
         event = UserAccountCreated(
-            occurred_at=user.created_at, user_id=user.id, initiator_id=admin.id
+            occurred_at=now(), user_id=user.id, initiator_id=admin.id
         )
         user_signals.account_created.send(None, event=event)
 
@@ -67,7 +66,7 @@ def test_screen_name_change_announced(app, make_user):
 
     with mocked_irc_bot() as mock:
         event = UserScreenNameChanged(
-            occurred_at=datetime.now(),
+            occurred_at=now(),
             user_id=user.id,
             old_screen_name=user.screen_name,
             new_screen_name='MrHyde',
@@ -87,9 +86,7 @@ def test_email_address_invalidated_announced(app, make_user):
 
     with mocked_irc_bot() as mock:
         event = UserEmailAddressInvalidated(
-            occurred_at=datetime.now(),
-            user_id=user.id,
-            initiator_id=admin.id,
+            occurred_at=now(), user_id=user.id, initiator_id=admin.id,
         )
         user_signals.email_address_invalidated.send(None, event=event)
 
@@ -104,9 +101,7 @@ def test_user_details_updated_announced(app, make_user):
 
     with mocked_irc_bot() as mock:
         event = UserDetailsUpdated(
-            occurred_at=datetime.now(),
-            user_id=user.id,
-            initiator_id=user.id,
+            occurred_at=now(), user_id=user.id, initiator_id=user.id,
         )
         user_signals.details_updated.send(None, event=event)
 
@@ -121,7 +116,7 @@ def test_suspended_account_announced(app, make_user):
 
     with mocked_irc_bot() as mock:
         event = UserAccountSuspended(
-            occurred_at=datetime.now(), user_id=user.id, initiator_id=admin.id
+            occurred_at=now(), user_id=user.id, initiator_id=admin.id
         )
         user_signals.account_suspended.send(None, event=event)
 
@@ -136,7 +131,7 @@ def test_unsuspended_account_announced(app, make_user):
 
     with mocked_irc_bot() as mock:
         event = UserAccountUnsuspended(
-            occurred_at=datetime.now(), user_id=user.id, initiator_id=admin.id
+            occurred_at=now(), user_id=user.id, initiator_id=admin.id
         )
         user_signals.account_unsuspended.send(None, event=event)
 
@@ -156,7 +151,7 @@ def test_deleted_account_announced(app, make_user):
                                             'specious reason')
 
         event = UserAccountDeleted(
-            occurred_at=datetime.now(), user_id=user.id, initiator_id=admin.id
+            occurred_at=now(), user_id=user.id, initiator_id=admin.id
         )
         user_signals.account_deleted.send(None, event=event)
 

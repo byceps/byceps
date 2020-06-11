@@ -3,8 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
-
 import pytest
 
 from byceps.announce.irc import news  # Load signal handlers.
@@ -20,6 +18,7 @@ from .helpers import (
     CHANNEL_ORGA_LOG,
     CHANNEL_PUBLIC,
     mocked_irc_bot,
+    now,
 )
 
 
@@ -30,9 +29,7 @@ def test_published_news_item_announced(app, item):
         + 'https://acme.example.com/news/zieh-dir-das-rein'
 
     with mocked_irc_bot() as mock:
-        event = NewsItemPublished(
-            occurred_at=datetime.utcnow(), item_id=item.id
-        )
+        event = NewsItemPublished(occurred_at=now(), item_id=item.id)
         news_signals.item_published.send(None, event=event)
         assert_submitted_data(mock, expected_channels, expected_text)
 

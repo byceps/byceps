@@ -3,8 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
-
 import pytest
 
 from byceps.announce.irc import board  # Load signal handlers.
@@ -34,6 +32,7 @@ from .helpers import (
     CHANNEL_ORGA_LOG,
     CHANNEL_PUBLIC,
     mocked_irc_bot,
+    now,
 )
 
 
@@ -65,7 +64,7 @@ def test_announce_topic_hidden(app, topic, moderator):
 
     with mocked_irc_bot() as mock:
         event = BoardTopicHidden(
-            occurred_at=datetime.now(),
+            occurred_at=now(),
             topic_id=topic.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -86,7 +85,7 @@ def test_announce_topic_unhidden(app, topic, moderator):
 
     with mocked_irc_bot() as mock:
         event = BoardTopicUnhidden(
-            occurred_at=datetime.now(),
+            occurred_at=now(),
             topic_id=topic.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -107,7 +106,7 @@ def test_announce_topic_locked(app, topic, moderator):
 
     with mocked_irc_bot() as mock:
         event = BoardTopicLocked(
-            occurred_at=datetime.now(),
+            occurred_at=now(),
             topic_id=topic.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -128,7 +127,7 @@ def test_announce_topic_unlocked(app, topic, moderator):
 
     with mocked_irc_bot() as mock:
         event = BoardTopicUnlocked(
-            occurred_at=datetime.now(),
+            occurred_at=now(),
             topic_id=topic.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -149,7 +148,7 @@ def test_announce_topic_pinned(app, topic, moderator):
 
     with mocked_irc_bot() as mock:
         event = BoardTopicPinned(
-            occurred_at=datetime.now(),
+            occurred_at=now(),
             topic_id=topic.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -170,7 +169,7 @@ def test_announce_topic_unpinned(app, topic, moderator):
 
     with mocked_irc_bot() as mock:
         event = BoardTopicUnpinned(
-            occurred_at=datetime.now(),
+            occurred_at=now(),
             topic_id=topic.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -193,7 +192,7 @@ def test_announce_topic_moved(
 
     with mocked_irc_bot() as mock:
         event = BoardTopicMoved(
-            occurred_at=datetime.now(),
+            occurred_at=now(),
             topic_id=topic.id,
             old_category_id=category.id,
             new_category_id=another_category.id,
@@ -237,7 +236,7 @@ def test_announce_posting_hidden(app, posting, moderator):
 
     with mocked_irc_bot() as mock:
         event = BoardPostingHidden(
-            occurred_at=datetime.now(),
+            occurred_at=now(),
             posting_id=posting.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -259,7 +258,7 @@ def test_announce_posting_unhidden(app, posting, moderator):
 
     with mocked_irc_bot() as mock:
         event = BoardPostingUnhidden(
-            occurred_at=datetime.now(),
+            occurred_at=now(),
             posting_id=posting.id,
             moderator_id=moderator.id,
             url=expected_link,

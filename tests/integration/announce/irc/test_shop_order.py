@@ -3,8 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
-
 import pytest
 
 from byceps.announce.irc import shop_order  # Load signal handlers.
@@ -20,7 +18,13 @@ from byceps.services.user import command_service as user_command_service
 
 from testfixtures.shop_order import create_orderer
 
-from .helpers import assert_submitted_data, CHANNEL_ORGA_LOG, mocked_irc_bot
+from .helpers import (
+    assert_submitted_data,
+    CHANNEL_ORGA_LOG,
+    CHANNEL_PUBLIC,
+    mocked_irc_bot,
+    now,
+)
 
 
 def test_shop_order_placed_announced(app, placed_order):
@@ -29,9 +33,7 @@ def test_shop_order_placed_announced(app, placed_order):
 
     order = placed_order
     event = ShopOrderPlaced(
-        occurred_at=datetime.utcnow(),
-        order_id=order.id,
-        initiator_id=order.placed_by_id,
+        occurred_at=now(), order_id=order.id, initiator_id=order.placed_by_id,
     )
 
     with mocked_irc_bot() as mock:
@@ -48,9 +50,7 @@ def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
 
     order = canceled_order
     event = ShopOrderCanceled(
-        occurred_at=datetime.utcnow(),
-        order_id=order.id,
-        initiator_id=shop_admin.id,
+        occurred_at=now(), order_id=order.id, initiator_id=shop_admin.id,
     )
 
     with mocked_irc_bot() as mock:
@@ -67,9 +67,7 @@ def test_shop_order_paid_announced(app, paid_order, shop_admin):
 
     order = paid_order
     event = ShopOrderPaid(
-        occurred_at=datetime.utcnow(),
-        order_id=order.id,
-        initiator_id=shop_admin.id,
+        occurred_at=now(), order_id=order.id, initiator_id=shop_admin.id,
     )
 
     with mocked_irc_bot() as mock:
