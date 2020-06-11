@@ -8,16 +8,16 @@
       </div>
     </aside>
     <div class="user-comment-main">
-    <div class="body">
-      <form action="{{ url_for('.posting_create', topic_id=topic.id) }}" method="post" class="board-posting-create-form-inline">
-        <fieldset>
-          {{ form.body(class='collapsible collapsed wide', required='required') }}
-          <div class="collapsible-neighbor">
-          {%- include 'board/_posting_form_body_supplement.html' -%}
-          {{ form_buttons('Hinzufügen', cancel_button=True) }}
-          </div>
-        </fieldset>
-      </form>
-    </div>
+      <div class="body">
+        <form action="{{ url_for('.posting_create', topic_id=topic.id) }}" method="post" class="board-posting-create-form-inline">
+          <fieldset>
+            {{ form.body(class='collapsible collapsed wide', required='required') }}
+            <div class="collapsible-neighbor">
+            {%- include 'board/_posting_form_body_supplement.html' -%}
+            {{ form_buttons('Hinzufügen', cancel_button=True) }}
+            </div>
+          </fieldset>
+        </form>
+      </div>
     </div>
   </article>
