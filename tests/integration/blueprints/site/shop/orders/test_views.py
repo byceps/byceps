@@ -107,6 +107,20 @@ def site2(storefront2):
     site_service.delete_site(site.id)
 
 
+@pytest.fixture
+def site1_app(site1, make_party_app):
+    app = make_party_app(SITE_ID=site1.id)
+    with app.app_context():
+        yield app
+
+
+@pytest.fixture
+def site2_app(site2, make_party_app):
+    app = make_party_app(SITE_ID=site2.id)
+    with app.app_context():
+        yield app
+
+
 @pytest.fixture(scope='module')
 def user1(make_user_with_detail):
     return make_user_with_detail('OrdersUser1')
@@ -129,24 +143,24 @@ def order(storefront1, user1):
     order_service.delete_order(order.id)
 
 
-def test_view_matching_user_and_site_and_shop(party_app, site1, order, user1):
-    response = request_view(party_app, user1, order.id)
+def test_view_matching_user_and_site_and_shop(site1_app, order, user1):
+    response = request_view(site1_app, user1, order.id)
 
     assert response.status_code == 200
 
 
 def test_view_matching_site_and_shop_but_different_user(
-    party_app, site1, order, user1, user2
+    site1_app, order, user1, user2
 ):
-    response = request_view(party_app, user2, order.id)
+    response = request_view(site1_app, user2, order.id)
 
     assert response.status_code == 404
 
 
 def test_view_matching_user_but_different_site_and_shop(
-    party_app, site2, order, user1
+    site2_app, order, user1
 ):
-    response = request_view(party_app, user1, order.id)
+    response = request_view(site2_app, user1, order.id)
 
     assert response.status_code == 404
 
@@ -160,12 +174,12 @@ def create_payment_instructions_snippet(shop_id, admin_id):
     )
 
 
-def request_view(party_app, current_user, order_id):
+def request_view(app, current_user, order_id):
     login_user(current_user.id)
 
     url = f'/shop/orders/{order_id!s}'
 
-    with http_client(party_app, user_id=current_user.id) as client:
+    with http_client(app, user_id=current_user.id) as client:
         response = client.get(url)
 
     return response
