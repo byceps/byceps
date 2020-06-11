@@ -54,7 +54,7 @@ def site1_app(site1, make_party_app):
         yield app
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture
 def site2_app(site2, make_party_app):
     app = make_party_app(SITE_ID=site2.id)
     with app.app_context():
