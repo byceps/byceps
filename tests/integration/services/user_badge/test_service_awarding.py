@@ -117,14 +117,7 @@ def test_award_badge_with_initiator(
 
 
 def test_count_awardings(
-    party_app,
-    user1,
-    user2,
-    user3,
-    badge1,
-    badge2,
-    badge3,
-    awardings_scope,
+    party_app, user1, user2, user3, badge1, badge2, badge3, awardings_scope,
 ):
     badge_command_service.award_badge_to_user(badge1.id, user1.id)
     badge_command_service.award_badge_to_user(badge1.id, user1.id)
@@ -135,7 +128,13 @@ def test_count_awardings(
 
     actual = badge_service.count_awardings()
 
-    assert actual == {badge1.id: 4, badge2.id: 0, badge3.id: 2}
+    # Remove counts for potential other badges.
+    relevant_badge_ids = {badge1.id, badge2.id, badge3.id}
+    actual_relevant = {
+        k: v for k, v in actual.items() if k in relevant_badge_ids
+    }
+
+    assert actual_relevant == {badge1.id: 4, badge2.id: 0, badge3.id: 2}
 
 
 def test_get_awardings_of_unknown_badge(party_app):
