@@ -3,31 +3,26 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-import pytest
-
 from byceps.services.user import (
     event_service as user_event_service,
     service as user_service,
 )
 
 
-@pytest.fixture(scope='module')
-def initialized_user(make_user):
-    return make_user(
+def test_invalidation_of_initialized_user(api_client, make_user):
+    email_address = 'hoarder@mailhost.example'
+
+    user = make_user(
         'InitializedUser',
-        email_address='hoarder@mailhost.example',
+        email_address=email_address,
         email_address_verified=True,
         initialized=True,
     )
 
-
-def test_invalidation_of_initialized_user(api_client, initialized_user):
-    user = initialized_user
-
     user_before = user_service.get_db_user(user.id)
     assert user_before.email_address_verified
 
-    response = send_request(api_client, user.email_address)
+    response = send_request(api_client, email_address)
     assert response.status_code == 204
 
     user_after = user_service.get_db_user(user.id)
@@ -38,7 +33,7 @@ def test_invalidation_of_initialized_user(api_client, initialized_user):
     )
     assert len(events) == 1
     assert events[0].data == {
-        'email_address': 'hoarder@mailhost.example',
+        'email_address': email_address,
         'reason': 'unknown host',
     }
 
