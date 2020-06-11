@@ -13,7 +13,10 @@ from byceps.services.brand import service as brand_service
 from byceps.services.email import service as email_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
-from byceps.services.user import command_service as user_command_service
+from byceps.services.user import (
+    command_service as user_command_service,
+    service as user_service,
+)
 
 from tests.base import create_admin_app, create_party_app
 from tests.database import set_up_database, tear_down_database
@@ -91,7 +94,8 @@ def make_user(admin_app):
     def _wrapper(*args, **kwargs):
         user = create_user(*args, **kwargs)
         user_ids.add(user.id)
-        return user
+        user_dto = user_service._db_entity_to_user(user)
+        return user_dto
 
     yield _wrapper
 
