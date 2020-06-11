@@ -143,7 +143,7 @@ def _create_user(
         'user-created', user.id, event_data, occurred_at=created_at
     )
 
-    user_dto = user_service._db_entity_to_user_dto(user)
+    user_dto = user_service._db_entity_to_user(user)
 
     event = UserAccountCreated(
         occurred_at=user.created_at, user_id=user.id, initiator_id=creator_id

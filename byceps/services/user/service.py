@@ -213,7 +213,7 @@ def get_db_user(user_id: UserID) -> Optional[DbUser]:
     return user
 
 
-def _db_entity_to_user_dto(user: DbUser) -> User:
+def _db_entity_to_user(user: DbUser) -> User:
     avatar_url = None
     is_orga = False  # Information is not available here by design.
 
