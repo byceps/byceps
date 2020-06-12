@@ -15,12 +15,12 @@ from tests.helpers import http_client
 
 @pytest.fixture(scope='module')
 def user1(make_user):
-    return make_user('User1', initialized=False)
+    return make_user('EAC-User1', initialized=False)
 
 
 @pytest.fixture(scope='module')
 def user2(make_user):
-    return make_user('User2', initialized=False)
+    return make_user('EAC-User2', initialized=False)
 
 
 @pytest.fixture

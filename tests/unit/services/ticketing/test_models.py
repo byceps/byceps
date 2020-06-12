@@ -15,9 +15,9 @@ from testfixtures.user import create_user
 ANY_BUNDLE_ID = UUID('4138fcfb-cc18-45c0-aede-d49a8e279885')
 
 
-user1 = create_user('User1')
-user2 = create_user('User2')
-user3 = create_user('User3')
+user1 = create_user('TicketUser1')
+user2 = create_user('TicketUser2')
+user3 = create_user('TicketUser3')
 
 
 @pytest.mark.parametrize('bundle_id, expected', [

@@ -10,7 +10,7 @@ from byceps.services.user import event_service
 
 def test_update_password_hash(party_app, admin_user, make_user):
     admin_id = admin_user.id
-    user_id = make_user('PasswordUpdater').id
+    user_id = make_user('PasswordHashUpdater').id
 
     password_service.create_password_hash(user_id, 'InitialPassw0rd')
 
