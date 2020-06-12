@@ -3,11 +3,22 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.brand import settings_service
+import pytest
+
+from byceps.services.brand import service as brand_service, settings_service
 from byceps.services.brand.transfer.models import BrandSetting
 
+from tests.helpers import create_brand
 
-BRAND_ID = 'acmecon'
+
+BRAND_ID = 'value-brand'
+
+
+@pytest.fixture(scope='module')
+def brand(admin_app):
+    brand = create_brand(BRAND_ID, 'ValueBrand')
+    yield brand
+    brand_service.delete_brand(brand.id)
 
 
 def test_create(brand):

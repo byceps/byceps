@@ -3,11 +3,26 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.site import settings_service
+import pytest
+
+from byceps.services.site import service as site_service, settings_service
 from byceps.services.site.transfer.models import SiteSetting
 
+from tests.helpers import create_site
 
-SITE_ID = 'acmecon-2014-website'
+
+SITE_ID = 'favorite-site'
+
+
+@pytest.fixture(scope='module')
+def site(admin_app, email_config):
+    site = create_site(
+        site_id=SITE_ID,
+        title='My favorite site!',
+        server_name='www.favorite-site.test',
+    )
+    yield site
+    site_service.delete_site(site.id)
 
 
 def test_create(site):
