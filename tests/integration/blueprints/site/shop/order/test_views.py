@@ -72,9 +72,16 @@ def storefront(shop, order_number_sequence_id) -> None:
 
 @pytest.fixture
 def site(storefront):
-    site = create_site('acmecon-2014-website', storefront_id=storefront.id)
+    site = create_site('acmecon-2014-shop-website', storefront_id=storefront.id)
     yield site
     site_service.delete_site(site.id)
+
+
+@pytest.fixture
+def site_app(site, make_party_app):
+    app = make_party_app(SITE_ID=site.id)
+    with app.app_context():
+        yield app
 
 
 @pytest.fixture
@@ -96,7 +103,7 @@ def orderer(admin_app, user):
 def test_order(
     order_email_service_mock,
     order_placed_mock,
-    party_app,
+    site_app,
     site,
     admin_user,
     orderer,
@@ -110,7 +117,7 @@ def test_order(
         **COMMON_FORM_DATA,
         article_quantity_key: 3,
     }
-    with http_client(party_app, user_id=orderer.id) as client:
+    with http_client(site_app, user_id=orderer.id) as client:
         response = client.post(url, data=form_data)
 
     assert get_article_quantity(article.id) == 2
@@ -142,7 +149,7 @@ def test_order(
 
     assert_response_headers(response, order_detail_page_url)
 
-    with http_client(party_app, user_id=orderer.id) as client:
+    with http_client(site_app, user_id=orderer.id) as client:
         assert_order_detail_page_works(
             client, order_detail_page_url, order.order_number
         )
@@ -155,7 +162,7 @@ def test_order(
 def test_order_single(
     order_email_service_mock,
     order_placed_mock,
-    party_app,
+    site_app,
     site,
     admin_user,
     orderer,
@@ -168,7 +175,7 @@ def test_order_single(
         **COMMON_FORM_DATA,
         'quantity': 1,  # TODO: Test with `3` if limitation is removed.
     }
-    with http_client(party_app, user_id=orderer.id) as client:
+    with http_client(site_app, user_id=orderer.id) as client:
         response = client.post(url, data=form_data)
 
     assert get_article_quantity(article.id) == 4
@@ -200,7 +207,7 @@ def test_order_single(
 
     assert_response_headers(response, order_detail_page_url)
 
-    with http_client(party_app, user_id=orderer.id) as client:
+    with http_client(site_app, user_id=orderer.id) as client:
         assert_order_detail_page_works(
             client, order_detail_page_url, order.order_number
         )
