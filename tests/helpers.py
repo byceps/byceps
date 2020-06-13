@@ -18,6 +18,7 @@ from byceps.services.authorization import service as authorization_service
 from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
+from byceps.services.user.creation_service import UserCreationFailed
 
 from testfixtures.user import (
     create_user as _create_user,
@@ -61,7 +62,11 @@ def create_user(*args, **kwargs):
     user = _create_user(*args, **kwargs)
 
     db.session.add(user)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        raise UserCreationFailed(e)
 
     return user
 
@@ -70,7 +75,11 @@ def create_user_with_detail(*args, **kwargs):
     user = _create_user_with_detail(*args, **kwargs)
 
     db.session.add(user)
-    db.session.commit()
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        raise UserCreationFailed(e)
 
     return user
 
