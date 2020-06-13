@@ -5,21 +5,15 @@
 
 import pytest
 
-from byceps.services.ticketing import category_service
+
+@pytest.fixture(scope='package')
+def category(make_ticket_category, party):
+    return make_ticket_category(party.id, 'Premium')
 
 
 @pytest.fixture(scope='package')
-def category(party):
-    category = category_service.create_category(party.id, 'Premium')
-    yield category
-    category_service.delete_category(category.id)
-
-
-@pytest.fixture(scope='package')
-def another_category(party):
-    category = category_service.create_category(party.id, 'Economy')
-    yield category
-    category_service.delete_category(category.id)
+def another_category(make_ticket_category, party):
+    return make_ticket_category(party.id, 'Economy')
 
 
 @pytest.fixture(scope='package')

@@ -6,10 +6,8 @@
 import pytest
 
 from byceps.services.shop.article import service as article_service
-from byceps.services.ticketing import (
-    category_service as ticket_category_service,
-)
 
+from tests.helpers import generate_token
 from tests.integration.services.shop.helpers import (
     create_article,
     create_orderer,
@@ -25,10 +23,9 @@ def article(shop):
 
 
 @pytest.fixture
-def ticket_category(party):
-    category = ticket_category_service.create_category(party.id, 'Deluxe')
-    yield category
-    ticket_category_service.delete_category(category.id)
+def ticket_category(make_ticket_category, party):
+    title = 'Deluxe-' + generate_token()
+    return make_ticket_category(party.id, title)
 
 
 @pytest.fixture(scope='module')

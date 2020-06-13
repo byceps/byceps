@@ -17,6 +17,9 @@ from byceps.services.brand import service as brand_service
 from byceps.services.email import service as email_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
+from byceps.services.ticketing import (
+    category_service as ticketing_category_service,
+)
 from byceps.services.user import (
     command_service as user_command_service,
     deletion_service as user_deletion_service,
@@ -293,6 +296,21 @@ def make_party(admin_app, make_brand):
 @pytest.fixture(scope='session')
 def party(make_party, brand):
     return make_party(brand.id)
+
+
+@pytest.fixture(scope='session')
+def make_ticket_category(admin_app, party):
+    category_ids = set()
+
+    def _wrapper(party_id, title):
+        category = ticketing_category_service.create_category(party_id, title)
+        category_ids.add(category.id)
+        return category
+
+    yield _wrapper
+
+    for category_id in category_ids:
+        ticketing_category_service.delete_category(category_id)
 
 
 @pytest.fixture(scope='session')
