@@ -31,7 +31,7 @@ from tests.integration.services.shop.helpers import (
 
 @pytest.fixture(scope='module')
 def admin_user(make_user):
-    admin = make_user('ShopOrderAdmin')
+    admin = make_user('ShopOrderExportAdmin')
 
     permission_ids = {'admin.access', 'shop_order.view'}
     role_id = 'order_admin'
@@ -110,7 +110,7 @@ def cart(article_bungalow, article_guest_fee, article_table):
 
 @pytest.fixture
 def orderer(make_user):
-    user = make_user('Besteller', email_address='h-w.mustermann@users.test')
+    user = make_user('ÖderBesteller', email_address='h-w.mustermann@users.test')
 
     return Orderer(
         user.id,
