@@ -17,7 +17,7 @@ SITE_ID = 'favorite-site'
 @pytest.fixture(scope='module')
 def site(admin_app, email_config):
     site = create_site(
-        site_id=SITE_ID,
+        SITE_ID,
         title='My favorite site!',
         server_name='www.favorite-site.test',
     )

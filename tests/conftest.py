@@ -174,7 +174,7 @@ def email_config(make_email_config):
 
 @pytest.fixture(scope='module')
 def site(email_config, party):
-    site = create_site(party_id=party.id)
+    site = create_site('acmecon-2014-website', party_id=party.id)
     yield site
     site_service.delete_site(site.id)
 

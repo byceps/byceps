@@ -20,7 +20,7 @@ def site1(make_email_config):
         sender_name='ACME Entertainment Convention',
     )
     site = create_site(
-        site_id='acmecon-website-1',
+        'acmecon-website-1',
         title='ACMECon Website #1',
         server_name='www1.acmecon.test',
         email_config_id=email_config.id,
@@ -38,7 +38,7 @@ def site2(make_email_config):
         contact_address='help@acmecon.test',
     )
     site = create_site(
-        site_id='acmecon-website-2',
+        'acmecon-website-2',
         title='ACMECon Website #2',
         server_name='www2.acmecon.test',
         email_config_id=email_config.id,
