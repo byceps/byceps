@@ -5,20 +5,16 @@
 
 import pytest
 
-from byceps.services.party import service as party_service, settings_service
+from byceps.services.party import settings_service
 from byceps.services.party.transfer.models import PartySetting
-
-from tests.helpers import create_party
 
 
 PARTY_ID = 'favorite-party'
 
 
 @pytest.fixture(scope='module')
-def party(brand):
-    party = create_party(brand.id, PARTY_ID, 'My favorite party!')
-    yield party
-    party_service.delete_party(party.id)
+def party(make_party, brand):
+    return make_party(brand.id, PARTY_ID, 'My favorite party!')
 
 
 def test_create(party):

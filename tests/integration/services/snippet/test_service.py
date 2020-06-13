@@ -5,25 +5,18 @@
 
 import pytest
 
-from byceps.services.party import service as party_service
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 
-from tests.helpers import create_party
+
+@pytest.fixture(scope='module')
+def party1(make_party, brand):
+    return make_party(brand.id, 'lafiesta-2014', 'La Fiesta 2014')
 
 
-@pytest.fixture
-def party1(brand):
-    party = create_party(brand.id, 'lafiesta-2014', 'La Fiesta 2014')
-    yield party
-    party_service.delete_party(party.id)
-
-
-@pytest.fixture
-def party2(brand):
-    party = create_party(brand.id, 'lafiesta-2015', 'La Fiesta 2015')
-    yield party
-    party_service.delete_party(party.id)
+@pytest.fixture(scope='module')
+def party2(make_party, brand):
+    return make_party(brand.id, 'lafiesta-2015', 'La Fiesta 2015')
 
 
 def test_current_party_is_considered(party1, party2, make_user):

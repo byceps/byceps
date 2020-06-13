@@ -276,10 +276,23 @@ def brand(make_brand):
 
 
 @pytest.fixture(scope='session')
-def party(brand):
-    party = create_party(brand.id)
-    yield party
-    party_service.delete_party(party.id)
+def make_party(admin_app, make_brand):
+    party_ids = set()
+
+    def _wrapper(*args, **kwargs):
+        party = create_party(*args, **kwargs)
+        party_ids.add(party.id)
+        return party
+
+    yield _wrapper
+
+    for party_id in party_ids:
+        party_service.delete_party(party_id)
+
+
+@pytest.fixture(scope='session')
+def party(make_party, brand):
+    return make_party(brand.id)
 
 
 @pytest.fixture(scope='session')
