@@ -103,8 +103,8 @@ def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014'):
 def create_site(
     site_id,
     *,
-    title='Website',
-    server_name='www.acmecon.test',
+    title=None,
+    server_name=None,
     email_config_id=DEFAULT_EMAIL_CONFIG_ID,
     enabled=True,
     user_account_creation_enabled=True,
@@ -112,6 +112,12 @@ def create_site(
     party_id=None,
     storefront_id=None,
 ):
+    if title is None:
+        title = site_id
+
+    if server_name is None:
+        server_name = f'{site_id}.test'
+
     return site_service.create_site(
         site_id,
         title,
