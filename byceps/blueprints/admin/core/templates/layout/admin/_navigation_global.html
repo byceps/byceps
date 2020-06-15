@@ -66,6 +66,12 @@
         required_permission=BrandPermission.view,
         icon='brand')
       .add_item(
+        url_for('party_admin.index'),
+        'Partys',
+        id='parties_admin',
+        required_permission=PartyPermission.view,
+        icon='date')
+      .add_item(
         url_for('site_admin.index'),
         'Sites',
         id='sites_admin',
