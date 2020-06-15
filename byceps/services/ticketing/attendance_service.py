@@ -70,6 +70,7 @@ def _get_attended_party_ids(user_id: UserID) -> Set[PartyID]:
         .filter(DbParty.ends_at < datetime.utcnow()) \
         .join(DbCategory) \
         .join(DbTicket) \
+        .filter(DbTicket.revoked == False) \
         .filter(DbTicket.used_by_id == user_id) \
         .all()
 
@@ -125,6 +126,7 @@ def get_attendee_ids_for_parties(
         .query(DbCategory.party_id, DbTicket.used_by_id) \
         .filter(DbCategory.party_id.in_(party_ids)) \
         .join(DbTicket) \
+        .filter(DbTicket.revoked == False) \
         .filter(DbTicket.used_by_id != None) \
         .all()
 
@@ -187,6 +189,7 @@ def _get_top_ticket_attendees_for_parties(
         .join(DbParty) \
         .filter(DbParty.brand_id == brand_id) \
         .join(DbTicket) \
+        .filter(DbTicket.revoked == False) \
         .filter(DbTicket.used_by_id == user_id_column) \
         .subquery() \
         .as_scalar()
