@@ -66,9 +66,9 @@
         {%- endif %}
         <br>
         {%- if site.login_enabled %}
-        {{ render_tag('', class='color-success', icon='user-create', title='Benutzeranmeldung geöffnet') }}
+        {{ render_tag('', class='color-success', icon='log-in', title='Benutzeranmeldung geöffnet') }}
         {%- else %}
-        {{ render_tag('', class='color-disabled', icon='user-create', title='Benutzeranmeldung gesperrt') }}
+        {{ render_tag('', class='color-disabled', icon='log-in', title='Benutzeranmeldung gesperrt') }}
         {%- endif %}
         <br>
         {%- if site.archived %}
