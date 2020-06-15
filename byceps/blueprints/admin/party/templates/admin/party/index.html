@@ -1,54 +1,54 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/party.html' import render_party_admin_link %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'partys_admin' %}
 {% set title = 'Partys' %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
   <h1>{{ title }} {{ render_extra_in_heading(parties|length) }}</h1>
 
   {%- if parties %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Name<br>ID</th>
-        <th></th>
-        <th>Marke</th>
-        <th>Zeitraum</th>
-        <th>Ticket&shy;verwaltung</th>
-        <th>Sitzplatz&shy;verwaltung</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
-      <tr>
-        <td>
-          <strong>{{ render_party_admin_link(party) }}</strong><br>
-          {{ party.id }}
-        </td>
-        <td>
-          {%- if party.archived %}
-          {{ render_tag('', class='color-disabled', icon='archived', title='archiviert') }}
-          {%- endif %}
-        </td>
-        <td>{{ party.brand.title }}</td>
-        <td>
+    {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
+  <div class="box" style="border-left: {{ '#55cc00' if not party.archived else '#aaaaaa' }} solid 0.25rem; margin-bottom: 1rem;">
+    <div class="row row--space-between">
+
+      <div class="column-auto" style="min-width: 35%;">
+        <a href="{{ url_for('.view', party_id=party.id) }}" class="disguised" style="display: block;">
+          <strong>{{ party.title }}</strong><br>
+          <span class="monospace">{{ party.id }}</span>
+        </a>
+        <br>
+        {{ render_icon('brand') }} {{ party.brand.title }}
+      </div>
+
+      <div class="column-auto" style="min-width: 30%;">
+        <div>
           {{- render_datetime(party.starts_at|utc_to_local_tz) }} bis<br>
           {{- render_datetime(party.ends_at|utc_to_local_tz) -}}
           {%- if party.is_over %}
-          <br>{{ render_tag('vorbei', class='color-disabled') }}
+          {{ render_tag('vorbei', class='color-disabled') }}
           {%- endif %}
-        </td>
-        <td>{{ render_tag('geöffnet', class='color-success') if party.ticket_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
-        <td>{{ render_tag('geöffnet', class='color-success') if party.seat_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
-      </tr>
-      {%- endfor %}
-      <tr>
-    </tbody>
-  </table>
+        </div>
+      </div>
+
+      <div class="column-auto" style="text-align: right;">
+        Ticket&shy;verwaltung: {{ render_tag('geöffnet', class='color-success') if party.ticket_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}
+        <br>
+        Sitzplatz&shy;verwaltung: {{ render_tag('geöffnet', class='color-success') if party.seat_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}
+        <br>
+        <br>
+        {%- if party.archived %}
+        {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+        {%- endif %}
+      </div>
+
+    </div>{# .row #}
+  </div>{# .box #}
+    {%- endfor %}
   {%- else %}
   <div class="dimmed-box centered">Es sind keine Partys hinterlegt.</div>
   {%- endif %}
