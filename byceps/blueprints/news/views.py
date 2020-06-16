@@ -12,7 +12,10 @@ from flask import abort, g
 
 from ...services.news import html_service as news_html_service
 from ...services.news import service as news_item_service
-from ...services.site import settings_service as site_settings_service
+from ...services.site import (
+    service as site_service,
+    settings_service as site_settings_service,
+)
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
@@ -75,10 +78,9 @@ def view(slug):
 
 
 def _get_channel_id():
-    channel_id = site_settings_service.find_setting_value(
-        g.site_id, 'news_channel_id'
-    )
+    site = site_service.get_site(g.site_id)
 
+    channel_id = site.news_channel_id
     if channel_id is None:
         abort(404)
 
