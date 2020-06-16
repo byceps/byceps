@@ -11,6 +11,7 @@ from typing import NewType, Optional
 
 from ....typing import PartyID
 
+from ...news.transfer.models import ChannelID as NewsChannelID
 from ...shop.storefront.transfer.models import StorefrontID
 
 
@@ -27,6 +28,7 @@ class Site:
     enabled: bool
     user_account_creation_enabled: bool
     login_enabled: bool
+    news_channel_id: Optional[NewsChannelID]
     storefront_id: Optional[StorefrontID]
     archived: bool
 

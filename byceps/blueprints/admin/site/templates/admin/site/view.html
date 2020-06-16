@@ -57,6 +57,16 @@
       <td>{{ render_tag('geöffnet', class='color-success') if site.login_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
     </tr>
     <tr>
+      <th>Newskanal</th>
+      <td>
+        {%- if news_channel %}
+        <a href="{{ url_for('news_admin.channel_view', channel_id=news_channel.id) }}">{{ news_channel.id }}</a>
+        {%- else %}
+        {{ 'kein Newskanal verknüpft'|dim }}
+        {%- endif %}
+      </td>
+    </tr>
+    <tr>
       <th>Storefront</th>
       <td>
         {%- if storefront %}

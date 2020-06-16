@@ -12,6 +12,7 @@ from wtforms.validators import InputRequired, Length, Optional
 from ....util.l10n import LocalizedForm
 
 from ....services.email import service as email_service
+from ....services.news import channel_service as news_channel_service
 from ....services.party import service as party_service
 from ....services.shop.storefront import service as storefront_service
 
@@ -24,6 +25,7 @@ class _BaseForm(LocalizedForm):
     enabled = BooleanField('aktiv')
     user_account_creation_enabled  = BooleanField('Benutzerregistrierung geöffnet')
     login_enabled = BooleanField('Benutzeranmeldung geöffnet')
+    news_channel_id = SelectField('Newskanal-ID', validators=[Optional()])
     storefront_id = SelectField('Storefront-ID', validators=[Optional()])
 
     def set_email_config_choices(self):
@@ -38,6 +40,14 @@ class _BaseForm(LocalizedForm):
         choices = [(p.id, p.title) for p in parties]
         choices.insert(0, ('', '<keine>'))
         self.party_id.choices = choices
+
+    def set_news_channel_choices(self):
+        news_channels = news_channel_service.get_all_channels()
+        news_channels.sort(key=lambda channel: channel.id)
+
+        choices = [(c.id, c.id) for c in news_channels]
+        choices.insert(0, ('', '<keiner>'))
+        self.news_channel_id.choices = choices
 
     def set_storefront_choices(self):
         storefronts = storefront_service.get_all_storefronts()

@@ -11,6 +11,7 @@ from typing import List, Optional
 from ...database import db
 from ...typing import PartyID
 
+from ..news.transfer.models import ChannelID as NewsChannelID
 from ..shop.storefront.transfer.models import StorefrontID
 
 from .models.site import Site as DbSite
@@ -32,6 +33,7 @@ def create_site(
     login_enabled: bool,
     *,
     party_id: Optional[PartyID] = None,
+    news_channel_id: Optional[NewsChannelID] = None,
     storefront_id: Optional[StorefrontID] = None,
 ) -> Site:
     """Create a site for that party."""
@@ -44,6 +46,7 @@ def create_site(
         user_account_creation_enabled,
         login_enabled,
         party_id=party_id,
+        news_channel_id=news_channel_id,
         storefront_id=storefront_id,
     )
 
@@ -62,6 +65,7 @@ def update_site(
     enabled: bool,
     user_account_creation_enabled: bool,
     login_enabled: bool,
+    news_channel_id: Optional[NewsChannelID],
     storefront_id: Optional[StorefrontID],
     archived: bool,
 ) -> Site:
@@ -78,6 +82,7 @@ def update_site(
     site.enabled = enabled
     site.user_account_creation_enabled = user_account_creation_enabled
     site.login_enabled = login_enabled
+    site.news_channel_id = news_channel_id
     site.storefront_id = storefront_id
     site.archived = archived
 
@@ -146,6 +151,7 @@ def _db_entity_to_site(site: DbSite) -> Site:
         site.enabled,
         site.user_account_creation_enabled,
         site.login_enabled,
+        site.news_channel_id,
         site.storefront_id,
         site.archived,
     )

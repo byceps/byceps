@@ -8,6 +8,7 @@ byceps.blueprints.admin.site.views
 
 from flask import abort, request
 
+from ....services.news import channel_service as news_channel_service
 from ....services.party import service as party_service
 from ....services.shop.shop import service as shop_service
 from ....services.shop.storefront import service as storefront_service
@@ -76,6 +77,11 @@ def view(site_id):
     if site is None:
         abort(404)
 
+    if site.news_channel_id:
+        news_channel = news_channel_service.find_channel(site.news_channel_id)
+    else:
+        news_channel = None
+
     if site.storefront_id:
         storefront = storefront_service.get_storefront(site.storefront_id)
         shop = shop_service.get_shop(storefront.shop_id)
@@ -87,6 +93,7 @@ def view(site_id):
 
     return {
         'site': site,
+        'news_channel': news_channel,
         'shop': shop,
         'storefront': storefront,
         'settings': settings,
@@ -103,6 +110,7 @@ def create_form(erroneous_form=None):
     form = erroneous_form if erroneous_form else CreateForm(party_id=party_id)
     form.set_email_config_choices()
     form.set_party_choices()
+    form.set_news_channel_choices()
     form.set_storefront_choices()
 
     return {
@@ -117,6 +125,7 @@ def create():
     form = CreateForm(request.form)
     form.set_email_config_choices()
     form.set_party_choices()
+    form.set_news_channel_choices()
     form.set_storefront_choices()
 
     if not form.validate():
@@ -130,6 +139,9 @@ def create():
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
     login_enabled = form.login_enabled.data
+    news_channel_id = form.news_channel_id.data.strip()
+    if not news_channel_id:
+        news_channel_id = None
     storefront_id = form.storefront_id.data.strip()
     if not storefront_id:
         storefront_id = None
@@ -151,6 +163,7 @@ def create():
         user_account_creation_enabled,
         login_enabled,
         party_id=party_id,
+        news_channel_id=news_channel_id,
         storefront_id=storefront_id,
     )
 
@@ -168,6 +181,7 @@ def update_form(site_id, erroneous_form=None):
     form = erroneous_form if erroneous_form else UpdateForm(obj=site)
     form.set_email_config_choices()
     form.set_party_choices()
+    form.set_news_channel_choices()
     form.set_storefront_choices()
 
     return {
@@ -185,6 +199,7 @@ def update(site_id):
     form = UpdateForm(request.form)
     form.set_email_config_choices()
     form.set_party_choices()
+    form.set_news_channel_choices()
     form.set_storefront_choices()
 
     if not form.validate():
@@ -197,6 +212,9 @@ def update(site_id):
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
     login_enabled = form.login_enabled.data
+    news_channel_id = form.news_channel_id.data.strip()
+    if not news_channel_id:
+        news_channel_id = None
     storefront_id = form.storefront_id.data.strip()
     if not storefront_id:
         storefront_id = None
@@ -220,6 +238,7 @@ def update(site_id):
             enabled,
             user_account_creation_enabled,
             login_enabled,
+            news_channel_id,
             storefront_id,
             archived,
         )

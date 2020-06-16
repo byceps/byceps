@@ -12,6 +12,7 @@ from ....database import db
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
+from ...news.transfer.models import ChannelID as NewsChannelID
 from ...shop.storefront.transfer.models import StorefrontID
 
 from ..transfer.models import SiteID
@@ -30,6 +31,7 @@ class Site(db.Model):
     enabled = db.Column(db.Boolean, nullable=False)
     user_account_creation_enabled = db.Column(db.Boolean, nullable=False)
     login_enabled = db.Column(db.Boolean, nullable=False)
+    news_channel_id = db.Column(db.UnicodeText, db.ForeignKey('news_channels.id'), index=True, nullable=True)
     storefront_id = db.Column(db.UnicodeText, db.ForeignKey('shop_storefronts.id'), index=True, nullable=True)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
@@ -44,6 +46,7 @@ class Site(db.Model):
         login_enabled: bool,
         *,
         party_id: Optional[PartyID] = None,
+        news_channel_id: Optional[NewsChannelID] = None,
         storefront_id: Optional[StorefrontID] = None,
     ) -> None:
         self.id = site_id
@@ -54,6 +57,7 @@ class Site(db.Model):
         self.enabled = enabled
         self.user_account_creation_enabled = user_account_creation_enabled
         self.login_enabled = login_enabled
+        self.news_channel_id = news_channel_id
         self.storefront_id = storefront_id
 
     def __repr__(self) -> str:
