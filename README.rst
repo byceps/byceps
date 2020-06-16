@@ -45,13 +45,13 @@ Code Status
 |badge-codeclimate|
 
 
-.. |badge_travisci| image:: https://travis-ci.org/byceps/byceps.svg?branch=master
+.. |badge_travisci| image:: https://travis-ci.org/byceps/byceps.svg?branch=main
    :alt: Build Status
    :target: https://travis-ci.org/byceps/byceps
 
-.. |badge_scrutinizer| image:: https://scrutinizer-ci.com/g/byceps/byceps/badges/quality-score.png?b=master
+.. |badge_scrutinizer| image:: https://scrutinizer-ci.com/g/byceps/byceps/badges/quality-score.png?b=main
    :alt: Scrutinizer Code Quality
-   :target: https://scrutinizer-ci.com/g/byceps/byceps/?branch=master
+   :target: https://scrutinizer-ci.com/g/byceps/byceps/?branch=main
 
 .. |badge-codeclimate| image:: https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg
    :alt: Code Climate
