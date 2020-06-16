@@ -7,7 +7,7 @@ byceps.services.site.transfer.models
 """
 
 from dataclasses import dataclass
-from typing import NewType
+from typing import NewType, Optional
 
 from ....typing import PartyID
 
@@ -27,7 +27,7 @@ class Site:
     enabled: bool
     user_account_creation_enabled: bool
     login_enabled: bool
-    storefront_id: StorefrontID
+    storefront_id: Optional[StorefrontID]
     archived: bool
 
 
