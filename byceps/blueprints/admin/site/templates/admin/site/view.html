@@ -67,6 +67,16 @@
       </td>
     </tr>
     <tr>
+      <th>Forum</th>
+      <td>
+        {%- if board %}
+        <a href="{{ url_for('board_admin.board_view', board_id=board.id) }}">{{ board.id }}</a>
+        {%- else %}
+        {{ 'kein Forum verknüpft'|dim }}
+        {%- endif %}
+      </td>
+    </tr>
+    <tr>
       <th>Storefront</th>
       <td>
         {%- if storefront %}

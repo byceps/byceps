@@ -49,6 +49,14 @@
           {%- endif -%}
         </div>
         <div>
+          {{ render_icon('board', title='Forum') }}
+          {% if site.board_id -%}
+          <a href="{{ url_for('board_admin.board_view', board_id=site.board_id) }}" class="disguised">{{ site.board_id }}</a>
+          {%- else -%}
+          {{ 'kein Forum'|dim }}
+          {%- endif -%}
+        </div>
+        <div>
           {{ render_icon('shop', title='Storefront') }}
           {% if site.storefront_id -%}
             {%- with storefront = storefronts_by_site_id.get(site.storefront_id) %}
