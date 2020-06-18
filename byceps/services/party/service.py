@@ -7,7 +7,7 @@ byceps.services.party.service
 """
 
 import dataclasses
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from typing import Dict, List, Optional, Set
 
 from ...database import db, paginate, Pagination
@@ -237,3 +237,23 @@ def _db_entity_to_party_with_brand(party_entity: DbParty) -> PartyWithBrand:
     party = _db_entity_to_party(party_entity)
 
     return PartyWithBrand(*dataclasses.astuple(party), brand=brand)
+
+
+def get_party_days(party: Party) -> List[date]:
+    """Return the sequence of dates on which the party happens."""
+    starts_on = party.starts_at.date()
+    ends_on = party.ends_at.date()
+
+    def _generate():
+        if starts_on > ends_on:
+            raise ValueError('Start date must not be after end date.')
+
+        day_step = timedelta(days=1)
+        day = starts_on
+        while True:
+            yield day
+            day += day_step
+            if day > ends_on:
+                return
+
+    return list(_generate())

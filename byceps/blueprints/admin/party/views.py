@@ -42,8 +42,13 @@ def index():
     """List parties."""
     parties = party_service.get_all_parties_with_brands()
 
+    days_by_party_id = {
+        party.id: party_service.get_party_days(party) for party in parties
+    }
+
     return {
         'parties': parties,
+        'days_by_party_id': days_by_party_id,
     }
 
 
@@ -77,11 +82,14 @@ def view(party_id):
     party = _get_party_or_404(party_id)
     brand = brand_service.find_brand(party.brand_id)
 
+    days = party_service.get_party_days(party)
+
     settings = party_settings_service.get_settings(party.id)
 
     return {
         'brand': brand,
         'party': party,
+        'days': days,
         'settings': settings,
     }
 

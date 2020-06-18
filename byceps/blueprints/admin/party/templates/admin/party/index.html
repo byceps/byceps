@@ -32,6 +32,10 @@
           {%- if party.is_over %}
           {{ render_tag('vorbei', class='color-disabled') }}
           {%- endif %}
+          <br>
+        {%- for day in days_by_party_id[party.id] %}
+          {{ render_tag('{:%a}'.format(day)) }}
+        {%- endfor %}
         </div>
       </div>
 
