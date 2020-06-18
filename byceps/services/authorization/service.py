@@ -19,17 +19,17 @@ from .models import (
     RolePermission as DbRolePermission,
     UserRole as DbUserRole,
 )
-from .transfer.models import PermissionID, RoleID
+from .transfer.models import Permission, PermissionID, Role, RoleID
 
 
-def create_permission(permission_id: PermissionID, title: str) -> DbPermission:
+def create_permission(permission_id: PermissionID, title: str) -> Permission:
     """Create a permission."""
     permission = DbPermission(permission_id, title)
 
     db.session.add(permission)
     db.session.commit()
 
-    return permission
+    return _db_entity_to_permission(permission)
 
 
 def delete_permission(permission_id: PermissionID) -> None:
@@ -41,14 +41,14 @@ def delete_permission(permission_id: PermissionID) -> None:
     db.session.commit()
 
 
-def create_role(role_id: RoleID, title: str) -> DbRole:
+def create_role(role_id: RoleID, title: str) -> Role:
     """Create a role."""
     role = DbRole(role_id, title)
 
     db.session.add(role)
     db.session.commit()
 
-    return role
+    return _db_entity_to_role(role)
 
 
 def delete_role(role_id: RoleID) -> None:
@@ -64,12 +64,17 @@ def delete_role(role_id: RoleID) -> None:
     db.session.commit()
 
 
-def find_role(role_id: RoleID) -> Optional[DbRole]:
+def find_role(role_id: RoleID) -> Optional[Role]:
     """Return the role with that id, or `None` if not found."""
-    return DbRole.query.get(role_id)
+    role = DbRole.query.get(role_id)
+
+    if role is None:
+        return None
+
+    return _db_entity_to_role(role)
 
 
-def find_role_ids_for_user(user_id: UserID) -> Set[DbRole]:
+def find_role_ids_for_user(user_id: UserID) -> Set[RoleID]:
     """Return the IDs of the roles assigned to the user."""
     roles = DbRole.query \
         .join(DbUserRole) \
@@ -190,27 +195,31 @@ def get_permission_ids_for_user(user_id: UserID) -> Set[PermissionID]:
     return {rp.permission_id for rp in role_permissions}
 
 
-def get_all_permissions_with_titles() -> Sequence[DbPermission]:
+def get_all_permissions_with_titles() -> Sequence[Permission]:
     """Return all permissions, with titles."""
-    return DbPermission.query \
+    permissions = DbPermission.query \
         .options(
             db.undefer('title'),
             db.joinedload('role_permissions')
         ) \
         .all()
 
+    return [_db_entity_to_permission(permission) for permission in permissions]
 
-def get_all_roles_with_titles() -> Sequence[DbRole]:
+
+def get_all_roles_with_titles() -> Sequence[Role]:
     """Return all roles, with titles."""
-    return DbRole.query \
+    roles = DbRole.query \
         .options(
             db.undefer('title'),
             db.joinedload('user_roles').joinedload('user')
         ) \
         .all()
 
+    return [_db_entity_to_role(role) for role in roles]
 
-def get_permissions_by_roles_with_titles() -> Dict[DbRole, Set[DbPermission]]:
+
+def get_permissions_by_roles_with_titles() -> Dict[Role, Set[Permission]]:
     """Return all roles with their assigned permissions.
 
     Titles are undeferred to avoid lots of additional queries.
@@ -220,6 +229,7 @@ def get_permissions_by_roles_with_titles() -> Dict[DbRole, Set[DbPermission]]:
             db.undefer('title'),
         ) \
         .all()
+    roles = [_db_entity_to_role(role) for role in roles]
 
     permissions = DbPermission.query \
         .options(
@@ -227,10 +237,11 @@ def get_permissions_by_roles_with_titles() -> Dict[DbRole, Set[DbPermission]]:
             db.joinedload('role_permissions').joinedload('role')
         ) \
         .all()
+    permissions = [
+        _db_entity_to_permission(permission) for permission in permissions
+    ]
 
-    permissions_by_role: Dict[DbRole, Set[DbPermission]] = {
-        r: set() for r in roles
-    }
+    permissions_by_role: Dict[Role, Set[Permission]] = {r: set() for r in roles}
 
     for permission in permissions:
         for role in permission.roles:
@@ -242,7 +253,7 @@ def get_permissions_by_roles_with_titles() -> Dict[DbRole, Set[DbPermission]]:
 
 def get_permissions_by_roles_for_user_with_titles(
     user_id: UserID,
-) -> Dict[DbRole, Set[DbPermission]]:
+) -> Dict[Role, Set[Permission]]:
     """Return permissions grouped by their respective roles for that user.
 
     Titles are undeferred to avoid lots of additional queries.
@@ -254,6 +265,7 @@ def get_permissions_by_roles_for_user_with_titles(
         .join(DbUserRole) \
         .filter(DbUserRole.user_id == user_id) \
         .all()
+    roles = [_db_entity_to_role(role) for role in roles]
 
     role_ids = {r.id for r in roles}
 
@@ -267,6 +279,9 @@ def get_permissions_by_roles_for_user_with_titles(
             .join(DbRole) \
             .filter(DbRole.id.in_(role_ids)) \
             .all()
+        permissions = [
+            _db_entity_to_permission(permission) for permission in permissions
+        ]
     else:
         permissions = []
 
@@ -274,11 +289,9 @@ def get_permissions_by_roles_for_user_with_titles(
 
 
 def _index_permissions_by_role(
-    permissions: List[DbPermission], roles: List[DbRole]
-) -> Dict[DbRole, Set[DbPermission]]:
-    permissions_by_role: Dict[DbRole, Set[DbPermission]] = {
-        r: set() for r in roles
-    }
+    permissions: List[Permission], roles: List[Role]
+) -> Dict[Role, Set[Permission]]:
+    permissions_by_role: Dict[Role, Set[Permission]] = {r: set() for r in roles}
 
     for permission in permissions:
         for role in permission.roles:
@@ -290,12 +303,28 @@ def _index_permissions_by_role(
 
 def get_permissions_with_title_for_role(
     role_id: RoleID,
-) -> Sequence[DbPermission]:
+) -> Sequence[Permission]:
     """Return the permissions assigned to the role."""
-    return DbPermission.query \
+    permissions = DbPermission.query \
         .options(
             db.undefer('title')
         ) \
         .join(DbRolePermission) \
         .filter(DbRolePermission.role_id == role_id) \
         .all()
+
+    return [_db_entity_to_permission(permission) for permission in permissions]
+
+
+def _db_entity_to_permission(permission: DbPermission) -> Permission:
+    return Permission(
+        permission.id,
+        permission.title,
+    )
+
+
+def _db_entity_to_role(role: DbRole) -> Role:
+    return Role(
+        role.id,
+        role.title,
+    )
