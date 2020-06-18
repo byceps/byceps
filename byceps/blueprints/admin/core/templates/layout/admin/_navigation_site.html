@@ -31,6 +31,20 @@
         required_permission=SnippetPermission.view,
         icon='snippet')
       .add_item(
+        url_for('news_admin.channel_view', channel_id=site.news_channel_id) if site.news_channel_id else '',
+        'Newskanal',
+        id='news_admin',
+        required_permission=NewsItemPermission.view,
+        precondition=site.news_channel_id is not none,
+        icon='news')
+      .add_item(
+        url_for('board_admin.board_view', board_id=board.id) if site.board_id else '',
+        'Forum',
+        id='board_admin',
+        required_permission=BoardCategoryPermission.view,
+        precondition=site.board_id is not none,
+        icon='board')
+      .add_item(
         url_for('shop_shop_admin.view_for_site', site_id=site.id),
         'Shop',
         id='shop_shop_admin',

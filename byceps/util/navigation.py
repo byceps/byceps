@@ -37,9 +37,13 @@ class Navigation:
         *,
         id: str = None,
         required_permission: Enum = None,
+        precondition: bool = True,
         icon: str = None,
     ) -> object:
         """Add an item to the navigation."""
+        if not precondition:
+            return self
+
         item = NavigationItem(
             endpoint=endpoint,
             label=label,
