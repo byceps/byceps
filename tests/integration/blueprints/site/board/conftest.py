@@ -7,46 +7,20 @@ import pytest
 
 from byceps.services.authorization import service as authorization_service
 from byceps.services.board import (
-    board_service,
     category_command_service,
     posting_command_service,
     topic_command_service,
     topic_query_service,
 )
-from byceps.services.site import service as site_service
 
 from tests.helpers import (
     create_permissions,
     create_role_with_permissions_assigned,
-    create_site,
     http_client,
     login_user,
 )
 
-from .helpers import create_board, create_category, create_posting, create_topic
-
-
-@pytest.fixture(scope='session')
-def board(brand):
-    board = create_board(brand.id)
-    yield board
-    board_service.delete_board(board.id)
-
-
-@pytest.fixture(scope='session')
-def site(email_config, board):
-    site = create_site(
-        'board-site', email_config_id=email_config.id, board_id=board.id
-    )
-    yield site
-    site_service.delete_site(site.id)
-
-
-@pytest.fixture(scope='session')
-def site_app(site, make_party_app):
-    app = make_party_app(SITE_ID=site.id)
-    with app.app_context():
-        yield app
+from .helpers import create_category, create_posting, create_topic
 
 
 @pytest.fixture(scope='session')
@@ -118,6 +92,6 @@ def moderator(make_user):
 
 
 @pytest.fixture(scope='session')
-def moderator_client(site_app, moderator):
-    with http_client(site_app, user_id=moderator.id) as client:
+def moderator_client(party_app, moderator):
+    with http_client(party_app, user_id=moderator.id) as client:
         yield client

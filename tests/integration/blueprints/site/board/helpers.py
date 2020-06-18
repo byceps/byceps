@@ -4,18 +4,12 @@
 """
 
 from byceps.services.board import (
-    board_service,
     category_command_service,
     posting_command_service,
     posting_query_service,
     topic_command_service,
     topic_query_service,
 )
-
-
-def create_board(brand_id):
-    board_id = brand_id
-    return board_service.create_board(brand_id, board_id)
 
 
 def create_category(

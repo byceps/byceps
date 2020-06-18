@@ -9,6 +9,7 @@ from typing import Optional
 
 import pytest
 
+from byceps.services.board import board_service
 from byceps.services.brand import service as brand_service
 from byceps.services.email import service as email_service
 from byceps.services.party import service as party_service
@@ -173,12 +174,13 @@ def email_config(make_email_config):
 
 
 @pytest.fixture(scope='session')
-def site(email_config, party):
+def site(email_config, party, board):
     site = create_site(
         'acmecon-2014-website',
         title='ACMECon 2014 website',
         server_name='www.acmecon.test',
         party_id=party.id,
+        board_id=board.id,
     )
     yield site
     site_service.delete_site(site.id)
@@ -196,3 +198,11 @@ def party(brand):
     party = create_party(brand.id)
     yield party
     party_service.delete_party(party.id)
+
+
+@pytest.fixture(scope='session')
+def board(brand):
+    board_id = brand.id
+    board = board_service.create_board(brand.id, board_id)
+    yield board
+    board_service.delete_board(board.id)
