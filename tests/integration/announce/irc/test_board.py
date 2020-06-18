@@ -21,7 +21,6 @@ from byceps.events.board import (
     BoardTopicUnpinned,
 )
 from byceps.services.board import (
-    board_service,
     category_command_service,
     posting_command_service,
     topic_command_service,
@@ -279,13 +278,6 @@ def creator(make_user):
 @pytest.fixture(scope='module')
 def moderator(make_user):
     return make_user('ElBosso')
-
-
-@pytest.fixture(scope='module')
-def board(brand):
-    board = board_service.create_board(brand.id, 'some-board')
-    yield board
-    board_service.delete_board(board.id)
 
 
 @pytest.fixture(scope='module')
