@@ -45,10 +45,11 @@
         precondition=site.board_id is not none,
         icon='board')
       .add_item(
-        url_for('shop_shop_admin.view_for_site', site_id=site.id),
-        'Shop',
-        id='shop_shop_admin',
+        url_for('shop_storefront_admin.view', storefront_id=site.storefront_id) if site.storefront_id else '',
+        'Storefront',
+        id='shop_storefront_admin',
         required_permission=ShopPermission.view,
+        precondition=site.storefront_id is not none,
         icon='shop')
   -%}
 {{ render_navigation(navigation, current_page) }}
