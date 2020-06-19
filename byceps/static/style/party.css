@@ -415,9 +415,11 @@ form.board-posting-create-form-inline .label {
   font-weight: bold;
 }
 
-.user-comment blockquote {
+.user-comment blockquote,
+.user-comment pre code {
   background-color: #eeeeee;
   border: #dddddd solid 1px;
+  display: block;
   margin: 0 0 0 1rem;
   padding: 0.5rem;
 }

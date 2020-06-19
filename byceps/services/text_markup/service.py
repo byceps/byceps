@@ -28,10 +28,20 @@ def _create_parser() -> Parser:
     """Create a customized BBcode parser."""
     parser = Parser(replace_cosmetic=False)
 
+    _add_code_formatter(parser)
     _add_image_formatter(parser)
     _add_quote_formatter(parser)
 
     return parser
+
+
+def _add_code_formatter(parser: Parser) -> None:
+    """Replace code tags."""
+
+    def render_code(name, value, options, parent, context):
+        return f'<pre><code class="block">{value}</code></pre>'
+
+    parser.add_formatter('code', render_code, replace_links=False)
 
 
 def _add_image_formatter(parser: Parser) -> None:
