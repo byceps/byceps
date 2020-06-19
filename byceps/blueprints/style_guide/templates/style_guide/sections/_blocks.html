@@ -1,0 +1,22 @@
+  {%- set example_blocks -%}
+<p>Block quote:</p>
+<blockquote>
+{{ lipsum(n=2) }}
+</blockquote>
+
+<p>How about some inline code? – <code>print('Yes, please!')</code> – Nice, thanks!</p>
+
+<p>Have a code block, too:</p>
+<pre><code class="block">{{ lipsum(n=1, html=False) }}</code></pre>
+  {%- endset %}
+
+  <div class="example">
+    <div class="example-result">
+{{ example_blocks }}
+    </div>
+    <div class="example-code">
+      {% call render_code_block() -%}
+{{ example_blocks }}
+      {%- endcall %}
+    </div>
+  </div>
