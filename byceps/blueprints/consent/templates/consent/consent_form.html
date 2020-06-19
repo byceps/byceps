@@ -15,11 +15,11 @@
       {%- for subject, field in subjects_and_fields %}
         {%- if subject.type_ == 'terms_of_service' %}
       {{ form_field_checkbox(field,
-        'Ich akzeptiere die <a href="%s" target="_blank">Allgemeinen Geschäftsbedingungen</a>.'|format(url_for('terms.view_current'))
+        'Ich akzeptiere die <a href="%s" target="_blank">Allgemeinen Geschäftsbedingungen</a>.'|format(url_for('terms.view_current'))|safe
       ) }}
         {%- elif subject.type_ == 'privacy_policy' %}
       {{ form_field_checkbox(field,
-        'Ich akzeptiere die <a href="%s" target="_blank">Datenschutzbestimmungen</a>.'|format(url_for_snippet('privacy_policy'))
+        'Ich akzeptiere die <a href="%s" target="_blank">Datenschutzbestimmungen</a>.'|format(url_for_snippet('privacy_policy'))|safe
       ) }}
         {%- endif %}
       {%- endfor %}
