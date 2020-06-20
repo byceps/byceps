@@ -112,9 +112,7 @@ def view(site_id):
 @templated
 def create_form(erroneous_form=None):
     """Show form to create a site."""
-    party_id = request.args.get('party_id')
-
-    form = erroneous_form if erroneous_form else CreateForm(party_id=party_id)
+    form = erroneous_form if erroneous_form else CreateForm()
     form.set_email_config_choices()
     form.set_party_choices()
     form.set_board_choices()
