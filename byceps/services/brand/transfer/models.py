@@ -15,6 +15,7 @@ from ....typing import BrandID
 class Brand:
     id: BrandID
     title: str
+    image_url_path: str
 
 
 @dataclass(frozen=True)

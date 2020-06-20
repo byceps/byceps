@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'partys_admin' %}
 {% set title = 'Partys' %}
@@ -22,7 +22,8 @@
           <span class="monospace">{{ party.id }}</span>
         </a>
         <br>
-        {{ render_icon('brand') }} {{ party.brand.title }}
+        <span style="margin-right: 0.2rem;">{{ render_brand_avatar(party.brand, '20') }}</span>
+        {{ party.brand.title }}
       </div>
 
       <div class="column-auto" style="min-width: 30%;">

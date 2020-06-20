@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/brand.html' import render_brand_admin_link %}
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% set current_page = 'brands_admin' %}
 {% set title = 'Marken' %}
 
@@ -27,8 +27,11 @@
       {%- for brand in brands %}
       <tr>
         <td>
-          <strong>{{ render_brand_admin_link(brand) }}</strong><br>
-          {{ brand.id }}
+          <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(brand, '32') }}</div>
+          <div>
+            <strong><a class="disguised" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">{{ brand.title }}</a></strong><br>
+            {{ brand.id }}
+          </div>
         </td>
         <td class="centered bignumber">{{ party_count_by_brand_id[brand.id] }}</td>
         <td class="centered bignumber">{{ orga_count_by_brand_id[brand.id] }}</td>

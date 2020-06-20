@@ -1,3 +1,8 @@
 {% macro render_brand_admin_link(brand) -%}
   <a href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">{{ brand.title }}</a>
 {%- endmacro %}
+
+
+{% macro render_brand_avatar(brand, size_name) -%}
+<div class="avatar size-{{ size_name }}"><img src="{{ brand.image_url_path or url_for('static', filename='brand_fallback.svg') }}"></div>
+{%- endmacro %}

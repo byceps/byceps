@@ -6,6 +6,8 @@ byceps.services.brand.models.brand
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from ....database import db
 from ....typing import BrandID
 from ....util.instances import ReprBuilder
@@ -18,10 +20,18 @@ class Brand(db.Model):
 
     id = db.Column(db.UnicodeText, primary_key=True)
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
+    image_filename = db.Column(db.UnicodeText, nullable=True)
 
-    def __init__(self, brand_id: BrandID, title: str) -> None:
+    def __init__(
+        self,
+        brand_id: BrandID,
+        title: str,
+        *,
+        image_filename: Optional[str] = None,
+    ) -> None:
         self.id = brand_id
         self.title = title
+        self.image_filename = image_filename
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

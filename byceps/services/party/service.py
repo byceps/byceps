@@ -14,7 +14,7 @@ from ...database import db, paginate, Pagination
 from ...typing import BrandID, PartyID
 
 from ..brand.models.brand import Brand as DbBrand
-from ..brand.transfer.models import Brand
+from ..brand import service as brand_service
 
 from .models.party import Party as DbParty
 from .models.setting import Setting as DbSetting
@@ -229,12 +229,8 @@ def _db_entity_to_party(party: DbParty) -> Party:
 
 
 def _db_entity_to_party_with_brand(party_entity: DbParty) -> PartyWithBrand:
-    brand = Brand(
-        party_entity.brand.id,
-        party_entity.brand.title,
-    )
-
     party = _db_entity_to_party(party_entity)
+    brand = brand_service._db_entity_to_brand(party_entity.brand)
 
     return PartyWithBrand(*dataclasses.astuple(party), brand=brand)
 

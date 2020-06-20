@@ -1,11 +1,16 @@
-{% from 'macros/admin/brand.html' import render_brand_admin_link %}
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
 
 
 <h2>Marken</h2>
 {%- if brands %}
 <ol class="fancy-list">
   {%- for brand in brands|sort(attribute='title') %}
-  <li>{{ render_brand_admin_link(brand) }}</li>
+  <li>
+    <a href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">
+      <span style="margin-right: 0.25rem;">{{ render_brand_avatar(brand, '32') }}</span>
+      {{ brand.title }}
+    </a>
+  </li>
   {%- endfor %}
 </ol>
 {%- else %}

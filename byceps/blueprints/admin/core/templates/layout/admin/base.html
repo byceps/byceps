@@ -1,3 +1,4 @@
+{%- from 'macros/admin/brand.html' import render_brand_avatar %}
 {%- from 'macros/icons.html' import render_icon -%}
 
 
@@ -57,6 +58,7 @@
               <span class="name">{{ party.title }}</span>
             </span>
   {%- elif brand %}
+            <div style="float: left; margin-left: 0.5rem; margin-right: 0.2rem;">{{ render_brand_avatar(brand, '32') }}</div>
             <span class="label-and-name">
               <span class="label">Marke</span>
               <span class="name">{{ brand.title }}</span>
