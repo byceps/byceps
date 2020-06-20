@@ -105,10 +105,7 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     posting = board_posting_query_service.find_posting_by_id(event.posting_id)
     posting_creator = user_service.find_user(posting.creator_id)
 
-    # Ignore selected topics.
-    if str(posting.topic_id) in {
-        #'1ef52ab6-ed7c-46d8-90c9-e2d4675c0634',  # example
-    }:
+    if board_topic_query_service.get_topic(posting.topic_id).muted:
         return
 
     text = (
