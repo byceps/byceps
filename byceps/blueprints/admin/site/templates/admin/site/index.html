@@ -36,22 +36,27 @@
 
 {% block body %}
 
-  <h1>{{ title }} {{ render_extra_in_heading(sites|length) }}</h1>
-
-  {%- if g.current_user.has_permission(SitePermission.create) %}
-  <div class="button-row button-row--right">
-    <div class="dropdown left">
-      <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Site erstellen</span></button>
-      <ol>
-        <li><span><strong>Marke:</strong></span></li>
-        <li class="divider"></li>
-      {%- for brand in brands %}
-        <li><a href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ brand.title }}</a></li>
-      {%- endfor %}
-      </ol>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h1>{{ title }} {{ render_extra_in_heading(sites|length) }}</h1>
     </div>
+    {%- if g.current_user.has_permission(SitePermission.create) %}
+    <div class="column-auto">
+      <div class="button-row button-row--right">
+        <div class="dropdown left">
+          <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Site erstellen</span></button>
+          <ol>
+            <li><span><strong>Marke:</strong></span></li>
+            <li class="divider"></li>
+          {%- for brand in brands %}
+            <li><a href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ brand.title }}</a></li>
+          {%- endfor %}
+          </ol>
+        </div>
+      </div>
+    </div>
+    {%- endif %}
   </div>
-  {%- endif %}
 
   {%- if sites %}
     {%- for site in sites|sort(attribute='enabled', reverse=True) %}
