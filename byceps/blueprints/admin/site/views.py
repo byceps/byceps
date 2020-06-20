@@ -126,9 +126,9 @@ def create_form(brand_id, erroneous_form=None):
 
     form = erroneous_form if erroneous_form else CreateForm()
     form.set_email_config_choices()
-    form.set_party_choices()
-    form.set_board_choices()
-    form.set_news_channel_choices()
+    form.set_party_choices(brand.id)
+    form.set_board_choices(brand.id)
+    form.set_news_channel_choices(brand.id)
     form.set_storefront_choices()
 
     return {
@@ -145,9 +145,9 @@ def create(brand_id):
 
     form = CreateForm(request.form)
     form.set_email_config_choices()
-    form.set_party_choices()
-    form.set_board_choices()
-    form.set_news_channel_choices()
+    form.set_party_choices(brand.id)
+    form.set_board_choices(brand.id)
+    form.set_news_channel_choices(brand.id)
     form.set_storefront_choices()
 
     if not form.validate():
@@ -208,9 +208,9 @@ def update_form(site_id, erroneous_form=None):
     form = erroneous_form if erroneous_form else UpdateForm(obj=site)
     form.set_brand_choices()
     form.set_email_config_choices()
-    form.set_party_choices()
-    form.set_board_choices()
-    form.set_news_channel_choices()
+    form.set_party_choices(site.brand_id)
+    form.set_board_choices(site.brand_id)
+    form.set_news_channel_choices(site.brand_id)
     form.set_storefront_choices()
 
     return {
@@ -228,9 +228,9 @@ def update(site_id):
     form = UpdateForm(request.form)
     form.set_brand_choices()
     form.set_email_config_choices()
-    form.set_party_choices()
-    form.set_board_choices()
-    form.set_news_channel_choices()
+    form.set_party_choicessite.brand_id()
+    form.set_board_choices(site.brand_id)
+    form.set_news_channel_choices(site.brand_id)
     form.set_storefront_choices()
 
     if not form.validate():

@@ -41,24 +41,24 @@ class _BaseForm(LocalizedForm):
         configs.sort(key=lambda config: config.id)
         self.email_config_id.choices = [(c.id, c.id) for c in configs]
 
-    def set_party_choices(self):
-        parties = party_service.get_all_parties()
+    def set_party_choices(self, brand_id):
+        parties = party_service.get_parties_for_brand(brand_id)
         parties.sort(key=lambda party: party.title)
 
         choices = [(p.id, p.title) for p in parties]
         choices.insert(0, ('', '<keine>'))
         self.party_id.choices = choices
 
-    def set_news_channel_choices(self):
-        news_channels = news_channel_service.get_all_channels()
+    def set_news_channel_choices(self, brand_id):
+        news_channels = news_channel_service.get_channels_for_brand(brand_id)
         news_channels.sort(key=lambda channel: channel.id)
 
         choices = [(c.id, c.id) for c in news_channels]
         choices.insert(0, ('', '<keiner>'))
         self.news_channel_id.choices = choices
 
-    def set_board_choices(self):
-        boards = board_service.get_all_boards()
+    def set_board_choices(self, brand_id):
+        boards = board_service.get_boards_for_brand(brand_id)
         boards.sort(key=lambda board: board.id)
 
         choices = [(b.id, b.id) for b in boards]
