@@ -1,10 +1,38 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'sites_admin' %}
 {% set title = 'Sites' %}
 {% set layout_main_raw = True %}
+
+{% macro render_icon_tag(icon, title, class) -%}
+  <span class="icon-tag {{ class }}" title="{{ title }}">{{ render_icon(icon) }}</span>
+{%- endmacro %}
+
+{% block head %}
+<style>
+  .icon-tag {
+    align-items: center;
+    border-radius: 3px;
+    color: #ffffff;
+    display: inline-flex;
+    font-size: 1rem; /* 16px */
+    height: 1.75rem;
+    justify-content: center;
+    line-height: 1;
+    margin: 0 0.125rem;
+    width: 1.75rem;
+  }
+
+  .icon-tag.color-disabled {
+    background-color: #dddddd;
+  }
+
+  .icon-tag.color-success {
+    background-color: #55cc00;
+  }
+</style>
+{%- endblock %}
 
 {% block body %}
 
@@ -30,13 +58,35 @@
   <div class="box" style="border-left: {{ '#55cc00' if site.enabled else '#aaaaaa' }} solid 0.25rem; margin-bottom: 1rem;">
     <div class="row row--space-between">
 
-      <div class="column-auto" style="min-width: 35%;">
+      <div class="column-auto" style="min-width: 65%;">
         <a href="{{ url_for('.view', site_id=site.id) }}" class="disguised" style="display: block;">
           <strong>{{ site.title }}</strong><br>
           <span class="monospace">{{ site.id }}</span>
         </a>
-        <br>
-        <a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a>
+        <p><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></p>
+        <div>
+          {%- if site.enabled %}
+          {{ render_icon_tag('success', 'Site aktiv', 'color-success') }}
+          {%- else %}
+          {{ render_icon_tag('disabled', 'Site deaktiviert', 'color-disabled') }}
+          {%- endif %}
+
+          {%- if site.user_account_creation_enabled %}
+          {{ render_icon_tag('user-create', 'Benutzerregistrierung geöffnet', 'color-success') }}
+          {%- else %}
+          {{ render_icon_tag('user-create', 'Benutzerregistrierung gesperrt', 'color-disabled') }}
+          {%- endif %}
+
+          {%- if site.login_enabled %}
+          {{ render_icon_tag('log-in', 'Benutzeranmeldung geöffnet', 'color-success') }}
+          {%- else %}
+          {{ render_icon_tag('log-in', 'Benutzeranmeldung gesperrt', 'color-disabled') }}
+          {%- endif %}
+
+          {%- if site.archived %}
+          {{ render_icon_tag('archived', 'Site archiviert', 'color-disabled') }}
+          {%- endif %}
+        </div>
       </div>
 
       <div class="column-auto" style="min-width: 35%;">
@@ -76,30 +126,6 @@
           {{ 'kein Storefront'|dim }}
           {%- endif -%}
         </div>
-      </div>
-
-      <div class="column-auto" style="text-align: right;">
-        {%- if site.enabled %}
-        {{ render_tag('', class='color-success', icon='success', title='Site aktiv') }}
-        {%- else %}
-        {{ render_tag('', class='color-disabled', icon='disabled', title='Site deaktiviert') }}
-        {%- endif %}
-        <br>
-        {%- if site.user_account_creation_enabled %}
-        {{ render_tag('', class='color-success', icon='user-create', title='Benutzerregistrierung geöffnet') }}
-        {%- else %}
-        {{ render_tag('', class='color-disabled', icon='user-create', title='Benutzerregistrierung gesperrt') }}
-        {%- endif %}
-        <br>
-        {%- if site.login_enabled %}
-        {{ render_tag('', class='color-success', icon='log-in', title='Benutzeranmeldung geöffnet') }}
-        {%- else %}
-        {{ render_tag('', class='color-disabled', icon='log-in', title='Benutzeranmeldung gesperrt') }}
-        {%- endif %}
-        <br>
-        {%- if site.archived %}
-        {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
-        {%- endif %}
       </div>
 
     </div>{# .row #}
