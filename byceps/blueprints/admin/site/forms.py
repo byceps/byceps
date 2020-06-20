@@ -12,6 +12,7 @@ from wtforms.validators import InputRequired, Length, Optional
 from ....util.l10n import LocalizedForm
 
 from ....services.board import board_service
+from ....services.brand import service as brand_service
 from ....services.email import service as email_service
 from ....services.news import channel_service as news_channel_service
 from ....services.party import service as party_service
@@ -29,6 +30,11 @@ class _BaseForm(LocalizedForm):
     news_channel_id = SelectField('Newskanal-ID', validators=[Optional()])
     board_id = SelectField('Forums-ID', validators=[Optional()])
     storefront_id = SelectField('Storefront-ID', validators=[Optional()])
+
+    def set_brand_choices(self):
+        brands = brand_service.get_brands()
+        brands.sort(key=lambda brand: brand.title)
+        self.brand_id.choices = [(brand.id, brand.title) for brand in brands]
 
     def set_email_config_choices(self):
         configs = email_service.get_all_configs()
@@ -73,4 +79,5 @@ class CreateForm(_BaseForm):
 
 
 class UpdateForm(_BaseForm):
+    brand_id = SelectField('Marke', validators=[InputRequired()])
     archived = BooleanField('archiviert')

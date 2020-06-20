@@ -9,7 +9,7 @@ byceps.services.site.transfer.models
 from dataclasses import dataclass
 from typing import NewType, Optional
 
-from ....typing import PartyID
+from ....typing import BrandID, PartyID
 
 from ...board.transfer.models import BoardID
 from ...news.transfer.models import ChannelID as NewsChannelID
@@ -24,6 +24,7 @@ class Site:
     id: SiteID
     title: str
     server_name: str
+    brand_id: BrandID
     email_config_id: str
     party_id: PartyID
     enabled: bool

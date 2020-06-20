@@ -9,6 +9,7 @@ byceps.blueprints.admin.site.views
 from flask import abort, request
 
 from ....services.board import board_service
+from ....services.brand import service as brand_service
 from ....services.news import channel_service as news_channel_service
 from ....services.party import service as party_service
 from ....services.shop.shop import service as shop_service
@@ -41,16 +42,22 @@ permission_registry.register_enum(SitePermission)
 def index():
     """List all sites."""
     sites = site_service.get_all_sites()
+    sites.sort(key=lambda site: (site.title, site.party_id))
+
+    brands = brand_service.get_brands()
+    brands.sort(key=lambda brand: brand.title)
+
+    brands_by_id = {brand.id: brand for brand in brands}
 
     parties = party_service.get_all_parties()
     party_titles_by_id = {p.id: p.title for p in parties}
 
     storefronts_by_site_id = _get_storefronts_by_site_id(sites)
 
-    sites.sort(key=lambda site: (site.title, site.party_id))
-
     return {
         'sites': sites,
+        'brands': brands,
+        'brands_by_id': brands_by_id,
         'party_titles_by_id': party_titles_by_id,
         'storefronts_by_site_id': storefronts_by_site_id,
     }
@@ -78,6 +85,8 @@ def view(site_id):
     if site is None:
         abort(404)
 
+    brand = brand_service.find_brand(site.brand_id)
+
     if site.news_channel_id:
         news_channel = news_channel_service.find_channel(site.news_channel_id)
     else:
@@ -99,6 +108,7 @@ def view(site_id):
 
     return {
         'site': site,
+        'brand': brand,
         'news_channel': news_channel,
         'board': board,
         'shop': shop,
@@ -107,11 +117,13 @@ def view(site_id):
     }
 
 
-@blueprint.route('/sites/create')
+@blueprint.route('/sites/create/for_brand/<brand_id>')
 @permission_required(SitePermission.create)
 @templated
-def create_form(erroneous_form=None):
+def create_form(brand_id, erroneous_form=None):
     """Show form to create a site."""
+    brand = _get_brand_or_404(brand_id)
+
     form = erroneous_form if erroneous_form else CreateForm()
     form.set_email_config_choices()
     form.set_party_choices()
@@ -120,14 +132,17 @@ def create_form(erroneous_form=None):
     form.set_storefront_choices()
 
     return {
+        'brand': brand,
         'form': form,
     }
 
 
-@blueprint.route('/sites', methods=['POST'])
+@blueprint.route('/sites/for_brand/<brand_id>', methods=['POST'])
 @permission_required(SitePermission.create)
-def create():
+def create(brand_id):
     """Create a site."""
+    brand = _get_brand_or_404(brand_id)
+
     form = CreateForm(request.form)
     form.set_email_config_choices()
     form.set_party_choices()
@@ -136,7 +151,7 @@ def create():
     form.set_storefront_choices()
 
     if not form.validate():
-        return create_form(form)
+        return create_form(brand_id, form)
 
     site_id = form.id.data.strip().lower()
     title = form.title.data.strip()
@@ -160,7 +175,7 @@ def create():
         party = party_service.find_party(party_id)
         if not party:
             flash_error(f'Die Party-ID "{party_id}" ist unbekannt.')
-            return create_form(form)
+            return create_form(brand_id, form)
     else:
         party_id = None
 
@@ -168,6 +183,7 @@ def create():
         site_id,
         title,
         server_name,
+        brand.id,
         email_config_id,
         enabled,
         user_account_creation_enabled,
@@ -190,6 +206,7 @@ def update_form(site_id, erroneous_form=None):
     site = _get_site_or_404(site_id)
 
     form = erroneous_form if erroneous_form else UpdateForm(obj=site)
+    form.set_brand_choices()
     form.set_email_config_choices()
     form.set_party_choices()
     form.set_board_choices()
@@ -209,6 +226,7 @@ def update(site_id):
     site = _get_site_or_404(site_id)
 
     form = UpdateForm(request.form)
+    form.set_brand_choices()
     form.set_email_config_choices()
     form.set_party_choices()
     form.set_board_choices()
@@ -220,6 +238,7 @@ def update(site_id):
 
     title = form.title.data.strip()
     server_name = form.server_name.data.strip()
+    brand_id = form.brand_id.data
     email_config_id = form.email_config_id.data
     party_id = form.party_id.data
     enabled = form.enabled.data
@@ -249,6 +268,7 @@ def update(site_id):
             site.id,
             title,
             server_name,
+            brand_id,
             email_config_id,
             party_id,
             enabled,
@@ -274,3 +294,12 @@ def _get_site_or_404(site_id):
         abort(404)
 
     return site
+
+
+def _get_brand_or_404(brand_id):
+    brand = brand_service.find_brand(brand_id)
+
+    if brand is None:
+        abort(404)
+
+    return brand

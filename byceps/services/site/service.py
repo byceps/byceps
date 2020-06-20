@@ -9,7 +9,7 @@ byceps.services.site.service
 from typing import List, Optional
 
 from ...database import db
-from ...typing import PartyID
+from ...typing import BrandID, PartyID
 
 from ..board.transfer.models import BoardID
 from ..news.transfer.models import ChannelID as NewsChannelID
@@ -28,6 +28,7 @@ def create_site(
     site_id: SiteID,
     title: str,
     server_name: str,
+    brand_id: BrandID,
     email_config_id: str,
     enabled: bool,
     user_account_creation_enabled: bool,
@@ -43,6 +44,7 @@ def create_site(
         site_id,
         title,
         server_name,
+        brand_id,
         email_config_id,
         enabled,
         user_account_creation_enabled,
@@ -63,6 +65,7 @@ def update_site(
     site_id: SiteID,
     title: str,
     server_name: str,
+    brand_id: BrandID,
     email_config_id: str,
     party_id: Optional[PartyID],
     enabled: bool,
@@ -81,6 +84,7 @@ def update_site(
 
     site.title = title
     site.server_name = server_name
+    site.brand_id = brand_id
     site.email_config_id = email_config_id
     site.party_id = party_id
     site.enabled = enabled
@@ -151,6 +155,7 @@ def _db_entity_to_site(site: DbSite) -> Site:
         site.id,
         site.title,
         site.server_name,
+        site.brand_id,
         site.email_config_id,
         site.party_id,
         site.enabled,

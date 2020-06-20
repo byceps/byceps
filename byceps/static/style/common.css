@@ -559,7 +559,8 @@ button.button[disabled],
   display: block;
 }
 
-.dropdown li > a {
+.dropdown li > a,
+.dropdown li > span {
   color: currentColor;
   display: block;
   padding: 0.4rem 0.8rem;

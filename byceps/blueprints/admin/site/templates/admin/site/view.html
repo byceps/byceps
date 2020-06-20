@@ -1,4 +1,5 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/brand.html' import render_brand_admin_link %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'site_admin' %}
@@ -39,6 +40,10 @@
     <tr>
       <th>Servername</th>
       <td><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></td>
+    </tr>
+    <tr>
+      <th>Marke</th>
+      <td>{{ render_brand_admin_link(brand) }}</td>
     </tr>
     <tr>
       <th>E-Mail-Konfiguration</th>

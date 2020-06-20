@@ -12,7 +12,16 @@
 
   {%- if g.current_user.has_permission(SitePermission.create) %}
   <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Site erstellen</span></a>
+    <div class="dropdown left">
+      <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Site erstellen</span></button>
+      <ol>
+        <li><span><strong>Marke:</strong></span></li>
+        <li class="divider"></li>
+      {%- for brand in brands %}
+        <li><a href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ brand.title }}</a></li>
+      {%- endfor %}
+      </ol>
+    </div>
   </div>
   {%- endif %}
 
@@ -31,6 +40,7 @@
       </div>
 
       <div class="column-auto" style="min-width: 35%;">
+        <div>{{ render_icon('brand', title='Marke') }} <a href="{{ url_for('admin_dashboard.view_brand', brand_id=site.brand_id) }}" class="disguised">{{ brands_by_id[site.brand_id].title }}</div>
         <div>{{ render_icon('email', title='E-Mail-Konfiguration') }} <a href="{{ url_for('email_admin.index') }}" class="disguised">{{ site.email_config_id }}</a></div>
         <div>
           {{ render_icon('date', title='Party') }}

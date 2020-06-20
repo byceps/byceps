@@ -13,7 +13,7 @@ from tests.helpers import create_site, http_client, login_user
 
 
 @pytest.fixture(scope='module')
-def site1(make_email_config):
+def site1(brand, make_email_config):
     email_config = make_email_config(
         'acme-noreply',
         sender_address='noreply@acmecon.test',
@@ -21,6 +21,7 @@ def site1(make_email_config):
     )
     site = create_site(
         'acmecon-website-1',
+        brand.id,
         title='ACMECon Website #1',
         server_name='www1.acmecon.test',
         email_config_id=email_config.id,
@@ -30,7 +31,7 @@ def site1(make_email_config):
 
 
 @pytest.fixture(scope='module')
-def site2(make_email_config):
+def site2(brand, make_email_config):
     email_config = make_email_config(
         'acme-noreply-with-contact-address',
         sender_address='noreply@acmecon.test',
@@ -39,6 +40,7 @@ def site2(make_email_config):
     )
     site = create_site(
         'acmecon-website-2',
+        brand.id,
         title='ACMECon Website #2',
         server_name='www2.acmecon.test',
         email_config_id=email_config.id,

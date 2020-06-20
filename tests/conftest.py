@@ -177,6 +177,7 @@ def email_config(make_email_config):
 def site(email_config, party, board):
     site = create_site(
         'acmecon-2014-website',
+        party.brand_id,
         title='ACMECon 2014 website',
         server_name='www.acmecon.test',
         party_id=party.id,

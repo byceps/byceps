@@ -111,6 +111,7 @@ def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014'):
 
 def create_site(
     site_id,
+    brand_id,
     *,
     title=None,
     server_name=None,
@@ -133,6 +134,7 @@ def create_site(
         site_id,
         title,
         server_name,
+        brand_id,
         email_config_id,
         enabled,
         user_account_creation_enabled,
