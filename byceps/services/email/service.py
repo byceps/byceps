@@ -16,8 +16,63 @@ from .models import EmailConfig as DbEmailConfig
 from .transfer.models import EmailConfig, Message, Sender
 
 
+class UnknownEmailConfigId(ValueError):
+    pass
+
+
 class EmailError(Exception):
     pass
+
+
+def create_config(
+    config_id: str,
+    sender_address: str,
+    *,
+    sender_name: Optional[str] = None,
+    contact_address: Optional[str] = None,
+) -> EmailConfig:
+    """Create a configuration."""
+    config = DbEmailConfig(
+        config_id,
+        sender_address,
+        sender_name=sender_name,
+        contact_address=contact_address,
+    )
+
+    db.session.add(config)
+    db.session.commit()
+
+    return _db_entity_to_config(config)
+
+
+def update_config(
+    config_id: str,
+    sender_address: str,
+    sender_name: Optional[str],
+    contact_address: Optional[str],
+) -> EmailConfig:
+    """Update a configuration."""
+    config = DbEmailConfig.query.get(config_id)
+
+    if config is None:
+        raise UnknownEmailConfigId(config_id)
+
+    config.sender_address = sender_address
+    config.sender_name = sender_name
+    config.contact_address = contact_address
+
+    db.session.commit()
+
+    return _db_entity_to_config(config)
+
+
+def delete_config(config_id: str) -> None:
+    """Delete a configuration."""
+    db.session.query(DbEmailConfig) \
+        .filter_by(id=config_id) \
+        .delete()
+
+    db.session.commit()
 
 
 def find_config(config_id: str) -> Optional[EmailConfig]:
