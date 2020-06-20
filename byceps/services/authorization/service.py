@@ -229,7 +229,6 @@ def get_permissions_by_roles_with_titles() -> Dict[Role, Set[Permission]]:
             db.undefer('title'),
         ) \
         .all()
-    roles = [_db_entity_to_role(role) for role in roles]
 
     permissions = DbPermission.query \
         .options(
@@ -237,18 +236,8 @@ def get_permissions_by_roles_with_titles() -> Dict[Role, Set[Permission]]:
             db.joinedload('role_permissions').joinedload('role')
         ) \
         .all()
-    permissions = [
-        _db_entity_to_permission(permission) for permission in permissions
-    ]
 
-    permissions_by_role: Dict[Role, Set[Permission]] = {r: set() for r in roles}
-
-    for permission in permissions:
-        for role in permission.roles:
-            if role in permissions_by_role:
-                permissions_by_role[role].add(permission)
-
-    return permissions_by_role
+    return _index_permissions_by_role(permissions, roles)
 
 
 def get_permissions_by_roles_for_user_with_titles(
@@ -265,7 +254,6 @@ def get_permissions_by_roles_for_user_with_titles(
         .join(DbUserRole) \
         .filter(DbUserRole.user_id == user_id) \
         .all()
-    roles = [_db_entity_to_role(role) for role in roles]
 
     role_ids = {r.id for r in roles}
 
@@ -279,9 +267,6 @@ def get_permissions_by_roles_for_user_with_titles(
             .join(DbRole) \
             .filter(DbRole.id.in_(role_ids)) \
             .all()
-        permissions = [
-            _db_entity_to_permission(permission) for permission in permissions
-        ]
     else:
         permissions = []
 
@@ -289,16 +274,24 @@ def get_permissions_by_roles_for_user_with_titles(
 
 
 def _index_permissions_by_role(
-    permissions: List[Permission], roles: List[Role]
+    permissions: List[DbPermission], roles: List[DbRole]
 ) -> Dict[Role, Set[Permission]]:
-    permissions_by_role: Dict[Role, Set[Permission]] = {r: set() for r in roles}
+    permissions_by_role: Dict[DbRole, Set[DbPermission]] = {
+        role: set() for role in roles
+    }
 
     for permission in permissions:
         for role in permission.roles:
             if role in permissions_by_role:
                 permissions_by_role[role].add(permission)
 
-    return permissions_by_role
+    # Convert database entities to transfer objects.
+    return {
+        _db_entity_to_role(role): {
+            _db_entity_to_permission(permission) for permission in permissions
+        }
+        for role, permissions in permissions_by_role.items()
+    }
 
 
 def get_permissions_with_title_for_role(
