@@ -207,16 +207,14 @@ def get_all_permissions_with_titles() -> Sequence[Permission]:
     return [_db_entity_to_permission(permission) for permission in permissions]
 
 
-def get_all_roles_with_titles() -> Sequence[Role]:
+def get_all_roles_with_titles() -> Sequence[DbRole]:
     """Return all roles, with titles."""
-    roles = DbRole.query \
+    return DbRole.query \
         .options(
             db.undefer('title'),
             db.joinedload('user_roles').joinedload('user')
         ) \
         .all()
-
-    return [_db_entity_to_role(role) for role in roles]
 
 
 def get_permissions_by_roles_with_titles() -> Dict[Role, Set[Permission]]:
