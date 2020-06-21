@@ -246,7 +246,7 @@ def count_revoked_tickets_for_party(party_id: PartyID) -> int:
         .count()
 
 
-def count_tickets_for_party(party_id: PartyID) -> int:
+def count_sold_tickets_for_party(party_id: PartyID) -> int:
     """Return the number of "sold" (i.e. generated and not revoked)
     tickets for that party.
     """
@@ -270,7 +270,7 @@ def get_ticket_sale_stats(party_id: PartyID) -> TicketSaleStats:
     """Return the number of maximum and sold tickets, respectively."""
     party = party_service.get_party(party_id)
 
-    sold = count_tickets_for_party(party.id)
+    sold = count_sold_tickets_for_party(party.id)
 
     return TicketSaleStats(
         tickets_max=party.max_ticket_quantity,

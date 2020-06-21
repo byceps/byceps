@@ -155,7 +155,7 @@ def _collect_ticket_metrics(active_parties: List[Party]) -> Iterator[Metric]:
             'tickets_revoked_count', tickets_revoked_count, labels=labels
         )
 
-        tickets_sold_count = ticket_service.count_tickets_for_party(party_id)
+        tickets_sold_count = ticket_service.count_sold_tickets_for_party(party_id)
         yield Metric('tickets_sold_count', tickets_sold_count, labels=labels)
 
         tickets_checked_in_count = ticket_service.count_tickets_checked_in_for_party(
