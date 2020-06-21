@@ -228,7 +228,7 @@ def update(site_id):
     form = UpdateForm(request.form)
     form.set_brand_choices()
     form.set_email_config_choices()
-    form.set_party_choicessite.brand_id()
+    form.set_party_choices(site.brand_id)
     form.set_board_choices(site.brand_id)
     form.set_news_channel_choices(site.brand_id)
     form.set_storefront_choices()
