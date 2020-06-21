@@ -48,7 +48,16 @@
         </div>
       {%- endwith %}
     {%- endcall %}
-    {{ render_bigstats_cell(tickets_checked_in|separate_thousands, 'Tickets eingecheckt', icon_name='ticketing-checkin') }}
+    {%- call render_cell(href=url_for('ticketing_checkin.index', party_id=party.id)) %}
+      <div class="dimmed" style="font-size: 0.75rem; margin-bottom: 1rem; text-transform: uppercase;">Tickets eingecheckt</div>
+        <div class="progress">
+          <div class="progress-bar" style="width: calc(100% * {{ tickets_checked_in }} / {{ ticket_sale_stats.tickets_sold }});"></div>
+        </div>
+        <div class="row row--space-between" style="font-size: 0.75rem;">
+          <div class="column-auto" style="font-weight: bold;">{{ tickets_checked_in|separate_thousands }}</div>
+          <div class="column-auto dimmed">von {{ ticket_sale_stats.tickets_sold|separate_thousands }}</div>
+        </div>
+    {%- endcall %}
   </div>
 
 {%- endblock %}
