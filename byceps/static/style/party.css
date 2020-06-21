@@ -90,7 +90,6 @@ main {
 }
 #topbar .current-user .label-and-name {
   display: inline-block;
-  margin: 0 0.3rem 0 0.1rem;
   vertical-align: middle;
 }
 #topbar .current-user .label-and-name .label {
