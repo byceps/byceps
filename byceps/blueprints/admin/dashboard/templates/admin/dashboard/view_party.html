@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin/dashboard.html' import render_bigstats_cell %}
+{% from 'macros/admin/dashboard.html' import render_bigstats_cell, render_cell %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'admin_dashboard_party' %}
 {% set current_page_party = party %}
 {% set title = 'Dashboard - ' ~ party.title %}
@@ -7,6 +8,21 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='style/admin_dashboard.css') }}">
+    <style>
+      .progress {
+        background-color: #dddddd;
+        border-radius: 3px;
+        height: 0.125rem;
+        margin-top: 0.25rem;
+        margin-bottom: 0.25rem;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        background-color: #666666;
+        height: 100%;
+      }
+    </style>
 {%- endblock %}
 
 {% block body %}
@@ -15,7 +31,23 @@
     {{ render_bigstats_cell(days_until_party|separate_thousands, 'Tage bis zur Party', icon_name='date') }}
     {{ render_bigstats_cell(orga_count, 'Organisatoren in <strong>%d</strong> Teams'|format(orga_team_count)|safe, href=url_for('orga_team_admin.teams_for_party', party_id=party.id), icon_name='users') }}
     {{ render_bigstats_cell(seat_count|separate_thousands, 'Sitzplätze in <strong>%d</strong> Bereichen'|format(seating_area_count)|safe, href=url_for('seating_admin.index_for_party', party_id=party.id), icon_name='seating-area') }}
-    {{ render_bigstats_cell(tickets_sold|separate_thousands, 'Tickets verkauft', href=url_for('ticketing_admin.index_for_party', party_id=party.id), icon_name='ticket', color='#008800') }}
+    {%- call render_cell(href=url_for('ticketing_admin.index_for_party', party_id=party.id)) %}
+      <div class="dimmed" style="font-size: 0.75rem; margin-bottom: 1rem; text-transform: uppercase;">Tickets verkauft</div>
+      {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
+        <div class="progress">
+          {%- if tickets_total_max_specified %}
+          <div class="progress-bar" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
+          {%- endif %}
+        </div>
+        <div class="row row--space-between" style="font-size: 0.75rem;">
+          <div class="column-auto" style="font-weight: bold;">{{ ticket_sale_stats.tickets_sold|separate_thousands }}</div>
+          {%- if tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
+          <div class="column-auto">{{ render_tag('ausverkauft') }}</div>
+          {%- endif %}
+          <div class="column-auto dimmed">von {{ ticket_sale_stats.tickets_max|separate_thousands if tickets_total_max_specified else '?' }}</div>
+        </div>
+      {%- endwith %}
+    {%- endcall %}
     {{ render_bigstats_cell(tickets_checked_in|separate_thousands, 'Tickets eingecheckt', icon_name='ticketing-checkin') }}
   </div>
 
