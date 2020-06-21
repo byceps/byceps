@@ -11,9 +11,11 @@
       {{ render_icon('caret-down') }}
     </button>
     <ol>
-      <li class="label-and-name">
-        <span class="label">Angemeldet als</span>
-        <span class="name">{{ render_user_screen_name(g.current_user) }}</span>
+      <li>
+        <span class="label-and-name">
+          <span class="label">Angemeldet als</span>
+          <span class="name">{{ render_user_screen_name(g.current_user) }}</span>
+        </span>
       </li>
       <li class="divider"></li>
       <li><a href="{{ url_for('user_admin.view', user_id=g.current_user.id) }}">{{ render_icon('user-profile') }} Profil</a></li>
