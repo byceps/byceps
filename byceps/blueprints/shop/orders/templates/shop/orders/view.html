@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/shop/orders.html' import render_order_payment_state, render_order_payment_method %}
 {% set current_page = 'shop_orders' %}
 {% set title = 'Bestellung ' ~ order.order_number %}
@@ -12,6 +13,12 @@
     </ol>
   </nav>
   <h1>{{ order.order_number }}</h1>
+
+  {%- if order.is_open %}
+  <div class="button-row button-row--right" style="float: right; margin-left: 1rem;">
+    <a class="button" href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('remove') }} <span>Bestellung stornieren</span></a>
+  </div>
+  {%- endif %}
 
   <table class="index" style="margin-top: 2rem;">
     <tr>

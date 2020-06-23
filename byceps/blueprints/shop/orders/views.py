@@ -6,17 +6,24 @@ byceps.blueprints.shop.orders.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g
+from flask import abort, g, request
 
+from ....services.shop.order.email import service as order_email_service
 from ....services.shop.order import service as order_service
 from ....services.shop.storefront import service as storefront_service
 from ....services.site import service as site_service
 from ....services.snippet.transfer.models import Scope
 from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
+from ....util.views import redirect_to
 
 from ...authentication.decorators import login_required
 from ...snippet.templating import render_snippet_as_partial
+
+from ..order import signals
+
+from .forms import CancelForm
 
 
 blueprint = create_blueprint('shop_orders', __name__)
@@ -61,8 +68,7 @@ def view(order_id):
     if order is None:
         abort(404)
 
-    if order.placed_by_id != current_user.id:
-        # Order was not placed by the current user.
+    if not _is_order_placed_by_current_user(order):
         abort(404)
 
     site = site_service.get_site(g.site_id)
@@ -90,3 +96,88 @@ def _get_payment_instructions(order):
     return render_snippet_as_partial(
         'payment_instructions', scope=scope, context=context
     )
+
+
+@blueprint.route('/<uuid:order_id>/cancel')
+@login_required
+@templated
+def cancel_form(order_id, erroneous_form=None):
+    """Show form to cancel an order."""
+    order = _get_order_by_current_user_or_404(order_id)
+
+    if order.is_canceled:
+        flash_error('Die Bestellung ist bereits storniert worden.')
+        return redirect_to('.view', order_id=order.id)
+
+    if order.is_paid:
+        flash_error(
+            'Die Bestellung ist bereits bezahlt worden. '
+            'Du kannst sie nicht mehr selbst stornieren.'
+        )
+        return redirect_to('.view', order_id=order.id)
+
+    form = erroneous_form if erroneous_form else CancelForm()
+
+    return {
+        'order': order,
+        'form': form,
+    }
+
+
+@blueprint.route('/<uuid:order_id>/cancel', methods=['POST'])
+@login_required
+def cancel(order_id):
+    """Set the payment status of a single order to 'canceled' and
+    release the respective article quantities.
+    """
+    order = _get_order_by_current_user_or_404(order_id)
+
+    if order.is_canceled:
+        flash_error('Die Bestellung ist bereits storniert worden.')
+        return redirect_to('.view', order_id=order.id)
+
+    if order.is_paid:
+        flash_error(
+            'Die Bestellung ist bereits bezahlt worden. '
+            'Du kannst sie nicht mehr selbst stornieren.'
+        )
+        return redirect_to('.view', order_id=order.id)
+
+    form = CancelForm(request.form)
+    if not form.validate():
+        return cancel_form(order_id, form)
+
+    reason = form.reason.data.strip()
+
+    try:
+        event = order_service.cancel_order(order.id, g.current_user.id, reason)
+    except order_service.OrderAlreadyCanceled:
+        flash_error(
+            'Die Bestellung ist bereits storniert worden; '
+            'der Bezahlstatus kann nicht mehr geändert werden.'
+        )
+        return redirect_to('.view', order_id=order.id)
+
+    flash_success('Die Bestellung wurde storniert.')
+
+    order_email_service.send_email_for_canceled_order_to_orderer(order.id)
+
+    signals.order_canceled.send(None, event=event)
+
+    return redirect_to('.view', order_id=order.id)
+
+
+def _get_order_by_current_user_or_404(order_id):
+    order = order_service.find_order(order_id)
+
+    if order is None:
+        abort(404)
+
+    if not _is_order_placed_by_current_user(order):
+        abort(404)
+
+    return order
+
+
+def _is_order_placed_by_current_user(order) -> bool:
+    return order.placed_by_id == g.current_user.id
