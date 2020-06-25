@@ -10,6 +10,14 @@ build:
         override:
           - js-scrutinizer-run
           - py-scrutinizer-run
+    coverage:
+      tests:
+        override:
+          - command:
+            coverage: 'pytest --cov=byceps tests'
+              file: '.coverage'
+              format: 'py-cc'
+
 checks:
   python:
     duplicate_code: false
