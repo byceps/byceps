@@ -7,6 +7,7 @@ byceps.application
 """
 
 from importlib import import_module
+import os
 from pathlib import Path
 from typing import Any, Callable, Dict, Iterator, Optional, Tuple, Union
 
@@ -37,6 +38,11 @@ def create_app(
     app.config.from_pyfile(str(config_filename))
     if config_overrides is not None:
         app.config.from_mapping(config_overrides)
+
+    # Allow database URI to be overriden via environment variable.
+    sqlalchemy_database_uri = os.environ.get('SQLALCHEMY_DATABASE_URI')
+    if sqlalchemy_database_uri:
+        app.config['SQLALCHEMY_DATABASE_URI'] = sqlalchemy_database_uri
 
     # Throw an exception when an undefined name is referenced in a template.
     app.jinja_env.undefined = jinja2.StrictUndefined
