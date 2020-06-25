@@ -13,8 +13,8 @@ build:
     coverage:
       tests:
         override:
-          - command:
-            coverage: 'pytest --cov=byceps tests'
+          - command: 'pytest --cov=byceps tests'
+            coverage:
               file: '.coverage'
               format: 'py-cc'
 
