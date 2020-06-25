@@ -41,11 +41,13 @@ WTForms = "^2.3.1"
 
 [tool.poetry.dev-dependencies]
 black = "19.10b0"
+coverage = "^5.1"
 Flask-DebugToolbar = "0.11.0"
 flask-shell-ipython = "0.4.1"
 freezegun = "0.3.15"
 mypy = "0.770"
 pytest = "^5.4.1"
+pytest-cov = "^2.10.0"
 python-dotenv = "0.13.0"
 requests-mock = "1.8.0"
 Sphinx = "2.1.1"
