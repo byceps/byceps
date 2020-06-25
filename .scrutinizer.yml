@@ -11,14 +11,15 @@ build:
           - js-scrutinizer-run
           - py-scrutinizer-run
     coverage:
+      environment:
+        variables:
+          SQLALCHEMY_DATABASE_URI: 'postgresql+psycopg2://scrutinizer:scrutinizer@127.0.0.1/scrutinizer'
       tests:
         override:
           - command: 'pytest --cov=byceps tests'
             coverage:
               file: '.coverage'
               format: 'py-cc'
-      variables:
-        SQLALCHEMY_DATABASE_URI: 'postgresql+psycopg2://scrutinizer:scrutinizer@127.0.0.1/scrutinizer'
 
 checks:
   python:
