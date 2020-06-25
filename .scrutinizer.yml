@@ -17,6 +17,8 @@ build:
             coverage:
               file: '.coverage'
               format: 'py-cc'
+      variables:
+        SQLALCHEMY_DATABASE_URI: 'postgresql+psycopg2://scrutinizer:scrutinizer@127.0.0.1/scrutinizer'
 
 checks:
   python:
