@@ -29,7 +29,7 @@ def create_badge(
     description: Optional[str] = None,
     featured: bool = False,
 ) -> Badge:
-    """Introduce a new badge."""
+    """Create a badge."""
     badge = DbBadge(
         slug,
         label,
@@ -40,6 +40,32 @@ def create_badge(
     )
 
     db.session.add(badge)
+    db.session.commit()
+
+    return _db_entity_to_badge(badge)
+
+
+def update_badge(
+    badge_id: BadgeID,
+    brand_id: Optional[BrandID],
+    slug: str,
+    label: str,
+    description: Optional[str],
+    image_filename: str,
+    featured: bool,
+) -> Badge:
+    """Update a badge."""
+    badge = DbBadge.query.get(badge_id)
+    if not badge:
+        raise ValueError(f'Unknown badge ID: "{badge_id}"')
+
+    badge.brand_id = brand_id
+    badge.slug = slug
+    badge.label = label
+    badge.description = description
+    badge.image_filename = image_filename
+    badge.featured = featured
+
     db.session.commit()
 
     return _db_entity_to_badge(badge)
