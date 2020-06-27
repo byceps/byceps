@@ -12,6 +12,8 @@ build:
           - py-scrutinizer-run
     coverage:
       environment:
+        apt_packages:
+          - language-pack-de
         variables:
           SQLALCHEMY_DATABASE_URI: 'postgresql+psycopg2://scrutinizer:scrutinizer@127.0.0.1/scrutinizer'
       services:
