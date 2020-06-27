@@ -9,10 +9,7 @@ byceps.blueprints.user_badge.views
 from flask import abort, g
 
 from ...services.user import service as user_service
-from ...services.user_badge import (
-    awarding_service as badge_awarding_service,
-    service as badge_service,
-)
+from ...services.user_badge import awarding_service, badge_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.templating import templated
 
@@ -40,7 +37,7 @@ def view(slug):
     if badge is None:
         abort(404)
 
-    awardings = badge_awarding_service.get_awardings_of_badge(badge.id)
+    awardings = awarding_service.get_awardings_of_badge(badge.id)
     recipient_ids = [awarding.user_id for awarding in awardings]
     recipients = user_service.find_users(
         recipient_ids,

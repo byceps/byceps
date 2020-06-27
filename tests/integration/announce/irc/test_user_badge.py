@@ -5,10 +5,7 @@
 
 from byceps.announce.irc import user_badge  # Load signal handlers.
 from byceps.blueprints.user_badge import signals
-from byceps.services.user_badge import (
-    awarding_service,
-    service as badge_service,
-)
+from byceps.services.user_badge import awarding_service, badge_service
 
 
 from .helpers import assert_submitted_data, CHANNEL_ORGA_LOG, mocked_irc_bot

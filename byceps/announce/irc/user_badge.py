@@ -11,7 +11,7 @@ Announce user badge events on IRC.
 from ...blueprints.user_badge import signals
 from ...events.user_badge import UserBadgeAwarded
 from ...services.user import service as user_service
-from ...services.user_badge import service as user_badge_service
+from ...services.user_badge import badge_service as user_badge_service
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 

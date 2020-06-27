@@ -10,10 +10,7 @@ from flask import abort, request
 from marshmallow import ValidationError
 
 from .....services.user import service as user_service
-from .....services.user_badge import (
-    awarding_service as badge_awarding_service,
-    service as badge_service,
-)
+from .....services.user_badge import awarding_service, badge_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.views import respond_no_content
 
@@ -53,7 +50,7 @@ def award_badge_to_user():
     if not initiator:
         abort(400, 'Initiator ID unknown')
 
-    _, event = badge_awarding_service.award_badge_to_user(
+    _, event = awarding_service.award_badge_to_user(
         badge.id, user.id, initiator_id=initiator.id
     )
 

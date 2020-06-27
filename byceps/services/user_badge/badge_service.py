@@ -1,6 +1,6 @@
 """
-byceps.services.user_badge.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user_badge.badge_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.

@@ -3,10 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from byceps.services.user_badge import (
-    awarding_service,
-    service as badge_service,
-)
+from byceps.services.user_badge import awarding_service, badge_service
 from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
 

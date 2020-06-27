@@ -8,10 +8,7 @@ byceps.services.shop.order.actions.award_badge
 
 from .....typing import UserID
 
-from ....user_badge import (
-    awarding_service as badge_awarding_service,
-    service as badge_service,
-)
+from ....user_badge import awarding_service, badge_service
 from ....user_badge.transfer.models import BadgeAwarding, BadgeID
 
 from ...article.transfer.models import ArticleNumber
@@ -35,9 +32,7 @@ def award_badge(
     _verify_badge_id(badge_id)
 
     for _ in range(quantity):
-        awarding, _ = badge_awarding_service.award_badge_to_user(
-            badge_id, user_id
-        )
+        awarding, _ = awarding_service.award_badge_to_user(badge_id, user_id)
 
         _create_order_event(order.id, awarding)
 
