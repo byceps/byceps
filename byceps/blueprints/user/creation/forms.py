@@ -17,7 +17,7 @@ from ....services.user import service as user_service
 from ....util.l10n import LocalizedForm
 
 
-EMAIL_ADDRESS_PATTERN = re.compile('^.+?@.+?\..+?$')
+EMAIL_ADDRESS_PATTERN = re.compile(r'^.+?@.+?\..+?$')
 
 
 class ScreenNameValidator:
