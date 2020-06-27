@@ -11,6 +11,7 @@ from flask import abort, g, request
 from ....services.brand import service as brand_service
 from ....services.user import service as user_service
 from ....services.user_badge import (
+    awarding_service as badge_awarding_service,
     command_service as badge_command_service,
     service as badge_service,
 )
@@ -48,7 +49,7 @@ def index():
 
         return brands_by_id[brand_id].title
 
-    awarding_counts_by_badge_id = badge_service.count_awardings()
+    awarding_counts_by_badge_id = badge_awarding_service.count_awardings()
 
     badges = [
         {
@@ -77,7 +78,7 @@ def view(badge_id):
     if badge is None:
         abort(404)
 
-    awardings = badge_service.get_awardings_of_badge(badge.id)
+    awardings = badge_awarding_service.get_awardings_of_badge(badge.id)
     recipient_ids = [awarding.user_id for awarding in awardings]
     recipients = user_service.find_users(recipient_ids, include_avatars=True)
 
@@ -181,7 +182,7 @@ def award(user_id):
 
     initiator_id = g.current_user.id
 
-    _, event = badge_command_service.award_badge_to_user(
+    _, event = badge_awarding_service.award_badge_to_user(
         badge_id, user_id, initiator_id=initiator_id
     )
 

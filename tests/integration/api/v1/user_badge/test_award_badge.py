@@ -4,8 +4,8 @@
 """
 
 from byceps.services.user_badge import (
+    awarding_service,
     command_service as badge_command_service,
-    service as badge_service,
 )
 from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
@@ -15,7 +15,7 @@ def test_award_badge(api_client, api_client_authz_header, user, admin_user):
         'supporter', 'Supporter', 'supporter.svg'
     )
 
-    before = badge_service.get_awardings_of_badge(badge.id)
+    before = awarding_service.get_awardings_of_badge(badge.id)
     assert before == set()
 
     url = f'/api/v1/user_badges/awardings'
@@ -29,5 +29,5 @@ def test_award_badge(api_client, api_client_authz_header, user, admin_user):
     response = api_client.post(url, headers=headers, json=json_data)
     assert response.status_code == 204
 
-    actual = badge_service.get_awardings_of_badge(badge.id)
+    actual = awarding_service.get_awardings_of_badge(badge.id)
     assert actual == {QuantifiedBadgeAwarding(badge.id, user.id, 1)}

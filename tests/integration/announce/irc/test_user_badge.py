@@ -5,7 +5,11 @@
 
 from byceps.announce.irc import user_badge  # Load signal handlers.
 from byceps.blueprints.user_badge import signals
-from byceps.services.user_badge import command_service as badge_command_service
+from byceps.services.user_badge import (
+    awarding_service,
+    command_service as badge_command_service,
+)
+
 
 from .helpers import assert_submitted_data, CHANNEL_ORGA_LOG, mocked_irc_bot
 
@@ -24,7 +28,7 @@ def test_user_badge_awarding_announced_without_initiator(app, make_user):
 
     user = make_user('Erster')
 
-    _, event = badge_command_service.award_badge_to_user(badge.id, user.id)
+    _, event = awarding_service.award_badge_to_user(badge.id, user.id)
 
     with mocked_irc_bot() as mock:
         signals.user_badge_awarded.send(None, event=event)
@@ -45,7 +49,7 @@ def test_user_badge_awarding_announced_with_initiator(
 
     user = make_user('PathFinder')
 
-    _, event = badge_command_service.award_badge_to_user(
+    _, event = awarding_service.award_badge_to_user(
         badge.id, user.id, initiator_id=admin_user.id
     )
 

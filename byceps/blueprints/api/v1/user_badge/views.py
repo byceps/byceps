@@ -11,7 +11,7 @@ from marshmallow import ValidationError
 
 from .....services.user import service as user_service
 from .....services.user_badge import (
-    command_service as badge_command_service,
+    awarding_service as badge_awarding_service,
     service as badge_service,
 )
 from .....util.framework.blueprint import create_blueprint
@@ -53,7 +53,7 @@ def award_badge_to_user():
     if not initiator:
         abort(400, 'Initiator ID unknown')
 
-    _, event = badge_command_service.award_badge_to_user(
+    _, event = badge_awarding_service.award_badge_to_user(
         badge.id, user.id, initiator_id=initiator.id
     )
 

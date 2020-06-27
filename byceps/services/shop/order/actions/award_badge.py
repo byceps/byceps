@@ -9,7 +9,7 @@ byceps.services.shop.order.actions.award_badge
 from .....typing import UserID
 
 from ....user_badge import (
-    command_service as badge_command_service,
+    awarding_service as badge_awarding_service,
     service as badge_service,
 )
 from ....user_badge.transfer.models import BadgeAwarding, BadgeID
@@ -35,7 +35,7 @@ def award_badge(
     _verify_badge_id(badge_id)
 
     for _ in range(quantity):
-        awarding, _ = badge_command_service.award_badge_to_user(
+        awarding, _ = badge_awarding_service.award_badge_to_user(
             badge_id, user_id
         )
 

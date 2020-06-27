@@ -9,6 +9,7 @@ from byceps.database import db
 from byceps.events.user_badge import UserBadgeAwarded
 from byceps.services.user import event_service
 from byceps.services.user_badge import (
+    awarding_service,
     command_service as badge_command_service,
     service as badge_service,
 )
@@ -71,7 +72,7 @@ def test_award_badge_without_initiator(
     user_events_before = event_service.get_events_for_user(user.id)
     assert len(user_events_before) == 0
 
-    _, event = badge_command_service.award_badge_to_user(badge.id, user.id)
+    _, event = awarding_service.award_badge_to_user(badge.id, user.id)
 
     assert event.__class__ is UserBadgeAwarded
     assert event.user_id == user.id
@@ -96,7 +97,7 @@ def test_award_badge_with_initiator(
     user_events_before = event_service.get_events_for_user(user.id)
     assert len(user_events_before) == 0
 
-    _, event = badge_command_service.award_badge_to_user(
+    _, event = awarding_service.award_badge_to_user(
         badge.id, user.id, initiator_id=admin_user.id
     )
 
@@ -119,14 +120,14 @@ def test_award_badge_with_initiator(
 def test_count_awardings(
     party_app, user1, user2, user3, badge1, badge2, badge3, awardings_scope,
 ):
-    badge_command_service.award_badge_to_user(badge1.id, user1.id)
-    badge_command_service.award_badge_to_user(badge1.id, user1.id)
-    badge_command_service.award_badge_to_user(badge1.id, user2.id)
-    badge_command_service.award_badge_to_user(badge1.id, user3.id)
-    badge_command_service.award_badge_to_user(badge3.id, user2.id)
-    badge_command_service.award_badge_to_user(badge3.id, user3.id)
+    awarding_service.award_badge_to_user(badge1.id, user1.id)
+    awarding_service.award_badge_to_user(badge1.id, user1.id)
+    awarding_service.award_badge_to_user(badge1.id, user2.id)
+    awarding_service.award_badge_to_user(badge1.id, user3.id)
+    awarding_service.award_badge_to_user(badge3.id, user2.id)
+    awarding_service.award_badge_to_user(badge3.id, user3.id)
 
-    actual = badge_service.count_awardings()
+    actual = awarding_service.count_awardings()
 
     # Remove counts for potential other badges.
     relevant_badge_ids = {badge1.id, badge2.id, badge3.id}
@@ -140,7 +141,7 @@ def test_count_awardings(
 def test_get_awardings_of_unknown_badge(party_app):
     unknown_badge_id = '00000000-0000-0000-0000-000000000000'
 
-    actual = badge_service.get_awardings_of_badge(unknown_badge_id)
+    actual = awarding_service.get_awardings_of_badge(unknown_badge_id)
 
     assert actual == set()
 
@@ -148,7 +149,7 @@ def test_get_awardings_of_unknown_badge(party_app):
 def test_get_awardings_of_unawarded_badge(party_app, badge3):
     badge = badge3
 
-    actual = badge_service.get_awardings_of_badge(badge.id)
+    actual = awarding_service.get_awardings_of_badge(badge.id)
 
     assert actual == set()
 
@@ -158,11 +159,11 @@ def test_get_awardings_of_badge(
 ):
     badge = badge1
 
-    badge_command_service.award_badge_to_user(badge.id, user1.id)
-    badge_command_service.award_badge_to_user(badge.id, user1.id)
-    badge_command_service.award_badge_to_user(badge.id, user2.id)
+    awarding_service.award_badge_to_user(badge.id, user1.id)
+    awarding_service.award_badge_to_user(badge.id, user1.id)
+    awarding_service.award_badge_to_user(badge.id, user2.id)
 
-    actual = badge_service.get_awardings_of_badge(badge.id)
+    actual = awarding_service.get_awardings_of_badge(badge.id)
 
     assert actual == {
         QuantifiedBadgeAwarding(badge.id, user1.id, 2),

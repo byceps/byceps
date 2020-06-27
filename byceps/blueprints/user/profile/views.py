@@ -13,7 +13,7 @@ from flask import abort, g
 from ....services.orga_team import service as orga_team_service
 from ....services.ticketing import attendance_service, ticket_service
 from ....services.user import service as user_service
-from ....services.user_badge import service as badge_service
+from ....services.user_badge import awarding_service as badge_awarding_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
@@ -29,7 +29,9 @@ def view(user_id):
     if user is None:
         abort(404)
 
-    badges_with_awarding_quantity = badge_service.get_badges_for_user(user.id)
+    badges_with_awarding_quantity = badge_awarding_service.get_badges_awarded_to_user(
+        user.id
+    )
 
     orga_team_membership = orga_team_service.find_membership_for_party(
         user.id, g.party_id
