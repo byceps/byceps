@@ -7,7 +7,7 @@ from byceps.announce.irc import user_badge  # Load signal handlers.
 from byceps.blueprints.user_badge import signals
 from byceps.services.user_badge import (
     awarding_service,
-    command_service as badge_command_service,
+    service as badge_service,
 )
 
 
@@ -22,7 +22,7 @@ def test_user_badge_awarding_announced_without_initiator(app, make_user):
         'Jemand hat das Abzeichen "First Post!" an Erster verliehen.'
     )
 
-    badge = badge_command_service.create_badge(
+    badge = badge_service.create_badge(
         'first-post', 'First Post!', 'first-post.svg'
     )
 
@@ -43,7 +43,7 @@ def test_user_badge_awarding_announced_with_initiator(
         'Admin hat das Abzeichen "Glanzleistung" an PathFinder verliehen.'
     )
 
-    badge = badge_command_service.create_badge(
+    badge = badge_service.create_badge(
         'glnzlstng', 'Glanzleistung', 'glanz.svg'
     )
 

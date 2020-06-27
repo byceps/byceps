@@ -10,7 +10,6 @@ from byceps.events.user_badge import UserBadgeAwarded
 from byceps.services.user import event_service
 from byceps.services.user_badge import (
     awarding_service,
-    command_service as badge_command_service,
     service as badge_service,
 )
 from byceps.services.user_badge.models.awarding import (
@@ -172,4 +171,4 @@ def test_get_awardings_of_badge(
 
 
 def _create_badge(slug, label):
-    return badge_command_service.create_badge(slug, label, f'{slug}.svg')
+    return badge_service.create_badge(slug, label, f'{slug}.svg')

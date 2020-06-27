@@ -5,13 +5,13 @@
 
 from byceps.services.user_badge import (
     awarding_service,
-    command_service as badge_command_service,
+    service as badge_service,
 )
 from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
 
 def test_award_badge(api_client, api_client_authz_header, user, admin_user):
-    badge = badge_command_service.create_badge(
+    badge = badge_service.create_badge(
         'supporter', 'Supporter', 'supporter.svg'
     )
 
