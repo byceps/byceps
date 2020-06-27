@@ -8,7 +8,7 @@ byceps.services.email.service
 
 from typing import List, Optional
 
-from ...database import upsert
+from ...database import db, upsert
 from ... import email
 from ...util.jobqueue import enqueue
 
