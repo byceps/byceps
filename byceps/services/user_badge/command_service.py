@@ -71,6 +71,15 @@ def update_badge(
     return _db_entity_to_badge(badge)
 
 
+def delete_badge(badge_id: BadgeID) -> None:
+    """Delete a badge."""
+    db.session.query(DbBadge) \
+        .filter_by(id=badge_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def award_badge_to_user(
     badge_id: BadgeID, user_id: UserID, *, initiator_id: Optional[UserID] = None
 ) -> Tuple[BadgeAwarding, UserBadgeAwarded]:
