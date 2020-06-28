@@ -77,6 +77,7 @@ def view(badge_id):
     awardings = awarding_service.get_awardings_of_badge(badge.id)
     recipient_ids = [awarding.user_id for awarding in awardings]
     recipients = user_service.find_users(recipient_ids, include_avatars=True)
+    recipients = list(sorted(recipients, key=lambda r: r.screen_name or ''))
 
     return {
         'badge': badge,
