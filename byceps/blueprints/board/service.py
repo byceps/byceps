@@ -90,7 +90,7 @@ def enrich_creators(
     """Enrich creators with their badges."""
     creator_ids = {posting.creator_id for posting in postings}
 
-    badges_by_user_id = _get_badges(creator_ids, brand_id)
+    badges_by_user_id = _get_badges_for_users(creator_ids, brand_id)
 
     if party_id is not None:
         party = party_service.get_party(party_id)
@@ -114,7 +114,7 @@ def enrich_creators(
         posting.creator = Creator.from_(posting.creator, badges, ticket)
 
 
-def _get_badges(
+def _get_badges_for_users(
     user_ids: Set[UserID], brand_id: BrandID
 ) -> Dict[UserID, Set[Badge]]:
     """Fetch users' badges that are either global or belong to the brand."""
