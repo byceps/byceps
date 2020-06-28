@@ -271,7 +271,7 @@ def request_password_reset():
 
 
 def _get_sender() -> Optional[Sender]:
-    if not get_app_mode().is_public():
+    if not get_app_mode().is_site():
         return None
 
     site = site_service.get_site(g.site_id)

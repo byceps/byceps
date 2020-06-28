@@ -19,9 +19,9 @@ KEY_APP_MODE = 'app_mode'
 KEY_SITE_ID = 'site_id'
 
 
-AppMode = Enum('AppMode', ['public', 'admin'])
+AppMode = Enum('AppMode', ['admin', 'site'])
 AppMode.is_admin = lambda self: self == AppMode.admin
-AppMode.is_public = lambda self: self == AppMode.public
+AppMode.is_site = lambda self: self == AppMode.site
 
 
 class ConfigurationError(Exception):
@@ -34,7 +34,7 @@ def init_app(app: Flask) -> None:
     app_mode = _determine_app_mode(app)
     set_extension_value(KEY_APP_MODE, app_mode, app)
 
-    if app_mode.is_public():
+    if app_mode.is_site():
         site_id = _determine_site_id(app)
         set_extension_value(KEY_SITE_ID, site_id, app)
 

@@ -40,7 +40,7 @@ def view():
     if user is None:
         abort(404)
 
-    if get_app_mode().is_public():
+    if get_app_mode().is_site():
         newsletter_list_id = _find_newsletter_list_for_brand()
         newsletter_offered = (newsletter_list_id is not None)
 

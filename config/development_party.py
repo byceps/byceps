@@ -8,7 +8,7 @@ SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byce
 
 REDIS_URL = 'redis://127.0.0.1:6379/0'
 
-APP_MODE = 'public'
+APP_MODE = 'site'
 SITE_ID = 'example-dev'
 
 MAIL_DEBUG = True

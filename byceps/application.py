@@ -80,7 +80,7 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     yield from _get_blueprints_common()
 
     current_mode = config.get_app_mode(app)
-    if current_mode.is_public():
+    if current_mode.is_site():
         yield from _get_blueprints_site()
     elif current_mode.is_admin():
         yield from _get_blueprints_admin()
@@ -213,7 +213,7 @@ def init_app(app: Flask) -> None:
         _set_url_root_path(app)
 
         app_mode = config.get_app_mode()
-        if app_mode.is_public():
+        if app_mode.is_site():
             # Incorporate site-specific template overrides.
             app.jinja_loader = SiteTemplateOverridesLoader()
 
