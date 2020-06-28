@@ -144,6 +144,9 @@ def find_article(article_id: ArticleID) -> Optional[Article]:
     """Return the article with that ID, or `None` if not found."""
     article = find_db_article(article_id)
 
+    if article is None:
+        return None
+
     return _db_entity_to_article(article)
 
 
