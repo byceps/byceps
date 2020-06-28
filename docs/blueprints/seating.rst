@@ -6,7 +6,7 @@ BYCEPS' seating model was designed to be flexible enough to fit both
 seats in a single hall) as well as :ref:`big ones <seating-example-big>`
 (like Northern LAN Convention – NorthCon_ – with around 3.500 seats).
 
-.. _NorthCon: http://www.northcon.de/
+.. _NorthCon: https://www.northcon.de/
 
 
 Structure

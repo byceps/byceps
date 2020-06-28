@@ -98,9 +98,9 @@ It is furthermore recommended to run it locally behind nginx_ and have
 the latter both serve static files and provide SSL encryption.
 
 
-.. _uWSGI: http://uwsgi-docs.readthedocs.io/
-.. _Gunicorn: http://gunicorn.org/
-.. _nginx: http://nginx.org/
+.. _uWSGI: https://uwsgi-docs.readthedocs.io/
+.. _Gunicorn: https://gunicorn.org/
+.. _nginx: https://nginx.org/
 
 
 Shell

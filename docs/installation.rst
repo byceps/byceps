@@ -10,9 +10,9 @@ Requirements
 * Redis_ 2.8 or higher
 * Git_ (for downloading and updating BYCEPS, but not strictly for running it)
 
-.. _Python: http://www.python.org/
-.. _PostgreSQL: http://www.postgresql.org/
-.. _Redis: http://redis.io/
+.. _Python: https://www.python.org/
+.. _PostgreSQL: https://www.postgresql.org/
+.. _Redis: https://redis.io/
 .. _Git: https://git-scm.com/
 
 
@@ -73,8 +73,8 @@ of the same libraries somewhere else in the system.
 Python_ already comes with the necessary tools, namely virtualenv_ and
 pip_.
 
-.. _virtualenv: http://www.virtualenv.org/
-.. _pip: http://www.pip-installer.org/
+.. _virtualenv: https://www.virtualenv.org/
+.. _pip: https://www.pip-installer.org/
 
 Change into the BYCEPS path and create a virtual environment (named
 "venv") there:

@@ -43,4 +43,4 @@ If a blueprint should react on certain events, it can connect to the
 available :doc:`signals <../concepts/signals>`.
 
 
-.. _Flask's Blueprints: http://flask.pocoo.org/docs/latest/blueprints/
+.. _Flask's Blueprints: https://flask.palletsprojects.com/en/1.1.x/blueprints/

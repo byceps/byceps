@@ -4,8 +4,8 @@ byceps.util.jobqueue
 
 An asynchronously processed job queue based on Redis_ and RQ_.
 
-.. _Redis: http://redis.io/
-.. _RQ:    http://python-rq.org/
+.. _Redis: https://redis.io/
+.. _RQ:    https://python-rq.org/
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
