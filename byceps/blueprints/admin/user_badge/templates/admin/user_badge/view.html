@@ -1,4 +1,5 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_64 %}
 {% set current_page = 'user_badge_admin' %}
 {% set title = 'Abzeichen - %s'|format(badge.label) %}
@@ -41,6 +42,14 @@
     <tr>
       <th>Slug</th>
       <td>{{ badge.slug }}</td>
+    </tr>
+    <tr>
+      <th>Marke</th>
+      <td>{{ badge.brand_id|fallback('keine Einschränkung') }}</td>
+    </tr>
+    <tr>
+      <th>{{ render_tag('featured') }}</th>
+      <td>{{ 'ja' if badge.featured else 'nein' }}</td>
     </tr>
   </table>
 
