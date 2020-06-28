@@ -41,6 +41,7 @@ Code Status
 ===========
 
 |badge_travis-ci_build|
+|badge_scrutinizer-ci_coverage|
 |badge_scrutinizer-ci_quality-score|
 |badge_code-climate_maintainability|
 
@@ -48,6 +49,10 @@ Code Status
 .. |badge_travis-ci_build| image:: https://travis-ci.org/byceps/byceps.svg?branch=main
    :alt: Build Status
    :target: https://travis-ci.org/byceps/byceps
+
+.. |badge_scrutinizer-ci_coverage| image:: https://scrutinizer-ci.com/g/byceps/byceps/badges/coverage.png?b=main
+   :alt: Scrutinizer Code Coverage
+   :target: https://scrutinizer-ci.com/g/byceps/byceps/?branch=main
 
 .. |badge_scrutinizer-ci_quality-score| image:: https://scrutinizer-ci.com/g/byceps/byceps/badges/quality-score.png?b=main
    :alt: Scrutinizer Code Quality
