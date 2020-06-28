@@ -14,6 +14,12 @@ def test_auto_url_linking():
     assert render_html(text) == expected
 
 
+def test_code_block():
+    text = 'Use the source, Luke!\n[code]Do not replace ... with an ellipsis character![/code]\nSweet!'
+    expected = 'Use the source, Luke!<br /><pre><code class="block">Do not replace ... with an ellipsis character!</code></pre><br />Sweet!'
+    assert render_html(text) == expected
+
+
 def test_explicit_url_linking():
     text = 'before [url]http://example.com/index.html[/url] after'
     expected = 'before <a rel="nofollow" href="http://example.com/index.html">http://example.com/index.html</a> after'

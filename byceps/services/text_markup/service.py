@@ -41,7 +41,9 @@ def _add_code_formatter(parser: Parser) -> None:
     def render_code(name, value, options, parent, context):
         return f'<pre><code class="block">{value}</code></pre>'
 
-    parser.add_formatter('code', render_code, replace_links=False)
+    parser.add_formatter(
+        'code', render_code, replace_cosmetic=False, replace_links=False
+    )
 
 
 def _add_image_formatter(parser: Parser) -> None:
@@ -50,7 +52,9 @@ def _add_image_formatter(parser: Parser) -> None:
     def render_image(name, value, options, parent, context):
         return f'<img src="{value}">'
 
-    parser.add_formatter('img', render_image, replace_links=False)
+    parser.add_formatter(
+        'img', render_image, replace_cosmetic=False, replace_links=False
+    )
 
 
 def _add_quote_formatter(parser: Parser) -> None:
