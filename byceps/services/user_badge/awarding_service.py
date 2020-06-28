@@ -16,7 +16,7 @@ from ...typing import UserID
 
 from ..user import event_service
 
-from .badge_service import _db_entity_to_badge
+from .badge_service import _db_entity_to_badge, get_badges
 from .models.awarding import BadgeAwarding as DbBadgeAwarding
 from .models.badge import Badge as DbBadge
 from .transfer.models import (
