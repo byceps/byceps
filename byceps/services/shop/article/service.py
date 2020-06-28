@@ -216,7 +216,7 @@ def get_articles_by_numbers(
 
 def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
     """Return all articles for that shop, ordered by article number."""
-    return _get_articles_for_shop_query(shop_id) \
+    rows = _get_articles_for_shop_query(shop_id) \
         .all()
 
     return [_db_entity_to_article(row) for row in rows]
