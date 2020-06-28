@@ -40,20 +40,20 @@ Other sites using BYCEPS:
 Code Status
 ===========
 
-|badge_travisci|
-|badge_scrutinizer|
-|badge-codeclimate|
+|badge_travis-ci_build|
+|badge_scrutinizer-ci_quality-score|
+|badge_code-climate_maintainability|
 
 
-.. |badge_travisci| image:: https://travis-ci.org/byceps/byceps.svg?branch=main
+.. |badge_travis-ci_build| image:: https://travis-ci.org/byceps/byceps.svg?branch=main
    :alt: Build Status
    :target: https://travis-ci.org/byceps/byceps
 
-.. |badge_scrutinizer| image:: https://scrutinizer-ci.com/g/byceps/byceps/badges/quality-score.png?b=main
+.. |badge_scrutinizer-ci_quality-score| image:: https://scrutinizer-ci.com/g/byceps/byceps/badges/quality-score.png?b=main
    :alt: Scrutinizer Code Quality
    :target: https://scrutinizer-ci.com/g/byceps/byceps/?branch=main
 
-.. |badge-codeclimate| image:: https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg
+.. |badge_code-climate_maintainability| image:: https://codeclimate.com/github/codeclimate/codeclimate/badges/gpa.svg
    :alt: Code Climate
    :target: https://codeclimate.com/github/byceps/byceps
 
