@@ -32,7 +32,7 @@ class PermissionRegistry:
         if enum is None:
             # No enum found for that key. This happens if the blueprint
             # which contains the authorization enum is not registered in
-            # the current site mode (public/admin).
+            # the current app mode (public/admin).
             return None
 
         try:

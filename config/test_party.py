@@ -9,7 +9,7 @@ SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps_test:test@127.0.0.1/byce
 
 REDIS_URL = 'redis://127.0.0.1:6379/0'
 
-SITE_MODE = 'public'
+APP_MODE = 'public'
 SITE_ID = 'acmecon-2014-website'
 
 MAIL_DEBUG = False

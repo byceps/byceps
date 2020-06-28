@@ -1,1 +1,1 @@
-{% extends ('layout/admin/base.html' if g.site_mode.is_admin() else 'layout/base.html') %}
+{% extends ('layout/admin/base.html' if g.app_mode.is_admin() else 'layout/base.html') %}

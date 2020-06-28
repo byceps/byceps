@@ -8,7 +8,7 @@ byceps.blueprints.user.current.views
 
 from flask import abort, g, jsonify, request, Response
 
-from ....config import get_site_mode
+from ....config import get_app_mode
 from ....services.country import service as country_service
 from ....services.newsletter import service as newsletter_service
 from ....services.user import command_service as user_command_service
@@ -40,7 +40,7 @@ def view():
     if user is None:
         abort(404)
 
-    if get_site_mode().is_public():
+    if get_app_mode().is_public():
         newsletter_list_id = _find_newsletter_list_for_brand()
         newsletter_offered = (newsletter_list_id is not None)
 
@@ -63,7 +63,7 @@ def view():
 @blueprint.route('/me.json')
 def view_as_json():
     """Show selected attributes of the current user's profile as JSON."""
-    if get_site_mode().is_admin():
+    if get_app_mode().is_admin():
         abort(404)
 
     user = g.current_user

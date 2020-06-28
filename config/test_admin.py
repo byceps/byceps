@@ -9,7 +9,7 @@ SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps_test:test@127.0.0.1/byce
 
 REDIS_URL = 'redis://127.0.0.1:6379/0'
 
-SITE_MODE = 'admin'
+APP_MODE = 'admin'
 
 MAIL_DEBUG = False
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'

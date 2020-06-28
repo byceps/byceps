@@ -11,7 +11,7 @@ from typing import Optional
 
 from flask import abort, g, request
 
-from ....config import get_site_mode
+from ....config import get_app_mode
 from ....services.brand import settings_service as brand_settings_service
 from ....services.consent.transfer.models import Consent, SubjectID
 from ....services.newsletter.transfer.models import (
@@ -182,7 +182,7 @@ def _abort_if_user_account_creation_disabled():
 
 
 def _is_user_account_creation_enabled():
-    if get_site_mode().is_admin():
+    if get_app_mode().is_admin():
         return False
 
     site = site_service.get_site(g.site_id)

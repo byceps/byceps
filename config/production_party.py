@@ -15,7 +15,7 @@ SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byce
 
 REDIS_URL = 'unix:///var/run/redis/redis.sock?db=0'
 
-SITE_MODE = 'public'
+APP_MODE = 'public'
 SITE_ID = 'example-prod'
 
 MAIL_DEBUG = False

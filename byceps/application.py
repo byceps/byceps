@@ -79,7 +79,7 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     """Yield blueprints to register on the application."""
     yield from _get_blueprints_common()
 
-    current_mode = config.get_site_mode(app)
+    current_mode = config.get_app_mode(app)
     if current_mode.is_public():
         yield from _get_blueprints_site()
     elif current_mode.is_admin():
@@ -212,8 +212,8 @@ def init_app(app: Flask) -> None:
     with app.app_context():
         _set_url_root_path(app)
 
-        site_mode = config.get_site_mode()
-        if site_mode.is_public():
+        app_mode = config.get_app_mode()
+        if app_mode.is_public():
             # Incorporate site-specific template overrides.
             app.jinja_loader = SiteTemplateOverridesLoader()
 
@@ -223,7 +223,7 @@ def init_app(app: Flask) -> None:
 
         _load_announce_signal_handlers()
 
-        if site_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
+        if app_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
             import rq_dashboard
             app.register_blueprint(
                 rq_dashboard.blueprint, url_prefix='/admin/rq'

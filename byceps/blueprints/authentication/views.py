@@ -10,7 +10,7 @@ from typing import Optional
 
 from flask import abort, g, request, url_for
 
-from ...config import get_site_mode
+from ...config import get_app_mode
 from ...services.authentication.exceptions import AuthenticationFailed
 from ...services.authentication import service as authentication_service
 from ...services.authentication.password import service as password_service
@@ -62,7 +62,7 @@ def login_form():
             'angemeldet.'
         )
 
-    in_admin_mode = get_site_mode().is_admin()
+    in_admin_mode = get_app_mode().is_admin()
 
     if not _is_login_enabled(in_admin_mode):
         return {
@@ -87,7 +87,7 @@ def login():
     if g.current_user.is_active:
         return
 
-    in_admin_mode = get_site_mode().is_admin()
+    in_admin_mode = get_app_mode().is_admin()
 
     if not _is_login_enabled(in_admin_mode):
         abort(403, 'Log in to this site is generally disabled.')
@@ -271,7 +271,7 @@ def request_password_reset():
 
 
 def _get_sender() -> Optional[Sender]:
-    if not get_site_mode().is_public():
+    if not get_app_mode().is_public():
         return None
 
     site = site_service.get_site(g.site_id)

@@ -7,7 +7,7 @@ REDIS_URL = 'redis://127.0.0.1:6379/0'
 
 RQ_DASHBOARD_ENABLED = True
 
-SITE_MODE = 'admin'
+APP_MODE = 'admin'
 
 MAIL_DEBUG = True
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'

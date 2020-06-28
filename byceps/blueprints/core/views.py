@@ -74,19 +74,19 @@ def is_current_page(nav_item_path, current_page=None):
 
 
 @blueprint.before_app_request
-def provide_site_mode():
-    # site mode
-    site_mode = config.get_site_mode()
-    g.site_mode = site_mode
+def provide_app_mode():
+    # app mode
+    app_mode = config.get_app_mode()
+    g.app_mode = app_mode
 
     # site ID
-    if site_mode.is_public():
+    if app_mode.is_public():
         site_id = config.get_current_site_id()
         g.site_id = site_id
 
     # current party and brand
     party_id = None
-    if site_mode.is_public():
+    if app_mode.is_public():
         site = site_service.get_site(site_id)
 
         party_id = site.party_id
@@ -101,7 +101,7 @@ def provide_site_mode():
             g.brand_id = None
 
     # current user
-    is_admin_mode = site_mode.is_admin()
+    is_admin_mode = app_mode.is_admin()
     g.current_user = authentication_blueprint_service.get_current_user(
         is_admin_mode, party_id=party_id
     )

@@ -15,13 +15,13 @@ from .services.site.transfer.models import SiteID
 
 
 EXTENSION_KEY = 'byceps_config'
-KEY_SITE_MODE = 'site_mode'
+KEY_APP_MODE = 'app_mode'
 KEY_SITE_ID = 'site_id'
 
 
-SiteMode = Enum('SiteMode', ['public', 'admin'])
-SiteMode.is_admin = lambda self: self == SiteMode.admin
-SiteMode.is_public = lambda self: self == SiteMode.public
+AppMode = Enum('AppMode', ['public', 'admin'])
+AppMode.is_admin = lambda self: self == AppMode.admin
+AppMode.is_public = lambda self: self == AppMode.public
 
 
 class ConfigurationError(Exception):
@@ -31,10 +31,10 @@ class ConfigurationError(Exception):
 def init_app(app: Flask) -> None:
     app.extensions[EXTENSION_KEY] = {}
 
-    site_mode = _determine_site_mode(app)
-    set_extension_value(KEY_SITE_MODE, site_mode, app)
+    app_mode = _determine_app_mode(app)
+    set_extension_value(KEY_APP_MODE, app_mode, app)
 
-    if site_mode.is_public():
+    if app_mode.is_public():
         site_id = _determine_site_id(app)
         set_extension_value(KEY_SITE_ID, site_id, app)
 
@@ -62,23 +62,23 @@ def set_extension_value(key: str, value: Any, app: Flask) -> None:
 
 
 # -------------------------------------------------------------------- #
-# site mode
+# app mode
 
 
-def _determine_site_mode(app: Flask) -> SiteMode:
-    value = app.config.get('SITE_MODE')
+def _determine_app_mode(app: Flask) -> AppMode:
+    value = app.config.get('APP_MODE')
     if value is None:
-        raise ConfigurationError('No site mode configured.')
+        raise ConfigurationError('No app mode configured.')
 
     try:
-        return SiteMode[value]
+        return AppMode[value]
     except KeyError:
-        raise ConfigurationError(f'Invalid site mode "{value}" configured.')
+        raise ConfigurationError(f'Invalid app mode "{value}" configured.')
 
 
-def get_site_mode(app: Optional[Flask]=None) -> SiteMode:
+def get_app_mode(app: Optional[Flask]=None) -> AppMode:
     """Return the mode the site should run in."""
-    return get_extension_value(KEY_SITE_MODE, app)
+    return get_extension_value(KEY_APP_MODE, app)
 
 
 # -------------------------------------------------------------------- #
