@@ -89,16 +89,12 @@ def provide_app_mode():
     if app_mode.is_site():
         site = site_service.get_site(site_id)
 
-        party_id = site.party_id
+        g.brand_id = site.brand_id
 
+        party_id = site.party_id
         if party_id is not None:
             party = party_service.get_party(party_id)
-
             g.party_id = party.id
-            g.brand_id = party.brand_id
-        else:
-            g.party_id = None
-            g.brand_id = None
 
     # current user
     is_admin_mode = app_mode.is_admin()
