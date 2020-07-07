@@ -1,0 +1,26 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'shops_admin' %}
+{% set title = 'Shop erstellen' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">Shops</a></li>
+    </ol>
+  </nav>
+  <h1>{{ render_icon('add') }} {{ title }}</h1>
+
+  <form action="{{ url_for('.create') }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.id, maxlength=40, required='required', autofocus='autofocus') }}
+      {{ form_field(form.title, maxlength=40, required='required') }}
+      {{ form_field(form.email_config_id, required='required') }}
+    {% endcall %}
+
+    {{ form_buttons('Erstellen', cancel_url=url_for('.index')) }}
+  </form>
+
+{%- endblock %}

@@ -8,7 +8,7 @@ byceps.blueprints.admin.shop.shop.views
 
 from collections import defaultdict
 
-from flask import abort
+from flask import abort, request
 
 from .....services.shop.article import service as article_service
 from .....services.shop.order import (
@@ -18,12 +18,15 @@ from .....services.shop.order import (
 from .....services.shop.order.transfer.models import PaymentState
 from .....services.shop.shop import service as shop_service
 from .....util.framework.blueprint import create_blueprint
+from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
+from .....util.views import redirect_to
 
 from ....authorization.decorators import permission_required
 from ....authorization.registry import permission_registry
 
 from .authorization import ShopPermission
+from .forms import CreateForm
 
 
 blueprint = create_blueprint('shop_shop_admin', __name__)
@@ -82,6 +85,43 @@ def _get_order_actions_by_article_number(shop_id):
         actions_by_article_number[action.article_number].append(action)
 
     return actions_by_article_number
+
+
+@blueprint.route('/shops/create')
+@permission_required(ShopPermission.create)
+@templated
+def create_form(erroneous_form=None):
+    """Show form to create a shop."""
+    form = erroneous_form if erroneous_form else CreateForm()
+    form.set_email_config_choices()
+
+    return {
+        'form': form,
+    }
+
+
+@blueprint.route('/shops', methods=['POST'])
+@permission_required(ShopPermission.create)
+def create():
+    """Create a shop."""
+    form = CreateForm(request.form)
+    form.set_email_config_choices()
+
+    if not form.validate():
+        return create_form(form)
+
+    shop_id = form.id.data.strip().lower()
+    title = form.title.data.strip()
+    email_config_id = form.email_config_id.data
+
+    shop = shop_service.create_shop(
+        shop_id,
+        title,
+        email_config_id,
+    )
+
+    flash_success(f'Der Shop "{shop.title}" wurde angelegt.')
+    return redirect_to('.index')
 
 
 def _get_shop_or_404(shop_id):
