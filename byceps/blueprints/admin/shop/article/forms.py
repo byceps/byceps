@@ -20,7 +20,7 @@ from .....util.l10n import LocalizedForm
 
 
 class ArticleCreateForm(LocalizedForm):
-    article_number_sequence_id = SelectField('Artikelnummer-Sequenz')
+    article_number_sequence_id = SelectField('Artikelnummer-Sequenz', validators=[InputRequired()])
     description = StringField('Beschreibung')
     price = DecimalField('Stückpreis', places=2, validators=[InputRequired()])
     tax_rate = DecimalField('Steuersatz', places=3, validators=[InputRequired()])
@@ -30,8 +30,7 @@ class ArticleCreateForm(LocalizedForm):
         sequences.sort(key=lambda seq: seq.prefix)
 
         choices = [(str(seq.id), seq.prefix) for seq in sequences]
-        choices.insert(0, ('', '<keine>'))
-        self.article_number_sequence_id .choices = choices
+        self.article_number_sequence_id.choices = choices
 
 
 class ArticleUpdateForm(ArticleCreateForm):
