@@ -19,12 +19,15 @@ from wtforms.validators import InputRequired, Optional, ValidationError
 from .....util.l10n import LocalizedForm
 
 
-class ArticleCreateForm(LocalizedForm):
-    article_number_sequence_id = SelectField('Artikelnummer-Sequenz', validators=[InputRequired()])
+class _ArticleBaseForm(LocalizedForm):
     description = StringField('Beschreibung')
     price = DecimalField('Stückpreis', places=2, validators=[InputRequired()])
     tax_rate = DecimalField('Steuersatz', places=3, validators=[InputRequired()])
     quantity = IntegerField('Anzahl verfügbar', validators=[InputRequired()])
+
+
+class ArticleCreateForm(_ArticleBaseForm):
+    article_number_sequence_id = SelectField('Artikelnummer-Sequenz', validators=[InputRequired()])
 
     def set_article_number_sequence_choices(self, sequences):
         sequences.sort(key=lambda seq: seq.prefix)
@@ -33,7 +36,7 @@ class ArticleCreateForm(LocalizedForm):
         self.article_number_sequence_id.choices = choices
 
 
-class ArticleUpdateForm(ArticleCreateForm):
+class ArticleUpdateForm(_ArticleBaseForm):
     available_from = DateTimeField('Verfügbar ab', format='%d.%m.%Y %H:%M', validators=[Optional()])
     available_until = DateTimeField('Verfügbar bis', format='%d.%m.%Y %H:%M', validators=[Optional()])
     max_quantity_per_order = IntegerField('maximale Anzahl pro Bestellung', validators=[Optional()])
