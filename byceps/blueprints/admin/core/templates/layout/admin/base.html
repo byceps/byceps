@@ -53,10 +53,13 @@
               <span class="name">{{ shop.title }}</span>
             </span>
   {%- elif party %}
+            {%- with brand = get_brand_for_party(party) %}
+            <div style="float: left; margin-left: 0.5rem; margin-right: 0.2rem;">{{ render_brand_avatar(brand, '32') }}</div>
             <span class="label-and-name">
               <span class="label">Party</span>
               <span class="name">{{ party.title }}</span>
             </span>
+            {%- endwith %}
   {%- elif brand %}
             <div style="float: left; margin-left: 0.5rem; margin-right: 0.2rem;">{{ render_brand_avatar(brand, '32') }}</div>
             <span class="label-and-name">
