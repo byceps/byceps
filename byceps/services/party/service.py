@@ -58,6 +58,7 @@ def update_party(
     max_ticket_quantity: Optional[int],
     ticket_management_enabled: bool,
     seat_management_enabled: bool,
+    canceled: bool,
     archived: bool,
 ) -> Party:
     """Update a party."""
@@ -72,6 +73,7 @@ def update_party(
     party.max_ticket_quantity = max_ticket_quantity
     party.ticket_management_enabled = ticket_management_enabled
     party.seat_management_enabled = seat_management_enabled
+    party.canceled = canceled
     party.archived = archived
 
     db.session.commit()
@@ -142,7 +144,7 @@ def get_all_parties_with_brands() -> List[DbParty]:
 
 
 def get_active_parties(brand_id: Optional[BrandID] = None) -> List[Party]:
-    """Return active (i.e. non-archived) parties."""
+    """Return active (i.e. non-canceled, non-archived) parties."""
     query = DbParty.query
 
     if brand_id is not None:
@@ -150,6 +152,7 @@ def get_active_parties(brand_id: Optional[BrandID] = None) -> List[Party]:
             .filter_by(brand_id=brand_id)
 
     parties = query \
+        .filter_by(canceled=False) \
         .filter_by(archived=False) \
         .order_by(DbParty.starts_at) \
         .all()
@@ -224,6 +227,7 @@ def _db_entity_to_party(party: DbParty) -> Party:
         party.max_ticket_quantity,
         party.ticket_management_enabled,
         party.seat_management_enabled,
+        party.canceled,
         party.archived,
     )
 

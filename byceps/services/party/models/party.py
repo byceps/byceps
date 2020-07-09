@@ -30,6 +30,7 @@ class Party(db.Model):
     max_ticket_quantity = db.Column(db.Integer, nullable=True)
     ticket_management_enabled = db.Column(db.Boolean, default=False, nullable=False)
     seat_management_enabled = db.Column(db.Boolean, default=False, nullable=False)
+    canceled = db.Column(db.Boolean, default=False, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(

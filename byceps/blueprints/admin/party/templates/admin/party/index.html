@@ -33,7 +33,7 @@
 
   {%- if parties %}
     {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
-  <div class="box" style="border-left: {{ '#55cc00' if not party.archived else '#aaaaaa' }} solid 0.25rem; margin-bottom: 1rem;">
+  <div class="box" style="border-left: {{ '#ff2222' if party.canceled else ('#aaaaaa' if party.archived else '#55cc00') }} solid 0.25rem; margin-bottom: 1rem;">
     <div class="row row--space-between">
 
       <div class="column-auto" style="min-width: 35%;">
@@ -70,6 +70,9 @@
         Sitzplatz&shy;verwaltung: {{ render_tag('geöffnet', class='color-success') if party.seat_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}
         <br>
         <br>
+        {%- if party.canceled %}
+        {{ render_tag('abgesagt', class='color-danger', icon='disabled') }}
+        {%- endif %}
         {%- if party.archived %}
         {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
         {%- endif %}

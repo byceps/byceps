@@ -25,6 +25,7 @@ class Party:
     max_ticket_quantity: Optional[int]
     ticket_management_enabled: bool
     seat_management_enabled: bool
+    canceled: bool
     archived: bool
 
     @property

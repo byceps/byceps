@@ -17,6 +17,9 @@
   </nav>
   <h1>
     {{- party.title }}
+    {%- if party.canceled -%}
+    <br>{{ render_tag('abgesagt', class='color-danger', icon='disabled') }}
+    {%- endif -%}
     {%- if party.archived -%}
     <br>{{ render_tag('archiviert', class='color-disabled', icon='archived') }}
     {%- endif -%}
