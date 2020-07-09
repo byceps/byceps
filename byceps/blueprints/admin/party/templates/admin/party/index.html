@@ -37,13 +37,17 @@
     <div class="row row--space-between">
 
       <div class="column-auto" style="min-width: 35%;">
-        <a href="{{ url_for('.view', party_id=party.id) }}" class="disguised" style="display: block;">
-          <strong>{{ party.title }}</strong><br>
-          <span class="monospace">{{ party.id }}</span>
-        </a>
-        <br>
-        <span style="margin-right: 0.2rem;">{{ render_brand_avatar(party.brand, '20') }}</span>
-        {{ party.brand.title }}
+        <div class="row">
+          <div class="column-auto">
+            <div style="margin-right: -0.25rem;">{{ render_brand_avatar(party.brand, '40') }}</div>
+          </div>
+          <div class="column-auto">
+            <a href="{{ url_for('.view', party_id=party.id) }}" class="disguised" style="display: block;">
+              <strong>{{ party.title }}</strong><br>
+              <span class="monospace">{{ party.id }}</span>
+            </a>
+          </div>
+        </div>
       </div>
 
       <div class="column-auto" style="min-width: 30%;">

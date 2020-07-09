@@ -664,6 +664,10 @@ nav.pagination li.current {
   height: 32px;
   width: 32px;
 }
+.avatar.size-40 {
+  height: 40px;
+  width: 40px;
+}
 .avatar.size-48 {
   height: 48px;
   width: 48px;
