@@ -42,12 +42,16 @@ def index():
     """List parties."""
     parties = party_service.get_all_parties_with_brands()
 
+    brands = brand_service.get_brands()
+    brands.sort(key=lambda brand: brand.title)
+
     days_by_party_id = {
         party.id: party_service.get_party_days(party) for party in parties
     }
 
     return {
         'parties': parties,
+        'brands': brands,
         'days_by_party_id': days_by_party_id,
     }
 
