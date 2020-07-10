@@ -30,10 +30,15 @@ from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
 from ...util.views import respond_no_content
 
+from ..admin.seating.authorization import SeatingPermission
 from ..authentication.decorators import login_required
+from ..authorization.registry import permission_registry
 
 
 blueprint = create_blueprint('seating', __name__)
+
+
+permission_registry.register_enum(SeatingPermission)
 
 
 @blueprint.route('/')
@@ -102,7 +107,9 @@ def occupy_seat(ticket_id, seat_id):
 
     manager = g.current_user
 
-    if not ticket.is_seat_managed_by(manager.id):
+    if not ticket.is_seat_managed_by(manager.id) and not _is_seating_admin(
+        manager
+    ):
         flash_error(
             'Du bist nicht berechtigt, den Sitzplatz '
             f'für Ticket {ticket.code} zu verwalten.'
@@ -152,7 +159,9 @@ def release_seat(ticket_id):
 
     manager = g.current_user
 
-    if not ticket.is_seat_managed_by(manager.id):
+    if not ticket.is_seat_managed_by(manager.id) and not _is_seating_admin(
+        manager
+    ):
         flash_error(
             'Du bist nicht berechtigt, den Sitzplatz '
             f'für Ticket {ticket.code} zu verwalten.'
@@ -186,8 +195,15 @@ def _is_seat_management_enabled():
     if g.party_id is None:
         return False
 
+    if _is_seating_admin(g.current_user):
+        return True
+
     party = party_service.get_party(g.party_id)
     return party.seat_management_enabled
+
+
+def _is_seating_admin(user) -> bool:
+    return user.has_permission(SeatingPermission.administrate)
 
 
 def _get_ticket_or_404(ticket_id: TicketID) -> DbTicket:
