@@ -39,4 +39,5 @@ def create_party(ends_at: datetime) -> Party:
         False,
         False,
         False,
+        False,
     )
