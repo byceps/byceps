@@ -29,6 +29,8 @@ def create_seat_group(
     ticket_category_id: TicketCategoryID,
     title: str,
     seats: Sequence[DbSeat],
+    *,
+    commit: bool=True,
 ) -> DbSeatGroup:
     """Create a seat group and assign the given seats."""
     seat_quantity = len(seats)
@@ -47,7 +49,8 @@ def create_seat_group(
         assignment = DbSeatGroupAssignment(group, seat)
         db.session.add(assignment)
 
-    db.session.commit()
+    if commit:
+        db.session.commit()
 
     return group
 
