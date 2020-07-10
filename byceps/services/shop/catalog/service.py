@@ -98,7 +98,7 @@ def delete_collection(collection_id: CollectionID) -> None:
 
 def get_collections_for_catalog(catalog_id: CatalogID) -> List[Collection]:
     """Return the catalog's collections."""
-    rows = DbCollection.query \
+    collections = DbCollection.query \
         .filter_by(catalog_id=catalog_id) \
         .order_by(DbCollection.position) \
         .all()
