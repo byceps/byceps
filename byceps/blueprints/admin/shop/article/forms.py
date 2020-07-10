@@ -33,6 +33,7 @@ class ArticleCreateForm(_ArticleBaseForm):
         sequences.sort(key=lambda seq: seq.prefix)
 
         choices = [(str(seq.id), seq.prefix) for seq in sequences]
+        choices.insert(0, ('', '<keine>'))
         self.article_number_sequence_id.choices = choices
 
 
