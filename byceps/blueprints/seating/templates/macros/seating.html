@@ -1,8 +1,34 @@
 {% macro render_seating_area_link(area, label=None) -%}
-  <a href="{{ url_for('seating.view_area', slug=area.slug) }}">{{ label if (label is not none) else area.title}}</a>
+  <a href="{{ url_for('seating.view_area', slug=area.slug) }}">{{ label if (label is not none) else area.title }}</a>
 {%- endmacro %}
 
 
 {% macro render_seat_link(area, seat) -%}
   <a href="{{ url_for('seating.view_area', slug=area.slug, _anchor='seat-%s'|format(seat.id)) }}">{{ seat.label }}</a>
+{%- endmacro %}
+
+
+{% macro render_area(area, seats) -%}
+  {%- set avatar_url_fallback = url_for('static', filename='avatar_fallback.svg') %}
+  <div class="area" style="background-image: url(/data/parties/{{ area.party_id }}/seating/areas/{{ area.image_filename }}); height: {{ area.image_height }}px; width: {{ area.image_width }}px;">
+    {%- for seat in seats|sort(attribute='coord_y')|sort(attribute='coord_x') %}
+    {{ render_seat_with_tooltip(seat, avatar_url_fallback) }}
+    {%- endfor %}
+  </div>
+{%- endmacro %}
+
+
+{% macro render_seat_with_tooltip(seat, avatar_url_fallback) -%}
+    <div id="seat-{{ seat.id }}" class="seat-with-tooltip" style="left: {{ seat.coord_x }}px; top: {{ seat.coord_y }}px;" data-seat-id="{{ seat.id }}" data-label="{{ seat.label }}"
+      {%- if seat.ticket %}
+      {{- ' ' }}data-ticket-id="{{ seat.ticket.id }}"
+        {%- if seat.ticket.user %}
+          {%- with occupier = seat.ticket.user %}
+      {{- ' ' }}data-occupier-avatar="{{ occupier.avatar_url or avatar_url_fallback }}" data-occupier-name="{{ occupier.screen_name }}"
+          {%- endwith %}
+        {%- endif %}
+      {%- endif -%}
+    >
+      <div class="seat{% if seat.type_ %} seat-type--{{ seat.type_ }}{% endif %}{% if seat.ticket %} seat--occupied{% endif %}"></div>
+    </div>
 {%- endmacro %}

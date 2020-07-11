@@ -1,0 +1,48 @@
+{%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/user.html' import render_user_screen_name %}
+
+
+{%- if managed_tickets %}
+  {%- with managed_tickets_total = managed_tickets|length %}
+  <p>Du verwaltest die Sitzplätze von {% if managed_tickets_total == 1 %}<strong>einem</strong> Ticket{% else %}<strong>{{ managed_tickets_total }}</strong> Tickets{% endif %}:</p>
+  {%- endwith %}
+
+  <div class="row row--space-between">
+    <div class="column-auto column-auto--grow">
+      <div class="ticket-selector button">
+        <ol id="ticket-selection">
+          {%- for ticket in managed_tickets|sort(attribute='code') %}
+          <li class="ticket" data-id="{{ ticket.id }}" data-code="{{ ticket.code }}"{% if ticket.occupied_seat_label %} data-seat-label="{{ ticket.occupied_seat_label }}"{% endif %}>
+            <span class="managed-ticket-code">{{ ticket.code }}</span>
+
+            <span class="managed-ticket-category">{{ ticket.category_label }}</span>
+
+            <span class="managed-ticket-user">
+            {%- if ticket.user -%}
+              {{ render_user_screen_name(ticket.user) }}
+            {%- else -%}
+              {{ 'kein/e Nutzer/in'|dim }}
+            {%- endif -%}
+            </span>
+
+            <span class="managed-ticket-seat">
+            {%- if ticket.occupied_seat_label -%}
+              {{ ticket.occupied_seat_label }}
+            {%- else -%}
+              {{ 'kein Sitzplatz'|dim }}
+            {%- endif -%}
+            </span>
+
+          </li>
+          {%- endfor %}
+        </ol>
+        {{ render_icon('caret-down') }}
+      </div>
+    </div>
+    <div class="column-auto">
+      <button class="button" id="release-seat-trigger" title="Sitzplatz freigeben">{{ render_icon('remove') }}</button>
+    </div>
+  </div>
+{%- else %}
+  <p>Du verwaltest keine Sitzplätze.</p>
+{%- endif %}

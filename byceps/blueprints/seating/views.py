@@ -6,9 +6,7 @@ byceps.blueprints.seating.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict, Iterator, Sequence
-
-from flask import abort, g
+from flask import abort, g, request
 
 from ...services.party import service as party_service
 from ...services.seating import area_service as seating_area_service
@@ -22,9 +20,6 @@ from ...services.ticketing import (
     ticket_service,
 )
 from ...services.ticketing.transfer.models import TicketID
-from ...services.user import service as user_service
-from ...services.user.transfer.models import User
-from ...typing import UserID
 from ...util.framework.blueprint import create_blueprint
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
@@ -33,6 +28,8 @@ from ...util.views import respond_no_content
 from ..admin.seating.authorization import SeatingPermission
 from ..authentication.decorators import login_required
 from ..authorization.registry import permission_registry
+
+from . import service
 
 
 blueprint = create_blueprint('seating', __name__)
@@ -72,21 +69,89 @@ def view_area(slug):
 
     seats = seat_service.get_seats_with_tickets_for_area(area.id)
 
-    if seat_management_enabled:
-        managed_tickets = ticket_service.find_tickets_for_seat_manager(
-            g.current_user.id, g.party_id
-        )
-    else:
-        managed_tickets = []
+    users_by_id = service.get_users(seats, [])
 
-    users_by_id = _get_users(seats, managed_tickets)
+    seats = service.get_seats(seats, users_by_id)
 
     return {
         'area': area,
         'seat_management_enabled': seat_management_enabled,
         'seats': seats,
+        'manage_mode': False,
+    }
+
+
+@blueprint.route('/areas/<slug>/manage_seats')
+@login_required
+@templated('seating/view_area')
+def manage_seats_in_area(slug):
+    """Manage seats for assigned tickets in area."""
+    _abort_if_seat_management_disabled()
+
+    area = seating_area_service.find_area_for_party_by_slug(g.party_id, slug)
+    if area is None:
+        abort(404)
+
+    seat_management_enabled = _is_seat_management_enabled()
+
+    seats = seat_service.get_seats_with_tickets_for_area(area.id)
+
+    ticket_code = request.args.get('ticket_code')
+    selected_ticket_id = request.args.get('ticket_id')
+
+    if _is_seating_admin(g.current_user) and ticket_code:
+        ticket_code = ticket_code.upper()
+        ticket = ticket_service.find_ticket_by_code(ticket_code)
+        if ticket:
+            tickets = ticket_service.find_tickets_for_seat_manager(
+                ticket.get_seat_manager().id, g.party_id
+            )
+            selected_ticket_id = ticket.id
+        else:
+            flash_error(f'Ticket code "{ticket_code}" not found.')
+            tickets = []
+            selected_ticket_id = None
+
+    elif _is_seating_admin(g.current_user) and selected_ticket_id:
+        ticket = ticket_service.find_ticket(selected_ticket_id)
+        if ticket:
+            tickets = ticket_service.find_tickets_for_seat_manager(
+                ticket.get_seat_manager().id, g.party_id
+            )
+            selected_ticket_id = ticket.id
+        else:
+            flash_error(f'Ticket ID "{selected_ticket_id}" not found.')
+            tickets = []
+            selected_ticket_id = None
+
+    elif seat_management_enabled:
+        tickets = ticket_service.find_tickets_for_seat_manager(
+            g.current_user.id, g.party_id
+        )
+        selected_ticket_id = None
+
+    else:
+        tickets = []
+        selected_ticket_id = None
+
+    users_by_id = service.get_users(seats, tickets)
+
+    seats = service.get_seats(seats, users_by_id)
+
+    if seat_management_enabled:
+        managed_tickets = list(
+            service.get_managed_tickets(tickets, users_by_id)
+        )
+    else:
+        managed_tickets = []
+
+    return {
+        'area': area,
+        'seat_management_enabled': seat_management_enabled,
+        'seats': seats,
+        'manage_mode': True,
         'managed_tickets': managed_tickets,
-        'users_by_id': users_by_id,
+        'selected_ticket_id': selected_ticket_id,
     }
 
 

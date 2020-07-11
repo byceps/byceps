@@ -1,25 +1,61 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/seating.html' import render_area %}
 {% set current_page = 'seating' %}
-{% set title = 'Sitzplan - %s'|format(area.title) %}
+{% set title = '%s - %s'|format('Sitzplatz-Verwaltung' if manage_mode else 'Sitzplan', area.title) %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='style/seating.css') }}">
 {%- endblock %}
 
+{% block scripts %}
+    <script src="{{ url_for('static', filename='behavior/seating.js') }}"></script>
+    <script>
+      onDomReady(function() {
+        {%- if seat_management_enabled %}
+        const selected_ticket_id = {% if selected_ticket_id|default %}'{{ selected_ticket_id }}'{% else %}null{% endif %};
+        init_seat_management(selected_ticket_id);
+        {%- endif %}
+
+        init_seat_tooltips();
+      });
+    </script>
+{%- endblock %}
+
 {% block body %}
 
+  {%- if manage_mode %}
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.view_area', slug=area.slug) }}">Sitzplan</a></li>
+    </ol>
+  </nav>
   <h1>{{ title }}</h1>
+  {%- else %}
+  <h1>{{ title }}</h1>
+  {%- endif %}
 
   <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive" style="margin-bottom: 2rem;">
     <input type="search" name="search_term" placeholder="Benutzername">
     <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
   </form>
 
-  <ol class="seats">
-    {%- for seat in seats|sort(attribute='coords') -%}
-    <li><a href="#" title="{{ '(%d, %d)'|format(seat.coords.x, seat.coords.y) }}"></a></li>
-    {%- endfor %}
-  </ol>
+{%- if seat_management_enabled %}
+
+  {%- if not g.current_user.is_anonymous %}
+    {%- if manage_mode %}
+{%- include 'seating/_ticket_selector.html' %}
+    {%- else %}
+  <div class="button-row button-row--right">
+    <a class="button" href="{{ url_for('.manage_seats_in_area', slug=area.slug) }}">Sitzplätze verwalten</a>
+  </div>
+    {%- endif %}
+  {%- endif %}
+
+{%- include 'seating/_legend.html' %}
+
+{%- endif %}
+
+{{ render_area(area, seats) }}
 
 {%- endblock %}

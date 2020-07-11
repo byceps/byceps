@@ -1,0 +1,13 @@
+  <div class="centered-block">
+    <small class="seats-legend">
+      <p><strong>Legende</strong></p>
+      <ol>
+        <li><div class="seat"></div> frei</li>
+        <li><div class="seat seat--occupied"></div> belegt durch ein nicht von dir verwaltetes Ticket</li>
+        {%- if manage_mode %}
+        <li><div class="seat seat--managed"></div> belegt durch ein von dir verwaltetes Ticket</li>
+        <li><div class="seat seat--managed-current"></div> belegt durch ein von dir verwaltetes und aktuell ausgewähltes Ticket</li>
+        {%- endif %}
+      </ol>
+    </small>
+  </div>

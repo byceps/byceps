@@ -1,18 +1,219 @@
-ol.seats li {
-  display: inline-block;
-  margin: 0;
+.centered-block {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* current ticket selection */
+
+.ticket-selector {
+  display: flex;
+  font-size: 0.875rem; /* 14px / 16px */
+  justify-content: space-between;
+  margin-bottom: 1rem;
   padding: 0;
+  position: relative;
+  width: 100%;
 }
-ol.seats a {
-  background-color: #00aa00;
-  border: #333333 solid 1px;
+
+.ticket-selector .icon {
+  position: absolute;
+  right: 0.5rem;
+  top: 0.65rem;
+}
+
+#ticket-selection {
+  width: 100%;
+}
+
+.ticket {
+  border-color: transparent;
+  border-left-color: #04aff4;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px 1px 1px 0.25rem;
+  display: none;
+  flex-direction: column;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.ticket:hover {
+  border-color: #04aff4;
+}
+
+.ticket--current {
+  border-left-color: #eecc00;
+}
+
+.ticket--current:hover {
+  border-color: #eecc00;
+}
+
+.ticket-selector--open .ticket,
+.ticket.ticket--current {
+  display: flex;
+}
+
+.ticket-selector--open .ticket + .ticket-selector--open .ticket {
+  margin-top: 0.25rem;
+}
+
+.managed-ticket-code,
+.managed-ticket-category,
+.managed-ticket-seat,
+.managed-ticket-user {
   display: block;
-  height: 17px;
-  margin: 1px;
-  width: 17px;
 }
-ol.seats a:hover {
-  height: 19px;
-  margin: 0;
-  width: 19px;
+
+.managed-ticket-category,
+.managed-ticket-seat,
+.managed-ticket-user {
+  padding-top: 0.25rem;
+}
+
+.managed-ticket-code {
+  font-weight: bold;
+  width: 13%;
+}
+
+.managed-ticket-category {
+  width: 17%;
+}
+
+.managed-ticket-seat {
+  margin-right: 1rem; /* space for dropdown icon */
+  width: 25%;
+}
+
+.managed-ticket-user {
+  width: 45%;
+}
+
+@media (min-width: 30rem) { /* 480px / 16px */
+  .ticket {
+    flex-direction: row;
+  }
+
+  .managed-ticket-category,
+  .managed-ticket-seat,
+  .managed-ticket-user {
+    padding-top: 0;
+    padding-left: 0.5rem;
+  }
+}
+
+
+/* area */
+
+.area {
+  background-repeat: no-repeat;
+  margin-top: 2rem;
+  position: relative;
+}
+
+.seat-with-tooltip {
+  position: absolute;
+}
+
+
+/* seat */
+
+.seat {
+  background-color: #333333;
+  box-shadow: 0 0 0 1px #666666;
+  display: block;
+  height: 11px;
+  margin: 1px 0 0 1px;
+  width: 11px;
+}
+
+.seat.seat-type--narrow {
+  width: 10px;
+}
+
+.seat:focus {
+  outline: none;
+}
+
+.seat:hover {
+  background-color: #eecc00;
+}
+
+.seat--occupied {
+  background-color: #dd0000;
+}
+
+/* Must be placed after `.seat--occupied` to override it. */
+.seat--managed {
+  background-color: #04aff4;
+}
+
+.seat--managed-current {
+  background-color: #eecc00 !important;
+}
+
+.seat--occupiable {
+  cursor: pointer;
+}
+
+.seat-with-tooltip:target .seat {
+  background-color: #eecc00 !important;
+}
+
+
+/* tooltip */
+
+.seat-tooltip {
+  background-color: #111111;
+  border: #888888 solid 1px;
+  bottom: 2rem;
+  font-size: 0.75rem; /* 12px / 16px */
+  left: -0.5rem;
+  padding: 0.5rem 0.75rem;
+  position: absolute;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.seat-label {
+  font-weight: bold;
+}
+
+.seat-ticket-code,
+.seat-occupier {
+  margin-top: 0.25rem;
+}
+
+.seat-occupier {
+  align-items: center;
+  display: flex;
+  margin-bottom: 0.25rem;
+}
+
+.seat-occupier-avatar {
+  margin-right: 0.5rem;
+}
+
+.seat-occupier-name {
+  line-height: 1.5;
+}
+
+
+/* legend */
+
+.seats-legend li {
+  align-items: center;
+  display: flex;
+}
+
+.seats-legend li + li {
+  margin-top: 0.25rem;
+}
+
+.seats-legend .seat {
+  height: 0.5rem;
+  margin: 0 0.5rem 0 0;
+  width: 0.5rem;
 }
