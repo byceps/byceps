@@ -56,6 +56,7 @@ def persons_for_brand(brand_id):
     brand = _get_brand_or_404(brand_id)
 
     orgas = orga_service.get_orgas_for_brand(brand.id)
+    _sort_users_by_screen_name(orgas)
 
     return {
         'brand': brand,
@@ -162,7 +163,7 @@ def export_persons(brand_id):
         }
 
     orgas = orga_service.get_orgas_for_brand(brand.id)
-    orgas.sort(key=attrgetter('screen_name'))
+    _sort_users_by_screen_name(orgas)
     rows = map(to_dict, orgas)
     return serialize_to_csv(field_names, rows)
 
@@ -187,3 +188,7 @@ def _get_brand_or_404(brand_id):
         abort(404)
 
     return brand
+
+
+def _sort_users_by_screen_name(users):
+    users.sort(key=lambda u: u.screen_name or '')

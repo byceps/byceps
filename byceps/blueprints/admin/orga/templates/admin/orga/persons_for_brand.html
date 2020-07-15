@@ -63,7 +63,7 @@
       </tr>
     </thead>
     <tbody>
-      {%- for user in orgas|sort(attribute='screen_name') %}
+      {%- for user in orgas %}
       <tr>
         <td>{{ render_user_avatar_48(user) }}</td>
         <td>
