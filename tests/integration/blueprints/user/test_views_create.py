@@ -99,7 +99,7 @@ def newsletter_list(brand):
 @patch('byceps.email.send')
 def test_create(
     send_email_mock,
-    party_app,
+    site_app,
     brand,
     site,
     terms_version,
@@ -123,7 +123,7 @@ def test_create(
         'subscribe_to_newsletter': 'y',
     }
 
-    response = send_request(party_app, form_data)
+    response = send_request(site_app, form_data)
     assert response.status_code == 302
 
     user_count_afterwards = get_user_count()
@@ -188,7 +188,7 @@ bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.a
 @patch('byceps.email.send')
 def test_create_without_newsletter_subscription(
     send_email_mock,
-    party_app,
+    site_app,
     brand,
     site,
     terms_version,
@@ -209,7 +209,7 @@ def test_create_without_newsletter_subscription(
         'subscribe_to_newsletter': '',
     }
 
-    response = send_request(party_app, form_data)
+    response = send_request(site_app, form_data)
     assert response.status_code == 302
 
     user = find_user(screen_name)

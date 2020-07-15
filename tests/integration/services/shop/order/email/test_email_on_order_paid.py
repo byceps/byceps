@@ -76,9 +76,9 @@ def order(storefront, customer, order_admin):
 
 @patch('byceps.email.send')
 def test_email_on_order_paid(
-    send_email_mock, party_app, customer, order_admin, order
+    send_email_mock, site_app, customer, order_admin, order
 ):
-    app = party_app
+    app = site_app
 
     order_service.mark_order_as_paid(
         order.id, PaymentMethod.bank_transfer, order_admin.id

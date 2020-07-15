@@ -10,7 +10,7 @@ from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
 
-def test_update_user_address(party_app, make_user_with_detail):
+def test_update_user_address(site_app, make_user_with_detail):
     old_first_names = 'Rainer'
     old_last_name = 'Zufall'
     old_date_of_birth = None
@@ -91,7 +91,7 @@ def test_update_user_address(party_app, make_user_with_detail):
     }
 
 
-def test_update_user_real_name(party_app, make_user_with_detail):
+def test_update_user_real_name(site_app, make_user_with_detail):
     old_first_names = 'Rainer'
     old_last_name = 'Zufall'
 
@@ -142,7 +142,7 @@ def test_update_user_real_name(party_app, make_user_with_detail):
     }
 
 
-def test_remove_user_dob_and_phone_number(party_app, make_user_with_detail):
+def test_remove_user_dob_and_phone_number(site_app, make_user_with_detail):
     old_date_of_birth = date(1991, 9, 17)
     old_phone_number = '555-fake-anyway'
 

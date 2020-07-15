@@ -25,14 +25,14 @@ from testfixtures.user import (
     create_user_with_detail as _create_user_with_detail,
 )
 
-from .base import CONFIG_FILENAME_TEST_PARTY
+from .base import CONFIG_FILENAME_TEST_SITE
 
 
 DEFAULT_EMAIL_CONFIG_ID = 'email-config-1'
 
 
 @contextmanager
-def app_context(*, config_filename=CONFIG_FILENAME_TEST_PARTY):
+def app_context(*, config_filename=CONFIG_FILENAME_TEST_SITE):
     app = create_app(config_filename)
 
     with app.app_context():

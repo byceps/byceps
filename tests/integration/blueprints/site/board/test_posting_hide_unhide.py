@@ -10,7 +10,7 @@ from byceps.services.board import (
 from .helpers import find_posting
 
 
-def test_hide_posting(party_app, moderator, moderator_client, posting):
+def test_hide_posting(site_app, moderator, moderator_client, posting):
     posting_before = posting
 
     assert_posting_is_not_hidden(posting_before)
@@ -23,7 +23,7 @@ def test_hide_posting(party_app, moderator, moderator_client, posting):
     assert_posting_is_hidden(posting_afterwards, moderator.id)
 
 
-def test_unhide_posting(party_app, moderator, moderator_client, posting):
+def test_unhide_posting(site_app, moderator, moderator_client, posting):
     posting_before = posting
 
     board_posting_command_service.hide_posting(posting_before.id, moderator.id)

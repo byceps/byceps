@@ -7,7 +7,7 @@ from .helpers import create_topic, find_topic
 
 
 def test_move_topic(
-    party_app,
+    site_app,
     board_poster,
     moderator,
     moderator_client,

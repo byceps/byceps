@@ -47,7 +47,7 @@ def orderer(make_user_with_detail):
     return create_orderer(make_user_with_detail('TotalAmountOrderer'))
 
 
-def test_without_any_items(party_app, storefront, orderer):
+def test_without_any_items(site_app, storefront, orderer):
     order = place_order(storefront.id, orderer, [])
 
     assert order.total_amount == Decimal('0.00')
@@ -55,7 +55,7 @@ def test_without_any_items(party_app, storefront, orderer):
     order_service.delete_order(order.id)
 
 
-def test_with_single_item(party_app, storefront, orderer, article1):
+def test_with_single_item(site_app, storefront, orderer, article1):
     order = place_order(storefront.id, orderer, [
         (article1, 1),
     ])
@@ -66,7 +66,7 @@ def test_with_single_item(party_app, storefront, orderer, article1):
 
 
 def test_with_multiple_items(
-    party_app,
+    site_app,
     storefront,
     orderer,
     article1,

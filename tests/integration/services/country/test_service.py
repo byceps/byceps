@@ -12,7 +12,7 @@ from byceps.services.country import service as country_service
     ('Deutschland', 'DE', 'DEU'),
     ('Österreich' , 'AT', 'AUT'),
 ])
-def test_get_countries_contains_country(party_app, name, alpha2, alpha3):
+def test_get_countries_contains_country(site_app, name, alpha2, alpha3):
     countries = country_service.get_countries()
 
     country = find_by_name(countries, name)
@@ -23,7 +23,7 @@ def test_get_countries_contains_country(party_app, name, alpha2, alpha3):
     assert country.alpha3 == alpha3
 
 
-def test_get_country_names_contains_selected_items(party_app):
+def test_get_country_names_contains_selected_items(site_app):
     actual = country_service.get_country_names()
 
     some_expected = frozenset([
@@ -40,7 +40,7 @@ def test_get_country_names_contains_selected_items(party_app):
     assert frozenset(actual).issuperset(some_expected)
 
 
-def test_get_country_names_contains_no_duplicates(party_app):
+def test_get_country_names_contains_no_duplicates(site_app):
     actual = country_service.get_country_names()
 
     assert len(actual) == len(set(actual))

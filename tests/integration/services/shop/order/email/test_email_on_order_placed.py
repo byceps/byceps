@@ -122,8 +122,8 @@ def order(storefront, article1, article2, customer, order_admin):
 
 
 @patch('byceps.email.send')
-def test_email_on_order_placed(send_email_mock, party_app, customer, order):
-    app = party_app
+def test_email_on_order_placed(send_email_mock, site_app, customer, order):
+    app = site_app
 
     with current_user_set(app, customer), app.app_context():
         order_email_service.send_email_for_incoming_order_to_orderer(order.id)

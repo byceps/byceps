@@ -13,13 +13,13 @@ from tests.helpers import (
 )
 
 
-def test_get_permission_ids_for_user_without_user_permissions(party_app, user):
+def test_get_permission_ids_for_user_without_user_permissions(site_app, user):
     actual = authorization_service.get_permission_ids_for_user(user.id)
     assert actual == frozenset()
 
 
 def test_get_permission_ids_for_user_with_user_permissions(
-    party_app, user, permissions
+    site_app, user, permissions
 ):
     actual = authorization_service.get_permission_ids_for_user(user.id)
     assert actual == {

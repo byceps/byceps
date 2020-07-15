@@ -9,10 +9,10 @@ from tests.helpers import http_client, login_user
 CONTENT_TYPE_JSON = 'application/json'
 
 
-def test_when_logged_in(party_app, site, user):
+def test_when_logged_in(site_app, site, user):
     login_user(user.id)
 
-    response = send_request(party_app, user_id=user.id)
+    response = send_request(site_app, user_id=user.id)
 
     assert response.status_code == 200
     assert response.content_type == CONTENT_TYPE_JSON
@@ -24,8 +24,8 @@ def test_when_logged_in(party_app, site, user):
     assert response_data['avatar_url'] is None
 
 
-def test_when_not_logged_in(party_app, site):
-    response = send_request(party_app)
+def test_when_not_logged_in(site_app, site):
+    response = send_request(site_app)
 
     assert response.status_code == 403
     assert response.get_data() == b''

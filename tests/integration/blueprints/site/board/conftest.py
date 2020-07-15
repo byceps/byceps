@@ -92,6 +92,6 @@ def moderator(make_user):
 
 
 @pytest.fixture(scope='session')
-def moderator_client(party_app, moderator):
-    with http_client(party_app, user_id=moderator.id) as client:
+def moderator_client(site_app, moderator):
+    with http_client(site_app, user_id=moderator.id) as client:
         yield client

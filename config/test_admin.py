@@ -1,4 +1,4 @@
-# an admin site configuration file to be used in tests
+# an admin app configuration file to be used in tests
 
 SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 SERVER_NAME = 'admin.acmecon.test'

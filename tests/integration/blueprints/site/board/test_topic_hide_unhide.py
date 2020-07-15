@@ -10,7 +10,7 @@ from byceps.services.board import (
 from .helpers import find_topic
 
 
-def test_hide_topic(party_app, moderator, moderator_client, topic):
+def test_hide_topic(site_app, moderator, moderator_client, topic):
     topic_before = topic
 
     assert_topic_is_not_hidden(topic_before)
@@ -23,7 +23,7 @@ def test_hide_topic(party_app, moderator, moderator_client, topic):
     assert_topic_is_hidden(topic_afterwards, moderator.id)
 
 
-def test_unhide_topic(party_app, moderator, moderator_client, topic):
+def test_unhide_topic(site_app, moderator, moderator_client, topic):
     topic_before = topic
 
     board_topic_command_service.hide_topic(topic_before.id, moderator.id)

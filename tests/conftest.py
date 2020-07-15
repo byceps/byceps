@@ -19,7 +19,7 @@ from byceps.services.user import (
     service as user_service,
 )
 
-from tests.base import create_admin_app, create_party_app
+from tests.base import create_admin_app, create_site_app
 from tests.database import set_up_database, tear_down_database
 from tests.helpers import (
     create_brand,
@@ -63,21 +63,21 @@ def admin_client(admin_app):
 
 
 @pytest.fixture(scope='session')
-def make_party_app(admin_app, data_path):
-    """Provide a party web application."""
+def make_site_app(admin_app, data_path):
+    """Provide a site web application."""
 
     def _wrapper(**config_overrides):
         if CONFIG_PATH_DATA_KEY not in config_overrides:
             config_overrides[CONFIG_PATH_DATA_KEY] = data_path
-        return create_party_app(config_overrides)
+        return create_site_app(config_overrides)
 
     return _wrapper
 
 
 @pytest.fixture(scope='session')
-def party_app(make_party_app):
-    """Provide a party web application."""
-    app = make_party_app()
+def site_app(make_site_app):
+    """Provide a site web application."""
+    app = make_site_app()
     with app.app_context():
         yield app
 

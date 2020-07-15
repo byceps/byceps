@@ -6,16 +6,16 @@
 from tests.helpers import http_client, login_user
 
 
-def test_when_logged_in_form_is_available(party_app, site, user):
+def test_when_logged_in_form_is_available(site_app, site, user):
     login_user(user.id)
 
-    response = send_request(party_app, user_id=user.id)
+    response = send_request(site_app, user_id=user.id)
 
     assert response.status_code == 200
 
 
-def test_when_not_logged_in_form_is_unavailable(party_app, site):
-    response = send_request(party_app)
+def test_when_not_logged_in_form_is_unavailable(site_app, site):
+    response = send_request(site_app)
 
     assert response.status_code == 404
 

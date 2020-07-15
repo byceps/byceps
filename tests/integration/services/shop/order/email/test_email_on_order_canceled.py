@@ -75,9 +75,9 @@ def order(storefront, customer, order_admin):
 
 @patch('byceps.email.send')
 def test_email_on_order_canceled(
-    send_email_mock, party_app, customer, order_admin, order
+    send_email_mock, site_app, customer, order_admin, order
 ):
-    app = party_app
+    app = site_app
 
     reason = 'Du hast nicht rechtzeitig bezahlt.'
     order_service.cancel_order(order.id, order_admin.id, reason)

@@ -78,8 +78,8 @@ def site(brand, storefront):
 
 
 @pytest.fixture
-def site_app(site, make_party_app):
-    app = make_party_app(SITE_ID=site.id)
+def site_app(site, make_site_app):
+    app = make_site_app(SITE_ID=site.id)
     with app.app_context():
         yield app
 

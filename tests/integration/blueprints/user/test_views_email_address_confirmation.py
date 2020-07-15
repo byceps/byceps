@@ -35,7 +35,7 @@ def role(admin_app, site, user1, user2):
     authorization_service.delete_role(role.id)
 
 
-def test_confirm_email_address_with_valid_token(party_app, user1, role):
+def test_confirm_email_address_with_valid_token(site_app, user1, role):
     user = user1
 
     verification_token = create_confirmation_token(user.id)
@@ -44,7 +44,7 @@ def test_confirm_email_address_with_valid_token(party_app, user1, role):
 
     # -------------------------------- #
 
-    response = confirm(party_app, verification_token)
+    response = confirm(site_app, verification_token)
 
     # -------------------------------- #
 
@@ -53,7 +53,7 @@ def test_confirm_email_address_with_valid_token(party_app, user1, role):
     assert get_role_ids(user.id) == {'board_user'}
 
 
-def test_confirm_email_address_with_unknown_token(party_app, site, user2, role):
+def test_confirm_email_address_with_unknown_token(site_app, site, user2, role):
     user = user2
 
     verification_token = create_confirmation_token(user.id)
@@ -61,7 +61,7 @@ def test_confirm_email_address_with_unknown_token(party_app, site, user2, role):
 
     # -------------------------------- #
 
-    response = confirm(party_app, verification_token)
+    response = confirm(site_app, verification_token)
 
     # -------------------------------- #
 
