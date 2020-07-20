@@ -13,6 +13,7 @@ from flask import abort, g, request
 from ....services.brand import service as brand_service
 from ....services.orga import service as orga_service
 from ....services.orga import birthday_service as orga_birthday_service
+from ....services.user import service as user_service
 from ....util.export import serialize_to_csv
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
@@ -56,7 +57,7 @@ def persons_for_brand(brand_id):
     brand = _get_brand_or_404(brand_id)
 
     orgas = orga_service.get_orgas_for_brand(brand.id)
-    _sort_users_by_screen_name(orgas)
+    orgas.sort(key=user_service.get_sort_key_for_screen_name)
 
     return {
         'brand': brand,
@@ -163,7 +164,7 @@ def export_persons(brand_id):
         }
 
     orgas = orga_service.get_orgas_for_brand(brand.id)
-    _sort_users_by_screen_name(orgas)
+    orgas.sort(key=user_service.get_sort_key_for_screen_name)
     rows = map(to_dict, orgas)
     return serialize_to_csv(field_names, rows)
 
@@ -188,7 +189,3 @@ def _get_brand_or_404(brand_id):
         abort(404)
 
     return brand
-
-
-def _sort_users_by_screen_name(users):
-    users.sort(key=lambda u: u.screen_name or '')

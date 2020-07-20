@@ -1,0 +1,32 @@
+"""
+:Copyright: 2006-2020 Jochen Kupperschmidt
+:License: Modified BSD, see LICENSE for details.
+"""
+
+from byceps.services.user.service import get_sort_key_for_screen_name
+from byceps.services.user.transfer.models import User
+
+
+def test_get_sort_key_for_screen_name():
+    user1 = create_user('AnyName')
+    user2 = create_user(None)  # no screen name
+    user3 = create_user('SomeName')
+    user4 = create_user('UpperCaseName')
+    user5 = create_user('lowerCaseName')
+
+    users = {user1, user2, user3, user4, user5}
+
+    actual = sorted(users, key=get_sort_key_for_screen_name)
+
+    assert actual == [user1, user5, user3, user4, user2]
+
+
+def create_user(screen_name: str) -> User:
+    return User(
+        id=None,
+        screen_name=screen_name,
+        suspended=False,
+        deleted=False,
+        avatar_url=None,
+        is_orga=False,
+    )

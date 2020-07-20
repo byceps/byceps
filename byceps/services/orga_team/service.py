@@ -157,15 +157,12 @@ def get_unassigned_orgas_for_party(party_id: PartyID) -> Sequence[DbUser]:
         unassigned_orgas_query = unassigned_orgas_query \
             .filter(db.not_(DbUser.id.in_(assigned_orga_ids)))
 
-    unassigned_orgas = unassigned_orgas_query \
+    return unassigned_orgas_query \
         .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == party.brand_id) \
         .options(
             db.load_only('screen_name')
         ) \
         .all()
-    unassigned_orgas.sort(key=lambda user: user.screen_name.lower())
-
-    return unassigned_orgas
 
 
 def is_orga_for_party(user_id: UserID, party_id: PartyID) -> bool:

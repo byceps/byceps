@@ -57,7 +57,7 @@
 {{ render_snippet('orga_team_intro', ignore_if_unknown=True)|safe }}
 
   <ol class="orga-overview">
-    {%- for orga in orgas|sort(attribute='user.screen_name') %}
+    {%- for orga in orgas %}
     <li class="orga">
       <div class="orga-avatar">
         {{ render_user_avatar_96(orga.user) }}

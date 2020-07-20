@@ -278,6 +278,18 @@ def get_email_address(user_id: UserID) -> str:
     return email_address
 
 
+def get_sort_key_for_screen_name(user: User) -> Tuple[bool, str]:
+    """Return a key for sorting by screen name.
+
+    - Orders screen names case-insensitively.
+    - Handles absent screen names (i.e. `None`) and places them at the
+      end.
+    """
+    normalized_screen_name = (user.screen_name or '').lower()
+    has_screen_name = bool(normalized_screen_name)
+    return not has_screen_name, normalized_screen_name
+
+
 def index_users_by_id(users: Set[User]) -> Dict[UserID, User]:
     """Map the users' IDs to the corresponding user objects."""
     return {user.id: user for user in users}

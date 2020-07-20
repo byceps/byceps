@@ -118,6 +118,10 @@ def membership_create_form(team_id, erroneous_form=None):
             'unassigned_orgas_available': False,
         }
 
+    unassigned_orgas = sorted(
+        unassigned_orgas, key=user_service.get_sort_key_for_screen_name
+    )
+
     form = erroneous_form if erroneous_form else MembershipCreateForm()
     form.set_user_choices(unassigned_orgas)
 
