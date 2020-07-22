@@ -79,7 +79,7 @@ def team_create(party_id):
 
     flash_success(
         f'Das Team "{team.title}" wurde '
-        f'für die Party "{team.party.title}" erstellt.'
+        f'für die Party "{party.title}" erstellt.'
     )
     return redirect_to('.teams_for_party', party_id=party.id)
 

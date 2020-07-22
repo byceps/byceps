@@ -18,21 +18,21 @@ from ..user import service as user_service
 from ..user.transfer.models import User
 
 from .models import Membership as DbMembership, OrgaTeam as DbOrgaTeam
-from .transfer.models import MembershipID, OrgaTeamID
+from .transfer.models import MembershipID, OrgaTeam, OrgaTeamID
 
 
 # -------------------------------------------------------------------- #
 # teams
 
 
-def create_team(party_id: PartyID, title: str) -> DbOrgaTeam:
+def create_team(party_id: PartyID, title: str) -> OrgaTeam:
     """Create an orga team for that party."""
     team = DbOrgaTeam(party_id, title)
 
     db.session.add(team)
     db.session.commit()
 
-    return team
+    return _db_entity_to_team(team)
 
 
 def delete_team(team_id: OrgaTeamID) -> None:
@@ -59,9 +59,14 @@ def get_teams_for_party(party_id: PartyID) -> Sequence[DbOrgaTeam]:
         .all()
 
 
-def find_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
+def find_team(team_id: OrgaTeamID) -> Optional[OrgaTeam]:
     """Return the team with that id, or `None` if not found."""
-    return _find_db_team(team_id)
+    team = _find_db_team(team_id)
+
+    if team is None:
+        return None
+
+    return _db_entity_to_team(team)
 
 
 def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
@@ -77,6 +82,14 @@ def get_teams_for_party_with_memberships(
         .options(db.joinedload('memberships')) \
         .filter_by(party_id=party_id) \
         .all()
+
+
+def _db_entity_to_team(team: DbOrgaTeam) -> OrgaTeam:
+    return OrgaTeam(
+        team.id,
+        team.party_id,
+        team.title,
+    )
 
 
 # -------------------------------------------------------------------- #
