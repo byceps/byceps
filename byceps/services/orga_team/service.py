@@ -44,14 +44,11 @@ def delete_team(team_id: OrgaTeamID) -> None:
     db.session.commit()
 
 
-def find_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
-    """Return the team with that id, or `None` if not found."""
-    return _find_db_team(team_id)
-
-
-def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
-    """Return the team with that id, or `None` if not found."""
-    return DbOrgaTeam.query.get(team_id)
+def count_teams_for_party(party_id: PartyID) -> int:
+    """Return the number of orga teams for that party."""
+    return DbOrgaTeam.query \
+        .filter_by(party_id=party_id) \
+        .count()
 
 
 def get_teams_for_party(party_id: PartyID) -> Sequence[DbOrgaTeam]:
@@ -60,6 +57,16 @@ def get_teams_for_party(party_id: PartyID) -> Sequence[DbOrgaTeam]:
         .filter_by(party_id=party_id) \
         .order_by(DbOrgaTeam.title) \
         .all()
+
+
+def find_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
+    """Return the team with that id, or `None` if not found."""
+    return _find_db_team(team_id)
+
+
+def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
+    """Return the team with that id, or `None` if not found."""
+    return DbOrgaTeam.query.get(team_id)
 
 
 def get_teams_for_party_with_memberships(
@@ -117,6 +124,13 @@ def delete_membership(membership_id: MembershipID) -> None:
     db.session.commit()
 
 
+def count_memberships_for_party(party_id: PartyID) -> int:
+    """Return the number of memberships the party's teams have in total."""
+    return DbMembership.query \
+        .for_party(party_id) \
+        .count()
+
+
 def find_membership(membership_id: MembershipID) -> Optional[DbMembership]:
     """Return the membership with that id, or `None` if not found."""
     return _find_db_membership(membership_id)
@@ -159,6 +173,18 @@ def get_memberships_for_user(user_id: UserID) -> Sequence[DbMembership]:
         ) \
         .filter_by(user_id=user_id) \
         .all()
+
+
+def has_team_memberships(team_id: OrgaTeamID) -> bool:
+    """Return `True` if the team has memberships."""
+    return db.session \
+        .query(
+            db.session
+                .query(DbMembership)
+                .filter(DbMembership.orga_team_id == team_id)
+                .exists()
+        ) \
+        .scalar()
 
 
 # -------------------------------------------------------------------- #

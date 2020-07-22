@@ -91,7 +91,7 @@ def team_delete(team_id):
     """Delete the team."""
     team = _get_team_or_404(team_id)
 
-    if team.memberships:
+    if orga_team_service.has_team_memberships(team.id):
         flash_error(
             f'Orga team "{team.title}" cannot be deleted because it has members.'
         )
