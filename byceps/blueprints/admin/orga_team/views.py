@@ -12,7 +12,7 @@ from ....services.orga_team import service as orga_team_service
 from ....services.party import service as party_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
+from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import redirect_to, respond_no_content
 
@@ -92,7 +92,10 @@ def team_delete(team_id):
     team = _get_team_or_404(team_id)
 
     if team.memberships:
-        abort(403, 'Orga team cannot be deleted as it has members.')
+        flash_error(
+            f'Orga team "{team.title}" cannot be deleted because it has members.'
+        )
+        return
 
     title = team.title
 
