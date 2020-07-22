@@ -6,7 +6,7 @@ byceps.services.orga_team.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional, Sequence
+from typing import Optional, Sequence, Set
 
 from ...database import db
 from ...typing import PartyID, UserID
@@ -14,6 +14,8 @@ from ...typing import PartyID, UserID
 from ..orga.models import OrgaFlag as DbOrgaFlag
 from ..party import service as party_service
 from ..user.models.user import User as DbUser
+from ..user import service as user_service
+from ..user.transfer.models import User
 
 from .models import Membership as DbMembership, OrgaTeam as DbOrgaTeam
 from .transfer.models import MembershipID, OrgaTeamID
@@ -139,7 +141,7 @@ def get_memberships_for_user(user_id: UserID) -> Sequence[DbMembership]:
 # organizers
 
 
-def get_unassigned_orgas_for_party(party_id: PartyID) -> Sequence[DbUser]:
+def get_unassigned_orgas_for_party(party_id: PartyID) -> Set[User]:
     """Return organizers that are not assigned to a team for the party."""
     party = party_service.get_party(party_id)
 
@@ -151,19 +153,19 @@ def get_unassigned_orgas_for_party(party_id: PartyID) -> Sequence[DbUser]:
         .all()
     assigned_orga_ids = frozenset(user.id for user in assigned_orgas)
 
-    unassigned_orgas_query = DbUser.query
+    unassigned_orga_ids_query = db.session \
+        .query(DbUser.id)
 
     if assigned_orga_ids:
-        unassigned_orgas_query = unassigned_orgas_query \
+        unassigned_orga_ids_query = unassigned_orga_ids_query \
             .filter(db.not_(DbUser.id.in_(assigned_orga_ids)))
 
-    return unassigned_orgas_query \
+    unassigned_orga_ids = unassigned_orga_ids_query \
         .filter_by(deleted=False) \
         .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == party.brand_id) \
-        .options(
-            db.load_only('screen_name')
-        ) \
         .all()
+
+    return user_service.find_users(unassigned_orga_ids)
 
 
 def is_orga_for_party(user_id: UserID, party_id: PartyID) -> bool:
