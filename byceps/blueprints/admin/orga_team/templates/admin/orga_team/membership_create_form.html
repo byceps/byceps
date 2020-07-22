@@ -2,14 +2,14 @@
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'orga_team_admin.teams' %}
-{% set current_page_party = team.party %}
+{% set current_page_party = party %}
 {% set title = 'Orga zu Team hinzufügen' %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li>{{ team.party.title }}</li>
+      <li>{{ party.title }}</li>
       <li>{{ team.title }}</li>
     </ol>
   </nav>
@@ -22,7 +22,7 @@
       {{ form_field(form.duties, maxlength=40) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.teams_for_party', party_id=team.party.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.teams_for_party', party_id=party.id)) }}
   </form>
   {%- else %}
   {{ render_notification('Es sind keine Orgas vorhanden, die noch keinem Team dieser Party zugewiesen sind.', category='info', icon='info') }}

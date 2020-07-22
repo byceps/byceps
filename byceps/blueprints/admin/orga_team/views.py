@@ -111,6 +111,8 @@ def membership_create_form(team_id, erroneous_form=None):
     """Show form to assign an organizer to that team."""
     team = _get_team_or_404(team_id)
 
+    party = party_service.get_party(team.party_id)
+
     unassigned_orgas = orga_team_service.get_unassigned_orgas_for_party(
         team.party_id
     )
@@ -118,6 +120,7 @@ def membership_create_form(team_id, erroneous_form=None):
     if not unassigned_orgas:
         return {
             'team': team,
+            'party': party,
             'unassigned_orgas_available': False,
         }
 
@@ -131,6 +134,7 @@ def membership_create_form(team_id, erroneous_form=None):
     return {
         'form': form,
         'team': team,
+        'party': party,
         'unassigned_orgas_available': True,
     }
 
