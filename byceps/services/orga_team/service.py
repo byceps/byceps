@@ -35,9 +35,12 @@ def create_team(party_id: PartyID, title: str) -> DbOrgaTeam:
     return team
 
 
-def delete_team(team: DbOrgaTeam) -> None:
+def delete_team(team_id: OrgaTeamID) -> None:
     """Delete the orga team."""
-    db.session.delete(team)
+    db.session.query(DbOrgaTeam) \
+        .filter_by(id=team_id) \
+        .delete()
+
     db.session.commit()
 
 
@@ -92,9 +95,12 @@ def update_membership(
     db.session.commit()
 
 
-def delete_membership(membership: DbMembership) -> None:
+def delete_membership(membership_id: MembershipID) -> None:
     """Delete the membership."""
-    db.session.delete(membership)
+    db.session.query(DbMembership) \
+        .filter_by(id=membership_id) \
+        .delete()
+
     db.session.commit()
 
 

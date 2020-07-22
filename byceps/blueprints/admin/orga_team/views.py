@@ -96,7 +96,7 @@ def team_delete(team_id):
 
     title = team.title
 
-    orga_team_service.delete_team(team)
+    orga_team_service.delete_team(team.id)
 
     flash_success(f'Das Team "{title}" wurde gelöscht.')
 
@@ -220,7 +220,7 @@ def membership_remove(membership_id):
     user = membership.user
     team = membership.orga_team
 
-    orga_team_service.delete_membership(membership)
+    orga_team_service.delete_membership(membership.id)
 
     flash_success(
         f'{user.screen_name} wurde aus dem Team "{team.title}" entfernt.'
