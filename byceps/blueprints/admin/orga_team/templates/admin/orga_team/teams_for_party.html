@@ -13,11 +13,6 @@
         margin-bottom: 0;
       }
 
-      .team .empty {
-        display: flex;
-        justify-content: space-between;
-      }
-
       .members {
         margin: 0 0 0.5rem 0;
       }
@@ -107,9 +102,7 @@
       {%- endfor %}
     </ol>
     {%- else %}
-    <p class="empty">
-      <span>Dieses Team hat keine Mitglieder.</span>
-    </p>
+    <div class="dimmed-box centered">Dieses Team hat keine Mitglieder.</div>
     {%- endif %}
 
   </div>
