@@ -161,12 +161,9 @@ def membership_create(team_id):
     membership = orga_team_service.create_membership(team.id, user.id, duties)
 
     flash_success(
-        f'{membership.user.screen_name} wurde '
-        f'in das Team "{membership.orga_team.title}" aufgenommen.'
+        f'{user.screen_name} wurde in das Team "{team.title}" aufgenommen.'
     )
-    return redirect_to(
-        '.teams_for_party', party_id=membership.orga_team.party_id
-    )
+    return redirect_to('.teams_for_party', party_id=team.party_id)
 
 
 @blueprint.route('/memberships/<uuid:membership_id>/update')

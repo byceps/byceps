@@ -18,7 +18,7 @@ from ..user import service as user_service
 from ..user.transfer.models import User
 
 from .models import Membership as DbMembership, OrgaTeam as DbOrgaTeam
-from .transfer.models import MembershipID, OrgaTeam, OrgaTeamID
+from .transfer.models import Membership, MembershipID, OrgaTeam, OrgaTeamID
 
 
 # -------------------------------------------------------------------- #
@@ -99,7 +99,7 @@ def _db_entity_to_team(team: DbOrgaTeam) -> OrgaTeam:
 
 def create_membership(
     team_id: OrgaTeamID, user_id: UserID, duties: str
-) -> DbMembership:
+) -> Membership:
     """Assign the user to the team."""
     membership = DbMembership(team_id, user_id)
 
@@ -109,7 +109,7 @@ def create_membership(
     db.session.add(membership)
     db.session.commit()
 
-    return membership
+    return _db_entity_to_membership(membership)
 
 
 def update_membership(
@@ -199,6 +199,15 @@ def has_team_memberships(team_id: OrgaTeamID) -> bool:
                 .exists()
         ) \
         .scalar()
+
+
+def _db_entity_to_membership(membership: DbMembership) -> Membership:
+    return Membership(
+        membership.id,
+        membership.orga_team_id,
+        membership.user,
+        membership.duties,
+    )
 
 
 # -------------------------------------------------------------------- #

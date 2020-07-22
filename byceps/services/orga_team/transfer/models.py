@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from ....typing import PartyID
+from ....typing import PartyID, UserID
 
 
 OrgaTeamID = NewType('OrgaTeamID', UUID)
@@ -24,3 +24,11 @@ class OrgaTeam:
 
 
 MembershipID = NewType('MembershipID', UUID)
+
+
+@dataclass(frozen=True)
+class Membership:
+    id: MembershipID
+    orga_team_id: OrgaTeamID
+    user_id: UserID
+    duties: str
