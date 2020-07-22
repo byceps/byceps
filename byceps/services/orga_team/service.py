@@ -46,6 +46,11 @@ def delete_team(team_id: OrgaTeamID) -> None:
 
 def find_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
     """Return the team with that id, or `None` if not found."""
+    return _find_db_team(team_id)
+
+
+def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
+    """Return the team with that id, or `None` if not found."""
     return DbOrgaTeam.query.get(team_id)
 
 
@@ -87,9 +92,17 @@ def create_membership(
 
 
 def update_membership(
-    membership: DbMembership, team: DbOrgaTeam, duties: str
+    membership_id: MembershipID, team_id: OrgaTeamID, duties: str
 ) -> None:
     """Update the membership."""
+    membership = _find_db_membership(membership_id)
+    if membership is None:
+        raise ValueError(f"Unknown membership ID '{membership_id}'")
+
+    team = _find_db_team(team_id)
+    if team is None:
+        raise ValueError(f"Unknown team ID '{team_id}'")
+
     membership.orga_team = team
     membership.duties = duties
     db.session.commit()
@@ -105,6 +118,11 @@ def delete_membership(membership_id: MembershipID) -> None:
 
 
 def find_membership(membership_id: MembershipID) -> Optional[DbMembership]:
+    """Return the membership with that id, or `None` if not found."""
+    return _find_db_membership(membership_id)
+
+
+def _find_db_membership(membership_id: MembershipID) -> Optional[DbMembership]:
     """Return the membership with that id, or `None` if not found."""
     return DbMembership.query.get(membership_id)
 

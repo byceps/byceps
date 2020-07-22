@@ -199,7 +199,7 @@ def membership_update(membership_id):
     team = orga_team_service.find_team(team_id)
     duties = form.duties.data.strip() or None
 
-    orga_team_service.update_membership(membership, team, duties)
+    orga_team_service.update_membership(membership.id, team.id, duties)
 
     flash_success(
         f'Die Teammitgliedschaft von {membership.user.screen_name} '
