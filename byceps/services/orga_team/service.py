@@ -158,6 +158,7 @@ def get_unassigned_orgas_for_party(party_id: PartyID) -> Sequence[DbUser]:
             .filter(db.not_(DbUser.id.in_(assigned_orga_ids)))
 
     return unassigned_orgas_query \
+        .filter_by(deleted=False) \
         .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == party.brand_id) \
         .options(
             db.load_only('screen_name')

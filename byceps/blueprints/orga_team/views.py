@@ -52,6 +52,7 @@ def index():
         )
 
     orgas = list(map(_to_orga, memberships))
+    orgas = [orga for orga in orgas if not orga.user.deleted]
     orgas.sort(key=lambda orga: user_service.get_sort_key_for_screen_name(orga.user))
 
     return {

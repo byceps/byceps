@@ -164,6 +164,7 @@ def export_persons(brand_id):
         }
 
     orgas = orga_service.get_orgas_for_brand(brand.id)
+    orgas = [orga for orga in orgas if not orga.deleted]
     orgas.sort(key=user_service.get_sort_key_for_screen_name)
     rows = map(to_dict, orgas)
     return serialize_to_csv(field_names, rows)
