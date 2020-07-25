@@ -20,19 +20,6 @@
         flex: 0 0 50%;
         padding: 1em 0 0 2em;
       }
-
-      .member {
-        display: flex;
-        justify-content: space-between;
-        margin: -1rem 0 0 -1rem;
-      }
-      .member > div {
-        flex: 0 0 auto;
-        padding: 1rem 0 0 1rem;
-      }
-      .member > div.details {
-        flex: 1 0 auto;
-      }
     </style>
 {%- endblock %}
 
@@ -90,15 +77,19 @@
     <ol class="list-grid members">
       {%- for membership in memberships|sort(attribute='user.screen_name') %}
       <li>
-        <div class="member">
-          <div>
-            {{ render_user_avatar_48(membership.user) }}
+        <div class="row row--space-between">
+          <div class="column-auto">
+            <div class="row">
+              <div class="column-auto">
+                {{ render_user_avatar_48(membership.user) }}
+              </div>
+              <div class="column-auto">
+                {{ render_user_admin_link(membership.user) }}<br>
+                {{ membership.duties|fallback }}
+              </div>
+            </div>
           </div>
-          <div class="details">
-            {{ render_user_admin_link(membership.user) }}<br>
-            {{ membership.duties|fallback }}
-          </div>
-          <div>
+          <div class="column-auto">
             <div class="dropdown left">
               <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
               <ol>
