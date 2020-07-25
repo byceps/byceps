@@ -38,6 +38,12 @@ class Membership:
 
 
 @dataclass(frozen=True)
+class Member:
+    membership: Membership
+    user: User
+
+
+@dataclass(frozen=True)
 class OrgaActivity:
     user_id: UserID
     party: Party

@@ -37,7 +37,7 @@
           <li>{{ party.title }}</li>
         </ol>
       </nav>
-      <h1>{{ title }} {{ render_extra_in_heading(teams_and_memberships|length) }}</h1>
+      <h1>{{ title }} {{ render_extra_in_heading(teams_and_members|length) }}</h1>
     </div>
     {%- if g.current_user.has_permission(OrgaTeamPermission.create) %}
     <div class="column-auto">
@@ -48,15 +48,15 @@
     {%- endif %}
   </div>
 
-  {%- if teams_and_memberships %}
-  {%- for team, memberships in teams_and_memberships|sort(attribute='0.title') %}
+  {%- if teams_and_members %}
+  {%- for team, members in teams_and_members|sort(attribute='0.title') %}
   <div class="box team">
-    {%- set member_total = memberships|length %}
+    {%- set member_total = members|length %}
 
     <div class="row row--space-between" style="margin-bottom: 1rem;">
       <div class="column-auto">
         <h2>{{ team.title }}</h2>
-        {%- if memberships %}
+        {%- if members %}
         <div>{{ '%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')|dim }}</div>
         {%- endif %}
       </div>
@@ -67,7 +67,7 @@
           <div class="dropdown left">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
             <ol>
-              {%- if not memberships and g.current_user.has_permission(OrgaTeamPermission.delete) %}
+              {%- if not members and g.current_user.has_permission(OrgaTeamPermission.delete) %}
               <li><a data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} <span>Team entfernen</span></a></li>
               {%- else %}
               <li><span class="button--disabled">{{ render_icon('remove') }} <span>Team entfernen</span></span></li>
@@ -79,18 +79,18 @@
       {%- endif %}
     </div>
 
-    {%- if memberships %}
+    {%- if members %}
     <div class="members">
-      {%- for membership in memberships|sort(attribute='user.screen_name') %}
+      {%- for member in members|sort(attribute='user.screen_name') %}
       <div class="row row--space-between">
         <div class="column-auto">
           <div class="row">
             <div class="column-auto">
-              {{ render_user_avatar_48(membership.user) }}
+              {{ render_user_avatar_48(member.user) }}
             </div>
             <div class="column-auto">
-              {{ render_user_admin_link(membership.user) }}<br>
-              {{ membership.duties|fallback }}
+              {{ render_user_admin_link(member.user) }}<br>
+              {{ member.membership.duties|fallback }}
             </div>
           </div>
         </div>
@@ -98,8 +98,8 @@
           <div class="dropdown left">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
             <ol>
-              <li><a href="{{ url_for('.membership_update_form', membership_id=membership.id) }}">{{ render_icon('edit') }} Teamzugehörigkeit und Aufgabe bearbeiten</a></li>
-              <li><a data-action="membership-remove" href="{{ url_for('.membership_remove', membership_id=membership.id) }}">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
+              <li><a href="{{ url_for('.membership_update_form', membership_id=member.membership.id) }}">{{ render_icon('edit') }} Teamzugehörigkeit und Aufgabe bearbeiten</a></li>
+              <li><a data-action="membership-remove" href="{{ url_for('.membership_remove', membership_id=member.membership.id) }}">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
             </ol>
           </div>
         </div>

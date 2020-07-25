@@ -20,6 +20,7 @@ from ..user.transfer.models import User
 
 from .models import Membership as DbMembership, OrgaTeam as DbOrgaTeam
 from .transfer.models import (
+    Member,
     Membership,
     MembershipID,
     OrgaActivity,
@@ -83,9 +84,9 @@ def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
     return DbOrgaTeam.query.get(team_id)
 
 
-def get_teams_and_memberships_for_party(
+def get_teams_and_members_for_party(
     party_id: PartyID,
-) -> Sequence[Tuple[OrgaTeam, DbMembership]]:
+) -> Sequence[Tuple[OrgaTeam, Set[Member]]]:
     """Return all orga teams and their corresponding memberships for
     that party.
     """
@@ -95,7 +96,20 @@ def get_teams_and_memberships_for_party(
         .filter_by(party_id=party_id) \
         .all()
 
-    return [(_db_entity_to_team(team), team.memberships) for team in teams]
+    user_ids = {ms.user_id for team in teams for ms in team.memberships}
+    users = user_service.find_users(user_ids, include_avatars=True)
+    users_by_id = {user.id: user for user in users}
+
+    def to_member(db_membership: DbMembership) -> Member:
+        membership = _db_entity_to_membership(db_membership)
+        user = users_by_id[membership.user_id]
+
+        return Member(membership, user)
+
+    return [
+        (_db_entity_to_team(team), {to_member(ms) for ms in team.memberships})
+        for team in teams
+    ]
 
 
 def _db_entity_to_team(team: DbOrgaTeam) -> OrgaTeam:
