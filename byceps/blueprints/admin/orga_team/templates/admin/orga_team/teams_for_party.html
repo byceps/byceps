@@ -18,14 +18,10 @@
         margin: 0;
       }
 
-      .team .subheading {
-        margin-bottom: 1rem;
-      }
-
       .members {
-        display: grid;
         --column-gap: 2rem;
         column-gap: var(--column-gap);
+        display: grid;
         grid-template-columns: repeat(2, calc(50% - var(--column-gap) / 2));
         row-gap: 1rem;
       }
@@ -57,10 +53,12 @@
   <div class="box team">
     {%- set member_total = memberships|length %}
 
-    <div class="row row--space-between">
+    <div class="row row--space-between" style="margin-bottom: 1rem;">
       <div class="column-auto">
         <h2>{{ team.title }}</h2>
-        <div class="subheading">{{ '%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')|dim }}</div>
+        {%- if memberships %}
+        <div>{{ '%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')|dim }}</div>
+        {%- endif %}
       </div>
       {%- if g.current_user.has_permission(OrgaTeamPermission.administrate_memberships) %}
       <div class="column-auto">
