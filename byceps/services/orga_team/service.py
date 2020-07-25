@@ -22,6 +22,7 @@ from .models import Membership as DbMembership, OrgaTeam as DbOrgaTeam
 from .transfer.models import (
     Membership,
     MembershipID,
+    OrgaActivity,
     OrgaTeam,
     OrgaTeamID,
     PublicOrga,
@@ -180,14 +181,27 @@ def find_orga_team_for_user_and_party(
         .one_or_none()
 
 
-def get_memberships_for_user(user_id: UserID) -> Sequence[DbMembership]:
-    """Return all orga team memberships for that user."""
-    return DbMembership.query \
+def get_orga_activities_for_user(user_id: UserID) -> Set[OrgaActivity]:
+    """Return all orga team activities for that user."""
+    memberships = DbMembership.query \
         .options(
             db.joinedload('orga_team').joinedload('party'),
         ) \
         .filter_by(user_id=user_id) \
         .all()
+
+    def to_activity(membership: DbMembership) -> OrgaActivity:
+        party = party_service._db_entity_to_party(membership.orga_team.party)
+        team = _db_entity_to_team(membership.orga_team)
+
+        return OrgaActivity(
+            membership.user_id,
+            party,
+            team,
+            membership.duties,
+        )
+
+    return {to_activity(ms) for ms in memberships}
 
 
 def get_public_orgas_for_party(party_id: PartyID) -> Set[PublicOrga]:

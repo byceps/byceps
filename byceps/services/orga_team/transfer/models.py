@@ -12,6 +12,7 @@ from uuid import UUID
 
 from ....typing import PartyID, UserID
 
+from ...party.transfer.models import Party
 from ...user.transfer.models import User
 
 
@@ -33,6 +34,14 @@ class Membership:
     id: MembershipID
     orga_team_id: OrgaTeamID
     user_id: UserID
+    duties: str
+
+
+@dataclass(frozen=True)
+class OrgaActivity:
+    user_id: UserID
+    party: Party
+    team: OrgaTeam
     duties: str
 
 

@@ -99,7 +99,7 @@ def view(user_id):
 
     recent_login = session_service.find_recent_login(user.id)
 
-    orga_team_memberships = orga_team_service.get_memberships_for_user(user.id)
+    orga_activities = orga_team_service.get_orga_activities_for_user(user.id)
 
     newsletter_subscriptions = service.get_newsletter_subscriptions(user.id)
 
@@ -120,7 +120,7 @@ def view(user_id):
     return {
         'user': user,
         'recent_login': recent_login,
-        'orga_team_memberships': orga_team_memberships,
+        'orga_activities': orga_activities,
         'newsletter_subscriptions': newsletter_subscriptions,
         'orders': orders,
         'shops_by_id': shops_by_id,
