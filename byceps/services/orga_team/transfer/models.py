@@ -12,6 +12,8 @@ from uuid import UUID
 
 from ....typing import PartyID, UserID
 
+from ...user.transfer.models import User
+
 
 OrgaTeamID = NewType('OrgaTeamID', UUID)
 
@@ -31,4 +33,12 @@ class Membership:
     id: MembershipID
     orga_team_id: OrgaTeamID
     user_id: UserID
+    duties: str
+
+
+@dataclass(frozen=True)
+class PublicOrga:
+    user: User
+    full_name: str
+    team_name: str
     duties: str

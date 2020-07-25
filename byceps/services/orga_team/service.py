@@ -6,7 +6,8 @@ byceps.services.orga_team.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional, Sequence, Set
+import dataclasses
+from typing import Dict, Optional, Sequence, Set
 
 from ...database import db
 from ...typing import PartyID, UserID
@@ -18,7 +19,13 @@ from ..user import service as user_service
 from ..user.transfer.models import User
 
 from .models import Membership as DbMembership, OrgaTeam as DbOrgaTeam
-from .transfer.models import Membership, MembershipID, OrgaTeam, OrgaTeamID
+from .transfer.models import (
+    Membership,
+    MembershipID,
+    OrgaTeam,
+    OrgaTeamID,
+    PublicOrga,
+)
 
 
 # -------------------------------------------------------------------- #
@@ -167,18 +174,6 @@ def find_membership_for_party(
         .one_or_none()
 
 
-def get_memberships_for_party(party_id: PartyID) -> Sequence[DbMembership]:
-    """Return all orga team memberships for that party."""
-    return DbMembership.query \
-        .for_party(party_id) \
-        .options(
-            db.joinedload('orga_team'),
-            db.joinedload('user').load_only('id'),
-            db.joinedload('user').joinedload('detail').load_only('first_names', 'last_name'),
-        ) \
-        .all()
-
-
 def get_memberships_for_user(user_id: UserID) -> Sequence[DbMembership]:
     """Return all orga team memberships for that user."""
     return DbMembership.query \
@@ -187,6 +182,49 @@ def get_memberships_for_user(user_id: UserID) -> Sequence[DbMembership]:
         ) \
         .filter_by(user_id=user_id) \
         .all()
+
+
+def get_public_orgas_for_party(party_id: PartyID) -> Set[PublicOrga]:
+    """Return all public orgas for that party."""
+    memberships = DbMembership.query \
+        .for_party(party_id) \
+        .options(
+            db.joinedload('orga_team'),
+            db.joinedload('user')
+                .load_only('id'),
+            db.joinedload('user')
+                .joinedload('detail')
+                .load_only('first_names', 'last_name'),
+        ) \
+        .all()
+
+    users_by_id = _get_public_orga_users_by_id(memberships)
+
+    def _to_orga(membership):
+        user = users_by_id[membership.user_id]
+
+        return PublicOrga(
+            user,
+            membership.user.detail.full_name,
+            membership.orga_team.title,
+            membership.duties,
+        )
+
+    orgas = {_to_orga(ms) for ms in memberships}
+    orgas = {orga for orga in orgas if not orga.user.deleted}
+
+    return orgas
+
+
+def _get_public_orga_users_by_id(memberships: DbMembership) -> Dict[UserID, User]:
+    user_ids = {ms.user_id for ms in memberships}
+
+    users = user_service.find_users(user_ids, include_avatars=True)
+
+    # Each of these users is an organizer.
+    users = {dataclasses.replace(u, is_orga=True) for u in users}
+
+    return {user.id: user for user in users}
 
 
 def has_team_memberships(team_id: OrgaTeamID) -> bool:
