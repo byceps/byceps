@@ -7,7 +7,7 @@ byceps.services.orga_team.service
 """
 
 import dataclasses
-from typing import Dict, Optional, Sequence, Set
+from typing import Dict, Optional, Sequence, Set, Tuple
 
 from ...database import db
 from ...typing import PartyID, UserID
@@ -82,14 +82,19 @@ def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
     return DbOrgaTeam.query.get(team_id)
 
 
-def get_teams_for_party_with_memberships(
+def get_teams_and_memberships_for_party(
     party_id: PartyID
-) -> Sequence[DbOrgaTeam]:
-    """Return all orga teams for that party, with memberships."""
-    return DbOrgaTeam.query \
+) -> Sequence[Tuple[DbOrgaTeam, DbMembership]]:
+    """Return all orga teams and their corresponding memberships for
+    that party.
+    """
+
+    teams = DbOrgaTeam.query \
         .options(db.joinedload('memberships')) \
         .filter_by(party_id=party_id) \
         .all()
+
+    return [(team, team.memberships) for team in teams]
 
 
 def _db_entity_to_team(team: DbOrgaTeam) -> OrgaTeam:

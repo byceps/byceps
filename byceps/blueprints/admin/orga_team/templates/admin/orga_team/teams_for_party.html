@@ -41,7 +41,7 @@
           <li>{{ party.title }}</li>
         </ol>
       </nav>
-      <h1>{{ title }} {{ render_extra_in_heading(teams|length) }}</h1>
+      <h1>{{ title }} {{ render_extra_in_heading(teams_and_memberships|length) }}</h1>
     </div>
     {%- if g.current_user.has_permission(OrgaTeamPermission.create) %}
     <div class="column-auto">
@@ -52,10 +52,9 @@
     {%- endif %}
   </div>
 
-  {%- if teams %}
-  {%- for team in teams|sort(attribute='title') %}
+  {%- if teams_and_memberships %}
+  {%- for team, memberships in teams_and_memberships|sort(attribute='0.title') %}
   <div class="box team">
-    {%- set memberships = team.memberships|list %}
     {%- set member_total = memberships|length %}
 
     <div class="row row--space-between">

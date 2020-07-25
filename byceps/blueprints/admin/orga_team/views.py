@@ -40,11 +40,13 @@ def teams_for_party(party_id):
     """List organizer teams for that party."""
     party = _get_party_or_404(party_id)
 
-    teams = orga_team_service.get_teams_for_party_with_memberships(party.id)
+    teams_and_memberships = orga_team_service.get_teams_and_memberships_for_party(
+        party.id
+    )
 
     return {
         'party': party,
-        'teams': teams,
+        'teams_and_memberships': teams_and_memberships,
     }
 
 
