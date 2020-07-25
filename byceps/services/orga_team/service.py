@@ -51,12 +51,13 @@ def count_teams_for_party(party_id: PartyID) -> int:
         .count()
 
 
-def get_teams_for_party(party_id: PartyID) -> Sequence[DbOrgaTeam]:
-    """Return orga teams for that party, ordered by title."""
-    return DbOrgaTeam.query \
+def get_teams_for_party(party_id: PartyID) -> Set[OrgaTeam]:
+    """Return orga teams for that party."""
+    teams = DbOrgaTeam.query \
         .filter_by(party_id=party_id) \
-        .order_by(DbOrgaTeam.title) \
         .all()
+
+    return {_db_entity_to_team(team) for team in teams}
 
 
 def find_team(team_id: OrgaTeamID) -> Optional[OrgaTeam]:

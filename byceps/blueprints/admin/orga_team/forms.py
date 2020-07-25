@@ -33,4 +33,5 @@ class MembershipUpdateForm(MembershipFormBase):
 
     def set_orga_team_choices(self, orga_teams):
         choices = [(str(team.id), team.title) for team in orga_teams]
+        choices.sort(key=lambda t: t[1])
         self.orga_team_id.choices = choices
