@@ -73,7 +73,7 @@ def get_categories_excluding(
 
 
 def get_categories_with_last_updates(
-    board_id: BoardID
+    board_id: BoardID,
 ) -> Sequence[CategoryWithLastUpdate]:
     """Return the categories for that board.
 
@@ -108,7 +108,7 @@ def _db_entity_to_category(category: DbCategory) -> Category:
 
 
 def _db_entity_to_category_with_last_update(
-    category: DbCategory
+    category: DbCategory,
 ) -> CategoryWithLastUpdate:
     return CategoryWithLastUpdate(
         category.id,

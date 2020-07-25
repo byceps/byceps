@@ -192,7 +192,7 @@ def get_snippets(snippet_ids: Set[SnippetID]) -> Sequence[DbSnippet]:
 
 
 def get_snippets_for_scope_with_current_versions(
-    scope: Scope
+    scope: Scope,
 ) -> Sequence[DbSnippet]:
     """Return all snippets with their current versions for that scope."""
     return DbSnippet.query \
@@ -205,7 +205,7 @@ def get_snippets_for_scope_with_current_versions(
 
 
 def find_snippet_version(
-    version_id: SnippetVersionID
+    version_id: SnippetVersionID,
 ) -> Optional[DbSnippetVersion]:
     """Return the snippet version with that id, or `None` if not found."""
     return DbSnippetVersion.query.get(version_id)

@@ -83,7 +83,7 @@ def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
 
 
 def get_teams_and_memberships_for_party(
-    party_id: PartyID
+    party_id: PartyID,
 ) -> Sequence[Tuple[OrgaTeam, DbMembership]]:
     """Return all orga teams and their corresponding memberships for
     that party.
@@ -221,7 +221,9 @@ def get_public_orgas_for_party(party_id: PartyID) -> Set[PublicOrga]:
     return orgas
 
 
-def _get_public_orga_users_by_id(memberships: DbMembership) -> Dict[UserID, User]:
+def _get_public_orga_users_by_id(
+    memberships: DbMembership,
+) -> Dict[UserID, User]:
     user_ids = {ms.user_id for ms in memberships}
 
     users = user_service.find_users(user_ids, include_avatars=True)

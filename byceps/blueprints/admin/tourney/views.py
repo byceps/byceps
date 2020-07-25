@@ -83,8 +83,11 @@ def category_update_form(category_id, erroneous_form=None):
     """Show form to update a category."""
     category = _get_category_or_404(category_id)
 
-    form = erroneous_form if erroneous_form \
-           else TourneyCategoryUpdateForm(obj=category)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else TourneyCategoryUpdateForm(obj=category)
+    )
 
     return {
         'category': category,

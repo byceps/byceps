@@ -42,7 +42,7 @@ def view():
 
     if get_app_mode().is_site():
         newsletter_list_id = _find_newsletter_list_for_brand()
-        newsletter_offered = (newsletter_list_id is not None)
+        newsletter_offered = newsletter_list_id is not None
 
         subscribed_to_newsletter = newsletter_service.is_subscribed(
             user.id, newsletter_list_id
@@ -72,11 +72,13 @@ def view_as_json():
         # Return empty response.
         return Response(status=403)
 
-    return jsonify({
-        'id': user.id,
-        'screen_name': user.screen_name,
-        'avatar_url': user.avatar_url,
-    })
+    return jsonify(
+        {
+            'id': user.id,
+            'screen_name': user.screen_name,
+            'avatar_url': user.avatar_url,
+        }
+    )
 
 
 @blueprint.route('/me/screen_name')

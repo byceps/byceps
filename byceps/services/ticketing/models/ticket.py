@@ -101,18 +101,21 @@ class Ticket(db.Model):
         """Return `True` if the user may choose the seat for or the
         user of this ticket.
         """
-        return self.is_seat_managed_by(user_id) \
-            or self.is_user_managed_by(user_id)
+        return self.is_seat_managed_by(user_id) or self.is_user_managed_by(
+            user_id
+        )
 
     def is_seat_managed_by(self, user_id: UserID) -> bool:
         """Return `True` if the user may choose the seat for this ticket."""
-        return ((self.seat_managed_by_id is None) and self.is_owned_by(user_id)) or \
-            (self.seat_managed_by_id == user_id)
+        return (
+            (self.seat_managed_by_id is None) and self.is_owned_by(user_id)
+        ) or (self.seat_managed_by_id == user_id)
 
     def is_user_managed_by(self, user_id: UserID) -> bool:
         """Return `True` if the user may choose the user of this ticket."""
-        return ((self.user_managed_by_id is None) and self.is_owned_by(user_id)) or \
-            (self.user_managed_by_id == user_id)
+        return (
+            (self.user_managed_by_id is None) and self.is_owned_by(user_id)
+        ) or (self.user_managed_by_id == user_id)
 
     def __repr__(self) -> str:
         def user(user: User) -> Optional[str]:

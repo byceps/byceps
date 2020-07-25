@@ -59,7 +59,7 @@ def find_tickets(ticket_ids: Set[TicketID]) -> Sequence[DbTicket]:
 
 
 def find_tickets_created_by_order(
-    order_number: OrderNumber
+    order_number: OrderNumber,
 ) -> Sequence[DbTicket]:
     """Return the tickets created by this order (as it was marked as paid)."""
     return DbTicket.query \

@@ -64,7 +64,7 @@ def move_category_down(category: DbTourneyCategory) -> None:
 
 
 def find_category(
-    category_id: TourneyCategoryID
+    category_id: TourneyCategoryID,
 ) -> Optional[DbTourneyCategory]:
     """Return the category with that id, or `None` if not found."""
     return DbTourneyCategory.query.get(category_id)

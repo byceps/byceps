@@ -111,7 +111,7 @@ def _aggregate_ordered_article_quantites(
 
 
 def _get_article_descriptions(
-    article_numbers: Set[ArticleNumber]
+    article_numbers: Set[ArticleNumber],
 ) -> Dict[ArticleNumber, str]:
     """Look up description texts of the specified articles."""
     if not article_numbers:

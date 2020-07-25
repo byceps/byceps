@@ -114,11 +114,7 @@ def create():
     title = form.title.data.strip()
     email_config_id = form.email_config_id.data
 
-    shop = shop_service.create_shop(
-        shop_id,
-        title,
-        email_config_id,
-    )
+    shop = shop_service.create_shop(shop_id, title, email_config_id)
 
     flash_success(f'Der Shop "{shop.title}" wurde angelegt.')
     return redirect_to('.index')

@@ -59,7 +59,13 @@ class Avatar(db.Model):
 
     @property
     def path(self) -> Path:
-        path = current_app.config['PATH_DATA'] / 'parties' / self.party_id / 'tourney' / 'avatars'
+        path = (
+            current_app.config['PATH_DATA']
+            / 'parties'
+            / self.party_id
+            / 'tourney'
+            / 'avatars'
+        )
         return path / self.filename
 
     @property

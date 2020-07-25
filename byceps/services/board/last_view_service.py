@@ -77,8 +77,7 @@ def contains_topic_unseen_postings(topic: DbTopic, user_id: UserID) -> bool:
     """
     last_viewed_at = find_topic_last_viewed_at(topic.id, user_id)
 
-    return last_viewed_at is None \
-        or topic.last_updated_at > last_viewed_at
+    return last_viewed_at is None or topic.last_updated_at > last_viewed_at
 
 
 def find_last_topic_view(
@@ -130,9 +129,8 @@ def mark_all_topics_in_category_as_viewed(
         'occurred_at': datetime.utcnow(),
     }
 
-    identifiers = [{
-        'user_id': user_id,
-        'topic_id': topic_id,
-    } for topic_id in topic_ids]
+    identifiers = [
+        {'user_id': user_id, 'topic_id': topic_id} for topic_id in topic_ids
+    ]
 
     upsert_many(table, identifiers, replacement)

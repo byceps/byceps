@@ -22,19 +22,23 @@ def create_empty_json_response(status):
 
 def jsonified(f):
     """Send the data returned by the decorated function as JSON."""
+
     @wraps(f)
     def wrapper(*args, **kwargs):
         data = f(*args, **kwargs)
         return jsonify(data)
+
     return wrapper
 
 
 def textified(f):
     """Send the data returned by the decorated function as plaintext."""
+
     @wraps(f)
     def wrapper(*args, **kwargs):
         data = f(*args, **kwargs)
         return Response(stream_with_context(data), mimetype='text/plain')
+
     return wrapper
 
 

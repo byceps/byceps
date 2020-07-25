@@ -147,8 +147,11 @@ def export_persons(brand_id):
     ]
 
     def to_dict(user):
-        date_of_birth = user.detail.date_of_birth.strftime('%d.%m.%Y') \
-                        if user.detail.date_of_birth else None
+        date_of_birth = (
+            user.detail.date_of_birth.strftime('%d.%m.%Y')
+            if user.detail.date_of_birth
+            else None
+        )
 
         return {
             'Benutzername': user.screen_name,

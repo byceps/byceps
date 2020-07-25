@@ -69,8 +69,7 @@ def add_page_arg(args, page):
 
 @blueprint.app_template_test()
 def is_current_page(nav_item_path, current_page=None):
-    return (current_page is not None) \
-            and (nav_item_path == current_page)
+    return (current_page is not None) and (nav_item_path == current_page)
 
 
 @blueprint.before_app_request

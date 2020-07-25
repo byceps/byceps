@@ -112,9 +112,7 @@ def _user_to_json(user: User) -> Dict[str, Any]:
 
 
 blueprint.add_url_rule(
-    '/match_comments/<uuid:comment_id>',
-    endpoint='view',
-    build_only=True,
+    '/match_comments/<uuid:comment_id>', endpoint='view', build_only=True,
 )
 
 
@@ -179,8 +177,7 @@ def hide(comment_id):
 
 
 @blueprint.route(
-    '/match_comments/<uuid:comment_id>/flags/hidden',
-    methods=['DELETE'],
+    '/match_comments/<uuid:comment_id>/flags/hidden', methods=['DELETE'],
 )
 @api_token_required
 @respond_no_content

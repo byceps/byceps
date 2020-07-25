@@ -99,8 +99,10 @@ def posting_create(topic_id):
         )
         return redirect(h.build_url_for_topic(topic.id))
 
-    if topic.posting_limited_to_moderators \
-            and not g.current_user.has_permission(BoardPermission.announce):
+    if (
+        topic.posting_limited_to_moderators
+        and not g.current_user.has_permission(BoardPermission.announce)
+    ):
         flash_error(
             'In diesem Thema dürfen nur Moderatoren Beiträge hinzufügen.',
             icon='announce',

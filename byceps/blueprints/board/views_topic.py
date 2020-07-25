@@ -195,8 +195,11 @@ def topic_update_form(topic_id, erroneous_form=None):
         flash_error('Du darfst dieses Thema nicht bearbeiten.')
         return redirect(url)
 
-    form = erroneous_form if erroneous_form \
-            else TopicUpdateForm(obj=topic, body=topic.initial_posting.body)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else TopicUpdateForm(obj=topic, body=topic.initial_posting.body)
+    )
 
     return {
         'form': form,

@@ -85,7 +85,7 @@ def _get_tickets_for_users(
 
 
 def _index_tickets_by_user_id(
-    tickets: Iterable[DbTicket]
+    tickets: Iterable[DbTicket],
 ) -> Dict[UserID, Set[DbTicket]]:
     tickets_by_user_id = defaultdict(set)
     for ticket in tickets:
@@ -111,7 +111,7 @@ def _to_attendee_tickets(tickets: Iterable[DbTicket]) -> List[AttendeeTicket]:
 
 
 def _get_attendee_ticket_sort_key(
-    attendee_ticket: AttendeeTicket
+    attendee_ticket: AttendeeTicket,
 ) -> Tuple[bool, str, bool]:
     return (
         # List tickets with occupied seat first.

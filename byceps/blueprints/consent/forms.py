@@ -16,8 +16,9 @@ def create_consent_form(subjects):
     subject_ids_str = ','.join(subject.id.hex for subject in subjects)
 
     class ConsentForm(LocalizedForm):
-        subject_ids = HiddenField(None, [InputRequired()],
-                                  default=subject_ids_str)
+        subject_ids = HiddenField(
+            None, [InputRequired()], default=subject_ids_str
+        )
 
     for subject in subjects:
         field_name = get_subject_field_name(subject)

@@ -64,7 +64,7 @@ def send_email_for_paid_order_to_orderer(order_id: OrderID) -> None:
 
 
 def _assemble_email_for_incoming_order_to_orderer(
-    data: OrderEmailData
+    data: OrderEmailData,
 ) -> Message:
     order = data.order
 
@@ -91,7 +91,7 @@ def _get_payment_instructions(order: Order) -> str:
 
 
 def _assemble_email_for_canceled_order_to_orderer(
-    data: OrderEmailData
+    data: OrderEmailData,
 ) -> Message:
     subject = (
         f'\u274c Deine Bestellung ({data.order.order_number}) '

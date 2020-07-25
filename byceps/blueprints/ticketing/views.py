@@ -370,6 +370,8 @@ def _get_ticket_or_404(ticket_id):
 
 def _is_user_allowed_to_print_ticket(ticket, user_id):
     """Return `True` only if the user is allowed to print the ticket."""
-    return ticket.is_owned_by(user_id) \
-        or ticket.is_managed_by(user_id) \
+    return (
+        ticket.is_owned_by(user_id)
+        or ticket.is_managed_by(user_id)
         or ticket.used_by_id == user_id
+    )

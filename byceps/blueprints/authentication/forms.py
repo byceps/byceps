@@ -31,8 +31,10 @@ class RequestPasswordResetForm(LocalizedForm):
 def _get_new_password_validators(companion_field_name):
     return [
         InputRequired(),
-        EqualTo(companion_field_name,
-                message='Das neue Passwort muss mit der Wiederholung übereinstimmen.'),
+        EqualTo(
+            companion_field_name,
+            message='Das neue Passwort muss mit der Wiederholung übereinstimmen.',
+        ),
         Length(min=MINIMUM_PASSWORD_LENGTH, max=MAXIMUM_PASSWORD_LENGTH),
     ]
 
@@ -40,10 +42,12 @@ def _get_new_password_validators(companion_field_name):
 class ResetPasswordForm(LocalizedForm):
     new_password = PasswordField(
         'Neues Passwort',
-        _get_new_password_validators('new_password_confirmation'))
+        _get_new_password_validators('new_password_confirmation'),
+    )
     new_password_confirmation = PasswordField(
         'Neues Passwort (Wiederholung)',
-        _get_new_password_validators('new_password'))
+        _get_new_password_validators('new_password'),
+    )
 
 
 class UpdatePasswordForm(ResetPasswordForm):

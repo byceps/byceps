@@ -36,11 +36,13 @@ def get_snippet_by_name(scope_type, scope_name, snippet_name):
 
     content = _get_content(version)
 
-    return jsonify({
-        'type': version.snippet.type_.name,
-        'version': version.id,
-        'content': content,
-    })
+    return jsonify(
+        {
+            'type': version.snippet.type_.name,
+            'version': version.id,
+            'content': content,
+        }
+    )
 
 
 def _get_content(version):

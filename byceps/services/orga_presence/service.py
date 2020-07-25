@@ -42,18 +42,12 @@ def get_tasks(party_id: PartyID) -> List[TaskTimeSlot]:
 
 def _presence_to_time_slot(presence: Presence) -> PresenceTimeSlot:
     return PresenceTimeSlot.from_(
-        presence.orga,
-        presence.starts_at,
-        presence.ends_at,
+        presence.orga, presence.starts_at, presence.ends_at,
     )
 
 
 def _task_to_time_slot(task: Task) -> TaskTimeSlot:
-    return TaskTimeSlot.from_(
-        task.title,
-        task.starts_at,
-        task.ends_at,
-    )
+    return TaskTimeSlot.from_(task.title, task.starts_at, task.ends_at)
 
 
 # -------------------------------------------------------------------- #
@@ -90,7 +84,7 @@ def _to_datetimes_without_tzinfo(dts: Sequence[DateTime]) -> Iterator[datetime]:
 
 
 def get_days_and_hour_totals(
-    hour_ranges: Sequence[DateTimeRange]
+    hour_ranges: Sequence[DateTimeRange],
 ) -> Iterator[Tuple[date, int]]:
     """Yield (day, relevant hours total) pairs."""
 

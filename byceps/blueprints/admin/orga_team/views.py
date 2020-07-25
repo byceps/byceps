@@ -177,8 +177,11 @@ def membership_update_form(membership_id, erroneous_form=None):
 
     teams = orga_team_service.get_teams_for_party(membership.orga_team.party_id)
 
-    form = erroneous_form if erroneous_form \
-           else MembershipUpdateForm(obj=membership)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else MembershipUpdateForm(obj=membership)
+    )
     form.set_orga_team_choices(teams)
 
     return {

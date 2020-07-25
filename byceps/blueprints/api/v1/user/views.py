@@ -34,11 +34,13 @@ def get_profile(user_id):
     if user is None:
         return create_empty_json_response(404)
 
-    return jsonify({
-        'id': user.id,
-        'screen_name': user.screen_name,
-        'avatar_url': user.avatar_url,
-    })
+    return jsonify(
+        {
+            'id': user.id,
+            'screen_name': user.screen_name,
+            'avatar_url': user.avatar_url,
+        }
+    )
 
 
 @blueprint.route('/invalidate_email_address', methods=['POST'])

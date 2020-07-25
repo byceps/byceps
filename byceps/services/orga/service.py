@@ -76,10 +76,14 @@ def add_orga_flag(
     orga_flag = OrgaFlag(brand_id, user_id)
     db.session.add(orga_flag)
 
-    event = user_event_service.build_event('orgaflag-added', user_id, {
-        'brand_id': str(brand_id),
-        'initiator_id': str(initiator_id),
-    })
+    event = user_event_service.build_event(
+        'orgaflag-added',
+        user_id,
+        {
+            'brand_id': str(brand_id),
+            'initiator_id': str(initiator_id),
+        },
+    )
     db.session.add(event)
 
     db.session.commit()
@@ -92,10 +96,14 @@ def remove_orga_flag(orga_flag: OrgaFlag, initiator_id: UserID) -> None:
     db.session.delete(orga_flag)
 
     user_id = orga_flag.user_id
-    event = user_event_service.build_event('orgaflag-removed', user_id, {
-        'brand_id': str(orga_flag.brand_id),
-        'initiator_id': str(initiator_id),
-    })
+    event = user_event_service.build_event(
+        'orgaflag-removed',
+        user_id,
+        {
+            'brand_id': str(orga_flag.brand_id),
+            'initiator_id': str(initiator_id),
+        },
+    )
     db.session.add(event)
 
     db.session.commit()

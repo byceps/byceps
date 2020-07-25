@@ -116,7 +116,7 @@ def get_attendees_by_party(party_ids: Set[PartyID]) -> Dict[PartyID, Set[User]]:
 
 
 def get_attendee_ids_for_parties(
-    party_ids: Set[PartyID]
+    party_ids: Set[PartyID],
 ) -> Dict[PartyID, Set[UserID]]:
     """Return the partys' attendee IDs, indexed by party ID."""
     if not party_ids:
@@ -178,7 +178,7 @@ def get_top_attendees_for_brand(brand_id: BrandID) -> List[Tuple[UserID, int]]:
 
 
 def _get_top_ticket_attendees_for_parties(
-    brand_id: BrandID
+    brand_id: BrandID,
 ) -> List[Tuple[UserID, int]]:
     user_id_column = db.aliased(DbTicket).used_by_id
 
@@ -206,7 +206,7 @@ def _get_top_ticket_attendees_for_parties(
 
 
 def _get_top_archived_attendees_for_parties(
-    brand_id: BrandID
+    brand_id: BrandID,
 ) -> List[Tuple[UserID, int]]:
     attendance_count_column = db.func \
         .count(DbArchivedAttendance.user_id) \

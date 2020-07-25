@@ -58,7 +58,7 @@ def get_categories_for_party(party_id: PartyID) -> Sequence[TicketCategory]:
 
 
 def get_categories_with_ticket_counts_for_party(
-    party_id: PartyID
+    party_id: PartyID,
 ) -> Dict[TicketCategory, int]:
     """Return all categories with ticket counts for that party."""
     category = db.aliased(DbCategory)

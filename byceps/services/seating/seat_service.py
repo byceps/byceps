@@ -41,7 +41,7 @@ def delete_seat(seat_id: SeatID) -> None:
 
 
 def count_occupied_seats_by_category(
-    party_id: PartyID
+    party_id: PartyID,
 ) -> List[Tuple[TicketCategory, int]]:
     """Count occupied seats for the party, grouped by ticket category."""
     subquery = db.session \

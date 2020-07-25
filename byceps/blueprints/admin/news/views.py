@@ -228,10 +228,7 @@ def image_update(image_id):
     attribution = form.attribution.data.strip()
 
     news_image_service.update_image(
-        image.id,
-        alt_text=alt_text,
-        caption=caption,
-        attribution=attribution,
+        image.id, alt_text=alt_text, caption=caption, attribution=attribution,
     )
 
     flash_success(f'Das Newsbild #{image.number} wurde aktualisiert.')
@@ -399,8 +396,11 @@ def item_update_form(item_id, erroneous_form=None):
 
     current_version = news_item_service.get_current_item_version(item.id)
 
-    form = erroneous_form if erroneous_form \
-            else ItemUpdateForm(obj=current_version, slug=item.slug)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else ItemUpdateForm(obj=current_version, slug=item.slug)
+    )
 
     return {
         'item': item,

@@ -46,8 +46,10 @@ def get_subjects_with_consent_counts() -> Dict[Subject, int]:
         .group_by(DbSubject.id) \
         .all()
 
-    return {_db_entity_to_subject(subject): consent_count
-            for subject, consent_count in rows}
+    return {
+        _db_entity_to_subject(subject): consent_count
+        for subject, consent_count in rows
+    }
 
 
 def _db_entity_to_subject(subject: DbSubject) -> Subject:

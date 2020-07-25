@@ -128,7 +128,7 @@ def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
 
 
 def count_subscriptions_by_state(
-    list_id: ListID
+    list_id: ListID,
 ) -> Dict[Union[SubscriptionState, str], int]:
     """Return the totals for each state as well as an overall total."""
     rows = _build_query_for_current_state(list_id) \
@@ -232,7 +232,7 @@ def get_subscription_state(
 
 
 def get_subscription_updates_for_user(
-    user_id: UserID
+    user_id: UserID,
 ) -> Sequence[DbSubscriptionUpdate]:
     """Return subscription updates made by the user, for any list."""
     return DbSubscriptionUpdate.query \

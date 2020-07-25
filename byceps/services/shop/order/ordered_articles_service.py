@@ -18,7 +18,7 @@ from .transfer.models import OrderItem, PaymentState
 
 
 def count_ordered_articles(
-    article_number: ArticleNumber
+    article_number: ArticleNumber,
 ) -> Dict[PaymentState, int]:
     """Count how often the article has been ordered, grouped by the
     order's payment state.
@@ -43,7 +43,7 @@ def count_ordered_articles(
 
 
 def get_order_items_for_article(
-    article_number: ArticleNumber
+    article_number: ArticleNumber,
 ) -> Sequence[OrderItem]:
     """Return all order items for that article."""
     order_items = DbOrderItem.query \

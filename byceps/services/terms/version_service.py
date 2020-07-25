@@ -43,7 +43,7 @@ def find_version(version_id: VersionID) -> Optional[DbVersion]:
 
 
 def find_version_for_consent_subject_id(
-    consent_subject_id: ConsentSubjectID
+    consent_subject_id: ConsentSubjectID,
 ) -> Optional[DbVersion]:
     """Return the version with that consent subject ID, or `None` if
     not found.

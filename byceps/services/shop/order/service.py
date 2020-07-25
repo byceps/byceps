@@ -112,9 +112,7 @@ def _build_order(
     )
 
 
-def _build_order_items(
-    cart: Cart, order: DbOrder
-) -> Iterator[DbOrderItem]:
+def _build_order_items(cart: Cart, order: DbOrder) -> Iterator[DbOrderItem]:
     """Build order items from the cart's content."""
     for cart_item in cart.get_items():
         article = cart_item.article
@@ -250,14 +248,20 @@ def cancel_order(
 
     updated_at = now
     payment_state_from = order.payment_state
-    payment_state_to = PaymentState.canceled_after_paid if has_order_been_paid \
-                  else PaymentState.canceled_before_paid
+    payment_state_to = (
+        PaymentState.canceled_after_paid
+        if has_order_been_paid
+        else PaymentState.canceled_before_paid
+    )
 
     _update_payment_state(order, payment_state_to, updated_at, initiator_id)
     order.cancelation_reason = reason
 
-    event_type = 'order-canceled-after-paid' if has_order_been_paid \
-            else 'order-canceled-before-paid'
+    event_type = (
+        'order-canceled-after-paid'
+        if has_order_been_paid
+        else 'order-canceled-before-paid'
+    )
     data = {
         'initiator_id': str(initiator_id),
         'former_payment_state': payment_state_from.name,
@@ -315,11 +319,13 @@ def mark_order_as_paid(
     event_data = {}
     if additional_event_data is not None:
         event_data.update(additional_event_data)
-    event_data.update({
-        'initiator_id': str(initiator_id),
-        'former_payment_state': payment_state_from.name,
-        'payment_method': payment_method.name,
-    })
+    event_data.update(
+        {
+            'initiator_id': str(initiator_id),
+            'former_payment_state': payment_state_from.name,
+            'payment_method': payment_method.name,
+        }
+    )
 
     event = DbOrderEvent(now, event_type, order.id, event_data)
     db.session.add(event)
@@ -439,7 +445,7 @@ def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
 
 
 def find_orders_by_order_numbers(
-    order_numbers: Set[OrderNumber]
+    order_numbers: Set[OrderNumber],
 ) -> Sequence[Order]:
     """Return the orders with those order numbers."""
     if not order_numbers:

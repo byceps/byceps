@@ -33,7 +33,7 @@ class OrderWithOrderer(Order):
 
 
 def extend_order_tuples_with_orderer(
-    orders: Sequence[Order]
+    orders: Sequence[Order],
 ) -> Iterator[OrderWithOrderer]:
     orderer_ids = {order.placed_by_id for order in orders}
     orderers = user_service.find_users(orderer_ids, include_avatars=True)
@@ -134,7 +134,7 @@ def _get_additional_data_for_badge_awarded(event: OrderEvent) -> OrderEventData:
 
 
 def _get_additional_data_for_ticket_bundle_created(
-    event: OrderEvent
+    event: OrderEvent,
 ) -> OrderEventData:
     bundle_id = event.data['ticket_bundle_id']
     category_id = event.data['ticket_bundle_category_id']
@@ -168,7 +168,7 @@ def _get_additional_data_for_ticket_bundle_revoked(
 
 
 def _get_additional_data_for_ticket_created(
-    event: OrderEvent
+    event: OrderEvent,
 ) -> OrderEventData:
     ticket_id = event.data['ticket_id']
     ticket_code = event.data['ticket_code']

@@ -97,10 +97,14 @@ def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     ticket.user_checked_in = False
 
-    event = event_service.build_event('user-check-in-reverted', ticket.id, {
-        'checked_in_user_id': str(ticket.used_by_id),
-        'initiator_id': str(initiator_id),
-    })
+    event = event_service.build_event(
+        'user-check-in-reverted',
+        ticket.id,
+        {
+            'checked_in_user_id': str(ticket.used_by_id),
+            'initiator_id': str(initiator_id),
+        },
+    )
     db.session.add(event)
 
     db.session.commit()

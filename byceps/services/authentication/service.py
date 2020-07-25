@@ -39,7 +39,7 @@ def authenticate(screen_name_or_email_address: str, password: str) -> User:
 
 
 def _find_user_by_screen_name_or_email_address(
-    screen_name_or_email_address: str
+    screen_name_or_email_address: str,
 ) -> Optional[User]:
     if '@' in screen_name_or_email_address:
         return user_service.find_user_by_email_address(

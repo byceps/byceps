@@ -58,9 +58,9 @@ def update_password_hash(
     credential.password_hash = password_hash
     credential.updated_at = now
 
-    event = user_event_service.build_event('password-updated', user_id, {
-        'initiator_id': str(initiator_id),
-    })
+    event = user_event_service.build_event(
+        'password-updated', user_id, {'initiator_id': str(initiator_id),}
+    )
     db.session.add(event)
 
     db.session.commit()
@@ -85,8 +85,9 @@ def check_password_hash(password_hash: str, password: str) -> bool:
     """Hash the password and return `True` if the result matches the
     given hash, `False` otherwise.
     """
-    return (password_hash is not None) \
-        and _check_password_hash(password_hash, password)
+    return (password_hash is not None) and _check_password_hash(
+        password_hash, password
+    )
 
 
 def delete_password_hash(user_id: UserID) -> None:

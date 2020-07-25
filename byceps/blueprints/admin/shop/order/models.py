@@ -42,7 +42,9 @@ class OrderStateFilter(Enum):
     @classmethod
     def find_for_payment_state(cls, payment_state):
         def match(order_state_filter):
-            return order_state_filter.payment_state == payment_state and \
-                order_state_filter.shipped is None
+            return (
+                order_state_filter.payment_state == payment_state
+                and order_state_filter.shipped is None
+            )
 
         return iterables.find(match, cls)

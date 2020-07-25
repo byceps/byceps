@@ -30,7 +30,7 @@ def create_seat_group(
     title: str,
     seats: Sequence[DbSeat],
     *,
-    commit: bool=True,
+    commit: bool = True,
 ) -> DbSeatGroup:
     """Create a seat group and assign the given seats."""
     seat_quantity = len(seats)
@@ -38,8 +38,9 @@ def create_seat_group(
         raise ValueError("No seats specified.")
 
     ticket_category_ids = {seat.category_id for seat in seats}
-    if len(ticket_category_ids) != 1 \
-            or (ticket_category_id not in ticket_category_ids):
+    if len(ticket_category_ids) != 1 or (
+        ticket_category_id not in ticket_category_ids
+    ):
         raise ValueError("Seats' ticket category IDs do not match the group's.")
 
     group = DbSeatGroup(party_id, ticket_category_id, seat_quantity, title)

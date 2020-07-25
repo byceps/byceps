@@ -137,7 +137,9 @@ def set_user_checked_in_flag(ticket_id):
     initiator_id = g.current_user.id
 
     try:
-        event = ticket_user_checkin_service.check_in_user(ticket.id, initiator_id)
+        event = ticket_user_checkin_service.check_in_user(
+            ticket.id, initiator_id
+        )
     except ticket_exceptions.UserAccountDeleted:
         flash_error(
             'Das dem Ticket zugewiesene Benutzerkonto ist gelöscht worden. '
@@ -155,7 +157,7 @@ def set_user_checked_in_flag(ticket_id):
 
     flash_success(f"Benutzer '{ticket.used_by.screen_name}' wurde eingecheckt.")
 
-    occupies_seat = (ticket.occupied_seat_id is not None)
+    occupies_seat = ticket.occupied_seat_id is not None
     if not occupies_seat:
         flash_notice('Das Ticket belegt noch keinen Sitzplatz.', icon='warning')
 

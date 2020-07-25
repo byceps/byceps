@@ -39,7 +39,7 @@ def init_app(app: Flask) -> None:
         set_extension_value(KEY_SITE_ID, site_id, app)
 
 
-def get_extension_value(key: str, app: Optional[Flask]=None) -> Any:
+def get_extension_value(key: str, app: Optional[Flask] = None) -> Any:
     """Return the value for the key in this application's own extension
     namespace.
 
@@ -76,7 +76,7 @@ def _determine_app_mode(app: Flask) -> AppMode:
         raise ConfigurationError(f'Invalid app mode "{value}" configured.')
 
 
-def get_app_mode(app: Optional[Flask]=None) -> AppMode:
+def get_app_mode(app: Optional[Flask] = None) -> AppMode:
     """Return the mode the site should run in."""
     return get_extension_value(KEY_APP_MODE, app)
 
@@ -93,6 +93,6 @@ def _determine_site_id(app: Flask) -> SiteID:
     return site_id
 
 
-def get_current_site_id(app: Optional[Flask]=None) -> SiteID:
+def get_current_site_id(app: Optional[Flask] = None) -> SiteID:
     """Return the id of the current site."""
     return get_extension_value(KEY_SITE_ID, app)

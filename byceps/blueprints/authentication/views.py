@@ -70,7 +70,9 @@ def login_form():
         }
 
     form = LoginForm()
-    user_account_creation_enabled = _is_user_account_creation_enabled(in_admin_mode)
+    user_account_creation_enabled = _is_user_account_creation_enabled(
+        in_admin_mode
+    )
 
     return {
         'login_enabled': True,

@@ -225,6 +225,7 @@ def init_app(app: Flask) -> None:
 
         if app_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
             import rq_dashboard
+
             app.register_blueprint(
                 rq_dashboard.blueprint, url_prefix='/admin/rq'
             )
@@ -261,7 +262,7 @@ def _get_site_template_context() -> Dict[str, Any]:
 
 
 def _find_site_template_context_processor_cached(
-    site_id: str
+    site_id: str,
 ) -> Optional[Callable[[], Dict[str, Any]]]:
     """Return the template context processor for the site.
 
@@ -280,7 +281,7 @@ def _find_site_template_context_processor_cached(
 
 
 def _find_site_template_context_processor(
-    site_id: str
+    site_id: str,
 ) -> Optional[Callable[[], Dict[str, Any]]]:
     """Import a template context processor from the site's package.
 

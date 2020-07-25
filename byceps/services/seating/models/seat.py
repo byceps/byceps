@@ -73,8 +73,9 @@ class Seat(db.Model):
         """Return `True` if the seat is occupied by a ticket, and that
         ticket is assigned to a user.
         """
-        return self.is_occupied and \
-            (self.occupied_by_ticket.used_by_id is not None)
+        return self.is_occupied and (
+            self.occupied_by_ticket.used_by_id is not None
+        )
 
     @property
     def user(self) -> Optional[User]:

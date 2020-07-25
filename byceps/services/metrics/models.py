@@ -43,8 +43,10 @@ class Metric:
     def serialize(self) -> str:
         labels_str = ''
         if self.labels:
-            labels_str = '{' \
-                + ', '.join(label.serialize() for label in self.labels) \
+            labels_str = (
+                '{'
+                + ', '.join(label.serialize() for label in self.labels)
                 + '}'
+            )
 
         return f'{self.name}{labels_str} {self.value}'

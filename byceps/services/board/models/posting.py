@@ -78,13 +78,10 @@ class Posting(db.Model):
 
     def may_be_updated_by_user(self, user: User) -> bool:
         return (
-            (
-                not self.topic.locked
-                    and user.id == self.creator_id
-                    and user.has_permission(BoardPostingPermission.update)
-            )
-            or user.has_permission(BoardPermission.update_of_others)
-        )
+            not self.topic.locked
+            and user.id == self.creator_id
+            and user.has_permission(BoardPostingPermission.update)
+        ) or user.has_permission(BoardPermission.update_of_others)
 
     def is_unseen(self, user: CurrentUser, last_viewed_at: datetime) -> bool:
         # Don't display any posting as new to a guest.

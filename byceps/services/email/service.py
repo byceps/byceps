@@ -128,10 +128,8 @@ def get_all_configs() -> List[EmailConfig]:
 def enqueue_message(message: Message) -> None:
     """Enqueue e-mail to be sent asynchronously."""
     enqueue_email(
-        message.sender,
-        message.recipients,
-        message.subject,
-        message.body)
+        message.sender, message.recipients, message.subject, message.body
+    )
 
 
 def enqueue_email(

@@ -70,7 +70,7 @@ def view(party_id):
 
 
 def _group_presences_by_orga(
-    presences: Iterable[PresenceTimeSlot]
+    presences: Iterable[PresenceTimeSlot],
 ) -> Dict[User, PresenceTimeSlot]:
     d = defaultdict(set)
 

@@ -24,8 +24,9 @@ def register_badge_awarding(
     params_create = {
         'badge_id': str(badge_id),
     }
-    action_service.create_action(article_number, PaymentState.paid,
-                                 'create_tickets', params_create)
+    action_service.create_action(
+        article_number, PaymentState.paid, 'create_tickets', params_create
+    )
 
 
 def register_ticket_bundles_creation(
@@ -63,8 +64,9 @@ def register_tickets_creation(
     params_create = {
         'category_id': str(ticket_category_id),
     }
-    action_service.create_action(article_number, PaymentState.paid,
-                                 'create_tickets', params_create)
+    action_service.create_action(
+        article_number, PaymentState.paid, 'create_tickets', params_create
+    )
 
     # Revoke tickets that have been created for the order when it is
     # canceled after being marked as paid.

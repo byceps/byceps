@@ -82,7 +82,7 @@ def _collect_consent_metrics() -> Iterator[Metric]:
 
 
 def _collect_shop_ordered_article_metrics(
-    shop_ids: Set[ShopID]
+    shop_ids: Set[ShopID],
 ) -> Iterator[Metric]:
     """Provide ordered article quantities for shops."""
     stats = shop_article_service.sum_ordered_articles_by_payment_state(shop_ids)
@@ -119,7 +119,7 @@ def _collect_shop_order_metrics(shops: List[Shop]) -> Iterator[Metric]:
 
 
 def _collect_seating_metrics(
-    active_party_ids: List[PartyID]
+    active_party_ids: List[PartyID],
 ) -> Iterator[Metric]:
     """Provide seat occupation counts per party and category."""
     for party_id in active_party_ids:
@@ -155,7 +155,9 @@ def _collect_ticket_metrics(active_parties: List[Party]) -> Iterator[Metric]:
             'tickets_revoked_count', tickets_revoked_count, labels=labels
         )
 
-        tickets_sold_count = ticket_service.count_sold_tickets_for_party(party_id)
+        tickets_sold_count = ticket_service.count_sold_tickets_for_party(
+            party_id
+        )
         yield Metric('tickets_sold_count', tickets_sold_count, labels=labels)
 
         tickets_checked_in_count = ticket_service.count_tickets_checked_in_for_party(

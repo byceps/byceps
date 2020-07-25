@@ -140,10 +140,13 @@ def create_form(shop_id, erroneous_form=None):
     )
     article_number_sequence_available = bool(article_number_sequences)
 
-    form = erroneous_form if erroneous_form else ArticleCreateForm(
-        price=Decimal('0.00'),
-        tax_rate=Decimal('0.19'),
-        quantity=0)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else ArticleCreateForm(
+            price=Decimal('0.00'), tax_rate=Decimal('0.19'), quantity=0
+        )
+    )
     form.set_article_number_sequence_choices(article_number_sequences)
 
     return {
@@ -286,8 +289,11 @@ def attachment_create_form(article_id, erroneous_form=None):
 
     attachable_articles = article_service.get_attachable_articles(article.id)
 
-    form = erroneous_form if erroneous_form else ArticleAttachmentCreateForm(
-        quantity=0)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else ArticleAttachmentCreateForm(quantity=0)
+    )
     form.set_article_to_attach_choices(attachable_articles)
 
     return {

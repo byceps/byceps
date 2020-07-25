@@ -182,8 +182,9 @@ def category_update_form(category_id, erroneous_form=None):
     board = board_service.find_board(category.board_id)
     brand = brand_service.find_brand(board.brand_id)
 
-    form = erroneous_form if erroneous_form \
-           else CategoryUpdateForm(obj=category)
+    form = (
+        erroneous_form if erroneous_form else CategoryUpdateForm(obj=category)
+    )
 
     return {
         'category': category,

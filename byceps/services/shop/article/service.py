@@ -201,7 +201,7 @@ def find_attached_article(
 
 
 def get_articles_by_numbers(
-    article_numbers: Set[ArticleNumber]
+    article_numbers: Set[ArticleNumber],
 ) -> Set[Article]:
     """Return the articles with those numbers."""
     if not article_numbers:

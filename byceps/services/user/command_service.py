@@ -77,10 +77,14 @@ def suspend_account(
 
     user.suspended = True
 
-    event = event_service.build_event('user-suspended', user.id, {
-        'initiator_id': str(initiator_id),
-        'reason': reason,
-    })
+    event = event_service.build_event(
+        'user-suspended',
+        user.id,
+        {
+            'initiator_id': str(initiator_id),
+            'reason': reason,
+        },
+    )
     db.session.add(event)
 
     db.session.commit()
@@ -100,10 +104,14 @@ def unsuspend_account(
 
     user.suspended = False
 
-    event = event_service.build_event('user-unsuspended', user.id, {
-        'initiator_id': str(initiator_id),
-        'reason': reason,
-    })
+    event = event_service.build_event(
+        'user-unsuspended',
+        user.id,
+        {
+            'initiator_id': str(initiator_id),
+            'reason': reason,
+        },
+    )
     db.session.add(event)
 
     db.session.commit()
@@ -124,10 +132,14 @@ def delete_account(
     user.deleted = True
     _anonymize_account(user)
 
-    event = event_service.build_event('user-deleted', user.id, {
-        'initiator_id': str(initiator_id),
-        'reason': reason,
-    })
+    event = event_service.build_event(
+        'user-deleted',
+        user.id,
+        {
+            'initiator_id': str(initiator_id),
+            'reason': reason,
+        },
+    )
     db.session.add(event)
 
     # Deassign authorization roles.
