@@ -14,11 +14,12 @@
       }
 
       .members {
-        margin: 0 0 0.5rem 0;
-      }
-      .members > li {
-        flex: 0 0 50%;
-        padding: 1em 0 0 2em;
+        display: grid;
+        --column-gap: 2rem;
+        column-gap: var(--column-gap);
+        grid-template-columns: repeat(2, calc(50% - var(--column-gap) / 2));
+        margin-top: 1rem;
+        row-gap: 1rem;
       }
     </style>
 {%- endblock %}
@@ -74,34 +75,32 @@
     </div>
 
     {%- if memberships %}
-    <ol class="list-grid members">
+    <div class="members">
       {%- for membership in memberships|sort(attribute='user.screen_name') %}
-      <li>
-        <div class="row row--space-between">
-          <div class="column-auto">
-            <div class="row">
-              <div class="column-auto">
-                {{ render_user_avatar_48(membership.user) }}
-              </div>
-              <div class="column-auto">
-                {{ render_user_admin_link(membership.user) }}<br>
-                {{ membership.duties|fallback }}
-              </div>
+      <div class="row row--space-between">
+        <div class="column-auto">
+          <div class="row">
+            <div class="column-auto">
+              {{ render_user_avatar_48(membership.user) }}
             </div>
-          </div>
-          <div class="column-auto">
-            <div class="dropdown left">
-              <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
-              <ol>
-                <li><a href="{{ url_for('.membership_update_form', membership_id=membership.id) }}">{{ render_icon('edit') }} Teamzugehörigkeit und Aufgabe bearbeiten</a></li>
-                <li><a data-action="membership-remove" href="{{ url_for('.membership_remove', membership_id=membership.id) }}">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
-              </ol>
+            <div class="column-auto">
+              {{ render_user_admin_link(membership.user) }}<br>
+              {{ membership.duties|fallback }}
             </div>
           </div>
         </div>
-      </li>
+        <div class="column-auto">
+          <div class="dropdown left">
+            <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
+            <ol>
+              <li><a href="{{ url_for('.membership_update_form', membership_id=membership.id) }}">{{ render_icon('edit') }} Teamzugehörigkeit und Aufgabe bearbeiten</a></li>
+              <li><a data-action="membership-remove" href="{{ url_for('.membership_remove', membership_id=membership.id) }}">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
+            </ol>
+          </div>
+        </div>
+      </div>
       {%- endfor %}
-    </ol>
+    </div>
     {%- else %}
     <div class="dimmed-box centered">Dieses Team hat keine Mitglieder.</div>
     {%- endif %}
