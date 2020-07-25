@@ -167,15 +167,16 @@ def _find_db_membership(membership_id: MembershipID) -> Optional[DbMembership]:
     return DbMembership.query.get(membership_id)
 
 
-def find_membership_for_party(
+def find_orga_team_for_user_and_party(
     user_id: UserID, party_id: PartyID
-) -> Optional[DbMembership]:
+) -> Optional[OrgaTeam]:
     """Return the user's membership in an orga team of that party, or
     `None` of user it not part of an orga team for that party.
     """
-    return DbMembership.query \
-        .filter_by(user_id=user_id) \
-        .for_party(party_id) \
+    return DbOrgaTeam.query \
+        .join(DbMembership) \
+        .filter(DbMembership.user_id == user_id) \
+        .filter(DbOrgaTeam.party_id == party_id) \
         .one_or_none()
 
 

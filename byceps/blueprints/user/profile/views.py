@@ -33,7 +33,7 @@ def view(user_id):
         user.id
     )
 
-    orga_team_membership = orga_team_service.find_membership_for_party(
+    orga_team = orga_team_service.find_orga_team_for_user_and_party(
         user.id, g.party_id
     )
 
@@ -48,7 +48,7 @@ def view(user_id):
     return {
         'user': user,
         'badges_with_awarding_quantity': badges_with_awarding_quantity,
-        'orga_team_membership': orga_team_membership,
+        'orga_team': orga_team,
         'current_party_tickets': current_party_tickets,
         'attended_parties': attended_parties,
     }
