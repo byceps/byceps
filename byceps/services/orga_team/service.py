@@ -84,7 +84,7 @@ def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
 
 def get_teams_and_memberships_for_party(
     party_id: PartyID
-) -> Sequence[Tuple[DbOrgaTeam, DbMembership]]:
+) -> Sequence[Tuple[OrgaTeam, DbMembership]]:
     """Return all orga teams and their corresponding memberships for
     that party.
     """
@@ -94,7 +94,7 @@ def get_teams_and_memberships_for_party(
         .filter_by(party_id=party_id) \
         .all()
 
-    return [(team, team.memberships) for team in teams]
+    return [(_db_entity_to_team(team), team.memberships) for team in teams]
 
 
 def _db_entity_to_team(team: DbOrgaTeam) -> OrgaTeam:
