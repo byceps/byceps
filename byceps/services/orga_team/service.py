@@ -265,7 +265,7 @@ def _db_entity_to_membership(membership: DbMembership) -> Membership:
     return Membership(
         membership.id,
         membership.orga_team_id,
-        membership.user,
+        membership.user_id,
         membership.duties,
     )
 
