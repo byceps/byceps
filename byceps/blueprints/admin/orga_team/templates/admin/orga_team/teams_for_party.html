@@ -62,24 +62,29 @@
     {%- set memberships = team.memberships|list %}
     {%- set member_total = memberships|length %}
 
-    {%- if g.current_user.has_permission(OrgaTeamPermission.administrate_memberships) %}
-    <div style="float: right;">
-      <a class="button button--compact" href="{{ url_for('.membership_create_form', team_id=team.id) }}" title="Orga hinzufügen">{{ render_icon('add') }}</a>
-      <div class="dropdown left">
-        <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
-        <ol>
-          {%- if not memberships and g.current_user.has_permission(OrgaTeamPermission.delete) %}
-          <li><a data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} <span>Team entfernen</span></a></li>
-          {%- else %}
-          <li><span class="button--disabled">{{ render_icon('remove') }} <span>Team entfernen</span></span></li>
-          {%- endif %}
-        </ol>
+    <div class="row row--space-between">
+      <div class="column-auto">
+        <h2>{{ team.title }}</h2>
+        {{ '%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')|dim }}
       </div>
+      {%- if g.current_user.has_permission(OrgaTeamPermission.administrate_memberships) %}
+      <div class="column-auto">
+        <div class="button-row button-row--right">
+          <a class="button button--compact" href="{{ url_for('.membership_create_form', team_id=team.id) }}" title="Orga hinzufügen">{{ render_icon('add') }}</a>
+          <div class="dropdown left">
+            <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
+            <ol>
+              {%- if not memberships and g.current_user.has_permission(OrgaTeamPermission.delete) %}
+              <li><a data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} <span>Team entfernen</span></a></li>
+              {%- else %}
+              <li><span class="button--disabled">{{ render_icon('remove') }} <span>Team entfernen</span></span></li>
+              {%- endif %}
+            </ol>
+          </div>
+        </div>
+      </div>
+      {%- endif %}
     </div>
-    {%- endif %}
-
-    <h2>{{ team.title }}</h2>
-    {{ '%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')|dim }}
 
     {%- if memberships %}
     <ol class="list-grid members">
