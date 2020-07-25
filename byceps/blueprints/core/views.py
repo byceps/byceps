@@ -79,6 +79,7 @@ def provide_app_mode():
     g.app_mode = app_mode
 
     # site ID
+    site_id = None
     if app_mode.is_site():
         site_id = config.get_current_site_id()
         g.site_id = site_id
