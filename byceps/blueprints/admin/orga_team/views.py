@@ -175,7 +175,11 @@ def membership_update_form(membership_id, erroneous_form=None):
     """Show form to update a membership."""
     membership = _get_membership_or_404(membership_id)
 
-    teams = orga_team_service.get_teams_for_party(membership.orga_team.party_id)
+    user = user_service.find_user(membership.user_id)
+    team = orga_team_service.find_team(membership.orga_team_id)
+    party = party_service.get_party(team.party_id)
+
+    teams = orga_team_service.get_teams_for_party(team.party_id)
 
     form = (
         erroneous_form
@@ -187,6 +191,9 @@ def membership_update_form(membership_id, erroneous_form=None):
     return {
         'form': form,
         'membership': membership,
+        'user': user,
+        'team': team,
+        'party': party,
     }
 
 
@@ -196,7 +203,10 @@ def membership_update(membership_id):
     """Update a membership."""
     membership = _get_membership_or_404(membership_id)
 
-    teams = orga_team_service.get_teams_for_party(membership.orga_team.party_id)
+    user = user_service.find_user(membership.user_id)
+    team = orga_team_service.find_team(membership.orga_team_id)
+
+    teams = orga_team_service.get_teams_for_party(team.party_id)
 
     form = MembershipUpdateForm(request.form)
     form.set_orga_team_choices(teams)
@@ -211,12 +221,9 @@ def membership_update(membership_id):
     orga_team_service.update_membership(membership.id, team.id, duties)
 
     flash_success(
-        f'Die Teammitgliedschaft von {membership.user.screen_name} '
-        'wurde aktualisiert.'
+        f'Die Teammitgliedschaft von {user.screen_name} wurde aktualisiert.'
     )
-    return redirect_to(
-        '.teams_for_party', party_id=membership.orga_team.party_id
-    )
+    return redirect_to('.teams_for_party', party_id=team.party_id)
 
 
 @blueprint.route('/memberships/<uuid:membership_id>', methods=['DELETE'])
@@ -226,8 +233,8 @@ def membership_remove(membership_id):
     """Remove an organizer from a team."""
     membership = _get_membership_or_404(membership_id)
 
-    user = membership.user
-    team = membership.orga_team
+    user = user_service.find_user(membership.user_id)
+    team = orga_team_service.find_team(membership.orga_team_id)
 
     orga_team_service.delete_membership(membership.id)
 

@@ -158,9 +158,14 @@ def count_memberships_for_party(party_id: PartyID) -> int:
         .count()
 
 
-def find_membership(membership_id: MembershipID) -> Optional[DbMembership]:
+def find_membership(membership_id: MembershipID) -> Optional[Membership]:
     """Return the membership with that id, or `None` if not found."""
-    return _find_db_membership(membership_id)
+    membership = _find_db_membership(membership_id)
+
+    if membership is None:
+        return None
+
+    return _db_entity_to_membership(membership)
 
 
 def _find_db_membership(membership_id: MembershipID) -> Optional[DbMembership]:

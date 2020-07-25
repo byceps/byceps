@@ -2,15 +2,15 @@
 {% from 'macros/admin/user.html' import render_user_admin_link %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% set current_page = 'orga_team_admin.teams' %}
-{% set current_page_party = membership.orga_team.party %}
+{% set current_page_party = party %}
 {% set title = 'Orga-Team-Mitgliedschaft bearbeiten' %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li>{{ membership.orga_team.party.title }}</li>
-      <li>{{ render_user_admin_link(membership.user) }}</li>
+      <li>{{ party.title }}</li>
+      <li>{{ render_user_admin_link(user) }}</li>
     </ol>
   </nav>
   <h1>{{ title }}</h1>
@@ -21,7 +21,7 @@
       {{ form_field(form.duties, maxlength=40) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.teams_for_party', party_id=membership.orga_team.party.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.teams_for_party', party_id=party.id)) }}
   </form>
 
 {%- endblock %}
