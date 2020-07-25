@@ -220,7 +220,7 @@ def get_public_orgas_for_party(party_id: PartyID) -> Set[PublicOrga]:
 
     users_by_id = _get_public_orga_users_by_id(memberships)
 
-    def _to_orga(membership):
+    def to_orga(membership: DbMembership) -> PublicOrga:
         user = users_by_id[membership.user_id]
 
         return PublicOrga(
@@ -230,7 +230,7 @@ def get_public_orgas_for_party(party_id: PartyID) -> Set[PublicOrga]:
             membership.duties,
         )
 
-    orgas = {_to_orga(ms) for ms in memberships}
+    orgas = {to_orga(ms) for ms in memberships}
     orgas = {orga for orga in orgas if not orga.user.deleted}
 
     return orgas
