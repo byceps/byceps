@@ -2,6 +2,11 @@
 BYCEPS
 ======
 
+.. image:: https://raw.githubusercontent.com/byceps/byceps/main/byceps_logo.svg
+   :align: left
+   :alt: BYCEPS logo
+   :height: 150
+   :width: 150
 
 BYCEPS is the Bring-Your-Computer Event Processing System.
 
