@@ -22,6 +22,10 @@
       .attendee-avatar {
         margin-right: 0.75rem;
       }
+
+      .attendee-seats {
+        margin: 0.4rem 0;
+      }
     </style>
 {%- endblock %}
 
@@ -69,18 +73,20 @@
           </div>
         </td>
         <td>
-          <table>
+          <div class="attendee-seats">
             {%- for ticket in attendee.tickets %}
-            <tr>
-              <td>
+            <div class="row row--space-between">
+              <div class="column-auto">
               {%- with seat = ticket.seat %}
                 {{ render_seat_link(seat.area, seat) if seat else 'nicht ausgewählt'|dim }}
               {%- endwith %}
-              </td>
-              <td>{% if ticket.checked_in %}{{ render_tag('eingecheckt') }}{% endif %}</td>
-            </tr>
+              </div>
+              {%- if ticket.checked_in %}
+              <div class="column-auto">{{ render_tag('eingecheckt') }}</div>
+              {%- endif %}
+            </div>
             {%- endfor %}
-          </table>
+          </div>
         </td>
       </tr>
       {%- endfor %}
