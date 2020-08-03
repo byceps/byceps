@@ -30,7 +30,7 @@
   </nav>
   <h1>{{ role.title }}<br><span class="monospace">{{ role.id|dim }}</span></h1>
 
-  <h2>Zugewiesene Rechte {{ render_extra_in_heading(permissions|length) }}</h2>
+  <h2>Zugewiesene Berechtigungen {{ render_extra_in_heading(permissions|length) }}</h2>
   {%- if permissions %}
   <ul class="permissions">
     {%- for permission in permissions|sort(attribute='id') %}
