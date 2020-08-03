@@ -6,44 +6,54 @@
 {% from 'macros/stats.html' import render_bigstats_item %}
 {% set current_page = 'user_admin' %}
 {% set title = 'Benutzer' %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h1>{{ title }}</h1>
+    </div>
+    {%- if g.current_user.has_permission(UserPermission.create) %}
+    <div class="column-auto">
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.create_account_form') }}">{{ render_icon('add') }} <span>Benutzer erstellen</span></a>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
 
-  <div class="row row--equal-sized-centered-columns row--space-around row--wrap bigstats">
-    <div class="column-auto">
-      <a class="button button--clear" href="{{ url_for('.index') }}">
-        {{- render_bigstats_item(total_overall|separate_thousands, '&sum; gesamt'|safe) -}}
-      </a>
-    </div>
-    <div class="column-auto">
-      <a class="button button--clear" href="{{ url_for('.index', only='active') }}">
-        {{- render_bigstats_item(total_active|separate_thousands, render_tag('aktiv', class='color-success', icon='enabled')) -}}
-      </a>
-    </div>
-    <div class="column-auto">
-      <a class="button button--clear" href="{{ url_for('.index', only='uninitialized') }}">
-        {{- render_bigstats_item(total_uninitialized|separate_thousands, render_user_flag_uninitialized()) -}}
-      </a>
-    </div>
-    <div class="column-auto">
-      <a class="button button--clear" href="{{ url_for('.index', only='suspended') }}">
-        {{- render_bigstats_item(total_suspended|separate_thousands, render_user_flag_suspended()) -}}
-      </a>
-    </div>
-    <div class="column-auto">
-      <a class="button button--clear" href="{{ url_for('.index', only='deleted') }}">
-        {{- render_bigstats_item(total_deleted|separate_thousands, render_user_flag_deleted()) -}}
-      </a>
+  <div class="box">
+    <div class="row row--equal-sized-centered-columns row--space-around row--wrap bigstats">
+      <div class="column-auto">
+        <a class="button button--clear" href="{{ url_for('.index') }}">
+          {{- render_bigstats_item(total_overall|separate_thousands, '&sum; gesamt'|safe) -}}
+        </a>
+      </div>
+      <div class="column-auto">
+        <a class="button button--clear" href="{{ url_for('.index', only='active') }}">
+          {{- render_bigstats_item(total_active|separate_thousands, render_tag('aktiv', class='color-success', icon='enabled')) -}}
+        </a>
+      </div>
+      <div class="column-auto">
+        <a class="button button--clear" href="{{ url_for('.index', only='uninitialized') }}">
+          {{- render_bigstats_item(total_uninitialized|separate_thousands, render_user_flag_uninitialized()) -}}
+        </a>
+      </div>
+      <div class="column-auto">
+        <a class="button button--clear" href="{{ url_for('.index', only='suspended') }}">
+          {{- render_bigstats_item(total_suspended|separate_thousands, render_user_flag_suspended()) -}}
+        </a>
+      </div>
+      <div class="column-auto">
+        <a class="button button--clear" href="{{ url_for('.index', only='deleted') }}">
+          {{- render_bigstats_item(total_deleted|separate_thousands, render_user_flag_deleted()) -}}
+        </a>
+      </div>
     </div>
   </div>
 
-  {%- if g.current_user.has_permission(UserPermission.create) %}
-  <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.create_account_form') }}">{{ render_icon('add') }} <span>Benutzer erstellen</span></a>
-  </div>
-  {%- endif %}
+  <div class="box" style="margin-bottom: 1rem;">
 
   <div class="row row--space-between row--wrap filters">
     <div class="column-auto">
@@ -86,5 +96,7 @@
   <small>
     <p>{{ users.total }} {{ 'Ergebnis' if (users.total == 1) else 'Ergebnisse' }}</p>
   </small>
+
+  </div>
 
 {%- endblock %}
