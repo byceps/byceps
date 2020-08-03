@@ -22,7 +22,7 @@
 
   {%- if shops %}
     {%- for shop in shops|sort(attribute='title')|sort(attribute='title') %}
-  <div class="box" style="border-left: {{ '#aaaaaa' if shop.archived else '#55cc00' }} solid 0.25rem; margin-bottom: 1rem;">
+  <div class="box" style="border-left: {{ '#aaaaaa' if shop.archived else '#55cc00' }} solid 0.25rem;">
     <div class="row row--space-between">
 
       <div class="column-auto">

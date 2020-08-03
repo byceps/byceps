@@ -75,17 +75,24 @@ main {
   border-width: 1px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
+
 #sidebar section,
 #main,
 .box {
   background-color: #ffffff;
   border-radius: 3px;
 }
+
 #main {
   padding: 20px 40px 40px 40px;
 }
+
 .box {
   padding: 20px;
+}
+
+.box + .box {
+  margin-top: 1rem;
 }
 
 

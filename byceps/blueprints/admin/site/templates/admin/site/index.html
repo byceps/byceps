@@ -61,7 +61,7 @@
 
   {%- if sites %}
     {%- for site in sites|sort(attribute='enabled', reverse=True) %}
-  <div class="box" style="border-left: {{ '#55cc00' if site.enabled else '#aaaaaa' }} solid 0.25rem; margin-bottom: 1rem;">
+  <div class="box" style="border-left: {{ '#55cc00' if site.enabled else '#aaaaaa' }} solid 0.25rem;">
     <div class="row row--space-between">
 
       <div class="column-auto" style="min-width: 65%;">
