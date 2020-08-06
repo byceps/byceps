@@ -51,3 +51,7 @@ pytest-cov = "^2.10.0"
 python-dotenv = "0.13.0"
 requests-mock = "1.8.0"
 Sphinx = "2.1.1"
+
+[tool.pytest.ini_options]
+addopts = "-vv -ra --showlocals"
+testpaths = ["tests/unit", "tests/integration"]
