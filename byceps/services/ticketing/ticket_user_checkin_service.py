@@ -45,6 +45,7 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> TicketCheckedIn:
 
     return TicketCheckedIn(
         occurred_at=event.occurred_at,
+        initiator_id=initiator_id,
         ticket_id=ticket.id,
     )
 
