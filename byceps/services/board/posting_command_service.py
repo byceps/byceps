@@ -38,7 +38,10 @@ def create_posting(
     aggregate_topic(topic)
 
     event = BoardPostingCreated(
-        occurred_at=posting.created_at, posting_id=posting.id, url=None
+        occurred_at=posting.created_at,
+        initiator_id=creator_id,
+        posting_id=posting.id,
+        url=None,
     )
 
     return posting, event
@@ -61,7 +64,11 @@ def update_posting(
         db.session.commit()
 
     return BoardPostingUpdated(
-        occurred_at=now, posting_id=posting.id, editor_id=editor_id, url=None
+        occurred_at=now,
+        initiator_id=editor_id,
+        posting_id=posting.id,
+        editor_id=editor_id,
+        url=None,
     )
 
 
@@ -82,6 +89,7 @@ def hide_posting(
 
     event = BoardPostingHidden(
         occurred_at=now,
+        initiator_id=moderator_id,
         posting_id=posting.id,
         moderator_id=moderator_id,
         url=None,
@@ -108,6 +116,7 @@ def unhide_posting(
 
     event = BoardPostingUnhidden(
         occurred_at=now,
+        initiator_id=moderator_id,
         posting_id=posting.id,
         moderator_id=moderator_id,
         url=None,

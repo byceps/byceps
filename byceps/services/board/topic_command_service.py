@@ -50,7 +50,10 @@ def create_topic(
     aggregate_topic(topic)
 
     event = BoardTopicCreated(
-        occurred_at=topic.created_at, topic_id=topic.id, url=None
+        occurred_at=topic.created_at,
+        initiator_id=creator_id,
+        topic_id=topic.id,
+        url=None,
     )
 
     return topic, event
@@ -72,6 +75,7 @@ def update_topic(
 
     return BoardTopicUpdated(
         occurred_at=posting_event.occurred_at,
+        initiator_id=editor_id,
         topic_id=topic.id,
         editor_id=editor_id,
         url=None,
@@ -92,7 +96,11 @@ def hide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicHidden:
     aggregate_topic(topic)
 
     return BoardTopicHidden(
-        occurred_at=now, topic_id=topic.id, moderator_id=moderator_id, url=None
+        occurred_at=now,
+        initiator_id=moderator_id,
+        topic_id=topic.id,
+        moderator_id=moderator_id,
+        url=None,
     )
 
 
@@ -111,7 +119,11 @@ def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
     aggregate_topic(topic)
 
     return BoardTopicUnhidden(
-        occurred_at=now, topic_id=topic.id, moderator_id=moderator_id, url=None
+        occurred_at=now,
+        initiator_id=moderator_id,
+        topic_id=topic.id,
+        moderator_id=moderator_id,
+        url=None,
     )
 
 
@@ -127,7 +139,11 @@ def lock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicLocked:
     db.session.commit()
 
     return BoardTopicLocked(
-        occurred_at=now, topic_id=topic.id, moderator_id=moderator_id, url=None
+        occurred_at=now,
+        initiator_id=moderator_id,
+        topic_id=topic.id,
+        moderator_id=moderator_id,
+        url=None,
     )
 
 
@@ -144,7 +160,11 @@ def unlock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnlocked:
     db.session.commit()
 
     return BoardTopicUnlocked(
-        occurred_at=now, topic_id=topic.id, moderator_id=moderator_id, url=None
+        occurred_at=now,
+        initiator_id=moderator_id,
+        topic_id=topic.id,
+        moderator_id=moderator_id,
+        url=None,
     )
 
 
@@ -160,7 +180,11 @@ def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinned:
     db.session.commit()
 
     return BoardTopicPinned(
-        occurred_at=now, topic_id=topic.id, moderator_id=moderator_id, url=None
+        occurred_at=now,
+        initiator_id=moderator_id,
+        topic_id=topic.id,
+        moderator_id=moderator_id,
+        url=None,
     )
 
 
@@ -177,7 +201,11 @@ def unpin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnpinned:
     db.session.commit()
 
     return BoardTopicUnpinned(
-        occurred_at=now, topic_id=topic.id, moderator_id=moderator_id, url=None
+        occurred_at=now,
+        initiator_id=moderator_id,
+        topic_id=topic.id,
+        moderator_id=moderator_id,
+        url=None,
     )
 
 
@@ -200,6 +228,7 @@ def move_topic(
 
     return BoardTopicMoved(
         occurred_at=now,
+        initiator_id=moderator_id,
         topic_id=topic.id,
         old_category_id=old_category.id,
         new_category_id=new_category.id,

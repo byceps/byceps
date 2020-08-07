@@ -35,7 +35,7 @@ from .helpers import (
 )
 
 
-def test_announce_topic_created(app, topic):
+def test_announce_topic_created(app, topic, creator):
     expected_channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -45,7 +45,10 @@ def test_announce_topic_created(app, topic):
 
     with mocked_irc_bot() as mock:
         event = BoardTopicCreated(
-            occurred_at=topic.created_at, topic_id=topic.id, url=expected_link
+            occurred_at=topic.created_at,
+            initiator_id=creator.id,
+            topic_id=topic.id,
+            url=expected_link,
         )
         board_signals.topic_created.send(None, event=event)
 
@@ -64,6 +67,7 @@ def test_announce_topic_hidden(app, topic, moderator):
     with mocked_irc_bot() as mock:
         event = BoardTopicHidden(
             occurred_at=now(),
+            initiator_id=moderator.id,
             topic_id=topic.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -85,6 +89,7 @@ def test_announce_topic_unhidden(app, topic, moderator):
     with mocked_irc_bot() as mock:
         event = BoardTopicUnhidden(
             occurred_at=now(),
+            initiator_id=moderator.id,
             topic_id=topic.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -106,6 +111,7 @@ def test_announce_topic_locked(app, topic, moderator):
     with mocked_irc_bot() as mock:
         event = BoardTopicLocked(
             occurred_at=now(),
+            initiator_id=moderator.id,
             topic_id=topic.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -127,6 +133,7 @@ def test_announce_topic_unlocked(app, topic, moderator):
     with mocked_irc_bot() as mock:
         event = BoardTopicUnlocked(
             occurred_at=now(),
+            initiator_id=moderator.id,
             topic_id=topic.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -148,6 +155,7 @@ def test_announce_topic_pinned(app, topic, moderator):
     with mocked_irc_bot() as mock:
         event = BoardTopicPinned(
             occurred_at=now(),
+            initiator_id=moderator.id,
             topic_id=topic.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -169,6 +177,7 @@ def test_announce_topic_unpinned(app, topic, moderator):
     with mocked_irc_bot() as mock:
         event = BoardTopicUnpinned(
             occurred_at=now(),
+            initiator_id=moderator.id,
             topic_id=topic.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -192,6 +201,7 @@ def test_announce_topic_moved(
     with mocked_irc_bot() as mock:
         event = BoardTopicMoved(
             occurred_at=now(),
+            initiator_id=moderator.id,
             topic_id=topic.id,
             old_category_id=category.id,
             new_category_id=another_category.id,
@@ -203,7 +213,7 @@ def test_announce_topic_moved(
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_posting_created(app, posting):
+def test_announce_posting_created(app, posting, creator):
     expected_channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
@@ -215,6 +225,7 @@ def test_announce_posting_created(app, posting):
     with mocked_irc_bot() as mock:
         event = BoardPostingCreated(
             occurred_at=posting.created_at,
+            initiator_id=creator.id,
             posting_id=posting.id,
             url=expected_link,
         )
@@ -236,6 +247,7 @@ def test_announce_posting_hidden(app, posting, moderator):
     with mocked_irc_bot() as mock:
         event = BoardPostingHidden(
             occurred_at=now(),
+            initiator_id=moderator.id,
             posting_id=posting.id,
             moderator_id=moderator.id,
             url=expected_link,
@@ -258,6 +270,7 @@ def test_announce_posting_unhidden(app, posting, moderator):
     with mocked_irc_bot() as mock:
         event = BoardPostingUnhidden(
             occurred_at=now(),
+            initiator_id=moderator.id,
             posting_id=posting.id,
             moderator_id=moderator.id,
             url=expected_link,

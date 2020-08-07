@@ -83,11 +83,11 @@ def _on_board_topic_created(sender, *, event: BoardTopicCreated = None) -> None:
 def announce_board_topic_created(event: BoardTopicCreated) -> None:
     """Announce that someone has created a board topic."""
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.find_user(topic.creator_id)
+    creator_screen_name = user_service.screen_name_user(topic.creator_id)
 
     text = (
-        f'[Forum] {topic_creator.screen_name} hat '
-        f'das Thema "{topic.title}" erstellt: <{event.url}>'
+        f'[Forum] {creator_screen_name} hat das Thema "{topic.title}" '
+        f'erstellt: <{event.url}>'
     )
 
     send_message(text)
@@ -103,14 +103,14 @@ def _on_board_posting_created(
 def announce_board_posting_created(event: BoardPostingCreated) -> None:
     """Announce that someone has created a board posting."""
     posting = board_posting_query_service.find_posting_by_id(event.posting_id)
-    posting_creator = user_service.find_user(posting.creator_id)
+    creator_screen_name = user_service.find_screen_name(posting.creator_id)
 
     if board_topic_query_service.get_topic(posting.topic_id).muted:
         return
 
     text = (
-        f'[Forum] {posting_creator.screen_name} hat '
-        f'auf das Thema "{posting.topic.title}" geantwortet: <{event.url}>'
+        f'[Forum] {creator_screen_name} hat auf das Thema '
+        f'"{posting.topic.title}" geantwortet: <{event.url}>'
     )
 
     send_message(text)
