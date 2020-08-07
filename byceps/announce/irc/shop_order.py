@@ -82,5 +82,4 @@ def announce_order_canceled(event: ShopOrderCanceled) -> None:
 
 
 def _get_screen_name(user_id: UserID) -> str:
-    user = user_service.find_user(user_id)
-    return user.screen_name
+    return user_service.find_screen_name(user_id)

@@ -263,6 +263,19 @@ def get_anonymous_user() -> AnonymousUser:
     return AnonymousUser()
 
 
+def find_screen_name(user_id: UserID) -> Optional[str]:
+    """Return the user's screen name, if available."""
+    screen_name = db.session \
+        .query(DbUser.screen_name) \
+        .filter_by(id=user_id) \
+        .scalar()
+
+    if screen_name is None:
+        return None
+
+    return screen_name
+
+
 def get_email_address(user_id: UserID) -> str:
     """Return the user's e-mail address."""
     email_address = db.session \

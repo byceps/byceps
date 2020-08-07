@@ -48,13 +48,8 @@ def announce_news_item_published_internally(event: NewsItemPublished) -> None:
     """Announce internally that a news item has been published."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator = user_service.find_user(event.initiator_id)
+    initiator_label = user_service.find_screen_name(event.initiator_id) or 'Jemand'
     item = news_service.find_item(event.item_id)
-
-    if (initiator is not None) and initiator.screen_name:
-        initiator_label = initiator.screen_name
-    else:
-        initiator_label = 'Jemand'
 
     text = (
         f'{initiator_label} hat die News "{item.title}" veröffentlicht. '
