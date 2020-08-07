@@ -16,6 +16,22 @@ class OrgaTeamCreateForm(LocalizedForm):
     title = StringField('Titel', validators=[Length(min=1, max=40)])
 
 
+class OrgaTeamsCopyForm(LocalizedForm):
+    party_id = SelectField('Von Party')
+
+    def set_party_choices(self, parties, team_count_per_party=None):
+        def get_label(party):
+            label = party.title
+            if team_count_per_party:
+                team_count = team_count_per_party.get(party.id, 0)
+                label += f' ({team_count:d} Teams)'
+            return label
+
+        choices = [(party.id, get_label(party)) for party in parties]
+
+        self.party_id.choices = choices
+
+
 class MembershipFormBase(LocalizedForm):
     duties = StringField('Aufgabe')
 

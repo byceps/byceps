@@ -24,6 +24,7 @@ from .forms import (
     MembershipCreateForm,
     MembershipUpdateForm,
     OrgaTeamCreateForm,
+    OrgaTeamsCopyForm,
 )
 
 
@@ -31,6 +32,10 @@ blueprint = create_blueprint('orga_team_admin', __name__)
 
 
 permission_registry.register_enum(OrgaTeamPermission)
+
+
+# -------------------------------------------------------------------- #
+# teams
 
 
 @blueprint.route('/teams/<party_id>')
@@ -104,6 +109,89 @@ def team_delete(team_id):
     orga_team_service.delete_team(team.id)
 
     flash_success(f'Das Team "{title}" wurde gelöscht.')
+
+
+@blueprint.route('/teams/<target_party_id>/copy')
+@permission_required(OrgaTeamPermission.create)
+@templated
+def teams_copy_form(target_party_id, erroneous_form=None):
+    """Show form to copy all organizer teams from another party."""
+    target_party = _get_party_or_404(target_party_id)
+
+    team_count = orga_team_service.count_teams_for_party(target_party.id)
+    if team_count:
+        flash_error(
+            'Diese Party hat bereits Orga-Teams. '
+            'Es können keine weiteren hinzu kopiert werden.'
+        )
+        return redirect_to('.teams_for_party', party_id=target_party.id)
+
+    parties = party_service.get_parties_for_brand(target_party.brand_id)
+
+    # Do not offer to copy teams from target party.
+    parties = [p for p in parties if p.id != target_party.id]
+
+    party_ids = {party.id for party in parties}
+    team_count_per_party = orga_team_service.count_teams_for_parties(party_ids)
+
+    # Exclude parties without orga teams.
+    parties = [p for p in parties if team_count_per_party.get(p.id, 0)]
+
+    if not parties:
+        flash_error(
+            'Es sind keine anderen Partys vorhanden, von denen Orga-Teams '
+            'kopiert werden können.'
+        )
+        return redirect_to('.teams_for_party', party_id=target_party.id)
+
+    parties.sort(key=lambda p: p.starts_at, reverse=True)
+
+    form = erroneous_form if erroneous_form else OrgaTeamsCopyForm()
+    form.set_party_choices(parties, team_count_per_party)
+
+    return {
+        'party': target_party,
+        'form': form,
+    }
+
+
+@blueprint.route('/teams/<target_party_id>/copy', methods=['POST'])
+@permission_required(OrgaTeamPermission.create)
+def teams_copy(target_party_id):
+    """Copy all organizer teams from another party."""
+    target_party = _get_party_or_404(target_party_id)
+
+    target_team_count = orga_team_service.count_teams_for_party(target_party.id)
+    if target_team_count:
+        flash_error(
+            'Diese Party hat bereits Orga-Teams. '
+            'Es können keine weiteren hinzu kopiert werden.'
+        )
+        return redirect_to('.teams_for_party', party_id=target_party.id)
+
+    parties = party_service.get_parties_for_brand(target_party.brand_id)
+
+    form = OrgaTeamsCopyForm(request.form)
+    form.set_party_choices(parties)
+    if not form.validate():
+        return teams_copy_form(target_party.id, form)
+
+    source_party = party_service.get_party(form.party_id.data)
+
+    copied_teams_count = orga_team_service.copy_teams_and_memberships(
+        source_party.id, target_party.id
+    )
+
+    flash_success(
+        f'{copied_teams_count:d} Team(s) wurde von Party '
+        f'"{source_party.title}" zu Party "{target_party.title}" kopiert.'
+    )
+
+    return redirect_to('.teams_for_party', party_id=target_party.id)
+
+
+# -------------------------------------------------------------------- #
+# memberships
 
 
 @blueprint.route('/teams/<uuid:team_id>/memberships/create')
@@ -241,6 +329,10 @@ def membership_remove(membership_id):
     flash_success(
         f'{user.screen_name} wurde aus dem Team "{team.title}" entfernt.'
     )
+
+
+# -------------------------------------------------------------------- #
+# helpers
 
 
 def _get_party_or_404(party_id):

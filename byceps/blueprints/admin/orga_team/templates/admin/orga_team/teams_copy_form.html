@@ -1,0 +1,24 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% set current_page = 'orga_team_admin.teams' %}
+{% set current_page_party = party %}
+{% set title = 'Orga-Teams kopieren' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ party.title }}</li>
+    </ol>
+  </nav>
+  <h1>Orga-Teams von anderer Party kopieren</h1>
+
+  <form action="{{ url_for('.teams_copy', target_party_id=party.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.party_id, required='required', autofocus='autofocus') }}
+    {% endcall %}
+
+    {{ form_buttons('Kopieren', cancel_url=url_for('.teams_for_party', party_id=party.id)) }}
+  </form>
+
+{%- endblock %}

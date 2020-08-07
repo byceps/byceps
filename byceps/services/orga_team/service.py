@@ -53,6 +53,20 @@ def delete_team(team_id: OrgaTeamID) -> None:
     db.session.commit()
 
 
+def count_teams_for_parties(party_ids: Set[PartyID]) -> Dict[PartyID, int]:
+    """Count orga teams for each party."""
+    rows = db.session \
+        .query(
+            DbOrgaTeam.party_id,
+            db.func.count(DbOrgaTeam.id)
+        ) \
+        .filter(DbOrgaTeam.party_id.in_(party_ids)) \
+        .group_by(DbOrgaTeam.party_id) \
+        .all()
+
+    return dict(rows)
+
+
 def count_teams_for_party(party_id: PartyID) -> int:
     """Return the number of orga teams for that party."""
     return DbOrgaTeam.query \
@@ -287,6 +301,31 @@ def _db_entity_to_membership(membership: DbMembership) -> Membership:
         membership.user_id,
         membership.duties,
     )
+
+
+# -------------------------------------------------------------------- #
+# copying teams and memberships
+
+
+def copy_teams_and_memberships(
+    source_party_id: PartyID, target_party_id: PartyID
+) -> int:
+    """Copy teams and memberships from one party to another.
+
+    Return the number of teams.
+    """
+    source_teams_and_members = get_teams_and_members_for_party(source_party_id)
+
+    for source_team, source_members in source_teams_and_members:
+        target_team = create_team(target_party_id, source_team.title)
+        for source_member in source_members:
+            create_membership(
+                target_team.id,
+                source_member.user.id,
+                source_member.membership.duties,
+            )
+
+    return len(source_teams_and_members)
 
 
 # -------------------------------------------------------------------- #
