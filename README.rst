@@ -2,7 +2,7 @@
 BYCEPS
 ======
 
-.. image:: https://raw.githubusercontent.com/byceps/byceps/main/byceps_logo.svg
+.. image:: https://raw.githubusercontent.com/byceps/byceps/main/assets/byceps_logo.svg
    :align: left
    :alt: BYCEPS logo
    :height: 150
