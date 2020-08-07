@@ -7,17 +7,14 @@ byceps.events.ticketing
 """
 
 from dataclasses import dataclass
-from typing import Optional
 
 from ..services.ticketing.transfer.models import TicketID
-from ..typing import UserID
 
 from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
 class _TicketEvent(_BaseEvent):
-    initiator_id: Optional[UserID]
     ticket_id: TicketID
 
 

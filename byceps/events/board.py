@@ -7,7 +7,6 @@ byceps.events.board
 """
 
 from dataclasses import dataclass
-from typing import Optional
 
 from ..services.board.transfer.models import CategoryID, PostingID, TopicID
 from ..typing import UserID
@@ -20,7 +19,6 @@ from .base import _BaseEvent
 
 @dataclass(frozen=True)
 class _BoardTopicEvent(_BaseEvent):
-    initiator_id: Optional[UserID]
     topic_id: TopicID
     url: str
 
@@ -81,7 +79,6 @@ class BoardTopicMoved(_BoardTopicModerationEvent):
 
 @dataclass(frozen=True)
 class _BoardPostingEvent(_BaseEvent):
-    initiator_id: Optional[UserID]
     posting_id: PostingID
     url: str
 

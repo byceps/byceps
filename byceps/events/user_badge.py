@@ -7,7 +7,6 @@ byceps.events.user_badge
 """
 
 from dataclasses import dataclass
-from typing import Optional
 
 from ..services.user_badge.transfer.models import BadgeID
 from ..typing import UserID
@@ -19,4 +18,3 @@ from .base import _BaseEvent
 class UserBadgeAwarded(_BaseEvent):
     user_id: UserID
     badge_id: BadgeID
-    initiator_id: Optional[UserID]
