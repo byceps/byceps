@@ -14,7 +14,7 @@ from byceps.services.news import (
 )
 
 from .helpers import (
-    assert_submitted_data,
+    assert_request_data,
     CHANNEL_ORGA_LOG,
     CHANNEL_PUBLIC,
     mocked_irc_bot,
@@ -23,10 +23,16 @@ from .helpers import (
 
 
 def test_published_news_item_announced(app, item, editor):
-    expected_channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
-    expected_text = (
+    expected_channels1 = [CHANNEL_PUBLIC]
+    expected_text1 = (
         'ACME Entertainment Convention: '
         + 'Die News "Zieh dir das rein!" wurde veröffentlicht. '
+        + 'https://acme.example.com/news/zieh-dir-das-rein'
+    )
+
+    expected_channels2 = [CHANNEL_ORGA_LOG]
+    expected_text2 = (
+        'Karla_Kolumna hat die News "Zieh dir das rein!" veröffentlicht. '
         + 'https://acme.example.com/news/zieh-dir-das-rein'
     )
 
@@ -35,7 +41,14 @@ def test_published_news_item_announced(app, item, editor):
             occurred_at=now(), initiator_id=editor.id, item_id=item.id
         )
         news_signals.item_published.send(None, event=event)
-        assert_submitted_data(mock, expected_channels, expected_text)
+
+        assert mock.called
+        assert len(mock.request_history) == 2
+
+        actual1, actual2 = [req.json() for req in mock.request_history]
+
+        assert_request_data(actual1, expected_channels1, expected_text1)
+        assert_request_data(actual2, expected_channels2, expected_text2)
 
 
 # helpers

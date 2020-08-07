@@ -29,7 +29,10 @@ def mocked_irc_bot():
 def assert_submitted_data(mock, expected_channels, expected_text):
     call = get_only_call(mock)
     actual = call.json()
+    assert_request_data(actual, expected_channels, expected_text)
 
+
+def assert_request_data(actual, expected_channels, expected_text):
     assert actual['channels'] == expected_channels
     assert actual['text'] == expected_text
 
