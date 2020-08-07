@@ -94,14 +94,20 @@ def _create_version(
     return version
 
 
-def publish_item(item_id: ItemID) -> NewsItemPublished:
+def publish_item(
+    item_id: ItemID, *, initiator_id: Optional[UserID] = None
+) -> NewsItemPublished:
     """Publish a news item."""
     item = _get_db_item(item_id)
 
     item.published_at = datetime.utcnow()
     db.session.commit()
 
-    return NewsItemPublished(occurred_at=item.published_at, item_id=item.id)
+    return NewsItemPublished(
+        occurred_at=item.published_at,
+        initiator_id=initiator_id,
+        item_id=item.id,
+    )
 
 
 def delete_item(item_id: ItemID) -> None:

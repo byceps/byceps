@@ -22,7 +22,7 @@ from .helpers import (
 )
 
 
-def test_published_news_item_announced(app, item):
+def test_published_news_item_announced(app, item, editor):
     expected_channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
     expected_text = (
         'ACME Entertainment Convention: '
@@ -31,7 +31,9 @@ def test_published_news_item_announced(app, item):
     )
 
     with mocked_irc_bot() as mock:
-        event = NewsItemPublished(occurred_at=now(), item_id=item.id)
+        event = NewsItemPublished(
+            occurred_at=now(), initiator_id=editor.id, item_id=item.id
+        )
         news_signals.item_published.send(None, event=event)
         assert_submitted_data(mock, expected_channels, expected_text)
 
