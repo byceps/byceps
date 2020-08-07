@@ -7,6 +7,7 @@ byceps.events.shop
 """
 
 from dataclasses import dataclass
+from typing import Optional
 
 from ..services.shop.order.transfer.models import OrderID
 from ..typing import UserID
@@ -17,7 +18,7 @@ from .base import _BaseEvent
 @dataclass(frozen=True)
 class _ShopOrderEvent(_BaseEvent):
     order_id: OrderID
-    initiator_id: UserID
+    initiator_id: Optional[UserID]
 
 
 @dataclass(frozen=True)
