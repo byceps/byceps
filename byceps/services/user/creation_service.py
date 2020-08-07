@@ -112,7 +112,7 @@ def create_basic_user(
 
 
 def _create_user(
-    screen_name: str,
+    screen_name: Optional[str],
     email_address: Optional[str],
     *,
     first_names: Optional[str] = None,
@@ -153,9 +153,14 @@ def _create_user(
 
 
 def build_user(
-    created_at: datetime, screen_name: str, email_address: Optional[str]
+    created_at: datetime,
+    screen_name: Optional[str],
+    email_address: Optional[str],
 ) -> DbUser:
-    normalized_screen_name = _normalize_screen_name(screen_name)
+    if screen_name is not None:
+        normalized_screen_name = _normalize_screen_name(screen_name)
+    else:
+        normalized_screen_name = None
 
     if email_address is not None:
         normalized_email_address = _normalize_email_address(email_address)
