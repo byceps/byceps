@@ -7,14 +7,17 @@ byceps.events.snippet
 """
 
 from dataclasses import dataclass
+from typing import Optional
 
 from ..services.snippet.transfer.models import SnippetVersionID
+from ..typing import UserID
 
 from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
 class _SnippetEvent(_BaseEvent):
+    initiator_id: Optional[UserID]
     snippet_version_id: SnippetVersionID
 
 

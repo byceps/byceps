@@ -11,6 +11,7 @@ Announce snippet events on IRC.
 from ...blueprints.snippet import signals
 from ...events.snippet import SnippetCreated, SnippetUpdated
 from ...services.snippet import service as snippet_service
+from ...services.user import service as user_service
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
@@ -30,11 +31,11 @@ def announce_snippet_created(event: SnippetCreated) -> None:
         event.snippet_version_id
     )
     snippet = snippet_version.snippet
-    editor = snippet_version.creator
+    editor_screen_name = user_service.find_screen_name(event.initiator_id)
     type_name = 'Dokument' if snippet.is_document else 'Fragment'
 
     text = (
-        f'{editor.screen_name} hat das Snippet-{type_name} '
+        f'{editor_screen_name} hat das Snippet-{type_name} '
         f'"{snippet.name}" im Scope '
         f'"{snippet.scope.type_}/{snippet.scope.name}" angelegt.'
     )
@@ -55,11 +56,11 @@ def announce_snippet_updated(event: SnippetUpdated = None) -> None:
         event.snippet_version_id
     )
     snippet = snippet_version.snippet
-    editor = snippet_version.creator
+    editor_screen_name = user_service.find_screen_name(event.initiator_id)
     type_name = 'Dokument' if snippet.is_document else 'Fragment'
 
     text = (
-        f'{editor.screen_name} hat das Snippet-{type_name} '
+        f'{editor_screen_name} hat das Snippet-{type_name} '
         f'"{snippet.name}" im Scope '
         f'"{snippet.scope.type_}/{snippet.scope.name}" aktualisiert.'
     )
