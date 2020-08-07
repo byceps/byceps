@@ -45,9 +45,9 @@
   </div>
 
   {%- if teams_and_members %}
-  {%- for team, members in teams_and_members|sort(attribute='0.title') %}
+    {%- for team, members in teams_and_members|sort(attribute='0.title') %}
   <div class="box team">
-    {%- set member_total = members|length %}
+      {%- set member_total = members|length %}
 
     <div class="row row--space-between" style="margin-bottom: 1rem;">
       <div class="column-auto">
@@ -75,9 +75,9 @@
       {%- endif %}
     </div>
 
-    {%- if members %}
+      {%- if members %}
     <div class="members">
-      {%- for member in members|sort(attribute='user.screen_name') %}
+        {%- for member in members|sort(attribute='user.screen_name') %}
       <div class="row row--space-between">
         <div class="column-auto">
           <div class="row">
@@ -100,14 +100,14 @@
           </div>
         </div>
       </div>
-      {%- endfor %}
+        {%- endfor %}
     </div>
-    {%- else %}
+      {%- else %}
     <div class="dimmed-box centered">Dieses Team hat keine Mitglieder.</div>
-    {%- endif %}
+      {%- endif %}
 
   </div>
-  {%- endfor %}
+    {%- endfor %}
   {%- else %}
   <div class="dimmed-box centered">Es sind keine Orga-Teams hinterlegt.</div>
   {%- endif %}
