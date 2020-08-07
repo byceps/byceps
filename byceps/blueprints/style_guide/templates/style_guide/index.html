@@ -12,6 +12,10 @@
       display: none;
     }
 
+    .styleguide {
+      max-width: 1080px;
+    }
+
     .example {
       border: rgba(0, 0, 0, 0.5) solid 1px;
       border-radius: 0.2rem;
@@ -32,6 +36,7 @@
       line-height: 1.5;
       padding: 1rem 2rem;
       white-space: pre;
+      overflow-x: scroll;
     }
 
     code:not(.block) {
@@ -52,6 +57,8 @@
 
 
 {% block body %}
+
+<div class="styleguide">
 
   <h1>{{ title }}</h1>
 
@@ -93,5 +100,7 @@
 
   <h2 id="icons">Icons</h2>
 {%- include 'style_guide/sections/_icons.html' %}
+
+</div>
 
 {%- endblock %}
