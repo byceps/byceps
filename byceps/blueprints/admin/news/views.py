@@ -269,9 +269,13 @@ def _render_item_version(version, item):
     channel = item.channel
     brand = brand_service.find_brand(channel.brand_id)
 
+    current_version = news_item_service.get_current_item_version(item.id)
+    is_current_version = version.id == current_version.id
+
     context = {
         'version': version,
         'brand': brand,
+        'is_current_version': is_current_version,
     }
 
     try:
