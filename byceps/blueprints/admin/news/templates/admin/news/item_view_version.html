@@ -93,10 +93,8 @@
         </td>
       </tr>
       <tr>
-        <th colspan="2">Bilder ({{ item.images|length }}):</th>
-      </tr>
-      <tr>
-        <td colspan="2" style="padding-left: 1rem;">
+        <th>Bilder ({{ item.images|length }}):</th>
+        <td>
           {%- if item.images %}
             {%- for image in item.images|sort(attribute='number') %}
             <details>
