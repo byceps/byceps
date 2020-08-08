@@ -83,10 +83,16 @@ def view_version(snippet_version_id):
 
     scope = version.snippet.scope
 
+    context = {
+        'scope': scope,
+        'brand': _find_brand_for_scope(scope),
+        'site': _find_site_for_scope(scope),
+    }
+
     try:
         snippet_context = get_snippet_context(version)
 
-        context = {
+        extra_context = {
             'version': version,
             'snippet_title': snippet_context['title'],
             'snippet_head': snippet_context['head'],
@@ -94,15 +100,13 @@ def view_version(snippet_version_id):
             'error_occurred': False,
         }
     except Exception as e:
-        context = {
+        extra_context = {
             'version': version,
             'error_occurred': True,
             'error_message': str(e),
         }
 
-    context['scope'] = scope
-    context['brand'] = _find_brand_for_scope(scope)
-    context['site'] = _find_site_for_scope(scope)
+    context.update(extra_context)
 
     return context
 
