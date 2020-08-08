@@ -764,6 +764,10 @@ table.user-badges-list td {
   background-color: #ff2222;
 }
 
+.tag.color-disabled {
+  background-color: #aaaaaa;
+}
+
 .tag.color-info {
   background-color: #1199ff;
 }
