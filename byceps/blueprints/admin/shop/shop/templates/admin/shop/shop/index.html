@@ -32,6 +32,12 @@
         </a>
       </div>
 
+      <div class="column-auto" style="align-items: flex-end; display: flex;">
+        {%- if shop.archived %}
+        {{ render_tag('archiviert', icon='archived', class='color-disabled') }}
+        {%- endif %}
+      </div>
+
     </div>{# .row #}
   </div>{# .box #}
     {%- endfor %}
