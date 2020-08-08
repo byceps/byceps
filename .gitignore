@@ -30,4 +30,4 @@ keys
 !/config/development_party.py
 !/config/production_party.py
 !/config/test_admin.py
-!/config/test_party.py
+!/config/test_site.py
