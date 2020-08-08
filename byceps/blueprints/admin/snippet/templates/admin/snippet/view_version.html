@@ -32,13 +32,24 @@
   <div class="snippet-head">
   {%- with snippet = version.snippet %}
 
-    {%- if g.current_user.has_permission(SnippetPermission.update) -%}
     <div class="button-row button-row--compact" style="float: right;">
-      {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
+
+      {%- if g.current_user.has_permission(SnippetPermission.update) -%}
+        {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
       <a class="button" href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
-      {%- endwith %}
+        {%- endwith %}
+      {%- endif -%}
+
+      {%- if g.current_user.has_permission(SnippetPermission.delete) %}
+      <div class="dropdown left">
+        <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
+        <ol>
+          <li><a data-action="snippet-delete" href="{{ url_for('.delete_snippet', snippet_id=snippet.id) }}">{{ render_icon('delete') }} Löschen</a></li>
+        </ol>
+      </div>
+      {%- endif %}
+
     </div>
-    {%- endif -%}
 
     <table class="index">
       <tr>
@@ -102,3 +113,11 @@
   {%- endif %}
 
 {%- endblock %}
+
+{% block scripts %}
+    <script>
+      onDomReady(function() {
+        confirmed_delete_on_click('[data-action="snippet-delete"]', 'Snippet löschen?');
+      });
+    </script>
+{% endblock %}

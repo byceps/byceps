@@ -6,7 +6,7 @@ byceps.blueprints.admin.snippet.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import abort, g, request
+from flask import abort, g, request, url_for
 
 from ....services.brand import service as brand_service
 from ....services.site import service as site_service
@@ -15,10 +15,14 @@ from ....services.snippet.transfer.models import Scope
 from ....services.text_diff import service as text_diff_service
 from ....util.datetime.format import format_datetime_short
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
+from ....util.framework.flash import flash_error, flash_success
 from ....util.iterables import pairwise
 from ....util.framework.templating import templated
-from ....util.views import redirect_to, respond_no_content
+from ....util.views import (
+    redirect_to,
+    respond_no_content,
+    respond_no_content_with_location,
+)
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
@@ -406,6 +410,38 @@ def compare_fragments(from_version_id, to_version_id):
         'brand': brand,
         'site': site,
     }
+
+
+# -------------------------------------------------------------------- #
+# delete
+
+
+@blueprint.route('/snippets/<uuid:snippet_id>', methods=['DELETE'])
+@permission_required(SnippetPermission.delete)
+@respond_no_content_with_location
+def delete_snippet(snippet_id):
+    """Delete a snippet."""
+    snippet = _find_snippet_by_id(snippet_id)
+
+    snippet_name = snippet.name
+    scope = snippet.scope
+
+    success, event = snippet_service.delete_snippet(
+        snippet.id, initiator_id=g.current_user.id
+    )
+
+    if not success:
+        flash_error(
+            f'Das Snippet "{snippet_name}" konnte nicht gelöscht werden. '
+            'Ist es noch gemountet?'
+        )
+        return url_for('.view_current_version', snippet_id=snippet.id)
+
+    flash_success(f'Das Snippet "{snippet_name}" wurde gelöscht.')
+    signals.snippet_deleted.send(None, event=event)
+    return url_for(
+        '.index_for_scope', scope_type=scope.type_, scope_name=scope.name
+    )
 
 
 # -------------------------------------------------------------------- #
