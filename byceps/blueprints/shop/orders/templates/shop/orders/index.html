@@ -15,8 +15,6 @@
   {%- if orders %}
   <p>Bestellungen mit dem Status {{ render_order_payment_state(PaymentState.open) }} kannst du selbst stornieren.</p>
 
-  <p>Dies sind deine aktuellen Bestellungen:</p>
-
   <table class="index wide">
     <thead>
       <tr>
@@ -39,7 +37,7 @@
     </tbody>
   </table>
   {%- else %}
-  <p>Du hast derzeit <em>keine</em> aktuellen Bestellungen.</p>
+  <p>Du hast bisher keine Bestellungen aufgegeben.</p>
   {%- endif %}
 
 {%- endblock %}
