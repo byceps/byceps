@@ -253,6 +253,10 @@
       "title": "Snippets erstellen"
     },
     {
+      "id": "snippet.delete",
+      "title": "Snippets l\u00f6schen"
+    },
+    {
       "id": "snippet.update",
       "title": "Snippets bearbeiten"
     },
@@ -527,7 +531,8 @@
     {
       "assigned_permissions": [
         "snippet_mountpoint.create",
-        "snippet_mountpoint.delete"
+        "snippet_mountpoint.delete",
+        "snippet.delete"
       ],
       "id": "snippet_admin",
       "title": "Snippets verwalten"
