@@ -635,6 +635,15 @@ nav.pagination li.current {
   vertical-align: middle;
 }
 
+.tag.tag--outlined {
+  background-color: transparent;
+  border: #aaaaaa solid 1px;
+  box-shadow: none;
+  color: currentColor;
+  font-weight: normal;
+  text-shadow: none;
+}
+
 
 /* user avatars */
 

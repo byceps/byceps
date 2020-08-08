@@ -1,6 +1,7 @@
 {%- from 'macros/board.html' import render_flag_hidden, render_flag_new %}
 {%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/misc.html' import render_tag %}
 {%- from 'macros/user.html' import render_user_link %}
 
 
@@ -12,6 +13,10 @@
           {{- ' ' }}<span title="Nutzt ein Ticket für die {{ posting.creator.ticket.party_title }}">{{ render_icon('ticket') }}</span>
           {%- endif -%}
         </span>
+
+        {%- if posting.creator_id == topic.creator_id %}
+        <span>{{ render_tag('Threadstarter', class='tag--outlined') }}</span>
+        {%- endif %}
 
         <a href="{{ url_for('.posting_view', posting_id=posting.id, _external=True) }}" class="user-comment-permalink" title="Permalink zu diesem Beitrag">{{ render_datetime(posting.created_at|utc_to_local_tz)|replace(', ', ' um ') }}</a>
 
