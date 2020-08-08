@@ -123,7 +123,7 @@ def create(shop_id):
         return create_form(shop_id, form)
 
     storefront_id = form.id.data.strip()
-    catalog_id = form.catalog_id.data
+    catalog_id = form.catalog_id.data or None
     order_number_sequence_id = form.order_number_sequence_id.data
 
     if not order_number_sequence_id:
@@ -205,7 +205,7 @@ def update(storefront_id):
         return update_form(storefront_id, form)
 
     order_number_sequence_id = form.order_number_sequence_id.data
-    catalog_id = form.catalog_id.data
+    catalog_id = form.catalog_id.data or None
     closed = form.closed.data
 
     storefront = storefront_service.update_storefront(
