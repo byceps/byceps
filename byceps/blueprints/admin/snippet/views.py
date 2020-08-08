@@ -81,12 +81,15 @@ def view_version(snippet_version_id):
     """Show the snippet with the given id."""
     version = _find_version(snippet_version_id)
 
-    scope = version.snippet.scope
+    snippet = version.snippet
+    scope = snippet.scope
+    is_current_version = version.id == snippet.current_version.id
 
     context = {
         'scope': scope,
         'brand': _find_brand_for_scope(scope),
         'site': _find_site_for_scope(scope),
+        'is_current_version': is_current_version,
     }
 
     try:

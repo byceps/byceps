@@ -1,6 +1,6 @@
 {% extends 'layout/admin/snippet.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% from 'macros/misc.html' import render_notification %}
+{% from 'macros/misc.html' import render_notification, render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_16_and_name %}
 {% set title = 'Snippetversion ansehen' %}
 
@@ -55,7 +55,15 @@
       </tr>
       <tr>
         <th>Version:</th>
-        <td>{{ version.id }}</td>
+        <td>
+          {{- version.id -}}
+          {%- if is_current_version %}
+          {{ render_tag('aktuell', class='color-success') }}
+          {%- else %}
+          {{ render_tag('veraltet', class='color-warning') }}<br>
+          (<a href="{{ url_for('.view_current_version', snippet_id=version.snippet.id) }}">zur aktuellen Version</a>)
+          {%- endif %}
+        </td>
       </tr>
       <tr>
         <th>Erstellt:</th>
