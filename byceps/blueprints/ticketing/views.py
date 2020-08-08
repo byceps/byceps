@@ -59,6 +59,7 @@ def index_mine():
         'tickets': tickets,
         'current_user_uses_any_ticket': current_user_uses_any_ticket,
         'is_user_allowed_to_print_ticket': _is_user_allowed_to_print_ticket,
+        'ticket_management_enabled': _is_ticket_management_enabled(),
     }
 
 
