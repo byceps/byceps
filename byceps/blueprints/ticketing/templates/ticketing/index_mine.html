@@ -96,7 +96,7 @@
             <div class="label-row">
               <span class="label">Nutzer/in</span>
 
-              {%- if user_manager == g.current_user %}
+              {%- if (user_manager == g.current_user) and not ticket.user_checked_in %}
               <span class="label-buttons">
                 <div class="dropdown left">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('caret-down') -}}</button>
@@ -126,7 +126,7 @@
             <div class="label-row">
               <span class="label">Verwalter/in</span>
 
-              {%- if ticket.owned_by_id == g.current_user.id %}
+              {%- if (ticket.owned_by_id == g.current_user.id) and not ticket.user_checked_in %}
               <span class="label-buttons">
                 <div class="dropdown left">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('caret-down') -}}</button>
