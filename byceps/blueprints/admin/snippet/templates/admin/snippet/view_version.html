@@ -30,11 +30,12 @@
 {% block body %}
 
   <div class="snippet-head">
+  {%- with snippet = version.snippet %}
 
     {%- if g.current_user.has_permission(SnippetPermission.update) -%}
     <div class="button-row button-row--compact" style="float: right;">
-      {%- with endpoint = '.update_fragment_form' if version.snippet.is_fragment else '.update_document_form' %}
-      <a class="button" href="{{ url_for(endpoint, snippet_id=version.snippet.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+      {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
+      <a class="button" href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
       {%- endwith %}
     </div>
     {%- endif -%}
@@ -42,18 +43,18 @@
     <table class="index">
       <tr>
         <th>Scope</th>
-        <td><a href="{{ url_for('.index_for_scope', scope_type=version.snippet.scope_type, scope_name=version.snippet.scope_name) }}">{{ version.snippet.scope_type }}/{{ version.snippet.scope_name }}</a></td>
+        <td><a href="{{ url_for('.index_for_scope', scope_type=snippet.scope_type, scope_name=snippet.scope_name) }}">{{ snippet.scope_type }}/{{ snippet.scope_name }}</a></td>
       </tr>
       <tr>
         <th>Snippet</th>
-        <td>{{ version.snippet.name }}</td>
+        <td>{{ snippet.name }}</td>
       </tr>
       <tr>
         <th>Typ</th>
         <td>
-          {%- if version.snippet.is_document %}
+          {%- if snippet.is_document %}
           {{ render_icon('snippet-document') }} Dokument
-          {%- elif version.snippet.is_fragment %}
+          {%- elif snippet.is_fragment %}
           {{ render_icon('snippet-fragment') }} Fragment
           {%- endif %}
         </td>
@@ -66,7 +67,7 @@
           {{ render_tag('aktuell', class='color-success') }}
           {%- else %}
           {{ render_tag('veraltet', class='color-warning') }}<br>
-          (<a href="{{ url_for('.view_current_version', snippet_id=version.snippet.id) }}">zur aktuellen Version</a>)
+          (<a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}">zur aktuellen Version</a>)
           {%- endif %}
         </td>
       </tr>
@@ -74,11 +75,12 @@
         <th>Erstellt</th>
         <td>
           {{ render_datetime(version.created_at|utc_to_local_tz) }} von {{ render_user_avatar_16_and_name(version.creator) }}<br>
-          <a href="{{ url_for('.history', snippet_id=version.snippet.id) }}">{{ render_icon('history') }} Änderungshistorie ansehen</a>
+          <a href="{{ url_for('.history', snippet_id=snippet.id) }}">{{ render_icon('history') }} Änderungshistorie ansehen</a>
         </td>
       </tr>
     </table>
 
+  {%- endwith %}
   </div>
 
   {%- if error_occurred %}
