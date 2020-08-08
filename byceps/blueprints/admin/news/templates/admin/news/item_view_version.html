@@ -19,6 +19,11 @@
       padding: 20px 40px;
     }
 
+    .newspost-head table.index > tbody > tr > th,
+    .newspost-head table.index > tbody > tr > td {
+      border: none;
+    }
+
     .newspost-head summary:focus {
       outline: none;
     }
@@ -50,21 +55,21 @@
       {%- endif %}
     </div>
 
-    <table>
+    <table class="index">
       <tr>
-        <th>Marke:</th>
+        <th>Marke</th>
         <td>{{ render_brand_avatar(brand, '16') }} <a href="{{ url_for('.channel_index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></td>
       </tr>
       <tr>
-        <th>Kanal:</th>
+        <th>Kanal</th>
         <td><a href="{{ url_for('.channel_view', channel_id=item.channel.id) }}">{{ item.channel.id }}</a></td>
       </tr>
       <tr>
-        <th>Slug:</th>
+        <th>Slug</th>
         <td>{{ item.slug }}</td>
       </tr>
       <tr>
-        <th>Version:</th>
+        <th>Version</th>
         <td>
           {{- version.id -}}
           {%- if is_current_version %}
@@ -76,14 +81,14 @@
         </td>
       </tr>
       <tr>
-        <th>Erstellt:</th>
+        <th>Erstellt</th>
         <td>
           {{ render_datetime(version.created_at|utc_to_local_tz) }} von {{ render_user_avatar_16_and_name(version.creator) }}<br>
           <a href="{{ url_for('.item_list_versions', item_id=item.id) }}">{{ render_icon('history') }} Änderungshistorie ansehen</a>
         </td>
       </tr>
       <tr>
-        <th>Veröffentlicht:</th>
+        <th>Veröffentlicht</th>
         <td>
           {%- if version.item.published %}
           {{- render_datetime(version.item.published_at|utc_to_local_tz) }}
@@ -93,32 +98,32 @@
         </td>
       </tr>
       <tr>
-        <th>Bilder ({{ item.images|length }}):</th>
+        <th>Bilder ({{ item.images|length }})</th>
         <td>
           {%- if item.images %}
             {%- for image in item.images|sort(attribute='number') %}
             <details>
               <summary>#{{ image.number }}: <span class="monospace">{{ image.filename }}</span></summary>
               <div style="margin-bottom: 1rem; margin-left: 1rem;">
-                <table>
+                <table class="index">
                   <tr>
-                    <th>ID:</th>
+                    <th>ID</th>
                     <td class="monospace">{{ image.id }}</td>
                   </tr>
                   <tr>
-                    <th>Dateiname:</th>
+                    <th>Dateiname</th>
                     <td class="monospace">{{ image.filename }}</td>
                   </tr>
                   <tr>
-                    <th>Alternativtext:</th>
+                    <th>Alternativtext</th>
                     <td>{{ image.alt_text|fallback }}</td>
                   </tr>
                   <tr>
-                    <th>Bildunterschrift:</th>
+                    <th>Bildunterschrift</th>
                     <td>{{ image.caption|fallback }}</td>
                   </tr>
                   <tr>
-                    <th>Quelle:</th>
+                    <th>Quelle</th>
                     <td>{{ image.attribution|fallback }}</td>
                   </tr>
                 </table>

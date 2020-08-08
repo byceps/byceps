@@ -15,6 +15,11 @@
       margin-top: -20px;
       padding: 20px 40px;
     }
+
+    .snippet-head table.index > tbody > tr > th,
+    .snippet-head table.index > tbody > tr > td {
+      border: none;
+    }
   </style>
 
   {%- if not error_occurred and snippet_head %}
@@ -34,17 +39,17 @@
     </div>
     {%- endif -%}
 
-    <table>
+    <table class="index">
       <tr>
-        <th>Scope:</th>
+        <th>Scope</th>
         <td><a href="{{ url_for('.index_for_scope', scope_type=version.snippet.scope_type, scope_name=version.snippet.scope_name) }}">{{ version.snippet.scope_type }}/{{ version.snippet.scope_name }}</a></td>
       </tr>
       <tr>
-        <th>Snippet:</th>
+        <th>Snippet</th>
         <td>{{ version.snippet.name }}</td>
       </tr>
       <tr>
-        <th>Typ:</th>
+        <th>Typ</th>
         <td>
           {%- if version.snippet.is_document %}
           {{ render_icon('snippet-document') }} Dokument
@@ -54,7 +59,7 @@
         </td>
       </tr>
       <tr>
-        <th>Version:</th>
+        <th>Version</th>
         <td>
           {{- version.id -}}
           {%- if is_current_version %}
@@ -66,7 +71,7 @@
         </td>
       </tr>
       <tr>
-        <th>Erstellt:</th>
+        <th>Erstellt</th>
         <td>
           {{ render_datetime(version.created_at|utc_to_local_tz) }} von {{ render_user_avatar_16_and_name(version.creator) }}<br>
           <a href="{{ url_for('.history', snippet_id=version.snippet.id) }}">{{ render_icon('history') }} Änderungshistorie ansehen</a>
