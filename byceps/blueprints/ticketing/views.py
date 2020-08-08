@@ -110,6 +110,8 @@ def appoint_user_form(ticket_id, erroneous_form=None):
 
     ticket = _get_ticket_or_404(ticket_id)
 
+    _abort_if_ticket_user_checked_in(ticket)
+
     manager = g.current_user.to_dto()
 
     if not ticket.is_user_managed_by(manager.id):
@@ -128,11 +130,13 @@ def appoint_user(ticket_id):
     """Appoint a user for the ticket."""
     _abort_if_ticket_management_disabled()
 
+    ticket = _get_ticket_or_404(ticket_id)
+
+    _abort_if_ticket_user_checked_in(ticket)
+
     form = SpecifyUserForm(request.form)
     if not form.validate():
         return appoint_user_form(ticket_id, form)
-
-    ticket = _get_ticket_or_404(ticket_id)
 
     manager = g.current_user.to_dto()
 
@@ -161,6 +165,8 @@ def withdraw_user(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
+    _abort_if_ticket_user_checked_in(ticket)
+
     manager = g.current_user.to_dto()
 
     if not ticket.is_user_managed_by(manager.id):
@@ -188,6 +194,8 @@ def appoint_user_manager_form(ticket_id, erroneous_form=None):
 
     ticket = _get_ticket_or_404(ticket_id)
 
+    _abort_if_ticket_user_checked_in(ticket)
+
     manager = g.current_user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
@@ -206,11 +214,13 @@ def appoint_user_manager(ticket_id):
     """Appoint a user manager for the ticket."""
     _abort_if_ticket_management_disabled()
 
+    ticket = _get_ticket_or_404(ticket_id)
+
+    _abort_if_ticket_user_checked_in(ticket)
+
     form = SpecifyUserForm(request.form)
     if not form.validate():
         return appoint_user_manager_form(ticket_id, form)
-
-    ticket = _get_ticket_or_404(ticket_id)
 
     manager = g.current_user.to_dto()
 
@@ -240,6 +250,8 @@ def withdraw_user_manager(ticket_id):
     _abort_if_ticket_management_disabled()
 
     ticket = _get_ticket_or_404(ticket_id)
+
+    _abort_if_ticket_user_checked_in(ticket)
 
     manager = g.current_user.to_dto()
 
@@ -366,6 +378,14 @@ def _get_ticket_or_404(ticket_id):
         abort(404)
 
     return ticket
+
+
+def _abort_if_ticket_user_checked_in(ticket):
+    if ticket.user_checked_in:
+        flash_error(
+            'Es ist bereits jemand mit diesem Ticket eingecheckt worden.'
+        )
+        abort(403)
 
 
 def _is_user_allowed_to_print_ticket(ticket, user_id):
