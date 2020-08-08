@@ -1,4 +1,5 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/misc.html' import render_notification, render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_16_and_name %}
@@ -52,7 +53,7 @@
     <table>
       <tr>
         <th>Marke:</th>
-        <td><a href="{{ url_for('.channel_index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></td>
+        <td>{{ render_brand_avatar(brand, '16') }} <a href="{{ url_for('.channel_index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></td>
       </tr>
       <tr>
         <th>Kanal:</th>
