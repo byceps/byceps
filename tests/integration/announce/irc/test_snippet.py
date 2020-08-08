@@ -80,6 +80,28 @@ def test_announce_snippet_fragment_updated(
         assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
+def test_announce_snippet_fragment_deleted(app, scope, editor):
+    expected_text = (
+        'Dr.Schnipsel hat das Snippet "old_fragment" '
+        'im Scope "site/acme-2019-website" gelöscht.'
+    )
+
+    fragment_version, _ = snippet_service.create_fragment(
+        scope, 'old_fragment', editor.id, 'This is old news. :('
+    )
+
+    success, event = snippet_service.delete_snippet(
+        fragment_version.snippet_id, initiator_id=editor.id
+    )
+
+    assert success
+
+    with mocked_irc_bot() as mock:
+        signals.snippet_deleted.send(None, event=event)
+
+        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+
+
 # helpers
 
 

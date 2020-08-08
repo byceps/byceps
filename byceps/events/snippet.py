@@ -8,21 +8,27 @@ byceps.events.snippet
 
 from dataclasses import dataclass
 
-from ..services.snippet.transfer.models import SnippetVersionID
+from ..services.snippet.transfer.models import (
+    Scope,
+    SnippetID,
+    SnippetVersionID,
+)
 
 from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
-class _SnippetEvent(_BaseEvent):
+class SnippetCreated(_BaseEvent):
     snippet_version_id: SnippetVersionID
 
 
 @dataclass(frozen=True)
-class SnippetCreated(_SnippetEvent):
-    pass
+class SnippetUpdated(_BaseEvent):
+    snippet_version_id: SnippetVersionID
 
 
 @dataclass(frozen=True)
-class SnippetUpdated(_SnippetEvent):
-    pass
+class SnippetDeleted(_BaseEvent):
+    snippet_id: SnippetID
+    snippet_name: str
+    scope: Scope

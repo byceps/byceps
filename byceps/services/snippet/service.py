@@ -6,10 +6,11 @@ byceps.services.snippet.service
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
 from typing import List, Optional, Sequence, Set, Tuple
 
 from ...database import db
-from ...events.snippet import SnippetCreated, SnippetUpdated
+from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from ...typing import UserID
 
 from .models.snippet import (
@@ -155,7 +156,9 @@ def _update_snippet(
     return version, event
 
 
-def delete_snippet(snippet_id: SnippetID) -> bool:
+def delete_snippet(
+    snippet_id: SnippetID, *, initiator_id: Optional[UserID] = None
+) -> Tuple[bool, Optional[SnippetDeleted]]:
     """Delete the snippet and its versions.
 
     It is expected that no database records (mountpoints, consents,
@@ -167,6 +170,10 @@ def delete_snippet(snippet_id: SnippetID) -> bool:
     if snippet is None:
         raise ValueError('Unknown snippet ID')
 
+    # Keep values for use after snippet is deleted.
+    snippet_name = snippet.name
+    scope = snippet.scope
+
     db.session.delete(snippet.current_version_association)
 
     versions = get_versions(snippet_id)
@@ -177,10 +184,19 @@ def delete_snippet(snippet_id: SnippetID) -> bool:
 
     try:
         db.session.commit()
-        return True
     except Exception:
         db.session.rollback()
-        return False
+        return False, None
+
+    event = SnippetDeleted(
+        occurred_at=datetime.utcnow(),
+        initiator_id=initiator_id,
+        snippet_id=snippet_id,
+        snippet_name=snippet_name,
+        scope=scope,
+    )
+
+    return True, event
 
 
 def find_snippet(snippet_id: SnippetID) -> Optional[DbSnippet]:

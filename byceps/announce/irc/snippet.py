@@ -9,7 +9,7 @@ Announce snippet events on IRC.
 """
 
 from ...blueprints.snippet import signals
-from ...events.snippet import SnippetCreated, SnippetUpdated
+from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from ...services.snippet import service as snippet_service
 from ...services.user import service as user_service
 from ...util.irc import send_message
@@ -48,7 +48,7 @@ def _on_snippet_updated(sender, *, event: SnippetUpdated = None) -> None:
     enqueue(announce_snippet_updated, event)
 
 
-def announce_snippet_updated(event: SnippetUpdated = None) -> None:
+def announce_snippet_updated(event: SnippetUpdated) -> None:
     """Announce that a snippet has been updated."""
     channels = [CHANNEL_ORGA_LOG]
 
@@ -63,6 +63,25 @@ def announce_snippet_updated(event: SnippetUpdated = None) -> None:
         f'{editor_screen_name} hat das Snippet-{type_name} '
         f'"{snippet.name}" im Scope '
         f'"{snippet.scope.type_}/{snippet.scope.name}" aktualisiert.'
+    )
+
+    send_message(channels, text)
+
+
+@signals.snippet_deleted.connect
+def _on_snippet_deleted(sender, *, event: SnippetDeleted = None) -> None:
+    enqueue(announce_snippet_deleted, event)
+
+
+def announce_snippet_deleted(event: SnippetDeleted) -> None:
+    """Announce that a snippet has been deleted."""
+    channels = [CHANNEL_ORGA_LOG]
+
+    initiator_screen_name = user_service.find_screen_name(event.initiator_id)
+
+    text = (
+        f'{initiator_screen_name} hat das Snippet "{event.snippet_name}" '
+        f'im Scope "{event.scope.type_}/{event.scope.name}" gelöscht.'
     )
 
     send_message(channels, text)
