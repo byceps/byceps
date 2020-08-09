@@ -444,7 +444,9 @@ def item_publish(item_id):
     """Publish a news item."""
     item = _get_item_or_404(item_id)
 
-    event = news_item_service.publish_item(item.id, initiator_id=g.current_user)
+    event = news_item_service.publish_item(
+        item.id, initiator_id=g.current_user.id
+    )
 
     signals.item_published.send(None, event=event)
 
