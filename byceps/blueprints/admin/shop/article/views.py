@@ -256,7 +256,6 @@ def update(article_id):
     tax_rate = form.tax_rate.data
     available_from = form.available_from.data
     available_until = form.available_until.data
-    quantity = form.quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
     requires_separate_order = form.requires_separate_order.data
@@ -274,7 +273,6 @@ def update(article_id):
         tax_rate,
         available_from,
         available_until,
-        quantity,
         max_quantity_per_order,
         not_directly_orderable,
         requires_separate_order,
