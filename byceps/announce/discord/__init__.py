@@ -83,7 +83,7 @@ def _on_board_topic_created(sender, *, event: BoardTopicCreated = None) -> None:
 def announce_board_topic_created(event: BoardTopicCreated) -> None:
     """Announce that someone has created a board topic."""
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    creator_screen_name = user_service.screen_name_user(topic.creator_id)
+    creator_screen_name = user_service.find_screen_name(topic.creator_id)
 
     text = (
         f'[Forum] {creator_screen_name} hat das Thema "{topic.title}" '
