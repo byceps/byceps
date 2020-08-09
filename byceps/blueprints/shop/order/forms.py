@@ -76,7 +76,4 @@ def _create_choices(article):
 
 
 def _get_max_orderable_quantity(article):
-    if article.max_quantity_per_order is None:
-        return article.quantity
-
     return min(article.quantity, article.max_quantity_per_order)

@@ -202,9 +202,16 @@ def create(shop_id):
     price = form.price.data
     tax_rate = form.tax_rate.data
     quantity = form.quantity.data
+    max_quantity_per_order = form.max_quantity_per_order.data
 
     article = article_service.create_article(
-        shop.id, item_number, description, price, tax_rate, quantity
+        shop.id,
+        item_number,
+        description,
+        price,
+        tax_rate,
+        quantity,
+        max_quantity_per_order,
     )
 
     flash_success(f'Der Artikel "{article.item_number}" wurde angelegt.')

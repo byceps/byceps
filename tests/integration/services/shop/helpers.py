@@ -35,4 +35,5 @@ def create_article(shop_id, **kwargs):
         article.price,
         article.tax_rate,
         article.quantity,
+        article.max_quantity_per_order,
     )

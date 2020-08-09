@@ -40,10 +40,17 @@ def create_article(
     price: Decimal,
     tax_rate: Decimal,
     quantity: int,
+    max_quantity_per_order: int,
 ) -> Article:
     """Create an article."""
     article = DbArticle(
-        shop_id, item_number, description, price, tax_rate, quantity
+        shop_id,
+        item_number,
+        description,
+        price,
+        tax_rate,
+        quantity,
+        max_quantity_per_order,
     )
 
     db.session.add(article)

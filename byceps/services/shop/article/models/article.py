@@ -59,7 +59,7 @@ class Article(db.Model):
     available_from = db.Column(db.DateTime, nullable=True)
     available_until = db.Column(db.DateTime, nullable=True)
     quantity = db.Column(db.Integer, db.CheckConstraint('quantity >= 0'), nullable=False)
-    max_quantity_per_order = db.Column(db.Integer, nullable=True)
+    max_quantity_per_order = db.Column(db.Integer, nullable=False)
     not_directly_orderable = db.Column(db.Boolean, default=False, nullable=False)
     requires_separate_order = db.Column(db.Boolean, default=False, nullable=False)
     shipping_required = db.Column(db.Boolean, default=False, nullable=False)
@@ -72,6 +72,7 @@ class Article(db.Model):
         price: Decimal,
         tax_rate: Decimal,
         quantity: int,
+        max_quantity_per_order: int,
         *,
         available_from: Optional[datetime] = None,
         available_until: Optional[datetime] = None,
@@ -84,6 +85,7 @@ class Article(db.Model):
         self.available_from = available_from
         self.available_until = available_until
         self.quantity = quantity
+        self.max_quantity_per_order = max_quantity_per_order
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

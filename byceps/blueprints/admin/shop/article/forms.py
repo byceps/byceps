@@ -24,6 +24,7 @@ class _ArticleBaseForm(LocalizedForm):
     price = DecimalField('Stückpreis', places=2, validators=[InputRequired()])
     tax_rate = DecimalField('Steuersatz', places=3, validators=[InputRequired()])
     quantity = IntegerField('Anzahl verfügbar', validators=[InputRequired()])
+    max_quantity_per_order = IntegerField('Maximale Anzahl pro Bestellung', validators=[InputRequired()])
 
 
 class ArticleCreateForm(_ArticleBaseForm):
@@ -40,7 +41,6 @@ class ArticleCreateForm(_ArticleBaseForm):
 class ArticleUpdateForm(_ArticleBaseForm):
     available_from = DateTimeField('Verfügbar ab', format='%d.%m.%Y %H:%M', validators=[Optional()])
     available_until = DateTimeField('Verfügbar bis', format='%d.%m.%Y %H:%M', validators=[Optional()])
-    max_quantity_per_order = IntegerField('maximale Anzahl pro Bestellung', validators=[Optional()])
     not_directly_orderable = BooleanField('nur indirekt bestellbar')
     requires_separate_order = BooleanField('muss separat bestellt werden')
     shipping_required = BooleanField('Versand erforderlich')

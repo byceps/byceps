@@ -24,6 +24,7 @@ def create_article(
     available_from=None,
     available_until=None,
     quantity=1,
+    max_quantity_per_order=10,
 ):
     if price is None:
         price = Decimal('24.95')
@@ -38,6 +39,7 @@ def create_article(
         price,
         tax_rate,
         quantity,
+        max_quantity_per_order,
         available_from=available_from,
         available_until=available_until,
     )

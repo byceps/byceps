@@ -35,7 +35,7 @@ class Article:
     available_from: Optional[datetime]
     available_until: Optional[datetime]
     quantity: int
-    max_quantity_per_order: Optional[int]
+    max_quantity_per_order: int
     not_directly_orderable: bool
     requires_separate_order: bool
     shipping_required: bool
