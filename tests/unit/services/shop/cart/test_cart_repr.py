@@ -15,11 +15,11 @@ def test_cart_empty_repr():
 
 
 def test_cart_filled_repr():
-    article1 = DbArticle(
-        'leshop', 'a-001', 'Article #1', Decimal('19.99'), Decimal('0.19'), 99
+    article1 = create_article(
+        'a-001', 'Article #1', Decimal('19.99'), Decimal('0.19')
     )
-    article2 = DbArticle(
-        'leshop', 'a-002', 'Article #2', Decimal('24.99'), Decimal('0.19'), 99
+    article2 = create_article(
+        'a-002', 'Article #2', Decimal('24.99'), Decimal('0.19')
     )
 
     cart = Cart()
@@ -27,3 +27,15 @@ def test_cart_filled_repr():
     cart.add_item(article1, 3)
 
     assert repr(cart) == '<Cart(2 items)>'
+
+
+# helpers
+
+
+def create_article(item_number, description, price, tax_rate):
+    shop_id = 'leshop'
+    quantity = 99
+
+    return DbArticle(
+        shop_id, item_number, description, price, tax_rate, quantity
+    )
