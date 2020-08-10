@@ -30,6 +30,7 @@
         <th>Artikelnr.</th>
         <th>Beschreibung</th>
         <th class="hyphenate number" style="width: 15%;">Stückpreis<br>Steuersatz</th>
+        <th class="number">Gesamt</th>
         <th class="hyphenate number" style="width: 11%;">Anzahl<br>verfügbar</th>
       </tr>
     </thead>
@@ -65,6 +66,7 @@
           {{- article.price|format_euro_amount }}<br>
           {{- '%s&thinsp;%%'|safe|format(article.tax_rate|tax_rate_as_percentage)|dim -}}
         </td>
+        <td class="number">{{ article.total_quantity }}</td>
         <td class="number bignumber{% if article.quantity == 0 %} dimmed{% endif %}">{{ article.quantity }}</td>
       </tr>
       {%- endfor %}
