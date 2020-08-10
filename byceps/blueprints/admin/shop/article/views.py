@@ -143,9 +143,7 @@ def create_form(shop_id, erroneous_form=None):
     form = (
         erroneous_form
         if erroneous_form
-        else ArticleCreateForm(
-            price=Decimal('0.00'), tax_rate=Decimal('0.19'), quantity=0
-        )
+        else ArticleCreateForm(price=Decimal('0.00'), tax_rate=Decimal('0.19'))
     )
     form.set_article_number_sequence_choices(article_number_sequences)
 
