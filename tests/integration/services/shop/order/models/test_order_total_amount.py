@@ -96,7 +96,7 @@ def create_article(shop_id, number, price):
         item_number=item_number,
         description=description,
         price=price,
-        quantity=50,
+        total_quantity=50,
     )
 
 

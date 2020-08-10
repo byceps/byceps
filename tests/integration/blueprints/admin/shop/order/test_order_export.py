@@ -199,5 +199,5 @@ def create_article(shop_id, item_number, description, price, tax_rate):
         description=description,
         price=price,
         tax_rate=tax_rate,
-        quantity=10,
+        total_quantity=10,
     )

@@ -58,6 +58,7 @@ class Article(db.Model):
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     available_from = db.Column(db.DateTime, nullable=True)
     available_until = db.Column(db.DateTime, nullable=True)
+    total_quantity = db.Column(db.Integer, nullable=False)
     quantity = db.Column(db.Integer, db.CheckConstraint('quantity >= 0'), nullable=False)
     max_quantity_per_order = db.Column(db.Integer, nullable=False)
     not_directly_orderable = db.Column(db.Boolean, default=False, nullable=False)
@@ -71,7 +72,7 @@ class Article(db.Model):
         description: str,
         price: Decimal,
         tax_rate: Decimal,
-        quantity: int,
+        total_quantity: int,
         max_quantity_per_order: int,
         *,
         available_from: Optional[datetime] = None,
@@ -84,7 +85,8 @@ class Article(db.Model):
         self.tax_rate = tax_rate
         self.available_from = available_from
         self.available_until = available_until
-        self.quantity = quantity
+        self.total_quantity = total_quantity
+        self.quantity = total_quantity  # Initialize with total quantity.
         self.max_quantity_per_order = max_quantity_per_order
 
     def __repr__(self) -> str:
@@ -93,5 +95,4 @@ class Article(db.Model):
             .add('shop', self.shop_id) \
             .add_with_lookup('item_number') \
             .add_with_lookup('description') \
-            .add_with_lookup('quantity') \
             .build()

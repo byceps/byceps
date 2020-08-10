@@ -86,7 +86,7 @@ def site_app(site, make_site_app):
 
 @pytest.fixture
 def article(admin_app, shop):
-    article = create_article(shop.id, quantity=5)
+    article = create_article(shop.id, total_quantity=5)
     article_id = article.id
     yield article
     article_service.delete_article(article_id)

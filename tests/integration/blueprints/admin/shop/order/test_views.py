@@ -288,12 +288,12 @@ def test_cancel_after_paid(
 # helpers
 
 
-def create_article(shop_id, item_number, quantity):
+def create_article(shop_id, item_number, total_quantity):
     return _create_article(
         shop_id,
         item_number=item_number,
         description=item_number,
-        quantity=quantity,
+        total_quantity=total_quantity,
     )
 
 

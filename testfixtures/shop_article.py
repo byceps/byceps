@@ -23,7 +23,7 @@ def create_article(
     tax_rate=None,
     available_from=None,
     available_until=None,
-    quantity=1,
+    total_quantity=1,
     max_quantity_per_order=10,
 ):
     if price is None:
@@ -32,13 +32,15 @@ def create_article(
     if tax_rate is None:
         tax_rate = Decimal('0.19')
 
+    quantity = total_quantity
+
     return DbArticle(
         shop_id,
         item_number,
         description,
         price,
         tax_rate,
-        quantity,
+        total_quantity,
         max_quantity_per_order,
         available_from=available_from,
         available_until=available_until,

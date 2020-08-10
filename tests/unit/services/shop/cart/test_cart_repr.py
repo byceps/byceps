@@ -34,7 +34,7 @@ def test_cart_filled_repr():
 
 def create_article(item_number, description, price, tax_rate):
     shop_id = 'leshop'
-    quantity = 99
+    total_quantity = 99
     max_quantity_per_order = 10
 
     return DbArticle(
@@ -43,6 +43,6 @@ def create_article(item_number, description, price, tax_rate):
         description,
         price,
         tax_rate,
-        quantity,
+        total_quantity,
         max_quantity_per_order,
     )

@@ -39,7 +39,7 @@ def create_article(
     description: str,
     price: Decimal,
     tax_rate: Decimal,
-    quantity: int,
+    total_quantity: int,
     max_quantity_per_order: int,
 ) -> Article:
     """Create an article."""
@@ -49,7 +49,7 @@ def create_article(
         description,
         price,
         tax_rate,
-        quantity,
+        total_quantity,
         max_quantity_per_order,
     )
 
@@ -66,6 +66,7 @@ def update_article(
     tax_rate: Decimal,
     available_from: Optional[datetime],
     available_until: Optional[datetime],
+    total_quantity: int,
     max_quantity_per_order: int,
     not_directly_orderable: bool,
     requires_separate_order: bool,
@@ -79,6 +80,7 @@ def update_article(
     article.tax_rate = tax_rate
     article.available_from = available_from
     article.available_until = available_until
+    article.total_quantity = total_quantity
     article.max_quantity_per_order = max_quantity_per_order
     article.not_directly_orderable = not_directly_orderable
     article.requires_separate_order = requires_separate_order
@@ -406,6 +408,7 @@ def _db_entity_to_article(article: DbArticle) -> Article:
         article.tax_rate,
         article.available_from,
         article.available_until,
+        article.total_quantity,
         article.quantity,
         article.max_quantity_per_order,
         article.not_directly_orderable,

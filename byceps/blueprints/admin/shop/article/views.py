@@ -199,7 +199,8 @@ def create(shop_id):
     description = form.description.data.strip()
     price = form.price.data
     tax_rate = form.tax_rate.data
-    quantity = form.quantity.data
+    total_quantity = form.total_quantity.data
+    quantity = total_quantity
     max_quantity_per_order = form.max_quantity_per_order.data
 
     article = article_service.create_article(
@@ -208,7 +209,7 @@ def create(shop_id):
         description,
         price,
         tax_rate,
-        quantity,
+        total_quantity,
         max_quantity_per_order,
     )
 
@@ -254,6 +255,7 @@ def update(article_id):
     tax_rate = form.tax_rate.data
     available_from = form.available_from.data
     available_until = form.available_until.data
+    total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
     requires_separate_order = form.requires_separate_order.data
@@ -271,6 +273,7 @@ def update(article_id):
         tax_rate,
         available_from,
         available_until,
+        total_quantity,
         max_quantity_per_order,
         not_directly_orderable,
         requires_separate_order,

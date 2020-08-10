@@ -23,6 +23,7 @@
       {{ form_datalist('tax_rates', ['0.00', '0.07', '0.19']) }}
       {{ form_field(form.available_from, size=16, maxlength=16, note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
       {{ form_field(form.available_until, size=16, maxlength=16, note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
+      {{ form_field(form.total_quantity, type='number', min=0, max=99999, style='width: 5.5rem;', required='required') }}
       {{ form_field(form.max_quantity_per_order, type='number', min=1, max=99, style='width: 5.5rem;', required='required') }}
       {{ form_field_checkbox(form.not_directly_orderable, form.not_directly_orderable.label.text) }}
       {{ form_field_checkbox(form.requires_separate_order, form.requires_separate_order.label.text) }}

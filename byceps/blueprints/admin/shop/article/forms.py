@@ -23,12 +23,12 @@ class _ArticleBaseForm(LocalizedForm):
     description = StringField('Beschreibung')
     price = DecimalField('Stückpreis', places=2, validators=[InputRequired()])
     tax_rate = DecimalField('Steuersatz', places=3, validators=[InputRequired()])
+    total_quantity = IntegerField('Gesamtmenge', validators=[InputRequired()])
     max_quantity_per_order = IntegerField('Maximale Anzahl pro Bestellung', validators=[InputRequired()])
 
 
 class ArticleCreateForm(_ArticleBaseForm):
     article_number_sequence_id = SelectField('Artikelnummer-Sequenz', validators=[InputRequired()])
-    quantity = IntegerField('Anzahl verfügbar', validators=[InputRequired()])
 
     def set_article_number_sequence_choices(self, sequences):
         sequences.sort(key=lambda seq: seq.prefix)

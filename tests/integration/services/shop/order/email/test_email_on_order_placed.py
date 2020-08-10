@@ -224,11 +224,11 @@ E-Mail: noreply@acmecon.test
     )
 
 
-def create_article(shop_id, item_number, description, price, quantity):
+def create_article(shop_id, item_number, description, price, total_quantity):
     return _create_article(
         shop_id,
         item_number=item_number,
         description=description,
         price=price,
-        quantity=quantity,
+        total_quantity=total_quantity,
     )
