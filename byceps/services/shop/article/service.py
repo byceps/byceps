@@ -223,7 +223,9 @@ def get_articles_by_numbers(
 
 def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
     """Return all articles for that shop, ordered by article number."""
-    rows = _get_articles_for_shop_query(shop_id) \
+    rows = DbArticle.query \
+        .for_shop(shop_id) \
+        .order_by(DbArticle.item_number) \
         .all()
 
     return [_db_entity_to_article(row) for row in rows]
@@ -232,15 +234,14 @@ def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
 def get_articles_for_shop_paginated(
     shop_id: ShopID, page: int, per_page: int
 ) -> Pagination:
-    """Return all articles for that shop, ordered by article number."""
-    return _get_articles_for_shop_query(shop_id) \
-        .paginate(page, per_page)
+    """Return all articles for that shop, paginated.
 
-
-def _get_articles_for_shop_query(shop_id: ShopID) -> BaseQuery:
+    Ordered by article number, reversed.
+    """
     return DbArticle.query \
         .for_shop(shop_id) \
-        .order_by(DbArticle.item_number)
+        .order_by(DbArticle.item_number.desc()) \
+        .paginate(page, per_page)
 
 
 def get_article_compilation_for_orderable_articles(
