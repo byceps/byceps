@@ -1,11 +1,34 @@
 {% extends 'layouts/admin/shop/article.html' %}
 {% from 'macros/admin/shop/article.html' import render_article_link, render_article_temporal_availability %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_page_shop = shop %}
 {% set title = 'Artikel ' ~ article.item_number %}
 
 {% block head %}
     <style>
+      .progress {
+        background-color: #dddddd;
+        border-radius: 3px;
+        display: flex;
+        height: 0.25rem;
+        margin: 0.25rem 0 0.5rem 0;
+        overflow: hidden;
+      }
+
+      .progress-bar {
+        background-color: #666666;
+        height: 100%;
+      }
+
+      .progress-bar.color--available {
+        background-color: #11aa22;
+      }
+
+      .progress-bar.color--ordered {
+        background-color: #eecc00;
+      }
+
       table.attachments td {
         border: none !important;
         text-align: right;
@@ -53,6 +76,25 @@
     <tr>
       <th>Zeitraum</th>
       <td>{{ render_article_temporal_availability(article) }}</td>
+    </tr>
+    <tr>
+      <th>Verfügbarkeit</th>
+      <td>
+        <div style="line-height: 1.5; width: 16rem;">
+          <div class="progress">
+            <div class="progress-bar color--available" style="width: calc(100% * {{ article.quantity }} / {{ article.total_quantity }});"></div>
+            <div class="progress-bar color--ordered" style="width: calc(100% * {{ totals[PaymentState.open] }} / {{ article.total_quantity }});"></div>
+          </div>
+          <div class="row row--space-between" style="font-size: 0.75rem;">
+            <div class="column-auto">
+              <strong>{{ article.quantity }}</strong> verfügbar{% if article.quantity < 1 %} {{ render_tag('ausverkauft') }}{% endif %}<br>
+              <strong>{{ totals[PaymentState.open] }}</strong> bestellt<br>
+              <strong>{{ totals[PaymentState.paid] }}</strong> bezahlt
+            </div>
+            <div class="column-auto dimmed">von {{ article.total_quantity }}</div>
+          </div>
+        </div>
+      </td>
     </tr>
     <tr>
       <th>Gesamtmenge</th>
