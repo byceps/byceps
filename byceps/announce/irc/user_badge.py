@@ -8,17 +8,17 @@ Announce user badge events on IRC.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...blueprints.user_badge import signals
 from ...events.user_badge import UserBadgeAwarded
 from ...services.user import service as user_service
 from ...services.user_badge import badge_service as user_badge_service
+from ...signals import user_badge as user_badge_signals
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 
 
-@signals.user_badge_awarded.connect
+@user_badge_signals.user_badge_awarded.connect
 def _on_user_badge_awarded(sender, *, event: UserBadgeAwarded) -> None:
     enqueue(announce_user_badge_awarded, event)
 

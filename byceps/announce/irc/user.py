@@ -8,7 +8,6 @@ Announce user events on IRC.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...blueprints.user import signals
 from ...events.user import (
     UserAccountCreated,
     UserAccountDeleted,
@@ -19,13 +18,14 @@ from ...events.user import (
     UserScreenNameChanged,
 )
 from ...services.user import service as user_service
+from ...signals import user as user_signals
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 
 
-@signals.account_created.connect
+@user_signals.account_created.connect
 def _on_user_account_created(sender, *, event: UserAccountCreated) -> None:
     enqueue(announce_user_account_created, event)
 
@@ -50,7 +50,7 @@ def announce_user_account_created(event: UserAccountCreated) -> None:
     send_message(channels, text)
 
 
-@signals.screen_name_changed.connect
+@user_signals.screen_name_changed.connect
 def _on_user_screen_name_changed(
     sender, *, event: UserScreenNameChanged
 ) -> None:
@@ -71,7 +71,7 @@ def announce_user_screen_name_changed(event: UserScreenNameChanged) -> None:
     send_message(channels, text)
 
 
-@signals.email_address_invalidated.connect
+@user_signals.email_address_invalidated.connect
 def _on_user_email_address_invalidated(
     sender, *, event: UserEmailAddressInvalidated
 ) -> None:
@@ -95,7 +95,7 @@ def announce_user_email_address_invalidated(
     send_message(channels, text)
 
 
-@signals.details_updated.connect
+@user_signals.details_updated.connect
 def _on_user_details_updated_changed(
     sender, *, event: UserDetailsUpdated
 ) -> None:
@@ -117,7 +117,7 @@ def announce_user_details_updated_changed(event: UserDetailsUpdated) -> None:
     send_message(channels, text)
 
 
-@signals.account_suspended.connect
+@user_signals.account_suspended.connect
 def _on_user_account_suspended(sender, *, event: UserAccountSuspended) -> None:
     enqueue(announce_user_account_suspended, event)
 
@@ -137,7 +137,7 @@ def announce_user_account_suspended(event: UserAccountSuspended) -> None:
     send_message(channels, text)
 
 
-@signals.account_unsuspended.connect
+@user_signals.account_unsuspended.connect
 def _on_user_account_unsuspended(
     sender, *, event: UserAccountUnsuspended
 ) -> None:
@@ -159,7 +159,7 @@ def announce_user_account_unsuspended(event: UserAccountUnsuspended) -> None:
     send_message(channels, text)
 
 
-@signals.account_deleted.connect
+@user_signals.account_deleted.connect
 def _on_user_account_deleted(sender, *, event: UserAccountDeleted) -> None:
     enqueue(announce_user_account_deleted, event)
 

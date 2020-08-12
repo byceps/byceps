@@ -11,6 +11,7 @@ from flask import abort, g, request
 from ....services.image import service as image_service
 from ....services.user import service as user_service
 from ....services.user_avatar import service as avatar_service
+from ....signals import user_avatar as user_avatar_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_notice, flash_success
 from ....util.image.models import ImageType
@@ -18,7 +19,6 @@ from ....util.framework.templating import templated
 from ....util.views import redirect_to, respond_no_content
 
 from .forms import UpdateForm
-from . import signals
 
 
 blueprint = create_blueprint('user_avatar', __name__)
@@ -67,7 +67,7 @@ def update():
     _update(user.id, image)
 
     flash_success('Dein Avatarbild wurde aktualisiert.', icon='upload')
-    signals.avatar_updated.send(None, user_id=user.id)
+    user_avatar_signals.avatar_updated.send(None, user_id=user.id)
 
     return redirect_to('user_current.view')
 

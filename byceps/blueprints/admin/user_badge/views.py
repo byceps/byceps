@@ -11,6 +11,7 @@ from flask import abort, g, request
 from ....services.brand import service as brand_service
 from ....services.user import service as user_service
 from ....services.user_badge import awarding_service, badge_service
+from ....signals import user_badge as user_badge_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -18,7 +19,6 @@ from ....util.views import redirect_to
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
-from ...user_badge import signals
 
 from .authorization import UserBadgePermission
 from .forms import AwardForm, CreateForm
@@ -187,7 +187,7 @@ def award(user_id):
         f'Das Abzeichen "{badge.label}" wurde an {user.screen_name} verliehen.'
     )
 
-    signals.user_badge_awarded.send(None, event=event)
+    user_badge_signals.user_badge_awarded.send(None, event=event)
 
     return redirect_to('user_admin.view', user_id=user.id)
 

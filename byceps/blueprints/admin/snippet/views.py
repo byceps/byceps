@@ -13,6 +13,7 @@ from ....services.site import service as site_service
 from ....services.snippet import mountpoint_service, service as snippet_service
 from ....services.snippet.transfer.models import Scope
 from ....services.text_diff import service as text_diff_service
+from ....signals import snippet as snippet_signals
 from ....util.datetime.format import format_datetime_short
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
@@ -26,7 +27,6 @@ from ....util.views import (
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
-from ...snippet import signals
 from ...snippet.templating import get_snippet_context
 
 from .authorization import SnippetMountpointPermission, SnippetPermission
@@ -194,7 +194,7 @@ def create_document(scope_type, scope_name):
 
     flash_success(f'Das Dokument "{version.snippet.name}" wurde angelegt.')
 
-    signals.snippet_created.send(None, event=event)
+    snippet_signals.snippet_created.send(None, event=event)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
 
@@ -248,7 +248,7 @@ def update_document(snippet_id):
 
     flash_success(f'Das Dokument "{version.snippet.name}" wurde aktualisiert.')
 
-    signals.snippet_updated.send(None, event=event)
+    snippet_signals.snippet_updated.send(None, event=event)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
 
@@ -333,7 +333,7 @@ def create_fragment(scope_type, scope_name):
 
     flash_success(f'Das Fragment "{version.snippet.name}" wurde angelegt.')
 
-    signals.snippet_created.send(None, event=event)
+    snippet_signals.snippet_created.send(None, event=event)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
 
@@ -379,7 +379,7 @@ def update_fragment(snippet_id):
 
     flash_success(f'Das Fragment "{version.snippet.name}" wurde aktualisiert.')
 
-    signals.snippet_updated.send(None, event=event)
+    snippet_signals.snippet_updated.send(None, event=event)
 
     return redirect_to('.view_version', snippet_version_id=version.id)
 
@@ -438,7 +438,7 @@ def delete_snippet(snippet_id):
         return url_for('.view_current_version', snippet_id=snippet.id)
 
     flash_success(f'Das Snippet "{snippet_name}" wurde gelöscht.')
-    signals.snippet_deleted.send(None, event=event)
+    snippet_signals.snippet_deleted.send(None, event=event)
     return url_for(
         '.index_for_scope', scope_type=scope.type_, scope_name=scope.name
     )

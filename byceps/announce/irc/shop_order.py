@@ -8,10 +8,10 @@ Announce shop order events on IRC.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...blueprints.shop.order import signals
 from ...events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ...services.shop.order import service as order_service
 from ...services.user import service as user_service
+from ...signals import shop as shop_signals
 from ...typing import UserID
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
@@ -19,7 +19,7 @@ from ...util.jobqueue import enqueue
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 
 
-@signals.order_placed.connect
+@shop_signals.order_placed.connect
 def _on_order_placed(sender, *, event: ShopOrderPlaced) -> None:
     enqueue(announce_order_placed, event)
 
@@ -37,7 +37,7 @@ def announce_order_placed(event: ShopOrderPlaced) -> None:
     send_message(channels, text)
 
 
-@signals.order_paid.connect
+@shop_signals.order_paid.connect
 def _on_order_paid(sender, *, event: ShopOrderPaid) -> None:
     enqueue(announce_order_paid, event)
 
@@ -59,7 +59,7 @@ def announce_order_paid(event: ShopOrderPaid) -> None:
     send_message(channels, text)
 
 
-@signals.order_canceled.connect
+@shop_signals.order_canceled.connect
 def _on_order_canceled(sender, *, event: ShopOrderCanceled) -> None:
     enqueue(announce_order_canceled, event)
 

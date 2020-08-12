@@ -8,7 +8,6 @@ Announce news events on IRC.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...blueprints.news import signals
 from ...events.news import NewsItemPublished
 from ...services.brand import service as brand_service
 from ...services.news import (
@@ -16,13 +15,14 @@ from ...services.news import (
     service as news_service,
 )
 from ...services.user import service as user_service
+from ...signals import news as news_signals
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 
 
-@signals.item_published.connect
+@news_signals.item_published.connect
 def _on_news_item_published(sender, *, event: NewsItemPublished = None) -> None:
     enqueue(announce_news_item_published_publicly, event)
     enqueue(announce_news_item_published_internally, event)

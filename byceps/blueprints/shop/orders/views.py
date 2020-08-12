@@ -14,6 +14,7 @@ from ....services.shop.order.transfer.models import PaymentState
 from ....services.shop.storefront import service as storefront_service
 from ....services.site import service as site_service
 from ....services.snippet.transfer.models import Scope
+from ....signals import shop as shop_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -21,8 +22,6 @@ from ....util.views import redirect_to
 
 from ...authentication.decorators import login_required
 from ...snippet.templating import render_snippet_as_partial
-
-from ..order import signals
 
 from .forms import CancelForm
 
@@ -164,7 +163,7 @@ def cancel(order_id):
 
     order_email_service.send_email_for_canceled_order_to_orderer(order.id)
 
-    signals.order_canceled.send(None, event=event)
+    shop_signals.order_canceled.send(None, event=event)
 
     return redirect_to('.view', order_id=order.id)
 

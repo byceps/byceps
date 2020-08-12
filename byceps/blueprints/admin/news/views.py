@@ -19,6 +19,7 @@ from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Channel
 from ....services.text_diff import service as text_diff_service
 from ....services.user.service import UserIdRejected
+from ....signals import news as news_signals
 from ....util.datetime.format import format_datetime_short
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
@@ -28,7 +29,6 @@ from ....util.views import redirect_to, respond_no_content
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
-from ...news import signals
 
 from .authorization import NewsChannelPermission, NewsItemPermission
 from .forms import (
@@ -448,7 +448,7 @@ def item_publish(item_id):
         item.id, initiator_id=g.current_user.id
     )
 
-    signals.item_published.send(None, event=event)
+    news_signals.item_published.send(None, event=event)
 
     flash_success(f'Die News "{item.title}" wurde veröffentlicht.')
 

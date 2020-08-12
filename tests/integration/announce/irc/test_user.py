@@ -4,7 +4,6 @@
 """
 
 from byceps.announce.irc import user  # Load signal handlers.
-import byceps.blueprints.user.signals as user_signals
 from byceps.events.user import (
     UserAccountCreated,
     UserAccountDeleted,
@@ -15,6 +14,7 @@ from byceps.events.user import (
     UserScreenNameChanged,
 )
 from byceps.services.user import command_service as user_command_service
+from byceps.signals import user as user_signals
 
 from .helpers import (
     assert_submitted_data,

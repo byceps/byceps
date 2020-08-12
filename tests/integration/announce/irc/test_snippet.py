@@ -6,9 +6,9 @@
 import pytest
 
 from byceps.announce.irc import snippet  # Load signal handlers.
-from byceps.blueprints.snippet import signals
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
+from byceps.signals import snippet as snippet_signals
 
 from .helpers import assert_submitted_data, CHANNEL_ORGA_LOG, mocked_irc_bot
 
@@ -27,7 +27,7 @@ def test_announce_snippet_document_created(
     _, event = created_document_version_and_event
 
     with mocked_irc_bot() as mock:
-        signals.snippet_created.send(None, event=event)
+        snippet_signals.snippet_created.send(None, event=event)
 
         assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
@@ -43,7 +43,7 @@ def test_announce_snippet_fragment_created(
     _, event = created_fragment_version_and_event
 
     with mocked_irc_bot() as mock:
-        signals.snippet_created.send(None, event=event)
+        snippet_signals.snippet_created.send(None, event=event)
 
         assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
@@ -59,7 +59,7 @@ def test_announce_snippet_document_updated(
     _, event = updated_document_version_and_event
 
     with mocked_irc_bot() as mock:
-        signals.snippet_updated.send(None, event=event)
+        snippet_signals.snippet_updated.send(None, event=event)
 
         assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
@@ -75,7 +75,7 @@ def test_announce_snippet_fragment_updated(
     _, event = updated_fragment_version_and_event
 
     with mocked_irc_bot() as mock:
-        signals.snippet_updated.send(None, event=event)
+        snippet_signals.snippet_updated.send(None, event=event)
 
         assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
@@ -97,7 +97,7 @@ def test_announce_snippet_fragment_deleted(app, scope, editor):
     assert success
 
     with mocked_irc_bot() as mock:
-        signals.snippet_deleted.send(None, event=event)
+        snippet_signals.snippet_deleted.send(None, event=event)
 
         assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 

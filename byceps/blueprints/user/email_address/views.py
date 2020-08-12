@@ -13,12 +13,11 @@ from ....services.user import service as user_service
 from ....services.verification_token import (
     service as verification_token_service,
 )
+from ....signals import user as user_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_notice, flash_success
 from ....util.framework.templating import templated
 from ....util.views import redirect_to
-
-from .. import signals
 
 from .forms import RequestConfirmationEmailForm
 
@@ -110,6 +109,6 @@ def confirm(token):
         f'Das Benutzerkonto "{user.screen_name}" ist nun aktiviert.'
     )
 
-    signals.email_address_confirmed.send(None, event=event)
+    user_signals.email_address_confirmed.send(None, event=event)
 
     return redirect_to('authentication.login_form')

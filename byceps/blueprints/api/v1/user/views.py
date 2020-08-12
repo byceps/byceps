@@ -14,11 +14,10 @@ from .....services.user import (
     email_address_verification_service,
     service as user_service,
 )
+from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.views import create_empty_json_response
 from .....util.views import respond_no_content
-
-from ....user.signals import email_address_invalidated
 
 from .schemas import InvalidateEmailAddressRequest
 
@@ -64,4 +63,4 @@ def invalidate_email_address():
         user.id, req['reason']
     )
 
-    email_address_invalidated.send(None, event=event)
+    user_signals.email_address_invalidated.send(None, event=event)

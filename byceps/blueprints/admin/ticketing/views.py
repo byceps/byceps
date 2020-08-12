@@ -17,6 +17,7 @@ from ....services.ticketing import (
     ticket_user_checkin_service,
     ticket_user_management_service,
 )
+from ....signals import ticketing as ticketing_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_notice, flash_success
 from ....util.framework.templating import templated
@@ -24,7 +25,6 @@ from ....util.views import respond_no_content
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
-from ...ticketing import signals
 
 from .authorization import TicketingPermission
 from .forms import SpecifyUserForm
@@ -153,7 +153,7 @@ def set_user_checked_in_flag(ticket_id):
         )
         return
 
-    signals.ticket_checked_in.send(None, event=event)
+    ticketing_signals.ticket_checked_in.send(None, event=event)
 
     flash_success(f"Benutzer '{ticket.used_by.screen_name}' wurde eingecheckt.")
 

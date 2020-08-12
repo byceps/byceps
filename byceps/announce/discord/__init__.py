@@ -11,7 +11,6 @@ Announce board events on Discord via its webhooks API.
 from flask import current_app
 import requests
 
-from ...blueprints.board import signals
 from ...events.board import BoardPostingCreated, BoardTopicCreated
 from ...services.board import (
     posting_query_service as board_posting_query_service,
@@ -19,6 +18,7 @@ from ...services.board import (
 )
 from ...services.brand import settings_service as brand_settings_service
 from ...services.user import service as user_service
+from ...signals import board as board_signals
 from ...util.jobqueue import enqueue
 
 
@@ -75,7 +75,7 @@ def _get_webhook_url() -> str:
 #       preview embedding on Discord.
 
 
-@signals.topic_created.connect
+@board_signals.topic_created.connect
 def _on_board_topic_created(sender, *, event: BoardTopicCreated = None) -> None:
     enqueue(announce_board_topic_created, event)
 
@@ -93,7 +93,7 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
     send_message(text)
 
 
-@signals.posting_created.connect
+@board_signals.posting_created.connect
 def _on_board_posting_created(
     sender, *, event: BoardPostingCreated = None
 ) -> None:

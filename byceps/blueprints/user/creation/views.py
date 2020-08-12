@@ -26,12 +26,11 @@ from ....services.terms import document_service as terms_document_service
 from ....services.terms import version_service as terms_version_service
 from ....services.terms.transfer.models import DocumentID as TermsDocumentID
 from ....services.user import creation_service as user_creation_service
+from ....signals import user as user_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import redirect_to
-
-from .. import signals
 
 from .forms import UserCreateForm
 
@@ -170,7 +169,7 @@ def create():
         'der an die angegebene Adresse verschickten E-Mail besucht werden.'
     )
 
-    signals.account_created.send(None, event=event)
+    user_signals.account_created.send(None, event=event)
 
     return redirect_to('authentication.login_form')
 

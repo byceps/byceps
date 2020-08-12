@@ -11,12 +11,11 @@ from marshmallow import ValidationError
 
 from .....services.user import service as user_service
 from .....services.user_badge import awarding_service, badge_service
+from .....signals import user_badge as user_badge_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.views import respond_no_content
 
 from ...decorators import api_token_required
-
-from ....user_badge import signals
 
 from .schemas import AwardBadgeToUserRequest
 
@@ -54,4 +53,4 @@ def award_badge_to_user():
         badge.id, user.id, initiator_id=initiator.id
     )
 
-    signals.user_badge_awarded.send(None, event=event)
+    user_badge_signals.user_badge_awarded.send(None, event=event)

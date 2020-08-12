@@ -25,12 +25,11 @@ from .......services.tourney.transfer.models import (
 )
 from .......services.user import service as user_service
 from .......services.user.transfer.models import User
+from .......signals import tourney as tourney_signals
 from .......util.framework.blueprint import create_blueprint
 from .......util.views import respond_created, respond_no_content
 
 from .....decorators import api_token_required
-
-from ... import signals
 
 from .schemas import (
     CreateMatchCommentRequest,
@@ -135,7 +134,7 @@ def create():
 
     comment = comment_service.create_comment(match.id, creator.id, body)
 
-    signals.match_comment_created.send(None, comment_id=comment.id)
+    tourney_signals.match_comment_created.send(None, comment_id=comment.id)
 
     return url_for('.view', comment_id=comment.id)
 

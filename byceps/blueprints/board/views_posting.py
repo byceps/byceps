@@ -17,6 +17,7 @@ from ...services.board import (
 )
 from ...services.text_markup.service import get_smileys
 from ...services.user import service as user_service
+from ...signals import board as board_signals
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
 from ...util.views import respond_no_content_with_location
@@ -26,7 +27,7 @@ from ..authorization.decorators import permission_required
 from .authorization import BoardPermission, BoardPostingPermission
 from .blueprint import blueprint
 from .forms import PostingCreateForm, PostingUpdateForm
-from . import _helpers as h, service, signals
+from . import _helpers as h, service
 
 
 @blueprint.route('/postings/<uuid:posting_id>')
@@ -123,7 +124,7 @@ def posting_create(topic_id):
     event = dataclasses.replace(
         event, url=h.build_external_url_for_posting(posting.id)
     )
-    signals.posting_created.send(None, event=event)
+    board_signals.posting_created.send(None, event=event)
 
     postings_per_page = service.get_postings_per_page_value()
     page_count = topic.count_pages(postings_per_page)
@@ -206,7 +207,7 @@ def posting_update(posting_id):
     event = dataclasses.replace(
         event, url=h.build_external_url_for_posting(posting.id)
     )
-    signals.posting_updated.send(None, event=event)
+    board_signals.posting_updated.send(None, event=event)
 
     return redirect(url)
 
@@ -242,7 +243,7 @@ def posting_hide(posting_id):
     event = dataclasses.replace(
         event, url=h.build_external_url_for_posting(posting.id)
     )
-    signals.posting_hidden.send(None, event=event)
+    board_signals.posting_hidden.send(None, event=event)
 
     return h.build_url_for_posting_in_topic_view(posting, page)
 
@@ -266,6 +267,6 @@ def posting_unhide(posting_id):
     event = dataclasses.replace(
         event, url=h.build_external_url_for_posting(posting.id)
     )
-    signals.posting_unhidden.send(None, event=event)
+    board_signals.posting_unhidden.send(None, event=event)
 
     return h.build_url_for_posting_in_topic_view(posting, page)

@@ -15,6 +15,7 @@ from .....services.shop.order.transfer.models import PaymentMethod, PaymentState
 from .....services.shop.shop import service as shop_service
 from .....services.ticketing import ticket_service
 from .....services.user import service as user_service
+from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_notice, flash_success
 from .....util.framework.templating import templated
@@ -22,7 +23,6 @@ from .....util.views import redirect_to, respond_no_content
 
 from ....authorization.decorators import permission_required
 from ....authorization.registry import permission_registry
-from ....shop.order import signals
 
 from .authorization import ShopOrderPermission
 from .forms import CancelForm, MarkAsPaidForm
@@ -255,7 +255,7 @@ def cancel(order_id):
             'Es wurde keine E-Mail an den/die Auftraggeber/in versendet.'
         )
 
-    signals.order_canceled.send(None, event=event)
+    shop_signals.order_canceled.send(None, event=event)
 
     return redirect_to('.view', order_id=order.id)
 
@@ -307,7 +307,7 @@ def mark_as_paid(order_id):
 
     order_email_service.send_email_for_paid_order_to_orderer(order.id)
 
-    signals.order_paid.send(None, event=event)
+    shop_signals.order_paid.send(None, event=event)
 
     return redirect_to('.view', order_id=order.id)
 

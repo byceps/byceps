@@ -20,6 +20,7 @@ from ....services.shop.shop import service as shop_service
 from ....services.shop.storefront import service as storefront_service
 from ....services.site import service as site_service
 from ....services.user import service as user_service
+from ....signals import shop as shop_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_notice, flash_success
 from ....util.framework.templating import templated
@@ -28,7 +29,6 @@ from ....util.views import redirect_to
 from ...authentication.decorators import login_required
 
 from .forms import assemble_articles_order_form, OrderForm
-from . import signals
 
 
 blueprint = create_blueprint('shop_order', __name__)
@@ -280,7 +280,7 @@ def _place_order(storefront_id, orderer, cart):
 
     order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
-    signals.order_placed.send(None, event=event)
+    shop_signals.order_placed.send(None, event=event)
 
     return order
 

@@ -84,7 +84,7 @@ def orderer(make_user_with_detail):
     return create_orderer(user)
 
 
-@patch('byceps.blueprints.shop.order.signals.order_canceled.send')
+@patch('byceps.signals.shop.order_canceled.send')
 @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
 def test_cancel_before_paid(
     order_email_service_mock,
@@ -137,7 +137,7 @@ def test_cancel_before_paid(
     order_service.delete_order(placed_order.id)
 
 
-@patch('byceps.blueprints.shop.order.signals.order_canceled.send')
+@patch('byceps.signals.shop.order_canceled.send')
 @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
 def test_cancel_before_paid_without_sending_email(
     order_email_service_mock,
@@ -179,7 +179,7 @@ def test_cancel_before_paid_without_sending_email(
     order_service.delete_order(placed_order.id)
 
 
-@patch('byceps.blueprints.shop.order.signals.order_paid.send')
+@patch('byceps.signals.shop.order_paid.send')
 @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
 def test_mark_order_as_paid(
     order_email_service_mock,
@@ -222,8 +222,8 @@ def test_mark_order_as_paid(
     order_service.delete_order(placed_order.id)
 
 
-@patch('byceps.blueprints.shop.order.signals.order_canceled.send')
-@patch('byceps.blueprints.shop.order.signals.order_paid.send')
+@patch('byceps.signals.shop.order_canceled.send')
+@patch('byceps.signals.shop.order_paid.send')
 @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
 def test_cancel_after_paid(
     order_email_service_mock,

@@ -19,6 +19,7 @@ from ...services.board import (
 )
 from ...services.text_markup.service import get_smileys
 from ...services.user import service as user_service
+from ...signals import board as board_signals
 from ...util.framework.flash import flash_error, flash_success
 from ...util.framework.templating import templated
 from ...util.views import respond_no_content_with_location
@@ -28,7 +29,7 @@ from ..authorization.decorators import permission_required
 from .authorization import BoardPermission, BoardTopicPermission
 from .blueprint import blueprint
 from .forms import PostingCreateForm, TopicCreateForm, TopicUpdateForm
-from . import _helpers as h, service, signals
+from . import _helpers as h, service
 
 
 @blueprint.route('/topics', defaults={'page': 1})
@@ -166,7 +167,7 @@ def topic_create(category_id):
     flash_success(f'Das Thema "{topic.title}" wurde hinzugefügt.')
 
     event = dataclasses.replace(event, url=topic_url)
-    signals.topic_created.send(None, event=event)
+    board_signals.topic_created.send(None, event=event)
 
     return redirect(topic_url)
 
@@ -278,7 +279,7 @@ def topic_hide(topic_id):
     event = dataclasses.replace(
         event, url=h.build_external_url_for_topic(topic.id)
     )
-    signals.topic_hidden.send(None, event=event)
+    board_signals.topic_hidden.send(None, event=event)
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -300,7 +301,7 @@ def topic_unhide(topic_id):
     event = dataclasses.replace(
         event, url=h.build_external_url_for_topic(topic.id)
     )
-    signals.topic_unhidden.send(None, event=event)
+    board_signals.topic_unhidden.send(None, event=event)
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -320,7 +321,7 @@ def topic_lock(topic_id):
     event = dataclasses.replace(
         event, url=h.build_external_url_for_topic(topic.id)
     )
-    signals.topic_locked.send(None, event=event)
+    board_signals.topic_locked.send(None, event=event)
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -342,7 +343,7 @@ def topic_unlock(topic_id):
     event = dataclasses.replace(
         event, url=h.build_external_url_for_topic(topic.id)
     )
-    signals.topic_unlocked.send(None, event=event)
+    board_signals.topic_unlocked.send(None, event=event)
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -362,7 +363,7 @@ def topic_pin(topic_id):
     event = dataclasses.replace(
         event, url=h.build_external_url_for_topic(topic.id)
     )
-    signals.topic_pinned.send(None, event=event)
+    board_signals.topic_pinned.send(None, event=event)
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -382,7 +383,7 @@ def topic_unpin(topic_id):
     event = dataclasses.replace(
         event, url=h.build_external_url_for_topic(topic.id)
     )
-    signals.topic_unpinned.send(None, event=event)
+    board_signals.topic_unpinned.send(None, event=event)
 
     return h.build_url_for_topic_in_category_view(topic)
 
@@ -416,7 +417,7 @@ def topic_move(topic_id):
     event = dataclasses.replace(
         event, url=h.build_external_url_for_topic(topic.id)
     )
-    signals.topic_moved.send(None, event=event)
+    board_signals.topic_moved.send(None, event=event)
 
     return redirect(h.build_url_for_topic_in_category_view(topic))
 

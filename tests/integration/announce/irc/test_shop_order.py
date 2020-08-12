@@ -6,7 +6,6 @@
 import pytest
 
 from byceps.announce.irc import shop_order  # Load signal handlers.
-from byceps.blueprints.shop.order import signals
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
@@ -15,6 +14,7 @@ from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.user import command_service as user_command_service
+from byceps.signals import shop as shop_signals
 
 from testfixtures.shop_order import create_orderer
 
@@ -37,7 +37,7 @@ def test_shop_order_placed_announced(app, placed_order):
     )
 
     with mocked_irc_bot() as mock:
-        signals.order_placed.send(None, event=event)
+        shop_signals.order_placed.send(None, event=event)
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
@@ -54,7 +54,7 @@ def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
     )
 
     with mocked_irc_bot() as mock:
-        signals.order_canceled.send(None, event=event)
+        shop_signals.order_canceled.send(None, event=event)
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
@@ -71,7 +71,7 @@ def test_shop_order_paid_announced(app, paid_order, shop_admin):
     )
 
     with mocked_irc_bot() as mock:
-        signals.order_paid.send(None, event=event)
+        shop_signals.order_paid.send(None, event=event)
         assert_submitted_data(mock, expected_channels, expected_text)
 
 

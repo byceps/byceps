@@ -6,7 +6,6 @@
 import pytest
 
 from byceps.announce.irc import board  # Load signal handlers.
-import byceps.blueprints.board.signals as board_signals
 from byceps.events.board import (
     BoardPostingCreated,
     BoardPostingHidden,
@@ -25,6 +24,7 @@ from byceps.services.board import (
     posting_command_service,
     topic_command_service,
 )
+from byceps.signals import board as board_signals
 
 from .helpers import (
     assert_submitted_data,

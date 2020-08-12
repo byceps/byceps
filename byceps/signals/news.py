@@ -1,6 +1,6 @@
 """
-byceps.blueprints.news.signals
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.signals.news
+~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.

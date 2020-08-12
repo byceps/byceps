@@ -6,12 +6,12 @@
 import pytest
 
 from byceps.announce.irc import news  # Load signal handlers.
-import byceps.blueprints.news.signals as news_signals
 from byceps.events.news import NewsItemPublished
 from byceps.services.news import (
     channel_service as news_channel_service,
     service as news_service,
 )
+from byceps.signals import news as news_signals
 
 from .helpers import (
     assert_request_data,

@@ -8,7 +8,6 @@ Announce board events on IRC.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...blueprints.board import signals
 from ...events.board import (
     BoardPostingCreated,
     BoardPostingHidden,
@@ -30,13 +29,14 @@ from ...services.board import (
 )
 from ...services.brand import service as brand_service
 from ...services.user import service as user_service
+from ...signals import board as board_signals
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 
 
-@signals.topic_created.connect
+@board_signals.topic_created.connect
 def _on_board_topic_created(sender, *, event: BoardTopicCreated = None) -> None:
     enqueue(announce_board_topic_created, event)
 
@@ -57,7 +57,7 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
     send_message(channels, text)
 
 
-@signals.topic_hidden.connect
+@board_signals.topic_hidden.connect
 def _on_board_topic_hidden(sender, *, event: BoardTopicHidden = None) -> None:
     enqueue(announce_board_topic_hidden, event)
 
@@ -80,7 +80,7 @@ def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
     send_message(channels, text)
 
 
-@signals.topic_unhidden.connect
+@board_signals.topic_unhidden.connect
 def _on_board_topic_unhidden(
     sender, *, event: BoardTopicUnhidden = None
 ) -> None:
@@ -105,7 +105,7 @@ def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
     send_message(channels, text)
 
 
-@signals.topic_locked.connect
+@board_signals.topic_locked.connect
 def _on_board_topic_locked(sender, *, event: BoardTopicLocked = None) -> None:
     enqueue(announce_board_topic_locked, event)
 
@@ -128,7 +128,7 @@ def announce_board_topic_locked(event: BoardTopicLocked) -> None:
     send_message(channels, text)
 
 
-@signals.topic_unlocked.connect
+@board_signals.topic_unlocked.connect
 def _on_board_topic_unlocked(
     sender, *, event: BoardTopicUnlocked = None
 ) -> None:
@@ -153,7 +153,7 @@ def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
     send_message(channels, text)
 
 
-@signals.topic_pinned.connect
+@board_signals.topic_pinned.connect
 def _on_board_topic_pinned(sender, *, event: BoardTopicPinned = None) -> None:
     enqueue(announce_board_topic_pinned, event)
 
@@ -176,7 +176,7 @@ def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
     send_message(channels, text)
 
 
-@signals.topic_unpinned.connect
+@board_signals.topic_unpinned.connect
 def _on_board_topic_unpinned(
     sender, *, event: BoardTopicUnpinned = None
 ) -> None:
@@ -201,7 +201,7 @@ def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
     send_message(channels, text)
 
 
-@signals.topic_moved.connect
+@board_signals.topic_moved.connect
 def _on_board_topic_moved(sender, *, event: BoardTopicMoved = None) -> None:
     enqueue(announce_board_topic_moved, event)
 
@@ -231,7 +231,7 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
     send_message(channels, text)
 
 
-@signals.posting_created.connect
+@board_signals.posting_created.connect
 def _on_board_posting_created(
     sender, *, event: BoardPostingCreated = None
 ) -> None:
@@ -257,7 +257,7 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     send_message(channels, text)
 
 
-@signals.posting_hidden.connect
+@board_signals.posting_hidden.connect
 def _on_board_posting_hidden(
     sender, *, event: BoardPostingHidden = None
 ) -> None:
@@ -282,7 +282,7 @@ def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     send_message(channels, text)
 
 
-@signals.posting_unhidden.connect
+@board_signals.posting_unhidden.connect
 def _on_board_posting_unhidden(
     sender, *, event: BoardPostingUnhidden = None
 ) -> None:

@@ -20,6 +20,7 @@ from ....services.user import creation_service as user_creation_service
 from ....services.user import service as user_service
 from ....services.user import stats_service as user_stats_service
 from ....services.user_badge import awarding_service as badge_awarding_service
+from ....signals import user as user_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -27,7 +28,6 @@ from ....util.views import redirect_to, respond_no_content
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
-from ...user import signals
 
 from ..authorization.authorization import RolePermission
 
@@ -204,7 +204,7 @@ def create_account():
             icon='email',
         )
 
-    signals.account_created.send(None, event=event)
+    user_signals.account_created.send(None, event=event)
 
     return redirect_to('.view', user_id=user.id)
 
@@ -305,7 +305,7 @@ def suspend_account(user_id):
 
     event = user_command_service.suspend_account(user.id, initiator_id, reason)
 
-    signals.account_suspended.send(None, event=event)
+    user_signals.account_suspended.send(None, event=event)
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde gesperrt.")
     return redirect_to('.view', user_id=user.id)
@@ -355,7 +355,7 @@ def unsuspend_account(user_id):
         user.id, initiator_id, reason
     )
 
-    signals.account_unsuspended.send(None, event=event)
+    user_signals.account_unsuspended.send(None, event=event)
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde entsperrt.")
     return redirect_to('.view', user_id=user.id)
@@ -405,7 +405,7 @@ def delete_account(user_id):
 
     event = user_command_service.delete_account(user.id, initiator_id, reason)
 
-    signals.account_deleted.send(None, event=event)
+    user_signals.account_deleted.send(None, event=event)
 
     flash_success(f"Das Benutzerkonto '{user.screen_name}' wurde gelöscht.")
     return redirect_to('.view', user_id=user.id)
@@ -445,7 +445,7 @@ def change_email_address(user_id):
         user.id, new_email_address, initiator_id, reason=reason
     )
 
-    signals.email_address_changed.send(None, event=event)
+    user_signals.email_address_changed.send(None, event=event)
 
     flash_success(
         f"Die E-Mail-Adresse des Benutzerkontos '{user.screen_name}' wurde "
@@ -488,7 +488,7 @@ def change_screen_name(user_id):
         user.id, new_screen_name, initiator_id, reason=reason
     )
 
-    signals.screen_name_changed.send(None, event=event)
+    user_signals.screen_name_changed.send(None, event=event)
 
     flash_success(
         f"Das Benutzerkonto '{old_screen_name}' wurde "
