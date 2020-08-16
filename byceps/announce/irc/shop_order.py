@@ -54,7 +54,7 @@ def announce_order_paid(event: ShopOrderPaid) -> None:
 
     text = (
         f'{initiator_screen_name} hat Bestellung {order.order_number} '
-        f'von {orderer_screen_name} als bezahlt via {payment_method_label} '
+        f'von {orderer_screen_name} als per {payment_method_label} bezahlt '
         'markiert.'
     )
 

@@ -44,8 +44,8 @@ def test_shop_order_placed_announced(app, placed_order):
 def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_text = (
-        'ShoppingSheriff hat Bestellung ORDER-00002 '
-        'von Ken_von_Kaufkraft storniert.'
+        'ShoppingSheriff hat Bestellung ORDER-00002 von Ken_von_Kaufkraft '
+        'storniert.'
     )
 
     order = canceled_order
@@ -61,8 +61,8 @@ def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
 def test_shop_order_paid_announced(app, paid_order, shop_admin):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_text = (
-        'ShoppingSheriff hat Bestellung ORDER-00003 '
-        'von Ken_von_Kaufkraft als bezahlt via Überweisung markiert.'
+        'ShoppingSheriff hat Bestellung ORDER-00003 von Ken_von_Kaufkraft '
+        'als per Überweisung bezahlt markiert.'
     )
 
     order = paid_order
