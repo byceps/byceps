@@ -6,22 +6,6 @@
 {%- endmacro %}
 
 
-{% macro render_order_payment_method(payment_method) %}
-  {%- set name = payment_method.name %}
-  {%- if name == 'bank_transfer' -%}
-    Überweisung
-  {%- elif name == 'cash' -%}
-    Barzahlung
-  {%- elif name == 'direct_debit' -%}
-    Lastschrift
-  {%- elif name == 'free' -%}
-    kostenlos
-  {%- else -%}
-    ?
-  {%- endif -%}
-{%- endmacro %}
-
-
 {% macro render_order_payment_state(payment_state) %}
   {%- set state_name = payment_state.name %}
   {%- if state_name == 'paid' -%}

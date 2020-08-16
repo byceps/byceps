@@ -83,6 +83,7 @@ def index_for_shop(shop_id, page):
         'OrderStateFilter': OrderStateFilter,
         'order_state_filter': order_state_filter,
         'orders': orders,
+        'render_order_payment_method': _find_order_payment_method_label,
     }
 
 
@@ -114,6 +115,7 @@ def view(order_id):
         'PaymentMethod': PaymentMethod,
         'PaymentState': PaymentState,
         'tickets': tickets,
+        'render_order_payment_method': _find_order_payment_method_label,
     }
 
 
@@ -342,3 +344,7 @@ def _get_order_or_404(order_id):
         abort(404)
 
     return order
+
+
+def _find_order_payment_method_label(payment_method):
+    return order_service.find_payment_method_label(payment_method)

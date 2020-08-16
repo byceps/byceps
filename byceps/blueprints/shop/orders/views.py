@@ -80,6 +80,7 @@ def view(order_id):
 
     template_context = {
         'order': order,
+        'render_order_payment_method': _find_order_payment_method_label,
     }
 
     if order.is_open:
@@ -88,6 +89,10 @@ def view(order_id):
         )
 
     return template_context
+
+
+def _find_order_payment_method_label(payment_method):
+    return order_service.find_payment_method_label(payment_method)
 
 
 def _get_payment_instructions(order):

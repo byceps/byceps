@@ -551,3 +551,16 @@ def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
         .count()
 
     return orders_total > 0
+
+
+PAYMENT_METHOD_LABELS = {
+    PaymentMethod.bank_transfer: 'Überweisung',
+    PaymentMethod.cash: 'Barzahlung',
+    PaymentMethod.direct_debit: 'Lastschrift',
+    PaymentMethod.free: 'kostenlos',
+}
+
+
+def find_payment_method_label(payment_method: PaymentMethod) -> Optional[str]:
+    """Return a label for the payment method."""
+    return PAYMENT_METHOD_LABELS.get(payment_method)

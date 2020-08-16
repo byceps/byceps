@@ -9,6 +9,7 @@ byceps.blueprints.admin.shop.order.forms
 from wtforms import BooleanField, RadioField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
+from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import PaymentMethod
 from .....util.l10n import LocalizedForm
 
@@ -18,16 +19,17 @@ class CancelForm(LocalizedForm):
     send_email = BooleanField('Auftraggeber/in per E-Mail über Stornierung informieren')
 
 
-PAYMENT_METHOD_CHOICES = [
-    (PaymentMethod.bank_transfer.name, 'Überweisung'),
-    (PaymentMethod.cash.name, 'Barzahlung'),
-    (PaymentMethod.direct_debit.name, 'Lastschrift'),
-    (PaymentMethod.free.name, 'kostenlos'),
-]
+def _get_payment_method_choices():
+    return [
+        (pm.name, order_service.find_payment_method_label(pm) or pm.name)
+        for pm in PaymentMethod
+    ]
 
 
 class MarkAsPaidForm(LocalizedForm):
-    payment_method = RadioField('Zahlungsart',
-        choices=PAYMENT_METHOD_CHOICES,
-        default=PAYMENT_METHOD_CHOICES[0][0],
-        validators=[InputRequired()])
+    payment_method = RadioField(
+        'Zahlungsart',
+        choices=_get_payment_method_choices(),
+        default=PaymentMethod.bank_transfer.name,
+        validators=[InputRequired()],
+    )
