@@ -50,10 +50,12 @@ def announce_order_paid(event: ShopOrderPaid) -> None:
 
     initiator_screen_name = _get_screen_name(event.initiator_id)
     orderer_screen_name = _get_screen_name(order.placed_by_id)
+    payment_method_label = order_service.find_payment_method_label(order.payment_method)
 
     text = (
         f'{initiator_screen_name} hat Bestellung {order.order_number} '
-        f'von {orderer_screen_name} als bezahlt markiert.'
+        f'von {orderer_screen_name} als bezahlt via {payment_method_label} '
+        'markiert.'
     )
 
     send_message(channels, text)

@@ -62,7 +62,7 @@ def test_shop_order_paid_announced(app, paid_order, shop_admin):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00003 '
-        'von Ken_von_Kaufkraft als bezahlt markiert.'
+        'von Ken_von_Kaufkraft als bezahlt via Überweisung markiert.'
     )
 
     order = paid_order
