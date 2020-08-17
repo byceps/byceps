@@ -11,12 +11,15 @@ from byceps.util.image.models import ImageType
 from testfixtures.user import create_user
 
 
-@pytest.mark.parametrize('database_value, expected', [
-    (None  , None          ),
-    ('gif' , ImageType.gif ),
-    ('jpeg', ImageType.jpeg),
-    ('png' , ImageType.png ),
-])
+@pytest.mark.parametrize(
+    'database_value, expected',
+    [
+        (None  , None          ),
+        ('gif' , ImageType.gif ),
+        ('jpeg', ImageType.jpeg),
+        ('png' , ImageType.png ),
+    ],
+)
 def test_hybrid_image_type_getter(database_value, expected):
     user = create_user()
     avatar = create_avatar(user.id)
@@ -26,12 +29,15 @@ def test_hybrid_image_type_getter(database_value, expected):
     assert avatar.image_type == expected
 
 
-@pytest.mark.parametrize('image_type, expected', [
-    (None          , None  ),
-    (ImageType.gif , 'gif' ),
-    (ImageType.jpeg, 'jpeg'),
-    (ImageType.png , 'png' ),
-])
+@pytest.mark.parametrize(
+    'image_type, expected',
+    [
+        (None          , None  ),
+        (ImageType.gif , 'gif' ),
+        (ImageType.jpeg, 'jpeg'),
+        (ImageType.png , 'png' ),
+    ],
+)
 def test_hybrid_image_type_setter(image_type, expected):
     user = create_user()
     avatar = create_avatar(user.id)

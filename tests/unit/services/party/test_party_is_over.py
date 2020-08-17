@@ -11,13 +11,16 @@ import pytest
 from byceps.services.party.transfer.models import Party
 
 
-@pytest.mark.parametrize('now, expected', [
-    (datetime(2020,  3,  21, 14, 59, 59), False),
-    (datetime(2020,  3,  21, 15,  0,  0), False),
-    (datetime(2020,  3,  21, 15,  0,  1), True),
-])
+@pytest.mark.parametrize(
+    'now, expected',
+    [
+        (datetime(2020,  3,  21, 14, 59, 59), False),
+        (datetime(2020,  3,  21, 15,  0,  0), False),
+        (datetime(2020,  3,  21, 15,  0,  1), True),
+    ],
+)
 def test_is_over(now, expected):
-    ends_at = datetime(2020, 3, 21, 15, 0 ,0)
+    ends_at = datetime(2020, 3, 21, 15, 0, 0)
     party = create_party(ends_at)
 
     with freeze_time(now):

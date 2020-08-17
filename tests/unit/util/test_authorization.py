@@ -8,22 +8,28 @@ import pytest
 from byceps.util.authorization import create_permission_enum
 
 
-@pytest.mark.parametrize('key', [
-    ('user'       ),
-    ('board_topic'),
-])
+@pytest.mark.parametrize(
+    'key',
+    [
+        ('user'       ),
+        ('board_topic'),
+    ],
+)
 def test_key(key):
     enum = create_permission_enum(key, ['some_member'])
 
     assert enum.__key__ == key
 
 
-@pytest.mark.parametrize('key, expected', [
-    ('user',        'UserPermission'      ),
-    ('board_topic', 'BoardTopicPermission'),
-    ('foo_bar_baz', 'FooBarBazPermission' ),
-    ('CASe_FReNzY', 'CaseFrenzyPermission'),
-])
+@pytest.mark.parametrize(
+    'key, expected',
+    [
+        ('user',        'UserPermission'      ),
+        ('board_topic', 'BoardTopicPermission'),
+        ('foo_bar_baz', 'FooBarBazPermission' ),
+        ('CASe_FReNzY', 'CaseFrenzyPermission'),
+    ],
+)
 def test_name_derivation(key, expected):
     enum = create_permission_enum(key, ['some_member'])
 

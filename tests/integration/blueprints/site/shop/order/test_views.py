@@ -72,7 +72,9 @@ def storefront(shop, order_number_sequence_id) -> None:
 
 @pytest.fixture
 def site(brand, storefront):
-    site = create_site('acmecon-2014-shop-website', brand.id, storefront_id=storefront.id)
+    site = create_site(
+        'acmecon-2014-shop-website', brand.id, storefront_id=storefront.id
+    )
     yield site
     site_service.delete_site(site.id)
 
@@ -127,11 +129,7 @@ def test_order(
 
     first_order_item = order.items[0]
     assert_order_item(
-        first_order_item,
-        article.id,
-        article.price,
-        article.tax_rate,
-        3,
+        first_order_item, article.id, article.price, article.tax_rate, 3,
     )
 
     order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
@@ -185,11 +183,7 @@ def test_order_single(
 
     first_order_item = order.items[0]
     assert_order_item(
-        first_order_item,
-        article.id,
-        article.price,
-        article.tax_rate,
-        1,
+        first_order_item, article.id, article.price, article.tax_rate, 1,
     )
 
     order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(

@@ -56,35 +56,38 @@ def test_quote_with_author():
     assert render_html(text) == expected
 
 
-@pytest.mark.parametrize('text, expected', [
-    (
-        '[quote author="foo]bar"]blah[/quote]',
-        '<p class="quote-intro"><cite>foo]bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
-    ),
-    (
-        '[quote author="foo[bar"]blah[/quote]',
-        '<p class="quote-intro"><cite>foo[bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
-    ),
-    (
-        '[quote author="foo][bar"]blah[/quote]',
-        '<p class="quote-intro"><cite>foo][bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
-    ),
-    (
-        '[quote author="foo[]bar"]blah[/quote]',
-        '<p class="quote-intro"><cite>foo[]bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
-    ),
-    (
-        '[quote author="[foobar]"]blah[/quote]',
-        '<p class="quote-intro"><cite>[foobar]</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
-    ),
-    (
-        '[quote author="]foobar["]blah[/quote]',
-        '<p class="quote-intro"><cite>]foobar[</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
-    ),
-    (
-        '[quote author="<AngleBracketeer>"]careful.[/quote]',
-        '<p class="quote-intro"><cite>&lt;AngleBracketeer&gt;</cite> schrieb:</p>\n<blockquote>careful.</blockquote>',
-    ),
-])
+@pytest.mark.parametrize(
+    'text, expected',
+    [
+        (
+            '[quote author="foo]bar"]blah[/quote]',
+            '<p class="quote-intro"><cite>foo]bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
+        ),
+        (
+            '[quote author="foo[bar"]blah[/quote]',
+            '<p class="quote-intro"><cite>foo[bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
+        ),
+        (
+            '[quote author="foo][bar"]blah[/quote]',
+            '<p class="quote-intro"><cite>foo][bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
+        ),
+        (
+            '[quote author="foo[]bar"]blah[/quote]',
+            '<p class="quote-intro"><cite>foo[]bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
+        ),
+        (
+            '[quote author="[foobar]"]blah[/quote]',
+            '<p class="quote-intro"><cite>[foobar]</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
+        ),
+        (
+            '[quote author="]foobar["]blah[/quote]',
+            '<p class="quote-intro"><cite>]foobar[</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
+        ),
+        (
+            '[quote author="<AngleBracketeer>"]careful.[/quote]',
+            '<p class="quote-intro"><cite>&lt;AngleBracketeer&gt;</cite> schrieb:</p>\n<blockquote>careful.</blockquote>',
+        ),
+    ],
+)
 def test_quote_with_author_whose_name_contains_square_brackets(text, expected):
     assert render_html(text) == expected

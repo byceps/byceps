@@ -8,10 +8,13 @@ import pytest
 from byceps.services.country import service as country_service
 
 
-@pytest.mark.parametrize('name, alpha2, alpha3', [
-    ('Deutschland', 'DE', 'DEU'),
-    ('Österreich' , 'AT', 'AUT'),
-])
+@pytest.mark.parametrize(
+    'name, alpha2, alpha3',
+    [
+        ('Deutschland', 'DE', 'DEU'),
+        ('Österreich' , 'AT', 'AUT'),
+    ],
+)
 def test_get_countries_contains_country(site_app, name, alpha2, alpha3):
     countries = country_service.get_countries()
 
