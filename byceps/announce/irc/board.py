@@ -23,7 +23,6 @@ from ...events.board import (
 )
 from ...services.board.models.topic import Topic as DbTopic
 from ...services.board import (
-    category_query_service as board_category_query_service,
     posting_query_service as board_posting_query_service,
     topic_query_service as board_topic_query_service,
 )
@@ -213,18 +212,12 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
     topic_creator = user_service.find_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    old_category = board_category_query_service.find_category_by_id(
-        event.old_category_id
-    )
-    new_category = board_category_query_service.find_category_by_id(
-        event.new_category_id
-    )
     moderator = user_service.find_user(event.moderator_id)
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
         f'das Thema "{topic.title}" von {topic_creator.screen_name} '
-        f'aus "{old_category.title}" in "{new_category.title}" '
+        f'aus "{event.old_category_title}" in "{event.new_category_title}" '
         f'verschoben: {event.url}'
     )
 

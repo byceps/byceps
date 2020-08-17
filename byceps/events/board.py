@@ -71,7 +71,9 @@ class BoardTopicUnpinned(_BoardTopicModerationEvent):
 @dataclass(frozen=True)
 class BoardTopicMoved(_BoardTopicModerationEvent):
     old_category_id: CategoryID
+    old_category_title: str
     new_category_id: CategoryID
+    new_category_title: str
 
 
 # posting

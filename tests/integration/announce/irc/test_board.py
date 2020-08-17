@@ -204,7 +204,9 @@ def test_announce_topic_moved(
             initiator_id=moderator.id,
             topic_id=topic.id,
             old_category_id=category.id,
+            old_category_title=category.title,
             new_category_id=another_category.id,
+            new_category_title=another_category.title,
             moderator_id=moderator.id,
             url=expected_link,
         )

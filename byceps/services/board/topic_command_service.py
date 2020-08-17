@@ -231,7 +231,9 @@ def move_topic(
         initiator_id=moderator_id,
         topic_id=topic.id,
         old_category_id=old_category.id,
+        old_category_title=old_category.title,
         new_category_id=new_category.id,
+        new_category_title=new_category.title,
         moderator_id=moderator_id,
         url=None,
     )
