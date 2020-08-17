@@ -50,7 +50,7 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
 
     text = (
         f'{topic_creator.screen_name} hat im {board_label} '
-        f'das Thema "{topic.title}" erstellt: {event.url}'
+        f'das Thema "{event.topic_title}" erstellt: {event.url}'
     )
 
     send_message(channels, text)
@@ -72,7 +72,7 @@ def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
-        f'das Thema "{topic.title}" von {topic_creator.screen_name} '
+        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'versteckt: {event.url}'
     )
 
@@ -97,7 +97,7 @@ def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
-        f'das Thema "{topic.title}" von {topic_creator.screen_name} '
+        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'wieder sichtbar gemacht: {event.url}'
     )
 
@@ -120,7 +120,7 @@ def announce_board_topic_locked(event: BoardTopicLocked) -> None:
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
-        f'das Thema "{topic.title}" von {topic_creator.screen_name} '
+        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'geschlossen: {event.url}'
     )
 
@@ -145,7 +145,7 @@ def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
-        f'das Thema "{topic.title}" von {topic_creator.screen_name} '
+        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'wieder geöffnet: {event.url}'
     )
 
@@ -168,7 +168,7 @@ def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
-        f'das Thema "{topic.title}" von {topic_creator.screen_name} '
+        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'angepinnt: {event.url}'
     )
 
@@ -193,7 +193,7 @@ def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
-        f'das Thema "{topic.title}" von {topic_creator.screen_name} '
+        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'wieder gelöst: {event.url}'
     )
 
@@ -216,7 +216,7 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
-        f'das Thema "{topic.title}" von {topic_creator.screen_name} '
+        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'aus "{event.old_category_title}" in "{event.new_category_title}" '
         f'verschoben: {event.url}'
     )

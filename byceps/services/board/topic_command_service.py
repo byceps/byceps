@@ -53,6 +53,7 @@ def create_topic(
         occurred_at=topic.created_at,
         initiator_id=creator_id,
         topic_id=topic.id,
+        topic_title=topic.title,
         url=None,
     )
 
@@ -77,6 +78,7 @@ def update_topic(
         occurred_at=posting_event.occurred_at,
         initiator_id=editor_id,
         topic_id=topic.id,
+        topic_title=topic.title,
         editor_id=editor_id,
         url=None,
     )
@@ -99,6 +101,7 @@ def hide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicHidden:
         occurred_at=now,
         initiator_id=moderator_id,
         topic_id=topic.id,
+        topic_title=topic.title,
         moderator_id=moderator_id,
         url=None,
     )
@@ -122,6 +125,7 @@ def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
         occurred_at=now,
         initiator_id=moderator_id,
         topic_id=topic.id,
+        topic_title=topic.title,
         moderator_id=moderator_id,
         url=None,
     )
@@ -142,6 +146,7 @@ def lock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicLocked:
         occurred_at=now,
         initiator_id=moderator_id,
         topic_id=topic.id,
+        topic_title=topic.title,
         moderator_id=moderator_id,
         url=None,
     )
@@ -163,6 +168,7 @@ def unlock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnlocked:
         occurred_at=now,
         initiator_id=moderator_id,
         topic_id=topic.id,
+        topic_title=topic.title,
         moderator_id=moderator_id,
         url=None,
     )
@@ -183,6 +189,7 @@ def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinned:
         occurred_at=now,
         initiator_id=moderator_id,
         topic_id=topic.id,
+        topic_title=topic.title,
         moderator_id=moderator_id,
         url=None,
     )
@@ -204,6 +211,7 @@ def unpin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnpinned:
         occurred_at=now,
         initiator_id=moderator_id,
         topic_id=topic.id,
+        topic_title=topic.title,
         moderator_id=moderator_id,
         url=None,
     )
@@ -230,6 +238,7 @@ def move_topic(
         occurred_at=now,
         initiator_id=moderator_id,
         topic_id=topic.id,
+        topic_title=topic.title,
         old_category_id=old_category.id,
         old_category_title=old_category.title,
         new_category_id=new_category.id,

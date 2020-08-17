@@ -20,6 +20,7 @@ from .base import _BaseEvent
 @dataclass(frozen=True)
 class _BoardTopicEvent(_BaseEvent):
     topic_id: TopicID
+    topic_title: str
     url: str
 
 

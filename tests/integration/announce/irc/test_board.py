@@ -48,6 +48,7 @@ def test_announce_topic_created(app, topic, creator):
             occurred_at=topic.created_at,
             initiator_id=creator.id,
             topic_id=topic.id,
+            topic_title=topic.title,
             url=expected_link,
         )
         board_signals.topic_created.send(None, event=event)
@@ -69,6 +70,7 @@ def test_announce_topic_hidden(app, topic, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_title=topic.title,
             moderator_id=moderator.id,
             url=expected_link,
         )
@@ -91,6 +93,7 @@ def test_announce_topic_unhidden(app, topic, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_title=topic.title,
             moderator_id=moderator.id,
             url=expected_link,
         )
@@ -113,6 +116,7 @@ def test_announce_topic_locked(app, topic, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_title=topic.title,
             moderator_id=moderator.id,
             url=expected_link,
         )
@@ -135,6 +139,7 @@ def test_announce_topic_unlocked(app, topic, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_title=topic.title,
             moderator_id=moderator.id,
             url=expected_link,
         )
@@ -157,6 +162,7 @@ def test_announce_topic_pinned(app, topic, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_title=topic.title,
             moderator_id=moderator.id,
             url=expected_link,
         )
@@ -179,6 +185,7 @@ def test_announce_topic_unpinned(app, topic, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_title=topic.title,
             moderator_id=moderator.id,
             url=expected_link,
         )
@@ -203,6 +210,7 @@ def test_announce_topic_moved(
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_title=topic.title,
             old_category_id=category.id,
             old_category_title=category.title,
             new_category_id=another_category.id,
