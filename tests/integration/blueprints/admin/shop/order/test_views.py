@@ -221,6 +221,7 @@ def test_mark_order_as_paid(
         order_id=placed_order.id,
         order_number=placed_order.order_number,
         orderer_id=placed_order.placed_by_id,
+        payment_method=PaymentMethod.direct_debit,
         initiator_id=admin.id,
     )
     order_paid_signal_send_mock.assert_called_once_with(None, event=event)

@@ -347,6 +347,7 @@ def mark_order_as_paid(
         order_id=order.id,
         order_number=order.order_number,
         orderer_id=order.placed_by_id,
+        payment_method=payment_method,
         initiator_id=initiator_id,
     )
 

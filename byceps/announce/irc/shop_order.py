@@ -44,11 +44,11 @@ def announce_order_paid(event: ShopOrderPaid) -> None:
     """Announce that an order has been paid."""
     channels = [CHANNEL_ORGA_LOG]
 
-    order = order_service.find_order(event.order_id)
-
     initiator_screen_name = _get_screen_name(event.initiator_id)
     orderer_screen_name = _get_screen_name(event.orderer_id)
-    payment_method_label = order_service.find_payment_method_label(order.payment_method)
+    payment_method_label = order_service.find_payment_method_label(
+        event.payment_method
+    )
 
     text = (
         f'{initiator_screen_name} hat Bestellung {event.order_number} '

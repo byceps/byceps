@@ -79,6 +79,7 @@ def test_shop_order_paid_announced(app, paid_order, shop_admin):
         order_id=order.id,
         order_number=order.order_number,
         orderer_id=order.placed_by_id,
+        payment_method=PaymentMethod.bank_transfer,
         initiator_id=shop_admin.id,
     )
 
