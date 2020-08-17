@@ -32,7 +32,7 @@ def announce_order_placed(event: ShopOrderPlaced) -> None:
 
     screen_name = _get_screen_name(order.placed_by_id)
 
-    text = f'{screen_name} hat Bestellung {order.order_number} aufgegeben.'
+    text = f'{screen_name} hat Bestellung {event.order_number} aufgegeben.'
 
     send_message(channels, text)
 
@@ -53,7 +53,7 @@ def announce_order_paid(event: ShopOrderPaid) -> None:
     payment_method_label = order_service.find_payment_method_label(order.payment_method)
 
     text = (
-        f'{initiator_screen_name} hat Bestellung {order.order_number} '
+        f'{initiator_screen_name} hat Bestellung {event.order_number} '
         f'von {orderer_screen_name} als per {payment_method_label} bezahlt '
         'markiert.'
     )
@@ -76,7 +76,7 @@ def announce_order_canceled(event: ShopOrderCanceled) -> None:
     orderer_screen_name = _get_screen_name(order.placed_by_id)
 
     text = (
-        f'{initiator_screen_name} hat Bestellung {order.order_number} '
+        f'{initiator_screen_name} hat Bestellung {event.order_number} '
         f'von {orderer_screen_name} storniert.'
     )
 

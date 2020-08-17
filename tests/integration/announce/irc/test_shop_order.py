@@ -33,7 +33,10 @@ def test_shop_order_placed_announced(app, placed_order):
 
     order = placed_order
     event = ShopOrderPlaced(
-        occurred_at=now(), order_id=order.id, initiator_id=order.placed_by_id,
+        occurred_at=now(),
+        order_id=order.id,
+        order_number=order.order_number,
+        initiator_id=order.placed_by_id,
     )
 
     with mocked_irc_bot() as mock:
@@ -50,7 +53,10 @@ def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
 
     order = canceled_order
     event = ShopOrderCanceled(
-        occurred_at=now(), order_id=order.id, initiator_id=shop_admin.id,
+        occurred_at=now(),
+        order_id=order.id,
+        order_number=order.order_number,
+        initiator_id=shop_admin.id,
     )
 
     with mocked_irc_bot() as mock:
@@ -67,7 +73,10 @@ def test_shop_order_paid_announced(app, paid_order, shop_admin):
 
     order = paid_order
     event = ShopOrderPaid(
-        occurred_at=now(), order_id=order.id, initiator_id=shop_admin.id,
+        occurred_at=now(),
+        order_id=order.id,
+        order_number=order.order_number,
+        initiator_id=shop_admin.id,
     )
 
     with mocked_irc_bot() as mock:

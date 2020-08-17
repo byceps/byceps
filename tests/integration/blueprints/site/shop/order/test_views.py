@@ -139,6 +139,7 @@ def test_order(
     event = ShopOrderPlaced(
         occurred_at=order.created_at,
         order_id=order.id,
+        order_number=order.order_number,
         initiator_id=order.placed_by_id,
     )
     order_placed_mock.assert_called_once_with(None, event=event)
@@ -193,6 +194,7 @@ def test_order_single(
     event = ShopOrderPlaced(
         occurred_at=order.created_at,
         order_id=order.id,
+        order_number=order.order_number,
         initiator_id=order.placed_by_id,
     )
     order_placed_mock.assert_called_once_with(None, event=event)

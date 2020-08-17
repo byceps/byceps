@@ -130,6 +130,7 @@ def test_cancel_before_paid(
     event = ShopOrderCanceled(
         occurred_at=order_afterwards.payment_state_updated_at,
         order_id=placed_order.id,
+        order_number=placed_order.order_number,
         initiator_id=admin.id,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
@@ -172,6 +173,7 @@ def test_cancel_before_paid_without_sending_email(
     event = ShopOrderCanceled(
         occurred_at=order_afterwards.payment_state_updated_at,
         order_id=placed_order.id,
+        order_number=placed_order.order_number,
         initiator_id=admin.id,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
@@ -215,6 +217,7 @@ def test_mark_order_as_paid(
     event = ShopOrderPaid(
         occurred_at=order_afterwards.payment_state_updated_at,
         order_id=placed_order.id,
+        order_number=placed_order.order_number,
         initiator_id=admin.id,
     )
     order_paid_signal_send_mock.assert_called_once_with(None, event=event)
@@ -278,6 +281,7 @@ def test_cancel_after_paid(
     event = ShopOrderCanceled(
         occurred_at=order_afterwards.payment_state_updated_at,
         order_id=placed_order.id,
+        order_number=placed_order.order_number,
         initiator_id=admin.id,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
