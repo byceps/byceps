@@ -36,6 +36,7 @@ def test_shop_order_placed_announced(app, placed_order):
         occurred_at=now(),
         order_id=order.id,
         order_number=order.order_number,
+        orderer_id=order.placed_by_id,
         initiator_id=order.placed_by_id,
     )
 
@@ -56,6 +57,7 @@ def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
         occurred_at=now(),
         order_id=order.id,
         order_number=order.order_number,
+        orderer_id=order.placed_by_id,
         initiator_id=shop_admin.id,
     )
 
@@ -76,6 +78,7 @@ def test_shop_order_paid_announced(app, paid_order, shop_admin):
         occurred_at=now(),
         order_id=order.id,
         order_number=order.order_number,
+        orderer_id=order.placed_by_id,
         initiator_id=shop_admin.id,
     )
 

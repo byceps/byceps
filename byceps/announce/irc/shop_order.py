@@ -28,9 +28,7 @@ def announce_order_placed(event: ShopOrderPlaced) -> None:
     """Announce that an order has been placed."""
     channels = [CHANNEL_ORGA_LOG]
 
-    order = order_service.find_order(event.order_id)
-
-    screen_name = _get_screen_name(order.placed_by_id)
+    screen_name = _get_screen_name(event.orderer_id)
 
     text = f'{screen_name} hat Bestellung {event.order_number} aufgegeben.'
 
@@ -49,7 +47,7 @@ def announce_order_paid(event: ShopOrderPaid) -> None:
     order = order_service.find_order(event.order_id)
 
     initiator_screen_name = _get_screen_name(event.initiator_id)
-    orderer_screen_name = _get_screen_name(order.placed_by_id)
+    orderer_screen_name = _get_screen_name(event.orderer_id)
     payment_method_label = order_service.find_payment_method_label(order.payment_method)
 
     text = (
@@ -70,10 +68,8 @@ def announce_order_canceled(event: ShopOrderCanceled) -> None:
     """Announce that an order has been canceled."""
     channels = [CHANNEL_ORGA_LOG]
 
-    order = order_service.find_order(event.order_id)
-
     initiator_screen_name = _get_screen_name(event.initiator_id)
-    orderer_screen_name = _get_screen_name(order.placed_by_id)
+    orderer_screen_name = _get_screen_name(event.orderer_id)
 
     text = (
         f'{initiator_screen_name} hat Bestellung {event.order_number} '

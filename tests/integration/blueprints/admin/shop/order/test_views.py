@@ -131,6 +131,7 @@ def test_cancel_before_paid(
         occurred_at=order_afterwards.payment_state_updated_at,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
+        orderer_id=placed_order.placed_by_id,
         initiator_id=admin.id,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
@@ -174,6 +175,7 @@ def test_cancel_before_paid_without_sending_email(
         occurred_at=order_afterwards.payment_state_updated_at,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
+        orderer_id=placed_order.placed_by_id,
         initiator_id=admin.id,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
@@ -218,6 +220,7 @@ def test_mark_order_as_paid(
         occurred_at=order_afterwards.payment_state_updated_at,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
+        orderer_id=placed_order.placed_by_id,
         initiator_id=admin.id,
     )
     order_paid_signal_send_mock.assert_called_once_with(None, event=event)
@@ -282,6 +285,7 @@ def test_cancel_after_paid(
         occurred_at=order_afterwards.payment_state_updated_at,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
+        orderer_id=placed_order.placed_by_id,
         initiator_id=admin.id,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)

@@ -86,6 +86,7 @@ def place_order(
         occurred_at=order.created_at,
         order_id=order.id,
         order_number=order.order_number,
+        orderer_id=order.placed_by_id,
         initiator_id=order.placed_by_id,
     )
 
@@ -288,6 +289,7 @@ def cancel_order(
         occurred_at=updated_at,
         order_id=order.id,
         order_number=order.order_number,
+        orderer_id=order.placed_by_id,
         initiator_id=initiator_id,
     )
 
@@ -344,6 +346,7 @@ def mark_order_as_paid(
         occurred_at=updated_at,
         order_id=order.id,
         order_number=order.order_number,
+        orderer_id=order.placed_by_id,
         initiator_id=initiator_id,
     )
 

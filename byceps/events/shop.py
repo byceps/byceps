@@ -9,6 +9,7 @@ byceps.events.shop
 from dataclasses import dataclass
 
 from ..services.shop.order.transfer.models import OrderID, OrderNumber
+from ..typing import UserID
 
 from .base import _BaseEvent
 
@@ -17,6 +18,7 @@ from .base import _BaseEvent
 class _ShopOrderEvent(_BaseEvent):
     order_id: OrderID
     order_number: OrderNumber
+    orderer_id: UserID
 
 
 @dataclass(frozen=True)
