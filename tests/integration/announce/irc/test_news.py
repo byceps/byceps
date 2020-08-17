@@ -38,7 +38,11 @@ def test_published_news_item_announced(app, item, editor):
 
     with mocked_irc_bot() as mock:
         event = NewsItemPublished(
-            occurred_at=now(), initiator_id=editor.id, item_id=item.id
+            occurred_at=now(),
+            initiator_id=editor.id,
+            item_id=item.id,
+            title=item.title,
+            external_url=item.external_url,
         )
         news_signals.item_published.send(None, event=event)
 

@@ -16,3 +16,5 @@ from .base import _BaseEvent
 @dataclass(frozen=True)
 class NewsItemPublished(_BaseEvent):
     item_id: ItemID
+    title: str
+    external_url: str

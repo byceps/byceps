@@ -98,15 +98,19 @@ def publish_item(
     item_id: ItemID, *, initiator_id: Optional[UserID] = None
 ) -> NewsItemPublished:
     """Publish a news item."""
-    item = _get_db_item(item_id)
+    db_item = _get_db_item(item_id)
 
-    item.published_at = datetime.utcnow()
+    db_item.published_at = datetime.utcnow()
     db.session.commit()
+
+    item = _db_entity_to_item(db_item)
 
     return NewsItemPublished(
         occurred_at=item.published_at,
         initiator_id=initiator_id,
         item_id=item.id,
+        title=item.title,
+        external_url=item.external_url,
     )
 
 

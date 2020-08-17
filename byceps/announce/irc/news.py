@@ -37,8 +37,8 @@ def announce_news_item_published_publicly(event: NewsItemPublished) -> None:
     brand = brand_service.find_brand(channel.brand_id)
 
     text = (
-        f'{brand.title}: Die News "{item.title}" wurde veröffentlicht. '
-        f'{item.external_url}'
+        f'{brand.title}: Die News "{event.title}" wurde veröffentlicht. '
+        f'{event.external_url}'
     )
 
     send_message(channels, text)
@@ -49,11 +49,10 @@ def announce_news_item_published_internally(event: NewsItemPublished) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     initiator_label = user_service.find_screen_name(event.initiator_id) or 'Jemand'
-    item = news_service.find_item(event.item_id)
 
     text = (
-        f'{initiator_label} hat die News "{item.title}" veröffentlicht. '
-        f'{item.external_url}'
+        f'{initiator_label} hat die News "{event.title}" veröffentlicht. '
+        f'{event.external_url}'
     )
 
     send_message(channels, text)
