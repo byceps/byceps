@@ -239,7 +239,7 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     posting_creator = user_service.find_user(posting.creator_id)
     board_label = _get_board_label(posting.topic)
 
-    if board_topic_query_service.get_topic(posting.topic_id).muted:
+    if event.topic_muted:
         return
 
     text = (

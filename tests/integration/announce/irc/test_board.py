@@ -238,6 +238,7 @@ def test_announce_posting_created(app, posting, creator):
             initiator_id=creator.id,
             posting_id=posting.id,
             topic_title=posting.topic.title,
+            topic_muted=posting.topic.muted,
             url=expected_link,
         )
         board_signals.posting_created.send(None, event=event)

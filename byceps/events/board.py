@@ -94,7 +94,7 @@ class _BoardPostingModerationEvent(_BoardPostingEvent):
 
 @dataclass(frozen=True)
 class BoardPostingCreated(_BoardPostingEvent):
-    pass
+    topic_muted: bool
 
 
 @dataclass(frozen=True)

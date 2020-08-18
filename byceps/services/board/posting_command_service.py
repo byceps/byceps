@@ -42,6 +42,7 @@ def create_posting(
         initiator_id=creator_id,
         posting_id=posting.id,
         topic_title=topic.title,
+        topic_muted=topic.muted,
         url=None,
     )
 

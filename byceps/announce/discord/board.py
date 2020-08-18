@@ -105,7 +105,7 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     posting = board_posting_query_service.find_posting_by_id(event.posting_id)
     creator_screen_name = user_service.find_screen_name(posting.creator_id)
 
-    if board_topic_query_service.get_topic(posting.topic_id).muted:
+    if event.topic_muted:
         return
 
     text = (
