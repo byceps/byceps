@@ -237,6 +237,7 @@ def test_announce_posting_created(app, posting, creator):
             occurred_at=posting.created_at,
             initiator_id=creator.id,
             posting_id=posting.id,
+            topic_title=posting.topic.title,
             url=expected_link,
         )
         board_signals.posting_created.send(None, event=event)
@@ -259,6 +260,7 @@ def test_announce_posting_hidden(app, posting, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             posting_id=posting.id,
+            topic_title=posting.topic.title,
             moderator_id=moderator.id,
             url=expected_link,
         )
@@ -282,6 +284,7 @@ def test_announce_posting_unhidden(app, posting, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             posting_id=posting.id,
+            topic_title=posting.topic.title,
             moderator_id=moderator.id,
             url=expected_link,
         )

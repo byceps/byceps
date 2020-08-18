@@ -41,6 +41,7 @@ def create_posting(
         occurred_at=posting.created_at,
         initiator_id=creator_id,
         posting_id=posting.id,
+        topic_title=topic.title,
         url=None,
     )
 
@@ -67,6 +68,7 @@ def update_posting(
         occurred_at=now,
         initiator_id=editor_id,
         posting_id=posting.id,
+        topic_title=posting.topic.title,
         editor_id=editor_id,
         url=None,
     )
@@ -91,6 +93,7 @@ def hide_posting(
         occurred_at=now,
         initiator_id=moderator_id,
         posting_id=posting.id,
+        topic_title=posting.topic.title,
         moderator_id=moderator_id,
         url=None,
     )
@@ -118,6 +121,7 @@ def unhide_posting(
         occurred_at=now,
         initiator_id=moderator_id,
         posting_id=posting.id,
+        topic_title=posting.topic.title,
         moderator_id=moderator_id,
         url=None,
     )

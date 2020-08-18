@@ -110,7 +110,7 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
 
     text = (
         f'[Forum] {creator_screen_name} hat auf das Thema '
-        f'"{posting.topic.title}" geantwortet: <{event.url}>'
+        f'"{event.topic_title}" geantwortet: <{event.url}>'
     )
 
     send_message(text)

@@ -244,7 +244,7 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
 
     text = (
         f'{posting_creator.screen_name} hat im {board_label} '
-        f'auf das Thema "{posting.topic.title}" geantwortet: {event.url}'
+        f'auf das Thema "{event.topic_title}" geantwortet: {event.url}'
     )
 
     send_message(channels, text)
@@ -269,7 +269,7 @@ def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     text = (
         f'{moderator.screen_name} hat im {board_label} '
         f'eine Antwort von {posting_creator.screen_name} '
-        f'im Thema "{posting.topic.title}" versteckt: {event.url}'
+        f'im Thema "{event.topic_title}" versteckt: {event.url}'
     )
 
     send_message(channels, text)
@@ -294,7 +294,7 @@ def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
     text = (
         f'{moderator.screen_name} hat im {board_label} '
         f'eine Antwort von {posting_creator.screen_name} '
-        f'im Thema "{posting.topic.title}" wieder sichtbar gemacht: {event.url}'
+        f'im Thema "{event.topic_title}" wieder sichtbar gemacht: {event.url}'
     )
 
     send_message(channels, text)
