@@ -125,7 +125,6 @@ def _get_additional_data_for_badge_awarded(event: OrderEvent) -> OrderEventData:
 
     recipient_id = event.data['recipient_id']
     recipient = user_service.find_user(recipient_id)
-    recipient = _to_user_dto(recipient)
 
     return {
         'badge_label': badge.label,
@@ -196,19 +195,3 @@ def _get_additional_data_for_ticket_revoked(
         data['initiator'] = users_by_id[initiator_id]
 
     return data
-
-
-def _to_user_dto(user: DbUser) -> User:
-    """Create an immutable user object with selected values from user entity."""
-    avatar = getattr(user, 'avatar', None)
-    avatar_url = avatar.url if avatar else None
-    is_orga = False
-
-    return User(
-        user.id,
-        user.screen_name,
-        user.suspended,
-        user.deleted,
-        avatar_url,
-        is_orga,
-    )
