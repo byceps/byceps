@@ -23,6 +23,9 @@ from ...events.board import (
 )
 from ...typing import UserID
 
+from ..user import service as user_service
+from ..user.transfer.models import User
+
 from .aggregation_service import aggregate_category, aggregate_topic
 from .models.category import Category as DbCategory
 from .models.posting import InitialTopicPostingAssociation, Posting as DbPosting
@@ -36,8 +39,10 @@ def create_topic(
     category_id: CategoryID, creator_id: UserID, title: str, body: str
 ) -> Tuple[DbTopic, BoardTopicCreated]:
     """Create a topic with an initial posting in that category."""
-    topic = DbTopic(category_id, creator_id, title)
-    posting = DbPosting(topic, creator_id, body)
+    creator = _get_user(creator_id)
+
+    topic = DbTopic(category_id, creator.id, title)
+    posting = DbPosting(topic, creator.id, body)
     initial_topic_posting_association = InitialTopicPostingAssociation(
         topic, posting
     )
@@ -51,7 +56,7 @@ def create_topic(
 
     event = BoardTopicCreated(
         occurred_at=topic.created_at,
-        initiator_id=creator_id,
+        initiator_id=creator.id,
         topic_id=topic.id,
         topic_title=topic.title,
         url=None,
@@ -65,21 +70,22 @@ def update_topic(
 ) -> BoardTopicUpdated:
     """Update the topic (and its initial posting)."""
     topic = _get_topic(topic_id)
+    editor = _get_user(editor_id)
 
     topic.title = title.strip()
 
     posting_event = update_posting(
-        topic.initial_posting.id, editor_id, body, commit=False
+        topic.initial_posting.id, editor.id, body, commit=False
     )
 
     db.session.commit()
 
     return BoardTopicUpdated(
         occurred_at=posting_event.occurred_at,
-        initiator_id=editor_id,
+        initiator_id=editor.id,
         topic_id=topic.id,
         topic_title=topic.title,
-        editor_id=editor_id,
+        editor_id=editor.id,
         url=None,
     )
 
@@ -87,22 +93,23 @@ def update_topic(
 def hide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicHidden:
     """Hide the topic."""
     topic = _get_topic(topic_id)
+    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
     topic.hidden = True
     topic.hidden_at = now
-    topic.hidden_by_id = moderator_id
+    topic.hidden_by_id = moderator.id
     db.session.commit()
 
     aggregate_topic(topic)
 
     return BoardTopicHidden(
         occurred_at=now,
-        initiator_id=moderator_id,
+        initiator_id=moderator.id,
         topic_id=topic.id,
         topic_title=topic.title,
-        moderator_id=moderator_id,
+        moderator_id=moderator.id,
         url=None,
     )
 
@@ -110,6 +117,7 @@ def hide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicHidden:
 def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
     """Un-hide the topic."""
     topic = _get_topic(topic_id)
+    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
@@ -123,10 +131,10 @@ def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
 
     return BoardTopicUnhidden(
         occurred_at=now,
-        initiator_id=moderator_id,
+        initiator_id=moderator.id,
         topic_id=topic.id,
         topic_title=topic.title,
-        moderator_id=moderator_id,
+        moderator_id=moderator.id,
         url=None,
     )
 
@@ -134,20 +142,21 @@ def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
 def lock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicLocked:
     """Lock the topic."""
     topic = _get_topic(topic_id)
+    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
     topic.locked = True
     topic.locked_at = now
-    topic.locked_by_id = moderator_id
+    topic.locked_by_id = moderator.id
     db.session.commit()
 
     return BoardTopicLocked(
         occurred_at=now,
-        initiator_id=moderator_id,
+        initiator_id=moderator.id,
         topic_id=topic.id,
         topic_title=topic.title,
-        moderator_id=moderator_id,
+        moderator_id=moderator.id,
         url=None,
     )
 
@@ -155,6 +164,7 @@ def lock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicLocked:
 def unlock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnlocked:
     """Unlock the topic."""
     topic = _get_topic(topic_id)
+    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
@@ -166,10 +176,10 @@ def unlock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnlocked:
 
     return BoardTopicUnlocked(
         occurred_at=now,
-        initiator_id=moderator_id,
+        initiator_id=moderator.id,
         topic_id=topic.id,
         topic_title=topic.title,
-        moderator_id=moderator_id,
+        moderator_id=moderator.id,
         url=None,
     )
 
@@ -177,20 +187,21 @@ def unlock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnlocked:
 def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinned:
     """Pin the topic."""
     topic = _get_topic(topic_id)
+    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
     topic.pinned = True
     topic.pinned_at = now
-    topic.pinned_by_id = moderator_id
+    topic.pinned_by_id = moderator.id
     db.session.commit()
 
     return BoardTopicPinned(
         occurred_at=now,
-        initiator_id=moderator_id,
+        initiator_id=moderator.id,
         topic_id=topic.id,
         topic_title=topic.title,
-        moderator_id=moderator_id,
+        moderator_id=moderator.id,
         url=None,
     )
 
@@ -198,6 +209,7 @@ def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinned:
 def unpin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnpinned:
     """Unpin the topic."""
     topic = _get_topic(topic_id)
+    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
@@ -209,10 +221,10 @@ def unpin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnpinned:
 
     return BoardTopicUnpinned(
         occurred_at=now,
-        initiator_id=moderator_id,
+        initiator_id=moderator.id,
         topic_id=topic.id,
         topic_title=topic.title,
-        moderator_id=moderator_id,
+        moderator_id=moderator.id,
         url=None,
     )
 
@@ -222,6 +234,7 @@ def move_topic(
 ) -> BoardTopicMoved:
     """Move the topic to another category."""
     topic = _get_topic(topic_id)
+    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
@@ -236,14 +249,14 @@ def move_topic(
 
     return BoardTopicMoved(
         occurred_at=now,
-        initiator_id=moderator_id,
+        initiator_id=moderator.id,
         topic_id=topic.id,
         topic_title=topic.title,
         old_category_id=old_category.id,
         old_category_title=old_category.title,
         new_category_id=new_category.id,
         new_category_title=new_category.title,
-        moderator_id=moderator_id,
+        moderator_id=moderator.id,
         url=None,
     )
 
@@ -283,3 +296,7 @@ def delete_topic(topic_id: TopicID) -> None:
 
 def _get_topic(topic_id: TopicID) -> DbTopic:
     return topic_query_service.get_topic(topic_id)
+
+
+def _get_user(user_id: UserID) -> User:
+    return user_service.get_user(user_id)

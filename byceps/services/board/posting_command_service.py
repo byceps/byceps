@@ -18,6 +18,9 @@ from ...events.board import (
 )
 from ...typing import UserID
 
+from ..user import service as user_service
+from ..user.transfer.models import User
+
 from .aggregation_service import aggregate_topic
 from .models.posting import Posting as DbPosting
 from . import posting_query_service
@@ -30,8 +33,9 @@ def create_posting(
 ) -> Tuple[DbPosting, BoardPostingCreated]:
     """Create a posting in that topic."""
     topic = topic_query_service.get_topic(topic_id)
+    creator = _get_user(creator_id)
 
-    posting = DbPosting(topic, creator_id, body)
+    posting = DbPosting(topic, creator.id, body)
     db.session.add(posting)
     db.session.commit()
 
@@ -39,7 +43,7 @@ def create_posting(
 
     event = BoardPostingCreated(
         occurred_at=posting.created_at,
-        initiator_id=creator_id,
+        initiator_id=creator.id,
         posting_id=posting.id,
         topic_title=topic.title,
         topic_muted=topic.muted,
@@ -54,12 +58,13 @@ def update_posting(
 ) -> BoardPostingUpdated:
     """Update the posting."""
     posting = _get_posting(posting_id)
+    editor = _get_user(editor_id)
 
     now = datetime.utcnow()
 
     posting.body = body.strip()
     posting.last_edited_at = now
-    posting.last_edited_by_id = editor_id
+    posting.last_edited_by_id = editor.id
     posting.edit_count += 1
 
     if commit:
@@ -67,10 +72,10 @@ def update_posting(
 
     return BoardPostingUpdated(
         occurred_at=now,
-        initiator_id=editor_id,
+        initiator_id=editor.id,
         posting_id=posting.id,
         topic_title=posting.topic.title,
-        editor_id=editor_id,
+        editor_id=editor.id,
         url=None,
     )
 
@@ -80,22 +85,23 @@ def hide_posting(
 ) -> BoardPostingHidden:
     """Hide the posting."""
     posting = _get_posting(posting_id)
+    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
     posting.hidden = True
     posting.hidden_at = now
-    posting.hidden_by_id = moderator_id
+    posting.hidden_by_id = moderator.id
     db.session.commit()
 
     aggregate_topic(posting.topic)
 
     event = BoardPostingHidden(
         occurred_at=now,
-        initiator_id=moderator_id,
+        initiator_id=moderator.id,
         posting_id=posting.id,
         topic_title=posting.topic.title,
-        moderator_id=moderator_id,
+        moderator_id=moderator.id,
         url=None,
     )
 
@@ -107,6 +113,7 @@ def unhide_posting(
 ) -> BoardPostingUnhidden:
     """Un-hide the posting."""
     posting = _get_posting(posting_id)
+    moderator = _get_user(moderator_id)
 
     now = datetime.utcnow()
 
@@ -120,10 +127,10 @@ def unhide_posting(
 
     event = BoardPostingUnhidden(
         occurred_at=now,
-        initiator_id=moderator_id,
+        initiator_id=moderator.id,
         posting_id=posting.id,
         topic_title=posting.topic.title,
-        moderator_id=moderator_id,
+        moderator_id=moderator.id,
         url=None,
     )
 
@@ -141,3 +148,7 @@ def delete_posting(posting_id: PostingID) -> None:
 
 def _get_posting(posting_id: PostingID) -> DbPosting:
     return posting_query_service.get_posting(posting_id)
+
+
+def _get_user(user_id: UserID) -> User:
+    return user_service.get_user(user_id)
