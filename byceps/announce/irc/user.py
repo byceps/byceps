@@ -34,10 +34,10 @@ def announce_user_account_created(event: UserAccountCreated) -> None:
     """Announce that a user account has been created."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.find_user(event.user_id)
+    user = user_service.get_user(event.user_id)
 
     if event.initiator_id is not None:
-        initiator = user_service.find_user(event.initiator_id)
+        initiator = user_service.get_user(event.initiator_id)
         initiator_label = initiator.screen_name
     else:
         initiator_label = 'Jemand'
@@ -61,7 +61,7 @@ def announce_user_screen_name_changed(event: UserScreenNameChanged) -> None:
     """Announce that a user's screen name has been changed."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator = user_service.find_user(event.initiator_id)
+    initiator = user_service.get_user(event.initiator_id)
 
     text = (
         f'{initiator.screen_name} hat das Benutzerkonto '
@@ -84,8 +84,8 @@ def announce_user_email_address_invalidated(
     """Announce that a user's email address has been invalidated."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.find_user(event.user_id)
-    initiator = user_service.find_user(event.initiator_id)
+    user = user_service.get_user(event.user_id)
+    initiator = user_service.get_user(event.initiator_id)
 
     text = (
         f'{initiator.screen_name} hat die E-Mail-Adresse '
@@ -106,8 +106,8 @@ def announce_user_details_updated_changed(event: UserDetailsUpdated) -> None:
     """Announce that a user's details have been changed."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.find_user(event.user_id)
-    initiator = user_service.find_user(event.initiator_id)
+    user = user_service.get_user(event.user_id)
+    initiator = user_service.get_user(event.initiator_id)
 
     text = (
         f'{initiator.screen_name} hat die persönlichen Daten '
@@ -126,8 +126,8 @@ def announce_user_account_suspended(event: UserAccountSuspended) -> None:
     """Announce that a user account has been suspended."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.find_user(event.user_id)
-    initiator = user_service.find_user(event.initiator_id)
+    user = user_service.get_user(event.user_id)
+    initiator = user_service.get_user(event.initiator_id)
 
     text = (
         f'{initiator.screen_name} hat das Benutzerkonto '
@@ -148,8 +148,8 @@ def announce_user_account_unsuspended(event: UserAccountUnsuspended) -> None:
     """Announce that a user account has been unsuspended."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.find_user(event.user_id)
-    initiator = user_service.find_user(event.initiator_id)
+    user = user_service.get_user(event.user_id)
+    initiator = user_service.get_user(event.initiator_id)
 
     text = (
         f'{initiator.screen_name} hat das Benutzerkonto '
@@ -168,8 +168,8 @@ def announce_user_account_deleted(event: UserAccountDeleted) -> None:
     """Announce that a user account has been created."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.find_user(event.user_id)
-    initiator = user_service.find_user(event.initiator_id)
+    user = user_service.get_user(event.user_id)
+    initiator = user_service.get_user(event.initiator_id)
 
     text = (
         f'{initiator.screen_name} hat das Benutzerkonto '

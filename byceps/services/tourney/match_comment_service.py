@@ -29,17 +29,17 @@ def find_comment(
         return None
 
     # creator
-    creator = _find_user(comment.created_by_id, party_id)
+    creator = _get_user(comment.created_by_id, party_id)
 
     # last editor
     last_editor = None
     if comment.last_edited_by_id:
-        last_editor = _find_user(comment.last_edited_by_id, party_id)
+        last_editor = _get_user(comment.last_edited_by_id, party_id)
 
     # moderator
     moderator = None
     if comment.hidden_by_id:
-        moderator = _find_user(comment.hidden_by_id, party_id)
+        moderator = _get_user(comment.hidden_by_id, party_id)
 
     return _db_entity_to_comment(
         comment, creator, last_editor=last_editor, moderator=moderator,
@@ -183,10 +183,8 @@ def _get_db_comment(comment_id: MatchCommentID) -> DbMatchComment:
     return comment
 
 
-def _find_user(
-    user_id: UserID, party_id: Optional[PartyID] = None
-) -> Optional[User]:
-    return user_service.find_user(
+def _get_user(user_id: UserID, party_id: Optional[PartyID] = None) -> User:
+    return user_service.get_user(
         user_id, include_avatar=True, include_orga_flag_for_party_id=party_id
     )
 

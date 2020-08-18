@@ -84,7 +84,7 @@ def find_user(
 ) -> Optional[User]:
     """Return the user with that ID, or `None` if not found.
 
-    Include avatar URLs if requested.
+    Include avatar URL if requested.
     """
     row = _get_user_query(include_avatar, include_orga_flag_for_party_id) \
         .filter(DbUser.id == user_id) \
@@ -94,6 +94,28 @@ def find_user(
         return None
 
     return _user_row_to_dto(row)
+
+
+def get_user(
+    user_id: UserID,
+    *,
+    include_avatar: bool = False,
+    include_orga_flag_for_party_id: Optional[PartyID] = None,
+) -> Optional[User]:
+    """Return the user with that ID, or raise an exception.
+
+    Include avatar URL if requested.
+    """
+    user = find_user(
+        user_id,
+        include_avatar=include_avatar,
+        include_orga_flag_for_party_id=include_orga_flag_for_party_id,
+    )
+
+    if user is None:
+        raise ValueError(f"Unknown user ID '{user_id}'")
+
+    return user
 
 
 def find_users(

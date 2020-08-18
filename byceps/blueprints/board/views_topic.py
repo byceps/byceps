@@ -252,7 +252,7 @@ def topic_moderate_form(topic_id):
     board_id = h.get_board_id()
     topic = h.get_topic_or_404(topic_id)
 
-    topic.creator = user_service.find_user(topic.creator_id)
+    topic.creator = user_service.get_user(topic.creator_id)
 
     categories = board_category_query_service.get_categories_excluding(
         board_id, topic.category_id

@@ -30,7 +30,7 @@ def test_suspend(admin_app, cheater, admin_user):
 
     reason = 'User has been caught cheating.'
 
-    user_before = user_service.find_user(user_id)
+    user_before = user_service.get_user(user_id)
     assert not user_before.suspended
 
     events_before = event_service.get_events_for_user(user_before.id)
@@ -42,7 +42,7 @@ def test_suspend(admin_app, cheater, admin_user):
 
     # -------------------------------- #
 
-    user_after = user_service.find_user(user_id)
+    user_after = user_service.get_user(user_id)
     assert user_after.suspended
 
     events_after = event_service.get_events_for_user(user_after.id)
@@ -63,7 +63,7 @@ def test_unsuspend(admin_app, remorseful_user, admin_user):
 
     reason = 'User showed penitence. Drop the ban.'
 
-    user_before = user_service.find_user(user_id)
+    user_before = user_service.get_user(user_id)
     assert user_before.suspended
 
     events_before = event_service.get_events_for_user(user_before.id)
@@ -75,7 +75,7 @@ def test_unsuspend(admin_app, remorseful_user, admin_user):
 
     # -------------------------------- #
 
-    user_after = user_service.find_user(user_id)
+    user_after = user_service.get_user(user_id)
     assert not user_after.suspended
 
     events_after = event_service.get_events_for_user(user_after.id)

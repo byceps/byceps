@@ -27,11 +27,11 @@ def announce_user_badge_awarded(event: UserBadgeAwarded) -> None:
     """Announce that a badge has been awarded to a user."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.find_user(event.user_id)
+    user = user_service.get_user(event.user_id)
     badge = user_badge_service.find_badge(event.badge_id)
 
     if event.initiator_id:
-        initiator = user_service.find_user(event.initiator_id)
+        initiator = user_service.get_user(event.initiator_id)
         initiator_name = initiator.screen_name
     else:
         initiator_name = 'Jemand'

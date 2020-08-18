@@ -245,7 +245,7 @@ def membership_create(team_id):
     if not form.validate():
         return membership_create_form(team.id, form)
 
-    user = user_service.find_user(form.user_id.data)
+    user = user_service.get_user(form.user_id.data)
     duties = form.duties.data.strip()
 
     membership = orga_team_service.create_membership(team.id, user.id, duties)
@@ -263,7 +263,7 @@ def membership_update_form(membership_id, erroneous_form=None):
     """Show form to update a membership."""
     membership = _get_membership_or_404(membership_id)
 
-    user = user_service.find_user(membership.user_id)
+    user = user_service.get_user(membership.user_id)
     team = orga_team_service.find_team(membership.orga_team_id)
     party = party_service.get_party(team.party_id)
 
@@ -291,7 +291,7 @@ def membership_update(membership_id):
     """Update a membership."""
     membership = _get_membership_or_404(membership_id)
 
-    user = user_service.find_user(membership.user_id)
+    user = user_service.get_user(membership.user_id)
     team = orga_team_service.find_team(membership.orga_team_id)
 
     teams = orga_team_service.get_teams_for_party(team.party_id)
@@ -321,7 +321,7 @@ def membership_remove(membership_id):
     """Remove an organizer from a team."""
     membership = _get_membership_or_404(membership_id)
 
-    user = user_service.find_user(membership.user_id)
+    user = user_service.get_user(membership.user_id)
     team = orga_team_service.find_team(membership.orga_team_id)
 
     orga_team_service.delete_membership(membership.id)

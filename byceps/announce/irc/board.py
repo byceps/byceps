@@ -45,7 +45,7 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
     channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.find_user(topic.creator_id)
+    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
 
     text = (
@@ -66,9 +66,9 @@ def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.find_user(topic.creator_id)
+    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.find_user(event.moderator_id)
+    moderator = user_service.get_user(event.moderator_id)
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
@@ -91,9 +91,9 @@ def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.find_user(topic.creator_id)
+    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.find_user(event.moderator_id)
+    moderator = user_service.get_user(event.moderator_id)
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
@@ -114,9 +114,9 @@ def announce_board_topic_locked(event: BoardTopicLocked) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.find_user(topic.creator_id)
+    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.find_user(event.moderator_id)
+    moderator = user_service.get_user(event.moderator_id)
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
@@ -139,9 +139,9 @@ def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.find_user(topic.creator_id)
+    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.find_user(event.moderator_id)
+    moderator = user_service.get_user(event.moderator_id)
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
@@ -162,9 +162,9 @@ def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.find_user(topic.creator_id)
+    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.find_user(event.moderator_id)
+    moderator = user_service.get_user(event.moderator_id)
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
@@ -187,9 +187,9 @@ def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.find_user(topic.creator_id)
+    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.find_user(event.moderator_id)
+    moderator = user_service.get_user(event.moderator_id)
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
@@ -210,9 +210,9 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.find_user(topic.creator_id)
+    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.find_user(event.moderator_id)
+    moderator = user_service.get_user(event.moderator_id)
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
@@ -236,7 +236,7 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
 
     posting = board_posting_query_service.find_posting_by_id(event.posting_id)
-    posting_creator = user_service.find_user(posting.creator_id)
+    posting_creator = user_service.get_user(posting.creator_id)
     board_label = _get_board_label(posting.topic)
 
     if event.topic_muted:
@@ -262,9 +262,9 @@ def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     posting = board_posting_query_service.find_posting_by_id(event.posting_id)
-    posting_creator = user_service.find_user(posting.creator_id)
+    posting_creator = user_service.get_user(posting.creator_id)
     board_label = _get_board_label(posting.topic)
-    moderator = user_service.find_user(event.moderator_id)
+    moderator = user_service.get_user(event.moderator_id)
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '
@@ -287,9 +287,9 @@ def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     posting = board_posting_query_service.find_posting_by_id(event.posting_id)
-    posting_creator = user_service.find_user(posting.creator_id)
+    posting_creator = user_service.get_user(posting.creator_id)
     board_label = _get_board_label(posting.topic)
-    moderator = user_service.find_user(event.moderator_id)
+    moderator = user_service.get_user(event.moderator_id)
 
     text = (
         f'{moderator.screen_name} hat im {board_label} '

@@ -124,7 +124,7 @@ def _get_additional_data_for_badge_awarded(event: OrderEvent) -> OrderEventData:
     badge = user_badge_service.find_badge(badge_id)
 
     recipient_id = event.data['recipient_id']
-    recipient = user_service.find_user(recipient_id)
+    recipient = user_service.get_user(recipient_id)
 
     return {
         'badge_label': badge.label,

@@ -74,7 +74,7 @@ def quote_posting_as_bbcode():
         flash_error('Der zu zitierende Beitrag wurde nicht gefunden.')
         return
 
-    creator = user_service.find_user(posting.creator_id)
+    creator = user_service.get_user(posting.creator_id)
 
     return f'[quote author="{creator.screen_name}"]{posting.body}[/quote]'
 
@@ -219,7 +219,7 @@ def posting_moderate_form(posting_id):
     """Show a form to moderate the posting."""
     posting = h.get_posting_or_404(posting_id)
 
-    posting.creator = user_service.find_user(posting.creator_id)
+    posting.creator = user_service.get_user(posting.creator_id)
 
     return {
         'posting': posting,
