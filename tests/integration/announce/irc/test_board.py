@@ -246,6 +246,23 @@ def test_announce_posting_created(app, posting, creator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
+def test_announce_posting_created_on_muted_topic(app, posting, creator):
+    expected_link = f'http://example.com/board/postings/{posting.id}'
+
+    with mocked_irc_bot() as mock:
+        event = BoardPostingCreated(
+            occurred_at=posting.created_at,
+            initiator_id=creator.id,
+            posting_id=posting.id,
+            topic_title=posting.topic.title,
+            topic_muted=True,
+            url=expected_link,
+        )
+        board_signals.posting_created.send(None, event=event)
+
+        assert not mock.called
+
+
 def test_announce_posting_hidden(app, posting, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/postings/{posting.id}'
