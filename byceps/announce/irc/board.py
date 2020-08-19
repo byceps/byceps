@@ -21,7 +21,7 @@ from ...events.board import (
     BoardTopicUnlocked,
     BoardTopicUnpinned,
 )
-from ...services.board.models.topic import Topic as DbTopic
+from ...services.board.transfer.models import TopicID
 from ...services.board import topic_query_service as board_topic_query_service
 from ...services.brand import service as brand_service
 from ...signals import board as board_signals
@@ -40,8 +40,7 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
     """Announce that someone has created a board topic."""
     channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
 
-    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    board_label = _get_board_label(topic)
+    board_label = _get_board_label(event.topic_id)
 
     text = (
         f'{event.topic_creator_screen_name} hat im {board_label} '
@@ -60,8 +59,7 @@ def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
     """Announce that a moderator has hidden a board topic."""
     channels = [CHANNEL_ORGA_LOG]
 
-    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    board_label = _get_board_label(topic)
+    board_label = _get_board_label(event.topic_id)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} das Thema '
@@ -83,8 +81,7 @@ def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
     """Announce that a moderator has made a board topic visible again."""
     channels = [CHANNEL_ORGA_LOG]
 
-    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    board_label = _get_board_label(topic)
+    board_label = _get_board_label(event.topic_id)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} das Thema '
@@ -104,8 +101,7 @@ def announce_board_topic_locked(event: BoardTopicLocked) -> None:
     """Announce that a moderator has locked a board topic."""
     channels = [CHANNEL_ORGA_LOG]
 
-    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    board_label = _get_board_label(topic)
+    board_label = _get_board_label(event.topic_id)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} das Thema '
@@ -127,8 +123,7 @@ def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
     """Announce that a moderator has unlocked a board topic."""
     channels = [CHANNEL_ORGA_LOG]
 
-    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    board_label = _get_board_label(topic)
+    board_label = _get_board_label(event.topic_id)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} das Thema '
@@ -148,8 +143,7 @@ def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
     """Announce that a moderator has pinned a board topic."""
     channels = [CHANNEL_ORGA_LOG]
 
-    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    board_label = _get_board_label(topic)
+    board_label = _get_board_label(event.topic_id)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} das Thema '
@@ -171,8 +165,7 @@ def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
     """Announce that a moderator has unpinned a board topic."""
     channels = [CHANNEL_ORGA_LOG]
 
-    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    board_label = _get_board_label(topic)
+    board_label = _get_board_label(event.topic_id)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} das Thema '
@@ -192,8 +185,7 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
     """Announce that a moderator has moved a board topic to another category."""
     channels = [CHANNEL_ORGA_LOG]
 
-    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    board_label = _get_board_label(topic)
+    board_label = _get_board_label(event.topic_id)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} das Thema '
@@ -216,8 +208,7 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     """Announce that someone has created a board posting."""
     channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
 
-    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    board_label = _get_board_label(topic)
+    board_label = _get_board_label(event.topic_id)
 
     if event.topic_muted:
         return
@@ -241,8 +232,7 @@ def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     """Announce that a moderator has hidden a board posting."""
     channels = [CHANNEL_ORGA_LOG]
 
-    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    board_label = _get_board_label(topic)
+    board_label = _get_board_label(event.topic_id)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} '
@@ -264,8 +254,7 @@ def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
     """Announce that a moderator has made a board posting visible again."""
     channels = [CHANNEL_ORGA_LOG]
 
-    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    board_label = _get_board_label(topic)
+    board_label = _get_board_label(event.topic_id)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} '
@@ -276,7 +265,8 @@ def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
     send_message(channels, text)
 
 
-def _get_board_label(topic: DbTopic) -> str:
+def _get_board_label(topic_id: TopicID) -> str:
+    topic = board_topic_query_service.find_topic_by_id(topic_id)
     brand_id = topic.category.board.brand_id
     brand = brand_service.find_brand(brand_id)
     return f'"{brand.title}"-Forum'
