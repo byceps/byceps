@@ -27,7 +27,6 @@ from ...services.board import (
     topic_query_service as board_topic_query_service,
 )
 from ...services.brand import service as brand_service
-from ...services.user import service as user_service
 from ...signals import board as board_signals
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
@@ -45,11 +44,10 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
     channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
 
     text = (
-        f'{topic_creator.screen_name} hat im {board_label} '
+        f'{event.topic_creator_screen_name} hat im {board_label} '
         f'das Thema "{event.topic_title}" erstellt: {event.url}'
     )
 
@@ -66,12 +64,11 @@ def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} '
-        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
+        f'{event.moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
         f'versteckt: {event.url}'
     )
 
@@ -90,12 +87,11 @@ def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} '
-        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
+        f'{event.moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
         f'wieder sichtbar gemacht: {event.url}'
     )
 
@@ -112,12 +108,11 @@ def announce_board_topic_locked(event: BoardTopicLocked) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} '
-        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
+        f'{event.moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
         f'geschlossen: {event.url}'
     )
 
@@ -136,12 +131,11 @@ def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} '
-        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
+        f'{event.moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
         f'wieder geöffnet: {event.url}'
     )
 
@@ -158,12 +152,11 @@ def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} '
-        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
+        f'{event.moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
         f'angepinnt: {event.url}'
     )
 
@@ -182,12 +175,11 @@ def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} '
-        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
+        f'{event.moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
         f'wieder gelöst: {event.url}'
     )
 
@@ -204,12 +196,11 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} '
-        f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
+        f'{event.moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
         f'aus "{event.old_category_title}" in "{event.new_category_title}" '
         f'verschoben: {event.url}'
     )

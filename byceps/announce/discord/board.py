@@ -12,12 +12,7 @@ from flask import current_app
 import requests
 
 from ...events.board import BoardPostingCreated, BoardTopicCreated
-from ...services.board import (
-    posting_query_service as board_posting_query_service,
-    topic_query_service as board_topic_query_service,
-)
 from ...services.brand import settings_service as brand_settings_service
-from ...services.user import service as user_service
 from ...signals import board as board_signals
 from ...util.jobqueue import enqueue
 
@@ -82,12 +77,9 @@ def _on_board_topic_created(sender, *, event: BoardTopicCreated = None) -> None:
 
 def announce_board_topic_created(event: BoardTopicCreated) -> None:
     """Announce that someone has created a board topic."""
-    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
-    creator_screen_name = user_service.find_screen_name(topic.creator_id)
-
     text = (
-        f'[Forum] {creator_screen_name} hat das Thema "{event.topic_title}" '
-        f'erstellt: <{event.url}>'
+        f'[Forum] {event.topic_creator_screen_name} hat das Thema '
+        f'"{event.topic_title}" erstellt: <{event.url}>'
     )
 
     send_message(text)

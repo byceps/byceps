@@ -21,6 +21,8 @@ from .base import _BaseEvent
 @dataclass(frozen=True)
 class _BoardTopicEvent(_BaseEvent):
     topic_id: TopicID
+    topic_creator_id: UserID
+    topic_creator_screen_name: Optional[str]
     topic_title: str
     url: str
 

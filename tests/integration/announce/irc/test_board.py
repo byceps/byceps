@@ -48,6 +48,8 @@ def test_announce_topic_created(app, topic, creator):
             occurred_at=topic.created_at,
             initiator_id=creator.id,
             topic_id=topic.id,
+            topic_creator_id=creator.id,
+            topic_creator_screen_name=creator.screen_name,
             topic_title=topic.title,
             url=expected_link,
         )
@@ -56,7 +58,7 @@ def test_announce_topic_created(app, topic, creator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_topic_hidden(app, topic, moderator):
+def test_announce_topic_hidden(app, topic, creator, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -70,6 +72,8 @@ def test_announce_topic_hidden(app, topic, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_creator_id=creator.id,
+            topic_creator_screen_name=creator.screen_name,
             topic_title=topic.title,
             moderator_id=moderator.id,
             moderator_screen_name=moderator.screen_name,
@@ -80,7 +84,7 @@ def test_announce_topic_hidden(app, topic, moderator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_topic_unhidden(app, topic, moderator):
+def test_announce_topic_unhidden(app, topic, creator, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -94,6 +98,8 @@ def test_announce_topic_unhidden(app, topic, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_creator_id=creator.id,
+            topic_creator_screen_name=creator.screen_name,
             topic_title=topic.title,
             moderator_id=moderator.id,
             moderator_screen_name=moderator.screen_name,
@@ -104,7 +110,7 @@ def test_announce_topic_unhidden(app, topic, moderator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_topic_locked(app, topic, moderator):
+def test_announce_topic_locked(app, topic, creator, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -118,6 +124,8 @@ def test_announce_topic_locked(app, topic, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_creator_id=creator.id,
+            topic_creator_screen_name=creator.screen_name,
             topic_title=topic.title,
             moderator_id=moderator.id,
             moderator_screen_name=moderator.screen_name,
@@ -128,7 +136,7 @@ def test_announce_topic_locked(app, topic, moderator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_topic_unlocked(app, topic, moderator):
+def test_announce_topic_unlocked(app, topic, creator, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -142,6 +150,8 @@ def test_announce_topic_unlocked(app, topic, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_creator_id=creator.id,
+            topic_creator_screen_name=creator.screen_name,
             topic_title=topic.title,
             moderator_id=moderator.id,
             moderator_screen_name=moderator.screen_name,
@@ -152,7 +162,7 @@ def test_announce_topic_unlocked(app, topic, moderator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_topic_pinned(app, topic, moderator):
+def test_announce_topic_pinned(app, topic, creator, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -166,6 +176,8 @@ def test_announce_topic_pinned(app, topic, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_creator_id=creator.id,
+            topic_creator_screen_name=creator.screen_name,
             topic_title=topic.title,
             moderator_id=moderator.id,
             moderator_screen_name=moderator.screen_name,
@@ -176,7 +188,7 @@ def test_announce_topic_pinned(app, topic, moderator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_topic_unpinned(app, topic, moderator):
+def test_announce_topic_unpinned(app, topic, creator, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
@@ -190,6 +202,8 @@ def test_announce_topic_unpinned(app, topic, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_creator_id=creator.id,
+            topic_creator_screen_name=creator.screen_name,
             topic_title=topic.title,
             moderator_id=moderator.id,
             moderator_screen_name=moderator.screen_name,
@@ -201,7 +215,7 @@ def test_announce_topic_unpinned(app, topic, moderator):
 
 
 def test_announce_topic_moved(
-    app, topic, category, another_category, board, moderator
+    app, topic, creator, category, another_category, board, moderator
 ):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/topics/{topic.id}'
@@ -216,6 +230,8 @@ def test_announce_topic_moved(
             occurred_at=now(),
             initiator_id=moderator.id,
             topic_id=topic.id,
+            topic_creator_id=creator.id,
+            topic_creator_screen_name=creator.screen_name,
             topic_title=topic.title,
             old_category_id=category.id,
             old_category_title=category.title,

@@ -58,6 +58,8 @@ def create_topic(
         occurred_at=topic.created_at,
         initiator_id=creator.id,
         topic_id=topic.id,
+        topic_creator_id=creator.id,
+        topic_creator_screen_name=creator.screen_name,
         topic_title=topic.title,
         url=None,
     )
@@ -80,10 +82,13 @@ def update_topic(
 
     db.session.commit()
 
+    topic_creator = _get_user(topic.creator_id)
     return BoardTopicUpdated(
         occurred_at=posting_event.occurred_at,
         initiator_id=editor.id,
         topic_id=topic.id,
+        topic_creator_id=topic_creator.id,
+        topic_creator_screen_name=topic_creator.screen_name,
         topic_title=topic.title,
         editor_id=editor.id,
         editor_screen_name=editor.screen_name,
@@ -105,10 +110,13 @@ def hide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicHidden:
 
     aggregate_topic(topic)
 
+    topic_creator = _get_user(topic.creator_id)
     return BoardTopicHidden(
         occurred_at=now,
         initiator_id=moderator.id,
         topic_id=topic.id,
+        topic_creator_id=topic_creator.id,
+        topic_creator_screen_name=topic_creator.screen_name,
         topic_title=topic.title,
         moderator_id=moderator.id,
         moderator_screen_name=moderator.screen_name,
@@ -131,10 +139,13 @@ def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
 
     aggregate_topic(topic)
 
+    topic_creator = _get_user(topic.creator_id)
     return BoardTopicUnhidden(
         occurred_at=now,
         initiator_id=moderator.id,
         topic_id=topic.id,
+        topic_creator_id=topic_creator.id,
+        topic_creator_screen_name=topic_creator.screen_name,
         topic_title=topic.title,
         moderator_id=moderator.id,
         moderator_screen_name=moderator.screen_name,
@@ -154,10 +165,13 @@ def lock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicLocked:
     topic.locked_by_id = moderator.id
     db.session.commit()
 
+    topic_creator = _get_user(topic.creator_id)
     return BoardTopicLocked(
         occurred_at=now,
         initiator_id=moderator.id,
         topic_id=topic.id,
+        topic_creator_id=topic_creator.id,
+        topic_creator_screen_name=topic_creator.screen_name,
         topic_title=topic.title,
         moderator_id=moderator.id,
         moderator_screen_name=moderator.screen_name,
@@ -178,10 +192,13 @@ def unlock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnlocked:
     topic.locked_by_id = None
     db.session.commit()
 
+    topic_creator = _get_user(topic.creator_id)
     return BoardTopicUnlocked(
         occurred_at=now,
         initiator_id=moderator.id,
         topic_id=topic.id,
+        topic_creator_id=topic_creator.id,
+        topic_creator_screen_name=topic_creator.screen_name,
         topic_title=topic.title,
         moderator_id=moderator.id,
         moderator_screen_name=moderator.screen_name,
@@ -201,10 +218,13 @@ def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinned:
     topic.pinned_by_id = moderator.id
     db.session.commit()
 
+    topic_creator = _get_user(topic.creator_id)
     return BoardTopicPinned(
         occurred_at=now,
         initiator_id=moderator.id,
         topic_id=topic.id,
+        topic_creator_id=topic_creator.id,
+        topic_creator_screen_name=topic_creator.screen_name,
         topic_title=topic.title,
         moderator_id=moderator.id,
         moderator_screen_name=moderator.screen_name,
@@ -225,10 +245,13 @@ def unpin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnpinned:
     topic.pinned_by_id = None
     db.session.commit()
 
+    topic_creator = _get_user(topic.creator_id)
     return BoardTopicUnpinned(
         occurred_at=now,
         initiator_id=moderator.id,
         topic_id=topic.id,
+        topic_creator_id=topic_creator.id,
+        topic_creator_screen_name=topic_creator.screen_name,
         topic_title=topic.title,
         moderator_id=moderator.id,
         moderator_screen_name=moderator.screen_name,
@@ -254,10 +277,13 @@ def move_topic(
     for category in old_category, new_category:
         aggregate_category(category)
 
+    topic_creator = _get_user(topic.creator_id)
     return BoardTopicMoved(
         occurred_at=now,
         initiator_id=moderator.id,
         topic_id=topic.id,
+        topic_creator_id=topic_creator.id,
+        topic_creator_screen_name=topic_creator.screen_name,
         topic_title=topic.title,
         old_category_id=old_category.id,
         old_category_title=old_category.title,
