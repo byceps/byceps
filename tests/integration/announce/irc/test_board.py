@@ -72,6 +72,7 @@ def test_announce_topic_hidden(app, topic, moderator):
             topic_id=topic.id,
             topic_title=topic.title,
             moderator_id=moderator.id,
+            moderator_screen_name=moderator.screen_name,
             url=expected_link,
         )
         board_signals.topic_hidden.send(None, event=event)
@@ -95,6 +96,7 @@ def test_announce_topic_unhidden(app, topic, moderator):
             topic_id=topic.id,
             topic_title=topic.title,
             moderator_id=moderator.id,
+            moderator_screen_name=moderator.screen_name,
             url=expected_link,
         )
         board_signals.topic_unhidden.send(None, event=event)
@@ -118,6 +120,7 @@ def test_announce_topic_locked(app, topic, moderator):
             topic_id=topic.id,
             topic_title=topic.title,
             moderator_id=moderator.id,
+            moderator_screen_name=moderator.screen_name,
             url=expected_link,
         )
         board_signals.topic_locked.send(None, event=event)
@@ -141,6 +144,7 @@ def test_announce_topic_unlocked(app, topic, moderator):
             topic_id=topic.id,
             topic_title=topic.title,
             moderator_id=moderator.id,
+            moderator_screen_name=moderator.screen_name,
             url=expected_link,
         )
         board_signals.topic_unlocked.send(None, event=event)
@@ -164,6 +168,7 @@ def test_announce_topic_pinned(app, topic, moderator):
             topic_id=topic.id,
             topic_title=topic.title,
             moderator_id=moderator.id,
+            moderator_screen_name=moderator.screen_name,
             url=expected_link,
         )
         board_signals.topic_pinned.send(None, event=event)
@@ -187,6 +192,7 @@ def test_announce_topic_unpinned(app, topic, moderator):
             topic_id=topic.id,
             topic_title=topic.title,
             moderator_id=moderator.id,
+            moderator_screen_name=moderator.screen_name,
             url=expected_link,
         )
         board_signals.topic_unpinned.send(None, event=event)
@@ -216,6 +222,7 @@ def test_announce_topic_moved(
             new_category_id=another_category.id,
             new_category_title=another_category.title,
             moderator_id=moderator.id,
+            moderator_screen_name=moderator.screen_name,
             url=expected_link,
         )
         board_signals.topic_moved.send(None, event=event)
@@ -280,6 +287,7 @@ def test_announce_posting_hidden(app, posting, moderator):
             posting_id=posting.id,
             topic_title=posting.topic.title,
             moderator_id=moderator.id,
+            moderator_screen_name=moderator.screen_name,
             url=expected_link,
         )
         board_signals.posting_hidden.send(None, event=event)
@@ -304,6 +312,7 @@ def test_announce_posting_unhidden(app, posting, moderator):
             posting_id=posting.id,
             topic_title=posting.topic.title,
             moderator_id=moderator.id,
+            moderator_screen_name=moderator.screen_name,
             url=expected_link,
         )
         board_signals.posting_unhidden.send(None, event=event)

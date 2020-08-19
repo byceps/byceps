@@ -110,6 +110,7 @@ def hide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicHidden:
         topic_id=topic.id,
         topic_title=topic.title,
         moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
         url=None,
     )
 
@@ -135,6 +136,7 @@ def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
         topic_id=topic.id,
         topic_title=topic.title,
         moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
         url=None,
     )
 
@@ -157,6 +159,7 @@ def lock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicLocked:
         topic_id=topic.id,
         topic_title=topic.title,
         moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
         url=None,
     )
 
@@ -180,6 +183,7 @@ def unlock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnlocked:
         topic_id=topic.id,
         topic_title=topic.title,
         moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
         url=None,
     )
 
@@ -202,6 +206,7 @@ def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinned:
         topic_id=topic.id,
         topic_title=topic.title,
         moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
         url=None,
     )
 
@@ -225,6 +230,7 @@ def unpin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnpinned:
         topic_id=topic.id,
         topic_title=topic.title,
         moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
         url=None,
     )
 
@@ -257,6 +263,7 @@ def move_topic(
         new_category_id=new_category.id,
         new_category_title=new_category.title,
         moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
         url=None,
     )
 

@@ -68,10 +68,9 @@ def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
     topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.get_user(event.moderator_id)
 
     text = (
-        f'{moderator.screen_name} hat im {board_label} '
+        f'{event.moderator_screen_name} hat im {board_label} '
         f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'versteckt: {event.url}'
     )
@@ -93,10 +92,9 @@ def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
     topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.get_user(event.moderator_id)
 
     text = (
-        f'{moderator.screen_name} hat im {board_label} '
+        f'{event.moderator_screen_name} hat im {board_label} '
         f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'wieder sichtbar gemacht: {event.url}'
     )
@@ -116,10 +114,9 @@ def announce_board_topic_locked(event: BoardTopicLocked) -> None:
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
     topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.get_user(event.moderator_id)
 
     text = (
-        f'{moderator.screen_name} hat im {board_label} '
+        f'{event.moderator_screen_name} hat im {board_label} '
         f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'geschlossen: {event.url}'
     )
@@ -141,10 +138,9 @@ def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
     topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.get_user(event.moderator_id)
 
     text = (
-        f'{moderator.screen_name} hat im {board_label} '
+        f'{event.moderator_screen_name} hat im {board_label} '
         f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'wieder geöffnet: {event.url}'
     )
@@ -164,10 +160,9 @@ def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
     topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.get_user(event.moderator_id)
 
     text = (
-        f'{moderator.screen_name} hat im {board_label} '
+        f'{event.moderator_screen_name} hat im {board_label} '
         f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'angepinnt: {event.url}'
     )
@@ -189,10 +184,9 @@ def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
     topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.get_user(event.moderator_id)
 
     text = (
-        f'{moderator.screen_name} hat im {board_label} '
+        f'{event.moderator_screen_name} hat im {board_label} '
         f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'wieder gelöst: {event.url}'
     )
@@ -212,10 +206,9 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
     topic = board_topic_query_service.find_topic_by_id(event.topic_id)
     topic_creator = user_service.get_user(topic.creator_id)
     board_label = _get_board_label(topic)
-    moderator = user_service.get_user(event.moderator_id)
 
     text = (
-        f'{moderator.screen_name} hat im {board_label} '
+        f'{event.moderator_screen_name} hat im {board_label} '
         f'das Thema "{event.topic_title}" von {topic_creator.screen_name} '
         f'aus "{event.old_category_title}" in "{event.new_category_title}" '
         f'verschoben: {event.url}'
@@ -264,10 +257,9 @@ def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     posting = board_posting_query_service.find_posting_by_id(event.posting_id)
     posting_creator = user_service.get_user(posting.creator_id)
     board_label = _get_board_label(posting.topic)
-    moderator = user_service.get_user(event.moderator_id)
 
     text = (
-        f'{moderator.screen_name} hat im {board_label} '
+        f'{event.moderator_screen_name} hat im {board_label} '
         f'eine Antwort von {posting_creator.screen_name} '
         f'im Thema "{event.topic_title}" versteckt: {event.url}'
     )
@@ -289,10 +281,9 @@ def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
     posting = board_posting_query_service.find_posting_by_id(event.posting_id)
     posting_creator = user_service.get_user(posting.creator_id)
     board_label = _get_board_label(posting.topic)
-    moderator = user_service.get_user(event.moderator_id)
 
     text = (
-        f'{moderator.screen_name} hat im {board_label} '
+        f'{event.moderator_screen_name} hat im {board_label} '
         f'eine Antwort von {posting_creator.screen_name} '
         f'im Thema "{event.topic_title}" wieder sichtbar gemacht: {event.url}'
     )

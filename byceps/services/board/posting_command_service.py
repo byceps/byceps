@@ -102,6 +102,7 @@ def hide_posting(
         posting_id=posting.id,
         topic_title=posting.topic.title,
         moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
         url=None,
     )
 
@@ -131,6 +132,7 @@ def unhide_posting(
         posting_id=posting.id,
         topic_title=posting.topic.title,
         moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
         url=None,
     )
 
