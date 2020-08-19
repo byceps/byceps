@@ -86,6 +86,8 @@ class BoardTopicMoved(_BoardTopicModerationEvent):
 @dataclass(frozen=True)
 class _BoardPostingEvent(_BaseEvent):
     posting_id: PostingID
+    posting_creator_id: UserID
+    posting_creator_screen_name: Optional[str]
     topic_title: str
     url: str
 

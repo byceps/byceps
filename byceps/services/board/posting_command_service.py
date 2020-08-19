@@ -45,6 +45,8 @@ def create_posting(
         occurred_at=posting.created_at,
         initiator_id=creator.id,
         posting_id=posting.id,
+        posting_creator_id=creator.id,
+        posting_creator_screen_name=creator.screen_name,
         topic_title=topic.title,
         topic_muted=topic.muted,
         url=None,
@@ -70,10 +72,13 @@ def update_posting(
     if commit:
         db.session.commit()
 
+    posting_creator = _get_user(posting.creator_id)
     return BoardPostingUpdated(
         occurred_at=now,
         initiator_id=editor.id,
         posting_id=posting.id,
+        posting_creator_id=posting_creator.id,
+        posting_creator_screen_name=posting_creator.screen_name,
         topic_title=posting.topic.title,
         editor_id=editor.id,
         editor_screen_name=editor.screen_name,
@@ -97,10 +102,13 @@ def hide_posting(
 
     aggregate_topic(posting.topic)
 
+    posting_creator = _get_user(posting.creator_id)
     event = BoardPostingHidden(
         occurred_at=now,
         initiator_id=moderator.id,
         posting_id=posting.id,
+        posting_creator_id=posting_creator.id,
+        posting_creator_screen_name=posting_creator.screen_name,
         topic_title=posting.topic.title,
         moderator_id=moderator.id,
         moderator_screen_name=moderator.screen_name,
@@ -127,10 +135,13 @@ def unhide_posting(
 
     aggregate_topic(posting.topic)
 
+    posting_creator = _get_user(posting.creator_id)
     event = BoardPostingUnhidden(
         occurred_at=now,
         initiator_id=moderator.id,
         posting_id=posting.id,
+        posting_creator_id=posting_creator.id,
+        posting_creator_screen_name=posting_creator.screen_name,
         topic_title=posting.topic.title,
         moderator_id=moderator.id,
         moderator_screen_name=moderator.screen_name,

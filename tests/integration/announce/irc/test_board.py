@@ -243,6 +243,8 @@ def test_announce_posting_created(app, posting, creator):
         event = BoardPostingCreated(
             occurred_at=posting.created_at,
             initiator_id=creator.id,
+            posting_creator_id=creator.id,
+            posting_creator_screen_name=creator.screen_name,
             posting_id=posting.id,
             topic_title=posting.topic.title,
             topic_muted=posting.topic.muted,
@@ -260,6 +262,8 @@ def test_announce_posting_created_on_muted_topic(app, posting, creator):
         event = BoardPostingCreated(
             occurred_at=posting.created_at,
             initiator_id=creator.id,
+            posting_creator_id=creator.id,
+            posting_creator_screen_name=creator.screen_name,
             posting_id=posting.id,
             topic_title=posting.topic.title,
             topic_muted=True,
@@ -270,7 +274,7 @@ def test_announce_posting_created_on_muted_topic(app, posting, creator):
         assert not mock.called
 
 
-def test_announce_posting_hidden(app, posting, moderator):
+def test_announce_posting_hidden(app, posting, creator, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
@@ -285,6 +289,8 @@ def test_announce_posting_hidden(app, posting, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             posting_id=posting.id,
+            posting_creator_id=creator.id,
+            posting_creator_screen_name=creator.screen_name,
             topic_title=posting.topic.title,
             moderator_id=moderator.id,
             moderator_screen_name=moderator.screen_name,
@@ -295,7 +301,7 @@ def test_announce_posting_hidden(app, posting, moderator):
         assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_announce_posting_unhidden(app, posting, moderator):
+def test_announce_posting_unhidden(app, posting, creator, moderator):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
@@ -310,6 +316,8 @@ def test_announce_posting_unhidden(app, posting, moderator):
             occurred_at=now(),
             initiator_id=moderator.id,
             posting_id=posting.id,
+            posting_creator_id=creator.id,
+            posting_creator_screen_name=creator.screen_name,
             topic_title=posting.topic.title,
             moderator_id=moderator.id,
             moderator_screen_name=moderator.screen_name,

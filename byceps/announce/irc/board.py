@@ -229,14 +229,13 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
 
     posting = board_posting_query_service.find_posting_by_id(event.posting_id)
-    posting_creator = user_service.get_user(posting.creator_id)
     board_label = _get_board_label(posting.topic)
 
     if event.topic_muted:
         return
 
     text = (
-        f'{posting_creator.screen_name} hat im {board_label} '
+        f'{event.posting_creator_screen_name} hat im {board_label} '
         f'auf das Thema "{event.topic_title}" geantwortet: {event.url}'
     )
 
@@ -255,12 +254,11 @@ def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     posting = board_posting_query_service.find_posting_by_id(event.posting_id)
-    posting_creator = user_service.get_user(posting.creator_id)
     board_label = _get_board_label(posting.topic)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} '
-        f'eine Antwort von {posting_creator.screen_name} '
+        f'eine Antwort von {event.posting_creator_screen_name} '
         f'im Thema "{event.topic_title}" versteckt: {event.url}'
     )
 
@@ -279,12 +277,11 @@ def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     posting = board_posting_query_service.find_posting_by_id(event.posting_id)
-    posting_creator = user_service.get_user(posting.creator_id)
     board_label = _get_board_label(posting.topic)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} '
-        f'eine Antwort von {posting_creator.screen_name} '
+        f'eine Antwort von {event.posting_creator_screen_name} '
         f'im Thema "{event.topic_title}" wieder sichtbar gemacht: {event.url}'
     )
 

@@ -102,14 +102,11 @@ def _on_board_posting_created(
 
 def announce_board_posting_created(event: BoardPostingCreated) -> None:
     """Announce that someone has created a board posting."""
-    posting = board_posting_query_service.find_posting_by_id(event.posting_id)
-    creator_screen_name = user_service.find_screen_name(posting.creator_id)
-
     if event.topic_muted:
         return
 
     text = (
-        f'[Forum] {creator_screen_name} hat auf das Thema '
+        f'[Forum] {event.posting_creator_screen_name} hat auf das Thema '
         f'"{event.topic_title}" geantwortet: <{event.url}>'
     )
 
