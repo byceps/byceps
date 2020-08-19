@@ -86,6 +86,7 @@ def update_topic(
         topic_id=topic.id,
         topic_title=topic.title,
         editor_id=editor.id,
+        editor_screen_name=editor.screen_name,
         url=None,
     )
 

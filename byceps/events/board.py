@@ -39,6 +39,7 @@ class BoardTopicCreated(_BoardTopicEvent):
 @dataclass(frozen=True)
 class BoardTopicUpdated(_BoardTopicEvent):
     editor_id: UserID
+    editor_screen_name: Optional[str]
 
 
 @dataclass(frozen=True)
@@ -103,6 +104,7 @@ class BoardPostingCreated(_BoardPostingEvent):
 @dataclass(frozen=True)
 class BoardPostingUpdated(_BoardPostingEvent):
     editor_id: UserID
+    editor_screen_name: Optional[str]
 
 
 @dataclass(frozen=True)

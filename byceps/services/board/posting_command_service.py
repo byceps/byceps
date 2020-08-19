@@ -76,6 +76,7 @@ def update_posting(
         posting_id=posting.id,
         topic_title=posting.topic.title,
         editor_id=editor.id,
+        editor_screen_name=editor.screen_name,
         url=None,
     )
 
