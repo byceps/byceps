@@ -22,10 +22,7 @@ from ...events.board import (
     BoardTopicUnpinned,
 )
 from ...services.board.models.topic import Topic as DbTopic
-from ...services.board import (
-    posting_query_service as board_posting_query_service,
-    topic_query_service as board_topic_query_service,
-)
+from ...services.board import topic_query_service as board_topic_query_service
 from ...services.brand import service as brand_service
 from ...signals import board as board_signals
 from ...util.irc import send_message
@@ -219,8 +216,8 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     """Announce that someone has created a board posting."""
     channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
 
-    posting = board_posting_query_service.find_posting_by_id(event.posting_id)
-    board_label = _get_board_label(posting.topic)
+    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
+    board_label = _get_board_label(topic)
 
     if event.topic_muted:
         return
@@ -244,8 +241,8 @@ def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     """Announce that a moderator has hidden a board posting."""
     channels = [CHANNEL_ORGA_LOG]
 
-    posting = board_posting_query_service.find_posting_by_id(event.posting_id)
-    board_label = _get_board_label(posting.topic)
+    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
+    board_label = _get_board_label(topic)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} '
@@ -267,8 +264,8 @@ def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
     """Announce that a moderator has made a board posting visible again."""
     channels = [CHANNEL_ORGA_LOG]
 
-    posting = board_posting_query_service.find_posting_by_id(event.posting_id)
-    board_label = _get_board_label(posting.topic)
+    topic = board_topic_query_service.find_topic_by_id(event.topic_id)
+    board_label = _get_board_label(topic)
 
     text = (
         f'{event.moderator_screen_name} hat im {board_label} '
