@@ -1,6 +1,6 @@
 """
-byceps.blueprints.newsletter.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.newsletter.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,10 +10,10 @@ from datetime import datetime
 
 from flask import abort, g
 
-from ...services.newsletter import command_service, service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
-from ...util.views import respond_no_content
+from ....services.newsletter import command_service, service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
+from ....util.views import respond_no_content
 
 
 blueprint = create_blueprint('newsletter', __name__)
