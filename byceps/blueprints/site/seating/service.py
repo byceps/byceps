@@ -1,6 +1,6 @@
 """
-byceps.blueprints.seating.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.seating.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,17 +10,17 @@ from dataclasses import dataclass
 from itertools import chain
 from typing import Dict, Iterator, Optional, Sequence
 
-from ...services.seating.models.seat import Seat
-from ...services.seating.transfer.models import SeatID
-from ...services.ticketing.models.ticket import Ticket as DbTicket
-from ...services.ticketing.transfer.models import (
+from ....services.seating.models.seat import Seat
+from ....services.seating.transfer.models import SeatID
+from ....services.ticketing.models.ticket import Ticket as DbTicket
+from ....services.ticketing.transfer.models import (
     TicketCategoryID,
     TicketCode,
     TicketID,
 )
-from ...services.user import service as user_service
-from ...services.user.transfer.models import User
-from ...typing import UserID
+from ....services.user import service as user_service
+from ....services.user.transfer.models import User
+from ....typing import UserID
 
 
 @dataclass(frozen=True)

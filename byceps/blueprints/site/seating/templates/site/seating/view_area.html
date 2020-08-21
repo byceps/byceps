@@ -44,7 +44,7 @@
 
   {%- if not g.current_user.is_anonymous %}
     {%- if manage_mode %}
-{%- include 'seating/_ticket_selector.html' %}
+{%- include 'site/seating/_ticket_selector.html' %}
     {%- else %}
   <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.manage_seats_in_area', slug=area.slug) }}">Sitzplätze verwalten</a>
@@ -52,7 +52,7 @@
     {%- endif %}
   {%- endif %}
 
-{%- include 'seating/_legend.html' %}
+{%- include 'site/seating/_legend.html' %}
 
 {%- endif %}
 

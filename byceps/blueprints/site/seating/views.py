@@ -1,6 +1,6 @@
 """
-byceps.blueprints.seating.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.seating.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,26 +8,26 @@ byceps.blueprints.seating.views
 
 from flask import abort, g, request
 
-from ...services.party import service as party_service
-from ...services.seating import area_service as seating_area_service
-from ...services.seating.models.seat import Seat
-from ...services.seating import seat_service
-from ...services.seating.transfer.models import SeatID
-from ...services.ticketing.models.ticket import Ticket as DbTicket
-from ...services.ticketing import (
+from ....services.party import service as party_service
+from ....services.seating import area_service as seating_area_service
+from ....services.seating.models.seat import Seat
+from ....services.seating import seat_service
+from ....services.seating.transfer.models import SeatID
+from ....services.ticketing.models.ticket import Ticket as DbTicket
+from ....services.ticketing import (
     exceptions as ticket_exceptions,
     ticket_seat_management_service,
     ticket_service,
 )
-from ...services.ticketing.transfer.models import TicketID
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_error, flash_success
-from ...util.framework.templating import templated
-from ...util.views import respond_no_content
+from ....services.ticketing.transfer.models import TicketID
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_error, flash_success
+from ....util.framework.templating import templated
+from ....util.views import respond_no_content
 
-from ..admin.seating.authorization import SeatingPermission
-from ..authentication.decorators import login_required
-from ..authorization.registry import permission_registry
+from ...admin.seating.authorization import SeatingPermission
+from ...authentication.decorators import login_required
+from ...authorization.registry import permission_registry
 
 from . import service
 
