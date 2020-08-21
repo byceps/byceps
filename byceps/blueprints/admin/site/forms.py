@@ -23,7 +23,7 @@ class _BaseForm(LocalizedForm):
     title = StringField('Titel', validators=[Length(min=1, max=40)])
     server_name = StringField('Servername', validators=[InputRequired()])
     email_config_id = SelectField('E-Mail-Konfiguration', validators=[InputRequired()])
-    party_id = SelectField('Party-ID', validators=[Optional()])
+    party_id = SelectField('Party', validators=[Optional()])
     enabled = BooleanField('aktiv')
     user_account_creation_enabled  = BooleanField('Benutzerregistrierung geöffnet')
     login_enabled = BooleanField('Benutzeranmeldung geöffnet')
