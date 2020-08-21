@@ -112,7 +112,7 @@ def _get_blueprints_common() -> Iterator[BlueprintReg]:
 def _get_blueprints_site() -> Iterator[BlueprintReg]:
     yield from [
         ('site.attendance',             '/attendance'               ),
-        ('board',                       '/board'                    ),
+        ('site.board',                  '/board'                    ),
         ('consent',                     '/consent'                  ),
         ('news',                        '/news'                     ),
         ('newsletter',                  '/newsletter'               ),

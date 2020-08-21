@@ -1,6 +1,6 @@
 """
-byceps.blueprints.board.views_category
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.board.views_category
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,14 +8,14 @@ byceps.blueprints.board.views_category
 
 from flask import abort, g, url_for
 
-from ...services.board import (
+from ....services.board import (
     category_query_service as board_category_query_service,
     last_view_service as board_last_view_service,
     topic_query_service as board_topic_query_service,
 )
-from ...util.framework.flash import flash_success
-from ...util.framework.templating import templated
-from ...util.views import respond_no_content_with_location
+from ....util.framework.flash import flash_success
+from ....util.framework.templating import templated
+from ....util.views import respond_no_content_with_location
 
 from .blueprint import blueprint
 from . import _helpers as h, service

@@ -8,7 +8,7 @@ byceps.services.board.models.posting
 
 from datetime import datetime
 
-from ....blueprints.board.authorization import (
+from ....blueprints.site.board.authorization import (
     BoardPermission,
     BoardPostingPermission,
 )

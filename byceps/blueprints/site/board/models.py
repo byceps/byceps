@@ -1,6 +1,6 @@
 """
-byceps.blueprints.board.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.board.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,9 +10,9 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional, Set
 
-from ...services.board.transfer.models import CategoryWithLastUpdate
-from ...services.user.transfer.models import User
-from ...services.user_badge.transfer.models import Badge
+from ....services.board.transfer.models import CategoryWithLastUpdate
+from ....services.user.transfer.models import User
+from ....services.user_badge.transfer.models import Badge
 
 
 @dataclass(frozen=True)

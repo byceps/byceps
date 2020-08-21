@@ -1,6 +1,6 @@
 """
-byceps.blueprints.board.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.board.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -11,21 +11,21 @@ from typing import Dict, Optional, Sequence, Set
 
 from flask import g
 
-from ...services.authentication.session.models.current_user import CurrentUser
-from ...services.board.models.topic import Topic as DbTopic
-from ...services.board.models.posting import Posting as DbPosting
-from ...services.board import (
+from ....services.authentication.session.models.current_user import CurrentUser
+from ....services.board.models.topic import Topic as DbTopic
+from ....services.board.models.posting import Posting as DbPosting
+from ....services.board import (
     last_view_service as board_last_view_service,
     posting_query_service as board_posting_query_service,
 )
-from ...services.board.transfer.models import CategoryWithLastUpdate
-from ...services.party import service as party_service
-from ...services.site import settings_service as site_settings_service
-from ...services.ticketing import ticket_service
-from ...services.user import service as user_service
-from ...services.user_badge import awarding_service as badge_awarding_service
-from ...services.user_badge.transfer.models import Badge
-from ...typing import BrandID, PartyID, UserID
+from ....services.board.transfer.models import CategoryWithLastUpdate
+from ....services.party import service as party_service
+from ....services.site import settings_service as site_settings_service
+from ....services.ticketing import ticket_service
+from ....services.user import service as user_service
+from ....services.user_badge import awarding_service as badge_awarding_service
+from ....services.user_badge.transfer.models import Badge
+from ....typing import BrandID, PartyID, UserID
 
 from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
 

@@ -1,6 +1,6 @@
 """
-byceps.blueprints.board.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.board.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.

@@ -4,12 +4,12 @@
 
 <article class="user-comment{% if posting.hidden %} dimmed{% endif %}" id="posting-{{ posting.id }}">
   <aside class="user-comment-aside">
-{%- include 'board/_posting_view_aside.html' %}
+{%- include 'site/board/_posting_view_aside.html' %}
   </aside>
   <div class="user-comment-main">
     <header>
-{%- include 'board/_posting_view_meta.html' %}
-{%- include 'board/_posting_view_actions.html' %}
+{%- include 'site/board/_posting_view_meta.html' %}
+{%- include 'site/board/_posting_view_actions.html' %}
     </header>
     <div class="body">
 {{ posting.body|bbcode|safe }}

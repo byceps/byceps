@@ -10,7 +10,7 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....blueprints.board.authorization import (
+from ....blueprints.site.board.authorization import (
     BoardPermission,
     BoardTopicPermission,
 )

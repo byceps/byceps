@@ -1,6 +1,6 @@
 """
-byceps.blueprints.board.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.board.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -9,7 +9,7 @@ byceps.blueprints.board.forms
 from wtforms import StringField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
-from ...util.l10n import LocalizedForm
+from ....util.l10n import LocalizedForm
 
 
 class PostingCreateForm(LocalizedForm):

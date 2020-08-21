@@ -26,7 +26,7 @@ from ....util.views import redirect_to, respond_no_content
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
-from ...board.authorization import BoardPermission
+from ...site.board.authorization import BoardPermission
 
 from .authorization import BoardCategoryPermission
 from .forms import BoardCreateForm, CategoryCreateForm, CategoryUpdateForm
