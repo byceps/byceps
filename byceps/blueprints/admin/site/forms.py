@@ -43,7 +43,7 @@ class _BaseForm(LocalizedForm):
 
     def set_party_choices(self, brand_id):
         parties = party_service.get_parties_for_brand(brand_id)
-        parties.sort(key=lambda party: party.title)
+        parties.sort(key=lambda party: party.starts_at, reverse=True)
 
         choices = [(p.id, p.title) for p in parties]
         choices.insert(0, ('', '<keine>'))
