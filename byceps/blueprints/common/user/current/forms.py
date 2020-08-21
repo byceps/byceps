@@ -1,6 +1,6 @@
 """
-byceps.blueprints.user.current.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.user.current.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -11,9 +11,9 @@ from wtforms import DateField, PasswordField, StringField
 from wtforms.fields.html5 import TelField
 from wtforms.validators import InputRequired, Length, Optional
 
-from ....services.authentication.password import service as password_service
-from ....services.user import screen_name_validator, service as user_service
-from ....util.l10n import LocalizedForm
+from .....services.authentication.password import service as password_service
+from .....services.user import screen_name_validator, service as user_service
+from .....util.l10n import LocalizedForm
 
 from ..creation.forms import ScreenNameValidator
 

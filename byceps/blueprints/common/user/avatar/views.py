@@ -1,6 +1,6 @@
 """
-byceps.blueprints.user.avatar.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.user.avatar.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,15 +8,15 @@ byceps.blueprints.user.avatar.views
 
 from flask import abort, g, request
 
-from ....services.image import service as image_service
-from ....services.user import service as user_service
-from ....services.user_avatar import service as avatar_service
-from ....signals import user_avatar as user_avatar_signals
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_notice, flash_success
-from ....util.image.models import ImageType
-from ....util.framework.templating import templated
-from ....util.views import redirect_to, respond_no_content
+from .....services.image import service as image_service
+from .....services.user import service as user_service
+from .....services.user_avatar import service as avatar_service
+from .....signals import user_avatar as user_avatar_signals
+from .....util.framework.blueprint import create_blueprint
+from .....util.framework.flash import flash_notice, flash_success
+from .....util.image.models import ImageType
+from .....util.framework.templating import templated
+from .....util.views import redirect_to, respond_no_content
 
 from .forms import UpdateForm
 

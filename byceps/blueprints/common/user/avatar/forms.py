@@ -1,6 +1,6 @@
 """
-byceps.blueprints.user.avatar.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.user.avatar.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -9,7 +9,7 @@ byceps.blueprints.user.avatar.forms
 from wtforms import FileField
 from wtforms.validators import InputRequired
 
-from ....util.l10n import LocalizedForm
+from .....util.l10n import LocalizedForm
 
 
 class UpdateForm(LocalizedForm):

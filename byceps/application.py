@@ -101,11 +101,11 @@ def _get_blueprints_common() -> Iterator[BlueprintReg]:
         ('authentication',              '/authentication'           ),
         ('authorization',               None                        ),
         ('core',                        '/core'                     ),
-        ('user',                        None                        ),
-        ('user.avatar',                 '/users'                    ),
-        ('user.creation',               '/users'                    ),
-        ('user.current',                '/users'                    ),
-        ('user.email_address',          '/users/email_address'      ),
+        ('common.user',                 None                        ),
+        ('common.user.avatar',          '/users'                    ),
+        ('common.user.creation',        '/users'                    ),
+        ('common.user.current',         '/users'                    ),
+        ('common.user.email_address',   '/users/email_address'      ),
     ]
 
 

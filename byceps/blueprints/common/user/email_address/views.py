@@ -1,6 +1,6 @@
 """
-byceps.blueprints.user.email_address.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.user.email_address.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,16 +8,16 @@ byceps.blueprints.user.email_address.views
 
 from flask import abort, g, request
 
-from ....services.user import email_address_verification_service
-from ....services.user import service as user_service
-from ....services.verification_token import (
+from .....services.user import email_address_verification_service
+from .....services.user import service as user_service
+from .....services.verification_token import (
     service as verification_token_service,
 )
-from ....signals import user as user_signals
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_notice, flash_success
-from ....util.framework.templating import templated
-from ....util.views import redirect_to
+from .....signals import user as user_signals
+from .....util.framework.blueprint import create_blueprint
+from .....util.framework.flash import flash_error, flash_notice, flash_success
+from .....util.framework.templating import templated
+from .....util.views import redirect_to
 
 from .forms import RequestConfirmationEmailForm
 

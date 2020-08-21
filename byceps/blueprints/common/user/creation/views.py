@@ -1,6 +1,6 @@
 """
-byceps.blueprints.user.creation.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.user.creation.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -11,26 +11,26 @@ from typing import Optional
 
 from flask import abort, g, request
 
-from ....config import get_app_mode
-from ....services.brand import settings_service as brand_settings_service
-from ....services.consent.transfer.models import Consent, SubjectID
-from ....services.newsletter.transfer.models import (
+from .....config import get_app_mode
+from .....services.brand import settings_service as brand_settings_service
+from .....services.consent.transfer.models import Consent, SubjectID
+from .....services.newsletter.transfer.models import (
     ListID as NewsletterListID,
     Subscription as NewsletterSubscription,
 )
-from ....services.site import (
+from .....services.site import (
     settings_service as site_settings_service,
     service as site_service,
 )
-from ....services.terms import document_service as terms_document_service
-from ....services.terms import version_service as terms_version_service
-from ....services.terms.transfer.models import DocumentID as TermsDocumentID
-from ....services.user import creation_service as user_creation_service
-from ....signals import user as user_signals
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.views import redirect_to
+from .....services.terms import document_service as terms_document_service
+from .....services.terms import version_service as terms_version_service
+from .....services.terms.transfer.models import DocumentID as TermsDocumentID
+from .....services.user import creation_service as user_creation_service
+from .....signals import user as user_signals
+from .....util.framework.blueprint import create_blueprint
+from .....util.framework.flash import flash_error, flash_success
+from .....util.framework.templating import templated
+from .....util.views import redirect_to
 
 from .forms import UserCreateForm
 

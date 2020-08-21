@@ -1,6 +1,6 @@
 """
-byceps.blueprints.user.creation.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.user.creation.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -12,9 +12,9 @@ from uuid import UUID
 from wtforms import BooleanField, HiddenField, PasswordField, StringField
 from wtforms.validators import InputRequired, Length, ValidationError
 
-from ....services.user import screen_name_validator
-from ....services.user import service as user_service
-from ....util.l10n import LocalizedForm
+from .....services.user import screen_name_validator
+from .....services.user import service as user_service
+from .....util.l10n import LocalizedForm
 
 
 EMAIL_ADDRESS_PATTERN = re.compile(r'^.+?@.+?\..+?$')

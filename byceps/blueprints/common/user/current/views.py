@@ -1,6 +1,6 @@
 """
-byceps.blueprints.user.current.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.user.current.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,18 +8,18 @@ byceps.blueprints.user.current.views
 
 from flask import abort, g, jsonify, request, Response
 
-from ....config import get_app_mode
-from ....services.country import service as country_service
-from ....services.newsletter import service as newsletter_service
-from ....services.user import command_service as user_command_service
-from ....services.user import service as user_service
-from ....signals import user as user_signals
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
-from ....util.framework.templating import templated
-from ....util.views import redirect_to
+from .....config import get_app_mode
+from .....services.country import service as country_service
+from .....services.newsletter import service as newsletter_service
+from .....services.user import command_service as user_command_service
+from .....services.user import service as user_service
+from .....signals import user as user_signals
+from .....util.framework.blueprint import create_blueprint
+from .....util.framework.flash import flash_success
+from .....util.framework.templating import templated
+from .....util.views import redirect_to
 
-from ...authentication.decorators import login_required
+from ....authentication.decorators import login_required
 
 from ..creation.views import _find_newsletter_list_for_brand
 

@@ -33,7 +33,7 @@ from ...util.framework.templating import templated
 from ...util.views import redirect_to, respond_no_content
 
 from ..admin.core.authorization import AdminPermission
-from ..user.creation.views import _find_privacy_policy_consent_subject_id
+from ..common.user.creation.views import _find_privacy_policy_consent_subject_id
 
 from .forms import (
     LoginForm,
