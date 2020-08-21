@@ -10,7 +10,6 @@ Announce user badge events on IRC.
 
 from ...events.user_badge import UserBadgeAwarded
 from ...services.user import service as user_service
-from ...services.user_badge import badge_service as user_badge_service
 from ...signals import user_badge as user_badge_signals
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
@@ -28,7 +27,6 @@ def announce_user_badge_awarded(event: UserBadgeAwarded) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     user = user_service.get_user(event.user_id)
-    badge = user_badge_service.find_badge(event.badge_id)
 
     if event.initiator_id:
         initiator = user_service.get_user(event.initiator_id)
@@ -37,7 +35,7 @@ def announce_user_badge_awarded(event: UserBadgeAwarded) -> None:
         initiator_name = 'Jemand'
 
     text = (
-        f'{initiator_name} hat das Abzeichen "{badge.label}" '
+        f'{initiator_name} hat das Abzeichen "{event.badge_label}" '
         f'an {user.screen_name} verliehen.'
     )
 

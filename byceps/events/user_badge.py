@@ -18,3 +18,4 @@ from .base import _BaseEvent
 class UserBadgeAwarded(_BaseEvent):
     user_id: UserID
     badge_id: BadgeID
+    badge_label: str

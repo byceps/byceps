@@ -73,6 +73,7 @@ def test_award_badge_without_initiator(
     assert event.__class__ is UserBadgeAwarded
     assert event.user_id == user.id
     assert event.badge_id == badge.id
+    assert event.badge_label == badge.label
     assert event.initiator_id is None
 
     user_events_after = event_service.get_events_for_user(user.id)
@@ -100,6 +101,7 @@ def test_award_badge_with_initiator(
     assert event.__class__ is UserBadgeAwarded
     assert event.user_id == user.id
     assert event.badge_id == badge.id
+    assert event.badge_label == badge.label
     assert event.initiator_id == admin_user.id
 
     user_events_after = event_service.get_events_for_user(user.id)
