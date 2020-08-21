@@ -1,6 +1,6 @@
 """
-byceps.blueprints.orga_team.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.orga_team.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,10 +8,10 @@ byceps.blueprints.orga_team.views
 
 from flask import abort, g
 
-from ...services.orga_team import service as orga_team_service
-from ...services.user import service as user_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.templating import templated
+from ....services.orga_team import service as orga_team_service
+from ....services.user import service as user_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
 
 
 blueprint = create_blueprint('orga_team', __name__)
