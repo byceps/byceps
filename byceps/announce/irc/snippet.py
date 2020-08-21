@@ -27,17 +27,14 @@ def announce_snippet_created(event: SnippetCreated) -> None:
     """Announce that a snippet has been created."""
     channels = [CHANNEL_ORGA_LOG]
 
-    snippet_version = snippet_service.find_snippet_version(
-        event.snippet_version_id
-    )
-    snippet = snippet_version.snippet
+    snippet = snippet_service.find_snippet(event.snippet_id)
     editor_screen_name = user_service.find_screen_name(event.initiator_id)
     type_name = 'Dokument' if snippet.is_document else 'Fragment'
 
     text = (
         f'{editor_screen_name} hat das Snippet-{type_name} '
-        f'"{snippet.name}" im Scope '
-        f'"{snippet.scope.type_}/{snippet.scope.name}" angelegt.'
+        f'"{event.snippet_name}" im Scope '
+        f'"{event.scope.type_}/{event.scope.name}" angelegt.'
     )
 
     send_message(channels, text)
@@ -52,17 +49,14 @@ def announce_snippet_updated(event: SnippetUpdated) -> None:
     """Announce that a snippet has been updated."""
     channels = [CHANNEL_ORGA_LOG]
 
-    snippet_version = snippet_service.find_snippet_version(
-        event.snippet_version_id
-    )
-    snippet = snippet_version.snippet
+    snippet = snippet_service.find_snippet(event.snippet_id)
     editor_screen_name = user_service.find_screen_name(event.initiator_id)
     type_name = 'Dokument' if snippet.is_document else 'Fragment'
 
     text = (
         f'{editor_screen_name} hat das Snippet-{type_name} '
-        f'"{snippet.name}" im Scope '
-        f'"{snippet.scope.type_}/{snippet.scope.name}" aktualisiert.'
+        f'"{event.snippet_name}" im Scope '
+        f'"{event.scope.type_}/{event.scope.name}" aktualisiert.'
     )
 
     send_message(channels, text)

@@ -119,6 +119,9 @@ def _create_snippet(
     event = SnippetCreated(
         occurred_at=version.created_at,
         initiator_id=creator_id,
+        snippet_id=snippet.id,
+        scope=snippet.scope,
+        snippet_name=snippet.name,
         snippet_version_id=version.id,
     )
 
@@ -150,6 +153,9 @@ def _update_snippet(
     event = SnippetUpdated(
         occurred_at=version.created_at,
         initiator_id=creator_id,
+        snippet_id=snippet.id,
+        scope=snippet.scope,
+        snippet_name=snippet.name,
         snippet_version_id=version.id,
     )
 
@@ -192,8 +198,8 @@ def delete_snippet(
         occurred_at=datetime.utcnow(),
         initiator_id=initiator_id,
         snippet_id=snippet_id,
-        snippet_name=snippet_name,
         scope=scope,
+        snippet_name=snippet_name,
     )
 
     return True, event

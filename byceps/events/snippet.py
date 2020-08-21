@@ -18,17 +18,22 @@ from .base import _BaseEvent
 
 
 @dataclass(frozen=True)
-class SnippetCreated(_BaseEvent):
-    snippet_version_id: SnippetVersionID
-
-
-@dataclass(frozen=True)
-class SnippetUpdated(_BaseEvent):
-    snippet_version_id: SnippetVersionID
-
-
-@dataclass(frozen=True)
-class SnippetDeleted(_BaseEvent):
+class _SnippetEvent(_BaseEvent):
     snippet_id: SnippetID
-    snippet_name: str
     scope: Scope
+    snippet_name: str
+
+
+@dataclass(frozen=True)
+class SnippetCreated(_SnippetEvent):
+    snippet_version_id: SnippetVersionID
+
+
+@dataclass(frozen=True)
+class SnippetUpdated(_SnippetEvent):
+    snippet_version_id: SnippetVersionID
+
+
+@dataclass(frozen=True)
+class SnippetDeleted(_SnippetEvent):
+    pass
