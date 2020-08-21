@@ -25,16 +25,17 @@ def test_ticket_checked_in(app, make_user, admin_user):
 
     user = make_user('Einchecker')
 
+    event = TicketCheckedIn(
+        occurred_at=now(),
+        initiator_id=admin_user.id,
+        ticket_id=None,
+        ticket_code='GTFIN',
+        occupied_seat_id=None,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
+    )
+
     with mocked_irc_bot() as mock:
-        event = TicketCheckedIn(
-            occurred_at=now(),
-            initiator_id=admin_user.id,
-            ticket_id=None,
-            ticket_code='GTFIN',
-            occupied_seat_id=None,
-            user_id=user.id,
-            user_screen_name=user.screen_name,
-        )
         ticketing_signals.ticket_checked_in.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)

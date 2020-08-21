@@ -29,7 +29,7 @@ def test_announce_snippet_document_created(
     with mocked_irc_bot() as mock:
         snippet_signals.snippet_created.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 def test_announce_snippet_fragment_created(
@@ -45,7 +45,7 @@ def test_announce_snippet_fragment_created(
     with mocked_irc_bot() as mock:
         snippet_signals.snippet_created.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 def test_announce_snippet_document_updated(
@@ -61,7 +61,7 @@ def test_announce_snippet_document_updated(
     with mocked_irc_bot() as mock:
         snippet_signals.snippet_updated.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 def test_announce_snippet_fragment_updated(
@@ -77,7 +77,7 @@ def test_announce_snippet_fragment_updated(
     with mocked_irc_bot() as mock:
         snippet_signals.snippet_updated.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 def test_announce_snippet_fragment_deleted(app, scope, editor):
@@ -99,7 +99,7 @@ def test_announce_snippet_fragment_deleted(app, scope, editor):
     with mocked_irc_bot() as mock:
         snippet_signals.snippet_deleted.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 # helpers

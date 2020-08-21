@@ -42,7 +42,8 @@ def test_shop_order_placed_announced(app, placed_order):
 
     with mocked_irc_bot() as mock:
         shop_signals.order_placed.send(None, event=event)
-        assert_submitted_data(mock, expected_channels, expected_text)
+
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
@@ -63,7 +64,8 @@ def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
 
     with mocked_irc_bot() as mock:
         shop_signals.order_canceled.send(None, event=event)
-        assert_submitted_data(mock, expected_channels, expected_text)
+
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 def test_shop_order_paid_announced(app, paid_order, shop_admin):
@@ -85,7 +87,8 @@ def test_shop_order_paid_announced(app, paid_order, shop_admin):
 
     with mocked_irc_bot() as mock:
         shop_signals.order_paid.send(None, event=event)
-        assert_submitted_data(mock, expected_channels, expected_text)
+
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 # helpers

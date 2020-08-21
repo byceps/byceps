@@ -29,7 +29,7 @@ def test_user_badge_awarding_announced_without_initiator(app, make_user):
     with mocked_irc_bot() as mock:
         user_badge_signals.user_badge_awarded.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 def test_user_badge_awarding_announced_with_initiator(
@@ -52,4 +52,4 @@ def test_user_badge_awarding_announced_with_initiator(
     with mocked_irc_bot() as mock:
         user_badge_signals.user_badge_awarded.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)

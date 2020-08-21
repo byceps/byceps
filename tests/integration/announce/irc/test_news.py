@@ -36,24 +36,25 @@ def test_published_news_item_announced(app, item, editor):
         + 'https://acme.example.com/news/zieh-dir-das-rein'
     )
 
+    event = NewsItemPublished(
+        occurred_at=now(),
+        initiator_id=editor.id,
+        item_id=item.id,
+        channel_id=item.channel.id,
+        title=item.title,
+        external_url=item.external_url,
+    )
+
     with mocked_irc_bot() as mock:
-        event = NewsItemPublished(
-            occurred_at=now(),
-            initiator_id=editor.id,
-            item_id=item.id,
-            channel_id=item.channel.id,
-            title=item.title,
-            external_url=item.external_url,
-        )
         news_signals.item_published.send(None, event=event)
 
-        assert mock.called
-        assert len(mock.request_history) == 2
+    assert mock.called
+    assert len(mock.request_history) == 2
 
-        actual1, actual2 = [req.json() for req in mock.request_history]
+    actual1, actual2 = [req.json() for req in mock.request_history]
 
-        assert_request_data(actual1, expected_channels1, expected_text1)
-        assert_request_data(actual2, expected_channels2, expected_text2)
+    assert_request_data(actual1, expected_channels1, expected_text1)
+    assert_request_data(actual2, expected_channels2, expected_text2)
 
 
 # helpers

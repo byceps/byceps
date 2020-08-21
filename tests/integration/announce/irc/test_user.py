@@ -33,13 +33,14 @@ def test_account_created_announced(app, make_user):
 
     user = make_user('JaneDoe')
 
+    event = UserAccountCreated(
+        occurred_at=now(), user_id=user.id, initiator_id=None
+    )
+
     with mocked_irc_bot() as mock:
-        event = UserAccountCreated(
-            occurred_at=now(), user_id=user.id, initiator_id=None
-        )
         user_signals.account_created.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 def test_account_created_by_admin_announced(app, make_user):
@@ -48,13 +49,14 @@ def test_account_created_by_admin_announced(app, make_user):
     admin = make_user('EinAdmin')
     user = make_user('EinUser')
 
+    event = UserAccountCreated(
+        occurred_at=now(), user_id=user.id, initiator_id=admin.id
+    )
+
     with mocked_irc_bot() as mock:
-        event = UserAccountCreated(
-            occurred_at=now(), user_id=user.id, initiator_id=admin.id
-        )
         user_signals.account_created.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 def test_screen_name_change_announced(app, make_user):
@@ -65,17 +67,18 @@ def test_screen_name_change_announced(app, make_user):
     admin = make_user('ElAdmin')
     user = make_user('DrJekyll')
 
+    event = UserScreenNameChanged(
+        occurred_at=now(),
+        user_id=user.id,
+        old_screen_name=user.screen_name,
+        new_screen_name='MrHyde',
+        initiator_id=admin.id,
+    )
+
     with mocked_irc_bot() as mock:
-        event = UserScreenNameChanged(
-            occurred_at=now(),
-            user_id=user.id,
-            old_screen_name=user.screen_name,
-            new_screen_name='MrHyde',
-            initiator_id=admin.id,
-        )
         user_signals.screen_name_changed.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 def test_email_address_invalidated_announced(app, make_user):
@@ -87,13 +90,14 @@ def test_email_address_invalidated_announced(app, make_user):
     admin = make_user('BounceWatchman')
     user = make_user('Faker')
 
+    event = UserEmailAddressInvalidated(
+        occurred_at=now(), user_id=user.id, initiator_id=admin.id,
+    )
+
     with mocked_irc_bot() as mock:
-        event = UserEmailAddressInvalidated(
-            occurred_at=now(), user_id=user.id, initiator_id=admin.id,
-        )
         user_signals.email_address_invalidated.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 def test_user_details_updated_announced(app, make_user):
@@ -104,13 +108,14 @@ def test_user_details_updated_announced(app, make_user):
 
     user = make_user('Chameleon')
 
+    event = UserDetailsUpdated(
+        occurred_at=now(), user_id=user.id, initiator_id=user.id,
+    )
+
     with mocked_irc_bot() as mock:
-        event = UserDetailsUpdated(
-            occurred_at=now(), user_id=user.id, initiator_id=user.id,
-        )
         user_signals.details_updated.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 def test_suspended_account_announced(app, make_user):
@@ -119,13 +124,14 @@ def test_suspended_account_announced(app, make_user):
     admin = make_user('She-Ra')
     user = make_user('Skeletor')
 
+    event = UserAccountSuspended(
+        occurred_at=now(), user_id=user.id, initiator_id=admin.id
+    )
+
     with mocked_irc_bot() as mock:
-        event = UserAccountSuspended(
-            occurred_at=now(), user_id=user.id, initiator_id=admin.id
-        )
         user_signals.account_suspended.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 def test_unsuspended_account_announced(app, make_user):
@@ -134,13 +140,14 @@ def test_unsuspended_account_announced(app, make_user):
     admin = make_user('TheBoss')
     user = make_user('RambaZamba')
 
+    event = UserAccountUnsuspended(
+        occurred_at=now(), user_id=user.id, initiator_id=admin.id
+    )
+
     with mocked_irc_bot() as mock:
-        event = UserAccountUnsuspended(
-            occurred_at=now(), user_id=user.id, initiator_id=admin.id
-        )
         user_signals.account_unsuspended.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
 
 
 def test_deleted_account_announced(app, make_user):
@@ -152,14 +159,13 @@ def test_deleted_account_announced(app, make_user):
     admin = make_user('UberDude')
     user = make_user('Snake', user_id='76b0c57f-8909-4b02-90c9-96e0a817f738')
 
-    with mocked_irc_bot() as mock:
-        user_command_service.delete_account(
-            user.id, admin.id, 'specious reason'
-        )
+    user_command_service.delete_account(user.id, admin.id, 'specious reason')
 
-        event = UserAccountDeleted(
-            occurred_at=now(), user_id=user.id, initiator_id=admin.id
-        )
+    event = UserAccountDeleted(
+        occurred_at=now(), user_id=user.id, initiator_id=admin.id
+    )
+
+    with mocked_irc_bot() as mock:
         user_signals.account_deleted.send(None, event=event)
 
-        assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)

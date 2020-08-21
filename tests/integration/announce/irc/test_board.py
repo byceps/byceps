@@ -43,19 +43,20 @@ def test_announce_topic_created(app, topic, creator):
         f'das Thema "Brötchen zum Frühstück" erstellt: {expected_link}'
     )
 
+    event = BoardTopicCreated(
+        occurred_at=topic.created_at,
+        initiator_id=creator.id,
+        topic_id=topic.id,
+        topic_creator_id=creator.id,
+        topic_creator_screen_name=creator.screen_name,
+        topic_title=topic.title,
+        url=expected_link,
+    )
+
     with mocked_irc_bot() as mock:
-        event = BoardTopicCreated(
-            occurred_at=topic.created_at,
-            initiator_id=creator.id,
-            topic_id=topic.id,
-            topic_creator_id=creator.id,
-            topic_creator_screen_name=creator.screen_name,
-            topic_title=topic.title,
-            url=expected_link,
-        )
         board_signals.topic_created.send(None, event=event)
 
-        assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 def test_announce_topic_hidden(app, topic, creator, moderator):
@@ -67,21 +68,22 @@ def test_announce_topic_hidden(app, topic, creator, moderator):
         f'versteckt: {expected_link}'
     )
 
+    event = BoardTopicHidden(
+        occurred_at=now(),
+        initiator_id=moderator.id,
+        topic_id=topic.id,
+        topic_creator_id=creator.id,
+        topic_creator_screen_name=creator.screen_name,
+        topic_title=topic.title,
+        moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
+        url=expected_link,
+    )
+
     with mocked_irc_bot() as mock:
-        event = BoardTopicHidden(
-            occurred_at=now(),
-            initiator_id=moderator.id,
-            topic_id=topic.id,
-            topic_creator_id=creator.id,
-            topic_creator_screen_name=creator.screen_name,
-            topic_title=topic.title,
-            moderator_id=moderator.id,
-            moderator_screen_name=moderator.screen_name,
-            url=expected_link,
-        )
         board_signals.topic_hidden.send(None, event=event)
 
-        assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 def test_announce_topic_unhidden(app, topic, creator, moderator):
@@ -93,21 +95,22 @@ def test_announce_topic_unhidden(app, topic, creator, moderator):
         f'wieder sichtbar gemacht: {expected_link}'
     )
 
+    event = BoardTopicUnhidden(
+        occurred_at=now(),
+        initiator_id=moderator.id,
+        topic_id=topic.id,
+        topic_creator_id=creator.id,
+        topic_creator_screen_name=creator.screen_name,
+        topic_title=topic.title,
+        moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
+        url=expected_link,
+    )
+
     with mocked_irc_bot() as mock:
-        event = BoardTopicUnhidden(
-            occurred_at=now(),
-            initiator_id=moderator.id,
-            topic_id=topic.id,
-            topic_creator_id=creator.id,
-            topic_creator_screen_name=creator.screen_name,
-            topic_title=topic.title,
-            moderator_id=moderator.id,
-            moderator_screen_name=moderator.screen_name,
-            url=expected_link,
-        )
         board_signals.topic_unhidden.send(None, event=event)
 
-        assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 def test_announce_topic_locked(app, topic, creator, moderator):
@@ -119,21 +122,22 @@ def test_announce_topic_locked(app, topic, creator, moderator):
         f'geschlossen: {expected_link}'
     )
 
+    event = BoardTopicLocked(
+        occurred_at=now(),
+        initiator_id=moderator.id,
+        topic_id=topic.id,
+        topic_creator_id=creator.id,
+        topic_creator_screen_name=creator.screen_name,
+        topic_title=topic.title,
+        moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
+        url=expected_link,
+    )
+
     with mocked_irc_bot() as mock:
-        event = BoardTopicLocked(
-            occurred_at=now(),
-            initiator_id=moderator.id,
-            topic_id=topic.id,
-            topic_creator_id=creator.id,
-            topic_creator_screen_name=creator.screen_name,
-            topic_title=topic.title,
-            moderator_id=moderator.id,
-            moderator_screen_name=moderator.screen_name,
-            url=expected_link,
-        )
         board_signals.topic_locked.send(None, event=event)
 
-        assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 def test_announce_topic_unlocked(app, topic, creator, moderator):
@@ -145,21 +149,22 @@ def test_announce_topic_unlocked(app, topic, creator, moderator):
         f'wieder geöffnet: {expected_link}'
     )
 
+    event = BoardTopicUnlocked(
+        occurred_at=now(),
+        initiator_id=moderator.id,
+        topic_id=topic.id,
+        topic_creator_id=creator.id,
+        topic_creator_screen_name=creator.screen_name,
+        topic_title=topic.title,
+        moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
+        url=expected_link,
+    )
+
     with mocked_irc_bot() as mock:
-        event = BoardTopicUnlocked(
-            occurred_at=now(),
-            initiator_id=moderator.id,
-            topic_id=topic.id,
-            topic_creator_id=creator.id,
-            topic_creator_screen_name=creator.screen_name,
-            topic_title=topic.title,
-            moderator_id=moderator.id,
-            moderator_screen_name=moderator.screen_name,
-            url=expected_link,
-        )
         board_signals.topic_unlocked.send(None, event=event)
 
-        assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 def test_announce_topic_pinned(app, topic, creator, moderator):
@@ -171,21 +176,22 @@ def test_announce_topic_pinned(app, topic, creator, moderator):
         f'angepinnt: {expected_link}'
     )
 
+    event = BoardTopicPinned(
+        occurred_at=now(),
+        initiator_id=moderator.id,
+        topic_id=topic.id,
+        topic_creator_id=creator.id,
+        topic_creator_screen_name=creator.screen_name,
+        topic_title=topic.title,
+        moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
+        url=expected_link,
+    )
+
     with mocked_irc_bot() as mock:
-        event = BoardTopicPinned(
-            occurred_at=now(),
-            initiator_id=moderator.id,
-            topic_id=topic.id,
-            topic_creator_id=creator.id,
-            topic_creator_screen_name=creator.screen_name,
-            topic_title=topic.title,
-            moderator_id=moderator.id,
-            moderator_screen_name=moderator.screen_name,
-            url=expected_link,
-        )
         board_signals.topic_pinned.send(None, event=event)
 
-        assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 def test_announce_topic_unpinned(app, topic, creator, moderator):
@@ -197,21 +203,22 @@ def test_announce_topic_unpinned(app, topic, creator, moderator):
         f'wieder gelöst: {expected_link}'
     )
 
+    event = BoardTopicUnpinned(
+        occurred_at=now(),
+        initiator_id=moderator.id,
+        topic_id=topic.id,
+        topic_creator_id=creator.id,
+        topic_creator_screen_name=creator.screen_name,
+        topic_title=topic.title,
+        moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
+        url=expected_link,
+    )
+
     with mocked_irc_bot() as mock:
-        event = BoardTopicUnpinned(
-            occurred_at=now(),
-            initiator_id=moderator.id,
-            topic_id=topic.id,
-            topic_creator_id=creator.id,
-            topic_creator_screen_name=creator.screen_name,
-            topic_title=topic.title,
-            moderator_id=moderator.id,
-            moderator_screen_name=moderator.screen_name,
-            url=expected_link,
-        )
         board_signals.topic_unpinned.send(None, event=event)
 
-        assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 def test_announce_topic_moved(
@@ -225,25 +232,26 @@ def test_announce_topic_moved(
         f'aus "Kategorie 1" in "Kategorie 2" verschoben: {expected_link}'
     )
 
+    event = BoardTopicMoved(
+        occurred_at=now(),
+        initiator_id=moderator.id,
+        topic_id=topic.id,
+        topic_creator_id=creator.id,
+        topic_creator_screen_name=creator.screen_name,
+        topic_title=topic.title,
+        old_category_id=category.id,
+        old_category_title=category.title,
+        new_category_id=another_category.id,
+        new_category_title=another_category.title,
+        moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
+        url=expected_link,
+    )
+
     with mocked_irc_bot() as mock:
-        event = BoardTopicMoved(
-            occurred_at=now(),
-            initiator_id=moderator.id,
-            topic_id=topic.id,
-            topic_creator_id=creator.id,
-            topic_creator_screen_name=creator.screen_name,
-            topic_title=topic.title,
-            old_category_id=category.id,
-            old_category_title=category.title,
-            new_category_id=another_category.id,
-            new_category_title=another_category.title,
-            moderator_id=moderator.id,
-            moderator_screen_name=moderator.screen_name,
-            url=expected_link,
-        )
         board_signals.topic_moved.send(None, event=event)
 
-        assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 def test_announce_posting_created(app, posting, creator):
@@ -255,41 +263,43 @@ def test_announce_posting_created(app, posting, creator):
         f'geantwortet: {expected_link}'
     )
 
+    event = BoardPostingCreated(
+        occurred_at=posting.created_at,
+        initiator_id=creator.id,
+        posting_creator_id=creator.id,
+        posting_creator_screen_name=creator.screen_name,
+        posting_id=posting.id,
+        topic_id=posting.topic.id,
+        topic_title=posting.topic.title,
+        topic_muted=posting.topic.muted,
+        url=expected_link,
+    )
+
     with mocked_irc_bot() as mock:
-        event = BoardPostingCreated(
-            occurred_at=posting.created_at,
-            initiator_id=creator.id,
-            posting_creator_id=creator.id,
-            posting_creator_screen_name=creator.screen_name,
-            posting_id=posting.id,
-            topic_id=posting.topic.id,
-            topic_title=posting.topic.title,
-            topic_muted=posting.topic.muted,
-            url=expected_link,
-        )
         board_signals.posting_created.send(None, event=event)
 
-        assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 def test_announce_posting_created_on_muted_topic(app, posting, creator):
     expected_link = f'http://example.com/board/postings/{posting.id}'
 
+    event = BoardPostingCreated(
+        occurred_at=posting.created_at,
+        initiator_id=creator.id,
+        posting_creator_id=creator.id,
+        posting_creator_screen_name=creator.screen_name,
+        posting_id=posting.id,
+        topic_id=posting.topic.id,
+        topic_title=posting.topic.title,
+        topic_muted=True,
+        url=expected_link,
+    )
+
     with mocked_irc_bot() as mock:
-        event = BoardPostingCreated(
-            occurred_at=posting.created_at,
-            initiator_id=creator.id,
-            posting_creator_id=creator.id,
-            posting_creator_screen_name=creator.screen_name,
-            posting_id=posting.id,
-            topic_id=posting.topic.id,
-            topic_title=posting.topic.title,
-            topic_muted=True,
-            url=expected_link,
-        )
         board_signals.posting_created.send(None, event=event)
 
-        assert not mock.called
+    assert not mock.called
 
 
 def test_announce_posting_hidden(app, posting, creator, moderator):
@@ -302,22 +312,23 @@ def test_announce_posting_hidden(app, posting, creator, moderator):
         f'versteckt: {expected_link}'
     )
 
+    event = BoardPostingHidden(
+        occurred_at=now(),
+        initiator_id=moderator.id,
+        posting_id=posting.id,
+        posting_creator_id=creator.id,
+        posting_creator_screen_name=creator.screen_name,
+        topic_id=posting.topic.id,
+        topic_title=posting.topic.title,
+        moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
+        url=expected_link,
+    )
+
     with mocked_irc_bot() as mock:
-        event = BoardPostingHidden(
-            occurred_at=now(),
-            initiator_id=moderator.id,
-            posting_id=posting.id,
-            posting_creator_id=creator.id,
-            posting_creator_screen_name=creator.screen_name,
-            topic_id=posting.topic.id,
-            topic_title=posting.topic.title,
-            moderator_id=moderator.id,
-            moderator_screen_name=moderator.screen_name,
-            url=expected_link,
-        )
         board_signals.posting_hidden.send(None, event=event)
 
-        assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 def test_announce_posting_unhidden(app, posting, creator, moderator):
@@ -330,22 +341,23 @@ def test_announce_posting_unhidden(app, posting, creator, moderator):
         f'wieder sichtbar gemacht: {expected_link}'
     )
 
+    event = BoardPostingUnhidden(
+        occurred_at=now(),
+        initiator_id=moderator.id,
+        posting_id=posting.id,
+        posting_creator_id=creator.id,
+        posting_creator_screen_name=creator.screen_name,
+        topic_id=posting.topic.id,
+        topic_title=posting.topic.title,
+        moderator_id=moderator.id,
+        moderator_screen_name=moderator.screen_name,
+        url=expected_link,
+    )
+
     with mocked_irc_bot() as mock:
-        event = BoardPostingUnhidden(
-            occurred_at=now(),
-            initiator_id=moderator.id,
-            posting_id=posting.id,
-            posting_creator_id=creator.id,
-            posting_creator_screen_name=creator.screen_name,
-            topic_id=posting.topic.id,
-            topic_title=posting.topic.title,
-            moderator_id=moderator.id,
-            moderator_screen_name=moderator.screen_name,
-            url=expected_link,
-        )
         board_signals.posting_unhidden.send(None, event=event)
 
-        assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channels, expected_text)
 
 
 # helpers
