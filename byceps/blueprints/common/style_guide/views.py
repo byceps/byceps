@@ -1,6 +1,6 @@
 """
-byceps.blueprints.style_guide.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.style_guide.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,8 +10,8 @@ import xml.etree.ElementTree as ET
 
 from flask import current_app
 
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.templating import templated
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
 
 
 blueprint = create_blueprint('style_guide', __name__)

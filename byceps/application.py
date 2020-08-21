@@ -193,7 +193,7 @@ def _get_blueprints_metrics() -> Iterator[BlueprintReg]:
 
 def _get_blueprints_debug() -> Iterator[BlueprintReg]:
     yield from [
-        ('style_guide',                 '/style_guide'              ),
+        ('common.style_guide',          '/style_guide'              ),
     ]
 
 
