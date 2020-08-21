@@ -1,6 +1,6 @@
 """
-byceps.blueprints.user_message.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.user_message.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Send messages from one user to another.
 
@@ -10,14 +10,14 @@ Send messages from one user to another.
 
 from flask import abort, g, request, url_for
 
-from ...services.user import service as user_service
-from ...services.user_message import service as user_message_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to
+from ....services.user import service as user_service
+from ....services.user_message import service as user_message_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to
 
-from ..authentication.decorators import login_required
+from ...authentication.decorators import login_required
 
 from .forms import CreateForm
 
