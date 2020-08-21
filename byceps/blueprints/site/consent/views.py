@@ -1,6 +1,6 @@
 """
-byceps.blueprints.consent.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.consent.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -11,14 +11,14 @@ from uuid import UUID
 
 from flask import abort, request
 
-from ...services.consent import consent_service, subject_service
-from ...services.verification_token import service as verification_token_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_error, flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to
+from ....services.consent import consent_service, subject_service
+from ....services.verification_token import service as verification_token_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_error, flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to
 
-from ..authentication.views import _get_required_consent_subject_ids
+from ...authentication.views import _get_required_consent_subject_ids
 
 from .forms import create_consent_form, get_subject_field_name
 

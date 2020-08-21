@@ -1,6 +1,6 @@
 """
-byceps.blueprints.consent.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.consent.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -9,7 +9,7 @@ byceps.blueprints.consent.forms
 from wtforms import BooleanField, HiddenField
 from wtforms.validators import InputRequired
 
-from ...util.l10n import LocalizedForm
+from ....util.l10n import LocalizedForm
 
 
 def create_consent_form(subjects):
