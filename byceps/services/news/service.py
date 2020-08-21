@@ -109,6 +109,7 @@ def publish_item(
         occurred_at=item.published_at,
         initiator_id=initiator_id,
         item_id=item.id,
+        channel_id=item.channel.id,
         title=item.title,
         external_url=item.external_url,
     )

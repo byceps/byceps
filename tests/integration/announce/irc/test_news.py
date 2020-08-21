@@ -41,6 +41,7 @@ def test_published_news_item_announced(app, item, editor):
             occurred_at=now(),
             initiator_id=editor.id,
             item_id=item.id,
+            channel_id=item.channel.id,
             title=item.title,
             external_url=item.external_url,
         )

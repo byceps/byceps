@@ -8,7 +8,7 @@ byceps.events.news
 
 from dataclasses import dataclass
 
-from ..services.news.transfer.models import ItemID
+from ..services.news.transfer.models import ChannelID, ItemID
 
 from .base import _BaseEvent
 
@@ -16,5 +16,6 @@ from .base import _BaseEvent
 @dataclass(frozen=True)
 class NewsItemPublished(_BaseEvent):
     item_id: ItemID
+    channel_id: ChannelID
     title: str
     external_url: str

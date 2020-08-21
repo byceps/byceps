@@ -10,10 +10,7 @@ Announce news events on IRC.
 
 from ...events.news import NewsItemPublished
 from ...services.brand import service as brand_service
-from ...services.news import (
-    channel_service as news_channel_service,
-    service as news_service,
-)
+from ...services.news import channel_service as news_channel_service
 from ...services.user import service as user_service
 from ...signals import news as news_signals
 from ...util.irc import send_message
@@ -32,8 +29,7 @@ def announce_news_item_published_publicly(event: NewsItemPublished) -> None:
     """Announce publicly that a news item has been published."""
     channels = [CHANNEL_PUBLIC]
 
-    item = news_service.find_item(event.item_id)
-    channel = news_channel_service.find_channel(item.channel.id)
+    channel = news_channel_service.find_channel(event.channel_id)
     brand = brand_service.find_brand(channel.brand_id)
 
     text = (
