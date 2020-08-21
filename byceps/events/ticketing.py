@@ -7,8 +7,11 @@ byceps.events.ticketing
 """
 
 from dataclasses import dataclass
+from typing import Optional
 
-from ..services.ticketing.transfer.models import TicketID
+from ..services.seating.transfer.models import SeatID
+from ..services.ticketing.transfer.models import TicketCode, TicketID
+from ..typing import UserID
 
 from .base import _BaseEvent
 
@@ -20,4 +23,7 @@ class _TicketEvent(_BaseEvent):
 
 @dataclass(frozen=True)
 class TicketCheckedIn(_TicketEvent):
-    pass
+    ticket_code: TicketCode
+    occupied_seat_id: Optional[SeatID]
+    user_id: Optional[UserID]
+    user_screen_name: Optional[str]
