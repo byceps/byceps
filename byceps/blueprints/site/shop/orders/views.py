@@ -1,6 +1,6 @@
 """
-byceps.blueprints.shop.orders.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.shop.orders.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,20 +8,20 @@ byceps.blueprints.shop.orders.views
 
 from flask import abort, g, request
 
-from ....services.shop.order.email import service as order_email_service
-from ....services.shop.order import service as order_service
-from ....services.shop.order.transfer.models import PaymentState
-from ....services.shop.storefront import service as storefront_service
-from ....services.site import service as site_service
-from ....services.snippet.transfer.models import Scope
-from ....signals import shop as shop_signals
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.templating import templated
-from ....util.views import redirect_to
+from .....services.shop.order.email import service as order_email_service
+from .....services.shop.order import service as order_service
+from .....services.shop.order.transfer.models import PaymentState
+from .....services.shop.storefront import service as storefront_service
+from .....services.site import service as site_service
+from .....services.snippet.transfer.models import Scope
+from .....signals import shop as shop_signals
+from .....util.framework.blueprint import create_blueprint
+from .....util.framework.flash import flash_error, flash_success
+from .....util.framework.templating import templated
+from .....util.views import redirect_to
 
-from ...authentication.decorators import login_required
-from ...site.snippet.templating import render_snippet_as_partial
+from ....authentication.decorators import login_required
+from ....site.snippet.templating import render_snippet_as_partial
 
 from .forms import CancelForm
 

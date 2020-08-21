@@ -101,7 +101,7 @@ def orderer(admin_app, user):
 
 
 @patch('byceps.signals.shop.order_placed.send')
-@patch('byceps.blueprints.shop.order.views.order_email_service')
+@patch('byceps.blueprints.site.shop.order.views.order_email_service')
 def test_order(
     order_email_service_mock,
     order_placed_mock,
@@ -158,7 +158,7 @@ def test_order(
 
 
 @patch('byceps.signals.shop.order_placed.send')
-@patch('byceps.blueprints.shop.order.views.order_email_service')
+@patch('byceps.blueprints.site.shop.order.views.order_email_service')
 def test_order_single(
     order_email_service_mock,
     order_placed_mock,

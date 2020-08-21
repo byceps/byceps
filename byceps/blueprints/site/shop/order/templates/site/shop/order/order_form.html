@@ -12,8 +12,8 @@
   {%- if article_compilation %}
   <form action="{{ url_for('.order') }}" method="post" class="disable-submit-button-on-submit">
 
-{%- include 'shop/order/_order_form_orderer.html' %}
-{%- include 'shop/order/_order_form_articles.html' %}
+{%- include 'site/shop/order/_order_form_orderer.html' %}
+{%- include 'site/shop/order/_order_form_articles.html' %}
 
     {{ form_buttons('Jetzt kostenpflichtig bestellen') }}
   </form>

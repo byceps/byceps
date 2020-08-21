@@ -1,6 +1,6 @@
 """
-byceps.blueprints.shop.order.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.shop.order.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -9,9 +9,9 @@ byceps.blueprints.shop.order.forms
 from wtforms import SelectField, StringField
 from wtforms.validators import InputRequired, Length
 
-from ....services.shop.cart.models import Cart
-from ....services.shop.order.models.orderer import Orderer
-from ....util.l10n import LocalizedForm
+from .....services.shop.cart.models import Cart
+from .....services.shop.order.models.orderer import Orderer
+from .....util.l10n import LocalizedForm
 
 
 class OrderForm(LocalizedForm):
