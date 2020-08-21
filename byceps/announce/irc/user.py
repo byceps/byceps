@@ -25,7 +25,7 @@ from ...util.jobqueue import enqueue
 
 from ..helpers import get_screen_name_or_fallback
 
-from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
+from ._config import CHANNEL_ORGA_LOG
 
 
 @user_signals.account_created.connect

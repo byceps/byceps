@@ -18,7 +18,7 @@ from ...util.jobqueue import enqueue
 
 from ..helpers import get_screen_name_or_fallback
 
-from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
+from ._config import CHANNEL_ORGA_LOG
 
 
 @shop_signals.order_placed.connect

@@ -3,8 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from unittest.mock import patch
-
 import pytest
 
 from byceps.services.user_message import service as user_message_service
