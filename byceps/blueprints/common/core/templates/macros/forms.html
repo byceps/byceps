@@ -3,9 +3,7 @@
 
 {% macro form_fieldset() -%}
   <fieldset>
-    <ol>
 {{ caller() }}
-    </ol>
   </fieldset>
 {%- endmacro %}
 
@@ -42,10 +40,10 @@
 
 
 {%- macro _row(field) -%}
-      <li{% if field.errors %} class="error"{% endif %}>
+      <div class="form-row{% if field.errors %} error{% endif %}">
 {{- caller() -}}
         {{- _errors(field) -}}
-      </li>
+      </div>
 {%- endmacro %}
 
 
@@ -61,12 +59,12 @@
 
 
 {% macro form_supplement(label=None) -%}
-      <li>
+      <div class="form-row">
         <div class="label">{% if label is not none %}{{ label }}{% endif %}</div>
         <div class="supplement">
 {{ caller() }}
         </div>
-      </li>
+      </div>
 {%- endmacro %}
 
 

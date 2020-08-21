@@ -5,24 +5,22 @@
 <form>
 
   <fieldset>
-    <ol>
-      <li>
-        <label for="field1">Field #1</label>
-        <input id="field1" name="field1">
-      </li>
-      <li class="error">
-        <label for="field2">Field #2</label>
-        <input id="field2" name="field2">
-        <ol class="errors">
-          <li><strong>Error:</strong> <span>Your answer must be in the form of a question. (<a href="#">More on this.</a>)</span></li>
-        </ol>
-      </li>
-      <li>
-        <div class="checkbox">
-          <input id="check_it" name="check_it" type="checkbox"> <label for="check_it">Tick, tick, tick, tick.</label>
-        </div>
-      </li>
-    </ol>
+    <div class="form-field">
+      <label for="field1">Field #1</label>
+      <input id="field1" name="field1">
+    </div>
+    <div class="form-field error">
+      <label for="field2">Field #2</label>
+      <input id="field2" name="field2">
+      <ol class="errors">
+        <li><strong>Error:</strong> <span>Your answer must be in the form of a question. (<a href="#">More on this.</a>)</span></li>
+      </ol>
+    </div>
+    <div>
+      <div class="checkbox">
+        <input id="check_it" name="check_it" type="checkbox"> <label for="check_it">Tick, tick, tick, tick.</label>
+      </div>
+    </div>
   </fieldset>
 
   {{ form_buttons('Do it!', cancel_url='#') }}

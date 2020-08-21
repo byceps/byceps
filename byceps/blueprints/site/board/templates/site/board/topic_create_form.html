@@ -18,7 +18,7 @@
     {%- call form_fieldset() %}
       {{ form_field(form.title, required='required', maxlength=80, autofocus='autofocus') }}
       {{ form_field(form.body, required='required') }}
-      <li>{%- include 'site/board/_posting_form_body_supplement.html' %}</li>
+{%- include 'site/board/_posting_form_body_supplement.html' %}
     {%- endcall %}
 
     {{ form_buttons('Hinzufügen', cancel_url=url_for('.category_view', slug=category.slug)) }}
