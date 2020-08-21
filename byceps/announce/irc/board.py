@@ -28,6 +28,8 @@ from ...signals import board as board_signals
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
+from ..helpers import get_screen_name_or_fallback
+
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 
 
@@ -40,10 +42,13 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
     """Announce that someone has created a board topic."""
     channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
 
+    topic_creator_screen_name = get_screen_name_or_fallback(
+        event.topic_creator_screen_name
+    )
     board_label = _get_board_label(event.topic_id)
 
     text = (
-        f'{event.topic_creator_screen_name} hat im {board_label} '
+        f'{topic_creator_screen_name} hat im {board_label} '
         f'das Thema "{event.topic_title}" erstellt: {event.url}'
     )
 
@@ -59,11 +64,17 @@ def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
     """Announce that a moderator has hidden a board topic."""
     channels = [CHANNEL_ORGA_LOG]
 
+    moderator_screen_name = get_screen_name_or_fallback(
+        event.moderator_screen_name
+    )
+    topic_creator_screen_name = get_screen_name_or_fallback(
+        event.topic_creator_screen_name
+    )
     board_label = _get_board_label(event.topic_id)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
+        f'{moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {topic_creator_screen_name} '
         f'versteckt: {event.url}'
     )
 
@@ -81,11 +92,17 @@ def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
     """Announce that a moderator has made a board topic visible again."""
     channels = [CHANNEL_ORGA_LOG]
 
+    moderator_screen_name = get_screen_name_or_fallback(
+        event.moderator_screen_name
+    )
+    topic_creator_screen_name = get_screen_name_or_fallback(
+        event.topic_creator_screen_name
+    )
     board_label = _get_board_label(event.topic_id)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
+        f'{moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {topic_creator_screen_name} '
         f'wieder sichtbar gemacht: {event.url}'
     )
 
@@ -101,11 +118,17 @@ def announce_board_topic_locked(event: BoardTopicLocked) -> None:
     """Announce that a moderator has locked a board topic."""
     channels = [CHANNEL_ORGA_LOG]
 
+    moderator_screen_name = get_screen_name_or_fallback(
+        event.moderator_screen_name
+    )
+    topic_creator_screen_name = get_screen_name_or_fallback(
+        event.topic_creator_screen_name
+    )
     board_label = _get_board_label(event.topic_id)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
+        f'{moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {topic_creator_screen_name} '
         f'geschlossen: {event.url}'
     )
 
@@ -123,11 +146,17 @@ def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
     """Announce that a moderator has unlocked a board topic."""
     channels = [CHANNEL_ORGA_LOG]
 
+    moderator_screen_name = get_screen_name_or_fallback(
+        event.moderator_screen_name
+    )
+    topic_creator_screen_name = get_screen_name_or_fallback(
+        event.topic_creator_screen_name
+    )
     board_label = _get_board_label(event.topic_id)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
+        f'{moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {topic_creator_screen_name} '
         f'wieder geöffnet: {event.url}'
     )
 
@@ -143,11 +172,17 @@ def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
     """Announce that a moderator has pinned a board topic."""
     channels = [CHANNEL_ORGA_LOG]
 
+    moderator_screen_name = get_screen_name_or_fallback(
+        event.moderator_screen_name
+    )
+    topic_creator_screen_name = get_screen_name_or_fallback(
+        event.topic_creator_screen_name
+    )
     board_label = _get_board_label(event.topic_id)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
+        f'{moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {topic_creator_screen_name} '
         f'angepinnt: {event.url}'
     )
 
@@ -165,11 +200,17 @@ def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
     """Announce that a moderator has unpinned a board topic."""
     channels = [CHANNEL_ORGA_LOG]
 
+    moderator_screen_name = get_screen_name_or_fallback(
+        event.moderator_screen_name
+    )
+    topic_creator_screen_name = get_screen_name_or_fallback(
+        event.topic_creator_screen_name
+    )
     board_label = _get_board_label(event.topic_id)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
+        f'{moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {topic_creator_screen_name} '
         f'wieder gelöst: {event.url}'
     )
 
@@ -185,11 +226,17 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
     """Announce that a moderator has moved a board topic to another category."""
     channels = [CHANNEL_ORGA_LOG]
 
+    moderator_screen_name = get_screen_name_or_fallback(
+        event.moderator_screen_name
+    )
+    topic_creator_screen_name = get_screen_name_or_fallback(
+        event.topic_creator_screen_name
+    )
     board_label = _get_board_label(event.topic_id)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {event.topic_creator_screen_name} '
+        f'{moderator_screen_name} hat im {board_label} das Thema '
+        f'"{event.topic_title}" von {topic_creator_screen_name} '
         f'aus "{event.old_category_title}" in "{event.new_category_title}" '
         f'verschoben: {event.url}'
     )
@@ -208,13 +255,16 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     """Announce that someone has created a board posting."""
     channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
 
+    posting_creator_screen_name = get_screen_name_or_fallback(
+        event.posting_creator_screen_name
+    )
     board_label = _get_board_label(event.topic_id)
 
     if event.topic_muted:
         return
 
     text = (
-        f'{event.posting_creator_screen_name} hat im {board_label} '
+        f'{posting_creator_screen_name} hat im {board_label} '
         f'auf das Thema "{event.topic_title}" geantwortet: {event.url}'
     )
 
@@ -232,11 +282,17 @@ def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     """Announce that a moderator has hidden a board posting."""
     channels = [CHANNEL_ORGA_LOG]
 
+    moderator_screen_name = get_screen_name_or_fallback(
+        event.moderator_screen_name
+    )
+    posting_creator_screen_name = get_screen_name_or_fallback(
+        event.posting_creator_screen_name
+    )
     board_label = _get_board_label(event.topic_id)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} '
-        f'eine Antwort von {event.posting_creator_screen_name} '
+        f'{moderator_screen_name} hat im {board_label} '
+        f'eine Antwort von {posting_creator_screen_name} '
         f'im Thema "{event.topic_title}" versteckt: {event.url}'
     )
 
@@ -254,11 +310,17 @@ def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
     """Announce that a moderator has made a board posting visible again."""
     channels = [CHANNEL_ORGA_LOG]
 
+    moderator_screen_name = get_screen_name_or_fallback(
+        event.moderator_screen_name
+    )
+    posting_creator_screen_name = get_screen_name_or_fallback(
+        event.posting_creator_screen_name
+    )
     board_label = _get_board_label(event.topic_id)
 
     text = (
-        f'{event.moderator_screen_name} hat im {board_label} '
-        f'eine Antwort von {event.posting_creator_screen_name} '
+        f'{moderator_screen_name} hat im {board_label} '
+        f'eine Antwort von {posting_creator_screen_name} '
         f'im Thema "{event.topic_title}" wieder sichtbar gemacht: {event.url}'
     )
 

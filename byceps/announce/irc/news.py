@@ -16,6 +16,8 @@ from ...signals import news as news_signals
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
+from ..helpers import get_screen_name_or_fallback
+
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 
 
@@ -44,10 +46,12 @@ def announce_news_item_published_internally(event: NewsItemPublished) -> None:
     """Announce internally that a news item has been published."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator_label = user_service.find_screen_name(event.initiator_id) or 'Jemand'
+    initiator_screen_name = get_screen_name_or_fallback(
+        user_service.find_screen_name(event.initiator_id)
+    )
 
     text = (
-        f'{initiator_label} hat die News "{event.title}" veröffentlicht. '
+        f'{initiator_screen_name} hat die News "{event.title}" veröffentlicht. '
         f'{event.external_url}'
     )
 

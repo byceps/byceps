@@ -16,6 +16,8 @@ from ...services.brand import settings_service as brand_settings_service
 from ...signals import board as board_signals
 from ...util.jobqueue import enqueue
 
+from ..helpers import get_screen_name_or_fallback
+
 
 # This is a pretty basic implementation that only supports a single
 # webhook and that fetches its configuration from a brand's setting.
@@ -77,8 +79,12 @@ def _on_board_topic_created(sender, *, event: BoardTopicCreated = None) -> None:
 
 def announce_board_topic_created(event: BoardTopicCreated) -> None:
     """Announce that someone has created a board topic."""
+    topic_creator_screen_name = get_screen_name_or_fallback(
+        event.topic_creator_screen_name
+    )
+
     text = (
-        f'[Forum] {event.topic_creator_screen_name} hat das Thema '
+        f'[Forum] {topic_creator_screen_name} hat das Thema '
         f'"{event.topic_title}" erstellt: <{event.url}>'
     )
 
@@ -97,8 +103,12 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     if event.topic_muted:
         return
 
+    posting_creator_screen_name = get_screen_name_or_fallback(
+        event.posting_creator_screen_name
+    )
+
     text = (
-        f'[Forum] {event.posting_creator_screen_name} hat auf das Thema '
+        f'[Forum] {posting_creator_screen_name} hat auf das Thema '
         f'"{event.topic_title}" geantwortet: <{event.url}>'
     )
 

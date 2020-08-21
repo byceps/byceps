@@ -16,6 +16,8 @@ from ...typing import UserID
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
+from ..helpers import get_screen_name_or_fallback
+
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 
 
@@ -81,8 +83,4 @@ def announce_order_canceled(event: ShopOrderCanceled) -> None:
 
 def _get_screen_name(user_id: UserID) -> str:
     screen_name = user_service.find_screen_name(user_id)
-
-    if screen_name is None:
-        return 'Jemand'
-
-    return screen_name
+    return get_screen_name_or_fallback(screen_name)

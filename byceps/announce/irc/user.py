@@ -19,8 +19,11 @@ from ...events.user import (
 )
 from ...services.user import service as user_service
 from ...signals import user as user_signals
+from ...typing import UserID
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
+
+from ..helpers import get_screen_name_or_fallback
 
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 
@@ -34,17 +37,12 @@ def announce_user_account_created(event: UserAccountCreated) -> None:
     """Announce that a user account has been created."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.get_user(event.user_id)
-
-    if event.initiator_id is not None:
-        initiator = user_service.get_user(event.initiator_id)
-        initiator_label = initiator.screen_name
-    else:
-        initiator_label = 'Jemand'
+    initiator_screen_name = _get_screen_name(event.initiator_id)
+    user_screen_name = _get_screen_name(event.user_id)
 
     text = (
-        f'{initiator_label} '
-        f'hat das Benutzerkonto "{user.screen_name}" angelegt.'
+        f'{initiator_screen_name} '
+        f'hat das Benutzerkonto "{user_screen_name}" angelegt.'
     )
 
     send_message(channels, text)
@@ -61,10 +59,10 @@ def announce_user_screen_name_changed(event: UserScreenNameChanged) -> None:
     """Announce that a user's screen name has been changed."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator = user_service.get_user(event.initiator_id)
+    initiator_screen_name = _get_screen_name(event.initiator_id)
 
     text = (
-        f'{initiator.screen_name} hat das Benutzerkonto '
+        f'{initiator_screen_name} hat das Benutzerkonto '
         f'"{event.old_screen_name}" in "{event.new_screen_name}" umbenannt.'
     )
 
@@ -84,12 +82,12 @@ def announce_user_email_address_invalidated(
     """Announce that a user's email address has been invalidated."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.get_user(event.user_id)
-    initiator = user_service.get_user(event.initiator_id)
+    initiator_screen_name = _get_screen_name(event.initiator_id)
+    user_screen_name = _get_screen_name(event.user_id)
 
     text = (
-        f'{initiator.screen_name} hat die E-Mail-Adresse '
-        f'des Benutzerkontos "{user.screen_name}" invalidiert.'
+        f'{initiator_screen_name} hat die E-Mail-Adresse '
+        f'des Benutzerkontos "{user_screen_name}" invalidiert.'
     )
 
     send_message(channels, text)
@@ -106,12 +104,12 @@ def announce_user_details_updated_changed(event: UserDetailsUpdated) -> None:
     """Announce that a user's details have been changed."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.get_user(event.user_id)
-    initiator = user_service.get_user(event.initiator_id)
+    initiator_screen_name = _get_screen_name(event.initiator_id)
+    user_screen_name = _get_screen_name(event.user_id)
 
     text = (
-        f'{initiator.screen_name} hat die persönlichen Daten '
-        f'des Benutzerkontos "{user.screen_name}" geändert.'
+        f'{initiator_screen_name} hat die persönlichen Daten '
+        f'des Benutzerkontos "{user_screen_name}" geändert.'
     )
 
     send_message(channels, text)
@@ -126,12 +124,12 @@ def announce_user_account_suspended(event: UserAccountSuspended) -> None:
     """Announce that a user account has been suspended."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.get_user(event.user_id)
-    initiator = user_service.get_user(event.initiator_id)
+    initiator_screen_name = _get_screen_name(event.initiator_id)
+    user_screen_name = _get_screen_name(event.user_id)
 
     text = (
-        f'{initiator.screen_name} hat das Benutzerkonto '
-        f'"{user.screen_name}" gesperrt.'
+        f'{initiator_screen_name} hat das Benutzerkonto '
+        f'"{user_screen_name}" gesperrt.'
     )
 
     send_message(channels, text)
@@ -148,12 +146,12 @@ def announce_user_account_unsuspended(event: UserAccountUnsuspended) -> None:
     """Announce that a user account has been unsuspended."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.get_user(event.user_id)
-    initiator = user_service.get_user(event.initiator_id)
+    initiator_screen_name = _get_screen_name(event.initiator_id)
+    user_screen_name = _get_screen_name(event.user_id)
 
     text = (
-        f'{initiator.screen_name} hat das Benutzerkonto '
-        f'"{user.screen_name}" entsperrt.'
+        f'{initiator_screen_name} hat das Benutzerkonto '
+        f'"{user_screen_name}" entsperrt.'
     )
 
     send_message(channels, text)
@@ -168,12 +166,17 @@ def announce_user_account_deleted(event: UserAccountDeleted) -> None:
     """Announce that a user account has been created."""
     channels = [CHANNEL_ORGA_LOG]
 
+    initiator_screen_name = _get_screen_name(event.initiator_id)
     user = user_service.get_user(event.user_id)
-    initiator = user_service.get_user(event.initiator_id)
 
     text = (
-        f'{initiator.screen_name} hat das Benutzerkonto '
+        f'{initiator_screen_name} hat das Benutzerkonto '
         f'mit der ID "{user.id}" gelöscht.'
     )
 
     send_message(channels, text)
+
+
+def _get_screen_name(user_id: UserID) -> str:
+    screen_name = user_service.find_screen_name(user_id)
+    return get_screen_name_or_fallback(screen_name)
