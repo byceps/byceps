@@ -35,9 +35,9 @@
         <td>
           <a class="board-topic-link disguised" href="{{ url_for('.topic_view', topic_id=topic.id) }}">
             <div class="board-topic-title">
-              {%- if topic.hidden %}{{ render_icon('hidden', title='versteckt (durch %s)'|format(topic.hidden_by.screen_name)) }} {% endif -%}
-              {%- if topic.locked %}{{ render_icon('lock', title='geschlossen') }} {% endif -%}
-              {%- if topic.pinned %}{{ render_icon('pin', title='angeheftet') }} {% endif -%}
+              {%- if topic.hidden %}<span class="tag tag--outlined">{{ render_icon('hidden', title='versteckt (durch %s)'|format(topic.hidden_by.screen_name)) }}</span> {% endif -%}
+              {%- if topic.locked %}<span class="tag tag--outlined">{{ render_icon('lock', title='geschlossen') }}</span> {% endif -%}
+              {%- if topic.pinned %}<span class="tag tag--outlined">{{ render_icon('pin', title='angeheftet') }}</span> {% endif -%}
               <strong>{{ topic.title }}</strong>
               {%- if topic.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
             </div>
