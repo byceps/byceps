@@ -1,6 +1,6 @@
 """
-byceps.blueprints.core.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.core.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -11,13 +11,13 @@ from typing import Optional
 
 from flask import g, render_template, url_for
 
-from ... import config
-from ...services.party import service as party_service
-from ...services.site import service as site_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.navigation import Navigation
+from .... import config
+from ....services.party import service as party_service
+from ....services.site import service as site_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.navigation import Navigation
 
-from ..common.authentication import service as authentication_blueprint_service
+from ..authentication import service as authentication_blueprint_service
 
 
 blueprint = create_blueprint('core', __name__)
