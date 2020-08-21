@@ -14,7 +14,7 @@ from ...database import db
 from ...events.user_badge import UserBadgeAwarded
 from ...typing import UserID
 
-from ..user import event_service
+from ..user import event_service, service as user_service
 
 from .badge_service import _db_entity_to_badge, find_badge, get_badges
 from .models.awarding import BadgeAwarding as DbBadgeAwarding
@@ -35,6 +35,7 @@ def award_badge_to_user(
     if badge is None:
         raise ValueError(f'Unknown badge ID "{badge_id}"')
 
+    user = user_service.get_user(user_id)
     awarded_at = datetime.utcnow()
 
     awarding = DbBadgeAwarding(badge_id, user_id, awarded_at=awarded_at)
@@ -55,6 +56,7 @@ def award_badge_to_user(
     event = UserBadgeAwarded(
         occurred_at=awarded_at,
         user_id=user_id,
+        user_screen_name=user.screen_name,
         badge_id=badge_id,
         badge_label=badge.label,
         initiator_id=initiator_id,

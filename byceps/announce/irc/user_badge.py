@@ -26,8 +26,6 @@ def announce_user_badge_awarded(event: UserBadgeAwarded) -> None:
     """Announce that a badge has been awarded to a user."""
     channels = [CHANNEL_ORGA_LOG]
 
-    user = user_service.get_user(event.user_id)
-
     if event.initiator_id:
         initiator = user_service.get_user(event.initiator_id)
         initiator_name = initiator.screen_name
@@ -36,7 +34,7 @@ def announce_user_badge_awarded(event: UserBadgeAwarded) -> None:
 
     text = (
         f'{initiator_name} hat das Abzeichen "{event.badge_label}" '
-        f'an {user.screen_name} verliehen.'
+        f'an {event.user_screen_name} verliehen.'
     )
 
     send_message(channels, text)
