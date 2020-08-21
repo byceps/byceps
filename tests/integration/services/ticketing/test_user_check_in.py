@@ -7,6 +7,7 @@ import pytest
 from pytest import raises
 
 from byceps.database import db
+from byceps.events.ticketing import TicketCheckedIn
 from byceps.services.ticketing import (
     event_service,
     ticket_creation_service,
@@ -45,12 +46,21 @@ def test_check_in_user(admin_app, ticket, ticketing_admin, make_user):
 
     ticket_id = ticket_before.id
 
-    check_in_user(ticket_id, ticketing_admin.id)
+    event = check_in_user(ticket_id, ticketing_admin.id)
 
     # -------------------------------- #
 
     ticket_after = ticket_service.find_ticket(ticket_id)
     assert ticket_before.user_checked_in
+
+    assert event.__class__ is TicketCheckedIn
+    assert event.occurred_at is not None
+    assert event.initiator_id == ticketing_admin.id
+    assert event.ticket_id == ticket.id
+    assert event.ticket_code == ticket.code
+    assert event.occupied_seat_id is None
+    assert event.user_id == ticket_user.id
+    assert event.user_screen_name == ticket_user.screen_name
 
     ticket_events_after = event_service.get_events_for_ticket(ticket_after.id)
     assert len(ticket_events_after) == 1
@@ -112,4 +122,4 @@ def test_check_in_suspended_user(
 
 
 def check_in_user(ticket_id, admin_id):
-    ticket_user_checkin_service.check_in_user(ticket_id, admin_id)
+    return ticket_user_checkin_service.check_in_user(ticket_id, admin_id)
