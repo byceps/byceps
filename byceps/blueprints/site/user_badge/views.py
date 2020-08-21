@@ -1,6 +1,6 @@
 """
-byceps.blueprints.user_badge.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.user_badge.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,10 +8,10 @@ byceps.blueprints.user_badge.views
 
 from flask import abort, g
 
-from ...services.user import service as user_service
-from ...services.user_badge import awarding_service, badge_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.templating import templated
+from ....services.user import service as user_service
+from ....services.user_badge import awarding_service, badge_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
 
 
 blueprint = create_blueprint('user_badge', __name__)
