@@ -1,6 +1,6 @@
 """
-byceps.blueprints.attendance.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.attendance.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,9 +8,9 @@ byceps.blueprints.attendance.views
 
 from flask import abort, g, request
 
-from ...services.attendance import service as attendance_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.templating import templated
+from ....services.attendance import service as attendance_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
 
 
 blueprint = create_blueprint('attendance', __name__)
