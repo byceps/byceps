@@ -13,7 +13,7 @@ from .....services.snippet.transfer.models import Scope
 from .....util.framework.blueprint import create_blueprint
 from .....util.views import create_empty_json_response
 
-from ....snippet.templating import get_snippet_context
+from ....site.snippet.templating import get_snippet_context
 
 from ...decorators import api_token_required
 

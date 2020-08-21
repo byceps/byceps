@@ -27,7 +27,7 @@ from ....util.views import (
 
 from ...authorization.decorators import permission_required
 from ...authorization.registry import permission_registry
-from ...snippet.templating import get_snippet_context
+from ...site.snippet.templating import get_snippet_context
 
 from .authorization import SnippetMountpointPermission, SnippetPermission
 from .forms import (

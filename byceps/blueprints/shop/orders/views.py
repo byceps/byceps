@@ -21,7 +21,7 @@ from ....util.framework.templating import templated
 from ....util.views import redirect_to
 
 from ...authentication.decorators import login_required
-from ...snippet.templating import render_snippet_as_partial
+from ...site.snippet.templating import render_snippet_as_partial
 
 from .forms import CancelForm
 

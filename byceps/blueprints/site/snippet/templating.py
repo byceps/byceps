@@ -1,6 +1,6 @@
 """
-byceps.blueprints.snippet.templating
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.snippet.templating
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -13,10 +13,10 @@ from typing import Set
 from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
 
-from ...services.snippet import mountpoint_service, service as snippet_service
-from ...services.snippet.service import SnippetNotFound
-from ...services.snippet.transfer.models import Mountpoint, Scope
-from ...util.templating import get_variable_value, load_template
+from ....services.snippet import mountpoint_service, service as snippet_service
+from ....services.snippet.service import SnippetNotFound
+from ....services.snippet.transfer.models import Mountpoint, Scope
+from ....util.templating import get_variable_value, load_template
 
 
 def render_snippet_as_page(version):
@@ -25,7 +25,7 @@ def render_snippet_as_page(version):
     """
     try:
         context = get_snippet_context(version)
-        return render_template('snippet/view.html', **context)
+        return render_template('site/snippet/view.html', **context)
     except TemplateNotFound:
         abort(404)
     except Exception as e:
@@ -34,7 +34,7 @@ def render_snippet_as_page(version):
         context = {
             'message': str(e),
         }
-        return render_template('snippet/error.html', **context), 500
+        return render_template('site/snippet/error.html', **context), 500
 
 
 def get_snippet_context(version):

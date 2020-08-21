@@ -1,6 +1,6 @@
 """
-byceps.blueprints.snippet.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.snippet.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,8 +8,8 @@ byceps.blueprints.snippet.views
 
 from flask import abort, g
 
-from ...services.snippet import mountpoint_service
-from ...util.framework.blueprint import create_blueprint
+from ....services.snippet import mountpoint_service
+from ....util.framework.blueprint import create_blueprint
 
 from .templating import (
     render_snippet_as_page,
