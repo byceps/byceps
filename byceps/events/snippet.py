@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from ..services.snippet.transfer.models import (
     Scope,
     SnippetID,
+    SnippetType,
     SnippetVersionID,
 )
 
@@ -22,6 +23,7 @@ class _SnippetEvent(_BaseEvent):
     snippet_id: SnippetID
     scope: Scope
     snippet_name: str
+    snippet_type: SnippetType
 
 
 @dataclass(frozen=True)

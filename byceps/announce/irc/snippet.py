@@ -9,7 +9,7 @@ Announce snippet events on IRC.
 """
 
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
-from ...services.snippet import service as snippet_service
+from ...services.snippet.transfer.models import SnippetType
 from ...services.user import service as user_service
 from ...signals import snippet as snippet_signals
 from ...util.irc import send_message
@@ -27,12 +27,11 @@ def announce_snippet_created(event: SnippetCreated) -> None:
     """Announce that a snippet has been created."""
     channels = [CHANNEL_ORGA_LOG]
 
-    snippet = snippet_service.find_snippet(event.snippet_id)
     editor_screen_name = user_service.find_screen_name(event.initiator_id)
-    type_name = 'Dokument' if snippet.is_document else 'Fragment'
+    type_label = _get_snippet_type_label(event.snippet_type)
 
     text = (
-        f'{editor_screen_name} hat das Snippet-{type_name} '
+        f'{editor_screen_name} hat das Snippet-{type_label} '
         f'"{event.snippet_name}" im Scope '
         f'"{event.scope.type_}/{event.scope.name}" angelegt.'
     )
@@ -49,12 +48,11 @@ def announce_snippet_updated(event: SnippetUpdated) -> None:
     """Announce that a snippet has been updated."""
     channels = [CHANNEL_ORGA_LOG]
 
-    snippet = snippet_service.find_snippet(event.snippet_id)
     editor_screen_name = user_service.find_screen_name(event.initiator_id)
-    type_name = 'Dokument' if snippet.is_document else 'Fragment'
+    type_label = _get_snippet_type_label(event.snippet_type)
 
     text = (
-        f'{editor_screen_name} hat das Snippet-{type_name} '
+        f'{editor_screen_name} hat das Snippet-{type_label} '
         f'"{event.snippet_name}" im Scope '
         f'"{event.scope.type_}/{event.scope.name}" aktualisiert.'
     )
@@ -79,3 +77,14 @@ def announce_snippet_deleted(event: SnippetDeleted) -> None:
     )
 
     send_message(channels, text)
+
+
+_SNIPPET_TYPE_LABELS = {
+    SnippetType.document: 'Dokument',
+    SnippetType.fragment: 'Fragment',
+}
+
+
+def _get_snippet_type_label(snippet_type: SnippetType) -> str:
+    """Return label for snippet type."""
+    return _SNIPPET_TYPE_LABELS.get(snippet_type, '?')

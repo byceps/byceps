@@ -122,6 +122,7 @@ def _create_snippet(
         snippet_id=snippet.id,
         scope=snippet.scope,
         snippet_name=snippet.name,
+        snippet_type=snippet.type_,
         snippet_version_id=version.id,
     )
 
@@ -156,6 +157,7 @@ def _update_snippet(
         snippet_id=snippet.id,
         scope=snippet.scope,
         snippet_name=snippet.name,
+        snippet_type=snippet.type_,
         snippet_version_id=version.id,
     )
 
@@ -200,6 +202,7 @@ def delete_snippet(
         snippet_id=snippet_id,
         scope=scope,
         snippet_name=snippet_name,
+        snippet_type=snippet.type_,
     )
 
     return True, event
