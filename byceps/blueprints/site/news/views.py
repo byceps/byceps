@@ -1,6 +1,6 @@
 """
-byceps.blueprints.news.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.news.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,17 +10,17 @@ import dataclasses
 
 from flask import abort, g
 
-from ...services.news import html_service as news_html_service
-from ...services.news import service as news_item_service
-from ...services.site import (
+from ....services.news import html_service as news_html_service
+from ....services.news import service as news_item_service
+from ....services.site import (
     service as site_service,
     settings_service as site_settings_service,
 )
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.templating import templated
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
 
-from ..admin.news.authorization import NewsItemPermission
-from ..authorization.registry import permission_registry
+from ...admin.news.authorization import NewsItemPermission
+from ...authorization.registry import permission_registry
 
 
 blueprint = create_blueprint('news', __name__)
