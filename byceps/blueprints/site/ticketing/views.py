@@ -1,6 +1,6 @@
 """
-byceps.blueprints.ticketing.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.ticketing.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,21 +8,21 @@ byceps.blueprints.ticketing.views
 
 from flask import abort, g, redirect, request, url_for
 
-from ...services.party import service as party_service
-from ...services.ticketing import (
+from ....services.party import service as party_service
+from ....services.ticketing import (
     barcode_service,
     category_service as ticket_category_service,
     ticket_service,
     ticket_seat_management_service,
     ticket_user_management_service,
 )
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_error, flash_success
-from ...util.iterables import find
-from ...util.framework.templating import templated
-from ...util.views import respond_no_content
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_error, flash_success
+from ....util.iterables import find
+from ....util.framework.templating import templated
+from ....util.views import respond_no_content
 
-from ..authentication.decorators import login_required
+from ...authentication.decorators import login_required
 
 from .forms import SpecifyUserForm
 from . import notification_service

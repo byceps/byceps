@@ -1,6 +1,6 @@
 """
-byceps.blueprints.ticketing.notification_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.ticketing.notification_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,12 +8,12 @@ byceps.blueprints.ticketing.notification_service
 
 from flask import g
 
-from ...services.email import service as email_service
-from ...services.party import service as party_service
-from ...services.site import service as site_service
-from ...services.ticketing.models.ticket import Ticket
-from ...services.user import service as user_service
-from ...services.user.transfer.models import User
+from ....services.email import service as email_service
+from ....services.party import service as party_service
+from ....services.site import service as site_service
+from ....services.ticketing.models.ticket import Ticket
+from ....services.user import service as user_service
+from ....services.user.transfer.models import User
 
 
 def notify_appointed_user(ticket: Ticket, user: User, manager: User) -> None:

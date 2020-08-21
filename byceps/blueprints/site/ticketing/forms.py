@@ -1,6 +1,6 @@
 """
-byceps.blueprints.ticketing.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.ticketing.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -11,10 +11,10 @@ from flask import g
 from wtforms import StringField
 from wtforms.validators import InputRequired, ValidationError
 
-from ...services.consent import consent_service
-from ...services.terms import version_service as terms_version_service
-from ...services.user import service as user_service
-from ...util.l10n import LocalizedForm
+from ....services.consent import consent_service
+from ....services.terms import version_service as terms_version_service
+from ....services.user import service as user_service
+from ....util.l10n import LocalizedForm
 
 
 def validate_user(form, field):
