@@ -1,6 +1,6 @@
 """
-byceps.blueprints.terms.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.terms.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -8,9 +8,9 @@ byceps.blueprints.terms.views
 
 from flask import abort, g
 
-from ...services.terms import version_service as terms_version_service
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.templating import templated
+from ....services.terms import version_service as terms_version_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
 
 
 blueprint = create_blueprint('terms', __name__)
