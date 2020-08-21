@@ -117,7 +117,7 @@ def _get_blueprints_site() -> Iterator[BlueprintReg]:
         ('site.news',                   '/news'                     ),
         ('site.newsletter',             '/newsletter'               ),
         ('site.orga_team',              '/orgas'                    ),
-        ('party',                       None                        ),
+        ('site.party',                  None                        ),
         ('seating',                     '/seating'                  ),
         ('shop.order',                  '/shop'                     ),
         ('shop.orders',                 '/shop/orders'              ),
