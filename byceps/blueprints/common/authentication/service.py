@@ -1,6 +1,6 @@
 """
-byceps.blueprints.authentication.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.authentication.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -9,13 +9,13 @@ byceps.blueprints.authentication.service
 from enum import Enum
 from typing import Optional, Set
 
-from ...services.authentication.session.models.current_user import CurrentUser
-from ...services.authorization import service as authorization_service
-from ...services.user import event_service as user_event_service
-from ...typing import PartyID, UserID
+from ....services.authentication.session.models.current_user import CurrentUser
+from ....services.authorization import service as authorization_service
+from ....services.user import event_service as user_event_service
+from ....typing import PartyID, UserID
 
-from ..admin.core.authorization import AdminPermission
-from ..authorization.registry import permission_registry
+from ...admin.core.authorization import AdminPermission
+from ...authorization.registry import permission_registry
 
 from . import session as user_session
 

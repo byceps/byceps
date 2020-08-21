@@ -1,6 +1,6 @@
 """
-byceps.blueprints.authentication.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.authentication.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,8 +10,8 @@ from flask import g
 from wtforms import BooleanField, PasswordField, StringField
 from wtforms.validators import InputRequired, EqualTo, Length, ValidationError
 
-from ...services.authentication.password import service as password_service
-from ...util.l10n import LocalizedForm
+from ....services.authentication.password import service as password_service
+from ....util.l10n import LocalizedForm
 
 
 MINIMUM_PASSWORD_LENGTH = 8

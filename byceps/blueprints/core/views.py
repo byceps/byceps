@@ -17,7 +17,7 @@ from ...services.site import service as site_service
 from ...util.framework.blueprint import create_blueprint
 from ...util.navigation import Navigation
 
-from ..authentication import service as authentication_blueprint_service
+from ..common.authentication import service as authentication_blueprint_service
 
 
 blueprint = create_blueprint('core', __name__)

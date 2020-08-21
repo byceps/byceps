@@ -1,6 +1,6 @@
 """
-byceps.blueprints.authentication.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.authentication.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,30 +10,31 @@ from typing import Optional
 
 from flask import abort, g, request, url_for
 
-from ...config import get_app_mode
-from ...services.authentication.exceptions import AuthenticationFailed
-from ...services.authentication import service as authentication_service
-from ...services.authentication.password import service as password_service
-from ...services.authentication.password import (
+from ....config import get_app_mode
+from ....services.authentication.exceptions import AuthenticationFailed
+from ....services.authentication import service as authentication_service
+from ....services.authentication.password import service as password_service
+from ....services.authentication.password import (
     reset_service as password_reset_service,
 )
-from ...services.authentication.session import service as session_service
-from ...services.consent import consent_service
-from ...services.email import service as email_service
-from ...services.email.transfer.models import Sender
-from ...services.site import service as site_service
-from ...services.terms import version_service as terms_version_service
-from ...services.user import service as user_service
-from ...services.verification_token import service as verification_token_service
-from ...services.verification_token.models import Token as VerificationToken
-from ...typing import UserID
-from ...util.framework.blueprint import create_blueprint
-from ...util.framework.flash import flash_error, flash_notice, flash_success
-from ...util.framework.templating import templated
-from ...util.views import redirect_to, respond_no_content
+from ....services.authentication.session import service as session_service
+from ....services.consent import consent_service
+from ....services.email import service as email_service
+from ....services.email.transfer.models import Sender
+from ....services.site import service as site_service
+from ....services.terms import version_service as terms_version_service
+from ....services.user import service as user_service
+from ....services.verification_token import service as verification_token_service
+from ....services.verification_token.models import Token as VerificationToken
+from ....typing import UserID
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_error, flash_notice, flash_success
+from ....util.framework.templating import templated
+from ....util.views import redirect_to, respond_no_content
 
-from ..admin.core.authorization import AdminPermission
-from ..common.user.creation.views import _find_privacy_policy_consent_subject_id
+from ...admin.core.authorization import AdminPermission
+
+from ..user.creation.views import _find_privacy_policy_consent_subject_id
 
 from .forms import (
     LoginForm,

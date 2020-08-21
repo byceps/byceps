@@ -18,7 +18,7 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import redirect_to
 
-from ...authentication.views import _get_required_consent_subject_ids
+from ...common.authentication.views import _get_required_consent_subject_ids
 
 from .forms import create_consent_form, get_subject_field_name
 

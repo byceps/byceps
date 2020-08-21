@@ -1,6 +1,6 @@
 """
-byceps.blueprints.authentication.decorators
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.authentication.decorators
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -10,8 +10,8 @@ from functools import wraps
 
 from flask import g
 
-from ...util.framework.flash import flash_notice
-from ...util.views import redirect_to
+from ....util.framework.flash import flash_notice
+from ....util.views import redirect_to
 
 
 def login_required(func):

@@ -20,7 +20,7 @@ from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
 from .....util.views import redirect_to
 
-from ....authentication.decorators import login_required
+from ....common.authentication.decorators import login_required
 from ....site.snippet.templating import render_snippet_as_partial
 
 from .forms import CancelForm

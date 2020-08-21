@@ -22,7 +22,7 @@ from ....util.iterables import find
 from ....util.framework.templating import templated
 from ....util.views import respond_no_content
 
-from ...authentication.decorators import login_required
+from ...common.authentication.decorators import login_required
 
 from .forms import SpecifyUserForm
 from . import notification_service

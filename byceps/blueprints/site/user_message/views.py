@@ -17,7 +17,7 @@ from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import redirect_to
 
-from ...authentication.decorators import login_required
+from ...common.authentication.decorators import login_required
 
 from .forms import CreateForm
 
