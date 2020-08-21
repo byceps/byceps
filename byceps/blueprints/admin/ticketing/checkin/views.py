@@ -15,7 +15,7 @@ from .....services.ticketing import ticket_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated
 
-from ....authorization.decorators import permission_required
+from ....common.authorization.decorators import permission_required
 
 from ...ticketing.authorization import TicketingPermission
 from ...user import service as user_blueprint_service

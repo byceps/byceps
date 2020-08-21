@@ -30,8 +30,8 @@ from ....services.user import stats_service as user_stats_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
-from ...authorization.decorators import permission_required
-from ...authorization.registry import permission_registry
+from ...common.authorization.decorators import permission_required
+from ...common.authorization.registry import permission_registry
 
 from ..user.service import get_users_created_since
 

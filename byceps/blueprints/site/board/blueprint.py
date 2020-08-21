@@ -9,7 +9,7 @@ byceps.blueprints.site.board.blueprint
 from ....services.text_markup.service import render_html
 from ....util.framework.blueprint import create_blueprint
 
-from ...authorization.registry import permission_registry
+from ...common.authorization.registry import permission_registry
 
 from .authorization import (
     BoardPermission,

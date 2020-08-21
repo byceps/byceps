@@ -22,7 +22,7 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import respond_no_content_with_location
 
-from ...authorization.decorators import permission_required
+from ...common.authorization.decorators import permission_required
 
 from .authorization import BoardPermission, BoardPostingPermission
 from .blueprint import blueprint

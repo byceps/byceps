@@ -26,8 +26,8 @@ from .....util.framework.flash import flash_error
 from .....util.framework.templating import templated
 from .....util.views import redirect_to
 
-from ....authorization.decorators import permission_required
-from ....authorization.registry import permission_registry
+from ....common.authorization.decorators import permission_required
+from ....common.authorization.registry import permission_registry
 
 from ..shop.authorization import ShopPermission
 

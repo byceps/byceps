@@ -25,8 +25,8 @@ from ....util.views import (
     respond_no_content_with_location,
 )
 
-from ...authorization.decorators import permission_required
-from ...authorization.registry import permission_registry
+from ...common.authorization.decorators import permission_required
+from ...common.authorization.registry import permission_registry
 from ...site.snippet.templating import get_snippet_context
 
 from .authorization import SnippetMountpointPermission, SnippetPermission

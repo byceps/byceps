@@ -27,7 +27,7 @@ from ....util.views import respond_no_content
 
 from ...admin.seating.authorization import SeatingPermission
 from ...common.authentication.decorators import login_required
-from ...authorization.registry import permission_registry
+from ...common.authorization.registry import permission_registry
 
 from . import service
 

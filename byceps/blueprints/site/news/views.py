@@ -20,7 +20,7 @@ from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
 from ...admin.news.authorization import NewsItemPermission
-from ...authorization.registry import permission_registry
+from ...common.authorization.registry import permission_registry
 
 
 blueprint = create_blueprint('news', __name__)

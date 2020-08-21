@@ -8,7 +8,9 @@ from unittest.mock import patch
 import pytest
 
 with patch('flask.current_app'):
-    from byceps.blueprints.authorization.registry import PermissionRegistry
+    from byceps.blueprints.common.authorization.registry import (
+        PermissionRegistry,
+    )
 from byceps.util.authorization import create_permission_enum
 
 

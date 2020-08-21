@@ -20,8 +20,8 @@ from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import redirect_to, respond_no_content, textified
 
-from ...authorization.decorators import permission_required
-from ...authorization.registry import permission_registry
+from ...common.authorization.decorators import permission_required
+from ...common.authorization.registry import permission_registry
 
 from ..orga_team.authorization import OrgaTeamPermission
 

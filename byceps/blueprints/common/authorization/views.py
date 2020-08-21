@@ -1,12 +1,12 @@
 """
-byceps.blueprints.authorization.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.authorization.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
-from ...util.framework.blueprint import create_blueprint
+from ....util.framework.blueprint import create_blueprint
 
 from .registry import permission_registry
 

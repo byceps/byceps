@@ -99,7 +99,7 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
 def _get_blueprints_common() -> Iterator[BlueprintReg]:
     yield from [
         ('common.authentication',       '/authentication'           ),
-        ('authorization',               None                        ),
+        ('common.authorization',        None                        ),
         ('core',                        '/core'                     ),
         ('common.user',                 None                        ),
         ('common.user.avatar',          '/users'                    ),

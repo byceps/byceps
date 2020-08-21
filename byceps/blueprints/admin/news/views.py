@@ -27,8 +27,8 @@ from ....util.framework.templating import templated
 from ....util.iterables import pairwise
 from ....util.views import redirect_to, respond_no_content
 
-from ...authorization.decorators import permission_required
-from ...authorization.registry import permission_registry
+from ...common.authorization.decorators import permission_required
+from ...common.authorization.registry import permission_registry
 
 from .authorization import NewsChannelPermission, NewsItemPermission
 from .forms import (
