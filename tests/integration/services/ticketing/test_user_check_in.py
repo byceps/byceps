@@ -52,12 +52,12 @@ def test_check_in_user(admin_app, ticket, ticketing_admin, make_user):
     ticket_after = ticket_service.find_ticket(ticket_id)
     assert ticket_before.user_checked_in
 
-    events_after = event_service.get_events_for_ticket(ticket_after.id)
-    assert len(events_after) == 1
+    ticket_events_after = event_service.get_events_for_ticket(ticket_after.id)
+    assert len(ticket_events_after) == 1
 
-    ticket_revoked_event = events_after[0]
-    assert ticket_revoked_event.event_type == 'user-checked-in'
-    assert ticket_revoked_event.data == {
+    ticket_checked_in_event = ticket_events_after[0]
+    assert ticket_checked_in_event.event_type == 'user-checked-in'
+    assert ticket_checked_in_event.data == {
         'checked_in_user_id': str(ticket_user.id),
         'initiator_id': str(ticketing_admin.id),
     }
