@@ -87,10 +87,7 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
 
     yield from _get_blueprints_api()
 
-    yield from _get_blueprints_health()
-
-    if app.config['METRICS_ENABLED']:
-        yield from _get_blueprints_metrics()
+    yield from _get_blueprints_monitoring(app.config)
 
     if app.debug:
         yield from _get_blueprints_debug()
@@ -179,16 +176,15 @@ def _get_blueprints_api() -> Iterator[BlueprintReg]:
     ]
 
 
-def _get_blueprints_health() -> Iterator[BlueprintReg]:
+def _get_blueprints_monitoring(app_config) -> Iterator[BlueprintReg]:
     yield from [
         ('monitoring.healthcheck',      '/health'                   ),
     ]
 
-
-def _get_blueprints_metrics() -> Iterator[BlueprintReg]:
-    yield from [
-        ('monitoring.metrics',          '/metrics'                  ),
-    ]
+    if app_config['METRICS_ENABLED']:
+        yield from [
+            ('monitoring.metrics',          '/metrics'                  ),
+        ]
 
 
 def _get_blueprints_debug() -> Iterator[BlueprintReg]:
