@@ -7,6 +7,12 @@
 
   <h1>{{ title }} {{ render_extra_in_heading(configs|length) }}</h1>
 
+  {%- if g.current_user.has_permission(EmailConfigPermission.create) %}
+  <div class="button-row button-row--right">
+    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Konfiguration erstellen</span></a>
+  </div>
+  {%- endif %}
+
   {%- if configs %}
   <table class="index wide">
     <thead>
@@ -20,6 +26,7 @@
         <th>Adresse</th>
         <th>Name</th>
         <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -29,6 +36,13 @@
         <td>{{ config.sender.address }}</td>
         <td>{{ config.sender.name|fallback }}</td>
         <td>{{ config.contact_address|fallback }}</td>
+        <td>
+          {%- if g.current_user.has_permission(EmailConfigPermission.update) %}
+          <div class="button-row button-row--compact button-row--right">
+            <a class="button button--compact" href="{{ url_for('.update_form', config_id=config.id) }}" title="Konfiguration earbeiten">{{ render_icon('edit') }}</span></a>
+          </div>
+          {%- endif %}
+        </td>
       </tr>
     {%- endfor %}
     </tbody>

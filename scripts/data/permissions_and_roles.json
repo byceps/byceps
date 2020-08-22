@@ -93,6 +93,14 @@
       "title": "Zustimmungen verwalten"
     },
     {
+      "id": "email_config.create",
+      "title": "E-Mail-Konfigurationen erstellen"
+    },
+    {
+      "id": "email_config.update",
+      "title": "E-Mail-Konfigurationen bearbeiten"
+    },
+    {
       "id": "email_config.view",
       "title": "E-Mail-Konfigurationen ansehen"
     },
@@ -402,6 +410,8 @@
     },
     {
       "assigned_permissions": [
+        "email_config.create",
+        "email_config.update",
         "email_config.view"
       ],
       "id": "email_admin",
