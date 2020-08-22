@@ -10,7 +10,7 @@ from unittest.mock import patch
 # party. After all, both admin and party apps should react the same.
 
 
-@patch('byceps.blueprints.healthcheck.views._is_rdbms_ok')
+@patch('byceps.blueprints.monitoring.healthcheck.views._is_rdbms_ok')
 def test_healthcheck_fail(is_rdbms_ok_mock, admin_client):
     expected_media_type = 'application/health+json'
 

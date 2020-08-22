@@ -1,6 +1,6 @@
 """
-byceps.blueprints.healthcheck
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.monitoring.healthcheck
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -11,8 +11,8 @@ from flask.json import dumps
 
 from sqlalchemy.exc import OperationalError
 
-from ...database import db
-from ...util.framework.blueprint import create_blueprint
+from ....database import db
+from ....util.framework.blueprint import create_blueprint
 
 
 blueprint = create_blueprint('healthcheck', __name__)

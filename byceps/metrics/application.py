@@ -24,6 +24,6 @@ def create_app(database_uri):
     # Initialize database.
     db.init_app(app)
 
-    register_blueprint(app, 'metrics', '/metrics')
+    register_blueprint(app, 'monitoring.metrics', '/metrics')
 
     return app

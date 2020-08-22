@@ -181,13 +181,13 @@ def _get_blueprints_api() -> Iterator[BlueprintReg]:
 
 def _get_blueprints_health() -> Iterator[BlueprintReg]:
     yield from [
-        ('healthcheck',                 '/health'                   ),
+        ('monitoring.healthcheck',      '/health'                   ),
     ]
 
 
 def _get_blueprints_metrics() -> Iterator[BlueprintReg]:
     yield from [
-        ('metrics',                     '/metrics'                  ),
+        ('monitoring.metrics',          '/metrics'                  ),
     ]
 
 

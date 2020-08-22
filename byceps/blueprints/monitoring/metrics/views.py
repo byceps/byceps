@@ -1,6 +1,6 @@
 """
-byceps.blueprints.metrics
-~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.monitoring.metrics
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Metrics export for `Prometheus <https://prometheus.io/>`_
 
@@ -10,8 +10,8 @@ Metrics export for `Prometheus <https://prometheus.io/>`_
 
 from flask import Response
 
-from ...services.metrics import service as metrics_service
-from ...util.framework.blueprint import create_blueprint
+from ....services.metrics import service as metrics_service
+from ....util.framework.blueprint import create_blueprint
 
 
 blueprint = create_blueprint('metrics', __name__)
