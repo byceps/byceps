@@ -26,7 +26,7 @@ class UserAccountCreated(_UserEvent):
 
 @dataclass(frozen=True)
 class UserAccountDeleted(_UserEvent):
-    pass
+    user_screen_name: Optional[str]
 
 
 @dataclass(frozen=True)

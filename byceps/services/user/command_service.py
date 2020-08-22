@@ -164,6 +164,7 @@ def delete_account(
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
 

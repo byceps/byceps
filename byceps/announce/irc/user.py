@@ -181,11 +181,11 @@ def announce_user_account_deleted(event: UserAccountDeleted) -> None:
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
-    user = user_service.get_user(event.user_id)
+    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
     text = (
         f'{initiator_screen_name} hat das Benutzerkonto '
-        f'mit der ID "{user.id}" gelöscht.'
+        f'"{user_screen_name}" (ID "{event.user_id}") gelöscht.'
     )
 
     send_message(channels, text)

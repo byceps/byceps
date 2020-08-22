@@ -173,8 +173,8 @@ def test_unsuspended_account_announced(app, make_user):
 
 def test_deleted_account_announced(app, make_user):
     expected_text = (
-        'UberDude hat das Benutzerkonto mit der ID '
-        '"76b0c57f-8909-4b02-90c9-96e0a817f738" gelöscht.'
+        'UberDude hat das Benutzerkonto "Snake" '
+        '(ID "76b0c57f-8909-4b02-90c9-96e0a817f738") gelöscht.'
     )
 
     admin = make_user('UberDude')
@@ -187,6 +187,7 @@ def test_deleted_account_announced(app, make_user):
         initiator_id=admin.id,
         initiator_screen_name=admin.screen_name,
         user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
     with mocked_irc_bot() as mock:
