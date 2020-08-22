@@ -50,6 +50,24 @@ def index():
     }
 
 
+@blueprint.route('/brands/<brand_id>')
+@permission_required(BrandPermission.view)
+@templated
+def view(brand_id):
+    """Show a brand."""
+    brand = brand_service.find_brand(brand_id)
+
+    if brand is None:
+        abort(404)
+
+    settings = brand_settings_service.get_settings(brand.id)
+
+    return {
+        'brand': brand,
+        'settings': settings,
+    }
+
+
 @blueprint.route('/create')
 @permission_required(BrandPermission.create)
 @templated
@@ -78,21 +96,3 @@ def create():
 
     flash_success(f'Die Marke "{brand.title}" wurde angelegt.')
     return redirect_to('.index')
-
-
-@blueprint.route('/brands/<brand_id>')
-@permission_required(BrandPermission.view)
-@templated
-def view(brand_id):
-    """Show a brand."""
-    brand = brand_service.find_brand(brand_id)
-
-    if brand is None:
-        abort(404)
-
-    settings = brand_settings_service.get_settings(brand.id)
-
-    return {
-        'brand': brand,
-        'settings': settings,
-    }
