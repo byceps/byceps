@@ -13,7 +13,6 @@ from byceps.services.shop.order.transfer.models import PaymentMethod
 from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
-from byceps.services.user import command_service as user_command_service
 from byceps.signals import shop as shop_signals
 
 from testfixtures.shop_order import create_orderer
@@ -102,10 +101,7 @@ def test_shop_order_paid_announced(app, paid_order, orderer_user, shop_admin):
 
 @pytest.fixture(scope='module')
 def orderer_user(make_user_with_detail):
-    user = make_user_with_detail('Ken_von_Kaufkraft')
-    user_id = user.id
-    yield user
-    user_command_service.delete_account(user_id, user_id, 'clean up')
+    return make_user_with_detail('Ken_von_Kaufkraft')
 
 
 @pytest.fixture(scope='module')
