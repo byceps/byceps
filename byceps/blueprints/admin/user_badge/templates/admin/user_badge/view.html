@@ -1,4 +1,5 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_64 %}
 {% set current_page = 'user_badge_admin' %}
@@ -45,7 +46,14 @@
     </tr>
     <tr>
       <th>Marke</th>
-      <td>{{ badge.brand_id|fallback('keine Einschränkung') }}</td>
+      <td>
+      {%- if brand %}
+        {{ render_brand_avatar(brand, '16') }}
+        {{ brand.title }}
+      {%- else %}
+        <em>keine Einschränkung</em>
+      {%- endif %}
+      </td>
     </tr>
     <tr>
       <th>{{ render_tag('featured') }}</th>

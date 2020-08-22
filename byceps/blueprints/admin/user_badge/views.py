@@ -39,11 +39,11 @@ def index():
     brands = brand_service.get_brands()
     brands_by_id = {brand.id: brand for brand in brands}
 
-    def _find_brand_title(brand_id):
+    def _find_brand(brand_id):
         if brand_id is None:
             return None
 
-        return brands_by_id[brand_id].title
+        return brands_by_id[brand_id]
 
     awarding_counts_by_badge_id = awarding_service.count_awardings()
 
@@ -53,7 +53,7 @@ def index():
             'slug': badge.slug,
             'label': badge.label,
             'image_url_path': badge.image_url_path,
-            'brand_title': _find_brand_title(badge.brand_id),
+            'brand': _find_brand(badge.brand_id),
             'featured': badge.featured,
             'awarding_count': awarding_counts_by_badge_id[badge.id],
         }
@@ -74,6 +74,11 @@ def view(badge_id):
     if badge is None:
         abort(404)
 
+    if badge.brand_id:
+        brand = brand_service.find_brand(badge.brand_id)
+    else:
+        brand = None
+
     awardings = awarding_service.get_awardings_of_badge(badge.id)
     recipient_ids = [awarding.user_id for awarding in awardings]
     recipients = user_service.find_users(recipient_ids, include_avatars=True)
@@ -81,6 +86,7 @@ def view(badge_id):
 
     return {
         'badge': badge,
+        'brand': brand,
         'recipients': recipients,
     }
 
