@@ -38,7 +38,8 @@ def test_shop_order_placed_announced(app, placed_order, orderer_user):
         initiator_screen_name=orderer_user.screen_name,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=order.placed_by_id,
+        orderer_id=orderer_user.id,
+        orderer_screen_name=orderer_user.screen_name,
     )
 
     with mocked_irc_bot() as mock:
@@ -47,7 +48,7 @@ def test_shop_order_placed_announced(app, placed_order, orderer_user):
     assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
+def test_shop_order_canceled_announced(app, canceled_order, orderer_user, shop_admin):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00002 von Ken_von_Kaufkraft '
@@ -61,7 +62,8 @@ def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
         initiator_screen_name=shop_admin.screen_name,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=order.placed_by_id,
+        orderer_id=orderer_user.id,
+        orderer_screen_name=orderer_user.screen_name,
     )
 
     with mocked_irc_bot() as mock:
@@ -70,7 +72,7 @@ def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
     assert_submitted_data(mock, expected_channels, expected_text)
 
 
-def test_shop_order_paid_announced(app, paid_order, shop_admin):
+def test_shop_order_paid_announced(app, paid_order, orderer_user, shop_admin):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00003 von Ken_von_Kaufkraft '
@@ -84,7 +86,8 @@ def test_shop_order_paid_announced(app, paid_order, shop_admin):
         initiator_screen_name=shop_admin.screen_name,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=order.placed_by_id,
+        orderer_id=orderer_user.id,
+        orderer_screen_name=orderer_user.screen_name,
         payment_method=PaymentMethod.bank_transfer,
     )
 

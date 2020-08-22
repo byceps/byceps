@@ -7,6 +7,7 @@ byceps.events.shop
 """
 
 from dataclasses import dataclass
+from typing import Optional
 
 from ..services.shop.order.transfer.models import (
     OrderID,
@@ -23,6 +24,7 @@ class _ShopOrderEvent(_BaseEvent):
     order_id: OrderID
     order_number: OrderNumber
     orderer_id: UserID
+    orderer_screen_name: Optional[str]
 
 
 @dataclass(frozen=True)

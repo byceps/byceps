@@ -92,7 +92,8 @@ def place_order(
         initiator_screen_name=orderer_user.screen_name,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=order.placed_by_id,
+        orderer_id=orderer_user.id,
+        orderer_screen_name=orderer_user.screen_name,
     )
 
     return order_dto, event
@@ -254,6 +255,7 @@ def cancel_order(
         raise OrderAlreadyCanceled()
 
     initiator = user_service.get_user(initiator_id)
+    orderer_user = user_service.get_user(order.placed_by_id)
 
     has_order_been_paid = order.is_paid
 
@@ -302,7 +304,8 @@ def cancel_order(
         initiator_screen_name=initiator.screen_name,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=order.placed_by_id,
+        orderer_id=orderer_user.id,
+        orderer_screen_name=orderer_user.screen_name,
     )
 
 
@@ -323,6 +326,7 @@ def mark_order_as_paid(
         raise OrderAlreadyMarkedAsPaid()
 
     initiator = user_service.get_user(initiator_id)
+    orderer_user = user_service.get_user(order.placed_by_id)
 
     now = datetime.utcnow()
 
@@ -362,7 +366,8 @@ def mark_order_as_paid(
         initiator_screen_name=initiator.screen_name,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=order.placed_by_id,
+        orderer_id=orderer_user.id,
+        orderer_screen_name=orderer_user.screen_name,
         payment_method=payment_method,
     )
 

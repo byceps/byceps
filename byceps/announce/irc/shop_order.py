@@ -10,9 +10,7 @@ Announce shop order events on IRC.
 
 from ...events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ...services.shop.order import service as order_service
-from ...services.user import service as user_service
 from ...signals import shop as shop_signals
-from ...typing import UserID
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
@@ -30,9 +28,11 @@ def announce_order_placed(event: ShopOrderPlaced) -> None:
     """Announce that an order has been placed."""
     channels = [CHANNEL_ORGA_LOG]
 
-    screen_name = _get_screen_name(event.orderer_id)
+    orderer_screen_name = get_screen_name_or_fallback(event.orderer_screen_name)
 
-    text = f'{screen_name} hat Bestellung {event.order_number} aufgegeben.'
+    text = (
+        f'{orderer_screen_name} hat Bestellung {event.order_number} aufgegeben.'
+    )
 
     send_message(channels, text)
 
@@ -49,7 +49,7 @@ def announce_order_paid(event: ShopOrderPaid) -> None:
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
-    orderer_screen_name = _get_screen_name(event.orderer_id)
+    orderer_screen_name = get_screen_name_or_fallback(event.orderer_screen_name)
     payment_method_label = order_service.find_payment_method_label(
         event.payment_method
     )
@@ -75,7 +75,7 @@ def announce_order_canceled(event: ShopOrderCanceled) -> None:
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
-    orderer_screen_name = _get_screen_name(event.orderer_id)
+    orderer_screen_name = get_screen_name_or_fallback(event.orderer_screen_name)
 
     text = (
         f'{initiator_screen_name} hat Bestellung {event.order_number} '
@@ -83,8 +83,3 @@ def announce_order_canceled(event: ShopOrderCanceled) -> None:
     )
 
     send_message(channels, text)
-
-
-def _get_screen_name(user_id: UserID) -> str:
-    screen_name = user_service.find_screen_name(user_id)
-    return get_screen_name_or_fallback(screen_name)

@@ -79,9 +79,13 @@ def article3(shop):
 
 
 @pytest.fixture(scope='module')
-def orderer(make_user_with_detail):
-    user = make_user_with_detail('Besteller')
-    return create_orderer(user)
+def orderer_user(make_user_with_detail):
+    return make_user_with_detail('Besteller')
+
+
+@pytest.fixture(scope='module')
+def orderer(orderer_user):
+    return create_orderer(orderer_user)
 
 
 @patch('byceps.signals.shop.order_canceled.send')
@@ -93,6 +97,7 @@ def test_cancel_before_paid(
     storefront,
     article1,
     admin,
+    orderer_user,
     orderer,
 ):
     article = article1
@@ -133,7 +138,8 @@ def test_cancel_before_paid(
         initiator_screen_name=admin.screen_name,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer_id=placed_order.placed_by_id,
+        orderer_id=orderer_user.id,
+        orderer_screen_name=orderer_user.screen_name,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 
@@ -149,6 +155,7 @@ def test_cancel_before_paid_without_sending_email(
     storefront,
     article2,
     admin,
+    orderer_user,
     orderer,
 ):
     article = article2
@@ -178,7 +185,8 @@ def test_cancel_before_paid_without_sending_email(
         initiator_screen_name=admin.screen_name,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer_id=placed_order.placed_by_id,
+        orderer_id=orderer_user.id,
+        orderer_screen_name=orderer_user.screen_name,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 
@@ -193,6 +201,7 @@ def test_mark_order_as_paid(
     admin_app,
     storefront,
     admin,
+    orderer_user,
     orderer,
 ):
     placed_order = place_order(storefront.id, orderer, [])
@@ -224,7 +233,8 @@ def test_mark_order_as_paid(
         initiator_screen_name=admin.screen_name,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer_id=placed_order.placed_by_id,
+        orderer_id=orderer_user.id,
+        orderer_screen_name=orderer_user.screen_name,
         payment_method=PaymentMethod.direct_debit,
     )
     order_paid_signal_send_mock.assert_called_once_with(None, event=event)
@@ -243,6 +253,7 @@ def test_cancel_after_paid(
     storefront,
     article3,
     admin,
+    orderer_user,
     orderer,
 ):
     article = article3
@@ -291,7 +302,8 @@ def test_cancel_after_paid(
         initiator_screen_name=admin.screen_name,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
-        orderer_id=placed_order.placed_by_id,
+        orderer_id=orderer_user.id,
+        orderer_screen_name=orderer_user.screen_name,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 

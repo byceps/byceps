@@ -142,7 +142,8 @@ def test_order(
         initiator_screen_name=orderer.screen_name,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=order.placed_by_id,
+        orderer_id=orderer.id,
+        orderer_screen_name=orderer.screen_name,
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 
@@ -199,7 +200,8 @@ def test_order_single(
         initiator_screen_name=orderer.screen_name,
         order_id=order.id,
         order_number=order.order_number,
-        orderer_id=order.placed_by_id,
+        orderer_id=orderer.id,
+        orderer_screen_name=orderer.screen_name,
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 
