@@ -20,11 +20,11 @@ BadgeID = NewType('BadgeID', UUID)
 @dataclass(frozen=True)
 class Badge:
     id: BadgeID
-    brand_id: BrandID
     slug: str
     label: str
     description: str
     image_url_path: str
+    brand_id: BrandID
     featured: bool
 
 

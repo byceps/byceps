@@ -18,11 +18,11 @@ SLUG_REGEX = re.compile('^[a-z0-9-]+$')
 
 
 class CreateForm(LocalizedForm):
-    brand_id = SelectField('Marke')
     slug = StringField('Slug', [InputRequired(), Length(max=80), Regexp(SLUG_REGEX, message='Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt.')])
     label = StringField('Bezeichnung', [InputRequired(), Length(max=80)])
     description = TextAreaField('Beschreibung')
     image_filename = StringField('Bilddateiname', [InputRequired(), Length(max=80)])
+    brand_id = SelectField('Marke')
     featured = BooleanField('featured')
 
     def set_brand_choices(self, brands):

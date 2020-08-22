@@ -27,9 +27,9 @@
   <table class="index wide badges">
     <thead>
       <tr>
-        <th>Marke</th>
         <th>Bild</th>
         <th>Bezeichnung<br>Slug</th>
+        <th>Marke</th>
         <th></th>
         <th class="number">Verliehen</th>
       </tr>
@@ -37,12 +37,12 @@
     <tbody>
       {%- for badge in badges|sort(attribute='label') %}
       <tr>
-        <td>{{ badge.brand_title|fallback('alle') }}</td>
         <td><span class="user-badge size-32"><img src="{{ badge.image_url_path }}"></span></td>
         <td>
           <a href="{{ url_for('user_badge_admin.view', badge_id=badge.id) }}">{{ badge.label }}</a><br>
           {{ badge.slug|dim }}
         </td>
+        <td>{{ badge.brand_title|fallback('alle') }}</td>
         <td>{{ render_tag('featured') if badge.featured else '' }}</td>
         <td class="bignumber number">{{ badge.awarding_count }}</td>
       </tr>

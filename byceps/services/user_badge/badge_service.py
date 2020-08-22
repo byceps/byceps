@@ -20,8 +20,8 @@ def create_badge(
     label: str,
     image_filename: str,
     *,
-    brand_id: Optional[BrandID] = None,
     description: Optional[str] = None,
+    brand_id: Optional[BrandID] = None,
     featured: bool = False,
 ) -> Badge:
     """Create a badge."""
@@ -29,8 +29,8 @@ def create_badge(
         slug,
         label,
         image_filename,
-        brand_id=brand_id,
         description=description,
+        brand_id=brand_id,
         featured=featured,
     )
 
@@ -42,11 +42,11 @@ def create_badge(
 
 def update_badge(
     badge_id: BadgeID,
-    brand_id: Optional[BrandID],
     slug: str,
     label: str,
     description: Optional[str],
     image_filename: str,
+    brand_id: Optional[BrandID],
     featured: bool,
 ) -> Badge:
     """Update a badge."""
@@ -54,11 +54,11 @@ def update_badge(
     if not badge:
         raise ValueError(f'Unknown badge ID: "{badge_id}"')
 
-    badge.brand_id = brand_id
     badge.slug = slug
     badge.label = label
     badge.description = description
     badge.image_filename = image_filename
+    badge.brand_id = brand_id
     badge.featured = featured
 
     db.session.commit()
@@ -130,10 +130,10 @@ def _db_entity_to_badge(entity: DbBadge) -> Badge:
 
     return Badge(
         entity.id,
-        entity.brand_id,
         entity.slug,
         entity.label,
         entity.description,
         image_url_path,
+        entity.brand_id,
         entity.featured,
     )

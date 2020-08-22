@@ -108,11 +108,11 @@ def create():
     if not form.validate():
         return create_form(form)
 
-    brand_id = form.brand_id.data
     slug = form.slug.data.strip()
     label = form.label.data.strip()
     description = form.description.data.strip()
     image_filename = form.image_filename.data.strip()
+    brand_id = form.brand_id.data
     featured = form.featured.data
 
     if brand_id:
@@ -125,8 +125,8 @@ def create():
         slug,
         label,
         image_filename,
-        brand_id=brand_id,
         description=description,
+        brand_id=brand_id,
         featured=featured,
     )
 
