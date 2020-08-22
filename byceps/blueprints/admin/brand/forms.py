@@ -7,11 +7,18 @@ byceps.blueprints.admin.brand.forms
 """
 
 from wtforms import StringField
-from wtforms.validators import Length
+from wtforms.validators import InputRequired, Length, Optional
 
 from ....util.l10n import LocalizedForm
 
 
-class CreateForm(LocalizedForm):
-    id = StringField('ID', validators=[Length(min=1, max=20)])
-    title = StringField('Titel', validators=[Length(min=1, max=40)])
+class _BaseForm(LocalizedForm):
+    title = StringField('Titel', validators=[InputRequired(), Length(min=1, max=40)])
+
+
+class CreateForm(_BaseForm):
+    id = StringField('ID', validators=[InputRequired(), Length(min=1, max=20)])
+
+
+class UpdateForm(_BaseForm):
+    image_filename = StringField('Bild-Dateiname', validators=[Optional()])

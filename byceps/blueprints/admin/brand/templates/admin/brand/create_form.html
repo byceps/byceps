@@ -15,8 +15,8 @@
 
   <form action="{{ url_for('.create') }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.id, maxlength=40, required='required', placeholder='superlan', autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=40, required='required', placeholder='SuperLAN') }}
+      {{ form_field(form.id, maxlength=40, placeholder='superlan', autofocus='autofocus') }}
+      {{ form_field(form.title, maxlength=40, placeholder='SuperLAN') }}
     {% endcall %}
 
     {{ form_buttons('Erstellen', cancel_url=url_for('.index')) }}

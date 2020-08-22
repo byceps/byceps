@@ -26,6 +26,20 @@ def create_brand(brand_id: BrandID, title: str) -> Brand:
     return _db_entity_to_brand(brand)
 
 
+def update_brand(
+    brand_id: BrandID, title: str, *, image_filename: Optional[str] = None
+) -> Brand:
+    """Update a brand."""
+    brand = _get_db_brand(brand_id)
+
+    brand.title = title
+    brand.image_filename = image_filename
+
+    db.session.commit()
+
+    return _db_entity_to_brand(brand)
+
+
 def delete_brand(brand_id: BrandID) -> None:
     """Delete a brand."""
     db.session.query(DbSetting) \
@@ -41,12 +55,17 @@ def delete_brand(brand_id: BrandID) -> None:
 
 def find_brand(brand_id: BrandID) -> Optional[Brand]:
     """Return the brand with that id, or `None` if not found."""
-    brand = DbBrand.query.get(brand_id)
+    brand = _get_db_brand(brand_id)
 
     if brand is None:
         return None
 
     return _db_entity_to_brand(brand)
+
+
+def _get_db_brand(brand_id: BrandID) -> DbBrand:
+    """Return the brand with that ID."""
+    return DbBrand.query.get(brand_id)
 
 
 def get_brands() -> List[Brand]:
@@ -72,5 +91,6 @@ def _db_entity_to_brand(brand: DbBrand) -> Brand:
     return Brand(
         brand.id,
         brand.title,
+        brand.image_filename,
         image_url_path,
     )

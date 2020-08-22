@@ -1,0 +1,27 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'brands_admin' %}
+{% set current_page_brand = brand %}
+{% set title = 'Marke bearbeiten' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li><a href="{{ url_for('.index') }}">Marken</a></li>
+      <li><a href="{{ url_for('.view', brand_id=brand.id) }}">{{ brand.title }}</a></li>
+    </ol>
+  </nav>
+  <h1>{{ render_icon('edit') }} {{ title }}</h1>
+
+  <form action="{{ url_for('.update', brand_id=brand.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.image_filename) }}
+    {% endcall %}
+
+    {{ form_buttons('Speichern', cancel_url=url_for('.view', brand_id=brand.id)) }}
+  </form>
+
+{%- endblock %}

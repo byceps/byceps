@@ -15,6 +15,7 @@ from ....typing import BrandID
 class Brand:
     id: BrandID
     title: str
+    image_filename: str
     image_url_path: str
 
 

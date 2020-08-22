@@ -81,6 +81,10 @@
       "title": "Marken erstellen"
     },
     {
+      "id": "brand.update",
+      "title": "Marken bearbeiten"
+    },
+    {
       "id": "brand.view",
       "title": "Marken anzeigen"
     },
@@ -370,6 +374,7 @@
     {
       "assigned_permissions": [
         "brand.create",
+        "brand.update",
         "brand.view"
       ],
       "id": "brand_admin",
