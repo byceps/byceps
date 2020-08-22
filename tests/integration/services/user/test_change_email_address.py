@@ -20,13 +20,13 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     new_email_address = 'crash.override@users.test'
     reason = 'Does not want to be recognized by Acid Burn.'
 
-    user_id = make_user(
+    user = make_user(
         'WantsEmailAddressChangedWithReason',
         email_address=old_email_address,
         email_address_verified=True,
-    ).id
+    )
 
-    user_before = user_command_service._get_user(user_id)
+    user_before = user_command_service._get_user(user.id)
     assert user_before.email_address == old_email_address
     assert user_before.email_address_verified
 
@@ -36,17 +36,18 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     # -------------------------------- #
 
     event = user_command_service.change_email_address(
-        user_id, new_email_address, admin_user.id, reason=reason
+        user.id, new_email_address, admin_user.id, reason=reason
     )
 
     # -------------------------------- #
 
     assert isinstance(event, UserEmailAddressChanged)
-    assert event.user_id == user_id
     assert event.initiator_id == admin_user.id
     assert event.initiator_screen_name == admin_user.screen_name
+    assert event.user_id == user.id
+    assert event.user_screen_name == user.screen_name
 
-    user_after = user_command_service._get_user(user_id)
+    user_after = user_command_service._get_user(user.id)
     assert user_after.email_address == new_email_address
     assert not user_after.email_address_verified
 
@@ -67,21 +68,21 @@ def test_change_email_address_without_reason(admin_app, make_user, admin_user):
     old_email_address = 'address_with_tyop@users.test'
     new_email_address = 'address_without_typo@users.test'
 
-    user_id = make_user(
+    user = make_user(
         'WantsEmailAddressChangedWithoutReason',
         email_address=old_email_address,
         email_address_verified=True,
-    ).id
-
-    # -------------------------------- #
-
-    user_command_service.change_email_address(
-        user_id, new_email_address, admin_user.id
     )
 
     # -------------------------------- #
 
-    user_after = user_command_service._get_user(user_id)
+    user_command_service.change_email_address(
+        user.id, new_email_address, admin_user.id
+    )
+
+    # -------------------------------- #
+
+    user_after = user_command_service._get_user(user.id)
 
     events_after = event_service.get_events_for_user(user_after.id)
 

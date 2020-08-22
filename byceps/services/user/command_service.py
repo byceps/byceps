@@ -100,6 +100,7 @@ def suspend_account(
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
 
@@ -129,6 +130,7 @@ def unsuspend_account(
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
 
@@ -244,6 +246,7 @@ def change_email_address(
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
 
@@ -303,11 +306,13 @@ def update_user_details(
 
     db.session.commit()
 
+    user = user_service.get_user(detail.user_id)
     return UserDetailsUpdated(
         occurred_at=event.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        user_id=event.user_id,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
 

@@ -62,9 +62,10 @@ def test_update_user_address(site_app, make_user_with_detail):
     # -------------------------------- #
 
     assert isinstance(event, UserDetailsUpdated)
-    assert event.user_id == user.id
     assert event.initiator_id == user.id
     assert event.initiator_screen_name == user.screen_name
+    assert event.user_id == user.id
+    assert event.user_screen_name == user.screen_name
 
     user_after = user_command_service._get_user(user.id)
     assert user_after.detail.first_names == new_first_names

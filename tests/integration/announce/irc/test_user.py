@@ -104,6 +104,7 @@ def test_email_address_invalidated_announced(app, make_user):
         initiator_id=admin.id,
         initiator_screen_name=admin.screen_name,
         user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
     with mocked_irc_bot() as mock:
@@ -125,6 +126,7 @@ def test_user_details_updated_announced(app, make_user):
         initiator_id=user.id,
         initiator_screen_name=user.screen_name,
         user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
     with mocked_irc_bot() as mock:
@@ -144,6 +146,7 @@ def test_suspended_account_announced(app, make_user):
         initiator_id=admin.id,
         initiator_screen_name=admin.screen_name,
         user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
     with mocked_irc_bot() as mock:
@@ -163,6 +166,7 @@ def test_unsuspended_account_announced(app, make_user):
         initiator_id=admin.id,
         initiator_screen_name=admin.screen_name,
         user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
     with mocked_irc_bot() as mock:

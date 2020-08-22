@@ -31,32 +31,32 @@ class UserAccountDeleted(_UserEvent):
 
 @dataclass(frozen=True)
 class UserAccountSuspended(_UserEvent):
-    pass
+    user_screen_name: Optional[str]
 
 
 @dataclass(frozen=True)
 class UserAccountUnsuspended(_UserEvent):
-    pass
+    user_screen_name: Optional[str]
 
 
 @dataclass(frozen=True)
 class UserDetailsUpdated(_UserEvent):
-    pass
+    user_screen_name: Optional[str]
 
 
 @dataclass(frozen=True)
 class UserEmailAddressChanged(_UserEvent):
-    pass
+    user_screen_name: Optional[str]
 
 
 @dataclass(frozen=True)
 class UserEmailAddressConfirmed(_UserEvent):
-    pass
+    user_screen_name: Optional[str]
 
 
 @dataclass(frozen=True)
 class UserEmailAddressInvalidated(_UserEvent):
-    pass
+    user_screen_name: Optional[str]
 
 
 @dataclass(frozen=True)

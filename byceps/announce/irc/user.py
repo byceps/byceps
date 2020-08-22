@@ -17,9 +17,7 @@ from ...events.user import (
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
-from ...services.user import service as user_service
 from ...signals import user as user_signals
-from ...typing import UserID
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
@@ -89,7 +87,7 @@ def announce_user_email_address_invalidated(
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
-    user_screen_name = _get_screen_name(event.user_id)
+    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
     text = (
         f'{initiator_screen_name} hat die E-Mail-Adresse '
@@ -113,7 +111,7 @@ def announce_user_details_updated_changed(event: UserDetailsUpdated) -> None:
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
-    user_screen_name = _get_screen_name(event.user_id)
+    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
     text = (
         f'{initiator_screen_name} hat die persönlichen Daten '
@@ -135,7 +133,7 @@ def announce_user_account_suspended(event: UserAccountSuspended) -> None:
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
-    user_screen_name = _get_screen_name(event.user_id)
+    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
     text = (
         f'{initiator_screen_name} hat das Benutzerkonto '
@@ -159,7 +157,7 @@ def announce_user_account_unsuspended(event: UserAccountUnsuspended) -> None:
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
-    user_screen_name = _get_screen_name(event.user_id)
+    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
     text = (
         f'{initiator_screen_name} hat das Benutzerkonto '
@@ -189,8 +187,3 @@ def announce_user_account_deleted(event: UserAccountDeleted) -> None:
     )
 
     send_message(channels, text)
-
-
-def _get_screen_name(user_id: UserID) -> str:
-    screen_name = user_service.find_screen_name(user_id)
-    return get_screen_name_or_fallback(screen_name)
