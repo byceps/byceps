@@ -155,6 +155,7 @@ def _create_user(
         initiator_id=creator.id if creator else None,
         initiator_screen_name=creator.screen_name if creator else None,
         user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
     return user_dto, event

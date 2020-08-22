@@ -38,6 +38,7 @@ def test_account_created_announced(app, make_user):
         initiator_id=None,
         initiator_screen_name=None,
         user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
     with mocked_irc_bot() as mock:
@@ -57,6 +58,7 @@ def test_account_created_by_admin_announced(app, make_user):
         initiator_id=admin.id,
         initiator_screen_name=admin.screen_name,
         user_id=user.id,
+        user_screen_name=user.screen_name,
     )
 
     with mocked_irc_bot() as mock:

@@ -7,6 +7,7 @@ byceps.events.user
 """
 
 from dataclasses import dataclass
+from typing import Optional
 
 from ..typing import UserID
 
@@ -20,7 +21,7 @@ class _UserEvent(_BaseEvent):
 
 @dataclass(frozen=True)
 class UserAccountCreated(_UserEvent):
-    pass
+    user_screen_name: str
 
 
 @dataclass(frozen=True)

@@ -40,7 +40,7 @@ def announce_user_account_created(event: UserAccountCreated) -> None:
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
-    user_screen_name = _get_screen_name(event.user_id)
+    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
     text = (
         f'{initiator_screen_name} '
