@@ -133,6 +133,7 @@ def _db_entity_to_badge(entity: DbBadge) -> Badge:
         entity.slug,
         entity.label,
         entity.description,
+        entity.image_filename,
         image_url_path,
         entity.brand_id,
         entity.featured,

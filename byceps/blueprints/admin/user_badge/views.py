@@ -21,13 +21,17 @@ from ...common.authorization.decorators import permission_required
 from ...common.authorization.registry import permission_registry
 
 from .authorization import UserBadgePermission
-from .forms import AwardForm, CreateForm
+from .forms import AwardForm, CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('user_badge_admin', __name__)
 
 
 permission_registry.register_enum(UserBadgePermission)
+
+
+# -------------------------------------------------------------------- #
+# badges
 
 
 @blueprint.route('/badges')
@@ -69,10 +73,7 @@ def index():
 @templated
 def view(badge_id):
     """Show badge details."""
-    badge = badge_service.find_badge(badge_id)
-
-    if badge is None:
-        abort(404)
+    badge = _get_badge_or_404(badge_id)
 
     if badge.brand_id:
         brand = brand_service.find_brand(badge.brand_id)
@@ -140,9 +141,55 @@ def create():
     return redirect_to('.index')
 
 
+@blueprint.route('/badges/<uuid:badge_id>/update')
+@permission_required(UserBadgePermission.update)
+@templated
+def update_form(badge_id, erroneous_form=None):
+    """Show form to update a badge."""
+    badge = _get_badge_or_404(badge_id)
+
+    form = erroneous_form if erroneous_form else UpdateForm(obj=badge)
+    _set_brand_ids_on_form(form)
+
+    return {
+        'badge': badge,
+        'form': form,
+    }
+
+
+@blueprint.route('/badges/<uuid:badge_id>', methods=['POST'])
+@permission_required(UserBadgePermission.update)
+def update(badge_id):
+    """Update a badge."""
+    badge = _get_badge_or_404(badge_id)
+
+    form = UpdateForm(request.form)
+    _set_brand_ids_on_form(form)
+    if not form.validate():
+        return update_form(badge.id, form)
+
+    slug = form.slug.data.strip()
+    label = form.label.data.strip()
+    description = form.description.data.strip()
+    image_filename = form.image_filename.data.strip()
+    brand_id = form.brand_id.data
+    featured = form.featured.data
+
+    badge = badge_service.update_badge(
+        badge.id, slug, label, description, image_filename, brand_id, featured
+    )
+
+    flash_success(f'Das Abzeichen "{badge.label}" wurde aktualisiert.')
+    return redirect_to('.view', badge_id=badge_id)
+
+
 def _set_brand_ids_on_form(form):
     brands = brand_service.get_brands()
     form.set_brand_choices(brands)
+
+
+# -------------------------------------------------------------------- #
+# awarding
 
 
 @blueprint.route('/awardings/to/<uuid:user_id>')
@@ -201,3 +248,16 @@ def award(user_id):
 def _set_badge_ids_on_form(form):
     badges = badge_service.get_all_badges()
     form.set_badge_choices(badges)
+
+
+# -------------------------------------------------------------------- #
+# helpers
+
+
+def _get_badge_or_404(badge_id):
+    badge = badge_service.find_badge(badge_id)
+
+    if badge is None:
+        abort(404)
+
+    return badge

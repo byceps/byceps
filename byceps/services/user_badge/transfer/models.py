@@ -23,6 +23,7 @@ class Badge:
     slug: str
     label: str
     description: str
+    image_filename: str
     image_url_path: str
     brand_id: BrandID
     featured: bool

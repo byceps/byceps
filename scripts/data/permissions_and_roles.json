@@ -321,6 +321,10 @@
       "title": "Abzeichen erstellen"
     },
     {
+      "id": "user_badge.update",
+      "title": "Abzeichen bearbeiten"
+    },
+    {
       "id": "user.set_password",
       "title": "Neues Passwort setzen"
     },
@@ -604,7 +608,8 @@
     {
       "assigned_permissions": [
         "user_badge.award",
-        "user_badge.create"
+        "user_badge.create",
+        "user_badge.update"
       ],
       "id": "user_badge_admin",
       "title": "Abzeichen verwalten"

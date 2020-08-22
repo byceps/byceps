@@ -30,6 +30,9 @@ class CreateForm(LocalizedForm):
         choices.insert(0, ('', '<keine Einschränkung>'))
         self.brand_id.choices = choices
 
+class UpdateForm(CreateForm):
+    pass
+
 
 class AwardForm(LocalizedForm):
     badge_id = SelectField('Badge', [InputRequired()])
