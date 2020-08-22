@@ -42,7 +42,7 @@
           <a href="{{ url_for('user_badge_admin.view', badge_id=badge.id) }}">{{ badge.label }}</a><br>
           {{ badge.slug|dim }}
         </td>
-        <td>{{ badge.brand_title|fallback('alle') }}</td>
+        <td>{{ badge.brand_title|fallback('keine Einschränkung') }}</td>
         <td>{{ render_tag('featured') if badge.featured else '' }}</td>
         <td class="bignumber number">{{ badge.awarding_count }}</td>
       </tr>

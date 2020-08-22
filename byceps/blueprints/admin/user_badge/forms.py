@@ -27,7 +27,7 @@ class CreateForm(LocalizedForm):
 
     def set_brand_choices(self, brands):
         choices = [(brand.id, brand.title) for brand in brands]
-        choices.insert(0, ('', '<keine>'))
+        choices.insert(0, ('', '<keine Einschränkung>'))
         self.brand_id.choices = choices
 
 
