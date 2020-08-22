@@ -39,7 +39,7 @@
       <tr>
         <td><span class="user-badge size-32"><img src="{{ badge.image_url_path }}"></span></td>
         <td>
-          <a href="{{ url_for('user_badge_admin.view', badge_id=badge.id) }}">{{ badge.label }}</a><br>
+          <a href="{{ url_for('user_badge_admin.view', badge_id=badge.id) }}" class="disguised"><strong>{{ badge.label }}</strong></a><br>
           {{ badge.slug|dim }}
         </td>
         <td>{{ badge.brand_title|fallback('keine Einschränkung') }}</td>
