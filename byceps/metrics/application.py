@@ -2,6 +2,15 @@
 byceps.metrics.application
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+This allows to provide the metrics in a separate application. This might
+be desired for performance and/or security reasons.
+
+Run like this (inside a virtual environment)::
+
+    $ DATABASE_URI=your-database-uri-here FLASK_APP=app_metrics flask run --port 8090
+
+Metrics then become available at `http://127.0.0.1/metrics`.
+
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
