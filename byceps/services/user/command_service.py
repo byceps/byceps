@@ -42,14 +42,19 @@ def initialize_account(
     """
     user = _get_user(user_id)
 
+    if initiator_id is not None:
+        initiator = user_service.get_user(initiator_id)
+    else:
+        initiator = None
+
     if user.initialized:
         raise ValueError(f'Account is already initialized.')
 
     user.initialized = True
 
     event_data = {}
-    if initiator_id:
-        event_data['initiator_id'] = str(initiator_id)
+    if initiator:
+        event_data['initiator_id'] = str(initiator.id)
     event = event_service.build_event('user-initialized', user.id, event_data)
     db.session.add(event)
 
@@ -74,6 +79,7 @@ def suspend_account(
 ) -> UserAccountSuspended:
     """Suspend the user account."""
     user = _get_user(user_id)
+    initiator = user_service.get_user(initiator_id)
 
     user.suspended = True
 
@@ -81,7 +87,7 @@ def suspend_account(
         'user-suspended',
         user.id,
         {
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
             'reason': reason,
         },
     )
@@ -91,8 +97,8 @@ def suspend_account(
 
     return UserAccountSuspended(
         occurred_at=event.occurred_at,
+        initiator_id=initiator.id,
         user_id=user.id,
-        initiator_id=initiator_id,
     )
 
 
@@ -101,6 +107,7 @@ def unsuspend_account(
 ) -> UserAccountUnsuspended:
     """Unsuspend the user account."""
     user = _get_user(user_id)
+    initiator = user_service.get_user(initiator_id)
 
     user.suspended = False
 
@@ -108,7 +115,7 @@ def unsuspend_account(
         'user-unsuspended',
         user.id,
         {
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
             'reason': reason,
         },
     )
@@ -118,8 +125,8 @@ def unsuspend_account(
 
     return UserAccountUnsuspended(
         occurred_at=event.occurred_at,
+        initiator_id=initiator.id,
         user_id=user.id,
-        initiator_id=initiator_id,
     )
 
 
@@ -128,6 +135,7 @@ def delete_account(
 ) -> UserAccountDeleted:
     """Delete the user account."""
     user = _get_user(user_id)
+    initiator = user_service.get_user(initiator_id)
 
     user.deleted = True
     _anonymize_account(user)
@@ -136,7 +144,7 @@ def delete_account(
         'user-deleted',
         user.id,
         {
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
             'reason': reason,
         },
     )
@@ -144,15 +152,15 @@ def delete_account(
 
     # Deassign authorization roles.
     authorization_service.deassign_all_roles_from_user(
-        user.id, initiator_id, commit=False
+        user.id, initiator.id, commit=False
     )
 
     db.session.commit()
 
     return UserAccountDeleted(
         occurred_at=event.occurred_at,
+        initiator_id=initiator.id,
         user_id=user.id,
-        initiator_id=initiator_id,
     )
 
 
@@ -165,6 +173,7 @@ def change_screen_name(
 ) -> UserScreenNameChanged:
     """Change the user's screen name."""
     user = _get_user(user_id)
+    initiator = user_service.get_user(initiator_id)
 
     old_screen_name = user.screen_name
 
@@ -173,7 +182,7 @@ def change_screen_name(
     event_data = {
         'old_screen_name': old_screen_name,
         'new_screen_name': new_screen_name,
-        'initiator_id': str(initiator_id),
+        'initiator_id': str(initiator.id),
     }
     if reason:
         event_data['reason'] = reason
@@ -187,8 +196,8 @@ def change_screen_name(
 
     return UserScreenNameChanged(
         occurred_at=event.occurred_at,
+        initiator_id=initiator.id,
         user_id=user.id,
-        initiator_id=initiator_id,
         old_screen_name=old_screen_name,
         new_screen_name=new_screen_name,
     )
@@ -203,6 +212,7 @@ def change_email_address(
 ) -> UserEmailAddressChanged:
     """Change the user's e-mail address."""
     user = _get_user(user_id)
+    initiator = user_service.get_user(initiator_id)
 
     old_email_address = user.email_address
 
@@ -212,7 +222,7 @@ def change_email_address(
     event_data = {
         'old_email_address': old_email_address,
         'new_email_address': new_email_address,
-        'initiator_id': str(initiator_id),
+        'initiator_id': str(initiator.id),
     }
     if reason:
         event_data['reason'] = reason
@@ -226,8 +236,8 @@ def change_email_address(
 
     return UserEmailAddressChanged(
         occurred_at=event.occurred_at,
+        initiator_id=initiator.id,
         user_id=user.id,
-        initiator_id=initiator_id,
     )
 
 
@@ -245,6 +255,7 @@ def update_user_details(
 ) -> UserDetailsUpdated:
     """Update the user's details."""
     detail = _get_user_detail(user_id)
+    initiator = user_service.get_user(initiator_id)
 
     old_first_names = detail.first_names
     old_last_name = detail.last_name
@@ -265,7 +276,7 @@ def update_user_details(
     detail.phone_number = phone_number
 
     event_data = {
-        'initiator_id': str(initiator_id),
+        'initiator_id': str(initiator.id),
     }
     _add_if_different(event_data, 'first_names', old_first_names, first_names)
     _add_if_different(event_data, 'last_name', old_last_name, last_name)
@@ -288,8 +299,8 @@ def update_user_details(
 
     return UserDetailsUpdated(
         occurred_at=event.occurred_at,
+        initiator_id=initiator.id,
         user_id=event.user_id,
-        initiator_id=initiator_id,
     )
 
 

@@ -13,6 +13,8 @@ from ...database import db, paginate, Pagination, Query
 from ...events.news import NewsItemPublished
 from ...typing import UserID
 
+from ..user import service as user_service
+
 from .channel_service import _db_entity_to_channel
 from .models.channel import Channel as DbChannel
 from .models.item import (
@@ -100,6 +102,11 @@ def publish_item(
     """Publish a news item."""
     db_item = _get_db_item(item_id)
 
+    if initiator_id is not None:
+        initiator = user_service.get_user(initiator_id)
+    else:
+        initiator = None
+
     db_item.published_at = datetime.utcnow()
     db.session.commit()
 
@@ -107,7 +114,7 @@ def publish_item(
 
     return NewsItemPublished(
         occurred_at=item.published_at,
-        initiator_id=initiator_id,
+        initiator_id=initiator.id if initiator else None,
         item_id=item.id,
         channel_id=item.channel.id,
         title=item.title,

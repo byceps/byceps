@@ -31,13 +31,15 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> TicketCheckedIn:
     """Record that the ticket was used to check in its user."""
     ticket = _get_ticket_for_checkin(ticket_id)
 
+    initiator = user_service.get_user(initiator_id)
+
     user = _get_user_for_checkin(ticket.used_by_id)
 
     ticket.user_checked_in = True
 
     event = event_service.build_event('user-checked-in', ticket.id, {
         'checked_in_user_id': str(ticket.used_by_id),
-        'initiator_id': str(initiator_id),
+        'initiator_id': str(initiator.id),
     })
     db.session.add(event)
 
@@ -45,7 +47,7 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> TicketCheckedIn:
 
     return TicketCheckedIn(
         occurred_at=event.occurred_at,
-        initiator_id=initiator_id,
+        initiator_id=initiator.id,
         ticket_id=ticket.id,
         ticket_code=ticket.code,
         occupied_seat_id=ticket.occupied_seat_id,
@@ -97,6 +99,8 @@ def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Revert a user check-in that was done by mistake."""
     ticket = ticket_service.find_ticket(ticket_id)
 
+    initiator = user_service.get_user(initiator_id)
+
     if not ticket.user_checked_in:
         raise ValueError(f'User of ticket {ticket_id} has not been checked in.')
 
@@ -107,7 +111,7 @@ def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
         ticket.id,
         {
             'checked_in_user_id': str(ticket.used_by_id),
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
         },
     )
     db.session.add(event)

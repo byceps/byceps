@@ -119,6 +119,11 @@ def _create_user(
     last_name: Optional[str] = None,
     creator_id: Optional[UserID] = None,
 ) -> Tuple[User, UserAccountCreated]:
+    if creator_id is not None:
+        creator = user_service.get_user(creator_id)
+    else:
+        creator = None
+
     created_at = datetime.utcnow()
 
     user = build_user(created_at, screen_name, email_address)
@@ -137,8 +142,8 @@ def _create_user(
 
     # Create event in separate step as user ID is not available earlier.
     event_data = {}
-    if creator_id is not None:
-        event_data['initiator_id'] = str(creator_id)
+    if creator is not None:
+        event_data['initiator_id'] = str(creator.id)
     event_service.create_event(
         'user-created', user.id, event_data, occurred_at=created_at
     )
@@ -146,7 +151,9 @@ def _create_user(
     user_dto = user_service._db_entity_to_user(user)
 
     event = UserAccountCreated(
-        occurred_at=user.created_at, user_id=user.id, initiator_id=creator_id
+        occurred_at=user.created_at,
+        initiator_id=creator.id if creator else None,
+        user_id=user.id,
     )
 
     return user_dto, event

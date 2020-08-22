@@ -16,6 +16,8 @@ from ....database import db, paginate, Pagination
 from ....events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ....typing import UserID
 
+from ...user import service as user_service
+
 from ..article import service as article_service
 from ..cart.models import Cart
 from ..sequence import service as sequence_service
@@ -54,6 +56,8 @@ def place_order(
     storefront = storefront_service.get_storefront(storefront_id)
     shop = shop_service.get_shop(storefront.shop_id)
 
+    orderer_user = user_service.get_user(orderer.user_id)
+
     order_number_sequence = sequence_service.find_order_number_sequence(
         storefront.order_number_sequence_id
     )
@@ -84,10 +88,10 @@ def place_order(
 
     event = ShopOrderPlaced(
         occurred_at=order.created_at,
+        initiator_id=orderer_user.id,
         order_id=order.id,
         order_number=order.order_number,
         orderer_id=order.placed_by_id,
-        initiator_id=order.placed_by_id,
     )
 
     return order_dto, event
@@ -145,11 +149,12 @@ def _reduce_article_stock(cart: Cart) -> None:
 def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Record that the invoice for that order has been (externally) created."""
     order = _find_order_entity(order_id)
+    initiator = user_service.get_user(initiator_id)
 
     now = datetime.utcnow()
     event_type = 'order-invoiced'
     data = {
-        'initiator_id': str(initiator_id),
+        'initiator_id': str(initiator.id),
     }
 
     event = DbOrderEvent(now, event_type, order.id, data)
@@ -163,11 +168,12 @@ def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
 def unset_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Withdraw record of the invoice for that order having been created."""
     order = _find_order_entity(order_id)
+    initiator = user_service.get_user(initiator_id)
 
     now = datetime.utcnow()
     event_type = 'order-invoiced-withdrawn'
     data = {
-        'initiator_id': str(initiator_id),
+        'initiator_id': str(initiator.id),
     }
 
     event = DbOrderEvent(now, event_type, order.id, data)
@@ -181,6 +187,7 @@ def unset_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
 def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Mark the order as shipped."""
     order = _find_order_entity(order_id)
+    initiator = user_service.get_user(initiator_id)
 
     if not order.shipping_required:
         raise ValueError('Order contains no items that require shipping.')
@@ -188,7 +195,7 @@ def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     now = datetime.utcnow()
     event_type = 'order-shipped'
     data = {
-        'initiator_id': str(initiator_id),
+        'initiator_id': str(initiator.id),
     }
 
     event = DbOrderEvent(now, event_type, order.id, data)
@@ -202,6 +209,7 @@ def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
 def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Mark the order as not shipped."""
     order = _find_order_entity(order_id)
+    initiator = user_service.get_user(initiator_id)
 
     if not order.shipping_required:
         raise ValueError('Order contains no items that require shipping.')
@@ -209,7 +217,7 @@ def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     now = datetime.utcnow()
     event_type = 'order-shipped-withdrawn'
     data = {
-        'initiator_id': str(initiator_id),
+        'initiator_id': str(initiator.id),
     }
 
     event = DbOrderEvent(now, event_type, order.id, data)
@@ -244,6 +252,8 @@ def cancel_order(
     if order.is_canceled:
         raise OrderAlreadyCanceled()
 
+    initiator = user_service.get_user(initiator_id)
+
     has_order_been_paid = order.is_paid
 
     now = datetime.utcnow()
@@ -256,7 +266,7 @@ def cancel_order(
         else PaymentState.canceled_before_paid
     )
 
-    _update_payment_state(order, payment_state_to, updated_at, initiator_id)
+    _update_payment_state(order, payment_state_to, updated_at, initiator.id)
     order.cancelation_reason = reason
 
     event_type = (
@@ -265,7 +275,7 @@ def cancel_order(
         else 'order-canceled-before-paid'
     )
     data = {
-        'initiator_id': str(initiator_id),
+        'initiator_id': str(initiator.id),
         'former_payment_state': payment_state_from.name,
         'reason': reason,
     }
@@ -282,15 +292,15 @@ def cancel_order(
     db.session.commit()
 
     action_service.execute_actions(
-        order.to_transfer_object(), payment_state_to, initiator_id
+        order.to_transfer_object(), payment_state_to, initiator.id
     )
 
     return ShopOrderCanceled(
         occurred_at=updated_at,
+        initiator_id=initiator.id,
         order_id=order.id,
         order_number=order.order_number,
         orderer_id=order.placed_by_id,
-        initiator_id=initiator_id,
     )
 
 
@@ -310,6 +320,8 @@ def mark_order_as_paid(
     if order.is_paid:
         raise OrderAlreadyMarkedAsPaid()
 
+    initiator = user_service.get_user(initiator_id)
+
     now = datetime.utcnow()
 
     updated_at = now
@@ -317,7 +329,7 @@ def mark_order_as_paid(
     payment_state_to = PaymentState.paid
 
     order.payment_method = payment_method
-    _update_payment_state(order, payment_state_to, updated_at, initiator_id)
+    _update_payment_state(order, payment_state_to, updated_at, initiator.id)
 
     event_type = 'order-paid'
     # Add required, internally set properties after given additional
@@ -327,7 +339,7 @@ def mark_order_as_paid(
         event_data.update(additional_event_data)
     event_data.update(
         {
-            'initiator_id': str(initiator_id),
+            'initiator_id': str(initiator.id),
             'former_payment_state': payment_state_from.name,
             'payment_method': payment_method.name,
         }
@@ -339,16 +351,16 @@ def mark_order_as_paid(
     db.session.commit()
 
     action_service.execute_actions(
-        order.to_transfer_object(), payment_state_to, initiator_id
+        order.to_transfer_object(), payment_state_to, initiator.id
     )
 
     return ShopOrderPaid(
         occurred_at=updated_at,
+        initiator_id=initiator.id,
         order_id=order.id,
         order_number=order.order_number,
         orderer_id=order.placed_by_id,
         payment_method=payment_method,
-        initiator_id=initiator_id,
     )
 
 

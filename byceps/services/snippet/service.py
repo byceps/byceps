@@ -11,6 +11,7 @@ from typing import List, Optional, Sequence, Set, Tuple
 
 from ...database import db
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
+from ...services.user import service as user_service
 from ...typing import UserID
 
 from .models.snippet import (
@@ -103,6 +104,8 @@ def _create_snippet(
     image_url_path: Optional[str] = None,
 ) -> Tuple[DbSnippetVersion, SnippetCreated]:
     """Create a snippet and its initial version, and return that version."""
+    creator = user_service.get_user(creator_id)
+
     snippet = DbSnippet(scope, name, type_)
     db.session.add(snippet)
 
@@ -118,7 +121,7 @@ def _create_snippet(
 
     event = SnippetCreated(
         occurred_at=version.created_at,
-        initiator_id=creator_id,
+        initiator_id=creator.id,
         snippet_id=snippet.id,
         scope=snippet.scope,
         snippet_name=snippet.name,
@@ -142,6 +145,8 @@ def _update_snippet(
     if snippet is None:
         raise ValueError('Unknown snippet ID')
 
+    creator = user_service.get_user(creator_id)
+
     version = DbSnippetVersion(
         snippet, creator_id, title, head, body, image_url_path
     )
@@ -153,7 +158,7 @@ def _update_snippet(
 
     event = SnippetUpdated(
         occurred_at=version.created_at,
-        initiator_id=creator_id,
+        initiator_id=creator.id,
         snippet_id=snippet.id,
         scope=snippet.scope,
         snippet_name=snippet.name,
@@ -178,6 +183,11 @@ def delete_snippet(
     if snippet is None:
         raise ValueError('Unknown snippet ID')
 
+    if initiator_id is not None:
+        initiator = user_service.get_user(initiator_id)
+    else:
+        initiator = None
+
     # Keep values for use after snippet is deleted.
     snippet_name = snippet.name
     scope = snippet.scope
@@ -198,7 +208,7 @@ def delete_snippet(
 
     event = SnippetDeleted(
         occurred_at=datetime.utcnow(),
-        initiator_id=initiator_id,
+        initiator_id=initiator.id if initiator else None,
         snippet_id=snippet_id,
         scope=scope,
         snippet_name=snippet_name,

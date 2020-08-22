@@ -80,7 +80,9 @@ def confirm_email_address(
     verification_token_service.delete_token(verification_token)
 
     return UserEmailAddressConfirmed(
-        occurred_at=event.occurred_at, user_id=user.id, initiator_id=user.id
+        occurred_at=event.occurred_at,
+        initiator_id=user.id,
+        user_id=user.id,
     )
 
 
@@ -95,6 +97,11 @@ def invalidate_email_address(
     """
     user = user_service.get_db_user(user_id)
 
+    if initiator_id is not None:
+        initiator = user_service.get_user(initiator_id)
+    else:
+        initiator = None
+
     user.email_address_verified = False
     db.session.commit()
 
@@ -102,12 +109,14 @@ def invalidate_email_address(
         'email_address': user.email_address,
         'reason': reason,
     }
-    if initiator_id:
-        event_data['initiator_id'] = str(initiator_id)
+    if initiator:
+        event_data['initiator_id'] = str(initiator.id)
     event = user_event_service.create_event(
         'user-email-address-invalidated', user.id, event_data
     )
 
     return UserEmailAddressInvalidated(
-        occurred_at=event.occurred_at, user_id=user.id, initiator_id=user.id
+        occurred_at=event.occurred_at,
+        initiator_id=initiator.id if initiator else None,
+        user_id=user.id,
     )

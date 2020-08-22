@@ -38,6 +38,11 @@ def award_badge_to_user(
     user = user_service.get_user(user_id)
     awarded_at = datetime.utcnow()
 
+    if initiator_id is not None:
+        initiator = user_service.get_user(initiator_id)
+    else:
+        initiator = None
+
     awarding = DbBadgeAwarding(badge_id, user_id, awarded_at=awarded_at)
     db.session.add(awarding)
 
@@ -55,11 +60,11 @@ def award_badge_to_user(
 
     event = UserBadgeAwarded(
         occurred_at=awarded_at,
+        initiator_id=initiator.id if initiator else None,
         user_id=user_id,
         user_screen_name=user.screen_name,
         badge_id=badge_id,
         badge_label=badge.label,
-        initiator_id=initiator_id,
     )
 
     return awarding_dto, event
