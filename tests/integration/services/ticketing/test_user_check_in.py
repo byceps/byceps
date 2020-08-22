@@ -56,6 +56,7 @@ def test_check_in_user(admin_app, ticket, ticketing_admin, make_user):
     assert event.__class__ is TicketCheckedIn
     assert event.occurred_at is not None
     assert event.initiator_id == ticketing_admin.id
+    assert event.initiator_screen_name == ticketing_admin.screen_name
     assert event.ticket_id == ticket.id
     assert event.ticket_code == ticket.code
     assert event.occupied_seat_id is None

@@ -9,7 +9,6 @@ Announce ticketing events on IRC.
 """
 
 from ...events.ticketing import TicketCheckedIn
-from ...services.user import service as user_service
 from ...signals import ticketing as ticketing_signals
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
@@ -29,7 +28,7 @@ def announce_ticket_checked_in(event: TicketCheckedIn) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     initiator_screen_name = get_screen_name_or_fallback(
-        user_service.find_screen_name(event.initiator_id)
+        event.initiator_screen_name
     )
     user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 

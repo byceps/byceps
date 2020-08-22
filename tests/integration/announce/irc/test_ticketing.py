@@ -28,6 +28,7 @@ def test_ticket_checked_in(app, make_user, admin_user):
     event = TicketCheckedIn(
         occurred_at=now(),
         initiator_id=admin_user.id,
+        initiator_screen_name=admin_user.screen_name,
         ticket_id=None,
         ticket_code='GTFIN',
         occupied_seat_id=None,

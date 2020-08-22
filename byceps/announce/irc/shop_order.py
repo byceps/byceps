@@ -46,7 +46,9 @@ def announce_order_paid(event: ShopOrderPaid) -> None:
     """Announce that an order has been paid."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator_screen_name = _get_screen_name(event.initiator_id)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
     orderer_screen_name = _get_screen_name(event.orderer_id)
     payment_method_label = order_service.find_payment_method_label(
         event.payment_method
@@ -70,7 +72,9 @@ def announce_order_canceled(event: ShopOrderCanceled) -> None:
     """Announce that an order has been canceled."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator_screen_name = _get_screen_name(event.initiator_id)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
     orderer_screen_name = _get_screen_name(event.orderer_id)
 
     text = (

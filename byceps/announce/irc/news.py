@@ -11,7 +11,6 @@ Announce news events on IRC.
 from ...events.news import NewsItemPublished
 from ...services.brand import service as brand_service
 from ...services.news import channel_service as news_channel_service
-from ...services.user import service as user_service
 from ...signals import news as news_signals
 from ...util.irc import send_message
 from ...util.jobqueue import enqueue
@@ -47,7 +46,7 @@ def announce_news_item_published_internally(event: NewsItemPublished) -> None:
     channels = [CHANNEL_ORGA_LOG]
 
     initiator_screen_name = get_screen_name_or_fallback(
-        user_service.find_screen_name(event.initiator_id)
+        event.initiator_screen_name
     )
 
     text = (

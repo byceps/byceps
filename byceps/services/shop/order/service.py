@@ -89,6 +89,7 @@ def place_order(
     event = ShopOrderPlaced(
         occurred_at=order.created_at,
         initiator_id=orderer_user.id,
+        initiator_screen_name=orderer_user.screen_name,
         order_id=order.id,
         order_number=order.order_number,
         orderer_id=order.placed_by_id,
@@ -298,6 +299,7 @@ def cancel_order(
     return ShopOrderCanceled(
         occurred_at=updated_at,
         initiator_id=initiator.id,
+        initiator_screen_name=initiator.screen_name,
         order_id=order.id,
         order_number=order.order_number,
         orderer_id=order.placed_by_id,
@@ -357,6 +359,7 @@ def mark_order_as_paid(
     return ShopOrderPaid(
         occurred_at=updated_at,
         initiator_id=initiator.id,
+        initiator_screen_name=initiator.screen_name,
         order_id=order.id,
         order_number=order.order_number,
         orderer_id=order.placed_by_id,

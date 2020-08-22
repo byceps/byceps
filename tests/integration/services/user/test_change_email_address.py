@@ -44,6 +44,7 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     assert isinstance(event, UserEmailAddressChanged)
     assert event.user_id == user_id
     assert event.initiator_id == admin_user.id
+    assert event.initiator_screen_name == admin_user.screen_name
 
     user_after = user_command_service._get_user(user_id)
     assert user_after.email_address == new_email_address

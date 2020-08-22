@@ -39,6 +39,7 @@ def test_published_news_item_announced(app, item, editor):
     event = NewsItemPublished(
         occurred_at=now(),
         initiator_id=editor.id,
+        initiator_screen_name=editor.screen_name,
         item_id=item.id,
         channel_id=item.channel.id,
         title=item.title,

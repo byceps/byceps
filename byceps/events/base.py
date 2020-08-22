@@ -16,3 +16,4 @@ from ..typing import UserID
 class _BaseEvent:
     occurred_at: datetime
     initiator_id: Optional[UserID]
+    initiator_screen_name: Optional[str]

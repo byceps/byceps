@@ -34,7 +34,10 @@ def test_account_created_announced(app, make_user):
     user = make_user('JaneDoe')
 
     event = UserAccountCreated(
-        occurred_at=now(), user_id=user.id, initiator_id=None
+        occurred_at=now(),
+        initiator_id=None,
+        initiator_screen_name=None,
+        user_id=user.id,
     )
 
     with mocked_irc_bot() as mock:
@@ -50,7 +53,10 @@ def test_account_created_by_admin_announced(app, make_user):
     user = make_user('EinUser')
 
     event = UserAccountCreated(
-        occurred_at=now(), user_id=user.id, initiator_id=admin.id
+        occurred_at=now(),
+        initiator_id=admin.id,
+        initiator_screen_name=admin.screen_name,
+        user_id=user.id,
     )
 
     with mocked_irc_bot() as mock:
@@ -69,10 +75,11 @@ def test_screen_name_change_announced(app, make_user):
 
     event = UserScreenNameChanged(
         occurred_at=now(),
+        initiator_id=admin.id,
+        initiator_screen_name=admin.screen_name,
         user_id=user.id,
         old_screen_name=user.screen_name,
         new_screen_name='MrHyde',
-        initiator_id=admin.id,
     )
 
     with mocked_irc_bot() as mock:
@@ -91,7 +98,10 @@ def test_email_address_invalidated_announced(app, make_user):
     user = make_user('Faker')
 
     event = UserEmailAddressInvalidated(
-        occurred_at=now(), user_id=user.id, initiator_id=admin.id,
+        occurred_at=now(),
+        initiator_id=admin.id,
+        initiator_screen_name=admin.screen_name,
+        user_id=user.id,
     )
 
     with mocked_irc_bot() as mock:
@@ -109,7 +119,10 @@ def test_user_details_updated_announced(app, make_user):
     user = make_user('Chameleon')
 
     event = UserDetailsUpdated(
-        occurred_at=now(), user_id=user.id, initiator_id=user.id,
+        occurred_at=now(),
+        initiator_id=user.id,
+        initiator_screen_name=user.screen_name,
+        user_id=user.id,
     )
 
     with mocked_irc_bot() as mock:
@@ -125,7 +138,10 @@ def test_suspended_account_announced(app, make_user):
     user = make_user('Skeletor')
 
     event = UserAccountSuspended(
-        occurred_at=now(), user_id=user.id, initiator_id=admin.id
+        occurred_at=now(),
+        initiator_id=admin.id,
+        initiator_screen_name=admin.screen_name,
+        user_id=user.id,
     )
 
     with mocked_irc_bot() as mock:
@@ -141,7 +157,10 @@ def test_unsuspended_account_announced(app, make_user):
     user = make_user('RambaZamba')
 
     event = UserAccountUnsuspended(
-        occurred_at=now(), user_id=user.id, initiator_id=admin.id
+        occurred_at=now(),
+        initiator_id=admin.id,
+        initiator_screen_name=admin.screen_name,
+        user_id=user.id,
     )
 
     with mocked_irc_bot() as mock:
@@ -162,7 +181,10 @@ def test_deleted_account_announced(app, make_user):
     user_command_service.delete_account(user.id, admin.id, 'specious reason')
 
     event = UserAccountDeleted(
-        occurred_at=now(), user_id=user.id, initiator_id=admin.id
+        occurred_at=now(),
+        initiator_id=admin.id,
+        initiator_screen_name=admin.screen_name,
+        user_id=user.id,
     )
 
     with mocked_irc_bot() as mock:

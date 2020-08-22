@@ -98,6 +98,7 @@ def suspend_account(
     return UserAccountSuspended(
         occurred_at=event.occurred_at,
         initiator_id=initiator.id,
+        initiator_screen_name=initiator.screen_name,
         user_id=user.id,
     )
 
@@ -126,6 +127,7 @@ def unsuspend_account(
     return UserAccountUnsuspended(
         occurred_at=event.occurred_at,
         initiator_id=initiator.id,
+        initiator_screen_name=initiator.screen_name,
         user_id=user.id,
     )
 
@@ -160,6 +162,7 @@ def delete_account(
     return UserAccountDeleted(
         occurred_at=event.occurred_at,
         initiator_id=initiator.id,
+        initiator_screen_name=initiator.screen_name,
         user_id=user.id,
     )
 
@@ -197,6 +200,7 @@ def change_screen_name(
     return UserScreenNameChanged(
         occurred_at=event.occurred_at,
         initiator_id=initiator.id,
+        initiator_screen_name=initiator.screen_name,
         user_id=user.id,
         old_screen_name=old_screen_name,
         new_screen_name=new_screen_name,
@@ -237,6 +241,7 @@ def change_email_address(
     return UserEmailAddressChanged(
         occurred_at=event.occurred_at,
         initiator_id=initiator.id,
+        initiator_screen_name=initiator.screen_name,
         user_id=user.id,
     )
 
@@ -300,6 +305,7 @@ def update_user_details(
     return UserDetailsUpdated(
         occurred_at=event.occurred_at,
         initiator_id=initiator.id,
+        initiator_screen_name=initiator.screen_name,
         user_id=event.user_id,
     )
 

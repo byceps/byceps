@@ -46,6 +46,7 @@ def test_announce_topic_created(app, topic, creator):
     event = BoardTopicCreated(
         occurred_at=topic.created_at,
         initiator_id=creator.id,
+        initiator_screen_name=creator.screen_name,
         topic_id=topic.id,
         topic_creator_id=creator.id,
         topic_creator_screen_name=creator.screen_name,
@@ -71,6 +72,7 @@ def test_announce_topic_hidden(app, topic, creator, moderator):
     event = BoardTopicHidden(
         occurred_at=now(),
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=creator.id,
         topic_creator_screen_name=creator.screen_name,
@@ -98,6 +100,7 @@ def test_announce_topic_unhidden(app, topic, creator, moderator):
     event = BoardTopicUnhidden(
         occurred_at=now(),
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=creator.id,
         topic_creator_screen_name=creator.screen_name,
@@ -125,6 +128,7 @@ def test_announce_topic_locked(app, topic, creator, moderator):
     event = BoardTopicLocked(
         occurred_at=now(),
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=creator.id,
         topic_creator_screen_name=creator.screen_name,
@@ -152,6 +156,7 @@ def test_announce_topic_unlocked(app, topic, creator, moderator):
     event = BoardTopicUnlocked(
         occurred_at=now(),
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=creator.id,
         topic_creator_screen_name=creator.screen_name,
@@ -179,6 +184,7 @@ def test_announce_topic_pinned(app, topic, creator, moderator):
     event = BoardTopicPinned(
         occurred_at=now(),
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=creator.id,
         topic_creator_screen_name=creator.screen_name,
@@ -206,6 +212,7 @@ def test_announce_topic_unpinned(app, topic, creator, moderator):
     event = BoardTopicUnpinned(
         occurred_at=now(),
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=creator.id,
         topic_creator_screen_name=creator.screen_name,
@@ -235,6 +242,7 @@ def test_announce_topic_moved(
     event = BoardTopicMoved(
         occurred_at=now(),
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=creator.id,
         topic_creator_screen_name=creator.screen_name,
@@ -266,6 +274,7 @@ def test_announce_posting_created(app, posting, creator):
     event = BoardPostingCreated(
         occurred_at=posting.created_at,
         initiator_id=creator.id,
+        initiator_screen_name=creator.screen_name,
         posting_creator_id=creator.id,
         posting_creator_screen_name=creator.screen_name,
         posting_id=posting.id,
@@ -287,6 +296,7 @@ def test_announce_posting_created_on_muted_topic(app, posting, creator):
     event = BoardPostingCreated(
         occurred_at=posting.created_at,
         initiator_id=creator.id,
+        initiator_screen_name=creator.screen_name,
         posting_creator_id=creator.id,
         posting_creator_screen_name=creator.screen_name,
         posting_id=posting.id,
@@ -315,6 +325,7 @@ def test_announce_posting_hidden(app, posting, creator, moderator):
     event = BoardPostingHidden(
         occurred_at=now(),
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         posting_id=posting.id,
         posting_creator_id=creator.id,
         posting_creator_screen_name=creator.screen_name,
@@ -344,6 +355,7 @@ def test_announce_posting_unhidden(app, posting, creator, moderator):
     event = BoardPostingUnhidden(
         occurred_at=now(),
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         posting_id=posting.id,
         posting_creator_id=creator.id,
         posting_creator_screen_name=creator.screen_name,

@@ -27,17 +27,18 @@ from .helpers import (
 )
 
 
-def test_shop_order_placed_announced(app, placed_order):
+def test_shop_order_placed_announced(app, placed_order, orderer_user):
     expected_channels = [CHANNEL_ORGA_LOG]
     expected_text = 'Ken_von_Kaufkraft hat Bestellung ORDER-00001 aufgegeben.'
 
     order = placed_order
     event = ShopOrderPlaced(
         occurred_at=now(),
+        initiator_id=orderer_user.id,
+        initiator_screen_name=orderer_user.screen_name,
         order_id=order.id,
         order_number=order.order_number,
         orderer_id=order.placed_by_id,
-        initiator_id=order.placed_by_id,
     )
 
     with mocked_irc_bot() as mock:
@@ -56,10 +57,11 @@ def test_shop_order_canceled_announced(app, canceled_order, shop_admin):
     order = canceled_order
     event = ShopOrderCanceled(
         occurred_at=now(),
+        initiator_id=shop_admin.id,
+        initiator_screen_name=shop_admin.screen_name,
         order_id=order.id,
         order_number=order.order_number,
         orderer_id=order.placed_by_id,
-        initiator_id=shop_admin.id,
     )
 
     with mocked_irc_bot() as mock:
@@ -78,11 +80,12 @@ def test_shop_order_paid_announced(app, paid_order, shop_admin):
     order = paid_order
     event = ShopOrderPaid(
         occurred_at=now(),
+        initiator_id=shop_admin.id,
+        initiator_screen_name=shop_admin.screen_name,
         order_id=order.id,
         order_number=order.order_number,
         orderer_id=order.placed_by_id,
         payment_method=PaymentMethod.bank_transfer,
-        initiator_id=shop_admin.id,
     )
 
     with mocked_irc_bot() as mock:
@@ -95,11 +98,16 @@ def test_shop_order_paid_announced(app, paid_order, shop_admin):
 
 
 @pytest.fixture(scope='module')
-def orderer(make_user_with_detail):
+def orderer_user(make_user_with_detail):
     user = make_user_with_detail('Ken_von_Kaufkraft')
     user_id = user.id
-    yield create_orderer(user)
+    yield user
     user_command_service.delete_account(user_id, user_id, 'clean up')
+
+
+@pytest.fixture(scope='module')
+def orderer(orderer_user):
+    yield create_orderer(orderer_user)
 
 
 @pytest.fixture(scope='module')

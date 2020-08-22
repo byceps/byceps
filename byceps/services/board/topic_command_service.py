@@ -57,6 +57,7 @@ def create_topic(
     event = BoardTopicCreated(
         occurred_at=topic.created_at,
         initiator_id=creator.id,
+        initiator_screen_name=creator.screen_name,
         topic_id=topic.id,
         topic_creator_id=creator.id,
         topic_creator_screen_name=creator.screen_name,
@@ -86,6 +87,7 @@ def update_topic(
     return BoardTopicUpdated(
         occurred_at=posting_event.occurred_at,
         initiator_id=editor.id,
+        initiator_screen_name=editor.screen_name,
         topic_id=topic.id,
         topic_creator_id=topic_creator.id,
         topic_creator_screen_name=topic_creator.screen_name,
@@ -114,6 +116,7 @@ def hide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicHidden:
     return BoardTopicHidden(
         occurred_at=now,
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=topic_creator.id,
         topic_creator_screen_name=topic_creator.screen_name,
@@ -143,6 +146,7 @@ def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
     return BoardTopicUnhidden(
         occurred_at=now,
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=topic_creator.id,
         topic_creator_screen_name=topic_creator.screen_name,
@@ -169,6 +173,7 @@ def lock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicLocked:
     return BoardTopicLocked(
         occurred_at=now,
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=topic_creator.id,
         topic_creator_screen_name=topic_creator.screen_name,
@@ -196,6 +201,7 @@ def unlock_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnlocked:
     return BoardTopicUnlocked(
         occurred_at=now,
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=topic_creator.id,
         topic_creator_screen_name=topic_creator.screen_name,
@@ -222,6 +228,7 @@ def pin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicPinned:
     return BoardTopicPinned(
         occurred_at=now,
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=topic_creator.id,
         topic_creator_screen_name=topic_creator.screen_name,
@@ -249,6 +256,7 @@ def unpin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnpinned:
     return BoardTopicUnpinned(
         occurred_at=now,
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=topic_creator.id,
         topic_creator_screen_name=topic_creator.screen_name,
@@ -281,6 +289,7 @@ def move_topic(
     return BoardTopicMoved(
         occurred_at=now,
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         topic_id=topic.id,
         topic_creator_id=topic_creator.id,
         topic_creator_screen_name=topic_creator.screen_name,

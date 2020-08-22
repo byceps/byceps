@@ -44,6 +44,7 @@ def create_posting(
     event = BoardPostingCreated(
         occurred_at=posting.created_at,
         initiator_id=creator.id,
+        initiator_screen_name=creator.screen_name,
         posting_id=posting.id,
         posting_creator_id=creator.id,
         posting_creator_screen_name=creator.screen_name,
@@ -77,6 +78,7 @@ def update_posting(
     return BoardPostingUpdated(
         occurred_at=now,
         initiator_id=editor.id,
+        initiator_screen_name=editor.screen_name,
         posting_id=posting.id,
         posting_creator_id=posting_creator.id,
         posting_creator_screen_name=posting_creator.screen_name,
@@ -108,6 +110,7 @@ def hide_posting(
     event = BoardPostingHidden(
         occurred_at=now,
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         posting_id=posting.id,
         posting_creator_id=posting_creator.id,
         posting_creator_screen_name=posting_creator.screen_name,
@@ -142,6 +145,7 @@ def unhide_posting(
     event = BoardPostingUnhidden(
         occurred_at=now,
         initiator_id=moderator.id,
+        initiator_screen_name=moderator.screen_name,
         posting_id=posting.id,
         posting_creator_id=posting_creator.id,
         posting_creator_screen_name=posting_creator.screen_name,

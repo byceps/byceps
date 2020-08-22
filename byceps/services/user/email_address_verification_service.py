@@ -82,6 +82,7 @@ def confirm_email_address(
     return UserEmailAddressConfirmed(
         occurred_at=event.occurred_at,
         initiator_id=user.id,
+        initiator_screen_name=user.screen_name,
         user_id=user.id,
     )
 
@@ -118,5 +119,6 @@ def invalidate_email_address(
     return UserEmailAddressInvalidated(
         occurred_at=event.occurred_at,
         initiator_id=initiator.id if initiator else None,
+        initiator_screen_name=initiator.screen_name if initiator else None,
         user_id=user.id,
     )

@@ -61,6 +61,7 @@ def award_badge_to_user(
     event = UserBadgeAwarded(
         occurred_at=awarded_at,
         initiator_id=initiator.id if initiator else None,
+        initiator_screen_name=initiator.screen_name if initiator else None,
         user_id=user_id,
         user_screen_name=user.screen_name,
         badge_id=badge_id,

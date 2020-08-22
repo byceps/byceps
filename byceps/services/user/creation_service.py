@@ -153,6 +153,7 @@ def _create_user(
     event = UserAccountCreated(
         occurred_at=user.created_at,
         initiator_id=creator.id if creator else None,
+        initiator_screen_name=creator.screen_name if creator else None,
         user_id=user.id,
     )
 

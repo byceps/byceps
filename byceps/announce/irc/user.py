@@ -37,7 +37,9 @@ def announce_user_account_created(event: UserAccountCreated) -> None:
     """Announce that a user account has been created."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator_screen_name = _get_screen_name(event.initiator_id)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
     user_screen_name = _get_screen_name(event.user_id)
 
     text = (
@@ -59,7 +61,9 @@ def announce_user_screen_name_changed(event: UserScreenNameChanged) -> None:
     """Announce that a user's screen name has been changed."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator_screen_name = _get_screen_name(event.initiator_id)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
 
     text = (
         f'{initiator_screen_name} hat das Benutzerkonto '
@@ -82,7 +86,9 @@ def announce_user_email_address_invalidated(
     """Announce that a user's email address has been invalidated."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator_screen_name = _get_screen_name(event.initiator_id)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
     user_screen_name = _get_screen_name(event.user_id)
 
     text = (
@@ -104,7 +110,9 @@ def announce_user_details_updated_changed(event: UserDetailsUpdated) -> None:
     """Announce that a user's details have been changed."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator_screen_name = _get_screen_name(event.initiator_id)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
     user_screen_name = _get_screen_name(event.user_id)
 
     text = (
@@ -124,7 +132,9 @@ def announce_user_account_suspended(event: UserAccountSuspended) -> None:
     """Announce that a user account has been suspended."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator_screen_name = _get_screen_name(event.initiator_id)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
     user_screen_name = _get_screen_name(event.user_id)
 
     text = (
@@ -146,7 +156,9 @@ def announce_user_account_unsuspended(event: UserAccountUnsuspended) -> None:
     """Announce that a user account has been unsuspended."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator_screen_name = _get_screen_name(event.initiator_id)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
     user_screen_name = _get_screen_name(event.user_id)
 
     text = (
@@ -166,7 +178,9 @@ def announce_user_account_deleted(event: UserAccountDeleted) -> None:
     """Announce that a user account has been created."""
     channels = [CHANNEL_ORGA_LOG]
 
-    initiator_screen_name = _get_screen_name(event.initiator_id)
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
     user = user_service.get_user(event.user_id)
 
     text = (

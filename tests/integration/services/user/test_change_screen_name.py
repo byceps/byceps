@@ -39,6 +39,7 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     assert isinstance(event, UserScreenNameChanged)
     assert event.user_id == user_id
     assert event.initiator_id == admin_user.id
+    assert event.initiator_screen_name == admin_user.screen_name
     assert event.old_screen_name == old_screen_name
     assert event.new_screen_name == new_screen_name
 

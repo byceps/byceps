@@ -115,6 +115,7 @@ def publish_item(
     return NewsItemPublished(
         occurred_at=item.published_at,
         initiator_id=initiator.id if initiator else None,
+        initiator_screen_name=initiator.screen_name if initiator else None,
         item_id=item.id,
         channel_id=item.channel.id,
         title=item.title,
