@@ -66,12 +66,11 @@
       <div class="user-badge size-64" title="{{ badge.label }}"><img src="{{ badge.image_url_path }}"></div>
     </div>
 
-    {%- if badge.description %}
-    <div class="description">{{ badge.description }}</div>
-    {%- endif %}
+    <div class="description">{{ badge.description|fallback('Es ist keine Beschreibung hinterlegt.') }}</div>
   </div>
 
-  <h2>an {{ recipients|length }} Personen verliehen</h2>
+  <h2>An {{ recipients|length }} Personen verliehen</h2>
+  {%- if recipients %}
   <ul class="list-grid">
     {%- for user in recipients %}
     <li><a class="recipient" href="{{ url_for('user_admin.view', user_id=user.id) }}">
@@ -79,5 +78,8 @@
     </a></li>
     {%- endfor %}
   </ul>
+  {%- else %}
+    <div class="dimmed-box centered">Dieses Abzeichen wurde an keine Personen verliehen.</div>
+  {%- endif %}
 
 {%- endblock %}
