@@ -6,15 +6,10 @@ byceps.blueprints.admin.shop.shop.views
 :License: Modified BSD, see LICENSE for details.
 """
 
-from collections import defaultdict
-
 from flask import abort, request
 
 from .....services.shop.article import service as article_service
-from .....services.shop.order import (
-    action_service as order_action_service,
-    service as order_service,
-)
+from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import PaymentState
 from .....services.shop.shop import service as shop_service
 from .....util.framework.blueprint import create_blueprint
@@ -58,10 +53,6 @@ def view_for_shop(shop_id):
         shop.id
     )
 
-    order_actions_by_article_number = _get_order_actions_by_article_number(
-        shop.id
-    )
-
     return {
         'shop': shop,
 
@@ -69,22 +60,7 @@ def view_for_shop(shop_id):
         'PaymentState': PaymentState,
 
         'settings': shop.extra_settings,
-
-        'order_actions_by_article_number': order_actions_by_article_number,
     }
-
-
-def _get_order_actions_by_article_number(shop_id):
-    actions = order_action_service.get_actions_for_shop(shop_id)
-
-    actions.sort(key=lambda a: a.payment_state.name, reverse=True)
-    actions.sort(key=lambda a: a.article_number)
-
-    actions_by_article_number = defaultdict(list)
-    for action in actions:
-        actions_by_article_number[action.article_number].append(action)
-
-    return actions_by_article_number
 
 
 @blueprint.route('/shops/create')

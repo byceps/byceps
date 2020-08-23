@@ -11,9 +11,7 @@ from typing import Callable, Sequence, Set
 from ....database import db
 from ....typing import UserID
 
-from ..article.models.article import Article as DbArticle
 from ..article.transfer.models import ArticleNumber
-from ..shop.transfer.models import ShopID
 
 from .actions.award_badge import award_badge
 from .actions.create_ticket_bundles import create_ticket_bundles
@@ -72,13 +70,6 @@ def get_actions_for_article(
     """Return the order actions defined for that article."""
     return OrderAction.query \
         .filter_by(article_number=article_number) \
-        .all()
-
-
-def get_actions_for_shop(shop_id: ShopID) -> Sequence[OrderAction]:
-    """Return all order actions defined for articles of that shop."""
-    return OrderAction.query \
-        .join(DbArticle).filter(DbArticle.shop_id == shop_id) \
         .all()
 
 

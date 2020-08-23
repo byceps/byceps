@@ -1,6 +1,5 @@
 {% extends 'layouts/admin/shop.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/shop/article.html' import render_article_link %}
 {% from 'macros/admin/shop/order.html' import render_order_payment_state %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/stats.html' import render_bigstats_item %}
@@ -58,38 +57,6 @@
   </table>
   {%- else %}
   <div class="dimmed-box centered">Es sind keine Einstellungen hinterlegt.</div>
-  {%- endif %}
-
-  <h2>Aktionen {{ render_extra_in_heading(order_actions_by_article_number|length) }}</h2>
-  <p>Eine Aktion wird ausgelöst, wenn eine Bestellung einen der aufgeführten Artikel enthält und der Bestellstatus auf einen der für den Artikel aufgeführten Zustände geändert wird.</p>
-  {%- if order_actions_by_article_number %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Artikel</th>
-        <th>Bezahlstatus</th>
-        <th>Prozedur<br>Parameter</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for article_number, actions in order_actions_by_article_number.items()|sort(attribute='0') %}
-      {%- for action in actions %}
-      <tr>
-        <td>
-        {%- if loop.first %}
-          {{- render_article_link(action.article) }}<br>
-          {{- action.article.description -}}
-        {%- endif %}
-        </td>
-        <td>{{ render_order_payment_state(action.payment_state) }}</td>
-        <td class="monospace">{{ action.procedure }}<br>{{ action.parameters }}</td>
-      </tr>
-      {%- endfor %}
-    {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Für diesen Shop sind keine Aktionen definiert.</div>
   {%- endif %}
 
 {%- endblock %}
