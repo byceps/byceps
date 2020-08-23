@@ -285,11 +285,11 @@ nav.main li {
 .main-tabs {
   display: flex;
   list-style: none;
-  margin: -8px 0 0 8px;
+  margin: -8px 12px 0 12px;
   padding: 0;
 }
 .main-tabs li {
-  padding: 8px 0 0 8px;
+  padding: 8px 0 0 4px;
 }
 .main-tabs a,
 .main-tabs .current {
