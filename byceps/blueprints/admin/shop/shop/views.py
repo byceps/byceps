@@ -75,7 +75,7 @@ def view_for_shop(shop_id):
 
 
 def _get_order_actions_by_article_number(shop_id):
-    actions = order_action_service.get_actions(shop_id)
+    actions = order_action_service.get_actions_for_shop(shop_id)
 
     actions.sort(key=lambda a: a.payment_state.name, reverse=True)
     actions.sort(key=lambda a: a.article_number)

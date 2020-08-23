@@ -66,7 +66,16 @@ def delete_actions(article_number: ArticleNumber) -> None:
 # retrieval
 
 
-def get_actions(shop_id: ShopID) -> Sequence[OrderAction]:
+def get_actions_for_article(
+    article_number: ArticleNumber,
+) -> Sequence[OrderAction]:
+    """Return the order actions defined for that article."""
+    return OrderAction.query \
+        .filter_by(article_number=article_number) \
+        .all()
+
+
+def get_actions_for_shop(shop_id: ShopID) -> Sequence[OrderAction]:
     """Return all order actions defined for articles of that shop."""
     return OrderAction.query \
         .join(DbArticle).filter(DbArticle.shop_id == shop_id) \

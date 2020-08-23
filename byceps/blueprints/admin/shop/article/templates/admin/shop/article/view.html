@@ -1,5 +1,6 @@
 {% extends 'layouts/admin/shop/article.html' %}
 {% from 'macros/admin/shop/article.html' import render_article_link, render_article_temporal_availability %}
+{% from 'macros/admin/shop/order.html' import render_order_payment_state %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page_shop = shop %}
@@ -148,6 +149,29 @@
       </td>
     </tr>
   </table>
+
+  <h2>Aktionen</h2>
+  <p>Eine Aktion wird ausgelöst, wenn eine Bestellung einen mit einer Aktion verknüpften Artikel enthält und der Bestellstatus auf einen der für den Artikel aufgeführten Zustände geändert wird.</p>
+  {%- if actions %}
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Bezahlstatus</th>
+        <th>Prozedur<br>Parameter</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for action in actions %}
+      <tr>
+        <td>{{ render_order_payment_state(action.payment_state) }}</td>
+        <td class="monospace">{{ action.procedure }}<br>{{ action.parameters }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="dimmed-box centered">Für diesen Artikel sind keine Aktionen definiert.</div>
+  {%- endif %}
 
 {%- endblock %}
 
