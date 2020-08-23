@@ -83,7 +83,7 @@ def view_area(slug):
 
 @blueprint.route('/areas/<slug>/manage_seats')
 @login_required
-@templated('seating/view_area')
+@templated('site/seating/view_area')
 def manage_seats_in_area(slug):
     """Manage seats for assigned tickets in area."""
     _abort_if_seat_management_disabled()
