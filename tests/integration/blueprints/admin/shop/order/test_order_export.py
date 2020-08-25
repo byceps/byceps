@@ -3,7 +3,6 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-import codecs
 from datetime import datetime
 from decimal import Decimal
 
@@ -163,9 +162,8 @@ def order(storefront, cart, orderer):
 
 @freeze_time('2015-04-15 07:54:18')  # UTC
 def test_serialize_existing_order(request, admin_app, order, admin_user):
-    filename = str(request.fspath.dirpath('order_export.xml'))
-    with codecs.open(filename, encoding='iso-8859-1') as f:
-        expected = f.read().rstrip()
+    filename = request.fspath.dirpath('order_export.xml')
+    expected = filename.read_text('iso-8859-1').rstrip()
 
     url = f'/admin/shop/orders/{order.id}/export'
     with http_client(admin_app, user_id=admin_user.id) as client:
