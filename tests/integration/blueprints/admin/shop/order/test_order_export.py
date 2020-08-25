@@ -162,8 +162,8 @@ def order(storefront, cart, orderer):
 
 
 @freeze_time('2015-04-15 07:54:18')  # UTC
-def test_serialize_existing_order(admin_app, order, admin_user):
-    filename = 'tests/integration/blueprints/admin/shop/order/order_export.xml'
+def test_serialize_existing_order(request, admin_app, order, admin_user):
+    filename = str(request.fspath.dirpath('order_export.xml'))
     with codecs.open(filename, encoding='iso-8859-1') as f:
         expected = f.read().rstrip()
 
