@@ -48,6 +48,10 @@ class _TourneyMatchEvent(_BaseEvent):
     tourney_id: str
     tourney_title: str
     match_id: str
+    participant1_id: str
+    participant1_name: str
+    participant2_id: str
+    participant2_name: str
 
 
 @dataclass(frozen=True)
