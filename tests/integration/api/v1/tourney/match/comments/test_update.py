@@ -32,7 +32,7 @@ def test_update_comment(api_client, api_client_authz_header, comment, user):
     assert updated_comment.last_edited_by.id == user.id
 
 
-def test_update_nonexistant_comment(api_client, api_client_authz_header, user):
+def test_update_nonexistent_comment(api_client, api_client_authz_header, user):
     unknown_comment_id = '00000000-0000-0000-0000-000000000000'
 
     response = request_comment_update(

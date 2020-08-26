@@ -56,7 +56,7 @@ def create_avatar_image(
     db.session.commit()
 
     # Might raise `FileExistsError`.
-    upload.store(stream, avatar.path, create_parent_path_if_nonexistant=True)
+    upload.store(stream, avatar.path, create_parent_path_if_nonexistent=True)
 
     return avatar
 

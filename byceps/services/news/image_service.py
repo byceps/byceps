@@ -85,7 +85,7 @@ def create_image(
     )
 
     # Might raise `FileExistsError`.
-    upload.store(stream, path, create_parent_path_if_nonexistant=True)
+    upload.store(stream, path, create_parent_path_if_nonexistent=True)
 
     return _db_entity_to_image(image, item.channel.id)
 
