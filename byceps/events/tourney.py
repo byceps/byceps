@@ -84,6 +84,7 @@ class _TourneyParticipantEvent(_BaseEvent):
     tourney_title: str
     match_id: str
     participant_id: str
+    participant_name: str
 
 
 @dataclass(frozen=True)
