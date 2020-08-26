@@ -17,6 +17,7 @@ from .base import _BaseEvent
 @dataclass(frozen=True)
 class _TourneyEvent(_BaseEvent):
     tourney_id: str
+    tourney_title: str
 
 
 @dataclass(frozen=True)
