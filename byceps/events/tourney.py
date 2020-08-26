@@ -7,6 +7,7 @@ byceps.events.tourney
 """
 
 from dataclasses import dataclass
+from typing import Optional
 
 from .base import _BaseEvent
 
@@ -48,10 +49,10 @@ class _TourneyMatchEvent(_BaseEvent):
     tourney_id: str
     tourney_title: str
     match_id: str
-    participant1_id: str
-    participant1_name: str
-    participant2_id: str
-    participant2_name: str
+    participant1_id: Optional[str]
+    participant1_name: Optional[str]
+    participant2_id: Optional[str]
+    participant2_name: Optional[str]
 
 
 @dataclass(frozen=True)
