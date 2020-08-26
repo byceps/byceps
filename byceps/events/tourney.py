@@ -45,6 +45,8 @@ class TourneyFinished(_TourneyEvent):
 
 @dataclass(frozen=True)
 class _TourneyMatchEvent(_BaseEvent):
+    tourney_id: str
+    tourney_title: str
     match_id: str
 
 
@@ -78,8 +80,10 @@ class TourneyMatchScoreRandomized(_TourneyMatchEvent):
 
 @dataclass(frozen=True)
 class _TourneyParticipantEvent(_BaseEvent):
-    participant_id: str
+    tourney_id: str
+    tourney_title: str
     match_id: str
+    participant_id: str
 
 
 @dataclass(frozen=True)
