@@ -40,8 +40,6 @@ def _on_board_topic_created(sender, *, event: BoardTopicCreated = None) -> None:
 
 def announce_board_topic_created(event: BoardTopicCreated) -> None:
     """Announce that someone has created a board topic."""
-    channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
-
     topic_creator_screen_name = get_screen_name_or_fallback(
         event.topic_creator_screen_name
     )
@@ -52,8 +50,8 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
         f'das Thema "{event.topic_title}" erstellt: {event.url}'
     )
 
-    for channel in channels:
-        send_message([channel], text)
+    send_message(CHANNEL_ORGA_LOG, text)
+    send_message(CHANNEL_PUBLIC, text)
 
 
 @board_signals.topic_hidden.connect
@@ -63,8 +61,6 @@ def _on_board_topic_hidden(sender, *, event: BoardTopicHidden = None) -> None:
 
 def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
     """Announce that a moderator has hidden a board topic."""
-    channels = [CHANNEL_ORGA_LOG]
-
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
     )
@@ -79,7 +75,7 @@ def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
         f'versteckt: {event.url}'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @board_signals.topic_unhidden.connect
@@ -91,8 +87,6 @@ def _on_board_topic_unhidden(
 
 def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
     """Announce that a moderator has made a board topic visible again."""
-    channels = [CHANNEL_ORGA_LOG]
-
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
     )
@@ -107,7 +101,7 @@ def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
         f'wieder sichtbar gemacht: {event.url}'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @board_signals.topic_locked.connect
@@ -117,8 +111,6 @@ def _on_board_topic_locked(sender, *, event: BoardTopicLocked = None) -> None:
 
 def announce_board_topic_locked(event: BoardTopicLocked) -> None:
     """Announce that a moderator has locked a board topic."""
-    channels = [CHANNEL_ORGA_LOG]
-
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
     )
@@ -133,7 +125,7 @@ def announce_board_topic_locked(event: BoardTopicLocked) -> None:
         f'geschlossen: {event.url}'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @board_signals.topic_unlocked.connect
@@ -145,8 +137,6 @@ def _on_board_topic_unlocked(
 
 def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
     """Announce that a moderator has unlocked a board topic."""
-    channels = [CHANNEL_ORGA_LOG]
-
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
     )
@@ -161,7 +151,7 @@ def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
         f'wieder geöffnet: {event.url}'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @board_signals.topic_pinned.connect
@@ -171,8 +161,6 @@ def _on_board_topic_pinned(sender, *, event: BoardTopicPinned = None) -> None:
 
 def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
     """Announce that a moderator has pinned a board topic."""
-    channels = [CHANNEL_ORGA_LOG]
-
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
     )
@@ -187,7 +175,7 @@ def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
         f'angepinnt: {event.url}'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @board_signals.topic_unpinned.connect
@@ -199,8 +187,6 @@ def _on_board_topic_unpinned(
 
 def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
     """Announce that a moderator has unpinned a board topic."""
-    channels = [CHANNEL_ORGA_LOG]
-
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
     )
@@ -215,7 +201,7 @@ def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
         f'wieder gelöst: {event.url}'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @board_signals.topic_moved.connect
@@ -225,8 +211,6 @@ def _on_board_topic_moved(sender, *, event: BoardTopicMoved = None) -> None:
 
 def announce_board_topic_moved(event: BoardTopicMoved) -> None:
     """Announce that a moderator has moved a board topic to another category."""
-    channels = [CHANNEL_ORGA_LOG]
-
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
     )
@@ -242,7 +226,7 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
         f'verschoben: {event.url}'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @board_signals.posting_created.connect
@@ -254,7 +238,8 @@ def _on_board_posting_created(
 
 def announce_board_posting_created(event: BoardPostingCreated) -> None:
     """Announce that someone has created a board posting."""
-    channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
+    channel1 = CHANNEL_ORGA_LOG
+    channel2 = CHANNEL_PUBLIC
 
     posting_creator_screen_name = get_screen_name_or_fallback(
         event.posting_creator_screen_name
@@ -269,8 +254,8 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
         f'auf das Thema "{event.topic_title}" geantwortet: {event.url}'
     )
 
-    for channel in channels:
-        send_message([channel], text)
+    send_message(CHANNEL_ORGA_LOG, text)
+    send_message(CHANNEL_PUBLIC, text)
 
 
 @board_signals.posting_hidden.connect
@@ -282,8 +267,6 @@ def _on_board_posting_hidden(
 
 def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     """Announce that a moderator has hidden a board posting."""
-    channels = [CHANNEL_ORGA_LOG]
-
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
     )
@@ -298,7 +281,7 @@ def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
         f'im Thema "{event.topic_title}" versteckt: {event.url}'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @board_signals.posting_unhidden.connect
@@ -310,8 +293,6 @@ def _on_board_posting_unhidden(
 
 def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
     """Announce that a moderator has made a board posting visible again."""
-    channels = [CHANNEL_ORGA_LOG]
-
     moderator_screen_name = get_screen_name_or_fallback(
         event.moderator_screen_name
     )
@@ -326,7 +307,7 @@ def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
         f'im Thema "{event.topic_title}" wieder sichtbar gemacht: {event.url}'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 def _get_board_label(topic_id: TopicID) -> str:

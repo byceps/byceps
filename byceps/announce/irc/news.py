@@ -28,8 +28,6 @@ def _on_news_item_published(sender, *, event: NewsItemPublished = None) -> None:
 
 def announce_news_item_published_publicly(event: NewsItemPublished) -> None:
     """Announce publicly that a news item has been published."""
-    channels = [CHANNEL_PUBLIC]
-
     channel = news_channel_service.find_channel(event.channel_id)
     brand = brand_service.find_brand(channel.brand_id)
 
@@ -38,13 +36,11 @@ def announce_news_item_published_publicly(event: NewsItemPublished) -> None:
         f'{event.external_url}'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_PUBLIC, text)
 
 
 def announce_news_item_published_internally(event: NewsItemPublished) -> None:
     """Announce internally that a news item has been published."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -54,4 +50,4 @@ def announce_news_item_published_internally(event: NewsItemPublished) -> None:
         f'{event.external_url}'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)

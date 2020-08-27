@@ -33,8 +33,6 @@ def _on_user_account_created(sender, *, event: UserAccountCreated) -> None:
 
 def announce_user_account_created(event: UserAccountCreated) -> None:
     """Announce that a user account has been created."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -45,7 +43,7 @@ def announce_user_account_created(event: UserAccountCreated) -> None:
         f'hat das Benutzerkonto "{user_screen_name}" angelegt.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @user_signals.screen_name_changed.connect
@@ -57,8 +55,6 @@ def _on_user_screen_name_changed(
 
 def announce_user_screen_name_changed(event: UserScreenNameChanged) -> None:
     """Announce that a user's screen name has been changed."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -68,7 +64,7 @@ def announce_user_screen_name_changed(event: UserScreenNameChanged) -> None:
         f'"{event.old_screen_name}" in "{event.new_screen_name}" umbenannt.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @user_signals.email_address_invalidated.connect
@@ -82,8 +78,6 @@ def announce_user_email_address_invalidated(
     event: UserEmailAddressInvalidated,
 ) -> None:
     """Announce that a user's email address has been invalidated."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -94,7 +88,7 @@ def announce_user_email_address_invalidated(
         f'des Benutzerkontos "{user_screen_name}" invalidiert.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @user_signals.details_updated.connect
@@ -106,8 +100,6 @@ def _on_user_details_updated_changed(
 
 def announce_user_details_updated_changed(event: UserDetailsUpdated) -> None:
     """Announce that a user's details have been changed."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -118,7 +110,7 @@ def announce_user_details_updated_changed(event: UserDetailsUpdated) -> None:
         f'des Benutzerkontos "{user_screen_name}" geändert.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @user_signals.account_suspended.connect
@@ -128,8 +120,6 @@ def _on_user_account_suspended(sender, *, event: UserAccountSuspended) -> None:
 
 def announce_user_account_suspended(event: UserAccountSuspended) -> None:
     """Announce that a user account has been suspended."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -140,7 +130,7 @@ def announce_user_account_suspended(event: UserAccountSuspended) -> None:
         f'"{user_screen_name}" gesperrt.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @user_signals.account_unsuspended.connect
@@ -152,8 +142,6 @@ def _on_user_account_unsuspended(
 
 def announce_user_account_unsuspended(event: UserAccountUnsuspended) -> None:
     """Announce that a user account has been unsuspended."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -164,7 +152,7 @@ def announce_user_account_unsuspended(event: UserAccountUnsuspended) -> None:
         f'"{user_screen_name}" entsperrt.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @user_signals.account_deleted.connect
@@ -174,8 +162,6 @@ def _on_user_account_deleted(sender, *, event: UserAccountDeleted) -> None:
 
 def announce_user_account_deleted(event: UserAccountDeleted) -> None:
     """Announce that a user account has been created."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -186,4 +172,4 @@ def announce_user_account_deleted(event: UserAccountDeleted) -> None:
         f'"{user_screen_name}" (ID "{event.user_id}") gelöscht.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)

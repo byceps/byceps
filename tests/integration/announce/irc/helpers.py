@@ -28,16 +28,16 @@ def mocked_irc_bot():
 
 
 def assert_submitted_data(
-    mock, expected_channels: List[str], expected_text: str
+    mock, expected_channel: str, expected_text: str
 ) -> None:
     actual = get_submitted_json(mock, 1)[0]
-    assert_request_data(actual, expected_channels, expected_text)
+    assert_request_data(actual, expected_channel, expected_text)
 
 
 def assert_request_data(
-    actual, expected_channels: List[str], expected_text: str
+    actual, expected_channel: str, expected_text: str
 ) -> None:
-    assert actual['channels'] == expected_channels
+    assert actual['channels'] == [expected_channel]
     assert actual['text'] == expected_text
 
     # Don't allow any other keys.

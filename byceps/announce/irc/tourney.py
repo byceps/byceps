@@ -32,7 +32,7 @@ from ...util.jobqueue import enqueue
 from ._config import CHANNEL_PUBLIC
 
 
-CHANNELS = [CHANNEL_PUBLIC]
+CHANNEL = CHANNEL_PUBLIC
 
 
 # -------------------------------------------------------------------- #
@@ -47,7 +47,7 @@ def _on_tourney_started(sender, *, event: TourneyStarted):
 def announce_tourney_started(event: TourneyStarted):
     text = f'Das Turnier {event.tourney_title} wurde gestartet.'
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 @tourney_signals.tourney_paused.connect
@@ -58,7 +58,7 @@ def _on_tourney_paused(sender, *, event: TourneyPaused):
 def announce_tourney_paused(event: TourneyPaused):
     text = f'Das Turnier {event.tourney_title} wurde unterbrochen.'
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 @tourney_signals.tourney_canceled.connect
@@ -69,7 +69,7 @@ def _on_tourney_canceled(sender, *, event: TourneyCanceled):
 def announce_tourney_canceled(event: TourneyCanceled):
     text = f'Das Turnier {event.tourney_title} wurde abgesagt.'
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 @tourney_signals.tourney_finished.connect
@@ -80,7 +80,7 @@ def _on_tourney_finished(sender, *, event: TourneyFinished):
 def announce_tourney_finished(event: TourneyFinished):
     text = f'Das Turnier {event.tourney_title} wurde beendet.'
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 # -------------------------------------------------------------------- #
@@ -102,7 +102,7 @@ def announce_match_ready(event: TourneyMatchReady):
         f'kann gespielt werden.'
     )
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 @tourney_signals.match_reset.connect
@@ -116,7 +116,7 @@ def announce_match_reset(event: TourneyMatchReset):
         f'wurde zurückgesetzt.'
     )
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 @tourney_signals.match_score_submitted.connect
@@ -131,7 +131,7 @@ def announce_match_score_submitted(event: TourneyMatchScoreSubmitted):
         f'wurde ein Ergebnis eingetragen.'
     )
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 @tourney_signals.match_score_confirmed.connect
@@ -146,7 +146,7 @@ def announce_match_score_confirmed(event: TourneyMatchScoreConfirmed):
         f'wurde das eingetragene Ergebnis bestätigt.'
     )
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 @tourney_signals.match_score_randomized.connect
@@ -161,7 +161,7 @@ def announce_match_score_randomized(event: TourneyMatchScoreRandomized):
         f'wurde ein zufälliges Ergebnis eingetragen.'
     )
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 # -------------------------------------------------------------------- #
@@ -179,7 +179,7 @@ def announce_participant_ready(event: TourneyParticipantReady):
         'ist spielbereit.'
     )
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 @tourney_signals.participant_eliminated.connect
@@ -193,7 +193,7 @@ def announce_participant_eliminated(event: TourneyParticipantEliminated):
         f'{event.tourney_title} aus.'
     )
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 @tourney_signals.participant_warned.connect
@@ -207,7 +207,7 @@ def announce_participant_warned(event: TourneyParticipantWarned):
         f'hat eine gelbe Karte \x038,8 \x03 erhalten.'
     )
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 @tourney_signals.participant_disqualified.connect
@@ -223,7 +223,7 @@ def announce_participant_disqualified(event: TourneyParticipantDisqualified):
         f'wurde disqualifiziert \x034,4 \x03.'
     )
 
-    send_message(CHANNELS, text)
+    send_message(CHANNEL, text)
 
 
 # -------------------------------------------------------------------- #

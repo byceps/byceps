@@ -10,7 +10,7 @@ from byceps.signals import user_badge as user_badge_signals
 from .helpers import assert_submitted_data, CHANNEL_ORGA_LOG, mocked_irc_bot
 
 
-EXPECTED_CHANNELS = [CHANNEL_ORGA_LOG]
+EXPECTED_CHANNEL = CHANNEL_ORGA_LOG
 
 
 def test_user_badge_awarding_announced_without_initiator(app, make_user):
@@ -29,7 +29,7 @@ def test_user_badge_awarding_announced_without_initiator(app, make_user):
     with mocked_irc_bot() as mock:
         user_badge_signals.user_badge_awarded.send(None, event=event)
 
-    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)
 
 
 def test_user_badge_awarding_announced_with_initiator(
@@ -52,4 +52,4 @@ def test_user_badge_awarding_announced_with_initiator(
     with mocked_irc_bot() as mock:
         user_badge_signals.user_badge_awarded.send(None, event=event)
 
-    assert_submitted_data(mock, EXPECTED_CHANNELS, expected_text)
+    assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)

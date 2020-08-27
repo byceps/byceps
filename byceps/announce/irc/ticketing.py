@@ -25,8 +25,6 @@ def _on_ticket_checked_in(sender, *, event: TicketCheckedIn) -> None:
 
 def announce_ticket_checked_in(event: TicketCheckedIn) -> None:
     """Announce that a ticket has been checked in."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -37,4 +35,4 @@ def announce_ticket_checked_in(event: TicketCheckedIn) -> None:
         f'benutzt von {user_screen_name}, eingecheckt.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)

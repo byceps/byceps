@@ -25,8 +25,6 @@ def _on_user_badge_awarded(sender, *, event: UserBadgeAwarded) -> None:
 
 def announce_user_badge_awarded(event: UserBadgeAwarded) -> None:
     """Announce that a badge has been awarded to a user."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -37,4 +35,4 @@ def announce_user_badge_awarded(event: UserBadgeAwarded) -> None:
         f'an {awardee_screen_name} verliehen.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)

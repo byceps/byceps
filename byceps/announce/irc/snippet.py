@@ -26,8 +26,6 @@ def _on_snippet_created(sender, *, event: SnippetCreated = None) -> None:
 
 def announce_snippet_created(event: SnippetCreated) -> None:
     """Announce that a snippet has been created."""
-    channels = [CHANNEL_ORGA_LOG]
-
     editor_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -39,7 +37,7 @@ def announce_snippet_created(event: SnippetCreated) -> None:
         f'"{event.scope.type_}/{event.scope.name}" angelegt.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @snippet_signals.snippet_updated.connect
@@ -49,8 +47,6 @@ def _on_snippet_updated(sender, *, event: SnippetUpdated = None) -> None:
 
 def announce_snippet_updated(event: SnippetUpdated) -> None:
     """Announce that a snippet has been updated."""
-    channels = [CHANNEL_ORGA_LOG]
-
     editor_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -62,7 +58,7 @@ def announce_snippet_updated(event: SnippetUpdated) -> None:
         f'"{event.scope.type_}/{event.scope.name}" aktualisiert.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @snippet_signals.snippet_deleted.connect
@@ -72,8 +68,6 @@ def _on_snippet_deleted(sender, *, event: SnippetDeleted = None) -> None:
 
 def announce_snippet_deleted(event: SnippetDeleted) -> None:
     """Announce that a snippet has been deleted."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -83,7 +77,7 @@ def announce_snippet_deleted(event: SnippetDeleted) -> None:
         f'im Scope "{event.scope.type_}/{event.scope.name}" gelöscht.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 _SNIPPET_TYPE_LABELS = {

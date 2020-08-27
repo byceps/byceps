@@ -26,15 +26,13 @@ def _on_order_placed(sender, *, event: ShopOrderPlaced) -> None:
 
 def announce_order_placed(event: ShopOrderPlaced) -> None:
     """Announce that an order has been placed."""
-    channels = [CHANNEL_ORGA_LOG]
-
     orderer_screen_name = get_screen_name_or_fallback(event.orderer_screen_name)
 
     text = (
         f'{orderer_screen_name} hat Bestellung {event.order_number} aufgegeben.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @shop_signals.order_paid.connect
@@ -44,8 +42,6 @@ def _on_order_paid(sender, *, event: ShopOrderPaid) -> None:
 
 def announce_order_paid(event: ShopOrderPaid) -> None:
     """Announce that an order has been paid."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -60,7 +56,7 @@ def announce_order_paid(event: ShopOrderPaid) -> None:
         'markiert.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)
 
 
 @shop_signals.order_canceled.connect
@@ -70,8 +66,6 @@ def _on_order_canceled(sender, *, event: ShopOrderCanceled) -> None:
 
 def announce_order_canceled(event: ShopOrderCanceled) -> None:
     """Announce that an order has been canceled."""
-    channels = [CHANNEL_ORGA_LOG]
-
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
@@ -82,4 +76,4 @@ def announce_order_canceled(event: ShopOrderCanceled) -> None:
         f'von {orderer_screen_name} storniert.'
     )
 
-    send_message(channels, text)
+    send_message(CHANNEL_ORGA_LOG, text)

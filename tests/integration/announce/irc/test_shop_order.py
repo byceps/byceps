@@ -27,7 +27,7 @@ from .helpers import (
 
 
 def test_shop_order_placed_announced(app, placed_order, orderer_user):
-    expected_channels = [CHANNEL_ORGA_LOG]
+    expected_channel = CHANNEL_ORGA_LOG
     expected_text = 'Ken_von_Kaufkraft hat Bestellung ORDER-00001 aufgegeben.'
 
     order = placed_order
@@ -44,11 +44,11 @@ def test_shop_order_placed_announced(app, placed_order, orderer_user):
     with mocked_irc_bot() as mock:
         shop_signals.order_placed.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channel, expected_text)
 
 
 def test_shop_order_canceled_announced(app, canceled_order, orderer_user, shop_admin):
-    expected_channels = [CHANNEL_ORGA_LOG]
+    expected_channel = CHANNEL_ORGA_LOG
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00002 von Ken_von_Kaufkraft '
         'storniert.'
@@ -68,11 +68,11 @@ def test_shop_order_canceled_announced(app, canceled_order, orderer_user, shop_a
     with mocked_irc_bot() as mock:
         shop_signals.order_canceled.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channel, expected_text)
 
 
 def test_shop_order_paid_announced(app, paid_order, orderer_user, shop_admin):
-    expected_channels = [CHANNEL_ORGA_LOG]
+    expected_channel = CHANNEL_ORGA_LOG
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00003 von Ken_von_Kaufkraft '
         'als per Überweisung bezahlt markiert.'
@@ -93,7 +93,7 @@ def test_shop_order_paid_announced(app, paid_order, orderer_user, shop_admin):
     with mocked_irc_bot() as mock:
         shop_signals.order_paid.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channels, expected_text)
+    assert_submitted_data(mock, expected_channel, expected_text)
 
 
 # helpers

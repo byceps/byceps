@@ -9,7 +9,7 @@ Send IRC messages to a bot via HTTP.
 """
 
 from time import sleep
-from typing import Any, List, Optional
+from typing import Any, Optional
 
 from flask import current_app
 import requests
@@ -21,8 +21,8 @@ DEFAULT_DELAY_IN_SECONDS = 2
 DEFAULT_TEXT_PREFIX = '[BYCEPS] '
 
 
-def send_message(channels: List[str], text: str) -> None:
-    """Write the text to the channels by sending it to the bot via HTTP."""
+def send_message(channel: str, text: str) -> None:
+    """Write the text to the channel by sending it to the bot via HTTP."""
     enabled = _get_config_value('ANNOUNCE_IRC_ENABLED', DEFAULT_ENABLED)
     if not enabled:
         current_app.logger.warning('Announcements on IRC are disabled.')
@@ -32,6 +32,7 @@ def send_message(channels: List[str], text: str) -> None:
         'ANNOUNCE_IRC_TEXT_PREFIX', DEFAULT_TEXT_PREFIX
     )
 
+    channels = [channel]
     text = text_prefix + text
 
     url = _get_config_value('ANNOUNCE_IRC_WEBHOOK_URL', DEFAULT_WEBHOOK_URL)
