@@ -27,16 +27,19 @@ from byceps.services.board import (
 from byceps.signals import board as board_signals
 
 from .helpers import (
+    assert_request_data,
     assert_submitted_data,
     CHANNEL_ORGA_LOG,
     CHANNEL_PUBLIC,
+    get_submitted_json,
     mocked_irc_bot,
     now,
 )
 
 
 def test_announce_topic_created(app, topic, creator):
-    expected_channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
+    expected_channels1 = [CHANNEL_ORGA_LOG]
+    expected_channels2 = [CHANNEL_PUBLIC]
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
@@ -57,7 +60,9 @@ def test_announce_topic_created(app, topic, creator):
     with mocked_irc_bot() as mock:
         board_signals.topic_created.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channels, expected_text)
+    actual1, actual2 = get_submitted_json(mock, 2)
+    assert_request_data(actual1, expected_channels1, expected_text)
+    assert_request_data(actual2, expected_channels2, expected_text)
 
 
 def test_announce_topic_hidden(app, topic, creator, moderator):
@@ -263,7 +268,8 @@ def test_announce_topic_moved(
 
 
 def test_announce_posting_created(app, posting, creator):
-    expected_channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
+    expected_channels1 = [CHANNEL_ORGA_LOG]
+    expected_channels2 = [CHANNEL_PUBLIC]
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
@@ -287,7 +293,9 @@ def test_announce_posting_created(app, posting, creator):
     with mocked_irc_bot() as mock:
         board_signals.posting_created.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channels, expected_text)
+    actual1, actual2 = get_submitted_json(mock, 2)
+    assert_request_data(actual1, expected_channels1, expected_text)
+    assert_request_data(actual2, expected_channels2, expected_text)
 
 
 def test_announce_posting_created_on_muted_topic(app, posting, creator):

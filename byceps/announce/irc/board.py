@@ -52,7 +52,8 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
         f'das Thema "{event.topic_title}" erstellt: {event.url}'
     )
 
-    send_message(channels, text)
+    for channel in channels:
+        send_message([channel], text)
 
 
 @board_signals.topic_hidden.connect
@@ -268,7 +269,8 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
         f'auf das Thema "{event.topic_title}" geantwortet: {event.url}'
     )
 
-    send_message(channels, text)
+    for channel in channels:
+        send_message([channel], text)
 
 
 @board_signals.posting_hidden.connect
