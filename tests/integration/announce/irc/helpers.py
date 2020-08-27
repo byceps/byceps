@@ -5,6 +5,7 @@
 
 from contextlib import contextmanager
 from datetime import datetime
+from typing import List
 
 from requests_mock import Mocker
 
@@ -26,13 +27,17 @@ def mocked_irc_bot():
         yield mock
 
 
-def assert_submitted_data(mock, expected_channels, expected_text):
-    call = get_only_call(mock)
+def assert_submitted_data(
+    mock, expected_channels: List[str], expected_text: str
+) -> None:
+    call = get_mock_calls(mock, 1)
     actual = call.json()
     assert_request_data(actual, expected_channels, expected_text)
 
 
-def assert_request_data(actual, expected_channels, expected_text):
+def assert_request_data(
+    actual, expected_channels: List[str], expected_text: str
+) -> None:
     assert actual['channels'] == expected_channels
     assert actual['text'] == expected_text
 
