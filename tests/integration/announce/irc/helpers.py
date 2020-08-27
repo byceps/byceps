@@ -30,8 +30,7 @@ def mocked_irc_bot():
 def assert_submitted_data(
     mock, expected_channels: List[str], expected_text: str
 ) -> None:
-    call = get_mock_calls(mock, 1)
-    actual = call.json()
+    actual = get_submitted_json(mock, 1)[0]
     assert_request_data(actual, expected_channels, expected_text)
 
 
@@ -45,10 +44,11 @@ def assert_request_data(
     assert actual.keys() == {'channels', 'text'}
 
 
-def get_only_call(mock):
+def get_submitted_json(mock, expected_call_count: int) -> List[str]:
     assert mock.called
 
     history = mock.request_history
-    assert len(history) == 1
+    assert len(history) == expected_call_count
 
-    return history[0]
+    requests = history[:expected_call_count]
+    return [req.json() for req in requests]
