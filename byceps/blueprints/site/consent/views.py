@@ -94,19 +94,11 @@ def consent(token):
 def _get_unconsented_subjects_for_user(user_id):
     required_consent_subject_ids = _get_required_consent_subject_ids()
 
-    unconsented_subject_ids = set(
-        _get_unconsented_subject_ids(user_id, required_consent_subject_ids)
+    unconsented_subject_ids = consent_service.get_unconsented_subject_ids(
+        user_id, required_consent_subject_ids
     )
 
     return subject_service.get_subjects(unconsented_subject_ids)
-
-
-def _get_unconsented_subject_ids(user_id, required_subject_ids):
-    for subject_id in required_subject_ids:
-        if not consent_service.has_user_consented_to_subject(
-            user_id, subject_id
-        ):
-            yield subject_id
 
 
 def _get_verification_token_or_404(token_value):

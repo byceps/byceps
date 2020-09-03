@@ -7,7 +7,7 @@ byceps.services.consent.consent_service
 """
 
 from datetime import datetime
-from typing import Dict, Iterable, Sequence
+from typing import Dict, Iterable, Sequence, Set
 
 from ...database import db
 from ...typing import UserID
@@ -72,6 +72,19 @@ def get_consents_by_user(user_id: UserID) -> Sequence[DbConsent]:
     return DbConsent.query \
         .filter_by(user_id=user_id) \
         .all()
+
+
+def get_unconsented_subject_ids(
+    user_id: UserID, required_subject_ids: Set[SubjectID]
+) -> Set[SubjectID]:
+    """Return the IDs of the subjects the user has not consented to."""
+    unconsented_subject_ids = set()
+
+    for subject_id in required_subject_ids:
+        if not has_user_consented_to_subject(user_id, subject_id):
+            unconsented_subject_ids.add(subject_id)
+
+    return unconsented_subject_ids
 
 
 def has_user_consented_to_subject(
