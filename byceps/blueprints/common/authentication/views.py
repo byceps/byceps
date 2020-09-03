@@ -144,20 +144,20 @@ def _require_admin_access_permission(user_id: UserID) -> None:
 
 
 def _get_required_consent_subject_ids():
-    subject_ids = []
+    subject_ids = set()
 
     terms_version = terms_version_service.find_current_version_for_brand(
         g.brand_id
     )
     if terms_version:
-        subject_ids.append(terms_version.consent_subject_id)
+        subject_ids.add(terms_version.consent_subject_id)
 
     privacy_policy_consent_subject_id = (
         _find_privacy_policy_consent_subject_id()
     )
 
     if privacy_policy_consent_subject_id:
-        subject_ids.append(privacy_policy_consent_subject_id)
+        subject_ids.add(privacy_policy_consent_subject_id)
 
     return subject_ids
 

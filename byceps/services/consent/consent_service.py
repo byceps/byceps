@@ -7,7 +7,7 @@ byceps.services.consent.consent_service
 """
 
 from datetime import datetime
-from typing import Dict, Sequence
+from typing import Dict, Iterable, Sequence
 
 from ...database import db
 from ...typing import UserID
@@ -36,7 +36,7 @@ def consent_to_subject(
 
 
 def consent_to_subjects(
-    subject_ids: Sequence[SubjectID],
+    subject_ids: Iterable[SubjectID],
     expressed_at: datetime,
     verification_token: Token,
 ) -> None:

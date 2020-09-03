@@ -70,9 +70,7 @@ def consent(token):
     if not form.validate():
         return consent_form(token, erroneous_form=form)
 
-    subject_ids_from_form = [
-        UUID(id_str) for id_str in form.subject_ids.data.split(',')
-    ]
+    subject_ids_from_form = set(map(UUID, form.subject_ids.data.split(',')))
 
     for subject_id in subject_ids_from_form:
         subject = subject_service.find_subject(subject_id)
@@ -94,23 +92,19 @@ def consent(token):
 def _get_unconsented_subjects_for_user(user_id):
     required_consent_subject_ids = _get_required_consent_subject_ids()
 
-    unconsented_subject_ids = _get_unconsented_subject_ids(
-        user_id, required_consent_subject_ids
+    unconsented_subject_ids = set(
+        _get_unconsented_subject_ids(user_id, required_consent_subject_ids)
     )
 
     return _get_subjects(unconsented_subject_ids)
 
 
 def _get_unconsented_subject_ids(user_id, required_subject_ids):
-    subject_ids = []
-
     for subject_id in required_subject_ids:
         if not consent_service.has_user_consented_to_subject(
             user_id, subject_id
         ):
-            subject_ids.append(subject_id)
-
-    return subject_ids
+            yield subject_id
 
 
 def _get_subjects(subject_ids):
