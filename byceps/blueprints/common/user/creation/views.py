@@ -8,6 +8,7 @@ byceps.blueprints.common.user.creation.views
 
 from datetime import datetime
 from typing import Optional
+from uuid import UUID
 
 from flask import abort, g, request
 
@@ -230,7 +231,7 @@ def _find_privacy_policy_consent_subject_id() -> Optional[SubjectID]:
     if not value:
         return None
 
-    return SubjectID(value)
+    return UUID(value)
 
 
 def _find_newsletter_list_for_brand() -> Optional[NewsletterListID]:
