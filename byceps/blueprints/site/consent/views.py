@@ -12,7 +12,9 @@ from uuid import UUID
 from flask import abort, request
 
 from ....services.consent import consent_service, subject_service
-from ....services.verification_token import service as verification_token_service
+from ....services.verification_token import (
+    service as verification_token_service,
+)
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -72,11 +74,11 @@ def consent(token):
 
     subject_ids_from_form = set(map(UUID, form.subject_ids.data.split(',')))
 
-    for subject_id in subject_ids_from_form:
-        subject = subject_service.find_subject(subject_id)
-        if subject is None:
-            flash_error('Unbekanntes Zustimmungsthema')
-            return consent_form(token, erroneous_form=form)
+    try:
+        subject_service.get_subjects(subject_ids_from_form)
+    except subject_service.UnknownSubjectId:
+        flash_error('Unbekanntes Zustimmungsthema')
+        return consent_form(token, erroneous_form=form)
 
     expressed_at = datetime.utcnow()
     consent_service.consent_to_subjects(
@@ -96,7 +98,7 @@ def _get_unconsented_subjects_for_user(user_id):
         _get_unconsented_subject_ids(user_id, required_consent_subject_ids)
     )
 
-    return _get_subjects(unconsented_subject_ids)
+    return subject_service.get_subjects(unconsented_subject_ids)
 
 
 def _get_unconsented_subject_ids(user_id, required_subject_ids):
@@ -105,12 +107,6 @@ def _get_unconsented_subject_ids(user_id, required_subject_ids):
             user_id, subject_id
         ):
             yield subject_id
-
-
-def _get_subjects(subject_ids):
-    return [
-        subject_service.find_subject(subject_id) for subject_id in subject_ids
-    ]
 
 
 def _get_verification_token_or_404(token_value):
