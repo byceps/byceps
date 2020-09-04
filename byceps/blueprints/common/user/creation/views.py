@@ -143,12 +143,12 @@ def create():
     else:
         terms_consent = None
 
+    consents = set()
     if privacy_policy_consent_required:
         privacy_policy_consent = _assemble_consent(
             privacy_policy_consent_subject_id, now_utc,
         )
-    else:
-        privacy_policy_consent = None
+        consents.add(privacy_policy_consent)
 
     newsletter_subscription = _get_newsletter_subscription(
         newsletter_offered, form, newsletter_list_id, now_utc
@@ -163,7 +163,7 @@ def create():
             last_name,
             g.site_id,
             terms_consent=terms_consent,
-            privacy_policy_consent=privacy_policy_consent,
+            consents=consents,
             newsletter_subscription=newsletter_subscription,
         )
     except user_creation_service.UserCreationFailed:

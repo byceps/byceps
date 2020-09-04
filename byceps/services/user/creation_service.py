@@ -7,7 +7,7 @@ byceps.services.user.creation_service
 """
 
 from datetime import datetime
-from typing import Optional, Tuple
+from typing import Optional, Set, Tuple
 
 from flask import current_app
 
@@ -43,7 +43,7 @@ def create_user(
     site_id: SiteID,
     *,
     terms_consent: Optional[Consent] = None,
-    privacy_policy_consent: Optional[Consent] = None,
+    consents: Set[Consent] = None,
     newsletter_subscription: Optional[NewsletterSubscription] = None,
 ) -> Tuple[User, UserAccountCreated]:
     """Create a user account and related records."""
@@ -63,14 +63,16 @@ def create_user(
         )
         db.session.add(terms_consent)
 
-    # consent to privacy policy
-    if privacy_policy_consent:
-        privacy_policy_consent = consent_service.build_consent(
-            user.id,
-            privacy_policy_consent.subject_id,
-            privacy_policy_consent.expressed_at,
-        )
-        db.session.add(privacy_policy_consent)
+    # consents
+    if consents:
+        for consent in consents:
+            # Insert missing user ID.
+            consent = consent_service.build_consent(
+                user.id,
+                consent.subject_id,
+                consent.expressed_at,
+            )
+            db.session.add(consent)
 
     db.session.commit()
 
