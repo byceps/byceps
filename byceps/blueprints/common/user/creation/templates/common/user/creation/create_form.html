@@ -24,11 +24,11 @@
         'Ich akzeptiere die <a href="%s" target="_blank">Allgemeinen Geschäftsbedingungen</a>.'|format(url_for('terms.view_current'))|safe
       ) }}
       {%- endif %}
-      {%- if privacy_policy_consent_subject is defined %}
-      {{ form_field_checkbox(form.consent_to_privacy_policy,
-        privacy_policy_consent_subject.checkbox_label.replace('{url}', privacy_policy_consent_subject.checkbox_link_target)|safe
-      ) }}
-      {%- endif %}
+      {%- for subject in required_consent_subjects %}
+        {%- with field = form.get_field_for_consent_subject_id(subject.id) %}
+      {{ form_field_checkbox(field, subject.checkbox_label.replace('{url}', subject.checkbox_link_target)|safe) }}
+        {%- endwith %}
+      {%- endfor %}
       {%- if form.subscribe_to_newsletter is defined %}
       {{ form_field_checkbox(form.subscribe_to_newsletter, 'Ich möchte den Newsletter erhalten.') }}
       {%- endif %}

@@ -7,11 +7,13 @@ byceps.blueprints.common.user.creation.forms
 """
 
 import re
+from typing import Set
 from uuid import UUID
 
 from wtforms import BooleanField, HiddenField, PasswordField, StringField
 from wtforms.validators import InputRequired, Length, ValidationError
 
+from .....services.consent.transfer.models import Subject, SubjectID
 from .....services.user import screen_name_validator
 from .....services.user import service as user_service
 from .....util.l10n import LocalizedForm
@@ -38,7 +40,7 @@ class ScreenNameValidator:
 def assemble_user_create_form(
     real_name_required: bool,
     terms_consent_required: bool,
-    privacy_policy_consent_required: bool,
+    required_consent_subjects: Set[Subject],
     newsletter_offered: bool,
 ):
     class UserCreateForm(LocalizedForm):
@@ -81,6 +83,10 @@ def assemble_user_create_form(
             if field.data:
                 raise ValueError('Bots sind nicht erlaubt.')
 
+        def get_field_for_consent_subject_id(self, subject_id: SubjectID):
+            name = _generate_consent_subject_field_name(subject_id)
+            return getattr(self, name)
+
     if not real_name_required:
         del UserCreateForm.first_names
         del UserCreateForm.last_name
@@ -91,12 +97,17 @@ def assemble_user_create_form(
         setattr(UserCreateForm, 'terms_version_id', terms_version_id)
         setattr(UserCreateForm, 'consent_to_terms', consent_to_terms)
 
-    if privacy_policy_consent_required:
-        consent_to_privacy_policy = BooleanField('Datenschutzbestimmungen', [InputRequired()])
-        setattr(UserCreateForm, 'consent_to_privacy_policy', consent_to_privacy_policy)
+    for subject in required_consent_subjects:
+        field_name = _generate_consent_subject_field_name(subject.id)
+        field = BooleanField('', [InputRequired()])
+        setattr(UserCreateForm, field_name, field)
 
     if newsletter_offered:
         subscribe_to_newsletter = BooleanField('Newsletter')
         setattr(UserCreateForm, 'subscribe_to_newsletter', subscribe_to_newsletter)
 
     return UserCreateForm
+
+
+def _generate_consent_subject_field_name(subject_id: SubjectID) -> str:
+    return f'consent_to_subject_{subject_id}'

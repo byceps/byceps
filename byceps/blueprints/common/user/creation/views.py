@@ -7,7 +7,7 @@ byceps.blueprints.common.user.creation.views
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Set
 from uuid import UUID
 
 from flask import abort, g, request
@@ -15,7 +15,7 @@ from flask import abort, g, request
 from .....config import get_app_mode
 from .....services.brand import settings_service as brand_settings_service
 from .....services.consent import subject_service as consent_subject_service
-from .....services.consent.transfer.models import Consent, SubjectID
+from .....services.consent.transfer.models import Consent, Subject, SubjectID
 from .....services.newsletter.transfer.models import (
     ListID as NewsletterListID,
     Subscription as NewsletterSubscription,
@@ -49,18 +49,11 @@ def create_form(erroneous_form=None):
     terms_version = terms_version_service.find_current_version_for_brand(
         g.brand_id
     )
-
-    privacy_policy_consent_subject_id = (
-        _find_privacy_policy_consent_subject_id()
-    )
-
+    required_consent_subjects = _get_required_consent_subjects()
     newsletter_list_id = _find_newsletter_list_for_brand()
 
     real_name_required = _is_real_name_required()
     terms_consent_required = terms_version is not None
-    privacy_policy_consent_required = (
-        privacy_policy_consent_subject_id is not None
-    )
     newsletter_offered = newsletter_list_id is not None
 
     if terms_consent_required:
@@ -74,21 +67,14 @@ def create_form(erroneous_form=None):
         UserCreateForm = assemble_user_create_form(
             real_name_required=real_name_required,
             terms_consent_required=terms_consent_required,
-            privacy_policy_consent_required=privacy_policy_consent_required,
+            required_consent_subjects=required_consent_subjects,
             newsletter_offered=newsletter_offered,
         )
         form = UserCreateForm(terms_version_id=terms_version_id)
 
-    if privacy_policy_consent_required:
-        subject_ids = {privacy_policy_consent_subject_id}
-        subjects = consent_subject_service.get_subjects(subject_ids)
-        privacy_policy_consent_subject = list(subjects)[0]
-    else:
-        privacy_policy_consent_subject = None
-
     return {
         'form': form,
-        'privacy_policy_consent_subject': privacy_policy_consent_subject,
+        'required_consent_subjects': required_consent_subjects,
     }
 
 
@@ -100,24 +86,17 @@ def create():
     terms_document_id = terms_document_service.find_document_id_for_brand(
         g.brand_id
     )
-
-    privacy_policy_consent_subject_id = (
-        _find_privacy_policy_consent_subject_id()
-    )
-
+    required_consent_subjects = _get_required_consent_subjects()
     newsletter_list_id = _find_newsletter_list_for_brand()
 
     real_name_required = _is_real_name_required()
     terms_consent_required = terms_document_id is not None
-    privacy_policy_consent_required = (
-        privacy_policy_consent_subject_id is not None
-    )
     newsletter_offered = newsletter_list_id is not None
 
     UserCreateForm = assemble_user_create_form(
         real_name_required=real_name_required,
         terms_consent_required=terms_consent_required,
-        privacy_policy_consent_required=privacy_policy_consent_required,
+        required_consent_subjects=required_consent_subjects,
         newsletter_offered=newsletter_offered,
     )
     form = UserCreateForm(request.form)
@@ -143,12 +122,10 @@ def create():
     else:
         terms_consent = None
 
-    consents = set()
-    if privacy_policy_consent_required:
-        privacy_policy_consent = _assemble_consent(
-            privacy_policy_consent_subject_id, now_utc,
-        )
-        consents.add(privacy_policy_consent)
+    consents = {
+        _assemble_consent(subject.id, now_utc)
+        for subject in required_consent_subjects
+    }
 
     newsletter_subscription = _get_newsletter_subscription(
         newsletter_offered, form, newsletter_list_id, now_utc
@@ -206,6 +183,19 @@ def _is_real_name_required() -> bool:
     value = _find_site_setting_value('real_name_required')
 
     return value != 'false'
+
+
+def _get_required_consent_subjects() -> Set[Subject]:
+    """Return the consent subjects required for this brand."""
+    subject_ids = set()
+
+    privacy_policy_consent_subject_id = (
+        _find_privacy_policy_consent_subject_id()
+    )
+    if privacy_policy_consent_subject_id is not None:
+        subject_ids.add(privacy_policy_consent_subject_id)
+
+    return consent_subject_service.get_subjects(subject_ids)
 
 
 def _find_privacy_policy_consent_subject_id() -> Optional[SubjectID]:

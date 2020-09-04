@@ -123,7 +123,7 @@ def test_create(
         'password': 'Snow_Crash',
         'terms_version_id': terms_version.id,
         'consent_to_terms': 'y',
-        'consent_to_privacy_policy': 'y',
+        f'consent_to_subject_{privacy_policy_consent_subject_id}': 'y',
         'subscribe_to_newsletter': 'y',
     }
 
@@ -209,7 +209,7 @@ def test_create_without_newsletter_subscription(
         'password': 'Snow_Crash',
         'terms_version_id': terms_version.id,
         'consent_to_terms': 'y',
-        'consent_to_privacy_policy': 'y',
+        f'consent_to_subject_{privacy_policy_consent_subject_id}': 'y',
         'subscribe_to_newsletter': '',
     }
 
