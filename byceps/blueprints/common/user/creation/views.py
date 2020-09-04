@@ -14,6 +14,7 @@ from flask import abort, g, request
 
 from .....config import get_app_mode
 from .....services.brand import settings_service as brand_settings_service
+from .....services.consent import subject_service as consent_subject_service
 from .....services.consent.transfer.models import Consent, SubjectID
 from .....services.newsletter.transfer.models import (
     ListID as NewsletterListID,
@@ -78,7 +79,17 @@ def create_form(erroneous_form=None):
         )
         form = UserCreateForm(terms_version_id=terms_version_id)
 
-    return {'form': form}
+    if privacy_policy_consent_required:
+        subject_ids = {privacy_policy_consent_subject_id}
+        subjects = consent_subject_service.get_subjects(subject_ids)
+        privacy_policy_consent_subject = list(subjects)[0]
+    else:
+        privacy_policy_consent_subject = None
+
+    return {
+        'form': form,
+        'privacy_policy_consent_subject': privacy_policy_consent_subject,
+    }
 
 
 @blueprint.route('/', methods=['POST'])

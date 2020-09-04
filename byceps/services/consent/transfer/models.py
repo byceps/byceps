@@ -8,7 +8,7 @@ byceps.services.consent.transfer.models
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import NewType
+from typing import NewType, Optional
 from uuid import UUID
 
 from ....typing import UserID
@@ -23,6 +23,8 @@ class Subject:
     name: str
     title: str
     type_: str
+    checkbox_label: str
+    checkbox_link_target: Optional[str]
 
 
 @dataclass(frozen=True)

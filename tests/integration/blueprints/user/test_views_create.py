@@ -50,6 +50,8 @@ def terms_version(user_admin, brand):
         f'{brand.id}_terms-of-service_v1',
         f'Terms of service for {brand.title} / v1',
         'terms_of_service',
+        'Ich akzeptiere die <a href="{url}" target="_blank">Allgemeinen Geschäftsbedingungen</a>.',
+        '/terms/',
     )
 
     terms_document_id = brand.id
@@ -78,6 +80,8 @@ def privacy_policy_consent_subject_id(brand):
         f'{brand.id}_privacy_policy_v1',
         f'Privacy policy for {brand.title} / v1',
         'privacy_policy',
+        'Ich akzeptiere die <a href="{url}" target="_blank">Datenschutzbestimmungen</a>.',
+        '/privacy',
     )
 
     brand_settings_service.create_setting(

@@ -6,6 +6,8 @@ byceps.services.consent.models.subject
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
@@ -19,11 +21,22 @@ class Subject(db.Model):
     name = db.Column(db.UnicodeText, unique=True, nullable=False)
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     type_ = db.Column('type', db.UnicodeText, nullable=True)
+    checkbox_label = db.Column(db.UnicodeText, nullable=False)
+    checkbox_link_target = db.Column(db.UnicodeText, nullable=True)
 
-    def __init__(self, name: str, title: str, type_: str) -> None:
+    def __init__(
+        self,
+        name: str,
+        title: str,
+        type_: str,
+        checkbox_label: str,
+        checkbox_link_target: Optional[str],
+    ) -> None:
         self.name = name
         self.title = title
         self.type_ = type_
+        self.checkbox_label = checkbox_label
+        self.checkbox_link_target = checkbox_link_target
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

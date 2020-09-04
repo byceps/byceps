@@ -6,7 +6,7 @@ byceps.services.consent.subject_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Dict, Set
+from typing import Dict, Optional, Set
 
 from ...database import db
 
@@ -19,9 +19,17 @@ class UnknownSubjectId(ValueError):
     pass
 
 
-def create_subject(name: str, title: str, type_: str) -> SubjectID:
+def create_subject(
+    name: str,
+    title: str,
+    type_: str,
+    checkbox_label: str,
+    checkbox_link_target: Optional[str],
+) -> SubjectID:
     """Create a new subject."""
-    subject = DbSubject(name, title, type_)
+    subject = DbSubject(
+        name, title, type_, checkbox_label, checkbox_link_target
+    )
 
     db.session.add(subject)
     db.session.commit()
@@ -78,4 +86,6 @@ def _db_entity_to_subject(subject: DbSubject) -> Subject:
         subject.name,
         subject.title,
         subject.type_,
+        subject.checkbox_label,
+        subject.checkbox_link_target,
     )

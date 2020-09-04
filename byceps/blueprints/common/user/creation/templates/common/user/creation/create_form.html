@@ -24,9 +24,9 @@
         'Ich akzeptiere die <a href="%s" target="_blank">Allgemeinen Geschäftsbedingungen</a>.'|format(url_for('terms.view_current'))|safe
       ) }}
       {%- endif %}
-      {%- if form.consent_to_privacy_policy is defined %}
+      {%- if privacy_policy_consent_subject is defined %}
       {{ form_field_checkbox(form.consent_to_privacy_policy,
-        'Ich akzeptiere die <a href="%s" target="_blank">Datenschutzbestimmungen</a>.'|format(url_for_snippet('privacy_policy'))|safe
+        privacy_policy_consent_subject.checkbox_label.replace('{url}', privacy_policy_consent_subject.checkbox_link_target)|safe
       ) }}
       {%- endif %}
       {%- if form.subscribe_to_newsletter is defined %}

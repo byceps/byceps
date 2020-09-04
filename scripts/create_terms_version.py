@@ -49,14 +49,8 @@ def validate_snippet_version_id(ctx, param, value) -> SnippetVersionID:
 def execute(
     brand, document_id, title, snippet_version_id, consent_subject_name_suffix
 ):
-    consent_subject_name = (
-        f'{brand.id}_terms-of-service_{consent_subject_name_suffix}'
-    )
-
-    consent_subject_title = f'AGB {brand.title} / {title}'
-
-    consent_subject = consent_subject_service.create_subject(
-        consent_subject_name, consent_subject_title, 'terms_of_service'
+    consent_subject = _create_consent_subject(
+        brand, title, consent_subject_name_suffix
     )
 
     terms_version_service.create_version(
@@ -64,6 +58,18 @@ def execute(
     )
 
     click.secho('Done.', fg='green')
+
+
+def _create_consent_subject(brand, title, consent_subject_name_suffix):
+    subject_name = f'{brand.id}_terms-of-service_{consent_subject_name_suffix}'
+    subject_title = f'AGB {brand.title} / {title}'
+    type_ = 'terms_of_service'
+    checkbox_label = 'Ich akzeptiere die <a href="{url}" target="_blank">Allgemeinen Geschäftsbedingungen</a>'
+    checkbox_link_target = '/terms/'
+
+    return consent_subject_service.create_subject(
+        subject_name, subject_title, type_, checkbox_label, checkbox_link_target
+    )
 
 
 if __name__ == '__main__':
