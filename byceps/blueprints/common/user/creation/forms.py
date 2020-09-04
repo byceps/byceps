@@ -52,10 +52,6 @@ def assemble_user_create_form(
         last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=80)])
         email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6, max=120)])
         password = PasswordField('Passwort', [InputRequired(), Length(min=8)])
-        terms_version_id = HiddenField('AGB-Version', [InputRequired()])
-        consent_to_terms = BooleanField('AGB', [InputRequired()])
-        consent_to_privacy_policy = BooleanField('Datenschutzbestimmungen', [InputRequired()])
-        subscribe_to_newsletter = BooleanField('Newsletter')
         is_bot = BooleanField('Bot')
 
         @staticmethod
@@ -89,14 +85,18 @@ def assemble_user_create_form(
         del UserCreateForm.first_names
         del UserCreateForm.last_name
 
-    if not terms_consent_required:
-        del UserCreateForm.terms_version_id
-        del UserCreateForm.consent_to_terms
+    if terms_consent_required:
+        terms_version_id = HiddenField('AGB-Version', [InputRequired()])
+        consent_to_terms = BooleanField('AGB', [InputRequired()])
+        setattr(UserCreateForm, 'terms_version_id', terms_version_id)
+        setattr(UserCreateForm, 'consent_to_terms', consent_to_terms)
 
-    if not privacy_policy_consent_required:
-        del UserCreateForm.consent_to_privacy_policy
+    if privacy_policy_consent_required:
+        consent_to_privacy_policy = BooleanField('Datenschutzbestimmungen', [InputRequired()])
+        setattr(UserCreateForm, 'consent_to_privacy_policy', consent_to_privacy_policy)
 
-    if not newsletter_offered:
-        del UserCreateForm.subscribe_to_newsletter
+    if newsletter_offered:
+        subscribe_to_newsletter = BooleanField('Newsletter')
+        setattr(UserCreateForm, 'subscribe_to_newsletter', subscribe_to_newsletter)
 
     return UserCreateForm
