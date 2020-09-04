@@ -6,7 +6,6 @@
 from byceps.announce.irc import user  # Load signal handlers.
 from byceps.events.user import (
     UserAccountCreated,
-    UserAccountDeleted,
     UserAccountSuspended,
     UserAccountUnsuspended,
     UserDetailsUpdated,
@@ -184,14 +183,8 @@ def test_deleted_account_announced(app, make_user):
     admin = make_user('UberDude')
     user = make_user('Snake', user_id='76b0c57f-8909-4b02-90c9-96e0a817f738')
 
-    user_command_service.delete_account(user.id, admin.id, 'specious reason')
-
-    event = UserAccountDeleted(
-        occurred_at=now(),
-        initiator_id=admin.id,
-        initiator_screen_name=admin.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+    event = user_command_service.delete_account(
+        user.id, admin.id, 'specious reason'
     )
 
     with mocked_irc_bot() as mock:

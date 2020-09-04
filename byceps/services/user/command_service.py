@@ -141,6 +141,8 @@ def delete_account(
     user = _get_user(user_id)
     initiator = user_service.get_user(initiator_id)
 
+    user_screen_name_before_anonymization = user.screen_name
+
     user.deleted = True
     _anonymize_account(user)
 
@@ -166,7 +168,7 @@ def delete_account(
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,
-        user_screen_name=user.screen_name,
+        user_screen_name=user_screen_name_before_anonymization,
     )
 
 
