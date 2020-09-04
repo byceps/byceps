@@ -116,15 +116,14 @@ def create():
         first_names = None
         last_name = None
 
-    if terms_consent_required:
-        terms_consent = _get_terms_consent(form, terms_document_id, now_utc)
-    else:
-        terms_consent = None
-
     consents = {
         _assemble_consent(subject.id, now_utc)
         for subject in required_consent_subjects
     }
+
+    if terms_consent_required:
+        terms_consent = _get_terms_consent(form, terms_document_id, now_utc)
+        consents.add(terms_consent)
 
     newsletter_subscription = _get_newsletter_subscription(
         newsletter_offered, form, newsletter_list_id, now_utc
@@ -138,7 +137,6 @@ def create():
             first_names,
             last_name,
             g.site_id,
-            terms_consent=terms_consent,
             consents=consents,
             newsletter_subscription=newsletter_subscription,
         )

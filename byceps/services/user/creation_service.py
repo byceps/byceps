@@ -42,7 +42,6 @@ def create_user(
     last_name: Optional[str],
     site_id: SiteID,
     *,
-    terms_consent: Optional[Consent] = None,
     consents: Set[Consent] = None,
     newsletter_subscription: Optional[NewsletterSubscription] = None,
 ) -> Tuple[User, UserAccountCreated]:
@@ -55,13 +54,6 @@ def create_user(
         first_names=first_names,
         last_name=last_name,
     )
-
-    # consent to terms of service
-    if terms_consent:
-        terms_consent = consent_service.build_consent(
-            user.id, terms_consent.subject_id, terms_consent.expressed_at
-        )
-        db.session.add(terms_consent)
 
     # consents
     if consents:
