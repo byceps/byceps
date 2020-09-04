@@ -48,7 +48,7 @@ freezegun = "0.3.15"
 mypy = "0.782"
 pytest = "^6.0.1"
 pytest-cov = "^2.10.1"
-python-dotenv = "0.13.0"
+python-dotenv = "0.14.0"
 requests-mock = "1.8.0"
 Sphinx = "2.1.1"
 
