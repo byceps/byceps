@@ -8,7 +8,6 @@ byceps.blueprints.common.user.creation.views
 
 from datetime import datetime
 from typing import Optional, Set
-from uuid import UUID
 
 from flask import abort, g, request
 
@@ -187,27 +186,7 @@ def _is_real_name_required() -> bool:
 
 def _get_required_consent_subjects() -> Set[Subject]:
     """Return the consent subjects required for this brand."""
-    subject_ids = set()
-
-    privacy_policy_consent_subject_id = (
-        _find_privacy_policy_consent_subject_id()
-    )
-    if privacy_policy_consent_subject_id is not None:
-        subject_ids.add(privacy_policy_consent_subject_id)
-
-    return consent_subject_service.get_subjects(subject_ids)
-
-
-def _find_privacy_policy_consent_subject_id() -> Optional[SubjectID]:
-    """Return the privacy policy consent subject ID configured for this
-    brand, or `None` if none is configured.
-    """
-    value = _find_brand_setting_value('privacy_policy_consent_subject_id')
-
-    if not value:
-        return None
-
-    return UUID(value)
+    return consent_subject_service.get_subjects_required_for_brand(g.brand_id)
 
 
 def _find_newsletter_list_for_brand() -> Optional[NewsletterListID]:

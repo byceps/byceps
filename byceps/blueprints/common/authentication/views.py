@@ -18,13 +18,18 @@ from ....services.authentication.password import (
     reset_service as password_reset_service,
 )
 from ....services.authentication.session import service as session_service
-from ....services.consent import consent_service
+from ....services.consent import (
+    consent_service,
+    subject_service as consent_subject_service,
+)
 from ....services.email import service as email_service
 from ....services.email.transfer.models import Sender
 from ....services.site import service as site_service
 from ....services.terms import version_service as terms_version_service
 from ....services.user import service as user_service
-from ....services.verification_token import service as verification_token_service
+from ....services.verification_token import (
+    service as verification_token_service,
+)
 from ....services.verification_token.models import Token as VerificationToken
 from ....typing import UserID
 from ....util.framework.blueprint import create_blueprint
@@ -33,8 +38,6 @@ from ....util.framework.templating import templated
 from ....util.views import redirect_to, respond_no_content
 
 from ...admin.core.authorization import AdminPermission
-
-from ..user.creation.views import _find_privacy_policy_consent_subject_id
 
 from .forms import (
     LoginForm,
@@ -152,12 +155,10 @@ def _get_required_consent_subject_ids():
     if terms_version:
         subject_ids.add(terms_version.consent_subject_id)
 
-    privacy_policy_consent_subject_id = (
-        _find_privacy_policy_consent_subject_id()
+    subjects_required_for_brand = consent_subject_service.get_subjects_required_for_brand(
+        g.brand_id
     )
-
-    if privacy_policy_consent_subject_id:
-        subject_ids.add(privacy_policy_consent_subject_id)
+    subject_ids.update(subjects_required_for_brand)
 
     return subject_ids
 

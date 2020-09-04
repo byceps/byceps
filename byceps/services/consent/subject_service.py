@@ -9,10 +9,16 @@ byceps.services.consent.subject_service
 from typing import Dict, Optional, Set
 
 from ...database import db
+from ...typing import BrandID
 
+from .models.brand_requirement import BrandRequirement as DbBrandRequirement
 from .models.consent import Consent as DbConsent
 from .models.subject import Subject as DbSubject
 from .transfer.models import Subject, SubjectID
+
+
+# -------------------------------------------------------------------- #
+# subjects
 
 
 class UnknownSubjectId(ValueError):
@@ -89,3 +95,35 @@ def _db_entity_to_subject(subject: DbSubject) -> Subject:
         subject.checkbox_label,
         subject.checkbox_link_target,
     )
+
+
+# -------------------------------------------------------------------- #
+# brand requirements
+
+
+def create_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
+    """Create a brand requirement."""
+    brand_requirement = DbBrandRequirement(brand_id, subject_id)
+
+    db.session.add(brand_requirement)
+    db.session.commit()
+
+
+def delete_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
+    """Delete a brand requirement."""
+    db.session.query(DbBrandRequirement) \
+        .filter_by(brand_id=brand_id) \
+        .filter_by(subject_id=subject_id) \
+        .delete()
+
+    db.session.commit()
+
+
+def get_subjects_required_for_brand(brand_id: BrandID) -> Set[Subject]:
+    """Return the subjects required for the brand."""
+    rows = DbSubject.query \
+        .join(DbBrandRequirement) \
+        .filter(DbBrandRequirement.brand_id == brand_id) \
+        .all()
+
+    return {_db_entity_to_subject(row) for row in rows}

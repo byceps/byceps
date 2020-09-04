@@ -84,11 +84,15 @@ def privacy_policy_consent_subject_id(brand):
         '/privacy',
     )
 
-    brand_settings_service.create_setting(
-        brand.id, 'privacy_policy_consent_subject_id', str(consent_subject.id)
+    consent_subject_service.create_brand_requirement(
+        brand.id, consent_subject.id
     )
 
-    return consent_subject.id
+    yield consent_subject.id
+
+    consent_subject_service.delete_brand_requirement(
+        brand.id, consent_subject.id
+    )
 
 
 @pytest.fixture(scope='module')
