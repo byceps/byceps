@@ -158,7 +158,10 @@ def _get_required_consent_subject_ids():
     subjects_required_for_brand = consent_subject_service.get_subjects_required_for_brand(
         g.brand_id
     )
-    subject_ids.update(subjects_required_for_brand)
+    subject_ids_required_for_brand = {
+        subject.id for subject in subjects_required_for_brand
+    }
+    subject_ids.update(subject_ids_required_for_brand)
 
     return subject_ids
 
