@@ -33,7 +33,7 @@ from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
 from .....util.views import redirect_to
 
-from .forms import UserCreateForm
+from .forms import assemble_user_create_form
 
 
 blueprint = create_blueprint('user_creation', __name__)
@@ -67,19 +67,16 @@ def create_form(erroneous_form=None):
     else:
         terms_version_id = None
 
-    form = (
-        erroneous_form
-        if erroneous_form
-        else UserCreateForm(terms_version_id=terms_version_id)
-    )
-
-    _adjust_create_form(
-        form,
-        real_name_required,
-        terms_consent_required,
-        privacy_policy_consent_required,
-        newsletter_offered,
-    )
+    if erroneous_form:
+        form = erroneous_form
+    else:
+        UserCreateForm = assemble_user_create_form(
+            real_name_required=real_name_required,
+            terms_consent_required=terms_consent_required,
+            privacy_policy_consent_required=privacy_policy_consent_required,
+            newsletter_offered=newsletter_offered,
+        )
+        form = UserCreateForm(terms_version_id=terms_version_id)
 
     return {'form': form}
 
@@ -106,15 +103,13 @@ def create():
     )
     newsletter_offered = newsletter_list_id is not None
 
-    form = UserCreateForm(request.form)
-
-    _adjust_create_form(
-        form,
-        real_name_required,
-        terms_consent_required,
-        privacy_policy_consent_required,
-        newsletter_offered,
+    UserCreateForm = assemble_user_create_form(
+        real_name_required=real_name_required,
+        terms_consent_required=terms_consent_required,
+        privacy_policy_consent_required=privacy_policy_consent_required,
+        newsletter_offered=newsletter_offered,
     )
+    form = UserCreateForm(request.form)
 
     if not form.validate():
         return create_form(form)
@@ -139,8 +134,7 @@ def create():
 
     if privacy_policy_consent_required:
         privacy_policy_consent = _assemble_consent(
-            privacy_policy_consent_subject_id,
-            now_utc,
+            privacy_policy_consent_subject_id, now_utc,
         )
     else:
         privacy_policy_consent = None
@@ -190,28 +184,6 @@ def _is_user_account_creation_enabled():
 
     site = site_service.get_site(g.site_id)
     return site.user_account_creation_enabled
-
-
-def _adjust_create_form(
-    form,
-    real_name_required,
-    terms_consent_required,
-    privacy_policy_consent_required,
-    newsletter_offered,
-):
-    if not real_name_required:
-        del form.first_names
-        del form.last_name
-
-    if not terms_consent_required:
-        del form.terms_version_id
-        del form.consent_to_terms
-
-    if not privacy_policy_consent_required:
-        del form.consent_to_privacy_policy
-
-    if not newsletter_offered:
-        del form.subscribe_to_newsletter
 
 
 def _is_real_name_required() -> bool:
@@ -264,9 +236,7 @@ def _find_site_setting_value(setting_name: str) -> Optional[str]:
 
 
 def _get_terms_consent(
-    form: UserCreateForm,
-    terms_document_id: TermsDocumentID,
-    expressed_at: datetime,
+    form, terms_document_id: TermsDocumentID, expressed_at: datetime,
 ) -> Consent:
     terms_version_id = form.terms_version_id.data
     consent_to_terms = form.consent_to_terms.data
@@ -288,7 +258,7 @@ def _assemble_consent(subject_id: SubjectID, expressed_at: datetime) -> Consent:
 
 def _get_newsletter_subscription(
     newsletter_offered: bool,
-    form: UserCreateForm,
+    form,
     newsletter_list_id: NewsletterListID,
     expressed_at: datetime,
 ) -> Optional[NewsletterSubscription]:

@@ -35,46 +35,68 @@ class ScreenNameValidator:
             )
 
 
-class UserCreateForm(LocalizedForm):
-    screen_name = StringField('Benutzername', [
-        InputRequired(),
-        Length(min=screen_name_validator.MIN_LENGTH,
-               max=screen_name_validator.MAX_LENGTH),
-        ScreenNameValidator(),
-    ])
-    first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
-    last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=80)])
-    email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6, max=120)])
-    password = PasswordField('Passwort', [InputRequired(), Length(min=8)])
-    terms_version_id = HiddenField('AGB-Version', [InputRequired()])
-    consent_to_terms = BooleanField('AGB', [InputRequired()])
-    consent_to_privacy_policy = BooleanField('Datenschutzbestimmungen', [InputRequired()])
-    subscribe_to_newsletter = BooleanField('Newsletter')
-    is_bot = BooleanField('Bot')
+def assemble_user_create_form(
+    real_name_required: bool,
+    terms_consent_required: bool,
+    privacy_policy_consent_required: bool,
+    newsletter_offered: bool,
+):
+    class UserCreateForm(LocalizedForm):
+        screen_name = StringField('Benutzername', [
+            InputRequired(),
+            Length(min=screen_name_validator.MIN_LENGTH,
+                   max=screen_name_validator.MAX_LENGTH),
+            ScreenNameValidator(),
+        ])
+        first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
+        last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=80)])
+        email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6, max=120)])
+        password = PasswordField('Passwort', [InputRequired(), Length(min=8)])
+        terms_version_id = HiddenField('AGB-Version', [InputRequired()])
+        consent_to_terms = BooleanField('AGB', [InputRequired()])
+        consent_to_privacy_policy = BooleanField('Datenschutzbestimmungen', [InputRequired()])
+        subscribe_to_newsletter = BooleanField('Newsletter')
+        is_bot = BooleanField('Bot')
 
-    @staticmethod
-    def validate_screen_name(form, field):
-        if user_service.is_screen_name_already_assigned(field.data):
-            raise ValueError('Dieser Benutzername kann nicht verwendet werden.')
+        @staticmethod
+        def validate_screen_name(form, field):
+            if user_service.is_screen_name_already_assigned(field.data):
+                raise ValueError('Dieser Benutzername kann nicht verwendet werden.')
 
-    @staticmethod
-    def validate_email_address(form, field):
-        if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
-            raise ValueError('Die E-Mail-Adresse ist ungültig.')
+        @staticmethod
+        def validate_email_address(form, field):
+            if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
+                raise ValueError('Die E-Mail-Adresse ist ungültig.')
 
-        if user_service.is_email_address_already_assigned(field.data):
-            raise ValueError(
-                'Diese E-Mail-Adresse kann nicht verwendet werden.'
-            )
+            if user_service.is_email_address_already_assigned(field.data):
+                raise ValueError(
+                    'Diese E-Mail-Adresse kann nicht verwendet werden.'
+                )
 
-    @staticmethod
-    def validate_terms_version_id(form, field):
-        try:
-            UUID(field.data)
-        except ValueError:
-            raise ValueError('Ungültige AGB-Version.')
+        @staticmethod
+        def validate_terms_version_id(form, field):
+            try:
+                UUID(field.data)
+            except ValueError:
+                raise ValueError('Ungültige AGB-Version.')
 
-    @staticmethod
-    def validate_is_bot(form, field):
-        if field.data:
-            raise ValueError('Bots sind nicht erlaubt.')
+        @staticmethod
+        def validate_is_bot(form, field):
+            if field.data:
+                raise ValueError('Bots sind nicht erlaubt.')
+
+    if not real_name_required:
+        del UserCreateForm.first_names
+        del UserCreateForm.last_name
+
+    if not terms_consent_required:
+        del UserCreateForm.terms_version_id
+        del UserCreateForm.consent_to_terms
+
+    if not privacy_policy_consent_required:
+        del UserCreateForm.consent_to_privacy_policy
+
+    if not newsletter_offered:
+        del UserCreateForm.subscribe_to_newsletter
+
+    return UserCreateForm

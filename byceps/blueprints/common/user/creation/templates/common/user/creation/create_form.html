@@ -10,26 +10,26 @@
   <form action="{{ url_for('.create') }}" method="post" class="disable-submit-button-on-submit">
     {%- call form_fieldset() %}
       {{ form_field(form.screen_name, maxlength=24, required='required', note='öffentlich sichtbar', autofocus='autofocus') }}
-      {%- if form.first_names %}
+      {%- if form.first_names is defined %}
       {{ form_field(form.first_names, maxlength=40) }}
       {%- endif %}
-      {%- if form.last_name %}
+      {%- if form.last_name is defined %}
       {{ form_field(form.last_name, maxlength=80) }}
       {%- endif %}
       {{ form_field(form.email_address, type='email', maxlength=120, required='required') }}
       {{ form_field(form.password, maxlength=40, required='required') }}
-      {%- if form.consent_to_terms %}
+      {%- if form.consent_to_terms is defined %}
       {{ form_field(form.terms_version_id, show_label=False, required='required') }}
       {{ form_field_checkbox(form.consent_to_terms,
         'Ich akzeptiere die <a href="%s" target="_blank">Allgemeinen Geschäftsbedingungen</a>.'|format(url_for('terms.view_current'))|safe
       ) }}
       {%- endif %}
-      {%- if form.consent_to_privacy_policy %}
+      {%- if form.consent_to_privacy_policy is defined %}
       {{ form_field_checkbox(form.consent_to_privacy_policy,
         'Ich akzeptiere die <a href="%s" target="_blank">Datenschutzbestimmungen</a>.'|format(url_for_snippet('privacy_policy'))|safe
       ) }}
       {%- endif %}
-      {%- if form.subscribe_to_newsletter %}
+      {%- if form.subscribe_to_newsletter is defined %}
       {{ form_field_checkbox(form.subscribe_to_newsletter, 'Ich möchte den Newsletter erhalten.') }}
       {%- endif %}
       <div style="display: none;">{{ form_field_checkbox(form.is_bot, 'Ich bin ein Bot.') }}</div>
