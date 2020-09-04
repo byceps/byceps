@@ -138,7 +138,7 @@ def create():
         terms_consent = None
 
     if privacy_policy_consent_required:
-        privacy_policy_consent = _get_privacy_policy_consent(
+        privacy_policy_consent = _assemble_consent(
             privacy_policy_consent_subject_id,
             now_utc,
         )
@@ -276,13 +276,6 @@ def _get_terms_consent(
         abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
 
     return _assemble_consent(terms_version.consent_subject_id, expressed_at)
-
-
-def _get_privacy_policy_consent(
-    privacy_policy_consent_subject_id: SubjectID,
-    expressed_at: datetime,
-) -> Consent:
-    return _assemble_consent(privacy_policy_consent_subject_id, expressed_at)
 
 
 def _assemble_consent(subject_id: SubjectID, expressed_at: datetime) -> Consent:
