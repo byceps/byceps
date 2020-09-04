@@ -17,7 +17,7 @@ psycopg2-binary==2.8.5
 python-dateutil==2.8.0
 pytzdata==2019.3
 redis==3.5.3
-requests==2.23.0
+requests==2.24.0
 rq==1.4.2
 rq-dashboard==0.6.1
 six==1.12.0
