@@ -23,9 +23,6 @@ from .....services.site import (
     settings_service as site_settings_service,
     service as site_service,
 )
-from .....services.terms import document_service as terms_document_service
-from .....services.terms import version_service as terms_version_service
-from .....services.terms.transfer.models import DocumentID as TermsDocumentID
 from .....services.user import creation_service as user_creation_service
 from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
@@ -45,31 +42,21 @@ def create_form(erroneous_form=None):
     """Show a form to create a user."""
     _abort_if_user_account_creation_disabled()
 
-    terms_version = terms_version_service.find_current_version_for_brand(
-        g.brand_id
-    )
     required_consent_subjects = _get_required_consent_subjects()
     newsletter_list_id = _find_newsletter_list_for_brand()
 
     real_name_required = _is_real_name_required()
-    terms_consent_required = terms_version is not None
     newsletter_offered = newsletter_list_id is not None
-
-    if terms_consent_required:
-        terms_version_id = terms_version.id
-    else:
-        terms_version_id = None
 
     if erroneous_form:
         form = erroneous_form
     else:
         UserCreateForm = assemble_user_create_form(
             real_name_required=real_name_required,
-            terms_consent_required=terms_consent_required,
             required_consent_subjects=required_consent_subjects,
             newsletter_offered=newsletter_offered,
         )
-        form = UserCreateForm(terms_version_id=terms_version_id)
+        form = UserCreateForm()
 
     return {
         'form': form,
@@ -82,19 +69,14 @@ def create():
     """Create a user."""
     _abort_if_user_account_creation_disabled()
 
-    terms_document_id = terms_document_service.find_document_id_for_brand(
-        g.brand_id
-    )
     required_consent_subjects = _get_required_consent_subjects()
     newsletter_list_id = _find_newsletter_list_for_brand()
 
     real_name_required = _is_real_name_required()
-    terms_consent_required = terms_document_id is not None
     newsletter_offered = newsletter_list_id is not None
 
     UserCreateForm = assemble_user_create_form(
         real_name_required=real_name_required,
-        terms_consent_required=terms_consent_required,
         required_consent_subjects=required_consent_subjects,
         newsletter_offered=newsletter_offered,
     )
@@ -120,10 +102,6 @@ def create():
         _assemble_consent(subject.id, now_utc)
         for subject in required_consent_subjects
     }
-
-    if terms_consent_required:
-        terms_consent = _get_terms_consent(form, terms_document_id, now_utc)
-        consents.add(terms_consent)
 
     newsletter_subscription = _get_newsletter_subscription(
         newsletter_offered, form, newsletter_list_id, now_utc
@@ -211,19 +189,6 @@ def _find_site_setting_value(setting_name: str) -> Optional[str]:
     name, or `None` if not configured.
     """
     return site_settings_service.find_setting_value(g.site_id, setting_name)
-
-
-def _get_terms_consent(
-    form, terms_document_id: TermsDocumentID, expressed_at: datetime,
-) -> Consent:
-    terms_version_id = form.terms_version_id.data
-    consent_to_terms = form.consent_to_terms.data
-
-    terms_version = terms_version_service.find_version(terms_version_id)
-    if terms_version.document_id != terms_document_id:
-        abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
-
-    return _assemble_consent(terms_version.consent_subject_id, expressed_at)
 
 
 def _assemble_consent(subject_id: SubjectID, expressed_at: datetime) -> Consent:

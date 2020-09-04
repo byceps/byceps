@@ -39,7 +39,7 @@ def user_admin(make_user):
 
 
 @pytest.fixture(scope='module')
-def terms_version(user_admin, brand):
+def terms_consent_subject_id(user_admin, brand):
     scope = Scope.for_brand(brand.id)
 
     snippet, _ = snippet_service.create_fragment(
@@ -63,15 +63,17 @@ def terms_version(user_admin, brand):
         terms_document.id, '01-Jan-2016', snippet.id, consent_subject.id
     )
 
-    terms_document_service.set_current_version(
-        terms_document_id, terms_version.id
+    consent_subject_id = terms_version.consent_subject_id
+
+    consent_subject_service.create_brand_requirement(
+        brand.id, consent_subject_id
     )
 
-    brand_settings_service.create_setting(
-        brand.id, 'terms_document_id', str(terms_document.id)
-    )
+    yield consent_subject_id
 
-    return terms_version
+    consent_subject_service.delete_brand_requirement(
+        brand.id, consent_subject_id
+    )
 
 
 @pytest.fixture(scope='module')
@@ -110,7 +112,7 @@ def test_create(
     site_app,
     brand,
     site,
-    terms_version,
+    terms_consent_subject_id,
     privacy_policy_consent_subject_id,
     newsletter_list,
 ):
@@ -125,8 +127,7 @@ def test_create(
         'last_name': 'Protagonist',
         'email_address': 'hiro@metaverse.org',
         'password': 'Snow_Crash',
-        'terms_version_id': terms_version.id,
-        'consent_to_terms': 'y',
+        f'consent_to_subject_{terms_consent_subject_id}': 'y',
         f'consent_to_subject_{privacy_policy_consent_subject_id}': 'y',
         'subscribe_to_newsletter': 'y',
     }
@@ -168,7 +169,7 @@ def test_create(
     assert role_ids == set()
 
     # consents
-    assert_consent(user.id, terms_version.consent_subject_id)
+    assert_consent(user.id, terms_consent_subject_id)
     assert_consent(user.id, privacy_policy_consent_subject_id)
 
     # newsletter subscription
@@ -199,7 +200,7 @@ def test_create_without_newsletter_subscription(
     site_app,
     brand,
     site,
-    terms_version,
+    terms_consent_subject_id,
     privacy_policy_consent_subject_id,
     newsletter_list,
 ):
@@ -211,8 +212,7 @@ def test_create_without_newsletter_subscription(
         'last_name': 'Protagonist',
         'email_address': 'hiro2@metaverse.org',
         'password': 'Snow_Crash',
-        'terms_version_id': terms_version.id,
-        'consent_to_terms': 'y',
+        f'consent_to_subject_{terms_consent_subject_id}': 'y',
         f'consent_to_subject_{privacy_policy_consent_subject_id}': 'y',
         'subscribe_to_newsletter': '',
     }

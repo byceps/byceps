@@ -25,7 +25,6 @@ from ....services.consent import (
 from ....services.email import service as email_service
 from ....services.email.transfer.models import Sender
 from ....services.site import service as site_service
-from ....services.terms import version_service as terms_version_service
 from ....services.user import service as user_service
 from ....services.verification_token import (
     service as verification_token_service,
@@ -147,23 +146,10 @@ def _require_admin_access_permission(user_id: UserID) -> None:
 
 
 def _get_required_consent_subject_ids():
-    subject_ids = set()
-
-    terms_version = terms_version_service.find_current_version_for_brand(
-        g.brand_id
-    )
-    if terms_version:
-        subject_ids.add(terms_version.consent_subject_id)
-
     subjects_required_for_brand = consent_subject_service.get_subjects_required_for_brand(
         g.brand_id
     )
-    subject_ids_required_for_brand = {
-        subject.id for subject in subjects_required_for_brand
-    }
-    subject_ids.update(subject_ids_required_for_brand)
-
-    return subject_ids
+    return {subject.id for subject in subjects_required_for_brand}
 
 
 def _is_consent_required(user_id, subject_ids):

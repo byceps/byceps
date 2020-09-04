@@ -8,9 +8,8 @@ byceps.blueprints.common.user.creation.forms
 
 import re
 from typing import Set
-from uuid import UUID
 
-from wtforms import BooleanField, HiddenField, PasswordField, StringField
+from wtforms import BooleanField, PasswordField, StringField
 from wtforms.validators import InputRequired, Length, ValidationError
 
 from .....services.consent.transfer.models import Subject, SubjectID
@@ -39,7 +38,6 @@ class ScreenNameValidator:
 
 def assemble_user_create_form(
     real_name_required: bool,
-    terms_consent_required: bool,
     required_consent_subjects: Set[Subject],
     newsletter_offered: bool,
 ):
@@ -72,13 +70,6 @@ def assemble_user_create_form(
                 )
 
         @staticmethod
-        def validate_terms_version_id(form, field):
-            try:
-                UUID(field.data)
-            except ValueError:
-                raise ValueError('Ungültige AGB-Version.')
-
-        @staticmethod
         def validate_is_bot(form, field):
             if field.data:
                 raise ValueError('Bots sind nicht erlaubt.')
@@ -90,12 +81,6 @@ def assemble_user_create_form(
     if not real_name_required:
         del UserCreateForm.first_names
         del UserCreateForm.last_name
-
-    if terms_consent_required:
-        terms_version_id = HiddenField('AGB-Version', [InputRequired()])
-        consent_to_terms = BooleanField('AGB', [InputRequired()])
-        setattr(UserCreateForm, 'terms_version_id', terms_version_id)
-        setattr(UserCreateForm, 'consent_to_terms', consent_to_terms)
 
     for subject in required_consent_subjects:
         field_name = _generate_consent_subject_field_name(subject.id)

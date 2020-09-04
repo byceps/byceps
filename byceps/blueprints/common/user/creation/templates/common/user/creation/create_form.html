@@ -18,12 +18,6 @@
       {%- endif %}
       {{ form_field(form.email_address, type='email', maxlength=120, required='required') }}
       {{ form_field(form.password, maxlength=40, required='required') }}
-      {%- if form.consent_to_terms is defined %}
-      {{ form_field(form.terms_version_id, show_label=False, required='required') }}
-      {{ form_field_checkbox(form.consent_to_terms,
-        'Ich akzeptiere die <a href="%s" target="_blank">Allgemeinen Geschäftsbedingungen</a>.'|format(url_for('terms.view_current'))|safe
-      ) }}
-      {%- endif %}
       {%- for subject in required_consent_subjects %}
         {%- with field = form.get_field_for_consent_subject_id(subject.id) %}
       {{ form_field_checkbox(field, subject.checkbox_label.replace('{url}', subject.checkbox_link_target)|safe) }}
