@@ -132,15 +132,18 @@ def create():
         first_names = None
         last_name = None
 
-    terms_consent = _get_terms_consent(
-        terms_consent_required, form, terms_document_id, now_utc
-    )
+    if terms_consent_required:
+        terms_consent = _get_terms_consent(form, terms_document_id, now_utc)
+    else:
+        terms_consent = None
 
-    privacy_policy_consent = _get_privacy_policy_consent(
-        privacy_policy_consent_required,
-        privacy_policy_consent_subject_id,
-        now_utc,
-    )
+    if privacy_policy_consent_required:
+        privacy_policy_consent = _get_privacy_policy_consent(
+            privacy_policy_consent_subject_id,
+            now_utc,
+        )
+    else:
+        privacy_policy_consent = None
 
     newsletter_subscription = _get_newsletter_subscription(
         newsletter_offered, form, newsletter_list_id, now_utc
@@ -261,14 +264,10 @@ def _find_site_setting_value(setting_name: str) -> Optional[str]:
 
 
 def _get_terms_consent(
-    terms_consent_required: bool,
     form: UserCreateForm,
     terms_document_id: TermsDocumentID,
     expressed_at: datetime,
-) -> Optional[Consent]:
-    if not terms_consent_required:
-        return None
-
+) -> Consent:
     terms_version_id = form.terms_version_id.data
     consent_to_terms = form.consent_to_terms.data
 
@@ -280,13 +279,9 @@ def _get_terms_consent(
 
 
 def _get_privacy_policy_consent(
-    privacy_policy_consent_required: bool,
     privacy_policy_consent_subject_id: SubjectID,
     expressed_at: datetime,
-) -> Optional[Consent]:
-    if not privacy_policy_consent_required:
-        return None
-
+) -> Consent:
     return _assemble_consent(privacy_policy_consent_subject_id, expressed_at)
 
 
