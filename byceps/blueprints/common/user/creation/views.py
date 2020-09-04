@@ -276,9 +276,7 @@ def _get_terms_consent(
     if terms_version.document_id != terms_document_id:
         abort(400, 'Die AGB-Version gehört nicht zu dieser Veranstaltung.')
 
-    return _assemble_privacy_policy_consent(
-        terms_version.consent_subject_id, expressed_at
-    )
+    return _assemble_consent(terms_version.consent_subject_id, expressed_at)
 
 
 def _get_privacy_policy_consent(
@@ -289,14 +287,10 @@ def _get_privacy_policy_consent(
     if not privacy_policy_consent_required:
         return None
 
-    return _assemble_privacy_policy_consent(
-        privacy_policy_consent_subject_id, expressed_at
-    )
+    return _assemble_consent(privacy_policy_consent_subject_id, expressed_at)
 
 
-def _assemble_privacy_policy_consent(
-    subject_id: SubjectID, expressed_at: datetime
-) -> Consent:
+def _assemble_consent(subject_id: SubjectID, expressed_at: datetime) -> Consent:
     return Consent(
         user_id=None,  # not available at this point
         subject_id=subject_id,
