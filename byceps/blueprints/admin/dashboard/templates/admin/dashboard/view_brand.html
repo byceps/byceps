@@ -1,6 +1,5 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin/dashboard.html' import render_bigstats_cell, render_cell %}
-{% from 'macros/datetime.html' import render_date %}
 {% set current_page = 'admin_dashboard_brand' %}
 {% set current_page_brand = brand %}
 {% set title = 'Dashboard - ' ~ brand.title %}
@@ -22,13 +21,17 @@
     {{ render_bigstats_cell(newsletter_subscriber_count|separate_thousands, 'Abonnenten für Newsletter "%s"'|format(newsletter_list.title), href=url_for('newsletter_admin.view_subscriptions', list_id=newsletter_list.id), icon_name='email', color='#008800') }}
     {%- endif %}
     {%- call render_cell('legal') %}
-      <h2 class="hyphenate">Stand aktuelle AGB</h2>
+      <h2 class="hyphenate">Erforderliche Zustimmungen</h2>
       <p class="centered">
-          {%- if current_terms_version -%}
-          <strong style="font-size: 2rem;">{{ render_date(current_terms_version.created_at) }}</strong>
-          {%- else -%}
-          <strong style="color: #cc0000;">keine AGB hinterlegt bzw. als aktuell festgelegt</strong>
-          {%- endif -%}
+        {%- if consent_subjects -%}
+        <ul>
+          {%- for subject in consent_subjects -%}
+          <li>{{ subject.title }}</li>
+          {%- endfor -%}
+        </ul>
+        {%- else -%}
+        <strong style="color: #cc0000;">keine</strong>
+        {%- endif -%}
       </p>
     {%- endcall %}
   </div>

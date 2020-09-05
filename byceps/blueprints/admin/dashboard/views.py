@@ -14,6 +14,7 @@ from ....services.brand import (
     service as brand_service,
     settings_service as brand_settings_service,
 )
+from ....services.consent import subject_service as consent_subject_service
 from ....services.newsletter import service as newsletter_service
 from ....services.orga import service as orga_service
 from ....services.orga import birthday_service as orga_birthday_service
@@ -24,7 +25,6 @@ from ....services.seating import (
     seat_service,
 )
 from ....services.site import service as site_service
-from ....services.terms import version_service as terms_version_service
 from ....services.ticketing import ticket_service
 from ....services.user import stats_service as user_stats_service
 from ....util.framework.blueprint import create_blueprint
@@ -116,7 +116,9 @@ def view_brand(brand_id):
     else:
         newsletter_subscriber_count = None
 
-    current_terms_version = terms_version_service.find_current_version(brand.id)
+    consent_subjects = consent_subject_service.get_subjects_required_for_brand(
+        brand.id
+    )
 
     return {
         'brand': brand,
@@ -130,7 +132,7 @@ def view_brand(brand_id):
         'newsletter_list': newsletter_list,
         'newsletter_subscriber_count': newsletter_subscriber_count,
 
-        'current_terms_version': current_terms_version,
+        'consent_subjects': consent_subjects,
     }
 
 
