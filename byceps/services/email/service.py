@@ -20,10 +20,6 @@ class UnknownEmailConfigId(ValueError):
     pass
 
 
-class EmailError(Exception):
-    pass
-
-
 def create_config(
     config_id: str,
     sender_address: str,
@@ -92,7 +88,7 @@ def get_config(config_id: str) -> EmailConfig:
     config = find_config(config_id)
 
     if not config:
-        raise EmailError(f'No e-mail config for ID "{config_id}"')
+        raise UnknownEmailConfigId(f'Unknown e-mail config ID "{config_id}"')
 
     return config
 
