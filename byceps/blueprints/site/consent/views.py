@@ -9,7 +9,7 @@ byceps.blueprints.site.consent.views
 from datetime import datetime
 from uuid import UUID
 
-from flask import abort, request
+from flask import abort, g, request
 
 from ....services.consent import consent_service, subject_service
 from ....services.verification_token import (
@@ -19,8 +19,6 @@ from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import redirect_to
-
-from ...common.authentication.views import _get_required_consent_subject_ids
 
 from .forms import create_consent_form, get_subject_field_name
 
@@ -92,10 +90,12 @@ def consent(token):
 
 
 def _get_unconsented_subjects_for_user(user_id):
-    required_consent_subject_ids = _get_required_consent_subject_ids()
+    required_subject_ids = subject_service.get_subject_ids_required_for_brand(
+        g.brand_id
+    )
 
     unconsented_subject_ids = consent_service.get_unconsented_subject_ids(
-        user_id, required_consent_subject_ids
+        user_id, required_subject_ids
     )
 
     return subject_service.get_subjects(unconsented_subject_ids)

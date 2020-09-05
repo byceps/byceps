@@ -146,10 +146,9 @@ def _require_admin_access_permission(user_id: UserID) -> None:
 
 
 def _get_required_consent_subject_ids():
-    subjects_required_for_brand = consent_subject_service.get_subjects_required_for_brand(
+    return consent_subject_service.get_subject_ids_required_for_brand(
         g.brand_id
     )
-    return {subject.id for subject in subjects_required_for_brand}
 
 
 def _is_consent_required(user_id, subject_ids):

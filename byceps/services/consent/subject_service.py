@@ -119,6 +119,17 @@ def delete_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
     db.session.commit()
 
 
+def get_subject_ids_required_for_brand(brand_id: BrandID) -> Set[SubjectID]:
+    """Return the IDs of the subjects required for the brand."""
+    rows = db.session \
+        .query(DbSubject.id) \
+        .join(DbBrandRequirement) \
+        .filter(DbBrandRequirement.brand_id == brand_id) \
+        .all()
+
+    return {row[0] for row in rows}
+
+
 def get_subjects_required_for_brand(brand_id: BrandID) -> Set[Subject]:
     """Return the subjects required for the brand."""
     rows = DbSubject.query \
