@@ -153,13 +153,9 @@ def _get_required_consent_subject_ids():
 
 
 def _is_consent_required(user_id, subject_ids):
-    for subject_id in subject_ids:
-        if not consent_service.has_user_consented_to_subject(
-            user_id, subject_id
-        ):
-            return True
-
-    return False
+    return not consent_service.has_user_consented_to_all_subjects(
+        user_id, subject_ids
+    )
 
 
 @blueprint.route('/logout', methods=['POST'])
