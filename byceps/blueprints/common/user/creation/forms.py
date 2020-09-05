@@ -95,4 +95,4 @@ def assemble_user_create_form(
 
 
 def _generate_consent_subject_field_name(subject_id: SubjectID) -> str:
-    return f'consent_to_subject_{subject_id}'
+    return f'consent_to_subject_{subject_id.hex}'

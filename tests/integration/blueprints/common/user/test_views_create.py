@@ -127,8 +127,8 @@ def test_create(
         'last_name': 'Protagonist',
         'email_address': 'hiro@metaverse.org',
         'password': 'Snow_Crash',
-        f'consent_to_subject_{terms_consent_subject_id}': 'y',
-        f'consent_to_subject_{privacy_policy_consent_subject_id}': 'y',
+        f'consent_to_subject_{terms_consent_subject_id.hex}': 'y',
+        f'consent_to_subject_{privacy_policy_consent_subject_id.hex}': 'y',
         'subscribe_to_newsletter': 'y',
     }
 
@@ -212,8 +212,8 @@ def test_create_without_newsletter_subscription(
         'last_name': 'Protagonist',
         'email_address': 'hiro2@metaverse.org',
         'password': 'Snow_Crash',
-        f'consent_to_subject_{terms_consent_subject_id}': 'y',
-        f'consent_to_subject_{privacy_policy_consent_subject_id}': 'y',
+        f'consent_to_subject_{terms_consent_subject_id.hex}': 'y',
+        f'consent_to_subject_{privacy_policy_consent_subject_id.hex}': 'y',
         'subscribe_to_newsletter': '',
     }
 
