@@ -11,8 +11,10 @@ from flask import g
 from wtforms import StringField
 from wtforms.validators import InputRequired, ValidationError
 
-from ....services.consent import consent_service
-from ....services.terms import version_service as terms_version_service
+from ....services.consent import (
+    consent_service,
+    subject_service as consent_subject_service,
+)
 from ....services.user import service as user_service
 from ....util.l10n import LocalizedForm
 
@@ -29,16 +31,19 @@ def validate_user(form, field):
 
     user = user.to_dto()
 
-    terms_version = terms_version_service.find_current_version_for_brand(
-        g.brand_id
+    required_consent_subjects = (
+        consent_subject_service.get_subjects_required_for_brand(g.brand_id)
     )
+    required_consent_subject_ids = {
+        subject.id for subject in required_consent_subjects
+    }
 
-    if terms_version and not consent_service.has_user_consented_to_subject(
-        user.id, terms_version.consent_subject_id
+    if not consent_service.has_user_consented_to_all_subjects(
+        user.id, required_consent_subject_ids
     ):
         raise ValidationError(
-            f'Der Benutzer "{user.screen_name}" '
-            'hat die aktuellen AGB noch nicht akzeptiert.'
+            f'Benutzer "{user.screen_name}" hat noch nicht alle nötigen '
+            'Zustimmungen erteilt. Ein erneuter Login ist erforderlich.'
         )
 
     field.data = user
