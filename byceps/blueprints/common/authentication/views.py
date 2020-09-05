@@ -114,8 +114,7 @@ def login():
         _require_admin_access_permission(user.id)
 
     if not in_admin_mode:
-        required_consent_subject_ids = _get_required_consent_subject_ids()
-        if _is_consent_required(user.id, required_consent_subject_ids):
+        if _is_consent_required(user.id):
             verification_token = verification_token_service.create_for_terms_consent(
                 user.id
             )
@@ -145,15 +144,13 @@ def _require_admin_access_permission(user_id: UserID) -> None:
         abort(403)
 
 
-def _get_required_consent_subject_ids():
-    return consent_subject_service.get_subject_ids_required_for_brand(
+def _is_consent_required(user_id):
+    required_subject_ids = consent_subject_service.get_subject_ids_required_for_brand(
         g.brand_id
     )
 
-
-def _is_consent_required(user_id, subject_ids):
     return not consent_service.has_user_consented_to_all_subjects(
-        user_id, subject_ids
+        user_id, required_subject_ids
     )
 
 
