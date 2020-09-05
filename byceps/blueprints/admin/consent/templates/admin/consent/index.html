@@ -22,7 +22,7 @@
         <tr>
           <td>{{ subject.title }}<br><span class="dimmed">{{ subject.name }}</span></td>
           <td>{{ subject.type_ }}</td>
-          <td class="bignumber number">{{ consent_count }}</td>
+          <td class="bignumber number">{{ consent_count|separate_thousands }}</td>
         </tr>
       {%- endfor %}
     </tbody>
