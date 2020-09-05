@@ -5,9 +5,9 @@
 
 {% block body %}
 
-  {{ render_notification('Bitte stimme den aktualisierten Bedingungen zu, um fortfahren zu können.', category='warning', icon='warning') }}
-
   <h1>{{ title }}</h1>
+
+  {{ render_notification('Bitte stimme den aktualisierten Bedingungen zu, um fortfahren zu können.', category='warning', icon='warning') }}
 
   <form action="{{ url_for('.consent', token=token) }}" method="post" class="disable-submit-button-on-submit" style="margin-top: 1rem;">
     {%- call form_fieldset() %}
