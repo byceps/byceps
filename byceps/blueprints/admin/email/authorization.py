@@ -12,5 +12,6 @@ from byceps.util.authorization import create_permission_enum
 EmailConfigPermission = create_permission_enum('email_config', [
     'create',
     'update',
+    'delete',
     'view',
 ])

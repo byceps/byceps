@@ -8,6 +8,8 @@ byceps.services.email.service
 
 from typing import List, Optional
 
+from sqlalchemy.exc import IntegrityError
+
 from ...database import db, upsert
 from ... import email
 from ...util.jobqueue import enqueue
@@ -63,12 +65,26 @@ def update_config(
 
 
 def delete_config(config_id: str) -> None:
-    """Delete a configuration."""
-    db.session.query(DbEmailConfig) \
-        .filter_by(id=config_id) \
-        .delete()
+    """Delete a configuration.
 
-    db.session.commit()
+    It is expected that no database records (sites) refer to the
+    configuration anymore.
+
+    Return `True` on success, or `False` if an error occurred.
+    """
+    get_config(config_id)  # Verify ID exists.
+
+    try:
+        db.session.query(DbEmailConfig) \
+            .filter_by(id=config_id) \
+            .delete()
+
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
+        return False
+
+    return True
 
 
 def find_config(config_id: str) -> Optional[EmailConfig]:

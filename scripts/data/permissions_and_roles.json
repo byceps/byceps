@@ -97,6 +97,10 @@
       "title": "E-Mail-Konfigurationen erstellen"
     },
     {
+      "id": "email_config.delete",
+      "title": "E-Mail-Konfigurationen l\u00f6schen"
+    },
+    {
       "id": "email_config.update",
       "title": "E-Mail-Konfigurationen bearbeiten"
     },
@@ -411,6 +415,7 @@
     {
       "assigned_permissions": [
         "email_config.create",
+        "email_config.delete",
         "email_config.update",
         "email_config.view"
       ],
