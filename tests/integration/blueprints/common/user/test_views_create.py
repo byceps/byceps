@@ -49,7 +49,6 @@ def terms_consent_subject_id(user_admin, brand):
     consent_subject = consent_subject_service.create_subject(
         f'{brand.id}_terms-of-service_v1',
         f'Terms of service for {brand.title} / v1',
-        'terms_of_service',
         'Ich akzeptiere die <a href="{url}" target="_blank">Allgemeinen Geschäftsbedingungen</a>.',
         '/terms/',
     )
@@ -81,7 +80,6 @@ def privacy_policy_consent_subject_id(brand):
     consent_subject = consent_subject_service.create_subject(
         f'{brand.id}_privacy_policy_v1',
         f'Privacy policy for {brand.title} / v1',
-        'privacy_policy',
         'Ich akzeptiere die <a href="{url}" target="_blank">Datenschutzbestimmungen</a>.',
         '/privacy',
     )

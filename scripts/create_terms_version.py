@@ -63,12 +63,11 @@ def execute(
 def _create_consent_subject(brand, title, consent_subject_name_suffix):
     subject_name = f'{brand.id}_terms-of-service_{consent_subject_name_suffix}'
     subject_title = f'AGB {brand.title} / {title}'
-    type_ = 'terms_of_service'
     checkbox_label = 'Ich akzeptiere die <a href="{url}" target="_blank">Allgemeinen Geschäftsbedingungen</a>'
     checkbox_link_target = '/terms/'
 
     return consent_subject_service.create_subject(
-        subject_name, subject_title, type_, checkbox_label, checkbox_link_target
+        subject_name, subject_title, checkbox_label, checkbox_link_target
     )
 
 

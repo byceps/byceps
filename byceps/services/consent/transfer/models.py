@@ -22,7 +22,6 @@ class Subject:
     id: SubjectID
     name: str
     title: str
-    type_: str
     checkbox_label: str
     checkbox_link_target: Optional[str]
 

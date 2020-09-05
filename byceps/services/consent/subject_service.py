@@ -28,14 +28,11 @@ class UnknownSubjectId(ValueError):
 def create_subject(
     name: str,
     title: str,
-    type_: str,
     checkbox_label: str,
     checkbox_link_target: Optional[str],
 ) -> SubjectID:
     """Create a new subject."""
-    subject = DbSubject(
-        name, title, type_, checkbox_label, checkbox_link_target
-    )
+    subject = DbSubject(name, title, checkbox_label, checkbox_link_target)
 
     db.session.add(subject)
     db.session.commit()
@@ -97,7 +94,6 @@ def _db_entity_to_subject(subject: DbSubject) -> Subject:
         subject.id,
         subject.name,
         subject.title,
-        subject.type_,
         subject.checkbox_label,
         subject.checkbox_link_target,
     )

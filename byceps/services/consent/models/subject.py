@@ -20,7 +20,6 @@ class Subject(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     name = db.Column(db.UnicodeText, unique=True, nullable=False)
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
-    type_ = db.Column('type', db.UnicodeText, nullable=True)
     checkbox_label = db.Column(db.UnicodeText, nullable=False)
     checkbox_link_target = db.Column(db.UnicodeText, nullable=True)
 
@@ -28,13 +27,11 @@ class Subject(db.Model):
         self,
         name: str,
         title: str,
-        type_: str,
         checkbox_label: str,
         checkbox_link_target: Optional[str],
     ) -> None:
         self.name = name
         self.title = title
-        self.type_ = type_
         self.checkbox_label = checkbox_label
         self.checkbox_link_target = checkbox_link_target
 
@@ -43,5 +40,4 @@ class Subject(db.Model):
             .add_with_lookup('id') \
             .add_with_lookup('name') \
             .add_with_lookup('title') \
-            .add_with_lookup('type_') \
             .build()
