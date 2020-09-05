@@ -42,27 +42,6 @@ def find_version(version_id: VersionID) -> Optional[DbVersion]:
     return DbVersion.query.get(version_id)
 
 
-def find_version_for_consent_subject_id(
-    consent_subject_id: ConsentSubjectID,
-) -> Optional[DbVersion]:
-    """Return the version with that consent subject ID, or `None` if
-    not found.
-    """
-    return DbVersion.query \
-        .filter_by(consent_subject_id=consent_subject_id) \
-        .one_or_none()
-
-
-def find_current_version(document_id: DocumentID) -> Optional[DbVersion]:
-    """Return the current version of the document, or `None` if none is
-    configured.
-    """
-    return DbVersion.query \
-        .join(DbDocument, DbDocument.current_version_id == DbVersion.id) \
-        .filter(DbDocument.id == document_id) \
-        .one_or_none()
-
-
 def find_current_version_for_brand(brand_id: BrandID) -> Optional[DbVersion]:
     """Return the current version of the document configured for the
     brand, or `None` if none is configured for the brand or if the
