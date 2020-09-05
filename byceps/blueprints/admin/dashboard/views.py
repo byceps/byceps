@@ -116,8 +116,16 @@ def view_brand(brand_id):
     else:
         newsletter_subscriber_count = None
 
-    consent_subjects = consent_subject_service.get_subjects_required_for_brand(
-        brand.id
+    consent_subject_ids = (
+        consent_subject_service.get_subject_ids_required_for_brand(brand.id)
+    )
+    consent_subjects_to_consent_counts = (
+        consent_subject_service.get_subjects_with_consent_counts(
+            limit_to_subject_ids=consent_subject_ids
+        )
+    )
+    consent_subjects_with_consent_counts = sorted(
+        consent_subjects_to_consent_counts.items(), key=lambda x: x[0].title
     )
 
     return {
@@ -132,7 +140,7 @@ def view_brand(brand_id):
         'newsletter_list': newsletter_list,
         'newsletter_subscriber_count': newsletter_subscriber_count,
 
-        'consent_subjects': consent_subjects,
+        'consent_subjects_with_consent_counts': consent_subjects_with_consent_counts,
     }
 
 

@@ -23,12 +23,15 @@
     {%- call render_cell('legal') %}
       <h2 class="hyphenate">Erforderliche Zustimmungen</h2>
       <p class="centered">
-        {%- if consent_subjects -%}
-        <ul>
-          {%- for subject in consent_subjects -%}
-          <li>{{ subject.title }}</li>
+        {%- if consent_subjects_with_consent_counts -%}
+        <table class="index">
+          {%- for subject, count in consent_subjects_with_consent_counts -%}
+          <tr>
+            <td>{{ subject.title }}</td>
+            <td class="bignumber number">{{ count|separate_thousands }}</td>
+          </tr>
           {%- endfor -%}
-        </ul>
+        </table>
         {%- else -%}
         <strong style="color: #cc0000;">keine</strong>
         {%- endif -%}

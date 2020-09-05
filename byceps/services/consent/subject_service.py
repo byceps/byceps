@@ -69,14 +69,20 @@ def _check_for_unknown_subject_ids(
         )
 
 
-def get_subjects_with_consent_counts() -> Dict[Subject, int]:
-    """Return all subjects."""
-    rows = db.session \
+def get_subjects_with_consent_counts(*, limit_to_subject_ids: Set[SubjectID]=None) -> Dict[Subject, int]:
+    """Return subjects and their consent counts."""
+    query = db.session \
         .query(
             DbSubject,
             db.func.count(DbConsent.user_id)
         ) \
-        .outerjoin(DbConsent) \
+        .outerjoin(DbConsent)
+
+    if limit_to_subject_ids:
+        query = query \
+            .filter(DbSubject.id.in_(limit_to_subject_ids))
+
+    rows = query \
         .group_by(DbSubject.id) \
         .all()
 
