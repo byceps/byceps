@@ -28,6 +28,18 @@ def create_shop(shop_id: ShopID, title: str, email_config_id: str) -> Shop:
     return _db_entity_to_shop(shop)
 
 
+def update_shop(shop_id: ShopID, title: str, email_config_id: str) -> Shop:
+    """Update a shop."""
+    shop = _get_db_shop(shop_id)
+
+    shop.title = title
+    shop.email_config_id = email_config_id
+
+    db.session.commit()
+
+    return _db_entity_to_shop(shop)
+
+
 def delete_shop(shop_id: ShopID) -> None:
     """Delete a shop."""
     db.session.query(DbShop) \

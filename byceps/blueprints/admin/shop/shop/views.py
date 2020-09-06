@@ -21,7 +21,7 @@ from ....common.authorization.decorators import permission_required
 from ....common.authorization.registry import permission_registry
 
 from .authorization import ShopPermission
-from .forms import CreateForm
+from .forms import CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('shop_shop_admin', __name__)
@@ -94,6 +94,43 @@ def create():
 
     flash_success(f'Der Shop "{shop.title}" wurde angelegt.')
     return redirect_to('.index')
+
+
+@blueprint.route('/shops/<shop_id>/update')
+@permission_required(ShopPermission.update)
+@templated
+def update_form(shop_id, erroneous_form=None):
+    """Show form to update a shop."""
+    shop = _get_shop_or_404(shop_id)
+
+    form = erroneous_form if erroneous_form else UpdateForm(obj=shop)
+    form.set_email_config_choices()
+
+    return {
+        'shop': shop,
+        'form': form,
+    }
+
+
+@blueprint.route('/shops/<shop_id>', methods=['POST'])
+@permission_required(ShopPermission.update)
+def update(shop_id):
+    """Update a shop."""
+    shop = _get_shop_or_404(shop_id)
+
+    form = UpdateForm(request.form)
+    form.set_email_config_choices()
+
+    if not form.validate():
+        return update_form(shop.id, form)
+
+    title = form.title.data.strip()
+    email_config_id = form.email_config_id.data
+
+    shop = shop_service.update_shop(shop_id, title, email_config_id)
+
+    flash_success(f'Der Shop "{shop.title}" wurde aktualisiert.')
+    return redirect_to('.view_for_shop', shop_id=shop.id)
 
 
 def _get_shop_or_404(shop_id):
