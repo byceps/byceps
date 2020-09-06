@@ -7,7 +7,7 @@
   render_main_tabs(
     Navigation(None)
       .add_item(
-        url_for('shop_shop_admin.view_for_shop', shop_id=shop.id),
+        url_for('shop_shop_admin.view', shop_id=shop.id),
         'Shop',
         id='shop',
         required_permission=ShopPermission.view,

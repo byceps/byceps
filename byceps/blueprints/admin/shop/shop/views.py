@@ -45,7 +45,7 @@ def index():
 @blueprint.route('/for_shop/<shop_id>')
 @permission_required(ShopPermission.view)
 @templated
-def view_for_shop(shop_id):
+def view(shop_id):
     """Show the shop."""
     shop = _get_shop_or_404(shop_id)
 
@@ -130,7 +130,7 @@ def update(shop_id):
     shop = shop_service.update_shop(shop_id, title, email_config_id)
 
     flash_success(f'Der Shop "{shop.title}" wurde aktualisiert.')
-    return redirect_to('.view_for_shop', shop_id=shop.id)
+    return redirect_to('.view', shop_id=shop.id)
 
 
 def _get_shop_or_404(shop_id):

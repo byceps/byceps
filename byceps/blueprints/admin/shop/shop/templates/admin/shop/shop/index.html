@@ -26,7 +26,7 @@
     <div class="row row--space-between">
 
       <div class="column-auto">
-        <a href="{{ url_for('.view_for_shop', shop_id=shop.id) }}" class="disguised" style="display: block;">
+        <a href="{{ url_for('.view', shop_id=shop.id) }}" class="disguised" style="display: block;">
           <strong>{{ shop.title }}</strong><br>
           <span class="monospace">{{ shop.id }}</span>
         </a>
