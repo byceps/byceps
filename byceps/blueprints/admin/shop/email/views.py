@@ -13,6 +13,7 @@ from flask import abort, current_app, Response
 
 from .....config import ConfigurationError
 from .....database import generate_uuid
+from .....services.email import service as email_service
 from .....services.shop.order.email import service as shop_order_email_service
 from .....services.shop.order.email.service import OrderEmailData
 from .....services.shop.order.transfer.models import (
@@ -45,8 +46,11 @@ def view_for_shop(shop_id):
     """Show e-mail examples."""
     shop = _get_shop_or_404(shop_id)
 
+    email_config = email_service.find_config(shop.email_config_id)
+
     return {
         'shop': shop,
+        'email_config': email_config,
     }
 
 
