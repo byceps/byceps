@@ -1,8 +1,31 @@
 {% extends 'layouts/admin/shop.html' %}
+{% from 'macros/misc.html' import render_notification %}
 {% set current_page_shop = shop %}
 {% set current_page = 'shop_email_admin' %}
 {% set current_tab = 'email' %}
 {% set title = 'E-Mail' %}
+
+{% block head %}
+<style>
+  .email-example summary:focus {
+    outline: none;
+  }
+
+  .email-example summary:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  .email-example code {
+    background-color: #eeeeee;
+    display: block;
+    font-size: 0.75rem;
+    max-width: 46rem;
+    overflow-x: scroll;
+    padding: 1rem;
+  }
+</style>
+{%- endblock %}
 
 {% block body %}
 
@@ -15,11 +38,21 @@
   <h1>E-Mail</h1>
 
   <h2>Beispiele</h2>
-  <ul>
-    <li><a href="{{ url_for('.view_example_order_placed', shop_id=shop.id) }}">Bestellbestätigung</a></li>
-    <li><a href="{{ url_for('.view_example_order_paid', shop_id=shop.id) }}">Zahlungseingang</a></li>
-    <li><a href="{{ url_for('.view_example_order_canceled', shop_id=shop.id) }}">Stornierung</a></li>
-  </ul>
+
+  <details class="email-example">
+    <summary>Bestellbestätigung</summary>
+    {{ render_message_text(placed_order_message_text) }}
+  </details>
+
+  <details class="email-example">
+    <summary>Zahlungseingang</summary>
+    {{ render_message_text(paid_order_message_text) }}
+  </details>
+
+  <details class="email-example">
+    <summary>Stornierung</summary>
+    {{ render_message_text(canceled_order_message_text) }}
+  </details>
 
   <h2>Konfiguration</h2>
   <table class="index">
@@ -42,3 +75,11 @@
   </table>
 
 {%- endblock %}
+
+{% macro render_message_text(message_text) -%}
+  {%- if message_text -%}
+    <pre><code>{{ message_text }}</code></pre>
+  {%- else -%}
+    {{ render_notification('Could not assemble example email. Are all necessary templates defined?', category='danger') }}
+  {%- endif -%}
+{%- endmacro %}
