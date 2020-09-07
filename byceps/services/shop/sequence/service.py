@@ -108,8 +108,7 @@ def generate_article_number(sequence_id: NumberSequenceID) -> ArticleNumber:
     sequence.
     """
     sequence = _get_next_sequence_step(sequence_id, Purpose.article)
-
-    return format_article_number(sequence)
+    return ArticleNumber(f'{sequence.prefix}{sequence.value:05d}')
 
 
 def generate_order_number(sequence_id: NumberSequenceID) -> OrderNumber:
@@ -117,8 +116,7 @@ def generate_order_number(sequence_id: NumberSequenceID) -> OrderNumber:
     sequence.
     """
     sequence = _get_next_sequence_step(sequence_id, Purpose.order)
-
-    return format_order_number(sequence)
+    return OrderNumber(f'{sequence.prefix}{sequence.value:05d}')
 
 
 def _get_next_sequence_step(
@@ -145,16 +143,6 @@ def _get_next_sequence_step(
     db.session.commit()
 
     return sequence
-
-
-def format_article_number(sequence: NumberSequence) -> ArticleNumber:
-    """Format a number sequence step as article number."""
-    return ArticleNumber(f'{sequence.prefix}{sequence.value:05d}')
-
-
-def format_order_number(sequence: NumberSequence) -> OrderNumber:
-    """Format a number sequence step as order number."""
-    return OrderNumber(f'{sequence.prefix}{sequence.value:05d}')
 
 
 def find_article_number_sequences_for_shop(
