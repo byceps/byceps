@@ -12,8 +12,10 @@ import pytest
 from byceps.services.shop.article import service as article_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
-from byceps.services.shop.order import service as order_service
-from byceps.services.shop.sequence import service as sequence_service
+from byceps.services.shop.order import (
+    sequence_service as order_sequence_service,
+    service as order_service,
+)
 from byceps.services.shop.storefront import service as storefront_service
 
 from tests.helpers import http_client, login_user
@@ -106,13 +108,13 @@ def orderer(make_user):
 
 @pytest.fixture
 def order_number_sequence_id(shop) -> None:
-    sequence_id = sequence_service.create_order_number_sequence(
+    sequence_id = order_sequence_service.create_order_number_sequence(
         shop.id, 'LR-08-B', value=26
     )
 
     yield sequence_id
 
-    sequence_service.delete_order_number_sequence(sequence_id)
+    order_sequence_service.delete_order_number_sequence(sequence_id)
 
 
 @pytest.fixture

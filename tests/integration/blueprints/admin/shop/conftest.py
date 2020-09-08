@@ -5,7 +5,9 @@
 
 import pytest
 
-from byceps.services.shop.sequence import service as sequence_service
+from byceps.services.shop.order import (
+    sequence_service as order_sequence_service,
+)
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 
@@ -21,13 +23,13 @@ def shop(email_config):
 
 @pytest.fixture(scope='module')
 def order_number_sequence_id(shop) -> None:
-    sequence_id = sequence_service.create_order_number_sequence(
+    sequence_id = order_sequence_service.create_order_number_sequence(
         shop.id, 'ORDER-'
     )
 
     yield sequence_id
 
-    sequence_service.delete_order_number_sequence(sequence_id)
+    order_sequence_service.delete_order_number_sequence(sequence_id)
 
 
 @pytest.fixture(scope='module')

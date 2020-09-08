@@ -20,7 +20,6 @@ from ...user import service as user_service
 
 from ..article import service as article_service
 from ..cart.models import Cart
-from ..sequence import service as sequence_service
 from ..shop.models import Shop
 from ..shop import service as shop_service
 from ..shop.transfer.models import ShopID
@@ -31,7 +30,7 @@ from .models.order import Order as DbOrder
 from .models.order_event import OrderEvent as DbOrderEvent
 from .models.order_item import OrderItem as DbOrderItem
 from .models.orderer import Orderer
-from . import action_service
+from . import action_service, sequence_service
 from .transfer.models import (
     Order,
     OrderID,

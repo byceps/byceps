@@ -10,8 +10,6 @@ from typing import List, Optional
 
 from ....database import db
 
-from ..order.transfer.models import OrderNumber
-
 from ..shop.transfer.models import ShopID
 
 from .models import NumberSequence as DbNumberSequence
@@ -34,12 +32,6 @@ def create_sequence(
     return sequence.id
 
 
-def create_order_number_sequence(
-    shop_id: ShopID, prefix: str, *, value: Optional[int] = None
-) -> NumberSequenceID:
-    return create_sequence(shop_id, Purpose.order, prefix, value=value)
-
-
 def delete_sequence(sequence_id: NumberSequenceID) -> None:
     """Delete the sequence."""
     db.session.query(DbNumberSequence) \
@@ -47,20 +39,6 @@ def delete_sequence(sequence_id: NumberSequenceID) -> None:
         .delete()
 
     db.session.commit()
-
-
-def delete_order_number_sequence(sequence_id: NumberSequenceID) -> None:
-    """Delete the order sequence."""
-    delete_sequence(sequence_id)
-
-
-def find_order_number_sequence(
-    sequence_id: NumberSequenceID,
-) -> Optional[NumberSequence]:
-    """Return the order number sequence, or `None` if the sequence ID
-    is unknown or if the sequence's purpose is not order numbers.
-    """
-    return _find_sequence(sequence_id, Purpose.order)
 
 
 def _find_sequence(
@@ -80,14 +58,6 @@ class NumberGenerationFailed(Exception):
 
     def __init__(self, message: str) -> None:
         self.message = message
-
-
-def generate_order_number(sequence_id: NumberSequenceID) -> OrderNumber:
-    """Generate and reserve an unused, unique order number from this
-    sequence.
-    """
-    sequence = _get_next_sequence_step(sequence_id, Purpose.order)
-    return OrderNumber(f'{sequence.prefix}{sequence.value:05d}')
 
 
 def _get_next_sequence_step(
@@ -114,13 +84,6 @@ def _get_next_sequence_step(
     db.session.commit()
 
     return sequence
-
-
-def find_order_number_sequences_for_shop(
-    shop_id: ShopID,
-) -> List[NumberSequence]:
-    """Return the order number sequences defined for that shop."""
-    return _find_number_sequences(shop_id, Purpose.order)
 
 
 def _find_number_sequences(

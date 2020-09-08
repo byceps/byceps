@@ -9,6 +9,7 @@ byceps.blueprints.admin.shop.storefront.views
 from flask import abort, request
 
 from .....services.shop.catalog import service as catalog_service
+from .....services.shop.order import sequence_service as order_sequence_service
 from .....services.shop.sequence import service as sequence_service
 from .....services.shop.shop import service as shop_service
 from .....services.shop.storefront import service as storefront_service
@@ -49,7 +50,9 @@ def index_for_shop(shop_id):
 
 def _get_order_number_prefixes_by_sequence_id(storefronts, shop_id):
     sequence_ids = {sf.order_number_sequence_id for sf in storefronts}
-    sequences = sequence_service.find_order_number_sequences_for_shop(shop_id)
+    sequences = order_sequence_service.find_order_number_sequences_for_shop(
+        shop_id
+    )
     return {seq.id: seq.prefix for seq in sequences}
 
 
@@ -62,7 +65,7 @@ def view(storefront_id):
 
     shop = shop_service.get_shop(storefront.shop_id)
 
-    order_number_sequence = sequence_service.find_order_number_sequence(
+    order_number_sequence = order_sequence_service.find_order_number_sequence(
         storefront.order_number_sequence_id
     )
     order_number_prefix = order_number_sequence.prefix
@@ -82,8 +85,8 @@ def create_form(shop_id, erroneous_form=None):
     shop = _get_shop_or_404(shop_id)
 
     catalogs = catalog_service.get_all_catalogs()
-    order_number_sequences = sequence_service.find_order_number_sequences_for_shop(
-        shop.id
+    order_number_sequences = (
+        order_sequence_service.find_order_number_sequences_for_shop(shop.id)
     )
     order_number_sequence_available = bool(order_number_sequences)
 
@@ -108,8 +111,8 @@ def create(shop_id):
 
     catalogs = catalog_service.get_all_catalogs()
 
-    order_number_sequences = sequence_service.find_order_number_sequences_for_shop(
-        shop.id
+    order_number_sequences = (
+        order_sequence_service.find_order_number_sequences_for_shop(shop.id)
     )
     if not order_number_sequences:
         flash_error(
@@ -130,7 +133,7 @@ def create(shop_id):
         flash_error('Es wurde keine gültige Bestellnummer-Sequenz angegeben.')
         return create_form(shop_id, form)
 
-    order_number_sequence = sequence_service.find_order_number_sequence(
+    order_number_sequence = order_sequence_service.find_order_number_sequence(
         order_number_sequence_id
     )
     if (order_number_sequence is None) or (
@@ -140,7 +143,7 @@ def create(shop_id):
         return create_form(shop_id, form)
 
     try:
-        item_number = sequence_service.generate_order_number(
+        item_number = order_sequence_service.generate_order_number(
             order_number_sequence.id
         )
     except sequence_service.NumberGenerationFailed as e:
@@ -168,8 +171,8 @@ def update_form(storefront_id, erroneous_form=None):
     shop = shop_service.get_shop(storefront.shop_id)
 
     catalogs = catalog_service.get_all_catalogs()
-    order_number_sequences = sequence_service.find_order_number_sequences_for_shop(
-        shop.id
+    order_number_sequences = (
+        order_sequence_service.find_order_number_sequences_for_shop(shop.id)
     )
 
     form = (
@@ -194,8 +197,10 @@ def update(storefront_id):
     storefront = _get_storefront_or_404(storefront_id)
 
     catalogs = catalog_service.get_all_catalogs()
-    order_number_sequences = sequence_service.find_order_number_sequences_for_shop(
-        storefront.shop_id
+    order_number_sequences = (
+        order_sequence_service.find_order_number_sequences_for_shop(
+            storefront.shop_id
+        )
     )
 
     form = StorefrontUpdateForm(request.form)

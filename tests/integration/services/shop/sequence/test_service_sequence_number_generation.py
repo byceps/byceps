@@ -8,7 +8,9 @@ import pytest
 from byceps.services.shop.article import (
     sequence_service as article_sequence_service,
 )
-from byceps.services.shop.sequence import service as sequence_service
+from byceps.services.shop.order import (
+    sequence_service as order_sequence_service,
+)
 from byceps.services.shop.shop import service as shop_service
 
 
@@ -71,15 +73,19 @@ def test_generate_article_number_custom(admin_app, shop2):
 def test_generate_order_number_default(admin_app, shop1):
     shop = shop1
 
-    order_number_sequence_id = sequence_service.create_order_number_sequence(
-        shop.id, 'AEC-01-B'
+    order_number_sequence_id = (
+        order_sequence_service.create_order_number_sequence(shop.id, 'AEC-01-B')
     )
 
-    actual = sequence_service.generate_order_number(order_number_sequence_id)
+    actual = order_sequence_service.generate_order_number(
+        order_number_sequence_id
+    )
 
     assert actual == 'AEC-01-B00001'
 
-    sequence_service.delete_order_number_sequence(order_number_sequence_id)
+    order_sequence_service.delete_order_number_sequence(
+        order_number_sequence_id
+    )
 
 
 def test_generate_order_number_custom(admin_app, shop2):
@@ -87,12 +93,18 @@ def test_generate_order_number_custom(admin_app, shop2):
 
     last_assigned_order_sequence_number = 206
 
-    order_number_sequence_id = sequence_service.create_order_number_sequence(
-        shop.id, 'LOL-03-B', value=last_assigned_order_sequence_number
+    order_number_sequence_id = (
+        order_sequence_service.create_order_number_sequence(
+            shop.id, 'LOL-03-B', value=last_assigned_order_sequence_number
+        )
     )
 
-    actual = sequence_service.generate_order_number(order_number_sequence_id)
+    actual = order_sequence_service.generate_order_number(
+        order_number_sequence_id
+    )
 
     assert actual == 'LOL-03-B00207'
 
-    sequence_service.delete_order_number_sequence(order_number_sequence_id)
+    order_sequence_service.delete_order_number_sequence(
+        order_number_sequence_id
+    )

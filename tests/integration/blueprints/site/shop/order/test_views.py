@@ -10,8 +10,10 @@ import pytest
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article import service as article_service
 from byceps.services.shop.order.models.order import Order
-from byceps.services.shop.order import service as order_service
-from byceps.services.shop.sequence import service as sequence_service
+from byceps.services.shop.order import (
+    sequence_service as order_sequence_service,
+    service as order_service,
+)
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.site import service as site_service
@@ -50,13 +52,13 @@ def shop(email_config, admin_user):
 
 @pytest.fixture
 def order_number_sequence_id(shop) -> None:
-    sequence_id = sequence_service.create_order_number_sequence(
+    sequence_id = order_sequence_service.create_order_number_sequence(
         shop.id, 'AEC-01-B', value=4
     )
 
     yield sequence_id
 
-    sequence_service.delete_order_number_sequence(sequence_id)
+    order_sequence_service.delete_order_number_sequence(sequence_id)
 
 
 @pytest.fixture

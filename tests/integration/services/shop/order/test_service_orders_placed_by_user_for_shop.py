@@ -6,8 +6,10 @@
 import pytest
 
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import service as order_service
-from byceps.services.shop.sequence import service as sequence_service
+from byceps.services.shop.order import (
+    sequence_service as order_sequence_service,
+    service as order_service,
+)
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 
@@ -19,8 +21,8 @@ from tests.integration.services.shop.helpers import create_shop
 @pytest.fixture
 def storefront1(email_config):
     shop = create_shop('first-nice-shop')
-    order_number_sequence_id = sequence_service.create_order_number_sequence(
-        shop.id, 'LF-02-B'
+    order_number_sequence_id = (
+        order_sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
     )
     storefront = storefront_service.create_storefront(
         f'{shop.id}-storefront',
@@ -32,15 +34,17 @@ def storefront1(email_config):
     yield storefront
 
     storefront_service.delete_storefront(storefront.id)
-    sequence_service.delete_order_number_sequence(order_number_sequence_id)
+    order_sequence_service.delete_order_number_sequence(
+        order_number_sequence_id
+    )
     shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture
 def storefront2(email_config):
     shop = create_shop('second-nice-shop')
-    order_number_sequence_id = sequence_service.create_order_number_sequence(
-        shop.id, 'LF-03-B'
+    order_number_sequence_id = (
+        order_sequence_service.create_order_number_sequence(shop.id, 'LF-03-B')
     )
     storefront = storefront_service.create_storefront(
         f'{shop.id}-storefront',
@@ -52,7 +56,9 @@ def storefront2(email_config):
     yield storefront
 
     storefront_service.delete_storefront(storefront.id)
-    sequence_service.delete_order_number_sequence(order_number_sequence_id)
+    order_sequence_service.delete_order_number_sequence(
+        order_number_sequence_id
+    )
     shop_service.delete_shop(shop.id)
 
 

@@ -7,8 +7,10 @@ import pytest
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.orderer import Orderer
-from byceps.services.shop.order import service as order_service
-from byceps.services.shop.sequence import service as sequence_service
+from byceps.services.shop.order import (
+    sequence_service as order_sequence_service,
+    service as order_service,
+)
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.site import service as site_service
@@ -45,24 +47,24 @@ def shop2(admin_app, email_config):
 
 @pytest.fixture
 def order_number_sequence_id1(shop1) -> None:
-    sequence_id = sequence_service.create_order_number_sequence(
+    sequence_id = order_sequence_service.create_order_number_sequence(
         shop1.id, 'LF-02-B'
     )
 
     yield sequence_id
 
-    sequence_service.delete_order_number_sequence(sequence_id)
+    order_sequence_service.delete_order_number_sequence(sequence_id)
 
 
 @pytest.fixture
 def order_number_sequence_id2(shop2) -> None:
-    sequence_id = sequence_service.create_order_number_sequence(
+    sequence_id = order_sequence_service.create_order_number_sequence(
         shop2.id, 'SHOP-02-B'
     )
 
     yield sequence_id
 
-    sequence_service.delete_order_number_sequence(sequence_id)
+    order_sequence_service.delete_order_number_sequence(sequence_id)
 
 
 @pytest.fixture

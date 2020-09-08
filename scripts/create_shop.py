@@ -11,7 +11,7 @@ import click
 from byceps.services.shop.article import (
     sequence_service as article_sequence_service,
 )
-from byceps.services.shop.sequence import service as sequence_service
+import byceps.services.shop.order.sequence_service as order_sequence_service
 from byceps.services.shop.shop import service as shop_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
@@ -30,7 +30,7 @@ def execute(shop_id, title, email_config_id, article_prefix, order_prefix):
     article_sequence_service.create_article_number_sequence(
         shop.id, article_prefix
     )
-    sequence_service.create_order_number_sequence(shop.id, order_prefix)
+    order_sequence_service.create_order_number_sequence(shop.id, order_prefix)
 
     click.secho('Done.', fg='green')
 

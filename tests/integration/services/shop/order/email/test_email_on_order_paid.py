@@ -9,9 +9,11 @@ from unittest.mock import patch
 import pytest
 
 from byceps.services.shop.order.email import service as order_email_service
-from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order import (
+    sequence_service as order_sequence_service,
+    service as order_service,
+)
 from byceps.services.shop.order.transfer.models import PaymentMethod
-from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.snippet import service as snippet_service
 
@@ -35,13 +37,13 @@ def customer(make_user_with_detail):
 
 @pytest.fixture
 def order_number_sequence_id(shop) -> None:
-    sequence_id = sequence_service.create_order_number_sequence(
+    sequence_id = order_sequence_service.create_order_number_sequence(
         shop.id, 'AC-14-B', value=21
     )
 
     yield sequence_id
 
-    sequence_service.delete_order_number_sequence(sequence_id)
+    order_sequence_service.delete_order_number_sequence(sequence_id)
 
 
 @pytest.fixture

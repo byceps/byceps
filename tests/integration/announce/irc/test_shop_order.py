@@ -8,9 +8,11 @@ import pytest
 from byceps.announce.irc import shop_order  # Load signal handlers.
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order import (
+    sequence_service as order_sequence_service,
+    service as order_service,
+)
 from byceps.services.shop.order.transfer.models import PaymentMethod
-from byceps.services.shop.sequence import service as sequence_service
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.signals import shop as shop_signals
@@ -47,7 +49,9 @@ def test_shop_order_placed_announced(app, placed_order, orderer_user):
     assert_submitted_data(mock, expected_channel, expected_text)
 
 
-def test_shop_order_canceled_announced(app, canceled_order, orderer_user, shop_admin):
+def test_shop_order_canceled_announced(
+    app, canceled_order, orderer_user, shop_admin
+):
     expected_channel = CHANNEL_ORGA_LOG
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00002 von Ken_von_Kaufkraft '
@@ -127,13 +131,13 @@ def shop(app, email_config):
 
 @pytest.fixture(scope='module')
 def order_number_sequence_id(shop) -> None:
-    sequence_id = sequence_service.create_order_number_sequence(
+    sequence_id = order_sequence_service.create_order_number_sequence(
         shop.id, 'ORDER-'
     )
 
     yield sequence_id
 
-    sequence_service.delete_order_number_sequence(sequence_id)
+    order_sequence_service.delete_order_number_sequence(sequence_id)
 
 
 @pytest.fixture(scope='module')
