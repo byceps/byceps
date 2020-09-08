@@ -9,28 +9,28 @@ byceps.services.shop.order.sequence_service
 from typing import List, Optional
 
 from ..sequence import service as sequence_service
-from ..sequence.transfer.models import NumberSequence, NumberSequenceID, Purpose
+from ..sequence.transfer.models import NumberSequence, Purpose
 from ..shop.transfer.models import ShopID
 
-from .transfer.models import OrderNumber
+from .transfer.models import OrderNumber, OrderNumberSequenceID
 
 
 def create_order_number_sequence(
     shop_id: ShopID, prefix: str, *, value: Optional[int] = None
-) -> NumberSequenceID:
+) -> OrderNumberSequenceID:
     """Create an order number sequence."""
     return sequence_service.create_sequence(
         shop_id, Purpose.order, prefix, value=value
     )
 
 
-def delete_order_number_sequence(sequence_id: NumberSequenceID) -> None:
+def delete_order_number_sequence(sequence_id: OrderNumberSequenceID) -> None:
     """Delete the order number sequence."""
     sequence_service.delete_sequence(sequence_id)
 
 
 def find_order_number_sequence(
-    sequence_id: NumberSequenceID,
+    sequence_id: OrderNumberSequenceID,
 ) -> Optional[NumberSequence]:
     """Return the order number sequence, or `None` if the sequence ID
     is unknown or if the sequence's purpose is not order numbers.
@@ -45,7 +45,7 @@ def find_order_number_sequences_for_shop(
     return sequence_service._find_number_sequences(shop_id, Purpose.order)
 
 
-def generate_order_number(sequence_id: NumberSequenceID) -> OrderNumber:
+def generate_order_number(sequence_id: OrderNumberSequenceID) -> OrderNumber:
     """Generate and reserve an unused, unique order number from this
     sequence.
     """

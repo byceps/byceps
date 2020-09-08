@@ -12,7 +12,7 @@ from ....database import db
 from ....util.instances import ReprBuilder
 
 from ..catalog.transfer.models import CatalogID
-from ..sequence.transfer.models import NumberSequenceID
+from ..order.transfer.models import OrderNumberSequenceID
 from ..shop.transfer.models import ShopID
 
 from .transfer.models import StorefrontID
@@ -36,7 +36,7 @@ class Storefront(db.Model):
         self,
         storefront_id: StorefrontID,
         shop_id: ShopID,
-        order_number_sequence_id: NumberSequenceID,
+        order_number_sequence_id: OrderNumberSequenceID,
         closed: bool,
         *,
         catalog_id: Optional[CatalogID] = None,

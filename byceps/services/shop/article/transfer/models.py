@@ -21,6 +21,9 @@ ArticleID = NewType('ArticleID', UUID)
 ArticleNumber = NewType('ArticleNumber', str)
 
 
+ArticleNumberSequenceID = NewType('ArticleNumberSequenceID', UUID)
+
+
 AttachedArticleID = NewType('AttachedArticleID', UUID)
 
 

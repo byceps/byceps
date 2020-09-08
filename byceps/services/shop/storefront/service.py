@@ -11,7 +11,7 @@ from typing import List, Optional, Set
 from ....database import db
 
 from ..catalog.transfer.models import CatalogID
-from ..sequence.transfer.models import NumberSequenceID
+from ..order.transfer.models import OrderNumberSequenceID
 from ..shop.transfer.models import ShopID
 
 from .models import Storefront as DbStorefront
@@ -25,7 +25,7 @@ class UnknownStorefrontId(ValueError):
 def create_storefront(
     storefront_id: StorefrontID,
     shop_id: ShopID,
-    order_number_sequence_id: NumberSequenceID,
+    order_number_sequence_id: OrderNumberSequenceID,
     closed: bool,
     *,
     catalog_id: Optional[CatalogID] = None,
@@ -48,7 +48,7 @@ def create_storefront(
 def update_storefront(
     storefront_id: StorefrontID,
     catalog_id: CatalogID,
-    order_number_sequence_id: NumberSequenceID,
+    order_number_sequence_id: OrderNumberSequenceID,
     closed: bool,
 ) -> Storefront:
     """Update a storefront."""

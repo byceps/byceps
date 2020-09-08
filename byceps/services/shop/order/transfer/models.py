@@ -25,6 +25,9 @@ OrderID = NewType('OrderID', UUID)
 OrderNumber = NewType('OrderNumber', str)
 
 
+OrderNumberSequenceID = NewType('OrderNumberSequenceID', UUID)
+
+
 PaymentMethod = Enum('PaymentMethod', [
     'bank_transfer',
     'cash',
