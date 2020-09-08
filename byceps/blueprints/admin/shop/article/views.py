@@ -12,6 +12,9 @@ from decimal import Decimal
 from flask import abort, request
 
 from .....services.shop.article import service as article_service
+from .....services.shop.article import (
+    sequence_service as article_sequence_service,
+)
 from .....services.shop.order import (
     action_service as order_action_service,
     ordered_articles_service,
@@ -140,8 +143,8 @@ def create_form(shop_id, erroneous_form=None):
     """Show form to create an article."""
     shop = _get_shop_or_404(shop_id)
 
-    article_number_sequences = sequence_service.find_article_number_sequences_for_shop(
-        shop.id
+    article_number_sequences = (
+        article_sequence_service.find_article_number_sequences_for_shop(shop.id)
     )
     article_number_sequence_available = bool(article_number_sequences)
 
@@ -167,8 +170,8 @@ def create(shop_id):
 
     form = ArticleCreateForm(request.form)
 
-    article_number_sequences = sequence_service.find_article_number_sequences_for_shop(
-        shop.id
+    article_number_sequences = (
+        article_sequence_service.find_article_number_sequences_for_shop(shop.id)
     )
     if not article_number_sequences:
         flash_error(
@@ -185,8 +188,10 @@ def create(shop_id):
         flash_error(f'Es wurde keine gültige Artikelnummer-Sequenz angegeben.')
         return create_form(shop_id, form)
 
-    article_number_sequence = sequence_service.find_article_number_sequence(
-        article_number_sequence_id
+    article_number_sequence = (
+        article_sequence_service.find_article_number_sequence(
+            article_number_sequence_id
+        )
     )
     if (article_number_sequence is None) or (
         article_number_sequence.shop_id != shop.id
@@ -195,7 +200,7 @@ def create(shop_id):
         return create_form(shop_id, form)
 
     try:
-        item_number = sequence_service.generate_article_number(
+        item_number = article_sequence_service.generate_article_number(
             article_number_sequence.id
         )
     except sequence_service.NumberGenerationFailed as e:
