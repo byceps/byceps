@@ -10,7 +10,6 @@ from flask import abort, request
 
 from .....services.shop.catalog import service as catalog_service
 from .....services.shop.order import sequence_service as order_sequence_service
-from .....services.shop.sequence import service as sequence_service
 from .....services.shop.shop import service as shop_service
 from .....services.shop.storefront import service as storefront_service
 from .....util.framework.blueprint import create_blueprint
@@ -146,7 +145,7 @@ def create(shop_id):
         item_number = order_sequence_service.generate_order_number(
             order_number_sequence.id
         )
-    except sequence_service.NumberGenerationFailed as e:
+    except order_sequence_service.OrderNumberGenerationFailed as e:
         abort(500, e.message)
 
     storefront = storefront_service.create_storefront(

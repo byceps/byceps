@@ -21,7 +21,6 @@ from .....services.shop.order import (
     service as order_service,
 )
 from .....services.shop.order.transfer.models import PaymentState
-from .....services.shop.sequence import service as sequence_service
 from .....services.shop.shop import service as shop_service
 from .....services.user import service as user_service
 from .....util.framework.blueprint import create_blueprint
@@ -203,7 +202,7 @@ def create(shop_id):
         item_number = article_sequence_service.generate_article_number(
             article_number_sequence.id
         )
-    except sequence_service.NumberGenerationFailed as e:
+    except article_sequence_service.ArticleNumberGenerationFailed as e:
         abort(500, e.message)
 
     description = form.description.data.strip()
