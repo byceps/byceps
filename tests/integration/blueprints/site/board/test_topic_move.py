@@ -8,6 +8,7 @@ from .helpers import create_topic, find_topic
 
 def test_move_topic(
     site_app,
+    site,
     board_poster,
     moderator,
     moderator_client,
