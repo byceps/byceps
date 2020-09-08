@@ -7,7 +7,7 @@ byceps.util.iterables
 """
 
 from itertools import tee
-from typing import Callable, Iterable, Iterator, Optional, Tuple, TypeVar
+from typing import Callable, Iterable, Iterator, List, Optional, Tuple, TypeVar
 
 
 T = TypeVar('T')
@@ -54,3 +54,24 @@ def pairwise(iterable: Iterable[T]) -> Iterator[Tuple[T, T]]:
     a, b = tee(iterable)
     next(b, None)
     return zip(a, b)
+
+
+def partition(
+    iterable: Iterable[T], predicate: Predicate
+) -> Tuple[List[T], List[T]]:
+    """Partition the iterable into two lists according to the predicate.
+
+    The first list contains all elements that satisfy the predicate, the
+    second list contains all elements that do not.
+
+    Relative element order is preserved.
+    """
+    satisfied, unsatisfied = [], []
+
+    for elem in iterable:
+        if predicate(elem):
+            satisfied.append(elem)
+        else:
+            unsatisfied.append(elem)
+
+    return satisfied, unsatisfied
