@@ -15,7 +15,7 @@ T = TypeVar('T')
 Predicate = Callable[[T], bool]
 
 
-def find(predicate: Predicate, iterable: Iterable[T]) -> Optional[T]:
+def find(iterable: Iterable[T], predicate: Predicate) -> Optional[T]:
     """Return the first element in the iterable that matches the
     predicate.
 

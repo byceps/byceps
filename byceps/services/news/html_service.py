@@ -37,7 +37,7 @@ def _render_image(
     height: Optional[int] = None,
 ) -> str:
     """Render HTML for image."""
-    image = find(lambda image: image.number == number, images)
+    image = find(images, lambda image: image.number == number)
 
     if image is None:
         raise Exception(f'Unknown image number "{number}"')

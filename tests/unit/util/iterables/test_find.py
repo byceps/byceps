@@ -9,25 +9,25 @@ from byceps.util.iterables import find
 
 
 @pytest.mark.parametrize(
-    'predicate, iterable, expected',
+    'iterable, predicate, expected',
     [
         (
-            lambda x: x > 3,
             [],
+            lambda x: x > 3,
             None,
         ),
         (
-            lambda x: x > 3,
             [-2, 0, 1, 3],
+            lambda x: x > 3,
             None,
         ),
         (
-            lambda x: x > 3,
             [2, 3, 4, 5],
+            lambda x: x > 3,
             4,
         ),
     ],
 )
-def test_find(predicate, iterable, expected):
-    actual = find(predicate, iterable)
+def test_find(iterable, predicate, expected):
+    actual = find(iterable, predicate)
     assert actual == expected

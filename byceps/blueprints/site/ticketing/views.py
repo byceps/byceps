@@ -51,7 +51,7 @@ def index_mine():
     tickets = [ticket for ticket in tickets if not ticket.revoked]
 
     current_user_uses_any_ticket = find(
-        lambda t: t.used_by_id == current_user.id, tickets
+        tickets, lambda t: t.used_by_id == current_user.id
     )
 
     return {

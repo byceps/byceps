@@ -47,4 +47,4 @@ class OrderStateFilter(Enum):
                 and order_state_filter.shipped is None
             )
 
-        return iterables.find(match, cls)
+        return iterables.find(cls, match)

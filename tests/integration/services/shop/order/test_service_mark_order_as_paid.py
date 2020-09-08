@@ -63,7 +63,7 @@ def test_additional_event_data(order, admin_user):
     )
 
     events = event_service.get_events_for_order(order.id)
-    paid_event = find(lambda e: e.event_type == 'order-paid', events)
+    paid_event = find(events, lambda e: e.event_type == 'order-paid')
 
     # Internal properties must not be overridden by additional event
     # data passed to the service.
