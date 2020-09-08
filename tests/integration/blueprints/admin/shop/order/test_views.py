@@ -8,7 +8,6 @@ from unittest.mock import patch
 import pytest
 
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid
-from byceps.services.authorization import service as authorization_service
 from byceps.services.shop.article import service as article_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.models.order import Order
@@ -19,39 +18,22 @@ from byceps.services.shop.order.transfer.models import (
 )
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import (
-    create_permissions,
-    create_role_with_permissions_assigned,
-    http_client,
-    login_user,
-)
+from tests.helpers import http_client, login_user
 from tests.integration.services.shop.helpers import (
     create_article as _create_article,
 )
 
 
 @pytest.fixture(scope='module')
-def admin(make_user):
-    admin = make_user('ShopOrderAdmin')
-
+def admin(make_admin):
     permission_ids = {
         'admin.access',
         'shop_order.cancel',
         'shop_order.mark_as_paid',
     }
-    role_id = 'order_admin'
-    create_permissions(permission_ids)
-    create_role_with_permissions_assigned(role_id, permission_ids)
-    authorization_service.assign_role_to_user(role_id, admin.id)
-
+    admin = make_admin('ShopOrderAdmin', permission_ids)
     login_user(admin.id)
-
-    yield admin
-
-    authorization_service.deassign_all_roles_from_user(admin.id, admin.id)
-    authorization_service.delete_role(role_id)
-    for permission_id in permission_ids:
-        authorization_service.delete_permission(permission_id)
+    return admin
 
 
 @pytest.fixture

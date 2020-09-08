@@ -8,6 +8,8 @@ byceps.services.authorization.service
 
 from typing import Dict, List, Optional, Sequence, Set
 
+from sqlalchemy.exc import IntegrityError
+
 from ...database import db
 from ...typing import UserID
 
@@ -22,12 +24,18 @@ from .models import (
 from .transfer.models import Permission, PermissionID, Role, RoleID
 
 
-def create_permission(permission_id: PermissionID, title: str) -> Permission:
+def create_permission(
+    permission_id: PermissionID, title: str, *, ignore_if_exists: bool = False
+) -> Permission:
     """Create a permission."""
     permission = DbPermission(permission_id, title)
 
     db.session.add(permission)
-    db.session.commit()
+
+    if ignore_if_exists:
+        _commit_ignoring_integrity_error()
+    else:
+        db.session.commit()
 
     return _db_entity_to_permission(permission)
 
@@ -41,12 +49,18 @@ def delete_permission(permission_id: PermissionID) -> None:
     db.session.commit()
 
 
-def create_role(role_id: RoleID, title: str) -> Role:
+def create_role(
+    role_id: RoleID, title: str, *, ignore_if_exists: bool = False
+) -> Role:
     """Create a role."""
     role = DbRole(role_id, title)
 
     db.session.add(role)
-    db.session.commit()
+
+    if ignore_if_exists:
+        _commit_ignoring_integrity_error()
+    else:
+        db.session.commit()
 
     return _db_entity_to_role(role)
 
@@ -303,6 +317,13 @@ def get_permissions_with_title_for_role(
         .all()
 
     return [_db_entity_to_permission(permission) for permission in permissions]
+
+
+def _commit_ignoring_integrity_error() -> None:
+    try:
+        db.session.commit()
+    except IntegrityError:
+        db.session.rollback()
 
 
 def _db_entity_to_permission(permission: DbPermission) -> Permission:

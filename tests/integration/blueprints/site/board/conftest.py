@@ -5,7 +5,6 @@
 
 import pytest
 
-from byceps.services.authorization import service as authorization_service
 from byceps.services.board import (
     category_command_service,
     posting_command_service,
@@ -13,12 +12,7 @@ from byceps.services.board import (
     topic_query_service,
 )
 
-from tests.helpers import (
-    create_permissions,
-    create_role_with_permissions_assigned,
-    http_client,
-    login_user,
-)
+from tests.helpers import http_client, login_user
 
 from .helpers import create_category, create_posting, create_topic
 
@@ -65,30 +59,16 @@ def board_poster(make_user):
 
 
 @pytest.fixture(scope='session')
-def moderator(make_user):
-    moderator = make_user('BoardModerator')
-
+def moderator(make_admin):
     permission_ids = {
         'board.hide',
         'board_topic.lock',
         'board_topic.move',
         'board_topic.pin',
     }
-    role_id = 'moderator'
-    create_permissions(permission_ids)
-    create_role_with_permissions_assigned(role_id, permission_ids)
-    authorization_service.assign_role_to_user(role_id, moderator.id)
-
+    moderator = make_admin('BoardModerator', permission_ids)
     login_user(moderator.id)
-
     yield moderator
-
-    authorization_service.deassign_all_roles_from_user(
-        moderator.id, moderator.id
-    )
-    authorization_service.delete_role(role_id)
-    for permission_id in permission_ids:
-        authorization_service.delete_permission(permission_id)
 
 
 @pytest.fixture(scope='session')

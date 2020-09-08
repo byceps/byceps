@@ -86,11 +86,15 @@ def create_user_with_detail(*args, **kwargs):
 
 def create_permissions(permission_ids):
     for permission_id in permission_ids:
-        authorization_service.create_permission(permission_id, permission_id)
+        authorization_service.create_permission(
+            permission_id, permission_id, ignore_if_exists=True
+        )
 
 
 def create_role_with_permissions_assigned(role_id, permission_ids):
-    role = authorization_service.create_role(role_id, role_id)
+    role = authorization_service.create_role(
+        role_id, role_id, ignore_if_exists=True
+    )
 
     for permission_id in permission_ids:
         authorization_service.assign_permission_to_role(permission_id, role_id)

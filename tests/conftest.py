@@ -4,11 +4,13 @@
 """
 
 from pathlib import Path
+from secrets import token_hex
 from tempfile import TemporaryDirectory
-from typing import Optional
+from typing import Optional, Set
 
 import pytest
 
+from byceps.services.authorization import service as authorization_service
 from byceps.services.board import board_service
 from byceps.services.brand import service as brand_service
 from byceps.services.email import service as email_service
@@ -24,6 +26,8 @@ from tests.database import set_up_database, tear_down_database
 from tests.helpers import (
     create_brand,
     create_party,
+    create_permissions,
+    create_role_with_permissions_assigned,
     create_site,
     create_user,
     create_user_with_detail,
@@ -118,6 +122,39 @@ def make_user_with_detail(admin_app):
 
     for user_id in user_ids:
         user_command_service.delete_account(user_id, user_id, 'clean up')
+
+
+@pytest.fixture(scope='session')
+def make_admin(make_user):
+    user_ids = set()
+    created_permission_ids = set()
+    created_role_ids = set()
+
+    def _wrapper(screen_name: str, permission_ids: Set[str]):
+        admin = make_user(screen_name)
+        user_ids.add(admin.id)
+
+        # Create permissions and role.
+        role_id = f'admin_{token_hex(3)}'
+        create_permissions(permission_ids)
+        create_role_with_permissions_assigned(role_id, permission_ids)
+        authorization_service.assign_role_to_user(role_id, admin.id)
+        created_role_ids.add(role_id)
+
+        return admin
+
+    yield _wrapper
+
+    # Remove permissions and role again.
+
+    for user_id in user_ids:
+        authorization_service.deassign_all_roles_from_user(user_id)
+
+    for role_id in created_role_ids:
+        authorization_service.delete_role(role_id)
+
+    for permission_id in created_permission_ids:
+        authorization_service.delete_permission(permission_id)
 
 
 @pytest.fixture(scope='session')
