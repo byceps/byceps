@@ -9,30 +9,30 @@ from byceps.util.iterables import index_of
 
 
 @pytest.mark.parametrize(
-    'predicate, iterable, expected',
+    'iterable, predicate, expected',
     [
         (
-            lambda x: x > 3,
             [],
+            lambda x: x > 3,
             None,
         ),
         (
-            lambda x: x > 1,
             [2, 3, 4, 5],
+            lambda x: x > 1,
             0,
         ),
         (
-            lambda x: x > 3,
             [2, 3, 4, 5],
+            lambda x: x > 3,
             2,
         ),
         (
-            lambda x: x > 6,
             [2, 3, 4, 5],
+            lambda x: x > 6,
             None,
         ),
     ],
 )
-def test_index_of(predicate, iterable, expected):
-    actual = index_of(predicate, iterable)
+def test_index_of(iterable, predicate, expected):
+    actual = index_of(iterable, predicate)
     assert actual == expected

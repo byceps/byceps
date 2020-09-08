@@ -28,7 +28,7 @@ def find(iterable: Iterable[T], predicate: Predicate) -> Optional[T]:
     return None
 
 
-def index_of(predicate: Predicate, iterable: Iterable[T]) -> Optional[int]:
+def index_of(iterable: Iterable[T], predicate: Predicate) -> Optional[int]:
     """Return the (0-based) index of the first element in the iterable
     that matches the predicate.
 

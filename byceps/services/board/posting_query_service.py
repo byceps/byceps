@@ -93,7 +93,7 @@ def calculate_posting_page_number(
         .earliest_to_latest() \
         .all()
 
-    index = index_of(lambda p: p == posting, topic_postings)
+    index = index_of(topic_postings, lambda p: p == posting)
     if index is None:
         return 1  # Shouldn't happen.
 
