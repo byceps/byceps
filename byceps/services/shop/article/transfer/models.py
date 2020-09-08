@@ -24,6 +24,14 @@ ArticleNumber = NewType('ArticleNumber', str)
 ArticleNumberSequenceID = NewType('ArticleNumberSequenceID', UUID)
 
 
+@dataclass(frozen=True)
+class ArticleNumberSequence:
+    id: ArticleNumberSequenceID
+    shop_id: ShopID
+    prefix: str
+    value: int
+
+
 AttachedArticleID = NewType('AttachedArticleID', UUID)
 
 

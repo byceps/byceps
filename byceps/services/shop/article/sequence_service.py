@@ -12,7 +12,11 @@ from ..sequence import service as sequence_service
 from ..sequence.transfer.models import NumberSequence, Purpose
 from ..shop.transfer.models import ShopID
 
-from .transfer.models import ArticleNumber, ArticleNumberSequenceID
+from .transfer.models import (
+    ArticleNumber,
+    ArticleNumberSequence,
+    ArticleNumberSequenceID,
+)
 
 
 def create_article_number_sequence(
@@ -33,18 +37,27 @@ def delete_article_number_sequence(
 
 def find_article_number_sequence(
     sequence_id: ArticleNumberSequenceID,
-) -> Optional[NumberSequence]:
+) -> Optional[ArticleNumberSequence]:
     """Return the article number sequence, or `None` if the sequence ID
     is unknown or if the sequence's purpose is not article numbers.
     """
-    return sequence_service._find_sequence(sequence_id, Purpose.article)
+    sequence = sequence_service._find_sequence(sequence_id, Purpose.article)
+
+    if sequence is None:
+        return None
+
+    return _to_article_number_sequence(sequence)
 
 
 def find_article_number_sequences_for_shop(
     shop_id: ShopID,
-) -> List[NumberSequence]:
+) -> List[ArticleNumberSequence]:
     """Return the article number sequences defined for that shop."""
-    return sequence_service._find_number_sequences(shop_id, Purpose.article)
+    sequences = sequence_service._find_number_sequences(
+        shop_id, Purpose.article
+    )
+
+    return [_to_article_number_sequence(sequence) for sequence in sequences]
 
 
 def generate_article_number(
@@ -57,3 +70,14 @@ def generate_article_number(
         sequence_id, Purpose.article
     )
     return ArticleNumber(f'{sequence.prefix}{sequence.value:05d}')
+
+
+def _to_article_number_sequence(
+    sequence: NumberSequence,
+) -> ArticleNumberSequence:
+    return ArticleNumberSequence(
+        sequence.id,
+        sequence.shop_id,
+        sequence.prefix,
+        sequence.value,
+    )
