@@ -12,7 +12,11 @@ from ..sequence import service as sequence_service
 from ..sequence.transfer.models import NumberSequence, Purpose
 from ..shop.transfer.models import ShopID
 
-from .transfer.models import OrderNumber, OrderNumberSequenceID
+from .transfer.models import (
+    OrderNumber,
+    OrderNumberSequence,
+    OrderNumberSequenceID,
+)
 
 
 def create_order_number_sequence(
@@ -31,18 +35,25 @@ def delete_order_number_sequence(sequence_id: OrderNumberSequenceID) -> None:
 
 def find_order_number_sequence(
     sequence_id: OrderNumberSequenceID,
-) -> Optional[NumberSequence]:
+) -> Optional[OrderNumberSequence]:
     """Return the order number sequence, or `None` if the sequence ID
     is unknown or if the sequence's purpose is not order numbers.
     """
-    return sequence_service._find_sequence(sequence_id, Purpose.order)
+    sequence = sequence_service._find_sequence(sequence_id, Purpose.order)
+
+    if sequence is None:
+        return None
+
+    return _to_order_number_sequence(sequence)
 
 
 def find_order_number_sequences_for_shop(
     shop_id: ShopID,
-) -> List[NumberSequence]:
+) -> List[OrderNumberSequence]:
     """Return the order number sequences defined for that shop."""
-    return sequence_service._find_number_sequences(shop_id, Purpose.order)
+    sequences = sequence_service._find_number_sequences(shop_id, Purpose.order)
+
+    return [_to_order_number_sequence(sequence) for sequence in sequences]
 
 
 def generate_order_number(sequence_id: OrderNumberSequenceID) -> OrderNumber:
@@ -53,3 +64,12 @@ def generate_order_number(sequence_id: OrderNumberSequenceID) -> OrderNumber:
         sequence_id, Purpose.order
     )
     return OrderNumber(f'{sequence.prefix}{sequence.value:05d}')
+
+
+def _to_order_number_sequence(sequence: NumberSequence) -> OrderNumberSequence:
+    return OrderNumberSequence(
+        sequence.id,
+        sequence.shop_id,
+        sequence.prefix,
+        sequence.value,
+    )

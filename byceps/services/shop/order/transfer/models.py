@@ -28,6 +28,14 @@ OrderNumber = NewType('OrderNumber', str)
 OrderNumberSequenceID = NewType('OrderNumberSequenceID', UUID)
 
 
+@dataclass(frozen=True)
+class OrderNumberSequence:
+    id: OrderNumberSequenceID
+    shop_id: ShopID
+    prefix: str
+    value: int
+
+
 PaymentMethod = Enum('PaymentMethod', [
     'bank_transfer',
     'cash',
