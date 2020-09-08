@@ -27,7 +27,7 @@ blueprint = create_blueprint('email_admin', __name__)
 permission_registry.register_enum(EmailConfigPermission)
 
 
-@blueprint.route('/')
+@blueprint.route('/configs')
 @permission_required(EmailConfigPermission.view)
 @templated
 def index():
@@ -39,7 +39,7 @@ def index():
     }
 
 
-@blueprint.route('/create')
+@blueprint.route('/configs/create')
 @permission_required(EmailConfigPermission.create)
 @templated
 def create_form(erroneous_form=None):
@@ -51,7 +51,7 @@ def create_form(erroneous_form=None):
     }
 
 
-@blueprint.route('/', methods=['POST'])
+@blueprint.route('/configs', methods=['POST'])
 @permission_required(EmailConfigPermission.create)
 def create():
     """Create an e-mail config."""

@@ -12,7 +12,7 @@ def test_create_minimal_config(admin_app, email_admin):
     config_id = 'acme-minimal'
     assert email_service.find_config(config_id) is None
 
-    url = '/admin/email/'
+    url = '/admin/email/configs'
     form_data = {
         'config_id': config_id,
         'sender_address': 'noreply@acme.example',
@@ -33,7 +33,7 @@ def test_create_full_config(admin_app, email_admin):
     config_id = 'acme-full'
     assert email_service.find_config(config_id) is None
 
-    url = '/admin/email/'
+    url = '/admin/email/configs'
     form_data = {
         'config_id': config_id,
         'sender_address': 'noreply@acme.example',
