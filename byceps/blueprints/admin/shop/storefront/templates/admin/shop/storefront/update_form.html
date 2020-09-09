@@ -6,12 +6,6 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}">Storefronts</a></li>
-      <li><a href="{{ url_for('.view', storefront_id=storefront.id) }}">{{ storefront.id }}</a></li>
-    </ol>
-  </nav>
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   <form action="{{ url_for('.update', storefront_id=storefront.id) }}" method="post">

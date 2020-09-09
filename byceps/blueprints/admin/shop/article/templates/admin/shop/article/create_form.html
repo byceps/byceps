@@ -6,11 +6,6 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}">Artikel</a></li>
-    </ol>
-  </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   {%- if not article_number_sequence_available %}

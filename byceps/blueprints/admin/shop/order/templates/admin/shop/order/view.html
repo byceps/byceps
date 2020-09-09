@@ -40,11 +40,6 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}">Bestellungen</a></li>
-    </ol>
-  </nav>
   <h1>{{ render_order_payment_state(order.payment_state) }} {{ title }}</h1>
 
   {%- if g.current_user.has_any_permission(

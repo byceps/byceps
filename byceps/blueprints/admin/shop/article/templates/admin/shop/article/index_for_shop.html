@@ -9,12 +9,6 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('shop_shop_admin.index') }}">Shops</a></li>
-      <li><a href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}">{{ shop.title }}</a></li>
-    </ol>
-  </nav>
   <h1>{{ title }} {{ render_extra_in_heading(articles.total) }}</h1>
 
   {%- if g.current_user.has_permission(ShopArticlePermission.create) %}

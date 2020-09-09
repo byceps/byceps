@@ -10,11 +10,6 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('shop_shop_admin.index') }}">Shops</a></li>
-    </ol>
-  </nav>
   <div class="row row--space-between">
     <div class="column-auto">
       <h1>{{ shop.title }}{% if shop.archived %} {{ render_tag('archiviert', class='color-disabled', icon='archived') }}{% endif %}</h1>
