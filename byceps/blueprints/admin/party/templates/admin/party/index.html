@@ -80,10 +80,12 @@
       </div>
 
       <div class="column-auto" style="text-align: right;">
-        Ticket&shy;verwaltung: {{ render_tag('geöffnet', class='color-success') if party.ticket_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}
-        <br>
-        Sitzplatz&shy;verwaltung: {{ render_tag('geöffnet', class='color-success') if party.seat_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}
-        <br>
+        {%- if party.ticket_management_enabled %}
+        {{ render_tag('Ticketverwaltung geöffnet', class='color-success', icon='ticket') }}<br>
+        {%- endif %}
+        {%- if party.seat_management_enabled %}
+        {{ render_tag('Sitzplatzverwaltung geöffnet', class='color-success', icon='seating-area') }}<br>
+        {%- endif %}
         <br>
         {%- if party.canceled %}
         {{ render_tag('abgesagt', class='color-danger', icon='disabled') }}
