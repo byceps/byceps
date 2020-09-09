@@ -240,7 +240,7 @@ span[title] .icon {
   background-color: #e8e8e8;
 }
 
-.tabs-tab--current {
+span.tabs-tab--current {
   cursor: default;
 }
 
