@@ -19,6 +19,7 @@ from ....services.ticketing import ticket_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
+from ....util.iterables import partition
 from ....util.templatefilters import local_tz_to_utc, utc_to_local_tz
 from ....util.views import redirect_to
 
@@ -43,6 +44,10 @@ def index():
     parties = party_service.get_all_parties_with_brands()
     parties.sort(key=lambda party: party.starts_at, reverse=True)
 
+    active_parties, archived_parties = partition(
+        parties, lambda party: not party.archived
+    )
+
     brands = brand_service.get_brands()
     brands.sort(key=lambda brand: brand.title)
 
@@ -52,6 +57,8 @@ def index():
 
     return {
         'parties': parties,
+        'active_parties': active_parties,
+        'archived_parties': archived_parties,
         'brands': brands,
         'days_by_party_id': days_by_party_id,
     }
