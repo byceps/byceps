@@ -316,7 +316,10 @@ nav.main li {
   margin-right: 0;
   margin-left: 0;
 }
-.main-tabs a:hover {
+.main-tabs a.current:hover {
+  color: #000000;
+}
+.main-tabs a:hover:not(.current) {
   color: #000000;
   opacity: 0.5;
 }

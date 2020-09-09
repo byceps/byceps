@@ -19,11 +19,7 @@
   <ol class="main-tabs">
     {%- for item in navigation.get_items(g.current_user) %}
       {%- with is_current = (item.id is not none) and (item.id == current_tab) %}
-        <li>
-          {%- if is_current %}<span class="current">{% else %}<a href="{{ item.endpoint }}">{% endif -%}
-          {% if item.icon %}{{ render_icon(item.icon) }} {% endif %}{{ item.label }}
-          {%- if is_current %}</span>{% else %}</a>{% endif -%}
-        </li>
+    <li><a href="{{ item.endpoint }}"{% if is_current %} class="current"{% endif -%}>{% if item.icon %}{{ render_icon(item.icon) }} {% endif %}{{ item.label }}</a></li>
       {%- endwith %}
     {%- endfor %}
   </ol>
