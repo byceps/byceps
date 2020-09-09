@@ -32,7 +32,7 @@
   </div>
 
   {%- if parties %}
-    {%- for party in parties|sort(attribute='starts_at', reverse=True) %}
+    {%- for party in parties %}
   <div class="box" style="border-left: {{ '#ff2222' if party.canceled else ('#aaaaaa' if party.archived else '#55cc00') }} solid 0.25rem;">
     <div class="row row--space-between">
 

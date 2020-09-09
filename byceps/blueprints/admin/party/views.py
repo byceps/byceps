@@ -41,6 +41,7 @@ permission_registry.register_enum(PartyPermission)
 def index():
     """List parties."""
     parties = party_service.get_all_parties_with_brands()
+    parties.sort(key=lambda party: party.starts_at, reverse=True)
 
     brands = brand_service.get_brands()
     brands.sort(key=lambda brand: brand.title)
