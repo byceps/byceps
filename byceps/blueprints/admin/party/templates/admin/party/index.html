@@ -51,7 +51,7 @@
   <div class="box" style="border-left: {{ '#ff2222' if party.canceled else ('#aaaaaa' if party.archived else '#55cc00') }} solid 0.25rem;">
     <div class="row row--space-between">
 
-      <div class="column-auto" style="min-width: 35%;">
+      <div class="column-auto" style="width: 40%;">
         <div class="row">
           <div class="column-auto">
             <div style="margin-right: -0.25rem;">{{ render_brand_avatar(party.brand, '40') }}</div>
@@ -65,7 +65,7 @@
         </div>
       </div>
 
-      <div class="column-auto" style="min-width: 30%;">
+      <div class="column-auto" style="width: 30%;">
         <div>
           {{- render_datetime(party.starts_at|utc_to_local_tz) }} bis<br>
           {{- render_datetime(party.ends_at|utc_to_local_tz) -}}
@@ -79,7 +79,7 @@
         </div>
       </div>
 
-      <div class="column-auto" style="text-align: right;">
+      <div class="column-auto" style="text-align: right; width: 30%;">
         {%- if party.ticket_management_enabled %}
         {{ render_tag('Ticketverwaltung geöffnet', class='color-success', icon='ticket') }}<br>
         {%- endif %}
