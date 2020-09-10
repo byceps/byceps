@@ -37,7 +37,7 @@ permission_registry.register_enum(BrandPermission)
 @templated
 def index():
     """List brands."""
-    brands = brand_service.get_brands()
+    brands = brand_service.get_all_brands()
 
     party_count_by_brand_id = party_service.get_party_count_by_brand_id()
 

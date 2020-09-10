@@ -68,7 +68,7 @@ def _get_db_brand(brand_id: BrandID) -> DbBrand:
     return DbBrand.query.get(brand_id)
 
 
-def get_brands() -> List[Brand]:
+def get_all_brands() -> List[Brand]:
     """Return all brands, ordered by title."""
     brands = DbBrand.query \
         .order_by(DbBrand.title) \

@@ -52,7 +52,7 @@ def view_global():
     current_sites = site_service.get_current_sites()
     active_parties = party_service.get_active_parties()
 
-    brands = brand_service.get_brands()
+    brands = brand_service.get_all_brands()
     party_count = party_service.count_parties()
 
     orga_count = orga_service.count_orgas()

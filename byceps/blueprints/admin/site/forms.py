@@ -32,7 +32,7 @@ class _BaseForm(LocalizedForm):
     storefront_id = SelectField('Storefront-ID', validators=[Optional()])
 
     def set_brand_choices(self):
-        brands = brand_service.get_brands()
+        brands = brand_service.get_all_brands()
         brands.sort(key=lambda brand: brand.title)
         self.brand_id.choices = [(brand.id, brand.title) for brand in brands]
 

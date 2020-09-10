@@ -48,7 +48,7 @@ def index():
         parties, lambda party: not party.archived
     )
 
-    brands = brand_service.get_brands()
+    brands = brand_service.get_all_brands()
     brands.sort(key=lambda brand: brand.title)
 
     days_by_party_id = {

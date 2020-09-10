@@ -44,7 +44,7 @@ def index():
     sites = site_service.get_all_sites()
     sites.sort(key=lambda site: (site.title, site.party_id))
 
-    brands = brand_service.get_brands()
+    brands = brand_service.get_all_brands()
     brands.sort(key=lambda brand: brand.title)
 
     brands_by_id = {brand.id: brand for brand in brands}

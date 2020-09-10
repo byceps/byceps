@@ -40,7 +40,7 @@ def index():
     """List all badges."""
     all_badges = badge_service.get_all_badges()
 
-    brands = brand_service.get_brands()
+    brands = brand_service.get_all_brands()
     brands_by_id = {brand.id: brand for brand in brands}
 
     def _find_brand(brand_id):
@@ -184,7 +184,7 @@ def update(badge_id):
 
 
 def _set_brand_ids_on_form(form):
-    brands = brand_service.get_brands()
+    brands = brand_service.get_all_brands()
     form.set_brand_choices(brands)
 
 

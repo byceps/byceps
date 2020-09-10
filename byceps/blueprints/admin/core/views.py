@@ -24,7 +24,7 @@ permission_registry.register_enum(AdminPermission)
 
 @blueprint.app_context_processor
 def inject_template_variables():
-    brands = brand_service.get_brands()
+    brands = brand_service.get_all_brands()
 
     def get_brand_for_party(party):
         return brand_service.find_brand(party.brand_id)
