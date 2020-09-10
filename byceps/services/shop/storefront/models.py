@@ -29,7 +29,7 @@ class Storefront(db.Model):
     id = db.Column(db.UnicodeText, primary_key=True)
     shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)
     catalog_id = db.Column(db.UnicodeText, db.ForeignKey('shop_catalogs.id'), nullable=True)
-    order_number_sequence_id = db.Column(db.Uuid, db.ForeignKey('shop_sequences.id'), nullable=False)
+    order_number_sequence_id = db.Column(db.Uuid, db.ForeignKey('shop_order_number_sequences.id'), nullable=False)
     closed = db.Column(db.Boolean, nullable=False)
 
     def __init__(
