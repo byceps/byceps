@@ -11,16 +11,16 @@ from typing import Dict, Iterator, Optional, Sequence, Tuple
 from ...database import db
 from ...typing import BrandID, UserID
 
-from ..brand.models.brand import Brand
+from ..brand.models.brand import Brand as DbBrand
 from ..user import event_service as user_event_service
 from ..user.models.user import User as DbUser
 
-from .models import OrgaFlag
+from .models import OrgaFlag as DbOrgaFlag
 
 
-def get_brands_with_person_counts() -> Iterator[Tuple[Brand, int]]:
+def get_brands_with_person_counts() -> Iterator[Tuple[DbBrand, int]]:
     """Yield (brand, person count) pairs."""
-    brands = Brand.query.all()
+    brands = DbBrand.query.all()
 
     person_counts_by_brand_id = get_person_count_by_brand_id()
 
@@ -33,11 +33,11 @@ def get_person_count_by_brand_id() -> Dict[BrandID, int]:
     """Return organizer count (including 0) per brand, indexed by brand ID."""
     brand_ids_and_orga_flag_counts = db.session \
         .query(
-            Brand.id,
-            db.func.count(OrgaFlag.brand_id)
+            DbBrand.id,
+            db.func.count(DbOrgaFlag.brand_id)
         ) \
-        .outerjoin(OrgaFlag) \
-        .group_by(Brand.id) \
+        .outerjoin(DbOrgaFlag) \
+        .group_by(DbBrand.id) \
         .all()
 
     return dict(brand_ids_and_orga_flag_counts)
@@ -46,7 +46,7 @@ def get_person_count_by_brand_id() -> Dict[BrandID, int]:
 def get_orgas_for_brand(brand_id: BrandID) -> Sequence[DbUser]:
     """Return all users flagged as organizers for the brand."""
     return DbUser.query \
-        .join(OrgaFlag).filter(OrgaFlag.brand_id == brand_id) \
+        .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == brand_id) \
         .options(db.joinedload('detail')) \
         .all()
 
@@ -55,7 +55,7 @@ def count_orgas() -> int:
     """Return the number of organizers with the organizer flag set."""
     return DbUser.query \
         .distinct(DbUser.id) \
-        .join(OrgaFlag) \
+        .join(DbOrgaFlag) \
         .count()
 
 
@@ -65,15 +65,15 @@ def count_orgas_for_brand(brand_id: BrandID) -> int:
     """
     return DbUser.query \
         .distinct(DbUser.id) \
-        .join(OrgaFlag).filter(OrgaFlag.brand_id == brand_id) \
+        .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == brand_id) \
         .count()
 
 
 def add_orga_flag(
     brand_id: BrandID, user_id: UserID, initiator_id: UserID
-) -> OrgaFlag:
+) -> DbOrgaFlag:
     """Add an orga flag for a user for that brand."""
-    orga_flag = OrgaFlag(brand_id, user_id)
+    orga_flag = DbOrgaFlag(brand_id, user_id)
     db.session.add(orga_flag)
 
     event = user_event_service.build_event(
@@ -91,7 +91,7 @@ def add_orga_flag(
     return orga_flag
 
 
-def remove_orga_flag(orga_flag: OrgaFlag, initiator_id: UserID) -> None:
+def remove_orga_flag(orga_flag: DbOrgaFlag, initiator_id: UserID) -> None:
     """Remove the orga flag."""
     db.session.delete(orga_flag)
 
@@ -109,9 +109,9 @@ def remove_orga_flag(orga_flag: OrgaFlag, initiator_id: UserID) -> None:
     db.session.commit()
 
 
-def find_orga_flag(brand_id: BrandID, user_id: UserID) -> Optional[OrgaFlag]:
+def find_orga_flag(brand_id: BrandID, user_id: UserID) -> Optional[DbOrgaFlag]:
     """Return the orga flag for that brand and user, or `None` if not found."""
-    return OrgaFlag.query \
+    return DbOrgaFlag.query \
         .filter_by(brand_id=brand_id) \
         .filter_by(user_id=user_id) \
         .first()
@@ -122,7 +122,7 @@ def is_user_orga(user_id: UserID) -> bool:
     return db.session \
         .query(
             db.session \
-                .query(OrgaFlag) \
+                .query(DbOrgaFlag) \
                 .filter_by(user_id=user_id) \
                 .exists()
         ) \

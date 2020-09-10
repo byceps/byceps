@@ -12,16 +12,16 @@ from typing import Iterator, Sequence, Tuple
 from ...database import db
 
 from ..user_avatar import service as user_avatar_service
-from ..user.models.detail import UserDetail
+from ..user.models.detail import UserDetail as DbUserDetail
 from ..user.models.user import User as DbUser
 from ..user.transfer.models import User
 
-from .models import OrgaFlag
+from .models import OrgaFlag as DbOrgaFlag
 
 
 def collect_orgas_with_next_birthdays(
     *, limit: int = None
-) -> Iterator[Tuple[User, UserDetail]]:
+) -> Iterator[Tuple[User, DbUserDetail]]:
     """Yield the next birthdays of organizers, sorted by month and day."""
     orgas_with_birthdays = _collect_orgas_with_birthdays()
 
@@ -56,9 +56,9 @@ def collect_orgas_with_next_birthdays(
 def _collect_orgas_with_birthdays() -> Sequence[DbUser]:
     """Return all organizers whose birthday is known."""
     return DbUser.query \
-        .join(OrgaFlag) \
-        .join(UserDetail) \
-        .filter(UserDetail.date_of_birth != None) \
+        .join(DbOrgaFlag) \
+        .join(DbUserDetail) \
+        .filter(DbUserDetail.date_of_birth != None) \
         .options(db.joinedload('detail')) \
         .all()
 

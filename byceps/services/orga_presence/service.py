@@ -17,13 +17,13 @@ from ...database import db
 from ...typing import PartyID
 from ...util.datetime.range import create_adjacent_ranges, DateTimeRange
 
-from .models import Presence, Task
+from .models import Presence as DbPresence, Task as DbTask
 from .transfer.models import PresenceTimeSlot, TaskTimeSlot, TimeSlot
 
 
 def get_presences(party_id: PartyID) -> List[PresenceTimeSlot]:
     """Return all presences for that party."""
-    presences = Presence.query \
+    presences = DbPresence.query \
         .for_party(party_id) \
         .options(db.joinedload('orga')) \
         .all()
@@ -33,20 +33,20 @@ def get_presences(party_id: PartyID) -> List[PresenceTimeSlot]:
 
 def get_tasks(party_id: PartyID) -> List[TaskTimeSlot]:
     """Return all tasks for that party."""
-    tasks = Task.query \
+    tasks = DbTask.query \
         .for_party(party_id) \
         .all()
 
     return [_task_to_time_slot(task) for task in tasks]
 
 
-def _presence_to_time_slot(presence: Presence) -> PresenceTimeSlot:
+def _presence_to_time_slot(presence: DbPresence) -> PresenceTimeSlot:
     return PresenceTimeSlot.from_(
         presence.orga, presence.starts_at, presence.ends_at,
     )
 
 
-def _task_to_time_slot(task: Task) -> TaskTimeSlot:
+def _task_to_time_slot(task: DbTask) -> TaskTimeSlot:
     return TaskTimeSlot.from_(task.title, task.starts_at, task.ends_at)
 
 
