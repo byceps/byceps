@@ -1,7 +1,8 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layouts/admin/user.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
-{% set current_page = 'user' %}
+{% set current_tab = 'profile' %}
+{% set current_tab_user_id = user.id %}
 {% set title = 'Benutzerkonto \'%s\' entsperren'|format(user.screen_name) %}
 
 {% block body %}
