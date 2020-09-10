@@ -19,7 +19,7 @@
       {{ form_field(form.description, maxlength=100, required='required', autofocus='autofocus') }}
       {{ form_field(form.price, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', required='required', note='€') }}
       {{ form_field(form.tax_rate, list='tax_rates', size=5, maxlength=5, style='text-align: right; width: 5.5rem;', required='required', note='%') }}
-      {{ form_datalist('tax_rates', ['0.00', '0.07', '0.19']) }}
+      {{ form_datalist('tax_rates', ['0.0', '7.0', '19.0']) }}
       {{ form_field(form.available_from, size=16, maxlength=16, note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
       {{ form_field(form.available_until, size=16, maxlength=16, note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
       {{ form_field(form.total_quantity, type='number', min=0, max=99999, style='width: 5.5rem;', required='required') }}

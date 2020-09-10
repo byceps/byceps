@@ -29,7 +29,7 @@ from .....util.l10n import LocalizedForm
 class _ArticleBaseForm(LocalizedForm):
     description = StringField('Beschreibung')
     price = DecimalField('Stückpreis', places=2, validators=[InputRequired()])
-    tax_rate = DecimalField('Steuersatz', places=3, validators=[InputRequired(), NumberRange(min=Decimal('0.000'), max=Decimal('0.999'))])
+    tax_rate = DecimalField('Steuersatz', places=1, validators=[InputRequired(), NumberRange(min=Decimal('0.0'), max=Decimal('99.9'))])
     total_quantity = IntegerField('Gesamtmenge', validators=[InputRequired()])
     max_quantity_per_order = IntegerField('Maximale Anzahl pro Bestellung', validators=[InputRequired()])
 

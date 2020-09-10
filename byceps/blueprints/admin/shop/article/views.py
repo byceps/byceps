@@ -46,6 +46,9 @@ blueprint = create_blueprint('shop_article_admin', __name__)
 permission_registry.register_enum(ShopArticlePermission)
 
 
+TAX_RATE_DISPLAY_FACTOR = Decimal('100')
+
+
 @blueprint.route('/for_shop/<shop_id>', defaults={'page': 1})
 @blueprint.route('/for_shop/<shop_id>/pages/<int:page>')
 @permission_required(ShopArticlePermission.view)
@@ -150,7 +153,7 @@ def create_form(shop_id, erroneous_form=None):
     form = (
         erroneous_form
         if erroneous_form
-        else ArticleCreateForm(price=Decimal('0.00'), tax_rate=Decimal('0.19'))
+        else ArticleCreateForm(price=Decimal('0.0'), tax_rate=Decimal('19.0'))
     )
     form.set_article_number_sequence_choices(article_number_sequences)
 
@@ -207,7 +210,7 @@ def create(shop_id):
 
     description = form.description.data.strip()
     price = form.price.data
-    tax_rate = form.tax_rate.data
+    tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
     total_quantity = form.total_quantity.data
     quantity = total_quantity
     max_quantity_per_order = form.max_quantity_per_order.data
@@ -241,6 +244,7 @@ def update_form(article_id, erroneous_form=None):
         article.available_until = utc_to_local_tz(article.available_until)
 
     form = erroneous_form if erroneous_form else ArticleUpdateForm(obj=article)
+    form.tax_rate.data = article.tax_rate * TAX_RATE_DISPLAY_FACTOR
 
     return {
         'article': article,
@@ -261,7 +265,7 @@ def update(article_id):
 
     description = form.description.data.strip()
     price = form.price.data
-    tax_rate = form.tax_rate.data
+    tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
     available_from = form.available_from.data
     available_until = form.available_until.data
     total_quantity = form.total_quantity.data
