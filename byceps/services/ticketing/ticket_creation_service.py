@@ -9,6 +9,8 @@ byceps.services.ticketing.ticket_creation_service
 from random import sample
 from typing import Iterator, Optional, Sequence, Set
 
+from sqlalchemy.exc import IntegrityError
+
 from ...database import db
 from ...typing import UserID
 
@@ -17,6 +19,10 @@ from ..shop.order.transfer.models import OrderNumber
 from .models.ticket import Ticket as DbTicket
 from .models.ticket_bundle import TicketBundle as DbTicketBundle
 from .transfer.models import TicketCategoryID, TicketCode
+
+
+class TicketCreationFailed(Exception):
+    pass
 
 
 def create_ticket(
@@ -47,7 +53,12 @@ def create_tickets(
     )
 
     db.session.add_all(tickets)
-    db.session.commit()
+
+    try:
+        db.session.commit()
+    except IntegrityError as e:
+        db.session.rollback()
+        raise TicketCreationFailed(e)
 
     return tickets
 

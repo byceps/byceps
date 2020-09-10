@@ -3,6 +3,10 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from unittest.mock import patch
+
+from pytest import raises
+
 from byceps.services.ticketing import (
     event_service,
     ticket_creation_service,
@@ -17,6 +21,20 @@ def test_create_ticket(admin_app, category, ticket_owner):
 
     # Clean up.
     ticket_service.delete_ticket(ticket.id)
+
+
+@patch('byceps.services.ticketing.ticket_creation_service._generate_ticket_code')
+def test_create_ticket_with_existing_code(generate_ticket_code_mock, admin_app, category, ticket_owner):
+    generate_ticket_code_mock.return_value = 'TAKEN'
+
+    existing_ticket = ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+    assert existing_ticket.code == 'TAKEN'
+
+    with raises(ticket_creation_service.TicketCreationFailed):
+        ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+
+    # Clean up.
+    ticket_service.delete_ticket(existing_ticket.id)
 
 
 def test_create_tickets(admin_app, category, ticket_owner):
