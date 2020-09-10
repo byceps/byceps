@@ -8,6 +8,8 @@ byceps.services.shop.order.sequence_service
 
 from typing import List, Optional
 
+from sqlalchemy.exc import IntegrityError
+
 from ....database import db
 
 from ..shop.transfer.models import ShopID
@@ -22,12 +24,21 @@ from .transfer.models import (
 
 def create_order_number_sequence(
     shop_id: ShopID, prefix: str, *, value: Optional[int] = None
-) -> OrderNumberSequenceID:
-    """Create an order number sequence."""
+) -> Optional[OrderNumberSequenceID]:
+    """Create an order number sequence.
+
+    Return the resulting sequence's ID, or `None` if the sequence could
+    not be created.
+    """
     sequence = DbOrderNumberSequence(shop_id, prefix, value=value)
 
     db.session.add(sequence)
-    db.session.commit()
+
+    try:
+        db.session.commit()
+    except IntegrityError as e:
+        db.session.rollback()
+        return None
 
     return sequence.id
 
