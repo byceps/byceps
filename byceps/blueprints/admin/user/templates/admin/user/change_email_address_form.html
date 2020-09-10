@@ -7,11 +7,6 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.index') }}">Benutzer</a></li>
-    </ol>
-  </nav>
   <h1>{{ title }}</h1>
 
   <form action="{{ url_for('.change_email_address', user_id=user.id) }}" method="post">
