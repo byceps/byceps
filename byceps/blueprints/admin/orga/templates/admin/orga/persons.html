@@ -1,4 +1,5 @@
 {% extends 'layouts/admin/orga.html' %}
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% set current_page = 'orga_admin.persons' %}
 {% set current_tab = 'persons' %}
 {% set title = 'Organisatoren' %}
@@ -13,6 +14,7 @@
     {%- for brand, person_count in brands_with_person_counts|sort(attribute='0.title') %}
     <li>
       <a href="{{ url_for('.persons_for_brand', brand_id=brand.id) }}">
+        <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(brand, '32') }}</div>
         <strong>{{ brand.title }}</strong><br>
         {{ '%d %s'|format(person_count, 'Person' if (person_count == 1) else 'Personen')|dim }}
       </a>
