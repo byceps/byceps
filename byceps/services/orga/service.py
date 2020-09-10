@@ -12,6 +12,7 @@ from ...database import db
 from ...typing import BrandID, UserID
 
 from ..brand.models.brand import Brand as DbBrand
+from ..brand import service as brand_service
 from ..user import event_service as user_event_service
 from ..user.models.user import User as DbUser
 
@@ -20,7 +21,7 @@ from .models import OrgaFlag as DbOrgaFlag
 
 def get_brands_with_person_counts() -> Iterator[Tuple[DbBrand, int]]:
     """Yield (brand, person count) pairs."""
-    brands = DbBrand.query.all()
+    brands = brand_service.get_all_brands()
 
     person_counts_by_brand_id = get_person_count_by_brand_id()
 
