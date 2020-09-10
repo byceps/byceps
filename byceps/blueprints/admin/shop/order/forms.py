@@ -6,7 +6,7 @@ byceps.blueprints.admin.shop.order.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
-from wtforms import BooleanField, RadioField, TextAreaField
+from wtforms import BooleanField, RadioField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
 from .....services.shop.order import service as order_service
@@ -33,3 +33,7 @@ class MarkAsPaidForm(LocalizedForm):
         default=PaymentMethod.bank_transfer.name,
         validators=[InputRequired()],
     )
+
+
+class OrderNumberSequenceCreateForm(LocalizedForm):
+    prefix = StringField('Statisches Präfix', validators=[InputRequired()])

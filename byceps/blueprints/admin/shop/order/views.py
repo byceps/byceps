@@ -8,7 +8,10 @@ byceps.blueprints.admin.shop.order.views
 
 from flask import abort, g, request, Response
 
-from .....services.shop.order import service as order_service
+from .....services.shop.order import (
+    sequence_service as order_sequence_service,
+    service as order_service,
+)
 from .....services.shop.order.email import service as order_email_service
 from .....services.shop.order.export import service as order_export_service
 from .....services.shop.order.transfer.models import PaymentMethod, PaymentState
@@ -24,8 +27,9 @@ from .....util.views import redirect_to, respond_no_content
 from ....common.authorization.decorators import permission_required
 from ....common.authorization.registry import permission_registry
 
+from ..shop.authorization import ShopPermission
 from .authorization import ShopOrderPermission
-from .forms import CancelForm, MarkAsPaidForm
+from .forms import CancelForm, MarkAsPaidForm, OrderNumberSequenceCreateForm
 from .models import OrderStateFilter
 from . import service
 
@@ -119,6 +123,10 @@ def view(order_id):
     }
 
 
+# -------------------------------------------------------------------- #
+# export
+
+
 @blueprint.route('/<uuid:order_id>/export')
 @permission_required(ShopOrderPermission.view)
 def export(order_id):
@@ -131,6 +139,10 @@ def export(order_id):
     return Response(
         xml_export['content'], content_type=xml_export['content_type']
     )
+
+
+# -------------------------------------------------------------------- #
+# flags
 
 
 @blueprint.route('/<uuid:order_id>/flags/invoiced', methods=['POST'])
@@ -193,6 +205,10 @@ def unset_shipped_flag(order_id):
     flash_success(
         f'Bestellung {order.order_number} wurde als nicht verschickt markiert.'
     )
+
+
+# -------------------------------------------------------------------- #
+# cancel
 
 
 @blueprint.route('/<uuid:order_id>/cancel')
@@ -262,6 +278,10 @@ def cancel(order_id):
     return redirect_to('.view', order_id=order.id)
 
 
+# -------------------------------------------------------------------- #
+# mark as paid
+
+
 @blueprint.route('/<uuid:order_id>/mark_as_paid')
 @permission_required(ShopOrderPermission.mark_as_paid)
 @templated
@@ -314,6 +334,10 @@ def mark_as_paid(order_id):
     return redirect_to('.view', order_id=order.id)
 
 
+# -------------------------------------------------------------------- #
+# email
+
+
 @blueprint.route(
     '/<uuid:order_id>/resend_incoming_order_email', methods=['POST']
 )
@@ -326,6 +350,57 @@ def resend_email_for_incoming_order_to_orderer(order_id):
     order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
     flash_success('Die E-Mail-Eingangsbestätigung wurde erneut versendet.')
+
+
+# -------------------------------------------------------------------- #
+# order number sequences
+
+
+@blueprint.route('/number_sequences/for_shop/<shop_id>/create')
+@permission_required(ShopPermission.update)
+@templated
+def create_number_sequence_form(shop_id, erroneous_form=None):
+    """Show form to create an order number sequence."""
+    shop = _get_shop_or_404(shop_id)
+
+    form = erroneous_form if erroneous_form else OrderNumberSequenceCreateForm()
+
+    return {
+        'shop': shop,
+        'form': form,
+    }
+
+
+@blueprint.route('/number_sequences/for_shop/<shop_id>', methods=['POST'])
+@permission_required(ShopPermission.update)
+def create_number_sequence(shop_id):
+    """Create an order number sequence."""
+    shop = _get_shop_or_404(shop_id)
+
+    form = OrderNumberSequenceCreateForm(request.form)
+    if not form.validate():
+        return create_number_sequence_form(shop_id, form)
+
+    prefix = form.prefix.data.strip()
+
+    sequence_id = order_sequence_service.create_order_number_sequence(
+        shop.id, prefix
+    )
+    if sequence_id is None:
+        flash_error(
+            'Die Bestellnummer-Sequenz konnte nicht angelegt werden. '
+            f'Ist das Präfix "{prefix}" bereits definiert?'
+        )
+        return create_number_sequence_form(shop.id, form)
+
+    flash_success(
+        f'Die Bestellnummer-Sequenz mit dem Präfix "{prefix}" wurde angelegt.'
+    )
+    return redirect_to('.index_for_shop', shop_id=shop.id)
+
+
+# -------------------------------------------------------------------- #
+# helpers
 
 
 def _get_shop_or_404(shop_id):
