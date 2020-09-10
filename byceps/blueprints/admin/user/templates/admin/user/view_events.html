@@ -23,8 +23,6 @@
 
 {% block body %}
 
-{%- include 'admin/user/_view_head.html' %}
-
   <h2>Ereignisse {{ render_extra_in_heading(events|length) }}</h2>
   <div class="events">
     {%- for event in events|sort(attribute='occurred_at', reverse=True) %}
