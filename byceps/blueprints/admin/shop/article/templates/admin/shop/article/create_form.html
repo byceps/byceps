@@ -9,7 +9,7 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   {%- if not article_number_sequence_available %}
-  <div class="notification color-danger">Der Artikelnummer-Präfix für diesen Shop muss erst konfiguriert werden, bevor Artikel angelegt werden können.</div>
+  <div class="notification color-danger">Das Artikelnummer-Präfix für diesen Shop muss erst konfiguriert werden, bevor Artikel angelegt werden können.</div>
   {%- else %}
   <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">
     {% call form_fieldset() %}

@@ -80,3 +80,7 @@ class ArticleAttachmentCreateForm(LocalizedForm):
         choices.sort(key=lambda choice: choice[1])
 
         self.article_to_attach_id.choices = choices
+
+
+class ArticleNumberSequenceCreateForm(LocalizedForm):
+    prefix = StringField('Statisches Präfix', validators=[InputRequired()])

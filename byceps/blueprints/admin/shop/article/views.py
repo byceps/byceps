@@ -11,9 +11,9 @@ from decimal import Decimal
 
 from flask import abort, request
 
-from .....services.shop.article import service as article_service
 from .....services.shop.article import (
     sequence_service as article_sequence_service,
+    service as article_service,
 )
 from .....services.shop.order import (
     action_service as order_action_service,
@@ -37,6 +37,7 @@ from .forms import (
     ArticleCreateForm,
     ArticleUpdateForm,
     ArticleAttachmentCreateForm,
+    ArticleNumberSequenceCreateForm,
 )
 
 
@@ -138,6 +139,10 @@ def view_ordered(article_id):
     }
 
 
+# -------------------------------------------------------------------- #
+# create
+
+
 @blueprint.route('/for_shop/<shop_id>/create')
 @permission_required(ShopArticlePermission.create)
 @templated
@@ -229,6 +234,10 @@ def create(shop_id):
     return redirect_to('.view', article_id=article.id)
 
 
+# -------------------------------------------------------------------- #
+# update
+
+
 @blueprint.route('/<uuid:article_id>/update')
 @permission_required(ShopArticlePermission.update)
 @templated
@@ -295,6 +304,10 @@ def update(article_id):
 
     flash_success(f'Der Artikel "{article.description}" wurde aktualisiert.')
     return redirect_to('.view', article_id=article.id)
+
+
+# -------------------------------------------------------------------- #
+# article attachments
 
 
 @blueprint.route('/<uuid:article_id>/attachments/create')
@@ -371,6 +384,59 @@ def attachment_remove(article_id):
         f'Artikel "{article.item_number}" ist nun nicht mehr '
         f'an Artikel "{attached_to_article.item_number}" angehängt.'
     )
+
+
+# -------------------------------------------------------------------- #
+# article number sequences
+
+
+@blueprint.route('/number_sequences/for_shop/<shop_id>/create')
+@permission_required(ShopArticlePermission.create)
+@templated
+def create_number_sequence_form(shop_id, erroneous_form=None):
+    """Show form to create an article number sequence."""
+    shop = _get_shop_or_404(shop_id)
+
+    form = (
+        erroneous_form if erroneous_form else ArticleNumberSequenceCreateForm()
+    )
+
+    return {
+        'shop': shop,
+        'form': form,
+    }
+
+
+@blueprint.route('/number_sequences/for_shop/<shop_id>', methods=['POST'])
+@permission_required(ShopArticlePermission.create)
+def create_number_sequence(shop_id):
+    """Create an article number sequence."""
+    shop = _get_shop_or_404(shop_id)
+
+    form = ArticleNumberSequenceCreateForm(request.form)
+    if not form.validate():
+        return create_number_sequence_form(shop_id, form)
+
+    prefix = form.prefix.data.strip()
+
+    sequence_id = article_sequence_service.create_article_number_sequence(
+        shop.id, prefix
+    )
+    if sequence_id is None:
+        flash_error(
+            'Die Artikelnummer-Sequenz konnte nicht angelegt werden. '
+            f'Ist das Präfix "{prefix}" bereits definiert?'
+        )
+        return create_number_sequence_form(shop.id, form)
+
+    flash_success(
+        f'Die Artikelnummer-Sequenz mit dem Präfix "{prefix}" wurde angelegt.'
+    )
+    return redirect_to('.index_for_shop', shop_id=shop.id)
+
+
+# -------------------------------------------------------------------- #
+# helpers
 
 
 def _get_shop_or_404(shop_id):
