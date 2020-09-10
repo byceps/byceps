@@ -10,10 +10,9 @@ from typing import List, Optional
 
 from ....database import db
 
-from ..sequence.models import NumberSequence as DbNumberSequence
-from ..sequence.transfer.models import Purpose
 from ..shop.transfer.models import ShopID
 
+from .models.number_sequence import ArticleNumberSequence as DbArticleNumberSequence
 from .transfer.models import (
     ArticleNumber,
     ArticleNumberSequence,
@@ -25,7 +24,7 @@ def create_article_number_sequence(
     shop_id: ShopID, prefix: str, *, value: Optional[int] = None
 ) -> ArticleNumberSequenceID:
     """Create an article number sequence."""
-    sequence = DbNumberSequence(shop_id, Purpose.article, prefix, value=value)
+    sequence = DbArticleNumberSequence(shop_id, prefix, value=value)
 
     db.session.add(sequence)
     db.session.commit()
@@ -37,7 +36,7 @@ def delete_article_number_sequence(
     sequence_id: ArticleNumberSequenceID,
 ) -> None:
     """Delete the article number sequence."""
-    db.session.query(DbNumberSequence) \
+    db.session.query(DbArticleNumberSequence) \
         .filter_by(id=sequence_id) \
         .delete()
 
@@ -48,11 +47,10 @@ def find_article_number_sequence(
     sequence_id: ArticleNumberSequenceID,
 ) -> Optional[ArticleNumberSequence]:
     """Return the article number sequence, or `None` if the sequence ID
-    is unknown or if the sequence's purpose is not article numbers.
+    is unknown.
     """
-    sequence = DbNumberSequence.query \
+    sequence = DbArticleNumberSequence.query \
         .filter_by(id=sequence_id) \
-        .filter_by(_purpose=Purpose.article.name) \
         .one_or_none()
 
     if sequence is None:
@@ -65,9 +63,8 @@ def find_article_number_sequences_for_shop(
     shop_id: ShopID,
 ) -> List[ArticleNumberSequence]:
     """Return the article number sequences defined for that shop."""
-    sequences = DbNumberSequence.query \
+    sequences = DbArticleNumberSequence.query \
         .filter_by(shop_id=shop_id) \
-        .filter_by(_purpose=Purpose.article.name) \
         .all()
 
     return [
@@ -89,9 +86,8 @@ def generate_article_number(
     sequence_id: ArticleNumberSequenceID,
 ) -> ArticleNumber:
     """Generate and reserve the next article number from this sequence."""
-    sequence = DbNumberSequence.query \
+    sequence = DbArticleNumberSequence.query \
         .filter_by(id=sequence_id) \
-        .filter_by(_purpose=Purpose.article.name) \
         .with_for_update() \
         .one_or_none()
 
@@ -100,14 +96,14 @@ def generate_article_number(
             f'No article number sequence found for ID "{sequence_id}".'
         )
 
-    sequence.value = DbNumberSequence.value + 1
+    sequence.value = DbArticleNumberSequence.value + 1
     db.session.commit()
 
     return ArticleNumber(f'{sequence.prefix}{sequence.value:05d}')
 
 
 def _db_entity_to_article_number_sequence(
-    sequence: DbNumberSequence,
+    sequence: DbArticleNumberSequence,
 ) -> ArticleNumberSequence:
     return ArticleNumberSequence(
         sequence.id,
