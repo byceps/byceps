@@ -24,7 +24,7 @@ def create_ticket(
     owned_by_id: UserID,
     *,
     order_number: Optional[OrderNumber] = None,
-) -> Sequence[DbTicket]:
+) -> DbTicket:
     """Create a single ticket."""
     tickets = create_tickets(
         category_id, owned_by_id, 1, order_number=order_number
