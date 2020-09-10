@@ -6,6 +6,8 @@ byceps.blueprints.admin.shop.article.forms
 :License: Modified BSD, see LICENSE for details.
 """
 
+from decimal import Decimal
+
 from wtforms import (
     BooleanField,
     DateTimeField,
@@ -14,7 +16,12 @@ from wtforms import (
     SelectField,
     StringField,
 )
-from wtforms.validators import InputRequired, Optional, ValidationError
+from wtforms.validators import (
+    InputRequired,
+    NumberRange,
+    Optional,
+    ValidationError,
+)
 
 from .....util.l10n import LocalizedForm
 
@@ -22,7 +29,7 @@ from .....util.l10n import LocalizedForm
 class _ArticleBaseForm(LocalizedForm):
     description = StringField('Beschreibung')
     price = DecimalField('Stückpreis', places=2, validators=[InputRequired()])
-    tax_rate = DecimalField('Steuersatz', places=3, validators=[InputRequired()])
+    tax_rate = DecimalField('Steuersatz', places=3, validators=[InputRequired(), NumberRange(min=Decimal('0.000'), max=Decimal('0.999'))])
     total_quantity = IntegerField('Gesamtmenge', validators=[InputRequired()])
     max_quantity_per_order = IntegerField('Maximale Anzahl pro Bestellung', validators=[InputRequired()])
 
