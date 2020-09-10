@@ -57,6 +57,22 @@ def test_create_tickets(admin_app, category, ticket_owner):
         ticket_service.delete_ticket(ticket.id)
 
 
+@patch(
+    'byceps.services.ticketing.ticket_creation_service._generate_ticket_code'
+)
+def test_create_tickets_with_clashing_generated_codes(
+    generate_ticket_code_mock, admin_app, category, ticket_owner
+):
+    generate_ticket_code_mock.return_value = 'CLASH'
+
+    quantity = 3
+
+    with raises(ticket_creation_service.TicketCodeGenerationFailed):
+        tickets = ticket_creation_service.create_tickets(
+            category.id, ticket_owner.id, quantity
+        )
+
+
 def assert_created_ticket(ticket, expected_category_id, expected_owner_id):
     assert ticket is not None
     assert ticket.created_at is not None

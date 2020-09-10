@@ -25,6 +25,10 @@ class TicketCreationFailed(Exception):
     pass
 
 
+class TicketCodeGenerationFailed(Exception):
+    pass
+
+
 def create_ticket(
     category_id: TicketCategoryID,
     owned_by_id: UserID,
@@ -101,9 +105,15 @@ def _generate_ticket_code() -> TicketCode:
     return TicketCode(''.join(sample(_CODE_ALPHABET, _CODE_LENGTH)))
 
 
-def _generate_ticket_code_not_in(codes: Set[TicketCode]) -> TicketCode:
+def _generate_ticket_code_not_in(
+    codes: Set[TicketCode], *, max_attempts: int = 4
+) -> TicketCode:
     """Generate ticket codes and return the first one not in the set."""
-    while True:
+    for _ in range(max_attempts):
         code = _generate_ticket_code()
         if code not in codes:
             return code
+
+    raise TicketCodeGenerationFailed(
+        f'Could not generate unique ticket code after {max_attempts} attempts.'
+    )
