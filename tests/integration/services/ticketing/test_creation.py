@@ -36,7 +36,7 @@ def test_create_ticket_with_existing_code(
     )
     assert existing_ticket.code == 'TAKEN'
 
-    with raises(ticket_creation_service.TicketCreationFailed):
+    with raises(ticket_creation_service.TicketCreationFailedWithConflict):
         ticket_creation_service.create_ticket(category.id, ticket_owner.id)
 
     # Clean up.

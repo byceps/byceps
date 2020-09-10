@@ -22,11 +22,17 @@ from .transfer.models import TicketCategoryID, TicketCode
 
 
 class TicketCreationFailed(Exception):
-    pass
+    """Ticket creation failed for some reason."""
 
 
-class TicketCodeGenerationFailed(Exception):
-    pass
+class TicketCodeGenerationFailed(TicketCreationFailed):
+    """Ticket creation failed because no unique code could be generated."""
+
+
+class TicketCreationFailedWithConflict(TicketCreationFailed):
+    """Ticket creation failed because of a conflict with an existing,
+    persisted ticket.
+    """
 
 
 def create_ticket(
@@ -62,7 +68,7 @@ def create_tickets(
         db.session.commit()
     except IntegrityError as e:
         db.session.rollback()
-        raise TicketCreationFailed(e)
+        raise TicketCreationFailedWithConflict(e)
 
     return tickets
 
