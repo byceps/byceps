@@ -238,9 +238,6 @@ def _on_board_posting_created(
 
 def announce_board_posting_created(event: BoardPostingCreated) -> None:
     """Announce that someone has created a board posting."""
-    channel1 = CHANNEL_ORGA_LOG
-    channel2 = CHANNEL_PUBLIC
-
     posting_creator_screen_name = get_screen_name_or_fallback(
         event.posting_creator_screen_name
     )
