@@ -14,6 +14,11 @@ from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
 
 @pytest.fixture(scope='module')
+def ticket_quantity():
+    return 5
+
+
+@pytest.fixture(scope='module')
 def bundle_quantity():
     return 2
 
@@ -28,21 +33,28 @@ def order(article, bundle_quantity, storefront, orderer):
     order_service.delete_order(order.id)
 
 
-def test_create_ticket_bundles(
-    admin_app,
-    article,
-    ticket_category,
-    bundle_quantity,
-    admin_user,
-    orderer,
-    order,
-):
-    ticket_quantity = 5
-
+@pytest.fixture
+def order_action(article, ticket_category, ticket_quantity):
     action_registry_service.register_ticket_bundles_creation(
         article.item_number, ticket_category.id, ticket_quantity
     )
 
+    yield
+
+    action_service.delete_actions(article.item_number)
+
+
+def test_create_ticket_bundles(
+    admin_app,
+    article,
+    ticket_category,
+    ticket_quantity,
+    bundle_quantity,
+    admin_user,
+    orderer,
+    order,
+    order_action,
+):
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
 
@@ -64,7 +76,6 @@ def test_create_ticket_bundles(
     assert len(ticket_bundle_created_events) == bundle_quantity
 
     tear_down_bundles(tickets_after_paid)
-    action_service.delete_actions(article.item_number)
 
 
 # helpers

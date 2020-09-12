@@ -28,6 +28,17 @@ def order(article, ticket_quantity, storefront, orderer):
     order_service.delete_order(order.id)
 
 
+@pytest.fixture
+def order_action(article, ticket_category):
+    action_registry_service.register_tickets_creation(
+        article.item_number, ticket_category.id
+    )
+
+    yield
+
+    action_service.delete_actions(article.item_number)
+
+
 def test_create_tickets(
     admin_app,
     article,
@@ -36,11 +47,8 @@ def test_create_tickets(
     admin_user,
     orderer,
     order,
+    order_action,
 ):
-    action_registry_service.register_tickets_creation(
-        article.item_number, ticket_category.id
-    )
-
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
 
@@ -62,4 +70,3 @@ def test_create_tickets(
     # Clean up.
     for ticket in tickets_after_paid:
         ticket_service.delete_ticket(ticket.id)
-    action_service.delete_actions(article.item_number)
