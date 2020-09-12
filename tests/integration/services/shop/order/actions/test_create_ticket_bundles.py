@@ -10,7 +10,7 @@ from byceps.services.ticketing import ticket_service, ticket_bundle_service
 
 from testfixtures.shop_order import create_orderer
 
-from .base import get_tickets_for_order, mark_order_as_paid, place_order
+from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
 
 def test_create_ticket_bundles(
