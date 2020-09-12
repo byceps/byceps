@@ -87,7 +87,10 @@ def _get_payment_instructions(order: Order) -> str:
     fragment = _get_snippet_body(order.shop_id, 'email_payment_instructions')
 
     template = load_template(fragment)
-    return template.render(order_number=order.order_number)
+    return template.render(
+        order_id=order.id,
+        order_number=order.order_number,
+    )
 
 
 def _assemble_email_for_canceled_order_to_orderer(
