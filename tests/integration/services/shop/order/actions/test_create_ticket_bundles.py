@@ -36,7 +36,7 @@ def test_create_ticket_bundles(
     mark_order_as_paid(order.id, admin_user.id)
 
     tickets_after_paid = get_tickets_for_order(order)
-    assert len(tickets_after_paid) == 10
+    assert len(tickets_after_paid) == ticket_quantity * bundle_quantity
 
     for ticket in tickets_after_paid:
         assert ticket.owned_by_id == orderer.user_id
