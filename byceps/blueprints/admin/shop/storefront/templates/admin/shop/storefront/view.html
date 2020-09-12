@@ -5,13 +5,18 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
-
-  {%- if g.current_user.has_permission(ShopPermission.update) %}
-  <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.update_form', storefront_id=storefront.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h1>{{ title }}</h1>
+    </div>
+    {%- if g.current_user.has_permission(ShopPermission.update) %}
+    <div class="column-auto">
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.update_form', storefront_id=storefront.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+      </div>
+    </div>
+    {%- endif %}
   </div>
-  {%- endif %}
 
   <table class="index">
     <tr>

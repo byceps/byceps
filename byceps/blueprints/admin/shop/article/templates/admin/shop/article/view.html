@@ -39,20 +39,25 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
-
-  <div class="button-row button-row--right">
-    {%- if g.current_user.has_permission(ShopArticlePermission.update) %}
-    <a class="button" href="{{ url_for('.update_form', article_id=article.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
-    {%- endif %}
-    <div class="dropdown left">
-      <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
-      <ol>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h1>{{ title }}</h1>
+    </div>
+    <div class="column-auto">
+      <div class="button-row button-row--right">
         {%- if g.current_user.has_permission(ShopArticlePermission.update) %}
-        <li><a href="{{ url_for('.attachment_create_form', article_id=article.id) }}">{{ render_icon('attached') }} Artikel anhängen</a></li>
+        <a class="button" href="{{ url_for('.update_form', article_id=article.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
         {%- endif %}
-        <li><a href="{{ url_for('.view_ordered', article_id=article.id) }}">{{ render_icon('users') }} Käufer auflisten</a></li>
-      </ol>
+        <div class="dropdown left">
+          <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
+          <ol>
+            {%- if g.current_user.has_permission(ShopArticlePermission.update) %}
+            <li><a href="{{ url_for('.attachment_create_form', article_id=article.id) }}">{{ render_icon('attached') }} Artikel anhängen</a></li>
+            {%- endif %}
+            <li><a href="{{ url_for('.view_ordered', article_id=article.id) }}">{{ render_icon('users') }} Käufer auflisten</a></li>
+          </ol>
+        </div>
+      </div>
     </div>
   </div>
 

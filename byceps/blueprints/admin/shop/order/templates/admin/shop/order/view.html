@@ -40,17 +40,22 @@
 
 {% block body %}
 
-  <h1>{{ render_order_payment_state(order.payment_state) }} {{ title }}</h1>
-
-  {%- if g.current_user.has_any_permission(
-    ShopOrderPermission.cancel,
-    ShopOrderPermission.mark_as_paid,
-    ShopOrderPermission.update
-  ) %}
-  <div style="float: right; margin-left: 40px;">
-{%- include 'admin/shop/order/_view_actions.html' %}
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h1>{{ render_order_payment_state(order.payment_state) }} {{ title }}</h1>
+    </div>
+    {%- if g.current_user.has_any_permission(
+      ShopOrderPermission.cancel,
+      ShopOrderPermission.mark_as_paid,
+      ShopOrderPermission.update
+    ) %}
+    <div class="column-auto">
+      <div class="button-row button-row--right">
+    {%- include 'admin/shop/order/_view_actions.html' %}
+      </div>
+    </div>
+    {%- endif %}
   </div>
-  {%- endif %}
 
   <table class="index">
     <tr>

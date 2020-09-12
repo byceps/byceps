@@ -9,19 +9,24 @@
 
 {% block body %}
 
-  <h1>{{ title }} {{ render_extra_in_heading(articles.total) }}</h1>
-
-  {%- if g.current_user.has_permission(ShopArticlePermission.create) %}
-  <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>Artikel anlegen</span></a>
-    <div class="dropdown left">
-      <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
-      <ol>
-        <li><a href="{{ url_for('.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} Artikelnummer-Sequenz anlegen</a></li>
-      </ol>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h1>{{ title }} {{ render_extra_in_heading(articles.total) }}</h1>
     </div>
+    {%- if g.current_user.has_permission(ShopArticlePermission.create) %}
+    <div class="column-auto">
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>Artikel anlegen</span></a>
+        <div class="dropdown left">
+          <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
+          <ol>
+            <li><a href="{{ url_for('.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} Artikelnummer-Sequenz anlegen</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    {%- endif %}
   </div>
-  {%- endif %}
 
   {%- if articles.items %}
   <table class="index wide">
