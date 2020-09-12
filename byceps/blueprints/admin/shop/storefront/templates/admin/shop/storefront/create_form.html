@@ -18,7 +18,7 @@
     {% call form_fieldset() %}
       {{ form_field(form.id, maxlength=80, required='required', autofocus='autofocus') }}
       {{ form_field(form.catalog_id) }}
-      {{ form_field(form.order_number_sequence_id, required='required') }}
+      {{ form_field(form.order_number_sequence_id, required='required', note='<a href="%s">Neue Sequenz erstellen</a>'|format(url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id))) }}
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.index_for_shop', shop_id=shop.id)) }}
