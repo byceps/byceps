@@ -9,7 +9,10 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   {%- if not order_number_sequence_available %}
-  <div class="notification color-danger">Das Bestellnummer-Präfix für diesen Shop muss erst konfiguriert werden, bevor Storefronts angelegt werden können.</div>
+  <div class="notification color-warning">
+    Es sind keine Bestellnummer-Sequenzen für diesen Shop hinterlegt. Ohne sie können keine Storefronts angelegt werden.<br><br>
+    <a class="button color-primary" href="{{ url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id) }}">Bestellnummer-Sequenz anlegen</a>
+  </div>
   {%- else %}
   <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">
     {% call form_fieldset() %}

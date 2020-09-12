@@ -9,7 +9,10 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   {%- if not article_number_sequence_available %}
-  <div class="notification color-danger">Das Artikelnummer-Präfix für diesen Shop muss erst konfiguriert werden, bevor Artikel angelegt werden können.</div>
+  <div class="notification color-warning">
+    Es sind keine Artikelnummer-Sequenzen für diesen Shop hinterlegt. Ohne sie können keine Artikel angelegt werden.<br><br>
+    <a class="button color-primary" href="{{ url_for('shop_article_admin.create_number_sequence_form', shop_id=shop.id) }}">Artikelnummer-Sequenz anlegen</a>
+  </div>
   {%- else %}
   <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">
     {% call form_fieldset() %}
