@@ -3,6 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+import pytest
+
 from byceps.services.shop.order import action_service, action_registry_service
 from byceps.services.shop.order import event_service as order_event_service
 from byceps.services.shop.order import service as order_service
@@ -11,24 +13,35 @@ from byceps.services.ticketing import ticket_service, ticket_bundle_service
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
 
+@pytest.fixture(scope='module')
+def bundle_quantity():
+    return 2
+
+
+@pytest.fixture
+def order(article, bundle_quantity, storefront, orderer):
+    articles_with_quantity = [(article, bundle_quantity)]
+    order = place_order(storefront.id, orderer, articles_with_quantity)
+
+    yield order
+
+    order_service.delete_order(order.id)
+
+
 def test_create_ticket_bundles(
     admin_app,
-    party,
-    storefront,
     article,
     ticket_category,
+    bundle_quantity,
     admin_user,
     orderer,
+    order,
 ):
     ticket_quantity = 5
-    bundle_quantity = 2
 
     action_registry_service.register_ticket_bundles_creation(
         article.item_number, ticket_category.id, ticket_quantity
     )
-
-    articles_with_quantity = [(article, bundle_quantity)]
-    order = place_order(storefront.id, orderer, articles_with_quantity)
 
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
@@ -51,7 +64,6 @@ def test_create_ticket_bundles(
     assert len(ticket_bundle_created_events) == bundle_quantity
 
     tear_down_bundles(tickets_after_paid)
-    order_service.delete_order(order.id)
     action_service.delete_actions(article.item_number)
 
 
