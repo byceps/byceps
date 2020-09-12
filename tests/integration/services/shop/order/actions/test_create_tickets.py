@@ -8,8 +8,6 @@ from byceps.services.shop.order import event_service as order_event_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.ticketing import ticket_service
 
-from testfixtures.shop_order import create_orderer
-
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
 
@@ -20,10 +18,9 @@ def test_create_tickets(
     article,
     ticket_category,
     admin_user,
-    make_user_with_detail,
+    orderer,
 ):
     ticket_quantity = 4
-    orderer = create_orderer(make_user_with_detail('TicketsOrderer'))
 
     action_registry_service.register_tickets_creation(
         article.item_number, ticket_category.id
