@@ -20,7 +20,7 @@ from byceps.services.snippet import service as snippet_service
 from tests.helpers import current_user_set
 from tests.integration.services.shop.helpers import create_shop_fragment
 
-from .base import place_order_with_items
+from .helpers import place_order_with_items
 
 
 @pytest.fixture
