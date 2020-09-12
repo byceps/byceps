@@ -8,11 +8,19 @@
 
   <h1>{{ title }} {{ render_extra_in_heading(storefronts|length) }}</h1>
 
-  {%- if g.current_user.has_permission(ShopPermission.create) %}
   <div class="button-row button-row--right">
+    {%- if g.current_user.has_permission(ShopPermission.create) %}
     <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>Storefront anlegen</span></a>
+    {%- endif %}
+    {%- if g.current_user.has_permission(ShopPermission.update) %}
+    <div class="dropdown left">
+      <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
+      <ol>
+        <li><a href="{{ url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} Bestellnummer-Sequenz anlegen</a></li>
+      </ol>
+    </div>
+    {%- endif %}
   </div>
-  {%- endif %}
 
   {%- if storefronts %}
   <table class="index wide">
