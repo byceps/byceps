@@ -37,11 +37,11 @@ def assert_submitted_data(
 def assert_request_data(
     actual, expected_channel: str, expected_text: str
 ) -> None:
-    assert actual['channels'] == [expected_channel]
+    assert actual['channel'] == expected_channel
     assert actual['text'] == expected_text
 
     # Don't allow any other keys.
-    assert actual.keys() == {'channels', 'text'}
+    assert actual.keys() == {'channel', 'text'}
 
 
 def get_submitted_json(mock, expected_call_count: int) -> List[str]:

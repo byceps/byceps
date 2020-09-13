@@ -32,11 +32,10 @@ def send_message(channel: str, text: str) -> None:
         'ANNOUNCE_IRC_TEXT_PREFIX', DEFAULT_TEXT_PREFIX
     )
 
-    channels = [channel]
     text = text_prefix + text
 
     url = _get_config_value('ANNOUNCE_IRC_WEBHOOK_URL', DEFAULT_WEBHOOK_URL)
-    data = {'channels': channels, 'text': text}
+    data = {'channel': channel, 'text': text}
 
     # Delay a bit as an attempt to avoid getting kicked from server
     # because of flooding.
