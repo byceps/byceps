@@ -99,9 +99,14 @@ def privacy_policy_consent_subject_id(brand):
 def newsletter_list(brand):
     list_ = newsletter_command_service.create_list(brand.id, brand.title)
 
-    brand_settings_service.create_setting(
-        brand.id, 'newsletter_list_id', str(list_.id)
-    )
+    name = 'newsletter_list_id'
+    value = str(list_.id)
+
+    brand_settings_service.create_setting(brand.id, name, value)
+
+    yield
+
+    brand_settings_service.remove_setting(brand.id, name)
 
 
 @patch('byceps.email.send')
