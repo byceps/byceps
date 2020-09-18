@@ -14,7 +14,7 @@ from ...typing import PartyID
 from ..party.models.party import Party as DbParty
 
 from .models.tourney_category import TourneyCategory as DbTourneyCategory
-from .transfer.models import TourneyCategoryID
+from .transfer.models import TourneyCategory, TourneyCategoryID
 
 
 def create_category(party_id: PartyID, title: str) -> DbTourneyCategory:
@@ -28,7 +28,7 @@ def create_category(party_id: PartyID, title: str) -> DbTourneyCategory:
 
     db.session.commit()
 
-    return category
+    return _db_entity_to_category(category)
 
 
 def update_category(category_id: TourneyCategoryID, title: str) -> None:
@@ -73,11 +73,20 @@ def find_category(
     category_id: TourneyCategoryID,
 ) -> Optional[DbTourneyCategory]:
     """Return the category with that id, or `None` if not found."""
+    category = _find_db_category(category_id)
+
+    if category is None:
+        return None
+
+    return _db_entity_to_category(category)
+
+
+def _find_db_category(category_id: TourneyCategoryID) -> Optional[DbTourneyCategory]:
     return DbTourneyCategory.query.get(category_id)
 
 
 def _get_db_category(category_id: TourneyCategoryID) -> DbTourneyCategory:
-    category = DbTourneyCategory.query.get(category_id)
+    category = _find_db_category(category_id)
 
     if category is None:
         raise ValueError(f'Unknown category ID "{category_id}"')
@@ -91,3 +100,12 @@ def get_categories_for_party(party_id: PartyID) -> Sequence[DbTourneyCategory]:
         .filter_by(party_id=party_id) \
         .order_by(DbTourneyCategory.position) \
         .all()
+
+
+def _db_entity_to_category(category: DbTourneyCategory) -> TourneyCategory:
+    return TourneyCategory(
+        category.id,
+        category.party_id,
+        category.position,
+        category.title,
+    )

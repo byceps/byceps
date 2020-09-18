@@ -11,10 +11,20 @@ from datetime import datetime
 from typing import NewType, Optional
 from uuid import UUID
 
+from ....typing import PartyID
+
 from ...user.transfer.models import User
 
 
 TourneyCategoryID = NewType('TourneyCategoryID', UUID)
+
+
+@dataclass(frozen=True)
+class TourneyCategory:
+    id: TourneyCategoryID
+    party_id: PartyID
+    position: int
+    title: str
 
 
 TourneyID = NewType('TourneyID', UUID)

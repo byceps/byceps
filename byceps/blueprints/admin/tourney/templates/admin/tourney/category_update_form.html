@@ -1,7 +1,7 @@
 {% extends 'layouts/admin/tourney.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
-{% set current_page_party = category.party %}
+{% set current_page_party = party %}
 {% set current_tab = 'categories' %}
 {% set title = 'Kategorie bearbeiten' %}
 
@@ -9,9 +9,9 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li>{{ category.party.title }}</li>
+      <li>{{ party.title }}</li>
       <li>Turniere</li>
-      <li><a href="{{ url_for('.category_index_for_party', party_id=category.party.id) }}">Kategorien</a></li>
+      <li><a href="{{ url_for('.category_index_for_party', party_id=party.id) }}">Kategorien</a></li>
       <li>{{ category.title }}</li>
     </ol>
   </nav>
@@ -22,7 +22,7 @@
       {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.category_index_for_party', party_id=category.party.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.category_index_for_party', party_id=party.id)) }}
   </form>
 
 {%- endblock %}

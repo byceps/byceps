@@ -73,7 +73,7 @@ def category_create(party_id):
     category = category_service.create_category(party.id, title)
 
     flash_success(f'Die Kategorie "{category.title}" wurde angelegt.')
-    return redirect_to('.category_index_for_party', party_id=category.party.id)
+    return redirect_to('.category_index_for_party', party_id=category.party_id)
 
 
 @blueprint.route('/categories/<uuid:category_id>/update')
@@ -83,6 +83,8 @@ def category_update_form(category_id, erroneous_form=None):
     """Show form to update a category."""
     category = _get_category_or_404(category_id)
 
+    party = party_service.get_party(category.party_id)
+
     form = (
         erroneous_form
         if erroneous_form
@@ -91,6 +93,7 @@ def category_update_form(category_id, erroneous_form=None):
 
     return {
         'category': category,
+        'party': party,
         'form': form,
     }
 
@@ -108,7 +111,7 @@ def category_update(category_id):
     category_service.update_category(category.id, form.title.data.strip())
 
     flash_success(f'Die Kategorie "{category.title}" wurde aktualisiert.')
-    return redirect_to('.category_index_for_party', party_id=category.party.id)
+    return redirect_to('.category_index_for_party', party_id=category.party_id)
 
 
 @blueprint.route('/categories/<uuid:category_id>/up', methods=['POST'])
