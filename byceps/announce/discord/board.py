@@ -8,6 +8,8 @@ Announce board events on Discord via its webhooks API.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from flask import current_app
 import requests
 
@@ -45,6 +47,10 @@ def send_message(text: str) -> None:
         )
         return
 
+    text_prefix = _get_text_prefix()
+    if text_prefix:
+        text = text_prefix + text
+
     data = {'content': text}
 
     requests.post(url, json=data)  # Ignore response code for now.
@@ -62,6 +68,13 @@ def _get_webhook_url() -> str:
     """Return the configured webhook URL."""
     return brand_settings_service.find_setting_value(
         BRAND_ID, 'announce_discord_webhook_url'
+    )
+
+
+def _get_text_prefix() -> Optional[str]:
+    """Return the configured text prefix."""
+    return brand_settings_service.find_setting_value(
+        BRAND_ID, 'announce_discord_text_prefix'
     )
 
 
@@ -84,7 +97,7 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
     )
 
     text = (
-        f'[Forum] {topic_creator_screen_name} hat das Thema '
+        f'{topic_creator_screen_name} hat das Thema '
         f'"{event.topic_title}" erstellt: <{event.url}>'
     )
 
@@ -108,7 +121,7 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     )
 
     text = (
-        f'[Forum] {posting_creator_screen_name} hat auf das Thema '
+        f'{posting_creator_screen_name} hat auf das Thema '
         f'"{event.topic_title}" geantwortet: <{event.url}>'
     )
 

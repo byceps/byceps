@@ -86,16 +86,20 @@ def brand_settings():
     brand = brand_service.create_brand(brand_id, brand_id)
 
     name_enabled = 'announce_discord_enabled'
+    name_text_prefix = 'announce_discord_text_prefix'
     name_webhook_url = 'announce_discord_webhook_url'
 
     brand_settings_service.create_setting(brand.id, name_enabled, 'true')
+    brand_settings_service.create_setting(
+        brand.id, name_text_prefix, '[Forum] '
+    )
     brand_settings_service.create_setting(
         brand.id, name_webhook_url, WEBHOOK_URL
     )
 
     yield
 
-    for name in name_enabled, name_webhook_url:
+    for name in name_enabled, name_text_prefix, name_webhook_url:
         brand_settings_service.remove_setting(brand.id, name)
 
     brand_service.delete_brand(brand_id)
