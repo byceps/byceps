@@ -18,20 +18,20 @@ class Tourney(db.Model):
 
     __tablename__ = 'tourneys'
     __table_args__ = (
-        db.UniqueConstraint('group_id', 'title'),
+        db.UniqueConstraint('category_id', 'title'),
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    group_id = db.Column(db.Uuid, db.ForeignKey('tourney_groups.id'), index=True, nullable=False)
-    group = db.relationship(TourneyCategory)
+    category_id = db.Column(db.Uuid, db.ForeignKey('tourney_categories.id'), index=True, nullable=False)
+    category = db.relationship(TourneyCategory)
     title = db.Column(db.UnicodeText, nullable=False)
 
-    def __init__(self, group: TourneyCategory, title: str) -> None:
-        self.group = group
+    def __init__(self, category: TourneyCategory, title: str) -> None:
+        self.category = category
         self.title = title
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
-            .add_with_lookup('group') \
+            .add_with_lookup('category') \
             .add_with_lookup('title') \
             .build()
