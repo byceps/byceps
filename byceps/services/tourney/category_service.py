@@ -31,14 +31,18 @@ def create_category(party_id: PartyID, title: str) -> DbTourneyCategory:
     return category
 
 
-def update_category(category: DbTourneyCategory, title: str) -> None:
+def update_category(category_id: TourneyCategoryID, title: str) -> None:
     """Update category."""
+    category = _get_db_category(category_id)
+
     category.title = title
     db.session.commit()
 
 
-def move_category_up(category: DbTourneyCategory) -> None:
+def move_category_up(category_id: TourneyCategoryID) -> None:
     """Move a category upwards by one position."""
+    category = _get_db_category(category_id)
+
     category_list = category.party.tourney_categories
 
     if category.position == 1:
@@ -50,8 +54,10 @@ def move_category_up(category: DbTourneyCategory) -> None:
     db.session.commit()
 
 
-def move_category_down(category: DbTourneyCategory) -> None:
+def move_category_down(category_id: TourneyCategoryID) -> None:
     """Move a category downwards by one position."""
+    category = _get_db_category(category_id)
+
     category_list = category.party.tourney_categories
 
     if category.position == len(category_list):
@@ -68,6 +74,15 @@ def find_category(
 ) -> Optional[DbTourneyCategory]:
     """Return the category with that id, or `None` if not found."""
     return DbTourneyCategory.query.get(category_id)
+
+
+def _get_db_category(category_id: TourneyCategoryID) -> DbTourneyCategory:
+    category = DbTourneyCategory.query.get(category_id)
+
+    if category is None:
+        raise ValueError(f'Unknown category ID "{category_id}"')
+
+    return category
 
 
 def get_categories_for_party(party_id: PartyID) -> Sequence[DbTourneyCategory]:

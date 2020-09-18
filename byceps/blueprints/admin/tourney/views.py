@@ -105,7 +105,7 @@ def category_update(category_id):
     if not form.validate():
         return category_update_form(category_id, form)
 
-    category_service.update_category(category, form.title.data.strip())
+    category_service.update_category(category.id, form.title.data.strip())
 
     flash_success(f'Die Kategorie "{category.title}" wurde aktualisiert.')
     return redirect_to('.category_index_for_party', party_id=category.party.id)
@@ -119,7 +119,7 @@ def category_move_up(category_id):
     category = _get_category_or_404(category_id)
 
     try:
-        category_service.move_category_up(category)
+        category_service.move_category_up(category.id)
     except ValueError:
         flash_error(
             f'Die Kategorie "{category.title}" befindet sich bereits ganz oben.'
@@ -139,7 +139,7 @@ def category_move_down(category_id):
     category = _get_category_or_404(category_id)
 
     try:
-        category_service.move_category_down(category)
+        category_service.move_category_down(category.id)
     except ValueError:
         flash_error(
             f'Die Kategorie "{category.title}" befindet sich bereits '
