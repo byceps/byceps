@@ -30,6 +30,16 @@ class TourneyCategory:
 TourneyID = NewType('TourneyID', UUID)
 
 
+@dataclass(frozen=True)
+class Tourney:
+    id: TourneyID
+    category_id: TourneyCategoryID
+    title: str
+    subtitle: str
+    current_participant_count: int
+    max_participant_count: int
+
+
 MatchID = NewType('MatchID', UUID)
 
 
