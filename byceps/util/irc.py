@@ -42,9 +42,7 @@ def send_message(channel: str, text: str) -> None:
 
     # Delay a bit as an attempt to avoid getting kicked from server
     # because of flooding.
-    delay = int(
-        _get_config_value('ANNOUNCE_IRC_DELAY', DEFAULT_DELAY_IN_SECONDS)
-    )
+    delay = _get_delay()
     sleep(delay)
 
     requests.post(url, json=data)  # Ignore response code for now.
@@ -63,6 +61,21 @@ def _get_webhook_url() -> str:
 def _get_text_prefix() -> Optional[str]:
     """Return the configured text prefix."""
     return _get_config_value('ANNOUNCE_IRC_TEXT_PREFIX', DEFAULT_TEXT_PREFIX)
+
+
+def _get_delay() -> int:
+    """Return the configured delay."""
+    value = _get_config_value('ANNOUNCE_IRC_DELAY', DEFAULT_DELAY_IN_SECONDS)
+
+    try:
+        value = int(value)
+    except (TypeError, ValueError) as e:
+        current_app.logger.warning(
+            f'Invalid delay value configured for announcements on IRC: {e}'
+        )
+        return DEFAULT_DELAY_IN_SECONDS
+
+    return value
 
 
 def _get_config_value(key: str, default_value: Any) -> Optional[Any]:
