@@ -23,18 +23,20 @@ DEFAULT_TEXT_PREFIX = '[BYCEPS] '
 
 def send_message(channel: str, text: str) -> None:
     """Write the text to the channel by sending it to the bot via HTTP."""
-    enabled = _get_config_value('ANNOUNCE_IRC_ENABLED', DEFAULT_ENABLED)
-    if not enabled:
+    if not _is_enabled():
         current_app.logger.warning('Announcements on IRC are disabled.')
         return
 
-    text_prefix = _get_config_value(
-        'ANNOUNCE_IRC_TEXT_PREFIX', DEFAULT_TEXT_PREFIX
-    )
+    url = _get_webhook_url()
+    if not url:
+        current_app.logger.warning(
+            'No webhook URL configured for announcements on IRC.'
+        )
+        return
 
+    text_prefix = _get_text_prefix()
     text = text_prefix + text
 
-    url = _get_config_value('ANNOUNCE_IRC_WEBHOOK_URL', DEFAULT_WEBHOOK_URL)
     data = {'channel': channel, 'text': text}
 
     # Delay a bit as an attempt to avoid getting kicked from server
@@ -45,6 +47,21 @@ def send_message(channel: str, text: str) -> None:
     sleep(delay)
 
     requests.post(url, json=data)  # Ignore response code for now.
+
+
+def _is_enabled() -> bool:
+    """Return `true' if announcements on IRC are enabled."""
+    return _get_config_value('ANNOUNCE_IRC_ENABLED', DEFAULT_ENABLED)
+
+
+def _get_webhook_url() -> str:
+    """Return the configured webhook URL."""
+    return _get_config_value('ANNOUNCE_IRC_WEBHOOK_URL', DEFAULT_WEBHOOK_URL)
+
+
+def _get_text_prefix() -> str:
+    """Return the configured text prefix."""
+    return _get_config_value('ANNOUNCE_IRC_TEXT_PREFIX', DEFAULT_TEXT_PREFIX)
 
 
 def _get_config_value(key: str, default_value: Any) -> Optional[Any]:
