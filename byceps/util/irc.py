@@ -35,7 +35,8 @@ def send_message(channel: str, text: str) -> None:
         return
 
     text_prefix = _get_text_prefix()
-    text = text_prefix + text
+    if text_prefix:
+        text = text_prefix + text
 
     data = {'channel': channel, 'text': text}
 
@@ -59,7 +60,7 @@ def _get_webhook_url() -> str:
     return _get_config_value('ANNOUNCE_IRC_WEBHOOK_URL', DEFAULT_WEBHOOK_URL)
 
 
-def _get_text_prefix() -> str:
+def _get_text_prefix() -> Optional[str]:
     """Return the configured text prefix."""
     return _get_config_value('ANNOUNCE_IRC_TEXT_PREFIX', DEFAULT_TEXT_PREFIX)
 
