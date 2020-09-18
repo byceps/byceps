@@ -9,16 +9,12 @@ Send IRC messages to a bot via HTTP.
 """
 
 from time import sleep
-from typing import Any, Optional
+from typing import Optional
 
 from flask import current_app
 import requests
 
-
-DEFAULT_WEBHOOK_URL = 'http://127.0.0.1:12345/'
-DEFAULT_ENABLED = False
-DEFAULT_DELAY_IN_SECONDS = 2
-DEFAULT_TEXT_PREFIX = '[BYCEPS] '
+from ..services.global_setting import service as global_settings_service
 
 
 def send_message(channel: str, text: str) -> None:
@@ -49,23 +45,33 @@ def send_message(channel: str, text: str) -> None:
 
 
 def _is_enabled() -> bool:
-    """Return `true' if announcements on IRC are enabled."""
-    return _get_config_value('ANNOUNCE_IRC_ENABLED', DEFAULT_ENABLED)
+    """Return `true' if announcements on IRC are enabled.
+
+    Disabled by default.
+    """
+    value = global_settings_service.find_setting_value('announce_irc_enabled')
+    return value == 'true'
 
 
-def _get_webhook_url() -> str:
+def _get_webhook_url() -> Optional[str]:
     """Return the configured webhook URL."""
-    return _get_config_value('ANNOUNCE_IRC_WEBHOOK_URL', DEFAULT_WEBHOOK_URL)
+    return global_settings_service.find_setting_value(
+        'announce_irc_webhook_url'
+    )
 
 
 def _get_text_prefix() -> Optional[str]:
     """Return the configured text prefix."""
-    return _get_config_value('ANNOUNCE_IRC_TEXT_PREFIX', DEFAULT_TEXT_PREFIX)
+    return global_settings_service.find_setting_value(
+        'announce_irc_text_prefix'
+    )
 
 
-def _get_delay() -> int:
-    """Return the configured delay."""
-    value = _get_config_value('ANNOUNCE_IRC_DELAY', DEFAULT_DELAY_IN_SECONDS)
+def _get_delay(default=2) -> int:
+    """Return the configured delay, in seconds."""
+    value = global_settings_service.find_setting_value('announce_irc_delay')
+    if value is None:
+        return default
 
     try:
         value = int(value)
@@ -73,10 +79,6 @@ def _get_delay() -> int:
         current_app.logger.warning(
             f'Invalid delay value configured for announcements on IRC: {e}'
         )
-        return DEFAULT_DELAY_IN_SECONDS
+        return default
 
     return value
-
-
-def _get_config_value(key: str, default_value: Any) -> Optional[Any]:
-    return current_app.config.get(key, default_value)
