@@ -6,7 +6,7 @@ byceps.services.tourney.category_service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Optional, Sequence
+from typing import List, Optional
 
 from ...database import db
 from ...typing import PartyID
@@ -94,12 +94,14 @@ def _get_db_category(category_id: TourneyCategoryID) -> DbTourneyCategory:
     return category
 
 
-def get_categories_for_party(party_id: PartyID) -> Sequence[DbTourneyCategory]:
+def get_categories_for_party(party_id: PartyID) -> List[TourneyCategory]:
     """Return the categories for this party."""
-    return DbTourneyCategory.query \
+    categories = DbTourneyCategory.query \
         .filter_by(party_id=party_id) \
         .order_by(DbTourneyCategory.position) \
         .all()
+
+    return [_db_entity_to_category(category) for category in categories]
 
 
 def _db_entity_to_category(category: DbTourneyCategory) -> TourneyCategory:
