@@ -121,6 +121,7 @@ def _get_blueprints_site() -> Iterator[BlueprintReg]:
         ('site.snippet',                None                        ),
         ('site.terms',                  '/terms'                    ),
         ('site.ticketing',              '/tickets'                  ),
+        ('site.tourney',                '/tourneys'                 ),
         ('site.user.profile',           '/users'                    ),
         ('site.user_badge',             '/user_badges'              ),
         ('site.user_group',             '/user_groups'              ),
