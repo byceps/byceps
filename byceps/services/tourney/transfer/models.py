@@ -35,9 +35,11 @@ class Tourney:
     id: TourneyID
     category_id: TourneyCategoryID
     title: str
-    subtitle: str
+    subtitle: Optional[str]
+    logo_url: Optional[str]
     current_participant_count: int
     max_participant_count: int
+    starts_at: datetime
 
 
 MatchID = NewType('MatchID', UUID)
@@ -47,6 +49,14 @@ MatchCommentID = NewType('MatchCommentID', UUID)
 
 
 ParticipantID = NewType('ParticipantID', UUID)
+
+
+@dataclass(frozen=True)
+class Participant:
+    id: ParticipantID
+    tourney_id: TourneyID
+    title: str
+    logo_url: Optional[str]
 
 
 @dataclass(frozen=True)
