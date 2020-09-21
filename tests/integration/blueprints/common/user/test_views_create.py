@@ -272,7 +272,7 @@ def assert_password_credentials_created(user_id):
     credential = Credential.query.get(user_id)
 
     assert credential is not None
-    assert credential.password_hash.startswith('pbkdf2:sha256:150000$')
+    assert credential.password_hash.startswith('pbkdf2:sha256:250000$')
     assert credential.updated_at is not None
 
 
