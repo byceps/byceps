@@ -25,7 +25,9 @@ from byceps.signals import board as board_signals
 WEBHOOK_URL = 'https://webhoooks.test/board'
 
 
-def test_announce_topic_created(brand_settings, admin_app, topic, creator):
+def test_announce_topic_created(
+    brand_settings, admin_app, board, topic, creator
+):
     expected_url = f'https://website.test/board/topics/{topic.id}'
     expected_content = (
         '[Forum] RocketRandy hat das Thema '
@@ -37,6 +39,7 @@ def test_announce_topic_created(brand_settings, admin_app, topic, creator):
         occurred_at=topic.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
+        board_id=board.id,
         topic_id=topic.id,
         topic_creator_id=creator.id,
         topic_creator_screen_name=creator.screen_name,
@@ -50,7 +53,9 @@ def test_announce_topic_created(brand_settings, admin_app, topic, creator):
     assert_request(mock, expected_content)
 
 
-def test_announce_posting_created(brand_settings, admin_app, posting, creator):
+def test_announce_posting_created(
+    brand_settings, admin_app, board, posting, creator
+):
     expected_url = f'https://website.test/board/postings/{posting.id}'
     expected_content = (
         '[Forum] RocketRandy hat auf das Thema '
@@ -62,6 +67,7 @@ def test_announce_posting_created(brand_settings, admin_app, posting, creator):
         occurred_at=posting.created_at,
         initiator_id=creator.id,
         initiator_screen_name=creator.screen_name,
+        board_id=board.id,
         posting_creator_id=creator.id,
         posting_creator_screen_name=creator.screen_name,
         posting_id=posting.id,
