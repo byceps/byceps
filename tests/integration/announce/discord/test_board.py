@@ -15,10 +15,7 @@ from byceps.services.board import (
     posting_command_service,
     topic_command_service,
 )
-from byceps.services.brand import (
-    service as brand_service,
-    settings_service as brand_settings_service,
-)
+from byceps.services.brand import settings_service as brand_settings_service
 from byceps.signals import board as board_signals
 
 
@@ -87,28 +84,25 @@ def test_announce_posting_created(
 
 
 @pytest.fixture(scope='module')
-def brand_settings():
-    brand_id = 'YOUR-BRAND-HERE'
-    brand = brand_service.create_brand(brand_id, brand_id)
+def brand_settings(board):
+    brand_id = board.brand_id
 
     name_enabled = 'announce_discord_enabled'
     name_text_prefix = 'announce_discord_text_prefix'
     name_webhook_url = 'announce_discord_webhook_url'
 
-    brand_settings_service.create_setting(brand.id, name_enabled, 'true')
+    brand_settings_service.create_setting(brand_id, name_enabled, 'true')
     brand_settings_service.create_setting(
-        brand.id, name_text_prefix, '[Forum] '
+        brand_id, name_text_prefix, '[Forum] '
     )
     brand_settings_service.create_setting(
-        brand.id, name_webhook_url, WEBHOOK_URL
+        brand_id, name_webhook_url, WEBHOOK_URL
     )
 
     yield
 
     for name in name_enabled, name_text_prefix, name_webhook_url:
-        brand_settings_service.remove_setting(brand.id, name)
-
-    brand_service.delete_brand(brand_id)
+        brand_settings_service.remove_setting(brand_id, name)
 
 
 @pytest.fixture(scope='module')
