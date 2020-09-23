@@ -94,26 +94,11 @@ def manage_seats_in_area(slug):
 
     seat_management_enabled = _is_seat_management_enabled()
 
-    selected_ticket_code_arg = request.args.get('ticket_code')
-    selected_ticket_id_arg = request.args.get('ticket_id')
-
     seat_manager_id = None
     selected_ticket_id = None
 
     if _is_seating_admin(g.current_user):
-        selected_ticket = None
-
-        if selected_ticket_code_arg:
-            ticket_code = selected_ticket_code_arg.upper()
-            selected_ticket = ticket_service.find_ticket_by_code(ticket_code)
-            if selected_ticket is None:
-                flash_error(f'Ticket code "{ticket_code}" not found.')
-
-        elif selected_ticket_id_arg:
-            selected_ticket = ticket_service.find_ticket(selected_ticket_id_arg)
-            if selected_ticket is None:
-                flash_error(f'Ticket ID "{selected_ticket_id_arg}" not found.')
-
+        selected_ticket = _get_selected_ticket()
         if selected_ticket is not None:
             seat_manager_id = ticket.get_seat_manager().id
             selected_ticket_id = ticket.id
@@ -149,6 +134,26 @@ def manage_seats_in_area(slug):
         'managed_tickets': managed_tickets,
         'selected_ticket_id': selected_ticket_id,
     }
+
+
+def _get_selected_ticket():
+    selected_ticket_code_arg = request.args.get('ticket_code')
+    selected_ticket_id_arg = request.args.get('ticket_id')
+
+    selected_ticket = None
+
+    if selected_ticket_code_arg:
+        ticket_code = selected_ticket_code_arg.upper()
+        selected_ticket = ticket_service.find_ticket_by_code(ticket_code)
+        if selected_ticket is None:
+            flash_error(f'Ticket code "{ticket_code}" not found.')
+
+    elif selected_ticket_id_arg:
+        selected_ticket = ticket_service.find_ticket(selected_ticket_id_arg)
+        if selected_ticket is None:
+            flash_error(f'Ticket ID "{selected_ticket_id_arg}" not found.')
+
+    return selected_ticket
 
 
 @blueprint.route(
