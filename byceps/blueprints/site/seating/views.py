@@ -94,8 +94,6 @@ def manage_seats_in_area(slug):
 
     seat_management_enabled = _is_seat_management_enabled()
 
-    seats = seat_service.get_seats_with_tickets_for_area(area.id)
-
     selected_ticket_code_arg = request.args.get('ticket_code')
     selected_ticket_id_arg = request.args.get('ticket_id')
 
@@ -130,6 +128,8 @@ def manage_seats_in_area(slug):
             g.current_user.id, g.party_id
         )
 
+    seats = seat_service.get_seats_with_tickets_for_area(area.id)
+
     users_by_id = service.get_users(seats, tickets)
 
     seats = service.get_seats(seats, users_by_id)
@@ -143,9 +143,9 @@ def manage_seats_in_area(slug):
 
     return {
         'area': area,
-        'seat_management_enabled': seat_management_enabled,
         'seats': seats,
         'manage_mode': True,
+        'seat_management_enabled': seat_management_enabled,
         'managed_tickets': managed_tickets,
         'selected_ticket_id': selected_ticket_id,
     }
