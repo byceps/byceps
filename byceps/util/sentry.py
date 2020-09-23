@@ -24,8 +24,11 @@ def configure_sentry_for_webapp(dsn: str, environment: str, app: Flask) -> None:
         dsn=dsn, environment=environment, integrations=[FlaskIntegration()],
     )
 
-    sentry_sdk.set_tag('app_mode', app.config.get('APP_MODE'))
-    sentry_sdk.set_tag('site_id', app.config.get('SITE_ID'))
+    app_mode = app.config.get('APP_MODE')
+    sentry_sdk.set_tag('app_mode', app_mode)
+
+    if app_mode == 'site':
+        sentry_sdk.set_tag('site_id', app.config.get('SITE_ID'))
 
 
 def configure_sentry_for_worker(dsn: str, environment: str) -> None:
