@@ -97,7 +97,7 @@ def manage_seats_in_area(slug):
     selected_ticket_code_arg = request.args.get('ticket_code')
     selected_ticket_id_arg = request.args.get('ticket_id')
 
-    tickets = []
+    seat_manager_id = None
     selected_ticket_id = None
 
     if _is_seating_admin(g.current_user):
@@ -106,9 +106,7 @@ def manage_seats_in_area(slug):
             ticket_code = selected_ticket_code_arg.upper()
             ticket = ticket_service.find_ticket_by_code(ticket_code)
             if ticket:
-                tickets = ticket_service.find_tickets_for_seat_manager(
-                    ticket.get_seat_manager().id, g.party_id
-                )
+                seat_manager_id = ticket.get_seat_manager().id
                 selected_ticket_id = ticket.id
             else:
                 flash_error(f'Ticket code "{ticket_code}" not found.')
@@ -116,19 +114,22 @@ def manage_seats_in_area(slug):
         elif selected_ticket_id_arg:
             ticket = ticket_service.find_ticket(selected_ticket_id_arg)
             if ticket:
-                tickets = ticket_service.find_tickets_for_seat_manager(
-                    ticket.get_seat_manager().id, g.party_id
-                )
+                seat_manager_id = ticket.get_seat_manager().id
                 selected_ticket_id = ticket.id
             else:
                 flash_error(f'Ticket ID "{selected_ticket_id_arg}" not found.')
 
     elif seat_management_enabled:
-        tickets = ticket_service.find_tickets_for_seat_manager(
-            g.current_user.id, g.party_id
-        )
+        seat_manager_id = g.current_user.id
 
     seats = seat_service.get_seats_with_tickets_for_area(area.id)
+
+    if seat_manager_id is not None:
+        tickets = ticket_service.find_tickets_for_seat_manager(
+            seat_manager_id, g.party_id
+        )
+    else:
+        tickets = []
 
     users_by_id = service.get_users(seats, tickets)
 
