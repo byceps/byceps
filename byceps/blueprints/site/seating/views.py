@@ -102,26 +102,28 @@ def manage_seats_in_area(slug):
     tickets = []
     selected_ticket_id = None
 
-    if _is_seating_admin(g.current_user) and selected_ticket_code_arg:
-        ticket_code = selected_ticket_code_arg.upper()
-        ticket = ticket_service.find_ticket_by_code(ticket_code)
-        if ticket:
-            tickets = ticket_service.find_tickets_for_seat_manager(
-                ticket.get_seat_manager().id, g.party_id
-            )
-            selected_ticket_id = ticket.id
-        else:
-            flash_error(f'Ticket code "{ticket_code}" not found.')
+    if _is_seating_admin(g.current_user):
 
-    elif _is_seating_admin(g.current_user) and selected_ticket_id_arg:
-        ticket = ticket_service.find_ticket(selected_ticket_id_arg)
-        if ticket:
-            tickets = ticket_service.find_tickets_for_seat_manager(
-                ticket.get_seat_manager().id, g.party_id
-            )
-            selected_ticket_id = ticket.id
-        else:
-            flash_error(f'Ticket ID "{selected_ticket_id_arg}" not found.')
+        if selected_ticket_code_arg:
+            ticket_code = selected_ticket_code_arg.upper()
+            ticket = ticket_service.find_ticket_by_code(ticket_code)
+            if ticket:
+                tickets = ticket_service.find_tickets_for_seat_manager(
+                    ticket.get_seat_manager().id, g.party_id
+                )
+                selected_ticket_id = ticket.id
+            else:
+                flash_error(f'Ticket code "{ticket_code}" not found.')
+
+        elif selected_ticket_id_arg:
+            ticket = ticket_service.find_ticket(selected_ticket_id_arg)
+            if ticket:
+                tickets = ticket_service.find_tickets_for_seat_manager(
+                    ticket.get_seat_manager().id, g.party_id
+                )
+                selected_ticket_id = ticket.id
+            else:
+                flash_error(f'Ticket ID "{selected_ticket_id_arg}" not found.')
 
     elif seat_management_enabled:
         tickets = ticket_service.find_tickets_for_seat_manager(
