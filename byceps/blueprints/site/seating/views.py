@@ -155,10 +155,6 @@ def manage_seats_in_area(slug):
     }
 
 
-def _get_users(seats, managed_tickets):
-    return {}  # Not implemented.
-
-
 @blueprint.route(
     '/ticket/<uuid:ticket_id>/seat/<uuid:seat_id>', methods=['POST']
 )
