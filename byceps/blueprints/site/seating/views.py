@@ -101,23 +101,22 @@ def manage_seats_in_area(slug):
     selected_ticket_id = None
 
     if _is_seating_admin(g.current_user):
+        selected_ticket = None
 
         if selected_ticket_code_arg:
             ticket_code = selected_ticket_code_arg.upper()
-            ticket = ticket_service.find_ticket_by_code(ticket_code)
-            if ticket:
-                seat_manager_id = ticket.get_seat_manager().id
-                selected_ticket_id = ticket.id
-            else:
+            selected_ticket = ticket_service.find_ticket_by_code(ticket_code)
+            if selected_ticket is None:
                 flash_error(f'Ticket code "{ticket_code}" not found.')
 
         elif selected_ticket_id_arg:
-            ticket = ticket_service.find_ticket(selected_ticket_id_arg)
-            if ticket:
-                seat_manager_id = ticket.get_seat_manager().id
-                selected_ticket_id = ticket.id
-            else:
+            selected_ticket = ticket_service.find_ticket(selected_ticket_id_arg)
+            if selected_ticket is None:
                 flash_error(f'Ticket ID "{selected_ticket_id_arg}" not found.')
+
+        if selected_ticket is not None:
+            seat_manager_id = ticket.get_seat_manager().id
+            selected_ticket_id = ticket.id
 
     elif seat_management_enabled:
         seat_manager_id = g.current_user.id
