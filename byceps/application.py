@@ -133,7 +133,7 @@ def _get_blueprints_admin() -> Iterator[BlueprintReg]:
     yield from [
         ('admin.attendance',            '/admin/attendance'         ),
         ('admin.authorization',         '/admin/authorization'      ),
-        ('admin.board',                 '/admin/board'              ),
+        ('admin.board',                 '/admin/boards'             ),
         ('admin.brand',                 '/admin/brands'             ),
         ('admin.consent',               '/admin/consent'            ),
         ('admin.core',                  None                        ),
