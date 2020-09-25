@@ -24,20 +24,7 @@ def get_events(ticket_id: TicketID) -> Iterator[TicketEventData]:
     events = event_service.get_events_for_ticket(ticket_id)
     events.insert(0, _fake_ticket_creation_event(ticket_id))
 
-    user_ids = set(
-        _find_values_for_keys(
-            events,
-            {
-                'initiator_id',
-                'appointed_seat_manager_id',
-                'appointed_user_manager_id',
-                'appointed_user_id',
-                'checked_in_user_id',
-            },
-        )
-    )
-    users = user_service.find_users(user_ids, include_avatars=True)
-    users_by_id = {str(user.id): user for user in users}
+    users_by_id = _get_users_by_id(events)
 
     for event in events:
         data = {
@@ -61,6 +48,24 @@ def _fake_ticket_creation_event(ticket_id: TicketID) -> TicketEvent:
     return TicketEvent(ticket.created_at, 'ticket-created', ticket.id, data)
 
 
+def _get_users_by_id(events: Sequence[TicketEvent]) -> Dict[str, User]:
+    user_ids = set(
+        _find_values_for_keys(
+            events,
+            {
+                'initiator_id',
+                'appointed_seat_manager_id',
+                'appointed_user_manager_id',
+                'appointed_user_id',
+                'checked_in_user_id',
+            },
+        )
+    )
+
+    users = user_service.find_users(user_ids, include_avatars=True)
+    return {str(user.id): user for user in users}
+
+
 def _find_values_for_keys(
     events: Sequence[TicketEvent], keys: Set[str]
 ) -> Iterator[Any]:
@@ -74,22 +79,7 @@ def _find_values_for_keys(
 def _get_additional_data(
     event: TicketEvent, users_by_id: Dict[str, User]
 ) -> Iterator[Tuple[str, Any]]:
-    if event.event_type in {
-        'seat-manager-appointed',
-        'seat-manager-withdrawn',
-        'seat-occupied',
-        'seat-released',
-        'ticket-revoked',
-        'user-appointed',
-        'user-checked-in',
-        'user-check-in-reverted',
-        'user-manager-appointed',
-        'user-manager-withdrawn',
-        'user-withdrawn',
-    }:
-        yield from _get_additional_data_for_user_initiated_event(
-            event, users_by_id
-        )
+    yield from _get_initiators(event, users_by_id)
 
     if event.event_type == 'seat-manager-appointed':
         yield _look_up_user_for_id(
@@ -124,6 +114,27 @@ def _get_additional_data(
             users_by_id,
             'appointed_user_manager_id',
             'appointed_user_manager',
+        )
+
+
+def _get_initiators(
+    event: TicketEvent, users_by_id: Dict[str, User]
+) -> Iterator[Tuple[str, Any]]:
+    if event.event_type in {
+        'seat-manager-appointed',
+        'seat-manager-withdrawn',
+        'seat-occupied',
+        'seat-released',
+        'ticket-revoked',
+        'user-appointed',
+        'user-checked-in',
+        'user-check-in-reverted',
+        'user-manager-appointed',
+        'user-manager-withdrawn',
+        'user-withdrawn',
+    }:
+        yield from _get_additional_data_for_user_initiated_event(
+            event, users_by_id
         )
 
 
