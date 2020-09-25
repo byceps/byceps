@@ -8,7 +8,7 @@ byceps.services.party.service
 
 import dataclasses
 from datetime import date, datetime, timedelta
-from typing import Dict, List, Optional, Set
+from typing import Dict, List, Optional, Set, Union
 
 from ...database import db, paginate, Pagination
 from ...typing import BrandID, PartyID
@@ -143,13 +143,17 @@ def get_all_parties_with_brands() -> List[PartyWithBrand]:
     return [_db_entity_to_party_with_brand(party) for party in parties]
 
 
-def get_active_parties(brand_id: Optional[BrandID] = None) -> List[Party]:
+def get_active_parties(
+    brand_id: Optional[BrandID] = None, *, include_brands: bool = True
+) -> List[Union[Party, PartyWithBrand]]:
     """Return active (i.e. non-canceled, non-archived) parties."""
     query = DbParty.query
 
     if brand_id is not None:
-        query = query \
-            .filter_by(brand_id=brand_id)
+        query = query.filter_by(brand_id=brand_id)
+
+    if include_brands:
+        query = query.options(db.joinedload('brand'))
 
     parties = query \
         .filter_by(canceled=False) \
@@ -157,7 +161,13 @@ def get_active_parties(brand_id: Optional[BrandID] = None) -> List[Party]:
         .order_by(DbParty.starts_at) \
         .all()
 
-    return [_db_entity_to_party(party) for party in parties]
+
+    if include_brands:
+        transform = _db_entity_to_party_with_brand
+    else:
+        transform = _db_entity_to_party
+
+    return [transform(party) for party in parties]
 
 
 def get_archived_parties_for_brand(brand_id: BrandID) -> List[Party]:

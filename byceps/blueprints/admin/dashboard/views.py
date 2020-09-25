@@ -50,7 +50,7 @@ permission_registry.register_enum(AdminDashboardPermission)
 def view_global():
     """View dashboard for global entities."""
     current_sites = site_service.get_current_sites()
-    active_parties = party_service.get_active_parties()
+    active_parties = party_service.get_active_parties(include_brands=True)
 
     brands = brand_service.get_all_brands()
     party_count = party_service.count_parties()
@@ -98,7 +98,9 @@ def view_brand(brand_id):
     if brand is None:
         abort(404)
 
-    active_parties = party_service.get_active_parties(brand_id=brand.id)
+    active_parties = party_service.get_active_parties(
+        brand_id=brand.id, include_brands=True
+    )
 
     party_count = party_service.count_parties_for_brand(brand.id)
 

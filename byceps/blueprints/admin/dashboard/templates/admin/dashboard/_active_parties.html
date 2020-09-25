@@ -1,3 +1,4 @@
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% from 'macros/datetime.html' import render_date %}
 
 
@@ -8,6 +9,7 @@
   {%- for party in active_parties %}
   <li>
     <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}">
+      <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(party.brand, '32') }}</div>
       <div class="item">{{ party.title }}</div>
       <div class="supplement">{{ render_date(party.starts_at, smart=False) }}–{{ render_date(party.ends_at, smart=False) }}</div>
     </a>
