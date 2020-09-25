@@ -125,11 +125,7 @@ def create_form(brand_id, erroneous_form=None):
     brand = _get_brand_or_404(brand_id)
 
     form = erroneous_form if erroneous_form else CreateForm()
-    form.set_email_config_choices()
-    form.set_party_choices(brand.id)
-    form.set_board_choices(brand.id)
-    form.set_news_channel_choices(brand.id)
-    form.set_storefront_choices()
+    _fill_in_common_form_choices(form, brand.id)
 
     return {
         'brand': brand,
@@ -144,11 +140,7 @@ def create(brand_id):
     brand = _get_brand_or_404(brand_id)
 
     form = CreateForm(request.form)
-    form.set_email_config_choices()
-    form.set_party_choices(brand.id)
-    form.set_board_choices(brand.id)
-    form.set_news_channel_choices(brand.id)
-    form.set_storefront_choices()
+    _fill_in_common_form_choices(form, brand.id)
 
     if not form.validate():
         return create_form(brand_id, form)
@@ -207,11 +199,7 @@ def update_form(site_id, erroneous_form=None):
 
     form = erroneous_form if erroneous_form else UpdateForm(obj=site)
     form.set_brand_choices()
-    form.set_email_config_choices()
-    form.set_party_choices(site.brand_id)
-    form.set_board_choices(site.brand_id)
-    form.set_news_channel_choices(site.brand_id)
-    form.set_storefront_choices()
+    _fill_in_common_form_choices(form, site.brand_id)
 
     return {
         'site': site,
@@ -227,11 +215,7 @@ def update(site_id):
 
     form = UpdateForm(request.form)
     form.set_brand_choices()
-    form.set_email_config_choices()
-    form.set_party_choices(site.brand_id)
-    form.set_board_choices(site.brand_id)
-    form.set_news_channel_choices(site.brand_id)
-    form.set_storefront_choices()
+    _fill_in_common_form_choices(form, site.brand_id)
 
     if not form.validate():
         return update_form(site.id, form)
@@ -285,6 +269,14 @@ def update(site_id):
     flash_success(f'Die Site "{site.title}" wurde aktualisiert.')
 
     return redirect_to('.view', site_id=site.id)
+
+
+def _fill_in_common_form_choices(form, brand_id):
+    form.set_email_config_choices()
+    form.set_party_choices(brand_id)
+    form.set_board_choices(brand_id)
+    form.set_news_channel_choices(brand_id)
+    form.set_storefront_choices()
 
 
 def _get_site_or_404(site_id):
