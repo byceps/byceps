@@ -35,6 +35,7 @@ permission_registry.register_enum(UserBadgePermission)
 
 
 @blueprint.route('/badges')
+@permission_required(UserBadgePermission.view)
 @templated
 def index():
     """List all badges."""
@@ -70,6 +71,7 @@ def index():
 
 
 @blueprint.route('/badges/<uuid:badge_id>')
+@permission_required(UserBadgePermission.view)
 @templated
 def view(badge_id):
     """Show badge details."""

@@ -13,4 +13,5 @@ UserBadgePermission = create_permission_enum('user_badge', [
     'award',
     'create',
     'update',
+    'view',
 ])

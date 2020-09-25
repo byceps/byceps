@@ -337,6 +337,10 @@
       "title": "Abzeichen bearbeiten"
     },
     {
+      "id": "user_badge.view",
+      "title": "Abzeichen anzeigen"
+    },
+    {
       "id": "user.set_password",
       "title": "Neues Passwort setzen"
     },
@@ -624,7 +628,8 @@
       "assigned_permissions": [
         "user_badge.award",
         "user_badge.create",
-        "user_badge.update"
+        "user_badge.update",
+        "user_badge.view"
       ],
       "id": "user_badge_admin",
       "title": "Abzeichen verwalten"
