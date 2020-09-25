@@ -28,6 +28,9 @@ def test_create_minimal_config(admin_app, email_admin):
     assert config.sender.name is None
     assert config.contact_address is None
 
+    # Clean up.
+    email_service.delete_config(config_id)
+
 
 def test_create_full_config(admin_app, email_admin):
     config_id = 'acme-full'
@@ -50,3 +53,6 @@ def test_create_full_config(admin_app, email_admin):
     assert config.sender.address == 'noreply@acme.example'
     assert config.sender.name == 'ACME Corp.'
     assert config.contact_address == 'info@acme.example'
+
+    # Clean up.
+    email_service.delete_config(config_id)
