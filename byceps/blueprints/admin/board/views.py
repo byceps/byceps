@@ -132,7 +132,7 @@ def board_create(brand_id):
 # categories
 
 
-@blueprint.route('/for_board/<board_id>/create')
+@blueprint.route('/categories/for_board/<board_id>/create')
 @permission_required(BoardCategoryPermission.create)
 @templated
 def category_create_form(board_id, erroneous_form=None):
@@ -150,7 +150,7 @@ def category_create_form(board_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/for_board/<board_id>', methods=['POST'])
+@blueprint.route('/categories/for_board/<board_id>', methods=['POST'])
 @permission_required(BoardCategoryPermission.create)
 def category_create(board_id):
     """Create a category."""
