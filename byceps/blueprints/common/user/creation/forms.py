@@ -48,8 +48,6 @@ def assemble_user_create_form(
                    max=screen_name_validator.MAX_LENGTH),
             ScreenNameValidator(),
         ])
-        first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
-        last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=80)])
         email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6, max=120)])
         password = PasswordField('Passwort', [InputRequired(), Length(min=8)])
         is_bot = BooleanField('Bot')
@@ -78,9 +76,11 @@ def assemble_user_create_form(
             name = _generate_consent_subject_field_name(subject_id)
             return getattr(self, name)
 
-    if not real_name_required:
-        del UserCreateForm.first_names
-        del UserCreateForm.last_name
+    if real_name_required:
+        first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
+        last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=80)])
+        setattr(UserCreateForm, 'first_names', first_names)
+        setattr(UserCreateForm, 'last_name', last_name)
 
     for subject in required_consent_subjects:
         field_name = _generate_consent_subject_field_name(subject.id)
