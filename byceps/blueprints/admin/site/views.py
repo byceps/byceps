@@ -153,15 +153,9 @@ def create(brand_id):
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
     login_enabled = form.login_enabled.data
-    news_channel_id = form.news_channel_id.data.strip()
-    if not news_channel_id:
-        news_channel_id = None
-    board_id = form.board_id.data.strip()
-    if not board_id:
-        board_id = None
-    storefront_id = form.storefront_id.data.strip()
-    if not storefront_id:
-        storefront_id = None
+    news_channel_id = form.news_channel_id.data.strip() or None
+    board_id = form.board_id.data.strip() or None
+    storefront_id = form.storefront_id.data.strip() or None
 
     if party_id:
         party = party_service.find_party(party_id)
@@ -228,15 +222,9 @@ def update(site_id):
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
     login_enabled = form.login_enabled.data
-    news_channel_id = form.news_channel_id.data.strip()
-    if not news_channel_id:
-        news_channel_id = None
-    board_id = form.board_id.data.strip()
-    if not board_id:
-        board_id = None
-    storefront_id = form.storefront_id.data.strip()
-    if not storefront_id:
-        storefront_id = None
+    news_channel_id = form.news_channel_id.data.strip() or None
+    board_id = form.board_id.data.strip() or None
+    storefront_id = form.storefront_id.data.strip() or None
     archived = form.archived.data
 
     if party_id:
