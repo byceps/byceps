@@ -15,7 +15,7 @@ from byceps.services.board import (
     posting_command_service,
     topic_command_service,
 )
-from byceps.services.brand import settings_service as brand_settings_service
+from byceps.services.webhooks import service as webhook_service
 from byceps.signals import board as board_signals
 
 
@@ -23,7 +23,7 @@ WEBHOOK_URL = 'https://webhoooks.test/board'
 
 
 def test_announce_topic_created(
-    brand_settings, admin_app, board, topic, creator
+    webhook_settings, admin_app, board, topic, creator
 ):
     expected_url = f'https://website.test/board/topics/{topic.id}'
     expected_content = (
@@ -51,7 +51,7 @@ def test_announce_topic_created(
 
 
 def test_announce_posting_created(
-    brand_settings, admin_app, board, posting, creator
+    webhook_settings, admin_app, board, posting, creator
 ):
     expected_url = f'https://website.test/board/postings/{posting.id}'
     expected_content = (
@@ -84,25 +84,21 @@ def test_announce_posting_created(
 
 
 @pytest.fixture(scope='module')
-def brand_settings(board):
-    brand_id = board.brand_id
+def webhook_settings(board):
+    scope = 'board'
+    scope_id = str(board.id)
+    format = 'discord'
+    text_prefix = '[Forum] '
+    url = WEBHOOK_URL
+    enabled = True
 
-    name_enabled = 'announce_discord_enabled'
-    name_text_prefix = 'announce_discord_text_prefix'
-    name_webhook_url = 'announce_discord_webhook_url'
-
-    brand_settings_service.create_setting(brand_id, name_enabled, 'true')
-    brand_settings_service.create_setting(
-        brand_id, name_text_prefix, '[Forum] '
-    )
-    brand_settings_service.create_setting(
-        brand_id, name_webhook_url, WEBHOOK_URL
+    webhook = webhook_service.create_outgoing_webhook(
+        scope, scope_id, format, url, enabled, text_prefix=text_prefix
     )
 
     yield
 
-    for name in name_enabled, name_text_prefix, name_webhook_url:
-        brand_settings_service.remove_setting(brand_id, name)
+    webhook_service.delete_outgoing_webhook(webhook.id)
 
 
 @pytest.fixture(scope='module')
