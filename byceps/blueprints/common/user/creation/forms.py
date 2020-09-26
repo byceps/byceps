@@ -36,62 +36,65 @@ class ScreenNameValidator:
             )
 
 
+class UserCreateForm(LocalizedForm):
+    screen_name = StringField('Benutzername', [
+        InputRequired(),
+        Length(min=screen_name_validator.MIN_LENGTH,
+               max=screen_name_validator.MAX_LENGTH),
+        ScreenNameValidator(),
+    ])
+    email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6, max=120)])
+    password = PasswordField('Passwort', [InputRequired(), Length(min=8)])
+    is_bot = BooleanField('Bot')
+
+    @staticmethod
+    def validate_screen_name(form, field):
+        if user_service.is_screen_name_already_assigned(field.data):
+            raise ValueError('Dieser Benutzername kann nicht verwendet werden.')
+
+    @staticmethod
+    def validate_email_address(form, field):
+        if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
+            raise ValueError('Die E-Mail-Adresse ist ungültig.')
+
+        if user_service.is_email_address_already_assigned(field.data):
+            raise ValueError(
+                'Diese E-Mail-Adresse kann nicht verwendet werden.'
+            )
+
+    @staticmethod
+    def validate_is_bot(form, field):
+        if field.data:
+            raise ValueError('Bots sind nicht erlaubt.')
+
+    def get_field_for_consent_subject_id(self, subject_id: SubjectID):
+        name = _generate_consent_subject_field_name(subject_id)
+        return getattr(self, name)
+
+
 def assemble_user_create_form(
     real_name_required: bool,
     required_consent_subjects: Set[Subject],
     newsletter_offered: bool,
 ):
-    class UserCreateForm(LocalizedForm):
-        screen_name = StringField('Benutzername', [
-            InputRequired(),
-            Length(min=screen_name_validator.MIN_LENGTH,
-                   max=screen_name_validator.MAX_LENGTH),
-            ScreenNameValidator(),
-        ])
-        email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6, max=120)])
-        password = PasswordField('Passwort', [InputRequired(), Length(min=8)])
-        is_bot = BooleanField('Bot')
-
-        @staticmethod
-        def validate_screen_name(form, field):
-            if user_service.is_screen_name_already_assigned(field.data):
-                raise ValueError('Dieser Benutzername kann nicht verwendet werden.')
-
-        @staticmethod
-        def validate_email_address(form, field):
-            if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
-                raise ValueError('Die E-Mail-Adresse ist ungültig.')
-
-            if user_service.is_email_address_already_assigned(field.data):
-                raise ValueError(
-                    'Diese E-Mail-Adresse kann nicht verwendet werden.'
-                )
-
-        @staticmethod
-        def validate_is_bot(form, field):
-            if field.data:
-                raise ValueError('Bots sind nicht erlaubt.')
-
-        def get_field_for_consent_subject_id(self, subject_id: SubjectID):
-            name = _generate_consent_subject_field_name(subject_id)
-            return getattr(self, name)
+    extra_fields = {}
 
     if real_name_required:
-        first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
-        last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=80)])
-        setattr(UserCreateForm, 'first_names', first_names)
-        setattr(UserCreateForm, 'last_name', last_name)
+        extra_fields['first_names'] = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
+        extra_fields['last_name'] = StringField('Nachname', [InputRequired(), Length(min=2, max=80)])
 
     for subject in required_consent_subjects:
         field_name = _generate_consent_subject_field_name(subject.id)
-        field = BooleanField('', [InputRequired()])
-        setattr(UserCreateForm, field_name, field)
+        extra_fields[field_name] = BooleanField('', [InputRequired()])
 
     if newsletter_offered:
-        subscribe_to_newsletter = BooleanField('Newsletter')
-        setattr(UserCreateForm, 'subscribe_to_newsletter', subscribe_to_newsletter)
+        extra_fields['subscribe_to_newsletter'] = BooleanField('Newsletter')
 
-    return UserCreateForm
+    # Create a configuration-specific subclass instead of
+    # modifying the original shared class.
+    subclass_name = UserCreateForm.__name__
+    subclass_bases = (UserCreateForm,)
+    return type(subclass_name, subclass_bases, extra_fields)
 
 
 def _generate_consent_subject_field_name(subject_id: SubjectID) -> str:
