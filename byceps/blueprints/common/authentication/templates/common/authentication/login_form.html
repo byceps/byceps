@@ -44,7 +44,7 @@
     <p>Du hast noch keinen Benutzerzugang? Dann <a href="{{ url_for('user_creation.create_form') }}">registriere dich</a>!</p>
     <p>Du hast die Bestätigungs-E-Mail noch nicht erhalten? Dann <a href="{{ url_for('user_email_address.request_confirmation_email_form') }}">fordere sie erneut an</a>.</p>
       {%- endif %}
-    <p>Du hast dein Passwort vergessen? Dann <a href="{{ url_for('.request_password_reset_form') }}">setze ein neues</a>.</p>
+    <p>Du hast dein Passwort vergessen? Dann <a href="{{ url_for('authentication.password.request_reset_form') }}">setze ein neues</a>.</p>
     {%- endif %}
   {%- else %}
 {{ render_notification('Die Anmeldung ist deaktiviert.', category='warning', icon='warning') }}

@@ -7,7 +7,7 @@
 
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.request_password_reset') }}" method="post">
+  <form action="{{ url_for('.request_reset') }}" method="post">
     {%- call form_fieldset() %}
       {{ form_field(form.screen_name, maxlength=40, required='required', autofocus='autofocus') }}
     {%- endcall %}
