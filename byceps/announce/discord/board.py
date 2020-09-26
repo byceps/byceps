@@ -2,48 +2,20 @@
 byceps.announce.discord.board
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Announce board events on Discord via its webhooks API.
+Announce board events on Discord.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
-from flask import current_app
-import requests
-
 from ...events.board import BoardPostingCreated, BoardTopicCreated
 from ...services.board.transfer.models import BoardID
-from ...services.webhooks import service as webhook_service
 from ...signals import board as board_signals
 from ...util.jobqueue import enqueue
 
 from ..helpers import get_screen_name_or_fallback
 
-
-def send_message(scope: str, scope_id: str, text: str) -> None:
-    """Send text to the webhook API.
-
-    The endpoint URL already includes the target channel.
-    """
-    format = 'discord'
-    webhook = webhook_service.find_enabled_outgoing_webhook(scope, scope_id, format)
-    if webhook is None:
-        current_app.logger.warning(
-            f'No enabled Discord webhook found for scope "{scope}" and '
-            f'scope ID "{scope_id}". Not sending message to Discord.'
-        )
-        return
-
-    text_prefix = webhook.text_prefix
-    if text_prefix:
-        text = text_prefix + text
-
-    data = {'content': text}
-
-    requests.post(webhook.url, json=data)  # Ignore response code for now.
-
-
-# board events
+from ._util import send_message
 
 
 # Note: URLs are wrapped in `<…>` because that prevents
