@@ -102,6 +102,8 @@ def manage_seats_in_area(slug):
         if selected_ticket is not None:
             seat_manager_id = selected_ticket.get_seat_manager().id
             selected_ticket_id = selected_ticket.id
+        elif seat_management_enabled:
+            seat_manager_id = g.current_user.id
 
     elif seat_management_enabled:
         seat_manager_id = g.current_user.id
