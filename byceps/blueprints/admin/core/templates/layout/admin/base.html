@@ -12,35 +12,47 @@
   </head>
   <body>
 
+    <div class="page-layout">
+
+      <section class="page-header">
 {%- include 'layout/admin/_header.html' %}
+      </section>
 
-    <div id="page" class="container">
-      <div id="page-grid">
+      <main class="page-body">
+        <div class="container">
 
-        {%- if not layout_sidebar_hide|default(False) %}
-        <div id="page-grid-sidebar">
-          <aside id="sidebar">
-{%- include 'layout/admin/_navigation.html' %}
-          </aside>
-        </div><!-- /#page-grid-sidebar -->
-        {%- endif %}
+          <div class="page-body-grid">
 
-        <div id="page-grid-main">
-          <main>
-{%- include 'layout/_notifications.html' %}
-{%- block before_body %}{% endblock %}
-            <div{% if not layout_main_raw|default(False) %} id="main"{% endif %}>
-{%- block body %}{% endblock %}
-            </div><!-- /#main -->
-          </main>
-        </div><!-- /#page-grid-main -->
+            {%- if not layout_sidebar_hide|default(False) %}
+            <div class="page-body-grid-sidebar">
+              <aside id="sidebar">
+    {%- include 'layout/admin/_navigation.html' %}
+              </aside>
+            </div>{# .page-body-grid-sidebar #}
+            {%- endif %}
 
-      </div><!-- /#page-grid -->
-    </div><!-- /#page -->
+            <div class="page-body-grid-main">
+              <main>
+    {%- include 'layout/_notifications.html' %}
+    {%- block before_body %}{% endblock %}
+                <div{% if not layout_main_raw|default(False) %} id="main"{% endif %}>
+    {%- block body %}{% endblock %}
+                </div>{# #main #}
+              </main>
+            </div>{# .page-body-grid-main #}
 
-    <footer id="footer" class="container">
-      <a href="https://byceps.nwsnet.de/">BYCEPS</a> &middot; Copyright &copy; 2006&ndash;2020 Jochen &quot;Y0Gi&quot; Kupperschmidt
-    </footer>
+          </div>{# .page-body-grid #}
+
+        </div>
+      </main>{# .page-body #}
+
+      <section class="page-footer">
+        <footer id="footer" class="container">
+          <a href="https://byceps.nwsnet.de/">BYCEPS</a> &middot; Copyright &copy; 2006&ndash;2020 Jochen &quot;Y0Gi&quot; Kupperschmidt
+        </footer>
+      </section>
+
+    </div>{# .page-layout #}
 
     <script src="{{ url_for('static', filename='behavior/utils.js') }}"></script>
     <script src="{{ url_for('static', filename='behavior/authentication.js') }}"></script>
