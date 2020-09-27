@@ -26,6 +26,12 @@ def test_explicit_url_linking():
     assert render_html(text) == expected
 
 
+def test_explicit_url_linking_applies_no_cosmetics():
+    text = 'before [url]http://example.com/dash--dash.html[/url] after'
+    expected = 'before <a rel="nofollow" href="http://example.com/dash--dash.html">http://example.com/dash--dash.html</a> after'
+    assert render_html(text) == expected
+
+
 def test_labeled_url_linking():
     text = 'before [url=http://example.com/index.html]Example[/url] after'
     expected = 'before <a rel="nofollow" href="http://example.com/index.html">Example</a> after'
@@ -35,6 +41,12 @@ def test_labeled_url_linking():
 def test_image():
     text = 'before [img]http://example.com/image.png[/img] after'
     expected = 'before <img src="http://example.com/image.png"> after'
+    assert render_html(text) == expected
+
+
+def test_image_applies_no_cosmetics():
+    text = '[img]http://example.com/double--dash.png[/img]'
+    expected = '<img src="http://example.com/double--dash.png">'
     assert render_html(text) == expected
 
 
