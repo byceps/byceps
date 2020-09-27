@@ -1,6 +1,11 @@
 {%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/misc.html' import render_notification %}
 {%- from 'macros/user.html' import render_user_screen_name %}
 
+
+{%- if selected_ticket_id %}
+{{ render_notification('Du verwaltest dieses Ticket als Sitzplatz-Administrator.', category='warning', icon='warning') }}
+{%- endif %}
 
 {%- if managed_tickets %}
   {%- with managed_tickets_total = managed_tickets|length %}
