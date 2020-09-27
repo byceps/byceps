@@ -6,7 +6,7 @@
 <div class="current-user">
   {%- if g.current_user.is_active %}
   <div class="dropdown left">
-    <button href="{{ url_for('user_current.view') }}" class="dropdown-toggle button button--clear">
+    <button href="{{ url_for('user_settings.view') }}" class="dropdown-toggle button button--clear">
       {{ render_user_avatar_32(g.current_user) }}
       {{ render_icon('caret-down') }}
     </button>
@@ -19,7 +19,7 @@
       </li>
       <li class="divider"></li>
       <li><a href="{{ url_for('user_admin.view', user_id=g.current_user.id) }}">{{ render_icon('user-profile') }} Profil</a></li>
-      <li><a href="{{ url_for('user_current.view') }}">{{ render_icon('user') }} Einstellungen</a></li>
+      <li><a href="{{ url_for('user_settings.view') }}">{{ render_icon('user') }} Einstellungen</a></li>
       <li class="divider"></li>
       <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
     </ol>

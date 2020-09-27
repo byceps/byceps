@@ -52,6 +52,7 @@ def _get_blueprints_common() -> Iterator[BlueprintReg]:
         ('common.user.creation',            '/users'                    ),
         ('common.user.current',             '/users'                    ),
         ('common.user.email_address',       '/users/email_address'      ),
+        ('common.user.settings',            '/users/me/settings'        ),
     ]
 
 
