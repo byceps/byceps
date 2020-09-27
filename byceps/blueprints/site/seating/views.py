@@ -140,18 +140,10 @@ def manage_seats_in_area(slug):
 
 
 def _get_selected_ticket():
-    selected_ticket_code_arg = request.args.get('ticket_code')
-    selected_ticket_id_arg = request.args.get('ticket_id')
-
     selected_ticket = None
 
-    if selected_ticket_code_arg:
-        ticket_code = selected_ticket_code_arg.upper()
-        selected_ticket = ticket_service.find_ticket_by_code(ticket_code)
-        if selected_ticket is None:
-            flash_error(f'Ticket code "{ticket_code}" not found.')
-
-    elif selected_ticket_id_arg:
+    selected_ticket_id_arg = request.args.get('ticket_id')
+    if selected_ticket_id_arg:
         selected_ticket = ticket_service.find_ticket(selected_ticket_id_arg)
         if selected_ticket is None:
             flash_error(f'Ticket ID "{selected_ticket_id_arg}" not found.')
