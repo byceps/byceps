@@ -304,7 +304,7 @@ function send_request(method, url, state_change_callback) {
 
 
 function reload_with_selected_ticket(ticket_id) {
-  location.href = location.href.split('?')[0] + '?ticket=' + ticket_id;
+  location.href = location.href.split('?')[0] + '?ticket_id=' + ticket_id;
 }
 
 
