@@ -156,8 +156,8 @@ def _get_selected_ticket():
         if selected_ticket is None:
             flash_error(f'Ticket ID "{selected_ticket_id_arg}" not found.')
 
-    if (selected_ticket is not None) and selected_ticket .revoked:
-        flash_error(f'Ticket "{ticket_code}" wurde wiederrufen.')
+    if (selected_ticket is not None) and selected_ticket.revoked:
+        flash_error(f'Ticket "{selected_ticket.code}" wurde widerrufen.')
         selected_ticket = None
 
     return selected_ticket
