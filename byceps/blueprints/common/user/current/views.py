@@ -29,7 +29,7 @@ from .forms import DetailsForm, ChangeScreenNameForm
 blueprint = create_blueprint('user_current', __name__)
 
 
-@blueprint.route('/me')
+@blueprint.route('/me/settings')
 @login_required
 @templated
 def view():
@@ -81,7 +81,7 @@ def view_as_json():
     )
 
 
-@blueprint.route('/me/screen_name')
+@blueprint.route('/me/settings/screen_name')
 @templated
 def change_screen_name_form(erroneous_form=None):
     """Show a form to change the current user's screen name."""
@@ -94,7 +94,7 @@ def change_screen_name_form(erroneous_form=None):
     }
 
 
-@blueprint.route('/me/screen_name', methods=['POST'])
+@blueprint.route('/me/settings/screen_name', methods=['POST'])
 def change_screen_name():
     """Change the current user's screen name."""
     current_user = _get_current_user_or_404()
@@ -118,7 +118,7 @@ def change_screen_name():
     return redirect_to('.view')
 
 
-@blueprint.route('/me/details')
+@blueprint.route('/me/settings/details')
 @templated
 def details_update_form(erroneous_form=None):
     """Show a form to update the current user's details."""
@@ -134,7 +134,7 @@ def details_update_form(erroneous_form=None):
     }
 
 
-@blueprint.route('/me/details', methods=['POST'])
+@blueprint.route('/me/settings/details', methods=['POST'])
 def details_update():
     """Update the current user's details."""
     current_user = _get_current_user_or_404()
