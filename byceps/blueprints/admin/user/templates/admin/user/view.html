@@ -2,6 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/order.html' import render_order_payment_state %}
 {% from 'macros/admin/user_badge.html' import render_user_badges_list %}
+{% from 'macros/icons.html' import render_icon %}
 {% set current_tab = 'profile' %}
 {% set current_tab_user_id = user.id %}
 {% set title = 'Benutzer - %s'|format(user.screen_name) %}
