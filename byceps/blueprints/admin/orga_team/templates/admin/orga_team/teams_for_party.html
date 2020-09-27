@@ -15,11 +15,9 @@
       }
 
       .members {
-        --column-gap: 2rem;
-        column-gap: var(--column-gap);
         display: grid;
-        grid-template-columns: repeat(2, calc(50% - var(--column-gap) / 2));
-        row-gap: 1rem;
+        gap: 1rem 2rem;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       }
     </style>
 {%- endblock %}
