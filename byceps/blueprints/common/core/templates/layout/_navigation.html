@@ -1,4 +1,7 @@
-{%- from 'macros/navigation.html' import render_navigation_item %}
+{%- macro render_nav_item(url, label, nav_item_id) -%}
+<li{% if current_page == nav_item_id %} class="current"{% endif %}><a href="{{ url }}">{{ label }}</a></li>
+{%- endmacro -%}
+
 {%- set navigation_items = [
     ('news.index',            'Neuigkeiten',  'news'      ),
     ('party.info',            'Partydetails', 'party'     ),
@@ -15,7 +18,7 @@
   <nav class="main">
     <ol>
       {%- for endpoint, label, id in navigation_items %}
-      {{ render_navigation_item(url_for(endpoint), label, id, current_page) }}
+      {{ render_nav_item(url_for(endpoint), label, id) }}
       {%- endfor %}
     </ol>
   </nav>
