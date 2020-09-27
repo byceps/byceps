@@ -5,7 +5,7 @@
   <nav class="main">
     <ol>
       {%- for item in navigation.get_items(g.current_user) %}
-      <li><a href="{{ item.endpoint }}" title="{{ item.label }}" class="nav-item{% if (item.id is not none) and (item.id is is_current_page(current_page)) %} nav-item--current{% endif %}">
+      <li><a href="{{ item.endpoint }}" title="{{ item.label }}" class="nav-item{% if (item.id is not none) and (item.id == current_page) %} nav-item--current{% endif %}">
         {%- if item.icon %}<span class="nav-item-icon">{{ render_icon(item.icon) }}</span>{% endif -%}
         <span class="nav-item-label">{{- item.label -}}</span>
       </a></li>
