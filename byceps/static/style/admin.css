@@ -184,13 +184,11 @@ main {
   font-size: 0.875rem; /* 14px / 16px */
   flex: 1;
   margin: 20px 0 0 20px;
-  padding-bottom: 12px;
 }
 
 .sidebar-section-header {
   background-color: #555555;
   border-bottom: #cccccc solid 1px;
-  margin-bottom: 0.5rem;
   padding: 0.5rem 1rem;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
@@ -226,11 +224,6 @@ main {
   color: #333333;
 }
 
-#sidebar section p {
-  margin: 0;
-  padding: 0 15px;
-}
-
 @media (min-width: 60rem) { /* 960px / 16px */
   #sidebar {
     flex-direction: column;
@@ -241,6 +234,7 @@ main {
 /* main navigation */
 
 nav.main ol {
+  margin: 0.5rem 0;
   width: 100%;
 }
 nav.main li {
