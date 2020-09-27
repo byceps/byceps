@@ -213,7 +213,7 @@ main {
   margin: 0;
 }
 
-.button .sidebar-section-title {
+.sidebar-section-title.button {
   text-align: left;
   white-space: normal;
 }
