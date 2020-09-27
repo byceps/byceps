@@ -1,0 +1,61 @@
+{%- from 'macros/admin/brand.html' import render_brand_avatar %}
+{%- from 'macros/icons.html' import render_icon -%}
+
+
+    <header id="header">
+      <div id="header-content" class="container">
+        <div id="header-grid">
+          <div class="column">
+
+{%- include 'layout/admin/_current_user.html' %}
+
+          </div><!-- /.column -->
+          <div class="column">
+
+            {%- if g.current_user.has_permission(UserPermission.view) %}
+            <form action="{{ url_for('user_admin.index') }}" class="single-row unobtrusive">
+              <input type="search" name="search_term" placeholder="Benutzer-, Vor-, Nachname, E-Mail-Adresse" title="Benutzer suchen: Benutzer-, Vor-, Nachname, E-Mail-Adresse" style="width: 16rem;">
+              <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
+            </form>
+            {%- endif %}
+
+          </div><!-- /.column -->
+          <div class="column">
+
+{%- with
+  brand = current_page_brand|default,
+  party = current_page_party|default,
+  shop = current_page_shop|default,
+  site = current_page_site|default
+%}
+  {%- if site %}
+            <span class="label-and-name">
+              <span class="label">Site</span>
+              <span class="name">{{ site.title }}</span>
+            </span>
+  {%- elif shop %}
+            <span class="label-and-name">
+              <span class="label">Shop</span>
+              <span class="name">{{ shop.title }}</span>
+            </span>
+  {%- elif party %}
+            {%- with brand = get_brand_for_party(party) %}
+            <div style="float: left; margin-left: 0.5rem; margin-right: 0.2rem;">{{ render_brand_avatar(brand, '32') }}</div>
+            <span class="label-and-name">
+              <span class="label">Party</span>
+              <span class="name">{{ party.title }}</span>
+            </span>
+            {%- endwith %}
+  {%- elif brand %}
+            <div style="float: left; margin-left: 0.5rem; margin-right: 0.2rem;">{{ render_brand_avatar(brand, '32') }}</div>
+            <span class="label-and-name">
+              <span class="label">Marke</span>
+              <span class="name">{{ brand.title }}</span>
+            </span>
+  {%- endif %}
+{%- endwith %}
+
+          </div><!-- /.column -->
+        </div><!-- /#header-grid -->
+      </div><!-- /#header-content -->
+    </header>
