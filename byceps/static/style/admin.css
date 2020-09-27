@@ -184,11 +184,13 @@ main {
   font-size: 0.875rem; /* 14px / 16px */
   flex: 1;
   margin: 20px 0 0 20px;
+  overflow: hidden;
 }
 
 .sidebar-section-header {
   background-color: #555555;
   border-bottom: #cccccc solid 1px;
+  line-height: 1;
   padding: 0.5rem 1rem;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
@@ -199,14 +201,14 @@ main {
 }
 
 .sidebar-section-category {
+  color: #aaaaaa;
   font-size: 0.75rem; /* 12px / 16px */
-  margin-bottom: -0.125rem;
-  margin-top: 0.25rem;
-  opacity: 0.5;
+  margin-bottom: 0.1rem;
+  margin-top: 0.3rem;
 }
 
 .sidebar-section-title {
-  font-size: 1rem; /* 16px */
+  font-size: 0.875rem; /* 14px / 16px */
   font-weight: normal;
   margin: 0;
 }
@@ -217,7 +219,7 @@ main {
 }
 
 .sidebar-section-header .dropdown {
-  margin-left: calc(-0.3rem - 1px);
+  margin-left: calc(-0.3rem);
 }
 
 .sidebar-section-title .dropdown > ol {
