@@ -53,7 +53,7 @@
   </div>
 
   {%- if teams_and_members %}
-    {%- for team, members in teams_and_members|sort(attribute='0.title') %}
+    {%- for team, members in teams_and_members %}
   <div class="box team">
       {%- set member_total = members|length %}
 
@@ -85,7 +85,7 @@
 
       {%- if members %}
     <div class="members">
-        {%- for member in members|sort(attribute='user.screen_name') %}
+        {%- for member in members %}
       <div class="row row--space-between">
         <div class="column-auto">
           <div class="row">

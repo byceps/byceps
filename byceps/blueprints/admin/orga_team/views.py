@@ -49,6 +49,17 @@ def teams_for_party(party_id):
         party.id
     )
 
+    def sort_members(members):
+        return sorted(
+            members,
+            key=lambda m: user_service.get_sort_key_for_screen_name(m.user),
+        )
+
+    teams_and_members = sorted(teams_and_members, key=lambda tam: tam[0].title)
+    teams_and_members = [
+        (teams, sort_members(members)) for teams, members in teams_and_members
+    ]
+
     return {
         'party': party,
         'teams_and_members': teams_and_members,
