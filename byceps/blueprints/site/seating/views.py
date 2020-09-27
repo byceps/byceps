@@ -111,9 +111,7 @@ def manage_seats_in_area(slug):
 
     seats = seat_service.get_seats_with_tickets_for_area(area.id)
 
-    if selected_ticket is not None:
-        tickets = [selected_ticket]
-    elif seat_manager_id is not None:
+    if seat_manager_id is not None:
         tickets = ticket_service.find_tickets_for_seat_manager(
             seat_manager_id, g.party_id
         )
