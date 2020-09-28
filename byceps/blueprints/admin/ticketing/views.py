@@ -37,15 +37,17 @@ blueprint = create_blueprint('ticketing_admin', __name__)
 permission_registry.register_enum(TicketingPermission)
 
 
+# -------------------------------------------------------------------- #
+# tickets
+
+
 @blueprint.route('/tickets/for_party/<party_id>', defaults={'page': 1})
 @blueprint.route('/tickets/for_party/<party_id>/pages/<int:page>')
 @permission_required(TicketingPermission.view)
 @templated
 def index_for_party(party_id, page):
     """List tickets for that party."""
-    party = party_service.find_party(party_id)
-    if party is None:
-        abort(404)
+    party = _get_party_or_404(party_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
 
@@ -88,6 +90,10 @@ def view_ticket(ticket_id):
     }
 
 
+# -------------------------------------------------------------------- #
+# user appointment
+
+
 @blueprint.route('/tickets/<uuid:ticket_id>/appoint_user')
 @permission_required(TicketingPermission.checkin)
 @templated
@@ -123,6 +129,10 @@ def appoint_user(ticket_id):
     )
 
     return redirect(url_for('.view_ticket', ticket_id=ticket.id))
+
+
+# -------------------------------------------------------------------- #
+# checked-in flag
 
 
 @blueprint.route(
@@ -178,6 +188,30 @@ def unset_user_checked_in_flag(ticket_id):
     flash_success('Der Check-In wurde rückgängig gemacht.')
 
 
+# -------------------------------------------------------------------- #
+# bundles
+
+
+@blueprint.route('/bundles/for_party/<party_id>', defaults={'page': 1})
+@blueprint.route('/bundles/for_party/<party_id>/pages/<int:page>')
+@permission_required(TicketingPermission.view)
+@templated
+def index_bundle_for_party(party_id, page):
+    """List ticket bundles for that party."""
+    party = _get_party_or_404(party_id)
+
+    per_page = request.args.get('per_page', type=int, default=15)
+
+    bundles = ticket_bundle_service.get_bundles_for_party_paginated(
+        party.id, page, per_page
+    )
+
+    return {
+        'party': party,
+        'bundles': bundles,
+    }
+
+
 @blueprint.route('/bundles/<uuid:bundle_id>')
 @permission_required(TicketingPermission.view)
 @templated
@@ -196,6 +230,19 @@ def view_bundle(bundle_id):
         'bundle': bundle,
         'tickets': tickets,
     }
+
+
+# -------------------------------------------------------------------- #
+# helpers
+
+
+def _get_party_or_404(party_id):
+    party = party_service.find_party(party_id)
+
+    if party is None:
+        abort(404)
+
+    return party
 
 
 def _get_ticket_or_404(ticket_id):

@@ -1,0 +1,49 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/pagination.html' import render_pagination_nav %}
+{% set current_page = 'ticketing_admin' %}
+{% set current_page_party = party %}
+{% set title = '%s - Ticket-Bundles'|format(party.title) %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>Ticketing</li>
+      <li>{{ party.title }}</li>
+    </ol>
+  </nav>
+  <h1>Ticket-Bundles {{ render_extra_in_heading(bundles.total) }}</h1>
+
+  {%- if bundles.items %}
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Erstellt</th>
+        <th>Besitzer/in</th>
+        <th>Kategorie</th>
+        <th class="number">Tickets</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for bundle in bundles.items %}
+      <tr>
+        <td><a class="disguised" href="{{ url_for('.view_bundle', bundle_id=bundle.id) }}"><strong>{{ bundle.id }}</strong></a></td>
+        <td>{{ render_datetime(bundle.created_at|utc_to_local_tz) }}</td>
+        <td>{{ render_user_avatar_20_and_admin_link(bundle.owned_by) }}</td>
+        <td>{{ bundle.ticket_category.title }}</td>
+        <td class="bignumber number">{{ bundle.ticket_quantity }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="dimmed-box centered">keine</div>
+  {%- endif %}
+
+{{ render_pagination_nav(bundles, '.index_bundle_for_party', {'party_id': party.id}) }}
+
+{%- endblock %}

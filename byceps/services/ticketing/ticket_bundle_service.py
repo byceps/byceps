@@ -8,11 +8,12 @@ byceps.services.ticketing.ticket_bundle_service
 
 from typing import Optional, Sequence
 
-from ...database import db
-from ...typing import UserID
+from ...database import db, Pagination
+from ...typing import PartyID, UserID
 
 from ..shop.order.transfer.models import OrderNumber
 
+from .models.category import Category as DbCategory
 from .models.ticket import Ticket as DbTicket
 from .models.ticket_bundle import TicketBundle as DbTicketBundle
 from .ticket_creation_service import build_tickets
@@ -101,3 +102,18 @@ def find_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[DbTicket]:
     return DbTicket.query \
         .filter(DbTicket.bundle_id == bundle_id) \
         .all()
+
+
+def get_bundles_for_party_paginated(
+    party_id: PartyID, page: int, per_page: int
+) -> Pagination:
+    """Return the party's ticket bundles to show on the specified page."""
+    return DbTicketBundle.query \
+        .join(DbCategory) \
+        .filter(DbCategory.party_id == party_id) \
+        .options(
+            db.joinedload('ticket_category'),
+            db.joinedload('owned_by'),
+        ) \
+        .order_by(DbTicketBundle.created_at.desc()) \
+        .paginate(page, per_page)
