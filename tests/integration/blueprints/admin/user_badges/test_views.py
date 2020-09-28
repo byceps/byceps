@@ -8,7 +8,7 @@ from byceps.services.user_badge import badge_service
 from tests.helpers import http_client
 
 
-def test_index(admin_app, user_badge_admin, ):
+def test_index(admin_app, user_badge_admin):
     url = '/admin/user_badges/badges'
     response = get_resource(admin_app, user_badge_admin, url)
     assert response.status_code == 200
