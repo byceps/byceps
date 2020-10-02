@@ -8,7 +8,7 @@ import pytest
 from tests.helpers import login_user
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='package')
 def email_admin(make_admin):
     permission_ids = {
         'admin.access',

@@ -17,14 +17,14 @@ from tests.helpers import http_client, login_user
 from .helpers import create_category, create_posting, create_topic
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='package')
 def category(board):
     category = create_category(board.id, number=1)
     yield category
     _delete_category(category.id)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='package')
 def another_category(board):
     category = create_category(board.id, number=2)
     yield category
@@ -53,12 +53,12 @@ def posting(topic, board_poster):
     posting_command_service.delete_posting(posting.id)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='package')
 def board_poster(make_user):
     return make_user('BoardPoster')
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='package')
 def moderator(make_admin):
     permission_ids = {
         'board.hide',
@@ -71,7 +71,7 @@ def moderator(make_admin):
     yield moderator
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='package')
 def moderator_client(site_app, moderator):
     with http_client(site_app, user_id=moderator.id) as client:
         yield client

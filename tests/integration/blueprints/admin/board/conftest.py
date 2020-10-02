@@ -10,7 +10,7 @@ from byceps.services.board import category_command_service
 from tests.helpers import login_user
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope='package')
 def board_admin(make_admin):
     permission_ids = {
         'admin.access',
