@@ -1,14 +1,14 @@
 # Python 3 bytecode
 __pycache__
 
-.eggs
+/.eggs
 
 # virtual environment
-venv
+/venv
 
 # test-related
-.coverage
-.pytest_cache
+/.coverage
+/.pytest_cache
 *.egg-info
 
 # cache data
@@ -16,10 +16,7 @@ venv
 .mypy_cache
 
 # user data
-data
-
-# OpenSSL keys for development server
-keys
+/data
 
 # documentation
 /docs/_build
