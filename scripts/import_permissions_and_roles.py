@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 
-"""Import permissions, roles, and their relations from a JSON file.
+"""Import permissions, roles, and their relations from a TOML file.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
-import json
-
 import click
+import rtoml
 
 from byceps.services.authorization import service as authz_service
 from byceps.util.system import get_config_filename_from_env_or_exit
@@ -17,9 +16,9 @@ from _util import app_context
 
 
 @click.command()
-@click.argument('json_file', type=click.File())
-def execute(json_file):
-    data = json.load(json_file)
+@click.argument('data_file', type=click.File())
+def execute(data_file):
+    data = rtoml.load(data_file)
 
     permissions = data['permissions']
     roles = data['roles']

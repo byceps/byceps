@@ -218,11 +218,11 @@ Create the necessary tables:
    Creating database tables ... done.
 
 An initial set of authorization permissions and roles is provided as a
-JSON file. Import it into the database:
+TOML file. Import it into the database:
 
 .. code-block:: sh
 
-   $ BYCEPS_CONFIG=../config/yourconfig.py ./import_permissions_and_roles.py data/permissions_and_roles.json
+   $ BYCEPS_CONFIG=../config/yourconfig.py ./import_permissions_and_roles.py data/permissions_and_roles.toml
    Importing 75 permissions ... done.
    Importing 29 roles ... done.
 

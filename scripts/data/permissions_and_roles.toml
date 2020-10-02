@@ -1,0 +1,623 @@
+[[permissions]]
+id = 'admin.access'
+title = 'auf den Admin-Bereich zugreifen'
+
+[[permissions]]
+id = 'admin_dashboard.view_brand'
+title = 'Admin-Dashboard für Marken anzeigen'
+
+[[permissions]]
+id = 'admin_dashboard.view_global'
+title = 'globales Admin-Dashboard anzeigen'
+
+[[permissions]]
+id = 'admin_dashboard.view_party'
+title = 'Admin-Dashboard für Partys anzeigen'
+
+[[permissions]]
+id = 'board.announce'
+title = 'Ankündigungen erstellen'
+
+[[permissions]]
+id = 'board.create'
+title = 'Foren erstellen'
+
+[[permissions]]
+id = 'board.hide'
+title = 'Themen und Beiträge im Forum verstecken'
+
+[[permissions]]
+id = 'board.update_of_others'
+title = 'Themen und Beiträge anderer Benutzer im Forum bearbeiten'
+
+[[permissions]]
+id = 'board.view_hidden'
+title = 'versteckte Themen und Beiträge im Forum anzeigen'
+
+[[permissions]]
+id = 'board_category.create'
+title = 'Foren-Kategorien erstellen'
+
+[[permissions]]
+id = 'board_category.update'
+title = 'Foren-Kategorien bearbeiten'
+
+[[permissions]]
+id = 'board_category.view'
+title = 'Foren-Kategorien anzeigen'
+
+[[permissions]]
+id = 'board_posting.create'
+title = 'Beiträge im Forum erstellen'
+
+[[permissions]]
+id = 'board_posting.update'
+title = 'Beiträge im Forum bearbeiten'
+
+[[permissions]]
+id = 'board_topic.create'
+title = 'Themen im Forum erstellen'
+
+[[permissions]]
+id = 'board_topic.lock'
+title = 'Themen im Forum schließen'
+
+[[permissions]]
+id = 'board_topic.move'
+title = 'Themen im Forum in anderen Kategorien verschieben'
+
+[[permissions]]
+id = 'board_topic.pin'
+title = 'Themen im Forum anpinnen'
+
+[[permissions]]
+id = 'board_topic.update'
+title = 'Themen im Forum bearbeiten'
+
+[[permissions]]
+id = 'brand.create'
+title = 'Marken erstellen'
+
+[[permissions]]
+id = 'brand.update'
+title = 'Marken bearbeiten'
+
+[[permissions]]
+id = 'brand.view'
+title = 'Marken anzeigen'
+
+[[permissions]]
+id = 'consent.administrate'
+title = 'Zustimmungen verwalten'
+
+[[permissions]]
+id = 'email_config.create'
+title = 'E-Mail-Konfigurationen erstellen'
+
+[[permissions]]
+id = 'email_config.delete'
+title = 'E-Mail-Konfigurationen löschen'
+
+[[permissions]]
+id = 'email_config.update'
+title = 'E-Mail-Konfigurationen bearbeiten'
+
+[[permissions]]
+id = 'email_config.view'
+title = 'E-Mail-Konfigurationen anzeigen'
+
+[[permissions]]
+id = 'jobs.view'
+title = 'Jobs anzeigen'
+
+[[permissions]]
+id = 'news_channel.create'
+title = 'News-Kanäle erstellen'
+
+[[permissions]]
+id = 'news_item.create'
+title = 'News erstellen'
+
+[[permissions]]
+id = 'news_item.publish'
+title = 'News veröffentlichen'
+
+[[permissions]]
+id = 'news_item.update'
+title = 'News bearbeiten'
+
+[[permissions]]
+id = 'news_item.view'
+title = 'News anzeigen'
+
+[[permissions]]
+id = 'news_item.view_draft'
+title = 'News-Entwürfe anzeigen'
+
+[[permissions]]
+id = 'newsletter.export_subscribers'
+title = 'Abonnenten exportieren'
+
+[[permissions]]
+id = 'newsletter.view_subscriptions'
+title = 'Newsletter-Bestellstatus einsehen'
+
+[[permissions]]
+id = 'orga_birthday.view'
+title = 'Geburtstage von Orgas anzeigen'
+
+[[permissions]]
+id = 'orga_detail.view'
+title = 'Orga-Details anzeigen'
+
+[[permissions]]
+id = 'orga_presence.update'
+title = 'Anwesenheiten eintragen'
+
+[[permissions]]
+id = 'orga_presence.view'
+title = 'Anwesenheiten anzeigen'
+
+[[permissions]]
+id = 'orga_team.administrate_memberships'
+title = 'Orga-Team-Mitgliedschaften verwalten'
+
+[[permissions]]
+id = 'orga_team.create'
+title = 'Orga-Teams erstellen'
+
+[[permissions]]
+id = 'orga_team.delete'
+title = 'Orga-Teams löschen'
+
+[[permissions]]
+id = 'orga_team.view'
+title = 'Orga-Teams anzeigen'
+
+[[permissions]]
+id = 'party.create'
+title = 'Partys erstellen'
+
+[[permissions]]
+id = 'party.update'
+title = 'Partys bearbeiten'
+
+[[permissions]]
+id = 'party.view'
+title = 'Partys anzeigen'
+
+[[permissions]]
+id = 'role.assign'
+title = 'Rollen an Benutzer zuweisen'
+
+[[permissions]]
+id = 'role.view'
+title = 'Rollen anzeigen'
+
+[[permissions]]
+id = 'seating.administrate'
+title = 'Sitzplätze administrieren'
+
+[[permissions]]
+id = 'seating.view'
+title = 'Sitzpläne anzeigen'
+
+[[permissions]]
+id = 'shop.create'
+title = 'Shops und Storefronts erstellen'
+
+[[permissions]]
+id = 'shop.update'
+title = 'Shops und Storefronts bearbeiten'
+
+[[permissions]]
+id = 'shop.view'
+title = 'Shops und Storefronts anzeigen'
+
+[[permissions]]
+id = 'shop_article.create'
+title = 'Shop-Artikel erstellen'
+
+[[permissions]]
+id = 'shop_article.update'
+title = 'Shop-Artikel bearbeiten'
+
+[[permissions]]
+id = 'shop_article.view'
+title = 'Shop-Artikel anzeigen'
+
+[[permissions]]
+id = 'shop_order.cancel'
+title = 'Bestellungen stornieren'
+
+[[permissions]]
+id = 'shop_order.mark_as_paid'
+title = 'Bestellungen als bezahlt markieren'
+
+[[permissions]]
+id = 'shop_order.update'
+title = 'Shop-Bestellungen bearbeiten'
+
+[[permissions]]
+id = 'shop_order.view'
+title = 'Shop-Bestellungen anzeigen'
+
+[[permissions]]
+id = 'site.create'
+title = 'Sites erstellen'
+
+[[permissions]]
+id = 'site.update'
+title = 'Sites bearbeiten'
+
+[[permissions]]
+id = 'site.view'
+title = 'Sites anzeigen'
+
+[[permissions]]
+id = 'snippet.create'
+title = 'Snippets erstellen'
+
+[[permissions]]
+id = 'snippet.delete'
+title = 'Snippets löschen'
+
+[[permissions]]
+id = 'snippet.update'
+title = 'Snippets bearbeiten'
+
+[[permissions]]
+id = 'snippet.view'
+title = 'Snippets anzeigen'
+
+[[permissions]]
+id = 'snippet.view_history'
+title = 'Versionsverlauf von Snippets anzeigen'
+
+[[permissions]]
+id = 'snippet_mountpoint.create'
+title = 'Snippet-Mountpoints erstellen'
+
+[[permissions]]
+id = 'snippet_mountpoint.delete'
+title = 'Snippet-Mountpoints löschen'
+
+[[permissions]]
+id = 'terms.create'
+title = 'neue AGB-Versionen erstellen'
+
+[[permissions]]
+id = 'terms.view'
+title = 'AGB-Versionen anzeigen'
+
+[[permissions]]
+id = 'ticketing.administrate_seat_occupancy'
+title = 'Belegung von Sitzplätzen verwalten'
+
+[[permissions]]
+id = 'ticketing.checkin'
+title = 'Gäste am Einlass einchecken'
+
+[[permissions]]
+id = 'ticketing.view'
+title = 'Tickets anzeigen'
+
+[[permissions]]
+id = 'tourney_category.create'
+title = 'Turnierkategorien erstellen'
+
+[[permissions]]
+id = 'tourney_category.update'
+title = 'Turnierkategorien bearbeiten'
+
+[[permissions]]
+id = 'tourney_category.view'
+title = 'Turnierkategorien anzeigen'
+
+[[permissions]]
+id = 'user.administrate'
+title = 'Benutzer verwalten'
+
+[[permissions]]
+id = 'user.create'
+title = 'Benutzer erstellen'
+
+[[permissions]]
+id = 'user.set_password'
+title = 'Benutzerpasswörter ändern'
+
+[[permissions]]
+id = 'user.view'
+title = 'Benutzer anzeigen'
+
+[[permissions]]
+id = 'user_badge.award'
+title = 'Abzeichen verleihen'
+
+[[permissions]]
+id = 'user_badge.create'
+title = 'Abzeichen erstellen'
+
+[[permissions]]
+id = 'user_badge.update'
+title = 'Abzeichen bearbeiten'
+
+[[permissions]]
+id = 'user_badge.view'
+title = 'Abzeichen anzeigen'
+
+[[roles]]
+id = 'authorization_admin'
+title = 'Rechte und Rollen verwalten'
+assigned_permissions = [
+    'role.assign',
+    'role.view',
+]
+
+[[roles]]
+id = 'board_admin'
+title = 'Forum verwalten'
+assigned_permissions = [
+    'board.create',
+    'board_category.create',
+    'board_category.update',
+    'board_category.view',
+]
+
+[[roles]]
+id = 'board_moderator'
+title = 'Forum moderieren'
+assigned_permissions = [
+    'board.announce',
+    'board.hide',
+    'board.update_of_others',
+    'board.view_hidden',
+    'board_topic.lock',
+    'board_topic.move',
+    'board_topic.pin',
+]
+
+[[roles]]
+id = 'board_user'
+title = 'im Forum schreiben'
+assigned_permissions = [
+    'board_posting.create',
+    'board_posting.update',
+    'board_topic.create',
+    'board_topic.update',
+]
+
+[[roles]]
+id = 'brand_admin'
+title = 'Marken verwalten'
+assigned_permissions = [
+    'brand.create',
+    'brand.update',
+    'brand.view',
+]
+
+[[roles]]
+id = 'checkin_boss'
+title = 'Abendkasse und Nutzerzuweisung'
+assigned_permissions = [
+    'shop_order.view',
+    'ticketing.administrate_seat_occupancy',
+    'user.administrate',
+    'user.create',
+    'user.set_password',
+    'user.view',
+]
+
+[[roles]]
+id = 'consent_admin'
+title = 'Zustimmungen verwalten'
+assigned_permissions = ['consent.administrate']
+
+[[roles]]
+id = 'email_admin'
+title = 'E-Mail-Konfigurationen verwalten'
+assigned_permissions = [
+    'email_config.create',
+    'email_config.delete',
+    'email_config.update',
+    'email_config.view',
+]
+
+[[roles]]
+id = 'jobs_admin'
+title = 'Jobs verwalten'
+assigned_permissions = ['jobs.view']
+
+[[roles]]
+id = 'news_admin'
+title = 'News verwalten'
+assigned_permissions = ['news_channel.create']
+
+[[roles]]
+id = 'news_editor'
+title = 'Newsredakteur'
+assigned_permissions = [
+    'news_item.create',
+    'news_item.publish',
+    'news_item.update',
+    'news_item.view',
+    'news_item.view_draft',
+]
+
+[[roles]]
+id = 'newsletter_admin'
+title = 'Newsletter-Abonnements verwalten'
+assigned_permissions = [
+    'newsletter.export_subscribers',
+    'newsletter.view_subscriptions',
+]
+
+[[roles]]
+id = 'orga'
+title = 'Organisator'
+assigned_permissions = [
+    'admin.access',
+    'admin_dashboard.view_brand',
+    'admin_dashboard.view_global',
+    'admin_dashboard.view_party',
+    'board.view_hidden',
+    'brand.view',
+    'news_item.view',
+    'orga_birthday.view',
+    'orga_detail.view',
+    'orga_presence.update',
+    'orga_presence.view',
+    'orga_team.view',
+    'party.view',
+    'seating.view',
+    'snippet.view',
+    'snippet.view_history',
+    'terms.view',
+    'ticketing.checkin',
+    'ticketing.view',
+    'tourney_category.view',
+]
+
+[[roles]]
+id = 'orga_team_admin'
+title = 'Orgateams verwalten'
+assigned_permissions = [
+    'orga_team.administrate_memberships',
+    'orga_team.create',
+    'orga_team.delete',
+    'orga_team.view',
+]
+
+[[roles]]
+id = 'party_admin'
+title = 'Partys verwalten'
+assigned_permissions = [
+    'party.create',
+    'party.update',
+    'party.view',
+]
+
+[[roles]]
+id = 'seating_admin'
+title = 'Sitzpläne verwalten'
+assigned_permissions = [
+    'seating.administrate',
+    'seating.view',
+]
+
+[[roles]]
+id = 'shop_admin'
+title = 'Shops verwalten'
+assigned_permissions = [
+    'shop.create',
+    'shop.update',
+    'shop.view',
+]
+
+[[roles]]
+id = 'shop_article_admin'
+title = 'Shop-Artikel verwalten'
+assigned_permissions = [
+    'shop_article.create',
+    'shop_article.update',
+    'shop_article.view',
+]
+
+[[roles]]
+id = 'shop_order_admin'
+title = 'Shop-Bestellungen verwalten'
+assigned_permissions = [
+    'shop_order.cancel',
+    'shop_order.update',
+    'shop_order.view',
+]
+
+[[roles]]
+id = 'shop_order_payment_approver'
+title = 'Zahlungseingänge bestätigen'
+assigned_permissions = [
+    'shop_order.mark_as_paid',
+    'shop_order.view',
+]
+
+[[roles]]
+id = 'site_admin'
+title = 'Sites verwalten'
+assigned_permissions = [
+    'site.create',
+    'site.update',
+    'site.view',
+]
+
+[[roles]]
+id = 'snippet_admin'
+title = 'Snippets verwalten'
+assigned_permissions = [
+    'snippet.delete',
+    'snippet_mountpoint.create',
+    'snippet_mountpoint.delete',
+]
+
+[[roles]]
+id = 'snippet_editor'
+title = 'Snippets bearbeiten'
+assigned_permissions = [
+    'snippet.create',
+    'snippet.update',
+    'snippet.view',
+    'snippet.view_history',
+]
+
+[[roles]]
+id = 'support_orga'
+title = 'Support-Orga'
+assigned_permissions = [
+    'shop_order.view',
+    'user.view',
+]
+
+[[roles]]
+id = 'terms_editor'
+title = 'AGB verwalten'
+assigned_permissions = [
+    'terms.create',
+    'terms.view',
+]
+
+[[roles]]
+id = 'ticketing_admin'
+title = 'Tickets verwalten'
+assigned_permissions = ['ticketing.view']
+
+[[roles]]
+id = 'tourney_category_admin'
+title = 'Turnierkategorien verwalten'
+assigned_permissions = [
+    'tourney_category.create',
+    'tourney_category.update',
+    'tourney_category.view',
+]
+
+[[roles]]
+id = 'user_admin'
+title = 'Benutzer verwalten'
+assigned_permissions = [
+    'user.administrate',
+    'user.create',
+    'user.view',
+]
+
+[[roles]]
+id = 'user_authn_admin'
+title = 'Benutzer-Authentifizierung verwalten'
+assigned_permissions = ['user.set_password']
+
+[[roles]]
+id = 'user_badge_admin'
+title = 'Abzeichen verwalten'
+assigned_permissions = [
+    'user_badge.award',
+    'user_badge.create',
+    'user_badge.update',
+    'user_badge.view',
+]

@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
-"""Export all permissions, roles, and their relations as JSON to STDOUT.
+"""Export all permissions, roles, and their relations as TOML to STDOUT.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 
-import json
 import sys
 
 import click
+import rtoml
 
 from byceps.database import db
 from byceps.services.authorization.models import Permission, Role
@@ -28,7 +28,7 @@ def execute():
         'roles': roles,
     }
 
-    json.dump(data, sys.stdout, indent=2, sort_keys=True)
+    rtoml.dump(data, sys.stdout, pretty=True)
 
 
 def collect_permissions():
