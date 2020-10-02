@@ -77,7 +77,7 @@ def test_create_comment_by_unknown_user(
 
 
 @pytest.fixture
-def match(app):
+def match(api_app):
     return match_service.create_match()
 
 

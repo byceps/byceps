@@ -84,17 +84,17 @@ def test_get_comment_with_edited_comment(
 
 
 @pytest.fixture
-def match(app):
+def match(api_app):
     return match_service.create_match()
 
 
 @pytest.fixture
-def comment(app, match, user):
+def comment(api_app, match, user):
     return comment_service.create_comment(match.id, user.id, 'Denn man tau.')
 
 
 @pytest.fixture
-def edited_comment(app, comment, admin_user):
+def edited_comment(api_app, comment, admin_user):
     comment_service.update_comment(
         comment.id, admin_user.id, '[b]So nicht[/b], Freundchen!'
     )

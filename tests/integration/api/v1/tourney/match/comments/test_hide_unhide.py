@@ -58,10 +58,10 @@ def test_unhide_comment(
 
 
 @pytest.fixture
-def match(app, scope='module'):
+def match(api_app, scope='module'):
     return match_service.create_match()
 
 
 @pytest.fixture
-def comment(app, match, user):
+def comment(api_app, match, user):
     return comment_service.create_comment(match.id, user.id, '¡Vámonos!')

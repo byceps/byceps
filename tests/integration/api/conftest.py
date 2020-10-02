@@ -18,7 +18,7 @@ API_TOKEN = 'just-say-PLEASE!'
 
 @pytest.fixture(scope='session')
 # `admin_app` fixture is required because it sets up the database.
-def app(admin_app, make_admin_app):
+def api_app(admin_app, make_admin_app):
     config_overrides = {
         'API_TOKEN': API_TOKEN,
         'SERVER_NAME': 'api.acmecon.test',
@@ -29,9 +29,9 @@ def app(admin_app, make_admin_app):
 
 
 @pytest.fixture(scope='session')
-def api_client(app):
+def api_client(api_app):
     """Provide a test HTTP client against the API."""
-    return app.test_client()
+    return api_app.test_client()
 
 
 @pytest.fixture(scope='session')

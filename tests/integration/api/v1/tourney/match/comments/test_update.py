@@ -46,7 +46,7 @@ def test_update_nonexistent_comment(api_client, api_client_authz_header, user):
 
 
 @pytest.fixture
-def match(app):
+def match(api_app):
     return match_service.create_match()
 
 
