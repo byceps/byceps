@@ -342,11 +342,11 @@
     },
     {
       "id": "user.set_password",
-      "title": "Neues Passwort setzen"
+      "title": "Benutzerpasswörter ändern"
     },
     {
       "id": "user.view",
-      "title": "Benutzerdetails anzeigen"
+      "title": "Benutzer anzeigen"
     }
   ],
   "roles": [
@@ -402,9 +402,12 @@
     },
     {
       "assigned_permissions": [
+        "shop_order.view",
         "ticketing.administrate_seat_occupancy",
         "user.administrate",
-        "user.create"
+        "user.create",
+        "user.set_password",
+        "user.view"
       ],
       "id": "checkin_boss",
       "title": "Abendkasse und Nutzerzuweisung"
@@ -502,7 +505,7 @@
         "party.view"
       ],
       "id": "party_admin",
-      "title": "Parties verwalten"
+      "title": "Partys verwalten"
     },
     {
       "assigned_permissions": [
@@ -567,7 +570,6 @@
     },
     {
       "assigned_permissions": [
-        "site.view",
         "snippet.create",
         "snippet.update",
         "snippet.view",
