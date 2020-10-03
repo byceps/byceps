@@ -66,7 +66,9 @@ def _check_for_unknown_subject_ids(
         )
 
 
-def get_subjects_with_consent_counts(*, limit_to_subject_ids: Set[SubjectID]=None) -> Dict[Subject, int]:
+def get_subjects_with_consent_counts(
+    *, limit_to_subject_ids: Optional[Set[SubjectID]] = None
+) -> Dict[Subject, int]:
     """Return subjects and their consent counts."""
     query = db.session \
         .query(

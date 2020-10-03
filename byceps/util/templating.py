@@ -26,7 +26,9 @@ from jinja2.sandbox import ImmutableSandboxedEnvironment
 SITES_PATH = Path('sites')
 
 
-def load_template(source: str, *, template_globals: Dict[str, Any] = None):
+def load_template(
+    source: str, *, template_globals: Optional[Dict[str, Any]] = None
+):
     """Load a template from source, using the sandboxed environment."""
     env = create_sandboxed_environment()
 

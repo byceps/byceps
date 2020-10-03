@@ -8,6 +8,8 @@ Announce ticketing events on IRC.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from ...events.ticketing import TicketCheckedIn
 from ...signals import ticketing as ticketing_signals
 from ...util.irc import send_message
@@ -19,7 +21,9 @@ from ._config import CHANNEL_ORGA_LOG
 
 
 @ticketing_signals.ticket_checked_in.connect
-def _on_ticket_checked_in(sender, *, event: TicketCheckedIn) -> None:
+def _on_ticket_checked_in(
+    sender, *, event: Optional[TicketCheckedIn] = None
+) -> None:
     enqueue(announce_ticket_checked_in, event)
 
 

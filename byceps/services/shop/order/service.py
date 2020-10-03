@@ -313,7 +313,7 @@ def mark_order_as_paid(
     payment_method: PaymentMethod,
     initiator_id: UserID,
     *,
-    additional_event_data: Mapping[str, str] = None,
+    additional_event_data: Optional[Mapping[str, str]] = None,
 ) -> ShopOrderPaid:
     """Mark the order as paid."""
     order = _find_order_entity(order_id)

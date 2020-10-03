@@ -8,6 +8,8 @@ Announce snippet events on IRC.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from ...services.snippet.transfer.models import SnippetType
 from ...signals import snippet as snippet_signals
@@ -20,7 +22,9 @@ from ._config import CHANNEL_ORGA_LOG
 
 
 @snippet_signals.snippet_created.connect
-def _on_snippet_created(sender, *, event: SnippetCreated = None) -> None:
+def _on_snippet_created(
+    sender, *, event: Optional[SnippetCreated] = None
+) -> None:
     enqueue(announce_snippet_created, event)
 
 
@@ -41,7 +45,9 @@ def announce_snippet_created(event: SnippetCreated) -> None:
 
 
 @snippet_signals.snippet_updated.connect
-def _on_snippet_updated(sender, *, event: SnippetUpdated = None) -> None:
+def _on_snippet_updated(
+    sender, *, event: Optional[SnippetUpdated] = None
+) -> None:
     enqueue(announce_snippet_updated, event)
 
 
@@ -62,7 +68,9 @@ def announce_snippet_updated(event: SnippetUpdated) -> None:
 
 
 @snippet_signals.snippet_deleted.connect
-def _on_snippet_deleted(sender, *, event: SnippetDeleted = None) -> None:
+def _on_snippet_deleted(
+    sender, *, event: Optional[SnippetDeleted] = None
+) -> None:
     enqueue(announce_snippet_deleted, event)
 
 

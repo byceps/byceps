@@ -8,6 +8,8 @@ Announce user badge events on IRC.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from ...events.user_badge import UserBadgeAwarded
 from ...signals import user_badge as user_badge_signals
 from ...util.irc import send_message
@@ -19,7 +21,9 @@ from ._config import CHANNEL_ORGA_LOG
 
 
 @user_badge_signals.user_badge_awarded.connect
-def _on_user_badge_awarded(sender, *, event: UserBadgeAwarded) -> None:
+def _on_user_badge_awarded(
+    sender, *, event: Optional[UserBadgeAwarded] = None
+) -> None:
     enqueue(announce_user_badge_awarded, event)
 
 

@@ -8,6 +8,8 @@ Announce board events on IRC.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from ...events.board import (
     BoardPostingCreated,
     BoardPostingHidden,
@@ -34,7 +36,9 @@ from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 
 
 @board_signals.topic_created.connect
-def _on_board_topic_created(sender, *, event: BoardTopicCreated = None) -> None:
+def _on_board_topic_created(
+    sender, *, event: Optional[BoardTopicCreated] = None
+) -> None:
     enqueue(announce_board_topic_created, event)
 
 
@@ -55,7 +59,9 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
 
 
 @board_signals.topic_hidden.connect
-def _on_board_topic_hidden(sender, *, event: BoardTopicHidden = None) -> None:
+def _on_board_topic_hidden(
+    sender, *, event: Optional[BoardTopicHidden] = None
+) -> None:
     enqueue(announce_board_topic_hidden, event)
 
 
@@ -80,7 +86,7 @@ def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
 
 @board_signals.topic_unhidden.connect
 def _on_board_topic_unhidden(
-    sender, *, event: BoardTopicUnhidden = None
+    sender, *, event: Optional[BoardTopicUnhidden] = None
 ) -> None:
     enqueue(announce_board_topic_unhidden, event)
 
@@ -105,7 +111,9 @@ def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
 
 
 @board_signals.topic_locked.connect
-def _on_board_topic_locked(sender, *, event: BoardTopicLocked = None) -> None:
+def _on_board_topic_locked(
+    sender, *, event: Optional[BoardTopicLocked] = None
+) -> None:
     enqueue(announce_board_topic_locked, event)
 
 
@@ -130,7 +138,7 @@ def announce_board_topic_locked(event: BoardTopicLocked) -> None:
 
 @board_signals.topic_unlocked.connect
 def _on_board_topic_unlocked(
-    sender, *, event: BoardTopicUnlocked = None
+    sender, *, event: Optional[BoardTopicUnlocked] = None
 ) -> None:
     enqueue(announce_board_topic_unlocked, event)
 
@@ -155,7 +163,9 @@ def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
 
 
 @board_signals.topic_pinned.connect
-def _on_board_topic_pinned(sender, *, event: BoardTopicPinned = None) -> None:
+def _on_board_topic_pinned(
+    sender, *, event: Optional[BoardTopicPinned] = None
+) -> None:
     enqueue(announce_board_topic_pinned, event)
 
 
@@ -180,7 +190,7 @@ def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
 
 @board_signals.topic_unpinned.connect
 def _on_board_topic_unpinned(
-    sender, *, event: BoardTopicUnpinned = None
+    sender, *, event: Optional[BoardTopicUnpinned] = None
 ) -> None:
     enqueue(announce_board_topic_unpinned, event)
 
@@ -205,7 +215,9 @@ def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
 
 
 @board_signals.topic_moved.connect
-def _on_board_topic_moved(sender, *, event: BoardTopicMoved = None) -> None:
+def _on_board_topic_moved(
+    sender, *, event: Optional[BoardTopicMoved] = None
+) -> None:
     enqueue(announce_board_topic_moved, event)
 
 
@@ -231,7 +243,7 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
 
 @board_signals.posting_created.connect
 def _on_board_posting_created(
-    sender, *, event: BoardPostingCreated = None
+    sender, *, event: Optional[BoardPostingCreated] = None
 ) -> None:
     enqueue(announce_board_posting_created, event)
 
@@ -257,7 +269,7 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
 
 @board_signals.posting_hidden.connect
 def _on_board_posting_hidden(
-    sender, *, event: BoardPostingHidden = None
+    sender, *, event: Optional[BoardPostingHidden] = None
 ) -> None:
     enqueue(announce_board_posting_hidden, event)
 
@@ -283,7 +295,7 @@ def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
 
 @board_signals.posting_unhidden.connect
 def _on_board_posting_unhidden(
-    sender, *, event: BoardPostingUnhidden = None
+    sender, *, event: Optional[BoardPostingUnhidden] = None
 ) -> None:
     enqueue(announce_board_posting_unhidden, event)
 

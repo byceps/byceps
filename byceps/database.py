@@ -8,7 +8,7 @@ Database utilities.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import Any, Callable, Dict, Iterable, TypeVar
+from typing import Any, Callable, Dict, Iterable, Optional, TypeVar
 import uuid
 
 from sqlalchemy.dialects.postgresql import insert
@@ -47,7 +47,11 @@ def generate_uuid() -> uuid.UUID:
 
 
 def paginate(
-    query: Query, page: int, per_page: int, *, item_mapper: Mapper = None
+    query: Query,
+    page: int,
+    per_page: int,
+    *,
+    item_mapper: Optional[Mapper] = None,
 ) -> Pagination:
     """Return `per_page` items from page `page`."""
     if page < 1:

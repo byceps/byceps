@@ -7,7 +7,7 @@ byceps.services.orga.birthday_service
 """
 
 from itertools import islice
-from typing import Iterator, Sequence, Tuple
+from typing import Iterator, Optional, Sequence, Tuple
 
 from ...database import db
 
@@ -20,7 +20,7 @@ from .models import OrgaFlag as DbOrgaFlag
 
 
 def collect_orgas_with_next_birthdays(
-    *, limit: int = None
+    *, limit: Optional[int] = None
 ) -> Iterator[Tuple[User, DbUserDetail]]:
     """Yield the next birthdays of organizers, sorted by month and day."""
     orgas_with_birthdays = _collect_orgas_with_birthdays()

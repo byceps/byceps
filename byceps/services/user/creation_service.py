@@ -42,7 +42,7 @@ def create_user(
     last_name: Optional[str],
     site_id: SiteID,
     *,
-    consents: Set[Consent] = None,
+    consents: Optional[Set[Consent]] = None,
     newsletter_subscription: Optional[NewsletterSubscription] = None,
 ) -> Tuple[User, UserAccountCreated]:
     """Create a user account and related records."""

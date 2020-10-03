@@ -8,6 +8,8 @@ Announce user events on IRC.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from ...events.user import (
     UserAccountCreated,
     UserAccountDeleted,
@@ -27,7 +29,9 @@ from ._config import CHANNEL_ORGA_LOG
 
 
 @user_signals.account_created.connect
-def _on_user_account_created(sender, *, event: UserAccountCreated) -> None:
+def _on_user_account_created(
+    sender, *, event: Optional[UserAccountCreated] = None
+) -> None:
     enqueue(announce_user_account_created, event)
 
 
@@ -48,7 +52,7 @@ def announce_user_account_created(event: UserAccountCreated) -> None:
 
 @user_signals.screen_name_changed.connect
 def _on_user_screen_name_changed(
-    sender, *, event: UserScreenNameChanged
+    sender, *, event: Optional[UserScreenNameChanged] = None
 ) -> None:
     enqueue(announce_user_screen_name_changed, event)
 
@@ -69,7 +73,7 @@ def announce_user_screen_name_changed(event: UserScreenNameChanged) -> None:
 
 @user_signals.email_address_invalidated.connect
 def _on_user_email_address_invalidated(
-    sender, *, event: UserEmailAddressInvalidated
+    sender, *, event: Optional[UserEmailAddressInvalidated] = None
 ) -> None:
     enqueue(announce_user_email_address_invalidated, event)
 
@@ -93,7 +97,7 @@ def announce_user_email_address_invalidated(
 
 @user_signals.details_updated.connect
 def _on_user_details_updated_changed(
-    sender, *, event: UserDetailsUpdated
+    sender, *, event: Optional[UserDetailsUpdated] = None
 ) -> None:
     enqueue(announce_user_details_updated_changed, event)
 
@@ -114,7 +118,9 @@ def announce_user_details_updated_changed(event: UserDetailsUpdated) -> None:
 
 
 @user_signals.account_suspended.connect
-def _on_user_account_suspended(sender, *, event: UserAccountSuspended) -> None:
+def _on_user_account_suspended(
+    sender, *, event: Optional[UserAccountSuspended] = None
+) -> None:
     enqueue(announce_user_account_suspended, event)
 
 
@@ -135,7 +141,7 @@ def announce_user_account_suspended(event: UserAccountSuspended) -> None:
 
 @user_signals.account_unsuspended.connect
 def _on_user_account_unsuspended(
-    sender, *, event: UserAccountUnsuspended
+    sender, *, event: Optional[UserAccountUnsuspended] = None
 ) -> None:
     enqueue(announce_user_account_unsuspended, event)
 
@@ -156,7 +162,9 @@ def announce_user_account_unsuspended(event: UserAccountUnsuspended) -> None:
 
 
 @user_signals.account_deleted.connect
-def _on_user_account_deleted(sender, *, event: UserAccountDeleted) -> None:
+def _on_user_account_deleted(
+    sender, *, event: Optional[UserAccountDeleted] = None
+) -> None:
     enqueue(announce_user_account_deleted, event)
 
 

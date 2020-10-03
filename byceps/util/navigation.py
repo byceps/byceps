@@ -10,6 +10,8 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import List, Optional
 
+from ..services.authentication.session.models.current_user import CurrentUser
+
 
 @dataclass(frozen=True)
 class NavigationItem:
@@ -35,10 +37,10 @@ class Navigation:
         endpoint: str,
         label: str,
         *,
-        id: str = None,
-        required_permission: Enum = None,
+        id: Optional[str] = None,
+        required_permission: Optional[Enum] = None,
         precondition: bool = True,
-        icon: str = None,
+        icon: Optional[str] = None,
     ) -> object:
         """Add an item to the navigation."""
         if not precondition:
@@ -55,7 +57,7 @@ class Navigation:
         self.items.append(item)
         return self
 
-    def get_items(self, user) -> List[NavigationItem]:
+    def get_items(self, user: CurrentUser) -> List[NavigationItem]:
         """Return the navigation items the user is permitted to see."""
 
         def user_has_permission(item: NavigationItem) -> bool:

@@ -8,6 +8,8 @@ Announce board events on Discord.
 :License: Modified BSD, see LICENSE for details.
 """
 
+from typing import Optional
+
 from ...events.board import BoardPostingCreated, BoardTopicCreated
 from ...services.board.transfer.models import BoardID
 from ...signals import board as board_signals
@@ -23,7 +25,9 @@ from ._util import send_message
 
 
 @board_signals.topic_created.connect
-def _on_board_topic_created(sender, *, event: BoardTopicCreated = None) -> None:
+def _on_board_topic_created(
+    sender, *, event: Optional[BoardTopicCreated] = None
+) -> None:
     enqueue(announce_board_topic_created, event)
 
 
@@ -43,7 +47,7 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
 
 @board_signals.posting_created.connect
 def _on_board_posting_created(
-    sender, *, event: BoardPostingCreated = None
+    sender, *, event: Optional[BoardPostingCreated] = None
 ) -> None:
     enqueue(announce_board_posting_created, event)
 

@@ -40,7 +40,7 @@ CHANNEL = CHANNEL_PUBLIC
 
 
 @tourney_signals.tourney_started.connect
-def _on_tourney_started(sender, *, event: TourneyStarted):
+def _on_tourney_started(sender, *, event: Optional[TourneyStarted] = None):
     enqueue(announce_tourney_started, event)
 
 
@@ -51,7 +51,7 @@ def announce_tourney_started(event: TourneyStarted):
 
 
 @tourney_signals.tourney_paused.connect
-def _on_tourney_paused(sender, *, event: TourneyPaused):
+def _on_tourney_paused(sender, *, event: Optional[TourneyPaused] = None):
     enqueue(announce_tourney_paused, event)
 
 
@@ -62,7 +62,7 @@ def announce_tourney_paused(event: TourneyPaused):
 
 
 @tourney_signals.tourney_canceled.connect
-def _on_tourney_canceled(sender, *, event: TourneyCanceled):
+def _on_tourney_canceled(sender, *, event: Optional[TourneyCanceled] = None):
     enqueue(announce_tourney_canceled, event)
 
 
@@ -73,7 +73,7 @@ def announce_tourney_canceled(event: TourneyCanceled):
 
 
 @tourney_signals.tourney_finished.connect
-def _on_tourney_finished(sender, *, event: TourneyFinished):
+def _on_tourney_finished(sender, *, event: Optional[TourneyFinished] = None):
     enqueue(announce_tourney_finished, event)
 
 
@@ -88,7 +88,7 @@ def announce_tourney_finished(event: TourneyFinished):
 
 
 @tourney_signals.match_ready.connect
-def _on_match_ready(sender, *, event: TourneyMatchReady):
+def _on_match_ready(sender, *, event: Optional[TourneyMatchReady] = None):
     enqueue(announce_match_ready, event)
 
 
@@ -106,7 +106,7 @@ def announce_match_ready(event: TourneyMatchReady):
 
 
 @tourney_signals.match_reset.connect
-def _on_match_reset(sender, *, event: TourneyMatchReset):
+def _on_match_reset(sender, *, event: Optional[TourneyMatchReset] = None):
     enqueue(announce_match_reset, event)
 
 
@@ -120,7 +120,9 @@ def announce_match_reset(event: TourneyMatchReset):
 
 
 @tourney_signals.match_score_submitted.connect
-def _on_match_score_submitted(sender, *, event: TourneyMatchScoreSubmitted):
+def _on_match_score_submitted(
+    sender, *, event: Optional[TourneyMatchScoreSubmitted] = None
+):
     enqueue(announce_match_score_submitted, event)
 
 
@@ -135,7 +137,9 @@ def announce_match_score_submitted(event: TourneyMatchScoreSubmitted):
 
 
 @tourney_signals.match_score_confirmed.connect
-def _on_match_score_confirmed(sender, *, event: TourneyMatchScoreConfirmed):
+def _on_match_score_confirmed(
+    sender, *, event: Optional[TourneyMatchScoreConfirmed] = None
+):
     enqueue(announce_match_score_confirmed, event)
 
 
@@ -150,7 +154,9 @@ def announce_match_score_confirmed(event: TourneyMatchScoreConfirmed):
 
 
 @tourney_signals.match_score_randomized.connect
-def _on_match_score_randomized(sender, *, event: TourneyMatchScoreRandomized):
+def _on_match_score_randomized(
+    sender, *, event: Optional[TourneyMatchScoreRandomized] = None
+):
     enqueue(announce_match_score_randomized, event)
 
 
@@ -169,7 +175,9 @@ def announce_match_score_randomized(event: TourneyMatchScoreRandomized):
 
 
 @tourney_signals.participant_ready.connect
-def _on_participant_ready(sender, *, event: TourneyParticipantReady):
+def _on_participant_ready(
+    sender, *, event: Optional[TourneyParticipantReady] = None
+):
     enqueue(announce_participant_ready, event)
 
 
@@ -183,7 +191,9 @@ def announce_participant_ready(event: TourneyParticipantReady):
 
 
 @tourney_signals.participant_eliminated.connect
-def _on_participant_eliminated(sender, *, event: TourneyParticipantEliminated):
+def _on_participant_eliminated(
+    sender, *, event: Optional[TourneyParticipantEliminated] = None
+):
     enqueue(announce_participant_eliminated, event)
 
 
@@ -197,7 +207,9 @@ def announce_participant_eliminated(event: TourneyParticipantEliminated):
 
 
 @tourney_signals.participant_warned.connect
-def _on_participant_warned(sender, *, event: TourneyParticipantWarned):
+def _on_participant_warned(
+    sender, *, event: Optional[TourneyParticipantWarned] = None
+):
     enqueue(announce_participant_warned, event)
 
 
@@ -212,7 +224,7 @@ def announce_participant_warned(event: TourneyParticipantWarned):
 
 @tourney_signals.participant_disqualified.connect
 def _on_participant_disqualified(
-    sender, *, event: TourneyParticipantDisqualified
+    sender, *, event: Optional[TourneyParticipantDisqualified] = None
 ):
     enqueue(announce_participant_disqualified, event)
 

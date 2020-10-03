@@ -8,6 +8,7 @@ byceps.services.shop.order.email.example_service
 
 from datetime import datetime
 from decimal import Decimal
+from typing import Optional
 
 from .....config import ConfigurationError
 from .....database import generate_uuid
@@ -95,7 +96,7 @@ def _build_order(
     is_open: bool = False,
     is_canceled: bool = False,
     is_paid: bool = False,
-    cancelation_reason: str = None,
+    cancelation_reason: Optional[str] = None,
 ) -> Order:
     order_id = generate_uuid()
     order_number = 'AWSM-ORDR-9247'
