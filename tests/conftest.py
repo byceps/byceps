@@ -137,6 +137,7 @@ def make_admin(make_user):
         # Create permissions and role.
         role_id = f'admin_{token_hex(3)}'
         create_permissions(permission_ids)
+        created_permission_ids.update(permission_ids)
         create_role_with_permissions_assigned(role_id, permission_ids)
         authz_service.assign_role_to_user(role_id, admin.id)
         created_role_ids.add(role_id)
