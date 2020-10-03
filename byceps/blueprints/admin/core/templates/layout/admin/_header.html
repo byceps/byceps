@@ -29,10 +29,13 @@
   site = current_page_site|default
 %}
   {%- if site %}
+            {%- with brand = get_brand_for_site(site) %}
+            <div style="float: left; margin-left: 0.5rem; margin-right: 0.2rem;">{{ render_brand_avatar(brand, '32') }}</div>
             <span class="label-and-name">
               <span class="label">Site</span>
               <span class="name">{{ site.title }}</span>
             </span>
+            {%- endwith %}
   {%- elif shop %}
             <span class="label-and-name">
               <span class="label">Shop</span>
