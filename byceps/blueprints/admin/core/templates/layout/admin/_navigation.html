@@ -2,18 +2,21 @@
 
   {%- with
     current_page = current_page|default,
-    site = current_page_site|default,
     brand = current_page_brand|default,
+    site = current_page_site|default,
     party = current_page_party|default
   %}
     {%- include 'layout/admin/_navigation_global.html' %}
 
-    {%- if site %}
-      {%- include 'layout/admin/_navigation_site.html' %}
-    {%- endif %}
-
     {%- if brand %}
       {%- include 'layout/admin/_navigation_brand.html' %}
+    {%- endif %}
+
+    {%- if site %}
+      {%- with brand = get_brand_for_site(site) %}
+      {%- include 'layout/admin/_navigation_brand.html' %}
+      {%- include 'layout/admin/_navigation_site.html' %}
+      {%- endwith %}
     {%- endif %}
 
     {%- if party %}
