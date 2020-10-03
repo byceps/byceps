@@ -5,3 +5,4 @@ flask-shell-ipython==0.4.1
 mypy==0.782
 python-dotenv==0.14.0
 Sphinx==3.2.1
+sqlalchemy-stubs==0.3
