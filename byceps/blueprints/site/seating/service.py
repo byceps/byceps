@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from itertools import chain
 from typing import Dict, Iterator, Optional, Sequence
 
-from ....services.seating.models.seat import Seat
+from ....services.seating.models.seat import Seat as DbSeat
 from ....services.seating.transfer.models import SeatID
 from ....services.ticketing.models.ticket import Ticket as DbTicket
 from ....services.ticketing.transfer.models import (
@@ -28,8 +28,8 @@ class ManagedTicket:
     id: TicketID
     code: TicketCode
     category_label: str
-    user: User
-    occupied_seat_label: str
+    user: Optional[User]
+    occupied_seat_label: Optional[str]
 
 
 @dataclass(frozen=True)
@@ -44,7 +44,7 @@ class Seat:
 
 
 def get_users(
-    seats: Sequence[Seat], managed_tickets: Sequence[DbTicket]
+    seats: Sequence[DbSeat], managed_tickets: Sequence[DbTicket]
 ) -> Dict[UserID, User]:
     seat_tickets = _get_seat_tickets(seats)
     tickets = chain(seat_tickets, managed_tickets)
@@ -52,7 +52,7 @@ def get_users(
     return _get_ticket_users_by_id(tickets)
 
 
-def _get_seat_tickets(seats: Sequence[Seat]) -> Iterator[DbTicket]:
+def _get_seat_tickets(seats: Sequence[DbSeat]) -> Iterator[DbTicket]:
     for seat in seats:
         if seat.has_user:
             yield seat.occupied_by_ticket
@@ -72,7 +72,7 @@ def _get_ticket_user_ids(tickets: Sequence[DbTicket]) -> Iterator[UserID]:
 
 
 def get_seats(
-    seats: Sequence[Seat], users_by_id: Dict[UserID, User]
+    seats: Sequence[DbSeat], users_by_id: Dict[UserID, User]
 ) -> Iterator[Seat]:
     for seat in seats:
         if seat.is_occupied:
