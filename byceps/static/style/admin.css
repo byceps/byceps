@@ -198,7 +198,7 @@ main {
 
 .sidebar-section {
   font-size: 0.875rem; /* 14px / 16px */
-  overflow: hidden;
+  /* overflow: hidden;  # Would cut off dropdown in section header. */
 }
 
 .sidebar-section-header {
