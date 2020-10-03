@@ -12,6 +12,7 @@ from typing import NewType, Optional
 from ....typing import BrandID, PartyID
 
 from ...board.transfer.models import BoardID
+from ...brand.transfer.models import Brand
 from ...news.transfer.models import ChannelID as NewsChannelID
 from ...shop.storefront.transfer.models import StorefrontID
 
@@ -34,6 +35,11 @@ class Site:
     board_id: Optional[BoardID]
     storefront_id: Optional[StorefrontID]
     archived: bool
+
+
+@dataclass(frozen=True)
+class SiteWithBrand(Site):
+    brand: Brand
 
 
 @dataclass(frozen=True)

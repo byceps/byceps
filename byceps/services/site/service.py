@@ -6,18 +6,20 @@ byceps.services.site.service
 :License: Modified BSD, see LICENSE for details.
 """
 
-from typing import List, Optional
+import dataclasses
+from typing import List, Optional, Union
 
 from ...database import db
 from ...typing import BrandID, PartyID
 
 from ..board.transfer.models import BoardID
+from ..brand import service as brand_service
 from ..news.transfer.models import ChannelID as NewsChannelID
 from ..shop.storefront.transfer.models import StorefrontID
 
 from .models.site import Site as DbSite
 from .models.setting import Setting as DbSetting
-from .transfer.models import Site, SiteID
+from .transfer.models import Site, SiteID, SiteWithBrand
 
 
 class UnknownSiteId(Exception):
@@ -149,14 +151,24 @@ def get_sites_for_brand(brand_id: BrandID) -> List[Site]:
     return [_db_entity_to_site(site) for site in sites]
 
 
-def get_current_sites() -> List[Site]:
+def get_current_sites(*, include_brands: bool = True) -> List[Union[Site, SiteWithBrand]]:
     """Return all "current" (i.e. enabled and not archived) sites."""
-    sites = DbSite.query \
+    query = DbSite.query
+
+    if include_brands:
+        query = query.options(db.joinedload('brand'))
+
+    sites = query \
         .filter_by(enabled=True) \
         .filter_by(archived=False) \
         .all()
 
-    return [_db_entity_to_site(site) for site in sites]
+    if include_brands:
+        transform = _db_entity_to_site_with_brand
+    else:
+        transform = _db_entity_to_site
+
+    return [transform(site) for site in sites]
 
 
 def _db_entity_to_site(site: DbSite) -> Site:
@@ -175,3 +187,10 @@ def _db_entity_to_site(site: DbSite) -> Site:
         site.storefront_id,
         site.archived,
     )
+
+
+def _db_entity_to_site_with_brand(site_entity: DbSite) -> SiteWithBrand:
+    site = _db_entity_to_site(site_entity)
+    brand = brand_service._db_entity_to_brand(site_entity.brand)
+
+    return SiteWithBrand(*dataclasses.astuple(site), brand=brand)

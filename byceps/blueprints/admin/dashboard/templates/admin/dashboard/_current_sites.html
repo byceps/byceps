@@ -1,3 +1,6 @@
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
+
+
 <h2>Aktuelle Sites</h2>
 
 {%- if current_sites %}
@@ -5,6 +8,7 @@
   {%- for site in current_sites|sort(attribute='title') %}
   <li>
     <a href="{{ url_for('site_admin.view', site_id=site.id) }}">
+      <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(site.brand, '32') }}</div>
       <div class="item">{{ site.title }}</div>
       <div class="supplement">{{ site.server_name }}</div>
     </a>

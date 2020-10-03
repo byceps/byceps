@@ -13,6 +13,7 @@ from ....typing import BrandID, PartyID
 from ....util.instances import ReprBuilder
 
 from ...board.transfer.models import BoardID
+from ...brand.models.brand import Brand
 from ...news.transfer.models import ChannelID as NewsChannelID
 from ...shop.storefront.transfer.models import StorefrontID
 
@@ -28,6 +29,7 @@ class Site(db.Model):
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     server_name = db.Column(db.UnicodeText, unique=True, nullable=False)
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False)
+    brand = db.relationship(Brand, backref='sites')
     email_config_id = db.Column(db.UnicodeText, db.ForeignKey('email_configs.id'), nullable=False)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=True)
     enabled = db.Column(db.Boolean, nullable=False)
