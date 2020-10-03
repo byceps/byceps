@@ -67,14 +67,14 @@ def _get_text_prefix() -> Optional[str]:
     )
 
 
-def _get_delay(default=2) -> int:
+def _get_delay(default: int = 2) -> int:
     """Return the configured delay, in seconds."""
-    value = global_settings_service.find_setting_value('announce_irc_delay')
-    if value is None:
+    value_str = global_settings_service.find_setting_value('announce_irc_delay')
+    if value_str is None:
         return default
 
     try:
-        value = int(value)
+        value = int(value_str)
     except (TypeError, ValueError) as e:
         current_app.logger.warning(
             f'Invalid delay value configured for announcements on IRC: {e}'
