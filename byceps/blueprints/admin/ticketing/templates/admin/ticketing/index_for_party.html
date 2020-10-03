@@ -1,19 +1,13 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layout/admin/ticketing.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% set current_page = 'ticketing_admin' %}
 {% set current_page_party = party %}
+{% set current_tab = 'tickets' %}
 {% set title = '%s - Ticketing'|format(party.title) %}
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>Ticketing</li>
-      <li>{{ party.title }}</li>
-    </ol>
-  </nav>
   <h1>Tickets {{ render_extra_in_heading(tickets.total) }}</h1>
 
   <div class="row row--space-between filters">

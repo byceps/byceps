@@ -1,0 +1,26 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_main_tabs %}
+{% set current_page = 'ticketing_admin' %}
+
+{% block before_body %}
+  {%- with party = current_page_party %}
+{{
+  render_main_tabs(
+    Navigation(None)
+      .add_item(
+        url_for('.index_for_party', party_id=party.id),
+        'Tickets',
+        id='tickets',
+        required_permission=TicketingPermission.view,
+        icon='ticket')
+      .add_item(
+        url_for('.index_bundle_for_party', party_id=party.id),
+        'Ticket-Bundles',
+        id='bundles',
+        required_permission=TicketingPermission.view,
+        icon='ticket-bundle')
+    , current_tab
+  )
+}}
+  {%- endwith %}
+{%- endblock %}

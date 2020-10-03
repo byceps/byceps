@@ -1,20 +1,14 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layout/admin/ticketing.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% set current_page = 'ticketing_admin' %}
 {% set current_page_party = party %}
+{% set current_tab = 'bundles' %}
 {% set title = '%s - Ticket-Bundles'|format(party.title) %}
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>Ticketing</li>
-      <li>{{ party.title }}</li>
-    </ol>
-  </nav>
   <h1>Ticket-Bundles {{ render_extra_in_heading(bundles.total) }}</h1>
 
   {%- if bundles.items %}

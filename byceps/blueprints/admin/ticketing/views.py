@@ -101,9 +101,12 @@ def appoint_user_form(ticket_id, erroneous_form=None):
     """Show a form to select a user to appoint for the ticket."""
     ticket = _get_ticket_or_404(ticket_id)
 
+    party = party_service.get_party(ticket.category.party_id)
+
     form = erroneous_form if erroneous_form else SpecifyUserForm()
 
     return {
+        'party': party,
         'ticket': ticket,
         'form': form,
     }

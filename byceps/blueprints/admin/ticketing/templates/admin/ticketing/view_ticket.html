@@ -1,11 +1,11 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layout/admin/ticketing.html' %}
 {% from 'macros/admin/shop/order.html' import render_order_link %}
 {% from 'macros/admin/ticketing.html' import render_ticket_flag_revoked, render_ticket_flag_user_checked_in %}
 {% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link, render_user_microcard %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% set current_page = 'ticketing_admin' %}
 {% set current_page_party = party %}
+{% set current_tab = 'tickets' %}
 {% set title = 'Ticket %s - Ticketing'|format(ticket.code) %}
 
 {% block head %}
@@ -18,12 +18,6 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>Ticketing</li>
-      <li>{{ party.title }}</li>
-    </ol>
-  </nav>
   <h1>
     {{- render_icon('ticket') }} {{ ticket.code }}
     {%- if ticket.revoked %} {{ render_ticket_flag_revoked() }}{% endif -%}
