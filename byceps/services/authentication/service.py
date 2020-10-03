@@ -8,6 +8,7 @@ byceps.services.authentication.service
 
 from typing import Optional
 
+from ..user.models.user import User as DbUser
 from ..user import service as user_service
 from ..user.transfer.models import User
 
@@ -40,7 +41,7 @@ def authenticate(screen_name_or_email_address: str, password: str) -> User:
 
 def _find_user_by_screen_name_or_email_address(
     screen_name_or_email_address: str,
-) -> Optional[User]:
+) -> Optional[DbUser]:
     if '@' in screen_name_or_email_address:
         return user_service.find_user_by_email_address(
             screen_name_or_email_address
@@ -51,7 +52,7 @@ def _find_user_by_screen_name_or_email_address(
         )
 
 
-def _require_user_account_is_active(user: User) -> None:
+def _require_user_account_is_active(user: DbUser) -> None:
     """Raise exception if user account has not been initialized, is
     suspended, or has been deleted.
     """
