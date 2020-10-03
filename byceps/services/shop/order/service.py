@@ -102,7 +102,7 @@ def _build_order(
     shop_id: ShopID,
     order_number: OrderNumber,
     orderer: Orderer,
-    created_at: datetime,
+    created_at: Optional[datetime],
 ) -> DbOrder:
     """Build an order."""
     return DbOrder(
