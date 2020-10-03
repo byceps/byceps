@@ -1,3 +1,15 @@
+{%- from 'macros/icons.html' import render_icon %}
+
+
+{%- macro render_navigation_backlink(label, url) %}
+<section class="sidebar-section">
+  <header class="sidebar-section-header" style="border: 0; padding: 0;">
+    <a href="{{ url }}" class="sidebar-section-title button button--clear" style="font-size: 0.875rem; padding-left: 15px; width: 100%;">{{ render_icon('arrow-up') }} <span>{{ label }}</span></a>
+  </header>
+</section>
+{%- endmacro %}
+
+
 {%- if g.current_user.has_permission(AdminPermission.access) %}
 
   {%- with
@@ -6,7 +18,11 @@
     site = current_page_site|default,
     party = current_page_party|default
   %}
-    {%- include 'layout/admin/_navigation_global.html' %}
+    {%- if not brand and not site and not party %}
+      {%- include 'layout/admin/_navigation_global.html' %}
+    {%- else %}
+{{ render_navigation_backlink('Global', url_for('admin_dashboard.view_global')) }}
+    {%- endif %}
 
     {%- if brand %}
       {%- include 'layout/admin/_navigation_brand.html' %}
@@ -14,14 +30,14 @@
 
     {%- if site %}
       {%- with brand = get_brand_for_site(site) %}
-      {%- include 'layout/admin/_navigation_brand.html' %}
+{{ render_navigation_backlink(brand.title, url_for('admin_dashboard.view_brand', brand_id=brand.id)) }}
       {%- include 'layout/admin/_navigation_site.html' %}
       {%- endwith %}
     {%- endif %}
 
     {%- if party %}
       {%- with brand = get_brand_for_party(party) %}
-      {%- include 'layout/admin/_navigation_brand.html' %}
+{{ render_navigation_backlink(brand.title, url_for('admin_dashboard.view_brand', brand_id=brand.id)) }}
       {%- include 'layout/admin/_navigation_party.html' %}
       {%- endwith %}
     {%- endif %}
