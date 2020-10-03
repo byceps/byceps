@@ -29,16 +29,9 @@ def inject_template_variables():
     def get_brand_for_party(party):
         return brand_service.find_brand(party.brand_id)
 
-    def get_party_for_site(site):
-        if site.party_id is None:
-            return None
-
-        return party_service.get_party(site.party_id)
-
     return {
         'all_brands': brands,
         'get_brand_for_party': get_brand_for_party,
-        'get_party_for_site': get_party_for_site,
         'get_parties_for_brand': party_service.get_parties_for_brand,
         'get_all_sites': site_service.get_all_sites,
     }
