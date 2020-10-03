@@ -107,7 +107,8 @@ def _assemble_message(
     return Message(sender, recipient_strs, subject, body)
 
 
-def _to_name_and_address_string(name: str, address: str) -> str:
+def _to_name_and_address_string(name: Optional[str], address: str) -> str:
+    # If `name` evaluates to `False`, just the address is returned.
     return formataddr((name, address))
 
 
