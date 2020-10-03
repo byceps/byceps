@@ -123,7 +123,7 @@ def _get_users_by_id(
 
 def create_comment(
     match_id: MatchID, creator_id: UserID, body: str
-) -> DbMatchComment:
+) -> MatchComment:
     """Create a comment on a match."""
     comment = DbMatchComment(match_id, creator_id, body)
 
@@ -135,7 +135,7 @@ def create_comment(
 
 def update_comment(
     comment_id: MatchCommentID, editor_id: UserID, body: str
-) -> DbMatchComment:
+) -> MatchComment:
     """Update a comment on a match."""
     comment = _get_db_comment(comment_id)
 

@@ -64,7 +64,7 @@ def update_config(
     return _db_entity_to_config(config)
 
 
-def delete_config(config_id: str) -> None:
+def delete_config(config_id: str) -> bool:
     """Delete a configuration.
 
     It is expected that no database records (sites) refer to the

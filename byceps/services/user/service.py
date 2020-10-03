@@ -101,7 +101,7 @@ def get_user(
     *,
     include_avatar: bool = False,
     include_orga_flag_for_party_id: Optional[PartyID] = None,
-) -> Optional[User]:
+) -> User:
     """Return the user with that ID, or raise an exception.
 
     Include avatar URL if requested.
