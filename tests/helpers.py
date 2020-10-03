@@ -14,7 +14,7 @@ from flask import appcontext_pushed, g
 from byceps.application import create_app
 from byceps.database import db
 from byceps.services.authentication.session import service as session_service
-from byceps.services.authorization import service as authorization_service
+from byceps.services.authorization import service as authz_service
 from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
@@ -86,18 +86,16 @@ def create_user_with_detail(*args, **kwargs):
 
 def create_permissions(permission_ids):
     for permission_id in permission_ids:
-        authorization_service.create_permission(
+        authz_service.create_permission(
             permission_id, permission_id, ignore_if_exists=True
         )
 
 
 def create_role_with_permissions_assigned(role_id, permission_ids):
-    role = authorization_service.create_role(
-        role_id, role_id, ignore_if_exists=True
-    )
+    role = authz_service.create_role(role_id, role_id, ignore_if_exists=True)
 
     for permission_id in permission_ids:
-        authorization_service.assign_permission_to_role(permission_id, role_id)
+        authz_service.assign_permission_to_role(permission_id, role_id)
 
 
 def create_brand(brand_id='acmecon', title='ACME Entertainment Convention'):

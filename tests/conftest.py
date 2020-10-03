@@ -10,7 +10,7 @@ from typing import Optional, Set
 
 import pytest
 
-from byceps.services.authorization import service as authorization_service
+from byceps.services.authorization import service as authz_service
 from byceps.services.board import board_service
 from byceps.services.brand import service as brand_service
 from byceps.services.email import service as email_service
@@ -138,7 +138,7 @@ def make_admin(make_user):
         role_id = f'admin_{token_hex(3)}'
         create_permissions(permission_ids)
         create_role_with_permissions_assigned(role_id, permission_ids)
-        authorization_service.assign_role_to_user(role_id, admin.id)
+        authz_service.assign_role_to_user(role_id, admin.id)
         created_role_ids.add(role_id)
 
         return admin
@@ -148,13 +148,13 @@ def make_admin(make_user):
     # Remove permissions and role again.
 
     for user_id in user_ids:
-        authorization_service.deassign_all_roles_from_user(user_id)
+        authz_service.deassign_all_roles_from_user(user_id)
 
     for role_id in created_role_ids:
-        authorization_service.delete_role(role_id)
+        authz_service.delete_role(role_id)
 
     for permission_id in created_permission_ids:
-        authorization_service.delete_permission(permission_id)
+        authz_service.delete_permission(permission_id)
 
 
 @pytest.fixture(scope='session')
