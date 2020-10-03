@@ -36,6 +36,6 @@ def inject_template_variables():
         'all_brands': brands,
         'get_brand_for_site': get_brand_for_site,
         'get_brand_for_party': get_brand_for_party,
+        'get_sites_for_brand': site_service.get_sites_for_brand,
         'get_parties_for_brand': party_service.get_parties_for_brand,
-        'get_all_sites': site_service.get_all_sites,
     }

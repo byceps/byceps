@@ -140,6 +140,15 @@ def get_all_sites() -> List[Site]:
     return [_db_entity_to_site(site) for site in sites]
 
 
+def get_sites_for_brand(brand_id: BrandID) -> List[Site]:
+    """Return the sites for that brand."""
+    sites = DbSite.query \
+        .filter_by(brand_id=brand_id) \
+        .all()
+
+    return [_db_entity_to_site(site) for site in sites]
+
+
 def get_current_sites() -> List[Site]:
     """Return all "current" (i.e. enabled and not archived) sites."""
     sites = DbSite.query \
