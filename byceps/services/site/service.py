@@ -195,4 +195,7 @@ def _db_entity_to_site_with_brand(site_entity: DbSite) -> SiteWithBrand:
     site = _db_entity_to_site(site_entity)
     brand = brand_service._db_entity_to_brand(site_entity.brand)
 
-    return SiteWithBrand(*dataclasses.astuple(site), brand=brand)
+    site_tuple = dataclasses.astuple(site)
+    brand_tuple = (brand,)
+
+    return SiteWithBrand(*(site_tuple + brand_tuple))

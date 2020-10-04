@@ -246,7 +246,10 @@ def _db_entity_to_party_with_brand(party_entity: DbParty) -> PartyWithBrand:
     party = _db_entity_to_party(party_entity)
     brand = brand_service._db_entity_to_brand(party_entity.brand)
 
-    return PartyWithBrand(*dataclasses.astuple(party), brand=brand)
+    party_tuple = dataclasses.astuple(party)
+    brand_tuple = (brand,)
+
+    return PartyWithBrand(*(party_tuple + brand_tuple))
 
 
 def get_party_days(party: Party) -> List[date]:
