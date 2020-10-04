@@ -3,18 +3,8 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from tests.helpers import http_client
 
-
-def test_index(admin_app, consent_admin):
+def test_index(consent_admin_client):
     url = '/admin/consent/'
-    response = get_resource(admin_app, consent_admin, url)
+    response = consent_admin_client.get(url)
     assert response.status_code == 200
-
-
-# helpers
-
-
-def get_resource(app, user, url):
-    with http_client(app, user_id=user.id) as client:
-        return client.get(url)

@@ -20,3 +20,8 @@ def email_admin(make_admin):
     admin = make_admin('EmailAdmin', permission_ids)
     login_user(admin.id)
     return admin
+
+
+@pytest.fixture(scope='package')
+def email_admin_client(make_client, admin_app, email_admin):
+    return make_client(admin_app, user_id=email_admin.id)

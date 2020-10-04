@@ -3,42 +3,32 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from tests.helpers import http_client
 
-
-def test_ticket_index(admin_app, party, ticketing_admin, ticket):
+def test_ticket_index(party, ticketing_admin_client, ticket):
     url = f'/admin/ticketing/tickets/for_party/{party.id}'
-    response = get_resource(admin_app, ticketing_admin, url)
+    response = ticketing_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_ticket_view(admin_app, ticketing_admin, ticket):
+def test_ticket_view(ticketing_admin_client, ticket):
     url = f'/admin/ticketing/tickets/{ticket.id}'
-    response = get_resource(admin_app, ticketing_admin, url)
+    response = ticketing_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_appoint_user_form(admin_app, ticketing_admin, ticket):
+def test_appoint_user_form(ticketing_admin_client, ticket):
     url = f'/admin/ticketing/tickets/{ticket.id}/appoint_user'
-    response = get_resource(admin_app, ticketing_admin, url)
+    response = ticketing_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_bundle_index(admin_app, party, ticketing_admin, bundle):
+def test_bundle_index(party, ticketing_admin_client, bundle):
     url = f'/admin/ticketing/bundles/for_party/{party.id}'
-    response = get_resource(admin_app, ticketing_admin, url)
+    response = ticketing_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_bundle_view(admin_app, ticketing_admin, bundle):
+def test_bundle_view(ticketing_admin_client, bundle):
     url = f'/admin/ticketing/bundles/{bundle.id}'
-    response = get_resource(admin_app, ticketing_admin, url)
+    response = ticketing_admin_client.get(url)
     assert response.status_code == 200
-
-
-# helpers
-
-
-def get_resource(app, user, url):
-    with http_client(app, user_id=user.id) as client:
-        return client.get(url)

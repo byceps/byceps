@@ -5,10 +5,8 @@
 
 import byceps.services.email.service as email_service
 
-from tests.helpers import http_client
 
-
-def test_create_minimal_config(admin_app, email_admin):
+def test_create_minimal_config(email_admin_client):
     config_id = 'acme-minimal'
     assert email_service.find_config(config_id) is None
 
@@ -17,8 +15,7 @@ def test_create_minimal_config(admin_app, email_admin):
         'config_id': config_id,
         'sender_address': 'noreply@acme.example',
     }
-    with http_client(admin_app, user_id=email_admin.id) as client:
-        response = client.post(url, data=form_data)
+    response = email_admin_client.post(url, data=form_data)
 
     config = email_service.find_config(config_id)
     assert config is not None
@@ -32,7 +29,7 @@ def test_create_minimal_config(admin_app, email_admin):
     email_service.delete_config(config_id)
 
 
-def test_create_full_config(admin_app, email_admin):
+def test_create_full_config(email_admin_client):
     config_id = 'acme-full'
     assert email_service.find_config(config_id) is None
 
@@ -43,8 +40,7 @@ def test_create_full_config(admin_app, email_admin):
         'sender_name': 'ACME Corp.',
         'contact_address': 'info@acme.example',
     }
-    with http_client(admin_app, user_id=email_admin.id) as client:
-        response = client.post(url, data=form_data)
+    response = email_admin_client.post(url, data=form_data)
 
     config = email_service.find_config(config_id)
     assert config is not None

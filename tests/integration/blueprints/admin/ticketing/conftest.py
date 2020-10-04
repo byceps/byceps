@@ -29,6 +29,11 @@ def ticketing_admin(make_admin):
 
 
 @pytest.fixture(scope='package')
+def ticketing_admin_client(make_client, admin_app, ticketing_admin):
+    return make_client(admin_app, user_id=ticketing_admin.id)
+
+
+@pytest.fixture(scope='package')
 def ticket_owner(make_user):
     return make_user('Ticket_Owner')
 

@@ -5,28 +5,26 @@
 
 from byceps.services.user_badge import badge_service
 
-from tests.helpers import http_client
 
-
-def test_index(admin_app, user_badge_admin):
+def test_index(user_badge_admin_client):
     url = '/admin/user_badges/badges'
-    response = get_resource(admin_app, user_badge_admin, url)
+    response = user_badge_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_view(admin_app, user_badge_admin, badge):
+def test_view(user_badge_admin_client, badge):
     url = f'/admin/user_badges/badges/{badge.id}'
-    response = get_resource(admin_app, user_badge_admin, url)
+    response = user_badge_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_create_form(admin_app, user_badge_admin):
+def test_create_form(user_badge_admin_client):
     url = '/admin/user_badges/create'
-    response = get_resource(admin_app, user_badge_admin, url)
+    response = user_badge_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_create(admin_app, user_badge_admin, brand):
+def test_create(user_badge_admin_client, brand):
     slug = 'seal-of-resilience'
     label = 'Seal of Resilience'
     image_filename = 'seal-of-resilience.svg'
@@ -43,7 +41,7 @@ def test_create(admin_app, user_badge_admin, brand):
         'brand_id': brand.id,
         'featured': 'Y',
     }
-    response = post_resource(admin_app, user_badge_admin, url, form_data)
+    response = user_badge_admin_client.post(url, data=form_data)
 
     badge = badge_service.find_badge_by_slug(slug)
     assert badge is not None
@@ -59,20 +57,7 @@ def test_create(admin_app, user_badge_admin, brand):
     badge_service.delete_badge(badge.id)
 
 
-def test_update_form(admin_app, user_badge_admin, badge):
+def test_update_form(user_badge_admin_client, badge):
     url = f'/admin/user_badges/badges/{badge.id}/update'
-    response = get_resource(admin_app, user_badge_admin, url)
+    response = user_badge_admin_client.get(url)
     assert response.status_code == 200
-
-
-# helpers
-
-
-def get_resource(app, user, url):
-    with http_client(app, user_id=user.id) as client:
-        return client.get(url)
-
-
-def post_resource(app, user, url, data):
-    with http_client(app, user_id=user.id) as client:
-        return client.post(url, data=data)

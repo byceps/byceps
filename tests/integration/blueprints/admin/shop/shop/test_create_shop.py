@@ -7,11 +7,11 @@ import pytest
 
 import byceps.services.shop.shop.service as shop_service
 
-from tests.helpers import http_client, login_user
+from tests.helpers import login_user
 
 
-@pytest.fixture(scope='module')
-def admin(make_admin):
+@pytest.fixture(scope='package')
+def shop_admin(make_admin):
     permission_ids = {
         'admin.access',
         'shop.create',
@@ -21,7 +21,12 @@ def admin(make_admin):
     return admin
 
 
-def test_create_shop(email_config, admin_app, admin):
+@pytest.fixture(scope='package')
+def shop_admin_client(make_client, admin_app, shop_admin):
+    return make_client(admin_app, user_id=shop_admin.id)
+
+
+def test_create_shop(email_config, shop_admin_client):
     shop_id = 'acme'
     assert shop_service.find_shop(shop_id) is None
 
@@ -31,8 +36,7 @@ def test_create_shop(email_config, admin_app, admin):
         'title': 'ACME',
         'email_config_id': email_config.id,
     }
-    with http_client(admin_app, user_id=admin.id) as client:
-        response = client.post(url, data=form_data)
+    response = shop_admin_client.post(url, data=form_data)
 
     shop = shop_service.find_shop(shop_id)
     assert shop is not None

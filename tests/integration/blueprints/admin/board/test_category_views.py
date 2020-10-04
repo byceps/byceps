@@ -8,16 +8,14 @@ from byceps.services.board import (
     category_query_service,
 )
 
-from tests.helpers import http_client
 
-
-def test_create_form(admin_app, board_admin, board):
+def test_create_form(board_admin_client, board):
     url = f'/admin/boards/categories/for_board/{board.id}/create'
-    response = get_resource(admin_app, board_admin, url)
+    response = board_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_create(admin_app, board_admin, board):
+def test_create(board_admin_client, board):
     slug = 'off-topic'
     title = 'Off-Topic'
     description = 'Random stuff'
@@ -30,7 +28,7 @@ def test_create(admin_app, board_admin, board):
         'title': title,
         'description': description,
     }
-    response = post_resource(admin_app, board_admin, url, form_data)
+    response = board_admin_client.post(url, data=form_data)
 
     category = category_query_service.find_category_by_slug(board.id, slug)
     assert category is not None
@@ -43,20 +41,7 @@ def test_create(admin_app, board_admin, board):
     category_command_service.delete_category(category.id)
 
 
-def test_update_form(admin_app, board_admin, category):
+def test_update_form(board_admin_client, category):
     url = f'/admin/boards/categories/{category.id}/update'
-    response = get_resource(admin_app, board_admin, url)
+    response = board_admin_client.get(url)
     assert response.status_code == 200
-
-
-# helpers
-
-
-def get_resource(app, user, url):
-    with http_client(app, user_id=user.id) as client:
-        return client.get(url)
-
-
-def post_resource(app, user, url, data):
-    with http_client(app, user_id=user.id) as client:
-        return client.post(url, data=data)

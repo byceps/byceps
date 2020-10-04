@@ -18,18 +18,23 @@ from byceps.services.shop.order import (
 )
 from byceps.services.shop.storefront import service as storefront_service
 
-from tests.helpers import http_client, login_user
+from tests.helpers import login_user
 from tests.integration.services.shop.helpers import (
     create_article as _create_article,
 )
 
 
-@pytest.fixture(scope='module')
-def admin_user(make_admin):
+@pytest.fixture(scope='package')
+def shop_order_admin(make_admin):
     permission_ids = {'admin.access', 'shop_order.view'}
     admin = make_admin('ShopOrderExportAdmin', permission_ids)
     login_user(admin.id)
     return admin
+
+
+@pytest.fixture(scope='package')
+def shop_order_admin_client(make_client, admin_app, shop_order_admin):
+    return make_client(admin_app, user_id=shop_order_admin.id)
 
 
 @pytest.fixture
@@ -145,13 +150,12 @@ def order(storefront, cart, orderer):
 
 
 @freeze_time('2015-04-15 07:54:18')  # UTC
-def test_serialize_existing_order(request, admin_app, order, admin_user):
+def test_serialize_existing_order(request, order, shop_order_admin_client):
     filename = request.fspath.dirpath('order_export.xml')
     expected = filename.read_text('iso-8859-1').rstrip()
 
     url = f'/admin/shop/orders/{order.id}/export'
-    with http_client(admin_app, user_id=admin_user.id) as client:
-        response = client.get(url)
+    response = shop_order_admin_client.get(url)
 
     assert response.status_code == 200
     assert response.content_type == 'application/xml; charset=iso-8859-1'
@@ -161,12 +165,11 @@ def test_serialize_existing_order(request, admin_app, order, admin_user):
 
 
 @freeze_time('2015-04-15 07:54:18')  # UTC
-def test_serialize_unknown_order(admin_app, admin_user):
+def test_serialize_unknown_order(shop_order_admin_client):
     unknown_order_id = '00000000-0000-0000-0000-000000000000'
 
     url = f'/admin/shop/orders/{unknown_order_id}/export'
-    with http_client(admin_app, user_id=admin_user.id) as client:
-        response = client.get(url)
+    response = shop_order_admin_client.get(url)
 
     assert response.status_code == 404
 

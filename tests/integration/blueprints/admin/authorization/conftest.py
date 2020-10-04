@@ -10,7 +10,7 @@ import byceps.services.authorization.service as authz_service
 from tests.helpers import login_user
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='package')
 def role_admin(make_admin):
     permission_ids = {
         'admin.access',
@@ -20,6 +20,11 @@ def role_admin(make_admin):
     admin = make_admin('RoleAdmin', permission_ids)
     login_user(admin.id)
     return admin
+
+
+@pytest.fixture(scope='package')
+def role_admin_client(make_client, admin_app, role_admin):
+    return make_client(admin_app, user_id=role_admin.id)
 
 
 @pytest.fixture(scope='module')

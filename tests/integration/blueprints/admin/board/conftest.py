@@ -25,6 +25,11 @@ def board_admin(make_admin):
     return admin
 
 
+@pytest.fixture(scope='package')
+def board_admin_client(make_client, admin_app, board_admin):
+    return make_client(admin_app, user_id=board_admin.id)
+
+
 @pytest.fixture(scope='module')
 def category(board):
     slug = 'beauty-tips'

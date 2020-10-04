@@ -7,34 +7,32 @@ from datetime import datetime
 
 import byceps.services.party.service as party_service
 
-from tests.helpers import http_client
 
-
-def test_index(admin_app, party_admin, party):
+def test_index(party_admin_client, party):
     url = '/admin/parties/'
-    response = get_resource(admin_app, party_admin, url)
+    response = party_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_index_for_brand(admin_app, party_admin, brand, party):
+def test_index_for_brand(party_admin_client, brand, party):
     url = f'/admin/parties/brands/{brand.id}'
-    response = get_resource(admin_app, party_admin, url)
+    response = party_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_view(admin_app, party_admin, party):
+def test_view(party_admin_client, party):
     url = f'/admin/parties/parties/{party.id}'
-    response = get_resource(admin_app, party_admin, url)
+    response = party_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_create_form(admin_app, party_admin, brand):
+def test_create_form(party_admin_client, brand):
     url = f'/admin/parties/for_brand/{brand.id}/create'
-    response = get_resource(admin_app, party_admin, url)
+    response = party_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_create(admin_app, party_admin, brand):
+def test_create(party_admin_client, brand):
     party_id = 'galant-2020'
     title = 'gaLANt 2020'
     max_ticket_quantity = 126
@@ -49,7 +47,7 @@ def test_create(admin_app, party_admin, brand):
         'ends_at': '20.09.2020 13:00',  # UTC+02:00
         'max_ticket_quantity': str(max_ticket_quantity),
     }
-    response = post_resource(admin_app, party_admin, url, form_data)
+    response = party_admin_client.post(url, data=form_data)
 
     party = party_service.find_party(party_id)
     assert party is not None
@@ -62,20 +60,7 @@ def test_create(admin_app, party_admin, brand):
     party_service.delete_party(party_id)
 
 
-def test_update_form(admin_app, party_admin, party):
+def test_update_form(party_admin_client, party):
     url = f'/admin/parties/parties/{party.id}/update'
-    response = get_resource(admin_app, party_admin, url)
+    response = party_admin_client.get(url)
     assert response.status_code == 200
-
-
-# helpers
-
-
-def get_resource(app, user, url):
-    with http_client(app, user_id=user.id) as client:
-        return client.get(url)
-
-
-def post_resource(app, user, url, data):
-    with http_client(app, user_id=user.id) as client:
-        return client.post(url, data=data)

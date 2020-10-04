@@ -5,28 +5,26 @@
 
 import byceps.services.site.service as site_service
 
-from tests.helpers import http_client
 
-
-def test_index(admin_app, site_admin, site):
+def test_index(site_admin_client, site):
     url = '/admin/sites/'
-    response = get_resource(admin_app, site_admin, url)
+    response = site_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_view(admin_app, site_admin, site):
+def test_view(site_admin_client, site):
     url = f'/admin/sites/sites/{site.id}'
-    response = get_resource(admin_app, site_admin, url)
+    response = site_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_create_form(admin_app, site_admin, brand):
+def test_create_form(site_admin_client, brand):
     url = f'/admin/sites/sites/create/for_brand/{brand.id}'
-    response = get_resource(admin_app, site_admin, url)
+    response = site_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_create(admin_app, site_admin, brand, email_config):
+def test_create(site_admin_client, brand, email_config):
     site_id = 'partysite-99'
     title = 'Party 99'
     server_name = 'www.party99.example'
@@ -43,7 +41,7 @@ def test_create(admin_app, site_admin, brand, email_config):
         'board_id': '',
         'storefront_id': '',
     }
-    response = post_resource(admin_app, site_admin, url, form_data)
+    response = site_admin_client.post(url, data=form_data)
 
     site = site_service.find_site(site_id)
     assert site is not None
@@ -59,20 +57,7 @@ def test_create(admin_app, site_admin, brand, email_config):
     site_service.delete_site(site_id)
 
 
-def test_update_form(admin_app, site_admin, site):
+def test_update_form(site_admin_client, site):
     url = f'/admin/sites/sites/{site.id}/update'
-    response = get_resource(admin_app, site_admin, url)
+    response = site_admin_client.get(url)
     assert response.status_code == 200
-
-
-# helpers
-
-
-def get_resource(app, user, url):
-    with http_client(app, user_id=user.id) as client:
-        return client.get(url)
-
-
-def post_resource(app, user, url, data):
-    with http_client(app, user_id=user.id) as client:
-        return client.post(url, data=data)

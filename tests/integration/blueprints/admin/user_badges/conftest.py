@@ -10,7 +10,7 @@ from byceps.services.user_badge import badge_service
 from tests.helpers import login_user
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='package')
 def user_badge_admin(make_admin):
     permission_ids = {
         'admin.access',
@@ -22,6 +22,11 @@ def user_badge_admin(make_admin):
     admin = make_admin('UserBadgeAdmin', permission_ids)
     login_user(admin.id)
     return admin
+
+
+@pytest.fixture(scope='package')
+def user_badge_admin_client(make_client, admin_app, user_badge_admin):
+    return make_client(admin_app, user_id=user_badge_admin.id)
 
 
 @pytest.fixture(scope='module')

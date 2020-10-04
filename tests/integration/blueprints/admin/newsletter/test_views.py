@@ -15,7 +15,7 @@ from byceps.services.newsletter import command_service
 from byceps.services.newsletter.types import SubscriptionState
 from byceps.services.user import command_service as user_command_service
 
-from tests.helpers import http_client, login_user
+from tests.helpers import login_user
 
 
 def test_export_subscribers(newsletter_list, subscribers, client):
@@ -95,7 +95,7 @@ def test_export_subscriber_email_addresses(newsletter_list, subscribers, client)
     assert response.get_data() == expected_data
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='package')
 def newsletter_admin(make_admin):
     permission_ids = {'admin.access', 'newsletter.export_subscribers'}
     admin = make_admin('NewsletterAdmin', permission_ids)
@@ -160,8 +160,6 @@ def add_subscriptions(user_id, list_id, states):
     db.session.commit()
 
 
-@pytest.fixture(scope='module')
-def client(admin_app, newsletter_admin):
-    """Provide a test HTTP client against the API."""
-    with http_client(admin_app, user_id=newsletter_admin.id) as client:
-        yield client
+@pytest.fixture(scope='package')
+def client(admin_app, make_client, newsletter_admin):
+    return make_client(admin_app, user_id=newsletter_admin.id)

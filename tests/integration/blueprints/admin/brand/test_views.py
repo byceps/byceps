@@ -5,28 +5,26 @@
 
 import byceps.services.brand.service as brand_service
 
-from tests.helpers import http_client
 
-
-def test_index(admin_app, brand_admin, brand):
+def test_index(brand_admin_client, brand):
     url = '/admin/brands/'
-    response = get_resource(admin_app, brand_admin, url)
+    response = brand_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_view(admin_app, brand_admin, brand):
+def test_view(brand_admin_client, brand):
     url = f'/admin/brands/brands/{brand.id}'
-    response = get_resource(admin_app, brand_admin, url)
+    response = brand_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_create_form(admin_app, brand_admin):
+def test_create_form(brand_admin_client):
     url = '/admin/brands/create'
-    response = get_resource(admin_app, brand_admin, url)
+    response = brand_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_create(admin_app, brand_admin):
+def test_create(brand_admin_client):
     brand_id = 'galant'
     title = 'gaLANt'
 
@@ -37,7 +35,7 @@ def test_create(admin_app, brand_admin):
         'id': brand_id,
         'title': title,
     }
-    response = post_resource(admin_app, brand_admin, url, form_data)
+    response = brand_admin_client.post(url, data=form_data)
 
     brand = brand_service.find_brand(brand_id)
     assert brand is not None
@@ -48,20 +46,7 @@ def test_create(admin_app, brand_admin):
     brand_service.delete_brand(brand_id)
 
 
-def test_update_form(admin_app, brand_admin, brand):
+def test_update_form(brand_admin_client, brand):
     url = f'/admin/brands/brands/{brand.id}/update'
-    response = get_resource(admin_app, brand_admin, url)
+    response = brand_admin_client.get(url)
     assert response.status_code == 200
-
-
-# helpers
-
-
-def get_resource(app, user, url):
-    with http_client(app, user_id=user.id) as client:
-        return client.get(url)
-
-
-def post_resource(app, user, url, data):
-    with http_client(app, user_id=user.id) as client:
-        return client.post(url, data=data)

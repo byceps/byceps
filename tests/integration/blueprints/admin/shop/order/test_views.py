@@ -18,14 +18,14 @@ from byceps.services.shop.order.transfer.models import (
 )
 from testfixtures.shop_order import create_orderer
 
-from tests.helpers import http_client, login_user
+from tests.helpers import login_user
 from tests.integration.services.shop.helpers import (
     create_article as _create_article,
 )
 
 
-@pytest.fixture(scope='module')
-def admin(make_admin):
+@pytest.fixture(scope='package')
+def shop_order_admin(make_admin):
     permission_ids = {
         'admin.access',
         'shop_order.cancel',
@@ -34,6 +34,11 @@ def admin(make_admin):
     admin = make_admin('ShopOrderAdmin', permission_ids)
     login_user(admin.id)
     return admin
+
+
+@pytest.fixture(scope='package')
+def shop_order_admin_client(make_client, admin_app, shop_order_admin):
+    return make_client(admin_app, user_id=shop_order_admin.id)
 
 
 @pytest.fixture
@@ -75,12 +80,12 @@ def orderer(orderer_user):
 def test_cancel_before_paid(
     order_email_service_mock,
     order_canceled_signal_send_mock,
-    admin_app,
     storefront,
     article1,
-    admin,
+    shop_order_admin,
     orderer_user,
     orderer,
+    shop_order_admin_client,
 ):
     article = article1
 
@@ -99,13 +104,12 @@ def test_cancel_before_paid(
         'reason': 'Dein Vorname ist albern!',
         'send_email': 'y',
     }
-    with http_client(admin_app, user_id=admin.id) as client:
-        response = client.post(url, data=form_data)
+    response = shop_order_admin_client.post(url, data=form_data)
 
     order_afterwards = get_order(order_before.id)
     assert response.status_code == 302
     assert_payment(
-        order_afterwards, None, PaymentState.canceled_before_paid, admin.id
+        order_afterwards, None, PaymentState.canceled_before_paid, shop_order_admin.id
     )
 
     assert get_article_quantity(article.id) == 8
@@ -116,8 +120,8 @@ def test_cancel_before_paid(
 
     event = ShopOrderCanceled(
         occurred_at=order_afterwards.payment_state_updated_at,
-        initiator_id=admin.id,
-        initiator_screen_name=admin.screen_name,
+        initiator_id=shop_order_admin.id,
+        initiator_screen_name=shop_order_admin.screen_name,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
         orderer_id=orderer_user.id,
@@ -133,12 +137,12 @@ def test_cancel_before_paid(
 def test_cancel_before_paid_without_sending_email(
     order_email_service_mock,
     order_canceled_signal_send_mock,
-    admin_app,
     storefront,
     article2,
-    admin,
+    shop_order_admin,
     orderer_user,
     orderer,
+    shop_order_admin_client,
 ):
     article = article2
 
@@ -152,8 +156,7 @@ def test_cancel_before_paid_without_sending_email(
         'reason': 'Dein Vorname ist albern!',
         # Sending e-mail is not requested.
     }
-    with http_client(admin_app, user_id=admin.id) as client:
-        response = client.post(url, data=form_data)
+    response = shop_order_admin_client.post(url, data=form_data)
 
     order_afterwards = get_order(placed_order.id)
     assert response.status_code == 302
@@ -163,8 +166,8 @@ def test_cancel_before_paid_without_sending_email(
 
     event = ShopOrderCanceled(
         occurred_at=order_afterwards.payment_state_updated_at,
-        initiator_id=admin.id,
-        initiator_screen_name=admin.screen_name,
+        initiator_id=shop_order_admin.id,
+        initiator_screen_name=shop_order_admin.screen_name,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
         orderer_id=orderer_user.id,
@@ -180,11 +183,11 @@ def test_cancel_before_paid_without_sending_email(
 def test_mark_order_as_paid(
     order_email_service_mock,
     order_paid_signal_send_mock,
-    admin_app,
     storefront,
-    admin,
+    shop_order_admin,
     orderer_user,
     orderer,
+    shop_order_admin_client,
 ):
     placed_order = place_order(storefront.id, orderer, [])
     order_before = get_order(placed_order.id)
@@ -193,8 +196,7 @@ def test_mark_order_as_paid(
 
     url = f'/admin/shop/orders/{order_before.id}/mark_as_paid'
     form_data = {'payment_method': 'direct_debit'}
-    with http_client(admin_app, user_id=admin.id) as client:
-        response = client.post(url, data=form_data)
+    response = shop_order_admin_client.post(url, data=form_data)
 
     order_afterwards = get_order(order_before.id)
     assert response.status_code == 302
@@ -202,7 +204,7 @@ def test_mark_order_as_paid(
         order_afterwards,
         PaymentMethod.direct_debit,
         PaymentState.paid,
-        admin.id,
+        shop_order_admin.id,
     )
 
     order_email_service_mock.send_email_for_paid_order_to_orderer.assert_called_once_with(
@@ -211,8 +213,8 @@ def test_mark_order_as_paid(
 
     event = ShopOrderPaid(
         occurred_at=order_afterwards.payment_state_updated_at,
-        initiator_id=admin.id,
-        initiator_screen_name=admin.screen_name,
+        initiator_id=shop_order_admin.id,
+        initiator_screen_name=shop_order_admin.screen_name,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
         orderer_id=orderer_user.id,
@@ -231,12 +233,12 @@ def test_cancel_after_paid(
     order_email_service_mock,
     order_paid_signal_send_mock,
     order_canceled_signal_send_mock,
-    admin_app,
     storefront,
     article3,
-    admin,
+    shop_order_admin,
     orderer_user,
     orderer,
+    shop_order_admin_client,
 ):
     article = article3
 
@@ -252,16 +254,14 @@ def test_cancel_after_paid(
 
     url = f'/admin/shop/orders/{order_before.id}/mark_as_paid'
     form_data = {'payment_method': 'bank_transfer'}
-    with http_client(admin_app, user_id=admin.id) as client:
-        response = client.post(url, data=form_data)
+    response = shop_order_admin_client.post(url, data=form_data)
 
     url = f'/admin/shop/orders/{order_before.id}/cancel'
     form_data = {
         'reason': 'Dein Vorname ist albern!',
         'send_email': 'n',
     }
-    with http_client(admin_app, user_id=admin.id) as client:
-        response = client.post(url, data=form_data)
+    response = shop_order_admin_client.post(url, data=form_data)
 
     order_afterwards = get_order(order_before.id)
     assert response.status_code == 302
@@ -269,7 +269,7 @@ def test_cancel_after_paid(
         order_afterwards,
         PaymentMethod.bank_transfer,
         PaymentState.canceled_after_paid,
-        admin.id,
+        shop_order_admin.id,
     )
 
     assert get_article_quantity(article.id) == 8
@@ -280,8 +280,8 @@ def test_cancel_after_paid(
 
     event = ShopOrderCanceled(
         occurred_at=order_afterwards.payment_state_updated_at,
-        initiator_id=admin.id,
-        initiator_screen_name=admin.screen_name,
+        initiator_id=shop_order_admin.id,
+        initiator_screen_name=shop_order_admin.screen_name,
         order_id=placed_order.id,
         order_number=placed_order.order_number,
         orderer_id=orderer_user.id,
