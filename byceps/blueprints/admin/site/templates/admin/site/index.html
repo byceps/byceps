@@ -6,35 +6,6 @@
 {% set title = 'Sites' %}
 {% set layout_main_raw = True %}
 
-{% macro render_icon_tag(icon, title, class) -%}
-  <span class="icon-tag {{ class }}" title="{{ title }}">{{ render_icon(icon) }}</span>
-{%- endmacro %}
-
-{% block head %}
-<style>
-  .icon-tag {
-    align-items: center;
-    border-radius: 3px;
-    color: #ffffff;
-    display: inline-flex;
-    font-size: 1rem; /* 16px */
-    height: 1.75rem;
-    justify-content: center;
-    line-height: 1;
-    margin: 0 0.125rem;
-    width: 1.75rem;
-  }
-
-  .icon-tag.color-disabled {
-    background-color: #dddddd;
-  }
-
-  .icon-tag.color-success {
-    background-color: #55cc00;
-  }
-</style>
-{%- endblock %}
-
 {% block body %}
 
   <div class="row row--space-between">
@@ -59,86 +30,6 @@
     {%- endif %}
   </div>
 
-  {%- if sites %}
-    {%- for site in sites|sort(attribute='enabled', reverse=True) %}
-  <div class="box" style="border-left: {{ '#55cc00' if site.enabled else '#aaaaaa' }} solid 0.25rem;">
-    <div class="row row--space-between">
-
-      <div class="column-auto" style="min-width: 65%;">
-        <a href="{{ url_for('.view', site_id=site.id) }}" class="disguised" style="display: block;">
-          <strong>{{ site.title }}</strong><br>
-          <span class="monospace">{{ site.id }}</span>
-        </a>
-        <p><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></p>
-        <div>
-          {%- if site.enabled %}
-          {{ render_icon_tag('success', 'Site aktiv', 'color-success') }}
-          {%- else %}
-          {{ render_icon_tag('disabled', 'Site deaktiviert', 'color-disabled') }}
-          {%- endif %}
-
-          {%- if site.user_account_creation_enabled %}
-          {{ render_icon_tag('user-create', 'Benutzerregistrierung geöffnet', 'color-success') }}
-          {%- else %}
-          {{ render_icon_tag('user-create', 'Benutzerregistrierung gesperrt', 'color-disabled') }}
-          {%- endif %}
-
-          {%- if site.login_enabled %}
-          {{ render_icon_tag('log-in', 'Benutzeranmeldung geöffnet', 'color-success') }}
-          {%- else %}
-          {{ render_icon_tag('log-in', 'Benutzeranmeldung gesperrt', 'color-disabled') }}
-          {%- endif %}
-
-          {%- if site.archived %}
-          {{ render_icon_tag('archived', 'Site archiviert', 'color-disabled') }}
-          {%- endif %}
-        </div>
-      </div>
-
-      <div class="column-auto" style="min-width: 35%;">
-        <div>{{ render_icon('brand', title='Marke') }} <a href="{{ url_for('admin_dashboard.view_brand', brand_id=site.brand_id) }}" class="disguised">{{ site.brand.title }}</div>
-        <div>{{ render_icon('email', title='E-Mail-Konfiguration') }} <a href="{{ url_for('email_admin.index') }}" class="disguised">{{ site.email_config_id }}</a></div>
-        <div>
-          {{ render_icon('date', title='Party') }}
-          {% if site.party_id -%}
-          <a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}" class="disguised">{{ party_titles_by_id[site.party_id] }}</a>
-          {%- else -%}
-          {{ 'keine Party'|dim }}
-          {%- endif -%}
-        </div>
-        <div>
-          {{ render_icon('news', title='Newskanal') }}
-          {% if site.news_channel_id -%}
-          <a href="{{ url_for('news_admin.channel_view', channel_id=site.news_channel_id) }}" class="disguised">{{ site.news_channel_id }}</a>
-          {%- else -%}
-          {{ 'kein Newskanal'|dim }}
-          {%- endif -%}
-        </div>
-        <div>
-          {{ render_icon('board', title='Forum') }}
-          {% if site.board_id -%}
-          <a href="{{ url_for('board_admin.board_view', board_id=site.board_id) }}" class="disguised">{{ site.board_id }}</a>
-          {%- else -%}
-          {{ 'kein Forum'|dim }}
-          {%- endif -%}
-        </div>
-        <div>
-          {{ render_icon('shop', title='Storefront') }}
-          {% if site.storefront_id -%}
-            {%- with storefront = storefronts_by_site_id.get(site.storefront_id) %}
-          <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}" class="disguised">{{ storefront.id }}</a>
-            {%- endwith %}
-          {%- else -%}
-          {{ 'kein Storefront'|dim }}
-          {%- endif -%}
-        </div>
-      </div>
-
-    </div>{# .row #}
-  </div>{# .box #}
-    {%- endfor %}
-  {%- else %}
-  <div class="dimmed-box centered">Es sind keine Sites hinterlegt.</div>
-  {%- endif %}
+{%- include 'admin/site/_sites.html' %}
 
 {%- endblock %}
