@@ -41,7 +41,7 @@ permission_registry.register_enum(SitePermission)
 @templated
 def index():
     """List all sites."""
-    sites = site_service.get_all_sites()
+    sites = list(site_service.get_all_sites())
     sites.sort(key=lambda site: (site.title, site.party_id))
 
     brands = brand_service.get_all_brands()
