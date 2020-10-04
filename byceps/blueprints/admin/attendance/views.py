@@ -15,11 +15,17 @@ from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
+from ...common.authorization.decorators import permission_required
+from ...common.authorization.registry import permission_registry
+
+from ..core.authorization import AdminPermission
+
 
 blueprint = create_blueprint('attendance_admin', __name__)
 
 
 @blueprint.route('/brands/<brand_id>')
+@permission_required(AdminPermission.access)
 @templated
 def view_for_brand(brand_id):
     """Show most frequent attendees for parties of this brand."""
