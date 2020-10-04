@@ -31,6 +31,7 @@ from tests.helpers import (
     create_site,
     create_user,
     create_user_with_detail,
+    http_client,
     DEFAULT_EMAIL_CONFIG_ID,
 )
 
@@ -61,12 +62,6 @@ def admin_app(make_admin_app):
 
 
 @pytest.fixture(scope='session')
-def admin_client(admin_app):
-    """Provide a test HTTP client against the admin web application."""
-    return admin_app.test_client()
-
-
-@pytest.fixture(scope='session')
 def make_site_app(admin_app, data_path):
     """Provide a site web application."""
 
@@ -90,6 +85,17 @@ def site_app(make_site_app):
 def data_path():
     with TemporaryDirectory() as d:
         yield Path(d)
+
+
+@pytest.fixture(scope='package')
+def make_client():
+    """Provide a test HTTP client against the application."""
+
+    def _wrapper(app, *, user_id=None):
+        with http_client(app, user_id=user_id) as client:
+            return client
+
+    return _wrapper
 
 
 @pytest.fixture(scope='session')
