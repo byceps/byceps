@@ -6,10 +6,14 @@ byceps.blueprints.admin.site.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+import dataclasses
+from typing import Iterable, Iterator
+
 from flask import abort, request
 
 from ....services.board import board_service
 from ....services.brand import service as brand_service
+from ....services.brand.transfer.models import Brand
 from ....services.news import channel_service as news_channel_service
 from ....services.party import service as party_service
 from ....services.shop.shop import service as shop_service
@@ -18,6 +22,7 @@ from ....services.site import (
     service as site_service,
     settings_service as site_settings_service,
 )
+from ....services.site.transfer.models import Site, SiteWithBrand
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -41,13 +46,12 @@ permission_registry.register_enum(SitePermission)
 @templated
 def index():
     """List all sites."""
-    sites = list(site_service.get_all_sites())
-    sites.sort(key=lambda site: (site.title, site.party_id))
-
     brands = brand_service.get_all_brands()
     brands.sort(key=lambda brand: brand.title)
 
-    brands_by_id = {brand.id: brand for brand in brands}
+    sites = site_service.get_all_sites()
+    sites = list(_sites_to_sites_with_brand(sites, brands))
+    sites.sort(key=lambda site: (site.title, site.party_id))
 
     parties = party_service.get_all_parties()
     party_titles_by_id = {p.id: p.title for p in parties}
@@ -57,10 +61,26 @@ def index():
     return {
         'sites': sites,
         'brands': brands,
-        'brands_by_id': brands_by_id,
         'party_titles_by_id': party_titles_by_id,
         'storefronts_by_site_id': storefronts_by_site_id,
     }
+
+
+def _sites_to_sites_with_brand(
+    sites: Iterable[Site], brands: Iterable[Brand]
+) -> Iterator[SiteWithBrand]:
+    brands_by_id = {brand.id: brand for brand in brands}
+
+    for site in sites:
+        brand = brands_by_id[site.brand_id]
+        yield _site_to_site_with_brand(site, brand)
+
+
+def _site_to_site_with_brand(site: Site, brand: Brand) -> SiteWithBrand:
+    site_tuple = dataclasses.astuple(site)
+    brand_tuple = (brand,)
+
+    return SiteWithBrand(*(site_tuple + brand_tuple))
 
 
 def _get_storefronts_by_site_id(sites):
