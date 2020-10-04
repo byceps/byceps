@@ -4,11 +4,11 @@
 
 
 <section class="sidebar-section">
-  <header class="sidebar-section-header">
-    <div class="sidebar-section-category">Marke</div>
+  <header class="sidebar-section-header sidebar-section-header--unpadded">
     <div class="dropdown">
       <button class="dropdown-toggle button button--clear button--compact">
-        <span>{{ brand.title }}</span> {{ render_icon('caret-down') }}
+        <div class="sidebar-section-category">Marke</div>
+        {{ brand.title }} {{ render_icon('caret-down') }}
       </button>
       <ol>
         {%- for brand in all_brands|sort(attribute='title') %}

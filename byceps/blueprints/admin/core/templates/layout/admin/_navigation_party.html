@@ -4,11 +4,11 @@
 
 
 <section class="sidebar-section">
-  <header class="sidebar-section-header">
-    <div class="sidebar-section-category">Party</div>
+  <header class="sidebar-section-header sidebar-section-header--unpadded">
     <div class="dropdown">
       <button class="dropdown-toggle button button--clear button--compact">
-        <span>{{ party.title }}</span> {{ render_icon('caret-down') }}
+        <div class="sidebar-section-category">Party</div>
+        {{ party.title }} {{ render_icon('caret-down') }}
       </button>
       <ol>
         {%- for party in get_parties_for_brand(brand.id)|sort(attribute='starts_at', reverse=True) %}

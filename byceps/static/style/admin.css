@@ -213,21 +213,28 @@ main {
   padding: 0;
 }
 
+.sidebar-section-header .dropdown {
+  width: 100%;
+}
+
+.sidebar-section-header .dropdown-toggle.button {
+  display: block;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  white-space: normal;
+  width: 100%;
+}
+
 .sidebar-section-category {
   color: #aaaaaa;
   font-size: 0.75rem; /* 12px / 16px */
   margin-bottom: 0.1rem;
-  margin-top: 0.3rem;
 }
 
 .sidebar-section-header .button {
   font-size: 0.875rem; /* 14px / 16px */
   text-align: left;
   white-space: normal;
-}
-
-.sidebar-section-header .dropdown {
-  margin-left: -0.3rem;
 }
 
 .sidebar-section-header .dropdown li a {
