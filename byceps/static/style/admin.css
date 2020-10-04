@@ -231,6 +231,16 @@ main {
   border-radius: 0;
 }
 
+.sidebar-section-header-layout {
+  display: flex;
+}
+
+.sidebar-section-header-layout .avatar {
+  margin-left: -0.3rem;
+  margin-right: 0.5rem;
+  margin-top: 0.1rem;
+}
+
 .sidebar-section-category {
   color: #aaaaaa;
   font-size: 0.75rem; /* 12px / 16px */

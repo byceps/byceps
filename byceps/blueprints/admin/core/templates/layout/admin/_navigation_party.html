@@ -1,4 +1,5 @@
 {%- from 'macros/admin.html' import render_navigation %}
+{%- from 'macros/admin/brand.html' import render_brand_avatar %}
 {%- from 'macros/admin/party.html' import render_party_admin_link %}
 {%- from 'macros/icons.html' import render_icon -%}
 
@@ -7,8 +8,13 @@
   <header class="sidebar-section-header sidebar-section-header--unpadded">
     <div class="dropdown">
       <button class="dropdown-toggle button button--clear button--compact">
-        <div class="sidebar-section-category">Party</div>
-        {{ party.title }} {{ render_icon('caret-down') }}
+        <div class="sidebar-section-header-layout">
+          {{ render_brand_avatar(brand, '32') }}
+          <div>
+            <div class="sidebar-section-category">Party</div>
+            {{ party.title }} {{ render_icon('caret-down') }}
+          </div>
+        </div>
       </button>
       <ol>
         {%- for party in get_parties_for_brand(brand.id)|sort(attribute='starts_at', reverse=True) %}
