@@ -225,6 +225,12 @@ main {
   width: 100%;
 }
 
+.sidebar-section-header .button:hover {
+  background-color: #666666;
+  border-color: transparent;
+  border-radius: 0;
+}
+
 .sidebar-section-category {
   color: #aaaaaa;
   font-size: 0.75rem; /* 12px / 16px */
