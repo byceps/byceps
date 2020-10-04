@@ -3,8 +3,8 @@
 
 {%- macro render_navigation_backlink(label, url) %}
 <section class="sidebar-section">
-  <header class="sidebar-section-header" style="border: 0; padding: 0;">
-    <a href="{{ url }}" class="sidebar-section-title button button--clear" style="font-size: 0.875rem; padding-left: 15px; width: 100%;">{{ render_icon('arrow-up') }} <span>{{ label }}</span></a>
+  <header class="sidebar-section-header sidebar-section-header--unpadded">
+    <a href="{{ url }}" class="button button--clear" style="padding-left: 15px; width: 100%;">{{ render_icon('arrow-up') }} <span>{{ label }}</span></a>
   </header>
 </section>
 {%- endmacro %}
