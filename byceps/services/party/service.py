@@ -144,7 +144,7 @@ def get_all_parties_with_brands() -> List[PartyWithBrand]:
 
 
 def get_active_parties(
-    brand_id: Optional[BrandID] = None, *, include_brands: bool = True
+    brand_id: Optional[BrandID] = None, *, include_brands: bool = False
 ) -> List[Union[Party, PartyWithBrand]]:
     """Return active (i.e. non-canceled, non-archived) parties."""
     query = DbParty.query
@@ -160,7 +160,6 @@ def get_active_parties(
         .filter_by(archived=False) \
         .order_by(DbParty.starts_at) \
         .all()
-
 
     if include_brands:
         transform = _db_entity_to_party_with_brand
