@@ -13,28 +13,30 @@
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>{{ shop.title }}{% if shop.archived %} {{ render_tag('archiviert', class='color-disabled', icon='archived') }}{% endif %}</h1>
+
+      <div class="row row--equal-sized-centered-columns row--space-between row--wrap bigstats">
+        <div class="column-auto">
+          <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open') }}">
+            {{- render_bigstats_item(order_counts_by_payment_state[PaymentState.open], 'Bestellungen<br>'|safe ~ render_order_payment_state(PaymentState.open)) -}}
+          </a>
+        </div>
+        <div class="column-auto">
+          <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='paid') }}">
+            {{- render_bigstats_item(order_counts_by_payment_state[PaymentState.paid], 'Bestellungen<br>'|safe ~ render_order_payment_state(PaymentState.paid)) -}}
+          </a>
+        </div>
+      </div>
+
     </div>
     {%- if g.current_user.has_permission(ShopPermission.update) %}
     <div class="column-auto">
+
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.update_form', shop_id=shop.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
       </div>
+
     </div>
     {%- endif %}
-  </div>
-
-  <div class="row row--equal-sized-centered-columns row--space-between row--wrap bigstats">
-    <div class="column-auto">
-      <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open') }}">
-        {{- render_bigstats_item(order_counts_by_payment_state[PaymentState.open], 'Bestellungen<br>'|safe ~ render_order_payment_state(PaymentState.open)) -}}
-      </a>
-    </div>
-    <div class="column-auto">
-      <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='paid') }}">
-        {{- render_bigstats_item(order_counts_by_payment_state[PaymentState.paid], 'Bestellungen<br>'|safe ~ render_order_payment_state(PaymentState.paid)) -}}
-      </a>
-    </div>
   </div>
 
   <table class="index" style="margin-top: 2rem;">
