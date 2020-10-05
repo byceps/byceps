@@ -22,42 +22,6 @@
           </div><!-- /.column -->
           <div class="column">
 
-{%- with
-  brand = current_page_brand|default,
-  party = current_page_party|default,
-  shop = current_page_shop|default,
-  site = current_page_site|default
-%}
-  {%- if site %}
-            {%- with brand = get_brand_for_site(site) %}
-            <div style="float: left; margin-left: 0.5rem; margin-right: 0.2rem;">{{ render_brand_avatar(brand, '32') }}</div>
-            <span class="label-and-name">
-              <span class="label">Site</span>
-              <span class="name">{{ site.title }}</span>
-            </span>
-            {%- endwith %}
-  {%- elif shop %}
-            <span class="label-and-name">
-              <span class="label">Shop</span>
-              <span class="name">{{ shop.title }}</span>
-            </span>
-  {%- elif party %}
-            {%- with brand = get_brand_for_party(party) %}
-            <div style="float: left; margin-left: 0.5rem; margin-right: 0.2rem;">{{ render_brand_avatar(brand, '32') }}</div>
-            <span class="label-and-name">
-              <span class="label">Party</span>
-              <span class="name">{{ party.title }}</span>
-            </span>
-            {%- endwith %}
-  {%- elif brand %}
-            <div style="float: left; margin-left: 0.5rem; margin-right: 0.2rem;">{{ render_brand_avatar(brand, '32') }}</div>
-            <span class="label-and-name">
-              <span class="label">Marke</span>
-              <span class="name">{{ brand.title }}</span>
-            </span>
-  {%- endif %}
-{%- endwith %}
-
           </div><!-- /.column -->
         </div><!-- /#header-grid -->
       </div><!-- /#header-content -->
