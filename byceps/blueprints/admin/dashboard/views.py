@@ -49,7 +49,7 @@ permission_registry.register_enum(AdminDashboardPermission)
 @templated
 def view_global():
     """View dashboard for global entities."""
-    current_sites = site_service.get_current_sites()
+    current_sites = site_service.get_current_sites(include_brands=True)
     active_parties = party_service.get_active_parties(include_brands=True)
 
     brands = brand_service.get_all_brands()
