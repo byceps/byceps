@@ -84,12 +84,7 @@ def build_tickets(
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
-    codes: Set[TicketCode] = set()
-
-    for _ in range(quantity):
-        code = _generate_ticket_code_not_in(codes)
-        codes.add(code)
-
+    for code in _generate_ticket_codes(quantity):
         yield DbTicket(
             code,
             category_id,
@@ -101,6 +96,36 @@ def build_tickets(
 
 _CODE_ALPHABET = 'BCDFGHJKLMNPQRSTVWXYZ'
 _CODE_LENGTH = 5
+
+
+def _generate_ticket_codes(quantity: int) -> Set[TicketCode]:
+    """Generate a number of ticket codes."""
+    codes: Set[TicketCode] = set()
+
+    for _ in range(quantity):
+        code = _generate_ticket_code_not_in(codes)
+        codes.add(code)
+
+    # Check if the correct number of codes has been generated.
+    _verify_total_matches(codes, quantity)
+
+    return codes
+
+
+def _verify_total_matches(
+    codes: Set[TicketCode], requested_quantity: int
+) -> None:
+    """Verify if the number of generated codes matches the number of
+    requested codes.
+
+    Raise an exception if they do not match.
+    """
+    actual_quantity = len(codes)
+    if actual_quantity != requested_quantity:
+        raise TicketCodeGenerationFailed(
+            f'Number of generated ticket codes ({actual_quantity}) '
+            f'does not match requested amount ({requested_quantity}).'
+        )
 
 
 def _generate_ticket_code() -> TicketCode:
