@@ -152,10 +152,13 @@ def get_sites_for_brand(brand_id: BrandID) -> Set[Site]:
 
 
 def get_current_sites(
-    *, include_brands: bool = False
+    brand_id: Optional[BrandID] = None, *, include_brands: bool = False
 ) -> Set[Union[Site, SiteWithBrand]]:
     """Return all "current" (i.e. enabled and not archived) sites."""
     query = DbSite.query
+
+    if brand_id is not None:
+        query = query.filter_by(brand_id=brand_id)
 
     if include_brands:
         query = query.options(db.joinedload('brand'))

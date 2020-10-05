@@ -98,6 +98,9 @@ def view_brand(brand_id):
     if brand is None:
         abort(404)
 
+    current_sites = site_service.get_current_sites(
+        brand_id=brand.id, include_brands=True
+    )
     active_parties = party_service.get_active_parties(
         brand_id=brand.id, include_brands=True
     )
@@ -133,6 +136,7 @@ def view_brand(brand_id):
     return {
         'brand': brand,
 
+        'current_sites': current_sites,
         'active_parties': active_parties,
 
         'party_count': party_count,
