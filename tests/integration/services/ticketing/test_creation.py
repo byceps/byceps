@@ -9,6 +9,7 @@ from pytest import raises
 
 from byceps.services.ticketing import (
     event_service,
+    ticket_code_service,
     ticket_creation_service,
     ticket_service,
 )
@@ -24,7 +25,7 @@ def test_create_ticket(admin_app, category, ticket_owner):
 
 
 @patch(
-    'byceps.services.ticketing.ticket_creation_service._generate_ticket_code'
+    'byceps.services.ticketing.ticket_code_service._generate_ticket_code'
 )
 def test_create_ticket_with_existing_code(
     generate_ticket_code_mock, admin_app, category, ticket_owner
@@ -58,7 +59,7 @@ def test_create_tickets(admin_app, category, ticket_owner):
 
 
 @patch(
-    'byceps.services.ticketing.ticket_creation_service._generate_ticket_code'
+    'byceps.services.ticketing.ticket_code_service._generate_ticket_code'
 )
 def test_create_tickets_with_clashing_generated_codes(
     generate_ticket_code_mock, admin_app, category, ticket_owner
@@ -67,10 +68,13 @@ def test_create_tickets_with_clashing_generated_codes(
 
     quantity = 3
 
-    with raises(ticket_creation_service.TicketCodeGenerationFailed):
+    with raises(ticket_creation_service.TicketCreationFailed) as excinfo:
         tickets = ticket_creation_service.create_tickets(
             category.id, ticket_owner.id, quantity
         )
+
+    wrapped_exc = excinfo.value.args[0]
+    assert type(wrapped_exc) is ticket_code_service.TicketCodeGenerationFailed
 
 
 def assert_created_ticket(ticket, expected_category_id, expected_owner_id):
