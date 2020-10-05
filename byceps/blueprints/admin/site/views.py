@@ -66,6 +66,32 @@ def index():
     }
 
 
+@blueprint.route('/for_brand/<brand_id>')
+@permission_required(SitePermission.view)
+@templated
+def index_for_brand(brand_id):
+    """List sites for this brand."""
+    brand = brand_service.find_brand(brand_id)
+    if brand is None:
+        abort(404)
+
+    sites = site_service.get_sites_for_brand(brand.id)
+    sites = [_site_to_site_with_brand(site, brand) for site in sites]
+    sites.sort(key=lambda site: (site.title, site.party_id))
+
+    parties = party_service.get_all_parties()
+    party_titles_by_id = {p.id: p.title for p in parties}
+
+    storefronts_by_site_id = _get_storefronts_by_site_id(sites)
+
+    return {
+        'sites': sites,
+        'brand': brand,
+        'party_titles_by_id': party_titles_by_id,
+        'storefronts_by_site_id': storefronts_by_site_id,
+    }
+
+
 def _sites_to_sites_with_brand(
     sites: Iterable[Site], brands: Iterable[Brand]
 ) -> Iterator[SiteWithBrand]:
