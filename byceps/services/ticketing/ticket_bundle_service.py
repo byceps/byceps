@@ -8,6 +8,8 @@ byceps.services.ticketing.ticket_bundle_service
 
 from typing import Optional, Sequence
 
+from tenacity import retry, retry_if_exception_type, stop_after_attempt
+
 from ...database import db, Pagination
 from ...typing import PartyID, UserID
 
@@ -16,13 +18,18 @@ from ..shop.order.transfer.models import OrderNumber
 from .models.category import Category as DbCategory
 from .models.ticket import Ticket as DbTicket
 from .models.ticket_bundle import TicketBundle as DbTicketBundle
-from .ticket_creation_service import build_tickets
+from .ticket_creation_service import build_tickets, TicketCreationFailed
 from .ticket_revocation_service import (
     _build_ticket_revoked_event as build_ticket_revoked_event,
 )
 from .transfer.models import TicketBundleID, TicketCategoryID
 
 
+@retry(
+    reraise=True,
+    retry=retry_if_exception_type(TicketCreationFailed),
+    stop=stop_after_attempt(5),
+)
 def create_bundle(
     category_id: TicketCategoryID,
     ticket_quantity: int,
