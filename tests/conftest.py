@@ -114,7 +114,7 @@ def make_user(admin_app):
         user_command_service.delete_account(user_id, user_id, 'clean up')
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def make_user_with_detail(admin_app):
     user_ids = set()
 
