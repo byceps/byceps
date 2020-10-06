@@ -9,6 +9,7 @@ byceps.services.ticketing.ticket_creation_service
 from typing import Iterator, Optional, Sequence
 
 from sqlalchemy.exc import IntegrityError
+from tenacity import retry, retry_if_exception_type, stop_after_attempt
 
 from ...database import db
 from ...typing import UserID
@@ -44,6 +45,11 @@ def create_ticket(
     return tickets[0]
 
 
+@retry(
+    reraise=True,
+    retry=retry_if_exception_type(TicketCreationFailed),
+    stop=stop_after_attempt(5),
+)
 def create_tickets(
     category_id: TicketCategoryID,
     owned_by_id: UserID,

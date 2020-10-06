@@ -94,3 +94,35 @@ def test_create_tickets_with_same_code_fails(
 
     with raises(TicketCreationFailed):
         mark_order_as_paid(order.id, admin_user.id)
+
+
+@patch('byceps.services.ticketing.ticket_code_service._generate_ticket_code')
+def test_create_tickets_with_temporarily_equal_code_and_retry_succeeds(
+    generate_ticket_code_mock,
+    admin_app,
+    article,
+    ticket_category,
+    ticket_quantity,
+    admin_user,
+    orderer,
+    order,
+    order_action,
+):
+    code_generation_retries = 4  # Depends on implemented default value.
+    necessary_outer_retries = 5  # Depends on argument to `retry` decorator.
+    codes = ['EQUAL'] * code_generation_retries * necessary_outer_retries
+    codes += ['TCKT1', 'TCKT2', 'TCKT3', 'TCKT4']
+    codes_iter = iter(codes)
+    generate_ticket_code_mock.side_effect = lambda: next(codes_iter)
+
+    tickets_before_paid = get_tickets_for_order(order)
+    assert len(tickets_before_paid) == 0
+
+    mark_order_as_paid(order.id, admin_user.id)
+
+    tickets_after_paid = get_tickets_for_order(order)
+    assert len(tickets_after_paid) == ticket_quantity
+
+    # Clean up.
+    for ticket in tickets_after_paid:
+        ticket_service.delete_ticket(ticket.id)
