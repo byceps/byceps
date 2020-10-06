@@ -3,12 +3,18 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from unittest.mock import patch
+
 import pytest
+from pytest import raises
 
 from byceps.services.shop.order import action_service, action_registry_service
 from byceps.services.shop.order import event_service as order_event_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.ticketing import ticket_service
+from byceps.services.ticketing.ticket_creation_service import (
+    TicketCreationFailed,
+)
 
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
@@ -70,3 +76,21 @@ def test_create_tickets(
     # Clean up.
     for ticket in tickets_after_paid:
         ticket_service.delete_ticket(ticket.id)
+
+
+@patch('byceps.services.ticketing.ticket_code_service._generate_ticket_code')
+def test_create_tickets_with_same_code_fails(
+    generate_ticket_code_mock,
+    admin_app,
+    article,
+    ticket_category,
+    ticket_quantity,
+    admin_user,
+    orderer,
+    order,
+    order_action,
+):
+    generate_ticket_code_mock.side_effect = lambda: 'EQUAL'
+
+    with raises(TicketCreationFailed):
+        mark_order_as_paid(order.id, admin_user.id)

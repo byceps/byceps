@@ -30,6 +30,6 @@ def ticket_category(party):
     ticket_category_service.delete_category(category.id)
 
 
-@pytest.fixture
+@pytest.fixture(scope='package')
 def orderer(make_user_with_detail):
     return create_orderer(make_user_with_detail('TicketsOrderer'))
