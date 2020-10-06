@@ -29,10 +29,7 @@ def appoint_seat_manager(
     ticket_id: TicketID, manager_id: UserID, initiator_id: UserID
 ) -> None:
     """Appoint the user as the ticket's seat manager."""
-    ticket = ticket_service.find_ticket(ticket_id)
-
-    if ticket.revoked:
-        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
+    ticket = _get_ticket(ticket_id)
 
     ticket.seat_managed_by_id = manager_id
 
@@ -51,10 +48,7 @@ def appoint_seat_manager(
 
 def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Withdraw the ticket's custom seat manager."""
-    ticket = ticket_service.find_ticket(ticket_id)
-
-    if ticket.revoked:
-        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
+    ticket = _get_ticket(ticket_id)
 
     ticket.seat_managed_by_id = None
 
@@ -74,10 +68,7 @@ def occupy_seat(
     ticket_id: TicketID, seat_id: SeatID, initiator_id: UserID
 ) -> None:
     """Occupy the seat with this ticket."""
-    ticket = ticket_service.find_ticket(ticket_id)
-
-    if ticket.revoked:
-        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
+    ticket = _get_ticket(ticket_id)
 
     _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
 
@@ -111,10 +102,7 @@ def occupy_seat(
 
 def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Release the seat occupied by this ticket."""
-    ticket = ticket_service.find_ticket(ticket_id)
-
-    if ticket.revoked:
-        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
+    ticket = _get_ticket(ticket_id)
 
     _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
 
@@ -137,6 +125,23 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
     db.session.add(event)
 
     db.session.commit()
+
+
+def _get_ticket(ticket_id: TicketID) -> DbTicket:
+    """Return the ticket with that ID.
+
+    Raise an exception if the ID is unknown or if the ticket has been
+    revoked.
+    """
+    ticket = ticket_service.find_ticket(ticket_id)
+
+    if ticket is None:
+        raise ValueError(f'Unknown ticket ID "{ticket_id}"')
+
+    if ticket.revoked:
+        raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
+
+    return ticket
 
 
 def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: DbTicket) -> None:
