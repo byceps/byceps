@@ -15,7 +15,7 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>ID</th>
+        <th>Beschreibung<br>ID</th>
         <th>Erstellt</th>
         <th>Besitzer/in</th>
         <th>Kategorie</th>
@@ -25,7 +25,10 @@
     <tbody>
       {%- for bundle in bundles.items %}
       <tr>
-        <td><a class="disguised" href="{{ url_for('.view_bundle', bundle_id=bundle.id) }}"><strong>{{ bundle.id }}</strong></a></td>
+        <td>
+          <a class="disguised" href="{{ url_for('.view_bundle', bundle_id=bundle.id) }}"><strong>{{ bundle.label|fallback('unbenannt') }}</strong></a><br>
+          <span class="monospace">{{ bundle.id }}</span>
+        </td>
         <td>{{ render_datetime(bundle.created_at|utc_to_local_tz) }}</td>
         <td>{{ render_user_avatar_20_and_admin_link(bundle.owned_by) }}</td>
         <td>{{ bundle.ticket_category.title }}</td>

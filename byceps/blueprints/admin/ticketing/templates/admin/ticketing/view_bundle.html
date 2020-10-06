@@ -18,6 +18,10 @@
       <td>{{ bundle.id }}</td>
     </tr>
     <tr>
+      <th>Beschreibung</th>
+      <td>{{ bundle.label|fallback }}</td>
+    </tr>
+    <tr>
       <th>Erstellt</th>
       <td>{{ render_datetime(bundle.created_at|utc_to_local_tz) }}</td>
     </tr>

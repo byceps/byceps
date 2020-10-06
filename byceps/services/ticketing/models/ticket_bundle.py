@@ -7,6 +7,7 @@ byceps.services.ticketing.models.ticket_bundle
 """
 
 from datetime import datetime
+from typing import Optional
 
 from ....database import db, generate_uuid
 from ....typing import UserID
@@ -37,16 +38,20 @@ class TicketBundle(db.Model):
     seats_managed_by = db.relationship(User, foreign_keys=[seats_managed_by_id])
     users_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     users_managed_by = db.relationship(User, foreign_keys=[users_managed_by_id])
+    label = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(
         self,
         ticket_category_id: TicketCategoryID,
         ticket_quantity: int,
         owned_by_id: UserID,
+        *,
+        label: Optional[str] = None,
     ) -> None:
         self.ticket_category_id = ticket_category_id
         self.ticket_quantity = ticket_quantity
         self.owned_by_id = owned_by_id
+        self.label = label
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

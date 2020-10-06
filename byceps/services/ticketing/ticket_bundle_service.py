@@ -35,13 +35,16 @@ def create_bundle(
     ticket_quantity: int,
     owned_by_id: UserID,
     *,
+    label: Optional[str] = None,
     order_number: Optional[OrderNumber] = None,
 ) -> DbTicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
-    bundle = DbTicketBundle(category_id, ticket_quantity, owned_by_id)
+    bundle = DbTicketBundle(
+        category_id, ticket_quantity, owned_by_id, label=label
+    )
     db.session.add(bundle)
 
     tickets = list(
