@@ -7,6 +7,7 @@ byceps.services.brand.transfer.models
 """
 
 from dataclasses import dataclass
+from typing import Optional
 
 from ....typing import BrandID
 
@@ -15,8 +16,8 @@ from ....typing import BrandID
 class Brand:
     id: BrandID
     title: str
-    image_filename: str
-    image_url_path: str
+    image_filename: Optional[str]
+    image_url_path: Optional[str]
 
 
 @dataclass(frozen=True)
