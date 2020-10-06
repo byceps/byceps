@@ -27,12 +27,12 @@ from tests.integration.services.shop.helpers import (
 from .helpers import place_order_with_items
 
 
-@pytest.fixture
+@pytest.fixture(scope='package')
 def order_admin(make_user):
     return make_user('PlacedEmailShopOrderAdmin')
 
 
-@pytest.fixture
+@pytest.fixture(scope='package')
 def customer(make_user_with_detail):
     return make_user_with_detail(
         'Interessent', email_address='interessent@users.test'
