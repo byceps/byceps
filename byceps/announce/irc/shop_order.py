@@ -13,12 +13,12 @@ from typing import Optional
 from ...events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ...services.shop.order import service as order_service
 from ...signals import shop as shop_signals
-from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
 from ..helpers import get_screen_name_or_fallback
 
 from ._config import CHANNEL_ORGA_LOG
+from ._util import send_message
 
 
 @shop_signals.order_placed.connect

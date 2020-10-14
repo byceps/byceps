@@ -13,12 +13,12 @@ from typing import Optional
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from ...services.snippet.transfer.models import SnippetType
 from ...signals import snippet as snippet_signals
-from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
 from ..helpers import get_screen_name_or_fallback
 
 from ._config import CHANNEL_ORGA_LOG
+from ._util import send_message
 
 
 @snippet_signals.snippet_created.connect

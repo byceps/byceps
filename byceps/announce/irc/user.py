@@ -20,12 +20,12 @@ from ...events.user import (
     UserScreenNameChanged,
 )
 from ...signals import user as user_signals
-from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
 from ..helpers import get_screen_name_or_fallback
 
 from ._config import CHANNEL_ORGA_LOG
+from ._util import send_message
 
 
 @user_signals.account_created.connect

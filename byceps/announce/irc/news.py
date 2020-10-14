@@ -14,12 +14,12 @@ from ...events.news import NewsItemPublished
 from ...services.brand import service as brand_service
 from ...services.news import channel_service as news_channel_service
 from ...signals import news as news_signals
-from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
 from ..helpers import get_screen_name_or_fallback
 
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
+from ._util import send_message
 
 
 @news_signals.item_published.connect

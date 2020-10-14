@@ -1,6 +1,6 @@
 """
-byceps.util.irc
-~~~~~~~~~~~~~~~
+byceps.announce.irc.util
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Send messages to an IRC bot (Weitersager_) via HTTP.
 
@@ -13,7 +13,7 @@ Send messages to an IRC bot (Weitersager_) via HTTP.
 from flask import current_app
 import requests
 
-from ..services.webhooks import service as webhook_service
+from ...services.webhooks import service as webhook_service
 
 
 def send_message(channel: str, text: str) -> None:

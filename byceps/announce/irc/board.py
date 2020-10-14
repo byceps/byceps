@@ -27,12 +27,12 @@ from ...services.board.transfer.models import TopicID
 from ...services.board import topic_query_service as board_topic_query_service
 from ...services.brand import service as brand_service
 from ...signals import board as board_signals
-from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
 from ..helpers import get_screen_name_or_fallback
 
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
+from ._util import send_message
 
 
 @board_signals.topic_created.connect

@@ -26,10 +26,10 @@ from ...events.tourney import (
     TourneyParticipantDisqualified,
 )
 from ...signals import tourney as tourney_signals
-from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
 from ._config import CHANNEL_PUBLIC
+from ._util import send_message
 
 
 CHANNEL = CHANNEL_PUBLIC

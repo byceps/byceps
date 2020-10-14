@@ -12,12 +12,12 @@ from typing import Optional
 
 from ...events.user_badge import UserBadgeAwarded
 from ...signals import user_badge as user_badge_signals
-from ...util.irc import send_message
 from ...util.jobqueue import enqueue
 
 from ..helpers import get_screen_name_or_fallback
 
 from ._config import CHANNEL_ORGA_LOG
+from ._util import send_message
 
 
 @user_badge_signals.user_badge_awarded.connect
