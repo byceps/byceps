@@ -5,17 +5,26 @@
 
 import pytest
 
-from byceps.services.global_setting import service as global_settings_service
+from byceps.services.webhooks import service as webhook_service
 
 
 @pytest.fixture(scope='module')
-def app(admin_app):
-    global_settings_service.create_setting('announce_irc_enabled', 'true')
-    global_settings_service.create_setting(
-        'announce_irc_webhook_url', 'http://127.0.0.1:12345/'
+def webhook_settings():
+    scope = 'any'
+    scope_id = None
+    format = 'weitersager'
+    url = 'http://127.0.0.1:12345/'
+    enabled = True
+
+    webhook = webhook_service.create_outgoing_webhook(
+        scope, scope_id, format, url, enabled
     )
 
-    yield admin_app
+    yield
 
-    global_settings_service.remove_setting('announce_irc_enabled')
-    global_settings_service.remove_setting('announce_irc_webhook_url')
+    webhook_service.delete_outgoing_webhook(webhook.id)
+
+
+@pytest.fixture(scope='module')
+def app(admin_app, webhook_settings):
+    return admin_app
