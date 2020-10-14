@@ -8,7 +8,6 @@ Send IRC messages to a bot via HTTP.
 :License: Modified BSD, see LICENSE for details.
 """
 
-from time import sleep
 from typing import Optional
 
 from flask import current_app
@@ -36,11 +35,6 @@ def send_message(channel: str, text: str) -> None:
 
     data = {'channel': channel, 'text': text}
 
-    # Delay a bit as an attempt to avoid getting kicked from server
-    # because of flooding.
-    delay = _get_delay()
-    sleep(delay)
-
     requests.post(url, json=data)  # Ignore response code for now.
 
 
@@ -65,20 +59,3 @@ def _get_text_prefix() -> Optional[str]:
     return global_settings_service.find_setting_value(
         'announce_irc_text_prefix'
     )
-
-
-def _get_delay(default: int = 2) -> int:
-    """Return the configured delay, in seconds."""
-    value_str = global_settings_service.find_setting_value('announce_irc_delay')
-    if value_str is None:
-        return default
-
-    try:
-        value = int(value_str)
-    except (TypeError, ValueError) as e:
-        current_app.logger.warning(
-            f'Invalid delay value configured for announcements on IRC: {e}'
-        )
-        return default
-
-    return value
