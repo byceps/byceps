@@ -190,15 +190,13 @@ main {
 
 /* sidebar */
 
-#sidebar {
-  display: grid;
-  gap: var(--layout-gutter);
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-}
-
 .sidebar-section {
   font-size: 0.875rem; /* 14px / 16px */
   /* overflow: hidden;  # Would cut off dropdown in section header. */
+}
+
+.sidebar-section + .sidebar-section {
+  margin-top: var(--layout-gutter);
 }
 
 .sidebar-section-header {
