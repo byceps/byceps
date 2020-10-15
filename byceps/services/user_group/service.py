@@ -9,16 +9,19 @@ byceps.services.user_group.service
 from typing import List, Optional
 
 from ...database import db
-from ...typing import UserID
+from ...typing import PartyID, UserID
 
 from .models import UserGroup
 
 
 def create_group(
-    creator_id: UserID, title: str, description: Optional[str]
+    party_id: PartyID,
+    creator_id: UserID,
+    title: str,
+    description: Optional[str],
 ) -> UserGroup:
     """Introduce a new group."""
-    group = UserGroup(creator_id, title, description)
+    group = UserGroup(party_id, creator_id, title, description)
 
     db.session.add(group)
     db.session.commit()

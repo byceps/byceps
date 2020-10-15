@@ -12,7 +12,7 @@ from typing import Optional
 from sqlalchemy.ext.associationproxy import association_proxy
 
 from ...database import db, generate_uuid
-from ...typing import UserID
+from ...typing import PartyID, UserID
 from ...util.instances import ReprBuilder
 
 from ..user.models.user import User
@@ -22,8 +22,12 @@ class UserGroup(db.Model):
     """A self-organized group of users."""
 
     __tablename__ = 'user_groups'
+    __table_args__ = (
+        db.UniqueConstraint('party_id', 'title'),
+    )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), unique=True, nullable=False)
     creator = db.relationship(User)
@@ -33,8 +37,13 @@ class UserGroup(db.Model):
     members = association_proxy('memberships', 'user')
 
     def __init__(
-        self, creator_id: UserID, title: str, description: Optional[str] = None
+        self,
+        party_id: PartyID,
+        creator_id: UserID,
+        title: str,
+        description: Optional[str] = None,
     ) -> None:
+        self.party_id = party_id
         self.creator_id = creator_id
         self.title = title
         self.description = description
@@ -45,16 +54,15 @@ class UserGroup(db.Model):
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
-            .add_with_lookup('id') \
+            .add_with_lookup('party_id') \
             .add_with_lookup('title') \
-            .add_custom(f'{self.member_count:d} members') \
             .build()
 
 
 class Membership(db.Model):
     """The assignment of a user to a user group.
 
-    A user must be a member of no more than one group.
+    A user must not be a member of more than one group per party.
     """
 
     __tablename__ = 'user_group_memberships'
@@ -62,7 +70,7 @@ class Membership(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     group_id = db.Column(db.Uuid, db.ForeignKey('user_groups.id'))
     group = db.relationship(UserGroup, collection_class=set, backref='memberships')
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), unique=True)
+    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     user = db.relationship(User, backref='group_membership')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
