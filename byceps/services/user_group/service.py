@@ -6,7 +6,7 @@ byceps.services.user_group.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import List
+from typing import List, Optional
 
 from ...database import db
 from ...typing import UserID
@@ -14,7 +14,9 @@ from ...typing import UserID
 from .models import UserGroup
 
 
-def create_group(creator_id: UserID, title: str, description: str) -> UserGroup:
+def create_group(
+    creator_id: UserID, title: str, description: Optional[str]
+) -> UserGroup:
     """Introduce a new group."""
     group = UserGroup(creator_id, title, description)
 

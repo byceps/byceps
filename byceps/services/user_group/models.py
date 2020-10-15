@@ -7,6 +7,7 @@ byceps.services.user_group.models
 """
 
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
@@ -24,15 +25,15 @@ class UserGroup(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), unique=True)
+    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), unique=True, nullable=False)
     creator = db.relationship(User)
-    title = db.Column(db.UnicodeText, unique=True)
-    description = db.Column(db.UnicodeText)
+    title = db.Column(db.UnicodeText, unique=True, nullable=False)
+    description = db.Column(db.UnicodeText, nullable=True)
 
     members = association_proxy('memberships', 'user')
 
     def __init__(
-        self, creator_id: UserID, title: str, description: str
+        self, creator_id: UserID, title: str, description: Optional[str] = None
     ) -> None:
         self.creator_id = creator_id
         self.title = title
