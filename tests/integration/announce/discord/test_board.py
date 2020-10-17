@@ -3,10 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
-from contextlib import contextmanager
-
 import pytest
-from requests_mock import Mocker
 
 from byceps.announce.discord import board  # Load signal handlers.
 from byceps.events.board import BoardPostingCreated, BoardTopicCreated
@@ -17,6 +14,8 @@ from byceps.services.board import (
 )
 from byceps.services.webhooks import service as webhook_service
 from byceps.signals import board as board_signals
+
+from .helpers import assert_request, mocked_webhook_receiver
 
 
 WEBHOOK_URL = 'https://webhoooks.test/board'
@@ -44,7 +43,7 @@ def test_announce_topic_created(
         url=expected_url,
     )
 
-    with mocked_webhook_receiver() as mock:
+    with mocked_webhook_receiver(WEBHOOK_URL) as mock:
         board_signals.topic_created.send(None, event=event)
 
     assert_request(mock, expected_content)
@@ -74,7 +73,7 @@ def test_announce_posting_created(
         url=expected_url,
     )
 
-    with mocked_webhook_receiver() as mock:
+    with mocked_webhook_receiver(WEBHOOK_URL) as mock:
         board_signals.posting_created.send(None, event=event)
 
     assert_request(mock, expected_content)
@@ -144,21 +143,3 @@ def posting(topic, creator):
     yield posting
 
     posting_command_service.delete_posting(posting.id)
-
-
-@contextmanager
-def mocked_webhook_receiver():
-    with Mocker() as mock:
-        mock.post(WEBHOOK_URL)
-        yield mock
-
-
-def assert_request(mock, expected_content: str) -> None:
-    assert mock.called
-
-    history = mock.request_history
-    assert len(history) == 1
-
-    actual = mock.last_request.json()
-
-    assert actual == {'content': expected_content}
