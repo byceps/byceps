@@ -4,8 +4,13 @@
 """
 
 from contextlib import contextmanager
+from datetime import datetime
 
 from requests_mock import Mocker
+
+
+def now() -> datetime:
+    return datetime.utcnow()
 
 
 @contextmanager
