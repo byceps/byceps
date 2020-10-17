@@ -55,16 +55,14 @@ a {
 .page-body-grid {
   display: flex;
   flex-direction: column;
-  margin: -20px 0 0 -20px;
+  gap: 20px;
   padding: 0 var(--layout-gutter);
 }
-.page-body-grid-main,
-.page-body-grid-sidebar {
-  padding: 20px 0 0 20px;
-}
+
 .page-body-grid-main {
   flex: 1;
 }
+
 .page-body-grid-sidebar {
   flex: 0 0 22%;
 }
