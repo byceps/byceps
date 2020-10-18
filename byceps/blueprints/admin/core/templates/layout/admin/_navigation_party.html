@@ -16,7 +16,7 @@
           </div>
         </div>
       </button>
-      <ol>
+      <ol class="dropdown-menu">
         {%- for party in get_parties_for_brand(brand.id)|sort(attribute='starts_at', reverse=True) %}
         <li>{{ render_party_admin_link(party, dim_archived=True) }}</li>
         {%- endfor %}

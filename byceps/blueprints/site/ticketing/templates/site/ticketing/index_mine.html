@@ -100,7 +100,7 @@
               <span class="label-buttons">
                 <div class="dropdown right">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('caret-down') -}}</button>
-                  <ol>
+                  <ol class="dropdown-menu">
                     <li><a href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
                     {%- if ticket.used_by_id != g.current_user.id %}
                     <li><a href="{{ url_for('.withdraw_user', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-user">{{ render_icon('arrow-left') }} selbst nutzen</a></li>
@@ -130,7 +130,7 @@
               <span class="label-buttons">
                 <div class="dropdown right">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('caret-down') -}}</button>
-                  <ol>
+                  <ol class="dropdown-menu">
                     <li><a href="{{ url_for('.appoint_user_manager_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer-Verwaltung übertragen</a></li>
                     {%- if user_manager != g.current_user %}
                     <li><a href="{{ url_for('.withdraw_user_manager', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-user-manager">{{ render_icon('arrow-left') }} Nutzer-Verwaltung zurückholen</a></li>
@@ -171,7 +171,7 @@
               <span class="label-buttons">
                 <div class="dropdown right">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('caret-down') -}}</button>
-                  <ol>
+                  <ol class="dropdown-menu">
                     <li><a href="{{ url_for('.appoint_seat_manager_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Sitzplatz-Verwaltung übertragen</a></li>
                     {%- if seat_manager != g.current_user %}
                     <li><a href="{{ url_for('.withdraw_seat_manager', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-seat-manager">{{ render_icon('arrow-left') }} Sitzplatz-Verwaltung zurückholen</a></li>

@@ -11,7 +11,7 @@
       <div class="user-comment-actions">
         <div class="dropdown right">
           <button class="dropdown-toggle" title="Beitrags-Aktionen">{{ render_icon('user-comment') }} {{ render_icon('caret-down') }}</button>
-          <ol>
+          <ol class="dropdown-menu">
             {%- if user_may_reply %}
             <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id, quote=posting.id) }}" title="Diesen Beitrag zitieren">{{ render_icon('quote') }} Beitrag zitieren</a></li>
             {%- endif %}

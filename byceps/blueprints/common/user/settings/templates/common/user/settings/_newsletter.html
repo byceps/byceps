@@ -19,7 +19,7 @@
             {%- endif -%}
             {{ ' ' }}{{ render_icon('caret-down') -}}
           </button>
-          <ol>
+          <ol class="dropdown-menu">
             {% if subscribed_to_newsletter -%}
             <li><a data-action="newsletter-unsubscribe" href="{{ url_for('newsletter.unsubscribe', list_id=newsletter_list_id) }}">{{ render_icon('disabled', color='#cc0000') }} Abmelden</a></li>
             {%- else -%}

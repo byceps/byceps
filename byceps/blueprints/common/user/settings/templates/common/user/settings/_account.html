@@ -26,7 +26,7 @@
 
         <div class="dropdown">
           <button class="dropdown-toggle button button--compact"><span>Bearbeiten</span> {{ render_icon('caret-down') -}}</button>
-          <ol>
+          <ol class="dropdown-menu">
             <li><a href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} Hochladen</a></li>
             {%- if user.avatar %}
             <li><a data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} Entfernen</a></li>

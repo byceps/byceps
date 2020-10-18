@@ -71,7 +71,7 @@
         <span>{{ render_icon('filter') }} Einschränkung:</span>
         <div class="dropdown right">
           <button class="dropdown-toggle button button--clear">{{ render_user_state_filter(user_state_filter) }} {{ render_icon('caret-down') }}</button>
-          <ol>
+          <ol class="dropdown-menu">
             <li><a href="{{ url_for('.index') }}">{{ render_user_state_filter(UserStateFilter.none) }}</a></li>
             <li><a href="{{ url_for('.index', only='active') }}">{{ render_user_state_filter(UserStateFilter.active) }}</a></li>
             <li><a href="{{ url_for('.index', only='uninitialized') }}">{{ render_user_state_filter(UserStateFilter.uninitialized) }}</a></li>

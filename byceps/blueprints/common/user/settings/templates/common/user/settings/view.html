@@ -10,7 +10,7 @@
   <div style="float: right; margin-left: 40px;">
     <div class="dropdown right">
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('caret-down') }}</button>
-      <ol>
+      <ol class="dropdown-menu">
         <li><a href="{{ url_for('.change_screen_name_form') }}">{{ render_icon('edit') }} Benutzername ändern</a></li>
         <li><a href="{{ url_for('.details_update_form') }}">{{ render_icon('edit') }} Persönliche Daten ändern</a></li>
         <li><a href="{{ url_for('authentication.password.update_form') }}">{{ render_icon('password') }} Passwort ändern</a></li>

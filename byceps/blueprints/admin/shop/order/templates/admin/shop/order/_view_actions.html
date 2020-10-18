@@ -3,7 +3,7 @@
 
     <div class="dropdown right">
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('caret-down') }}</button>
-      <ol>
+      <ol class="dropdown-menu">
         <li><a href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren (XML)</a></li>
 
         {%- if order.is_invoiced %}

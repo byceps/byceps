@@ -40,7 +40,7 @@
         {%- if g.current_user.has_permission(OrgaTeamPermission.create) %}
         <div class="dropdown right">
           <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
-          <ol>
+          <ol class="dropdown-menu">
             <li><a href="{{ url_for('.teams_copy_form', target_party_id=party.id) }}">{{ render_icon('copy') }} <span>Teams von anderer Party kopieren</span></a></li>
           </ol>
         </div>
@@ -68,7 +68,7 @@
           <a class="button button--compact" href="{{ url_for('.membership_create_form', team_id=team.id) }}" title="Orga hinzufügen">{{ render_icon('add') }}</a>
           <div class="dropdown right">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
-            <ol>
+            <ol class="dropdown-menu">
               {%- if not members and g.current_user.has_permission(OrgaTeamPermission.delete) %}
               <li><a data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} <span>Team entfernen</span></a></li>
               {%- else %}
@@ -99,7 +99,7 @@
         <div class="column-auto">
           <div class="dropdown right">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
-            <ol>
+            <ol class="dropdown-menu">
               <li><a href="{{ url_for('.membership_update_form', membership_id=member.membership.id) }}">{{ render_icon('edit') }} Teamzugehörigkeit und Aufgabe bearbeiten</a></li>
               <li><a data-action="membership-remove" href="{{ url_for('.membership_remove', membership_id=member.membership.id) }}">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
             </ol>

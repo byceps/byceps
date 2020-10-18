@@ -36,7 +36,7 @@
           <div class="block-with-icon-body">Abonnenten {{ render_icon('caret-down') }}<br>exportieren</div>
         </div>
       </button>
-      <ol>
+      <ol class="dropdown-menu">
         <li><a href="{{ url_for('.export_subscribers', list_id=list_.id) }}">{{ render_icon('download') }} Benutzernamen und E-Mail-Adressen (als JSON)</a></li>
         <li><a href="{{ url_for('.export_subscriber_email_addresses', list_id=list_.id) }}">{{ render_icon('download') }} nur E-Mail-Adressen (als Text)</a></li>
       </ol>

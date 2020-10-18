@@ -19,7 +19,7 @@
         {%- if g.current_user.has_permission(ShopPermission.update) %}
         <div class="dropdown right">
           <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
-          <ol>
+          <ol class="dropdown-menu">
             <li><a href="{{ url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} Bestellnummer-Sequenz anlegen</a></li>
           </ol>
         </div>

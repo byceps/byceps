@@ -39,7 +39,7 @@
           {%- if g.current_user.has_permission(TourneyCategoryPermission.update) -%}
           <div class="dropdown">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
-            <ol>
+            <ol class="dropdown-menu">
               <li><a href="{{ url_for('.category_update_form', category_id=category.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
               <li><a data-action="category-move-up" href="{{ url_for('.category_move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} Nach oben schieben</a></li>
               <li><a data-action="category-move-down" href="{{ url_for('.category_move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} Nach unten schieben</a></li>

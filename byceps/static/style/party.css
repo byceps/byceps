@@ -85,7 +85,7 @@ main {
   text-decoration: none;
   white-space: nowrap;
 }
-#topbar .current-user .dropdown ol {
+#topbar .current-user .dropdown-menu {
   margin-right: -1px;
 }
 #topbar .current-user .label-and-name {

@@ -46,7 +46,7 @@
       <a class="button" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
       <div class="dropdown right">
         <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
-        <ol>
+        <ol class="dropdown-menu">
           <li><a href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} Bild hinzufügen</a></li>
           {%- if not item.published and g.current_user.has_permission(NewsItemPermission.publish) %}
           <li><a data-action="item-publish" href="{{ url_for('.item_publish', item_id=item.id) }}">{{ render_icon('published') }} News veröffentlichen</a></li>

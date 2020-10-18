@@ -62,7 +62,7 @@
           {%- if g.current_user.has_permission(PartyPermission.update) %}
           <div class="dropdown right">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
-            <ol>
+            <ol class="dropdown-menu">
               <li><a href="{{ url_for('.update_form', party_id=party.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
             </ol>
           </div>

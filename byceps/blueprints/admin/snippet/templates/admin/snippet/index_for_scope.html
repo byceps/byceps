@@ -41,7 +41,7 @@
   <div class="button-row button-row--right">
     <div class="dropdown right">
       <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Snippet erstellen</span> {{ render_icon('caret-down') }}</button>
-      <ol>
+      <ol class="dropdown-menu">
         <li><a href="{{ url_for('.create_document_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-document') }} Dokument</a></li>
         <li><a href="{{ url_for('.create_fragment_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-fragment') }} Fragment</a></li>
       </ol>
@@ -88,7 +88,7 @@
             {%- if snippet.is_document and g.current_user.has_permission(SnippetMountpointPermission.create) %}
             <div class="dropdown right">
               <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
-              <ol>
+              <ol class="dropdown-menu">
                 <li><a href="{{ url_for('.create_mountpoint_form', snippet_id=snippet.id) }}">{{ render_icon('add') }} Mountpoint erstellen</a></li>
               </ol>
             </div>

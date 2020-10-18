@@ -548,7 +548,7 @@ button.button[disabled],
   border: 0;
 }
 
-.dropdown > ol {
+.dropdown-menu {
   background-color: #ffffff;
   border: #cccccc solid 1px;
   display: none;
@@ -561,11 +561,11 @@ button.button[disabled],
   top: 100%;
   z-index: 200;
 }
-.dropdown.right > ol {
+.dropdown.right .dropdown-menu {
   left: auto;
   right: 0;
 }
-.dropdown.open > ol {
+.dropdown.open .dropdown-menu {
   display: block;
 }
 

@@ -28,7 +28,7 @@
   <div style="float: right; margin-left: 40px;">
     <div class="dropdown right">
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('caret-down') }}</button>
-      <ol>
+      <ol class="dropdown-menu">
         <li><a href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
         <li class="divider"></li>
         {%- if not ticket.user_checked_in %}

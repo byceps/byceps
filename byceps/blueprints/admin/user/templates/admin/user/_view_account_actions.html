@@ -4,7 +4,7 @@
   <div style="float: right; margin-left: 40px;">
     <div class="dropdown right">
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('caret-down') }}</button>
-      <ol>
+      <ol class="dropdown-menu">
         {%- if g.current_user.has_permission(UserPermission.set_password) %}
         <li><a href="{{ url_for('.set_password', user_id=user.id) }}">{{ render_icon('password') }} Passwort ändern</a></li>
         {%- endif %}
