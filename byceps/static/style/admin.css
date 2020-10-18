@@ -451,19 +451,9 @@ fieldset.buttons {
 
 /* dropdowns */
 
-main .dropdown.open .button.dropdown-toggle {
-  border-radius: 3px 3px 3px 0;
-}
-main .dropdown.open.right .button.dropdown-toggle {
-  border-radius: 3px 3px 0 3px;
-}
-
 main .dropdown-menu {
-  border-radius: 0 3px 3px 3px;
+  border-radius: 3px;
   top: calc(100% - 1px);
-}
-main .dropdown.right .dropdown-menu {
-  border-radius: 3px 0 3px 3px;
 }
 
 
