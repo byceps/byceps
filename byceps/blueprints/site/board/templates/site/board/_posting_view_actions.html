@@ -13,19 +13,19 @@
           <button class="dropdown-toggle" title="Beitrags-Aktionen">{{ render_icon('user-comment') }} {{ render_icon('caret-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
             {%- if user_may_reply %}
-            <li><a href="{{ url_for('.posting_create_form', topic_id=topic.id, quote=posting.id) }}" title="Diesen Beitrag zitieren">{{ render_icon('quote') }} Beitrag zitieren</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.posting_create_form', topic_id=topic.id, quote=posting.id) }}" title="Diesen Beitrag zitieren">{{ render_icon('quote') }} Beitrag zitieren</a></li>
             {%- endif %}
 
             {%- if user_may_update %}
               {%- if is_initial_topic_posting %}
-            <li><a href="{{ url_for('.topic_update_form', topic_id=topic.id) }}" title="Dieses Thema bearbeiten">{{ render_icon('edit') }} Thema bearbeiten</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.topic_update_form', topic_id=topic.id) }}" title="Dieses Thema bearbeiten">{{ render_icon('edit') }} Thema bearbeiten</a></li>
               {%- else %}
-            <li><a href="{{ url_for('.posting_update_form', posting_id=posting.id) }}" title="Diesen Beitrag bearbeiten">{{ render_icon('edit') }} Beitrag bearbeiten</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.posting_update_form', posting_id=posting.id) }}" title="Diesen Beitrag bearbeiten">{{ render_icon('edit') }} Beitrag bearbeiten</a></li>
               {%- endif %}
             {%- endif %}
 
             {%- if user_may_hide %}
-            <li><a href="{{ url_for('.posting_moderate_form', posting_id=posting.id) }}" title="Diesen Beitrag moderieren">{{ render_icon('moderate') }} Moderieren</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.posting_moderate_form', posting_id=posting.id) }}" title="Diesen Beitrag moderieren">{{ render_icon('moderate') }} Moderieren</a></li>
             {%- endif %}
           </ol>
         </div>

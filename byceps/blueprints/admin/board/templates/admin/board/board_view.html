@@ -52,16 +52,16 @@
           <div class="dropdown">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">
-              <li><a href="{{ url_for('.category_update_form', category_id=category.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
-              <li><a data-action="category-move-up" href="{{ url_for('.category_move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} Nach oben schieben</a></li>
-              <li><a data-action="category-move-down" href="{{ url_for('.category_move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} Nach unten schieben</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.category_update_form', category_id=category.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
+              <li><a class="dropdown-item" data-action="category-move-up" href="{{ url_for('.category_move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} Nach oben schieben</a></li>
+              <li><a class="dropdown-item" data-action="category-move-down" href="{{ url_for('.category_move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} Nach unten schieben</a></li>
               {%- if category.hidden %}
-              <li><a data-action="category-unhide" href="{{ url_for('.category_unhide', category_id=category.id) }}">{{ render_icon('view') }} Sichtbar machen</a></li>
+              <li><a class="dropdown-item" data-action="category-unhide" href="{{ url_for('.category_unhide', category_id=category.id) }}">{{ render_icon('view') }} Sichtbar machen</a></li>
               {%- else %}
-              <li><a data-action="category-hide" href="{{ url_for('.category_hide', category_id=category.id) }}">{{ render_icon('hidden') }} Verstecken</a></li>
+              <li><a class="dropdown-item" data-action="category-hide" href="{{ url_for('.category_hide', category_id=category.id) }}">{{ render_icon('hidden') }} Verstecken</a></li>
               {%- endif %}
               {%- if category.topic_count == 0 %}
-              <li><a data-action="category-delete" href="{{ url_for('.category_delete', category_id=category.id) }}">{{ render_icon('delete') }} Löschen</a></li>
+              <li><a class="dropdown-item" data-action="category-delete" href="{{ url_for('.category_delete', category_id=category.id) }}">{{ render_icon('delete') }} Löschen</a></li>
               {%- endif %}
             </ol>
           </div>

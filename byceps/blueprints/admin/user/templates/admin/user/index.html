@@ -72,11 +72,11 @@
         <div class="dropdown">
           <button class="dropdown-toggle button button--clear">{{ render_user_state_filter(user_state_filter) }} {{ render_icon('caret-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a href="{{ url_for('.index') }}">{{ render_user_state_filter(UserStateFilter.none) }}</a></li>
-            <li><a href="{{ url_for('.index', only='active') }}">{{ render_user_state_filter(UserStateFilter.active) }}</a></li>
-            <li><a href="{{ url_for('.index', only='uninitialized') }}">{{ render_user_state_filter(UserStateFilter.uninitialized) }}</a></li>
-            <li><a href="{{ url_for('.index', only='suspended') }}">{{ render_user_state_filter(UserStateFilter.suspended) }}</a></li>
-            <li><a href="{{ url_for('.index', only='deleted') }}">{{ render_user_state_filter(UserStateFilter.deleted) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index') }}">{{ render_user_state_filter(UserStateFilter.none) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index', only='active') }}">{{ render_user_state_filter(UserStateFilter.active) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index', only='uninitialized') }}">{{ render_user_state_filter(UserStateFilter.uninitialized) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index', only='suspended') }}">{{ render_user_state_filter(UserStateFilter.suspended) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index', only='deleted') }}">{{ render_user_state_filter(UserStateFilter.deleted) }}</a></li>
           </ol>
         </div>
       </div>

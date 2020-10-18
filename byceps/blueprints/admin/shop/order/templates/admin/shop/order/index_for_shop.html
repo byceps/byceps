@@ -27,11 +27,11 @@
         <div class="dropdown">
           <button class="dropdown-toggle button button--clear">{{ render_order_state_filter(order_state_filter) }} {{ render_icon('caret-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}">{{ render_order_state_filter(OrderStateFilter.none) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index_for_shop', shop_id=shop.id) }}">{{ render_order_state_filter(OrderStateFilter.none) }}</a></li>
             {%- for payment_state in PaymentState %}
-            <li><a href="{{ url_for('.index_for_shop', shop_id=shop.id, only_payment_state=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index_for_shop', shop_id=shop.id, only_payment_state=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
             {%- endfor %}
-            <li><a href="{{ url_for('.index_for_shop', shop_id=shop.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ render_order_state_filter(OrderStateFilter.waiting_for_shipping) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index_for_shop', shop_id=shop.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ render_order_state_filter(OrderStateFilter.waiting_for_shipping) }}</a></li>
           </ol>
         </div>
       </div>

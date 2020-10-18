@@ -4,37 +4,37 @@
     <div class="dropdown">
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('caret-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
-        <li><a href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren (XML)</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren (XML)</a></li>
 
         {%- if order.is_invoiced %}
-        <li><a data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde <strong>nicht</strong> versendet</a></li>
+        <li><a class="dropdown-item" data-action="order-unflag-invoiced" href="{{ url_for('.unset_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde <strong>nicht</strong> versendet</a></li>
         {%- else %}
-        <li><a data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde versendet</a></li>
+        <li><a class="dropdown-item" data-action="order-flag-invoiced" href="{{ url_for('.set_invoiced_flag', order_id=order.id) }}">{{ render_icon('invoice') }} Rechnung wurde versendet</a></li>
         {%- endif %}
 
         {%- if not order.is_canceled %}
-        <li class="divider"></li>
+        <li class="dropdown-divider"></li>
 
           {%- if order.is_open %}
-        <li><a data-action="order-resend-incoming-notification" href="{{ url_for('.resend_email_for_incoming_order_to_orderer', order_id=order.id) }}">{{ render_icon('email') }} E-Mail-Bestätigung erneut senden</a></li>
+        <li><a class="dropdown-item" data-action="order-resend-incoming-notification" href="{{ url_for('.resend_email_for_incoming_order_to_orderer', order_id=order.id) }}">{{ render_icon('email') }} E-Mail-Bestätigung erneut senden</a></li>
           {%- endif %}
 
           {%- if order.is_open and g.current_user.has_permission(ShopOrderPermission.mark_as_paid) %}
-        <li><a href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}">{{ render_icon('payment') }} Bestellung als bezahlt markieren</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}">{{ render_icon('payment') }} Bestellung als bezahlt markieren</a></li>
           {%- endif %}
 
           {%- if g.current_user.has_permission(ShopOrderPermission.cancel) %}
-        <li><a href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('disabled') }} Bestellung stornieren</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('disabled') }} Bestellung stornieren</a></li>
           {%- endif %}
 
         {%- endif %}
 
         {%- if order.is_shipping_required %}
-        <li class="divider"></li>
+        <li class="dropdown-divider"></li>
           {%- if order.is_shipped %}
-        <li><a data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} Bestellung wurde <strong>nicht</strong> versendet</a></li>
+        <li><a class="dropdown-item" data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} Bestellung wurde <strong>nicht</strong> versendet</a></li>
           {%- else %}
-        <li><a data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} Bestellung wurde versendet</a></li>
+        <li><a class="dropdown-item" data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} Bestellung wurde versendet</a></li>
           {%- endif %}
         {%- endif %}
 

@@ -37,8 +37,8 @@
         </div>
       </button>
       <ol class="dropdown-menu dropdown-menu--right">
-        <li><a href="{{ url_for('.export_subscribers', list_id=list_.id) }}">{{ render_icon('download') }} Benutzernamen und E-Mail-Adressen (als JSON)</a></li>
-        <li><a href="{{ url_for('.export_subscriber_email_addresses', list_id=list_.id) }}">{{ render_icon('download') }} nur E-Mail-Adressen (als Text)</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.export_subscribers', list_id=list_.id) }}">{{ render_icon('download') }} Benutzernamen und E-Mail-Adressen (als JSON)</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.export_subscriber_email_addresses', list_id=list_.id) }}">{{ render_icon('download') }} nur E-Mail-Adressen (als Text)</a></li>
       </ol>
     </div>
   </div>

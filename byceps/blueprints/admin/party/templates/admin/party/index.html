@@ -20,10 +20,10 @@
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Party erstellen</span> {{ render_icon('caret-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><span><strong>Marke:</strong></span></li>
-            <li class="divider"></li>
+            <li><span class="dropdown-item"><strong>Marke:</strong></span></li>
+            <li class="dropdown-divider"></li>
           {%- for brand in brands %}
-            <li><a href="{{ url_for('.create_form', brand_id=brand.id) }}"><span style="margin-right: 0.25rem;">{{ render_brand_avatar(brand, '24') }}</span> {{ brand.title }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.create_form', brand_id=brand.id) }}"><span style="margin-right: 0.25rem;">{{ render_brand_avatar(brand, '24') }}</span> {{ brand.title }}</a></li>
           {%- endfor %}
           </ol>
         </div>

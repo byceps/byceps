@@ -237,7 +237,7 @@ main {
   white-space: normal;
 }
 
-.sidebar-section-header .dropdown li a {
+.sidebar-section-header .dropdown-item {
   color: #333333;
 }
 

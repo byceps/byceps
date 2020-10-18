@@ -79,7 +79,7 @@ main {
   background-color: #ffffff;
   border-color: #cccccc;
 }
-#topbar .current-user .dropdown a {
+#topbar .current-user .dropdown-item {
   color: currentColor;
   display: block;
   text-decoration: none;
@@ -686,7 +686,7 @@ form.board-posting-create-form-inline .label {
 .ticket-card-cell a:not(:hover) {
   text-decoration: none;
 }
-.ticket-card-cell .dropdown a:hover {
+.ticket-card-cell .dropdown-item:hover {
   text-decoration: none;
 }
 

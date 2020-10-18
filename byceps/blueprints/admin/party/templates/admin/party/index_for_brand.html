@@ -63,7 +63,7 @@
           <div class="dropdown">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">
-              <li><a href="{{ url_for('.update_form', party_id=party.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.update_form', party_id=party.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
             </ol>
           </div>
           {%- endif %}

@@ -44,10 +44,10 @@
             <button class="dropdown-toggle button button--compact"><span>{{ render_icon('caret-down') }}</span></button>
             <ol class="dropdown-menu dropdown-menu--right">
             {%- if g.current_user.has_permission(EmailConfigPermission.update) %}
-              <li><a href="{{ url_for('.update_form', config_id=config.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.update_form', config_id=config.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
             {%- endif %}
             {%- if g.current_user.has_permission(EmailConfigPermission.delete) %}
-              <li><a href="{{ url_for('.delete', config_id=config.id) }}" data-action="config-delete">{{ render_icon('delete') }} Löschen</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.delete', config_id=config.id) }}" data-action="config-delete">{{ render_icon('delete') }} Löschen</a></li>
             {%- endif %}
             </ol>
           </div>

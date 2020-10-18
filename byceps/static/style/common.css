@@ -571,19 +571,19 @@ button.button[disabled],
   display: block;
 }
 
-.dropdown li > a,
-.dropdown li > span {
+.dropdown-item {
   color: currentColor;
   display: block;
   padding: 0.4rem 0.8rem;
   text-decoration: none;
   white-space: nowrap;
 }
-.dropdown li > a:hover {
+
+a.dropdown-item:hover {
   background-color: #eeeeee;
 }
 
-.dropdown li.divider {
+.dropdown-divider {
   border-top: #dddddd solid 1px;
   margin-top: 0.4rem;
   padding-top: 0.4rem;

@@ -12,16 +12,16 @@
     </button>
     <ol class="dropdown-menu dropdown-menu--right">
       <li>
-        <span class="label-and-name">
+        <span class="dropdown-item label-and-name">
           <span class="label">Angemeldet als</span>
           <span class="name">{{ render_user_screen_name(g.current_user) }}</span>
         </span>
       </li>
-      <li class="divider"></li>
-      <li><a href="{{ url_for('user_admin.view', user_id=g.current_user.id) }}">{{ render_icon('user-profile') }} Profil</a></li>
-      <li><a href="{{ url_for('user_settings.view') }}">{{ render_icon('user') }} Einstellungen</a></li>
-      <li class="divider"></li>
-      <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
+      <li class="dropdown-divider"></li>
+      <li><a class="dropdown-item" href="{{ url_for('user_admin.view', user_id=g.current_user.id) }}">{{ render_icon('user-profile') }} Profil</a></li>
+      <li><a class="dropdown-item" href="{{ url_for('user_settings.view') }}">{{ render_icon('user') }} Einstellungen</a></li>
+      <li class="dropdown-divider"></li>
+      <li><a class="dropdown-item" data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
     </ol>
   </div>
   {%- else %}

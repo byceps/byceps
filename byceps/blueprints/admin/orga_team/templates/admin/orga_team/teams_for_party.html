@@ -41,7 +41,7 @@
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a href="{{ url_for('.teams_copy_form', target_party_id=party.id) }}">{{ render_icon('copy') }} <span>Teams von anderer Party kopieren</span></a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.teams_copy_form', target_party_id=party.id) }}">{{ render_icon('copy') }} <span>Teams von anderer Party kopieren</span></a></li>
           </ol>
         </div>
         {%- endif %}
@@ -70,9 +70,9 @@
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">
               {%- if not members and g.current_user.has_permission(OrgaTeamPermission.delete) %}
-              <li><a data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} <span>Team entfernen</span></a></li>
+              <li><a class="dropdown-item" data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} <span>Team entfernen</span></a></li>
               {%- else %}
-              <li><span class="button--disabled">{{ render_icon('remove') }} <span>Team entfernen</span></span></li>
+              <li><span class="dropdown-item button--disabled">{{ render_icon('remove') }} <span>Team entfernen</span></span></li>
               {%- endif %}
             </ol>
           </div>

@@ -6,23 +6,23 @@
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('caret-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
         {%- if g.current_user.has_permission(UserPermission.set_password) %}
-        <li><a href="{{ url_for('.set_password', user_id=user.id) }}">{{ render_icon('password') }} Passwort ändern</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.set_password', user_id=user.id) }}">{{ render_icon('password') }} Passwort ändern</a></li>
         {%- endif %}
         {%- if g.current_user.has_permission(UserPermission.administrate) %}
 
           {%- if not user.initialized %}
-        <li><a data-action="user-initialize" href="{{ url_for('.initialize_account', user_id=user.id) }}">{{ render_icon('enabled') }} Initialisieren</a></li>
+        <li><a class="dropdown-item" data-action="user-initialize" href="{{ url_for('.initialize_account', user_id=user.id) }}">{{ render_icon('enabled') }} Initialisieren</a></li>
           {%- endif %}
 
           {%- if not user.suspended %}
-        <li><a href="{{ url_for('.suspend_account', user_id=user.id) }}">{{ render_icon('lock') }} Sperren</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.suspend_account', user_id=user.id) }}">{{ render_icon('lock') }} Sperren</a></li>
           {%- else %}
-        <li><a href="{{ url_for('.unsuspend_account', user_id=user.id) }}">{{ render_icon('unlock') }} Entsperren</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.unsuspend_account', user_id=user.id) }}">{{ render_icon('unlock') }} Entsperren</a></li>
           {%- endif %}
 
-        <li><a href="{{ url_for('.change_screen_name_form', user_id=user.id) }}">{{ render_icon('edit') }} Umbenennen</a></li>
-        <li><a href="{{ url_for('.change_email_address_form', user_id=user.id) }}">{{ render_icon('edit') }} E-Mail-Adresse ändern</a></li>
-        <li><a href="{{ url_for('.delete_account_form', user_id=user.id) }}">{{ render_icon('delete') }} Löschen</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.change_screen_name_form', user_id=user.id) }}">{{ render_icon('edit') }} Umbenennen</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.change_email_address_form', user_id=user.id) }}">{{ render_icon('edit') }} E-Mail-Adresse ändern</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.delete_account_form', user_id=user.id) }}">{{ render_icon('delete') }} Löschen</a></li>
 
         {%- endif %}
       </ol>

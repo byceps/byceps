@@ -18,7 +18,7 @@
       <ol class="dropdown-menu">
       {%- with sites = get_sites_for_brand(brand.id) %}
         {%- for site in sites|sort(attribute='title') %}
-        <li><a href="{{ url_for('site_admin.view', site_id=site.id) }}">{{ site.title if site.enabled else site.title|dim }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('site_admin.view', site_id=site.id) }}">{{ site.title if site.enabled else site.title|dim }}</a></li>
         {%- endfor %}
       {%- endwith %}
       </ol>

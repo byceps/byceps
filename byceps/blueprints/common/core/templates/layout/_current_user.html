@@ -16,8 +16,8 @@
     </a>
     <ol class="dropdown-menu dropdown-menu--right">
 {%- include 'layout/_current_user_menu_items.html' %}
-      <li class="divider"></li>
-      <li><a data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
+      <li class="dropdown-divider"></li>
+      <li><a class="dropdown-item" data-action="logout" href="{{ url_for('authentication.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>
     </ol>
   </div>
   {%- else %}
