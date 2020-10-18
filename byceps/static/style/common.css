@@ -182,8 +182,8 @@ span[title] .icon {
   padding: 1rem;
 }
 
-.notification:not(:last-child) {
-  margin-bottom: 1rem;
+.notification + .notification {
+  margin-top: 1rem;
 }
 
 .notification > .block-with-icon-body :first-child {
