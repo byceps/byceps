@@ -30,7 +30,7 @@
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('caret-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
         <li><a class="dropdown-item" href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
-        <li class="divider"></li>
+        <li class="dropdown-divider"></li>
         {%- if not ticket.user_checked_in %}
           {%- if ticket.used_by_id %}
         <li><a class="dropdown-item" data-action="check-in-user" href="{{ url_for('.set_user_checked_in_flag', ticket_id=ticket.id) }}">{{ render_icon('enabled') }} Benutzer einchecken</a></li>

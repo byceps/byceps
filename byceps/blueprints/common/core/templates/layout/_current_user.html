@@ -8,7 +8,7 @@
   <div class="dropdown">
     <a href="{{ url_for('user_settings.view') }}" class="dropdown-toggle">
       {{ render_user_avatar_32(g.current_user) }}
-      <span class="label-and-name">
+      <span class="dropdown-item label-and-name">
         <span class="label">Angemeldet als</span>
         <span class="name">{{ render_user_screen_name(g.current_user) }}</span>
       </span>

@@ -1,7 +1,7 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-      <li><a href="{{ url_for('user_profile.view', user_id=g.current_user.id) }}">{{ render_icon('user-profile') }} Profil</a></li>
-      <li><a href="{{ url_for('user_settings.view') }}">{{ render_icon('user') }} Einstellungen</a></li>
-      <li><a href="{{ url_for('ticketing.index_mine') }}">{{ render_icon('ticket') }} Tickets</a></li>
-      <li><a href="{{ url_for('shop_orders.index') }}">{{ render_icon('invoice') }} Bestellungen</a></li>
+      <li><a class="dropdown-item" href="{{ url_for('user_profile.view', user_id=g.current_user.id) }}">{{ render_icon('user-profile') }} Profil</a></li>
+      <li><a class="dropdown-item" href="{{ url_for('user_settings.view') }}">{{ render_icon('user') }} Einstellungen</a></li>
+      <li><a class="dropdown-item" href="{{ url_for('ticketing.index_mine') }}">{{ render_icon('ticket') }} Tickets</a></li>
+      <li><a class="dropdown-item" href="{{ url_for('shop_orders.index') }}">{{ render_icon('invoice') }} Bestellungen</a></li>
