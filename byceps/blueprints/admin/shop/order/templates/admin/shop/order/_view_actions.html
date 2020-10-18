@@ -1,7 +1,7 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-    <div class="dropdown left">
+    <div class="dropdown right">
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('caret-down') }}</button>
       <ol>
         <li><a href="{{ url_for('.export', order_id=order.id) }}" download="{{ order.order_number }}.xml">{{ render_icon('download') }} für Lexware exportieren (XML)</a></li>

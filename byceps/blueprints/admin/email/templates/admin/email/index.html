@@ -40,7 +40,7 @@
         <td>{{ config.contact_address|fallback }}</td>
         <td>
           {%- if g.current_user.has_any_permission(EmailConfigPermission.update, EmailConfigPermission.delete) %}
-          <div class="dropdown left">
+          <div class="dropdown right">
             <button class="dropdown-toggle button button--compact"><span>{{ render_icon('caret-down') }}</span></button>
             <ol>
             {%- if g.current_user.has_permission(EmailConfigPermission.update) %}

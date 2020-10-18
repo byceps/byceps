@@ -26,7 +26,7 @@
 
   {%- if not ticket.revoked and g.current_user.has_permission(TicketingPermission.checkin) %}
   <div style="float: right; margin-left: 40px;">
-    <div class="dropdown left">
+    <div class="dropdown right">
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('caret-down') }}</button>
       <ol>
         <li><a href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>

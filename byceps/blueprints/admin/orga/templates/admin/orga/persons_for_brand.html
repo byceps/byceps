@@ -101,7 +101,7 @@
         </td>
         <td>
           {%- if g.current_user.has_permission(OrgaTeamPermission.administrate_memberships) %}
-          <div class="dropdown left">
+          <div class="dropdown right">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
             <ol>
               <li><a data-action="orgaflag-remove" href="{{ url_for('.remove_orgaflag', brand_id=brand.id, user_id=user.id) }}">{{ render_icon('remove') }} Orga-Status entziehen</a></li>

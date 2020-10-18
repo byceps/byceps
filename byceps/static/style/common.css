@@ -561,7 +561,7 @@ button.button[disabled],
   top: 100%;
   z-index: 200;
 }
-.dropdown.left > ol {
+.dropdown.right > ol {
   left: auto;
   right: 0;
 }

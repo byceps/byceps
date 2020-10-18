@@ -44,7 +44,7 @@
     <div class="button-row button-row--compact" style="float: right;">
       {%- if g.current_user.has_permission(NewsItemPermission.update) %}
       <a class="button" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
-      <div class="dropdown left">
+      <div class="dropdown right">
         <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
         <ol>
           <li><a href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} Bild hinzufügen</a></li>

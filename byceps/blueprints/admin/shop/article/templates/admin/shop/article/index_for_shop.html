@@ -17,7 +17,7 @@
     <div class="column-auto">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>Artikel anlegen</span></a>
-        <div class="dropdown left">
+        <div class="dropdown right">
           <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
           <ol>
             <li><a href="{{ url_for('.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} Artikelnummer-Sequenz anlegen</a></li>

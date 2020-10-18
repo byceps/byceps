@@ -49,7 +49,7 @@
         <td class="centered bignumber">{{ category.posting_count|separate_thousands }}</td>
         <td>
           {%- if g.current_user.has_permission(BoardCategoryPermission.update) -%}
-          <div class="dropdown left">
+          <div class="dropdown right">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
             <ol>
               <li><a href="{{ url_for('.category_update_form', category_id=category.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>

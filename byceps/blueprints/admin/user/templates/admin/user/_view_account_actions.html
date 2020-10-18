@@ -2,7 +2,7 @@
 
   {%- if not user.deleted and g.current_user.has_any_permission(UserPermission.administrate, UserPermission.set_password) %}
   <div style="float: right; margin-left: 40px;">
-    <div class="dropdown left">
+    <div class="dropdown right">
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('caret-down') }}</button>
       <ol>
         {%- if g.current_user.has_permission(UserPermission.set_password) %}

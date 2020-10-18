@@ -5,7 +5,7 @@
 
 <div class="current-user">
   {%- if g.current_user.is_active %}
-  <div class="dropdown left">
+  <div class="dropdown right">
     <button href="{{ url_for('user_settings.view') }}" class="dropdown-toggle button button--clear">
       {{ render_user_avatar_32(g.current_user) }}
       {{ render_icon('caret-down') }}

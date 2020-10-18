@@ -48,7 +48,7 @@
         {%- if g.current_user.has_permission(ShopArticlePermission.update) %}
         <a class="button" href="{{ url_for('.update_form', article_id=article.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
         {%- endif %}
-        <div class="dropdown left">
+        <div class="dropdown right">
           <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
           <ol>
             {%- if g.current_user.has_permission(ShopArticlePermission.update) %}

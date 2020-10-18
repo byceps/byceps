@@ -9,7 +9,7 @@
 
       {%- if user_may_reply or user_may_update or user_may_hide %}
       <div class="user-comment-actions">
-        <div class="dropdown left">
+        <div class="dropdown right">
           <button class="dropdown-toggle" title="Beitrags-Aktionen">{{ render_icon('user-comment') }} {{ render_icon('caret-down') }}</button>
           <ol>
             {%- if user_may_reply %}
