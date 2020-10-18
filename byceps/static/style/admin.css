@@ -245,7 +245,7 @@ main {
 /* main navigation */
 
 nav.main ol {
-  margin: 0.5rem 0;
+  margin: 0.75rem 0;
   width: 100%;
 }
 nav.main li {
@@ -255,20 +255,19 @@ nav.main li {
 }
 
 .nav-item {
-  border-color: transparent;
-  border-style: solid;
-  border-width: 1px 0;
+  border-radius: 0.25rem;
   color: #5c5c5c;
   display: flex;
-  line-height: 1.2;
-  padding: 0.2rem 1rem;
+  line-height: 1.1;
+  margin: 0.25rem 0.75rem;
+  padding: 0.25rem 0.5rem;
   text-decoration: none;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 .nav-item:hover,
 .nav-item--current {
   background-color: #eeeeee;
-  border-color: #cccccc;
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
   color: currentColor;
 }
 
