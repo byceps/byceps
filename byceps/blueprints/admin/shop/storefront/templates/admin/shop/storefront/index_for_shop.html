@@ -17,9 +17,9 @@
         <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>Storefront anlegen</span></a>
         {%- endif %}
         {%- if g.current_user.has_permission(ShopPermission.update) %}
-        <div class="dropdown right">
+        <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
-          <ol class="dropdown-menu">
+          <ol class="dropdown-menu dropdown-menu--right">
             <li><a href="{{ url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} Bestellnummer-Sequenz anlegen</a></li>
           </ol>
         </div>

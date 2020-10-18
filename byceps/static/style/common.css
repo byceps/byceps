@@ -561,10 +561,12 @@ button.button[disabled],
   top: 100%;
   z-index: 200;
 }
-.dropdown.right .dropdown-menu {
+
+.dropdown-menu--right {
   left: auto;
   right: 0;
 }
+
 .dropdown.open .dropdown-menu {
   display: block;
 }

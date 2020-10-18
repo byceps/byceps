@@ -29,14 +29,14 @@
 
   {%- if g.current_user.has_permission(NewsletterPermission.export_subscribers) %}
   <div class="button-row button-row--right">
-    <div class="dropdown right">
+    <div class="dropdown">
       <button class="dropdown-toggle button">
         <div class="block-with-icon">
           <div class="block-with-icon-icon">{{ render_icon('download') }}</div>
           <div class="block-with-icon-body">Abonnenten {{ render_icon('caret-down') }}<br>exportieren</div>
         </div>
       </button>
-      <ol class="dropdown-menu">
+      <ol class="dropdown-menu dropdown-menu--right">
         <li><a href="{{ url_for('.export_subscribers', list_id=list_.id) }}">{{ render_icon('download') }} Benutzernamen und E-Mail-Adressen (als JSON)</a></li>
         <li><a href="{{ url_for('.export_subscriber_email_addresses', list_id=list_.id) }}">{{ render_icon('download') }} nur E-Mail-Adressen (als Text)</a></li>
       </ol>

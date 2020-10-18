@@ -60,9 +60,9 @@
         <td>{{ render_tag('geöffnet', class='color-success') if party.seat_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
         <td>
           {%- if g.current_user.has_permission(PartyPermission.update) %}
-          <div class="dropdown right">
+          <div class="dropdown">
             <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
-            <ol class="dropdown-menu">
+            <ol class="dropdown-menu dropdown-menu--right">
               <li><a href="{{ url_for('.update_form', party_id=party.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
             </ol>
           </div>
