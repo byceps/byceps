@@ -571,9 +571,14 @@ button.button[disabled],
   display: block;
 }
 
+.dropdown-divider,
+.dropdown-item,
+.dropdown-label {
+  display: block;
+}
+
 .dropdown-item {
   color: currentColor;
-  display: block;
   padding: 0.4rem 0.8rem;
   text-decoration: none;
   white-space: nowrap;
@@ -581,6 +586,10 @@ button.button[disabled],
 
 .dropdown-item:hover {
   background-color: #eeeeee;
+}
+
+.dropdown-label {
+  padding: 0.4rem 0.8rem;
 }
 
 .dropdown-divider {
