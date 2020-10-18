@@ -579,7 +579,7 @@ button.button[disabled],
   white-space: nowrap;
 }
 
-a.dropdown-item:hover {
+.dropdown-item:hover {
   background-color: #eeeeee;
 }
 

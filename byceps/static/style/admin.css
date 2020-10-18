@@ -465,7 +465,7 @@ main .dropdown-menu {
   padding: 0.25rem 0.5rem;
 }
 
-a.dropdown-item:hover {
+.dropdown-item:hover {
   box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
 }
 
