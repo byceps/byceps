@@ -55,7 +55,7 @@ a {
 .page-body-grid {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--layout-gutter);
   padding: 0 var(--layout-gutter);
 }
 
@@ -78,7 +78,7 @@ main {
 }
 
 .notifications {
-  margin-bottom: 20px;
+  margin-bottom: var(--layout-gutter);
 }
 
 #header,
@@ -118,7 +118,7 @@ main {
 }
 
 #header-content {
-  padding: 4px 20px;
+  padding: 4px var(--layout-gutter);
 }
 
 #header-grid {
