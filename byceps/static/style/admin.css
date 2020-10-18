@@ -17,7 +17,8 @@ a {
 /* layout */
 
 :root {
-  --layout-gutter: 20px;
+  --inner-gutter: 16px;
+  --layout-gutter: 32px;
 }
 
 .page-layout {
@@ -107,7 +108,7 @@ main {
 }
 
 .box + .box {
-  margin-top: 1rem;
+  margin-top: var(--inner-gutter);
 }
 
 
@@ -181,7 +182,7 @@ main {
 }
 
 .sidebar-section + .sidebar-section {
-  margin-top: var(--layout-gutter);
+  margin-top: var(--inner-gutter);
 }
 
 .sidebar-section-header {
