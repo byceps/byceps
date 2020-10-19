@@ -65,30 +65,6 @@ main {
   padding: 0 25px;
 }
 
-#topbar .current-user {
-  font-size: 0.75rem; /* 12px / 16px */
-}
-
-#topbar .current-user .dropdown-toggle {
-  border-color: transparent;
-  border-style: solid;
-  border-width: 1px;
-  color: currentColor;
-  display: block;
-  padding: 4px 8px;
-  text-decoration: none;
-}
-
-#topbar .current-user .dropdown-toggle:hover,
-#topbar .current-user .dropdown.open .dropdown-toggle {
-  background-color: #ffffff;
-  border-color: #cccccc;
-}
-
-#topbar .current-user .dropdown-menu {
-  margin-right: -1px;
-}
-
 #topbar .current-user .label-and-name .label {
   display: block;
   font-size: 0.6875rem; /* 11px / 16px */
