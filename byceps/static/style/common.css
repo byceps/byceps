@@ -34,12 +34,6 @@ textarea {
   font-family: sans-serif;
 }
 
-figcaption,
-figure,
-main {
-  display: block;
-}
-
 a {
   background-color: transparent;
 }
