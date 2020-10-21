@@ -40,7 +40,7 @@
   {%- if g.current_user.has_permission(SnippetPermission.create) %}
   <div class="button-row button-row--right">
     <div class="dropdown">
-      <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Snippet erstellen</span> {{ render_icon('caret-down') }}</button>
+      <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Snippet erstellen</span> {{ render_icon('chevron-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
         <li><a class="dropdown-item" href="{{ url_for('.create_document_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-document') }} Dokument</a></li>
         <li><a class="dropdown-item" href="{{ url_for('.create_fragment_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-fragment') }} Fragment</a></li>
@@ -87,14 +87,14 @@
             {%- endif %}
             {%- if snippet.is_document and g.current_user.has_permission(SnippetMountpointPermission.create) %}
             <div class="dropdown">
-              <button class="dropdown-toggle button button--compact">{{ render_icon('caret-down') }}</button>
+              <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
               <ol class="dropdown-menu dropdown-menu--right">
                 <li><a class="dropdown-item" href="{{ url_for('.create_mountpoint_form', snippet_id=snippet.id) }}">{{ render_icon('add') }} Mountpoint erstellen</a></li>
               </ol>
             </div>
             {%- else %}
               {# Occupy width of dropdown button to keep edit buttons horizontally aligned. #}
-              <button class="dropdown-toggle button button--compact" style="visibility: hidden;">{{ render_icon('caret-down') }}</button>
+              <button class="dropdown-toggle button button--compact" style="visibility: hidden;">{{ render_icon('chevron-down') }}</button>
             {%- endif %}
           </div>
         </td>

@@ -18,7 +18,7 @@
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>Artikel anlegen</span></a>
         <div class="dropdown">
-          <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
+          <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} Artikelnummer-Sequenz anlegen</a></li>
           </ol>

@@ -43,7 +43,7 @@
 
       {%- if g.current_user.has_permission(SnippetPermission.delete) %}
       <div class="dropdown">
-        <button class="dropdown-toggle button"><span>{{ render_icon('caret-down') }}</span></button>
+        <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
         <ol class="dropdown-menu dropdown-menu--right">
           <li><a class="dropdown-item" data-action="snippet-delete" href="{{ url_for('.delete_snippet', snippet_id=snippet.id) }}">{{ render_icon('delete') }} Löschen</a></li>
         </ol>

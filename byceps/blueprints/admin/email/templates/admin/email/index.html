@@ -41,7 +41,7 @@
         <td>
           {%- if g.current_user.has_any_permission(EmailConfigPermission.update, EmailConfigPermission.delete) %}
           <div class="dropdown">
-            <button class="dropdown-toggle button button--compact"><span>{{ render_icon('caret-down') }}</span></button>
+            <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
             <ol class="dropdown-menu dropdown-menu--right">
             {%- if g.current_user.has_permission(EmailConfigPermission.update) %}
               <li><a class="dropdown-item" href="{{ url_for('.update_form', config_id=config.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>

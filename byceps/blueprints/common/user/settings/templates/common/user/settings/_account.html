@@ -25,7 +25,7 @@
         </div>
 
         <div class="dropdown">
-          <button class="dropdown-toggle button button--compact"><span>Bearbeiten</span> {{ render_icon('caret-down') -}}</button>
+          <button class="dropdown-toggle button button--compact"><span>Bearbeiten</span> {{ render_icon('chevron-down') -}}</button>
           <ol class="dropdown-menu">
             <li><a class="dropdown-item" href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} Hochladen</a></li>
             {%- if user.avatar %}
