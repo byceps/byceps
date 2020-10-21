@@ -3,6 +3,9 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'authentication.password_update' %}
 {% set title = 'Neues Passwort setzen' %}
+{% if g.app_mode.is_admin() %}
+{% set layout_sidebar_hide = True %}
+{% endif %}
 
 {% block body %}
 

@@ -3,6 +3,10 @@
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'authentication.login' %}
 {% set title = 'Anmelden' %}
+{% if g.app_mode.is_admin() %}
+{% set layout_sidebar_hide = True %}
+{% endif %}
+
 
 {% block head %}
   <style>

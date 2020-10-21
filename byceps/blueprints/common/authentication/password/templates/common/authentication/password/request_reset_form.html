@@ -2,6 +2,9 @@
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% set current_page = 'authentication.request_password_reset' %}
 {% set title = 'Zurücksetzen deines Passworts anfordern' %}
+{% if g.app_mode.is_admin() %}
+{% set layout_sidebar_hide = True %}
+{% endif %}
 
 {% block body %}
 

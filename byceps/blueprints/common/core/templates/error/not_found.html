@@ -1,5 +1,8 @@
 {% extends 'layout/base_auto.html' %}
 {% set title = 'Seite nicht gefunden' %}
+{% if g.app_mode.is_admin() %}
+{% set layout_sidebar_hide = True %}
+{% endif %}
 
 {% block body %}
 
