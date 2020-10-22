@@ -104,7 +104,13 @@ main {
 }
 
 #main {
-  padding: 20px 40px 40px 40px;
+  padding: 0 20px 20px 20px;
+}
+
+@media (min-width: 36rem) { /* 576px / 16px */
+  #main {
+    padding: 20px 40px 40px 40px;
+  }
 }
 
 .box {
