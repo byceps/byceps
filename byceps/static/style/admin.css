@@ -129,19 +129,26 @@ main {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-#header-content {
-  padding: 4px var(--layout-gutter);
-}
-
 #header-grid {
   display: flex;
-  flex-direction: row-reverse;
   flex-wrap: wrap;
+  gap: 0 1rem;
+  min-height: 48px;
   justify-content: space-between;
+  padding: 4px var(--layout-gutter);
 }
 
 #header-content .column {
   align-self: center;
+}
+
+#header-content .column--brand,
+#header-content .column--user {
+  flex: 0 0 auto;
+}
+
+#header-content .column--form {
+  flex: 1 0 auto;
 }
 
 #header-content .brand {
@@ -154,6 +161,23 @@ main {
   fill: #e4c444;
   margin-left: 0.5rem;
   width: 0.75rem;
+}
+
+#header-content .current-user .button,
+#header-content .current-user .button:hover,
+#header-content .current-user .dropdown-toggle {
+  background-color: transparent;
+  color: #eeeeee;
+  display: block;
+  font-size: 0.875rem; /* 14px / 16px */
+}
+
+#header-content .current-user .dropdown-toggle {
+  padding: 0;
+}
+
+#header-content .current-user .avatar {
+  box-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 #header-content .label-and-name .label {
@@ -172,32 +196,6 @@ main {
   text-decoration: none;
 }
 
-#header-content .current-user .dropdown-toggle {
-  padding: 0.375rem;
-}
-
-#header-content .current-user {
-  align-items: center;
-  display: flex;
-  height: 42px;
-}
-
-#header-content .current-user .button,
-#header-content .current-user .button:hover {
-  background-color: transparent;
-  color: #eeeeee;
-  font-size: 0.875rem; /* 14px / 16px */
-}
-
-#header-content .current-user .avatar {
-  box-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
-}
-
-#header-content .dropdown-menu {
-  margin-top: 2px;
-  color: currentColor;
-}
-
 #header-content form button,
 #header-content form input {
   border: none;
@@ -205,9 +203,15 @@ main {
   color: #444444;
 }
 
+#header-content form {
+  margin: 0 auto;
+  max-width: 22rem;
+}
+
 #header-content form input {
   background-color: #888888;
   padding: 0.4rem 2.6rem 0.4rem 0.4rem;
+  width: 100%;
 }
 
 #header-content form button {
