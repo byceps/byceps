@@ -150,8 +150,8 @@ main {
 }
 
 #header-content .brand-icon {
-  color: #e4c444;
   display: inline-block;
+  fill: #e4c444;
   margin-left: 0.5rem;
   width: 0.75rem;
 }
