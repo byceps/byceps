@@ -18,7 +18,13 @@ a {
 
 :root {
   --inner-gutter: 16px;
-  --layout-gutter: 32px;
+  --layout-gutter: 16px;
+}
+
+@media (min-width: 36rem) { /* 576px / 16px */
+  :root {
+    --layout-gutter: 32px;
+  }
 }
 
 .page-layout {
