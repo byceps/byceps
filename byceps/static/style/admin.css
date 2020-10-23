@@ -152,15 +152,18 @@ main {
 }
 
 #header-content .brand {
-  color: #eeeeee;
-  font-size: 1.75rem; /* 28px / 16px */
+  margin-left: 0.5rem;
 }
 
 #header-content .brand-icon {
   display: inline-block;
   fill: #e4c444;
-  margin-left: 0.5rem;
   width: 0.75rem;
+}
+
+#header-content .brand-text {
+  color: #eeeeee;
+  font-size: 1.75rem; /* 28px / 16px */
 }
 
 #header-content .current-user .button,
