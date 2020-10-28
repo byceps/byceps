@@ -433,23 +433,20 @@ form.unobtrusive input:focus ~ .button {
 .button-row {
   display: flex;
   flex-wrap: wrap;
-  margin: 1.5rem 0 1.5rem -0.5rem;
+  gap: 0.5rem;
+  margin: 1.5rem 0;
 }
 
 .button-row--compact {
-  margin-bottom: 0;
-  margin-top: -0.5rem;
+  margin: 0;
 }
 
 .button-row--center {
   justify-content: center;
 }
+
 .button-row--right {
   justify-content: flex-end;
-}
-
-.button-row > * {
-  margin: 0.5rem 0 0 0.5rem;
 }
 
 
