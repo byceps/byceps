@@ -1,13 +1,15 @@
 language: python
 python:
   - "3.7"
+os: linux
+dist: bionic
 addons:
   postgresql: "11"
   apt:
     packages:
       - language-pack-de
 services:
-  - redis-server
+  - redis
 install:
   - "pip install --upgrade pip"
   - "pip install -r requirements.txt -r requirements-test.txt"
@@ -16,8 +18,6 @@ before_script:
   - psql -U postgres -c "CREATE ROLE byceps_test WITH LOGIN PASSWORD 'test';"
 script:
   - "pytest"
-dist: bionic
-sudo: false
 notifications:
   email: false
 after_success:
