@@ -8,20 +8,6 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style/seating.css') }}">
 {%- endblock %}
 
-{% block scripts %}
-    <script src="{{ url_for('static', filename='behavior/seating.js') }}"></script>
-    <script>
-      onDomReady(function() {
-        {%- if seat_management_enabled %}
-        const selected_ticket_id = {% if selected_ticket_id|default %}'{{ selected_ticket_id }}'{% else %}null{% endif %};
-        init_seat_management(selected_ticket_id);
-        {%- endif %}
-
-        init_seat_tooltips();
-      });
-    </script>
-{%- endblock %}
-
 {% block body %}
 
   {%- if manage_mode %}
@@ -58,4 +44,18 @@
 
 {{ render_area(area, seats) }}
 
+{%- endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='behavior/seating.js') }}"></script>
+    <script>
+      onDomReady(function() {
+        {%- if seat_management_enabled %}
+        const selected_ticket_id = {% if selected_ticket_id|default %}'{{ selected_ticket_id }}'{% else %}null{% endif %};
+        init_seat_management(selected_ticket_id);
+        {%- endif %}
+
+        init_seat_tooltips();
+      });
+    </script>
 {%- endblock %}
