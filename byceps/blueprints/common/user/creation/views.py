@@ -212,12 +212,6 @@ def _get_newsletter_subscription(
     if not subscribe_to_newsletter:
         return None
 
-    return _assemble_newsletter_subscription(newsletter_list_id, expressed_at)
-
-
-def _assemble_newsletter_subscription(
-    newsletter_list_id: NewsletterListID, expressed_at: datetime
-) -> NewsletterSubscription:
     return NewsletterSubscription(
         user_id=None,  # not available at this point
         list_id=newsletter_list_id,
