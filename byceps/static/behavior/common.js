@@ -205,3 +205,26 @@ onDomReady(function() {
     });
   });
 });
+
+
+// ---------------------------------------------------------------------
+// log-out
+
+
+// Enable log-out.
+onDomReady(function() {
+  document.querySelectorAll('a[data-action="logout"]')
+    .forEach(function(anchor) {
+      anchor.addEventListener('click', function(event) {
+        if (confirm('Wirklich abmelden?')) {
+          const href = anchor.getAttribute('href');
+          fetch(href, {method: 'POST'})
+            .then(response => {
+              location.href = '/authentication/login';
+            });
+        };
+
+        event.preventDefault();
+      });
+    });
+});
