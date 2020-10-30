@@ -71,12 +71,14 @@ class Ticket(db.Model):
         *,
         bundle: Optional[TicketBundle] = None,
         order_number: Optional[OrderNumber] = None,
+        used_by_id: Optional[UserID] = None,
     ) -> None:
         self.code = code
         self.bundle = bundle
         self.category_id = category_id
         self.owned_by_id = owned_by_id
         self.order_number = order_number
+        self.used_by_id = used_by_id
 
     @property
     def belongs_to_bundle(self) -> bool:

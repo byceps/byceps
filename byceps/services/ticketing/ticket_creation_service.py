@@ -37,10 +37,16 @@ def create_ticket(
     owned_by_id: UserID,
     *,
     order_number: Optional[OrderNumber] = None,
+    used_by_id: Optional[UserID] = None,
 ) -> DbTicket:
     """Create a single ticket."""
+    quantity = 1
     tickets = create_tickets(
-        category_id, owned_by_id, 1, order_number=order_number
+        category_id,
+        owned_by_id,
+        quantity,
+        order_number=order_number,
+        used_by_id=used_by_id,
     )
     return tickets[0]
 
@@ -56,11 +62,16 @@ def create_tickets(
     quantity: int,
     *,
     order_number: Optional[OrderNumber] = None,
+    used_by_id: Optional[UserID] = None,
 ) -> Sequence[DbTicket]:
     """Create a number of tickets of the same category for a single owner."""
     tickets = list(
         build_tickets(
-            category_id, owned_by_id, quantity, order_number=order_number
+            category_id,
+            owned_by_id,
+            quantity,
+            order_number=order_number,
+            used_by_id=used_by_id,
         )
     )
 
@@ -82,6 +93,7 @@ def build_tickets(
     *,
     bundle: Optional[DbTicketBundle] = None,
     order_number: Optional[OrderNumber] = None,
+    used_by_id: Optional[UserID] = None,
 ) -> Iterator[DbTicket]:
     if quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
@@ -98,4 +110,5 @@ def build_tickets(
             owned_by_id,
             bundle=bundle,
             order_number=order_number,
+            used_by_id=used_by_id,
         )

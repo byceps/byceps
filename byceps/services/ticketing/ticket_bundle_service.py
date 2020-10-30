@@ -37,6 +37,7 @@ def create_bundle(
     *,
     label: Optional[str] = None,
     order_number: Optional[OrderNumber] = None,
+    used_by_id: Optional[UserID] = None,
 ) -> DbTicketBundle:
     """Create a ticket bundle and the given quantity of tickets."""
     if ticket_quantity < 1:
@@ -54,6 +55,7 @@ def create_bundle(
             ticket_quantity,
             bundle=bundle,
             order_number=order_number,
+            used_by_id=used_by_id,
         )
     )
     db.session.add_all(tickets)
