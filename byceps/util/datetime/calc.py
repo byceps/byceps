@@ -24,7 +24,12 @@ def calculate_age(date_of_birth: date, today: date) -> int:
 
 
 def calculate_days_until(date: date, today: date) -> int:
-    """Calculate the number of days from today until the given date."""
+    """Calculate the number of days from today until the given date,
+    *ignoring the year*.
+
+    This is meant to calculate the distance to yearly recurring events,
+    like birthdays.
+    """
     date_this_year = date.replace(year=today.year)
     if date_this_year < today:
         date_this_year = date.replace(year=date_this_year.year + 1)
