@@ -1,0 +1,37 @@
+  {%- set example_progress -%}
+
+<p>Basic progress bars:</p>
+<div class="progress">
+  <div class="progress-bar" style="width: 0%;"></div>
+</div>
+<div class="progress">
+  <div class="progress-bar" style="width: 42%;"></div>
+</div>
+<div class="progress">
+  <div class="progress-bar" style="width: 100%;"></div>
+</div>
+
+<p>Custom-colored, shorter progress bar:</p>
+<div class="progress" style="background-color: #88ccff; width: 8rem;">
+  <div class="progress-bar" style="background-color: #1199ff; width: 75%;"></div>
+</div>
+
+<p>Stacked, colored, thinner progress bars:</p>
+<div class="progress" style="height: 0.3rem;">
+  <div class="progress-bar color-danger" style="width: 16%;"></div>
+  <div class="progress-bar color-warning" style="width: 42%;"></div>
+  <div class="progress-bar color-success" style="width: 23%;"></div>
+</div>
+
+  {%- endset %}
+
+  <div class="example">
+    <div class="example-result">
+{{ example_progress }}
+    </div>
+    <div class="example-code">
+      {% call render_code_block() -%}
+{{ example_progress }}
+      {%- endcall %}
+    </div>
+  </div>

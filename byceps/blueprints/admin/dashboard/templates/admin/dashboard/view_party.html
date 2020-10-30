@@ -10,17 +10,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style/admin_dashboard.css') }}">
     <style>
       .progress {
-        background-color: #dddddd;
-        border-radius: 3px;
-        height: 0.125rem;
-        margin-top: 0.25rem;
-        margin-bottom: 0.25rem;
-        overflow: hidden;
-      }
-
-      .progress-bar {
-        background-color: #666666;
-        height: 100%;
+        height: 0.25rem;
       }
     </style>
 {%- endblock %}
@@ -36,7 +26,7 @@
       {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
         <div class="progress">
           {%- if tickets_total_max_specified %}
-          <div class="progress-bar" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
+          <div class="progress-bar color-success" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
           {%- endif %}
         </div>
         <div class="row row--space-between" style="font-size: 0.75rem;">
@@ -51,7 +41,7 @@
     {%- call render_cell(href=url_for('ticketing_checkin.index', party_id=party.id)) %}
       <div class="dimmed" style="font-size: 0.75rem; margin-bottom: 1rem; text-transform: uppercase;">Tickets eingecheckt</div>
         <div class="progress">
-          <div class="progress-bar" style="width: calc(100% * {{ tickets_checked_in }} / {{ ticket_sale_stats.tickets_sold }});"></div>
+          <div class="progress-bar color-success" style="width: calc(100% * {{ tickets_checked_in }} / {{ ticket_sale_stats.tickets_sold }});"></div>
         </div>
         <div class="row row--space-between" style="font-size: 0.75rem;">
           <div class="column-auto" style="font-weight: bold;">{{ tickets_checked_in|separate_thousands }}</div>

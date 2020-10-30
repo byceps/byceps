@@ -627,6 +627,23 @@ nav.pagination li.current {
 }
 
 
+/* progress bars */
+
+.progress {
+  background-color: #dddddd;
+  border-radius: 3px;
+  display: flex;
+  height: 0.5rem;
+  margin: 0.25rem 0;
+  overflow: hidden;
+}
+
+.progress-bar {
+  background-color: #666666;
+  height: 100%;
+}
+
+
 /* tags */
 
 .tag {
@@ -777,6 +794,7 @@ table.user-badges-list td {
   border-color: #ffcc11;
 }
 
+.progress-bar.color-danger,
 .tag.color-danger {
   background-color: #ff2222;
 }
@@ -785,14 +803,17 @@ table.user-badges-list td {
   background-color: #aaaaaa;
 }
 
+.progress-bar.color-info,
 .tag.color-info {
   background-color: #1199ff;
 }
 
+.progress-bar.color-success,
 .tag.color-success {
   background-color: #55cc00;
 }
 
+.progress-bar.color-warning,
 .tag.color-warning {
   background-color: #ffcc11;
 }
