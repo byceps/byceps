@@ -33,11 +33,12 @@ def create_tickets(
     order_number = order.order_number
 
     tickets = ticket_creation_service.create_tickets(
-        category_id, owned_by_id, quantity, order_number=order_number
+        category_id,
+        owned_by_id,
+        quantity,
+        order_number=order_number,
+        used_by_id=owned_by_id,
     )
-
-    for ticket in tickets:
-        ticket.used_by_id = owned_by_id
 
     _create_order_events(order.id, tickets)
 
