@@ -55,3 +55,7 @@
   {%- endif %}
 
 {%- endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='behavior/login.js') }}"></script>
+{%- endblock %}

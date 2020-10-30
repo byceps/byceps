@@ -1,6 +1,4 @@
 onDomReady(function() {
-
-  // Log in.
   const loginForm = document.getElementById('login-form');
   if (loginForm !== null) {
     loginForm.addEventListener('submit', function(event) {
@@ -40,5 +38,4 @@ onDomReady(function() {
         });
     });
   }
-
 });
