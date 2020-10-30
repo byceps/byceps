@@ -19,6 +19,8 @@ from .. import event_service
 from ..models.order_action import Parameters
 from ..transfer.models import Order, OrderID
 
+from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
+
 
 def create_tickets(
     order: Order,
@@ -41,6 +43,11 @@ def create_tickets(
     )
 
     _create_order_events(order.id, tickets)
+
+    tickets_sold_event = create_tickets_sold_event(
+        initiator_id, owned_by_id, quantity
+    )
+    send_tickets_sold_event(tickets_sold_event)
 
 
 def _create_order_events(order_id: OrderID, tickets: Sequence[Ticket]) -> None:

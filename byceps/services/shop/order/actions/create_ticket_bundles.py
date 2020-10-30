@@ -17,6 +17,8 @@ from .. import event_service
 from ..models.order_action import Parameters
 from ..transfer.models import Order, OrderID
 
+from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
+
 
 def create_ticket_bundles(
     order: Order,
@@ -41,6 +43,11 @@ def create_ticket_bundles(
         )
 
         _create_order_event(order.id, bundle)
+
+    tickets_sold_event = create_tickets_sold_event(
+        initiator_id, owned_by_id, ticket_quantity
+    )
+    send_tickets_sold_event(tickets_sold_event)
 
 
 def _create_order_event(order_id: OrderID, ticket_bundle: TicketBundle) -> None:

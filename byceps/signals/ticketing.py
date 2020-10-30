@@ -13,3 +13,4 @@ ticketing_signals = Namespace()
 
 
 ticket_checked_in = ticketing_signals.signal('ticket-checked-in')
+tickets_sold = ticketing_signals.signal('tickets-sold')

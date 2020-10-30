@@ -27,3 +27,10 @@ class TicketCheckedIn(_TicketEvent):
     occupied_seat_id: Optional[SeatID]
     user_id: Optional[UserID]
     user_screen_name: Optional[str]
+
+
+@dataclass(frozen=True)
+class TicketsSold(_BaseEvent):
+    owner_id: Optional[UserID]
+    owner_screen_name: Optional[str]
+    quantity: int
