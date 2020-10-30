@@ -107,10 +107,6 @@ def create():
         for subject in required_consent_subjects
     }
 
-    newsletter_subscription = _get_newsletter_subscription(
-        newsletter_offered, form, newsletter_list_id, now_utc
-    )
-
     try:
         user, event = user_creation_service.create_user(
             screen_name,
@@ -135,6 +131,9 @@ def create():
 
     user_signals.account_created.send(None, event=event)
 
+    newsletter_subscription = _get_newsletter_subscription(
+        newsletter_offered, form, user.id, newsletter_list_id, now_utc
+    )
     if newsletter_subscription:
         _subscribe_to_newsletter(user.id, newsletter_subscription)
 
@@ -208,6 +207,7 @@ def _assemble_consent(subject_id: SubjectID, expressed_at: datetime) -> Consent:
 def _get_newsletter_subscription(
     newsletter_offered: bool,
     form,
+    user_id: UserID,
     newsletter_list_id: NewsletterListID,
     expressed_at: datetime,
 ) -> Optional[NewsletterSubscription]:
@@ -219,7 +219,7 @@ def _get_newsletter_subscription(
         return None
 
     return NewsletterSubscription(
-        user_id=None,  # not available at this point
+        user_id=user_id,
         list_id=newsletter_list_id,
         expressed_at=expressed_at,
     )
