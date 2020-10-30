@@ -3,8 +3,11 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from unittest.mock import patch
+
 from byceps.announce.irc import ticketing  # Load signal handlers.
 from byceps.events.ticketing import TicketCheckedIn, TicketsSold
+from byceps.services.ticketing.transfer.models import TicketSaleStats
 from byceps.signals import ticketing as ticketing_signals
 
 from .helpers import (
@@ -42,8 +45,17 @@ def test_ticket_checked_in(app, make_user, admin_user):
     assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)
 
 
-def test_tickets_sold(app, make_user, admin_user):
-    expected_text = 'TreuerKäufer hat 3 Ticket(s) gekauft.'
+@patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
+def test_tickets_sold(get_ticket_sale_stats_mock, app, make_user, admin_user):
+    expected_text = (
+        'TreuerKäufer hat 3 Ticket(s) gekauft. '
+        'Aktuell sind 775 von 1001 Tickets verkauft.'
+    )
+
+    get_ticket_sale_stats_mock.return_value = TicketSaleStats(
+        tickets_max=1001,
+        tickets_sold=775,
+    )
 
     user = make_user('TreuerKäufer')
 
@@ -51,7 +63,7 @@ def test_tickets_sold(app, make_user, admin_user):
         occurred_at=now(),
         initiator_id=admin_user.id,
         initiator_screen_name=admin_user.screen_name,
-        party_id='some-party-id',
+        party_id='popular-party',
         owner_id=user.id,
         owner_screen_name=user.screen_name,
         quantity=3,

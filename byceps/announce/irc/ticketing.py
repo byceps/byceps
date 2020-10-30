@@ -11,6 +11,7 @@ Announce ticketing events on IRC.
 from typing import Optional
 
 from ...events.ticketing import TicketCheckedIn, TicketsSold
+from ...services.ticketing import ticket_service
 from ...signals import ticketing as ticketing_signals
 from ...util.jobqueue import enqueue
 
@@ -53,7 +54,12 @@ def announce_tickets_sold(event: TicketsSold) -> None:
         event.initiator_screen_name
     )
     owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)
+    sale_stats = ticket_service.get_ticket_sale_stats(event.party_id)
 
-    text = f'{owner_screen_name} hat {event.quantity} Ticket(s) gekauft.'
+    text = (
+        f'{owner_screen_name} hat {event.quantity} Ticket(s) gekauft. '
+        f'Aktuell sind {sale_stats.tickets_sold} '
+        f'von {sale_stats.tickets_max} Tickets verkauft.'
+    )
 
     send_message(CHANNEL_ORGA_LOG, text)
