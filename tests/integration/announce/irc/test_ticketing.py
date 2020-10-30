@@ -4,7 +4,7 @@
 """
 
 from byceps.announce.irc import ticketing  # Load signal handlers.
-from byceps.events.ticketing import TicketCheckedIn
+from byceps.events.ticketing import TicketCheckedIn, TicketsSold
 from byceps.signals import ticketing as ticketing_signals
 
 from .helpers import (
@@ -38,5 +38,25 @@ def test_ticket_checked_in(app, make_user, admin_user):
 
     with mocked_irc_bot() as mock:
         ticketing_signals.ticket_checked_in.send(None, event=event)
+
+    assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)
+
+
+def test_tickets_sold(app, make_user, admin_user):
+    expected_text = 'TreuerKäufer hat 3 Ticket(s) gekauft.'
+
+    user = make_user('TreuerKäufer')
+
+    event = TicketsSold(
+        occurred_at=now(),
+        initiator_id=admin_user.id,
+        initiator_screen_name=admin_user.screen_name,
+        owner_id=user.id,
+        owner_screen_name=user.screen_name,
+        quantity=3,
+    )
+
+    with mocked_irc_bot() as mock:
+        ticketing_signals.tickets_sold.send(None, event=event)
 
     assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)
