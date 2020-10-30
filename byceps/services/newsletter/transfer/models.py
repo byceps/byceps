@@ -7,10 +7,7 @@ byceps.services.newsletter.transfer.models
 """
 
 from dataclasses import dataclass
-from datetime import datetime
 from typing import NewType
-
-from ....typing import UserID
 
 
 ListID = NewType('ListID', str)
@@ -20,10 +17,3 @@ ListID = NewType('ListID', str)
 class List:
     id: ListID
     title: str
-
-
-@dataclass(frozen=True)
-class Subscription:
-    user_id: UserID
-    list_id: ListID
-    expressed_at: datetime
