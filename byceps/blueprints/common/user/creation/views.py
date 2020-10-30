@@ -18,17 +18,13 @@ from .....services.consent.transfer.models import Consent, Subject, SubjectID
 from .....services.newsletter import (
     command_service as newsletter_command_service,
 )
-from .....services.newsletter.transfer.models import (
-    ListID as NewsletterListID,
-    Subscription as NewsletterSubscription,
-)
+from .....services.newsletter.transfer.models import ListID as NewsletterListID
 from .....services.site import (
     settings_service as site_settings_service,
     service as site_service,
 )
 from .....services.user import creation_service as user_creation_service
 from .....signals import user as user_signals
-from .....typing import UserID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
@@ -132,11 +128,11 @@ def create():
     user_signals.account_created.send(None, event=event)
 
     if newsletter_offered:
-        newsletter_subscription = _get_newsletter_subscription(
-            form, user.id, newsletter_list_id, now_utc
-        )
-        if newsletter_subscription:
-            _subscribe_to_newsletter(user.id, newsletter_subscription)
+        subscribe_to_newsletter = form.subscribe_to_newsletter.data
+        if subscribe_to_newsletter:
+            newsletter_command_service.subscribe(
+                user.id, newsletter_list_id, now_utc
+            )
 
     return redirect_to('authentication.login_form')
 
@@ -202,31 +198,4 @@ def _assemble_consent(subject_id: SubjectID, expressed_at: datetime) -> Consent:
         user_id=None,  # not available at this point
         subject_id=subject_id,
         expressed_at=expressed_at,
-    )
-
-
-def _get_newsletter_subscription(
-    form,
-    user_id: UserID,
-    newsletter_list_id: NewsletterListID,
-    expressed_at: datetime,
-) -> Optional[NewsletterSubscription]:
-    subscribe_to_newsletter = form.subscribe_to_newsletter.data
-    if not subscribe_to_newsletter:
-        return None
-
-    return NewsletterSubscription(
-        user_id=user_id,
-        list_id=newsletter_list_id,
-        expressed_at=expressed_at,
-    )
-
-
-def _subscribe_to_newsletter(
-    user_id: UserID, newsletter_subscription: NewsletterSubscription
-) -> None:
-    newsletter_command_service.subscribe(
-        user_id,
-        newsletter_subscription.list_id,
-        newsletter_subscription.expressed_at,
     )
