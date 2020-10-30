@@ -151,9 +151,7 @@ function closeOpenDropdownMenus(clickTarget) {
 }
 
 
-/**
- * Add behavior to dropdown menus.
- */
+// Add behavior to dropdown menus.
 onDomReady(function() {
   enableDropdownMenuToggles();
 
@@ -193,10 +191,8 @@ function enableCopyToClipboard(triggerElementId) {
 // forms
 
 
-/**
- * Disable the submit button of forms with class
- * `disable-submit-button-on-submit` on submit.
- */
+// Disable the submit button of forms with class
+// `disable-submit-button-on-submit` on submit.
 onDomReady(function() {
   const formsWhoseSubmitButtonShouldBeDisabledOnSubmit = document
       .querySelectorAll('form.disable-submit-button-on-submit');
