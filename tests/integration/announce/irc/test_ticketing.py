@@ -51,6 +51,7 @@ def test_tickets_sold(app, make_user, admin_user):
         occurred_at=now(),
         initiator_id=admin_user.id,
         initiator_screen_name=admin_user.screen_name,
+        party_id='some-party-id',
         owner_id=user.id,
         owner_screen_name=user.screen_name,
         quantity=3,

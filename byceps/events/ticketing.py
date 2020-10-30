@@ -11,7 +11,7 @@ from typing import Optional
 
 from ..services.seating.transfer.models import SeatID
 from ..services.ticketing.transfer.models import TicketCode, TicketID
-from ..typing import UserID
+from ..typing import PartyID, UserID
 
 from .base import _BaseEvent
 
@@ -31,6 +31,7 @@ class TicketCheckedIn(_TicketEvent):
 
 @dataclass(frozen=True)
 class TicketsSold(_BaseEvent):
+    party_id: PartyID
     owner_id: Optional[UserID]
     owner_screen_name: Optional[str]
     quantity: int
