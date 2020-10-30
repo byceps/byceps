@@ -18,8 +18,6 @@ from ...typing import UserID
 from ..authentication.password import service as password_service
 from ..consent import consent_service
 from ..consent.transfer.models import Consent
-from ..newsletter import command_service as newsletter_command_service
-from ..newsletter.transfer.models import Subscription as NewsletterSubscription
 from ..site.transfer.models import SiteID
 
 from . import email_address_verification_service
@@ -43,7 +41,6 @@ def create_user(
     site_id: SiteID,
     *,
     consents: Optional[Set[Consent]] = None,
-    newsletter_subscription: Optional[NewsletterSubscription] = None,
 ) -> Tuple[User, UserAccountCreated]:
     """Create a user account and related records."""
     # user with details, password, and roles
@@ -67,14 +64,6 @@ def create_user(
             db.session.add(consent)
 
     db.session.commit()
-
-    # newsletter subscription (optional)
-    if newsletter_subscription:
-        newsletter_command_service.subscribe(
-            user.id,
-            newsletter_subscription.list_id,
-            newsletter_subscription.expressed_at,
-        )
 
     request_email_address_confirmation(user, email_address, site_id)
 
