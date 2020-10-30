@@ -27,6 +27,9 @@
       <td>
         {%- if recent_login -%}
         {{ render_datetime(recent_login|utc_to_local_tz) }}
+          {%- if (days_since_recent_login is not none) and (days_since_recent_login > 1) %}
+        <span class="dimmed">(vor {{ days_since_recent_login }} Tagen)</span>
+          {%- endif %}
         {%- else -%}
         {{ 'unbekannt'|dim }}
         {%- endif -%}

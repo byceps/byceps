@@ -6,6 +6,9 @@ byceps.blueprints.admin.user.views
 :License: Modified BSD, see LICENSE for details.
 """
 
+from datetime import datetime
+from typing import Optional
+
 from flask import abort, g, redirect, request, url_for
 
 from ....services.authentication.password import service as password_service
@@ -98,6 +101,7 @@ def view(user_id):
         abort(404)
 
     recent_login = session_service.find_recent_login(user.id)
+    days_since_recent_login = _calculate_days_since(recent_login)
 
     orga_activities = orga_team_service.get_orga_activities_for_user(user.id)
 
@@ -120,6 +124,7 @@ def view(user_id):
     return {
         'user': user,
         'recent_login': recent_login,
+        'days_since_recent_login': days_since_recent_login,
         'orga_activities': orga_activities,
         'newsletter_subscriptions': newsletter_subscriptions,
         'orders': orders,
@@ -128,6 +133,13 @@ def view(user_id):
         'attended_parties': attended_parties,
         'badges_with_awarding_quantity': badges_with_awarding_quantity,
     }
+
+
+def _calculate_days_since(dt: Optional[datetime]) -> Optional[int]:
+    if dt is None:
+        return None
+
+    return (datetime.utcnow().date() - dt.date()).days
 
 
 @blueprint.route('/create')
