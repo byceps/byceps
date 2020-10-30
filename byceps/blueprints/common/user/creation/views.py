@@ -131,11 +131,12 @@ def create():
 
     user_signals.account_created.send(None, event=event)
 
-    newsletter_subscription = _get_newsletter_subscription(
-        newsletter_offered, form, user.id, newsletter_list_id, now_utc
-    )
-    if newsletter_subscription:
-        _subscribe_to_newsletter(user.id, newsletter_subscription)
+    if newsletter_offered:
+        newsletter_subscription = _get_newsletter_subscription(
+            form, user.id, newsletter_list_id, now_utc
+        )
+        if newsletter_subscription:
+            _subscribe_to_newsletter(user.id, newsletter_subscription)
 
     return redirect_to('authentication.login_form')
 
@@ -205,15 +206,11 @@ def _assemble_consent(subject_id: SubjectID, expressed_at: datetime) -> Consent:
 
 
 def _get_newsletter_subscription(
-    newsletter_offered: bool,
     form,
     user_id: UserID,
     newsletter_list_id: NewsletterListID,
     expressed_at: datetime,
 ) -> Optional[NewsletterSubscription]:
-    if not newsletter_offered:
-        return None
-
     subscribe_to_newsletter = form.subscribe_to_newsletter.data
     if not subscribe_to_newsletter:
         return None
