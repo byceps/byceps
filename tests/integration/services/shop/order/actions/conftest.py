@@ -31,5 +31,10 @@ def ticket_category(party):
 
 
 @pytest.fixture(scope='package')
-def orderer(make_user_with_detail):
-    return create_orderer(make_user_with_detail('TicketsOrderer'))
+def orderer_user(make_user_with_detail):
+    return make_user_with_detail('TicketsOrderer')
+
+
+@pytest.fixture(scope='package')
+def orderer(orderer_user):
+    return create_orderer(orderer_user)

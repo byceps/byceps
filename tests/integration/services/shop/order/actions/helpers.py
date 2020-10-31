@@ -3,6 +3,7 @@
 :License: Modified BSD, see LICENSE for details.
 """
 
+from byceps.events.shop import ShopOrderPaid
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.transfer.models import PaymentMethod
 from byceps.services.shop.order import service as order_service
@@ -23,7 +24,7 @@ def place_order(storefront_id, orderer, articles_with_quantity):
     return order
 
 
-def mark_order_as_paid(order_id, admin_id):
-    order_service.mark_order_as_paid(
+def mark_order_as_paid(order_id, admin_id) -> ShopOrderPaid:
+    return order_service.mark_order_as_paid(
         order_id, PaymentMethod.bank_transfer, admin_id
     )

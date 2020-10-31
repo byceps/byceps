@@ -8,6 +8,7 @@ from unittest.mock import patch
 import pytest
 from pytest import raises
 
+from byceps.events.ticketing import TicketsSold
 from byceps.services.shop.order import action_service, action_registry_service
 from byceps.services.shop.order import event_service as order_event_service
 from byceps.services.shop.order import service as order_service
@@ -45,12 +46,15 @@ def order_action(article, ticket_category):
     action_service.delete_actions(article.item_number)
 
 
+@patch('byceps.signals.ticketing.tickets_sold.send')
 def test_create_tickets(
+    tickets_sold_signal_send_mock,
     admin_app,
     article,
     ticket_category,
     ticket_quantity,
     admin_user,
+    orderer_user,
     orderer,
     order,
     order_action,
@@ -58,7 +62,7 @@ def test_create_tickets(
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
 
-    mark_order_as_paid(order.id, admin_user.id)
+    shop_order_paid_event = mark_order_as_paid(order.id, admin_user.id)
 
     tickets_after_paid = get_tickets_for_order(order)
     assert len(tickets_after_paid) == ticket_quantity
@@ -72,6 +76,19 @@ def test_create_tickets(
         event for event in events if event.event_type == 'ticket-created'
     }
     assert len(ticket_created_events) == ticket_quantity
+
+    tickets_sold_event = TicketsSold(
+        occurred_at=shop_order_paid_event.occurred_at,
+        initiator_id=admin_user.id,
+        initiator_screen_name=admin_user.screen_name,
+        party_id=ticket_category.party_id,
+        owner_id=orderer_user.id,
+        owner_screen_name=orderer_user.screen_name,
+        quantity=ticket_quantity,
+    )
+    tickets_sold_signal_send_mock.assert_called_once_with(
+        None, event=tickets_sold_event
+    )
 
     # Clean up.
     for ticket in tickets_after_paid:
