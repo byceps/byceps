@@ -20,7 +20,7 @@ from ...user import service as user_service
 
 from ..article import service as article_service
 from ..cart.models import Cart
-from ..shop.models import Shop
+from ..shop.models import Shop as DbShop
 from ..shop import service as shop_service
 from ..shop.transfer.models import ShopID
 from ..storefront import service as storefront_service
@@ -490,11 +490,11 @@ def get_order_count_by_shop_id() -> Dict[ShopID, int]:
     """Return order count (including 0) per shop, indexed by shop ID."""
     shop_ids_and_order_counts = db.session \
         .query(
-            Shop.id,
+            DbShop.id,
             db.func.count(DbOrder.shop_id)
         ) \
         .outerjoin(DbOrder) \
-        .group_by(Shop.id) \
+        .group_by(DbShop.id) \
         .all()
 
     return dict(shop_ids_and_order_counts)
