@@ -592,3 +592,13 @@ PAYMENT_METHOD_LABELS = {
 def find_payment_method_label(payment_method: PaymentMethod) -> Optional[str]:
     """Return a label for the payment method."""
     return PAYMENT_METHOD_LABELS.get(payment_method)
+
+
+def get_payment_date(order_id: OrderID) -> Optional[datetime]:
+    """Return the date the order has been marked as paid, or `None` if
+    it has not been paid.
+    """
+    return db.session \
+        .query(DbOrder.payment_state_updated_at) \
+        .filter_by(id=order_id) \
+        .scalar()

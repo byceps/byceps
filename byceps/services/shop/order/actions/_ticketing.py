@@ -6,8 +6,6 @@ byceps.services.shop.order.actions._ticketing
 :License: Modified BSD, see LICENSE for details.
 """
 
-from datetime import datetime
-
 from .....events.ticketing import TicketsSold
 from .....signals import ticketing as ticketing_signals
 from .....typing import UserID
@@ -16,14 +14,18 @@ from ....ticketing import category_service
 from ....ticketing.transfer.models import TicketCategoryID
 from ....user import service as user_service
 
+from .. import service as order_service
+from ..transfer.models import OrderID
+
 
 def create_tickets_sold_event(
+    order_id: OrderID,
     initiator_id: UserID,
     category_id: TicketCategoryID,
     owner_id: UserID,
     quantity: int,
 ) -> TicketsSold:
-    occurred_at = datetime.utcnow()
+    occurred_at = order_service.get_payment_date(order_id)
     initiator_screen_name = user_service.find_screen_name(initiator_id)
     category = category_service.find_category(category_id)
     owner_screen_name = user_service.find_screen_name(owner_id)

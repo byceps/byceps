@@ -45,7 +45,7 @@ def create_tickets(
     _create_order_events(order.id, tickets)
 
     tickets_sold_event = create_tickets_sold_event(
-        initiator_id, category_id, owned_by_id, quantity
+        order.id, initiator_id, category_id, owned_by_id, quantity
     )
     send_tickets_sold_event(tickets_sold_event)
 
