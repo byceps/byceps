@@ -187,6 +187,7 @@ def _load_announce_signal_handlers() -> None:
         news,
         shop_order,
         snippet,
+        ticketing,
         tourney,
         user,
         user_badge,
