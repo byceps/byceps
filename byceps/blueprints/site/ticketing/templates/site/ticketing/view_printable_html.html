@@ -53,10 +53,14 @@ td {
 .dimmed {
   opacity: 0.5;
 }
+
+{%- include 'site/ticketing/_printable_html_styles.html' ignore missing %}
     </style>
   </head>
   <body>
     <div class="ticket">
+
+      <div class="party-logo"></div>
 
       <h1>
         Ticket {{ ticket.code }}<br>
