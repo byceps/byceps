@@ -91,9 +91,12 @@ def view_printable_html(ticket_id):
             .replace('\n', '%0A')
 
     return {
-        'ticket': ticket,
-        'ticket_category': ticket_category,
-        'party': party,
+        'party_title': party.title,
+        'ticket_code': ticket.code,
+        'ticket_category_title': ticket_category.title,
+        'ticket_owner': ticket.owned_by,
+        'ticket_user': ticket.used_by,
+        'occupied_seat': ticket.occupied_seat,
         'barcode_svg_inline': barcode_svg_inline,
     }
 

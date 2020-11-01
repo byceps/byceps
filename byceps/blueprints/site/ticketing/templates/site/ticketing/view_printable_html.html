@@ -6,7 +6,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Ticket {{ ticket.code }} – {{ party.title }}</title>
+    <title>Ticket {{ ticket_code }} – {{ party_title }}</title>
     <style>
 body {
   font-family: sans-serif;
@@ -63,8 +63,8 @@ td {
       <div class="party-logo"></div>
 
       <h1>
-        Ticket {{ ticket.code }}<br>
-        <span class="dimmed subtitle">{{ party.title }}</span>
+        Ticket {{ ticket_code }}<br>
+        <span class="dimmed subtitle">{{ party_title }}</span>
       </h1>
 
       <img src="data:image/svg+xml,{{ barcode_svg_inline|safe }}">
@@ -73,11 +73,11 @@ td {
       <table>
         <tr>
           <th>Nickname:</th>
-          <td>{{ render_user_screen_name(ticket.used_by) if ticket.used_by else 'nicht zugewiesen'|dim }}</td>
+          <td>{{ render_user_screen_name(ticket_user) if ticket_user else 'nicht zugewiesen'|dim }}</td>
         </tr>
         <tr>
           <th>Name:</th>
-          <td>{{ ticket.used_by.detail.full_name if ticket.used_by else 'nicht zugewiesen'|dim }}</td>
+          <td>{{ ticket_user.detail.full_name if ticket_user else 'nicht zugewiesen'|dim }}</td>
         </tr>
       </table>
 
@@ -85,19 +85,19 @@ td {
       <table>
         <tr>
           <th>Nickname:</th>
-          <td>{{ render_user_screen_name(ticket.owned_by) }}</td>
+          <td>{{ render_user_screen_name(ticket_owner) }}</td>
         </tr>
         <tr>
           <th>Name:</th>
-          <td>{{ ticket.owned_by.detail.full_name }}</td>
+          <td>{{ ticket_owner.detail.full_name }}</td>
         </tr>
       </table>
 
       <h2>Kategorie</h2>
-      <div>{{ ticket_category.title }}</div>
+      <div>{{ ticket_category_title }}</div>
 
       <h2>Sitzplatz</h2>
-      <div>{{ ticket.occupied_seat.label|fallback('unbenannt') if ticket.occupied_seat else 'nicht zugewiesen'|dim }}</div>
+      <div>{{ occupied_seat.label|fallback('unbenannt') if occupied_seat else 'nicht zugewiesen'|dim }}</div>
 
     </div>
 
