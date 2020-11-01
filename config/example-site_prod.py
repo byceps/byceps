@@ -1,8 +1,11 @@
-# an examplary configuration file of a public party web application to
-# be run in production
+# Examplary production configuration for a public site
 
+# Limit incoming request content.
 MAX_CONTENT_LENGTH = 4000000
-PROPAGATE_EXCEPTIONS = True
+
+# Enable this if you want a tool like Sentry
+# handle exceptions rather than Flask.
+PROPAGATE_EXCEPTIONS = False
 
 # Set a custom secret key for running in production!
 # To generate one:
@@ -16,8 +19,8 @@ SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byce
 REDIS_URL = 'unix:///var/run/redis/redis.sock?db=0'
 
 APP_MODE = 'site'
-SITE_ID = 'example-prod'
+SITE_ID = 'example-site'
 
 MAIL_DEBUG = False
-MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
+MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@site.example>'
 MAIL_SUPPRESS_SEND = False
