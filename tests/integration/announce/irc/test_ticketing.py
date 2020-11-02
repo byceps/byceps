@@ -48,8 +48,8 @@ def test_ticket_checked_in(app, make_user, admin_user):
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
 def test_tickets_sold(get_ticket_sale_stats_mock, app, make_user, admin_user):
     expected_text = (
-        'TreuerKäufer hat 3 Ticket(s) gekauft. '
-        'Aktuell sind 775 von 1001 Tickets verkauft.'
+        'TreuerKäufer hat 3 Ticket(s) bezahlt. '
+        'Aktuell sind 775 von 1001 Tickets bezahlt.'
     )
 
     get_ticket_sale_stats_mock.return_value = TicketSaleStats(

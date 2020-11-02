@@ -57,9 +57,9 @@ def announce_tickets_sold(event: TicketsSold) -> None:
     sale_stats = ticket_service.get_ticket_sale_stats(event.party_id)
 
     text = (
-        f'{owner_screen_name} hat {event.quantity} Ticket(s) gekauft. '
+        f'{owner_screen_name} hat {event.quantity} Ticket(s) bezahlt. '
         f'Aktuell sind {sale_stats.tickets_sold} '
-        f'von {sale_stats.tickets_max} Tickets verkauft.'
+        f'von {sale_stats.tickets_max} Tickets bezahlt.'
     )
 
     send_message(CHANNEL_ORGA_LOG, text)
