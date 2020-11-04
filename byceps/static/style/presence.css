@@ -34,9 +34,11 @@ nav.breadcrumbs {
 .party .bar {
   background-color: blue;
 }
+
 .presence .bar {
   background-color: green;
 }
+
 .task .bar {
   background-color: orange;
 }

@@ -92,6 +92,7 @@
 }
 
 @media (min-width: 30rem) { /* 480px / 16px */
+
   .ticket {
     flex-direction: row;
   }
@@ -102,6 +103,7 @@
     padding-top: 0;
     padding-left: 0.5rem;
   }
+
 }
 
 

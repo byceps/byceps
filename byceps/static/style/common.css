@@ -3,6 +3,7 @@
 html {
   box-sizing: border-box;
 }
+
 *,
 *::after,
 *::before {
@@ -37,6 +38,7 @@ textarea {
 a {
   background-color: transparent;
 }
+
 a:active,
 a:hover {
   outline: 0;
@@ -133,6 +135,7 @@ img {
 a.disguised {
   color: currentColor;
 }
+
 a.disguised:not(:hover) {
   text-decoration: none;
 }
@@ -157,10 +160,12 @@ span[title] .icon {
 .block-with-icon {
   display: flex;
 }
+
 .block-with-icon-icon {
   flex: 0 0 auto;
   padding-right: 0.5em;
 }
+
 .block-with-icon-body {
   flex: 1;
   text-align: left;
@@ -249,9 +254,11 @@ nav.breadcrumbs {
 nav.breadcrumbs li {
   display: inline-block;
 }
+
 nav.breadcrumbs li::after {
   content: ' \0BB \020';
 }
+
 nav.breadcrumbs.compact li:last-child::after {
   content: none;
 }
@@ -269,6 +276,7 @@ td {
   text-align: left;
   vertical-align: top;
 }
+
 th.number,
 td.number {
   text-align: right;
@@ -278,23 +286,28 @@ table.index th,
 table.index td {
   padding: 0.35rem 1rem 0.35rem 0;
 }
+
 table.index th:last-child,
 table.index td:last-child {
   padding-right: 0;
 }
+
 table.index th {
   font-size: 0.75rem; /* 12px / 16px */
   font-weight: bold;
 }
+
 table.index td {
   font-size: 0.8125rem; /* 13px / 16px */
 }
+
 table.index > tbody > tr > th,
 table.index > tbody > tr > td {
   border-color: #dddddd;
   border-style: solid;
   border-width: 1px 0;
 }
+
 table.index .details {
   display: block;
   font-size: 0.6875rem; /* 11px / 16px */
@@ -324,12 +337,14 @@ fieldset .label {
   vertical-align: top;
   width: 100%;
 }
+
 .checkbox label,
 .radio label {
   font-weight: normal;
   padding-top: 0.1rem;
   width: auto;
 }
+
 .checkbox,
 .radio {
   padding-top: 0.3rem;
@@ -340,28 +355,35 @@ fieldset textarea,
 fieldset .supplement {
   width: 100%;
 }
+
 fieldset input[type='number'] {
   text-align: right;
 }
+
 fieldset textarea {
   height: 20rem;
   resize: vertical;
 }
+
 fieldset textarea.wide {
   width: 100%;
 }
+
 fieldset textarea.collapsible {
   transition: height 0.5s;
 }
+
 fieldset textarea.collapsible.collapsed {
   height: 3rem;
 }
+
 fieldset .supplement {
   display: inline-block;
   margin-left: -4px;
 }
 
 @media (min-width: 45rem) { /* 720px / 16px */
+
   form label,
   fieldset .label {
     width: 22%;
@@ -377,6 +399,7 @@ fieldset .supplement {
   .radio {
     padding-left: 22%;
   }
+
 }
 
 fieldset.buttons {
@@ -394,11 +417,13 @@ form li.error {
   margin: 4px -8px;
   padding: 4px 7px;
 }
+
 .form-row.error .errors li,
 form li.error .errors li {
   font-size: 0.6875rem; /* 11px / 16px */
   margin-top: 0.2rem;
 }
+
 .form-row.error .errors li span,
 form li.error .errors li span {
   font-style: italic;
@@ -532,9 +557,11 @@ button.button[disabled],
 .dropdown-toggle {
   cursor: pointer;
 }
+
 .dropdown-toggle:focus {
   outline: 0;
 }
+
 .dropdown-toggle::-moz-focus-inner {
   border: 0;
 }
@@ -597,6 +624,7 @@ nav.pagination {
   margin: 1em 0;
   text-align: left;
 }
+
 nav.pagination.centered {
   text-align: center;
 }
@@ -680,6 +708,7 @@ nav.pagination li.current {
   overflow: hidden;
   vertical-align: middle;
 }
+
 .avatar img {
   display: block;
   height: 100%;
@@ -690,34 +719,42 @@ nav.pagination li.current {
   height: 16px;
   width: 16px;
 }
+
 .avatar.size-20 {
   height: 20px;
   width: 20px;
 }
+
 .avatar.size-24 {
   height: 24px;
   width: 24px;
 }
+
 .avatar.size-32 {
   height: 32px;
   width: 32px;
 }
+
 .avatar.size-40 {
   height: 40px;
   width: 40px;
 }
+
 .avatar.size-48 {
   height: 48px;
   width: 48px;
 }
+
 .avatar.size-64 {
   height: 64px;
   width: 64px;
 }
+
 .avatar.size-96 {
   height: 96px;
   width: 96px;
 }
+
 .avatar.size-128 {
   height: 128px;
   width: 128px;
@@ -732,9 +769,11 @@ nav.pagination li.current {
   display: inline-flex;
   overflow: hidden;
 }
+
 a.user-badge:hover {
   border-color: currentColor;
 }
+
 .user-badge img {
   display: block;
   min-height: 100%;
@@ -746,11 +785,13 @@ a.user-badge:hover {
   padding: 3px;
   width: 24px;
 }
+
 .user-badge.size-32 {
   height: 32px;
   padding: 4px;
   width: 32px;
 }
+
 .user-badge.size-64 {
   height: 64px;
   padding: 8px;
@@ -822,24 +863,31 @@ table.user-badges-list td {
 /* animation */
 
 @-webkit-keyframes spin {
+
   from {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   to {
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg);
   }
+
 }
+
 @keyframes spin {
+
   from {
     -webkit-transform: rotate(0deg);
     transform: rotate(0deg);
   }
+
   to {
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg);
   }
+
 }
 
 .spinning {

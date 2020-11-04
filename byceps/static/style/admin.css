@@ -3,6 +3,7 @@
 html {
   height: 100%;
 }
+
 body {
   background-color: #f4f4f4;
   color: #333333;
@@ -22,9 +23,11 @@ a {
 }
 
 @media (min-width: 36rem) { /* 576px / 16px */
+
   :root {
     --layout-gutter: 32px;
   }
+
 }
 
 .page-layout {
@@ -51,11 +54,13 @@ a {
 }
 
 @media (min-width: 60rem) { /* 960px / 16px */
+
   .container {
     --layout-width: 1080px;
     max-width: var(--layout-width);
     width: var(--layout-width);
   }
+
 }
 
 .page-body-grid {
@@ -74,9 +79,11 @@ a {
 }
 
 @media (min-width: 60rem) { /* 960px / 16px */
+
   .page-body-grid {
     flex-direction: row;
   }
+
 }
 
 main {
@@ -108,9 +115,11 @@ main {
 }
 
 @media (min-width: 36rem) { /* 576px / 16px */
+
   #main {
     padding: 20px 40px 40px 40px;
   }
+
 }
 
 .box {
@@ -307,6 +316,7 @@ nav.main ol {
   margin: 0.75rem 0;
   width: 100%;
 }
+
 nav.main li {
   display: block;
   margin: 0;
@@ -323,6 +333,7 @@ nav.main li {
   text-decoration: none;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
+
 .nav-item:hover,
 .nav-item--current {
   background-color: #eeeeee;
@@ -344,9 +355,11 @@ nav.main li {
   margin: -8px 12px 0 12px;
   padding: 0;
 }
+
 .main-tabs li {
   padding: 8px 0 0 4px;
 }
+
 .main-tabs a,
 .main-tabs .current {
   border-color: #cccccc;
@@ -357,6 +370,7 @@ nav.main li {
   margin-bottom: -1px;
   padding: 0.5rem 1rem;
 }
+
 .main-tabs a {
   border-width: 0;
   margin-top: 1px;
@@ -364,6 +378,7 @@ nav.main li {
   margin-left: 1px;
   text-decoration: none;
 }
+
 .main-tabs a:hover,
 .main-tabs .current {
   border-width: 1px 1px 0 1px;
@@ -372,9 +387,11 @@ nav.main li {
   margin-right: 0;
   margin-left: 0;
 }
+
 .main-tabs a.current:hover {
   color: #000000;
 }
+
 .main-tabs a:hover:not(.current) {
   color: #000000;
   opacity: 0.5;
@@ -387,6 +404,7 @@ h1 {
   font-size: 1.75rem; /* 28px / 16px */
   line-height: 1.2;
 }
+
 h2 {
   font-size: 1.25rem; /* 20px / 16px */
   margin-top: 2rem;
@@ -397,9 +415,11 @@ h2 small {
   font-weight: normal;
   opacity: 0.5;
 }
+
 h1 small {
   font-size: 1.5rem; /* 24px / 16px */
 }
+
 h2 small {
   font-size: 1.125rem; /* 18px / 16px */
 }
@@ -408,10 +428,12 @@ h2 small {
 /* tables */
 
 @media (max-width: 60rem) { /* 960px / 16px */
+
   table.index.wide {
     display: block;
     overflow-x: auto;
   }
+
 }
 
 table.index td.bignumber {
@@ -427,9 +449,11 @@ ol.index li {
   border-color: #cccccc;
   border-style: solid;
 }
+
 ol.index {
   border-width: 0 0 1px 0;
 }
+
 ol.index li {
   border-width: 1px 0 0 0;
   font-size: 0.875rem; /* 14px / 16px */
@@ -439,6 +463,7 @@ ol.index li {
 ol.index.fully-linked li {
   padding: 0;
 }
+
 ol.index.fully-linked a {
   color: currentColor;
   display: block;
@@ -446,6 +471,7 @@ ol.index.fully-linked a {
   padding: 0.35rem 40px;
   text-decoration: none;
 }
+
 ol.index.fully-linked a:hover {
   background-color: #f8f888;
 }
@@ -457,6 +483,7 @@ ol.index.fully-linked a:hover {
   margin: -8px 0 0 -8px;
   padding: 0;
 }
+
 .list-grid > li {
   padding: 8px 0 0 8px;
 }
@@ -467,15 +494,19 @@ ol.index.fully-linked a:hover {
 .tag.order-open {
   background-color: #ee3322 !important;
 }
+
 .tag.order-canceled-before-paid {
   background-color: #999999 !important;
 }
+
 .tag.order-paid {
   background-color: #11aa22 !important;
 }
+
 .tag.order-canceled-after-paid {
   background-color: #666666 !important;
 }
+
 .tag.order-waiting-for-shipping {
   background-color: #eecc00 !important;
 }
@@ -490,6 +521,7 @@ ol.index.fully-linked a:hover {
   font-weight: normal;
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
+
 .button.color-primary:hover {
   background-color: #666666;
 }
@@ -549,15 +581,18 @@ main .dropdown-menu {
 .bigstats figure {
   text-align: center;
 }
+
 .bigstats .value,
 .bigstats figcaption {
   display: block;
 }
+
 .bigstats .value {
   font-size: 2.5rem; /* 40px / 16px */
   font-weight: bold;
   line-height: 1;
 }
+
 .bigstats a {
   color: currentColor;
 }
@@ -573,6 +608,7 @@ main .dropdown-menu {
   opacity: 0.5;
   text-align: center;
 }
+
 #footer:hover {
   opacity: 1;
 }
@@ -675,11 +711,11 @@ main .dropdown-menu {
   white-space: nowrap;
 }
 
-
 .event-body .user-link a {
   color: currentColor;
   font-weight: bold;
 }
+
 .event-body .user-link a:not(:hover) {
   text-decoration: none;
 }
@@ -705,6 +741,7 @@ main .dropdown-menu {
 /* print view */
 
 @media print {
+
   * {
     background-color: transparent !important;
     color: #000000 !important;
@@ -741,4 +778,5 @@ main .dropdown-menu {
   .button-row {
     display: none !important;
   }
+
 }
