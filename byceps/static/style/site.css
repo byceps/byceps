@@ -1,14 +1,9 @@
 /* basic */
 
-html {
-  height: 100%;
-}
-
 body {
   background-color: #f4f4f4;
   color: #333333;
   line-height: 1.4;
-  min-height: 100%;
 }
 
 
