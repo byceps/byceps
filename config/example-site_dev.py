@@ -1,4 +1,4 @@
-# Examplary development configuration for a public site
+# Exemplary development configuration for a public site
 
 SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 SESSION_COOKIE_SECURE = True

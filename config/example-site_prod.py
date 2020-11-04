@@ -1,4 +1,4 @@
-# Examplary production configuration for a public site
+# Exemplary production configuration for a public site
 
 # Limit incoming request content.
 MAX_CONTENT_LENGTH = 4000000
