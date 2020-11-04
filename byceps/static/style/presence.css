@@ -3,16 +3,15 @@ body {
   border: none;
 }
 
-#footer,
-#header,
-#page-grid-sidebar,
-#sidebar {
+.page-body-grid-sidebar,
+.page-footer,
+.page-header {
   display: none;
 }
 
-#page {
-  margin: 0;
+.container {
   max-width: none;
+  width: auto;
 }
 
 nav.breadcrumbs {
