@@ -1,6 +1,6 @@
 """
 :Copyright: 2006-2020 Jochen Kupperschmidt
-:License: Modified BSD, see LICENSE for details.
+:License: Revised BSD (see `LICENSE` file for details)
 """
 
 import byceps.services.site.service as site_service

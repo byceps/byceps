@@ -3,7 +3,7 @@ byceps.services.board.models.last_topic_view
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
-:License: Modified BSD, see LICENSE for details.
+:License: Revised BSD (see `LICENSE` file for details)
 """
 
 from datetime import datetime

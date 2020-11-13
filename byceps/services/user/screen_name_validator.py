@@ -5,7 +5,7 @@ byceps.services.user.screen_name_validator
 Validate screen names regarding their contained characters
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
-:License: Modified BSD, see LICENSE for details.
+:License: Revised BSD (see `LICENSE` file for details)
 """
 
 from itertools import chain

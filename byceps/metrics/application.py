@@ -12,7 +12,7 @@ Run like this (inside a virtual environment)::
 Metrics then become available at `http://127.0.0.1/metrics`.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
-:License: Modified BSD, see LICENSE for details.
+:License: Revised BSD (see `LICENSE` file for details)
 """
 
 from flask import Flask

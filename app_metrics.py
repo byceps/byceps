@@ -3,7 +3,7 @@ metrics application instance
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
-:License: Modified BSD, see LICENSE for details.
+:License: Revised BSD (see `LICENSE` file for details)
 """
 
 from byceps.metrics.application import create_app

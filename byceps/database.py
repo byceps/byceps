@@ -5,7 +5,7 @@ byceps.database
 Database utilities.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
-:License: Modified BSD, see LICENSE for details.
+:License: Revised BSD (see `LICENSE` file for details)
 """
 
 from typing import Any, Callable, Dict, Iterable, Optional, TypeVar

@@ -7,7 +7,7 @@ Send messages to an IRC bot (Weitersager_) via HTTP.
 .. _Weitersager: https://github.com/homeworkprod/weitersager
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
-:License: Modified BSD, see LICENSE for details.
+:License: Revised BSD (see `LICENSE` file for details)
 """
 
 from flask import current_app

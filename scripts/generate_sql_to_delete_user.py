@@ -6,7 +6,7 @@ various (but not all) traces from the database.
 Might fail for example if a user posted in a discussion board.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
-:License: Modified BSD, see LICENSE for details.
+:License: Revised BSD (see `LICENSE` file for details)
 """
 
 from typing import Iterable, Iterator, List

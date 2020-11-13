@@ -5,7 +5,7 @@ byceps.announce.irc.user_badge
 Announce user badge events on IRC.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
-:License: Modified BSD, see LICENSE for details.
+:License: Revised BSD (see `LICENSE` file for details)
 """
 
 from typing import Optional

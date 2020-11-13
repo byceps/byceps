@@ -5,7 +5,7 @@ byceps.blueprints.site.user_message.views
 Send messages from one user to another.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
-:License: Modified BSD, see LICENSE for details.
+:License: Revised BSD (see `LICENSE` file for details)
 """
 
 from flask import abort, g, request, url_for
