@@ -17,13 +17,18 @@ messages, but not `flask.flash` directly.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections import namedtuple
+from dataclasses import dataclass
+from typing import Optional
 
 from flask import flash
 
 
-FlashMessage = namedtuple('FlashMessage',
-                          ['text', 'text_is_safe', 'category', 'icon'])
+@dataclass(frozen=True)
+class FlashMessage:
+    text: str
+    text_is_safe: bool
+    category: Optional[str]
+    icon: Optional[str]
 
 
 def flash_error(message, icon=None, text_is_safe=False):
