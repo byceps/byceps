@@ -31,21 +31,32 @@ class FlashMessage:
     icon: Optional[str]
 
 
-def flash_error(message, icon=None, text_is_safe=False):
+def flash_error(
+    message: str, icon: Optional[str] = None, text_is_safe: bool = False
+) -> None:
     """Flash a message indicating an error."""
     _flash(message, category='danger', icon=icon, text_is_safe=text_is_safe)
 
 
-def flash_notice(message, icon=None, text_is_safe=False):
+def flash_notice(
+    message: str, icon: Optional[str] = None, text_is_safe: bool = False
+) -> None:
     """Flash a generally informational message."""
     _flash(message, category='info', icon=icon, text_is_safe=text_is_safe)
 
 
-def flash_success(message, icon=None, text_is_safe=False):
+def flash_success(
+    message: str, icon: Optional[str] = None, text_is_safe: bool = False
+) -> None:
     """Flash a message describing a successful action."""
     _flash(message, category='success', icon=icon, text_is_safe=text_is_safe)
 
 
-def _flash(message, category=None, icon=None, text_is_safe=False):
+def _flash(
+    message: str,
+    category: Optional[str] = None,
+    icon: Optional[str] = None,
+    text_is_safe: bool = False,
+) -> None:
     flash_message = FlashMessage(message, text_is_safe, category, icon)
     flash(flash_message)
