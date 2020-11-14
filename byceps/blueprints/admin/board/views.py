@@ -6,7 +6,7 @@ byceps.blueprints.admin.board.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections import namedtuple
+from dataclasses import dataclass
 
 from flask import abort, request
 
@@ -39,11 +39,11 @@ permission_registry.register_enum(BoardPermission)
 permission_registry.register_enum(BoardCategoryPermission)
 
 
-BoardStats = namedtuple('BoardStats', [
-    'category_count',
-    'topic_count',
-    'posting_count',
-])
+@dataclass(frozen=True)
+class BoardStats:
+    category_count: int
+    topic_count: int
+    posting_count: int
 
 
 # -------------------------------------------------------------------- #
