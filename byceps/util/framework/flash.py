@@ -33,26 +33,19 @@ class FlashMessage:
 
 def flash_error(message, icon=None, text_is_safe=False):
     """Flash a message indicating an error."""
-    return _flash(
-        message, category='danger', icon=icon, text_is_safe=text_is_safe
-    )
+    _flash(message, category='danger', icon=icon, text_is_safe=text_is_safe)
 
 
 def flash_notice(message, icon=None, text_is_safe=False):
     """Flash a generally informational message."""
-    return _flash(
-        message, category='info', icon=icon, text_is_safe=text_is_safe
-    )
+    _flash(message, category='info', icon=icon, text_is_safe=text_is_safe)
 
 
 def flash_success(message, icon=None, text_is_safe=False):
     """Flash a message describing a successful action."""
-    return _flash(
-        message, category='success', icon=icon, text_is_safe=text_is_safe
-    )
+    _flash(message, category='success', icon=icon, text_is_safe=text_is_safe)
 
 
 def _flash(message, category=None, icon=None, text_is_safe=False):
     flash_message = FlashMessage(message, text_is_safe, category, icon)
-
-    return flash(flash_message)
+    flash(flash_message)
