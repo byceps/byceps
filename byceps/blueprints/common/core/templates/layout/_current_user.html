@@ -24,8 +24,8 @@
     </ol>
   </div>
   {%- else %}
-  <div class="nowrap">
-    {{ render_icon('log-in') }} <a href="{{ url_for('authentication.login_form') }}">Anmelden</a>
+  <div>
+    <a href="{{ url_for('authentication.login_form') }}" class="button button--outlined">{{ render_icon('log-in') }} <span>Anmelden</span></a>
   </div>
   {%- endif %}
 </div>
