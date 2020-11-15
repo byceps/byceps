@@ -117,6 +117,10 @@ img {
   justify-content: space-between;
 }
 
+.row--vertically-centered {
+  align-items: center;
+}
+
 .row--wrap {
   flex-wrap: wrap;
 }
