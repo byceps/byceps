@@ -24,7 +24,7 @@
     </ol>
   </div>
   {%- else %}
-  <div>
+  <div class="nowrap">
     {{ render_icon('log-in') }} <a href="{{ url_for('authentication.login_form') }}">Anmelden</a>
   </div>
   {%- endif %}
