@@ -17,7 +17,7 @@ from ..ticketing.transfer.models import TicketCategory, TicketCategoryID
 
 from .models.area import Area as DbArea
 from .models.seat import Seat as DbSeat
-from .transfer.models import AreaID, SeatID
+from .transfer.models import AreaID, SeatID, SeatUtilization
 
 
 def create_seat(
@@ -69,12 +69,30 @@ def count_occupied_seats_by_category(
     return [(TicketCategory(row[0], row[1], row[2]), row[3]) for row in rows]
 
 
+def count_occupied_seats_for_party(party_id: PartyID) -> int:
+    """Count occupied seats for the party."""
+    return DbSeat.query \
+        .join(DbTicket) \
+        .join(DbTicketCategory) \
+        .filter(DbTicket.revoked == False) \
+        .filter(DbTicketCategory.party_id == party_id) \
+        .count()
+
+
 def count_seats_for_party(party_id: PartyID) -> int:
     """Return the number of seats in seating areas for that party."""
     return DbSeat.query \
         .join(DbArea) \
         .filter(DbArea.party_id == party_id) \
         .count()
+
+
+def get_seat_utilization(party_id: PartyID) -> SeatUtilization:
+    """Return how many seats of how many in total are occupied."""
+    occupied_seat_count = count_occupied_seats_for_party(party_id)
+    total_seat_count = count_seats_for_party(party_id)
+
+    return SeatUtilization(occupied_seat_count, total_seat_count)
 
 
 def get_seat_total_per_area(party_id: PartyID) -> Dict[AreaID, int]:
