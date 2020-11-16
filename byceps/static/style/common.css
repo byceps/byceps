@@ -558,6 +558,7 @@ button.button[disabled],
 
 .dropdown-toggle {
   cursor: pointer;
+  text-decoration: none;
 }
 
 .dropdown-toggle:focus {
