@@ -1,3 +1,45 @@
 <div class="sidebar-section">
+  <h3>Tickets</h3>
+
+  {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
+    {%- with sold_out = tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
+
+      {%- if tickets_total_max_specified %}
+  <div class="progress">
+    <div class="progress-bar" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
+  </div>
+
+        {%- if not sold_out %}
+  <div><strong>Ausverkauft!</strong></div>
+        {%- endif %}
+      {%- endif %}
+
+  {{ ticket_sale_stats.tickets_sold|separate_thousands }}
+        {%- if tickets_total_max_specified %}
+  / {{ ticket_sale_stats.tickets_max|separate_thousands }}
+        {%- endif %}
+  <br>Tickets bezahlt
+
+    {%- if not sold_out %}
+  <p><a class="button color-primary" style="font-size: 0.875rem;" href="/shop/order">Tickets bestellen</a></p>
+    {%- endif %}
+
+    {%- endwith %}
+  {%- endwith %}
+</div>
+
+<div class="sidebar-section">
+  <h3>Sitzplätze</h3>
+
+  <div class="progress">
+    <div class="progress-bar" style="width: calc(100% * {{ seat_utilization.occupied }} / {{ seat_utilization.total }});"></div>
+  </div>
+
+  {{ seat_utilization.occupied|separate_thousands }}
+  / {{ seat_utilization.total|separate_thousands }}
+  <br>Sitzplätze belegt
+</div>
+
+<div class="sidebar-section">
   <h3>Sponsoren</h3>
 </div>
