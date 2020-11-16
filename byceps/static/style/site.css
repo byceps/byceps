@@ -34,6 +34,10 @@ h2 {
 
 /* news */
 
+.news-items {
+  --news-item-divider-color: #cccccc;
+}
+
 .news-item {
   -webkit-hyphens: auto;
   hyphens: auto;
@@ -51,7 +55,7 @@ h2 {
 
 .news-items .news-item,
 .news-items .pagination {
-  border-top: #cccccc solid 1px;
+  border-top: var(--news-item-divider-color) solid 1px;
   margin: 20px 0 0;
   padding: 20px 0 0;
 }
