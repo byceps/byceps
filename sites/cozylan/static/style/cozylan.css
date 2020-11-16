@@ -1,0 +1,201 @@
+:root {
+  --border-color: #c4a777;
+}
+
+body {
+  background-color: #eee6bb;
+  color: #222;
+}
+
+a {
+  color: #664422;
+}
+
+
+/* page layout */
+
+:root {
+  --page-gutter: 2rem;
+}
+
+.page {
+  display: grid;
+  gap: var(--page-gutter);
+  grid-template:
+    "header" auto
+    "body"   1fr
+    "footer" auto;
+  height: 100vh;
+}
+
+.page-body-grid {
+  display: grid;
+  gap: var(--page-gutter);
+  grid-template:
+    "sidebar-left"  auto
+    "main"          auto
+    "sidebar-right" auto
+    ;
+}
+
+.page-header {
+  grid-area: header;
+}
+
+.page-body {
+  grid-area: body;
+}
+
+.page-sidebar-left {
+  grid-area: sidebar-left;
+}
+
+.page-main {
+  grid-area: main;
+}
+
+.page-sidebar-right {
+  grid-area: sidebar-right;
+}
+
+.page-footer {
+  grid-area: footer;
+}
+
+.container {
+  padding-left: var(--page-gutter);
+  padding-right: var(--page-gutter);
+}
+
+@media (min-width: 1200px) {
+
+  .page-body-grid {
+    grid-template: "sidebar-left main sidebar-right" auto / auto 1fr auto;
+  }
+
+  .container {
+    --container-max-width: 1200px;
+    max-width: var(--container-max-width);
+    width: var(--container-max-width);
+  }
+
+}
+
+
+/* header */
+
+.page-header-inner {
+  border-bottom: var(--border-color) solid 1px;
+  font-size: 0.75rem; /* 12px / 16px */
+  padding-bottom: 1rem;
+  padding-top: 1rem;
+}
+
+.brand-logo {
+  background: url(cozylan-logo.svg) 0 0 / contain no-repeat;
+  display: block;
+  height: 64px;
+  width: 160px;
+}
+
+.brand-logo span {
+  position: absolute;
+  left: -9999px;
+  top: -9999px;
+}
+
+.brand-slogan {
+  font-size: 1.125rem; /* 18px / 16px */
+  font-weight: bold;
+  margin-left: 1rem;
+}
+
+.current-user .label-and-name .label {
+  display: block;
+  font-size: 0.6875rem; /* 11px / 16px */
+  opacity: 0.5;
+}
+
+.current-user .label-and-name .name {
+  color: currentColor;
+  display: block;
+  font-size: 1.0625rem; /* 17px / 16px */
+  font-weight: bold;
+  line-height: 1;
+  text-decoration: none;
+}
+
+
+/* sidebars */
+
+.sidebar-section + .sidebar-section {
+  margin-top: 2rem;
+}
+
+.sidebar-section h3 {
+  font-size: 1.125rem; /* 18px / 16px */
+  margin-bottom: 1rem;
+  margin-top: 0;
+}
+
+
+/* left sidebar */
+
+.page-sidebar-left {
+  font-size: 0.875rem; /* 14px / 16px */
+  width: 160px;
+}
+
+
+/* right sidebar */
+
+.page-sidebar-right {
+  font-size: 0.875rem; /* 14px / 16px */
+  width: 160px;
+}
+
+
+/* main navigation */
+
+.nav-main {
+  border-color: var(--border-color);
+  border-style: solid;
+  border-width: 1px 1px 0 1px;
+  border-radius: 3px;
+  width: 150px;
+}
+
+.nav-main-item {
+  border-bottom: var(--border-color) solid 1px;
+  color: currentColor;
+  display: block;
+  padding: 0.25rem 0.5rem;
+  text-decoration: none;
+}
+
+.nav-main-item:hover,
+.nav-main-item.current {
+  background-color: #c4a777;
+}
+
+
+/* footer */
+
+.page-footer-inner {
+  border-top: var(--border-color) solid 1px;
+  font-size: 0.8125rem; /* 13px / 16px */
+  padding-bottom: 2rem;
+  padding-top: 1rem;
+  text-align: center;
+}
+
+.page-footer-inner a:not(:hover) {
+  text-decoration: none;
+}
+
+
+/* content */
+
+main h1 {
+  margin-top: 0;
+}

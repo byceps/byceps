@@ -6,134 +6,8 @@ body {
   line-height: 1.4;
 }
 
-
-/* layout */
-
-@media (min-width: 60rem) { /* 960px / 16px */
-
-  .container {
-    max-width: 960px;
-    width: 960px;
-  }
-
-}
-
-@media (min-width: 36rem) { /* 576px / 16px */
-
-  #page {
-    padding: 0 20px;
-  }
-
-}
-
-#page-grid {
-  display: flex;
-  margin: -20px 0 0 -20px;
-}
-
-#page-grid-main,
-#page-grid-sidebar {
-  padding: 20px 0 0 20px;
-}
-
-#page-grid-main {
-  flex: 1;
-}
-
-#page-grid-sidebar {
-  flex: 0 0 auto;
-}
-
 main {
   font-size: 0.875rem; /* 14px / 16px */
-  padding: 10px 20px 20px 20px;
-}
-
-@media (min-width: 36rem) { /* 576px / 16px */
-
-  main {
-    padding: 20px 40px 40px 40px;
-  }
-
-}
-
-
-/* top bar */
-
-#topbar-body {
-  align-items: center;
-  display: flex;
-  flex-direction: row-reverse;
-  font-size: 0.75rem; /* 12px / 16px */
-  height: 2.5rem;
-  justify-content: space-between;
-  padding: 0 25px;
-}
-
-#topbar .current-user .label-and-name .label {
-  display: block;
-  font-size: 0.6875rem; /* 11px / 16px */
-  opacity: 0.5;
-}
-
-#topbar .current-user .label-and-name .name {
-  color: currentColor;
-  display: block;
-  font-size: 1.0625rem; /* 17px / 16px */
-  font-weight: bold;
-  line-height: 1;
-  text-decoration: none;
-}
-
-
-/* sidebar */
-
-#sidebar {
-  display: flex;
-  flex-direction: column;
-  margin: -20px 0 0 -20px;
-}
-
-#sidebar section {
-  flex: 1 0 auto;
-  font-size: 0.75rem; /* 12px / 16px */
-  margin: 20px 0 0 20px;
-  padding: 20px 0;
-}
-
-#sidebar section h1 {
-  font-size: 1rem; /* 16 px */
-  font-weight: bold;
-  margin: 0 0 20px 0;
-  padding: 0 20px;
-}
-
-
-/* main navigation */
-
-nav.main ol {
-  width: 100%;
-}
-
-nav.main li {
-  display: block;
-  margin: 0;
-  padding: 0;
-}
-
-nav.main a {
-  color: currentColor;
-  display: block;
-  line-height: 1.5;
-  padding: 0 20px;
-}
-
-nav.main a:not(:hover) {
-  text-decoration: none;
-}
-
-nav.main .current a {
-  font-weight: bold;
 }
 
 
@@ -776,16 +650,6 @@ table.index td.bignumber {
 }
 
 
-/* footer */
-
-#footer {
-  display: block;
-  font-size: 0.8125rem; /* 13px / 16px */
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-
 /* print view */
 
 @media print {
@@ -800,11 +664,6 @@ table.index td.bignumber {
   .container {
     max-width: none;
     width: auto;
-  }
-
-  nav.top,
-  #sidebar {
-    display: none;
   }
 
   main {

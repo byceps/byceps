@@ -1,5 +1,5 @@
 {%- macro render_nav_item(url, label, nav_item_id) -%}
-<li{% if current_page == nav_item_id %} class="current"{% endif %}><a href="{{ url }}">{{ label }}</a></li>
+<li><a class="nav-main-item{% if nav_item_id == current_page %} current{% endif %}" href="{{ url }}">{{ label }}</a></li>
 {%- endmacro -%}
 
 {%- set navigation_items = [
@@ -14,8 +14,7 @@
 ] -%}
 
 <section>
-  <h1>Informationen</h1>
-  <nav class="main">
+  <nav class="nav-main">
     <ol>
       {%- for endpoint, label, id in navigation_items %}
       {{ render_nav_item(url_for(endpoint), label, id) }}
