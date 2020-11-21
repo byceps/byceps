@@ -5,7 +5,7 @@
 
 from decimal import Decimal
 
-from byceps.services.shop.article.models.article import Article as DbArticle
+from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.cart.models import Cart
 
 
@@ -33,16 +33,19 @@ def test_cart_filled_repr():
 
 
 def create_article(item_number, description, price, tax_rate):
-    shop_id = 'leshop'
-    total_quantity = 99
-    max_quantity_per_order = 10
-
-    return DbArticle(
-        shop_id,
-        item_number,
-        description,
-        price,
-        tax_rate,
-        total_quantity,
-        max_quantity_per_order,
+    return Article(
+        id='00000000-0000-0000-0000-000000000001',
+        shop_id='any-shop',
+        item_number=item_number,
+        description=description,
+        price=price,
+        tax_rate=tax_rate,
+        available_from=None,
+        available_until=None,
+        total_quantity=99,
+        quantity=1,
+        max_quantity_per_order=10,
+        not_directly_orderable=False,
+        requires_separate_order=False,
+        shipping_required=False,
     )
