@@ -3,14 +3,15 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 from byceps.services.shop.order.models.order import Order as DbOrder
 from byceps.services.shop.order.service import _build_order
 from byceps.services.shop.order.transfer.models import OrderNumber, PaymentState
 from byceps.services.user.models.user import User as DbUser
+from byceps.services.user.models.detail import UserDetail as DbUserDetail
 
 from tests.integration.services.shop.helpers import create_orderer
-
-from testfixtures.user import create_user_with_detail
 
 
 def test_is_open():
@@ -63,7 +64,7 @@ def test_is_canceled_after_paid():
 def create_order_with_payment_state(payment_state: PaymentState) -> DbOrder:
     shop_id = 'shop-123'
     order_number = 'AEC-03-B00074'
-    placed_by = create_user_with_detail()
+    placed_by = create_user()
     orderer = create_orderer(placed_by)
     created_at = None
 
@@ -71,3 +72,23 @@ def create_order_with_payment_state(payment_state: PaymentState) -> DbOrder:
     order.payment_state = payment_state
 
     return order
+
+
+def create_user(
+    screen_name='Faith',
+    *,
+    first_names='John Joseph',
+    last_name='Doe',
+    country='State of Mind',
+    zip_code='31337',
+    city='Atrocity',
+    street='Elite Street 1337',
+):
+    created_at = datetime.utcnow()
+    screen_name = 'HerrDamit'
+    email_address = 'herr.damit@users.test'
+
+    user = DbUser(created_at, screen_name, email_address)
+    detail = DbUserDetail(user=user)
+
+    return user
