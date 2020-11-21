@@ -48,16 +48,15 @@ from byceps.services.verification_token.models import Purpose, Token
     ],
 )
 def test_is_expired(purpose, now, expected):
-    user_id = UUID('b57acf68-c258-4b0a-9f00-bb989b36de8a')
-    created_at = datetime(2014, 11, 26, 17, 44, 53)
-
-    token = create_verification_token(user_id, purpose, created_at)
+    token = create_verification_token(purpose)
 
     with freeze_time(now):
         assert token.is_expired == expected
 
 
-def create_verification_token(user_id, purpose, created_at):
+def create_verification_token(purpose):
+    user_id = UUID('b57acf68-c258-4b0a-9f00-bb989b36de8a')
+
     token = Token(user_id, purpose)
-    token.created_at = created_at
+    token.created_at = datetime(2014, 11, 26, 17, 44, 53)
     return token
