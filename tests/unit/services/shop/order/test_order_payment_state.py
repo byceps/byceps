@@ -4,9 +4,9 @@
 """
 
 from byceps.services.shop.order.models.order import Order as DbOrder
-from byceps.services.shop.order.transfer.models import PaymentState
+from byceps.services.shop.order.transfer.models import OrderNumber, PaymentState
+from byceps.services.user.models.user import User as DbUser
 
-from testfixtures.shop_order import create_order
 from testfixtures.user import create_user
 
 
@@ -58,12 +58,22 @@ def test_is_canceled_after_paid():
 
 
 def create_order_with_payment_state(payment_state: PaymentState) -> DbOrder:
-    user = create_user()
-
     shop_id = 'shop-123'
-    placed_by = user
+    order_number = 'AEC-03-B00074'
+    placed_by = create_user()
 
-    order = create_order(shop_id, placed_by)
+    order = DbOrder(
+        shop_id,
+        order_number,
+        placed_by.id,
+        placed_by.detail.first_names,
+        placed_by.detail.last_name,
+        placed_by.detail.country,
+        placed_by.detail.zip_code,
+        placed_by.detail.city,
+        placed_by.detail.street,
+    )
+
     order.payment_state = payment_state
 
     return order
