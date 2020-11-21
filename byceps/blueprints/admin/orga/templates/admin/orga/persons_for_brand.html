@@ -30,21 +30,21 @@
       <li><a href="{{ url_for('.persons') }}">{{ brand.title }}</a></li>
     </ol>
   </nav>
-  <h1>{{ title }} {{ render_extra_in_heading(orgas|length) }}</h1>
+  <h1>{{ title }} {{ render_extra_in_heading(orgas_with_birthdays|length) }}</h1>
 
   <div class="button-row button-row--right">
     {%- if g.current_user.has_permission(OrgaTeamPermission.administrate_memberships) %}
     <a class="button" href="{{ url_for('.create_orgaflag_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>Person zum Orga ernennen</span></a>
     {%- endif %}
 
-    {%- if orgas %}
+    {%- if orgas_with_birthdays %}
     <a class="button" href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} <span>Exportieren <small>{{ 'als Excel-CSV'|dim }}</small></span></a>
     {%- else %}
     <button class="button" disabled>{{ render_icon('download') }} <span>Exportieren <small>{{ 'als Excel-CSV'|dim }}</small></span></button>
     {%- endif %}
   </div>
 
-  {%- if orgas %}
+  {%- if orgas_with_birthdays %}
   <table class="index wide orgas">
     <thead>
       <tr>
@@ -63,16 +63,16 @@
       </tr>
     </thead>
     <tbody>
-      {%- for user in orgas %}
+      {%- for user, birthday in orgas_with_birthdays %}
       <tr>
         <td>{{ render_user_avatar_48(user) }}</td>
         <td>
           <strong>{{ render_user_admin_link(user) }}</strong><br>
           {{ user.detail.full_name|fallback }}<br>
-          {%- if user.detail.date_of_birth %}
+          {%- if birthday %}
             {{ render_icon('birthday') }}
-            {{ render_date(user.detail.date_of_birth) }}
-            ({{ user.detail.age }} Jahre)
+            {{ render_date(birthday.date_of_birth) }}
+            ({{ birthday.age }} Jahre)
           {%- else %}
             {{ (render_icon('birthday') ~ ' nicht angegeben')|dim }}
           {%- endif %}

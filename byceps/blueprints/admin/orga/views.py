@@ -6,11 +6,14 @@ byceps.blueprints.admin.orga.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Optional
+
 from flask import abort, g, request
 
 from ....services.brand import service as brand_service
-from ....services.orga import service as orga_service
 from ....services.orga import birthday_service as orga_birthday_service
+from ....services.orga import service as orga_service
+from ....services.orga.transfer.models import Birthday
 from ....services.user import service as user_service
 from ....util.export import serialize_to_csv
 from ....util.framework.blueprint import create_blueprint
@@ -57,10 +60,21 @@ def persons_for_brand(brand_id):
     orgas = orga_service.get_orgas_for_brand(brand.id)
     orgas.sort(key=user_service.get_sort_key_for_screen_name)
 
+    orgas_with_birthdays = [(user, _to_birthday(user)) for user in orgas]
+
     return {
         'brand': brand,
-        'orgas': orgas,
+        'orgas_with_birthdays': orgas_with_birthdays,
     }
+
+
+def _to_birthday(user) -> Optional[Birthday]:
+    dob = user.detail.date_of_birth
+
+    if dob is None:
+        return None
+
+    return Birthday(dob)
 
 
 @blueprint.route('/persons/<brand_id>/create')
