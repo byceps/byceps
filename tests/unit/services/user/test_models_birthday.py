@@ -8,7 +8,7 @@ from datetime import date
 from freezegun import freeze_time
 import pytest
 
-from testfixtures.user import create_user, create_user_with_detail
+from testfixtures.user import create_user_with_detail
 
 
 @pytest.mark.parametrize(
@@ -58,6 +58,6 @@ def test_is_birthday_today_without_date_of_birth():
 
 
 def _create_user_without_date_of_birth():
-    user = create_user()
+    user = create_user_with_detail(date_of_birth=None)
     assert user.detail.date_of_birth is None  # precondition
     return user
