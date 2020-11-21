@@ -7,23 +7,21 @@ tests.helpers
 """
 
 from contextlib import contextmanager
-from datetime import datetime
+from datetime import date, datetime
 
 from flask import appcontext_pushed, g
 
 from byceps.application import create_app
-from byceps.database import db
+from byceps.database import db, generate_uuid
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authz_service
 from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
+from byceps.services.user import creation_service as user_creation_service
 from byceps.services.user.creation_service import UserCreationFailed
-
-from testfixtures.user import (
-    create_user as _create_user,
-    create_user_with_detail as _create_user_with_detail,
-)
+from byceps.services.user.models.detail import UserDetail as DbUserDetail
+from byceps.services.user.models.user import User as DbUser
 
 from .base import CONFIG_FILENAME_TEST_SITE
 
@@ -58,21 +56,92 @@ def current_user_set(app, user):
         yield
 
 
-def create_user(*args, **kwargs):
-    user = _create_user(*args, **kwargs)
+def create_user(
+    screen_name='Faith',
+    *,
+    user_id=None,
+    created_at=None,
+    email_address=None,
+    email_address_verified=False,
+    initialized=True,
+    suspended=False,
+    deleted=False,
+    legacy_id=None,
+    _commit=True,
+) -> DbUser:
+    if not user_id:
+        user_id = generate_uuid()
 
-    db.session.add(user)
-    try:
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        raise UserCreationFailed(e)
+    if not created_at:
+        created_at = datetime.utcnow()
+
+    if not email_address:
+        email_address = f'user{user_id}@users.test'
+
+    user = user_creation_service.build_user(
+        created_at, screen_name, email_address
+    )
+
+    user.id = user_id
+    user.email_address_verified = email_address_verified
+    user.initialized = initialized
+    user.suspended = suspended
+    user.deleted = deleted
+    user.legacy_id = legacy_id
+
+    if _commit:
+        db.session.add(user)
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise UserCreationFailed(e)
 
     return user
 
 
-def create_user_with_detail(*args, **kwargs):
-    user = _create_user_with_detail(*args, **kwargs)
+DEFAULT_DATE_OF_BIRTH = date(1993, 2, 15)
+
+
+def create_user_with_detail(
+    screen_name='Faith',
+    *,
+    user_id=None,
+    email_address=None,
+    initialized=True,
+    suspended=False,
+    deleted=False,
+    legacy_id=None,
+    first_names='John Joseph',
+    last_name='Doe',
+    date_of_birth=DEFAULT_DATE_OF_BIRTH,
+    country='State of Mind',
+    zip_code='31337',
+    city='Atrocity',
+    street='Elite Street 1337',
+    phone_number='555-CALL-ME-MAYBE',
+) -> DbUser:
+    user = create_user(
+        screen_name,
+        user_id=user_id,
+        email_address=email_address,
+        initialized=initialized,
+        suspended=suspended,
+        deleted=deleted,
+        legacy_id=legacy_id,
+        _commit=False,
+    )
+
+    detail = DbUserDetail(user=user)
+
+    detail.first_names = first_names
+    detail.last_name = last_name
+    detail.date_of_birth = date_of_birth
+    detail.country = country
+    detail.zip_code = zip_code
+    detail.city = city
+    detail.street = street
+    detail.phone_number = phone_number
 
     db.session.add(user)
     try:
