@@ -6,13 +6,11 @@ byceps.services.user.models.detail
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import date
 from typing import Optional
 
 from sqlalchemy.ext.mutable import MutableDict
 
 from ....database import db
-from ....util.datetime.calc import calculate_age
 from ....util.instances import ReprBuilder
 
 
@@ -38,14 +36,6 @@ class UserDetail(db.Model):
     def full_name(self) -> Optional[str]:
         names = [self.first_names, self.last_name]
         return ' '.join(filter(None, names)) or None
-
-    @property
-    def age(self) -> Optional[int]:
-        """Return the user's current age."""
-        if self.date_of_birth is None:
-            return None
-
-        return calculate_age(self.date_of_birth, date.today())
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
