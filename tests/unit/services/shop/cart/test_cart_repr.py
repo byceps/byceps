@@ -5,7 +5,7 @@
 
 from decimal import Decimal
 
-from byceps.services.shop.article.transfer.models import Article
+from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.cart.models import Cart
 
 
@@ -32,7 +32,12 @@ def test_cart_filled_repr():
 # helpers
 
 
-def create_article(item_number, description, price, tax_rate):
+def create_article(
+    item_number: ArticleNumber,
+    description: str,
+    price: Decimal,
+    tax_rate: Decimal,
+) -> Article:
     return Article(
         id='00000000-0000-0000-0000-000000000001',
         shop_id='any-shop',

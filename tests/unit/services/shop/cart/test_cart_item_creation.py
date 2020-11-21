@@ -32,12 +32,12 @@ def test_init_with_negative_quantity():
 # helpers
 
 
-def create_item(quantity):
+def create_item(quantity: int) -> CartItem:
     article = create_article()
     return CartItem(article, quantity)
 
 
-def create_article():
+def create_article() -> Article:
     return Article(
         id='00000000-0000-0000-0000-000000000001',
         shop_id='any-shop',

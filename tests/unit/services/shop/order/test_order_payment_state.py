@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.services.shop.order.models.order import Order as DbOrder
 from byceps.services.shop.order.transfer.models import PaymentState
 
 from testfixtures.shop_order import create_order
@@ -56,7 +57,7 @@ def test_is_canceled_after_paid():
 # helpers
 
 
-def create_order_with_payment_state(payment_state):
+def create_order_with_payment_state(payment_state: PaymentState) -> DbOrder:
     user = create_user()
 
     shop_id = 'shop-123'

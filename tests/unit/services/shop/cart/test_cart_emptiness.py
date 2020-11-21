@@ -36,12 +36,12 @@ def test_is_empty_with_multiple_items():
 # helpers
 
 
-def add_item(cart, quantity):
+def add_item(cart: Cart, quantity: int) -> None:
     article = create_article()
     cart.add_item(article, quantity)
 
 
-def create_article():
+def create_article() -> Article:
     return Article(
         id='00000000-0000-0000-0000-000000000001',
         shop_id='any-shop',

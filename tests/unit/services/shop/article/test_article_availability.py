@@ -101,7 +101,9 @@ def test_is_available_without_start_and_without_end(now, expected):
         assert is_article_available_now(article) == expected
 
 
-def create_article(available_from, available_until):
+def create_article(
+    available_from: datetime, available_until: datetime
+) -> Article:
     return Article(
         id='00000000-0000-0000-0000-000000000001',
         shop_id='any-shop',
