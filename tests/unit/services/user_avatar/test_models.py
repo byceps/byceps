@@ -3,12 +3,12 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from uuid import UUID
+
 import pytest
 
 from byceps.services.user_avatar.models import Avatar
 from byceps.util.image.models import ImageType
-
-from testfixtures.user import create_user
 
 
 @pytest.mark.parametrize(
@@ -21,8 +21,7 @@ from testfixtures.user import create_user
     ],
 )
 def test_hybrid_image_type_getter(database_value, expected):
-    user = create_user()
-    avatar = create_avatar(user.id)
+    avatar = create_avatar()
 
     avatar._image_type = database_value
 
@@ -39,8 +38,7 @@ def test_hybrid_image_type_getter(database_value, expected):
     ],
 )
 def test_hybrid_image_type_setter(image_type, expected):
-    user = create_user()
-    avatar = create_avatar(user.id)
+    avatar = create_avatar()
 
     avatar.image_type = image_type
 
@@ -50,5 +48,6 @@ def test_hybrid_image_type_setter(image_type, expected):
 # helpers
 
 
-def create_avatar(creator_id):
+def create_avatar() -> Avatar:
+    creator_id = UUID('a96629ac-b17d-43d8-b93d-ec5a9fe9ba67')
     return Avatar(creator_id, ImageType.jpeg)

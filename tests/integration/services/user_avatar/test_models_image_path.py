@@ -11,8 +11,6 @@ import pytest
 from byceps.services.user_avatar.models import Avatar
 from byceps.util.image.models import ImageType
 
-from testfixtures.user import create_user
-
 from tests.helpers import app_context
 
 
@@ -34,9 +32,9 @@ from tests.helpers import app_context
     ],
 )
 def test_path(data_path, avatar_id, image_type, expected):
-    user = create_user()
+    user_id = UUID('dc4e11d5-0c43-42d9-add2-37e947f19e68')
 
-    avatar = create_avatar(user.id, avatar_id, image_type)
+    avatar = create_avatar(user_id, avatar_id, image_type)
 
     with app_context() as app:
         app.config['PATH_DATA'] = data_path

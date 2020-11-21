@@ -4,13 +4,12 @@
 """
 
 from datetime import datetime
+from uuid import UUID
 
 from freezegun import freeze_time
 import pytest
 
 from byceps.services.verification_token.models import Purpose, Token
-
-from testfixtures.user import create_user
 
 
 @pytest.mark.parametrize(
@@ -49,10 +48,10 @@ from testfixtures.user import create_user
     ],
 )
 def test_is_expired(purpose, now, expected):
-    user = create_user()
+    user_id = UUID('b57acf68-c258-4b0a-9f00-bb989b36de8a')
     created_at = datetime(2014, 11, 26, 17, 44, 53)
 
-    token = create_verification_token(user.id, purpose, created_at)
+    token = create_verification_token(user_id, purpose, created_at)
 
     with freeze_time(now):
         assert token.is_expired == expected

@@ -9,15 +9,12 @@ import pytest
 
 from byceps.services.ticketing.models.ticket import Ticket
 
-from testfixtures.user import create_user
-
 
 ANY_BUNDLE_ID = UUID('4138fcfb-cc18-45c0-aede-d49a8e279885')
 
 
-user1 = create_user('TicketUser1')
-user2 = create_user('TicketUser2')
-user3 = create_user('TicketUser3')
+user_id1 = UUID('388925a8-1f67-4506-9dde-63a9880139a6')
+user_id2 = UUID('cd9685fe-b503-41ce-a6e5-5a4762c29cbc')
 
 
 @pytest.mark.parametrize(
@@ -28,7 +25,7 @@ user3 = create_user('TicketUser3')
     ],
 )
 def test_belongs_to_bundle(bundle_id, expected):
-    ticket = create_ticket(user1.id, bundle_id=bundle_id)
+    ticket = create_ticket(user_id1, bundle_id=bundle_id)
 
     assert ticket.belongs_to_bundle == expected
 
@@ -36,19 +33,19 @@ def test_belongs_to_bundle(bundle_id, expected):
 @pytest.mark.parametrize(
     'owned_by_id, seat_managed_by_id, user_managed_by_id, user_id, expected',
     [
-        (user1.id, None    , None    , user1.id, True ),
-        (user1.id, user1.id, None    , user1.id, True ),
-        (user1.id, None    , user1.id, user1.id, True ),
-        (user1.id, user1.id, user1.id, user1.id, True ),
+        (user_id1, None    , None    , user_id1, True ),
+        (user_id1, user_id1, None    , user_id1, True ),
+        (user_id1, None    , user_id1, user_id1, True ),
+        (user_id1, user_id1, user_id1, user_id1, True ),
 
-        (user1.id, user2.id, None    , user1.id, True ),
-        (user1.id, None    , user2.id, user1.id, True ),
-        (user1.id, user2.id, user2.id, user1.id, False),  # all management rights waived
+        (user_id1, user_id2, None    , user_id1, True ),
+        (user_id1, None    , user_id2, user_id1, True ),
+        (user_id1, user_id2, user_id2, user_id1, False),  # all management rights waived
 
-        (user2.id, None    , None    , user1.id, False),
-        (user2.id, user1.id, None    , user1.id, True ),
-        (user2.id, None    , user1.id, user1.id, True ),
-        (user2.id, user1.id, user1.id, user1.id, True ),
+        (user_id2, None    , None    , user_id1, False),
+        (user_id2, user_id1, None    , user_id1, True ),
+        (user_id2, None    , user_id1, user_id1, True ),
+        (user_id2, user_id1, user_id1, user_id1, True ),
     ],
 )
 def test_is_managed_by(
@@ -66,14 +63,14 @@ def test_is_managed_by(
 @pytest.mark.parametrize(
     'owned_by_id, seat_managed_by_id, user_id, expected',
     [
-        (user1.id, None    , user1.id, True ),
-        (user1.id, user1.id, user1.id, True ),
+        (user_id1, None    , user_id1, True ),
+        (user_id1, user_id1, user_id1, True ),
 
-        (user1.id, None    , user1.id, True ),
-        (user1.id, user2.id, user1.id, False),  # management right waived
+        (user_id1, None    , user_id1, True ),
+        (user_id1, user_id2, user_id1, False),  # management right waived
 
-        (user2.id, None    , user1.id, False),
-        (user2.id, user1.id, user1.id, True ),
+        (user_id2, None    , user_id1, False),
+        (user_id2, user_id1, user_id1, True ),
     ],
 )
 def test_is_seat_managed_by(owned_by_id, seat_managed_by_id, user_id, expected):
@@ -85,14 +82,14 @@ def test_is_seat_managed_by(owned_by_id, seat_managed_by_id, user_id, expected):
 @pytest.mark.parametrize(
     'owned_by_id, user_managed_by_id, user_id, expected',
     [
-        (user1.id, None    , user1.id, True ),
-        (user1.id, user1.id, user1.id, True ),
+        (user_id1, None    , user_id1, True ),
+        (user_id1, user_id1, user_id1, True ),
 
-        (user1.id, None    , user1.id, True ),
-        (user1.id, user2.id, user1.id, False),  # management right waived
+        (user_id1, None    , user_id1, True ),
+        (user_id1, user_id2, user_id1, False),  # management right waived
 
-        (user2.id, None    , user1.id, False),
-        (user2.id, user1.id, user1.id, True ),
+        (user_id2, None    , user_id1, False),
+        (user_id2, user_id1, user_id1, True ),
     ],
 )
 def test_is_user_managed_by(owned_by_id, user_managed_by_id, user_id, expected):
