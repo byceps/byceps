@@ -6,8 +6,6 @@ byceps.blueprints.admin.orga.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from operator import attrgetter
-
 from flask import abort, g, request
 
 from ....services.brand import service as brand_service

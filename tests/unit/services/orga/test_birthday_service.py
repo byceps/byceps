@@ -12,8 +12,6 @@ from byceps.services.orga import birthday_service
 from byceps.services.orga.transfer.models import Birthday
 from byceps.services.user.transfer.models import User
 
-from testfixtures.user import create_user_with_detail
-
 
 @freeze_time('1994-09-30')
 def test_sort():
