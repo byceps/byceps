@@ -67,7 +67,7 @@ def send_request(api_client, api_client_authz_header, party_id, creator_id):
     url = f'/api/v1/tourney/avatars'
 
     headers = [api_client_authz_header]
-    with Path('testfixtures/images/image.png').open('rb') as image_file:
+    with Path('tests/fixtures/images/image.png').open('rb') as image_file:
         form_data = {
             'image': image_file,
             'party_id': party_id,

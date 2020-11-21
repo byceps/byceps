@@ -12,7 +12,7 @@ from byceps.util.image.models import Dimensions, ImageType
 from byceps.util.image.typeguess import guess_type
 
 
-IMAGES_PATH = Path('testfixtures/images')
+IMAGES_PATH = Path('tests/fixtures/images')
 
 
 @pytest.mark.parametrize(
