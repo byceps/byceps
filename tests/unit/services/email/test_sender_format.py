@@ -7,8 +7,6 @@ import pytest
 
 from byceps.services.email.transfer.models import Sender
 
-from testfixtures.user import create_user_with_detail
-
 
 @pytest.mark.parametrize(
     'address, name, expected',
