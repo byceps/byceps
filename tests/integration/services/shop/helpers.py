@@ -3,12 +3,16 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+from decimal import Decimal
+from typing import Optional
+
+from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.article import service as article_service
 from byceps.services.shop.shop import service as shop_service
+from byceps.services.shop.shop.transfer.models import ShopID
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
-
-from testfixtures.shop_article import create_article as _create_article
 
 from tests.helpers import DEFAULT_EMAIL_CONFIG_ID
 
@@ -25,15 +29,35 @@ def create_shop_fragment(shop_id, admin_id, name, body):
     return version.snippet_id
 
 
-def create_article(shop_id, **kwargs):
-    article = _create_article(shop_id, **kwargs)
+ANY_ARTICLE_ITEM_NUMBER = 'AEC-05-A00009'
+
+
+def create_article(
+    shop_id: ShopID,
+    *,
+    item_number: ArticleNumber = ANY_ARTICLE_ITEM_NUMBER,
+    description: str = 'Cool thing',
+    price: Optional[Decimal] = None,
+    tax_rate: Optional[Decimal] = None,
+    available_from: Optional[datetime] = None,
+    available_until: Optional[datetime] = None,
+    total_quantity: int = 1,
+    max_quantity_per_order: int = 10,
+) -> Article:
+    if price is None:
+        price = Decimal('24.95')
+
+    if tax_rate is None:
+        tax_rate = Decimal('0.19')
+
+    quantity = total_quantity
 
     return article_service.create_article(
         shop_id,
-        article.item_number,
-        article.description,
-        article.price,
-        article.tax_rate,
-        article.total_quantity,
-        article.max_quantity_per_order,
+        item_number,
+        description,
+        price,
+        tax_rate,
+        total_quantity,
+        max_quantity_per_order,
     )
