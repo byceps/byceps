@@ -17,11 +17,12 @@ from ..user.models.user import User as DbUser
 from ..user.transfer.models import User
 
 from .models import OrgaFlag as DbOrgaFlag
+from .transfer.models import Birthday
 
 
 def collect_orgas_with_next_birthdays(
     *, limit: Optional[int] = None
-) -> Iterator[Tuple[User, DbUserDetail]]:
+) -> Iterator[Tuple[User, Birthday]]:
     """Yield the next birthdays of organizers, sorted by month and day."""
     orgas_with_birthdays = _collect_orgas_with_known_birthdays()
 
@@ -34,7 +35,7 @@ def collect_orgas_with_next_birthdays(
 
 
 def _collect_orgas_with_known_birthdays() -> Iterator[
-    Tuple[User, DbUserDetail]
+    Tuple[User, Birthday]
 ]:
     """Return all organizers whose birthday is known."""
     users = DbUser.query \
@@ -62,16 +63,18 @@ def _collect_orgas_with_known_birthdays() -> Iterator[
             True,  # is_orga
         )
 
-        yield user_dto, user.detail
+        birthday = Birthday(user.detail.date_of_birth)
+
+        yield user_dto, birthday
 
 
 def sort_users_by_next_birthday(
-    users_and_details: Sequence[Tuple[User, DbUserDetail]]
-) -> Sequence[Tuple[User, DbUserDetail]]:
+    users_and_birthdays: Sequence[Tuple[User, Birthday]]
+) -> Sequence[Tuple[User, Birthday]]:
     return sorted(
-        users_and_details,
-        key=lambda user_and_detail: (
-            user_and_detail[1].days_until_next_birthday,
-            -user_and_detail[1].age,
+        users_and_birthdays,
+        key=lambda user_and_birthday: (
+            user_and_birthday[1].days_until_next_birthday,
+            -user_and_birthday[1].age,
         ),
     )

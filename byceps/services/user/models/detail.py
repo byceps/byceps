@@ -12,8 +12,7 @@ from typing import Optional
 from sqlalchemy.ext.mutable import MutableDict
 
 from ....database import db
-from ....util.datetime.calc import calculate_age, calculate_days_until
-from ....util.datetime.monthday import MonthDay
+from ....util.datetime.calc import calculate_age
 from ....util.instances import ReprBuilder
 
 
@@ -47,22 +46,6 @@ class UserDetail(db.Model):
             return None
 
         return calculate_age(self.date_of_birth, date.today())
-
-    @property
-    def days_until_next_birthday(self) -> Optional[int]:
-        """Return the number of days until the user's next birthday."""
-        if self.date_of_birth is None:
-            return None
-
-        return calculate_days_until(self.date_of_birth, date.today())
-
-    @property
-    def is_birthday_today(self) -> Optional[bool]:
-        """Return `True` if today is the user's birthday."""
-        if self.date_of_birth is None:
-            return None
-
-        return MonthDay.of(self.date_of_birth).matches(date.today())
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
