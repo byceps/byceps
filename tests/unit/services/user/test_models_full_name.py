@@ -3,9 +3,12 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import datetime
+
 import pytest
 
-from testfixtures.user import create_user_with_detail
+from byceps.services.user.models.user import User as DbUser
+from byceps.services.user.models.detail import UserDetail as DbUserDetail
 
 
 @pytest.mark.parametrize(
@@ -18,6 +21,20 @@ from testfixtures.user import create_user_with_detail
     ],
 )
 def test_full_name(first_names, last_name, expected):
-    user = create_user_with_detail(first_names=first_names, last_name=last_name)
+    user = create_user(first_names, last_name)
 
     assert user.detail.full_name == expected
+
+
+def create_user(first_names: str, last_name: str) -> DbUser:
+    created_at = datetime.utcnow()
+    screen_name = 'Anyone'
+    email_address = 'anyone@example.test'
+
+    user = DbUser(created_at, screen_name, email_address)
+
+    detail = DbUserDetail(user=user)
+    detail.first_names = first_names
+    detail.last_name = last_name
+
+    return user
