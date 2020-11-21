@@ -12,7 +12,7 @@ from byceps.services.shop.order.transfer.models import (
 )
 from byceps.util.iterables import find
 
-from testfixtures.shop_order import create_orderer
+from tests.integration.services.shop.helpers import create_orderer
 
 
 @pytest.fixture(scope='module')

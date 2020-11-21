@@ -9,10 +9,12 @@ from typing import Optional
 
 from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.article import service as article_service
+from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.shop.transfer.models import ShopID
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
+from byceps.services.user.transfer.models import UserWithDetail
 
 from tests.helpers import DEFAULT_EMAIL_CONFIG_ID
 
@@ -60,4 +62,16 @@ def create_article(
         tax_rate,
         total_quantity,
         max_quantity_per_order,
+    )
+
+
+def create_orderer(user: UserWithDetail) -> Orderer:
+    return Orderer(
+        user.id,
+        user.detail.first_names,
+        user.detail.last_name,
+        user.detail.country,
+        user.detail.zip_code,
+        user.detail.city,
+        user.detail.street,
     )

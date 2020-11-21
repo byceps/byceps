@@ -10,9 +10,10 @@ from byceps.services.ticketing import (
     category_service as ticket_category_service,
 )
 
-from testfixtures.shop_order import create_orderer
-
-from tests.integration.services.shop.helpers import create_article
+from tests.integration.services.shop.helpers import (
+    create_article,
+    create_orderer,
+)
 
 
 @pytest.fixture

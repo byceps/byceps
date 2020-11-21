@@ -16,11 +16,11 @@ from byceps.services.shop.order.transfer.models import (
     PaymentMethod,
     PaymentState,
 )
-from testfixtures.shop_order import create_orderer
 
 from tests.helpers import login_user
 from tests.integration.services.shop.helpers import (
     create_article as _create_article,
+    create_orderer,
 )
 
 

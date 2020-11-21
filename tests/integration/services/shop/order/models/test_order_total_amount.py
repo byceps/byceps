@@ -11,10 +11,9 @@ from byceps.services.shop.article import service as article_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
 
-from testfixtures.shop_order import create_orderer
-
 from tests.integration.services.shop.helpers import (
     create_article as _create_article,
+    create_orderer,
 )
 
 

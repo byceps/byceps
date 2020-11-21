@@ -16,10 +16,9 @@ from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
 
-from testfixtures.shop_order import create_orderer
-
 from tests.helpers import create_site, http_client, login_user
 from tests.integration.services.shop.helpers import (
+    create_orderer,
     create_shop,
     create_shop_fragment,
 )

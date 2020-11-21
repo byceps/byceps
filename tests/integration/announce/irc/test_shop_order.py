@@ -17,7 +17,7 @@ from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.signals import shop as shop_signals
 
-from testfixtures.shop_order import create_orderer
+from tests.integration.services.shop.helpers import create_orderer
 
 from .helpers import (
     assert_submitted_data,

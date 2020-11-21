@@ -13,9 +13,10 @@ from byceps.services.shop.order.models.order import Order as DbOrder
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import PaymentState
 
-from testfixtures.shop_order import create_orderer
-
-from tests.integration.services.shop.helpers import create_article
+from tests.integration.services.shop.helpers import (
+    create_article,
+    create_orderer,
+)
 
 
 @pytest.fixture
