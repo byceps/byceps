@@ -20,23 +20,25 @@ def test_sort():
     born1992 = create_user(date(1992, 11, 14))
     born1994 = create_user(date(1994,  9, 30))
 
-    users = [
-        born1994,
-        born1992,
-        born1985,
-        born1991,
-        born1987,
+    users_and_details = [
+        (born1994, born1994.detail),
+        (born1992, born1992.detail),
+        (born1985, born1985.detail),
+        (born1991, born1991.detail),
+        (born1987, born1987.detail),
     ]
 
     expected = [
-        born1994,
-        born1987,
-        born1991,
-        born1992,
-        born1985,
+        (born1994, born1994.detail),
+        (born1987, born1987.detail),
+        (born1991, born1991.detail),
+        (born1992, born1992.detail),
+        (born1985, born1985.detail),
     ]
 
-    actual = list(birthday_service.sort_users_by_next_birthday(users))
+    actual = list(
+        birthday_service.sort_users_by_next_birthday(users_and_details)
+    )
     assert actual == expected
 
 

@@ -23,22 +23,34 @@ def collect_orgas_with_next_birthdays(
     *, limit: Optional[int] = None
 ) -> Iterator[Tuple[User, DbUserDetail]]:
     """Yield the next birthdays of organizers, sorted by month and day."""
-    orgas_with_birthdays = _collect_orgas_with_birthdays()
+    orgas_with_birthdays = _collect_orgas_with_known_birthdays()
 
     sorted_orgas = sort_users_by_next_birthday(orgas_with_birthdays)
 
     if limit is not None:
         sorted_orgas = list(islice(sorted_orgas, limit))
 
-    orgas = sorted_orgas
+    return sorted_orgas
 
-    user_ids = {user.id for user in orgas}
+
+def _collect_orgas_with_known_birthdays() -> Iterator[
+    Tuple[User, DbUserDetail]
+]:
+    """Return all organizers whose birthday is known."""
+    users = DbUser.query \
+        .join(DbOrgaFlag) \
+        .join(DbUserDetail) \
+        .filter(DbUserDetail.date_of_birth != None) \
+        .options(db.joinedload('detail')) \
+        .all()
+
+    user_ids = {user.id for user in users}
 
     avatar_urls_by_user_id = user_avatar_service.get_avatar_urls_for_users(
         user_ids
     )
 
-    for user in orgas:
+    for user in users:
         avatar_url = avatar_urls_by_user_id.get(user.id)
 
         user_dto = User(
@@ -53,21 +65,13 @@ def collect_orgas_with_next_birthdays(
         yield user_dto, user.detail
 
 
-def _collect_orgas_with_birthdays() -> Sequence[DbUser]:
-    """Return all organizers whose birthday is known."""
-    return DbUser.query \
-        .join(DbOrgaFlag) \
-        .join(DbUserDetail) \
-        .filter(DbUserDetail.date_of_birth != None) \
-        .options(db.joinedload('detail')) \
-        .all()
-
-
-def sort_users_by_next_birthday(users: Sequence[DbUser]) -> Sequence[DbUser]:
+def sort_users_by_next_birthday(
+    users_and_details: Sequence[Tuple[User, DbUserDetail]]
+) -> Sequence[Tuple[User, DbUserDetail]]:
     return sorted(
-        users,
-        key=lambda user: (
-            user.detail.days_until_next_birthday,
-            -user.detail.age,
+        users_and_details,
+        key=lambda user_and_detail: (
+            user_and_detail[1].days_until_next_birthday,
+            -user_and_detail[1].age,
         ),
     )
