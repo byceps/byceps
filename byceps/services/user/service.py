@@ -265,7 +265,7 @@ def _db_entity_to_user_detail(detail: DbUserDetail) -> UserDetail:
     )
 
 
-def _db_entity_to_user_with_detail(user: DbUser) -> User:
+def _db_entity_to_user_with_detail(user: DbUser) -> UserWithDetail:
     user_dto = _db_entity_to_user(user)
     detail_dto = _db_entity_to_user_detail(user.detail)
 
