@@ -4,10 +4,13 @@
 """
 
 from byceps.services.shop.order.models.order import Order as DbOrder
+from byceps.services.shop.order.service import _build_order
 from byceps.services.shop.order.transfer.models import OrderNumber, PaymentState
 from byceps.services.user.models.user import User as DbUser
 
-from testfixtures.user import create_user
+from tests.integration.services.shop.helpers import create_orderer
+
+from testfixtures.user import create_user_with_detail
 
 
 def test_is_open():
@@ -60,20 +63,11 @@ def test_is_canceled_after_paid():
 def create_order_with_payment_state(payment_state: PaymentState) -> DbOrder:
     shop_id = 'shop-123'
     order_number = 'AEC-03-B00074'
-    placed_by = create_user()
+    placed_by = create_user_with_detail()
+    orderer = create_orderer(placed_by)
+    created_at = None
 
-    order = DbOrder(
-        shop_id,
-        order_number,
-        placed_by.id,
-        placed_by.detail.first_names,
-        placed_by.detail.last_name,
-        placed_by.detail.country,
-        placed_by.detail.zip_code,
-        placed_by.detail.city,
-        placed_by.detail.street,
-    )
-
+    order = _build_order(shop_id, order_number, orderer, created_at)
     order.payment_state = payment_state
 
     return order
