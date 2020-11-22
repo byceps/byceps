@@ -12,8 +12,10 @@ import click
 
 from byceps.database import db
 from byceps.services.authentication.password.models import Credential
-from byceps.services.authentication.session.models.session_token import (
+from byceps.services.authentication.session.models.recent_login import (
     RecentLogin,
+)
+from byceps.services.authentication.session.models.session_token import (
     SessionToken,
 )
 from byceps.services.authorization.models import UserRole
