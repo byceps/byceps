@@ -5,6 +5,8 @@ various (but not all) traces from the database.
 
 Might fail for example if a user posted in a discussion board.
 
+Run script `clean_up_after_deleted_users.py` before this one.
+
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
@@ -60,15 +62,6 @@ def generate_delete_statements_for_users(
 
 def generate_delete_statements_for_user(user_id: UserID) -> Iterator[str]:
     for table, user_id_column in [
-        ('authn_credentials', 'user_id'),
-        ('authn_session_tokens', 'user_id'),
-        ('authz_user_roles', 'user_id'),
-        ('board_categories_lastviews', 'user_id'),
-        ('board_topics_lastviews', 'user_id'),
-        ('newsletter_subscription_updates', 'user_id'),
-        ('consents', 'user_id'),
-        ('verification_tokens', 'user_id'),
-        ('user_avatar_selections', 'user_id'),
         ('user_avatars', 'creator_id'),
         ('user_details', 'user_id'),
         ('user_events', 'user_id'),
