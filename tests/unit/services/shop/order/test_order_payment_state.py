@@ -6,12 +6,9 @@
 from datetime import datetime
 
 from byceps.services.shop.order.models.order import Order as DbOrder
+from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order.service import _build_order
 from byceps.services.shop.order.transfer.models import OrderNumber, PaymentState
-from byceps.services.user.models.user import User as DbUser
-from byceps.services.user.models.detail import UserDetail as DbUserDetail
-
-from tests.integration.services.shop.helpers import create_orderer
 
 
 def test_is_open():
@@ -64,8 +61,7 @@ def test_is_canceled_after_paid():
 def create_order_with_payment_state(payment_state: PaymentState) -> DbOrder:
     shop_id = 'shop-123'
     order_number = 'AEC-03-B00074'
-    placed_by = create_user()
-    orderer = create_orderer(placed_by)
+    orderer = create_orderer()
     created_at = None
 
     order = _build_order(shop_id, order_number, orderer, created_at)
@@ -74,21 +70,13 @@ def create_order_with_payment_state(payment_state: PaymentState) -> DbOrder:
     return order
 
 
-def create_user(
-    screen_name='Faith',
-    *,
-    first_names='John Joseph',
-    last_name='Doe',
-    country='State of Mind',
-    zip_code='31337',
-    city='Atrocity',
-    street='Elite Street 1337',
-):
-    created_at = datetime.utcnow()
-    screen_name = 'HerrDamit'
-    email_address = 'herr.damit@users.test'
-
-    user = DbUser(created_at, screen_name, email_address)
-    detail = DbUserDetail(user=user)
-
-    return user
+def create_orderer() -> Orderer:
+    return Orderer(
+        user_id='d8a9c61c-2286-41b3-85ae-7d9f7a2f3357',
+        first_names='John Joseph',
+        last_name='Doe',
+        country='State of Mind',
+        zip_code='31337',
+        city='Atrocity',
+        street='Elite Street 1337',
+    )
