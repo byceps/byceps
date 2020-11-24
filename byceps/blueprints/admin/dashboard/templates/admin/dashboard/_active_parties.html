@@ -1,25 +1,30 @@
 {% from 'macros/admin/brand.html' import render_brand_avatar %}
+{% from 'macros/admin/dashboard.html' import render_cell %}
 {% from 'macros/datetime.html' import render_date %}
 
 
-<h2>Aktive Partys</h2>
+<div class="dashboard-section-title">Aktive Partys</div>
+
+<div class="grid">
 
 {%- if active_parties %}
-<ol class="fancy-list">
   {%- for party in active_parties %}
-  <li>
-    <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}">
-      <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(party.brand, '32') }}</div>
-      <div class="item">{{ party.title }}</div>
-      <div class="supplement">{{ render_date(party.starts_at, smart=False) }}–{{ render_date(party.ends_at, smart=False) }}</div>
-    </a>
-  </li>
+    {%- call render_cell(href=url_for('admin_dashboard.view_party', party_id=party.id)) %}
+  <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(party.brand, '32') }}</div>
+  <div>{{ party.title }}</div>
+  <div class="supplement">{{ render_date(party.starts_at, smart=False) }}–{{ render_date(party.ends_at, smart=False) }}</div>
+    {%- endcall %}
   {%- endfor %}
-</ol>
 {%- else %}
-<p>{{ 'keine aktiven Partys'|dim }}</p>
+  {%- call render_cell() %}
+  <div style="display: grid; height: 100%; place-items: center;">{{ 'Keine aktiven Partys'|dim }}</div>
+  {%- endcall %}
 {%- endif %}
 
 {%- if brand|default %}
-<p style="float: right;"><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">alle Partys &rarr;</a></p>
+  {%- call render_cell(href=url_for('party_admin.index_for_brand', brand_id=brand.id)) %}
+  <div style="display: grid; height: 100%; place-items: center;">Alle Partys &rarr;</div>
+  {%- endcall %}
 {%- endif %}
+
+</div>

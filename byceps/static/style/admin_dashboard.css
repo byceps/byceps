@@ -1,7 +1,17 @@
+.dashboard-section-title {
+  color: #666666;
+  font-size: 0.75rem; /* 12px / 16px */
+  margin-bottom: 1rem;
+  margin-left: 0.5rem;
+  margin-top: 0;
+  text-transform: uppercase;
+}
+
 .grid {
   display: grid;
   gap: var(--inner-gutter);
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  margin-bottom: var(--inner-gutter);
 }
 
 .grid .cell.higher {
@@ -87,7 +97,7 @@
   border-color: #cccccc;
 }
 
-.fancy-list .supplement {
+.supplement {
   color: #999999;
   font-size: 0.6875rem; /* 11px / 16px */
   margin-top: 0.15rem;

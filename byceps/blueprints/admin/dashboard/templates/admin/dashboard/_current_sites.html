@@ -1,22 +1,27 @@
 {% from 'macros/admin/brand.html' import render_brand_avatar %}
+{% from 'macros/admin/dashboard.html' import render_cell %}
 
 
-<h2>Aktuelle Sites</h2>
+<div class="dashboard-section-title">Aktuelle Sites</div>
+
+<div class="grid">
 
 {%- if current_sites %}
-<ol class="fancy-list">
   {%- for site in current_sites|sort(attribute='title') %}
-  <li>
-    <a href="{{ url_for('site_admin.view', site_id=site.id) }}">
-      <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(site.brand, '32') }}</div>
-      <div class="item">{{ site.title }}</div>
-      <div class="supplement">{{ site.server_name }}</div>
-    </a>
-  </li>
+    {%- call render_cell(href=url_for('site_admin.view', site_id=site.id)) %}
+  <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(site.brand, '32') }}</div>
+  <div>{{ site.title }}</div>
+  <div class="supplement">{{ site.server_name }}</div>
+    {%- endcall %}
   {%- endfor %}
-</ol>
 {%- else %}
-<p>{{ 'keine aktuellen Sites'|dim }}</p>
+  {%- call render_cell() %}
+  <div style="display: grid; height: 100%; place-items: center;">{{ 'Keine aktuellen Sites'|dim }}</div>
+  {%- endcall %}
 {%- endif %}
 
-<p style="float: right;"><a href="{{ url_for('site_admin.index') }}">alle Sites &rarr;</a></p>
+{%- call render_cell(href=url_for('site_admin.index')) %}
+  <div style="display: grid; height: 100%; place-items: center;">Alle Sites &rarr;</div>
+{%- endcall %}
+
+</div>
