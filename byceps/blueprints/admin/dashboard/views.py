@@ -50,7 +50,12 @@ permission_registry.register_enum(AdminDashboardPermission)
 def view_global():
     """View dashboard for global entities."""
     current_sites = site_service.get_current_sites(include_brands=True)
+
     active_parties = party_service.get_active_parties(include_brands=True)
+    active_parties_with_ticket_stats = [
+        (party, ticket_service.get_ticket_sale_stats(party.id))
+        for party in active_parties
+    ]
 
     brands = brand_service.get_all_brands()
     party_count = party_service.count_parties()
@@ -73,7 +78,7 @@ def view_global():
 
     return {
         'current_sites': current_sites,
-        'active_parties': active_parties,
+        'active_parties_with_ticket_stats': active_parties_with_ticket_stats,
 
         'brands': brands,
         'party_count': party_count,
@@ -101,9 +106,14 @@ def view_brand(brand_id):
     current_sites = site_service.get_current_sites(
         brand_id=brand.id, include_brands=True
     )
+
     active_parties = party_service.get_active_parties(
         brand_id=brand.id, include_brands=True
     )
+    active_parties_with_ticket_stats = [
+        (party, ticket_service.get_ticket_sale_stats(party.id))
+        for party in active_parties
+    ]
 
     party_count = party_service.count_parties_for_brand(brand.id)
 
@@ -137,7 +147,7 @@ def view_brand(brand_id):
         'brand': brand,
 
         'current_sites': current_sites,
-        'active_parties': active_parties,
+        'active_parties_with_ticket_stats': active_parties_with_ticket_stats,
 
         'party_count': party_count,
 

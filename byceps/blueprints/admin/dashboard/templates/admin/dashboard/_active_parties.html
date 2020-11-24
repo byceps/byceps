@@ -1,18 +1,37 @@
 {% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% from 'macros/admin/dashboard.html' import render_cell %}
 {% from 'macros/datetime.html' import render_date %}
+{% from 'macros/misc.html' import render_tag %}
 
 
 <div class="dashboard-section-title">Aktive Partys</div>
 
 <div class="grid">
 
-{%- if active_parties %}
-  {%- for party in active_parties %}
+{%- if active_parties_with_ticket_stats %}
+  {%- for party, ticket_sale_stats in active_parties_with_ticket_stats %}
     {%- call render_cell(href=url_for('admin_dashboard.view_party', party_id=party.id)) %}
   <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(party.brand, '32') }}</div>
   <div>{{ party.title }}</div>
   <div class="supplement">{{ render_date(party.starts_at, smart=False) }}–{{ render_date(party.ends_at, smart=False) }}</div>
+
+      {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
+  <div class="progress" style="height: 0.25rem; margin-top: 1rem;">
+        {%- if tickets_total_max_specified %}
+    <div class="progress-bar color-success" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
+        {%- endif %}
+  </div>
+  <div style="color: #999999; font-size: 0.6875rem; text-align: right;">
+    <strong>{{ ticket_sale_stats.tickets_sold|separate_thousands }}</strong>
+    von
+    <strong>{{ ticket_sale_stats.tickets_max|separate_thousands if tickets_total_max_specified else '?' }}</strong>
+    Tickets verkauft
+        {%- if tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
+    <div class="centered">{{ render_tag('ausverkauft') }}</div>
+        {%- endif %}
+  </div>
+      {%- endwith %}
+
     {%- endcall %}
   {%- endfor %}
 {%- else %}
