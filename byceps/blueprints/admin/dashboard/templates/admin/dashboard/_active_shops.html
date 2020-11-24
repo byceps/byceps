@@ -1,0 +1,27 @@
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
+{% from 'macros/admin/dashboard.html' import render_cell %}
+{% from 'macros/datetime.html' import render_date %}
+{% from 'macros/misc.html' import render_tag %}
+
+
+<div class="dashboard-section-title">Aktive Shops</div>
+
+<div class="grid">
+
+{%- if active_shops %}
+  {%- for shop in active_shops %}
+    {%- call render_cell(href=url_for('shop_shop_admin.view', shop_id=shop.id)) %}
+  <div>{{ shop.title }}</div>
+    {%- endcall %}
+  {%- endfor %}
+{%- else %}
+  {%- call render_cell() %}
+  <div style="display: grid; height: 100%; place-items: center;">{{ 'Keine aktiven Shops'|dim }}</div>
+  {%- endcall %}
+{%- endif %}
+
+{%- call render_cell(href=url_for('shop_shop_admin.index')) %}
+  <div style="display: grid; height: 100%; place-items: center;">Alle Shops &rarr;</div>
+{%- endcall %}
+
+</div>
