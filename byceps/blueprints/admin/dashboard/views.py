@@ -24,6 +24,7 @@ from ....services.seating import (
     area_service as seating_area_service,
     seat_service,
 )
+from ....services.shop.order import service as shop_order_service
 from ....services.shop.shop import service as shop_service
 from ....services.site import service as site_service
 from ....services.ticketing import ticket_service
@@ -59,6 +60,10 @@ def view_global():
     ]
 
     active_shops = shop_service.get_active_shops()
+    active_shops_with_open_orders_counts = [
+        (shop, shop_order_service.count_open_orders(shop.id))
+        for shop in active_shops
+    ]
 
     brands = brand_service.get_all_brands()
     party_count = party_service.count_parties()
@@ -82,7 +87,7 @@ def view_global():
     return {
         'current_sites': current_sites,
         'active_parties_with_ticket_stats': active_parties_with_ticket_stats,
-        'active_shops': active_shops,
+        'active_shops_with_open_orders_counts': active_shops_with_open_orders_counts,
 
         'brands': brands,
         'party_count': party_count,

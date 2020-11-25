@@ -8,10 +8,13 @@
 
 <div class="grid">
 
-{%- if active_shops %}
-  {%- for shop in active_shops %}
+{%- if active_shops_with_open_orders_counts %}
+  {%- for shop, open_orders_count in active_shops_with_open_orders_counts %}
     {%- call render_cell(href=url_for('shop_shop_admin.view', shop_id=shop.id)) %}
   <div>{{ shop.title }}</div>
+      {%- if open_orders_count %}
+      <div style="font-size: 0.6875rem; margin-top: 1rem;"><strong style="color: #ee3322;">{{ open_orders_count }}</strong> offene Bestellungen</div>
+      {%- endif %}
     {%- endcall %}
   {%- endfor %}
 {%- else %}
