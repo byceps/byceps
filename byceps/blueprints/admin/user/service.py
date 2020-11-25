@@ -21,8 +21,11 @@ from ....services.shop.order import service as order_service
 from ....services.ticketing.models.ticket import Ticket as DbTicket
 from ....services.ticketing import attendance_service, ticket_service
 from ....services.user import event_service
-from ....services.user.models.detail import UserDetail
-from ....services.user.models.event import UserEvent, UserEventData
+from ....services.user.models.detail import UserDetail as DbUserDetail
+from ....services.user.models.event import (
+    UserEvent as DbUserEvent,
+    UserEventData,
+)
 from ....services.user.models.user import User as DbUser
 from ....services.user import service as user_service
 from ....services.user.transfer.models import User
@@ -85,13 +88,13 @@ def _filter_by_search_term(query, search_term):
     ilike_pattern = f'%{search_term}%'
 
     return query \
-        .join(UserDetail) \
+        .join(DbUserDetail) \
         .filter(
             db.or_(
                 DbUser.email_address.ilike(ilike_pattern),
                 DbUser.screen_name.ilike(ilike_pattern),
-                UserDetail.first_names.ilike(ilike_pattern),
-                UserDetail.last_name.ilike(ilike_pattern)
+                DbUserDetail.first_names.ilike(ilike_pattern),
+                DbUserDetail.last_name.ilike(ilike_pattern)
             )
         )
 
@@ -219,7 +222,7 @@ def get_events(user_id: UserID) -> Iterator[UserEventData]:
         yield data
 
 
-def _fake_avatar_update_events(user_id: UserID) -> Iterator[UserEvent]:
+def _fake_avatar_update_events(user_id: UserID) -> Iterator[DbUserEvent]:
     """Yield the user's avatar updates as volatile events."""
     avatar_updates = avatar_service.get_avatars_uploaded_by_user(user_id)
 
@@ -229,12 +232,12 @@ def _fake_avatar_update_events(user_id: UserID) -> Iterator[UserEvent]:
             'url_path': avatar_update.url_path,
         }
 
-        yield UserEvent(
+        yield DbUserEvent(
             avatar_update.occurred_at, 'user-avatar-updated', user_id, data
         )
 
 
-def _fake_consent_events(user_id: UserID) -> Iterator[UserEvent]:
+def _fake_consent_events(user_id: UserID) -> Iterator[DbUserEvent]:
     """Yield the user's consents as volatile events."""
     consents = consent_service.get_consents_by_user(user_id)
 
@@ -244,14 +247,14 @@ def _fake_consent_events(user_id: UserID) -> Iterator[UserEvent]:
             'subject_title': consent.subject.title,
         }
 
-        yield UserEvent(
+        yield DbUserEvent(
             consent.expressed_at, 'consent-expressed', user_id, data
         )
 
 
 def _fake_newsletter_subscription_update_events(
     user_id: UserID,
-) -> Iterator[UserEvent]:
+) -> Iterator[DbUserEvent]:
     """Yield the user's newsletter subscription updates as volatile events."""
     lists = newsletter_service.get_all_lists()
     lists_by_id = {list_.id: list_ for list_ in lists}
@@ -268,10 +271,10 @@ def _fake_newsletter_subscription_update_events(
             'initiator_id': str(user_id),
         }
 
-        yield UserEvent(update.expressed_at, event_type, user_id, data)
+        yield DbUserEvent(update.expressed_at, event_type, user_id, data)
 
 
-def _fake_order_events(user_id: UserID) -> Iterator[UserEvent]:
+def _fake_order_events(user_id: UserID) -> Iterator[DbUserEvent]:
     """Yield the orders placed by the user as volatile events."""
     orders = order_service.get_orders_placed_by_user(user_id)
 
@@ -281,11 +284,11 @@ def _fake_order_events(user_id: UserID) -> Iterator[UserEvent]:
             'order': order,
         }
 
-        yield UserEvent(order.created_at, 'order-placed', user_id, data)
+        yield DbUserEvent(order.created_at, 'order-placed', user_id, data)
 
 
 def _get_additional_data(
-    event: UserEvent, users_by_id: Dict[str, User]
+    event: DbUserEvent, users_by_id: Dict[str, User]
 ) -> Iterator[Tuple[str, Any]]:
     if event.event_type in {
         'user-created',
@@ -328,7 +331,7 @@ def _get_additional_data(
 
 
 def _get_additional_data_for_user_initiated_event(
-    event: UserEvent, users_by_id: Dict[str, User]
+    event: DbUserEvent, users_by_id: Dict[str, User]
 ) -> Iterator[Tuple[str, Any]]:
     initiator_id = event.data.get('initiator_id')
     if initiator_id is not None:
