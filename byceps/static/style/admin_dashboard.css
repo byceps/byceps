@@ -22,10 +22,11 @@
   grid-column: span 2;
 }
 
-.grid .cell a {
+.grid .cell a:not(.disguised) {
   color: currentColor;
   text-decoration: none;
 }
+
 .grid .cell a:hover .box {
   background-color: #f4f4f4;
 }
