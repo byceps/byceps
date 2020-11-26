@@ -68,8 +68,6 @@ def view_global():
     brands = brand_service.get_all_brands()
     party_count = party_service.count_parties()
 
-    orga_count = orga_service.count_orgas()
-
     user_count = user_stats_service.count_users()
 
     one_week_ago = timedelta(days=7)
@@ -91,8 +89,6 @@ def view_global():
 
         'brands': brands,
         'party_count': party_count,
-
-        'orga_count': orga_count,
 
         'user_count': user_count,
         'recent_users': recent_users,

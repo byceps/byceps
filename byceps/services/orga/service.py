@@ -41,14 +41,6 @@ def get_orgas_for_brand(brand_id: BrandID) -> Sequence[DbUser]:
         .all()
 
 
-def count_orgas() -> int:
-    """Return the number of organizers with the organizer flag set."""
-    return DbUser.query \
-        .distinct(DbUser.id) \
-        .join(DbOrgaFlag) \
-        .count()
-
-
 def count_orgas_for_brand(brand_id: BrandID) -> int:
     """Return the number of organizers with the organizer flag set for
     that brand.
