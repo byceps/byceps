@@ -69,6 +69,7 @@ def view(shop_id):
 def create_form(erroneous_form=None):
     """Show form to create a shop."""
     form = erroneous_form if erroneous_form else CreateForm()
+    form.set_brand_choices()
     form.set_email_config_choices()
 
     return {
@@ -81,16 +82,18 @@ def create_form(erroneous_form=None):
 def create():
     """Create a shop."""
     form = CreateForm(request.form)
+    form.set_brand_choices()
     form.set_email_config_choices()
 
     if not form.validate():
         return create_form(form)
 
     shop_id = form.id.data.strip().lower()
+    brand_id = form.brand_id.data
     title = form.title.data.strip()
     email_config_id = form.email_config_id.data
 
-    shop = shop_service.create_shop(shop_id, title, email_config_id)
+    shop = shop_service.create_shop(shop_id, brand_id, title, email_config_id)
 
     flash_success(f'Der Shop "{shop.title}" wurde angelegt.')
     return redirect_to('.index')

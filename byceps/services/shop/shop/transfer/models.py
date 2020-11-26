@@ -9,6 +9,8 @@ byceps.services.shop.shop.transfer.models
 from dataclasses import dataclass
 from typing import Any, Dict, NewType
 
+from .....typing import BrandID
+
 
 ShopID = NewType('ShopID', str)
 
@@ -16,6 +18,7 @@ ShopID = NewType('ShopID', str)
 @dataclass(frozen=True)
 class Shop:
     id: ShopID
+    brand_id: BrandID
     title: str
     email_config_id: str
     archived: bool

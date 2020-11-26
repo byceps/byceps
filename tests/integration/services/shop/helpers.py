@@ -19,8 +19,10 @@ from byceps.services.user.transfer.models import UserWithDetail
 from tests.helpers import DEFAULT_EMAIL_CONFIG_ID
 
 
-def create_shop(shop_id='shop-1', email_config_id=DEFAULT_EMAIL_CONFIG_ID):
-    return shop_service.create_shop(shop_id, shop_id, email_config_id)
+def create_shop(
+    shop_id='shop-1', brand_id=None, email_config_id=DEFAULT_EMAIL_CONFIG_ID
+):
+    return shop_service.create_shop(shop_id, brand_id, shop_id, email_config_id)
 
 
 def create_shop_fragment(shop_id, admin_id, name, body):

@@ -38,8 +38,8 @@ COMMON_FORM_DATA = {
 
 
 @pytest.fixture
-def shop(email_config, admin_user):
-    shop = create_shop('shop-1')
+def shop(brand, email_config, admin_user):
+    shop = create_shop('shop-1', brand.id)
     snippet_id = create_shop_fragment(
         shop.id, admin_user.id, 'payment_instructions', 'Send all ur moneyz!'
     )
