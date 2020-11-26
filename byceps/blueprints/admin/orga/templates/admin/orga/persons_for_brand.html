@@ -1,4 +1,4 @@
-{% extends 'layout/admin/orga.html' %}
+{% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/user.html' import render_user_admin_link %}
 {% from 'macros/datetime.html' import render_date %}
@@ -6,7 +6,6 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_48 %}
 {% set current_page = 'orga_admin' %}
 {% set current_page_brand = brand %}
-{% set current_tab = 'persons' %}
 {% set title = 'Organisatoren' %}
 
 {% block head %}

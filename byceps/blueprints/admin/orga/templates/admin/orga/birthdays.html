@@ -1,10 +1,9 @@
-{% extends 'layout/admin/orga.html' %}
+{% extends 'layout/admin/base.html' %}
 {% from 'macros/admin/orga.html' import render_random_age_adjective, render_relative_days_until, render_time_element %}
 {% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
 {% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'orga_admin.birthdays' %}
-{% set current_tab = 'birthdays' %}
 {% set title = 'Die nächsten Geburtstage' %}
 
 {% block head %}
