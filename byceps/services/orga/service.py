@@ -6,7 +6,7 @@ byceps.services.orga.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Dict, Iterator, Optional, Sequence, Tuple
+from typing import Dict, Optional, Sequence
 
 from ...database import db
 from ...typing import BrandID, UserID
@@ -17,17 +17,6 @@ from ..user import event_service as user_event_service
 from ..user.models.user import User as DbUser
 
 from .models import OrgaFlag as DbOrgaFlag
-
-
-def get_brands_with_person_counts() -> Iterator[Tuple[DbBrand, int]]:
-    """Yield (brand, person count) pairs."""
-    brands = brand_service.get_all_brands()
-
-    person_counts_by_brand_id = get_person_count_by_brand_id()
-
-    for brand in brands:
-        person_count = person_counts_by_brand_id[brand.id]
-        yield brand, person_count
 
 
 def get_person_count_by_brand_id() -> Dict[BrandID, int]:

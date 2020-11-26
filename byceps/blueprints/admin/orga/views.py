@@ -38,18 +38,6 @@ permission_registry.register_enum(OrgaDetailPermission)
 permission_registry.register_enum(OrgaTeamPermission)
 
 
-@blueprint.route('/persons')
-@permission_required(OrgaDetailPermission.view)
-@templated
-def persons():
-    """List brands to choose from."""
-    brands_with_person_counts = orga_service.get_brands_with_person_counts()
-
-    return {
-        'brands_with_person_counts': brands_with_person_counts,
-    }
-
-
 @blueprint.route('/persons/<brand_id>')
 @permission_required(OrgaDetailPermission.view)
 @templated

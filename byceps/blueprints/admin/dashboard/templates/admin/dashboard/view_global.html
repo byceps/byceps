@@ -23,7 +23,7 @@
 {%- include 'admin/dashboard/_brands.html' %}
     {%- endcall %}
     {{ render_bigstats_cell(party_count, 'Partys', href=url_for('party_admin.index'), icon_name='date') }}
-    {{ render_bigstats_cell(orga_count, 'Organisatoren', href=url_for('orga_admin.persons'), icon_name='users') }}
+    {{ render_bigstats_cell(orga_count, 'Organisatoren', icon_name='users') }}
     {{ render_bigstats_cell(user_count|separate_thousands, 'Benutzer', href=url_for('user_admin.index'), icon_name='users') }}
     {{ render_bigstats_cell(recent_users_count, 'neue Benutzer in den letzten 7 Tagen', href=url_for('user_admin.index'), icon_name='users', color='#008800') }}
     {{ render_bigstats_cell(uninitialized_user_count, 'noch nicht aktivierte Benutzer', href=url_for('user_admin.index', only='uninitialized'), icon_name='users', color='#1199ff') }}

@@ -24,11 +24,6 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.persons') }}">{{ brand.title }}</a></li>
-    </ol>
-  </nav>
   <h1>{{ title }} {{ render_extra_in_heading(orgas_with_birthdays|length) }}</h1>
 
   <div class="button-row button-row--right">
