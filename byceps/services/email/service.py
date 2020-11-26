@@ -12,6 +12,7 @@ from sqlalchemy.exc import IntegrityError
 
 from ...database import db, upsert
 from ... import email
+from ...typing import BrandID
 from ...util.jobqueue import enqueue
 
 from .models import EmailConfig as DbEmailConfig
@@ -24,6 +25,7 @@ class UnknownEmailConfigId(ValueError):
 
 def create_config(
     config_id: str,
+    brand_id: BrandID,
     sender_address: str,
     *,
     sender_name: Optional[str] = None,
@@ -32,6 +34,7 @@ def create_config(
     """Create a configuration."""
     config = DbEmailConfig(
         config_id,
+        brand_id,
         sender_address,
         sender_name=sender_name,
         contact_address=contact_address,
@@ -111,6 +114,7 @@ def get_config(config_id: str) -> EmailConfig:
 
 def set_config(
     config_id: str,
+    brand_id: BrandID,
     sender_address: str,
     *,
     sender_name: Optional[str] = None,
@@ -120,6 +124,7 @@ def set_config(
     table = DbEmailConfig.__table__
     identifier = {
         'id': config_id,
+        'brand_id': brand_id,
         'sender_address': sender_address,
     }
     replacement = {
@@ -168,6 +173,7 @@ def _db_entity_to_config(config: DbEmailConfig) -> EmailConfig:
 
     return EmailConfig(
         config.id,
+        config.brand_id,
         sender,
         config.contact_address,
     )

@@ -6,10 +6,12 @@
 import byceps.services.email.service as email_service
 
 
-def test_delete_config(email_admin_client):
+def test_delete_config(email_admin_client, brand):
     config_id = 'kann-weg'
 
-    assert email_service.create_config(config_id, 'noreply@acme.example')
+    assert email_service.create_config(
+        config_id, brand.id, 'noreply@acme.example'
+    )
     assert email_service.find_config(config_id) is not None
 
     url = f'/admin/email/configs/{config_id}'

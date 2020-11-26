@@ -10,6 +10,8 @@ from dataclasses import dataclass
 from email.utils import formataddr
 from typing import List
 
+from ....typing import BrandID
+
 
 @dataclass(frozen=True)
 class Sender:
@@ -25,6 +27,7 @@ class Sender:
 @dataclass(frozen=True)
 class EmailConfig:
     id: str
+    brand_id: BrandID
     sender: Sender
     contact_address: str
 

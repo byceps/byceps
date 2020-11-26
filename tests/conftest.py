@@ -20,6 +20,7 @@ from byceps.services.user import (
     command_service as user_command_service,
     service as user_service,
 )
+from byceps.typing import BrandID
 
 from tests.base import create_admin_app, create_site_app
 from tests.database import set_up_database, tear_down_database
@@ -190,9 +191,12 @@ def deleted_user(make_user):
 
 
 @pytest.fixture(scope='session')
-def make_email_config(admin_app):
+def make_email_config(admin_app, brand):
+    configs = []
+
     def _wrapper(
         config_id: str,
+        brand_id: BrandID,
         sender_address: str,
         *,
         sender_name: Optional[str] = None,
@@ -200,20 +204,28 @@ def make_email_config(admin_app):
     ):
         email_service.set_config(
             config_id,
+            brand_id,
             sender_address,
             sender_name=sender_name,
             contact_address=contact_address,
         )
 
-        return email_service.get_config(config_id)
+        config = email_service.get_config(config_id)
+        configs.append(config)
 
-    return _wrapper
+        return config
+
+    yield _wrapper
+
+    for config in configs:
+        email_service.delete_config(config.id)
 
 
+# Dependency on `brand` avoids error on clean up.
 @pytest.fixture(scope='session')
-def email_config(make_email_config):
+def email_config(make_email_config, brand):
     return make_email_config(
-        DEFAULT_EMAIL_CONFIG_ID, sender_address='noreply@acmecon.test'
+        DEFAULT_EMAIL_CONFIG_ID, brand.id, sender_address='noreply@acmecon.test'
     )
 
 

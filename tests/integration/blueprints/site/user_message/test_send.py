@@ -16,9 +16,11 @@ from tests.helpers import create_site, http_client, login_user
 def site1(brand, make_email_config):
     email_config = make_email_config(
         'acme-noreply',
+        brand.id,
         sender_address='noreply@acmecon.test',
         sender_name='ACME Entertainment Convention',
     )
+
     site = create_site(
         'acmecon-website-1',
         brand.id,
@@ -26,7 +28,9 @@ def site1(brand, make_email_config):
         server_name='www1.acmecon.test',
         email_config_id=email_config.id,
     )
+
     yield site
+
     site_service.delete_site(site.id)
 
 
@@ -34,10 +38,12 @@ def site1(brand, make_email_config):
 def site2(brand, make_email_config):
     email_config = make_email_config(
         'acme-noreply-with-contact-address',
+        brand.id,
         sender_address='noreply@acmecon.test',
         sender_name='ACME Entertainment Convention',
         contact_address='help@acmecon.test',
     )
+
     site = create_site(
         'acmecon-website-2',
         brand.id,
@@ -45,7 +51,9 @@ def site2(brand, make_email_config):
         server_name='www2.acmecon.test',
         email_config_id=email_config.id,
     )
+
     yield site
+
     site_service.delete_site(site.id)
 
 

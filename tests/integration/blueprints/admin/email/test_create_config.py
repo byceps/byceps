@@ -6,13 +6,14 @@
 import byceps.services.email.service as email_service
 
 
-def test_create_minimal_config(email_admin_client):
+def test_create_minimal_config(email_admin_client, brand):
     config_id = 'acme-minimal'
     assert email_service.find_config(config_id) is None
 
     url = '/admin/email/configs'
     form_data = {
         'config_id': config_id,
+        'brand_id': brand.id,
         'sender_address': 'noreply@acme.example',
     }
     response = email_admin_client.post(url, data=form_data)
@@ -20,6 +21,7 @@ def test_create_minimal_config(email_admin_client):
     config = email_service.find_config(config_id)
     assert config is not None
     assert config.id == config_id
+    assert config.brand_id == brand.id
     assert config.sender is not None
     assert config.sender.address == 'noreply@acme.example'
     assert config.sender.name is None
@@ -29,13 +31,14 @@ def test_create_minimal_config(email_admin_client):
     email_service.delete_config(config_id)
 
 
-def test_create_full_config(email_admin_client):
+def test_create_full_config(email_admin_client, brand):
     config_id = 'acme-full'
     assert email_service.find_config(config_id) is None
 
     url = '/admin/email/configs'
     form_data = {
         'config_id': config_id,
+        'brand_id': brand.id,
         'sender_address': 'noreply@acme.example',
         'sender_name': 'ACME Corp.',
         'contact_address': 'info@acme.example',
@@ -45,6 +48,7 @@ def test_create_full_config(email_admin_client):
     config = email_service.find_config(config_id)
     assert config is not None
     assert config.id == config_id
+    assert config.brand_id == brand.id
     assert config.sender is not None
     assert config.sender.address == 'noreply@acme.example'
     assert config.sender.name == 'ACME Corp.'
