@@ -132,7 +132,7 @@ def _get_sender() -> Optional[Sender]:
         return None
 
     site = site_service.get_site(g.site_id)
-    email_config = email_service.get_config(site.email_config_id)
+    email_config = email_service.get_config_for_brand(site.brand_id)
     return email_config.sender
 
 

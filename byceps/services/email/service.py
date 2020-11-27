@@ -112,6 +112,22 @@ def get_config(config_id: str) -> EmailConfig:
     return config
 
 
+def get_config_for_brand(brand_id: BrandID) -> EmailConfig:
+    """Return the configuration for that brand, or raise an error if
+    none is configured for that brand ID.
+    """
+    config = DbEmailConfig.query \
+        .filter_by(brand_id=brand_id) \
+        .one_or_none()
+
+    if config is None:
+        raise UnknownEmailConfigId(
+            f'No e-mail config found for brand ID "{brand_id}"'
+        )
+
+    return _db_entity_to_config(config)
+
+
 def set_config(
     config_id: str,
     brand_id: BrandID,

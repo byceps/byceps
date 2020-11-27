@@ -80,7 +80,7 @@ def _assemble_message(
     site: Site,
 ) -> Message:
     """Assemble an email message with the rendered template as its body."""
-    email_config = email_service.get_config(site.email_config_id)
+    email_config = email_service.get_config_for_brand(site.brand_id)
 
     website_contact_address = email_config.contact_address
 
