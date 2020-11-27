@@ -13,7 +13,9 @@ from tests.helpers import create_site, http_client, login_user
 
 
 @pytest.fixture(scope='module')
-def site1(brand, make_email_config):
+def site1(make_brand, make_email_config):
+    brand = make_brand('acme-brand-1', 'ACME Brand 1')
+
     email_config = make_email_config(
         'acme-noreply',
         brand.id,
@@ -35,7 +37,9 @@ def site1(brand, make_email_config):
 
 
 @pytest.fixture(scope='module')
-def site2(brand, make_email_config):
+def site2(make_brand, make_email_config):
+    brand = make_brand('acme-brand-2', 'ACME Brand 2')
+
     email_config = make_email_config(
         'acme-noreply-with-contact-address',
         brand.id,

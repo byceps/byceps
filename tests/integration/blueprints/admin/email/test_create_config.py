@@ -6,7 +6,9 @@
 import byceps.services.email.service as email_service
 
 
-def test_create_minimal_config(email_admin_client, brand):
+def test_create_minimal_config(email_admin_client, make_brand):
+    brand = make_brand('acme-create-1', 'ACME create test 1')
+
     config_id = 'acme-minimal'
     assert email_service.find_config(config_id) is None
 
@@ -31,7 +33,9 @@ def test_create_minimal_config(email_admin_client, brand):
     email_service.delete_config(config_id)
 
 
-def test_create_full_config(email_admin_client, brand):
+def test_create_full_config(email_admin_client, make_brand):
+    brand = make_brand('acme-create-2', 'ACME create test 2')
+
     config_id = 'acme-full'
     assert email_service.find_config(config_id) is None
 

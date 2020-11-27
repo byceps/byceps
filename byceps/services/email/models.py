@@ -19,7 +19,7 @@ class EmailConfig(db.Model):
     __tablename__ = 'email_configs'
 
     id = db.Column(db.UnicodeText, primary_key=True)
-    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False)
+    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, unique=True, nullable=False)
     sender_address = db.Column(db.UnicodeText, nullable=False)
     sender_name = db.Column(db.UnicodeText, nullable=True)
     contact_address = db.Column(db.UnicodeText, nullable=True)

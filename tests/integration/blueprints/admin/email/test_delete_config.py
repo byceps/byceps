@@ -6,8 +6,10 @@
 import byceps.services.email.service as email_service
 
 
-def test_delete_config(email_admin_client, brand):
+def test_delete_config(email_admin_client, make_brand):
     config_id = 'kann-weg'
+
+    brand = make_brand('acme-delete', 'ACME deletion test')
 
     assert email_service.create_config(
         config_id, brand.id, 'noreply@acme.example'
