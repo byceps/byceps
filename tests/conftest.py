@@ -25,7 +25,6 @@ from byceps.typing import BrandID
 from tests.base import create_admin_app, create_site_app
 from tests.database import set_up_database, tear_down_database
 from tests.helpers import (
-    create_brand,
     create_party,
     create_permissions,
     create_role_with_permissions_assigned,
@@ -244,10 +243,23 @@ def site(email_config, party, board):
 
 
 @pytest.fixture(scope='session')
-def brand(admin_app):
-    brand = create_brand()
-    yield brand
-    brand_service.delete_brand(brand.id)
+def make_brand(admin_app):
+    brands = []
+
+    def _wrapper(brand_id, title):
+        brand = brand_service.create_brand(brand_id, title)
+        brands.append(brand)
+        return brand
+
+    yield _wrapper
+
+    for brand in brands:
+        brand_service.delete_brand(brand.id)
+
+
+@pytest.fixture(scope='session')
+def brand(make_brand):
+    return make_brand('acmecon', 'ACME Entertainment Convention')
 
 
 @pytest.fixture(scope='session')

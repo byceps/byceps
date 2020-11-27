@@ -15,7 +15,6 @@ from byceps.application import create_app
 from byceps.database import db, generate_uuid
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authz_service
-from byceps.services.brand import service as brand_service
 from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 from byceps.services.user import creation_service as user_creation_service
@@ -165,10 +164,6 @@ def create_role_with_permissions_assigned(role_id, permission_ids):
 
     for permission_id in permission_ids:
         authz_service.assign_permission_to_role(permission_id, role_id)
-
-
-def create_brand(brand_id='acmecon', title='ACME Entertainment Convention'):
-    return brand_service.create_brand(brand_id, title)
 
 
 def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014'):
