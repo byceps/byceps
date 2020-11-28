@@ -59,7 +59,7 @@
     {%- for item in items.items|sort(attribute='created_at', reverse=True) %}
       <tr>
         <td>
-          <a href="{{ url_for('.item_view', item_id=item.id) }}"><strong>{{ item.title }}</strong></a><br>
+          <a href="{{ url_for('.item_view', item_id=item.id) }}"><strong>{{ item.title|fallback('&lt;kein Titel&gt;') }}</strong></a><br>
           {{ item.slug|dim }}
         </td>
         <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title='Bild festgelegt') }}{% endif %}</td>
