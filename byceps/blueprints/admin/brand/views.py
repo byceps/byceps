@@ -24,7 +24,7 @@ from ...common.authorization.decorators import permission_required
 from ...common.authorization.registry import permission_registry
 
 from .authorization import BrandPermission
-from .forms import CreateForm, UpdateForm
+from .forms import CreateForm, EmailConfigUpdateForm, UpdateForm
 
 
 blueprint = create_blueprint('brand_admin', __name__)
@@ -135,6 +135,60 @@ def update(brand_id):
 
 
 # -------------------------------------------------------------------- #
+# email config
+
+
+@blueprint.route('/brands/<brand_id>/email_config/update')
+@permission_required(BrandPermission.update)
+@templated
+def email_config_update_form(brand_id, erroneous_form=None):
+    """Show form to update e-mail config."""
+    brand = _get_brand_or_404(brand_id)
+
+    config = _get_email_config_or_404(brand.id)
+
+    form = (
+        erroneous_form
+        if erroneous_form
+        else EmailConfigUpdateForm(
+            sender_address=config.sender.address,
+            sender_name=config.sender.name,
+            contact_address=config.contact_address,
+        )
+    )
+
+    return {
+        'brand': brand,
+        'config': config,
+        'form': form,
+    }
+
+
+@blueprint.route('/brands/<brand_id>/email_config', methods=['POST'])
+@permission_required(BrandPermission.update)
+def email_config_update(brand_id):
+    """Update e-mail config."""
+    brand = _get_brand_or_404(brand_id)
+
+    config = _get_email_config_or_404(brand.id)
+
+    form = EmailConfigUpdateForm(request.form)
+    if not form.validate():
+        return email_config_update_form(brand.id, form)
+
+    sender_address = form.sender_address.data.strip()
+    sender_name = form.sender_name.data.strip()
+    contact_address = form.contact_address.data.strip()
+
+    config = email_service.update_config(
+        config.id, sender_address, sender_name, contact_address
+    )
+
+    flash_success(f'Die E-Mail-Konfiguration wurde aktualisiert.')
+    return redirect_to('.view', brand_id=brand.id)
+
+
+# -------------------------------------------------------------------- #
 # helpers
 
 
@@ -145,3 +199,12 @@ def _get_brand_or_404(brand_id):
         abort(404)
 
     return brand
+
+
+def _get_email_config_or_404(brand_id):
+    config = email_service.find_config_for_brand(brand_id)
+
+    if config is None:
+        abort(404)
+
+    return config

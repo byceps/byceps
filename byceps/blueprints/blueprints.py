@@ -88,7 +88,6 @@ def _get_blueprints_admin() -> Iterator[BlueprintReg]:
         ('admin.consent',                   '/admin/consent'            ),
         ('admin.core',                      None                        ),
         ('admin.dashboard',                 '/admin/dashboard'          ),
-        ('admin.email',                     '/admin/email'              ),
         ('admin.news',                      '/admin/news'               ),
         ('admin.newsletter',                '/admin/newsletter'         ),
         ('admin.jobs',                      '/admin/jobs'               ),

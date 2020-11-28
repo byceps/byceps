@@ -1,0 +1,22 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'brand_admin' %}
+{% set current_page_brand = brand %}
+{% set title = 'E-Mail-Konfiguration bearbeiten' %}
+
+{% block body %}
+
+  <h1>{{ render_icon('edit') }} {{ title }}</h1>
+
+  <form action="{{ url_for('.email_config_update', brand_id=brand.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.sender_address, autofocus='autofocus') }}
+      {{ form_field(form.sender_name) }}
+      {{ form_field(form.contact_address) }}
+    {% endcall %}
+
+    {{ form_buttons('Speichern', cancel_url=url_for('.view', brand_id=brand.id)) }}
+  </form>
+
+{%- endblock %}

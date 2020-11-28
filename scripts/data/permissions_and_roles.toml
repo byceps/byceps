@@ -91,10 +91,6 @@ id = 'consent.administrate'
 title = 'Zustimmungen verwalten'
 
 [[permissions]]
-id = 'email_config.update'
-title = 'E-Mail-Konfigurationen bearbeiten'
-
-[[permissions]]
 id = 'jobs.view'
 title = 'Jobs anzeigen'
 
@@ -400,13 +396,6 @@ assigned_permissions = [
 id = 'consent_admin'
 title = 'Zustimmungen verwalten'
 assigned_permissions = ['consent.administrate']
-
-[[roles]]
-id = 'email_admin'
-title = 'E-Mail-Konfigurationen verwalten'
-assigned_permissions = [
-    'email_config.update',
-]
 
 [[roles]]
 id = 'jobs_admin'

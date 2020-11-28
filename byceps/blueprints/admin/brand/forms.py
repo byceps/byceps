@@ -22,3 +22,9 @@ class CreateForm(_BaseForm):
 
 class UpdateForm(_BaseForm):
     image_filename = StringField('Bild-Dateiname', validators=[Optional()])
+
+
+class EmailConfigUpdateForm(LocalizedForm):
+    sender_address = StringField('Absender-Adresse', validators=[InputRequired()])
+    sender_name = StringField('Absender-Name', validators=[Optional()])
+    contact_address = StringField('Kontaktadresse', validators=[Optional()])

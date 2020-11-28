@@ -53,10 +53,10 @@
     <div class="column-auto">
       <h2>E-Mail-Konfiguration</h2>
     </div>
-    {%- if email_config and g.current_user.has_permission(EmailConfigPermission.update) %}
+    {%- if email_config and g.current_user.has_permission(BrandPermission.update) %}
     <div class="column-auto">
       <div class="button-row button-row--right" style="margin-top: 2rem;">
-        <a class="button button--compact" href="{{ url_for('email_admin.update_form', config_id=email_config.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+        <a class="button button--compact" href="{{ url_for('.email_config_update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
       </div>
     </div>
     {%- endif %}

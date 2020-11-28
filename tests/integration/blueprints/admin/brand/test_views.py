@@ -50,3 +50,9 @@ def test_update_form(brand_admin_client, brand):
     url = f'/admin/brands/brands/{brand.id}/update'
     response = brand_admin_client.get(url)
     assert response.status_code == 200
+
+
+def test_email_config_update_form(brand_admin_client, email_config):
+    url = f'/admin/brands/brands/{email_config.brand_id}/email_config/update'
+    response = brand_admin_client.get(url)
+    assert response.status_code == 200
