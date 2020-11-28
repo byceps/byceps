@@ -39,7 +39,7 @@
         icon='snippet')
       .add_item(
         url_for('news_admin.channel_view', channel_id=site.news_channel_id) if site.news_channel_id else '',
-        'Newskanal',
+        'Newsposts',
         id='news_admin',
         required_permission=NewsItemPermission.view,
         precondition=site.news_channel_id is not none,
