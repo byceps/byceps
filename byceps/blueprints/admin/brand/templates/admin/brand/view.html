@@ -7,18 +7,23 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.index') }}">Marken</a></li>
-    </ol>
-  </nav>
-  <h1>{{ brand.title }}</h1>
-
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{{ url_for('.index') }}">Marken</a></li>
+        </ol>
+      </nav>
+      <h1>{{ brand.title }}</h1>
+    </div>
   {%- if g.current_user.has_permission(BrandPermission.update) %}
-  <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
-  </div>
+    <div class="column-auto">
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+      </div>
+    </div>
   {%- endif %}
+  </div>
 
   <table class="index">
     <tr>

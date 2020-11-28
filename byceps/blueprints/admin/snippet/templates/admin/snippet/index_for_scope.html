@@ -35,19 +35,24 @@
   </nav>
   <h1>{{ scope.type_ }}/{{ scope.name }}</h1>
 
-  <h2>Snippets {{ render_extra_in_heading(snippets|length) }}</h2>
-
-  {%- if g.current_user.has_permission(SnippetPermission.create) %}
-  <div class="button-row button-row--right">
-    <div class="dropdown">
-      <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Snippet erstellen</span> {{ render_icon('chevron-down') }}</button>
-      <ol class="dropdown-menu dropdown-menu--right">
-        <li><a class="dropdown-item" href="{{ url_for('.create_document_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-document') }} Dokument</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('.create_fragment_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-fragment') }} Fragment</a></li>
-      </ol>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h2>Snippets {{ render_extra_in_heading(snippets|length) }}</h2>
     </div>
-  </div>
+  {%- if g.current_user.has_permission(SnippetPermission.create) %}
+    <div class="column-auto">
+      <div class="button-row button-row--right">
+        <div class="dropdown">
+          <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Snippet erstellen</span> {{ render_icon('chevron-down') }}</button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            <li><a class="dropdown-item" href="{{ url_for('.create_document_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-document') }} Dokument</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.create_fragment_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-fragment') }} Fragment</a></li>
+          </ol>
+        </div>
+      </div>
+    </div>
   {%- endif %}
+  </div>
 
   {%- if snippets %}
   <table class="index wide">

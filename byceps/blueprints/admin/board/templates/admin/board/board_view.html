@@ -7,19 +7,24 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>Foren</li>
-      <li><a href="{{ url_for('.board_index_for_brand', brand_id=board_brand_id) }}">{{ brand.title }}</a></li>
-    </ol>
-  </nav>
-  <h1>{{ board_id }}</h1>
-
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <nav class="breadcrumbs">
+        <ol>
+          <li>Foren</li>
+          <li><a href="{{ url_for('.board_index_for_brand', brand_id=board_brand_id) }}">{{ brand.title }}</a></li>
+        </ol>
+      </nav>
+      <h1>{{ board_id }}</h1>
+    </div>
   {%- if g.current_user.has_permission(BoardCategoryPermission.create) %}
-  <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.category_create_form', board_id=board_id) }}">{{ render_icon('add') }} <span>Kategorie erstellen</span></a>
-  </div>
+    <div class="column-auto">
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.category_create_form', board_id=board_id) }}">{{ render_icon('add') }} <span>Kategorie erstellen</span></a>
+      </div>
+    </div>
   {%- endif %}
+  </div>
 
   {%- if categories %}
   <table class="index wide">

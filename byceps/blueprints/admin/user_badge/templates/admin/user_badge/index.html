@@ -16,13 +16,18 @@
 
 {% block body %}
 
-  <h1>Abzeichen {{ render_extra_in_heading(badges|length) }}</h1>
-
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h1>Abzeichen {{ render_extra_in_heading(badges|length) }}</h1>
+    </div>
   {%- if g.current_user.has_permission(UserBadgePermission.create) %}
-  <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Abzeichen erstellen</span></a>
-  </div>
+    <div class="column-auto">
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Abzeichen erstellen</span></a>
+      </div>
+    </div>
   {%- endif %}
+  </div>
 
   {%- if badges %}
   <table class="index wide badges">
