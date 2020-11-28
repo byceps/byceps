@@ -8,6 +8,7 @@ tests.helpers
 
 from contextlib import contextmanager
 from datetime import date, datetime
+from secrets import token_hex
 
 from flask import appcontext_pushed, g
 
@@ -23,6 +24,10 @@ from byceps.services.user.models.detail import UserDetail as DbUserDetail
 from byceps.services.user.models.user import User as DbUser
 
 from .base import CONFIG_FILENAME_TEST_SITE
+
+
+def generate_token() -> str:
+    return token_hex(4)
 
 
 @contextmanager

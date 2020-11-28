@@ -17,11 +17,18 @@ def editor(make_user):
 
 
 @pytest.fixture(scope='module')
+def brand(make_brand):
+    return make_brand()
+
+
+@pytest.fixture(scope='module')
 def channel(brand):
     channel_id = f'{brand.id}-test'
     url_prefix = 'https://www.acmecon.test/news/'
 
-    channel = news_channel_service.create_channel(brand.id, channel_id, url_prefix)
+    channel = news_channel_service.create_channel(
+        brand.id, channel_id, url_prefix
+    )
 
     yield channel
 
@@ -51,8 +58,11 @@ def news_item_without_image(channel, editor):
     news_service.delete_item(item.id)
 
 
-def test_image_url_with_image(news_item_with_image):
-    assert news_item_with_image.image_url_path == '/data/global/news_channels/acmecon-test/breaking.png'
+def test_image_url_with_image(news_item_with_image, brand):
+    assert (
+        news_item_with_image.image_url_path
+        == f'/data/global/news_channels/{brand.id}-test/breaking.png'
+    )
 
 
 def test_image_url_without_image(news_item_without_image):

@@ -31,6 +31,7 @@ from tests.helpers import (
     create_site,
     create_user,
     create_user_with_detail,
+    generate_token,
     http_client,
 )
 
@@ -241,7 +242,13 @@ def site(email_config, party, board):
 def make_brand(admin_app):
     brands = []
 
-    def _wrapper(brand_id, title):
+    def _wrapper(brand_id=None, title=None):
+        if brand_id is None:
+            brand_id = generate_token()
+
+        if title is None:
+            title = brand_id
+
         brand = brand_service.create_brand(brand_id, title)
         brands.append(brand)
         return brand
