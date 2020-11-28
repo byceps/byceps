@@ -24,6 +24,7 @@ from .....services.snippet import service as snippet_service
 from .....services.snippet.service import SnippetNotFound
 from .....services.snippet.transfer.models import Scope
 from .....services.user import service as user_service
+from .....typing import BrandID
 from .....util.money import format_euro_amount
 from .....util.templatefilters import utc_to_local_tz
 from .....util.templating import create_sandboxed_environment, load_template
@@ -34,7 +35,7 @@ from ...shop.transfer.models import ShopID
 @dataclass(frozen=True)
 class OrderEmailData:
     order: Order
-    email_config_id: str
+    brand_id: BrandID
     orderer_screen_name: str
     orderer_email_address: str
 
@@ -78,7 +79,7 @@ def _assemble_email_for_incoming_order_to_orderer(
         subject,
         template_name,
         template_context,
-        data.email_config_id,
+        data.brand_id,
         recipient_address,
     )
 
@@ -108,7 +109,7 @@ def _assemble_email_for_canceled_order_to_orderer(
         subject,
         template_name,
         template_context,
-        data.email_config_id,
+        data.brand_id,
         recipient_address,
     )
 
@@ -126,7 +127,7 @@ def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
         subject,
         template_name,
         template_context,
-        data.email_config_id,
+        data.brand_id,
         recipient_address,
     )
 
@@ -142,7 +143,7 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
 
     return OrderEmailData(
         order=order,
-        email_config_id=shop.email_config_id,
+        brand_id=shop.brand_id,
         orderer_screen_name=screen_name,
         orderer_email_address=email_address,
     )
@@ -170,23 +171,23 @@ def _assemble_email_to_orderer(
     subject: str,
     template_name: str,
     template_context: Dict[str, Any],
-    email_config_id: str,
+    brand_id: BrandID,
     recipient_address: str,
 ) -> Message:
     """Assemble an email message with the rendered template as its body."""
-    sender = _get_sender_address(email_config_id)
+    sender = _get_sender_address(brand_id)
     body = _render_template(template_name, **template_context)
     recipients = [recipient_address]
 
     return Message(sender, recipients, subject, body)
 
 
-def _get_sender_address(email_config_id: str) -> Optional[Sender]:
-    config = email_service.find_config(email_config_id)
+def _get_sender_address(brand_id: BrandID) -> Optional[Sender]:
+    config = email_service.find_config_for_brand(brand_id)
 
     if not config:
         current_app.logger.warning(
-            'No e-mail sender configured for ID "%s".', email_config_id
+            'No e-mail sender configured for brand ID "%s".', brand_id
         )
 
     return config.sender

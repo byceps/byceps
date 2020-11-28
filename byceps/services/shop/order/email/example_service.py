@@ -12,6 +12,7 @@ from typing import Optional
 
 from .....config import ConfigurationError
 from .....database import generate_uuid
+from .....typing import BrandID
 
 from ....email.transfer.models import Message
 
@@ -34,7 +35,7 @@ def build_example_placed_order_message_text(shop_id: ShopID) -> str:
 
     order = _build_order(shop.id, PaymentState.open, is_open=True)
 
-    data = _build_email_data(order, shop.email_config_id)
+    data = _build_email_data(order, shop.brand_id)
 
     try:
         message = shop_order_email_service._assemble_email_for_incoming_order_to_orderer(
@@ -52,7 +53,7 @@ def build_example_paid_order_message_text(shop_id: ShopID) -> str:
 
     order = _build_order(shop.id, PaymentState.paid, is_paid=True)
 
-    data = _build_email_data(order, shop.email_config_id)
+    data = _build_email_data(order, shop.brand_id)
 
     try:
         message = (
@@ -77,7 +78,7 @@ def build_example_canceled_order_message_text(shop_id: ShopID) -> str:
         cancelation_reason='Kein fristgerechter Geldeingang feststellbar.',
     )
 
-    data = _build_email_data(order, shop.email_config_id)
+    data = _build_email_data(order, shop.brand_id)
 
     try:
         message = shop_order_email_service._assemble_email_for_canceled_order_to_orderer(
@@ -135,10 +136,10 @@ def _build_order(
     )
 
 
-def _build_email_data(order: Order, email_config_id: str) -> OrderEmailData:
+def _build_email_data(order: Order, brand_id: BrandID) -> OrderEmailData:
     return OrderEmailData(
         order=order,
-        email_config_id=email_config_id,
+        brand_id=brand_id,
         orderer_screen_name='Besteller',
         orderer_email_address='besteller@example.com',
     )
