@@ -207,7 +207,7 @@ def make_email_config(admin_app, brand):
             contact_address=contact_address,
         )
 
-        config = email_service.get_config_for_brand(brand_id)
+        config = email_service.get_config(brand_id)
         configs.append(config)
 
         return config

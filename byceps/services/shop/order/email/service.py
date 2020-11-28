@@ -183,7 +183,7 @@ def _assemble_email_to_orderer(
 
 
 def _get_sender_address(brand_id: BrandID) -> Optional[Sender]:
-    config = email_service.find_config_for_brand(brand_id)
+    config = email_service.find_config(brand_id)
 
     if not config:
         current_app.logger.warning(

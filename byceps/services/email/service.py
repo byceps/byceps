@@ -51,7 +51,7 @@ def update_config(
     contact_address: Optional[str],
 ) -> EmailConfig:
     """Update a configuration."""
-    config = _find_db_config_for_brand(brand_id)
+    config = _find_db_config(brand_id)
 
     if config is None:
         raise UnknownEmailConfigId(
@@ -75,7 +75,7 @@ def delete_config(brand_id: BrandID) -> bool:
 
     Return `True` on success, or `False` if an error occurred.
     """
-    get_config_for_brand(brand_id)  # Verify ID exists.
+    get_config(brand_id)  # Verify ID exists.
 
     try:
         db.session.query(DbEmailConfig) \
@@ -90,15 +90,15 @@ def delete_config(brand_id: BrandID) -> bool:
     return True
 
 
-def _find_db_config_for_brand(brand_id: BrandID) -> Optional[DbEmailConfig]:
+def _find_db_config(brand_id: BrandID) -> Optional[DbEmailConfig]:
     return DbEmailConfig.query \
         .filter_by(brand_id=brand_id) \
         .one_or_none()
 
 
-def find_config_for_brand(brand_id: BrandID) -> Optional[EmailConfig]:
-    """Return the configuration for that brand, or `None` if not found."""
-    config = _find_db_config_for_brand(brand_id)
+def find_config(brand_id: BrandID) -> Optional[EmailConfig]:
+    """Return the configuration, or `None` if not found."""
+    config = _find_db_config(brand_id)
 
     if config is None:
         return None
@@ -106,11 +106,11 @@ def find_config_for_brand(brand_id: BrandID) -> Optional[EmailConfig]:
     return _db_entity_to_config(config)
 
 
-def get_config_for_brand(brand_id: BrandID) -> EmailConfig:
-    """Return the configuration for that brand, or raise an error if
-    none is configured for that brand ID.
+def get_config(brand_id: BrandID) -> EmailConfig:
+    """Return the configuration, or raise an error if none is configured
+    for that brand.
     """
-    config = find_config_for_brand(brand_id)
+    config = find_config(brand_id)
 
     if config is None:
         raise UnknownEmailConfigId(

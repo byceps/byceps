@@ -33,7 +33,7 @@ def send_email_address_confirmation_email(
 ) -> None:
     site = site_service.get_site(site_id)
 
-    email_config = email_service.get_config_for_brand(site.brand_id)
+    email_config = email_service.get_config(site.brand_id)
     sender = email_config.sender
 
     verification_token = verification_token_service.create_for_email_address_confirmation(

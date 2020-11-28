@@ -59,7 +59,7 @@ def view(brand_id):
     brand = _get_brand_or_404(brand_id)
 
     settings = brand_settings_service.get_settings(brand.id)
-    email_config = email_service.find_config_for_brand(brand.id)
+    email_config = email_service.find_config(brand.id)
 
     return {
         'brand': brand,
@@ -202,7 +202,7 @@ def _get_brand_or_404(brand_id):
 
 
 def _get_email_config_or_404(brand_id):
-    config = email_service.find_config_for_brand(brand_id)
+    config = email_service.find_config(brand_id)
 
     if config is None:
         abort(404)
