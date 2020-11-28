@@ -26,7 +26,7 @@ from tests.integration.services.shop.helpers import (
 
 @pytest.fixture
 def shop1(admin_app, brand, email_config, admin_user):
-    shop = create_shop('shop-1', brand.id)
+    shop = create_shop(brand.id)
     snippet_id = create_payment_instructions_snippet(shop.id, admin_user.id)
 
     yield shop
@@ -37,7 +37,7 @@ def shop1(admin_app, brand, email_config, admin_user):
 
 @pytest.fixture
 def shop2(admin_app, brand, email_config):
-    shop = create_shop('shop-2', brand.id)
+    shop = create_shop(brand.id)
 
     yield shop
 

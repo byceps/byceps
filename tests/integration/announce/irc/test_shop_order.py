@@ -17,7 +17,7 @@ from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.signals import shop as shop_signals
 
-from tests.integration.services.shop.helpers import create_orderer
+from tests.integration.services.shop.helpers import create_orderer, create_shop
 
 from .helpers import (
     assert_submitted_data,
@@ -120,7 +120,7 @@ def shop_admin(make_user):
 
 @pytest.fixture(scope='module')
 def shop(app, brand):
-    shop = shop_service.create_shop('popup-store', brand.id, 'Popup Store')
+    shop = create_shop(brand.id)
 
     yield shop
 

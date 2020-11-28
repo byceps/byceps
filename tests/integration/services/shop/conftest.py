@@ -12,10 +12,12 @@ from byceps.services.shop.order import (
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 
+from tests.integration.services.shop.helpers import create_shop
+
 
 @pytest.fixture
 def shop(brand):
-    shop = shop_service.create_shop('shop-01', brand.id, 'Some Shop')
+    shop = create_shop(brand.id)
 
     yield shop
 

@@ -13,12 +13,12 @@ from byceps.services.shop.order import (
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 
-from tests.integration.services.shop.helpers import create_shop, create_orderer
+from tests.integration.services.shop.helpers import create_orderer, create_shop
 
 
 @pytest.fixture
 def storefront1(brand, email_config):
-    shop = create_shop('first-nice-shop', brand.id)
+    shop = create_shop(brand.id)
     order_number_sequence_id = (
         order_sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
     )
@@ -40,7 +40,7 @@ def storefront1(brand, email_config):
 
 @pytest.fixture
 def storefront2(brand, email_config):
-    shop = create_shop('second-nice-shop', brand.id)
+    shop = create_shop(brand.id)
     order_number_sequence_id = (
         order_sequence_service.create_order_number_sequence(shop.id, 'LF-03-B')
     )

@@ -10,17 +10,19 @@ from byceps.services.shop.article import (
 )
 from byceps.services.shop.shop import service as shop_service
 
+from tests.integration.services.shop.helpers import create_shop
+
 
 @pytest.fixture(scope='module')
 def shop1(brand):
-    shop = shop_service.create_shop('shop-01', brand.id, 'Some Shop')
+    shop = create_shop(brand.id)
     yield shop
     shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture(scope='module')
 def shop2(brand):
-    shop = shop_service.create_shop('shop-02', brand.id, 'Another Shop')
+    shop = create_shop(brand.id)
     yield shop
     shop_service.delete_shop(shop.id)
 

@@ -16,8 +16,15 @@ from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.user.transfer.models import UserWithDetail
 
+from tests.helpers import generate_token
 
-def create_shop(shop_id='shop-1', brand_id=None):
+
+def create_shop(brand_id, *, shop_id=None):
+    if shop_id is None:
+        shop_id = generate_token()
+
+    title = shop_id
+
     return shop_service.create_shop(shop_id, brand_id, shop_id)
 
 
