@@ -10,7 +10,7 @@ Notification e-mails about shop orders
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 from flask import current_app
 from jinja2 import FileSystemLoader
@@ -175,22 +175,12 @@ def _assemble_email_to_orderer(
     recipient_address: str,
 ) -> Message:
     """Assemble an email message with the rendered template as its body."""
-    sender = _get_sender_address(brand_id)
+    config = email_service.get_config(brand_id)
+    sender = config.sender
     body = _render_template(template_name, **template_context)
     recipients = [recipient_address]
 
     return Message(sender, recipients, subject, body)
-
-
-def _get_sender_address(brand_id: BrandID) -> Optional[Sender]:
-    config = email_service.find_config(brand_id)
-
-    if not config:
-        current_app.logger.warning(
-            'No e-mail sender configured for brand ID "%s".', brand_id
-        )
-
-    return config.sender
 
 
 def _get_snippet_body(shop_id: ShopID, name: str) -> str:

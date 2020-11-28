@@ -37,7 +37,7 @@ def view_for_shop(shop_id):
     """Show e-mail examples."""
     shop = _get_shop_or_404(shop_id)
 
-    email_config = email_service.find_config(shop.brand_id)
+    email_config = email_service.get_config(shop.brand_id)
 
     example_placed_order_message_text = _get_example_placed_order_message_text(
         shop.id

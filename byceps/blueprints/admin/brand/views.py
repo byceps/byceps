@@ -59,7 +59,7 @@ def view(brand_id):
     brand = _get_brand_or_404(brand_id)
 
     settings = brand_settings_service.get_settings(brand.id)
-    email_config = email_service.find_config(brand.id)
+    email_config = email_service.get_config(brand.id)
 
     return {
         'brand': brand,
@@ -152,7 +152,7 @@ def email_config_update_form(brand_id, erroneous_form=None):
     """Show form to update e-mail config."""
     brand = _get_brand_or_404(brand_id)
 
-    config = _get_email_config_or_404(brand.id)
+    config = email_service.get_config(brand.id)
 
     form = (
         erroneous_form
@@ -177,7 +177,7 @@ def email_config_update(brand_id):
     """Update e-mail config."""
     brand = _get_brand_or_404(brand_id)
 
-    config = _get_email_config_or_404(brand.id)
+    config = email_service.get_config(brand.id)
 
     form = EmailConfigUpdateForm(request.form)
     if not form.validate():
@@ -206,12 +206,3 @@ def _get_brand_or_404(brand_id):
         abort(404)
 
     return brand
-
-
-def _get_email_config_or_404(brand_id):
-    config = email_service.find_config(brand_id)
-
-    if config is None:
-        abort(404)
-
-    return config

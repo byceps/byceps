@@ -96,28 +96,18 @@ def _find_db_config(brand_id: BrandID) -> Optional[DbEmailConfig]:
         .one_or_none()
 
 
-def find_config(brand_id: BrandID) -> Optional[EmailConfig]:
-    """Return the configuration, or `None` if not found."""
-    config = _find_db_config(brand_id)
-
-    if config is None:
-        return None
-
-    return _db_entity_to_config(config)
-
-
 def get_config(brand_id: BrandID) -> EmailConfig:
     """Return the configuration, or raise an error if none is configured
     for that brand.
     """
-    config = find_config(brand_id)
+    config = _find_db_config(brand_id)
 
     if config is None:
         raise UnknownEmailConfigId(
             f'No e-mail config found for brand ID "{brand_id}"'
         )
 
-    return config
+    return _db_entity_to_config(config)
 
 
 def set_config(
