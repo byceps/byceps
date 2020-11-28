@@ -6,13 +6,13 @@ byceps.blueprints.admin.email.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, request, url_for
+from flask import abort, request
 
 from ....services.email import service as email_service
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_error, flash_success
+from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
-from ....util.views import redirect_to, respond_no_content_with_location
+from ....util.views import redirect_to
 
 from ...common.authorization.decorators import permission_required
 from ...common.authorization.registry import permission_registry
@@ -124,26 +124,6 @@ def update(config_id):
 
     flash_success(f'Die Konfiguration "{config.id}" wurde aktualisiert.')
     return redirect_to('.index')
-
-
-@blueprint.route('/configs/<config_id>', methods=['DELETE'])
-@permission_required(EmailConfigPermission.delete)
-@respond_no_content_with_location
-def delete(config_id):
-    """Delete an e-mail config."""
-    config = _get_config_or_404(config_id)
-
-    success = email_service.delete_config(config.id)
-
-    if success:
-        flash_success(f'Die Konfiguration "{config_id}" wurde gelöscht.')
-    else:
-        flash_error(
-            f'Die Konfiguration "{config_id}" konnte nicht gelöscht werden. '
-            'Sie scheint noch in Sites verwendet zu werden.'
-        )
-
-    return url_for('.index')
 
 
 def _get_config_or_404(config_id):

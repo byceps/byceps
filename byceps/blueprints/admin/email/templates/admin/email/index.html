@@ -46,9 +46,6 @@
             {%- if g.current_user.has_permission(EmailConfigPermission.update) %}
               <li><a class="dropdown-item" href="{{ url_for('.update_form', config_id=config.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
             {%- endif %}
-            {%- if g.current_user.has_permission(EmailConfigPermission.delete) %}
-              <li><a class="dropdown-item" href="{{ url_for('.delete', config_id=config.id) }}" data-action="config-delete">{{ render_icon('delete') }} Löschen</a></li>
-            {%- endif %}
             </ol>
           </div>
           {%- endif %}
@@ -62,11 +59,3 @@
   {%- endif %}
 
 {%- endblock %}
-
-{% block scripts %}
-    <script>
-      onDomReady(function() {
-        confirmed_delete_on_click('[data-action="config-delete"]', 'Konfiguration löschen?');
-      });
-    </script>
-{% endblock %}

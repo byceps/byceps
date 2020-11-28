@@ -95,10 +95,6 @@ id = 'email_config.create'
 title = 'E-Mail-Konfigurationen erstellen'
 
 [[permissions]]
-id = 'email_config.delete'
-title = 'E-Mail-Konfigurationen löschen'
-
-[[permissions]]
 id = 'email_config.update'
 title = 'E-Mail-Konfigurationen bearbeiten'
 
@@ -418,7 +414,6 @@ id = 'email_admin'
 title = 'E-Mail-Konfigurationen verwalten'
 assigned_permissions = [
     'email_config.create',
-    'email_config.delete',
     'email_config.update',
     'email_config.view',
 ]

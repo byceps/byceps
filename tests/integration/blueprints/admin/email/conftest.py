@@ -13,7 +13,6 @@ def email_admin(make_admin):
     permission_ids = {
         'admin.access',
         'email_config.create',
-        'email_config.delete',
         'email_config.update',
         'email_config.view',
     }
