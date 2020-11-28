@@ -8,12 +8,6 @@
 
   <h1>{{ title }} {{ render_extra_in_heading(configs|length) }}</h1>
 
-  {%- if g.current_user.has_permission(EmailConfigPermission.create) %}
-  <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Konfiguration erstellen</span></a>
-  </div>
-  {%- endif %}
-
   {%- if configs %}
   <table class="index wide">
     <thead>

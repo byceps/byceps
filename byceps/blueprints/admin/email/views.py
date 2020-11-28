@@ -18,7 +18,7 @@ from ...common.authorization.decorators import permission_required
 from ...common.authorization.registry import permission_registry
 
 from .authorization import EmailConfigPermission
-from .forms import CreateForm, UpdateForm
+from .forms import UpdateForm
 
 
 blueprint = create_blueprint('email_admin', __name__)
@@ -37,47 +37,6 @@ def index():
     return {
         'configs': configs,
     }
-
-
-@blueprint.route('/configs/create')
-@permission_required(EmailConfigPermission.create)
-@templated
-def create_form(erroneous_form=None):
-    """Show form to create an e-mail config."""
-    form = erroneous_form if erroneous_form else CreateForm()
-    form.set_brand_choices()
-
-    return {
-        'form': form,
-    }
-
-
-@blueprint.route('/configs', methods=['POST'])
-@permission_required(EmailConfigPermission.create)
-def create():
-    """Create an e-mail config."""
-    form = CreateForm(request.form)
-    form.set_brand_choices()
-
-    if not form.validate():
-        return create_form(form)
-
-    config_id = form.config_id.data.strip()
-    brand_id = form.brand_id.data
-    sender_address = form.sender_address.data.strip()
-    sender_name = form.sender_name.data.strip() or None
-    contact_address = form.contact_address.data.strip() or None
-
-    config = email_service.create_config(
-        config_id,
-        brand_id,
-        sender_address,
-        sender_name=sender_name,
-        contact_address=contact_address,
-    )
-
-    flash_success(f'Die Konfiguration "{config.id}" wurde angelegt.')
-    return redirect_to('.index')
 
 
 @blueprint.route('/configs/<config_id>/update')
