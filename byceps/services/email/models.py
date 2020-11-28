@@ -18,22 +18,19 @@ class EmailConfig(db.Model):
 
     __tablename__ = 'email_configs'
 
-    id = db.Column(db.UnicodeText, primary_key=True)
-    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, unique=True, nullable=False)
+    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True)
     sender_address = db.Column(db.UnicodeText, nullable=False)
     sender_name = db.Column(db.UnicodeText, nullable=True)
     contact_address = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(
         self,
-        config_id: str,
         brand_id: BrandID,
         sender_address: str,
         *,
         sender_name: Optional[str] = None,
         contact_address: Optional[str] = None,
     ) -> None:
-        self.id = config_id
         self.brand_id = brand_id
         self.sender_address = sender_address
         self.sender_name = sender_name
@@ -41,5 +38,5 @@ class EmailConfig(db.Model):
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
-            .add_with_lookup('id') \
+            .add_with_lookup('brand_id') \
             .build()

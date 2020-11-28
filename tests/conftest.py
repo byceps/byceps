@@ -188,12 +188,12 @@ def deleted_user(make_user):
     return make_user('DeletedUser', deleted=True)
 
 
+# Dependency on `brand` avoids error on clean up.
 @pytest.fixture(scope='session')
 def make_email_config(admin_app, brand):
     configs = []
 
     def _wrapper(
-        config_id: str,
         brand_id: BrandID,
         sender_address: str,
         *,
@@ -201,14 +201,13 @@ def make_email_config(admin_app, brand):
         contact_address: Optional[str] = None,
     ):
         email_service.set_config(
-            config_id,
             brand_id,
             sender_address,
             sender_name=sender_name,
             contact_address=contact_address,
         )
 
-        config = email_service.get_config(config_id)
+        config = email_service.get_config_for_brand(brand_id)
         configs.append(config)
 
         return config
@@ -216,15 +215,12 @@ def make_email_config(admin_app, brand):
     yield _wrapper
 
     for config in configs:
-        email_service.delete_config(config.id)
+        email_service.delete_config(config.brand_id)
 
 
-# Dependency on `brand` avoids error on clean up.
 @pytest.fixture(scope='session')
 def email_config(make_email_config, brand):
-    return make_email_config(
-        'email-config-1', brand.id, sender_address='noreply@acmecon.test'
-    )
+    return make_email_config(brand.id, sender_address='noreply@acmecon.test')
 
 
 @pytest.fixture(scope='session')

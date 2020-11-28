@@ -17,7 +17,6 @@ def site1(make_brand, make_email_config):
     brand = make_brand('acme-brand-1', 'ACME Brand 1')
 
     email_config = make_email_config(
-        'acme-noreply',
         brand.id,
         sender_address='noreply@acmecon.test',
         sender_name='ACME Entertainment Convention',
@@ -40,7 +39,6 @@ def site2(make_brand, make_email_config):
     brand = make_brand('acme-brand-2', 'ACME Brand 2')
 
     email_config = make_email_config(
-        'acme-noreply-with-contact-address',
         brand.id,
         sender_address='noreply@acmecon.test',
         sender_name='ACME Entertainment Convention',

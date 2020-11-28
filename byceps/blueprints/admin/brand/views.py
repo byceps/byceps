@@ -181,7 +181,7 @@ def email_config_update(brand_id):
     contact_address = form.contact_address.data.strip()
 
     config = email_service.update_config(
-        config.id, sender_address, sender_name, contact_address
+        config.brand_id, sender_address, sender_name, contact_address
     )
 
     flash_success(f'Die E-Mail-Konfiguration wurde aktualisiert.')

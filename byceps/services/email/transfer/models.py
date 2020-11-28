@@ -26,7 +26,6 @@ class Sender:
 
 @dataclass(frozen=True)
 class EmailConfig:
-    id: str
     brand_id: BrandID
     sender: Sender
     contact_address: str
