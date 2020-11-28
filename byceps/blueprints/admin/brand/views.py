@@ -94,6 +94,13 @@ def create():
 
     brand = brand_service.create_brand(brand_id, title)
 
+    email_service.create_config(
+        brand.id,
+        sender_address=f'noreply@{brand.id}.example',
+        sender_name=brand.title,
+        contact_address=f'info@{brand.id}.example',
+    )
+
     flash_success(f'Die Marke "{brand.title}" wurde angelegt.')
     return redirect_to('.index')
 

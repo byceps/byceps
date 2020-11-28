@@ -4,6 +4,7 @@
 """
 
 import byceps.services.brand.service as brand_service
+import byceps.services.email.service as email_service
 
 
 def test_index(brand_admin_client, brand):
@@ -42,7 +43,15 @@ def test_create(brand_admin_client):
     assert brand.id == brand_id
     assert brand.title == title
 
+    email_config = email_service.find_config(brand.id)
+    assert email_config is not None
+    assert email_config.sender is not None
+    assert email_config.sender.address == 'noreply@galant.example'
+    assert email_config.sender.name == 'gaLANt'
+    assert email_config.contact_address == 'info@galant.example'
+
     # Clean up.
+    email_service.delete_config(brand_id)
     brand_service.delete_brand(brand_id)
 
 
