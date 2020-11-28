@@ -12,6 +12,7 @@ from ....services.brand import (
     service as brand_service,
     settings_service as brand_settings_service,
 )
+from ....services.email import service as email_service
 from ....services.orga import service as orga_service
 from ....services.party import service as party_service
 from ....util.framework.blueprint import create_blueprint
@@ -56,11 +57,14 @@ def index():
 def view(brand_id):
     """Show a brand."""
     brand = _get_brand_or_404(brand_id)
+
     settings = brand_settings_service.get_settings(brand.id)
+    email_config = email_service.find_config_for_brand(brand.id)
 
     return {
         'brand': brand,
         'settings': settings,
+        'email_config': email_config,
     }
 
 

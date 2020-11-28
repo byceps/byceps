@@ -95,10 +95,6 @@ id = 'email_config.update'
 title = 'E-Mail-Konfigurationen bearbeiten'
 
 [[permissions]]
-id = 'email_config.view'
-title = 'E-Mail-Konfigurationen anzeigen'
-
-[[permissions]]
 id = 'jobs.view'
 title = 'Jobs anzeigen'
 
@@ -410,7 +406,6 @@ id = 'email_admin'
 title = 'E-Mail-Konfigurationen verwalten'
 assigned_permissions = [
     'email_config.update',
-    'email_config.view',
 ]
 
 [[roles]]

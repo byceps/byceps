@@ -27,18 +27,6 @@ blueprint = create_blueprint('email_admin', __name__)
 permission_registry.register_enum(EmailConfigPermission)
 
 
-@blueprint.route('/configs')
-@permission_required(EmailConfigPermission.view)
-@templated
-def index():
-    """List all e-mail configs."""
-    configs = email_service.get_all_configs()
-
-    return {
-        'configs': configs,
-    }
-
-
 @blueprint.route('/configs/<config_id>/update')
 @permission_required(EmailConfigPermission.update)
 @templated
@@ -81,8 +69,8 @@ def update(config_id):
         config.id, sender_address, sender_name, contact_address
     )
 
-    flash_success(f'Die Konfiguration "{config.id}" wurde aktualisiert.')
-    return redirect_to('.index')
+    flash_success(f'Die E-Mail-Konfiguration wurde aktualisiert.')
+    return redirect_to('brand_admin.view', brand_id=config.brand_id)
 
 
 def _get_config_or_404(config_id):

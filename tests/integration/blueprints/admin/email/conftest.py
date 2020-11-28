@@ -13,7 +13,6 @@ def email_admin(make_admin):
     permission_ids = {
         'admin.access',
         'email_config.update',
-        'email_config.view',
     }
     admin = make_admin('EmailAdmin', permission_ids)
     login_user(admin.id)

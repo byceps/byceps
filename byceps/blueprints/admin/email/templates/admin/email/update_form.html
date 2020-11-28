@@ -9,7 +9,7 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index') }}">Konfigurationen</a></li>
+      <li><a href="{{ url_for('brand_admin.view', brand_id=config.brand_id) }}">Konfigurationen</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
@@ -22,7 +22,7 @@
       {{ form_field(form.contact_address) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index')) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('brand_admin.view', brand_id=config.brand_id)) }}
   </form>
 
 {%- endblock %}
