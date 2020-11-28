@@ -38,7 +38,8 @@ COMMON_FORM_DATA = {
 
 
 @pytest.fixture
-def shop(brand, admin_user):
+def shop(make_brand, admin_user):
+    brand = make_brand()
     shop = create_shop(brand.id)
     snippet_id = create_shop_fragment(
         shop.id, admin_user.id, 'payment_instructions', 'Send all ur moneyz!'
@@ -73,7 +74,8 @@ def storefront(shop, order_number_sequence_id) -> None:
 
 
 @pytest.fixture
-def site(brand, storefront):
+def site(make_brand, storefront):
+    brand = make_brand()
     site = create_site(
         'acmecon-2014-shop-website', brand.id, storefront_id=storefront.id
     )

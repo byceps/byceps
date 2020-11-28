@@ -119,7 +119,8 @@ def shop_admin(make_user):
 
 
 @pytest.fixture(scope='module')
-def shop(app, brand):
+def shop(app, make_brand):
+    brand = make_brand()
     shop = create_shop(brand.id)
 
     yield shop

@@ -15,7 +15,8 @@ from tests.integration.services.shop.helpers import create_shop
 
 
 @pytest.fixture(scope='module')
-def shop(brand):
+def shop(make_brand):
+    brand = make_brand()
     shop = create_shop(brand.id)
 
     yield shop

@@ -16,7 +16,11 @@ from tests.integration.services.shop.helpers import create_shop
 
 
 @pytest.fixture
-def shop(brand):
+def shop(make_brand, make_email_config):
+    brand = make_brand()
+    email_config = make_email_config(
+        brand.id, sender_address='noreply@acmecon.test'
+    )
     shop = create_shop(brand.id)
 
     yield shop

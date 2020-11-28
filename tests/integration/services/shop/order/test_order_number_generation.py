@@ -14,14 +14,16 @@ from tests.integration.services.shop.helpers import create_shop
 
 
 @pytest.fixture(scope='module')
-def shop1(brand):
+def shop1(make_brand):
+    brand = make_brand()
     shop = create_shop(brand.id)
     yield shop
     shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture(scope='module')
-def shop2(brand):
+def shop2(make_brand):
+    brand = make_brand()
     shop = create_shop(brand.id)
     yield shop
     shop_service.delete_shop(shop.id)

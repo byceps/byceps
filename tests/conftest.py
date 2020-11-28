@@ -196,11 +196,14 @@ def make_email_config(admin_app, brand):
 
     def _wrapper(
         brand_id: BrandID,
-        sender_address: str,
         *,
+        sender_address: Optional[str] = None,
         sender_name: Optional[str] = None,
         contact_address: Optional[str] = None,
     ):
+        if sender_address is None:
+            sender_address = f'{generate_token()}@domain.example'
+
         email_service.set_config(
             brand_id,
             sender_address,
