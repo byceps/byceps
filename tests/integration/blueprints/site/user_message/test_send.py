@@ -28,7 +28,6 @@ def site1(make_brand, make_email_config):
         brand.id,
         title='ACMECon Website #1',
         server_name='www1.acmecon.test',
-        email_config_id=email_config.id,
     )
 
     yield site
@@ -53,7 +52,6 @@ def site2(make_brand, make_email_config):
         brand.id,
         title='ACMECon Website #2',
         server_name='www2.acmecon.test',
-        email_config_id=email_config.id,
     )
 
     yield site

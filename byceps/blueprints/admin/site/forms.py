@@ -13,7 +13,6 @@ from ....util.l10n import LocalizedForm
 
 from ....services.board import board_service
 from ....services.brand import service as brand_service
-from ....services.email import service as email_service
 from ....services.news import channel_service as news_channel_service
 from ....services.party import service as party_service
 from ....services.shop.storefront import service as storefront_service
@@ -22,7 +21,6 @@ from ....services.shop.storefront import service as storefront_service
 class _BaseForm(LocalizedForm):
     title = StringField('Titel', validators=[Length(min=1, max=40)])
     server_name = StringField('Servername', validators=[InputRequired()])
-    email_config_id = SelectField('E-Mail-Konfiguration', validators=[InputRequired()])
     party_id = SelectField('Party', validators=[Optional()])
     enabled = BooleanField('aktiv')
     user_account_creation_enabled  = BooleanField('Benutzerregistrierung geöffnet')
@@ -35,11 +33,6 @@ class _BaseForm(LocalizedForm):
         brands = brand_service.get_all_brands()
         brands.sort(key=lambda brand: brand.title)
         self.brand_id.choices = [(brand.id, brand.title) for brand in brands]
-
-    def set_email_config_choices(self):
-        configs = email_service.get_all_configs()
-        configs.sort(key=lambda config: config.id)
-        self.email_config_id.choices = [(c.id, c.id) for c in configs]
 
     def set_party_choices(self, brand_id):
         parties = party_service.get_parties_for_brand(brand_id)

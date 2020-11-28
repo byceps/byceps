@@ -194,7 +194,6 @@ def create(brand_id):
     site_id = form.id.data.strip().lower()
     title = form.title.data.strip()
     server_name = form.server_name.data.strip()
-    email_config_id = form.email_config_id.data
     party_id = form.party_id.data
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
@@ -216,7 +215,6 @@ def create(brand_id):
         title,
         server_name,
         brand.id,
-        email_config_id,
         enabled=enabled,
         user_account_creation_enabled=user_account_creation_enabled,
         login_enabled=login_enabled,
@@ -263,7 +261,6 @@ def update(site_id):
     title = form.title.data.strip()
     server_name = form.server_name.data.strip()
     brand_id = form.brand_id.data
-    email_config_id = form.email_config_id.data
     party_id = form.party_id.data
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
@@ -287,7 +284,6 @@ def update(site_id):
             title,
             server_name,
             brand_id,
-            email_config_id,
             party_id,
             enabled,
             user_account_creation_enabled,
@@ -306,7 +302,6 @@ def update(site_id):
 
 
 def _fill_in_common_form_choices(form, brand_id):
-    form.set_email_config_choices()
     form.set_party_choices(brand_id)
     form.set_board_choices(brand_id)
     form.set_news_channel_choices(brand_id)

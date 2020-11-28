@@ -26,7 +26,6 @@ class Site:
     title: str
     server_name: str
     brand_id: BrandID
-    email_config_id: str
     party_id: PartyID
     enabled: bool
     user_account_creation_enabled: bool

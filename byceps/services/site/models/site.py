@@ -30,7 +30,6 @@ class Site(db.Model):
     server_name = db.Column(db.UnicodeText, unique=True, nullable=False)
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False)
     brand = db.relationship(Brand, backref='sites')
-    email_config_id = db.Column(db.UnicodeText, db.ForeignKey('email_configs.id'), nullable=False)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=True)
     enabled = db.Column(db.Boolean, nullable=False)
     user_account_creation_enabled = db.Column(db.Boolean, nullable=False)
@@ -46,7 +45,6 @@ class Site(db.Model):
         title: str,
         server_name: str,
         brand_id: BrandID,
-        email_config_id: str,
         enabled: bool,
         user_account_creation_enabled: bool,
         login_enabled: bool,
@@ -60,7 +58,6 @@ class Site(db.Model):
         self.title = title
         self.server_name = server_name
         self.brand_id = brand_id
-        self.email_config_id = email_config_id
         self.party_id = party_id
         self.enabled = enabled
         self.user_account_creation_enabled = user_account_creation_enabled

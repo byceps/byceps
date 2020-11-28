@@ -24,7 +24,7 @@ def test_create_form(site_admin_client, brand):
     assert response.status_code == 200
 
 
-def test_create(site_admin_client, brand, email_config):
+def test_create(site_admin_client, brand):
     site_id = 'partysite-99'
     title = 'Party 99'
     server_name = 'www.party99.example'
@@ -36,7 +36,6 @@ def test_create(site_admin_client, brand, email_config):
         'id': site_id,
         'title': title,
         'server_name': server_name,
-        'email_config_id': email_config.id,
         'news_channel_id': '',
         'board_id': '',
         'storefront_id': '',
@@ -48,7 +47,6 @@ def test_create(site_admin_client, brand, email_config):
     assert site.id == site_id
     assert site.title == title
     assert site.server_name == server_name
-    assert site.email_config_id == email_config.id
     assert site.news_channel_id is None
     assert site.board_id is None
     assert site.storefront_id is None

@@ -31,7 +31,6 @@ def create_site(
     title: str,
     server_name: str,
     brand_id: BrandID,
-    email_config_id: str,
     *,
     enabled: bool = False,
     user_account_creation_enabled: bool = False,
@@ -47,7 +46,6 @@ def create_site(
         title,
         server_name,
         brand_id,
-        email_config_id,
         enabled,
         user_account_creation_enabled,
         login_enabled,
@@ -68,7 +66,6 @@ def update_site(
     title: str,
     server_name: str,
     brand_id: BrandID,
-    email_config_id: str,
     party_id: Optional[PartyID],
     enabled: bool,
     user_account_creation_enabled: bool,
@@ -87,7 +84,6 @@ def update_site(
     site.title = title
     site.server_name = server_name
     site.brand_id = brand_id
-    site.email_config_id = email_config_id
     site.party_id = party_id
     site.enabled = enabled
     site.user_account_creation_enabled = user_account_creation_enabled
@@ -182,7 +178,6 @@ def _db_entity_to_site(site: DbSite) -> Site:
         site.title,
         site.server_name,
         site.brand_id,
-        site.email_config_id,
         site.party_id,
         site.enabled,
         site.user_account_creation_enabled,
