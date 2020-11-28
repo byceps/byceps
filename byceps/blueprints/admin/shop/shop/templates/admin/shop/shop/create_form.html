@@ -18,7 +18,6 @@
       {{ form_field(form.id, maxlength=40, required='required', autofocus='autofocus') }}
       {{ form_field(form.brand_id, required='required') }}
       {{ form_field(form.title, maxlength=40, required='required') }}
-      {{ form_field(form.email_config_id, required='required') }}
     {% endcall %}
 
     {{ form_buttons('Erstellen', cancel_url=url_for('.index')) }}

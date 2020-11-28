@@ -119,10 +119,8 @@ def shop_admin(make_user):
 
 
 @pytest.fixture(scope='module')
-def shop(app, brand, email_config):
-    shop = shop_service.create_shop(
-        'popup-store', brand.id, 'Popup Store', email_config.id
-    )
+def shop(app, brand):
+    shop = shop_service.create_shop('popup-store', brand.id, 'Popup Store')
 
     yield shop
 

@@ -13,10 +13,8 @@ from byceps.services.shop.storefront import service as storefront_service
 
 
 @pytest.fixture(scope='module')
-def shop(brand, email_config):
-    shop = shop_service.create_shop(
-        'shop-01', brand.id, 'Some Shop', email_config.id
-    )
+def shop(brand):
+    shop = shop_service.create_shop('shop-01', brand.id, 'Some Shop')
 
     yield shop
 

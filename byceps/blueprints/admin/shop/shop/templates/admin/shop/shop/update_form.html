@@ -17,7 +17,6 @@
   <form action="{{ url_for('.update', shop_id=shop.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
-      {{ form_field(form.email_config_id, required='required') }}
     {% endcall %}
 
     {{ form_buttons('Speichern', cancel_url=url_for('.view', shop_id=shop.id)) }}

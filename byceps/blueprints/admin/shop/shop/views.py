@@ -70,7 +70,6 @@ def create_form(erroneous_form=None):
     """Show form to create a shop."""
     form = erroneous_form if erroneous_form else CreateForm()
     form.set_brand_choices()
-    form.set_email_config_choices()
 
     return {
         'form': form,
@@ -83,7 +82,6 @@ def create():
     """Create a shop."""
     form = CreateForm(request.form)
     form.set_brand_choices()
-    form.set_email_config_choices()
 
     if not form.validate():
         return create_form(form)
@@ -91,9 +89,8 @@ def create():
     shop_id = form.id.data.strip().lower()
     brand_id = form.brand_id.data
     title = form.title.data.strip()
-    email_config_id = form.email_config_id.data
 
-    shop = shop_service.create_shop(shop_id, brand_id, title, email_config_id)
+    shop = shop_service.create_shop(shop_id, brand_id, title)
 
     flash_success(f'Der Shop "{shop.title}" wurde angelegt.')
     return redirect_to('.index')
@@ -107,7 +104,6 @@ def update_form(shop_id, erroneous_form=None):
     shop = _get_shop_or_404(shop_id)
 
     form = erroneous_form if erroneous_form else UpdateForm(obj=shop)
-    form.set_email_config_choices()
 
     return {
         'shop': shop,
@@ -122,15 +118,13 @@ def update(shop_id):
     shop = _get_shop_or_404(shop_id)
 
     form = UpdateForm(request.form)
-    form.set_email_config_choices()
 
     if not form.validate():
         return update_form(shop.id, form)
 
     title = form.title.data.strip()
-    email_config_id = form.email_config_id.data
 
-    shop = shop_service.update_shop(shop_id, title, email_config_id)
+    shop = shop_service.update_shop(shop_id, title)
 
     flash_success(f'Der Shop "{shop.title}" wurde aktualisiert.')
     return redirect_to('.view', shop_id=shop.id)

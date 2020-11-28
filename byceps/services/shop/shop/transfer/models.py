@@ -20,6 +20,5 @@ class Shop:
     id: ShopID
     brand_id: BrandID
     title: str
-    email_config_id: str
     archived: bool
     extra_settings: Dict[str, Any]

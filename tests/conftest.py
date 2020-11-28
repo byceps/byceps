@@ -32,7 +32,6 @@ from tests.helpers import (
     create_user,
     create_user_with_detail,
     http_client,
-    DEFAULT_EMAIL_CONFIG_ID,
 )
 
 
@@ -224,7 +223,7 @@ def make_email_config(admin_app, brand):
 @pytest.fixture(scope='session')
 def email_config(make_email_config, brand):
     return make_email_config(
-        DEFAULT_EMAIL_CONFIG_ID, brand.id, sender_address='noreply@acmecon.test'
+        'email-config-1', brand.id, sender_address='noreply@acmecon.test'
     )
 
 
