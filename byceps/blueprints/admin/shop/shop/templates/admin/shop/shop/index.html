@@ -1,6 +1,5 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'shops_admin' %}
 {% set title = 'Shops' %}
@@ -22,18 +21,7 @@
 
 {% block body %}
 
-  <div class="row row--space-between">
-    <div class="column-auto">
-      <h1>{{ title }} {{ render_extra_in_heading(shops|length) }}</h1>
-    </div>
-    {%- if g.current_user.has_permission(ShopPermission.create) %}
-    <div class="column-auto">
-      <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Shop erstellen</span></a>
-      </div>
-    </div>
-    {%- endif %}
-  </div>
+  <h1>{{ title }} {{ render_extra_in_heading(shops|length) }}</h1>
 
   {%- if shops %}
   <div class="two-columns">

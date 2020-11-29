@@ -6,7 +6,7 @@ byceps.blueprints.admin.shop.shop.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, request
+from flask import abort, request, url_for
 
 from .....services.brand import service as brand_service
 from .....services.shop.order import service as order_service
@@ -15,13 +15,12 @@ from .....services.shop.shop import service as shop_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
-from .....util.views import redirect_to
+from .....util.views import redirect_to, respond_no_content_with_location
 
 from ....common.authorization.decorators import permission_required
 from ....common.authorization.registry import permission_registry
 
 from .authorization import ShopPermission
-from .forms import CreateForm
 
 
 blueprint = create_blueprint('shop_shop_admin', __name__)
@@ -67,48 +66,38 @@ def view(shop_id):
 
 
 @blueprint.route('/for_brand/<brand_id>')
+@permission_required(ShopPermission.view)
+@templated
 def view_for_brand(brand_id):
-    shop = shop_service.find_shop_for_brand(brand_id)
-
-    if shop is None:
+    brand = brand_service.find_brand(brand_id)
+    if brand is None:
         abort(404)
 
-    return redirect_to('.view', shop_id=shop.id)
-
-
-@blueprint.route('/shops/create')
-@permission_required(ShopPermission.create)
-@templated
-def create_form(erroneous_form=None):
-    """Show form to create a shop."""
-    form = erroneous_form if erroneous_form else CreateForm()
-    form.set_brand_choices()
+    shop = shop_service.find_shop_for_brand(brand.id)
+    if shop is not None:
+        return redirect_to('.view', shop_id=shop.id)
 
     return {
-        'form': form,
+        'brand': brand,
     }
 
 
-@blueprint.route('/shops', methods=['POST'])
+@blueprint.route('/for_brand/<brand_id>', methods=['POST'])
 @permission_required(ShopPermission.create)
-def create():
+@respond_no_content_with_location
+def create(brand_id):
     """Create a shop."""
-    form = CreateForm(request.form)
-    form.set_brand_choices()
-
-    if not form.validate():
-        return create_form(form)
-
-    brand_id = form.brand_id.data
-    brand = brand_service.get_brand(brand_id)
+    brand = brand_service.find_brand(brand_id)
+    if brand is None:
+        abort(404)
 
     shop_id = brand.id
     title = brand.title
 
-    shop = shop_service.create_shop(shop_id, brand_id, title)
+    shop = shop_service.create_shop(shop_id, brand.id, title)
 
     flash_success(f'Der Shop wurde angelegt.')
-    return redirect_to('.index')
+    return url_for('.view', shop_id=shop.id)
 
 
 def _get_shop_or_404(shop_id):

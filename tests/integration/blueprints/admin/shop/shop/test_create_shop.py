@@ -31,11 +31,8 @@ def test_create_shop(make_brand, shop_admin_client):
 
     assert shop_service.find_shop_for_brand(brand.id) is None
 
-    url = '/admin/shop/shop/shops'
-    form_data = {
-        'brand_id': brand.id,
-    }
-    response = shop_admin_client.post(url, data=form_data)
+    url = f'/admin/shop/shop/for_brand/{brand.id}'
+    response = shop_admin_client.post(url)
 
     shop = shop_service.find_shop_for_brand(brand.id)
     assert shop is not None

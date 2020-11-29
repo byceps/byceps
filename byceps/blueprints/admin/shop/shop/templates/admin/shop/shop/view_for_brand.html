@@ -1,0 +1,29 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'shop_shop_admin' %}
+{% set current_page_brand = brand %}
+{% set title = 'Shop' %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <div class="dimmed-box centered">
+    <p>Für diese Marke existiert noch kein Shop.</p>
+
+    {%- if g.current_user.has_permission(ShopPermission.create) %}
+    <div class="button-row button-row--center">
+      <a class="button" data-action="create-shop" href="{{ url_for('.create', brand_id=brand.id) }}">{{ render_icon('add') }} <span>Shop erstellen</span></a>
+    </div>
+    {%- endif %}
+  </div>
+
+{%- endblock %}
+
+{% block scripts %}
+<script>
+  onDomReady(function() {
+    confirmed_post_on_click('[data-action="create-shop"]', 'Shop erstellen?');
+  });
+</script>
+{% endblock %}
