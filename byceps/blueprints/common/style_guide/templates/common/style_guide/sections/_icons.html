@@ -17,37 +17,32 @@
   </div>
 
   <style>
-    .icon-list {
-      columns: 12rem auto;
+    .icon-grid {
+      display: grid;
+      grid-gap: 0.25rem;
+      grid-template-columns: repeat(auto-fill, minmax(12rem, auto));
       margin-top: 2rem;
-      /* Try to trigger Chrome to re-calculate the column layout to
-         avoid split content at column breaks. */
-      -webkit-perspective: 1;
     }
 
-    .icon-list li {
+    .icon-grid li {
       align-items: center;
+      border-radius: 0.2rem;
       display: flex;
       padding: 0.5rem 1rem;
     }
 
-    .icon-list li:hover {
+    .icon-grid li:hover {
       background-color: #333333;
-      border-radius: 0.2rem;
       color: #ffffff;
     }
 
-    .icon-list li + li {
-      margin-top: 0.25rem;
-    }
-
-    .icon-list .icon {
+    .icon-grid .icon {
       font-size: 2rem;
       margin-right: 0.75rem;
     }
   </style>
 
-  <ol class="icon-list">
+  <ol class="icon-grid">
     {%- for icon_name in icon_names %}
     <li>{{ render_icon(icon_name) }} {{ icon_name }}</li>
     {%- endfor %}
