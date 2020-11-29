@@ -19,13 +19,14 @@ from byceps.services.user.transfer.models import UserWithDetail
 from tests.helpers import generate_token
 
 
-def create_shop(brand_id, *, shop_id=None):
+def create_shop(brand_id, *, shop_id=None, title=None):
     if shop_id is None:
         shop_id = generate_token()
 
-    title = shop_id
+    if title is None:
+        title = shop_id
 
-    return shop_service.create_shop(shop_id, brand_id, shop_id)
+    return shop_service.create_shop(shop_id, brand_id, title)
 
 
 def create_shop_fragment(shop_id, admin_id, name, body):
