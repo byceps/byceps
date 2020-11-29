@@ -15,7 +15,7 @@ SITE_ID = 'favorite-site'
 
 
 @pytest.fixture(scope='module')
-def site(admin_app, brand, email_config):
+def site(admin_app, brand):
     site = create_site(
         SITE_ID,
         brand.id,

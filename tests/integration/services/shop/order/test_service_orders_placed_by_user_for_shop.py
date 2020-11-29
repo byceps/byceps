@@ -17,7 +17,7 @@ from tests.integration.services.shop.helpers import create_orderer, create_shop
 
 
 @pytest.fixture
-def storefront1(brand, email_config):
+def storefront1(brand):
     shop = create_shop(brand.id)
     order_number_sequence_id = (
         order_sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
@@ -39,7 +39,7 @@ def storefront1(brand, email_config):
 
 
 @pytest.fixture
-def storefront2(brand, email_config):
+def storefront2(brand):
     shop = create_shop(brand.id)
     order_number_sequence_id = (
         order_sequence_service.create_order_number_sequence(shop.id, 'LF-03-B')

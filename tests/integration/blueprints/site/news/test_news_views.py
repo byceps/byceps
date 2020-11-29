@@ -57,7 +57,7 @@ def published_news_item(news_channel, editor):
 
 
 @pytest.fixture(scope='module')
-def news_site(email_config, news_channel):
+def news_site(news_channel):
     site = create_site(
         'newsflash',
         news_channel.brand_id,

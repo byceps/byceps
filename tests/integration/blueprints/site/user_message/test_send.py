@@ -16,7 +16,7 @@ from tests.helpers import create_site, http_client, login_user
 def site1(make_brand, make_email_config):
     brand = make_brand()
 
-    email_config = make_email_config(
+    make_email_config(
         brand.id,
         sender_address='noreply@acmecon.test',
         sender_name='ACME Entertainment Convention',
@@ -38,7 +38,7 @@ def site1(make_brand, make_email_config):
 def site2(make_brand, make_email_config):
     brand = make_brand()
 
-    email_config = make_email_config(
+    make_email_config(
         brand.id,
         sender_address='noreply@acmecon.test',
         sender_name='ACME Entertainment Convention',
