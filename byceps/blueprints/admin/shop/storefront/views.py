@@ -8,6 +8,7 @@ byceps.blueprints.admin.shop.storefront.views
 
 from flask import abort, request
 
+from .....services.brand import service as brand_service
 from .....services.shop.catalog import service as catalog_service
 from .....services.shop.order import sequence_service as order_sequence_service
 from .....services.shop.shop import service as shop_service
@@ -34,6 +35,8 @@ def index_for_shop(shop_id):
     """List storefronts for that shop."""
     shop = _get_shop_or_404(shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     storefronts = storefront_service.get_storefronts_for_shop(shop.id)
 
     order_number_prefixes_by_sequence_id = _get_order_number_prefixes_by_sequence_id(
@@ -42,6 +45,7 @@ def index_for_shop(shop_id):
 
     return {
         'shop': shop,
+        'brand': brand,
         'storefronts': storefronts,
         'order_number_prefixes_by_sequence_id': order_number_prefixes_by_sequence_id,
     }
@@ -64,6 +68,8 @@ def view(storefront_id):
 
     shop = shop_service.get_shop(storefront.shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     order_number_sequence = order_sequence_service.find_order_number_sequence(
         storefront.order_number_sequence_id
     )
@@ -72,6 +78,7 @@ def view(storefront_id):
     return {
         'storefront': storefront,
         'shop': shop,
+        'brand': brand,
         'order_number_prefix': order_number_prefix,
     }
 
@@ -82,6 +89,8 @@ def view(storefront_id):
 def create_form(shop_id, erroneous_form=None):
     """Show form to create a storefront."""
     shop = _get_shop_or_404(shop_id)
+
+    brand = brand_service.get_brand(shop.brand_id)
 
     catalogs = catalog_service.get_all_catalogs()
     order_number_sequences = (
@@ -95,6 +104,7 @@ def create_form(shop_id, erroneous_form=None):
 
     return {
         'shop': shop,
+        'brand': brand,
         'order_number_sequence_available': order_number_sequence_available,
         'form': form,
     }
@@ -169,6 +179,8 @@ def update_form(storefront_id, erroneous_form=None):
 
     shop = shop_service.get_shop(storefront.shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     catalogs = catalog_service.get_all_catalogs()
     order_number_sequences = (
         order_sequence_service.find_order_number_sequences_for_shop(shop.id)
@@ -185,6 +197,7 @@ def update_form(storefront_id, erroneous_form=None):
     return {
         'storefront': storefront,
         'shop': shop,
+        'brand': brand,
         'form': form,
     }
 

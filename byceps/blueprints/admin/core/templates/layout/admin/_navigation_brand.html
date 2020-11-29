@@ -72,6 +72,12 @@
         required_permission=NewsletterPermission.view_subscriptions,
         icon='email')
       .add_item(
+        url_for('shop_shop_admin.view_for_brand', brand_id=brand.id),
+        'Shop',
+        id='shop_shop_admin',
+        required_permission=ShopPermission.view,
+        icon='shop')
+      .add_item(
         url_for('snippet_admin.index_for_scope', scope_type='brand', scope_name=brand.id),
         'Snippets',
         id='snippet_admin_for_brand',

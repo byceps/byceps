@@ -8,6 +8,7 @@ byceps.blueprints.admin.shop.order.views
 
 from flask import abort, g, request, Response
 
+from .....services.brand import service as brand_service
 from .....services.shop.order import (
     sequence_service as order_sequence_service,
     service as order_service,
@@ -48,6 +49,8 @@ def index_for_shop(shop_id, page):
     """List orders for that shop."""
     shop = _get_shop_or_404(shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     per_page = request.args.get('per_page', type=int, default=15)
 
     search_term = request.args.get('search_term', default='').strip()
@@ -80,6 +83,7 @@ def index_for_shop(shop_id, page):
 
     return {
         'shop': shop,
+        'brand': brand,
         'search_term': search_term,
         'PaymentState': PaymentState,
         'only_payment_state': only_payment_state,
@@ -104,6 +108,8 @@ def view(order_id):
 
     shop = shop_service.get_shop(order.shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     articles_by_item_number = service.get_articles_by_item_number(order)
 
     events = service.get_events(order.id)
@@ -112,6 +118,7 @@ def view(order_id):
 
     return {
         'shop': shop,
+        'brand': brand,
         'order': order,
         'placed_by': placed_by,
         'articles_by_item_number': articles_by_item_number,
@@ -227,10 +234,13 @@ def cancel_form(order_id, erroneous_form=None):
 
     shop = shop_service.get_shop(order.shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     form = erroneous_form if erroneous_form else CancelForm()
 
     return {
         'shop': shop,
+        'brand': brand,
         'order': order,
         'form': form,
     }
@@ -295,10 +305,13 @@ def mark_as_paid_form(order_id, erroneous_form=None):
 
     shop = shop_service.get_shop(order.shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     form = erroneous_form if erroneous_form else MarkAsPaidForm()
 
     return {
         'shop': shop,
+        'brand': brand,
         'order': order,
         'form': form,
     }
@@ -363,10 +376,13 @@ def create_number_sequence_form(shop_id, erroneous_form=None):
     """Show form to create an order number sequence."""
     shop = _get_shop_or_404(shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     form = erroneous_form if erroneous_form else OrderNumberSequenceCreateForm()
 
     return {
         'shop': shop,
+        'brand': brand,
         'form': form,
     }
 

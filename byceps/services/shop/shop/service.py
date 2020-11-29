@@ -49,6 +49,18 @@ def delete_shop(shop_id: ShopID) -> None:
     db.session.commit()
 
 
+def find_shop_for_brand(brand_id: BrandID) -> Optional[Shop]:
+    """Return the shop for that brand, or `None` if not found."""
+    shop = DbShop.query \
+        .filter_by(brand_id=brand_id) \
+        .one_or_none()
+
+    if shop is None:
+        return None
+
+    return _db_entity_to_shop(shop)
+
+
 def find_shop(shop_id: ShopID) -> Optional[Shop]:
     """Return the shop with that id, or `None` if not found."""
     shop = _find_db_shop(shop_id)

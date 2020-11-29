@@ -11,6 +11,7 @@ from decimal import Decimal
 
 from flask import abort, request
 
+from .....services.brand import service as brand_service
 from .....services.shop.article import (
     sequence_service as article_sequence_service,
     service as article_service,
@@ -58,6 +59,8 @@ def index_for_shop(shop_id, page):
     """List articles for that shop."""
     shop = _get_shop_or_404(shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     per_page = request.args.get('per_page', type=int, default=15)
     articles = article_service.get_articles_for_shop_paginated(
         shop.id, page, per_page
@@ -65,6 +68,7 @@ def index_for_shop(shop_id, page):
 
     return {
         'shop': shop,
+        'brand': brand,
         'articles': articles,
     }
 
@@ -80,6 +84,8 @@ def view(article_id):
 
     shop = shop_service.get_shop(article.shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     totals = ordered_articles_service.count_ordered_articles(
         article.item_number
     )
@@ -90,6 +96,7 @@ def view(article_id):
     return {
         'article': article,
         'shop': shop,
+        'brand': brand,
         'totals': totals,
         'PaymentState': PaymentState,
         'actions': actions,
@@ -106,6 +113,8 @@ def view_ordered(article_id):
     article = _get_article_or_404(article_id)
 
     shop = shop_service.get_shop(article.shop_id)
+
+    brand = brand_service.get_brand(shop.brand_id)
 
     order_items = ordered_articles_service.get_order_items_for_article(
         article.item_number
@@ -133,6 +142,7 @@ def view_ordered(article_id):
     return {
         'article': article,
         'shop': shop,
+        'brand': brand,
         'quantity_total': quantity_total,
         'quantities_orders_users': quantities_orders_users,
         'now': datetime.utcnow(),
@@ -150,6 +160,8 @@ def create_form(shop_id, erroneous_form=None):
     """Show form to create an article."""
     shop = _get_shop_or_404(shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     article_number_sequences = (
         article_sequence_service.find_article_number_sequences_for_shop(shop.id)
     )
@@ -164,6 +176,7 @@ def create_form(shop_id, erroneous_form=None):
 
     return {
         'shop': shop,
+        'brand': brand,
         'article_number_sequence_available': article_number_sequence_available,
         'form': form,
     }
@@ -247,6 +260,8 @@ def update_form(article_id, erroneous_form=None):
 
     shop = shop_service.get_shop(article.shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     if article.available_from:
         article.available_from = utc_to_local_tz(article.available_from)
     if article.available_until:
@@ -258,6 +273,7 @@ def update_form(article_id, erroneous_form=None):
     return {
         'article': article,
         'shop': shop,
+        'brand': brand,
         'form': form,
     }
 
@@ -319,6 +335,8 @@ def attachment_create_form(article_id, erroneous_form=None):
 
     shop = shop_service.get_shop(article.shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     attachable_articles = article_service.get_attachable_articles(article.id)
 
     form = (
@@ -331,6 +349,7 @@ def attachment_create_form(article_id, erroneous_form=None):
     return {
         'article': article,
         'shop': shop,
+        'brand': brand,
         'form': form,
     }
 
@@ -397,12 +416,15 @@ def create_number_sequence_form(shop_id, erroneous_form=None):
     """Show form to create an article number sequence."""
     shop = _get_shop_or_404(shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     form = (
         erroneous_form if erroneous_form else ArticleNumberSequenceCreateForm()
     )
 
     return {
         'shop': shop,
+        'brand': brand,
         'form': form,
     }
 

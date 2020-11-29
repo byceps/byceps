@@ -68,6 +68,16 @@ def _get_db_brand(brand_id: BrandID) -> DbBrand:
     return DbBrand.query.get(brand_id)
 
 
+def get_brand(brand_id: BrandID) -> Brand:
+    """Return the brand with that id, or raise an exception."""
+    brand = find_brand(brand_id)
+
+    if brand is None:
+        raise ValueError(f'Unknown brand ID "{brand_id}"')
+
+    return brand
+
+
 def get_all_brands() -> List[Brand]:
     """Return all brands, ordered by title."""
     brands = DbBrand.query \

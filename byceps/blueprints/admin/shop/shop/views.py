@@ -8,6 +8,7 @@ byceps.blueprints.admin.shop.shop.views
 
 from flask import abort, request
 
+from .....services.brand import service as brand_service
 from .....services.shop.article import service as article_service
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import PaymentState
@@ -49,18 +50,31 @@ def view(shop_id):
     """Show the shop."""
     shop = _get_shop_or_404(shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     order_counts_by_payment_state = order_service.count_orders_per_payment_state(
         shop.id
     )
 
     return {
         'shop': shop,
+        'brand': brand,
 
         'order_counts_by_payment_state': order_counts_by_payment_state,
         'PaymentState': PaymentState,
 
         'settings': shop.extra_settings,
     }
+
+
+@blueprint.route('/for_brand/<brand_id>')
+def view_for_brand(brand_id):
+    shop = shop_service.find_shop_for_brand(brand_id)
+
+    if shop is None:
+        abort(404)
+
+    return redirect_to('.view', shop_id=shop.id)
 
 
 @blueprint.route('/shops/create')
@@ -103,10 +117,13 @@ def update_form(shop_id, erroneous_form=None):
     """Show form to update a shop."""
     shop = _get_shop_or_404(shop_id)
 
+    brand = brand_service.get_brand(shop.brand_id)
+
     form = erroneous_form if erroneous_form else UpdateForm(obj=shop)
 
     return {
         'shop': shop,
+        'brand': brand,
         'form': form,
     }
 
