@@ -99,10 +99,10 @@ def create():
     if not form.validate():
         return create_form(form)
 
-    shop_id = form.id.data.strip().lower()
     brand_id = form.brand_id.data
-
     brand = brand_service.get_brand(brand_id)
+
+    shop_id = brand.id
     title = brand.title
 
     shop = shop_service.create_shop(shop_id, brand_id, title)

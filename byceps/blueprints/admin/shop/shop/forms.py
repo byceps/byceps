@@ -6,7 +6,7 @@ byceps.blueprints.admin.shop.shop.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from wtforms import SelectField, StringField
+from wtforms import SelectField
 from wtforms.validators import InputRequired
 
 from .....services.brand import service as brand_service
@@ -14,7 +14,6 @@ from .....util.l10n import LocalizedForm
 
 
 class CreateForm(LocalizedForm):
-    id = StringField('ID', validators=[InputRequired()])
     brand_id = SelectField('Marke', validators=[InputRequired()])
 
     def set_brand_choices(self):

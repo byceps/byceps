@@ -29,21 +29,19 @@ def shop_admin_client(make_client, admin_app, shop_admin):
 def test_create_shop(make_brand, shop_admin_client):
     brand = make_brand(title='ACME')
 
-    shop_id = 'acme'
-    assert shop_service.find_shop(shop_id) is None
+    assert shop_service.find_shop_for_brand(brand.id) is None
 
     url = '/admin/shop/shop/shops'
     form_data = {
-        'id': shop_id,
         'brand_id': brand.id,
     }
     response = shop_admin_client.post(url, data=form_data)
 
-    shop = shop_service.find_shop(shop_id)
+    shop = shop_service.find_shop_for_brand(brand.id)
     assert shop is not None
-    assert shop.id == shop_id
+    assert shop.id == brand.id
     assert shop.brand_id == brand.id
-    assert shop.title == 'ACME'
+    assert shop.title == brand.title
 
     # Clean up.
     shop_service.delete_shop(shop.id)
