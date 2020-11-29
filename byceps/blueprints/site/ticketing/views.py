@@ -6,7 +6,7 @@ byceps.blueprints.site.ticketing.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, redirect, request, url_for
+from flask import abort, g, request
 
 from ....services.party import service as party_service
 from ....services.ticketing import (
@@ -20,7 +20,7 @@ from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.iterables import find
 from ....util.framework.templating import templated
-from ....util.views import respond_no_content
+from ....util.views import redirect_to, respond_no_content
 
 from ...common.authentication.decorators import login_required
 
@@ -158,7 +158,7 @@ def appoint_user(ticket_id):
 
     notification_service.notify_appointed_user(ticket, user, manager)
 
-    return redirect(url_for('.index_mine'))
+    return redirect_to('.index_mine')
 
 
 @blueprint.route('/tickets/<uuid:ticket_id>/user', methods=['DELETE'])
@@ -244,7 +244,7 @@ def appoint_user_manager(ticket_id):
 
     notification_service.notify_appointed_user_manager(ticket, user, manager)
 
-    return redirect(url_for('.index_mine'))
+    return redirect_to('.index_mine')
 
 
 @blueprint.route('/tickets/<uuid:ticket_id>/user_manager', methods=['DELETE'])
@@ -328,7 +328,7 @@ def appoint_seat_manager(ticket_id):
 
     notification_service.notify_appointed_seat_manager(ticket, user, manager)
 
-    return redirect(url_for('.index_mine'))
+    return redirect_to('.index_mine')
 
 
 @blueprint.route('/tickets/<uuid:ticket_id>/seat_manager', methods=['DELETE'])

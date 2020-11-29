@@ -9,7 +9,7 @@ byceps.blueprints.admin.user.views
 from datetime import datetime
 from typing import Optional
 
-from flask import abort, g, redirect, request, url_for
+from flask import abort, g, request
 
 from ....services.authentication.password import service as password_service
 from ....services.authentication.session import service as session_service
@@ -256,7 +256,7 @@ def set_password(user_id):
         "ein neues Passwort gesetzt."
     )
 
-    return redirect(url_for('.view', user_id=user.id))
+    return redirect_to('.view', user_id=user.id)
 
 
 @blueprint.route('/<uuid:user_id>/initialize', methods=['POST'])

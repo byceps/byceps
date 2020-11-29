@@ -6,7 +6,7 @@ byceps.blueprints.admin.ticketing.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, redirect, request, url_for
+from flask import abort, g, request
 
 from ....services.party import service as party_service
 from ....services.shop.order import service as order_service
@@ -131,7 +131,7 @@ def appoint_user(ticket_id):
         f'von Ticket {ticket.code} eingetragen.'
     )
 
-    return redirect(url_for('.view_ticket', ticket_id=ticket.id))
+    return redirect_to('.view_ticket', ticket_id=ticket.id)
 
 
 # -------------------------------------------------------------------- #
