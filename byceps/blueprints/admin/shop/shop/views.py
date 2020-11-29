@@ -9,7 +9,6 @@ byceps.blueprints.admin.shop.shop.views
 from flask import abort, request
 
 from .....services.brand import service as brand_service
-from .....services.shop.article import service as article_service
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import PaymentState
 from .....services.shop.shop import service as shop_service
@@ -22,7 +21,7 @@ from ....common.authorization.decorators import permission_required
 from ....common.authorization.registry import permission_registry
 
 from .authorization import ShopPermission
-from .forms import CreateForm, UpdateForm
+from .forms import CreateForm
 
 
 blueprint = create_blueprint('shop_shop_admin', __name__)
@@ -108,43 +107,6 @@ def create():
 
     flash_success(f'Der Shop "{shop.title}" wurde angelegt.')
     return redirect_to('.index')
-
-
-@blueprint.route('/shops/<shop_id>/update')
-@permission_required(ShopPermission.update)
-@templated
-def update_form(shop_id, erroneous_form=None):
-    """Show form to update a shop."""
-    shop = _get_shop_or_404(shop_id)
-
-    brand = brand_service.get_brand(shop.brand_id)
-
-    form = erroneous_form if erroneous_form else UpdateForm(obj=shop)
-
-    return {
-        'shop': shop,
-        'brand': brand,
-        'form': form,
-    }
-
-
-@blueprint.route('/shops/<shop_id>', methods=['POST'])
-@permission_required(ShopPermission.update)
-def update(shop_id):
-    """Update a shop."""
-    shop = _get_shop_or_404(shop_id)
-
-    form = UpdateForm(request.form)
-
-    if not form.validate():
-        return update_form(shop.id, form)
-
-    title = form.title.data.strip()
-
-    shop = shop_service.update_shop(shop_id, title)
-
-    flash_success(f'Der Shop "{shop.title}" wurde aktualisiert.')
-    return redirect_to('.view', shop_id=shop.id)
 
 
 def _get_shop_or_404(shop_id):

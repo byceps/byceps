@@ -29,17 +29,6 @@ def create_shop(shop_id: ShopID, brand_id: BrandID, title: str) -> Shop:
     return _db_entity_to_shop(shop)
 
 
-def update_shop(shop_id: ShopID, title: str) -> Shop:
-    """Update a shop."""
-    shop = _get_db_shop(shop_id)
-
-    shop.title = title
-
-    db.session.commit()
-
-    return _db_entity_to_shop(shop)
-
-
 def delete_shop(shop_id: ShopID) -> None:
     """Delete a shop."""
     db.session.query(DbShop) \

@@ -13,19 +13,12 @@ from .....services.brand import service as brand_service
 from .....util.l10n import LocalizedForm
 
 
-class _BaseForm(LocalizedForm):
+class CreateForm(LocalizedForm):
+    id = StringField('ID', validators=[InputRequired()])
+    brand_id = SelectField('Marke', validators=[InputRequired()])
     title = StringField('Titel', validators=[Length(min=1, max=40)])
 
     def set_brand_choices(self):
         brands = brand_service.get_all_brands()
         brands.sort(key=lambda brand: brand.title)
         self.brand_id.choices = [(brand.id, brand.title) for brand in brands]
-
-
-class CreateForm(_BaseForm):
-    id = StringField('ID', validators=[InputRequired()])
-    brand_id = SelectField('Marke', validators=[InputRequired()])
-
-
-class UpdateForm(_BaseForm):
-    pass
