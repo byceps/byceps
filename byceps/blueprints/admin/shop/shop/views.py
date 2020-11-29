@@ -101,11 +101,13 @@ def create():
 
     shop_id = form.id.data.strip().lower()
     brand_id = form.brand_id.data
-    title = form.title.data.strip()
+
+    brand = brand_service.get_brand(brand_id)
+    title = brand.title
 
     shop = shop_service.create_shop(shop_id, brand_id, title)
 
-    flash_success(f'Der Shop "{shop.title}" wurde angelegt.')
+    flash_success(f'Der Shop wurde angelegt.')
     return redirect_to('.index')
 
 

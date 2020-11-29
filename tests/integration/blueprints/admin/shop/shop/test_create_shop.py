@@ -26,7 +26,9 @@ def shop_admin_client(make_client, admin_app, shop_admin):
     return make_client(admin_app, user_id=shop_admin.id)
 
 
-def test_create_shop(brand, shop_admin_client):
+def test_create_shop(make_brand, shop_admin_client):
+    brand = make_brand(title='ACME')
+
     shop_id = 'acme'
     assert shop_service.find_shop(shop_id) is None
 
@@ -34,7 +36,6 @@ def test_create_shop(brand, shop_admin_client):
     form_data = {
         'id': shop_id,
         'brand_id': brand.id,
-        'title': 'ACME',
     }
     response = shop_admin_client.post(url, data=form_data)
 

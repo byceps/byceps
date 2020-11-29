@@ -7,7 +7,7 @@ byceps.blueprints.admin.shop.shop.forms
 """
 
 from wtforms import SelectField, StringField
-from wtforms.validators import InputRequired, Length
+from wtforms.validators import InputRequired
 
 from .....services.brand import service as brand_service
 from .....util.l10n import LocalizedForm
@@ -16,7 +16,6 @@ from .....util.l10n import LocalizedForm
 class CreateForm(LocalizedForm):
     id = StringField('ID', validators=[InputRequired()])
     brand_id = SelectField('Marke', validators=[InputRequired()])
-    title = StringField('Titel', validators=[Length(min=1, max=40)])
 
     def set_brand_choices(self):
         brands = brand_service.get_all_brands()
