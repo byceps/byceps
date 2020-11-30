@@ -1,0 +1,33 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/dashboard.html' import render_cell %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'more_admin' %}
+{% set title = 'Mehr' %}
+{% set layout_main_raw = True %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/admin_dashboard.css') }}">
+{%- endblock %}
+
+{% block body %}
+
+  <div class="grid dashboard">
+  {%- with items = [
+    ('Berechtigungen', 'permission', url_for('authorization_admin.role_index'), RolePermission.view),
+    ('Globale Snippets', 'snippet', url_for('snippet_admin.index_for_scope', scope_type='global', scope_name='global'), SnippetPermission.view),
+    ('Zustimmungen', 'consent', url_for('consent_admin.index'), ConsentPermission.administrate),
+    ('Newsletter', 'email', url_for('newsletter_admin.index'), NewsletterPermission.view_subscriptions),
+    ('Benutzer-Abzeichen', 'badge', url_for('user_badge_admin.index'), UserBadgePermission.view),
+    ('Hintergrundjobs', 'pending', url_for('jobs_admin.index'), JobsPermission.view),
+  ] %}
+    {%- for label, icon, url, required_permission in items %}
+      {%- if g.current_user.has_permission(required_permission) %}
+        {%- call render_cell(icon_name=icon, href=url) %}
+          {{ render_icon(icon) }} <span>{{ label }}</span>
+        {%- endcall %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endwith %}
+  </div>
+
+{%- endblock %}

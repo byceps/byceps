@@ -91,6 +91,7 @@ def _get_blueprints_admin() -> Iterator[BlueprintReg]:
         ('admin.news',                      '/admin/news'               ),
         ('admin.newsletter',                '/admin/newsletter'         ),
         ('admin.jobs',                      '/admin/jobs'               ),
+        ('admin.more',                      '/admin/more'               ),
         ('admin.orga',                      '/admin/orgas'              ),
         ('admin.orga_presence',             '/admin/presence'           ),
         ('admin.orga_team',                 '/admin/orga_teams'         ),

@@ -17,35 +17,6 @@
         required_permission=UserPermission.view,
         icon='users')
       .add_item(
-        url_for('authorization_admin.role_index'),
-        'Berechtigungen',
-        id='authorization_admin',
-        required_permission=RolePermission.view,
-        icon='permission')
-      .add_item(
-        url_for('consent_admin.index'),
-        'Zustimmungen',
-        id='consent_admin',
-        required_permission=ConsentPermission.administrate,
-        icon='consent')
-      .add_item(
-        url_for('newsletter_admin.index'),
-        'Newsletter',
-        id='newsletter_admin',
-        required_permission=NewsletterPermission.view_subscriptions,
-        icon='email')
-      .add_item(
-        url_for('user_badge_admin.index'),
-        'Abzeichen',
-        id='user_badge_admin',
-        icon='badge')
-      .add_item(
-        url_for('snippet_admin.index_for_scope', scope_type='global', scope_name='global'),
-        'Snippets',
-        id='snippet_admin_for_global',
-        required_permission=SnippetPermission.view,
-        icon='snippet')
-      .add_item(
         url_for('brand_admin.index'),
         'Marken',
         id='brands_admin',
@@ -64,11 +35,11 @@
         required_permission=SitePermission.view,
         icon='site')
       .add_item(
-        url_for('jobs_admin.index'),
-        'Jobs',
-        id='jobs_admin',
-        required_permission=JobsPermission.view,
-        icon='pending')
+        url_for('more_admin.index'),
+        'Mehr',
+        id='more_admin',
+        required_permission=AdminPermission.access,
+        icon='ellipsis-h')
   -%}
 {{ render_navigation(navigation, current_page) }}
   {%- endwith %}
