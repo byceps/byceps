@@ -76,7 +76,7 @@ def index_for_brand(brand_id, page):
     """List parties for this brand."""
     brand = _get_brand_or_404(brand_id)
 
-    per_page = request.args.get('per_page', type=int, default=15)
+    per_page = request.args.get('per_page', type=int, default=10)
     parties = party_service.get_parties_for_brand_paginated(
         brand.id, page, per_page
     )
