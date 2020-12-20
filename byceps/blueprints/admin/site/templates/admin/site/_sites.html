@@ -42,7 +42,7 @@
       </div>
 
       <div class="column-auto" style="min-width: 35%;">
-        <div>{{ render_icon('brand', title='Marke') }} <a href="{{ url_for('admin_dashboard.view_brand', brand_id=site.brand_id) }}" class="disguised">{{ site.brand.title }}</div>
+        <div>{{ render_icon('brand', title='Marke') }} <a href="{{ url_for('admin_dashboard.view_brand', brand_id=site.brand_id) }}" class="disguised">{{ site.brand.title }}</a></div>
         <div>
           {{ render_icon('date', title='Party') }}
           {% if site.party_id -%}
