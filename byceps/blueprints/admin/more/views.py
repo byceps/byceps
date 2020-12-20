@@ -9,6 +9,7 @@ byceps.blueprints.admin.more.views
 from flask import abort
 
 from ....services.brand import service as brand_service
+from ....services.party import service as party_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
@@ -38,3 +39,15 @@ def view_brand(brand_id):
         abort(404)
 
     return {'brand': brand}
+
+
+@blueprint.route('/parties/<party_id>')
+@permission_required(AdminPermission.access)
+@templated
+def view_party(party_id):
+    """Show more party admin items."""
+    party = party_service.find_party(party_id)
+    if party is None:
+        abort(404)
+
+    return {'party': party}

@@ -1,0 +1,31 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/dashboard.html' import render_cell %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'more_admin_party' %}
+{% set current_page_party = party %}
+{% set title = 'Mehr' %}
+{% set layout_main_raw = True %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/admin_dashboard.css') }}">
+{%- endblock %}
+
+{% block body %}
+
+  <div class="grid dashboard">
+  {%- with items = [
+    ('Einstellungen', 'settings', url_for('party_admin.view', party_id=party.id), PartyPermission.view),
+    ('Orga-Anwesenheit', 'date-okay', url_for('orga_presence.view', party_id=party.id), OrgaPresencePermission.view),
+    ('Turniere', 'trophy', url_for('tourney_admin.category_index_for_party', party_id=party.id), TourneyCategoryPermission.view),
+  ] %}
+    {%- for label, icon, url, required_permission in items %}
+      {%- if g.current_user.has_permission(required_permission) %}
+        {%- call render_cell(icon_name=icon, href=url) %}
+          {{ render_icon(icon) }} <span>{{ label }}</span>
+        {%- endcall %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endwith %}
+  </div>
+
+{%- endblock %}

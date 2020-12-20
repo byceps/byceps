@@ -31,12 +31,6 @@
         required_permission=AdminDashboardPermission.view_party,
         icon='dashboard')
       .add_item(
-        url_for('party_admin.view', party_id=party.id),
-        'Einstellungen',
-        id='party_admin',
-        required_permission=PartyPermission.view,
-        icon='settings')
-      .add_item(
         url_for('seating_admin.index_for_party', party_id=party.id),
         'Sitzpläne',
         id='seating_admin',
@@ -61,17 +55,11 @@
         required_permission=OrgaTeamPermission.view,
         icon='users')
       .add_item(
-        url_for('orga_presence.view', party_id=party.id),
-        'Orga-Anwesenheit',
-        id='orga_presence',
-        required_permission=OrgaPresencePermission.view,
-        icon='date-okay')
-      .add_item(
-        url_for('tourney_admin.category_index_for_party', party_id=party.id),
-        'Turniere',
-        id='tourney_admin',
-        required_permission=TourneyCategoryPermission.view,
-        icon='trophy')
+        url_for('more_admin.view_party', party_id=party.id),
+        'Mehr',
+        id='more_admin_party',
+        required_permission=AdminPermission.access,
+        icon='ellipsis-h')
   -%}
 {{ render_navigation(navigation, current_page) }}
   {%- endwith %}
