@@ -1,13 +1,12 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/party.html' import render_party_admin_link %}
-{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/admin/party.html' import render_party %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'parties_admin' %}
 {% set current_page_brand = brand %}
 {% set title = '%s - Partys'|format(brand.title) %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
@@ -30,57 +29,17 @@
   </div>
 
   {%- if parties.items %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Name<br>ID<br>Zeitraum</th>
-        <th></th>
-        <th class="centered">Tickets<br>verkauft</th>
-        <th class="centered">Tickets<br>maximal</th>
-        <th>Ticket&shy;verwaltung</th>
-        <th>Sitzplatz&shy;verwaltung</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for party in parties.items %}
-      <tr>
-        <td>
-          <strong>{{ render_party_admin_link(party) }}</strong><br>
-          {{ party.id }}<br>
-          {{- render_datetime(party.starts_at|utc_to_local_tz, smart=False) }} bis<br>
-          {{- render_datetime(party.ends_at|utc_to_local_tz, smart=False) -}}
-          {%- if party.is_over %}
-          {{ render_tag('vorbei', class='color-disabled') }}
-          {%- endif %}
-        </td>
-        <td>
-          {%- if party.archived %}
-          {{ render_tag('', class='color-disabled', icon='archived', title='archiviert') }}
-          {%- endif %}
-        </td>
-        <td class="centered bignumber">{{ ticket_count_by_party_id[party.id] }}</td>
-        <td class="centered bignumber">{{ party.max_ticket_quantity|separate_thousands if (party.max_ticket_quantity is not none) else '?'|dim }}</td>
-        <td>{{ render_tag('geöffnet', class='color-success') if party.ticket_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
-        <td>{{ render_tag('geöffnet', class='color-success') if party.seat_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
-        <td>
-          {%- if g.current_user.has_permission(PartyPermission.update) %}
-          <div class="dropdown">
-            <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
-            <ol class="dropdown-menu dropdown-menu--right">
-              <li><a class="dropdown-item" href="{{ url_for('.update_form', party_id=party.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
-            </ol>
-          </div>
-          {%- endif %}
-        </td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
+
+    {%- for party in parties.items %}
+{{ render_party(party, days_by_party_id[party.id], ticket_sale_stats_by_party_id[party.id], show_brand_avatar=False) }}
+    {%- endfor %}
+
+  <div style="margin-top: 1.5rem;">
+{{ render_pagination_nav(parties, '.index_for_brand', {'brand_id': brand.id}, centered=True) }}
+  </div>
+
   {%- else %}
   <div class="dimmed-box centered">Für diese Marke sind keine Partys hinterlegt.</div>
   {%- endif %}
-
-{{ render_pagination_nav(parties, '.index_for_brand', {'brand_id': brand.id}) }}
 
 {%- endblock %}

@@ -3,15 +3,17 @@
 {% from 'macros/misc.html' import render_tag %}
 
 
-{%- macro render_party(party, days, ticket_sale_stats) %}
+{%- macro render_party(party, days, ticket_sale_stats, show_brand_avatar=True) %}
   <div class="box" style="border-left: {{ '#ff2222' if party.canceled else ('#aaaaaa' if party.archived else '#55cc00') }} solid 0.25rem;">
     <div class="row row--space-between">
 
       <div class="column-auto" style="width: 40%;">
         <div class="row">
+          {%- if show_brand_avatar %}
           <div class="column-auto">
             <div style="margin-right: -0.25rem;">{{ render_brand_avatar(party.brand, '40') }}</div>
           </div>
+          {%- endif %}
           <div class="column-auto">
             <a href="{{ url_for('.view', party_id=party.id) }}" class="disguised" style="display: block;">
               <strong>{{ party.title }}</strong><br>

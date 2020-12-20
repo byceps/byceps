@@ -7,6 +7,8 @@ byceps.blueprints.admin.party.views
 """
 
 import dataclasses
+from datetime import date
+from typing import Dict, List
 
 from flask import abort, request
 
@@ -16,6 +18,8 @@ from ....services.party import (
     settings_service as party_settings_service,
 )
 from ....services.ticketing import ticket_service
+from ....services.ticketing.transfer.models import TicketSaleStats
+from ....typing import PartyID
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -51,14 +55,8 @@ def index():
     brands = brand_service.get_all_brands()
     brands.sort(key=lambda brand: brand.title)
 
-    days_by_party_id = {
-        party.id: party_service.get_party_days(party) for party in parties
-    }
-
-    ticket_sale_stats_by_party_id = {
-        party.id: ticket_service.get_ticket_sale_stats(party.id)
-        for party in parties
-    }
+    days_by_party_id = _get_days_by_party_id(parties)
+    ticket_sale_stats_by_party_id = _get_ticket_sale_stats_by_party_id(parties)
 
     return {
         'parties': parties,
@@ -83,12 +81,27 @@ def index_for_brand(brand_id, page):
         brand.id, page, per_page
     )
 
-    ticket_count_by_party_id = ticket_service.get_ticket_count_by_party_id()
+    days_by_party_id = _get_days_by_party_id(parties.items)
+    ticket_sale_stats_by_party_id = _get_ticket_sale_stats_by_party_id(parties.items)
 
     return {
         'brand': brand,
         'parties': parties,
-        'ticket_count_by_party_id': ticket_count_by_party_id,
+        'days_by_party_id': days_by_party_id,
+        'ticket_sale_stats_by_party_id': ticket_sale_stats_by_party_id,
+    }
+
+
+def _get_days_by_party_id(parties) -> Dict[PartyID, List[date]]:
+    return {party.id: party_service.get_party_days(party) for party in parties}
+
+
+def _get_ticket_sale_stats_by_party_id(
+    parties,
+) -> Dict[PartyID, TicketSaleStats]:
+    return {
+        party.id: ticket_service.get_ticket_sale_stats(party.id)
+        for party in parties
     }
 
 
