@@ -35,9 +35,9 @@
         required_permission=SitePermission.view,
         icon='site')
       .add_item(
-        url_for('more_admin.index'),
+        url_for('more_admin.view_global'),
         'Mehr',
-        id='more_admin',
+        id='more_admin_global',
         required_permission=AdminPermission.access,
         icon='ellipsis-h')
   -%}

@@ -17,9 +17,9 @@ from ..core.authorization import AdminPermission
 blueprint = create_blueprint('more_admin', __name__)
 
 
-@blueprint.route('')
+@blueprint.route('/global')
 @permission_required(AdminPermission.access)
 @templated
-def index():
-    """Show more admin items."""
+def view_global():
+    """Show more global admin items."""
     return {}
