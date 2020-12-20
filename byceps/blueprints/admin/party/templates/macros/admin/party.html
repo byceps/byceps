@@ -23,15 +23,18 @@
 
       <div class="column-auto" style="width: 30%;">
         <div>
-          {{- render_datetime(party.starts_at|utc_to_local_tz) }} bis<br>
-          {{- render_datetime(party.ends_at|utc_to_local_tz) -}}
+          <div style="font-size: 0.75rem;">
+            {{- render_datetime(party.starts_at|utc_to_local_tz) }} bis<br>
+            {{- render_datetime(party.ends_at|utc_to_local_tz) -}}
+          </div>
+
+          {%- for day in days %}
+          {{ render_tag('{:%a}'.format(day)) }}
+          {%- endfor %}
+
           {%- if party.is_over %}
           {{ render_tag('vorbei', class='color-disabled') }}
           {%- endif %}
-          <br>
-        {%- for day in days %}
-          {{ render_tag('{:%a}'.format(day)) }}
-        {%- endfor %}
         </div>
       </div>
 
