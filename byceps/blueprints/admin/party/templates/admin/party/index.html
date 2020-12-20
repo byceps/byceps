@@ -35,12 +35,12 @@
 
   <h2>Aktive Partys</h2>
     {%- for party in active_parties %}
-{{ render_party(party, days_by_party_id[party.id]) }}
+{{ render_party(party, days_by_party_id[party.id], ticket_sale_stats_by_party_id[party.id]) }}
     {%- endfor %}
 
   <h2>Archivierte Partys</h2>
     {%- for party in archived_parties %}
-{{ render_party(party, days_by_party_id[party.id]) }}
+{{ render_party(party, days_by_party_id[party.id], ticket_sale_stats_by_party_id[party.id]) }}
     {%- endfor %}
 
   {%- else %}

@@ -3,7 +3,7 @@
 {% from 'macros/misc.html' import render_tag %}
 
 
-{%- macro render_party(party, days) %}
+{%- macro render_party(party, days, ticket_sale_stats) %}
   <div class="box" style="border-left: {{ '#ff2222' if party.canceled else ('#aaaaaa' if party.archived else '#55cc00') }} solid 0.25rem;">
     <div class="row row--space-between">
 
@@ -38,7 +38,11 @@
         </div>
       </div>
 
-      <div class="column-auto" style="text-align: right; width: 30%;">
+      <div class="column-auto" style="width: 30%;">
+        <div style="margin-bottom: 1rem;">
+        {{ _render_ticket_sale_stats(ticket_sale_stats) }}
+        </div>
+
         {%- if party.ticket_management_enabled %}
         {{ render_tag('Ticketverwaltung geöffnet', class='color-success', icon='ticket') }}<br>
         {%- endif %}
@@ -67,4 +71,28 @@
     {{ party.title }}
   {%- endif -%}
   </a>
+{%- endmacro %}
+
+
+{% macro _render_ticket_sale_stats(ticket_sale_stats) -%}
+  {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
+  <div class="progress" style="height: 0.25rem;">
+    {%- if tickets_total_max_specified %}
+    <div class="progress-bar color-success" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
+    {%- endif %}
+  </div>
+
+  <div style="font-size: 0.75rem; text-align: center;">
+    <strong>{{ ticket_sale_stats.tickets_sold|separate_thousands }}</strong>
+    von
+    <strong>{{ ticket_sale_stats.tickets_max|separate_thousands if tickets_total_max_specified else '?' }}</strong>
+    Tickets verkauft
+  </div>
+
+    {%- if tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
+  <div style="text-align: center;">
+  {{ render_tag('ausverkauft', class='color-success', icon='ticket') }}
+  </div>
+    {%- endif %}
+  {%- endwith %}
 {%- endmacro %}

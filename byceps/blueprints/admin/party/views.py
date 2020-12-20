@@ -55,12 +55,18 @@ def index():
         party.id: party_service.get_party_days(party) for party in parties
     }
 
+    ticket_sale_stats_by_party_id = {
+        party.id: ticket_service.get_ticket_sale_stats(party.id)
+        for party in parties
+    }
+
     return {
         'parties': parties,
         'active_parties': active_parties,
         'archived_parties': archived_parties,
         'brands': brands,
         'days_by_party_id': days_by_party_id,
+        'ticket_sale_stats_by_party_id': ticket_sale_stats_by_party_id,
     }
 
 
