@@ -31,12 +31,6 @@
         required_permission=AdminDashboardPermission.view_brand,
         icon='dashboard')
       .add_item(
-        url_for('brand_admin.view', brand_id=brand.id),
-        'Einstellungen',
-        id='brand_admin',
-        required_permission=BrandPermission.view,
-        icon='settings')
-      .add_item(
         url_for('site_admin.index_for_brand', brand_id=brand.id),
         'Sites',
         id='sites_admin',
@@ -55,46 +49,17 @@
         required_permission=OrgaDetailPermission.view,
         icon='users')
       .add_item(
-        url_for('attendance_admin.view_for_brand', brand_id=brand.id),
-        'Stammgäste',
-        id='attendance_admin',
-        icon='users')
-      .add_item(
-        url_for('news_admin.channel_index_for_brand', brand_id=brand.id),
-        'Newskanäle',
-        id='news_admin',
-        required_permission=NewsItemPermission.view,
-        icon='news')
-      .add_item(
-        url_for('newsletter_admin.view_subscriptions', list_id=brand.id),
-        'Newsletter',
-        id='newsletter_admin',
-        required_permission=NewsletterPermission.view_subscriptions,
-        icon='email')
-      .add_item(
         url_for('shop_shop_admin.view_for_brand', brand_id=brand.id),
         'Shop',
         id='shop_shop_admin',
         required_permission=ShopPermission.view,
         icon='shop')
       .add_item(
-        url_for('snippet_admin.index_for_scope', scope_type='brand', scope_name=brand.id),
-        'Snippets',
-        id='snippet_admin_for_brand',
-        required_permission=SnippetPermission.view,
-        icon='snippet')
-      .add_item(
-        url_for('terms_admin.view_document', document_id=brand.id),
-        'AGB',
-        id='terms_admin',
-        required_permission=TermsPermission.view,
-        icon='legal')
-      .add_item(
-        url_for('board_admin.board_index_for_brand', brand_id=brand.id),
-        'Foren',
-        id='board_admin',
-        required_permission=BoardCategoryPermission.view,
-        icon='board')
+        url_for('more_admin.view_brand', brand_id=brand.id),
+        'Mehr',
+        id='more_admin_brand',
+        required_permission=AdminPermission.access,
+        icon='ellipsis-h')
   -%}
 {{ render_navigation(navigation, current_page) }}
   {%- endwith %}

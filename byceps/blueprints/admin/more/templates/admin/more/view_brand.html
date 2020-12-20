@@ -1,0 +1,35 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/dashboard.html' import render_cell %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'more_admin_brand' %}
+{% set current_page_brand = brand %}
+{% set title = 'Mehr' %}
+{% set layout_main_raw = True %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/admin_dashboard.css') }}">
+{%- endblock %}
+
+{% block body %}
+
+  <div class="grid dashboard">
+  {%- with items = [
+    ('Einstellungen', 'settings', url_for('brand_admin.view', brand_id=brand.id), BrandPermission.view),
+    ('Newsletter-Abos', 'email', url_for('newsletter_admin.view_subscriptions', list_id=brand.id), NewsletterPermission.view_subscriptions),
+    ('Newskanäle', 'news', url_for('news_admin.channel_index_for_brand', brand_id=brand.id), NewsItemPermission.view),
+    ('Foren', 'board', url_for('board_admin.board_index_for_brand', brand_id=brand.id), BoardCategoryPermission.view),
+    ('Stammgäste', 'users', url_for('attendance_admin.view_for_brand', brand_id=brand.id), AdminPermission.access),
+    ('Marken-Snippets', 'snippet', url_for('snippet_admin.index_for_scope', scope_type='brand', scope_name=brand.id), SnippetPermission.view),
+    ('AGB', 'legal', url_for('terms_admin.view_document', document_id=brand.id), TermsPermission.view),
+  ] %}
+    {%- for label, icon, url, required_permission in items %}
+      {%- if g.current_user.has_permission(required_permission) %}
+        {%- call render_cell(icon_name=icon, href=url) %}
+          {{ render_icon(icon) }} <span>{{ label }}</span>
+        {%- endcall %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endwith %}
+  </div>
+
+{%- endblock %}
