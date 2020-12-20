@@ -1,9 +1,8 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/brand.html' import render_brand_avatar %}
-{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/admin/party.html' import render_party %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'parties_admin' %}
 {% set title = 'Partys' %}
 {% set layout_main_raw = True %}
@@ -33,69 +32,19 @@
   </div>
 
   {%- if parties %}
+
   <h2>Aktive Partys</h2>
     {%- for party in active_parties %}
-      {{ render_party(party) }}
+{{ render_party(party, days_by_party_id[party.id]) }}
     {%- endfor %}
 
   <h2>Archivierte Partys</h2>
     {%- for party in archived_parties %}
-      {{ render_party(party) }}
+{{ render_party(party, days_by_party_id[party.id]) }}
     {%- endfor %}
+
   {%- else %}
   <div class="dimmed-box centered">Es sind keine Partys hinterlegt.</div>
   {%- endif %}
 
 {%- endblock %}
-
-{% macro render_party(party) %}
-  <div class="box" style="border-left: {{ '#ff2222' if party.canceled else ('#aaaaaa' if party.archived else '#55cc00') }} solid 0.25rem;">
-    <div class="row row--space-between">
-
-      <div class="column-auto" style="width: 40%;">
-        <div class="row">
-          <div class="column-auto">
-            <div style="margin-right: -0.25rem;">{{ render_brand_avatar(party.brand, '40') }}</div>
-          </div>
-          <div class="column-auto">
-            <a href="{{ url_for('.view', party_id=party.id) }}" class="disguised" style="display: block;">
-              <strong>{{ party.title }}</strong><br>
-              <span class="monospace">{{ party.id }}</span>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <div class="column-auto" style="width: 30%;">
-        <div>
-          {{- render_datetime(party.starts_at|utc_to_local_tz) }} bis<br>
-          {{- render_datetime(party.ends_at|utc_to_local_tz) -}}
-          {%- if party.is_over %}
-          {{ render_tag('vorbei', class='color-disabled') }}
-          {%- endif %}
-          <br>
-        {%- for day in days_by_party_id[party.id] %}
-          {{ render_tag('{:%a}'.format(day)) }}
-        {%- endfor %}
-        </div>
-      </div>
-
-      <div class="column-auto" style="text-align: right; width: 30%;">
-        {%- if party.ticket_management_enabled %}
-        {{ render_tag('Ticketverwaltung geöffnet', class='color-success', icon='ticket') }}<br>
-        {%- endif %}
-        {%- if party.seat_management_enabled %}
-        {{ render_tag('Sitzplatzverwaltung geöffnet', class='color-success', icon='seating-area') }}<br>
-        {%- endif %}
-        <br>
-        {%- if party.canceled %}
-        {{ render_tag('abgesagt', class='color-danger', icon='disabled') }}
-        {%- endif %}
-        {%- if party.archived %}
-        {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
-        {%- endif %}
-      </div>
-
-    </div>{# .row #}
-  </div>{# .box #}
-{%- endmacro %}

@@ -1,3 +1,61 @@
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/misc.html' import render_tag %}
+
+
+{%- macro render_party(party, days) %}
+  <div class="box" style="border-left: {{ '#ff2222' if party.canceled else ('#aaaaaa' if party.archived else '#55cc00') }} solid 0.25rem;">
+    <div class="row row--space-between">
+
+      <div class="column-auto" style="width: 40%;">
+        <div class="row">
+          <div class="column-auto">
+            <div style="margin-right: -0.25rem;">{{ render_brand_avatar(party.brand, '40') }}</div>
+          </div>
+          <div class="column-auto">
+            <a href="{{ url_for('.view', party_id=party.id) }}" class="disguised" style="display: block;">
+              <strong>{{ party.title }}</strong><br>
+              <span class="monospace">{{ party.id }}</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="column-auto" style="width: 30%;">
+        <div>
+          {{- render_datetime(party.starts_at|utc_to_local_tz) }} bis<br>
+          {{- render_datetime(party.ends_at|utc_to_local_tz) -}}
+          {%- if party.is_over %}
+          {{ render_tag('vorbei', class='color-disabled') }}
+          {%- endif %}
+          <br>
+        {%- for day in days %}
+          {{ render_tag('{:%a}'.format(day)) }}
+        {%- endfor %}
+        </div>
+      </div>
+
+      <div class="column-auto" style="text-align: right; width: 30%;">
+        {%- if party.ticket_management_enabled %}
+        {{ render_tag('Ticketverwaltung geöffnet', class='color-success', icon='ticket') }}<br>
+        {%- endif %}
+        {%- if party.seat_management_enabled %}
+        {{ render_tag('Sitzplatzverwaltung geöffnet', class='color-success', icon='seating-area') }}<br>
+        {%- endif %}
+        <br>
+        {%- if party.canceled %}
+        {{ render_tag('abgesagt', class='color-danger', icon='disabled') }}
+        {%- endif %}
+        {%- if party.archived %}
+        {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+        {%- endif %}
+      </div>
+
+    </div>{# .row #}
+  </div>{# .box #}
+{%- endmacro %}
+
+
 {% macro render_party_admin_link(party, class=None, dim_archived=False) -%}
 <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}"{% if class %} class="{{ class }}"{% endif %}>
   {%- if dim_archived and party.archived -%}
