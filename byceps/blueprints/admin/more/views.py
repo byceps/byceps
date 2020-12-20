@@ -10,6 +10,7 @@ from flask import abort
 
 from ....services.brand import service as brand_service
 from ....services.party import service as party_service
+from ....services.site import service as site_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
@@ -51,3 +52,15 @@ def view_party(party_id):
         abort(404)
 
     return {'party': party}
+
+
+@blueprint.route('/sites/<site_id>')
+@permission_required(AdminPermission.access)
+@templated
+def view_site(site_id):
+    """Show more site admin items."""
+    site = site_service.find_site(site_id)
+    if site is None:
+        abort(404)
+
+    return {'site': site}

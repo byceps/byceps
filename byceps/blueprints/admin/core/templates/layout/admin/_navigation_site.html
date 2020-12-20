@@ -26,12 +26,6 @@
   </header>
   {%- with navigation = Navigation('Site')
       .add_item(
-        url_for('site_admin.view', site_id=site.id),
-        'Einstellungen',
-        id='site_admin',
-        required_permission=SitePermission.view,
-        icon='site')
-      .add_item(
         url_for('snippet_admin.index_for_scope', scope_type='site', scope_name=site.id),
         'Snippets',
         id='snippet_admin_for_site',
@@ -45,19 +39,18 @@
         precondition=site.news_channel_id is not none,
         icon='news')
       .add_item(
-        url_for('board_admin.board_view', board_id=site.board_id) if site.board_id else '',
-        'Forum',
-        id='board_admin',
-        required_permission=BoardCategoryPermission.view,
-        precondition=site.board_id is not none,
-        icon='board')
-      .add_item(
         url_for('shop_storefront_admin.view', storefront_id=site.storefront_id) if site.storefront_id else '',
         'Storefront',
         id='shop_storefront_admin',
         required_permission=ShopPermission.view,
         precondition=site.storefront_id is not none,
         icon='shop')
+      .add_item(
+        url_for('more_admin.view_site', site_id=site.id),
+        'Mehr',
+        id='more_admin_site',
+        required_permission=AdminPermission.access,
+        icon='ellipsis-h')
   -%}
 {{ render_navigation(navigation, current_page) }}
   {%- endwith %}
