@@ -23,7 +23,7 @@ from ....services.ticketing.transfer.models import TicketID
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
-from ....util.views import respond_no_content
+from ....util.views import redirect_to, respond_no_content
 
 from ...admin.seating.authorization import SeatingPermission
 from ...common.authentication.decorators import login_required
@@ -86,7 +86,11 @@ def view_area(slug):
 @templated('site/seating/view_area')
 def manage_seats_in_area(slug):
     """Manage seats for assigned tickets in area."""
-    _abort_if_seat_management_disabled()
+    if not _is_seat_management_enabled():
+        flash_error(
+            'Sitzplatzreservierungen können derzeit nicht verändert werden.'
+        )
+        return redirect_to('.view_area', slug=slug)
 
     area = seating_area_service.find_area_for_party_by_slug(g.party_id, slug)
     if area is None:
@@ -162,7 +166,11 @@ def _get_selected_ticket():
 @respond_no_content
 def occupy_seat(ticket_id, seat_id):
     """Use ticket to occupy seat."""
-    _abort_if_seat_management_disabled()
+    if not _is_seat_management_enabled():
+        flash_error(
+            'Sitzplatzreservierungen können derzeit nicht verändert werden.'
+        )
+        return
 
     ticket = _get_ticket_or_404(ticket_id)
 
@@ -210,7 +218,11 @@ def occupy_seat(ticket_id, seat_id):
 @respond_no_content
 def release_seat(ticket_id):
     """Release the seat."""
-    _abort_if_seat_management_disabled()
+    if not _is_seat_management_enabled():
+        flash_error(
+            'Sitzplatzreservierungen können derzeit nicht verändert werden.'
+        )
+        return
 
     ticket = _get_ticket_or_404(ticket_id)
 
@@ -241,12 +253,6 @@ def release_seat(ticket_id):
         return
 
     flash_success(f'{seat.label} wurde freigegeben.')
-
-
-def _abort_if_seat_management_disabled() -> None:
-    if not _is_seat_management_enabled():
-        flash_error('Sitzplätze können derzeit nicht verändert werden.')
-        return
 
 
 def _is_seat_management_enabled():
