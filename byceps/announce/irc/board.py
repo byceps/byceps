@@ -183,13 +183,13 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
 
 def announce_board_posting_created(event: BoardPostingCreated) -> None:
     """Announce that someone has created a board posting."""
+    if event.topic_muted:
+        return
+
     posting_creator_screen_name = get_screen_name_or_fallback(
         event.posting_creator_screen_name
     )
     board_label = _get_board_label(event.topic_id)
-
-    if event.topic_muted:
-        return
 
     text = (
         f'{posting_creator_screen_name} hat im {board_label} '
