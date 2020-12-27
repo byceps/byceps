@@ -14,6 +14,7 @@ from flask import current_app
 import requests
 
 from ...services.webhooks import service as webhook_service
+from ...services.webhooks.transfer.models import OutgoingWebhook
 
 
 def send_message(scope: str, scope_id: str, channel: str, text: str) -> None:
@@ -30,6 +31,10 @@ def send_message(scope: str, scope_id: str, channel: str, text: str) -> None:
         )
         return
 
+    call_webhook(webhook, channel, text)
+
+
+def call_webhook(webhook: OutgoingWebhook, channel: str, text: str) -> None:
     text_prefix = webhook.text_prefix
     if text_prefix:
         text = text_prefix + text
