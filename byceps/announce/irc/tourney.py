@@ -40,25 +40,25 @@ CHANNEL = CHANNEL_PUBLIC
 def announce_tourney_started(event: TourneyStarted):
     text = f'Das Turnier {event.tourney_title} wurde gestartet.'
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 def announce_tourney_paused(event: TourneyPaused):
     text = f'Das Turnier {event.tourney_title} wurde unterbrochen.'
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 def announce_tourney_canceled(event: TourneyCanceled):
     text = f'Das Turnier {event.tourney_title} wurde abgesagt.'
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 def announce_tourney_finished(event: TourneyFinished):
     text = f'Das Turnier {event.tourney_title} wurde beendet.'
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 # -------------------------------------------------------------------- #
@@ -75,7 +75,7 @@ def announce_match_ready(event: TourneyMatchReady):
         f'kann gespielt werden.'
     )
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 def announce_match_reset(event: TourneyMatchReset):
@@ -84,7 +84,7 @@ def announce_match_reset(event: TourneyMatchReset):
         f'wurde zurückgesetzt.'
     )
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 def announce_match_score_submitted(event: TourneyMatchScoreSubmitted):
@@ -94,7 +94,7 @@ def announce_match_score_submitted(event: TourneyMatchScoreSubmitted):
         f'wurde ein Ergebnis eingetragen.'
     )
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 def announce_match_score_confirmed(event: TourneyMatchScoreConfirmed):
@@ -104,7 +104,7 @@ def announce_match_score_confirmed(event: TourneyMatchScoreConfirmed):
         f'wurde das eingetragene Ergebnis bestätigt.'
     )
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 def announce_match_score_randomized(event: TourneyMatchScoreRandomized):
@@ -114,7 +114,7 @@ def announce_match_score_randomized(event: TourneyMatchScoreRandomized):
         f'wurde ein zufälliges Ergebnis eingetragen.'
     )
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 # -------------------------------------------------------------------- #
@@ -127,7 +127,7 @@ def announce_participant_ready(event: TourneyParticipantReady):
         'ist spielbereit.'
     )
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 def announce_participant_eliminated(event: TourneyParticipantEliminated):
@@ -136,7 +136,7 @@ def announce_participant_eliminated(event: TourneyParticipantEliminated):
         f'{event.tourney_title} aus.'
     )
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 def announce_participant_warned(event: TourneyParticipantWarned):
@@ -145,7 +145,7 @@ def announce_participant_warned(event: TourneyParticipantWarned):
         f'hat eine gelbe Karte \x038,8 \x03 erhalten.'
     )
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 def announce_participant_disqualified(event: TourneyParticipantDisqualified):
@@ -154,7 +154,7 @@ def announce_participant_disqualified(event: TourneyParticipantDisqualified):
         f'wurde disqualifiziert \x034,4 \x03.'
     )
 
-    send_message(CHANNEL, text)
+    send_tourney_message(event.tourney_id, CHANNEL, text)
 
 
 # -------------------------------------------------------------------- #
@@ -179,3 +179,10 @@ def get_participant_label(
         return 'freilos'
 
     return participant_name
+
+
+def send_tourney_message(tourney_id: str, channel: str, text: str) -> None:
+    scope = 'tourney'
+    scope_id = tourney_id
+
+    send_message(scope, scope_id, channel, text)

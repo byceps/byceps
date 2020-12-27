@@ -30,7 +30,7 @@ def announce_snippet_created(event: SnippetCreated) -> None:
         f'"{event.scope.type_}/{event.scope.name}" angelegt.'
     )
 
-    send_message(CHANNEL_ORGA_LOG, text)
+    send_snippet_message(CHANNEL_ORGA_LOG, text)
 
 
 def announce_snippet_updated(event: SnippetUpdated) -> None:
@@ -46,7 +46,7 @@ def announce_snippet_updated(event: SnippetUpdated) -> None:
         f'"{event.scope.type_}/{event.scope.name}" aktualisiert.'
     )
 
-    send_message(CHANNEL_ORGA_LOG, text)
+    send_snippet_message(CHANNEL_ORGA_LOG, text)
 
 
 def announce_snippet_deleted(event: SnippetDeleted) -> None:
@@ -60,7 +60,10 @@ def announce_snippet_deleted(event: SnippetDeleted) -> None:
         f'im Scope "{event.scope.type_}/{event.scope.name}" gelöscht.'
     )
 
-    send_message(CHANNEL_ORGA_LOG, text)
+    send_snippet_message(CHANNEL_ORGA_LOG, text)
+
+
+# helpers
 
 
 _SNIPPET_TYPE_LABELS = {
@@ -72,3 +75,10 @@ _SNIPPET_TYPE_LABELS = {
 def _get_snippet_type_label(snippet_type: SnippetType) -> str:
     """Return label for snippet type."""
     return _SNIPPET_TYPE_LABELS.get(snippet_type, '?')
+
+
+def send_snippet_message(channel: str, text: str) -> None:
+    scope = 'snippet'
+    scope_id = None
+
+    send_message(scope, scope_id, channel, text)

@@ -16,7 +16,7 @@ import requests
 from ...services.webhooks import service as webhook_service
 
 
-def send_message(channel: str, text: str) -> None:
+def send_message(scope: str, scope_id: str, channel: str, text: str) -> None:
     """Write the text to the channel by sending it to the bot via HTTP."""
     scope = 'any'
     scope_id = None

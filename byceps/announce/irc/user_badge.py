@@ -28,4 +28,14 @@ def announce_user_badge_awarded(event: UserBadgeAwarded) -> None:
         f'an {awardee_screen_name} verliehen.'
     )
 
-    send_message(CHANNEL_ORGA_LOG, text)
+    send_user_badge_message(CHANNEL_ORGA_LOG, text)
+
+
+# helpers
+
+
+def send_user_badge_message(channel: str, text: str) -> None:
+    scope = 'user_badge'
+    scope_id = None
+
+    send_message(scope, scope_id, channel, text)

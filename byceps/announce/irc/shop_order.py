@@ -25,7 +25,7 @@ def announce_order_placed(event: ShopOrderPlaced) -> None:
         f'{orderer_screen_name} hat Bestellung {event.order_number} aufgegeben.'
     )
 
-    send_message(CHANNEL_ORGA_LOG, text)
+    send_shop_message(CHANNEL_ORGA_LOG, text)
 
 
 def announce_order_paid(event: ShopOrderPaid) -> None:
@@ -44,7 +44,7 @@ def announce_order_paid(event: ShopOrderPaid) -> None:
         'markiert.'
     )
 
-    send_message(CHANNEL_ORGA_LOG, text)
+    send_shop_message(CHANNEL_ORGA_LOG, text)
 
 
 def announce_order_canceled(event: ShopOrderCanceled) -> None:
@@ -59,4 +59,14 @@ def announce_order_canceled(event: ShopOrderCanceled) -> None:
         f'von {orderer_screen_name} storniert.'
     )
 
-    send_message(CHANNEL_ORGA_LOG, text)
+    send_shop_message(CHANNEL_ORGA_LOG, text)
+
+
+# helpers
+
+
+def send_shop_message(channel: str, text: str) -> None:
+    scope = 'shop'
+    scope_id = None
+
+    send_message(scope, scope_id, channel, text)

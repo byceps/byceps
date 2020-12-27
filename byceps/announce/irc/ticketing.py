@@ -29,7 +29,7 @@ def announce_ticket_checked_in(event: TicketCheckedIn) -> None:
         f'benutzt von {user_screen_name}, eingecheckt.'
     )
 
-    send_message(CHANNEL_ORGA_LOG, text)
+    send_ticketing_message(CHANNEL_ORGA_LOG, text)
 
 
 def announce_tickets_sold(event: TicketsSold) -> None:
@@ -46,4 +46,14 @@ def announce_tickets_sold(event: TicketsSold) -> None:
         f'von {sale_stats.tickets_max} Tickets bezahlt.'
     )
 
-    send_message(CHANNEL_ORGA_LOG, text)
+    send_ticketing_message(CHANNEL_ORGA_LOG, text)
+
+
+# helpers
+
+
+def send_ticketing_message(channel: str, text: str) -> None:
+    scope = 'ticketing'
+    scope_id = None
+
+    send_message(scope, scope_id, channel, text)
