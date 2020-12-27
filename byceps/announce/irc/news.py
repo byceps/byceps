@@ -18,6 +18,11 @@ from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 from ._util import send_message
 
 
+def announce_news_item_published(event: NewsItemPublished) -> None:
+    announce_news_item_published_publicly(event)
+    announce_news_item_published_internally(event)
+
+
 def announce_news_item_published_publicly(event: NewsItemPublished) -> None:
     """Announce publicly that a news item has been published."""
     channel = news_channel_service.find_channel(event.channel_id)

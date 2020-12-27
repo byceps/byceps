@@ -164,8 +164,7 @@ def _on_board_posting_unhidden(
 def _on_news_item_published(
     sender, *, event: Optional[NewsItemPublished] = None
 ) -> None:
-    enqueue(news.announce_news_item_published_publicly, event)
-    enqueue(news.announce_news_item_published_internally, event)
+    enqueue(news.announce_news_item_published, event)
 
 
 # shop orders
