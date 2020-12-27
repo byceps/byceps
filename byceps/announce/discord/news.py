@@ -8,21 +8,10 @@ Announce news events on Discord.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
-
 from ...events.news import NewsItemPublished
 from ...services.news.transfer.models import ChannelID
-from ...signals import news as news_signals
-from ...util.jobqueue import enqueue
 
 from ._util import send_message
-
-
-@news_signals.item_published.connect
-def _on_news_item_published(
-    sender, *, event: Optional[NewsItemPublished] = None
-) -> None:
-    enqueue(announce_news_item_published, event)
 
 
 def announce_news_item_published(event: NewsItemPublished) -> None:
