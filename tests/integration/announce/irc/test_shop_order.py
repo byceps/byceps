@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.announce.irc import shop_order  # Load signal handlers.
+import byceps.announce.irc.connections  # Connect signal handlers.
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import (

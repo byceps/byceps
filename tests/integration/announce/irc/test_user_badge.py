@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.announce.irc import user_badge  # Load signal handlers.
+import byceps.announce.irc.connections  # Connect signal handlers.
 from byceps.services.user_badge import awarding_service, badge_service
 from byceps.signals import user_badge as user_badge_signals
 

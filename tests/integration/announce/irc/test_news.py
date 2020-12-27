@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.announce.irc import news  # Load signal handlers.
+import byceps.announce.irc.connections  # Connect signal handlers.
 from byceps.events.news import NewsItemPublished
 from byceps.services.news import (
     channel_service as news_channel_service,

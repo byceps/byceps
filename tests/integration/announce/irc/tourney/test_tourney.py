@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.announce.irc import tourney  # Load signal handlers.
+import byceps.announce.irc.connections  # Connect signal handlers.
 from byceps.events.tourney import (
     TourneyCanceled,
     TourneyFinished,

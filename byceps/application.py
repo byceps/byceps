@@ -182,13 +182,4 @@ def _load_announce_signal_handlers() -> None:
     corresponding signals.
     """
     from .announce.discord import connections
-    from .announce.irc import (
-        board,
-        news,
-        shop_order,
-        snippet,
-        ticketing,
-        tourney,
-        user,
-        user_badge,
-    )
+    from .announce.irc import connections

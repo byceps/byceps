@@ -8,8 +8,6 @@ Announce board events on IRC.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
-
 from ...events.board import (
     BoardPostingCreated,
     BoardPostingHidden,
@@ -26,20 +24,11 @@ from ...events.board import (
 from ...services.board.transfer.models import TopicID
 from ...services.board import topic_query_service as board_topic_query_service
 from ...services.brand import service as brand_service
-from ...signals import board as board_signals
-from ...util.jobqueue import enqueue
 
 from ..helpers import get_screen_name_or_fallback
 
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 from ._util import send_message
-
-
-@board_signals.topic_created.connect
-def _on_board_topic_created(
-    sender, *, event: Optional[BoardTopicCreated] = None
-) -> None:
-    enqueue(announce_board_topic_created, event)
 
 
 def announce_board_topic_created(event: BoardTopicCreated) -> None:
@@ -56,13 +45,6 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
 
     send_message(CHANNEL_ORGA_LOG, text)
     send_message(CHANNEL_PUBLIC, text)
-
-
-@board_signals.topic_hidden.connect
-def _on_board_topic_hidden(
-    sender, *, event: Optional[BoardTopicHidden] = None
-) -> None:
-    enqueue(announce_board_topic_hidden, event)
 
 
 def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
@@ -84,13 +66,6 @@ def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
     send_message(CHANNEL_ORGA_LOG, text)
 
 
-@board_signals.topic_unhidden.connect
-def _on_board_topic_unhidden(
-    sender, *, event: Optional[BoardTopicUnhidden] = None
-) -> None:
-    enqueue(announce_board_topic_unhidden, event)
-
-
 def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
     """Announce that a moderator has made a board topic visible again."""
     moderator_screen_name = get_screen_name_or_fallback(
@@ -108,13 +83,6 @@ def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
     )
 
     send_message(CHANNEL_ORGA_LOG, text)
-
-
-@board_signals.topic_locked.connect
-def _on_board_topic_locked(
-    sender, *, event: Optional[BoardTopicLocked] = None
-) -> None:
-    enqueue(announce_board_topic_locked, event)
 
 
 def announce_board_topic_locked(event: BoardTopicLocked) -> None:
@@ -136,13 +104,6 @@ def announce_board_topic_locked(event: BoardTopicLocked) -> None:
     send_message(CHANNEL_ORGA_LOG, text)
 
 
-@board_signals.topic_unlocked.connect
-def _on_board_topic_unlocked(
-    sender, *, event: Optional[BoardTopicUnlocked] = None
-) -> None:
-    enqueue(announce_board_topic_unlocked, event)
-
-
 def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
     """Announce that a moderator has unlocked a board topic."""
     moderator_screen_name = get_screen_name_or_fallback(
@@ -160,13 +121,6 @@ def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
     )
 
     send_message(CHANNEL_ORGA_LOG, text)
-
-
-@board_signals.topic_pinned.connect
-def _on_board_topic_pinned(
-    sender, *, event: Optional[BoardTopicPinned] = None
-) -> None:
-    enqueue(announce_board_topic_pinned, event)
 
 
 def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
@@ -188,13 +142,6 @@ def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
     send_message(CHANNEL_ORGA_LOG, text)
 
 
-@board_signals.topic_unpinned.connect
-def _on_board_topic_unpinned(
-    sender, *, event: Optional[BoardTopicUnpinned] = None
-) -> None:
-    enqueue(announce_board_topic_unpinned, event)
-
-
 def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
     """Announce that a moderator has unpinned a board topic."""
     moderator_screen_name = get_screen_name_or_fallback(
@@ -212,13 +159,6 @@ def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
     )
 
     send_message(CHANNEL_ORGA_LOG, text)
-
-
-@board_signals.topic_moved.connect
-def _on_board_topic_moved(
-    sender, *, event: Optional[BoardTopicMoved] = None
-) -> None:
-    enqueue(announce_board_topic_moved, event)
 
 
 def announce_board_topic_moved(event: BoardTopicMoved) -> None:
@@ -241,13 +181,6 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
     send_message(CHANNEL_ORGA_LOG, text)
 
 
-@board_signals.posting_created.connect
-def _on_board_posting_created(
-    sender, *, event: Optional[BoardPostingCreated] = None
-) -> None:
-    enqueue(announce_board_posting_created, event)
-
-
 def announce_board_posting_created(event: BoardPostingCreated) -> None:
     """Announce that someone has created a board posting."""
     posting_creator_screen_name = get_screen_name_or_fallback(
@@ -267,13 +200,6 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     send_message(CHANNEL_PUBLIC, text)
 
 
-@board_signals.posting_hidden.connect
-def _on_board_posting_hidden(
-    sender, *, event: Optional[BoardPostingHidden] = None
-) -> None:
-    enqueue(announce_board_posting_hidden, event)
-
-
 def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     """Announce that a moderator has hidden a board posting."""
     moderator_screen_name = get_screen_name_or_fallback(
@@ -291,13 +217,6 @@ def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     )
 
     send_message(CHANNEL_ORGA_LOG, text)
-
-
-@board_signals.posting_unhidden.connect
-def _on_board_posting_unhidden(
-    sender, *, event: Optional[BoardPostingUnhidden] = None
-) -> None:
-    enqueue(announce_board_posting_unhidden, event)
 
 
 def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:

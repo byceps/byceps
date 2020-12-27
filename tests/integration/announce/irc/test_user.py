@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.announce.irc import user  # Load signal handlers.
+import byceps.announce.irc.connections  # Connect signal handlers.
 from byceps.events.user import (
     UserAccountCreated,
     UserAccountSuspended,

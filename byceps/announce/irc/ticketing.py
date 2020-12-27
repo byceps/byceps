@@ -8,24 +8,13 @@ Announce ticketing events on IRC.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
-
 from ...events.ticketing import TicketCheckedIn, TicketsSold
 from ...services.ticketing import ticket_service
-from ...signals import ticketing as ticketing_signals
-from ...util.jobqueue import enqueue
 
 from ..helpers import get_screen_name_or_fallback
 
 from ._config import CHANNEL_ORGA_LOG
 from ._util import send_message
-
-
-@ticketing_signals.ticket_checked_in.connect
-def _on_ticket_checked_in(
-    sender, *, event: Optional[TicketCheckedIn] = None
-) -> None:
-    enqueue(announce_ticket_checked_in, event)
 
 
 def announce_ticket_checked_in(event: TicketCheckedIn) -> None:
@@ -41,11 +30,6 @@ def announce_ticket_checked_in(event: TicketCheckedIn) -> None:
     )
 
     send_message(CHANNEL_ORGA_LOG, text)
-
-
-@ticketing_signals.tickets_sold.connect
-def _on_tickets_sold(sender, *, event: Optional[TicketsSold] = None) -> None:
-    enqueue(announce_tickets_sold, event)
 
 
 def announce_tickets_sold(event: TicketsSold) -> None:

@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.announce.irc import snippet  # Load signal handlers.
+import byceps.announce.irc.connections  # Connect signal handlers.
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.signals import snippet as snippet_signals

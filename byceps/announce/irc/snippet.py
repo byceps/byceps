@@ -8,24 +8,13 @@ Announce snippet events on IRC.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
-
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from ...services.snippet.transfer.models import SnippetType
-from ...signals import snippet as snippet_signals
-from ...util.jobqueue import enqueue
 
 from ..helpers import get_screen_name_or_fallback
 
 from ._config import CHANNEL_ORGA_LOG
 from ._util import send_message
-
-
-@snippet_signals.snippet_created.connect
-def _on_snippet_created(
-    sender, *, event: Optional[SnippetCreated] = None
-) -> None:
-    enqueue(announce_snippet_created, event)
 
 
 def announce_snippet_created(event: SnippetCreated) -> None:
@@ -44,13 +33,6 @@ def announce_snippet_created(event: SnippetCreated) -> None:
     send_message(CHANNEL_ORGA_LOG, text)
 
 
-@snippet_signals.snippet_updated.connect
-def _on_snippet_updated(
-    sender, *, event: Optional[SnippetUpdated] = None
-) -> None:
-    enqueue(announce_snippet_updated, event)
-
-
 def announce_snippet_updated(event: SnippetUpdated) -> None:
     """Announce that a snippet has been updated."""
     editor_screen_name = get_screen_name_or_fallback(
@@ -65,13 +47,6 @@ def announce_snippet_updated(event: SnippetUpdated) -> None:
     )
 
     send_message(CHANNEL_ORGA_LOG, text)
-
-
-@snippet_signals.snippet_deleted.connect
-def _on_snippet_deleted(
-    sender, *, event: Optional[SnippetDeleted] = None
-) -> None:
-    enqueue(announce_snippet_deleted, event)
 
 
 def announce_snippet_deleted(event: SnippetDeleted) -> None:
