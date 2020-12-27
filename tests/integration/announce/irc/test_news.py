@@ -25,15 +25,10 @@ from .helpers import (
 
 def test_published_news_item_announced(app, item, editor):
     expected_channel1 = CHANNEL_PUBLIC
-    expected_text1 = (
+    expected_channel2 = CHANNEL_ORGA_LOG
+    expected_text = (
         'ACME Entertainment Convention: '
         + 'Die News "Zieh dir das rein!" wurde veröffentlicht. '
-        + 'https://acme.example.com/news/zieh-dir-das-rein'
-    )
-
-    expected_channel2 = CHANNEL_ORGA_LOG
-    expected_text2 = (
-        'Karla_Kolumna hat die News "Zieh dir das rein!" veröffentlicht. '
         + 'https://acme.example.com/news/zieh-dir-das-rein'
     )
 
@@ -51,8 +46,8 @@ def test_published_news_item_announced(app, item, editor):
         news_signals.item_published.send(None, event=event)
 
     actual1, actual2 = get_submitted_json(mock, 2)
-    assert_request_data(actual1, expected_channel1, expected_text1)
-    assert_request_data(actual2, expected_channel2, expected_text2)
+    assert_request_data(actual1, expected_channel1, expected_text)
+    assert_request_data(actual2, expected_channel2, expected_text)
 
 
 # helpers
