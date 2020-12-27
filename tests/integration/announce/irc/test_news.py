@@ -27,8 +27,7 @@ def test_published_news_item_announced(app, item, editor):
     expected_channel1 = CHANNEL_PUBLIC
     expected_channel2 = CHANNEL_ORGA_LOG
     expected_text = (
-        'ACME Entertainment Convention: '
-        + 'Die News "Zieh dir das rein!" wurde veröffentlicht. '
+        'Die News "Zieh dir das rein!" wurde veröffentlicht. '
         + 'https://acme.example.com/news/zieh-dir-das-rein'
     )
 
