@@ -33,7 +33,7 @@ def test_announce_match_ready(app, tourney, match):
         'kann gespielt werden.'
     )
 
-    event = TourneyMatchReset(
+    event = TourneyMatchReady(
         occurred_at=now(),
         initiator_id=None,
         initiator_screen_name=None,
