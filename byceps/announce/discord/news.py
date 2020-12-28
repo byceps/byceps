@@ -9,7 +9,6 @@ Announce news events on Discord.
 """
 
 from ...events.news import NewsItemPublished
-from ...services.news.transfer.models import ChannelID
 
 from ._util import send_message
 
@@ -21,11 +20,11 @@ def announce_news_item_published(event: NewsItemPublished) -> None:
         f'{event.external_url}'
     )
 
-    send_news_message(event.channel_id, text)
+    send_news_message(event, text)
 
 
-def send_news_message(channel_id: ChannelID, text: str) -> None:
+def send_news_message(event: NewsItemPublished, text: str) -> None:
     scope = 'news'
-    scope_id = str(channel_id)
+    scope_id = str(event.channel_id)
 
-    send_message(scope, scope_id, text)
+    send_message(event, scope, scope_id, text)

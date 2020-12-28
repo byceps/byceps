@@ -8,8 +8,7 @@ Announce board events on Discord.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...events.board import BoardPostingCreated, BoardTopicCreated
-from ...services.board.transfer.models import BoardID
+from ...events.board import _BoardEvent, BoardPostingCreated, BoardTopicCreated
 
 from ..helpers import get_screen_name_or_fallback
 
@@ -31,7 +30,7 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
         f'"{event.topic_title}" erstellt: <{event.url}>'
     )
 
-    send_board_message(event.board_id, text)
+    send_board_message(event, text)
 
 
 def announce_board_posting_created(event: BoardPostingCreated) -> None:
@@ -48,11 +47,14 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
         f'"{event.topic_title}" geantwortet: <{event.url}>'
     )
 
-    send_board_message(event.board_id, text)
+    send_board_message(event, text)
 
 
-def send_board_message(board_id: BoardID, text: str) -> None:
+# helpers
+
+
+def send_board_message(event: _BoardEvent, text: str) -> None:
     scope = 'board'
-    scope_id = str(board_id)
+    scope_id = str(event.board_id)
 
-    send_message(scope, scope_id, text)
+    send_message(event, scope, scope_id, text)

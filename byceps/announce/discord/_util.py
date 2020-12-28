@@ -11,10 +11,13 @@ Send messages to Discord channels via its webhooks API.
 from flask import current_app
 import requests
 
+from ...events.base import _BaseEvent
 from ...services.webhooks import service as webhook_service
 
 
-def send_message(scope: str, scope_id: str, text: str) -> None:
+def send_message(
+    event: _BaseEvent, scope: str, scope_id: str, text: str
+) -> None:
     """Send text to the webhook API.
 
     The endpoint URL already includes the target channel.
