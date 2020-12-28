@@ -22,160 +22,64 @@ from ...events.board import (
     BoardTopicUnlocked,
     BoardTopicUnpinned,
 )
-from ...services.board.transfer.models import TopicID
-from ...services.board import topic_query_service as board_topic_query_service
-from ...services.brand import service as brand_service
 
-from ..helpers import get_screen_name_or_fallback
+from ..common import board
 
 from ._util import send_message
 
 
 def announce_board_topic_created(event: BoardTopicCreated) -> None:
     """Announce that someone has created a board topic."""
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
-    board_label = _get_board_label(event.topic_id)
-
-    text = (
-        f'{topic_creator_screen_name} hat im {board_label} '
-        f'das Thema "{event.topic_title}" erstellt: {event.url}'
-    )
+    text = board.assemble_text_for_board_topic_created(event)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
     """Announce that a moderator has hidden a board topic."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
-    board_label = _get_board_label(event.topic_id)
-
-    text = (
-        f'{moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'versteckt: {event.url}'
-    )
+    text = board.assemble_text_for_board_topic_hidden(event)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
     """Announce that a moderator has made a board topic visible again."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
-    board_label = _get_board_label(event.topic_id)
-
-    text = (
-        f'{moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'wieder sichtbar gemacht: {event.url}'
-    )
+    text = board.assemble_text_for_board_topic_unhidden(event)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_locked(event: BoardTopicLocked) -> None:
     """Announce that a moderator has locked a board topic."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
-    board_label = _get_board_label(event.topic_id)
-
-    text = (
-        f'{moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'geschlossen: {event.url}'
-    )
+    text = board.assemble_text_for_board_topic_locked(event)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
     """Announce that a moderator has unlocked a board topic."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
-    board_label = _get_board_label(event.topic_id)
-
-    text = (
-        f'{moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'wieder geöffnet: {event.url}'
-    )
+    text = board.assemble_text_for_board_topic_unlocked(event)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
     """Announce that a moderator has pinned a board topic."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
-    board_label = _get_board_label(event.topic_id)
-
-    text = (
-        f'{moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'angepinnt: {event.url}'
-    )
+    text = board.assemble_text_for_board_topic_pinned(event)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
     """Announce that a moderator has unpinned a board topic."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
-    board_label = _get_board_label(event.topic_id)
-
-    text = (
-        f'{moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'wieder gelöst: {event.url}'
-    )
+    text = board.assemble_text_for_board_topic_unpinned(event)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_moved(event: BoardTopicMoved) -> None:
     """Announce that a moderator has moved a board topic to another category."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
-    board_label = _get_board_label(event.topic_id)
-
-    text = (
-        f'{moderator_screen_name} hat im {board_label} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'aus "{event.old_category_title}" in "{event.new_category_title}" '
-        f'verschoben: {event.url}'
-    )
+    text = board.assemble_text_for_board_topic_moved(event)
 
     send_board_message(event, text)
 
@@ -185,65 +89,26 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     if event.topic_muted:
         return
 
-    posting_creator_screen_name = get_screen_name_or_fallback(
-        event.posting_creator_screen_name
-    )
-    board_label = _get_board_label(event.topic_id)
-
-    text = (
-        f'{posting_creator_screen_name} hat im {board_label} '
-        f'auf das Thema "{event.topic_title}" geantwortet: {event.url}'
-    )
+    text = board.assemble_text_for_board_posting_created(event)
 
     send_board_message(event, text)
 
 
 def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     """Announce that a moderator has hidden a board posting."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    posting_creator_screen_name = get_screen_name_or_fallback(
-        event.posting_creator_screen_name
-    )
-    board_label = _get_board_label(event.topic_id)
-
-    text = (
-        f'{moderator_screen_name} hat im {board_label} '
-        f'eine Antwort von {posting_creator_screen_name} '
-        f'im Thema "{event.topic_title}" versteckt: {event.url}'
-    )
+    text = board.assemble_text_for_board_posting_hidden(event)
 
     send_board_message(event, text)
 
 
 def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
     """Announce that a moderator has made a board posting visible again."""
-    moderator_screen_name = get_screen_name_or_fallback(
-        event.moderator_screen_name
-    )
-    posting_creator_screen_name = get_screen_name_or_fallback(
-        event.posting_creator_screen_name
-    )
-    board_label = _get_board_label(event.topic_id)
-
-    text = (
-        f'{moderator_screen_name} hat im {board_label} '
-        f'eine Antwort von {posting_creator_screen_name} '
-        f'im Thema "{event.topic_title}" wieder sichtbar gemacht: {event.url}'
-    )
+    text = board.assemble_text_for_board_posting_unhidden(event)
 
     send_board_message(event, text)
 
 
 # helpers
-
-
-def _get_board_label(topic_id: TopicID) -> str:
-    topic = board_topic_query_service.find_topic_by_id(topic_id)
-    brand_id = topic.category.board.brand_id
-    brand = brand_service.find_brand(brand_id)
-    return f'"{brand.title}"-Forum'
 
 
 def send_board_message(event: _BoardEvent, text: str) -> None:

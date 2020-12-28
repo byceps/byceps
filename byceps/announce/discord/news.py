@@ -10,15 +10,14 @@ Announce news events on Discord.
 
 from ...events.news import NewsItemPublished
 
+from ..common import news
+
 from ._util import send_message
 
 
 def announce_news_item_published(event: NewsItemPublished) -> None:
     """Announce that a news item has been published."""
-    text = (
-        f'Die News "{event.title}" wurde veröffentlicht. '
-        f'{event.external_url}'
-    )
+    text = news.assemble_text_for_news_item_published(event)
 
     send_news_message(event, text)
 

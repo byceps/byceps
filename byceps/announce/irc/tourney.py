@@ -8,8 +8,6 @@ Announce tourney events on IRC.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
-
 from ...events.tourney import (
     _TourneyEvent,
     TourneyStarted,
@@ -27,6 +25,8 @@ from ...events.tourney import (
     TourneyParticipantDisqualified,
 )
 
+from ..common import tourney
+
 from ._util import send_message
 
 
@@ -34,26 +34,26 @@ from ._util import send_message
 # tourney
 
 
-def announce_tourney_started(event: TourneyStarted):
-    text = f'Das Turnier {event.tourney_title} wurde gestartet.'
+def announce_tourney_started(event: TourneyStarted) -> None:
+    text = tourney.assemble_text_for_tourney_started(event)
 
     send_tourney_message(event, text)
 
 
-def announce_tourney_paused(event: TourneyPaused):
-    text = f'Das Turnier {event.tourney_title} wurde unterbrochen.'
+def announce_tourney_paused(event: TourneyPaused) -> None:
+    text = tourney.assemble_text_for_tourney_paused(event)
 
     send_tourney_message(event, text)
 
 
-def announce_tourney_canceled(event: TourneyCanceled):
-    text = f'Das Turnier {event.tourney_title} wurde abgesagt.'
+def announce_tourney_canceled(event: TourneyCanceled) -> None:
+    text = tourney.assemble_text_for_tourney_canceled(event)
 
     send_tourney_message(event, text)
 
 
-def announce_tourney_finished(event: TourneyFinished):
-    text = f'Das Turnier {event.tourney_title} wurde beendet.'
+def announce_tourney_finished(event: TourneyFinished) -> None:
+    text = tourney.assemble_text_for_tourney_finished(event)
 
     send_tourney_message(event, text)
 
@@ -62,54 +62,36 @@ def announce_tourney_finished(event: TourneyFinished):
 # match
 
 
-def announce_match_ready(event: TourneyMatchReady):
+def announce_match_ready(event: TourneyMatchReady) -> None:
     # Do not announce a match if it does not actually need to be played.
     if None in {event.participant1_id, event.participant2_id}:
         return
 
-    text = (
-        f'Das Match {get_match_label(event)} im Turnier {event.tourney_title} '
-        f'kann gespielt werden.'
-    )
+    text = tourney.assemble_text_for_match_ready(event)
 
     send_tourney_message(event, text)
 
 
-def announce_match_reset(event: TourneyMatchReset):
-    text = (
-        f'Das Match {get_match_label(event)} im Turnier {event.tourney_title} '
-        f'wurde zurückgesetzt.'
-    )
+def announce_match_reset(event: TourneyMatchReset) -> None:
+    text = tourney.assemble_text_for_match_reset(event)
 
     send_tourney_message(event, text)
 
 
-def announce_match_score_submitted(event: TourneyMatchScoreSubmitted):
-    text = (
-        f'Für das Match {get_match_label(event)} '
-        f'im Turnier {event.tourney_title} '
-        f'wurde ein Ergebnis eingetragen.'
-    )
+def announce_match_score_submitted(event: TourneyMatchScoreSubmitted) -> None:
+    text = tourney.assemble_text_for_match_score_submitted(event)
 
     send_tourney_message(event, text)
 
 
-def announce_match_score_confirmed(event: TourneyMatchScoreConfirmed):
-    text = (
-        f'Für das Match {get_match_label(event)} '
-        f'im Turnier {event.tourney_title} '
-        f'wurde das eingetragene Ergebnis bestätigt.'
-    )
+def announce_match_score_confirmed(event: TourneyMatchScoreConfirmed) -> None:
+    text = tourney.assemble_text_for_match_score_confirmed(event)
 
     send_tourney_message(event, text)
 
 
-def announce_match_score_randomized(event: TourneyMatchScoreRandomized):
-    text = (
-        f'Für das Match {get_match_label(event)} '
-        f'im Turnier {event.tourney_title} '
-        f'wurde ein zufälliges Ergebnis eingetragen.'
-    )
+def announce_match_score_randomized(event: TourneyMatchScoreRandomized) -> None:
+    text = tourney.assemble_text_for_match_score_randomized(event)
 
     send_tourney_message(event, text)
 
@@ -118,64 +100,36 @@ def announce_match_score_randomized(event: TourneyMatchScoreRandomized):
 # participant
 
 
-def announce_participant_ready(event: TourneyParticipantReady):
-    text = (
-        f'"{event.participant_name}" im Turnier {event.tourney_title} '
-        'ist spielbereit.'
-    )
+def announce_participant_ready(event: TourneyParticipantReady) -> None:
+    text = tourney.assemble_text_for_participant_ready(event)
 
     send_tourney_message(event, text)
 
 
-def announce_participant_eliminated(event: TourneyParticipantEliminated):
-    text = (
-        f'"{event.participant_name}" scheidet aus dem Turnier '
-        f'{event.tourney_title} aus.'
-    )
+def announce_participant_eliminated(
+    event: TourneyParticipantEliminated,
+) -> None:
+    text = tourney.assemble_text_for_participant_eliminated(event)
 
     send_tourney_message(event, text)
 
 
-def announce_participant_warned(event: TourneyParticipantWarned):
-    text = (
-        f'"{event.participant_name}" im Turnier {event.tourney_title} '
-        f'hat eine gelbe Karte \x038,8 \x03 erhalten.'
-    )
+def announce_participant_warned(event: TourneyParticipantWarned) -> None:
+    text = tourney.assemble_text_for_participant_warned(event)
 
     send_tourney_message(event, text)
 
 
-def announce_participant_disqualified(event: TourneyParticipantDisqualified):
-    text = (
-        f'"{event.participant_name}" im Turnier {event.tourney_title} '
-        f'wurde disqualifiziert \x034,4 \x03.'
-    )
+def announce_participant_disqualified(
+    event: TourneyParticipantDisqualified,
+) -> None:
+    text = tourney.assemble_text_for_participant_disqualified(event)
 
     send_tourney_message(event, text)
 
 
 # -------------------------------------------------------------------- #
 # helpers
-
-
-def get_match_label(match_event) -> str:
-    participant1_label = get_participant_label(
-        match_event.participant1_id, match_event.participant1_name
-    )
-    participant2_label = get_participant_label(
-        match_event.participant2_id, match_event.participant2_name
-    )
-
-    return f'"{participant1_label}" vs. "{participant2_label}"'
-
-
-def get_participant_label(
-    participant_id: Optional[str], participant_name: Optional[str]
-) -> str:
-    if participant_id is None:
-        return 'freilos'
-
-    return participant_name
 
 
 def send_tourney_message(event: _TourneyEvent, text: str) -> None:

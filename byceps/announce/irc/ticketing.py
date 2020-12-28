@@ -11,41 +11,22 @@ Announce ticketing events on IRC.
 from typing import Union
 
 from ...events.ticketing import TicketCheckedIn, TicketsSold
-from ...services.ticketing import ticket_service
 
-from ..helpers import get_screen_name_or_fallback
+from ..common import ticketing
 
 from ._util import send_message
 
 
 def announce_ticket_checked_in(event: TicketCheckedIn) -> None:
     """Announce that a ticket has been checked in."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
-
-    text = (
-        f'{initiator_screen_name} hat Ticket "{event.ticket_code}", '
-        f'benutzt von {user_screen_name}, eingecheckt.'
-    )
+    text = ticketing.assemble_text_for_ticket_checked_in(event)
 
     send_ticketing_message(event, text)
 
 
 def announce_tickets_sold(event: TicketsSold) -> None:
-    """Announce that ticket have been sold."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)
-    sale_stats = ticket_service.get_ticket_sale_stats(event.party_id)
-
-    text = (
-        f'{owner_screen_name} hat {event.quantity} Ticket(s) bezahlt. '
-        f'Aktuell sind {sale_stats.tickets_sold} '
-        f'von {sale_stats.tickets_max} Tickets bezahlt.'
-    )
+    """Announce that tickets have been sold."""
+    text = ticketing.assemble_text_for_tickets_sold(event)
 
     send_ticketing_message(event, text)
 

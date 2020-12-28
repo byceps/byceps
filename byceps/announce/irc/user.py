@@ -19,36 +19,21 @@ from ...events.user import (
     UserScreenNameChanged,
 )
 
-from ..helpers import get_screen_name_or_fallback
+from ..common import user
 
 from ._util import send_message
 
 
 def announce_user_account_created(event: UserAccountCreated) -> None:
     """Announce that a user account has been created."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
-
-    text = (
-        f'{initiator_screen_name} '
-        f'hat das Benutzerkonto "{user_screen_name}" angelegt.'
-    )
+    text = user.assemble_text_for_user_account_created(event)
 
     send_user_message(event, text)
 
 
 def announce_user_screen_name_changed(event: UserScreenNameChanged) -> None:
     """Announce that a user's screen name has been changed."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-
-    text = (
-        f'{initiator_screen_name} hat das Benutzerkonto '
-        f'"{event.old_screen_name}" in "{event.new_screen_name}" umbenannt.'
-    )
+    text = user.assemble_text_for_user_screen_name_changed(event)
 
     send_user_message(event, text)
 
@@ -57,75 +42,35 @@ def announce_user_email_address_invalidated(
     event: UserEmailAddressInvalidated,
 ) -> None:
     """Announce that a user's email address has been invalidated."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
-
-    text = (
-        f'{initiator_screen_name} hat die E-Mail-Adresse '
-        f'des Benutzerkontos "{user_screen_name}" invalidiert.'
-    )
+    text = user.assemble_text_for_user_email_address_invalidated(event)
 
     send_user_message(event, text)
 
 
 def announce_user_details_updated_changed(event: UserDetailsUpdated) -> None:
     """Announce that a user's details have been changed."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
-
-    text = (
-        f'{initiator_screen_name} hat die persönlichen Daten '
-        f'des Benutzerkontos "{user_screen_name}" geändert.'
-    )
+    text = user.assemble_text_for_user_details_updated_changed(event)
 
     send_user_message(event, text)
 
 
 def announce_user_account_suspended(event: UserAccountSuspended) -> None:
     """Announce that a user account has been suspended."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
-
-    text = (
-        f'{initiator_screen_name} hat das Benutzerkonto '
-        f'"{user_screen_name}" gesperrt.'
-    )
+    text = user.assemble_text_for_user_account_suspended(event)
 
     send_user_message(event, text)
 
 
 def announce_user_account_unsuspended(event: UserAccountUnsuspended) -> None:
     """Announce that a user account has been unsuspended."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
-
-    text = (
-        f'{initiator_screen_name} hat das Benutzerkonto '
-        f'"{user_screen_name}" entsperrt.'
-    )
+    text = user.assemble_text_for_user_account_unsuspended(event)
 
     send_user_message(event, text)
 
 
 def announce_user_account_deleted(event: UserAccountDeleted) -> None:
-    """Announce that a user account has been created."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
-
-    text = (
-        f'{initiator_screen_name} hat das Benutzerkonto '
-        f'"{user_screen_name}" (ID "{event.user_id}") gelöscht.'
-    )
+    """Announce that a user account has been deleted."""
+    text = user.assemble_text_for_user_account_deleted(event)
 
     send_user_message(event, text)
 
