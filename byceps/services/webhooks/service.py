@@ -6,7 +6,7 @@ byceps.services.webhooks.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Dict, Optional, Set
+from typing import Any, Dict, List, Optional
 
 from ...database import db
 
@@ -49,22 +49,19 @@ def delete_outgoing_webhook(webhook_id: WebhookID) -> None:
     db.session.commit()
 
 
-def find_enabled_outgoing_webhook(
+def get_enabled_outgoing_webhooks(
     scope: str, scope_id: str, format: str
-) -> Optional[OutgoingWebhook]:
-    """Return the configuration for an enabled outgoing webhook with the
+) -> List[OutgoingWebhook]:
+    """Return the configurations for enabled outgoing webhooks with the
     given scope and format.
     """
-    webhook = db.session.query(DbOutgoingWebhook) \
+    webhooks = db.session.query(DbOutgoingWebhook) \
         .filter_by(scope=scope) \
         .filter_by(scope_id=scope_id) \
         .filter_by(format=format) \
-        .one_or_none()
+        .all()
 
-    if webhook is None:
-        return None
-
-    return _db_entity_to_outgoing_webhook(webhook)
+    return [_db_entity_to_outgoing_webhook(webhook) for webhook in webhooks]
 
 
 def _db_entity_to_outgoing_webhook(

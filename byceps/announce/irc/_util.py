@@ -40,12 +40,11 @@ def send_message(
     for visibility in visibilities:
         scope = visibility.name
 
-        webhook = webhook_service.find_enabled_outgoing_webhook(
-            scope, scope_id, format
+        webhooks.extend(
+            webhook_service.get_enabled_outgoing_webhooks(
+                scope, scope_id, format
+            )
         )
-
-        if webhook is not None:
-            webhooks.append(webhook)
 
     if not webhooks:
         current_app.logger.warning(

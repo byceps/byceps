@@ -13,6 +13,7 @@ import requests
 
 from ...events.base import _BaseEvent
 from ...services.webhooks import service as webhook_service
+from ...services.webhooks.transfer.models import OutgoingWebhook
 
 
 def send_message(
@@ -23,14 +24,21 @@ def send_message(
     The endpoint URL already includes the target channel.
     """
     format = 'discord'
-    webhook = webhook_service.find_enabled_outgoing_webhook(scope, scope_id, format)
-    if webhook is None:
+    webhooks = webhook_service.get_enabled_outgoing_webhooks(
+        scope, scope_id, format
+    )
+    if not webhooks:
         current_app.logger.warning(
             f'No enabled Discord webhook found for scope "{scope}" and '
             f'scope ID "{scope_id}". Not sending message to Discord.'
         )
         return
 
+    for webhook in webhooks:
+        call_webhook(webhook, text)
+
+
+def call_webhook(webhook: OutgoingWebhook, text: str) -> None:
     text_prefix = webhook.text_prefix
     if text_prefix:
         text = text_prefix + text
