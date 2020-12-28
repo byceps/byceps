@@ -24,9 +24,10 @@ from ...events.tourney import (
     TourneyParticipantWarned,
     TourneyParticipantDisqualified,
 )
+from ...services.webhooks.transfer.models import OutgoingWebhook
 
 from ..common import tourney
-from ..helpers import send_message
+from ..helpers import call_webhook
 
 
 # -------------------------------------------------------------------- #
@@ -34,77 +35,83 @@ from ..helpers import send_message
 
 
 def announce_tourney_started(
-    event: TourneyStarted, webhook_format: str
+    event: TourneyStarted, webhook: OutgoingWebhook
 ) -> None:
     text = tourney.assemble_text_for_tourney_started(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
-def announce_tourney_paused(event: TourneyPaused, webhook_format: str) -> None:
+def announce_tourney_paused(
+    event: TourneyPaused, webhook: OutgoingWebhook
+) -> None:
     text = tourney.assemble_text_for_tourney_paused(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
 def announce_tourney_canceled(
-    event: TourneyCanceled, webhook_format: str
+    event: TourneyCanceled, webhook: OutgoingWebhook
 ) -> None:
     text = tourney.assemble_text_for_tourney_canceled(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
 def announce_tourney_finished(
-    event: TourneyFinished, webhook_format: str
+    event: TourneyFinished, webhook: OutgoingWebhook
 ) -> None:
     text = tourney.assemble_text_for_tourney_finished(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
 # -------------------------------------------------------------------- #
 # match
 
 
-def announce_match_ready(event: TourneyMatchReady, webhook_format: str) -> None:
+def announce_match_ready(
+    event: TourneyMatchReady, webhook: OutgoingWebhook
+) -> None:
     # Do not announce a match if it does not actually need to be played.
     if None in {event.participant1_id, event.participant2_id}:
         return
 
     text = tourney.assemble_text_for_match_ready(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
-def announce_match_reset(event: TourneyMatchReset, webhook_format: str) -> None:
+def announce_match_reset(
+    event: TourneyMatchReset, webhook: OutgoingWebhook
+) -> None:
     text = tourney.assemble_text_for_match_reset(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
 def announce_match_score_submitted(
-    event: TourneyMatchScoreSubmitted, webhook_format: str
+    event: TourneyMatchScoreSubmitted, webhook: OutgoingWebhook
 ) -> None:
     text = tourney.assemble_text_for_match_score_submitted(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
 def announce_match_score_confirmed(
-    event: TourneyMatchScoreConfirmed, webhook_format: str
+    event: TourneyMatchScoreConfirmed, webhook: OutgoingWebhook
 ) -> None:
     text = tourney.assemble_text_for_match_score_confirmed(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
 def announce_match_score_randomized(
-    event: TourneyMatchScoreRandomized, webhook_format: str
+    event: TourneyMatchScoreRandomized, webhook: OutgoingWebhook
 ) -> None:
     text = tourney.assemble_text_for_match_score_randomized(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
 # -------------------------------------------------------------------- #
@@ -112,35 +119,35 @@ def announce_match_score_randomized(
 
 
 def announce_participant_ready(
-    event: TourneyParticipantReady, webhook_format: str
+    event: TourneyParticipantReady, webhook: OutgoingWebhook
 ) -> None:
     text = tourney.assemble_text_for_participant_ready(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
 def announce_participant_eliminated(
-    event: TourneyParticipantEliminated, webhook_format: str
+    event: TourneyParticipantEliminated, webhook: OutgoingWebhook
 ) -> None:
     text = tourney.assemble_text_for_participant_eliminated(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
 def announce_participant_warned(
-    event: TourneyParticipantWarned, webhook_format: str
+    event: TourneyParticipantWarned, webhook: OutgoingWebhook
 ) -> None:
     text = tourney.assemble_text_for_participant_warned(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
 def announce_participant_disqualified(
-    event: TourneyParticipantDisqualified, webhook_format: str
+    event: TourneyParticipantDisqualified, webhook: OutgoingWebhook
 ) -> None:
     text = tourney.assemble_text_for_participant_disqualified(event)
 
-    send_tourney_message(event, webhook_format, text)
+    send_tourney_message(event, webhook, text)
 
 
 # -------------------------------------------------------------------- #
@@ -148,9 +155,9 @@ def announce_participant_disqualified(
 
 
 def send_tourney_message(
-    event: _TourneyEvent, webhook_format: str, text: str
+    event: _TourneyEvent, webhook: OutgoingWebhook, text: str
 ) -> None:
     scope = 'tourney'
     scope_id = event.tourney_id
 
-    send_message(event, webhook_format, scope, scope_id, text)
+    call_webhook(webhook, text)

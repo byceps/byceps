@@ -9,12 +9,13 @@ Announce user badge events on IRC.
 """
 
 from ...events.user_badge import UserBadgeAwarded
+from ...services.webhooks.transfer.models import OutgoingWebhook
 
-from ..helpers import get_screen_name_or_fallback, send_message
+from ..helpers import get_screen_name_or_fallback, call_webhook
 
 
 def announce_user_badge_awarded(
-    event: UserBadgeAwarded, webhook_format: str
+    event: UserBadgeAwarded, webhook: OutgoingWebhook
 ) -> None:
     """Announce that a badge has been awarded to a user."""
     initiator_screen_name = get_screen_name_or_fallback(
@@ -27,16 +28,16 @@ def announce_user_badge_awarded(
         f'an {awardee_screen_name} verliehen.'
     )
 
-    send_user_badge_message(event, webhook_format, text)
+    send_user_badge_message(event, webhook, text)
 
 
 # helpers
 
 
 def send_user_badge_message(
-    event: UserBadgeAwarded, webhook_format: str, text: str
+    event: UserBadgeAwarded, webhook: OutgoingWebhook, text: str
 ) -> None:
     scope = 'user_badge'
     scope_id = None
 
-    send_message(event, webhook_format, scope, scope_id, text)
+    call_webhook(webhook, text)

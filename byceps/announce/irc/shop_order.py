@@ -14,41 +14,44 @@ from ...events.shop import (
     ShopOrderPaid,
     ShopOrderPlaced,
 )
+from ...services.webhooks.transfer.models import OutgoingWebhook
 
 from ..common import shop_order
-from ..helpers import send_message
+from ..helpers import call_webhook
 
 
-def announce_order_placed(event: ShopOrderPlaced, webhook_format: str) -> None:
+def announce_order_placed(
+    event: ShopOrderPlaced, webhook: OutgoingWebhook
+) -> None:
     """Announce that an order has been placed."""
     text = shop_order.assemble_text_for_order_placed(event)
 
-    send_shop_message(event, webhook_format, text)
+    send_shop_message(event, webhook, text)
 
 
-def announce_order_paid(event: ShopOrderPaid, webhook_format: str) -> None:
+def announce_order_paid(event: ShopOrderPaid, webhook: OutgoingWebhook) -> None:
     """Announce that an order has been paid."""
     text = shop_order.assemble_text_for_order_paid(event)
 
-    send_shop_message(event, webhook_format, text)
+    send_shop_message(event, webhook, text)
 
 
 def announce_order_canceled(
-    event: ShopOrderCanceled, webhook_format: str
+    event: ShopOrderCanceled, webhook: OutgoingWebhook
 ) -> None:
     """Announce that an order has been canceled."""
     text = shop_order.assemble_text_for_order_canceled(event)
 
-    send_shop_message(event, webhook_format, text)
+    send_shop_message(event, webhook, text)
 
 
 # helpers
 
 
 def send_shop_message(
-    event: _ShopOrderEvent, webhook_format: str, text: str
+    event: _ShopOrderEvent, webhook: OutgoingWebhook, text: str
 ) -> None:
     scope = 'shop'
     scope_id = None
 
-    send_message(event, webhook_format, scope, scope_id, text)
+    call_webhook(webhook, text)

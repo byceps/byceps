@@ -14,45 +14,46 @@ from ...events.snippet import (
     SnippetDeleted,
     SnippetUpdated,
 )
+from ...services.webhooks.transfer.models import OutgoingWebhook
 
 from ..common import snippet
-from ..helpers import send_message
+from ..helpers import call_webhook
 
 
 def announce_snippet_created(
-    event: SnippetCreated, webhook_format: str
+    event: SnippetCreated, webhook: OutgoingWebhook
 ) -> None:
     """Announce that a snippet has been created."""
     text = snippet.assemble_text_for_snippet_created(event)
 
-    send_snippet_message(event, webhook_format, text)
+    send_snippet_message(event, webhook, text)
 
 
 def announce_snippet_updated(
-    event: SnippetUpdated, webhook_format: str
+    event: SnippetUpdated, webhook: OutgoingWebhook
 ) -> None:
     """Announce that a snippet has been updated."""
     text = snippet.assemble_text_for_snippet_updated(event)
 
-    send_snippet_message(event, webhook_format, text)
+    send_snippet_message(event, webhook, text)
 
 
 def announce_snippet_deleted(
-    event: SnippetDeleted, webhook_format: str
+    event: SnippetDeleted, webhook: OutgoingWebhook
 ) -> None:
     """Announce that a snippet has been deleted."""
     text = snippet.assemble_text_for_snippet_deleted(event)
 
-    send_snippet_message(event, webhook_format, text)
+    send_snippet_message(event, webhook, text)
 
 
 # helpers
 
 
 def send_snippet_message(
-    event: _SnippetEvent, webhook_format: str, text: str
+    event: _SnippetEvent, webhook: OutgoingWebhook, text: str
 ) -> None:
     scope = 'snippet'
     scope_id = None
 
-    send_message(event, webhook_format, scope, scope_id, text)
+    call_webhook(webhook, text)
