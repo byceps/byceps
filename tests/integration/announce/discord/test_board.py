@@ -85,19 +85,23 @@ def test_announce_posting_created(
 @pytest.fixture(scope='module')
 def webhook_settings(board):
     scope = 'board'
-    scope_id = str(board.id)
+    scope_ids = [str(board.id), 'totally-different-id']
     format = 'discord'
     text_prefix = '[Forum] '
     url = WEBHOOK_URL
     enabled = True
 
-    webhook = webhook_service.create_outgoing_webhook(
-        scope, scope_id, format, url, enabled, text_prefix=text_prefix
-    )
+    webhooks = [
+        webhook_service.create_outgoing_webhook(
+            scope, scope_id, format, url, enabled, text_prefix=text_prefix
+        )
+        for scope_id in scope_ids
+    ]
 
     yield
 
-    webhook_service.delete_outgoing_webhook(webhook.id)
+    for webhook in webhooks:
+        webhook_service.delete_outgoing_webhook(webhook.id)
 
 
 @pytest.fixture(scope='module')
