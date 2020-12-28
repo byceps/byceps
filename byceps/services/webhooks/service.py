@@ -49,15 +49,11 @@ def delete_outgoing_webhook(webhook_id: WebhookID) -> None:
     db.session.commit()
 
 
-def get_enabled_outgoing_webhooks(
-    scope: str, scope_id: str, format: str
-) -> List[OutgoingWebhook]:
+def get_enabled_outgoing_webhooks(format: str) -> List[OutgoingWebhook]:
     """Return the configurations for enabled outgoing webhooks with the
-    given scope and format.
+    given format.
     """
     webhooks = db.session.query(DbOutgoingWebhook) \
-        .filter_by(scope=scope) \
-        .filter_by(scope_id=scope_id) \
         .filter_by(format=format) \
         .all()
 

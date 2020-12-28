@@ -48,9 +48,8 @@ def get_webhooks_for_discord(
     event: _BaseEvent, scope: str, scope_id: str
 ) -> List[OutgoingWebhook]:
     webhook_format = 'discord'
-    webhooks = webhook_service.get_enabled_outgoing_webhooks(
-        scope, scope_id, webhook_format
-    )
+    webhooks = webhook_service.get_enabled_outgoing_webhooks(webhook_format)
+    webhooks = select_webhooks(webhooks, scope, scope_id)
 
     if not webhooks:
         current_app.logger.warning(
@@ -77,11 +76,11 @@ def get_webhooks_for_irc(event: _BaseEvent) -> List[OutgoingWebhook]:
     for visibility in visibilities:
         scope = visibility.name
 
-        webhooks.extend(
-            webhook_service.get_enabled_outgoing_webhooks(
-                scope, scope_id, webhook_format
-            )
+        relevant_webhooks = webhook_service.get_enabled_outgoing_webhooks(
+            webhook_format
         )
+        relevant_webhooks = select_webhooks(relevant_webhooks, scope, scope_id)
+        webhooks.extend(relevant_webhooks)
 
     if not webhooks:
         current_app.logger.warning(
@@ -93,6 +92,16 @@ def get_webhooks_for_irc(event: _BaseEvent) -> List[OutgoingWebhook]:
     webhooks.sort(key=lambda wh: wh.extra_fields['channel'])
 
     return webhooks
+
+
+def select_webhooks(
+    webhooks: List[OutgoingWebhook], scope: str, scope_id: str
+) -> List[OutgoingWebhook]:
+    return [wh for wh in webhooks if match_scope(wh, scope, scope_id)]
+
+
+def match_scope(webhook: OutgoingWebhook, scope: str, scope_id: str) -> bool:
+    return webhook.scope == scope and webhook.scope_id == scope_id
 
 
 def call_webhook(webhook: OutgoingWebhook, text: str) -> None:
