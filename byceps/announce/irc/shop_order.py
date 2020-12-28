@@ -8,7 +8,12 @@ Announce shop order events on IRC.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
+from ...events.shop import (
+    _ShopOrderEvent,
+    ShopOrderCanceled,
+    ShopOrderPaid,
+    ShopOrderPlaced,
+)
 from ...services.shop.order import service as order_service
 
 from ..helpers import get_screen_name_or_fallback
@@ -25,7 +30,7 @@ def announce_order_placed(event: ShopOrderPlaced) -> None:
         f'{orderer_screen_name} hat Bestellung {event.order_number} aufgegeben.'
     )
 
-    send_shop_message(CHANNEL_ORGA_LOG, text)
+    send_shop_message(event, CHANNEL_ORGA_LOG, text)
 
 
 def announce_order_paid(event: ShopOrderPaid) -> None:
@@ -44,7 +49,7 @@ def announce_order_paid(event: ShopOrderPaid) -> None:
         'markiert.'
     )
 
-    send_shop_message(CHANNEL_ORGA_LOG, text)
+    send_shop_message(event, CHANNEL_ORGA_LOG, text)
 
 
 def announce_order_canceled(event: ShopOrderCanceled) -> None:
@@ -59,14 +64,14 @@ def announce_order_canceled(event: ShopOrderCanceled) -> None:
         f'von {orderer_screen_name} storniert.'
     )
 
-    send_shop_message(CHANNEL_ORGA_LOG, text)
+    send_shop_message(event, CHANNEL_ORGA_LOG, text)
 
 
 # helpers
 
 
-def send_shop_message(channel: str, text: str) -> None:
+def send_shop_message(event: _ShopOrderEvent, channel: str, text: str) -> None:
     scope = 'shop'
     scope_id = None
 
-    send_message(scope, scope_id, channel, text)
+    send_message(event, scope, scope_id, channel, text)

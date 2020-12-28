@@ -9,6 +9,7 @@ Announce board events on IRC.
 """
 
 from ...events.board import (
+    _BoardEvent,
     BoardPostingCreated,
     BoardPostingHidden,
     BoardPostingUnhidden,
@@ -21,7 +22,7 @@ from ...events.board import (
     BoardTopicUnlocked,
     BoardTopicUnpinned,
 )
-from ...services.board.transfer.models import BoardID, TopicID
+from ...services.board.transfer.models import TopicID
 from ...services.board import topic_query_service as board_topic_query_service
 from ...services.brand import service as brand_service
 
@@ -43,8 +44,8 @@ def announce_board_topic_created(event: BoardTopicCreated) -> None:
         f'das Thema "{event.topic_title}" erstellt: {event.url}'
     )
 
-    send_board_message(event.board_id, CHANNEL_ORGA_LOG, text)
-    send_board_message(event.board_id, CHANNEL_PUBLIC, text)
+    send_board_message(event, CHANNEL_ORGA_LOG, text)
+    send_board_message(event, CHANNEL_PUBLIC, text)
 
 
 def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
@@ -63,7 +64,7 @@ def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
         f'versteckt: {event.url}'
     )
 
-    send_board_message(event.board_id, CHANNEL_ORGA_LOG, text)
+    send_board_message(event, CHANNEL_ORGA_LOG, text)
 
 
 def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
@@ -82,7 +83,7 @@ def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
         f'wieder sichtbar gemacht: {event.url}'
     )
 
-    send_board_message(event.board_id, CHANNEL_ORGA_LOG, text)
+    send_board_message(event, CHANNEL_ORGA_LOG, text)
 
 
 def announce_board_topic_locked(event: BoardTopicLocked) -> None:
@@ -101,7 +102,7 @@ def announce_board_topic_locked(event: BoardTopicLocked) -> None:
         f'geschlossen: {event.url}'
     )
 
-    send_board_message(event.board_id, CHANNEL_ORGA_LOG, text)
+    send_board_message(event, CHANNEL_ORGA_LOG, text)
 
 
 def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
@@ -120,7 +121,7 @@ def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
         f'wieder geöffnet: {event.url}'
     )
 
-    send_board_message(event.board_id, CHANNEL_ORGA_LOG, text)
+    send_board_message(event, CHANNEL_ORGA_LOG, text)
 
 
 def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
@@ -139,7 +140,7 @@ def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
         f'angepinnt: {event.url}'
     )
 
-    send_board_message(event.board_id, CHANNEL_ORGA_LOG, text)
+    send_board_message(event, CHANNEL_ORGA_LOG, text)
 
 
 def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
@@ -158,7 +159,7 @@ def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
         f'wieder gelöst: {event.url}'
     )
 
-    send_board_message(event.board_id, CHANNEL_ORGA_LOG, text)
+    send_board_message(event, CHANNEL_ORGA_LOG, text)
 
 
 def announce_board_topic_moved(event: BoardTopicMoved) -> None:
@@ -178,7 +179,7 @@ def announce_board_topic_moved(event: BoardTopicMoved) -> None:
         f'verschoben: {event.url}'
     )
 
-    send_board_message(event.board_id, CHANNEL_ORGA_LOG, text)
+    send_board_message(event, CHANNEL_ORGA_LOG, text)
 
 
 def announce_board_posting_created(event: BoardPostingCreated) -> None:
@@ -196,8 +197,8 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
         f'auf das Thema "{event.topic_title}" geantwortet: {event.url}'
     )
 
-    send_board_message(event.board_id, CHANNEL_ORGA_LOG, text)
-    send_board_message(event.board_id, CHANNEL_PUBLIC, text)
+    send_board_message(event, CHANNEL_ORGA_LOG, text)
+    send_board_message(event, CHANNEL_PUBLIC, text)
 
 
 def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
@@ -216,7 +217,7 @@ def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
         f'im Thema "{event.topic_title}" versteckt: {event.url}'
     )
 
-    send_board_message(event.board_id, CHANNEL_ORGA_LOG, text)
+    send_board_message(event, CHANNEL_ORGA_LOG, text)
 
 
 def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
@@ -235,7 +236,7 @@ def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
         f'im Thema "{event.topic_title}" wieder sichtbar gemacht: {event.url}'
     )
 
-    send_board_message(event.board_id, CHANNEL_ORGA_LOG, text)
+    send_board_message(event, CHANNEL_ORGA_LOG, text)
 
 
 # helpers
@@ -248,8 +249,8 @@ def _get_board_label(topic_id: TopicID) -> str:
     return f'"{brand.title}"-Forum'
 
 
-def send_board_message(board_id: BoardID, channel: str, text: str) -> None:
+def send_board_message(event: _BoardEvent, channel: str, text: str) -> None:
     scope = 'board'
-    scope_id = str(board_id)
+    scope_id = str(event.board_id)
 
-    send_message(scope, scope_id, channel, text)
+    send_message(event, scope, scope_id, channel, text)

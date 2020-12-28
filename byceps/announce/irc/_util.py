@@ -13,11 +13,14 @@ Send messages to an IRC bot (Weitersager_) via HTTP.
 from flask import current_app
 import requests
 
+from ...events.base import _BaseEvent
 from ...services.webhooks import service as webhook_service
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
 
-def send_message(scope: str, scope_id: str, channel: str, text: str) -> None:
+def send_message(
+    event: _BaseEvent, scope: str, scope_id: str, channel: str, text: str
+) -> None:
     """Write the text to the channel by sending it to the bot via HTTP."""
     scope = 'any'
     scope_id = None

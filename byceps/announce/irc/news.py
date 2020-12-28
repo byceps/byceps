@@ -9,7 +9,6 @@ Announce news events on IRC.
 """
 
 from ...events.news import NewsItemPublished
-from ...services.news.transfer.models import ChannelID
 
 from ._config import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 from ._util import send_message
@@ -21,15 +20,17 @@ def announce_news_item_published(event: NewsItemPublished) -> None:
         f'Die News "{event.title}" wurde veröffentlicht. {event.external_url}'
     )
 
-    send_news_message(event.channel_id, CHANNEL_PUBLIC, text)
-    send_news_message(event.channel_id, CHANNEL_ORGA_LOG, text)
+    send_news_message(event, CHANNEL_PUBLIC, text)
+    send_news_message(event, CHANNEL_ORGA_LOG, text)
 
 
 # helpers
 
 
-def send_news_message(channel_id: ChannelID, channel: str, text: str) -> None:
+def send_news_message(
+    event: NewsItemPublished, channel: str, text: str
+) -> None:
     scope = 'news'
-    scope_id = str(channel_id)
+    scope_id = str(event.channel_id)
 
-    send_message(scope, scope_id, channel, text)
+    send_message(event, scope, scope_id, channel, text)

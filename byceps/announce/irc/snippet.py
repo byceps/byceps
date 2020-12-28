@@ -8,7 +8,12 @@ Announce snippet events on IRC.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
+from ...events.snippet import (
+    _SnippetEvent,
+    SnippetCreated,
+    SnippetDeleted,
+    SnippetUpdated,
+)
 from ...services.snippet.transfer.models import SnippetType
 
 from ..helpers import get_screen_name_or_fallback
@@ -30,7 +35,7 @@ def announce_snippet_created(event: SnippetCreated) -> None:
         f'"{event.scope.type_}/{event.scope.name}" angelegt.'
     )
 
-    send_snippet_message(CHANNEL_ORGA_LOG, text)
+    send_snippet_message(event, CHANNEL_ORGA_LOG, text)
 
 
 def announce_snippet_updated(event: SnippetUpdated) -> None:
@@ -46,7 +51,7 @@ def announce_snippet_updated(event: SnippetUpdated) -> None:
         f'"{event.scope.type_}/{event.scope.name}" aktualisiert.'
     )
 
-    send_snippet_message(CHANNEL_ORGA_LOG, text)
+    send_snippet_message(event, CHANNEL_ORGA_LOG, text)
 
 
 def announce_snippet_deleted(event: SnippetDeleted) -> None:
@@ -60,7 +65,7 @@ def announce_snippet_deleted(event: SnippetDeleted) -> None:
         f'im Scope "{event.scope.type_}/{event.scope.name}" gelöscht.'
     )
 
-    send_snippet_message(CHANNEL_ORGA_LOG, text)
+    send_snippet_message(event, CHANNEL_ORGA_LOG, text)
 
 
 # helpers
@@ -77,8 +82,8 @@ def _get_snippet_type_label(snippet_type: SnippetType) -> str:
     return _SNIPPET_TYPE_LABELS.get(snippet_type, '?')
 
 
-def send_snippet_message(channel: str, text: str) -> None:
+def send_snippet_message(event: _SnippetEvent, channel: str, text: str) -> None:
     scope = 'snippet'
     scope_id = None
 
-    send_message(scope, scope_id, channel, text)
+    send_message(event, scope, scope_id, channel, text)
