@@ -35,27 +35,39 @@ def send_message(
     by sending it to the bot via HTTP.
     """
     visibilities = get_visibilities(event)
-
-    channels = {CHANNELS_BY_VISIBILITY[visibility] for visibility in visibilities}
-    if not channels:
+    if not visibilities:
         current_app.logger.warning(
-            f'No IRC channels assigned for event type "{type(event)}".'
+            f'No visibility assigned for event type "{type(event)}".'
         )
         return
 
-    scope = 'any'
     scope_id = None
     format = 'weitersager'
 
-    webhook = webhook_service.find_enabled_outgoing_webhook(scope, scope_id, format)
+    webhooks_with_channels = []
+    for visibility in visibilities:
+        scope = visibility.name
 
-    if webhook is None:
+        webhook = webhook_service.find_enabled_outgoing_webhook(
+            scope, scope_id, format
+        )
+        if webhook is None:
+            continue
+
+        channel = CHANNELS_BY_VISIBILITY[visibility]
+
+        webhooks_with_channels.append((webhook, channel))
+
+    if not webhooks_with_channels:
         current_app.logger.warning(
-            f'No enabled IRC webhook found. Not sending message to IRC.'
+            f'No enabled IRC webhooks found. Not sending message to IRC.'
         )
         return
 
-    for channel in sorted(channels):  # Stable order is easier to test.
+    # Stable order is easier to test.
+    webhooks_with_channels.sort(key=lambda xs: xs[1])
+
+    for webhook, channel in webhooks_with_channels:
         call_webhook(webhook, channel, text)
 
 

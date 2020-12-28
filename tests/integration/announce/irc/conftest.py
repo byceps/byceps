@@ -10,19 +10,23 @@ from byceps.services.webhooks import service as webhook_service
 
 @pytest.fixture(scope='module')
 def webhook_settings():
-    scope = 'any'
+    scopes = {'internal', 'public'}
     scope_id = None
     format = 'weitersager'
     url = 'http://127.0.0.1:12345/'
     enabled = True
 
-    webhook = webhook_service.create_outgoing_webhook(
-        scope, scope_id, format, url, enabled
-    )
+    webhooks = {
+        webhook_service.create_outgoing_webhook(
+            scope, scope_id, format, url, enabled
+        )
+        for scope in scopes
+    }
 
     yield
 
-    webhook_service.delete_outgoing_webhook(webhook.id)
+    for webhook in webhooks:
+        webhook_service.delete_outgoing_webhook(webhook.id)
 
 
 @pytest.fixture(scope='module')
