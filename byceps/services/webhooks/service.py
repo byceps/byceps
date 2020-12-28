@@ -6,7 +6,7 @@ byceps.services.webhooks.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Set
+from typing import Any, Dict, Optional, Set
 
 from ...database import db
 
@@ -22,10 +22,17 @@ def create_outgoing_webhook(
     enabled: bool,
     *,
     text_prefix: Optional[str] = None,
+    extra_fields: Optional[Dict[str, Any]] = None,
 ) -> OutgoingWebhook:
     """Create an outgoing webhook."""
     webhook = DbOutgoingWebhook(
-        scope, scope_id, format, url, enabled, text_prefix=text_prefix
+        scope,
+        scope_id,
+        format,
+        url,
+        enabled,
+        text_prefix=text_prefix,
+        extra_fields=extra_fields,
     )
 
     db.session.add(webhook)
@@ -63,12 +70,17 @@ def find_enabled_outgoing_webhook(
 def _db_entity_to_outgoing_webhook(
     webhook: DbOutgoingWebhook,
 ) -> OutgoingWebhook:
+    extra_fields = (
+        dict(webhook.extra_fields) if (webhook.extra_fields is not None) else {}
+    )
+
     return OutgoingWebhook(
         webhook.id,
         webhook.scope,
         webhook.scope_id,
         webhook.format,
         webhook.text_prefix,
+        extra_fields,
         webhook.url,
         webhook.enabled,
     )

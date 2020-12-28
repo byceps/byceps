@@ -7,7 +7,7 @@ byceps.services.webhooks.transfer.models
 """
 
 from dataclasses import dataclass
-from typing import NewType, Optional
+from typing import Any, Dict, NewType, Optional
 from uuid import UUID
 
 
@@ -21,5 +21,6 @@ class OutgoingWebhook:
     scope_id: Optional[str]
     format: str
     text_prefix: Optional[str]
+    extra_fields: Optional[Dict[str, Any]]
     url: str
     enabled: bool
