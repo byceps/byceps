@@ -44,21 +44,9 @@ def send_message(
         call_webhook(webhook, text)
 
 
-def get_webhooks_for_discord(
-    event: _BaseEvent, scope: str, scope_id: str
-) -> List[OutgoingWebhook]:
+def get_webhooks_for_discord(event: _BaseEvent) -> List[OutgoingWebhook]:
     webhook_format = 'discord'
-    webhooks = webhook_service.get_enabled_outgoing_webhooks(webhook_format)
-    webhooks = select_webhooks(webhooks, scope, scope_id)
-
-    if not webhooks:
-        current_app.logger.warning(
-            f'No enabled Discord webhook found for scope "{scope}" and '
-            f'scope ID "{scope_id}". Not sending message to Discord.'
-        )
-        return []
-
-    return webhooks
+    return webhook_service.get_enabled_outgoing_webhooks(webhook_format)
 
 
 def get_webhooks_for_irc(event: _BaseEvent) -> List[OutgoingWebhook]:

@@ -9,24 +9,31 @@ Announce news events on Discord.
 """
 
 from ...events.news import NewsItemPublished
+from ...services.webhooks.transfer.models import OutgoingWebhook
 
 from ..common import news
-from ..helpers import send_message
+from ..helpers import call_webhook, match_scope
 
 
 def announce_news_item_published(
-    event: NewsItemPublished, webhook_format: str
+    event: NewsItemPublished, webhook: OutgoingWebhook
 ) -> None:
     """Announce that a news item has been published."""
     text = news.assemble_text_for_news_item_published(event)
 
-    send_news_message(event, webhook_format, text)
+    send_news_message(event, webhook, text)
+
+
+# helpers
 
 
 def send_news_message(
-    event: NewsItemPublished, webhook_format: str, text: str
+    event: NewsItemPublished, webhook: OutgoingWebhook, text: str
 ) -> None:
     scope = 'news'
     scope_id = str(event.channel_id)
 
-    send_message(event, webhook_format, scope, scope_id, text)
+    if not match_scope(webhook, scope, scope_id):
+        return
+
+    call_webhook(webhook, text)
