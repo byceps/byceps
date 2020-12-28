@@ -38,8 +38,8 @@ from .helpers import (
 
 
 def test_announce_topic_created(app, board, topic, creator):
-    expected_channel1 = CHANNEL_ORGA_LOG
-    expected_channel2 = CHANNEL_PUBLIC
+    expected_channel1 = CHANNEL_PUBLIC
+    expected_channel2 = CHANNEL_ORGA_LOG
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
@@ -276,8 +276,8 @@ def test_announce_topic_moved(
 
 
 def test_announce_posting_created(app, board, posting, creator):
-    expected_channel1 = CHANNEL_ORGA_LOG
-    expected_channel2 = CHANNEL_PUBLIC
+    expected_channel1 = CHANNEL_PUBLIC
+    expected_channel2 = CHANNEL_ORGA_LOG
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '

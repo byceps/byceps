@@ -21,7 +21,6 @@ from ...events.user import (
 
 from ..helpers import get_screen_name_or_fallback
 
-from ._config import CHANNEL_ORGA_LOG
 from ._util import send_message
 
 
@@ -37,7 +36,7 @@ def announce_user_account_created(event: UserAccountCreated) -> None:
         f'hat das Benutzerkonto "{user_screen_name}" angelegt.'
     )
 
-    send_user_message(event, CHANNEL_ORGA_LOG, text)
+    send_user_message(event, text)
 
 
 def announce_user_screen_name_changed(event: UserScreenNameChanged) -> None:
@@ -51,7 +50,7 @@ def announce_user_screen_name_changed(event: UserScreenNameChanged) -> None:
         f'"{event.old_screen_name}" in "{event.new_screen_name}" umbenannt.'
     )
 
-    send_user_message(event, CHANNEL_ORGA_LOG, text)
+    send_user_message(event, text)
 
 
 def announce_user_email_address_invalidated(
@@ -68,7 +67,7 @@ def announce_user_email_address_invalidated(
         f'des Benutzerkontos "{user_screen_name}" invalidiert.'
     )
 
-    send_user_message(event, CHANNEL_ORGA_LOG, text)
+    send_user_message(event, text)
 
 
 def announce_user_details_updated_changed(event: UserDetailsUpdated) -> None:
@@ -83,7 +82,7 @@ def announce_user_details_updated_changed(event: UserDetailsUpdated) -> None:
         f'des Benutzerkontos "{user_screen_name}" geändert.'
     )
 
-    send_user_message(event, CHANNEL_ORGA_LOG, text)
+    send_user_message(event, text)
 
 
 def announce_user_account_suspended(event: UserAccountSuspended) -> None:
@@ -98,7 +97,7 @@ def announce_user_account_suspended(event: UserAccountSuspended) -> None:
         f'"{user_screen_name}" gesperrt.'
     )
 
-    send_user_message(event, CHANNEL_ORGA_LOG, text)
+    send_user_message(event, text)
 
 
 def announce_user_account_unsuspended(event: UserAccountUnsuspended) -> None:
@@ -113,7 +112,7 @@ def announce_user_account_unsuspended(event: UserAccountUnsuspended) -> None:
         f'"{user_screen_name}" entsperrt.'
     )
 
-    send_user_message(event, CHANNEL_ORGA_LOG, text)
+    send_user_message(event, text)
 
 
 def announce_user_account_deleted(event: UserAccountDeleted) -> None:
@@ -128,14 +127,14 @@ def announce_user_account_deleted(event: UserAccountDeleted) -> None:
         f'"{user_screen_name}" (ID "{event.user_id}") gelöscht.'
     )
 
-    send_user_message(event, CHANNEL_ORGA_LOG, text)
+    send_user_message(event, text)
 
 
 # helpers
 
 
-def send_user_message(event: _UserEvent, channel: str, text: str) -> None:
+def send_user_message(event: _UserEvent, text: str) -> None:
     scope = 'user'
     scope_id = None
 
-    send_message(event, scope, scope_id, channel, text)
+    send_message(event, scope, scope_id, text)

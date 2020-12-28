@@ -12,7 +12,6 @@ from ...events.user_badge import UserBadgeAwarded
 
 from ..helpers import get_screen_name_or_fallback
 
-from ._config import CHANNEL_ORGA_LOG
 from ._util import send_message
 
 
@@ -28,16 +27,14 @@ def announce_user_badge_awarded(event: UserBadgeAwarded) -> None:
         f'an {awardee_screen_name} verliehen.'
     )
 
-    send_user_badge_message(event, CHANNEL_ORGA_LOG, text)
+    send_user_badge_message(event, text)
 
 
 # helpers
 
 
-def send_user_badge_message(
-    event: UserBadgeAwarded, channel: str, text: str
-) -> None:
+def send_user_badge_message(event: UserBadgeAwarded, text: str) -> None:
     scope = 'user_badge'
     scope_id = None
 
-    send_message(event, scope, scope_id, channel, text)
+    send_message(event, scope, scope_id, text)

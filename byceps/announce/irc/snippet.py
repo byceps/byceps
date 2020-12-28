@@ -18,7 +18,6 @@ from ...services.snippet.transfer.models import SnippetType
 
 from ..helpers import get_screen_name_or_fallback
 
-from ._config import CHANNEL_ORGA_LOG
 from ._util import send_message
 
 
@@ -35,7 +34,7 @@ def announce_snippet_created(event: SnippetCreated) -> None:
         f'"{event.scope.type_}/{event.scope.name}" angelegt.'
     )
 
-    send_snippet_message(event, CHANNEL_ORGA_LOG, text)
+    send_snippet_message(event, text)
 
 
 def announce_snippet_updated(event: SnippetUpdated) -> None:
@@ -51,7 +50,7 @@ def announce_snippet_updated(event: SnippetUpdated) -> None:
         f'"{event.scope.type_}/{event.scope.name}" aktualisiert.'
     )
 
-    send_snippet_message(event, CHANNEL_ORGA_LOG, text)
+    send_snippet_message(event, text)
 
 
 def announce_snippet_deleted(event: SnippetDeleted) -> None:
@@ -65,7 +64,7 @@ def announce_snippet_deleted(event: SnippetDeleted) -> None:
         f'im Scope "{event.scope.type_}/{event.scope.name}" gelöscht.'
     )
 
-    send_snippet_message(event, CHANNEL_ORGA_LOG, text)
+    send_snippet_message(event, text)
 
 
 # helpers
@@ -82,8 +81,8 @@ def _get_snippet_type_label(snippet_type: SnippetType) -> str:
     return _SNIPPET_TYPE_LABELS.get(snippet_type, '?')
 
 
-def send_snippet_message(event: _SnippetEvent, channel: str, text: str) -> None:
+def send_snippet_message(event: _SnippetEvent, text: str) -> None:
     scope = 'snippet'
     scope_id = None
 
-    send_message(event, scope, scope_id, channel, text)
+    send_message(event, scope, scope_id, text)

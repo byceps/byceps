@@ -15,7 +15,6 @@ from ...services.ticketing import ticket_service
 
 from ..helpers import get_screen_name_or_fallback
 
-from ._config import CHANNEL_ORGA_LOG
 from ._util import send_message
 
 
@@ -31,7 +30,7 @@ def announce_ticket_checked_in(event: TicketCheckedIn) -> None:
         f'benutzt von {user_screen_name}, eingecheckt.'
     )
 
-    send_ticketing_message(event, CHANNEL_ORGA_LOG, text)
+    send_ticketing_message(event, text)
 
 
 def announce_tickets_sold(event: TicketsSold) -> None:
@@ -48,16 +47,16 @@ def announce_tickets_sold(event: TicketsSold) -> None:
         f'von {sale_stats.tickets_max} Tickets bezahlt.'
     )
 
-    send_ticketing_message(event, CHANNEL_ORGA_LOG, text)
+    send_ticketing_message(event, text)
 
 
 # helpers
 
 
 def send_ticketing_message(
-    event: Union[TicketCheckedIn, TicketsSold], channel: str, text: str
+    event: Union[TicketCheckedIn, TicketsSold], text: str
 ) -> None:
     scope = 'ticketing'
     scope_id = None
 
-    send_message(event, scope, scope_id, channel, text)
+    send_message(event, scope, scope_id, text)
