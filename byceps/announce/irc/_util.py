@@ -10,8 +10,6 @@ Send messages to an IRC bot (Weitersager_) via HTTP.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Set
-
 from flask import current_app
 import requests
 
@@ -30,21 +28,15 @@ CHANNELS_BY_VISIBILITY = {
 }
 
 
-def get_channels_for_event_type(event: _BaseEvent) -> Set[str]:
-    """Return the channel(s) to announce this event on based on the
-    event type's visibility.
-    """
-    visibilities = get_visibilities(event)
-    return {CHANNELS_BY_VISIBILITY[visibility] for visibility in visibilities}
-
-
 def send_message(
     event: _BaseEvent, scope: str, scope_id: str, text: str
 ) -> None:
     """Write the text to the channel(s) appropriate for this event type
     by sending it to the bot via HTTP.
     """
-    channels = get_channels_for_event_type(event)
+    visibilities = get_visibilities(event)
+
+    channels = {CHANNELS_BY_VISIBILITY[visibility] for visibility in visibilities}
     if not channels:
         current_app.logger.warning(
             f'No IRC channels assigned for event type "{type(event)}".'
