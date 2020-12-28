@@ -38,10 +38,11 @@ def assemble_text_for_board_topic_created(
     board_label_segment = _get_board_label_segment(
         event.topic_id, webhook_format
     )
+    url = _format_url(event.url, webhook_format)
 
     return (
         f'{topic_creator_screen_name} hat{board_label_segment} '
-        f'das Thema "{event.topic_title}" erstellt: {event.url}'
+        f'das Thema "{event.topic_title}" erstellt: {url}'
     )
 
 
@@ -58,11 +59,12 @@ def assemble_text_for_board_topic_hidden(
     board_label_segment = _get_board_label_segment(
         event.topic_id, webhook_format
     )
+    url = _format_url(event.url, webhook_format)
 
     return (
         f'{moderator_screen_name} hat{board_label_segment} das Thema '
         f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'versteckt: {event.url}'
+        f'versteckt: {url}'
     )
 
 
@@ -79,11 +81,12 @@ def assemble_text_for_board_topic_unhidden(
     board_label_segment = _get_board_label_segment(
         event.topic_id, webhook_format
     )
+    url = _format_url(event.url, webhook_format)
 
     return (
         f'{moderator_screen_name} hat{board_label_segment} das Thema '
         f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'wieder sichtbar gemacht: {event.url}'
+        f'wieder sichtbar gemacht: {url}'
     )
 
 
@@ -100,11 +103,12 @@ def assemble_text_for_board_topic_locked(
     board_label_segment = _get_board_label_segment(
         event.topic_id, webhook_format
     )
+    url = _format_url(event.url, webhook_format)
 
     return (
         f'{moderator_screen_name} hat{board_label_segment} das Thema '
         f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'geschlossen: {event.url}'
+        f'geschlossen: {url}'
     )
 
 
@@ -121,11 +125,12 @@ def assemble_text_for_board_topic_unlocked(
     board_label_segment = _get_board_label_segment(
         event.topic_id, webhook_format
     )
+    url = _format_url(event.url, webhook_format)
 
     return (
         f'{moderator_screen_name} hat{board_label_segment} das Thema '
         f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'wieder geöffnet: {event.url}'
+        f'wieder geöffnet: {url}'
     )
 
 
@@ -142,11 +147,12 @@ def assemble_text_for_board_topic_pinned(
     board_label_segment = _get_board_label_segment(
         event.topic_id, webhook_format
     )
+    url = _format_url(event.url, webhook_format)
 
     return (
         f'{moderator_screen_name} hat{board_label_segment} das Thema '
         f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'angepinnt: {event.url}'
+        f'angepinnt: {url}'
     )
 
 
@@ -163,11 +169,12 @@ def assemble_text_for_board_topic_unpinned(
     board_label_segment = _get_board_label_segment(
         event.topic_id, webhook_format
     )
+    url = _format_url(event.url, webhook_format)
 
     return (
         f'{moderator_screen_name} hat{board_label_segment} das Thema '
         f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'wieder gelöst: {event.url}'
+        f'wieder gelöst: {url}'
     )
 
 
@@ -184,12 +191,13 @@ def assemble_text_for_board_topic_moved(
     board_label_segment = _get_board_label_segment(
         event.topic_id, webhook_format
     )
+    url = _format_url(event.url, webhook_format)
 
     return (
         f'{moderator_screen_name} hat{board_label_segment} das Thema '
         f'"{event.topic_title}" von {topic_creator_screen_name} '
         f'aus "{event.old_category_title}" in "{event.new_category_title}" '
-        f'verschoben: {event.url}'
+        f'verschoben: {url}'
     )
 
 
@@ -203,10 +211,11 @@ def assemble_text_for_board_posting_created(
     board_label_segment = _get_board_label_segment(
         event.topic_id, webhook_format
     )
+    url = _format_url(event.url, webhook_format)
 
     return (
         f'{posting_creator_screen_name} hat{board_label_segment} '
-        f'auf das Thema "{event.topic_title}" geantwortet: {event.url}'
+        f'auf das Thema "{event.topic_title}" geantwortet: {url}'
     )
 
 
@@ -223,11 +232,12 @@ def assemble_text_for_board_posting_hidden(
     board_label_segment = _get_board_label_segment(
         event.topic_id, webhook_format
     )
+    url = _format_url(event.url, webhook_format)
 
     return (
         f'{moderator_screen_name} hat{board_label_segment} '
         f'eine Antwort von {posting_creator_screen_name} '
-        f'im Thema "{event.topic_title}" versteckt: {event.url}'
+        f'im Thema "{event.topic_title}" versteckt: {url}'
     )
 
 
@@ -244,11 +254,12 @@ def assemble_text_for_board_posting_unhidden(
     board_label_segment = _get_board_label_segment(
         event.topic_id, webhook_format
     )
+    url = _format_url(event.url, webhook_format)
 
     return (
         f'{moderator_screen_name} hat{board_label_segment} '
         f'eine Antwort von {posting_creator_screen_name} '
-        f'im Thema "{event.topic_title}" wieder sichtbar gemacht: {event.url}'
+        f'im Thema "{event.topic_title}" wieder sichtbar gemacht: {url}'
     )
 
 
@@ -268,3 +279,14 @@ def _get_board_label_segment(topic_id: TopicID, webhook_format: str) -> str:
 
     board_label = _get_board_label(topic_id)
     return f' im {board_label}'
+
+
+def _format_url(url: str, webhook_format: str) -> str:
+    return _escape_url_for_discord(url) if webhook_format == 'discord' else url
+
+
+def _escape_url_for_discord(url: str) -> str:
+    """Wrap URL in angle brackets (``<…>``) as that prevents preview
+    embedding on Discord.
+    """
+    return f'<{url}>'

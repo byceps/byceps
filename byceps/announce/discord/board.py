@@ -10,25 +10,17 @@ Announce board events on Discord.
 
 from ...events.board import _BoardEvent, BoardPostingCreated, BoardTopicCreated
 
-from ..helpers import get_screen_name_or_fallback
+from ..common import board
 
 from ._util import send_message
 
 
-# Note: URLs are wrapped in `<…>` because that prevents
-#       preview embedding on Discord.
+WEBHOOK_FORMAT = 'discord'
 
 
 def announce_board_topic_created(event: BoardTopicCreated) -> None:
     """Announce that someone has created a board topic."""
-    topic_creator_screen_name = get_screen_name_or_fallback(
-        event.topic_creator_screen_name
-    )
-
-    text = (
-        f'{topic_creator_screen_name} hat das Thema '
-        f'"{event.topic_title}" erstellt: <{event.url}>'
-    )
+    text = board.assemble_text_for_board_topic_created(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
@@ -38,14 +30,7 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     if event.topic_muted:
         return
 
-    posting_creator_screen_name = get_screen_name_or_fallback(
-        event.posting_creator_screen_name
-    )
-
-    text = (
-        f'{posting_creator_screen_name} hat auf das Thema '
-        f'"{event.topic_title}" geantwortet: <{event.url}>'
-    )
+    text = board.assemble_text_for_board_posting_created(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
