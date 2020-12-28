@@ -28,58 +28,61 @@ from ..common import board
 from ._util import send_message
 
 
+WEBHOOK_FORMAT = 'weitersager'
+
+
 def announce_board_topic_created(event: BoardTopicCreated) -> None:
     """Announce that someone has created a board topic."""
-    text = board.assemble_text_for_board_topic_created(event)
+    text = board.assemble_text_for_board_topic_created(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_hidden(event: BoardTopicHidden) -> None:
     """Announce that a moderator has hidden a board topic."""
-    text = board.assemble_text_for_board_topic_hidden(event)
+    text = board.assemble_text_for_board_topic_hidden(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_unhidden(event: BoardTopicUnhidden) -> None:
     """Announce that a moderator has made a board topic visible again."""
-    text = board.assemble_text_for_board_topic_unhidden(event)
+    text = board.assemble_text_for_board_topic_unhidden(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_locked(event: BoardTopicLocked) -> None:
     """Announce that a moderator has locked a board topic."""
-    text = board.assemble_text_for_board_topic_locked(event)
+    text = board.assemble_text_for_board_topic_locked(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_unlocked(event: BoardTopicUnlocked) -> None:
     """Announce that a moderator has unlocked a board topic."""
-    text = board.assemble_text_for_board_topic_unlocked(event)
+    text = board.assemble_text_for_board_topic_unlocked(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_pinned(event: BoardTopicPinned) -> None:
     """Announce that a moderator has pinned a board topic."""
-    text = board.assemble_text_for_board_topic_pinned(event)
+    text = board.assemble_text_for_board_topic_pinned(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_unpinned(event: BoardTopicUnpinned) -> None:
     """Announce that a moderator has unpinned a board topic."""
-    text = board.assemble_text_for_board_topic_unpinned(event)
+    text = board.assemble_text_for_board_topic_unpinned(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
 
 def announce_board_topic_moved(event: BoardTopicMoved) -> None:
     """Announce that a moderator has moved a board topic to another category."""
-    text = board.assemble_text_for_board_topic_moved(event)
+    text = board.assemble_text_for_board_topic_moved(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
@@ -89,21 +92,21 @@ def announce_board_posting_created(event: BoardPostingCreated) -> None:
     if event.topic_muted:
         return
 
-    text = board.assemble_text_for_board_posting_created(event)
+    text = board.assemble_text_for_board_posting_created(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
 
 def announce_board_posting_hidden(event: BoardPostingHidden) -> None:
     """Announce that a moderator has hidden a board posting."""
-    text = board.assemble_text_for_board_posting_hidden(event)
+    text = board.assemble_text_for_board_posting_hidden(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
 
 def announce_board_posting_unhidden(event: BoardPostingUnhidden) -> None:
     """Announce that a moderator has made a board posting visible again."""
-    text = board.assemble_text_for_board_posting_unhidden(event)
+    text = board.assemble_text_for_board_posting_unhidden(event, WEBHOOK_FORMAT)
 
     send_board_message(event, text)
 
