@@ -23,27 +23,6 @@ def get_screen_name_or_fallback(screen_name: Optional[str]) -> str:
     return screen_name if screen_name else 'Jemand'
 
 
-def send_message(
-    event: _BaseEvent, webhook_format: str, scope: str, scope_id: str, text: str
-) -> None:
-    """Send text to a webhook API."""
-    if webhook_format == 'discord':
-        # Send messages to Discord channels via its webhooks API.
-        # The webhook URL already includes the (encoded) target channel.
-        webhooks = get_webhooks_for_discord(event, scope, scope_id)
-
-    elif webhook_format == 'weitersager':
-        # Send messages to an IRC bot (Weitersager
-        # <https://github.com/homeworkprod/weitersager>) via HTTP.
-        webhooks = get_webhooks_for_irc(event)
-
-    else:
-        return
-
-    for webhook in webhooks:
-        call_webhook(webhook, text)
-
-
 def get_webhooks_for_discord(event: _BaseEvent) -> List[OutgoingWebhook]:
     webhook_format = 'discord'
     return webhook_service.get_enabled_outgoing_webhooks(webhook_format)
