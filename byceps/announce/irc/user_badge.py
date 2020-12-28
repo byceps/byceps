@@ -15,7 +15,9 @@ from ..helpers import get_screen_name_or_fallback
 from ._util import send_message
 
 
-def announce_user_badge_awarded(event: UserBadgeAwarded) -> None:
+def announce_user_badge_awarded(
+    event: UserBadgeAwarded, webhook_format: str
+) -> None:
     """Announce that a badge has been awarded to a user."""
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -27,14 +29,16 @@ def announce_user_badge_awarded(event: UserBadgeAwarded) -> None:
         f'an {awardee_screen_name} verliehen.'
     )
 
-    send_user_badge_message(event, text)
+    send_user_badge_message(event, webhook_format, text)
 
 
 # helpers
 
 
-def send_user_badge_message(event: UserBadgeAwarded, text: str) -> None:
+def send_user_badge_message(
+    event: UserBadgeAwarded, webhook_format: str, text: str
+) -> None:
     scope = 'user_badge'
     scope_id = None
 
-    send_message(event, scope, scope_id, text)
+    send_message(event, webhook_format, scope, scope_id, text)

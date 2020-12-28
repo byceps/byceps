@@ -20,7 +20,7 @@ from ..visibility import get_visibilities
 
 
 def send_message(
-    event: _BaseEvent, scope: str, scope_id: str, text: str
+    event: _BaseEvent, webhook_format: str, scope: str, scope_id: str, text: str
 ) -> None:
     """Write the text to the channel(s) configured for this event type
     by sending it to the bot via HTTP.
@@ -33,7 +33,6 @@ def send_message(
         return
 
     scope_id = None
-    format = 'weitersager'
 
     webhooks = []
     for visibility in visibilities:
@@ -41,7 +40,7 @@ def send_message(
 
         webhooks.extend(
             webhook_service.get_enabled_outgoing_webhooks(
-                scope, scope_id, format
+                scope, scope_id, webhook_format
             )
         )
 

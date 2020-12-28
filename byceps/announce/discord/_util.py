@@ -17,15 +17,14 @@ from ..helpers import call_webhook
 
 
 def send_message(
-    event: _BaseEvent, scope: str, scope_id: str, text: str
+    event: _BaseEvent, webhook_format: str, scope: str, scope_id: str, text: str
 ) -> None:
     """Send text to the webhook API.
 
     The endpoint URL already includes the target channel.
     """
-    format = 'discord'
     webhooks = webhook_service.get_enabled_outgoing_webhooks(
-        scope, scope_id, format
+        scope, scope_id, webhook_format
     )
     if not webhooks:
         current_app.logger.warning(

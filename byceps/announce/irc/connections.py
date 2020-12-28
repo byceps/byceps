@@ -168,4 +168,5 @@ def _on_event(sender, *, event: Optional[_BaseEvent] = None) -> None:
     if handler is None:
         return None
 
-    enqueue(handler, event)
+    webhook_format = 'weitersager'
+    enqueue(handler, event, webhook_format)

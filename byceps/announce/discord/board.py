@@ -15,31 +15,34 @@ from ..common import board
 from ._util import send_message
 
 
-WEBHOOK_FORMAT = 'discord'
-
-
-def announce_board_topic_created(event: BoardTopicCreated) -> None:
+def announce_board_topic_created(
+    event: BoardTopicCreated, webhook_format: str
+) -> None:
     """Announce that someone has created a board topic."""
-    text = board.assemble_text_for_board_topic_created(event, WEBHOOK_FORMAT)
+    text = board.assemble_text_for_board_topic_created(event, webhook_format)
 
-    send_board_message(event, text)
+    send_board_message(event, webhook_format, text)
 
 
-def announce_board_posting_created(event: BoardPostingCreated) -> None:
+def announce_board_posting_created(
+    event: BoardPostingCreated, webhook_format: str
+) -> None:
     """Announce that someone has created a board posting."""
     if event.topic_muted:
         return
 
-    text = board.assemble_text_for_board_posting_created(event, WEBHOOK_FORMAT)
+    text = board.assemble_text_for_board_posting_created(event, webhook_format)
 
-    send_board_message(event, text)
+    send_board_message(event, webhook_format, text)
 
 
 # helpers
 
 
-def send_board_message(event: _BoardEvent, text: str) -> None:
+def send_board_message(
+    event: _BoardEvent, webhook_format: str, text: str
+) -> None:
     scope = 'board'
     scope_id = str(event.board_id)
 
-    send_message(event, scope, scope_id, text)
+    send_message(event, webhook_format, scope, scope_id, text)

@@ -15,15 +15,19 @@ from ..common import news
 from ._util import send_message
 
 
-def announce_news_item_published(event: NewsItemPublished) -> None:
+def announce_news_item_published(
+    event: NewsItemPublished, webhook_format: str
+) -> None:
     """Announce that a news item has been published."""
     text = news.assemble_text_for_news_item_published(event)
 
-    send_news_message(event, text)
+    send_news_message(event, webhook_format, text)
 
 
-def send_news_message(event: NewsItemPublished, text: str) -> None:
+def send_news_message(
+    event: NewsItemPublished, webhook_format: str, text: str
+) -> None:
     scope = 'news'
     scope_id = str(event.channel_id)
 
-    send_message(event, scope, scope_id, text)
+    send_message(event, webhook_format, scope, scope_id, text)
