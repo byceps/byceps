@@ -11,12 +11,11 @@ Send messages to an IRC bot (Weitersager_) via HTTP.
 """
 
 from flask import current_app
-import requests
 
 from ...events.base import _BaseEvent
 from ...services.webhooks import service as webhook_service
-from ...services.webhooks.transfer.models import OutgoingWebhook
 
+from ..helpers import call_webhook
 from ..visibility import get_visibilities
 
 
@@ -57,18 +56,3 @@ def send_message(
 
     for webhook in webhooks:
         call_webhook(webhook, text)
-
-
-def call_webhook(webhook: OutgoingWebhook, text: str) -> None:
-    text_prefix = webhook.text_prefix
-    if text_prefix:
-        text = text_prefix + text
-
-    channel = webhook.extra_fields.get('channel')
-    if not channel:
-        current_app.logger.warning(f'No channel specified with IRC webhook.')
-        return
-
-    data = {'channel': channel, 'text': text}
-
-    requests.post(webhook.url, json=data)  # Ignore response code for now.

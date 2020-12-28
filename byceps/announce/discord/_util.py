@@ -9,11 +9,11 @@ Send messages to Discord channels via its webhooks API.
 """
 
 from flask import current_app
-import requests
 
 from ...events.base import _BaseEvent
 from ...services.webhooks import service as webhook_service
-from ...services.webhooks.transfer.models import OutgoingWebhook
+
+from ..helpers import call_webhook
 
 
 def send_message(
@@ -36,13 +36,3 @@ def send_message(
 
     for webhook in webhooks:
         call_webhook(webhook, text)
-
-
-def call_webhook(webhook: OutgoingWebhook, text: str) -> None:
-    text_prefix = webhook.text_prefix
-    if text_prefix:
-        text = text_prefix + text
-
-    data = {'content': text}
-
-    requests.post(webhook.url, json=data)  # Ignore response code for now.
