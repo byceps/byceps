@@ -10,9 +10,7 @@ Announce user badge events on IRC.
 
 from ...events.user_badge import UserBadgeAwarded
 
-from ..helpers import get_screen_name_or_fallback
-
-from ._util import send_message
+from ..helpers import get_screen_name_or_fallback, send_message
 
 
 def announce_user_badge_awarded(

@@ -24,8 +24,7 @@ from ...events.board import (
 )
 
 from ..common import board
-
-from ._util import send_message
+from ..helpers import send_message
 
 
 def announce_board_topic_created(

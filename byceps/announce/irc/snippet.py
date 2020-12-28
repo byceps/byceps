@@ -16,8 +16,7 @@ from ...events.snippet import (
 )
 
 from ..common import snippet
-
-from ._util import send_message
+from ..helpers import send_message
 
 
 def announce_snippet_created(

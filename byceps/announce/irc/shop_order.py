@@ -16,8 +16,7 @@ from ...events.shop import (
 )
 
 from ..common import shop_order
-
-from ._util import send_message
+from ..helpers import send_message
 
 
 def announce_order_placed(event: ShopOrderPlaced, webhook_format: str) -> None:

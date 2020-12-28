@@ -13,8 +13,7 @@ from typing import Union
 from ...events.ticketing import TicketCheckedIn, TicketsSold
 
 from ..common import ticketing
-
-from ._util import send_message
+from ..helpers import send_message
 
 
 def announce_ticket_checked_in(

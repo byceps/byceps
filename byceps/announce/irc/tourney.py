@@ -26,8 +26,7 @@ from ...events.tourney import (
 )
 
 from ..common import tourney
-
-from ._util import send_message
+from ..helpers import send_message
 
 
 # -------------------------------------------------------------------- #

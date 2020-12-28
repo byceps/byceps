@@ -11,8 +11,7 @@ Announce news events on IRC.
 from ...events.news import NewsItemPublished
 
 from ..common import news
-
-from ._util import send_message
+from ..helpers import send_message
 
 
 def announce_news_item_published(

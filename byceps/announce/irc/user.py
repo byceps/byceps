@@ -20,8 +20,7 @@ from ...events.user import (
 )
 
 from ..common import user
-
-from ._util import send_message
+from ..helpers import send_message
 
 
 def announce_user_account_created(
