@@ -6,7 +6,7 @@ byceps.announce.helpers
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from flask import current_app
 import requests
@@ -30,54 +30,69 @@ def send_message(
     if webhook_format == 'discord':
         # Send messages to Discord channels via its webhooks API.
         # The webhook URL already includes the (encoded) target channel.
-
-        webhooks = webhook_service.get_enabled_outgoing_webhooks(
-            scope, scope_id, webhook_format
-        )
-        if not webhooks:
-            current_app.logger.warning(
-                f'No enabled Discord webhook found for scope "{scope}" and '
-                f'scope ID "{scope_id}". Not sending message to Discord.'
-            )
-            return
+        webhooks = get_webhooks_for_discord(event, scope, scope_id)
 
     elif webhook_format == 'weitersager':
         # Send messages to an IRC bot (Weitersager
         # <https://github.com/homeworkprod/weitersager>) via HTTP.
-
-        visibilities = get_visibilities(event)
-        if not visibilities:
-            current_app.logger.warning(
-                f'No visibility assigned for event type "{type(event)}".'
-            )
-            return
-
-        scope_id = None
-
-        webhooks = []
-        for visibility in visibilities:
-            scope = visibility.name
-
-            webhooks.extend(
-                webhook_service.get_enabled_outgoing_webhooks(
-                    scope, scope_id, webhook_format
-                )
-            )
-
-        if not webhooks:
-            current_app.logger.warning(
-                f'No enabled IRC webhooks found. Not sending message to IRC.'
-            )
-            return
-
-        # Stable order is easier to test.
-        webhooks.sort(key=lambda wh: wh.extra_fields['channel'])
+        webhooks = get_webhooks_for_irc(event)
 
     else:
         return
 
     for webhook in webhooks:
         call_webhook(webhook, text)
+
+
+def get_webhooks_for_discord(
+    event: _BaseEvent, scope: str, scope_id: str
+) -> List[OutgoingWebhook]:
+    webhook_format = 'discord'
+    webhooks = webhook_service.get_enabled_outgoing_webhooks(
+        scope, scope_id, webhook_format
+    )
+
+    if not webhooks:
+        current_app.logger.warning(
+            f'No enabled Discord webhook found for scope "{scope}" and '
+            f'scope ID "{scope_id}". Not sending message to Discord.'
+        )
+        return []
+
+    return webhooks
+
+
+def get_webhooks_for_irc(event: _BaseEvent) -> List[OutgoingWebhook]:
+    visibilities = get_visibilities(event)
+    if not visibilities:
+        current_app.logger.warning(
+            f'No visibility assigned for event type "{type(event)}".'
+        )
+        return []
+
+    scope_id = None
+    webhook_format = 'weitersager'
+
+    webhooks = []
+    for visibility in visibilities:
+        scope = visibility.name
+
+        webhooks.extend(
+            webhook_service.get_enabled_outgoing_webhooks(
+                scope, scope_id, webhook_format
+            )
+        )
+
+    if not webhooks:
+        current_app.logger.warning(
+            f'No enabled IRC webhooks found. Not sending message to IRC.'
+        )
+        return []
+
+    # Stable order is easier to test.
+    webhooks.sort(key=lambda wh: wh.extra_fields['channel'])
+
+    return webhooks
 
 
 def call_webhook(webhook: OutgoingWebhook, text: str) -> None:
