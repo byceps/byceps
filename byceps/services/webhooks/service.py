@@ -6,7 +6,7 @@ byceps.services.webhooks.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 from ...database import db
 
@@ -15,6 +15,7 @@ from .transfer.models import OutgoingWebhook, WebhookID
 
 
 def create_outgoing_webhook(
+    event_selectors: Set[str],
     scope: str,
     scope_id: Optional[str],
     format: str,
@@ -25,7 +26,10 @@ def create_outgoing_webhook(
     extra_fields: Optional[Dict[str, Any]] = None,
 ) -> OutgoingWebhook:
     """Create an outgoing webhook."""
+    event_selectors_dict = dict.fromkeys(event_selectors)
+
     webhook = DbOutgoingWebhook(
+        event_selectors_dict,
         scope,
         scope_id,
         format,
@@ -63,12 +67,17 @@ def get_enabled_outgoing_webhooks(format: str) -> List[OutgoingWebhook]:
 def _db_entity_to_outgoing_webhook(
     webhook: DbOutgoingWebhook,
 ) -> OutgoingWebhook:
+    event_selectors = set()
+    if webhook.event_selectors is not None:
+        event_selectors = set(webhook.event_selectors.keys())
+
     extra_fields = (
         dict(webhook.extra_fields) if (webhook.extra_fields is not None) else {}
     )
 
     return OutgoingWebhook(
         webhook.id,
+        event_selectors,
         webhook.scope,
         webhook.scope_id,
         webhook.format,

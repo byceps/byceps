@@ -7,7 +7,7 @@ byceps.services.webhooks.transfer.models
 """
 
 from dataclasses import dataclass
-from typing import Any, Dict, NewType, Optional
+from typing import Any, Dict, NewType, Optional, Set
 from uuid import UUID
 
 
@@ -17,6 +17,7 @@ WebhookID = NewType('WebhookID', UUID)
 @dataclass(frozen=True)
 class OutgoingWebhook:
     id: WebhookID
+    event_selectors: Set[str]
     scope: str
     scope_id: Optional[str]
     format: str

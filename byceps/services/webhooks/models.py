@@ -6,7 +6,7 @@ byceps.services.webhooks.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Dict
 
 from sqlalchemy.ext.mutable import MutableDict
 
@@ -22,6 +22,7 @@ class OutgoingWebhook(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    event_selectors = db.Column(MutableDict.as_mutable(db.JSONB), nullable=True)
     scope = db.Column(db.UnicodeText, nullable=False)
     scope_id = db.Column(db.UnicodeText, nullable=True)
     format = db.Column(db.UnicodeText, nullable=False)
@@ -32,6 +33,7 @@ class OutgoingWebhook(db.Model):
 
     def __init__(
         self,
+        event_selectors: Dict[str, None],
         scope: str,
         scope_id: Optional[str],
         format: str,
@@ -41,6 +43,7 @@ class OutgoingWebhook(db.Model):
         text_prefix: Optional[str] = None,
         extra_fields: Optional[Dict[str, Any]] = None,
     ) -> None:
+        self.event_selectors = event_selectors
         self.scope = scope
         self.scope_id = scope_id
         self.format = format

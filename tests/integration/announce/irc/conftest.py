@@ -12,6 +12,7 @@ from .helpers import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 
 @pytest.fixture(scope='module')
 def webhook_settings():
+    event_selectors = set([])
     scopes_and_channels = [
         ('internal', CHANNEL_ORGA_LOG),
         ('public', CHANNEL_PUBLIC),
@@ -23,6 +24,7 @@ def webhook_settings():
 
     webhooks = [
         webhook_service.create_outgoing_webhook(
+            event_selectors,
             scope,
             scope_id,
             format,
