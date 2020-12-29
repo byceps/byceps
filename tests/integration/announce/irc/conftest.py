@@ -69,8 +69,6 @@ def webhook_settings():
         ),
     ]
     channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
-    scope = 'any'
-    scope_id = None
     format = 'weitersager'
     url = 'http://127.0.0.1:12345/'
     enabled = True
@@ -78,8 +76,6 @@ def webhook_settings():
     webhooks = [
         webhook_service.create_outgoing_webhook(
             event_selectors,
-            scope,
-            scope_id,
             format,
             url,
             enabled,

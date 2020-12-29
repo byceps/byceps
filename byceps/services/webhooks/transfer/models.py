@@ -21,8 +21,6 @@ EventSelectors = Dict[str, Optional[Dict[str, List[str]]]]
 class OutgoingWebhook:
     id: WebhookID
     event_selectors: EventSelectors
-    scope: str
-    scope_id: Optional[str]
     format: str
     text_prefix: Optional[str]
     extra_fields: Optional[Dict[str, Any]]

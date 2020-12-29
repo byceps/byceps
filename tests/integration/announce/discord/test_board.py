@@ -85,8 +85,6 @@ def test_announce_posting_created(
 @pytest.fixture(scope='module')
 def webhook_settings(board):
     board_ids = [str(board.id), 'totally-different-id']
-    scope = ''
-    scope_id = None
     format = 'discord'
     text_prefix = '[Forum] '
     url = WEBHOOK_URL
@@ -99,8 +97,6 @@ def webhook_settings(board):
                 'board-posting-created': {'board_id': [board_id]},
                 'board-topic-created': {'board_id': [board_id]},
             },
-            scope,
-            scope_id,
             format,
             url,
             enabled,

@@ -16,8 +16,6 @@ from .transfer.models import EventSelectors, OutgoingWebhook, WebhookID
 
 def create_outgoing_webhook(
     event_selectors: EventSelectors,
-    scope: str,
-    scope_id: Optional[str],
     format: str,
     url: str,
     enabled: bool,
@@ -28,8 +26,6 @@ def create_outgoing_webhook(
     """Create an outgoing webhook."""
     webhook = DbOutgoingWebhook(
         event_selectors,
-        scope,
-        scope_id,
         format,
         url,
         enabled,
@@ -78,8 +74,6 @@ def _db_entity_to_outgoing_webhook(
     return OutgoingWebhook(
         webhook.id,
         event_selectors,
-        webhook.scope,
-        webhook.scope_id,
         webhook.format,
         webhook.text_prefix,
         extra_fields,
