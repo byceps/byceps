@@ -16,7 +16,6 @@ from ..services.webhooks import service as webhook_service
 from ..services.webhooks.transfer.models import OutgoingWebhook
 
 from .events import get_name_for_event
-from .visibility import get_visibilities
 
 
 def get_screen_name_or_fallback(screen_name: Optional[str]) -> str:
@@ -38,21 +37,6 @@ def get_webhooks_for_irc(event: _BaseEvent) -> List[OutgoingWebhook]:
     webhooks = webhook_service.get_enabled_outgoing_webhooks(
         event_name, webhook_format
     )
-
-    visibilities = get_visibilities(event)
-    if not visibilities:
-        current_app.logger.warning(
-            f'No visibility assigned for event type "{type(event)}".'
-        )
-        return []
-
-    def match(webhook):
-        return any(
-            match_scope(webhook, visibility.name, None)
-            for visibility in visibilities
-        )
-
-    webhooks = [wh for wh in webhooks if match(wh)]
 
     if not webhooks:
         current_app.logger.warning(
