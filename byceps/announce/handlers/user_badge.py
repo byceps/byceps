@@ -1,8 +1,8 @@
 """
-byceps.announce.irc.user_badge
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.handlers.user_badge
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Announce user badge events on IRC.
+Announce user badge events.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

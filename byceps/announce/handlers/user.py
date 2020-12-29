@@ -1,8 +1,8 @@
 """
-byceps.announce.irc.user
-~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.handlers.user
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Announce user events on IRC.
+Announce user events.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

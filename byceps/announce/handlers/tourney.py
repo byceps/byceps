@@ -1,8 +1,8 @@
 """
-byceps.announce.irc.tourney
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.handlers.tourney
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Announce tourney events on IRC.
+Announce tourney events.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

@@ -63,10 +63,9 @@ from ...signals import user as user_signals
 from ...signals import user_badge as user_badge_signals
 from ...util.jobqueue import enqueue
 
-from ..handlers import board, news
-from ..helpers import get_webhooks
-
-from . import (
+from ..handlers import (
+    board,
+    news,
     shop_order,
     snippet,
     ticketing,
@@ -74,6 +73,7 @@ from . import (
     user,
     user_badge,
 )
+from ..helpers import get_webhooks
 
 
 EVENT_TYPES_TO_HANDLERS = {

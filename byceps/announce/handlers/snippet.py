@@ -1,8 +1,8 @@
 """
-byceps.announce.irc.snippet
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.handlers.snippet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Announce snippet events on IRC.
+Announce snippet events.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

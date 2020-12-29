@@ -1,8 +1,8 @@
 """
-byceps.announce.irc.ticketing
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.handlers.ticketing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Announce ticketing events on IRC.
+Announce ticketing events.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
