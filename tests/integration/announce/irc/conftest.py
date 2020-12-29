@@ -14,7 +14,7 @@ from .helpers import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 def webhook_settings():
     event_selector_sets = [
         # internal
-        set(
+        dict.fromkeys(
             [
                 'board-topic-created',
                 'board-topic-hidden',
@@ -47,7 +47,7 @@ def webhook_settings():
             ]
         ),
         # public
-        set(
+        dict.fromkeys(
             [
                 'board-topic-created',
                 'board-posting-created',

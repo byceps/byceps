@@ -84,7 +84,9 @@ def test_announce_posting_created(
 
 @pytest.fixture(scope='module')
 def webhook_settings(board):
-    event_selectors = set(['board-posting-created', 'board-topic-created'])
+    event_selectors = dict.fromkeys(
+        ['board-posting-created', 'board-topic-created']
+    )
     scope = 'board'
     scope_ids = [str(board.id), 'totally-different-id']
     format = 'discord'

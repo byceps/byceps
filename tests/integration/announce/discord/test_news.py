@@ -49,7 +49,7 @@ def test_published_news_item_announced(
 
 @pytest.fixture(scope='module')
 def webhook_settings(channel):
-    event_selectors = set(['news-item-published'])
+    event_selectors = dict.fromkeys(['news-item-published'])
     scope = 'news'
     scope_ids = [str(channel.id), 'totally-different-id']
     format = 'discord'

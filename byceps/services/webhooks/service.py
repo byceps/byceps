@@ -6,16 +6,16 @@ byceps.services.webhooks.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional
 
 from ...database import db
 
 from .models import OutgoingWebhook as DbOutgoingWebhook
-from .transfer.models import OutgoingWebhook, WebhookID
+from .transfer.models import EventSelectors, OutgoingWebhook, WebhookID
 
 
 def create_outgoing_webhook(
-    event_selectors: Set[str],
+    event_selectors: EventSelectors,
     scope: str,
     scope_id: Optional[str],
     format: str,
@@ -26,10 +26,8 @@ def create_outgoing_webhook(
     extra_fields: Optional[Dict[str, Any]] = None,
 ) -> OutgoingWebhook:
     """Create an outgoing webhook."""
-    event_selectors_dict = dict.fromkeys(event_selectors)
-
     webhook = DbOutgoingWebhook(
-        event_selectors_dict,
+        event_selectors,
         scope,
         scope_id,
         format,
@@ -67,9 +65,11 @@ def get_enabled_outgoing_webhooks(event_type: str) -> List[OutgoingWebhook]:
 def _db_entity_to_outgoing_webhook(
     webhook: DbOutgoingWebhook,
 ) -> OutgoingWebhook:
-    event_selectors = set()
-    if webhook.event_selectors is not None:
-        event_selectors = set(webhook.event_selectors.keys())
+    event_selectors = (
+        dict(webhook.event_selectors)
+        if (webhook.event_selectors is not None)
+        else {}
+    )
 
     extra_fields = (
         dict(webhook.extra_fields) if (webhook.extra_fields is not None) else {}
