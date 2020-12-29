@@ -63,11 +63,10 @@ from ...signals import user as user_signals
 from ...signals import user_badge as user_badge_signals
 from ...util.jobqueue import enqueue
 
-from ..handlers import news
+from ..handlers import board, news
 from ..helpers import get_webhooks
 
 from . import (
-    board,
     shop_order,
     snippet,
     ticketing,

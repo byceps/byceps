@@ -1,8 +1,8 @@
 """
-byceps.announce.irc.board
-~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.handlers.board
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Announce board events on IRC.
+Announce board events.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -25,7 +25,7 @@ from ...events.board import (
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
 from ..common import board
-from ..helpers import call_webhook
+from ..helpers import call_webhook, match_scope
 
 
 def announce_board_topic_created(
@@ -138,5 +138,8 @@ def send_board_message(
 ) -> None:
     scope = 'board'
     scope_id = str(event.board_id)
+
+    if webhook.scope != 'any' and not match_scope(webhook, scope, scope_id):
+        return
 
     call_webhook(webhook, text)
