@@ -23,23 +23,16 @@ def get_screen_name_or_fallback(screen_name: Optional[str]) -> str:
     return screen_name if screen_name else 'Jemand'
 
 
-def get_webhooks_for_discord(event: _BaseEvent) -> List[OutgoingWebhook]:
+def get_webhooks(
+    event: _BaseEvent, webhook_format: str
+) -> List[OutgoingWebhook]:
     event_name = get_name_for_event(event)
-    webhook_format = 'discord'
-    return webhook_service.get_enabled_outgoing_webhooks(
-        event_name, webhook_format
-    )
-
-
-def get_webhooks_for_irc(event: _BaseEvent) -> List[OutgoingWebhook]:
-    event_name = get_name_for_event(event)
-    webhook_format = 'weitersager'
     webhooks = webhook_service.get_enabled_outgoing_webhooks(
         event_name, webhook_format
     )
 
     # Stable order is easier to test.
-    webhooks.sort(key=lambda wh: wh.extra_fields['channel'])
+    webhooks.sort(key=lambda wh: wh.extra_fields.get('channel', ''))
 
     return webhooks
 

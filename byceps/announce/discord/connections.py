@@ -17,7 +17,7 @@ from ...signals import board as board_signals
 from ...signals import news as news_signals
 from ...util.jobqueue import enqueue
 
-from ..helpers import get_webhooks_for_discord
+from ..helpers import get_webhooks
 
 from . import board, news
 
@@ -39,6 +39,7 @@ def _on_event(sender, *, event: Optional[_BaseEvent] = None) -> None:
     if handler is None:
         return None
 
-    webhooks = get_webhooks_for_discord(event)
+    webhook_format = 'discord'
+    webhooks = get_webhooks(event, webhook_format)
     for webhook in webhooks:
         enqueue(handler, event, webhook)

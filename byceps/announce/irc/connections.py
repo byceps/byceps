@@ -63,7 +63,7 @@ from ...signals import user as user_signals
 from ...signals import user_badge as user_badge_signals
 from ...util.jobqueue import enqueue
 
-from ..helpers import get_webhooks_for_irc
+from ..helpers import get_webhooks
 
 from . import (
     board,
@@ -170,6 +170,7 @@ def _on_event(sender, *, event: Optional[_BaseEvent] = None) -> None:
     if handler is None:
         return None
 
-    webhooks = get_webhooks_for_irc(event)
+    webhook_format = 'weitersager'
+    webhooks = get_webhooks(event, webhook_format)
     for webhook in webhooks:
         enqueue(handler, event, webhook)
