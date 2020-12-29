@@ -1,8 +1,8 @@
 """
-byceps.announce.irc.news
-~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.handlers.news
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Announce news events on IRC.
+Announce news events.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,7 +12,7 @@ from ...events.news import NewsItemPublished
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
 from ..common import news
-from ..helpers import call_webhook
+from ..helpers import call_webhook, match_scope
 
 
 def announce_news_item_published(
@@ -32,5 +32,8 @@ def send_news_message(
 ) -> None:
     scope = 'news'
     scope_id = str(event.channel_id)
+
+    if webhook.scope != 'any' and not match_scope(webhook, scope, scope_id):
+        return
 
     call_webhook(webhook, text)

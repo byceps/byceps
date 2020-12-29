@@ -17,9 +17,10 @@ from ...signals import board as board_signals
 from ...signals import news as news_signals
 from ...util.jobqueue import enqueue
 
+from ..handlers import news
 from ..helpers import get_webhooks
 
-from . import board, news
+from . import board
 
 
 EVENT_TYPES_TO_HANDLERS = {
