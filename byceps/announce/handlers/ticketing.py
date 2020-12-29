@@ -41,7 +41,4 @@ def send_ticketing_message(
     webhook: OutgoingWebhook,
     text: str,
 ) -> None:
-    scope = 'ticketing'
-    scope_id = None
-
     call_webhook(webhook, text)

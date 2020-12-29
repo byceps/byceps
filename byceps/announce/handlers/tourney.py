@@ -157,7 +157,4 @@ def announce_participant_disqualified(
 def send_tourney_message(
     event: _TourneyEvent, webhook: OutgoingWebhook, text: str
 ) -> None:
-    scope = 'tourney'
-    scope_id = event.tourney_id
-
     call_webhook(webhook, text)

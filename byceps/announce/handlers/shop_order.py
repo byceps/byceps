@@ -51,7 +51,4 @@ def announce_order_canceled(
 def send_shop_message(
     event: _ShopOrderEvent, webhook: OutgoingWebhook, text: str
 ) -> None:
-    scope = 'shop'
-    scope_id = None
-
     call_webhook(webhook, text)

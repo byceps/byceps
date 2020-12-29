@@ -37,7 +37,4 @@ def announce_user_badge_awarded(
 def send_user_badge_message(
     event: UserBadgeAwarded, webhook: OutgoingWebhook, text: str
 ) -> None:
-    scope = 'user_badge'
-    scope_id = None
-
     call_webhook(webhook, text)

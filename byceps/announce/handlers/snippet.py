@@ -53,7 +53,4 @@ def announce_snippet_deleted(
 def send_snippet_message(
     event: _SnippetEvent, webhook: OutgoingWebhook, text: str
 ) -> None:
-    scope = 'snippet'
-    scope_id = None
-
     call_webhook(webhook, text)

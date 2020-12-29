@@ -93,7 +93,4 @@ def announce_user_account_deleted(
 def send_user_message(
     event: _UserEvent, webhook: OutgoingWebhook, text: str
 ) -> None:
-    scope = 'user'
-    scope_id = None
-
     call_webhook(webhook, text)
