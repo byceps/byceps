@@ -38,12 +38,6 @@ def get_webhooks_for_irc(event: _BaseEvent) -> List[OutgoingWebhook]:
         event_name, webhook_format
     )
 
-    if not webhooks:
-        current_app.logger.warning(
-            f'No enabled IRC webhooks found. Not sending message to IRC.'
-        )
-        return []
-
     # Stable order is easier to test.
     webhooks.sort(key=lambda wh: wh.extra_fields['channel'])
 
