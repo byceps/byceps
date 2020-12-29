@@ -33,8 +33,28 @@ def get_webhooks(event: _BaseEvent) -> List[OutgoingWebhook]:
     return webhooks
 
 
-def match_scope(webhook: OutgoingWebhook, scope: str, scope_id: str) -> bool:
-    return webhook.scope == scope and webhook.scope_id == scope_id
+def matches_selectors(
+    event: _BaseEvent,
+    webhook: OutgoingWebhook,
+    attribute_name: str,
+    actual_value: str,
+) -> bool:
+    event_name = get_name_for_event(event)
+    if event_name not in webhook.event_selectors:
+        # This should not happen as only webhooks supporting this
+        # event type should have been selected before calling an
+        # event announcement handler.
+        return False
+
+    event_selector = webhook.event_selectors.get(event_name)
+    if event_selector is None:
+        # If no specific matcher rule is defined, a value of `None`
+        # is okay (as it allows the event name to be contained in
+        # the dictionary as a key).
+        event_selector = {}
+
+    allowed_values = event_selector.get(attribute_name)
+    return (allowed_values is None) or (actual_value in allowed_values)
 
 
 def call_webhook(webhook: OutgoingWebhook, text: str) -> None:

@@ -12,7 +12,7 @@ from ...events.news import NewsItemPublished
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
 from ..common import news
-from ..helpers import call_webhook, match_scope
+from ..helpers import call_webhook, matches_selectors
 
 
 def announce_news_item_published(
@@ -30,10 +30,8 @@ def announce_news_item_published(
 def send_news_message(
     event: NewsItemPublished, webhook: OutgoingWebhook, text: str
 ) -> None:
-    scope = 'news'
-    scope_id = str(event.channel_id)
-
-    if webhook.scope != 'any' and not match_scope(webhook, scope, scope_id):
+    channel_id = str(event.channel_id)
+    if not matches_selectors(event, webhook, 'channel_id', channel_id):
         return
 
     call_webhook(webhook, text)

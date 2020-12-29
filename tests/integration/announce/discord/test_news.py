@@ -49,9 +49,9 @@ def test_published_news_item_announced(
 
 @pytest.fixture(scope='module')
 def webhook_settings(channel):
-    event_selectors = dict.fromkeys(['news-item-published'])
-    scope = 'news'
-    scope_ids = [str(channel.id), 'totally-different-id']
+    news_channel_ids = [str(channel.id), 'totally-different-id']
+    scope = ''
+    scope_id = None
     format = 'discord'
     text_prefix = '[News] '
     url = WEBHOOK_URL
@@ -59,7 +59,8 @@ def webhook_settings(channel):
 
     webhooks = [
         webhook_service.create_outgoing_webhook(
-            event_selectors,
+            # event_selectors
+            {'news-item-published': {'channel_id': [news_channel_id]}},
             scope,
             scope_id,
             format,
@@ -67,7 +68,7 @@ def webhook_settings(channel):
             enabled,
             text_prefix=text_prefix,
         )
-        for scope_id in scope_ids
+        for news_channel_id in news_channel_ids
     ]
 
     yield

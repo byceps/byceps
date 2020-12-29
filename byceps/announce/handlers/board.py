@@ -25,7 +25,7 @@ from ...events.board import (
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
 from ..common import board
-from ..helpers import call_webhook, match_scope
+from ..helpers import call_webhook, matches_selectors
 
 
 def announce_board_topic_created(
@@ -136,10 +136,8 @@ def announce_board_posting_unhidden(
 def send_board_message(
     event: _BoardEvent, webhook: OutgoingWebhook, text: str
 ) -> None:
-    scope = 'board'
-    scope_id = str(event.board_id)
-
-    if webhook.scope != 'any' and not match_scope(webhook, scope, scope_id):
+    board_id = str(event.board_id)
+    if not matches_selectors(event, webhook, 'board_id', board_id):
         return
 
     call_webhook(webhook, text)
