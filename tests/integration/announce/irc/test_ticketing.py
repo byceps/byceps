@@ -5,7 +5,7 @@
 
 from unittest.mock import patch
 
-import byceps.announce.irc.connections  # Connect signal handlers.
+import byceps.announce.connections  # Connect signal handlers.
 from byceps.events.ticketing import TicketCheckedIn, TicketsSold
 from byceps.services.ticketing.transfer.models import TicketSaleStats
 from byceps.signals import ticketing as ticketing_signals

@@ -1,8 +1,8 @@
 """
-byceps.announce.irc.connections
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.connections
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Announce events on IRC.
+Connect event signals to announcement handlers.
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -10,8 +10,8 @@ Announce events on IRC.
 
 from typing import Optional
 
-from ...events.base import _BaseEvent
-from ...events.board import (
+from ..events.base import _BaseEvent
+from ..events.board import (
     BoardPostingCreated,
     BoardPostingHidden,
     BoardPostingUnhidden,
@@ -24,11 +24,11 @@ from ...events.board import (
     BoardTopicUnlocked,
     BoardTopicUnpinned,
 )
-from ...events.news import NewsItemPublished
-from ...events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
-from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
-from ...events.ticketing import TicketCheckedIn, TicketsSold
-from ...events.tourney import (
+from ..events.news import NewsItemPublished
+from ..events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
+from ..events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
+from ..events.ticketing import TicketCheckedIn, TicketsSold
+from ..events.tourney import (
     TourneyStarted,
     TourneyPaused,
     TourneyCanceled,
@@ -43,7 +43,7 @@ from ...events.tourney import (
     TourneyParticipantWarned,
     TourneyParticipantDisqualified,
 )
-from ...events.user import (
+from ..events.user import (
     UserAccountCreated,
     UserAccountDeleted,
     UserAccountSuspended,
@@ -52,18 +52,18 @@ from ...events.user import (
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
-from ...events.user_badge import UserBadgeAwarded
-from ...signals import board as board_signals
-from ...signals import news as news_signals
-from ...signals import shop as shop_signals
-from ...signals import snippet as snippet_signals
-from ...signals import ticketing as ticketing_signals
-from ...signals import tourney as tourney_signals
-from ...signals import user as user_signals
-from ...signals import user_badge as user_badge_signals
-from ...util.jobqueue import enqueue
+from ..events.user_badge import UserBadgeAwarded
+from ..signals import board as board_signals
+from ..signals import news as news_signals
+from ..signals import shop as shop_signals
+from ..signals import snippet as snippet_signals
+from ..signals import ticketing as ticketing_signals
+from ..signals import tourney as tourney_signals
+from ..signals import user as user_signals
+from ..signals import user_badge as user_badge_signals
+from ..util.jobqueue import enqueue
 
-from ..handlers import (
+from .handlers import (
     board,
     news,
     shop_order,
@@ -73,7 +73,7 @@ from ..handlers import (
     user,
     user_badge,
 )
-from ..helpers import get_webhooks
+from .helpers import get_webhooks
 
 
 EVENT_TYPES_TO_HANDLERS = {
@@ -169,7 +169,6 @@ def _on_event(sender, *, event: Optional[_BaseEvent] = None) -> None:
     if handler is None:
         return None
 
-    webhook_format = 'weitersager'
-    webhooks = get_webhooks(event, webhook_format)
+    webhooks = get_webhooks(event)
     for webhook in webhooks:
         enqueue(handler, event, webhook)

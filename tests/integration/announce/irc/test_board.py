@@ -5,7 +5,7 @@
 
 import pytest
 
-import byceps.announce.irc.connections  # Connect signal handlers.
+import byceps.announce.connections  # Connect signal handlers.
 from byceps.events.board import (
     BoardPostingCreated,
     BoardPostingHidden,

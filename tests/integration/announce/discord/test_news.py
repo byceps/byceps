@@ -5,7 +5,7 @@
 
 import pytest
 
-import byceps.announce.discord.connections  # Connect signal handlers.
+import byceps.announce.connections  # Connect signal handlers.
 from byceps.events.news import NewsItemPublished
 from byceps.services.news import (
     channel_service as news_channel_service,

@@ -181,5 +181,4 @@ def _load_announce_signal_handlers() -> None:
     """Import modules containing handlers so they connect to the
     corresponding signals.
     """
-    from .announce.discord import connections
-    from .announce.irc import connections
+    from .announce import connections

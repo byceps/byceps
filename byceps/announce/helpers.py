@@ -23,13 +23,9 @@ def get_screen_name_or_fallback(screen_name: Optional[str]) -> str:
     return screen_name if screen_name else 'Jemand'
 
 
-def get_webhooks(
-    event: _BaseEvent, webhook_format: str
-) -> List[OutgoingWebhook]:
+def get_webhooks(event: _BaseEvent) -> List[OutgoingWebhook]:
     event_name = get_name_for_event(event)
-    webhooks = webhook_service.get_enabled_outgoing_webhooks(
-        event_name, webhook_format
-    )
+    webhooks = webhook_service.get_enabled_outgoing_webhooks(event_name)
 
     # Stable order is easier to test.
     webhooks.sort(key=lambda wh: wh.extra_fields.get('channel', ''))

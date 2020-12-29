@@ -5,7 +5,7 @@
 
 import pytest
 
-import byceps.announce.discord.connections  # Connect signal handlers.
+import byceps.announce.connections  # Connect signal handlers.
 from byceps.events.board import BoardPostingCreated, BoardTopicCreated
 from byceps.services.board import (
     category_command_service,
