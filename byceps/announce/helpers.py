@@ -29,6 +29,9 @@ def get_webhooks_for_discord(event: _BaseEvent) -> List[OutgoingWebhook]:
 
 
 def get_webhooks_for_irc(event: _BaseEvent) -> List[OutgoingWebhook]:
+    webhook_format = 'weitersager'
+    webhooks = webhook_service.get_enabled_outgoing_webhooks(webhook_format)
+
     visibilities = get_visibilities(event)
     if not visibilities:
         current_app.logger.warning(
@@ -36,18 +39,13 @@ def get_webhooks_for_irc(event: _BaseEvent) -> List[OutgoingWebhook]:
         )
         return []
 
-    scope_id = None
-    webhook_format = 'weitersager'
-
-    webhooks = []
-    for visibility in visibilities:
-        scope = visibility.name
-
-        relevant_webhooks = webhook_service.get_enabled_outgoing_webhooks(
-            webhook_format
+    def match(webhook):
+        return any(
+            match_scope(webhook, visibility.name, None)
+            for visibility in visibilities
         )
-        relevant_webhooks = select_webhooks(relevant_webhooks, scope, scope_id)
-        webhooks.extend(relevant_webhooks)
+
+    webhooks = [wh for wh in webhooks if match(wh)]
 
     if not webhooks:
         current_app.logger.warning(
@@ -59,12 +57,6 @@ def get_webhooks_for_irc(event: _BaseEvent) -> List[OutgoingWebhook]:
     webhooks.sort(key=lambda wh: wh.extra_fields['channel'])
 
     return webhooks
-
-
-def select_webhooks(
-    webhooks: List[OutgoingWebhook], scope: str, scope_id: str
-) -> List[OutgoingWebhook]:
-    return [wh for wh in webhooks if match_scope(wh, scope, scope_id)]
 
 
 def match_scope(webhook: OutgoingWebhook, scope: str, scope_id: str) -> bool:
