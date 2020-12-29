@@ -15,6 +15,7 @@ from ..events.base import _BaseEvent
 from ..services.webhooks import service as webhook_service
 from ..services.webhooks.transfer.models import OutgoingWebhook
 
+from .events import get_name_for_event
 from .visibility import get_visibilities
 
 
@@ -24,13 +25,19 @@ def get_screen_name_or_fallback(screen_name: Optional[str]) -> str:
 
 
 def get_webhooks_for_discord(event: _BaseEvent) -> List[OutgoingWebhook]:
+    event_name = get_name_for_event(event)
     webhook_format = 'discord'
-    return webhook_service.get_enabled_outgoing_webhooks(webhook_format)
+    return webhook_service.get_enabled_outgoing_webhooks(
+        event_name, webhook_format
+    )
 
 
 def get_webhooks_for_irc(event: _BaseEvent) -> List[OutgoingWebhook]:
+    event_name = get_name_for_event(event)
     webhook_format = 'weitersager'
-    webhooks = webhook_service.get_enabled_outgoing_webhooks(webhook_format)
+    webhooks = webhook_service.get_enabled_outgoing_webhooks(
+        event_name, webhook_format
+    )
 
     visibilities = get_visibilities(event)
     if not visibilities:
