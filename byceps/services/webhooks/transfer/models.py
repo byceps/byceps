@@ -25,4 +25,5 @@ class OutgoingWebhook:
     text_prefix: Optional[str]
     extra_fields: Optional[Dict[str, Any]]
     url: str
+    description: str
     enabled: bool

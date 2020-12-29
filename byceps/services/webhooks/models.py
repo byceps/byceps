@@ -26,6 +26,7 @@ class OutgoingWebhook(db.Model):
     text_prefix = db.Column(db.UnicodeText, nullable=True)
     extra_fields = db.Column(MutableDict.as_mutable(db.JSONB), nullable=True)
     url = db.Column(db.UnicodeText, nullable=False)
+    description = db.Column(db.UnicodeText, nullable=True)
     enabled = db.Column(db.Boolean, nullable=False)
 
     def __init__(
@@ -37,10 +38,12 @@ class OutgoingWebhook(db.Model):
         *,
         text_prefix: Optional[str] = None,
         extra_fields: Optional[Dict[str, Any]] = None,
+        description: Optional[str] = None,
     ) -> None:
         self.event_selectors = event_selectors
         self.format = format
         self.text_prefix = text_prefix
         self.extra_fields = extra_fields
         self.url = url
+        self.description = description
         self.enabled = enabled

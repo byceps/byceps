@@ -22,6 +22,7 @@ def create_outgoing_webhook(
     *,
     text_prefix: Optional[str] = None,
     extra_fields: Optional[Dict[str, Any]] = None,
+    description: Optional[str] = None,
 ) -> OutgoingWebhook:
     """Create an outgoing webhook."""
     webhook = DbOutgoingWebhook(
@@ -31,6 +32,7 @@ def create_outgoing_webhook(
         enabled,
         text_prefix=text_prefix,
         extra_fields=extra_fields,
+        description=description,
     )
 
     db.session.add(webhook)
@@ -78,5 +80,6 @@ def _db_entity_to_outgoing_webhook(
         webhook.text_prefix,
         extra_fields,
         webhook.url,
+        webhook.description,
         webhook.enabled,
     )
