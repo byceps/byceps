@@ -49,6 +49,13 @@ def delete_outgoing_webhook(webhook_id: WebhookID) -> None:
     db.session.commit()
 
 
+def get_all_webhooks() -> List[OutgoingWebhook]:
+    """Return all webhooks."""
+    webhooks = db.session.query(DbOutgoingWebhook).all()
+
+    return [_db_entity_to_outgoing_webhook(webhook) for webhook in webhooks]
+
+
 def get_enabled_outgoing_webhooks(event_type: str) -> List[OutgoingWebhook]:
     """Return the configurations for enabled outgoing webhooks for that
     event type.

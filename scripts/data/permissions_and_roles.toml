@@ -330,6 +330,14 @@ title = 'Abzeichen bearbeiten'
 id = 'user_badge.view'
 title = 'Abzeichen anzeigen'
 
+[[permissions]]
+id = 'webhook.administrate'
+title = 'Webhooks verwalten'
+
+[[permissions]]
+id = 'webhook.view'
+title = 'Webhooks anzeigen'
+
 [[roles]]
 id = 'authorization_admin'
 title = 'Rechte und Rollen verwalten'
@@ -594,4 +602,12 @@ assigned_permissions = [
     'user_badge.create',
     'user_badge.update',
     'user_badge.view',
+]
+
+[[roles]]
+id = 'webhook_admin'
+title = 'Webhooks verwalten'
+assigned_permissions = [
+    'webhook.administrate',
+    'webhook.view',
 ]

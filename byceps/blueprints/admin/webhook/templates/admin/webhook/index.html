@@ -1,0 +1,75 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/misc.html' import render_tag %}
+{% set current_page = 'webhook_admin' %}
+{% set title = 'Webhooks' %}
+{% set layout_main_raw = True %}
+
+{% block body %}
+
+  <h1>{{ title }} {{ render_extra_in_heading(webhooks|length) }}</h1>
+
+  {%- if webhooks %}
+    {%- for webhook in webhooks %}
+  <div class="box" style="border-left: {{ '#55cc00' if webhook.enabled else '#aaaaaa' }} solid 0.25rem;">
+
+    <div style="margin-bottom: 1rem;">
+      {{ render_tag('aktiv', class='color-success') if webhook.enabled else render_tag('inaktiv', class='color-disabled') }}
+      {{ webhook.description|fallback }}
+    </div>
+
+    <div class="row row--space-between">
+
+      <div class="column-auto" style="width: 50%;">
+        <table class="index">
+          <tr>
+            <th>URL</th>
+            <td>{{ webhook.url }}</td>
+          </tr>
+          <tr>
+            <th>Format</th>
+            <td>{{ webhook.format }}</td>
+          </tr>
+          <tr>
+            <th>Zusätzliche Felder</th>
+            <td>{{ webhook.extra_fields|fallback }}</td>
+          </tr>
+          <tr>
+            <th>Text-Präfix</th>
+            <td>{{ webhook.text_prefix|fallback }}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="column-auto" style="font-size: 0.75rem; width: 50%;">
+        <strong>Selektoren</strong>
+        <details>
+          <summary>{{ webhook.event_selectors|length }} Event(s)</summary>
+          <ul style="padding-left: 0.75rem;">
+            {%- for event_name, event_filters in webhook.event_selectors|dictsort %}
+            <li>
+              {{ event_name }}
+              {%- if event_filters %}
+              <ul style="padding-left: 1rem;">
+                {%- for key, value in event_filters|dictsort %}
+                <li>
+                  {{ key }} in {{ value }}
+                </li>
+                {%- endfor %}
+              </ul>
+              {%- endif %}
+            </li>
+            {%- endfor %}
+          </ul>
+        </details>
+      </div>
+
+    </div>{# .row #}
+
+  </div>{# .box #}
+    {%- endfor %}
+  {%- else %}
+  <div class="dimmed-box centered">Es sind keine Webhooks definiert.</div>
+  {%- endif %}
+
+{%- endblock %}

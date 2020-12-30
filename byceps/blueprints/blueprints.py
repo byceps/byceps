@@ -112,6 +112,7 @@ def _get_blueprints_admin() -> Iterator[BlueprintReg]:
         ('admin.tourney',                   '/admin/tourney'            ),
         ('admin.user',                      '/admin/users'              ),
         ('admin.user_badge',                '/admin/user_badges'        ),
+        ('admin.webhook',                   '/admin/webhooks'           ),
     ]
 
 
