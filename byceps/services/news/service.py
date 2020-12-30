@@ -6,7 +6,9 @@ byceps.services.news.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import dataclasses
 from datetime import datetime
+from functools import partial
 from typing import Dict, Optional, Sequence
 
 from ...database import db, paginate, Pagination, Query
@@ -16,6 +18,7 @@ from ...typing import UserID
 from ..user import service as user_service
 
 from .channel_service import _db_entity_to_channel
+from . import html_service
 from .models.channel import Channel as DbChannel
 from .models.item import (
     CurrentVersionAssociation as DbCurrentVersionAssociation,
@@ -187,7 +190,7 @@ def find_aggregated_item_by_slug(
     if item is None:
         return None
 
-    return _db_entity_to_item(item)
+    return _db_entity_to_item(item, render_body=True)
 
 
 def get_aggregated_items_paginated(
@@ -203,7 +206,9 @@ def get_aggregated_items_paginated(
     if published_only:
         query = query.published()
 
-    return paginate(query, page, items_per_page, item_mapper=_db_entity_to_item)
+    item_mapper = partial(_db_entity_to_item, render_body=True)
+
+    return paginate(query, page, items_per_page, item_mapper=item_mapper)
 
 
 def get_items_paginated(
@@ -259,7 +264,9 @@ def get_item_count_by_channel_id() -> Dict[ChannelID, int]:
     return dict(channel_ids_and_item_counts)
 
 
-def _db_entity_to_item(item: DbItem) -> Item:
+def _db_entity_to_item(
+    item: DbItem, *, render_body: Optional[bool] = False
+) -> Item:
     channel = _db_entity_to_channel(item.channel)
     external_url = item.channel.url_prefix + item.slug
     image_url_path = _assemble_image_url_path(item)
@@ -268,7 +275,7 @@ def _db_entity_to_item(item: DbItem) -> Item:
         for image in item.images
     ]
 
-    return Item(
+    item = Item(
         id=item.id,
         channel=channel,
         slug=item.slug,
@@ -281,6 +288,11 @@ def _db_entity_to_item(item: DbItem) -> Item:
         images=images,
     )
 
+    if render_body:
+        item = _replace_body_with_rendered_body(item)
+
+    return item
+
 
 def _assemble_image_url_path(item: DbItem) -> Optional[str]:
     url_path = item.current_version.image_url_path
@@ -289,3 +301,14 @@ def _assemble_image_url_path(item: DbItem) -> Optional[str]:
         return None
 
     return f'/data/global/news_channels/{item.channel_id}/{url_path}'
+
+
+def _replace_body_with_rendered_body(item: Item) -> Item:
+    try:
+        rendered_body = html_service.render_body(
+            item.body, item.channel.id, item.images
+        )
+    except Exception as e:
+        rendered_body = None  # Not the best error indicator.
+
+    return dataclasses.replace(item, body=rendered_body)

@@ -6,11 +6,8 @@ byceps.blueprints.site.news.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import dataclasses
-
 from flask import abort, g
 
-from ....services.news import html_service as news_html_service
 from ....services.news import service as news_item_service
 from ....services.site import (
     service as site_service,
@@ -45,11 +42,6 @@ def index(page):
         channel_id, page, items_per_page, published_only=published_only
     )
 
-    replacement_items = [
-        _replace_body_with_rendered_body(item) for item in items.items
-    ]
-    items.items = replacement_items
-
     return {
         'items': items,
         'page': page,
@@ -69,8 +61,6 @@ def view(slug):
 
     if item is None:
         abort(404)
-
-    item = _replace_body_with_rendered_body(item)
 
     return {
         'item': item,
@@ -100,14 +90,3 @@ def _get_items_per_page_value():
 
 def _may_view_drafts(user):
     return user.has_permission(NewsItemPermission.view_draft)
-
-
-def _replace_body_with_rendered_body(item):
-    try:
-        rendered_body = news_html_service.render_body(
-            item.body, item.channel.id, item.images
-        )
-    except Exception as e:
-        rendered_body = None  # Not the best error indicator.
-
-    return dataclasses.replace(item, body=rendered_body)
