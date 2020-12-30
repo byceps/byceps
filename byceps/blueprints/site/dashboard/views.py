@@ -22,6 +22,8 @@ from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Headline as NewsHeadline
 from ....services.site import service as site_service
 from ....services.site.transfer.models import Site
+from ....services.ticketing import ticket_service
+from ....services.ticketing.models.ticket import Ticket as DbTicket
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
@@ -45,13 +47,22 @@ def index():
 
     site = site_service.get_site(g.site_id)
 
+    tickets = _get_tickets(g.current_user)
     news_headlines = _get_news_headlines(site)
     board_topics = _get_board_topics(site, g.current_user)
 
     return {
+        'tickets': tickets,
         'news_headlines': news_headlines,
         'board_topics': board_topics,
     }
+
+
+def _get_tickets(current_user: CurrentUser) -> List[DbTicket]:
+    if g.party_id is None:
+        return []
+
+    return ticket_service.find_tickets_used_by_user(current_user.id, g.party_id)
 
 
 def _get_news_headlines(site: Site) -> List[NewsHeadline]:

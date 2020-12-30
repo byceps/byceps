@@ -1,6 +1,8 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/board.html' import render_flag_new %}
 {% from 'macros/datetime.html' import render_date_long, render_datetime %}
+{% from 'macros/misc.html' import render_tag %}
+{% from 'macros/seating.html' import render_seat_link %}
 {% set title = 'Dashboard' %}
 
 {% block head %}
@@ -11,12 +13,54 @@
 
     .item-meta {
       font-size: 0.6875rem; /* 11px / 16px */
+      font-weight: normal;
       opacity: 0.5;
     }
   </style>
 {%- endblock %}
 
 {% block body %}
+
+  <div class="row row--space-between">
+    <div class="column-auto" style="width: 50%;">
+
+      {# Intentionally left blank. #}
+
+    </div>
+    <div class="column-auto" style="width: 50%;">
+
+      <h2>Tickets</h2>
+      {%- if tickets %}
+      <table class="index">
+        <tr>
+          <th><span class="item-meta">Code</span></th>
+          <th><span class="item-meta">Sitzplatz</span></th>
+          <th></th>
+        </tr>
+        {%- for ticket in tickets %}
+        <tr>
+          <td>{{ ticket.code }}</td>
+          <td>
+            {%- if ticket.occupied_seat -%}
+            {{ render_seat_link(ticket.occupied_seat.area, ticket.occupied_seat) }}
+            {%- else -%}
+            {{ render_tag('keiner', class='color-danger') }}
+            {%- endif -%}
+          </td>
+          <td>
+            {%- if ticket.user_checked_in %}
+            {{ render_tag('eingecheckt', class='color-success') }}
+            {%- endif %}
+          </td>
+        </tr>
+        {%- endfor %}
+      </table>
+      {%- else %}
+      <p class="dimmed">Du nutzt noch kein Ticket.</p>
+      {%- endif %}
+
+    </div>
+  </div>{# .row #}
 
   <div class="row row--space-between">
     <div class="column-auto" style="width: 50%;">
