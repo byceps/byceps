@@ -17,8 +17,10 @@
   </nav>
   <h1>{{ render_icon('moderate') }} {{ title }}</h1>
 
+  <p>Beitrag von {{ render_user_link(posting.creator) }} im Thema &quot;{{ posting.topic.title }}&quot;</p>
+
   <h2>{{ render_icon('view') }} Sichtbarkeit</h2>
-  <p>Dieser Beitrag von {{ render_user_link(posting.creator) }} ist {% if posting.hidden %}<strong>versteckt</strong> (am {{ render_datetime(posting.hidden_at|utc_to_local_tz) }} durch {{ render_user_screen_name(posting.hidden_by) }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
+  <p>Der Beitrag ist {% if posting.hidden %}<strong>versteckt</strong> (am {{ render_datetime(posting.hidden_at|utc_to_local_tz) }} durch {{ render_user_screen_name(posting.hidden_by) }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <div class="button-row">
   {%- if posting.hidden %}
     <span class="button button--disabled">{{ render_icon('hidden') }} <span>Verstecken</span></span>

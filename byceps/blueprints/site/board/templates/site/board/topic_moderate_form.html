@@ -16,9 +16,11 @@
   </nav>
   <h1>{{ render_icon('moderate') }} {{ title }}</h1>
 
+  <p>Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }}</p>
+
   {%- if g.current_user.has_permission(BoardPermission.hide) %}
   <h2>{{ render_icon('view') }} Sichtbarkeit</h2>
-  <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at|utc_to_local_tz) }} durch {{ render_user_screen_name(topic.hidden_by) }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
+  <p>Das Thema ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at|utc_to_local_tz) }} durch {{ render_user_screen_name(topic.hidden_by) }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <div class="button-row">
   {%- if topic.hidden %}
     <span class="button button--disabled">{{ render_icon('hidden') }} <span>Verstecken</span></span>
@@ -32,7 +34,7 @@
 
   {%- if g.current_user.has_permission(BoardTopicPermission.lock) %}
   <h2>{{ render_icon('lock') }} Schreibsperre</h2>
-  <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.locked %}<strong>geschlossen</strong> ({{ render_datetime(topic.locked_at|utc_to_local_tz) }} durch {{ render_user_screen_name(topic.locked_by) }}){% else %}<strong>offen</strong>{% endif %}.</p>
+  <p>Das Thema ist {% if topic.locked %}<strong>geschlossen</strong> ({{ render_datetime(topic.locked_at|utc_to_local_tz) }} durch {{ render_user_screen_name(topic.locked_by) }}){% else %}<strong>offen</strong>{% endif %}.</p>
   <div class="button-row">
   {%- if topic.locked %}
     <span class="button button--disabled">{{ render_icon('lock') }} <span>Schließen</span></span>
@@ -46,7 +48,7 @@
 
   {%- if g.current_user.has_permission(BoardTopicPermission.pin) %}
   <h2>{{ render_icon('pin') }} Anheften</h2>
-  <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if topic.pinned %}<strong>angepinnt</strong> ({{ render_datetime(topic.pinned_at|utc_to_local_tz) }} durch {{ render_user_screen_name(topic.pinned_by) }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
+  <p>Das Thema ist {% if topic.pinned %}<strong>angepinnt</strong> ({{ render_datetime(topic.pinned_at|utc_to_local_tz) }} durch {{ render_user_screen_name(topic.pinned_by) }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
   <div class="button-row">
   {%- if topic.pinned %}
     <span class="button button--disabled">{{ render_icon('pin') }} <span>Anpinnen</span></span>
@@ -60,7 +62,7 @@
 
   {%- if g.current_user.has_permission(BoardTopicPermission.move) %}
   <h2>{{ render_icon('move') }} Verschieben</h2>
-  <p>Dieses Thema befindet sich in der Kategorie &quot;{{ topic.category.title }}&quot;.</p>
+  <p>Das Thema befindet sich in der Kategorie &quot;{{ topic.category.title }}&quot;.</p>
     {%- if categories %}
   <div class="button-row">
     <form action="{{ url_for('.topic_move', topic_id=topic.id) }}" method="post">
@@ -82,7 +84,7 @@
 
   {%- if g.current_user.has_permission(BoardPermission.announce) %}
   <h2>{{ render_icon('announce') }} Ankündigungen</h2>
-  <p>Das Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }} ist {% if not topic.posting_limited_to_moderators %}<strong>nicht</strong> {% endif %} auf Ankündigungen durch Moderatoren beschränkt.</p>
+  <p>Das Thema ist {% if not topic.posting_limited_to_moderators %}<strong>nicht</strong> {% endif %} auf Ankündigungen durch Moderatoren beschränkt.</p>
   <div class="button-row">
   {%- if topic.posting_limited_to_moderators %}
     <span class="button button--disabled">{{ render_icon('announce') }} <span>Auf Ankündigungen beschränken</span></span>
