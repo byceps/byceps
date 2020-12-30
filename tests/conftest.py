@@ -18,6 +18,7 @@ from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 from byceps.services.user import (
     command_service as user_command_service,
+    deletion_service as user_deletion_service,
     service as user_service,
 )
 from byceps.typing import BrandID
@@ -111,7 +112,7 @@ def make_user(admin_app):
     yield _wrapper
 
     for user_id in user_ids:
-        user_command_service.delete_account(user_id, user_id, 'clean up')
+        user_deletion_service.delete_account(user_id, user_id, 'clean up')
 
 
 @pytest.fixture(scope='session')
@@ -127,7 +128,7 @@ def make_user_with_detail(admin_app):
     yield _wrapper
 
     for user_id in user_ids:
-        user_command_service.delete_account(user_id, user_id, 'clean up')
+        user_deletion_service.delete_account(user_id, user_id, 'clean up')
 
 
 @pytest.fixture(scope='session')

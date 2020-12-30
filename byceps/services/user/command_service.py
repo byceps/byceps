@@ -11,7 +11,6 @@ from typing import Any, Optional
 
 from ...database import db
 from ...events.user import (
-    UserAccountDeleted,
     UserAccountSuspended,
     UserAccountUnsuspended,
     UserDetailsUpdated,
@@ -131,44 +130,6 @@ def unsuspend_account(
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,
         user_screen_name=user.screen_name,
-    )
-
-
-def delete_account(
-    user_id: UserID, initiator_id: UserID, reason: str
-) -> UserAccountDeleted:
-    """Delete the user account."""
-    user = _get_user(user_id)
-    initiator = user_service.get_user(initiator_id)
-
-    user_screen_name_before_anonymization = user.screen_name
-
-    user.deleted = True
-    _anonymize_account(user)
-
-    event = event_service.build_event(
-        'user-deleted',
-        user.id,
-        {
-            'initiator_id': str(initiator.id),
-            'reason': reason,
-        },
-    )
-    db.session.add(event)
-
-    # Deassign authorization roles.
-    authorization_service.deassign_all_roles_from_user(
-        user.id, initiator.id, commit=False
-    )
-
-    db.session.commit()
-
-    return UserAccountDeleted(
-        occurred_at=event.occurred_at,
-        initiator_id=initiator.id,
-        initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user_screen_name_before_anonymization,
     )
 
 
@@ -351,27 +312,6 @@ def remove_user_detail_extra(user_id: UserID, key: str) -> None:
 
     del detail.extras[key]
     db.session.commit()
-
-
-def _anonymize_account(user: DbUser) -> None:
-    """Remove user details from the account."""
-    user.screen_name = None
-    user.email_address = None
-    user.legacy_id = None
-
-    # Remove details.
-    user.detail.first_names = None
-    user.detail.last_name = None
-    user.detail.date_of_birth = None
-    user.detail.country = None
-    user.detail.zip_code = None
-    user.detail.city = None
-    user.detail.street = None
-    user.detail.phone_number = None
-
-    # Remove avatar association.
-    if user.avatar_selection is not None:
-        db.session.delete(user.avatar_selection)
 
 
 def _get_user(user_id: UserID) -> DbUser:

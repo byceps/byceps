@@ -12,7 +12,7 @@ from byceps.events.user import (
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
-from byceps.services.user import command_service as user_command_service
+from byceps.services.user import deletion_service as user_deletion_service
 from byceps.signals import user as user_signals
 
 from .helpers import (
@@ -183,7 +183,7 @@ def test_deleted_account_announced(app, make_user):
     admin = make_user('UberDude')
     user = make_user('Snake', user_id='76b0c57f-8909-4b02-90c9-96e0a817f738')
 
-    event = user_command_service.delete_account(
+    event = user_deletion_service.delete_account(
         user.id, admin.id, 'specious reason'
     )
 

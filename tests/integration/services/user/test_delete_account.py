@@ -7,7 +7,10 @@ import pytest
 
 from byceps.database import db
 from byceps.services.authorization import service as authorization_service
-from byceps.services.user import command_service as user_command_service
+from byceps.services.user import (
+    command_service as user_command_service,
+    deletion_service as user_deletion_service,
+)
 from byceps.services.user import event_service
 
 
@@ -81,7 +84,7 @@ def test_delete_account(
 
     # -------------------------------- #
 
-    user_command_service.delete_account(user_id, admin_user.id, reason=reason)
+    user_deletion_service.delete_account(user_id, admin_user.id, reason=reason)
 
     # -------------------------------- #
 

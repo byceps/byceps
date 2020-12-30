@@ -18,7 +18,10 @@ from ....services.orga_team import service as orga_team_service
 from ....services.shop.order import service as order_service
 from ....services.shop.shop import service as shop_service
 from ....services.site import service as site_service
-from ....services.user import command_service as user_command_service
+from ....services.user import (
+    command_service as user_command_service,
+    deletion_service as user_deletion_service,
+)
 from ....services.user import creation_service as user_creation_service
 from ....services.user import service as user_service
 from ....services.user import stats_service as user_stats_service
@@ -415,7 +418,7 @@ def delete_account(user_id):
     initiator_id = g.current_user.id
     reason = form.reason.data.strip()
 
-    event = user_command_service.delete_account(user.id, initiator_id, reason)
+    event = user_deletion_service.delete_account(user.id, initiator_id, reason)
 
     user_signals.account_deleted.send(None, event=event)
 
