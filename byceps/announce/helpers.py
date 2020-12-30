@@ -6,6 +6,7 @@ byceps.announce.helpers
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from http import HTTPStatus
 from typing import Any, Dict, List, Optional
 
 from flask import current_app
@@ -16,6 +17,10 @@ from ..services.webhooks import service as webhook_service
 from ..services.webhooks.transfer.models import OutgoingWebhook
 
 from .events import get_name_for_event
+
+
+class WebhookError(Exception):
+    pass
 
 
 def get_screen_name_or_fallback(screen_name: Optional[str]) -> str:
@@ -65,7 +70,23 @@ def call_webhook(webhook: OutgoingWebhook, text: str) -> None:
 
     data = _assemble_request_data(webhook, text)
 
-    requests.post(webhook.url, json=data)  # Ignore response code for now.
+    response = requests.post(webhook.url, json=data)
+
+    response_code = response.status_code
+    if webhook.format == 'discord' and response_code != HTTPStatus.NO_CONTENT:
+        raise WebhookError(
+            f'Discord webhook API returned unexpected status code {response_code}'
+        )
+    elif (
+        webhook.format == 'weitersager' and response_code != HTTPStatus.ACCEPTED
+    ):
+        raise WebhookError(
+            f'Weitersager webhook API returned unexpected status code {response_code}'
+        )
+    elif webhook.format == 'matrix' and response_code != HTTPStatus.OK:
+        raise WebhookError(
+            f'Matrix webhook API returned unexpected status code {response_code}'
+        )
 
 
 def _assemble_request_data(

@@ -5,6 +5,7 @@
 
 from contextlib import contextmanager
 from datetime import datetime
+from http import HTTPStatus
 
 from requests_mock import Mocker
 
@@ -16,7 +17,7 @@ def now() -> datetime:
 @contextmanager
 def mocked_webhook_receiver(url: str):
     with Mocker() as mock:
-        mock.post(url)
+        mock.post(url, status_code=HTTPStatus.NO_CONTENT)
         yield mock
 
 

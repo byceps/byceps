@@ -5,6 +5,7 @@
 
 from contextlib import contextmanager
 from datetime import datetime
+from http import HTTPStatus
 from typing import List
 
 from requests_mock import Mocker
@@ -23,7 +24,7 @@ def now() -> datetime:
 @contextmanager
 def mocked_irc_bot():
     with Mocker() as mock:
-        mock.post(BOT_URL)
+        mock.post(BOT_URL, status_code=HTTPStatus.ACCEPTED)
         yield mock
 
 
