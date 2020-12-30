@@ -82,3 +82,18 @@ def _assemble_request_data(
             )
 
         return {'channel': channel, 'text': text}
+
+    elif webhook.format == 'matrix':
+        key = webhook.extra_fields.get('key')
+        if not key:
+            current_app.logger.warning(
+                f'No API key specified with Matrix webhook.'
+            )
+
+        room_id = webhook.extra_fields.get('room_id')
+        if not room_id:
+            current_app.logger.warning(
+                f'No room ID specified with Matrix webhook.'
+            )
+
+        return {'key': key, 'room_id': room_id, 'text': text}
