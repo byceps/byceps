@@ -72,7 +72,7 @@ def _get_blueprints_site() -> Iterator[BlueprintReg]:
         ('site.terms',                      '/terms'                    ),
         ('site.ticketing',                  '/tickets'                  ),
         ('site.tourney',                    '/tourneys'                 ),
-        ('site.user.profile',               '/users'                    ),
+        ('site.user_profile',               '/users'                    ),
         ('site.user_badge',                 '/user_badges'              ),
         ('site.user_group',                 '/user_groups'              ),
         ('site.user_message',               '/user_messages'            ),

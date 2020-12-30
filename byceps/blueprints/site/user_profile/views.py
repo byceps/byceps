@@ -1,5 +1,5 @@
 """
-byceps.blueprints.site.user.profile.views
+byceps.blueprints.site.user_profile.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2020 Jochen Kupperschmidt
@@ -10,12 +10,12 @@ from operator import attrgetter
 
 from flask import abort, g
 
-from .....services.orga_team import service as orga_team_service
-from .....services.ticketing import attendance_service, ticket_service
-from .....services.user import service as user_service
-from .....services.user_badge import awarding_service as badge_awarding_service
-from .....util.framework.blueprint import create_blueprint
-from .....util.framework.templating import templated
+from ....services.orga_team import service as orga_team_service
+from ....services.ticketing import attendance_service, ticket_service
+from ....services.user import service as user_service
+from ....services.user_badge import awarding_service as badge_awarding_service
+from ....util.framework.blueprint import create_blueprint
+from ....util.framework.templating import templated
 
 
 blueprint = create_blueprint('user_profile', __name__)
