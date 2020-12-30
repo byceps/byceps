@@ -3,6 +3,7 @@
 {% from 'macros/datetime.html' import render_date_long, render_datetime %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/seating.html' import render_seat_link %}
+{% from 'macros/shop/orders.html' import render_order_payment_state %}
 {% set title = 'Dashboard' %}
 
 {% block head %}
@@ -26,7 +27,25 @@
   <div class="row row--space-between">
     <div class="column-auto" style="width: 50%;">
 
-      {# Intentionally left blank. #}
+      <h2>Offene Bestellungen</h2>
+      {%- if open_orders %}
+      <table class="index">
+        <tr>
+          <th><span class="item-meta">Bestellnummer</span></th>
+          <th class="number"><span class="item-meta">Betrag</span></th>
+          <th><span class="item-meta">Status</span></th>
+        </tr>
+        {%- for order in open_orders %}
+        <tr>
+          <td><a class="disguised" href="{{ url_for('shop_orders.view', order_id=order.id) }}">{{ order.order_number }}</a></td>
+          <td class="number nowrap">{{ order.total_amount|format_euro_amount }}</td>
+          <td class="nowrap">{{ render_order_payment_state(order.payment_state) }}</td>
+        </tr>
+        {%- endfor %}
+      </table>
+      {%- else %}
+      <p class="dimmed">Du hast keine offenen Bestellungen.</p>
+      {%- endif %}
 
     </div>
     <div class="column-auto" style="width: 50%;">

@@ -20,11 +20,15 @@ from ....services.board import (
 )
 from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Headline as NewsHeadline
+from ....services.shop.order import service as order_service
+from ....services.shop.order.transfer.models import Order
+from ....services.shop.storefront import service as storefront_service
 from ....services.site import service as site_service
 from ....services.site.transfer.models import Site
 from ....services.ticketing import ticket_service
 from ....services.ticketing.models.ticket import Ticket as DbTicket
 from ....services.user import service as user_service
+from ....typing import UserID
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import login_required
@@ -46,15 +50,33 @@ def index():
 
     site = site_service.get_site(g.site_id)
 
+    open_orders = _get_open_orders(site, g.current_user.id)
     tickets = _get_tickets(g.current_user)
     news_headlines = _get_news_headlines(site)
     board_topics = _get_board_topics(site, g.current_user)
 
     return {
+        'open_orders': open_orders,
         'tickets': tickets,
         'news_headlines': news_headlines,
         'board_topics': board_topics,
     }
+
+
+def _get_open_orders(site: Site, user_id: UserID) -> List[Order]:
+    storefront_id = site.storefront_id
+    if storefront_id is None:
+        return []
+
+    storefront = storefront_service.get_storefront(storefront_id)
+
+    orders = order_service.get_orders_placed_by_user_for_shop(
+        user_id, storefront.shop_id
+    )
+
+    orders = [order for order in orders if order.is_open]
+
+    return orders
 
 
 def _get_tickets(current_user: CurrentUser) -> List[DbTicket]:
