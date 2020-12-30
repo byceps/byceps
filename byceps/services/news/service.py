@@ -9,7 +9,7 @@ byceps.services.news.service
 import dataclasses
 from datetime import datetime
 from functools import partial
-from typing import Dict, Optional, Sequence
+from typing import Dict, List, Optional, Sequence
 
 from ...database import db, paginate, Pagination, Query
 from ...events.news import NewsItemPublished
@@ -26,7 +26,7 @@ from .models.item import (
     ItemVersion as DbItemVersion,
 )
 from . import image_service
-from .transfer.models import ChannelID, Item, ItemID, ItemVersionID
+from .transfer.models import ChannelID, Headline, Item, ItemID, ItemVersionID
 
 
 def create_item(
@@ -217,6 +217,26 @@ def get_items_paginated(
     """Return the news items to show on the specified page."""
     return _get_items_query(channel_id) \
         .paginate(page, items_per_page)
+
+
+def get_recent_headlines(channel_id: ChannelID, limit: int) -> List[Headline]:
+    """Return the most recent headlines."""
+    items = DbItem.query \
+        .for_channel(channel_id) \
+        .with_current_version() \
+        .published() \
+        .order_by(DbItem.published_at.desc()) \
+        .limit(limit) \
+        .all()
+
+    return [
+        Headline(
+            slug=item.slug,
+            published_at=item.published_at,
+            title=item.current_version.title,
+        )
+        for item in items
+    ]
 
 
 def _get_items_query(channel_id: ChannelID) -> Query:

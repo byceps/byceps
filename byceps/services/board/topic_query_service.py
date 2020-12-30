@@ -7,7 +7,7 @@ byceps.services.board.topic_query_service
 """
 
 from datetime import datetime
-from typing import Optional, Set
+from typing import List, Optional, Set
 
 from ...database import db, Pagination, Query
 
@@ -55,6 +55,19 @@ def find_topic_visible_for_user(
         .only_visible_for_user(user) \
         .filter_by(id=topic_id) \
         .first()
+
+
+def get_recent_topics(
+    board_id: BoardID, user: CurrentUser, limit: int
+) -> List[DbTopic]:
+    """Paginate topics in that board, as visible for the user."""
+    return _query_topics(user) \
+        .join(DbCategory) \
+            .filter(DbCategory.board_id == board_id) \
+            .filter(DbCategory.hidden == False) \
+        .order_by(DbTopic.last_updated_at.desc()) \
+        .limit(limit) \
+        .all()
 
 
 def paginate_topics(

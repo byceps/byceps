@@ -59,3 +59,10 @@ class Item:
     external_url: str
     image_url_path: Optional[str]
     images: List[Image]
+
+
+@dataclass(frozen=True)
+class Headline:
+    slug: str
+    published_at: Optional[datetime]
+    title: str

@@ -61,6 +61,7 @@ def _get_blueprints_site() -> Iterator[BlueprintReg]:
         ('site.attendance',                 '/attendance'               ),
         ('site.board',                      '/board'                    ),
         ('site.consent',                    '/consent'                  ),
+        ('site.dashboard',                  '/dashboard'                ),
         ('site.news',                       '/news'                     ),
         ('site.newsletter',                 '/newsletter'               ),
         ('site.orga_team',                  '/orgas'                    ),
