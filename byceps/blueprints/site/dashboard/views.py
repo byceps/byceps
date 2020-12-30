@@ -27,8 +27,7 @@ from ....services.ticketing.models.ticket import Ticket as DbTicket
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
-
-from ...common.authentication.decorators import login_required
+from ....util.views import login_required
 
 from ..board import service as board_helper_service
 

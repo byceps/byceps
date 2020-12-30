@@ -23,10 +23,9 @@ from ....services.ticketing.transfer.models import TicketID
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
-from ....util.views import redirect_to, respond_no_content
+from ....util.views import login_required, redirect_to, respond_no_content
 
 from ...admin.seating.authorization import SeatingPermission
-from ...common.authentication.decorators import login_required
 from ...common.authorization.registry import permission_registry
 
 from . import service

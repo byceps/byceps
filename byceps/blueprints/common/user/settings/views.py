@@ -17,9 +17,7 @@ from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
-from .....util.views import redirect_to
-
-from ...authentication.decorators import login_required
+from .....util.views import login_required, redirect_to
 
 from ..creation.views import _find_newsletter_list_for_brand
 

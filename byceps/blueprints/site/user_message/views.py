@@ -15,9 +15,7 @@ from ....services.user_message import service as user_message_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
-from ....util.views import redirect_to
-
-from ...common.authentication.decorators import login_required
+from ....util.views import login_required, redirect_to
 
 from .forms import CreateForm
 
