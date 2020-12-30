@@ -13,8 +13,7 @@ from .....services.shop.shipping import service as shipping_service
 from .....services.shop.shop import service as shop_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated
-
-from ....common.authorization.decorators import permission_required
+from .....util.views import permission_required
 
 from ..order.authorization import ShopOrderPermission
 

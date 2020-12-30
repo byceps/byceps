@@ -19,8 +19,8 @@ from ....services.ticketing import (
 )
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
+from ....util.views import permission_required
 
-from ...common.authorization.decorators import permission_required
 from ...common.authorization.registry import permission_registry
 
 from .authorization import SeatingPermission

@@ -16,9 +16,7 @@ from .....services.shop.storefront import service as storefront_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
-from .....util.views import redirect_to
-
-from ....common.authorization.decorators import permission_required
+from .....util.views import permission_required, redirect_to
 
 from ..shop.authorization import ShopPermission
 

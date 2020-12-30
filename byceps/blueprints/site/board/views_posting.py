@@ -20,9 +20,7 @@ from ....services.user import service as user_service
 from ....signals import board as board_signals
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
-from ....util.views import respond_no_content_with_location
-
-from ...common.authorization.decorators import permission_required
+from ....util.views import permission_required, respond_no_content_with_location
 
 from .authorization import BoardPermission, BoardPostingPermission
 from .blueprint import blueprint

@@ -14,9 +14,8 @@ from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
-from ....util.views import redirect_to, respond_no_content
+from ....util.views import permission_required, redirect_to, respond_no_content
 
-from ...common.authorization.decorators import permission_required
 from ...common.authorization.registry import permission_registry
 
 from .authorization import OrgaTeamPermission

@@ -10,7 +10,15 @@ View utilities.
 
 from functools import wraps
 
-from flask import g, jsonify, redirect, Response, stream_with_context, url_for
+from flask import (
+    abort,
+    g,
+    jsonify,
+    redirect,
+    Response,
+    stream_with_context,
+    url_for,
+)
 
 from .framework.flash import flash_notice
 
@@ -26,6 +34,21 @@ def login_required(func):
         return func(*args, **kwargs)
 
     return wrapper
+
+
+def permission_required(permission):
+    """Ensure the current user has the given permission."""
+
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            if not g.current_user.has_permission(permission):
+                abort(403)
+            return func(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def create_empty_json_response(status):

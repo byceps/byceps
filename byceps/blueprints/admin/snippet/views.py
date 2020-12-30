@@ -20,12 +20,12 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.iterables import pairwise
 from ....util.framework.templating import templated
 from ....util.views import (
+    permission_required,
     redirect_to,
     respond_no_content,
     respond_no_content_with_location,
 )
 
-from ...common.authorization.decorators import permission_required
 from ...common.authorization.registry import permission_registry
 from ...site.snippet.templating import get_snippet_context
 

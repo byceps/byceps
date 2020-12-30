@@ -25,9 +25,8 @@ from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.iterables import partition
 from ....util.templatefilters import local_tz_to_utc, utc_to_local_tz
-from ....util.views import redirect_to
+from ....util.views import permission_required, redirect_to
 
-from ...common.authorization.decorators import permission_required
 from ...common.authorization.registry import permission_registry
 
 from .authorization import PartyPermission

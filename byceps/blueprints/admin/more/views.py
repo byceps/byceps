@@ -13,8 +13,7 @@ from ....services.party import service as party_service
 from ....services.site import service as site_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
-
-from ...common.authorization.decorators import permission_required
+from ....util.views import permission_required
 
 from ..core.authorization import AdminPermission
 
