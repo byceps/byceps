@@ -1,6 +1,6 @@
 """
-byceps.announce.common.user
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.text_assembly.user
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce user events.
 

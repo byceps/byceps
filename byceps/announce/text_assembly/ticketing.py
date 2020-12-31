@@ -1,6 +1,6 @@
 """
-byceps.announce.common.ticketing
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.text_assembly.ticketing
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce ticketing events.
 

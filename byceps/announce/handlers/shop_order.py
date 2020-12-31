@@ -16,8 +16,8 @@ from ...events.shop import (
 )
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
-from ..common import shop_order
 from ..helpers import call_webhook
+from ..text_assembly import shop_order
 
 
 def announce_order_placed(

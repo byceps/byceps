@@ -1,6 +1,6 @@
 """
-byceps.announce.common.tourney
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.text_assembly.tourney
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce tourney events.
 

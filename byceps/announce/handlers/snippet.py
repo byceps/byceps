@@ -16,8 +16,8 @@ from ...events.snippet import (
 )
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
-from ..common import snippet
 from ..helpers import call_webhook
+from ..text_assembly import snippet
 
 
 def announce_snippet_created(

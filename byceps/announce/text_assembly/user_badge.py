@@ -1,6 +1,6 @@
 """
-byceps.announce.common.user_badge
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.text_assembly.user_badge
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce user badge events.
 

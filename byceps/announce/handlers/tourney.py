@@ -26,8 +26,8 @@ from ...events.tourney import (
 )
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
-from ..common import tourney
 from ..helpers import call_webhook
+from ..text_assembly import tourney
 
 
 # -------------------------------------------------------------------- #

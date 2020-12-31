@@ -20,8 +20,8 @@ from ...events.user import (
 )
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
-from ..common import user
 from ..helpers import call_webhook
+from ..text_assembly import user
 
 
 def announce_user_account_created(

@@ -1,6 +1,6 @@
 """
-byceps.announce.common.snippet
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.text_assembly.snippet
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce snippet events.
 

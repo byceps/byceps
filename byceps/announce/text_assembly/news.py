@@ -1,6 +1,6 @@
 """
-byceps.announce.common.news
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.text_assembly.news
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce news events.
 

@@ -1,6 +1,6 @@
 """
-byceps.announce.common.board
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.text_assembly.board
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce board events.
 

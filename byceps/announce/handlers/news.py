@@ -11,8 +11,8 @@ Announce news events.
 from ...events.news import NewsItemPublished
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
-from ..common import news
 from ..helpers import call_webhook, matches_selectors
+from ..text_assembly import news
 
 
 def announce_news_item_published(

@@ -1,6 +1,6 @@
 """
-byceps.announce.common.shop_order
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.announce.text_assembly.shop_order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Announce shop order events.
 

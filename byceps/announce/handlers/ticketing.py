@@ -13,8 +13,8 @@ from typing import Union
 from ...events.ticketing import TicketCheckedIn, TicketsSold
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
-from ..common import ticketing
 from ..helpers import call_webhook
+from ..text_assembly import ticketing
 
 
 def announce_ticket_checked_in(

@@ -24,8 +24,8 @@ from ...events.board import (
 )
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
-from ..common import board
 from ..helpers import call_webhook, matches_selectors
+from ..text_assembly import board
 
 
 def announce_board_topic_created(

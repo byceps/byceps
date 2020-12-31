@@ -11,8 +11,8 @@ Announce user badge events.
 from ...events.user_badge import UserBadgeAwarded
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
-from ..common import user_badge
 from ..helpers import call_webhook
+from ..text_assembly import user_badge
 
 
 def announce_user_badge_awarded(
