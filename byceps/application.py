@@ -29,7 +29,7 @@ def create_app(
     config_overrides: Optional[Dict[str, Any]] = None,
 ) -> Flask:
     """Create the actual Flask application."""
-    app = Flask(__name__)
+    app = Flask('byceps')
 
     app.config.from_object(config_defaults)
     app.config.from_pyfile(str(config_filename))
