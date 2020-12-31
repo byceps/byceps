@@ -67,21 +67,7 @@ def call_webhook(webhook: OutgoingWebhook, text: str) -> None:
 
     response = requests.post(webhook.url, json=data)
 
-    response_code = response.status_code
-    if webhook.format == 'discord' and response_code != HTTPStatus.NO_CONTENT:
-        raise WebhookError(
-            f'Discord webhook API returned unexpected status code {response_code}'
-        )
-    elif (
-        webhook.format == 'weitersager' and response_code != HTTPStatus.ACCEPTED
-    ):
-        raise WebhookError(
-            f'Weitersager webhook API returned unexpected status code {response_code}'
-        )
-    elif webhook.format == 'matrix' and response_code != HTTPStatus.OK:
-        raise WebhookError(
-            f'Matrix webhook API returned unexpected status code {response_code}'
-        )
+    _check_response_status_code(webhook, response.status_code)
 
 
 def _assemble_request_data(
@@ -113,3 +99,22 @@ def _assemble_request_data(
             )
 
         return {'key': key, 'room_id': room_id, 'text': text}
+
+
+EXPECTED_RESPONSE_STATUS_CODES = {
+    'discord': HTTPStatus.NO_CONTENT,
+    'matrix': HTTPStatus.OK,
+    'weitersager': HTTPStatus.ACCEPTED,
+}
+
+
+def _check_response_status_code(webhook: OutgoingWebhook, code: int) -> None:
+    expected_code = EXPECTED_RESPONSE_STATUS_CODES.get(webhook.format)
+    if expected_code is None:
+        return
+
+    if code != expected_code:
+        raise WebhookError(
+            f'Endpoint for webhook {webhook.id} '
+            f'returned unexpected status code {code}'
+        )
