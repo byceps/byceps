@@ -44,6 +44,9 @@ def find_mountpoint(mountpoint_id: MountpointID) -> Optional[Mountpoint]:
     """Return the mountpoint with that id, or `None` if not found."""
     mountpoint = DbMountpoint.query.get(mountpoint_id)
 
+    if mountpoint is None:
+        return None
+
     return _db_entity_to_mountpoint(mountpoint)
 
 
