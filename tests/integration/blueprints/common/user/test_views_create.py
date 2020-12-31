@@ -35,7 +35,7 @@ from tests.helpers import http_client
 
 @pytest.fixture(scope='module')
 def user_admin(make_user):
-    return make_user('UserAdmin')
+    return make_user('CommonUserAdmin')
 
 
 @pytest.fixture(scope='module')
