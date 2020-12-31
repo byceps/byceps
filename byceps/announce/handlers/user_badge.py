@@ -11,22 +11,15 @@ Announce user badge events.
 from ...events.user_badge import UserBadgeAwarded
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
-from ..helpers import get_screen_name_or_fallback, call_webhook
+from ..common import user_badge
+from ..helpers import call_webhook
 
 
 def announce_user_badge_awarded(
     event: UserBadgeAwarded, webhook: OutgoingWebhook
 ) -> None:
     """Announce that a badge has been awarded to a user."""
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
-    awardee_screen_name = get_screen_name_or_fallback(event.user_screen_name)
-
-    text = (
-        f'{initiator_screen_name} hat das Abzeichen "{event.badge_label}" '
-        f'an {awardee_screen_name} verliehen.'
-    )
+    text = user_badge.assemble_text_for_user_badge_awarded(event)
 
     send_user_badge_message(event, webhook, text)
 
