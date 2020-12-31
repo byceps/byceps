@@ -14,7 +14,7 @@ from typing import Any, Dict, Optional
 
 from flask import appcontext_pushed, g
 
-from byceps.application import create_app
+from byceps.application import create_app, init_app
 from byceps.database import db, generate_uuid
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authz_service
@@ -32,11 +32,15 @@ CONFIG_FILENAME_TEST_ADMIN = _CONFIG_PATH / 'test_admin.py'
 
 
 def create_admin_app(config_overrides: Optional[Dict[str, Any]] = None):
-    return create_app(CONFIG_FILENAME_TEST_ADMIN, config_overrides)
+    app = create_app(CONFIG_FILENAME_TEST_ADMIN, config_overrides)
+    init_app(app)
+    return app
 
 
 def create_site_app(config_overrides: Optional[Dict[str, Any]] = None):
-    return create_app(CONFIG_FILENAME_TEST_SITE, config_overrides)
+    app = create_app(CONFIG_FILENAME_TEST_SITE, config_overrides)
+    init_app(app)
+    return app
 
 
 def generate_token() -> str:
@@ -46,6 +50,7 @@ def generate_token() -> str:
 @contextmanager
 def app_context(*, config_filename=CONFIG_FILENAME_TEST_SITE):
     app = create_app(config_filename)
+    init_app(app)
 
     with app.app_context():
         yield app
