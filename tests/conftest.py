@@ -23,13 +23,14 @@ from byceps.services.user import (
 )
 from byceps.typing import BrandID
 
-from tests.base import create_admin_app, create_site_app
 from tests.database import set_up_database, tear_down_database
 from tests.helpers import (
+    create_admin_app,
     create_party,
     create_permissions,
     create_role_with_permissions_assigned,
     create_site,
+    create_site_app,
     create_user,
     create_user_with_detail,
     generate_token,

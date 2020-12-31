@@ -8,7 +8,9 @@ tests.helpers
 
 from contextlib import contextmanager
 from datetime import date, datetime
+from pathlib import Path
 from secrets import token_hex
+from typing import Any, Dict, Optional
 
 from flask import appcontext_pushed, g
 
@@ -23,7 +25,18 @@ from byceps.services.user.creation_service import UserCreationFailed
 from byceps.services.user.models.detail import UserDetail as DbUserDetail
 from byceps.services.user.models.user import User as DbUser
 
-from .base import CONFIG_FILENAME_TEST_SITE
+
+_CONFIG_PATH = Path('../config')
+CONFIG_FILENAME_TEST_SITE = _CONFIG_PATH / 'test_site.py'
+CONFIG_FILENAME_TEST_ADMIN = _CONFIG_PATH / 'test_admin.py'
+
+
+def create_admin_app(config_overrides: Optional[Dict[str, Any]] = None):
+    return create_app(CONFIG_FILENAME_TEST_ADMIN, config_overrides)
+
+
+def create_site_app(config_overrides: Optional[Dict[str, Any]] = None):
+    return create_app(CONFIG_FILENAME_TEST_SITE, config_overrides)
 
 
 def generate_token() -> str:
