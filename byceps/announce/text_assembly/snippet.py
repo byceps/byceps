@@ -11,7 +11,7 @@ Announce snippet events.
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from ...services.snippet.transfer.models import SnippetType
 
-from ..helpers import get_screen_name_or_fallback
+from ._helpers import get_screen_name_or_fallback
 
 
 def assemble_text_for_snippet_created(event: SnippetCreated) -> str:

@@ -7,7 +7,7 @@ byceps.announce.helpers
 """
 
 from http import HTTPStatus
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List
 
 from flask import current_app
 import requests
@@ -21,11 +21,6 @@ from .events import get_name_for_event
 
 class WebhookError(Exception):
     pass
-
-
-def get_screen_name_or_fallback(screen_name: Optional[str]) -> str:
-    """Return the screen name or a fallback value."""
-    return screen_name if screen_name else 'Jemand'
 
 
 def get_webhooks(event: _BaseEvent) -> List[OutgoingWebhook]:

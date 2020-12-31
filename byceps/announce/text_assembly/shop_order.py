@@ -11,7 +11,7 @@ Announce shop order events.
 from ...events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ...services.shop.order import service as order_service
 
-from ..helpers import get_screen_name_or_fallback
+from ._helpers import get_screen_name_or_fallback
 
 
 def assemble_text_for_order_placed(event: ShopOrderPlaced) -> str:

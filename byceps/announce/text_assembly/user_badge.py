@@ -10,7 +10,7 @@ Announce user badge events.
 
 from ...events.user_badge import UserBadgeAwarded
 
-from ..helpers import get_screen_name_or_fallback
+from ._helpers import get_screen_name_or_fallback
 
 
 def assemble_text_for_user_badge_awarded(event: UserBadgeAwarded) -> str:

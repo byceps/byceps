@@ -11,7 +11,7 @@ Announce ticketing events.
 from ...events.ticketing import TicketCheckedIn, TicketsSold
 from ...services.ticketing import ticket_service
 
-from ..helpers import get_screen_name_or_fallback
+from ._helpers import get_screen_name_or_fallback
 
 
 def assemble_text_for_ticket_checked_in(event: TicketCheckedIn) -> str:

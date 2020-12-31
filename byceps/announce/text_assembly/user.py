@@ -18,7 +18,7 @@ from ...events.user import (
     UserScreenNameChanged,
 )
 
-from ..helpers import get_screen_name_or_fallback
+from ._helpers import get_screen_name_or_fallback
 
 
 def assemble_text_for_user_account_created(event: UserAccountCreated) -> str:
