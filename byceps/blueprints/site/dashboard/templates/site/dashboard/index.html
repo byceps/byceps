@@ -13,9 +13,8 @@
     }
 
     .item-meta {
+      color: var(--color-dim);
       font-size: 0.6875rem; /* 11px / 16px */
-      font-weight: normal;
-      opacity: 0.5;
     }
   </style>
 {%- endblock %}
@@ -30,18 +29,22 @@
       <h2>Offene Bestellungen</h2>
       {%- if open_orders %}
       <table class="index">
-        <tr>
-          <th><span class="item-meta">Bestellnummer</span></th>
-          <th class="number"><span class="item-meta">Betrag</span></th>
-          <th><span class="item-meta">Status</span></th>
-        </tr>
-        {%- for order in open_orders %}
-        <tr>
-          <td><a class="disguised" href="{{ url_for('shop_orders.view', order_id=order.id) }}">{{ order.order_number }}</a></td>
-          <td class="number nowrap">{{ order.total_amount|format_euro_amount }}</td>
-          <td class="nowrap">{{ render_order_payment_state(order.payment_state) }}</td>
-        </tr>
-        {%- endfor %}
+        <thead>
+          <tr>
+            <th>Bestellnummer</th>
+            <th class="number">Betrag</th>
+            <th><span class="item-meta">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for order in open_orders %}
+          <tr>
+            <td><a class="disguised" href="{{ url_for('shop_orders.view', order_id=order.id) }}">{{ order.order_number }}</a></td>
+            <td class="number nowrap">{{ order.total_amount|format_euro_amount }}</td>
+            <td class="nowrap">{{ render_order_payment_state(order.payment_state) }}</td>
+          </tr>
+          {%- endfor %}
+        </tbody>
       </table>
       {%- else %}
       <p class="dimmed">Du hast keine offenen Bestellungen.</p>
@@ -53,28 +56,32 @@
       <h2>Tickets</h2>
       {%- if tickets %}
       <table class="index">
-        <tr>
-          <th><span class="item-meta">Code</span></th>
-          <th><span class="item-meta">Sitzplatz</span></th>
-          <th></th>
-        </tr>
-        {%- for ticket in tickets %}
-        <tr>
-          <td>{{ ticket.code }}</td>
-          <td>
-            {%- if ticket.occupied_seat -%}
-            {{ render_seat_link(ticket.occupied_seat.area, ticket.occupied_seat) }}
-            {%- else -%}
-            {{ render_tag('keiner', class='color-danger') }}
-            {%- endif -%}
-          </td>
-          <td>
-            {%- if ticket.user_checked_in %}
-            {{ render_tag('eingecheckt', class='color-success') }}
-            {%- endif %}
-          </td>
-        </tr>
-        {%- endfor %}
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Sitzplatz</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for ticket in tickets %}
+          <tr>
+            <td>{{ ticket.code }}</td>
+            <td>
+              {%- if ticket.occupied_seat -%}
+              {{ render_seat_link(ticket.occupied_seat.area, ticket.occupied_seat) }}
+              {%- else -%}
+              {{ render_tag('keiner', class='color-danger') }}
+              {%- endif -%}
+            </td>
+            <td>
+              {%- if ticket.user_checked_in %}
+              {{ render_tag('eingecheckt', class='color-success') }}
+              {%- endif %}
+            </td>
+          </tr>
+          {%- endfor %}
+        </tbody>
       </table>
       {%- else %}
       <p class="dimmed">Du nutzt noch kein Ticket.</p>
