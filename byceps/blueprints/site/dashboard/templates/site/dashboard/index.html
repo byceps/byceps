@@ -1,6 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/board.html' import render_flag_new %}
 {% from 'macros/datetime.html' import render_date_long, render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/seating.html' import render_seat_link %}
 {% from 'macros/shop/orders.html' import render_order_payment_state %}
@@ -27,8 +28,9 @@
     <div class="column-auto" style="width: 50%;">
 
       <h2>Offene Bestellungen</h2>
+
       {%- if open_orders %}
-      <table class="index">
+      <table class="index wide">
         <thead>
           <tr>
             <th>Bestellnummer</th>
@@ -50,12 +52,14 @@
       <p class="dimmed">Du hast keine offenen Bestellungen.</p>
       {%- endif %}
 
+      <p style="text-align: right;"><a class="disguised" href="{{ url_for('shop_orders.index') }}">Alle Bestellungen {{ render_icon('arrow-right') }}</a></p>
+
     </div>
     <div class="column-auto" style="width: 50%;">
 
       <h2>Tickets</h2>
       {%- if tickets %}
-      <table class="index">
+      <table class="index wide">
         <thead>
           <tr>
             <th>Code</th>
@@ -87,6 +91,8 @@
       <p class="dimmed">Du nutzt noch kein Ticket.</p>
       {%- endif %}
 
+      <p style="text-align: right;"><a class="disguised" href="{{ url_for('ticketing.index_mine') }}">Ticketverwaltung {{ render_icon('arrow-right') }}</a></p>
+
     </div>
   </div>{# .row #}
 
@@ -94,6 +100,7 @@
     <div class="column-auto" style="width: 50%;">
 
       <h2>News</h2>
+
       {%- if news_headlines %}
       <ol class="items">
         {%- for headline in news_headlines %}
@@ -107,10 +114,13 @@
       <p class="dimmed">Es gibt noch keine News.</p>
       {%- endif %}
 
+      <p style="text-align: right;"><a class="disguised" href="{{ url_for('news.index') }}">Alle News {{ render_icon('arrow-right') }}</a></p>
+
     </div>
     <div class="column-auto" style="width: 50%;">
 
       <h2>Forum</h2>
+
       {%- if board_topics %}
       <ol class="items">
         {%- for topic in board_topics %}
@@ -130,6 +140,8 @@
       {%- else %}
       <p class="dimmed">Es gibt noch keine Themen im Forum.</p>
       {%- endif %}
+
+      <p style="text-align: right;"><a class="disguised" href="{{ url_for('board.category_index') }}">Forum {{ render_icon('arrow-right') }}</a></p>
 
     </div>
   </div>{# .row #}
