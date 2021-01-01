@@ -2,7 +2,7 @@
 application instance
 ~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2006-2020 Jochen Kupperschmidt
+:Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

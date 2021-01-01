@@ -2,7 +2,7 @@
 
 """Copy a snippet (in its latest version) from one site to another.
 
-:Copyright: 2006-2020 Jochen Kupperschmidt
+:Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

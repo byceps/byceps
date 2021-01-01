@@ -13,7 +13,7 @@ handled accordingly in the `_notifications` partial template.
 Thus, use the `flash_*` functions provided by this module to flash
 messages, but not `flask.flash` directly.
 
-:Copyright: 2006-2020 Jochen Kupperschmidt
+:Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

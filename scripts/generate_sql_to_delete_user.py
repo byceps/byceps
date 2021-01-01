@@ -7,7 +7,7 @@ Might fail for example if a user posted in a discussion board.
 
 Run script `clean_up_after_deleted_users.py` before this one.
 
-:Copyright: 2006-2020 Jochen Kupperschmidt
+:Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
