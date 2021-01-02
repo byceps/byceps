@@ -8,13 +8,14 @@ byceps.services.ticketing.ticket_user_checkin_service
 
 from ...database import db
 from ...events.ticketing import TicketCheckedIn
-from ...typing import UserID
+from ...typing import PartyID, UserID
 
 from ..user import service as user_service
 from ..user.transfer.models import User
 
 from . import event_service
 from .exceptions import (
+    TicketBelongsToDifferentParty,
     TicketIsRevoked,
     TicketLacksUser,
     UserAccountDeleted,
@@ -27,9 +28,11 @@ from . import ticket_service
 from .transfer.models import TicketID
 
 
-def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> TicketCheckedIn:
+def check_in_user(
+    party_id: PartyID, ticket_id: TicketID, initiator_id: UserID
+) -> TicketCheckedIn:
     """Record that the ticket was used to check in its user."""
-    ticket = _get_ticket_for_checkin(ticket_id)
+    ticket = _get_ticket_for_checkin(party_id, ticket_id)
 
     initiator = user_service.get_user(initiator_id)
 
@@ -57,11 +60,16 @@ def check_in_user(ticket_id: TicketID, initiator_id: UserID) -> TicketCheckedIn:
     )
 
 
-def _get_ticket_for_checkin(ticket_id: TicketID) -> DbTicket:
+def _get_ticket_for_checkin(party_id: PartyID, ticket_id: TicketID) -> DbTicket:
     ticket = ticket_service.find_ticket(ticket_id)
 
     if ticket is None:
         raise ValueError(f"Unknown ticket ID '{ticket_id}'")
+
+    if ticket.party_id != party_id:
+        raise TicketBelongsToDifferentParty(
+            f'Ticket {ticket_id} belongs to another party ({ticket.party_id}).'
+        )
 
     if ticket.revoked:
         raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')

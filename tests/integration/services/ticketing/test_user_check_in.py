@@ -7,6 +7,7 @@ import pytest
 from pytest import raises
 
 from byceps.database import db
+from byceps.services.party import service as party_service
 from byceps.events.ticketing import TicketCheckedIn
 from byceps.services.ticketing import (
     event_service,
@@ -15,11 +16,14 @@ from byceps.services.ticketing import (
     ticket_user_checkin_service,
 )
 from byceps.services.ticketing.exceptions import (
+    TicketBelongsToDifferentParty,
     TicketIsRevoked,
     TicketLacksUser,
     UserAccountSuspended,
     UserAlreadyCheckedIn,
 )
+
+from tests.helpers import create_party
 
 
 @pytest.fixture
@@ -31,7 +35,7 @@ def ticket(admin_app, category, ticket_owner):
     ticket_service.delete_ticket(ticket.id)
 
 
-def test_check_in_user(admin_app, ticket, ticketing_admin, make_user):
+def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
     ticket_user = make_user('TicketUserToCheckIn')
 
     ticket_before = ticket
@@ -48,7 +52,7 @@ def test_check_in_user(admin_app, ticket, ticketing_admin, make_user):
 
     ticket_id = ticket_before.id
 
-    event = check_in_user(ticket_id, ticketing_admin.id)
+    event = check_in_user(party.id, ticket_id, ticketing_admin.id)
 
     # -------------------------------- #
 
@@ -76,15 +80,27 @@ def test_check_in_user(admin_app, ticket, ticketing_admin, make_user):
     }
 
 
+def test_check_in_user_with_ticket_for_another_party(
+    admin_app, brand, ticket, ticketing_admin
+):
+    other_party = create_party(brand.id, 'next-party', 'Next Party')
+
+    with raises(TicketBelongsToDifferentParty):
+        check_in_user(other_party.id, ticket.id, ticketing_admin.id)
+
+    # Clean up.
+    party_service.delete_party(other_party.id)
+
+
 def test_check_in_user_with_ticket_without_assigned_user(
-    admin_app, ticket, ticketing_admin
+    admin_app, party, ticket, ticketing_admin
 ):
     with raises(TicketLacksUser):
-        check_in_user(ticket.id, ticketing_admin.id)
+        check_in_user(party.id, ticket.id, ticketing_admin.id)
 
 
 def test_check_in_user_with_revoked_ticket(
-    admin_app, ticket, ticketing_admin, make_user
+    admin_app, party, ticket, ticketing_admin, make_user
 ):
     ticket_user = make_user('TicketUserWithRevokedTicket')
 
@@ -93,11 +109,11 @@ def test_check_in_user_with_revoked_ticket(
     db.session.commit()
 
     with raises(TicketIsRevoked):
-        check_in_user(ticket.id, ticketing_admin.id)
+        check_in_user(party.id, ticket.id, ticketing_admin.id)
 
 
 def test_check_in_user_with_ticket_user_already_checked_in(
-    admin_app, ticket, ticketing_admin, make_user
+    admin_app, party, ticket, ticketing_admin, make_user
 ):
     ticket_user = make_user('AlreadyCheckedInTicketUser')
 
@@ -106,21 +122,25 @@ def test_check_in_user_with_ticket_user_already_checked_in(
     db.session.commit()
 
     with raises(UserAlreadyCheckedIn):
-        check_in_user(ticket.id, ticketing_admin.id)
+        check_in_user(party.id, ticket.id, ticketing_admin.id)
 
 
-def test_check_in_suspended_user(admin_app, ticket, ticketing_admin, make_user):
+def test_check_in_suspended_user(
+    admin_app, party, ticket, ticketing_admin, make_user
+):
     ticket_user = make_user('SuspendedTicketUser', suspended=True)
 
     ticket.used_by_id = ticket_user.id
     db.session.commit()
 
     with raises(UserAccountSuspended):
-        check_in_user(ticket.id, ticketing_admin.id)
+        check_in_user(party.id, ticket.id, ticketing_admin.id)
 
 
 # helpers
 
 
-def check_in_user(ticket_id, admin_id):
-    return ticket_user_checkin_service.check_in_user(ticket_id, admin_id)
+def check_in_user(party_id, ticket_id, admin_id):
+    return ticket_user_checkin_service.check_in_user(
+        party_id, ticket_id, admin_id
+    )

@@ -102,18 +102,22 @@ def _get_tickets_for_users(party_id, users):
         )
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/check_in_user', methods=['POST'])
+@blueprint.route(
+    '/for_party/<party_id>/tickets/<uuid:ticket_id>/check_in_user',
+    methods=['POST'],
+)
 @permission_required(TicketingPermission.checkin)
 @respond_no_content
-def check_in_user(ticket_id):
+def check_in_user(party_id, ticket_id):
     """Check the user in."""
+    party = _get_party_or_404(party_id)
     ticket = _get_ticket_or_404(ticket_id)
 
     initiator_id = g.current_user.id
 
     try:
         event = ticket_user_checkin_service.check_in_user(
-            ticket.id, initiator_id
+            party_id, ticket.id, initiator_id
         )
     except ticket_exceptions.UserAccountDeleted:
         flash_error(

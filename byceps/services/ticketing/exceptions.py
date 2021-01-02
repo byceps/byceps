@@ -7,6 +7,12 @@ byceps.services.ticketing.exceptions
 """
 
 
+class TicketBelongsToDifferentParty(Exception):
+    """Indicate an error caused by the ticket being issued for a
+    different party than the one the user is trying to check in for.
+    """
+
+
 class TicketIsRevoked(Exception):
     """Indicate an error caused by the ticket being revoked."""
 
