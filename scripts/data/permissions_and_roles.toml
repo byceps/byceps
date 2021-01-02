@@ -275,6 +275,10 @@ id = 'terms.view'
 title = 'AGB-Versionen anzeigen'
 
 [[permissions]]
+id = 'ticketing.administrate'
+title = 'Tickets verwalten'
+
+[[permissions]]
 id = 'ticketing.administrate_seat_occupancy'
 title = 'Belegung von Sitzplätzen verwalten'
 
@@ -574,7 +578,10 @@ assigned_permissions = [
 [[roles]]
 id = 'ticketing_admin'
 title = 'Tickets verwalten'
-assigned_permissions = ['ticketing.view']
+assigned_permissions = [
+    'ticketing.administrate',
+    'ticketing.view',
+]
 
 [[roles]]
 id = 'tourney_admin'
