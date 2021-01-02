@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'categories' %}
-{% set title = 'Kategorie erstellen' %}
+{% set title = 'Kategorie bearbeiten' %}
 
 {% block body %}
 
@@ -11,17 +11,18 @@
     <ol>
       <li>{{ party.title }}</li>
       <li>Turniere</li>
-      <li><a href="{{ url_for('.category_index_for_party', party_id=party.id) }}">Kategorien</a></li>
+      <li><a href="{{ url_for('.index', party_id=party.id) }}">Kategorien</a></li>
+      <li>{{ category.title }}</li>
     </ol>
   </nav>
-  <h1>{{ render_icon('add') }} {{ title }}</h1>
+  <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
-  <form action="{{ url_for('.category_create', party_id=party.id) }}" method="post">
+  <form action="{{ url_for('.update', category_id=category.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
     {% endcall %}
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.category_index_for_party', party_id=party.id)) }}
+    {{ form_buttons('Speichern', cancel_url=url_for('.index', party_id=party.id)) }}
   </form>
 
 {%- endblock %}

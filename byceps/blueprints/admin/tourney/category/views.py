@@ -1,0 +1,173 @@
+"""
+byceps.blueprints.admin.tourney.category.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+:Copyright: 2006-2021 Jochen Kupperschmidt
+:License: Revised BSD (see `LICENSE` file for details)
+"""
+
+from flask import abort, request
+
+from .....services.party import service as party_service
+from .....services.tourney import category_service
+from .....util.framework.blueprint import create_blueprint
+from .....util.framework.flash import flash_error, flash_success
+from .....util.framework.templating import templated
+from .....util.views import permission_required, redirect_to, respond_no_content
+
+from ....common.authorization.registry import permission_registry
+
+from ..authorization import TourneyCategoryPermission
+
+from .forms import CreateForm, UpdateForm
+
+
+blueprint = create_blueprint('tourney_category_admin', __name__)
+
+
+permission_registry.register_enum(TourneyCategoryPermission)
+
+
+@blueprint.route('/parties/<party_id>/categories')
+@permission_required(TourneyCategoryPermission.view)
+@templated
+def index(party_id):
+    """List tourney categories for that party."""
+    party = _get_party_or_404(party_id)
+
+    categories = category_service.get_categories_for_party(party.id)
+
+    return {
+        'party': party,
+        'categories': categories,
+    }
+
+
+@blueprint.route('/parties/<party_id>/categories/create')
+@permission_required(TourneyCategoryPermission.create)
+@templated
+def create_form(party_id, erroneous_form=None):
+    """Show form to create a category."""
+    party = _get_party_or_404(party_id)
+
+    form = erroneous_form if erroneous_form else CreateForm()
+
+    return {
+        'party': party,
+        'form': form,
+    }
+
+
+@blueprint.route('/parties/<party_id>/categories', methods=['POST'])
+@permission_required(TourneyCategoryPermission.create)
+def create(party_id):
+    """Create a category."""
+    party = _get_party_or_404(party_id)
+
+    form = CreateForm(request.form)
+    if not form.validate():
+        return create_form(party_id, form)
+
+    title = form.title.data.strip()
+
+    category = category_service.create_category(party.id, title)
+
+    flash_success(f'Die Kategorie "{category.title}" wurde angelegt.')
+    return redirect_to('.index', party_id=category.party_id)
+
+
+@blueprint.route('/categories/<uuid:category_id>/update')
+@permission_required(TourneyCategoryPermission.update)
+@templated
+def update_form(category_id, erroneous_form=None):
+    """Show form to update a category."""
+    category = _get_category_or_404(category_id)
+
+    party = party_service.get_party(category.party_id)
+
+    form = (
+        erroneous_form
+        if erroneous_form
+        else UpdateForm(obj=category)
+    )
+
+    return {
+        'category': category,
+        'party': party,
+        'form': form,
+    }
+
+
+@blueprint.route('/categories/<uuid:category_id>', methods=['POST'])
+@permission_required(TourneyCategoryPermission.update)
+def update(category_id):
+    """Update a category."""
+    category = _get_category_or_404(category_id)
+
+    form = UpdateForm(request.form)
+    if not form.validate():
+        return update_form(category_id, form)
+
+    category_service.update_category(category.id, form.title.data.strip())
+
+    flash_success(f'Die Kategorie "{category.title}" wurde aktualisiert.')
+    return redirect_to('.index', party_id=category.party_id)
+
+
+@blueprint.route('/categories/<uuid:category_id>/up', methods=['POST'])
+@permission_required(TourneyCategoryPermission.update)
+@respond_no_content
+def move_up(category_id):
+    """Move a category upwards by one position."""
+    category = _get_category_or_404(category_id)
+
+    try:
+        category_service.move_category_up(category.id)
+    except ValueError:
+        flash_error(
+            f'Die Kategorie "{category.title}" befindet sich bereits ganz oben.'
+        )
+    else:
+        flash_success(
+            f'Die Kategorie "{category.title}" '
+            'wurde eine Position nach oben verschoben.'
+        )
+
+
+@blueprint.route('/categories/<uuid:category_id>/down', methods=['POST'])
+@permission_required(TourneyCategoryPermission.update)
+@respond_no_content
+def move_down(category_id):
+    """Move a category downwards by one position."""
+    category = _get_category_or_404(category_id)
+
+    try:
+        category_service.move_category_down(category.id)
+    except ValueError:
+        flash_error(
+            f'Die Kategorie "{category.title}" befindet sich bereits '
+            'ganz unten.'
+        )
+    else:
+        flash_success(
+            f'Die Kategorie "{category.title}" '
+            'wurde eine Position nach unten verschoben.'
+        )
+
+
+def _get_party_or_404(party_id):
+    party = party_service.find_party(party_id)
+
+    if party is None:
+        abort(404)
+
+    return party
+
+
+def _get_category_or_404(category_id):
+    category = category_service.find_category(category_id)
+
+    if category is None:
+        abort(404)
+
+    return category

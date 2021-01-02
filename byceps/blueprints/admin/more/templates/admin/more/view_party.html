@@ -16,7 +16,7 @@
   {%- with items = [
     ('Einstellungen', 'settings', url_for('party_admin.view', party_id=party.id), PartyPermission.view),
     ('Orga-Anwesenheit', 'date-okay', url_for('orga_presence.view', party_id=party.id), OrgaPresencePermission.view),
-    ('Turniere', 'trophy', url_for('tourney_admin.category_index_for_party', party_id=party.id), TourneyCategoryPermission.view),
+    ('Turniere', 'trophy', url_for('tourney_category_admin.index', party_id=party.id), TourneyCategoryPermission.view),
   ] %}
     {%- for label, icon, url, required_permission in items %}
       {%- if g.current_user.has_permission(required_permission) %}
