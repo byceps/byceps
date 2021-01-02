@@ -45,7 +45,7 @@ def create_bundle(
         raise ValueError('Ticket quantity must be positive.')
 
     bundle = DbTicketBundle(
-        category_id, ticket_quantity, owned_by_id, label=label
+        party_id, category_id, ticket_quantity, owned_by_id, label=label
     )
     db.session.add(bundle)
 
