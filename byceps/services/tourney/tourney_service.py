@@ -16,7 +16,12 @@ from . import category_service
 from .models.participant import Participant as DbParticipant
 from .models.tourney import Tourney as DbTourney
 from .models.tourney_category import TourneyCategory as DbTourneyCategory
-from .transfer.models import Tourney, TourneyCategoryID, TourneyID
+from .transfer.models import (
+    Tourney,
+    TourneyCategoryID,
+    TourneyID,
+    TourneyWithCategory,
+)
 
 
 def create_tourney(
@@ -119,21 +124,22 @@ def _get_db_tourney(tourney_id: int) -> DbTourney:
     return tourney
 
 
-def get_tourneys_for_party(party_id: PartyID) -> List[Tourney]:
+def get_tourneys_for_party(party_id: PartyID) -> List[TourneyWithCategory]:
     """Return the tourneys for that party."""
     rows = db.session \
-        .query(DbTourney, db.func.count(DbParticipant.id)) \
+        .query(DbTourney, DbTourneyCategory, db.func.count(DbParticipant.id)) \
         .join(DbTourneyCategory) \
         .join(DbParticipant, isouter=True) \
         .filter(DbTourneyCategory.party_id == party_id) \
-        .group_by(DbTourney.id) \
+        .group_by(DbTourney.id, DbTourneyCategory) \
         .all()
 
-    return [_db_entity_to_tourney(row[0], row[1]) for row in rows]
+    return [_to_tourney_with_category(row[0], row[1], row[2]) for row in rows]
 
 
 def _db_entity_to_tourney(
-    tourney: DbTourney, current_participant_count: int = -1
+    tourney: DbTourney,
+    current_participant_count: int = -1,
 ) -> Tourney:
     return Tourney(
         id=tourney.id,
@@ -144,4 +150,17 @@ def _db_entity_to_tourney(
         current_participant_count=current_participant_count,
         max_participant_count=tourney.max_participant_count,
         starts_at=tourney.starts_at,
+    )
+
+
+def _to_tourney_with_category(
+    db_tourney: DbTourney,
+    db_category: DbTourneyCategory,
+    current_participant_count: int = -1,
+) -> Tourney:
+    tourney = _db_entity_to_tourney(db_tourney, current_participant_count)
+    category = category_service._db_entity_to_category(db_category)
+
+    return TourneyWithCategory.from_tourney_and_category(
+        tourney, category, current_participant_count
     )

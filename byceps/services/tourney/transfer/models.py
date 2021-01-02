@@ -6,6 +6,7 @@ byceps.services.tourney.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from typing import NewType, Optional
@@ -40,6 +41,30 @@ class Tourney:
     current_participant_count: int
     max_participant_count: int
     starts_at: datetime
+
+
+@dataclass(frozen=True)
+class TourneyWithCategory(Tourney):
+    category: TourneyCategory
+
+    @classmethod
+    def from_tourney_and_category(
+        cls: TourneyWithCategory,
+        tourney: Tourney,
+        category: TourneyCategory,
+        current_participant_count: int,
+    ) -> TourneyWithCategory:
+        return cls(
+            id=tourney.id,
+            title=tourney.title,
+            subtitle=tourney.subtitle,
+            logo_url=tourney.logo_url,
+            category_id=tourney.category_id,
+            current_participant_count=current_participant_count,
+            max_participant_count=tourney.max_participant_count,
+            starts_at=tourney.starts_at,
+            category=category,
+        )
 
 
 MatchID = NewType('MatchID', UUID)
