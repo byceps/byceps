@@ -24,7 +24,9 @@ from byceps.services.ticketing.exceptions import (
 
 @pytest.fixture
 def ticket(admin_app, category, ticket_owner):
-    ticket = ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+    ticket = ticket_creation_service.create_ticket(
+        category.party_id, category.id, ticket_owner.id
+    )
     yield ticket
     ticket_service.delete_ticket(ticket.id)
 
@@ -107,9 +109,7 @@ def test_check_in_user_with_ticket_user_already_checked_in(
         check_in_user(ticket.id, ticketing_admin.id)
 
 
-def test_check_in_suspended_user(
-    admin_app, ticket, ticketing_admin, make_user
-):
+def test_check_in_suspended_user(admin_app, ticket, ticketing_admin, make_user):
     ticket_user = make_user('SuspendedTicketUser', suspended=True)
 
     ticket.used_by_id = ticket_user.id

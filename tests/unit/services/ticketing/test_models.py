@@ -7,7 +7,7 @@ from uuid import UUID
 
 import pytest
 
-from byceps.services.ticketing.models.ticket import Ticket
+from byceps.services.ticketing.models.ticket import Ticket as DbTicket
 
 
 ANY_BUNDLE_ID = UUID('4138fcfb-cc18-45c0-aede-d49a8e279885')
@@ -105,10 +105,11 @@ def create_ticket(
     seat_managed_by_id=None,
     user_managed_by_id=None,
 ):
+    party_id = 'megacon-99'
     code = 'BRTZN'
     category_id = None
 
-    ticket = Ticket(code, category_id, owned_by_id)
+    ticket = DbTicket(party_id, code, category_id, owned_by_id)
     ticket.bundle_id = bundle_id
     ticket.seat_managed_by_id = seat_managed_by_id
     ticket.user_managed_by_id = user_managed_by_id

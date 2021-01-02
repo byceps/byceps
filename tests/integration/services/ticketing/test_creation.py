@@ -16,7 +16,9 @@ from byceps.services.ticketing import (
 
 
 def test_create_ticket(admin_app, category, ticket_owner):
-    ticket = ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+    ticket = ticket_creation_service.create_ticket(
+        category.party_id, category.id, ticket_owner.id
+    )
 
     assert_created_ticket(ticket, category.id, ticket_owner.id)
 
@@ -33,12 +35,14 @@ def test_create_ticket_with_existing_code(
     generate_ticket_code_mock.return_value = 'TAKEN'
 
     existing_ticket = ticket_creation_service.create_ticket(
-        category.id, ticket_owner.id
+        category.party_id, category.id, ticket_owner.id
     )
     assert existing_ticket.code == 'TAKEN'
 
     with raises(ticket_creation_service.TicketCreationFailedWithConflict):
-        ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+        ticket_creation_service.create_ticket(
+            category.party_id, category.id, ticket_owner.id
+        )
 
     # Clean up.
     ticket_service.delete_ticket(existing_ticket.id)
@@ -47,7 +51,7 @@ def test_create_ticket_with_existing_code(
 def test_create_tickets(admin_app, category, ticket_owner):
     quantity = 3
     tickets = ticket_creation_service.create_tickets(
-        category.id, ticket_owner.id, quantity
+        category.party_id, category.id, ticket_owner.id, quantity
     )
 
     for ticket in tickets:
@@ -70,7 +74,7 @@ def test_create_tickets_with_clashing_generated_codes(
 
     with raises(ticket_creation_service.TicketCreationFailed) as excinfo:
         tickets = ticket_creation_service.create_tickets(
-            category.id, ticket_owner.id, quantity
+            category.party_id, category.id, ticket_owner.id, quantity
         )
 
     wrapped_exc = excinfo.value.args[0]

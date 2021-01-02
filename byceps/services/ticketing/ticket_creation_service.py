@@ -12,7 +12,7 @@ from sqlalchemy.exc import IntegrityError
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
 
 from ...database import db
-from ...typing import UserID
+from ...typing import PartyID, UserID
 
 from ..shop.order.transfer.models import OrderNumber
 
@@ -33,6 +33,7 @@ class TicketCreationFailedWithConflict(TicketCreationFailed):
 
 
 def create_ticket(
+    party_id: PartyID,
     category_id: TicketCategoryID,
     owned_by_id: UserID,
     *,
@@ -42,6 +43,7 @@ def create_ticket(
     """Create a single ticket."""
     quantity = 1
     tickets = create_tickets(
+        party_id,
         category_id,
         owned_by_id,
         quantity,
@@ -57,6 +59,7 @@ def create_ticket(
     stop=stop_after_attempt(5),
 )
 def create_tickets(
+    party_id: PartyID,
     category_id: TicketCategoryID,
     owned_by_id: UserID,
     quantity: int,
@@ -67,6 +70,7 @@ def create_tickets(
     """Create a number of tickets of the same category for a single owner."""
     tickets = list(
         build_tickets(
+            party_id,
             category_id,
             owned_by_id,
             quantity,
@@ -87,6 +91,7 @@ def create_tickets(
 
 
 def build_tickets(
+    party_id: PartyID,
     category_id: TicketCategoryID,
     owned_by_id: UserID,
     quantity: int,
@@ -105,6 +110,7 @@ def build_tickets(
 
     for code in codes:
         yield DbTicket(
+            party_id,
             code,
             category_id,
             owned_by_id,

@@ -26,7 +26,7 @@ from .ticket_bundle import TicketBundle
 class TicketQuery(BaseQuery):
 
     def for_party(self, party_id: PartyID) -> BaseQuery:
-        return self.join(Category).filter(Category.party_id == party_id)
+        return self.filter(Ticket.party_id == party_id)
 
 
 class Ticket(db.Model):
@@ -44,6 +44,7 @@ class Ticket(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     code = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
     bundle_id = db.Column(db.Uuid, db.ForeignKey('ticket_bundles.id'), index=True, nullable=True)
     bundle = db.relationship(TicketBundle, backref='tickets')
@@ -65,6 +66,7 @@ class Ticket(db.Model):
 
     def __init__(
         self,
+        party_id: PartyID,
         code: TicketCode,
         category_id: TicketCategoryID,
         owned_by_id: UserID,
@@ -73,6 +75,7 @@ class Ticket(db.Model):
         order_number: Optional[OrderNumber] = None,
         used_by_id: Optional[UserID] = None,
     ) -> None:
+        self.party_id = party_id
         self.code = code
         self.bundle = bundle
         self.category_id = category_id
@@ -133,8 +136,8 @@ class Ticket(db.Model):
 
         return ReprBuilder(self) \
             .add('id', str(self.id)) \
+            .add('party_id', self.party_id) \
             .add('code', self.code) \
-            .add('party', self.category.party_id) \
             .add('category', self.category.title) \
             .add('owned_by', user(self.owned_by)) \
             .add_custom(f'occupied_seat={occupied_seat()}') \

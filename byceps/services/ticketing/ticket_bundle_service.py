@@ -31,6 +31,7 @@ from .transfer.models import TicketBundleID, TicketCategoryID
     stop=stop_after_attempt(5),
 )
 def create_bundle(
+    party_id: PartyID,
     category_id: TicketCategoryID,
     ticket_quantity: int,
     owned_by_id: UserID,
@@ -50,6 +51,7 @@ def create_bundle(
 
     tickets = list(
         build_tickets(
+            party_id,
             category_id,
             owned_by_id,
             ticket_quantity,

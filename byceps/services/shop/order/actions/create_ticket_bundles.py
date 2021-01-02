@@ -9,7 +9,10 @@ byceps.services.shop.order.actions.create_ticket_bundles
 from .....typing import UserID
 
 from ....ticketing.models.ticket_bundle import TicketBundle
-from ....ticketing import ticket_bundle_service
+from ....ticketing import (
+    category_service as ticket_category_service,
+    ticket_bundle_service,
+)
 
 from ...article.transfer.models import ArticleNumber
 
@@ -33,9 +36,14 @@ def create_ticket_bundles(
     owned_by_id = order.placed_by_id
     order_number = order.order_number
 
+    category = ticket_category_service.find_category(category_id)
+    if category is None:
+        raise ValueError(f'Unknown ticket category ID for order {order_number}')
+
     for _ in range(bundle_quantity):
         bundle = ticket_bundle_service.create_bundle(
-            category_id,
+            category.party_id,
+            category.id,
             ticket_quantity,
             owned_by_id,
             order_number=order_number,

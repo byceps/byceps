@@ -54,7 +54,9 @@ def seat_of_another_category(area, another_category):
 
 @pytest.fixture
 def ticket(admin_app, category, ticket_owner):
-    ticket = ticket_creation_service.create_ticket(category.id, ticket_owner.id)
+    ticket = ticket_creation_service.create_ticket(
+        category.party_id, category.id, ticket_owner.id
+    )
     yield ticket
     ticket_service.delete_ticket(ticket.id)
 
@@ -63,7 +65,7 @@ def ticket(admin_app, category, ticket_owner):
 def ticket_bundle(category, ticket_owner):
     ticket_quantity = 1
     bundle = ticket_bundle_service.create_bundle(
-        category.id, ticket_quantity, ticket_owner.id
+        category.party_id, category.id, ticket_quantity, ticket_owner.id
     )
     yield bundle
     ticket_bundle_service.delete_bundle(bundle.id)

@@ -11,7 +11,10 @@ from typing import Sequence
 from .....typing import UserID
 
 from ....ticketing.models.ticket import Ticket
-from ....ticketing import ticket_creation_service
+from ....ticketing import (
+    category_service as ticket_category_service,
+    ticket_creation_service,
+)
 
 from ...article.transfer.models import ArticleNumber
 
@@ -34,7 +37,12 @@ def create_tickets(
     owned_by_id = order.placed_by_id
     order_number = order.order_number
 
+    category = ticket_category_service.find_category(category_id)
+    if category is None:
+        raise ValueError(f'Unknown ticket category ID for order {order_number}')
+
     tickets = ticket_creation_service.create_tickets(
+        category.party_id,
         category_id,
         owned_by_id,
         quantity,

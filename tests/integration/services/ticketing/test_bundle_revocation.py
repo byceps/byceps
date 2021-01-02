@@ -53,7 +53,7 @@ def test_revoke_bundle(admin_app, bundle, ticketing_admin):
 def bundle(category, ticket_owner):
     quantity = 4
     bundle = bundle_service.create_bundle(
-        category.id, quantity, ticket_owner.id
+        category.party_id, category.id, quantity, ticket_owner.id
     )
 
     yield bundle
