@@ -75,7 +75,7 @@ def delete_category(category_id: TourneyCategoryID) -> None:
     if category is None:
         raise ValueError(f'Unknown category ID "{category_id}"')
 
-    db.session.query(DbCategory) \
+    db.session.query(DbTourneyCategory) \
         .filter_by(id=category_id) \
         .delete()
 

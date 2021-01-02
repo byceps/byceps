@@ -6,7 +6,9 @@ byceps.services.tourney.participant_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Set
+from typing import Optional, Set
+
+from ...database import db
 
 from .models.participant import Participant as DbParticipant
 from . import tourney_service
@@ -19,9 +21,7 @@ def create_participant(
     """Create a participant."""
     tourney = tourney_service.get_tourney(tourney_id)
 
-    participant = DbParticipant(
-        category.id, title, max_participant_count, starts_at
-    )
+    participant = DbParticipant(tourney.id, title, max_size)
 
     db.session.add(participant)
     db.session.commit()
@@ -35,11 +35,21 @@ def delete_participant(participant_id: ParticipantID) -> None:
     if participant is None:
         raise ValueError(f'Unknown participant ID "{participant_id}"')
 
-    db.session.query(DbTourney) \
+    db.session.query(DbParticipant) \
         .filter_by(id=participant_id) \
         .delete()
 
     db.session.commit()
+
+
+def find_participant(participant_id: ParticipantID) -> Optional[Participant]:
+    """Return the participant with that id, or `None` if not found."""
+    participant = DbParticipant.query.get(participant_id)
+
+    if participant is None:
+        return None
+
+    return _db_entity_to_participant(participant)
 
 
 def get_participants_for_tourney(tourney_id: TourneyID) -> Set[Participant]:

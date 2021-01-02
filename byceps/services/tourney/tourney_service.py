@@ -113,7 +113,7 @@ def get_tourney(tourney_id: int) -> Tourney:
 
     Raise an exception if not found.
     """
-    tourney = _find_tourney(tourney_id)
+    tourney = find_tourney(tourney_id)
 
     if tourney is None:
         raise ValueError(f'Unknown tourney ID "{tourney_id}"')
