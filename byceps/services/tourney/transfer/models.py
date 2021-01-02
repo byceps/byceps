@@ -33,10 +33,10 @@ TourneyID = NewType('TourneyID', UUID)
 @dataclass(frozen=True)
 class Tourney:
     id: TourneyID
-    category_id: TourneyCategoryID
     title: str
     subtitle: Optional[str]
     logo_url: Optional[str]
+    category_id: TourneyCategoryID
     current_participant_count: int
     max_participant_count: int
     starts_at: datetime

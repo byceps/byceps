@@ -13,6 +13,8 @@ from ....util.instances import ReprBuilder
 
 from ...user.models.user import User
 
+from ..transfer.models import TourneyID
+
 from .tourney import Tourney
 
 
@@ -30,8 +32,10 @@ class Participant(db.Model):
     title = db.Column(db.UnicodeText, nullable=False)
     max_size = db.Column(db.Integer, nullable=True)
 
-    def __init__(self, tourney: Tourney, title: str, max_size: int) -> None:
-        self.tourney = tourney
+    def __init__(
+        self, tourney_id: TourneyID, title: str, max_size: int
+    ) -> None:
+        self.tourney_id = tourney_id
         self.title = title
         self.max_size = max_size
 

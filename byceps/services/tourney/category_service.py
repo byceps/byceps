@@ -69,6 +69,19 @@ def move_category_down(category_id: TourneyCategoryID) -> None:
     db.session.commit()
 
 
+def delete_category(category_id: TourneyCategoryID) -> None:
+    """Delete a category."""
+    category = find_category(category_id)
+    if category is None:
+        raise ValueError(f'Unknown category ID "{category_id}"')
+
+    db.session.query(DbCategory) \
+        .filter_by(id=category_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def find_category(
     category_id: TourneyCategoryID,
 ) -> Optional[DbTourneyCategory]:
@@ -81,7 +94,9 @@ def find_category(
     return _db_entity_to_category(category)
 
 
-def _find_db_category(category_id: TourneyCategoryID) -> Optional[DbTourneyCategory]:
+def _find_db_category(
+    category_id: TourneyCategoryID,
+) -> Optional[DbTourneyCategory]:
     return DbTourneyCategory.query.get(category_id)
 
 
@@ -106,8 +121,8 @@ def get_categories_for_party(party_id: PartyID) -> List[TourneyCategory]:
 
 def _db_entity_to_category(category: DbTourneyCategory) -> TourneyCategory:
     return TourneyCategory(
-        category.id,
-        category.party_id,
-        category.position,
-        category.title,
+        id=category.id,
+        party_id=category.party_id,
+        position=category.position,
+        title=category.title,
     )

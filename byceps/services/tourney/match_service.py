@@ -24,6 +24,19 @@ def create_match() -> Match:
     return _db_entity_to_match(match)
 
 
+def delete_match(match_id: MatchID) -> None:
+    """Delete a match."""
+    match = find_match(match_id)
+    if match is None:
+        raise ValueError(f'Unknown match ID "{match_id}"')
+
+    db.session.query(DbMatch) \
+        .filter_by(id=match_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def find_match(match_id: MatchID) -> Optional[Match]:
     """Return the match with that id, or `None` if not found."""
     match = DbMatch.query.get(match_id)
