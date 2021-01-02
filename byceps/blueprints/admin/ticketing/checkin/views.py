@@ -8,7 +8,7 @@ byceps.blueprints.admin.ticketing.checkin.views
 
 from datetime import date
 
-from flask import abort, g, request
+from flask import abort, g, request, url_for
 
 from .....services.party import service as party_service
 from .....services.ticketing import (
@@ -134,11 +134,22 @@ def check_in_user(party_id, ticket_id):
 
     ticketing_signals.ticket_checked_in.send(None, event=event)
 
-    flash_success(f"Benutzer '{ticket.used_by.screen_name}' wurde eingecheckt.")
+    ticket_url = url_for('ticketing_admin.view_ticket', ticket_id=ticket.id)
+
+    flash_success(
+        f'Benutzer <em>{ticket.used_by.screen_name}</em> wurde '
+        f'mit Ticket <a href="{ticket_url}">{ticket.code}</a> eingecheckt.',
+        text_is_safe=True,
+    )
 
     occupies_seat = ticket.occupied_seat_id is not None
     if not occupies_seat:
-        flash_notice('Das Ticket belegt noch keinen Sitzplatz.', icon='warning')
+        flash_notice(
+            f'Ticket <a href="{ticket_url}">{ticket.code}</a> '
+            'belegt noch keinen Sitzplatz.',
+            icon='warning',
+            text_is_safe=True,
+        )
 
 
 @blueprint.route(
