@@ -120,6 +120,9 @@ def login():
     user_session.start(user.id, session_token.token, permanent=permanent)
     flash_success(f'Erfolgreich eingeloggt als {user.screen_name}.')
 
+    if not in_admin_mode:
+        return [('Location', url_for('dashboard.index'))]
+
 
 def _require_admin_access_permission(user_id: UserID) -> None:
     permissions = service.get_permissions_for_user(user_id)

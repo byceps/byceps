@@ -35,6 +35,9 @@ def test_login_succeeds(client, make_user):
 
     response = client.post('/authentication/login', data=form_data)
     assert response.status_code == 204
+    # Location (used by JavaScript redirect) should point to user
+    # dashboard (non-admin sites only).
+    assert response.location == 'http://www.acmecon.test/dashboard'
 
     cookies = list(client.cookie_jar)
     assert len(cookies) == 1
