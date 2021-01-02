@@ -10,6 +10,7 @@ from flask import abort, g, request, Response
 
 from .....services.brand import service as brand_service
 from .....services.shop.order import (
+    event_service as order_event_service,
     sequence_service as order_sequence_service,
     service as order_service,
 )
@@ -359,7 +360,17 @@ def resend_email_for_incoming_order_to_orderer(order_id):
     """Resend the e-mail to the orderer to confirm that the order was placed."""
     order = _get_order_or_404(order_id)
 
+    initiator_id = g.current_user.id
+
     order_email_service.send_email_for_incoming_order_to_orderer(order.id)
+
+    order_event_service.create_event(
+        'order-placed-confirmation-email-resent',
+        order.id,
+        {
+            'initiator_id': str(initiator_id),
+        },
+    )
 
     flash_success('Die E-Mail-Eingangsbestätigung wurde erneut versendet.')
 

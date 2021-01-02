@@ -65,6 +65,11 @@
             <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
             hat die Lieferung als <strong>doch nicht versendet</strong> markiert.
           {%- endset %}
+        {%- elif event.event == 'order-placed-confirmation-email-resent' %}
+          {%- set icon_name = 'email' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat den Versand der Bestellbestätigung per E-Mail <strong>erneut ausgelöst</strong>.
+          {%- endset %}
         {%- elif event.event == 'badge-awarded' %}
           {%- set icon_name = 'badge' %}
           {%- set body %}
