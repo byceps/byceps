@@ -10,7 +10,6 @@ from byceps.util.authorization import create_permission_enum
 
 
 TourneyCategoryPermission = create_permission_enum('tourney_category', [
-    'create',
-    'update',
+    'administrate',
     'view',
 ])

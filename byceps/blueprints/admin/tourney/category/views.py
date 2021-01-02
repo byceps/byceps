@@ -44,7 +44,7 @@ def index(party_id):
 
 
 @blueprint.route('/parties/<party_id>/categories/create')
-@permission_required(TourneyCategoryPermission.create)
+@permission_required(TourneyCategoryPermission.administrate)
 @templated
 def create_form(party_id, erroneous_form=None):
     """Show form to create a category."""
@@ -59,7 +59,7 @@ def create_form(party_id, erroneous_form=None):
 
 
 @blueprint.route('/parties/<party_id>/categories', methods=['POST'])
-@permission_required(TourneyCategoryPermission.create)
+@permission_required(TourneyCategoryPermission.administrate)
 def create(party_id):
     """Create a category."""
     party = _get_party_or_404(party_id)
@@ -77,7 +77,7 @@ def create(party_id):
 
 
 @blueprint.route('/categories/<uuid:category_id>/update')
-@permission_required(TourneyCategoryPermission.update)
+@permission_required(TourneyCategoryPermission.administrate)
 @templated
 def update_form(category_id, erroneous_form=None):
     """Show form to update a category."""
@@ -99,7 +99,7 @@ def update_form(category_id, erroneous_form=None):
 
 
 @blueprint.route('/categories/<uuid:category_id>', methods=['POST'])
-@permission_required(TourneyCategoryPermission.update)
+@permission_required(TourneyCategoryPermission.administrate)
 def update(category_id):
     """Update a category."""
     category = _get_category_or_404(category_id)
@@ -115,7 +115,7 @@ def update(category_id):
 
 
 @blueprint.route('/categories/<uuid:category_id>/up', methods=['POST'])
-@permission_required(TourneyCategoryPermission.update)
+@permission_required(TourneyCategoryPermission.administrate)
 @respond_no_content
 def move_up(category_id):
     """Move a category upwards by one position."""
@@ -135,7 +135,7 @@ def move_up(category_id):
 
 
 @blueprint.route('/categories/<uuid:category_id>/down', methods=['POST'])
-@permission_required(TourneyCategoryPermission.update)
+@permission_required(TourneyCategoryPermission.administrate)
 @respond_no_content
 def move_down(category_id):
     """Move a category downwards by one position."""

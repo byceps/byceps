@@ -287,12 +287,8 @@ id = 'ticketing.view'
 title = 'Tickets anzeigen'
 
 [[permissions]]
-id = 'tourney_category.create'
-title = 'Turnierkategorien erstellen'
-
-[[permissions]]
-id = 'tourney_category.update'
-title = 'Turnierkategorien bearbeiten'
+id = 'tourney_category.administrate'
+title = 'Turnierkategorien verwalten'
 
 [[permissions]]
 id = 'tourney_category.view'
@@ -575,8 +571,7 @@ assigned_permissions = ['ticketing.view']
 id = 'tourney_category_admin'
 title = 'Turnierkategorien verwalten'
 assigned_permissions = [
-    'tourney_category.create',
-    'tourney_category.update',
+    'tourney_category.administrate',
     'tourney_category.view',
 ]
 
