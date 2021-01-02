@@ -37,9 +37,7 @@ MINIMUM_AGE_IN_YEARS = 18
 @templated
 def index(party_id):
     """Provide form to find tickets, then check them in."""
-    party = party_service.find_party(party_id)
-    if party is None:
-        abort(404)
+    party = _get_party_or_404(party_id)
 
     search_term = request.args.get('search_term', default='').strip()
 
@@ -153,6 +151,15 @@ def revert_user_check_in(ticket_id):
     ticket_user_checkin_service.revert_user_check_in(ticket.id, initiator_id)
 
     flash_success('Der Check-In wurde rückgängig gemacht.')
+
+
+def _get_party_or_404(party_id):
+    party = party_service.find_party(party_id)
+
+    if party is None:
+        abort(404)
+
+    return party
 
 
 def _get_ticket_or_404(ticket_id):
