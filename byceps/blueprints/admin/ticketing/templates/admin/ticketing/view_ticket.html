@@ -32,7 +32,7 @@
         <li><a class="dropdown-item" href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
         <li class="dropdown-divider"></li>
         {%- if ticket.user_checked_in %}
-        <li><a class="dropdown-item" data-action="revert-user-check-in" href="{{ url_for('ticketing_checkin.revert_user_check_in', ticket_id=ticket.id) }}">{{ render_icon('disabled') }} Check-In rückgängig machen</a></li>
+        <li><a class="dropdown-item" data-action="revert-user-check-in" href="{{ url_for('ticketing_checkin_admin.revert_user_check_in', ticket_id=ticket.id) }}">{{ render_icon('disabled') }} Check-In rückgängig machen</a></li>
         {%- endif %}
       </ol>
     </div>

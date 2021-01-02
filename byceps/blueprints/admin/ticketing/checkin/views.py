@@ -26,7 +26,7 @@ from ...ticketing.authorization import TicketingPermission
 from ...user import service as user_blueprint_service
 
 
-blueprint = create_blueprint('ticketing_checkin', __name__)
+blueprint = create_blueprint('ticketing_checkin_admin', __name__)
 
 
 MINIMUM_AGE_IN_YEARS = 18

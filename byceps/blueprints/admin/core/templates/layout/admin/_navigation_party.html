@@ -43,9 +43,9 @@
         required_permission=TicketingPermission.view,
         icon='ticket')
       .add_item(
-        url_for('ticketing_checkin.index', party_id=party.id),
+        url_for('ticketing_checkin_admin.index', party_id=party.id),
         'Check-In',
-        id='ticketing_checkin',
+        id='ticketing_checkin_admin',
         required_permission=TicketingPermission.checkin,
         icon='ticketing-checkin')
       .add_item(
