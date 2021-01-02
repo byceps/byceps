@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import Optional
 
 from ....database import db, generate_uuid
-
+from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
 from ..transfer.models import TourneyCategoryID
@@ -27,6 +27,7 @@ class Tourney(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     title = db.Column(db.UnicodeText, nullable=False)
     subtitle = db.Column(db.UnicodeText, nullable=True)
     logo_url = db.Column(db.UnicodeText, nullable=True)
@@ -42,6 +43,7 @@ class Tourney(db.Model):
 
     def __init__(
         self,
+        party_id: PartyID,
         title: str,
         category_id: TourneyCategoryID,
         max_participant_count: int,
@@ -50,6 +52,7 @@ class Tourney(db.Model):
         subtitle: Optional[str] = None,
         logo_url: Optional[str] = None,
     ) -> None:
+        self.party_id = party_id
         self.title = title
         self.subtitle = subtitle
         self.logo_url = logo_url
@@ -59,5 +62,6 @@ class Tourney(db.Model):
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
+            .add_with_lookup('party_id') \
             .add_with_lookup('title') \
             .build()

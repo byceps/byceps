@@ -12,6 +12,8 @@ from typing import List, Optional
 from ...database import db
 from ...typing import PartyID, UserID
 
+from ..party import service as party_service
+
 from . import category_service
 from .models.participant import Participant as DbParticipant
 from .models.tourney import Tourney as DbTourney
@@ -25,6 +27,7 @@ from .transfer.models import (
 
 
 def create_tourney(
+    party_id: PartyID,
     title: str,
     category_id: TourneyCategoryID,
     max_participant_count: int,
@@ -34,11 +37,14 @@ def create_tourney(
     logo_url: Optional[str] = None,
 ) -> Tourney:
     """Create a tourney."""
+    party = party_service.get_party(party_id)
+
     category = category_service.find_category(category_id)
     if category is None:
         raise ValueError(f'Unknown tourney category ID "{category_id}"')
 
     tourney = DbTourney(
+        party.id,
         title,
         category.id,
         max_participant_count,
@@ -130,7 +136,7 @@ def get_tourneys_for_party(party_id: PartyID) -> List[TourneyWithCategory]:
         .query(DbTourney, DbTourneyCategory, db.func.count(DbParticipant.id)) \
         .join(DbTourneyCategory) \
         .join(DbParticipant, isouter=True) \
-        .filter(DbTourneyCategory.party_id == party_id) \
+        .filter(DbTourney.party_id == party_id) \
         .group_by(DbTourney.id, DbTourneyCategory) \
         .all()
 
@@ -143,6 +149,7 @@ def _db_entity_to_tourney(
 ) -> Tourney:
     return Tourney(
         id=tourney.id,
+        party_id=tourney.party_id,
         title=tourney.title,
         subtitle=tourney.subtitle,
         logo_url=tourney.logo_url,

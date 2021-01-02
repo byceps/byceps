@@ -34,6 +34,7 @@ TourneyID = NewType('TourneyID', UUID)
 @dataclass(frozen=True)
 class Tourney:
     id: TourneyID
+    party_id: PartyID
     title: str
     subtitle: Optional[str]
     logo_url: Optional[str]
@@ -56,6 +57,7 @@ class TourneyWithCategory(Tourney):
     ) -> TourneyWithCategory:
         return cls(
             id=tourney.id,
+            party_id=tourney.party_id,
             title=tourney.title,
             subtitle=tourney.subtitle,
             logo_url=tourney.logo_url,
