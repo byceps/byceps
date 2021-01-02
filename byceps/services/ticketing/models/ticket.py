@@ -40,12 +40,15 @@ class Ticket(db.Model):
     """
 
     __tablename__ = 'tickets'
+    __table_args__ = (
+        db.UniqueConstraint('party_id', 'code'),
+    )
     query_class = TicketQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
-    code = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
+    code = db.Column(db.UnicodeText, index=True, nullable=False)
     bundle_id = db.Column(db.Uuid, db.ForeignKey('ticket_bundles.id'), index=True, nullable=True)
     bundle = db.relationship(TicketBundle, backref='tickets')
     category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), index=True, nullable=False)

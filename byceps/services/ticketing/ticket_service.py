@@ -41,9 +41,12 @@ def find_ticket(ticket_id: TicketID) -> Optional[DbTicket]:
     return DbTicket.query.get(ticket_id)
 
 
-def find_ticket_by_code(code: TicketCode) -> Optional[DbTicket]:
-    """Return the ticket with that code, or `None` if not found."""
+def find_ticket_by_code(party_id: PartyID, code: TicketCode) -> Optional[DbTicket]:
+    """Return the ticket with that code for that party, or `None` if not
+    found.
+    """
     return DbTicket.query \
+        .for_party(party_id) \
         .filter_by(code=code) \
         .one_or_none()
 
