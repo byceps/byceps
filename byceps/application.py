@@ -6,6 +6,7 @@ byceps.application
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from http import HTTPStatus
 from importlib import import_module
 import os
 from pathlib import Path
@@ -110,10 +111,8 @@ def _set_url_root_path(app: Flask) -> None:
     if target_url is None:
         return
 
-    status_code = app.config['ROOT_REDIRECT_STATUS_CODE']
-
     def _redirect():
-        return redirect(target_url, status_code)
+        return redirect(target_url, code=HTTPStatus.TEMPORARY_REDIRECT)
 
     app.add_url_rule('/', endpoint='root', view_func=_redirect)
 
