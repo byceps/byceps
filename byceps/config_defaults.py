@@ -46,7 +46,6 @@ PATH_DATA = Path('./data')
 
 # home page
 ROOT_REDIRECT_TARGET = None
-ROOT_REDIRECT_STATUS_CODE = 307
 
 # shop
 SHOP_ORDER_EXPORT_TIMEZONE = 'Europe/Berlin'
