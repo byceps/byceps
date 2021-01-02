@@ -287,6 +287,14 @@ id = 'ticketing.view'
 title = 'Tickets anzeigen'
 
 [[permissions]]
+id = 'tourney.administrate'
+title = 'Turniere verwalten'
+
+[[permissions]]
+id = 'tourney.view'
+title = 'Turniere anzeigen'
+
+[[permissions]]
 id = 'tourney_category.administrate'
 title = 'Turnierkategorien verwalten'
 
@@ -453,6 +461,7 @@ assigned_permissions = [
     'terms.view',
     'ticketing.checkin',
     'ticketing.view',
+    'tourney.view',
     'tourney_category.view',
 ]
 
@@ -566,6 +575,14 @@ assigned_permissions = [
 id = 'ticketing_admin'
 title = 'Tickets verwalten'
 assigned_permissions = ['ticketing.view']
+
+[[roles]]
+id = 'tourney_admin'
+title = 'Turniere verwalten'
+assigned_permissions = [
+    'tourney.administrate',
+    'tourney.view',
+]
 
 [[roles]]
 id = 'tourney_category_admin'

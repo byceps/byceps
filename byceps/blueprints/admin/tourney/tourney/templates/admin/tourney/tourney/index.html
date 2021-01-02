@@ -1,0 +1,62 @@
+{% extends 'layout/admin/tourney.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page_party = party %}
+{% set current_tab = 'tourneys' %}
+{% set title = '%s - Turniere'|format(party.title) %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>{{ party.title }}</li>
+    </ol>
+  </nav>
+  <h1>Turniere {{ render_extra_in_heading(tourneys|length) }}</h1>
+
+  {%- if g.current_user.has_permission(TourneyPermission.administrate) %}
+  <div class="button-row button-row--right">
+    <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Turnier erstellen</span></a>
+  </div>
+  {%- endif %}
+
+  {%- if tourneys %}
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th>Titel<br>Untertitel</th>
+        <th>Kategorie</th>
+        <th colspan="3">Teilnehmer</th>
+        <th>Beginn</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for tourney in tourneys|sort(attribute='title') %}
+      <tr>
+        <td>
+          <strong>{{ tourney.title }}</strong><br>
+          <small>{{ tourney.subtitle|fallback('') }}</small>
+        </td>
+        <td>{{ tourney.category.title }}</td>
+        <td class="bignumber number" style="padding-right: 0;">{{ tourney.current_participant_count }}</td>
+        <td class="bignumber dimmed" style="padding-left: 0.25rem; padding-right: 0.25rem;">/</td>
+        <td class="bignumber">{{ tourney.max_participant_count }}</td>
+        <td>{{ render_datetime(tourney.starts_at|utc_to_local_tz) }}</td>
+        <td>
+          {%- if g.current_user.has_permission(TourneyPermission.administrate) %}
+          <div class="button-row button-row--compact">
+            <a class="button button--compact" href="{{ url_for('.update_form', tourney_id=tourney.id) }}">{{ render_icon('edit', title='Turnier bearbeiten') }}</a>
+          </div>
+          {%- endif %}
+        </td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="dimmed-box centered">Es wurden noch keine Turniere angelegt.</div>
+  {%- endif %}
+
+{%- endblock %}

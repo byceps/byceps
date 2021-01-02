@@ -8,7 +8,12 @@
   render_main_tabs(
     Navigation(None)
       .add_item(
-        url_for('.index', party_id=party.id),
+        url_for('tourney_tourney_admin.index', party_id=party.id),
+        'Turniere',
+        id='tourneys',
+        required_permission=TourneyPermission.view)
+      .add_item(
+        url_for('tourney_category_admin.index', party_id=party.id),
         'Kategorien',
         id='categories',
         required_permission=TourneyCategoryPermission.view)

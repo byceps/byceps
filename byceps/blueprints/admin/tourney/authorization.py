@@ -9,6 +9,12 @@ byceps.blueprints.admin.tourney.authorization
 from byceps.util.authorization import create_permission_enum
 
 
+TourneyPermission = create_permission_enum('tourney', [
+    'administrate',
+    'view',
+])
+
+
 TourneyCategoryPermission = create_permission_enum('tourney_category', [
     'administrate',
     'view',
