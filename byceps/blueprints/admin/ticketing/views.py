@@ -16,7 +16,7 @@ from ....services.ticketing import (
     ticket_user_management_service,
 )
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
+from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to
 
@@ -97,6 +97,13 @@ def update_code_form(ticket_id, erroneous_form=None):
     """Show a form to set a custom code for the ticket."""
     ticket = _get_ticket_or_404(ticket_id)
 
+    if ticket.user_checked_in:
+        flash_error(
+            'Der Code kann nicht geändert werden, da bereits jemand '
+            'mit diesem Ticket eingecheckt worden ist.'
+        )
+        return redirect_to('.view_ticket', ticket_id=ticket.id)
+
     party = party_service.get_party(ticket.party_id)
 
     form = erroneous_form if erroneous_form else UpdateCodeForm()
@@ -114,6 +121,13 @@ def update_code(ticket_id):
     """Set a custom code for the ticket."""
     ticket = _get_ticket_or_404(ticket_id)
 
+    if ticket.user_checked_in:
+        flash_error(
+            'Der Code kann nicht geändert werden, da bereits jemand '
+            'mit diesem Ticket eingecheckt worden ist.'
+        )
+        return redirect_to('.view_ticket', ticket_id=ticket.id)
+
     form = UpdateCodeForm(request.form)
     if not form.validate():
         return update_code_form(ticket.id, form)
@@ -126,7 +140,6 @@ def update_code(ticket_id):
     flash_success(f'Der Code von Ticket {ticket.code} wurde geändert.')
 
     return redirect_to('.view_ticket', ticket_id=ticket.id)
-
 
 
 # -------------------------------------------------------------------- #

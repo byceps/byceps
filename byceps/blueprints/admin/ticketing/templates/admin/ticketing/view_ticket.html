@@ -30,7 +30,7 @@
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('chevron-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
         <li><a class="dropdown-item" href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
-        {%- if g.current_user.has_permission(TicketingPermission.administrate) %}
+        {%- if g.current_user.has_permission(TicketingPermission.administrate) and not ticket.user_checked_in %}
         <li><a class="dropdown-item" data-action="update-code" href="{{ url_for('.update_code', ticket_id=ticket.id) }}">{{ render_icon('edit') }} Code ändern</a></li>
         {%- endif %}
         {%- if ticket.user_checked_in %}
