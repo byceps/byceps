@@ -33,10 +33,10 @@
         <li class="dropdown-divider"></li>
         {%- if not ticket.user_checked_in %}
           {%- if ticket.used_by_id %}
-        <li><a class="dropdown-item" data-action="check-in-user" href="{{ url_for('.set_user_checked_in_flag', ticket_id=ticket.id) }}">{{ render_icon('enabled') }} Benutzer einchecken</a></li>
+        <li><a class="dropdown-item" data-action="check-in-user" href="{{ url_for('.check_in_user', ticket_id=ticket.id) }}">{{ render_icon('enabled') }} Benutzer einchecken</a></li>
           {%- endif %}
         {%- else %}
-        <li><a class="dropdown-item" data-action="revert-user-check-in" href="{{ url_for('.unset_user_checked_in_flag', ticket_id=ticket.id) }}">{{ render_icon('disabled') }} Check-In rückgängig machen</a></li>
+        <li><a class="dropdown-item" data-action="revert-user-check-in" href="{{ url_for('.revert_user_check_in', ticket_id=ticket.id) }}">{{ render_icon('disabled') }} Check-In rückgängig machen</a></li>
         {%- endif %}
       </ol>
     </div>
@@ -112,7 +112,7 @@
 
   onDomReady(function() {
     confirmed_post_on_click_then_reload('[data-action="check-in-user"]', 'Benutzer einchecken?');
-    confirmed_delete_on_click_then_reload('[data-action="revert-user-check-in"]', 'Check-In rückgängig machen?');
+    confirmed_post_on_click_then_reload('[data-action="revert-user-check-in"]', 'Check-In rückgängig machen?');
   });
 </script>
 {% endblock %}

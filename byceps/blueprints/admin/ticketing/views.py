@@ -137,12 +137,10 @@ def appoint_user(ticket_id):
 # checked-in flag
 
 
-@blueprint.route(
-    '/tickets/<uuid:ticket_id>/flags/user_checked_in', methods=['POST']
-)
+@blueprint.route('/tickets/<uuid:ticket_id>/check_in_user', methods=['POST'])
 @permission_required(TicketingPermission.checkin)
 @respond_no_content
-def set_user_checked_in_flag(ticket_id):
+def check_in_user(ticket_id):
     """Check the user in."""
     ticket = _get_ticket_or_404(ticket_id)
 
@@ -175,11 +173,11 @@ def set_user_checked_in_flag(ticket_id):
 
 
 @blueprint.route(
-    '/tickets/<uuid:ticket_id>/flags/user_checked_in', methods=['DELETE']
+    '/tickets/<uuid:ticket_id>/revert_user_check_in', methods=['POST']
 )
 @permission_required(TicketingPermission.checkin)
 @respond_no_content
-def unset_user_checked_in_flag(ticket_id):
+def revert_user_check_in(ticket_id):
     """Revert the user check-in state."""
     ticket = _get_ticket_or_404(ticket_id)
 
