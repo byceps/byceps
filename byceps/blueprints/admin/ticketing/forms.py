@@ -9,6 +9,7 @@ byceps.blueprints.admin.ticketing.forms
 from wtforms import StringField
 from wtforms.validators import InputRequired, ValidationError
 
+from ....services.ticketing import ticket_code_service
 from ....services.user import service as user_service
 from ....util.l10n import LocalizedForm
 
@@ -24,6 +25,15 @@ def validate_user(form, field):
         raise ValidationError('Unbekannter Benutzername')
 
     field.data = user.to_dto()
+
+
+class UpdateCodeForm(LocalizedForm):
+    code = StringField('Code', [InputRequired()])
+
+    @staticmethod
+    def validate_code(form, field):
+        if not ticket_code_service.is_ticket_code_wellformed(field.data):
+            raise ValueError('Ungültiges Format')
 
 
 class SpecifyUserForm(LocalizedForm):

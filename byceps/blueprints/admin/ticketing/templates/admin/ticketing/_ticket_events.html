@@ -43,6 +43,12 @@
             {%- endif %}
             freigegeben.
           {%- endset %}
+        {%- elif event.event == 'ticket-code-changed' %}
+          {%- set icon_name = 'edit' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat
+            den <strong>Code geändert</strong> ({{ event.old_code }} &rarr; {{ event.new_code }}).
+          {%- endset %}
         {%- elif event.event == 'ticket-created' %}
           {%- set icon_name = 'add' %}
           {%- set body %}

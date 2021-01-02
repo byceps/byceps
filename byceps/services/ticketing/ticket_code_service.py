@@ -7,6 +7,7 @@ byceps.services.ticketing.ticket_code_service
 """
 
 from random import sample
+from string import ascii_uppercase, digits
 from typing import Set
 
 from .transfer.models import TicketCode
@@ -70,3 +71,11 @@ def _verify_total_matches(
 
 class TicketCodeGenerationFailed(Exception):
     """Generating one or more unique ticket codes has failed."""
+
+
+_ALLOWED_CODE_SYMBOLS = frozenset(_CODE_ALPHABET + ascii_uppercase + digits)
+
+
+def is_ticket_code_wellformed(code: str) -> bool:
+    """Determine if the ticket code is well-formed."""
+    return len(code) == _CODE_LENGTH and set(code).issubset(_ALLOWED_CODE_SYMBOLS)

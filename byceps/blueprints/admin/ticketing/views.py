@@ -23,7 +23,7 @@ from ....util.views import permission_required, redirect_to
 from ...common.authorization.registry import permission_registry
 
 from .authorization import TicketingPermission
-from .forms import SpecifyUserForm
+from .forms import SpecifyUserForm, UpdateCodeForm
 from . import service
 
 
@@ -87,6 +87,49 @@ def view_ticket(ticket_id):
 
 
 # -------------------------------------------------------------------- #
+# ticket code
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/code')
+@permission_required(TicketingPermission.administrate)
+@templated
+def update_code_form(ticket_id, erroneous_form=None):
+    """Show a form to set a custom code for the ticket."""
+    ticket = _get_ticket_or_404(ticket_id)
+
+    party = party_service.get_party(ticket.party_id)
+
+    form = erroneous_form if erroneous_form else UpdateCodeForm()
+
+    return {
+        'party': party,
+        'ticket': ticket,
+        'form': form,
+    }
+
+
+@blueprint.route('/tickets/<uuid:ticket_id>/code', methods=['POST'])
+@permission_required(TicketingPermission.administrate)
+def update_code(ticket_id):
+    """Set a custom code for the ticket."""
+    ticket = _get_ticket_or_404(ticket_id)
+
+    form = UpdateCodeForm(request.form)
+    if not form.validate():
+        return update_code_form(ticket.id, form)
+
+    code = form.code.data
+    manager = g.current_user
+
+    ticket_service.update_ticket_code(ticket.id, code, manager.id)
+
+    flash_success(f'Der Code von Ticket {ticket.code} wurde geändert.')
+
+    return redirect_to('.view_ticket', ticket_id=ticket.id)
+
+
+
+# -------------------------------------------------------------------- #
 # user appointment
 
 
@@ -97,7 +140,7 @@ def appoint_user_form(ticket_id, erroneous_form=None):
     """Show a form to select a user to appoint for the ticket."""
     ticket = _get_ticket_or_404(ticket_id)
 
-    party = party_service.get_party(ticket.category.party_id)
+    party = party_service.get_party(ticket.party_id)
 
     form = erroneous_form if erroneous_form else SpecifyUserForm()
 

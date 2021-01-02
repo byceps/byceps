@@ -17,10 +17,41 @@ from ..seating.models.seat import Seat as DbSeat
 from ..shop.order.transfer.models import OrderNumber
 from ..user.models.user import User as DbUser
 
+from . import event_service
 from .models.category import Category as DbCategory
 from .models.ticket import Ticket as DbTicket
 from .models.ticket_event import TicketEvent as DbTicketEvent
+from . import ticket_code_service
 from .transfer.models import TicketCode, TicketID, TicketSaleStats
+
+
+def update_ticket_code(
+    ticket_id: TicketID, code: str, initiator_id: UserID
+) -> None:
+    """Set a custom code for the ticket."""
+    ticket = find_ticket(ticket_id)
+    if ticket is None:
+        raise ValueError(f'Unknown ticket ID "{ticket_id}"')
+
+    if not ticket_code_service.is_ticket_code_wellformed(code):
+        raise ValueError(f'Ticket code "{code}" is not well-formed')
+
+    old_code = ticket.code
+
+    ticket.code = code
+
+    event = event_service.build_event(
+        'ticket-code-changed',
+        ticket.id,
+        {
+            'old_code': old_code,
+            'new_code': code,
+            'initiator_id': str(initiator_id),
+        },
+    )
+    db.session.add(event)
+
+    db.session.commit()
 
 
 def delete_ticket(ticket_id: TicketID) -> None:
@@ -41,7 +72,9 @@ def find_ticket(ticket_id: TicketID) -> Optional[DbTicket]:
     return DbTicket.query.get(ticket_id)
 
 
-def find_ticket_by_code(party_id: PartyID, code: TicketCode) -> Optional[DbTicket]:
+def find_ticket_by_code(
+    party_id: PartyID, code: TicketCode
+) -> Optional[DbTicket]:
     """Return the ticket with that code for that party, or `None` if not
     found.
     """

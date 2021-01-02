@@ -24,14 +24,17 @@
     {%- if ticket.user_checked_in %} {{ render_ticket_flag_user_checked_in() }}{% endif -%}
   </h1>
 
-  {%- if not ticket.revoked and g.current_user.has_permission(TicketingPermission.checkin) %}
+  {%- if not ticket.revoked and g.current_user.has_any_permission(TicketingPermission.administrate, TicketingPermission.checkin) %}
   <div style="float: right; margin-left: 40px;">
     <div class="dropdown">
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('chevron-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
         <li><a class="dropdown-item" href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
-        <li class="dropdown-divider"></li>
+        {%- if g.current_user.has_permission(TicketingPermission.administrate) %}
+        <li><a class="dropdown-item" data-action="update-code" href="{{ url_for('.update_code', ticket_id=ticket.id) }}">{{ render_icon('edit') }} Code ändern</a></li>
+        {%- endif %}
         {%- if ticket.user_checked_in %}
+        <li class="dropdown-divider"></li>
         <li><a class="dropdown-item" data-action="revert-user-check-in" href="{{ url_for('ticketing_checkin_admin.revert_user_check_in', ticket_id=ticket.id) }}">{{ render_icon('disabled') }} Check-In rückgängig machen</a></li>
         {%- endif %}
       </ol>
