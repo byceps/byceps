@@ -31,11 +31,7 @@
       <ol class="dropdown-menu dropdown-menu--right">
         <li><a class="dropdown-item" href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
         <li class="dropdown-divider"></li>
-        {%- if not ticket.user_checked_in %}
-          {%- if ticket.used_by_id %}
-        <li><a class="dropdown-item" data-action="check-in-user" href="{{ url_for('ticketing_checkin.check_in_user', ticket_id=ticket.id) }}">{{ render_icon('enabled') }} Benutzer einchecken</a></li>
-          {%- endif %}
-        {%- else %}
+        {%- if ticket.user_checked_in %}
         <li><a class="dropdown-item" data-action="revert-user-check-in" href="{{ url_for('ticketing_checkin.revert_user_check_in', ticket_id=ticket.id) }}">{{ render_icon('disabled') }} Check-In rückgängig machen</a></li>
         {%- endif %}
       </ol>
@@ -111,7 +107,6 @@
   enableCopyToClipboard('ticket-id-copy-trigger');
 
   onDomReady(function() {
-    confirmed_post_on_click_then_reload('[data-action="check-in-user"]', 'Benutzer einchecken?');
     confirmed_post_on_click_then_reload('[data-action="revert-user-check-in"]', 'Check-In rückgängig machen?');
   });
 </script>
