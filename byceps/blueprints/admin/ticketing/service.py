@@ -95,9 +95,6 @@ def _get_additional_data(
     if event.event_type == 'seat-released':
         yield from _get_additional_data_for_seat_released_event(event)
 
-    if event.event_type == 'ticket-code-changed':
-        yield from _get_additional_data_for_ticket_code_changed_event(event)
-
     if event.event_type == 'ticket-revoked':
         yield from _get_additional_data_for_ticket_revoked_event(event)
 
@@ -170,13 +167,6 @@ def _get_additional_data_for_seat_released_event(
     if seat_id:
         seat = seat_service.find_seat(seat_id)
         yield 'seat_label', seat.label
-
-
-def _get_additional_data_for_ticket_code_changed_event(
-    event: TicketEvent,
-) -> Iterator[Tuple[str, Any]]:
-    for key in 'old_code', 'new_code':
-        yield key, event.data.get(key)
 
 
 def _get_additional_data_for_ticket_revoked_event(
