@@ -28,7 +28,7 @@ blueprint = create_blueprint('tourney_category_admin', __name__)
 permission_registry.register_enum(TourneyCategoryPermission)
 
 
-@blueprint.route('/parties/<party_id>/categories')
+@blueprint.route('/for_party/<party_id>')
 @permission_required(TourneyCategoryPermission.view)
 @templated
 def index(party_id):
@@ -43,7 +43,7 @@ def index(party_id):
     }
 
 
-@blueprint.route('/parties/<party_id>/categories/create')
+@blueprint.route('/for_party/<party_id>/create')
 @permission_required(TourneyCategoryPermission.administrate)
 @templated
 def create_form(party_id, erroneous_form=None):
@@ -58,7 +58,7 @@ def create_form(party_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/parties/<party_id>/categories', methods=['POST'])
+@blueprint.route('/for_party/<party_id>', methods=['POST'])
 @permission_required(TourneyCategoryPermission.administrate)
 def create(party_id):
     """Create a category."""
