@@ -100,18 +100,24 @@ def _create_version(
 
 
 def publish_item(
-    item_id: ItemID, *, initiator_id: Optional[UserID] = None
+    item_id: ItemID,
+    *,
+    publish_at: Optional[datetime] = None,
+    initiator_id: Optional[UserID] = None,
 ) -> NewsItemPublished:
     """Publish a news item."""
     db_item = _get_db_item(item_id)
+
+    now = datetime.utcnow()
+    if publish_at is None:
+        publish_at = now
 
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
     else:
         initiator = None
 
-    now = datetime.utcnow()
-    db_item.published_at = now
+    db_item.published_at = publish_at
     db.session.commit()
 
     item = _db_entity_to_item(db_item)
