@@ -22,4 +22,4 @@ if __name__ == '__main__':
             queues = [get_queue(app)]
 
             worker = Worker(queues, name='BYCEPS worker')
-            worker.work()
+            worker.work(with_scheduler=True)
