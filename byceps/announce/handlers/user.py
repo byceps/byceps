@@ -9,7 +9,6 @@ Announce user events.
 """
 
 from ...events.user import (
-    _UserEvent,
     UserAccountCreated,
     UserAccountDeleted,
     UserAccountSuspended,
@@ -30,7 +29,7 @@ def announce_user_account_created(
     """Announce that a user account has been created."""
     text = user.assemble_text_for_user_account_created(event)
 
-    send_user_message(event, webhook, text)
+    send_user_message(webhook, text)
 
 
 def announce_user_screen_name_changed(
@@ -39,7 +38,7 @@ def announce_user_screen_name_changed(
     """Announce that a user's screen name has been changed."""
     text = user.assemble_text_for_user_screen_name_changed(event)
 
-    send_user_message(event, webhook, text)
+    send_user_message(webhook, text)
 
 
 def announce_user_email_address_invalidated(
@@ -48,7 +47,7 @@ def announce_user_email_address_invalidated(
     """Announce that a user's email address has been invalidated."""
     text = user.assemble_text_for_user_email_address_invalidated(event)
 
-    send_user_message(event, webhook, text)
+    send_user_message(webhook, text)
 
 
 def announce_user_details_updated_changed(
@@ -57,7 +56,7 @@ def announce_user_details_updated_changed(
     """Announce that a user's details have been changed."""
     text = user.assemble_text_for_user_details_updated_changed(event)
 
-    send_user_message(event, webhook, text)
+    send_user_message(webhook, text)
 
 
 def announce_user_account_suspended(
@@ -66,7 +65,7 @@ def announce_user_account_suspended(
     """Announce that a user account has been suspended."""
     text = user.assemble_text_for_user_account_suspended(event)
 
-    send_user_message(event, webhook, text)
+    send_user_message(webhook, text)
 
 
 def announce_user_account_unsuspended(
@@ -75,7 +74,7 @@ def announce_user_account_unsuspended(
     """Announce that a user account has been unsuspended."""
     text = user.assemble_text_for_user_account_unsuspended(event)
 
-    send_user_message(event, webhook, text)
+    send_user_message(webhook, text)
 
 
 def announce_user_account_deleted(
@@ -84,13 +83,11 @@ def announce_user_account_deleted(
     """Announce that a user account has been deleted."""
     text = user.assemble_text_for_user_account_deleted(event)
 
-    send_user_message(event, webhook, text)
+    send_user_message(webhook, text)
 
 
 # helpers
 
 
-def send_user_message(
-    event: _UserEvent, webhook: OutgoingWebhook, text: str
-) -> None:
+def send_user_message(webhook: OutgoingWebhook, text: str) -> None:
     call_webhook(webhook, text)

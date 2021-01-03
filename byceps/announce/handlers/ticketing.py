@@ -8,8 +8,6 @@ Announce ticketing events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Union
-
 from ...events.ticketing import TicketCheckedIn, TicketsSold
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
@@ -23,22 +21,18 @@ def announce_ticket_checked_in(
     """Announce that a ticket has been checked in."""
     text = ticketing.assemble_text_for_ticket_checked_in(event)
 
-    send_ticketing_message(event, webhook, text)
+    send_ticketing_message(webhook, text)
 
 
 def announce_tickets_sold(event: TicketsSold, webhook: OutgoingWebhook) -> None:
     """Announce that tickets have been sold."""
     text = ticketing.assemble_text_for_tickets_sold(event)
 
-    send_ticketing_message(event, webhook, text)
+    send_ticketing_message(webhook, text)
 
 
 # helpers
 
 
-def send_ticketing_message(
-    event: Union[TicketCheckedIn, TicketsSold],
-    webhook: OutgoingWebhook,
-    text: str,
-) -> None:
+def send_ticketing_message(webhook: OutgoingWebhook, text: str) -> None:
     call_webhook(webhook, text)

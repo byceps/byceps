@@ -8,12 +8,7 @@ Announce snippet events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...events.snippet import (
-    _SnippetEvent,
-    SnippetCreated,
-    SnippetDeleted,
-    SnippetUpdated,
-)
+from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from ...services.webhooks.transfer.models import OutgoingWebhook
 
 from ..helpers import call_webhook
@@ -26,7 +21,7 @@ def announce_snippet_created(
     """Announce that a snippet has been created."""
     text = snippet.assemble_text_for_snippet_created(event)
 
-    send_snippet_message(event, webhook, text)
+    send_snippet_message(webhook, text)
 
 
 def announce_snippet_updated(
@@ -35,7 +30,7 @@ def announce_snippet_updated(
     """Announce that a snippet has been updated."""
     text = snippet.assemble_text_for_snippet_updated(event)
 
-    send_snippet_message(event, webhook, text)
+    send_snippet_message(webhook, text)
 
 
 def announce_snippet_deleted(
@@ -44,13 +39,11 @@ def announce_snippet_deleted(
     """Announce that a snippet has been deleted."""
     text = snippet.assemble_text_for_snippet_deleted(event)
 
-    send_snippet_message(event, webhook, text)
+    send_snippet_message(webhook, text)
 
 
 # helpers
 
 
-def send_snippet_message(
-    event: _SnippetEvent, webhook: OutgoingWebhook, text: str
-) -> None:
+def send_snippet_message(webhook: OutgoingWebhook, text: str) -> None:
     call_webhook(webhook, text)
