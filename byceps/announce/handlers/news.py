@@ -8,6 +8,8 @@ Announce news events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from functools import wraps
+
 from ...events.news import NewsItemPublished
 from ...services.webhooks.transfer.models import OutgoingWebhook
 from ...util.jobqueue import enqueue_at
@@ -16,6 +18,19 @@ from ..helpers import call_webhook, matches_selectors
 from ..text_assembly import news
 
 
+def apply_selectors(handler):
+    @wraps(handler)
+    def wrapper(event: NewsItemPublished, webhook: OutgoingWebhook):
+        channel_id = str(event.channel_id)
+        if not matches_selectors(event, webhook, 'channel_id', channel_id):
+            return
+
+        handler(event, webhook)
+
+    return wrapper
+
+
+@apply_selectors
 def announce_news_item_published(
     event: NewsItemPublished, webhook: OutgoingWebhook
 ) -> None:
@@ -36,8 +51,4 @@ def announce_news_item_published(
 def send_news_message(
     event: NewsItemPublished, webhook: OutgoingWebhook, text: str
 ) -> None:
-    channel_id = str(event.channel_id)
-    if not matches_selectors(event, webhook, 'channel_id', channel_id):
-        return
-
     call_webhook(webhook, text)
