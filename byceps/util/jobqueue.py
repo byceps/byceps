@@ -12,6 +12,7 @@ An asynchronously processed job queue based on Redis_ and RQ_.
 """
 
 from contextlib import contextmanager
+from typing import Callable
 
 from flask import current_app
 from rq import Connection, Queue
@@ -30,8 +31,8 @@ def get_queue(app):
     return Queue(is_async=is_async)
 
 
-def enqueue(*args, **kwargs):
+def enqueue(func: Callable, *args, **kwargs):
     """Add the function call to the queue as a job."""
     with connection():
         queue = get_queue(current_app)
-        queue.enqueue(*args, **kwargs)
+        queue.enqueue(func, *args, **kwargs)
