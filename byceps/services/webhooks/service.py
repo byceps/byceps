@@ -62,6 +62,7 @@ def get_enabled_outgoing_webhooks(event_type: str) -> List[OutgoingWebhook]:
     """
     webhooks = db.session.query(DbOutgoingWebhook) \
         .filter(DbOutgoingWebhook.event_selectors.has_key(event_type)) \
+        .filter_by(enabled=True) \
         .all()
 
     return [_db_entity_to_outgoing_webhook(webhook) for webhook in webhooks]
