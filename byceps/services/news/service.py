@@ -110,17 +110,19 @@ def publish_item(
     else:
         initiator = None
 
-    db_item.published_at = datetime.utcnow()
+    now = datetime.utcnow()
+    db_item.published_at = now
     db.session.commit()
 
     item = _db_entity_to_item(db_item)
 
     return NewsItemPublished(
-        occurred_at=item.published_at,
+        occurred_at=now,
         initiator_id=initiator.id if initiator else None,
         initiator_screen_name=initiator.screen_name if initiator else None,
         item_id=item.id,
         channel_id=item.channel.id,
+        published_at=item.published_at,
         title=item.title,
         external_url=item.external_url,
     )

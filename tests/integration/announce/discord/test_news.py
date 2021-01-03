@@ -28,12 +28,15 @@ def test_published_news_item_announced(
         + 'https://acme.example.com/news/zieh-dir-das-rein'
     )
 
+    now_ = now()
+
     event = NewsItemPublished(
-        occurred_at=now(),
+        occurred_at=now_,
         initiator_id=editor.id,
         initiator_screen_name=editor.screen_name,
         item_id=item.id,
         channel_id=item.channel.id,
+        published_at=now_,
         title=item.title,
         external_url=item.external_url,
     )
