@@ -21,11 +21,4 @@ def announce_user_badge_awarded(
     """Announce that a badge has been awarded to a user."""
     text = user_badge.assemble_text_for_user_badge_awarded(event)
 
-    send_user_badge_message(webhook, text)
-
-
-# helpers
-
-
-def send_user_badge_message(webhook: OutgoingWebhook, text: str) -> None:
     call_webhook(webhook, text)

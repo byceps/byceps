@@ -21,7 +21,7 @@ def announce_snippet_created(
     """Announce that a snippet has been created."""
     text = snippet.assemble_text_for_snippet_created(event)
 
-    send_snippet_message(webhook, text)
+    call_webhook(webhook, text)
 
 
 def announce_snippet_updated(
@@ -30,7 +30,7 @@ def announce_snippet_updated(
     """Announce that a snippet has been updated."""
     text = snippet.assemble_text_for_snippet_updated(event)
 
-    send_snippet_message(webhook, text)
+    call_webhook(webhook, text)
 
 
 def announce_snippet_deleted(
@@ -39,11 +39,4 @@ def announce_snippet_deleted(
     """Announce that a snippet has been deleted."""
     text = snippet.assemble_text_for_snippet_deleted(event)
 
-    send_snippet_message(webhook, text)
-
-
-# helpers
-
-
-def send_snippet_message(webhook: OutgoingWebhook, text: str) -> None:
     call_webhook(webhook, text)

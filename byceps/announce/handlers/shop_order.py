@@ -21,14 +21,14 @@ def announce_order_placed(
     """Announce that an order has been placed."""
     text = shop_order.assemble_text_for_order_placed(event)
 
-    send_shop_message(webhook, text)
+    call_webhook(webhook, text)
 
 
 def announce_order_paid(event: ShopOrderPaid, webhook: OutgoingWebhook) -> None:
     """Announce that an order has been paid."""
     text = shop_order.assemble_text_for_order_paid(event)
 
-    send_shop_message(webhook, text)
+    call_webhook(webhook, text)
 
 
 def announce_order_canceled(
@@ -37,11 +37,4 @@ def announce_order_canceled(
     """Announce that an order has been canceled."""
     text = shop_order.assemble_text_for_order_canceled(event)
 
-    send_shop_message(webhook, text)
-
-
-# helpers
-
-
-def send_shop_message(webhook: OutgoingWebhook, text: str) -> None:
     call_webhook(webhook, text)

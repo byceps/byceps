@@ -39,14 +39,7 @@ def announce_news_item_published(
 
     if event.published_at > event.occurred_at:
         # Schedule job to announce later.
-        enqueue_at(event.published_at, send_news_message, webhook, text)
+        enqueue_at(event.published_at, call_webhook, webhook, text)
     else:
         # Announce now.
-        send_news_message(webhook, text)
-
-
-# helpers
-
-
-def send_news_message(webhook: OutgoingWebhook, text: str) -> None:
-    call_webhook(webhook, text)
+        call_webhook(webhook, text)
