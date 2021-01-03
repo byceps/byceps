@@ -21,5 +21,5 @@ if __name__ == '__main__':
         with connection():
             queues = [get_queue(app)]
 
-            worker = Worker(queues)
+            worker = Worker(queues, name='BYCEPS worker')
             worker.work()
