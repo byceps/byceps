@@ -9,6 +9,7 @@ byceps.blueprints.admin.news.forms
 import re
 
 from wtforms import FileField, StringField, TextAreaField
+from wtforms.fields.html5 import DateField, TimeField
 from wtforms.validators import InputRequired, Length, Optional, Regexp
 
 from ....util.l10n import LocalizedForm
@@ -45,3 +46,8 @@ class ItemCreateForm(LocalizedForm):
 
 class ItemUpdateForm(ItemCreateForm):
     pass
+
+
+class ItemPublishLaterForm(LocalizedForm):
+    publish_on = DateField('Datum', [InputRequired()])
+    publish_at = TimeField('Uhrzeit', [InputRequired()])

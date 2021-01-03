@@ -82,13 +82,38 @@ def test_update_form(news_admin_client, item):
     assert response.status_code == 200
 
 
-def test_publish(news_admin_client, item):
+def test_publish_later_form(news_admin_client, item):
+    url = f'/admin/news/items/{item.id}/publish_later'
+    response = news_admin_client.get(url)
+    assert response.status_code == 200
+
+
+def test_publish_later(news_admin_client, item):
     item_before = item_service.find_item(item.id)
     assert item_before.published_at is None
     assert not item_before.published
 
-    url = f'/admin/news/items/{item.id}/publish'
+    url = f'/admin/news/items/{item.id}/publish_later'
+    form_data = {
+        'publish_on': '2021-01-23',
+        'publish_at': '23:42',
+    }
+    response = news_admin_client.post(url, data=form_data)
+    assert response.status_code == 302
+
+    item_after = item_service.find_item(item.id)
+    assert item_after.published_at is not None
+    assert item_after.published
+
+
+def test_publish_now(news_admin_client, item):
+    item_before = item_service.find_item(item.id)
+    assert item_before.published_at is None
+    assert not item_before.published
+
+    url = f'/admin/news/items/{item.id}/publish_now'
     response = news_admin_client.post(url)
+    assert response.status_code == 204
 
     item_after = item_service.find_item(item.id)
     assert item_after.published_at is not None

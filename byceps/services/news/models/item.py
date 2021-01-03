@@ -37,7 +37,11 @@ class ItemQuery(BaseQuery):
         )
 
     def published(self) -> BaseQuery:
-        """Return items that have been published."""
+        """Return items that have been published and are public at this time.
+
+        This excludes items that have been pre-published for a time that
+        is still in the future.
+        """
         return self.filter(Item.published_at <= datetime.utcnow())
 
     def with_current_version(self) -> BaseQuery:

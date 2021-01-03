@@ -1,0 +1,28 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'news_admin' %}
+{% set current_page_brand = item.brand %}
+{% set title = 'News später veröffentlichen' %}
+
+{% block body %}
+
+  <nav class="breadcrumbs">
+    <ol>
+      <li>News</li>
+      <li>Kanal <a href="{{ url_for('.channel_view', channel_id=item.channel.id) }}">{{ item.channel.id }}</a></li>
+      <li>Newspost <a href="{{ url_for('.item_view', item_id=item.id) }}">{{ item.title }}</a></li>
+    </ol>
+  </nav>
+  <h1>{{ render_icon('published') }} {{ title }}</h1>
+
+  <form action="{{ url_for('.item_publish_later', item_id=item.id) }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.publish_on, autofocus='autofocus') }}
+      {{ form_field(form.publish_at, autofocus='autofocus') }}
+    {% endcall %}
+
+    {{ form_buttons('Veröffentlichen', cancel_url=url_for('.item_view', item_id=item.id)) }}
+  </form>
+
+{%- endblock %}

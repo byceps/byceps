@@ -6,7 +6,7 @@ byceps.blueprints.admin.news.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import date
+from datetime import date, datetime
 
 from flask import abort, g, request
 
@@ -25,6 +25,7 @@ from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.iterables import pairwise
+from ....util.templatefilters import local_tz_to_utc
 from ....util.views import permission_required, redirect_to, respond_no_content
 
 from ...common.authorization.registry import permission_registry
@@ -35,6 +36,7 @@ from .forms import (
     ImageCreateForm,
     ImageUpdateForm,
     ItemCreateForm,
+    ItemPublishLaterForm,
     ItemUpdateForm,
 )
 
@@ -436,11 +438,51 @@ def item_update(item_id):
     return redirect_to('.item_view', item_id=item.id)
 
 
-@blueprint.route('/items/<uuid:item_id>/publish', methods=['POST'])
+@blueprint.route('/items/<uuid:item_id>/publish_later')
+@permission_required(NewsItemPermission.publish)
+@templated
+def item_publish_later_form(item_id, erroneous_form=None):
+    """Show form to publish a news item at a time in the future."""
+    item = _get_item_or_404(item_id)
+
+    form = erroneous_form if erroneous_form else ItemPublishLaterForm()
+
+    return {
+        'item': item,
+        'form': form,
+    }
+
+
+@blueprint.route('/items/<uuid:item_id>/publish_later', methods=['POST'])
+@permission_required(NewsItemPermission.publish)
+def item_publish_later(item_id):
+    """Publish a news item at a time in the future."""
+    item = _get_item_or_404(item_id)
+
+    form = ItemPublishLaterForm(request.form)
+    if not form.validate():
+        return item_publish_later_form(item.id, form)
+
+    publish_at = local_tz_to_utc(
+        datetime.combine(form.publish_on.data, form.publish_at.data)
+    )
+
+    event = news_item_service.publish_item(
+        item.id, publish_at=publish_at, initiator_id=g.current_user.id
+    )
+
+    news_signals.item_published.send(None, event=event)
+
+    flash_success(f'Die News "{item.title}" wird später veröffentlicht.')
+
+    return redirect_to('.item_view', item_id=item.id)
+
+
+@blueprint.route('/items/<uuid:item_id>/publish_now', methods=['POST'])
 @permission_required(NewsItemPermission.publish)
 @respond_no_content
-def item_publish(item_id):
-    """Publish a news item."""
+def item_publish_now(item_id):
+    """Publish a news item now."""
     item = _get_item_or_404(item_id)
 
     event = news_item_service.publish_item(

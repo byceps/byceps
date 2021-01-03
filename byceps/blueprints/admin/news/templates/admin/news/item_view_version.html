@@ -49,7 +49,8 @@
         <ol class="dropdown-menu dropdown-menu--right">
           <li><a class="dropdown-item" href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} Bild hinzufügen</a></li>
           {%- if not item.published and g.current_user.has_permission(NewsItemPermission.publish) %}
-          <li><a class="dropdown-item" data-action="item-publish" href="{{ url_for('.item_publish', item_id=item.id) }}">{{ render_icon('published') }} News veröffentlichen</a></li>
+          <li><a class="dropdown-item" data-action="item-publish-now" href="{{ url_for('.item_publish_now', item_id=item.id) }}">{{ render_icon('published') }} News jetzt veröffentlichen</a></li>
+          <li><a class="dropdown-item" href="{{ url_for('.item_publish_later_form', item_id=item.id) }}">{{ render_icon('published') }} News später veröffentlichen</a></li>
           {%- endif %}
         </ol>
       </div>
@@ -161,7 +162,7 @@
 {% block scripts %}
 <script>
   onDomReady(function() {
-    confirmed_post_on_click_then_reload('[data-action="item-publish"]', 'Newspost veröffentlichen?');
+    confirmed_post_on_click_then_reload('[data-action="item-publish-now"]', 'Newspost jetzt veröffentlichen?');
   });
 </script>
 {% endblock %}
