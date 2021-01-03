@@ -12,6 +12,7 @@ An asynchronously processed job queue based on Redis_ and RQ_.
 """
 
 from contextlib import contextmanager
+from datetime import datetime, timezone
 from typing import Callable
 
 from flask import current_app
@@ -36,3 +37,17 @@ def enqueue(func: Callable, *args, **kwargs):
     with connection():
         queue = get_queue(current_app)
         queue.enqueue(func, *args, **kwargs)
+
+
+def enqueue_at(dt: datetime, func: Callable, *args, **kwargs):
+    """Add the function call to the queue as a job to be executed at the
+    specific time.
+    """
+    if dt.tzinfo is None:
+        # Set UTC as timezine in naive datetime objects
+        # to prevent rq from assuming local timezone.
+        dt = dt.replace(tzinfo=timezone.utc)
+
+    with connection():
+        queue = get_queue(current_app)
+        queue.enqueue_at(dt, func, *args, **kwargs)
