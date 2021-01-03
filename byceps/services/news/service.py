@@ -108,6 +108,9 @@ def publish_item(
     """Publish a news item."""
     db_item = _get_db_item(item_id)
 
+    if db_item.published:
+        raise ValueError('News item has already been published')
+
     now = datetime.utcnow()
     if publish_at is None:
         publish_at = now
