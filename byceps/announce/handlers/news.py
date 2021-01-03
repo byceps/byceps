@@ -10,6 +10,7 @@ Announce news events.
 
 from ...events.news import NewsItemPublished
 from ...services.webhooks.transfer.models import OutgoingWebhook
+from ...util.jobqueue import enqueue_at
 
 from ..helpers import call_webhook, matches_selectors
 from ..text_assembly import news
@@ -21,7 +22,12 @@ def announce_news_item_published(
     """Announce that a news item has been published."""
     text = news.assemble_text_for_news_item_published(event)
 
-    send_news_message(event, webhook, text)
+    if event.published_at > event.occurred_at:
+        # Schedule job to announce later.
+        enqueue_at(event.published_at, send_news_message, event, webhook, text)
+    else:
+        # Announce now.
+        send_news_message(event, webhook, text)
 
 
 # helpers
