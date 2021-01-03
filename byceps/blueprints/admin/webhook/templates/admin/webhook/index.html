@@ -5,6 +5,16 @@
 {% set title = 'Webhooks' %}
 {% set layout_main_raw = True %}
 
+{% block head %}
+  <style>
+    .two-column {
+      display: grid;
+      gap: 0.5rem 2rem;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+  </style>
+{%- endblock %}
+
 {% block body %}
 
   <h1>{{ title }} {{ render_extra_in_heading(webhooks|length) }}</h1>
@@ -18,9 +28,9 @@
       {{ webhook.description|fallback }}
     </div>
 
-    <div class="row row--space-between">
+    <div class="two-column">
 
-      <div class="column-auto" style="width: 50%;">
+      <div style="overflow-x: auto;">
         <table class="index">
           <tr>
             <th>URL</th>
@@ -41,7 +51,7 @@
         </table>
       </div>
 
-      <div class="column-auto" style="font-size: 0.75rem; width: 50%;">
+      <div style="font-size: 0.75rem;">
         <strong>Selektoren</strong>
         <details>
           <summary>{{ webhook.event_selectors|length }} Event(s)</summary>
@@ -64,7 +74,7 @@
         </details>
       </div>
 
-    </div>{# .row #}
+    </div>{# .two-column #}
 
   </div>{# .box #}
     {%- endfor %}
