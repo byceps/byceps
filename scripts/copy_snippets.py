@@ -53,9 +53,9 @@ def copy_snippet(target_scope, snippet_version):
     snippet_type = snippet_version.snippet.type_
 
     if snippet_type == SnippetType.document:
-        pass#create_document(target_scope, snippet_version)
+        create_document(target_scope, snippet_version)
     elif snippet_type == SnippetType.fragment:
-        pass#create_fragment(target_scope, snippet_version)
+        create_fragment(target_scope, snippet_version)
     else:
         ctx.fail(f"Unknown snippet type '{snippet_type}'.")
 
