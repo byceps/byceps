@@ -25,39 +25,61 @@ def execute(ctx, source_site, target_site, snippet_name):
     source_scope = Scope.for_site(source_site.id)
     target_scope = Scope.for_site(target_site.id)
 
+    snippet_version = get_snippet_version(source_scope, snippet_name)
+
+    copy_snippet(target_scope, snippet_version)
+
+    click.secho('Done.', fg='green')
+
+
+def get_snippet_version(source_scope, snippet_name):
     snippet_version = snippet_service.find_current_version_of_snippet_with_name(
         source_scope, snippet_name
     )
 
     if snippet_version is None:
         raise click.BadParameter(
-            f'Unknown snippet name "{snippet_name}" '
-            f'for site "{source_site.id}".'
+            f'Snippet "{snippet_name}" not found '
+            f'in scope "{scope_as_string(source_scope)}".'
         )
 
-    snippet = snippet_version.snippet
+    return snippet_version
 
-    if snippet.type_ == SnippetType.document:
-        snippet_service.create_document(
-            target_scope,
-            snippet.name,
-            snippet_version.creator_id,
-            snippet_version.title,
-            snippet_version.body,
-            head=snippet_version.head,
-            image_url_path=snippet_version.image_url_path,
-        )
-    elif snippet.type_ == SnippetType.fragment:
-        snippet_service.create_fragment(
-            target_scope,
-            snippet.name,
-            snippet_version.creator_id,
-            snippet_version.body,
-        )
+
+def copy_snippet(target_scope, snippet_version):
+    snippet_type = snippet_version.snippet.type_
+
+    if snippet_type == SnippetType.document:
+        create_document(target_scope, snippet_version)
+    elif snippet_type == SnippetType.fragment:
+        create_fragment(target_scope, snippet_version)
     else:
-        ctx.fail(f"Unknown snippet type '{snippet.type_}'.")
+        ctx.fail(f"Unknown snippet type '{snippet_type}'.")
 
-    click.secho('Done.', fg='green')
+
+def create_document(target_scope, snippet_version):
+    snippet_service.create_document(
+        target_scope,
+        snippet_version.snippet.name,
+        snippet_version.creator_id,
+        snippet_version.title,
+        snippet_version.body,
+        head=snippet_version.head,
+        image_url_path=snippet_version.image_url_path,
+    )
+
+
+def create_fragment(target_scope, snippet_version):
+    snippet_service.create_fragment(
+        target_scope,
+        snippet_version.snippet.name,
+        snippet_version.creator_id,
+        snippet_version.body,
+    )
+
+
+def scope_as_string(scope):
+    return f'{scope.type_}/{scope.name}'
 
 
 if __name__ == '__main__':
