@@ -6,7 +6,7 @@
 {% set title = '%s/%s - Snippets'|format(scope.type_, scope.name) %}
 
 {% block before_body %}
-  {% if scope.type_ == 'site' %}
+  {% if (scope.type_ == 'site') and (site is not none) %}
     {%- from 'macros/admin.html' import render_main_tabs %}
     {%- set current_tab = 'snippets' %}
     {{ render_main_tabs(
