@@ -20,14 +20,17 @@ from _validators import validate_site
 @click.pass_context
 @click.argument('source_site', callback=validate_site)
 @click.argument('target_site', callback=validate_site)
-@click.argument('snippet_name')
-def execute(ctx, source_site, target_site, snippet_name):
+@click.argument('snippet_names', nargs=-1, required=True)
+def execute(ctx, source_site, target_site, snippet_names):
     source_scope = Scope.for_site(source_site.id)
     target_scope = Scope.for_site(target_site.id)
 
-    snippet_version = get_snippet_version(source_scope, snippet_name)
+    snippet_versions = [
+        get_snippet_version(source_scope, name) for name in snippet_names
+    ]
 
-    copy_snippet(target_scope, snippet_version)
+    for snippet_version in snippet_versions:
+        copy_snippet(target_scope, snippet_version)
 
     click.secho('Done.', fg='green')
 
@@ -50,11 +53,17 @@ def copy_snippet(target_scope, snippet_version):
     snippet_type = snippet_version.snippet.type_
 
     if snippet_type == SnippetType.document:
-        create_document(target_scope, snippet_version)
+        pass#create_document(target_scope, snippet_version)
     elif snippet_type == SnippetType.fragment:
-        create_fragment(target_scope, snippet_version)
+        pass#create_fragment(target_scope, snippet_version)
     else:
         ctx.fail(f"Unknown snippet type '{snippet_type}'.")
+
+    click.secho(
+        f'Copied snippet "{snippet_version.snippet.name}" '
+        f'to scope "{scope_as_string(target_scope)}".',
+        fg='green',
+    )
 
 
 def create_document(target_scope, snippet_version):
