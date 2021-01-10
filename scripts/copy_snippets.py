@@ -30,7 +30,7 @@ def execute(ctx, source_site, target_site, snippet_names):
     ]
 
     for snippet_version in snippet_versions:
-        copy_snippet(target_scope, snippet_version)
+        copy_snippet(target_scope, snippet_version, ctx)
 
     click.secho('Done.', fg='green')
 
@@ -49,7 +49,7 @@ def get_snippet_version(source_scope, snippet_name):
     return snippet_version
 
 
-def copy_snippet(target_scope, snippet_version):
+def copy_snippet(target_scope, snippet_version, ctx):
     snippet_type = snippet_version.snippet.type_
 
     if snippet_type == SnippetType.document:
