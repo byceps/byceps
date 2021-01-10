@@ -38,7 +38,7 @@ class PermissionRegistry:
         try:
             return enum[permission_name]
         except KeyError:
-            current_app.logger.warn(
+            current_app.logger.warning(
                 'Ignoring unknown permission name "%s" configured '
                 'in database for "%s" enum (permission ID: "%s").',
                 permission_name,
