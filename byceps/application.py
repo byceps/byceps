@@ -42,6 +42,8 @@ def create_app(
     if sqlalchemy_database_uri:
         app.config['SQLALCHEMY_DATABASE_URI'] = sqlalchemy_database_uri
 
+    config.init_app(app)
+
     # Throw an exception when an undefined name is referenced in a template.
     # NB: Set via `app.jinja_options['undefined'] = ` instead of
     #     `app.jinja_env.undefined = ` as that would create the Jinja
@@ -58,8 +60,6 @@ def create_app(
     redis.init_app(app)
 
     email.init_app(app)
-
-    config.init_app(app)
 
     register_blueprints(app)
 
