@@ -43,7 +43,10 @@ def create_app(
         app.config['SQLALCHEMY_DATABASE_URI'] = sqlalchemy_database_uri
 
     # Throw an exception when an undefined name is referenced in a template.
-    app.jinja_env.undefined = jinja2.StrictUndefined
+    # NB: Set via `app.jinja_options['undefined'] = ` instead of
+    #     `app.jinja_env.undefined = ` as that would create the Jinja
+    #      environment too early.
+    app.jinja_options['undefined'] = jinja2.StrictUndefined
 
     # Set the locale.
     set_locale(app.config['LOCALE'])  # Fail if not configured.
