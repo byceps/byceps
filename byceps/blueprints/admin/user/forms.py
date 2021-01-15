@@ -13,7 +13,7 @@ from ....services.site import service as site_service
 from ....services.user import screen_name_validator
 from ....util.l10n import LocalizedForm
 
-from ...common.user.creation.forms import ScreenNameValidator
+from ...common.user.forms import ScreenNameValidator
 
 
 MINIMUM_PASSWORD_LENGTH = 10

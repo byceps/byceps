@@ -15,7 +15,7 @@ from .....services.authentication.password import service as password_service
 from .....services.user import screen_name_validator, service as user_service
 from .....util.l10n import LocalizedForm
 
-from ..creation.forms import ScreenNameValidator
+from ..forms import ScreenNameValidator
 
 
 class ChangeScreenNameForm(LocalizedForm):

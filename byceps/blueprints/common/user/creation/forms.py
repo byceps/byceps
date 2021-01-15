@@ -10,30 +10,17 @@ import re
 from typing import Set
 
 from wtforms import BooleanField, PasswordField, StringField
-from wtforms.validators import InputRequired, Length, ValidationError
+from wtforms.validators import InputRequired, Length
 
 from .....services.consent.transfer.models import Subject, SubjectID
 from .....services.user import screen_name_validator
 from .....services.user import service as user_service
 from .....util.l10n import LocalizedForm
 
+from ..forms import ScreenNameValidator
+
 
 EMAIL_ADDRESS_PATTERN = re.compile(r'^.+?@.+?\..+?$')
-
-
-class ScreenNameValidator:
-    """Make sure screen name contains only permitted characters.
-
-    However, do *not* check the length; use WTForms' `Length` for that.
-    """
-
-    def __call__(self, form, field):
-        if not screen_name_validator.contains_only_valid_chars(field.data):
-            special_chars_spaced = ' '.join(screen_name_validator.SPECIAL_CHARS)
-            raise ValidationError(
-                'Enthält ungültige Zeichen. Erlaubt sind Buchstaben, '
-                f' Ziffern und diese Sonderzeichen: {special_chars_spaced}'
-            )
 
 
 class UserCreateForm(LocalizedForm):
