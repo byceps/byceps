@@ -10,8 +10,7 @@ from ....services.brand import service as brand_service
 from ....services.party import service as party_service
 from ....services.site import service as site_service
 from ....util.framework.blueprint import create_blueprint
-
-from ...common.authorization.registry import permission_registry
+from ....util.framework.permission_registry import permission_registry
 
 from .authorization import AdminPermission
 

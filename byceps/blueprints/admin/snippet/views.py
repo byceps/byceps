@@ -17,8 +17,9 @@ from ....signals import snippet as snippet_signals
 from ....util.datetime.format import format_datetime_short
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
-from ....util.iterables import pairwise
+from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
+from ....util.iterables import pairwise
 from ....util.views import (
     permission_required,
     redirect_to,
@@ -26,7 +27,6 @@ from ....util.views import (
     respond_no_content_with_location,
 )
 
-from ...common.authorization.registry import permission_registry
 from ...site.snippet.templating import get_snippet_context
 
 from .authorization import SnippetMountpointPermission, SnippetPermission

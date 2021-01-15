@@ -7,8 +7,7 @@ byceps.blueprints.common.authorization.views
 """
 
 from ....util.framework.blueprint import create_blueprint
-
-from .registry import permission_registry
+from ....util.framework.permission_registry import permission_registry
 
 
 blueprint = create_blueprint('authorization', __name__)

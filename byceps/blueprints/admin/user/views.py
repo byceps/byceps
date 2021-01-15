@@ -29,10 +29,9 @@ from ....services.user_badge import awarding_service as badge_awarding_service
 from ....signals import user as user_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
+from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
-
-from ...common.authorization.registry import permission_registry
 
 from ..authorization.authorization import RolePermission
 

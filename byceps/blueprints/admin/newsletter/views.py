@@ -15,10 +15,9 @@ from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List
 from ....services.newsletter.types import SubscriptionState
 from ....util.framework.blueprint import create_blueprint
+from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import jsonified, permission_required, textified
-
-from ...common.authorization.registry import permission_registry
 
 from .authorization import NewsletterPermission
 

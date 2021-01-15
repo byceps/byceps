@@ -14,10 +14,10 @@ from ....services.site import (
     settings_service as site_settings_service,
 )
 from ....util.framework.blueprint import create_blueprint
+from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 
 from ...admin.news.authorization import NewsItemPermission
-from ...common.authorization.registry import permission_registry
 
 
 blueprint = create_blueprint('news', __name__)

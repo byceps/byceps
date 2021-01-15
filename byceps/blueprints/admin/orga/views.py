@@ -18,6 +18,7 @@ from ....services.user import service as user_service
 from ....util.export import serialize_to_csv
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
+from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import (
     permission_required,
@@ -25,8 +26,6 @@ from ....util.views import (
     respond_no_content,
     textified,
 )
-
-from ...common.authorization.registry import permission_registry
 
 from ..orga_team.authorization import OrgaTeamPermission
 

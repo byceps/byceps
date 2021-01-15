@@ -12,10 +12,9 @@ from .....services.party import service as party_service
 from .....services.tourney import category_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
+from .....util.framework.permission_registry import permission_registry
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
-
-from ....common.authorization.registry import permission_registry
 
 from ..authorization import TourneyCategoryPermission
 

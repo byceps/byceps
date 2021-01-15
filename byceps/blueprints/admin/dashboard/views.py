@@ -30,10 +30,9 @@ from ....services.site import service as site_service
 from ....services.ticketing import ticket_service
 from ....services.user import stats_service as user_stats_service
 from ....util.framework.blueprint import create_blueprint
+from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required
-
-from ...common.authorization.registry import permission_registry
 
 from ..user.service import get_users_created_since
 

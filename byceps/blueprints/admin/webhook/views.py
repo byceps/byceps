@@ -8,10 +8,9 @@ byceps.blueprints.admin.webhook.views
 
 from ....services.webhooks import service as webhook_service
 from ....util.framework.blueprint import create_blueprint
+from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required
-
-from ...common.authorization.registry import permission_registry
 
 from .authorization import WebhookPermission
 

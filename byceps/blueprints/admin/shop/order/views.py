@@ -23,10 +23,9 @@ from .....services.user import service as user_service
 from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_notice, flash_success
+from .....util.framework.permission_registry import permission_registry
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
-
-from ....common.authorization.registry import permission_registry
 
 from ..shop.authorization import ShopPermission
 from .authorization import ShopOrderPermission

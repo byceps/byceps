@@ -17,10 +17,9 @@ from .....services.shop.order.email import (
 )
 from .....services.shop.shop import service as shop_service
 from .....util.framework.blueprint import create_blueprint
+from .....util.framework.permission_registry import permission_registry
 from .....util.framework.templating import templated
 from .....util.views import permission_required
-
-from ....common.authorization.registry import permission_registry
 
 from ..shop.authorization import ShopPermission
 

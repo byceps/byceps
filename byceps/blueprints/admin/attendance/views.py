@@ -13,10 +13,9 @@ from ....services.party import service as party_service
 from ....services.ticketing import attendance_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
+from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required
-
-from ...common.authorization.registry import permission_registry
 
 from ..core.authorization import AdminPermission
 
