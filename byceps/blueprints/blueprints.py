@@ -46,7 +46,6 @@ def _get_blueprints_common() -> Iterator[BlueprintReg]:
         ('common.authentication',           '/authentication'           ),
         ('common.authentication.password',  '/authentication/password'  ),
         ('common.core',                     '/core'                     ),
-        ('common.user',                     None                        ),
     ]
 
 
