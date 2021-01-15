@@ -1,6 +1,6 @@
 """
-byceps.blueprints.common.authentication.session
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.util.user_session
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -10,11 +10,11 @@ from typing import Optional
 
 from flask import session
 
-from ....services.authentication.exceptions import AuthenticationFailed
-from ....services.authentication.session import service as session_service
-from ....services.user import service as user_service
-from ....services.user.transfer.models import User
-from ....typing import PartyID, UserID
+from ..services.authentication.exceptions import AuthenticationFailed
+from ..services.authentication.session import service as session_service
+from ..services.user import service as user_service
+from ..services.user.transfer.models import User
+from ..typing import PartyID, UserID
 
 
 KEY_USER_ID = 'user_id'

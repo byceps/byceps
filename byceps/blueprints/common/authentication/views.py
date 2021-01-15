@@ -24,12 +24,13 @@ from ....typing import UserID
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_notice, flash_success
 from ....util.framework.templating import templated
+from ....util import user_session
 from ....util.views import redirect_to, respond_no_content
 
 from ...admin.core.authorization import AdminPermission
 
 from .forms import LoginForm
-from . import service, session as user_session
+from . import service
 
 
 blueprint = create_blueprint('authentication', __name__)

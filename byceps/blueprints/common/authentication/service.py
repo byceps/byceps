@@ -13,10 +13,9 @@ from ....services.authentication.session.models.current_user import CurrentUser
 from ....services.authorization import service as authorization_service
 from ....typing import PartyID, UserID
 from ....util.framework.permission_registry import permission_registry
+from ....util import user_session
 
 from ...admin.core.authorization import AdminPermission
-
-from . import session as user_session
 
 
 def get_permissions_for_user(user_id: UserID) -> Set[Enum]:
