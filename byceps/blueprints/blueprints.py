@@ -45,7 +45,6 @@ def _get_blueprints_common() -> Iterator[BlueprintReg]:
     yield from [
         ('common.authentication',           '/authentication'           ),
         ('common.authentication.password',  '/authentication/password'  ),
-        ('common.authorization',            None                        ),
         ('common.core',                     '/core'                     ),
         ('common.user',                     None                        ),
         ('common.user.avatar',              '/users'                    ),

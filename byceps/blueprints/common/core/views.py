@@ -15,6 +15,7 @@ from .... import config
 from ....services.party import service as party_service
 from ....services.site import service as site_service
 from ....util.framework.blueprint import create_blueprint
+from ....util.framework.permission_registry import permission_registry
 from ....util.navigation import Navigation
 
 from ..authentication import service as authentication_blueprint_service
@@ -35,12 +36,18 @@ def not_found(error):
 
 @blueprint.app_context_processor
 def inject_template_variables():
-    return {
+    context = {
         'datetime': datetime,
         'now': datetime.utcnow(),
         'today': date.today(),
         'Navigation': Navigation,
     }
+
+    # Make permission enums available in templates.
+    for enum in permission_registry.get_enums():
+        context[enum.__name__] = enum
+
+    return context
 
 
 @blueprint.app_template_global()
