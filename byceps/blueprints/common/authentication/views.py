@@ -6,7 +6,7 @@ byceps.blueprints.common.authentication.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, request, url_for
+from flask import abort, g, redirect, request, url_for
 
 from ....config import get_app_mode
 from ....services.authentication.exceptions import AuthenticationFailed
@@ -24,7 +24,7 @@ from ....typing import UserID
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_notice, flash_success
 from ....util.framework.templating import templated
-from ....util.views import respond_no_content
+from ....util.views import redirect_to, respond_no_content
 
 from ...admin.core.authorization import AdminPermission
 
@@ -43,14 +43,17 @@ blueprint = create_blueprint('authentication', __name__)
 @templated
 def login_form():
     """Show login form."""
-    logged_in = g.current_user.is_active
-    if logged_in:
+    in_admin_mode = get_app_mode().is_admin()
+
+    if g.current_user.is_active:
         flash_notice(
             f'Du bist bereits als Benutzer "{g.current_user.screen_name}" '
             'angemeldet.'
         )
-
-    in_admin_mode = get_app_mode().is_admin()
+        if in_admin_mode:
+            return redirect('/')
+        else:
+            return redirect(url_for('dashboard.index'))
 
     if not _is_login_enabled(in_admin_mode):
         return {
@@ -64,7 +67,6 @@ def login_form():
 
     return {
         'login_enabled': True,
-        'logged_in': logged_in,
         'form': form,
         'user_account_creation_enabled': user_account_creation_enabled,
     }
