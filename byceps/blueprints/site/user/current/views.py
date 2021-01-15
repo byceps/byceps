@@ -1,6 +1,6 @@
 """
-byceps.blueprints.common.user.current.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.user.current.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -18,9 +18,6 @@ blueprint = create_blueprint('user_current', __name__)
 @blueprint.route('/me.json')
 def view_as_json():
     """Show selected attributes of the current user's profile as JSON."""
-    if get_app_mode().is_admin():
-        abort(404)
-
     user = g.current_user
 
     if not user.is_active:
