@@ -48,7 +48,6 @@ def _get_blueprints_common() -> Iterator[BlueprintReg]:
         ('common.core',                     '/core'                     ),
         ('common.user',                     None                        ),
         ('common.user.avatar',              '/users'                    ),
-        ('common.user.creation',            '/users'                    ),
         ('common.user.email_address',       '/users/email_address'      ),
         ('common.user.settings',            '/users/me/settings'        ),
     ]
@@ -71,6 +70,7 @@ def _get_blueprints_site() -> Iterator[BlueprintReg]:
         ('site.terms',                      '/terms'                    ),
         ('site.ticketing',                  '/tickets'                  ),
         ('site.tourney',                    '/tourneys'                 ),
+        ('site.user.creation',              '/users'                    ),
         ('site.user.current',               '/users'                    ),
         ('site.user_profile',               '/users'                    ),
         ('site.user_badge',                 '/user_badges'              ),

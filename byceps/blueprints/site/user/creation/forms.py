@@ -1,6 +1,6 @@
 """
-byceps.blueprints.common.user.creation.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.user.creation.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -17,7 +17,7 @@ from .....services.user import screen_name_validator
 from .....services.user import service as user_service
 from .....util.l10n import LocalizedForm
 
-from ..forms import ScreenNameValidator
+from ....common.user.forms import ScreenNameValidator
 
 
 EMAIL_ADDRESS_PATTERN = re.compile(r'^.+?@.+?\..+?$')

@@ -1,6 +1,6 @@
 """
-byceps.blueprints.common.user.creation.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.user.creation.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,7 +11,6 @@ from typing import Optional, Set
 
 from flask import abort, g, request
 
-from .....config import get_app_mode
 from .....services.brand import settings_service as brand_settings_service
 from .....services.consent import subject_service as consent_subject_service
 from .....services.consent.transfer.models import Consent, Subject, SubjectID
@@ -138,17 +137,10 @@ def create():
 
 
 def _abort_if_user_account_creation_disabled():
-    if not _is_user_account_creation_enabled():
+    site = site_service.get_site(g.site_id)
+    if not site.user_account_creation_enabled:
         flash_error('Das Erstellen von Benutzerkonten ist deaktiviert.')
         abort(403)
-
-
-def _is_user_account_creation_enabled():
-    if get_app_mode().is_admin():
-        return False
-
-    site = site_service.get_site(g.site_id)
-    return site.user_account_creation_enabled
 
 
 def _is_real_name_required() -> bool:
