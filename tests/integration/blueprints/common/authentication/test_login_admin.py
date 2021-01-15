@@ -9,8 +9,8 @@ from byceps.services.authentication.password import service as password_service
 
 
 @pytest.fixture
-def client(site_app, site):
-    return site_app.test_client()
+def client(admin_app, site):
+    return admin_app.test_client()
 
 
 def test_login_form(client):
@@ -19,11 +19,12 @@ def test_login_form(client):
     assert response.status_code == 200
 
 
-def test_login_succeeds(client, make_user):
-    screen_name = 'LoginTester'
+def test_login_succeeds(client, make_admin):
+    screen_name = 'AdminLoginTester'
     password = 'correct horse battery staple'
+    permission_ids = {'admin.access'}
 
-    user = make_user(screen_name)
+    user = make_admin(screen_name, permission_ids)
     password_service.create_password_hash(user.id, password)
 
     assert not list(client.cookie_jar)
@@ -35,22 +36,39 @@ def test_login_succeeds(client, make_user):
 
     response = client.post('/authentication/login', data=form_data)
     assert response.status_code == 204
-    # Location (used by JavaScript redirect) should point to user
-    # dashboard (non-admin sites only).
-    assert response.location == 'http://www.acmecon.test/dashboard'
+    assert response.location is None
 
     cookies = list(client.cookie_jar)
     assert len(cookies) == 1
 
     cookie = cookies[0]
-    assert cookie.domain == '.www.acmecon.test'
+    assert cookie.domain == '.admin.acmecon.test'
     assert cookie.name == 'session'
     assert cookie.secure
 
 
+def test_login_fails_lacking_access_permission(client, make_admin):
+    screen_name = 'AdminWithoutAccess'
+    password = 'correct horse battery staple'
+    permission_ids = {}
+
+    user = make_admin(screen_name, permission_ids)
+    password_service.create_password_hash(user.id, password)
+
+    assert not list(client.cookie_jar)
+
+    form_data = {
+        'screen_name': screen_name,
+        'password': password,
+    }
+
+    response = client.post('/authentication/login', data=form_data)
+    assert response.status_code == 403
+
+
 def test_login_fails(client):
     form_data = {
-        'screen_name': 'TotallyUnknownUser',
+        'screen_name': 'TotallyUnknownAdmin',
         'password': 'TotallyWrongPassword',
     }
 
