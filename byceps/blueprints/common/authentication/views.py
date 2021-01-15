@@ -55,20 +55,37 @@ def login_form():
         else:
             return redirect(url_for('dashboard.index'))
 
-    if not _is_login_enabled(in_admin_mode):
+    in_admin_mode = get_app_mode().is_admin()
+    if in_admin_mode:
+        return login_form_admin()
+    else:
+        return login_form_site()
+
+
+@templated
+def login_form_admin():
+    """Show admin login form."""
+    form = LoginForm()
+
+    return {'form': form}
+
+
+@templated
+def login_form_site():
+    """Show site login form."""
+    if not _is_login_enabled(in_admin_mode=False):
         return {
             'login_enabled': False,
         }
 
     form = LoginForm()
-    user_account_creation_enabled = _is_user_account_creation_enabled(
-        in_admin_mode
-    )
+
+    site = _get_site()
 
     return {
         'login_enabled': True,
         'form': form,
-        'user_account_creation_enabled': user_account_creation_enabled,
+        'user_account_creation_enabled': site.user_account_creation_enabled,
     }
 
 
@@ -154,14 +171,6 @@ def logout():
 
 # -------------------------------------------------------------------- #
 # helpers
-
-
-def _is_user_account_creation_enabled(in_admin_mode):
-    if in_admin_mode:
-        return False
-
-    site = _get_site()
-    return site.user_account_creation_enabled
 
 
 def _is_login_enabled(in_admin_mode):

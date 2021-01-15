@@ -1,0 +1,31 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/misc.html' import render_notification %}
+{% set current_page = 'authentication.login' %}
+{% set title = 'Anmelden' %}
+
+
+{% block head %}
+{%- include 'common/authentication/_login_form_css.html' %}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  {%- if login_enabled %}
+{%- include 'common/authentication/_login_form_form.html' %}
+
+    {% if user_account_creation_enabled %}
+  <p>Du hast noch keinen Benutzerzugang? Dann <a href="{{ url_for('user_creation.create_form') }}">registriere dich</a>!</p>
+  <p>Du hast die Bestätigungs-E-Mail noch nicht erhalten? Dann <a href="{{ url_for('user_email_address.request_confirmation_email_form') }}">fordere sie erneut an</a>.</p>
+    {%- endif %}
+  <p>Du hast dein Passwort vergessen? Dann <a href="{{ url_for('authentication.password.request_reset_form') }}">setze ein neues</a>.</p>
+  {%- else %}
+{{ render_notification('Die Anmeldung ist deaktiviert.', category='warning', icon='warning') }}
+  {%- endif %}
+
+{%- endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='behavior/login.js') }}"></script>
+{%- endblock %}

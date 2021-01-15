@@ -1,0 +1,17 @@
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
+{% from 'macros/misc.html' import render_notification %}
+
+
+  <form action="{{ url_for('.login') }}" method="post" id="login-form">
+    {%- call form_fieldset() %}
+      {{ form_field(form.screen_name, maxlength=40, required='required', autofocus='autofocus') }}
+      {{ form_field(form.password, maxlength=40, required='required') }}
+      {{ form_field_checkbox(form.permanent, 'dauerhaft eingeloggt bleiben') }}
+    {%- endcall %}
+
+    <div id="login-failed-notice" class="hidden">
+{{ render_notification('Die Anmeldung ist fehlgeschlagen.', category='danger', icon='warning') }}
+    </div>
+
+    {{ form_buttons('Anmelden') }}
+  </form>

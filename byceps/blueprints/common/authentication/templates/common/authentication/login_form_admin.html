@@ -1,0 +1,23 @@
+{% extends 'layout/admin/base.html' %}
+{% set current_page = 'authentication.login' %}
+{% set title = 'Anmelden' %}
+{% set layout_sidebar_hide = True %}
+
+
+{% block head %}
+{%- include 'common/authentication/_login_form_css.html' %}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+{%- include 'common/authentication/_login_form_form.html' %}
+
+  <p>Passwort vergessen? <a href="{{ url_for('authentication.password.request_reset_form') }}">Neues Passwort setzen</a></p>
+
+{%- endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='behavior/login.js') }}"></script>
+{%- endblock %}
