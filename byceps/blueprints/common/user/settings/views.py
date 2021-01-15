@@ -6,11 +6,15 @@ byceps.blueprints.common.user.settings.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Optional
+
 from flask import abort, g, request
 
 from .....config import get_app_mode
+from .....services.brand import settings_service as brand_settings_service
 from .....services.country import service as country_service
 from .....services.newsletter import service as newsletter_service
+from .....services.newsletter.transfer.models import ListID as NewsletterListID
 from .....services.user import command_service as user_command_service
 from .....services.user import service as user_service
 from .....signals import user as user_signals
@@ -18,8 +22,6 @@ from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
 from .....util.views import login_required, redirect_to
-
-from ..creation.views import _find_newsletter_list_for_brand
 
 from .forms import DetailsForm, ChangeScreenNameForm
 
@@ -156,3 +158,17 @@ def _get_current_user_or_404():
         abort(404)
 
     return user
+
+
+def _find_newsletter_list_for_brand() -> Optional[NewsletterListID]:
+    """Return the newsletter list configured for this brand, or `None`
+    if none is configured.
+    """
+    value = brand_settings_service.find_setting_value(
+        g.brand_id, 'newsletter_list_id'
+    )
+
+    if not value:
+        return None
+
+    return NewsletterListID(value)
