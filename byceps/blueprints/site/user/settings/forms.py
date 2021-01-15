@@ -1,6 +1,6 @@
 """
-byceps.blueprints.common.user.settings.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.user.settings.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -15,7 +15,7 @@ from .....services.authentication.password import service as password_service
 from .....services.user import screen_name_validator, service as user_service
 from .....util.l10n import LocalizedForm
 
-from ..forms import ScreenNameValidator
+from ....common.user.forms import ScreenNameValidator
 
 
 class ChangeScreenNameForm(LocalizedForm):
