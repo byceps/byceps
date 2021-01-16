@@ -17,6 +17,7 @@ from ....services.consent import (
     subject_service as consent_subject_service,
 )
 from ....services.site import service as site_service
+from ....services.site.transfer.models import Site
 from ....services.verification_token import (
     service as verification_token_service,
 )
@@ -152,7 +153,7 @@ def _require_admin_access_permission(user_id: UserID) -> None:
         abort(403)
 
 
-def _is_consent_required(user_id):
+def _is_consent_required(user_id: UserID) -> bool:
     required_subject_ids = consent_subject_service.get_subject_ids_required_for_brand(
         g.brand_id
     )
@@ -174,7 +175,7 @@ def logout():
 # helpers
 
 
-def _is_login_enabled(in_admin_mode):
+def _is_login_enabled(in_admin_mode: bool) -> bool:
     if in_admin_mode:
         return True
 
@@ -182,5 +183,5 @@ def _is_login_enabled(in_admin_mode):
     return site.login_enabled
 
 
-def _get_site():
+def _get_site() -> Site:
     return site_service.get_site(g.site_id)
