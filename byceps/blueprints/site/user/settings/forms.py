@@ -7,8 +7,8 @@ byceps.blueprints.site.user.settings.forms
 """
 
 from flask import g
-from wtforms import DateField, PasswordField, StringField
-from wtforms.fields.html5 import TelField
+from wtforms import PasswordField, StringField
+from wtforms.fields.html5 import DateField, TelField
 from wtforms.validators import InputRequired, Length, Optional
 
 from .....services.authentication.password import service as password_service
@@ -47,9 +47,7 @@ class ChangeScreenNameForm(LocalizedForm):
 class DetailsForm(LocalizedForm):
     first_names = StringField('Vorname(n)', [InputRequired(), Length(min=2)])
     last_name = StringField('Nachname', [InputRequired(), Length(min=2, max=80)])
-    date_of_birth = DateField('Geburtsdatum',
-                              [Optional()],
-                              format='%d.%m.%Y')
+    date_of_birth = DateField('Geburtsdatum', [Optional()])
     country = StringField('Land', [Optional(), Length(max=60)])
     zip_code = StringField('PLZ', [Optional()])
     city = StringField('Stadt', [Optional()])

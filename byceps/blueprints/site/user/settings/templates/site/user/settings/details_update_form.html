@@ -13,7 +13,7 @@
     {%- call form_fieldset() %}
       {{ form_field(form.first_names, maxlength=40, autofocus='autofocus') }}
       {{ form_field(form.last_name, maxlength=80) }}
-      {{ form_field(form.date_of_birth, size=10, maxlength=10, note='Format: <tt>TT.MM.JJJJ</tt> (T = Tag, M = Monat, J = Jahr)'|safe) }}
+      {{ form_field(form.date_of_birth, size=10) }}
       {{ form_field(form.street, maxlength=40) }}
       {{ form_field(form.zip_code, size=5, maxlength=5) }}
       {{ form_field(form.city, maxlength=40) }}
