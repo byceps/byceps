@@ -1,20 +1,44 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
+{% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'authentication.login' %}
 {% set title = 'Anmelden' %}
 {% set layout_sidebar_hide = True %}
 
 
 {% block head %}
-{%- include 'common/authentication/login/_login_form_css.html' %}
+  <style>
+    #login-failed-notice {
+      max-height: 4rem;
+      margin-top: 1rem;
+      overflow-y: hidden;
+      transition: max-height 1s ease-out;
+    }
+
+    #login-failed-notice.hidden {
+      max-height: 0;
+      transition: max-height 0s;
+    }
+  </style>
 {%- endblock %}
 
 {% block body %}
 
   <h1>{{ title }}</h1>
 
-  {%- with login_url = url_for('.login_admin') %}
-{%- include 'common/authentication/login/_login_form_form.html' %}
-  {%- endwith %}
+  <form action="{{ url_for('.login_admin') }}" method="post" id="login-form">
+    {%- call form_fieldset() %}
+      {{ form_field(form.screen_name, maxlength=40, required='required', autofocus='autofocus') }}
+      {{ form_field(form.password, maxlength=40, required='required') }}
+      {{ form_field_checkbox(form.permanent, 'dauerhaft eingeloggt bleiben') }}
+    {%- endcall %}
+
+    <div id="login-failed-notice" class="hidden">
+{{ render_notification('Die Anmeldung ist fehlgeschlagen.', category='danger', icon='warning') }}
+    </div>
+
+    {{ form_buttons('Anmelden') }}
+  </form>
 
   <p>Passwort vergessen? <a href="{{ url_for('authentication.password.request_reset_form') }}">Neues Passwort setzen</a></p>
 
