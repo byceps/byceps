@@ -22,6 +22,7 @@ from .....services.verification_token import (
     service as verification_token_service,
 )
 from .....typing import UserID
+from .....util.authorization import get_permissions_for_user
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_notice, flash_success
 from .....util.framework.templating import templated
@@ -124,7 +125,7 @@ def login_admin():
 
 
 def _require_admin_access_permission(user_id: UserID) -> None:
-    permissions = service.get_permissions_for_user(user_id)
+    permissions = get_permissions_for_user(user_id)
     if AdminPermission.access not in permissions:
         # The user lacks the admin access permission which is required
         # to enter the admin area.

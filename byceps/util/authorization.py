@@ -7,9 +7,12 @@ byceps.util.authorization
 """
 
 from enum import Enum
-from typing import List
+from typing import List, Set
 
 from flask import current_app
+
+from ..services.authorization import service as authorization_service
+from ..typing import UserID
 
 
 def create_permission_enum(key: str, member_names: List[str]) -> Enum:
@@ -34,6 +37,12 @@ def _derive_enum_name(key: str) -> str:
 def register_permission_enum(enum: Enum):
     """Register permission enum."""
     permission_registry.register_enum(enum)
+
+
+def get_permissions_for_user(user_id: UserID) -> Set[Enum]:
+    """Return the permissions this user has been granted."""
+    permission_ids = authorization_service.get_permission_ids_for_user(user_id)
+    return permission_registry.get_enum_members(permission_ids)
 
 
 class PermissionRegistry:
