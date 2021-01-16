@@ -14,8 +14,8 @@ from flask import g, render_template, url_for
 from .... import config
 from ....services.party import service as party_service
 from ....services.site import service as site_service
+from ....util.authorization import permission_registry
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.permission_registry import permission_registry
 from ....util.navigation import Navigation
 
 from ..authentication.login import service as authentication_blueprint_service

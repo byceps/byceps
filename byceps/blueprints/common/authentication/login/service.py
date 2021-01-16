@@ -12,7 +12,7 @@ from typing import Optional, Set
 from .....services.authentication.session.models.current_user import CurrentUser
 from .....services.authorization import service as authorization_service
 from .....typing import PartyID, UserID
-from .....util.framework.permission_registry import permission_registry
+from .....util.authorization import permission_registry
 from .....util import user_session
 
 from ....admin.core.authorization import AdminPermission

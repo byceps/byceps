@@ -7,8 +7,7 @@ from flask import Flask
 
 import pytest
 
-from byceps.util.authorization import create_permission_enum
-from byceps.util.framework.permission_registry import PermissionRegistry
+from byceps.util.authorization import create_permission_enum, PermissionRegistry
 
 
 ItemPermission = create_permission_enum('item', ['view', 'create', 'update'])
