@@ -86,7 +86,7 @@ def consent(token):
     flash_success(
         'Vielen Dank für deine Zustimmung. Bitte melde dich erneut an.'
     )
-    return redirect_to('authentication.login_form')
+    return redirect_to('authentication.login.login_form')
 
 
 def _get_unconsented_subjects_for_user(user_id):

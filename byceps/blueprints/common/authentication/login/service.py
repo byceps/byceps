@@ -1,6 +1,6 @@
 """
-byceps.blueprints.common.authentication.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.authentication.login.service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -9,13 +9,13 @@ byceps.blueprints.common.authentication.service
 from enum import Enum
 from typing import Optional, Set
 
-from ....services.authentication.session.models.current_user import CurrentUser
-from ....services.authorization import service as authorization_service
-from ....typing import PartyID, UserID
-from ....util.framework.permission_registry import permission_registry
-from ....util import user_session
+from .....services.authentication.session.models.current_user import CurrentUser
+from .....services.authorization import service as authorization_service
+from .....typing import PartyID, UserID
+from .....util.framework.permission_registry import permission_registry
+from .....util import user_session
 
-from ...admin.core.authorization import AdminPermission
+from ....admin.core.authorization import AdminPermission
 
 
 def get_permissions_for_user(user_id: UserID) -> Set[Enum]:

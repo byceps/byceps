@@ -111,4 +111,4 @@ def confirm(token):
 
     user_signals.email_address_confirmed.send(None, event=event)
 
-    return redirect_to('authentication.login_form')
+    return redirect_to('authentication.login.login_form')

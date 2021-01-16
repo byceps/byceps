@@ -1,6 +1,6 @@
 """
-byceps.blueprints.common.authentication.forms
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.authentication.login.forms
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -9,7 +9,7 @@ byceps.blueprints.common.authentication.forms
 from wtforms import BooleanField, PasswordField, StringField
 from wtforms.validators import InputRequired
 
-from ....util.l10n import LocalizedForm
+from .....util.l10n import LocalizedForm
 
 
 class LoginForm(LocalizedForm):

@@ -60,7 +60,7 @@
 
   {%- if not current_user_may_reply_generally %}
   <small>
-    <p style="text-align: right;">Du musst <a href="{{ url_for('authentication.login_form') }}">angemeldet</a> sein, um antworten zu können.</p>
+    <p style="text-align: right;">Du musst <a href="{{ url_for('authentication.login.login_form') }}">angemeldet</a> sein, um antworten zu können.</p>
   </small>
   {%- elif topic.locked or (topic.posting_limited_to_moderators and not g.current_user.has_permission(BoardPermission.announce)) %}
   <div class="button-row button-row--right">

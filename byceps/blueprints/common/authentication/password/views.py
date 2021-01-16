@@ -64,7 +64,7 @@ def update():
     password_service.update_password_hash(user.id, password, user.id)
 
     flash_success('Dein Passwort wurde geändert. Bitte melde dich erneut an.')
-    return redirect_to('authentication.login_form')
+    return redirect_to('authentication.login.login_form')
 
 
 # -------------------------------------------------------------------- #
@@ -164,7 +164,7 @@ def reset(token):
     password_reset_service.reset_password(verification_token, password)
 
     flash_success('Das Passwort wurde geändert.')
-    return redirect_to('authentication.login_form')
+    return redirect_to('authentication.login.login_form')
 
 
 def _verify_reset_token(token: str) -> VerificationToken:

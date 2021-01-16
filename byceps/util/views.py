@@ -30,7 +30,7 @@ def login_required(func):
     def wrapper(*args, **kwargs):
         if not g.current_user.is_active:
             flash_notice('Bitte melde dich an.')
-            return redirect_to('authentication.login_form')
+            return redirect_to('authentication.login.login_form')
         return func(*args, **kwargs)
 
     return wrapper

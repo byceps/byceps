@@ -18,7 +18,7 @@ from ....util.framework.blueprint import create_blueprint
 from ....util.framework.permission_registry import permission_registry
 from ....util.navigation import Navigation
 
-from ..authentication import service as authentication_blueprint_service
+from ..authentication.login import service as authentication_blueprint_service
 
 
 blueprint = create_blueprint('core', __name__)

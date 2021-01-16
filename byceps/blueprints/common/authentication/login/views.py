@@ -1,6 +1,6 @@
 """
-byceps.blueprints.common.authentication.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.common.authentication.login.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -8,33 +8,33 @@ byceps.blueprints.common.authentication.views
 
 from flask import abort, g, redirect, request, url_for
 
-from ....config import get_app_mode
-from ....services.authentication.exceptions import AuthenticationFailed
-from ....services.authentication import service as authentication_service
-from ....services.authentication.session import service as session_service
-from ....services.consent import (
+from .....config import get_app_mode
+from .....services.authentication.exceptions import AuthenticationFailed
+from .....services.authentication import service as authentication_service
+from .....services.authentication.session import service as session_service
+from .....services.consent import (
     consent_service,
     subject_service as consent_subject_service,
 )
-from ....services.site import service as site_service
-from ....services.site.transfer.models import Site
-from ....services.verification_token import (
+from .....services.site import service as site_service
+from .....services.site.transfer.models import Site
+from .....services.verification_token import (
     service as verification_token_service,
 )
-from ....typing import UserID
-from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_notice, flash_success
-from ....util.framework.templating import templated
-from ....util import user_session
-from ....util.views import redirect_to, respond_no_content
+from .....typing import UserID
+from .....util.framework.blueprint import create_blueprint
+from .....util.framework.flash import flash_notice, flash_success
+from .....util.framework.templating import templated
+from .....util import user_session
+from .....util.views import redirect_to, respond_no_content
 
-from ...admin.core.authorization import AdminPermission
+from ....admin.core.authorization import AdminPermission
 
 from .forms import LoginForm
 from . import service
 
 
-blueprint = create_blueprint('authentication', __name__)
+blueprint = create_blueprint('authentication.login', __name__)
 
 
 # -------------------------------------------------------------------- #

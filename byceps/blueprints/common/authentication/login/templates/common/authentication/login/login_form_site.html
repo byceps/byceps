@@ -5,7 +5,7 @@
 
 
 {% block head %}
-{%- include 'common/authentication/_login_form_css.html' %}
+{%- include 'common/authentication/login/_login_form_css.html' %}
 {%- endblock %}
 
 {% block body %}
@@ -14,7 +14,7 @@
 
   {%- if login_enabled %}
     {%- with login_url = url_for('.login_site') %}
-{%- include 'common/authentication/_login_form_form.html' %}
+{%- include 'common/authentication/login/_login_form_form.html' %}
     {%- endwith %}
 
     {% if user_account_creation_enabled %}
