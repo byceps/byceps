@@ -43,7 +43,6 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
 
 def _get_blueprints_common() -> Iterator[BlueprintReg]:
     yield from [
-        ('common.authentication.login',     '/authentication'           ),
         ('common.authentication.password',  '/authentication/password'  ),
         ('common.core',                     '/core'                     ),
     ]
@@ -52,6 +51,7 @@ def _get_blueprints_common() -> Iterator[BlueprintReg]:
 def _get_blueprints_site() -> Iterator[BlueprintReg]:
     yield from [
         ('site.attendance',                 '/attendance'               ),
+        ('site.authentication.login',       '/authentication'           ),
         ('site.board',                      '/board'                    ),
         ('site.consent',                    '/consent'                  ),
         ('site.dashboard',                  '/dashboard'                ),
@@ -81,6 +81,7 @@ def _get_blueprints_site() -> Iterator[BlueprintReg]:
 def _get_blueprints_admin() -> Iterator[BlueprintReg]:
     yield from [
         ('admin.attendance',                '/admin/attendance'         ),
+        ('admin.authentication.login',      '/authentication'           ),
         ('admin.authorization',             '/admin/authorization'      ),
         ('admin.board',                     '/admin/boards'             ),
         ('admin.brand',                     '/admin/brands'             ),

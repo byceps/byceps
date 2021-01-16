@@ -1,14 +1,13 @@
 """
-byceps.blueprints.common.authentication.login.views
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.site.authentication.login.views
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, redirect, request, url_for
+from flask import abort, g, request, url_for
 
-from .....config import get_app_mode
 from .....services.authentication.exceptions import AuthenticationFailed
 from .....services.authentication import service as authentication_service
 from .....services.authentication.session import service as session_service
@@ -22,14 +21,11 @@ from .....services.verification_token import (
     service as verification_token_service,
 )
 from .....typing import UserID
-from .....util.authorization import get_permissions_for_user
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_notice, flash_success
 from .....util.framework.templating import templated
 from .....util import user_session
 from .....util.views import redirect_to, respond_no_content
-
-from ....admin.core.authorization import AdminPermission
 
 from .forms import LoginForm
 
@@ -45,36 +41,13 @@ blueprint = create_blueprint('authentication.login', __name__)
 @templated
 def login_form():
     """Show login form."""
-    in_admin_mode = get_app_mode().is_admin()
-
     if g.current_user.is_active:
         flash_notice(
             f'Du bist bereits als Benutzer "{g.current_user.screen_name}" '
             'angemeldet.'
         )
-        if in_admin_mode:
-            return redirect('/')
-        else:
-            return redirect(url_for('dashboard.index'))
+        return redirect_to('dashboard.index')
 
-    in_admin_mode = get_app_mode().is_admin()
-    if in_admin_mode:
-        return login_form_admin()
-    else:
-        return login_form_site()
-
-
-@templated
-def login_form_admin():
-    """Show admin login form."""
-    form = LoginForm()
-
-    return {'form': form}
-
-
-@templated
-def login_form_site():
-    """Show site login form."""
     if not _is_site_login_enabled():
         return {
             'login_enabled': False,
@@ -91,53 +64,10 @@ def login_form_site():
     }
 
 
-@blueprint.route('/login_admin', methods=['POST'])
-@respond_no_content
-def login_admin():
-    """Allow the user to authenticate with e-mail address and password."""
-    if not get_app_mode().is_admin():
-        abort(404)
-
-    if g.current_user.is_active:
-        return
-
-    form = LoginForm(request.form)
-
-    screen_name = form.screen_name.data.strip()
-    password = form.password.data
-    permanent = form.permanent.data
-    if not all([screen_name, password]):
-        abort(403)
-
-    try:
-        user = authentication_service.authenticate(screen_name, password)
-    except AuthenticationFailed:
-        abort(403)
-
-    _require_admin_access_permission(user.id)
-
-    # Authorization succeeded.
-
-    auth_token = session_service.log_in_user(user.id, request.remote_addr)
-    user_session.start(user.id, auth_token, permanent=permanent)
-    flash_success(f'Erfolgreich eingeloggt als {user.screen_name}.')
-
-
-def _require_admin_access_permission(user_id: UserID) -> None:
-    permissions = get_permissions_for_user(user_id)
-    if AdminPermission.access not in permissions:
-        # The user lacks the admin access permission which is required
-        # to enter the admin area.
-        abort(403)
-
-
 @blueprint.route('/login', methods=['POST'])
 @respond_no_content
-def login_site():
+def login():
     """Allow the user to authenticate with e-mail address and password."""
-    if not get_app_mode().is_site():
-        abort(404)
-
     if g.current_user.is_active:
         return
 
@@ -195,7 +125,6 @@ def logout():
     flash_success('Erfolgreich ausgeloggt.')
 
 
-# -------------------------------------------------------------------- #
 # helpers
 
 

@@ -64,7 +64,11 @@ def update():
     password_service.update_password_hash(user.id, password, user.id)
 
     flash_success('Dein Passwort wurde geändert. Bitte melde dich erneut an.')
-    return redirect_to('authentication.login.login_form')
+
+    if get_app_mode().is_admin():
+        return redirect_to('authentication.login_admin.login_form')
+    else:
+        return redirect_to('authentication.login.login_form')
 
 
 # -------------------------------------------------------------------- #
