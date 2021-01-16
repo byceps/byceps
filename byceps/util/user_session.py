@@ -39,20 +39,10 @@ def end() -> None:
 
 def get_user(*, party_id: Optional[PartyID] = None) -> Optional[User]:
     """Return the current user if authenticated, `None` if not."""
-    user_id = _get_user_id()
-    auth_token = _get_auth_token()
+    user_id = session.get(KEY_USER_ID)
+    auth_token = session.get(KEY_USER_AUTH_TOKEN)
 
     return _load_user(user_id, auth_token, party_id=party_id)
-
-
-def _get_user_id() -> Optional[str]:
-    """Return the current user's ID, or `None` if not available."""
-    return session.get(KEY_USER_ID)
-
-
-def _get_auth_token() -> Optional[str]:
-    """Return the current user's auth token, or `None` if not available."""
-    return session.get(KEY_USER_AUTH_TOKEN)
 
 
 def _load_user(
