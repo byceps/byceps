@@ -7,8 +7,8 @@ byceps.blueprints.admin.webhook.views
 """
 
 from ....services.webhooks import service as webhook_service
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required
 
@@ -18,7 +18,7 @@ from .authorization import WebhookPermission
 blueprint = create_blueprint('webhook_admin', __name__)
 
 
-permission_registry.register_enum(WebhookPermission)
+register_permission_enum(WebhookPermission)
 
 
 @blueprint.route('/')

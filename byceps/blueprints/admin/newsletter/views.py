@@ -14,8 +14,8 @@ from flask import abort
 from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List
 from ....services.newsletter.types import SubscriptionState
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import jsonified, permission_required, textified
 
@@ -25,7 +25,7 @@ from .authorization import NewsletterPermission
 blueprint = create_blueprint('newsletter_admin', __name__)
 
 
-permission_registry.register_enum(NewsletterPermission)
+register_permission_enum(NewsletterPermission)
 
 
 @dataclass(frozen=True)

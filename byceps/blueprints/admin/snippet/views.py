@@ -14,10 +14,10 @@ from ....services.snippet import mountpoint_service, service as snippet_service
 from ....services.snippet.transfer.models import Scope
 from ....services.text_diff import service as text_diff_service
 from ....signals import snippet as snippet_signals
+from ....util.authorization import register_permission_enum
 from ....util.datetime.format import format_datetime_short
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.iterables import pairwise
 from ....util.views import (
@@ -41,8 +41,8 @@ from .forms import (
 blueprint = create_blueprint('snippet_admin', __name__)
 
 
-permission_registry.register_enum(SnippetMountpointPermission)
-permission_registry.register_enum(SnippetPermission)
+register_permission_enum(SnippetMountpointPermission)
+register_permission_enum(SnippetPermission)
 
 
 @blueprint.route('/for_scope/<scope_type>/<scope_name>')

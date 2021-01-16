@@ -23,9 +23,9 @@ from ....services.site import (
     settings_service as site_settings_service,
 )
 from ....services.site.transfer.models import Site, SiteWithBrand
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to
 
@@ -36,7 +36,7 @@ from .forms import CreateForm, UpdateForm
 blueprint = create_blueprint('site_admin', __name__)
 
 
-permission_registry.register_enum(SitePermission)
+register_permission_enum(SitePermission)
 
 
 @blueprint.route('/')

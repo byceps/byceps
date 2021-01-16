@@ -9,10 +9,12 @@ byceps.util.authorization
 from enum import Enum
 from typing import List
 
+from .framework.permission_registry import permission_registry
+
 
 def create_permission_enum(key: str, member_names: List[str]) -> Enum:
     """Create a permission enum."""
-    name = derive_name(key)
+    name = _derive_enum_name(key)
 
     permission_enum = Enum(name, list(member_names))
     permission_enum.__key__ = key
@@ -21,9 +23,14 @@ def create_permission_enum(key: str, member_names: List[str]) -> Enum:
     return permission_enum
 
 
-def derive_name(key: str) -> str:
+def _derive_enum_name(key: str) -> str:
     """Derive a `CamelCase` name from the `underscore_separated_key`."""
     words = key.split('_')
     words.append('permission')
 
     return ''.join(word.title() for word in words)
+
+
+def register_permission_enum(enum: Enum):
+    """Register permission enum."""
+    permission_registry.register_enum(enum)

@@ -15,9 +15,9 @@ from ....services.brand import (
 from ....services.email import service as email_service
 from ....services.orga import service as orga_service
 from ....services.party import service as party_service
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to
 
@@ -28,7 +28,7 @@ from .forms import CreateForm, EmailConfigUpdateForm, UpdateForm
 blueprint = create_blueprint('brand_admin', __name__)
 
 
-permission_registry.register_enum(BrandPermission)
+register_permission_enum(BrandPermission)
 
 
 @blueprint.route('/')

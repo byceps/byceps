@@ -20,10 +20,10 @@ from ....services.news.transfer.models import Channel
 from ....services.text_diff import service as text_diff_service
 from ....services.user.service import UserIdRejected
 from ....signals import news as news_signals
+from ....util.authorization import register_permission_enum
 from ....util.datetime.format import format_datetime_short
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.iterables import pairwise
 from ....util.templatefilters import local_tz_to_utc
@@ -43,8 +43,8 @@ from .forms import (
 blueprint = create_blueprint('news_admin', __name__)
 
 
-permission_registry.register_enum(NewsChannelPermission)
-permission_registry.register_enum(NewsItemPermission)
+register_permission_enum(NewsChannelPermission)
+register_permission_enum(NewsItemPermission)
 
 
 # -------------------------------------------------------------------- #

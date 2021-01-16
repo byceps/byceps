@@ -29,8 +29,8 @@ from ....services.shop.shop import service as shop_service
 from ....services.site import service as site_service
 from ....services.ticketing import ticket_service
 from ....services.user import stats_service as user_stats_service
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required
 
@@ -42,7 +42,7 @@ from .authorization import AdminDashboardPermission
 blueprint = create_blueprint('admin_dashboard', __name__)
 
 
-permission_registry.register_enum(AdminDashboardPermission)
+register_permission_enum(AdminDashboardPermission)
 
 
 @blueprint.route('')

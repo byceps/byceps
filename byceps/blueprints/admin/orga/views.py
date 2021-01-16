@@ -16,9 +16,9 @@ from ....services.orga import service as orga_service
 from ....services.orga.transfer.models import Birthday
 from ....services.user import service as user_service
 from ....util.export import serialize_to_csv
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import (
     permission_required,
@@ -36,9 +36,9 @@ from .forms import OrgaFlagCreateForm
 blueprint = create_blueprint('orga_admin', __name__)
 
 
-permission_registry.register_enum(OrgaBirthdayPermission)
-permission_registry.register_enum(OrgaDetailPermission)
-permission_registry.register_enum(OrgaTeamPermission)
+register_permission_enum(OrgaBirthdayPermission)
+register_permission_enum(OrgaDetailPermission)
+register_permission_enum(OrgaTeamPermission)
 
 
 @blueprint.route('/persons/<brand_id>')

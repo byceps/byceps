@@ -13,8 +13,8 @@ from ....services.site import (
     service as site_service,
     settings_service as site_settings_service,
 )
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 
 from ...admin.news.authorization import NewsItemPermission
@@ -23,7 +23,7 @@ from ...admin.news.authorization import NewsItemPermission
 blueprint = create_blueprint('news', __name__)
 
 
-permission_registry.register_enum(NewsItemPermission)
+register_permission_enum(NewsItemPermission)
 
 
 DEFAULT_ITEMS_PER_PAGE = 4

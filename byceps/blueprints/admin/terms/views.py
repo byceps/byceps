@@ -12,8 +12,8 @@ from ....services.terms import consent_service as terms_consent_service
 from ....services.terms import document_service as terms_document_service
 from ....services.terms import version_service as terms_version_service
 from ....services.user import service as user_service
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required
 
@@ -23,7 +23,7 @@ from .authorization import TermsPermission
 blueprint = create_blueprint('terms_admin', __name__)
 
 
-permission_registry.register_enum(TermsPermission)
+register_permission_enum(TermsPermission)
 
 
 @blueprint.route('/documents/<document_id>')

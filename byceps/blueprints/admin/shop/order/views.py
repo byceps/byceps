@@ -21,9 +21,9 @@ from .....services.shop.shop import service as shop_service
 from .....services.ticketing import ticket_service
 from .....services.user import service as user_service
 from .....signals import shop as shop_signals
+from .....util.authorization import register_permission_enum
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_notice, flash_success
-from .....util.framework.permission_registry import permission_registry
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
 
@@ -37,7 +37,7 @@ from . import service
 blueprint = create_blueprint('shop_order_admin', __name__)
 
 
-permission_registry.register_enum(ShopOrderPermission)
+register_permission_enum(ShopOrderPermission)
 
 
 @blueprint.route('/for_shop/<shop_id>', defaults={'page': 1})

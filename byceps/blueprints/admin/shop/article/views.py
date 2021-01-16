@@ -24,9 +24,9 @@ from .....services.shop.order import (
 from .....services.shop.order.transfer.models import PaymentState
 from .....services.shop.shop import service as shop_service
 from .....services.user import service as user_service
+from .....util.authorization import register_permission_enum
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
-from .....util.framework.permission_registry import permission_registry
 from .....util.framework.templating import templated
 from .....util.templatefilters import local_tz_to_utc, utc_to_local_tz
 from .....util.views import permission_required, redirect_to, respond_no_content
@@ -43,7 +43,7 @@ from .forms import (
 blueprint = create_blueprint('shop_article_admin', __name__)
 
 
-permission_registry.register_enum(ShopArticlePermission)
+register_permission_enum(ShopArticlePermission)
 
 
 TAX_RATE_DISPLAY_FACTOR = Decimal('100')

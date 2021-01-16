@@ -20,8 +20,8 @@ from ....services.orga_presence.transfer.models import (
 )
 from ....services.party import service as party_service
 from ....services.user.transfer.models import User
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required
 
@@ -31,7 +31,7 @@ from .authorization import OrgaPresencePermission
 blueprint = create_blueprint('orga_presence', __name__)
 
 
-permission_registry.register_enum(OrgaPresencePermission)
+register_permission_enum(OrgaPresencePermission)
 
 
 @blueprint.route('/<party_id>')

@@ -11,9 +11,9 @@ from flask import abort, request
 from ....services.orga_team import service as orga_team_service
 from ....services.party import service as party_service
 from ....services.user import service as user_service
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
@@ -29,7 +29,7 @@ from .forms import (
 blueprint = create_blueprint('orga_team_admin', __name__)
 
 
-permission_registry.register_enum(OrgaTeamPermission)
+register_permission_enum(OrgaTeamPermission)
 
 
 # -------------------------------------------------------------------- #

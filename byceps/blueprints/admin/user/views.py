@@ -27,9 +27,9 @@ from ....services.user import service as user_service
 from ....services.user import stats_service as user_stats_service
 from ....services.user_badge import awarding_service as badge_awarding_service
 from ....signals import user as user_signals
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
@@ -51,7 +51,7 @@ from . import service
 blueprint = create_blueprint('user_admin', __name__)
 
 
-permission_registry.register_enum(UserPermission)
+register_permission_enum(UserPermission)
 
 
 @blueprint.route('/', defaults={'page': 1})

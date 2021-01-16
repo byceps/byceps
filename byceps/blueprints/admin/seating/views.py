@@ -17,8 +17,8 @@ from ....services.seating import (
 from ....services.ticketing import (
     category_service as ticketing_category_service,
 )
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required
 
@@ -28,7 +28,7 @@ from .authorization import SeatingPermission
 blueprint = create_blueprint('seating_admin', __name__)
 
 
-permission_registry.register_enum(SeatingPermission)
+register_permission_enum(SeatingPermission)
 
 
 @blueprint.route('/<party_id>')

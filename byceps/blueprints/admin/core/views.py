@@ -9,8 +9,8 @@ byceps.blueprints.admin.core.views
 from ....services.brand import service as brand_service
 from ....services.party import service as party_service
 from ....services.site import service as site_service
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.permission_registry import permission_registry
 
 from .authorization import AdminPermission
 
@@ -18,7 +18,7 @@ from .authorization import AdminPermission
 blueprint = create_blueprint('core_admin', __name__)
 
 
-permission_registry.register_enum(AdminPermission)
+register_permission_enum(AdminPermission)
 
 
 @blueprint.app_context_processor

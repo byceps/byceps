@@ -12,9 +12,9 @@ from .....services.brand import service as brand_service
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import PaymentState
 from .....services.shop.shop import service as shop_service
+from .....util.authorization import register_permission_enum
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
-from .....util.framework.permission_registry import permission_registry
 from .....util.framework.templating import templated
 from .....util.views import (
     permission_required,
@@ -28,7 +28,7 @@ from .authorization import ShopPermission
 blueprint = create_blueprint('shop_shop_admin', __name__)
 
 
-permission_registry.register_enum(ShopPermission)
+register_permission_enum(ShopPermission)
 
 
 @blueprint.route('/for_shop/<shop_id>')

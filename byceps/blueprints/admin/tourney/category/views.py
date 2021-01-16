@@ -10,9 +10,9 @@ from flask import abort, request
 
 from .....services.party import service as party_service
 from .....services.tourney import category_service
+from .....util.authorization import register_permission_enum
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
-from .....util.framework.permission_registry import permission_registry
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
 
@@ -24,7 +24,7 @@ from .forms import CreateForm, UpdateForm
 blueprint = create_blueprint('tourney_category_admin', __name__)
 
 
-permission_registry.register_enum(TourneyCategoryPermission)
+register_permission_enum(TourneyCategoryPermission)
 
 
 @blueprint.route('/for_party/<party_id>')

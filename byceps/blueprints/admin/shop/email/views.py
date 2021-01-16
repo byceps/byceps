@@ -16,8 +16,8 @@ from .....services.shop.order.email import (
     example_service as example_order_email_service,
 )
 from .....services.shop.shop import service as shop_service
+from .....util.authorization import register_permission_enum
 from .....util.framework.blueprint import create_blueprint
-from .....util.framework.permission_registry import permission_registry
 from .....util.framework.templating import templated
 from .....util.views import permission_required
 
@@ -27,7 +27,7 @@ from ..shop.authorization import ShopPermission
 blueprint = create_blueprint('shop_email_admin', __name__)
 
 
-permission_registry.register_enum(ShopPermission)
+register_permission_enum(ShopPermission)
 
 
 @blueprint.route('/for_shop/<shop_id>')

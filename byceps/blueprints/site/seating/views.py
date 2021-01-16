@@ -20,9 +20,9 @@ from ....services.ticketing import (
     ticket_service,
 )
 from ....services.ticketing.transfer.models import TicketID
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import login_required, redirect_to, respond_no_content
 
@@ -34,7 +34,7 @@ from . import service
 blueprint = create_blueprint('seating', __name__)
 
 
-permission_registry.register_enum(SeatingPermission)
+register_permission_enum(SeatingPermission)
 
 
 @blueprint.route('/')

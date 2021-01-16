@@ -7,8 +7,8 @@ byceps.blueprints.admin.consent.views
 """
 
 from ....services.consent import subject_service
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required
 
@@ -18,7 +18,7 @@ from .authorization import ConsentPermission
 blueprint = create_blueprint('consent_admin', __name__)
 
 
-permission_registry.register_enum(ConsentPermission)
+register_permission_enum(ConsentPermission)
 
 
 @blueprint.route('/')

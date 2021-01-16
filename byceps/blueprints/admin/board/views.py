@@ -19,9 +19,9 @@ from ....services.board import (
 )
 from ....services.board.transfer.models import Board, Category
 from ....services.brand import service as brand_service
+from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
-from ....util.framework.permission_registry import permission_registry
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
@@ -34,8 +34,8 @@ from .forms import BoardCreateForm, CategoryCreateForm, CategoryUpdateForm
 blueprint = create_blueprint('board_admin', __name__)
 
 
-permission_registry.register_enum(BoardPermission)
-permission_registry.register_enum(BoardCategoryPermission)
+register_permission_enum(BoardPermission)
+register_permission_enum(BoardCategoryPermission)
 
 
 @dataclass(frozen=True)
