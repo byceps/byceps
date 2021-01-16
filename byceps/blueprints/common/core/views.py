@@ -20,6 +20,8 @@ from ....util.navigation import Navigation
 
 from ..authentication.login import service as authentication_blueprint_service
 
+from ...admin.core.authorization import AdminPermission
+
 
 blueprint = create_blueprint('core', __name__)
 
@@ -100,7 +102,10 @@ def provide_app_mode():
         g.party_id = party_id
 
     # current user
-    is_admin_mode = app_mode.is_admin()
+    if app_mode.is_admin():
+        required_permissions = {AdminPermission.access}
+    else:
+        required_permissions = set()
     g.current_user = authentication_blueprint_service.get_current_user(
-        is_admin_mode, party_id=party_id
+        party_id=party_id, required_permissions=required_permissions
     )
