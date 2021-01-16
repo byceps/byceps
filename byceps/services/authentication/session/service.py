@@ -13,6 +13,8 @@ from uuid import uuid4
 from ....database import db, insert_ignore_on_conflict, upsert
 from ....typing import UserID
 
+from ...user import event_service as user_event_service
+
 from ..exceptions import AuthenticationFailed
 
 from .models.recent_login import RecentLogin as DbRecentLogin
@@ -96,6 +98,12 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
         .exists()
 
     return db.session.query(subquery).scalar()
+
+
+def create_login_event(user_id: UserID, ip_address: str) -> None:
+    """Create an event that represents a user login."""
+    data = {'ip_address': ip_address}
+    user_event_service.create_event('user-logged-in', user_id, data)
 
 
 def find_recent_login(user_id: UserID) -> Optional[datetime]:

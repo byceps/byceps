@@ -8,10 +8,8 @@ byceps.services.authentication.service
 
 from typing import Optional
 
-from ...typing import UserID
-
 from ..user.models.user import User as DbUser
-from ..user import event_service as user_event_service, service as user_service
+from ..user import service as user_service
 from ..user.transfer.models import User
 
 from .exceptions import AuthenticationFailed
@@ -60,9 +58,3 @@ def _require_user_account_is_active(user: DbUser) -> None:
     """
     if (not user.initialized) or user.suspended or user.deleted:
         raise AuthenticationFailed()
-
-
-def create_login_event(user_id: UserID, ip_address: str) -> None:
-    """Create an event representing a user login."""
-    data = {'ip_address': ip_address}
-    user_event_service.create_event('user-logged-in', user_id, data)

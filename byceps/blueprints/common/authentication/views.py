@@ -136,7 +136,7 @@ def login():
     session_token = session_service.get_session_token(user.id)
 
     session_service.record_recent_login(user.id)
-    authentication_service.create_login_event(user.id, request.remote_addr)
+    session_service.create_login_event(user.id, request.remote_addr)
 
     user_session.start(user.id, session_token.token, permanent=permanent)
     flash_success(f'Erfolgreich eingeloggt als {user.screen_name}.')
