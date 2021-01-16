@@ -100,6 +100,16 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
     return db.session.query(subquery).scalar()
 
 
+def log_in_user(user_id: UserID, ip_address: str) -> str:
+    """Create a session token and record the log in."""
+    session_token = get_session_token(user_id)
+
+    create_login_event(user_id, ip_address)
+    record_recent_login(user_id)
+
+    return session_token.token
+
+
 def create_login_event(user_id: UserID, ip_address: str) -> None:
     """Create an event that represents a user login."""
     data = {'ip_address': ip_address}

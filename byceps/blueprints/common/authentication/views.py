@@ -133,12 +133,8 @@ def login():
 
     # Authorization succeeded.
 
-    session_token = session_service.get_session_token(user.id)
-
-    session_service.record_recent_login(user.id)
-    session_service.create_login_event(user.id, request.remote_addr)
-
-    user_session.start(user.id, session_token.token, permanent=permanent)
+    auth_token = session_service.log_in_user(user.id, request.remote_addr)
+    user_session.start(user.id, auth_token, permanent=permanent)
     flash_success(f'Erfolgreich eingeloggt als {user.screen_name}.')
 
     if not in_admin_mode:
