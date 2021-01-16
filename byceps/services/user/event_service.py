@@ -54,7 +54,7 @@ def get_events_for_user(user_id: UserID) -> List[UserEvent]:
 
 
 def get_events_of_type_for_user(
-    event_type: str, user_id: UserID
+    user_id: UserID, event_type: str
 ) -> List[UserEvent]:
     """Return the events of that type for that user."""
     return UserEvent.query \

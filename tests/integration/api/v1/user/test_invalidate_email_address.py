@@ -29,7 +29,7 @@ def test_invalidation_of_initialized_user(api_client, make_user):
     assert not user_after.email_address_verified
 
     events = user_event_service.get_events_of_type_for_user(
-        'user-email-address-invalidated', user.id
+        user.id, 'user-email-address-invalidated'
     )
     assert len(events) == 1
     assert events[0].data == {

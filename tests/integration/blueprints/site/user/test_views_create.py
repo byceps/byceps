@@ -260,7 +260,7 @@ def is_subscribed_to_newsletter(user_id, brand_id):
 
 
 def assert_creation_event_created(user_id):
-    events = event_service.get_events_of_type_for_user('user-created', user_id)
+    events = event_service.get_events_of_type_for_user(user_id, 'user-created')
     assert len(events) == 1
 
     first_event = events[0]
