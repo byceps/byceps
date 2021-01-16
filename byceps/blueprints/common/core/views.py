@@ -17,8 +17,7 @@ from ....services.site import service as site_service
 from ....util.authorization import permission_registry
 from ....util.framework.blueprint import create_blueprint
 from ....util.navigation import Navigation
-
-from ..authentication.login import service as authentication_blueprint_service
+from ....util.user_session import get_current_user
 
 from ...admin.core.authorization import AdminPermission
 
@@ -106,6 +105,6 @@ def provide_app_mode():
         required_permissions = {AdminPermission.access}
     else:
         required_permissions = set()
-    g.current_user = authentication_blueprint_service.get_current_user(
+    g.current_user = get_current_user(
         party_id=party_id, required_permissions=required_permissions
     )

@@ -32,7 +32,6 @@ from .....util.views import redirect_to, respond_no_content
 from ....admin.core.authorization import AdminPermission
 
 from .forms import LoginForm
-from . import service
 
 
 blueprint = create_blueprint('authentication.login', __name__)
