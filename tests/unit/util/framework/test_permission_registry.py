@@ -3,13 +3,12 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from unittest.mock import patch
+from flask import Flask
 
 import pytest
 
-with patch('flask.current_app'):
-    from byceps.util.framework.permission_registry import PermissionRegistry
 from byceps.util.authorization import create_permission_enum
+from byceps.util.framework.permission_registry import PermissionRegistry
 
 
 ItemPermission = create_permission_enum('item', ['view', 'create', 'update'])
@@ -26,7 +25,8 @@ ItemPermission = create_permission_enum('item', ['view', 'create', 'update'])
 def test_get_enum_member(permission_id, expected):
     registry = create_registry_with_registered_enum()
 
-    assert registry.get_enum_member(permission_id) == expected
+    with Flask('dummy').app_context():
+        assert registry.get_enum_member(permission_id) == expected
 
 
 @pytest.mark.parametrize(
