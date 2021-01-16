@@ -75,7 +75,7 @@ def login_form_admin():
 @templated
 def login_form_site():
     """Show site login form."""
-    if not _is_login_enabled(in_admin_mode=False):
+    if not _is_site_login_enabled():
         return {
             'login_enabled': False,
         }
@@ -91,16 +91,57 @@ def login_form_site():
     }
 
 
-@blueprint.route('/login', methods=['POST'])
+@blueprint.route('/login_admin', methods=['POST'])
 @respond_no_content
-def login():
+def login_admin():
     """Allow the user to authenticate with e-mail address and password."""
+    if not get_app_mode().is_admin():
+        abort(404)
+
     if g.current_user.is_active:
         return
 
-    in_admin_mode = get_app_mode().is_admin()
+    form = LoginForm(request.form)
 
-    if not _is_login_enabled(in_admin_mode):
+    screen_name = form.screen_name.data.strip()
+    password = form.password.data
+    permanent = form.permanent.data
+    if not all([screen_name, password]):
+        abort(403)
+
+    try:
+        user = authentication_service.authenticate(screen_name, password)
+    except AuthenticationFailed:
+        abort(403)
+
+    _require_admin_access_permission(user.id)
+
+    # Authorization succeeded.
+
+    auth_token = session_service.log_in_user(user.id, request.remote_addr)
+    user_session.start(user.id, auth_token, permanent=permanent)
+    flash_success(f'Erfolgreich eingeloggt als {user.screen_name}.')
+
+
+def _require_admin_access_permission(user_id: UserID) -> None:
+    permissions = service.get_permissions_for_user(user_id)
+    if AdminPermission.access not in permissions:
+        # The user lacks the admin access permission which is required
+        # to enter the admin area.
+        abort(403)
+
+
+@blueprint.route('/login', methods=['POST'])
+@respond_no_content
+def login_site():
+    """Allow the user to authenticate with e-mail address and password."""
+    if not get_app_mode().is_site():
+        abort(404)
+
+    if g.current_user.is_active:
+        return
+
+    if not _is_site_login_enabled():
         abort(403, 'Log in to this site is generally disabled.')
 
     form = LoginForm(request.form)
@@ -116,20 +157,16 @@ def login():
     except AuthenticationFailed:
         abort(403)
 
-    if in_admin_mode:
-        _require_admin_access_permission(user.id)
+    if _is_consent_required(user.id):
+        verification_token = verification_token_service.create_for_terms_consent(
+            user.id
+        )
 
-    if not in_admin_mode:
-        if _is_consent_required(user.id):
-            verification_token = verification_token_service.create_for_terms_consent(
-                user.id
-            )
+        consent_form_url = url_for(
+            'consent.consent_form', token=verification_token.token
+        )
 
-            consent_form_url = url_for(
-                'consent.consent_form', token=verification_token.token
-            )
-
-            return [('Location', consent_form_url)]
+        return [('Location', consent_form_url)]
 
     # Authorization succeeded.
 
@@ -137,16 +174,7 @@ def login():
     user_session.start(user.id, auth_token, permanent=permanent)
     flash_success(f'Erfolgreich eingeloggt als {user.screen_name}.')
 
-    if not in_admin_mode:
-        return [('Location', url_for('dashboard.index'))]
-
-
-def _require_admin_access_permission(user_id: UserID) -> None:
-    permissions = service.get_permissions_for_user(user_id)
-    if AdminPermission.access not in permissions:
-        # The user lacks the admin access permission which is required
-        # to enter the admin area.
-        abort(403)
+    return [('Location', url_for('dashboard.index'))]
 
 
 def _is_consent_required(user_id: UserID) -> bool:
@@ -171,10 +199,7 @@ def logout():
 # helpers
 
 
-def _is_login_enabled(in_admin_mode: bool) -> bool:
-    if in_admin_mode:
-        return True
-
+def _is_site_login_enabled() -> bool:
     site = _get_site()
     return site.login_enabled
 

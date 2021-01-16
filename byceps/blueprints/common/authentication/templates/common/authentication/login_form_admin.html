@@ -12,7 +12,9 @@
 
   <h1>{{ title }}</h1>
 
+  {%- with login_url = url_for('.login_admin') %}
 {%- include 'common/authentication/_login_form_form.html' %}
+  {%- endwith %}
 
   <p>Passwort vergessen? <a href="{{ url_for('authentication.password.request_reset_form') }}">Neues Passwort setzen</a></p>
 

@@ -13,7 +13,9 @@
   <h1>{{ title }}</h1>
 
   {%- if login_enabled %}
+    {%- with login_url = url_for('.login_site') %}
 {%- include 'common/authentication/_login_form_form.html' %}
+    {%- endwith %}
 
     {% if user_account_creation_enabled %}
   <p>Du hast noch keinen Benutzerzugang? Dann <a href="{{ url_for('user_creation.create_form') }}">registriere dich</a>!</p>
