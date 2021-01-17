@@ -31,11 +31,11 @@ def ticket_category(party):
     ticket_category_service.delete_category(category.id)
 
 
-@pytest.fixture(scope='package')
+@pytest.fixture(scope='module')
 def orderer_user(make_user_with_detail):
     return make_user_with_detail('TicketsOrderer')
 
 
-@pytest.fixture(scope='package')
+@pytest.fixture(scope='module')
 def orderer(orderer_user):
     return create_orderer(orderer_user)
