@@ -21,7 +21,7 @@ from ....common.core.forms import ScreenNameValidator
 
 class ChangeScreenNameForm(LocalizedForm):
     screen_name = StringField(
-        lazy_gettext('Neuer Benutzername'),
+        lazy_gettext('New username'),
         [
             InputRequired(),
             Length(
@@ -32,19 +32,19 @@ class ChangeScreenNameForm(LocalizedForm):
         ],
     )
     password = PasswordField(
-        lazy_gettext('Aktuelles Passwort'), [InputRequired()]
+        lazy_gettext('Current password'), [InputRequired()]
     )
 
     @staticmethod
     def validate_screen_name(form, field):
         if g.user.screen_name == field.data:
             raise ValueError(
-                lazy_gettext('Dies ist bereits der aktuelle Benutzername.')
+                lazy_gettext('This already is the current username.')
             )
 
         if user_service.is_screen_name_already_assigned(field.data):
             raise ValueError(
-                lazy_gettext('Dieser Benutzername kann nicht verwendet werden.')
+                lazy_gettext('This username is not available.')
             )
 
     @staticmethod
@@ -53,21 +53,21 @@ class ChangeScreenNameForm(LocalizedForm):
         password = field.data
 
         if not password_service.is_password_valid_for_user(user_id, password):
-            raise ValueError(lazy_gettext('Das Passwort ist nicht korrekt.'))
+            raise ValueError(lazy_gettext('Wrong password.'))
 
 
 class DetailsForm(LocalizedForm):
     first_names = StringField(
-        lazy_gettext('Vorname(n)'), [InputRequired(), Length(min=2)]
+        lazy_gettext('First name(s)'), [InputRequired(), Length(min=2)]
     )
     last_name = StringField(
-        lazy_gettext('Nachname'), [InputRequired(), Length(min=2, max=80)]
+        lazy_gettext('Last name(s)'), [InputRequired(), Length(min=2, max=80)]
     )
-    date_of_birth = DateField(lazy_gettext('Geburtsdatum'), [Optional()])
-    country = StringField(lazy_gettext('Land'), [Optional(), Length(max=60)])
-    zip_code = StringField(lazy_gettext('PLZ'), [Optional()])
-    city = StringField(lazy_gettext('Stadt'), [Optional()])
-    street = StringField(lazy_gettext('Straße'), [Optional()])
+    date_of_birth = DateField(lazy_gettext('Date of birth'), [Optional()])
+    country = StringField(lazy_gettext('Country'), [Optional(), Length(max=60)])
+    zip_code = StringField(lazy_gettext('Zip code'), [Optional()])
+    city = StringField(lazy_gettext('City'), [Optional()])
+    street = StringField(lazy_gettext('Street'), [Optional()])
     phone_number = TelField(
-        lazy_gettext('Telefonnummer'), [Optional(), Length(max=20)]
+        lazy_gettext('Phone number'), [Optional(), Length(max=20)]
     )

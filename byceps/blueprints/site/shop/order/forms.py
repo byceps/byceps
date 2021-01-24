@@ -17,19 +17,19 @@ from .....util.l10n import LocalizedForm
 
 class OrderForm(LocalizedForm):
     first_names = StringField(
-        lazy_gettext('Vorname(n)'), validators=[Length(min=2)]
+        lazy_gettext('First name(s)'), validators=[Length(min=2)]
     )
     last_name = StringField(
-        lazy_gettext('Nachname'), validators=[Length(min=2)]
+        lazy_gettext('Last name(s)'), validators=[Length(min=2)]
     )
     country = StringField(
-        lazy_gettext('Land'), validators=[Length(min=2, max=60)]
+        lazy_gettext('Country'), validators=[Length(min=2, max=60)]
     )
     zip_code = StringField(
-        lazy_gettext('PLZ'), validators=[Length(min=5, max=5)]
+        lazy_gettext('Zip code'), validators=[Length(min=5, max=5)]
     )
-    city = StringField(lazy_gettext('Stadt'), validators=[Length(min=2)])
-    street = StringField(lazy_gettext('Straße'), validators=[Length(min=2)])
+    city = StringField(lazy_gettext('City'), validators=[Length(min=2)])
+    street = StringField(lazy_gettext('Street'), validators=[Length(min=2)])
 
     def get_orderer(self, user_id):
         return Orderer(
@@ -69,7 +69,7 @@ def assemble_articles_order_form(article_compilation):
         field_name = _generate_field_name(item.article)
         choices = _create_choices(item.article)
         field = SelectField(
-            lazy_gettext('Anzahl'), validators, coerce=int, choices=choices
+            lazy_gettext('Quantity'), validators, coerce=int, choices=choices
         )
         setattr(ArticlesOrderForm, field_name, field)
 

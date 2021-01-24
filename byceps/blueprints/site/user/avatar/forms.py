@@ -14,4 +14,4 @@ from .....util.l10n import LocalizedForm
 
 
 class UpdateForm(LocalizedForm):
-    image = FileField(lazy_gettext('Bilddatei'), [InputRequired()])
+    image = FileField(lazy_gettext('Image file'), [InputRequired()])

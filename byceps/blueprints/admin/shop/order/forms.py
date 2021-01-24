@@ -17,11 +17,11 @@ from .....util.l10n import LocalizedForm
 
 class CancelForm(LocalizedForm):
     reason = TextAreaField(
-        lazy_gettext('Begründung'),
+        lazy_gettext('Reason'),
         validators=[InputRequired(), Length(max=1000)],
     )
     send_email = BooleanField(
-        lazy_gettext('Auftraggeber/in per E-Mail über Stornierung informieren')
+        lazy_gettext('Inform orderer via email of cancellation.')
     )
 
 
@@ -34,7 +34,7 @@ def _get_payment_method_choices():
 
 class MarkAsPaidForm(LocalizedForm):
     payment_method = RadioField(
-        lazy_gettext('Zahlungsart'),
+        lazy_gettext('Payment type'),
         choices=_get_payment_method_choices(),
         default=PaymentMethod.bank_transfer.name,
         validators=[InputRequired()],
@@ -43,5 +43,5 @@ class MarkAsPaidForm(LocalizedForm):
 
 class OrderNumberSequenceCreateForm(LocalizedForm):
     prefix = StringField(
-        lazy_gettext('Statisches Präfix'), validators=[InputRequired()]
+        lazy_gettext('Static prefix'), validators=[InputRequired()]
     )

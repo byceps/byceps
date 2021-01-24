@@ -23,7 +23,7 @@ class PostingUpdateForm(PostingCreateForm):
 
 class TopicCreateForm(PostingCreateForm):
     title = StringField(
-        lazy_gettext('Titel'), validators=[InputRequired(), Length(max=80)]
+        lazy_gettext('Title'), validators=[InputRequired(), Length(max=80)]
     )
 
 

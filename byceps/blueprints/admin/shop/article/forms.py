@@ -8,7 +8,7 @@ byceps.blueprints.admin.shop.article.forms
 
 from decimal import Decimal
 
-from flask_babel import lazy_gettext
+from flask_babel import lazy_gettext, lazy_pgettext
 from wtforms import (
     BooleanField,
     DateTimeField,
@@ -28,12 +28,12 @@ from .....util.l10n import LocalizedForm
 
 
 class _ArticleBaseForm(LocalizedForm):
-    description = StringField(lazy_gettext('Beschreibung'))
+    description = StringField(lazy_gettext('Description'))
     price = DecimalField(
-        lazy_gettext('Stückpreis'), places=2, validators=[InputRequired()]
+        lazy_gettext('Unit price'), places=2, validators=[InputRequired()]
     )
     tax_rate = DecimalField(
-        lazy_gettext('Steuersatz'),
+        lazy_gettext('Tax rate'),
         places=1,
         validators=[
             InputRequired(),
@@ -41,45 +41,45 @@ class _ArticleBaseForm(LocalizedForm):
         ],
     )
     total_quantity = IntegerField(
-        lazy_gettext('Gesamtmenge'), validators=[InputRequired()]
+        lazy_gettext('Total quantity'), validators=[InputRequired()]
     )
     max_quantity_per_order = IntegerField(
-        lazy_gettext('Maximale Anzahl pro Bestellung'),
+        lazy_gettext('Maximum quantity per order'),
         validators=[InputRequired()],
     )
 
 
 class ArticleCreateForm(_ArticleBaseForm):
     article_number_sequence_id = SelectField(
-        lazy_gettext('Artikelnummer-Sequenz'), validators=[InputRequired()]
+        lazy_gettext('Article number sequence'), validators=[InputRequired()]
     )
 
     def set_article_number_sequence_choices(self, sequences):
         sequences.sort(key=lambda seq: seq.prefix)
 
         choices = [(str(seq.id), seq.prefix) for seq in sequences]
-        choices.insert(0, ('', lazy_gettext('<keine>')))
+        choices.insert(0, ('', lazy_pgettext('sequence', '<none>')))
         self.article_number_sequence_id.choices = choices
 
 
 class ArticleUpdateForm(_ArticleBaseForm):
     available_from = DateTimeField(
-        lazy_gettext('Verfügbar ab'),
+        lazy_gettext('Available from'),
         format='%d.%m.%Y %H:%M',
         validators=[Optional()],
     )
     available_until = DateTimeField(
-        lazy_gettext('Verfügbar bis'),
+        lazy_gettext('Available until'),
         format='%d.%m.%Y %H:%M',
         validators=[Optional()],
     )
     not_directly_orderable = BooleanField(
-        lazy_gettext('nur indirekt bestellbar')
+        lazy_gettext('can only be ordered indirectly')
     )
     requires_separate_order = BooleanField(
-        lazy_gettext('muss separat bestellt werden')
+        lazy_gettext('must be ordered separately')
     )
-    shipping_required = BooleanField(lazy_gettext('Versand erforderlich'))
+    shipping_required = BooleanField(lazy_gettext('Shipping required'))
 
     @staticmethod
     def validate_available_until(form, field):
@@ -90,18 +90,17 @@ class ArticleUpdateForm(_ArticleBaseForm):
         if (begin is not None) and (begin >= end):
             raise ValidationError(
                 lazy_gettext(
-                    'Das Ende des Verfügbarkeitszeitraums muss nach dessen Beginn '
-                    'liegen.'
+                    'The end of the availability period must be after its begin.'
                 )
             )
 
 
 class ArticleAttachmentCreateForm(LocalizedForm):
     article_to_attach_id = SelectField(
-        lazy_gettext('Artikel'), validators=[InputRequired()]
+        lazy_gettext('Article'), validators=[InputRequired()]
     )
     quantity = IntegerField(
-        lazy_gettext('Anzahl'), validators=[InputRequired()]
+        lazy_gettext('Quantity'), validators=[InputRequired()]
     )
 
     def set_article_to_attach_choices(self, attachable_articles):
@@ -119,5 +118,5 @@ class ArticleAttachmentCreateForm(LocalizedForm):
 
 class ArticleNumberSequenceCreateForm(LocalizedForm):
     prefix = StringField(
-        lazy_gettext('Statisches Präfix'), validators=[InputRequired()]
+        lazy_gettext('Static prefix'), validators=[InputRequired()]
     )

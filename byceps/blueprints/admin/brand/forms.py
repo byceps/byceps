@@ -15,7 +15,7 @@ from ....util.l10n import LocalizedForm
 
 class _BaseForm(LocalizedForm):
     title = StringField(
-        lazy_gettext('Titel'),
+        lazy_gettext('Title'),
         validators=[InputRequired(), Length(min=1, max=40)],
     )
 
@@ -28,17 +28,17 @@ class CreateForm(_BaseForm):
 
 class UpdateForm(_BaseForm):
     image_filename = StringField(
-        lazy_gettext('Bild-Dateiname'), validators=[Optional()]
+        lazy_gettext('Image filename'), validators=[Optional()]
     )
 
 
 class EmailConfigUpdateForm(LocalizedForm):
     sender_address = StringField(
-        lazy_gettext('Absender-Adresse'), validators=[InputRequired()]
+        lazy_gettext('Sender address'), validators=[InputRequired()]
     )
     sender_name = StringField(
-        lazy_gettext('Absender-Name'), validators=[Optional()]
+        lazy_gettext('Sender name'), validators=[Optional()]
     )
     contact_address = StringField(
-        lazy_gettext('Kontaktadresse'), validators=[Optional()]
+        lazy_gettext('Contact adress'), validators=[Optional()]
     )

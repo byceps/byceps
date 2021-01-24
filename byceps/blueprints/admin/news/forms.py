@@ -24,18 +24,18 @@ class ChannelCreateForm(LocalizedForm):
         lazy_gettext('ID'), validators=[Length(min=1, max=40)]
     )
     url_prefix = StringField(
-        lazy_gettext('URL-Präfix'), [InputRequired(), Length(max=80)]
+        lazy_gettext('URL prefix'), [InputRequired(), Length(max=80)]
     )
 
 
 class _ImageFormBase(LocalizedForm):
-    alt_text = StringField(lazy_gettext('Alternativtext'), [InputRequired()])
-    caption = StringField(lazy_gettext('Bildunterschrift'), [Optional()])
-    attribution = StringField(lazy_gettext('Bildquelle'), [Optional()])
+    alt_text = StringField(lazy_gettext('Alternative text'), [InputRequired()])
+    caption = StringField(lazy_gettext('Caption'), [Optional()])
+    attribution = StringField(lazy_gettext('Source'), [Optional()])
 
 
 class ImageCreateForm(_ImageFormBase):
-    image = FileField(lazy_gettext('Bilddatei'), [InputRequired()])
+    image = FileField(lazy_gettext('Image file'), [InputRequired()])
 
 
 class ImageUpdateForm(_ImageFormBase):
@@ -51,17 +51,17 @@ class ItemCreateForm(LocalizedForm):
             Regexp(
                 SLUG_REGEX,
                 message=lazy_gettext(
-                    'Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt.'
+                    'Lowercase letters, digits, and dash are allowed.'
                 ),
             ),
         ],
     )
     title = StringField(
-        lazy_gettext('Titel'), [InputRequired(), Length(max=100)]
+        lazy_gettext('Title'), [InputRequired(), Length(max=100)]
     )
     body = TextAreaField(lazy_gettext('Text'), [InputRequired()])
     image_url_path = StringField(
-        lazy_gettext('Bild-URL-Pfad'), [Optional(), Length(max=100)]
+        lazy_gettext('Image URL path'), [Optional(), Length(max=100)]
     )
 
 
@@ -70,5 +70,5 @@ class ItemUpdateForm(ItemCreateForm):
 
 
 class ItemPublishLaterForm(LocalizedForm):
-    publish_on = DateField(lazy_gettext('Datum'), [InputRequired()])
-    publish_at = TimeField(lazy_gettext('Uhrzeit'), [InputRequired()])
+    publish_on = DateField(lazy_gettext('Date'), [InputRequired()])
+    publish_at = TimeField(lazy_gettext('Time'), [InputRequired()])

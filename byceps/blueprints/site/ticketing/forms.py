@@ -27,7 +27,7 @@ def validate_user(form, field):
     )
 
     if user is None:
-        raise ValidationError(lazy_gettext('Unbekannter Benutzername'))
+        raise ValidationError(lazy_gettext('Unknown username'))
 
     user = user.to_dto()
 
@@ -43,8 +43,8 @@ def validate_user(form, field):
     ):
         raise ValidationError(
             lazy_gettext(
-                'Benutzer "%(screen_name)s" hat noch nicht alle nötigen '
-                'Zustimmungen erteilt. Ein erneuter Login ist erforderlich.',
+                'User "%(screen_name)s" has not yet given all necessary '
+                'consents. Logging in again is required.',
                 screen_name=user.screen_name,
             )
         )
@@ -54,5 +54,5 @@ def validate_user(form, field):
 
 class SpecifyUserForm(LocalizedForm):
     user = StringField(
-        lazy_gettext('Benutzername'), [InputRequired(), validate_user]
+        lazy_gettext('Username'), [InputRequired(), validate_user]
     )

@@ -20,7 +20,7 @@ MAXIMUM_PASSWORD_LENGTH = 100
 
 
 class RequestResetForm(LocalizedForm):
-    screen_name = StringField(lazy_gettext('Benutzername'), [InputRequired()])
+    screen_name = StringField(lazy_gettext('Username'), [InputRequired()])
 
 
 def _get_new_password_validators(companion_field_name):
@@ -29,7 +29,7 @@ def _get_new_password_validators(companion_field_name):
         EqualTo(
             companion_field_name,
             message=lazy_gettext(
-                'Das neue Passwort muss mit der Wiederholung übereinstimmen.'
+                'The new password and its confirmation must match.'
             ),
         ),
         Length(min=MINIMUM_PASSWORD_LENGTH, max=MAXIMUM_PASSWORD_LENGTH),
@@ -38,18 +38,18 @@ def _get_new_password_validators(companion_field_name):
 
 class ResetForm(LocalizedForm):
     new_password = PasswordField(
-        lazy_gettext('Neues Passwort'),
+        lazy_gettext('New password'),
         _get_new_password_validators('new_password_confirmation'),
     )
     new_password_confirmation = PasswordField(
-        lazy_gettext('Neues Passwort (Wiederholung)'),
+        lazy_gettext('New password (confirmation)'),
         _get_new_password_validators('new_password'),
     )
 
 
 class UpdateForm(ResetForm):
     old_password = PasswordField(
-        lazy_gettext('Bisheriges Passwort'), [InputRequired()]
+        lazy_gettext('Current Password'), [InputRequired()]
     )
 
     @staticmethod
@@ -59,7 +59,5 @@ class UpdateForm(ResetForm):
 
         if not password_service.is_password_valid_for_user(user_id, password):
             raise ValidationError(
-                lazy_gettext(
-                    'Das eingegebene Passwort stimmt nicht mit dem bisherigen überein.'
-                )
+                lazy_gettext('The password does not match the current one.')
             )

@@ -27,24 +27,24 @@ class CreateForm(LocalizedForm):
             Regexp(
                 SLUG_REGEX,
                 message=lazy_gettext(
-                    'Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt.'
+                    'Lowercase letters, digits, and dash are allowed.'
                 ),
             ),
         ],
     )
     label = StringField(
-        lazy_gettext('Bezeichnung'), [InputRequired(), Length(max=80)]
+        lazy_gettext('Label'), [InputRequired(), Length(max=80)]
     )
-    description = TextAreaField(lazy_gettext('Beschreibung'))
+    description = TextAreaField(lazy_gettext('Description'))
     image_filename = StringField(
-        lazy_gettext('Bilddateiname'), [InputRequired(), Length(max=80)]
+        lazy_gettext('Image filename'), [InputRequired(), Length(max=80)]
     )
-    brand_id = SelectField(lazy_gettext('Marke'))
+    brand_id = SelectField(lazy_gettext('Brand'))
     featured = BooleanField(lazy_gettext('featured'))
 
     def set_brand_choices(self, brands):
         choices = [(brand.id, brand.title) for brand in brands]
-        choices.insert(0, ('', lazy_gettext('<keine Einschränkung>')))
+        choices.insert(0, ('', lazy_gettext('<no restriction>')))
         self.brand_id.choices = choices
 
 

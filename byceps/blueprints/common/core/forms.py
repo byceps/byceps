@@ -23,8 +23,8 @@ class ScreenNameValidator:
             special_chars_spaced = ' '.join(screen_name_validator.SPECIAL_CHARS)
             raise ValidationError(
                 lazy_gettext(
-                    'Enthält ungültige Zeichen. Erlaubt sind Buchstaben, '
-                    'Ziffern und diese Sonderzeichen: '
+                    'Contains invalid characters. Allowed are letters, digits, '
+                    'and these special charactes: '
                 )
                 + special_chars_spaced
             )

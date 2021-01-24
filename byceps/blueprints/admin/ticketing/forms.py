@@ -23,7 +23,7 @@ def validate_user(form, field):
     )
 
     if user is None:
-        raise ValidationError(lazy_gettext('Unbekannter Benutzername'))
+        raise ValidationError(lazy_gettext('Unknown username'))
 
     field.data = user.to_dto()
 
@@ -34,10 +34,10 @@ class UpdateCodeForm(LocalizedForm):
     @staticmethod
     def validate_code(form, field):
         if not ticket_code_service.is_ticket_code_wellformed(field.data):
-            raise ValueError(lazy_gettext('Ungültiges Format'))
+            raise ValueError(lazy_gettext('Invalid format'))
 
 
 class SpecifyUserForm(LocalizedForm):
     user = StringField(
-        lazy_gettext('Benutzername'), [InputRequired(), validate_user]
+        lazy_gettext('Username'), [InputRequired(), validate_user]
     )

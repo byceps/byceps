@@ -15,7 +15,7 @@ from .....util.l10n import LocalizedForm
 
 class CreateForm(LocalizedForm):
     title = StringField(
-        lazy_gettext('Titel'), [InputRequired(), Length(max=40)]
+        lazy_gettext('Title'), [InputRequired(), Length(max=40)]
     )
 
 

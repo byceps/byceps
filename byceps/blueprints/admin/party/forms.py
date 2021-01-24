@@ -15,20 +15,20 @@ from ....util.l10n import LocalizedForm
 
 class _BaseForm(LocalizedForm):
     title = StringField(
-        lazy_gettext('Titel'), validators=[Length(min=1, max=40)]
+        lazy_gettext('Title'), validators=[Length(min=1, max=40)]
     )
     starts_at = DateTimeField(
-        lazy_gettext('Beginn'),
+        lazy_gettext('Start'),
         format='%d.%m.%Y %H:%M',
         validators=[InputRequired()],
     )
     ends_at = DateTimeField(
-        lazy_gettext('Ende'),
+        lazy_gettext('End'),
         format='%d.%m.%Y %H:%M',
         validators=[InputRequired()],
     )
     max_ticket_quantity = IntegerField(
-        lazy_gettext('Maximale Anzahl Tickets'), validators=[Optional()]
+        lazy_gettext('Maximum number of tickets'), validators=[Optional()]
     )
 
 
@@ -38,10 +38,10 @@ class CreateForm(_BaseForm):
 
 class UpdateForm(_BaseForm):
     ticket_management_enabled = BooleanField(
-        lazy_gettext('Ticketverwaltung geöffnet')
+        lazy_gettext('Ticket management open')
     )
     seat_management_enabled = BooleanField(
-        lazy_gettext('Sitzplatzverwaltung geöffnet)')
+        lazy_gettext('Seat management open')
     )
-    canceled = BooleanField(lazy_gettext('abgesagt'))
-    archived = BooleanField(lazy_gettext('archiviert'))
+    canceled = BooleanField(lazy_gettext('canceled'))
+    archived = BooleanField(lazy_gettext('archived'))

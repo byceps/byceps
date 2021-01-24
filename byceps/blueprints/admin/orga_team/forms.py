@@ -15,19 +15,19 @@ from ....util.l10n import LocalizedForm
 
 class OrgaTeamCreateForm(LocalizedForm):
     title = StringField(
-        lazy_gettext('Titel'), validators=[Length(min=1, max=40)]
+        lazy_gettext('Title'), validators=[Length(min=1, max=40)]
     )
 
 
 class OrgaTeamsCopyForm(LocalizedForm):
-    party_id = SelectField(lazy_gettext('Von Party'))
+    party_id = SelectField(lazy_gettext('From party'))
 
     def set_party_choices(self, parties, team_count_per_party=None):
         def get_label(party):
             label = party.title
             if team_count_per_party:
                 team_count = team_count_per_party.get(party.id, 0)
-                label += lazy_gettext(' (%(team_count)s Teams)')
+                label += lazy_gettext(' (%(team_count)s teams)')
             return label
 
         choices = [(party.id, get_label(party)) for party in parties]
@@ -36,11 +36,11 @@ class OrgaTeamsCopyForm(LocalizedForm):
 
 
 class MembershipFormBase(LocalizedForm):
-    duties = StringField(lazy_gettext('Aufgabe'))
+    duties = StringField(lazy_gettext('Function'))
 
 
 class MembershipCreateForm(MembershipFormBase):
-    user_id = SelectField(lazy_gettext('Benutzer'))
+    user_id = SelectField(lazy_gettext('User'))
 
     def set_user_choices(self, orgas):
         choices = [(str(orga.id), orga.screen_name) for orga in orgas]

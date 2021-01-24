@@ -13,5 +13,5 @@ from ....util.l10n import LocalizedForm
 
 
 class CreateForm(LocalizedForm):
-    title = StringField(lazy_gettext('Titel'))
-    description = TextAreaField(lazy_gettext('Beschreibung'))
+    title = StringField(lazy_gettext('Title'))
+    description = TextAreaField(lazy_gettext('Description'))

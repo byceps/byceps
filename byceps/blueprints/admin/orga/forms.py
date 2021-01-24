@@ -23,12 +23,12 @@ def validate_user_screen_name(form, field):
     )
 
     if user is None:
-        raise ValidationError(lazy_gettext('Unbekannter Benutzername'))
+        raise ValidationError(lazy_gettext('Unknown username'))
 
     orga_flag = orga_service.find_orga_flag(form.brand_id, user.id)
     if orga_flag is not None:
         raise ValidationError(
-            lazy_gettext('Der Benutzer ist bereits Orga für diese Marke.')
+            lazy_gettext('The user already is an organizer for this brand.')
         )
 
     field.data = user.to_dto()
@@ -41,6 +41,6 @@ class OrgaFlagCreateForm(LocalizedForm):
         self.brand_id = brand_id
 
     user = StringField(
-        lazy_gettext('Benutzername'),
+        lazy_gettext('Username'),
         [InputRequired(), validate_user_screen_name],
     )

@@ -19,7 +19,7 @@ class BoardCreateForm(LocalizedForm):
 
 class CategoryCreateForm(LocalizedForm):
     slug = StringField(lazy_gettext('Slug'), [InputRequired(), Length(max=40)])
-    title = StringField(lazy_gettext('Titel'), [InputRequired(), Length(max=40)])
+    title = StringField(lazy_gettext('Title'), [InputRequired(), Length(max=40)])
     description = StringField(lazy_gettext('Text'), [InputRequired(), Length(max=80)])
 
 

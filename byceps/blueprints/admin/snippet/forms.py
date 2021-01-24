@@ -14,15 +14,15 @@ from ....util.l10n import LocalizedForm
 
 
 class MountpointCreateForm(LocalizedForm):
-    site_id = StringField(lazy_gettext('Site-ID'), [InputRequired()])
-    endpoint_suffix = StringField(lazy_gettext('Bezeichner'), [InputRequired()])
-    url_path = StringField(lazy_gettext('URL-Pfad'), [InputRequired()])
+    site_id = StringField(lazy_gettext('Site ID'), [InputRequired()])
+    endpoint_suffix = StringField(lazy_gettext('Identifier'), [InputRequired()])
+    url_path = StringField(lazy_gettext('URL path'), [InputRequired()])
 
     @staticmethod
     def validate_url_path(form, field):
         if not field.data.startswith('/'):
             raise ValidationError(
-                lazy_gettext('Der URL-Pfad muss mit einem Slash beginnen.')
+                lazy_gettext('URL path has to start with a slash.')
             )
 
 
@@ -31,7 +31,7 @@ class MountpointUpdateForm(MountpointCreateForm):
 
 
 class FragmentCreateForm(LocalizedForm):
-    name = StringField(lazy_gettext('Bezeichner'), [InputRequired()])
+    name = StringField(lazy_gettext('Name'), [InputRequired()])
     body = TextAreaField(lazy_gettext('Text'), [InputRequired()])
 
 
@@ -40,9 +40,9 @@ class FragmentUpdateForm(FragmentCreateForm):
 
 
 class DocumentCreateForm(FragmentCreateForm):
-    title = StringField(lazy_gettext('Titel'), [InputRequired()])
-    head = TextAreaField(lazy_gettext('Seitenkopf'))
-    image_url_path = StringField(lazy_gettext('Bild-URL-Pfad'))
+    title = StringField(lazy_gettext('Title'), [InputRequired()])
+    head = TextAreaField(lazy_gettext('Page header'))
+    image_url_path = StringField(lazy_gettext('Image URL path'))
 
 
 class DocumentUpdateForm(DocumentCreateForm):

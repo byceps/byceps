@@ -15,6 +15,6 @@ from .....util.l10n import LocalizedForm
 
 class CancelForm(LocalizedForm):
     reason = TextAreaField(
-        lazy_gettext('Begründung'),
+        lazy_gettext('Reason'),
         validators=[InputRequired(), Length(min=10, max=1000)],
     )

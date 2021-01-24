@@ -26,7 +26,7 @@ EMAIL_ADDRESS_PATTERN = re.compile(r'^.+?@.+?\..+?$')
 
 class UserCreateForm(LocalizedForm):
     screen_name = StringField(
-        lazy_gettext('Benutzername'),
+        lazy_gettext('Username'),
         [
             InputRequired(),
             Length(
@@ -37,11 +37,11 @@ class UserCreateForm(LocalizedForm):
         ],
     )
     email_address = StringField(
-        lazy_gettext('E-Mail-Adresse'),
+        lazy_gettext('Email address'),
         [InputRequired(), Length(min=6, max=120)],
     )
     password = PasswordField(
-        lazy_gettext('Passwort'), [InputRequired(), Length(min=8)]
+        lazy_gettext('Password'), [InputRequired(), Length(min=8)]
     )
     is_bot = BooleanField(lazy_gettext('Bot'))
 
@@ -49,25 +49,25 @@ class UserCreateForm(LocalizedForm):
     def validate_screen_name(form, field):
         if user_service.is_screen_name_already_assigned(field.data):
             raise ValueError(
-                lazy_gettext('Dieser Benutzername kann nicht verwendet werden.')
+                lazy_gettext('This username is not available.')
             )
 
     @staticmethod
     def validate_email_address(form, field):
         if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
-            raise ValueError(lazy_gettext('Die E-Mail-Adresse ist ungültig.'))
+            raise ValueError(lazy_gettext('Invalid email address'))
 
         if user_service.is_email_address_already_assigned(field.data):
             raise ValueError(
                 lazy_gettext(
-                    'Diese E-Mail-Adresse kann nicht verwendet werden.'
+                    'This email address is not available.'
                 )
             )
 
     @staticmethod
     def validate_is_bot(form, field):
         if field.data:
-            raise ValueError(lazy_gettext('Bots sind nicht erlaubt.'))
+            raise ValueError(lazy_gettext('Bots are not permitted.'))
 
     def get_field_for_consent_subject_id(self, subject_id: SubjectID):
         name = _generate_consent_subject_field_name(subject_id)
@@ -83,10 +83,10 @@ def assemble_user_create_form(
 
     if real_name_required:
         extra_fields['first_names'] = StringField(
-            lazy_gettext('Vorname(n)'), [InputRequired(), Length(min=2, max=40)]
+            lazy_gettext('First name(s)'), [InputRequired(), Length(min=2, max=40)]
         )
         extra_fields['last_name'] = StringField(
-            lazy_gettext('Nachname'), [InputRequired(), Length(min=2, max=80)]
+            lazy_gettext('Last name(s)'), [InputRequired(), Length(min=2, max=80)]
         )
 
     for subject in required_consent_subjects:

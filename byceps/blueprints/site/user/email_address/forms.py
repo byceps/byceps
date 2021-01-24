@@ -14,4 +14,4 @@ from .....util.l10n import LocalizedForm
 
 
 class RequestConfirmationEmailForm(LocalizedForm):
-    screen_name = StringField(lazy_gettext('Benutzername'), [InputRequired()])
+    screen_name = StringField(lazy_gettext('Username'), [InputRequired()])
