@@ -7,6 +7,7 @@ byceps.blueprints.admin.brand.views
 """
 
 from flask import abort, request
+from flask_babel import gettext
 
 from ....services.brand import (
     service as brand_service,
@@ -99,7 +100,9 @@ def create():
         contact_address=f'info@{brand.id}.example',
     )
 
-    flash_success(f'Die Marke "{brand.title}" wurde angelegt.')
+    flash_success(
+        gettext('Die Marke "%(title)s" wurde angelegt.', title=brand.title)
+    )
     return redirect_to('.index')
 
 
@@ -135,7 +138,9 @@ def update(brand_id):
         brand.id, title, image_filename=image_filename
     )
 
-    flash_success(f'Die Marke "{brand.title}" wurde aktualisiert.')
+    flash_success(
+        gettext('Die Marke "%(title)s" wurde aktualisiert.', title=brand.title)
+    )
     return redirect_to('.view', brand_id=brand_id)
 
 
@@ -189,7 +194,7 @@ def email_config_update(brand_id):
         config.brand_id, sender_address, sender_name, contact_address
     )
 
-    flash_success(f'Die E-Mail-Konfiguration wurde aktualisiert.')
+    flash_success(gettext('Die E-Mail-Konfiguration wurde aktualisiert.'))
     return redirect_to('.view', brand_id=brand.id)
 
 

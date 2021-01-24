@@ -9,6 +9,7 @@ byceps.blueprints.admin.news.views
 from datetime import date, datetime
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from ....services.brand import service as brand_service
 from ....services.image import service as image_service
@@ -101,7 +102,12 @@ def channel_create(brand_id):
         brand.id, channel_id, url_prefix
     )
 
-    flash_success(f'Der News-Kanal mit der ID "{channel.id}" wurde angelegt.')
+    flash_success(
+        gettext(
+            'Der News-Kanal mit der ID "%(channel_id)s" wurde angelegt.',
+            channel_id=channel.id,
+        )
+    )
     return redirect_to('.channel_view', channel_id=channel.id)
 
 
@@ -191,7 +197,12 @@ def image_create(item_id):
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
 
-    flash_success(f'Das Newsbild #{image.number} wurde hinzugefügt.')
+    flash_success(
+        gettext(
+            'Das Newsbild #%(image_number)s wurde hinzugefügt.',
+            image_number=image.number,
+        )
+    )
 
     return redirect_to('.item_view', item_id=image.item_id)
 
@@ -231,7 +242,12 @@ def image_update(image_id):
         image.id, alt_text=alt_text, caption=caption, attribution=attribution,
     )
 
-    flash_success(f'Das Newsbild #{image.number} wurde aktualisiert.')
+    flash_success(
+        gettext(
+            'Das Newsbild #%(image_number)s wurde aktualisiert.',
+            image_number=image.number,
+        )
+    )
 
     return redirect_to('.item_view', item_id=image.item_id)
 
@@ -386,7 +402,9 @@ def item_create(channel_id):
         channel.id, slug, creator.id, title, body, image_url_path=image_url_path
     )
 
-    flash_success(f'Die News "{item.title}" wurde angelegt.')
+    flash_success(
+        gettext('Die News "%(title)s" wurde angelegt.', title=item.title)
+    )
 
     return redirect_to('.item_view', item_id=item.id)
 
@@ -432,7 +450,9 @@ def item_update(item_id):
         item.id, slug, creator.id, title, body, image_url_path=image_url_path
     )
 
-    flash_success(f'Die News "{item.title}" wurde aktualisiert.')
+    flash_success(
+        gettext('Die News "%(title)s" wurde aktualisiert.', title=item.title)
+    )
 
     return redirect_to('.item_view', item_id=item.id)
 
@@ -472,7 +492,11 @@ def item_publish_later(item_id):
 
     news_signals.item_published.send(None, event=event)
 
-    flash_success(f'Die News "{item.title}" wird später veröffentlicht.')
+    flash_success(
+        gettext(
+            'Die News "%(title)s" wird später veröffentlicht.', title=item.title
+        )
+    )
 
     return redirect_to('.item_view', item_id=item.id)
 
@@ -488,7 +512,9 @@ def item_publish_now(item_id):
 
     news_signals.item_published.send(None, event=event)
 
-    flash_success(f'Die News "{item.title}" wurde veröffentlicht.')
+    flash_success(
+        gettext('Die News "%(title)s" wurde veröffentlicht.', title=item.title)
+    )
 
 
 # -------------------------------------------------------------------- #

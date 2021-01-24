@@ -19,6 +19,7 @@ from flask import (
     stream_with_context,
     url_for,
 )
+from flask_babel import gettext
 
 from .framework.flash import flash_notice
 
@@ -29,7 +30,7 @@ def login_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not g.user.is_active:
-            flash_notice('Bitte melde dich an.')
+            flash_notice(gettext('Bitte melde dich an.'))
             return redirect_to('authentication.login.login_form')
         return func(*args, **kwargs)
 

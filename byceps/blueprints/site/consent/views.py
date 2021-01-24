@@ -10,6 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from ....services.consent import consent_service, subject_service
 from ....services.verification_token import (
@@ -75,7 +76,7 @@ def consent(token):
     try:
         subject_service.get_subjects(subject_ids_from_form)
     except subject_service.UnknownSubjectId:
-        flash_error('Unbekanntes Zustimmungsthema')
+        flash_error(gettext('Unbekanntes Zustimmungsthema'))
         return consent_form(token, erroneous_form=form)
 
     expressed_at = datetime.utcnow()
@@ -84,7 +85,7 @@ def consent(token):
     )
 
     flash_success(
-        'Vielen Dank für deine Zustimmung. Bitte melde dich erneut an.'
+        gettext('Vielen Dank für deine Zustimmung. Bitte melde dich erneut an.')
     )
     return redirect_to('authentication.login.login_form')
 
@@ -107,7 +108,7 @@ def _get_verification_token_or_404(token_value):
     )
 
     if verification_token is None:
-        flash_error('Unbekannter Bestätigungscode.')
+        flash_error(gettext('Unbekannter Bestätigungscode'))
         abort(404)
 
     return verification_token

@@ -7,6 +7,7 @@ byceps.blueprints.admin.webhook.views
 """
 
 from flask import abort
+from flask_babel import gettext
 
 from ....announce.helpers import call_webhook
 from ....services.webhooks import service as webhook_service
@@ -51,11 +52,13 @@ def test(webhook_id):
     text = 'Test, test … is this thing on?!'
     try:
         call_webhook(webhook, text)
-        flash_success('Der Webhook-Aufruf war erfolgreich.', icon='success')
+        flash_success(
+            gettext('Der Webhook-Aufruf war erfolgreich.'), icon='success'
+        )
     except Exception as e:
         flash_error(
-            'Der Webhook-Aufruf ist fehlgeschlagen:'
-            f'<br><pre style="white-space: pre-wrap;">{e}</pre>',
+            gettext('Der Webhook-Aufruf ist fehlgeschlagen:')
+            + f'<br><pre style="white-space: pre-wrap;">{e}</pre>',
             icon='warning',
             text_is_safe=True,
         )

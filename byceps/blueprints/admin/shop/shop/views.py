@@ -7,6 +7,7 @@ byceps.blueprints.admin.shop.shop.views
 """
 
 from flask import abort, request, url_for
+from flask_babel import gettext
 
 from .....services.brand import service as brand_service
 from .....services.shop.order import service as order_service
@@ -86,7 +87,7 @@ def create(brand_id):
 
     shop = shop_service.create_shop(shop_id, brand.id, title)
 
-    flash_success(f'Der Shop wurde angelegt.')
+    flash_success(gettext('Der Shop wurde angelegt.'))
     return url_for('.view', shop_id=shop.id)
 
 

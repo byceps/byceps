@@ -7,6 +7,7 @@ byceps.blueprints.site.ticketing.views
 """
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from ....services.party import service as party_service
 from ....services.ticketing import (
@@ -150,8 +151,12 @@ def appoint_user(ticket_id):
     ticket_user_management_service.appoint_user(ticket.id, user.id, manager.id)
 
     flash_success(
-        f'{user.screen_name} wurde als Nutzer/in '
-        f'von Ticket {ticket.code} eingetragen.'
+        gettext(
+            '%(screen_name)s wurde als Nutzer/in '
+            'von Ticket %(ticket_code)s eingetragen.',
+            screen_name=user.screen_name,
+            ticket_code=ticket.code,
+        )
     )
 
     notification_service.notify_appointed_user(ticket, user, manager)
@@ -179,7 +184,10 @@ def withdraw_user(ticket_id):
     )
 
     flash_success(
-        f'Du wurdest als Nutzer/in von Ticket {ticket.code} eingetragen.'
+        gettext(
+            'Du wurdest als Nutzer/in von Ticket %(ticket_code)s eingetragen.',
+            ticket_code=ticket.code,
+        )
     )
 
 
@@ -236,8 +244,12 @@ def appoint_user_manager(ticket_id):
     )
 
     flash_success(
-        f'{user.screen_name} wurde als Nutzer-Verwalter/in '
-        f'von Ticket {ticket.code} eingetragen.'
+        gettext(
+            '%(screen_name)s wurde als Nutzer-Verwalter/in '
+            'von Ticket %(ticket_code)s eingetragen.',
+            screen_name=user.screen_name,
+            ticket_code=ticket.code,
+        )
     )
 
     notification_service.notify_appointed_user_manager(ticket, user, manager)
@@ -265,7 +277,10 @@ def withdraw_user_manager(ticket_id):
     ticket_user_management_service.withdraw_user_manager(ticket.id, manager.id)
 
     flash_success(
-        f'Der Nutzer-Verwalter von Ticket {ticket.code} wurde entfernt.'
+        gettext(
+            'Der Nutzer-Verwalter von Ticket %(ticket_code)s wurde entfernt.',
+            ticket_code=ticket.code,
+        )
     )
 
     notification_service.notify_withdrawn_user_manager(ticket, user, manager)
@@ -320,8 +335,12 @@ def appoint_seat_manager(ticket_id):
     )
 
     flash_success(
-        f'{user.screen_name} wurde als Sitzplatz-Verwalter/in '
-        f'von Ticket {ticket.code} eingetragen.'
+        gettext(
+            '%(screen_name)s wurde als Sitzplatz-Verwalter/in '
+            'von Ticket %(ticket_code)s eingetragen.',
+            screen_name=user.screen_name,
+            ticket_code=ticket.code,
+        )
     )
 
     notification_service.notify_appointed_seat_manager(ticket, user, manager)
@@ -347,7 +366,10 @@ def withdraw_seat_manager(ticket_id):
     ticket_seat_management_service.withdraw_seat_manager(ticket.id, manager.id)
 
     flash_success(
-        f'Der Sitzplatz-Verwalter von Ticket {ticket.code} wurde entfernt.'
+        gettext(
+            'Der Sitzplatz-Verwalter von Ticket %(ticket_code)s wurde entfernt.',
+            ticket_code=ticket.code,
+        )
     )
 
     notification_service.notify_withdrawn_seat_manager(ticket, user, manager)
@@ -358,7 +380,7 @@ def withdraw_seat_manager(ticket_id):
 
 def _abort_if_ticket_management_disabled():
     if not _is_ticket_management_enabled():
-        flash_error('Tickets können derzeit nicht verändert werden.')
+        flash_error(gettext('Tickets können derzeit nicht verändert werden.'))
         abort(403)
 
 
@@ -385,7 +407,9 @@ def _get_ticket_or_404(ticket_id):
 def _abort_if_ticket_user_checked_in(ticket):
     if ticket.user_checked_in:
         flash_error(
-            'Es ist bereits jemand mit diesem Ticket eingecheckt worden.'
+            gettext(
+                'Es ist bereits jemand mit diesem Ticket eingecheckt worden.'
+            )
         )
         abort(403)
 

@@ -10,6 +10,7 @@ from datetime import datetime
 from decimal import Decimal
 
 from flask import abort, request
+from flask_babel import gettext
 
 from .....services.brand import service as brand_service
 from .....services.shop.article import (
@@ -193,7 +194,9 @@ def create(shop_id):
     )
     if not article_number_sequences:
         flash_error(
-            f'Für diesen Shop sind keine Artikelnummer-Sequenzen definiert.'
+            gettext(
+                'Für diesen Shop sind keine Artikelnummer-Sequenzen definiert.'
+            )
         )
         return create_form(shop_id, form)
 
@@ -203,7 +206,9 @@ def create(shop_id):
 
     article_number_sequence_id = form.article_number_sequence_id.data
     if not article_number_sequence_id:
-        flash_error(f'Es wurde keine gültige Artikelnummer-Sequenz angegeben.')
+        flash_error(
+            gettext('Es wurde keine gültige Artikelnummer-Sequenz angegeben.')
+        )
         return create_form(shop_id, form)
 
     article_number_sequence = (
@@ -214,7 +219,9 @@ def create(shop_id):
     if (article_number_sequence is None) or (
         article_number_sequence.shop_id != shop.id
     ):
-        flash_error(f'Es wurde keine gültige Artikelnummer-Sequenz angegeben.')
+        flash_error(
+            gettext('Es wurde keine gültige Artikelnummer-Sequenz angegeben.')
+        )
         return create_form(shop_id, form)
 
     try:
@@ -241,7 +248,12 @@ def create(shop_id):
         max_quantity_per_order,
     )
 
-    flash_success(f'Der Artikel "{article.item_number}" wurde angelegt.')
+    flash_success(
+        gettext(
+            'Der Artikel "%(item_number)s" wurde angelegt.',
+            item_number=article.item_number,
+        )
+    )
     return redirect_to('.view', article_id=article.id)
 
 
@@ -316,7 +328,12 @@ def update(article_id):
         shipping_required,
     )
 
-    flash_success(f'Der Artikel "{article.description}" wurde aktualisiert.')
+    flash_success(
+        gettext(
+            'Der Artikel "%(description)s" wurde aktualisiert.',
+            description=article.description,
+        )
+    )
     return redirect_to('.view', article_id=article.id)
 
 
@@ -375,9 +392,12 @@ def attachment_create(article_id):
     )
 
     flash_success(
-        f'Der Artikel "{article_to_attach.item_number}" '
-        f'wurde {quantity:d} mal an den Artikel "{article.item_number}" '
-        'angehängt.'
+        gettext(
+            'Der Artikel "%(article_to_attach_item_number)s" wurde %(quantity)s mal an den Artikel "%(article_item_number)s" angehängt.',
+            article_to_attach_item_number=article_to_attach.item_number,
+            quantity=quantity,
+            article_item_number=article.item_number,
+        )
     )
     return redirect_to('.view', article_id=article.id)
 
@@ -398,8 +418,11 @@ def attachment_remove(article_id):
     article_service.unattach_article(attached_article.id)
 
     flash_success(
-        f'Artikel "{article.item_number}" ist nun nicht mehr '
-        f'an Artikel "{attached_to_article.item_number}" angehängt.'
+        gettext(
+            'Artikel "%(article_item_number)s" ist nun nicht mehr an Artikel "%(attached_to_article_item_number)s" angehängt.',
+            article_item_number=article.item_number,
+            attached_to_article_item_number=attached_to_article.item_number,
+        )
     )
 
 
@@ -444,13 +467,18 @@ def create_number_sequence(shop_id):
     )
     if sequence_id is None:
         flash_error(
-            'Die Artikelnummer-Sequenz konnte nicht angelegt werden. '
-            f'Ist das Präfix "{prefix}" bereits definiert?'
+            gettext(
+                'Die Artikelnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "%(prefix)s" bereits definiert?',
+                prefix=prefix,
+            )
         )
         return create_number_sequence_form(shop.id, form)
 
     flash_success(
-        f'Die Artikelnummer-Sequenz mit dem Präfix "{prefix}" wurde angelegt.'
+        gettext(
+            'Die Artikelnummer-Sequenz mit dem Präfix "%(prefix)s" wurde angelegt.',
+            prefix=prefix,
+        )
     )
     return redirect_to('.index_for_shop', shop_id=shop.id)
 

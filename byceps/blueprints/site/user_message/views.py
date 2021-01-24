@@ -9,6 +9,7 @@ Send messages from one user to another.
 """
 
 from flask import abort, g, request, url_for
+from flask_babel import gettext
 
 from ....services.user import service as user_service
 from ....services.user_message import service as user_message_service
@@ -59,7 +60,10 @@ def create(recipient_id):
     )
 
     flash_success(
-        f'Deine Nachricht an {recipient.screen_name} wurde versendet.'
+        gettext(
+            'Deine Nachricht an %(screen_name)s wurde versendet.',
+            screen_name=recipient.screen_name,
+        )
     )
 
     return redirect_to('user_profile.view', user_id=recipient.id)

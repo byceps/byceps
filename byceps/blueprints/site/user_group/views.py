@@ -7,6 +7,7 @@ byceps.blueprints.site.user_group.views
 """
 
 from flask import g, request
+from flask_babel import gettext
 
 from ....services.user_group import service as user_group_service
 from ....util.framework.blueprint import create_blueprint
@@ -37,7 +38,9 @@ def create_form(erroneous_form=None):
     """Show a form to create a group."""
     if not g.user.is_active:
         flash_error(
-            'Du musst angemeldet sein, um eine Benutzergruppe erstellen zu können.'
+            gettext(
+                'Du musst angemeldet sein, um eine Benutzergruppe erstellen zu können.'
+            )
         )
         return redirect_to('.index')
 
@@ -53,7 +56,9 @@ def create():
     """Create a group."""
     if not g.user.is_active:
         flash_error(
-            'Du musst angemeldet sein, um eine Benutzergruppe erstellen zu können.'
+            gettext(
+                'Du musst angemeldet sein, um eine Benutzergruppe erstellen zu können.'
+            )
         )
         return redirect_to('.index')
 
@@ -65,5 +70,10 @@ def create():
 
     group = user_group_service.create_group(creator.id, title, description)
 
-    flash_success(f'Die Gruppe "{group.title}" wurde erstellt.')
+    flash_success(
+        gettext(
+            'Die Gruppe "%(group_title)s" wurde erstellt.',
+            group_title=group.title,
+        )
+    )
     return redirect_to('.index')

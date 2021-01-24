@@ -9,6 +9,7 @@ byceps.blueprints.site.user.settings.views
 from typing import Optional
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from .....config import get_app_mode
 from .....services.brand import settings_service as brand_settings_service
@@ -90,7 +91,12 @@ def change_screen_name():
 
     user_signals.screen_name_changed.send(None, event=event)
 
-    flash_success(f'Dein Benutzername wurde zu "{new_screen_name}" geändert.')
+    flash_success(
+        gettext(
+            'Dein Benutzername wurde zu "%(new_screen_name)s" geändert.',
+            new_screen_name=new_screen_name,
+        )
+    )
 
     return redirect_to('.view')
 
@@ -144,7 +150,7 @@ def details_update():
         current_user.id,  # initiator_id
     )
 
-    flash_success('Deine Daten wurden gespeichert.')
+    flash_success(gettext('Deine Daten wurden gespeichert.'))
 
     user_signals.details_updated.send(None, event=event)
 

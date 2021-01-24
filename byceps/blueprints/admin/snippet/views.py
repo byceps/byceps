@@ -7,6 +7,7 @@ byceps.blueprints.admin.snippet.views
 """
 
 from flask import abort, g, request, url_for
+from flask_babel import gettext
 
 from ....services.brand import service as brand_service
 from ....services.site import service as site_service
@@ -192,7 +193,11 @@ def create_document(scope_type, scope_name):
         image_url_path=image_url_path,
     )
 
-    flash_success(f'Das Dokument "{version.snippet.name}" wurde angelegt.')
+    flash_success(
+        gettext(
+            'Das Dokument "%(name)s" wurde angelegt.', name=version.snippet.name
+        )
+    )
 
     snippet_signals.snippet_created.send(None, event=event)
 
@@ -246,7 +251,12 @@ def update_document(snippet_id):
         image_url_path=image_url_path,
     )
 
-    flash_success(f'Das Dokument "{version.snippet.name}" wurde aktualisiert.')
+    flash_success(
+        gettext(
+            'Das Dokument "%(name)s" wurde aktualisiert.',
+            name=version.snippet.name,
+        )
+    )
 
     snippet_signals.snippet_updated.send(None, event=event)
 
@@ -331,7 +341,11 @@ def create_fragment(scope_type, scope_name):
         scope, name, creator.id, body
     )
 
-    flash_success(f'Das Fragment "{version.snippet.name}" wurde angelegt.')
+    flash_success(
+        gettext(
+            'Das Fragment "%(name)s" wurde angelegt.', name=version.snippet.name
+        )
+    )
 
     snippet_signals.snippet_created.send(None, event=event)
 
@@ -377,7 +391,12 @@ def update_fragment(snippet_id):
         snippet.id, creator.id, body
     )
 
-    flash_success(f'Das Fragment "{version.snippet.name}" wurde aktualisiert.')
+    flash_success(
+        gettext(
+            'Das Fragment "%(name)s" wurde aktualisiert.',
+            name=version.snippet.name,
+        )
+    )
 
     snippet_signals.snippet_updated.send(None, event=event)
 
@@ -432,12 +451,16 @@ def delete_snippet(snippet_id):
 
     if not success:
         flash_error(
-            f'Das Snippet "{snippet_name}" konnte nicht gelöscht werden. '
-            'Ist es noch gemountet?'
+            gettext(
+                'Das Snippet "%(snippet_name)s" konnte nicht gelöscht werden. Ist es noch gemountet?',
+                snippet_name=snippet_name,
+            )
         )
         return url_for('.view_current_version', snippet_id=snippet.id)
 
-    flash_success(f'Das Snippet "{snippet_name}" wurde gelöscht.')
+    flash_success(
+        gettext('Das Snippet "%(name)s" wurde gelöscht.', name=snippet_name)
+    )
     snippet_signals.snippet_deleted.send(None, event=event)
     return url_for(
         '.index_for_scope', scope_type=scope.type_, scope_name=scope.name
@@ -515,7 +538,12 @@ def create_mountpoint(snippet_id):
         site_id, endpoint_suffix, url_path, snippet.id
     )
 
-    flash_success(f'Der Mountpoint für "{mountpoint.url_path}" wurde angelegt.')
+    flash_success(
+        gettext(
+            'Der Mountpoint für "%(url_path)s" wurde angelegt.',
+            url_path=mountpoint.url_path,
+        )
+    )
     return redirect_to('.index_mountpoints', site_id=site_id)
 
 
@@ -533,7 +561,12 @@ def delete_mountpoint(mountpoint_id):
 
     mountpoint_service.delete_mountpoint(mountpoint.id)
 
-    flash_success(f'Der Mountpoint für "{url_path}" wurde entfernt.')
+    flash_success(
+        gettext(
+            'Der Mountpoint für "%(url_path)s" wurde entfernt.',
+            url_path=url_path,
+        )
+    )
 
 
 # -------------------------------------------------------------------- #

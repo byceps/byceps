@@ -7,6 +7,7 @@ byceps.blueprints.admin.orga_team.views
 """
 
 from flask import abort, request
+from flask_babel import gettext
 
 from ....services.orga_team import service as orga_team_service
 from ....services.party import service as party_service
@@ -94,8 +95,12 @@ def team_create(party_id):
     team = orga_team_service.create_team(party.id, title)
 
     flash_success(
-        f'Das Team "{team.title}" wurde '
-        f'für die Party "{party.title}" erstellt.'
+        gettext(
+            'Das Team "%(team_title)s" wurde '
+            'für die Party "%(party_title)s" erstellt.',
+            team_title=team.title,
+            party_title=party.title,
+        )
     )
     return redirect_to('.teams_for_party', party_id=party.id)
 
@@ -109,7 +114,10 @@ def team_delete(team_id):
 
     if orga_team_service.has_team_memberships(team.id):
         flash_error(
-            f'Orga team "{team.title}" cannot be deleted because it has members.'
+            gettext(
+                'Orga team "%(team_title)s" cannot be deleted because it has members.',
+                team_title=team.title,
+            )
         )
         return
 
@@ -117,7 +125,7 @@ def team_delete(team_id):
 
     orga_team_service.delete_team(team.id)
 
-    flash_success(f'Das Team "{title}" wurde gelöscht.')
+    flash_success(gettext('Das Team "%(title)s" wurde gelöscht.', title=title))
 
 
 @blueprint.route('/teams/<target_party_id>/copy')
@@ -130,8 +138,9 @@ def teams_copy_form(target_party_id, erroneous_form=None):
     team_count = orga_team_service.count_teams_for_party(target_party.id)
     if team_count:
         flash_error(
-            'Diese Party hat bereits Orga-Teams. '
-            'Es können keine weiteren hinzu kopiert werden.'
+            gettext(
+                'Diese Party hat bereits Orga-Teams. Es können keine weiteren hinzu kopiert werden.'
+            )
         )
         return redirect_to('.teams_for_party', party_id=target_party.id)
 
@@ -148,8 +157,9 @@ def teams_copy_form(target_party_id, erroneous_form=None):
 
     if not parties:
         flash_error(
-            'Es sind keine anderen Partys vorhanden, von denen Orga-Teams '
-            'kopiert werden können.'
+            gettext(
+                'Es sind keine anderen Partys vorhanden, von denen Orga-Teams kopiert werden können.'
+            )
         )
         return redirect_to('.teams_for_party', party_id=target_party.id)
 
@@ -173,8 +183,9 @@ def teams_copy(target_party_id):
     target_team_count = orga_team_service.count_teams_for_party(target_party.id)
     if target_team_count:
         flash_error(
-            'Diese Party hat bereits Orga-Teams. '
-            'Es können keine weiteren hinzu kopiert werden.'
+            gettext(
+                'Diese Party hat bereits Orga-Teams. Es können keine weiteren hinzu kopiert werden.'
+            )
         )
         return redirect_to('.teams_for_party', party_id=target_party.id)
 
@@ -192,8 +203,13 @@ def teams_copy(target_party_id):
     )
 
     flash_success(
-        f'{copied_teams_count:d} Team(s) wurde von Party '
-        f'"{source_party.title}" zu Party "{target_party.title}" kopiert.'
+        gettext(
+            '%(copied_teams_count)s Team(s) wurde(n) von Party '
+            '"%(source_party_title)s" zu Party "%(target_party_title)s" kopiert.',
+            copied_teams_count=copied_teams_count,
+            source_party_title=source_party.title,
+            target_party_title=target_party.title,
+        )
     )
 
     return redirect_to('.teams_for_party', party_id=target_party.id)
@@ -260,7 +276,11 @@ def membership_create(team_id):
     membership = orga_team_service.create_membership(team.id, user.id, duties)
 
     flash_success(
-        f'{user.screen_name} wurde in das Team "{team.title}" aufgenommen.'
+        gettext(
+            '%(screen_name)s wurde in das Team "%(team_title)s" aufgenommen.',
+            screen_name=user.screen_name,
+            team_title=team.title,
+        )
     )
     return redirect_to('.teams_for_party', party_id=team.party_id)
 
@@ -318,7 +338,10 @@ def membership_update(membership_id):
     orga_team_service.update_membership(membership.id, team.id, duties)
 
     flash_success(
-        f'Die Teammitgliedschaft von {user.screen_name} wurde aktualisiert.'
+        gettext(
+            'Die Teammitgliedschaft von %(screen_name)s wurde aktualisiert.',
+            screen_name=user.screen_name,
+        )
     )
     return redirect_to('.teams_for_party', party_id=team.party_id)
 
@@ -336,7 +359,11 @@ def membership_remove(membership_id):
     orga_team_service.delete_membership(membership.id)
 
     flash_success(
-        f'{user.screen_name} wurde aus dem Team "{team.title}" entfernt.'
+        gettext(
+            '%(screen_name)s wurde aus dem Team "%(team_title)s" entfernt.',
+            screen_name=user.screen_name,
+            team_title=team.title,
+        )
     )
 
 

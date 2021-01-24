@@ -7,6 +7,7 @@ byceps.blueprints.admin.user_badge.views
 """
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from ....services.brand import service as brand_service
 from ....services.user import service as user_service
@@ -137,7 +138,12 @@ def create():
         featured=featured,
     )
 
-    flash_success(f'Das Abzeichen "{badge.label}" wurde angelegt.')
+    flash_success(
+        gettext(
+            'Das Abzeichen "%(badge_label)s" wurde angelegt.',
+            badge_label=badge.label,
+        )
+    )
     return redirect_to('.index')
 
 
@@ -179,7 +185,12 @@ def update(badge_id):
         badge.id, slug, label, description, image_filename, brand_id, featured
     )
 
-    flash_success(f'Das Abzeichen "{badge.label}" wurde aktualisiert.')
+    flash_success(
+        gettext(
+            'Das Abzeichen "%(badge_label)s" wurde aktualisiert.',
+            badge_label=badge.label,
+        )
+    )
     return redirect_to('.view', badge_id=badge_id)
 
 
@@ -237,7 +248,11 @@ def award(user_id):
     )
 
     flash_success(
-        f'Das Abzeichen "{badge.label}" wurde an {user.screen_name} verliehen.'
+        gettext(
+            'Das Abzeichen "%(badge_label)s" wurde an %(screen_name)s verliehen.',
+            badge_label=badge.label,
+            screen_name=user.screen_name,
+        )
     )
 
     user_badge_signals.user_badge_awarded.send(None, event=event)

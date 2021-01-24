@@ -10,6 +10,7 @@ import dataclasses
 from datetime import datetime
 
 from flask import abort, request
+from flask_babel import gettext
 
 from .....services.party import service as party_service
 from .....services.tourney import tourney_service
@@ -93,7 +94,9 @@ def create(party_id):
         starts_at,
     )
 
-    flash_success(f'Das Turnier "{tourney.title}" wurde angelegt.')
+    flash_success(
+        gettext('Das Turnier "%(title)s" wurde angelegt.', title=tourney.title)
+    )
 
     return redirect_to('.index', party_id=tourney.party_id)
 
@@ -161,7 +164,11 @@ def update(tourney_id):
         starts_at,
     )
 
-    flash_success(f'Das Turnier "{tourney.title}" wurde aktualisiert.')
+    flash_success(
+        gettext(
+            'Das Turnier "%(title)s" wurde aktualisiert.', title=tourney.title
+        )
+    )
 
     return redirect_to('.index', party_id=tourney.party_id)
 

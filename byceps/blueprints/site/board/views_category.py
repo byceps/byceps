@@ -7,6 +7,7 @@ byceps.blueprints.site.board.views_category
 """
 
 from flask import abort, g, url_for
+from flask_babel import gettext
 
 from ....services.board import (
     category_query_service as board_category_query_service,
@@ -95,7 +96,7 @@ def mark_all_topics_in_category_as_viewed(category_id):
     )
 
     flash_success(
-        'Alle Themen in dieser Kategorie wurden als gelesen markiert.'
+        gettext('Alle Themen in dieser Kategorie wurden als gelesen markiert.')
     )
 
     return url_for('.category_view', slug=category.slug)

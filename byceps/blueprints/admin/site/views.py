@@ -10,6 +10,7 @@ import dataclasses
 from typing import Iterable, Iterator
 
 from flask import abort, request
+from flask_babel import gettext
 
 from ....services.board import board_service
 from ....services.brand import service as brand_service
@@ -203,7 +204,12 @@ def create(brand_id):
     if party_id:
         party = party_service.find_party(party_id)
         if not party:
-            flash_error(f'Die Party-ID "{party_id}" ist unbekannt.')
+            flash_error(
+                gettext(
+                    'Die Party-ID "%(party_id)s" ist unbekannt.',
+                    party_id=party_id,
+                )
+            )
             return create_form(brand_id, form)
     else:
         party_id = None
@@ -222,7 +228,10 @@ def create(brand_id):
         storefront_id=storefront_id,
     )
 
-    flash_success(f'Die Site "{site.title}" wurde angelegt.')
+    flash_success(
+        gettext('Die Site "%(title)s" wurde angelegt.', title=site.title)
+    )
+
     return redirect_to('.view', site_id=site.id)
 
 
@@ -271,7 +280,12 @@ def update(site_id):
     if party_id:
         party = party_service.find_party(party_id)
         if not party:
-            flash_error(f'Die Party-ID "{party_id}" ist unbekannt.')
+            flash_error(
+                gettext(
+                    'Die Party-ID "%(party_id)s" ist unbekannt.',
+                    party_id=party_id,
+                )
+            )
             return update_form(site.id, form)
     else:
         party_id = None
@@ -294,7 +308,9 @@ def update(site_id):
     except site_service.UnknownSiteId:
         abort(404, f'Unknown site ID "{site_id}".')
 
-    flash_success(f'Die Site "{site.title}" wurde aktualisiert.')
+    flash_success(
+        gettext('Die Site "%(title)s" wurde aktualisiert.', title=site.title)
+    )
 
     return redirect_to('.view', site_id=site.id)
 

@@ -7,6 +7,7 @@ byceps.blueprints.site.user.email_address.views
 """
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from .....services.user import email_address_verification_service
 from .....services.user import (
@@ -53,24 +54,39 @@ def request_confirmation_email():
     )
 
     if (user is None) or user.deleted:
-        flash_error(f'Der Benutzername "{screen_name}" ist unbekannt.')
+        flash_error(
+            gettext(
+                'Der Benutzername "%(screen_name)s" ist unbekannt.',
+                screen_name=screen_name,
+            )
+        )
         return request_confirmation_email_form(form)
 
     if user.email_address is None:
         flash_error(
-            f'Für das Benutzerkonto "{screen_name}" ist keine E-Mail-Adresse hinterlegt.'
+            gettext(
+                'Für das Benutzerkonto "%(screen_name)s" ist keine E-Mail-Adresse hinterlegt.',
+                screen_name=screen_name,
+            )
         )
         return request_confirmation_email_form(form)
 
     if user.email_address_verified:
         flash_notice(
-            f'Die E-Mail-Adresse für den Benutzernamen "{user.screen_name}" '
-            'wurde bereits bestätigt.'
+            gettext(
+                'Die E-Mail-Adresse für den Benutzernamen "%(screen_name)s" wurde bereits bestätigt.',
+                screen_name=user.screen_name,
+            )
         )
         return request_confirmation_email_form()
 
     if user.suspended:
-        flash_error(f'Das Benutzerkonto "{screen_name}" ist gesperrt.')
+        flash_error(
+            gettext(
+                'Das Benutzerkonto "%(screen_name)s" ist gesperrt.',
+                screen_name=screen_name,
+            )
+        )
         return request_confirmation_email_form()
 
     email_address_verification_service.send_email_address_confirmation_email(
@@ -78,9 +94,12 @@ def request_confirmation_email():
     )
 
     flash_success(
-        'Der Link zur Bestätigung der für den '
-        f'Benutzernamen "{user.screen_name}" '
-        'hinterlegten E-Mail-Adresse wurde erneut versendet.'
+        gettext(
+            'Der Link zur Bestätigung der für den Benutzernamen '
+            '"%(screen_name)s" hinterlegten E-Mail-Adresse '
+            'wurde erneut versendet.',
+            screen_name=user.screen_name,
+        )
     )
 
     return redirect_to('.request_confirmation_email_form')
@@ -101,18 +120,21 @@ def confirm(token):
 
     user = user_service.get_db_user(verification_token.user_id)
     if (user is None) or user.suspended or user.deleted:
-        flash_error('Es wurde kein gültiges Token angegeben.')
+        flash_error(gettext('Es wurde kein gültiges Token angegeben.'))
         abort(404)
 
     event = email_address_verification_service.confirm_email_address(
         verification_token
     )
-    flash_success('Die E-Mail-Adresse wurde bestätigt.')
+    flash_success(gettext('Die E-Mail-Adresse wurde bestätigt.'))
 
     if not user.initialized:
         user_command_service.initialize_account(user.id)
         flash_success(
-            f'Das Benutzerkonto "{user.screen_name}" wurde aktiviert.'
+            gettext(
+                'Das Benutzerkonto "%(screen_name)s" wurde aktiviert.',
+                screen_name=user.screen_name,
+            )
         )
 
     user_signals.email_address_confirmed.send(None, event=event)

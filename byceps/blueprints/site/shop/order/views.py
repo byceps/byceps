@@ -9,6 +9,7 @@ byceps.blueprints.site.shop.order.views
 from decimal import Decimal
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from .....services.country import service as country_service
 from .....services.shop.article import service as article_service
@@ -48,7 +49,7 @@ def order_form(erroneous_form=None):
     shop = shop_service.get_shop(storefront.shop_id)
 
     if storefront.closed:
-        flash_notice('Der Shop ist derzeit geschlossen.')
+        flash_notice(gettext('Der Shop ist derzeit geschlossen.'))
         return {'article_compilation': None}
 
     article_compilation = article_service.get_article_compilation_for_orderable_articles(
@@ -56,7 +57,7 @@ def order_form(erroneous_form=None):
     )
 
     if article_compilation.is_empty():
-        flash_error('Es sind keine Artikel verfügbar.')
+        flash_error(gettext('Es sind keine Artikel verfügbar.'))
         return {'article_compilation': None}
 
     is_logged_in = g.user.is_active
@@ -97,7 +98,7 @@ def order():
     shop = shop_service.get_shop(storefront.shop_id)
 
     if storefront.closed:
-        flash_notice('Der Shop ist derzeit geschlossen.')
+        flash_notice(gettext('Der Shop ist derzeit geschlossen.'))
         return order_form()
 
     article_compilation = article_service.get_article_compilation_for_orderable_articles(
@@ -105,7 +106,7 @@ def order():
     )
 
     if article_compilation.is_empty():
-        flash_error('Es sind keine Artikel verfügbar.')
+        flash_error(gettext('Es sind keine Artikel verfügbar.'))
         return order_form()
 
     ArticlesOrderForm = assemble_articles_order_form(article_compilation)
@@ -117,7 +118,7 @@ def order():
     cart = form.get_cart(article_compilation)
 
     if cart.is_empty():
-        flash_error('Es wurden keine Artikel ausgewählt.')
+        flash_error(gettext('Es wurden keine Artikel ausgewählt.'))
         return order_form(form)
 
     orderer = form.get_orderer(g.user.id)
@@ -125,7 +126,7 @@ def order():
     try:
         order = _place_order(storefront.id, orderer, cart)
     except order_service.OrderFailed:
-        flash_error('Die Bestellung ist fehlgeschlagen.')
+        flash_error(gettext('Die Bestellung ist fehlgeschlagen.'))
         return order_form(form)
 
     _flash_order_success(order)
@@ -148,7 +149,7 @@ def order_single_form(article_id, erroneous_form=None):
     form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
 
     if storefront.closed:
-        flash_notice('Der Shop ist derzeit geschlossen.')
+        flash_notice(gettext('Der Shop ist derzeit geschlossen.'))
         return {
             'form': form,
             'article': None,
@@ -161,14 +162,14 @@ def order_single_form(article_id, erroneous_form=None):
     country_names = country_service.get_country_names()
 
     if article.not_directly_orderable:
-        flash_error('Der Artikel kann nicht direkt bestellt werden.')
+        flash_error(gettext('Der Artikel kann nicht direkt bestellt werden.'))
         return {
             'form': form,
             'article': None,
         }
 
     if order_service.has_user_placed_orders(user.id, shop.id):
-        flash_error('Du kannst keine weitere Bestellung aufgeben.')
+        flash_error(gettext('Du kannst keine weitere Bestellung aufgeben.'))
         return {
             'form': form,
             'article': None,
@@ -177,7 +178,7 @@ def order_single_form(article_id, erroneous_form=None):
     if article.quantity < 1 or not article_service.is_article_available_now(
         article
     ):
-        flash_error('Der Artikel ist nicht verfügbar.')
+        flash_error(gettext('Der Artikel ist nicht verfügbar.'))
         return {
             'form': form,
             'article': None,
@@ -202,11 +203,11 @@ def order_single(article_id):
     shop = shop_service.get_shop(storefront.shop_id)
 
     if storefront.closed:
-        flash_notice('Der Shop ist derzeit geschlossen.')
+        flash_notice(gettext('Der Shop ist derzeit geschlossen.'))
         return order_single_form(article.id)
 
     if article.not_directly_orderable:
-        flash_error('Der Artikel kann nicht direkt bestellt werden.')
+        flash_error(gettext('Der Artikel kann nicht direkt bestellt werden.'))
         return order_single_form(article.id)
 
     article_compilation = article_service.get_article_compilation_for_single_article(
@@ -216,13 +217,13 @@ def order_single(article_id):
     user = g.user
 
     if order_service.has_user_placed_orders(user.id, shop.id):
-        flash_error('Du kannst keine weitere Bestellung aufgeben.')
+        flash_error(gettext('Du kannst keine weitere Bestellung aufgeben.'))
         return order_single_form(article.id)
 
     if article.quantity < 1 or not article_service.is_article_available_now(
         article
     ):
-        flash_error('Der Artikel ist nicht verfügbar.')
+        flash_error(gettext('Der Artikel ist nicht verfügbar.'))
         return order_single_form(article.id)
 
     form = OrderForm(request.form)
@@ -236,7 +237,7 @@ def order_single(article_id):
     try:
         order = _place_order(storefront.id, orderer, cart)
     except order_service.OrderFailed:
-        flash_error('Die Bestellung ist fehlgeschlagen.')
+        flash_error(gettext('Die Bestellung ist fehlgeschlagen.'))
         return order_form(form)
 
     _flash_order_success(order)
@@ -285,8 +286,11 @@ def _place_order(storefront_id, orderer, cart):
 
 def _flash_order_success(order):
     flash_success(
-        'Deine Bestellung mit der '
-        f'Bestellnummer <strong>{order.order_number}</strong> '
-        'wurde entgegengenommen. Vielen Dank!',
+        gettext(
+            'Deine Bestellung mit der '
+            'Bestellnummer <strong>%(order_number)s</strong> '
+            'wurde entgegengenommen. Vielen Dank!',
+            order_number=order.order_number,
+        ),
         text_is_safe=True,
     )

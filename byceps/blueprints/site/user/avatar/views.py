@@ -7,6 +7,7 @@ byceps.blueprints.site.user.avatar.views
 """
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from .....services.image import service as image_service
 from .....services.user import service as user_service
@@ -66,7 +67,7 @@ def update():
 
     _update(user.id, image)
 
-    flash_success('Dein Avatarbild wurde aktualisiert.', icon='upload')
+    flash_success(gettext('Dein Avatarbild wurde aktualisiert.'), icon='upload')
     user_avatar_signals.avatar_updated.send(None, user_id=user.id)
 
     return redirect_to('user_settings.view')
@@ -100,10 +101,12 @@ def delete():
         # No avatar selected.
         # But that's ok, deletions should be idempotent.
         flash_notice(
-            'Es ist kein Avatarbild gesetzt, das entfernt werden könnte.'
+            gettext(
+                'Es ist kein Avatarbild gesetzt, das entfernt werden könnte.'
+            )
         )
     else:
-        flash_success('Dein Avatarbild wurde entfernt.')
+        flash_success(gettext('Dein Avatarbild wurde entfernt.'))
 
 
 def _get_current_user_or_404():

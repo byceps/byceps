@@ -7,6 +7,7 @@ byceps.blueprints.admin.ticketing.views
 """
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from ....services.party import service as party_service
 from ....services.shop.order import service as order_service
@@ -98,8 +99,9 @@ def update_code_form(ticket_id, erroneous_form=None):
 
     if ticket.user_checked_in:
         flash_error(
-            'Der Code kann nicht geändert werden, da bereits jemand '
-            'mit diesem Ticket eingecheckt worden ist.'
+            gettext(
+                'Der Code kann nicht geändert werden, da bereits jemand mit diesem Ticket eingecheckt worden ist.'
+            )
         )
         return redirect_to('.view_ticket', ticket_id=ticket.id)
 
@@ -122,8 +124,9 @@ def update_code(ticket_id):
 
     if ticket.user_checked_in:
         flash_error(
-            'Der Code kann nicht geändert werden, da bereits jemand '
-            'mit diesem Ticket eingecheckt worden ist.'
+            gettext(
+                'Der Code kann nicht geändert werden, da bereits jemand mit diesem Ticket eingecheckt worden ist.'
+            )
         )
         return redirect_to('.view_ticket', ticket_id=ticket.id)
 
@@ -136,7 +139,12 @@ def update_code(ticket_id):
 
     ticket_service.update_ticket_code(ticket.id, code, manager.id)
 
-    flash_success(f'Der Code von Ticket {ticket.code} wurde geändert.')
+    flash_success(
+        gettext(
+            'Der Code von Ticket %(ticket_code)s wurde geändert.',
+            ticket_code=ticket.code,
+        )
+    )
 
     return redirect_to('.view_ticket', ticket_id=ticket.id)
 
@@ -178,8 +186,12 @@ def appoint_user(ticket_id):
     ticket_user_management_service.appoint_user(ticket.id, user.id, manager.id)
 
     flash_success(
-        f'{user.screen_name} wurde als Nutzer/in '
-        f'von Ticket {ticket.code} eingetragen.'
+        gettext(
+            '%(screen_name)s wurde als Nutzer/in '
+            'von Ticket %(ticket_code)s eingetragen.',
+            screen_name=user.screen_name,
+            ticket_code=ticket.code,
+        )
     )
 
     return redirect_to('.view_ticket', ticket_id=ticket.id)

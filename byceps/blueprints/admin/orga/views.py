@@ -9,6 +9,7 @@ byceps.blueprints.admin.orga.views
 from typing import Optional
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from ....services.brand import service as brand_service
 from ....services.orga import birthday_service as orga_birthday_service
@@ -99,8 +100,12 @@ def create_orgaflag(brand_id):
     orga_flag = orga_service.add_orga_flag(brand.id, user.id, initiator.id)
 
     flash_success(
-        f'{orga_flag.user.screen_name} wurde das Orga-Flag '
-        f'für die Marke {orga_flag.brand.title} gegeben.'
+        gettext(
+            '%(screen_name)s wurde das Orga-Flag '
+            'für die Marke %(brand_title)s gegeben.',
+            screen_name=orga_flag.user.screen_name,
+            brand_title=orga_flag.brand.title,
+        )
     )
     return redirect_to('.persons_for_brand', brand_id=orga_flag.brand.id)
 
@@ -122,8 +127,12 @@ def remove_orgaflag(brand_id, user_id):
     orga_service.remove_orga_flag(orga_flag, initiator.id)
 
     flash_success(
-        f'{user.screen_name} wurde das Orga-Flag '
-        f'für die Marke {brand.title} entzogen.'
+        gettext(
+            '%(screen_name)s wurde das Orga-Flag '
+            'für die Marke %(brand_title)s entzogen.',
+            screen_name=user.screen_name,
+            brand_title=brand.title,
+        )
     )
 
 

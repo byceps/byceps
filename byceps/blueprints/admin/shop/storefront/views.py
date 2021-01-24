@@ -7,6 +7,7 @@ byceps.blueprints.admin.shop.storefront.views
 """
 
 from flask import abort, request
+from flask_babel import gettext
 
 from .....services.brand import service as brand_service
 from .....services.shop.catalog import service as catalog_service
@@ -123,7 +124,9 @@ def create(shop_id):
     )
     if not order_number_sequences:
         flash_error(
-            f'Für diesen Shop sind keine Bestellnummer-Sequenzen definiert.'
+            gettext(
+                'Für diesen Shop sind keine Bestellnummer-Sequenzen definiert.'
+            )
         )
         return create_form(shop_id, form)
 
@@ -137,7 +140,9 @@ def create(shop_id):
     order_number_sequence_id = form.order_number_sequence_id.data
 
     if not order_number_sequence_id:
-        flash_error('Es wurde keine gültige Bestellnummer-Sequenz angegeben.')
+        flash_error(
+            gettext('Es wurde keine gültige Bestellnummer-Sequenz angegeben.')
+        )
         return create_form(shop_id, form)
 
     order_number_sequence = order_sequence_service.find_order_number_sequence(
@@ -146,7 +151,9 @@ def create(shop_id):
     if (order_number_sequence is None) or (
         order_number_sequence.shop_id != shop.id
     ):
-        flash_error('Es wurde keine gültige Bestellnummer-Sequenz angegeben.')
+        flash_error(
+            gettext('Es wurde keine gültige Bestellnummer-Sequenz angegeben.')
+        )
         return create_form(shop_id, form)
 
     try:
@@ -164,7 +171,12 @@ def create(shop_id):
         catalog_id=catalog_id,
     )
 
-    flash_success(f'Storefront "{storefront.id}" wurde angelegt.')
+    flash_success(
+        gettext(
+            'Storefront "%(storefront_id)s" wurde angelegt.',
+            storefront_id=storefront.id,
+        )
+    )
     return redirect_to('.view', storefront_id=storefront.id)
 
 
@@ -227,7 +239,12 @@ def update(storefront_id):
         storefront.id, catalog_id, order_number_sequence_id, closed
     )
 
-    flash_success(f'Storefront "{storefront.id}" wurde aktualisiert.')
+    flash_success(
+        gettext(
+            'Storefront "%(storefront_id)s" wurde aktualisiert.',
+            storefront_id=storefront.id,
+        )
+    )
     return redirect_to('.view', storefront_id=storefront.id)
 
 

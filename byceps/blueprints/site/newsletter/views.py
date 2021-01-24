@@ -9,6 +9,7 @@ byceps.blueprints.site.newsletter.views
 from datetime import datetime
 
 from flask import abort, g
+from flask_babel import gettext
 
 from ....services.newsletter import command_service, service
 from ....util.framework.blueprint import create_blueprint
@@ -28,7 +29,12 @@ def subscribe(list_id):
 
     command_service.subscribe(g.user.id, list_.id, expressed_at)
 
-    flash_success(f'Du hast dich zum Newsletter "{list_.title}" angemeldet.')
+    flash_success(
+        gettext(
+            'Du hast dich zum Newsletter "%(title)s" angemeldet.',
+            title=list_.title,
+        )
+    )
 
 
 @blueprint.route('/lists/<list_id>/subscription', methods=['DELETE'])
@@ -40,7 +46,12 @@ def unsubscribe(list_id):
 
     command_service.unsubscribe(g.user.id, list_.id, expressed_at)
 
-    flash_success(f'Du hast dich vom Newsletter "{list_.title}" abgemeldet.')
+    flash_success(
+        gettext(
+            'Du hast dich vom Newsletter "%(title)s" abgemeldet.',
+            title=list_.title,
+        )
+    )
 
 
 def _get_list_or_404(list_id):

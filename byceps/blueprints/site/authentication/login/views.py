@@ -7,6 +7,7 @@ byceps.blueprints.site.authentication.login.views
 """
 
 from flask import abort, g, request, url_for
+from flask_babel import gettext
 
 from .....services.authentication.exceptions import AuthenticationFailed
 from .....services.authentication import service as authentication_service
@@ -43,7 +44,10 @@ def login_form():
     """Show login form."""
     if g.user.is_active:
         flash_notice(
-            f'Du bist bereits als Benutzer "{g.user.screen_name}" angemeldet.'
+            gettext(
+                'Du bist bereits als Benutzer "%(screen_name)s" angemeldet.',
+                screen_name=g.user.screen_name,
+            )
         )
         return redirect_to('dashboard.index')
 
@@ -101,7 +105,12 @@ def login():
 
     auth_token = session_service.log_in_user(user.id, request.remote_addr)
     user_session.start(user.id, auth_token, permanent=permanent)
-    flash_success(f'Erfolgreich eingeloggt als {user.screen_name}.')
+    flash_success(
+        gettext(
+            'Erfolgreich eingeloggt als %(screen_name)s.',
+            screen_name=user.screen_name,
+        )
+    )
 
     return [('Location', url_for('dashboard.index'))]
 
@@ -121,7 +130,7 @@ def _is_consent_required(user_id: UserID) -> bool:
 def logout():
     """Log out user by deleting the corresponding cookie."""
     user_session.end()
-    flash_success('Erfolgreich ausgeloggt.')
+    flash_success(gettext('Erfolgreich ausgeloggt.'))
 
 
 # helpers

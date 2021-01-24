@@ -7,6 +7,7 @@ byceps.blueprints.site.seating.views
 """
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from ....services.party import service as party_service
 from ....services.seating import area_service as seating_area_service
@@ -87,7 +88,9 @@ def manage_seats_in_area(slug):
     """Manage seats for assigned tickets in area."""
     if not _is_seat_management_enabled():
         flash_error(
-            'Sitzplatzreservierungen können derzeit nicht verändert werden.'
+            gettext(
+                'Sitzplatzreservierungen können derzeit nicht verändert werden.'
+            )
         )
         return redirect_to('.view_area', slug=slug)
 
@@ -149,10 +152,20 @@ def _get_selected_ticket():
     if selected_ticket_id_arg:
         selected_ticket = ticket_service.find_ticket(selected_ticket_id_arg)
         if selected_ticket is None:
-            flash_error(f'Ticket ID "{selected_ticket_id_arg}" not found.')
+            flash_error(
+                gettext(
+                    'Ticket ID "%(selected_ticket_id_arg)s" not found.',
+                    selected_ticket_id_arg=selected_ticket_id_arg,
+                )
+            )
 
     if (selected_ticket is not None) and selected_ticket.revoked:
-        flash_error(f'Ticket "{selected_ticket.code}" wurde widerrufen.')
+        flash_error(
+            gettext(
+                'Ticket "%(selected_ticket_code)s" wurde widerrufen.',
+                selected_ticket_code=selected_ticket.code,
+            )
+        )
         selected_ticket = None
 
     return selected_ticket
@@ -167,7 +180,9 @@ def occupy_seat(ticket_id, seat_id):
     """Use ticket to occupy seat."""
     if not _is_seat_management_enabled():
         flash_error(
-            'Sitzplatzreservierungen können derzeit nicht verändert werden.'
+            gettext(
+                'Sitzplatzreservierungen können derzeit nicht verändert werden.'
+            )
         )
         return
 
@@ -179,15 +194,19 @@ def occupy_seat(ticket_id, seat_id):
         manager
     ):
         flash_error(
-            'Du bist nicht berechtigt, den Sitzplatz '
-            f'für Ticket {ticket.code} zu verwalten.'
+            gettext(
+                'Du bist nicht berechtigt, den Sitzplatz für Ticket %(ticket_code)s zu verwalten.',
+                ticket_code=ticket.code,
+            )
         )
         return
 
     seat = _get_seat_or_404(seat_id)
 
     if seat.is_occupied:
-        flash_error(f'{seat.label} ist bereits belegt.')
+        flash_error(
+            gettext('%(seat_label)s ist bereits belegt.', seat_label=seat.label)
+        )
         return
 
     try:
@@ -196,20 +215,31 @@ def occupy_seat(ticket_id, seat_id):
         )
     except ticket_exceptions.SeatChangeDeniedForBundledTicket:
         flash_error(
-            f'Ticket {ticket.code} gehört zu einem Paket '
-            'und kann nicht einzeln verwaltet werden.'
+            gettext(
+                'Ticket %(ticket_code)s gehört zu einem Paket und kann nicht einzeln verwaltet werden.',
+                ticket_code=ticket.code,
+            )
         )
         return
     except ticket_exceptions.TicketCategoryMismatch:
         flash_error(
-            f'Ticket {ticket.code} und {seat.label} haben '
-            'unterschiedliche Kategorien.'
+            gettext(
+                'Ticket %(ticket_code)s und %(seat_label)s haben unterschiedliche Kategorien.',
+                ticket_code=ticket.code,
+                seat_label=seat.label,
+            )
         )
         return
     except ValueError:
         abort(404)
 
-    flash_success(f'{seat.label} wurde mit Ticket {ticket.code} reserviert.')
+    flash_success(
+        gettext(
+            '%(seat_label)s wurde mit Ticket %(ticket_code)s reserviert.',
+            seat_label=seat.label,
+            ticket_code=ticket.code,
+        )
+    )
 
 
 @blueprint.route('/ticket/<uuid:ticket_id>/seat', methods=['DELETE'])
@@ -219,14 +249,21 @@ def release_seat(ticket_id):
     """Release the seat."""
     if not _is_seat_management_enabled():
         flash_error(
-            'Sitzplatzreservierungen können derzeit nicht verändert werden.'
+            gettext(
+                'Sitzplatzreservierungen können derzeit nicht verändert werden.'
+            )
         )
         return
 
     ticket = _get_ticket_or_404(ticket_id)
 
     if not ticket.occupied_seat:
-        flash_error(f'Ticket {ticket.code} belegt keinen Sitzplatz.')
+        flash_error(
+            gettext(
+                'Ticket %(ticket_code)s belegt keinen Sitzplatz.',
+                ticket_code=ticket.code,
+            )
+        )
         return
 
     manager = g.user
@@ -235,8 +272,10 @@ def release_seat(ticket_id):
         manager
     ):
         flash_error(
-            'Du bist nicht berechtigt, den Sitzplatz '
-            f'für Ticket {ticket.code} zu verwalten.'
+            gettext(
+                'Du bist nicht berechtigt, den Sitzplatz für Ticket %(ticket_code)s zu verwalten.',
+                ticket_code=ticket.code,
+            )
         )
         return
 
@@ -246,12 +285,16 @@ def release_seat(ticket_id):
         ticket_seat_management_service.release_seat(ticket.id, manager.id)
     except ticket_exceptions.SeatChangeDeniedForBundledTicket:
         flash_error(
-            f'Ticket {ticket.code} gehört zu einem Paket '
-            'und kann nicht einzeln verwaltet werden.'
+            gettext(
+                'Ticket %(ticket_code)s gehört zu einem Paket und kann nicht einzeln verwaltet werden.',
+                ticket_code=ticket.code,
+            )
         )
         return
 
-    flash_success(f'{seat.label} wurde freigegeben.')
+    flash_success(
+        gettext('%(seat_label)s wurde freigegeben.', seat_label=seat.label)
+    )
 
 
 def _is_seat_management_enabled():

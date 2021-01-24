@@ -9,6 +9,7 @@ byceps.blueprints.site.board.views_posting
 import dataclasses
 
 from flask import g, redirect, request
+from flask_babel import gettext
 
 from ....services.board import (
     last_view_service as board_last_view_service,
@@ -69,7 +70,7 @@ def quote_posting_as_bbcode():
 
     posting = board_posting_query_service.find_posting_by_id(posting_id)
     if posting is None:
-        flash_error('Der zu zitierende Beitrag wurde nicht gefunden.')
+        flash_error(gettext('Der zu zitierende Beitrag wurde nicht gefunden.'))
         return
 
     creator = user_service.get_user(posting.creator_id)
@@ -92,18 +93,20 @@ def posting_create(topic_id):
 
     if topic.locked:
         flash_error(
-            'Das Thema ist geschlossen. '
-            'Es können keine Beiträge mehr hinzugefügt werden.',
+            gettext(
+                'Das Thema ist geschlossen. Es können keine Beiträge mehr hinzugefügt werden.'
+            ),
             icon='lock',
         )
         return redirect(h.build_url_for_topic(topic.id))
 
-    if (
-        topic.posting_limited_to_moderators
-        and not g.user.has_permission(BoardPermission.announce)
+    if topic.posting_limited_to_moderators and not g.user.has_permission(
+        BoardPermission.announce
     ):
         flash_error(
-            'In diesem Thema dürfen nur Moderatoren Beiträge hinzufügen.',
+            gettext(
+                'In diesem Thema dürfen nur Moderatoren Beiträge hinzufügen.'
+            ),
             icon='announce',
         )
         return redirect(h.build_url_for_topic(topic.id))
@@ -117,7 +120,7 @@ def posting_create(topic_id):
             topic.category.id, g.user.id
         )
 
-    flash_success('Deine Antwort wurde hinzugefügt.')
+    flash_success(gettext('Deine Antwort wurde hinzugefügt.'))
 
     event = dataclasses.replace(
         event, url=h.build_external_url_for_posting(posting.id)
@@ -144,17 +147,18 @@ def posting_update_form(posting_id, erroneous_form=None):
 
     if posting.topic.locked and not user_may_update:
         flash_error(
-            'Der Beitrag darf nicht bearbeitet werden weil das Thema, '
-            'zu dem dieser Beitrag gehört, gesperrt ist.'
+            gettext(
+                'Der Beitrag darf nicht bearbeitet werden weil das Thema, zu dem dieser Beitrag gehört, gesperrt ist.'
+            )
         )
         return redirect(url)
 
     if posting.topic.hidden or posting.hidden:
-        flash_error('Der Beitrag darf nicht bearbeitet werden.')
+        flash_error(gettext('Der Beitrag darf nicht bearbeitet werden.'))
         return redirect(url)
 
     if not user_may_update:
-        flash_error('Du darfst diesen Beitrag nicht bearbeiten.')
+        flash_error(gettext('Du darfst diesen Beitrag nicht bearbeiten.'))
         return redirect(url)
 
     form = erroneous_form if erroneous_form else PostingUpdateForm(obj=posting)
@@ -179,17 +183,18 @@ def posting_update(posting_id):
 
     if posting.topic.locked and not user_may_update:
         flash_error(
-            'Der Beitrag darf nicht bearbeitet werden weil das Thema, '
-            'zu dem dieser Beitrag gehört, gesperrt ist.'
+            gettext(
+                'Der Beitrag darf nicht bearbeitet werden weil das Thema, zu dem dieser Beitrag gehört, gesperrt ist.'
+            )
         )
         return redirect(url)
 
     if posting.topic.hidden or posting.hidden:
-        flash_error('Der Beitrag darf nicht bearbeitet werden.')
+        flash_error(gettext('Der Beitrag darf nicht bearbeitet werden.'))
         return redirect(url)
 
     if not user_may_update:
-        flash_error('Du darfst diesen Beitrag nicht bearbeiten.')
+        flash_error(gettext('Du darfst diesen Beitrag nicht bearbeiten.'))
         return redirect(url)
 
     form = PostingUpdateForm(request.form)
@@ -200,7 +205,7 @@ def posting_update(posting_id):
         posting.id, g.user.id, form.body.data
     )
 
-    flash_success('Der Beitrag wurde aktualisiert.')
+    flash_success(gettext('Der Beitrag wurde aktualisiert.'))
 
     event = dataclasses.replace(
         event, url=h.build_external_url_for_posting(posting.id)
@@ -236,7 +241,7 @@ def posting_hide(posting_id):
 
     page = service.calculate_posting_page_number(posting, g.user)
 
-    flash_success('Der Beitrag wurde versteckt.', icon='hidden')
+    flash_success(gettext('Der Beitrag wurde versteckt.'), icon='hidden')
 
     event = dataclasses.replace(
         event, url=h.build_external_url_for_posting(posting.id)
@@ -260,7 +265,9 @@ def posting_unhide(posting_id):
 
     page = service.calculate_posting_page_number(posting, g.user)
 
-    flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
+    flash_success(
+        gettext('Der Beitrag wurde wieder sichtbar gemacht.'), icon='view'
+    )
 
     event = dataclasses.replace(
         event, url=h.build_external_url_for_posting(posting.id)

@@ -9,6 +9,7 @@ byceps.blueprints.admin.board.views
 from dataclasses import dataclass
 
 from flask import abort, request
+from flask_babel import gettext
 
 from ....services.board import board_service
 from ....services.board import (
@@ -123,7 +124,12 @@ def board_create(brand_id):
 
     board = board_service.create_board(brand.id, board_id)
 
-    flash_success(f'Das Forum mit der ID "{board.id}" wurde angelegt.')
+    flash_success(
+        gettext(
+            'Das Forum mit der ID "%(board_id)s" wurde angelegt.',
+            board_id=board.id,
+        )
+    )
     return redirect_to('.board_view', board_id=board.id)
 
 
@@ -167,7 +173,12 @@ def category_create(board_id):
         board.id, slug, title, description
     )
 
-    flash_success(f'Die Kategorie "{category.title}" wurde angelegt.')
+    flash_success(
+        gettext(
+            'Die Kategorie "%(category_title)s" wurde angelegt.',
+            category_title=category.title,
+        )
+    )
     return redirect_to('.board_view', board_id=board.id)
 
 
@@ -210,7 +221,12 @@ def category_update(category_id):
         category.id, slug, title, description
     )
 
-    flash_success(f'Die Kategorie "{category.title}" wurde aktualisiert.')
+    flash_success(
+        gettext(
+            'Die Kategorie "%(category_title)s" wurde aktualisiert.',
+            category_title=category.title,
+        )
+    )
     return redirect_to('.board_view', board_id=category.board_id)
 
 
@@ -225,7 +241,12 @@ def category_hide(category_id):
 
     board_category_command_service.hide_category(category.id)
 
-    flash_success(f'Die Kategorie "{category.title}" wurde versteckt.')
+    flash_success(
+        gettext(
+            'Die Kategorie "%(category_title)s" wurde versteckt.',
+            category_title=category.title,
+        )
+    )
 
 
 @blueprint.route(
@@ -239,7 +260,12 @@ def category_unhide(category_id):
 
     board_category_command_service.unhide_category(category.id)
 
-    flash_success(f'Die Kategorie "{category.title}" wurde sichtbar gemacht.')
+    flash_success(
+        gettext(
+            'Die Kategorie "%(category_title)s" wurde sichtbar gemacht.',
+            category_title=category.title,
+        )
+    )
 
 
 @blueprint.route('/categories/<uuid:category_id>/up', methods=['POST'])
@@ -253,12 +279,17 @@ def category_move_up(category_id):
         board_category_command_service.move_category_up(category.id)
     except ValueError:
         flash_error(
-            f'Die Kategorie "{category.title}" befindet sich bereits ganz oben.'
+            gettext(
+                'Die Kategorie "%(category_title)s" befindet sich bereits ganz oben.',
+                category_title=category.title,
+            )
         )
     else:
         flash_success(
-            f'Die Kategorie "{category.title}" wurde '
-            'eine Position nach oben verschoben.'
+            gettext(
+                'Die Kategorie "%(category_title)s" wurde eine Position nach oben verschoben.',
+                category_title=category.title,
+            )
         )
 
 
@@ -273,13 +304,17 @@ def category_move_down(category_id):
         board_category_command_service.move_category_down(category.id)
     except ValueError:
         flash_error(
-            f'Die Kategorie "{category.title}" befindet sich bereits '
-            'ganz unten.'
+            gettext(
+                'Die Kategorie "%(category_title)s" befindet sich bereits ganz unten.',
+                category_title=category.title,
+            )
         )
     else:
         flash_success(
-            f'Die Kategorie "{category.title}" wurde '
-            'eine Position nach unten verschoben.'
+            gettext(
+                'Die Kategorie "%(category_title)s" wurde eine Position nach unten verschoben.',
+                category_title=category.title,
+            )
         )
 
 
@@ -294,10 +329,18 @@ def category_delete(category_id):
         board_category_command_service.delete_category(category.id)
     except Exception:
         flash_error(
-            f'Die Kategorie "{category.title}" konnte nicht gelöscht werden.'
+            gettext(
+                'Die Kategorie "%(category_title)s" konnte nicht gelöscht werden.',
+                category_title=category.title,
+            )
         )
     else:
-        flash_success(f'Die Kategorie "{category.title}" wurde gelöscht.')
+        flash_success(
+            gettext(
+                'Die Kategorie "%(category_title)s" wurde gelöscht.',
+                category_title=category.title,
+            )
+        )
 
 
 # -------------------------------------------------------------------- #

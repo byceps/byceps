@@ -7,6 +7,7 @@ byceps.blueprints.admin.tourney.category.views
 """
 
 from flask import abort, request
+from flask_babel import gettext
 
 from .....services.party import service as party_service
 from .....services.tourney import category_service
@@ -71,7 +72,12 @@ def create(party_id):
 
     category = category_service.create_category(party.id, title)
 
-    flash_success(f'Die Kategorie "{category.title}" wurde angelegt.')
+    flash_success(
+        gettext(
+            'Die Kategorie "%(category_title)s" wurde angelegt.',
+            category_title=category.title,
+        )
+    )
     return redirect_to('.index', party_id=category.party_id)
 
 
@@ -109,7 +115,12 @@ def update(category_id):
 
     category_service.update_category(category.id, form.title.data.strip())
 
-    flash_success(f'Die Kategorie "{category.title}" wurde aktualisiert.')
+    flash_success(
+        gettext(
+            'Die Kategorie "%(category_title)s" wurde aktualisiert.',
+            category_title=category.title,
+        )
+    )
     return redirect_to('.index', party_id=category.party_id)
 
 
@@ -124,12 +135,16 @@ def move_up(category_id):
         category_service.move_category_up(category.id)
     except ValueError:
         flash_error(
-            f'Die Kategorie "{category.title}" befindet sich bereits ganz oben.'
+            gettext(
+                'Die Kategorie "%(category_title)s" befindet sich bereits ganz oben.',
+                category_title=category.title,
+            )
         )
     else:
         flash_success(
-            f'Die Kategorie "{category.title}" '
-            'wurde eine Position nach oben verschoben.'
+            gettext(
+                'Die Kategorie "%(category_title)s" wurde eine Position nach oben verschoben.'
+            )
         )
 
 
@@ -144,13 +159,16 @@ def move_down(category_id):
         category_service.move_category_down(category.id)
     except ValueError:
         flash_error(
-            f'Die Kategorie "{category.title}" befindet sich bereits '
-            'ganz unten.'
+            gettext(
+                'Die Kategorie "%(category_title)s" befindet sich bereits ganz unten.',
+                category_title=category.title,
+            )
         )
     else:
         flash_success(
-            f'Die Kategorie "{category.title}" '
-            'wurde eine Position nach unten verschoben.'
+            gettext(
+                'Die Kategorie "%(category_title)s" wurde eine Position nach unten verschoben.'
+            )
         )
 
 

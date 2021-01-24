@@ -11,6 +11,7 @@ from datetime import date
 from typing import Dict, List
 
 from flask import abort, request
+from flask_babel import gettext
 
 from ....services.brand import service as brand_service
 from ....services.party import (
@@ -164,7 +165,10 @@ def create(brand_id):
         max_ticket_quantity=max_ticket_quantity,
     )
 
-    flash_success(f'Die Party "{party.title}" wurde angelegt.')
+    flash_success(
+        gettext('Die Party "%(title)s" wurde angelegt.', title=party.title)
+    )
+
     return redirect_to('.index_for_brand', brand_id=brand.id)
 
 
@@ -225,7 +229,9 @@ def update(party_id):
     except party_service.UnknownPartyId:
         abort(404, f'Unknown party ID "{party_id}".')
 
-    flash_success(f'Der Party "{party.title}" wurde aktualisiert.')
+    flash_success(
+        gettext('Die Party "%(title)s" wurde aktualisiert.', title=party.title)
+    )
 
     return redirect_to('.view', party_id=party.id)
 

@@ -9,6 +9,7 @@ byceps.blueprints.common.authentication.password.views
 from typing import Optional
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from .....config import get_app_mode
 from .....services.authentication.password import (
@@ -63,7 +64,9 @@ def update():
 
     password_service.update_password_hash(user.id, password, user.id)
 
-    flash_success('Dein Passwort wurde geändert. Bitte melde dich erneut an.')
+    flash_success(
+        gettext('Dein Passwort wurde geändert. Bitte melde dich erneut an.')
+    )
 
     if get_app_mode().is_admin():
         return redirect_to('authentication.login_admin.login_form')
@@ -97,24 +100,39 @@ def request_reset():
     )
 
     if (user is None) or user.deleted:
-        flash_error(f'Der Benutzername "{screen_name}" ist unbekannt.')
+        flash_error(
+            gettext(
+                'Der Benutzername "%(screen_name)s" ist unbekannt.',
+                screen_name=screen_name,
+            )
+        )
         return request_reset_form(form)
 
     if user.email_address is None:
         flash_error(
-            f'Für das Benutzerkonto "{screen_name}" ist keine E-Mail-Adresse hinterlegt.'
+            gettext(
+                'Für das Benutzerkonto "%(screen_name)s" ist keine E-Mail-Adresse hinterlegt.',
+                screen_name=screen_name,
+            )
         )
         return request_reset_form(form)
 
     if not user.email_address_verified:
         flash_error(
-            f'Die E-Mail-Adresse für das Benutzerkonto "{screen_name}" '
-            'wurde noch nicht bestätigt.'
+            gettext(
+                'Die E-Mail-Adresse für das Benutzerkonto "%(screen_name)s" wurde noch nicht bestätigt.',
+                screen_name=screen_name,
+            )
         )
         return redirect_to('user_email_address.request_confirmation_email')
 
     if user.suspended:
-        flash_error(f'Das Benutzerkonto "{screen_name}" ist gesperrt.')
+        flash_error(
+            gettext(
+                'Das Benutzerkonto "%(screen_name)s" ist gesperrt.',
+                screen_name=screen_name,
+            )
+        )
         return request_reset_form(form)
 
     sender = _get_sender()
@@ -124,9 +142,11 @@ def request_reset():
     )
 
     flash_success(
-        'Ein Link zum Setzen eines neuen Passworts '
-        f'für den Benutzernamen "{user.screen_name}" '
-        'wurde an die hinterlegte E-Mail-Adresse versendet.'
+        gettext(
+            'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen '
+            '"%(screen_name)s" wurde an die hinterlegte E-Mail-Adresse versendet.',
+            screen_name=user.screen_name,
+        )
     )
     return request_reset_form()
 
@@ -167,7 +187,7 @@ def reset(token):
 
     password_reset_service.reset_password(verification_token, password)
 
-    flash_success('Das Passwort wurde geändert.')
+    flash_success(gettext('Das Passwort wurde geändert.'))
     return redirect_to('authentication.login.login_form')
 
 
@@ -178,14 +198,16 @@ def _verify_reset_token(token: str) -> VerificationToken:
 
     if not _is_verification_token_valid(verification_token):
         flash_error(
-            'Es wurde kein gültiges Token angegeben. '
-            'Ein Token ist nur 24 Stunden lang gültig.'
+            gettext(
+                'Es wurde kein gültiges Token angegeben. Ein Token ist nur %(hours)s Stunden lang gültig.',
+                hours=24,
+            )
         )
         abort(404)
 
     user = user_service.find_active_user(verification_token.user_id)
     if user is None:
-        flash_error('Es wurde kein gültiges Token angegeben.')
+        flash_error(gettext('Es wurde kein gültiges Token angegeben.'))
         abort(404)
 
     return verification_token

@@ -7,6 +7,7 @@ byceps.blueprints.site.shop.orders.views
 """
 
 from flask import abort, g, request
+from flask_babel import gettext
 
 from .....services.shop.order.email import service as order_email_service
 from .....services.shop.order import service as order_service
@@ -107,13 +108,14 @@ def cancel_form(order_id, erroneous_form=None):
     order = _get_order_by_current_user_or_404(order_id)
 
     if order.is_canceled:
-        flash_error('Die Bestellung ist bereits storniert worden.')
+        flash_error(gettext('Die Bestellung ist bereits storniert worden.'))
         return redirect_to('.view', order_id=order.id)
 
     if order.is_paid:
         flash_error(
-            'Die Bestellung ist bereits bezahlt worden. '
-            'Du kannst sie nicht mehr selbst stornieren.'
+            gettext(
+                'Die Bestellung ist bereits bezahlt worden. Du kannst sie nicht mehr selbst stornieren.'
+            )
         )
         return redirect_to('.view', order_id=order.id)
 
@@ -134,13 +136,14 @@ def cancel(order_id):
     order = _get_order_by_current_user_or_404(order_id)
 
     if order.is_canceled:
-        flash_error('Die Bestellung ist bereits storniert worden.')
+        flash_error(gettext('Die Bestellung ist bereits storniert worden.'))
         return redirect_to('.view', order_id=order.id)
 
     if order.is_paid:
         flash_error(
-            'Die Bestellung ist bereits bezahlt worden. '
-            'Du kannst sie nicht mehr selbst stornieren.'
+            gettext(
+                'Die Bestellung ist bereits bezahlt worden. Du kannst sie nicht mehr selbst stornieren.'
+            )
         )
         return redirect_to('.view', order_id=order.id)
 
@@ -154,12 +157,13 @@ def cancel(order_id):
         event = order_service.cancel_order(order.id, g.user.id, reason)
     except order_service.OrderAlreadyCanceled:
         flash_error(
-            'Die Bestellung ist bereits storniert worden; '
-            'der Bezahlstatus kann nicht mehr geändert werden.'
+            gettext(
+                'Die Bestellung ist bereits storniert worden; der Bezahlstatus kann nicht mehr geändert werden.'
+            )
         )
         return redirect_to('.view', order_id=order.id)
 
-    flash_success('Die Bestellung wurde storniert.')
+    flash_success(gettext('Die Bestellung wurde storniert.'))
 
     order_email_service.send_email_for_canceled_order_to_orderer(order.id)
 

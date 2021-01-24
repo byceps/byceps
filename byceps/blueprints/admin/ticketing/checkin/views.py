@@ -9,6 +9,7 @@ byceps.blueprints.admin.ticketing.checkin.views
 from datetime import date
 
 from flask import abort, g, request, url_for
+from flask_babel import gettext
 
 from .....services.party import service as party_service
 from .....services.ticketing import (
@@ -121,14 +122,16 @@ def check_in_user(party_id, ticket_id):
         )
     except ticket_exceptions.UserAccountDeleted:
         flash_error(
-            'Das dem Ticket zugewiesene Benutzerkonto ist gelöscht worden. '
-            'Der Check-In ist nicht erlaubt.'
+            gettext(
+                'Das dem Ticket zugewiesene Benutzerkonto ist gelöscht worden. Der Check-In ist nicht erlaubt.'
+            )
         )
         return
     except ticket_exceptions.UserAccountSuspended:
         flash_error(
-            'Das dem Ticket zugewiesene Benutzerkonto ist gesperrt. '
-            'Der Check-In ist nicht erlaubt.'
+            gettext(
+                'Das dem Ticket zugewiesene Benutzerkonto ist gesperrt. Der Check-In ist nicht erlaubt.'
+            )
         )
         return
 
@@ -137,16 +140,23 @@ def check_in_user(party_id, ticket_id):
     ticket_url = url_for('ticketing_admin.view_ticket', ticket_id=ticket.id)
 
     flash_success(
-        f'Benutzer <em>{ticket.used_by.screen_name}</em> wurde '
-        f'mit Ticket <a href="{ticket_url}">{ticket.code}</a> eingecheckt.',
+        gettext(
+            'Benutzer <em>%(screen_name)s</em> wurde mit Ticket <a href="%(ticket_url)s">%(ticket_code)s</a> eingecheckt.',
+            screen_name=ticket.used_by.screen_name,
+            ticket_url=ticket_url,
+            ticket_code=ticket.code,
+        ),
         text_is_safe=True,
     )
 
     occupies_seat = ticket.occupied_seat_id is not None
     if not occupies_seat:
         flash_notice(
-            f'Ticket <a href="{ticket_url}">{ticket.code}</a> '
-            'belegt noch keinen Sitzplatz.',
+            gettext(
+                'Ticket <a href="%(ticket_url)s">%(ticket_code)s</a> belegt noch keinen Sitzplatz.',
+                ticket_url=ticket_url,
+                ticket_code=ticket.code,
+            ),
             icon='warning',
             text_is_safe=True,
         )
@@ -165,7 +175,7 @@ def revert_user_check_in(ticket_id):
 
     ticket_user_checkin_service.revert_user_check_in(ticket.id, initiator_id)
 
-    flash_success('Der Check-In wurde rückgängig gemacht.')
+    flash_success(gettext('Der Check-In wurde rückgängig gemacht.'))
 
 
 def _get_party_or_404(party_id):
