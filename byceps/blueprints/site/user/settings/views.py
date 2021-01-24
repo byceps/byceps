@@ -59,11 +59,10 @@ def view():
 
 
 @blueprint.route('/screen_name')
+@login_required
 @templated
 def change_screen_name_form(erroneous_form=None):
     """Show a form to change the current user's screen name."""
-    _get_current_user_or_404()
-
     form = erroneous_form if erroneous_form else ChangeScreenNameForm()
 
     return {
@@ -71,10 +70,11 @@ def change_screen_name_form(erroneous_form=None):
     }
 
 
+@login_required
 @blueprint.route('/screen_name', methods=['POST'])
 def change_screen_name():
     """Change the current user's screen name."""
-    current_user = _get_current_user_or_404()
+    current_user = g.user
 
     form = ChangeScreenNameForm(request.form)
     if not form.validate():
@@ -96,11 +96,11 @@ def change_screen_name():
 
 
 @blueprint.route('/details')
+@login_required
 @templated
 def details_update_form(erroneous_form=None):
     """Show a form to update the current user's details."""
-    current_user = _get_current_user_or_404()
-    user = user_service.find_user_with_details(current_user.id)
+    user = user_service.find_user_with_details(g.user.id)
 
     form = erroneous_form if erroneous_form else DetailsForm(obj=user.detail)
     country_names = country_service.get_country_names()
@@ -112,9 +112,10 @@ def details_update_form(erroneous_form=None):
 
 
 @blueprint.route('/details', methods=['POST'])
+@login_required
 def details_update():
     """Update the current user's details."""
-    current_user = _get_current_user_or_404()
+    current_user = g.user
 
     form = DetailsForm(request.form)
 
@@ -148,14 +149,6 @@ def details_update():
     user_signals.details_updated.send(None, event=event)
 
     return redirect_to('.view')
-
-
-def _get_current_user_or_404():
-    user = g.user
-    if not user.is_active:
-        abort(404)
-
-    return user
 
 
 def _find_newsletter_list_for_brand() -> Optional[NewsletterListID]:

@@ -13,43 +13,34 @@ from flask import abort, g
 from ....services.newsletter import command_service, service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
-from ....util.views import respond_no_content
+from ....util.views import login_required, respond_no_content
 
 
 blueprint = create_blueprint('newsletter', __name__)
 
 
 @blueprint.route('/lists/<list_id>/subscription', methods=['POST'])
+@login_required
 @respond_no_content
 def subscribe(list_id):
     list_ = _get_list_or_404(list_id)
-    user = _get_current_user_or_404()
     expressed_at = datetime.utcnow()
 
-    command_service.subscribe(user.id, list_.id, expressed_at)
+    command_service.subscribe(g.user.id, list_.id, expressed_at)
 
     flash_success(f'Du hast dich zum Newsletter "{list_.title}" angemeldet.')
 
 
 @blueprint.route('/lists/<list_id>/subscription', methods=['DELETE'])
+@login_required
 @respond_no_content
 def unsubscribe(list_id):
     list_ = _get_list_or_404(list_id)
-    user = _get_current_user_or_404()
     expressed_at = datetime.utcnow()
 
-    command_service.unsubscribe(user.id, list_.id, expressed_at)
+    command_service.unsubscribe(g.user.id, list_.id, expressed_at)
 
     flash_success(f'Du hast dich vom Newsletter "{list_.title}" abgemeldet.')
-
-
-def _get_current_user_or_404():
-    user = g.user
-
-    if not user.is_active:
-        abort(404)
-
-    return user
 
 
 def _get_list_or_404(list_id):
