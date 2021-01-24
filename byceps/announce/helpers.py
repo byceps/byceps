@@ -85,6 +85,9 @@ def _assemble_request_data(
 
         return {'channel': channel, 'text': text}
 
+    elif webhook.format == 'mattermost':
+        return {'text': text}
+
     elif webhook.format == 'matrix':
         key = webhook.extra_fields.get('key')
         if not key:
@@ -103,6 +106,7 @@ def _assemble_request_data(
 
 EXPECTED_RESPONSE_STATUS_CODES = {
     'discord': HTTPStatus.NO_CONTENT,
+    'mattermost': HTTPStatus.OK,
     'matrix': HTTPStatus.OK,
     'weitersager': HTTPStatus.ACCEPTED,
 }
