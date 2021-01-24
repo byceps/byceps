@@ -49,7 +49,7 @@ class UpdateForm(ResetForm):
 
     @staticmethod
     def validate_old_password(form, field):
-        user_id = g.current_user.id
+        user_id = g.user.id
         password = field.data
 
         if not password_service.is_password_valid_for_user(user_id, password):

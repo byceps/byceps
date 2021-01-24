@@ -42,7 +42,7 @@
                user_manager = ticket.get_user_manager()
        %}
     <li>
-      <div class="ticket-card{% if ticket.used_by_id == g.current_user.id %} ticket-used-by-me{% endif %}">
+      <div class="ticket-card{% if ticket.used_by_id == g.user.id %} ticket-used-by-me{% endif %}">
 
         {# icon, code #}
         <div class="ticket-card-cell">
@@ -96,13 +96,13 @@
             <div class="label-row">
               <span class="label">Nutzer/in</span>
 
-              {%- if ticket_management_enabled and (user_manager == g.current_user) and not ticket.user_checked_in %}
+              {%- if ticket_management_enabled and (user_manager == g.user) and not ticket.user_checked_in %}
               <span class="label-buttons">
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('chevron-down') -}}</button>
                   <ol class="dropdown-menu dropdown-menu--right">
                     <li><a class="dropdown-item" href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
-                    {%- if ticket.used_by_id != g.current_user.id %}
+                    {%- if ticket.used_by_id != g.user.id %}
                     <li><a class="dropdown-item" href="{{ url_for('.withdraw_user', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-user">{{ render_icon('arrow-left') }} selbst nutzen</a></li>
                     {%- endif %}
                   </ol>
@@ -126,13 +126,13 @@
             <div class="label-row">
               <span class="label">Verwalter/in</span>
 
-              {%- if ticket_management_enabled and (ticket.owned_by_id == g.current_user.id) and not ticket.user_checked_in %}
+              {%- if ticket_management_enabled and (ticket.owned_by_id == g.user.id) and not ticket.user_checked_in %}
               <span class="label-buttons">
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('chevron-down') -}}</button>
                   <ol class="dropdown-menu dropdown-menu--right">
                     <li><a class="dropdown-item" href="{{ url_for('.appoint_user_manager_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer-Verwaltung übertragen</a></li>
-                    {%- if user_manager != g.current_user %}
+                    {%- if user_manager != g.user %}
                     <li><a class="dropdown-item" href="{{ url_for('.withdraw_user_manager', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-user-manager">{{ render_icon('arrow-left') }} Nutzer-Verwaltung zurückholen</a></li>
                     {%- endif %}
                   </ol>
@@ -167,13 +167,13 @@
             <div class="label-row">
               <span class="label">Verwalter/in</span>
 
-              {%- if ticket.owned_by_id == g.current_user.id %}
+              {%- if ticket.owned_by_id == g.user.id %}
               <span class="label-buttons">
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('chevron-down') -}}</button>
                   <ol class="dropdown-menu dropdown-menu--right">
                     <li><a class="dropdown-item" href="{{ url_for('.appoint_seat_manager_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Sitzplatz-Verwaltung übertragen</a></li>
-                    {%- if seat_manager != g.current_user %}
+                    {%- if seat_manager != g.user %}
                     <li><a class="dropdown-item" href="{{ url_for('.withdraw_seat_manager', ticket_id=ticket.id, _method='DELETE') }}" data-action="withdraw-seat-manager">{{ render_icon('arrow-left') }} Sitzplatz-Verwaltung zurückholen</a></li>
                     {%- endif %}
                   </ol>

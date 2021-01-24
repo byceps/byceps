@@ -56,7 +56,7 @@
 
 {{ render_pagination_nav(topics, 'board.category_view', {'slug': category.slug}, centered=True) }}
 
-  {%- set current_user_may_create_topic = g.current_user.has_permission(BoardTopicPermission.create) %}
+  {%- set current_user_may_create_topic = g.user.has_permission(BoardTopicPermission.create) %}
 
   <div class="button-row button-row--right">
 
@@ -66,7 +66,7 @@
     <span class="button button--disabled">{{ render_icon('add') }} <span>Thema hinzufügen</span></span>
     {%- endif %}
 
-    {%- if not g.current_user.is_anonymous %}
+    {%- if not g.user.is_anonymous %}
     <button class="button" data-action="mark-all-topics-in-category-as-viewed" href="{{ url_for('.mark_all_topics_in_category_as_viewed', category_id=category.id) }}" title="Alle Themen in dieser Kategorie als gelesen markieren">{{ render_icon('view') }}</button>
     {%- endif %}
 

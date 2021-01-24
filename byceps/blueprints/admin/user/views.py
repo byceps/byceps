@@ -188,7 +188,7 @@ def create_account():
         )
         return create_account_form(form)
 
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
 
     try:
         user, event = user_creation_service.create_basic_user(
@@ -248,7 +248,7 @@ def set_password(user_id):
         return set_password_form(user.id, form)
 
     new_password = form.password.data
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
 
     password_service.update_password_hash(user.id, new_password, initiator_id)
 
@@ -267,7 +267,7 @@ def initialize_account(user_id):
     """Initialize the user account."""
     user = _get_user_or_404(user_id)
 
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
 
     user_command_service.initialize_account(user.id, initiator_id=initiator_id)
 
@@ -313,7 +313,7 @@ def suspend_account(user_id):
     if not form.validate():
         return suspend_account_form(user.id, form)
 
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
     reason = form.reason.data.strip()
 
     event = user_command_service.suspend_account(user.id, initiator_id, reason)
@@ -361,7 +361,7 @@ def unsuspend_account(user_id):
     if not form.validate():
         return unsuspend_account_form(user.id, form)
 
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
     reason = form.reason.data.strip()
 
     event = user_command_service.unsuspend_account(
@@ -413,7 +413,7 @@ def delete_account(user_id):
     if not form.validate():
         return delete_account_form(user.id, form)
 
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
     reason = form.reason.data.strip()
 
     event = user_deletion_service.delete_account(user.id, initiator_id, reason)
@@ -451,7 +451,7 @@ def change_email_address(user_id):
 
     old_email_address = user.email_address
     new_email_address = form.email_address.data.strip()
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
     reason = form.reason.data.strip()
 
     event = user_command_service.change_email_address(
@@ -494,7 +494,7 @@ def change_screen_name(user_id):
 
     old_screen_name = user.screen_name
     new_screen_name = form.screen_name.data.strip()
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
     reason = form.reason.data.strip()
 
     event = user_command_service.change_screen_name(
@@ -554,7 +554,7 @@ def role_assign(user_id, role_id):
     """Assign the role to the user."""
     user = _get_user_or_404(user_id)
     role = _get_role_or_404(role_id)
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
 
     authorization_service.assign_role_to_user(
         role.id, user.id, initiator_id=initiator_id
@@ -572,7 +572,7 @@ def role_deassign(user_id, role_id):
     """Deassign the role from the user."""
     user = _get_user_or_404(user_id)
     role = _get_role_or_404(role_id)
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
 
     authorization_service.deassign_role_from_user(
         role.id, user.id, initiator_id=initiator_id

@@ -4,20 +4,20 @@
 
 
 <div class="current-user">
-  {%- if g.current_user.is_active %}
+  {%- if g.user.is_active %}
   <div class="dropdown">
-    <a href="{{ url_for('user_admin.view', user_id=g.current_user.id) }}" class="dropdown-toggle button button--clear">
-      {{ render_user_avatar_32(g.current_user) }}
+    <a href="{{ url_for('user_admin.view', user_id=g.user.id) }}" class="dropdown-toggle button button--clear">
+      {{ render_user_avatar_32(g.user) }}
     </a>
     <ol class="dropdown-menu dropdown-menu--right">
       <li>
         <span class="dropdown-label label-and-name">
           <span class="label">Angemeldet als</span>
-          <span class="name">{{ render_user_screen_name(g.current_user) }}</span>
+          <span class="name">{{ render_user_screen_name(g.user) }}</span>
         </span>
       </li>
       <li class="dropdown-divider"></li>
-      <li><a class="dropdown-item" href="{{ url_for('user_admin.view', user_id=g.current_user.id) }}">{{ render_icon('user-profile') }} Profil</a></li>
+      <li><a class="dropdown-item" href="{{ url_for('user_admin.view', user_id=g.user.id) }}">{{ render_icon('user-profile') }} Profil</a></li>
       <li><a class="dropdown-item" href="{{ url_for('authentication.password.update_form') }}">{{ render_icon('password') }} Passwort ändern</a></li>
       <li class="dropdown-divider"></li>
       <li><a class="dropdown-item" data-action="logout" href="{{ url_for('authentication.login_admin.logout', _method='POST') }}">{{ render_icon('log-out') }} abmelden</a></li>

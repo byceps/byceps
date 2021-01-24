@@ -36,7 +36,7 @@ def index(page):
     """Show a page of news items."""
     channel_id = _get_channel_id()
     items_per_page = _get_items_per_page_value()
-    published_only = not _may_view_drafts(g.current_user)
+    published_only = not _may_view_drafts(g.user)
 
     items = news_item_service.get_aggregated_items_paginated(
         channel_id, page, items_per_page, published_only=published_only
@@ -53,7 +53,7 @@ def index(page):
 def view(slug):
     """Show a single news item."""
     channel_id = _get_channel_id()
-    published_only = not _may_view_drafts(g.current_user)
+    published_only = not _may_view_drafts(g.user)
 
     item = news_item_service.find_aggregated_item_by_slug(
         channel_id, slug, published_only=published_only

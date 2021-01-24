@@ -176,7 +176,7 @@ def create_document(scope_type, scope_name):
     form = DocumentCreateForm(request.form)
 
     name = form.name.data.strip().lower()
-    creator = g.current_user
+    creator = g.user
     title = form.title.data.strip()
     head = form.head.data.strip()
     body = form.body.data.strip()
@@ -231,7 +231,7 @@ def update_document(snippet_id):
 
     snippet = _find_snippet_by_id(snippet_id)
 
-    creator = g.current_user
+    creator = g.user
     title = form.title.data.strip()
     head = form.head.data.strip()
     body = form.body.data.strip()
@@ -324,7 +324,7 @@ def create_fragment(scope_type, scope_name):
     form = FragmentCreateForm(request.form)
 
     name = form.name.data.strip().lower()
-    creator = g.current_user
+    creator = g.user
     body = form.body.data.strip()
 
     version, event = snippet_service.create_fragment(
@@ -370,7 +370,7 @@ def update_fragment(snippet_id):
 
     snippet = _find_snippet_by_id(snippet_id)
 
-    creator = g.current_user
+    creator = g.user
     body = form.body.data.strip()
 
     version, event = snippet_service.update_fragment(
@@ -427,7 +427,7 @@ def delete_snippet(snippet_id):
     scope = snippet.scope
 
     success, event = snippet_service.delete_snippet(
-        snippet.id, initiator_id=g.current_user.id
+        snippet.id, initiator_id=g.user.id
     )
 
     if not success:

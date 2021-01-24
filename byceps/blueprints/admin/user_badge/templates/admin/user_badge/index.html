@@ -20,7 +20,7 @@
     <div class="column-auto">
       <h1>Abzeichen {{ render_extra_in_heading(badges|length) }}</h1>
     </div>
-  {%- if g.current_user.has_permission(UserBadgePermission.create) %}
+  {%- if g.user.has_permission(UserBadgePermission.create) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Abzeichen erstellen</span></a>

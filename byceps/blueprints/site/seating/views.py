@@ -101,16 +101,16 @@ def manage_seats_in_area(slug):
     selected_ticket_id = None
     selected_ticket = None
 
-    if _is_seating_admin(g.current_user):
+    if _is_seating_admin(g.user):
         selected_ticket = _get_selected_ticket()
         if selected_ticket is not None:
             seat_manager_id = selected_ticket.get_seat_manager().id
             selected_ticket_id = selected_ticket.id
         elif seat_management_enabled:
-            seat_manager_id = g.current_user.id
+            seat_manager_id = g.user.id
 
     elif seat_management_enabled:
-        seat_manager_id = g.current_user.id
+        seat_manager_id = g.user.id
 
     seats = seat_service.get_seats_with_tickets_for_area(area.id)
 
@@ -173,7 +173,7 @@ def occupy_seat(ticket_id, seat_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user
+    manager = g.user
 
     if not ticket.is_seat_managed_by(manager.id) and not _is_seating_admin(
         manager
@@ -229,7 +229,7 @@ def release_seat(ticket_id):
         flash_error(f'Ticket {ticket.code} belegt keinen Sitzplatz.')
         return
 
-    manager = g.current_user
+    manager = g.user
 
     if not ticket.is_seat_managed_by(manager.id) and not _is_seating_admin(
         manager
@@ -255,13 +255,13 @@ def release_seat(ticket_id):
 
 
 def _is_seat_management_enabled():
-    if g.current_user.is_anonymous:
+    if g.user.is_anonymous:
         return False
 
     if g.party_id is None:
         return False
 
-    if _is_seating_admin(g.current_user):
+    if _is_seating_admin(g.user):
         return True
 
     party = party_service.get_party(g.party_id)

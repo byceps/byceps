@@ -114,7 +114,7 @@
       <div class="radio-panel" id="tabs-panel-badges">
         <h2>Abzeichen {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
 
-        {%- if g.current_user.has_permission(UserBadgePermission.award) %}
+        {%- if g.user.has_permission(UserBadgePermission.award) %}
         <div class="button-row button-row--right">
           <a class="button" href="{{ url_for('user_badge_admin.award_form', user_id=user.id) }}">{{ render_icon('add') }} <span>Verleihen</span></a>
         </div>

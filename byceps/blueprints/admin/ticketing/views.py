@@ -132,7 +132,7 @@ def update_code(ticket_id):
         return update_code_form(ticket.id, form)
 
     code = form.code.data
-    manager = g.current_user
+    manager = g.user
 
     ticket_service.update_ticket_code(ticket.id, code, manager.id)
 
@@ -173,7 +173,7 @@ def appoint_user(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
     user = form.user.data
-    manager = g.current_user
+    manager = g.user
 
     ticket_user_management_service.appoint_user(ticket.id, user.id, manager.id)
 

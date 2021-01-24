@@ -28,7 +28,7 @@ def login_required(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        if not g.current_user.is_active:
+        if not g.user.is_active:
             flash_notice('Bitte melde dich an.')
             return redirect_to('authentication.login.login_form')
         return func(*args, **kwargs)
@@ -42,7 +42,7 @@ def permission_required(permission):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if not g.current_user.has_permission(permission):
+            if not g.user.has_permission(permission):
                 abort(403)
             return func(*args, **kwargs)
 

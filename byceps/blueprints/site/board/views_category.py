@@ -26,7 +26,7 @@ from . import _helpers as h, service
 def category_index():
     """List categories."""
     board_id = h.get_board_id()
-    user = g.current_user
+    user = g.user
 
     h.require_board_access(board_id, user.id)
 
@@ -49,7 +49,7 @@ def category_index():
 def category_view(slug, page):
     """List latest topics in the category."""
     board_id = h.get_board_id()
-    user = g.current_user
+    user = g.user
 
     h.require_board_access(board_id, user.id)
 
@@ -91,7 +91,7 @@ def mark_all_topics_in_category_as_viewed(category_id):
     category = h.get_category_or_404(category_id)
 
     board_last_view_service.mark_all_topics_in_category_as_viewed(
-        category_id, g.current_user.id
+        category_id, g.user.id
     )
 
     flash_success(

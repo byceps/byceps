@@ -34,7 +34,7 @@
     </tbody>
   </table>
 
-  {%- if g.current_user.is_active %}
+  {%- if g.user.is_active %}
   <div class="button-row">
     <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Gruppe erstellen</span></a>
   </div>

@@ -230,7 +230,7 @@ def award(user_id):
     if not badge:
         abort(401, 'Unknown badge ID')
 
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
 
     _, event = awarding_service.award_badge_to_user(
         badge_id, user_id, initiator_id=initiator_id

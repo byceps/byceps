@@ -30,7 +30,7 @@
     <div class="column-auto">
       <h2>Newsposts {{ render_extra_in_heading(items.total) }}</h2>
     </div>
-  {%- if g.current_user.has_permission(NewsItemPermission.create) %}
+  {%- if g.user.has_permission(NewsItemPermission.create) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.item_create_form', channel_id=channel.id) }}">{{ render_icon('add') }} <span>Newspost erstellen</span></a>
@@ -71,7 +71,7 @@
           {%- endif %}
           <br>
         {%- filter dim %}
-          {%- if g.current_user.has_permission(NewsItemPermission.view) %}
+          {%- if g.user.has_permission(NewsItemPermission.view) %}
           {{ render_icon('history') }} <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}</a>
           {%- else %}
           {{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}

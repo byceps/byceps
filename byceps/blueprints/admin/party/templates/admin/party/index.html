@@ -13,7 +13,7 @@
     <div class="column-auto">
       <h1>{{ title }} {{ render_extra_in_heading(parties|length) }}</h1>
     </div>
-    {%- if g.current_user.has_permission(PartyPermission.create) %}
+    {%- if g.user.has_permission(PartyPermission.create) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
         <div class="dropdown">

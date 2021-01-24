@@ -27,7 +27,7 @@
     {%- endif -%}
   </h1>
 
-  {%- if g.current_user.has_permission(SitePermission.update) %}
+  {%- if g.user.has_permission(SitePermission.update) %}
   <div class="button-row button-row--compact" style="float: right;">
     <a class="button" href="{{ url_for('.update_form', site_id=site.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
   </div>

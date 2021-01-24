@@ -10,7 +10,7 @@
 {%- endmacro %}
 
 
-{%- if g.current_user.has_permission(AdminPermission.access) %}
+{%- if g.user.has_permission(AdminPermission.access) %}
 
   {%- with
     current_page = current_page|default,

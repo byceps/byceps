@@ -200,7 +200,7 @@ def _is_verification_token_valid(token: Optional[VerificationToken]) -> bool:
 
 
 def _get_current_user_or_404():
-    user = g.current_user
+    user = g.user
     if not user.is_active:
         abort(404)
 

@@ -18,7 +18,7 @@ blueprint = create_blueprint('user_current', __name__)
 @blueprint.route('/me.json')
 def view_as_json():
     """Show selected attributes of the current user's profile as JSON."""
-    user = g.current_user
+    user = g.user
 
     if not user.is_active:
         # Return empty response.

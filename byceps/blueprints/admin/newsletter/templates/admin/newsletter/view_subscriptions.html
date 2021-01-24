@@ -27,7 +27,7 @@
     </div>
   </div>
 
-  {%- if g.current_user.has_permission(NewsletterPermission.export_subscribers) %}
+  {%- if g.user.has_permission(NewsletterPermission.export_subscribers) %}
   <div class="button-row button-row--right">
     <div class="dropdown">
       <button class="dropdown-toggle button">

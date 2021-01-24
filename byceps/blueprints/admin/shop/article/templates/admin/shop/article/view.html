@@ -35,13 +35,13 @@
     </div>
     <div class="column-auto">
       <div class="button-row button-row--right">
-        {%- if g.current_user.has_permission(ShopArticlePermission.update) %}
+        {%- if g.user.has_permission(ShopArticlePermission.update) %}
         <a class="button" href="{{ url_for('.update_form', article_id=article.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
         {%- endif %}
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
-            {%- if g.current_user.has_permission(ShopArticlePermission.update) %}
+            {%- if g.user.has_permission(ShopArticlePermission.update) %}
             <li><a class="dropdown-item" href="{{ url_for('.attachment_create_form', article_id=article.id) }}">{{ render_icon('attached') }} Artikel anhängen</a></li>
             {%- endif %}
             <li><a class="dropdown-item" href="{{ url_for('.view_ordered', article_id=article.id) }}">{{ render_icon('users') }} Käufer auflisten</a></li>

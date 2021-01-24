@@ -12,10 +12,10 @@
     </div>
     <div class="column-auto">
       <div class="button-row button-row--right">
-        {%- if g.current_user.has_permission(ShopPermission.create) %}
+        {%- if g.user.has_permission(ShopPermission.create) %}
         <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>Storefront anlegen</span></a>
         {%- endif %}
-        {%- if g.current_user.has_permission(ShopPermission.update) %}
+        {%- if g.user.has_permission(ShopPermission.update) %}
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">

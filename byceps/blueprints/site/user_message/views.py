@@ -48,7 +48,7 @@ def create(recipient_id):
     if not form.validate():
         return create_form(recipient.id, form)
 
-    sender = g.current_user
+    sender = g.user
     body = form.body.data.strip()
     sender_contact_url = url_for(
         '.create_form', recipient_id=sender.id, _external=True

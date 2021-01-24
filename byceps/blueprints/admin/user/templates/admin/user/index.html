@@ -14,7 +14,7 @@
     <div class="column-auto">
       <h1>{{ title }}</h1>
     </div>
-    {%- if g.current_user.has_permission(UserPermission.create) %}
+    {%- if g.user.has_permission(UserPermission.create) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_account_form') }}">{{ render_icon('add') }} <span>Benutzer erstellen</span></a>

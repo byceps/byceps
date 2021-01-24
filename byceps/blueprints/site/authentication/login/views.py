@@ -41,10 +41,9 @@ blueprint = create_blueprint('authentication.login', __name__)
 @templated
 def login_form():
     """Show login form."""
-    if g.current_user.is_active:
+    if g.user.is_active:
         flash_notice(
-            f'Du bist bereits als Benutzer "{g.current_user.screen_name}" '
-            'angemeldet.'
+            f'Du bist bereits als Benutzer "{g.user.screen_name}" angemeldet.'
         )
         return redirect_to('dashboard.index')
 
@@ -68,7 +67,7 @@ def login_form():
 @respond_no_content
 def login():
     """Allow the user to authenticate with e-mail address and password."""
-    if g.current_user.is_active:
+    if g.user.is_active:
         return
 
     if not _is_site_login_enabled():

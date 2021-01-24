@@ -28,7 +28,7 @@
 
 {%- if seat_management_enabled %}
 
-  {%- if not g.current_user.is_anonymous %}
+  {%- if not g.user.is_anonymous %}
     {%- if manage_mode %}
 {%- include 'site/seating/_ticket_selector.html' %}
     {%- else %}

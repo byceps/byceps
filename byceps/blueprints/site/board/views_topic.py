@@ -36,7 +36,7 @@ from . import _helpers as h, service
 def topic_index(page):
     """List latest topics in all categories."""
     board_id = h.get_board_id()
-    user = g.current_user
+    user = g.user
 
     h.require_board_access(board_id, user.id)
 
@@ -59,7 +59,7 @@ def topic_index(page):
 @templated
 def topic_view(topic_id, page):
     """List postings for the topic."""
-    user = g.current_user
+    user = g.user
 
     topic = board_topic_query_service.find_topic_visible_for_user(
         topic_id, user
@@ -90,9 +90,7 @@ def topic_view(topic_id, page):
         if posting is None:
             page = 1
         else:
-            page = service.calculate_posting_page_number(
-                posting, g.current_user
-            )
+            page = service.calculate_posting_page_number(posting, g.user)
             # Jump to a specific posting. This requires a redirect.
             url = h.build_url_for_posting_in_topic_view(posting, page)
             return redirect(url, code=307)
@@ -153,7 +151,7 @@ def topic_create(category_id):
     if not form.validate():
         return topic_create_form(category.id, form)
 
-    creator = g.current_user
+    creator = g.user
     title = form.title.data.strip()
     body = form.body.data.strip()
 
@@ -178,7 +176,7 @@ def topic_update_form(topic_id, erroneous_form=None):
     topic = h.get_topic_or_404(topic_id)
     url = h.build_url_for_topic(topic.id)
 
-    user_may_update = topic.may_be_updated_by_user(g.current_user)
+    user_may_update = topic.may_be_updated_by_user(g.user)
 
     if topic.locked and not user_may_update:
         flash_error(
@@ -214,7 +212,7 @@ def topic_update(topic_id):
     topic = h.get_topic_or_404(topic_id)
     url = h.build_url_for_topic(topic.id)
 
-    user_may_update = topic.may_be_updated_by_user(g.current_user)
+    user_may_update = topic.may_be_updated_by_user(g.user)
 
     if topic.locked and not user_may_update:
         flash_error(
@@ -235,7 +233,7 @@ def topic_update(topic_id):
         return topic_update_form(topic_id, form)
 
     board_topic_command_service.update_topic(
-        topic.id, g.current_user.id, form.title.data, form.body.data
+        topic.id, g.user.id, form.title.data, form.body.data
     )
 
     flash_success(f'Das Thema "{topic.title}" wurde aktualisiert.')
@@ -268,7 +266,7 @@ def topic_moderate_form(topic_id):
 def topic_hide(topic_id):
     """Hide a topic."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.current_user.id
+    moderator_id = g.user.id
 
     event = board_topic_command_service.hide_topic(topic.id, moderator_id)
 
@@ -288,7 +286,7 @@ def topic_hide(topic_id):
 def topic_unhide(topic_id):
     """Un-hide a topic."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.current_user.id
+    moderator_id = g.user.id
 
     event = board_topic_command_service.unhide_topic(topic.id, moderator_id)
 
@@ -310,7 +308,7 @@ def topic_unhide(topic_id):
 def topic_lock(topic_id):
     """Lock a topic."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.current_user.id
+    moderator_id = g.user.id
 
     event = board_topic_command_service.lock_topic(topic.id, moderator_id)
 
@@ -330,7 +328,7 @@ def topic_lock(topic_id):
 def topic_unlock(topic_id):
     """Unlock a topic."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.current_user.id
+    moderator_id = g.user.id
 
     event = board_topic_command_service.unlock_topic(topic.id, moderator_id)
 
@@ -352,7 +350,7 @@ def topic_unlock(topic_id):
 def topic_pin(topic_id):
     """Pin a topic."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.current_user.id
+    moderator_id = g.user.id
 
     event = board_topic_command_service.pin_topic(topic.id, moderator_id)
 
@@ -372,7 +370,7 @@ def topic_pin(topic_id):
 def topic_unpin(topic_id):
     """Unpin a topic."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.current_user.id
+    moderator_id = g.user.id
 
     event = board_topic_command_service.unpin_topic(topic.id, moderator_id)
 
@@ -391,7 +389,7 @@ def topic_unpin(topic_id):
 def topic_move(topic_id):
     """Move a topic from one category to another."""
     topic = h.get_topic_or_404(topic_id)
-    moderator_id = g.current_user.id
+    moderator_id = g.user.id
 
     new_category_id = request.form.get('category_id')
     if not new_category_id:

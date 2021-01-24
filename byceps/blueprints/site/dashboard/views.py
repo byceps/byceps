@@ -44,16 +44,16 @@ blueprint = create_blueprint('dashboard', __name__)
 @templated
 def index():
     """Show current user's dashboard."""
-    user = user_service.find_active_db_user(g.current_user.id)
+    user = user_service.find_active_db_user(g.user.id)
     if user is None:
         abort(404)
 
     site = site_service.get_site(g.site_id)
 
-    open_orders = _get_open_orders(site, g.current_user.id)
-    tickets = _get_tickets(g.current_user)
+    open_orders = _get_open_orders(site, g.user.id)
+    tickets = _get_tickets(g.user)
     news_headlines = _get_news_headlines(site)
-    board_topics = _get_board_topics(site, g.current_user)
+    board_topics = _get_board_topics(site, g.user)
 
     return {
         'open_orders': open_orders,

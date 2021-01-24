@@ -29,7 +29,7 @@ class ChangeScreenNameForm(LocalizedForm):
 
     @staticmethod
     def validate_screen_name(form, field):
-        if g.current_user.screen_name == field.data:
+        if g.user.screen_name == field.data:
             raise ValueError('Dies ist bereits der aktuelle Benutzername.')
 
         if user_service.is_screen_name_already_assigned(field.data):
@@ -37,7 +37,7 @@ class ChangeScreenNameForm(LocalizedForm):
 
     @staticmethod
     def validate_password(form, field):
-        user_id = g.current_user.id
+        user_id = g.user.id
         password = field.data
 
         if not password_service.is_password_valid_for_user(user_id, password):

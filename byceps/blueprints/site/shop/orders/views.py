@@ -35,15 +35,13 @@ def index():
     """List orders placed by the current user in the storefront assigned
     to the current site.
     """
-    current_user = g.current_user
-
     site = site_service.get_site(g.site_id)
 
     storefront_id = site.storefront_id
     if storefront_id is not None:
         storefront = storefront_service.get_storefront(storefront_id)
         orders = order_service.get_orders_placed_by_user_for_shop(
-            current_user.id, storefront.shop_id
+            g.user.id, storefront.shop_id
         )
     else:
         orders = []
@@ -61,8 +59,6 @@ def view(order_id):
     """Show a single order (if it belongs to the current user and
     current site's storefront).
     """
-    current_user = g.current_user
-
     order = order_service.find_order_with_details(order_id)
 
     if order is None:
@@ -155,7 +151,7 @@ def cancel(order_id):
     reason = form.reason.data.strip()
 
     try:
-        event = order_service.cancel_order(order.id, g.current_user.id, reason)
+        event = order_service.cancel_order(order.id, g.user.id, reason)
     except order_service.OrderAlreadyCanceled:
         flash_error(
             'Die Bestellung ist bereits storniert worden; '
@@ -185,4 +181,4 @@ def _get_order_by_current_user_or_404(order_id):
 
 
 def _is_order_placed_by_current_user(order) -> bool:
-    return order.placed_by_id == g.current_user.id
+    return order.placed_by_id == g.user.id

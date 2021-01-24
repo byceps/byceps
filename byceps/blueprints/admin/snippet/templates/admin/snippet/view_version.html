@@ -35,13 +35,13 @@
 
     <div class="button-row button-row--compact" style="float: right;">
 
-      {%- if g.current_user.has_permission(SnippetPermission.update) -%}
+      {%- if g.user.has_permission(SnippetPermission.update) -%}
         {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
       <a class="button" href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
         {%- endwith %}
       {%- endif -%}
 
-      {%- if g.current_user.has_permission(SnippetPermission.delete) %}
+      {%- if g.user.has_permission(SnippetPermission.delete) %}
       <div class="dropdown">
         <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
         <ol class="dropdown-menu dropdown-menu--right">

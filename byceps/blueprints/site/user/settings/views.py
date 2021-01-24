@@ -34,9 +34,7 @@ blueprint = create_blueprint('user_settings', __name__)
 @templated
 def view():
     """Show the current user's internal profile."""
-    current_user = g.current_user
-
-    user = user_service.find_active_db_user(current_user.id)
+    user = user_service.find_active_db_user(g.user.id)
     if user is None:
         abort(404)
 
@@ -153,7 +151,7 @@ def details_update():
 
 
 def _get_current_user_or_404():
-    user = g.current_user
+    user = g.user
     if not user.is_active:
         abort(404)
 

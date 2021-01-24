@@ -16,7 +16,7 @@
   </nav>
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
-  {%- if posting.creator_id != g.current_user.id %}
+  {%- if posting.creator_id != g.user.id %}
   {{ render_notification('Du bist im Begriff, einen Beitrag von jemand anderem zu verändern.', category='danger', icon='warning') }}
   {%- endif %}
 

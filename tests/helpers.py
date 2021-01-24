@@ -69,7 +69,7 @@ def current_party_set(app, party):
 @contextmanager
 def current_user_set(app, user):
     def handler(sender, **kwargs):
-        g.current_user = user
+        g.user = user
 
     with appcontext_pushed.connected_to(handler, app):
         yield

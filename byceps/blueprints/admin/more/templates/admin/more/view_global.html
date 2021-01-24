@@ -22,7 +22,7 @@
     ('Hintergrundjobs', 'pending', url_for('jobs_admin.index'), JobsPermission.view),
   ] %}
     {%- for label, icon, url, required_permission in items %}
-      {%- if g.current_user.has_permission(required_permission) %}
+      {%- if g.user.has_permission(required_permission) %}
         {%- call render_cell(icon_name=icon, href=url) %}
           {{ render_icon(icon) }} <span>{{ label }}</span>
         {%- endcall %}

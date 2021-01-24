@@ -157,7 +157,7 @@ def export(order_id):
 def set_invoiced_flag(order_id):
     """Mark the order as invoiced."""
     order = _get_order_or_404(order_id)
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
 
     order_service.set_invoiced_flag(order.id, initiator_id)
 
@@ -173,7 +173,7 @@ def set_invoiced_flag(order_id):
 def unset_invoiced_flag(order_id):
     """Mark the order as not invoiced."""
     order = _get_order_or_404(order_id)
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
 
     order_service.unset_invoiced_flag(order.id, initiator_id)
 
@@ -189,7 +189,7 @@ def unset_invoiced_flag(order_id):
 def set_shipped_flag(order_id):
     """Mark the order as shipped."""
     order = _get_order_or_404(order_id)
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
 
     order_service.set_shipped_flag(order.id, initiator_id)
 
@@ -204,7 +204,7 @@ def set_shipped_flag(order_id):
 def unset_shipped_flag(order_id):
     """Mark the order as not shipped."""
     order = _get_order_or_404(order_id)
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
 
     order_service.unset_shipped_flag(order.id, initiator_id)
 
@@ -261,7 +261,7 @@ def cancel(order_id):
     send_email = form.send_email.data
 
     try:
-        event = order_service.cancel_order(order.id, g.current_user.id, reason)
+        event = order_service.cancel_order(order.id, g.user.id, reason)
     except order_service.OrderAlreadyCanceled:
         flash_error(
             'Die Bestellung ist bereits storniert worden; '
@@ -327,7 +327,7 @@ def mark_as_paid(order_id):
         return mark_as_paid_form(order_id, form)
 
     payment_method = PaymentMethod[form.payment_method.data]
-    updated_by_id = g.current_user.id
+    updated_by_id = g.user.id
 
     try:
         event = order_service.mark_order_as_paid(
@@ -359,7 +359,7 @@ def resend_email_for_incoming_order_to_orderer(order_id):
     """Resend the e-mail to the orderer to confirm that the order was placed."""
     order = _get_order_or_404(order_id)
 
-    initiator_id = g.current_user.id
+    initiator_id = g.user.id
 
     order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 

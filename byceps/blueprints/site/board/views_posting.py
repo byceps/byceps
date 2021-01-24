@@ -35,7 +35,7 @@ def posting_view(posting_id):
     """
     posting = h.get_posting_or_404(posting_id)
 
-    page = service.calculate_posting_page_number(posting, g.current_user)
+    page = service.calculate_posting_page_number(posting, g.user)
 
     return redirect(
         h.build_url_for_posting_in_topic_view(posting, page, _external=True)
@@ -87,7 +87,7 @@ def posting_create(topic_id):
     if not form.validate():
         return posting_create_form(topic_id, form)
 
-    creator = g.current_user
+    creator = g.user
     body = form.body.data.strip()
 
     if topic.locked:
@@ -100,7 +100,7 @@ def posting_create(topic_id):
 
     if (
         topic.posting_limited_to_moderators
-        and not g.current_user.has_permission(BoardPermission.announce)
+        and not g.user.has_permission(BoardPermission.announce)
     ):
         flash_error(
             'In diesem Thema dürfen nur Moderatoren Beiträge hinzufügen.',
@@ -112,9 +112,9 @@ def posting_create(topic_id):
         topic.id, creator.id, body
     )
 
-    if not g.current_user.is_anonymous:
+    if not g.user.is_anonymous:
         board_last_view_service.mark_category_as_just_viewed(
-            topic.category.id, g.current_user.id
+            topic.category.id, g.user.id
         )
 
     flash_success('Deine Antwort wurde hinzugefügt.')
@@ -137,10 +137,10 @@ def posting_update_form(posting_id, erroneous_form=None):
     """Show form to update a posting."""
     posting = h.get_posting_or_404(posting_id)
 
-    page = service.calculate_posting_page_number(posting, g.current_user)
+    page = service.calculate_posting_page_number(posting, g.user)
     url = h.build_url_for_posting_in_topic_view(posting, page)
 
-    user_may_update = posting.may_be_updated_by_user(g.current_user)
+    user_may_update = posting.may_be_updated_by_user(g.user)
 
     if posting.topic.locked and not user_may_update:
         flash_error(
@@ -172,10 +172,10 @@ def posting_update(posting_id):
     """Update a posting."""
     posting = h.get_posting_or_404(posting_id)
 
-    page = service.calculate_posting_page_number(posting, g.current_user)
+    page = service.calculate_posting_page_number(posting, g.user)
     url = h.build_url_for_posting_in_topic_view(posting, page)
 
-    user_may_update = posting.may_be_updated_by_user(g.current_user)
+    user_may_update = posting.may_be_updated_by_user(g.user)
 
     if posting.topic.locked and not user_may_update:
         flash_error(
@@ -197,7 +197,7 @@ def posting_update(posting_id):
         return posting_update_form(posting_id, form)
 
     event = board_posting_command_service.update_posting(
-        posting.id, g.current_user.id, form.body.data
+        posting.id, g.user.id, form.body.data
     )
 
     flash_success('Der Beitrag wurde aktualisiert.')
@@ -230,11 +230,11 @@ def posting_moderate_form(posting_id):
 def posting_hide(posting_id):
     """Hide a posting."""
     posting = h.get_posting_or_404(posting_id)
-    moderator_id = g.current_user.id
+    moderator_id = g.user.id
 
     event = board_posting_command_service.hide_posting(posting.id, moderator_id)
 
-    page = service.calculate_posting_page_number(posting, g.current_user)
+    page = service.calculate_posting_page_number(posting, g.user)
 
     flash_success('Der Beitrag wurde versteckt.', icon='hidden')
 
@@ -252,13 +252,13 @@ def posting_hide(posting_id):
 def posting_unhide(posting_id):
     """Un-hide a posting."""
     posting = h.get_posting_or_404(posting_id)
-    moderator_id = g.current_user.id
+    moderator_id = g.user.id
 
     event = board_posting_command_service.unhide_posting(
         posting.id, moderator_id
     )
 
-    page = service.calculate_posting_page_number(posting, g.current_user)
+    page = service.calculate_posting_page_number(posting, g.user)
 
     flash_success('Der Beitrag wurde wieder sichtbar gemacht.', icon='view')
 

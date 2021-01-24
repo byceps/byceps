@@ -59,11 +59,11 @@ def order_form(erroneous_form=None):
         flash_error('Es sind keine Artikel verfügbar.')
         return {'article_compilation': None}
 
-    is_logged_in = g.current_user.is_active
+    is_logged_in = g.user.is_active
     if not is_logged_in:
         return list_articles(article_compilation)
 
-    user = user_service.find_user_with_details(g.current_user.id)
+    user = user_service.find_user_with_details(g.user.id)
 
     if erroneous_form:
         form = erroneous_form
@@ -120,7 +120,7 @@ def order():
         flash_error('Es wurden keine Artikel ausgewählt.')
         return order_form(form)
 
-    orderer = form.get_orderer(g.current_user.id)
+    orderer = form.get_orderer(g.user.id)
 
     try:
         order = _place_order(storefront.id, orderer, cart)
@@ -143,7 +143,7 @@ def order_single_form(article_id, erroneous_form=None):
     storefront = _get_storefront_or_404()
     shop = shop_service.get_shop(storefront.shop_id)
 
-    user = user_service.find_user_with_details(g.current_user.id)
+    user = user_service.find_user_with_details(g.user.id)
 
     form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
 
@@ -213,7 +213,7 @@ def order_single(article_id):
         article.id, fixed_quantity=quantity
     )
 
-    user = g.current_user
+    user = g.user
 
     if order_service.has_user_placed_orders(user.id, shop.id):
         flash_error('Du kannst keine weitere Bestellung aufgeben.')

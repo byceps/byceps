@@ -40,16 +40,16 @@ def index_mine():
 
     party = party_service.get_party(g.party_id)
 
-    current_user = g.current_user
+    user = g.user
 
     tickets = ticket_service.find_tickets_related_to_user_for_party(
-        current_user.id, party.id
+        user.id, party.id
     )
 
     tickets = [ticket for ticket in tickets if not ticket.revoked]
 
     current_user_uses_any_ticket = find(
-        tickets, lambda t: t.used_by_id == current_user.id
+        tickets, lambda t: t.used_by_id == user.id
     )
 
     return {
@@ -68,7 +68,7 @@ def view_printable_html(ticket_id):
     """Show a form to select a user to appoint for the ticket."""
     ticket = _get_ticket_or_404(ticket_id)
 
-    if not _is_user_allowed_to_print_ticket(ticket, g.current_user.id):
+    if not _is_user_allowed_to_print_ticket(ticket, g.user.id):
         # Hide ticket ID validity rather than openly denying access.
         abort(404)
 
@@ -114,7 +114,7 @@ def appoint_user_form(ticket_id, erroneous_form=None):
 
     _abort_if_ticket_user_checked_in(ticket)
 
-    manager = g.current_user.to_dto()
+    manager = g.user.to_dto()
 
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
@@ -140,7 +140,7 @@ def appoint_user(ticket_id):
     if not form.validate():
         return appoint_user_form(ticket_id, form)
 
-    manager = g.current_user.to_dto()
+    manager = g.user.to_dto()
 
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
@@ -169,7 +169,7 @@ def withdraw_user(ticket_id):
 
     _abort_if_ticket_user_checked_in(ticket)
 
-    manager = g.current_user.to_dto()
+    manager = g.user.to_dto()
 
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
@@ -198,7 +198,7 @@ def appoint_user_manager_form(ticket_id, erroneous_form=None):
 
     _abort_if_ticket_user_checked_in(ticket)
 
-    manager = g.current_user.to_dto()
+    manager = g.user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -224,7 +224,7 @@ def appoint_user_manager(ticket_id):
     if not form.validate():
         return appoint_user_manager_form(ticket_id, form)
 
-    manager = g.current_user.to_dto()
+    manager = g.user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -255,7 +255,7 @@ def withdraw_user_manager(ticket_id):
 
     _abort_if_ticket_user_checked_in(ticket)
 
-    manager = g.current_user.to_dto()
+    manager = g.user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -284,7 +284,7 @@ def appoint_seat_manager_form(ticket_id, erroneous_form=None):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user.to_dto()
+    manager = g.user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -308,7 +308,7 @@ def appoint_seat_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user.to_dto()
+    manager = g.user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -337,7 +337,7 @@ def withdraw_seat_manager(ticket_id):
 
     ticket = _get_ticket_or_404(ticket_id)
 
-    manager = g.current_user.to_dto()
+    manager = g.user.to_dto()
 
     if not ticket.is_owned_by(manager.id):
         abort(403)
@@ -363,7 +363,7 @@ def _abort_if_ticket_management_disabled():
 
 
 def _is_ticket_management_enabled():
-    if g.current_user.is_anonymous:
+    if g.user.is_anonymous:
         return False
 
     if g.party_id is None:

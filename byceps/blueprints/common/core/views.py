@@ -105,6 +105,6 @@ def provide_app_mode():
         required_permissions = {AdminPermission.access}
     else:
         required_permissions = set()
-    g.current_user = get_current_user(
+    g.user = get_current_user(
         party_id=party_id, required_permissions=required_permissions
     )

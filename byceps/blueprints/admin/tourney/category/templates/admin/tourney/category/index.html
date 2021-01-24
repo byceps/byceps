@@ -15,7 +15,7 @@
   </nav>
   <h1>Kategorien {{ render_extra_in_heading(categories|length) }}</h1>
 
-  {%- if g.current_user.has_permission(TourneyCategoryPermission.administrate) %}
+  {%- if g.user.has_permission(TourneyCategoryPermission.administrate) %}
   <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Kategorie erstellen</span></a>
   </div>
@@ -36,7 +36,7 @@
         <td class="number">{{ category.position }}</td>
         <td>{{ category.title }}</td>
         <td>
-          {%- if g.current_user.has_permission(TourneyCategoryPermission.administrate) -%}
+          {%- if g.user.has_permission(TourneyCategoryPermission.administrate) -%}
           <div class="dropdown">
             <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu">

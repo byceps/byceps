@@ -38,7 +38,7 @@ def get_category_or_404(category_id):
     if category.board_id != board_id:
         abort(404)
 
-    require_board_access(board_id, g.current_user.id)
+    require_board_access(board_id, g.user.id)
 
     return category
 
@@ -54,7 +54,7 @@ def get_topic_or_404(topic_id):
     if topic.category.board_id != board_id:
         abort(404)
 
-    require_board_access(board_id, g.current_user.id)
+    require_board_access(board_id, g.user.id)
 
     return topic
 
@@ -70,7 +70,7 @@ def get_posting_or_404(posting_id):
     if posting.topic.category.board_id != board_id:
         abort(404)
 
-    require_board_access(board_id, g.current_user.id)
+    require_board_access(board_id, g.user.id)
 
     return posting
 
