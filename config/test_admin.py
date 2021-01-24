@@ -12,7 +12,6 @@ REDIS_URL = 'redis://127.0.0.1:6379/0'
 APP_MODE = 'admin'
 
 MAIL_DEBUG = False
-MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
 MAIL_SUPPRESS_SEND = True
 
 JOBS_ASYNC = False

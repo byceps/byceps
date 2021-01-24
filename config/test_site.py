@@ -13,7 +13,6 @@ APP_MODE = 'site'
 SITE_ID = 'acmecon-2014-website'
 
 MAIL_DEBUG = False
-MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@example.com>'
 MAIL_SUPPRESS_SEND = True
 
 JOBS_ASYNC = False
