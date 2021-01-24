@@ -6,6 +6,7 @@ byceps.blueprints.site.board.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import lazy_gettext
 from wtforms import StringField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
@@ -13,7 +14,7 @@ from ....util.l10n import LocalizedForm
 
 
 class PostingCreateForm(LocalizedForm):
-    body = TextAreaField('Text', validators=[InputRequired()])
+    body = TextAreaField(lazy_gettext('Text'), validators=[InputRequired()])
 
 
 class PostingUpdateForm(PostingCreateForm):
@@ -21,7 +22,9 @@ class PostingUpdateForm(PostingCreateForm):
 
 
 class TopicCreateForm(PostingCreateForm):
-    title = StringField('Titel', validators=[InputRequired(), Length(max=80)])
+    title = StringField(
+        lazy_gettext('Titel'), validators=[InputRequired(), Length(max=80)]
+    )
 
 
 class TopicUpdateForm(TopicCreateForm):

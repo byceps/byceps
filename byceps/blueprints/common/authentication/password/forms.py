@@ -7,6 +7,7 @@ byceps.blueprints.common.authentication.password.forms
 """
 
 from flask import g
+from flask_babel import lazy_gettext
 from wtforms import PasswordField, StringField
 from wtforms.validators import InputRequired, EqualTo, Length, ValidationError
 
@@ -19,7 +20,7 @@ MAXIMUM_PASSWORD_LENGTH = 100
 
 
 class RequestResetForm(LocalizedForm):
-    screen_name = StringField('Benutzername', [InputRequired()])
+    screen_name = StringField(lazy_gettext('Benutzername'), [InputRequired()])
 
 
 def _get_new_password_validators(companion_field_name):
@@ -27,7 +28,9 @@ def _get_new_password_validators(companion_field_name):
         InputRequired(),
         EqualTo(
             companion_field_name,
-            message='Das neue Passwort muss mit der Wiederholung übereinstimmen.',
+            message=lazy_gettext(
+                'Das neue Passwort muss mit der Wiederholung übereinstimmen.'
+            ),
         ),
         Length(min=MINIMUM_PASSWORD_LENGTH, max=MAXIMUM_PASSWORD_LENGTH),
     ]
@@ -35,17 +38,19 @@ def _get_new_password_validators(companion_field_name):
 
 class ResetForm(LocalizedForm):
     new_password = PasswordField(
-        'Neues Passwort',
+        lazy_gettext('Neues Passwort'),
         _get_new_password_validators('new_password_confirmation'),
     )
     new_password_confirmation = PasswordField(
-        'Neues Passwort (Wiederholung)',
+        lazy_gettext('Neues Passwort (Wiederholung)'),
         _get_new_password_validators('new_password'),
     )
 
 
 class UpdateForm(ResetForm):
-    old_password = PasswordField('Bisheriges Passwort', [InputRequired()])
+    old_password = PasswordField(
+        lazy_gettext('Bisheriges Passwort'), [InputRequired()]
+    )
 
     @staticmethod
     def validate_old_password(form, field):
@@ -54,5 +59,7 @@ class UpdateForm(ResetForm):
 
         if not password_service.is_password_valid_for_user(user_id, password):
             raise ValidationError(
-                'Das eingegebene Passwort stimmt nicht mit dem bisherigen überein.'
+                lazy_gettext(
+                    'Das eingegebene Passwort stimmt nicht mit dem bisherigen überein.'
+                )
             )

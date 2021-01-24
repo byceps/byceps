@@ -6,6 +6,7 @@ byceps.blueprints.admin.board.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import lazy_gettext
 from wtforms import StringField
 from wtforms.validators import InputRequired, Length
 
@@ -13,13 +14,13 @@ from ....util.l10n import LocalizedForm
 
 
 class BoardCreateForm(LocalizedForm):
-    board_id = StringField('ID', validators=[Length(min=1, max=40)])
+    board_id = StringField(lazy_gettext('ID'), validators=[Length(min=1, max=40)])
 
 
 class CategoryCreateForm(LocalizedForm):
-    slug = StringField('Slug', [InputRequired(), Length(max=40)])
-    title = StringField('Titel', [InputRequired(), Length(max=40)])
-    description = StringField('Text', [InputRequired(), Length(max=80)])
+    slug = StringField(lazy_gettext('Slug'), [InputRequired(), Length(max=40)])
+    title = StringField(lazy_gettext('Titel'), [InputRequired(), Length(max=40)])
+    description = StringField(lazy_gettext('Text'), [InputRequired(), Length(max=80)])
 
 
 class CategoryUpdateForm(CategoryCreateForm):

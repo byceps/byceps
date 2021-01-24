@@ -8,6 +8,7 @@ byceps.blueprints.admin.news.forms
 
 import re
 
+from flask_babel import lazy_gettext
 from wtforms import FileField, StringField, TextAreaField
 from wtforms.fields.html5 import DateField, TimeField
 from wtforms.validators import InputRequired, Length, Optional, Regexp
@@ -19,18 +20,22 @@ SLUG_REGEX = re.compile('^[a-z0-9-]+$')
 
 
 class ChannelCreateForm(LocalizedForm):
-    channel_id = StringField('ID', validators=[Length(min=1, max=40)])
-    url_prefix = StringField('URL-Präfix', [InputRequired(), Length(max=80)])
+    channel_id = StringField(
+        lazy_gettext('ID'), validators=[Length(min=1, max=40)]
+    )
+    url_prefix = StringField(
+        lazy_gettext('URL-Präfix'), [InputRequired(), Length(max=80)]
+    )
 
 
 class _ImageFormBase(LocalizedForm):
-    alt_text = StringField('Alternativtext', [InputRequired()])
-    caption = StringField('Bildunterschrift', [Optional()])
-    attribution = StringField('Bildquelle', [Optional()])
+    alt_text = StringField(lazy_gettext('Alternativtext'), [InputRequired()])
+    caption = StringField(lazy_gettext('Bildunterschrift'), [Optional()])
+    attribution = StringField(lazy_gettext('Bildquelle'), [Optional()])
 
 
 class ImageCreateForm(_ImageFormBase):
-    image = FileField('Bilddatei', [InputRequired()])
+    image = FileField(lazy_gettext('Bilddatei'), [InputRequired()])
 
 
 class ImageUpdateForm(_ImageFormBase):
@@ -38,10 +43,26 @@ class ImageUpdateForm(_ImageFormBase):
 
 
 class ItemCreateForm(LocalizedForm):
-    slug = StringField('Slug', [InputRequired(), Length(max=100), Regexp(SLUG_REGEX, message='Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt.')])
-    title = StringField('Titel', [InputRequired(), Length(max=100)])
-    body = TextAreaField('Text', [InputRequired()])
-    image_url_path = StringField('Bild-URL-Pfad', [Optional(), Length(max=100)])
+    slug = StringField(
+        lazy_gettext('Slug'),
+        [
+            InputRequired(),
+            Length(max=100),
+            Regexp(
+                SLUG_REGEX,
+                message=lazy_gettext(
+                    'Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt.'
+                ),
+            ),
+        ],
+    )
+    title = StringField(
+        lazy_gettext('Titel'), [InputRequired(), Length(max=100)]
+    )
+    body = TextAreaField(lazy_gettext('Text'), [InputRequired()])
+    image_url_path = StringField(
+        lazy_gettext('Bild-URL-Pfad'), [Optional(), Length(max=100)]
+    )
 
 
 class ItemUpdateForm(ItemCreateForm):
@@ -49,5 +70,5 @@ class ItemUpdateForm(ItemCreateForm):
 
 
 class ItemPublishLaterForm(LocalizedForm):
-    publish_on = DateField('Datum', [InputRequired()])
-    publish_at = TimeField('Uhrzeit', [InputRequired()])
+    publish_on = DateField(lazy_gettext('Datum'), [InputRequired()])
+    publish_at = TimeField(lazy_gettext('Uhrzeit'), [InputRequired()])

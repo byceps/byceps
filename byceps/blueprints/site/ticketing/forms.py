@@ -7,7 +7,7 @@ byceps.blueprints.site.ticketing.forms
 """
 
 from flask import g
-
+from flask_babel import lazy_gettext
 from wtforms import StringField
 from wtforms.validators import InputRequired, ValidationError
 
@@ -27,7 +27,7 @@ def validate_user(form, field):
     )
 
     if user is None:
-        raise ValidationError('Unbekannter Benutzername')
+        raise ValidationError(lazy_gettext('Unbekannter Benutzername'))
 
     user = user.to_dto()
 
@@ -42,12 +42,17 @@ def validate_user(form, field):
         user.id, required_consent_subject_ids
     ):
         raise ValidationError(
-            f'Benutzer "{user.screen_name}" hat noch nicht alle nötigen '
-            'Zustimmungen erteilt. Ein erneuter Login ist erforderlich.'
+            lazy_gettext(
+                'Benutzer "%(screen_name)s" hat noch nicht alle nötigen '
+                'Zustimmungen erteilt. Ein erneuter Login ist erforderlich.',
+                screen_name=user.screen_name,
+            )
         )
 
     field.data = user
 
 
 class SpecifyUserForm(LocalizedForm):
-    user = StringField('Benutzername', [InputRequired(), validate_user])
+    user = StringField(
+        lazy_gettext('Benutzername'), [InputRequired(), validate_user]
+    )

@@ -9,6 +9,7 @@ byceps.blueprints.site.user.creation.forms
 import re
 from typing import Set
 
+from flask_babel import lazy_gettext
 from wtforms import BooleanField, PasswordField, StringField
 from wtforms.validators import InputRequired, Length
 
@@ -24,35 +25,49 @@ EMAIL_ADDRESS_PATTERN = re.compile(r'^.+?@.+?\..+?$')
 
 
 class UserCreateForm(LocalizedForm):
-    screen_name = StringField('Benutzername', [
-        InputRequired(),
-        Length(min=screen_name_validator.MIN_LENGTH,
-               max=screen_name_validator.MAX_LENGTH),
-        ScreenNameValidator(),
-    ])
-    email_address = StringField('E-Mail-Adresse', [InputRequired(), Length(min=6, max=120)])
-    password = PasswordField('Passwort', [InputRequired(), Length(min=8)])
-    is_bot = BooleanField('Bot')
+    screen_name = StringField(
+        lazy_gettext('Benutzername'),
+        [
+            InputRequired(),
+            Length(
+                min=screen_name_validator.MIN_LENGTH,
+                max=screen_name_validator.MAX_LENGTH,
+            ),
+            ScreenNameValidator(),
+        ],
+    )
+    email_address = StringField(
+        lazy_gettext('E-Mail-Adresse'),
+        [InputRequired(), Length(min=6, max=120)],
+    )
+    password = PasswordField(
+        lazy_gettext('Passwort'), [InputRequired(), Length(min=8)]
+    )
+    is_bot = BooleanField(lazy_gettext('Bot'))
 
     @staticmethod
     def validate_screen_name(form, field):
         if user_service.is_screen_name_already_assigned(field.data):
-            raise ValueError('Dieser Benutzername kann nicht verwendet werden.')
+            raise ValueError(
+                lazy_gettext('Dieser Benutzername kann nicht verwendet werden.')
+            )
 
     @staticmethod
     def validate_email_address(form, field):
         if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
-            raise ValueError('Die E-Mail-Adresse ist ungültig.')
+            raise ValueError(lazy_gettext('Die E-Mail-Adresse ist ungültig.'))
 
         if user_service.is_email_address_already_assigned(field.data):
             raise ValueError(
-                'Diese E-Mail-Adresse kann nicht verwendet werden.'
+                lazy_gettext(
+                    'Diese E-Mail-Adresse kann nicht verwendet werden.'
+                )
             )
 
     @staticmethod
     def validate_is_bot(form, field):
         if field.data:
-            raise ValueError('Bots sind nicht erlaubt.')
+            raise ValueError(lazy_gettext('Bots sind nicht erlaubt.'))
 
     def get_field_for_consent_subject_id(self, subject_id: SubjectID):
         name = _generate_consent_subject_field_name(subject_id)
@@ -67,15 +82,21 @@ def assemble_user_create_form(
     extra_fields = {}
 
     if real_name_required:
-        extra_fields['first_names'] = StringField('Vorname(n)', [InputRequired(), Length(min=2, max=40)])
-        extra_fields['last_name'] = StringField('Nachname', [InputRequired(), Length(min=2, max=80)])
+        extra_fields['first_names'] = StringField(
+            lazy_gettext('Vorname(n)'), [InputRequired(), Length(min=2, max=40)]
+        )
+        extra_fields['last_name'] = StringField(
+            lazy_gettext('Nachname'), [InputRequired(), Length(min=2, max=80)]
+        )
 
     for subject in required_consent_subjects:
         field_name = _generate_consent_subject_field_name(subject.id)
         extra_fields[field_name] = BooleanField('', [InputRequired()])
 
     if newsletter_offered:
-        extra_fields['subscribe_to_newsletter'] = BooleanField('Newsletter')
+        extra_fields['subscribe_to_newsletter'] = BooleanField(
+            lazy_gettext('Newsletter')
+        )
 
     # Create a configuration-specific subclass instead of
     # modifying the original shared class.

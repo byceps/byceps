@@ -6,6 +6,7 @@ byceps.blueprints.site.shop.order.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import lazy_gettext
 from wtforms import SelectField, StringField
 from wtforms.validators import InputRequired, Length
 
@@ -15,12 +16,20 @@ from .....util.l10n import LocalizedForm
 
 
 class OrderForm(LocalizedForm):
-    first_names = StringField('Vorname(n)', validators=[Length(min=2)])
-    last_name = StringField('Nachname', validators=[Length(min=2)])
-    country = StringField('Land', validators=[Length(min=2, max=60)])
-    zip_code = StringField('PLZ', validators=[Length(min=5, max=5)])
-    city = StringField('Stadt', validators=[Length(min=2)])
-    street = StringField('Straße', validators=[Length(min=2)])
+    first_names = StringField(
+        lazy_gettext('Vorname(n)'), validators=[Length(min=2)]
+    )
+    last_name = StringField(
+        lazy_gettext('Nachname'), validators=[Length(min=2)]
+    )
+    country = StringField(
+        lazy_gettext('Land'), validators=[Length(min=2, max=60)]
+    )
+    zip_code = StringField(
+        lazy_gettext('PLZ'), validators=[Length(min=5, max=5)]
+    )
+    city = StringField(lazy_gettext('Stadt'), validators=[Length(min=2)])
+    street = StringField(lazy_gettext('Straße'), validators=[Length(min=2)])
 
     def get_orderer(self, user_id):
         return Orderer(
@@ -59,7 +68,9 @@ def assemble_articles_order_form(article_compilation):
     for item in article_compilation:
         field_name = _generate_field_name(item.article)
         choices = _create_choices(item.article)
-        field = SelectField('Anzahl', validators, coerce=int, choices=choices)
+        field = SelectField(
+            lazy_gettext('Anzahl'), validators, coerce=int, choices=choices
+        )
         setattr(ArticlesOrderForm, field_name, field)
 
     return ArticlesOrderForm

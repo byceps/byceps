@@ -6,6 +6,7 @@ byceps.blueprints.admin.ticketing.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import lazy_gettext
 from wtforms import StringField
 from wtforms.validators import InputRequired, ValidationError
 
@@ -22,19 +23,21 @@ def validate_user(form, field):
     )
 
     if user is None:
-        raise ValidationError('Unbekannter Benutzername')
+        raise ValidationError(lazy_gettext('Unbekannter Benutzername'))
 
     field.data = user.to_dto()
 
 
 class UpdateCodeForm(LocalizedForm):
-    code = StringField('Code', [InputRequired()])
+    code = StringField(lazy_gettext('Code'), [InputRequired()])
 
     @staticmethod
     def validate_code(form, field):
         if not ticket_code_service.is_ticket_code_wellformed(field.data):
-            raise ValueError('Ungültiges Format')
+            raise ValueError(lazy_gettext('Ungültiges Format'))
 
 
 class SpecifyUserForm(LocalizedForm):
-    user = StringField('Benutzername', [InputRequired(), validate_user])
+    user = StringField(
+        lazy_gettext('Benutzername'), [InputRequired(), validate_user]
+    )

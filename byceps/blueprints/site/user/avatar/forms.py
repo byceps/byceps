@@ -6,6 +6,7 @@ byceps.blueprints.site.user.avatar.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import lazy_gettext
 from wtforms import FileField
 from wtforms.validators import InputRequired
 
@@ -13,4 +14,4 @@ from .....util.l10n import LocalizedForm
 
 
 class UpdateForm(LocalizedForm):
-    image = FileField('Bilddatei', [InputRequired()])
+    image = FileField(lazy_gettext('Bilddatei'), [InputRequired()])

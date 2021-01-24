@@ -6,6 +6,7 @@ byceps.blueprints.common.user.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import lazy_gettext
 from wtforms.validators import ValidationError
 
 from ....services.user import screen_name_validator
@@ -21,6 +22,9 @@ class ScreenNameValidator:
         if not screen_name_validator.contains_only_valid_chars(field.data):
             special_chars_spaced = ' '.join(screen_name_validator.SPECIAL_CHARS)
             raise ValidationError(
-                'Enthält ungültige Zeichen. Erlaubt sind Buchstaben, '
-                f' Ziffern und diese Sonderzeichen: {special_chars_spaced}'
+                lazy_gettext(
+                    'Enthält ungültige Zeichen. Erlaubt sind Buchstaben, '
+                    'Ziffern und diese Sonderzeichen: '
+                )
+                + special_chars_spaced
             )

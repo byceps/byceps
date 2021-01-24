@@ -6,6 +6,7 @@ byceps.blueprints.admin.tourney.category.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import lazy_gettext
 from wtforms import StringField
 from wtforms.validators import InputRequired, Length
 
@@ -13,7 +14,9 @@ from .....util.l10n import LocalizedForm
 
 
 class CreateForm(LocalizedForm):
-    title = StringField('Titel', [InputRequired(), Length(max=40)])
+    title = StringField(
+        lazy_gettext('Titel'), [InputRequired(), Length(max=40)]
+    )
 
 
 class UpdateForm(CreateForm):

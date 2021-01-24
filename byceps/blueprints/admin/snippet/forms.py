@@ -6,6 +6,7 @@ byceps.blueprints.admin.snippet.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import lazy_gettext
 from wtforms import StringField, TextAreaField
 from wtforms.validators import InputRequired, ValidationError
 
@@ -13,14 +14,16 @@ from ....util.l10n import LocalizedForm
 
 
 class MountpointCreateForm(LocalizedForm):
-    site_id = StringField('Site-ID', [InputRequired()])
-    endpoint_suffix = StringField('Bezeichner', [InputRequired()])
-    url_path = StringField('URL-Pfad', [InputRequired()])
+    site_id = StringField(lazy_gettext('Site-ID'), [InputRequired()])
+    endpoint_suffix = StringField(lazy_gettext('Bezeichner'), [InputRequired()])
+    url_path = StringField(lazy_gettext('URL-Pfad'), [InputRequired()])
 
     @staticmethod
     def validate_url_path(form, field):
         if not field.data.startswith('/'):
-            raise ValidationError('Der URL-Pfad muss mit einem Slash beginnen.')
+            raise ValidationError(
+                lazy_gettext('Der URL-Pfad muss mit einem Slash beginnen.')
+            )
 
 
 class MountpointUpdateForm(MountpointCreateForm):
@@ -28,8 +31,8 @@ class MountpointUpdateForm(MountpointCreateForm):
 
 
 class FragmentCreateForm(LocalizedForm):
-    name = StringField('Bezeichner', [InputRequired()])
-    body = TextAreaField('Text', [InputRequired()])
+    name = StringField(lazy_gettext('Bezeichner'), [InputRequired()])
+    body = TextAreaField(lazy_gettext('Text'), [InputRequired()])
 
 
 class FragmentUpdateForm(FragmentCreateForm):
@@ -37,9 +40,9 @@ class FragmentUpdateForm(FragmentCreateForm):
 
 
 class DocumentCreateForm(FragmentCreateForm):
-    title = StringField('Titel', [InputRequired()])
-    head = TextAreaField('Seitenkopf')
-    image_url_path = StringField('Bild-URL-Pfad')
+    title = StringField(lazy_gettext('Titel'), [InputRequired()])
+    head = TextAreaField(lazy_gettext('Seitenkopf'))
+    image_url_path = StringField(lazy_gettext('Bild-URL-Pfad'))
 
 
 class DocumentUpdateForm(DocumentCreateForm):

@@ -6,6 +6,7 @@ byceps.blueprints.admin.site.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import lazy_gettext
 from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
@@ -19,15 +20,25 @@ from ....services.shop.storefront import service as storefront_service
 
 
 class _BaseForm(LocalizedForm):
-    title = StringField('Titel', validators=[Length(min=1, max=40)])
-    server_name = StringField('Servername', validators=[InputRequired()])
-    party_id = SelectField('Party', validators=[Optional()])
-    enabled = BooleanField('aktiv')
-    user_account_creation_enabled  = BooleanField('Benutzerregistrierung geöffnet')
-    login_enabled = BooleanField('Benutzeranmeldung geöffnet')
-    news_channel_id = SelectField('Newskanal-ID', validators=[Optional()])
-    board_id = SelectField('Forums-ID', validators=[Optional()])
-    storefront_id = SelectField('Storefront-ID', validators=[Optional()])
+    title = StringField(
+        lazy_gettext('Titel'), validators=[Length(min=1, max=40)]
+    )
+    server_name = StringField(
+        lazy_gettext('Servername'), validators=[InputRequired()]
+    )
+    party_id = SelectField(lazy_gettext('Party'), validators=[Optional()])
+    enabled = BooleanField(lazy_gettext('aktiv'))
+    user_account_creation_enabled = BooleanField(
+        lazy_gettext('Benutzerregistrierung geöffnet')
+    )
+    login_enabled = BooleanField(lazy_gettext('Benutzeranmeldung geöffnet'))
+    news_channel_id = SelectField(
+        lazy_gettext('Newskanal-ID'), validators=[Optional()]
+    )
+    board_id = SelectField(lazy_gettext('Forums-ID'), validators=[Optional()])
+    storefront_id = SelectField(
+        lazy_gettext('Storefront-ID'), validators=[Optional()]
+    )
 
     def set_brand_choices(self):
         brands = brand_service.get_all_brands()
@@ -39,7 +50,7 @@ class _BaseForm(LocalizedForm):
         parties.sort(key=lambda party: party.starts_at, reverse=True)
 
         choices = [(p.id, p.title) for p in parties]
-        choices.insert(0, ('', '<keine>'))
+        choices.insert(0, ('', lazy_gettext('<keine>')))
         self.party_id.choices = choices
 
     def set_news_channel_choices(self, brand_id):
@@ -47,7 +58,7 @@ class _BaseForm(LocalizedForm):
         news_channels.sort(key=lambda channel: channel.id)
 
         choices = [(c.id, c.id) for c in news_channels]
-        choices.insert(0, ('', '<keiner>'))
+        choices.insert(0, ('', lazy_gettext('<keiner>')))
         self.news_channel_id.choices = choices
 
     def set_board_choices(self, brand_id):
@@ -55,7 +66,7 @@ class _BaseForm(LocalizedForm):
         boards.sort(key=lambda board: board.id)
 
         choices = [(b.id, b.id) for b in boards]
-        choices.insert(0, ('', '<keins>'))
+        choices.insert(0, ('', lazy_gettext('<keins>')))
         self.board_id.choices = choices
 
     def set_storefront_choices(self):
@@ -63,14 +74,14 @@ class _BaseForm(LocalizedForm):
         storefronts.sort(key=lambda storefront: storefront.id)
 
         choices = [(s.id, s.id) for s in storefronts]
-        choices.insert(0, ('', '<keiner>'))
+        choices.insert(0, ('', lazy_gettext('<keiner>')))
         self.storefront_id.choices = choices
 
 
 class CreateForm(_BaseForm):
-    id = StringField('ID', validators=[Length(min=1, max=40)])
+    id = StringField(lazy_gettext('ID'), validators=[Length(min=1, max=40)])
 
 
 class UpdateForm(_BaseForm):
-    brand_id = SelectField('Marke', validators=[InputRequired()])
-    archived = BooleanField('archiviert')
+    brand_id = SelectField(lazy_gettext('Marke'), validators=[InputRequired()])
+    archived = BooleanField(lazy_gettext('archiviert'))
