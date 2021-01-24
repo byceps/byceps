@@ -121,48 +121,7 @@ EVENT_TYPES_TO_HANDLERS = {
 }
 
 
-@board_signals.topic_created.connect
-@board_signals.topic_hidden.connect
-@board_signals.topic_unhidden.connect
-@board_signals.topic_locked.connect
-@board_signals.topic_unlocked.connect
-@board_signals.topic_pinned.connect
-@board_signals.topic_unpinned.connect
-@board_signals.topic_moved.connect
-@board_signals.posting_created.connect
-@board_signals.posting_hidden.connect
-@board_signals.posting_unhidden.connect
-@news_signals.item_published.connect
-@shop_signals.order_placed.connect
-@shop_signals.order_paid.connect
-@shop_signals.order_canceled.connect
-@snippet_signals.snippet_created.connect
-@snippet_signals.snippet_updated.connect
-@snippet_signals.snippet_deleted.connect
-@ticketing_signals.ticket_checked_in.connect
-@ticketing_signals.tickets_sold.connect
-@tourney_signals.tourney_started.connect
-@tourney_signals.tourney_paused.connect
-@tourney_signals.tourney_canceled.connect
-@tourney_signals.tourney_finished.connect
-@tourney_signals.match_ready.connect
-@tourney_signals.match_reset.connect
-@tourney_signals.match_score_submitted.connect
-@tourney_signals.match_score_confirmed.connect
-@tourney_signals.match_score_randomized.connect
-@tourney_signals.participant_ready.connect
-@tourney_signals.participant_eliminated.connect
-@tourney_signals.participant_warned.connect
-@tourney_signals.participant_disqualified.connect
-@user_signals.account_created.connect
-@user_signals.screen_name_changed.connect
-@user_signals.email_address_invalidated.connect
-@user_signals.details_updated.connect
-@user_signals.account_suspended.connect
-@user_signals.account_unsuspended.connect
-@user_signals.account_deleted.connect
-@user_badge_signals.user_badge_awarded.connect
-def _on_event(sender, *, event: Optional[_BaseEvent] = None) -> None:
+def receive_signal(sender, *, event: Optional[_BaseEvent] = None) -> None:
     event_type = type(event)
 
     handler = EVENT_TYPES_TO_HANDLERS.get(event_type)
@@ -172,3 +131,50 @@ def _on_event(sender, *, event: Optional[_BaseEvent] = None) -> None:
     webhooks = get_webhooks(event)
     for webhook in webhooks:
         enqueue(handler, event, webhook)
+
+
+SIGNALS = [
+    board_signals.topic_created,
+    board_signals.topic_hidden,
+    board_signals.topic_unhidden,
+    board_signals.topic_locked,
+    board_signals.topic_unlocked,
+    board_signals.topic_pinned,
+    board_signals.topic_unpinned,
+    board_signals.topic_moved,
+    board_signals.posting_created,
+    board_signals.posting_hidden,
+    board_signals.posting_unhidden,
+    news_signals.item_published,
+    shop_signals.order_placed,
+    shop_signals.order_paid,
+    shop_signals.order_canceled,
+    snippet_signals.snippet_created,
+    snippet_signals.snippet_updated,
+    snippet_signals.snippet_deleted,
+    ticketing_signals.ticket_checked_in,
+    ticketing_signals.tickets_sold,
+    tourney_signals.tourney_started,
+    tourney_signals.tourney_paused,
+    tourney_signals.tourney_canceled,
+    tourney_signals.tourney_finished,
+    tourney_signals.match_ready,
+    tourney_signals.match_reset,
+    tourney_signals.match_score_submitted,
+    tourney_signals.match_score_confirmed,
+    tourney_signals.match_score_randomized,
+    tourney_signals.participant_ready,
+    tourney_signals.participant_eliminated,
+    tourney_signals.participant_warned,
+    tourney_signals.participant_disqualified,
+    user_signals.account_created,
+    user_signals.screen_name_changed,
+    user_signals.email_address_invalidated,
+    user_signals.details_updated,
+    user_signals.account_suspended,
+    user_signals.account_unsuspended,
+    user_signals.account_deleted,
+    user_badge_signals.user_badge_awarded,
+]
+for signal in SIGNALS:
+    signal.connect(receive_signal)
