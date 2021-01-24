@@ -164,7 +164,7 @@ def set_invoiced_flag(order_id):
 
     flash_success(
         gettext(
-            'Bestellung %(order_number)s wurde als in Rechnung gestellt markiert.',
+            'Order %(order_number)s has been marked as invoiced.',
             order_number=order.order_number,
         )
     )
@@ -182,7 +182,7 @@ def unset_invoiced_flag(order_id):
 
     flash_success(
         gettext(
-            'Bestellung %(order_number)s wurde als nicht in Rechnung gestellt markiert.',
+            'Order %(order_number)s has been marked as not invoiced.',
             order_number=order.order_number,
         )
     )
@@ -200,7 +200,7 @@ def set_shipped_flag(order_id):
 
     flash_success(
         gettext(
-            'Bestellung %(order_number)s wurde als verschickt markiert.',
+            'Order %(order_number)s has been marked as shipped.',
             order_number=order.order_number,
         )
     )
@@ -218,7 +218,7 @@ def unset_shipped_flag(order_id):
 
     flash_success(
         gettext(
-            'Bestellung %(order_number)s wurde als nicht verschickt markiert.',
+            'Order %(order_number)s has been marked as not shipped.',
             order_number=order.order_number,
         )
     )
@@ -238,7 +238,8 @@ def cancel_form(order_id, erroneous_form=None):
     if order.is_canceled:
         flash_error(
             gettext(
-                'Die Bestellung ist bereits storniert worden; der Bezahlstatus kann nicht mehr geändert werden.'
+                'The order has already been canceled. '
+                'The payment status cannot be changed anymore.'
             )
         )
         return redirect_to('.view', order_id=order.id)
@@ -277,25 +278,23 @@ def cancel(order_id):
     except order_service.OrderAlreadyCanceled:
         flash_error(
             gettext(
-                'Die Bestellung ist bereits storniert worden; der Bezahlstatus kann nicht mehr geändert werden.'
+                'The order has already been canceled. '
+                'The payment status cannot be changed anymore.'
             )
         )
         return redirect_to('.view', order_id=order.id)
 
     flash_success(
         gettext(
-            'Die Bestellung wurde als storniert markiert und die betroffenen Artikel in den entsprechenden Stückzahlen wieder zur Bestellung freigegeben.'
+            'The order has been canceled and the corresponding articles '
+            'have been made available again.'
         )
     )
 
     if send_email:
         order_email_service.send_email_for_canceled_order_to_orderer(order.id)
     else:
-        flash_notice(
-            gettext(
-                'Es wurde keine E-Mail an den/die Auftraggeber/in versendet.'
-            )
-        )
+        flash_notice(gettext('No email has been sent to the orderer.'))
 
     shop_signals.order_canceled.send(None, event=event)
 
@@ -314,9 +313,7 @@ def mark_as_paid_form(order_id, erroneous_form=None):
     order = _get_order_or_404(order_id)
 
     if order.is_paid:
-        flash_error(
-            gettext('Die Bestellung ist bereits als bezahlt markiert worden.')
-        )
+        flash_error(gettext('Order is already marked as paid.'))
         return redirect_to('.view', order_id=order.id)
 
     shop = shop_service.get_shop(order.shop_id)
@@ -351,12 +348,10 @@ def mark_as_paid(order_id):
             order.id, payment_method, updated_by_id
         )
     except order_service.OrderAlreadyMarkedAsPaid:
-        flash_error(
-            gettext('Die Bestellung ist bereits als bezahlt markiert worden.')
-        )
+        flash_error(gettext('Order is already marked as paid.'))
         return redirect_to('.view', order_id=order.id)
 
-    flash_success(gettext('Die Bestellung wurde als bezahlt markiert.'))
+    flash_success(gettext('Order has been marked as paid.'))
 
     order_email_service.send_email_for_paid_order_to_orderer(order.id)
 
@@ -391,7 +386,7 @@ def resend_email_for_incoming_order_to_orderer(order_id):
     )
 
     flash_success(
-        gettext('Die E-Mail-Eingangsbestätigung wurde erneut versendet.')
+        gettext('Email confirmation for placed order has been sent again.')
     )
 
 
@@ -435,7 +430,8 @@ def create_number_sequence(shop_id):
     if sequence_id is None:
         flash_error(
             gettext(
-                'Die Bestellnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "%(prefix)s" bereits definiert?',
+                'Order number sequence could not be created. '
+                'Is the prefix "%(prefix)s" already defined?',
                 prefix=prefix,
             )
         )
@@ -443,7 +439,7 @@ def create_number_sequence(shop_id):
 
     flash_success(
         gettext(
-            'Die Bestellnummer-Sequenz mit dem Präfix "%(prefix)s" wurde angelegt.',
+            'Order number sequence with prefix "%(prefix)s" has been created.',
             prefix=prefix,
         )
     )

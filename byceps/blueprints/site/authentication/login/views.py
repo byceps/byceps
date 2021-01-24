@@ -45,7 +45,7 @@ def login_form():
     if g.user.is_active:
         flash_notice(
             gettext(
-                'Du bist bereits als Benutzer "%(screen_name)s" angemeldet.',
+                'You are already logged in as "%(screen_name)s".',
                 screen_name=g.user.screen_name,
             )
         )
@@ -107,7 +107,7 @@ def login():
     user_session.start(user.id, auth_token, permanent=permanent)
     flash_success(
         gettext(
-            'Erfolgreich eingeloggt als %(screen_name)s.',
+            'Successfully logged in as %(screen_name)s.',
             screen_name=user.screen_name,
         )
     )
@@ -130,7 +130,7 @@ def _is_consent_required(user_id: UserID) -> bool:
 def logout():
     """Log out user by deleting the corresponding cookie."""
     user_session.end()
-    flash_success(gettext('Erfolgreich ausgeloggt.'))
+    flash_success(gettext('Successfully logged out.'))
 
 
 # helpers

@@ -194,9 +194,7 @@ def create(shop_id):
     )
     if not article_number_sequences:
         flash_error(
-            gettext(
-                'Für diesen Shop sind keine Artikelnummer-Sequenzen definiert.'
-            )
+            gettext('No article number sequences are defined for this shop.')
         )
         return create_form(shop_id, form)
 
@@ -206,9 +204,7 @@ def create(shop_id):
 
     article_number_sequence_id = form.article_number_sequence_id.data
     if not article_number_sequence_id:
-        flash_error(
-            gettext('Es wurde keine gültige Artikelnummer-Sequenz angegeben.')
-        )
+        flash_error(gettext('No valid article number sequence was specified.'))
         return create_form(shop_id, form)
 
     article_number_sequence = (
@@ -219,9 +215,7 @@ def create(shop_id):
     if (article_number_sequence is None) or (
         article_number_sequence.shop_id != shop.id
     ):
-        flash_error(
-            gettext('Es wurde keine gültige Artikelnummer-Sequenz angegeben.')
-        )
+        flash_error(gettext('No valid article number sequence was specified.'))
         return create_form(shop_id, form)
 
     try:
@@ -250,7 +244,7 @@ def create(shop_id):
 
     flash_success(
         gettext(
-            'Der Artikel "%(item_number)s" wurde angelegt.',
+            'Article "%(item_number)s" has been created.',
             item_number=article.item_number,
         )
     )
@@ -330,7 +324,7 @@ def update(article_id):
 
     flash_success(
         gettext(
-            'Der Artikel "%(description)s" wurde aktualisiert.',
+            'Article "%(description)s" has been updated.',
             description=article.description,
         )
     )
@@ -393,7 +387,7 @@ def attachment_create(article_id):
 
     flash_success(
         gettext(
-            'Der Artikel "%(article_to_attach_item_number)s" wurde %(quantity)s mal an den Artikel "%(article_item_number)s" angehängt.',
+            'Article "%(article_to_attach_item_number)s" has been attached %(quantity)s times to article "%(article_item_number)s".',
             article_to_attach_item_number=article_to_attach.item_number,
             quantity=quantity,
             article_item_number=article.item_number,
@@ -419,7 +413,7 @@ def attachment_remove(article_id):
 
     flash_success(
         gettext(
-            'Artikel "%(article_item_number)s" ist nun nicht mehr an Artikel "%(attached_to_article_item_number)s" angehängt.',
+            'Article "%(article_item_number)s" is no longer attached to article "%(attached_to_article_item_number)s".',
             article_item_number=article.item_number,
             attached_to_article_item_number=attached_to_article.item_number,
         )
@@ -468,7 +462,8 @@ def create_number_sequence(shop_id):
     if sequence_id is None:
         flash_error(
             gettext(
-                'Die Artikelnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "%(prefix)s" bereits definiert?',
+                'Article number sequence could not be created. '
+                'Is prefix "%(prefix)s" already defined?',
                 prefix=prefix,
             )
         )
@@ -476,7 +471,7 @@ def create_number_sequence(shop_id):
 
     flash_success(
         gettext(
-            'Die Artikelnummer-Sequenz mit dem Präfix "%(prefix)s" wurde angelegt.',
+            'Article number sequence with prefix "%(prefix)s" has been created.',
             prefix=prefix,
         )
     )

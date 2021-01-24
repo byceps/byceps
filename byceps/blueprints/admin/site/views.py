@@ -206,7 +206,7 @@ def create(brand_id):
         if not party:
             flash_error(
                 gettext(
-                    'Die Party-ID "%(party_id)s" ist unbekannt.',
+                    'Party ID "%(party_id)s" is unknown.',
                     party_id=party_id,
                 )
             )
@@ -229,7 +229,7 @@ def create(brand_id):
     )
 
     flash_success(
-        gettext('Die Site "%(title)s" wurde angelegt.', title=site.title)
+        gettext('Site "%(title)s" has been created.', title=site.title)
     )
 
     return redirect_to('.view', site_id=site.id)
@@ -282,7 +282,7 @@ def update(site_id):
         if not party:
             flash_error(
                 gettext(
-                    'Die Party-ID "%(party_id)s" ist unbekannt.',
+                    'Party ID "%(party_id)s" is unknown.',
                     party_id=party_id,
                 )
             )
@@ -309,7 +309,7 @@ def update(site_id):
         abort(404, f'Unknown site ID "{site_id}".')
 
     flash_success(
-        gettext('Die Site "%(title)s" wurde aktualisiert.', title=site.title)
+        gettext('Site "%(title)s" has been updated.', title=site.title)
     )
 
     return redirect_to('.view', site_id=site.id)

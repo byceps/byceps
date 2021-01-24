@@ -195,7 +195,7 @@ def create_document(scope_type, scope_name):
 
     flash_success(
         gettext(
-            'Das Dokument "%(name)s" wurde angelegt.', name=version.snippet.name
+            'Document "%(name)s" has been created.', name=version.snippet.name
         )
     )
 
@@ -253,7 +253,7 @@ def update_document(snippet_id):
 
     flash_success(
         gettext(
-            'Das Dokument "%(name)s" wurde aktualisiert.',
+            'Document "%(name)s" has been updated.',
             name=version.snippet.name,
         )
     )
@@ -343,7 +343,7 @@ def create_fragment(scope_type, scope_name):
 
     flash_success(
         gettext(
-            'Das Fragment "%(name)s" wurde angelegt.', name=version.snippet.name
+            'Fragment "%(name)s" has been created.', name=version.snippet.name
         )
     )
 
@@ -393,7 +393,7 @@ def update_fragment(snippet_id):
 
     flash_success(
         gettext(
-            'Das Fragment "%(name)s" wurde aktualisiert.',
+            'Fragment "%(name)s" has been updated.',
             name=version.snippet.name,
         )
     )
@@ -452,14 +452,14 @@ def delete_snippet(snippet_id):
     if not success:
         flash_error(
             gettext(
-                'Das Snippet "%(snippet_name)s" konnte nicht gelöscht werden. Ist es noch gemountet?',
+                'Snippet "%(snippet_name)s" could not be deleted. Is it still mounted?',
                 snippet_name=snippet_name,
             )
         )
         return url_for('.view_current_version', snippet_id=snippet.id)
 
     flash_success(
-        gettext('Das Snippet "%(name)s" wurde gelöscht.', name=snippet_name)
+        gettext('Snippet "%(name)s" has been deleted.', name=snippet_name)
     )
     snippet_signals.snippet_deleted.send(None, event=event)
     return url_for(
@@ -540,7 +540,7 @@ def create_mountpoint(snippet_id):
 
     flash_success(
         gettext(
-            'Der Mountpoint für "%(url_path)s" wurde angelegt.',
+            'Mountpoint for "%(url_path)s" has been created.',
             url_path=mountpoint.url_path,
         )
     )
@@ -563,7 +563,7 @@ def delete_mountpoint(mountpoint_id):
 
     flash_success(
         gettext(
-            'Der Mountpoint für "%(url_path)s" wurde entfernt.',
+            'Mountpoint for "%(url_path)s" has been deleted.',
             url_path=url_path,
         )
     )

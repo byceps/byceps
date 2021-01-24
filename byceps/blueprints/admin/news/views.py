@@ -104,7 +104,7 @@ def channel_create(brand_id):
 
     flash_success(
         gettext(
-            'Der News-Kanal mit der ID "%(channel_id)s" wurde angelegt.',
+            'News channel with ID "%(channel_id)s" has been created.',
             channel_id=channel.id,
         )
     )
@@ -199,7 +199,7 @@ def image_create(item_id):
 
     flash_success(
         gettext(
-            'Das Newsbild #%(image_number)s wurde hinzugefügt.',
+            'News image #%(image_number)s has been created.',
             image_number=image.number,
         )
     )
@@ -244,7 +244,7 @@ def image_update(image_id):
 
     flash_success(
         gettext(
-            'Das Newsbild #%(image_number)s wurde aktualisiert.',
+            'News image #%(image_number)s has been updated.',
             image_number=image.number,
         )
     )
@@ -403,7 +403,7 @@ def item_create(channel_id):
     )
 
     flash_success(
-        gettext('Die News "%(title)s" wurde angelegt.', title=item.title)
+        gettext('News item "%(title)s" has been created.', title=item.title)
     )
 
     return redirect_to('.item_view', item_id=item.id)
@@ -451,7 +451,7 @@ def item_update(item_id):
     )
 
     flash_success(
-        gettext('Die News "%(title)s" wurde aktualisiert.', title=item.title)
+        gettext('News item "%(title)s" has been updated.', title=item.title)
     )
 
     return redirect_to('.item_view', item_id=item.id)
@@ -494,7 +494,7 @@ def item_publish_later(item_id):
 
     flash_success(
         gettext(
-            'Die News "%(title)s" wird später veröffentlicht.', title=item.title
+            'News item "%(title)s" will be published later.', title=item.title
         )
     )
 
@@ -513,7 +513,7 @@ def item_publish_now(item_id):
     news_signals.item_published.send(None, event=event)
 
     flash_success(
-        gettext('Die News "%(title)s" wurde veröffentlicht.', title=item.title)
+        gettext('News item "%(title)s" has been published.', title=item.title)
     )
 
 

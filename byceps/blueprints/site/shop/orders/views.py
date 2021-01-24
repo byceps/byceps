@@ -108,13 +108,13 @@ def cancel_form(order_id, erroneous_form=None):
     order = _get_order_by_current_user_or_404(order_id)
 
     if order.is_canceled:
-        flash_error(gettext('Die Bestellung ist bereits storniert worden.'))
+        flash_error(gettext('The order has already been canceled.'))
         return redirect_to('.view', order_id=order.id)
 
     if order.is_paid:
         flash_error(
             gettext(
-                'Die Bestellung ist bereits bezahlt worden. Du kannst sie nicht mehr selbst stornieren.'
+                'The order has already been paid. You cannot cancel it yourself anymore.'
             )
         )
         return redirect_to('.view', order_id=order.id)
@@ -136,13 +136,13 @@ def cancel(order_id):
     order = _get_order_by_current_user_or_404(order_id)
 
     if order.is_canceled:
-        flash_error(gettext('Die Bestellung ist bereits storniert worden.'))
+        flash_error(gettext('The order has already been canceled.'))
         return redirect_to('.view', order_id=order.id)
 
     if order.is_paid:
         flash_error(
             gettext(
-                'Die Bestellung ist bereits bezahlt worden. Du kannst sie nicht mehr selbst stornieren.'
+                'The order has already been paid. You cannot cancel it yourself anymore.'
             )
         )
         return redirect_to('.view', order_id=order.id)
@@ -158,12 +158,12 @@ def cancel(order_id):
     except order_service.OrderAlreadyCanceled:
         flash_error(
             gettext(
-                'Die Bestellung ist bereits storniert worden; der Bezahlstatus kann nicht mehr geändert werden.'
+                'The order has already been canceled. The payment state cannot be changed anymore.'
             )
         )
         return redirect_to('.view', order_id=order.id)
 
-    flash_success(gettext('Die Bestellung wurde storniert.'))
+    flash_success(gettext('Order has been canceled.'))
 
     order_email_service.send_email_for_canceled_order_to_orderer(order.id)
 

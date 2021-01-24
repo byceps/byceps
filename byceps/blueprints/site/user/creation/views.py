@@ -116,7 +116,7 @@ def create():
     except user_creation_service.UserCreationFailed:
         flash_error(
             gettext(
-                'Das Benutzerkonto für "%(screen_name)s" konnte nicht angelegt werden.',
+                'User "%(screen_name)s" could not be created.',
                 screen_name=screen_name,
             )
         )
@@ -124,9 +124,8 @@ def create():
 
     flash_success(
         gettext(
-            'Das Benutzerkonto für "%(screen_name)s" wurde angelegt. '
-            'Bevor du dich damit anmelden kannst, muss zunächst der Link in der '
-            'an die angegebene Adresse verschickten E-Mail besucht werden.',
+            'User "%(screen_name)s" has been created. Before you can log in, '
+            'please visit the link emailed to you to verify your email address.',
             screen_name=user.screen_name,
         )
     )
@@ -146,9 +145,7 @@ def create():
 def _abort_if_user_account_creation_disabled():
     site = site_service.get_site(g.site_id)
     if not site.user_account_creation_enabled:
-        flash_error(
-            gettext('Das Erstellen von Benutzerkonten ist deaktiviert.')
-        )
+        flash_error(gettext('User account creation is disabled.'))
         abort(403)
 
 

@@ -96,8 +96,7 @@ def team_create(party_id):
 
     flash_success(
         gettext(
-            'Das Team "%(team_title)s" wurde '
-            'für die Party "%(party_title)s" erstellt.',
+            'Team "%(team_title)s" for party "%(party_title)s" has been created.',
             team_title=team.title,
             party_title=party.title,
         )
@@ -115,7 +114,7 @@ def team_delete(team_id):
     if orga_team_service.has_team_memberships(team.id):
         flash_error(
             gettext(
-                'Orga team "%(team_title)s" cannot be deleted because it has members.',
+                'Team "%(team_title)s" cannot be deleted because it has members.',
                 team_title=team.title,
             )
         )
@@ -125,7 +124,7 @@ def team_delete(team_id):
 
     orga_team_service.delete_team(team.id)
 
-    flash_success(gettext('Das Team "%(title)s" wurde gelöscht.', title=title))
+    flash_success(gettext('Team "%(title)s" has been deleted.', title=title))
 
 
 @blueprint.route('/teams/<target_party_id>/copy')
@@ -139,7 +138,7 @@ def teams_copy_form(target_party_id, erroneous_form=None):
     if team_count:
         flash_error(
             gettext(
-                'Diese Party hat bereits Orga-Teams. Es können keine weiteren hinzu kopiert werden.'
+                'This party already has teams. No additional teams can be copied to it.'
             )
         )
         return redirect_to('.teams_for_party', party_id=target_party.id)
@@ -157,9 +156,7 @@ def teams_copy_form(target_party_id, erroneous_form=None):
 
     if not parties:
         flash_error(
-            gettext(
-                'Es sind keine anderen Partys vorhanden, von denen Orga-Teams kopiert werden können.'
-            )
+            gettext('No other parties exist from which teams could be copied.')
         )
         return redirect_to('.teams_for_party', party_id=target_party.id)
 
@@ -184,7 +181,7 @@ def teams_copy(target_party_id):
     if target_team_count:
         flash_error(
             gettext(
-                'Diese Party hat bereits Orga-Teams. Es können keine weiteren hinzu kopiert werden.'
+                'This party already has teams. No additional teams can be copied to it.'
             )
         )
         return redirect_to('.teams_for_party', party_id=target_party.id)
@@ -204,8 +201,8 @@ def teams_copy(target_party_id):
 
     flash_success(
         gettext(
-            '%(copied_teams_count)s Team(s) wurde(n) von Party '
-            '"%(source_party_title)s" zu Party "%(target_party_title)s" kopiert.',
+            '%(copied_teams_count)s team(s) has/have been copied from party '
+            '"%(source_party_title)s" to party "%(target_party_title)s".',
             copied_teams_count=copied_teams_count,
             source_party_title=source_party.title,
             target_party_title=target_party.title,
@@ -277,7 +274,7 @@ def membership_create(team_id):
 
     flash_success(
         gettext(
-            '%(screen_name)s wurde in das Team "%(team_title)s" aufgenommen.',
+            '%(screen_name)s has been added to team "%(team_title)s".',
             screen_name=user.screen_name,
             team_title=team.title,
         )
@@ -339,7 +336,7 @@ def membership_update(membership_id):
 
     flash_success(
         gettext(
-            'Die Teammitgliedschaft von %(screen_name)s wurde aktualisiert.',
+            'Membership of %(screen_name)s has been updated.',
             screen_name=user.screen_name,
         )
     )
@@ -360,7 +357,7 @@ def membership_remove(membership_id):
 
     flash_success(
         gettext(
-            '%(screen_name)s wurde aus dem Team "%(team_title)s" entfernt.',
+            '%(screen_name)s has been removed from team "%(team_title)s".',
             screen_name=user.screen_name,
             team_title=team.title,
         )

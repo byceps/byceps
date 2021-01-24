@@ -126,7 +126,7 @@ def board_create(brand_id):
 
     flash_success(
         gettext(
-            'Das Forum mit der ID "%(board_id)s" wurde angelegt.',
+            'Board with ID "%(board_id)s" has been created.',
             board_id=board.id,
         )
     )
@@ -175,7 +175,7 @@ def category_create(board_id):
 
     flash_success(
         gettext(
-            'Die Kategorie "%(category_title)s" wurde angelegt.',
+            'Category "%(category_title)s" has been created.',
             category_title=category.title,
         )
     )
@@ -223,7 +223,7 @@ def category_update(category_id):
 
     flash_success(
         gettext(
-            'Die Kategorie "%(category_title)s" wurde aktualisiert.',
+            'Category "%(category_title)s" has been updated.',
             category_title=category.title,
         )
     )
@@ -243,7 +243,7 @@ def category_hide(category_id):
 
     flash_success(
         gettext(
-            'Die Kategorie "%(category_title)s" wurde versteckt.',
+            'Category "%(category_title)s" has been hidden.',
             category_title=category.title,
         )
     )
@@ -262,7 +262,7 @@ def category_unhide(category_id):
 
     flash_success(
         gettext(
-            'Die Kategorie "%(category_title)s" wurde sichtbar gemacht.',
+            'Category "%(category_title)s" has been made visible.',
             category_title=category.title,
         )
     )
@@ -280,14 +280,14 @@ def category_move_up(category_id):
     except ValueError:
         flash_error(
             gettext(
-                'Die Kategorie "%(category_title)s" befindet sich bereits ganz oben.',
+                'Category "%(category_title)s" is already at the top.',
                 category_title=category.title,
             )
         )
     else:
         flash_success(
             gettext(
-                'Die Kategorie "%(category_title)s" wurde eine Position nach oben verschoben.',
+                'Category "%(category_title)s" has been moved upwards by one position.',
                 category_title=category.title,
             )
         )
@@ -305,14 +305,14 @@ def category_move_down(category_id):
     except ValueError:
         flash_error(
             gettext(
-                'Die Kategorie "%(category_title)s" befindet sich bereits ganz unten.',
+                'Category "%(category_title)s" is already at the bottom.',
                 category_title=category.title,
             )
         )
     else:
         flash_success(
             gettext(
-                'Die Kategorie "%(category_title)s" wurde eine Position nach unten verschoben.',
+                'Category "%(category_title)s" has been moved downwards by one position.',
                 category_title=category.title,
             )
         )
@@ -330,14 +330,14 @@ def category_delete(category_id):
     except Exception:
         flash_error(
             gettext(
-                'Die Kategorie "%(category_title)s" konnte nicht gelöscht werden.',
+                'Category "%(category_title)s" could not be deleted.',
                 category_title=category.title,
             )
         )
     else:
         flash_success(
             gettext(
-                'Die Kategorie "%(category_title)s" wurde gelöscht.',
+                'Category "%(category_title)s" has been deleted.',
                 category_title=category.title,
             )
         )

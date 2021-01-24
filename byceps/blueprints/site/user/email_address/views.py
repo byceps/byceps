@@ -56,7 +56,7 @@ def request_confirmation_email():
     if (user is None) or user.deleted:
         flash_error(
             gettext(
-                'Der Benutzername "%(screen_name)s" ist unbekannt.',
+                'Username "%(screen_name)s" is unknown.',
                 screen_name=screen_name,
             )
         )
@@ -65,7 +65,7 @@ def request_confirmation_email():
     if user.email_address is None:
         flash_error(
             gettext(
-                'Für das Benutzerkonto "%(screen_name)s" ist keine E-Mail-Adresse hinterlegt.',
+                'No email address is set for user "%(screen_name)s".',
                 screen_name=screen_name,
             )
         )
@@ -74,7 +74,7 @@ def request_confirmation_email():
     if user.email_address_verified:
         flash_notice(
             gettext(
-                'Die E-Mail-Adresse für den Benutzernamen "%(screen_name)s" wurde bereits bestätigt.',
+                'The email address for user "%(screen_name)s" has already been verified.',
                 screen_name=user.screen_name,
             )
         )
@@ -83,7 +83,7 @@ def request_confirmation_email():
     if user.suspended:
         flash_error(
             gettext(
-                'Das Benutzerkonto "%(screen_name)s" ist gesperrt.',
+                'User "%(screen_name)s" has been suspended.',
                 screen_name=screen_name,
             )
         )
@@ -95,9 +95,8 @@ def request_confirmation_email():
 
     flash_success(
         gettext(
-            'Der Link zur Bestätigung der für den Benutzernamen '
-            '"%(screen_name)s" hinterlegten E-Mail-Adresse '
-            'wurde erneut versendet.',
+            'The link to verify the email address for user "%(screen_name)s" '
+            'has been sent again.',
             screen_name=user.screen_name,
         )
     )
@@ -120,19 +119,19 @@ def confirm(token):
 
     user = user_service.get_db_user(verification_token.user_id)
     if (user is None) or user.suspended or user.deleted:
-        flash_error(gettext('Es wurde kein gültiges Token angegeben.'))
+        flash_error(gettext('No valid token specified.'))
         abort(404)
 
     event = email_address_verification_service.confirm_email_address(
         verification_token
     )
-    flash_success(gettext('Die E-Mail-Adresse wurde bestätigt.'))
+    flash_success(gettext('Email address has been verified.'))
 
     if not user.initialized:
         user_command_service.initialize_account(user.id)
         flash_success(
             gettext(
-                'Das Benutzerkonto "%(screen_name)s" wurde aktiviert.',
+                'User "%(screen_name)s" has been activated.',
                 screen_name=user.screen_name,
             )
         )

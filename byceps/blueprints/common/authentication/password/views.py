@@ -64,9 +64,7 @@ def update():
 
     password_service.update_password_hash(user.id, password, user.id)
 
-    flash_success(
-        gettext('Dein Passwort wurde geändert. Bitte melde dich erneut an.')
-    )
+    flash_success(gettext('Password has been updated. Please log in again.'))
 
     if get_app_mode().is_admin():
         return redirect_to('authentication.login_admin.login_form')
@@ -102,7 +100,7 @@ def request_reset():
     if (user is None) or user.deleted:
         flash_error(
             gettext(
-                'Der Benutzername "%(screen_name)s" ist unbekannt.',
+                'User name "%(screen_name)s" is unknown.',
                 screen_name=screen_name,
             )
         )
@@ -111,7 +109,7 @@ def request_reset():
     if user.email_address is None:
         flash_error(
             gettext(
-                'Für das Benutzerkonto "%(screen_name)s" ist keine E-Mail-Adresse hinterlegt.',
+                'No email address is set for user "%(screen_name)s".',
                 screen_name=screen_name,
             )
         )
@@ -120,7 +118,7 @@ def request_reset():
     if not user.email_address_verified:
         flash_error(
             gettext(
-                'Die E-Mail-Adresse für das Benutzerkonto "%(screen_name)s" wurde noch nicht bestätigt.',
+                'The email address for user "%(screen_name)s" has not been verified.',
                 screen_name=screen_name,
             )
         )
@@ -129,7 +127,7 @@ def request_reset():
     if user.suspended:
         flash_error(
             gettext(
-                'Das Benutzerkonto "%(screen_name)s" ist gesperrt.',
+                'User "%(screen_name)s" has been suspended.',
                 screen_name=screen_name,
             )
         )
@@ -143,8 +141,8 @@ def request_reset():
 
     flash_success(
         gettext(
-            'Ein Link zum Setzen eines neuen Passworts für den Benutzernamen '
-            '"%(screen_name)s" wurde an die hinterlegte E-Mail-Adresse versendet.',
+            'A link to set a new password for user "%(screen_name)s" '
+            'has been sent to the corresponding email address.',
             screen_name=user.screen_name,
         )
     )
@@ -187,7 +185,7 @@ def reset(token):
 
     password_reset_service.reset_password(verification_token, password)
 
-    flash_success(gettext('Das Passwort wurde geändert.'))
+    flash_success(gettext('Password has been updated.'))
     return redirect_to('authentication.login.login_form')
 
 
@@ -199,7 +197,7 @@ def _verify_reset_token(token: str) -> VerificationToken:
     if not _is_verification_token_valid(verification_token):
         flash_error(
             gettext(
-                'Es wurde kein gültiges Token angegeben. Ein Token ist nur %(hours)s Stunden lang gültig.',
+                'Invalid token. A token expires after %(hours)s hours.',
                 hours=24,
             )
         )
@@ -207,7 +205,7 @@ def _verify_reset_token(token: str) -> VerificationToken:
 
     user = user_service.find_active_user(verification_token.user_id)
     if user is None:
-        flash_error(gettext('Es wurde kein gültiges Token angegeben.'))
+        flash_error(gettext('No valid token specified.'))
         abort(404)
 
     return verification_token

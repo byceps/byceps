@@ -152,8 +152,7 @@ def appoint_user(ticket_id):
 
     flash_success(
         gettext(
-            '%(screen_name)s wurde als Nutzer/in '
-            'von Ticket %(ticket_code)s eingetragen.',
+            '%(screen_name)s has been assigned as user of ticket %(ticket_code)s.',
             screen_name=user.screen_name,
             ticket_code=ticket.code,
         )
@@ -185,7 +184,7 @@ def withdraw_user(ticket_id):
 
     flash_success(
         gettext(
-            'Du wurdest als Nutzer/in von Ticket %(ticket_code)s eingetragen.',
+            'You have been assigned as user of ticket %(ticket_code)s.',
             ticket_code=ticket.code,
         )
     )
@@ -245,8 +244,8 @@ def appoint_user_manager(ticket_id):
 
     flash_success(
         gettext(
-            '%(screen_name)s wurde als Nutzer-Verwalter/in '
-            'von Ticket %(ticket_code)s eingetragen.',
+            '%(screen_name)s has been assigned as user manager '
+            'of ticket %(ticket_code)s.',
             screen_name=user.screen_name,
             ticket_code=ticket.code,
         )
@@ -278,7 +277,7 @@ def withdraw_user_manager(ticket_id):
 
     flash_success(
         gettext(
-            'Der Nutzer-Verwalter von Ticket %(ticket_code)s wurde entfernt.',
+            'User manager of ticket %(ticket_code)s has been removed.',
             ticket_code=ticket.code,
         )
     )
@@ -336,8 +335,8 @@ def appoint_seat_manager(ticket_id):
 
     flash_success(
         gettext(
-            '%(screen_name)s wurde als Sitzplatz-Verwalter/in '
-            'von Ticket %(ticket_code)s eingetragen.',
+            '%(screen_name)s has been assigned as seat manager '
+            'of ticket %(ticket_code)s.',
             screen_name=user.screen_name,
             ticket_code=ticket.code,
         )
@@ -367,7 +366,7 @@ def withdraw_seat_manager(ticket_id):
 
     flash_success(
         gettext(
-            'Der Sitzplatz-Verwalter von Ticket %(ticket_code)s wurde entfernt.',
+            'Seat manager of ticket %(ticket_code)s has been removed.',
             ticket_code=ticket.code,
         )
     )
@@ -380,7 +379,7 @@ def withdraw_seat_manager(ticket_id):
 
 def _abort_if_ticket_management_disabled():
     if not _is_ticket_management_enabled():
-        flash_error(gettext('Tickets können derzeit nicht verändert werden.'))
+        flash_error(gettext('Tickets cannot be updated at this time.'))
         abort(403)
 
 
@@ -407,9 +406,7 @@ def _get_ticket_or_404(ticket_id):
 def _abort_if_ticket_user_checked_in(ticket):
     if ticket.user_checked_in:
         flash_error(
-            gettext(
-                'Es ist bereits jemand mit diesem Ticket eingecheckt worden.'
-            )
+            gettext('Somebody has already been checked in with this ticket.')
         )
         abort(403)
 

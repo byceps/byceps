@@ -87,7 +87,7 @@ def create(brand_id):
 
     shop = shop_service.create_shop(shop_id, brand.id, title)
 
-    flash_success(gettext('Der Shop wurde angelegt.'))
+    flash_success(gettext('Shop has been created.'))
     return url_for('.view', shop_id=shop.id)
 
 

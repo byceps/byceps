@@ -101,7 +101,7 @@ def create():
     )
 
     flash_success(
-        gettext('Die Marke "%(title)s" wurde angelegt.', title=brand.title)
+        gettext('Brand "%(title)s" has been created.', title=brand.title)
     )
     return redirect_to('.index')
 
@@ -139,7 +139,7 @@ def update(brand_id):
     )
 
     flash_success(
-        gettext('Die Marke "%(title)s" wurde aktualisiert.', title=brand.title)
+        gettext('Brand "%(title)s" has been updated.', title=brand.title)
     )
     return redirect_to('.view', brand_id=brand_id)
 
@@ -194,7 +194,7 @@ def email_config_update(brand_id):
         config.brand_id, sender_address, sender_name, contact_address
     )
 
-    flash_success(gettext('Die E-Mail-Konfiguration wurde aktualisiert.'))
+    flash_success(gettext('Email configuration has been updated.'))
     return redirect_to('.view', brand_id=brand.id)
 
 

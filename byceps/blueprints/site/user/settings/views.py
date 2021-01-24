@@ -93,7 +93,7 @@ def change_screen_name():
 
     flash_success(
         gettext(
-            'Dein Benutzername wurde zu "%(new_screen_name)s" geändert.',
+            'Your username has been changed to "%(new_screen_name)s".',
             new_screen_name=new_screen_name,
         )
     )
@@ -150,7 +150,7 @@ def details_update():
         current_user.id,  # initiator_id
     )
 
-    flash_success(gettext('Deine Daten wurden gespeichert.'))
+    flash_success(gettext('Your data has been saved.'))
 
     user_signals.details_updated.send(None, event=event)
 

@@ -53,11 +53,11 @@ def test(webhook_id):
     try:
         call_webhook(webhook, text)
         flash_success(
-            gettext('Der Webhook-Aufruf war erfolgreich.'), icon='success'
+            gettext('Webhook call has been successful.'), icon='success'
         )
     except Exception as e:
         flash_error(
-            gettext('Der Webhook-Aufruf ist fehlgeschlagen:')
+            gettext('Webhook call failed:')
             + f'<br><pre style="white-space: pre-wrap;">{e}</pre>',
             icon='warning',
             text_is_safe=True,

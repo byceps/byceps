@@ -140,7 +140,7 @@ def create():
 
     flash_success(
         gettext(
-            'Das Abzeichen "%(badge_label)s" wurde angelegt.',
+            'Badge "%(badge_label)s" has been created.',
             badge_label=badge.label,
         )
     )
@@ -187,7 +187,7 @@ def update(badge_id):
 
     flash_success(
         gettext(
-            'Das Abzeichen "%(badge_label)s" wurde aktualisiert.',
+            'Badge "%(badge_label)s" has been updated.',
             badge_label=badge.label,
         )
     )
@@ -249,7 +249,7 @@ def award(user_id):
 
     flash_success(
         gettext(
-            'Das Abzeichen "%(badge_label)s" wurde an %(screen_name)s verliehen.',
+            'Badge "%(badge_label)s" has been awarded to %(screen_name)s.',
             badge_label=badge.label,
             screen_name=user.screen_name,
         )

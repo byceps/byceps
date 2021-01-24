@@ -166,7 +166,7 @@ def create(brand_id):
     )
 
     flash_success(
-        gettext('Die Party "%(title)s" wurde angelegt.', title=party.title)
+        gettext('Party "%(title)s" has been created.', title=party.title)
     )
 
     return redirect_to('.index_for_brand', brand_id=brand.id)
@@ -230,7 +230,7 @@ def update(party_id):
         abort(404, f'Unknown party ID "{party_id}".')
 
     flash_success(
-        gettext('Die Party "%(title)s" wurde aktualisiert.', title=party.title)
+        gettext('Party "%(title)s" has been updated.', title=party.title)
     )
 
     return redirect_to('.view', party_id=party.id)

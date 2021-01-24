@@ -162,7 +162,7 @@ def topic_create(category_id):
     topic_url = h.build_external_url_for_topic(topic.id)
 
     flash_success(
-        gettext('Das Thema "%(title)s" wurde hinzugefügt.', title=topic.title)
+        gettext('Topic "%(title)s" has been created.', title=topic.title)
     )
 
     event = dataclasses.replace(event, url=topic_url)
@@ -183,18 +183,16 @@ def topic_update_form(topic_id, erroneous_form=None):
 
     if topic.locked and not user_may_update:
         flash_error(
-            gettext(
-                'Das Thema darf nicht bearbeitet werden weil es gesperrt ist.'
-            )
+            gettext('The topic must not be updated because it is locked.')
         )
         return redirect(url)
 
     if topic.hidden:
-        flash_error(gettext('Das Thema darf nicht bearbeitet werden.'))
+        flash_error(gettext('The topic must not be updated.'))
         return redirect(url)
 
     if not user_may_update:
-        flash_error(gettext('Du darfst dieses Thema nicht bearbeiten.'))
+        flash_error(gettext('You are not allowed to update this topic.'))
         return redirect(url)
 
     form = (
@@ -221,18 +219,16 @@ def topic_update(topic_id):
 
     if topic.locked and not user_may_update:
         flash_error(
-            gettext(
-                'Das Thema darf nicht bearbeitet werden weil es gesperrt ist.'
-            )
+            gettext('The topic must not be updated because it is locked.')
         )
         return redirect(url)
 
     if topic.hidden:
-        flash_error(gettext('Das Thema darf nicht bearbeitet werden.'))
+        flash_error(gettext('The topic must not be updated.'))
         return redirect(url)
 
     if not user_may_update:
-        flash_error(gettext('Du darfst dieses Thema nicht bearbeiten.'))
+        flash_error(gettext('You are not allowed to update this topic.'))
         return redirect(url)
 
     form = TopicUpdateForm(request.form)
@@ -244,7 +240,7 @@ def topic_update(topic_id):
     )
 
     flash_success(
-        gettext('Das Thema "%(title)s" wurde aktualisiert.', title=topic.title)
+        gettext('Topic "%(title)s" has been updated.', title=topic.title)
     )
     return redirect(url)
 
@@ -280,7 +276,7 @@ def topic_hide(topic_id):
     event = board_topic_command_service.hide_topic(topic.id, moderator_id)
 
     flash_success(
-        gettext('Das Thema "%(title)s" wurde versteckt.', title=topic.title),
+        gettext('Topic "%(title)s" has been hidden.', title=topic.title),
         icon='hidden',
     )
 
@@ -304,7 +300,7 @@ def topic_unhide(topic_id):
 
     flash_success(
         gettext(
-            'Das Thema "%(title)s" wurde wieder sichtbar gemacht.',
+            'Topic "%(title)s" has been made visible again.',
             title=topic.title,
         ),
         icon='view',
@@ -329,7 +325,7 @@ def topic_lock(topic_id):
     event = board_topic_command_service.lock_topic(topic.id, moderator_id)
 
     flash_success(
-        gettext('Das Thema "%(title)s" wurde geschlossen.', title=topic.title),
+        gettext('Topic "%(title)s" has been locked.', title=topic.title),
         icon='lock',
     )
 
@@ -352,9 +348,7 @@ def topic_unlock(topic_id):
     event = board_topic_command_service.unlock_topic(topic.id, moderator_id)
 
     flash_success(
-        gettext(
-            'Das Thema "%(title)s" wurde wieder geöffnet.', title=topic.title
-        ),
+        gettext('Topic "%(title)s" has been unlocked.', title=topic.title),
         icon='unlock',
     )
 
@@ -377,7 +371,7 @@ def topic_pin(topic_id):
     event = board_topic_command_service.pin_topic(topic.id, moderator_id)
 
     flash_success(
-        gettext('Das Thema "%(title)s" wurde angepinnt.', title=topic.title),
+        gettext('Topic "%(title)s" has been pinned.', title=topic.title),
         icon='pin',
     )
 
@@ -400,7 +394,7 @@ def topic_unpin(topic_id):
     event = board_topic_command_service.unpin_topic(topic.id, moderator_id)
 
     flash_success(
-        gettext('Das Thema "%(title)s" wurde wieder gelöst.', title=topic.title)
+        gettext('Topic "%(title)s" has been unpinned.', title=topic.title)
     )
 
     event = dataclasses.replace(
@@ -432,9 +426,8 @@ def topic_move(topic_id):
 
     flash_success(
         gettext(
-            'Das Thema "%(topic_title)s" wurde '
-            'aus der Kategorie "%(old_category_title)s" '
-            'in die Kategorie "%(new_category_title)s" verschoben.',
+            'Topic "%(topic_title)s" has been moved from category '
+            '"%(old_category_title)s" to category "%(new_category_title)s".',
             topic_title=topic.title,
             old_category_title=old_category.title,
             new_category_title=new_category.title,
@@ -463,7 +456,7 @@ def topic_limit_to_announcements(topic_id):
 
     flash_success(
         gettext(
-            'Das Thema "%(title)s" wurde auf Ankündigungen beschränkt.',
+            'Topic "%(title)s" has been limited to announcements.',
             title=topic.title,
         ),
         icon='announce',
@@ -485,7 +478,7 @@ def topic_remove_limit_to_announcements(topic_id):
 
     flash_success(
         gettext(
-            'Das Thema "%(title)s" wurde für normale Beiträge geöffnet.',
+            'Topic "%(title)s" has been reopened for regular replies.',
             title=topic.title,
         )
     )

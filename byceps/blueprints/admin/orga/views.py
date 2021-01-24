@@ -101,8 +101,8 @@ def create_orgaflag(brand_id):
 
     flash_success(
         gettext(
-            '%(screen_name)s wurde das Orga-Flag '
-            'für die Marke %(brand_title)s gegeben.',
+            '%(screen_name)s has received the orga flag '
+            'for brand %(brand_title)s.',
             screen_name=orga_flag.user.screen_name,
             brand_title=orga_flag.brand.title,
         )
@@ -128,8 +128,8 @@ def remove_orgaflag(brand_id, user_id):
 
     flash_success(
         gettext(
-            '%(screen_name)s wurde das Orga-Flag '
-            'für die Marke %(brand_title)s entzogen.',
+            '%(screen_name)s has lost the orga flag '
+            'for brand %(brand_title)s.',
             screen_name=user.screen_name,
             brand_title=brand.title,
         )

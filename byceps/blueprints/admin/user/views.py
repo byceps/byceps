@@ -178,19 +178,11 @@ def create_account():
         site = None
 
     if user_service.is_screen_name_already_assigned(screen_name):
-        flash_error(
-            gettext(
-                'Dieser Benutzername ist bereits einem Benutzerkonto zugeordnet.'
-            )
-        )
+        flash_error(gettext('This username cannot be used.'))
         return create_account_form(form)
 
     if user_service.is_email_address_already_assigned(email_address):
-        flash_error(
-            gettext(
-                'Diese E-Mail-Adresse ist bereits einem Benutzerkonto zugeordnet.'
-            )
-        )
+        flash_error(gettext('This email address cannot be used.'))
         return create_account_form(form)
 
     initiator_id = g.user.id
@@ -207,7 +199,7 @@ def create_account():
     except user_creation_service.UserCreationFailed:
         flash_error(
             gettext(
-                'Das Benutzerkonto für "%(screen_name)s" konnte nicht angelegt werden.',
+                'User "%(screen_name)s" could not be created.',
                 screen_name=screen_name,
             )
         )
@@ -215,7 +207,7 @@ def create_account():
 
     flash_success(
         gettext(
-            'Das Benutzerkonto "%(screen_name)s" wurde angelegt.',
+            'User "%(screen_name)s" has been created.',
             screen_name=user.screen_name,
         )
     )
@@ -225,7 +217,7 @@ def create_account():
             user, email_address, site_id
         )
         flash_success(
-            gettext('Eine E-Mail wurde an die hinterlegte Adresse versendet.'),
+            gettext('An email has been sent to the corresponding address.'),
             icon='email',
         )
 
@@ -266,7 +258,7 @@ def set_password(user_id):
 
     flash_success(
         gettext(
-            "Für Benutzerkonto '%(screen_name)s' wurde ein neues Passwort gesetzt.",
+            "New password has been set for user '%(screen_name)s'.",
             screen_name=user.screen_name,
         )
     )
@@ -287,7 +279,7 @@ def initialize_account(user_id):
 
     flash_success(
         gettext(
-            "Das Benutzerkonto '%(screen_name)s' wurde initialisiert.",
+            "User '%(screen_name)s' has been initialized.",
             screen_name=user.screen_name,
         )
     )
@@ -303,7 +295,7 @@ def suspend_account_form(user_id, erroneous_form=None):
     if user.suspended:
         flash_error(
             gettext(
-                "Das Benutzerkonto '%(screen_name)s' ist bereits gesperrt.",
+                "User '%(screen_name)s' is already suspended.",
                 screen_name=user.screen_name,
             )
         )
@@ -326,7 +318,7 @@ def suspend_account(user_id):
     if user.suspended:
         flash_error(
             gettext(
-                "Das Benutzerkonto '%(screen_name)s' ist bereits gesperrt.",
+                "User '%(screen_name)s' is already suspended.",
                 screen_name=user.screen_name,
             )
         )
@@ -345,7 +337,7 @@ def suspend_account(user_id):
 
     flash_success(
         gettext(
-            "Das Benutzerkonto '%(screen_name)s' wurde gesperrt.",
+            "User '%(screen_name)s' has been suspended.",
             screen_name=user.screen_name,
         )
     )
@@ -362,7 +354,7 @@ def unsuspend_account_form(user_id, erroneous_form=None):
     if not user.suspended:
         flash_error(
             gettext(
-                "Das Benutzerkonto '%(screen_name)s' ist bereits entsperrt.",
+                "User '%(screen_name)s' is not suspended.",
                 screen_name=user.screen_name,
             )
         )
@@ -385,7 +377,7 @@ def unsuspend_account(user_id):
     if not user.suspended:
         flash_error(
             gettext(
-                "Das Benutzerkonto '%(screen_name)s' ist bereits entsperrt.",
+                "User '%(screen_name)s' is not suspended.",
                 screen_name=user.screen_name,
             )
         )
@@ -406,7 +398,7 @@ def unsuspend_account(user_id):
 
     flash_success(
         gettext(
-            "Das Benutzerkonto '%(screen_name)s' wurde entsperrt.",
+            "User '%(screen_name)s' has been unsuspended.",
             screen_name=user.screen_name,
         )
     )
@@ -423,7 +415,7 @@ def delete_account_form(user_id, erroneous_form=None):
     if user.deleted:
         flash_error(
             gettext(
-                f"Das Benutzerkonto '%(user.screen_name)s' ist bereits gelöscht worden.",
+                "User '%(screen_name)s' has already been deleted.",
                 screen_name=user.screen_name,
             )
         )
@@ -446,7 +438,7 @@ def delete_account(user_id):
     if user.deleted:
         flash_error(
             gettext(
-                "Das Benutzerkonto '%(user.screen_name)s' ist bereits gelöscht worden.",
+                "User '%(screen_name)s' has already been deleted.",
                 screen_name=user.screen_name,
             )
         )
@@ -465,7 +457,7 @@ def delete_account(user_id):
 
     flash_success(
         gettext(
-            "Das Benutzerkonto '%(screen_name)s' wurde gelöscht.",
+            "User '%(screen_name)s' has been deleted.",
             screen_name=user.screen_name,
         )
     )
@@ -510,7 +502,7 @@ def change_email_address(user_id):
 
     flash_success(
         gettext(
-            "Die E-Mail-Adresse des Benutzerkontos '%(screen_name)s' wurde geändert.",
+            "Email address for user '%(screen_name)s' has been updated.",
             screen_name=user.screen_name,
         )
     )
@@ -555,7 +547,7 @@ def change_screen_name(user_id):
 
     flash_success(
         gettext(
-            "Das Benutzerkonto '%(old_screen_name)s' wurde umbenannt in '%(new_screen_name)s'.",
+            "User '%(old_screen_name)s' has been renamed to '%(new_screen_name)s'.",
             old_screen_name=old_screen_name,
             new_screen_name=new_screen_name,
         )
@@ -615,7 +607,7 @@ def role_assign(user_id, role_id):
 
     flash_success(
         gettext(
-            '%(screen_name)s wurde die Rolle "%(role_title)s" zugewiesen.',
+            '%(role_title)s has been assigned to "%(screen_name)s".',
             screen_name=user.screen_name,
             role_title=role.title,
         )
@@ -637,7 +629,7 @@ def role_deassign(user_id, role_id):
 
     flash_success(
         gettext(
-            '%(screen_name)s wurde die Rolle "%(role_title)s" genommen.',
+            '%(role_title)s has been withdrawn from "%(screen_name)s".',
             screen_name=user.screen_name,
             role_title=role.title,
         )

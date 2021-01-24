@@ -31,7 +31,7 @@ def subscribe(list_id):
 
     flash_success(
         gettext(
-            'Du hast dich zum Newsletter "%(title)s" angemeldet.',
+            'You have subscribed to newsletter "%(title)s".',
             title=list_.title,
         )
     )
@@ -48,7 +48,7 @@ def unsubscribe(list_id):
 
     flash_success(
         gettext(
-            'Du hast dich vom Newsletter "%(title)s" abgemeldet.',
+            'You have unsubscribed from newsletter "%(title)s".',
             title=list_.title,
         )
     )

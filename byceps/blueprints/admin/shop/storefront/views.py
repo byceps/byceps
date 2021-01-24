@@ -124,9 +124,7 @@ def create(shop_id):
     )
     if not order_number_sequences:
         flash_error(
-            gettext(
-                'Für diesen Shop sind keine Bestellnummer-Sequenzen definiert.'
-            )
+            gettext('No order number sequences are defined for this shop.')
         )
         return create_form(shop_id, form)
 
@@ -140,9 +138,7 @@ def create(shop_id):
     order_number_sequence_id = form.order_number_sequence_id.data
 
     if not order_number_sequence_id:
-        flash_error(
-            gettext('Es wurde keine gültige Bestellnummer-Sequenz angegeben.')
-        )
+        flash_error(gettext('No valid order number sequence was specified.'))
         return create_form(shop_id, form)
 
     order_number_sequence = order_sequence_service.find_order_number_sequence(
@@ -151,9 +147,7 @@ def create(shop_id):
     if (order_number_sequence is None) or (
         order_number_sequence.shop_id != shop.id
     ):
-        flash_error(
-            gettext('Es wurde keine gültige Bestellnummer-Sequenz angegeben.')
-        )
+        flash_error(gettext('No valid order number sequence was specified.'))
         return create_form(shop_id, form)
 
     try:
@@ -173,7 +167,7 @@ def create(shop_id):
 
     flash_success(
         gettext(
-            'Storefront "%(storefront_id)s" wurde angelegt.',
+            'Storefront "%(storefront_id)s" has been created.',
             storefront_id=storefront.id,
         )
     )
@@ -241,7 +235,7 @@ def update(storefront_id):
 
     flash_success(
         gettext(
-            'Storefront "%(storefront_id)s" wurde aktualisiert.',
+            'Storefront "%(storefront_id)s" has been updated.',
             storefront_id=storefront.id,
         )
     )

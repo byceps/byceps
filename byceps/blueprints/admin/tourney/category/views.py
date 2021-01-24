@@ -74,7 +74,7 @@ def create(party_id):
 
     flash_success(
         gettext(
-            'Die Kategorie "%(category_title)s" wurde angelegt.',
+            'Category "%(category_title)s" has been created.',
             category_title=category.title,
         )
     )
@@ -117,7 +117,7 @@ def update(category_id):
 
     flash_success(
         gettext(
-            'Die Kategorie "%(category_title)s" wurde aktualisiert.',
+            'Category "%(category_title)s" has been updated.',
             category_title=category.title,
         )
     )
@@ -136,14 +136,14 @@ def move_up(category_id):
     except ValueError:
         flash_error(
             gettext(
-                'Die Kategorie "%(category_title)s" befindet sich bereits ganz oben.',
+                'Category "%(category_title)s" is already at the top.',
                 category_title=category.title,
             )
         )
     else:
         flash_success(
             gettext(
-                'Die Kategorie "%(category_title)s" wurde eine Position nach oben verschoben.'
+                'Category "%(category_title)s" has been moved upwards by one position.'
             )
         )
 
@@ -160,14 +160,14 @@ def move_down(category_id):
     except ValueError:
         flash_error(
             gettext(
-                'Die Kategorie "%(category_title)s" befindet sich bereits ganz unten.',
+                'Category "%(category_title)s" is already at the bottom.',
                 category_title=category.title,
             )
         )
     else:
         flash_success(
             gettext(
-                'Die Kategorie "%(category_title)s" wurde eine Position nach unten verschoben.'
+                'Category "%(category_title)s" has been moved downwards by one position.'
             )
         )
 

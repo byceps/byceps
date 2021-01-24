@@ -88,9 +88,7 @@ def manage_seats_in_area(slug):
     """Manage seats for assigned tickets in area."""
     if not _is_seat_management_enabled():
         flash_error(
-            gettext(
-                'Sitzplatzreservierungen können derzeit nicht verändert werden.'
-            )
+            gettext('Seat reservations cannot be changed at this time.')
         )
         return redirect_to('.view_area', slug=slug)
 
@@ -162,7 +160,7 @@ def _get_selected_ticket():
     if (selected_ticket is not None) and selected_ticket.revoked:
         flash_error(
             gettext(
-                'Ticket "%(selected_ticket_code)s" wurde widerrufen.',
+                'Ticket "%(selected_ticket_code)s" is revoked.',
                 selected_ticket_code=selected_ticket.code,
             )
         )
@@ -180,9 +178,7 @@ def occupy_seat(ticket_id, seat_id):
     """Use ticket to occupy seat."""
     if not _is_seat_management_enabled():
         flash_error(
-            gettext(
-                'Sitzplatzreservierungen können derzeit nicht verändert werden.'
-            )
+            gettext('Seat reservations cannot be changed at this time.')
         )
         return
 
@@ -195,7 +191,7 @@ def occupy_seat(ticket_id, seat_id):
     ):
         flash_error(
             gettext(
-                'Du bist nicht berechtigt, den Sitzplatz für Ticket %(ticket_code)s zu verwalten.',
+                'You are not authorized to manage the seat for ticket %(ticket_code)s.',
                 ticket_code=ticket.code,
             )
         )
@@ -205,7 +201,9 @@ def occupy_seat(ticket_id, seat_id):
 
     if seat.is_occupied:
         flash_error(
-            gettext('%(seat_label)s ist bereits belegt.', seat_label=seat.label)
+            gettext(
+                '%(seat_label)s is already occupied.', seat_label=seat.label
+            )
         )
         return
 
@@ -216,7 +214,7 @@ def occupy_seat(ticket_id, seat_id):
     except ticket_exceptions.SeatChangeDeniedForBundledTicket:
         flash_error(
             gettext(
-                'Ticket %(ticket_code)s gehört zu einem Paket und kann nicht einzeln verwaltet werden.',
+                'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',
                 ticket_code=ticket.code,
             )
         )
@@ -224,7 +222,7 @@ def occupy_seat(ticket_id, seat_id):
     except ticket_exceptions.TicketCategoryMismatch:
         flash_error(
             gettext(
-                'Ticket %(ticket_code)s und %(seat_label)s haben unterschiedliche Kategorien.',
+                'Ticket %(ticket_code)s and seat "%(seat_label)s" belong to different categories.',
                 ticket_code=ticket.code,
                 seat_label=seat.label,
             )
@@ -235,7 +233,7 @@ def occupy_seat(ticket_id, seat_id):
 
     flash_success(
         gettext(
-            '%(seat_label)s wurde mit Ticket %(ticket_code)s reserviert.',
+            '%(seat_label)s has been occupied with ticket %(ticket_code)s.',
             seat_label=seat.label,
             ticket_code=ticket.code,
         )
@@ -249,9 +247,7 @@ def release_seat(ticket_id):
     """Release the seat."""
     if not _is_seat_management_enabled():
         flash_error(
-            gettext(
-                'Sitzplatzreservierungen können derzeit nicht verändert werden.'
-            )
+            gettext('Seat reservations cannot be changed at this time.')
         )
         return
 
@@ -260,7 +256,7 @@ def release_seat(ticket_id):
     if not ticket.occupied_seat:
         flash_error(
             gettext(
-                'Ticket %(ticket_code)s belegt keinen Sitzplatz.',
+                'Ticket %(ticket_code)s occupies no seat.',
                 ticket_code=ticket.code,
             )
         )
@@ -273,7 +269,7 @@ def release_seat(ticket_id):
     ):
         flash_error(
             gettext(
-                'Du bist nicht berechtigt, den Sitzplatz für Ticket %(ticket_code)s zu verwalten.',
+                'You are not authorized to manage the seat for ticket %(ticket_code)s.',
                 ticket_code=ticket.code,
             )
         )
@@ -286,14 +282,14 @@ def release_seat(ticket_id):
     except ticket_exceptions.SeatChangeDeniedForBundledTicket:
         flash_error(
             gettext(
-                'Ticket %(ticket_code)s gehört zu einem Paket und kann nicht einzeln verwaltet werden.',
+                'Ticket %(ticket_code)s belongs to a bundle and cannot be managed separately.',
                 ticket_code=ticket.code,
             )
         )
         return
 
     flash_success(
-        gettext('%(seat_label)s wurde freigegeben.', seat_label=seat.label)
+        gettext('%(seat_label)s has been released.', seat_label=seat.label)
     )
 
 

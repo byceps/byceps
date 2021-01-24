@@ -95,7 +95,7 @@ def create(party_id):
     )
 
     flash_success(
-        gettext('Das Turnier "%(title)s" wurde angelegt.', title=tourney.title)
+        gettext('Tourney "%(title)s" has been created.', title=tourney.title)
     )
 
     return redirect_to('.index', party_id=tourney.party_id)
@@ -165,9 +165,7 @@ def update(tourney_id):
     )
 
     flash_success(
-        gettext(
-            'Das Turnier "%(title)s" wurde aktualisiert.', title=tourney.title
-        )
+        gettext('Tourney "%(title)s" has been updated.', title=tourney.title)
     )
 
     return redirect_to('.index', party_id=tourney.party_id)

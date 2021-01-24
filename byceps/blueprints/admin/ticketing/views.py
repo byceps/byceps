@@ -100,7 +100,7 @@ def update_code_form(ticket_id, erroneous_form=None):
     if ticket.user_checked_in:
         flash_error(
             gettext(
-                'Der Code kann nicht geändert werden, da bereits jemand mit diesem Ticket eingecheckt worden ist.'
+                'Code cannot be changed as somebody has already been checked in with this ticket.'
             )
         )
         return redirect_to('.view_ticket', ticket_id=ticket.id)
@@ -125,7 +125,7 @@ def update_code(ticket_id):
     if ticket.user_checked_in:
         flash_error(
             gettext(
-                'Der Code kann nicht geändert werden, da bereits jemand mit diesem Ticket eingecheckt worden ist.'
+                'Code cannot be changed as somebody has already been checked in with this ticket.'
             )
         )
         return redirect_to('.view_ticket', ticket_id=ticket.id)
@@ -141,7 +141,7 @@ def update_code(ticket_id):
 
     flash_success(
         gettext(
-            'Der Code von Ticket %(ticket_code)s wurde geändert.',
+            'Code for ticket %(ticket_code)s has been updated.',
             ticket_code=ticket.code,
         )
     )
@@ -187,8 +187,7 @@ def appoint_user(ticket_id):
 
     flash_success(
         gettext(
-            '%(screen_name)s wurde als Nutzer/in '
-            'von Ticket %(ticket_code)s eingetragen.',
+            '%(screen_name)s has been assigned as user of ticket %(ticket_code)s.',
             screen_name=user.screen_name,
             ticket_code=ticket.code,
         )

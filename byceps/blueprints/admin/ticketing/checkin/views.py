@@ -123,14 +123,14 @@ def check_in_user(party_id, ticket_id):
     except ticket_exceptions.UserAccountDeleted:
         flash_error(
             gettext(
-                'Das dem Ticket zugewiesene Benutzerkonto ist gelöscht worden. Der Check-In ist nicht erlaubt.'
+                'The user account assigned to this ticket has been deleted. Check-in denied.'
             )
         )
         return
     except ticket_exceptions.UserAccountSuspended:
         flash_error(
             gettext(
-                'Das dem Ticket zugewiesene Benutzerkonto ist gesperrt. Der Check-In ist nicht erlaubt.'
+                'The user account assigned to this ticket has been suspended. Check-in denied.'
             )
         )
         return
@@ -141,7 +141,7 @@ def check_in_user(party_id, ticket_id):
 
     flash_success(
         gettext(
-            'Benutzer <em>%(screen_name)s</em> wurde mit Ticket <a href="%(ticket_url)s">%(ticket_code)s</a> eingecheckt.',
+            'User <em>%(screen_name)s</em> has been checked in with ticket <a href="%(ticket_url)s">%(ticket_code)s</a>.',
             screen_name=ticket.used_by.screen_name,
             ticket_url=ticket_url,
             ticket_code=ticket.code,
@@ -153,7 +153,7 @@ def check_in_user(party_id, ticket_id):
     if not occupies_seat:
         flash_notice(
             gettext(
-                'Ticket <a href="%(ticket_url)s">%(ticket_code)s</a> belegt noch keinen Sitzplatz.',
+                'Ticket <a href="%(ticket_url)s">%(ticket_code)s</a> does not occupy a seat.',
                 ticket_url=ticket_url,
                 ticket_code=ticket.code,
             ),
@@ -175,7 +175,7 @@ def revert_user_check_in(ticket_id):
 
     ticket_user_checkin_service.revert_user_check_in(ticket.id, initiator_id)
 
-    flash_success(gettext('Der Check-In wurde rückgängig gemacht.'))
+    flash_success(gettext('Check-in has been reverted.'))
 
 
 def _get_party_or_404(party_id):

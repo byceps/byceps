@@ -61,7 +61,7 @@ def create(recipient_id):
 
     flash_success(
         gettext(
-            'Deine Nachricht an %(screen_name)s wurde versendet.',
+            'Your message to %(screen_name)s has been sent.',
             screen_name=recipient.screen_name,
         )
     )

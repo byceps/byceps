@@ -76,7 +76,7 @@ def consent(token):
     try:
         subject_service.get_subjects(subject_ids_from_form)
     except subject_service.UnknownSubjectId:
-        flash_error(gettext('Unbekanntes Zustimmungsthema'))
+        flash_error(gettext('Unknown consent subject'))
         return consent_form(token, erroneous_form=form)
 
     expressed_at = datetime.utcnow()
@@ -84,9 +84,7 @@ def consent(token):
         subject_ids_from_form, expressed_at, verification_token
     )
 
-    flash_success(
-        gettext('Vielen Dank für deine Zustimmung. Bitte melde dich erneut an.')
-    )
+    flash_success(gettext('Thank you for your consent. Please log in again.'))
     return redirect_to('authentication.login.login_form')
 
 
@@ -108,7 +106,7 @@ def _get_verification_token_or_404(token_value):
     )
 
     if verification_token is None:
-        flash_error(gettext('Unbekannter Bestätigungscode'))
+        flash_error(gettext('Invalid verification token'))
         abort(404)
 
     return verification_token

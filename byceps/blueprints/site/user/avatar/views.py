@@ -67,7 +67,7 @@ def update():
 
     _update(user.id, image)
 
-    flash_success(gettext('Dein Avatarbild wurde aktualisiert.'), icon='upload')
+    flash_success(gettext('Avatar image has been updated.'), icon='upload')
     user_avatar_signals.avatar_updated.send(None, user_id=user.id)
 
     return redirect_to('user_settings.view')
@@ -100,13 +100,9 @@ def delete():
     except ValueError:
         # No avatar selected.
         # But that's ok, deletions should be idempotent.
-        flash_notice(
-            gettext(
-                'Es ist kein Avatarbild gesetzt, das entfernt werden könnte.'
-            )
-        )
+        flash_notice(gettext('No avatar image is set that could be removed.'))
     else:
-        flash_success(gettext('Dein Avatarbild wurde entfernt.'))
+        flash_success(gettext('Avatar image has been removed.'))
 
 
 def _get_current_user_or_404():

@@ -96,7 +96,7 @@ def mark_all_topics_in_category_as_viewed(category_id):
     )
 
     flash_success(
-        gettext('Alle Themen in dieser Kategorie wurden als gelesen markiert.')
+        gettext('All topics in this category have been marked as read.')
     )
 
     return url_for('.category_view', slug=category.slug)
