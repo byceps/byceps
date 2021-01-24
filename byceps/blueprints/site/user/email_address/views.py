@@ -9,7 +9,10 @@ byceps.blueprints.site.user.email_address.views
 from flask import abort, g, request
 
 from .....services.user import email_address_verification_service
-from .....services.user import service as user_service
+from .....services.user import (
+    command_service as user_command_service,
+    service as user_service,
+)
 from .....services.verification_token import (
     service as verification_token_service,
 )
@@ -88,26 +91,29 @@ def confirm(token):
     """Confirm e-mail address of the user account assigned with the
     verification token.
     """
-    verification_token = verification_token_service.find_for_email_address_confirmation_by_token(
-        token
+    verification_token = (
+        verification_token_service.find_for_email_address_confirmation_by_token(
+            token
+        )
     )
-
     if verification_token is None:
         abort(404)
 
     user = user_service.get_db_user(verification_token.user_id)
-    if (user is None) or user.initialized or user.suspended or user.deleted:
+    if (user is None) or user.suspended or user.deleted:
         flash_error('Es wurde kein gültiges Token angegeben.')
         abort(404)
 
     event = email_address_verification_service.confirm_email_address(
         verification_token
     )
+    flash_success('Die E-Mail-Adresse wurde bestätigt.')
 
-    flash_success(
-        'Die E-Mail-Adresse wurde bestätigt. '
-        f'Das Benutzerkonto "{user.screen_name}" ist nun aktiviert.'
-    )
+    if not user.initialized:
+        user_command_service.initialize_account(user.id)
+        flash_success(
+            f'Das Benutzerkonto "{user.screen_name}" wurde aktiviert.'
+        )
 
     user_signals.email_address_confirmed.send(None, event=event)
 

@@ -24,6 +24,11 @@ def user2(make_user):
     return make_user('EAC-User2', initialized=False)
 
 
+@pytest.fixture(scope='module')
+def user3(make_user):
+    return make_user('EAC-User3', initialized=True)
+
+
 @pytest.fixture
 def role(admin_app, site, user1, user2):
     role = authorization_service.create_role('board_user', 'Board User')
@@ -80,6 +85,28 @@ def test_confirm_email_address_with_unknown_token(site_app, site, user2, role):
     assert not user_after.initialized
 
     assert get_role_ids(user_id) == set()
+
+
+def test_confirm_email_address_for_initialized_user(site_app, user3, role):
+    user_id = user3.id
+
+    user_before = user_service.get_db_user(user_id)
+    assert not user_before.email_address_verified
+    assert user_before.initialized
+
+    token = create_confirmation_token(user_id)
+
+    # -------------------------------- #
+
+    response = confirm(site_app, token)
+
+    # -------------------------------- #
+
+    assert response.status_code == 302
+
+    user_after = user_service.get_db_user(user_id)
+    assert user_before.email_address_verified
+    assert user_after.initialized
 
 
 # helpers

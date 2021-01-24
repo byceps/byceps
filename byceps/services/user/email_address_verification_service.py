@@ -22,7 +22,7 @@ from ..user import service as user_service
 from ..verification_token.models import Token
 from ..verification_token import service as verification_token_service
 
-from . import command_service, event_service as user_event_service
+from . import event_service as user_event_service
 
 
 def send_email_address_confirmation_email(
@@ -73,9 +73,6 @@ def confirm_email_address(
     event = user_event_service.create_event(
         'user-email-address-confirmed', user.id, event_data
     )
-
-    if not user.initialized:
-        command_service.initialize_account(user.id)
 
     verification_token_service.delete_token(verification_token)
 
