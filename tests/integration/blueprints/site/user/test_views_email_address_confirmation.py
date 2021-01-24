@@ -5,10 +5,11 @@
 
 import pytest
 
-from byceps.database import db
 from byceps.services.authorization import service as authorization_service
 from byceps.services.user import service as user_service
-from byceps.services.verification_token.models import Purpose, Token
+from byceps.services.verification_token import (
+    service as verification_token_service,
+)
 
 from tests.helpers import http_client
 
@@ -42,13 +43,11 @@ def test_confirm_email_address_with_valid_token(site_app, user1, role):
     assert not user_before.email_address_verified
     assert not user_before.initialized
 
-    verification_token = create_confirmation_token(user_id)
-    db.session.add(verification_token)
-    db.session.commit()
+    token = create_confirmation_token(user_id)
 
     # -------------------------------- #
 
-    response = confirm(site_app, verification_token)
+    response = confirm(site_app, token)
 
     # -------------------------------- #
 
@@ -67,12 +66,11 @@ def test_confirm_email_address_with_unknown_token(site_app, site, user2, role):
     user_before = user_service.get_db_user(user_id)
     assert not user_before.initialized
 
-    verification_token = create_confirmation_token(user_id)
-    verification_token.token = 'wZdSLzkT-zRf2x2T6AR7yGa3Nc_X3Nn3F3XGPvPtOhw'
+    unknown_token = 'wZdSLzkT-zRf2x2T6AR7yGa3Nc_X3Nn3F3XGPvPtOhw'
 
     # -------------------------------- #
 
-    response = confirm(site_app, verification_token)
+    response = confirm(site_app, unknown_token)
 
     # -------------------------------- #
 
@@ -87,8 +85,8 @@ def test_confirm_email_address_with_unknown_token(site_app, site, user2, role):
 # helpers
 
 
-def confirm(app, verification_token):
-    url = f'/users/email_address/confirmation/{verification_token.token}'
+def confirm(app, token):
+    url = f'/users/email_address/confirmation/{token}'
     with http_client(app) as client:
         return client.get(url)
 
@@ -98,5 +96,7 @@ def get_role_ids(user_id):
 
 
 def create_confirmation_token(user_id):
-    purpose = Purpose.email_address_confirmation
-    return Token(user_id, purpose)
+    token = verification_token_service.create_for_email_address_confirmation(
+        user_id
+    )
+    return token.token
