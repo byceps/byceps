@@ -49,6 +49,16 @@ def delete_outgoing_webhook(webhook_id: WebhookID) -> None:
     db.session.commit()
 
 
+def find_webhook(webhook_id: WebhookID) -> Optional[OutgoingWebhook]:
+    """Return the webhook with that ID, if found."""
+    webhook = db.session.query(DbOutgoingWebhook).get(webhook_id)
+
+    if webhook is None:
+        return None
+
+    return _db_entity_to_outgoing_webhook(webhook)
+
+
 def get_all_webhooks() -> List[OutgoingWebhook]:
     """Return all webhooks."""
     webhooks = db.session.query(DbOutgoingWebhook).all()

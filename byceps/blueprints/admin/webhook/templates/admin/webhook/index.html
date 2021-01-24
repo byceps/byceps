@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'webhook_admin' %}
 {% set title = 'Webhooks' %}
@@ -23,10 +24,18 @@
     {%- for webhook in webhooks %}
   <div class="box" style="border-left: {{ '#55cc00' if webhook.enabled else '#aaaaaa' }} solid 0.25rem;">
 
-    <div style="margin-bottom: 1rem;">
-      {{ render_tag('aktiv', class='color-success') if webhook.enabled else render_tag('inaktiv', class='color-disabled') }}
-      {{ webhook.description|fallback }}
-    </div>
+    <div class="two-column" style="margin-bottom: 1rem;">
+
+      <div>
+        {{ render_tag('aktiv', class='color-success') if webhook.enabled else render_tag('inaktiv', class='color-disabled') }}
+        {{ webhook.description|fallback }}
+      </div>
+
+      <div class="button-row button-row--compact button-row--right">
+        <a class="button" data-action="test-webhook" href="{{ url_for('.test', webhook_id=webhook.id) }}">{{ render_icon('webhook') }} <span>Testen</span></a>
+      </div>
+
+    </div>{# .two-column #}
 
     <div class="two-column">
 
@@ -83,3 +92,11 @@
   {%- endif %}
 
 {%- endblock %}
+
+{% block scripts %}
+<script>
+  onDomReady(function() {
+    post_on_click_then_reload('[data-action="test-webhook"]');
+  });
+</script>
+{% endblock %}
