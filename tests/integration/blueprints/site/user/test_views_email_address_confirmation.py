@@ -36,9 +36,13 @@ def role(admin_app, site, user1, user2):
 
 
 def test_confirm_email_address_with_valid_token(site_app, user1, role):
-    user = user1
+    user_id = user1.id
 
-    verification_token = create_confirmation_token(user.id)
+    user_before = user_service.get_db_user(user_id)
+    assert not user_before.email_address_verified
+    assert not user_before.initialized
+
+    verification_token = create_confirmation_token(user_id)
     db.session.add(verification_token)
     db.session.commit()
 
@@ -49,14 +53,21 @@ def test_confirm_email_address_with_valid_token(site_app, user1, role):
     # -------------------------------- #
 
     assert response.status_code == 302
-    assert is_user_initialized(user.id)
-    assert get_role_ids(user.id) == {'board_user'}
+
+    user_after = user_service.get_db_user(user_id)
+    assert user_before.email_address_verified
+    assert user_after.initialized
+
+    assert get_role_ids(user_id) == {'board_user'}
 
 
 def test_confirm_email_address_with_unknown_token(site_app, site, user2, role):
-    user = user2
+    user_id = user2.id
 
-    verification_token = create_confirmation_token(user.id)
+    user_before = user_service.get_db_user(user_id)
+    assert not user_before.initialized
+
+    verification_token = create_confirmation_token(user_id)
     verification_token.token = 'wZdSLzkT-zRf2x2T6AR7yGa3Nc_X3Nn3F3XGPvPtOhw'
 
     # -------------------------------- #
@@ -66,8 +77,11 @@ def test_confirm_email_address_with_unknown_token(site_app, site, user2, role):
     # -------------------------------- #
 
     assert response.status_code == 404
-    assert not is_user_initialized(user.id)
-    assert get_role_ids(user.id) == set()
+
+    user_after = user_service.get_db_user(user_id)
+    assert not user_after.initialized
+
+    assert get_role_ids(user_id) == set()
 
 
 # helpers
@@ -77,11 +91,6 @@ def confirm(app, verification_token):
     url = f'/users/email_address/confirmation/{verification_token.token}'
     with http_client(app) as client:
         return client.get(url)
-
-
-def is_user_initialized(user_id) -> bool:
-    user = user_service.get_db_user(user_id)
-    return bool(user.initialized)
 
 
 def get_role_ids(user_id):
