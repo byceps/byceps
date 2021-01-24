@@ -11,6 +11,7 @@ Provide and register custom template filters.
 from datetime import datetime
 
 from flask import current_app
+from flask_babel import format_decimal
 from jinja2 import evalcontextfilter, Markup
 from jinja2.filters import do_default, do_trim
 import pendulum
@@ -43,7 +44,7 @@ def _wrap_markup_on_autoescape(eval_ctx, value):
 
 def separate_thousands(number: int) -> str:
     """Insert locale-specific characters to separate thousands."""
-    return f'{number:n}'
+    return format_decimal(number)
 
 
 def local_tz_to_utc(dt: datetime):
