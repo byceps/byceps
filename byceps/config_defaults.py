@@ -40,6 +40,8 @@ PERMANENT_SESSION_LIFETIME = timedelta(14)
 LOCALE = 'de_DE.UTF-8'
 LOCALES_FORMS = ['de']
 TIMEZONE = 'Europe/Berlin'
+BABEL_DEFAULT_LOCALE = LOCALE
+BABEL_DEFAULT_TIMEZONE = TIMEZONE
 
 # static content files path
 PATH_DATA = Path('./data')

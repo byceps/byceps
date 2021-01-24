@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Any, Callable, Dict, Optional, Union
 
 from flask import current_app, Flask, g, redirect
+from flask_babel import Babel
 import jinja2
 
 from .blueprints.blueprints import register_blueprints
@@ -52,6 +53,8 @@ def create_app(
 
     # Set the locale.
     set_locale(app.config['LOCALE'])  # Fail if not configured.
+
+    babel = Babel(app)
 
     # Initialize database.
     db.init_app(app)
