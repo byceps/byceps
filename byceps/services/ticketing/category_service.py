@@ -45,6 +45,9 @@ def find_category(category_id: TicketCategoryID) -> Optional[TicketCategory]:
     """Return the category with that ID, or `None` if not found."""
     category = DbCategory.query.get(category_id)
 
+    if category is None:
+        return None
+
     return _db_entity_to_category(category)
 
 
