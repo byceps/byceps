@@ -21,7 +21,7 @@
       {{ form_field(form.url_path, value='/', maxlength=40) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_scope', scope_type=snippet.scope.type_, scope_name=snippet.scope.name)) }}
+    {{ form_buttons(_('Save'), cancel_url=url_for('.index_for_scope', scope_type=snippet.scope.type_, scope_name=snippet.scope.name)) }}
   </form>
 
 {%- endblock %}

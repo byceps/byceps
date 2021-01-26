@@ -22,7 +22,7 @@
       {{ form_field(form.duties, maxlength=40) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.teams_for_party', party_id=party.id)) }}
+    {{ form_buttons(_('Save'), cancel_url=url_for('.teams_for_party', party_id=party.id)) }}
   </form>
   {%- else %}
   {{ render_notification('Es sind keine Orgas vorhanden, die noch keinem Team dieser Party zugewiesen sind.', category='info', icon='info') }}

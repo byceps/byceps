@@ -14,7 +14,7 @@
       {{ form_field_checkbox(form.closed, form.closed.label.text) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.view', storefront_id=storefront.id)) }}
+    {{ form_buttons(_('Save'), cancel_url=url_for('.view', storefront_id=storefront.id)) }}
   </form>
 
 {%- endblock %}

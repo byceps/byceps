@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-24 13:23+0100\n"
+"POT-Creation-Date: 2021-01-26 13:50+0100\n"
 "PO-Revision-Date: 2021-01-24 11:05+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -54,6 +54,11 @@ msgstr "Erfolgreich eingeloggt als %(screen_name)s."
 #: byceps/blueprints/site/authentication/login/views.py:133
 msgid "Successfully logged out."
 msgstr "Erfolgreich ausgeloggt."
+
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:40
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:40
+msgid "Login"
+msgstr "Anmelden"
 
 #: byceps/blueprints/admin/board/forms.py:17
 #: byceps/blueprints/admin/brand/forms.py:25
@@ -156,6 +161,55 @@ msgstr "Die Kategorie \"%(category_title)s\" konnte nicht gelöscht werden."
 #, python-format
 msgid "Category \"%(category_title)s\" has been deleted."
 msgstr "Die Kategorie \"%(category_title)s\" wurde gelöscht."
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_create_form.html:26
+#: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:25
+#: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:22
+#: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:27
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/team_create_form.html:22
+#: byceps/blueprints/admin/party/templates/admin/party/create_form.html:26
+#: byceps/blueprints/admin/site/templates/admin/site/create_form.html:34
+#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:24
+#: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/create_form.html:29
+#: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:26
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/create_form.html:26
+#: byceps/blueprints/site/board/templates/site/board/topic_create_form.html:24
+#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:32
+#: byceps/blueprints/site/user_group/templates/site/user_group/create_form.html:16
+msgid "Create"
+msgstr "Erstellen"
+
+#: byceps/blueprints/admin/board/templates/admin/board/category_update_form.html:25
+#: byceps/blueprints/admin/brand/templates/admin/brand/email_config_update_form.html:19
+#: byceps/blueprints/admin/brand/templates/admin/brand/update_form.html:24
+#: byceps/blueprints/admin/news/templates/admin/news/image_update_form.html:26
+#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:27
+#: byceps/blueprints/admin/orga/templates/admin/orga/create_orgaflag_form.html:22
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_create_form.html:25
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_update_form.html:24
+#: byceps/blueprints/admin/party/templates/admin/party/update_form.html:31
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_form.html:27
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_number_sequence_form.html:16
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/update_form.html:32
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/create_number_sequence_form.html:15
+#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/create_form.html:23
+#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/update_form.html:17
+#: byceps/blueprints/admin/site/templates/admin/site/update_form.html:33
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_document_form.html:25
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_fragment_form.html:22
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_mountpoint_form.html:24
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/update_document_form.html:25
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/update_fragment_form.html:22
+#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/update_form.html:25
+#: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/update_form.html:30
+#: byceps/blueprints/admin/user/templates/admin/user/set_password_form.html:16
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/update_form.html:27
+#: byceps/blueprints/common/authentication/password/templates/common/authentication/password/reset_form.html:20
+#: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:29
+#: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:30
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/details_update_form.html:24
+msgid "Save"
+msgstr "Speichern"
 
 #: byceps/blueprints/admin/brand/forms.py:31
 #: byceps/blueprints/admin/user_badge/forms.py:40
@@ -263,6 +317,20 @@ msgstr "Die News \"%(title)s\" wird später veröffentlicht."
 msgid "News item \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
 
+#: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:34
+#: byceps/blueprints/site/board/templates/site/board/_posting_inline_create_form.html:17
+#: byceps/blueprints/site/board/templates/site/board/posting_create_form.html:24
+msgid "Add"
+msgstr "Hinzufügen"
+
+#: byceps/blueprints/admin/news/templates/admin/news/item_create_form.html:26
+msgid "Create draft"
+msgstr "Entwurf erstellen"
+
+#: byceps/blueprints/admin/news/templates/admin/news/item_publish_later_form.html:25
+msgid "Publish"
+msgstr "Veröffentlichen"
+
 #: byceps/blueprints/admin/orga/forms.py:26
 #: byceps/blueprints/admin/ticketing/forms.py:26
 #: byceps/blueprints/site/ticketing/forms.py:30
@@ -361,6 +429,10 @@ msgstr "Die Teammitgliedschaft von %(screen_name)s wurde aktualisiert."
 #, python-format
 msgid "%(screen_name)s has been removed from team \"%(team_title)s\"."
 msgstr "%(screen_name)s wurde aus dem Team \"%(team_title)s\" entfernt."
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_copy_form.html:21
+msgid "Copy"
+msgstr "Kopieren"
 
 #: byceps/blueprints/admin/party/forms.py:21
 msgid "Start"
@@ -522,6 +594,10 @@ msgstr ""
 msgid "Article number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Artikelnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
 
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/attachment_create_form.html:23
+msgid "Attach article"
+msgstr "Artikel anhängen"
+
 #: byceps/blueprints/admin/shop/order/forms.py:20
 #: byceps/blueprints/admin/user/forms.py:30
 #: byceps/blueprints/admin/user/forms.py:48
@@ -606,6 +682,15 @@ msgstr ""
 #, python-format
 msgid "Order number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Bestellnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:23
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:22
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/mark_as_paid_form.html:20
+msgid "Mark as paid"
+msgstr "Als bezahlt markieren"
 
 #: byceps/blueprints/admin/shop/shop/views.py:90
 msgid "Shop has been created."
@@ -855,6 +940,21 @@ msgstr ""
 msgid "Check-in has been reverted."
 msgstr "Der Check-In wurde rückgängig gemacht."
 
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/appoint_user_form.html:17
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/appoint_seat_manager_form.html:15
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/appoint_user_form.html:15
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/appoint_user_manager_form.html:15
+msgid "Assign"
+msgstr "Zuweisen"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/update_code_form.html:17
+#: byceps/blueprints/admin/user/templates/admin/user/change_email_address_form.html:18
+#: byceps/blueprints/admin/user/templates/admin/user/change_screen_name_form.html:18
+#: byceps/blueprints/common/authentication/password/templates/common/authentication/password/update_form.html:18
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:17
+msgid "Change"
+msgstr "Ändern"
+
 #: byceps/blueprints/admin/tourney/tourney/forms.py:24
 msgid "Subtitle"
 msgstr "Untertitel"
@@ -1017,6 +1117,18 @@ msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" zugewiesen."
 msgid "%(role_title)s has been withdrawn from \"%(screen_name)s\"."
 msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" genommen."
 
+#: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:21
+msgid "Delete"
+msgstr "Löschen"
+
+#: byceps/blueprints/admin/user/templates/admin/user/suspend_account_form.html:17
+msgid "Lock"
+msgstr "Sperren"
+
+#: byceps/blueprints/admin/user/templates/admin/user/unsuspend_account_form.html:18
+msgid "Unlock"
+msgstr "Entsperren"
+
 #: byceps/blueprints/admin/user_badge/forms.py:36
 msgid "Label"
 msgstr "Bezeichnung"
@@ -1047,6 +1159,10 @@ msgstr "Das Abzeichen \"%(badge_label)s\" wurde aktualisiert."
 #, python-format
 msgid "Badge \"%(badge_label)s\" has been awarded to %(screen_name)s."
 msgstr "Das Abzeichen \"%(badge_label)s\" wurde an %(screen_name)s verliehen."
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/award_form.html:26
+msgid "Award badge"
+msgstr "Abzeichen verleihen"
 
 #: byceps/blueprints/admin/webhook/views.py:56
 msgid "Webhook call has been successful."
@@ -1138,6 +1254,11 @@ msgstr ""
 #: byceps/blueprints/site/user/email_address/views.py:122
 msgid "No valid token specified."
 msgstr "Es wurde kein gültiges Token angegeben."
+
+#: byceps/blueprints/common/authentication/password/templates/common/authentication/password/request_reset_form.html:18
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/request_confirmation_email_form.html:15
+msgid "Request"
+msgstr "Anfordern"
 
 #: byceps/blueprints/common/core/forms.py:25
 msgid ""
@@ -1283,6 +1404,10 @@ msgstr "Vielen Dank für deine Zustimmung. Bitte melde dich erneut an."
 msgid "Invalid verification token"
 msgstr "Unbekannter Bestätigungscode"
 
+#: byceps/blueprints/site/consent/templates/site/consent/consent_form.html:20
+msgid "I consent"
+msgstr "Ich stimme zu"
+
 #: byceps/blueprints/site/newsletter/views.py:33
 #, python-format
 msgid "You have subscribed to newsletter \"%(title)s\"."
@@ -1419,6 +1544,11 @@ msgstr ""
 "Deine Bestellung mit der Bestellnummer <strong>%(order_number)s</strong> "
 "wurde entgegengenommen. Vielen Dank!"
 
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/order_form.html:18
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/order_single_form.html:16
+msgid "Place binding order now"
+msgstr "Jetzt kostenpflichtig bestellen"
+
 #: byceps/blueprints/site/shop/orders/views.py:111
 #: byceps/blueprints/site/shop/orders/views.py:139
 msgid "The order has already been canceled."
@@ -1502,6 +1632,10 @@ msgstr "Es ist kein Avatarbild gesetzt, das entfernt werden könnte."
 #: byceps/blueprints/site/user/avatar/views.py:105
 msgid "Avatar image has been removed."
 msgstr "Dein Avatarbild wurde entfernt."
+
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:23
+msgid "Upload"
+msgstr "Hochladen"
 
 #: byceps/blueprints/site/user/creation/forms.py:46
 msgid "Bot"
@@ -1619,6 +1753,10 @@ msgstr "Die Gruppe \"%(group_title)s\" wurde erstellt."
 #, python-format
 msgid "Your message to %(screen_name)s has been sent."
 msgstr "Deine Nachricht an %(screen_name)s wurde versendet."
+
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:19
+msgid "Send"
+msgstr "Senden"
 
 #: byceps/util/views.py:33
 msgid "Please log in."

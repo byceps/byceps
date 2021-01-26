@@ -14,7 +14,7 @@
       {{ form_field(form.password) }}
     {% endcall %}
 
-    {{ form_buttons('Umbenennen', cancel_url=url_for('.view')) }}
+    {{ form_buttons(_('Change'), cancel_url=url_for('.view')) }}
   </form>
 
 {%- endblock %}

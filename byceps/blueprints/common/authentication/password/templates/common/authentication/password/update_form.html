@@ -15,7 +15,7 @@
       {{ form_field(form.new_password_confirmation, maxlength=100, required='required') }}
     {%- endcall %}
 
-    {{ form_buttons('Passwort ändern', cancel_url=url_for('user_settings.view') if g.app_mode.is_site() else None) }}
+    {{ form_buttons(_('Change'), cancel_url=url_for('user_settings.view') if g.app_mode.is_site() else None) }}
   </form>
 
 {%- endblock %}

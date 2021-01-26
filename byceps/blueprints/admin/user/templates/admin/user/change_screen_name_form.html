@@ -15,7 +15,7 @@
       {{ form_field(form.reason, maxlength=1000, required='required', note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.') }}
     {% endcall %}
 
-    {{ form_buttons('Umbenennen', cancel_url=url_for('.view', user_id=user.id)) }}
+    {{ form_buttons(_('Change'), cancel_url=url_for('.view', user_id=user.id)) }}
   </form>
 
 {%- endblock %}

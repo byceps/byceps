@@ -19,7 +19,7 @@
       {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
     {% endcall %}
 
-    {{ form_buttons('Team erstellen', cancel_url=url_for('.teams_for_party', party_id=party.id)) }}
+    {{ form_buttons(_('Create'), cancel_url=url_for('.teams_for_party', party_id=party.id)) }}
   </form>
 
 {%- endblock %}

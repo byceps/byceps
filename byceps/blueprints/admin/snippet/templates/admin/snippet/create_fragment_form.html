@@ -19,7 +19,7 @@
       {{ form_field(form.body, class='monospace wide') }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name)) }}
+    {{ form_buttons(_('Save'), cancel_url=url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name)) }}
   </form>
 
 {%- endblock %}

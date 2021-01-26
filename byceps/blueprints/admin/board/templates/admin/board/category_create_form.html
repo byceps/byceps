@@ -22,7 +22,7 @@
       {{ form_field(form.description, maxlength=80, required='required') }}
     {% endcall %}
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.board_view', board_id=board_id)) }}
+    {{ form_buttons(_('Create'), cancel_url=url_for('.board_view', board_id=board_id)) }}
   </form>
 
 {%- endblock %}

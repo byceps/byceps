@@ -18,7 +18,7 @@
       {{ form_field(form.verification, required='required', note='Bitte zur Bestätigung "löschen" eingeben.') }}
     {% endcall %}
 
-    {{ form_buttons('Löschen', icon='delete', color='danger', cancel_url=url_for('.view', user_id=user.id)) }}
+    {{ form_buttons(_('Delete'), icon='delete', color='danger', cancel_url=url_for('.view', user_id=user.id)) }}
   </form>
 
 {%- endblock %}

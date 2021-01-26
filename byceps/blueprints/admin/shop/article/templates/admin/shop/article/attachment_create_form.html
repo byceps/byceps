@@ -20,7 +20,7 @@
       {{ form_field(form.quantity, type='number', min=1, max=999, style='width: 4em;', required='required') }}
     {% endcall %}
 
-    {{ form_buttons('Artikel anhängen', cancel_url=url_for('.view', article_id=article.id)) }}
+    {{ form_buttons(_('Attach article'), cancel_url=url_for('.view', article_id=article.id)) }}
   </form>
 
 {%- endblock %}

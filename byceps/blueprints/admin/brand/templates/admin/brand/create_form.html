@@ -19,7 +19,7 @@
       {{ form_field(form.title, maxlength=40, placeholder='SuperLAN') }}
     {% endcall %}
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.index')) }}
+    {{ form_buttons(_('Create'), cancel_url=url_for('.index')) }}
   </form>
 
 {%- endblock %}

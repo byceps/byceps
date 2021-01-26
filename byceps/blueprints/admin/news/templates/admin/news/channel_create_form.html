@@ -24,7 +24,7 @@
     <p>Ein News-Kanal kann sowohl für eine einzelne Party als auch für mehrere oder alle Partys derselben Marke genutzt werden.</p>
     <p>Tipp: Sofern der News-Kanal nur für eine konkrete Party genutzt werden soll, verwende die ID <em>dieser Party</em> als ID für den News-Kanal. Falls er jedoch partyübergreifend genutzt werden soll, verwende die ID <em>der Marke</em> der Partys als ID für den News-Kanal.</p>
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.channel_index_for_brand', brand_id=brand.id)) }}
+    {{ form_buttons(_('Create'), cancel_url=url_for('.channel_index_for_brand', brand_id=brand.id)) }}
   </form>
 
 {%- endblock %}

@@ -22,7 +22,7 @@
       {{ form_field(form.publish_at, autofocus='autofocus') }}
     {% endcall %}
 
-    {{ form_buttons('Veröffentlichen', cancel_url=url_for('.item_view', item_id=item.id)) }}
+    {{ form_buttons(_('Publish'), cancel_url=url_for('.item_view', item_id=item.id)) }}
   </form>
 
 {%- endblock %}

@@ -23,7 +23,7 @@
       {{ form_field(form.image_url_path, maxlength=80) }}
     {% endcall %}
 
-    {{ form_buttons('Entwurf erstellen', cancel_url=url_for('.channel_view', channel_id=channel.id)) }}
+    {{ form_buttons(_('Create draft'), cancel_url=url_for('.channel_view', channel_id=channel.id)) }}
   </form>
 
 {%- endblock %}

@@ -22,7 +22,7 @@
       {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index', party_id=party.id)) }}
+    {{ form_buttons(_('Save'), cancel_url=url_for('.index', party_id=party.id)) }}
   </form>
 
 {%- endblock %}

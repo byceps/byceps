@@ -12,7 +12,7 @@
       {{ form_field(form.prefix, placeholder='LAN23-B', autofocus='autofocus') }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.index_for_shop', shop_id=shop.id)) }}
+    {{ form_buttons(_('Save'), cancel_url=url_for('.index_for_shop', shop_id=shop.id)) }}
   </form>
 
 {%- endblock %}

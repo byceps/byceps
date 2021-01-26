@@ -26,7 +26,7 @@
       {{ form_field(form.starts_at) }}
     {% endcall %}
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.index', party_id=party.id)) }}
+    {{ form_buttons(_('Create'), cancel_url=url_for('.index', party_id=party.id)) }}
   </form>
 
 {%- endblock %}

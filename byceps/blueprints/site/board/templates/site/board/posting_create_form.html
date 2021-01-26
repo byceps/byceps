@@ -21,7 +21,7 @@
 {%- include 'site/board/_posting_form_body_supplement.html' %}
     {%- endcall %}
 
-    {{ form_buttons('Hinzufügen', cancel_url=url_for('.topic_view', topic_id=topic.id)) }}
+    {{ form_buttons(_('Add'), cancel_url=url_for('.topic_view', topic_id=topic.id)) }}
   </form>
 
 {%- endblock %}

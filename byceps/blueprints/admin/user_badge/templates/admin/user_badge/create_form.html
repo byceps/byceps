@@ -23,7 +23,7 @@
       {{ form_field_checkbox(form.featured, form.featured.label.text) }}
     {% endcall %}
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.index')) }}
+    {{ form_buttons(_('Create'), cancel_url=url_for('.index')) }}
   </form>
 
 {%- endblock %}

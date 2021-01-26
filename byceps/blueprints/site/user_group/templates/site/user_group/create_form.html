@@ -13,7 +13,7 @@
       {{ form_field(form.description, maxlength=200, required='required') }}
     {% endcall %}
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.index')) }}
+    {{ form_buttons(_('Create'), cancel_url=url_for('.index')) }}
   </form>
 
 {%- endblock %}

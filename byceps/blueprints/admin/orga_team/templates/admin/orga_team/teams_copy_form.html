@@ -18,7 +18,7 @@
       {{ form_field(form.party_id, required='required', autofocus='autofocus') }}
     {% endcall %}
 
-    {{ form_buttons('Kopieren', cancel_url=url_for('.teams_for_party', party_id=party.id)) }}
+    {{ form_buttons(_('Copy'), cancel_url=url_for('.teams_for_party', party_id=party.id)) }}
   </form>
 
 {%- endblock %}

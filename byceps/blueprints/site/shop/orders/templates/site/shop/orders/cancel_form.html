@@ -19,7 +19,7 @@
       {{ form_field(form.reason, maxlength=1000) }}
     {% endcall %}
 
-    {{ form_buttons('Stornieren', icon='remove', cancel_url=url_for('.view', order_id=order.id)) }}
+    {{ form_buttons(_('Cancel'), icon='remove', cancel_url=url_for('.view', order_id=order.id)) }}
   </form>
 
 {%- endblock %}

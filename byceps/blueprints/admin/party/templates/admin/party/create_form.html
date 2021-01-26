@@ -23,7 +23,7 @@
       {{ form_field(form.max_ticket_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
     {% endcall %}
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.index_for_brand', brand_id=brand.id)) }}
+    {{ form_buttons(_('Create'), cancel_url=url_for('.index_for_brand', brand_id=brand.id)) }}
   </form>
 
 {%- endblock %}

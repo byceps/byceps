@@ -20,7 +20,7 @@
       {%- endcall %}
     {%- endcall %}
 
-    {{ form_buttons('%s Bild hochladen'|format(render_icon('upload'))|safe) }}
+    {{ form_buttons(render_icon('upload') + ' ' + _('Upload')) }}
   </form>
 
 {%- endblock %}

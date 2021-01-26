@@ -24,7 +24,7 @@
       {{ form_field(form.image_url_path, maxlength=100) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.item_view', item_id=item.id)) }}
+    {{ form_buttons(_('Save'), cancel_url=url_for('.item_view', item_id=item.id)) }}
   </form>
 
 {%- endblock %}

@@ -22,7 +22,7 @@
       {{ form_field(form.description, maxlength=80, required='required') }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.board_view', board_id=category.board_id)) }}
+    {{ form_buttons(_('Save'), cancel_url=url_for('.board_view', board_id=category.board_id)) }}
   </form>
 
 {%- endblock %}

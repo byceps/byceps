@@ -37,7 +37,7 @@
 {{ render_notification('Die Anmeldung ist fehlgeschlagen.', category='danger', icon='warning') }}
     </div>
 
-    {{ form_buttons('Anmelden') }}
+    {{ form_buttons(_('Login')) }}
   </form>
 
     {% if user_account_creation_enabled %}

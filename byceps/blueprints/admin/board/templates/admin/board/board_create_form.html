@@ -23,7 +23,7 @@
     <p>Ein Forum kann sowohl für eine einzelne Party als auch für mehrere oder alle Partys derselben Marke genutzt werden.</p>
     <p>Tipp: Sofern das Forum nur für eine konkrete Party genutzt werden soll, verwende die ID <em>dieser Party</em> als ID für das Forum. Falls es jedoch partyübergreifend genutzt werden soll, verwende die ID <em>der Marke</em> der Partys als ID für das Forum.</p>
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.board_index_for_brand', brand_id=brand.id)) }}
+    {{ form_buttons(_('Create'), cancel_url=url_for('.board_index_for_brand', brand_id=brand.id)) }}
   </form>
 
 {%- endblock %}

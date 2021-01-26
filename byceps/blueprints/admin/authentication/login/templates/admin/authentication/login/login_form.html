@@ -37,7 +37,7 @@
 {{ render_notification('Die Anmeldung ist fehlgeschlagen.', category='danger', icon='warning') }}
     </div>
 
-    {{ form_buttons('Anmelden') }}
+    {{ form_buttons(_('Login')) }}
   </form>
 
   <p>Passwort vergessen? <a href="{{ url_for('authentication.password.request_reset_form') }}">Neues Passwort setzen</a></p>

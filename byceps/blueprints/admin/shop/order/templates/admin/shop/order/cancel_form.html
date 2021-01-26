@@ -20,7 +20,7 @@
       {{ form_field_checkbox(form.send_email, form.send_email.label.text, checked='checked') }}
     {% endcall %}
 
-    {{ form_buttons('Stornieren', icon='disabled', cancel_url=url_for('.view', order_id=order.id)) }}
+    {{ form_buttons(_('Cancel'), icon='disabled', cancel_url=url_for('.view', order_id=order.id)) }}
   </form>
 
 {%- endblock %}

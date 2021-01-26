@@ -15,7 +15,7 @@
 {%- include 'site/shop/order/_order_form_orderer.html' %}
 {%- include 'site/shop/order/_order_form_articles.html' %}
 
-    {{ form_buttons('Jetzt kostenpflichtig bestellen') }}
+    {{ form_buttons(_('Place binding order now')) }}
   </form>
   {%- else %}
   <p>Es sind derzeit keine Artikel verfügbar.</p>

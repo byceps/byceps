@@ -17,7 +17,7 @@
       {{ form_fields_radio(form.payment_method, required='required') }}
     {% endcall %}
 
-    {{ form_buttons('Als bezahlt markieren', icon='success', cancel_url=url_for('.view', order_id=order.id)) }}
+    {{ form_buttons(_('Mark as paid'), icon='success', cancel_url=url_for('.view', order_id=order.id)) }}
   </form>
 
 {%- endblock %}

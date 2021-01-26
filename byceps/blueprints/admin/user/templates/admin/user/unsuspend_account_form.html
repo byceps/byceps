@@ -15,7 +15,7 @@
     {% endcall %}
     <small><p>Die Begründung wird als <em>interner</em> Vermerk gespeichert.</p></small>
 
-    {{ form_buttons('Entsperren', icon='unlock', cancel_url=url_for('.view', user_id=user.id)) }}
+    {{ form_buttons(_('Unlock'), icon='unlock', cancel_url=url_for('.view', user_id=user.id)) }}
   </form>
 
 {%- endblock %}

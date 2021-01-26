@@ -29,7 +29,7 @@
       {{ form_field_checkbox(form.shipping_required, form.shipping_required.label.text) }}
     {% endcall %}
 
-    {{ form_buttons('Speichern', cancel_url=url_for('.view', article_id=article.id)) }}
+    {{ form_buttons(_('Save'), cancel_url=url_for('.view', article_id=article.id)) }}
   </form>
 
 {%- endblock %}

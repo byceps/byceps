@@ -21,7 +21,7 @@
       {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
     {% endcall %}
 
-    {{ form_buttons('Erstellen', cancel_url=url_for('.index', party_id=party.id)) }}
+    {{ form_buttons(_('Create'), cancel_url=url_for('.index', party_id=party.id)) }}
   </form>
 
 {%- endblock %}
