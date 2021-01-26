@@ -2,41 +2,41 @@
 
 
 <section class="sidebar-section">
-  <header class="sidebar-section-header">Global</header>
-  {%- with navigation = Navigation('global')
+  <header class="sidebar-section-header">{{ _('Global') }}</header>
+  {%- with navigation = Navigation(_('Global'))
       .add_item(
         url_for('admin_dashboard.view_global'),
-        'Dashboard',
+        _('Dashboard'),
         id='admin_dashboard_global',
         required_permission=AdminDashboardPermission.view_global,
         icon='dashboard')
       .add_item(
         url_for('user_admin.index'),
-        'Benutzer',
+        _('Users'),
         id='user_admin',
         required_permission=UserPermission.view,
         icon='users')
       .add_item(
         url_for('brand_admin.index'),
-        'Marken',
+        _('Brands'),
         id='brands_admin',
         required_permission=BrandPermission.view,
         icon='brand')
       .add_item(
         url_for('party_admin.index'),
-        'Partys',
+        _('Parties'),
         id='parties_admin',
         required_permission=PartyPermission.view,
         icon='date')
       .add_item(
         url_for('site_admin.index'),
-        'Sites',
+        _('Sites'),
         id='sites_admin',
         required_permission=SitePermission.view,
         icon='site')
       .add_item(
         url_for('more_admin.view_global'),
-        'Mehr',
+        _('More'),
         id='more_admin_global',
         required_permission=AdminPermission.access,
         icon='ellipsis-h')

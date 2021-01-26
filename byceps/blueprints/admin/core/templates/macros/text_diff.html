@@ -29,7 +29,7 @@
       width: 1%;
     }
 
-    .diff_add { 
+    .diff_add {
       background-color: #88ee88;
       border-color: #1fd81f;
     }
@@ -51,6 +51,6 @@
 {{- diff|safe }}
   </div>
   {%- else %}
-  <p>{{ 'keine Unterschiede'|dim }}</p>
+  <p>{{ 'no differences'|dim }}</p>
   {%- endif %}
 {%- endmacro %}

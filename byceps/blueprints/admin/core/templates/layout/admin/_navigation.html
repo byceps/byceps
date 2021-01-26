@@ -21,7 +21,7 @@
     {%- if not brand and not site and not party %}
       {%- include 'layout/admin/_navigation_global.html' %}
     {%- else %}
-{{ render_navigation_backlink('Global', url_for('admin_dashboard.view_global')) }}
+{{ render_navigation_backlink(_('Global'), url_for('admin_dashboard.view_global')) }}
     {%- endif %}
 
     {%- if brand %}

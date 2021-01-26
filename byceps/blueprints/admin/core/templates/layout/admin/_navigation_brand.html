@@ -10,7 +10,7 @@
         <div class="sidebar-section-header-layout">
           {{ render_brand_avatar(brand, '32') }}
           <div>
-            <div class="sidebar-section-category">Marke</div>
+            <div class="sidebar-section-category">{{ _('Brand') }}</div>
             {{ brand.title }} {{ render_icon('chevron-down') }}
           </div>
         </div>
@@ -22,41 +22,41 @@
       </ol>
     </div>
   </header>
-  {%- with navigation = Navigation('Marke')
+  {%- with navigation = Navigation(_('Brand'))
       .add_item(
         url_for('admin_dashboard.view_brand',
         brand_id=brand.id),
-        'Dashboard',
+        _('Dashboard'),
         id='admin_dashboard_brand',
         required_permission=AdminDashboardPermission.view_brand,
         icon='dashboard')
       .add_item(
         url_for('site_admin.index_for_brand', brand_id=brand.id),
-        'Sites',
+        _('Sites'),
         id='sites_admin',
         required_permission=SitePermission.view,
         icon='site')
       .add_item(
         url_for('party_admin.index_for_brand', brand_id=brand.id),
-        'Partys',
+        _('Parties'),
         id='parties_admin',
         required_permission=PartyPermission.view,
         icon='date')
       .add_item(
         url_for('orga_admin.persons_for_brand', brand_id=brand.id),
-        'Organisatoren',
+        _('Organizers'),
         id='orga_admin',
         required_permission=OrgaDetailPermission.view,
         icon='users')
       .add_item(
         url_for('shop_shop_admin.view_for_brand', brand_id=brand.id),
-        'Shop',
+        _('Shop'),
         id='shop_shop_admin',
         required_permission=ShopPermission.view,
         icon='shop')
       .add_item(
         url_for('more_admin.view_brand', brand_id=brand.id),
-        'Mehr',
+        _('More'),
         id='more_admin_brand',
         required_permission=AdminPermission.access,
         icon='ellipsis-h')

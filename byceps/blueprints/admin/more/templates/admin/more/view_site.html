@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'more_admin_site' %}
 {% set current_page_site = site %}
-{% set title = 'Mehr' %}
+{% set title = _('More') %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -14,8 +14,8 @@
 
   <div class="grid dashboard">
   {%- with items = [
-    ('Einstellungen', 'settings', url_for('site_admin.view', site_id=site.id), SitePermission.view, True),
-    ('Forum', 'board', url_for('board_admin.board_view', board_id=site.board_id) if site.board_id else '', BoardCategoryPermission.view, site.board_id is not none),
+    (_('Settings'), 'settings', url_for('site_admin.view', site_id=site.id), SitePermission.view, True),
+    (_('Discussion Board'), 'board', url_for('board_admin.board_view', board_id=site.board_id) if site.board_id else '', BoardCategoryPermission.view, site.board_id is not none),
   ] %}
     {%- for label, icon, url, required_permission, precondition in items %}
       {%- if g.user.has_permission(required_permission) and precondition %}

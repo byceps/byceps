@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-26 13:50+0100\n"
+"POT-Creation-Date: 2021-01-26 16:59+0100\n"
 "PO-Revision-Date: 2021-01-24 11:05+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -241,6 +241,183 @@ msgstr "Die Marke \"%(title)s\" wurde aktualisiert."
 #: byceps/blueprints/admin/brand/views.py:197
 msgid "Email configuration has been updated."
 msgstr "Die E-Mail-Konfiguration wurde aktualisiert."
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_header.html:20
+msgid "user name, first name, last name, email address"
+msgstr "Benutzer-, Vor-, Nachname, E-Mail-Adresse"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_header.html:20
+msgid "Search user:"
+msgstr "Benutzer suchen:"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_header.html:21
+msgid "Search"
+msgstr "Suchen"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation.html:24
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:5
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:6
+msgid "Global"
+msgstr "Global"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:13
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:25
+#: byceps/blueprints/admin/site/forms.py:86
+#: byceps/blueprints/admin/user_badge/forms.py:42
+msgid "Brand"
+msgstr "Marke"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:29
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:9
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:29
+msgid "Dashboard"
+msgstr "Dashboard"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:35
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:33
+msgid "Sites"
+msgstr "Sites"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:41
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:27
+msgid "Parties"
+msgstr "Partys"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:47
+msgid "Organizers"
+msgstr "Organisatoren"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:53
+msgid "Shop"
+msgstr "Shop"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:59
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:39
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:59
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_site.html:50
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:6
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:5
+#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:6
+#: byceps/blueprints/admin/more/templates/admin/more/view_site.html:6
+msgid "More"
+msgstr "Mehr"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:15
+msgid "Users"
+msgstr "Benutzer"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:21
+msgid "Brands"
+msgstr "Marken"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:14
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:26
+#: byceps/blueprints/admin/site/forms.py:29
+msgid "Party"
+msgstr "Party"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:35
+msgid "Seating Plans"
+msgstr "Sitzpläne"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:41
+msgid "Tickets"
+msgstr "Tickets"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:47
+msgid "Check-In"
+msgstr "Check-In"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:53
+msgid "Organizer Teams"
+msgstr "Orga-Teams"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_site.html:13
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_site.html:27
+msgid "Site"
+msgstr "Site"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_site.html:30
+msgid "Snippets"
+msgstr "Snippets"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_site.html:36
+msgid "News Items"
+msgstr "Newsposts"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_site.html:43
+msgid "Storefront"
+msgstr "Storefront"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
+#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
+#: byceps/blueprints/admin/more/templates/admin/more/view_site.html:17
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:18
+msgid "Newsletter Subscriptions"
+msgstr "Newsletter-Abos"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:19
+msgid "News Channels"
+msgstr "Newskanäle"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:20
+msgid "Discussion Boards"
+msgstr "Foren"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:21
+msgid "Regular Guests"
+msgstr "Stammgäste"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:22
+msgid "Brand Snippets"
+msgstr "Marken-Snippets"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:23
+msgid "Terms of Service"
+msgstr "AGB"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:16
+msgid "Permissions"
+msgstr "Berechtigungen"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:17
+msgid "Global Snippets"
+msgstr "Globale Snippets"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:18
+msgid "Consents"
+msgstr "Zustimmungen"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:19
+msgid "Newsletters"
+msgstr "Newsletter"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:20
+msgid "User Badges"
+msgstr "Benutzer-Abzeichen"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:21
+msgid "Webhooks"
+msgstr "Webhooks"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:22
+msgid "Background Jobs"
+msgstr "Hintergrundjobs"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:18
+msgid "Organizer Presence"
+msgstr "Orga-Anwesenheit"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:19
+msgid "Tournaments"
+msgstr "Turniere"
+
+#: byceps/blueprints/admin/more/templates/admin/more/view_site.html:18
+msgid "Discussion Board"
+msgstr "Foren"
 
 #: byceps/blueprints/admin/news/forms.py:27
 msgid "URL prefix"
@@ -736,10 +913,6 @@ msgstr "Storefront \"%(storefront_id)s\" wurde aktualisiert."
 msgid "Server name"
 msgstr "Servername"
 
-#: byceps/blueprints/admin/site/forms.py:29
-msgid "Party"
-msgstr "Party"
-
 #: byceps/blueprints/admin/site/forms.py:30
 msgid "enabled"
 msgstr "aktiv"
@@ -783,11 +956,6 @@ msgstr "<keins>"
 msgctxt "storefront"
 msgid "<none>"
 msgstr "<keins>"
-
-#: byceps/blueprints/admin/site/forms.py:86
-#: byceps/blueprints/admin/user_badge/forms.py:42
-msgid "Brand"
-msgstr "Marke"
 
 #: byceps/blueprints/admin/site/views.py:208
 #: byceps/blueprints/admin/site/views.py:284

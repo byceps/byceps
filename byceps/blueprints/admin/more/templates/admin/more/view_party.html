@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'more_admin_party' %}
 {% set current_page_party = party %}
-{% set title = 'Mehr' %}
+{% set title = _('More') %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -14,9 +14,9 @@
 
   <div class="grid dashboard">
   {%- with items = [
-    ('Einstellungen', 'settings', url_for('party_admin.view', party_id=party.id), PartyPermission.view),
-    ('Orga-Anwesenheit', 'date-okay', url_for('orga_presence.view', party_id=party.id), OrgaPresencePermission.view),
-    ('Turniere', 'trophy', url_for('tourney_tourney_admin.index', party_id=party.id), TourneyPermission.view),
+    (_('Settings'), 'settings', url_for('party_admin.view', party_id=party.id), PartyPermission.view),
+    (_('Organizer Presence'), 'date-okay', url_for('orga_presence.view', party_id=party.id), OrgaPresencePermission.view),
+    (_('Tournaments'), 'trophy', url_for('tourney_tourney_admin.index', party_id=party.id), TourneyPermission.view),
   ] %}
     {%- for label, icon, url, required_permission in items %}
       {%- if g.user.has_permission(required_permission) %}

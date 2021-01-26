@@ -17,8 +17,8 @@
 
             {%- if g.user.has_permission(UserPermission.view) %}
             <form action="{{ url_for('user_admin.index') }}" class="single-row">
-              <input type="search" name="search_term" placeholder="Benutzer-, Vor-, Nachname, E-Mail-Adresse" title="Benutzer suchen: Benutzer-, Vor-, Nachname, E-Mail-Adresse">
-              <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
+              <input type="search" name="search_term" placeholder="{{ _('user name, first name, last name, email address') }}" title="{{ _('Search user:') }} {{ _('user name, first name, last name, email address') }}">
+              <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
             </form>
             {%- endif %}
 
