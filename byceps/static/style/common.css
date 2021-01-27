@@ -363,7 +363,7 @@ fieldset .label {
   padding-top: 0.3rem;
 }
 
-fieldset input:not([size]):not([type='checkbox']):not([type='radio']),
+fieldset input:not([size]):not([type='checkbox']):not([type='date']):not([type='radio']):not([type='time']),
 fieldset textarea,
 fieldset .supplement {
   width: 100%;
@@ -402,7 +402,7 @@ fieldset .supplement {
     width: 22%;
   }
 
-  fieldset input:not([size]):not([type='checkbox']):not([type='radio']),
+  fieldset input:not([size]):not([type='checkbox']):not([type='date']):not([type='radio']):not([type='time']),
   fieldset textarea,
   fieldset .supplement {
     width: 78%;
