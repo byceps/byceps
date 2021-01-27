@@ -19,7 +19,7 @@ from _util import app_context
 def execute(data_file):
     permission_count, role_count = impex_service.import_from_file(data_file)
     click.secho(
-        'Imported {permission_count} permissions and {role_count} roles.',
+        f'Imported {permission_count} permissions and {role_count} roles.',
         fg='green',
     )
 
