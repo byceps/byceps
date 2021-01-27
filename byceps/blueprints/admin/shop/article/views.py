@@ -271,7 +271,25 @@ def update_form(article_id, erroneous_form=None):
     if article.available_until:
         article.available_until = utc_to_local_tz(article.available_until)
 
-    form = erroneous_form if erroneous_form else ArticleUpdateForm(obj=article)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else ArticleUpdateForm(
+            obj=article,
+            available_from_date=article.available_from.date()
+            if article.available_from
+            else None,
+            available_from_time=article.available_from.time()
+            if article.available_from
+            else None,
+            available_until_date=article.available_until.date()
+            if article.available_until
+            else None,
+            available_until_time=article.available_until.time()
+            if article.available_until
+            else None,
+        )
+    )
     form.tax_rate.data = article.tax_rate * TAX_RATE_DISPLAY_FACTOR
 
     return {
@@ -295,18 +313,27 @@ def update(article_id):
     description = form.description.data.strip()
     price = form.price.data
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
-    available_from = form.available_from.data
-    available_until = form.available_until.data
+    if form.available_from_date.data and form.available_from_time.data:
+        available_from = local_tz_to_utc(
+            datetime.combine(
+                form.available_from_date.data, form.available_from_time.data
+            )
+        )
+    else:
+        available_from = None
+    if form.available_until_date.data and form.available_until_time.data:
+        available_until = local_tz_to_utc(
+            datetime.combine(
+                form.available_until_date.data, form.available_until_time.data
+            )
+        )
+    else:
+        available_until = None
     total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
     requires_separate_order = form.requires_separate_order.data
     shipping_required = form.shipping_required.data
-
-    if available_from:
-        available_from = local_tz_to_utc(available_from)
-    if available_until:
-        available_until = local_tz_to_utc(available_until)
 
     article = article_service.update_article(
         article.id,

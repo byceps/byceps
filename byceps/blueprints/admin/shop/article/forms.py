@@ -6,17 +6,18 @@ byceps.blueprints.admin.shop.article.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from datetime import date, datetime, time
 from decimal import Decimal
 
 from flask_babel import lazy_gettext, lazy_pgettext
 from wtforms import (
     BooleanField,
-    DateTimeField,
     DecimalField,
     IntegerField,
     SelectField,
     StringField,
 )
+from wtforms.fields.html5 import DateField, TimeField
 from wtforms.validators import (
     InputRequired,
     NumberRange,
@@ -63,15 +64,17 @@ class ArticleCreateForm(_ArticleBaseForm):
 
 
 class ArticleUpdateForm(_ArticleBaseForm):
-    available_from = DateTimeField(
-        lazy_gettext('Available from'),
-        format='%d.%m.%Y %H:%M',
-        validators=[Optional()],
+    available_from_date = DateField(
+        lazy_gettext('Available from date'), validators=[Optional()]
     )
-    available_until = DateTimeField(
-        lazy_gettext('Available until'),
-        format='%d.%m.%Y %H:%M',
-        validators=[Optional()],
+    available_from_time = TimeField(
+        lazy_gettext('Available from time'), validators=[Optional()]
+    )
+    available_until_date = DateField(
+        lazy_gettext('Available until date'), validators=[Optional()]
+    )
+    available_until_time = TimeField(
+        lazy_gettext('Available until time'), validators=[Optional()]
     )
     not_directly_orderable = BooleanField(
         lazy_gettext('can only be ordered indirectly')
@@ -82,17 +85,81 @@ class ArticleUpdateForm(_ArticleBaseForm):
     shipping_required = BooleanField(lazy_gettext('Shipping required'))
 
     @staticmethod
-    def validate_available_until(form, field):
-        """Ensure that the availability range's begin is before its end."""
-        begin = form.available_from.data
-        end = field.data
+    def validate_available_from_date(form, field):
+        """Ensure that either both date and time or neither of them is given."""
+        d = form.available_from_date.data
+        t = form.available_from_time.data
+        _validate_date_and_time(d, t)
 
-        if (begin is not None) and (begin >= end):
-            raise ValidationError(
-                lazy_gettext(
-                    'The end of the availability period must be after its begin.'
-                )
+    @staticmethod
+    def validate_available_from_time(form, field):
+        """Ensure that either both date and time or neither of them is given."""
+        d = form.available_from_date.data
+        t = form.available_from_time.data
+        _validate_date_and_time(d, t)
+
+    @staticmethod
+    def validate_available_until_date(form, field):
+        """Ensure that either both date and time or neither of them is given."""
+        d = form.available_until_date.data
+        t = form.available_until_time.data
+        _validate_date_and_time(d, t)
+
+        available_from = form._get_available_from()
+        available_until = form._get_available_until()
+        _validate_availability_range(available_from ,available_until )
+
+    @staticmethod
+    def validate_available_until_time(form, field):
+        """Ensure that either both date and time or neither of them is given."""
+        d = form.available_until_date.data
+        t = form.available_until_time.data
+        _validate_date_and_time(d, t)
+
+        available_from = form._get_available_from()
+        available_until = form._get_available_until()
+        _validate_availability_range(available_from ,available_until )
+
+    def _get_available_from(self):
+        d = self.available_from_date.data
+        t = self.available_from_time.data
+        if (d is None) or (t is None):
+            return None
+
+        return datetime.combine(d, t)
+
+    def _get_available_until(self):
+        d = self.available_until_date.data
+        t = self.available_until_time.data
+        if (d is None) or (t is None):
+            return None
+
+        return datetime.combine(d, t)
+
+
+def _validate_date_and_time(d: date, t: time):
+    if ((d is None) and (t is not None)) or (
+        (d is not None) and (t is None)
+    ):
+        raise ValidationError(
+            lazy_gettext(
+                'Either date and time must be specified or neither of them.'
             )
+        )
+
+
+def _validate_availability_range(available_from: datetime, available_until: datetime):
+    """Ensure that the availability range's begin is before its end."""
+    if (
+        (available_from is not None)
+        and (available_until is not None)
+        and (available_from >= available_until)
+    ):
+        raise ValidationError(
+            lazy_gettext(
+                'The end of the availability period must be after its begin.'
+            )
+        )
 
 
 class ArticleAttachmentCreateForm(LocalizedForm):

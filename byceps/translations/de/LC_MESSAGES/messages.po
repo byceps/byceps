@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-27 16:44+0100\n"
+"POT-Creation-Date: 2021-01-27 17:56+0100\n"
 "PO-Revision-Date: 2021-01-24 11:05+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -190,7 +190,7 @@ msgstr "Erstellen"
 #: byceps/blueprints/admin/party/templates/admin/party/update_form.html:33
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_form.html:27
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_number_sequence_form.html:16
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/update_form.html:32
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/update_form.html:34
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/create_number_sequence_form.html:15
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/create_form.html:23
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/update_form.html:17
@@ -658,72 +658,84 @@ msgstr "Die Party \"%(title)s\" wurde angelegt."
 msgid "Party \"%(title)s\" has been updated."
 msgstr "Die Party \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/shop/article/forms.py:31
+#: byceps/blueprints/admin/shop/article/forms.py:32
 #: byceps/blueprints/admin/user_badge/forms.py:38
 #: byceps/blueprints/site/user_group/forms.py:17
 msgid "Description"
 msgstr "Beschreibung"
 
-#: byceps/blueprints/admin/shop/article/forms.py:33
+#: byceps/blueprints/admin/shop/article/forms.py:34
 msgid "Unit price"
 msgstr "Stückpreis"
 
-#: byceps/blueprints/admin/shop/article/forms.py:36
+#: byceps/blueprints/admin/shop/article/forms.py:37
 msgid "Tax rate"
 msgstr "Steuersatz"
 
-#: byceps/blueprints/admin/shop/article/forms.py:44
+#: byceps/blueprints/admin/shop/article/forms.py:45
 msgid "Total quantity"
 msgstr "Gesamtmenge"
 
-#: byceps/blueprints/admin/shop/article/forms.py:47
+#: byceps/blueprints/admin/shop/article/forms.py:48
 msgid "Maximum quantity per order"
 msgstr "Maximale Anzahl pro Bestellung"
 
-#: byceps/blueprints/admin/shop/article/forms.py:54
+#: byceps/blueprints/admin/shop/article/forms.py:55
 msgid "Article number sequence"
 msgstr "Artikelnummer-Sequenz"
 
-#: byceps/blueprints/admin/shop/article/forms.py:61
+#: byceps/blueprints/admin/shop/article/forms.py:62
 #: byceps/blueprints/admin/shop/storefront/forms.py:33
 msgctxt "sequence"
 msgid "<none>"
 msgstr "<keine>"
 
-#: byceps/blueprints/admin/shop/article/forms.py:67
-msgid "Available from"
-msgstr "Verfügbar ab"
+#: byceps/blueprints/admin/shop/article/forms.py:68
+msgid "Available from date"
+msgstr "Verfügbar ab Datum"
 
-#: byceps/blueprints/admin/shop/article/forms.py:72
-msgid "Available until"
-msgstr "Verfügbar bis"
+#: byceps/blueprints/admin/shop/article/forms.py:71
+msgid "Available from time"
+msgstr "Verfügbar ab Uhrzeit"
+
+#: byceps/blueprints/admin/shop/article/forms.py:74
+msgid "Available until date"
+msgstr "Verfügbar bis Datum"
 
 #: byceps/blueprints/admin/shop/article/forms.py:77
+msgid "Available until time"
+msgstr "Verfügbar bis Uhrzeit"
+
+#: byceps/blueprints/admin/shop/article/forms.py:80
 msgid "can only be ordered indirectly"
 msgstr "nur indirekt bestellbar"
 
-#: byceps/blueprints/admin/shop/article/forms.py:80
+#: byceps/blueprints/admin/shop/article/forms.py:83
 msgid "must be ordered separately"
 msgstr "muss separat bestellt werden"
 
-#: byceps/blueprints/admin/shop/article/forms.py:82
+#: byceps/blueprints/admin/shop/article/forms.py:85
 msgid "Shipping required"
 msgstr "Versand erforderlich"
 
-#: byceps/blueprints/admin/shop/article/forms.py:92
+#: byceps/blueprints/admin/shop/article/forms.py:145
+msgid "Either date and time must be specified or neither of them."
+msgstr "Entweder Datum und Uhrzeit müssen angegeben werden oder keines von beiden."
+
+#: byceps/blueprints/admin/shop/article/forms.py:159
 msgid "The end of the availability period must be after its begin."
 msgstr "Das Ende des Verfügbarkeitszeitraums muss nach dessen Beginn liegen."
 
-#: byceps/blueprints/admin/shop/article/forms.py:100
+#: byceps/blueprints/admin/shop/article/forms.py:167
 msgid "Article"
 msgstr "Artikel"
 
-#: byceps/blueprints/admin/shop/article/forms.py:103
+#: byceps/blueprints/admin/shop/article/forms.py:170
 #: byceps/blueprints/site/shop/order/forms.py:72
 msgid "Quantity"
 msgstr "Anzahl"
 
-#: byceps/blueprints/admin/shop/article/forms.py:121
+#: byceps/blueprints/admin/shop/article/forms.py:188
 #: byceps/blueprints/admin/shop/order/forms.py:46
 msgid "Static prefix"
 msgstr "Statisches Präfix"
@@ -742,12 +754,12 @@ msgstr "Es wurde keine gültige Artikelnummer-Sequenz angegeben."
 msgid "Article \"%(item_number)s\" has been created."
 msgstr "Der Artikel \"%(item_number)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/shop/article/views.py:326
+#: byceps/blueprints/admin/shop/article/views.py:353
 #, python-format
 msgid "Article \"%(description)s\" has been updated."
 msgstr "Der Artikel \"%(description)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/shop/article/views.py:389
+#: byceps/blueprints/admin/shop/article/views.py:416
 #, python-format
 msgid ""
 "Article \"%(article_to_attach_item_number)s\" has been attached "
@@ -756,7 +768,7 @@ msgstr ""
 "Der Artikel \"%(article_to_attach_item_number)s\" wurde %(quantity)s mal "
 "an den Artikel \"%(article_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/article/views.py:415
+#: byceps/blueprints/admin/shop/article/views.py:442
 #, python-format
 msgid ""
 "Article \"%(article_item_number)s\" is no longer attached to article "
@@ -765,7 +777,7 @@ msgstr ""
 "Artikel \"%(article_item_number)s\" ist nun nicht mehr an Artikel "
 "\"%(attached_to_article_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/article/views.py:464
+#: byceps/blueprints/admin/shop/article/views.py:491
 #, python-format
 msgid ""
 "Article number sequence could not be created. Is prefix \"%(prefix)s\" "
@@ -774,7 +786,7 @@ msgstr ""
 "Die Artikelnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/article/views.py:473
+#: byceps/blueprints/admin/shop/article/views.py:500
 #, python-format
 msgid "Article number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Artikelnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
