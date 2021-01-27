@@ -155,7 +155,7 @@ def create_membership(
 
 def update_membership(
     membership_id: MembershipID, team_id: OrgaTeamID, duties: str
-) -> None:
+) -> Membership:
     """Update the membership."""
     membership = _find_db_membership(membership_id)
     if membership is None:
@@ -168,6 +168,8 @@ def update_membership(
     membership.orga_team = team
     membership.duties = duties
     db.session.commit()
+
+    return _db_entity_to_membership(membership)
 
 
 def delete_membership(membership_id: MembershipID) -> None:

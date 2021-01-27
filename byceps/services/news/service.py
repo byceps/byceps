@@ -65,7 +65,7 @@ def update_item(
     body: str,
     *,
     image_url_path: Optional[str] = None,
-) -> None:
+) -> Item:
     """Update a news item by creating a new version of it and setting
     the new version as the current one.
     """
@@ -81,6 +81,8 @@ def update_item(
     item.current_version = version
 
     db.session.commit()
+
+    return _db_entity_to_item(item)
 
 
 def _create_version(

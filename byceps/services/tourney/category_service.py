@@ -17,7 +17,7 @@ from .models.tourney_category import TourneyCategory as DbTourneyCategory
 from .transfer.models import TourneyCategory, TourneyCategoryID
 
 
-def create_category(party_id: PartyID, title: str) -> DbTourneyCategory:
+def create_category(party_id: PartyID, title: str) -> TourneyCategory:
     """Create a category for that party."""
     party = DbParty.query.get(party_id)
     if party is None:
@@ -31,15 +31,19 @@ def create_category(party_id: PartyID, title: str) -> DbTourneyCategory:
     return _db_entity_to_category(category)
 
 
-def update_category(category_id: TourneyCategoryID, title: str) -> None:
+def update_category(
+    category_id: TourneyCategoryID, title: str
+) -> TourneyCategory:
     """Update category."""
     category = _get_db_category(category_id)
 
     category.title = title
     db.session.commit()
 
+    return _db_entity_to_category(category)
 
-def move_category_up(category_id: TourneyCategoryID) -> None:
+
+def move_category_up(category_id: TourneyCategoryID) -> TourneyCategory:
     """Move a category upwards by one position."""
     category = _get_db_category(category_id)
 
@@ -53,8 +57,10 @@ def move_category_up(category_id: TourneyCategoryID) -> None:
 
     db.session.commit()
 
+    return _db_entity_to_category(category)
 
-def move_category_down(category_id: TourneyCategoryID) -> None:
+
+def move_category_down(category_id: TourneyCategoryID) -> TourneyCategory:
     """Move a category downwards by one position."""
     category = _get_db_category(category_id)
 
@@ -67,6 +73,8 @@ def move_category_down(category_id: TourneyCategoryID) -> None:
     category_list.insert(popped_category.position, popped_category)
 
     db.session.commit()
+
+    return _db_entity_to_category(category)
 
 
 def delete_category(category_id: TourneyCategoryID) -> None:

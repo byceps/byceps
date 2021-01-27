@@ -238,7 +238,7 @@ def image_update(image_id):
     caption = form.caption.data.strip()
     attribution = form.attribution.data.strip()
 
-    news_image_service.update_image(
+    image = news_image_service.update_image(
         image.id, alt_text=alt_text, caption=caption, attribution=attribution,
     )
 
@@ -446,7 +446,7 @@ def item_update(item_id):
     body = form.body.data.strip()
     image_url_path = form.image_url_path.data.strip()
 
-    news_item_service.update_item(
+    item = news_item_service.update_item(
         item.id, slug, creator.id, title, body, image_url_path=image_url_path
     )
 

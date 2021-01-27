@@ -126,7 +126,7 @@ def update_image(
     alt_text: Optional[str] = None,
     caption: Optional[str] = None,
     attribution: Optional[str] = None,
-) -> None:
+) -> Image:
     """Update a news image."""
     image = _find_db_image(image_id)
 
@@ -138,6 +138,8 @@ def update_image(
     image.attribution = attribution
 
     db.session.commit()
+
+    return _db_entity_to_image(image, image.item.channel_id)
 
 
 def find_image(image_id: ImageID) -> Optional[Image]:
