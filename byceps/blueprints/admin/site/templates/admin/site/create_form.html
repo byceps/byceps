@@ -19,9 +19,9 @@
       {% call form_supplement('Marke') %}
         {{ render_brand_admin_link(brand) }}
       {% endcall %}
-      {{ form_field(form.id, maxlength=40, required='required', placeholder='intranet', autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=40, required='required', placeholder='Intranet') }}
-      {{ form_field(form.server_name, required='required', placeholder='www.example.com', note='Muss eindeutig sein') }}
+      {{ form_field(form.id, maxlength=40, placeholder='intranet', autofocus='autofocus') }}
+      {{ form_field(form.title, maxlength=40, placeholder='Intranet') }}
+      {{ form_field(form.server_name, placeholder='www.example.com', note='Muss eindeutig sein') }}
       {{ form_field(form.party_id) }}
       {{ form_field_checkbox(form.enabled, form.enabled.label.text) }}
       {{ form_field_checkbox(form.user_account_creation_enabled, form.user_account_creation_enabled.label.text) }}

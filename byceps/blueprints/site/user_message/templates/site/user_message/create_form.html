@@ -13,7 +13,7 @@
       {%- call form_supplement(label='Empfänger/in') %}
         {{ render_user_avatar_20_and_link(recipient) }}
       {%- endcall %}
-      {{ form_field(form.body, maxlength=2000, required='required', autofocus='autofocus') }}
+      {{ form_field(form.body, maxlength=2000, autofocus='autofocus') }}
     {%- endcall %}
 
     {{ form_buttons(_('Send')) }}

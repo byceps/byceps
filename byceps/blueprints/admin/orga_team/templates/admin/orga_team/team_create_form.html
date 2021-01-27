@@ -16,7 +16,7 @@
 
   <form action="{{ url_for('.team_create', party_id=party.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
+      {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
     {% endcall %}
 
     {{ form_buttons(_('Create'), cancel_url=url_for('.teams_for_party', party_id=party.id)) }}

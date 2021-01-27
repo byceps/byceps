@@ -17,9 +17,9 @@
 
   <form action="{{ url_for('.category_update', category_id=category.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.slug, maxlength=40, required='required', autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=40, required='required') }}
-      {{ form_field(form.description, maxlength=80, required='required') }}
+      {{ form_field(form.slug, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.title, maxlength=40) }}
+      {{ form_field(form.description, maxlength=80) }}
     {% endcall %}
 
     {{ form_buttons(_('Save'), cancel_url=url_for('.board_view', board_id=category.board_id)) }}

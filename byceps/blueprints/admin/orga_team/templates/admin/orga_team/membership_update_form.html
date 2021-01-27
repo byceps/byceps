@@ -17,7 +17,7 @@
 
   <form action="{{ url_for('.membership_update', membership_id=membership.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.orga_team_id, required='required', autofocus='autofocus') }}
+      {{ form_field(form.orga_team_id, autofocus='autofocus') }}
       {{ form_field(form.duties, maxlength=40) }}
     {% endcall %}
 

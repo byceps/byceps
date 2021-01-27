@@ -11,7 +11,7 @@
 
   <form action="{{ url_for('.unsuspend_account', user_id=user.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.reason, maxlength=1000, required='required', note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.', autofocus='autofocus') }}
+      {{ form_field(form.reason, maxlength=1000, note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.', autofocus='autofocus') }}
     {% endcall %}
     <small><p>Die Begründung wird als <em>interner</em> Vermerk gespeichert.</p></small>
 

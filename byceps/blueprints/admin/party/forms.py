@@ -16,7 +16,8 @@ from ....util.l10n import LocalizedForm
 
 class _BaseForm(LocalizedForm):
     title = StringField(
-        lazy_gettext('Title'), validators=[Length(min=1, max=40)]
+        lazy_gettext('Title'),
+        validators=[InputRequired(), Length(min=1, max=40)],
     )
     starts_on = DateField(lazy_gettext('Start date'), validators=[InputRequired()])
     starts_at = TimeField(lazy_gettext('Start time'), validators=[InputRequired()])
@@ -28,7 +29,9 @@ class _BaseForm(LocalizedForm):
 
 
 class CreateForm(_BaseForm):
-    id = StringField(lazy_gettext('ID'), validators=[Length(min=1, max=40)])
+    id = StringField(
+        lazy_gettext('ID'), validators=[InputRequired(), Length(min=1, max=40)]
+    )
 
 
 class UpdateForm(_BaseForm):

@@ -13,8 +13,8 @@
 
   <form action="{{ url_for('.reset', token=token) }}" method="post">
     {%- call form_fieldset() %}
-      {{ form_field(form.new_password, maxlength=40, required='required') }}
-      {{ form_field(form.new_password_confirmation, maxlength=40, required='required') }}
+      {{ form_field(form.new_password, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.new_password_confirmation, maxlength=40) }}
     {%- endcall %}
 
     {{ form_buttons(_('Save')) }}

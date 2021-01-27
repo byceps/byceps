@@ -14,7 +14,7 @@
 
   <form action="{{ url_for('.mark_as_paid', order_id=order.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_fields_radio(form.payment_method, required='required') }}
+      {{ form_fields_radio(form.payment_method, autofocus='autofocus') }}
     {% endcall %}
 
     {{ form_buttons(_('Mark as paid'), icon='success', cancel_url=url_for('.view', order_id=order.id)) }}

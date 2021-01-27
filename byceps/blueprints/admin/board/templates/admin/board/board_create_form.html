@@ -17,7 +17,7 @@
 
   <form action="{{ url_for('.board_create', brand_id=brand.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.board_id, maxlength=40, required='required', placeholder=brand.id, autofocus='autofocus') }}
+      {{ form_field(form.board_id, maxlength=40, placeholder=brand.id, autofocus='autofocus') }}
     {% endcall %}
 
     <p>Ein Forum kann sowohl für eine einzelne Party als auch für mehrere oder alle Partys derselben Marke genutzt werden.</p>

@@ -16,8 +16,8 @@
 
   <form action="{{ url_for('.attachment_create', article_id=article.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.article_to_attach_id, required='required', autofocus='autofocus') }}
-      {{ form_field(form.quantity, type='number', min=1, max=999, style='width: 4em;', required='required') }}
+      {{ form_field(form.article_to_attach_id, autofocus='autofocus') }}
+      {{ form_field(form.quantity, type='number', min=1, max=999, style='width: 4em;') }}
     {% endcall %}
 
     {{ form_buttons(_('Attach article'), cancel_url=url_for('.view', article_id=article.id)) }}

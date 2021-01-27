@@ -14,7 +14,7 @@ from ....util.l10n import LocalizedForm
 
 
 class BoardCreateForm(LocalizedForm):
-    board_id = StringField(lazy_gettext('ID'), validators=[Length(min=1, max=40)])
+    board_id = StringField(lazy_gettext('ID'), validators=[InputRequired(), Length(min=1, max=40)])
 
 
 class CategoryCreateForm(LocalizedForm):

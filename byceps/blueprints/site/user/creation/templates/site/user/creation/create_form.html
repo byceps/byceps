@@ -9,15 +9,15 @@
 
   <form action="{{ url_for('.create') }}" method="post" class="disable-submit-button-on-submit">
     {%- call form_fieldset() %}
-      {{ form_field(form.screen_name, maxlength=24, required='required', note='öffentlich sichtbar', autofocus='autofocus') }}
+      {{ form_field(form.screen_name, maxlength=24, note='öffentlich sichtbar', autofocus='autofocus') }}
       {%- if form.first_names is defined %}
       {{ form_field(form.first_names, maxlength=40) }}
       {%- endif %}
       {%- if form.last_name is defined %}
       {{ form_field(form.last_name, maxlength=80) }}
       {%- endif %}
-      {{ form_field(form.email_address, type='email', maxlength=120, required='required') }}
-      {{ form_field(form.password, maxlength=40, required='required') }}
+      {{ form_field(form.email_address, type='email', maxlength=120) }}
+      {{ form_field(form.password, maxlength=40) }}
       {%- for subject in required_consent_subjects %}
         {%- with field = form.get_field_for_consent_subject_id(subject.id) %}
       {{ form_field_checkbox(field, subject.checkbox_label.replace('{url}', subject.checkbox_link_target)|safe) }}

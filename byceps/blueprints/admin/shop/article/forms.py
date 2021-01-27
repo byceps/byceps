@@ -29,7 +29,9 @@ from .....util.l10n import LocalizedForm
 
 
 class _ArticleBaseForm(LocalizedForm):
-    description = StringField(lazy_gettext('Description'))
+    description = StringField(
+        lazy_gettext('Description'), validators=[InputRequired()]
+    )
     price = DecimalField(
         lazy_gettext('Unit price'), places=2, validators=[InputRequired()]
     )

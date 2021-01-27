@@ -17,8 +17,8 @@
 
   <form action="{{ url_for('.channel_create', brand_id=brand.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.channel_id, maxlength=40, required='required', placeholder=brand.id, autofocus='autofocus') }}
-      {{ form_field(form.url_prefix, maxlength=80, required='required', placeholder='https://www.example.com/news/') }}
+      {{ form_field(form.channel_id, maxlength=40, placeholder=brand.id, autofocus='autofocus') }}
+      {{ form_field(form.url_prefix, maxlength=80, placeholder='https://www.example.com/news/') }}
     {% endcall %}
 
     <p>Ein News-Kanal kann sowohl für eine einzelne Party als auch für mehrere oder alle Partys derselben Marke genutzt werden.</p>

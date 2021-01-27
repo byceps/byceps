@@ -8,19 +8,20 @@ byceps.blueprints.admin.orga_team.forms
 
 from flask_babel import lazy_gettext
 from wtforms import SelectField, StringField
-from wtforms.validators import Length
+from wtforms.validators import InputRequired, Length
 
 from ....util.l10n import LocalizedForm
 
 
 class OrgaTeamCreateForm(LocalizedForm):
     title = StringField(
-        lazy_gettext('Title'), validators=[Length(min=1, max=40)]
+        lazy_gettext('Title'),
+        validators=[InputRequired(), Length(min=1, max=40)],
     )
 
 
 class OrgaTeamsCopyForm(LocalizedForm):
-    party_id = SelectField(lazy_gettext('From party'))
+    party_id = SelectField(lazy_gettext('From party'), [InputRequired()])
 
     def set_party_choices(self, parties, team_count_per_party=None):
         def get_label(party):
@@ -40,7 +41,7 @@ class MembershipFormBase(LocalizedForm):
 
 
 class MembershipCreateForm(MembershipFormBase):
-    user_id = SelectField(lazy_gettext('User'))
+    user_id = SelectField(lazy_gettext('User'), [InputRequired()])
 
     def set_user_choices(self, orgas):
         choices = [(str(orga.id), orga.screen_name) for orga in orgas]
@@ -48,7 +49,7 @@ class MembershipCreateForm(MembershipFormBase):
 
 
 class MembershipUpdateForm(MembershipFormBase):
-    orga_team_id = SelectField(lazy_gettext('Team'))
+    orga_team_id = SelectField(lazy_gettext('Team'), [InputRequired()])
 
     def set_orga_team_choices(self, orga_teams):
         choices = [(str(team.id), team.title) for team in orga_teams]

@@ -21,7 +21,8 @@ from ....services.shop.storefront import service as storefront_service
 
 class _BaseForm(LocalizedForm):
     title = StringField(
-        lazy_gettext('Title'), validators=[Length(min=1, max=40)]
+        lazy_gettext('Title'),
+        validators=[InputRequired(), Length(min=1, max=40)],
     )
     server_name = StringField(
         lazy_gettext('Server name'), validators=[InputRequired()]
@@ -79,7 +80,9 @@ class _BaseForm(LocalizedForm):
 
 
 class CreateForm(_BaseForm):
-    id = StringField(lazy_gettext('ID'), validators=[Length(min=1, max=40)])
+    id = StringField(
+        lazy_gettext('ID'), validators=[InputRequired(), Length(min=1, max=40)]
+    )
 
 
 class UpdateForm(_BaseForm):

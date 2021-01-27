@@ -15,11 +15,11 @@
 
   <form action="{{ url_for('.create') }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.slug, maxlength=40, required='required') }}
-      {{ form_field(form.label, maxlength=80, required='required') }}
+      {{ form_field(form.slug, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.label, maxlength=80) }}
       {{ form_field(form.description) }}
-      {{ form_field(form.image_filename, maxlength=80, required='required') }}
-      {{ form_field(form.brand_id, autofocus='autofocus') }}
+      {{ form_field(form.image_filename, maxlength=80) }}
+      {{ form_field(form.brand_id) }}
       {{ form_field_checkbox(form.featured, form.featured.label.text) }}
     {% endcall %}
 

@@ -16,7 +16,7 @@ from .....util.l10n import LocalizedForm
 class _BaseForm(LocalizedForm):
     catalog_id = SelectField(lazy_gettext('Catalog'))
     order_number_sequence_id = SelectField(
-        lazy_gettext('Order number sequence')
+        lazy_gettext('Order number sequence'), validators=[InputRequired()]
     )
 
     def set_catalog_choices(self, catalogs):

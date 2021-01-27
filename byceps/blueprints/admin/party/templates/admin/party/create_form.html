@@ -16,8 +16,8 @@
 
   <form action="{{ url_for('.create', brand_id=brand.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.id, maxlength=40, required='required', placeholder='%s-42'|format(brand.id), autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=40, required='required', placeholder='%s 42'|format(brand.title)) }}
+      {{ form_field(form.id, maxlength=40, placeholder='%s-42'|format(brand.id), autofocus='autofocus') }}
+      {{ form_field(form.title, maxlength=40, placeholder='%s 42'|format(brand.title)) }}
       {{ form_field(form.starts_on) }}
       {{ form_field(form.starts_at) }}
       {{ form_field(form.ends_on) }}

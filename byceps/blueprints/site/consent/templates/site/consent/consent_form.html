@@ -11,7 +11,7 @@
 
   <form action="{{ url_for('.consent', token=token) }}" method="post" class="disable-submit-button-on-submit" style="margin-top: 1rem;">
     {%- call form_fieldset() %}
-      {{ form_field(form.subject_ids, show_label=False, required='required') }}
+      {{ form_field(form.subject_ids, show_label=False) }}
       {%- for subject, field in subjects_and_fields %}
       {{ form_field_checkbox(field, subject.checkbox_label.replace('{url}', subject.checkbox_link_target)|safe) }}
       {%- endfor %}

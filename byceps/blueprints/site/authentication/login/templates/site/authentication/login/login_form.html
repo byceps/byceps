@@ -28,8 +28,8 @@
   {%- if login_enabled %}
   <form action="{{ url_for('.login') }}" method="post" id="login-form">
     {%- call form_fieldset() %}
-      {{ form_field(form.screen_name, maxlength=40, required='required', autofocus='autofocus') }}
-      {{ form_field(form.password, maxlength=40, required='required') }}
+      {{ form_field(form.screen_name, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.password, maxlength=40) }}
       {{ form_field_checkbox(form.permanent, 'dauerhaft eingeloggt bleiben') }}
     {%- endcall %}
 

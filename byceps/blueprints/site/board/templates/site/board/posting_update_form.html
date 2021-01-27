@@ -22,7 +22,7 @@
 
   <form action="{{ url_for('.posting_update', posting_id=posting.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.body, required='required', autofocus='autofocus') }}
+      {{ form_field(form.body, autofocus='autofocus') }}
 {%- include 'site/board/_posting_form_body_supplement.html' %}
     {% endcall %}
 

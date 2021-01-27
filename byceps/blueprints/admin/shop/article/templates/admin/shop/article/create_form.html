@@ -15,13 +15,13 @@
   {%- else %}
   <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.article_number_sequence_id, required='required', note='<a href="%s">Neue Sequenz erstellen</a>'|format(url_for('shop_article_admin.create_number_sequence_form', shop_id=shop.id)), autofocus='autofocus') }}
-      {{ form_field(form.description, maxlength=80, required='required') }}
-      {{ form_field(form.price, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', required='required', note='€') }}
-      {{ form_field(form.tax_rate, list='tax_rates', size=5, maxlength=5, style='text-align: right; width: 5.5rem;', required='required', note='%') }}
+      {{ form_field(form.article_number_sequence_id, note='<a href="%s">Neue Sequenz erstellen</a>'|format(url_for('shop_article_admin.create_number_sequence_form', shop_id=shop.id)), autofocus='autofocus') }}
+      {{ form_field(form.description, maxlength=80) }}
+      {{ form_field(form.price, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', note='€') }}
+      {{ form_field(form.tax_rate, list='tax_rates', size=5, maxlength=5, style='text-align: right; width: 5.5rem;', note='%') }}
       {{ form_datalist('tax_rates', ['0.0', '7.0', '19.0']) }}
-      {{ form_field(form.total_quantity, type='number', min=0, max=99999, style='width: 5.5rem;', required='required') }}
-      {{ form_field(form.max_quantity_per_order, type='number', min=1, max=99, style='width: 5.5rem;', required='required') }}
+      {{ form_field(form.total_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
+      {{ form_field(form.max_quantity_per_order, type='number', min=1, max=99, style='width: 5.5rem;') }}
     {% endcall %}
 
     {{ form_buttons(_('Save'), cancel_url=url_for('.index_for_shop', shop_id=shop.id)) }}

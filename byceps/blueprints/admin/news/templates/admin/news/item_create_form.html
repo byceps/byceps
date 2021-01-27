@@ -17,9 +17,9 @@
 
   <form action="{{ url_for('.item_create', channel_id=channel.id) }}" method="post">
     {% call form_fieldset() %}
-      {{ form_field(form.slug, maxlength=80, required='required', autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=80, required='required') }}
-      {{ form_field(form.body, required='required', class='monospace wide') }}
+      {{ form_field(form.slug, maxlength=80, autofocus='autofocus') }}
+      {{ form_field(form.title, maxlength=80) }}
+      {{ form_field(form.body, class='monospace wide') }}
       {{ form_field(form.image_url_path, maxlength=80) }}
     {% endcall %}
 
