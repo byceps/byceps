@@ -19,8 +19,10 @@
   <form action="{{ url_for('.update', party_id=party.id) }}" method="post">
     {% call form_fieldset() %}
       {{ form_field(form.title, maxlength=40, required='required', autofocus='autofocus') }}
-      {{ form_field(form.starts_at, size=16, maxlength=16, required='required', note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
-      {{ form_field(form.ends_at, size=16, maxlength=16, required='required', note='Format: <kbd>TT.MM.JJJJ hh:mm</kbd>'|safe) }}
+      {{ form_field(form.starts_on) }}
+      {{ form_field(form.starts_at) }}
+      {{ form_field(form.ends_on) }}
+      {{ form_field(form.ends_at) }}
       {{ form_field(form.max_ticket_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
       {{ form_field_checkbox(form.ticket_management_enabled, form.ticket_management_enabled.label.text) }}
       {{ form_field_checkbox(form.seat_management_enabled, form.seat_management_enabled.label.text) }}

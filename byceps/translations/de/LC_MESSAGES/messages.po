@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-26 16:59+0100\n"
+"POT-Creation-Date: 2021-01-27 16:44+0100\n"
 "PO-Revision-Date: 2021-01-24 11:05+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -63,7 +63,7 @@ msgstr "Anmelden"
 #: byceps/blueprints/admin/board/forms.py:17
 #: byceps/blueprints/admin/brand/forms.py:25
 #: byceps/blueprints/admin/news/forms.py:24
-#: byceps/blueprints/admin/party/forms.py:36
+#: byceps/blueprints/admin/party/forms.py:31
 #: byceps/blueprints/admin/shop/storefront/forms.py:38
 #: byceps/blueprints/admin/site/forms.py:82
 msgid "ID"
@@ -79,7 +79,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/brand/forms.py:18
 #: byceps/blueprints/admin/news/forms.py:60
 #: byceps/blueprints/admin/orga_team/forms.py:18
-#: byceps/blueprints/admin/party/forms.py:18
+#: byceps/blueprints/admin/party/forms.py:19
 #: byceps/blueprints/admin/site/forms.py:24
 #: byceps/blueprints/admin/snippet/forms.py:43
 #: byceps/blueprints/admin/tourney/category/forms.py:18
@@ -167,7 +167,7 @@ msgstr "Die Kategorie \"%(category_title)s\" wurde gelöscht."
 #: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:22
 #: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:27
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/team_create_form.html:22
-#: byceps/blueprints/admin/party/templates/admin/party/create_form.html:26
+#: byceps/blueprints/admin/party/templates/admin/party/create_form.html:28
 #: byceps/blueprints/admin/site/templates/admin/site/create_form.html:34
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:24
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/create_form.html:29
@@ -187,7 +187,7 @@ msgstr "Erstellen"
 #: byceps/blueprints/admin/orga/templates/admin/orga/create_orgaflag_form.html:22
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_create_form.html:25
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_update_form.html:24
-#: byceps/blueprints/admin/party/templates/admin/party/update_form.html:31
+#: byceps/blueprints/admin/party/templates/admin/party/update_form.html:33
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_form.html:27
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_number_sequence_form.html:16
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/update_form.html:32
@@ -612,40 +612,48 @@ msgid "Copy"
 msgstr "Kopieren"
 
 #: byceps/blueprints/admin/party/forms.py:21
-msgid "Start"
-msgstr "Beginn"
+msgid "Start date"
+msgstr "Startdatum"
+
+#: byceps/blueprints/admin/party/forms.py:22
+msgid "Start time"
+msgstr "Startzeit"
+
+#: byceps/blueprints/admin/party/forms.py:23
+msgid "End date"
+msgstr "Enddatum"
+
+#: byceps/blueprints/admin/party/forms.py:24
+msgid "End time"
+msgstr "Endzeit"
 
 #: byceps/blueprints/admin/party/forms.py:26
-msgid "End"
-msgstr "Ende"
-
-#: byceps/blueprints/admin/party/forms.py:31
 msgid "Maximum number of tickets"
 msgstr "Maximale Anzahl Tickets"
 
-#: byceps/blueprints/admin/party/forms.py:41
+#: byceps/blueprints/admin/party/forms.py:36
 msgid "Ticket management open"
 msgstr "Ticketverwaltung geöffnet"
 
-#: byceps/blueprints/admin/party/forms.py:44
+#: byceps/blueprints/admin/party/forms.py:39
 msgid "Seat management open"
 msgstr "Sitzplatzverwaltung geöffnet"
 
-#: byceps/blueprints/admin/party/forms.py:46
+#: byceps/blueprints/admin/party/forms.py:41
 msgid "canceled"
 msgstr "abgesagt"
 
-#: byceps/blueprints/admin/party/forms.py:47
+#: byceps/blueprints/admin/party/forms.py:42
 #: byceps/blueprints/admin/site/forms.py:87
 msgid "archived"
 msgstr "archiviert"
 
-#: byceps/blueprints/admin/party/views.py:169
+#: byceps/blueprints/admin/party/views.py:173
 #, python-format
 msgid "Party \"%(title)s\" has been created."
 msgstr "Die Party \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/party/views.py:233
+#: byceps/blueprints/admin/party/views.py:251
 #, python-format
 msgid "Party \"%(title)s\" has been updated."
 msgstr "Die Party \"%(title)s\" wurde aktualisiert."

@@ -7,7 +7,7 @@ byceps.blueprints.admin.party.views
 """
 
 import dataclasses
-from datetime import date
+from datetime import date, datetime
 from typing import Dict, List
 
 from flask import abort, request
@@ -152,8 +152,12 @@ def create(brand_id):
 
     party_id = form.id.data.strip().lower()
     title = form.title.data.strip()
-    starts_at = local_tz_to_utc(form.starts_at.data)
-    ends_at = local_tz_to_utc(form.ends_at.data)
+    starts_at = local_tz_to_utc(
+        datetime.combine(form.starts_on.data, form.starts_at.data)
+    )
+    ends_at = local_tz_to_utc(
+        datetime.combine(form.ends_on.data, form.ends_at.data)
+    )
     max_ticket_quantity = form.max_ticket_quantity.data
 
     party = party_service.create_party(
@@ -186,7 +190,17 @@ def update_form(party_id, erroneous_form=None):
         ends_at=utc_to_local_tz(party.ends_at),
     )
 
-    form = erroneous_form if erroneous_form else UpdateForm(obj=party)
+    form = (
+        erroneous_form
+        if erroneous_form
+        else UpdateForm(
+            obj=party,
+            starts_on=party.starts_at.date(),
+            starts_at=party.starts_at.time(),
+            ends_on=party.ends_at.date(),
+            ends_at=party.ends_at.time(),
+        )
+    )
 
     return {
         'brand': brand,
@@ -206,8 +220,12 @@ def update(party_id):
         return update_form(party.id, form)
 
     title = form.title.data.strip()
-    starts_at = local_tz_to_utc(form.starts_at.data)
-    ends_at = local_tz_to_utc(form.ends_at.data)
+    starts_at = local_tz_to_utc(
+        datetime.combine(form.starts_on.data, form.starts_at.data)
+    )
+    ends_at = local_tz_to_utc(
+        datetime.combine(form.ends_on.data, form.ends_at.data)
+    )
     max_ticket_quantity = form.max_ticket_quantity.data
     ticket_management_enabled = form.ticket_management_enabled.data
     seat_management_enabled = form.seat_management_enabled.data
