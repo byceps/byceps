@@ -6,7 +6,7 @@ byceps.blueprints.admin.site.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask_babel import lazy_gettext, lazy_pgettext
+from flask_babel import lazy_gettext, pgettext
 from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
@@ -51,7 +51,7 @@ class _BaseForm(LocalizedForm):
         parties.sort(key=lambda party: party.starts_at, reverse=True)
 
         choices = [(p.id, p.title) for p in parties]
-        choices.insert(0, ('', lazy_pgettext('party', '<none>')))
+        choices.insert(0, ('', pgettext('party', '<none>')))
         self.party_id.choices = choices
 
     def set_news_channel_choices(self, brand_id):
@@ -59,7 +59,7 @@ class _BaseForm(LocalizedForm):
         news_channels.sort(key=lambda channel: channel.id)
 
         choices = [(c.id, c.id) for c in news_channels]
-        choices.insert(0, ('', lazy_pgettext('news_channel', '<none>')))
+        choices.insert(0, ('', pgettext('news_channel', '<none>')))
         self.news_channel_id.choices = choices
 
     def set_board_choices(self, brand_id):
@@ -67,7 +67,7 @@ class _BaseForm(LocalizedForm):
         boards.sort(key=lambda board: board.id)
 
         choices = [(b.id, b.id) for b in boards]
-        choices.insert(0, ('', lazy_pgettext('board', '<none>')))
+        choices.insert(0, ('', pgettext('board', '<none>')))
         self.board_id.choices = choices
 
     def set_storefront_choices(self):
@@ -75,7 +75,7 @@ class _BaseForm(LocalizedForm):
         storefronts.sort(key=lambda storefront: storefront.id)
 
         choices = [(s.id, s.id) for s in storefronts]
-        choices.insert(0, ('', lazy_pgettext('storefront', '<none>')))
+        choices.insert(0, ('', pgettext('storefront', '<none>')))
         self.storefront_id.choices = choices
 
 

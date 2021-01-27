@@ -6,7 +6,7 @@ byceps.blueprints.admin.shop.storefront.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask_babel import lazy_gettext, lazy_pgettext
+from flask_babel import lazy_gettext, pgettext
 from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired
 
@@ -23,14 +23,14 @@ class _BaseForm(LocalizedForm):
         catalogs.sort(key=lambda catalog: catalog.title)
 
         choices = [(str(catalog.id), catalog.title) for catalog in catalogs]
-        choices.insert(0, ('', lazy_pgettext('catalog', '<none>')))
+        choices.insert(0, ('', pgettext('catalog', '<none>')))
         self.catalog_id.choices = choices
 
     def set_order_number_sequence_choices(self, sequences):
         sequences.sort(key=lambda seq: seq.prefix)
 
         choices = [(str(seq.id), seq.prefix) for seq in sequences]
-        choices.insert(0, ('', lazy_pgettext('sequence', '<none>')))
+        choices.insert(0, ('', pgettext('sequence', '<none>')))
         self.order_number_sequence_id.choices = choices
 
 

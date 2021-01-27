@@ -9,7 +9,7 @@ byceps.blueprints.admin.shop.article.forms
 from datetime import date, datetime, time
 from decimal import Decimal
 
-from flask_babel import lazy_gettext, lazy_pgettext
+from flask_babel import lazy_gettext, pgettext
 from wtforms import (
     BooleanField,
     DecimalField,
@@ -61,7 +61,7 @@ class ArticleCreateForm(_ArticleBaseForm):
         sequences.sort(key=lambda seq: seq.prefix)
 
         choices = [(str(seq.id), seq.prefix) for seq in sequences]
-        choices.insert(0, ('', lazy_pgettext('sequence', '<none>')))
+        choices.insert(0, ('', pgettext('sequence', '<none>')))
         self.article_number_sequence_id.choices = choices
 
 

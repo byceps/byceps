@@ -6,7 +6,7 @@ byceps.blueprints.admin.user.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask_babel import lazy_gettext, lazy_pgettext
+from flask_babel import lazy_gettext, pgettext
 from wtforms import PasswordField, SelectField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
@@ -87,7 +87,7 @@ class CreateAccountForm(LocalizedForm):
         sites.sort(key=lambda site: site.id)
 
         choices = [(str(site.id), site.id) for site in sites]
-        choices.insert(0, ('', lazy_pgettext('site', '<none>')))
+        choices.insert(0, ('', pgettext('site', '<none>')))
         self.site_id.choices = choices
 
 
