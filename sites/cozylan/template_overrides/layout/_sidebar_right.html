@@ -9,7 +9,7 @@
     <div class="progress-bar" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
   </div>
 
-        {%- if not sold_out %}
+        {%- if sold_out %}
   <div><strong>Ausverkauft!</strong></div>
         {%- endif %}
       {%- endif %}
