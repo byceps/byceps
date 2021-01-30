@@ -18,11 +18,6 @@
         id='areas',
         required_permission=SeatingPermission.view)
       .add_item(
-        url_for('.seat_category_index', party_id=party.id),
-        'Kategorien',
-        id='seat_categories',
-        required_permission=SeatingPermission.view)
-      .add_item(
         url_for('.seat_group_index', party_id=party.id),
         'Gruppen',
         id='seat_groups',

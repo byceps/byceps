@@ -32,3 +32,9 @@ def test_bundle_view(ticketing_admin_client, bundle):
     url = f'/admin/ticketing/bundles/{bundle.id}'
     response = ticketing_admin_client.get(url)
     assert response.status_code == 200
+
+
+def test_category_index(ticketing_admin_client, party):
+    url = f'/admin/ticketing/categories/for_party/{party.id}'
+    response = ticketing_admin_client.get(url)
+    assert response.status_code == 200

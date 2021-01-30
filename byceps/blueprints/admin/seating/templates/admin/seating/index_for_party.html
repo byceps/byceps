@@ -10,7 +10,7 @@
   <table class="index">
     <tr>
       <td class="bignumber number">{{ category_count }}</td>
-      <td style="vertical-align: middle;"><a href="{{ url_for('.seat_category_index', party_id=party.id) }}">Ticket-Kategorie{% if category_count != 1 %}n{% endif %}</a></td>
+      <td style="vertical-align: middle;"><a href="{{ url_for('ticketing_category_admin.index', party_id=party.id) }}">Ticket-Kategorie{% if category_count != 1 %}n{% endif %}</a></td>
     </tr>
     <tr>
       <td class="bignumber number">{{ area_count }}</td>

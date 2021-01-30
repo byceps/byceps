@@ -108,6 +108,7 @@ def _get_blueprints_admin() -> Iterator[BlueprintReg]:
         ('admin.snippet',                   '/admin/snippets'           ),
         ('admin.terms',                     '/admin/terms'              ),
         ('admin.ticketing',                 '/admin/ticketing'          ),
+        ('admin.ticketing.category',        '/admin/ticketing/categories'   ),
         ('admin.ticketing.checkin',         '/admin/ticketing/checkin'  ),
         ('admin.tourney',                   None                        ),
         ('admin.tourney.category',          '/admin/tourney/categories' ),

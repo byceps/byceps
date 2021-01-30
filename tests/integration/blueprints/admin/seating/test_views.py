@@ -16,12 +16,6 @@ def test_area_index(seating_admin_client, party):
     assert response.status_code == 200
 
 
-def test_seat_category_index(seating_admin_client, party):
-    url = f'/admin/seating/parties/{party.id}/seat_categories'
-    response = seating_admin_client.get(url)
-    assert response.status_code == 200
-
-
 def test_seat_group_index(seating_admin_client, party):
     url = f'/admin/seating/parties/{party.id}/seat_groups'
     response = seating_admin_client.get(url)

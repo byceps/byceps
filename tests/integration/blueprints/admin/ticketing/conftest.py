@@ -19,6 +19,7 @@ from tests.helpers import login_user
 def ticketing_admin(make_admin):
     permission_ids = {
         'admin.access',
+        'ticketing.administrate',
         'ticketing.administrate_seat_occupancy',
         'ticketing.checkin',
         'ticketing.view',

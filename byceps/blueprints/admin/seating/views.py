@@ -76,25 +76,6 @@ def area_index(party_id, page):
     }
 
 
-@blueprint.route('/parties/<party_id>/seat_categories')
-@permission_required(SeatingPermission.view)
-@templated
-def seat_category_index(party_id):
-    """List seat categories for that party."""
-    party = _get_party_or_404(party_id)
-
-    categories_with_ticket_counts = list(
-        ticketing_category_service.get_categories_with_ticket_counts_for_party(
-            party.id
-        ).items()
-    )
-
-    return {
-        'party': party,
-        'categories_with_ticket_counts': categories_with_ticket_counts,
-    }
-
-
 @blueprint.route('/parties/<party_id>/seat_groups')
 @permission_required(SeatingPermission.view)
 @templated
