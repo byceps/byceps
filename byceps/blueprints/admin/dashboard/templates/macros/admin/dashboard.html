@@ -2,9 +2,9 @@
 {% from 'macros/stats.html' import render_bigstats_item %}
 
 
-{%- macro render_cell(icon_name=None, additional_classes=None, href=None) -%}
+{%- macro render_cell(icon_name=None, additional_classes=None, href=None, data_action=None) -%}
     <div class="cell{% if additional_classes %} {{ additional_classes }}{% endif %}">
-      {%- if href %}<a href="{{ href }}">{% endif %}
+    {%- if href %}<a href="{{ href }}"{%- if data_action %} data-action="{{ data_action }}"{% endif %}>{% endif %}
       <div class="box">
         {%- if icon_name is not none %}
         <div class="cell-icon">{{ render_icon(icon_name) }}</div>

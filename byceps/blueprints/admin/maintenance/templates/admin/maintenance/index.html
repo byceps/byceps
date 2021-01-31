@@ -25,6 +25,17 @@
       {%- endif %}
     {%- endfor %}
   {%- endwith %}
+  {%- call render_cell(icon_name='delete', href=url_for('.delete_old_login_events'), data_action='delete-old-login-events') %}
+    {{ render_icon('delete') }} <span>{{ _('Delete old login events') }}</span>
+  {%- endcall %}
   </div>
 
 {%- endblock %}
+
+{% block scripts %}
+<script>
+  onDomReady(function() {
+    confirmed_post_on_click_then_reload('[data-action="delete-old-login-events"]', '{{ _('Delete old login events?') }}');
+  });
+</script>
+{% endblock %}

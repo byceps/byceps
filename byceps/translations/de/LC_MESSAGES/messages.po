@@ -352,6 +352,14 @@ msgstr "Newsposts"
 msgid "Storefront"
 msgstr "Storefront"
 
+#: byceps/blueprints/admin/maintenance/views.py:46
+#, python-format
+msgid ""
+"Deleted %(num_deleted)s login events older than %(minimum_age_in_days)s "
+"days."
+msgstr ""
+"%(num_deleted)s Login-Events älter als %(minimum_age_in_days)s Tage wurden gelöscht."
+
 #: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:5
 #: byceps/blueprints/admin/more/templates/admin/more/view_global.html:22
 msgid "Maintenance"
@@ -360,6 +368,14 @@ msgstr "Wartung"
 #: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:18
 msgid "Background Jobs"
 msgstr "Hintergrundjobs"
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:29
+msgid "Delete old login events"
+msgstr "Alte Login-Events löschen"
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:38
+msgid "Delete old login events?"
+msgstr "Alte Login-Events löschen?"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
