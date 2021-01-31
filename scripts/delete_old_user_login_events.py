@@ -10,8 +10,7 @@ from datetime import datetime, timedelta
 
 import click
 
-from byceps.database import db
-from byceps.services.user.models.event import UserEvent as DbUserEvent
+from byceps.services.user import event_service as user_event_service
 from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
@@ -20,32 +19,17 @@ from _util import app_context
 @click.command()
 @click.argument('minimum_age_in_days', type=int)
 def execute(minimum_age_in_days):
-    latest_occurred_at = get_latest_occurred_at(minimum_age_in_days)
+    now = datetime.utcnow()
+    occurred_before = now - timedelta(days=minimum_age_in_days)
 
     click.secho(
         f'Deleting all user login events older than {minimum_age_in_days} days '
-        f'(i.e. before {latest_occurred_at:%Y-%m-%d %H:%M:%S}) ...'
+        f'(i.e. before {occurred_before:%Y-%m-%d %H:%M:%S}) ...'
     )
 
-    num_deleted = delete_user_login_events_before(latest_occurred_at)
+    num_deleted = user_event_service.delete_user_login_events(occurred_before)
 
     click.secho(f'{num_deleted} user login events deleted.')
-
-
-def get_latest_occurred_at(minimum_age_in_days: int) -> datetime:
-    now = datetime.utcnow()
-    return now - timedelta(days=minimum_age_in_days)
-
-
-def delete_user_login_events_before(latest_occurred_at: datetime) -> int:
-    num_deleted = DbUserEvent.query \
-        .filter_by(event_type='user-logged-in') \
-        .filter(DbUserEvent.occurred_at <= latest_occurred_at) \
-        .delete()
-
-    db.session.commit()
-
-    return num_deleted
 
 
 if __name__ == '__main__':

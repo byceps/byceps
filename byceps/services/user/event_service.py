@@ -62,3 +62,18 @@ def get_events_of_type_for_user(
         .filter_by(event_type=event_type) \
         .order_by(DbUserEvent.occurred_at) \
         .all()
+
+
+def delete_user_login_events(occurred_before: datetime) -> int:
+    """Delete login events which occurred before the given date.
+
+    Return the number of deleted events.
+    """
+    num_deleted = DbUserEvent.query \
+        .filter_by(event_type='user-logged-in') \
+        .filter(DbUserEvent.occurred_at < occurred_before) \
+        .delete()
+
+    db.session.commit()
+
+    return num_deleted
