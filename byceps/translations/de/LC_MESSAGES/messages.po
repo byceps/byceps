@@ -353,9 +353,13 @@ msgid "Storefront"
 msgstr "Storefront"
 
 #: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:5
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:23
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:22
 msgid "Maintenance"
 msgstr "Wartung"
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:18
+msgid "Background Jobs"
+msgstr "Hintergrundjobs"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
@@ -410,10 +414,6 @@ msgstr "Benutzer-Abzeichen"
 #: byceps/blueprints/admin/more/templates/admin/more/view_global.html:21
 msgid "Webhooks"
 msgstr "Webhooks"
-
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:22
-msgid "Background Jobs"
-msgstr "Hintergrundjobs"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:18
 msgid "Organizer Presence"

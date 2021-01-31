@@ -15,6 +15,7 @@
 
   <div class="grid dashboard">
   {%- with items = [
+    (_('Background Jobs'), 'pending', url_for('jobs_admin.index'), JobsPermission.view),
   ] %}
     {%- for label, icon, url, required_permission in items %}
       {%- if g.user.has_permission(required_permission) %}
