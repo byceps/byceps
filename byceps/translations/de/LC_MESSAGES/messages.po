@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-27 17:56+0100\n"
+"POT-Creation-Date: 2021-01-31 06:42+0100\n"
 "PO-Revision-Date: 2021-01-24 11:05+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -63,9 +63,9 @@ msgstr "Anmelden"
 #: byceps/blueprints/admin/board/forms.py:17
 #: byceps/blueprints/admin/brand/forms.py:25
 #: byceps/blueprints/admin/news/forms.py:24
-#: byceps/blueprints/admin/party/forms.py:31
+#: byceps/blueprints/admin/party/forms.py:33
 #: byceps/blueprints/admin/shop/storefront/forms.py:38
-#: byceps/blueprints/admin/site/forms.py:82
+#: byceps/blueprints/admin/site/forms.py:84
 msgid "ID"
 msgstr "ID"
 
@@ -85,7 +85,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/tourney/category/forms.py:18
 #: byceps/blueprints/admin/tourney/tourney/forms.py:21
 #: byceps/blueprints/site/board/forms.py:26
-#: byceps/blueprints/site/user_group/forms.py:16
+#: byceps/blueprints/site/user_group/forms.py:17
 msgid "Title"
 msgstr "Titel"
 
@@ -262,7 +262,7 @@ msgstr "Global"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:13
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:25
-#: byceps/blueprints/admin/site/forms.py:86
+#: byceps/blueprints/admin/site/forms.py:89
 #: byceps/blueprints/admin/user_badge/forms.py:42
 msgid "Brand"
 msgstr "Marke"
@@ -312,25 +312,25 @@ msgstr "Marken"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:14
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:26
-#: byceps/blueprints/admin/site/forms.py:29
+#: byceps/blueprints/admin/site/forms.py:30
 msgid "Party"
 msgstr "Party"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:35
-msgid "Seating Plans"
-msgstr "Sitzpläne"
+msgid "Organizer Teams"
+msgstr "Orga-Teams"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:41
 msgid "Tickets"
 msgstr "Tickets"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:47
-msgid "Check-In"
-msgstr "Check-In"
+msgid "Seating Plans"
+msgstr "Sitzpläne"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:53
-msgid "Organizer Teams"
-msgstr "Orga-Teams"
+msgid "Check-In"
+msgstr "Check-In"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_site.html:13
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_site.html:27
@@ -530,24 +530,24 @@ msgstr ""
 "%(screen_name)s wurde das Orga-Flag für die Marke %(brand_title)s "
 "entzogen."
 
-#: byceps/blueprints/admin/orga_team/forms.py:23
+#: byceps/blueprints/admin/orga_team/forms.py:24
 msgid "From party"
 msgstr "Von Party"
 
-#: byceps/blueprints/admin/orga_team/forms.py:30
+#: byceps/blueprints/admin/orga_team/forms.py:31
 #, python-format
 msgid " (%(team_count)s teams)"
 msgstr " (%(team_count)s Teams)"
 
-#: byceps/blueprints/admin/orga_team/forms.py:39
+#: byceps/blueprints/admin/orga_team/forms.py:40
 msgid "Function"
 msgstr "Aufgabe"
 
-#: byceps/blueprints/admin/orga_team/forms.py:43
+#: byceps/blueprints/admin/orga_team/forms.py:44
 msgid "User"
 msgstr "Benutzer"
 
-#: byceps/blueprints/admin/orga_team/forms.py:51
+#: byceps/blueprints/admin/orga_team/forms.py:52
 msgid "Team"
 msgstr "Team"
 
@@ -611,40 +611,40 @@ msgstr "%(screen_name)s wurde aus dem Team \"%(team_title)s\" entfernt."
 msgid "Copy"
 msgstr "Kopieren"
 
-#: byceps/blueprints/admin/party/forms.py:21
+#: byceps/blueprints/admin/party/forms.py:22
 msgid "Start date"
 msgstr "Startdatum"
 
-#: byceps/blueprints/admin/party/forms.py:22
+#: byceps/blueprints/admin/party/forms.py:23
 msgid "Start time"
 msgstr "Startzeit"
 
-#: byceps/blueprints/admin/party/forms.py:23
+#: byceps/blueprints/admin/party/forms.py:24
 msgid "End date"
 msgstr "Enddatum"
 
-#: byceps/blueprints/admin/party/forms.py:24
+#: byceps/blueprints/admin/party/forms.py:25
 msgid "End time"
 msgstr "Endzeit"
 
-#: byceps/blueprints/admin/party/forms.py:26
+#: byceps/blueprints/admin/party/forms.py:27
 msgid "Maximum number of tickets"
 msgstr "Maximale Anzahl Tickets"
 
-#: byceps/blueprints/admin/party/forms.py:36
+#: byceps/blueprints/admin/party/forms.py:39
 msgid "Ticket management open"
 msgstr "Ticketverwaltung geöffnet"
 
-#: byceps/blueprints/admin/party/forms.py:39
+#: byceps/blueprints/admin/party/forms.py:42
 msgid "Seat management open"
 msgstr "Sitzplatzverwaltung geöffnet"
 
-#: byceps/blueprints/admin/party/forms.py:41
+#: byceps/blueprints/admin/party/forms.py:44
 msgid "canceled"
 msgstr "abgesagt"
 
-#: byceps/blueprints/admin/party/forms.py:42
-#: byceps/blueprints/admin/site/forms.py:87
+#: byceps/blueprints/admin/party/forms.py:45
+#: byceps/blueprints/admin/site/forms.py:90
 msgid "archived"
 msgstr "archiviert"
 
@@ -658,84 +658,84 @@ msgstr "Die Party \"%(title)s\" wurde angelegt."
 msgid "Party \"%(title)s\" has been updated."
 msgstr "Die Party \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/shop/article/forms.py:32
+#: byceps/blueprints/admin/shop/article/forms.py:33
 #: byceps/blueprints/admin/user_badge/forms.py:38
-#: byceps/blueprints/site/user_group/forms.py:17
+#: byceps/blueprints/site/user_group/forms.py:18
 msgid "Description"
 msgstr "Beschreibung"
 
-#: byceps/blueprints/admin/shop/article/forms.py:34
+#: byceps/blueprints/admin/shop/article/forms.py:36
 msgid "Unit price"
 msgstr "Stückpreis"
 
-#: byceps/blueprints/admin/shop/article/forms.py:37
+#: byceps/blueprints/admin/shop/article/forms.py:39
 msgid "Tax rate"
 msgstr "Steuersatz"
 
-#: byceps/blueprints/admin/shop/article/forms.py:45
+#: byceps/blueprints/admin/shop/article/forms.py:47
 msgid "Total quantity"
 msgstr "Gesamtmenge"
 
-#: byceps/blueprints/admin/shop/article/forms.py:48
+#: byceps/blueprints/admin/shop/article/forms.py:50
 msgid "Maximum quantity per order"
 msgstr "Maximale Anzahl pro Bestellung"
 
-#: byceps/blueprints/admin/shop/article/forms.py:55
+#: byceps/blueprints/admin/shop/article/forms.py:57
 msgid "Article number sequence"
 msgstr "Artikelnummer-Sequenz"
 
-#: byceps/blueprints/admin/shop/article/forms.py:62
+#: byceps/blueprints/admin/shop/article/forms.py:64
 #: byceps/blueprints/admin/shop/storefront/forms.py:33
 msgctxt "sequence"
 msgid "<none>"
 msgstr "<keine>"
 
-#: byceps/blueprints/admin/shop/article/forms.py:68
+#: byceps/blueprints/admin/shop/article/forms.py:70
 msgid "Available from date"
 msgstr "Verfügbar ab Datum"
 
-#: byceps/blueprints/admin/shop/article/forms.py:71
+#: byceps/blueprints/admin/shop/article/forms.py:73
 msgid "Available from time"
 msgstr "Verfügbar ab Uhrzeit"
 
-#: byceps/blueprints/admin/shop/article/forms.py:74
+#: byceps/blueprints/admin/shop/article/forms.py:76
 msgid "Available until date"
 msgstr "Verfügbar bis Datum"
 
-#: byceps/blueprints/admin/shop/article/forms.py:77
+#: byceps/blueprints/admin/shop/article/forms.py:79
 msgid "Available until time"
 msgstr "Verfügbar bis Uhrzeit"
 
-#: byceps/blueprints/admin/shop/article/forms.py:80
+#: byceps/blueprints/admin/shop/article/forms.py:82
 msgid "can only be ordered indirectly"
 msgstr "nur indirekt bestellbar"
 
-#: byceps/blueprints/admin/shop/article/forms.py:83
+#: byceps/blueprints/admin/shop/article/forms.py:85
 msgid "must be ordered separately"
 msgstr "muss separat bestellt werden"
 
-#: byceps/blueprints/admin/shop/article/forms.py:85
+#: byceps/blueprints/admin/shop/article/forms.py:87
 msgid "Shipping required"
 msgstr "Versand erforderlich"
 
-#: byceps/blueprints/admin/shop/article/forms.py:145
+#: byceps/blueprints/admin/shop/article/forms.py:147
 msgid "Either date and time must be specified or neither of them."
 msgstr "Entweder Datum und Uhrzeit müssen angegeben werden oder keines von beiden."
 
-#: byceps/blueprints/admin/shop/article/forms.py:159
+#: byceps/blueprints/admin/shop/article/forms.py:161
 msgid "The end of the availability period must be after its begin."
 msgstr "Das Ende des Verfügbarkeitszeitraums muss nach dessen Beginn liegen."
 
-#: byceps/blueprints/admin/shop/article/forms.py:167
+#: byceps/blueprints/admin/shop/article/forms.py:169
 msgid "Article"
 msgstr "Artikel"
 
-#: byceps/blueprints/admin/shop/article/forms.py:170
+#: byceps/blueprints/admin/shop/article/forms.py:172
 #: byceps/blueprints/site/shop/order/forms.py:72
 msgid "Quantity"
 msgstr "Anzahl"
 
-#: byceps/blueprints/admin/shop/article/forms.py:188
+#: byceps/blueprints/admin/shop/article/forms.py:190
 #: byceps/blueprints/admin/shop/order/forms.py:46
 msgid "Static prefix"
 msgstr "Statisches Präfix"
@@ -929,50 +929,50 @@ msgstr "Storefront \"%(storefront_id)s\" wurde angelegt."
 msgid "Storefront \"%(storefront_id)s\" has been updated."
 msgstr "Storefront \"%(storefront_id)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/site/forms.py:27
+#: byceps/blueprints/admin/site/forms.py:28
 msgid "Server name"
 msgstr "Servername"
 
-#: byceps/blueprints/admin/site/forms.py:30
+#: byceps/blueprints/admin/site/forms.py:31
 msgid "enabled"
 msgstr "aktiv"
 
-#: byceps/blueprints/admin/site/forms.py:32
+#: byceps/blueprints/admin/site/forms.py:33
 msgid "User registration open"
 msgstr "Benutzerregistrierung geöffnet"
 
-#: byceps/blueprints/admin/site/forms.py:34
+#: byceps/blueprints/admin/site/forms.py:35
 msgid "User login open"
 msgstr "Benutzeranmeldung geöffnet"
 
-#: byceps/blueprints/admin/site/forms.py:36
+#: byceps/blueprints/admin/site/forms.py:37
 msgid "News channel ID"
 msgstr "Newskanal-ID"
 
-#: byceps/blueprints/admin/site/forms.py:38
+#: byceps/blueprints/admin/site/forms.py:39
 msgid "Board ID"
 msgstr "Forums-ID"
 
-#: byceps/blueprints/admin/site/forms.py:40
+#: byceps/blueprints/admin/site/forms.py:41
 msgid "Storefront ID"
 msgstr "Storefront-ID"
 
-#: byceps/blueprints/admin/site/forms.py:53
+#: byceps/blueprints/admin/site/forms.py:54
 msgctxt "party"
 msgid "<none>"
 msgstr "<keine>"
 
-#: byceps/blueprints/admin/site/forms.py:61
+#: byceps/blueprints/admin/site/forms.py:62
 msgctxt "news_channel"
 msgid "<none>"
 msgstr "<keiner>"
 
-#: byceps/blueprints/admin/site/forms.py:69
+#: byceps/blueprints/admin/site/forms.py:70
 msgctxt "board"
 msgid "<none>"
 msgstr "<keins>"
 
-#: byceps/blueprints/admin/site/forms.py:77
+#: byceps/blueprints/admin/site/forms.py:78
 msgctxt "storefront"
 msgid "<none>"
 msgstr "<keins>"
