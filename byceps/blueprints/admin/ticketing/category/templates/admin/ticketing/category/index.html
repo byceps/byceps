@@ -26,6 +26,7 @@
       <tr>
         <th>Titel<br>ID</th>
         <th class="number">Tickets<sup>*</sup></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -33,6 +34,13 @@
         <tr>
           <td><strong>{{ category.title }}</strong><br><span class="dimmed">{{ category.id }}</span></td>
           <td class="bignumber number">{{ ticket_count }}</td>
+          <td>
+            {%- if g.user.has_permission(TicketingPermission.administrate) %}
+            <div class="button-row button-row--compact button-row--right">
+              <a href="{{ url_for('.update_form', category_id=category.id) }}" class="button" title="Bearbeiten">{{ render_icon('edit') }}</a>
+            </div>
+            {%- endif %}
+          </td>
         </tr>
       {%- endfor %}
     </tbody>

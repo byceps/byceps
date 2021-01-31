@@ -202,6 +202,7 @@ msgstr "Erstellen"
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_mountpoint_form.html:24
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/update_document_form.html:25
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/update_fragment_form.html:22
+#: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/update_form.html:17
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/update_form.html:25
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/update_form.html:30
 #: byceps/blueprints/admin/user/templates/admin/user/set_password_form.html:16
@@ -1092,10 +1093,15 @@ msgstr ""
 "%(screen_name)s wurde als Nutzer/in von Ticket %(ticket_code)s "
 "eingetragen."
 
-#: byceps/blueprints/admin/ticketing/category/views.py:78
+#: byceps/blueprints/admin/ticketing/category/views.py:76
 #, python-format
 msgid "Ticket category \"%(title)s\" has been created."
 msgstr "Ticket-Kategorie \"%(title)s\" wurde erstellt."
+
+#: byceps/blueprints/admin/ticketing/category/views.py:120
+#, python-format
+msgid "Category \"%(title)s\" has been updated."
+msgstr "Ticket-Kategorie \"%(title)s\" wurde aktualisiert."
 
 #: byceps/blueprints/admin/ticketing/checkin/views.py:125
 msgid ""

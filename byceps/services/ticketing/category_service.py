@@ -26,6 +26,20 @@ def create_category(party_id: PartyID, title: str) -> TicketCategory:
     return _db_entity_to_category(category)
 
 
+def update_category(category_id: TicketCategoryID, title: str) -> TicketCategory:
+    """Update a category."""
+    category = DbCategory.query.get(category_id)
+
+    if category is None:
+        raise ValueError(f'Unknown category ID "{category_id}"')
+
+    category.title = title
+
+    db.session.commit()
+
+    return _db_entity_to_category(category)
+
+
 def delete_category(category_id: TicketCategoryID) -> None:
     """Delete a category."""
     db.session.query(DbCategory) \

@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired, Length
 from .....util.l10n import LocalizedForm
 
 
-class CreateForm(LocalizedForm):
+class CreateOrUpdateForm(LocalizedForm):
     title = StringField(
         lazy_gettext('Title'),
         validators=[InputRequired(), Length(min=1, max=40)],
