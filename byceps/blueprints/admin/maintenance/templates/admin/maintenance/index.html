@@ -1,0 +1,29 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/dashboard.html' import render_cell %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'maintenance_admin' %}
+{% set title = _('Maintenance') %}
+{% set layout_main_raw = True %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/admin_dashboard.css') }}">
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <div class="grid dashboard">
+  {%- with items = [
+  ] %}
+    {%- for label, icon, url, required_permission in items %}
+      {%- if g.user.has_permission(required_permission) %}
+        {%- call render_cell(icon_name=icon, href=url) %}
+          {{ render_icon(icon) }} <span>{{ label }}</span>
+        {%- endcall %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endwith %}
+  </div>
+
+{%- endblock %}

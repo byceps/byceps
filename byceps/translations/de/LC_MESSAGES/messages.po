@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-31 06:43+0100\n"
+"POT-Creation-Date: 2021-01-31 06:45+0100\n"
 "PO-Revision-Date: 2021-01-24 11:05+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -351,6 +351,11 @@ msgstr "Newsposts"
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_site.html:43
 msgid "Storefront"
 msgstr "Storefront"
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:5
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:23
+msgid "Maintenance"
+msgstr "Wartung"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17

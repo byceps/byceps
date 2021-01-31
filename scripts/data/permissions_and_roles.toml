@@ -3,6 +3,10 @@ id = 'admin.access'
 title = 'auf den Admin-Bereich zugreifen'
 
 [[permissions]]
+id = 'admin.maintain'
+title = 'Wartungsarbeiten ausführen'
+
+[[permissions]]
 id = 'admin_dashboard.view_brand'
 title = 'Admin-Dashboard für Marken anzeigen'
 
@@ -417,6 +421,11 @@ assigned_permissions = ['consent.administrate']
 id = 'jobs_admin'
 title = 'Jobs verwalten'
 assigned_permissions = ['jobs.view']
+
+[[roles]]
+id = 'maintenance_admin'
+title = 'Wartungsarbeiten ausführen'
+assigned_permissions = ['admin.maintain']
 
 [[roles]]
 id = 'news_admin'
