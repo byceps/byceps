@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-31 06:42+0100\n"
+"POT-Creation-Date: 2021-01-31 06:43+0100\n"
 "PO-Revision-Date: 2021-01-24 11:05+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -82,6 +82,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/party/forms.py:19
 #: byceps/blueprints/admin/site/forms.py:24
 #: byceps/blueprints/admin/snippet/forms.py:43
+#: byceps/blueprints/admin/ticketing/category/forms.py:18
 #: byceps/blueprints/admin/tourney/category/forms.py:18
 #: byceps/blueprints/admin/tourney/tourney/forms.py:21
 #: byceps/blueprints/site/board/forms.py:26
@@ -169,6 +170,7 @@ msgstr "Die Kategorie \"%(category_title)s\" wurde gelöscht."
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/team_create_form.html:22
 #: byceps/blueprints/admin/party/templates/admin/party/create_form.html:28
 #: byceps/blueprints/admin/site/templates/admin/site/create_form.html:34
+#: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/create_form.html:17
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:24
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/create_form.html:29
 #: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:26
@@ -1089,6 +1091,11 @@ msgid "%(screen_name)s has been assigned as user of ticket %(ticket_code)s."
 msgstr ""
 "%(screen_name)s wurde als Nutzer/in von Ticket %(ticket_code)s "
 "eingetragen."
+
+#: byceps/blueprints/admin/ticketing/category/views.py:78
+#, python-format
+msgid "Ticket category \"%(title)s\" has been created."
+msgstr "Ticket-Kategorie \"%(title)s\" wurde erstellt."
 
 #: byceps/blueprints/admin/ticketing/checkin/views.py:125
 msgid ""

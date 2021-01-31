@@ -38,3 +38,9 @@ def test_category_index(ticketing_admin_client, party):
     url = f'/admin/ticketing/categories/for_party/{party.id}'
     response = ticketing_admin_client.get(url)
     assert response.status_code == 200
+
+
+def test_category_create_form(ticketing_admin_client, party):
+    url = f'/admin/ticketing/categories/for_party/{party.id}/create'
+    response = ticketing_admin_client.get(url)
+    assert response.status_code == 200
