@@ -37,14 +37,12 @@
     <div class="column-auto">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.team_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Team erstellen</span></a>
-        {%- if g.user.has_permission(OrgaTeamPermission.create) %}
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.teams_copy_form', target_party_id=party.id) }}">{{ render_icon('copy') }} <span>Teams von anderer Party kopieren</span></a></li>
           </ol>
         </div>
-        {%- endif %}
       </div>
     </div>
     {%- endif %}
