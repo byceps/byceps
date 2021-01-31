@@ -11,6 +11,7 @@ Render HTML fragments from news items and images.
 from functools import partial
 from typing import List, Optional
 
+from flask_babel import gettext
 from jinja2 import Markup
 
 from ...util.iterables import find
@@ -72,7 +73,8 @@ def _render_image_caption(image: Image, attrs: str) -> str:
     if image.attribution:
         if caption:
             caption += ' '
-        caption += f'<small>Bild: {image.attribution}</small>'
+        credit_label = gettext('Image credit')
+        caption += f'<small>{credit_label}: {image.attribution}</small>'
 
     if not caption:
         return ''

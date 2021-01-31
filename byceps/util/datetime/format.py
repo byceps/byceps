@@ -11,6 +11,8 @@ Date/time formatting.
 from datetime import date, datetime, time, timedelta
 from typing import Optional, Union
 
+from flask_babel import gettext
+
 
 DateOrDateTime = Union[date, datetime]
 
@@ -67,8 +69,8 @@ def _format_date_smart(d: DateOrDateTime) -> Optional[str]:
 
     today = date.today()
     if d == today:
-        return 'heute'
+        return gettext('today')
     elif d == (today - timedelta(days=1)):
-        return 'gestern'
+        return gettext('yesterday')
     else:
         return None

@@ -352,13 +352,14 @@ msgstr "Newsposts"
 msgid "Storefront"
 msgstr "Storefront"
 
-#: byceps/blueprints/admin/maintenance/views.py:46
+#: byceps/blueprints/admin/maintenance/views.py:45
 #, python-format
 msgid ""
 "Deleted %(num_deleted)s login events older than %(minimum_age_in_days)s "
 "days."
 msgstr ""
-"%(num_deleted)s Login-Events älter als %(minimum_age_in_days)s Tage wurden gelöscht."
+"%(num_deleted)s Login-Events älter als %(minimum_age_in_days)s Tage "
+"wurden gelöscht."
 
 #: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:5
 #: byceps/blueprints/admin/more/templates/admin/more/view_global.html:22
@@ -553,6 +554,20 @@ msgid "%(screen_name)s has lost the orga flag for brand %(brand_title)s."
 msgstr ""
 "%(screen_name)s wurde das Orga-Flag für die Marke %(brand_title)s "
 "entzogen."
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:7
+#: byceps/util/datetime/format.py:72
+msgid "today"
+msgstr "heute"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:9
+msgid "tomorrow"
+msgstr "morgen"
+
+#: byceps/blueprints/admin/orga/templates/macros/admin/orga.html:11
+#, python-format
+msgid "in %(days)s days"
+msgstr "in %(days)s Tagen"
 
 #: byceps/blueprints/admin/orga_team/forms.py:24
 msgid "From party"
@@ -1980,7 +1995,19 @@ msgstr "Deine Nachricht an %(screen_name)s wurde versendet."
 msgid "Send"
 msgstr "Senden"
 
+#: byceps/services/news/html_service.py:76
+msgid "Image credit"
+msgstr "Bild"
+
+#: byceps/services/text_markup/service.py:68
+msgid "wrote"
+msgstr "schrieb"
+
 #: byceps/util/views.py:33
 msgid "Please log in."
 msgstr "Bitte melde dich an."
+
+#: byceps/util/datetime/format.py:74
+msgid "yesterday"
+msgstr "gestern"
 

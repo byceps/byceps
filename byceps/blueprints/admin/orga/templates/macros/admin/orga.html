@@ -4,13 +4,11 @@
   {%- if is_soon %}<strong>{% endif %}
 
   {%- if days_until_next_birthday == 0 -%}
-    heute
+  {{ _('today') }}
   {%- elif days_until_next_birthday == 1 -%}
-    morgen
-  {%- elif days_until_next_birthday == 2 -%}
-    übermorgen
+  {{ _('tomorrow') }}
   {%- else -%}
-    in {{ days_until_next_birthday }} Tagen
+  {{ _('in %(days)s days', days=days_until_next_birthday) }}
   {%- endif %}
 
   {%- if is_soon %}</strong>{% endif %}

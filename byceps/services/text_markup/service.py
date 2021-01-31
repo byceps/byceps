@@ -9,6 +9,7 @@ byceps.services.text_markup.service
 from html import escape
 
 from bbcode import Parser
+from flask_babel import gettext
 
 try:
     from .smileys import get_smileys
@@ -64,8 +65,9 @@ def _add_quote_formatter(parser: Parser) -> None:
         intro = ''
         if 'author' in options:
             author = escape(options['author'])
+            verb = gettext('wrote')
             intro = (
-                f'<p class="quote-intro"><cite>{author}</cite> schrieb:</p>\n'
+                f'<p class="quote-intro"><cite>{author}</cite> {verb}:</p>\n'
             )
         return f'{intro}<blockquote>{value}</blockquote>'
 
