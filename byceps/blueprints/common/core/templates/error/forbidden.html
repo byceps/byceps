@@ -1,5 +1,5 @@
 {% extends 'layout/base_auto.html' %}
-{% set title = 'Zugriff verweigert' %}
+{% set title = _('Access Denied') %}
 {% if g.app_mode.is_admin() %}
 {% set layout_sidebar_hide = True %}
 {% endif %}
@@ -7,6 +7,6 @@
 {% block body %}
 
   <h1>{{ title }}</h1>
-  <p>Entschuldigung, der Zugriff auf die angeforderte Seite wurde verweigert.</p>
+  <p>{{ _('Sorry, access to the requested page has been denied.')  }}</p>
 
 {%- endblock %}

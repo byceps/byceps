@@ -10,7 +10,7 @@
   </div>
 
         {%- if sold_out %}
-  <div><strong>Ausverkauft!</strong></div>
+        <div><strong>{{ _('Sold out!') }}</strong></div>
         {%- endif %}
       {%- endif %}
 
@@ -18,10 +18,10 @@
         {%- if tickets_total_max_specified %}
   / {{ ticket_sale_stats.tickets_max|separate_thousands }}
         {%- endif %}
-  <br>Tickets bezahlt
+  <br>{{ _('tickets paid') }}
 
     {%- if not sold_out %}
-  <p><a class="button color-primary" style="font-size: 0.875rem;" href="/shop/order">Tickets bestellen</a></p>
+    <p><a class="button color-primary" style="font-size: 0.875rem;" href="/shop/order">{{ _('Order tickets') }}</a></p>
     {%- endif %}
 
     {%- endwith %}
@@ -29,7 +29,7 @@
 </div>
 
 <div class="sidebar-section">
-  <h3>Sitzplätze</h3>
+  <h3>{{ _('Seats') }}</h3>
 
   <div class="progress">
     <div class="progress-bar" style="width: calc(100% * {{ seat_utilization.occupied }} / {{ seat_utilization.total }});"></div>
@@ -37,7 +37,7 @@
 
   {{ seat_utilization.occupied|separate_thousands }}
   / {{ seat_utilization.total|separate_thousands }}
-  <br>Sitzplätze belegt
+  <br>{{ _('seats occupied') }}
 </div>
 
 <div class="sidebar-section">

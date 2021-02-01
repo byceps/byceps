@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-01-31 06:45+0100\n"
+"POT-Creation-Date: 2021-02-01 04:08+0100\n"
 "PO-Revision-Date: 2021-01-24 11:05+0100\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -55,10 +55,35 @@ msgstr "Erfolgreich eingeloggt als %(screen_name)s."
 msgid "Successfully logged out."
 msgstr "Erfolgreich ausgeloggt."
 
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:40
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:40
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:5
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:5
 msgid "Login"
 msgstr "Anmelden"
+
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:33
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:33
+msgid "permanently stay logged in"
+msgstr "dauerhaft eingeloggt bleiben"
+
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:37
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:37
+msgid "Login failed."
+msgstr "Die Anmeldung ist fehlgeschlagen."
+
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:40
+#: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:27
+#: byceps/blueprints/common/core/templates/layout/_current_user.html:28
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:40
+msgid "Log in"
+msgstr "Anmelden"
+
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:43
+msgid "Forgot password?"
+msgstr "Passwort vergessen?"
+
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:43
+msgid "Set new password"
+msgstr "Neues Passwort setzen"
 
 #: byceps/blueprints/admin/board/forms.py:17
 #: byceps/blueprints/admin/brand/forms.py:25
@@ -245,6 +270,25 @@ msgstr "Die Marke \"%(title)s\" wurde aktualisiert."
 msgid "Email configuration has been updated."
 msgstr "Die E-Mail-Konfiguration wurde aktualisiert."
 
+#: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:15
+#: byceps/blueprints/common/core/templates/layout/_current_user.html:16
+msgid "Logged in as"
+msgstr "Eingeloggt als"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:20
+#: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:5
+msgid "Profile"
+msgstr "Profil"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:21
+msgid "Change password"
+msgstr "Passwort ändern"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:23
+#: byceps/blueprints/common/core/templates/layout/_current_user.html:23
+msgid "Log out"
+msgstr "Abmelden"
+
 #: byceps/blueprints/admin/core/templates/layout/admin/_header.html:20
 msgid "user name, first name, last name, email address"
 msgstr "Benutzer-, Vor-, Nachname, E-Mail-Adresse"
@@ -273,6 +317,8 @@ msgstr "Marke"
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:29
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:9
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:29
+#: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:4
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:37
 msgid "Dashboard"
 msgstr "Dashboard"
 
@@ -324,6 +370,8 @@ msgid "Organizer Teams"
 msgstr "Orga-Teams"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:41
+#: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:7
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:74
 msgid "Tickets"
 msgstr "Tickets"
 
@@ -381,6 +429,7 @@ msgstr "Alte Login-Events löschen?"
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
 #: byceps/blueprints/admin/more/templates/admin/more/view_site.html:17
+#: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:6
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -441,6 +490,8 @@ msgid "Tournaments"
 msgstr "Turniere"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_site.html:18
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:137
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:160
 msgid "Discussion Board"
 msgstr "Foren"
 
@@ -1100,6 +1151,7 @@ msgid "Mountpoint for \"%(url_path)s\" has been deleted."
 msgstr "Der Mountpoint für \"%(url_path)s\" wurde entfernt."
 
 #: byceps/blueprints/admin/ticketing/forms.py:32
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:79
 msgid "Code"
 msgstr "Code"
 
@@ -1503,6 +1555,54 @@ msgid ""
 "special charactes: "
 msgstr ""
 
+#: byceps/blueprints/common/core/templates/error/forbidden.html:2
+msgid "Access Denied"
+msgstr "Zugriff verweigert"
+
+#: byceps/blueprints/common/core/templates/error/forbidden.html:10
+msgid "Sorry, access to the requested page has been denied."
+msgstr "Entschuldigung, der Zugriff auf die angeforderte Seite wurde verweigert."
+
+#: byceps/blueprints/common/core/templates/error/not_found.html:2
+msgid "Page Not Found"
+msgstr "Seite nicht gefunden"
+
+#: byceps/blueprints/common/core/templates/error/not_found.html:10
+msgid "Sorry, the request page could not be found."
+msgstr "Entschuldigung, die angeforderte Seite wurde nicht gefunden."
+
+#: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:8
+msgid "Orders"
+msgstr "Bestellungen"
+
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:44
+msgid "Not registered yet?"
+msgstr "Noch nicht registriert?"
+
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:44
+msgid "Create an account."
+msgstr "Erstelle ein Benutzerkonto."
+
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:45
+msgid "Confirmation email not received yet?"
+msgstr "Bestätigungs-E-Mail noch nicht erhalten?"
+
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:45
+msgid "Request it again."
+msgstr "Erneut anfodern."
+
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:47
+msgid "Forgot your password?"
+msgstr "Passwort vergessen?"
+
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:47
+msgid "Set new password."
+msgstr "Setze ein neues Passwort."
+
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:49
+msgid "Login is disabled."
+msgstr "Die Anmeldung ist deaktiviert."
+
 #: byceps/blueprints/site/board/views_category.py:99
 msgid "All topics in this category have been marked as read."
 msgstr "Alle Themen in dieser Kategorie wurden als gelesen markiert."
@@ -1644,6 +1744,66 @@ msgstr "Unbekannter Bestätigungscode"
 #: byceps/blueprints/site/consent/templates/site/consent/consent_form.html:20
 msgid "I consent"
 msgstr "Ich stimme zu"
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:42
+msgid "Open Orders"
+msgstr "Offene Bestellungen"
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:48
+msgid "Order number"
+msgstr "Bestellnummer"
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:49
+msgid "Amount"
+msgstr "Betrag"
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:50
+msgid "Status"
+msgstr "Status"
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:64
+msgid "No open orders."
+msgstr "Keine offenen Bestellungen."
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:68
+msgid "All orders"
+msgstr "Alle Bestellungen"
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:80
+msgid "Seat"
+msgstr "Sitzplatz"
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:92
+msgid "not chosen"
+msgstr "nicht ausgewählt"
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:97
+msgid "checked in"
+msgstr "eingecheckt"
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:105
+msgid "You do not use a ticket yet."
+msgstr "Du nutzt noch kein Ticket."
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:109
+msgid "Ticket management"
+msgstr "Ticketverwaltung"
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:115
+msgid "News"
+msgstr "News"
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:127
+msgid "No news yet."
+msgstr "Es gibt noch keine News."
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:131
+msgid "All news"
+msgstr "Alle News"
+
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:156
+msgid "No topics yet."
+msgstr "Es gibt noch keine Themen."
 
 #: byceps/blueprints/site/newsletter/views.py:33
 #, python-format

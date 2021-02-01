@@ -1,5 +1,5 @@
 {% extends 'layout/base_auto.html' %}
-{% set title = 'Seite nicht gefunden' %}
+{% set title = _('Page Not Found') %}
 {% if g.app_mode.is_admin() %}
 {% set layout_sidebar_hide = True %}
 {% endif %}
@@ -7,6 +7,6 @@
 {% block body %}
 
   <h1>{{ title }}</h1>
-  <p>Entschuldigung, die angeforderte Seite wurde nicht gefunden.</p>
+  <p>{{ _('Sorry, the request page could not be found.') }}</p>
 
 {%- endblock %}

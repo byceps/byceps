@@ -2,7 +2,7 @@
 {% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'authentication.login' %}
-{% set title = 'Anmelden' %}
+{% set title = _('Login') %}
 {% set layout_sidebar_hide = True %}
 
 
@@ -30,17 +30,17 @@
     {%- call form_fieldset() %}
       {{ form_field(form.screen_name, maxlength=40, autofocus='autofocus') }}
       {{ form_field(form.password, maxlength=40) }}
-      {{ form_field_checkbox(form.permanent, 'dauerhaft eingeloggt bleiben') }}
+      {{ form_field_checkbox(form.permanent, _('permanently stay logged in')) }}
     {%- endcall %}
 
     <div id="login-failed-notice" class="hidden">
-{{ render_notification('Die Anmeldung ist fehlgeschlagen.', category='danger', icon='warning') }}
+{{ render_notification(_('Login failed.'), category='danger', icon='warning') }}
     </div>
 
-    {{ form_buttons(_('Login')) }}
+    {{ form_buttons(_('Log in')) }}
   </form>
 
-  <p>Passwort vergessen? <a href="{{ url_for('authentication.password.request_reset_form') }}">Neues Passwort setzen</a></p>
+  <p>{{ _('Forgot password?') }} <a href="{{ url_for('authentication.password.request_reset_form') }}">{{ _('Set new password') }}</a></p>
 
 {%- endblock %}
 

@@ -2,7 +2,7 @@
 {% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'authentication.login' %}
-{% set title = 'Anmelden' %}
+{% set title = _('Login') %}
 
 
 {% block head %}
@@ -30,23 +30,23 @@
     {%- call form_fieldset() %}
       {{ form_field(form.screen_name, maxlength=40, autofocus='autofocus') }}
       {{ form_field(form.password, maxlength=40) }}
-      {{ form_field_checkbox(form.permanent, 'dauerhaft eingeloggt bleiben') }}
+      {{ form_field_checkbox(form.permanent, _('permanently stay logged in')) }}
     {%- endcall %}
 
     <div id="login-failed-notice" class="hidden">
-{{ render_notification('Die Anmeldung ist fehlgeschlagen.', category='danger', icon='warning') }}
+{{ render_notification(_('Login failed.'), category='danger', icon='warning') }}
     </div>
 
-    {{ form_buttons(_('Login')) }}
+    {{ form_buttons(_('Log in')) }}
   </form>
 
     {% if user_account_creation_enabled %}
-  <p>Du hast noch keinen Benutzerzugang? Dann <a href="{{ url_for('user_creation.create_form') }}">registriere dich</a>!</p>
-  <p>Du hast die Bestätigungs-E-Mail noch nicht erhalten? Dann <a href="{{ url_for('user_email_address.request_confirmation_email_form') }}">fordere sie erneut an</a>.</p>
+  <p>{{ _('Not registered yet?') }} <a href="{{ url_for('user_creation.create_form') }}">{{ _('Create an account.') }}</a></p>
+  <p>{{ _('Confirmation email not received yet?') }} <a href="{{ url_for('user_email_address.request_confirmation_email_form') }}">{{ _('Request it again.') }}</a></p>
     {%- endif %}
-  <p>Du hast dein Passwort vergessen? Dann <a href="{{ url_for('authentication.password.request_reset_form') }}">setze ein neues</a>.</p>
+  <p>{{ _('Forgot your password?') }} <a href="{{ url_for('authentication.password.request_reset_form') }}">{{ _('Set new password.') }}</a></p>
   {%- else %}
-{{ render_notification('Die Anmeldung ist deaktiviert.', category='warning', icon='warning') }}
+{{ render_notification(_('Login is disabled.'), category='warning', icon='warning') }}
   {%- endif %}
 
 {%- endblock %}
