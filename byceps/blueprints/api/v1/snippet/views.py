@@ -53,9 +53,11 @@ def _get_content(version):
     }
 
     if version.snippet.is_document:
-        content.update({
-            'title': context['title'],
-            'head': context['head'],
-        })
+        content.update(
+            {
+                'title': context['title'],
+                'head': context['head'],
+            }
+        )
 
     return content

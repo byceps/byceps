@@ -81,7 +81,9 @@ def index_for_brand(brand_id, page):
     )
 
     days_by_party_id = _get_days_by_party_id(parties.items)
-    ticket_sale_stats_by_party_id = _get_ticket_sale_stats_by_party_id(parties.items)
+    ticket_sale_stats_by_party_id = _get_ticket_sale_stats_by_party_id(
+        parties.items
+    )
 
     return {
         'brand': brand,

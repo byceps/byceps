@@ -52,8 +52,8 @@ def order_form(erroneous_form=None):
         flash_notice(gettext('The shop is closed.'))
         return {'article_compilation': None}
 
-    article_compilation = article_service.get_article_compilation_for_orderable_articles(
-        shop.id
+    article_compilation = (
+        article_service.get_article_compilation_for_orderable_articles(shop.id)
     )
 
     if article_compilation.is_empty():
@@ -101,8 +101,8 @@ def order():
         flash_notice(gettext('The shop is closed.'))
         return order_form()
 
-    article_compilation = article_service.get_article_compilation_for_orderable_articles(
-        shop.id
+    article_compilation = (
+        article_service.get_article_compilation_for_orderable_articles(shop.id)
     )
 
     if article_compilation.is_empty():
@@ -155,8 +155,10 @@ def order_single_form(article_id, erroneous_form=None):
             'article': None,
         }
 
-    article_compilation = article_service.get_article_compilation_for_single_article(
-        article.id, fixed_quantity=1
+    article_compilation = (
+        article_service.get_article_compilation_for_single_article(
+            article.id, fixed_quantity=1
+        )
     )
 
     country_names = country_service.get_country_names()
@@ -210,8 +212,10 @@ def order_single(article_id):
         flash_error(gettext('The article cannot be ordered directly.'))
         return order_single_form(article.id)
 
-    article_compilation = article_service.get_article_compilation_for_single_article(
-        article.id, fixed_quantity=quantity
+    article_compilation = (
+        article_service.get_article_compilation_for_single_article(
+            article.id, fixed_quantity=quantity
+        )
     )
 
     user = g.user

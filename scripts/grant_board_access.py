@@ -16,7 +16,6 @@ from _util import app_context
 from _validators import validate_user_screen_name
 
 
-
 def validate_board(ctx, param, board_id: str) -> Board:
     board = board_service.find_board(board_id)
 

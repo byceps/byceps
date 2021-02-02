@@ -25,10 +25,12 @@ from .forms import UpdateForm
 blueprint = create_blueprint('user_avatar', __name__)
 
 
-ALLOWED_IMAGE_TYPES = frozenset([
-    ImageType.jpeg,
-    ImageType.png,
-])
+ALLOWED_IMAGE_TYPES = frozenset(
+    [
+        ImageType.jpeg,
+        ImageType.png,
+    ]
+)
 
 
 @blueprint.route('/me/avatar/update')

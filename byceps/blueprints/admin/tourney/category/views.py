@@ -90,11 +90,7 @@ def update_form(category_id, erroneous_form=None):
 
     party = party_service.get_party(category.party_id)
 
-    form = (
-        erroneous_form
-        if erroneous_form
-        else UpdateForm(obj=category)
-    )
+    form = erroneous_form if erroneous_form else UpdateForm(obj=category)
 
     return {
         'category': category,

@@ -73,8 +73,10 @@ def _search_tickets(party_id, search_term, limit):
     page = 1
     per_page = limit
 
-    tickets_pagination = ticket_service.get_tickets_with_details_for_party_paginated(
-        party_id, page, per_page, search_term=search_term
+    tickets_pagination = (
+        ticket_service.get_tickets_with_details_for_party_paginated(
+            party_id, page, per_page, search_term=search_term
+        )
     )
 
     return tickets_pagination.items

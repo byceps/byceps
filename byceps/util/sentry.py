@@ -21,7 +21,9 @@ def configure_sentry_for_webapp(dsn: str, environment: str, app: Flask) -> None:
     from sentry_sdk.integrations.flask import FlaskIntegration
 
     sentry_sdk.init(
-        dsn=dsn, environment=environment, integrations=[FlaskIntegration()],
+        dsn=dsn,
+        environment=environment,
+        integrations=[FlaskIntegration()],
     )
 
     app_mode = app.config.get('APP_MODE')
@@ -37,7 +39,9 @@ def configure_sentry_for_worker(dsn: str, environment: str) -> None:
     from sentry_sdk.integrations.rq import RqIntegration
 
     sentry_sdk.init(
-        dsn=dsn, environment=environment, integrations=[RqIntegration()],
+        dsn=dsn,
+        environment=environment,
+        integrations=[RqIntegration()],
     )
 
     sentry_sdk.set_tag('app_mode', 'worker')

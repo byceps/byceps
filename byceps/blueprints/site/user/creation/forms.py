@@ -48,9 +48,7 @@ class UserCreateForm(LocalizedForm):
     @staticmethod
     def validate_screen_name(form, field):
         if user_service.is_screen_name_already_assigned(field.data):
-            raise ValueError(
-                lazy_gettext('This username is not available.')
-            )
+            raise ValueError(lazy_gettext('This username is not available.'))
 
     @staticmethod
     def validate_email_address(form, field):
@@ -59,9 +57,7 @@ class UserCreateForm(LocalizedForm):
 
         if user_service.is_email_address_already_assigned(field.data):
             raise ValueError(
-                lazy_gettext(
-                    'This email address is not available.'
-                )
+                lazy_gettext('This email address is not available.')
             )
 
     @staticmethod
@@ -83,10 +79,12 @@ def assemble_user_create_form(
 
     if real_name_required:
         extra_fields['first_names'] = StringField(
-            lazy_gettext('First name(s)'), [InputRequired(), Length(min=2, max=40)]
+            lazy_gettext('First name(s)'),
+            [InputRequired(), Length(min=2, max=40)],
         )
         extra_fields['last_name'] = StringField(
-            lazy_gettext('Last name(s)'), [InputRequired(), Length(min=2, max=80)]
+            lazy_gettext('Last name(s)'),
+            [InputRequired(), Length(min=2, max=80)],
         )
 
     for subject in required_consent_subjects:

@@ -19,8 +19,12 @@ class _BaseForm(LocalizedForm):
         lazy_gettext('Title'),
         validators=[InputRequired(), Length(min=1, max=40)],
     )
-    starts_on = DateField(lazy_gettext('Start date'), validators=[InputRequired()])
-    starts_at = TimeField(lazy_gettext('Start time'), validators=[InputRequired()])
+    starts_on = DateField(
+        lazy_gettext('Start date'), validators=[InputRequired()]
+    )
+    starts_at = TimeField(
+        lazy_gettext('Start time'), validators=[InputRequired()]
+    )
     ends_on = DateField(lazy_gettext('End date'), validators=[InputRequired()])
     ends_at = TimeField(lazy_gettext('End time'), validators=[InputRequired()])
     max_ticket_quantity = IntegerField(
@@ -38,8 +42,6 @@ class UpdateForm(_BaseForm):
     ticket_management_enabled = BooleanField(
         lazy_gettext('Ticket management open')
     )
-    seat_management_enabled = BooleanField(
-        lazy_gettext('Seat management open')
-    )
+    seat_management_enabled = BooleanField(lazy_gettext('Seat management open'))
     canceled = BooleanField(lazy_gettext('canceled'))
     archived = BooleanField(lazy_gettext('archived'))

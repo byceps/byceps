@@ -23,10 +23,12 @@ from .forms import CreateForm
 blueprint = create_blueprint('api_v1_tourney_avatar', __name__)
 
 
-ALLOWED_IMAGE_TYPES = frozenset([
-    ImageType.jpeg,
-    ImageType.png,
-])
+ALLOWED_IMAGE_TYPES = frozenset(
+    [
+        ImageType.jpeg,
+        ImageType.png,
+    ]
+)
 
 
 @blueprint.route('', methods=['POST'])

@@ -109,7 +109,7 @@ class ArticleUpdateForm(_ArticleBaseForm):
 
         available_from = form._get_available_from()
         available_until = form._get_available_until()
-        _validate_availability_range(available_from ,available_until )
+        _validate_availability_range(available_from, available_until)
 
     @staticmethod
     def validate_available_until_time(form, field):
@@ -120,7 +120,7 @@ class ArticleUpdateForm(_ArticleBaseForm):
 
         available_from = form._get_available_from()
         available_until = form._get_available_until()
-        _validate_availability_range(available_from ,available_until )
+        _validate_availability_range(available_from, available_until)
 
     def _get_available_from(self):
         d = self.available_from_date.data
@@ -140,9 +140,7 @@ class ArticleUpdateForm(_ArticleBaseForm):
 
 
 def _validate_date_and_time(d: date, t: time):
-    if ((d is None) and (t is not None)) or (
-        (d is not None) and (t is None)
-    ):
+    if ((d is None) and (t is not None)) or ((d is not None) and (t is None)):
         raise ValidationError(
             lazy_gettext(
                 'Either date and time must be specified or neither of them.'
@@ -150,7 +148,9 @@ def _validate_date_and_time(d: date, t: time):
         )
 
 
-def _validate_availability_range(available_from: datetime, available_until: datetime):
+def _validate_availability_range(
+    available_from: datetime, available_until: datetime
+):
     """Ensure that the availability range's begin is before its end."""
     if (
         (available_from is not None)

@@ -50,8 +50,10 @@ def add_unseen_postings_flag_to_categories(
             )
         )
 
-        category_with_flag = CategoryWithLastUpdateAndUnseenFlag.from_category_with_last_update(
-            category, contains_unseen_postings
+        category_with_flag = (
+            CategoryWithLastUpdateAndUnseenFlag.from_category_with_last_update(
+                category, contains_unseen_postings
+            )
         )
 
         categories_with_flag.append(category_with_flag)

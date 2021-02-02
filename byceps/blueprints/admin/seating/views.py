@@ -63,8 +63,10 @@ def area_index(party_id, page):
     party = _get_party_or_404(party_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    areas_with_occupied_seat_counts = seating_area_service.get_areas_for_party_paginated(
-        party.id, page, per_page
+    areas_with_occupied_seat_counts = (
+        seating_area_service.get_areas_for_party_paginated(
+            party.id, page, per_page
+        )
     )
 
     seat_total_per_area = seat_service.get_seat_total_per_area(party.id)

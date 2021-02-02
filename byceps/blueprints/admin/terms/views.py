@@ -39,8 +39,8 @@ def view_document(document_id):
 
     _add_version_creators(versions)
 
-    consent_counts_by_version_id = terms_consent_service.count_consents_for_document_versions(
-        document.id
+    consent_counts_by_version_id = (
+        terms_consent_service.count_consents_for_document_versions(document.id)
     )
 
     for version in versions:

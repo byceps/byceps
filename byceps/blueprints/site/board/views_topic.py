@@ -118,10 +118,12 @@ def topic_view(topic_id, page):
     }
 
     if is_last_page:
-        context.update({
-            'form': PostingCreateForm(),
-            'smileys': get_smileys(),
-        })
+        context.update(
+            {
+                'form': PostingCreateForm(),
+                'smileys': get_smileys(),
+            }
+        )
 
     return context
 

@@ -43,9 +43,7 @@ class ChangeScreenNameForm(LocalizedForm):
             )
 
         if user_service.is_screen_name_already_assigned(field.data):
-            raise ValueError(
-                lazy_gettext('This username is not available.')
-            )
+            raise ValueError(lazy_gettext('This username is not available.'))
 
     @staticmethod
     def validate_password(form, field):

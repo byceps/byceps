@@ -91,8 +91,8 @@ def login():
         abort(403)
 
     if _is_consent_required(user.id):
-        verification_token = verification_token_service.create_for_terms_consent(
-            user.id
+        verification_token = (
+            verification_token_service.create_for_terms_consent(user.id)
         )
 
         consent_form_url = url_for(
@@ -116,8 +116,8 @@ def login():
 
 
 def _is_consent_required(user_id: UserID) -> bool:
-    required_subject_ids = consent_subject_service.get_subject_ids_required_for_brand(
-        g.brand_id
+    required_subject_ids = (
+        consent_subject_service.get_subject_ids_required_for_brand(g.brand_id)
     )
 
     return not consent_service.has_user_consented_to_all_subjects(

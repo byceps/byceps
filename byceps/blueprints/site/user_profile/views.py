@@ -29,8 +29,8 @@ def view(user_id):
     if user is None:
         abort(404)
 
-    badges_with_awarding_quantity = badge_awarding_service.get_badges_awarded_to_user(
-        user.id
+    badges_with_awarding_quantity = (
+        badge_awarding_service.get_badges_awarded_to_user(user.id)
     )
 
     orga_team = orga_team_service.find_orga_team_for_user_and_party(

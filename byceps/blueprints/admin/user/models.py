@@ -14,13 +14,16 @@ from typing import Optional
 from ....services.user.transfer.models import User
 
 
-UserStateFilter = Enum('UserStateFilter', [
-    'none',
-    'active',
-    'uninitialized',
-    'suspended',
-    'deleted',
-])
+UserStateFilter = Enum(
+    'UserStateFilter',
+    [
+        'none',
+        'active',
+        'uninitialized',
+        'suspended',
+        'deleted',
+    ],
+)
 
 
 @dataclass(frozen=True)

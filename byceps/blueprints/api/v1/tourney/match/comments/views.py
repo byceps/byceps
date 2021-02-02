@@ -66,9 +66,11 @@ def get_comments_for_match(match_id):
 
     comment_dtos = list(map(_comment_to_json, comments))
 
-    return jsonify({
-        'comments': comment_dtos,
-    })
+    return jsonify(
+        {
+            'comments': comment_dtos,
+        }
+    )
 
 
 def _comment_to_json(comment: MatchComment) -> Dict[str, Any]:
@@ -111,7 +113,9 @@ def _user_to_json(user: User) -> Dict[str, Any]:
 
 
 blueprint.add_url_rule(
-    '/match_comments/<uuid:comment_id>', endpoint='view', build_only=True,
+    '/match_comments/<uuid:comment_id>',
+    endpoint='view',
+    build_only=True,
 )
 
 
@@ -176,7 +180,8 @@ def hide(comment_id):
 
 
 @blueprint.route(
-    '/match_comments/<uuid:comment_id>/flags/hidden', methods=['DELETE'],
+    '/match_comments/<uuid:comment_id>/flags/hidden',
+    methods=['DELETE'],
 )
 @api_token_required
 @respond_no_content

@@ -119,8 +119,8 @@ def view(user_id):
 
     attended_parties = service.get_attended_parties(user.id)
 
-    badges_with_awarding_quantity = badge_awarding_service.get_badges_awarded_to_user(
-        user.id
+    badges_with_awarding_quantity = (
+        badge_awarding_service.get_badges_awarded_to_user(user.id)
     )
 
     return {
@@ -562,8 +562,10 @@ def view_permissions(user_id):
     """Show user's permissions."""
     user = _get_user_or_404(user_id)
 
-    permissions_by_role = authorization_service.get_permissions_by_roles_for_user_with_titles(
-        user.id
+    permissions_by_role = (
+        authorization_service.get_permissions_by_roles_for_user_with_titles(
+            user.id
+        )
     )
 
     return {

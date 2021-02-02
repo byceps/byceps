@@ -41,8 +41,8 @@ def view(shop_id):
 
     brand = brand_service.get_brand(shop.brand_id)
 
-    order_counts_by_payment_state = order_service.count_orders_per_payment_state(
-        shop.id
+    order_counts_by_payment_state = (
+        order_service.count_orders_per_payment_state(shop.id)
     )
 
     return {

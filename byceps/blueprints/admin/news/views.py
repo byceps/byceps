@@ -239,7 +239,10 @@ def image_update(image_id):
     attribution = form.attribution.data.strip()
 
     image = news_image_service.update_image(
-        image.id, alt_text=alt_text, caption=caption, attribution=attribution,
+        image.id,
+        alt_text=alt_text,
+        caption=caption,
+        attribution=attribution,
     )
 
     flash_success(
@@ -299,15 +302,19 @@ def _render_item_version(version, item):
             version.body, channel.id, item.images
         )
 
-        context.update({
-            'rendered_body': rendered_body,
-            'error_occurred': False,
-        })
+        context.update(
+            {
+                'rendered_body': rendered_body,
+                'error_occurred': False,
+            }
+        )
     except Exception as e:
-        context.update({
-            'error_occurred': True,
-            'error_message': str(e),
-        })
+        context.update(
+            {
+                'error_occurred': True,
+                'error_message': str(e),
+            }
+        )
 
     return context
 
