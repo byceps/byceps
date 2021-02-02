@@ -525,7 +525,7 @@ ol.index.fully-linked a:hover {
 
 /* forms */
 
-fieldset.buttons {
+.form-buttons {
   background-color: #e8e8e8;
   border-color: #cccccc;
   border-style: solid;

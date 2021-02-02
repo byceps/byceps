@@ -415,11 +415,6 @@ fieldset .supplement {
 
 }
 
-fieldset.buttons {
-  margin-top: 1.5rem;
-  text-align: center;
-}
-
 .form-row.erroneous {
   background-color: #ff9999;
   border: #ff1a1a solid 1px;
@@ -436,6 +431,11 @@ fieldset.buttons {
 
 .form-row.erroneous .errors li span {
   font-style: italic;
+}
+
+.form-buttons {
+  margin-top: 1.5rem;
+  text-align: center;
 }
 
 form.single-row {

@@ -70,7 +70,7 @@
 
 {# A field set with a submit button. #}
 {% macro form_buttons(label, icon=None, color='primary', cancel_button=False, cancel_url=None) -%}
-  <fieldset class="buttons">
+  <div class="form-buttons">
     <div class="button-row button-row--center button-row--compact">
       <button type="submit" class="button color-{{ color }}">{% if icon %}{{ render_icon(icon) }} {% endif %}<span>{{ label }}</span></button>
     {%- if cancel_button %}
@@ -80,7 +80,7 @@
       <a class="button button--outlined" href="{{ cancel_url }}">{{ _('Cancel') }}</a>
     {%- endif %}
     </div>
-  </fieldset>
+  </div>
 {%- endmacro %}
 
 
