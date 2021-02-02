@@ -8,7 +8,6 @@ byceps.services.user.models.user
 
 from datetime import datetime
 from typing import Optional
-from uuid import UUID
 
 from flask import g
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -20,35 +19,6 @@ from ....util.instances import ReprBuilder
 from ...user_avatar.models import AvatarSelection
 
 from ..transfer.models import User as UserDTO
-
-
-GUEST_USER_ID = UUID('00000000-0000-0000-0000-000000000000')
-
-
-class AnonymousUser:
-
-    id = GUEST_USER_ID
-    deleted = False
-
-    @property
-    def avatar(self) -> None:
-        return None
-
-    @property
-    def avatar_url(self) -> None:
-        return None
-
-    @property
-    def is_orga(self) -> bool:
-        return False
-
-    def __eq__(self, other) -> bool:
-        return self.id == other.id
-
-    def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .build()
 
 
 class User(db.Model):

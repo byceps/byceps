@@ -7,16 +7,19 @@ byceps.services.authentication.session.service
 """
 
 from datetime import datetime
-from typing import Optional
-from uuid import uuid4
+from enum import Enum
+from typing import Optional, Set
+from uuid import UUID, uuid4
 
 from ....database import db, insert_ignore_on_conflict, upsert
 from ....typing import UserID
 
 from ...user import event_service as user_event_service
+from ...user.transfer.models import User
 
 from ..exceptions import AuthenticationFailed
 
+from .models.current_user import CurrentUser
 from .models.recent_login import RecentLogin as DbRecentLogin
 from .models.session_token import SessionToken as DbSessionToken
 
@@ -139,3 +142,34 @@ def record_recent_login(user_id: UserID) -> datetime:
     upsert(table, identifier, replacement)
 
     return occurred_at
+
+
+ANONYMOUS_USER_ID = UUID('00000000-0000-0000-0000-000000000000')
+
+
+def get_anonymous_current_user() -> CurrentUser:
+    """Return an anonymous current user object."""
+    return CurrentUser(
+        user_id=ANONYMOUS_USER_ID,
+        screen_name=None,
+        avatar_url=None,
+        is_orga=False,
+        is_active=False,
+        is_anonymous=True,
+        permissions=frozenset(),
+    )
+
+
+def get_authenticated_current_user(
+    user: User, permissions: Set[Enum]
+) -> CurrentUser:
+    """Return an authenticated current user object."""
+    return CurrentUser(
+        user_id=user.id,
+        screen_name=user.screen_name,
+        avatar_url=user.avatar_url,
+        is_orga=user.is_orga,
+        is_active=True,
+        is_anonymous=False,
+        permissions=permissions,
+    )

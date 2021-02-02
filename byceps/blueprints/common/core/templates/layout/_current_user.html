@@ -7,14 +7,14 @@
   {%- if g.user.is_active %}
   <div class="dropdown">
     <a href="{{ url_for('user_settings.view') }}" class="dropdown-toggle">
-      {{ render_user_avatar_32(g.user) }}
+      {{ render_user_avatar_32(g.user.to_dto()) }}
       {{ render_icon('chevron-down') }}
     </a>
     <ol class="dropdown-menu dropdown-menu--right">
       <li>
         <span class="dropdown-label label-and-name">
           <span class="label">{{ _('Logged in as') }}</span>
-          <span class="name">{{ render_user_screen_name(g.user) }}</span>
+          <span class="name">{{ render_user_screen_name(g.user.to_dto()) }}</span>
         </span>
       </li>
       <li class="dropdown-divider"></li>

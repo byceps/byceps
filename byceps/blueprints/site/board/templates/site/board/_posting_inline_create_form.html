@@ -4,7 +4,7 @@
   <article class="user-comment">
     <aside class="user-comment-aside">
       <div class="creator">
-        {{ render_user_avatar_96(g.user) }}
+        {{ render_user_avatar_96(g.user.to_dto()) }}
       </div>
     </aside>
     <div class="user-comment-main">

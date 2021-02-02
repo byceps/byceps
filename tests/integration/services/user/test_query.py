@@ -26,19 +26,6 @@ def test_find_user_by_screen_name_not_found(admin_app):
     assert actual is None
 
 
-def test_get_anonymous_user(admin_app):
-    user = user_service.get_anonymous_user()
-
-    assert user.id == UUID('00000000-0000-0000-0000-000000000000')
-
-    assert not user.deleted
-
-    assert user.avatar is None
-    assert user.avatar_url is None
-
-    assert not user.is_orga
-
-
 def test_get_email_address_found(admin_app, make_user):
     email_address = 'lanparty@lar.ge'
 

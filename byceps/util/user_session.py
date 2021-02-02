@@ -49,14 +49,14 @@ def get_current_user(
     user = get_user(party_id=party_id)
 
     if user is None:
-        return CurrentUser.create_anonymous()
+        return session_service.get_anonymous_current_user()
 
     permissions = get_permissions_for_user(user.id)
 
     if not required_permissions.issubset(permissions):
-        return CurrentUser.create_anonymous()
+        return session_service.get_anonymous_current_user()
 
-    return CurrentUser.create_from_user(user, permissions)
+    return session_service.get_authenticated_current_user(user, permissions)
 
 
 def get_user(*, party_id: Optional[PartyID] = None) -> Optional[User]:

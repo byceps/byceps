@@ -15,7 +15,7 @@ from ..orga_team.models import OrgaTeam, Membership as OrgaTeamMembership
 from ..user_avatar.models import Avatar, AvatarSelection
 
 from .models.detail import UserDetail as DbUserDetail
-from .models.user import AnonymousUser, User as DbUser
+from .models.user import User as DbUser
 from .transfer.models import User, UserDetail, UserWithDetail
 
 
@@ -278,11 +278,6 @@ def _db_entity_to_user_with_detail(user: DbUser) -> UserWithDetail:
         user_dto.is_orga,
         detail_dto,
     )
-
-
-def get_anonymous_user() -> AnonymousUser:
-    """Return the anonymous user."""
-    return AnonymousUser()
 
 
 def find_screen_name(user_id: UserID) -> Optional[str]:
