@@ -62,9 +62,9 @@ def test_quote_without_author():
     assert render_html(text) == expected
 
 
-def test_quote_with_author():
+def test_quote_with_author(site_app):
     text = '[quote author="CATS"]All your base are belong to us.[/quote]'
-    expected = '<p class="quote-intro"><cite>CATS</cite> wrote:</p>\n<blockquote>All your base are belong to us.</blockquote>'
+    expected = '<p class="quote-intro"><cite>CATS</cite> schrieb:</p>\n<blockquote>All your base are belong to us.</blockquote>'
     assert render_html(text) == expected
 
 
@@ -73,33 +73,33 @@ def test_quote_with_author():
     [
         (
             '[quote author="foo]bar"]blah[/quote]',
-            '<p class="quote-intro"><cite>foo]bar</cite> wrote:</p>\n<blockquote>blah</blockquote>',
+            '<p class="quote-intro"><cite>foo]bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
         ),
         (
             '[quote author="foo[bar"]blah[/quote]',
-            '<p class="quote-intro"><cite>foo[bar</cite> wrote:</p>\n<blockquote>blah</blockquote>',
+            '<p class="quote-intro"><cite>foo[bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
         ),
         (
             '[quote author="foo][bar"]blah[/quote]',
-            '<p class="quote-intro"><cite>foo][bar</cite> wrote:</p>\n<blockquote>blah</blockquote>',
+            '<p class="quote-intro"><cite>foo][bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
         ),
         (
             '[quote author="foo[]bar"]blah[/quote]',
-            '<p class="quote-intro"><cite>foo[]bar</cite> wrote:</p>\n<blockquote>blah</blockquote>',
+            '<p class="quote-intro"><cite>foo[]bar</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
         ),
         (
             '[quote author="[foobar]"]blah[/quote]',
-            '<p class="quote-intro"><cite>[foobar]</cite> wrote:</p>\n<blockquote>blah</blockquote>',
+            '<p class="quote-intro"><cite>[foobar]</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
         ),
         (
             '[quote author="]foobar["]blah[/quote]',
-            '<p class="quote-intro"><cite>]foobar[</cite> wrote:</p>\n<blockquote>blah</blockquote>',
+            '<p class="quote-intro"><cite>]foobar[</cite> schrieb:</p>\n<blockquote>blah</blockquote>',
         ),
         (
             '[quote author="<AngleBracketeer>"]careful.[/quote]',
-            '<p class="quote-intro"><cite>&lt;AngleBracketeer&gt;</cite> wrote:</p>\n<blockquote>careful.</blockquote>',
+            '<p class="quote-intro"><cite>&lt;AngleBracketeer&gt;</cite> schrieb:</p>\n<blockquote>careful.</blockquote>',
         ),
     ],
 )
-def test_quote_with_author_whose_name_contains_square_brackets(text, expected):
+def test_quote_with_author_whose_name_contains_square_brackets(site_app, text, expected):
     assert render_html(text) == expected
