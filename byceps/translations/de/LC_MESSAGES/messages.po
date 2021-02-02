@@ -2169,6 +2169,25 @@ msgstr "Senden"
 msgid "Image credit"
 msgstr "Bild"
 
+#: byceps/services/shop/order/email/example_service.py:80
+msgid "Not paid in time."
+msgstr "Kein fristgerechter Geldeingang feststellbar."
+
+#: byceps/services/shop/order/email/service.py:73
+#, python-format
+msgid "Your order (%(order_number)s) has been received."
+msgstr "Deine Bestellung (%(order_number)s) ist eingegangen."
+
+#: byceps/services/shop/order/email/service.py:104
+#, python-format
+msgid "Your order (%(order_number)s) has been canceled."
+msgstr "Deine Bestellung (%(order_number)s) ist storniert worden."
+
+#: byceps/services/shop/order/email/service.py:122
+#, python-format
+msgid "Your order (%(order_number)s) has been paid."
+msgstr "Deine Bestellung (%(order_number)s) ist bezahlt worden."
+
 #: byceps/services/text_markup/service.py:68
 msgid "wrote"
 msgstr "schrieb"

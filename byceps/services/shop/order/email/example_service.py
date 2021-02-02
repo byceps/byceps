@@ -10,6 +10,8 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional
 
+from flask_babel import gettext
+
 from .....config import ConfigurationError
 from .....database import generate_uuid
 from .....typing import BrandID
@@ -75,7 +77,7 @@ def build_example_canceled_order_message_text(shop_id: ShopID) -> str:
         shop.id,
         PaymentState.canceled_before_paid,
         is_canceled=True,
-        cancelation_reason='Kein fristgerechter Geldeingang feststellbar.',
+        cancelation_reason=gettext('Not paid in time.'),
     )
 
     data = _build_email_data(order, shop.brand_id)

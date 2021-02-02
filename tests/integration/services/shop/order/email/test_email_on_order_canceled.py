@@ -89,7 +89,7 @@ def test_email_on_order_canceled(
 
     expected_sender = 'noreply@acmecon.test'
     expected_recipients = ['versager@users.test']
-    expected_subject = '\u274c Deine Bestellung (AC-14-B00017) wurde storniert.'
+    expected_subject = '\u274c Deine Bestellung (AC-14-B00017) ist storniert worden.'
     expected_body = '''
 Hallo Versager,
 
