@@ -88,7 +88,7 @@ msgstr "Neues Passwort setzen"
 #: byceps/blueprints/admin/board/forms.py:18
 #: byceps/blueprints/admin/brand/forms.py:25
 #: byceps/blueprints/admin/news/forms.py:24
-#: byceps/blueprints/admin/party/forms.py:37
+#: byceps/blueprints/admin/party/forms.py:50
 #: byceps/blueprints/admin/shop/storefront/forms.py:38
 #: byceps/blueprints/admin/site/forms.py:84
 msgid "ID"
@@ -104,7 +104,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/brand/forms.py:18
 #: byceps/blueprints/admin/news/forms.py:60
 #: byceps/blueprints/admin/orga_team/forms.py:18
-#: byceps/blueprints/admin/party/forms.py:19
+#: byceps/blueprints/admin/party/forms.py:21
 #: byceps/blueprints/admin/site/forms.py:24
 #: byceps/blueprints/admin/snippet/forms.py:43
 #: byceps/blueprints/admin/ticketing/category/forms.py:18
@@ -701,39 +701,43 @@ msgstr "%(screen_name)s wurde aus dem Team \"%(team_title)s\" entfernt."
 msgid "Copy"
 msgstr "Kopieren"
 
-#: byceps/blueprints/admin/party/forms.py:23
+#: byceps/blueprints/admin/party/forms.py:25
 msgid "Start date"
 msgstr "Startdatum"
 
-#: byceps/blueprints/admin/party/forms.py:26
+#: byceps/blueprints/admin/party/forms.py:28
 msgid "Start time"
 msgstr "Startzeit"
 
-#: byceps/blueprints/admin/party/forms.py:28
+#: byceps/blueprints/admin/party/forms.py:30
 msgid "End date"
 msgstr "Enddatum"
 
-#: byceps/blueprints/admin/party/forms.py:29
+#: byceps/blueprints/admin/party/forms.py:31
 msgid "End time"
 msgstr "Endzeit"
 
-#: byceps/blueprints/admin/party/forms.py:31
+#: byceps/blueprints/admin/party/forms.py:33
 msgid "Maximum number of tickets"
 msgstr "Maximale Anzahl Tickets"
 
-#: byceps/blueprints/admin/party/forms.py:43
+#: byceps/blueprints/admin/party/forms.py:44
+msgid "The party must begin before it ends."
+msgstr "Der Beginn der Party muss vor dessen Ende liegen."
+
+#: byceps/blueprints/admin/party/forms.py:56
 msgid "Ticket management open"
 msgstr "Ticketverwaltung geöffnet"
 
-#: byceps/blueprints/admin/party/forms.py:45
+#: byceps/blueprints/admin/party/forms.py:58
 msgid "Seat management open"
 msgstr "Sitzplatzverwaltung geöffnet"
 
-#: byceps/blueprints/admin/party/forms.py:46
+#: byceps/blueprints/admin/party/forms.py:59
 msgid "canceled"
 msgstr "abgesagt"
 
-#: byceps/blueprints/admin/party/forms.py:47
+#: byceps/blueprints/admin/party/forms.py:60
 #: byceps/blueprints/admin/site/forms.py:90
 msgid "archived"
 msgstr "archiviert"
