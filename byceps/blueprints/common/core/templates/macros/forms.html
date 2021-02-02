@@ -51,7 +51,7 @@
         {%- if field.errors %}
         <ol class="errors">
           {%- for error in field.errors %}
-          <li><strong>Fehler:</strong> <span>{{ error }}</span></li>
+          <li><strong>{{ _('Error') }}:</strong> <span>{{ error }}</span></li>
           {%- endfor %}
         </ol>
         {%- endif -%}
@@ -74,10 +74,10 @@
     <div class="button-row button-row--center button-row--compact">
       <button type="submit" class="button color-{{ color }}">{% if icon %}{{ render_icon(icon) }} {% endif %}<span>{{ label }}</span></button>
     {%- if cancel_button %}
-      <button type="button" class="button button--outlined cancel">Abbrechen</button>
+      <button type="button" class="button button--outlined cancel">{{ _('Cancel') }}</button>
     {%- endif %}
     {%- if cancel_url %}
-      <a class="button button--outlined" href="{{ cancel_url }}">Abbrechen</a>
+      <a class="button button--outlined" href="{{ cancel_url }}">{{ _('Cancel') }}</a>
     {%- endif %}
     </div>
   </fieldset>

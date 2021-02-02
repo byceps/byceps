@@ -971,6 +971,8 @@ msgid "Order number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Bestellnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:23
+#: byceps/blueprints/common/core/templates/macros/forms.html:77
+#: byceps/blueprints/common/core/templates/macros/forms.html:80
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:22
 msgid "Cancel"
 msgstr "Abbrechen"
@@ -1574,6 +1576,10 @@ msgstr "Entschuldigung, die angeforderte Seite wurde nicht gefunden."
 #: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:8
 msgid "Orders"
 msgstr "Bestellungen"
+
+#: byceps/blueprints/common/core/templates/macros/forms.html:54
+msgid "Error"
+msgstr "Fehler"
 
 #: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:44
 msgid "Not registered yet?"
