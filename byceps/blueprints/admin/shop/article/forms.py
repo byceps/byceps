@@ -9,7 +9,7 @@ byceps.blueprints.admin.shop.article.forms
 from datetime import date, datetime, time
 from decimal import Decimal
 
-from flask_babel import lazy_gettext, pgettext
+from flask_babel import gettext, lazy_gettext, pgettext
 from wtforms import (
     BooleanField,
     DecimalField,
@@ -142,7 +142,7 @@ class ArticleUpdateForm(_ArticleBaseForm):
 def _validate_date_and_time(d: date, t: time):
     if ((d is None) and (t is not None)) or ((d is not None) and (t is None)):
         raise ValidationError(
-            lazy_gettext(
+            gettext(
                 'Either date and time must be specified or neither of them.'
             )
         )
@@ -158,7 +158,7 @@ def _validate_availability_range(
         and (available_from >= available_until)
     ):
         raise ValidationError(
-            lazy_gettext(
+            gettext(
                 'The end of the availability period must be after its begin.'
             )
         )
