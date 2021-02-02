@@ -9,7 +9,10 @@ byceps.blueprints.admin.webhook.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-WebhookPermission = create_permission_enum('webhook', [
-    'administrate',
-    'view',
-])
+WebhookPermission = create_permission_enum(
+    'webhook',
+    [
+        'administrate',
+        'view',
+    ],
+)

@@ -9,9 +9,12 @@ byceps.blueprints.admin.user.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-UserPermission = create_permission_enum('user', [
-    'administrate',
-    'create',
-    'set_password',
-    'view',
-])
+UserPermission = create_permission_enum(
+    'user',
+    [
+        'administrate',
+        'create',
+        'set_password',
+        'view',
+    ],
+)

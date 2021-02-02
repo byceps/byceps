@@ -9,9 +9,12 @@ byceps.blueprints.admin.ticketing.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-TicketingPermission = create_permission_enum('ticketing', [
-    'administrate',
-    'administrate_seat_occupancy',
-    'checkin',
-    'view',
-])
+TicketingPermission = create_permission_enum(
+    'ticketing',
+    [
+        'administrate',
+        'administrate_seat_occupancy',
+        'checkin',
+        'view',
+    ],
+)

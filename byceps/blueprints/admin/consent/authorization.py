@@ -9,6 +9,9 @@ byceps.blueprints.admin.consent.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-ConsentPermission = create_permission_enum('consent', [
-    'administrate',
-])
+ConsentPermission = create_permission_enum(
+    'consent',
+    [
+        'administrate',
+    ],
+)

@@ -9,7 +9,10 @@ byceps.blueprints.admin.core.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-AdminPermission = create_permission_enum('admin', [
-    'access',
-    'maintain',
-])
+AdminPermission = create_permission_enum(
+    'admin',
+    [
+        'access',
+        'maintain',
+    ],
+)

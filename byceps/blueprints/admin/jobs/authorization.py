@@ -9,6 +9,9 @@ byceps.blueprints.admin.jobs.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-JobsPermission = create_permission_enum('jobs', [
-    'view',
-])
+JobsPermission = create_permission_enum(
+    'jobs',
+    [
+        'view',
+    ],
+)

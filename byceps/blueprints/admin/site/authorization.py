@@ -9,8 +9,11 @@ byceps.blueprints.admin.site.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-SitePermission = create_permission_enum('site', [
-    'create',
-    'update',
-    'view',
-])
+SitePermission = create_permission_enum(
+    'site',
+    [
+        'create',
+        'update',
+        'view',
+    ],
+)

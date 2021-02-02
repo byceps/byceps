@@ -9,8 +9,11 @@ byceps.blueprints.admin.party.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-PartyPermission = create_permission_enum('party', [
-    'create',
-    'update',
-    'view',
-])
+PartyPermission = create_permission_enum(
+    'party',
+    [
+        'create',
+        'update',
+        'view',
+    ],
+)

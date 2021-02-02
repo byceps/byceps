@@ -9,7 +9,10 @@ byceps.blueprints.admin.terms.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-TermsPermission = create_permission_enum('terms', [
-    'create',
-    'view',
-])
+TermsPermission = create_permission_enum(
+    'terms',
+    [
+        'create',
+        'view',
+    ],
+)

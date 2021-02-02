@@ -9,8 +9,11 @@ byceps.blueprints.admin.board.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-BoardCategoryPermission = create_permission_enum('board_category', [
-    'create',
-    'update',
-    'view',
-])
+BoardCategoryPermission = create_permission_enum(
+    'board_category',
+    [
+        'create',
+        'update',
+        'view',
+    ],
+)

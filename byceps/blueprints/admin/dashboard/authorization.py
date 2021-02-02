@@ -9,8 +9,11 @@ byceps.blueprints.admin.dashboard.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-AdminDashboardPermission = create_permission_enum('admin_dashboard', [
-    'view_global',
-    'view_brand',
-    'view_party',
-])
+AdminDashboardPermission = create_permission_enum(
+    'admin_dashboard',
+    [
+        'view_global',
+        'view_brand',
+        'view_party',
+    ],
+)
