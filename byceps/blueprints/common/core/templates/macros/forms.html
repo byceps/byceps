@@ -40,7 +40,7 @@
 
 
 {%- macro _row(field) -%}
-      <div class="form-row{% if field.errors %} error{% endif %}">
+      <div class="form-row{% if field.errors %} erroneous{% endif %}">
 {{- caller() -}}
         {{- _errors(field) -}}
       </div>

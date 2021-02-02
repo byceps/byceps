@@ -420,7 +420,7 @@ fieldset.buttons {
   text-align: center;
 }
 
-.form-row.error {
+.form-row.erroneous {
   background-color: #ff9999;
   border: #ff1a1a solid 1px;
   border-radius: 3px;
@@ -429,12 +429,12 @@ fieldset.buttons {
   padding: 4px 7px;
 }
 
-.form-row.error .errors li {
+.form-row.erroneous .errors li {
   font-size: 0.6875rem; /* 11px / 16px */
   margin-top: 0.2rem;
 }
 
-.form-row.error .errors li span {
+.form-row.erroneous .errors li span {
   font-style: italic;
 }
 
