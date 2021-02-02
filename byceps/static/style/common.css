@@ -419,9 +419,8 @@ fieldset .supplement {
   background-color: #ff9999;
   border: #ff1a1a solid 1px;
   border-radius: 3px;
-  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
-  margin: 4px -8px;
-  padding: 4px 7px;
+  margin: 0.25rem -1rem;
+  padding: 0.75rem calc(1rem - 1px) 0.5rem calc(1rem - 1px);
 }
 
 .form-row.erroneous .errors li {
