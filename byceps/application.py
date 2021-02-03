@@ -24,6 +24,7 @@ from .redis import redis
 from .util.l10n import set_locale
 from .util import templatefilters
 from .util.templating import SiteTemplateOverridesLoader
+from .util.views import redirect_to
 
 
 def create_app(
@@ -86,8 +87,6 @@ def _add_static_file_url_rules(app: Flask) -> None:
 def init_app(app: Flask) -> None:
     """Initialize application."""
     with app.app_context():
-        _set_url_root_path(app)
-
         app_mode = config.get_app_mode()
         if app_mode.is_admin():
             _init_admin_app(app)
@@ -99,6 +98,12 @@ def init_app(app: Flask) -> None:
 
 def _init_admin_app(app: Flask) -> None:
     """Initialize admin application."""
+    app.add_url_rule(
+        '/',
+        endpoint='root',
+        view_func=lambda: redirect_to('admin_dashboard.view_global'),
+    )
+
     if app.config['RQ_DASHBOARD_ENABLED']:
         import rq_dashboard
 
@@ -107,6 +112,8 @@ def _init_admin_app(app: Flask) -> None:
 
 def _init_site_app(app: Flask) -> None:
     """Initialize site application."""
+    _set_url_root_path(app)
+
     # Incorporate site-specific template overrides.
     app.jinja_loader = SiteTemplateOverridesLoader()
 
