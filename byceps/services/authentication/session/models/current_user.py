@@ -17,7 +17,7 @@ class CurrentUser:
     def __init__(
         self,
         user_id: UserID,
-        screen_name: Optional[UserID],
+        screen_name: Optional[str],
         avatar_url: Optional[str],
         is_orga: bool,
         is_active: bool,
@@ -28,7 +28,7 @@ class CurrentUser:
         self.screen_name = screen_name
         self.avatar_url = avatar_url
         self.is_orga = is_orga
-        self.is_active = not is_anonymous
+        self.is_active = is_active
         self.is_anonymous = is_anonymous
         self.permissions = permissions
 
