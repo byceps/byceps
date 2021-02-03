@@ -6,6 +6,7 @@ byceps.services.authentication.session.models.current_user
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from dataclasses import dataclass
 from enum import Enum
 from typing import Optional, Set
 
@@ -13,24 +14,17 @@ from .....services.user.transfer.models import User
 from .....typing import UserID
 
 
+@dataclass(eq=False, frozen=True)
 class CurrentUser:
-    def __init__(
-        self,
-        user_id: UserID,
-        screen_name: Optional[str],
-        avatar_url: Optional[str],
-        is_orga: bool,
-        is_active: bool,
-        is_anonymous: bool,
-        permissions: Set[Enum],
-    ) -> None:
-        self.id = user_id
-        self.screen_name = screen_name
-        self.avatar_url = avatar_url
-        self.is_orga = is_orga
-        self.is_active = is_active
-        self.is_anonymous = is_anonymous
-        self.permissions = permissions
+    """The current user, anonymous or logged in."""
+
+    id: UserID
+    screen_name: Optional[str]
+    avatar_url: Optional[str]
+    is_orga: bool
+    is_active: bool
+    is_anonymous: bool
+    permissions: Set[Enum]
 
     def has_permission(self, permission: Enum) -> bool:
         return permission in self.permissions
