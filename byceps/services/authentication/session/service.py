@@ -152,6 +152,8 @@ def get_anonymous_current_user() -> CurrentUser:
     return CurrentUser(
         id=ANONYMOUS_USER_ID,
         screen_name=None,
+        suspended=False,
+        deleted=False,
         avatar_url=None,
         is_orga=False,
         is_active=False,
@@ -167,6 +169,8 @@ def get_authenticated_current_user(
     return CurrentUser(
         id=user.id,
         screen_name=user.screen_name,
+        suspended=False,  # Current user cannot be suspended.
+        deleted=False,  # Current user cannot be deleted.
         avatar_url=user.avatar_url,
         is_orga=user.is_orga,
         is_active=True,

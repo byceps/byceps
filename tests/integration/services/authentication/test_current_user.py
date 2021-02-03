@@ -14,15 +14,13 @@ def test_get_anonymous_current_user():
 
     assert current_user.id == UUID('00000000-0000-0000-0000-000000000000')
     assert current_user.screen_name is None
+    assert not current_user.suspended
+    assert not current_user.deleted
     assert current_user.avatar_url is None
     assert not current_user.is_orga
     assert not current_user.is_active
     assert current_user.is_anonymous
     assert len(current_user.permissions) == 0
-
-    dto = current_user.to_dto()
-    assert not dto.suspended
-    assert not dto.deleted
 
 
 def test_get_authenticated_current_user(user):
@@ -38,12 +36,10 @@ def test_get_authenticated_current_user(user):
 
     assert current_user.id == user.id
     assert current_user.screen_name == user.screen_name
+    assert not current_user.suspended
+    assert not current_user.deleted
     assert current_user.avatar_url is None
     assert not current_user.is_orga
     assert current_user.is_active
     assert not current_user.is_anonymous
     assert current_user.permissions == permissions
-
-    dto = current_user.to_dto()
-    assert not dto.suspended
-    assert not dto.deleted
