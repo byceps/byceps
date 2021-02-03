@@ -60,8 +60,7 @@ def order_form(erroneous_form=None):
         flash_error(gettext('No articles are available.'))
         return {'article_compilation': None}
 
-    is_logged_in = g.user.is_active
-    if not is_logged_in:
+    if not g.user.authenticated:
         return list_articles(article_compilation)
 
     user = user_service.find_user_with_details(g.user.id)

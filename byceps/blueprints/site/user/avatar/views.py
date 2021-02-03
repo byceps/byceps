@@ -110,7 +110,7 @@ def delete():
 def _get_current_user_or_404():
     user = g.user
 
-    if not user.is_active:
+    if not user.authenticated:
         abort(404)
 
     return user

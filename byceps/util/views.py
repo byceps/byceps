@@ -29,7 +29,7 @@ def login_required(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        if not g.user.is_active:
+        if not g.user.authenticated:
             flash_notice(gettext('Please log in.'))
             return redirect_to('authentication.login.login_form')
         return func(*args, **kwargs)

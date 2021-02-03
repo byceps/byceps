@@ -17,8 +17,7 @@ from .....services.user.transfer.models import User
 class CurrentUser(User):
     """The current user, anonymous or logged in."""
 
-    is_active: bool
-    is_anonymous: bool
+    authenticated: bool
     permissions: Set[Enum]
 
     def has_permission(self, permission: Enum) -> bool:

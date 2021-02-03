@@ -20,7 +20,7 @@ def view_as_json():
     """Show selected attributes of the current user's profile as JSON."""
     user = g.user
 
-    if not user.is_active:
+    if not user.authenticated:
         # Return empty response.
         return Response(status=403)
 

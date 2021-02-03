@@ -44,7 +44,7 @@ def add_unseen_postings_flag_to_categories(
 
     for category in categories:
         contains_unseen_postings = (
-            not user.is_anonymous
+            user.authenticated
             and board_last_view_service.contains_category_unseen_postings(
                 category, user.id
             )
@@ -75,7 +75,7 @@ def add_topic_unseen_flag(topics: Sequence[DbTopic], user: CurrentUser) -> None:
     """Add `unseen` flag to topics."""
     for topic in topics:
         topic.contains_unseen_postings = (
-            not user.is_anonymous
+            user.authenticated
             and board_last_view_service.contains_topic_unseen_postings(
                 topic, user.id
             )

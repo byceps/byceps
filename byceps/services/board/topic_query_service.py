@@ -121,7 +121,7 @@ def find_default_posting_to_jump_to(
     topic_id: TopicID, user: CurrentUser, last_viewed_at: Optional[datetime]
 ) -> Optional[DbPosting]:
     """Return the posting of the topic to show by default, or `None`."""
-    if user.is_anonymous:
+    if not user.authenticated:
         # All postings are potentially new to a guest, so start on
         # the first page.
         return None

@@ -64,7 +64,7 @@ def category_view(slug, page):
     if category.hidden:
         abort(404)
 
-    if not user.is_anonymous:
+    if user.authenticated:
         board_last_view_service.mark_category_as_just_viewed(
             category.id, user.id
         )

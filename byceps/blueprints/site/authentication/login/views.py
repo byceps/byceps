@@ -42,7 +42,7 @@ blueprint = create_blueprint('authentication.login', __name__)
 @templated
 def login_form():
     """Show login form."""
-    if g.user.is_active:
+    if g.user.authenticated:
         flash_notice(
             gettext(
                 'You are already logged in as "%(screen_name)s".',
@@ -71,7 +71,7 @@ def login_form():
 @respond_no_content
 def login():
     """Allow the user to authenticate with e-mail address and password."""
-    if g.user.is_active:
+    if g.user.authenticated:
         return
 
     if not _is_site_login_enabled():

@@ -294,7 +294,7 @@ def release_seat(ticket_id):
 
 
 def _is_seat_management_enabled():
-    if g.user.is_anonymous:
+    if not g.user.authenticated:
         return False
 
     if g.party_id is None:

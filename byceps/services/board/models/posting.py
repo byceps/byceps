@@ -85,7 +85,7 @@ class Posting(db.Model):
 
     def is_unseen(self, user: CurrentUser, last_viewed_at: datetime) -> bool:
         # Don't display any posting as new to a guest.
-        if user.is_anonymous:
+        if not user.authenticated:
             return False
 
         # Don't display the author's own posting as new to him/her.

@@ -18,8 +18,7 @@ def test_get_anonymous_current_user():
     assert not current_user.deleted
     assert current_user.avatar_url is None
     assert not current_user.is_orga
-    assert not current_user.is_active
-    assert current_user.is_anonymous
+    assert not current_user.authenticated
     assert len(current_user.permissions) == 0
 
 
@@ -40,6 +39,5 @@ def test_get_authenticated_current_user(user):
     assert not current_user.deleted
     assert current_user.avatar_url is None
     assert not current_user.is_orga
-    assert current_user.is_active
-    assert not current_user.is_anonymous
+    assert current_user.authenticated
     assert current_user.permissions == permissions

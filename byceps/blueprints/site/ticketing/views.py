@@ -384,7 +384,7 @@ def _abort_if_ticket_management_disabled():
 
 
 def _is_ticket_management_enabled():
-    if g.user.is_anonymous:
+    if not g.user.authenticated:
         return False
 
     if g.party_id is None:

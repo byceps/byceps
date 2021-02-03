@@ -66,7 +66,7 @@
     <span class="button button--disabled">{{ render_icon('add') }} <span>Thema hinzufügen</span></span>
     {%- endif %}
 
-    {%- if not g.user.is_anonymous %}
+    {%- if g.user.authenticated %}
     <button class="button" data-action="mark-all-topics-in-category-as-viewed" href="{{ url_for('.mark_all_topics_in_category_as_viewed', category_id=category.id) }}" title="Alle Themen in dieser Kategorie als gelesen markieren">{{ render_icon('view') }}</button>
     {%- endif %}
 

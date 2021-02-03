@@ -111,7 +111,7 @@ def posting_create(topic_id):
         topic.id, creator.id, body
     )
 
-    if not g.user.is_anonymous:
+    if g.user.authenticated:
         board_last_view_service.mark_category_as_just_viewed(
             topic.category.id, g.user.id
         )

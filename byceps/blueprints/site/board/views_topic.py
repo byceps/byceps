@@ -96,7 +96,7 @@ def topic_view(topic_id, page):
             url = h.build_url_for_posting_in_topic_view(posting, page)
             return redirect(url, code=307)
 
-    if not user.is_anonymous:
+    if user.authenticated:
         # Mark as viewed before aborting so a user can itself remove the
         # 'new' tag from a locked topic.
         board_last_view_service.mark_topic_as_just_viewed(topic.id, user.id)
