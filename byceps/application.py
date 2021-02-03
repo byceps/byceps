@@ -84,27 +84,35 @@ def _add_static_file_url_rules(app: Flask) -> None:
 
 
 def init_app(app: Flask) -> None:
-    """Initialize the application after is has been created."""
+    """Initialize application."""
     with app.app_context():
         _set_url_root_path(app)
 
         app_mode = config.get_app_mode()
-        if app_mode.is_site():
-            # Incorporate site-specific template overrides.
-            app.jinja_loader = SiteTemplateOverridesLoader()
-
-            # Set up site-aware template context processor.
-            app._site_context_processors = {}
-            app.context_processor(_get_site_template_context)
+        if app_mode.is_admin():
+            _init_admin_app(app)
+        elif app_mode.is_site():
+            _init_site_app(app)
 
         _load_announce_signal_handlers()
 
-        if app_mode.is_admin() and app.config['RQ_DASHBOARD_ENABLED']:
-            import rq_dashboard
 
-            app.register_blueprint(
-                rq_dashboard.blueprint, url_prefix='/admin/rq'
-            )
+def _init_admin_app(app: Flask) -> None:
+    """Initialize admin application."""
+    if app.config['RQ_DASHBOARD_ENABLED']:
+        import rq_dashboard
+
+        app.register_blueprint(rq_dashboard.blueprint, url_prefix='/admin/rq')
+
+
+def _init_site_app(app: Flask) -> None:
+    """Initialize site application."""
+    # Incorporate site-specific template overrides.
+    app.jinja_loader = SiteTemplateOverridesLoader()
+
+    # Set up site-aware template context processor.
+    app._site_context_processors = {}
+    app.context_processor(_get_site_template_context)
 
 
 def _set_url_root_path(app: Flask) -> None:
