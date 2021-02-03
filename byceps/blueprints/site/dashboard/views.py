@@ -51,7 +51,7 @@ def index():
     site = site_service.get_site(g.site_id)
 
     open_orders = _get_open_orders(site, g.user.id)
-    tickets = _get_tickets(g.user)
+    tickets = _get_tickets(g.user.id)
     news_headlines = _get_news_headlines(site)
     board_topics = _get_board_topics(site, g.user)
 
@@ -79,11 +79,11 @@ def _get_open_orders(site: Site, user_id: UserID) -> List[Order]:
     return orders
 
 
-def _get_tickets(current_user: CurrentUser) -> List[DbTicket]:
+def _get_tickets(user_id: UserID) -> List[DbTicket]:
     if g.party_id is None:
         return []
 
-    return ticket_service.find_tickets_used_by_user(current_user.id, g.party_id)
+    return ticket_service.find_tickets_used_by_user(user_id, g.party_id)
 
 
 def _get_news_headlines(site: Site) -> List[NewsHeadline]:
