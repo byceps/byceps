@@ -41,10 +41,11 @@ def topic_index(page):
 
     h.require_board_access(board_id, user.id)
 
+    include_hidden = service.may_current_user_view_hidden()
     topics_per_page = service.get_topics_per_page_value()
 
     topics = board_topic_query_service.paginate_topics(
-        board_id, user, page, topics_per_page
+        board_id, include_hidden, page, topics_per_page
     )
 
     service.add_topic_creators(topics.items)
@@ -62,8 +63,10 @@ def topic_view(topic_id, page):
     """List postings for the topic."""
     user = g.user
 
+    include_hidden = service.may_current_user_view_hidden()
+
     topic = board_topic_query_service.find_topic_visible_for_user(
-        topic_id, user
+        topic_id, include_hidden
     )
 
     if topic is None:
@@ -76,8 +79,6 @@ def topic_view(topic_id, page):
 
     h.require_board_access(board_id, user.id)
 
-    include_hidden = service.may_current_user_view_hidden()
-
     # Copy last view timestamp for later use to compare postings
     # against it.
     last_viewed_at = board_last_view_service.find_topic_last_viewed_at(
@@ -87,7 +88,7 @@ def topic_view(topic_id, page):
     postings_per_page = service.get_postings_per_page_value()
     if page == 0:
         posting = board_topic_query_service.find_default_posting_to_jump_to(
-            topic.id, user, last_viewed_at
+            topic.id, user, include_hidden, last_viewed_at
         )
 
         if posting is None:

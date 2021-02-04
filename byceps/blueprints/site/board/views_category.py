@@ -69,10 +69,11 @@ def category_view(slug, page):
             category.id, user.id
         )
 
+    include_hidden = service.may_current_user_view_hidden()
     topics_per_page = service.get_topics_per_page_value()
 
     topics = board_topic_query_service.paginate_topics_of_category(
-        category.id, user, page, topics_per_page
+        category.id, include_hidden, page, topics_per_page
     )
 
     service.add_topic_creators(topics.items)

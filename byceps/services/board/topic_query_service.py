@@ -43,25 +43,29 @@ def get_topic(topic_id: TopicID) -> DbTopic:
 
 
 def find_topic_visible_for_user(
-    topic_id: TopicID, user: CurrentUser
+    topic_id: TopicID, include_hidden: bool
 ) -> Optional[DbTopic]:
     """Return the topic with that id, or `None` if not found or
     invisible for the user.
     """
-    return DbTopic.query \
+    query = DbTopic.query \
         .options(
             db.joinedload(DbTopic.category),
-        ) \
-        .only_visible_for_user(user) \
+        )
+
+    if not include_hidden:
+        query = query.without_hidden()
+
+    return query \
         .filter_by(id=topic_id) \
         .first()
 
 
 def get_recent_topics(
-    board_id: BoardID, user: CurrentUser, limit: int
+    board_id: BoardID, include_hidden: bool, limit: int
 ) -> List[DbTopic]:
-    """Paginate topics in that board, as visible for the user."""
-    return _query_topics(user) \
+    """Paginate topics in that board."""
+    return _query_topics(include_hidden) \
         .join(DbCategory) \
             .filter(DbCategory.board_id == board_id) \
             .filter(DbCategory.hidden == False) \
@@ -71,10 +75,10 @@ def get_recent_topics(
 
 
 def paginate_topics(
-    board_id: BoardID, user: CurrentUser, page: int, topics_per_page: int
+    board_id: BoardID, include_hidden: bool, page: int, topics_per_page: int
 ) -> Pagination:
-    """Paginate topics in that board, as visible for the user."""
-    return _query_topics(user) \
+    """Paginate topics in that board."""
+    return _query_topics(include_hidden) \
         .join(DbCategory) \
             .filter(DbCategory.board_id == board_id) \
             .filter(DbCategory.hidden == False) \
@@ -93,32 +97,42 @@ def get_all_topic_ids_in_category(category_id: CategoryID) -> Set[TopicID]:
 
 
 def paginate_topics_of_category(
-    category_id: CategoryID, user: CurrentUser, page: int, topics_per_page: int
+    category_id: CategoryID,
+    include_hidden: bool,
+    page: int,
+    topics_per_page: int,
 ) -> Pagination:
     """Paginate topics in that category, as visible for the user.
 
     Pinned topics are returned first.
     """
-    return _query_topics(user) \
+    return _query_topics(include_hidden) \
         .for_category(category_id) \
         .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc()) \
         .paginate(page, topics_per_page)
 
 
-def _query_topics(user: CurrentUser) -> Query:
-    return DbTopic.query \
+def _query_topics(include_hidden: bool) -> Query:
+    query = DbTopic.query \
         .options(
             db.joinedload(DbTopic.category),
             db.joinedload(DbTopic.last_updated_by),
             db.joinedload(DbTopic.hidden_by),
             db.joinedload(DbTopic.locked_by),
             db.joinedload(DbTopic.pinned_by),
-        ) \
-        .only_visible_for_user(user)
+        )
+
+    if not include_hidden:
+        query = query.without_hidden()
+
+    return query
 
 
 def find_default_posting_to_jump_to(
-    topic_id: TopicID, user: CurrentUser, last_viewed_at: Optional[datetime]
+    topic_id: TopicID,
+    user: CurrentUser,
+    include_hidden: bool,
+    last_viewed_at: Optional[datetime],
 ) -> Optional[DbPosting]:
     """Return the posting of the topic to show by default, or `None`."""
     if not user.authenticated:
@@ -131,9 +145,9 @@ def find_default_posting_to_jump_to(
         # start on the first page.
         return None
 
-    postings_query = DbPosting.query \
-        .for_topic(topic_id) \
-        .only_visible_for_user(user)
+    postings_query = DbPosting.query.for_topic(topic_id)
+    if not include_hidden:
+        postings_query = postings_query.without_hidden()
 
     first_new_posting = postings_query \
         .filter(DbPosting.created_at > last_viewed_at) \
