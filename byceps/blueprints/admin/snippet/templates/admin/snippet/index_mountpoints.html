@@ -55,7 +55,7 @@
           <span class="dimmed">{{ snippet.scope.type_ }}/{{ snippet.scope.name }}</span>
         </td>
         <td>
-        {%- if g.user.has_permission(SnippetMountpointPermission.delete) %}
+        {%- if has_current_user_permission(SnippetMountpointPermission.delete) %}
           <div class="dropdown">
             <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">

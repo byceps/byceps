@@ -15,7 +15,7 @@
   </nav>
   <h1>Turniere {{ render_extra_in_heading(tourneys|length) }}</h1>
 
-  {%- if g.user.has_permission(TourneyPermission.administrate) %}
+  {%- if has_current_user_permission(TourneyPermission.administrate) %}
   <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Turnier erstellen</span></a>
   </div>
@@ -45,7 +45,7 @@
         <td class="bignumber">{{ tourney.max_participant_count }}</td>
         <td>{{ render_datetime(tourney.starts_at|utc_to_local_tz) }}</td>
         <td>
-          {%- if g.user.has_permission(TourneyPermission.administrate) %}
+          {%- if has_current_user_permission(TourneyPermission.administrate) %}
           <div class="button-row button-row--compact">
             <a class="button button--compact" href="{{ url_for('.update_form', tourney_id=tourney.id) }}">{{ render_icon('edit', title='Turnier bearbeiten') }}</a>
           </div>

@@ -42,13 +42,13 @@
   {%- with item = version.item %}
 
     <div class="button-row button-row--compact" style="float: right;">
-      {%- if g.user.has_permission(NewsItemPermission.update) %}
+      {%- if has_current_user_permission(NewsItemPermission.update) %}
       <a class="button" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
       <div class="dropdown">
         <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
         <ol class="dropdown-menu dropdown-menu--right">
           <li><a class="dropdown-item" href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} Bild hinzufügen</a></li>
-          {%- if not item.published and g.user.has_permission(NewsItemPermission.publish) %}
+          {%- if not item.published and has_current_user_permission(NewsItemPermission.publish) %}
           <li><a class="dropdown-item" data-action="item-publish-now" href="{{ url_for('.item_publish_now', item_id=item.id) }}">{{ render_icon('published') }} News jetzt veröffentlichen</a></li>
           <li><a class="dropdown-item" href="{{ url_for('.item_publish_later_form', item_id=item.id) }}">{{ render_icon('published') }} News später veröffentlichen</a></li>
           {%- endif %}
@@ -129,7 +129,7 @@
                     <td>{{ image.attribution|fallback }}</td>
                   </tr>
                 </table>
-                {%- if g.user.has_permission(NewsItemPermission.update) -%}
+                {%- if has_current_user_permission(NewsItemPermission.update) -%}
                 <p><a class="button button--compact" href="{{ url_for('.image_update_form', image_id=image.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a></p>
                 {%- endif -%}
               </div>

@@ -14,7 +14,11 @@ from flask import g, render_template, url_for
 from .... import config
 from ....services.party import service as party_service
 from ....services.site import service as site_service
-from ....util.authorization import permission_registry
+from ....util.authorization import (
+    has_current_user_any_permission,
+    has_current_user_permission,
+    permission_registry,
+)
 from ....util.framework.blueprint import create_blueprint
 from ....util.navigation import Navigation
 from ....util.user_session import get_current_user
@@ -42,6 +46,8 @@ def inject_template_variables():
         'now': datetime.utcnow(),
         'today': date.today(),
         'Navigation': Navigation,
+        'has_current_user_any_permission': has_current_user_any_permission,
+        'has_current_user_permission': has_current_user_permission,
     }
 
     # Make permission enums available in templates.

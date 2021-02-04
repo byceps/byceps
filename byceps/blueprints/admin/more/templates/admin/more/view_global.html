@@ -22,7 +22,7 @@
     (_('Maintenance'), 'administrate', url_for('maintenance_admin.index'), AdminPermission.maintain),
   ] %}
     {%- for label, icon, url, required_permission in items %}
-      {%- if g.user.has_permission(required_permission) %}
+      {%- if has_current_user_permission(required_permission) %}
         {%- call render_cell(icon_name=icon, href=url) %}
           {{ render_icon(icon) }} <span>{{ label }}</span>
         {%- endcall %}

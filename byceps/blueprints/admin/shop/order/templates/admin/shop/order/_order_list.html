@@ -49,7 +49,7 @@
         {%- endif %}
       </td>
       <td>
-        {%- if order.is_open and g.user.has_permission(ShopOrderPermission.mark_as_paid) %}
+        {%- if order.is_open and has_current_user_permission(ShopOrderPermission.mark_as_paid) %}
         <a class="button button--compact" href="{{ url_for('shop_order_admin.mark_as_paid_form', order_id=order.id) }}" title="Bestellung als bezahlt markieren">{{ render_icon('payment') }}</a>
         {%- endif %}
       </td>

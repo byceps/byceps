@@ -11,7 +11,7 @@
   <div class="dimmed-box centered">
     <p>Für diese Marke existiert noch kein Shop.</p>
 
-    {%- if g.user.has_permission(ShopPermission.create) %}
+    {%- if has_current_user_permission(ShopPermission.create) %}
     <div class="button-row button-row--center">
       <a class="button" data-action="create-shop" href="{{ url_for('.create', brand_id=brand.id) }}">{{ render_icon('add') }} <span>Shop erstellen</span></a>
     </div>

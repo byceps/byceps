@@ -19,11 +19,11 @@
         <li><a class="dropdown-item" data-action="order-resend-incoming-notification" href="{{ url_for('.resend_email_for_incoming_order_to_orderer', order_id=order.id) }}">{{ render_icon('email') }} E-Mail-Bestätigung erneut senden</a></li>
           {%- endif %}
 
-          {%- if order.is_open and g.user.has_permission(ShopOrderPermission.mark_as_paid) %}
+          {%- if order.is_open and has_current_user_permission(ShopOrderPermission.mark_as_paid) %}
         <li><a class="dropdown-item" href="{{ url_for('.mark_as_paid_form', order_id=order.id) }}">{{ render_icon('payment') }} Bestellung als bezahlt markieren</a></li>
           {%- endif %}
 
-          {%- if g.user.has_permission(ShopOrderPermission.cancel) %}
+          {%- if has_current_user_permission(ShopOrderPermission.cancel) %}
         <li><a class="dropdown-item" href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('disabled') }} Bestellung stornieren</a></li>
           {%- endif %}
 

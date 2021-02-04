@@ -11,7 +11,7 @@
     <div class="column-auto">
       <h1>Ticket-Kategorien {{ render_extra_in_heading(categories_with_ticket_counts|length) }}</h1>
     </div>
-    {%- if g.user.has_permission(TicketingPermission.administrate) %}
+    {%- if has_current_user_permission(TicketingPermission.administrate) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Kategorie erstellen</span></a>
@@ -35,7 +35,7 @@
           <td><strong>{{ category.title }}</strong><br><span class="dimmed">{{ category.id }}</span></td>
           <td class="bignumber number">{{ ticket_count }}</td>
           <td>
-            {%- if g.user.has_permission(TicketingPermission.administrate) %}
+            {%- if has_current_user_permission(TicketingPermission.administrate) %}
             <div class="button-row button-row--compact button-row--right">
               <a href="{{ url_for('.update_form', category_id=category.id) }}" class="button" title="Bearbeiten">{{ render_icon('edit') }}</a>
             </div>

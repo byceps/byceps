@@ -18,7 +18,7 @@
     (_('Discussion Board'), 'board', url_for('board_admin.board_view', board_id=site.board_id) if site.board_id else '', BoardCategoryPermission.view, site.board_id is not none),
   ] %}
     {%- for label, icon, url, required_permission, precondition in items %}
-      {%- if g.user.has_permission(required_permission) and precondition %}
+      {%- if has_current_user_permission(required_permission) and precondition %}
         {%- call render_cell(icon_name=icon, href=url) %}
           {{ render_icon(icon) }} <span>{{ label }}</span>
         {%- endcall %}

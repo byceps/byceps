@@ -26,7 +26,7 @@
   </div>
 {%- endif %}
 
-  {%- if g.user.has_any_permission(BoardPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
+  {%- if has_current_user_any_permission(BoardPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
   <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} <span>Moderieren</span></a>
   </div>
@@ -56,13 +56,13 @@
 
   </div>
 
-  {%- set current_user_may_reply_generally = g.user.has_permission(BoardPostingPermission.create) %}
+  {%- set current_user_may_reply_generally = has_current_user_permission(BoardPostingPermission.create) %}
 
   {%- if not current_user_may_reply_generally %}
   <small>
     <p style="text-align: right;">Du musst <a href="{{ url_for('authentication.login.login_form') }}">angemeldet</a> sein, um antworten zu können.</p>
   </small>
-  {%- elif topic.locked or (topic.posting_limited_to_moderators and not g.user.has_permission(BoardPermission.announce)) %}
+  {%- elif topic.locked or (topic.posting_limited_to_moderators and not has_current_user_permission(BoardPermission.announce)) %}
   <div class="button-row button-row--right">
     <span class="button button--disabled">{{ render_icon('reply') }} <span>Antworten</span></span>
   </div>

@@ -13,7 +13,7 @@
     <div class="column-auto">
       <h1>{{ title }} {{ render_extra_in_heading(sites|length) }}</h1>
     </div>
-    {%- if g.user.has_permission(SitePermission.create) %}
+    {%- if has_current_user_permission(SitePermission.create) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form', brand_id=brand.id) }}"><span>{{ render_icon('add') }} Site erstellen</span></a>

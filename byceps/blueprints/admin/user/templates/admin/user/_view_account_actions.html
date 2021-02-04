@@ -1,14 +1,14 @@
 {%- from 'macros/icons.html' import render_icon %}
 
-  {%- if not user.deleted and g.user.has_any_permission(UserPermission.administrate, UserPermission.set_password) %}
+  {%- if not user.deleted and has_current_user_any_permission(UserPermission.administrate, UserPermission.set_password) %}
   <div style="float: right; margin-left: 40px;">
     <div class="dropdown">
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('chevron-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
-        {%- if g.user.has_permission(UserPermission.set_password) %}
+        {%- if has_current_user_permission(UserPermission.set_password) %}
         <li><a class="dropdown-item" href="{{ url_for('.set_password', user_id=user.id) }}">{{ render_icon('password') }} Passwort ändern</a></li>
         {%- endif %}
-        {%- if g.user.has_permission(UserPermission.administrate) %}
+        {%- if has_current_user_permission(UserPermission.administrate) %}
 
           {%- if not user.initialized %}
         <li><a class="dropdown-item" data-action="user-initialize" href="{{ url_for('.initialize_account', user_id=user.id) }}">{{ render_icon('enabled') }} Initialisieren</a></li>

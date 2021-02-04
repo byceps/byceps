@@ -40,7 +40,7 @@
   </nav>
   <h1>{{ badge.label }}</h1>
 
-  {%- if g.user.has_permission(UserBadgePermission.update) %}
+  {%- if has_current_user_permission(UserBadgePermission.update) %}
   <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.update_form', badge_id=badge.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
   </div>
