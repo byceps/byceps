@@ -13,7 +13,7 @@ from ....services.site import (
     service as site_service,
     settings_service as site_settings_service,
 )
-from ....util.authorization import register_permission_enum
+from ....util.authorization import has_current_user_permission, register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
@@ -89,4 +89,4 @@ def _get_items_per_page_value():
 
 
 def _may_current_user_view_drafts() -> bool:
-    return g.user.has_permission(NewsItemPermission.view_draft)
+    return has_current_user_permission(NewsItemPermission.view_draft)

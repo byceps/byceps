@@ -21,7 +21,7 @@ from ....services.ticketing import (
     ticket_service,
 )
 from ....services.ticketing.transfer.models import TicketID
-from ....util.authorization import register_permission_enum
+from ....util.authorization import has_current_user_permission, register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -310,7 +310,7 @@ def _is_seat_management_enabled():
 
 
 def _is_current_user_seating_admin() -> bool:
-    return g.user.has_permission(SeatingPermission.administrate)
+    return has_current_user_permission(SeatingPermission.administrate)
 
 
 def _get_ticket_or_404(ticket_id: TicketID) -> DbTicket:

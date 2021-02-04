@@ -21,6 +21,7 @@ from flask import (
 )
 from flask_babel import gettext
 
+from .authorization import has_current_user_permission
 from .framework.flash import flash_notice
 
 
@@ -43,7 +44,7 @@ def permission_required(permission):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
-            if not g.user.has_permission(permission):
+            if not has_current_user_permission(permission):
                 abort(403)
             return func(*args, **kwargs)
 

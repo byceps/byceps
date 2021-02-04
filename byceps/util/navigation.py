@@ -12,6 +12,8 @@ from typing import List, Optional
 
 from flask import g
 
+from .authorization import has_current_user_permission
+
 
 @dataclass(frozen=True)
 class NavigationItem:
@@ -65,6 +67,6 @@ class Navigation:
             if required_permission is None:
                 return True
 
-            return g.user.has_permission(required_permission)
+            return has_current_user_permission(required_permission)
 
         return list(filter(user_has_permission, self.items))

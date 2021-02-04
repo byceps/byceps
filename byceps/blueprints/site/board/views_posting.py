@@ -19,6 +19,7 @@ from ....services.board import (
 from ....services.text_markup.service import get_smileys
 from ....services.user import service as user_service
 from ....signals import board as board_signals
+from ....util.authorization import has_current_user_permission
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, respond_no_content_with_location
@@ -98,7 +99,7 @@ def posting_create(topic_id):
         )
         return redirect(h.build_url_for_topic(topic.id))
 
-    if topic.posting_limited_to_moderators and not g.user.has_permission(
+    if topic.posting_limited_to_moderators and not has_current_user_permission(
         BoardPermission.announce
     ):
         flash_error(
