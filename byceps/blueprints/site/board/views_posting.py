@@ -36,7 +36,7 @@ def posting_view(posting_id):
     """
     posting = h.get_posting_or_404(posting_id)
 
-    page = service.calculate_posting_page_number(posting, g.user)
+    page = service.calculate_posting_page_number(posting)
 
     return redirect(
         h.build_url_for_posting_in_topic_view(posting, page, _external=True)
@@ -136,7 +136,7 @@ def posting_update_form(posting_id, erroneous_form=None):
     """Show form to update a posting."""
     posting = h.get_posting_or_404(posting_id)
 
-    page = service.calculate_posting_page_number(posting, g.user)
+    page = service.calculate_posting_page_number(posting)
     url = h.build_url_for_posting_in_topic_view(posting, page)
 
     user_may_update = posting.may_be_updated_by_user(g.user)
@@ -173,7 +173,7 @@ def posting_update(posting_id):
     """Update a posting."""
     posting = h.get_posting_or_404(posting_id)
 
-    page = service.calculate_posting_page_number(posting, g.user)
+    page = service.calculate_posting_page_number(posting)
     url = h.build_url_for_posting_in_topic_view(posting, page)
 
     user_may_update = posting.may_be_updated_by_user(g.user)
@@ -237,7 +237,7 @@ def posting_hide(posting_id):
 
     event = board_posting_command_service.hide_posting(posting.id, moderator_id)
 
-    page = service.calculate_posting_page_number(posting, g.user)
+    page = service.calculate_posting_page_number(posting)
 
     flash_success(gettext('The posting has been hidden.'), icon='hidden')
 
@@ -261,7 +261,7 @@ def posting_unhide(posting_id):
         posting.id, moderator_id
     )
 
-    page = service.calculate_posting_page_number(posting, g.user)
+    page = service.calculate_posting_page_number(posting)
 
     flash_success(
         gettext('The posting has been made visible again.'), icon='view'

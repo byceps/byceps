@@ -91,7 +91,7 @@ def topic_view(topic_id, page):
         if posting is None:
             page = 1
         else:
-            page = service.calculate_posting_page_number(posting, g.user)
+            page = service.calculate_posting_page_number(posting)
             # Jump to a specific posting. This requires a redirect.
             url = h.build_url_for_posting_in_topic_view(posting, page)
             return redirect(url, code=307)

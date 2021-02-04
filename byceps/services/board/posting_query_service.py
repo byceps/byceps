@@ -82,14 +82,16 @@ def _get_users_by_id(
 
 
 def calculate_posting_page_number(
-    posting: DbPosting, user: CurrentUser, postings_per_page: int
+    posting: DbPosting, include_hidden: bool, postings_per_page: int
 ) -> int:
-    """Return the number of the page the posting should appear on when
-    viewed by the user.
-    """
-    topic_postings = DbPosting.query \
-        .for_topic(posting.topic_id) \
-        .only_visible_for_user(user) \
+    """Return the number of the page the posting should appear on."""
+    query = DbPosting.query \
+        .for_topic(posting.topic_id)
+
+    if not include_hidden:
+        query = query.without_hidden()
+
+    topic_postings = query \
         .earliest_to_latest() \
         .all()
 

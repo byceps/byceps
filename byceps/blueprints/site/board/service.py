@@ -27,6 +27,7 @@ from ....services.user_badge import awarding_service as badge_awarding_service
 from ....services.user_badge.transfer.models import Badge
 from ....typing import BrandID, PartyID, UserID
 
+from .authorization import BoardPermission
 from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
 
 
@@ -140,12 +141,13 @@ def _get_badges_for_users(
     return dict(generate_items())
 
 
-def calculate_posting_page_number(posting: DbPosting, user: CurrentUser) -> int:
+def calculate_posting_page_number(posting: DbPosting) -> int:
     """Calculate the number of postings to show per page."""
+    include_hidden = may_current_user_view_hidden()
     postings_per_page = get_postings_per_page_value()
 
     return board_posting_query_service.calculate_posting_page_number(
-        posting, user, postings_per_page
+        posting, include_hidden, postings_per_page
     )
 
 
@@ -170,3 +172,8 @@ def _get_site_setting_int_value(key, default_value) -> int:
         return default_value
 
     return int(value)
+
+
+def may_current_user_view_hidden() -> bool:
+    """Return `True' if the current user may view hidden items."""
+    return g.user.has_permission(BoardPermission.view_hidden)
