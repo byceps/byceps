@@ -7,10 +7,13 @@ byceps.blueprints.site.board.views_topic
 """
 
 import dataclasses
+from datetime import datetime
+from typing import Optional
 
 from flask import abort, g, redirect, request
 from flask_babel import gettext
 
+from ....services.authentication.session.models.current_user import CurrentUser
 from ....services.board import (
     category_query_service as board_category_query_service,
     last_view_service as board_last_view_service,
@@ -18,6 +21,7 @@ from ....services.board import (
     topic_command_service as board_topic_command_service,
     topic_query_service as board_topic_query_service,
 )
+from ....services.board.transfer.models import TopicID
 from ....services.text_markup.service import get_smileys
 from ....services.user import service as user_service
 from ....signals import board as board_signals
@@ -87,17 +91,15 @@ def topic_view(topic_id, page):
 
     postings_per_page = service.get_postings_per_page_value()
     if page == 0:
-        posting = board_topic_query_service.find_default_posting_to_jump_to(
+        posting_url_to_redirect_to = _find_posting_url_to_redirect_to(
             topic.id, user, include_hidden, last_viewed_at
         )
 
-        if posting is None:
-            page = 1
-        else:
-            page = service.calculate_posting_page_number(posting)
+        if posting_url_to_redirect_to is not None:
             # Jump to a specific posting. This requires a redirect.
-            url = h.build_url_for_posting_in_topic_view(posting, page)
-            return redirect(url, code=307)
+            return redirect(posting_url_to_redirect_to, code=307)
+
+        page = 1
 
     if user.authenticated:
         # Mark as viewed before aborting so a user can itself remove the
@@ -129,6 +131,24 @@ def topic_view(topic_id, page):
         )
 
     return context
+
+
+def _find_posting_url_to_redirect_to(
+    topic_id: TopicID,
+    user: CurrentUser,
+    include_hidden: bool,
+    last_viewed_at: Optional[datetime],
+) -> Optional[str]:
+    posting = board_topic_query_service.find_default_posting_to_jump_to(
+        topic_id, user, include_hidden, last_viewed_at
+    )
+
+    if posting is None:
+        return None
+
+    page = service.calculate_posting_page_number(posting)
+
+    return h.build_url_for_posting_in_topic_view(posting, page)
 
 
 @blueprint.route('/categories/<category_id>/create')
