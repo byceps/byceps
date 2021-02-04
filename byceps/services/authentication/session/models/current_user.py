@@ -20,11 +20,5 @@ class CurrentUser(User):
     authenticated: bool
     permissions: Set[Enum]
 
-    def has_permission(self, permission: Enum) -> bool:
-        return permission in self.permissions
-
-    def has_any_permission(self, *permissions: Set[Enum]) -> bool:
-        return any(map(self.has_permission, permissions))
-
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)
