@@ -12,7 +12,6 @@ from ...database import db, Pagination
 from ...typing import PartyID, UserID
 from ...util.iterables import index_of
 
-from ..authentication.session.models.current_user import CurrentUser
 from ..user import service as user_service
 from ..user.transfer.models import User
 
@@ -46,20 +45,24 @@ def get_posting(posting_id: PostingID) -> DbPosting:
 
 def paginate_postings(
     topic_id: TopicID,
-    user: CurrentUser,
+    include_hidden: bool,
     party_id: Optional[PartyID],
     page: int,
     postings_per_page: int,
 ) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
-    postings = DbPosting.query \
+    query = DbPosting.query \
         .options(
             db.joinedload(DbPosting.topic),
             db.joinedload(DbPosting.last_edited_by).load_only('screen_name'),
             db.joinedload(DbPosting.hidden_by).load_only('screen_name'),
         ) \
-        .for_topic(topic_id) \
-        .only_visible_for_user(user) \
+        .for_topic(topic_id)
+
+    if not include_hidden:
+        query = query.without_hidden()
+
+    postings = query \
         .earliest_to_latest() \
         .paginate(page, postings_per_page)
 

@@ -29,13 +29,6 @@ class PostingQuery(BaseQuery):
     def for_topic(self, topic_id: TopicID) -> BaseQuery:
         return self.filter_by(topic_id=topic_id)
 
-    def only_visible_for_user(self, user: CurrentUser) -> BaseQuery:
-        """Only return postings the user may see."""
-        if not user.has_permission(BoardPermission.view_hidden):
-            return self.without_hidden()
-
-        return self
-
     def without_hidden(self) -> BaseQuery:
         """Only return postings every user may see."""
         return self.filter(Posting.hidden == False)
