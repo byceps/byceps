@@ -4,7 +4,7 @@
 {% macro render_navigation(navigation, current_page) %}
   <nav class="main">
     <ol>
-      {%- for item in navigation.get_items(g.user) %}
+      {%- for item in navigation.get_items() %}
       <li><a href="{{ item.endpoint }}" title="{{ item.label }}" class="nav-item{% if (item.id is not none) and (item.id == current_page) %} nav-item--current{% endif %}">
         {%- if item.icon %}<span class="nav-item-icon">{{ render_icon(item.icon) }}</span>{% endif -%}
         <span class="nav-item-label">{{ item.label }}</span>
@@ -17,7 +17,7 @@
 
 {% macro render_main_tabs(navigation, current_tab) -%}
   <ol class="main-tabs">
-    {%- for item in navigation.get_items(g.user) %}
+    {%- for item in navigation.get_items() %}
       {%- with is_current = (item.id is not none) and (item.id == current_tab) %}
     <li><a href="{{ item.endpoint }}"{% if is_current %} class="current"{% endif -%}>{% if item.icon %}{{ render_icon(item.icon) }} {% endif %}{{ item.label }}</a></li>
       {%- endwith %}

@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import List, Optional
 
-from ..services.authentication.session.models.current_user import CurrentUser
+from flask import g
 
 
 @dataclass(frozen=True)
@@ -57,14 +57,14 @@ class Navigation:
         self.items.append(item)
         return self
 
-    def get_items(self, user: CurrentUser) -> List[NavigationItem]:
-        """Return the navigation items the user is permitted to see."""
+    def get_items(self) -> List[NavigationItem]:
+        """Return the navigation items the current user is allowed to see."""
 
         def user_has_permission(item: NavigationItem) -> bool:
             required_permission = item.required_permission
             if required_permission is None:
                 return True
 
-            return user.has_permission(required_permission)
+            return g.user.has_permission(required_permission)
 
         return list(filter(user_has_permission, self.items))
