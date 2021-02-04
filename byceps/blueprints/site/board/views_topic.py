@@ -139,8 +139,18 @@ def _find_posting_url_to_redirect_to(
     include_hidden: bool,
     last_viewed_at: Optional[datetime],
 ) -> Optional[str]:
+    if not user.authenticated:
+        # All postings are potentially new to a guest, so start on
+        # the first page.
+        return None
+
+    if last_viewed_at is None:
+        # This topic is completely new to the current user, so
+        # start on the first page.
+        return None
+
     posting = board_topic_query_service.find_default_posting_to_jump_to(
-        topic_id, user, include_hidden, last_viewed_at
+        topic_id, include_hidden, last_viewed_at
     )
 
     if posting is None:

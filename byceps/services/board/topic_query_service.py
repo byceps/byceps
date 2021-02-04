@@ -11,8 +11,6 @@ from typing import List, Optional, Set
 
 from ...database import db, Pagination, Query
 
-from ..authentication.session.models.current_user import CurrentUser
-
 from .models.category import Category as DbCategory
 from .models.posting import Posting as DbPosting
 from .models.topic import Topic as DbTopic
@@ -129,22 +127,9 @@ def _query_topics(include_hidden: bool) -> Query:
 
 
 def find_default_posting_to_jump_to(
-    topic_id: TopicID,
-    user: CurrentUser,
-    include_hidden: bool,
-    last_viewed_at: Optional[datetime],
+    topic_id: TopicID, include_hidden: bool, last_viewed_at: datetime
 ) -> Optional[DbPosting]:
     """Return the posting of the topic to show by default, or `None`."""
-    if not user.authenticated:
-        # All postings are potentially new to a guest, so start on
-        # the first page.
-        return None
-
-    if last_viewed_at is None:
-        # This topic is completely new to the current user, so
-        # start on the first page.
-        return None
-
     postings_query = DbPosting.query.for_topic(topic_id)
     if not include_hidden:
         postings_query = postings_query.without_hidden()
