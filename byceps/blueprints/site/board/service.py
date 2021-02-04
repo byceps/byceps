@@ -28,7 +28,11 @@ from ....services.user_badge.transfer.models import Badge
 from ....util.authorization import has_current_user_permission
 from ....typing import BrandID, PartyID, UserID
 
-from .authorization import BoardPermission, BoardPostingPermission
+from .authorization import (
+    BoardPermission,
+    BoardPostingPermission,
+    BoardTopicPermission,
+)
 from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
 
 
@@ -198,13 +202,10 @@ def may_current_user_view_hidden() -> bool:
 def may_topic_be_updated_by_current_user(topic: DbTopic) -> bool:
     """Return `True` if the topic may be updated by the current user."""
     return (
-        (
-            not topic.locked
-                and g.user.id == topic.creator_id
-                and has_current_user_permission(BoardTopicPermission.update)
-        )
-        or has_current_user_permission(BoardPermission.update_of_others)
-    )
+        not topic.locked
+        and g.user.id == topic.creator_id
+        and has_current_user_permission(BoardTopicPermission.update)
+    ) or has_current_user_permission(BoardPermission.update_of_others)
 
 
 def may_posting_be_updated_by_current_user(posting: DbPosting) -> bool:
