@@ -69,7 +69,7 @@ class Posting(db.Model):
     def is_initial_topic_posting(self, topic: Topic) -> bool:
         return self == topic.initial_posting
 
-    def may_be_updated_by_user(self, user: User) -> bool:
+    def may_be_updated_by_user(self, user: CurrentUser) -> bool:
         return (
             not self.topic.locked
             and user.id == self.creator_id
