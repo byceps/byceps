@@ -9,7 +9,7 @@ byceps.util.authorization
 from enum import Enum
 from typing import List, Set
 
-from flask import current_app
+from flask import current_app, g
 
 from ..services.authorization import service as authorization_service
 from ..typing import UserID
@@ -94,3 +94,13 @@ class PermissionRegistry:
 
 
 permission_registry = PermissionRegistry()
+
+
+def has_current_user_permission(permission: Enum) -> bool:
+    """Return `True` if the current user has this permission."""
+    return permission in g.user.permissions
+
+
+def has_current_user_any_permission(*permissions: Set[Enum]) -> bool:
+    """Return `True` if the current user has any of these permissions."""
+    return any(map(has_current_user_permission, permissions))
