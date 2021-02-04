@@ -102,7 +102,7 @@ def manage_seats_in_area(slug):
     selected_ticket_id = None
     selected_ticket = None
 
-    if _is_seating_admin(g.user):
+    if _is_current_user_seating_admin():
         selected_ticket = _get_selected_ticket()
         if selected_ticket is not None:
             seat_manager_id = selected_ticket.get_seat_manager().id
@@ -186,8 +186,9 @@ def occupy_seat(ticket_id, seat_id):
 
     manager = g.user
 
-    if not ticket.is_seat_managed_by(manager.id) and not _is_seating_admin(
-        manager
+    if (
+        not ticket.is_seat_managed_by(manager.id)
+        and not _is_current_user_seating_admin()
     ):
         flash_error(
             gettext(
@@ -264,8 +265,9 @@ def release_seat(ticket_id):
 
     manager = g.user
 
-    if not ticket.is_seat_managed_by(manager.id) and not _is_seating_admin(
-        manager
+    if (
+        not ticket.is_seat_managed_by(manager.id)
+        and not _is_current_user_seating_admin()
     ):
         flash_error(
             gettext(
@@ -300,15 +302,15 @@ def _is_seat_management_enabled():
     if g.party_id is None:
         return False
 
-    if _is_seating_admin(g.user):
+    if _is_current_user_seating_admin():
         return True
 
     party = party_service.get_party(g.party_id)
     return party.seat_management_enabled
 
 
-def _is_seating_admin(user) -> bool:
-    return user.has_permission(SeatingPermission.administrate)
+def _is_current_user_seating_admin() -> bool:
+    return g.user.has_permission(SeatingPermission.administrate)
 
 
 def _get_ticket_or_404(ticket_id: TicketID) -> DbTicket:
