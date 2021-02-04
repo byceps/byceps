@@ -76,17 +76,6 @@ class Posting(db.Model):
             and user.has_permission(BoardPostingPermission.update)
         ) or user.has_permission(BoardPermission.update_of_others)
 
-    def is_unseen(self, user: CurrentUser, last_viewed_at: datetime) -> bool:
-        # Don't display any posting as new to a guest.
-        if not user.authenticated:
-            return False
-
-        # Don't display the author's own posting as new to him/her.
-        if self.creator_id == user.id:
-            return False
-
-        return (last_viewed_at is None) or (self.created_at > last_viewed_at)
-
     def __eq__(self, other) -> bool:
         return self.id == other.id
 

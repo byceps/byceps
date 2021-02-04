@@ -110,7 +110,7 @@ def topic_view(topic_id, page):
         topic.id, include_hidden, g.party_id, page, postings_per_page
     )
 
-    service.add_unseen_flag_to_postings(postings.items, user, last_viewed_at)
+    service.add_unseen_flag_to_postings(postings.items, last_viewed_at)
 
     is_last_page = not postings.has_next
 

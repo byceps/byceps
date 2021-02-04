@@ -84,11 +84,26 @@ def add_topic_unseen_flag(topics: Sequence[DbTopic], user: CurrentUser) -> None:
 
 
 def add_unseen_flag_to_postings(
-    postings: Sequence[DbPosting], user: CurrentUser, last_viewed_at: datetime
+    postings: Sequence[DbPosting], last_viewed_at: datetime
 ) -> None:
     """Add the attribute 'unseen' to each posting."""
     for posting in postings:
-        posting.unseen = posting.is_unseen(user, last_viewed_at)
+        posting.unseen = is_posting_unseen(posting, last_viewed_at)
+
+
+def is_posting_unseen(posting: DbPosting, last_viewed_at: datetime) -> bool:
+    """Return `True` if the posting has not yet been seen by the current
+    user.
+    """
+    # Don't display any posting as new to a guest.
+    if not g.user.authenticated:
+        return False
+
+    # Don't display the author's own posting as new to them.
+    if posting.creator_id == g.user.id:
+        return False
+
+    return (last_viewed_at is None) or (posting.created_at > last_viewed_at)
 
 
 def enrich_creators(
