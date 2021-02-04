@@ -8,15 +8,10 @@ byceps.services.board.models.posting
 
 from datetime import datetime
 
-from ....blueprints.site.board.authorization import (
-    BoardPermission,
-    BoardPostingPermission,
-)
 from ....database import BaseQuery, db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ...authentication.session.models.current_user import CurrentUser
 from ...user.models.user import User
 
 from ..transfer.models import TopicID
@@ -68,13 +63,6 @@ class Posting(db.Model):
 
     def is_initial_topic_posting(self, topic: Topic) -> bool:
         return self == topic.initial_posting
-
-    def may_be_updated_by_user(self, user: CurrentUser) -> bool:
-        return (
-            not self.topic.locked
-            and user.id == self.creator_id
-            and user.has_permission(BoardPostingPermission.update)
-        ) or user.has_permission(BoardPermission.update_of_others)
 
     def __eq__(self, other) -> bool:
         return self.id == other.id

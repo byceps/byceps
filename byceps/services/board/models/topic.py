@@ -10,15 +10,10 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....blueprints.site.board.authorization import (
-    BoardPermission,
-    BoardTopicPermission,
-)
 from ....database import BaseQuery, db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ...authentication.session.models.current_user import CurrentUser
 from ...user.models.user import User
 
 from ..transfer.models import CategoryID
@@ -74,16 +69,6 @@ class Topic(db.Model):
         self.category_id = category_id
         self.creator_id = creator_id
         self.title = title
-
-    def may_be_updated_by_user(self, user: CurrentUser) -> bool:
-        return (
-            (
-                not self.locked
-                    and user.id == self.creator_id
-                    and user.has_permission(BoardTopicPermission.update)
-            )
-            or user.has_permission(BoardPermission.update_of_others)
-        )
 
     @property
     def reply_count(self) -> int:

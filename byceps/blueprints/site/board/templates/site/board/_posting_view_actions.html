@@ -4,7 +4,7 @@
 {%- set is_initial_topic_posting = posting.is_initial_topic_posting(posting.topic) %}
 
 {%- set user_may_reply = (not topic.locked and g.user.has_permission(BoardPostingPermission.create)) %}
-{%- set user_may_update = (topic.may_be_updated_by_user(g.user) if is_initial_topic_posting else posting.may_be_updated_by_user(g.user)) %}
+{%- set user_may_update = (may_topic_be_updated_by_current_user(topic) if is_initial_topic_posting else may_posting_be_updated_by_current_user(posting)) %}
 {%- set user_may_hide = g.user.has_permission(BoardPermission.hide) %}
 
       {%- if user_may_reply or user_may_update or user_may_hide %}

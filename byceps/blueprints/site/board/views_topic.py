@@ -120,6 +120,8 @@ def topic_view(topic_id, page):
         'topic': topic,
         'postings': postings,
         'is_last_page': is_last_page,
+        'may_topic_be_updated_by_current_user': service.may_topic_be_updated_by_current_user,
+        'may_posting_be_updated_by_current_user': service.may_posting_be_updated_by_current_user,
     }
 
     if is_last_page:
@@ -214,7 +216,7 @@ def topic_update_form(topic_id, erroneous_form=None):
     topic = h.get_topic_or_404(topic_id)
     url = h.build_url_for_topic(topic.id)
 
-    user_may_update = topic.may_be_updated_by_user(g.user)
+    user_may_update = service.may_topic_be_updated_by_current_user(topic)
 
     if topic.locked and not user_may_update:
         flash_error(
@@ -250,7 +252,7 @@ def topic_update(topic_id):
     topic = h.get_topic_or_404(topic_id)
     url = h.build_url_for_topic(topic.id)
 
-    user_may_update = topic.may_be_updated_by_user(g.user)
+    user_may_update = service.may_topic_be_updated_by_current_user(topic)
 
     if topic.locked and not user_may_update:
         flash_error(

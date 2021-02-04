@@ -27,7 +27,7 @@ from ....services.user_badge import awarding_service as badge_awarding_service
 from ....services.user_badge.transfer.models import Badge
 from ....typing import BrandID, PartyID, UserID
 
-from .authorization import BoardPermission
+from .authorization import BoardPermission, BoardPostingPermission
 from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
 
 
@@ -192,3 +192,24 @@ def _get_site_setting_int_value(key, default_value) -> int:
 def may_current_user_view_hidden() -> bool:
     """Return `True' if the current user may view hidden items."""
     return g.user.has_permission(BoardPermission.view_hidden)
+
+
+def may_topic_be_updated_by_current_user(topic: DbTopic) -> bool:
+    """Return `True` if the topic may be updated by the current user."""
+    return (
+        (
+            not topic.locked
+                and g.user.id == topic.creator_id
+                and g.user.has_permission(BoardTopicPermission.update)
+        )
+        or g.user.has_permission(BoardPermission.update_of_others)
+    )
+
+
+def may_posting_be_updated_by_current_user(posting: DbPosting) -> bool:
+    """Return `True` if the posting may be updated by the current user."""
+    return (
+        not posting.topic.locked
+        and g.user.id == posting.creator_id
+        and g.user.has_permission(BoardPostingPermission.update)
+    ) or g.user.has_permission(BoardPermission.update_of_others)

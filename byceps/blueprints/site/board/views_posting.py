@@ -139,7 +139,7 @@ def posting_update_form(posting_id, erroneous_form=None):
     page = service.calculate_posting_page_number(posting)
     url = h.build_url_for_posting_in_topic_view(posting, page)
 
-    user_may_update = posting.may_be_updated_by_user(g.user)
+    user_may_update = service.may_posting_be_updated_by_current_user(posting)
 
     if posting.topic.locked and not user_may_update:
         flash_error(
@@ -176,7 +176,7 @@ def posting_update(posting_id):
     page = service.calculate_posting_page_number(posting)
     url = h.build_url_for_posting_in_topic_view(posting, page)
 
-    user_may_update = posting.may_be_updated_by_user(g.user)
+    user_may_update = service.may_posting_be_updated_by_current_user(posting)
 
     if posting.topic.locked and not user_may_update:
         flash_error(
