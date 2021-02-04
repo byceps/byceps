@@ -337,6 +337,7 @@ msgid "Organizers"
 msgstr "Organisatoren"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:53
+#: sites/cozylan/template_overrides/layout/_navigation.html:11
 msgid "Shop"
 msgstr "Shop"
 
@@ -454,6 +455,7 @@ msgid "Brand Snippets"
 msgstr "Marken-Snippets"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:23
+#: sites/cozylan/template_overrides/layout/_navigation.html:12
 msgid "Terms of Service"
 msgstr "AGB"
 
@@ -492,8 +494,9 @@ msgstr "Turniere"
 #: byceps/blueprints/admin/more/templates/admin/more/view_site.html:18
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:137
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:160
+#: sites/cozylan/template_overrides/layout/_navigation.html:13
 msgid "Discussion Board"
-msgstr "Foren"
+msgstr "Forum"
 
 #: byceps/blueprints/admin/news/forms.py:27
 msgid "URL prefix"
@@ -638,6 +641,7 @@ msgid "User"
 msgstr "Benutzer"
 
 #: byceps/blueprints/admin/orga_team/forms.py:52
+#: sites/cozylan/template_overrides/layout/_navigation.html:8
 msgid "Team"
 msgstr "Team"
 
@@ -1613,113 +1617,113 @@ msgstr "Setze ein neues Passwort."
 msgid "Login is disabled."
 msgstr "Die Anmeldung ist deaktiviert."
 
-#: byceps/blueprints/site/board/views_category.py:99
+#: byceps/blueprints/site/board/views_category.py:100
 msgid "All topics in this category have been marked as read."
 msgstr "Alle Themen in dieser Kategorie wurden als gelesen markiert."
 
-#: byceps/blueprints/site/board/views_posting.py:73
+#: byceps/blueprints/site/board/views_posting.py:74
 msgid "The posting to quote has not been found."
 msgstr "Der zu zitierende Beitrag wurde nicht gefunden."
 
-#: byceps/blueprints/site/board/views_posting.py:96
+#: byceps/blueprints/site/board/views_posting.py:97
 msgid "This topic is locked. It cannot be replied to."
 msgstr ""
 "Das Thema ist geschlossen. Es können keine Beiträge mehr hinzugefügt "
 "werden."
 
-#: byceps/blueprints/site/board/views_posting.py:105
+#: byceps/blueprints/site/board/views_posting.py:106
 msgid "Only moderators are allowed to reply in this topic."
 msgstr "In diesem Thema dürfen nur Moderatoren Beiträge hinzufügen."
 
-#: byceps/blueprints/site/board/views_posting.py:119
+#: byceps/blueprints/site/board/views_posting.py:120
 msgid "Your reply has been added."
 msgstr "Deine Antwort wurde hinzugefügt."
 
-#: byceps/blueprints/site/board/views_posting.py:146
-#: byceps/blueprints/site/board/views_posting.py:183
+#: byceps/blueprints/site/board/views_posting.py:147
+#: byceps/blueprints/site/board/views_posting.py:184
 msgid "The posting must not be edited because the topic it belongs to is locked."
 msgstr ""
 "Der Beitrag darf nicht bearbeitet werden weil das Thema, zu dem dieser "
 "Beitrag gehört, gesperrt ist."
 
-#: byceps/blueprints/site/board/views_posting.py:154
-#: byceps/blueprints/site/board/views_posting.py:191
+#: byceps/blueprints/site/board/views_posting.py:155
+#: byceps/blueprints/site/board/views_posting.py:192
 msgid "The posting must not be edited."
 msgstr "Der Beitrag darf nicht bearbeitet werden."
 
-#: byceps/blueprints/site/board/views_posting.py:158
-#: byceps/blueprints/site/board/views_posting.py:195
+#: byceps/blueprints/site/board/views_posting.py:159
+#: byceps/blueprints/site/board/views_posting.py:196
 msgid "You are not allowed to edit this posting."
 msgstr "Du darfst diesen Beitrag nicht bearbeiten."
 
-#: byceps/blueprints/site/board/views_posting.py:206
+#: byceps/blueprints/site/board/views_posting.py:207
 msgid "The posting has been updated."
 msgstr "Der Beitrag wurde aktualisiert."
 
-#: byceps/blueprints/site/board/views_posting.py:242
+#: byceps/blueprints/site/board/views_posting.py:243
 msgid "The posting has been hidden."
 msgstr "Der Beitrag wurde versteckt."
 
-#: byceps/blueprints/site/board/views_posting.py:267
+#: byceps/blueprints/site/board/views_posting.py:268
 msgid "The posting has been made visible again."
 msgstr "Der Beitrag wurde wieder sichtbar gemacht."
 
-#: byceps/blueprints/site/board/views_topic.py:167
+#: byceps/blueprints/site/board/views_topic.py:202
 #, python-format
 msgid "Topic \"%(title)s\" has been created."
 msgstr "Das Thema \"%(title)s\" wurde hinzugefügt."
 
-#: byceps/blueprints/site/board/views_topic.py:188
-#: byceps/blueprints/site/board/views_topic.py:224
+#: byceps/blueprints/site/board/views_topic.py:223
+#: byceps/blueprints/site/board/views_topic.py:259
 msgid "The topic must not be updated because it is locked."
 msgstr "Das Thema darf nicht bearbeitet werden weil es gesperrt ist."
 
-#: byceps/blueprints/site/board/views_topic.py:193
-#: byceps/blueprints/site/board/views_topic.py:229
+#: byceps/blueprints/site/board/views_topic.py:228
+#: byceps/blueprints/site/board/views_topic.py:264
 msgid "The topic must not be updated."
 msgstr "Das Thema darf nicht bearbeitet werden."
 
-#: byceps/blueprints/site/board/views_topic.py:197
-#: byceps/blueprints/site/board/views_topic.py:233
+#: byceps/blueprints/site/board/views_topic.py:232
+#: byceps/blueprints/site/board/views_topic.py:268
 msgid "You are not allowed to update this topic."
 msgstr "Du darfst dieses Thema nicht bearbeiten."
 
-#: byceps/blueprints/site/board/views_topic.py:245
+#: byceps/blueprints/site/board/views_topic.py:280
 #, python-format
 msgid "Topic \"%(title)s\" has been updated."
 msgstr "Das Thema \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/site/board/views_topic.py:281
+#: byceps/blueprints/site/board/views_topic.py:316
 #, python-format
 msgid "Topic \"%(title)s\" has been hidden."
 msgstr "Das Thema \"%(title)s\" wurde versteckt."
 
-#: byceps/blueprints/site/board/views_topic.py:304
+#: byceps/blueprints/site/board/views_topic.py:339
 #, python-format
 msgid "Topic \"%(title)s\" has been made visible again."
 msgstr "Das Thema \"%(title)s\" wurde wieder sichtbar gemacht."
 
-#: byceps/blueprints/site/board/views_topic.py:330
+#: byceps/blueprints/site/board/views_topic.py:365
 #, python-format
 msgid "Topic \"%(title)s\" has been locked."
 msgstr "Das Thema \"%(title)s\" wurde geschlossen."
 
-#: byceps/blueprints/site/board/views_topic.py:353
+#: byceps/blueprints/site/board/views_topic.py:388
 #, python-format
 msgid "Topic \"%(title)s\" has been unlocked."
 msgstr "Das Thema \"%(title)s\" wurde wieder geöffnet."
 
-#: byceps/blueprints/site/board/views_topic.py:376
+#: byceps/blueprints/site/board/views_topic.py:411
 #, python-format
 msgid "Topic \"%(title)s\" has been pinned."
 msgstr "Das Thema \"%(title)s\" wurde angepinnt."
 
-#: byceps/blueprints/site/board/views_topic.py:399
+#: byceps/blueprints/site/board/views_topic.py:434
 #, python-format
 msgid "Topic \"%(title)s\" has been unpinned."
 msgstr "Das Thema \"%(title)s\" wurde wieder gelöst."
 
-#: byceps/blueprints/site/board/views_topic.py:430
+#: byceps/blueprints/site/board/views_topic.py:465
 #, python-format
 msgid ""
 "Topic \"%(topic_title)s\" has been moved from category "
@@ -1729,12 +1733,12 @@ msgstr ""
 "\"%(old_category_title)s\" in die Kategorie \"%(new_category_title)s\" "
 "verschoben."
 
-#: byceps/blueprints/site/board/views_topic.py:460
+#: byceps/blueprints/site/board/views_topic.py:495
 #, python-format
 msgid "Topic \"%(title)s\" has been limited to announcements."
 msgstr "Das Thema \"%(title)s\" wurde auf Ankündigungen beschränkt."
 
-#: byceps/blueprints/site/board/views_topic.py:482
+#: byceps/blueprints/site/board/views_topic.py:517
 #, python-format
 msgid "Topic \"%(title)s\" has been reopened for regular replies."
 msgstr "Das Thema \"%(title)s\" wurde für normale Beiträge geöffnet."
@@ -1800,6 +1804,7 @@ msgid "Ticket management"
 msgstr "Ticketverwaltung"
 
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:115
+#: sites/cozylan/template_overrides/layout/_navigation.html:6
 msgid "News"
 msgstr "News"
 
@@ -1827,7 +1832,7 @@ msgstr "Du hast dich vom Newsletter \"%(title)s\" abgemeldet."
 
 #: byceps/blueprints/site/seating/views.py:91
 #: byceps/blueprints/site/seating/views.py:181
-#: byceps/blueprints/site/seating/views.py:250
+#: byceps/blueprints/site/seating/views.py:251
 msgid "Seat reservations cannot be changed at this time."
 msgstr "Sitzplatzreservierungen können derzeit nicht verändert werden."
 
@@ -1841,21 +1846,21 @@ msgstr "Ticket ID \"%(selected_ticket_id_arg)s\" not found."
 msgid "Ticket \"%(selected_ticket_code)s\" is revoked."
 msgstr "Ticket \"%(selected_ticket_code)s\" wurde widerrufen."
 
-#: byceps/blueprints/site/seating/views.py:193
-#: byceps/blueprints/site/seating/views.py:271
+#: byceps/blueprints/site/seating/views.py:194
+#: byceps/blueprints/site/seating/views.py:273
 #, python-format
 msgid "You are not authorized to manage the seat for ticket %(ticket_code)s."
 msgstr ""
 "Du bist nicht berechtigt, den Sitzplatz für Ticket %(ticket_code)s zu "
 "verwalten."
 
-#: byceps/blueprints/site/seating/views.py:204
+#: byceps/blueprints/site/seating/views.py:205
 #, python-format
 msgid "%(seat_label)s is already occupied."
 msgstr "%(seat_label)s ist bereits belegt."
 
-#: byceps/blueprints/site/seating/views.py:216
-#: byceps/blueprints/site/seating/views.py:284
+#: byceps/blueprints/site/seating/views.py:217
+#: byceps/blueprints/site/seating/views.py:286
 #, python-format
 msgid ""
 "Ticket %(ticket_code)s belongs to a bundle and cannot be managed "
@@ -1864,7 +1869,7 @@ msgstr ""
 "Ticket %(ticket_code)s gehört zu einem Paket und kann nicht einzeln "
 "verwaltet werden."
 
-#: byceps/blueprints/site/seating/views.py:224
+#: byceps/blueprints/site/seating/views.py:225
 #, python-format
 msgid ""
 "Ticket %(ticket_code)s and seat \"%(seat_label)s\" belong to different "
@@ -1873,17 +1878,17 @@ msgstr ""
 "Ticket %(ticket_code)s und %(seat_label)s haben unterschiedliche "
 "Kategorien."
 
-#: byceps/blueprints/site/seating/views.py:235
+#: byceps/blueprints/site/seating/views.py:236
 #, python-format
 msgid "%(seat_label)s has been occupied with ticket %(ticket_code)s."
 msgstr "%(seat_label)s wurde mit Ticket %(ticket_code)s reserviert."
 
-#: byceps/blueprints/site/seating/views.py:258
+#: byceps/blueprints/site/seating/views.py:259
 #, python-format
 msgid "Ticket %(ticket_code)s occupies no seat."
 msgstr "Ticket %(ticket_code)s belegt keinen Sitzplatz."
 
-#: byceps/blueprints/site/seating/views.py:292
+#: byceps/blueprints/site/seating/views.py:294
 #, python-format
 msgid "%(seat_label)s has been released."
 msgstr "%(seat_label)s wurde freigegeben."
@@ -1909,42 +1914,42 @@ msgid "Street"
 msgstr "Straße"
 
 #: byceps/blueprints/site/shop/order/views.py:52
-#: byceps/blueprints/site/shop/order/views.py:101
-#: byceps/blueprints/site/shop/order/views.py:152
-#: byceps/blueprints/site/shop/order/views.py:208
+#: byceps/blueprints/site/shop/order/views.py:100
+#: byceps/blueprints/site/shop/order/views.py:151
+#: byceps/blueprints/site/shop/order/views.py:207
 msgid "The shop is closed."
 msgstr "Der Shop ist derzeit geschlossen."
 
 #: byceps/blueprints/site/shop/order/views.py:60
-#: byceps/blueprints/site/shop/order/views.py:109
+#: byceps/blueprints/site/shop/order/views.py:108
 msgid "No articles are available."
 msgstr "Es sind keine Artikel verfügbar."
 
-#: byceps/blueprints/site/shop/order/views.py:121
+#: byceps/blueprints/site/shop/order/views.py:120
 msgid "No articles have been selected."
 msgstr "Es wurden keine Artikel ausgewählt."
 
-#: byceps/blueprints/site/shop/order/views.py:129
-#: byceps/blueprints/site/shop/order/views.py:244
+#: byceps/blueprints/site/shop/order/views.py:128
+#: byceps/blueprints/site/shop/order/views.py:243
 msgid "Placing the order has failed."
 msgstr "Die Bestellung ist fehlgeschlagen."
 
-#: byceps/blueprints/site/shop/order/views.py:167
-#: byceps/blueprints/site/shop/order/views.py:212
+#: byceps/blueprints/site/shop/order/views.py:166
+#: byceps/blueprints/site/shop/order/views.py:211
 msgid "The article cannot be ordered directly."
 msgstr "Der Artikel kann nicht direkt bestellt werden."
 
-#: byceps/blueprints/site/shop/order/views.py:174
-#: byceps/blueprints/site/shop/order/views.py:224
+#: byceps/blueprints/site/shop/order/views.py:173
+#: byceps/blueprints/site/shop/order/views.py:223
 msgid "You cannot place another order."
 msgstr "Du kannst keine weitere Bestellung aufgeben."
 
-#: byceps/blueprints/site/shop/order/views.py:183
-#: byceps/blueprints/site/shop/order/views.py:230
+#: byceps/blueprints/site/shop/order/views.py:182
+#: byceps/blueprints/site/shop/order/views.py:229
 msgid "The article is not available."
 msgstr "Der Artikel ist nicht verfügbar."
 
-#: byceps/blueprints/site/shop/order/views.py:293
+#: byceps/blueprints/site/shop/order/views.py:292
 #, python-format
 msgid "Your order <strong>%(order_number)s</strong> has been placed. Thank you!"
 msgstr ""
@@ -2192,11 +2197,43 @@ msgstr "Deine Bestellung (%(order_number)s) ist bezahlt worden."
 msgid "wrote"
 msgstr "schrieb"
 
-#: byceps/util/views.py:33
+#: byceps/util/views.py:34
 msgid "Please log in."
 msgstr "Bitte melde dich an."
 
 #: byceps/util/datetime/format.py:74
 msgid "yesterday"
 msgstr "gestern"
+
+#: sites/cozylan/template_overrides/layout/_navigation.html:7
+msgid "Party Details"
+msgstr "Party-Details"
+
+#: sites/cozylan/template_overrides/layout/_navigation.html:9
+msgid "Attendees"
+msgstr "Teilnehmer"
+
+#: sites/cozylan/template_overrides/layout/_navigation.html:10
+msgid "Seating Plan"
+msgstr "Sitzplan"
+
+#: sites/cozylan/template_overrides/layout/_sidebar_right.html:13
+msgid "Sold out!"
+msgstr "Ausverkauft!"
+
+#: sites/cozylan/template_overrides/layout/_sidebar_right.html:21
+msgid "tickets paid"
+msgstr "Tickets bezahlt"
+
+#: sites/cozylan/template_overrides/layout/_sidebar_right.html:24
+msgid "Order tickets"
+msgstr "Tickets bestellen"
+
+#: sites/cozylan/template_overrides/layout/_sidebar_right.html:32
+msgid "Seats"
+msgstr "Sitzplätze"
+
+#: sites/cozylan/template_overrides/layout/_sidebar_right.html:40
+msgid "seats occupied"
+msgstr "Sitzplätze belegt"
 
