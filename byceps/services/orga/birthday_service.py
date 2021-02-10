@@ -7,7 +7,7 @@ byceps.services.orga.birthday_service
 """
 
 from itertools import islice
-from typing import Dict, Iterator, Optional, Sequence, Tuple
+from typing import Dict, Iterator, Optional, Sequence, Set, Tuple
 
 from ...database import db
 
@@ -18,6 +18,15 @@ from ..user.transfer.models import User, UserID
 
 from .models import OrgaFlag as DbOrgaFlag
 from .transfer.models import Birthday
+
+
+def get_orgas_with_birthday_today() -> Set[User]:
+    """Return the orgas whose birthday is today."""
+    orgas_with_birthdays = _collect_orgas_with_known_birthdays()
+
+    return {
+        user for user, birthday in orgas_with_birthdays if birthday.is_today
+    }
 
 
 def collect_orgas_with_next_birthdays(
