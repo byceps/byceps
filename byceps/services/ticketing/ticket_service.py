@@ -195,6 +195,18 @@ def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
     return db.session.query(q.exists()).scalar()
 
 
+def get_ticket_users_for_party(party_id: PartyID) -> Set[UserID]:
+    """Return the IDs of the users of tickets for that party."""
+    rows = db.session \
+        .query(DbTicket.used_by_id) \
+        .filter(DbTicket.party_id == party_id) \
+        .filter(DbTicket.revoked == False) \
+        .filter(DbTicket.used_by_id != None) \
+        .all()
+
+    return {row[0] for row in rows}
+
+
 def select_ticket_users_for_party(
     user_ids: Set[UserID], party_id: PartyID
 ) -> Set[UserID]:

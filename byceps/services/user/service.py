@@ -308,6 +308,17 @@ def get_email_address(user_id: UserID) -> str:
     return email_address
 
 
+def get_email_addresses(user_ids: Set[UserID]) -> Set[Tuple[UserID, str]]:
+    """Return the users' e-mail addresses."""
+    return db.session \
+        .query(
+            DbUser.id,
+            DbUser.email_address,
+        ) \
+        .filter(DbUser.id.in_(user_ids)) \
+        .all()
+
+
 def get_sort_key_for_screen_name(user: User) -> Tuple[bool, str]:
     """Return a key for sorting by screen name.
 
