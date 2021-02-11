@@ -110,20 +110,28 @@ def log_in_user(
     """Create a session token and record the log in."""
     session_token = get_session_token(user_id)
 
-    create_login_event(user_id, ip_address, site_id=site_id)
-    record_recent_login(user_id)
+    occurred_at = datetime.utcnow()
+
+    _create_login_event(user_id, occurred_at, ip_address, site_id=site_id)
+    _record_recent_login(user_id, occurred_at)
 
     return session_token.token
 
 
-def create_login_event(
-    user_id: UserID, ip_address: str, *, site_id: Optional[SiteID] = None
+def _create_login_event(
+    user_id: UserID,
+    occurred_at: datetime,
+    ip_address: str,
+    *,
+    site_id: Optional[SiteID] = None,
 ) -> None:
     """Create an event that represents a user login."""
     data = {'ip_address': ip_address}
     if site_id:
         data['site_id'] = site_id
-    user_event_service.create_event('user-logged-in', user_id, data)
+    user_event_service.create_event(
+        'user-logged-in', user_id, data, occurred_at=occurred_at
+    )
 
 
 def find_recent_login(user_id: UserID) -> Optional[datetime]:
@@ -138,17 +146,13 @@ def find_recent_login(user_id: UserID) -> Optional[datetime]:
     return recent_login.occurred_at
 
 
-def record_recent_login(user_id: UserID) -> datetime:
+def _record_recent_login(user_id: UserID, occurred_at: datetime) -> None:
     """Store the time of the user's most recent login."""
-    occurred_at = datetime.utcnow()
-
     table = DbRecentLogin.__table__
     identifier = {'user_id': user_id}
     replacement = {'occurred_at': occurred_at}
 
     upsert(table, identifier, replacement)
-
-    return occurred_at
 
 
 ANONYMOUS_USER_ID = UUID('00000000-0000-0000-0000-000000000000')
