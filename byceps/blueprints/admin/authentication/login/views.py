@@ -12,6 +12,7 @@ from flask_babel import gettext
 from .....services.authentication.exceptions import AuthenticationFailed
 from .....services.authentication import service as authentication_service
 from .....services.authentication.session import service as session_service
+from .....signals import auth as auth_signals
 from .....typing import UserID
 from .....util.authorization import get_permissions_for_user
 from .....util.framework.blueprint import create_blueprint
@@ -70,14 +71,19 @@ def login():
 
     # Authorization succeeded.
 
-    auth_token = session_service.log_in_user(user.id, request.remote_addr)
+    auth_token, event = session_service.log_in_user(
+        user.id, request.remote_addr
+    )
     user_session.start(user.id, auth_token, permanent=permanent)
+
     flash_success(
         gettext(
             'Successfully logged in as %(screen_name)s.',
             screen_name=user.screen_name,
         )
     )
+
+    auth_signals.user_logged_in.send(None, event=event)
 
 
 def _require_admin_access_permission(user_id: UserID) -> None:

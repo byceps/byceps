@@ -40,10 +40,11 @@ def webhook_settings():
                 'user-account-deleted',
                 'user-account-suspended',
                 'user-account-unsuspended',
+                'user-badge-awarded',
                 'user-details-updated',
                 'user-email-address-invalidated',
                 'user-screen-name-changed',
-                'user-badge-awarded',
+                'user-logged-in',
             ]
         ),
         # public

@@ -8,6 +8,7 @@ Mapping between event types and names.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from ..events.auth import UserLoggedIn
 from ..events.base import _BaseEvent
 from ..events.board import (
     BoardPostingCreated,
@@ -54,6 +55,7 @@ from ..events.user_badge import UserBadgeAwarded
 
 
 EVENT_TYPES_TO_NAMES = {
+    UserLoggedIn:                   'user-logged-in',
     BoardTopicCreated:              'board-topic-created',
     BoardTopicHidden:               'board-topic-hidden',
     BoardTopicLocked:               'board-topic-locked',

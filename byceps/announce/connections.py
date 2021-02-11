@@ -10,6 +10,7 @@ Connect event signals to announcement handlers.
 
 from typing import Optional
 
+from ..events.auth import UserLoggedIn
 from ..events.base import _BaseEvent
 from ..events.board import (
     BoardPostingCreated,
@@ -53,6 +54,7 @@ from ..events.user import (
     UserScreenNameChanged,
 )
 from ..events.user_badge import UserBadgeAwarded
+from ..signals import auth as auth_signals
 from ..signals import board as board_signals
 from ..signals import news as news_signals
 from ..signals import shop as shop_signals
@@ -64,6 +66,7 @@ from ..signals import user_badge as user_badge_signals
 from ..util.jobqueue import enqueue
 
 from .handlers import (
+    auth,
     board,
     news,
     shop_order,
@@ -77,6 +80,7 @@ from .helpers import get_webhooks
 
 
 EVENT_TYPES_TO_HANDLERS = {
+    UserLoggedIn: auth.announce_user_logged_in,
     BoardTopicCreated: board.announce_board_topic_created,
     BoardTopicHidden: board.announce_board_topic_hidden,
     BoardTopicUnhidden: board.announce_board_topic_unhidden,
@@ -134,6 +138,7 @@ def receive_signal(sender, *, event: Optional[_BaseEvent] = None) -> None:
 
 
 SIGNALS = [
+    auth_signals.user_logged_in,
     board_signals.topic_created,
     board_signals.topic_hidden,
     board_signals.topic_unhidden,

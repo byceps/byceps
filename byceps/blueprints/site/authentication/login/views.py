@@ -21,6 +21,7 @@ from .....services.site.transfer.models import Site
 from .....services.verification_token import (
     service as verification_token_service,
 )
+from .....signals import auth as auth_signals
 from .....typing import UserID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_notice, flash_success
@@ -103,16 +104,19 @@ def login():
 
     # Authorization succeeded.
 
-    auth_token = session_service.log_in_user(
+    auth_token, event = session_service.log_in_user(
         user.id, request.remote_addr, site_id=g.site_id
     )
     user_session.start(user.id, auth_token, permanent=permanent)
+
     flash_success(
         gettext(
             'Successfully logged in as %(screen_name)s.',
             screen_name=user.screen_name,
         )
     )
+
+    auth_signals.user_logged_in.send(None, event=event)
 
     return [('Location', url_for('dashboard.index'))]
 

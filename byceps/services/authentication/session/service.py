@@ -8,14 +8,15 @@ byceps.services.authentication.session.service
 
 from datetime import datetime
 from enum import Enum
-from typing import Optional, Set
+from typing import Optional, Set, Tuple
 from uuid import UUID, uuid4
 
 from ....database import db, insert_ignore_on_conflict, upsert
+from ....events.auth import UserLoggedIn
 from ....typing import UserID
 
 from ...site.transfer.models import SiteID
-from ...user import event_service as user_event_service
+from ...user import event_service as user_event_service, service as user_service
 from ...user.transfer.models import User
 
 from ..exceptions import AuthenticationFailed
@@ -106,16 +107,24 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
 
 def log_in_user(
     user_id: UserID, ip_address: str, *, site_id: Optional[SiteID] = None
-) -> str:
+) -> Tuple[str, UserLoggedIn]:
     """Create a session token and record the log in."""
     session_token = get_session_token(user_id)
 
     occurred_at = datetime.utcnow()
+    user = user_service.get_user(user_id)
 
     _create_login_event(user_id, occurred_at, ip_address, site_id=site_id)
     _record_recent_login(user_id, occurred_at)
 
-    return session_token.token
+    event = UserLoggedIn(
+        occurred_at=occurred_at,
+        initiator_id=user.id,
+        initiator_screen_name=user.screen_name,
+        site_id=site_id,
+    )
+
+    return session_token.token, event
 
 
 def _create_login_event(
