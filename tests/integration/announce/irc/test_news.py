@@ -6,7 +6,6 @@
 import pytest
 
 import byceps.announce.connections  # Connect signal handlers.
-from byceps.events.news import NewsItemPublished
 from byceps.services.news import (
     channel_service as news_channel_service,
     service as news_service,
@@ -19,11 +18,10 @@ from .helpers import (
     CHANNEL_PUBLIC,
     get_submitted_json,
     mocked_irc_bot,
-    now,
 )
 
 
-def test_published_news_item_announced(app, item, editor):
+def test_published_news_item_announced(app, item):
     expected_channel1 = CHANNEL_PUBLIC
     expected_channel2 = CHANNEL_ORGA_LOG
     expected_text = (
@@ -31,18 +29,7 @@ def test_published_news_item_announced(app, item, editor):
         + 'https://acme.example.com/news/zieh-dir-das-rein'
     )
 
-    now_ = now()
-
-    event = NewsItemPublished(
-        occurred_at=now_,
-        initiator_id=editor.id,
-        initiator_screen_name=editor.screen_name,
-        item_id=item.id,
-        channel_id=item.channel.id,
-        published_at=now_,
-        title=item.title,
-        external_url=item.external_url,
-    )
+    event = news_service.publish_item(item.id)
 
     with mocked_irc_bot() as mock:
         news_signals.item_published.send(None, event=event)

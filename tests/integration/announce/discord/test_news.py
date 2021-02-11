@@ -6,7 +6,6 @@
 import pytest
 
 import byceps.announce.connections  # Connect signal handlers.
-from byceps.events.news import NewsItemPublished
 from byceps.services.news import (
     channel_service as news_channel_service,
     service as news_service,
@@ -14,32 +13,19 @@ from byceps.services.news import (
 from byceps.services.webhooks import service as webhook_service
 from byceps.signals import news as news_signals
 
-from .helpers import assert_request, mocked_webhook_receiver, now
+from .helpers import assert_request, mocked_webhook_receiver
 
 
 WEBHOOK_URL = 'https://webhoooks.test/news'
 
 
-def test_published_news_item_announced(
-    webhook_settings, admin_app, item, editor
-):
+def test_published_news_item_announced(webhook_settings, admin_app, item):
     expected_content = (
         '[News] Die News "Zieh dir das rein!" wurde veröffentlicht. '
         + 'https://acme.example.com/news/zieh-dir-das-rein'
     )
 
-    now_ = now()
-
-    event = NewsItemPublished(
-        occurred_at=now_,
-        initiator_id=editor.id,
-        initiator_screen_name=editor.screen_name,
-        item_id=item.id,
-        channel_id=item.channel.id,
-        published_at=now_,
-        title=item.title,
-        external_url=item.external_url,
-    )
+    event = news_service.publish_item(item.id)
 
     with mocked_webhook_receiver(WEBHOOK_URL) as mock:
         news_signals.item_published.send(None, event=event)
