@@ -11,7 +11,7 @@ from typing import Optional
 from ...database import db
 from ...typing import UserID
 
-from .models import Purpose, Token as DbToken
+from .dbmodels import Purpose, Token as DbToken
 
 
 def create_for_email_address_confirmation(user_id: UserID) -> DbToken:

@@ -15,7 +15,7 @@ from ...typing import UserID
 
 from ..user import event_service as user_event_service
 
-from .models import (
+from .dbmodels import (
     Permission as DbPermission,
     Role as DbRole,
     RolePermission as DbRolePermission,

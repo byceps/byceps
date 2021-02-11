@@ -15,8 +15,8 @@ from ..consent.transfer.models import SubjectID as ConsentSubjectID
 from ..snippet.transfer.models import SnippetVersionID
 
 from . import document_service
-from .models.document import Document as DbDocument
-from .models.version import Version as DbVersion
+from .dbmodels.document import Document as DbDocument
+from .dbmodels.version import Version as DbVersion
 from .transfer.models import DocumentID, VersionID
 
 

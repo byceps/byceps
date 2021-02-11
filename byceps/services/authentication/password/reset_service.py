@@ -10,9 +10,9 @@ from typing import Optional
 
 from ...email import service as email_service
 from ...email.transfer.models import Sender
-from ...user.models.user import User
+from ...user.dbmodels.user import User
 from ...user import service as user_service
-from ...verification_token.models import Token
+from ...verification_token.dbmodels import Token
 from ...verification_token import service as verification_token_service
 
 from . import service as password_service

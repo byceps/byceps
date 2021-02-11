@@ -11,7 +11,7 @@ from typing import List, Sequence
 
 from ....database import db
 
-from .models.order_event import OrderEvent, OrderEventData
+from .dbmodels.order_event import OrderEvent, OrderEventData
 from .transfer.models import OrderID
 
 

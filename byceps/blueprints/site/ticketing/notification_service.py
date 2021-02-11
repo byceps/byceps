@@ -11,7 +11,7 @@ from flask import g
 from ....services.email import service as email_service
 from ....services.party import service as party_service
 from ....services.site import service as site_service
-from ....services.ticketing.models.ticket import Ticket
+from ....services.ticketing.dbmodels.ticket import Ticket
 from ....services.user import service as user_service
 from ....services.user.transfer.models import User
 

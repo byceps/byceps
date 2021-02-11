@@ -15,7 +15,7 @@ from ... import email
 from ...typing import BrandID
 from ...util.jobqueue import enqueue
 
-from .models import EmailConfig as DbEmailConfig
+from .dbmodels import EmailConfig as DbEmailConfig
 from .transfer.models import EmailConfig, Message, Sender
 
 

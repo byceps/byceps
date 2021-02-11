@@ -12,8 +12,8 @@ from typing import Dict, Iterable, List, Optional, Set, Tuple
 from ...database import db, paginate, Pagination
 from ...typing import PartyID, UserID
 
-from ..ticketing.models.ticket import Category as DbCategory, Ticket as DbTicket
-from ..user.models.user import User as DbUser
+from ..ticketing.dbmodels.ticket import Category as DbCategory, Ticket as DbTicket
+from ..user.dbmodels.user import User as DbUser
 
 from .transfer.models import Attendee, AttendeeTicket
 

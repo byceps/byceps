@@ -19,13 +19,13 @@ from ...events.user import (
 )
 from ...typing import UserID
 
-from ..authorization.models import RoleID
 from ..authorization import service as authorization_service
+from ..authorization.transfer.models import RoleID
 
 from . import event_service
-from .models.detail import UserDetail as DbUserDetail
-from .models.event import UserEventData
-from .models.user import User as DbUser
+from .dbmodels.detail import UserDetail as DbUserDetail
+from .dbmodels.event import UserEventData
+from .dbmodels.user import User as DbUser
 from . import service as user_service
 
 

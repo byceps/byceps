@@ -11,8 +11,8 @@ from typing import List, Optional
 from ...database import db
 from ...typing import BrandID
 
-from .models.brand import Brand as DbBrand
-from .models.setting import Setting as DbSetting
+from .dbmodels.brand import Brand as DbBrand
+from .dbmodels.setting import Setting as DbSetting
 from .transfer.models import Brand
 
 

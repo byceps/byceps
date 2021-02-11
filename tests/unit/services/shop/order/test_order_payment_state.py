@@ -5,7 +5,7 @@
 
 from datetime import datetime
 
-from byceps.services.shop.order.models.order import Order as DbOrder
+from byceps.services.shop.order.dbmodels.order import Order as DbOrder
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order.service import _build_order
 from byceps.services.shop.order.transfer.models import OrderNumber, PaymentState

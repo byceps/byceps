@@ -12,11 +12,11 @@ from typing import Dict, Iterator, Optional, Sequence, Set, Tuple
 from ...database import db
 
 from ..user_avatar import service as user_avatar_service
-from ..user.models.detail import UserDetail as DbUserDetail
-from ..user.models.user import User as DbUser
+from ..user.dbmodels.detail import UserDetail as DbUserDetail
+from ..user.dbmodels.user import User as DbUser
 from ..user.transfer.models import User, UserID
 
-from .models import OrgaFlag as DbOrgaFlag
+from .dbmodels import OrgaFlag as DbOrgaFlag
 from .transfer.models import Birthday
 
 

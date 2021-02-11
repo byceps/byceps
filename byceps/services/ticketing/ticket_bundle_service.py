@@ -15,9 +15,9 @@ from ...typing import PartyID, UserID
 
 from ..shop.order.transfer.models import OrderNumber
 
-from .models.category import Category as DbCategory
-from .models.ticket import Ticket as DbTicket
-from .models.ticket_bundle import TicketBundle as DbTicketBundle
+from .dbmodels.category import Category as DbCategory
+from .dbmodels.ticket import Ticket as DbTicket
+from .dbmodels.ticket_bundle import TicketBundle as DbTicketBundle
 from .ticket_creation_service import build_tickets, TicketCreationFailed
 from .ticket_revocation_service import (
     _build_ticket_revoked_event as build_ticket_revoked_event,

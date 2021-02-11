@@ -10,7 +10,7 @@ from typing import Optional
 
 from ...database import db
 
-from .models.match import Match as DbMatch
+from .dbmodels.match import Match as DbMatch
 from .transfer.models import Match, MatchID
 
 

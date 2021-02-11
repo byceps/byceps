@@ -10,7 +10,7 @@ from typing import Optional, Sequence
 
 from ...database import db
 
-from .models.category import Category as DbCategory
+from .dbmodels.category import Category as DbCategory
 from .transfer.models import (
     BoardID,
     Category,

@@ -13,7 +13,7 @@ from ....database import db
 
 from ..article.transfer.models import ArticleNumber
 
-from .models.order_item import OrderItem as DbOrderItem
+from .dbmodels.order_item import OrderItem as DbOrderItem
 from .transfer.models import OrderItem, PaymentState
 
 

@@ -12,14 +12,14 @@ from typing import List, Optional, Sequence, Set, Tuple
 
 from ....database import BaseQuery, db, Pagination
 
-from ..order.models.order import Order as DbOrder
-from ..order.models.order_item import OrderItem as DbOrderItem
+from ..order.dbmodels.order import Order as DbOrder
+from ..order.dbmodels.order_item import OrderItem as DbOrderItem
 from ..order.transfer.models import PaymentState
-from ..shop.models import Shop as DbShop
+from ..shop.dbmodels import Shop as DbShop
 from ..shop.transfer.models import ShopID
 
-from .models.article import Article as DbArticle
-from .models.attached_article import AttachedArticle as DbAttachedArticle
+from .dbmodels.article import Article as DbArticle
+from .dbmodels.attached_article import AttachedArticle as DbAttachedArticle
 from .models.compilation import ArticleCompilation, ArticleCompilationItem
 from .transfer.models import (
     Article,

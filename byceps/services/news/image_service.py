@@ -18,7 +18,7 @@ from ...util.image.models import Dimensions, ImageType
 from ..image import service as image_service
 from ..user import service as user_service
 
-from .models.image import Image as DbImage
+from .dbmodels.image import Image as DbImage
 from . import service as item_service
 from .transfer.models import ChannelID, Image, ImageID, ItemID
 

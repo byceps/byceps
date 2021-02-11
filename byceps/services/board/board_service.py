@@ -13,7 +13,7 @@ from ...typing import BrandID
 
 from ..brand import service as brand_service
 
-from .models.board import Board as DbBoard
+from .dbmodels.board import Board as DbBoard
 from .transfer.models import Board, BoardID
 
 

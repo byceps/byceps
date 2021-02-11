@@ -20,7 +20,7 @@ from ...user import event_service as user_event_service
 
 from ..session import service as session_service
 
-from .models import Credential as DbCredential
+from .dbmodels import Credential as DbCredential
 
 
 PASSWORD_HASH_ITERATIONS = 250000

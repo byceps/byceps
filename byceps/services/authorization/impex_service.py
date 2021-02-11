@@ -15,7 +15,7 @@ import rtoml
 
 from ...database import db
 
-from .models import Permission as DbPermission, Role as DbRole
+from .dbmodels import Permission as DbPermission, Role as DbRole
 from . import service
 
 

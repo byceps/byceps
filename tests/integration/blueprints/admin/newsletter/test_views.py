@@ -8,7 +8,7 @@ from datetime import datetime
 import pytest
 
 from byceps.database import db
-from byceps.services.newsletter.models import (
+from byceps.services.newsletter.dbmodels import (
     SubscriptionUpdate as DbSubscriptionUpdate,
 )
 from byceps.services.newsletter import command_service

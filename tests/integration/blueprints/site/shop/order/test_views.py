@@ -9,7 +9,7 @@ import pytest
 
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article import service as article_service
-from byceps.services.shop.order.models.order import Order
+from byceps.services.shop.order.dbmodels.order import Order
 from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
     service as order_service,

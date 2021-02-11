@@ -22,8 +22,8 @@ from ..site.transfer.models import SiteID
 
 from . import email_address_verification_service
 from . import event_service
-from .models.detail import UserDetail as DbUserDetail
-from .models.user import User as DbUser
+from .dbmodels.detail import UserDetail as DbUserDetail
+from .dbmodels.user import User as DbUser
 from . import service as user_service
 from .transfer.models import User
 

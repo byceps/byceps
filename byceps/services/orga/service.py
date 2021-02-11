@@ -11,12 +11,12 @@ from typing import Dict, Optional, Sequence
 from ...database import db
 from ...typing import BrandID, UserID
 
-from ..brand.models.brand import Brand as DbBrand
+from ..brand.dbmodels.brand import Brand as DbBrand
 from ..brand import service as brand_service
 from ..user import event_service as user_event_service
-from ..user.models.user import User as DbUser
+from ..user.dbmodels.user import User as DbUser
 
-from .models import OrgaFlag as DbOrgaFlag
+from .dbmodels import OrgaFlag as DbOrgaFlag
 
 
 def get_person_count_by_brand_id() -> Dict[BrandID, int]:

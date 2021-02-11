@@ -14,7 +14,7 @@ from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from ...services.user import service as user_service
 from ...typing import UserID
 
-from .models.snippet import (
+from .dbmodels.snippet import (
     CurrentVersionAssociation as DbCurrentVersionAssociation,
     Snippet as DbSnippet,
     SnippetVersion as DbSnippetVersion,

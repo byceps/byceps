@@ -12,10 +12,10 @@ from typing import Dict, Iterable, Sequence, Set
 from ...database import db
 from ...typing import UserID
 
-from ..verification_token.models import Token
+from ..verification_token.dbmodels import Token
 
-from .models.consent import Consent as DbConsent
-from .models.subject import Subject as DbSubject
+from .dbmodels.consent import Consent as DbConsent
+from .dbmodels.subject import Subject as DbSubject
 from .transfer.models import SubjectID
 
 

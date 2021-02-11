@@ -8,8 +8,8 @@ byceps.services.board.category_command_service
 
 from ...database import db
 
-from .models.board import Board as DbBoard
-from .models.category import Category as DbCategory
+from .dbmodels.board import Board as DbBoard
+from .dbmodels.category import Category as DbCategory
 from .transfer.models import BoardID, Category, CategoryID
 from . import topic_query_service
 

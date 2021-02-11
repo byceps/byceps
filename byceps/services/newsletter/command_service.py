@@ -11,7 +11,7 @@ from datetime import datetime
 from ...database import db
 from ...typing import UserID
 
-from .models import List as DbList, SubscriptionUpdate as DbSubscriptionUpdate
+from .dbmodels import List as DbList, SubscriptionUpdate as DbSubscriptionUpdate
 from .service import find_list, _db_entity_to_list
 from .transfer.models import List, ListID
 from .types import SubscriptionState

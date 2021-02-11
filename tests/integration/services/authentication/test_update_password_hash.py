@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.authentication.password.models import Credential
+from byceps.services.authentication.password.dbmodels import Credential
 from byceps.services.authentication.password import service as password_service
 from byceps.services.user import event_service
 

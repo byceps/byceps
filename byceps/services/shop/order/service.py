@@ -20,15 +20,15 @@ from ...user import service as user_service
 
 from ..article import service as article_service
 from ..cart.models import Cart
-from ..shop.models import Shop as DbShop
+from ..shop.dbmodels import Shop as DbShop
 from ..shop import service as shop_service
 from ..shop.transfer.models import ShopID
 from ..storefront import service as storefront_service
 from ..storefront.transfer.models import StorefrontID
 
-from .models.order import Order as DbOrder
-from .models.order_event import OrderEvent as DbOrderEvent
-from .models.order_item import OrderItem as DbOrderItem
+from .dbmodels.order import Order as DbOrder
+from .dbmodels.order_event import OrderEvent as DbOrderEvent
+from .dbmodels.order_item import OrderItem as DbOrderItem
 from .models.orderer import Orderer
 from . import action_service, sequence_service
 from .transfer.models import (

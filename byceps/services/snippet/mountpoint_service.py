@@ -12,8 +12,8 @@ from ...database import db
 
 from ..site.transfer.models import SiteID
 
-from .models.mountpoint import Mountpoint as DbMountpoint
-from .models.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
+from .dbmodels.mountpoint import Mountpoint as DbMountpoint
+from .dbmodels.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
 from .transfer.models import Mountpoint, MountpointID, SnippetID
 
 

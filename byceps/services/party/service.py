@@ -13,11 +13,11 @@ from typing import Dict, List, Optional, Set, Union
 from ...database import db, paginate, Pagination
 from ...typing import BrandID, PartyID
 
-from ..brand.models.brand import Brand as DbBrand
+from ..brand.dbmodels.brand import Brand as DbBrand
 from ..brand import service as brand_service
 
-from .models.party import Party as DbParty
-from .models.setting import Setting as DbSetting
+from .dbmodels.party import Party as DbParty
+from .dbmodels.setting import Setting as DbSetting
 from .transfer.models import Party, PartyWithBrand
 
 

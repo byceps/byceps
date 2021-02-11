@@ -13,7 +13,7 @@ from typing import List
 from flask import abort, g
 
 from ....services.authentication.session.models.current_user import CurrentUser
-from ....services.board.models.topic import Topic as DbTopic
+from ....services.board.dbmodels.topic import Topic as DbTopic
 from ....services.board import (
     access_control_service as board_access_control_service,
     topic_query_service as board_topic_query_service,
@@ -26,7 +26,7 @@ from ....services.shop.storefront import service as storefront_service
 from ....services.site import service as site_service
 from ....services.site.transfer.models import Site
 from ....services.ticketing import ticket_service
-from ....services.ticketing.models.ticket import Ticket as DbTicket
+from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
 from ....services.user import service as user_service
 from ....typing import UserID
 from ....util.framework.blueprint import create_blueprint

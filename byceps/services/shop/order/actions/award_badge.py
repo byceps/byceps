@@ -14,7 +14,7 @@ from ....user_badge.transfer.models import BadgeAwarding, BadgeID
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..models.order_action import Parameters
+from ..dbmodels.order_action import Parameters
 from ..transfer.models import Order, OrderID
 
 

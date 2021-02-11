@@ -10,7 +10,7 @@ import pytest
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid
 from byceps.services.shop.article import service as article_service
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order.models.order import Order
+from byceps.services.shop.order.dbmodels.order import Order
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import (
     PaymentMethod,

@@ -9,8 +9,8 @@ byceps.services.board.access_control_service
 from ...database import db
 from ...typing import UserID
 
-from .models.board import Board
-from .models.board_access_grant import BoardAccessGrant, BoardAccessGrantID
+from .dbmodels.board import Board
+from .dbmodels.board_access_grant import BoardAccessGrant, BoardAccessGrantID
 from .transfer.models import BoardID
 
 

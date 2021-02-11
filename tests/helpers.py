@@ -22,8 +22,8 @@ from byceps.services.party import service as party_service
 from byceps.services.site import service as site_service
 from byceps.services.user import creation_service as user_creation_service
 from byceps.services.user.creation_service import UserCreationFailed
-from byceps.services.user.models.detail import UserDetail as DbUserDetail
-from byceps.services.user.models.user import User as DbUser
+from byceps.services.user.dbmodels.detail import UserDetail as DbUserDetail
+from byceps.services.user.dbmodels.user import User as DbUser
 
 
 _CONFIG_PATH = Path('../config')

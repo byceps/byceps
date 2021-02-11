@@ -10,9 +10,9 @@ from dataclasses import dataclass
 from itertools import chain
 from typing import Dict, Iterator, Optional, Sequence
 
-from ....services.seating.models.seat import Seat as DbSeat
+from ....services.seating.dbmodels.seat import Seat as DbSeat
 from ....services.seating.transfer.models import SeatID
-from ....services.ticketing.models.ticket import Ticket as DbTicket
+from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
 from ....services.ticketing.transfer.models import (
     TicketCategoryID,
     TicketCode,

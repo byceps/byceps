@@ -10,7 +10,7 @@ from typing import Optional, Set
 
 from ...database import db, upsert
 
-from .models import Setting as DbSetting
+from .dbmodels import Setting as DbSetting
 from .transfer.models import GlobalSetting
 
 

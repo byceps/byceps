@@ -22,7 +22,7 @@ from ..user import service as user_service
 from ..user.transfer.models import User
 
 from .aggregation_service import aggregate_topic
-from .models.posting import Posting as DbPosting
+from .dbmodels.posting import Posting as DbPosting
 from . import posting_query_service
 from . import topic_query_service
 from .transfer.models import PostingID, TopicID

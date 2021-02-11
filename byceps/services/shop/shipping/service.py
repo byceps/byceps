@@ -10,13 +10,13 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from typing import Dict, Iterator, Sequence, Set
 
-from ..article.models.article import Article as DbArticle
+from ..article.dbmodels.article import Article as DbArticle
 
 from ....database import db
 
 from ..article.transfer.models import ArticleNumber
-from ..order.models.order import Order as DbOrder
-from ..order.models.order_item import OrderItem as DbOrderItem
+from ..order.dbmodels.order import Order as DbOrder
+from ..order.dbmodels.order_item import OrderItem as DbOrderItem
 from ..order.transfer.models import PaymentState
 from ..shop.transfer.models import ShopID
 

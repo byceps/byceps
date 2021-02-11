@@ -11,10 +11,10 @@ from typing import Optional
 from ...database import db, Pagination
 from ...typing import PartyID
 
-from ..ticketing.models.ticket import Ticket as DbTicket
+from ..ticketing.dbmodels.ticket import Ticket as DbTicket
 
-from .models.area import Area as DbArea
-from .models.seat import Seat as DbSeat
+from .dbmodels.area import Area as DbArea
+from .dbmodels.seat import Seat as DbSeat
 
 
 def create_area(party_id: PartyID, slug: str, title: str) -> DbArea:

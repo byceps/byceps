@@ -17,8 +17,8 @@ from ..brand import service as brand_service
 from ..news.transfer.models import ChannelID as NewsChannelID
 from ..shop.storefront.transfer.models import StorefrontID
 
-from .models.site import Site as DbSite
-from .models.setting import Setting as DbSetting
+from .dbmodels.site import Site as DbSite
+from .dbmodels.setting import Setting as DbSetting
 from .transfer.models import Site, SiteID, SiteWithBrand
 
 

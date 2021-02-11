@@ -12,7 +12,7 @@ from ....database import db
 
 from ..article.transfer.models import ArticleNumber
 
-from .models import (
+from .dbmodels import (
     Catalog as DbCatalog,
     CatalogArticle as DbCatalogArticle,
     Collection as DbCollection,

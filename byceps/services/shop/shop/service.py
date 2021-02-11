@@ -11,7 +11,7 @@ from typing import List, Optional, Set
 from ....database import db
 from ....typing import BrandID
 
-from .models import Shop as DbShop
+from .dbmodels import Shop as DbShop
 from .transfer.models import Shop, ShopID
 
 

@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from byceps.services.authentication.password.models import Credential
+from byceps.services.authentication.password.dbmodels import Credential
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authorization_service
 from byceps.services.brand import settings_service as brand_settings_service
@@ -23,9 +23,9 @@ from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.terms import document_service as terms_document_service
 from byceps.services.terms import version_service as terms_version_service
+from byceps.services.user.dbmodels.user import User
 from byceps.services.user import event_service, service as user_service
-from byceps.services.user.models.user import User
-from byceps.services.verification_token.models import (
+from byceps.services.verification_token.dbmodels import (
     Purpose as TokenPurpose,
     Token,
 )

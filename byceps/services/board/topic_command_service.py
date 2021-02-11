@@ -27,9 +27,9 @@ from ..user import service as user_service
 from ..user.transfer.models import User
 
 from .aggregation_service import aggregate_category, aggregate_topic
-from .models.category import Category as DbCategory
-from .models.posting import InitialTopicPostingAssociation, Posting as DbPosting
-from .models.topic import Topic as DbTopic
+from .dbmodels.category import Category as DbCategory
+from .dbmodels.posting import InitialTopicPostingAssociation, Posting as DbPosting
+from .dbmodels.topic import Topic as DbTopic
 from .posting_command_service import update_posting
 from . import topic_query_service
 from .transfer.models import CategoryID, TopicID

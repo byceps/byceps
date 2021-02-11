@@ -19,8 +19,8 @@ from ..user import service as user_service
 
 from .channel_service import _db_entity_to_channel
 from . import html_service
-from .models.channel import Channel as DbChannel
-from .models.item import (
+from .dbmodels.channel import Channel as DbChannel
+from .dbmodels.item import (
     CurrentVersionAssociation as DbCurrentVersionAssociation,
     Item as DbItem,
     ItemVersion as DbItemVersion,

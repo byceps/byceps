@@ -12,7 +12,7 @@ from typing import Dict, Iterator, Sequence
 
 from .....services.shop.article import service as article_service
 from .....services.shop.article.transfer.models import Article, ArticleNumber
-from .....services.shop.order.models.order_event import (
+from .....services.shop.order.dbmodels.order_event import (
     OrderEvent,
     OrderEventData,
 )
@@ -20,7 +20,7 @@ from .....services.shop.order import event_service as order_event_service
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import Order, OrderID
 from .....services.ticketing import category_service as ticket_category_service
-from .....services.user.models.user import User as DbUser
+from .....services.user.dbmodels.user import User as DbUser
 from .....services.user import service as user_service
 from .....services.user.transfer.models import User
 from .....services.user_badge import badge_service as user_badge_service

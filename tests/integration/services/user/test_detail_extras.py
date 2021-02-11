@@ -5,7 +5,7 @@
 
 from byceps.database import db
 from byceps.services.user import command_service as user_command_service
-from byceps.services.user.models.detail import UserDetail
+from byceps.services.user.dbmodels.detail import UserDetail
 
 
 def test_set_and_remove(admin_app, make_user_with_detail):

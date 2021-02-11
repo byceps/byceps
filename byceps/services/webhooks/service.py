@@ -10,7 +10,7 @@ from typing import Any, Dict, List, Optional
 
 from ...database import db
 
-from .models import OutgoingWebhook as DbOutgoingWebhook
+from .dbmodels import OutgoingWebhook as DbOutgoingWebhook
 from .transfer.models import EventSelectors, OutgoingWebhook, WebhookID
 
 

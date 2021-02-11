@@ -21,9 +21,9 @@ from ...user.transfer.models import User
 
 from ..exceptions import AuthenticationFailed
 
+from .dbmodels.recent_login import RecentLogin as DbRecentLogin
+from .dbmodels.session_token import SessionToken as DbSessionToken
 from .models.current_user import CurrentUser
-from .models.recent_login import RecentLogin as DbRecentLogin
-from .models.session_token import SessionToken as DbSessionToken
 
 
 def get_session_token(user_id: UserID) -> DbSessionToken:

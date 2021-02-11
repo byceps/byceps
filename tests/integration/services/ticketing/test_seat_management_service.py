@@ -21,7 +21,7 @@ from byceps.services.ticketing.exceptions import (
 
 # Import models to ensure the corresponding tables are created so
 # `Seat.assignment` is available.
-import byceps.services.seating.models.seat_group
+import byceps.services.seating.dbmodels.seat_group
 
 
 @pytest.fixture(scope='module')

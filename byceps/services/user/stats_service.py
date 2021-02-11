@@ -8,7 +8,7 @@ byceps.services.user.stats_service
 
 from datetime import datetime, timedelta
 
-from .models.user import User as DbUser
+from .dbmodels.user import User as DbUser
 
 
 def count_users() -> int:

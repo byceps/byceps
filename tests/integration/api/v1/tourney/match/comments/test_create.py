@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.tourney.models.match_comment import (
+from byceps.services.tourney.dbmodels.match_comment import (
     MatchComment as DbMatchComment,
 )
 from byceps.services.tourney import (

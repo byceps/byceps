@@ -12,13 +12,13 @@ from typing import Dict, Optional, Sequence, Set, Tuple
 from ...database import db
 from ...typing import PartyID, UserID
 
-from ..orga.models import OrgaFlag as DbOrgaFlag
+from ..orga.dbmodels import OrgaFlag as DbOrgaFlag
 from ..party import service as party_service
-from ..user.models.user import User as DbUser
+from ..user.dbmodels.user import User as DbUser
 from ..user import service as user_service
 from ..user.transfer.models import User
 
-from .models import Membership as DbMembership, OrgaTeam as DbOrgaTeam
+from .dbmodels import Membership as DbMembership, OrgaTeam as DbOrgaTeam
 from .transfer.models import (
     Member,
     Membership,

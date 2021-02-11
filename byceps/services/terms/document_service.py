@@ -13,8 +13,8 @@ from ...typing import BrandID
 
 from ..brand import settings_service as brand_settings_service
 
-from .models.document import Document as DbDocument
-from .models.version import Version as DbVersion
+from .dbmodels.document import Document as DbDocument
+from .dbmodels.version import Version as DbVersion
 from .transfer.models import Document, DocumentID, VersionID
 
 

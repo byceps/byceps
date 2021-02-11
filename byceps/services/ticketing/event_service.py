@@ -11,7 +11,7 @@ from typing import List
 
 from ...database import db
 
-from .models.ticket_event import TicketEvent, TicketEventData
+from .dbmodels.ticket_event import TicketEvent, TicketEventData
 from .transfer.models import TicketID
 
 

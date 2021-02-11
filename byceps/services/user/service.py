@@ -11,11 +11,11 @@ from typing import Dict, Optional, Set, Tuple
 from ...database import db, Query
 from ...typing import PartyID, UserID
 
-from ..orga_team.models import OrgaTeam, Membership as OrgaTeamMembership
-from ..user_avatar.models import Avatar, AvatarSelection
+from ..orga_team.dbmodels import OrgaTeam, Membership as OrgaTeamMembership
+from ..user_avatar.dbmodels import Avatar, AvatarSelection
 
-from .models.detail import UserDetail as DbUserDetail
-from .models.user import User as DbUser
+from .dbmodels.detail import UserDetail as DbUserDetail
+from .dbmodels.user import User as DbUser
 from .transfer.models import User, UserDetail, UserWithDetail
 
 

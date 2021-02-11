@@ -11,7 +11,7 @@ from typing import List, Sequence
 
 from ....util.instances import ReprBuilder
 
-from ..article.models.article import Article as DbArticle
+from ..article.dbmodels.article import Article as DbArticle
 
 
 class CartItem:

@@ -15,9 +15,9 @@ from ...util.iterables import index_of
 from ..user import service as user_service
 from ..user.transfer.models import User
 
-from .models.category import Category as DbCategory
-from .models.posting import Posting as DbPosting
-from .models.topic import Topic as DbTopic
+from .dbmodels.category import Category as DbCategory
+from .dbmodels.posting import Posting as DbPosting
+from .dbmodels.topic import Topic as DbTopic
 from .transfer.models import BoardID, PostingID, TopicID
 
 

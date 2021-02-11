@@ -15,9 +15,9 @@ from ...typing import PartyID, UserID
 from ..party import service as party_service
 
 from . import category_service
-from .models.participant import Participant as DbParticipant
-from .models.tourney import Tourney as DbTourney
-from .models.tourney_category import TourneyCategory as DbTourneyCategory
+from .dbmodels.participant import Participant as DbParticipant
+from .dbmodels.tourney import Tourney as DbTourney
+from .dbmodels.tourney_category import TourneyCategory as DbTourneyCategory
 from .transfer.models import (
     Tourney,
     TourneyCategoryID,

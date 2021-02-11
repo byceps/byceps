@@ -11,7 +11,7 @@ from typing import Optional, Set
 from ...database import db, upsert
 from ...typing import PartyID
 
-from .models.setting import Setting as DbSetting
+from .dbmodels.setting import Setting as DbSetting
 from .transfer.models import PartySetting
 
 

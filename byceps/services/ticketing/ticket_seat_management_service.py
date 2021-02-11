@@ -9,9 +9,9 @@ byceps.services.ticketing.ticket_seat_management_service
 from ...database import db
 from ...typing import UserID
 
-from ..seating.models.seat import Seat as DbSeat
+from ..seating.dbmodels.seat import Seat as DbSeat
 # Load `Seat.assignment` backref.
-from ..seating.models.seat_group import SeatGroup as DbSeatGroup
+from ..seating.dbmodels.seat_group import SeatGroup as DbSeatGroup
 from ..seating import seat_service
 from ..seating.transfer.models import SeatID
 
@@ -22,7 +22,7 @@ from .exceptions import (
     TicketCategoryMismatch,
     TicketIsRevoked,
 )
-from .models.ticket import Ticket as DbTicket
+from .dbmodels.ticket import Ticket as DbTicket
 from . import ticket_service
 from .transfer.models import TicketID
 

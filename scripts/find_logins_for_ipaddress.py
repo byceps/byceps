@@ -10,7 +10,7 @@ from typing import Dict, List
 
 import click
 
-from byceps.services.user.models.event import UserEvent
+from byceps.services.user.dbmodels.event import UserEvent
 from byceps.services.user import service as user_service
 from byceps.services.user.transfer.models import User
 from byceps.typing import PartyID, UserID

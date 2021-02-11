@@ -17,7 +17,7 @@ from ...database import db
 from ...typing import PartyID
 from ...util.datetime.range import create_adjacent_ranges, DateTimeRange
 
-from .models import Presence as DbPresence, Task as DbTask
+from .dbmodels import Presence as DbPresence, Task as DbTask
 from .transfer.models import PresenceTimeSlot, TaskTimeSlot, TimeSlot
 
 

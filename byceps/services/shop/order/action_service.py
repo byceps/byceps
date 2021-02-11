@@ -18,7 +18,7 @@ from .actions.create_ticket_bundles import create_ticket_bundles
 from .actions.create_tickets import create_tickets
 from .actions.revoke_ticket_bundles import revoke_ticket_bundles
 from .actions.revoke_tickets import revoke_tickets
-from .models.order_action import OrderAction, Parameters
+from .dbmodels.order_action import OrderAction, Parameters
 from .transfer.models import Order, PaymentState
 
 

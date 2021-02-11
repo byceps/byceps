@@ -10,7 +10,7 @@ from typing import Any, Dict, Iterator, Optional, Sequence, Set, Tuple
 
 from ....services.seating import seat_service
 from ....services.ticketing import event_service
-from ....services.ticketing.models.ticket_event import (
+from ....services.ticketing.dbmodels.ticket_event import (
     TicketEvent,
     TicketEventData,
 )

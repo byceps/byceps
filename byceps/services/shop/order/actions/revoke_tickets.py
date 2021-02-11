@@ -10,13 +10,13 @@ from typing import Sequence
 
 from .....typing import UserID
 
-from ....ticketing.models.ticket import Ticket
+from ....ticketing.dbmodels.ticket import Ticket
 from ....ticketing import ticket_revocation_service, ticket_service
 
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..models.order_action import Parameters
+from ..dbmodels.order_action import Parameters
 from ..transfer.models import Order, OrderID
 
 

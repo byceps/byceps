@@ -11,12 +11,12 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import PartyID
 
-from ..ticketing.models.ticket import Ticket as DbTicket
-from ..ticketing.models.ticket_bundle import TicketBundle as DbTicketBundle
+from ..ticketing.dbmodels.ticket import Ticket as DbTicket
+from ..ticketing.dbmodels.ticket_bundle import TicketBundle as DbTicketBundle
 from ..ticketing.transfer.models import TicketCategoryID
 
-from .models.seat import Seat as DbSeat
-from .models.seat_group import (
+from .dbmodels.seat import Seat as DbSeat
+from .dbmodels.seat_group import (
     Occupancy as DbSeatGroupOccupancy,
     SeatGroup as DbSeatGroup,
     SeatGroupAssignment as DbSeatGroupAssignment,

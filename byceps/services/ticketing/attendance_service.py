@@ -17,17 +17,17 @@ from sqlalchemy.dialects.postgresql import insert
 from ...database import db, upsert
 from ...typing import BrandID, PartyID, UserID
 
-from ..party.models.party import Party as DbParty
+from ..party.dbmodels.party import Party as DbParty
 from ..party import service as party_service
 from ..party.transfer.models import Party
 from ..user import service as user_service
 from ..user.transfer.models import User
 
-from .models.archived_attendance import (
+from .dbmodels.archived_attendance import (
     ArchivedAttendance as DbArchivedAttendance,
 )
-from .models.category import Category as DbCategory
-from .models.ticket import Ticket as DbTicket
+from .dbmodels.category import Category as DbCategory
+from .dbmodels.ticket import Ticket as DbTicket
 
 
 def create_archived_attendance(user_id: UserID, party_id: PartyID) -> None:

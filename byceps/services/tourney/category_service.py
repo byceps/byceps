@@ -11,9 +11,9 @@ from typing import List, Optional
 from ...database import db
 from ...typing import PartyID
 
-from ..party.models.party import Party as DbParty
+from ..party.dbmodels.party import Party as DbParty
 
-from .models.tourney_category import TourneyCategory as DbTourneyCategory
+from .dbmodels.tourney_category import TourneyCategory as DbTourneyCategory
 from .transfer.models import TourneyCategory, TourneyCategoryID
 
 

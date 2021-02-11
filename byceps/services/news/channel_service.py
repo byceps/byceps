@@ -13,7 +13,7 @@ from ...typing import BrandID
 
 from ..brand import service as brand_service
 
-from .models.channel import Channel as DbChannel
+from .dbmodels.channel import Channel as DbChannel
 from .transfer.models import Channel, ChannelID
 
 

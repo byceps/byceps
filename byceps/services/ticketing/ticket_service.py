@@ -11,16 +11,16 @@ from typing import Dict, Optional, Sequence, Set
 from ...database import db, Pagination
 from ...typing import PartyID, UserID
 
-from ..party.models.party import Party as DbParty
+from ..party.dbmodels.party import Party as DbParty
 from ..party import service as party_service
-from ..seating.models.seat import Seat as DbSeat
+from ..seating.dbmodels.seat import Seat as DbSeat
 from ..shop.order.transfer.models import OrderNumber
-from ..user.models.user import User as DbUser
+from ..user.dbmodels.user import User as DbUser
 
 from . import event_service
-from .models.category import Category as DbCategory
-from .models.ticket import Ticket as DbTicket
-from .models.ticket_event import TicketEvent as DbTicketEvent
+from .dbmodels.category import Category as DbCategory
+from .dbmodels.ticket import Ticket as DbTicket
+from .dbmodels.ticket_event import TicketEvent as DbTicketEvent
 from . import ticket_code_service
 from .transfer.models import TicketCode, TicketID, TicketSaleStats
 

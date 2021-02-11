@@ -8,7 +8,7 @@ byceps.services.shop.order.actions.create_ticket_bundles
 
 from .....typing import UserID
 
-from ....ticketing.models.ticket_bundle import TicketBundle
+from ....ticketing.dbmodels.ticket_bundle import TicketBundle
 from ....ticketing import (
     category_service as ticket_category_service,
     ticket_bundle_service,
@@ -17,7 +17,7 @@ from ....ticketing import (
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..models.order_action import Parameters
+from ..dbmodels.order_action import Parameters
 from ..transfer.models import Order, OrderID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event

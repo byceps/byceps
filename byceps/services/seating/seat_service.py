@@ -11,12 +11,12 @@ from typing import Dict, List, Optional, Sequence, Set, Tuple
 from ...database import db
 from ...typing import PartyID
 
-from ..ticketing.models.category import Category as DbTicketCategory
-from ..ticketing.models.ticket import Ticket as DbTicket
+from ..ticketing.dbmodels.category import Category as DbTicketCategory
+from ..ticketing.dbmodels.ticket import Ticket as DbTicket
 from ..ticketing.transfer.models import TicketCategory, TicketCategoryID
 
-from .models.area import Area as DbArea
-from .models.seat import Seat as DbSeat
+from .dbmodels.area import Area as DbArea
+from .dbmodels.seat import Seat as DbSeat
 from .transfer.models import AreaID, SeatID, SeatUtilization
 
 

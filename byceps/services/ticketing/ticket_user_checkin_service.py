@@ -23,7 +23,7 @@ from .exceptions import (
     UserAlreadyCheckedIn,
     UserIdUnknown,
 )
-from .models.ticket import Ticket as DbTicket
+from .dbmodels.ticket import Ticket as DbTicket
 from . import ticket_service
 from .transfer.models import TicketID
 

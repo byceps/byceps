@@ -11,9 +11,9 @@ from typing import Dict, Optional, Set
 from ...database import db
 from ...typing import BrandID
 
-from .models.brand_requirement import BrandRequirement as DbBrandRequirement
-from .models.consent import Consent as DbConsent
-from .models.subject import Subject as DbSubject
+from .dbmodels.brand_requirement import BrandRequirement as DbBrandRequirement
+from .dbmodels.consent import Consent as DbConsent
+from .dbmodels.subject import Subject as DbSubject
 from .transfer.models import Subject, SubjectID
 
 

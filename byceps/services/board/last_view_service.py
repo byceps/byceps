@@ -12,9 +12,9 @@ from typing import Optional
 from ...database import upsert, upsert_many
 from ...typing import UserID
 
-from .models.last_category_view import LastCategoryView
-from .models.last_topic_view import LastTopicView
-from .models.topic import Topic as DbTopic
+from .dbmodels.last_category_view import LastCategoryView
+from .dbmodels.last_topic_view import LastTopicView
+from .dbmodels.topic import Topic as DbTopic
 from . import topic_query_service
 from .transfer.models import CategoryID, CategoryWithLastUpdate, TopicID
 

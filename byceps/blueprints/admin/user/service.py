@@ -20,15 +20,15 @@ from ....services.party import service as party_service
 from ....services.party.transfer.models import Party
 from ....services.shop.order import service as order_service
 from ....services.site import service as site_service
-from ....services.ticketing.models.ticket import Ticket as DbTicket
+from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
 from ....services.ticketing import attendance_service, ticket_service
 from ....services.user import event_service
-from ....services.user.models.detail import UserDetail as DbUserDetail
-from ....services.user.models.event import (
+from ....services.user.dbmodels.detail import UserDetail as DbUserDetail
+from ....services.user.dbmodels.event import (
     UserEvent as DbUserEvent,
     UserEventData,
 )
-from ....services.user.models.user import User as DbUser
+from ....services.user.dbmodels.user import User as DbUser
 from ....services.user import service as user_service
 from ....services.user.transfer.models import User
 from ....services.user_avatar import service as avatar_service

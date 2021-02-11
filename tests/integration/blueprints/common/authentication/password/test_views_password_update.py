@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.authentication.password.models import Credential
+from byceps.services.authentication.password.dbmodels import Credential
 from byceps.services.authentication.password import service as password_service
 from byceps.services.authentication.session import service as session_service
 

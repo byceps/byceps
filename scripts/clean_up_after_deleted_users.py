@@ -11,30 +11,32 @@ from typing import Callable, Set
 import click
 
 from byceps.database import db
-from byceps.services.authentication.password.models import Credential
-from byceps.services.authentication.session.models.recent_login import (
+from byceps.services.authentication.password.dbmodels import Credential
+from byceps.services.authentication.session.dbmodels.recent_login import (
     RecentLogin,
 )
-from byceps.services.authentication.session.models.session_token import (
+from byceps.services.authentication.session.dbmodels.session_token import (
     SessionToken,
 )
-from byceps.services.authorization.models import UserRole
-from byceps.services.board.models.last_category_view import (
+from byceps.services.authorization.dbmodels import UserRole
+from byceps.services.board.dbmodels.last_category_view import (
     LastCategoryView as BoardLastCategoryView,
 )
-from byceps.services.board.models.last_topic_view import (
+from byceps.services.board.dbmodels.last_topic_view import (
     LastTopicView as BoardLastTopicView,
 )
-from byceps.services.consent.models.consent import Consent
-from byceps.services.newsletter.models import (
+from byceps.services.consent.dbmodels.consent import Consent
+from byceps.services.newsletter.dbmodels import (
     SubscriptionUpdate as NewsletterSubscriptionUpdate,
 )
-from byceps.services.user.models.event import UserEvent
+from byceps.services.user.dbmodels.event import UserEvent
 from byceps.services.user import service as user_service
-from byceps.services.user_avatar.models import (
+from byceps.services.user_avatar.dbmodels import (
     AvatarSelection as UserAvatarSelection,
 )
-from byceps.services.verification_token.models import Token as VerificationToken
+from byceps.services.verification_token.dbmodels import (
+    Token as VerificationToken,
+)
 from byceps.typing import UserID
 from byceps.util.system import get_config_filename_from_env_or_exit
 

@@ -10,10 +10,10 @@ from typing import Dict
 
 from ...database import db
 
-from ..consent.models.consent import Consent
-from ..consent.models.subject import Subject
+from ..consent.dbmodels.consent import Consent
+from ..consent.dbmodels.subject import Subject
 
-from .models.version import Version
+from .dbmodels.version import Version
 from .transfer.models import DocumentID, VersionID
 
 

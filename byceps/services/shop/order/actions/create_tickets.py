@@ -10,7 +10,7 @@ from typing import Sequence
 
 from .....typing import UserID
 
-from ....ticketing.models.ticket import Ticket
+from ....ticketing.dbmodels.ticket import Ticket
 from ....ticketing import (
     category_service as ticket_category_service,
     ticket_creation_service,
@@ -19,7 +19,7 @@ from ....ticketing import (
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..models.order_action import Parameters
+from ..dbmodels.order_action import Parameters
 from ..transfer.models import Order, OrderID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event

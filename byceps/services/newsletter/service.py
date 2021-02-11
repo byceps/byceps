@@ -21,9 +21,9 @@ from typing import (
 from ...database import BaseQuery, db
 from ...typing import UserID
 
-from ..user.models.user import User as DbUser
+from ..user.dbmodels.user import User as DbUser
 
-from .models import (
+from .dbmodels import (
     List as DbList,
     Subscriber,
     SubscriptionUpdate as DbSubscriptionUpdate,

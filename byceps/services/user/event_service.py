@@ -12,7 +12,7 @@ from typing import List, Optional
 from ...database import db
 from ...typing import UserID
 
-from .models.event import UserEvent as DbUserEvent, UserEventData
+from .dbmodels.event import UserEvent as DbUserEvent, UserEventData
 
 
 def create_event(

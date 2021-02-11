@@ -11,7 +11,7 @@ from typing import List, Optional
 from ...database import db
 from ...typing import PartyID, UserID
 
-from .models import UserGroup
+from .dbmodels import UserGroup
 
 
 def create_group(

@@ -11,7 +11,7 @@ from typing import Optional, Set
 from ...database import db
 from ...typing import BrandID
 
-from .models.badge import Badge as DbBadge
+from .dbmodels.badge import Badge as DbBadge
 from .transfer.models import Badge, BadgeID
 
 

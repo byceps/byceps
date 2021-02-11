@@ -10,7 +10,7 @@ from typing import Optional, Set
 
 from ...database import db
 
-from .models.participant import Participant as DbParticipant
+from .dbmodels.participant import Participant as DbParticipant
 from . import tourney_service
 from .transfer.models import Participant, ParticipantID, TourneyID
 
