@@ -83,20 +83,16 @@ def add_page_arg(args, page):
 
 @blueprint.before_app_request
 def provide_app_mode():
-    # app mode
     app_mode = config.get_app_mode()
     g.app_mode = app_mode
 
-    # site ID
-    site_id = None
-    if app_mode.is_site():
+    if app_mode.is_admin():
+        required_permissions = {AdminPermission.access}
+        g.user = get_current_user(required_permissions)
+    elif app_mode.is_site():
         site_id = config.get_current_site_id()
-        g.site_id = site_id
-
-    # current party and brand
-    party_id = None
-    if app_mode.is_site():
         site = site_service.get_site(site_id)
+        g.site_id = site.id
 
         g.brand_id = site.brand_id
 
@@ -106,11 +102,5 @@ def provide_app_mode():
             party_id = party.id
         g.party_id = party_id
 
-    # current user
-    if app_mode.is_admin():
-        required_permissions = {AdminPermission.access}
-    else:
         required_permissions = set()
-    g.user = get_current_user(
-        party_id=party_id, required_permissions=required_permissions
-    )
+        g.user = get_current_user(required_permissions, party_id=party_id)
