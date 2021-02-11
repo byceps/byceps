@@ -647,9 +647,16 @@ def view_events(user_id):
 
     events = list(service.get_events(user.id))
 
+    include_logins = request.args.get('include_logins', default='yes') == 'yes'
+    if not include_logins:
+        events = [
+            event for event in events if event['event'] != 'user-logged-in'
+        ]
+
     return {
         'user': user,
         'events': events,
+        'logins_included': include_logins,
     }
 
 

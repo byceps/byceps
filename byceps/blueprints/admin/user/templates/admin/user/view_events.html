@@ -23,7 +23,21 @@
 
 {% block body %}
 
-  <h2>Ereignisse {{ render_extra_in_heading(events|length) }}</h2>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h2>Ereignisse {{ render_extra_in_heading(events|length) }}</h2>
+    </div>
+    <div class="column-auto">
+      <div class="button-row button-row--right">
+        {%- if logins_included %}
+        <a class="button button--compact" href="{{ url_for('.view_events', user_id=user.id, include_logins='no') }}">{{ render_icon('hidden') }} <span>Logins ausblenden</span></a>
+        {%- else %}
+        <a class="button button--compact" href="{{ url_for('.view_events', user_id=user.id) }}">{{ render_icon('view') }} <span>Logins anzeigen</span></a>
+        {%- endif %}
+      </div>
+    </div>
+  </div>
+
   <div class="events">
     {%- for event in events|sort(attribute='occurred_at', reverse=True) %}
       {%- with %}
