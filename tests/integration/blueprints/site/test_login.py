@@ -21,7 +21,7 @@ def test_login_form(client):
     assert response.status_code == 200
 
 
-def test_login_succeeds(client, make_user):
+def test_login_succeeds(site, client, make_user):
     screen_name = 'SiteLoginTester'
     password = 'correct horse battery staple'
 
@@ -49,7 +49,10 @@ def test_login_succeeds(client, make_user):
     login_events_after = event_service.get_events_of_type_for_user(user.id, 'user-logged-in')
     assert len(login_events_after) == 1
     login_event = login_events_after[0]
-    assert login_event.data == {'ip_address': '127.0.0.1'}
+    assert login_event.data == {
+        'ip_address': '127.0.0.1',
+        'site_id': site.id,
+    }
 
     assert session_service.find_recent_login(user.id) is not None
 

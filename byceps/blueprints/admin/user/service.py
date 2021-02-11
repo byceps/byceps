@@ -19,6 +19,7 @@ from ....services.newsletter.transfer.models import List as NewsletterList
 from ....services.party import service as party_service
 from ....services.party.transfer.models import Party
 from ....services.shop.order import service as order_service
+from ....services.site import service as site_service
 from ....services.ticketing.models.ticket import Ticket as DbTicket
 from ....services.ticketing import attendance_service, ticket_service
 from ....services.user import event_service
@@ -334,6 +335,13 @@ def _get_additional_data(
             if k.startswith('old_') or k.startswith('new_')
         }
         yield 'details', details
+
+    if event.event_type == 'user-logged-in':
+        site_id = event.data.get('site_id')
+        if site_id:
+            site = site_service.find_site(site_id)
+            if site is not None:
+                yield 'site', site
 
 
 def _get_additional_data_for_user_initiated_event(

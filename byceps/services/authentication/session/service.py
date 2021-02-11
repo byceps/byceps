@@ -14,6 +14,7 @@ from uuid import UUID, uuid4
 from ....database import db, insert_ignore_on_conflict, upsert
 from ....typing import UserID
 
+from ...site.transfer.models import SiteID
 from ...user import event_service as user_event_service
 from ...user.transfer.models import User
 
@@ -103,19 +104,25 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
     return db.session.query(subquery).scalar()
 
 
-def log_in_user(user_id: UserID, ip_address: str) -> str:
+def log_in_user(
+    user_id: UserID, ip_address: str, *, site_id: Optional[SiteID] = None
+) -> str:
     """Create a session token and record the log in."""
     session_token = get_session_token(user_id)
 
-    create_login_event(user_id, ip_address)
+    create_login_event(user_id, ip_address, site_id=site_id)
     record_recent_login(user_id)
 
     return session_token.token
 
 
-def create_login_event(user_id: UserID, ip_address: str) -> None:
+def create_login_event(
+    user_id: UserID, ip_address: str, *, site_id: Optional[SiteID] = None
+) -> None:
     """Create an event that represents a user login."""
     data = {'ip_address': ip_address}
+    if site_id:
+        data['site_id'] = site_id
     user_event_service.create_event('user-logged-in', user_id, data)
 
 
