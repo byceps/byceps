@@ -7,7 +7,7 @@ byceps.blueprints.site.ticketing.forms
 """
 
 from flask import g
-from flask_babel import lazy_gettext
+from flask_babel import gettext, lazy_gettext
 from wtforms import StringField
 from wtforms.validators import InputRequired, ValidationError
 
@@ -27,10 +27,10 @@ def validate_user(form, field):
     )
 
     if user is None:
-        raise ValidationError(lazy_gettext('Unknown username'))
+        raise ValidationError(gettext('Unknown username'))
 
     if (not user.initialized) or user.suspeded or user.deleted:
-        raise ValidationError(lazy_gettext('The user account is not active.'))
+        raise ValidationError(gettext('The user account is not active.'))
 
     user = user.to_dto()
 
@@ -45,7 +45,7 @@ def validate_user(form, field):
         user.id, required_consent_subject_ids
     ):
         raise ValidationError(
-            lazy_gettext(
+            gettext(
                 'User "%(screen_name)s" has not yet given all necessary '
                 'consents. Logging in again is required.',
                 screen_name=user.screen_name,
