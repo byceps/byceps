@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin/dashboard.html' import render_bigstats_cell, render_cell %}
 {% set current_page = 'admin_dashboard_global' %}
-{% set title = 'Dashboard' %}
+{% set title = _('Dashboard') %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -16,16 +16,16 @@
 
 {%- include 'admin/dashboard/_active_shops.html' %}
 
-<div class="dashboard-section-title">Übersicht</div>
+<div class="dashboard-section-title">{{ _('Overview') }}</div>
 
   <div class="grid dashboard">
     {%- call render_cell('brand') %}
 {%- include 'admin/dashboard/_brands.html' %}
     {%- endcall %}
-    {{ render_bigstats_cell(party_count, 'Partys', href=url_for('party_admin.index'), icon_name='date') }}
-    {{ render_bigstats_cell(user_count|separate_thousands, 'Benutzer', href=url_for('user_admin.index'), icon_name='users') }}
-    {{ render_bigstats_cell(recent_users_count, 'neue Benutzer in den letzten 7 Tagen', href=url_for('user_admin.index'), icon_name='users', color='#008800') }}
-    {{ render_bigstats_cell(uninitialized_user_count, 'noch nicht aktivierte Benutzer', href=url_for('user_admin.index', only='uninitialized'), icon_name='users', color='#1199ff') }}
+    {{ render_bigstats_cell(party_count, _('Parties'), href=url_for('party_admin.index'), icon_name='date') }}
+    {{ render_bigstats_cell(user_count|separate_thousands, _('Users'), href=url_for('user_admin.index'), icon_name='users') }}
+    {{ render_bigstats_cell(recent_users_count, _('new users in the last 7 days'), href=url_for('user_admin.index'), icon_name='users', color='#008800') }}
+    {{ render_bigstats_cell(uninitialized_user_count, _('uninitialized users'), href=url_for('user_admin.index', only='uninitialized'), icon_name='users', color='#1199ff') }}
     {%- call render_cell('users', 'higher') %}
 {%- include 'admin/dashboard/_recent_users.html' %}
     {%- endcall %}

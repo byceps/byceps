@@ -4,7 +4,7 @@
 {% from 'macros/misc.html' import render_tag %}
 
 
-<div class="dashboard-section-title">Aktive Partys</div>
+<div class="dashboard-section-title">{{ _('Active Parties') }}</div>
 
 <div class="grid">
 
@@ -23,11 +23,11 @@
   </div>
   <div style="color: #999999; font-size: 0.6875rem; text-align: right;">
     <strong>{{ ticket_sale_stats.tickets_sold|separate_thousands }}</strong>
-    von
+    {{ _('of') }}
     <strong>{{ ticket_sale_stats.tickets_max|separate_thousands if tickets_total_max_specified else '?' }}</strong>
-    Tickets verkauft
+    {{ _('tickets sold') }}
         {%- if tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
-    <div class="centered">{{ render_tag('ausverkauft') }}</div>
+    <div class="centered">{{ render_tag(_('sold out')) }}</div>
         {%- endif %}
   </div>
       {%- endwith %}
@@ -36,13 +36,13 @@
   {%- endfor %}
 {%- else %}
   {%- call render_cell() %}
-  <div style="display: grid; height: 100%; place-items: center;">{{ 'Keine aktiven Partys'|dim }}</div>
+  <div style="display: grid; height: 100%; place-items: center;">{{ _('No active parties')|dim }}</div>
   {%- endcall %}
 {%- endif %}
 
 {%- if brand|default %}
   {%- call render_cell(href=url_for('party_admin.index_for_brand', brand_id=brand.id)) %}
-  <div style="display: grid; height: 100%; place-items: center;">Alle Partys &rarr;</div>
+  <div style="display: grid; height: 100%; place-items: center;">{{ _('All parties') }} &rarr;</div>
   {%- endcall %}
 {%- endif %}
 

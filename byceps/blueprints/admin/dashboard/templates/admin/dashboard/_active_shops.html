@@ -3,7 +3,7 @@
 {% from 'macros/datetime.html' import render_date %}
 
 
-<div class="dashboard-section-title">Aktive Shops</div>
+<div class="dashboard-section-title">{{ _('Active Shops') }}</div>
 
 <div class="grid">
 
@@ -12,13 +12,13 @@
     {%- call render_cell() %}
   <div><a href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}" class="disguised" style="display: block;">{{ shop.title }}</a></div>
       {%- if open_orders_count %}
-  <div style="font-size: 0.6875rem; margin-top: 1rem;"><a href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open') }}" class="disguised" style="display: block;"><strong style="color: #ee3322;">{{ open_orders_count }}</strong> offene Bestellungen</a></div>
+  <div style="font-size: 0.6875rem; margin-top: 1rem;"><a href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open') }}" class="disguised" style="display: block;"><strong style="color: #ee3322;">{{ open_orders_count }}</strong> {{ _('open orders') }}</a></div>
       {%- endif %}
     {%- endcall %}
   {%- endfor %}
 {%- else %}
   {%- call render_cell() %}
-  <div style="display: grid; height: 100%; place-items: center;">{{ 'Keine aktiven Shops'|dim }}</div>
+  <div style="display: grid; height: 100%; place-items: center;">{{ _('No active shops')|dim }}</div>
   {%- endcall %}
 {%- endif %}
 

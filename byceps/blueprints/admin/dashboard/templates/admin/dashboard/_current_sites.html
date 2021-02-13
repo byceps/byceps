@@ -2,7 +2,7 @@
 {% from 'macros/admin/dashboard.html' import render_cell %}
 
 
-<div class="dashboard-section-title">Aktuelle Sites</div>
+<div class="dashboard-section-title">{{ _('Current Sites') }}</div>
 
 <div class="grid">
 
@@ -16,12 +16,12 @@
   {%- endfor %}
 {%- else %}
   {%- call render_cell() %}
-  <div style="display: grid; height: 100%; place-items: center;">{{ 'Keine aktuellen Sites'|dim }}</div>
+  <div style="display: grid; height: 100%; place-items: center;">{{ _('No current sites')|dim }}</div>
   {%- endcall %}
 {%- endif %}
 
 {%- call render_cell(href=url_for('site_admin.index')) %}
-  <div style="display: grid; height: 100%; place-items: center;">Alle Sites &rarr;</div>
+<div style="display: grid; height: 100%; place-items: center;">{{ _('All sites') }} &rarr;</div>
 {%- endcall %}
 
 </div>

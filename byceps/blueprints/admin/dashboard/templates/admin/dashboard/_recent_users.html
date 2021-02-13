@@ -4,7 +4,7 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_20 %}
 
 
-<h2>Neueste Benutzer</h2>
+<h2>{{ _('Newest Users') }}</h2>
 {%- if recent_users %}
 <ol class="fancy-list">
   {%- for user in recent_users %}
@@ -21,7 +21,7 @@
   {%- endfor %}
 </ol>
 {%- else %}
-<p>{{ 'keine in letzter Zeit'|dim }}</p>
+<p>{{ _('None recently')|dim }}</p>
 {%- endif %}
 
-<p style="float: right;"><a href="{{ url_for('user_admin.index') }}">alle User &rarr;</a></p>
+<p style="float: right;"><a href="{{ url_for('user_admin.index') }}">{{ _('All users') }} &rarr;</a></p>

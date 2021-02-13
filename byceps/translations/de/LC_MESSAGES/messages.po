@@ -38,20 +38,20 @@ msgstr "Benutzername"
 msgid "Password"
 msgstr "Passwort"
 
-#: byceps/blueprints/admin/authentication/login/views.py:37
-#: byceps/blueprints/site/authentication/login/views.py:47
+#: byceps/blueprints/admin/authentication/login/views.py:38
+#: byceps/blueprints/site/authentication/login/views.py:48
 #, python-format
 msgid "You are already logged in as \"%(screen_name)s\"."
 msgstr "Du bist bereits als Benutzer \"%(screen_name)s\" angemeldet."
 
-#: byceps/blueprints/admin/authentication/login/views.py:76
-#: byceps/blueprints/site/authentication/login/views.py:109
+#: byceps/blueprints/admin/authentication/login/views.py:80
+#: byceps/blueprints/site/authentication/login/views.py:113
 #, python-format
 msgid "Successfully logged in as %(screen_name)s."
 msgstr "Erfolgreich eingeloggt als %(screen_name)s."
 
-#: byceps/blueprints/admin/authentication/login/views.py:96
-#: byceps/blueprints/site/authentication/login/views.py:133
+#: byceps/blueprints/admin/authentication/login/views.py:102
+#: byceps/blueprints/site/authentication/login/views.py:139
 msgid "Successfully logged out."
 msgstr "Erfolgreich ausgeloggt."
 
@@ -317,6 +317,9 @@ msgstr "Marke"
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:29
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:9
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:29
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:5
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:4
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:6
 #: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:4
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:37
 msgid "Dashboard"
@@ -329,10 +332,13 @@ msgstr "Sites"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:41
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:27
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:21
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:25
 msgid "Parties"
 msgstr "Partys"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:47
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:22
 msgid "Organizers"
 msgstr "Organisatoren"
 
@@ -353,10 +359,12 @@ msgid "More"
 msgstr "Mehr"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:15
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:26
 msgid "Users"
 msgstr "Benutzer"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:21
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_brands.html:4
 msgid "Brands"
 msgstr "Marken"
 
@@ -400,6 +408,126 @@ msgstr "Newsposts"
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_site.html:43
 msgid "Storefront"
 msgstr "Storefront"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:7
+msgid "Active Parties"
+msgstr "Aktive Partys"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:26
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:37
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:48
+msgid "of"
+msgstr "von"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:28
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:25
+msgid "tickets sold"
+msgstr "Tickets verkauft"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:30
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:35
+msgid "sold out"
+msgstr "ausverkauft"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:39
+msgid "No active parties"
+msgstr "Keine aktiven Partys"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:45
+msgid "All parties"
+msgstr "Alle Partys"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:6
+msgid "Active Shops"
+msgstr "Aktive Shops"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:15
+msgid "open orders"
+msgstr "offene Bestellungen"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:21
+msgid "No active shops"
+msgstr "Keine aktiven Shops"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_birthdays.html:7
+msgid "Upcoming Birthdays"
+msgstr "De nächsten Geburtstage"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_birthdays.html:26
+msgid "All birthdays"
+msgstr "Alle Geburtstage"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_brands.html:17
+msgid "No brands"
+msgstr "Keine Marken"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_sites.html:5
+msgid "Current Sites"
+msgstr "Aktuelle Sites"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_sites.html:19
+msgid "No current sites"
+msgstr "Keine aktuellen Sites"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_sites.html:24
+msgid "All sites"
+msgstr "Alle Sites"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_recent_users.html:7
+msgid "Newest Users"
+msgstr "Neueste Benutzer"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_recent_users.html:24
+msgid "None recently"
+msgstr "Keine in letzter Zeit"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_recent_users.html:27
+msgid "All users"
+msgstr "Alle Benutzer"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:18
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:19
+msgid "Overview"
+msgstr "Übersicht"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:24
+#, python-format
+msgid "Subscribers to newsletter \"%(title)s\""
+msgstr "Abonnenten von Newsletter \"%(title)s\""
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:27
+msgid "Required Consents"
+msgstr "Erforderliche Zustimmungen"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:39
+msgid "None required"
+msgstr "Keine erforderlich"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:27
+msgid "new users in the last 7 days"
+msgstr "neue Benutzer in den letzten 7 Tagen"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:28
+msgid "uninitialized users"
+msgstr "noch nicht aktivierte Benutzer"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:21
+msgid "days until the party"
+msgstr "Tage bis zur Party"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:22
+#, python-format
+msgid "organizers in %(team_count)s teams"
+msgstr "Organisatoren in %(team_count)s Teams"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:23
+#, python-format
+msgid "seats in %(area_count)s areas"
+msgstr "Sitzplätze in %(area_count)s Bereichen"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:42
+msgid "tickets checked in"
+msgstr "Tickets eingecheckt"
 
 #: byceps/blueprints/admin/maintenance/views.py:45
 #, python-format

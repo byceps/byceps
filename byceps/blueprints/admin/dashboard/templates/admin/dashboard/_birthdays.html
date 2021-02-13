@@ -4,7 +4,7 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_32 %}
 
 
-<h2>Die nächsten Geburtstage</h2>
+<h2>{{ _('Upcoming Birthdays') }}</h2>
 <ol class="birthdays">
 {%- for user, birthday in orgas_with_next_birthdays %}
   {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
@@ -23,5 +23,5 @@
 </ol>
 
 <div style="font-size: 0.6875rem; margin-top: 1rem; text-align: right;">
-  <a href="{{ url_for('orga_admin.birthdays') }}" class="disguised" style="display: block;">Zu allen Geburtstagen &rarr;</a>
+  <a href="{{ url_for('orga_admin.birthdays') }}" class="disguised" style="display: block;">{{ _('All birthdays') }} &rarr;</a>
 </div>

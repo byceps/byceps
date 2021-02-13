@@ -1,7 +1,7 @@
 {% from 'macros/admin/brand.html' import render_brand_avatar %}
 
 
-<h2>Marken</h2>
+<h2>{{ _('Brands') }}</h2>
 {%- if brands %}
 <ol class="fancy-list">
   {%- for brand in brands|sort(attribute='title') %}
@@ -14,5 +14,5 @@
   {%- endfor %}
 </ol>
 {%- else %}
-<p>{{ 'keine'|dim }}</p>
+<p>{{ _('No brands')|dim }}</p>
 {%- endif %}
