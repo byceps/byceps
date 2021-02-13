@@ -24,7 +24,7 @@ msgstr ""
 #: byceps/blueprints/admin/user/forms.py:55
 #: byceps/blueprints/common/authentication/password/forms.py:23
 #: byceps/blueprints/site/authentication/login/forms.py:17
-#: byceps/blueprints/site/ticketing/forms.py:57
+#: byceps/blueprints/site/ticketing/forms.py:60
 #: byceps/blueprints/site/user/creation/forms.py:29
 #: byceps/blueprints/site/user/email_address/forms.py:17
 msgid "Username"
@@ -1985,7 +1985,11 @@ msgstr ""
 msgid "Order has been canceled."
 msgstr "Die Bestellung wurde storniert."
 
-#: byceps/blueprints/site/ticketing/forms.py:45
+#: byceps/blueprints/site/ticketing/forms.py:33
+msgid "The user account is not active."
+msgstr "Das Benutzerkonto ist nicht aktiv."
+
+#: byceps/blueprints/site/ticketing/forms.py:48
 #, python-format
 msgid ""
 "User \"%(screen_name)s\" has not yet given all necessary consents. "

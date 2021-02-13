@@ -29,6 +29,9 @@ def validate_user(form, field):
     if user is None:
         raise ValidationError(lazy_gettext('Unknown username'))
 
+    if (not user.initialized) or user.suspeded or user.deleted:
+        raise ValidationError(lazy_gettext('The user account is not active.'))
+
     user = user.to_dto()
 
     required_consent_subjects = (
