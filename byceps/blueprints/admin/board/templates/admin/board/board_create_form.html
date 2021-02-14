@@ -1,18 +1,17 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'board_admin' %}
 {% set current_page_brand = brand %}
 {% set title = 'Forum erstellen' %}
 
+{% block before_body %}
+{{ render_backlink(url_for('.board_index_for_brand', brand_id=brand.id), brand.title) }}
+{%- endblock %}
+
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>Foren</li>
-      <li><a href="{{ url_for('.board_index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
-    </ol>
-  </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.board_create', brand_id=brand.id) }}" method="post">
@@ -23,7 +22,7 @@
     <p>Ein Forum kann sowohl für eine einzelne Party als auch für mehrere oder alle Partys derselben Marke genutzt werden.</p>
     <p>Tipp: Sofern das Forum nur für eine konkrete Party genutzt werden soll, verwende die ID <em>dieser Party</em> als ID für das Forum. Falls es jedoch partyübergreifend genutzt werden soll, verwende die ID <em>der Marke</em> der Partys als ID für das Forum.</p>
 
-    {{ form_buttons(_('Create'), cancel_url=url_for('.board_index_for_brand', brand_id=brand.id)) }}
+    {{ form_buttons(_('Create')) }}
   </form>
 
 {%- endblock %}

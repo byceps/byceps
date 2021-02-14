@@ -149,7 +149,7 @@ def category_create_form(board_id, erroneous_form=None):
     form = erroneous_form if erroneous_form else CategoryCreateForm()
 
     return {
-        'board_id': board_id,
+        'board': board,
         'brand': brand,
         'form': form,
     }

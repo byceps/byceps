@@ -1,16 +1,16 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user' %}
 {% set title = 'Benutzerkonto erstellen' %}
 
+{% block before_body %}
+{{ render_backlink(url_for('.index'), _('Users')) }}
+{%- endblock %}
+
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.index') }}">Benutzer</a></li>
-    </ol>
-  </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.create_account') }}" method="post" class="disable-submit-button-on-submit">

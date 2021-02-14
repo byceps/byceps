@@ -1,13 +1,12 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset, form_supplement %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'webhook_admin' %}
 {% set title = _('Create Webhook') %}
 
 {% block before_body %}
-  <nav style="margin-bottom: 0.5rem;">
-    <a class="button button--clear button--compact" href="{{ url_for('.index') }}">{{ render_icon('arrow-left') }} <span>{{ _('Webhooks') }}</span></a></li>
-  </nav>
+{{ render_backlink(url_for('.index'), _('Webhooks')) }}
 {%- endblock %}
 
 {% block body %}

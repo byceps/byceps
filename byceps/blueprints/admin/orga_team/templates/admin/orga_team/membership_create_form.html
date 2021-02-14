@@ -1,18 +1,17 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
 {% set title = 'Orga zu Team hinzufügen' %}
 
+{% block before_body %}
+{{ render_backlink(url_for('.teams_for_party', party_id=party.id), 'Teams "%s"'|format(party.title)) }}
+{%- endblock %}
+
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>{{ party.title }}</li>
-      <li>{{ team.title }}</li>
-    </ol>
-  </nav>
   <h1>{{ title }}</h1>
 
   {%- if unassigned_orgas_available %}
@@ -22,7 +21,7 @@
       {{ form_field(form.duties, maxlength=40) }}
     {% endcall %}
 
-    {{ form_buttons(_('Save'), cancel_url=url_for('.teams_for_party', party_id=party.id)) }}
+    {{ form_buttons(_('Save')) }}
   </form>
   {%- else %}
   {{ render_notification('Es sind keine Orgas vorhanden, die noch keinem Team dieser Party zugewiesen sind.', category='info', icon='info') }}

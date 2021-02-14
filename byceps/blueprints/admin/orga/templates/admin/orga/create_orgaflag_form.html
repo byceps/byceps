@@ -1,17 +1,17 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'orga_admin' %}
 {% set current_page_brand = brand %}
 {% set title = 'Person zum Orga ernennen' %}
 
+{% block before_body %}
+{{ render_backlink(url_for('.persons_for_brand', brand_id=brand.id), brand.title) }}
+{%- endblock %}
+
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.persons_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
-    </ol>
-  </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.create_orgaflag', brand_id=brand.id) }}" method="post">
@@ -19,7 +19,7 @@
       {{ form_field(form.user, maxlength=36, autofocus='autofocus') }}
     {% endcall %}
 
-    {{ form_buttons(_('Save'), cancel_url=url_for('.persons_for_brand', brand_id=brand.id)) }}
+    {{ form_buttons(_('Save')) }}
   </form>
 
 {%- endblock %}

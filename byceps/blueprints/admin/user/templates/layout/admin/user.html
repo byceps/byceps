@@ -1,5 +1,5 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin.html' import render_main_tabs %}
+{% from 'macros/admin.html' import render_backlink, render_main_tabs %}
 {% from 'macros/admin/user.html' import render_most_important_user_flag %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_screen_name %}
@@ -34,9 +34,7 @@
 }
 </style>
 
-  <nav>
-    <a class="button button--clear button--compact" href="{{ url_for('.index') }}">{{ render_icon('arrow-left') }} <span>Benutzer</span></a></li>
-  </nav>
+  {{ render_backlink(url_for('.index'), _('Users')) }}
 
   <div class="user-head">
     <div>{{ render_user_avatar_96(user) }}</div>

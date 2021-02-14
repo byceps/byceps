@@ -1,18 +1,17 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set title = 'News-Kanal erstellen' %}
 
+{% block before_body %}
+{{ render_backlink(url_for('.channel_index_for_brand', brand_id=brand.id), 'Newskanäle') }}
+{%- endblock %}
+
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>News-Kanäle</li>
-      <li><a href="{{ url_for('.channel_index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></li>
-    </ol>
-  </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.channel_create', brand_id=brand.id) }}" method="post">
@@ -24,7 +23,7 @@
     <p>Ein News-Kanal kann sowohl für eine einzelne Party als auch für mehrere oder alle Partys derselben Marke genutzt werden.</p>
     <p>Tipp: Sofern der News-Kanal nur für eine konkrete Party genutzt werden soll, verwende die ID <em>dieser Party</em> als ID für den News-Kanal. Falls er jedoch partyübergreifend genutzt werden soll, verwende die ID <em>der Marke</em> der Partys als ID für den News-Kanal.</p>
 
-    {{ form_buttons(_('Create'), cancel_url=url_for('.channel_index_for_brand', brand_id=brand.id)) }}
+    {{ form_buttons(_('Create')) }}
   </form>
 
 {%- endblock %}
