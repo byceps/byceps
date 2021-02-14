@@ -1,1 +1,18 @@
+<div class="sidebar-section">
+  <h3>Navigation</h3>
 {%- include 'layout/_navigation.html' with context %}
+</div>
+
+<div class="sidebar-section">
+  <h3>Sprache</h3>
+  <nav class="nav-main">
+    <ol>
+      {%- for code, label, flag in [
+        ('en', 'English', '🇬🇧'),
+        ('de', 'Deutsch', '🇩🇪'),
+      ] %}
+      <li><a class="nav-main-item{% if g.user.locale == code %} current{% endif %}" href="{{ url_for('locale.set_locale', locale=code) }}">{{ flag }} {{ label }}</a></li>
+      {%- endfor %}
+    </ol>
+  </nav>
+</div>

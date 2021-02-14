@@ -1,5 +1,5 @@
 <div class="sidebar-section">
-  <h3>Tickets</h3>
+  <h3>{{ _('Tickets') }}</h3>
 
   {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
     {%- with sold_out = tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
