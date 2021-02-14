@@ -29,7 +29,7 @@ def validate_user(form, field):
     if user is None:
         raise ValidationError(gettext('Unknown username'))
 
-    if (not user.initialized) or user.suspeded or user.deleted:
+    if (not user.initialized) or user.suspended or user.deleted:
         raise ValidationError(gettext('The user account is not active.'))
 
     user = user.to_dto()
