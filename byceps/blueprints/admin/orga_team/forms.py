@@ -28,7 +28,9 @@ class OrgaTeamsCopyForm(LocalizedForm):
             label = party.title
             if team_count_per_party:
                 team_count = team_count_per_party.get(party.id, 0)
-                label += lazy_gettext(' (%(team_count)s teams)')
+                label += lazy_gettext(
+                    ' (%(team_count)s teams)', team_count=team_count
+                )
             return label
 
         choices = [(party.id, get_label(party)) for party in parties]
