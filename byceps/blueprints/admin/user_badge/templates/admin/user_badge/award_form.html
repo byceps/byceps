@@ -16,10 +16,10 @@
 
   <form action="{{ url_for('.award', user_id=user.id) }}" method="post">
     {% call form_fieldset() %}
-      <li>
+      <div class="form-row">
         <div class="label">{{ _('User') }}</div>
         {{ render_user_avatar_20_and_admin_link(user) }}
-      </li>
+      </div>
       {{ form_field(form.badge_id, autofocus='autofocus') }}
     {% endcall %}
 
