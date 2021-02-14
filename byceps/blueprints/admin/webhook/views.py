@@ -6,24 +6,29 @@ byceps.blueprints.admin.webhook.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort
+from flask import abort, request
 from flask_babel import gettext
 
+from ....announce.events import EVENT_TYPES_TO_NAMES
 from ....announce.helpers import call_webhook
 from ....services.webhooks import service as webhook_service
 from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
-from ....util.views import permission_required, respond_no_content
+from ....util.views import permission_required, redirect_to, respond_no_content
 
 from .authorization import WebhookPermission
+from .forms import assemble_create_form_with_events
 
 
 blueprint = create_blueprint('webhook_admin', __name__)
 
 
 register_permission_enum(WebhookPermission)
+
+
+WEBHOOK_EVENT_NAMES = frozenset(EVENT_TYPES_TO_NAMES.values())
 
 
 @blueprint.route('/')
@@ -40,8 +45,55 @@ def index():
     }
 
 
+@blueprint.route('/create')
+@permission_required(WebhookPermission.administrate)
+@templated
+def create_form(erroneous_form=None):
+    """Show form to create a webhook."""
+    event_names = WEBHOOK_EVENT_NAMES
+    CreateFormWithEvents = assemble_create_form_with_events(event_names)
+
+    form = erroneous_form if erroneous_form else CreateFormWithEvents()
+
+    return {
+        'form': form,
+        'event_names': event_names,
+    }
+
+
+@blueprint.route('/', methods=['POST'])
+@permission_required(WebhookPermission.administrate)
+def create():
+    """Create a webhook."""
+    event_names = WEBHOOK_EVENT_NAMES
+    CreateFormWithEvents = assemble_create_form_with_events(event_names)
+
+    form = CreateFormWithEvents(request.form)
+
+    if not form.validate():
+        return create_form(form)
+
+    event_selectors = {}
+    for event_name in event_names:
+        if form.get_field_for_event_name(event_name).data:
+            event_selectors[event_name] = None
+
+    format = form.format.data.strip()
+    url = form.url.data.strip()
+    description = form.description.data.strip()
+    enabled = False
+
+    webhook = webhook_service.create_outgoing_webhook(
+        event_selectors, format, url, enabled, description=description
+    )
+
+    flash_success(gettext('Webhook has been created.'))
+
+    return redirect_to('.index')
+
+
 @blueprint.route('/webhooks/<webhook_id>', methods=['POST'])
-@permission_required(WebhookPermission.view)
+@permission_required(WebhookPermission.administrate)
 @respond_no_content
 def test(webhook_id):
     """Call the webhook (synchronously)."""

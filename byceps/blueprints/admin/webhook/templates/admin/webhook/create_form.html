@@ -1,0 +1,39 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset, form_supplement %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'webhook_admin' %}
+{% set title = _('Create Webhook') %}
+
+{% block before_body %}
+  <nav style="margin-bottom: 0.5rem;">
+    <a class="button button--clear button--compact" href="{{ url_for('.index') }}">{{ render_icon('arrow-left') }} <span>{{ _('Webhooks') }}</span></a></li>
+  </nav>
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ render_icon('add') }} {{ title }}</h1>
+
+  <form action="{{ url_for('.create') }}" method="post">
+    {% call form_fieldset() %}
+      {{ form_field(form.description, autofocus='autofocus') }}
+      {{ form_field(form.format) }}
+      {{ form_field(form.url) }}
+      <div class="form-row">
+        <label>{{ _('Selectors') }}</label>
+        <fieldset>
+          {%- for event_name in event_names|sort %}
+          <div class="checkbox">
+            {%- with field = form.get_field_for_event_name(event_name) %}
+            {{- field() }} {{ field.label(event_name) }}
+            {%- endwith %}
+          </div>
+          {%- endfor %}
+        <fieldset>
+      </div>
+    {% endcall %}
+
+    {{ form_buttons(_('Create')) }}
+  </form>
+
+{%- endblock %}
