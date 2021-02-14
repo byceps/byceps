@@ -14,12 +14,7 @@ from tests.integration.services.shop.helpers import create_orderer
 
 
 def get_current_user_for_user(user) -> CurrentUser:
-    permissions = set()
-    locale = None
-
-    return session_service.get_authenticated_current_user(
-        user, permissions, locale
-    )
+    return session_service.get_authenticated_current_user(user)
 
 
 def place_order_with_items(

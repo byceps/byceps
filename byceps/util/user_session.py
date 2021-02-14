@@ -51,15 +51,15 @@ def get_current_user(
     user = get_user(party_id=party_id)
 
     if user is None:
-        return session_service.get_anonymous_current_user(locale)
+        return session_service.get_anonymous_current_user(locale=locale)
 
     permissions = get_permissions_for_user(user.id)
 
     if not required_permissions.issubset(permissions):
-        return session_service.get_anonymous_current_user(locale)
+        return session_service.get_anonymous_current_user(locale=locale)
 
     return session_service.get_authenticated_current_user(
-        user, permissions, locale
+        user, permissions=permissions, locale=locale
     )
 
 
