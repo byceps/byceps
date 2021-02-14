@@ -40,5 +40,5 @@ class EmailConfigUpdateForm(LocalizedForm):
         lazy_gettext('Sender name'), validators=[Optional()]
     )
     contact_address = StringField(
-        lazy_gettext('Contact adress'), validators=[Optional()]
+        lazy_gettext('Contact address'), validators=[Optional()]
     )

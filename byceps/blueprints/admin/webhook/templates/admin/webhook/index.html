@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'webhook_admin' %}
-{% set title = 'Webhooks' %}
+{% set title = _('Webhooks') %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -27,12 +27,12 @@
     <div class="two-column" style="margin-bottom: 1rem;">
 
       <div>
-        {{ render_tag('aktiv', class='color-success') if webhook.enabled else render_tag('inaktiv', class='color-disabled') }}
+        {{ render_tag(_('enabled'), class='color-success') if webhook.enabled else render_tag(_('disabled'), class='color-disabled') }}
         {{ webhook.description|fallback }}
       </div>
 
       <div class="button-row button-row--compact button-row--right">
-        <a class="button" data-action="test-webhook" href="{{ url_for('.test', webhook_id=webhook.id) }}">{{ render_icon('webhook') }} <span>Testen</span></a>
+        <a class="button" data-action="test-webhook" href="{{ url_for('.test', webhook_id=webhook.id) }}">{{ render_icon('webhook') }} <span>{{ _('Test') }}</span></a>
       </div>
 
     </div>{# .two-column #}
@@ -42,28 +42,28 @@
       <div style="overflow-x: auto;">
         <table class="index">
           <tr>
-            <th>URL</th>
+            <th>{{ _('URL') }}</th>
             <td>{{ webhook.url }}</td>
           </tr>
           <tr>
-            <th>Format</th>
+            <th>{{ _('Format') }}</th>
             <td>{{ webhook.format }}</td>
           </tr>
           <tr>
-            <th>Zusätzliche Felder</th>
+            <th>{{ _('Additional fields') }}</th>
             <td>{{ webhook.extra_fields|fallback }}</td>
           </tr>
           <tr>
-            <th>Text-Präfix</th>
+            <th>{{ _('Text prefix') }}</th>
             <td>{{ webhook.text_prefix|fallback }}</td>
           </tr>
         </table>
       </div>
 
       <div style="font-size: 0.75rem;">
-        <strong>Selektoren</strong>
+        <strong>{{ _('Selectors') }}</strong>
         <details>
-          <summary>{{ webhook.event_selectors|length }} Event(s)</summary>
+          <summary>{{ webhook.event_selectors|length }} {{ _('event(s)') }}</summary>
           <ul style="padding-left: 0.75rem;">
             {%- for event_name, event_filters in webhook.event_selectors|dictsort %}
             <li>
@@ -88,7 +88,7 @@
   </div>{# .box #}
     {%- endfor %}
   {%- else %}
-  <div class="dimmed-box centered">Es sind keine Webhooks definiert.</div>
+  <div class="dimmed-box centered">{{ _('No webhooks defined.') }}</div>
   {%- endif %}
 
 {%- endblock %}

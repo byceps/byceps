@@ -4,7 +4,7 @@
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_64 %}
 {% set current_page = 'user_badge_admin' %}
-{% set title = 'Abzeichen - %s'|format(badge.label) %}
+{% set title = _('Badge') ~ ' - ' ~ badge.label %}
 
 {% block head %}
   <style>
@@ -35,36 +35,36 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index') }}">Abzeichen</a></li>
+      <li><a href="{{ url_for('.index') }}">{{ _('Badges') }}</a></li>
     </ol>
   </nav>
   <h1>{{ badge.label }}</h1>
 
   {%- if has_current_user_permission(UserBadgePermission.update) %}
   <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.update_form', badge_id=badge.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+    <a class="button" href="{{ url_for('.update_form', badge_id=badge.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
   </div>
   {%- endif %}
 
   <table class="index">
     <tr>
-      <th>Slug</th>
+      <th>{{ _('Slug') }}</th>
       <td>{{ badge.slug }}</td>
     </tr>
     <tr>
-      <th>Marke</th>
+      <th>{{ _('Brand') }}</th>
       <td>
       {%- if brand %}
         {{ render_brand_avatar(brand, '16') }}
         {{ brand.title }}
       {%- else %}
-        <em>keine Einschränkung</em>
+      <em>{{ _('unrestricted') }}</em>
       {%- endif %}
       </td>
     </tr>
     <tr>
-      <th>{{ render_tag('featured') }}</th>
-      <td>{{ 'ja' if badge.featured else 'nein' }}</td>
+      <th>{{ render_tag(_('featured')) }}</th>
+      <td>{{ _('yes') if badge.featured else _('no') }}</td>
     </tr>
   </table>
 
@@ -73,10 +73,10 @@
       <div class="user-badge size-64" title="{{ badge.label }}"><img src="{{ badge.image_url_path }}"></div>
     </div>
 
-    <div class="description">{{ badge.description|fallback('Es ist keine Beschreibung hinterlegt.') }}</div>
+    <div class="description">{{ badge.description|fallback('No description set.') }}</div>
   </div>
 
-  <h2>An {{ recipients|length }} Personen verliehen</h2>
+  <h2>{{ _('Awarded to %(recipient_count)s users', recipient_count=recipients|length) }}</h2>
   {%- if recipients %}
   <ul class="list-grid">
     {%- for user in recipients %}
@@ -86,7 +86,7 @@
     {%- endfor %}
   </ul>
   {%- else %}
-    <div class="dimmed-box centered">Dieses Abzeichen wurde an keine Personen verliehen.</div>
+    <div class="dimmed-box centered">{{ _('This badge has not been awarded yet.') }}</div>
   {%- endif %}
 
 {%- endblock %}

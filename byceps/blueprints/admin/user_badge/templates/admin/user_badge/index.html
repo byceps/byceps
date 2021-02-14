@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'user_badge_admin' %}
-{% set title = 'Abzeichen' %}
+{% set title = _('Badges') %}
 
 {% block head %}
   <style>
@@ -18,12 +18,12 @@
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>Abzeichen {{ render_extra_in_heading(badges|length) }}</h1>
+      <h1>{{ _('Badges') }} {{ render_extra_in_heading(badges|length) }}</h1>
     </div>
   {%- if has_current_user_permission(UserBadgePermission.create) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Abzeichen erstellen</span></a>
+        <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Create badge') }}</span></a>
       </div>
     </div>
   {%- endif %}
@@ -33,11 +33,11 @@
   <table class="index wide badges">
     <thead>
       <tr>
-        <th>Bild</th>
-        <th>Bezeichnung<br>Slug</th>
-        <th colspan="2">Marke</th>
+        <th>{{ _('Image') }}</th>
+        <th>{{ _('Label') }}<br>{{ _('Slug') }}</th>
+        <th colspan="2">{{ _('Brand') }}</th>
         <th></th>
-        <th class="number">Verliehen</th>
+        <th class="number">{{ _('Awarded') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -52,16 +52,16 @@
         <td>{{ render_brand_avatar(badge.brand, '32') }}</td>
         <td>{{ badge.brand.title }}</td>
         {%- else %}
-        <td colspan="2"><em>keine Einschränkung</em></td>
+        <td colspan="2"><em>{{ _('unrestricted') }}</em></td>
         {%- endif %}
-        <td>{{ render_tag('featured') if badge.featured else '' }}</td>
+        <td>{{ render_tag(_('featured')) if badge.featured else '' }}</td>
         <td class="bignumber number">{{ badge.awarding_count }}</td>
       </tr>
       {%- endfor %}
     </tbody>
   </table>
   {%- else %}
-  <div class="dimmed-box centered">Es sind keine Abzeichen hinterlegt.</div>
+  <div class="dimmed-box centered">{{ _('No badges defined.') }}</div>
   {%- endif %}
 
 {%- endblock %}

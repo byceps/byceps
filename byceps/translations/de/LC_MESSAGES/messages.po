@@ -97,6 +97,8 @@ msgstr "ID"
 #: byceps/blueprints/admin/board/forms.py:23
 #: byceps/blueprints/admin/news/forms.py:47
 #: byceps/blueprints/admin/user_badge/forms.py:23
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:37
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:51
 msgid "Slug"
 msgstr "Slug"
 
@@ -253,7 +255,7 @@ msgid "Sender name"
 msgstr "Absender-Name"
 
 #: byceps/blueprints/admin/brand/forms.py:43
-msgid "Contact adress"
+msgid "Contact address"
 msgstr "Kontaktadresse"
 
 #: byceps/blueprints/admin/brand/views.py:104
@@ -311,6 +313,8 @@ msgstr "Global"
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:25
 #: byceps/blueprints/admin/site/forms.py:89
 #: byceps/blueprints/admin/user_badge/forms.py:42
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:38
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:55
 msgid "Brand"
 msgstr "Marke"
 
@@ -608,6 +612,7 @@ msgid "User Badges"
 msgstr "Benutzer-Abzeichen"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_global.html:21
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:6
 msgid "Webhooks"
 msgstr "Webhooks"
 
@@ -765,6 +770,7 @@ msgid "Function"
 msgstr "Aufgabe"
 
 #: byceps/blueprints/admin/orga_team/forms.py:44
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/award_form.html:20
 msgid "User"
 msgstr "Benutzer"
 
@@ -1162,6 +1168,7 @@ msgid "Server name"
 msgstr "Servername"
 
 #: byceps/blueprints/admin/site/forms.py:31
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:30
 msgid "enabled"
 msgstr "aktiv"
 
@@ -1557,10 +1564,13 @@ msgid "Unlock"
 msgstr "Entsperren"
 
 #: byceps/blueprints/admin/user_badge/forms.py:36
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:37
 msgid "Label"
 msgstr "Bezeichnung"
 
 #: byceps/blueprints/admin/user_badge/forms.py:43
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:57
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:66
 msgid "featured"
 msgstr "featured"
 
@@ -1569,6 +1579,7 @@ msgid "<no restriction>"
 msgstr "<keine Einschränkung>"
 
 #: byceps/blueprints/admin/user_badge/forms.py:56
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:7
 msgid "Badge"
 msgstr "Badge"
 
@@ -1587,9 +1598,72 @@ msgstr "Das Abzeichen \"%(badge_label)s\" wurde aktualisiert."
 msgid "Badge \"%(badge_label)s\" has been awarded to %(screen_name)s."
 msgstr "Das Abzeichen \"%(badge_label)s\" wurde an %(screen_name)s verliehen."
 
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/award_form.html:6
+msgid "Award Badge"
+msgstr "Abzeichen verleihen"
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/award_form.html:12
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/create_form.html:11
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:7
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:21
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/update_form.html:11
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:38
+msgid "Badges"
+msgstr "Abzeichen"
+
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/award_form.html:26
 msgid "Award badge"
 msgstr "Abzeichen verleihen"
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/create_form.html:5
+msgid "Create Badge"
+msgstr "Abzeichen erstellen"
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:26
+msgid "Create badge"
+msgstr "Abzeichen erstellen"
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:36
+msgid "Image"
+msgstr "Bild"
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:40
+msgid "Awarded"
+msgstr "Verliehen"
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:55
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:61
+msgid "unrestricted"
+msgstr "keine Einschränkung"
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:64
+msgid "No badges defined."
+msgstr "Es sind keine Abzeichen hinterlegt."
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/update_form.html:5
+msgid "Update Badge"
+msgstr "Abzeichen bearbeiten"
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:45
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:67
+msgid "yes"
+msgstr "ja"
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:67
+msgid "no"
+msgstr "nein"
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:79
+#, python-format
+msgid "Awarded to %(recipient_count)s users"
+msgstr "An %(recipient_count)s Personen verliehen"
+
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:89
+msgid "This badge has not been awarded yet."
+msgstr "Dieses Abzeichen wurde bisher nicht verliehen."
 
 #: byceps/blueprints/admin/webhook/views.py:56
 msgid "Webhook call has been successful."
@@ -1598,6 +1672,42 @@ msgstr "Der Webhook-Aufruf war erfolgreich."
 #: byceps/blueprints/admin/webhook/views.py:60
 msgid "Webhook call failed:"
 msgstr "Der Webhook-Aufruf ist fehlgeschlagen:"
+
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:30
+msgid "disabled"
+msgstr "inaktiv"
+
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:35
+msgid "Test"
+msgstr "Testen"
+
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:45
+msgid "URL"
+msgstr "URL"
+
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:49
+msgid "Format"
+msgstr "Format"
+
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:53
+msgid "Additional fields"
+msgstr "Zusätzliche Felder"
+
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:57
+msgid "Text prefix"
+msgstr "Text-Präfix"
+
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:64
+msgid "Selectors"
+msgstr "Selektoren"
+
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:66
+msgid "event(s)"
+msgstr "Event(s)"
+
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:91
+msgid "No webhooks defined."
+msgstr "Es sind keine Webhooks definiert."
 
 #: byceps/blueprints/api/v1/tourney/avatar/forms.py:17
 msgid "Party ID"
@@ -2328,6 +2438,10 @@ msgstr "Deine Bestellung (%(order_number)s) ist bezahlt worden."
 #: byceps/services/text_markup/service.py:68
 msgid "wrote"
 msgstr "schrieb"
+
+#: byceps/util/templatefilters.py:41
+msgid "not specified"
+msgstr "nicht angegeben"
 
 #: byceps/util/views.py:34
 msgid "Please log in."

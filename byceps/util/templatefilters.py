@@ -11,7 +11,7 @@ Provide and register custom template filters.
 from datetime import datetime
 
 from flask import current_app
-from flask_babel import format_decimal
+from flask_babel import format_decimal, gettext
 from jinja2 import evalcontextfilter, Markup
 from jinja2.filters import do_default, do_trim
 import pendulum
@@ -32,9 +32,15 @@ def _dim(value):
 
 
 @evalcontextfilter
-def fallback(eval_ctx, value, fallback='nicht angegeben'):
+def fallback(eval_ctx, value, fallback=None):
     defaulted = do_trim(do_default(value, '', True))
-    result = value if defaulted else _dim(fallback)
+    if defaulted:
+        result = value
+    else:
+        if fallback is None:
+            fallback = gettext('not specified')
+        result = _dim(fallback)
+
     return _wrap_markup_on_autoescape(eval_ctx, result)
 
 

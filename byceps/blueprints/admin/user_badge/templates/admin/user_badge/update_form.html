@@ -2,13 +2,13 @@
 {% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user_badge_admin' %}
-{% set title = 'Abzeichen bearbeiten' %}
+{% set title = _('Update Badge') %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index') }}">Abzeichen</a></li>
+      <li><a href="{{ url_for('.index') }}">{{ _('Badges') }}</a></li>
       <li><a href="{{ url_for('.view', badge_id=badge.id) }}">{{ badge.label }}</a></li>
     </ol>
   </nav>

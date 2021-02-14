@@ -3,13 +3,13 @@
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user_badge_admin' %}
-{% set title = 'Abzeichen verleihen' %}
+{% set title = _('Award Badge') %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index') }}">Abzeichen</a></li>
+      <li><a href="{{ url_for('.index') }}">{{ _('Badges') }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('badge') }} {{ title }}</h1>
@@ -17,7 +17,7 @@
   <form action="{{ url_for('.award', user_id=user.id) }}" method="post">
     {% call form_fieldset() %}
       <li>
-        <div class="label">User</div>
+        <div class="label">{{ _('User') }}</div>
         {{ render_user_avatar_20_and_admin_link(user) }}
       </li>
       {{ form_field(form.badge_id, autofocus='autofocus') }}
