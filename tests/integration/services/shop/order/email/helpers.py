@@ -3,10 +3,23 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.services.authentication.session.models.current_user import (
+    CurrentUser,
+)
+from byceps.services.authentication.session import service as session_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
 
 from tests.integration.services.shop.helpers import create_orderer
+
+
+def get_current_user_for_user(user) -> CurrentUser:
+    permissions = set()
+    locale = None
+
+    return session_service.get_authenticated_current_user(
+        user, permissions, locale
+    )
 
 
 def place_order_with_items(

@@ -24,7 +24,7 @@ from tests.integration.services.shop.helpers import (
     create_shop_fragment,
 )
 
-from .helpers import place_order_with_items
+from .helpers import get_current_user_for_user, place_order_with_items
 
 
 @pytest.fixture(scope='package')
@@ -127,7 +127,8 @@ def order(storefront, article1, article2, customer, order_admin):
 def test_email_on_order_placed(send_email_mock, site_app, customer, order):
     app = site_app
 
-    with current_user_set(app, customer), app.app_context():
+    current_user = get_current_user_for_user(customer)
+    with current_user_set(app, current_user), app.app_context():
         order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
     expected_to_orderer_sender = 'noreply@acmecon.test'

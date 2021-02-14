@@ -16,6 +16,9 @@ from flask import appcontext_pushed, g
 
 from byceps.application import create_app, init_app
 from byceps.database import db, generate_uuid
+from byceps.services.authentication.session.models.current_user import (
+    CurrentUser,
+)
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authz_service
 from byceps.services.party import service as party_service
@@ -67,9 +70,9 @@ def current_party_set(app, party):
 
 
 @contextmanager
-def current_user_set(app, user):
+def current_user_set(app, current_user: CurrentUser):
     def handler(sender, **kwargs):
-        g.user = user
+        g.user = current_user
 
     with appcontext_pushed.connected_to(handler, app):
         yield
