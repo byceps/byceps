@@ -167,7 +167,7 @@ def _record_recent_login(user_id: UserID, occurred_at: datetime) -> None:
 ANONYMOUS_USER_ID = UUID('00000000-0000-0000-0000-000000000000')
 
 
-def get_anonymous_current_user() -> CurrentUser:
+def get_anonymous_current_user(locale: Optional[str]) -> CurrentUser:
     """Return an anonymous current user object."""
     return CurrentUser(
         id=ANONYMOUS_USER_ID,
@@ -178,11 +178,12 @@ def get_anonymous_current_user() -> CurrentUser:
         is_orga=False,
         authenticated=False,
         permissions=frozenset(),
+        locale=locale,
     )
 
 
 def get_authenticated_current_user(
-    user: User, permissions: Set[Enum]
+    user: User, permissions: Set[Enum], locale: Optional[str]
 ) -> CurrentUser:
     """Return an authenticated current user object."""
     return CurrentUser(
@@ -194,4 +195,5 @@ def get_authenticated_current_user(
         is_orga=user.is_orga,
         authenticated=True,
         permissions=permissions,
+        locale=locale,
     )

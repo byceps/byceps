@@ -56,6 +56,7 @@ def create_app(
     set_locale(app.config['LOCALE'])  # Fail if not configured.
 
     babel = Babel(app)
+    babel.locale_selector_func = _get_locale
 
     # Initialize database.
     db.init_app(app)
@@ -72,6 +73,10 @@ def create_app(
     _add_static_file_url_rules(app)
 
     return app
+
+
+def _get_locale() -> Optional[str]:
+    return g.user.locale
 
 
 def _add_static_file_url_rules(app: Flask) -> None:

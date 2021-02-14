@@ -10,7 +10,9 @@ from byceps.util.authorization import create_permission_enum
 
 
 def test_get_anonymous_current_user():
-    current_user = session_service.get_anonymous_current_user()
+    locale = 'en'
+
+    current_user = session_service.get_anonymous_current_user(locale)
 
     assert current_user.id == UUID('00000000-0000-0000-0000-000000000000')
     assert current_user.screen_name is None
@@ -20,6 +22,7 @@ def test_get_anonymous_current_user():
     assert not current_user.is_orga
     assert not current_user.authenticated
     assert len(current_user.permissions) == 0
+    assert current_user.locale == 'en'
 
 
 def test_get_authenticated_current_user(user):
@@ -28,9 +31,10 @@ def test_get_authenticated_current_user(user):
         permission_enum.do_this,
         permission_enum.do_that,
     }
+    locale = 'de'
 
     current_user = session_service.get_authenticated_current_user(
-        user, permissions
+        user, permissions, locale
     )
 
     assert current_user.id == user.id
@@ -41,3 +45,4 @@ def test_get_authenticated_current_user(user):
     assert not current_user.is_orga
     assert current_user.authenticated
     assert current_user.permissions == permissions
+    assert current_user.locale == 'de'

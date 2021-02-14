@@ -21,7 +21,10 @@ from ....util.authorization import (
 )
 from ....util.framework.blueprint import create_blueprint
 from ....util.navigation import Navigation
-from ....util.user_session import get_current_user
+from ....util.user_session import (
+    get_current_user,
+    get_locale as get_session_locale,
+)
 
 from ...admin.core.authorization import AdminPermission
 
@@ -86,9 +89,11 @@ def provide_app_mode():
     app_mode = config.get_app_mode()
     g.app_mode = app_mode
 
+    locale = get_session_locale()
+
     if app_mode.is_admin():
         required_permissions = {AdminPermission.access}
-        g.user = get_current_user(required_permissions)
+        g.user = get_current_user(required_permissions, locale)
     elif app_mode.is_site():
         site_id = config.get_current_site_id()
         site = site_service.get_site(site_id)
@@ -103,4 +108,6 @@ def provide_app_mode():
         g.party_id = party_id
 
         required_permissions = set()
-        g.user = get_current_user(required_permissions, party_id=party_id)
+        g.user = get_current_user(
+            required_permissions, locale, party_id=party_id
+        )

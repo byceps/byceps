@@ -44,20 +44,23 @@ def end() -> None:
 
 def get_current_user(
     required_permissions: Set[Enum],
+    locale: Optional[str],
     *,
     party_id: Optional[PartyID] = None,
 ) -> CurrentUser:
     user = get_user(party_id=party_id)
 
     if user is None:
-        return session_service.get_anonymous_current_user()
+        return session_service.get_anonymous_current_user(locale)
 
     permissions = get_permissions_for_user(user.id)
 
     if not required_permissions.issubset(permissions):
-        return session_service.get_anonymous_current_user()
+        return session_service.get_anonymous_current_user(locale)
 
-    return session_service.get_authenticated_current_user(user, permissions)
+    return session_service.get_authenticated_current_user(
+        user, permissions, locale
+    )
 
 
 def get_user(*, party_id: Optional[PartyID] = None) -> Optional[User]:
