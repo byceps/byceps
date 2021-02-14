@@ -98,8 +98,8 @@
           <div class="dropdown">
             <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">
-              <li><a href="{{ url_for('.membership_update_form', membership_id=member.membership.id) }}">{{ render_icon('edit') }} Teamzugehörigkeit und Aufgabe bearbeiten</a></li>
-              <li><a data-action="membership-remove" href="{{ url_for('.membership_remove', membership_id=member.membership.id) }}">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.membership_update_form', membership_id=member.membership.id) }}">{{ render_icon('edit') }} Teamzugehörigkeit und Aufgabe bearbeiten</a></li>
+              <li><a class="dropdown-item" data-action="membership-remove" href="{{ url_for('.membership_remove', membership_id=member.membership.id) }}">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
             </ol>
           </div>
         </div>
