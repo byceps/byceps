@@ -87,6 +87,8 @@ msgstr "Neues Passwort setzen"
 
 #: byceps/blueprints/admin/board/forms.py:18
 #: byceps/blueprints/admin/brand/forms.py:25
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:27
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:30
 #: byceps/blueprints/admin/news/forms.py:24
 #: byceps/blueprints/admin/party/forms.py:50
 #: byceps/blueprints/admin/shop/storefront/forms.py:38
@@ -248,14 +250,17 @@ msgid "Image filename"
 msgstr "Bild-Dateiname"
 
 #: byceps/blueprints/admin/brand/forms.py:37
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:72
 msgid "Sender address"
 msgstr "Absender-Adresse"
 
 #: byceps/blueprints/admin/brand/forms.py:40
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:76
 msgid "Sender name"
 msgstr "Absender-Name"
 
 #: byceps/blueprints/admin/brand/forms.py:43
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:80
 msgid "Contact address"
 msgstr "Kontaktadresse"
 
@@ -272,6 +277,84 @@ msgstr "Die Marke \"%(title)s\" wurde aktualisiert."
 #: byceps/blueprints/admin/brand/views.py:197
 msgid "Email configuration has been updated."
 msgstr "Die E-Mail-Konfiguration wurde aktualisiert."
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:5
+msgid "Create Brand"
+msgstr "Marke erstellen"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:11
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:6
+#: byceps/blueprints/admin/brand/templates/admin/brand/update_form.html:12
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:14
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:21
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_brands.html:4
+msgid "Brands"
+msgstr "Marken"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/email_config_update_form.html:6
+msgid "Update Email Configuration"
+msgstr "E-Mail-Konfiguration bearbeiten"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:17
+msgid "Create brand"
+msgstr "Marke erstellen"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:27
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:40
+#: byceps/blueprints/admin/snippet/forms.py:34
+msgid "Name"
+msgstr "Name"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:28
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:41
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:27
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:21
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:25
+msgid "Parties"
+msgstr "Partys"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:29
+#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:47
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:22
+msgid "Organizers"
+msgstr "Organisatoren"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:49
+msgid "No brands defined."
+msgstr "Es sind keine Marken hinterlegt."
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/update_form.html:6
+msgid "Update Brand"
+msgstr "Marke bearbeiten"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:22
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:64
+msgid "Update"
+msgstr "Bearbeiten"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:35
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
+#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
+#: byceps/blueprints/admin/more/templates/admin/more/view_site.html:17
+#: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:6
+msgid "Settings"
+msgstr "Einstellungen"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:41
+msgid "Value"
+msgstr "Wert"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:54
+msgid "No settings defined for this brand."
+msgstr "Für diese Marke sind keine Einstellungen hinterlegt."
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:59
+msgid "Email Configuration"
+msgstr "E-Mail-Konfiguration"
+
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:85
+msgid "Not configured"
+msgstr "Nicht konfiguriert"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:15
 #: byceps/blueprints/common/core/templates/layout/_current_user.html:16
@@ -335,18 +418,6 @@ msgstr "Dashboard"
 msgid "Sites"
 msgstr "Sites"
 
-#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:41
-#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:27
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:21
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:25
-msgid "Parties"
-msgstr "Partys"
-
-#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:47
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:22
-msgid "Organizers"
-msgstr "Organisatoren"
-
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:53
 #: sites/cozylan/template_overrides/layout/_navigation.html:11
 msgid "Shop"
@@ -367,11 +438,6 @@ msgstr "Mehr"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:26
 msgid "Users"
 msgstr "Benutzer"
-
-#: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:21
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_brands.html:4
-msgid "Brands"
-msgstr "Marken"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:14
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_party.html:26
@@ -559,13 +625,6 @@ msgstr "Alte Login-Events löschen"
 #: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:38
 msgid "Delete old login events?"
 msgstr "Alte Login-Events löschen?"
-
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
-#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
-#: byceps/blueprints/admin/more/templates/admin/more/view_site.html:17
-#: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:6
-msgid "Settings"
-msgstr "Einstellungen"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:18
 msgid "Newsletter Subscriptions"
@@ -1247,10 +1306,6 @@ msgstr "URL-Pfad"
 #: byceps/blueprints/admin/snippet/forms.py:25
 msgid "URL path has to start with a slash."
 msgstr "Der URL-Pfad muss mit einem Slash beginnen."
-
-#: byceps/blueprints/admin/snippet/forms.py:34
-msgid "Name"
-msgstr "Name"
 
 #: byceps/blueprints/admin/snippet/forms.py:44
 msgid "Page header"

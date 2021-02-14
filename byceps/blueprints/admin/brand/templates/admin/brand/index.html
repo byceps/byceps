@@ -3,7 +3,7 @@
 {% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'brands_admin' %}
-{% set title = 'Marken' %}
+{% set title = _('Brands') %}
 
 {% block body %}
 
@@ -14,7 +14,7 @@
   {%- if has_current_user_permission(BrandPermission.create) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>Marke erstellen</span></a>
+        <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Create brand') }}</span></a>
       </div>
     </div>
   {%- endif %}
@@ -24,9 +24,9 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Name<br>ID</th>
-        <th class="centered">Partys</th>
-        <th class="centered">Organisatoren</th>
+        <th>{{ _('Name') }}<br>{{ _('ID') }}</th>
+        <th class="centered">{{ _('Parties') }}</th>
+        <th class="centered">{{ _('Organizers') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -46,7 +46,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="dimmed-box centered">Es sind keine Marken hinterlegt.</div>
+  <div class="dimmed-box centered">{{ _('No brands defined.') }}</div>
   {%- endif %}
 
 {%- endblock %}

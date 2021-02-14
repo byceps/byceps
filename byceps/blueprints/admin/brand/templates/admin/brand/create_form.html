@@ -2,13 +2,13 @@
 {% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'brands_admin' %}
-{% set title = 'Marke erstellen' %}
+{% set title = _('Create Brand') %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index') }}">Marken</a></li>
+      <li><a href="{{ url_for('.index') }}">{{ _('Brands') }}</a></li>
     </ol>
   </nav>
   <h1>{{ render_icon('add') }} {{ title }}</h1>

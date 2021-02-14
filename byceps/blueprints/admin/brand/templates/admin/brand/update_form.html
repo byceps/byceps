@@ -3,13 +3,13 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'brands_admin' %}
 {% set current_page_brand = brand %}
-{% set title = 'Marke bearbeiten' %}
+{% set title = _('Update Brand') %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index') }}">Marken</a></li>
+      <li><a href="{{ url_for('.index') }}">{{ _('Brands') }}</a></li>
       <li><a href="{{ url_for('.view', brand_id=brand.id) }}">{{ brand.title }}</a></li>
     </ol>
   </nav>

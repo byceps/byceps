@@ -11,7 +11,7 @@
     <div class="column-auto">
       <nav class="breadcrumbs">
         <ol>
-          <li><a href="{{ url_for('.index') }}">Marken</a></li>
+          <li><a href="{{ url_for('.index') }}">{{ _('Brands') }}</a></li>
         </ol>
       </nav>
       <h1>{{ brand.title }}</h1>
@@ -19,7 +19,7 @@
   {%- if has_current_user_permission(BrandPermission.update) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+        <a class="button" href="{{ url_for('.update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
       </div>
     </div>
   {%- endif %}
@@ -27,18 +27,18 @@
 
   <table class="index">
     <tr>
-      <th>ID</th>
+      <th>{{ _('ID') }}</th>
       <td>{{ brand.id }}</td>
     </tr>
   </table>
 
-  <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>
+  <h2>{{ _('Settings') }} {{ render_extra_in_heading(settings|length) }}</h2>
   {%- if settings %}
   <table class="index wide">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Wert</th>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Value') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -51,17 +51,17 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="dimmed-box centered">Für diese Marke sind keine Einstellungen hinterlegt.</div>
+  <div class="dimmed-box centered">{{ _('No settings defined for this brand.') }}</div>
   {%- endif %}
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h2>E-Mail-Konfiguration</h2>
+      <h2>{{ _('Email Configuration') }}</h2>
     </div>
     {%- if email_config and has_current_user_permission(BrandPermission.update) %}
     <div class="column-auto">
       <div class="button-row button-row--right" style="margin-top: 2rem;">
-        <a class="button button--compact" href="{{ url_for('.email_config_update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+        <a class="button button--compact" href="{{ url_for('.email_config_update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
       </div>
     </div>
     {%- endif %}
@@ -69,20 +69,20 @@
   {%- if email_config %}
   <table class="index">
     <tr>
-      <th>Absender-Adresse</th>
+      <th>{{ _('Sender address') }}</th>
       <td>{{ email_config.sender.address }}</td>
     </tr>
     <tr>
-      <th>Absender-Name</th>
+      <th>{{ _('Sender name') }}</th>
       <td>{{ email_config.sender.name|fallback }}</td>
     </tr>
     <tr>
-      <th>Kontaktadresse</th>
+      <th>{{ _('Contact address') }}</th>
       <td>{{ email_config.contact_address|fallback }}</td>
     </tr>
   </table>
   {%- else %}
-  <div class="dimmed-box centered">Keine</div>
+  <div class="dimmed-box centered">{{ _('Not configured') }}</div>
   {%- endif %}
 
 {%- endblock %}
