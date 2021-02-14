@@ -21,6 +21,7 @@ from ..typing import PartyID, UserID
 from .authorization import get_permissions_for_user
 
 
+KEY_LOCALE = 'locale'
 KEY_USER_ID = 'user_id'
 KEY_USER_AUTH_TOKEN = 'user_auth_token'
 
@@ -105,3 +106,13 @@ def _is_auth_token_valid(user_id: UserID, auth_token: str) -> bool:
         return False
     else:
         return True
+
+
+def get_locale() -> Optional[str]:
+    """Return the locale set in the session, if any."""
+    return session.get(KEY_LOCALE)
+
+
+def set_locale(locale: str) -> None:
+    """Set locale for the session."""
+    session[KEY_LOCALE] = locale

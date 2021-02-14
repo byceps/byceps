@@ -45,6 +45,7 @@ def _get_blueprints_common() -> Iterator[BlueprintReg]:
     yield from [
         ('common.authentication.password',  '/authentication/password'  ),
         ('common.core',                     '/core'                     ),
+        ('common.locale',                   '/locale'                   ),
     ]
 
 
