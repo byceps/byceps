@@ -41,6 +41,35 @@ def create_outgoing_webhook(
     return _db_entity_to_outgoing_webhook(webhook)
 
 
+def update_outgoing_webhook(
+    webhook_id: WebhookID,
+    event_selectors: EventSelectors,
+    format: str,
+    url: str,
+    enabled: bool,
+    *,
+    text_prefix: Optional[str] = None,
+    extra_fields: Optional[Dict[str, Any]] = None,
+    description: Optional[str] = None,
+) -> OutgoingWebhook:
+    """Update an outgoing webhook."""
+    webhook = _find_db_webhook(webhook_id)
+    if webhook is None:
+        raise ValueError(f'Unknown webhook ID "{webhook_id}"')
+
+    webhook.event_selectors = event_selectors
+    webhook.format = format
+    webhook.text_prefix = text_prefix
+    webhook.extra_fields = extra_fields
+    webhook.url = url
+    webhook.description = description
+    webhook.enabled = enabled
+
+    db.session.commit()
+
+    return _db_entity_to_outgoing_webhook(webhook)
+
+
 def delete_outgoing_webhook(webhook_id: WebhookID) -> None:
     """Delete the outgoing webhook."""
     db.session.query(DbOutgoingWebhook) \
@@ -51,12 +80,17 @@ def delete_outgoing_webhook(webhook_id: WebhookID) -> None:
 
 def find_webhook(webhook_id: WebhookID) -> Optional[OutgoingWebhook]:
     """Return the webhook with that ID, if found."""
-    webhook = db.session.query(DbOutgoingWebhook).get(webhook_id)
+    webhook = _find_db_webhook(webhook_id)
 
     if webhook is None:
         return None
 
     return _db_entity_to_outgoing_webhook(webhook)
+
+
+def _find_db_webhook(webhook_id: WebhookID) -> Optional[DbOutgoingWebhook]:
+    """Return the webhook database entity with that ID, if found."""
+    return db.session.query(DbOutgoingWebhook).get(webhook_id)
 
 
 def get_all_webhooks() -> List[OutgoingWebhook]:

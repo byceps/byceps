@@ -15,14 +15,27 @@ from wtforms.validators import InputRequired
 from ....util.l10n import LocalizedForm
 
 
-class CreateForm(LocalizedForm):
+class _BaseForm(LocalizedForm):
     description = StringField(lazy_gettext('Description'), [InputRequired()])
     format = StringField(lazy_gettext('Format'), [InputRequired()])
     url = StringField(lazy_gettext('URL'), [InputRequired()])
 
 
+class CreateForm(_BaseForm):
+    pass
+
+
+class UpdateForm(_BaseForm):
+    text_prefix = StringField(lazy_gettext('Text prefix'), [InputRequired()])
+    enabled = BooleanField(lazy_gettext('Enabled'))
+
+
 def assemble_create_form(event_names: Set[str]) -> Type[LocalizedForm]:
     return _extend_form_for_event_types(CreateForm, event_names)
+
+
+def assemble_update_form(event_names: Set[str]) -> Type[LocalizedForm]:
+    return _extend_form_for_event_types(UpdateForm, event_names)
 
 
 def _extend_form_for_event_types(

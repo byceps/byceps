@@ -20,7 +20,11 @@ from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
 from .authorization import WebhookPermission
-from .forms import assemble_create_form
+from .forms import (
+    assemble_create_form,
+    assemble_update_form,
+    _create_event_field_name,
+)
 
 
 blueprint = create_blueprint('webhook_admin', __name__)
@@ -89,6 +93,75 @@ def create():
     )
 
     flash_success(gettext('Webhook has been created.'))
+
+    return redirect_to('.index')
+
+
+@blueprint.route('/webhooks/<uuid:webhook_id>/update')
+@permission_required(WebhookPermission.administrate)
+@templated
+def update_form(webhook_id, erroneous_form=None):
+    """Show form to update a webhook."""
+    webhook = _get_webhook_or_404(webhook_id)
+
+    event_names = WEBHOOK_EVENT_NAMES
+    UpdateForm = assemble_update_form(event_names)
+
+    # Pre-fill event type checkboxes.
+    event_type_fields = {}
+    for event_type_name in webhook.event_selectors:
+        field_name = _create_event_field_name(event_type_name)
+        event_type_fields[field_name] = True
+
+    form = (
+        erroneous_form
+        if erroneous_form
+        else UpdateForm(obj=webhook, **event_type_fields)
+    )
+
+    return {
+        'webhook': webhook,
+        'form': form,
+        'event_names': event_names,
+    }
+
+
+@blueprint.route('/webhooks/<uuid:webhook_id>', methods=['POST'])
+@permission_required(WebhookPermission.administrate)
+def update(webhook_id):
+    """Update the webhook."""
+    webhook = _get_webhook_or_404(webhook_id)
+
+    event_names = WEBHOOK_EVENT_NAMES
+    UpdateForm = assemble_update_form(event_names)
+
+    form = UpdateForm(request.form)
+
+    if not form.validate():
+        return update_form(webhook.id, form)
+
+    event_selectors = {}
+    for event_name in event_names:
+        if form.get_field_for_event_name(event_name).data:
+            event_selectors[event_name] = None
+
+    format = form.format.data.strip()
+    url = form.url.data.strip()
+    text_prefix = form.text_prefix.data.lstrip()  # Allow trailing whitespace.
+    description = form.description.data.strip()
+    enabled = form.enabled.data
+
+    webhook = webhook_service.update_outgoing_webhook(
+        webhook.id,
+        event_selectors,
+        format,
+        url,
+        enabled,
+        text_prefix=text_prefix,
+        description=description,
+    )
+
+    flash_success(gettext('Webhook has been updated.'))
 
     return redirect_to('.index')
 
