@@ -29,6 +29,7 @@ from .util.views import redirect_to
 
 def create_app(
     config_filename: Union[Path, str],
+    *,
     config_overrides: Optional[Dict[str, Any]] = None,
 ) -> Flask:
     """Create the actual Flask application."""
