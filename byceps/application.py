@@ -15,12 +15,12 @@ from typing import Any, Callable, Dict, Optional, Union
 from flask import current_app, Flask, g, redirect
 from flask_babel import Babel
 import jinja2
+from redis import StrictRedis
 
 from .blueprints.blueprints import register_blueprints
 from . import config, config_defaults
 from .database import db
 from . import email
-from .redis import redis
 from .util.l10n import set_locale
 from .util import templatefilters
 from .util.templating import SiteTemplateOverridesLoader
@@ -61,8 +61,8 @@ def create_app(
     # Initialize database.
     db.init_app(app)
 
-    # Initialize Redis connection.
-    redis.init_app(app)
+    # Initialize Redis client.
+    app.redis_client = StrictRedis.from_url(app.config['REDIS_URL'])
 
     email.init_app(app)
 

@@ -18,12 +18,10 @@ from typing import Callable
 from flask import current_app
 from rq import Connection, Queue
 
-from byceps.redis import redis
-
 
 @contextmanager
 def connection():
-    with Connection(redis.client):
+    with Connection(current_app.redis_client):
         yield
 
 
