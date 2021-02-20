@@ -12,6 +12,7 @@ from flask_babel import gettext
 from ....announce.events import EVENT_TYPES_TO_NAMES
 from ....announce.helpers import call_webhook
 from ....services.webhooks import service as webhook_service
+from ....services.webhooks.transfer.models import OutgoingWebhook, WebhookID
 from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
@@ -97,9 +98,7 @@ def create():
 @respond_no_content
 def test(webhook_id):
     """Call the webhook (synchronously)."""
-    webhook = webhook_service.find_webhook(webhook_id)
-    if webhook is None:
-        abort(404)
+    webhook = _get_webhook_or_404(webhook_id)
 
     text = 'Test, test … is this thing on?!'
     try:
@@ -114,3 +113,15 @@ def test(webhook_id):
             icon='warning',
             text_is_safe=True,
         )
+
+
+# helpers
+
+
+def _get_webhook_or_404(webhook_id: WebhookID) -> OutgoingWebhook:
+    webhook = webhook_service.find_webhook(webhook_id)
+
+    if webhook is None:
+        abort(404)
+
+    return webhook
