@@ -56,7 +56,7 @@ def create_app(
     set_locale(app.config['LOCALE'])  # Fail if not configured.
 
     babel = Babel(app)
-    babel.locale_selector_func = _get_locale
+    babel.locale_selector_func = _get_user_locale
 
     # Initialize database.
     db.init_app(app)
@@ -75,7 +75,7 @@ def create_app(
     return app
 
 
-def _get_locale() -> Optional[str]:
+def _get_user_locale() -> Optional[str]:
     return g.user.locale
 
 
