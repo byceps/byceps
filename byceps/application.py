@@ -72,6 +72,14 @@ def create_app(
 
     _add_static_file_url_rules(app)
 
+    app_mode = config.get_app_mode(app)
+    if app_mode.is_admin():
+        _init_admin_app(app)
+    elif app_mode.is_site():
+        _init_site_app(app)
+
+    _load_announce_signal_handlers()
+
     return app
 
 
@@ -87,17 +95,6 @@ def _add_static_file_url_rules(app: Flask) -> None:
         methods=['GET'],
         build_only=True,
     )
-
-
-def init_app(app: Flask) -> None:
-    """Initialize application."""
-    app_mode = config.get_app_mode(app)
-    if app_mode.is_admin():
-        _init_admin_app(app)
-    elif app_mode.is_site():
-        _init_site_app(app)
-
-    _load_announce_signal_handlers()
 
 
 def _init_admin_app(app: Flask) -> None:
