@@ -20,7 +20,7 @@ from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
 from .authorization import WebhookPermission
-from .forms import assemble_create_form_with_events
+from .forms import assemble_create_form
 
 
 blueprint = create_blueprint('webhook_admin', __name__)
@@ -52,9 +52,9 @@ def index():
 def create_form(erroneous_form=None):
     """Show form to create a webhook."""
     event_names = WEBHOOK_EVENT_NAMES
-    CreateFormWithEvents = assemble_create_form_with_events(event_names)
+    CreateForm = assemble_create_form(event_names)
 
-    form = erroneous_form if erroneous_form else CreateFormWithEvents()
+    form = erroneous_form if erroneous_form else CreateForm()
 
     return {
         'form': form,
@@ -67,9 +67,9 @@ def create_form(erroneous_form=None):
 def create():
     """Create a webhook."""
     event_names = WEBHOOK_EVENT_NAMES
-    CreateFormWithEvents = assemble_create_form_with_events(event_names)
+    CreateForm = assemble_create_form(event_names)
 
-    form = CreateFormWithEvents(request.form)
+    form = CreateForm(request.form)
 
     if not form.validate():
         return create_form(form)
