@@ -8,7 +8,6 @@ byceps.blueprints.site.user.current.views
 
 from flask import abort, g, jsonify, Response
 
-from .....config import get_app_mode
 from .....util.framework.blueprint import create_blueprint
 
 
