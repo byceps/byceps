@@ -6,18 +6,20 @@ metrics application instance
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import os
+
+from byceps.config import ConfigurationError
 from byceps.metrics.application import create_app
-from byceps.util.system import get_env_value
 
 
 ENV_VAR_NAME_DATABASE_URI = 'DATABASE_URI'
 
 
-database_uri = get_env_value(
-    ENV_VAR_NAME_DATABASE_URI,
-    f"No database URI was specified via the '{ENV_VAR_NAME_DATABASE_URI}' "
-    "environment variable.",
-)
-
+database_uri = os.environ.get(ENV_VAR_NAME_DATABASE_URI)
+if not database_uri:
+    raise ConfigurationError(
+        f"No database URI was specified via the '{ENV_VAR_NAME_DATABASE_URI}' "
+        "environment variable.",
+    )
 
 app = create_app(database_uri)
