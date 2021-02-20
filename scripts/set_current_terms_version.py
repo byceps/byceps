@@ -16,7 +16,7 @@ from byceps.services.terms.dbmodels.version import Version
 from byceps.services.terms.transfer.models import DocumentID, VersionID
 from byceps.services.terms import document_service, version_service
 
-from _util import app_context
+from _util import call_with_app_context
 
 
 def validate_document_id(ctx, param, value) -> DocumentID:
@@ -96,5 +96,4 @@ def _get_version_ids_latest_first(
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)

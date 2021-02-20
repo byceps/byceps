@@ -12,7 +12,7 @@ from byceps.services.authorization import service as authorization_service
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user import creation_service as user_creation_service
 
-from _util import app_context
+from _util import call_with_app_context
 
 
 @click.command()
@@ -56,5 +56,4 @@ def _assign_roles_to_user(roles, user_id):
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)

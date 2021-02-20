@@ -39,7 +39,7 @@ from byceps.services.verification_token.dbmodels import (
 )
 from byceps.typing import UserID
 
-from _util import app_context
+from _util import call_with_app_context
 
 
 @click.command()
@@ -171,5 +171,4 @@ def _execute_delete_for_users_query(model, user_ids: Set[UserID]) -> int:
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)

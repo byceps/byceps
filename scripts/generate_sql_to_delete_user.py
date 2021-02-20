@@ -18,7 +18,7 @@ import click
 from byceps.services.user import service as user_service
 from byceps.typing import UserID
 
-from _util import app_context
+from _util import call_with_app_context
 from _validators import validate_user_id_format
 
 
@@ -70,5 +70,4 @@ def generate_delete_statements_for_user(user_id: UserID) -> Iterator[str]:
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)

@@ -11,7 +11,7 @@ import click
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope, SnippetType
 
-from _util import app_context
+from _util import call_with_app_context
 from _validators import validate_site
 
 
@@ -91,5 +91,4 @@ def scope_as_string(scope):
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)

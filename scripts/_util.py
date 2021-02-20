@@ -9,6 +9,7 @@ Utilities for scripts
 """
 
 from contextlib import contextmanager
+from typing import Callable
 
 from byceps.application import create_app
 
@@ -21,3 +22,9 @@ def app_context():
     app = create_app()
     with app.app_context():
         yield app
+
+
+def call_with_app_context(func: Callable) -> None:
+    """Call a callable inside of an application context."""
+    with app_context():
+        func()

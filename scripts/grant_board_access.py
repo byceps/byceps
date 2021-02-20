@@ -11,7 +11,7 @@ import click
 from byceps.services.board import access_control_service, board_service
 from byceps.services.board.transfer.models import Board
 
-from _util import app_context
+from _util import call_with_app_context
 from _validators import validate_user_screen_name
 
 
@@ -48,5 +48,4 @@ def execute(board, user):
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)

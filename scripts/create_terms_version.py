@@ -17,7 +17,7 @@ from byceps.services.terms import document_service as terms_document_service
 from byceps.services.terms.transfer.models import DocumentID
 from byceps.services.terms import version_service as terms_version_service
 
-from _util import app_context
+from _util import call_with_app_context
 from _validators import validate_brand
 
 
@@ -71,5 +71,4 @@ def _create_consent_subject(brand, title, consent_subject_name_suffix):
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)

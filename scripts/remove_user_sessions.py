@@ -16,7 +16,7 @@ import click
 
 from byceps.services.authentication.session import service as session_service
 
-from _util import app_context
+from _util import call_with_app_context
 
 
 @click.command()
@@ -28,5 +28,4 @@ def execute():
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)

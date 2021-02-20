@@ -11,7 +11,7 @@ import click
 from byceps.services.seating import seat_group_service
 from byceps.services.ticketing import ticket_bundle_service
 
-from _util import app_context
+from _util import call_with_app_context
 
 
 def get_seat_group(ctx, param, seat_group_id):
@@ -44,5 +44,4 @@ def execute(seat_group, ticket_bundle):
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)

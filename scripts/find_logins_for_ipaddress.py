@@ -15,7 +15,7 @@ from byceps.services.user import service as user_service
 from byceps.services.user.transfer.models import User
 from byceps.typing import PartyID, UserID
 
-from _util import app_context
+from _util import call_with_app_context
 
 
 @click.command()
@@ -44,5 +44,4 @@ def get_users_by_id(events: List[UserEvent]) -> Dict[UserID, User]:
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)

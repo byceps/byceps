@@ -12,7 +12,7 @@ import click
 
 from byceps.services.user import event_service as user_event_service
 
-from _util import app_context
+from _util import call_with_app_context
 
 
 @click.command()
@@ -32,5 +32,4 @@ def execute(minimum_age_in_days):
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)

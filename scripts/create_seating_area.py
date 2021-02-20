@@ -10,7 +10,7 @@ import click
 
 from byceps.services.seating import area_service
 
-from _util import app_context
+from _util import call_with_app_context
 from _validators import validate_party
 
 
@@ -24,5 +24,4 @@ def execute(party, slug, title):
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)

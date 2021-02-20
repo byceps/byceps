@@ -14,7 +14,7 @@ from byceps.services.ticketing import ticket_service
 from byceps.services.user import service as user_service
 from byceps.typing import PartyID
 
-from _util import app_context
+from _util import call_with_app_context
 from _validators import validate_party
 
 
@@ -40,5 +40,4 @@ def _get_email_addresses(party_id: PartyID) -> Iterator[str]:
 
 
 if __name__ == '__main__':
-    with app_context():
-        execute()
+    call_with_app_context(execute)
