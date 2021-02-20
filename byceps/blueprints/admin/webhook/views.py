@@ -92,7 +92,7 @@ def create():
     return redirect_to('.index')
 
 
-@blueprint.route('/webhooks/<webhook_id>', methods=['POST'])
+@blueprint.route('/webhooks/<uuid:webhook_id>/test', methods=['POST'])
 @permission_required(WebhookPermission.administrate)
 @respond_no_content
 def test(webhook_id):
