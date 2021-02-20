@@ -11,7 +11,6 @@ from typing import Optional
 from flask import abort, g, request
 from flask_babel import gettext
 
-from .....config import get_app_mode
 from .....services.authentication.password import (
     reset_service as password_reset_service,
     service as password_service,
@@ -66,7 +65,7 @@ def update():
 
     flash_success(gettext('Password has been updated. Please log in again.'))
 
-    if get_app_mode().is_admin():
+    if g.app_mode.is_admin():
         return redirect_to('authentication.login_admin.login_form')
     else:
         return redirect_to('authentication.login.login_form')
@@ -150,7 +149,7 @@ def request_reset():
 
 
 def _get_sender() -> Optional[Sender]:
-    if not get_app_mode().is_site():
+    if not g.app_mode.is_site():
         return None
 
     site = site_service.get_site(g.site_id)
