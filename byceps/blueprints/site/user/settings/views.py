@@ -11,7 +11,6 @@ from typing import Optional
 from flask import abort, g, request
 from flask_babel import gettext
 
-from .....config import get_app_mode
 from .....services.brand import settings_service as brand_settings_service
 from .....services.country import service as country_service
 from .....services.newsletter import service as newsletter_service
@@ -39,17 +38,12 @@ def view():
     if user is None:
         abort(404)
 
-    if get_app_mode().is_site():
-        newsletter_list_id = _find_newsletter_list_for_brand()
-        newsletter_offered = newsletter_list_id is not None
+    newsletter_list_id = _find_newsletter_list_for_brand()
+    newsletter_offered = newsletter_list_id is not None
 
-        subscribed_to_newsletter = newsletter_service.is_subscribed(
-            user.id, newsletter_list_id
-        )
-    else:
-        newsletter_list_id = None
-        newsletter_offered = False
-        subscribed_to_newsletter = None
+    subscribed_to_newsletter = newsletter_service.is_subscribed(
+        user.id, newsletter_list_id
+    )
 
     return {
         'user': user,

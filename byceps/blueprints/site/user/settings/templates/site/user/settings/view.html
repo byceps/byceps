@@ -21,7 +21,7 @@
   {%- with label_column_width = '8rem', data_column_min_width = '12rem' %}
 {%- include 'site/user/settings/_account.html' %}
 {%- include 'site/user/settings/_details_personal.html' %}
-    {%- if g.app_mode.is_site() and newsletter_offered %}
+    {%- if newsletter_offered %}
 {%- include 'site/user/settings/_newsletter.html' %}
     {%- endif %}
   {%- endwith %}
