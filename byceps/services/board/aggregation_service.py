@@ -20,7 +20,7 @@ def aggregate_category(category: DbCategory) -> None:
     posting_query = DbPosting.query \
         .without_hidden() \
         .join(DbTopic) \
-            .filter_by(category=category)
+            .filter(DbTopic.category_id == category.id)
 
     posting_count = posting_query.count()
 

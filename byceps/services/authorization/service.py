@@ -203,7 +203,7 @@ def get_permission_ids_for_user(user_id: UserID) -> Set[PermissionID]:
     role_permissions = DbRolePermission.query \
         .join(DbRole) \
         .join(DbUserRole) \
-        .filter_by(user_id=user_id) \
+        .filter(DbUserRole.user_id == user_id) \
         .all()
 
     return {rp.permission_id for rp in role_permissions}
