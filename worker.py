@@ -9,13 +9,10 @@ from rq import Worker
 
 from byceps.application import create_app
 from byceps.util.jobqueue import connection, get_queue
-from byceps.util.system import get_config_filename_from_env_or_exit
 
 
 if __name__ == '__main__':
-    config_filename = get_config_filename_from_env_or_exit()
-
-    app = create_app(config_filename)
+    app = create_app()
 
     with app.app_context():
         with connection():

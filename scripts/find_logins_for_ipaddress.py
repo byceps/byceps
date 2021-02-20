@@ -14,7 +14,6 @@ from byceps.services.user.dbmodels.event import UserEvent
 from byceps.services.user import service as user_service
 from byceps.services.user.transfer.models import User
 from byceps.typing import PartyID, UserID
-from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
 
@@ -45,6 +44,5 @@ def get_users_by_id(events: List[UserEvent]) -> Dict[UserID, User]:
 
 
 if __name__ == '__main__':
-    config_filename = get_config_filename_from_env_or_exit()
-    with app_context(config_filename):
+    with app_context():
         execute()

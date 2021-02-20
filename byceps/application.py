@@ -28,15 +28,18 @@ from .util.views import redirect_to
 
 
 def create_app(
-    config_filename: Union[Path, str],
     *,
+    config_filename: Optional[Union[Path, str]] = None,
     config_overrides: Optional[Dict[str, Any]] = None,
 ) -> Flask:
     """Create the actual Flask application."""
     app = Flask('byceps')
 
     app.config.from_object(config_defaults)
-    app.config.from_pyfile(str(config_filename))
+    if config_filename is not None:
+        app.config.from_pyfile(str(config_filename))
+    else:
+        app.config.from_envvar('BYCEPS_CONFIG')
     if config_overrides is not None:
         app.config.from_mapping(config_overrides)
 

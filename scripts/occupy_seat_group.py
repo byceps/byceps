@@ -10,7 +10,6 @@ import click
 
 from byceps.services.seating import seat_group_service
 from byceps.services.ticketing import ticket_bundle_service
-from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
 
@@ -45,6 +44,5 @@ def execute(seat_group, ticket_bundle):
 
 
 if __name__ == '__main__':
-    config_filename = get_config_filename_from_env_or_exit()
-    with app_context(config_filename):
+    with app_context():
         execute()

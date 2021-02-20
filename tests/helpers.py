@@ -36,14 +36,16 @@ CONFIG_FILENAME_TEST_ADMIN = _CONFIG_PATH / 'test_admin.py'
 
 def create_admin_app(config_overrides: Optional[Dict[str, Any]] = None):
     app = create_app(
-        CONFIG_FILENAME_TEST_ADMIN, config_overrides=config_overrides
+        config_filename=CONFIG_FILENAME_TEST_ADMIN,
+        config_overrides=config_overrides,
     )
     return app
 
 
 def create_site_app(config_overrides: Optional[Dict[str, Any]] = None):
     app = create_app(
-        CONFIG_FILENAME_TEST_SITE, config_overrides=config_overrides
+        config_filename=CONFIG_FILENAME_TEST_SITE,
+        config_overrides=config_overrides,
     )
     return app
 
@@ -54,7 +56,7 @@ def generate_token() -> str:
 
 @contextmanager
 def app_context(*, config_filename=CONFIG_FILENAME_TEST_SITE):
-    app = create_app(config_filename)
+    app = create_app(config_filename=config_filename)
 
     with app.app_context():
         yield app

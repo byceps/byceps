@@ -16,7 +16,6 @@ from byceps.services.snippet.transfer.models import SnippetVersionID
 from byceps.services.terms import document_service as terms_document_service
 from byceps.services.terms.transfer.models import DocumentID
 from byceps.services.terms import version_service as terms_version_service
-from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
 from _validators import validate_brand
@@ -72,6 +71,5 @@ def _create_consent_subject(brand, title, consent_subject_name_suffix):
 
 
 if __name__ == '__main__':
-    config_filename = get_config_filename_from_env_or_exit()
-    with app_context(config_filename):
+    with app_context():
         execute()

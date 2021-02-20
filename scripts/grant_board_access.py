@@ -10,7 +10,6 @@ import click
 
 from byceps.services.board import access_control_service, board_service
 from byceps.services.board.transfer.models import Board
-from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
 from _validators import validate_user_screen_name
@@ -49,6 +48,5 @@ def execute(board, user):
 
 
 if __name__ == '__main__':
-    config_filename = get_config_filename_from_env_or_exit()
-    with app_context(config_filename):
+    with app_context():
         execute()

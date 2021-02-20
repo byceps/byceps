@@ -14,10 +14,10 @@ from byceps.application import create_app
 
 
 @contextmanager
-def app_context(config_filename):
+def app_context():
     """Provide a context in which the application is available with the
     specified configuration.
     """
-    app = create_app(config_filename)
+    app = create_app()
     with app.app_context():
         yield app

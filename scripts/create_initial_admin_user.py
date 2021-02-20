@@ -11,7 +11,6 @@ import click
 from byceps.services.authorization import service as authorization_service
 from byceps.services.user import command_service as user_command_service
 from byceps.services.user import creation_service as user_creation_service
-from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
 
@@ -57,6 +56,5 @@ def _assign_roles_to_user(roles, user_id):
 
 
 if __name__ == '__main__':
-    config_filename = get_config_filename_from_env_or_exit()
-    with app_context(config_filename):
+    with app_context():
         execute()

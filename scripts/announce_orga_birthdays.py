@@ -14,7 +14,6 @@ from byceps.announce.helpers import call_webhook
 from byceps.services.orga import birthday_service
 from byceps.services.webhooks import service as webhook_service
 from byceps.services.webhooks.transfer.models import OutgoingWebhook, WebhookID
-from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
 
@@ -41,6 +40,5 @@ def execute(webhook: OutgoingWebhook):
 
 
 if __name__ == '__main__':
-    config_filename = get_config_filename_from_env_or_exit()
-    with app_context(config_filename):
+    with app_context():
         execute()

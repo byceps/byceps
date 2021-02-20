@@ -15,7 +15,6 @@ from byceps.services.terms import document_service as terms_document_service
 from byceps.services.terms.dbmodels.version import Version
 from byceps.services.terms.transfer.models import DocumentID, VersionID
 from byceps.services.terms import document_service, version_service
-from byceps.util.system import get_config_filename_from_env_or_exit
 
 from _util import app_context
 
@@ -97,6 +96,5 @@ def _get_version_ids_latest_first(
 
 
 if __name__ == '__main__':
-    config_filename = get_config_filename_from_env_or_exit()
-    with app_context(config_filename):
+    with app_context():
         execute()

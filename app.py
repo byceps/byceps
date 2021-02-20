@@ -21,12 +21,9 @@ from byceps.services.ticketing.ticket_service import find_ticket_by_code
 from byceps.services.user.dbmodels.detail import UserDetail
 from byceps.services.user.dbmodels.user import User
 from byceps.services.user.service import find_user_by_screen_name
-from byceps.util.system import get_config_filename_from_env_or_exit
 
 
-config_filename = get_config_filename_from_env_or_exit()
-
-app = create_app(config_filename)
+app = create_app()
 
 
 if app.env == 'development':
