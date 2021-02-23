@@ -40,22 +40,22 @@ class RequestResetForm(LocalizedForm):
     screen_name = StringField(lazy_gettext('Username'), [InputRequired()])
 
 
-def _get_new_password_validators(companion_field_name):
-    return [
-        InputRequired(),
-        PasswordConfirmationMatches(companion_field_name),
-        NewPasswordLength(),
-    ]
-
-
 class ResetForm(LocalizedForm):
     new_password = PasswordField(
         lazy_gettext('New password'),
-        _get_new_password_validators('new_password_confirmation'),
+        [
+            InputRequired(),
+            NewPasswordLength(),
+            PasswordConfirmationMatches('new_password_confirmation'),
+        ],
     )
     new_password_confirmation = PasswordField(
         lazy_gettext('New password (confirmation)'),
-        _get_new_password_validators('new_password'),
+        [
+            InputRequired(),
+            NewPasswordLength(),
+            PasswordConfirmationMatches('new_password'),
+        ],
     )
 
 
