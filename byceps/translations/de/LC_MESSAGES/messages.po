@@ -1792,7 +1792,7 @@ msgstr "User-ID"
 
 #: byceps/blueprints/common/authentication/password/forms.py:31
 msgid "The new password and its confirmation must match."
-msgstr "Das neue Passwort muss mit der Wiederholung übereinstimmen."
+msgstr "Das neue Passwort und dessen Wiederholung müssen übereinstimmen."
 
 #: byceps/blueprints/common/authentication/password/forms.py:41
 msgid "New password"
