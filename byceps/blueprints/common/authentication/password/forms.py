@@ -46,7 +46,6 @@ class ResetForm(LocalizedForm):
         [
             InputRequired(),
             NewPasswordLength(),
-            PasswordConfirmationMatches('new_password_confirmation'),
         ],
     )
     new_password_confirmation = PasswordField(
