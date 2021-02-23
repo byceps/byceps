@@ -52,7 +52,6 @@ class ResetForm(LocalizedForm):
         lazy_gettext('New password (confirmation)'),
         [
             InputRequired(),
-            NewPasswordLength(),
             PasswordConfirmationMatches('new_password'),
         ],
     )
