@@ -19,6 +19,23 @@ MINIMUM_PASSWORD_LENGTH = 8
 MAXIMUM_PASSWORD_LENGTH = 100
 
 
+class NewPasswordLength(Length):
+    def __init__(self) -> None:
+        super().__init__(
+            min=MINIMUM_PASSWORD_LENGTH, max=MAXIMUM_PASSWORD_LENGTH
+        )
+
+
+class PasswordConfirmationMatches(EqualTo):
+    def __init__(self, companion_field_name: str) -> None:
+        super().__init__(
+            companion_field_name,
+            message=lazy_gettext(
+                'The new password and its confirmation must match.'
+            ),
+        )
+
+
 class RequestResetForm(LocalizedForm):
     screen_name = StringField(lazy_gettext('Username'), [InputRequired()])
 
@@ -26,13 +43,8 @@ class RequestResetForm(LocalizedForm):
 def _get_new_password_validators(companion_field_name):
     return [
         InputRequired(),
-        EqualTo(
-            companion_field_name,
-            message=lazy_gettext(
-                'The new password and its confirmation must match.'
-            ),
-        ),
-        Length(min=MINIMUM_PASSWORD_LENGTH, max=MAXIMUM_PASSWORD_LENGTH),
+        PasswordConfirmationMatches(companion_field_name),
+        NewPasswordLength(),
     ]
 
 
