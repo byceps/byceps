@@ -85,7 +85,7 @@ def add_page_arg(args, page):
 
 
 @blueprint.before_app_request
-def provide_app_mode():
+def prepare_request_globals():
     app_mode = config.get_app_mode()
     g.app_mode = app_mode
 
