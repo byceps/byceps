@@ -1752,7 +1752,7 @@ msgstr "Text-Präfix"
 
 #: byceps/blueprints/admin/webhook/forms.py:30
 msgid "Enabled"
-msgstr ""
+msgstr "Aktiv"
 
 #: byceps/blueprints/admin/webhook/views.py:95
 msgid "Webhook has been created."
@@ -1760,7 +1760,7 @@ msgstr "Der Webhook wurde erstellt."
 
 #: byceps/blueprints/admin/webhook/views.py:164
 msgid "Webhook has been updated."
-msgstr ""
+msgstr "Der Webhook wurde aktualisiert."
 
 #: byceps/blueprints/admin/webhook/views.py:180
 msgid "Webhook call has been successful."
@@ -1806,7 +1806,7 @@ msgstr "Es sind keine Webhooks definiert."
 
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:6
 msgid "Update Webhook"
-msgstr ""
+msgstr "Webhook bearbeiten"
 
 #: byceps/blueprints/api/v1/tourney/avatar/forms.py:17
 msgid "Party ID"
@@ -1901,6 +1901,8 @@ msgid ""
 "Contains invalid characters. Allowed are letters, digits, and these "
 "special charactes: "
 msgstr ""
+"Enthält ungültige Zeichen. Erlaubt sind Buchstaben, Zahlen und diese "
+"Sonderzeichen: "
 
 #: byceps/blueprints/common/core/templates/error/forbidden.html:2
 msgid "Access Denied"
@@ -2332,6 +2334,8 @@ msgid ""
 "User \"%(screen_name)s\" has not yet given all necessary consents. "
 "Logging in again is required."
 msgstr ""
+"Benutzer \"%(screen_name)s\" hat noch nicht alle erforderlichen Zustimmungen "
+"erteilt. Erneutes Einloggen ist erforderlich."
 
 #: byceps/blueprints/site/ticketing/views.py:186
 #, python-format
