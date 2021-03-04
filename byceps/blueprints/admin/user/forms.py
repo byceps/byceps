@@ -6,19 +6,39 @@ byceps.blueprints.admin.user.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import re
+
 from flask_babel import lazy_gettext, pgettext
 from wtforms import PasswordField, SelectField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from ....services.site import service as site_service
 from ....services.user import screen_name_validator
+from ....services.user import service as user_service
 from ....util.l10n import LocalizedForm
 
 from ...common.core.forms import ScreenNameValidator
 
 
+EMAIL_ADDRESS_PATTERN = re.compile(r'^.+?@.+?\..+?$')
+
 MINIMUM_PASSWORD_LENGTH = 10
 MAXIMUM_PASSWORD_LENGTH = 100
+
+
+def validate_email_address(form, field):
+    if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
+        raise ValidationError(lazy_gettext('Invalid email address'))
+
+    if user_service.is_email_address_already_assigned(field.data):
+        raise ValidationError(
+            lazy_gettext('This email address is not available.')
+        )
+
+
+def validate_screen_name_availability(form, field):
+    if user_service.is_screen_name_already_assigned(field.data):
+        raise ValidationError(lazy_gettext('This username is not available.'))
 
 
 class ChangeEmailAddressForm(LocalizedForm):
@@ -60,6 +80,7 @@ class CreateAccountForm(LocalizedForm):
                 max=screen_name_validator.MAX_LENGTH,
             ),
             ScreenNameValidator(),
+            validate_screen_name_availability,
         ],
     )
     first_names = StringField(
@@ -70,7 +91,7 @@ class CreateAccountForm(LocalizedForm):
     )
     email_address = StringField(
         lazy_gettext('Email address'),
-        [InputRequired(), Length(min=6, max=120)],
+        [InputRequired(), Length(min=6, max=120), validate_email_address],
     )
     password = PasswordField(
         lazy_gettext('Password'),

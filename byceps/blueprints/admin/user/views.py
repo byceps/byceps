@@ -177,14 +177,6 @@ def create_account():
     else:
         site_for_email = None
 
-    if user_service.is_screen_name_already_assigned(screen_name):
-        flash_error(gettext('This username cannot be used.'))
-        return create_account_form(form)
-
-    if user_service.is_email_address_already_assigned(email_address):
-        flash_error(gettext('This email address cannot be used.'))
-        return create_account_form(form)
-
     initiator_id = g.user.id
 
     try:
