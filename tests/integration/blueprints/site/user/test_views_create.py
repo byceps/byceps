@@ -151,7 +151,7 @@ def test_create(
     assert not user.deleted
 
     # events
-    assert_creation_event_created(user.id)
+    assert_creation_event_created(user.id, site.id)
 
     # password
     assert_password_credentials_created(user.id)
@@ -259,13 +259,13 @@ def is_subscribed_to_newsletter(user_id, brand_id):
     return newsletter_service.is_subscribed(user_id, brand_id)
 
 
-def assert_creation_event_created(user_id):
+def assert_creation_event_created(user_id, site_id):
     events = event_service.get_events_of_type_for_user(user_id, 'user-created')
     assert len(events) == 1
 
     first_event = events[0]
     assert first_event.event_type == 'user-created'
-    assert first_event.data == {}
+    assert first_event.data == {'site_id': site_id}
 
 
 def assert_password_credentials_created(user_id):

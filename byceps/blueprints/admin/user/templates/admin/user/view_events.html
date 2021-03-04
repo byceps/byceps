@@ -49,7 +49,11 @@
             {%- else %}
             Jemand
             {%- endif %}
-            hat das Benutzerkonto <strong>angelegt</strong>.
+            hat das Benutzerkonto
+            {%- if event.site is defined %}
+            auf Site &quot;{{ event.site.title }}&quot;
+            {%- endif %}
+            <strong>angelegt</strong>.
           {%- endset %}
         {%- elif event.event == 'user-initialized' %}
           {%- set icon_name = 'enabled' %}

@@ -170,12 +170,12 @@ def create_account():
     last_name = form.last_name.data.strip()
     email_address = form.email_address.data.lower()
     password = form.password.data
-    site_id = form.site_id.data
+    site_id_for_email = form.site_id.data
 
-    if site_id:
-        site = site_service.get_site(site_id)
+    if site_id_for_email:
+        site_for_email = site_service.get_site(site_id_for_email)
     else:
-        site = None
+        site_for_email = None
 
     if user_service.is_screen_name_already_assigned(screen_name):
         flash_error(gettext('This username cannot be used.'))
@@ -195,6 +195,7 @@ def create_account():
             first_names=first_names,
             last_name=last_name,
             creator_id=initiator_id,
+            # Do not pass site ID here; the account is not created on a site.
         )
     except user_creation_service.UserCreationFailed:
         flash_error(
@@ -212,7 +213,7 @@ def create_account():
         )
     )
 
-    if site:
+    if site_for_email:
         user_creation_service.request_email_address_confirmation(
             user, email_address, site_id
         )

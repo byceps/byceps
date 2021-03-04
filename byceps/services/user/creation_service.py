@@ -50,6 +50,7 @@ def create_user(
         password,
         first_names=first_names,
         last_name=last_name,
+        site_id=site_id,
     )
 
     # consents
@@ -78,6 +79,7 @@ def create_basic_user(
     first_names: Optional[str] = None,
     last_name: Optional[str] = None,
     creator_id: Optional[UserID] = None,
+    site_id: Optional[SiteID] = None,
 ) -> Tuple[User, UserAccountCreated]:
     # user with details
     user, event = _create_user(
@@ -86,6 +88,7 @@ def create_basic_user(
         first_names=first_names,
         last_name=last_name,
         creator_id=creator_id,
+        site_id=site_id,
     )
 
     # password
@@ -101,6 +104,7 @@ def _create_user(
     first_names: Optional[str] = None,
     last_name: Optional[str] = None,
     creator_id: Optional[UserID] = None,
+    site_id: Optional[SiteID] = None,
 ) -> Tuple[User, UserAccountCreated]:
     if creator_id is not None:
         creator = user_service.get_user(creator_id)
@@ -127,6 +131,8 @@ def _create_user(
     event_data = {}
     if creator is not None:
         event_data['initiator_id'] = str(creator.id)
+    if site_id is not None:
+        event_data['site_id'] = site_id
     event_service.create_event(
         'user-created', user.id, event_data, occurred_at=created_at
     )

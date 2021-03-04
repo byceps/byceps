@@ -336,7 +336,7 @@ def _get_additional_data(
         }
         yield 'details', details
 
-    if event.event_type == 'user-logged-in':
+    if event.event_type in {'user-created', 'user-logged-in'}:
         site_id = event.data.get('site_id')
         if site_id:
             site = site_service.find_site(site_id)
