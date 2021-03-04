@@ -10,7 +10,7 @@ from flask import g
 from flask_babel import lazy_gettext
 from wtforms import PasswordField, StringField
 from wtforms.fields.html5 import DateField, TelField
-from wtforms.validators import InputRequired, Length, Optional
+from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from .....services.authentication.password import service as password_service
 from .....services.user import screen_name_validator, service as user_service
@@ -38,12 +38,14 @@ class ChangeScreenNameForm(LocalizedForm):
     @staticmethod
     def validate_screen_name(form, field):
         if g.user.screen_name == field.data:
-            raise ValueError(
+            raise ValidationError(
                 lazy_gettext('This already is the current username.')
             )
 
         if user_service.is_screen_name_already_assigned(field.data):
-            raise ValueError(lazy_gettext('This username is not available.'))
+            raise ValidationError(
+                lazy_gettext('This username is not available.')
+            )
 
     @staticmethod
     def validate_password(form, field):
@@ -51,7 +53,7 @@ class ChangeScreenNameForm(LocalizedForm):
         password = field.data
 
         if not password_service.is_password_valid_for_user(user_id, password):
-            raise ValueError(lazy_gettext('Wrong password.'))
+            raise ValidationError(lazy_gettext('Wrong password.'))
 
 
 class DetailsForm(LocalizedForm):

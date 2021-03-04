@@ -11,7 +11,7 @@ from typing import Set
 
 from flask_babel import lazy_gettext
 from wtforms import BooleanField, PasswordField, StringField
-from wtforms.validators import InputRequired, Length
+from wtforms.validators import InputRequired, Length, ValidationError
 
 from .....services.consent.transfer.models import Subject, SubjectID
 from .....services.user import screen_name_validator
@@ -48,22 +48,24 @@ class UserCreateForm(LocalizedForm):
     @staticmethod
     def validate_screen_name(form, field):
         if user_service.is_screen_name_already_assigned(field.data):
-            raise ValueError(lazy_gettext('This username is not available.'))
+            raise ValidationError(
+                lazy_gettext('This username is not available.')
+            )
 
     @staticmethod
     def validate_email_address(form, field):
         if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
-            raise ValueError(lazy_gettext('Invalid email address'))
+            raise ValidationError(lazy_gettext('Invalid email address'))
 
         if user_service.is_email_address_already_assigned(field.data):
-            raise ValueError(
+            raise ValidationError(
                 lazy_gettext('This email address is not available.')
             )
 
     @staticmethod
     def validate_is_bot(form, field):
         if field.data:
-            raise ValueError(lazy_gettext('Bots are not permitted.'))
+            raise ValidationError(lazy_gettext('Bots are not permitted.'))
 
     def get_field_for_consent_subject_id(self, subject_id: SubjectID):
         name = _generate_consent_subject_field_name(subject_id)

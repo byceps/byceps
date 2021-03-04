@@ -34,7 +34,7 @@ class UpdateCodeForm(LocalizedForm):
     @staticmethod
     def validate_code(form, field):
         if not ticket_code_service.is_ticket_code_wellformed(field.data):
-            raise ValueError(lazy_gettext('Invalid format'))
+            raise ValidationError(lazy_gettext('Invalid format'))
 
 
 class SpecifyUserForm(LocalizedForm):
