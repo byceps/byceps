@@ -24,6 +24,21 @@ from ....common.core.forms import ScreenNameValidator
 EMAIL_ADDRESS_PATTERN = re.compile(r'^.+?@.+?\..+?$')
 
 
+def validate_email_address(form, field):
+    if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
+        raise ValidationError(lazy_gettext('Invalid email address'))
+
+    if user_service.is_email_address_already_assigned(field.data):
+        raise ValidationError(
+            lazy_gettext('This email address is not available.')
+        )
+
+
+def validate_screen_name_availability(form, field):
+    if user_service.is_screen_name_already_assigned(field.data):
+        raise ValidationError(lazy_gettext('This username is not available.'))
+
+
 class UserCreateForm(LocalizedForm):
     screen_name = StringField(
         lazy_gettext('Username'),
@@ -34,33 +49,17 @@ class UserCreateForm(LocalizedForm):
                 max=screen_name_validator.MAX_LENGTH,
             ),
             ScreenNameValidator(),
+            validate_screen_name_availability,
         ],
     )
     email_address = StringField(
         lazy_gettext('Email address'),
-        [InputRequired(), Length(min=6, max=120)],
+        [InputRequired(), Length(min=6, max=120), validate_email_address],
     )
     password = PasswordField(
         lazy_gettext('Password'), [InputRequired(), Length(min=8)]
     )
     is_bot = BooleanField(lazy_gettext('Bot'))
-
-    @staticmethod
-    def validate_screen_name(form, field):
-        if user_service.is_screen_name_already_assigned(field.data):
-            raise ValidationError(
-                lazy_gettext('This username is not available.')
-            )
-
-    @staticmethod
-    def validate_email_address(form, field):
-        if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
-            raise ValidationError(lazy_gettext('Invalid email address'))
-
-        if user_service.is_email_address_already_assigned(field.data):
-            raise ValidationError(
-                lazy_gettext('This email address is not available.')
-            )
 
     @staticmethod
     def validate_is_bot(form, field):
