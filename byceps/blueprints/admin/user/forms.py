@@ -44,7 +44,7 @@ def validate_screen_name_availability(form, field):
 class ChangeEmailAddressForm(LocalizedForm):
     email_address = StringField(
         lazy_gettext('New email address'),
-        [InputRequired(), Length(min=6, max=120)],
+        [InputRequired(), Length(min=6, max=120), validate_email_address],
     )
     reason = TextAreaField(
         lazy_gettext('Reason'),
@@ -62,6 +62,7 @@ class ChangeScreenNameForm(LocalizedForm):
                 max=screen_name_validator.MAX_LENGTH,
             ),
             ScreenNameValidator(),
+            validate_screen_name_availability,
         ],
     )
     reason = TextAreaField(
