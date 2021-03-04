@@ -38,6 +38,30 @@ def test_account_created_announced(app, make_user):
         initiator_screen_name=None,
         user_id=user.id,
         user_screen_name=user.screen_name,
+        site_id=None,
+    )
+
+    with mocked_irc_bot() as mock:
+        user_signals.account_created.send(None, event=event)
+
+    assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)
+
+
+def test_account_created_announced_on_site(app, make_user, site):
+    expected_text = (
+        'Jemand hat das Benutzerkonto "JaneDoeOnSite" '
+        'auf Site "ACMECon 2014 website" angelegt.'
+    )
+
+    user = make_user('JaneDoeOnSite')
+
+    event = UserAccountCreated(
+        occurred_at=now(),
+        initiator_id=None,
+        initiator_screen_name=None,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
+        site_id=site.id,
     )
 
     with mocked_irc_bot() as mock:
@@ -58,6 +82,7 @@ def test_account_created_by_admin_announced(app, make_user):
         initiator_screen_name=admin.screen_name,
         user_id=user.id,
         user_screen_name=user.screen_name,
+        site_id=None,
     )
 
     with mocked_irc_bot() as mock:

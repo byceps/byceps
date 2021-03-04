@@ -17,6 +17,7 @@ from ...events.user import (
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
+from ...services.site import service as site_service
 
 from ._helpers import get_screen_name_or_fallback
 
@@ -27,10 +28,21 @@ def assemble_text_for_user_account_created(event: UserAccountCreated) -> str:
     )
     user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
-    return (
-        f'{initiator_screen_name} '
-        f'hat das Benutzerkonto "{user_screen_name}" angelegt.'
-    )
+    site = None
+    if event.site_id:
+        site = site_service.find_site(event.site_id)
+
+    if site:
+        return (
+            f'{initiator_screen_name} '
+            f'hat das Benutzerkonto "{user_screen_name}" '
+            f'auf Site "{site.title}" angelegt.'
+        )
+    else:
+        return (
+            f'{initiator_screen_name} '
+            f'hat das Benutzerkonto "{user_screen_name}" angelegt.'
+        )
 
 
 def assemble_text_for_user_screen_name_changed(
