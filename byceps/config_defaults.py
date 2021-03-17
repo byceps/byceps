@@ -35,6 +35,7 @@ RQ_DASHBOARD_WEB_BACKGROUND = 'white'
 
 # login sessions
 PERMANENT_SESSION_LIFETIME = timedelta(14)
+SESSION_COOKIE_SAMESITE = 'Lax'
 
 # localization
 LOCALE = 'de_DE.UTF-8'
