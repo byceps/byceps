@@ -145,17 +145,28 @@ def export_persons(brand_id):
     """
     brand = _get_brand_or_404(brand_id)
 
+    field_name_screen_name = 'Benutzername'
+    field_name_first_names = 'Vorname'
+    field_name_last_names = 'Nachname'
+    field_name_date_of_birth = 'Geburtstag'
+    field_name_street = 'Straße'
+    field_name_zip_code = 'PLZ'
+    field_name_city = 'Ort'
+    field_name_country = 'Land'
+    field_name_email_address = 'E-Mail-Adresse'
+    field_name_phone_number = 'Telefonnummer'
+
     field_names = [
-        'Benutzername',
-        'Vorname',
-        'Nachname',
-        'Geburtstag',
-        'Straße',
-        'PLZ',
-        'Ort',
-        'Land',
-        'E-Mail-Adresse',
-        'Telefonnummer',
+        field_name_screen_name,
+        field_name_first_names,
+        field_name_last_names,
+        field_name_date_of_birth,
+        field_name_street,
+        field_name_zip_code,
+        field_name_city,
+        field_name_country,
+        field_name_email_address,
+        field_name_phone_number,
     ]
 
     def to_dict(user):
@@ -166,16 +177,16 @@ def export_persons(brand_id):
         )
 
         return {
-            'Benutzername': user.screen_name,
-            'Vorname': user.detail.first_names,
-            'Nachname': user.detail.last_name,
-            'Geburtstag': date_of_birth,
-            'Straße': user.detail.street,
-            'PLZ': user.detail.zip_code,
-            'Ort': user.detail.city,
-            'Land': user.detail.country,
-            'E-Mail-Adresse': user.email_address,
-            'Telefonnummer': user.detail.phone_number,
+            field_name_screen_name: user.screen_name,
+            field_name_first_names: user.detail.first_names,
+            field_name_last_names: user.detail.last_name,
+            field_name_date_of_birth: date_of_birth,
+            field_name_street: user.detail.street,
+            field_name_zip_code: user.detail.zip_code,
+            field_name_city: user.detail.city,
+            field_name_country: user.detail.country,
+            field_name_email_address: user.email_address,
+            field_name_phone_number: user.detail.phone_number,
         }
 
     orgas = orga_service.get_orgas_for_brand(brand.id)
