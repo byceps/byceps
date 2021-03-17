@@ -1181,11 +1181,8 @@ msgid "Order number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Bestellnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:23
-#: byceps/blueprints/common/core/templates/macros/forms.html:77
-#: byceps/blueprints/common/core/templates/macros/forms.html:80
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:22
-msgid "Cancel"
-msgstr "Abbrechen"
+msgid "Cancel order"
+msgstr "Bestellung stornieren"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/mark_as_paid_form.html:20
 msgid "Mark as paid"
@@ -1928,6 +1925,12 @@ msgstr "Bestellungen"
 msgid "Error"
 msgstr "Fehler"
 
+#: byceps/blueprints/common/core/templates/macros/forms.html:77
+#: byceps/blueprints/common/core/templates/macros/forms.html:80
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:22
+msgid "Cancel"
+msgstr "Abbrechen"
+
 #: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:44
 msgid "Not registered yet?"
 msgstr "Noch nicht registriert?"
@@ -2334,8 +2337,8 @@ msgid ""
 "User \"%(screen_name)s\" has not yet given all necessary consents. "
 "Logging in again is required."
 msgstr ""
-"Benutzer \"%(screen_name)s\" hat noch nicht alle erforderlichen Zustimmungen "
-"erteilt. Erneutes Einloggen ist erforderlich."
+"Benutzer \"%(screen_name)s\" hat noch nicht alle erforderlichen "
+"Zustimmungen erteilt. Erneutes Einloggen ist erforderlich."
 
 #: byceps/blueprints/site/ticketing/views.py:186
 #, python-format
