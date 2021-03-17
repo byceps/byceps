@@ -30,6 +30,8 @@ def start(user_id: UserID, auth_token: str, *, permanent: bool = False) -> None:
     """Initialize the user's session by putting the relevant data
     into the session cookie.
     """
+    session.clear()
+
     session[KEY_USER_ID] = str(user_id)
     session[KEY_USER_AUTH_TOKEN] = str(auth_token)
     session.permanent = permanent
