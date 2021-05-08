@@ -6,7 +6,7 @@ flask-babel==2.0.0
 flask-sqlalchemy==2.4.4
 hiredis==1.1.0
 itsdangerous==1.1.0
-jinja2==2.11.2
+jinja2==2.11.3
 markupsafe==1.1.1
 marrow.mailer==4.0.3
 marrow.util==1.2.3
