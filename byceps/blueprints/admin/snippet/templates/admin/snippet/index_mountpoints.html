@@ -76,7 +76,7 @@
 
 {% block scripts %}
     <script>
-      onDomReady(function() {
+      onDomReady(() => {
         confirmed_delete_on_click_then_reload('[data-action="mountpoint-delete"]', 'Mountpoint entfernen?');
       });
     </script>

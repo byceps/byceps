@@ -34,7 +34,7 @@
 
 {% block scripts %}
 <script>
-  onDomReady(function() {
+  onDomReady(() => {
     confirmed_post_on_click_then_reload('[data-action="delete-old-login-events"]', '{{ _('Delete old login events?') }}');
   });
 </script>

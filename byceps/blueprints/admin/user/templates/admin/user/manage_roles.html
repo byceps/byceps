@@ -71,7 +71,7 @@
 
 {% block scripts %}
     <script>
-      onDomReady(function() {
+      onDomReady(() => {
         confirmed_post_on_click_then_reload('[data-action="role-assign"]', 'Rolle zuweisen?');
         confirmed_delete_on_click_then_reload('[data-action="role-deassign"]', 'Rolle entfernen?');
       });

@@ -84,7 +84,7 @@
 
 {% block scripts %}
     <script>
-      onDomReady(function() {
+      onDomReady(() => {
         post_on_click_then_reload('[data-action="category-move-up"]');
         post_on_click_then_reload('[data-action="category-move-down"]');
         post_on_click_then_reload('[data-action="category-hide"]');

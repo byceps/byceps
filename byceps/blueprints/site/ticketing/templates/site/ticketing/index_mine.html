@@ -26,7 +26,7 @@
 
 {% block scripts %}
     <script>
-      onDomReady(function() {
+      onDomReady(() => {
         confirmed_delete_on_click_then_reload('[data-action="withdraw-user"]', 'Dieses Ticket selbst nutzen?');
         confirmed_delete_on_click_then_reload('[data-action="withdraw-user-manager"]', 'Nutzer-Verwaltung zurückholen?');
         confirmed_delete_on_click_then_reload('[data-action="withdraw-seat-manager"]', 'Sitzplatz-Verwaltung zurückholen?');

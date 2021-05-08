@@ -3,8 +3,8 @@
  */
 function init_seat_tooltips() {
   document.querySelectorAll('.seat-with-tooltip')
-    .forEach(function(seatContainer) {
-      seatContainer.addEventListener('mouseover', function() {
+    .forEach(seatContainer => {
+      seatContainer.addEventListener('mouseover', () => {
         const dataset = seatContainer.dataset;
 
         let tooltipHTML = '<div class="seat-label">' + dataset.label + '</div>';
@@ -35,7 +35,7 @@ function init_seat_tooltips() {
         seatContainer.appendChild(tooltipNode);
       });
 
-      seatContainer.addEventListener('mouseout', function() {
+      seatContainer.addEventListener('mouseout', () => {
         const tooltip = seatContainer.querySelector('.seat-tooltip');
         // Tooltip element won't exist at this point if the mouse
         // cursor is above a seat when the page is reloaded, so the
@@ -92,9 +92,8 @@ function init_ticket_selector() {
 function _make_ticket_selector_open_on_click() {
   const ticket_selector = document.querySelector('.ticket-selector');
   if (ticket_selector !== null) {
-    ticket_selector.addEventListener('click', function() {
-      this.classList.toggle('ticket-selector--open');
-    });
+    ticket_selector
+      .addEventListener('click', () => this.classList.toggle('ticket-selector--open'));
   }
 }
 
@@ -104,11 +103,7 @@ function _make_ticket_selector_open_on_click() {
  */
 function _select_ticket_on_click() {
   document.querySelectorAll('.ticket')
-    .forEach(function(ticket) {
-      ticket.addEventListener('click', function() {
-        select_ticket(ticket);
-      });
-    });
+    .forEach(ticket => ticket.addEventListener('click', () => select_ticket(ticket)));
 }
 
 
@@ -141,9 +136,7 @@ function select_ticket(ticket) {
   ticket_selection.dataset.selectedId = ticket_id;
   ticket_selection.dataset.selectedCode = ticket_code;
   ticket_selection.querySelectorAll('.ticket--current')
-    .forEach(function(ticket) {
-      ticket.classList.remove('ticket--current');
-    });
+    .forEach(ticket => ticket.classList.remove('ticket--current'));
 
   ticket.classList.add('ticket--current');
 
@@ -155,21 +148,17 @@ function select_ticket(ticket) {
 
 function set_current_managed_seat(ticket_id) {
   document.querySelectorAll('.area .seat--managed-current')
-    .forEach(function(seat) {
-      seat.classList.remove('seat--managed-current');
-    });
+    .forEach(seat => seat.classList.remove('seat--managed-current'));
 
   document.querySelectorAll('.seat-with-tooltip[data-ticket-id="' + ticket_id + '"] .seat--managed')
-    .forEach(function(seat) {
-      seat.classList.add('seat--managed-current');
-    });
+    .forEach(seat => seat.classList.add('seat--managed-current'));
 }
 
 
 function wire_seat_release_button() {
   const release_seat_trigger = document.getElementById('release-seat-trigger');
   if (release_seat_trigger !== null) {
-    release_seat_trigger.addEventListener('click', function() {
+    release_seat_trigger.addEventListener('click', () => {
       const seat_label = get_selected_seat_label();
       const confirmation_label = seat_label + ' (belegt durch Ticket ' + get_selected_ticket_code() + ') freigeben?';
       if (confirm(confirmation_label)) {
@@ -177,7 +166,7 @@ function wire_seat_release_button() {
 
         const request_url = '/seating/ticket/' + ticket_id + '/seat';
 
-        send_request('DELETE', request_url, function() {
+        send_request('DELETE', request_url, () => {
           if (this.readyState === XMLHttpRequest.DONE) {
             if (this.status === 204) {
               reload_with_selected_ticket(ticket_id);
@@ -221,9 +210,7 @@ function get_managed_ticket_ids() {
 
   document.getElementById('ticket-selection')
     .querySelectorAll('.ticket')
-    .forEach(function(ticket) {
-      managed_ticket_ids.add(ticket.dataset.id);
-    });
+    .forEach(ticket => managed_ticket_ids.add(ticket.dataset.id));
 
   return managed_ticket_ids;
 }
@@ -239,9 +226,7 @@ function mark_managed_seats() {
 
   for (const ticket_id of managed_ticket_ids.values()) {
     get_seats_with_ticket_code(ticket_id)
-      .forEach(function(seat) {
-        seat.classList.add('seat--managed');
-      });
+      .forEach(seat => seat.classList.add('seat--managed'));
   }
 }
 
@@ -249,15 +234,13 @@ function mark_managed_seats() {
 function mark_seat_for_selected_managed_ticket() {
   const ticket_id = get_selected_ticket_id();
   get_seats_with_ticket_code(ticket_id)
-    .forEach(function(seat) {
-      seat.classList.add('seat--managed-current');
-    });
+    .forEach(seat => seat.classList.add('seat--managed-current'));
 }
 
 
 function mark_seats_as_occupiable() {
   document.querySelectorAll('.seat')
-    .forEach(function(seat) {
+    .forEach(seat => {
       const ticket_id = seat.parentNode.dataset.ticketId;
       if (ticket_id === undefined) {
         seat.classList.add('seat--occupiable');
@@ -269,8 +252,8 @@ function mark_seats_as_occupiable() {
 
 function init_occupiable_seats() {
   document.querySelectorAll('.seat--occupiable')
-    .forEach(function(seat) {
-      seat.addEventListener('click', function() {
+    .forEach(seat => {
+      seat.addEventListener('click', () => {
         const seat_label = seat.parentNode.dataset.label;
         const confirmation_label = seat_label + ' mit Ticket ' + get_selected_ticket_code() + ' reservieren?';
         if (confirm(confirmation_label)) {
@@ -279,7 +262,7 @@ function init_occupiable_seats() {
 
           const request_url = '/seating/ticket/' + ticket_id + '/seat/' + seat_id;
 
-          send_request('POST', request_url, function() {
+          send_request('POST', request_url, () => {
             if (this.readyState === XMLHttpRequest.DONE) {
               if (this.status === 204) {
                 reload_with_selected_ticket(ticket_id);

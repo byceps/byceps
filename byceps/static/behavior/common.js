@@ -51,19 +51,19 @@ function confirmed_delete_on_click_then_reload(selector, confirmation_label) {
 }
 
 function _request_on_click(selector, method) {
-  _onClickCallbackWithHref(selector, function(href) {
+  _onClickCallbackWithHref(selector, href => {
     _ajax_then_redirect_to_location_response_header(method, href);
   });
 }
 
 function _request_on_click_then_reload(selector, method) {
-  _onClickCallbackWithHref(selector, function(href) {
+  _onClickCallbackWithHref(selector, href => {
     _ajax_then_reload(method, href);
   });
 }
 
 function _confirmed_request_on_click(selector, confirmation_label, method) {
-  _onClickCallbackWithHref(selector, function(href) {
+  _onClickCallbackWithHref(selector, href => {
     if (confirm(confirmation_label)) {
       _ajax_then_redirect_to_location_response_header(method, href);
     };
@@ -71,7 +71,7 @@ function _confirmed_request_on_click(selector, confirmation_label, method) {
 }
 
 function _confirmed_request_on_click_then_reload(selector, confirmation_label, method) {
-  _onClickCallbackWithHref(selector, function(href) {
+  _onClickCallbackWithHref(selector, href => {
     if (confirm(confirmation_label)) {
       _ajax_then_reload(method, href);
     };
@@ -81,8 +81,8 @@ function _confirmed_request_on_click_then_reload(selector, confirmation_label, m
 
 function _onClickCallbackWithHref(selector, callback) {
   const elements = document.querySelectorAll(selector);
-  elements.forEach(function(element) {
-    element.addEventListener('click', function(event) {
+  elements.forEach(element => {
+    element.addEventListener('click', event => {
       const href = element.getAttribute('href');
       callback(href);
 
@@ -92,7 +92,7 @@ function _onClickCallbackWithHref(selector, callback) {
 }
 
 function _ajax_then_redirect_to_location_response_header(method, request_url) {
-  _ajax(method, request_url, function(response) {
+  _ajax(method, request_url, response => {
     if (response.status == 204) {
       const redirectUrl = response.headers.get('Location');
       if (redirectUrl !== null) {
@@ -103,7 +103,7 @@ function _ajax_then_redirect_to_location_response_header(method, request_url) {
 }
 
 function _ajax_then_reload(method, request_url) {
-  _ajax(method, request_url, function(response) {
+  _ajax(method, request_url, response => {
     if (response.status == 204) {
       location.href = location.href;
     }
@@ -125,8 +125,8 @@ function _ajax(method, url, on_complete) {
  */
 function enableDropdownMenuToggles() {
   const dropdownToggles = document.querySelectorAll('.dropdown .dropdown-toggle');
-  dropdownToggles.forEach(function(triggerElement) {
-    triggerElement.addEventListener('click', function(event) {
+  dropdownToggles.forEach(triggerElement => {
+    triggerElement.addEventListener('click', event => {
       const dropdown = triggerElement.parentNode;
       dropdown.classList.toggle('open');
 
@@ -142,7 +142,7 @@ function enableDropdownMenuToggles() {
  */
 function closeOpenDropdownMenus(clickTarget) {
   const openDropdowns = document.querySelectorAll('.dropdown.open');
-  openDropdowns.forEach(function(openDropdown) {
+  openDropdowns.forEach(openDropdown => {
     if (!openDropdown.contains(clickTarget)) {
       // Click was outside of this dropdown menu, so close it.
       openDropdown.classList.remove('open');
@@ -152,13 +152,11 @@ function closeOpenDropdownMenus(clickTarget) {
 
 
 // Add behavior to dropdown menus.
-onDomReady(function() {
+onDomReady(() => {
   enableDropdownMenuToggles();
 
   // Close open dropdowns if user clicks outside of an open dropdown.
-  document.addEventListener('click', function(event) {
-    closeOpenDropdownMenus(event.target);
-  });
+  document.addEventListener('click', event => closeOpenDropdownMenus(event.target));
 });
 
 
@@ -173,7 +171,7 @@ onDomReady(function() {
 function enableCopyToClipboard(triggerElementId) {
   const triggerElement = document.getElementById(triggerElementId);
 
-  triggerElement.addEventListener('click', function() {
+  triggerElement.addEventListener('click', () => {
     const fieldId = this.dataset.fieldId;
     const field = document.getElementById(fieldId);
 
@@ -193,12 +191,12 @@ function enableCopyToClipboard(triggerElementId) {
 
 // Disable the submit button of forms with class
 // `disable-submit-button-on-submit` on submit.
-onDomReady(function() {
+onDomReady(() => {
   const formsWhoseSubmitButtonShouldBeDisabledOnSubmit = document
       .querySelectorAll('form.disable-submit-button-on-submit');
 
-  formsWhoseSubmitButtonShouldBeDisabledOnSubmit.forEach(function(form) {
-    form.addEventListener('submit', function() {
+  formsWhoseSubmitButtonShouldBeDisabledOnSubmit.forEach(form => {
+    form.addEventListener('submit', () => {
       const submitButton = form.querySelector('button[type="submit"]');
       submitButton.disabled = true;
       submitButton.innerHTML += ' <svg class="icon spinning"><use xlink:href="/static/style/icons.svg#spinner"></use></svg>';
@@ -212,16 +210,14 @@ onDomReady(function() {
 
 
 // Enable log-out.
-onDomReady(function() {
+onDomReady(() => {
   document.querySelectorAll('a[data-action="logout"]')
-    .forEach(function(anchor) {
-      anchor.addEventListener('click', function(event) {
+    .forEach(anchor => {
+      anchor.addEventListener('click', event => {
         if (confirm('Wirklich abmelden?')) {
           const href = anchor.getAttribute('href');
           fetch(href, {method: 'POST'})
-            .then(response => {
-              location.href = '/authentication/login';
-            });
+            .then(response => location.href = '/authentication/login');
         };
 
         event.preventDefault();

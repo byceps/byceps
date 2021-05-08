@@ -1,7 +1,7 @@
-onDomReady(function() {
+onDomReady(() => {
   const loginForm = document.getElementById('login-form');
   if (loginForm !== null) {
-    loginForm.addEventListener('submit', function(event) {
+    loginForm.addEventListener('submit', event => {
       event.preventDefault();
 
       const loginFailedNotice = document.getElementById('login-failed-notice');

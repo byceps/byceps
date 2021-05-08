@@ -84,12 +84,12 @@
 
 {% block scripts %}
 <script>
-  onDomReady(function() {
+  onDomReady(() => {
   {%- if tickets %}
     // Skip non-check-in links in ticket list for keyboard tab navigation.
     document
       .querySelectorAll('.tickets a:not(.button-check-in)')
-      .forEach(function(node) { node.tabIndex = -1; });
+      .forEach(node => { node.tabIndex = -1; });
   {%- endif %}
 
     post_on_click_then_reload('[data-action="check-in-user"]');

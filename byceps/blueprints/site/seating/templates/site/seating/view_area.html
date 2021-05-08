@@ -49,7 +49,7 @@
 {% block scripts %}
     <script src="{{ url_for('static', filename='behavior/seating.js') }}"></script>
     <script>
-      onDomReady(function() {
+      onDomReady(() => {
         {%- if seat_management_enabled %}
         const selected_ticket_id = {% if selected_ticket_id|default %}'{{ selected_ticket_id }}'{% else %}null{% endif %};
         init_seat_management(selected_ticket_id);
