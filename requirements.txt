@@ -4,7 +4,7 @@ click==7.1.2
 flask==1.1.2
 flask-babel==2.0.0
 flask-sqlalchemy==2.5.1
-hiredis==1.1.0
+hiredis==2.0.0
 itsdangerous==1.1.0
 jinja2==2.11.3
 markupsafe==1.1.1
