@@ -345,7 +345,7 @@ nav.main li {
 
 /* tabs above main content area */
 
-.main-tabs {
+.main-tabs ol {
   display: flex;
   list-style: none;
   margin: -8px 12px 0 12px;
