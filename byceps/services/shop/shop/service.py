@@ -6,7 +6,8 @@ byceps.services.shop.shop.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import List, Optional, Set
+from __future__ import annotations
+from typing import Optional
 
 from ....database import db
 from ....typing import BrandID
@@ -90,7 +91,7 @@ def _get_db_shop(shop_id: ShopID) -> DbShop:
     return shop
 
 
-def find_shops(shop_ids: Set[ShopID]) -> List[Shop]:
+def find_shops(shop_ids: set[ShopID]) -> list[Shop]:
     """Return the shops with those IDs."""
     if not shop_ids:
         return []
@@ -102,7 +103,7 @@ def find_shops(shop_ids: Set[ShopID]) -> List[Shop]:
     return [_db_entity_to_shop(shop) for shop in shops]
 
 
-def get_active_shops() -> List[Shop]:
+def get_active_shops() -> list[Shop]:
     """Return all shops that are not archived."""
     shops = DbShop.query \
         .filter_by(archived=False) \

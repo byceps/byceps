@@ -6,9 +6,10 @@ byceps.services.authentication.session.models.current_user
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional, Set
+from typing import Optional
 
 from .....services.user.transfer.models import User
 
@@ -18,7 +19,7 @@ class CurrentUser(User):
     """The current user, anonymous or logged in."""
 
     authenticated: bool
-    permissions: Set[Enum]
+    permissions: set[Enum]
     locale: Optional[str]
 
     def __eq__(self, other) -> bool:

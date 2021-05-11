@@ -3,10 +3,11 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from pathlib import Path
 from secrets import token_hex
 from tempfile import TemporaryDirectory
-from typing import Optional, Set
+from typing import Optional
 
 import pytest
 
@@ -138,7 +139,7 @@ def make_admin(make_user):
     created_permission_ids = set()
     created_role_ids = set()
 
-    def _wrapper(screen_name: str, permission_ids: Set[str]):
+    def _wrapper(screen_name: str, permission_ids: set[str]):
         admin = make_user(screen_name)
         user_ids.add(admin.id)
 

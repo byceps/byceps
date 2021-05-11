@@ -6,7 +6,7 @@ byceps.blueprints.admin.webhook.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Set, Type
+from __future__ import annotations
 
 from flask_babel import lazy_gettext
 from wtforms import BooleanField, StringField
@@ -30,18 +30,18 @@ class UpdateForm(_BaseForm):
     enabled = BooleanField(lazy_gettext('Enabled'))
 
 
-def assemble_create_form(event_names: Set[str]) -> Type[LocalizedForm]:
+def assemble_create_form(event_names: set[str]) -> type[LocalizedForm]:
     return _extend_form_for_event_types(CreateForm, event_names)
 
 
-def assemble_update_form(event_names: Set[str]) -> Type[LocalizedForm]:
+def assemble_update_form(event_names: set[str]) -> type[LocalizedForm]:
     return _extend_form_for_event_types(UpdateForm, event_names)
 
 
 def _extend_form_for_event_types(
     form_class,
-    event_names: Set[str],
-) -> Type[LocalizedForm]:
+    event_names: set[str],
+) -> type[LocalizedForm]:
     """Dynamically add a checkbox per event type to the form."""
 
     class FormWithEventTypes(form_class):
@@ -61,7 +61,7 @@ def _add_event_field_getter_to_form(form_class) -> None:
     form_class.get_field_for_event_name = get_field_for_event_name
 
 
-def _add_event_fields_to_form(form_class, event_names: Set[str]) -> None:
+def _add_event_fields_to_form(form_class, event_names: set[str]) -> None:
     for event_name in event_names:
         field_name = _create_event_field_name(event_name)
         field = BooleanField()

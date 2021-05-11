@@ -6,11 +6,12 @@ byceps.blueprints.admin.user.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from collections import defaultdict
 from datetime import datetime, timedelta
 from itertools import chain
 from operator import attrgetter
-from typing import Any, Dict, Iterator, List, Optional, Sequence, Set, Tuple
+from typing import Any, Iterator, Optional, Sequence
 
 from ....database import db, paginate, Pagination
 from ....services.consent import consent_service
@@ -95,7 +96,7 @@ def _filter_by_search_term(query, search_term):
         .filter(db.or_(*clauses))
 
 
-def _generate_search_clauses_for_term(search_term: str) -> List:
+def _generate_search_clauses_for_term(search_term: str) -> list:
     ilike_pattern = f'%{search_term}%'
 
     return [
@@ -108,7 +109,7 @@ def _generate_search_clauses_for_term(search_term: str) -> List:
 
 def get_users_created_since(
     delta: timedelta, limit: Optional[int] = None
-) -> List[User]:
+) -> list[User]:
     """Return the user accounts created since `delta` ago."""
     filter_starts_at = datetime.utcnow() - delta
 
@@ -150,7 +151,7 @@ def _db_entity_to_user_with_creation_details(
 
 def get_parties_and_tickets(
     user_id: UserID,
-) -> List[Tuple[Party, List[DbTicket]]]:
+) -> list[tuple[Party, list[DbTicket]]]:
     """Return tickets the user uses or manages, and the related parties."""
     tickets = ticket_service.find_tickets_related_to_user(user_id)
 
@@ -171,8 +172,8 @@ def get_parties_and_tickets(
 
 def _group_tickets_by_party_id(
     tickets: Sequence[DbTicket],
-) -> Dict[PartyID, List[DbTicket]]:
-    tickets_by_party_id: Dict[PartyID, List[DbTicket]] = defaultdict(list)
+) -> dict[PartyID, list[DbTicket]]:
+    tickets_by_party_id: dict[PartyID, list[DbTicket]] = defaultdict(list)
 
     for ticket in tickets:
         tickets_by_party_id[ticket.category.party_id].append(ticket)
@@ -180,12 +181,12 @@ def _group_tickets_by_party_id(
     return tickets_by_party_id
 
 
-def _get_parties_by_id(party_ids: Set[PartyID]) -> Dict[PartyID, Party]:
+def _get_parties_by_id(party_ids: set[PartyID]) -> dict[PartyID, Party]:
     parties = party_service.get_parties(party_ids)
     return {p.id: p for p in parties}
 
 
-def get_attended_parties(user_id: UserID) -> List[Party]:
+def get_attended_parties(user_id: UserID) -> list[Party]:
     """Return the parties attended by the user, in order."""
     attended_parties = attendance_service.get_attended_parties(user_id)
     attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
@@ -194,7 +195,7 @@ def get_attended_parties(user_id: UserID) -> List[Party]:
 
 def get_newsletter_subscriptions(
     user_id: UserID,
-) -> Iterator[Tuple[NewsletterList, bool]]:
+) -> Iterator[tuple[NewsletterList, bool]]:
     lists = newsletter_service.get_all_lists()
     for list_ in lists:
         is_subscribed = newsletter_service.is_subscribed(user_id, list_.id)
@@ -295,8 +296,8 @@ def _fake_order_events(user_id: UserID) -> Iterator[DbUserEvent]:
 
 
 def _get_additional_data(
-    event: DbUserEvent, users_by_id: Dict[str, User]
-) -> Iterator[Tuple[str, Any]]:
+    event: DbUserEvent, users_by_id: dict[str, User]
+) -> Iterator[tuple[str, Any]]:
     if event.event_type in {
         'user-created',
         'user-deleted',
@@ -345,8 +346,8 @@ def _get_additional_data(
 
 
 def _get_additional_data_for_user_initiated_event(
-    event: DbUserEvent, users_by_id: Dict[str, User]
-) -> Iterator[Tuple[str, Any]]:
+    event: DbUserEvent, users_by_id: dict[str, User]
+) -> Iterator[tuple[str, Any]]:
     initiator_id = event.data.get('initiator_id')
     if initiator_id is not None:
         yield 'initiator', users_by_id[initiator_id]

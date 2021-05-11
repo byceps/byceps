@@ -8,7 +8,7 @@ Current user's dashboard
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import List
+from __future__ import annotations
 
 from flask import abort, g
 
@@ -63,7 +63,7 @@ def index():
     }
 
 
-def _get_open_orders(site: Site, user_id: UserID) -> List[Order]:
+def _get_open_orders(site: Site, user_id: UserID) -> list[Order]:
     storefront_id = site.storefront_id
     if storefront_id is None:
         return []
@@ -79,14 +79,14 @@ def _get_open_orders(site: Site, user_id: UserID) -> List[Order]:
     return orders
 
 
-def _get_tickets(user_id: UserID) -> List[DbTicket]:
+def _get_tickets(user_id: UserID) -> list[DbTicket]:
     if g.party_id is None:
         return []
 
     return ticket_service.find_tickets_used_by_user(user_id, g.party_id)
 
 
-def _get_news_headlines(site: Site) -> List[NewsHeadline]:
+def _get_news_headlines(site: Site) -> list[NewsHeadline]:
     channel_id = site.news_channel_id
     if channel_id is None:
         return []
@@ -94,7 +94,7 @@ def _get_news_headlines(site: Site) -> List[NewsHeadline]:
     return news_item_service.get_recent_headlines(channel_id, limit=4)
 
 
-def _get_board_topics(site: Site, current_user: CurrentUser) -> List[DbTopic]:
+def _get_board_topics(site: Site, current_user: CurrentUser) -> list[DbTopic]:
     board_id = site.board_id
     if board_id is None:
         return []

@@ -6,8 +6,9 @@ byceps.services.shop.catalog.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import List, NewType
+from typing import NewType
 from uuid import UUID
 
 from ...article.transfer.models import ArticleNumber
@@ -34,7 +35,7 @@ class Collection:
     catalog_id: CatalogID
     title: str
     position: int
-    article_numbers: List[ArticleNumber]
+    article_numbers: list[ArticleNumber]
 
 
 @dataclass(frozen=True)

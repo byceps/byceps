@@ -3,8 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import date
-from typing import Tuple
 
 from freezegun import freeze_time
 
@@ -46,7 +46,7 @@ def test_sort():
 # helpers
 
 
-def create_user_and_birthday(date_of_birth: date) -> Tuple[User, Birthday]:
+def create_user_and_birthday(date_of_birth: date) -> tuple[User, Birthday]:
     user = User(
         '55ecd4f2-37ca-4cab-a771-79cf3dabb7cb',
         f'born-{date_of_birth}',

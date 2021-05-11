@@ -6,7 +6,8 @@ byceps.blueprints.admin.ticketing.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Dict, Iterator, Optional, Sequence, Set, Tuple
+from __future__ import annotations
+from typing import Any, Iterator, Optional, Sequence
 
 from ....services.seating import seat_service
 from ....services.ticketing import event_service
@@ -48,7 +49,7 @@ def _fake_ticket_creation_event(ticket_id: TicketID) -> TicketEvent:
     return TicketEvent(ticket.created_at, 'ticket-created', ticket.id, data)
 
 
-def _get_users_by_id(events: Sequence[TicketEvent]) -> Dict[str, User]:
+def _get_users_by_id(events: Sequence[TicketEvent]) -> dict[str, User]:
     user_ids = set(
         _find_values_for_keys(
             events,
@@ -67,7 +68,7 @@ def _get_users_by_id(events: Sequence[TicketEvent]) -> Dict[str, User]:
 
 
 def _find_values_for_keys(
-    events: Sequence[TicketEvent], keys: Set[str]
+    events: Sequence[TicketEvent], keys: set[str]
 ) -> Iterator[Any]:
     for event in events:
         for key in keys:
@@ -77,8 +78,8 @@ def _find_values_for_keys(
 
 
 def _get_additional_data(
-    event: TicketEvent, users_by_id: Dict[str, User]
-) -> Iterator[Tuple[str, Any]]:
+    event: TicketEvent, users_by_id: dict[str, User]
+) -> Iterator[tuple[str, Any]]:
     yield from _get_initiators(event, users_by_id)
 
     if event.event_type == 'seat-manager-appointed':
@@ -118,8 +119,8 @@ def _get_additional_data(
 
 
 def _get_initiators(
-    event: TicketEvent, users_by_id: Dict[str, User]
-) -> Iterator[Tuple[str, Any]]:
+    event: TicketEvent, users_by_id: dict[str, User]
+) -> Iterator[tuple[str, Any]]:
     if event.event_type in {
         'seat-manager-appointed',
         'seat-manager-withdrawn',
@@ -140,8 +141,8 @@ def _get_initiators(
 
 
 def _get_additional_data_for_user_initiated_event(
-    event: TicketEvent, users_by_id: Dict[str, User]
-) -> Iterator[Tuple[str, Any]]:
+    event: TicketEvent, users_by_id: dict[str, User]
+) -> Iterator[tuple[str, Any]]:
     initiator_id = event.data.get('initiator_id')
     if initiator_id is not None:
         yield 'initiator', users_by_id[initiator_id]
@@ -149,7 +150,7 @@ def _get_additional_data_for_user_initiated_event(
 
 def _get_additional_data_for_seat_occupied_event(
     event: TicketEvent,
-) -> Iterator[Tuple[str, Any]]:
+) -> Iterator[tuple[str, Any]]:
     seat_id = event.data['seat_id']
     seat = seat_service.find_seat(seat_id)
     yield 'seat_label', seat.label
@@ -162,7 +163,7 @@ def _get_additional_data_for_seat_occupied_event(
 
 def _get_additional_data_for_seat_released_event(
     event: TicketEvent,
-) -> Iterator[Tuple[str, Any]]:
+) -> Iterator[tuple[str, Any]]:
     seat_id = event.data.get('seat_id')
     if seat_id:
         seat = seat_service.find_seat(seat_id)
@@ -171,7 +172,7 @@ def _get_additional_data_for_seat_released_event(
 
 def _get_additional_data_for_ticket_revoked_event(
     event: TicketEvent,
-) -> Iterator[Tuple[str, Any]]:
+) -> Iterator[tuple[str, Any]]:
     reason = event.data.get('reason')
     if reason:
         yield 'reason', reason
@@ -179,10 +180,10 @@ def _get_additional_data_for_ticket_revoked_event(
 
 def _look_up_user_for_id(
     event: TicketEvent,
-    users_by_id: Dict[str, User],
+    users_by_id: dict[str, User],
     user_id_key: str,
     user_key: str,
-) -> Tuple[str, Optional[User]]:
+) -> tuple[str, Optional[User]]:
     user_id = event.data[user_id_key]
     user = users_by_id.get(user_id)
     return user_key, user

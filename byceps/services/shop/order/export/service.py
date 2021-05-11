@@ -6,9 +6,10 @@ byceps.services.shop.order.export.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from flask import current_app
 import pendulum
@@ -21,7 +22,7 @@ from .. import service as order_service
 from ..transfer.models import Order, OrderID
 
 
-def export_order_as_xml(order_id: OrderID) -> Optional[Dict[str, str]]:
+def export_order_as_xml(order_id: OrderID) -> Optional[dict[str, str]]:
     """Export the order as an XML document."""
     order = order_service.find_order_with_details(order_id)
 
@@ -37,7 +38,7 @@ def export_order_as_xml(order_id: OrderID) -> Optional[Dict[str, str]]:
     }
 
 
-def _assemble_context(order: Order) -> Dict[str, Any]:
+def _assemble_context(order: Order) -> dict[str, Any]:
     """Assemble template context."""
     placed_by = user_service.get_user(order.placed_by_id)
     email_address = user_service.get_email_address(placed_by.id)
@@ -78,7 +79,7 @@ def _format_export_datetime(dt: datetime) -> str:
     return date_time + utc_offset
 
 
-def _render_template(context: Dict[str, Any]) -> str:
+def _render_template(context: dict[str, Any]) -> str:
     """Load and render export template."""
     path = 'services/shop/order/export/templates/export.xml'
     with current_app.open_resource(path, 'r') as f:

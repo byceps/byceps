@@ -6,8 +6,9 @@ byceps.services.tourney.match_comment_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import Dict, Optional, Sequence, Set
+from typing import Optional, Sequence
 
 from ...database import db
 from ...services.text_markup import service as text_markup_service
@@ -112,8 +113,8 @@ def get_comments(
 
 
 def _get_users_by_id(
-    user_ids: Set[UserID], *, party_id: Optional[PartyID] = None
-) -> Dict[UserID, User]:
+    user_ids: set[UserID], *, party_id: Optional[PartyID] = None
+) -> dict[UserID, User]:
     users = user_service.find_users(
         user_ids, include_avatars=True, include_orga_flags_for_party_id=party_id
     )

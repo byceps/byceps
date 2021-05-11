@@ -8,8 +8,9 @@ Templating utilities
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from pathlib import Path
-from typing import Any, Dict, Optional, Set
+from typing import Any, Optional
 
 from flask import g
 from jinja2 import (
@@ -27,7 +28,7 @@ SITES_PATH = Path('sites')
 
 
 def load_template(
-    source: str, *, template_globals: Optional[Dict[str, Any]] = None
+    source: str, *, template_globals: Optional[dict[str, Any]] = None
 ):
     """Load a template from source, using the sandboxed environment."""
     env = create_sandboxed_environment()

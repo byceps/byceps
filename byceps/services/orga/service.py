@@ -6,7 +6,8 @@ byceps.services.orga.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Dict, Optional, Sequence
+from __future__ import annotations
+from typing import Optional, Sequence
 
 from ...database import db
 from ...typing import BrandID, UserID
@@ -19,7 +20,7 @@ from ..user.dbmodels.user import User as DbUser
 from .dbmodels import OrgaFlag as DbOrgaFlag
 
 
-def get_person_count_by_brand_id() -> Dict[BrandID, int]:
+def get_person_count_by_brand_id() -> dict[BrandID, int]:
     """Return organizer count (including 0) per brand, indexed by brand ID."""
     brand_ids_and_orga_flag_counts = db.session \
         .query(

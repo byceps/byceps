@@ -6,9 +6,10 @@ byceps.blueprints.admin.shop.order.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 import dataclasses
-from typing import Dict, Iterator, Sequence
+from typing import Iterator, Sequence
 
 from .....services.shop.article import service as article_service
 from .....services.shop.article.transfer.models import Article, ArticleNumber
@@ -45,7 +46,7 @@ def extend_order_tuples_with_orderer(
         yield OrderWithOrderer(*values)
 
 
-def get_articles_by_item_number(order: Order) -> Dict[ArticleNumber, Article]:
+def get_articles_by_item_number(order: Order) -> dict[ArticleNumber, Article]:
     numbers = {item.article_number for item in order.items}
 
     articles = article_service.get_articles_by_numbers(numbers)
@@ -91,7 +92,7 @@ def _fake_order_placement_event(order_id: OrderID) -> OrderEvent:
 
 
 def _get_additional_data(
-    event: OrderEvent, users_by_id: Dict[UserID, User]
+    event: OrderEvent, users_by_id: dict[UserID, User]
 ) -> OrderEventData:
     if event.event_type == 'badge-awarded':
         return _get_additional_data_for_badge_awarded(event)
@@ -110,7 +111,7 @@ def _get_additional_data(
 
 
 def _get_additional_data_for_standard_event(
-    event: OrderEvent, users_by_id: Dict[UserID, User]
+    event: OrderEvent, users_by_id: dict[UserID, User]
 ) -> OrderEventData:
     initiator_id = event.data['initiator_id']
 
@@ -151,7 +152,7 @@ def _get_additional_data_for_ticket_bundle_created(
 
 
 def _get_additional_data_for_ticket_bundle_revoked(
-    event: OrderEvent, users_by_id: Dict[UserID, User]
+    event: OrderEvent, users_by_id: dict[UserID, User]
 ) -> OrderEventData:
     bundle_id = event.data['ticket_bundle_id']
 
@@ -181,7 +182,7 @@ def _get_additional_data_for_ticket_created(
 
 
 def _get_additional_data_for_ticket_revoked(
-    event: OrderEvent, users_by_id: Dict[UserID, User]
+    event: OrderEvent, users_by_id: dict[UserID, User]
 ) -> OrderEventData:
     ticket_id = event.data['ticket_id']
     ticket_code = event.data['ticket_code']

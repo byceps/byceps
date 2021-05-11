@@ -6,8 +6,9 @@ byceps.services.shop.shop.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import Any, Dict, NewType
+from typing import Any, NewType
 
 from .....typing import BrandID
 
@@ -21,4 +22,4 @@ class Shop:
     brand_id: BrandID
     title: str
     archived: bool
-    extra_settings: Dict[str, Any]
+    extra_settings: dict[str, Any]

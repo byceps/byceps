@@ -6,9 +6,10 @@ byceps.services.user.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from ....typing import UserID
 
@@ -34,7 +35,7 @@ class UserDetail:
     street: Optional[str]
     phone_number: Optional[str]
     internal_comment: Optional[str]
-    extras: Dict[str, Any]
+    extras: dict[str, Any]
 
 
 @dataclass(frozen=True)

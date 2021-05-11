@@ -6,8 +6,9 @@ byceps.services.snippet.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import List, Optional, Sequence, Set, Tuple
+from typing import Optional, Sequence
 
 from ...database import db
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
@@ -35,7 +36,7 @@ def create_document(
     *,
     head: Optional[str] = None,
     image_url_path: Optional[str] = None,
-) -> Tuple[DbSnippetVersion, SnippetCreated]:
+) -> tuple[DbSnippetVersion, SnippetCreated]:
     """Create a document and its initial version, and return that version."""
     return _create_snippet(
         scope,
@@ -57,7 +58,7 @@ def update_document(
     *,
     head: Optional[str] = None,
     image_url_path: Optional[str] = None,
-) -> Tuple[DbSnippetVersion, SnippetUpdated]:
+) -> tuple[DbSnippetVersion, SnippetUpdated]:
     """Update document with a new version, and return that version."""
     return _update_snippet(
         snippet_id, creator_id, title, head, body, image_url_path
@@ -70,14 +71,14 @@ def update_document(
 
 def create_fragment(
     scope: Scope, name: str, creator_id: UserID, body: str
-) -> Tuple[DbSnippetVersion, SnippetCreated]:
+) -> tuple[DbSnippetVersion, SnippetCreated]:
     """Create a fragment and its initial version, and return that version."""
     return _create_snippet(scope, name, SnippetType.fragment, creator_id, body)
 
 
 def update_fragment(
     snippet_id: SnippetID, creator_id: UserID, body: str
-) -> Tuple[DbSnippetVersion, SnippetUpdated]:
+) -> tuple[DbSnippetVersion, SnippetUpdated]:
     """Update fragment with a new version, and return that version."""
     title = None
     head = None
@@ -102,7 +103,7 @@ def _create_snippet(
     title: Optional[str] = None,
     head: Optional[str] = None,
     image_url_path: Optional[str] = None,
-) -> Tuple[DbSnippetVersion, SnippetCreated]:
+) -> tuple[DbSnippetVersion, SnippetCreated]:
     """Create a snippet and its initial version, and return that version."""
     creator = user_service.get_user(creator_id)
 
@@ -140,7 +141,7 @@ def _update_snippet(
     head: Optional[str],
     body: str,
     image_url_path: Optional[str],
-) -> Tuple[DbSnippetVersion, SnippetUpdated]:
+) -> tuple[DbSnippetVersion, SnippetUpdated]:
     """Update snippet with a new version, and return that version."""
     snippet = find_snippet(snippet_id)
     if snippet is None:
@@ -173,7 +174,7 @@ def _update_snippet(
 
 def delete_snippet(
     snippet_id: SnippetID, *, initiator_id: Optional[UserID] = None
-) -> Tuple[bool, Optional[SnippetDeleted]]:
+) -> tuple[bool, Optional[SnippetDeleted]]:
     """Delete the snippet and its versions.
 
     It is expected that no database records (mountpoints, consents,
@@ -226,7 +227,7 @@ def find_snippet(snippet_id: SnippetID) -> Optional[DbSnippet]:
     return DbSnippet.query.get(snippet_id)
 
 
-def get_snippets(snippet_ids: Set[SnippetID]) -> Sequence[DbSnippet]:
+def get_snippets(snippet_ids: set[SnippetID]) -> Sequence[DbSnippet]:
     """Return these snippets."""
     return DbSnippet.query \
         .filter(DbSnippet.id.in_(snippet_ids)) \
@@ -280,7 +281,7 @@ def get_versions(snippet_id: SnippetID) -> Sequence[DbSnippetVersion]:
 
 def search_snippets(
     search_term: str, scope: Optional[Scope]
-) -> List[DbSnippetVersion]:
+) -> list[DbSnippetVersion]:
     """Search in (the latest versions of) snippets."""
     q = DbSnippetVersion.query \
         .join(DbCurrentVersionAssociation) \

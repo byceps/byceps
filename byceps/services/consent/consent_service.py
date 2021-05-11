@@ -6,8 +6,9 @@ byceps.services.consent.consent_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import Dict, Iterable, Sequence, Set
+from typing import Iterable, Sequence
 
 from ...database import db
 from ...typing import UserID
@@ -53,7 +54,7 @@ def consent_to_subjects(
     db.session.commit()
 
 
-def count_consents_by_subject() -> Dict[str, int]:
+def count_consents_by_subject() -> dict[str, int]:
     """Return the number of given consents per subject."""
     rows = db.session \
         .query(
@@ -75,8 +76,8 @@ def get_consents_by_user(user_id: UserID) -> Sequence[DbConsent]:
 
 
 def get_unconsented_subject_ids(
-    user_id: UserID, required_subject_ids: Set[SubjectID]
-) -> Set[SubjectID]:
+    user_id: UserID, required_subject_ids: set[SubjectID]
+) -> set[SubjectID]:
     """Return the IDs of the subjects the user has not consented to."""
     unconsented_subject_ids = set()
 
@@ -88,7 +89,7 @@ def get_unconsented_subject_ids(
 
 
 def has_user_consented_to_all_subjects(
-    user_id: UserID, subject_ids: Set[SubjectID]
+    user_id: UserID, subject_ids: set[SubjectID]
 ) -> bool:
     """Return `True` if the user has consented to all given subjects."""
     for subject_id in subject_ids:

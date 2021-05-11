@@ -6,7 +6,8 @@ byceps.services.webhooks.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Dict, List, Optional
+from __future__ import annotations
+from typing import Any, Optional
 
 from ...database import db
 
@@ -21,7 +22,7 @@ def create_outgoing_webhook(
     enabled: bool,
     *,
     text_prefix: Optional[str] = None,
-    extra_fields: Optional[Dict[str, Any]] = None,
+    extra_fields: Optional[dict[str, Any]] = None,
     description: Optional[str] = None,
 ) -> OutgoingWebhook:
     """Create an outgoing webhook."""
@@ -49,7 +50,7 @@ def update_outgoing_webhook(
     enabled: bool,
     *,
     text_prefix: Optional[str] = None,
-    extra_fields: Optional[Dict[str, Any]] = None,
+    extra_fields: Optional[dict[str, Any]] = None,
     description: Optional[str] = None,
 ) -> OutgoingWebhook:
     """Update an outgoing webhook."""
@@ -93,14 +94,14 @@ def _find_db_webhook(webhook_id: WebhookID) -> Optional[DbOutgoingWebhook]:
     return db.session.query(DbOutgoingWebhook).get(webhook_id)
 
 
-def get_all_webhooks() -> List[OutgoingWebhook]:
+def get_all_webhooks() -> list[OutgoingWebhook]:
     """Return all webhooks."""
     webhooks = db.session.query(DbOutgoingWebhook).all()
 
     return [_db_entity_to_outgoing_webhook(webhook) for webhook in webhooks]
 
 
-def get_enabled_outgoing_webhooks(event_type: str) -> List[OutgoingWebhook]:
+def get_enabled_outgoing_webhooks(event_type: str) -> list[OutgoingWebhook]:
     """Return the configurations for enabled outgoing webhooks for that
     event type.
     """

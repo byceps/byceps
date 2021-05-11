@@ -8,7 +8,7 @@ byceps.blueprints.site.board.models
 
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Optional, Set
+from typing import Optional
 
 from ....services.board.transfer.models import CategoryWithLastUpdate
 from ....services.user.transfer.models import User
@@ -46,12 +46,12 @@ class Ticket:
 
 @dataclass(frozen=True)
 class Creator(User):
-    badges: Set[Badge]
+    badges: set[Badge]
     ticket: Ticket
 
     @classmethod
     def from_(
-        cls, user: User, badges: Set[Badge], ticket: Optional[Ticket]
+        cls, user: User, badges: set[Badge], ticket: Optional[Ticket]
     ) -> Creator:
         return cls(
             user.id,

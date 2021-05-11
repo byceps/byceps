@@ -8,8 +8,9 @@ Render HTML fragments from news items and images.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from functools import partial
-from typing import List, Optional
+from typing import Optional
 
 from flask_babel import gettext
 from jinja2 import Markup
@@ -21,7 +22,7 @@ from .transfer.models import ChannelID, Image
 
 
 def render_body(
-    raw_body: str, channel_id: ChannelID, images: List[Image]
+    raw_body: str, channel_id: ChannelID, images: list[Image]
 ) -> str:
     """Render item's raw body to HTML."""
     template = load_template(raw_body)
@@ -31,7 +32,7 @@ def render_body(
 
 def _render_image(
     channel_id: ChannelID,
-    images: List[Image],
+    images: list[Image],
     number: int,
     *,
     width: Optional[int] = None,

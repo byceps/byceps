@@ -6,11 +6,12 @@ tests.helpers
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from contextlib import contextmanager
 from datetime import date, datetime
 from pathlib import Path
 from secrets import token_hex
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from flask import appcontext_pushed, g
 
@@ -34,7 +35,7 @@ CONFIG_FILENAME_TEST_SITE = _CONFIG_PATH / 'test_site.py'
 CONFIG_FILENAME_TEST_ADMIN = _CONFIG_PATH / 'test_admin.py'
 
 
-def create_admin_app(config_overrides: Optional[Dict[str, Any]] = None):
+def create_admin_app(config_overrides: Optional[dict[str, Any]] = None):
     app = create_app(
         config_filename=CONFIG_FILENAME_TEST_ADMIN,
         config_overrides=config_overrides,
@@ -42,7 +43,7 @@ def create_admin_app(config_overrides: Optional[Dict[str, Any]] = None):
     return app
 
 
-def create_site_app(config_overrides: Optional[Dict[str, Any]] = None):
+def create_site_app(config_overrides: Optional[dict[str, Any]] = None):
     app = create_app(
         config_filename=CONFIG_FILENAME_TEST_SITE,
         config_overrides=config_overrides,

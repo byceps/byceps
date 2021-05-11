@@ -8,8 +8,9 @@ Import/export
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from pathlib import Path
-from typing import Dict, Iterator, List, Tuple, Union
+from typing import Iterator, Union
 
 import rtoml
 
@@ -23,7 +24,7 @@ from . import service
 # import
 
 
-def import_from_file(path: Path) -> Tuple[int, int]:
+def import_from_file(path: Path) -> tuple[int, int]:
     """Import permissions, roles, and their relations from TOML."""
     data = rtoml.load(path)
 
@@ -36,12 +37,12 @@ def import_from_file(path: Path) -> Tuple[int, int]:
     return len(permissions), len(roles)
 
 
-def _create_permissions(permissions: List[Dict[str, str]]) -> None:
+def _create_permissions(permissions: list[dict[str, str]]) -> None:
     for permission in permissions:
         service.create_permission(permission['id'], permission['title'])
 
 
-def _create_roles(roles: List[Dict[str, Union[str, List[str]]]]) -> None:
+def _create_roles(roles: list[dict[str, Union[str, list[str]]]]) -> None:
     for role in roles:
         role_id = role['id']
 
@@ -68,7 +69,7 @@ def export() -> str:
     return rtoml.dumps(data, pretty=True)
 
 
-def _collect_permissions() -> Iterator[Dict[str, str]]:
+def _collect_permissions() -> Iterator[dict[str, str]]:
     """Collect all permissions, even those not assigned to any role."""
     permissions = DbPermission.query \
         .options(
@@ -84,7 +85,7 @@ def _collect_permissions() -> Iterator[Dict[str, str]]:
         }
 
 
-def _collect_roles() -> Iterator[Dict[str, Union[str, List[str]]]]:
+def _collect_roles() -> Iterator[dict[str, Union[str, list[str]]]]:
     """Collect all roles and the permissions assigned to them."""
     roles = DbRole.query \
         .options(

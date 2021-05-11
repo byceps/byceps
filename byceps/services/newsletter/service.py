@@ -6,17 +6,9 @@ byceps.services.newsletter.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from operator import itemgetter
-from typing import (
-    Dict,
-    Iterable,
-    Iterator,
-    Optional,
-    Sequence,
-    Set,
-    Tuple,
-    Union,
-)
+from typing import Iterable, Iterator, Optional, Sequence, Union
 
 from ...database import BaseQuery, db
 from ...typing import UserID
@@ -105,7 +97,7 @@ def _build_query_for_current_subscribers(list_id: ListID) -> BaseQuery:
         .filter(DbSubscriptionUpdate.list_id == list_id)
 
 
-def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
+def _get_subscriber_details(user_ids: set[UserID]) -> Iterator[Subscriber]:
     """Yield screen name and email address of each eligible user."""
     if not user_ids:
         return []
@@ -129,7 +121,7 @@ def _get_subscriber_details(user_ids: Set[UserID]) -> Iterator[Subscriber]:
 
 def count_subscriptions_by_state(
     list_id: ListID,
-) -> Dict[Union[SubscriptionState, str], int]:
+) -> dict[Union[SubscriptionState, str], int]:
     """Return the totals for each state as well as an overall total."""
     rows = _build_query_for_current_state(list_id) \
         .all()

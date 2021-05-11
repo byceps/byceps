@@ -11,7 +11,8 @@ Run script `clean_up_after_deleted_users.py` before this one.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterable, Iterator, List
+from __future__ import annotations
+from typing import Iterable, Iterator
 
 import click
 
@@ -22,7 +23,7 @@ from _util import call_with_app_context
 from _validators import validate_user_id_format
 
 
-def validate_user_ids(ctx, param, user_ids: Iterable[UserID]) -> List[UserID]:
+def validate_user_ids(ctx, param, user_ids: Iterable[UserID]) -> list[UserID]:
     def _validate():
         for user_id in user_ids:
             yield validate_user_id_format(ctx, param, user_id)

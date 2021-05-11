@@ -6,9 +6,9 @@ byceps.blueprints.admin.party.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import dataclasses
 from datetime import date, datetime
-from typing import Dict, List
 
 from flask import abort, request
 from flask_babel import gettext
@@ -93,13 +93,13 @@ def index_for_brand(brand_id, page):
     }
 
 
-def _get_days_by_party_id(parties) -> Dict[PartyID, List[date]]:
+def _get_days_by_party_id(parties) -> dict[PartyID, list[date]]:
     return {party.id: party_service.get_party_days(party) for party in parties}
 
 
 def _get_ticket_sale_stats_by_party_id(
     parties,
-) -> Dict[PartyID, TicketSaleStats]:
+) -> dict[PartyID, TicketSaleStats]:
     return {
         party.id: ticket_service.get_ticket_sale_stats(party.id)
         for party in parties

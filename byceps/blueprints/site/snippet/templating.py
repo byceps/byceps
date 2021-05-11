@@ -6,9 +6,9 @@ byceps.blueprints.site.snippet.templating
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import sys
 import traceback
-from typing import Set
 
 from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
@@ -112,7 +112,7 @@ def url_for_snippet(endpoint_suffix: str, **kwargs) -> str:
     return url_for(f'snippet.view', url_path=mountpoint.url_path, **kwargs)
 
 
-def _get_mountpoints() -> Set[Mountpoint]:
+def _get_mountpoints() -> set[Mountpoint]:
     """Return site-specific mountpoints.
 
     Preferrably from request-local cache, if available. From the

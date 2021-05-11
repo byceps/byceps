@@ -6,8 +6,9 @@ byceps.util.iterables
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from itertools import tee
-from typing import Callable, Iterable, Iterator, List, Optional, Tuple, TypeVar
+from typing import Callable, Iterable, Iterator, Optional, TypeVar
 
 
 T = TypeVar('T')
@@ -41,7 +42,7 @@ def index_of(iterable: Iterable[T], predicate: Predicate) -> Optional[int]:
     return None
 
 
-def pairwise(iterable: Iterable[T]) -> Iterator[Tuple[T, T]]:
+def pairwise(iterable: Iterable[T]) -> Iterator[tuple[T, T]]:
     """Return each element paired with its next one.
 
     Example:
@@ -58,7 +59,7 @@ def pairwise(iterable: Iterable[T]) -> Iterator[Tuple[T, T]]:
 
 def partition(
     iterable: Iterable[T], predicate: Predicate
-) -> Tuple[List[T], List[T]]:
+) -> tuple[list[T], list[T]]:
     """Partition the iterable into two lists according to the predicate.
 
     The first list contains all elements that satisfy the predicate, the

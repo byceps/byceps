@@ -6,7 +6,7 @@ byceps.services.terms.consent_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Dict
+from __future__ import annotations
 
 from ...database import db
 
@@ -19,7 +19,7 @@ from .transfer.models import DocumentID, VersionID
 
 def count_consents_for_document_versions(
     document_id: DocumentID,
-) -> Dict[VersionID, int]:
+) -> dict[VersionID, int]:
     """Return the number of consents for each version of the document."""
     rows = db.session \
         .query(

@@ -6,8 +6,9 @@ byceps.blueprints.api.v1.tourney.match.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from flask import abort, jsonify, request, url_for
 from marshmallow import ValidationError
@@ -73,7 +74,7 @@ def get_comments_for_match(match_id):
     )
 
 
-def _comment_to_json(comment: MatchComment) -> Dict[str, Any]:
+def _comment_to_json(comment: MatchComment) -> dict[str, Any]:
     creator = comment.created_by
     last_editor = comment.last_edited_by
     moderator = comment.hidden_by
@@ -97,11 +98,11 @@ def _potential_datetime_to_json(dt: Optional[datetime]) -> Optional[str]:
     return dt.isoformat() if (dt is not None) else None
 
 
-def _potential_user_to_json(user: Optional[User]) -> Optional[Dict[str, Any]]:
+def _potential_user_to_json(user: Optional[User]) -> Optional[dict[str, Any]]:
     return _user_to_json(user) if (user is not None) else None
 
 
-def _user_to_json(user: User) -> Dict[str, Any]:
+def _user_to_json(user: User) -> dict[str, Any]:
     return {
         'user_id': str(user.id),
         'screen_name': user.screen_name,
@@ -216,7 +217,7 @@ def _get_comment_or_404(comment_id: MatchCommentID) -> MatchComment:
     return comment
 
 
-def _parse_request(schema_class: SchemaMeta) -> Dict[str, Any]:
+def _parse_request(schema_class: SchemaMeta) -> dict[str, Any]:
     schema = schema_class()
     request_data = request.get_json()
 

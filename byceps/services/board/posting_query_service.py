@@ -6,7 +6,8 @@ byceps.services.board.posting_query_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Dict, Optional, Set
+from __future__ import annotations
+from typing import Optional
 
 from ...database import db, Pagination
 from ...typing import PartyID, UserID
@@ -76,8 +77,8 @@ def paginate_postings(
 
 
 def _get_users_by_id(
-    user_ids: Set[UserID], party_id: Optional[PartyID]
-) -> Dict[UserID, User]:
+    user_ids: set[UserID], party_id: Optional[PartyID]
+) -> dict[UserID, User]:
     users = user_service.find_users(
         user_ids, include_avatars=True, include_orga_flags_for_party_id=party_id
     )

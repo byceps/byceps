@@ -6,7 +6,8 @@ byceps.services.snippet.mountpoint_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Set
+from __future__ import annotations
+from typing import Optional
 
 from ...database import db
 
@@ -50,7 +51,7 @@ def find_mountpoint(mountpoint_id: MountpointID) -> Optional[Mountpoint]:
     return _db_entity_to_mountpoint(mountpoint)
 
 
-def get_mountpoints_for_site(site_id: SiteID) -> Set[Mountpoint]:
+def get_mountpoints_for_site(site_id: SiteID) -> set[Mountpoint]:
     """Return all mountpoints for that site."""
     mountpoints = DbMountpoint.query \
         .filter_by(site_id=site_id) \

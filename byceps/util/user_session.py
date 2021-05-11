@@ -6,8 +6,9 @@ byceps.util.user_session
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from enum import Enum
-from typing import Optional, Set
+from typing import Optional
 
 from flask import session
 
@@ -45,7 +46,7 @@ def end() -> None:
 
 
 def get_current_user(
-    required_permissions: Set[Enum],
+    required_permissions: set[Enum],
     locale: Optional[str],
     *,
     party_id: Optional[PartyID] = None,

@@ -6,8 +6,9 @@ byceps.services.attendance.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from collections import defaultdict
-from typing import Dict, Iterable, List, Optional, Set, Tuple
+from typing import Iterable, Optional
 
 from ...database import db, paginate, Pagination
 from ...typing import PartyID, UserID
@@ -71,8 +72,8 @@ def _get_users_paginated(
 
 
 def _get_tickets_for_users(
-    party_id: PartyID, user_ids: Set[UserID]
-) -> List[DbTicket]:
+    party_id: PartyID, user_ids: set[UserID]
+) -> list[DbTicket]:
     return DbTicket.query \
         .options(
             db.joinedload('category'),
@@ -86,7 +87,7 @@ def _get_tickets_for_users(
 
 def _index_tickets_by_user_id(
     tickets: Iterable[DbTicket],
-) -> Dict[UserID, Set[DbTicket]]:
+) -> dict[UserID, set[DbTicket]]:
     tickets_by_user_id = defaultdict(set)
     for ticket in tickets:
         tickets_by_user_id[ticket.used_by_id].add(ticket)
@@ -94,7 +95,7 @@ def _index_tickets_by_user_id(
 
 
 def _generate_attendees(
-    users: Iterable[DbUser], tickets_by_user_id: Dict[UserID, Set[DbTicket]]
+    users: Iterable[DbUser], tickets_by_user_id: dict[UserID, set[DbTicket]]
 ) -> Iterable[Attendee]:
     for user in users:
         tickets = tickets_by_user_id[user.id]
@@ -102,7 +103,7 @@ def _generate_attendees(
         yield Attendee(user, attendee_tickets)
 
 
-def _to_attendee_tickets(tickets: Iterable[DbTicket]) -> List[AttendeeTicket]:
+def _to_attendee_tickets(tickets: Iterable[DbTicket]) -> list[AttendeeTicket]:
     attendee_tickets = [
         AttendeeTicket(t.occupied_seat, t.user_checked_in) for t in tickets
     ]
@@ -112,7 +113,7 @@ def _to_attendee_tickets(tickets: Iterable[DbTicket]) -> List[AttendeeTicket]:
 
 def _get_attendee_ticket_sort_key(
     attendee_ticket: AttendeeTicket,
-) -> Tuple[bool, str, bool]:
+) -> tuple[bool, str, bool]:
     return (
         # List tickets with occupied seat first.
         attendee_ticket.seat is None,

@@ -6,9 +6,10 @@ byceps.blueprints.admin.orga_presence.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from collections import defaultdict
 from datetime import datetime
-from typing import Dict, Iterable
+from typing import Iterable
 
 from flask import abort
 
@@ -70,7 +71,7 @@ def view(party_id):
 
 def _group_presences_by_orga(
     presences: Iterable[PresenceTimeSlot],
-) -> Dict[User, PresenceTimeSlot]:
+) -> dict[User, PresenceTimeSlot]:
     d = defaultdict(set)
 
     for presence in presences:

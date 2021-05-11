@@ -6,9 +6,10 @@ byceps.services.user_badge.awarding_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from collections import defaultdict
 from datetime import datetime
-from typing import Dict, Optional, Set, Tuple
+from typing import Optional
 
 from ...database import db
 from ...events.user_badge import UserBadgeAwarded
@@ -29,7 +30,7 @@ from .transfer.models import (
 
 def award_badge_to_user(
     badge_id: BadgeID, user_id: UserID, *, initiator_id: Optional[UserID] = None
-) -> Tuple[BadgeAwarding, UserBadgeAwarded]:
+) -> tuple[BadgeAwarding, UserBadgeAwarded]:
     """Award the badge to the user."""
     badge = find_badge(badge_id)
     if badge is None:
@@ -71,7 +72,7 @@ def award_badge_to_user(
     return awarding_dto, event
 
 
-def count_awardings() -> Dict[BadgeID, int]:
+def count_awardings() -> dict[BadgeID, int]:
     """Return the number of times each badge has been awarded.
 
     Because a badge can be awarded multiple times to a user, the number
@@ -89,7 +90,7 @@ def count_awardings() -> Dict[BadgeID, int]:
     return {badge_id: count for badge_id, count in rows}
 
 
-def get_awardings_of_badge(badge_id: BadgeID) -> Set[QuantifiedBadgeAwarding]:
+def get_awardings_of_badge(badge_id: BadgeID) -> set[QuantifiedBadgeAwarding]:
     """Return the awardings of this badge."""
     rows = db.session \
         .query(
@@ -110,7 +111,7 @@ def get_awardings_of_badge(badge_id: BadgeID) -> Set[QuantifiedBadgeAwarding]:
     }
 
 
-def get_badges_awarded_to_user(user_id: UserID) -> Dict[Badge, int]:
+def get_badges_awarded_to_user(user_id: UserID) -> dict[Badge, int]:
     """Return all badges that have been awarded to the user (and how often)."""
     rows = db.session \
         .query(
@@ -143,8 +144,8 @@ def get_badges_awarded_to_user(user_id: UserID) -> Dict[Badge, int]:
 
 
 def get_badges_awarded_to_users(
-    user_ids: Set[UserID], *, featured_only: bool = False
-) -> Dict[UserID, Set[Badge]]:
+    user_ids: set[UserID], *, featured_only: bool = False
+) -> dict[UserID, set[Badge]]:
     """Return all badges that have been awarded to the users, indexed
     by user ID.
 
@@ -161,7 +162,7 @@ def get_badges_awarded_to_users(
     badges = get_badges(badge_ids, featured_only=featured_only)
     badges_by_id = {badge.id: badge for badge in badges}
 
-    badges_by_user_id: Dict[UserID, Set[Badge]] = defaultdict(set)
+    badges_by_user_id: dict[UserID, set[Badge]] = defaultdict(set)
     for awarding in awardings:
         badge = badges_by_id.get(awarding.badge_id)
         if badge:

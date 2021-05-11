@@ -6,8 +6,8 @@ byceps.services.board.posting_command_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import Tuple
 
 from ...database import db
 from ...events.board import (
@@ -30,7 +30,7 @@ from .transfer.models import PostingID, TopicID
 
 def create_posting(
     topic_id: TopicID, creator_id: UserID, body: str
-) -> Tuple[DbPosting, BoardPostingCreated]:
+) -> tuple[DbPosting, BoardPostingCreated]:
     """Create a posting in that topic."""
     topic = topic_query_service.get_topic(topic_id)
     creator = _get_user(creator_id)

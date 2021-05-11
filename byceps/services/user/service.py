@@ -6,7 +6,8 @@ byceps.services.user.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Dict, Optional, Set, Tuple
+from __future__ import annotations
+from typing import Optional
 
 from ...database import db, Query
 from ...typing import PartyID, UserID
@@ -119,11 +120,11 @@ def get_user(
 
 
 def find_users(
-    user_ids: Set[UserID],
+    user_ids: set[UserID],
     *,
     include_avatars: bool = False,
     include_orga_flags_for_party_id: Optional[PartyID] = None,
-) -> Set[User]:
+) -> set[User]:
     """Return the users with those IDs.
 
     Their respective avatars' URLs are included, if requested.
@@ -179,7 +180,7 @@ def _get_orga_flag_subquery(party_id: PartyID):
 
 
 def _user_row_to_dto(
-    row: Tuple[UserID, str, bool, bool, Optional[Avatar], bool]
+    row: tuple[UserID, str, bool, bool, Optional[Avatar], bool]
 ) -> User:
     user_id, screen_name, suspended, deleted, avatar, is_orga = row
     avatar_url = avatar.url if avatar else None
@@ -308,7 +309,7 @@ def get_email_address(user_id: UserID) -> str:
     return email_address
 
 
-def get_email_addresses(user_ids: Set[UserID]) -> Set[Tuple[UserID, str]]:
+def get_email_addresses(user_ids: set[UserID]) -> set[tuple[UserID, str]]:
     """Return the users' e-mail addresses."""
     return db.session \
         .query(
@@ -319,7 +320,7 @@ def get_email_addresses(user_ids: Set[UserID]) -> Set[Tuple[UserID, str]]:
         .all()
 
 
-def get_sort_key_for_screen_name(user: User) -> Tuple[bool, str]:
+def get_sort_key_for_screen_name(user: User) -> tuple[bool, str]:
     """Return a key for sorting by screen name.
 
     - Orders screen names case-insensitively.
@@ -331,7 +332,7 @@ def get_sort_key_for_screen_name(user: User) -> Tuple[bool, str]:
     return not has_screen_name, normalized_screen_name
 
 
-def index_users_by_id(users: Set[User]) -> Dict[UserID, User]:
+def index_users_by_id(users: set[User]) -> dict[UserID, User]:
     """Map the users' IDs to the corresponding user objects."""
     return {user.id: user for user in users}
 

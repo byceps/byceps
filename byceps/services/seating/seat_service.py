@@ -6,7 +6,8 @@ byceps.services.seating.seat_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Dict, List, Optional, Sequence, Set, Tuple
+from __future__ import annotations
+from typing import Optional, Sequence
 
 from ...database import db
 from ...typing import PartyID
@@ -42,7 +43,7 @@ def delete_seat(seat_id: SeatID) -> None:
 
 def count_occupied_seats_by_category(
     party_id: PartyID,
-) -> List[Tuple[TicketCategory, int]]:
+) -> list[tuple[TicketCategory, int]]:
     """Count occupied seats for the party, grouped by ticket category."""
     subquery = db.session \
         .query(
@@ -95,7 +96,7 @@ def get_seat_utilization(party_id: PartyID) -> SeatUtilization:
     return SeatUtilization(occupied_seat_count, total_seat_count)
 
 
-def get_seat_total_per_area(party_id: PartyID) -> Dict[AreaID, int]:
+def get_seat_total_per_area(party_id: PartyID) -> dict[AreaID, int]:
     """Return the number of seats per area for that party."""
     area_ids_and_seat_counts = db.session \
         .query(
@@ -115,7 +116,7 @@ def find_seat(seat_id: SeatID) -> Optional[DbSeat]:
     return DbSeat.query.get(seat_id)
 
 
-def find_seats(seat_ids: Set[SeatID]) -> Set[DbSeat]:
+def find_seats(seat_ids: set[SeatID]) -> set[DbSeat]:
     """Return the seats with those IDs."""
     if not seat_ids:
         return set()

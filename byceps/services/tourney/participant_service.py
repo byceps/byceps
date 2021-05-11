@@ -6,7 +6,8 @@ byceps.services.tourney.participant_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Set
+from __future__ import annotations
+from typing import Optional
 
 from ...database import db
 
@@ -52,7 +53,7 @@ def find_participant(participant_id: ParticipantID) -> Optional[Participant]:
     return _db_entity_to_participant(participant)
 
 
-def get_participants_for_tourney(tourney_id: TourneyID) -> Set[Participant]:
+def get_participants_for_tourney(tourney_id: TourneyID) -> set[Participant]:
     """Return the participants of the tourney."""
     participants = DbParticipant.query \
         .filter_by(tourney_id=tourney_id) \

@@ -8,9 +8,10 @@ Notification e-mails about shop orders
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from flask import current_app
 from flask_babel import gettext
@@ -153,7 +154,7 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     )
 
 
-def _get_template_context(order_email_data: OrderEmailData) -> Dict[str, Any]:
+def _get_template_context(order_email_data: OrderEmailData) -> dict[str, Any]:
     """Collect data required for an order e-mail template."""
     footer = _get_footer(order_email_data.order)
 
@@ -174,7 +175,7 @@ def _get_footer(order: Order) -> str:
 def _assemble_email_to_orderer(
     subject: str,
     template_name: str,
-    template_context: Dict[str, Any],
+    template_context: dict[str, Any],
     brand_id: BrandID,
     recipient_address: str,
 ) -> Message:
@@ -200,7 +201,7 @@ def _get_snippet_body(shop_id: ShopID, name: str) -> str:
     return version.body
 
 
-def _render_template(name: str, **context: Dict[str, Any]) -> str:
+def _render_template(name: str, **context: dict[str, Any]) -> str:
     templates_path = (
         Path(current_app.root_path)
         / 'services'

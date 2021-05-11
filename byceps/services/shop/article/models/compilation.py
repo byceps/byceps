@@ -6,7 +6,8 @@ byceps.services.shop.article.models.compilation
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterator, List, Optional
+from __future__ import annotations
+from typing import Iterator, Optional
 
 from ..transfer.models import Article
 
@@ -30,7 +31,7 @@ class ArticleCompilationItem:
 class ArticleCompilation:
 
     def __init__(self) -> None:
-        self._items: List[ArticleCompilationItem] = []
+        self._items: list[ArticleCompilationItem] = []
 
     def append(self, item: ArticleCompilationItem) -> None:
         self._items.append(item)

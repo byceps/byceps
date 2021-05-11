@@ -6,8 +6,9 @@ byceps.blueprints.site.board.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import Dict, Optional, Sequence, Set
+from typing import Optional, Sequence
 
 from flask import g
 
@@ -144,8 +145,8 @@ def enrich_creators(
 
 
 def _get_badges_for_users(
-    user_ids: Set[UserID], brand_id: BrandID
-) -> Dict[UserID, Set[Badge]]:
+    user_ids: set[UserID], brand_id: BrandID
+) -> dict[UserID, set[Badge]]:
     """Fetch users' badges that are either global or belong to the brand."""
     badges_by_user_id = badge_awarding_service.get_badges_awarded_to_users(
         user_ids, featured_only=True

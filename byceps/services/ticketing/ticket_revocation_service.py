@@ -6,7 +6,8 @@ byceps.services.ticketing.ticket_revocation_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Set
+from __future__ import annotations
+from typing import Optional
 
 from ...database import db
 from ...typing import UserID
@@ -39,7 +40,7 @@ def revoke_ticket(
 
 
 def revoke_tickets(
-    ticket_ids: Set[TicketID],
+    ticket_ids: set[TicketID],
     initiator_id: UserID,
     *,
     reason: Optional[str] = None,

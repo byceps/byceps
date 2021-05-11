@@ -6,7 +6,8 @@ byceps.services.shop.catalog.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import List, Optional
+from __future__ import annotations
+from typing import Optional
 
 from ....database import db
 
@@ -56,7 +57,7 @@ def _find_db_catalog(catalog_id: CatalogID) -> Optional[DbCatalog]:
     return DbCatalog.query.get(catalog_id)
 
 
-def get_all_catalogs() -> List[Catalog]:
+def get_all_catalogs() -> list[Catalog]:
     """Return all catalogs."""
     catalogs = DbCatalog.query.all()
 
@@ -96,7 +97,7 @@ def delete_collection(collection_id: CollectionID) -> None:
     db.session.commit()
 
 
-def get_collections_for_catalog(catalog_id: CatalogID) -> List[Collection]:
+def get_collections_for_catalog(catalog_id: CatalogID) -> list[Collection]:
     """Return the catalog's collections."""
     collections = DbCollection.query \
         .filter_by(catalog_id=catalog_id) \

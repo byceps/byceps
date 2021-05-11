@@ -6,9 +6,10 @@ byceps.services.news.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
-from typing import List, NewType, Optional
+from typing import NewType, Optional
 from uuid import UUID
 
 from ....typing import BrandID, UserID
@@ -58,7 +59,7 @@ class Item:
     body: str
     external_url: str
     image_url_path: Optional[str]
-    images: List[Image]
+    images: list[Image]
 
 
 @dataclass(frozen=True)

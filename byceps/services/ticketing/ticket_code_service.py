@@ -6,16 +6,16 @@ byceps.services.ticketing.ticket_code_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from random import sample
 from string import ascii_uppercase, digits
-from typing import Set
 
 from .transfer.models import TicketCode
 
 
-def generate_ticket_codes(quantity: int) -> Set[TicketCode]:
+def generate_ticket_codes(quantity: int) -> set[TicketCode]:
     """Generate a number of ticket codes."""
-    codes: Set[TicketCode] = set()
+    codes: set[TicketCode] = set()
 
     for _ in range(quantity):
         code = _generate_ticket_code_not_in(codes)
@@ -28,7 +28,7 @@ def generate_ticket_codes(quantity: int) -> Set[TicketCode]:
 
 
 def _generate_ticket_code_not_in(
-    codes: Set[TicketCode], *, max_attempts: int = 4
+    codes: set[TicketCode], *, max_attempts: int = 4
 ) -> TicketCode:
     """Generate ticket codes and return the first one not in the set."""
     for _ in range(max_attempts):
@@ -54,7 +54,7 @@ def _generate_ticket_code() -> TicketCode:
 
 
 def _verify_total_matches(
-    codes: Set[TicketCode], requested_quantity: int
+    codes: set[TicketCode], requested_quantity: int
 ) -> None:
     """Verify if the number of generated codes matches the number of
     requested codes.

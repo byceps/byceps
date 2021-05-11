@@ -6,11 +6,11 @@ tests.api.helpers
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from base64 import b64encode
-from typing import Tuple
 
 
-def assemble_authorization_header(api_token: str) -> Tuple[str, str]:
+def assemble_authorization_header(api_token: str) -> tuple[str, str]:
     """Assemble header to authorize against the API."""
     encoded_token = b64encode(api_token.encode('ascii')).decode('ascii')
 

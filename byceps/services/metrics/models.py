@@ -6,8 +6,8 @@ byceps.services.metrics.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import List
 
 
 @dataclass(frozen=True)
@@ -38,7 +38,7 @@ def _escape_label_value(value: str) -> str:
 class Metric:
     name: str
     value: float
-    labels: List[Label] = field(default_factory=dict)
+    labels: list[Label] = field(default_factory=dict)
 
     def serialize(self) -> str:
         labels_str = ''

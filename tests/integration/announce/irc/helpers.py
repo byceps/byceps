@@ -3,10 +3,10 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from contextlib import contextmanager
 from datetime import datetime
 from http import HTTPStatus
-from typing import List
 
 from requests_mock import Mocker
 
@@ -45,7 +45,7 @@ def assert_request_data(
     assert actual.keys() == {'channel', 'text'}
 
 
-def get_submitted_json(mock, expected_call_count: int) -> List[str]:
+def get_submitted_json(mock, expected_call_count: int) -> list[str]:
     assert mock.called
 
     history = mock.request_history

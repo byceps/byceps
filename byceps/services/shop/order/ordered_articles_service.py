@@ -6,8 +6,9 @@ byceps.services.shop.order.ordered_articles_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from collections import Counter
-from typing import Dict, Sequence
+from typing import Sequence
 
 from ....database import db
 
@@ -19,7 +20,7 @@ from .transfer.models import OrderItem, PaymentState
 
 def count_ordered_articles(
     article_number: ArticleNumber,
-) -> Dict[PaymentState, int]:
+) -> dict[PaymentState, int]:
     """Count how often the article has been ordered, grouped by the
     order's payment state.
     """

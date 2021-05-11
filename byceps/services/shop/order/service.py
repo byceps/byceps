@@ -6,8 +6,9 @@ byceps.services.shop.order.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import Dict, Iterator, Mapping, Optional, Sequence, Set, Tuple
+from typing import Iterator, Mapping, Optional, Sequence
 
 from flask import current_app
 from sqlalchemy.exc import IntegrityError
@@ -50,7 +51,7 @@ def place_order(
     cart: Cart,
     *,
     created_at: Optional[datetime] = None,
-) -> Tuple[Order, ShopOrderPlaced]:
+) -> tuple[Order, ShopOrderPlaced]:
     """Place an order for one or more articles."""
     storefront = storefront_service.get_storefront(storefront_id)
     shop = shop_service.get_shop(storefront.shop_id)
@@ -409,7 +410,7 @@ def count_open_orders(shop_id: ShopID) -> int:
         .count()
 
 
-def count_orders_per_payment_state(shop_id: ShopID) -> Dict[PaymentState, int]:
+def count_orders_per_payment_state(shop_id: ShopID) -> dict[PaymentState, int]:
     """Count orders for the shop, grouped by payment state."""
     counts_by_payment_state = dict.fromkeys(PaymentState, 0)
 
@@ -473,7 +474,7 @@ def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
 
 
 def find_orders_by_order_numbers(
-    order_numbers: Set[OrderNumber],
+    order_numbers: set[OrderNumber],
 ) -> Sequence[Order]:
     """Return the orders with those order numbers."""
     if not order_numbers:
@@ -486,7 +487,7 @@ def find_orders_by_order_numbers(
     return [order.to_transfer_object() for order in orders]
 
 
-def get_order_count_by_shop_id() -> Dict[ShopID, int]:
+def get_order_count_by_shop_id() -> dict[ShopID, int]:
     """Return order count (including 0) per shop, indexed by shop ID."""
     shop_ids_and_order_counts = db.session \
         .query(

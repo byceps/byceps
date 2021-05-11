@@ -6,11 +6,10 @@ byceps.services.ticketing.attendance_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from collections import Counter, defaultdict
 from datetime import datetime
 from itertools import chain
-import typing
-from typing import Dict, List, Set, Tuple
 
 from sqlalchemy.dialects.postgresql import insert
 
@@ -51,7 +50,7 @@ def delete_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
     db.session.commit()
 
 
-def get_attended_parties(user_id: UserID) -> List[Party]:
+def get_attended_parties(user_id: UserID) -> list[Party]:
     """Return the parties the user has attended in the past."""
     ticket_attendance_party_ids = _get_attended_party_ids(user_id)
     archived_attendance_party_ids = _get_archived_attendance_party_ids(user_id)
@@ -63,7 +62,7 @@ def get_attended_parties(user_id: UserID) -> List[Party]:
     return party_service.get_parties(party_ids)
 
 
-def _get_attended_party_ids(user_id: UserID) -> Set[PartyID]:
+def _get_attended_party_ids(user_id: UserID) -> set[PartyID]:
     """Return the IDs of the non-legacy parties the user has attended."""
     party_id_rows = db.session \
         .query(DbParty.id) \
@@ -77,7 +76,7 @@ def _get_attended_party_ids(user_id: UserID) -> Set[PartyID]:
     return {row[0] for row in party_id_rows}
 
 
-def _get_archived_attendance_party_ids(user_id: UserID) -> Set[PartyID]:
+def _get_archived_attendance_party_ids(user_id: UserID) -> set[PartyID]:
     """Return the IDs of the legacy parties the user has attended."""
     party_id_rows = db.session \
         .query(DbArchivedAttendance.party_id) \
@@ -87,7 +86,7 @@ def _get_archived_attendance_party_ids(user_id: UserID) -> Set[PartyID]:
     return {row[0] for row in party_id_rows}
 
 
-def get_attendees_by_party(party_ids: Set[PartyID]) -> Dict[PartyID, Set[User]]:
+def get_attendees_by_party(party_ids: set[PartyID]) -> dict[PartyID, set[User]]:
     """Return the parties' attendees, indexed by party."""
     if not party_ids:
         return {}
@@ -116,8 +115,8 @@ def get_attendees_by_party(party_ids: Set[PartyID]) -> Dict[PartyID, Set[User]]:
 
 
 def get_attendee_ids_for_parties(
-    party_ids: Set[PartyID],
-) -> Dict[PartyID, Set[UserID]]:
+    party_ids: set[PartyID],
+) -> dict[PartyID, set[UserID]]:
     """Return the partys' attendee IDs, indexed by party ID."""
     if not party_ids:
         return {}
@@ -140,14 +139,14 @@ def get_attendee_ids_for_parties(
 
     rows = ticket_rows + archived_attendance_rows
 
-    attendee_ids_by_party_id: Dict[PartyID, Set[UserID]] = defaultdict(set)
+    attendee_ids_by_party_id: dict[PartyID, set[UserID]] = defaultdict(set)
     for party_id, attendee_id in rows:
         attendee_ids_by_party_id[party_id].add(attendee_id)
 
     return dict(attendee_ids_by_party_id)
 
 
-def get_top_attendees_for_brand(brand_id: BrandID) -> List[Tuple[UserID, int]]:
+def get_top_attendees_for_brand(brand_id: BrandID) -> list[tuple[UserID, int]]:
     """Return the attendees with the highest number of parties of this
     brand visited.
     """
@@ -179,7 +178,7 @@ def get_top_attendees_for_brand(brand_id: BrandID) -> List[Tuple[UserID, int]]:
 
 def _get_top_ticket_attendees_for_parties(
     brand_id: BrandID,
-) -> List[Tuple[UserID, int]]:
+) -> list[tuple[UserID, int]]:
     user_id_column = db.aliased(DbTicket).used_by_id
 
     attendance_count = db.session \
@@ -207,7 +206,7 @@ def _get_top_ticket_attendees_for_parties(
 
 def _get_top_archived_attendees_for_parties(
     brand_id: BrandID,
-) -> List[Tuple[UserID, int]]:
+) -> list[tuple[UserID, int]]:
     attendance_count_column = db.func \
         .count(DbArchivedAttendance.user_id) \
         .label('attendance_count')
@@ -225,8 +224,8 @@ def _get_top_archived_attendees_for_parties(
 
 
 def _merge_top_attendance_counts(
-    xs: List[List[Tuple[UserID, int]]]
-) -> typing.Counter[UserID]:
+    xs: list[list[tuple[UserID, int]]]
+) -> Counter[UserID]:
     counter = Counter()
 
     for x in xs:

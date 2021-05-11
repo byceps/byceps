@@ -3,8 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from enum import Enum
-from typing import Set
 
 from flask import g
 import pytest
@@ -22,7 +22,7 @@ ChillPermission = create_permission_enum(
 
 
 class CurrentUserMock:
-    def __init__(self, permissions: Set[Enum]) -> None:
+    def __init__(self, permissions: set[Enum]) -> None:
         self.permissions = permissions
 
 

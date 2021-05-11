@@ -6,7 +6,8 @@ byceps.services.user_avatar.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import BinaryIO, Dict, List, Optional, Set
+from __future__ import annotations
+from typing import BinaryIO, Optional
 
 from ...database import db
 from ...typing import UserID
@@ -29,7 +30,7 @@ MAXIMUM_DIMENSIONS = Dimensions(512, 512)
 def update_avatar_image(
     user_id: UserID,
     stream: BinaryIO,
-    allowed_types: Set[ImageType],
+    allowed_types: set[ImageType],
     *,
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
 ) -> AvatarID:
@@ -79,7 +80,7 @@ def remove_avatar_image(user_id: UserID) -> None:
     db.session.commit()
 
 
-def get_avatars_uploaded_by_user(user_id: UserID) -> List[AvatarUpdate]:
+def get_avatars_uploaded_by_user(user_id: UserID) -> list[AvatarUpdate]:
     """Return the avatars uploaded by the user."""
     avatars = DbAvatar.query \
         .filter_by(creator_id=user_id) \
@@ -94,7 +95,7 @@ def get_avatar_url_for_user(user_id: UserID) -> Optional[str]:
     return avatar_urls_by_user_id.get(user_id)
 
 
-def get_avatar_urls_for_users(user_ids: Set[UserID]) -> Dict[UserID, str]:
+def get_avatar_urls_for_users(user_ids: set[UserID]) -> dict[UserID, str]:
     """Return the URLs of those users' current avatars."""
     if not user_ids:
         return {}

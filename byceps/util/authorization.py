@@ -6,8 +6,8 @@ byceps.util.authorization
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from enum import Enum
-from typing import List, Set
 
 from flask import current_app, g
 
@@ -15,7 +15,7 @@ from ..services.authorization import service as authorization_service
 from ..typing import UserID
 
 
-def create_permission_enum(key: str, member_names: List[str]) -> Enum:
+def create_permission_enum(key: str, member_names: list[str]) -> Enum:
     """Create a permission enum."""
     name = _derive_enum_name(key)
 
@@ -39,7 +39,7 @@ def register_permission_enum(enum: Enum):
     permission_registry.register_enum(enum)
 
 
-def get_permissions_for_user(user_id: UserID) -> Set[Enum]:
+def get_permissions_for_user(user_id: UserID) -> set[Enum]:
     """Return the permissions this user has been granted."""
     permission_ids = authorization_service.get_permission_ids_for_user(user_id)
     return permission_registry.get_enum_members(permission_ids)
@@ -101,6 +101,6 @@ def has_current_user_permission(permission: Enum) -> bool:
     return permission in g.user.permissions
 
 
-def has_current_user_any_permission(*permissions: Set[Enum]) -> bool:
+def has_current_user_any_permission(*permissions: set[Enum]) -> bool:
     """Return `True` if the current user has any of these permissions."""
     return any(map(has_current_user_permission, permissions))

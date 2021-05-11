@@ -6,7 +6,8 @@ byceps.services.brand.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import List, Optional
+from __future__ import annotations
+from typing import Optional
 
 from ...database import db
 from ...typing import BrandID
@@ -78,7 +79,7 @@ def get_brand(brand_id: BrandID) -> Brand:
     return brand
 
 
-def get_all_brands() -> List[Brand]:
+def get_all_brands() -> list[Brand]:
     """Return all brands, ordered by title."""
     brands = DbBrand.query \
         .order_by(DbBrand.title) \

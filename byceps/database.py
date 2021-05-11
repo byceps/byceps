@@ -8,7 +8,8 @@ Database utilities.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Callable, Dict, Iterable, Optional, TypeVar
+from __future__ import annotations
+from typing import Any, Callable, Iterable, Optional, TypeVar
 import uuid
 
 from sqlalchemy.dialects.postgresql import insert
@@ -80,7 +81,7 @@ def paginate(
     return Pagination(None, page, per_page, total, items)
 
 
-def insert_ignore_on_conflict(table: Table, values: Dict[str, Any]) -> None:
+def insert_ignore_on_conflict(table: Table, values: dict[str, Any]) -> None:
     """Insert the record identified by the primary key (specified as
     part of the values), or do nothing on conflict.
     """
@@ -93,7 +94,7 @@ def insert_ignore_on_conflict(table: Table, values: Dict[str, Any]) -> None:
 
 
 def upsert(
-    table: Table, identifier: Dict[str, Any], replacement: Dict[str, Any]
+    table: Table, identifier: dict[str, Any], replacement: dict[str, Any]
 ) -> None:
     """Insert or update the record identified by `identifier` with value
     `replacement`.
@@ -104,8 +105,8 @@ def upsert(
 
 def upsert_many(
     table: Table,
-    identifiers: Iterable[Dict[str, Any]],
-    replacement: Dict[str, Any],
+    identifiers: Iterable[dict[str, Any]],
+    replacement: dict[str, Any],
 ) -> None:
     """Insert or update the record identified by `identifier` with value
     `replacement`.
@@ -117,7 +118,7 @@ def upsert_many(
 
 
 def execute_upsert(
-    table: Table, identifier: Dict[str, Any], replacement: Dict[str, Any]
+    table: Table, identifier: dict[str, Any], replacement: dict[str, Any]
 ) -> None:
     """Execute, but do not commit, an UPSERT."""
     query = _build_upsert_query(table, identifier, replacement)
@@ -125,7 +126,7 @@ def execute_upsert(
 
 
 def _build_upsert_query(
-    table: Table, identifier: Dict[str, Any], replacement: Dict[str, Any]
+    table: Table, identifier: dict[str, Any], replacement: dict[str, Any]
 ) -> Insert:
     values = identifier.copy()
     values.update(replacement)

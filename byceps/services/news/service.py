@@ -6,10 +6,11 @@ byceps.services.news.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import dataclasses
 from datetime import datetime
 from functools import partial
-from typing import Dict, List, Optional, Sequence
+from typing import Optional, Sequence
 
 from ...database import db, paginate, Pagination, Query
 from ...events.news import NewsItemPublished
@@ -232,7 +233,7 @@ def get_items_paginated(
         .paginate(page, items_per_page)
 
 
-def get_recent_headlines(channel_id: ChannelID, limit: int) -> List[Headline]:
+def get_recent_headlines(channel_id: ChannelID, limit: int) -> list[Headline]:
     """Return the most recent headlines."""
     items = DbItem.query \
         .for_channel(channel_id) \
@@ -281,7 +282,7 @@ def find_item_version(version_id: ItemVersionID) -> DbItemVersion:
     return DbItemVersion.query.get(version_id)
 
 
-def get_item_count_by_channel_id() -> Dict[ChannelID, int]:
+def get_item_count_by_channel_id() -> dict[ChannelID, int]:
     """Return news item count (including 0) per channel, indexed by
     channel ID.
     """

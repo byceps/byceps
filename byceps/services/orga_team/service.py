@@ -6,8 +6,9 @@ byceps.services.orga_team.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import dataclasses
-from typing import Dict, Optional, Sequence, Set, Tuple
+from typing import Optional, Sequence
 
 from ...database import db
 from ...typing import PartyID, UserID
@@ -53,7 +54,7 @@ def delete_team(team_id: OrgaTeamID) -> None:
     db.session.commit()
 
 
-def count_teams_for_parties(party_ids: Set[PartyID]) -> Dict[PartyID, int]:
+def count_teams_for_parties(party_ids: set[PartyID]) -> dict[PartyID, int]:
     """Count orga teams for each party."""
     rows = db.session \
         .query(
@@ -74,7 +75,7 @@ def count_teams_for_party(party_id: PartyID) -> int:
         .count()
 
 
-def get_teams_for_party(party_id: PartyID) -> Set[OrgaTeam]:
+def get_teams_for_party(party_id: PartyID) -> set[OrgaTeam]:
     """Return orga teams for that party."""
     teams = DbOrgaTeam.query \
         .filter_by(party_id=party_id) \
@@ -100,7 +101,7 @@ def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
 
 def get_teams_and_members_for_party(
     party_id: PartyID,
-) -> Sequence[Tuple[OrgaTeam, Set[Member]]]:
+) -> Sequence[tuple[OrgaTeam, set[Member]]]:
     """Return all orga teams and their corresponding memberships for
     that party.
     """
@@ -188,7 +189,7 @@ def count_memberships_for_party(party_id: PartyID) -> int:
         .count()
 
 
-def get_memberships_for_party(party_id: PartyID) -> Set[Membership]:
+def get_memberships_for_party(party_id: PartyID) -> set[Membership]:
     """Return memberships for that party."""
     memberships = DbMembership.query \
         .for_party(party_id) \
@@ -225,7 +226,7 @@ def find_orga_team_for_user_and_party(
         .one_or_none()
 
 
-def get_orga_activities_for_user(user_id: UserID) -> Set[OrgaActivity]:
+def get_orga_activities_for_user(user_id: UserID) -> set[OrgaActivity]:
     """Return all orga team activities for that user."""
     memberships = DbMembership.query \
         .options(
@@ -248,7 +249,7 @@ def get_orga_activities_for_user(user_id: UserID) -> Set[OrgaActivity]:
     return {to_activity(ms) for ms in memberships}
 
 
-def get_public_orgas_for_party(party_id: PartyID) -> Set[PublicOrga]:
+def get_public_orgas_for_party(party_id: PartyID) -> set[PublicOrga]:
     """Return all public orgas for that party."""
     memberships = DbMembership.query \
         .for_party(party_id) \
@@ -282,7 +283,7 @@ def get_public_orgas_for_party(party_id: PartyID) -> Set[PublicOrga]:
 
 def _get_public_orga_users_by_id(
     memberships: DbMembership,
-) -> Dict[UserID, User]:
+) -> dict[UserID, User]:
     user_ids = {ms.user_id for ms in memberships}
 
     users = user_service.find_users(user_ids, include_avatars=True)
@@ -343,7 +344,7 @@ def copy_teams_and_memberships(
 # organizers
 
 
-def get_unassigned_orgas_for_party(party_id: PartyID) -> Set[User]:
+def get_unassigned_orgas_for_party(party_id: PartyID) -> set[User]:
     """Return organizers that are not assigned to a team for the party."""
     party = party_service.get_party(party_id)
 

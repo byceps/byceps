@@ -6,9 +6,10 @@ byceps.services.shop.article.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
-from typing import List, Optional, Sequence, Set, Tuple
+from typing import Optional, Sequence
 
 from ....database import BaseQuery, db, Pagination
 
@@ -208,8 +209,8 @@ def find_attached_article(
 
 
 def get_articles_by_numbers(
-    article_numbers: Set[ArticleNumber],
-) -> Set[Article]:
+    article_numbers: set[ArticleNumber],
+) -> set[Article]:
     """Return the articles with those numbers."""
     if not article_numbers:
         return []
@@ -306,7 +307,7 @@ def _add_attached_articles(
         )
 
 
-def get_attachable_articles(article_id: ArticleID) -> Set[Article]:
+def get_attachable_articles(article_id: ArticleID) -> set[Article]:
     """Return the articles that can be attached to that article."""
     article = _get_db_article(article_id)
 
@@ -338,8 +339,8 @@ def is_article_available_now(article: Article) -> bool:
 
 
 def sum_ordered_articles_by_payment_state(
-    shop_ids: Set[ShopID],
-) -> List[Tuple[ShopID, ArticleNumber, str, PaymentState, int]]:
+    shop_ids: set[ShopID],
+) -> list[tuple[ShopID, ArticleNumber, str, PaymentState, int]]:
     """Sum ordered articles for those shops, grouped by order payment state."""
     subquery = db.session \
         .query(

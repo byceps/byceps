@@ -6,8 +6,8 @@ byceps.blueprints.site.user.creation.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import re
-from typing import Set
 
 from flask_babel import lazy_gettext
 from wtforms import BooleanField, PasswordField, StringField
@@ -73,7 +73,7 @@ class UserCreateForm(LocalizedForm):
 
 def assemble_user_create_form(
     real_name_required: bool,
-    required_consent_subjects: Set[Subject],
+    required_consent_subjects: set[Subject],
     newsletter_offered: bool,
 ):
     extra_fields = {}

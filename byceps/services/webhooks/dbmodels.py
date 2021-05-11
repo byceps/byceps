@@ -6,7 +6,8 @@ byceps.services.webhooks.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Dict, Optional
+from __future__ import annotations
+from typing import Any, Optional
 
 from sqlalchemy.ext.mutable import MutableDict
 
@@ -37,7 +38,7 @@ class OutgoingWebhook(db.Model):
         enabled: bool,
         *,
         text_prefix: Optional[str] = None,
-        extra_fields: Optional[Dict[str, Any]] = None,
+        extra_fields: Optional[dict[str, Any]] = None,
         description: Optional[str] = None,
     ) -> None:
         self.event_selectors = event_selectors

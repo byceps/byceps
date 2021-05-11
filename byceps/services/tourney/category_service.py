@@ -6,7 +6,8 @@ byceps.services.tourney.category_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import List, Optional
+from __future__ import annotations
+from typing import Optional
 
 from ...database import db
 from ...typing import PartyID
@@ -117,7 +118,7 @@ def _get_db_category(category_id: TourneyCategoryID) -> DbTourneyCategory:
     return category
 
 
-def get_categories_for_party(party_id: PartyID) -> List[TourneyCategory]:
+def get_categories_for_party(party_id: PartyID) -> list[TourneyCategory]:
     """Return the categories for this party."""
     categories = DbTourneyCategory.query \
         .filter_by(party_id=party_id) \

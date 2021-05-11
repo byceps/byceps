@@ -6,7 +6,8 @@ byceps.services.user_badge.badge_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Set
+from __future__ import annotations
+from typing import Optional
 
 from ...database import db
 from ...typing import BrandID
@@ -98,8 +99,8 @@ def find_badge_by_slug(slug: str) -> Optional[Badge]:
 
 
 def get_badges(
-    badge_ids: Set[BadgeID], *, featured_only: bool = False
-) -> Set[Badge]:
+    badge_ids: set[BadgeID], *, featured_only: bool = False
+) -> set[Badge]:
     """Return the badges with those IDs.
 
     If `featured_only` is `True`, only return featured badges.
@@ -118,7 +119,7 @@ def get_badges(
     return {_db_entity_to_badge(badge) for badge in badges}
 
 
-def get_all_badges() -> Set[Badge]:
+def get_all_badges() -> set[Badge]:
     """Return all badges."""
     badges = DbBadge.query.all()
 

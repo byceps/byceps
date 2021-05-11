@@ -6,7 +6,8 @@ byceps.services.site.settings_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Set
+from __future__ import annotations
+from typing import Optional
 
 from ...database import db, upsert
 from ...typing import PartyID
@@ -80,7 +81,7 @@ def find_setting_value(site_id: SiteID, name: str) -> Optional[str]:
     return setting.value
 
 
-def get_settings(site_id: SiteID) -> Set[SiteSetting]:
+def get_settings(site_id: SiteID) -> set[SiteSetting]:
     """Return all settings for that site."""
     settings = DbSetting.query \
         .filter_by(site_id=site_id) \

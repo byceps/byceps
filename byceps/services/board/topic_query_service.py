@@ -6,8 +6,9 @@ byceps.services.board.topic_query_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import List, Optional, Set
+from typing import Optional
 
 from ...database import db, Pagination, Query
 
@@ -61,7 +62,7 @@ def find_topic_visible_for_user(
 
 def get_recent_topics(
     board_id: BoardID, include_hidden: bool, limit: int
-) -> List[DbTopic]:
+) -> list[DbTopic]:
     """Paginate topics in that board."""
     return _query_topics(include_hidden) \
         .join(DbCategory) \
@@ -84,7 +85,7 @@ def paginate_topics(
         .paginate(page, topics_per_page)
 
 
-def get_all_topic_ids_in_category(category_id: CategoryID) -> Set[TopicID]:
+def get_all_topic_ids_in_category(category_id: CategoryID) -> set[TopicID]:
     """Return the IDs of all topics in the category."""
     rows = db.session \
         .query(DbTopic.id) \

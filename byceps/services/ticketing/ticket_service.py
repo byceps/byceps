@@ -6,7 +6,8 @@ byceps.services.ticketing.ticket_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Dict, Optional, Sequence, Set
+from __future__ import annotations
+from typing import Optional, Sequence
 
 from ...database import db, Pagination
 from ...typing import PartyID, UserID
@@ -84,7 +85,7 @@ def find_ticket_by_code(
         .one_or_none()
 
 
-def find_tickets(ticket_ids: Set[TicketID]) -> Sequence[DbTicket]:
+def find_tickets(ticket_ids: set[TicketID]) -> Sequence[DbTicket]:
     """Return the tickets with those ids."""
     if not ticket_ids:
         return []
@@ -195,7 +196,7 @@ def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
     return db.session.query(q.exists()).scalar()
 
 
-def get_ticket_users_for_party(party_id: PartyID) -> Set[UserID]:
+def get_ticket_users_for_party(party_id: PartyID) -> set[UserID]:
     """Return the IDs of the users of tickets for that party."""
     rows = db.session \
         .query(DbTicket.used_by_id) \
@@ -208,8 +209,8 @@ def get_ticket_users_for_party(party_id: PartyID) -> Set[UserID]:
 
 
 def select_ticket_users_for_party(
-    user_ids: Set[UserID], party_id: PartyID
-) -> Set[UserID]:
+    user_ids: set[UserID], party_id: PartyID
+) -> set[UserID]:
     """Return the IDs of those users that use a ticket for that party."""
     if not user_ids:
         return set()
@@ -262,7 +263,7 @@ def get_tickets_with_details_for_party_paginated(
         .paginate(page, per_page)
 
 
-def get_ticket_count_by_party_id() -> Dict[PartyID, int]:
+def get_ticket_count_by_party_id() -> dict[PartyID, int]:
     """Return ticket count (including 0) per party, indexed by party ID."""
     party = db.aliased(DbParty)
 

@@ -6,8 +6,8 @@ byceps.services.ticketing.event_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import List
 
 from ...database import db
 
@@ -34,7 +34,7 @@ def build_event(
     return TicketEvent(now, event_type, ticket_id, data)
 
 
-def get_events_for_ticket(ticket_id: TicketID) -> List[TicketEvent]:
+def get_events_for_ticket(ticket_id: TicketID) -> list[TicketEvent]:
     """Return the events for that ticket."""
     return TicketEvent.query \
         .filter_by(ticket_id=ticket_id) \

@@ -6,7 +6,8 @@ byceps.services.global_setting.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Set
+from __future__ import annotations
+from typing import Optional
 
 from ...database import db, upsert
 
@@ -70,7 +71,7 @@ def find_setting_value(name: str) -> Optional[str]:
     return setting.value
 
 
-def get_settings() -> Set[GlobalSetting]:
+def get_settings() -> set[GlobalSetting]:
     """Return all global settings."""
     settings = DbSetting.query.all()
 

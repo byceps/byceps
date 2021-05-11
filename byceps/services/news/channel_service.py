@@ -6,7 +6,8 @@ byceps.services.news.channel_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import List, Optional, Sequence
+from __future__ import annotations
+from typing import Optional, Sequence
 
 from ...database import db
 from ...typing import BrandID
@@ -52,7 +53,7 @@ def find_channel(channel_id: ChannelID) -> Optional[Channel]:
     return _db_entity_to_channel(channel)
 
 
-def get_all_channels() -> List[Channel]:
+def get_all_channels() -> list[Channel]:
     """Return all channels."""
     channels = DbChannel.query.all()
 

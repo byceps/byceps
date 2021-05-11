@@ -6,7 +6,8 @@ byceps.services.shop.order.action_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Callable, Sequence, Set
+from __future__ import annotations
+from typing import Callable, Sequence
 
 from ....database import db
 from ....typing import UserID
@@ -99,7 +100,7 @@ def execute_actions(
 
 
 def _get_actions(
-    article_numbers: Set[ArticleNumber], payment_state: PaymentState
+    article_numbers: set[ArticleNumber], payment_state: PaymentState
 ) -> Sequence[OrderAction]:
     """Return the order actions for those article numbers."""
     return OrderAction.query \

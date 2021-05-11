@@ -6,9 +6,10 @@ byceps.util.navigation
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from typing import List, Optional
+from typing import Optional
 
 from flask import g
 
@@ -32,7 +33,7 @@ class Navigation:
 
     def __init__(self, title: str) -> None:
         self.title = title
-        self.items: List[NavigationItem] = []
+        self.items: list[NavigationItem] = []
 
     def add_item(
         self,
@@ -59,7 +60,7 @@ class Navigation:
         self.items.append(item)
         return self
 
-    def get_items(self) -> List[NavigationItem]:
+    def get_items(self) -> list[NavigationItem]:
         """Return the navigation items the current user is allowed to see."""
 
         def user_has_permission(item: NavigationItem) -> bool:

@@ -6,8 +6,9 @@ byceps.services.tourney.tourney_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 from ...database import db
 from ...typing import PartyID, UserID
@@ -130,7 +131,7 @@ def _get_db_tourney(tourney_id: int) -> DbTourney:
     return tourney
 
 
-def get_tourneys_for_party(party_id: PartyID) -> List[TourneyWithCategory]:
+def get_tourneys_for_party(party_id: PartyID) -> list[TourneyWithCategory]:
     """Return the tourneys for that party."""
     rows = db.session \
         .query(DbTourney, DbTourneyCategory, db.func.count(DbParticipant.id)) \

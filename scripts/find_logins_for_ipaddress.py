@@ -6,7 +6,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Dict, List
+from __future__ import annotations
 
 import click
 
@@ -29,7 +29,7 @@ def execute(ip_address: str):
         click.echo(f'{event.occurred_at}\t{ip_address}\t{user.screen_name}')
 
 
-def find_events(ip_address: str) -> List[UserEvent]:
+def find_events(ip_address: str) -> list[UserEvent]:
     return UserEvent.query \
         .filter_by(event_type='user-logged-in') \
         .filter(UserEvent.data['ip_address'].astext == ip_address) \
@@ -37,7 +37,7 @@ def find_events(ip_address: str) -> List[UserEvent]:
         .all()
 
 
-def get_users_by_id(events: List[UserEvent]) -> Dict[UserID, User]:
+def get_users_by_id(events: list[UserEvent]) -> dict[UserID, User]:
     user_ids = {event.user_id for event in events}
     users = user_service.find_users(user_ids)
     return {user.id: user for user in users}

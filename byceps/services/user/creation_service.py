@@ -6,8 +6,9 @@ byceps.services.user.creation_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import Optional, Set, Tuple
+from typing import Optional
 
 from flask import current_app
 
@@ -40,8 +41,8 @@ def create_user(
     last_name: Optional[str],
     site_id: SiteID,
     *,
-    consents: Optional[Set[Consent]] = None,
-) -> Tuple[User, UserAccountCreated]:
+    consents: Optional[set[Consent]] = None,
+) -> tuple[User, UserAccountCreated]:
     """Create a user account and related records."""
     # user with details, password, and roles
     user, event = create_basic_user(
@@ -80,7 +81,7 @@ def create_basic_user(
     last_name: Optional[str] = None,
     creator_id: Optional[UserID] = None,
     site_id: Optional[SiteID] = None,
-) -> Tuple[User, UserAccountCreated]:
+) -> tuple[User, UserAccountCreated]:
     # user with details
     user, event = _create_user(
         screen_name,
@@ -105,7 +106,7 @@ def _create_user(
     last_name: Optional[str] = None,
     creator_id: Optional[UserID] = None,
     site_id: Optional[SiteID] = None,
-) -> Tuple[User, UserAccountCreated]:
+) -> tuple[User, UserAccountCreated]:
     if creator_id is not None:
         creator = user_service.get_user(creator_id)
     else:

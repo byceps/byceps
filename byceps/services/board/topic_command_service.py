@@ -6,8 +6,8 @@ byceps.services.board.topic_command_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import Tuple
 
 from ...database import db
 from ...events.board import (
@@ -37,7 +37,7 @@ from .transfer.models import CategoryID, TopicID
 
 def create_topic(
     category_id: CategoryID, creator_id: UserID, title: str, body: str
-) -> Tuple[DbTopic, BoardTopicCreated]:
+) -> tuple[DbTopic, BoardTopicCreated]:
     """Create a topic with an initial posting in that category."""
     creator = _get_user(creator_id)
 

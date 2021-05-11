@@ -6,7 +6,8 @@ byceps.services.authorization.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Dict, List, Optional, Sequence, Set
+from __future__ import annotations
+from typing import Optional, Sequence
 
 from sqlalchemy.exc import IntegrityError
 
@@ -88,7 +89,7 @@ def find_role(role_id: RoleID) -> Optional[Role]:
     return _db_entity_to_role(role)
 
 
-def find_role_ids_for_user(user_id: UserID) -> Set[RoleID]:
+def find_role_ids_for_user(user_id: UserID) -> set[RoleID]:
     """Return the IDs of the roles assigned to the user."""
     roles = DbRole.query \
         .join(DbUserRole) \
@@ -98,7 +99,7 @@ def find_role_ids_for_user(user_id: UserID) -> Set[RoleID]:
     return {r.id for r in roles}
 
 
-def find_user_ids_for_role(role_id: RoleID) -> Set[UserID]:
+def find_user_ids_for_role(role_id: RoleID) -> set[UserID]:
     """Return the IDs of the users that have this role assigned."""
     rows = db.session \
         .query(DbUserRole.user_id) \
@@ -196,7 +197,7 @@ def _is_role_assigned_to_user(role_id: RoleID, user_id: UserID) -> bool:
     return db.session.query(subquery).scalar()
 
 
-def get_permission_ids_for_user(user_id: UserID) -> Set[PermissionID]:
+def get_permission_ids_for_user(user_id: UserID) -> set[PermissionID]:
     """Return the IDs of all permissions the user has through the roles
     assigned to it.
     """
@@ -229,7 +230,7 @@ def get_all_roles_with_titles() -> Sequence[DbRole]:
         .all()
 
 
-def get_permissions_by_roles_with_titles() -> Dict[Role, Set[Permission]]:
+def get_permissions_by_roles_with_titles() -> dict[Role, set[Permission]]:
     """Return all roles with their assigned permissions.
 
     Titles are undeferred to avoid lots of additional queries.
@@ -252,7 +253,7 @@ def get_permissions_by_roles_with_titles() -> Dict[Role, Set[Permission]]:
 
 def get_permissions_by_roles_for_user_with_titles(
     user_id: UserID,
-) -> Dict[Role, Set[Permission]]:
+) -> dict[Role, set[Permission]]:
     """Return permissions grouped by their respective roles for that user.
 
     Titles are undeferred to avoid lots of additional queries.
@@ -284,9 +285,9 @@ def get_permissions_by_roles_for_user_with_titles(
 
 
 def _index_permissions_by_role(
-    permissions: List[DbPermission], roles: List[DbRole]
-) -> Dict[Role, Set[Permission]]:
-    permissions_by_role: Dict[DbRole, Set[DbPermission]] = {
+    permissions: list[DbPermission], roles: list[DbRole]
+) -> dict[Role, set[Permission]]:
+    permissions_by_role: dict[DbRole, set[DbPermission]] = {
         role: set() for role in roles
     }
 

@@ -6,7 +6,8 @@ byceps.services.ticketing.category_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Dict, Optional, Sequence
+from __future__ import annotations
+from typing import Optional, Sequence
 
 from ...database import db
 from ...typing import PartyID
@@ -76,7 +77,7 @@ def get_categories_for_party(party_id: PartyID) -> Sequence[TicketCategory]:
 
 def get_categories_with_ticket_counts_for_party(
     party_id: PartyID,
-) -> Dict[TicketCategory, int]:
+) -> dict[TicketCategory, int]:
     """Return all categories with ticket counts for that party."""
     category = db.aliased(DbCategory)
 

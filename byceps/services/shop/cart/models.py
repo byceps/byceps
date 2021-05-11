@@ -6,8 +6,9 @@ byceps.services.shop.cart.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from decimal import Decimal
-from typing import List, Sequence
+from typing import Sequence
 
 from ....util.instances import ReprBuilder
 
@@ -37,7 +38,7 @@ class Cart:
     """A shopping cart."""
 
     def __init__(self) -> None:
-        self._items: List[CartItem] = []
+        self._items: list[CartItem] = []
 
     def add_item(self, article: DbArticle, quantity: int) -> None:
         item = CartItem(article, quantity)

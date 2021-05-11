@@ -6,9 +6,10 @@ byceps.services.orga_presence.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import date, datetime
 from itertools import groupby
-from typing import Iterator, List, Sequence, Tuple
+from typing import Iterator, Sequence
 
 import pendulum
 from pendulum import DateTime
@@ -21,7 +22,7 @@ from .dbmodels import Presence as DbPresence, Task as DbTask
 from .transfer.models import PresenceTimeSlot, TaskTimeSlot, TimeSlot
 
 
-def get_presences(party_id: PartyID) -> List[PresenceTimeSlot]:
+def get_presences(party_id: PartyID) -> list[PresenceTimeSlot]:
     """Return all presences for that party."""
     presences = DbPresence.query \
         .for_party(party_id) \
@@ -31,7 +32,7 @@ def get_presences(party_id: PartyID) -> List[PresenceTimeSlot]:
     return [_presence_to_time_slot(presence) for presence in presences]
 
 
-def get_tasks(party_id: PartyID) -> List[TaskTimeSlot]:
+def get_tasks(party_id: PartyID) -> list[TaskTimeSlot]:
     """Return all tasks for that party."""
     tasks = DbTask.query \
         .for_party(party_id) \
@@ -53,7 +54,7 @@ def _task_to_time_slot(task: DbTask) -> TaskTimeSlot:
 # -------------------------------------------------------------------- #
 
 
-def get_hour_ranges(time_slots: List[TimeSlot]) -> Iterator[DateTimeRange]:
+def get_hour_ranges(time_slots: list[TimeSlot]) -> Iterator[DateTimeRange]:
     """Yield hour ranges based on the time slots."""
     time_slot_ranges = [time_slot.range for time_slot in time_slots]
     hour_starts = _get_hour_starts(time_slot_ranges)
@@ -85,7 +86,7 @@ def _to_datetimes_without_tzinfo(dts: Sequence[DateTime]) -> Iterator[datetime]:
 
 def get_days_and_hour_totals(
     hour_ranges: Sequence[DateTimeRange],
-) -> Iterator[Tuple[date, int]]:
+) -> Iterator[tuple[date, int]]:
     """Yield (day, relevant hours total) pairs."""
 
     def get_date(dt_range: DateTimeRange) -> date:

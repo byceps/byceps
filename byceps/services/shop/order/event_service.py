@@ -6,8 +6,9 @@ byceps.services.shop.order.event_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import List, Sequence
+from typing import Sequence
 
 from ....database import db
 
@@ -44,7 +45,7 @@ def build_event(
     return OrderEvent(now, event_type, order_id, data)
 
 
-def get_events_for_order(order_id: OrderID) -> List[OrderEvent]:
+def get_events_for_order(order_id: OrderID) -> list[OrderEvent]:
     """Return the events for that order."""
     return OrderEvent.query \
         .filter_by(order_id=order_id) \

@@ -6,10 +6,10 @@ byceps.services.country.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import codecs
 from dataclasses import dataclass
 import json
-from typing import List
 
 from flask import current_app
 
@@ -21,7 +21,7 @@ class Country:
     alpha3: str
 
 
-def get_countries() -> List[Country]:
+def get_countries() -> list[Country]:
     """Load countries from JSON file."""
     reader = codecs.getreader('utf-8')
 
@@ -32,6 +32,6 @@ def get_countries() -> List[Country]:
     return [Country(**record) for record in records]
 
 
-def get_country_names() -> List[str]:
+def get_country_names() -> list[str]:
     """Return country names."""
     return [country.name for country in get_countries()]

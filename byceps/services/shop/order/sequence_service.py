@@ -6,7 +6,8 @@ byceps.services.shop.order.sequence_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import List, Optional
+from __future__ import annotations
+from typing import Optional
 
 from sqlalchemy.exc import IntegrityError
 
@@ -70,7 +71,7 @@ def find_order_number_sequence(
 
 def find_order_number_sequences_for_shop(
     shop_id: ShopID,
-) -> List[OrderNumberSequence]:
+) -> list[OrderNumberSequence]:
     """Return the order number sequences defined for that shop."""
     sequences = DbOrderNumberSequence.query \
         .filter_by(shop_id=shop_id) \

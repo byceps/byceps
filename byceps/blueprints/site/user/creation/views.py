@@ -6,8 +6,9 @@ byceps.blueprints.site.user.creation.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import Optional, Set
+from typing import Optional
 
 from flask import abort, g, request
 from flask_babel import gettext
@@ -160,7 +161,7 @@ def _is_real_name_required() -> bool:
     return value != 'false'
 
 
-def _get_required_consent_subjects() -> Set[Subject]:
+def _get_required_consent_subjects() -> set[Subject]:
     """Return the consent subjects required for this brand."""
     return consent_subject_service.get_subjects_required_for_brand(g.brand_id)
 

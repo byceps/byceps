@@ -6,9 +6,10 @@ byceps.services.party.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import dataclasses
 from datetime import date, datetime, timedelta
-from typing import Dict, List, Optional, Set, Union
+from typing import Optional, Union
 
 from ...database import db, paginate, Pagination
 from ...typing import BrandID, PartyID
@@ -126,7 +127,7 @@ def get_party(party_id: PartyID) -> Party:
     return party
 
 
-def get_all_parties() -> List[Party]:
+def get_all_parties() -> list[Party]:
     """Return all parties."""
     parties = DbParty.query \
         .all()
@@ -134,7 +135,7 @@ def get_all_parties() -> List[Party]:
     return [_db_entity_to_party(party) for party in parties]
 
 
-def get_all_parties_with_brands() -> List[PartyWithBrand]:
+def get_all_parties_with_brands() -> list[PartyWithBrand]:
     """Return all parties."""
     parties = DbParty.query \
         .options(db.joinedload('brand')) \
@@ -145,7 +146,7 @@ def get_all_parties_with_brands() -> List[PartyWithBrand]:
 
 def get_active_parties(
     brand_id: Optional[BrandID] = None, *, include_brands: bool = False
-) -> List[Union[Party, PartyWithBrand]]:
+) -> list[Union[Party, PartyWithBrand]]:
     """Return active (i.e. non-canceled, non-archived) parties."""
     query = DbParty.query
 
@@ -169,7 +170,7 @@ def get_active_parties(
     return [transform(party) for party in parties]
 
 
-def get_archived_parties_for_brand(brand_id: BrandID) -> List[Party]:
+def get_archived_parties_for_brand(brand_id: BrandID) -> list[Party]:
     """Return archived parties for that brand."""
     parties = DbParty.query \
         .filter_by(brand_id=brand_id) \
@@ -180,7 +181,7 @@ def get_archived_parties_for_brand(brand_id: BrandID) -> List[Party]:
     return [_db_entity_to_party(party) for party in parties]
 
 
-def get_parties(party_ids: Set[PartyID]) -> List[Party]:
+def get_parties(party_ids: set[PartyID]) -> list[Party]:
     """Return the parties with those IDs."""
     if not party_ids:
         return []
@@ -192,7 +193,7 @@ def get_parties(party_ids: Set[PartyID]) -> List[Party]:
     return [_db_entity_to_party(party) for party in parties]
 
 
-def get_parties_for_brand(brand_id: BrandID) -> List[Party]:
+def get_parties_for_brand(brand_id: BrandID) -> list[Party]:
     """Return the parties for that brand."""
     parties = DbParty.query \
         .filter_by(brand_id=brand_id) \
@@ -212,7 +213,7 @@ def get_parties_for_brand_paginated(
     return paginate(query, page, per_page, item_mapper=_db_entity_to_party)
 
 
-def get_party_count_by_brand_id() -> Dict[BrandID, int]:
+def get_party_count_by_brand_id() -> dict[BrandID, int]:
     """Return party count (including 0) per brand, indexed by brand ID."""
     brand_ids_and_party_counts = db.session \
         .query(
@@ -251,7 +252,7 @@ def _db_entity_to_party_with_brand(party_entity: DbParty) -> PartyWithBrand:
     return PartyWithBrand(*(party_tuple + brand_tuple))
 
 
-def get_party_days(party: Party) -> List[date]:
+def get_party_days(party: Party) -> list[date]:
     """Return the sequence of dates on which the party happens."""
     starts_on = party.starts_at.date()
     ends_on = party.ends_at.date()

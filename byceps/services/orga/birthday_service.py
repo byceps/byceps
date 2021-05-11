@@ -6,8 +6,9 @@ byceps.services.orga.birthday_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from itertools import islice
-from typing import Dict, Iterator, Optional, Sequence, Set, Tuple
+from typing import Iterator, Optional, Sequence
 
 from ...database import db
 
@@ -20,7 +21,7 @@ from .dbmodels import OrgaFlag as DbOrgaFlag
 from .transfer.models import Birthday
 
 
-def get_orgas_with_birthday_today() -> Set[User]:
+def get_orgas_with_birthday_today() -> set[User]:
     """Return the orgas whose birthday is today."""
     orgas_with_birthdays = _collect_orgas_with_known_birthdays()
 
@@ -31,7 +32,7 @@ def get_orgas_with_birthday_today() -> Set[User]:
 
 def collect_orgas_with_next_birthdays(
     *, limit: Optional[int] = None
-) -> Iterator[Tuple[User, Birthday]]:
+) -> Iterator[tuple[User, Birthday]]:
     """Yield the next birthdays of organizers, sorted by month and day."""
     orgas_with_birthdays = _collect_orgas_with_known_birthdays()
 
@@ -43,7 +44,7 @@ def collect_orgas_with_next_birthdays(
     return sorted_orgas
 
 
-def _collect_orgas_with_known_birthdays() -> Iterator[Tuple[User, Birthday]]:
+def _collect_orgas_with_known_birthdays() -> Iterator[tuple[User, Birthday]]:
     """Return all organizers whose birthday is known."""
     users = DbUser.query \
         .join(DbOrgaFlag) \
@@ -64,7 +65,7 @@ def _collect_orgas_with_known_birthdays() -> Iterator[Tuple[User, Birthday]]:
 
 
 def _to_user_dto(
-    user: DbUser, avatar_urls_by_user_id: Dict[UserID, str]
+    user: DbUser, avatar_urls_by_user_id: dict[UserID, str]
 ) -> User:
     """Create user DTO from database entity."""
     avatar_url = avatar_urls_by_user_id.get(user.id)
@@ -80,8 +81,8 @@ def _to_user_dto(
 
 
 def sort_users_by_next_birthday(
-    users_and_birthdays: Sequence[Tuple[User, Birthday]]
-) -> Sequence[Tuple[User, Birthday]]:
+    users_and_birthdays: Sequence[tuple[User, Birthday]]
+) -> Sequence[tuple[User, Birthday]]:
     return sorted(
         users_and_birthdays,
         key=lambda user_and_birthday: (

@@ -6,9 +6,10 @@ byceps.blueprints.site.seating.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from itertools import chain
-from typing import Dict, Iterator, Optional, Sequence
+from typing import Iterator, Optional, Sequence
 
 from ....services.seating.dbmodels.seat import Seat as DbSeat
 from ....services.seating.transfer.models import SeatID
@@ -45,7 +46,7 @@ class Seat:
 
 def get_users(
     seats: Sequence[DbSeat], managed_tickets: Sequence[DbTicket]
-) -> Dict[UserID, User]:
+) -> dict[UserID, User]:
     seat_tickets = _get_seat_tickets(seats)
     tickets = chain(seat_tickets, managed_tickets)
 
@@ -58,7 +59,7 @@ def _get_seat_tickets(seats: Sequence[DbSeat]) -> Iterator[DbTicket]:
             yield seat.occupied_by_ticket
 
 
-def _get_ticket_users_by_id(tickets: Sequence[DbTicket]) -> Dict[UserID, User]:
+def _get_ticket_users_by_id(tickets: Sequence[DbTicket]) -> dict[UserID, User]:
     user_ids = set(_get_ticket_user_ids(tickets))
     users = user_service.find_users(user_ids, include_avatars=True)
     return user_service.index_users_by_id(users)
@@ -72,7 +73,7 @@ def _get_ticket_user_ids(tickets: Sequence[DbTicket]) -> Iterator[UserID]:
 
 
 def get_seats(
-    seats: Sequence[DbSeat], users_by_id: Dict[UserID, User]
+    seats: Sequence[DbSeat], users_by_id: dict[UserID, User]
 ) -> Iterator[Seat]:
     for seat in seats:
         if seat.is_occupied:
@@ -97,7 +98,7 @@ def get_seats(
 
 
 def get_managed_tickets(
-    managed_tickets: Sequence[DbTicket], users_by_id: Dict[UserID, User]
+    managed_tickets: Sequence[DbTicket], users_by_id: dict[UserID, User]
 ) -> Iterator[ManagedTicket]:
     for ticket in managed_tickets:
         user = _find_ticket_user(ticket, users_by_id)
@@ -113,7 +114,7 @@ def get_managed_tickets(
 
 
 def _find_ticket_user(
-    ticket: DbTicket, users_by_id: Dict[UserID, User]
+    ticket: DbTicket, users_by_id: dict[UserID, User]
 ) -> Optional[User]:
     if ticket.used_by_id is None:
         return None

@@ -6,7 +6,8 @@ byceps.services.email.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import List, Optional
+from __future__ import annotations
+from typing import Optional
 
 from sqlalchemy.exc import IntegrityError
 
@@ -131,7 +132,7 @@ def set_config(
     upsert(table, identifier, replacement)
 
 
-def get_all_configs() -> List[EmailConfig]:
+def get_all_configs() -> list[EmailConfig]:
     """Return all configurations."""
     configs = DbEmailConfig.query.all()
 
@@ -146,7 +147,7 @@ def enqueue_message(message: Message) -> None:
 
 
 def enqueue_email(
-    sender: Optional[Sender], recipients: List[str], subject: str, body: str
+    sender: Optional[Sender], recipients: list[str], subject: str, body: str
 ) -> None:
     """Enqueue e-mail to be sent asynchronously."""
     sender_str = sender.format() if (sender is not None) else None
@@ -155,7 +156,7 @@ def enqueue_email(
 
 
 def send_email(
-    sender: Optional[str], recipients: List[str], subject: str, body: str
+    sender: Optional[str], recipients: list[str], subject: str, body: str
 ) -> None:
     """Send e-mail."""
     email.send(sender, recipients, subject, body)

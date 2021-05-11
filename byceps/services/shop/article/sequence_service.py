@@ -6,7 +6,8 @@ byceps.services.shop.article.sequence_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import List, Optional
+from __future__ import annotations
+from typing import Optional
 
 from sqlalchemy.exc import IntegrityError
 
@@ -72,7 +73,7 @@ def find_article_number_sequence(
 
 def find_article_number_sequences_for_shop(
     shop_id: ShopID,
-) -> List[ArticleNumberSequence]:
+) -> list[ArticleNumberSequence]:
     """Return the article number sequences defined for that shop."""
     sequences = DbArticleNumberSequence.query \
         .filter_by(shop_id=shop_id) \

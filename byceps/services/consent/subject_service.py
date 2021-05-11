@@ -6,7 +6,8 @@ byceps.services.consent.subject_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Dict, Optional, Set
+from __future__ import annotations
+from typing import Optional
 
 from ...database import db
 from ...typing import BrandID
@@ -40,7 +41,7 @@ def create_subject(
     return _db_entity_to_subject(subject)
 
 
-def get_subjects(subject_ids: Set[SubjectID]) -> Set[Subject]:
+def get_subjects(subject_ids: set[SubjectID]) -> set[Subject]:
     """Return the subjects."""
     rows = DbSubject.query \
         .filter(DbSubject.id.in_(subject_ids)) \
@@ -54,7 +55,7 @@ def get_subjects(subject_ids: Set[SubjectID]) -> Set[Subject]:
 
 
 def _check_for_unknown_subject_ids(
-    subject_ids: Set[SubjectID], subjects: Set[Subject]
+    subject_ids: set[SubjectID], subjects: set[Subject]
 ) -> None:
     """Raise exception on unknown IDs."""
     found_subject_ids = {subject.id for subject in subjects}
@@ -67,8 +68,8 @@ def _check_for_unknown_subject_ids(
 
 
 def get_subjects_with_consent_counts(
-    *, limit_to_subject_ids: Optional[Set[SubjectID]] = None
-) -> Dict[Subject, int]:
+    *, limit_to_subject_ids: Optional[set[SubjectID]] = None
+) -> dict[Subject, int]:
     """Return subjects and their consent counts."""
     query = db.session \
         .query(
@@ -123,7 +124,7 @@ def delete_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
     db.session.commit()
 
 
-def get_subject_ids_required_for_brand(brand_id: BrandID) -> Set[SubjectID]:
+def get_subject_ids_required_for_brand(brand_id: BrandID) -> set[SubjectID]:
     """Return the IDs of the subjects required for the brand."""
     rows = db.session \
         .query(DbSubject.id) \
@@ -134,7 +135,7 @@ def get_subject_ids_required_for_brand(brand_id: BrandID) -> Set[SubjectID]:
     return {row[0] for row in rows}
 
 
-def get_subjects_required_for_brand(brand_id: BrandID) -> Set[Subject]:
+def get_subjects_required_for_brand(brand_id: BrandID) -> set[Subject]:
     """Return the subjects required for the brand."""
     rows = DbSubject.query \
         .join(DbBrandRequirement) \

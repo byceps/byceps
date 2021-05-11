@@ -6,9 +6,10 @@ byceps.services.shop.shipping.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from collections import Counter, defaultdict
 from dataclasses import dataclass
-from typing import Dict, Iterator, Sequence, Set
+from typing import Iterator, Sequence
 
 from ..article.dbmodels.article import Article as DbArticle
 
@@ -56,7 +57,7 @@ class OrderItemQuantity:
 
 
 def _find_order_items(
-    shop_id: ShopID, payment_states: Set[PaymentState]
+    shop_id: ShopID, payment_states: set[PaymentState]
 ) -> Iterator[OrderItemQuantity]:
     """Return article quantities for the given payment states."""
     payment_state_names = {ps.name for ps in payment_states}
@@ -88,7 +89,7 @@ def _find_order_items(
 
 def _aggregate_ordered_article_quantites(
     order_item_quantities: Sequence[OrderItemQuantity],
-    article_descriptions: Dict[ArticleNumber, str],
+    article_descriptions: dict[ArticleNumber, str],
 ) -> Iterator[ArticleToShip]:
     """Aggregate article quantities per payment state."""
     d = defaultdict(Counter)
@@ -111,8 +112,8 @@ def _aggregate_ordered_article_quantites(
 
 
 def _get_article_descriptions(
-    article_numbers: Set[ArticleNumber],
-) -> Dict[ArticleNumber, str]:
+    article_numbers: set[ArticleNumber],
+) -> dict[ArticleNumber, str]:
     """Look up description texts of the specified articles."""
     if not article_numbers:
         return []

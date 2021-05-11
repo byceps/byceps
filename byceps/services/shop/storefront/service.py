@@ -6,7 +6,8 @@ byceps.services.shop.storefront.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import List, Optional, Set
+from __future__ import annotations
+from typing import Optional
 
 from ....database import db
 
@@ -112,7 +113,7 @@ def _get_db_storefront(storefront_id: StorefrontID) -> DbStorefront:
     return storefront
 
 
-def find_storefronts(storefront_ids: Set[StorefrontID]) -> List[Storefront]:
+def find_storefronts(storefront_ids: set[StorefrontID]) -> list[Storefront]:
     """Return the storefronts with those IDs."""
     if not storefront_ids:
         return []
@@ -124,14 +125,14 @@ def find_storefronts(storefront_ids: Set[StorefrontID]) -> List[Storefront]:
     return [_db_entity_to_storefront(storefront) for storefront in storefronts]
 
 
-def get_all_storefronts() -> List[Storefront]:
+def get_all_storefronts() -> list[Storefront]:
     """Return all storefronts."""
     storefronts = DbStorefront.query.all()
 
     return [_db_entity_to_storefront(storefront) for storefront in storefronts]
 
 
-def get_storefronts_for_shop(shop_id: ShopID) -> Set[Storefront]:
+def get_storefronts_for_shop(shop_id: ShopID) -> set[Storefront]:
     """Return all storefronts for that shop."""
     rows = DbStorefront.query \
         .filter_by(shop_id=shop_id) \

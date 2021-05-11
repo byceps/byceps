@@ -6,8 +6,9 @@ byceps.announce.helpers
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from http import HTTPStatus
-from typing import Any, Dict, List
+from typing import Any
 
 from flask import current_app
 import requests
@@ -23,7 +24,7 @@ class WebhookError(Exception):
     pass
 
 
-def get_webhooks(event: _BaseEvent) -> List[OutgoingWebhook]:
+def get_webhooks(event: _BaseEvent) -> list[OutgoingWebhook]:
     event_name = get_name_for_event(event)
     webhooks = webhook_service.get_enabled_outgoing_webhooks(event_name)
 
@@ -72,7 +73,7 @@ def call_webhook(webhook: OutgoingWebhook, text: str) -> None:
 
 def _assemble_request_data(
     webhook: OutgoingWebhook, text: str
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     if webhook.format == 'discord':
         return {'content': text}
 

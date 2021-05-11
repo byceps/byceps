@@ -6,11 +6,12 @@ byceps.services.shop.order.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import List, NewType, Optional
+from typing import NewType, Optional
 from uuid import UUID
 
 from .....typing import UserID
@@ -82,7 +83,7 @@ class Order:
     last_name: str
     address: Address
     total_amount: Decimal
-    items: List[OrderItem]
+    items: list[OrderItem]
     payment_method: Optional[PaymentMethod]
     payment_state: PaymentState
     is_open: bool

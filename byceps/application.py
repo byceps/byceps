@@ -6,11 +6,12 @@ byceps.application
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from http import HTTPStatus
 from importlib import import_module
 import os
 from pathlib import Path
-from typing import Any, Callable, Dict, Optional, Union
+from typing import Any, Callable, Optional, Union
 
 from flask import current_app, Flask, g, redirect
 from flask_babel import Babel
@@ -30,7 +31,7 @@ from .util.views import redirect_to
 def create_app(
     *,
     config_filename: Optional[Union[Path, str]] = None,
-    config_overrides: Optional[Dict[str, Any]] = None,
+    config_overrides: Optional[dict[str, Any]] = None,
 ) -> Flask:
     """Create the actual Flask application."""
     app = Flask('byceps')
@@ -143,7 +144,7 @@ def _set_url_root_path(app: Flask) -> None:
     app.add_url_rule('/', endpoint='root', view_func=_redirect)
 
 
-def _get_site_template_context() -> Dict[str, Any]:
+def _get_site_template_context() -> dict[str, Any]:
     """Return the site-specific additions to the template context."""
     site_context_processor = _find_site_template_context_processor_cached(
         g.site_id
@@ -157,7 +158,7 @@ def _get_site_template_context() -> Dict[str, Any]:
 
 def _find_site_template_context_processor_cached(
     site_id: str,
-) -> Optional[Callable[[], Dict[str, Any]]]:
+) -> Optional[Callable[[], dict[str, Any]]]:
     """Return the template context processor for the site.
 
     A processor will be cached after it has been obtained for the first
@@ -176,7 +177,7 @@ def _find_site_template_context_processor_cached(
 
 def _find_site_template_context_processor(
     site_id: str,
-) -> Optional[Callable[[], Dict[str, Any]]]:
+) -> Optional[Callable[[], dict[str, Any]]]:
     """Import a template context processor from the site's package.
 
     If a site package contains a module named `extension` and that

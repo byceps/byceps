@@ -6,8 +6,9 @@ byceps.services.site.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import dataclasses
-from typing import Optional, Set, Union
+from typing import Optional, Union
 
 from ...database import db
 from ...typing import BrandID, PartyID
@@ -131,14 +132,14 @@ def get_site(site_id: SiteID) -> Site:
     return site
 
 
-def get_all_sites() -> Set[Site]:
+def get_all_sites() -> set[Site]:
     """Return all sites."""
     sites = DbSite.query.all()
 
     return {_db_entity_to_site(site) for site in sites}
 
 
-def get_sites_for_brand(brand_id: BrandID) -> Set[Site]:
+def get_sites_for_brand(brand_id: BrandID) -> set[Site]:
     """Return the sites for that brand."""
     sites = DbSite.query \
         .filter_by(brand_id=brand_id) \
@@ -149,7 +150,7 @@ def get_sites_for_brand(brand_id: BrandID) -> Set[Site]:
 
 def get_current_sites(
     brand_id: Optional[BrandID] = None, *, include_brands: bool = False
-) -> Set[Union[Site, SiteWithBrand]]:
+) -> set[Union[Site, SiteWithBrand]]:
     """Return all "current" (i.e. enabled and not archived) sites."""
     query = DbSite.query
 

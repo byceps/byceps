@@ -6,8 +6,9 @@ byceps.services.user.event_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
-from typing import List, Optional
+from typing import Optional
 
 from ...database import db
 from ...typing import UserID
@@ -45,7 +46,7 @@ def build_event(
     return DbUserEvent(occurred_at, event_type, user_id, data)
 
 
-def get_events_for_user(user_id: UserID) -> List[DbUserEvent]:
+def get_events_for_user(user_id: UserID) -> list[DbUserEvent]:
     """Return the events for that user."""
     return DbUserEvent.query \
         .filter_by(user_id=user_id) \
@@ -55,7 +56,7 @@ def get_events_for_user(user_id: UserID) -> List[DbUserEvent]:
 
 def get_events_of_type_for_user(
     user_id: UserID, event_type: str
-) -> List[DbUserEvent]:
+) -> list[DbUserEvent]:
     """Return the events of that type for that user."""
     return DbUserEvent.query \
         .filter_by(user_id=user_id) \

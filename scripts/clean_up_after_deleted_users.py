@@ -6,7 +6,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Callable, Set
+from __future__ import annotations
+from typing import Callable
 
 import click
 
@@ -76,7 +77,7 @@ def execute(dry_run, user_ids):
         db.session.commit()
 
 
-def check_for_undeleted_accounts(user_ids: Set[UserID]) -> None:
+def check_for_undeleted_accounts(user_ids: set[UserID]) -> None:
     users = user_service.find_users(user_ids)
 
     non_deleted_users = [u for u in users if not u.deleted]
@@ -88,63 +89,63 @@ def check_for_undeleted_accounts(user_ids: Set[UserID]) -> None:
 
 
 def delete_records(
-    label: str, delete_func: Callable, user_ids: Set[UserID]
+    label: str, delete_func: Callable, user_ids: set[UserID]
 ) -> None:
     click.secho(f'Deleting {label} ... ', nl=False)
     affected = delete_func(user_ids)
     click.secho(str(affected), fg='yellow')
 
 
-def delete_authn_credentials(user_ids: Set[UserID]) -> int:
+def delete_authn_credentials(user_ids: set[UserID]) -> int:
     """Delete authentication credentials for the given users."""
     return _execute_delete_for_users_query(Credential, user_ids)
 
 
-def delete_authn_recent_logins(user_ids: Set[UserID]) -> int:
+def delete_authn_recent_logins(user_ids: set[UserID]) -> int:
     """Delete recent logins for the given users."""
     return _execute_delete_for_users_query(RecentLogin, user_ids)
 
 
-def delete_authn_session_tokens(user_ids: Set[UserID]) -> int:
+def delete_authn_session_tokens(user_ids: set[UserID]) -> int:
     """Delete session tokens for the given users."""
     return _execute_delete_for_users_query(SessionToken, user_ids)
 
 
-def delete_authz_user_roles(user_ids: Set[UserID]) -> int:
+def delete_authz_user_roles(user_ids: set[UserID]) -> int:
     """Delete authorization role assignments from the given users."""
     return _execute_delete_for_users_query(UserRole, user_ids)
 
 
-def delete_board_category_lastviews(user_ids: Set[UserID]) -> int:
+def delete_board_category_lastviews(user_ids: set[UserID]) -> int:
     """Delete last board category view marks for the given users."""
     return _execute_delete_for_users_query(BoardLastCategoryView, user_ids)
 
 
-def delete_board_topic_lastviews(user_ids: Set[UserID]) -> int:
+def delete_board_topic_lastviews(user_ids: set[UserID]) -> int:
     """Delete last board topic view marks for the given users."""
     return _execute_delete_for_users_query(BoardLastTopicView, user_ids)
 
 
-def delete_consents(user_ids: Set[UserID]) -> int:
+def delete_consents(user_ids: set[UserID]) -> int:
     """Delete consents from the given users."""
     return _execute_delete_for_users_query(Consent, user_ids)
 
 
-def delete_newsletter_subscription_updates(user_ids: Set[UserID]) -> int:
+def delete_newsletter_subscription_updates(user_ids: set[UserID]) -> int:
     """Delete newsletter subscription updates for the given users."""
     return _execute_delete_for_users_query(
         NewsletterSubscriptionUpdate, user_ids
     )
 
 
-def delete_user_avatar_selections(user_ids: Set[UserID]) -> int:
+def delete_user_avatar_selections(user_ids: set[UserID]) -> int:
     """Delete user avatar selections (but not user avatar records and
     image files at this point) for the given users.
     """
     return _execute_delete_for_users_query(UserAvatarSelection, user_ids)
 
 
-def delete_user_events(user_ids: Set[UserID]) -> int:
+def delete_user_events(user_ids: set[UserID]) -> int:
     """Delete user events (execpt for those that justify the deletion)
     for the given users.
     """
@@ -156,12 +157,12 @@ def delete_user_events(user_ids: Set[UserID]) -> int:
     )
 
 
-def delete_verification_tokens(user_ids: Set[UserID]) -> int:
+def delete_verification_tokens(user_ids: set[UserID]) -> int:
     """Delete verification tokens for the given users."""
     return _execute_delete_for_users_query(VerificationToken, user_ids)
 
 
-def _execute_delete_for_users_query(model, user_ids: Set[UserID]) -> int:
+def _execute_delete_for_users_query(model, user_ids: set[UserID]) -> int:
     """Execute (but not commit) deletions, return number of affected rows."""
     return (
         db.session.query(model)

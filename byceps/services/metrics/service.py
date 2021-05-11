@@ -6,7 +6,8 @@ byceps.metrics.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterator, List, Set
+from __future__ import annotations
+from typing import Iterator
 
 from ...services.brand import service as brand_service
 from ...services.board import (
@@ -52,7 +53,7 @@ def collect_metrics() -> Iterator[Metric]:
     yield from _collect_user_metrics()
 
 
-def _collect_board_metrics(brand_ids: List[BrandID]) -> Iterator[Metric]:
+def _collect_board_metrics(brand_ids: list[BrandID]) -> Iterator[Metric]:
     for brand_id in brand_ids:
         boards = board_service.get_boards_for_brand(brand_id)
         board_ids = [board.id for board in boards]
@@ -82,7 +83,7 @@ def _collect_consent_metrics() -> Iterator[Metric]:
 
 
 def _collect_shop_ordered_article_metrics(
-    shop_ids: Set[ShopID],
+    shop_ids: set[ShopID],
 ) -> Iterator[Metric]:
     """Provide ordered article quantities for shops."""
     stats = shop_article_service.sum_ordered_articles_by_payment_state(shop_ids)
@@ -100,7 +101,7 @@ def _collect_shop_ordered_article_metrics(
         )
 
 
-def _collect_shop_order_metrics(shops: List[Shop]) -> Iterator[Metric]:
+def _collect_shop_order_metrics(shops: list[Shop]) -> Iterator[Metric]:
     """Provide order counts grouped by payment state for shops."""
     for shop in shops:
         order_counts_per_payment_state = order_service.count_orders_per_payment_state(
@@ -119,7 +120,7 @@ def _collect_shop_order_metrics(shops: List[Shop]) -> Iterator[Metric]:
 
 
 def _collect_seating_metrics(
-    active_party_ids: List[PartyID],
+    active_party_ids: list[PartyID],
 ) -> Iterator[Metric]:
     """Provide seat occupation counts per party and category."""
     for party_id in active_party_ids:
@@ -138,7 +139,7 @@ def _collect_seating_metrics(
             )
 
 
-def _collect_ticket_metrics(active_parties: List[Party]) -> Iterator[Metric]:
+def _collect_ticket_metrics(active_parties: list[Party]) -> Iterator[Metric]:
     """Provide ticket counts for active parties."""
     for party in active_parties:
         party_id = party.id

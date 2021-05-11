@@ -6,7 +6,8 @@ byceps.services.user_group.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import List, Optional
+from __future__ import annotations
+from typing import Optional
 
 from ...database import db
 from ...typing import PartyID, UserID
@@ -29,6 +30,6 @@ def create_group(
     return group
 
 
-def get_all_groups() -> List[UserGroup]:
+def get_all_groups() -> list[UserGroup]:
     """Return all groups."""
     return UserGroup.query.all()

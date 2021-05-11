@@ -6,8 +6,9 @@ byceps.services.attendance.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import Optional
 
 from ....services.seating.dbmodels.seat import Seat
 from ....services.user.dbmodels.user import User
@@ -22,4 +23,4 @@ class AttendeeTicket:
 @dataclass  # Not yet frozen b/c models are not immutable.
 class Attendee:
     user: User
-    tickets: List[AttendeeTicket]
+    tickets: list[AttendeeTicket]

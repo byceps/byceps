@@ -6,9 +6,9 @@ byceps.services.email.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from email.utils import formataddr
-from typing import List
 
 from ....typing import BrandID
 
@@ -34,6 +34,6 @@ class EmailConfig:
 @dataclass(frozen=True)
 class Message:
     sender: Sender
-    recipients: List[str]
+    recipients: list[str]
     subject: str
     body: str

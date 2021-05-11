@@ -6,7 +6,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Dict, List, Optional
+from __future__ import annotations
+from typing import Optional
 
 import click
 from pick import pick
@@ -54,7 +55,7 @@ def execute(document_id):
 
 
 def _request_version_id(
-    versions_by_id: Dict[VersionID, Version],
+    versions_by_id: dict[VersionID, Version],
     current_version_id: Optional[VersionID],
 ) -> VersionID:
     version_ids = _get_version_ids_latest_first(versions_by_id)
@@ -84,8 +85,8 @@ def _request_version_id(
 
 
 def _get_version_ids_latest_first(
-    versions_by_id: Dict[VersionID, Version]
-) -> List[VersionID]:
+    versions_by_id: dict[VersionID, Version]
+) -> list[VersionID]:
     versions = versions_by_id.values()
 
     versions_latest_first = list(

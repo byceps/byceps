@@ -6,8 +6,9 @@ byceps.services.tourney.avatar.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from uuid import UUID
-from typing import BinaryIO, Set
+from typing import BinaryIO
 
 from ....database import db
 from ....typing import PartyID, UserID
@@ -29,7 +30,7 @@ def create_avatar_image(
     party_id: PartyID,
     creator_id: UserID,
     stream: BinaryIO,
-    allowed_types: Set[ImageType],
+    allowed_types: set[ImageType],
     *,
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
 ) -> Avatar:

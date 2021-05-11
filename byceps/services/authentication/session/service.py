@@ -6,9 +6,10 @@ byceps.services.authentication.session.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
 from enum import Enum
-from typing import Optional, Set, Tuple
+from typing import Optional
 from uuid import UUID, uuid4
 
 from ....database import db, insert_ignore_on_conflict, upsert
@@ -107,7 +108,7 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
 
 def log_in_user(
     user_id: UserID, ip_address: str, *, site_id: Optional[SiteID] = None
-) -> Tuple[str, UserLoggedIn]:
+) -> tuple[str, UserLoggedIn]:
     """Create a session token and record the log in."""
     session_token = get_session_token(user_id)
 
@@ -183,7 +184,7 @@ def get_anonymous_current_user(*, locale: Optional[str] = None) -> CurrentUser:
 
 
 def get_authenticated_current_user(
-    user: User, *, permissions: Set[Enum] = None, locale: Optional[str] = None
+    user: User, *, permissions: set[Enum] = None, locale: Optional[str] = None
 ) -> CurrentUser:
     """Return an authenticated current user object."""
     if permissions is None:
