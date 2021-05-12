@@ -323,7 +323,8 @@ def _db_entity_to_item(
     )
 
     if render_body:
-        item = _replace_body_with_rendered_body(item)
+        rendered_body = _render_body(item)
+        item = dataclasses.replace(item, body=rendered_body)
 
     return item
 
@@ -337,12 +338,9 @@ def _assemble_image_url_path(item: DbItem) -> Optional[str]:
     return f'/data/global/news_channels/{item.channel_id}/{url_path}'
 
 
-def _replace_body_with_rendered_body(item: Item) -> Item:
+def _render_body(item: Item) -> Optional[str]:
+    """Render body text to HTML."""
     try:
-        rendered_body = html_service.render_body(
-            item.body, item.channel.id, item.images
-        )
+        return html_service.render_body(item.body, item.channel.id, item.images)
     except Exception as e:
-        rendered_body = None  # Not the best error indicator.
-
-    return dataclasses.replace(item, body=rendered_body)
+        return None  # Not the best error indicator.
