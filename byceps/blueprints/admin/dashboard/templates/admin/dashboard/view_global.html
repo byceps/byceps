@@ -21,9 +21,6 @@
 <div class="dashboard-section-title">{{ _('Overview') }}</div>
 
   <div class="grid dashboard">
-    {%- call render_cell('brand') %}
-{%- include 'admin/dashboard/_brands.html' %}
-    {%- endcall %}
     {{ render_bigstats_cell(party_count, _('Parties'), href=url_for('party_admin.index'), icon_name='date') }}
     {{ render_bigstats_cell(user_count|separate_thousands, _('Users'), href=url_for('user_admin.index'), icon_name='users') }}
     {{ render_bigstats_cell(recent_users_count, _('new users in the last 7 days'), href=url_for('user_admin.index'), icon_name='users', color='#008800') }}
