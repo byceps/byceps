@@ -18,6 +18,7 @@
 
   <p>With pre-defined colors:</p>
 
+  {%- set color = None -%}{# workaround for bug in Jinja 3.0.0 #}
   {%- set example_tags_colored -%}
 <p>
   {%- for color in ('info', 'success', 'warning', 'danger') %}
