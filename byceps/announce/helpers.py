@@ -104,6 +104,9 @@ def _assemble_request_data(
 
         return {'key': key, 'room_id': room_id, 'text': text}
 
+    else:
+        return {}
+
 
 EXPECTED_RESPONSE_STATUS_CODES = {
     'discord': HTTPStatus.NO_CONTENT,
