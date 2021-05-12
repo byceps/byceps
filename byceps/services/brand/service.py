@@ -92,6 +92,15 @@ def get_all_brands() -> list[Brand]:
     return [_db_entity_to_brand(brand) for brand in brands]
 
 
+def get_active_brands() -> set[Brand]:
+    """Return active (i.e. non-archived) brands."""
+    brands = DbBrand.query \
+        .filter_by(archived=False) \
+        .all()
+
+    return {_db_entity_to_brand(brand) for brand in brands}
+
+
 def count_brands() -> int:
     """Return the number of brands."""
     return DbBrand.query.count()

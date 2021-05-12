@@ -7,6 +7,19 @@
   text-transform: uppercase;
 }
 
+.flex-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: var(--inner-gutter);
+  margin-left: calc(var(--inner-gutter) * -1);
+  margin-top: calc(var(--inner-gutter) * -1);
+}
+
+.flex-grid .cell {
+  margin-left: var(--inner-gutter);
+  margin-top: var(--inner-gutter);
+}
+
 .grid {
   display: grid;
   gap: var(--inner-gutter);
@@ -35,6 +48,11 @@
   height: 100%;
   position: relative;
   overflow: hidden;
+}
+
+.cell.less-padding .box {
+  height: auto;
+  padding: 0.25rem;
 }
 
 .dashboard h2 {

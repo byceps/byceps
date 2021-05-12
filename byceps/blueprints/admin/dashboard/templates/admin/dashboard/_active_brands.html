@@ -1,0 +1,25 @@
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
+{% from 'macros/admin/dashboard.html' import render_cell %}
+
+
+<div class="dashboard-section-title">{{ _('Active Brands') }}</div>
+
+<div class="flex-grid">
+
+{%- if active_brands %}
+  {%- for brand in active_brands|sort(attribute='title') %}
+    {%- call render_cell(href=url_for('brand_admin.view', brand_id=brand.id), additional_classes='less-padding') %}
+  <div title="{{ brand.title }}">{{ render_brand_avatar(brand, '64') }}</div>
+    {%- endcall %}
+  {%- endfor %}
+{%- else %}
+  {%- call render_cell() %}
+  <div style="display: grid; height: 100%; place-items: center;">{{ _('No active brands')|dim }}</div>
+  {%- endcall %}
+{%- endif %}
+
+{%- call render_cell(href=url_for('brand_admin.index')) %}
+  <div style="display: grid; height: 100%; place-items: center;">{{ _('All brands') }} &rarr;</div>
+{%- endcall %}
+
+</div>
