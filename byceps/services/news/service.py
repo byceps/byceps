@@ -299,24 +299,24 @@ def get_item_count_by_channel_id() -> dict[ChannelID, int]:
 
 
 def _db_entity_to_item(
-    item: DbItem, *, render_body: Optional[bool] = False
+    db_item: DbItem, *, render_body: Optional[bool] = False
 ) -> Item:
-    channel = _db_entity_to_channel(item.channel)
-    external_url = item.channel.url_prefix + item.slug
-    image_url_path = _assemble_image_url_path(item)
+    channel = _db_entity_to_channel(db_item.channel)
+    external_url = db_item.channel.url_prefix + db_item.slug
+    image_url_path = _assemble_image_url_path(db_item)
     images = [
-        image_service._db_entity_to_image(image, item.channel_id)
-        for image in item.images
+        image_service._db_entity_to_image(image, db_item.channel_id)
+        for image in db_item.images
     ]
 
     item = Item(
-        id=item.id,
+        id=db_item.id,
         channel=channel,
-        slug=item.slug,
-        published_at=item.published_at,
-        published=item.published_at is not None,
-        title=item.current_version.title,
-        body=item.current_version.body,
+        slug=db_item.slug,
+        published_at=db_item.published_at,
+        published=db_item.published_at is not None,
+        title=db_item.current_version.title,
+        body=db_item.current_version.body,
         external_url=external_url,
         image_url_path=image_url_path,
         images=images,
