@@ -12,7 +12,7 @@ from datetime import datetime
 
 from flask import current_app
 from flask_babel import format_decimal, gettext
-from jinja2 import evalcontextfilter
+from jinja2 import pass_eval_context
 from jinja2.filters import do_default, do_trim
 from markupsafe import Markup
 import pendulum
@@ -21,7 +21,7 @@ from .datetime import format as dateformat
 from . import money
 
 
-@evalcontextfilter
+@pass_eval_context
 def dim(eval_ctx, value):
     """Render value in a way so that it looks dimmed."""
     dimmed = _dim(value)
@@ -32,7 +32,7 @@ def _dim(value):
     return f'<span class="dimmed">{value}</span>'
 
 
-@evalcontextfilter
+@pass_eval_context
 def fallback(eval_ctx, value, fallback=None):
     defaulted = do_trim(do_default(value, '', True))
     if defaulted:
