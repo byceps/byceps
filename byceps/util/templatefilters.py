@@ -12,8 +12,9 @@ from datetime import datetime
 
 from flask import current_app
 from flask_babel import format_decimal, gettext
-from jinja2 import evalcontextfilter, Markup
+from jinja2 import evalcontextfilter
 from jinja2.filters import do_default, do_trim
+from markupsafe import Markup
 import pendulum
 
 from .datetime import format as dateformat

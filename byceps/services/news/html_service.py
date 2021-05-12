@@ -13,7 +13,7 @@ from functools import partial
 from typing import Optional
 
 from flask_babel import gettext
-from jinja2 import Markup
+from markupsafe import Markup
 
 from ...util.iterables import find
 from ...util.templating import load_template
