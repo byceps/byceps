@@ -28,7 +28,7 @@ def create_brand(brand_id: BrandID, title: str) -> Brand:
 
 
 def update_brand(
-    brand_id: BrandID, title: str, *, image_filename: Optional[str] = None
+    brand_id: BrandID, title: str, image_filename: Optional[str]
 ) -> Brand:
     """Update a brand."""
     brand = _get_db_brand(brand_id)
