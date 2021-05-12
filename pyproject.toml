@@ -11,5 +11,5 @@ skip-string-normalization = true
 target-version = ['py37']
 
 [tool.pytest.ini_options]
-addopts = "-vv -ra --showlocals"
+addopts = "-vv -ra"
 testpaths = ["tests/unit", "tests/integration"]
