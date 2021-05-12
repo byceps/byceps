@@ -1,5 +1,5 @@
 {% filter trim %}
-{% block body %}{% endblock %}
+{% block body required %}{% endblock %}
 {% endfilter %}
 
 {{ footer|trim|safe }}

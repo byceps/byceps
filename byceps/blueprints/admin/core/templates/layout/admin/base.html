@@ -36,7 +36,7 @@
     {%- include 'layout/_notifications.html' %}
     {%- block before_body %}{% endblock %}
                 <div{% if not layout_main_raw|default(False) %} id="main"{% endif %}>
-    {%- block body %}{% endblock %}
+    {%- block body required %}{% endblock %}
                 </div>{# #main #}
               </main>
             </div>{# .page-body-grid-main #}
