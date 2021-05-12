@@ -150,7 +150,7 @@ def _reduce_article_stock(cart: Cart) -> None:
 
 def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Record that the invoice for that order has been (externally) created."""
-    order = _find_order_entity(order_id)
+    order = _get_order_entity(order_id)
     initiator = user_service.get_user(initiator_id)
 
     now = datetime.utcnow()
@@ -169,7 +169,7 @@ def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
 
 def unset_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Withdraw record of the invoice for that order having been created."""
-    order = _find_order_entity(order_id)
+    order = _get_order_entity(order_id)
     initiator = user_service.get_user(initiator_id)
 
     now = datetime.utcnow()
@@ -188,7 +188,7 @@ def unset_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
 
 def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Mark the order as shipped."""
-    order = _find_order_entity(order_id)
+    order = _get_order_entity(order_id)
     initiator = user_service.get_user(initiator_id)
 
     if not order.shipping_required:
@@ -210,7 +210,7 @@ def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
 
 def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Mark the order as not shipped."""
-    order = _find_order_entity(order_id)
+    order = _get_order_entity(order_id)
     initiator = user_service.get_user(initiator_id)
 
     if not order.shipping_required:
@@ -246,10 +246,7 @@ def cancel_order(
     Reserved quantities of articles from that order are made available
     again.
     """
-    order = _find_order_entity(order_id)
-
-    if order is None:
-        raise ValueError('Unknown order ID')
+    order = _get_order_entity(order_id)
 
     if order.is_canceled:
         raise OrderAlreadyCanceled()
@@ -317,10 +314,7 @@ def mark_order_as_paid(
     additional_event_data: Optional[Mapping[str, str]] = None,
 ) -> ShopOrderPaid:
     """Mark the order as paid."""
-    order = _find_order_entity(order_id)
-
-    if order is None:
-        raise ValueError('Unknown order ID')
+    order = _get_order_entity(order_id)
 
     if order.is_paid:
         raise OrderAlreadyMarkedAsPaid()
@@ -437,6 +431,18 @@ def _find_order_entity(order_id: OrderID) -> Optional[DbOrder]:
     return DbOrder.query.get(order_id)
 
 
+def _get_order_entity(order_id: OrderID) -> DbOrder:
+    """Return the order database entity with that id, or raise an
+    exception.
+    """
+    order = _find_order_entity(order_id)
+
+    if order is None:
+        raise ValueError(f'Unknown order ID "{order_id}"')
+
+    return order
+
+
 def find_order(order_id: OrderID) -> Optional[Order]:
     """Return the order with that id, or `None` if not found."""
     order = _find_order_entity(order_id)
@@ -449,12 +455,8 @@ def find_order(order_id: OrderID) -> Optional[Order]:
 
 def get_order(order_id: OrderID) -> Order:
     """Return the order with that id, or raise an exception."""
-    order = find_order(order_id)
-
-    if order is None:
-        raise ValueError(f'Unknown order ID "{order_id}"')
-
-    return order
+    order = _get_order_entity(order_id)
+    return order.to_transfer_object()
 
 
 def find_order_with_details(order_id: OrderID) -> Optional[Order]:
