@@ -91,7 +91,10 @@ def _load_user(
     if user_id_str is None:
         return None
 
-    user_id = UserID(UUID(user_id_str))
+    try:
+        user_id = UserID(UUID(user_id_str))
+    except ValueError:
+        return None
 
     user = user_service.find_active_user(
         user_id, include_avatar=True, include_orga_flag_for_party_id=party_id
