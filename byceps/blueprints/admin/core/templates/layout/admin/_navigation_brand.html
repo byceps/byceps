@@ -17,7 +17,7 @@
       </button>
       <ol class="dropdown-menu">
         {%- for brand in all_brands|sort(attribute='title') %}
-        <li>{{ render_brand_admin_link(brand, class='dropdown-item') }}</li>
+        <li>{{ render_brand_admin_link(brand, class='dropdown-item', dim_archived=True) }}</li>
         {%- endfor %}
       </ol>
     </div>

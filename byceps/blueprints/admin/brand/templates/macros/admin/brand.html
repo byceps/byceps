@@ -1,5 +1,11 @@
-{% macro render_brand_admin_link(brand, class=None) -%}
-  <a href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"{% if class %} class="{{ class }}"{% endif %}>{{ brand.title }}</a>
+{% macro render_brand_admin_link(brand, class=None, dim_archived=False) -%}
+<a href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"{% if class %} class="{{ class }}"{% endif %}>
+  {%- if dim_archived and brand.archived -%}
+    {{ brand.title|dim }}
+  {%- else -%}
+    {{ brand.title }}
+  {%- endif -%}
+</a>
 {%- endmacro %}
 
 
