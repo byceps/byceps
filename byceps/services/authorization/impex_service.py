@@ -17,6 +17,7 @@ import rtoml
 from ...database import db
 
 from .dbmodels import Permission as DbPermission, Role as DbRole
+from .transfer.models import PermissionID, RoleID
 from . import service
 
 
@@ -39,16 +40,19 @@ def import_from_file(path: Path) -> tuple[int, int]:
 
 def _create_permissions(permissions: list[dict[str, str]]) -> None:
     for permission in permissions:
-        service.create_permission(permission['id'], permission['title'])
+        permission_id = PermissionID(permission['id'])
+        service.create_permission(permission_id, permission['title'])
 
 
 def _create_roles(roles: list[dict[str, Union[str, list[str]]]]) -> None:
     for role in roles:
-        role_id = role['id']
+        role_id = RoleID(str(role['id']))
+        role_title = str(role['title'])
 
-        service.create_role(role_id, role['title'])
+        service.create_role(role_id, role_title)
 
-        for permission_id in role['assigned_permissions']:
+        for permission_id_str in role['assigned_permissions']:
+            permission_id = PermissionID(permission_id_str)
             service.assign_permission_to_role(permission_id, role_id)
 
 

@@ -165,7 +165,7 @@ def _record_recent_login(user_id: UserID, occurred_at: datetime) -> None:
     upsert(table, identifier, replacement)
 
 
-ANONYMOUS_USER_ID = UUID('00000000-0000-0000-0000-000000000000')
+ANONYMOUS_USER_ID = UserID(UUID('00000000-0000-0000-0000-000000000000'))
 
 
 def get_anonymous_current_user(*, locale: Optional[str] = None) -> CurrentUser:

@@ -9,6 +9,7 @@ byceps.util.user_session
 from __future__ import annotations
 from enum import Enum
 from typing import Optional
+from uuid import UUID
 
 from flask import session
 
@@ -68,14 +69,14 @@ def get_current_user(
 
 def get_user(*, party_id: Optional[PartyID] = None) -> Optional[User]:
     """Return the current user if authenticated, `None` if not."""
-    user_id = session.get(KEY_USER_ID)
+    user_id_str = session.get(KEY_USER_ID)
     auth_token = session.get(KEY_USER_AUTH_TOKEN)
 
-    return _load_user(user_id, auth_token, party_id=party_id)
+    return _load_user(user_id_str, auth_token, party_id=party_id)
 
 
 def _load_user(
-    user_id: Optional[str],
+    user_id_str: Optional[str],
     auth_token: Optional[str],
     *,
     party_id: Optional[PartyID] = None,
@@ -87,8 +88,10 @@ def _load_user(
     - the account is not enabled.
     - the auth token is invalid.
     """
-    if user_id is None:
+    if user_id_str is None:
         return None
+
+    user_id = UserID(UUID(user_id_str))
 
     user = user_service.find_active_user(
         user_id, include_avatar=True, include_orga_flag_for_party_id=party_id

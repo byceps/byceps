@@ -15,7 +15,7 @@ from flask_babel import gettext
 
 from .....config import ConfigurationError
 from .....database import generate_uuid
-from .....typing import BrandID
+from .....typing import BrandID, UserID
 
 from ....email.transfer.models import Message
 
@@ -26,7 +26,9 @@ from ..email.service import OrderEmailData
 from ..transfer.models import (
     Address,
     Order,
+    OrderID,
     OrderItem,
+    OrderNumber,
     PaymentMethod,
     PaymentState,
 )
@@ -108,11 +110,11 @@ def _build_order(
     is_paid: bool = False,
     cancelation_reason: Optional[str] = None,
 ) -> Order:
-    order_id = generate_uuid()
-    order_number = 'AWSM-ORDR-9247'
+    order_id = OrderID(generate_uuid())
+    order_number = OrderNumber('AWSM-ORDR-9247')
 
     created_at = datetime.utcnow()
-    placed_by_id = generate_uuid()
+    placed_by_id = UserID(generate_uuid())
 
     first_names = 'Bella-Bernadine'
     last_name = 'Ballerwurm'
