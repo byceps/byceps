@@ -26,7 +26,7 @@ def appoint_user_manager(
     ticket_id: TicketID, manager_id: UserID, initiator_id: UserID
 ) -> None:
     """Appoint the user as the ticket's user manager."""
-    ticket = ticket_service.find_ticket(ticket_id)
+    ticket = ticket_service.get_ticket(ticket_id)
 
     if ticket.revoked:
         raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
@@ -48,7 +48,7 @@ def appoint_user_manager(
 
 def withdraw_user_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Withdraw the ticket's custom user manager."""
-    ticket = ticket_service.find_ticket(ticket_id)
+    ticket = ticket_service.get_ticket(ticket_id)
 
     if ticket.revoked:
         raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
@@ -71,7 +71,7 @@ def appoint_user(
     ticket_id: TicketID, user_id: UserID, initiator_id: UserID
 ) -> None:
     """Appoint the user as the ticket's user."""
-    ticket = ticket_service.find_ticket(ticket_id)
+    ticket = ticket_service.get_ticket(ticket_id)
 
     if ticket.revoked:
         raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
@@ -105,7 +105,7 @@ def appoint_user(
 
 def withdraw_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Withdraw the ticket's user."""
-    ticket = ticket_service.find_ticket(ticket_id)
+    ticket = ticket_service.get_ticket(ticket_id)
 
     if ticket.revoked:
         raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')

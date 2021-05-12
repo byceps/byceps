@@ -40,9 +40,7 @@ def get_events(ticket_id: TicketID) -> Iterator[TicketEventData]:
 
 
 def _fake_ticket_creation_event(ticket_id: TicketID) -> TicketEvent:
-    ticket = ticket_service.find_ticket(ticket_id)
-    if ticket is None:
-        raise ValueError('Unknown ticket ID')
+    ticket = ticket_service.get_ticket(ticket_id)
 
     data: TicketEventData = {}
 

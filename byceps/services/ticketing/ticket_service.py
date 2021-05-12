@@ -30,9 +30,7 @@ def update_ticket_code(
     ticket_id: TicketID, code: str, initiator_id: UserID
 ) -> None:
     """Set a custom code for the ticket."""
-    ticket = find_ticket(ticket_id)
-    if ticket is None:
-        raise ValueError(f'Unknown ticket ID "{ticket_id}"')
+    ticket = get_ticket(ticket_id)
 
     if not ticket_code_service.is_ticket_code_wellformed(code):
         raise ValueError(f'Ticket code "{code}" is not well-formed')
@@ -71,6 +69,16 @@ def delete_ticket(ticket_id: TicketID) -> None:
 def find_ticket(ticket_id: TicketID) -> Optional[DbTicket]:
     """Return the ticket with that id, or `None` if not found."""
     return DbTicket.query.get(ticket_id)
+
+
+def get_ticket(ticket_id: TicketID) -> DbTicket:
+    """Return the ticket with that id, or raise an exception."""
+    ticket = find_ticket(ticket_id)
+
+    if ticket is None:
+        raise ValueError(f'Unknown ticket ID "{ticket_id}"')
+
+    return ticket
 
 
 def find_ticket_by_code(

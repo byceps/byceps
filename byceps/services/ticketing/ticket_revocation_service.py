@@ -22,10 +22,7 @@ def revoke_ticket(
     ticket_id: TicketID, initiator_id: UserID, *, reason: Optional[str] = None
 ) -> None:
     """Revoke the ticket."""
-    ticket = ticket_service.find_ticket(ticket_id)
-
-    if ticket is None:
-        raise ValueError('Unknown ticket ID.')
+    ticket = ticket_service.get_ticket(ticket_id)
 
     # Release seat.
     if ticket.occupied_seat_id:

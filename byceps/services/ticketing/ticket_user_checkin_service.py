@@ -61,10 +61,7 @@ def check_in_user(
 
 
 def _get_ticket_for_checkin(party_id: PartyID, ticket_id: TicketID) -> DbTicket:
-    ticket = ticket_service.find_ticket(ticket_id)
-
-    if ticket is None:
-        raise ValueError(f"Unknown ticket ID '{ticket_id}'")
+    ticket = ticket_service.get_ticket(ticket_id)
 
     if ticket.party_id != party_id:
         raise TicketBelongsToDifferentParty(
@@ -106,7 +103,7 @@ def _get_user_for_checkin(user_id: UserID) -> User:
 
 def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Revert a user check-in that was done by mistake."""
-    ticket = ticket_service.find_ticket(ticket_id)
+    ticket = ticket_service.get_ticket(ticket_id)
 
     initiator = user_service.get_user(initiator_id)
 

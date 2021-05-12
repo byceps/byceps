@@ -86,7 +86,7 @@ def test_revoke_ticket(admin_app, ticket, ticketing_admin):
 
     # -------------------------------- #
 
-    ticket_after = ticket_service.find_ticket(ticket_id)
+    ticket_after = ticket_service.get_ticket(ticket_id)
     assert ticket_after.revoked
 
     events_after = event_service.get_events_for_ticket(ticket_after.id)

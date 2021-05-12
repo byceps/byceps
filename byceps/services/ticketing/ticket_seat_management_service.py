@@ -135,10 +135,7 @@ def _get_ticket(ticket_id: TicketID) -> DbTicket:
     Raise an exception if the ID is unknown or if the ticket has been
     revoked.
     """
-    ticket = ticket_service.find_ticket(ticket_id)
-
-    if ticket is None:
-        raise ValueError(f'Unknown ticket ID "{ticket_id}"')
+    ticket = ticket_service.get_ticket(ticket_id)
 
     if ticket.revoked:
         raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
