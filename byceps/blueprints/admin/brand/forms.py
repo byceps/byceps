@@ -7,7 +7,7 @@ byceps.blueprints.admin.brand.forms
 """
 
 from flask_babel import lazy_gettext
-from wtforms import StringField
+from wtforms import BooleanField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
 from ....util.l10n import LocalizedForm
@@ -30,6 +30,7 @@ class UpdateForm(_BaseForm):
     image_filename = StringField(
         lazy_gettext('Image filename'), validators=[Optional()]
     )
+    archived = BooleanField(lazy_gettext('archived'))
 
 
 class EmailConfigUpdateForm(LocalizedForm):

@@ -1,6 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'brand_admin' %}
 {% set current_page_brand = brand %}
 {% set title = brand.title %}
@@ -14,7 +15,12 @@
           <li><a href="{{ url_for('.index') }}">{{ _('Brands') }}</a></li>
         </ol>
       </nav>
-      <h1>{{ brand.title }}</h1>
+      <h1>
+        {{ brand.title }}
+        {%- if brand.archived %}
+        <br>{{ render_tag('archived', class='color-disabled', icon='archived') }}
+        {%- endif %}
+      </h1>
     </div>
   {%- if has_current_user_permission(BrandPermission.update) %}
     <div class="column-auto">

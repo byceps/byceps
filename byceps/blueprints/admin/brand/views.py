@@ -133,8 +133,11 @@ def update(brand_id):
 
     title = form.title.data.strip()
     image_filename = form.image_filename.data.strip() or None
+    archived = form.archived.data
 
-    brand = brand_service.update_brand(brand.id, title, image_filename)
+    brand = brand_service.update_brand(
+        brand.id, title, image_filename, archived
+    )
 
     flash_success(
         gettext('Brand "%(title)s" has been updated.', title=brand.title)

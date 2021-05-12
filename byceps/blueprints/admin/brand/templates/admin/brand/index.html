@@ -2,6 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'brands_admin' %}
 {% set title = _('Brands') %}
 
@@ -24,7 +25,7 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>{{ _('Name') }}<br>{{ _('ID') }}</th>
+        <th colspan="2">{{ _('Name') }}<br>{{ _('ID') }}</th>
         <th class="centered">{{ _('Parties') }}</th>
         <th class="centered">{{ _('Organizers') }}</th>
       </tr>
@@ -38,6 +39,11 @@
             <strong><a class="disguised" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">{{ brand.title }}</a></strong><br>
             {{ brand.id }}
           </div>
+        </td>
+        <td>
+        {%- if brand.archived %}
+          {{ render_tag('archived', class='color-disabled', icon='archived') }}
+        {%- endif %}
         </td>
         <td class="centered bignumber">{{ party_count_by_brand_id[brand.id] }}</td>
         <td class="centered bignumber">{{ orga_count_by_brand_id[brand.id] }}</td>

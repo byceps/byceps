@@ -87,8 +87,8 @@ msgstr "Neues Passwort setzen"
 
 #: byceps/blueprints/admin/board/forms.py:18
 #: byceps/blueprints/admin/brand/forms.py:25
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:27
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:30
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:28
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:36
 #: byceps/blueprints/admin/news/forms.py:24
 #: byceps/blueprints/admin/party/forms.py:50
 #: byceps/blueprints/admin/shop/storefront/forms.py:38
@@ -213,7 +213,7 @@ msgstr "Erstellen"
 
 #: byceps/blueprints/admin/board/templates/admin/board/category_update_form.html:24
 #: byceps/blueprints/admin/brand/templates/admin/brand/email_config_update_form.html:24
-#: byceps/blueprints/admin/brand/templates/admin/brand/update_form.html:23
+#: byceps/blueprints/admin/brand/templates/admin/brand/update_form.html:24
 #: byceps/blueprints/admin/news/templates/admin/news/image_update_form.html:24
 #: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:25
 #: byceps/blueprints/admin/orga/templates/admin/orga/create_orgaflag_form.html:22
@@ -249,18 +249,24 @@ msgstr "Speichern"
 msgid "Image filename"
 msgstr "Bild-Dateiname"
 
-#: byceps/blueprints/admin/brand/forms.py:37
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:72
+#: byceps/blueprints/admin/brand/forms.py:33
+#: byceps/blueprints/admin/party/forms.py:60
+#: byceps/blueprints/admin/site/forms.py:90
+msgid "archived"
+msgstr "archiviert"
+
+#: byceps/blueprints/admin/brand/forms.py:38
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:78
 msgid "Sender address"
 msgstr "Absender-Adresse"
 
-#: byceps/blueprints/admin/brand/forms.py:40
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:76
+#: byceps/blueprints/admin/brand/forms.py:41
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:82
 msgid "Sender name"
 msgstr "Absender-Name"
 
-#: byceps/blueprints/admin/brand/forms.py:43
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:80
+#: byceps/blueprints/admin/brand/forms.py:44
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:86
 msgid "Contact address"
 msgstr "Kontaktadresse"
 
@@ -269,12 +275,12 @@ msgstr "Kontaktadresse"
 msgid "Brand \"%(title)s\" has been created."
 msgstr "Die Marke \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/brand/views.py:142
+#: byceps/blueprints/admin/brand/views.py:143
 #, python-format
 msgid "Brand \"%(title)s\" has been updated."
 msgstr "Die Marke \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/brand/views.py:197
+#: byceps/blueprints/admin/brand/views.py:198
 msgid "Email configuration has been updated."
 msgstr "Die E-Mail-Konfiguration wurde aktualisiert."
 
@@ -283,8 +289,8 @@ msgid "Create Brand"
 msgstr "Marke erstellen"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:9
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:6
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:14
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:7
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:15
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:21
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_brands.html:4
 msgid "Brands"
@@ -294,17 +300,17 @@ msgstr "Marken"
 msgid "Update Email Configuration"
 msgstr "E-Mail-Konfiguration bearbeiten"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:17
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:18
 msgid "Create brand"
 msgstr "Marke erstellen"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:27
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:40
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:28
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:46
 #: byceps/blueprints/admin/snippet/forms.py:34
 msgid "Name"
 msgstr "Name"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:28
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:29
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:41
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:27
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:21
@@ -312,13 +318,13 @@ msgstr "Name"
 msgid "Parties"
 msgstr "Partys"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:29
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:30
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:47
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:22
 msgid "Organizers"
 msgstr "Organisatoren"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:49
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:55
 msgid "No brands defined."
 msgstr "Es sind keine Marken hinterlegt."
 
@@ -326,14 +332,14 @@ msgstr "Es sind keine Marken hinterlegt."
 msgid "Update Brand"
 msgstr "Marke bearbeiten"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:22
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:64
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:28
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:70
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:46
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:37
 msgid "Update"
 msgstr "Bearbeiten"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:35
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:41
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
 #: byceps/blueprints/admin/more/templates/admin/more/view_site.html:17
@@ -341,19 +347,19 @@ msgstr "Bearbeiten"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:41
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:47
 msgid "Value"
 msgstr "Wert"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:54
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:60
 msgid "No settings defined for this brand."
 msgstr "Für diese Marke sind keine Einstellungen hinterlegt."
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:59
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:65
 msgid "Email Configuration"
 msgstr "E-Mail-Konfiguration"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:85
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:91
 msgid "Not configured"
 msgstr "Nicht konfiguriert"
 
@@ -941,11 +947,6 @@ msgstr "Sitzplatzverwaltung geöffnet"
 #: byceps/blueprints/admin/party/forms.py:59
 msgid "canceled"
 msgstr "abgesagt"
-
-#: byceps/blueprints/admin/party/forms.py:60
-#: byceps/blueprints/admin/site/forms.py:90
-msgid "archived"
-msgstr "archiviert"
 
 #: byceps/blueprints/admin/party/views.py:175
 #, python-format
@@ -1541,7 +1542,7 @@ msgid "Invalid confirmation word"
 msgstr "Ungültiges Bestätigungswort"
 
 #: byceps/blueprints/admin/user/views.py:194
-#: byceps/blueprints/site/user/creation/views.py:118
+#: byceps/blueprints/site/user/creation/views.py:119
 #, python-format
 msgid "User \"%(screen_name)s\" could not be created."
 msgstr "Das Benutzerkonto für \"%(screen_name)s\" konnte nicht angelegt werden."
@@ -2409,7 +2410,7 @@ msgstr "Bots sind nicht erlaubt."
 msgid "Newsletter"
 msgstr "Newsletter"
 
-#: byceps/blueprints/site/user/creation/views.py:126
+#: byceps/blueprints/site/user/creation/views.py:127
 #, python-format
 msgid ""
 "User \"%(screen_name)s\" has been created. Before you can log in, please "
@@ -2419,7 +2420,7 @@ msgstr ""
 "damit anmelden kannst, muss zunächst der Link in der an die angegebene "
 "Adresse verschickten E-Mail besucht werden."
 
-#: byceps/blueprints/site/user/creation/views.py:148
+#: byceps/blueprints/site/user/creation/views.py:149
 msgid "User account creation is disabled."
 msgstr "Das Erstellen von Benutzerkonten ist deaktiviert."
 
@@ -2505,7 +2506,7 @@ msgstr "Deine Nachricht an %(screen_name)s wurde versendet."
 msgid "Send"
 msgstr "Senden"
 
-#: byceps/services/news/html_service.py:76
+#: byceps/services/news/html_service.py:77
 msgid "Image credit"
 msgstr "Bild"
 
@@ -2513,17 +2514,17 @@ msgstr "Bild"
 msgid "Not paid in time."
 msgstr "Kein fristgerechter Geldeingang feststellbar."
 
-#: byceps/services/shop/order/email/service.py:73
+#: byceps/services/shop/order/email/service.py:74
 #, python-format
 msgid "Your order (%(order_number)s) has been received."
 msgstr "Deine Bestellung (%(order_number)s) ist eingegangen."
 
-#: byceps/services/shop/order/email/service.py:104
+#: byceps/services/shop/order/email/service.py:105
 #, python-format
 msgid "Your order (%(order_number)s) has been canceled."
 msgstr "Deine Bestellung (%(order_number)s) ist storniert worden."
 
-#: byceps/services/shop/order/email/service.py:122
+#: byceps/services/shop/order/email/service.py:123
 #, python-format
 msgid "Your order (%(order_number)s) has been paid."
 msgstr "Deine Bestellung (%(order_number)s) ist bezahlt worden."

@@ -18,6 +18,7 @@ class Brand:
     title: str
     image_filename: Optional[str]
     image_url_path: Optional[str]
+    archived: bool
 
 
 @dataclass(frozen=True)

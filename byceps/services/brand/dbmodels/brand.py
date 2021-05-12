@@ -21,6 +21,7 @@ class Brand(db.Model):
     id = db.Column(db.UnicodeText, primary_key=True)
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     image_filename = db.Column(db.UnicodeText, nullable=True)
+    archived = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(
         self,
