@@ -23,7 +23,13 @@ from ...shop import service as shop_service
 from ...shop.transfer.models import ShopID
 
 from ..email.service import OrderEmailData
-from ..transfer.models import Order, OrderItem, PaymentMethod, PaymentState
+from ..transfer.models import (
+    Address,
+    Order,
+    OrderItem,
+    PaymentMethod,
+    PaymentState,
+)
 
 from . import service as shop_order_email_service
 
@@ -106,11 +112,11 @@ def _build_order(
     order_number = 'AWSM-ORDR-9247'
 
     created_at = datetime.utcnow()
-    placed_by_id = None
+    placed_by_id = generate_uuid()
 
     first_names = 'Bella-Bernadine'
     last_name = 'Ballerwurm'
-    address = None
+    address = Address('Germany', '22999', 'Büttenwarder', 'Deichweg 23')
 
     total_amount = Decimal('42.95')
     items: list[OrderItem] = []
