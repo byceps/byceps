@@ -116,6 +116,16 @@ def find_seat(seat_id: SeatID) -> Optional[DbSeat]:
     return DbSeat.query.get(seat_id)
 
 
+def get_seat(seat_id: SeatID) -> DbSeat:
+    """Return the seat with that id, or raise an exception."""
+    seat = find_seat(seat_id)
+
+    if seat is None:
+        raise ValueError(f'Unknown seat ID "{seat_id}"')
+
+    return seat
+
+
 def find_seats(seat_ids: set[SeatID]) -> set[DbSeat]:
     """Return the seats with those IDs."""
     if not seat_ids:

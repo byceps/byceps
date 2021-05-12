@@ -150,12 +150,12 @@ def _get_additional_data_for_seat_occupied_event(
     event: TicketEvent,
 ) -> Iterator[tuple[str, Any]]:
     seat_id = event.data['seat_id']
-    seat = seat_service.find_seat(seat_id)
+    seat = seat_service.get_seat(seat_id)
     yield 'seat_label', seat.label
 
     previous_seat_id = event.data.get('previous_seat_id')
     if previous_seat_id:
-        previous_seat = seat_service.find_seat(previous_seat_id)
+        previous_seat = seat_service.get_seat(previous_seat_id)
         yield 'previous_seat_label', previous_seat.label
 
 
@@ -164,7 +164,7 @@ def _get_additional_data_for_seat_released_event(
 ) -> Iterator[tuple[str, Any]]:
     seat_id = event.data.get('seat_id')
     if seat_id:
-        seat = seat_service.find_seat(seat_id)
+        seat = seat_service.get_seat(seat_id)
         yield 'seat_label', seat.label
 
 

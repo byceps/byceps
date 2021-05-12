@@ -74,9 +74,7 @@ def occupy_seat(
 
     _deny_seat_management_if_ticket_belongs_to_bundle(ticket)
 
-    seat = seat_service.find_seat(seat_id)
-    if seat is None:
-        raise ValueError('Invalid seat ID')
+    seat = seat_service.get_seat(seat_id)
 
     if seat.category_id != ticket.category_id:
         raise TicketCategoryMismatch(
