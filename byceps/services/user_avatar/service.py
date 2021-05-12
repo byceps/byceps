@@ -95,7 +95,9 @@ def get_avatar_url_for_user(user_id: UserID) -> Optional[str]:
     return avatar_urls_by_user_id.get(user_id)
 
 
-def get_avatar_urls_for_users(user_ids: set[UserID]) -> dict[UserID, str]:
+def get_avatar_urls_for_users(
+    user_ids: set[UserID],
+) -> dict[UserID, Optional[str]]:
     """Return the URLs of those users' current avatars."""
     if not user_ids:
         return {}

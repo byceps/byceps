@@ -95,7 +95,7 @@ def delete_tourney(tourney_id: TourneyID) -> None:
     db.session.commit()
 
 
-def find_tourney(tourney_id: int) -> Optional[Tourney]:
+def find_tourney(tourney_id: TourneyID) -> Optional[Tourney]:
     """Return the tourney with that id, or `None` if not found."""
     tourney = _find_db_tourney(tourney_id)
 
@@ -109,7 +109,7 @@ def _find_db_tourney(tourney_id: TourneyID) -> Optional[DbTourney]:
     return DbTourney.query.get(tourney_id)
 
 
-def get_tourney(tourney_id: int) -> Tourney:
+def get_tourney(tourney_id: TourneyID) -> Tourney:
     """Return the tourney with that ID.
 
     Raise an exception if not found.
@@ -122,7 +122,7 @@ def get_tourney(tourney_id: int) -> Tourney:
     return tourney
 
 
-def _get_db_tourney(tourney_id: int) -> DbTourney:
+def _get_db_tourney(tourney_id: TourneyID) -> DbTourney:
     tourney = _find_db_tourney(tourney_id)
 
     if tourney is None:
@@ -165,7 +165,7 @@ def _to_tourney_with_category(
     db_tourney: DbTourney,
     db_category: DbTourneyCategory,
     current_participant_count: int = -1,
-) -> Tourney:
+) -> TourneyWithCategory:
     tourney = _db_entity_to_tourney(db_tourney, current_participant_count)
     category = category_service._db_entity_to_category(db_category)
 

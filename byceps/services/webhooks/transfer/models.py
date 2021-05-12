@@ -24,7 +24,7 @@ class OutgoingWebhook:
     event_selectors: EventSelectors
     format: str
     text_prefix: Optional[str]
-    extra_fields: Optional[dict[str, Any]]
+    extra_fields: dict[str, Any]
     url: str
     description: str
     enabled: bool

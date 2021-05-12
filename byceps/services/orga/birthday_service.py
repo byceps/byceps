@@ -65,7 +65,7 @@ def _collect_orgas_with_known_birthdays() -> Iterator[tuple[User, Birthday]]:
 
 
 def _to_user_dto(
-    user: DbUser, avatar_urls_by_user_id: dict[UserID, str]
+    user: DbUser, avatar_urls_by_user_id: dict[UserID, Optional[str]]
 ) -> User:
     """Create user DTO from database entity."""
     avatar_url = avatar_urls_by_user_id.get(user.id)

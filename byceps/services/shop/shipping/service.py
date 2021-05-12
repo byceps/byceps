@@ -116,7 +116,7 @@ def _get_article_descriptions(
 ) -> dict[ArticleNumber, str]:
     """Look up description texts of the specified articles."""
     if not article_numbers:
-        return []
+        return {}
 
     articles = DbArticle.query \
         .options(db.load_only('item_number', 'description')) \

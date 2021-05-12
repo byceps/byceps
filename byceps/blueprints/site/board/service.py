@@ -134,7 +134,7 @@ def enrich_creators(
     for posting in postings:
         user_id = posting.creator_id
 
-        badges = badges_by_user_id.get(user_id, frozenset())
+        badges = badges_by_user_id.get(user_id, set())
 
         if user_id in ticket_users:
             ticket = Ticket(party.title)

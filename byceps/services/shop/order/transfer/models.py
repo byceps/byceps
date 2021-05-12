@@ -92,4 +92,4 @@ class Order:
     is_invoiced: bool
     is_shipping_required: bool
     is_shipped: bool
-    cancelation_reason: str
+    cancelation_reason: Optional[str]

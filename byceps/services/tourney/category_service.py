@@ -91,9 +91,7 @@ def delete_category(category_id: TourneyCategoryID) -> None:
     db.session.commit()
 
 
-def find_category(
-    category_id: TourneyCategoryID,
-) -> Optional[DbTourneyCategory]:
+def find_category(category_id: TourneyCategoryID) -> Optional[TourneyCategory]:
     """Return the category with that id, or `None` if not found."""
     category = _find_db_category(category_id)
 

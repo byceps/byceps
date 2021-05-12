@@ -31,7 +31,7 @@ def create_subject(
     title: str,
     checkbox_label: str,
     checkbox_link_target: Optional[str],
-) -> SubjectID:
+) -> Subject:
     """Create a new subject."""
     subject = DbSubject(name, title, checkbox_label, checkbox_link_target)
 

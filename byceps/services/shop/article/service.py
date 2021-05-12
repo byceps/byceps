@@ -213,7 +213,7 @@ def get_articles_by_numbers(
 ) -> set[Article]:
     """Return the articles with those numbers."""
     if not article_numbers:
-        return []
+        return set()
 
     rows = DbArticle.query \
         .filter(DbArticle.item_number.in_(article_numbers)) \
