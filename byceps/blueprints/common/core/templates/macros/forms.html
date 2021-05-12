@@ -21,7 +21,7 @@
   {%- set kwargs2 = kwargs %}
   {%- call _row(field) %}
         <div class="checkbox">
-          {{- field(**kwargs2) }} {{ field.label(label) }}
+          <label>{{- field(**kwargs2) }} {{ label }}</label>
         </div>
   {%- endcall %}
 {%- endmacro %}
