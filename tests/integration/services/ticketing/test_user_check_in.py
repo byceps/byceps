@@ -57,7 +57,7 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
     # -------------------------------- #
 
     ticket_after = ticket_service.get_ticket(ticket_id)
-    assert ticket_before.user_checked_in
+    assert ticket_after.user_checked_in
 
     assert event.__class__ is TicketCheckedIn
     assert event.occurred_at is not None
