@@ -9,7 +9,7 @@ byceps.services.shop.order.actions.award_badge
 from .....typing import UserID
 
 from ....user_badge import awarding_service, badge_service
-from ....user_badge.transfer.models import BadgeAwarding, BadgeID
+from ....user_badge.transfer.models import BadgeAwarding
 
 from ...article.transfer.models import ArticleNumber
 
@@ -26,23 +26,13 @@ def award_badge(
     parameters: Parameters,
 ) -> None:
     """Award badge to user."""
-    badge_id = parameters['badge_id']
+    badge = badge_service.get_badge(parameters['badge_id'])
     user_id = order.placed_by_id
 
-    _verify_badge_id(badge_id)
-
     for _ in range(quantity):
-        awarding, _ = awarding_service.award_badge_to_user(badge_id, user_id)
+        awarding, _ = awarding_service.award_badge_to_user(badge.id, user_id)
 
         _create_order_event(order.id, awarding)
-
-
-def _verify_badge_id(badge_id: BadgeID) -> None:
-    """Raise exception if no badge with that ID is known."""
-    badge = badge_service.find_badge(badge_id)
-
-    if badge is None:
-        raise ValueError(f'Unknown badge ID "{badge_id}"')
 
 
 def _create_order_event(order_id: OrderID, awarding: BadgeAwarding) -> None:

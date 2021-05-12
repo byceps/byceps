@@ -17,7 +17,7 @@ from ...typing import UserID
 
 from ..user import event_service, service as user_service
 
-from .badge_service import _db_entity_to_badge, find_badge, get_badges
+from .badge_service import _db_entity_to_badge, get_badge, get_badges
 from .dbmodels.awarding import BadgeAwarding as DbBadgeAwarding
 from .dbmodels.badge import Badge as DbBadge
 from .transfer.models import (
@@ -32,10 +32,7 @@ def award_badge_to_user(
     badge_id: BadgeID, user_id: UserID, *, initiator_id: Optional[UserID] = None
 ) -> tuple[BadgeAwarding, UserBadgeAwarded]:
     """Award the badge to the user."""
-    badge = find_badge(badge_id)
-    if badge is None:
-        raise ValueError(f'Unknown badge ID "{badge_id}"')
-
+    badge = get_badge(badge_id)
     user = user_service.get_user(user_id)
     awarded_at = datetime.utcnow()
 

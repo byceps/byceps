@@ -86,6 +86,16 @@ def find_badge(badge_id: BadgeID) -> Optional[Badge]:
     return _db_entity_to_badge(badge)
 
 
+def get_badge(badge_id: BadgeID) -> Badge:
+    """Return the badge with that id, or raise an exception."""
+    badge = find_badge(badge_id)
+
+    if badge is None:
+        raise ValueError(f'Unknown badge ID "{badge_id}"')
+
+    return badge
+
+
 def find_badge_by_slug(slug: str) -> Optional[Badge]:
     """Return the badge with that slug, or `None` if not found."""
     badge = DbBadge.query \
