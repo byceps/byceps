@@ -267,9 +267,9 @@ def assemble_text_for_board_posting_unhidden(
 
 
 def _get_board_label(topic_id: TopicID) -> str:
-    topic = board_topic_query_service.find_topic_by_id(topic_id)
+    topic = board_topic_query_service.get_topic(topic_id)
     brand_id = topic.category.board.brand_id
-    brand = brand_service.find_brand(brand_id)
+    brand = brand_service.get_brand(brand_id)
     return f'"{brand.title}"-Forum'
 
 
