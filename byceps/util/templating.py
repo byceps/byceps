@@ -64,7 +64,7 @@ class SiteTemplateOverridesLoader(BaseLoader):
     """Look for site-specific template overrides."""
 
     def __init__(self) -> None:
-        self._loaders_by_site_id = {}
+        self._loaders_by_site_id: dict[str, BaseLoader] = {}
 
     def get_source(self, environment: Environment, template: Template) -> str:
         site_id = getattr(g, 'site_id', None)

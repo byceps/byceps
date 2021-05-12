@@ -28,7 +28,7 @@ from ..storefront import service as storefront_service
 from ..storefront.transfer.models import StorefrontID
 
 from .dbmodels.order import Order as DbOrder
-from .dbmodels.order_event import OrderEvent as DbOrderEvent
+from .dbmodels.order_event import OrderEvent as DbOrderEvent, OrderEventData
 from .dbmodels.order_item import OrderItem as DbOrderItem
 from .models.orderer import Orderer
 from . import action_service, sequence_service
@@ -334,7 +334,7 @@ def mark_order_as_paid(
     event_type = 'order-paid'
     # Add required, internally set properties after given additional
     # ones to ensure the former are not overridden by the latter.
-    event_data = {}
+    event_data: OrderEventData = {}
     if additional_event_data is not None:
         event_data.update(additional_event_data)
     event_data.update(

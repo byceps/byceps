@@ -6,6 +6,7 @@ byceps.services.shop.order.email.example_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 from typing import Optional
@@ -22,7 +23,7 @@ from ...shop import service as shop_service
 from ...shop.transfer.models import ShopID
 
 from ..email.service import OrderEmailData
-from ..transfer.models import Order, PaymentMethod, PaymentState
+from ..transfer.models import Order, OrderItem, PaymentMethod, PaymentState
 
 from . import service as shop_order_email_service
 
@@ -112,7 +113,7 @@ def _build_order(
     address = None
 
     total_amount = Decimal('42.95')
-    items = []
+    items: list[OrderItem] = []
     payment_method = PaymentMethod.bank_transfer
 
     return Order(

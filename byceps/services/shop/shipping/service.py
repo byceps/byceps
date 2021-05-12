@@ -92,7 +92,7 @@ def _aggregate_ordered_article_quantites(
     article_descriptions: dict[ArticleNumber, str],
 ) -> Iterator[ArticleToShip]:
     """Aggregate article quantities per payment state."""
-    d = defaultdict(Counter)
+    d: defaultdict[ArticleNumber, Counter] = defaultdict(Counter)
 
     for item in order_item_quantities:
         d[item.article_number][item.payment_state] += item.quantity

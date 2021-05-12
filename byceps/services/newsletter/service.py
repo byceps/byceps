@@ -126,7 +126,9 @@ def count_subscriptions_by_state(
     rows = _build_query_for_current_state(list_id) \
         .all()
 
-    totals = {state: 0 for state in SubscriptionState}
+    totals: dict[Union[SubscriptionState, str], int] = {
+        state: 0 for state in SubscriptionState
+    }
 
     for state_name, count in rows:
         state = SubscriptionState[state_name]

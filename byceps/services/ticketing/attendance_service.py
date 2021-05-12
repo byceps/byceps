@@ -226,7 +226,7 @@ def _get_top_archived_attendees_for_parties(
 def _merge_top_attendance_counts(
     xs: list[list[tuple[UserID, int]]]
 ) -> Counter[UserID]:
-    counter = Counter()
+    counter: Counter = Counter()
 
     for x in xs:
         counter.update(dict(x))
