@@ -38,7 +38,7 @@ def test_mark_order_as_paid(order, admin_user):
         order.id, PaymentMethod.cash, admin_user.id
     )
 
-    order_after = order_service.find_order(order.id)
+    order_after = order_service.get_order(order.id)
     assert order_after.payment_method == PaymentMethod.cash
     assert order_after.payment_state == PaymentState.paid
     assert not order_after.is_open

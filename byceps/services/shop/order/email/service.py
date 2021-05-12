@@ -139,7 +139,7 @@ def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
 
 def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     """Collect data required for an order e-mail template."""
-    order = order_service.find_order(order_id)
+    order = order_service.get_order(order_id)
 
     shop = shop_service.get_shop(order.shop_id)
     orderer_id = order.placed_by_id

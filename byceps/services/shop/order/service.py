@@ -385,7 +385,7 @@ def _update_payment_state(
 
 def delete_order(order_id: OrderID) -> None:
     """Delete an order."""
-    order = find_order(order_id)
+    order = get_order(order_id)
 
     db.session.query(DbOrderEvent) \
         .filter_by(order_id=order_id) \
@@ -445,6 +445,16 @@ def find_order(order_id: OrderID) -> Optional[Order]:
         return None
 
     return order.to_transfer_object()
+
+
+def get_order(order_id: OrderID) -> Order:
+    """Return the order with that id, or raise an exception."""
+    order = find_order(order_id)
+
+    if order is None:
+        raise ValueError(f'Unknown order ID "{order_id}"')
+
+    return order
 
 
 def find_order_with_details(order_id: OrderID) -> Optional[Order]:
