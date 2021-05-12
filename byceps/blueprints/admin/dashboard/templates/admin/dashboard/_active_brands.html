@@ -8,7 +8,7 @@
 
 {%- if active_brands %}
   {%- for brand in active_brands|sort(attribute='title') %}
-    {%- call render_cell(href=url_for('brand_admin.view', brand_id=brand.id), additional_classes='less-padding') %}
+    {%- call render_cell(href=url_for('admin_dashboard.view_brand', brand_id=brand.id), additional_classes='less-padding') %}
   <div title="{{ brand.title }}">{{ render_brand_avatar(brand, '64') }}</div>
     {%- endcall %}
   {%- endfor %}
