@@ -49,6 +49,12 @@
         required_permission=OrgaDetailPermission.view,
         icon='users')
       .add_item(
+        url_for('news_admin.channel_index_for_brand', brand_id=brand.id),
+        _('News Channels'),
+        id='news_admin',
+        required_permission=NewsItemPermission.view,
+        icon='news')
+      .add_item(
         url_for('shop_shop_admin.view_for_brand', brand_id=brand.id),
         _('Shop'),
         id='shop_shop_admin',

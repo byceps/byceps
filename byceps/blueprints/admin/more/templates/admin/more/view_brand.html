@@ -16,7 +16,6 @@
   {%- with items = [
     (_('Settings'), 'settings', url_for('brand_admin.view', brand_id=brand.id), BrandPermission.view),
     (_('Newsletter Subscriptions'), 'email', url_for('newsletter_admin.view_subscriptions', list_id=brand.id), NewsletterPermission.view_subscriptions),
-    (_('News Channels'), 'news', url_for('news_admin.channel_index_for_brand', brand_id=brand.id), NewsItemPermission.view),
     (_('Discussion Boards'), 'board', url_for('board_admin.board_index_for_brand', brand_id=brand.id), BoardCategoryPermission.view),
     (_('Regular Guests'), 'users', url_for('attendance_admin.view_for_brand', brand_id=brand.id), AdminPermission.access),
     (_('Brand Snippets'), 'snippet', url_for('snippet_admin.index_for_scope', scope_type='brand', scope_name=brand.id), SnippetPermission.view),
