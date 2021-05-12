@@ -46,6 +46,7 @@ def _is_svg(stream: BinaryIO) -> bool:
     header = stream.read(80)
     stream.seek(0)
 
-    return header.startswith(b'<svg') or (
-        header.startswith(b'<?xml version="1.0"') and header.find(b'<svg')
+    return bool(
+        header.startswith(b'<svg')
+        or (header.startswith(b'<?xml version="1.0"') and header.find(b'<svg'))
     )
