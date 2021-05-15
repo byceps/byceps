@@ -162,7 +162,7 @@ def create_form(shop_id, erroneous_form=None):
     brand = brand_service.get_brand(shop.brand_id)
 
     article_number_sequences = (
-        article_sequence_service.find_article_number_sequences_for_shop(shop.id)
+        article_sequence_service.get_article_number_sequences_for_shop(shop.id)
     )
     article_number_sequence_available = bool(article_number_sequences)
 
@@ -190,7 +190,7 @@ def create(shop_id):
     form = ArticleCreateForm(request.form)
 
     article_number_sequences = (
-        article_sequence_service.find_article_number_sequences_for_shop(shop.id)
+        article_sequence_service.get_article_number_sequences_for_shop(shop.id)
     )
     if not article_number_sequences:
         flash_error(

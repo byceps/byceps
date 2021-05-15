@@ -69,7 +69,7 @@ def get_article_number_sequence(
     return _db_entity_to_article_number_sequence(sequence)
 
 
-def find_article_number_sequences_for_shop(
+def get_article_number_sequences_for_shop(
     shop_id: ShopID,
 ) -> list[ArticleNumberSequence]:
     """Return the article number sequences defined for that shop."""

@@ -67,7 +67,7 @@ def get_order_number_sequence(
     return _db_entity_to_order_number_sequence(sequence)
 
 
-def find_order_number_sequences_for_shop(
+def get_order_number_sequences_for_shop(
     shop_id: ShopID,
 ) -> list[OrderNumberSequence]:
     """Return the order number sequences defined for that shop."""

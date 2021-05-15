@@ -52,7 +52,7 @@ def index_for_shop(shop_id):
 
 def _get_order_number_prefixes_by_sequence_id(storefronts, shop_id):
     sequence_ids = {sf.order_number_sequence_id for sf in storefronts}
-    sequences = order_sequence_service.find_order_number_sequences_for_shop(
+    sequences = order_sequence_service.get_order_number_sequences_for_shop(
         shop_id
     )
     return {seq.id: seq.prefix for seq in sequences}
@@ -93,7 +93,7 @@ def create_form(shop_id, erroneous_form=None):
 
     catalogs = catalog_service.get_all_catalogs()
     order_number_sequences = (
-        order_sequence_service.find_order_number_sequences_for_shop(shop.id)
+        order_sequence_service.get_order_number_sequences_for_shop(shop.id)
     )
     order_number_sequence_available = bool(order_number_sequences)
 
@@ -120,7 +120,7 @@ def create(shop_id):
     catalogs = catalog_service.get_all_catalogs()
 
     order_number_sequences = (
-        order_sequence_service.find_order_number_sequences_for_shop(shop.id)
+        order_sequence_service.get_order_number_sequences_for_shop(shop.id)
     )
     if not order_number_sequences:
         flash_error(
@@ -185,7 +185,7 @@ def update_form(storefront_id, erroneous_form=None):
 
     catalogs = catalog_service.get_all_catalogs()
     order_number_sequences = (
-        order_sequence_service.find_order_number_sequences_for_shop(shop.id)
+        order_sequence_service.get_order_number_sequences_for_shop(shop.id)
     )
 
     form = (
@@ -212,7 +212,7 @@ def update(storefront_id):
 
     catalogs = catalog_service.get_all_catalogs()
     order_number_sequences = (
-        order_sequence_service.find_order_number_sequences_for_shop(
+        order_sequence_service.get_order_number_sequences_for_shop(
             storefront.shop_id
         )
     )
