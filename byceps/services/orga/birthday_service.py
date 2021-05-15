@@ -8,7 +8,7 @@ byceps.services.orga.birthday_service
 
 from __future__ import annotations
 from itertools import islice
-from typing import Iterator, Optional, Sequence
+from typing import Iterable, Iterator, Optional
 
 from ...database import db
 
@@ -32,8 +32,8 @@ def get_orgas_with_birthday_today() -> set[User]:
 
 def collect_orgas_with_next_birthdays(
     *, limit: Optional[int] = None
-) -> Iterator[tuple[User, Birthday]]:
-    """Yield the next birthdays of organizers, sorted by month and day."""
+) -> list[tuple[User, Birthday]]:
+    """Return the next birthdays of organizers, sorted by month and day."""
     orgas_with_birthdays = _collect_orgas_with_known_birthdays()
 
     sorted_orgas = sort_users_by_next_birthday(orgas_with_birthdays)
@@ -45,7 +45,7 @@ def collect_orgas_with_next_birthdays(
 
 
 def _collect_orgas_with_known_birthdays() -> Iterator[tuple[User, Birthday]]:
-    """Return all organizers whose birthday is known."""
+    """Yield all organizers whose birthday is known."""
     users = DbUser.query \
         .join(DbOrgaFlag) \
         .join(DbUserDetail) \
@@ -81,12 +81,12 @@ def _to_user_dto(
 
 
 def sort_users_by_next_birthday(
-    users_and_birthdays: Sequence[tuple[User, Birthday]]
-) -> Sequence[tuple[User, Birthday]]:
-    return sorted(
+    users_and_birthdays: Iterable[tuple[User, Birthday]]
+) -> list[tuple[User, Birthday]]:
+    return list(sorted(
         users_and_birthdays,
         key=lambda user_and_birthday: (
             user_and_birthday[1].days_until_next_birthday,
             -user_and_birthday[1].age,
         ),
-    )
+    ))

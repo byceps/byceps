@@ -59,7 +59,12 @@ def find_document_id_for_brand(brand_id: BrandID) -> Optional[DocumentID]:
     none is configured.
     """
     setting_name = 'terms_document_id'
-    return brand_settings_service.find_setting_value(brand_id, setting_name)
+    value = brand_settings_service.find_setting_value(brand_id, setting_name)
+
+    if value is None:
+        return None
+
+    return DocumentID(value)
 
 
 def _db_entity_to_document(document: DbDocument) -> Document:

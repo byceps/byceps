@@ -58,7 +58,7 @@ def create_image(
         image_dimensions = image_service.determine_dimensions(stream)
         _check_image_dimensions(image_dimensions)
 
-    image_id = generate_uuid()
+    image_id = ImageID(generate_uuid())
     number = _get_next_available_number(item.id)
     filename = f'{image_id}.{image_type.name}'
 

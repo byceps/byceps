@@ -39,7 +39,7 @@ def register_permission_enum(enum: Enum):
     permission_registry.register_enum(enum)
 
 
-def get_permissions_for_user(user_id: UserID) -> set[Enum]:
+def get_permissions_for_user(user_id: UserID) -> frozenset[Enum]:
     """Return the permissions this user has been granted."""
     permission_ids = authorization_service.get_permission_ids_for_user(user_id)
     return permission_registry.get_enum_members(permission_ids)
@@ -83,7 +83,7 @@ class PermissionRegistry:
             )
             return None
 
-    def get_enum_members(self, permission_ids):
+    def get_enum_members(self, permission_ids) -> frozenset[Enum]:
         """Return the enums that are registered for the permission IDs.
 
         If no enum is found for a permission ID, it is silently ignored.

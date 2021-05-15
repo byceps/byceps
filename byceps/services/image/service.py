@@ -7,7 +7,7 @@ byceps.services.image.service
 """
 
 from __future__ import annotations
-from typing import BinaryIO, FrozenSet, Iterable
+from typing import BinaryIO, Iterable, Union
 
 from ...util.image import read_dimensions
 from ...util.image.models import Dimensions, ImageType
@@ -18,18 +18,18 @@ class ImageTypeProhibited(ValueError):
     pass
 
 
-def get_image_type_names(types: Iterable[ImageType]) -> FrozenSet[str]:
+def get_image_type_names(types: Iterable[ImageType]) -> frozenset[str]:
     """Return the names of the image types."""
     return frozenset(t.name.upper() for t in types)
 
 
 def determine_image_type(
-    stream: BinaryIO, allowed_types: set[ImageType]
+    stream: BinaryIO, allowed_types: Union[frozenset[ImageType], set[ImageType]]
 ) -> ImageType:
     """Extract image type from stream."""
     image_type = guess_type(stream)
 
-    if image_type not in allowed_types:
+    if (image_type is None) or (image_type not in allowed_types):
         allowed_type_names = get_image_type_names(allowed_types)
         allowed_type_names_string = ', '.join(sorted(allowed_type_names))
 

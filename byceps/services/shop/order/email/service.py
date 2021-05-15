@@ -143,7 +143,7 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
 
     shop = shop_service.get_shop(order.shop_id)
     orderer_id = order.placed_by_id
-    screen_name = user_service.get_user(orderer_id).screen_name
+    screen_name = user_service.get_user(orderer_id).screen_name or 'UnknownUser'
     email_address = user_service.get_email_address(orderer_id)
 
     return OrderEmailData(

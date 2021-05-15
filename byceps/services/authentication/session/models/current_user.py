@@ -19,7 +19,7 @@ class CurrentUser(User):
     """The current user, anonymous or logged in."""
 
     authenticated: bool
-    permissions: set[Enum]
+    permissions: frozenset[Enum]
     locale: Optional[str]
 
     def __eq__(self, other) -> bool:

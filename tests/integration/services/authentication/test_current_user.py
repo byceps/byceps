@@ -27,10 +27,10 @@ def test_get_anonymous_current_user():
 
 def test_get_authenticated_current_user(user):
     permission_enum = create_permission_enum('example', ['do_this', 'do_that'])
-    permissions = {
+    permissions = frozenset([
         permission_enum.do_this,
         permission_enum.do_that,
-    }
+    ])
     locale = 'de'
 
     current_user = session_service.get_authenticated_current_user(

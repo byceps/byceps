@@ -66,7 +66,7 @@ class SiteTemplateOverridesLoader(BaseLoader):
     def __init__(self) -> None:
         self._loaders_by_site_id: dict[str, BaseLoader] = {}
 
-    def get_source(self, environment: Environment, template: Template) -> str:
+    def get_source(self, environment: Environment, template: str) -> str:
         site_id = getattr(g, 'site_id', None)
         if site_id is None:
             # Site could not be determined. Thus, no site-specific
