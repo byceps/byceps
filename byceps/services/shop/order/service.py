@@ -58,7 +58,7 @@ def place_order(
 
     orderer_user = user_service.get_user(orderer.user_id)
 
-    order_number_sequence = sequence_service.find_order_number_sequence(
+    order_number_sequence = sequence_service.get_order_number_sequence(
         storefront.order_number_sequence_id
     )
     order_number = sequence_service.generate_order_number(

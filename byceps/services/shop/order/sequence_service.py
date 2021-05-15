@@ -53,18 +53,16 @@ def delete_order_number_sequence(sequence_id: OrderNumberSequenceID) -> None:
     db.session.commit()
 
 
-def find_order_number_sequence(
+def get_order_number_sequence(
     sequence_id: OrderNumberSequenceID,
-) -> Optional[OrderNumberSequence]:
-    """Return the order number sequence, or `None` if the sequence ID
-    is unknown.
-    """
+) -> OrderNumberSequence:
+    """Return the order number sequence, or raise an exception."""
     sequence = DbOrderNumberSequence.query \
         .filter_by(id=sequence_id) \
         .one_or_none()
 
     if sequence is None:
-        return None
+        raise ValueError(f'Unknown order number sequence ID "{sequence_id}"')
 
     return _db_entity_to_order_number_sequence(sequence)
 

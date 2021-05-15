@@ -69,7 +69,7 @@ def view(storefront_id):
 
     brand = brand_service.get_brand(shop.brand_id)
 
-    order_number_sequence = order_sequence_service.find_order_number_sequence(
+    order_number_sequence = order_sequence_service.get_order_number_sequence(
         storefront.order_number_sequence_id
     )
     order_number_prefix = order_number_sequence.prefix
@@ -141,12 +141,10 @@ def create(shop_id):
         flash_error(gettext('No valid order number sequence was specified.'))
         return create_form(shop_id, form)
 
-    order_number_sequence = order_sequence_service.find_order_number_sequence(
+    order_number_sequence = order_sequence_service.get_order_number_sequence(
         order_number_sequence_id
     )
-    if (order_number_sequence is None) or (
-        order_number_sequence.shop_id != shop.id
-    ):
+    if order_number_sequence.shop_id != shop.id:
         flash_error(gettext('No valid order number sequence was specified.'))
         return create_form(shop_id, form)
 
