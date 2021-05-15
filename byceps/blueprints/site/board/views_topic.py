@@ -35,8 +35,8 @@ from .forms import PostingCreateForm, TopicCreateForm, TopicUpdateForm
 from . import _helpers as h, service
 
 
-@blueprint.route('/topics', defaults={'page': 1})
-@blueprint.route('/topics/pages/<int:page>')
+@blueprint.get('/topics', defaults={'page': 1})
+@blueprint.get('/topics/pages/<int:page>')
 @templated
 def topic_index(page):
     """List latest topics in all categories."""
@@ -60,8 +60,8 @@ def topic_index(page):
     }
 
 
-@blueprint.route('/topics/<uuid:topic_id>', defaults={'page': 0})
-@blueprint.route('/topics/<uuid:topic_id>/pages/<int:page>')
+@blueprint.get('/topics/<uuid:topic_id>', defaults={'page': 0})
+@blueprint.get('/topics/<uuid:topic_id>/pages/<int:page>')
 @templated
 def topic_view(topic_id, page):
     """List postings for the topic."""
@@ -163,7 +163,7 @@ def _find_posting_url_to_redirect_to(
     return h.build_url_for_posting_in_topic_view(posting, page)
 
 
-@blueprint.route('/categories/<category_id>/create')
+@blueprint.get('/categories/<category_id>/create')
 @permission_required(BoardTopicPermission.create)
 @templated
 def topic_create_form(category_id, erroneous_form=None):
@@ -179,7 +179,7 @@ def topic_create_form(category_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/categories/<category_id>/create', methods=['POST'])
+@blueprint.post('/categories/<category_id>/create')
 @permission_required(BoardTopicPermission.create)
 def topic_create(category_id):
     """Create a topic in the category."""
@@ -208,7 +208,7 @@ def topic_create(category_id):
     return redirect(topic_url)
 
 
-@blueprint.route('/topics/<uuid:topic_id>/update')
+@blueprint.get('/topics/<uuid:topic_id>/update')
 @permission_required(BoardTopicPermission.update)
 @templated
 def topic_update_form(topic_id, erroneous_form=None):
@@ -245,7 +245,7 @@ def topic_update_form(topic_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/topics/<uuid:topic_id>', methods=['POST'])
+@blueprint.post('/topics/<uuid:topic_id>')
 @permission_required(BoardTopicPermission.update)
 def topic_update(topic_id):
     """Update a topic."""
@@ -282,7 +282,7 @@ def topic_update(topic_id):
     return redirect(url)
 
 
-@blueprint.route('/topics/<uuid:topic_id>/moderate')
+@blueprint.get('/topics/<uuid:topic_id>/moderate')
 @permission_required(BoardPermission.hide)
 @templated
 def topic_moderate_form(topic_id):
@@ -302,7 +302,7 @@ def topic_moderate_form(topic_id):
     }
 
 
-@blueprint.route('/topics/<uuid:topic_id>/flags/hidden', methods=['POST'])
+@blueprint.post('/topics/<uuid:topic_id>/flags/hidden')
 @permission_required(BoardPermission.hide)
 @respond_no_content_with_location
 def topic_hide(topic_id):
@@ -325,7 +325,7 @@ def topic_hide(topic_id):
     return h.build_url_for_topic_in_category_view(topic)
 
 
-@blueprint.route('/topics/<uuid:topic_id>/flags/hidden', methods=['DELETE'])
+@blueprint.delete('/topics/<uuid:topic_id>/flags/hidden')
 @permission_required(BoardPermission.hide)
 @respond_no_content_with_location
 def topic_unhide(topic_id):
@@ -351,7 +351,7 @@ def topic_unhide(topic_id):
     return h.build_url_for_topic_in_category_view(topic)
 
 
-@blueprint.route('/topics/<uuid:topic_id>/flags/locked', methods=['POST'])
+@blueprint.post('/topics/<uuid:topic_id>/flags/locked')
 @permission_required(BoardTopicPermission.lock)
 @respond_no_content_with_location
 def topic_lock(topic_id):
@@ -374,7 +374,7 @@ def topic_lock(topic_id):
     return h.build_url_for_topic_in_category_view(topic)
 
 
-@blueprint.route('/topics/<uuid:topic_id>/flags/locked', methods=['DELETE'])
+@blueprint.delete('/topics/<uuid:topic_id>/flags/locked')
 @permission_required(BoardTopicPermission.lock)
 @respond_no_content_with_location
 def topic_unlock(topic_id):
@@ -397,7 +397,7 @@ def topic_unlock(topic_id):
     return h.build_url_for_topic_in_category_view(topic)
 
 
-@blueprint.route('/topics/<uuid:topic_id>/flags/pinned', methods=['POST'])
+@blueprint.post('/topics/<uuid:topic_id>/flags/pinned')
 @permission_required(BoardTopicPermission.pin)
 @respond_no_content_with_location
 def topic_pin(topic_id):
@@ -420,7 +420,7 @@ def topic_pin(topic_id):
     return h.build_url_for_topic_in_category_view(topic)
 
 
-@blueprint.route('/topics/<uuid:topic_id>/flags/pinned', methods=['DELETE'])
+@blueprint.delete('/topics/<uuid:topic_id>/flags/pinned')
 @permission_required(BoardTopicPermission.pin)
 @respond_no_content_with_location
 def topic_unpin(topic_id):
@@ -442,7 +442,7 @@ def topic_unpin(topic_id):
     return h.build_url_for_topic_in_category_view(topic)
 
 
-@blueprint.route('/topics/<uuid:topic_id>/move', methods=['POST'])
+@blueprint.post('/topics/<uuid:topic_id>/move')
 @permission_required(BoardTopicPermission.move)
 def topic_move(topic_id):
     """Move a topic from one category to another."""
@@ -480,9 +480,7 @@ def topic_move(topic_id):
     return redirect(h.build_url_for_topic_in_category_view(topic))
 
 
-@blueprint.route(
-    '/topics/<uuid:topic_id>/flags/announcements', methods=['POST']
-)
+@blueprint.post('/topics/<uuid:topic_id>/flags/announcements')
 @permission_required(BoardPermission.announce)
 @respond_no_content_with_location
 def topic_limit_to_announcements(topic_id):
@@ -502,9 +500,7 @@ def topic_limit_to_announcements(topic_id):
     return h.build_url_for_topic_in_category_view(topic)
 
 
-@blueprint.route(
-    '/topics/<uuid:topic_id>/flags/announcements', methods=['DELETE']
-)
+@blueprint.delete('/topics/<uuid:topic_id>/flags/announcements')
 @permission_required(BoardPermission.announce)
 @respond_no_content_with_location
 def topic_remove_limit_to_announcements(topic_id):

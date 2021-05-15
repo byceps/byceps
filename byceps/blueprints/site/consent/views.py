@@ -27,7 +27,7 @@ from .forms import create_consent_form, get_subject_field_name
 blueprint = create_blueprint('consent', __name__)
 
 
-@blueprint.route('/consent/<token>')
+@blueprint.get('/consent/<token>')
 @templated
 def consent_form(token, *, erroneous_form=None):
     """Show form requiring consent to required subjects to which the
@@ -57,7 +57,7 @@ def _get_subjects_and_fields(subjects, form):
     return list(zip(subjects, fields))
 
 
-@blueprint.route('/consent/<token>', methods=['POST'])
+@blueprint.post('/consent/<token>')
 def consent(token):
     """Consent to the specified subjects."""
     verification_token = _get_verification_token_or_404(token)

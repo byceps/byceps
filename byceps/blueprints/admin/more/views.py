@@ -21,7 +21,7 @@ from ..core.authorization import AdminPermission
 blueprint = create_blueprint('more_admin', __name__)
 
 
-@blueprint.route('/global')
+@blueprint.get('/global')
 @permission_required(AdminPermission.access)
 @templated
 def view_global():
@@ -29,7 +29,7 @@ def view_global():
     return {}
 
 
-@blueprint.route('/brands/<brand_id>')
+@blueprint.get('/brands/<brand_id>')
 @permission_required(AdminPermission.access)
 @templated
 def view_brand(brand_id):
@@ -41,7 +41,7 @@ def view_brand(brand_id):
     return {'brand': brand}
 
 
-@blueprint.route('/parties/<party_id>')
+@blueprint.get('/parties/<party_id>')
 @permission_required(AdminPermission.access)
 @templated
 def view_party(party_id):
@@ -53,7 +53,7 @@ def view_party(party_id):
     return {'party': party}
 
 
-@blueprint.route('/sites/<site_id>')
+@blueprint.get('/sites/<site_id>')
 @permission_required(AdminPermission.access)
 @templated
 def view_site(site_id):

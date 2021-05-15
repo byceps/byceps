@@ -35,7 +35,7 @@ blueprint = create_blueprint('orga_presence', __name__)
 register_permission_enum(OrgaPresencePermission)
 
 
-@blueprint.route('/<party_id>')
+@blueprint.get('/<party_id>')
 @permission_required(OrgaPresencePermission.view)
 @templated
 def view(party_id):

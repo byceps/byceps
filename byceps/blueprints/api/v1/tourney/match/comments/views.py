@@ -42,7 +42,7 @@ from .schemas import (
 blueprint = create_blueprint('api_v1_tourney_match_comments', __name__)
 
 
-@blueprint.route('/match_comments/<uuid:comment_id>')
+@blueprint.get('/match_comments/<uuid:comment_id>')
 @api_token_required
 def get_comment(comment_id):
     """Return the comment."""
@@ -53,7 +53,7 @@ def get_comment(comment_id):
     return jsonify(comment_dto)
 
 
-@blueprint.route('/matches/<uuid:match_id>/comments')
+@blueprint.get('/matches/<uuid:match_id>/comments')
 @api_token_required
 def get_comments_for_match(match_id):
     """Return the comments on the match."""
@@ -120,7 +120,7 @@ blueprint.add_url_rule(
 )
 
 
-@blueprint.route('/match_comments', methods=['POST'])
+@blueprint.post('/match_comments')
 @api_token_required
 @respond_created
 def create():
@@ -144,7 +144,7 @@ def create():
     return url_for('.view', comment_id=comment.id)
 
 
-@blueprint.route('/match_comments/<uuid:comment_id>', methods=['PATCH'])
+@blueprint.patch('/match_comments/<uuid:comment_id>')
 @api_token_required
 @respond_no_content
 def update(comment_id):
@@ -162,9 +162,7 @@ def update(comment_id):
     comment_service.update_comment(comment.id, editor.id, body)
 
 
-@blueprint.route(
-    '/match_comments/<uuid:comment_id>/flags/hidden', methods=['POST']
-)
+@blueprint.post('/match_comments/<uuid:comment_id>/flags/hidden')
 @api_token_required
 @respond_no_content
 def hide(comment_id):
@@ -180,10 +178,7 @@ def hide(comment_id):
     comment_service.hide_comment(comment.id, initiator.id)
 
 
-@blueprint.route(
-    '/match_comments/<uuid:comment_id>/flags/hidden',
-    methods=['DELETE'],
-)
+@blueprint.delete('/match_comments/<uuid:comment_id>/flags/hidden')
 @api_token_required
 @respond_no_content
 def unhide(comment_id):

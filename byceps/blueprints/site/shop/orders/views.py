@@ -29,7 +29,7 @@ from .forms import CancelForm
 blueprint = create_blueprint('shop_orders', __name__)
 
 
-@blueprint.route('')
+@blueprint.get('')
 @login_required
 @templated
 def index():
@@ -53,7 +53,7 @@ def index():
     }
 
 
-@blueprint.route('/<uuid:order_id>')
+@blueprint.get('/<uuid:order_id>')
 @login_required
 @templated
 def view(order_id):
@@ -100,7 +100,7 @@ def _get_payment_instructions(order):
     )
 
 
-@blueprint.route('/<uuid:order_id>/cancel')
+@blueprint.get('/<uuid:order_id>/cancel')
 @login_required
 @templated
 def cancel_form(order_id, erroneous_form=None):
@@ -127,7 +127,7 @@ def cancel_form(order_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<uuid:order_id>/cancel', methods=['POST'])
+@blueprint.post('/<uuid:order_id>/cancel')
 @login_required
 def cancel(order_id):
     """Set the payment status of a single order to 'canceled' and

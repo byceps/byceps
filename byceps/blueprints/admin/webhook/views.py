@@ -36,7 +36,7 @@ register_permission_enum(WebhookPermission)
 WEBHOOK_EVENT_NAMES = frozenset(EVENT_TYPES_TO_NAMES.values())
 
 
-@blueprint.route('/')
+@blueprint.get('/')
 @permission_required(WebhookPermission.view)
 @templated
 def index():
@@ -50,7 +50,7 @@ def index():
     }
 
 
-@blueprint.route('/create')
+@blueprint.get('/create')
 @permission_required(WebhookPermission.administrate)
 @templated
 def create_form(erroneous_form=None):
@@ -66,7 +66,7 @@ def create_form(erroneous_form=None):
     }
 
 
-@blueprint.route('/', methods=['POST'])
+@blueprint.post('/')
 @permission_required(WebhookPermission.administrate)
 def create():
     """Create a webhook."""
@@ -97,7 +97,7 @@ def create():
     return redirect_to('.index')
 
 
-@blueprint.route('/webhooks/<uuid:webhook_id>/update')
+@blueprint.get('/webhooks/<uuid:webhook_id>/update')
 @permission_required(WebhookPermission.administrate)
 @templated
 def update_form(webhook_id, erroneous_form=None):
@@ -126,7 +126,7 @@ def update_form(webhook_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/webhooks/<uuid:webhook_id>', methods=['POST'])
+@blueprint.post('/webhooks/<uuid:webhook_id>')
 @permission_required(WebhookPermission.administrate)
 def update(webhook_id):
     """Update the webhook."""
@@ -166,7 +166,7 @@ def update(webhook_id):
     return redirect_to('.index')
 
 
-@blueprint.route('/webhooks/<uuid:webhook_id>/test', methods=['POST'])
+@blueprint.post('/webhooks/<uuid:webhook_id>/test')
 @permission_required(WebhookPermission.administrate)
 @respond_no_content
 def test(webhook_id):

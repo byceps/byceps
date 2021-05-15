@@ -32,7 +32,7 @@ blueprint = create_blueprint('brand_admin', __name__)
 register_permission_enum(BrandPermission)
 
 
-@blueprint.route('/')
+@blueprint.get('/')
 @permission_required(BrandPermission.view)
 @templated
 def index():
@@ -50,7 +50,7 @@ def index():
     }
 
 
-@blueprint.route('/brands/<brand_id>')
+@blueprint.get('/brands/<brand_id>')
 @permission_required(BrandPermission.view)
 @templated
 def view(brand_id):
@@ -67,7 +67,7 @@ def view(brand_id):
     }
 
 
-@blueprint.route('/create')
+@blueprint.get('/create')
 @permission_required(BrandPermission.create)
 @templated
 def create_form(erroneous_form=None):
@@ -79,7 +79,7 @@ def create_form(erroneous_form=None):
     }
 
 
-@blueprint.route('/', methods=['POST'])
+@blueprint.post('/')
 @permission_required(BrandPermission.create)
 def create():
     """Create a brand."""
@@ -106,7 +106,7 @@ def create():
     return redirect_to('.index')
 
 
-@blueprint.route('/brands/<brand_id>/update')
+@blueprint.get('/brands/<brand_id>/update')
 @permission_required(BrandPermission.update)
 @templated
 def update_form(brand_id, erroneous_form=None):
@@ -121,7 +121,7 @@ def update_form(brand_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/brands/<brand_id>', methods=['POST'])
+@blueprint.post('/brands/<brand_id>')
 @permission_required(BrandPermission.update)
 def update(brand_id):
     """Update a brand."""
@@ -149,7 +149,7 @@ def update(brand_id):
 # email config
 
 
-@blueprint.route('/brands/<brand_id>/email_config/update')
+@blueprint.get('/brands/<brand_id>/email_config/update')
 @permission_required(BrandPermission.update)
 @templated
 def email_config_update_form(brand_id, erroneous_form=None):
@@ -175,7 +175,7 @@ def email_config_update_form(brand_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/brands/<brand_id>/email_config', methods=['POST'])
+@blueprint.post('/brands/<brand_id>/email_config')
 @permission_required(BrandPermission.update)
 def email_config_update(brand_id):
     """Update e-mail config."""

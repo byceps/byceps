@@ -21,7 +21,7 @@ from ..order.authorization import ShopOrderPermission
 blueprint = create_blueprint('shop_shipping_admin', __name__)
 
 
-@blueprint.route('/for_shop/<shop_id>')
+@blueprint.get('/for_shop/<shop_id>')
 @permission_required(ShopOrderPermission.view)
 @templated
 def view_for_shop(shop_id):

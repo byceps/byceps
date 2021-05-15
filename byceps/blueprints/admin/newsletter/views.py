@@ -33,7 +33,7 @@ class ListWithStats(List):
     subscriber_count: int
 
 
-@blueprint.route('/lists')
+@blueprint.get('/lists')
 @permission_required(NewsletterPermission.view_subscriptions)
 @templated
 def index():
@@ -53,7 +53,7 @@ def _add_subscriber_count(list_):
     return ListWithStats(list_.id, list_.title, subscriber_count)
 
 
-@blueprint.route('/lists/<list_id>/subscriptions')
+@blueprint.get('/lists/<list_id>/subscriptions')
 @permission_required(NewsletterPermission.view_subscriptions)
 @templated
 def view_subscriptions(list_id):
@@ -69,7 +69,7 @@ def view_subscriptions(list_id):
     }
 
 
-@blueprint.route('/lists/<list_id>/subscriptions/export')
+@blueprint.get('/lists/<list_id>/subscriptions/export')
 @permission_required(NewsletterPermission.export_subscribers)
 @jsonified
 def export_subscribers(list_id):
@@ -92,7 +92,7 @@ def assemble_subscriber_export(subscriber):
     }
 
 
-@blueprint.route('/lists/<list_id>/subscriptions/email_addresses/export')
+@blueprint.get('/lists/<list_id>/subscriptions/email_addresses/export')
 @permission_required(NewsletterPermission.export_subscribers)
 @textified
 def export_subscriber_email_addresses(list_id):

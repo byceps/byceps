@@ -33,7 +33,7 @@ ALLOWED_IMAGE_TYPES = frozenset(
 )
 
 
-@blueprint.route('/me/avatar/update')
+@blueprint.get('/me/avatar/update')
 @templated
 def update_form(erroneous_form=None):
     """Show a form to update the current user's avatar image."""
@@ -50,7 +50,7 @@ def update_form(erroneous_form=None):
     }
 
 
-@blueprint.route('/me/avatar', methods=['POST'])
+@blueprint.post('/me/avatar')
 def update():
     """Update the current user's avatar image."""
     user = _get_current_user_or_404()
@@ -91,7 +91,7 @@ def _update(user_id, image):
         abort(409, 'File already exists, not overwriting.')
 
 
-@blueprint.route('/me/avatar', methods=['DELETE'])
+@blueprint.delete('/me/avatar')
 @respond_no_content
 def delete():
     """Remove the current user's avatar image."""

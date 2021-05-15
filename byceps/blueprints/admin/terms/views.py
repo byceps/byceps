@@ -26,7 +26,7 @@ blueprint = create_blueprint('terms_admin', __name__)
 register_permission_enum(TermsPermission)
 
 
-@blueprint.route('/documents/<document_id>')
+@blueprint.get('/documents/<document_id>')
 @permission_required(TermsPermission.view)
 @templated
 def view_document(document_id):
@@ -63,7 +63,7 @@ def _add_version_creators(versions):
         version.creator = creators_by_id[version.snippet_version.creator_id]
 
 
-@blueprint.route('/versions/<uuid:version_id>')
+@blueprint.get('/versions/<uuid:version_id>')
 @permission_required(TermsPermission.view)
 @templated
 def view_version(version_id):
@@ -75,7 +75,7 @@ def view_version(version_id):
     }
 
 
-@blueprint.route('/versions/<uuid:version_id>/body.html')
+@blueprint.get('/versions/<uuid:version_id>/body.html')
 @permission_required(TermsPermission.view)
 @templated
 def view_version_body_html(version_id):

@@ -25,7 +25,7 @@ from .schemas import InvalidateEmailAddressRequest
 blueprint = create_blueprint('api_v1_user', __name__)
 
 
-@blueprint.route('/<uuid:user_id>/profile')
+@blueprint.get('/<uuid:user_id>/profile')
 def get_profile(user_id):
     """Return (part of) user's profile as JSON."""
     user = user_service.find_active_user(user_id, include_avatar=True)
@@ -42,7 +42,7 @@ def get_profile(user_id):
     )
 
 
-@blueprint.route('/invalidate_email_address', methods=['POST'])
+@blueprint.post('/invalidate_email_address')
 @respond_no_content
 def invalidate_email_address():
     """Invalidate the email address."""

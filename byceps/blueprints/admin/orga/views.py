@@ -42,7 +42,7 @@ register_permission_enum(OrgaDetailPermission)
 register_permission_enum(OrgaTeamPermission)
 
 
-@blueprint.route('/persons/<brand_id>')
+@blueprint.get('/persons/<brand_id>')
 @permission_required(OrgaDetailPermission.view)
 @templated
 def persons_for_brand(brand_id):
@@ -69,7 +69,7 @@ def _to_birthday(user) -> Optional[Birthday]:
     return Birthday(dob)
 
 
-@blueprint.route('/persons/<brand_id>/create')
+@blueprint.get('/persons/<brand_id>/create')
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @templated
 def create_orgaflag_form(brand_id, erroneous_form=None):
@@ -84,7 +84,7 @@ def create_orgaflag_form(brand_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/persons/<brand_id>', methods=['POST'])
+@blueprint.post('/persons/<brand_id>')
 @permission_required(OrgaTeamPermission.administrate_memberships)
 def create_orgaflag(brand_id):
     """Give the organizer flag to a user."""
@@ -110,7 +110,7 @@ def create_orgaflag(brand_id):
     return redirect_to('.persons_for_brand', brand_id=orga_flag.brand.id)
 
 
-@blueprint.route('/persons/<brand_id>/<uuid:user_id>', methods=['DELETE'])
+@blueprint.delete('/persons/<brand_id>/<uuid:user_id>')
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @respond_no_content
 def remove_orgaflag(brand_id, user_id):
@@ -136,7 +136,7 @@ def remove_orgaflag(brand_id, user_id):
     )
 
 
-@blueprint.route('/persons/<brand_id>/export')
+@blueprint.get('/persons/<brand_id>/export')
 @permission_required(OrgaDetailPermission.view)
 @textified
 def export_persons(brand_id):
@@ -196,7 +196,7 @@ def export_persons(brand_id):
     return serialize_to_csv(field_names, rows)
 
 
-@blueprint.route('/birthdays')
+@blueprint.get('/birthdays')
 @permission_required(OrgaBirthdayPermission.view)
 @templated
 def birthdays():

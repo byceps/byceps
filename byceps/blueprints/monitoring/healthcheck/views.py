@@ -18,7 +18,7 @@ from ....util.framework.blueprint import create_blueprint
 blueprint = create_blueprint('healthcheck', __name__)
 
 
-@blueprint.route('')
+@blueprint.get('')
 def health():
     """Return health status as JSON.
 

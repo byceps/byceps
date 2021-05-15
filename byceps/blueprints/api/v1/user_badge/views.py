@@ -23,7 +23,7 @@ from .schemas import AwardBadgeToUserRequest
 blueprint = create_blueprint('api_v1_user_badge', __name__)
 
 
-@blueprint.route('/awardings', methods=['POST'])
+@blueprint.post('/awardings')
 @api_token_required
 @respond_no_content
 def award_badge_to_user():

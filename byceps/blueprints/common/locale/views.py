@@ -15,7 +15,7 @@ from ....util import user_session
 blueprint = create_blueprint('locale', __name__)
 
 
-@blueprint.route('/set')
+@blueprint.get('/set')
 def set_locale():
     """Set the locale."""
     locale = request.args.get('locale')

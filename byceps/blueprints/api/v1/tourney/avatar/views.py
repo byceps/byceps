@@ -31,7 +31,7 @@ ALLOWED_IMAGE_TYPES = frozenset(
 )
 
 
-@blueprint.route('', methods=['POST'])
+@blueprint.post('')
 @api_token_required
 @respond_created
 def create():
@@ -75,7 +75,7 @@ def _create(party_id, creator_id, image):
         abort(409, 'File already exists, not overwriting.')
 
 
-@blueprint.route('/<uuid:avatar_id>', methods=['DELETE'])
+@blueprint.delete('/<uuid:avatar_id>')
 @api_token_required
 @respond_no_content
 def delete(avatar_id):

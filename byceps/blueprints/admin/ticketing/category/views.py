@@ -24,7 +24,7 @@ from .forms import CreateOrUpdateForm
 blueprint = create_blueprint('ticketing_category_admin', __name__)
 
 
-@blueprint.route('/for_party/<party_id>')
+@blueprint.get('/for_party/<party_id>')
 @permission_required(TicketingPermission.administrate)
 @templated
 def index(party_id):
@@ -43,7 +43,7 @@ def index(party_id):
     }
 
 
-@blueprint.route('/for_party/<party_id>/create')
+@blueprint.get('/for_party/<party_id>/create')
 @permission_required(TicketingPermission.administrate)
 @templated
 def create_form(party_id, erroneous_form=None):
@@ -58,7 +58,7 @@ def create_form(party_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/for_party/<party_id>', methods=['POST'])
+@blueprint.post('/for_party/<party_id>')
 @permission_required(TicketingPermission.administrate)
 def create(party_id):
     """Create a ticket category."""
@@ -82,7 +82,7 @@ def create(party_id):
     return redirect_to('.index', party_id=party.id)
 
 
-@blueprint.route('/categories/<uuid:category_id>/update')
+@blueprint.get('/categories/<uuid:category_id>/update')
 @permission_required(TicketingPermission.administrate)
 @templated
 def update_form(category_id, erroneous_form=None):
@@ -102,7 +102,7 @@ def update_form(category_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/categories/<uuid:category_id>', methods=['POST'])
+@blueprint.post('/categories/<uuid:category_id>')
 @permission_required(TicketingPermission.administrate)
 def update(category_id):
     """Update the category."""

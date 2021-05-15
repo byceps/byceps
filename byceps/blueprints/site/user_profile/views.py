@@ -21,7 +21,7 @@ from ....util.framework.templating import templated
 blueprint = create_blueprint('user_profile', __name__)
 
 
-@blueprint.route('/<uuid:user_id>')
+@blueprint.get('/<uuid:user_id>')
 @templated
 def view(user_id):
     """Show a user's profile."""

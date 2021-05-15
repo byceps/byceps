@@ -24,7 +24,7 @@ blueprint = create_blueprint('authorization_admin', __name__)
 register_permission_enum(RolePermission)
 
 
-@blueprint.route('/permissions')
+@blueprint.get('/permissions')
 @permission_required(RolePermission.view)
 @templated
 def permission_index():
@@ -34,7 +34,7 @@ def permission_index():
     return {'permissions': permissions}
 
 
-@blueprint.route('/roles')
+@blueprint.get('/roles')
 @permission_required(RolePermission.view)
 @templated
 def role_index():
@@ -44,7 +44,7 @@ def role_index():
     return {'roles': roles}
 
 
-@blueprint.route('/roles/<role_id>')
+@blueprint.get('/roles/<role_id>')
 @permission_required(RolePermission.view)
 @templated
 def role_view(role_id):

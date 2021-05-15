@@ -30,7 +30,7 @@ from .forms import PostingCreateForm, PostingUpdateForm
 from . import _helpers as h, service
 
 
-@blueprint.route('/postings/<uuid:posting_id>')
+@blueprint.get('/postings/<uuid:posting_id>')
 def posting_view(posting_id):
     """Show the page of the posting's topic that contains the posting,
     as seen by the current user.
@@ -44,7 +44,7 @@ def posting_view(posting_id):
     )
 
 
-@blueprint.route('/topics/<uuid:topic_id>/create')
+@blueprint.get('/topics/<uuid:topic_id>/create')
 @permission_required(BoardPostingPermission.create)
 @templated
 def posting_create_form(topic_id, erroneous_form=None):
@@ -79,7 +79,7 @@ def quote_posting_as_bbcode():
     return f'[quote author="{creator.screen_name}"]{posting.body}[/quote]'
 
 
-@blueprint.route('/topics/<uuid:topic_id>/create', methods=['POST'])
+@blueprint.post('/topics/<uuid:topic_id>/create')
 @permission_required(BoardPostingPermission.create)
 def posting_create(topic_id):
     """Create a posting to the topic."""
@@ -130,7 +130,7 @@ def posting_create(topic_id):
     return redirect(h.build_url_for_posting_in_topic_view(posting, page_count))
 
 
-@blueprint.route('/postings/<uuid:posting_id>/update')
+@blueprint.get('/postings/<uuid:posting_id>/update')
 @permission_required(BoardPostingPermission.update)
 @templated
 def posting_update_form(posting_id, erroneous_form=None):
@@ -168,7 +168,7 @@ def posting_update_form(posting_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/postings/<uuid:posting_id>', methods=['POST'])
+@blueprint.post('/postings/<uuid:posting_id>')
 @permission_required(BoardPostingPermission.update)
 def posting_update(posting_id):
     """Update a posting."""
@@ -214,7 +214,7 @@ def posting_update(posting_id):
     return redirect(url)
 
 
-@blueprint.route('/postings/<uuid:posting_id>/moderate')
+@blueprint.get('/postings/<uuid:posting_id>/moderate')
 @permission_required(BoardPermission.hide)
 @templated
 def posting_moderate_form(posting_id):
@@ -228,7 +228,7 @@ def posting_moderate_form(posting_id):
     }
 
 
-@blueprint.route('/postings/<uuid:posting_id>/flags/hidden', methods=['POST'])
+@blueprint.post('/postings/<uuid:posting_id>/flags/hidden')
 @permission_required(BoardPermission.hide)
 @respond_no_content_with_location
 def posting_hide(posting_id):
@@ -250,7 +250,7 @@ def posting_hide(posting_id):
     return h.build_url_for_posting_in_topic_view(posting, page)
 
 
-@blueprint.route('/postings/<uuid:posting_id>/flags/hidden', methods=['DELETE'])
+@blueprint.delete('/postings/<uuid:posting_id>/flags/hidden')
 @permission_required(BoardPermission.hide)
 @respond_no_content_with_location
 def posting_unhide(posting_id):

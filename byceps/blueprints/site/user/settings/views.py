@@ -29,7 +29,7 @@ from .forms import DetailsForm, ChangeScreenNameForm
 blueprint = create_blueprint('user_settings', __name__)
 
 
-@blueprint.route('')
+@blueprint.get('')
 @login_required
 @templated
 def view():
@@ -53,7 +53,7 @@ def view():
     }
 
 
-@blueprint.route('/screen_name')
+@blueprint.get('/screen_name')
 @login_required
 @templated
 def change_screen_name_form(erroneous_form=None):
@@ -66,7 +66,7 @@ def change_screen_name_form(erroneous_form=None):
 
 
 @login_required
-@blueprint.route('/screen_name', methods=['POST'])
+@blueprint.post('/screen_name')
 def change_screen_name():
     """Change the current user's screen name."""
     current_user = g.user
@@ -95,7 +95,7 @@ def change_screen_name():
     return redirect_to('.view')
 
 
-@blueprint.route('/details')
+@blueprint.get('/details')
 @login_required
 @templated
 def details_update_form(erroneous_form=None):
@@ -111,7 +111,7 @@ def details_update_form(erroneous_form=None):
     }
 
 
-@blueprint.route('/details', methods=['POST'])
+@blueprint.post('/details')
 @login_required
 def details_update():
     """Update the current user's details."""

@@ -29,7 +29,7 @@ from .forms import RequestConfirmationEmailForm
 blueprint = create_blueprint('user_email_address', __name__)
 
 
-@blueprint.route('/confirmation_email/request')
+@blueprint.get('/confirmation_email/request')
 @templated
 def request_confirmation_email_form(erroneous_form=None):
     """Show a form to request the email address confirmation email for the user
@@ -39,7 +39,7 @@ def request_confirmation_email_form(erroneous_form=None):
     return {'form': form}
 
 
-@blueprint.route('/confirmation_email/request', methods=['POST'])
+@blueprint.post('/confirmation_email/request')
 def request_confirmation_email():
     """Request the email address confirmation email for the user account
     again.
@@ -104,7 +104,7 @@ def request_confirmation_email():
     return redirect_to('.request_confirmation_email_form')
 
 
-@blueprint.route('/confirmation/<token>')
+@blueprint.get('/confirmation/<token>')
 def confirm(token):
     """Confirm e-mail address of the user account assigned with the
     verification token.

@@ -40,7 +40,7 @@ blueprint = create_blueprint('site_admin', __name__)
 register_permission_enum(SitePermission)
 
 
-@blueprint.route('/')
+@blueprint.get('/')
 @permission_required(SitePermission.view)
 @templated
 def index():
@@ -65,7 +65,7 @@ def index():
     }
 
 
-@blueprint.route('/for_brand/<brand_id>')
+@blueprint.get('/for_brand/<brand_id>')
 @permission_required(SitePermission.view)
 @templated
 def index_for_brand(brand_id):
@@ -121,7 +121,7 @@ def _get_storefronts_by_site_id(sites):
     }
 
 
-@blueprint.route('/sites/<site_id>')
+@blueprint.get('/sites/<site_id>')
 @permission_required(SitePermission.view)
 @templated
 def view(site_id):
@@ -162,7 +162,7 @@ def view(site_id):
     }
 
 
-@blueprint.route('/sites/create/for_brand/<brand_id>')
+@blueprint.get('/sites/create/for_brand/<brand_id>')
 @permission_required(SitePermission.create)
 @templated
 def create_form(brand_id, erroneous_form=None):
@@ -178,7 +178,7 @@ def create_form(brand_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/sites/for_brand/<brand_id>', methods=['POST'])
+@blueprint.post('/sites/for_brand/<brand_id>')
 @permission_required(SitePermission.create)
 def create(brand_id):
     """Create a site."""
@@ -235,7 +235,7 @@ def create(brand_id):
     return redirect_to('.view', site_id=site.id)
 
 
-@blueprint.route('/sites/<site_id>/update')
+@blueprint.get('/sites/<site_id>/update')
 @permission_required(SitePermission.update)
 @templated
 def update_form(site_id, erroneous_form=None):
@@ -252,7 +252,7 @@ def update_form(site_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/sites/<site_id>', methods=['POST'])
+@blueprint.post('/sites/<site_id>')
 @permission_required(SitePermission.update)
 def update(site_id):
     """Update the site."""

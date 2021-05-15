@@ -38,7 +38,7 @@ blueprint = create_blueprint('authentication.password', __name__)
 # password update
 
 
-@blueprint.route('/update')
+@blueprint.get('/update')
 @templated
 def update_form(erroneous_form=None):
     """Show a form to update the current user's password."""
@@ -49,7 +49,7 @@ def update_form(erroneous_form=None):
     return {'form': form}
 
 
-@blueprint.route('/', methods=['POST'])
+@blueprint.post('/')
 def update():
     """Update the current user's password."""
     user = _get_current_user_or_404()
@@ -75,7 +75,7 @@ def update():
 # password reset
 
 
-@blueprint.route('/reset/request')
+@blueprint.get('/reset/request')
 @templated
 def request_reset_form(erroneous_form=None):
     """Show a form to request a password reset."""
@@ -84,7 +84,7 @@ def request_reset_form(erroneous_form=None):
     return {'form': form}
 
 
-@blueprint.route('/reset/request', methods=['POST'])
+@blueprint.post('/reset/request')
 def request_reset():
     """Request a password reset."""
     form = RequestResetForm(request.form)
@@ -157,7 +157,7 @@ def _get_sender() -> Optional[Sender]:
     return email_config.sender
 
 
-@blueprint.route('/reset/token/<token>')
+@blueprint.get('/reset/token/<token>')
 @templated
 def reset_form(token, erroneous_form=None):
     """Show a form to reset the current user's password."""
@@ -171,7 +171,7 @@ def reset_form(token, erroneous_form=None):
     }
 
 
-@blueprint.route('/reset/token/<token>', methods=['POST'])
+@blueprint.post('/reset/token/<token>')
 def reset(token):
     """Reset the current user's password."""
     verification_token = _verify_reset_token(token)

@@ -37,8 +37,8 @@ register_permission_enum(TicketingPermission)
 # tickets
 
 
-@blueprint.route('/tickets/for_party/<party_id>', defaults={'page': 1})
-@blueprint.route('/tickets/for_party/<party_id>/pages/<int:page>')
+@blueprint.get('/tickets/for_party/<party_id>', defaults={'page': 1})
+@blueprint.get('/tickets/for_party/<party_id>/pages/<int:page>')
 @permission_required(TicketingPermission.view)
 @templated
 def index_for_party(party_id, page):
@@ -60,7 +60,7 @@ def index_for_party(party_id, page):
     }
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>')
+@blueprint.get('/tickets/<uuid:ticket_id>')
 @permission_required(TicketingPermission.view)
 @templated
 def view_ticket(ticket_id):
@@ -90,7 +90,7 @@ def view_ticket(ticket_id):
 # ticket code
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/code')
+@blueprint.get('/tickets/<uuid:ticket_id>/code')
 @permission_required(TicketingPermission.administrate)
 @templated
 def update_code_form(ticket_id, erroneous_form=None):
@@ -116,7 +116,7 @@ def update_code_form(ticket_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/code', methods=['POST'])
+@blueprint.post('/tickets/<uuid:ticket_id>/code')
 @permission_required(TicketingPermission.administrate)
 def update_code(ticket_id):
     """Set a custom code for the ticket."""
@@ -153,7 +153,7 @@ def update_code(ticket_id):
 # user appointment
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/appoint_user')
+@blueprint.get('/tickets/<uuid:ticket_id>/appoint_user')
 @permission_required(TicketingPermission.checkin)
 @templated
 def appoint_user_form(ticket_id, erroneous_form=None):
@@ -171,7 +171,7 @@ def appoint_user_form(ticket_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/user', methods=['POST'])
+@blueprint.post('/tickets/<uuid:ticket_id>/user')
 @permission_required(TicketingPermission.checkin)
 def appoint_user(ticket_id):
     """Appoint a user for the ticket."""
@@ -200,8 +200,8 @@ def appoint_user(ticket_id):
 # bundles
 
 
-@blueprint.route('/bundles/for_party/<party_id>', defaults={'page': 1})
-@blueprint.route('/bundles/for_party/<party_id>/pages/<int:page>')
+@blueprint.get('/bundles/for_party/<party_id>', defaults={'page': 1})
+@blueprint.get('/bundles/for_party/<party_id>/pages/<int:page>')
 @permission_required(TicketingPermission.view)
 @templated
 def index_bundle_for_party(party_id, page):
@@ -220,7 +220,7 @@ def index_bundle_for_party(party_id, page):
     }
 
 
-@blueprint.route('/bundles/<uuid:bundle_id>')
+@blueprint.get('/bundles/<uuid:bundle_id>')
 @permission_required(TicketingPermission.view)
 @templated
 def view_bundle(bundle_id):

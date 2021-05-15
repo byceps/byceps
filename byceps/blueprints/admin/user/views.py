@@ -55,8 +55,8 @@ blueprint = create_blueprint('user_admin', __name__)
 register_permission_enum(UserPermission)
 
 
-@blueprint.route('/', defaults={'page': 1})
-@blueprint.route('/pages/<int:page>')
+@blueprint.get('/', defaults={'page': 1})
+@blueprint.get('/pages/<int:page>')
 @permission_required(UserPermission.view)
 @templated
 def index(page):
@@ -93,7 +93,7 @@ def index(page):
     }
 
 
-@blueprint.route('/<uuid:user_id>')
+@blueprint.get('/<uuid:user_id>')
 @permission_required(UserPermission.view)
 @templated
 def view(user_id):
@@ -144,7 +144,7 @@ def _calculate_days_since(dt: Optional[datetime]) -> Optional[int]:
     return (datetime.utcnow().date() - dt.date()).days
 
 
-@blueprint.route('/create')
+@blueprint.get('/create')
 @permission_required(UserPermission.create)
 @templated
 def create_account_form(erroneous_form=None):
@@ -155,7 +155,7 @@ def create_account_form(erroneous_form=None):
     return {'form': form}
 
 
-@blueprint.route('/', methods=['POST'])
+@blueprint.post('/')
 @permission_required(UserPermission.create)
 def create_account():
     """Create a user account."""
@@ -219,7 +219,7 @@ def create_account():
     return redirect_to('.view', user_id=user.id)
 
 
-@blueprint.route('/<uuid:user_id>/password')
+@blueprint.get('/<uuid:user_id>/password')
 @permission_required(UserPermission.set_password)
 @templated
 def set_password_form(user_id, erroneous_form=None):
@@ -234,7 +234,7 @@ def set_password_form(user_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<uuid:user_id>/password', methods=['POST'])
+@blueprint.post('/<uuid:user_id>/password')
 @permission_required(UserPermission.set_password)
 def set_password(user_id):
     """Set a new password for the user."""
@@ -259,7 +259,7 @@ def set_password(user_id):
     return redirect_to('.view', user_id=user.id)
 
 
-@blueprint.route('/<uuid:user_id>/initialize', methods=['POST'])
+@blueprint.post('/<uuid:user_id>/initialize')
 @permission_required(UserPermission.administrate)
 @respond_no_content
 def initialize_account(user_id):
@@ -278,7 +278,7 @@ def initialize_account(user_id):
     )
 
 
-@blueprint.route('/<uuid:user_id>/suspend')
+@blueprint.get('/<uuid:user_id>/suspend')
 @permission_required(UserPermission.administrate)
 @templated
 def suspend_account_form(user_id, erroneous_form=None):
@@ -302,7 +302,7 @@ def suspend_account_form(user_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<uuid:user_id>/suspend', methods=['POST'])
+@blueprint.post('/<uuid:user_id>/suspend')
 @permission_required(UserPermission.administrate)
 def suspend_account(user_id):
     """Suspend the user account."""
@@ -337,7 +337,7 @@ def suspend_account(user_id):
     return redirect_to('.view', user_id=user.id)
 
 
-@blueprint.route('/<uuid:user_id>/unsuspend')
+@blueprint.get('/<uuid:user_id>/unsuspend')
 @permission_required(UserPermission.administrate)
 @templated
 def unsuspend_account_form(user_id, erroneous_form=None):
@@ -361,7 +361,7 @@ def unsuspend_account_form(user_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<uuid:user_id>/unsuspend', methods=['POST'])
+@blueprint.post('/<uuid:user_id>/unsuspend')
 @permission_required(UserPermission.administrate)
 def unsuspend_account(user_id):
     """Unsuspend the user account."""
@@ -398,7 +398,7 @@ def unsuspend_account(user_id):
     return redirect_to('.view', user_id=user.id)
 
 
-@blueprint.route('/<uuid:user_id>/delete')
+@blueprint.get('/<uuid:user_id>/delete')
 @permission_required(UserPermission.administrate)
 @templated
 def delete_account_form(user_id, erroneous_form=None):
@@ -422,7 +422,7 @@ def delete_account_form(user_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<uuid:user_id>/delete', methods=['POST'])
+@blueprint.post('/<uuid:user_id>/delete')
 @permission_required(UserPermission.administrate)
 def delete_account(user_id):
     """Delete the user account."""
@@ -457,7 +457,7 @@ def delete_account(user_id):
     return redirect_to('.view', user_id=user.id)
 
 
-@blueprint.route('/<uuid:user_id>/change_email_address')
+@blueprint.get('/<uuid:user_id>/change_email_address')
 @permission_required(UserPermission.administrate)
 @templated
 def change_email_address_form(user_id, erroneous_form=None):
@@ -472,7 +472,7 @@ def change_email_address_form(user_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<uuid:user_id>/change_email_address', methods=['POST'])
+@blueprint.post('/<uuid:user_id>/change_email_address')
 @permission_required(UserPermission.administrate)
 def change_email_address(user_id):
     """Change the user's e-mail address."""
@@ -502,7 +502,7 @@ def change_email_address(user_id):
     return redirect_to('.view', user_id=user.id)
 
 
-@blueprint.route('/<uuid:user_id>/change_screen_name')
+@blueprint.get('/<uuid:user_id>/change_screen_name')
 @permission_required(UserPermission.administrate)
 @templated
 def change_screen_name_form(user_id, erroneous_form=None):
@@ -517,7 +517,7 @@ def change_screen_name_form(user_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<uuid:user_id>/change_screen_name', methods=['POST'])
+@blueprint.post('/<uuid:user_id>/change_screen_name')
 @permission_required(UserPermission.administrate)
 def change_screen_name(user_id):
     """Change the user's screen name."""
@@ -548,7 +548,7 @@ def change_screen_name(user_id):
     return redirect_to('.view', user_id=user.id)
 
 
-@blueprint.route('/<uuid:user_id>/permissions')
+@blueprint.get('/<uuid:user_id>/permissions')
 @permission_required(UserPermission.view)
 @templated
 def view_permissions(user_id):
@@ -567,7 +567,7 @@ def view_permissions(user_id):
     }
 
 
-@blueprint.route('/<uuid:user_id>/roles/assignment')
+@blueprint.get('/<uuid:user_id>/roles/assignment')
 @permission_required(RolePermission.assign)
 @templated
 def manage_roles(user_id):
@@ -587,7 +587,7 @@ def manage_roles(user_id):
     }
 
 
-@blueprint.route('/<uuid:user_id>/roles/<role_id>', methods=['POST'])
+@blueprint.post('/<uuid:user_id>/roles/<role_id>')
 @permission_required(RolePermission.assign)
 @respond_no_content
 def role_assign(user_id, role_id):
@@ -609,7 +609,7 @@ def role_assign(user_id, role_id):
     )
 
 
-@blueprint.route('/<uuid:user_id>/roles/<role_id>', methods=['DELETE'])
+@blueprint.delete('/<uuid:user_id>/roles/<role_id>')
 @permission_required(RolePermission.assign)
 @respond_no_content
 def role_deassign(user_id, role_id):
@@ -631,7 +631,7 @@ def role_deassign(user_id, role_id):
     )
 
 
-@blueprint.route('/<uuid:user_id>/events')
+@blueprint.get('/<uuid:user_id>/events')
 @permission_required(UserPermission.view)
 @templated
 def view_events(user_id):

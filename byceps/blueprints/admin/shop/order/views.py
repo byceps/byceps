@@ -41,8 +41,8 @@ blueprint = create_blueprint('shop_order_admin', __name__)
 register_permission_enum(ShopOrderPermission)
 
 
-@blueprint.route('/for_shop/<shop_id>', defaults={'page': 1})
-@blueprint.route('/for_shop/<shop_id>/pages/<int:page>')
+@blueprint.get('/for_shop/<shop_id>', defaults={'page': 1})
+@blueprint.get('/for_shop/<shop_id>/pages/<int:page>')
 @permission_required(ShopOrderPermission.view)
 @templated
 def index_for_shop(shop_id, page):
@@ -95,7 +95,7 @@ def index_for_shop(shop_id, page):
     }
 
 
-@blueprint.route('/<uuid:order_id>')
+@blueprint.get('/<uuid:order_id>')
 @permission_required(ShopOrderPermission.view)
 @templated
 def view(order_id):
@@ -134,7 +134,7 @@ def view(order_id):
 # export
 
 
-@blueprint.route('/<uuid:order_id>/export')
+@blueprint.get('/<uuid:order_id>/export')
 @permission_required(ShopOrderPermission.view)
 def export(order_id):
     """Export the order as an XML document."""
@@ -152,7 +152,7 @@ def export(order_id):
 # flags
 
 
-@blueprint.route('/<uuid:order_id>/flags/invoiced', methods=['POST'])
+@blueprint.post('/<uuid:order_id>/flags/invoiced')
 @permission_required(ShopOrderPermission.update)
 @respond_no_content
 def set_invoiced_flag(order_id):
@@ -170,7 +170,7 @@ def set_invoiced_flag(order_id):
     )
 
 
-@blueprint.route('/<uuid:order_id>/flags/invoiced', methods=['DELETE'])
+@blueprint.delete('/<uuid:order_id>/flags/invoiced')
 @permission_required(ShopOrderPermission.update)
 @respond_no_content
 def unset_invoiced_flag(order_id):
@@ -188,7 +188,7 @@ def unset_invoiced_flag(order_id):
     )
 
 
-@blueprint.route('/<uuid:order_id>/flags/shipped', methods=['POST'])
+@blueprint.post('/<uuid:order_id>/flags/shipped')
 @permission_required(ShopOrderPermission.update)
 @respond_no_content
 def set_shipped_flag(order_id):
@@ -206,7 +206,7 @@ def set_shipped_flag(order_id):
     )
 
 
-@blueprint.route('/<uuid:order_id>/flags/shipped', methods=['DELETE'])
+@blueprint.delete('/<uuid:order_id>/flags/shipped')
 @permission_required(ShopOrderPermission.update)
 @respond_no_content
 def unset_shipped_flag(order_id):
@@ -228,7 +228,7 @@ def unset_shipped_flag(order_id):
 # cancel
 
 
-@blueprint.route('/<uuid:order_id>/cancel')
+@blueprint.get('/<uuid:order_id>/cancel')
 @permission_required(ShopOrderPermission.cancel)
 @templated
 def cancel_form(order_id, erroneous_form=None):
@@ -258,7 +258,7 @@ def cancel_form(order_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<uuid:order_id>/cancel', methods=['POST'])
+@blueprint.post('/<uuid:order_id>/cancel')
 @permission_required(ShopOrderPermission.cancel)
 def cancel(order_id):
     """Set the payment status of a single order to 'canceled' and
@@ -305,7 +305,7 @@ def cancel(order_id):
 # mark as paid
 
 
-@blueprint.route('/<uuid:order_id>/mark_as_paid')
+@blueprint.get('/<uuid:order_id>/mark_as_paid')
 @permission_required(ShopOrderPermission.mark_as_paid)
 @templated
 def mark_as_paid_form(order_id, erroneous_form=None):
@@ -330,7 +330,7 @@ def mark_as_paid_form(order_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<uuid:order_id>/mark_as_paid', methods=['POST'])
+@blueprint.post('/<uuid:order_id>/mark_as_paid')
 @permission_required(ShopOrderPermission.mark_as_paid)
 def mark_as_paid(order_id):
     """Set the payment status of a single order to 'paid'."""
@@ -364,9 +364,7 @@ def mark_as_paid(order_id):
 # email
 
 
-@blueprint.route(
-    '/<uuid:order_id>/resend_incoming_order_email', methods=['POST']
-)
+@blueprint.post('/<uuid:order_id>/resend_incoming_order_email')
 @permission_required(ShopOrderPermission.update)
 @respond_no_content
 def resend_email_for_incoming_order_to_orderer(order_id):
@@ -394,7 +392,7 @@ def resend_email_for_incoming_order_to_orderer(order_id):
 # order number sequences
 
 
-@blueprint.route('/number_sequences/for_shop/<shop_id>/create')
+@blueprint.get('/number_sequences/for_shop/<shop_id>/create')
 @permission_required(ShopPermission.update)
 @templated
 def create_number_sequence_form(shop_id, erroneous_form=None):
@@ -412,7 +410,7 @@ def create_number_sequence_form(shop_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/number_sequences/for_shop/<shop_id>', methods=['POST'])
+@blueprint.post('/number_sequences/for_shop/<shop_id>')
 @permission_required(ShopPermission.update)
 def create_number_sequence(shop_id):
     """Create an order number sequence."""

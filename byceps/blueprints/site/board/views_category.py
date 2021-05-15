@@ -22,7 +22,7 @@ from .blueprint import blueprint
 from . import _helpers as h, service
 
 
-@blueprint.route('/')
+@blueprint.get('/')
 @templated
 def category_index():
     """List categories."""
@@ -44,8 +44,8 @@ def category_index():
     }
 
 
-@blueprint.route('/categories/<slug>', defaults={'page': 1})
-@blueprint.route('/categories/<slug>/pages/<int:page>')
+@blueprint.get('/categories/<slug>', defaults={'page': 1})
+@blueprint.get('/categories/<slug>/pages/<int:page>')
 @templated
 def category_view(slug, page):
     """List latest topics in the category."""
@@ -85,9 +85,7 @@ def category_view(slug, page):
     }
 
 
-@blueprint.route(
-    '/categories/<category_id>/mark_all_topics_as_read', methods=['POST']
-)
+@blueprint.post('/categories/<category_id>/mark_all_topics_as_read')
 @respond_no_content_with_location
 def mark_all_topics_in_category_as_viewed(category_id):
     category = h.get_category_or_404(category_id)

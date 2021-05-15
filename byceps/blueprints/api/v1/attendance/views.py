@@ -23,7 +23,7 @@ from .schemas import CreateArchivedAttendanceRequest
 blueprint = create_blueprint('api_v1_attendance', __name__)
 
 
-@blueprint.route('/archived_attendances', methods=['POST'])
+@blueprint.post('/archived_attendances')
 @api_token_required
 @respond_no_content
 def create_archived_attendance():

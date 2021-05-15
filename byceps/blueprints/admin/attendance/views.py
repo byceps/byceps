@@ -22,7 +22,7 @@ from ..core.authorization import AdminPermission
 blueprint = create_blueprint('attendance_admin', __name__)
 
 
-@blueprint.route('/brands/<brand_id>')
+@blueprint.get('/brands/<brand_id>')
 @permission_required(AdminPermission.access)
 @templated
 def view_for_brand(brand_id):

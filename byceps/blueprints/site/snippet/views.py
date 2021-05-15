@@ -24,7 +24,7 @@ blueprint.add_app_template_global(render_snippet_as_partial, 'render_snippet')
 blueprint.add_app_template_global(url_for_snippet)
 
 
-@blueprint.route('/<path:url_path>')
+@blueprint.get('/<path:url_path>')
 def view(url_path):
     """Show the current version of the snippet that is mounted for the
     current site at the given URL path.

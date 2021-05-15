@@ -22,7 +22,7 @@ from ..core.authorization import AdminPermission
 blueprint = create_blueprint('maintenance_admin', __name__)
 
 
-@blueprint.route('')
+@blueprint.get('')
 @permission_required(AdminPermission.access)
 @templated
 def index():
@@ -30,7 +30,7 @@ def index():
     return {}
 
 
-@blueprint.route('/delete_old_login_events', methods=['POST'])
+@blueprint.post('/delete_old_login_events')
 @permission_required(AdminPermission.access)
 @respond_no_content
 def delete_old_login_events():

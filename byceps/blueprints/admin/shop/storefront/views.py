@@ -27,7 +27,7 @@ from .forms import StorefrontCreateForm, StorefrontUpdateForm
 blueprint = create_blueprint('shop_storefront_admin', __name__)
 
 
-@blueprint.route('/for_shop/<shop_id>')
+@blueprint.get('/for_shop/<shop_id>')
 @permission_required(ShopPermission.view)
 @templated
 def index_for_shop(shop_id):
@@ -58,7 +58,7 @@ def _get_order_number_prefixes_by_sequence_id(storefronts, shop_id):
     return {seq.id: seq.prefix for seq in sequences}
 
 
-@blueprint.route('/<storefront_id>')
+@blueprint.get('/<storefront_id>')
 @permission_required(ShopPermission.view)
 @templated
 def view(storefront_id):
@@ -82,7 +82,7 @@ def view(storefront_id):
     }
 
 
-@blueprint.route('/for_shop/<shop_id>/create')
+@blueprint.get('/for_shop/<shop_id>/create')
 @permission_required(ShopPermission.create)
 @templated
 def create_form(shop_id, erroneous_form=None):
@@ -109,7 +109,7 @@ def create_form(shop_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/for_shop/<shop_id>', methods=['POST'])
+@blueprint.post('/for_shop/<shop_id>')
 @permission_required(ShopPermission.create)
 def create(shop_id):
     """Create a storefront."""
@@ -174,7 +174,7 @@ def create(shop_id):
     return redirect_to('.view', storefront_id=storefront.id)
 
 
-@blueprint.route('/<storefront_id>/update')
+@blueprint.get('/<storefront_id>/update')
 @permission_required(ShopPermission.update)
 @templated
 def update_form(storefront_id, erroneous_form=None):
@@ -206,7 +206,7 @@ def update_form(storefront_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<storefront_id>', methods=['POST'])
+@blueprint.post('/<storefront_id>')
 @permission_required(ShopPermission.update)
 def update(storefront_id):
     """Update a storefront."""

@@ -37,7 +37,7 @@ from .forms import assemble_user_create_form
 blueprint = create_blueprint('user_creation', __name__)
 
 
-@blueprint.route('/create')
+@blueprint.get('/create')
 @templated
 def create_form(erroneous_form=None):
     """Show a form to create a user."""
@@ -65,7 +65,7 @@ def create_form(erroneous_form=None):
     }
 
 
-@blueprint.route('/', methods=['POST'])
+@blueprint.post('/')
 def create():
     """Create a user."""
     _abort_if_user_account_creation_disabled()

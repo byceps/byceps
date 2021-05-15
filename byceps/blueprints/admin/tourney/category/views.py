@@ -28,7 +28,7 @@ blueprint = create_blueprint('tourney_category_admin', __name__)
 register_permission_enum(TourneyCategoryPermission)
 
 
-@blueprint.route('/for_party/<party_id>')
+@blueprint.get('/for_party/<party_id>')
 @permission_required(TourneyCategoryPermission.view)
 @templated
 def index(party_id):
@@ -43,7 +43,7 @@ def index(party_id):
     }
 
 
-@blueprint.route('/for_party/<party_id>/create')
+@blueprint.get('/for_party/<party_id>/create')
 @permission_required(TourneyCategoryPermission.administrate)
 @templated
 def create_form(party_id, erroneous_form=None):
@@ -58,7 +58,7 @@ def create_form(party_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/for_party/<party_id>', methods=['POST'])
+@blueprint.post('/for_party/<party_id>')
 @permission_required(TourneyCategoryPermission.administrate)
 def create(party_id):
     """Create a category."""
@@ -81,7 +81,7 @@ def create(party_id):
     return redirect_to('.index', party_id=category.party_id)
 
 
-@blueprint.route('/categories/<uuid:category_id>/update')
+@blueprint.get('/categories/<uuid:category_id>/update')
 @permission_required(TourneyCategoryPermission.administrate)
 @templated
 def update_form(category_id, erroneous_form=None):
@@ -99,7 +99,7 @@ def update_form(category_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/categories/<uuid:category_id>', methods=['POST'])
+@blueprint.post('/categories/<uuid:category_id>')
 @permission_required(TourneyCategoryPermission.administrate)
 def update(category_id):
     """Update a category."""
@@ -120,7 +120,7 @@ def update(category_id):
     return redirect_to('.index', party_id=category.party_id)
 
 
-@blueprint.route('/categories/<uuid:category_id>/up', methods=['POST'])
+@blueprint.post('/categories/<uuid:category_id>/up')
 @permission_required(TourneyCategoryPermission.administrate)
 @respond_no_content
 def move_up(category_id):
@@ -144,7 +144,7 @@ def move_up(category_id):
         )
 
 
-@blueprint.route('/categories/<uuid:category_id>/down', methods=['POST'])
+@blueprint.post('/categories/<uuid:category_id>/down')
 @permission_required(TourneyCategoryPermission.administrate)
 @respond_no_content
 def move_down(category_id):

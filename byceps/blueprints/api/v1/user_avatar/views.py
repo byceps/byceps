@@ -16,7 +16,7 @@ from .....util.framework.blueprint import create_blueprint
 blueprint = create_blueprint('api_v1_user_avatar', __name__)
 
 
-@blueprint.route('/by_email_hash/<md5_hash>')
+@blueprint.get('/by_email_hash/<md5_hash>')
 def get_avatar_url_by_email_address_hash(md5_hash):
     """Redirect to the avatar of the user with that hashed email address.
 

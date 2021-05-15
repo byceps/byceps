@@ -31,7 +31,7 @@ blueprint = create_blueprint('seating_admin', __name__)
 register_permission_enum(SeatingPermission)
 
 
-@blueprint.route('/<party_id>')
+@blueprint.get('/<party_id>')
 @permission_required(SeatingPermission.view)
 @templated
 def index_for_party(party_id):
@@ -54,8 +54,8 @@ def index_for_party(party_id):
     }
 
 
-@blueprint.route('/parties/<party_id>/areas', defaults={'page': 1})
-@blueprint.route('/parties/<party_id>/areas/pages/<int:page>')
+@blueprint.get('/parties/<party_id>/areas', defaults={'page': 1})
+@blueprint.get('/parties/<party_id>/areas/pages/<int:page>')
 @permission_required(SeatingPermission.view)
 @templated
 def area_index(party_id, page):
@@ -78,7 +78,7 @@ def area_index(party_id, page):
     }
 
 
-@blueprint.route('/parties/<party_id>/seat_groups')
+@blueprint.get('/parties/<party_id>/seat_groups')
 @permission_required(SeatingPermission.view)
 @templated
 def seat_group_index(party_id):

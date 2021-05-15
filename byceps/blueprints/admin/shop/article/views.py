@@ -50,8 +50,8 @@ register_permission_enum(ShopArticlePermission)
 TAX_RATE_DISPLAY_FACTOR = Decimal('100')
 
 
-@blueprint.route('/for_shop/<shop_id>', defaults={'page': 1})
-@blueprint.route('/for_shop/<shop_id>/pages/<int:page>')
+@blueprint.get('/for_shop/<shop_id>', defaults={'page': 1})
+@blueprint.get('/for_shop/<shop_id>/pages/<int:page>')
 @permission_required(ShopArticlePermission.view)
 @templated
 def index_for_shop(shop_id, page):
@@ -72,7 +72,7 @@ def index_for_shop(shop_id, page):
     }
 
 
-@blueprint.route('/<uuid:article_id>')
+@blueprint.get('/<uuid:article_id>')
 @permission_required(ShopArticlePermission.view)
 @templated
 def view(article_id):
@@ -102,7 +102,7 @@ def view(article_id):
     }
 
 
-@blueprint.route('/<uuid:article_id>/ordered')
+@blueprint.get('/<uuid:article_id>/ordered')
 @permission_required(ShopArticlePermission.view)
 @templated
 def view_ordered(article_id):
@@ -152,7 +152,7 @@ def view_ordered(article_id):
 # create
 
 
-@blueprint.route('/for_shop/<shop_id>/create')
+@blueprint.get('/for_shop/<shop_id>/create')
 @permission_required(ShopArticlePermission.create)
 @templated
 def create_form(shop_id, erroneous_form=None):
@@ -181,7 +181,7 @@ def create_form(shop_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/for_shop/<shop_id>', methods=['POST'])
+@blueprint.post('/for_shop/<shop_id>')
 @permission_required(ShopArticlePermission.create)
 def create(shop_id):
     """Create an article."""
@@ -255,7 +255,7 @@ def create(shop_id):
 # update
 
 
-@blueprint.route('/<uuid:article_id>/update')
+@blueprint.get('/<uuid:article_id>/update')
 @permission_required(ShopArticlePermission.update)
 @templated
 def update_form(article_id, erroneous_form=None):
@@ -300,7 +300,7 @@ def update_form(article_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<uuid:article_id>', methods=['POST'])
+@blueprint.post('/<uuid:article_id>')
 @permission_required(ShopArticlePermission.update)
 def update(article_id):
     """Update an article."""
@@ -362,7 +362,7 @@ def update(article_id):
 # article attachments
 
 
-@blueprint.route('/<uuid:article_id>/attachments/create')
+@blueprint.get('/<uuid:article_id>/attachments/create')
 @permission_required(ShopArticlePermission.update)
 @templated
 def attachment_create_form(article_id, erroneous_form=None):
@@ -390,7 +390,7 @@ def attachment_create_form(article_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/<uuid:article_id>/attachments', methods=['POST'])
+@blueprint.post('/<uuid:article_id>/attachments')
 @permission_required(ShopArticlePermission.update)
 def attachment_create(article_id):
     """Attach an article to another article."""
@@ -423,7 +423,7 @@ def attachment_create(article_id):
     return redirect_to('.view', article_id=article.id)
 
 
-@blueprint.route('/attachments/<uuid:article_id>', methods=['DELETE'])
+@blueprint.delete('/attachments/<uuid:article_id>')
 @permission_required(ShopArticlePermission.update)
 @respond_no_content
 def attachment_remove(article_id):
@@ -451,7 +451,7 @@ def attachment_remove(article_id):
 # article number sequences
 
 
-@blueprint.route('/number_sequences/for_shop/<shop_id>/create')
+@blueprint.get('/number_sequences/for_shop/<shop_id>/create')
 @permission_required(ShopArticlePermission.create)
 @templated
 def create_number_sequence_form(shop_id, erroneous_form=None):
@@ -471,7 +471,7 @@ def create_number_sequence_form(shop_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/number_sequences/for_shop/<shop_id>', methods=['POST'])
+@blueprint.post('/number_sequences/for_shop/<shop_id>')
 @permission_required(ShopArticlePermission.create)
 def create_number_sequence(shop_id):
     """Create an article number sequence."""

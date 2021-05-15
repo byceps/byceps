@@ -24,7 +24,7 @@ from .forms import CreateForm
 blueprint = create_blueprint('user_message', __name__)
 
 
-@blueprint.route('/to/<uuid:recipient_id>/create')
+@blueprint.get('/to/<uuid:recipient_id>/create')
 @login_required
 @templated
 def create_form(recipient_id, erroneous_form=None):
@@ -39,7 +39,7 @@ def create_form(recipient_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/to/<uuid:recipient_id>/create', methods=['POST'])
+@blueprint.post('/to/<uuid:recipient_id>/create')
 @login_required
 def create(recipient_id):
     """Create a message to send to the user."""

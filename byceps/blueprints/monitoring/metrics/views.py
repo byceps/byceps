@@ -17,7 +17,7 @@ from ....util.framework.blueprint import create_blueprint
 blueprint = create_blueprint('metrics', __name__)
 
 
-@blueprint.route('')
+@blueprint.get('')
 def metrics():
     """Return metrics."""
     metrics = metrics_service.collect_metrics()

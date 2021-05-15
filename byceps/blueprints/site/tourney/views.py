@@ -24,7 +24,7 @@ from ....util.framework.templating import templated
 blueprint = create_blueprint('tourney', __name__)
 
 
-@blueprint.route('/tourneys')
+@blueprint.get('/tourneys')
 @templated
 def tourney_index():
     """List all tournaments for the current party."""
@@ -65,7 +65,7 @@ def get_categories_with_tourneys(categories, tourneys):
     return categories_with_tourneys
 
 
-@blueprint.route('/tourneys/<tourney_id>')
+@blueprint.get('/tourneys/<tourney_id>')
 @templated
 def tourney_view(tourney_id):
     """Show the tournament."""

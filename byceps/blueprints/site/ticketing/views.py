@@ -30,7 +30,7 @@ from . import notification_service
 blueprint = create_blueprint('ticketing', __name__)
 
 
-@blueprint.route('/mine')
+@blueprint.get('/mine')
 @login_required
 @templated
 def index_mine():
@@ -62,7 +62,7 @@ def index_mine():
     }
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/printable.html')
+@blueprint.get('/tickets/<uuid:ticket_id>/printable.html')
 @login_required
 @templated
 def view_printable_html(ticket_id):
@@ -104,7 +104,7 @@ def view_printable_html(ticket_id):
 # user
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/appoint_user')
+@blueprint.get('/tickets/<uuid:ticket_id>/appoint_user')
 @login_required
 @templated
 def appoint_user_form(ticket_id, erroneous_form=None):
@@ -128,7 +128,7 @@ def appoint_user_form(ticket_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/user', methods=['POST'])
+@blueprint.post('/tickets/<uuid:ticket_id>/user')
 def appoint_user(ticket_id):
     """Appoint a user for the ticket."""
     _abort_if_ticket_management_disabled()
@@ -163,7 +163,7 @@ def appoint_user(ticket_id):
     return redirect_to('.index_mine')
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/user', methods=['DELETE'])
+@blueprint.delete('/tickets/<uuid:ticket_id>/user')
 @respond_no_content
 def withdraw_user(ticket_id):
     """Withdraw the ticket's user and appoint its owner instead."""
@@ -194,7 +194,7 @@ def withdraw_user(ticket_id):
 # user manager
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/appoint_user_manager')
+@blueprint.get('/tickets/<uuid:ticket_id>/appoint_user_manager')
 @login_required
 @templated
 def appoint_user_manager_form(ticket_id, erroneous_form=None):
@@ -218,7 +218,7 @@ def appoint_user_manager_form(ticket_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/user_manager', methods=['POST'])
+@blueprint.post('/tickets/<uuid:ticket_id>/user_manager')
 def appoint_user_manager(ticket_id):
     """Appoint a user manager for the ticket."""
     _abort_if_ticket_management_disabled()
@@ -256,7 +256,7 @@ def appoint_user_manager(ticket_id):
     return redirect_to('.index_mine')
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/user_manager', methods=['DELETE'])
+@blueprint.delete('/tickets/<uuid:ticket_id>/user_manager')
 @respond_no_content
 def withdraw_user_manager(ticket_id):
     """Withdraw the ticket's user manager."""
@@ -289,7 +289,7 @@ def withdraw_user_manager(ticket_id):
 # seat manager
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/appoint_seat_manager')
+@blueprint.get('/tickets/<uuid:ticket_id>/appoint_seat_manager')
 @login_required
 @templated
 def appoint_seat_manager_form(ticket_id, erroneous_form=None):
@@ -311,7 +311,7 @@ def appoint_seat_manager_form(ticket_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/seat_manager', methods=['POST'])
+@blueprint.post('/tickets/<uuid:ticket_id>/seat_manager')
 def appoint_seat_manager(ticket_id):
     """Appoint a seat manager for the ticket."""
     _abort_if_ticket_management_disabled()
@@ -347,7 +347,7 @@ def appoint_seat_manager(ticket_id):
     return redirect_to('.index_mine')
 
 
-@blueprint.route('/tickets/<uuid:ticket_id>/seat_manager', methods=['DELETE'])
+@blueprint.delete('/tickets/<uuid:ticket_id>/seat_manager')
 @respond_no_content
 def withdraw_seat_manager(ticket_id):
     """Withdraw the ticket's seat manager."""

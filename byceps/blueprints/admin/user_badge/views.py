@@ -33,7 +33,7 @@ register_permission_enum(UserBadgePermission)
 # badges
 
 
-@blueprint.route('/badges')
+@blueprint.get('/badges')
 @permission_required(UserBadgePermission.view)
 @templated
 def index():
@@ -69,7 +69,7 @@ def index():
     }
 
 
-@blueprint.route('/badges/<uuid:badge_id>')
+@blueprint.get('/badges/<uuid:badge_id>')
 @permission_required(UserBadgePermission.view)
 @templated
 def view(badge_id):
@@ -93,7 +93,7 @@ def view(badge_id):
     }
 
 
-@blueprint.route('/create')
+@blueprint.get('/create')
 @permission_required(UserBadgePermission.create)
 @templated
 def create_form(erroneous_form=None):
@@ -106,7 +106,7 @@ def create_form(erroneous_form=None):
     }
 
 
-@blueprint.route('/badges', methods=['POST'])
+@blueprint.post('/badges')
 @permission_required(UserBadgePermission.create)
 def create():
     """Create a user badge."""
@@ -147,7 +147,7 @@ def create():
     return redirect_to('.index')
 
 
-@blueprint.route('/badges/<uuid:badge_id>/update')
+@blueprint.get('/badges/<uuid:badge_id>/update')
 @permission_required(UserBadgePermission.update)
 @templated
 def update_form(badge_id, erroneous_form=None):
@@ -163,7 +163,7 @@ def update_form(badge_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/badges/<uuid:badge_id>', methods=['POST'])
+@blueprint.post('/badges/<uuid:badge_id>')
 @permission_required(UserBadgePermission.update)
 def update(badge_id):
     """Update a badge."""
@@ -203,7 +203,7 @@ def _set_brand_ids_on_form(form):
 # awarding
 
 
-@blueprint.route('/awardings/to/<uuid:user_id>')
+@blueprint.get('/awardings/to/<uuid:user_id>')
 @permission_required(UserBadgePermission.award)
 @templated
 def award_form(user_id, erroneous_form=None):
@@ -221,7 +221,7 @@ def award_form(user_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/awardings/to/<uuid:user_id>', methods=['POST'])
+@blueprint.post('/awardings/to/<uuid:user_id>')
 @permission_required(UserBadgePermission.award)
 def award(user_id):
     """Award a badge to a user."""

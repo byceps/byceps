@@ -32,7 +32,7 @@ blueprint = create_blueprint('tourney_tourney_admin', __name__)
 register_permission_enum(TourneyPermission)
 
 
-@blueprint.route('/for_party/<party_id>')
+@blueprint.get('/for_party/<party_id>')
 @permission_required(TourneyPermission.view)
 @templated
 def index(party_id):
@@ -47,7 +47,7 @@ def index(party_id):
     }
 
 
-@blueprint.route('/for_party/<party_id>/create')
+@blueprint.get('/for_party/<party_id>/create')
 @permission_required(TourneyPermission.administrate)
 @templated
 def create_form(party_id, erroneous_form=None):
@@ -63,7 +63,7 @@ def create_form(party_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/for_party/<party_id>', methods=['POST'])
+@blueprint.post('/for_party/<party_id>')
 @permission_required(TourneyPermission.administrate)
 def create(party_id):
     """Create a tourney."""
@@ -101,7 +101,7 @@ def create(party_id):
     return redirect_to('.index', party_id=tourney.party_id)
 
 
-@blueprint.route('/tourneys/<tourney_id>/update')
+@blueprint.get('/tourneys/<tourney_id>/update')
 @permission_required(TourneyPermission.administrate)
 @templated
 def update_form(tourney_id, erroneous_form=None):
@@ -133,7 +133,7 @@ def update_form(tourney_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/tourneys/<tourney_id>', methods=['POST'])
+@blueprint.post('/tourneys/<tourney_id>')
 @permission_required(TourneyPermission.administrate)
 def update(tourney_id):
     """Update the tourney."""

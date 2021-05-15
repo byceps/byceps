@@ -29,7 +29,7 @@ from .forms import LoginForm
 blueprint = create_blueprint('authentication.login_admin', __name__)
 
 
-@blueprint.route('/login')
+@blueprint.get('/login')
 @templated
 def login_form():
     """Show login form."""
@@ -47,7 +47,7 @@ def login_form():
     return {'form': form}
 
 
-@blueprint.route('/login', methods=['POST'])
+@blueprint.post('/login')
 @respond_no_content
 def login():
     """Allow the user to authenticate with e-mail address and password."""
@@ -94,7 +94,7 @@ def _require_admin_access_permission(user_id: UserID) -> None:
         abort(403)
 
 
-@blueprint.route('/logout', methods=['POST'])
+@blueprint.post('/logout')
 @respond_no_content
 def logout():
     """Log out user by deleting the corresponding cookie."""

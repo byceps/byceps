@@ -30,7 +30,7 @@ blueprint = create_blueprint('shop_email_admin', __name__)
 register_permission_enum(ShopPermission)
 
 
-@blueprint.route('/for_shop/<shop_id>')
+@blueprint.get('/for_shop/<shop_id>')
 @permission_required(ShopPermission.view)
 @templated
 def view_for_shop(shop_id):

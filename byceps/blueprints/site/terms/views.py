@@ -16,7 +16,7 @@ from ....util.framework.templating import templated
 blueprint = create_blueprint('terms', __name__)
 
 
-@blueprint.route('/')
+@blueprint.get('/')
 @templated
 def view_current():
     """Show the current version of this brand's terms and conditions."""

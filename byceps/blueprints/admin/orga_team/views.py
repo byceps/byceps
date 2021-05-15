@@ -37,7 +37,7 @@ register_permission_enum(OrgaTeamPermission)
 # teams
 
 
-@blueprint.route('/teams/<party_id>')
+@blueprint.get('/teams/<party_id>')
 @permission_required(OrgaTeamPermission.view)
 @templated
 def teams_for_party(party_id):
@@ -65,7 +65,7 @@ def teams_for_party(party_id):
     }
 
 
-@blueprint.route('/teams/<party_id>/create')
+@blueprint.get('/teams/<party_id>/create')
 @permission_required(OrgaTeamPermission.create)
 @templated
 def team_create_form(party_id, erroneous_form=None):
@@ -80,7 +80,7 @@ def team_create_form(party_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/teams/<party_id>', methods=['POST'])
+@blueprint.post('/teams/<party_id>')
 @permission_required(OrgaTeamPermission.create)
 def team_create(party_id):
     """Create an organizer team for a party."""
@@ -104,7 +104,7 @@ def team_create(party_id):
     return redirect_to('.teams_for_party', party_id=party.id)
 
 
-@blueprint.route('/teams/<uuid:team_id>', methods=['DELETE'])
+@blueprint.delete('/teams/<uuid:team_id>')
 @permission_required(OrgaTeamPermission.delete)
 @respond_no_content
 def team_delete(team_id):
@@ -127,7 +127,7 @@ def team_delete(team_id):
     flash_success(gettext('Team "%(title)s" has been deleted.', title=title))
 
 
-@blueprint.route('/teams/<target_party_id>/copy')
+@blueprint.get('/teams/<target_party_id>/copy')
 @permission_required(OrgaTeamPermission.create)
 @templated
 def teams_copy_form(target_party_id, erroneous_form=None):
@@ -171,7 +171,7 @@ def teams_copy_form(target_party_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/teams/<target_party_id>/copy', methods=['POST'])
+@blueprint.post('/teams/<target_party_id>/copy')
 @permission_required(OrgaTeamPermission.create)
 def teams_copy(target_party_id):
     """Copy all organizer teams from another party."""
@@ -216,7 +216,7 @@ def teams_copy(target_party_id):
 # memberships
 
 
-@blueprint.route('/teams/<uuid:team_id>/memberships/create')
+@blueprint.get('/teams/<uuid:team_id>/memberships/create')
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @templated
 def membership_create_form(team_id, erroneous_form=None):
@@ -251,7 +251,7 @@ def membership_create_form(team_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/teams/<uuid:team_id>/memberships', methods=['POST'])
+@blueprint.post('/teams/<uuid:team_id>/memberships')
 @permission_required(OrgaTeamPermission.administrate_memberships)
 def membership_create(team_id):
     """Assign an organizer to that team."""
@@ -282,7 +282,7 @@ def membership_create(team_id):
     return redirect_to('.teams_for_party', party_id=team.party_id)
 
 
-@blueprint.route('/memberships/<uuid:membership_id>/update')
+@blueprint.get('/memberships/<uuid:membership_id>/update')
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @templated
 def membership_update_form(membership_id, erroneous_form=None):
@@ -311,7 +311,7 @@ def membership_update_form(membership_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/memberships/<uuid:membership_id>', methods=['POST'])
+@blueprint.post('/memberships/<uuid:membership_id>')
 @permission_required(OrgaTeamPermission.administrate_memberships)
 def membership_update(membership_id):
     """Update a membership."""
@@ -343,7 +343,7 @@ def membership_update(membership_id):
     return redirect_to('.teams_for_party', party_id=team.party_id)
 
 
-@blueprint.route('/memberships/<uuid:membership_id>', methods=['DELETE'])
+@blueprint.delete('/memberships/<uuid:membership_id>')
 @permission_required(OrgaTeamPermission.administrate_memberships)
 @respond_no_content
 def membership_remove(membership_id):

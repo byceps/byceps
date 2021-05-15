@@ -14,7 +14,7 @@ from .....util.framework.blueprint import create_blueprint
 blueprint = create_blueprint('user_current', __name__)
 
 
-@blueprint.route('/me.json')
+@blueprint.get('/me.json')
 def view_as_json():
     """Show selected attributes of the current user's profile as JSON."""
     user = g.user

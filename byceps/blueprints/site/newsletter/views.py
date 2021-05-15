@@ -20,7 +20,7 @@ from ....util.views import login_required, respond_no_content
 blueprint = create_blueprint('newsletter', __name__)
 
 
-@blueprint.route('/lists/<list_id>/subscription', methods=['POST'])
+@blueprint.post('/lists/<list_id>/subscription')
 @login_required
 @respond_no_content
 def subscribe(list_id):
@@ -37,7 +37,7 @@ def subscribe(list_id):
     )
 
 
-@blueprint.route('/lists/<list_id>/subscription', methods=['DELETE'])
+@blueprint.delete('/lists/<list_id>/subscription')
 @login_required
 @respond_no_content
 def unsubscribe(list_id):

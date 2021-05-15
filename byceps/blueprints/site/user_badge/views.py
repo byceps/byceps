@@ -17,7 +17,7 @@ from ....util.framework.templating import templated
 blueprint = create_blueprint('user_badge', __name__)
 
 
-@blueprint.route('/')
+@blueprint.get('/')
 @templated
 def index():
     """List all badges."""
@@ -28,7 +28,7 @@ def index():
     }
 
 
-@blueprint.route('/<slug>')
+@blueprint.get('/<slug>')
 @templated
 def view(slug):
     """Show information about a badge."""

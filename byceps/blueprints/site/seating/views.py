@@ -38,7 +38,7 @@ blueprint = create_blueprint('seating', __name__)
 register_permission_enum(SeatingPermission)
 
 
-@blueprint.route('/')
+@blueprint.get('/')
 @templated
 def index():
     """List areas."""
@@ -53,7 +53,7 @@ def index():
     }
 
 
-@blueprint.route('/areas/<slug>')
+@blueprint.get('/areas/<slug>')
 @templated
 def view_area(slug):
     """View area."""
@@ -81,7 +81,7 @@ def view_area(slug):
     }
 
 
-@blueprint.route('/areas/<slug>/manage_seats')
+@blueprint.get('/areas/<slug>/manage_seats')
 @login_required
 @templated('site/seating/view_area')
 def manage_seats_in_area(slug):
@@ -169,9 +169,7 @@ def _get_selected_ticket():
     return selected_ticket
 
 
-@blueprint.route(
-    '/ticket/<uuid:ticket_id>/seat/<uuid:seat_id>', methods=['POST']
-)
+@blueprint.post('/ticket/<uuid:ticket_id>/seat/<uuid:seat_id>')
 @login_required
 @respond_no_content
 def occupy_seat(ticket_id, seat_id):
@@ -241,7 +239,7 @@ def occupy_seat(ticket_id, seat_id):
     )
 
 
-@blueprint.route('/ticket/<uuid:ticket_id>/seat', methods=['DELETE'])
+@blueprint.delete('/ticket/<uuid:ticket_id>/seat')
 @login_required
 @respond_no_content
 def release_seat(ticket_id):

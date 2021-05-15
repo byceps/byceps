@@ -32,7 +32,7 @@ blueprint = create_blueprint('shop_shop_admin', __name__)
 register_permission_enum(ShopPermission)
 
 
-@blueprint.route('/for_shop/<shop_id>')
+@blueprint.get('/for_shop/<shop_id>')
 @permission_required(ShopPermission.view)
 @templated
 def view(shop_id):
@@ -56,7 +56,7 @@ def view(shop_id):
     }
 
 
-@blueprint.route('/for_brand/<brand_id>')
+@blueprint.get('/for_brand/<brand_id>')
 @permission_required(ShopPermission.view)
 @templated
 def view_for_brand(brand_id):
@@ -73,7 +73,7 @@ def view_for_brand(brand_id):
     }
 
 
-@blueprint.route('/for_brand/<brand_id>', methods=['POST'])
+@blueprint.post('/for_brand/<brand_id>')
 @permission_required(ShopPermission.create)
 @respond_no_content_with_location
 def create(brand_id):

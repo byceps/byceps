@@ -52,7 +52,7 @@ register_permission_enum(NewsItemPermission)
 # channels
 
 
-@blueprint.route('/brands/<brand_id>')
+@blueprint.get('/brands/<brand_id>')
 @permission_required(NewsItemPermission.view)
 @templated
 def channel_index_for_brand(brand_id):
@@ -70,7 +70,7 @@ def channel_index_for_brand(brand_id):
     }
 
 
-@blueprint.route('/for_brand/<brand_id>/channels/create')
+@blueprint.get('/for_brand/<brand_id>/channels/create')
 @permission_required(NewsChannelPermission.create)
 @templated
 def channel_create_form(brand_id, erroneous_form=None):
@@ -85,7 +85,7 @@ def channel_create_form(brand_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/for_brand/<brand_id>/channels', methods=['POST'])
+@blueprint.post('/for_brand/<brand_id>/channels')
 @permission_required(NewsChannelPermission.create)
 def channel_create(brand_id):
     """Create a channel."""
@@ -111,8 +111,8 @@ def channel_create(brand_id):
     return redirect_to('.channel_view', channel_id=channel.id)
 
 
-@blueprint.route('/channels/<channel_id>', defaults={'page': 1})
-@blueprint.route('/channels/<channel_id>/pages/<int:page>')
+@blueprint.get('/channels/<channel_id>', defaults={'page': 1})
+@blueprint.get('/channels/<channel_id>/pages/<int:page>')
 @permission_required(NewsItemPermission.view)
 @templated
 def channel_view(channel_id, page):
@@ -136,7 +136,7 @@ def channel_view(channel_id, page):
 # images
 
 
-@blueprint.route('/for_item/<item_id>/create')
+@blueprint.get('/for_item/<item_id>/create')
 @permission_required(NewsItemPermission.update)
 @templated
 def image_create_form(item_id, erroneous_form=None):
@@ -157,7 +157,7 @@ def image_create_form(item_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/for_item/<item_id>', methods=['POST'])
+@blueprint.post('/for_item/<item_id>')
 @permission_required(NewsItemPermission.update)
 def image_create(item_id):
     """Create a news image."""
@@ -207,7 +207,7 @@ def image_create(item_id):
     return redirect_to('.item_view', item_id=image.item_id)
 
 
-@blueprint.route('/images/<uuid:image_id>/update')
+@blueprint.get('/images/<uuid:image_id>/update')
 @permission_required(NewsItemPermission.update)
 @templated
 def image_update_form(image_id, erroneous_form=None):
@@ -224,7 +224,7 @@ def image_update_form(image_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/images/<uuid:image_id>', methods=['POST'])
+@blueprint.post('/images/<uuid:image_id>')
 @permission_required(NewsItemPermission.update)
 def image_update(image_id):
     """Update a news image."""
@@ -259,7 +259,7 @@ def image_update(image_id):
 # items
 
 
-@blueprint.route('/items/<uuid:item_id>')
+@blueprint.get('/items/<uuid:item_id>')
 @permission_required(NewsItemPermission.view)
 @templated('admin/news/item_view_version')
 def item_view(item_id):
@@ -271,7 +271,7 @@ def item_view(item_id):
     return _render_item_version(version, item)
 
 
-@blueprint.route('/versions/<uuid:version_id>')
+@blueprint.get('/versions/<uuid:version_id>')
 @permission_required(NewsItemPermission.view)
 @templated
 def item_view_version(version_id):
@@ -319,7 +319,7 @@ def _render_item_version(version, item):
     return context
 
 
-@blueprint.route('/items/<uuid:item_id>/versions')
+@blueprint.get('/items/<uuid:item_id>/versions')
 @permission_required(NewsItemPermission.view)
 @templated
 def item_list_versions(item_id):
@@ -339,9 +339,7 @@ def item_list_versions(item_id):
     }
 
 
-@blueprint.route(
-    '/items/<uuid:from_version_id>/compare_to/<uuid:to_version_id>'
-)
+@blueprint.get('/items/<uuid:from_version_id>/compare_to/<uuid:to_version_id>')
 @permission_required(NewsItemPermission.view)
 @templated
 def item_compare_versions(from_version_id, to_version_id):
@@ -370,7 +368,7 @@ def item_compare_versions(from_version_id, to_version_id):
     }
 
 
-@blueprint.route('/for_channel/<channel_id>/create')
+@blueprint.get('/for_channel/<channel_id>/create')
 @permission_required(NewsItemPermission.create)
 @templated
 def item_create_form(channel_id, erroneous_form=None):
@@ -389,7 +387,7 @@ def item_create_form(channel_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/for_channel/<channel_id>', methods=['POST'])
+@blueprint.post('/for_channel/<channel_id>')
 @permission_required(NewsItemPermission.create)
 def item_create(channel_id):
     """Create a news item."""
@@ -416,7 +414,7 @@ def item_create(channel_id):
     return redirect_to('.item_view', item_id=item.id)
 
 
-@blueprint.route('/items/<uuid:item_id>/update')
+@blueprint.get('/items/<uuid:item_id>/update')
 @permission_required(NewsItemPermission.update)
 @templated
 def item_update_form(item_id, erroneous_form=None):
@@ -437,7 +435,7 @@ def item_update_form(item_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/items/<uuid:item_id>', methods=['POST'])
+@blueprint.post('/items/<uuid:item_id>')
 @permission_required(NewsItemPermission.update)
 def item_update(item_id):
     """Update a news item."""
@@ -464,7 +462,7 @@ def item_update(item_id):
     return redirect_to('.item_view', item_id=item.id)
 
 
-@blueprint.route('/items/<uuid:item_id>/publish_later')
+@blueprint.get('/items/<uuid:item_id>/publish_later')
 @permission_required(NewsItemPermission.publish)
 @templated
 def item_publish_later_form(item_id, erroneous_form=None):
@@ -479,7 +477,7 @@ def item_publish_later_form(item_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/items/<uuid:item_id>/publish_later', methods=['POST'])
+@blueprint.post('/items/<uuid:item_id>/publish_later')
 @permission_required(NewsItemPermission.publish)
 def item_publish_later(item_id):
     """Publish a news item at a time in the future."""
@@ -508,7 +506,7 @@ def item_publish_later(item_id):
     return redirect_to('.item_view', item_id=item.id)
 
 
-@blueprint.route('/items/<uuid:item_id>/publish_now', methods=['POST'])
+@blueprint.post('/items/<uuid:item_id>/publish_now')
 @permission_required(NewsItemPermission.publish)
 @respond_no_content
 def item_publish_now(item_id):

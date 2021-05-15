@@ -21,7 +21,7 @@ from .forms import CreateForm
 blueprint = create_blueprint('user_group', __name__)
 
 
-@blueprint.route('/')
+@blueprint.get('/')
 @templated
 def index():
     """List groups."""
@@ -32,7 +32,7 @@ def index():
     }
 
 
-@blueprint.route('/create')
+@blueprint.get('/create')
 @templated
 def create_form(erroneous_form=None):
     """Show a form to create a group."""
@@ -47,7 +47,7 @@ def create_form(erroneous_form=None):
     }
 
 
-@blueprint.route('/', methods=['POST'])
+@blueprint.post('/')
 def create():
     """Create a group."""
     if not g.user.authenticated:

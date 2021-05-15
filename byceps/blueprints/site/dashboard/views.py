@@ -39,7 +39,7 @@ from ..board import service as board_helper_service
 blueprint = create_blueprint('dashboard', __name__)
 
 
-@blueprint.route('')
+@blueprint.get('')
 @login_required
 @templated
 def index():

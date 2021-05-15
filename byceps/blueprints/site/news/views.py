@@ -29,8 +29,8 @@ register_permission_enum(NewsItemPermission)
 DEFAULT_ITEMS_PER_PAGE = 4
 
 
-@blueprint.route('/', defaults={'page': 1})
-@blueprint.route('/pages/<int:page>')
+@blueprint.get('/', defaults={'page': 1})
+@blueprint.get('/pages/<int:page>')
 @templated
 def index(page):
     """Show a page of news items."""
@@ -48,7 +48,7 @@ def index(page):
     }
 
 
-@blueprint.route('/<slug>')
+@blueprint.get('/<slug>')
 @templated
 def view(slug):
     """Show a single news item."""

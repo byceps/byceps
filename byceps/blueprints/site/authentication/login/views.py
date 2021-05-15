@@ -39,7 +39,7 @@ blueprint = create_blueprint('authentication.login', __name__)
 # log in/out
 
 
-@blueprint.route('/login')
+@blueprint.get('/login')
 @templated
 def login_form():
     """Show login form."""
@@ -68,7 +68,7 @@ def login_form():
     }
 
 
-@blueprint.route('/login', methods=['POST'])
+@blueprint.post('/login')
 @respond_no_content
 def login():
     """Allow the user to authenticate with e-mail address and password."""
@@ -131,7 +131,7 @@ def _is_consent_required(user_id: UserID) -> bool:
     )
 
 
-@blueprint.route('/logout', methods=['POST'])
+@blueprint.post('/logout')
 @respond_no_content
 def logout():
     """Log out user by deleting the corresponding cookie."""

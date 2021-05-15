@@ -21,7 +21,7 @@ blueprint = create_blueprint('consent_admin', __name__)
 register_permission_enum(ConsentPermission)
 
 
-@blueprint.route('/')
+@blueprint.get('/')
 @permission_required(ConsentPermission.administrate)
 @templated
 def index():

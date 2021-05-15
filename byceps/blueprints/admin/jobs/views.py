@@ -20,7 +20,7 @@ blueprint = create_blueprint('jobs_admin', __name__)
 register_permission_enum(JobsPermission)
 
 
-@blueprint.route('/')
+@blueprint.get('/')
 @permission_required(JobsPermission.view)
 @templated
 def index():

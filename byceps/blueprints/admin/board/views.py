@@ -50,7 +50,7 @@ class BoardStats:
 # boards
 
 
-@blueprint.route('/brands/<brand_id>')
+@blueprint.get('/brands/<brand_id>')
 @permission_required(BoardCategoryPermission.view)
 @templated
 def board_index_for_brand(brand_id):
@@ -76,7 +76,7 @@ def board_index_for_brand(brand_id):
     }
 
 
-@blueprint.route('/boards/<board_id>')
+@blueprint.get('/boards/<board_id>')
 @permission_required(BoardCategoryPermission.view)
 @templated
 def board_view(board_id):
@@ -95,7 +95,7 @@ def board_view(board_id):
     }
 
 
-@blueprint.route('/for_brand/<brand_id>/boards/create')
+@blueprint.get('/for_brand/<brand_id>/boards/create')
 @permission_required(BoardPermission.create)
 @templated
 def board_create_form(brand_id, erroneous_form=None):
@@ -110,7 +110,7 @@ def board_create_form(brand_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/for_brand/<brand_id>/boards', methods=['POST'])
+@blueprint.post('/for_brand/<brand_id>/boards')
 @permission_required(BoardPermission.create)
 def board_create(brand_id):
     """Create a board."""
@@ -137,7 +137,7 @@ def board_create(brand_id):
 # categories
 
 
-@blueprint.route('/categories/for_board/<board_id>/create')
+@blueprint.get('/categories/for_board/<board_id>/create')
 @permission_required(BoardCategoryPermission.create)
 @templated
 def category_create_form(board_id, erroneous_form=None):
@@ -155,7 +155,7 @@ def category_create_form(board_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/categories/for_board/<board_id>', methods=['POST'])
+@blueprint.post('/categories/for_board/<board_id>')
 @permission_required(BoardCategoryPermission.create)
 def category_create(board_id):
     """Create a category."""
@@ -182,7 +182,7 @@ def category_create(board_id):
     return redirect_to('.board_view', board_id=board.id)
 
 
-@blueprint.route('/categories/<uuid:category_id>/update')
+@blueprint.get('/categories/<uuid:category_id>/update')
 @permission_required(BoardCategoryPermission.update)
 @templated
 def category_update_form(category_id, erroneous_form=None):
@@ -203,7 +203,7 @@ def category_update_form(category_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/categories/<uuid:category_id>', methods=['POST'])
+@blueprint.post('/categories/<uuid:category_id>')
 @permission_required(BoardCategoryPermission.update)
 def category_update(category_id):
     """Update the category."""
@@ -230,9 +230,7 @@ def category_update(category_id):
     return redirect_to('.board_view', board_id=category.board_id)
 
 
-@blueprint.route(
-    '/categories/<uuid:category_id>/flags/hidden', methods=['POST']
-)
+@blueprint.post('/categories/<uuid:category_id>/flags/hidden')
 @permission_required(BoardCategoryPermission.update)
 @respond_no_content
 def category_hide(category_id):
@@ -249,9 +247,7 @@ def category_hide(category_id):
     )
 
 
-@blueprint.route(
-    '/categories/<uuid:category_id>/flags/hidden', methods=['DELETE']
-)
+@blueprint.delete('/categories/<uuid:category_id>/flags/hidden')
 @permission_required(BoardCategoryPermission.update)
 @respond_no_content
 def category_unhide(category_id):
@@ -268,7 +264,7 @@ def category_unhide(category_id):
     )
 
 
-@blueprint.route('/categories/<uuid:category_id>/up', methods=['POST'])
+@blueprint.post('/categories/<uuid:category_id>/up')
 @permission_required(BoardCategoryPermission.update)
 @respond_no_content
 def category_move_up(category_id):
@@ -293,7 +289,7 @@ def category_move_up(category_id):
         )
 
 
-@blueprint.route('/categories/<uuid:category_id>/down', methods=['POST'])
+@blueprint.post('/categories/<uuid:category_id>/down')
 @permission_required(BoardCategoryPermission.update)
 @respond_no_content
 def category_move_down(category_id):
@@ -318,7 +314,7 @@ def category_move_down(category_id):
         )
 
 
-@blueprint.route('/categories/<uuid:category_id>', methods=['DELETE'])
+@blueprint.delete('/categories/<uuid:category_id>')
 @permission_required(BoardCategoryPermission.create)
 @respond_no_content
 def category_delete(category_id):

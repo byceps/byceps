@@ -17,7 +17,7 @@ from ....util.framework.templating import templated
 blueprint = create_blueprint('party', __name__)
 
 
-@blueprint.route('/info')
+@blueprint.get('/info')
 @templated
 def info():
     """Show information about the current party."""
@@ -32,7 +32,7 @@ def info():
     }
 
 
-@blueprint.route('/archive')
+@blueprint.get('/archive')
 @templated
 def archive():
     """Show archived parties."""

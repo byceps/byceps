@@ -39,7 +39,7 @@ blueprint = create_blueprint('party_admin', __name__)
 register_permission_enum(PartyPermission)
 
 
-@blueprint.route('/')
+@blueprint.get('/')
 @permission_required(PartyPermission.view)
 @templated
 def index():
@@ -67,8 +67,8 @@ def index():
     }
 
 
-@blueprint.route('/brands/<brand_id>', defaults={'page': 1})
-@blueprint.route('/brands/<brand_id>/pages/<int:page>')
+@blueprint.get('/brands/<brand_id>', defaults={'page': 1})
+@blueprint.get('/brands/<brand_id>/pages/<int:page>')
 @permission_required(PartyPermission.view)
 @templated
 def index_for_brand(brand_id, page):
@@ -106,7 +106,7 @@ def _get_ticket_sale_stats_by_party_id(
     }
 
 
-@blueprint.route('/parties/<party_id>')
+@blueprint.get('/parties/<party_id>')
 @permission_required(PartyPermission.view)
 @templated
 def view(party_id):
@@ -126,7 +126,7 @@ def view(party_id):
     }
 
 
-@blueprint.route('/for_brand/<brand_id>/create')
+@blueprint.get('/for_brand/<brand_id>/create')
 @permission_required(PartyPermission.create)
 @templated
 def create_form(brand_id, erroneous_form=None):
@@ -141,7 +141,7 @@ def create_form(brand_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/for_brand/<brand_id>', methods=['POST'])
+@blueprint.post('/for_brand/<brand_id>')
 @permission_required(PartyPermission.create)
 def create(brand_id):
     """Create a party for that brand."""
@@ -178,7 +178,7 @@ def create(brand_id):
     return redirect_to('.index_for_brand', brand_id=brand.id)
 
 
-@blueprint.route('/parties/<party_id>/update')
+@blueprint.get('/parties/<party_id>/update')
 @permission_required(PartyPermission.update)
 @templated
 def update_form(party_id, erroneous_form=None):
@@ -211,7 +211,7 @@ def update_form(party_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/parties/<party_id>', methods=['POST'])
+@blueprint.post('/parties/<party_id>')
 @permission_required(PartyPermission.update)
 def update(party_id):
     """Update a party."""

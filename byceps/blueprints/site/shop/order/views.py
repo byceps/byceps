@@ -41,7 +41,7 @@ def tax_rate_as_percentage(tax_rate) -> str:
     return str(percentage).replace('.', ',')
 
 
-@blueprint.route('/order')
+@blueprint.get('/order')
 @templated
 def order_form(erroneous_form=None):
     """Show a form to order articles."""
@@ -89,7 +89,7 @@ def list_articles(article_compilation):
     }
 
 
-@blueprint.route('/order', methods=['POST'])
+@blueprint.post('/order')
 @login_required
 def order():
     """Order articles."""
@@ -133,7 +133,7 @@ def order():
     return redirect_to('shop_orders.view', order_id=order.id)
 
 
-@blueprint.route('/order_single/<uuid:article_id>')
+@blueprint.get('/order_single/<uuid:article_id>')
 @login_required
 @templated
 def order_single_form(article_id, erroneous_form=None):
@@ -193,7 +193,7 @@ def order_single_form(article_id, erroneous_form=None):
     }
 
 
-@blueprint.route('/order_single/<uuid:article_id>', methods=['POST'])
+@blueprint.post('/order_single/<uuid:article_id>')
 @login_required
 def order_single(article_id):
     """Order a single article."""

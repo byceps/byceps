@@ -17,7 +17,7 @@ from ....util.framework.templating import templated
 blueprint = create_blueprint('orga_team', __name__)
 
 
-@blueprint.route('/')
+@blueprint.get('/')
 @templated
 def index():
     """List all organizers for the current party."""

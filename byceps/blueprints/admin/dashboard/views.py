@@ -45,7 +45,7 @@ blueprint = create_blueprint('admin_dashboard', __name__)
 register_permission_enum(AdminDashboardPermission)
 
 
-@blueprint.route('')
+@blueprint.get('')
 @permission_required(AdminDashboardPermission.view_global)
 @templated
 def view_global():
@@ -99,7 +99,7 @@ def view_global():
     }
 
 
-@blueprint.route('/brands/<brand_id>')
+@blueprint.get('/brands/<brand_id>')
 @permission_required(AdminDashboardPermission.view_brand)
 @templated
 def view_brand(brand_id):
@@ -165,7 +165,7 @@ def view_brand(brand_id):
     }
 
 
-@blueprint.route('/parties/<party_id>')
+@blueprint.get('/parties/<party_id>')
 @permission_required(AdminDashboardPermission.view_party)
 @templated
 def view_party(party_id):

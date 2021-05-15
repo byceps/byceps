@@ -46,7 +46,7 @@ register_permission_enum(SnippetMountpointPermission)
 register_permission_enum(SnippetPermission)
 
 
-@blueprint.route('/for_scope/<scope_type>/<scope_name>')
+@blueprint.get('/for_scope/<scope_type>/<scope_name>')
 @permission_required(SnippetPermission.view)
 @templated
 def index_for_scope(scope_type, scope_name):
@@ -68,7 +68,7 @@ def index_for_scope(scope_type, scope_name):
     }
 
 
-@blueprint.route('/snippets/<uuid:snippet_id>/current_version')
+@blueprint.get('/snippets/<uuid:snippet_id>/current_version')
 @permission_required(SnippetPermission.view)
 def view_current_version(snippet_id):
     """Show the current version of the snippet."""
@@ -79,7 +79,7 @@ def view_current_version(snippet_id):
     return view_version(version.id)
 
 
-@blueprint.route('/versions/<uuid:snippet_version_id>')
+@blueprint.get('/versions/<uuid:snippet_version_id>')
 @permission_required(SnippetPermission.view_history)
 @templated
 def view_version(snippet_version_id):
@@ -119,7 +119,7 @@ def view_version(snippet_version_id):
     return context
 
 
-@blueprint.route('/snippets/<uuid:snippet_id>/history')
+@blueprint.get('/snippets/<uuid:snippet_id>/history')
 @permission_required(SnippetPermission.view_history)
 @templated
 def history(snippet_id):
@@ -146,7 +146,7 @@ def history(snippet_id):
 # document
 
 
-@blueprint.route('/for_scope/<scope_type>/<scope_name>/documents/create')
+@blueprint.get('/for_scope/<scope_type>/<scope_name>/documents/create')
 @permission_required(SnippetPermission.create)
 @templated
 def create_document_form(scope_type, scope_name):
@@ -166,9 +166,7 @@ def create_document_form(scope_type, scope_name):
     }
 
 
-@blueprint.route(
-    '/for_scope/<scope_type>/<scope_name>/documents', methods=['POST']
-)
+@blueprint.post('/for_scope/<scope_type>/<scope_name>/documents')
 @permission_required(SnippetPermission.create)
 def create_document(scope_type, scope_name):
     """Create a document."""
@@ -204,7 +202,7 @@ def create_document(scope_type, scope_name):
     return redirect_to('.view_version', snippet_version_id=version.id)
 
 
-@blueprint.route('/documents/<uuid:snippet_id>/update')
+@blueprint.get('/documents/<uuid:snippet_id>/update')
 @permission_required(SnippetPermission.update)
 @templated
 def update_document_form(snippet_id):
@@ -228,7 +226,7 @@ def update_document_form(snippet_id):
     }
 
 
-@blueprint.route('/documents/<uuid:snippet_id>', methods=['POST'])
+@blueprint.post('/documents/<uuid:snippet_id>')
 @permission_required(SnippetPermission.update)
 def update_document(snippet_id):
     """Update a document."""
@@ -263,7 +261,7 @@ def update_document(snippet_id):
     return redirect_to('.view_version', snippet_version_id=version.id)
 
 
-@blueprint.route(
+@blueprint.get(
     '/documents/<uuid:from_version_id>/compare_to/<uuid:to_version_id>'
 )
 @permission_required(SnippetPermission.view_history)
@@ -303,7 +301,7 @@ def compare_documents(from_version_id, to_version_id):
 # fragment
 
 
-@blueprint.route('/for_scope/<scope_type>/<scope_name>/fragments/create')
+@blueprint.get('/for_scope/<scope_type>/<scope_name>/fragments/create')
 @permission_required(SnippetPermission.create)
 @templated
 def create_fragment_form(scope_type, scope_name):
@@ -323,9 +321,7 @@ def create_fragment_form(scope_type, scope_name):
     }
 
 
-@blueprint.route(
-    '/for_scope/<scope_type>/<scope_name>/fragments', methods=['POST']
-)
+@blueprint.post('/for_scope/<scope_type>/<scope_name>/fragments')
 @permission_required(SnippetPermission.create)
 def create_fragment(scope_type, scope_name):
     """Create a fragment."""
@@ -352,7 +348,7 @@ def create_fragment(scope_type, scope_name):
     return redirect_to('.view_version', snippet_version_id=version.id)
 
 
-@blueprint.route('/fragments/<uuid:snippet_id>/update')
+@blueprint.get('/fragments/<uuid:snippet_id>/update')
 @permission_required(SnippetPermission.update)
 @templated
 def update_fragment_form(snippet_id):
@@ -376,7 +372,7 @@ def update_fragment_form(snippet_id):
     }
 
 
-@blueprint.route('/fragments/<uuid:snippet_id>', methods=['POST'])
+@blueprint.post('/fragments/<uuid:snippet_id>')
 @permission_required(SnippetPermission.update)
 def update_fragment(snippet_id):
     """Update a fragment."""
@@ -403,7 +399,7 @@ def update_fragment(snippet_id):
     return redirect_to('.view_version', snippet_version_id=version.id)
 
 
-@blueprint.route(
+@blueprint.get(
     '/fragments/<uuid:from_version_id>/compare_to/<uuid:to_version_id>'
 )
 @permission_required(SnippetPermission.view_history)
@@ -435,7 +431,7 @@ def compare_fragments(from_version_id, to_version_id):
 # delete
 
 
-@blueprint.route('/snippets/<uuid:snippet_id>', methods=['DELETE'])
+@blueprint.delete('/snippets/<uuid:snippet_id>')
 @permission_required(SnippetPermission.delete)
 @respond_no_content_with_location
 def delete_snippet(snippet_id):
@@ -471,7 +467,7 @@ def delete_snippet(snippet_id):
 # mountpoint
 
 
-@blueprint.route('/mountpoints/<site_id>')
+@blueprint.get('/mountpoints/<site_id>')
 @permission_required(SnippetPermission.view)
 @templated
 def index_mountpoints(site_id):
@@ -497,7 +493,7 @@ def index_mountpoints(site_id):
     }
 
 
-@blueprint.route('/snippets/<uuid:snippet_id>/mountpoints/create')
+@blueprint.get('/snippets/<uuid:snippet_id>/mountpoints/create')
 @permission_required(SnippetMountpointPermission.create)
 @templated
 def create_mountpoint_form(snippet_id, *, erroneous_form=None):
@@ -520,7 +516,7 @@ def create_mountpoint_form(snippet_id, *, erroneous_form=None):
     }
 
 
-@blueprint.route('/snippets/<uuid:snippet_id>/mountpoints', methods=['POST'])
+@blueprint.post('/snippets/<uuid:snippet_id>/mountpoints')
 @permission_required(SnippetMountpointPermission.create)
 def create_mountpoint(snippet_id):
     """Create a mountpoint."""
@@ -547,7 +543,7 @@ def create_mountpoint(snippet_id):
     return redirect_to('.index_mountpoints', site_id=site_id)
 
 
-@blueprint.route('/mountpoints/<uuid:mountpoint_id>', methods=['DELETE'])
+@blueprint.delete('/mountpoints/<uuid:mountpoint_id>')
 @permission_required(SnippetMountpointPermission.delete)
 @respond_no_content
 def delete_mountpoint(mountpoint_id):
