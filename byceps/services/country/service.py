@@ -7,7 +7,6 @@ byceps.services.country.service
 """
 
 from __future__ import annotations
-import codecs
 from dataclasses import dataclass
 import json
 
@@ -23,11 +22,9 @@ class Country:
 
 def get_countries() -> list[Country]:
     """Load countries from JSON file."""
-    reader = codecs.getreader('utf-8')
-
     path = 'services/country/resources/countries.json'
     with current_app.open_resource(path) as f:
-        records = json.load(reader(f))
+        records = json.load(f)
 
     return [Country(**record) for record in records]
 
