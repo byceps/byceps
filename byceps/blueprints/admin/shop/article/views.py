@@ -208,13 +208,11 @@ def create(shop_id):
         return create_form(shop_id, form)
 
     article_number_sequence = (
-        article_sequence_service.find_article_number_sequence(
+        article_sequence_service.get_article_number_sequence(
             article_number_sequence_id
         )
     )
-    if (article_number_sequence is None) or (
-        article_number_sequence.shop_id != shop.id
-    ):
+    if article_number_sequence.shop_id != shop.id:
         flash_error(gettext('No valid article number sequence was specified.'))
         return create_form(shop_id, form)
 

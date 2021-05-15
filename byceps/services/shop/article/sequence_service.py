@@ -55,18 +55,16 @@ def delete_article_number_sequence(
     db.session.commit()
 
 
-def find_article_number_sequence(
+def get_article_number_sequence(
     sequence_id: ArticleNumberSequenceID,
-) -> Optional[ArticleNumberSequence]:
-    """Return the article number sequence, or `None` if the sequence ID
-    is unknown.
-    """
+) -> ArticleNumberSequence:
+    """Return the article number sequence, or raise an exception."""
     sequence = DbArticleNumberSequence.query \
         .filter_by(id=sequence_id) \
         .one_or_none()
 
     if sequence is None:
-        return None
+        raise ValueError(f'Unknown article number sequence ID "{sequence_id}"')
 
     return _db_entity_to_article_number_sequence(sequence)
 
