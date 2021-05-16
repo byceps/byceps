@@ -113,9 +113,9 @@ def _db_entity_to_brand(brand: DbBrand) -> Brand:
         image_url_path = None
 
     return Brand(
-        brand.id,
-        brand.title,
-        brand.image_filename,
-        image_url_path,
-        brand.archived,
+        id=brand.id,
+        title=brand.title,
+        image_filename=brand.image_filename,
+        image_url_path=image_url_path,
+        archived=brand.archived,
     )

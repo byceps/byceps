@@ -175,18 +175,18 @@ def get_current_sites(
 
 def _db_entity_to_site(site: DbSite) -> Site:
     return Site(
-        site.id,
-        site.title,
-        site.server_name,
-        site.brand_id,
-        site.party_id,
-        site.enabled,
-        site.user_account_creation_enabled,
-        site.login_enabled,
-        site.news_channel_id,
-        site.board_id,
-        site.storefront_id,
-        site.archived,
+        id=site.id,
+        title=site.title,
+        server_name=site.server_name,
+        brand_id=site.brand_id,
+        party_id=site.party_id,
+        enabled=site.enabled,
+        user_account_creation_enabled=site.user_account_creation_enabled,
+        login_enabled=site.login_enabled,
+        news_channel_id=site.news_channel_id,
+        board_id=site.board_id,
+        storefront_id=site.storefront_id,
+        archived=site.archived,
     )
 
 

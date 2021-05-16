@@ -229,16 +229,16 @@ def get_party_count_by_brand_id() -> dict[BrandID, int]:
 
 def _db_entity_to_party(party: DbParty) -> Party:
     return Party(
-        party.id,
-        party.brand_id,
-        party.title,
-        party.starts_at,
-        party.ends_at,
-        party.max_ticket_quantity,
-        party.ticket_management_enabled,
-        party.seat_management_enabled,
-        party.canceled,
-        party.archived,
+        id=party.id,
+        brand_id=party.brand_id,
+        title=party.title,
+        starts_at=party.starts_at,
+        ends_at=party.ends_at,
+        max_ticket_quantity=party.max_ticket_quantity,
+        ticket_management_enabled=party.ticket_management_enabled,
+        seat_management_enabled=party.seat_management_enabled,
+        canceled=party.canceled,
+        archived=party.archived,
     )
 
 
