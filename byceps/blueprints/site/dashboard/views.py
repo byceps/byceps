@@ -91,7 +91,9 @@ def _get_news_headlines(site: Site) -> list[NewsHeadline]:
     if channel_id is None:
         return []
 
-    return news_item_service.get_recent_headlines(channel_id, limit=4)
+    channel_ids = {channel_id}
+
+    return news_item_service.get_recent_headlines(channel_ids, limit=4)
 
 
 def _get_board_topics(site: Site, current_user: CurrentUser) -> list[DbTopic]:

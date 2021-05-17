@@ -208,14 +208,14 @@ def find_aggregated_item_by_slug(
 
 
 def get_aggregated_items_paginated(
-    channel_id: ChannelID,
+    channel_ids: set[ChannelID],
     page: int,
     items_per_page: int,
     *,
     published_only: bool = False,
 ) -> Pagination:
     """Return the news items to show on the specified page."""
-    query = _get_items_query(channel_id)
+    query = _get_items_query(channel_ids)
 
     if published_only:
         query = query.published()
@@ -226,17 +226,19 @@ def get_aggregated_items_paginated(
 
 
 def get_items_paginated(
-    channel_id: ChannelID, page: int, items_per_page: int
+    channel_ids: set[ChannelID], page: int, items_per_page: int
 ) -> Pagination:
     """Return the news items to show on the specified page."""
-    return _get_items_query(channel_id) \
+    return _get_items_query(channel_ids) \
         .paginate(page, items_per_page)
 
 
-def get_recent_headlines(channel_id: ChannelID, limit: int) -> list[Headline]:
+def get_recent_headlines(
+    channel_ids: set[ChannelID], limit: int
+) -> list[Headline]:
     """Return the most recent headlines."""
     items = DbItem.query \
-        .for_channel(channel_id) \
+        .for_channels(channel_ids) \
         .with_current_version() \
         .published() \
         .order_by(DbItem.published_at.desc()) \
@@ -253,9 +255,9 @@ def get_recent_headlines(channel_id: ChannelID, limit: int) -> list[Headline]:
     ]
 
 
-def _get_items_query(channel_id: ChannelID) -> Query:
+def _get_items_query(channel_ids: set[ChannelID]) -> Query:
     return DbItem.query \
-        .for_channel(channel_id) \
+        .for_channels(channel_ids) \
         .with_channel() \
         .with_current_version() \
         .with_images() \

@@ -121,9 +121,10 @@ def channel_view(channel_id, page):
 
     brand = brand_service.find_brand(channel.brand_id)
 
+    channel_ids = {channel.id}
     per_page = request.args.get('per_page', type=int, default=15)
 
-    items = news_item_service.get_items_paginated(channel.id, page, per_page)
+    items = news_item_service.get_items_paginated(channel_ids, page, per_page)
 
     return {
         'channel': channel,

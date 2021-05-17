@@ -6,6 +6,7 @@ byceps.services.news.dbmodels.item
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
@@ -25,6 +26,12 @@ class ItemQuery(BaseQuery):
 
     def for_channel(self, channel_id: ChannelID) -> BaseQuery:
         return self.filter_by(channel_id=channel_id)
+
+    def for_channels(self, channel_ids: set[ChannelID]) -> BaseQuery:
+        if not channel_ids:
+            raise ValueError('No channel IDs given')
+
+        return self.filter(Item.channel_id.in_(channel_ids))
 
     def with_channel(self) -> BaseQuery:
         return self.options(

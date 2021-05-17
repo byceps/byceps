@@ -35,11 +35,12 @@ DEFAULT_ITEMS_PER_PAGE = 4
 def index(page):
     """Show a page of news items."""
     channel_id = _get_channel_id()
+    channel_ids = {channel_id}
     items_per_page = _get_items_per_page_value()
     published_only = not _may_current_user_view_drafts()
 
     items = news_item_service.get_aggregated_items_paginated(
-        channel_id, page, items_per_page, published_only=published_only
+        channel_ids, page, items_per_page, published_only=published_only
     )
 
     return {
