@@ -77,10 +77,7 @@ def update_site(
     archived: bool,
 ) -> Site:
     """Update the site."""
-    site = DbSite.query.get(site_id)
-
-    if site is None:
-        raise UnknownSiteId(site_id)
+    site = _get_db_site(site_id)
 
     site.title = title
     site.server_name = server_name
@@ -112,9 +109,22 @@ def delete_site(site_id: SiteID) -> None:
     db.session.commit()
 
 
+def _find_db_site(site_id: SiteID) -> Optional[DbSite]:
+    return DbSite.query.get(site_id)
+
+
+def _get_db_site(site_id: SiteID) -> DbSite:
+    site = _find_db_site(site_id)
+
+    if site is None:
+        raise UnknownSiteId(site_id)
+
+    return site
+
+
 def find_site(site_id: SiteID) -> Optional[Site]:
     """Return the site with that ID, or `None` if not found."""
-    site = DbSite.query.get(site_id)
+    site = _find_db_site(site_id)
 
     if site is None:
         return None
@@ -124,12 +134,8 @@ def find_site(site_id: SiteID) -> Optional[Site]:
 
 def get_site(site_id: SiteID) -> Site:
     """Return the site with that ID."""
-    site = find_site(site_id)
-
-    if site is None:
-        raise UnknownSiteId(site_id)
-
-    return site
+    site = _get_db_site(site_id)
+    return _db_entity_to_site(site)
 
 
 def get_all_sites() -> set[Site]:
