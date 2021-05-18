@@ -54,10 +54,11 @@ def index(page):
 def view(slug):
     """Show a single news item."""
     channel_id = _get_channel_id()
+    channel_ids = {channel_id}
     published_only = not _may_current_user_view_drafts()
 
     item = news_item_service.find_aggregated_item_by_slug(
-        channel_id, slug, published_only=published_only
+        channel_ids, slug, published_only=published_only
     )
 
     if item is None:

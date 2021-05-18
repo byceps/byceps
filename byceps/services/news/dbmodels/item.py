@@ -24,9 +24,6 @@ from .channel import Channel
 
 class ItemQuery(BaseQuery):
 
-    def for_channel(self, channel_id: ChannelID) -> BaseQuery:
-        return self.filter_by(channel_id=channel_id)
-
     def for_channels(self, channel_ids: set[ChannelID]) -> BaseQuery:
         if not channel_ids:
             raise ValueError('No channel IDs given')
@@ -64,16 +61,13 @@ class Item(db.Model):
     """
 
     __tablename__ = 'news_items'
-    __table_args__ = (
-        db.UniqueConstraint('channel_id', 'slug'),
-    )
     query_class = ItemQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     channel_id = db.Column(db.UnicodeText, db.ForeignKey('news_channels.id'), index=True, nullable=False)
     channel = db.relationship(Channel)
-    slug = db.Column(db.UnicodeText, index=True, nullable=False)
+    slug = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
     published_at = db.Column(db.DateTime, nullable=True)
     current_version = association_proxy('current_version_association', 'version')
 

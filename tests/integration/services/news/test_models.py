@@ -81,4 +81,5 @@ def create_item(channel_id, slug, editor_id, *, image_url_path=None):
     )
 
     # Return aggregated version of item.
-    return news_service.find_aggregated_item_by_slug(channel_id, slug)
+    channel_ids = {channel_id}
+    return news_service.find_aggregated_item_by_slug(channel_ids, slug)

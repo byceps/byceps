@@ -186,11 +186,13 @@ def _get_db_item(item_id: ItemID) -> DbItem:
 
 
 def find_aggregated_item_by_slug(
-    channel_id: ChannelID, slug: str, *, published_only: bool = False
+    channel_ids: set[ChannelID], slug: str, *, published_only: bool = False
 ) -> Optional[Item]:
-    """Return the news item identified by that slug, or `None` if not found."""
+    """Return the news item identified by that slug in one of the given
+    channels, or `None` if not found.
+    """
     query = DbItem.query \
-        .for_channel(channel_id) \
+        .for_channels(channel_ids) \
         .with_channel() \
         .with_current_version() \
         .with_images() \
