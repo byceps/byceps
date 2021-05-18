@@ -47,7 +47,7 @@ def test_create(site_admin_client, brand):
     assert site.id == site_id
     assert site.title == title
     assert site.server_name == server_name
-    assert site.news_channel_id is None
+    assert site.news_channel_ids == frozenset()
     assert site.board_id is None
     assert site.storefront_id is None
 

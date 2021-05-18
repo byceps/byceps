@@ -53,6 +53,15 @@ def find_channel(channel_id: ChannelID) -> Optional[Channel]:
     return _db_entity_to_channel(channel)
 
 
+def get_channels(channel_ids: set[ChannelID]) -> set[Channel]:
+    """Return these channels."""
+    channels = DbChannel.query \
+        .filter(DbChannel.id.in_(channel_ids)) \
+        .all()
+
+    return {_db_entity_to_channel(channel) for channel in channels}
+
+
 def get_all_channels() -> list[Channel]:
     """Return all channels."""
     channels = DbChannel.query.all()

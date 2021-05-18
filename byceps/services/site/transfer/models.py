@@ -6,6 +6,7 @@ byceps.services.site.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from typing import NewType, Optional
 
@@ -30,7 +31,7 @@ class Site:
     enabled: bool
     user_account_creation_enabled: bool
     login_enabled: bool
-    news_channel_id: Optional[NewsChannelID]
+    news_channel_ids: frozenset[NewsChannelID]
     board_id: Optional[BoardID]
     storefront_id: Optional[StorefrontID]
     archived: bool

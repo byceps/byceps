@@ -87,11 +87,9 @@ def _get_tickets(user_id: UserID) -> list[DbTicket]:
 
 
 def _get_news_headlines(site: Site) -> list[NewsHeadline]:
-    channel_id = site.news_channel_id
-    if channel_id is None:
+    channel_ids = site.news_channel_ids
+    if not channel_ids:
         return []
-
-    channel_ids = {channel_id}
 
     return news_item_service.get_recent_headlines(channel_ids, limit=4)
 

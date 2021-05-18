@@ -132,11 +132,7 @@ def view(site_id):
 
     brand = brand_service.find_brand(site.brand_id)
 
-    if site.news_channel_id:
-        news_channel = news_channel_service.find_channel(site.news_channel_id)
-        news_channels = {news_channel}
-    else:
-        news_channels = set()
+    news_channels = news_channel_service.get_channels(site.news_channel_ids)
 
     if site.board_id:
         board = board_service.find_board(site.board_id)
