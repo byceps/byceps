@@ -134,8 +134,9 @@ def view(site_id):
 
     if site.news_channel_id:
         news_channel = news_channel_service.find_channel(site.news_channel_id)
+        news_channels = {news_channel}
     else:
-        news_channel = None
+        news_channels = set()
 
     if site.board_id:
         board = board_service.find_board(site.board_id)
@@ -154,7 +155,7 @@ def view(site_id):
     return {
         'site': site,
         'brand': brand,
-        'news_channel': news_channel,
+        'news_channels': news_channels,
         'board': board,
         'shop': shop,
         'storefront': storefront,
