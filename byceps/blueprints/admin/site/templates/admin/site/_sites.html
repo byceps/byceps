@@ -52,12 +52,14 @@
           {%- endif -%}
         </div>
         <div>
-          {{ render_icon('news', title='Newskanal') }}
-          {% if site.news_channel_id -%}
-          <a href="{{ url_for('news_admin.channel_view', channel_id=site.news_channel_id) }}" class="disguised">{{ site.news_channel_id }}</a>
-          {%- else -%}
-          {{ 'kein Newskanal'|dim }}
-          {%- endif -%}
+          {%- if site.news_channel_id %}
+            {%- for channel_id in [site.news_channel_id] -%}
+            {{ render_icon('news', title='Newskanal') }} <a href="{{ url_for('news_admin.channel_view', channel_id=channel_id) }}" class="disguised">{{ channel_id }}</a>
+              {%- if not loop.last %}<br>{% endif %}
+            {%- endfor %}
+          {%- else %}
+          {{ render_icon('news', title='Newskanal') }} {{ 'keine Newskanäle'|dim }}
+          {%- endif %}
         </div>
         <div>
           {{ render_icon('board', title='Forum') }}
