@@ -177,10 +177,7 @@ def get_current_sites(
 
 
 def _db_entity_to_site(site: DbSite) -> Site:
-    if site.news_channel_id is not None:
-        news_channel_ids = frozenset([site.news_channel_id])
-    else:
-        news_channel_ids = frozenset()
+    news_channel_ids = frozenset(channel.id for channel in site.news_channels)
 
     return Site(
         id=site.id,
@@ -211,12 +208,9 @@ def _db_entity_to_site_with_brand(site_entity: DbSite) -> SiteWithBrand:
 def add_news_channel(site_id: SiteID, news_channel_id: NewsChannelID) -> None:
     """Add the news channel to the site."""
     site = _get_db_site(site_id)
-    if site.news_channel_id is not None:
-        raise ValueError(f'Site already has a news channel assigned.')
+    news_channel = news_channel_service.get_db_channel(news_channel_id)
 
-    news_channel = news_channel_service.get_channel(news_channel_id)
-
-    site.news_channel_id = news_channel_id
+    site.news_channels.append(news_channel)
     db.session.commit()
 
 
@@ -225,12 +219,7 @@ def remove_news_channel(
 ) -> None:
     """Remove the news channel from the site."""
     site = _get_db_site(site_id)
-    news_channel = news_channel_service.get_channel(news_channel_id)
+    news_channel = news_channel_service.get_db_channel(news_channel_id)
 
-    if site.news_channel_id != news_channel.id:
-        raise ValueError(
-            f'The news channel ID does not match the one assigned to the site.'
-        )
-
-    site.news_channel_id = None
+    site.news_channels.remove(news_channel)
     db.session.commit()

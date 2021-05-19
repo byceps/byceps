@@ -47,6 +47,15 @@ def _find_db_channel(channel_id: ChannelID) -> Optional[DbChannel]:
     return DbChannel.query.get(channel_id)
 
 
+def get_db_channel(channel_id: ChannelID) -> DbChannel:
+    channel = _find_db_channel(channel_id)
+
+    if channel is None:
+        raise ValueError(f'Unknown channel ID "{channel_id}"')
+
+    return channel
+
+
 def find_channel(channel_id: ChannelID) -> Optional[Channel]:
     """Return the channel with that id, or `None` if not found."""
     channel = _find_db_channel(channel_id)
@@ -59,11 +68,7 @@ def find_channel(channel_id: ChannelID) -> Optional[Channel]:
 
 def get_channel(channel_id: ChannelID) -> Channel:
     """Return the channel with that id, or raise an exception."""
-    channel = _find_db_channel(channel_id)
-
-    if channel is None:
-        raise ValueError(f'Unknown channel ID "{channel_id}"')
-
+    channel = get_db_channel(channel_id)
     return _db_entity_to_channel(channel)
 
 
