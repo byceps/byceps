@@ -33,9 +33,6 @@ class _BaseForm(LocalizedForm):
         lazy_gettext('User registration open')
     )
     login_enabled = BooleanField(lazy_gettext('User login open'))
-    news_channel_id = SelectField(
-        lazy_gettext('News channel ID'), validators=[Optional()]
-    )
     board_id = SelectField(lazy_gettext('Board ID'), validators=[Optional()])
     storefront_id = SelectField(
         lazy_gettext('Storefront ID'), validators=[Optional()]
@@ -53,14 +50,6 @@ class _BaseForm(LocalizedForm):
         choices = [(p.id, p.title) for p in parties]
         choices.insert(0, ('', pgettext('party', '<none>')))
         self.party_id.choices = choices
-
-    def set_news_channel_choices(self, brand_id):
-        news_channels = news_channel_service.get_channels_for_brand(brand_id)
-        news_channels.sort(key=lambda channel: channel.id)
-
-        choices = [(c.id, c.id) for c in news_channels]
-        choices.insert(0, ('', pgettext('news_channel', '<none>')))
-        self.news_channel_id.choices = choices
 
     def set_board_choices(self, brand_id):
         boards = board_service.get_boards_for_brand(brand_id)
@@ -88,3 +77,16 @@ class CreateForm(_BaseForm):
 class UpdateForm(_BaseForm):
     brand_id = SelectField(lazy_gettext('Brand'), validators=[InputRequired()])
     archived = BooleanField(lazy_gettext('archived'))
+
+
+class AddNewsChannelForm(LocalizedForm):
+    news_channel_id = SelectField(
+        lazy_gettext('News channel ID'), validators=[InputRequired()]
+    )
+
+    def set_news_channel_choices(self, brand_id):
+        news_channels = news_channel_service.get_channels_for_brand(brand_id)
+        news_channels.sort(key=lambda channel: channel.id)
+
+        choices = [(c.id, c.id) for c in news_channels]
+        self.news_channel_id.choices = choices

@@ -58,14 +58,12 @@ def published_news_item(news_channel, editor):
 
 @pytest.fixture(scope='module')
 def news_site(news_channel):
-    site = create_site(
-        'newsflash',
-        news_channel.brand_id,
-        news_channel_id=news_channel.id,
-    )
+    site = create_site('newsflash', news_channel.brand_id)
+    site_service.add_news_channel(site.id, news_channel.id)
 
     yield site
 
+    site_service.remove_news_channel(site.id, news_channel.id)
     site_service.delete_site(site.id)
 
 

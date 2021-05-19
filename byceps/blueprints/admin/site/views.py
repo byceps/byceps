@@ -28,10 +28,10 @@ from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to
+from ....util.views import permission_required, redirect_to, respond_no_content
 
 from .authorization import SitePermission
-from .forms import CreateForm, UpdateForm
+from .forms import AddNewsChannelForm, CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('site_admin', __name__)
@@ -194,7 +194,6 @@ def create(brand_id):
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
     login_enabled = form.login_enabled.data
-    news_channel_id = form.news_channel_id.data.strip() or None
     board_id = form.board_id.data.strip() or None
     storefront_id = form.storefront_id.data.strip() or None
 
@@ -221,7 +220,6 @@ def create(brand_id):
         login_enabled=login_enabled,
         party_id=party_id,
         board_id=board_id,
-        news_channel_id=news_channel_id,
         storefront_id=storefront_id,
     )
 
@@ -269,7 +267,6 @@ def update(site_id):
     enabled = form.enabled.data
     user_account_creation_enabled = form.user_account_creation_enabled.data
     login_enabled = form.login_enabled.data
-    news_channel_id = form.news_channel_id.data.strip() or None
     board_id = form.board_id.data.strip() or None
     storefront_id = form.storefront_id.data.strip() or None
     archived = form.archived.data
@@ -297,7 +294,6 @@ def update(site_id):
             enabled,
             user_account_creation_enabled,
             login_enabled,
-            news_channel_id,
             board_id,
             storefront_id,
             archived,
@@ -315,8 +311,82 @@ def update(site_id):
 def _fill_in_common_form_choices(form, brand_id):
     form.set_party_choices(brand_id)
     form.set_board_choices(brand_id)
-    form.set_news_channel_choices(brand_id)
     form.set_storefront_choices()
+
+
+# -------------------------------------------------------------------- #
+# news channels
+
+
+@blueprint.get('/sites/<site_id>/news_channels/add')
+@permission_required(SitePermission.update)
+@templated
+def add_news_channel_form(site_id, erroneous_form=None):
+    """Show form to add a news channel to the site."""
+    site = _get_site_or_404(site_id)
+
+    form = erroneous_form if erroneous_form else AddNewsChannelForm()
+    form.set_news_channel_choices(site.brand_id)
+
+    return {
+        'site': site,
+        'form': form,
+    }
+
+
+@blueprint.post('/sites/<site_id>/news_channels')
+@permission_required(SitePermission.update)
+def add_news_channel(site_id):
+    """Add a news channel to the site."""
+    site = _get_site_or_404(site_id)
+
+    form = AddNewsChannelForm(request.form)
+    form.set_news_channel_choices(site.brand_id)
+
+    if not form.validate():
+        return add_news_channel_form(site.id, form)
+
+    news_channel_id = form.news_channel_id.data
+    news_channel = news_channel_service.get_channel(news_channel_id)
+
+    site_service.add_news_channel(site.id, news_channel.id)
+
+    flash_success(
+        gettext(
+            'News channel "%(news_channel_id)s" has been added to site "%(site_title)s".',
+            news_channel_id=news_channel.id,
+            site_title=site.title,
+        )
+    )
+
+    return redirect_to('.view', site_id=site.id)
+
+
+@blueprint.delete('/sites/<site_id>/news_channels/<news_channel_id>')
+@permission_required(SitePermission.update)
+@respond_no_content
+def remove_news_channel(site_id, news_channel_id):
+    """Remove the news channel from the site."""
+    site = _get_site_or_404(site_id)
+
+    news_channel = news_channel_service.find_channel(news_channel_id)
+    if news_channel is None:
+        abort(404)
+
+    news_channel_id = news_channel.id
+
+    site_service.remove_news_channel(site.id, news_channel.id)
+
+    flash_success(
+        gettext(
+            'News channel "%(news_channel_id)s" has been removed from site "%(site_title)s".',
+            news_channel_id=news_channel.id,
+            site_title=site.title,
+        )
+    )
+
+
+# -------------------------------------------------------------------- #
 
 
 def _get_site_or_404(site_id):

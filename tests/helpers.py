@@ -212,7 +212,6 @@ def create_site(
     user_account_creation_enabled=True,
     login_enabled=True,
     party_id=None,
-    news_channel_id=None,
     board_id=None,
     storefront_id=None,
 ):
@@ -231,7 +230,6 @@ def create_site(
         user_account_creation_enabled=user_account_creation_enabled,
         login_enabled=login_enabled,
         party_id=party_id,
-        news_channel_id=news_channel_id,
         board_id=board_id,
         storefront_id=storefront_id,
     )

@@ -15,6 +15,7 @@ from ...typing import BrandID, PartyID
 
 from ..board.transfer.models import BoardID
 from ..brand import service as brand_service
+from ..news import channel_service as news_channel_service
 from ..news.transfer.models import ChannelID as NewsChannelID
 from ..shop.storefront.transfer.models import StorefrontID
 
@@ -37,7 +38,6 @@ def create_site(
     user_account_creation_enabled: bool = False,
     login_enabled: bool = False,
     party_id: Optional[PartyID] = None,
-    news_channel_id: Optional[NewsChannelID] = None,
     board_id: Optional[BoardID] = None,
     storefront_id: Optional[StorefrontID] = None,
 ) -> Site:
@@ -51,7 +51,6 @@ def create_site(
         user_account_creation_enabled,
         login_enabled,
         party_id=party_id,
-        news_channel_id=news_channel_id,
         board_id=board_id,
         storefront_id=storefront_id,
     )
@@ -71,7 +70,6 @@ def update_site(
     enabled: bool,
     user_account_creation_enabled: bool,
     login_enabled: bool,
-    news_channel_id: Optional[NewsChannelID],
     board_id: Optional[BoardID],
     storefront_id: Optional[StorefrontID],
     archived: bool,
@@ -86,7 +84,6 @@ def update_site(
     site.enabled = enabled
     site.user_account_creation_enabled = user_account_creation_enabled
     site.login_enabled = login_enabled
-    site.news_channel_id = news_channel_id
     site.board_id = board_id
     site.storefront_id = storefront_id
     site.archived = archived
@@ -209,3 +206,31 @@ def _db_entity_to_site_with_brand(site_entity: DbSite) -> SiteWithBrand:
     brand_tuple = (brand,)
 
     return SiteWithBrand(*(site_tuple + brand_tuple))
+
+
+def add_news_channel(site_id: SiteID, news_channel_id: NewsChannelID) -> None:
+    """Add the news channel to the site."""
+    site = _get_db_site(site_id)
+    if site.news_channel_id is not None:
+        raise ValueError(f'Site already has a news channel assigned.')
+
+    news_channel = news_channel_service.get_channel(news_channel_id)
+
+    site.news_channel_id = news_channel_id
+    db.session.commit()
+
+
+def remove_news_channel(
+    site_id: SiteID, news_channel_id: NewsChannelID
+) -> None:
+    """Remove the news channel from the site."""
+    site = _get_db_site(site_id)
+    news_channel = news_channel_service.get_channel(news_channel_id)
+
+    if site.news_channel_id != news_channel.id:
+        raise ValueError(
+            f'The news channel ID does not match the one assigned to the site.'
+        )
+
+    site.news_channel_id = None
+    db.session.commit()

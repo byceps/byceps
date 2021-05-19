@@ -59,20 +59,6 @@
       <td>{{ render_tag('geöffnet', class='color-success') if site.login_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
     </tr>
     <tr>
-      <th>Newskanäle</th>
-      <td>
-        {%- if news_channels %}
-        <ol>
-          {%- for channel in news_channels %}
-          <li><a href="{{ url_for('news_admin.channel_view', channel_id=channel.id) }}">{{ channel.id }}</a></li>
-          {%- endfor %}
-        </ol>
-        {%- else %}
-        {{ 'keine Newskanäle verknüpft'|dim }}
-        {%- endif %}
-      </td>
-    </tr>
-    <tr>
       <th>Forum</th>
       <td>
         {%- if board %}
@@ -93,6 +79,39 @@
       </td>
     </tr>
   </table>
+
+  <div class="row row--space-between" style="margin-bottom: 1rem; margin-top: 1rem;">
+    <div class="column-auto">
+      <h2 style="margin: 0;">{{ _('News Channels') }} {{ render_extra_in_heading(news_channels|length) }}</h2>
+    </div>
+  {%- if has_current_user_permission(SitePermission.update) %}
+    <div class="column-auto">
+      <div class="button-row button-row--compact button-row--right">
+        <a class="button button--compact" href="{{ url_for('.add_news_channel_form', site_id=site.id) }}">{{ render_icon('add') }} <span>{{ _('Add news channel') }}</span></a>
+      </div>
+    </div>
+  {%- endif %}
+  </div>
+  {%- if news_channels %}
+  <table class="index">
+    <tbody>
+    {%- for channel in news_channels|sort(attribute='id') %}
+      <tr>
+        <td><a href="{{ url_for('news_admin.channel_view', channel_id=channel.id) }}">{{ channel.id }}</a></td>
+        {%- if has_current_user_permission(SitePermission.update) %}
+        <td>
+          <div class="button-row button-row--compact button-row--right">
+            <a href="{{ url_for('.remove_news_channel', site_id=site.id, news_channel_id=channel.id) }}" data-action="news-channel-remove" class="button button--compact" title="{{ _('Remove') }}">{{ render_icon('remove') }}</a>
+          </div>
+        </td>
+        {%- endif %}
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="dimmed-box centered">{{ _('No news channels are assigned to this site.') }}</div>
+  {%- endif %}
 
   <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>
   {%- if settings %}
@@ -116,4 +135,12 @@
   <div class="dimmed-box centered">Es sind keine Einstellungen hinterlegt.</div>
   {%- endif %}
 
+{%- endblock %}
+
+{% block scripts %}
+  <script>
+    onDomReady(() => {
+      confirmed_delete_on_click_then_reload('[data-action="news-channel-remove"]', '{{ _('Remove news channel from site?') }}');
+    });
+  </script>
 {%- endblock %}
