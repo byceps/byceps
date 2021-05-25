@@ -34,7 +34,8 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     elif current_mode.is_admin():
         yield from _get_blueprints_admin(app)
 
-    yield from _get_blueprints_api(app)
+    if app.config.get('API_TOKEN'):
+        yield from _get_blueprints_api(app)
 
     yield from _get_blueprints_monitoring(app)
 
