@@ -346,9 +346,10 @@ nav.main li {
 /* tabs above main content area */
 
 .main-tabs ol {
+  border-bottom: #cccccc solid 1px;
   display: flex;
   list-style: none;
-  margin: 0 0.5rem;
+  margin: 0 0.5rem -1px 0.5rem;
   padding: 0;
 }
 
