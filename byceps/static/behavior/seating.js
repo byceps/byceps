@@ -93,7 +93,7 @@ function _make_ticket_selector_open_on_click() {
   const ticket_selector = document.querySelector('.ticket-selector');
   if (ticket_selector !== null) {
     ticket_selector
-      .addEventListener('click', () => this.classList.toggle('ticket-selector--open'));
+      .addEventListener('click', () => ticket_selector.classList.toggle('ticket-selector--open'));
   }
 }
 
