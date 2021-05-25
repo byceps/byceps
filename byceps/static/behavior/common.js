@@ -172,7 +172,7 @@ function enableCopyToClipboard(triggerElementId) {
   const triggerElement = document.getElementById(triggerElementId);
 
   triggerElement.addEventListener('click', () => {
-    const fieldId = this.dataset.fieldId;
+    const fieldId = triggerElement.dataset.fieldId;
     const field = document.getElementById(fieldId);
 
     field.focus();
