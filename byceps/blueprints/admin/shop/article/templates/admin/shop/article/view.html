@@ -5,6 +5,7 @@
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page_shop = shop %}
 {% set title = 'Artikel ' ~ article.item_number %}
+{% set layout_main_raw = True %}
 
 {% block head %}
     <style>
@@ -51,117 +52,121 @@
     </div>
   </div>
 
-  <table class="index">
-    <tr>
-      <th>Beschreibung</th>
-      <td>{{ article.description }}</td>
-    </tr>
-    <tr>
-      <th>Stückpreis</th>
-      <td>{{ article.price|format_euro_amount }}</td>
-    </tr>
-    <tr>
-      <th>Steuersatz</th>
-      <td>{{ article.tax_rate|tax_rate_as_percentage }}&thinsp;%</td>
-    </tr>
-    <tr>
-      <th>Zeitraum</th>
-      <td>{{ render_article_temporal_availability(article) }}</td>
-    </tr>
-    <tr>
-      <th>Verfügbarkeit</th>
-      <td>
-        <div style="line-height: 1.5; width: 16rem;">
-          <div class="progress">
-            <div class="progress-bar color--available" style="width: calc(100% * {{ article.quantity }} / {{ article.total_quantity }});"></div>
-            <div class="progress-bar color--ordered" style="width: calc(100% * {{ totals[PaymentState.open] }} / {{ article.total_quantity }});"></div>
-          </div>
-          <div class="row row--space-between" style="font-size: 0.75rem;">
-            <div class="column-auto">
-              <strong>{{ article.quantity }}</strong> verfügbar{% if article.quantity < 1 %} {{ render_tag('ausverkauft') }}{% endif %}<br>
-              <strong>{{ totals[PaymentState.open] }}</strong> bestellt<br>
-              <strong>{{ totals[PaymentState.paid] }}</strong> bezahlt
+  <div class="box">
+    <table class="index">
+      <tr>
+        <th>Beschreibung</th>
+        <td>{{ article.description }}</td>
+      </tr>
+      <tr>
+        <th>Stückpreis</th>
+        <td>{{ article.price|format_euro_amount }}</td>
+      </tr>
+      <tr>
+        <th>Steuersatz</th>
+        <td>{{ article.tax_rate|tax_rate_as_percentage }}&thinsp;%</td>
+      </tr>
+      <tr>
+        <th>Zeitraum</th>
+        <td>{{ render_article_temporal_availability(article) }}</td>
+      </tr>
+      <tr>
+        <th>Verfügbarkeit</th>
+        <td>
+          <div style="line-height: 1.5; width: 16rem;">
+            <div class="progress">
+              <div class="progress-bar color--available" style="width: calc(100% * {{ article.quantity }} / {{ article.total_quantity }});"></div>
+              <div class="progress-bar color--ordered" style="width: calc(100% * {{ totals[PaymentState.open] }} / {{ article.total_quantity }});"></div>
             </div>
-            <div class="column-auto dimmed">von {{ article.total_quantity }}</div>
+            <div class="row row--space-between" style="font-size: 0.75rem;">
+              <div class="column-auto">
+                <strong>{{ article.quantity }}</strong> verfügbar{% if article.quantity < 1 %} {{ render_tag('ausverkauft') }}{% endif %}<br>
+                <strong>{{ totals[PaymentState.open] }}</strong> bestellt<br>
+                <strong>{{ totals[PaymentState.paid] }}</strong> bezahlt
+              </div>
+              <div class="column-auto dimmed">von {{ article.total_quantity }}</div>
+            </div>
           </div>
-        </div>
-      </td>
-    </tr>
-    <tr>
-      <th>Gesamtmenge</th>
-      <td>{{ article.total_quantity }}</td>
-    </tr>
-    <tr>
-      <th>Maximale Anzahl<br>pro Bestellung</th>
-      <td>{{ article.max_quantity_per_order }}</td>
-    </tr>
-    <tr>
-      <th>Nur indirekt<br>bestellbar</th>
-      <td>{{ 'ja' if article.not_directly_orderable else 'nein' }}</td>
-    </tr>
-    <tr>
-      <th>Muss separat<br>bestellt werden</th>
-      <td>{{ 'ja' if article.requires_separate_order else 'nein' }}</td>
-    </tr>
-    <tr>
-      <th>Versand erforderlich</th>
-      <td>{{ 'ja' if article.shipping_required else 'nein' }}</td>
-    </tr>
-    <tr>
-      <th>Angehängt an Artikel</th>
-      <td>
-        {%- if article.articles_attached_to %}
-        <ol>
-        {%- for attached_article in article.articles_attached_to|sort(attribute='attached_to_article.item_number') %}
-          <li>{{ render_article_link(attached_article.attached_to_article) }} ({{ attached_article.quantity }} Stück)</li>
-        {%- endfor %}
-        </ol>
-        {%- else %}
-        {{ 'keine'|dim }}
-        {%- endif %}
-      </td>
-    </tr>
-    <tr>
-      <th>Angehängte Artikel</th>
-      <td>
-        {%- if article.attached_articles %}
-        <table class="attachments">
-        {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
-          <tr>
-            <td>{{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</td>
-            <td><a href="{{ url_for('.attachment_remove', article_id=attached_article.id) }}" class="button button--compact attachment-remove" title="Artikelanhang entfernen">{{ render_icon('remove') }}</a></td>
-          </tr>
-        {%- endfor %}
-        </table>
-        {%- else %}
-        {{ 'keine'|dim }}
-        {%- endif %}
-      </td>
-    </tr>
-  </table>
+        </td>
+      </tr>
+      <tr>
+        <th>Gesamtmenge</th>
+        <td>{{ article.total_quantity }}</td>
+      </tr>
+      <tr>
+        <th>Maximale Anzahl<br>pro Bestellung</th>
+        <td>{{ article.max_quantity_per_order }}</td>
+      </tr>
+      <tr>
+        <th>Nur indirekt<br>bestellbar</th>
+        <td>{{ 'ja' if article.not_directly_orderable else 'nein' }}</td>
+      </tr>
+      <tr>
+        <th>Muss separat<br>bestellt werden</th>
+        <td>{{ 'ja' if article.requires_separate_order else 'nein' }}</td>
+      </tr>
+      <tr>
+        <th>Versand erforderlich</th>
+        <td>{{ 'ja' if article.shipping_required else 'nein' }}</td>
+      </tr>
+      <tr>
+        <th>Angehängt an Artikel</th>
+        <td>
+          {%- if article.articles_attached_to %}
+          <ol>
+          {%- for attached_article in article.articles_attached_to|sort(attribute='attached_to_article.item_number') %}
+            <li>{{ render_article_link(attached_article.attached_to_article) }} ({{ attached_article.quantity }} Stück)</li>
+          {%- endfor %}
+          </ol>
+          {%- else %}
+          {{ 'keine'|dim }}
+          {%- endif %}
+        </td>
+      </tr>
+      <tr>
+        <th>Angehängte Artikel</th>
+        <td>
+          {%- if article.attached_articles %}
+          <table class="attachments">
+          {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
+            <tr>
+              <td>{{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</td>
+              <td><a href="{{ url_for('.attachment_remove', article_id=attached_article.id) }}" class="button button--compact attachment-remove" title="Artikelanhang entfernen">{{ render_icon('remove') }}</a></td>
+            </tr>
+          {%- endfor %}
+          </table>
+          {%- else %}
+          {{ 'keine'|dim }}
+          {%- endif %}
+        </td>
+      </tr>
+    </table>
+  </div>
 
   <h2>Aktionen</h2>
-  <p>Eine Aktion wird ausgelöst, wenn eine Bestellung einen mit einer Aktion verknüpften Artikel enthält und der Bestellstatus auf einen der für den Artikel aufgeführten Zustände geändert wird.</p>
-  {%- if actions %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Bezahlstatus</th>
-        <th>Prozedur<br>Parameter</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for action in actions %}
-      <tr>
-        <td>{{ render_order_payment_state(action.payment_state) }}</td>
-        <td class="monospace">{{ action.procedure }}<br>{{ action.parameters }}</td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Für diesen Artikel sind keine Aktionen definiert.</div>
-  {%- endif %}
+  <div class="box">
+    <p>Eine Aktion wird ausgelöst, wenn eine Bestellung einen mit einer Aktion verknüpften Artikel enthält und der Bestellstatus auf einen der für den Artikel aufgeführten Zustände geändert wird.</p>
+    {%- if actions %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>Bezahlstatus</th>
+          <th>Prozedur<br>Parameter</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for action in actions %}
+        <tr>
+          <td>{{ render_order_payment_state(action.payment_state) }}</td>
+          <td class="monospace">{{ action.procedure }}<br>{{ action.parameters }}</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Für diesen Artikel sind keine Aktionen definiert.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}
 

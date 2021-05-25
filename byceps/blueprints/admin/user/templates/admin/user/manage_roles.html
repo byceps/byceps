@@ -4,6 +4,7 @@
 {% set current_tab = 'permissions' %}
 {% set current_tab_user_id = user.id %}
 {% set title = 'Benutzer - Berechtigungen zuweisen - %s'|format(user.screen_name) %}
+{% set layout_main_raw = True %}
 
 {% block head %}
   <style>
@@ -21,51 +22,53 @@
 {% block body %}
 
   <h2>Berechtigungen</h2>
-  {%- if permissions_by_role %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Rolle</th>
-        <th>Berechtigungen</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for role, permissions in permissions_by_role.items()|sort(attribute='0.id') %}
-        {%- with user_has_role = (role.id in user_role_ids) %}
-      <tr{% if not user_has_role %} class="dimmed"{% endif %}>
-        <td>
-          <strong>{{ role.title }}</strong><br>
-          <span class="monospace">{{ role.id|dim }}</span>
-        </td>
-        <td>
-          {%- if permissions %}
-          <ul class="permissions">
-            {%- for permission in permissions|sort(attribute='id') %}
-            <li>{{ permission.title }}<br><span class="monospace">{{ permission.id|dim }}</span></li>
-            {%- endfor %}
-          </ul>
-          {%- else %}
-          <p class="dimmed">keine</p>
-          {%- endif %}
-        </td>
-        <td>
-          {%- if has_current_user_permission(RolePermission.assign) %}
-            {%- if user_has_role %}
-          <a class="button button--compact" data-action="role-deassign" href="{{ url_for('.role_deassign', user_id=user.id, role_id=role.id) }}" title="Rolle entfernen">{{ render_icon('remove') }}</a>
+  <div class="box">
+    {%- if permissions_by_role %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>Rolle</th>
+          <th>Berechtigungen</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for role, permissions in permissions_by_role.items()|sort(attribute='0.id') %}
+          {%- with user_has_role = (role.id in user_role_ids) %}
+        <tr{% if not user_has_role %} class="dimmed"{% endif %}>
+          <td>
+            <strong>{{ role.title }}</strong><br>
+            <span class="monospace">{{ role.id|dim }}</span>
+          </td>
+          <td>
+            {%- if permissions %}
+            <ul class="permissions">
+              {%- for permission in permissions|sort(attribute='id') %}
+              <li>{{ permission.title }}<br><span class="monospace">{{ permission.id|dim }}</span></li>
+              {%- endfor %}
+            </ul>
             {%- else %}
-          <a class="button button--compact" data-action="role-assign" href="{{ url_for('.role_assign', user_id=user.id, role_id=role.id) }}" title="Rolle zuweisen">{{ render_icon('add') }}</a>
+            <p class="dimmed">keine</p>
             {%- endif %}
-          {%- endif %}
-        </td>
-      </tr>
-        {%- endwith %}
-      {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Es sind keine Rollen hinterlegt, die dem Benutzer zugewiesen werden könnten.</div>
-  {%- endif %}
+          </td>
+          <td>
+            {%- if has_current_user_permission(RolePermission.assign) %}
+              {%- if user_has_role %}
+            <a class="button button--compact" data-action="role-deassign" href="{{ url_for('.role_deassign', user_id=user.id, role_id=role.id) }}" title="Rolle entfernen">{{ render_icon('remove') }}</a>
+              {%- else %}
+            <a class="button button--compact" data-action="role-assign" href="{{ url_for('.role_assign', user_id=user.id, role_id=role.id) }}" title="Rolle zuweisen">{{ render_icon('add') }}</a>
+              {%- endif %}
+            {%- endif %}
+          </td>
+        </tr>
+          {%- endwith %}
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Es sind keine Rollen hinterlegt, die dem Benutzer zugewiesen werden könnten.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}
 

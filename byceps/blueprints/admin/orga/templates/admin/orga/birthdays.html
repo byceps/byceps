@@ -5,6 +5,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'orga_admin.birthdays' %}
 {% set title = 'Die nächsten Geburtstage' %}
+{% set layout_main_raw = True %}
 
 {% block head %}
     <style>
@@ -27,22 +28,24 @@
 
   <h1>{{ title }}</h1>
 
-  {%- if orgas %}
-  <ol class="birthdays">
-  {%- for user, birthday in orgas %}
-    {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
-    <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
-      {{ render_user_avatar_20_and_admin_link(user) }}
-      {% if is_today %}{{ render_icon('birthday') }}{% endif %}
-      {%- set relative_days_label = render_relative_days_until(days_until_next_birthday) %}
-      wird {{ render_time_element(birthday.date_of_birth, relative_days_label) }}
-      {{ render_random_age_adjective() }} {{ birthday.age if is_today else birthday.age + 1 }} Jahre alt.
-    </li>
-    {%- endwith %}
-  {%- endfor %}
-  </ol>
-  {%- else %}
-  <div class="dimmed-box centered">Es stehen keine Geburtstage von Organisatoren bevor.</div>
-  {%- endif %}
+  <div class="box">
+    {%- if orgas %}
+    <ol class="birthdays">
+    {%- for user, birthday in orgas %}
+      {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
+      <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
+        {{ render_user_avatar_20_and_admin_link(user) }}
+        {% if is_today %}{{ render_icon('birthday') }}{% endif %}
+        {%- set relative_days_label = render_relative_days_until(days_until_next_birthday) %}
+        wird {{ render_time_element(birthday.date_of_birth, relative_days_label) }}
+        {{ render_random_age_adjective() }} {{ birthday.age if is_today else birthday.age + 1 }} Jahre alt.
+      </li>
+      {%- endwith %}
+    {%- endfor %}
+    </ol>
+    {%- else %}
+    <div class="dimmed-box centered">Es stehen keine Geburtstage von Organisatoren bevor.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

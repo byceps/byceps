@@ -1,36 +1,39 @@
 {% extends 'layout/admin/shop/shipping.html' %}
 {% set current_page_shop = shop %}
 {% set title = 'Versandartikel' %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
   <h1>{{ title }}</h1>
 
-  {%- if articles_to_ship %}
-  <table class="index">
-    <thead>
-      <tr>
-        <th>Artikelnummer</th>
-        <th>Beschreibung</th>
-        <th class="number">Bezahlt</th>
-        <th class="number">Offen</th>
-        <th class="number">Summe</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for article_to_ship in articles_to_ship %}
-      <tr>
-        <td>{{ article_to_ship.article_number }}</td>
-        <td>{{ article_to_ship.description }}</td>
-        <td class="number">{{ article_to_ship.quantity_paid }}</td>
-        <td class="number">{{ article_to_ship.quantity_open }}</td>
-        <td class="number">{{ article_to_ship.quantity_total }}</td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Derzeit sind keine Artikel bestellt oder bezahlt, die versendet werden müssen.</div>
-  {%- endif %}
+  <div class="box">
+    {%- if articles_to_ship %}
+    <table class="index">
+      <thead>
+        <tr>
+          <th>Artikelnummer</th>
+          <th>Beschreibung</th>
+          <th class="number">Bezahlt</th>
+          <th class="number">Offen</th>
+          <th class="number">Summe</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for article_to_ship in articles_to_ship %}
+        <tr>
+          <td>{{ article_to_ship.article_number }}</td>
+          <td>{{ article_to_ship.description }}</td>
+          <td class="number">{{ article_to_ship.quantity_paid }}</td>
+          <td class="number">{{ article_to_ship.quantity_open }}</td>
+          <td class="number">{{ article_to_ship.quantity_total }}</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Derzeit sind keine Artikel bestellt oder bezahlt, die versendet werden müssen.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

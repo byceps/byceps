@@ -6,93 +6,105 @@
 {% set current_page = 'party_admin' %}
 {% set current_page_party = party %}
 {% set title = party.title %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>{{ brand.title }}</li>
-      <li><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">Partys</a></li>
-    </ol>
-  </nav>
-  <h1>
-    {{ party.title }}
-    {%- if party.canceled or party.archived %}
-    <br>
-      {%- if party.canceled %}
-    {{ render_tag('abgesagt', class='color-danger', icon='disabled') }}
-      {%- endif %}
-      {%- if party.archived %}
-    {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
-      {%- endif %}
-    {%- endif %}
-  </h1>
+  <div class="row row--space-between">
+    <div class="column-auto">
 
-  <div class="button-row button-row--right">
-    {%- if has_current_user_permission(PartyPermission.update) %}
-    <a class="button" href="{{ url_for('.update_form', party_id=party.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
-    {%- endif %}
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">Partys</a></li>
+        </ol>
+      </nav>
+      <h1>
+        {{ party.title }}
+        {%- if party.canceled or party.archived %}
+          {%- if party.canceled %}
+        {{ render_tag('abgesagt', class='color-danger', icon='disabled') }}
+          {%- endif %}
+          {%- if party.archived %}
+        {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+          {%- endif %}
+        {%- endif %}
+      </h1>
+
+    </div>
+    <div class="column-auto column--align-bottom">
+
+      <div class="button-row button-row--right">
+        {%- if has_current_user_permission(PartyPermission.update) %}
+        <a class="button" href="{{ url_for('.update_form', party_id=party.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+        {%- endif %}
+      </div>
+
+    </div>
   </div>
 
-  <table class="index">
-    <tr>
-      <th>ID</th>
-      <td>{{ party.id }}</td>
-    </tr>
-    <tr>
-      <th>Marke</th>
-      <td>{{ brand.title }}</td>
-    </tr>
-    <tr>
-      <th>Beginn</th>
-      <td>{{ render_datetime(party.starts_at|utc_to_local_tz) }}</td>
-    </tr>
-    <tr>
-      <th>Ende</th>
-      <td>{{ render_datetime(party.ends_at|utc_to_local_tz) }}</td>
-    </tr>
-    <tr>
-      <th>Tage</th>
-      <td>
-      {%- for day in days %}
-        {{ render_tag('{:%a}'.format(day)) }}
-      {%- endfor %}
-      </td>
-    </tr>
-    <tr>
-      <th>Maximale Anzahl Tickets</th>
-      <td>{{ party.max_ticket_quantity|separate_thousands if (party.max_ticket_quantity is not none) else 'nicht festgelegt'|dim }}</td>
-    </tr>
-    <tr>
-      <th>Ticketverwaltung</th>
-      <td>{{ render_tag('geöffnet', class='color-success') if party.ticket_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
-    </tr>
-    <tr>
-      <th>Sitzplatzverwaltung</th>
-      <td>{{ render_tag('geöffnet', class='color-success') if party.seat_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
-    </tr>
-  </table>
+  <div class="box">
+    <table class="index">
+      <tr>
+        <th>ID</th>
+        <td>{{ party.id }}</td>
+      </tr>
+      <tr>
+        <th>Marke</th>
+        <td>{{ brand.title }}</td>
+      </tr>
+      <tr>
+        <th>Beginn</th>
+        <td>{{ render_datetime(party.starts_at|utc_to_local_tz) }}</td>
+      </tr>
+      <tr>
+        <th>Ende</th>
+        <td>{{ render_datetime(party.ends_at|utc_to_local_tz) }}</td>
+      </tr>
+      <tr>
+        <th>Tage</th>
+        <td>
+        {%- for day in days %}
+          {{ render_tag('{:%a}'.format(day)) }}
+        {%- endfor %}
+        </td>
+      </tr>
+      <tr>
+        <th>Maximale Anzahl Tickets</th>
+        <td>{{ party.max_ticket_quantity|separate_thousands if (party.max_ticket_quantity is not none) else 'nicht festgelegt'|dim }}</td>
+      </tr>
+      <tr>
+        <th>Ticketverwaltung</th>
+        <td>{{ render_tag('geöffnet', class='color-success') if party.ticket_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
+      </tr>
+      <tr>
+        <th>Sitzplatzverwaltung</th>
+        <td>{{ render_tag('geöffnet', class='color-success') if party.seat_management_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
+      </tr>
+    </table>
+  </div>
 
   <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>
-  {%- if settings %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Wert</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for setting in settings|sort(attribute='name') %}
-      <tr>
-        <td class="monospace">{{ setting.name }}</td>
-        <td class="monospace">{{ setting.value }}</td>
-      </tr>
-    {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Für diese Party sind keine Einstellungen hinterlegt.</div>
-  {%- endif %}
+  <div class="box">
+    {%- if settings %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Wert</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for setting in settings|sort(attribute='name') %}
+        <tr>
+          <td class="monospace">{{ setting.name }}</td>
+          <td class="monospace">{{ setting.value }}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Für diese Party sind keine Einstellungen hinterlegt.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

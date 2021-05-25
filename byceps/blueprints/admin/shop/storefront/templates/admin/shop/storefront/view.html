@@ -2,6 +2,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set title = 'Storefront ' ~ storefront.id %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
@@ -18,29 +19,31 @@
     {%- endif %}
   </div>
 
-  <table class="index">
-    <tr>
-      <th>Shop</th>
-      <td><a href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}">{{ shop.title }}</a></td>
-    </tr>
-    <tr>
-      <th>Katalog</th>
-      <td>{{ storefront.catalog_id|fallback }}</td>
-    </tr>
-    <tr>
-      <th>Bestellnummer-Sequenz</th>
-      <td>{{ order_number_prefix }}</td>
-    </tr>
-    <tr>
-      <th>Status</th>
-      <td>
-        {%- if storefront.closed -%}
-        {{ render_tag('geschlossen', icon='disabled', class='color-disabled') }}
-        {%- else -%}
-        {{ render_tag('geöffnet', icon='success', class='color-success') }}
-        {%- endif -%}
-      </td>
-    </tr>
-  </table>
+  <div class="box">
+    <table class="index">
+      <tr>
+        <th>Shop</th>
+        <td><a href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}">{{ shop.title }}</a></td>
+      </tr>
+      <tr>
+        <th>Katalog</th>
+        <td>{{ storefront.catalog_id|fallback }}</td>
+      </tr>
+      <tr>
+        <th>Bestellnummer-Sequenz</th>
+        <td>{{ order_number_prefix }}</td>
+      </tr>
+      <tr>
+        <th>Status</th>
+        <td>
+          {%- if storefront.closed -%}
+          {{ render_tag('geschlossen', icon='disabled', class='color-disabled') }}
+          {%- else -%}
+          {{ render_tag('geöffnet', icon='success', class='color-success') }}
+          {%- endif -%}
+        </td>
+      </tr>
+    </table>
+  </div>
 
 {%- endblock %}

@@ -5,6 +5,7 @@
 {% set current_page = 'brand_admin' %}
 {% set current_page_brand = brand %}
 {% set title = brand.title %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
@@ -31,64 +32,70 @@
   {%- endif %}
   </div>
 
-  <table class="index">
-    <tr>
-      <th>{{ _('ID') }}</th>
-      <td>{{ brand.id }}</td>
-    </tr>
-  </table>
+  <div class="box">
+    <table class="index">
+      <tr>
+        <th>{{ _('ID') }}</th>
+        <td>{{ brand.id }}</td>
+      </tr>
+    </table>
+  </div>
 
   <h2>{{ _('Settings') }} {{ render_extra_in_heading(settings|length) }}</h2>
-  {%- if settings %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>{{ _('Name') }}</th>
-        <th>{{ _('Value') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for setting in settings|sort(attribute='name') %}
-      <tr>
-        <td class="monospace">{{ setting.name }}</td>
-        <td class="monospace">{{ setting.value }}</td>
-      </tr>
-    {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">{{ _('No settings defined for this brand.') }}</div>
-  {%- endif %}
+  <div class="box">
+    {%- if settings %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Value') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for setting in settings|sort(attribute='name') %}
+        <tr>
+          <td class="monospace">{{ setting.name }}</td>
+          <td class="monospace">{{ setting.value }}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No settings defined for this brand.') }}</div>
+    {%- endif %}
+  </div>
 
   <div class="row row--space-between">
     <div class="column-auto">
       <h2>{{ _('Email Configuration') }}</h2>
     </div>
     {%- if email_config and has_current_user_permission(BrandPermission.update) %}
-    <div class="column-auto">
-      <div class="button-row button-row--right" style="margin-top: 2rem;">
+    <div class="column-auto column--align-bottom">
+      <div class="button-row button-row--right">
         <a class="button button--compact" href="{{ url_for('.email_config_update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
       </div>
     </div>
     {%- endif %}
   </div>
-  {%- if email_config %}
-  <table class="index">
-    <tr>
-      <th>{{ _('Sender address') }}</th>
-      <td>{{ email_config.sender.address }}</td>
-    </tr>
-    <tr>
-      <th>{{ _('Sender name') }}</th>
-      <td>{{ email_config.sender.name|fallback }}</td>
-    </tr>
-    <tr>
-      <th>{{ _('Contact address') }}</th>
-      <td>{{ email_config.contact_address|fallback }}</td>
-    </tr>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">{{ _('Not configured') }}</div>
-  {%- endif %}
+  <div class="box">
+    {%- if email_config %}
+    <table class="index">
+      <tr>
+        <th>{{ _('Sender address') }}</th>
+        <td>{{ email_config.sender.address }}</td>
+      </tr>
+      <tr>
+        <th>{{ _('Sender name') }}</th>
+        <td>{{ email_config.sender.name|fallback }}</td>
+      </tr>
+      <tr>
+        <th>{{ _('Contact address') }}</th>
+        <td>{{ email_config.contact_address|fallback }}</td>
+      </tr>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('Not configured') }}</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

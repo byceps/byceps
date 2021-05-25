@@ -8,23 +8,20 @@
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set title = '%s - News'|format(brand.title) %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>News</li>
-      <li><a href="{{ url_for('.channel_index_for_brand', brand_id=brand.id) }}">Marke {{ brand.title }}</a></li>
-    </ol>
-  </nav>
-  <h1>Kanal &quot;{{ channel.id }}&quot;</h1>
+  <h1>Newskanal &quot;{{ channel.id }}&quot;</h1>
 
-  <table class="index">
-    <tr>
-      <th>URL-Präfix</th>
-      <td>{{ channel.url_prefix }}</td>
-    </tr>
-  </table>
+  <div class="box">
+    <table class="index">
+      <tr>
+        <th>URL-Präfix</th>
+        <td>{{ channel.url_prefix }}</td>
+      </tr>
+    </table>
+  </div>
 
   <div class="row row--space-between">
     <div class="column-auto">
@@ -39,58 +36,59 @@
   {%- endif %}
   </div>
 
-  {%- if items.items %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>
-          Titel<br>
-          Slug
-        </th>
-        <th></th>
-        <th class="nowrap">
-          Veröffentlichung<br>
-          Letzte Änderung
-        </th>
-        <th class="centered">Bilder</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for item in items.items|sort(attribute='created_at', reverse=True) %}
-      <tr>
-        <td>
-          <a href="{{ url_for('.item_view', item_id=item.id) }}"><strong>{{ item.title|fallback('&lt;kein Titel&gt;') }}</strong></a><br>
-          {{ item.slug|dim }}
-        </td>
-        <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title='Bild festgelegt') }}{% endif %}</td>
-        <td class="nowrap">
-          {%- if item.published %}
-          <strong>{{ render_datetime(item.published_at|utc_to_local_tz) }}</strong>
-          {%- else %}
-          {{ render_tag('Entwurf') }}
-          {%- endif %}
-          <br>
-        {%- filter dim %}
-          {%- if has_current_user_permission(NewsItemPermission.view) %}
-          {{ render_icon('history') }} <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}</a>
-          {%- else %}
-          {{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}
-          {%- endif -%}
-          <br>
-          von {{ render_user_avatar_16_and_name(item.current_version.creator) }}
-        {%- endfilter %}
-        </td>
-        {%- with image_total = item.images|length %}
-        <td class="centered bignumber{% if image_total == 0 %} dimmed{% endif %}">{{ image_total }}</td>
-        {%- endwith %}
-      </tr>
-    {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Dieser Kanal enthält noch keine Newsposts.</div>
-  {%- endif %}
-
-{{ render_pagination_nav(items, '.channel_view', {'channel_id': channel.id}) }}
+  <div class="box">
+    {%- if items.items %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>
+            Titel<br>
+            Slug
+          </th>
+          <th></th>
+          <th class="nowrap">
+            Veröffentlichung<br>
+            Letzte Änderung
+          </th>
+          <th class="centered">Bilder</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for item in items.items|sort(attribute='created_at', reverse=True) %}
+        <tr>
+          <td>
+            <a href="{{ url_for('.item_view', item_id=item.id) }}"><strong>{{ item.title|fallback('&lt;kein Titel&gt;') }}</strong></a><br>
+            {{ item.slug|dim }}
+          </td>
+          <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title='Bild festgelegt') }}{% endif %}</td>
+          <td class="nowrap">
+            {%- if item.published %}
+            <strong>{{ render_datetime(item.published_at|utc_to_local_tz) }}</strong>
+            {%- else %}
+            {{ render_tag('Entwurf') }}
+            {%- endif %}
+            <br>
+          {%- filter dim %}
+            {%- if has_current_user_permission(NewsItemPermission.view) %}
+            {{ render_icon('history') }} <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}</a>
+            {%- else %}
+            {{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}
+            {%- endif -%}
+            <br>
+            von {{ render_user_avatar_16_and_name(item.current_version.creator) }}
+          {%- endfilter %}
+          </td>
+          {%- with image_total = item.images|length %}
+          <td class="centered bignumber{% if image_total == 0 %} dimmed{% endif %}">{{ image_total }}</td>
+          {%- endwith %}
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {{ render_pagination_nav(items, '.channel_view', {'channel_id': channel.id}) }}
+    {%- else %}
+    <div class="dimmed-box centered">Dieser Kanal enthält noch keine Newsposts.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

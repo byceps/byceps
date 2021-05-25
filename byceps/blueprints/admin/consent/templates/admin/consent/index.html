@@ -2,30 +2,33 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% set current_page = 'consent_admin' %}
 {% set title = 'Zustimmungen' %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
   <h1>{{ title }} {{ render_extra_in_heading(subjects_with_consent_counts|length) }}</h1>
 
-  {%- if subjects_with_consent_counts %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Titel<br>Name</th>
-        <th class="number">Zustimmungen</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for subject, consent_count in subjects_with_consent_counts|sort(attribute='0.name') %}
+  <div class="box">
+    {%- if subjects_with_consent_counts %}
+    <table class="index wide">
+      <thead>
         <tr>
-          <td>{{ subject.title }}<br><span class="dimmed">{{ subject.name }}</span></td>
-          <td class="bignumber number">{{ consent_count|separate_thousands }}</td>
+          <th>Titel<br>Name</th>
+          <th class="number">Zustimmungen</th>
         </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Es sind keine zustimmungsbedürftigen Themen hinterlegt.</div>
-  {%- endif %}
+      </thead>
+      <tbody>
+        {%- for subject, consent_count in subjects_with_consent_counts|sort(attribute='0.name') %}
+          <tr>
+            <td>{{ subject.title }}<br><span class="dimmed">{{ subject.name }}</span></td>
+            <td class="bignumber number">{{ consent_count|separate_thousands }}</td>
+          </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Es sind keine zustimmungsbedürftigen Themen hinterlegt.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

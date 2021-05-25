@@ -2,20 +2,34 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'terms_admin' %}
 {% set title = 'AGB-Version ansehen' %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.view_document', document_id=version.document_id) }}">Versionen</a></li>
-    </ol>
-  </nav>
-  <h1>{{ version.title }}</h1>
+  <div class="row row--space-between">
+    <div class="column-auto">
 
-  <div class="button-row">
-    <a class="button" href="{{ url_for('.view_version_body_html', version_id=version.id) }}">{{ render_icon('download') }} <span>HTML</span></a>
+      <nav class="breadcrumbs">
+        <ol>
+          <li>Allgemeine Geschäftsbedingungen</li>
+          <li><a href="{{ url_for('.view_document', document_id=version.document_id) }}">{{ version.document.title }}</a></li>
+          <li>Versionen</li>
+        </ol>
+      </nav>
+      <h1>{{ version.title }}</h1>
+
+    </div>
+    <div class="column-auto column--align-bottom">
+
+      <div class="button-row">
+        <a class="button" href="{{ url_for('.view_version_body_html', version_id=version.id) }}" download="terms_{{ version.document_id }}_{{ version.id }}.html">{{ render_icon('download') }} <span>HTML</span></a>
+      </div>
+
+    </div>
   </div>
 
+  <div class="box">
 {{ version.body|safe }}
+  </div>
 
 {%- endblock %}

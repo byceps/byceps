@@ -2,39 +2,42 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% set current_tab = 'permissions' %}
 {% set title = 'Berechtigungen' %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
   <h1>{{ title }} {{ render_extra_in_heading(permissions|length) }}</h1>
 
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Berechtigung</th>
-        <th>Teil dieser Rollen</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for permission in permissions|sort(attribute='id') %}
-      <tr>
-        <td>
-          <strong class="monospace">{{ permission.id }}</strong><br>
-          {{ permission.title|fallback('keine Beschreibung vorhanden') }}
-        </td>
-        <td>
-        {%- if permission.roles %}
-          <ol>
-          {%- for role in permission.roles|sort(attribute='id') %}
-            <li class="monospace"><a href="{{ url_for('.role_view', role_id=role.id) }}">{{ role.id }}</a></li>
-          {%- endfor %}
-          </ol>
-        {%- else %}
-          {{ 'keine'|dim }}
-        {%- endif %}
-        </td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
+  <div class="box">
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>Berechtigung</th>
+          <th>Teil dieser Rollen</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for permission in permissions|sort(attribute='id') %}
+        <tr>
+          <td>
+            <strong class="monospace">{{ permission.id }}</strong><br>
+            {{ permission.title|fallback('keine Beschreibung vorhanden') }}
+          </td>
+          <td>
+          {%- if permission.roles %}
+            <ol>
+            {%- for role in permission.roles|sort(attribute='id') %}
+              <li class="monospace"><a href="{{ url_for('.role_view', role_id=role.id) }}">{{ role.id }}</a></li>
+            {%- endfor %}
+            </ol>
+          {%- else %}
+            {{ 'keine'|dim }}
+          {%- endif %}
+          </td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
 
 {%- endblock %}

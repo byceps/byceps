@@ -3,6 +3,7 @@
 {% set current_tab = 'permissions' %}
 {% set current_tab_user_id = user.id %}
 {% set title = 'Benutzer - Berechtigungen - %s'|format(user.screen_name) %}
+{% set layout_main_raw = True %}
 
 {% block head %}
   <style>
@@ -19,45 +20,53 @@
 
 {% block body %}
 
-  {%- if has_current_user_permission(RolePermission.assign) %}
-  <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.manage_roles', user_id=user.id) }}">{{ render_icon('permission') }} <span>Rollen verwalten</span></a>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h2>Berechtigungen</h2>
+    </div>
+    <div class="column-auto column--align-bottom">
+      {%- if has_current_user_permission(RolePermission.assign) %}
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.manage_roles', user_id=user.id) }}">{{ render_icon('permission') }} <span>Rollen verwalten</span></a>
+      </div>
+      {%- endif %}
+    </div>
   </div>
-  {%- endif %}
 
-  <h2>Berechtigungen</h2>
-  {%- if permissions_by_role %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Rolle</th>
-        <th>Berechtigungen</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for role, permissions in permissions_by_role.items()|sort(attribute='0.id') %}
-      <tr>
-        <td>
-          <strong>{{ role.title }}</strong><br>
-          <span class="monospace">{{ role.id|dim }}</span>
-        </td>
-        <td>
-          {%- if permissions %}
-          <ul class="permissions">
-            {%- for permission in permissions|sort(attribute='id') %}
-            <li>{{ permission.title }}<br><span class="monospace">{{ permission.id|dim }}</span></li>
-            {%- endfor %}
-          </ul>
-          {%- else %}
-          <p class="dimmed">keine</p>
-          {%- endif %}
-        </td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Dem Benutzer sind keine Berechtigungen zugewiesen.</div>
-  {%- endif %}
+  <div class="box">
+    {%- if permissions_by_role %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>Rolle</th>
+          <th>Berechtigungen</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for role, permissions in permissions_by_role.items()|sort(attribute='0.id') %}
+        <tr>
+          <td>
+            <strong>{{ role.title }}</strong><br>
+            <span class="monospace">{{ role.id|dim }}</span>
+          </td>
+          <td>
+            {%- if permissions %}
+            <ul class="permissions">
+              {%- for permission in permissions|sort(attribute='id') %}
+              <li>{{ permission.title }}<br><span class="monospace">{{ permission.id|dim }}</span></li>
+              {%- endfor %}
+            </ul>
+            {%- else %}
+            <p class="dimmed">keine</p>
+            {%- endif %}
+          </td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Dem Benutzer sind keine Berechtigungen zugewiesen.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

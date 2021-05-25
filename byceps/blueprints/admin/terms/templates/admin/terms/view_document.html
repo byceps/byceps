@@ -4,6 +4,7 @@
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'terms_admin' %}
 {% set title = document.title %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
@@ -14,50 +15,56 @@
   </nav>
   <h1>{{ document.title }}</h1>
 
-  <table class="index">
-    <tr>
-      <th>ID</th>
-      <td>{{ document.id }}</td>
-    </tr>
-  </table>
+  <div class="box">
+    <table class="index">
+      <tr>
+        <th>ID</th>
+        <td>{{ document.id }}</td>
+      </tr>
+    </table>
+  </div>
 
   <h2>Versionen</h2>
 
   {%- if not document.current_version_id %}
-  <div class="notification color-danger"><strong>Achtung:</strong> Es ist keine aktuelle Version für dieses Dokument festgelegt.</div>
+  <div style="margin-bottom: var(--inner-gutter);">
+    <div class="notification color-danger"><strong>Achtung:</strong> Es ist keine aktuelle Version für dieses Dokument festgelegt.</div>
+  </div>
   {%- endif %}
 
-  {%- if versions %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Titel<br>ID</th>
-        <th>Erstellt</th>
-        <th class="number">Zustimmungen</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for version in versions %}
+  <div class="box">
+    {%- if versions %}
+    <table class="index wide">
+      <thead>
         <tr>
-          <td>
-            <strong><a href="{{ url_for('.view_version', version_id=version.id) }}">{{ version.title }}</a></strong>
-            {%- if version.id == document.current_version_id %}
-            {{ render_tag('aktuelle Version') }}
-            {%- endif %}
-            <br>
-            {{ version.id|dim }}
-          </td>
-          <td>
-            <span class="nowrap">{{ render_datetime(version.created_at|utc_to_local_tz) }}</span><br>
-            von {{ render_user_avatar_16_and_admin_link(version.creator) }}
-          </td>
-          <td class="number bignumber">{{ version.consent_count }}</td>
+          <th>Titel<br>ID</th>
+          <th>Erstellt</th>
+          <th class="number">Zustimmungen</th>
         </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Es sind keine Versionen hinterlegt.</div>
-  {%- endif %}
+      </thead>
+      <tbody>
+        {%- for version in versions %}
+          <tr>
+            <td>
+              <strong><a href="{{ url_for('.view_version', version_id=version.id) }}">{{ version.title }}</a></strong>
+              {%- if version.id == document.current_version_id %}
+              {{ render_tag('aktuelle Version') }}
+              {%- endif %}
+              <br>
+              {{ version.id|dim }}
+            </td>
+            <td>
+              <span class="nowrap">{{ render_datetime(version.created_at|utc_to_local_tz) }}</span><br>
+              von {{ render_user_avatar_16_and_admin_link(version.creator) }}
+            </td>
+            <td class="number bignumber">{{ version.consent_count }}</td>
+          </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Es sind keine Versionen hinterlegt.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

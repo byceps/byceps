@@ -4,65 +4,58 @@
 {% set current_page_party = party %}
 {% set current_tab = 'categories' %}
 {% set title = '%s - Turniere - Kategorien'|format(party.title) %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
   <div class="row row--space-between">
     <div class="column-auto">
-
-      <nav class="breadcrumbs">
-        <ol>
-          <li>{{ party.title }}</li>
-          <li>Turniere</li>
-        </ol>
-      </nav>
       <h1>Kategorien {{ render_extra_in_heading(categories|length) }}</h1>
-
     </div>
-    <div class="column-auto column--align-bottom">
-
+    <div class="column-auto">
       {%- if has_current_user_permission(TourneyCategoryPermission.administrate) %}
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Kategorie erstellen</span></a>
       </div>
       {%- endif %}
-
     </div>
   </div>
 
-  {%- if categories %}
-  <table class="index">
-    <thead>
-      <tr>
-        <th>Position</th>
-        <th>Titel</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for category in categories|sort(attribute='position') %}
-      <tr>
-        <td class="number">{{ category.position }}</td>
-        <td>{{ category.title }}</td>
-        <td>
-          {%- if has_current_user_permission(TourneyCategoryPermission.administrate) -%}
-          <div class="dropdown">
-            <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
-            <ol class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{ url_for('.update_form', category_id=category.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
-              <li><a class="dropdown-item" data-action="category-move-up" href="{{ url_for('.move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} Nach oben schieben</a></li>
-              <li><a class="dropdown-item" data-action="category-move-down" href="{{ url_for('.move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} Nach unten schieben</a></li>
-            </ol>
-          </div>
-          {%- endif -%}
-        </td>
-      </tr>
-    {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Es sind keine Kategorien hinterlegt.</div>
-  {%- endif %}
+  <div class="box">
+    {%- if categories %}
+    <table class="index">
+      <thead>
+        <tr>
+          <th>Position</th>
+          <th>Titel</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for category in categories|sort(attribute='position') %}
+        <tr>
+          <td class="number">{{ category.position }}</td>
+          <td>{{ category.title }}</td>
+          <td>
+            {%- if has_current_user_permission(TourneyCategoryPermission.administrate) -%}
+            <div class="dropdown">
+              <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+              <ol class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ url_for('.update_form', category_id=category.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
+                <li><a class="dropdown-item" data-action="category-move-up" href="{{ url_for('.move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} Nach oben schieben</a></li>
+                <li><a class="dropdown-item" data-action="category-move-down" href="{{ url_for('.move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} Nach unten schieben</a></li>
+              </ol>
+            </div>
+            {%- endif -%}
+          </td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Es sind keine Kategorien hinterlegt.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}
 

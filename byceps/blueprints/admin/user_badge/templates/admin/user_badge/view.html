@@ -5,12 +5,13 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_64 %}
 {% set current_page = 'user_badge_admin' %}
 {% set title = _('Badge') ~ ' - ' ~ badge.label %}
+{% set layout_main_raw = True %}
 
 {% block head %}
   <style>
     .badge-details {
       display: flex;
-      margin-top: 2rem;
+      margin-bottom: 2rem;
     }
     .badge-details .badge {
       flex: 0 0 auto;
@@ -33,60 +34,73 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.index') }}">{{ _('Badges') }}</a></li>
-    </ol>
-  </nav>
-  <h1>{{ badge.label }}</h1>
+  <div class="row row--space-between">
+    <div class="column-auto">
 
-  {%- if has_current_user_permission(UserBadgePermission.update) %}
-  <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.update_form', badge_id=badge.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+    <nav class="breadcrumbs">
+      <ol>
+        <li><a href="{{ url_for('.index') }}">{{ _('Badges') }}</a></li>
+      </ol>
+    </nav>
+    <h1>{{ badge.label }}</h1>
+
+    </div>
+    <div class="column-auto column--align-bottom">
+
+    {%- if has_current_user_permission(UserBadgePermission.update) %}
+    <div class="button-row button-row--right">
+      <a class="button" href="{{ url_for('.update_form', badge_id=badge.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+    </div>
+    {%- endif %}
+
+    </div>
   </div>
-  {%- endif %}
 
-  <table class="index">
-    <tr>
-      <th>{{ _('Slug') }}</th>
-      <td>{{ badge.slug }}</td>
-    </tr>
-    <tr>
-      <th>{{ _('Brand') }}</th>
-      <td>
-      {%- if brand %}
-        {{ render_brand_avatar(brand, '16') }}
-        {{ brand.title }}
-      {%- else %}
-      <em>{{ _('unrestricted') }}</em>
-      {%- endif %}
-      </td>
-    </tr>
-    <tr>
-      <th>{{ render_tag(_('featured')) }}</th>
-      <td>{{ _('yes') if badge.featured else _('no') }}</td>
-    </tr>
-  </table>
+  <div class="box">
 
-  <div class="badge-details">
-    <div class="badge">
-      <div class="user-badge size-64" title="{{ badge.label }}"><img src="{{ badge.image_url_path }}"></div>
+    <div class="badge-details">
+      <div class="badge">
+        <div class="user-badge size-64" title="{{ badge.label }}"><img src="{{ badge.image_url_path }}"></div>
+      </div>
+
+      <div class="description">{{ badge.description|fallback('No description set.') }}</div>
     </div>
 
-    <div class="description">{{ badge.description|fallback('No description set.') }}</div>
-  </div>
+    <table class="index">
+      <tr>
+        <th>{{ _('Slug') }}</th>
+        <td>{{ badge.slug }}</td>
+      </tr>
+      <tr>
+        <th>{{ _('Brand') }}</th>
+        <td>
+        {%- if brand %}
+          {{ render_brand_avatar(brand, '16') }}
+          {{ brand.title }}
+        {%- else %}
+        <em>{{ _('unrestricted') }}</em>
+        {%- endif %}
+        </td>
+      </tr>
+      <tr>
+        <th>{{ render_tag(_('featured')) }}</th>
+        <td>{{ _('yes') if badge.featured else _('no') }}</td>
+      </tr>
+    </table>
 
-  <h2>{{ _('Awarded to %(recipient_count)s users', recipient_count=recipients|length) }}</h2>
-  {%- if recipients %}
-  <ul class="list-grid">
-    {%- for user in recipients %}
-    <li><a class="recipient" href="{{ url_for('user_admin.view', user_id=user.id) }}">
-{{ render_user_avatar_64(user) }}
-    </a></li>
-    {%- endfor %}
-  </ul>
-  {%- else %}
-    <div class="dimmed-box centered">{{ _('This badge has not been awarded yet.') }}</div>
-  {%- endif %}
+    <h2>{{ _('Awarded to %(recipient_count)s users', recipient_count=recipients|length) }}</h2>
+    {%- if recipients %}
+    <ul class="list-grid">
+      {%- for user in recipients %}
+      <li><a class="recipient" href="{{ url_for('user_admin.view', user_id=user.id) }}">
+  {{ render_user_avatar_64(user) }}
+      </a></li>
+      {%- endfor %}
+    </ul>
+    {%- else %}
+      <div class="dimmed-box centered">{{ _('This badge has not been awarded yet.') }}</div>
+    {%- endif %}
+
+  </div>
 
 {%- endblock %}

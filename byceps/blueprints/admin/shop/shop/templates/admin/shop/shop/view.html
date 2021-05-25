@@ -7,49 +7,56 @@
 {% set current_page_shop = shop %}
 {% set current_tab = 'shop' %}
 {% set title = 'Shop' %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
-  <div class="row row--equal-sized-centered-columns row--space-between row--wrap bigstats">
-    <div class="column-auto">
-      <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open') }}">
-        {{- render_bigstats_item(order_counts_by_payment_state[PaymentState.open], 'Bestellungen<br>'|safe ~ render_order_payment_state(PaymentState.open)) -}}
-      </a>
-    </div>
-    <div class="column-auto">
-      <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='paid') }}">
-        {{- render_bigstats_item(order_counts_by_payment_state[PaymentState.paid], 'Bestellungen<br>'|safe ~ render_order_payment_state(PaymentState.paid)) -}}
-      </a>
+  <div class="box" style="margin-top: var(--inner-gutter);">
+    <div class="row row--equal-sized-centered-columns row--space-between row--wrap bigstats">
+      <div class="column-auto">
+        <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open') }}">
+          {{- render_bigstats_item(order_counts_by_payment_state[PaymentState.open], 'Bestellungen<br>'|safe ~ render_order_payment_state(PaymentState.open)) -}}
+        </a>
+      </div>
+      <div class="column-auto">
+        <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='paid') }}">
+          {{- render_bigstats_item(order_counts_by_payment_state[PaymentState.paid], 'Bestellungen<br>'|safe ~ render_order_payment_state(PaymentState.paid)) -}}
+        </a>
+      </div>
     </div>
   </div>
 
-  <table class="index" style="margin-top: 2rem;">
-    <tr>
-      <th>Shop-ID</th>
-      <td>{{ shop.id }}</td>
-    </tr>
-  </table>
+  <div class="box">
+    <table class="index">
+      <tr>
+        <th>Shop-ID</th>
+        <td>{{ shop.id }}</td>
+      </tr>
+    </table>
+  </div>
 
   <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>
-  {%- if settings %}
-  <table class="index">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Wert</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for key, value in settings|dictsort(by='key') %}
-      <tr>
-        <td class="monospace">{{ key }}</td>
-        <td class="monospace">{{ value }}</td>
-      </tr>
-    {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Es sind keine Einstellungen hinterlegt.</div>
-  {%- endif %}
+  <div class="box">
+    {%- if settings %}
+    <table class="index">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Wert</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for key, value in settings|dictsort(by='key') %}
+        <tr>
+          <td class="monospace">{{ key }}</td>
+          <td class="monospace">{{ value }}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Es sind keine Einstellungen hinterlegt.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

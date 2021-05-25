@@ -6,134 +6,150 @@
 {% set current_page = 'site_admin' %}
 {% set current_page_site = site %}
 {% set title = '%s - Site'|format(site.id) %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('site_admin.index') }}">Sites</a></li>
-    </ol>
-  </nav>
-  <h1>
-    {{- site.title }}
-    {%- if not site.enabled or site.archived -%}
-    <br>
-      {%- if not site.enabled %}
-    {{ render_tag('deaktiviert', class='color-disabled', icon='disabled') }}
-      {%- endif %}
-      {%- if site.archived %}
-    {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
-      {%- endif %}
-    {%- endif -%}
-  </h1>
-
-  {%- if has_current_user_permission(SitePermission.update) %}
-  <div class="button-row button-row--compact" style="float: right;">
-    <a class="button" href="{{ url_for('.update_form', site_id=site.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
-  </div>
-  {%- endif %}
-
-  <table class="index">
-    <tr>
-      <th>ID</th>
-      <td>{{ site.id }}</td>
-    </tr>
-    <tr>
-      <th>Servername</th>
-      <td><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></td>
-    </tr>
-    <tr>
-      <th>Marke</th>
-      <td>{{ render_brand_admin_link(brand) }}</td>
-    </tr>
-    <tr>
-      <th>Party</th>
-      <td>{% if site.party_id %}<a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ site.party_id }}</a>{% else %}{{ ''|fallback }}{% endif %}</td>
-    </tr>
-    <tr>
-      <th>Benutzer&shy;registrierung</th>
-      <td>{{ render_tag('geöffnet', class='color-success') if site.user_account_creation_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
-    </tr>
-    <tr>
-      <th>Benutzer&shy;anmeldung</th>
-      <td>{{ render_tag('geöffnet', class='color-success') if site.login_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
-    </tr>
-    <tr>
-      <th>Forum</th>
-      <td>
-        {%- if board %}
-        <a href="{{ url_for('board_admin.board_view', board_id=board.id) }}">{{ board.id }}</a>
-        {%- else %}
-        {{ 'kein Forum verknüpft'|dim }}
-        {%- endif %}
-      </td>
-    </tr>
-    <tr>
-      <th>Storefront</th>
-      <td>
-        {%- if storefront %}
-        <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}">{{ storefront.id }}</a>
-        {%- else %}
-        {{ 'kein Storefront verknüpft'|dim }}
-        {%- endif %}
-      </td>
-    </tr>
-  </table>
-
-  <div class="row row--space-between" style="margin-bottom: 1rem; margin-top: 1rem;">
+  <div class="row row--space-between">
     <div class="column-auto">
-      <h2 style="margin: 0;">{{ _('News Channels') }} {{ render_extra_in_heading(news_channels|length) }}</h2>
+
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{{ url_for('site_admin.index') }}">Sites</a></li>
+        </ol>
+      </nav>
+      <h1>
+        {{- site.title }}
+        {%- if not site.enabled or site.archived -%}
+        <br>
+          {%- if not site.enabled %}
+        {{ render_tag('deaktiviert', class='color-disabled', icon='disabled') }}
+          {%- endif %}
+          {%- if site.archived %}
+        {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+          {%- endif %}
+        {%- endif -%}
+      </h1>
+
+    </div>
+    <div class="column-auto column--align-bottom">
+
+      {%- if has_current_user_permission(SitePermission.update) %}
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.update_form', site_id=site.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+      </div>
+      {%- endif %}
+
+    </div>
+  </div>
+
+  <div class="box">
+    <table class="index">
+      <tr>
+        <th>ID</th>
+        <td>{{ site.id }}</td>
+      </tr>
+      <tr>
+        <th>Servername</th>
+        <td><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></td>
+      </tr>
+      <tr>
+        <th>Marke</th>
+        <td>{{ render_brand_admin_link(brand) }}</td>
+      </tr>
+      <tr>
+        <th>Party</th>
+        <td>{% if site.party_id %}<a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ site.party_id }}</a>{% else %}{{ ''|fallback }}{% endif %}</td>
+      </tr>
+      <tr>
+        <th>Benutzer&shy;registrierung</th>
+        <td>{{ render_tag('geöffnet', class='color-success') if site.user_account_creation_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
+      </tr>
+      <tr>
+        <th>Benutzer&shy;anmeldung</th>
+        <td>{{ render_tag('geöffnet', class='color-success') if site.login_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
+      </tr>
+      <tr>
+        <th>Forum</th>
+        <td>
+          {%- if board %}
+          <a href="{{ url_for('board_admin.board_view', board_id=board.id) }}">{{ board.id }}</a>
+          {%- else %}
+          {{ 'kein Forum verknüpft'|dim }}
+          {%- endif %}
+        </td>
+      </tr>
+      <tr>
+        <th>Storefront</th>
+        <td>
+          {%- if storefront %}
+          <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}">{{ storefront.id }}</a>
+          {%- else %}
+          {{ 'kein Storefront verknüpft'|dim }}
+          {%- endif %}
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h2>{{ _('News Channels') }} {{ render_extra_in_heading(news_channels|length) }}</h2>
     </div>
   {%- if has_current_user_permission(SitePermission.update) %}
-    <div class="column-auto">
-      <div class="button-row button-row--compact button-row--right">
+    <div class="column-auto column--align-bottom">
+      <div class="button-row button-row--right">
         <a class="button button--compact" href="{{ url_for('.add_news_channel_form', site_id=site.id) }}">{{ render_icon('add') }} <span>{{ _('Add news channel') }}</span></a>
       </div>
     </div>
   {%- endif %}
   </div>
-  {%- if news_channels %}
-  <table class="index">
-    <tbody>
-    {%- for channel in news_channels|sort(attribute='id') %}
-      <tr>
-        <td><a href="{{ url_for('news_admin.channel_view', channel_id=channel.id) }}">{{ channel.id }}</a></td>
-        {%- if has_current_user_permission(SitePermission.update) %}
-        <td>
-          <div class="button-row button-row--compact button-row--right">
-            <a href="{{ url_for('.remove_news_channel', site_id=site.id, news_channel_id=channel.id) }}" data-action="news-channel-remove" class="button button--compact" title="{{ _('Remove') }}">{{ render_icon('remove') }}</a>
-          </div>
-        </td>
-        {%- endif %}
-      </tr>
-    {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">{{ _('No news channels are assigned to this site.') }}</div>
-  {%- endif %}
+  <div class="box">
+    {%- if news_channels %}
+    <table class="index">
+      <tbody>
+      {%- for channel in news_channels|sort(attribute='id') %}
+        <tr>
+          <td><a href="{{ url_for('news_admin.channel_view', channel_id=channel.id) }}">{{ channel.id }}</a></td>
+          {%- if has_current_user_permission(SitePermission.update) %}
+          <td>
+            <div class="button-row button-row--compact button-row--right">
+              <a href="{{ url_for('.remove_news_channel', site_id=site.id, news_channel_id=channel.id) }}" data-action="news-channel-remove" class="button button--compact" title="{{ _('Remove') }}">{{ render_icon('remove') }}</a>
+            </div>
+          </td>
+          {%- endif %}
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No news channels are assigned to this site.') }}</div>
+    {%- endif %}
+  </div>
 
   <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>
-  {%- if settings %}
-  <table class="index">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Wert</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for setting in settings|sort(attribute='name') %}
-      <tr>
-        <td class="monospace">{{ setting.name }}</td>
-        <td class="monospace">{{ setting.value }}</td>
-      </tr>
-    {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Es sind keine Einstellungen hinterlegt.</div>
-  {%- endif %}
+  <div class="box">
+    {%- if settings %}
+    <table class="index">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Wert</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for setting in settings|sort(attribute='name') %}
+        <tr>
+          <td class="monospace">{{ setting.name }}</td>
+          <td class="monospace">{{ setting.value }}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Es sind keine Einstellungen hinterlegt.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}
 

@@ -1,30 +1,33 @@
 {% extends 'layout/admin/base.html' %}
 {% set current_page = 'newsletter_admin' %}
 {% set title = 'Newsletter' %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
   <h1>{{ title }}</h1>
 
-  {%- if lists %}
-  <table class="index">
-    <thead>
-      <tr>
-        <th>Titel<br>ID</th>
-        <th class="number">Abonnenten</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for list in lists %}
+  <div class="box">
+    {%- if lists %}
+    <table class="index">
+      <thead>
         <tr>
-          <td><a href="{{ url_for('.view_subscriptions', list_id=list.id) }}">{{ list.title }}</a><br><span class="dimmed">{{ list.id }}</span></td>
-          <td class="bignumber number">{{ list.subscriber_count }}</td>
+          <th>Titel<br>ID</th>
+          <th class="number">Abonnenten</th>
         </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Es sind keine Newsletter-Listen hinterlegt.</div>
-  {%- endif %}
+      </thead>
+      <tbody>
+        {%- for list in lists %}
+          <tr>
+            <td><a href="{{ url_for('.view_subscriptions', list_id=list.id) }}">{{ list.title }}</a><br><span class="dimmed">{{ list.id }}</span></td>
+            <td class="bignumber number">{{ list.subscriber_count }}</td>
+          </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Es sind keine Newsletter-Listen hinterlegt.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

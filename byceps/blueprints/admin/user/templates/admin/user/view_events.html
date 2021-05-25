@@ -9,6 +9,7 @@
 {% set current_tab = 'events' %}
 {% set current_tab_user_id = user.id %}
 {% set title = 'Benutzer - Ereignisse - %s'|format(user.screen_name) %}
+{% set layout_main_raw = True %}
 
 {% block head %}
     <style>
@@ -27,7 +28,7 @@
     <div class="column-auto">
       <h2>Ereignisse {{ render_extra_in_heading(events|length) }}</h2>
     </div>
-    <div class="column-auto">
+    <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
         {%- if logins_included %}
         <a class="button button--compact" href="{{ url_for('.view_events', user_id=user.id, include_logins='no') }}">{{ render_icon('hidden') }} <span>Logins ausblenden</span></a>
@@ -38,228 +39,230 @@
     </div>
   </div>
 
-  <div class="events">
-    {%- for event in events|sort(attribute='occurred_at', reverse=True) %}
-      {%- with %}
-        {%- if event.event == 'user-created' %}
-          {%- set icon_name = 'add' %}
-          {%- set body %}
-            {%- if event.initiator is defined %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            {%- else %}
-            Jemand
-            {%- endif %}
-            hat das Benutzerkonto
-            {%- if event.site is defined %}
-            auf Site &quot;{{ event.site.title }}&quot;
-            {%- endif %}
-            <strong>angelegt</strong>.
-          {%- endset %}
-        {%- elif event.event == 'user-initialized' %}
-          {%- set icon_name = 'enabled' %}
-          {%- set body %}
-            {%- if event.initiator is defined %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            {%- else %}
-            Jemand
-            {%- endif %}
-            hat das Benutzerkonto <strong>initialisiert</strong>.
-          {%- endset %}
-        {%- elif event.event == 'user-suspended' %}
-          {%- set icon_name = 'lock' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat das Benutzerkonto {{ render_user_flag_suspended() }}.
-            <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
-          {%- endset %}
-        {%- elif event.event == 'user-unsuspended' %}
-          {%- set icon_name = 'unlock' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat das Benutzerkonto {{ render_tag('entsperrt', icon='unlock', class='color-success') }}.
-            <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
-          {%- endset %}
-        {%- elif event.event == 'user-deleted' %}
-          {%- set icon_name = 'delete' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat das Benutzerkonto {{ render_user_flag_deleted() }}.
-            <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
-          {%- endset %}
-        {%- elif event.event == 'user-logged-in' %}
-          {%- set icon_name = 'log-in' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
-            hat sich von IP-Adresse {{ event.data.ip_address }} <strong>erfolgreich angemeldet</strong>
-            {%- if event.site is defined %}
-            auf Site &quot;{{ event.site.title }}&quot;
-            {%- endif -%}
-            .
-          {%- endset %}
-        {%- elif event.event == 'user-screen-name-changed' %}
-          {%- set icon_name = 'user' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat das Benutzerkonto &quot;{{ event.data.old_screen_name }}&quot; umbenannt in &quot;{{ event.data.new_screen_name }}&quot;.
-            {%- if 'reason' in event.data %}
-            <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
-            {%- endif %}
-          {%- endset %}
-        {%- elif event.event == 'user-email-address-changed' %}
-          {%- set icon_name = 'user' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat die E-Mail-Adresse von
-            {%- if event.data.old_email_address %}
-            &quot;{{ event.data.old_email_address }}&quot;
-            {%- else %}
-            <em>keine</em>
-            {%- endif %}
-            in
-            {%- if event.data.new_email_address %}
-            &quot;{{ event.data.new_email_address }}&quot;
-            {%- else %}
-            <em>keine</em>
-            {%- endif %}
-            geändert.
-            {%- if 'reason' in event.data %}
-            <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
-            {%- endif %}
-          {%- endset %}
-        {%- elif event.event == 'user-email-address-confirmed' %}
-          {%- set icon_name = 'email' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
-            hat die E-Mail-Adresse {{ event.data.email_address }} <strong>verifiziert</strong>.
-          {%- endset %}
-        {%- elif event.event == 'user-email-address-invalidated' %}
-          {%- set icon_name = 'email' %}
-          {%- set body %}
-            {%- if event.initiator is defined %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            {%- else %}
-            Jemand
-            {%- endif %}
-            hat die E-Mail-Adresse {{ event.data.email_address }} <strong>invalidiert</strong>.
-            <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
-          {%- endset %}
-        {%- elif event.event == 'user-details-updated' %}
-          {%- set icon_name = 'edit' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat persönliche Daten von
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
-            geändert.
-            <blockquote><table>
-            {%- for key, value in event.details.items()|sort %}
-              <tr>
-                <th>{{ key }}</th>
-                <td>{{ value|fallback }}</td>
-              </tr>
-            {%- endfor %}
-            </table></blockquote>
-          {%- endset %}
-        {%- elif event.event == 'password-updated' %}
-          {%- set icon_name = 'password' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat ein <strong>neues Passwort gesetzt</strong>.
-          {%- endset %}
-        {%- elif event.event == 'user-avatar-updated' %}
-          {%- set icon_name = 'upload' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat ein <a href="{{ event.data.url_path }}">neues Avatarbild</a> hochgeladen.
-          {%- endset %}
-        {%- elif event.event == 'consent-expressed' %}
-          {%- set icon_name = 'legal' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat &quot;{{ event.data.subject_title }}&quot; <strong>akzeptiert</strong>.
-          {%- endset %}
-        {%- elif event.event == 'privacy-policy-accepted' %}
-          {%- set icon_name = 'legal' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat die <strong>Datenschutzbestimmungen akzeptiert</strong>.
-          {%- endset %}
-        {%- elif event.event == 'newsletter-requested' %}
-          {%- set icon_name = 'email' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat den Newsletter &quot;{{ event.data.list_.title }}&quot; {{ render_tag('angefordert', icon='success', class='newsletter-subscribed') }}.
-          {%- endset %}
-        {%- elif event.event == 'newsletter-declined' %}
-          {%- set icon_name = 'email' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat den Newsletter &quot;{{ event.data.list_.title }}&quot; {{ render_tag('abbestellt', icon='disabled', class='newsletter-unsubscribed') }}.
-          {%- endset %}
-        {%- elif event.event == 'order-placed' %}
-          {%- set icon_name = 'shopping-cart' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat Bestellung {{ render_order_link(event.data.order) }} aufgegeben.
-          {%- endset %}
-        {%- elif event.event == 'orgaflag-added' %}
-          {%- set icon_name = 'enabled' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
-            für die Marke <strong>{{ event.data.brand_id }}</strong> zum Orga ernannt.
-          {%- endset %}
-        {%- elif event.event == 'orgaflag-removed' %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
-            für die Marke <strong>{{ event.data.brand_id }}</strong> den Orgastatus entzogen.
-          {%- endset %}
-        {%- elif event.event == 'role-assigned' %}
-          {%- set icon_name = 'permission' %}
-          {%- set body %}
-            {%- if event.initiator is defined %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            {%- else %}
-            Jemand
-            {%- endif %}
-            hat
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
-            die Rolle <strong>{{ event.data.role_id }}</strong> zugewiesen.
-          {%- endset %}
-        {%- elif event.event == 'role-deassigned' %}
-          {%- set icon_name = 'permission' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            hat
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
-            die Rolle <strong>{{ event.data.role_id }}</strong> genommen.
-          {%- endset %}
-        {%- elif event.event == 'user-badge-awarded' %}
-          {%- set icon_name = 'badge' %}
-          {%- set body %}
-            {%- if event.initiator is defined %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
-            {%- else %}
-            Jemand
-            {%- endif %}
-            hat
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
-            das Abzeichen {{ render_user_badge_linked(event.badge, 24) }} <strong>{{ event.badge.label }}</strong> verliehen.
-          {%- endset %}
-        {%- else %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
-            <strong>Unbekannte Aktion '{{ event.event }}'</strong> ist ausgelöst worden.
-          {%- endset %}
-        {%- endif %}
-    <div class="event">
-      <div class="event-icon">{{ render_icon(icon_name) }}</div>
-      <div class="event-data">
-        <div class="event-body">{{ body|safe }}</div>
-        <div class="event-timestamp">{{ render_datetime(event.occurred_at|utc_to_local_tz) }}</div>
+  <div class="box">
+    <div class="events">
+      {%- for event in events|sort(attribute='occurred_at', reverse=True) %}
+        {%- with %}
+          {%- if event.event == 'user-created' %}
+            {%- set icon_name = 'add' %}
+            {%- set body %}
+              {%- if event.initiator is defined %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              {%- else %}
+              Jemand
+              {%- endif %}
+              hat das Benutzerkonto
+              {%- if event.site is defined %}
+              auf Site &quot;{{ event.site.title }}&quot;
+              {%- endif %}
+              <strong>angelegt</strong>.
+            {%- endset %}
+          {%- elif event.event == 'user-initialized' %}
+            {%- set icon_name = 'enabled' %}
+            {%- set body %}
+              {%- if event.initiator is defined %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              {%- else %}
+              Jemand
+              {%- endif %}
+              hat das Benutzerkonto <strong>initialisiert</strong>.
+            {%- endset %}
+          {%- elif event.event == 'user-suspended' %}
+            {%- set icon_name = 'lock' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat das Benutzerkonto {{ render_user_flag_suspended() }}.
+              <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
+            {%- endset %}
+          {%- elif event.event == 'user-unsuspended' %}
+            {%- set icon_name = 'unlock' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat das Benutzerkonto {{ render_tag('entsperrt', icon='unlock', class='color-success') }}.
+              <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
+            {%- endset %}
+          {%- elif event.event == 'user-deleted' %}
+            {%- set icon_name = 'delete' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat das Benutzerkonto {{ render_user_flag_deleted() }}.
+              <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
+            {%- endset %}
+          {%- elif event.event == 'user-logged-in' %}
+            {%- set icon_name = 'log-in' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
+              hat sich von IP-Adresse {{ event.data.ip_address }} <strong>erfolgreich angemeldet</strong>
+              {%- if event.site is defined %}
+              auf Site &quot;{{ event.site.title }}&quot;
+              {%- endif -%}
+              .
+            {%- endset %}
+          {%- elif event.event == 'user-screen-name-changed' %}
+            {%- set icon_name = 'user' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat das Benutzerkonto &quot;{{ event.data.old_screen_name }}&quot; umbenannt in &quot;{{ event.data.new_screen_name }}&quot;.
+              {%- if 'reason' in event.data %}
+              <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
+              {%- endif %}
+            {%- endset %}
+          {%- elif event.event == 'user-email-address-changed' %}
+            {%- set icon_name = 'user' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat die E-Mail-Adresse von
+              {%- if event.data.old_email_address %}
+              &quot;{{ event.data.old_email_address }}&quot;
+              {%- else %}
+              <em>keine</em>
+              {%- endif %}
+              in
+              {%- if event.data.new_email_address %}
+              &quot;{{ event.data.new_email_address }}&quot;
+              {%- else %}
+              <em>keine</em>
+              {%- endif %}
+              geändert.
+              {%- if 'reason' in event.data %}
+              <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
+              {%- endif %}
+            {%- endset %}
+          {%- elif event.event == 'user-email-address-confirmed' %}
+            {%- set icon_name = 'email' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
+              hat die E-Mail-Adresse {{ event.data.email_address }} <strong>verifiziert</strong>.
+            {%- endset %}
+          {%- elif event.event == 'user-email-address-invalidated' %}
+            {%- set icon_name = 'email' %}
+            {%- set body %}
+              {%- if event.initiator is defined %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              {%- else %}
+              Jemand
+              {%- endif %}
+              hat die E-Mail-Adresse {{ event.data.email_address }} <strong>invalidiert</strong>.
+              <div style="margin-top: 0.5rem;">Begründung: <em>{{ event.data.reason }}</em></div>
+            {%- endset %}
+          {%- elif event.event == 'user-details-updated' %}
+            {%- set icon_name = 'edit' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat persönliche Daten von
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
+              geändert.
+              <blockquote><table>
+              {%- for key, value in event.details.items()|sort %}
+                <tr>
+                  <th>{{ key }}</th>
+                  <td>{{ value|fallback }}</td>
+                </tr>
+              {%- endfor %}
+              </table></blockquote>
+            {%- endset %}
+          {%- elif event.event == 'password-updated' %}
+            {%- set icon_name = 'password' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat ein <strong>neues Passwort gesetzt</strong>.
+            {%- endset %}
+          {%- elif event.event == 'user-avatar-updated' %}
+            {%- set icon_name = 'upload' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat ein <a href="{{ event.data.url_path }}">neues Avatarbild</a> hochgeladen.
+            {%- endset %}
+          {%- elif event.event == 'consent-expressed' %}
+            {%- set icon_name = 'legal' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat &quot;{{ event.data.subject_title }}&quot; <strong>akzeptiert</strong>.
+            {%- endset %}
+          {%- elif event.event == 'privacy-policy-accepted' %}
+            {%- set icon_name = 'legal' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat die <strong>Datenschutzbestimmungen akzeptiert</strong>.
+            {%- endset %}
+          {%- elif event.event == 'newsletter-requested' %}
+            {%- set icon_name = 'email' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat den Newsletter &quot;{{ event.data.list_.title }}&quot; {{ render_tag('angefordert', icon='success', class='newsletter-subscribed') }}.
+            {%- endset %}
+          {%- elif event.event == 'newsletter-declined' %}
+            {%- set icon_name = 'email' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat den Newsletter &quot;{{ event.data.list_.title }}&quot; {{ render_tag('abbestellt', icon='disabled', class='newsletter-unsubscribed') }}.
+            {%- endset %}
+          {%- elif event.event == 'order-placed' %}
+            {%- set icon_name = 'shopping-cart' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat Bestellung {{ render_order_link(event.data.order) }} aufgegeben.
+            {%- endset %}
+          {%- elif event.event == 'orgaflag-added' %}
+            {%- set icon_name = 'enabled' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
+              für die Marke <strong>{{ event.data.brand_id }}</strong> zum Orga ernannt.
+            {%- endset %}
+          {%- elif event.event == 'orgaflag-removed' %}
+            {%- set icon_name = 'disabled' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
+              für die Marke <strong>{{ event.data.brand_id }}</strong> den Orgastatus entzogen.
+            {%- endset %}
+          {%- elif event.event == 'role-assigned' %}
+            {%- set icon_name = 'permission' %}
+            {%- set body %}
+              {%- if event.initiator is defined %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              {%- else %}
+              Jemand
+              {%- endif %}
+              hat
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
+              die Rolle <strong>{{ event.data.role_id }}</strong> zugewiesen.
+            {%- endset %}
+          {%- elif event.event == 'role-deassigned' %}
+            {%- set icon_name = 'permission' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              hat
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
+              die Rolle <strong>{{ event.data.role_id }}</strong> genommen.
+            {%- endset %}
+          {%- elif event.event == 'user-badge-awarded' %}
+            {%- set icon_name = 'badge' %}
+            {%- set body %}
+              {%- if event.initiator is defined %}
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+              {%- else %}
+              Jemand
+              {%- endif %}
+              hat
+              <span class="user-link">{{ render_user_avatar_20_and_admin_link(user) }}</span>
+              das Abzeichen {{ render_user_badge_linked(event.badge, 24) }} <strong>{{ event.badge.label }}</strong> verliehen.
+            {%- endset %}
+          {%- else %}
+            {%- set icon_name = 'disabled' %}
+            {%- set body %}
+              <strong>Unbekannte Aktion '{{ event.event }}'</strong> ist ausgelöst worden.
+            {%- endset %}
+          {%- endif %}
+      <div class="event">
+        <div class="event-icon">{{ render_icon(icon_name) }}</div>
+        <div class="event-data">
+          <div class="event-body">{{ body|safe }}</div>
+          <div class="event-timestamp">{{ render_datetime(event.occurred_at|utc_to_local_tz) }}</div>
+        </div>
       </div>
+        {%- endwith %}
+      {%- endfor %}
     </div>
-      {%- endwith %}
-    {%- endfor %}
   </div>
 
 {%- endblock %}

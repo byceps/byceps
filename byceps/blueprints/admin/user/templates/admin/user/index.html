@@ -23,7 +23,7 @@
     {%- endif %}
   </div>
 
-  <div class="box">
+  <div class="box" style="margin-bottom: var(--inner-gutter);">
     <div class="row row--equal-sized-centered-columns row--space-around row--wrap bigstats">
       <div class="column-auto">
         <a class="button button--clear" href="{{ url_for('.index') }}">
@@ -53,12 +53,10 @@
     </div>
   </div>
 
-  <div class="box" style="margin-bottom: 1rem;">
-
   <div class="row row--space-between row--wrap filters">
     <div class="column-auto">
 
-      <form action="{{ url_for('.index') }}" class="single-row unobtrusive">
+      <form action="{{ url_for('.index') }}" class="single-row">
         <input type="search" name="search_term" placeholder="Benutzer-, Vor-, Nachname, E-Mail-Adresse" title="Benutzer-, Vor-, Nachname, E-Mail-Adresse"{%- if search_term %} value="{{ search_term }}"{% endif %}>
         <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
         <a href="{{ url_for('.index') }}" class="button{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
@@ -84,18 +82,22 @@
     </div>
   </div>
 
-  {%- with users = users.items %}
-    {%- include 'admin/user/_user_list.html' %}
-  {%- endwith %}
+  <div class="box">
 
-{{ render_pagination_nav(users, '.index', {
-    'only': only if only else None,
-    'search_term': search_term if search_term else None,
-}) }}
+    {%- with users = users.items %}
+      {%- include 'admin/user/_user_list.html' %}
+    {%- endwith %}
 
-  <small>
-    <p>{{ users.total }} {{ 'Ergebnis' if (users.total == 1) else 'Ergebnisse' }}</p>
-  </small>
+    <div style="margin-top: var(--inner-gutter);">
+    {{ render_pagination_nav(users, '.index', {
+        'only': only if only else None,
+        'search_term': search_term if search_term else None,
+    }) }}
+    </div>
+
+    <small>
+      <p>{{ users.total }} {{ 'Ergebnis' if (users.total == 1) else 'Ergebnisse' }}</p>
+    </small>
 
   </div>
 

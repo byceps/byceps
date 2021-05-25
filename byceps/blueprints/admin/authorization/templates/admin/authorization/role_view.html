@@ -3,6 +3,7 @@
 {% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
 {% set current_tab = 'roles' %}
 {% set title = 'Rollen - %s'|format(role.title) %}
+{% set layout_main_raw = True %}
 
 {% block head %}
   <style>
@@ -23,33 +24,32 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.role_index') }}">Rollen</a></li>
-    </ol>
-  </nav>
   <h1>{{ role.title }}<br><span class="monospace">{{ role.id|dim }}</span></h1>
 
   <h2>Zugewiesene Berechtigungen {{ render_extra_in_heading(permissions|length) }}</h2>
-  {%- if permissions %}
-  <ul class="permissions">
-    {%- for permission in permissions|sort(attribute='id') %}
-    <li>{{ permission.title }}<br><span class="monospace">{{ permission.id|dim }}</span></li>
-    {%- endfor %}
-  </ul>
-  {%- else %}
-  <p class="dimmed">keine</p>
-  {%- endif %}
+  <div class="box">
+    {%- if permissions %}
+    <ul class="permissions">
+      {%- for permission in permissions|sort(attribute='id') %}
+      <li>{{ permission.title }}<br><span class="monospace">{{ permission.id|dim }}</span></li>
+      {%- endfor %}
+    </ul>
+    {%- else %}
+    <p class="dimmed">keine</p>
+    {%- endif %}
+  </div>
 
   <h2>Benutzer mit dieser Rolle {{ render_extra_in_heading(users|length) }}</h2>
-  {%- if users %}
-  <ol>
-    {%- for user in users|sort(attribute='screen_name') %}
-    <li>{{ render_user_avatar_16_and_admin_link(user) }}</li>
-    {%- endfor %}
-  </ol>
-  {%- else %}
-  <p class="dimmed">keine</p>
-  {%- endif %}
+  <div class="box">
+    {%- if users %}
+    <ol>
+      {%- for user in users|sort(attribute='screen_name') %}
+      <li>{{ render_user_avatar_16_and_admin_link(user) }}</li>
+      {%- endfor %}
+    </ol>
+    {%- else %}
+    <p class="dimmed">keine</p>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

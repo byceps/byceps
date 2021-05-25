@@ -5,6 +5,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set title = 'Artikel' %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
@@ -27,59 +28,61 @@
     {%- endif %}
   </div>
 
-  {%- if articles.items %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Artikelnr.</th>
-        <th>Beschreibung</th>
-        <th class="hyphenate number" style="width: 15%;">Stückpreis<br>Steuersatz</th>
-        <th class="number">Gesamt</th>
-        <th class="hyphenate number" style="width: 11%;">Anzahl<br>verfügbar</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for article in articles.items %}
-      <tr>
-        <td class="nowrap">
-          {{ render_article_link(article) }}
-          {%- for attached_article in article.attached_articles %}
-            <div style="font-size: 0.625rem;">{{ render_icon('attached') }} {{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</div>
-          {%- endfor %}
-        </td>
-        <td>
-          {{ article.description }}
+  <div class="box">
+    {%- if articles.items %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>Artikelnr.</th>
+          <th>Beschreibung</th>
+          <th class="hyphenate number" style="width: 15%;">Stückpreis<br>Steuersatz</th>
+          <th class="number">Gesamt</th>
+          <th class="hyphenate number" style="width: 11%;">Anzahl<br>verfügbar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for article in articles.items %}
+        <tr>
+          <td class="nowrap">
+            {{ render_article_link(article) }}
+            {%- for attached_article in article.attached_articles %}
+              <div style="font-size: 0.625rem;">{{ render_icon('attached') }} {{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</div>
+            {%- endfor %}
+          </td>
+          <td>
+            {{ article.description }}
 
-          {%- if article.not_directly_orderable %}
-          <br>{{ render_icon('info') }} {{ 'nur indirekt bestellbar'|dim }}
-          {%- endif %}
+            {%- if article.not_directly_orderable %}
+            <br>{{ render_icon('info') }} {{ 'nur indirekt bestellbar'|dim }}
+            {%- endif %}
 
-          {%- if article.requires_separate_order %}
-          <br>{{ render_icon('info') }} {{ 'separat zu bestellen'|dim }}
-          {%- endif %}
+            {%- if article.requires_separate_order %}
+            <br>{{ render_icon('info') }} {{ 'separat zu bestellen'|dim }}
+            {%- endif %}
 
-          {%- if article.available_from %}
-          <br>{{ render_icon('time') }} {{ 'ab ' + render_datetime(article.available_from|utc_to_local_tz, smart=False)|dim }}
-          {%- endif %}
+            {%- if article.available_from %}
+            <br>{{ render_icon('time') }} {{ 'ab ' + render_datetime(article.available_from|utc_to_local_tz, smart=False)|dim }}
+            {%- endif %}
 
-          {%- if article.available_until %}
-          <br>{{ render_icon('time') }} {{ 'bis ' + render_datetime(article.available_until|utc_to_local_tz, smart=False)|dim }}
-          {%- endif %}
-        </td>
-        <td class="nowrap number">
-          {{- article.price|format_euro_amount }}<br>
-          {{- '%s&thinsp;%%'|safe|format(article.tax_rate|tax_rate_as_percentage)|dim -}}
-        </td>
-        <td class="number">{{ article.total_quantity }}</td>
-        <td class="number bignumber{% if article.quantity == 0 %} dimmed{% endif %}">{{ article.quantity }}</td>
-      </tr>
-      {%- endfor %}
-      <tr>
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Es sind keine Artikel hinterlegt.</div>
-  {%- endif %}
+            {%- if article.available_until %}
+            <br>{{ render_icon('time') }} {{ 'bis ' + render_datetime(article.available_until|utc_to_local_tz, smart=False)|dim }}
+            {%- endif %}
+          </td>
+          <td class="nowrap number">
+            {{- article.price|format_euro_amount }}<br>
+            {{- '%s&thinsp;%%'|safe|format(article.tax_rate|tax_rate_as_percentage)|dim -}}
+          </td>
+          <td class="number">{{ article.total_quantity }}</td>
+          <td class="number bignumber{% if article.quantity == 0 %} dimmed{% endif %}">{{ article.quantity }}</td>
+        </tr>
+        {%- endfor %}
+        <tr>
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Es sind keine Artikel hinterlegt.</div>
+    {%- endif %}
+  </div>
 
 {{ render_pagination_nav(articles, '.index_for_shop', {'shop_id': shop.id}) }}
 

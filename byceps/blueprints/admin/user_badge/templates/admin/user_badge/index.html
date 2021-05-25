@@ -5,6 +5,7 @@
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'user_badge_admin' %}
 {% set title = _('Badges') %}
+{% set layout_main_raw = True %}
 
 {% block head %}
   <style>
@@ -29,39 +30,41 @@
   {%- endif %}
   </div>
 
-  {%- if badges %}
-  <table class="index wide badges">
-    <thead>
-      <tr>
-        <th>{{ _('Image') }}</th>
-        <th>{{ _('Label') }}<br>{{ _('Slug') }}</th>
-        <th colspan="2">{{ _('Brand') }}</th>
-        <th></th>
-        <th class="number">{{ _('Awarded') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for badge in badges|sort(attribute='label') %}
-      <tr>
-        <td><span class="user-badge size-32"><img src="{{ badge.image_url_path }}"></span></td>
-        <td>
-          <a href="{{ url_for('user_badge_admin.view', badge_id=badge.id) }}" class="disguised"><strong>{{ badge.label }}</strong></a><br>
-          {{ badge.slug|dim }}
-        </td>
-        {%- if badge.brand %}
-        <td>{{ render_brand_avatar(badge.brand, '32') }}</td>
-        <td>{{ badge.brand.title }}</td>
-        {%- else %}
-        <td colspan="2"><em>{{ _('unrestricted') }}</em></td>
-        {%- endif %}
-        <td>{{ render_tag(_('featured')) if badge.featured else '' }}</td>
-        <td class="bignumber number">{{ badge.awarding_count }}</td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">{{ _('No badges defined.') }}</div>
-  {%- endif %}
+  <div class="box">
+    {%- if badges %}
+    <table class="index wide badges">
+      <thead>
+        <tr>
+          <th>{{ _('Image') }}</th>
+          <th>{{ _('Label') }}<br>{{ _('Slug') }}</th>
+          <th colspan="2">{{ _('Brand') }}</th>
+          <th></th>
+          <th class="number">{{ _('Awarded') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for badge in badges|sort(attribute='label') %}
+        <tr>
+          <td><span class="user-badge size-32"><img src="{{ badge.image_url_path }}"></span></td>
+          <td>
+            <a href="{{ url_for('user_badge_admin.view', badge_id=badge.id) }}" class="disguised"><strong>{{ badge.label }}</strong></a><br>
+            {{ badge.slug|dim }}
+          </td>
+          {%- if badge.brand %}
+          <td>{{ render_brand_avatar(badge.brand, '32') }}</td>
+          <td>{{ badge.brand.title }}</td>
+          {%- else %}
+          <td colspan="2"><em>{{ _('unrestricted') }}</em></td>
+          {%- endif %}
+          <td>{{ render_tag(_('featured')) if badge.featured else '' }}</td>
+          <td class="bignumber number">{{ badge.awarding_count }}</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No badges defined.') }}</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

@@ -5,6 +5,7 @@
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'brands_admin' %}
 {% set title = _('Brands') %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
@@ -21,38 +22,40 @@
   {%- endif %}
   </div>
 
-  {%- if brands %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th colspan="2">{{ _('Name') }}<br>{{ _('ID') }}</th>
-        <th class="centered">{{ _('Parties') }}</th>
-        <th class="centered">{{ _('Organizers') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for brand in brands %}
-      <tr>
-        <td>
-          <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(brand, '32') }}</div>
-          <div>
-            <strong><a class="disguised" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">{{ brand.title }}</a></strong><br>
-            {{ brand.id }}
-          </div>
-        </td>
-        <td>
-        {%- if brand.archived %}
-          {{ render_tag('archived', class='color-disabled', icon='archived') }}
-        {%- endif %}
-        </td>
-        <td class="centered bignumber">{{ party_count_by_brand_id[brand.id] }}</td>
-        <td class="centered bignumber">{{ orga_count_by_brand_id[brand.id] }}</td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">{{ _('No brands defined.') }}</div>
-  {%- endif %}
+  <div class="box">
+    {%- if brands %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th colspan="2">{{ _('Name') }}<br>{{ _('ID') }}</th>
+          <th class="centered">{{ _('Parties') }}</th>
+          <th class="centered">{{ _('Organizers') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for brand in brands %}
+        <tr>
+          <td>
+            <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(brand, '32') }}</div>
+            <div>
+              <strong><a class="disguised" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">{{ brand.title }}</a></strong><br>
+              {{ brand.id }}
+            </div>
+          </td>
+          <td>
+          {%- if brand.archived %}
+            {{ render_tag('archived', class='color-disabled', icon='archived') }}
+          {%- endif %}
+          </td>
+          <td class="centered bignumber">{{ party_count_by_brand_id[brand.id] }}</td>
+          <td class="centered bignumber">{{ orga_count_by_brand_id[brand.id] }}</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No brands defined.') }}</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

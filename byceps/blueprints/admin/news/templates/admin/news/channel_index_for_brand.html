@@ -4,6 +4,7 @@
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set title = '%s - News-Kanäle'|format(brand.title) %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
@@ -25,27 +26,29 @@
   {%- endif %}
   </div>
 
-  {%- if channels %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>URL-Präfix</th>
-        <th class="centered">Posts</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for channel in channels|sort(attribute='id') %}
-      <tr>
-        <td><a href="{{ url_for('.channel_view', channel_id=channel.id) }}"><strong>{{ channel.id }}</strong></a></td>
-        <td class="monospace">{{ channel.url_prefix }}</td>
-        <td class="centered bignumber">{{ item_count_by_channel_id[channel.id]|separate_thousands }}</td>
-      </tr>
-    {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Für diese Marke existieren noch keine News-Kanäle.</div>
-  {%- endif %}
+  <div class="box">
+    {%- if channels %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>URL-Präfix</th>
+          <th class="centered">Posts</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for channel in channels|sort(attribute='id') %}
+        <tr>
+          <td><a href="{{ url_for('.channel_view', channel_id=channel.id) }}"><strong>{{ channel.id }}</strong></a></td>
+          <td class="monospace">{{ channel.url_prefix }}</td>
+          <td class="centered bignumber">{{ item_count_by_channel_id[channel.id]|separate_thousands }}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Für diese Marke existieren noch keine News-Kanäle.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

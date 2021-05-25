@@ -3,54 +3,57 @@
 {% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
 {% set current_tab = 'roles' %}
 {% set title = 'Rollen' %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
   <h1>{{ title }} {{ render_extra_in_heading(roles|length) }}</h1>
 
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Rolle</th>
-        <th>zugewiesene Berechtigungen</th>
-        <th>Benutzer mit dieser Rolle</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for role in roles|sort(attribute='id') %}
-      <tr>
-        <td>
-          <strong class="monospace"><a href="{{ url_for('.role_view', role_id=role.id) }}">{{ role.id }}</a></strong><br>
-          {{ role.title|fallback('keine Beschreibung vorhanden') }}
-        </td>
-        <td>
-        {%- if role.permissions %}
-          <ol>
-          {%- for permission in role.permissions|sort(attribute='id') %}
-            <li class="monospace">{{ permission.id }}</li>
-          {%- endfor %}
-          </ol>
-        {%- else %}
-          {{ 'keine'|dim }}
-        {%- endif %}
-        </td>
-        <td>
-        {%- set user_limit = 10 %}
-        {%- if not role.users %}
-          {{ 'keine'|dim }}
-        {%- elif role.users|length <= user_limit %}
-          <ol>
-          {%- for user in role.users|sort(attribute='screen_name') %}
-            <li>{{ render_user_avatar_16_and_admin_link(user) }}</li>
-          {%- endfor %}
-          </ol>
-        {%- else %}
-          <em>[mehr als {{ user_limit }}]</em>
-        {%- endif %}
-        </td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
+  <div class="box">
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>Rolle</th>
+          <th>zugewiesene Berechtigungen</th>
+          <th>Benutzer mit dieser Rolle</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for role in roles|sort(attribute='id') %}
+        <tr>
+          <td>
+            <strong class="monospace"><a href="{{ url_for('.role_view', role_id=role.id) }}">{{ role.id }}</a></strong><br>
+            {{ role.title|fallback('keine Beschreibung vorhanden') }}
+          </td>
+          <td>
+          {%- if role.permissions %}
+            <ol>
+            {%- for permission in role.permissions|sort(attribute='id') %}
+              <li class="monospace">{{ permission.id }}</li>
+            {%- endfor %}
+            </ol>
+          {%- else %}
+            {{ 'keine'|dim }}
+          {%- endif %}
+          </td>
+          <td>
+          {%- set user_limit = 10 %}
+          {%- if not role.users %}
+            {{ 'keine'|dim }}
+          {%- elif role.users|length <= user_limit %}
+            <ol>
+            {%- for user in role.users|sort(attribute='screen_name') %}
+              <li>{{ render_user_avatar_16_and_admin_link(user) }}</li>
+            {%- endfor %}
+            </ol>
+          {%- else %}
+            <em>[mehr als {{ user_limit }}]</em>
+          {%- endif %}
+          </td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
 
 {%- endblock %}

@@ -5,6 +5,7 @@
 {% set current_page_shop = shop %}
 {% set current_tab = 'email' %}
 {% set title = 'E-Mail' %}
+{% set layout_main_raw = True %}
 
 {% block head %}
 <style>
@@ -34,36 +35,42 @@
 
   <h2>Beispiele</h2>
 
-  <details class="email-example">
-    <summary>Bestellbestätigung</summary>
-    {{ render_message_text(placed_order_message_text) }}
-  </details>
+  <div class="box">
 
-  <details class="email-example">
-    <summary>Zahlungseingang</summary>
-    {{ render_message_text(paid_order_message_text) }}
-  </details>
+    <details class="email-example">
+      <summary>Bestellbestätigung</summary>
+      {{ render_message_text(placed_order_message_text) }}
+    </details>
 
-  <details class="email-example">
-    <summary>Stornierung</summary>
-    {{ render_message_text(canceled_order_message_text) }}
-  </details>
+    <details class="email-example">
+      <summary>Zahlungseingang</summary>
+      {{ render_message_text(paid_order_message_text) }}
+    </details>
+
+    <details class="email-example">
+      <summary>Stornierung</summary>
+      {{ render_message_text(canceled_order_message_text) }}
+    </details>
+
+  </div>
 
   <h2>Konfiguration</h2>
-  <table class="index">
-    <tr>
-      <th>Absender-Adresse</th>
-      <td>{{ email_config.sender.address }}</td>
-    </tr>
-    <tr>
-      <th>Absender-Name</th>
-      <td>{{ email_config.sender.name|fallback }}</td>
-    </tr>
-    <tr>
-      <th>Kontaktadresse</th>
-      <td>{{ email_config.contact_address|fallback }}</td>
-    </tr>
-  </table>
+  <div class="box">
+    <table class="index">
+      <tr>
+        <th>Absender-Adresse</th>
+        <td>{{ email_config.sender.address }}</td>
+      </tr>
+      <tr>
+        <th>Absender-Name</th>
+        <td>{{ email_config.sender.name|fallback }}</td>
+      </tr>
+      <tr>
+        <th>Kontaktadresse</th>
+        <td>{{ email_config.contact_address|fallback }}</td>
+      </tr>
+    </table>
+  </div>
 
 {%- endblock %}
 
