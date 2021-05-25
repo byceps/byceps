@@ -20,7 +20,7 @@ from ...decorators import api_token_required
 from .schemas import AwardBadgeToUserRequest
 
 
-blueprint = create_blueprint('api_v1_user_badge', __name__)
+blueprint = create_blueprint('user_badge', __name__)
 
 
 @blueprint.post('/awardings')

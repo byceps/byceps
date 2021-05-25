@@ -39,7 +39,7 @@ from .schemas import (
 )
 
 
-blueprint = create_blueprint('api_v1_tourney_match_comments', __name__)
+blueprint = create_blueprint('tourney_match_comments', __name__)
 
 
 @blueprint.get('/match_comments/<uuid:comment_id>')

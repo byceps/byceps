@@ -20,7 +20,7 @@ from ...decorators import api_token_required
 from .schemas import CreateArchivedAttendanceRequest
 
 
-blueprint = create_blueprint('api_v1_attendance', __name__)
+blueprint = create_blueprint('attendance', __name__)
 
 
 @blueprint.post('/archived_attendances')

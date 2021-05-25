@@ -22,7 +22,7 @@ from .....util.views import respond_no_content
 from .schemas import InvalidateEmailAddressRequest
 
 
-blueprint = create_blueprint('api_v1_user', __name__)
+blueprint = create_blueprint('user', __name__)
 
 
 @blueprint.get('/<uuid:user_id>/profile')

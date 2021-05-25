@@ -18,7 +18,7 @@ from ....site.snippet.templating import get_snippet_context
 from ...decorators import api_token_required
 
 
-blueprint = create_blueprint('api_v1_snippet', __name__)
+blueprint = create_blueprint('snippet', __name__)
 
 
 @blueprint.get('/by_name/<scope_type>/<scope_name>/<snippet_name>')

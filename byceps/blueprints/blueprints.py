@@ -23,6 +23,9 @@ def register_blueprints(app: Flask) -> None:
         blueprint = get_blueprint(name)
         parent.register_blueprint(blueprint, url_prefix=url_prefix)
 
+    if app.config.get('API_TOKEN'):
+        register_api_blueprints(app)
+
 
 def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     """Yield blueprints to register on the application."""
@@ -33,9 +36,6 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
         yield from _get_blueprints_site(app)
     elif current_mode.is_admin():
         yield from _get_blueprints_admin(app)
-
-    if app.config.get('API_TOKEN'):
-        yield from _get_blueprints_api(app)
 
     yield from _get_blueprints_monitoring(app)
 
@@ -123,16 +123,25 @@ def _get_blueprints_admin(app: Flask) -> Iterator[BlueprintReg]:
     ]
 
 
-def _get_blueprints_api(app: Flask) -> Iterator[BlueprintReg]:
-    yield from [
-        (app, 'api.v1.attendance',               '/api/v1/attendances'      ),
-        (app, 'api.v1.snippet',                  '/api/v1/snippets'         ),
-        (app, 'api.v1.tourney.avatar',           '/api/v1/tourney/avatars'  ),
-        (app, 'api.v1.tourney.match.comments',   '/api/v1/tourney'          ),
-        (app, 'api.v1.user',                     '/api/v1/users'            ),
-        (app, 'api.v1.user_avatar',              '/api/v1/user_avatars'     ),
-        (app, 'api.v1.user_badge',               '/api/v1/user_badges'      ),
-    ]
+def register_api_blueprints(app: Flask) -> None:
+    api = get_blueprint('api')
+    api_v1 = get_blueprint('api.v1')
+
+    for name, url_prefix in [
+        ('attendance',              '/attendances'          ),
+        ('snippet',                 '/snippets'             ),
+        ('tourney.avatar',          '/tourney/avatars'      ),
+        ('tourney.match.comments',  '/tourney'              ),
+        ('user',                    '/users'                ),
+        ('user_avatar',             '/user_avatars'         ),
+        ('user_badge',              '/user_badges'          ),
+    ]:
+        package = f'api.v1.{name}'
+        blueprint = get_blueprint(package)
+        api_v1.register_blueprint(blueprint, url_prefix=url_prefix)
+
+    api.register_blueprint(api_v1, url_prefix='/v1')
+    app.register_blueprint(api, url_prefix='/api')
 
 
 def _get_blueprints_monitoring(app: Flask) -> Iterator[BlueprintReg]:
