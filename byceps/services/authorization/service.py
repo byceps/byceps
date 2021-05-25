@@ -175,7 +175,7 @@ def deassign_role_from_user(
 
 
 def deassign_all_roles_from_user(
-    user_id: UserID, initiator_id: Optional[UserID] = None, commit=True
+    user_id: UserID, initiator_id: Optional[UserID] = None, commit: bool = True
 ) -> None:
     """Deassign all roles from the user."""
     table = DbUserRole.__table__
