@@ -7,19 +7,28 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>{{ party.title }}</li>
-      <li>Turniere</li>
-    </ol>
-  </nav>
-  <h1>Kategorien {{ render_extra_in_heading(categories|length) }}</h1>
+  <div class="row row--space-between">
+    <div class="column-auto">
 
-  {%- if has_current_user_permission(TourneyCategoryPermission.administrate) %}
-  <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Kategorie erstellen</span></a>
+      <nav class="breadcrumbs">
+        <ol>
+          <li>{{ party.title }}</li>
+          <li>Turniere</li>
+        </ol>
+      </nav>
+      <h1>Kategorien {{ render_extra_in_heading(categories|length) }}</h1>
+
+    </div>
+    <div class="column-auto column--align-bottom">
+
+      {%- if has_current_user_permission(TourneyCategoryPermission.administrate) %}
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Kategorie erstellen</span></a>
+      </div>
+      {%- endif %}
+
+    </div>
   </div>
-  {%- endif %}
 
   {%- if categories %}
   <table class="index">
