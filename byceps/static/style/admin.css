@@ -726,6 +726,10 @@ main .dropdown-menu {
 
 /* misc */
 
+.column--align-bottom {
+  align-self: flex-end;
+}
+
 .dimmed-box {
   border-radius: 3px;
   border: #dddddd solid 1px;

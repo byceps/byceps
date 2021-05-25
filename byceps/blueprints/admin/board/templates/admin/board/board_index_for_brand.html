@@ -18,7 +18,7 @@
       <h1>Foren {{ render_extra_in_heading(boards|length) }}</h1>
     </div>
   {%- if has_current_user_permission(BoardPermission.create) %}
-    <div class="column-auto">
+    <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.board_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>Forum erstellen</span></a>
       </div>

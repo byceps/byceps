@@ -34,7 +34,7 @@
       <h1>{{ title }} {{ render_extra_in_heading(teams_and_members|length) }}</h1>
     </div>
     {%- if has_current_user_permission(OrgaTeamPermission.create) %}
-    <div class="column-auto">
+    <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.team_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Team erstellen</span></a>
         <div class="dropdown">

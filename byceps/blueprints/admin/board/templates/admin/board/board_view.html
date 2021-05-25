@@ -18,7 +18,7 @@
       <h1>{{ board_id }}</h1>
     </div>
   {%- if has_current_user_permission(BoardCategoryPermission.create) %}
-    <div class="column-auto">
+    <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.category_create_form', board_id=board_id) }}">{{ render_icon('add') }} <span>Kategorie erstellen</span></a>
       </div>
