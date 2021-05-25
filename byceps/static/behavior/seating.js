@@ -166,15 +166,8 @@ function wire_seat_release_button() {
 
         const request_url = '/seating/ticket/' + ticket_id + '/seat';
 
-        send_request('DELETE', request_url, () => {
-          if (this.readyState === XMLHttpRequest.DONE) {
-            if (this.status === 204) {
-              reload_with_selected_ticket(ticket_id);
-            } else if (this.status === 403 || this.status === 404 || this.status === 500) {
-              reload_with_selected_ticket(ticket_id);
-            }
-          }
-        });
+        fetch(request_url, {method: 'DELETE'})
+          .then(response => reload_with_selected_ticket(ticket_id));
       };
       return false;
     });
@@ -262,27 +255,12 @@ function init_occupiable_seats() {
 
           const request_url = '/seating/ticket/' + ticket_id + '/seat/' + seat_id;
 
-          send_request('POST', request_url, () => {
-            if (this.readyState === XMLHttpRequest.DONE) {
-              if (this.status === 204) {
-                reload_with_selected_ticket(ticket_id);
-              } else if (this.status === 403 || this.status === 404 || this.status === 500) {
-                reload_with_selected_ticket(ticket_id);
-              }
-            }
-          });
+          fetch(request_url, {method: 'POST'})
+            .then(response => reload_with_selected_ticket(ticket_id));
         };
         return false;
       });
     });
-}
-
-
-function send_request(method, url, state_change_callback) {
-  const request = new XMLHttpRequest();
-  request.open(method, url);
-  request.onreadystatechange = state_change_callback;
-  request.send();
 }
 
 
