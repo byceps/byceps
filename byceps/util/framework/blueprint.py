@@ -9,18 +9,19 @@ Blueprint utilities
 """
 
 from importlib import import_module
+from types import ModuleType
 
-from flask import Blueprint
+from flask import Blueprint, Flask
 
 
-def create_blueprint(name, import_name):
+def create_blueprint(name: str, import_name: str) -> Blueprint:
     """Create a blueprint with default folder names."""
     return Blueprint(
         name, import_name, static_folder='static', template_folder='templates'
     )
 
 
-def register_blueprint(app, name, url_prefix):
+def register_blueprint(app: Flask, name: str, url_prefix: str) -> None:
     """Register a blueprint with the application.
 
     The module with the given name is expected to be located inside the
@@ -32,7 +33,7 @@ def register_blueprint(app, name, url_prefix):
     app.register_blueprint(blueprint, url_prefix=url_prefix)
 
 
-def _get_blueprint_views_module(name):
+def _get_blueprint_views_module(name: str) -> ModuleType:
     """Import and return the 'views' module located in the specified
     blueprint package.
     """
