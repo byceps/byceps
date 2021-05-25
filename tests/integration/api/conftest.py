@@ -7,9 +7,6 @@ API-specific fixtures
 
 import pytest
 
-from tests.conftest import CONFIG_PATH_DATA_KEY
-from tests.helpers import create_admin_app
-
 from .helpers import assemble_authorization_header
 
 
