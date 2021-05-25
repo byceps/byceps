@@ -10,19 +10,12 @@ import pytest
 from .helpers import assemble_authorization_header
 
 
-API_TOKEN = 'just-say-PLEASE!'
+API_TOKEN = 'testing-TESTING'
 
 
 @pytest.fixture(scope='package')
-# `admin_app` fixture is required because it sets up the database.
-def api_app(admin_app, make_admin_app):
-    config_overrides = {
-        'API_TOKEN': API_TOKEN,
-        'SERVER_NAME': 'api.acmecon.test',
-    }
-    app = make_admin_app(**config_overrides)
-    with app.app_context():
-        yield app
+def api_app(admin_app):
+    return admin_app
 
 
 @pytest.fixture(scope='package')

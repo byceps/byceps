@@ -11,6 +11,8 @@ REDIS_URL = 'redis://127.0.0.1:6379/0'
 
 APP_MODE = 'admin'
 
+API_TOKEN = 'testing-TESTING'
+
 MAIL_DEBUG = False
 MAIL_SUPPRESS_SEND = True
 
