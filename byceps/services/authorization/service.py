@@ -159,7 +159,7 @@ def deassign_role_from_user(
     user_role = DbUserRole.query.get((user_id, role_id))
 
     if user_role is None:
-        raise ValueError('Unknown user ID and/or role ID.')
+        raise ValueError(f'Unknown role ID "{role_id}" and/or user ID "{user_id}".')
 
     db.session.delete(user_role)
 
