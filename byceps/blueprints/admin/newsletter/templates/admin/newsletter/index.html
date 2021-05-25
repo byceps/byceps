@@ -17,7 +17,7 @@
     <tbody>
       {%- for list in lists %}
         <tr>
-          <td>{{ list.title }}<br><span class="dimmed">{{ list.id }}</span></td>
+          <td><a href="{{ url_for('.view_subscriptions', list_id=list.id) }}">{{ list.title }}</a><br><span class="dimmed">{{ list.id }}</span></td>
           <td class="bignumber number">{{ list.subscriber_count }}</td>
         </tr>
       {%- endfor %}
