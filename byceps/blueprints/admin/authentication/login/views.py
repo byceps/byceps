@@ -26,7 +26,7 @@ from ....admin.core.authorization import AdminPermission
 from .forms import LoginForm
 
 
-blueprint = create_blueprint('authentication.login_admin', __name__)
+blueprint = create_blueprint('authentication_login_admin', __name__)
 
 
 @blueprint.get('/login')

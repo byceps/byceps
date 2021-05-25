@@ -31,7 +31,7 @@ from .....util.views import redirect_to
 from .forms import RequestResetForm, ResetForm, UpdateForm
 
 
-blueprint = create_blueprint('authentication.password', __name__)
+blueprint = create_blueprint('authentication_password', __name__)
 
 
 # -------------------------------------------------------------------- #
@@ -66,9 +66,9 @@ def update():
     flash_success(gettext('Password has been updated. Please log in again.'))
 
     if g.app_mode.is_admin():
-        return redirect_to('authentication.login_admin.login_form')
+        return redirect_to('authentication_login_admin.login_form')
     else:
-        return redirect_to('authentication.login.login_form')
+        return redirect_to('authentication_login.login_form')
 
 
 # -------------------------------------------------------------------- #
@@ -185,7 +185,7 @@ def reset(token):
     password_reset_service.reset_password(verification_token, password)
 
     flash_success(gettext('Password has been updated.'))
-    return redirect_to('authentication.login.login_form')
+    return redirect_to('authentication_login.login_form')
 
 
 def _verify_reset_token(token: str) -> VerificationToken:

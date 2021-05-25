@@ -20,12 +20,12 @@
       <li class="dropdown-divider"></li>
 {%- include 'layout/_current_user_menu_items.html' %}
       <li class="dropdown-divider"></li>
-      <li><a class="dropdown-item" data-action="logout" href="{{ url_for('authentication.login.logout', _method='POST') }}">{{ render_icon('log-out') }} {{ _('Log out') }}</a></li>
+      <li><a class="dropdown-item" data-action="logout" href="{{ url_for('authentication_login.logout', _method='POST') }}">{{ render_icon('log-out') }} {{ _('Log out') }}</a></li>
     </ol>
   </div>
   {%- else %}
   <div>
-    <a href="{{ url_for('authentication.login.login_form') }}" class="button button--outlined">{{ render_icon('log-in') }} <span>{{ _('Log in') }}</span></a>
+    <a href="{{ url_for('authentication_login.login_form') }}" class="button button--outlined">{{ render_icon('log-in') }} <span>{{ _('Log in') }}</span></a>
   </div>
   {%- endif %}
 </div>

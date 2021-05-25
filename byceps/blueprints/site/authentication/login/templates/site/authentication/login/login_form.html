@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
 {% from 'macros/misc.html' import render_notification %}
-{% set current_page = 'authentication.login' %}
+{% set current_page = 'authentication_login' %}
 {% set title = _('Login') %}
 
 
@@ -44,7 +44,7 @@
   <p>{{ _('Not registered yet?') }} <a href="{{ url_for('user_creation.create_form') }}">{{ _('Create an account.') }}</a></p>
   <p>{{ _('Confirmation email not received yet?') }} <a href="{{ url_for('user_email_address.request_confirmation_email_form') }}">{{ _('Request it again.') }}</a></p>
     {%- endif %}
-  <p>{{ _('Forgot your password?') }} <a href="{{ url_for('authentication.password.request_reset_form') }}">{{ _('Set new password.') }}</a></p>
+  <p>{{ _('Forgot your password?') }} <a href="{{ url_for('authentication_password.request_reset_form') }}">{{ _('Set new password.') }}</a></p>
   {%- else %}
 {{ render_notification(_('Login is disabled.'), category='warning', icon='warning') }}
   {%- endif %}

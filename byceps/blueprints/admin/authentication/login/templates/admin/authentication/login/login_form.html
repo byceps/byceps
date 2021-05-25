@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
 {% from 'macros/misc.html' import render_notification %}
-{% set current_page = 'authentication.login' %}
+{% set current_page = 'authentication_login' %}
 {% set title = _('Login') %}
 {% set layout_sidebar_hide = True %}
 
@@ -40,7 +40,7 @@
     {{ form_buttons(_('Log in')) }}
   </form>
 
-  <p>{{ _('Forgot password?') }} <a href="{{ url_for('authentication.password.request_reset_form') }}">{{ _('Set new password') }}</a></p>
+  <p>{{ _('Forgot password?') }} <a href="{{ url_for('authentication_password.request_reset_form') }}">{{ _('Set new password') }}</a></p>
 
 {%- endblock %}
 

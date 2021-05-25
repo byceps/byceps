@@ -32,7 +32,7 @@ from .....util.views import redirect_to, respond_no_content
 from .forms import LoginForm
 
 
-blueprint = create_blueprint('authentication.login', __name__)
+blueprint = create_blueprint('authentication_login', __name__)
 
 
 # -------------------------------------------------------------------- #

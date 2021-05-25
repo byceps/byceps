@@ -18,12 +18,12 @@
       </li>
       <li class="dropdown-divider"></li>
       <li><a class="dropdown-item" href="{{ url_for('user_admin.view', user_id=g.user.id) }}">{{ render_icon('user-profile') }} {{ _('Profile') }}</a></li>
-      <li><a class="dropdown-item" href="{{ url_for('authentication.password.update_form') }}">{{ render_icon('password') }} {{ _('Change password') }}</a></li>
+      <li><a class="dropdown-item" href="{{ url_for('authentication_password.update_form') }}">{{ render_icon('password') }} {{ _('Change password') }}</a></li>
       <li class="dropdown-divider"></li>
-      <li><a class="dropdown-item" data-action="logout" href="{{ url_for('authentication.login_admin.logout', _method='POST') }}">{{ render_icon('log-out') }} {{ _('Log out') }}</a></li>
+      <li><a class="dropdown-item" data-action="logout" href="{{ url_for('authentication_login_admin.logout', _method='POST') }}">{{ render_icon('log-out') }} {{ _('Log out') }}</a></li>
     </ol>
   </div>
   {%- else %}
-  <a class="button button--clear" href="{{ url_for('authentication.login_admin.login_form') }}">{{ render_icon('log-in') }} <span>{{ _('Log in') }}</span></a>
+  <a class="button button--clear" href="{{ url_for('authentication_login_admin.login_form') }}">{{ render_icon('log-in') }} <span>{{ _('Log in') }}</span></a>
   {%- endif %}
 </div>

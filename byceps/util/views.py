@@ -32,7 +32,7 @@ def login_required(func):
     def wrapper(*args, **kwargs):
         if not g.user.authenticated:
             flash_notice(gettext('Please log in.'))
-            return redirect_to('authentication.login.login_form')
+            return redirect_to('authentication_login.login_form')
         return func(*args, **kwargs)
 
     return wrapper
