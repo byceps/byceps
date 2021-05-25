@@ -3,45 +3,58 @@
 {% from 'macros/stats.html' import render_bigstats_item %}
 {% set current_page = 'newsletter_admin' %}
 {% set current_page_brand = brand %}
-{% set title = 'Newsletter - Bestellstatus ({})'.format(list_.title) %}
+{% set title = 'Newsletter - {}'.format(list_.title) %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li><a href="{{ url_for('.index') }}">Newsletter</a></li>
-      <li>{{ list_.title }}</li>
-    </ol>
-  </nav>
-  <h1>Bestellstatus</h1>
+  <div class="row row--space-between">
+    <div class="column-auto">
 
-  <div class="row row--space-around row--wrap bigstats">
-    <div class="column-auto">
-      {{ render_bigstats_item(totals[State.requested]|separate_thousands, 'angefordert', icon_name='enabled', color='#008800') }}
-    </div>
-    <div class="column-auto">
-      {{ render_bigstats_item(totals[State.declined]|separate_thousands, 'abgelehnt', icon_name='disabled', color='#cc0000') }}
-    </div>
-    <div class="column-auto">
-      {{ render_bigstats_item(totals['total']|separate_thousands, '&sum; gesamt'|safe) }}
-    </div>
-  </div>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{{ url_for('.index') }}">Newsletter</a></li>
+        </ol>
+      </nav>
+      <h1>{{ list_.title }}</h1>
 
-  {%- if has_current_user_permission(NewsletterPermission.export_subscribers) %}
-  <div class="button-row button-row--right">
-    <div class="dropdown">
-      <button class="dropdown-toggle button">
-        <div class="block-with-icon">
-          <div class="block-with-icon-icon">{{ render_icon('download') }}</div>
-          <div class="block-with-icon-body">Abonnenten {{ render_icon('chevron-down') }}<br>exportieren</div>
+    </div>
+    <div class="column-auto">
+
+      {%- if has_current_user_permission(NewsletterPermission.export_subscribers) %}
+      <div class="button-row button-row--right">
+        <div class="dropdown">
+          <button class="dropdown-toggle button">
+            <div class="block-with-icon">
+              <div class="block-with-icon-icon">{{ render_icon('download') }}</div>
+              <div class="block-with-icon-body">Exportieren {{ render_icon('chevron-down') }}</div>
+            </div>
+          </button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            <li><a class="dropdown-item" href="{{ url_for('.export_subscribers', list_id=list_.id) }}" download="subscribers_{{ list_.id }}.json">{{ render_icon('download') }} Benutzernamen und E-Mail-Adressen (als JSON)</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.export_subscriber_email_addresses', list_id=list_.id) }}" download="subscribers_{{ list_.id }}.txt">{{ render_icon('download') }} nur E-Mail-Adressen (als Text)</a></li>
+          </ol>
         </div>
-      </button>
-      <ol class="dropdown-menu dropdown-menu--right">
-        <li><a class="dropdown-item" href="{{ url_for('.export_subscribers', list_id=list_.id) }}" download="subscribers_{{ list_.id }}.json">{{ render_icon('download') }} Benutzernamen und E-Mail-Adressen (als JSON)</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('.export_subscriber_email_addresses', list_id=list_.id) }}" download="subscribers_{{ list_.id }}.txt">{{ render_icon('download') }} nur E-Mail-Adressen (als Text)</a></li>
-      </ol>
+      </div>
+      {%- endif %}
+
     </div>
   </div>
-  {%- endif %}
+
+  <div class="box">
+
+    <div class="row row--space-around row--wrap bigstats">
+      <div class="column-auto">
+        {{ render_bigstats_item(totals[State.requested]|separate_thousands, 'angefordert', icon_name='enabled', color='#008800') }}
+      </div>
+      <div class="column-auto">
+        {{ render_bigstats_item(totals[State.declined]|separate_thousands, 'abgelehnt', icon_name='disabled', color='#cc0000') }}
+      </div>
+      <div class="column-auto">
+        {{ render_bigstats_item(totals['total']|separate_thousands, '&sum; gesamt'|safe) }}
+      </div>
+    </div>
+
+  </div>
 
 {%- endblock %}
