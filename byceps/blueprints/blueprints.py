@@ -19,132 +19,132 @@ BlueprintReg = Tuple[str, Optional[str]]
 
 def register_blueprints(app: Flask) -> None:
     """Register blueprints depending on the configuration."""
-    for name, url_prefix in _get_blueprints(app):
-        register_blueprint(app, name, url_prefix)
+    for parent, name, url_prefix in _get_blueprints(app):
+        register_blueprint(parent, name, url_prefix)
 
 
 def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     """Yield blueprints to register on the application."""
-    yield from _get_blueprints_common()
+    yield from _get_blueprints_common(app)
 
     current_mode = config.get_app_mode(app)
     if current_mode.is_site():
-        yield from _get_blueprints_site()
+        yield from _get_blueprints_site(app)
     elif current_mode.is_admin():
-        yield from _get_blueprints_admin()
+        yield from _get_blueprints_admin(app)
 
-    yield from _get_blueprints_api()
+    yield from _get_blueprints_api(app)
 
-    yield from _get_blueprints_monitoring(app.config)
+    yield from _get_blueprints_monitoring(app)
 
     if app.debug:
-        yield from _get_blueprints_debug()
+        yield from _get_blueprints_debug(app)
 
 
-def _get_blueprints_common() -> Iterator[BlueprintReg]:
+def _get_blueprints_common(app: Flask) -> Iterator[BlueprintReg]:
     yield from [
-        ('common.authentication.password',  '/authentication/password'  ),
-        ('common.core',                     '/core'                     ),
-        ('common.locale',                   '/locale'                   ),
+        (app, 'common.authentication.password',  '/authentication/password' ),
+        (app, 'common.core',                     '/core'                    ),
+        (app, 'common.locale',                   '/locale'                  ),
     ]
 
 
-def _get_blueprints_site() -> Iterator[BlueprintReg]:
+def _get_blueprints_site(app: Flask) -> Iterator[BlueprintReg]:
     yield from [
-        ('site.attendance',                 '/attendance'               ),
-        ('site.authentication.login',       '/authentication'           ),
-        ('site.board',                      '/board'                    ),
-        ('site.consent',                    '/consent'                  ),
-        ('site.dashboard',                  '/dashboard'                ),
-        ('site.news',                       '/news'                     ),
-        ('site.newsletter',                 '/newsletter'               ),
-        ('site.orga_team',                  '/orgas'                    ),
-        ('site.party',                      None                        ),
-        ('site.seating',                    '/seating'                  ),
-        ('site.shop.order',                 '/shop'                     ),
-        ('site.shop.orders',                '/shop/orders'              ),
-        ('site.snippet',                    None                        ),
-        ('site.terms',                      '/terms'                    ),
-        ('site.ticketing',                  '/tickets'                  ),
-        ('site.tourney',                    '/tourneys'                 ),
-        ('site.user.avatar',                '/users'                    ),
-        ('site.user.creation',              '/users'                    ),
-        ('site.user.current',               '/users'                    ),
-        ('site.user.settings',              '/users/me/settings'        ),
-        ('site.user.email_address',         '/users/email_address'      ),
-        ('site.user_profile',               '/users'                    ),
-        ('site.user_badge',                 '/user_badges'              ),
-        ('site.user_group',                 '/user_groups'              ),
-        ('site.user_message',               '/user_messages'            ),
+        (app, 'site.attendance',                 '/attendance'              ),
+        (app, 'site.authentication.login',       '/authentication'          ),
+        (app, 'site.board',                      '/board'                   ),
+        (app, 'site.consent',                    '/consent'                 ),
+        (app, 'site.dashboard',                  '/dashboard'               ),
+        (app, 'site.news',                       '/news'                    ),
+        (app, 'site.newsletter',                 '/newsletter'              ),
+        (app, 'site.orga_team',                  '/orgas'                   ),
+        (app, 'site.party',                      None                       ),
+        (app, 'site.seating',                    '/seating'                 ),
+        (app, 'site.shop.order',                 '/shop'                    ),
+        (app, 'site.shop.orders',                '/shop/orders'             ),
+        (app, 'site.snippet',                    None                       ),
+        (app, 'site.terms',                      '/terms'                   ),
+        (app, 'site.ticketing',                  '/tickets'                 ),
+        (app, 'site.tourney',                    '/tourneys'                ),
+        (app, 'site.user.avatar',                '/users'                   ),
+        (app, 'site.user.creation',              '/users'                   ),
+        (app, 'site.user.current',               '/users'                   ),
+        (app, 'site.user.settings',              '/users/me/settings'       ),
+        (app, 'site.user.email_address',         '/users/email_address'     ),
+        (app, 'site.user_profile',               '/users'                   ),
+        (app, 'site.user_badge',                 '/user_badges'             ),
+        (app, 'site.user_group',                 '/user_groups'             ),
+        (app, 'site.user_message',               '/user_messages'           ),
     ]
 
 
-def _get_blueprints_admin() -> Iterator[BlueprintReg]:
+def _get_blueprints_admin(app: Flask) -> Iterator[BlueprintReg]:
     yield from [
-        ('admin.attendance',                '/admin/attendance'         ),
-        ('admin.authentication.login',      '/authentication'           ),
-        ('admin.authorization',             '/admin/authorization'      ),
-        ('admin.board',                     '/admin/boards'             ),
-        ('admin.brand',                     '/admin/brands'             ),
-        ('admin.consent',                   '/admin/consent'            ),
-        ('admin.core',                      None                        ),
-        ('admin.dashboard',                 '/admin/dashboard'          ),
-        ('admin.news',                      '/admin/news'               ),
-        ('admin.newsletter',                '/admin/newsletter'         ),
-        ('admin.jobs',                      '/admin/jobs'               ),
-        ('admin.maintenance',               '/admin/maintenance'        ),
-        ('admin.more',                      '/admin/more'               ),
-        ('admin.orga',                      '/admin/orgas'              ),
-        ('admin.orga_presence',             '/admin/presence'           ),
-        ('admin.orga_team',                 '/admin/orga_teams'         ),
-        ('admin.party',                     '/admin/parties'            ),
-        ('admin.seating',                   '/admin/seating'            ),
-        ('admin.shop',                      None                        ),
-        ('admin.shop.article',              '/admin/shop/articles'      ),
-        ('admin.shop.email',                '/admin/shop/email'         ),
-        ('admin.shop.order',                '/admin/shop/orders'        ),
-        ('admin.shop.shipping',             '/admin/shop/shipping'      ),
-        ('admin.shop.shop',                 '/admin/shop/shop'          ),
-        ('admin.shop.storefront',           '/admin/shop/storefronts'   ),
-        ('admin.site',                      '/admin/sites'              ),
-        ('admin.snippet',                   '/admin/snippets'           ),
-        ('admin.terms',                     '/admin/terms'              ),
-        ('admin.ticketing',                 '/admin/ticketing'          ),
-        ('admin.ticketing.category',        '/admin/ticketing/categories'   ),
-        ('admin.ticketing.checkin',         '/admin/ticketing/checkin'  ),
-        ('admin.tourney',                   None                        ),
-        ('admin.tourney.category',          '/admin/tourney/categories' ),
-        ('admin.tourney.tourney',           '/admin/tourney/tourneys'   ),
-        ('admin.user',                      '/admin/users'              ),
-        ('admin.user_badge',                '/admin/user_badges'        ),
-        ('admin.webhook',                   '/admin/webhooks'           ),
+        (app, 'admin.attendance',                '/admin/attendance'        ),
+        (app, 'admin.authentication.login',      '/authentication'          ),
+        (app, 'admin.authorization',             '/admin/authorization'     ),
+        (app, 'admin.board',                     '/admin/boards'            ),
+        (app, 'admin.brand',                     '/admin/brands'            ),
+        (app, 'admin.consent',                   '/admin/consent'           ),
+        (app, 'admin.core',                      None                       ),
+        (app, 'admin.dashboard',                 '/admin/dashboard'         ),
+        (app, 'admin.news',                      '/admin/news'              ),
+        (app, 'admin.newsletter',                '/admin/newsletter'        ),
+        (app, 'admin.jobs',                      '/admin/jobs'              ),
+        (app, 'admin.maintenance',               '/admin/maintenance'       ),
+        (app, 'admin.more',                      '/admin/more'              ),
+        (app, 'admin.orga',                      '/admin/orgas'             ),
+        (app, 'admin.orga_presence',             '/admin/presence'          ),
+        (app, 'admin.orga_team',                 '/admin/orga_teams'        ),
+        (app, 'admin.party',                     '/admin/parties'           ),
+        (app, 'admin.seating',                   '/admin/seating'           ),
+        (app, 'admin.shop',                      None                       ),
+        (app, 'admin.shop.article',              '/admin/shop/articles'     ),
+        (app, 'admin.shop.email',                '/admin/shop/email'        ),
+        (app, 'admin.shop.order',                '/admin/shop/orders'       ),
+        (app, 'admin.shop.shipping',             '/admin/shop/shipping'     ),
+        (app, 'admin.shop.shop',                 '/admin/shop/shop'         ),
+        (app, 'admin.shop.storefront',           '/admin/shop/storefronts'  ),
+        (app, 'admin.site',                      '/admin/sites'             ),
+        (app, 'admin.snippet',                   '/admin/snippets'          ),
+        (app, 'admin.terms',                     '/admin/terms'             ),
+        (app, 'admin.ticketing',                 '/admin/ticketing'         ),
+        (app, 'admin.ticketing.category',        '/admin/ticketing/categories'  ),
+        (app, 'admin.ticketing.checkin',         '/admin/ticketing/checkin' ),
+        (app, 'admin.tourney',                   None                       ),
+        (app, 'admin.tourney.category',          '/admin/tourney/categories'),
+        (app, 'admin.tourney.tourney',           '/admin/tourney/tourneys'  ),
+        (app, 'admin.user',                      '/admin/users'             ),
+        (app, 'admin.user_badge',                '/admin/user_badges'       ),
+        (app, 'admin.webhook',                   '/admin/webhooks'          ),
     ]
 
 
-def _get_blueprints_api() -> Iterator[BlueprintReg]:
+def _get_blueprints_api(app: Flask) -> Iterator[BlueprintReg]:
     yield from [
-        ('api.v1.attendance',               '/api/v1/attendances'       ),
-        ('api.v1.snippet',                  '/api/v1/snippets'          ),
-        ('api.v1.tourney.avatar',           '/api/v1/tourney/avatars'   ),
-        ('api.v1.tourney.match.comments',   '/api/v1/tourney'           ),
-        ('api.v1.user',                     '/api/v1/users'             ),
-        ('api.v1.user_avatar',              '/api/v1/user_avatars'      ),
-        ('api.v1.user_badge',               '/api/v1/user_badges'       ),
+        (app, 'api.v1.attendance',               '/api/v1/attendances'      ),
+        (app, 'api.v1.snippet',                  '/api/v1/snippets'         ),
+        (app, 'api.v1.tourney.avatar',           '/api/v1/tourney/avatars'  ),
+        (app, 'api.v1.tourney.match.comments',   '/api/v1/tourney'          ),
+        (app, 'api.v1.user',                     '/api/v1/users'            ),
+        (app, 'api.v1.user_avatar',              '/api/v1/user_avatars'     ),
+        (app, 'api.v1.user_badge',               '/api/v1/user_badges'      ),
     ]
 
 
-def _get_blueprints_monitoring(app_config) -> Iterator[BlueprintReg]:
+def _get_blueprints_monitoring(app: Flask) -> Iterator[BlueprintReg]:
     yield from [
-        ('monitoring.healthcheck',      '/health'                   ),
+        (app, 'monitoring.healthcheck',      '/health'                  ),
     ]
 
-    if app_config['METRICS_ENABLED']:
+    if app.config['METRICS_ENABLED']:
         yield from [
-            ('monitoring.metrics',          '/metrics'                  ),
+            (app, 'monitoring.metrics',          '/metrics'                 ),
         ]
 
 
-def _get_blueprints_debug() -> Iterator[BlueprintReg]:
+def _get_blueprints_debug(app: Flask) -> Iterator[BlueprintReg]:
     yield from [
-        ('common.style_guide',              '/style_guide'              ),
+        (app, 'common.style_guide',              '/style_guide'             ),
     ]
