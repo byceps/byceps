@@ -10,9 +10,8 @@ Blueprint utilities
 
 from importlib import import_module
 from types import ModuleType
-from typing import Union
 
-from flask import Blueprint, Flask
+from flask import Blueprint
 
 
 def create_blueprint(name: str, import_name: str) -> Blueprint:
@@ -22,18 +21,14 @@ def create_blueprint(name: str, import_name: str) -> Blueprint:
     )
 
 
-def register_blueprint(
-    parent: Union[Blueprint, Flask], name: str, url_prefix: str
-) -> None:
-    """Register a blueprint with the application/blueprint as a parent.
+def get_blueprint(name: str) -> Blueprint:
+    """Load the blueprint from the named module.
 
-    The module with the given name is expected to be located inside the
-    'blueprints' sub-package and to contain a blueprint instance named
-    'blueprint'.
+    The module is expected to be located inside the ``blueprints``
+    sub-package and to contain a blueprint instance named ``blueprint``.
     """
     module = _get_blueprint_views_module(name)
-    blueprint = getattr(module, 'blueprint')
-    parent.register_blueprint(blueprint, url_prefix=url_prefix)
+    return getattr(module, 'blueprint')
 
 
 def _get_blueprint_views_module(name: str) -> ModuleType:

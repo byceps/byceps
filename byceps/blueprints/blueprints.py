@@ -11,7 +11,7 @@ from typing import Iterator, Optional, Tuple
 from flask import Flask
 
 from .. import config
-from ..util.framework.blueprint import register_blueprint
+from ..util.framework.blueprint import get_blueprint
 
 
 BlueprintReg = Tuple[str, Optional[str]]
@@ -20,7 +20,8 @@ BlueprintReg = Tuple[str, Optional[str]]
 def register_blueprints(app: Flask) -> None:
     """Register blueprints depending on the configuration."""
     for parent, name, url_prefix in _get_blueprints(app):
-        register_blueprint(parent, name, url_prefix)
+        blueprint = get_blueprint(name)
+        parent.register_blueprint(blueprint, url_prefix=url_prefix)
 
 
 def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:

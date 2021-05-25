@@ -18,7 +18,7 @@ Metrics then become available at `http://127.0.0.1/metrics`.
 from flask import Flask
 
 from ..database import db
-from ..util.framework.blueprint import register_blueprint
+from ..util.framework.blueprint import get_blueprint
 
 
 def create_app(database_uri):
@@ -33,6 +33,7 @@ def create_app(database_uri):
     # Initialize database.
     db.init_app(app)
 
-    register_blueprint(app, 'monitoring.metrics', '/metrics')
+    blueprint = get_blueprint('monitoring.metrics')
+    app.register_blueprint(blueprint, url_prefix='/metrics')
 
     return app
