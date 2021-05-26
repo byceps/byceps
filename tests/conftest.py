@@ -143,13 +143,18 @@ def make_admin(make_user):
         admin = make_user(screen_name)
         user_ids.add(admin.id)
 
-        # Create permissions and role.
+        # Create (not yet created) permissions.
+        new_permission_ids = permission_ids.difference(created_permission_ids)
+        create_permissions(new_permission_ids)
+        created_permission_ids.update(new_permission_ids)
+
+        # Create role.
         role_id = f'admin_{token_hex(3)}'
-        create_permissions(permission_ids)
-        created_permission_ids.update(permission_ids)
         create_role_with_permissions_assigned(role_id, permission_ids)
-        authz_service.assign_role_to_user(role_id, admin.id)
         created_role_ids.add(role_id)
+
+        # Assign role to user.
+        authz_service.assign_role_to_user(role_id, admin.id)
 
         return admin
 
