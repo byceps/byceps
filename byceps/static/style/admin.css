@@ -377,11 +377,11 @@ nav.main li {
   border-color: #aaaaaa;
 }
 
-.main-tab.current {
+.main-tab--current {
   border-color: #1199ff;
 }
 
-.main-tab.current .icon {
+.main-tab--current .icon {
   color: #5c5c5c;
 }
 
