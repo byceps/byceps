@@ -16,7 +16,6 @@ from ....services.brand import (
 )
 from ....services.consent import subject_service as consent_subject_service
 from ....services.newsletter import service as newsletter_service
-from ....services.orga import service as orga_service
 from ....services.orga import birthday_service as orga_birthday_service
 from ....services.orga_team import service as orga_team_service
 from ....services.party import service as party_service
@@ -122,8 +121,6 @@ def view_brand(brand_id):
 
     party_count = party_service.count_parties_for_brand(brand.id)
 
-    orga_count = orga_service.count_orgas_for_brand(brand.id)
-
     newsletter_list_id = brand_settings_service.find_setting_value(
         brand.id, 'newsletter_list_id'
     )
@@ -161,8 +158,6 @@ def view_brand(brand_id):
         'active_parties_with_ticket_stats': active_parties_with_ticket_stats,
 
         'party_count': party_count,
-
-        'orga_count': orga_count,
 
         'newsletter_list': newsletter_list,
         'newsletter_subscriber_count': newsletter_subscriber_count,
