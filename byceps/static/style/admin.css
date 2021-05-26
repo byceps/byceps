@@ -354,14 +354,18 @@ nav.main li {
 }
 
 .main-tab {
-  border-bottom: transparent solid 0.125rem;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 0 0 0.125rem 0;
   color: #333333;
   display: block;
   font-size: 0.75rem; /* 12px / 16px */
+  height: 100%;
   margin-bottom: -1px;
   margin-right: 0.125rem;
   padding: 0.5rem 0.75rem;
   text-decoration: none;
+  user-select: none;
 }
 
 .main-tab .icon {
@@ -370,11 +374,11 @@ nav.main li {
 }
 
 .main-tab:hover {
-  border-bottom-color: #aaaaaa;
+  border-color: #aaaaaa;
 }
 
 .main-tab.current {
-  border-bottom-color: #1199ff;
+  border-color: #1199ff;
 }
 
 .main-tab.current .icon {
