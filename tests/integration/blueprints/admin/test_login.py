@@ -64,7 +64,7 @@ def test_login_succeeds(client, make_admin):
 def test_login_fails_lacking_access_permission(client, make_admin):
     screen_name = 'AdminWithoutAccess'
     password = 'correct horse battery staple'
-    permission_ids = {}
+    permission_ids = set()
 
     user = make_admin(screen_name, permission_ids)
     password_service.create_password_hash(user.id, password)
