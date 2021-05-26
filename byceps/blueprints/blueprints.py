@@ -23,8 +23,7 @@ def register_blueprints(app: Flask) -> None:
         blueprint = get_blueprint(name)
         parent.register_blueprint(blueprint, url_prefix=url_prefix)
 
-    if app.config.get('API_TOKEN'):
-        register_api_blueprints(app)
+    register_api_blueprints(app)
 
 
 def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
