@@ -18,6 +18,9 @@
 <div class="dashboard-section-title">{{ _('Overview') }}</div>
 
   <div class="grid dashboard">
+    {%- if shop %}
+    {{ render_bigstats_cell(open_order_count, _('open orders'), href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open'), icon_name='invoice') }}
+    {%- endif %}
     {{ render_bigstats_cell(party_count, _('Parties'), href=url_for('party_admin.index_for_brand', brand_id=brand.id), icon_name='date') }}
     {{ render_bigstats_cell(orga_count, _('Organizers'), href=url_for('orga_admin.persons_for_brand', brand_id=brand.id), icon_name='users') }}
     {%- if newsletter_list %}

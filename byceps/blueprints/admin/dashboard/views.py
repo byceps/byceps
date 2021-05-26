@@ -148,6 +148,12 @@ def view_brand(brand_id):
         consent_subjects_to_consent_counts.items(), key=lambda x: x[0].title
     )
 
+    shop = shop_service.find_shop_for_brand(brand.id)
+    if shop is not None:
+        open_order_count = shop_order_service.count_open_orders(shop.id)
+    else:
+        open_order_count = None
+
     return {
         'brand': brand,
 
@@ -162,6 +168,9 @@ def view_brand(brand_id):
         'newsletter_subscriber_count': newsletter_subscriber_count,
 
         'consent_subjects_with_consent_counts': consent_subjects_with_consent_counts,
+
+        'shop': shop,
+        'open_order_count': open_order_count,
     }
 
 
