@@ -21,7 +21,6 @@
     {%- if shop %}
     {{ render_bigstats_cell(open_order_count, _('open orders'), href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open'), icon_name='invoice') }}
     {%- endif %}
-    {{ render_bigstats_cell(party_count, _('Parties'), href=url_for('party_admin.index_for_brand', brand_id=brand.id), icon_name='date') }}
     {%- if newsletter_list %}
     {{ render_bigstats_cell(newsletter_subscriber_count|separate_thousands, _('Subscribers to newsletter "%(title)s"', title=newsletter_list.title), href=url_for('newsletter_admin.view_subscriptions', list_id=newsletter_list.id), icon_name='email', color='#008800') }}
     {%- endif %}

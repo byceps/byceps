@@ -65,8 +65,6 @@ def view_global():
         for shop in active_shops
     ]
 
-    party_count = party_service.count_parties()
-
     user_count = user_stats_service.count_users()
 
     one_week_ago = timedelta(days=7)
@@ -86,8 +84,6 @@ def view_global():
         'current_sites': current_sites,
         'active_parties_with_ticket_stats': active_parties_with_ticket_stats,
         'active_shops_with_open_orders_counts': active_shops_with_open_orders_counts,
-
-        'party_count': party_count,
 
         'user_count': user_count,
         'recent_users': recent_users,
@@ -118,8 +114,6 @@ def view_brand(brand_id):
         (party, ticket_service.get_ticket_sale_stats(party.id))
         for party in active_parties
     ]
-
-    party_count = party_service.count_parties_for_brand(brand.id)
 
     newsletter_list_id = brand_settings_service.find_setting_value(
         brand.id, 'newsletter_list_id'
@@ -156,8 +150,6 @@ def view_brand(brand_id):
 
         'current_sites': current_sites,
         'active_parties_with_ticket_stats': active_parties_with_ticket_stats,
-
-        'party_count': party_count,
 
         'newsletter_list': newsletter_list,
         'newsletter_subscriber_count': newsletter_subscriber_count,

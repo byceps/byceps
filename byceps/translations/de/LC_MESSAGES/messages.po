@@ -312,14 +312,11 @@ msgstr "Name"
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:31
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:41
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:27
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:24
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:24
 msgid "Parties"
 msgstr "Partys"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:32
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:47
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:25
 msgid "Organizers"
 msgstr "Organisatoren"
 
@@ -446,7 +443,8 @@ msgid "More"
 msgstr "Mehr"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:15
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:25
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:21
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:24
 #: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:9
 #: byceps/blueprints/admin/user/templates/layout/admin/user.html:37
 msgid "Users"
@@ -577,28 +575,27 @@ msgid "All users"
 msgstr "Alle Benutzer"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:18
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:21
 msgid "Overview"
 msgstr "Übersicht"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:27
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:25
 #, python-format
 msgid "Subscribers to newsletter \"%(title)s\""
 msgstr "Abonnenten von Newsletter \"%(title)s\""
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:30
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:28
 msgid "Required Consents"
 msgstr "Erforderliche Zustimmungen"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:42
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:40
 msgid "None required"
 msgstr "Keine erforderlich"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:26
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:25
 msgid "new users in the last 7 days"
 msgstr "neue Benutzer in den letzten 7 Tagen"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:27
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:26
 msgid "uninitialized users"
 msgstr "noch nicht aktivierte Benutzer"
 
