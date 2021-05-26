@@ -212,6 +212,7 @@ span[title] .icon {
 /* tabs */
 
 .tabs {
+  align-items: flex-end;
   border-color: #dddddd;
   border-style: solid;
   border-width: 0 0 1px 0;
