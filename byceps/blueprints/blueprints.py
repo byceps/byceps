@@ -41,7 +41,7 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     if app.config['METRICS_ENABLED']:
         yield (app, 'monitoring.metrics', '/metrics')
 
-    if app.debug:
+    if app.config.get('STYLE_GUIDE_ENABLED', False):
         yield (app, 'common.style_guide', '/style_guide')
 
 

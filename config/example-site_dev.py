@@ -13,3 +13,5 @@ SITE_ID = 'example-site'
 MAIL_DEBUG = True
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@site.example>'
 MAIL_SUPPRESS_SEND = True
+
+STYLE_GUIDE_ENABLED = True
