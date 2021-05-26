@@ -36,10 +36,13 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
     elif current_mode.is_admin():
         yield from _get_blueprints_admin(app)
 
-    yield from _get_blueprints_monitoring(app)
+    yield (app, 'monitoring.healthcheck', '/health')
+
+    if app.config['METRICS_ENABLED']:
+        yield (app, 'monitoring.metrics', '/metrics')
 
     if app.debug:
-        yield from _get_blueprints_debug(app)
+        yield (app, 'common.style_guide', '/style_guide')
 
 
 def _get_blueprints_common(app: Flask) -> Iterator[BlueprintReg]:
@@ -141,20 +144,3 @@ def register_api_blueprints(app: Flask) -> None:
 
     api.register_blueprint(api_v1, url_prefix='/v1')
     app.register_blueprint(api, url_prefix='/api')
-
-
-def _get_blueprints_monitoring(app: Flask) -> Iterator[BlueprintReg]:
-    yield from [
-        (app, 'monitoring.healthcheck',      '/health'                  ),
-    ]
-
-    if app.config['METRICS_ENABLED']:
-        yield from [
-            (app, 'monitoring.metrics',          '/metrics'                 ),
-        ]
-
-
-def _get_blueprints_debug(app: Flask) -> Iterator[BlueprintReg]:
-    yield from [
-        (app, 'common.style_guide',              '/style_guide'             ),
-    ]
