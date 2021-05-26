@@ -26,7 +26,7 @@
     {%- if newsletter_list %}
     {{ render_bigstats_cell(newsletter_subscriber_count|separate_thousands, _('Subscribers to newsletter "%(title)s"', title=newsletter_list.title), href=url_for('newsletter_admin.view_subscriptions', list_id=newsletter_list.id), icon_name='email', color='#008800') }}
     {%- endif %}
-    {%- call render_cell('legal') %}
+    {%- call render_cell('legal', 'wider') %}
     <h2 class="hyphenate">{{ _('Required Consents') }}</h2>
       <p class="centered">
         {%- if consent_subjects_with_consent_counts -%}
