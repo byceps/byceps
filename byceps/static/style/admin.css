@@ -386,6 +386,31 @@ nav.main li {
 }
 
 
+/* tabs (adjustment of common tabs) */
+
+.tabs-tab {
+  border-width: 0 0 0.125rem 0;
+  color: #666666;
+  font-size: 0.75rem; /* 12px / 16px */
+  margin-right: 0.125rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.tabs-tab:hover,
+.tabs-tab--current {
+  background-color: transparent;
+  color: currentColor;
+}
+
+.tabs-tab:hover {
+  border-color: #aaaaaa;
+}
+
+.tabs-tab--current {
+  border-color: #1199ff;
+}
+
+
 /* headings */
 
 h1 {
