@@ -87,8 +87,8 @@ msgstr "Neues Passwort setzen"
 
 #: byceps/blueprints/admin/board/forms.py:18
 #: byceps/blueprints/admin/brand/forms.py:25
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:28
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:36
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:30
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:38
 #: byceps/blueprints/admin/news/forms.py:24
 #: byceps/blueprints/admin/party/forms.py:50
 #: byceps/blueprints/admin/shop/storefront/forms.py:38
@@ -99,8 +99,8 @@ msgstr "ID"
 #: byceps/blueprints/admin/board/forms.py:23
 #: byceps/blueprints/admin/news/forms.py:47
 #: byceps/blueprints/admin/user_badge/forms.py:23
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:37
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:51
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:39
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:71
 msgid "Slug"
 msgstr "Slug"
 
@@ -256,17 +256,17 @@ msgid "archived"
 msgstr "archiviert"
 
 #: byceps/blueprints/admin/brand/forms.py:38
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:78
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:84
 msgid "Sender address"
 msgstr "Absender-Adresse"
 
 #: byceps/blueprints/admin/brand/forms.py:41
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:82
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:88
 msgid "Sender name"
 msgstr "Absender-Name"
 
 #: byceps/blueprints/admin/brand/forms.py:44
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:86
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:92
 msgid "Contact address"
 msgstr "Kontaktadresse"
 
@@ -290,7 +290,7 @@ msgstr "Marke erstellen"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:9
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:7
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:15
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:16
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:21
 msgid "Brands"
 msgstr "Marken"
@@ -299,31 +299,31 @@ msgstr "Marken"
 msgid "Update Email Configuration"
 msgstr "E-Mail-Konfiguration bearbeiten"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:18
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:19
 msgid "Create brand"
 msgstr "Marke erstellen"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:28
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:46
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:30
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:50
 #: byceps/blueprints/admin/snippet/forms.py:34
 msgid "Name"
 msgstr "Name"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:29
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:31
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:41
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_global.html:27
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:21
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:24
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:24
 msgid "Parties"
 msgstr "Partys"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:30
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:32
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:47
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:22
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:25
 msgid "Organizers"
 msgstr "Organisatoren"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:55
+#: byceps/blueprints/admin/brand/templates/admin/brand/index.html:57
 msgid "No brands defined."
 msgstr "Es sind keine Marken hinterlegt."
 
@@ -331,14 +331,14 @@ msgstr "Es sind keine Marken hinterlegt."
 msgid "Update Brand"
 msgstr "Marke bearbeiten"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:28
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:70
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:29
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:75
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:46
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:37
 msgid "Update"
 msgstr "Bearbeiten"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:41
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:44
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
 #: byceps/blueprints/admin/more/templates/admin/more/view_site.html:17
@@ -346,19 +346,19 @@ msgstr "Bearbeiten"
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:47
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:51
 msgid "Value"
 msgstr "Wert"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:60
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:64
 msgid "No settings defined for this brand."
 msgstr "Für diese Marke sind keine Einstellungen hinterlegt."
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:65
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:70
 msgid "Email Configuration"
 msgstr "E-Mail-Konfiguration"
 
-#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:91
+#: byceps/blueprints/admin/brand/templates/admin/brand/view.html:97
 msgid "Not configured"
 msgstr "Nicht konfiguriert"
 
@@ -403,8 +403,8 @@ msgstr "Global"
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:25
 #: byceps/blueprints/admin/site/forms.py:78
 #: byceps/blueprints/admin/user_badge/forms.py:42
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:38
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:55
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:40
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:75
 msgid "Brand"
 msgstr "Marke"
 
@@ -425,7 +425,7 @@ msgid "Sites"
 msgstr "Sites"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_navigation_brand.html:53
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:85
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:97
 msgid "News Channels"
 msgstr "Newskanäle"
 
@@ -491,51 +491,52 @@ msgstr "Snippets"
 msgid "Storefront"
 msgstr "Storefront"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_brands.html:5
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_brands.html:7
 msgid "Active Brands"
 msgstr "Aktive Marken"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_brands.html:17
-msgid "No active brands"
-msgstr "Keine aktiven Marken"
-
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_brands.html:22
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_brands.html:10
 msgid "All brands"
 msgstr "Alle Marken"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:7
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_brands.html:24
+msgid "No active brands"
+msgstr "Keine aktiven Marken"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:9
 msgid "Active Parties"
 msgstr "Aktive Partys"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:26
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:12
+msgid "All parties"
+msgstr "Alle Partys"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:33
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:37
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:48
 msgid "of"
 msgstr "von"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:28
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:35
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:25
 msgid "tickets sold"
 msgstr "Tickets verkauft"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:30
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:37
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:35
 msgid "sold out"
 msgstr "ausverkauft"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:39
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:46
 msgid "No active parties"
 msgstr "Keine aktiven Partys"
-
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:45
-msgid "All parties"
-msgstr "Alle Partys"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:6
 msgid "Active Shops"
 msgstr "Aktive Shops"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:15
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:22
 msgid "open orders"
 msgstr "offene Bestellungen"
 
@@ -551,17 +552,17 @@ msgstr "De nächsten Geburtstage"
 msgid "All birthdays"
 msgstr "Alle Geburtstage"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_sites.html:5
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_sites.html:7
 msgid "Current Sites"
 msgstr "Aktuelle Sites"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_sites.html:19
-msgid "No current sites"
-msgstr "Keine aktuellen Sites"
-
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_sites.html:24
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_sites.html:10
 msgid "All sites"
 msgstr "Alle Sites"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_sites.html:26
+msgid "No current sites"
+msgstr "Keine aktuellen Sites"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_recent_users.html:7
 msgid "Newest Users"
@@ -580,16 +581,16 @@ msgstr "Alle Benutzer"
 msgid "Overview"
 msgstr "Übersicht"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:24
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:27
 #, python-format
 msgid "Subscribers to newsletter \"%(title)s\""
 msgstr "Abonnenten von Newsletter \"%(title)s\""
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:27
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:30
 msgid "Required Consents"
 msgstr "Erforderliche Zustimmungen"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:39
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:42
 msgid "None required"
 msgstr "Keine erforderlich"
 
@@ -1314,19 +1315,19 @@ msgstr ""
 "\"%(site_title)s\"."
 
 #: byceps/blueprints/admin/site/templates/admin/site/add_news_channel_form.html:6
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:90
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:102
 msgid "Add news channel"
 msgstr "Newskanal hinzufügen"
 
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:104
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:117
 msgid "Remove"
 msgstr "Entfernen"
 
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:113
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:126
 msgid "No news channels are assigned to this site."
 msgstr "Es sind keine Newskanäle mit dieser Site verknüpft."
 
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:143
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:159
 msgid "Remove news channel from site?"
 msgstr "Newskanal aus Site entfernen?"
 
@@ -1670,13 +1671,13 @@ msgid "Unlock"
 msgstr "Entsperren"
 
 #: byceps/blueprints/admin/user_badge/forms.py:36
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:37
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:39
 msgid "Label"
 msgstr "Bezeichnung"
 
 #: byceps/blueprints/admin/user_badge/forms.py:43
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:57
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:66
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:59
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:86
 msgid "featured"
 msgstr "featured"
 
@@ -1718,29 +1719,29 @@ msgstr "Abzeichen erstellen"
 
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/create_form.html:9
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:7
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:21
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:38
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:22
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:42
 msgid "Badges"
 msgstr "Abzeichen"
 
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:26
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:27
 msgid "Create badge"
 msgstr "Abzeichen erstellen"
 
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:36
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:38
 msgid "Image"
 msgstr "Bild"
 
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:40
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:42
 msgid "Awarded"
 msgstr "Verliehen"
 
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:55
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:61
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:57
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:81
 msgid "unrestricted"
 msgstr "keine Einschränkung"
 
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:64
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:66
 msgid "No badges defined."
 msgstr "Es sind keine Abzeichen hinterlegt."
 
@@ -1748,24 +1749,24 @@ msgstr "Es sind keine Abzeichen hinterlegt."
 msgid "Update Badge"
 msgstr "Abzeichen bearbeiten"
 
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:45
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:52
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:67
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:87
 msgid "yes"
 msgstr "ja"
 
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:67
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:87
 msgid "no"
 msgstr "nein"
 
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:79
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:91
 #, python-format
 msgid "Awarded to %(recipient_count)s users"
 msgstr "An %(recipient_count)s Personen verliehen"
 
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:89
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:101
 msgid "This badge has not been awarded yet."
 msgstr "Dieses Abzeichen wurde bisher nicht verliehen."
 

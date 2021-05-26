@@ -4,7 +4,14 @@
 {% from 'macros/misc.html' import render_tag %}
 
 
-<div class="dashboard-section-title">{{ _('Active Parties') }}</div>
+<div class="row row--space-between">
+  <div class="column-auto">
+    <div class="dashboard-section-title">{{ _('Active Parties') }}</div>
+  </div>
+  <div class="column-auto">
+    <a class="dashboard-section-link" href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) if brand|default else url_for('party_admin.index') }}">{{ _('All parties') }} &rarr;</a>
+  </div>
+</div>
 
 <div class="grid">
 
@@ -37,12 +44,6 @@
 {%- else %}
   {%- call render_cell() %}
   <div style="display: grid; height: 100%; place-items: center;">{{ _('No active parties')|dim }}</div>
-  {%- endcall %}
-{%- endif %}
-
-{%- if brand|default %}
-  {%- call render_cell(href=url_for('party_admin.index_for_brand', brand_id=brand.id)) %}
-  <div style="display: grid; height: 100%; place-items: center;">{{ _('All parties') }} &rarr;</div>
   {%- endcall %}
 {%- endif %}
 

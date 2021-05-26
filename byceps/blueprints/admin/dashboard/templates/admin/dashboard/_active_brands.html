@@ -2,7 +2,14 @@
 {% from 'macros/admin/dashboard.html' import render_cell %}
 
 
-<div class="dashboard-section-title">{{ _('Active Brands') }}</div>
+<div class="row row--space-between">
+  <div class="column-auto">
+    <div class="dashboard-section-title">{{ _('Active Brands') }}</div>
+  </div>
+  <div class="column-auto">
+    <a class="dashboard-section-link" href="{{ url_for('brand_admin.index') }}">{{ _('All brands') }} &rarr;</a>
+  </div>
+</div>
 
 <div class="flex-grid">
 
@@ -17,9 +24,5 @@
   <div style="display: grid; height: 100%; place-items: center;">{{ _('No active brands')|dim }}</div>
   {%- endcall %}
 {%- endif %}
-
-{%- call render_cell(href=url_for('brand_admin.index')) %}
-  <div style="display: grid; height: 100%; place-items: center;">{{ _('All brands') }} &rarr;</div>
-{%- endcall %}
 
 </div>
