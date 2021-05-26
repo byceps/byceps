@@ -1,0 +1,11 @@
+  {%- if attended_parties %}
+  <table class="index">
+    {%- for party in attended_parties %}
+    <tr>
+      <td>{{ party.title }}</td>
+    </tr>
+    {%- endfor %}
+  </table>
+  {%- else %}
+  {{ 'keine'|dim }}
+  {%- endif %}
