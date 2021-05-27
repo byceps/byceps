@@ -8,6 +8,8 @@ Announce user events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import gettext
+
 from ...events.user import (
     UserAccountCreated,
     UserAccountDeleted,
@@ -19,9 +21,10 @@ from ...events.user import (
 )
 from ...services.site import service as site_service
 
-from ._helpers import get_screen_name_or_fallback
+from ._helpers import get_screen_name_or_fallback, with_locale
 
 
+@with_locale
 def assemble_text_for_user_account_created(event: UserAccountCreated) -> str:
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
@@ -33,18 +36,21 @@ def assemble_text_for_user_account_created(event: UserAccountCreated) -> str:
         site = site_service.find_site(event.site_id)
 
     if site:
-        return (
-            f'{initiator_screen_name} '
-            f'hat das Benutzerkonto "{user_screen_name}" '
-            f'auf Site "{site.title}" angelegt.'
+        return gettext(
+            '%(initiator_screen_name)s has created user account "%(user_screen_name)s" on site "%(site_title)s".',
+            initiator_screen_name=initiator_screen_name,
+            user_screen_name=user_screen_name,
+            site_title=site.title,
         )
     else:
-        return (
-            f'{initiator_screen_name} '
-            f'hat das Benutzerkonto "{user_screen_name}" angelegt.'
+        return gettext(
+            '%(initiator_screen_name)s has created user account "%(user_screen_name)s".',
+            initiator_screen_name=initiator_screen_name,
+            user_screen_name=user_screen_name,
         )
 
 
+@with_locale
 def assemble_text_for_user_screen_name_changed(
     event: UserScreenNameChanged,
 ) -> str:
@@ -52,12 +58,15 @@ def assemble_text_for_user_screen_name_changed(
         event.initiator_screen_name
     )
 
-    return (
-        f'{initiator_screen_name} hat das Benutzerkonto '
-        f'"{event.old_screen_name}" in "{event.new_screen_name}" umbenannt.'
+    return gettext(
+        '%(initiator_screen_name)s has renamed user account "%(old_screen_name)s" to "%(new_screen_name)s".',
+        initiator_screen_name=initiator_screen_name,
+        old_screen_name=event.old_screen_name,
+        new_screen_name=event.new_screen_name,
     )
 
 
+@with_locale
 def assemble_text_for_user_email_address_invalidated(
     event: UserEmailAddressInvalidated,
 ) -> str:
@@ -66,12 +75,14 @@ def assemble_text_for_user_email_address_invalidated(
     )
     user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
-    return (
-        f'{initiator_screen_name} hat die E-Mail-Adresse '
-        f'des Benutzerkontos "{user_screen_name}" invalidiert.'
+    return gettext(
+        '%(initiator_screen_name)s has invalidated the email address of user account "%(user_screen_name)s".',
+        initiator_screen_name=initiator_screen_name,
+        user_screen_name=user_screen_name,
     )
 
 
+@with_locale
 def assemble_text_for_user_details_updated_changed(
     event: UserDetailsUpdated,
 ) -> str:
@@ -80,12 +91,14 @@ def assemble_text_for_user_details_updated_changed(
     )
     user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
-    return (
-        f'{initiator_screen_name} hat die persönlichen Daten '
-        f'des Benutzerkontos "{user_screen_name}" geändert.'
+    return gettext(
+        '%(initiator_screen_name)s has changed personal data of user account "%(user_screen_name)s".',
+        initiator_screen_name=initiator_screen_name,
+        user_screen_name=user_screen_name,
     )
 
 
+@with_locale
 def assemble_text_for_user_account_suspended(
     event: UserAccountSuspended,
 ) -> str:
@@ -94,12 +107,14 @@ def assemble_text_for_user_account_suspended(
     )
     user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
-    return (
-        f'{initiator_screen_name} hat das Benutzerkonto '
-        f'"{user_screen_name}" gesperrt.'
+    return gettext(
+        '%(initiator_screen_name)s has suspended user account "%(user_screen_name)s".',
+        initiator_screen_name=initiator_screen_name,
+        user_screen_name=user_screen_name,
     )
 
 
+@with_locale
 def assemble_text_for_user_account_unsuspended(
     event: UserAccountUnsuspended,
 ) -> str:
@@ -108,19 +123,23 @@ def assemble_text_for_user_account_unsuspended(
     )
     user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
-    return (
-        f'{initiator_screen_name} hat das Benutzerkonto '
-        f'"{user_screen_name}" entsperrt.'
+    return gettext(
+        '%(initiator_screen_name)s has unsuspended user account "%(user_screen_name)s".',
+        initiator_screen_name=initiator_screen_name,
+        user_screen_name=user_screen_name,
     )
 
 
+@with_locale
 def assemble_text_for_user_account_deleted(event: UserAccountDeleted) -> str:
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
     user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
 
-    return (
-        f'{initiator_screen_name} hat das Benutzerkonto '
-        f'"{user_screen_name}" (ID "{event.user_id}") gelöscht.'
+    return gettext(
+        '%(initiator_screen_name)s has deleted user account "%(user_screen_name)s" (ID "%(user_id)s").',
+        initiator_screen_name=initiator_screen_name,
+        user_screen_name=user_screen_name,
+        user_id=event.user_id,
     )

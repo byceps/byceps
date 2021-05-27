@@ -8,6 +8,8 @@ Announce board events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import gettext
+
 from ...events.board import (
     BoardPostingCreated,
     BoardPostingHidden,
@@ -25,9 +27,10 @@ from ...services.board.transfer.models import TopicID
 from ...services.board import topic_query_service as board_topic_query_service
 from ...services.brand import service as brand_service
 
-from ._helpers import get_screen_name_or_fallback
+from ._helpers import get_screen_name_or_fallback, with_locale
 
 
+@with_locale
 def assemble_text_for_board_topic_created(
     event: BoardTopicCreated,
     webhook_format: str,
@@ -40,12 +43,16 @@ def assemble_text_for_board_topic_created(
     )
     url = _format_url(event.url, webhook_format)
 
-    return (
-        f'{topic_creator_screen_name} hat{board_label_segment} '
-        f'das Thema "{event.topic_title}" erstellt: {url}'
+    return gettext(
+        '%(topic_creator_screen_name)s has created topic "%(topic_title)s"%(board_label_segment)s: %(url)s',
+        topic_creator_screen_name=topic_creator_screen_name,
+        board_label_segment=board_label_segment,
+        topic_title=event.topic_title,
+        url=url,
     )
 
 
+@with_locale
 def assemble_text_for_board_topic_hidden(
     event: BoardTopicHidden,
     webhook_format: str,
@@ -61,13 +68,17 @@ def assemble_text_for_board_topic_hidden(
     )
     url = _format_url(event.url, webhook_format)
 
-    return (
-        f'{moderator_screen_name} hat{board_label_segment} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'versteckt: {url}'
+    return gettext(
+        '%(moderator_screen_name)s has hidden topic "%(topic_title)s" by %(topic_creator_screen_name)s%(board_label_segment)s: %(url)s',
+        moderator_screen_name=moderator_screen_name,
+        board_label_segment=board_label_segment,
+        topic_title=event.topic_title,
+        topic_creator_screen_name=topic_creator_screen_name,
+        url=url,
     )
 
 
+@with_locale
 def assemble_text_for_board_topic_unhidden(
     event: BoardTopicUnhidden,
     webhook_format: str,
@@ -83,13 +94,17 @@ def assemble_text_for_board_topic_unhidden(
     )
     url = _format_url(event.url, webhook_format)
 
-    return (
-        f'{moderator_screen_name} hat{board_label_segment} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'wieder sichtbar gemacht: {url}'
+    return gettext(
+        '%(moderator_screen_name)s has unhidden topic "%(topic_title)s" by %(topic_creator_screen_name)s%(board_label_segment)s: %(url)s',
+        moderator_screen_name=moderator_screen_name,
+        board_label_segment=board_label_segment,
+        topic_title=event.topic_title,
+        topic_creator_screen_name=topic_creator_screen_name,
+        url=url,
     )
 
 
+@with_locale
 def assemble_text_for_board_topic_locked(
     event: BoardTopicLocked,
     webhook_format: str,
@@ -105,13 +120,17 @@ def assemble_text_for_board_topic_locked(
     )
     url = _format_url(event.url, webhook_format)
 
-    return (
-        f'{moderator_screen_name} hat{board_label_segment} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'geschlossen: {url}'
+    return gettext(
+        '%(moderator_screen_name)s has closed topic "%(topic_title)s" by %(topic_creator_screen_name)s%(board_label_segment)s: %(url)s',
+        moderator_screen_name=moderator_screen_name,
+        board_label_segment=board_label_segment,
+        topic_title=event.topic_title,
+        topic_creator_screen_name=topic_creator_screen_name,
+        url=url,
     )
 
 
+@with_locale
 def assemble_text_for_board_topic_unlocked(
     event: BoardTopicUnlocked,
     webhook_format: str,
@@ -127,13 +146,17 @@ def assemble_text_for_board_topic_unlocked(
     )
     url = _format_url(event.url, webhook_format)
 
-    return (
-        f'{moderator_screen_name} hat{board_label_segment} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'wieder geöffnet: {url}'
+    return gettext(
+        '%(moderator_screen_name)s has reopened topic "%(topic_title)s" by %(topic_creator_screen_name)s%(board_label_segment)s: %(url)s',
+        moderator_screen_name=moderator_screen_name,
+        board_label_segment=board_label_segment,
+        topic_title=event.topic_title,
+        topic_creator_screen_name=topic_creator_screen_name,
+        url=url,
     )
 
 
+@with_locale
 def assemble_text_for_board_topic_pinned(
     event: BoardTopicPinned,
     webhook_format: str,
@@ -149,13 +172,17 @@ def assemble_text_for_board_topic_pinned(
     )
     url = _format_url(event.url, webhook_format)
 
-    return (
-        f'{moderator_screen_name} hat{board_label_segment} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'angepinnt: {url}'
+    return gettext(
+        '%(moderator_screen_name)s has pinned topic "%(topic_title)s" by %(topic_creator_screen_name)s%(board_label_segment)s: %(url)s',
+        moderator_screen_name=moderator_screen_name,
+        board_label_segment=board_label_segment,
+        topic_title=event.topic_title,
+        topic_creator_screen_name=topic_creator_screen_name,
+        url=url,
     )
 
 
+@with_locale
 def assemble_text_for_board_topic_unpinned(
     event: BoardTopicUnpinned,
     webhook_format: str,
@@ -171,13 +198,17 @@ def assemble_text_for_board_topic_unpinned(
     )
     url = _format_url(event.url, webhook_format)
 
-    return (
-        f'{moderator_screen_name} hat{board_label_segment} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'wieder gelöst: {url}'
+    return gettext(
+        '%(moderator_screen_name)s has unpinned topic "%(topic_title)s" by %(topic_creator_screen_name)s%(board_label_segment)s: %(url)s',
+        moderator_screen_name=moderator_screen_name,
+        board_label_segment=board_label_segment,
+        topic_title=event.topic_title,
+        topic_creator_screen_name=topic_creator_screen_name,
+        url=url,
     )
 
 
+@with_locale
 def assemble_text_for_board_topic_moved(
     event: BoardTopicMoved,
     webhook_format: str,
@@ -193,14 +224,19 @@ def assemble_text_for_board_topic_moved(
     )
     url = _format_url(event.url, webhook_format)
 
-    return (
-        f'{moderator_screen_name} hat{board_label_segment} das Thema '
-        f'"{event.topic_title}" von {topic_creator_screen_name} '
-        f'aus "{event.old_category_title}" in "{event.new_category_title}" '
-        f'verschoben: {url}'
+    return gettext(
+        '%(moderator_screen_name)s has moved topic "%(topic_title)s" by %(topic_creator_screen_name)s from "%(old_category_title)s" to "%(new_category_title)s"%(board_label_segment)s: %(url)s',
+        moderator_screen_name=moderator_screen_name,
+        board_label_segment=board_label_segment,
+        topic_title=event.topic_title,
+        topic_creator_screen_name=topic_creator_screen_name,
+        old_category_title=event.old_category_title,
+        new_category_title=event.new_category_title,
+        url=url,
     )
 
 
+@with_locale
 def assemble_text_for_board_posting_created(
     event: BoardPostingCreated,
     webhook_format: str,
@@ -213,12 +249,16 @@ def assemble_text_for_board_posting_created(
     )
     url = _format_url(event.url, webhook_format)
 
-    return (
-        f'{posting_creator_screen_name} hat{board_label_segment} '
-        f'auf das Thema "{event.topic_title}" geantwortet: {url}'
+    return gettext(
+        '%(posting_creator_screen_name)s replied in topic "%(topic_title)s"%(board_label_segment)s: %(url)s',
+        posting_creator_screen_name=posting_creator_screen_name,
+        board_label_segment=board_label_segment,
+        topic_title=event.topic_title,
+        url=url,
     )
 
 
+@with_locale
 def assemble_text_for_board_posting_hidden(
     event: BoardPostingHidden,
     webhook_format: str,
@@ -234,13 +274,17 @@ def assemble_text_for_board_posting_hidden(
     )
     url = _format_url(event.url, webhook_format)
 
-    return (
-        f'{moderator_screen_name} hat{board_label_segment} '
-        f'eine Antwort von {posting_creator_screen_name} '
-        f'im Thema "{event.topic_title}" versteckt: {url}'
+    return gettext(
+        '%(moderator_screen_name)s has hidden a reply by %(posting_creator_screen_name)s in topic "%(topic_title)s"%(board_label_segment)s: %(url)s',
+        moderator_screen_name=moderator_screen_name,
+        board_label_segment=board_label_segment,
+        posting_creator_screen_name=posting_creator_screen_name,
+        topic_title=event.topic_title,
+        url=url,
     )
 
 
+@with_locale
 def assemble_text_for_board_posting_unhidden(
     event: BoardPostingUnhidden,
     webhook_format: str,
@@ -256,10 +300,13 @@ def assemble_text_for_board_posting_unhidden(
     )
     url = _format_url(event.url, webhook_format)
 
-    return (
-        f'{moderator_screen_name} hat{board_label_segment} '
-        f'eine Antwort von {posting_creator_screen_name} '
-        f'im Thema "{event.topic_title}" wieder sichtbar gemacht: {url}'
+    return gettext(
+        '%(moderator_screen_name)s has unhidden a reply by %(posting_creator_screen_name)s in topic "%(topic_title)s"%(board_label_segment)s: %(url)s',
+        moderator_screen_name=moderator_screen_name,
+        board_label_segment=board_label_segment,
+        posting_creator_screen_name=posting_creator_screen_name,
+        topic_title=event.topic_title,
+        url=url,
     )
 
 
@@ -270,7 +317,7 @@ def _get_board_label(topic_id: TopicID) -> str:
     topic = board_topic_query_service.get_topic(topic_id)
     brand_id = topic.category.board.brand_id
     brand = brand_service.get_brand(brand_id)
-    return f'"{brand.title}"-Forum'
+    return gettext('"%(brand_title)s" board', brand_title=brand.title)
 
 
 def _get_board_label_segment(topic_id: TopicID, webhook_format: str) -> str:
@@ -278,7 +325,7 @@ def _get_board_label_segment(topic_id: TopicID, webhook_format: str) -> str:
         return ''
 
     board_label = _get_board_label(topic_id)
-    return f' im {board_label}'
+    return gettext(' in %(board_label)s', board_label=board_label)
 
 
 def _format_url(url: str, webhook_format: str) -> str:

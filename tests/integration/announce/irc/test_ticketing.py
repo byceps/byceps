@@ -23,7 +23,7 @@ EXPECTED_CHANNEL = CHANNEL_ORGA_LOG
 
 def test_ticket_checked_in(app, make_user, admin_user):
     expected_text = (
-        'Admin hat Ticket "GTFIN", benutzt von Einchecker, eingecheckt.'
+        'Admin hat Ticket "GTFIN", genutzt von Einchecker, eingecheckt.'
     )
 
     user = make_user('Einchecker')

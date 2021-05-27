@@ -8,12 +8,15 @@ Announce auth events.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import gettext
+
 from ...events.auth import UserLoggedIn
 from ...services.site import service as site_service
 
-from ._helpers import get_screen_name_or_fallback
+from ._helpers import get_screen_name_or_fallback, with_locale
 
 
+@with_locale
 def assemble_text_for_user_logged_in(event: UserLoggedIn) -> str:
     screen_name = get_screen_name_or_fallback(event.initiator_screen_name)
 
@@ -22,6 +25,12 @@ def assemble_text_for_user_logged_in(event: UserLoggedIn) -> str:
         site = site_service.find_site(event.site_id)
 
     if site:
-        return f'{screen_name} hat sich auf Site "{site.title}" eingeloggt.'
+        return gettext(
+            '%(screen_name)s has logged in on site "%(site_title)s".',
+            screen_name=screen_name,
+            site_title=site.title,
+        )
     else:
-        return f'{screen_name} hat sich eingeloggt.'
+        return gettext(
+            '%(screen_name)s has logged in.', screen_name=screen_name
+        )

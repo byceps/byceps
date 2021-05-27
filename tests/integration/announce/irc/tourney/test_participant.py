@@ -49,7 +49,7 @@ def test_announce_participant_ready(app, tourney, match, participant):
 
 def test_announce_participant_eliminated(app, tourney, match, participant):
     expected_text = (
-        '"Le Supern00bs" scheidet aus dem Turnier Burrito Blaster (3on3) aus.'
+        '"Le Supern00bs" ist aus dem Turnier Burrito Blaster (3on3) ausgeschieden.'
     )
 
     event = TourneyParticipantEliminated(
@@ -72,7 +72,7 @@ def test_announce_participant_eliminated(app, tourney, match, participant):
 def test_announce_participant_warned(app, tourney, match, participant):
     expected_text = (
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) '
-        'hat eine gelbe Karte \x038,8 \x03 erhalten.'
+        'wurde verwarnt. \x038,8 \x03'
     )
 
     event = TourneyParticipantWarned(
@@ -95,7 +95,7 @@ def test_announce_participant_warned(app, tourney, match, participant):
 def test_announce_participant_disqualified(app, tourney, match, participant):
     expected_text = (
         '"Le Supern00bs" im Turnier Burrito Blaster (3on3) '
-        'wurde disqualifiziert \x034,4 \x03.'
+        'wurde disqualifiziert. \x034,4 \x03'
     )
 
     event = TourneyParticipantDisqualified(
