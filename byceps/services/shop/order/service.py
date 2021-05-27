@@ -11,6 +11,7 @@ from datetime import datetime
 from typing import Iterator, Mapping, Optional, Sequence
 
 from flask import current_app
+from flask_babel import lazy_gettext
 from sqlalchemy.exc import IntegrityError
 
 from ....database import db, paginate, Pagination
@@ -594,17 +595,17 @@ def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
     return orders_total > 0
 
 
-PAYMENT_METHOD_LABELS = {
-    PaymentMethod.bank_transfer: 'Überweisung',
-    PaymentMethod.cash: 'Barzahlung',
-    PaymentMethod.direct_debit: 'Lastschrift',
-    PaymentMethod.free: 'kostenlos',
+_PAYMENT_METHOD_LABELS = {
+    PaymentMethod.bank_transfer: lazy_gettext('bank transfer'),
+    PaymentMethod.cash: lazy_gettext('cash'),
+    PaymentMethod.direct_debit: lazy_gettext('direct debit'),
+    PaymentMethod.free: lazy_gettext('free'),
 }
 
 
 def find_payment_method_label(payment_method: PaymentMethod) -> Optional[str]:
     """Return a label for the payment method."""
-    return PAYMENT_METHOD_LABELS.get(payment_method)
+    return _PAYMENT_METHOD_LABELS.get(payment_method)
 
 
 def get_payment_date(order_id: OrderID) -> Optional[datetime]:

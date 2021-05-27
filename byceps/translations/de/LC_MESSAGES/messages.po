@@ -2936,6 +2936,22 @@ msgstr "Senden"
 msgid "Image credit"
 msgstr "Bild"
 
+#: byceps/services/shop/order/service.py:599
+msgid "bank transfer"
+msgstr "Überweisung"
+
+#: byceps/services/shop/order/service.py:600
+msgid "cash"
+msgstr "Barzahlung"
+
+#: byceps/services/shop/order/service.py:601
+msgid "direct debit"
+msgstr "Lastschrift"
+
+#: byceps/services/shop/order/service.py:602
+msgid "free"
+msgstr "kostenlos"
+
 #: byceps/services/shop/order/email/example_service.py:89
 msgid "Not paid in time."
 msgstr "Kein fristgerechter Geldeingang feststellbar."
