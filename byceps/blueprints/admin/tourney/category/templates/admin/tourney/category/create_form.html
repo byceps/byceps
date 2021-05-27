@@ -1,5 +1,5 @@
 {% extends 'layout/admin/tourney.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'categories' %}
@@ -17,9 +17,7 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
-    {% endcall %}
+    {{ form_field_simple(form.title, maxlength=40, autofocus='autofocus') }}
 
     {{ form_buttons(_('Create'), cancel_url=url_for('.index', party_id=party.id)) }}
   </form>

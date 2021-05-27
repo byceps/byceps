@@ -335,6 +335,46 @@ table.wide {
 
 /* forms */
 
+label {
+  display: inline-block;
+}
+
+.form-row-simple {
+  margin-bottom: 1.5rem;
+}
+
+.form-label,
+.form-check-label {
+  width: auto;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
+}
+
+.form-check-label,
+.form-control-radios label {
+  font-weight: normal;
+}
+
+.form-control {
+  display: block;
+}
+
+.form-control-radios ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+input.form-control[type='email'],
+input.form-control[type='password'],
+input.form-control[type='text'],
+textarea.form-control {
+  width: 100%;
+}
+
 .form-row {
   padding: 0.2rem 0;
 }
@@ -346,21 +386,18 @@ fieldset li {
 
 form label,
 fieldset .label {
-  display: inline-block;
   font-weight: bold;
   vertical-align: top;
   width: 100%;
 }
 
-.checkbox label,
-.radio label {
+.checkbox label {
   font-weight: normal;
   padding-top: 0.1rem;
   width: auto;
 }
 
-.checkbox,
-.radio {
+.checkbox {
   padding-top: 0.3rem;
 }
 
@@ -374,6 +411,7 @@ fieldset input[type='number'] {
   text-align: right;
 }
 
+.form-row-simple textarea,
 fieldset textarea {
   height: 20rem;
   resize: vertical;
@@ -409,13 +447,19 @@ fieldset .supplement {
     width: 78%;
   }
 
-  .checkbox,
-  .radio {
+  .checkbox {
     padding-left: 22%;
   }
 
 }
 
+.form-note {
+  color: var(--color-dim: #888888);
+  font-size: 0.75rem; /* 12px / 16px */
+  margin-top: 0.5rem;
+}
+
+.form-row-simple.erroneous,
 .form-row.erroneous {
   background-color: #ff9999;
   border: #ff1a1a solid 1px;
@@ -424,11 +468,13 @@ fieldset .supplement {
   padding: 0.75rem calc(1rem - 1px) 0.5rem calc(1rem - 1px);
 }
 
+.form-row-simple.erroneous .errors li,
 .form-row.erroneous .errors li {
   font-size: 0.6875rem; /* 11px / 16px */
   margin-top: 0.2rem;
 }
 
+.form-row-simple.erroneous .errors li span,
 .form-row.erroneous .errors li span {
   font-style: italic;
 }

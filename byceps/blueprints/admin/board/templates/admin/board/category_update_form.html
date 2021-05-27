@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'board_admin' %}
 {% set current_page_brand = brand %}
@@ -15,11 +15,9 @@
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   <form action="{{ url_for('.category_update', category_id=category.id) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.slug, maxlength=40, autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=40) }}
-      {{ form_field(form.description, maxlength=80) }}
-    {% endcall %}
+    {{ form_field_simple(form.slug, maxlength=40, autofocus='autofocus') }}
+    {{ form_field_simple(form.title, maxlength=40) }}
+    {{ form_field_simple(form.description, maxlength=80) }}
 
     {{ form_buttons(_('Save')) }}
   </form>

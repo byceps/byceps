@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user_badge_admin' %}
 {% set title = _('Award Badge') %}
@@ -15,13 +15,13 @@
   <h1>{{ render_icon('badge') }} {{ title }}</h1>
 
   <form action="{{ url_for('.award', user_id=user.id) }}" method="post">
-    {% call form_fieldset() %}
-      <div class="form-row">
-        <div class="label">{{ _('User') }}</div>
+    <div class="form-row-simple">
+      <label class="form-label">{{ _('User') }}</label>
+      <div>
         {{ render_user_avatar_20_and_admin_link(user) }}
       </div>
-      {{ form_field(form.badge_id, autofocus='autofocus') }}
-    {% endcall %}
+    </div>
+    {{ form_field_simple(form.badge_id, autofocus='autofocus') }}
 
     {{ form_buttons(_('Award badge')) }}
   </form>

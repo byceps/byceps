@@ -1,5 +1,5 @@
 {% extends 'layout/admin/shop/order.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% set title = 'Bestellnummer-Sequenz anlegen' %}
 
@@ -8,9 +8,7 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.create_number_sequence', shop_id=shop.id) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.prefix, placeholder='LAN23-B', autofocus='autofocus') }}
-    {% endcall %}
+    {{ form_field_simple(form.prefix, placeholder='LAN23-B', autofocus='autofocus') }}
 
     {{ form_buttons(_('Save'), cancel_url=url_for('.index_for_shop', shop_id=shop.id)) }}
   </form>

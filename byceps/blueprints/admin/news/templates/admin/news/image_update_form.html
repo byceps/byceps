@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = item.brand %}
@@ -15,11 +15,9 @@
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   <form action="{{ url_for('.image_update', image_id=image.id) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.alt_text, autofocus='autofocus') }}
-      {{ form_field(form.caption) }}
-      {{ form_field(form.attribution) }}
-    {% endcall %}
+    {{ form_field_simple(form.alt_text, autofocus='autofocus') }}
+    {{ form_field_simple(form.caption) }}
+    {{ form_field_simple(form.attribution) }}
 
     {{ form_buttons(_('Save')) }}
   </form>

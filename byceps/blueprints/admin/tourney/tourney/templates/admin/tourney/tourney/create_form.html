@@ -1,5 +1,5 @@
 {% extends 'layout/admin/tourney.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'tourneys' %}
@@ -16,15 +16,19 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
-      {{ form_field(form.subtitle, maxlength=80) }}
-      {{ form_field(form.logo_url, maxlength=120) }}
-      {{ form_field(form.category_id) }}
-      {{ form_field(form.max_participant_count, min=0, max=999, style='width: 4rem;') }}
-      {{ form_field(form.starts_on) }}
-      {{ form_field(form.starts_at) }}
-    {% endcall %}
+    {{ form_field_simple(form.title, maxlength=40, autofocus='autofocus') }}
+    {{ form_field_simple(form.subtitle, maxlength=80) }}
+    {{ form_field_simple(form.logo_url, maxlength=120) }}
+    {{ form_field_simple(form.category_id) }}
+    {{ form_field_simple(form.max_participant_count, min=0, max=999, style='width: 4rem;') }}
+    <div class="row">
+      <div class="column-auto">
+        {{ form_field_simple(form.starts_on) }}
+      </div>
+      <div class="column-auto">
+        {{ form_field_simple(form.starts_at) }}
+      </div>
+    </div>
 
     {{ form_buttons(_('Create'), cancel_url=url_for('.index', party_id=party.id)) }}
   </form>

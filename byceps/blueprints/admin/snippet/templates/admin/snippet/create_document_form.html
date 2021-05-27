@@ -1,5 +1,5 @@
 {% extends 'layout/admin/snippet.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% set title = 'Dokument erstellen' %}
 
@@ -14,13 +14,11 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.create_document', scope_type=scope.type_, scope_name=scope.name) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.name, maxlength=40, autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=80) }}
-      {{ form_field(form.head, class='monospace wide') }}
-      {{ form_field(form.body, class='monospace wide') }}
-      {{ form_field(form.image_url_path, maxlength=80) }}
-    {% endcall %}
+    {{ form_field_simple(form.name, maxlength=40, autofocus='autofocus') }}
+    {{ form_field_simple(form.title, maxlength=80) }}
+    {{ form_field_simple(form.head, class='monospace') }}
+    {{ form_field_simple(form.body, class='monospace') }}
+    {{ form_field_simple(form.image_url_path, maxlength=80) }}
 
     {{ form_buttons(_('Save'), cancel_url=url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name)) }}
   </form>

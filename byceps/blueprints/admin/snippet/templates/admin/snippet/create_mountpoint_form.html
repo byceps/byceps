@@ -1,5 +1,5 @@
 {% extends 'layout/admin/snippet.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% set title = 'Mountpoint erstellen' %}
 
@@ -15,11 +15,9 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.create_mountpoint', snippet_id=snippet.id) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.site_id, value=snippet.scope.name, maxlength=40) }}
-      {{ form_field(form.endpoint_suffix, value=snippet.name, maxlength=40, autofocus='autofocus') }}
-      {{ form_field(form.url_path, value='/', maxlength=40) }}
-    {% endcall %}
+    {{ form_field_simple(form.site_id, value=snippet.scope.name, maxlength=40) }}
+    {{ form_field_simple(form.endpoint_suffix, value=snippet.name, maxlength=40, autofocus='autofocus') }}
+    {{ form_field_simple(form.url_path, value='/', maxlength=40) }}
 
     {{ form_buttons(_('Save'), cancel_url=url_for('.index_for_scope', scope_type=snippet.scope.type_, scope_name=snippet.scope.name)) }}
   </form>

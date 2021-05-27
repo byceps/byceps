@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
@@ -15,9 +15,7 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.team_create', party_id=party.id) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
-    {% endcall %}
+    {{ form_field_simple(form.title, maxlength=40, autofocus='autofocus') }}
 
     {{ form_buttons(_('Create')) }}
   </form>

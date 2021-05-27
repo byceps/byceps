@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset, form_supplement %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
@@ -15,19 +15,17 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.image_create', item_id=item.id) }}" method="post" enctype="multipart/form-data" class="disable-submit-button-on-submit">
-    {% call form_fieldset() %}
-      {{ form_field(form.image, maxlength=200000, accept='image/*', autofocus='autofocus') }}
-      {%- call form_supplement() %}
-        {%- filter dim %}
-          Erlaubte Formate: {{ allowed_types|sort|join(', ') }}<br>
-          Maximale Bildgröße: {{ maximum_dimensions|join(' &times; ')|safe }} Pixel<br>
-          Maximale Dateigröße: 150 KB
-        {%- endfilter %}
-      {%- endcall %}
-      {{ form_field(form.alt_text) }}
-      {{ form_field(form.caption) }}
-      {{ form_field(form.attribution) }}
-    {% endcall %}
+  {%- with %}
+    {%- set note %}
+        Erlaubte Formate: {{ allowed_types|sort|join(', ') }}<br>
+        Maximale Bildgröße: {{ maximum_dimensions|join(' &times; ')|safe }} Pixel<br>
+        Maximale Dateigröße: 150 KB
+    {%- endset %}
+    {{ form_field_simple(form.image, maxlength=200000, accept='image/*', autofocus='autofocus', note=note) }}
+  {%- endwith %}
+    {{ form_field_simple(form.alt_text) }}
+    {{ form_field_simple(form.caption) }}
+    {{ form_field_simple(form.attribution) }}
 
     {{ form_buttons(_('Add')) }}
   </form>

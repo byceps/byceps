@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
@@ -16,10 +16,8 @@
 
   {%- if unassigned_orgas_available %}
   <form action="{{ url_for('.membership_create', team_id=team.id) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.user_id, autofocus='autofocus') }}
-      {{ form_field(form.duties, maxlength=40) }}
-    {% endcall %}
+    {{ form_field_simple(form.user_id, autofocus='autofocus') }}
+    {{ form_field_simple(form.duties, maxlength=40) }}
 
     {{ form_buttons(_('Save')) }}
   </form>

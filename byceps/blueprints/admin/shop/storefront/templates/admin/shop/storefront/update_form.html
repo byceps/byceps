@@ -1,5 +1,5 @@
 {% extends 'layout/admin/shop/storefront.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field_checkbox, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_check_simple, form_field_simple, form_fieldset %}
 {% from 'macros/icons.html' import render_icon %}
 {% set title = 'Storefront bearbeiten' %}
 
@@ -8,11 +8,9 @@
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   <form action="{{ url_for('.update', storefront_id=storefront.id) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.catalog_id, autofocus='autofocus') }}
-      {{ form_field(form.order_number_sequence_id) }}
-      {{ form_field_checkbox(form.closed, form.closed.label.text) }}
-    {% endcall %}
+    {{ form_field_simple(form.catalog_id, autofocus='autofocus') }}
+    {{ form_field_simple(form.order_number_sequence_id) }}
+    {{ form_field_check_simple(form.closed, form.closed.label.text) }}
 
     {{ form_buttons(_('Save'), cancel_url=url_for('.view', storefront_id=storefront.id)) }}
   </form>
