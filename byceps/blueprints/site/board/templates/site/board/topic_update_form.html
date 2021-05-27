@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'board' %}
@@ -17,15 +17,15 @@
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   {%- if topic.creator_id != g.user.id %}
-  {{ render_notification('Du bist im Begriff, ein Thema von jemand anderem zu verändern.', category='danger', icon='warning') }}
+  <div style="margin-bottom: 1rem;">
+    {{ render_notification('Du bist im Begriff, ein Thema von jemand anderem zu verändern.', category='danger', icon='warning') }}
+  </div>
   {%- endif %}
 
   <form action="{{ url_for('.topic_update', topic_id=topic.id) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.title, maxlength=80, autofocus='autofocus') }}
-      {{ form_field(form.body) }}
+    {{ form_field_simple(form.title, maxlength=80, autofocus='autofocus') }}
+    {{ form_field_simple(form.body) }}
 {%- include 'site/board/_posting_form_body_supplement.html' %}
-    {% endcall %}
 
     {{ form_buttons(_('Save'), cancel_url=url_for('.topic_view', topic_id=topic.id)) }}
   </form>

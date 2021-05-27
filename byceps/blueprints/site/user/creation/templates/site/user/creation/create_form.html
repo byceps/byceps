@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_check_simple, form_field_simple %}
 {% set current_page = 'user.create' %}
 {% set title = 'Benutzerkonto erstellen' %}
 
@@ -8,26 +8,38 @@
   <h1>{{ title }}</h1>
 
   <form action="{{ url_for('.create') }}" method="post" class="disable-submit-button-on-submit">
-    {%- call form_fieldset() %}
-      {{ form_field(form.screen_name, maxlength=24, note='öffentlich sichtbar', autofocus='autofocus') }}
+
+    {{ form_field_simple(form.screen_name, maxlength=24, note='öffentlich sichtbar', autofocus='autofocus') }}
+
+    {%- if form.first_names is defined and form.last_name is defined %}
+    <div class="row">
       {%- if form.first_names is defined %}
-      {{ form_field(form.first_names, maxlength=40) }}
+      <div class="column-auto column-auto--grow">
+        {{ form_field_simple(form.first_names, maxlength=40) }}
+      </div>
       {%- endif %}
       {%- if form.last_name is defined %}
-      {{ form_field(form.last_name, maxlength=80) }}
+      <div class="column-auto column-auto--grow">
+        {{ form_field_simple(form.last_name, maxlength=80) }}
+      </div>
       {%- endif %}
-      {{ form_field(form.email_address, type='email', maxlength=120) }}
-      {{ form_field(form.password, maxlength=40) }}
-      {%- for subject in required_consent_subjects %}
-        {%- with field = form.get_field_for_consent_subject_id(subject.id) %}
-      {{ form_field_checkbox(field, subject.checkbox_label.replace('{url}', subject.checkbox_link_target)|safe) }}
-        {%- endwith %}
-      {%- endfor %}
-      {%- if form.subscribe_to_newsletter is defined %}
-      {{ form_field_checkbox(form.subscribe_to_newsletter, 'Ich möchte den Newsletter erhalten.') }}
-      {%- endif %}
-      <div style="display: none;">{{ form_field_checkbox(form.is_bot, 'Ich bin ein Bot.') }}</div>
-    {%- endcall %}
+    </div>
+    {%- endif %}
+
+    {{ form_field_simple(form.email_address, type='email', maxlength=120) }}
+    {{ form_field_simple(form.password, maxlength=40) }}
+
+    {%- for subject in required_consent_subjects %}
+      {%- with field = form.get_field_for_consent_subject_id(subject.id) %}
+    {{ form_field_check_simple(field, subject.checkbox_label.replace('{url}', subject.checkbox_link_target)|safe) }}
+      {%- endwith %}
+    {%- endfor %}
+
+    {%- if form.subscribe_to_newsletter is defined %}
+    {{ form_field_check_simple(form.subscribe_to_newsletter, 'Ich möchte den Newsletter erhalten.') }}
+    {%- endif %}
+
+    <div style="display: none;">{{ form_field_check_simple(form.is_bot, 'Ich bin ein Bot.') }}</div>
 
     {{ form_buttons(_('Create')) }}
   </form>

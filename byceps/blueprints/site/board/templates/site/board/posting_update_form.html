@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'board' %}
@@ -21,10 +21,8 @@
   {%- endif %}
 
   <form action="{{ url_for('.posting_update', posting_id=posting.id) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.body, autofocus='autofocus') }}
+    {{ form_field_simple(form.body, autofocus='autofocus') }}
 {%- include 'site/board/_posting_form_body_supplement.html' %}
-    {% endcall %}
 
     {{ form_buttons(_('Save'), cancel_url=url_for('.topic_view', topic_id=posting.topic.id)) }}
   </form>

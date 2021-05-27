@@ -1,5 +1,5 @@
 {% extends 'layout/base_auto.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% set current_page = 'authentication_password_request_reset' %}
 {% set title = 'Zurücksetzen deines Passworts anfordern' %}
 {% if g.app_mode.is_admin() %}
@@ -11,9 +11,7 @@
   <h1>{{ title }}</h1>
 
   <form action="{{ url_for('.request_reset') }}" method="post">
-    {%- call form_fieldset() %}
-      {{ form_field(form.screen_name, maxlength=40, autofocus='autofocus') }}
-    {%- endcall %}
+    {{ form_field_simple(form.screen_name, maxlength=40, autofocus='autofocus') }}
 
     {{ form_buttons(_('Request')) }}
   </form>

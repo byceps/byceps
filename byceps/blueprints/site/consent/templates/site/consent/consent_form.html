@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_check_simple %}
 {% from 'macros/misc.html' import render_notification %}
 {% set title = 'Zustimmung erforderlich' %}
 
@@ -10,12 +10,10 @@
   {{ render_notification('Bitte stimme den aktualisierten Bedingungen zu, um fortfahren zu können.', category='warning', icon='warning') }}
 
   <form action="{{ url_for('.consent', token=token) }}" method="post" class="disable-submit-button-on-submit" style="margin-top: 1rem;">
-    {%- call form_fieldset() %}
-      {{ form_field(form.subject_ids, show_label=False) }}
-      {%- for subject, field in subjects_and_fields %}
-      {{ form_field_checkbox(field, subject.checkbox_label.replace('{url}', subject.checkbox_link_target)|safe) }}
-      {%- endfor %}
-    {%- endcall %}
+    {{ form.subject_ids() }}
+    {%- for subject, field in subjects_and_fields %}
+    {{ form_field_check_simple(field, subject.checkbox_label.replace('{url}', subject.checkbox_link_target)|safe) }}
+    {%- endfor %}
 
     {{ form_buttons(_('I consent')) }}
   </form>

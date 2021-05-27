@@ -340,12 +340,7 @@ label {
 }
 
 .form-row-simple {
-  margin-bottom: 1.5rem;
-}
-
-.form-label,
-.form-check-label {
-  width: auto;
+  margin-bottom: 1rem;
 }
 
 .form-label {
@@ -353,104 +348,37 @@ label {
   margin-bottom: 0.25rem;
 }
 
-.form-check-label,
-.form-control-radios label {
-  font-weight: normal;
-}
-
 .form-control {
   display: block;
 }
 
+.form-control-checkboxes ul,
 .form-control-radios ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-input.form-control[type='email'],
-input.form-control[type='password'],
-input.form-control[type='text'],
+input.form-control:not([size]):not([type='checkbox']):not([type='date']):not([type='radio']):not([type='time']),
 textarea.form-control {
   width: 100%;
 }
 
-.form-row {
-  padding: 0.2rem 0;
-}
-
-fieldset li {
-  margin: 0;
-  padding: 0.2rem 0;
-}
-
-form label,
-fieldset .label {
-  font-weight: bold;
-  vertical-align: top;
-  width: 100%;
-}
-
-.checkbox label {
-  font-weight: normal;
-  padding-top: 0.1rem;
-  width: auto;
-}
-
-.checkbox {
-  padding-top: 0.3rem;
-}
-
-fieldset input:not([size]):not([type='checkbox']):not([type='date']):not([type='radio']):not([type='time']),
-fieldset textarea,
-fieldset .supplement {
-  width: 100%;
-}
-
-fieldset input[type='number'] {
+input[type='number'] {
   text-align: right;
 }
 
-.form-row-simple textarea,
-fieldset textarea {
+textarea.form-control {
   height: 20rem;
   resize: vertical;
 }
 
-fieldset textarea.wide {
-  width: 100%;
-}
-
-fieldset textarea.collapsible {
+textarea.collapsible {
   transition: height 0.5s;
 }
 
-fieldset textarea.collapsible.collapsed {
+textarea.collapsible.collapsed {
   height: 3rem;
-}
-
-fieldset .supplement {
-  display: inline-block;
-  margin-left: -4px;
-}
-
-@media (min-width: 45rem) { /* 720px / 16px */
-
-  form label,
-  fieldset .label {
-    width: 22%;
-  }
-
-  fieldset input:not([size]):not([type='checkbox']):not([type='date']):not([type='radio']):not([type='time']),
-  fieldset textarea,
-  fieldset .supplement {
-    width: 78%;
-  }
-
-  .checkbox {
-    padding-left: 22%;
-  }
-
 }
 
 .form-note {
@@ -459,8 +387,7 @@ fieldset .supplement {
   margin-top: 0.5rem;
 }
 
-.form-row-simple.erroneous,
-.form-row.erroneous {
+.form-row-simple.erroneous {
   background-color: #ff9999;
   border: #ff1a1a solid 1px;
   border-radius: 3px;
@@ -468,14 +395,12 @@ fieldset .supplement {
   padding: 0.75rem calc(1rem - 1px) 0.5rem calc(1rem - 1px);
 }
 
-.form-row-simple.erroneous .errors li,
-.form-row.erroneous .errors li {
+.form-row-simple.erroneous .errors li {
   font-size: 0.6875rem; /* 11px / 16px */
   margin-top: 0.2rem;
 }
 
-.form-row-simple.erroneous .errors li span,
-.form-row.erroneous .errors li span {
+.form-row-simple.erroneous .errors li span {
   font-style: italic;
 }
 

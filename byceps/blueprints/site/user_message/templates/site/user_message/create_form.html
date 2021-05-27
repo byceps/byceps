@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_fieldset, form_field, form_supplement %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_link %}
 {% set current_page = 'user_message' %}
 {% set title = 'Mitteilung an Benutzer senden' %}
@@ -9,12 +9,11 @@
   <h1>Mitteilung senden</h1>
 
   <form action="{{ url_for('.create', recipient_id=recipient.id) }}" method="post">
-    {%- call form_fieldset() %}
-      {%- call form_supplement(label='Empfänger/in') %}
-        {{ render_user_avatar_20_and_link(recipient) }}
-      {%- endcall %}
-      {{ form_field(form.body, maxlength=2000, autofocus='autofocus') }}
-    {%- endcall %}
+    <label class="form-label">Empfänger/in</label>
+    <div style="margin-bottom: 1rem;">
+      {{ render_user_avatar_20_and_link(recipient) }}
+    </div>
+    {{ form_field_simple(form.body, maxlength=2000, autofocus='autofocus') }}
 
     {{ form_buttons(_('Send')) }}
   </form>

@@ -104,11 +104,6 @@ form.board-posting-create-form-inline textarea.collapsible.collapsed ~ .collapsi
   display: none;
 }
 
-form.board-posting-create-form-inline textarea.collapsible ~ .collapsible-neighbor .supplement {
-  margin-left: 0;
-  width: auto;
-}
-
 form.board-posting-create-form-inline .label {
   display: none;
 }

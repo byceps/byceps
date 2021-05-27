@@ -21,7 +21,7 @@
         Maximale Bildgröße: {{ maximum_dimensions|join(' &times; ')|safe }} Pixel<br>
         Maximale Dateigröße: 150 KB
     {%- endset %}
-    {{ form_field_simple(form.image, maxlength=200000, accept='image/*', autofocus='autofocus', note=note) }}
+    {{ form_field_simple(form.image, maxlength=150000, accept='image/*', autofocus='autofocus', note=note) }}
   {%- endwith %}
     {{ form_field_simple(form.alt_text) }}
     {{ form_field_simple(form.caption) }}

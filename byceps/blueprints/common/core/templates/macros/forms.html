@@ -1,13 +1,6 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-{% macro form_fieldset() -%}
-  <fieldset>
-{{ caller() }}
-  </fieldset>
-{%- endmacro %}
-
-
 {%- macro form_field_simple(field, class='', note=None) -%}
   <div class="form-row-simple{% if field.errors %} erroneous{% endif %}">
     {{ field.label(class='form-label') }}
@@ -41,51 +34,14 @@
 {%- endmacro %}
 
 
-{%- macro form_field(field, show_label=True, note=None) -%}
-  {%- set kwargs2 = kwargs %}
-  {%- call _row(field) %}
-        {%- if show_label %}{{ field.label }}{% endif %}{{ field(**kwargs2) }}
-        {%- if note %} {{ note|dim }}{% endif %}
-  {%- endcall %}
-{%- endmacro %}
-
-
-{%- macro form_field_checkbox(field, label) -%}
-  {%- set kwargs2 = kwargs %}
-  {%- call _row(field) %}
-        <div class="checkbox">
-          <label>{{- field(**kwargs2) }} {{ label }}</label>
-        </div>
-  {%- endcall %}
-{%- endmacro %}
-
-
-{%- macro _row(field) -%}
-      <div class="form-row{% if field.errors %} erroneous{% endif %}">
-{{- caller() -}}
-        {{- _errors(field) -}}
-      </div>
-{%- endmacro %}
-
-
 {%- macro _errors(field) -%}
-        {%- if field.errors %}
-        <ol class="errors">
-          {%- for error in field.errors %}
-          <li><strong>{{ _('Error') }}:</strong> <span>{{ error }}</span></li>
-          {%- endfor %}
-        </ol>
-        {%- endif -%}
-{%- endmacro %}
-
-
-{% macro form_supplement(label=None) -%}
-      <div class="form-row">
-        <div class="label">{% if label is not none %}{{ label }}{% endif %}</div>
-        <div class="supplement">
-{{ caller() }}
-        </div>
-      </div>
+    {%- if field.errors %}
+    <ol class="errors">
+      {%- for error in field.errors %}
+      <li><strong>{{ _('Error') }}:</strong> <span>{{ error }}</span></li>
+      {%- endfor %}
+    </ol>
+    {%- endif -%}
 {%- endmacro %}
 
 

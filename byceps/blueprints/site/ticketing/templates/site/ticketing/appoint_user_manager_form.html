@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% set current_page = 'ticket' %}
 {% set title = 'Nutzer-Verwaltung von Ticket %s an Benutzer zuweisen'|format(ticket.code) %}
 
@@ -8,9 +8,7 @@
   <h1>{{ title }}</h1>
 
   <form action="{{ url_for('.appoint_user_manager', ticket_id=ticket.id) }}" method="post">
-    {%- call form_fieldset() %}
-      {{ form_field(form.user, maxlength=40, autofocus='autofocus') }}
-    {%- endcall %}
+    {{ form_field_simple(form.user, maxlength=40, autofocus='autofocus') }}
 
     {{ form_buttons(_('Assign')) }}
   </form>

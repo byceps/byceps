@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_field_checkbox, form_fieldset, form_supplement %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'webhook_admin' %}
 {% set title = _('Update Webhook') %}
@@ -14,25 +14,25 @@
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   <form action="{{ url_for('.update', webhook_id=webhook.id) }}" method="post">
-    {% call form_fieldset() %}
-      {{ form_field(form.description, autofocus='autofocus') }}
-      {{ form_field(form.format) }}
-      {{ form_field(form.url) }}
-      {{ form_field(form.text_prefix) }}
-      {{ form_field(form.enabled) }}
-      <div class="form-row">
-        <label>{{ _('Selectors') }}</label>
+    {{ form_field_simple(form.description, autofocus='autofocus') }}
+    {{ form_field_simple(form.format) }}
+    {{ form_field_simple(form.url) }}
+    {{ form_field_simple(form.text_prefix) }}
+    {{ form_field_simple(form.enabled) }}
+    <div class="form-row-simple">
+      <label class="form-label">{{ _('Selectors') }}</label>
+      <div class="form-control-checkboxes">
         <fieldset>
+          <ul>
           {%- for event_name in event_names|sort %}
-          <div class="checkbox">
             {%- with field = form.get_field_for_event_name(event_name) %}
-            {{- field() }} {{ field.label(event_name) }}
+            <li><label class="form-check-label">{{- field() }} {{ event_name }}</label></li>
             {%- endwith %}
-          </div>
           {%- endfor %}
-        <fieldset>
+          </ul>
+        </fieldset>
       </div>
-    {% endcall %}
+    </div>
 
     {{ form_buttons(_('Update')) }}
   </form>

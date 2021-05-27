@@ -1,5 +1,5 @@
 {% extends 'layout/admin/ticketing.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% set current_page = 'ticket' %}
 {% set current_page_party = party %}
 {% set current_tab = 'tickets' %}
@@ -10,9 +10,7 @@
   <h1>{{ title }}</h1>
 
   <form action="{{ url_for('.update_code', ticket_id=ticket.id) }}" method="post">
-    {%- call form_fieldset() %}
-      {{ form_field(form.code, autofocus='autofocus') }}
-    {%- endcall %}
+    {{ form_field_simple(form.code, autofocus='autofocus') }}
 
     {{ form_buttons(_('Change')) }}
   </form>

@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field, form_fieldset, form_supplement %}
+{% from 'macros/forms.html' import form_buttons, form_field_simple %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user_avatar' %}
 {% set title = 'Avatar hochladen' %}
@@ -9,16 +9,15 @@
   <h1>{{ title }}</h1>
 
   <form action="{{ url_for('.update') }}" method="post" enctype="multipart/form-data" class="disable-submit-button-on-submit">
-    {%- call form_fieldset() %}
-      {{ form_field(form.image, maxlength=150000, accept='image/*', autofocus='autofocus') }}
-      {%- call form_supplement() %}
-        {%- filter dim %}
-          Erlaubte Formate: {{ allowed_types|sort|join(', ') }}<br>
-          Maximale Bildgröße: {{ maximum_dimensions|join(' &times; ')|safe }} Pixel<br>
-          Falls das Bild nicht quadratisch ist, wird es zugeschnitten.
-        {%- endfilter %}
-      {%- endcall %}
-    {%- endcall %}
+  {%- with %}
+    {%- set note %}
+      Erlaubte Formate: {{ allowed_types|sort|join(', ') }}<br>
+      Maximale Bildgröße: {{ maximum_dimensions|join(' &times; ')|safe }} Pixel<br>
+      Maximale Dateigröße: 150 KB<br>
+      Falls das Bild nicht quadratisch ist, wird es zugeschnitten.
+    {%- endset %}
+    {{ form_field_simple(form.image, maxlength=150000, accept='image/*', autofocus='autofocus', note=note) }}
+  {%- endwith %}
 
     {{ form_buttons(render_icon('upload') + ' ' + _('Upload')) }}
   </form>
