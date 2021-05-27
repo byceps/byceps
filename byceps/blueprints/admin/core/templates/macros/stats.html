@@ -3,7 +3,7 @@
 
 {%- macro render_bigstats_item(value, caption, icon_name=None, color=None) -%}
 <figure{% if color is not none %} style="color: {{ color }};"{% endif %}>
-  <span class="value">{{ value }}</span>
+  <div class="value">{{ value }}</div>
   <figcaption>{% if icon_name is not none %}{{ render_icon(icon_name) }} {% endif %}{{ caption }}</figcaption>
 </figure>
 {%- endmacro %}

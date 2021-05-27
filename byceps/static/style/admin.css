@@ -608,11 +608,6 @@ main .dropdown-menu {
   text-align: center;
 }
 
-.bigstats .value,
-.bigstats figcaption {
-  display: block;
-}
-
 .bigstats .value {
   font-size: 2.5rem; /* 40px / 16px */
   font-weight: bold;
