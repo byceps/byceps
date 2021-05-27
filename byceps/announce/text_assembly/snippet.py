@@ -9,7 +9,7 @@ Announce snippet events.
 """
 
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
-from ...services.snippet.transfer.models import SnippetType
+from ...services.snippet.transfer.models import Scope, SnippetType
 
 from ._helpers import get_screen_name_or_fallback
 
@@ -23,7 +23,7 @@ def assemble_text_for_snippet_created(event: SnippetCreated) -> str:
     return (
         f'{editor_screen_name} hat das Snippet-{type_label} '
         f'"{event.snippet_name}" im Scope '
-        f'"{event.scope.type_}/{event.scope.name}" angelegt.'
+        f'"{_get_scope_label(event.scope)}" angelegt.'
     )
 
 
@@ -36,7 +36,7 @@ def assemble_text_for_snippet_updated(event: SnippetUpdated) -> str:
     return (
         f'{editor_screen_name} hat das Snippet-{type_label} '
         f'"{event.snippet_name}" im Scope '
-        f'"{event.scope.type_}/{event.scope.name}" aktualisiert.'
+        f'"{_get_scope_label(event.scope)}" aktualisiert.'
     )
 
 
@@ -47,7 +47,7 @@ def assemble_text_for_snippet_deleted(event: SnippetDeleted) -> str:
 
     return (
         f'{initiator_screen_name} hat das Snippet "{event.snippet_name}" '
-        f'im Scope "{event.scope.type_}/{event.scope.name}" gelöscht.'
+        f'im Scope "{_get_scope_label(event.scope)}" gelöscht.'
     )
 
 
@@ -63,3 +63,7 @@ _SNIPPET_TYPE_LABELS = {
 def _get_snippet_type_label(snippet_type: SnippetType) -> str:
     """Return label for snippet type."""
     return _SNIPPET_TYPE_LABELS.get(snippet_type, '?')
+
+
+def _get_scope_label(scope: Scope) -> str:
+    return scope.type_ + '/' + scope.name
