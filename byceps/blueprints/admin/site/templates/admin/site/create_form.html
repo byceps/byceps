@@ -15,7 +15,7 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.create', brand_id=brand.id) }}" method="post">
-    <div class="form-row-simple">
+    <div class="mb">
       <label class="form-label">Marke</label>
       <div>
         {{ render_brand_avatar(brand, '64') }}<br>

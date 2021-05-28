@@ -15,7 +15,7 @@
   <h1>{{ render_icon('badge') }} {{ title }}</h1>
 
   <form action="{{ url_for('.award', user_id=user.id) }}" method="post">
-    <div class="form-row-simple">
+    <div class="mb">
       <label class="form-label">{{ _('User') }}</label>
       <div>
         {{ render_user_avatar_20_and_admin_link(user) }}
