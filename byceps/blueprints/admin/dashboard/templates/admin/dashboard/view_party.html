@@ -22,31 +22,31 @@
     {{ render_bigstats_cell(orga_count, _('organizers in %(team_count)s teams', team_count='<strong>%d</strong>'|format(orga_team_count)|safe), href=url_for('orga_team_admin.teams_for_party', party_id=party.id), icon_name='users') }}
     {{ render_bigstats_cell(seat_count|separate_thousands, _('seats in %(area_count)s areas', area_count='<strong>%d</strong>'|format(seating_area_count)|safe), href=url_for('seating_admin.index_for_party', party_id=party.id), icon_name='seating-area') }}
     {%- call render_cell(href=url_for('ticketing_admin.index_for_party', party_id=party.id)) %}
-    <div class="dimmed" style="font-size: 0.75rem; margin-bottom: 1rem; text-transform: uppercase;">{{ _('tickets sold') }}</div>
+      <div class="dimmed" style="font-size: 0.75rem; margin-bottom: 1rem; text-transform: uppercase;">{{ _('tickets sold') }}</div>
       {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
-        <div class="progress">
-          {%- if tickets_total_max_specified %}
-          <div class="progress-bar color-success" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
-          {%- endif %}
-        </div>
-        <div class="row row--space-between" style="font-size: 0.75rem;">
-          <div class="column-auto" style="font-weight: bold;">{{ ticket_sale_stats.tickets_sold|separate_thousands }}</div>
-          {%- if tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
-          <div class="column-auto">{{ render_tag(_('sold out')) }}</div>
-          {%- endif %}
-          <div class="column-auto dimmed">{{ _('of') }} {{ ticket_sale_stats.tickets_max|separate_thousands if tickets_total_max_specified else '?' }}</div>
-        </div>
+      <div class="progress">
+        {%- if tickets_total_max_specified %}
+        <div class="progress-bar color-success" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
+        {%- endif %}
+      </div>
+      <div class="row row--space-between" style="font-size: 0.75rem;">
+        <div class="column-auto" style="font-weight: bold;">{{ ticket_sale_stats.tickets_sold|separate_thousands }}</div>
+        {%- if tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
+        <div class="column-auto">{{ render_tag(_('sold out')) }}</div>
+        {%- endif %}
+        <div class="column-auto dimmed">{{ _('of') }} {{ ticket_sale_stats.tickets_max|separate_thousands if tickets_total_max_specified else '?' }}</div>
+      </div>
       {%- endwith %}
     {%- endcall %}
     {%- call render_cell(href=url_for('ticketing_checkin_admin.index', party_id=party.id)) %}
-    <div class="dimmed" style="font-size: 0.75rem; margin-bottom: 1rem; text-transform: uppercase;">{{ _('tickets checked in') }}</div>
-        <div class="progress">
-          <div class="progress-bar color-success" style="width: calc(100% * {{ tickets_checked_in }} / {{ ticket_sale_stats.tickets_sold }});"></div>
-        </div>
-        <div class="row row--space-between" style="font-size: 0.75rem;">
-          <div class="column-auto" style="font-weight: bold;">{{ tickets_checked_in|separate_thousands }}</div>
-          <div class="column-auto dimmed">{{ _('of') }} {{ ticket_sale_stats.tickets_sold|separate_thousands }}</div>
-        </div>
+      <div class="dimmed" style="font-size: 0.75rem; margin-bottom: 1rem; text-transform: uppercase;">{{ _('tickets checked in') }}</div>
+      <div class="progress">
+        <div class="progress-bar color-success" style="width: calc(100% * {{ tickets_checked_in }} / {{ ticket_sale_stats.tickets_sold }});"></div>
+      </div>
+      <div class="row row--space-between" style="font-size: 0.75rem;">
+        <div class="column-auto" style="font-weight: bold;">{{ tickets_checked_in|separate_thousands }}</div>
+        <div class="column-auto dimmed">{{ _('of') }} {{ ticket_sale_stats.tickets_sold|separate_thousands }}</div>
+      </div>
     {%- endcall %}
   </div>
 
