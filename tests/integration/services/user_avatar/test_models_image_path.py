@@ -14,6 +14,12 @@ from byceps.util.image.models import ImageType
 from tests.helpers import app_context
 
 
+@pytest.fixture
+def app():
+    with app_context() as app:
+        yield app
+
+
 @pytest.mark.parametrize(
     'data_path, avatar_id, image_type, expected',
     [
@@ -31,14 +37,14 @@ from tests.helpers import app_context
         ),
     ],
 )
-def test_path(data_path, avatar_id, image_type, expected):
+def test_path(app, data_path, avatar_id, image_type, expected):
     user_id = UUID('dc4e11d5-0c43-42d9-add2-37e947f19e68')
+
+    app.config['PATH_DATA'] = data_path
 
     avatar = create_avatar(user_id, avatar_id, image_type)
 
-    with app_context() as app:
-        app.config['PATH_DATA'] = data_path
-        assert avatar.path == expected
+    assert avatar.path == expected
 
 
 # helpers
