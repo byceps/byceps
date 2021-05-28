@@ -542,28 +542,17 @@ ol.index.fully-linked a:hover {
 
 /* forms */
 
-.form-row-simple.erroneous,
-.form-row.erroneous {
+form .invalid {
   border-radius: 0;
   border-width: 1px 0;
+  margin-bottom: 1rem;
   margin-left: -40px;
   margin-right: -40px;
-  padding: 0.75rem 40px 0.5rem 40px;
-}
-
-.form-row-simple.erroneous {
-  margin-bottom: 1rem;
   margin-top: 0;
-  padding-bottom: 0.75rem;
-  padding-top: 0.75rem;
+  padding: 0.75rem 40px;
 }
 
-.form-row-simple.erroneous + .form-row-simple.erroneous,
-.form-row.erroneous + .form-row.erroneous {
-  margin-top: 0.5rem;
-}
-
-.form-row-simple .errors {
+form .invalid .errors {
   margin-top: 0.5rem;
 }
 

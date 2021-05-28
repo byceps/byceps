@@ -398,7 +398,7 @@ textarea.collapsible.collapsed {
   margin-top: 0.5rem;
 }
 
-.form-row-simple.erroneous {
+form .invalid {
   background-color: #ff9999;
   border: #ff1a1a solid 1px;
   border-radius: 3px;
@@ -406,12 +406,12 @@ textarea.collapsible.collapsed {
   padding: 0.75rem calc(1rem - 1px) 0.5rem calc(1rem - 1px);
 }
 
-.form-row-simple.erroneous .errors li {
+form .invalid .errors li {
   font-size: 0.6875rem; /* 11px / 16px */
   margin-top: 0.2rem;
 }
 
-.form-row-simple.erroneous .errors li span {
+form .invalid .errors li span {
   font-style: italic;
 }
 
