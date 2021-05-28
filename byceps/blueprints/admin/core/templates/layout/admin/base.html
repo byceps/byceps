@@ -26,17 +26,17 @@
             {%- if not layout_sidebar_hide|default(False) %}
             <div class="page-body-grid-sidebar">
               <aside id="sidebar">
-    {%- include 'layout/admin/_navigation.html' %}
+{%- include 'layout/admin/_navigation.html' %}
               </aside>
             </div>{# .page-body-grid-sidebar #}
             {%- endif %}
 
             <div class="page-body-grid-main">
               <main>
-    {%- include 'layout/_notifications.html' %}
-    {%- block before_body %}{% endblock %}
+{%- include 'layout/_notifications.html' %}
+{%- block before_body %}{% endblock %}
                 <div{% if not layout_main_raw|default(False) %} id="main"{% endif %}>
-    {%- block body required %}{% endblock %}
+{%- block body required %}{% endblock %}
                 </div>{# #main #}
               </main>
             </div>{# .page-body-grid-main #}

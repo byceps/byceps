@@ -33,7 +33,6 @@ a {
     "body"   1fr
     "footer" auto;
   height: 100vh;
-  row-gap: var(--layout-gutter);
 }
 
 .page-header {
@@ -63,7 +62,7 @@ a {
   display: flex;
   flex-direction: column;
   gap: var(--layout-gutter);
-  padding: 0 var(--layout-gutter);
+  padding: var(--layout-gutter);
 }
 
 .page-body-grid-main {
