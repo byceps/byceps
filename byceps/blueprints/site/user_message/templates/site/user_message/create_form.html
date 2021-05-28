@@ -10,7 +10,7 @@
 
   <form action="{{ url_for('.create', recipient_id=recipient.id) }}" method="post">
     <label class="form-label">Empfänger/in</label>
-    <div style="margin-bottom: 1rem;">
+    <div class="mb">
       {{ render_user_avatar_20_and_link(recipient) }}
     </div>
     {{ form_field_simple(form.body, maxlength=2000, autofocus='autofocus') }}

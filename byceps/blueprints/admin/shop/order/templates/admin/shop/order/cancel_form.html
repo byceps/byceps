@@ -15,7 +15,7 @@
 
   <form action="{{ url_for('.cancel', order_id=order.id) }}" method="post">
     {{ form_field_simple(form.reason, maxlength=1000, autofocus='autofocus') }}
-    <div style="margin-bottom: var(--inner-gutter);">
+    <div class="mb">
       {{ render_notification('Die Begründung wird an die bestellende Person weitergegeben.<br>Es handelt sich <em>nicht</em> um einen internen Vermerk.'|safe, category='warning', icon='warning') }}
     </div>
     {{ form_field_check_simple(form.send_email, form.send_email.label.text, checked='checked') }}

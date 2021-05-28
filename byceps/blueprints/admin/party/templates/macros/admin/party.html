@@ -41,7 +41,7 @@
       </div>
 
       <div class="column-auto" style="width: 30%;">
-        <div style="margin-bottom: 1rem;">
+        <div class="mb">
         {{ _render_ticket_sale_stats(ticket_sale_stats) }}
         </div>
 
@@ -51,7 +51,6 @@
         {%- if party.seat_management_enabled %}
         {{ render_tag('Sitzplatzverwaltung geöffnet', class='color-success', icon='seating-area') }}<br>
         {%- endif %}
-        <br>
         {%- if party.canceled %}
         {{ render_tag('abgesagt', class='color-danger', icon='disabled') }}
         {%- endif %}

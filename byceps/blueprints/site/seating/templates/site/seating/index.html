@@ -8,7 +8,7 @@
 
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive" style="margin-bottom: 2rem;">
+  <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive">
     <input type="search" name="search_term" placeholder="Benutzername">
     <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
   </form>

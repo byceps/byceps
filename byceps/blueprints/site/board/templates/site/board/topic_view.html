@@ -41,11 +41,9 @@
   {%- endfor %}
 
   {%- if topic.posting_limited_to_moderators %}
-    <div style="margin-bottom: 2.5rem;">
     {%- call render_event_row('announce') %}
       Dieses Thema ist für Ankündigungen gedacht. Nur <strong>Moderatoren</strong> dürfen Beiträge hinzufügen.
     {%- endcall %}
-    </div>
   {%- endif %}
 
   {%- if topic.locked %}

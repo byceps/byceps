@@ -106,7 +106,8 @@ img {
 
 .row {
   display: flex;
-  margin: -1rem 0 0 -1rem;
+  margin-top: -1rem;
+  margin-left: -1rem;
 }
 
 .row--equal-sized-centered-columns > * {
@@ -889,6 +890,10 @@ table.user-badges-list td {
 
 img {
   max-width: 100%;
+}
+
+.mb {
+  margin-bottom: 1rem;
 }
 
 .centered {

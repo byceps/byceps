@@ -33,7 +33,7 @@
 
   <h1>{{ title }}</h1>
 
-  <form action="{{ url_for('.attendees') }}" class="single-row unobtrusive" style="margin-bottom: 2rem;">
+  <form action="{{ url_for('.attendees') }}" class="single-row unobtrusive mb">
     <input type="search" name="search_term" placeholder="Benutzername" {%- if search_term %} value="{{ search_term }}"{% endif %}>
     <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
     {%- if search_term %}
@@ -43,7 +43,7 @@
 
   {%- if search_term %}
   <small>
-    <div class="row row--space-between" style="margin-bottom: 1rem;">
+    <div class="row row--space-between mb">
       <div class="column-auto">
         <p><strong>{{ attendees.total }}</strong> Treffer für Suchbegriff &quot;<strong>{{ search_term }}</strong>&quot;</p>
       </div>

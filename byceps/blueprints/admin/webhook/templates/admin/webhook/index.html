@@ -35,7 +35,7 @@
     {%- for webhook in webhooks %}
   <div class="box" style="border-left: {{ '#55cc00' if webhook.enabled else '#aaaaaa' }} solid 0.25rem;">
 
-    <div class="two-column" style="margin-bottom: 1rem;">
+    <div class="two-column mb">
 
       <div>
         {{ render_tag(_('enabled'), class='color-success') if webhook.enabled else render_tag(_('disabled'), class='color-disabled') }}
