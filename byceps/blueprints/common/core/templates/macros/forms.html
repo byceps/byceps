@@ -16,7 +16,7 @@
 {%- macro form_field_check_simple(field, label=None) -%}
   <div class="form-row-simple{% if field.errors %} erroneous{% endif %}">
     {%- with label = label if label is not none else field.label.text %}
-    <label class="form-check-label">{{- field(**kwargs) }} {{ label }}</label>
+    <label class="form-check-label">{{- field(**kwargs) }} <span>{{ label }}</span></label>
     {%- endwith %}
     {{- _errors(field) -}}
   </div>

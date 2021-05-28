@@ -348,6 +348,16 @@ label {
   margin-bottom: 0.25rem;
 }
 
+.form-check-label {
+  align-items: flex-start;
+  display: flex;
+}
+
+.form-check-label span {
+  margin-left: 0.25rem;
+  margin-top: 0.125rem;
+}
+
 .form-control {
   display: block;
 }
