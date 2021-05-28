@@ -30,6 +30,7 @@ a {
   display: grid;
   grid-template:
     "header" auto
+    "nav"    auto
     "body"   1fr
     "footer" auto;
   height: 100vh;
@@ -37,6 +38,10 @@ a {
 
 .page-header {
   grid-area: header;
+}
+
+.page-header-nav {
+  grid-area: nav;
 }
 
 .page-body {
@@ -233,6 +238,39 @@ main {
 
 #header-content form input:not(:placeholder-shown) {
   background-color: #eeeeee;
+}
+
+
+/* header navigation */
+
+.page-header-nav {
+  background-color: #ffffff;
+  border-bottom: #dddddd solid 1px;
+  border-top: #dddddd solid 1px;
+}
+
+.header-nav {
+  padding: 1.5rem var(--layout-gutter);
+}
+
+.header-nav-crumbs {
+  align-items: center;
+  display: flex;
+  min-height: 2.8rem;
+}
+
+.header-nav-crumb {
+  color: #666666;
+}
+
+.header-nav-crumb-separator::before {
+  color: #aaaaaa;
+  content: "›";
+  margin: 0 0.75rem;
+}
+
+.header-nav-crumb:not(:hover) {
+  text-decoration: none;
 }
 
 

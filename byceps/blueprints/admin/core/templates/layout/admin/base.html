@@ -18,6 +18,12 @@
 {%- include 'layout/admin/_header.html' %}
       </section>
 
+{%- if has_current_user_permission(AdminPermission.access) %}
+      <section class="page-header-nav">
+{%- include 'layout/admin/_header_navigation.html' %}
+      </section>
+{%- endif %}
+
       <section class="page-body">
         <div class="container">
 
