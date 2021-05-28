@@ -1,5 +1,5 @@
 {% extends 'layout/admin/user.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_tab = 'profile' %}
 {% set current_tab_user_id = user.id %}
@@ -10,8 +10,8 @@
   <h1>{{ title }}</h1>
 
   <form action="{{ url_for('.change_screen_name', user_id=user.id) }}" method="post">
-    {{ form_field_simple(form.screen_name, maxlength=24, autofocus='autofocus') }}
-    {{ form_field_simple(form.reason, maxlength=1000, note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.') }}
+    {{ form_field(form.screen_name, maxlength=24, autofocus='autofocus') }}
+    {{ form_field(form.reason, maxlength=1000, note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.') }}
 
     {{ form_buttons(_('Change'), cancel_url=url_for('.view', user_id=user.id)) }}
   </form>

@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field_check_simple, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'site_admin' %}
 {% set current_page_site = site %}
@@ -15,16 +15,16 @@
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   <form action="{{ url_for('.update', site_id=site.id) }}" method="post">
-    {{ form_field_simple(form.title, maxlength=40, autofocus='autofocus') }}
-    {{ form_field_simple(form.server_name, note='Muss eindeutig sein') }}
-    {{ form_field_simple(form.brand_id) }}
-    {{ form_field_simple(form.party_id) }}
-    {{ form_field_simple(form.board_id) }}
-    {{ form_field_simple(form.storefront_id) }}
-    {{ form_field_check_simple(form.enabled, form.enabled.label.text) }}
-    {{ form_field_check_simple(form.user_account_creation_enabled, form.user_account_creation_enabled.label.text) }}
-    {{ form_field_check_simple(form.login_enabled, form.login_enabled.label.text) }}
-    {{ form_field_check_simple(form.archived, form.archived.label.text) }}
+    {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
+    {{ form_field(form.server_name, note='Muss eindeutig sein') }}
+    {{ form_field(form.brand_id) }}
+    {{ form_field(form.party_id) }}
+    {{ form_field(form.board_id) }}
+    {{ form_field(form.storefront_id) }}
+    {{ form_field_check(form.enabled, form.enabled.label.text) }}
+    {{ form_field_check(form.user_account_creation_enabled, form.user_account_creation_enabled.label.text) }}
+    {{ form_field_check(form.login_enabled, form.login_enabled.label.text) }}
+    {{ form_field_check(form.archived, form.archived.label.text) }}
 
     {{ form_buttons(_('Save')) }}
   </form>

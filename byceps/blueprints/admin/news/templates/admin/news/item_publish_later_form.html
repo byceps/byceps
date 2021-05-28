@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = item.brand %}
@@ -17,10 +17,10 @@
   <form action="{{ url_for('.item_publish_later', item_id=item.id) }}" method="post">
     <div class="row">
       <div class="column-auto">
-        {{ form_field_simple(form.publish_on, autofocus='autofocus') }}
+        {{ form_field(form.publish_on, autofocus='autofocus') }}
       </div>
       <div class="column-auto">
-        {{ form_field_simple(form.publish_at) }}
+        {{ form_field(form.publish_at) }}
       </div>
     </div>
 

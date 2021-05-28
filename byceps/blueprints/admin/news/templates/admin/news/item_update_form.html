@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = item.brand %}
@@ -15,10 +15,10 @@
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   <form action="{{ url_for('.item_update', item_id=item.id) }}" method="post">
-    {{ form_field_simple(form.slug, maxlength=100, note='<strong>Achtung:</strong> Eine Änderung des Slugs wirkt sich auf den Permalink der News aus!') }}
-    {{ form_field_simple(form.title, maxlength=100, autofocus='autofocus') }}
-    {{ form_field_simple(form.body, class='monospace') }}
-    {{ form_field_simple(form.image_url_path, maxlength=100) }}
+    {{ form_field(form.slug, maxlength=100, note='<strong>Achtung:</strong> Eine Änderung des Slugs wirkt sich auf den Permalink der News aus!') }}
+    {{ form_field(form.title, maxlength=100, autofocus='autofocus') }}
+    {{ form_field(form.body, class='monospace') }}
+    {{ form_field(form.image_url_path, maxlength=100) }}
 
     {{ form_buttons(_('Save')) }}
   </form>

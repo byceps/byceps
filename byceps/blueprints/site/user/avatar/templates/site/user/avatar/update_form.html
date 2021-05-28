@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user_avatar' %}
 {% set title = 'Avatar hochladen' %}
@@ -16,7 +16,7 @@
       Maximale Dateigröße: 150 KB<br>
       Falls das Bild nicht quadratisch ist, wird es zugeschnitten.
     {%- endset %}
-    {{ form_field_simple(form.image, maxlength=150000, accept='image/*', autofocus='autofocus', note=note) }}
+    {{ form_field(form.image, maxlength=150000, accept='image/*', autofocus='autofocus', note=note) }}
   {%- endwith %}
 
     {{ form_buttons(render_icon('upload') + ' ' + _('Upload')) }}

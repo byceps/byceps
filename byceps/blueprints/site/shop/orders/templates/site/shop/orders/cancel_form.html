@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page = 'shop_orders' %}
 {% set title = 'Bestellung {} stornieren'.format(order.order_number) %}
 
@@ -15,7 +15,7 @@
   <h1>Bestellung stornieren</h1>
 
   <form action="{{ url_for('.cancel', order_id=order.id) }}" method="post">
-    {{ form_field_simple(form.reason, maxlength=1000) }}
+    {{ form_field(form.reason, maxlength=1000) }}
 
     {{ form_buttons(_('Cancel order'), icon='remove', cancel_url=url_for('.view', order_id=order.id)) }}
   </form>

@@ -1,5 +1,5 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'ticketing_admin' %}
 {% set current_page_party = party %}
@@ -10,7 +10,7 @@
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   <form action="{{ url_for('.update', category_id=category.id) }}" method="post">
-    {{ form_field_simple(form.title, maxlength=40, autofocus='autofocus') }}
+    {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
 
     {{ form_buttons(_('Save'), cancel_url=url_for('.index', party_id=party.id)) }}
   </form>

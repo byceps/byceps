@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/admin/brand.html' import render_brand_admin_link, render_brand_avatar %}
-{% from 'macros/forms.html' import form_buttons, form_field_check_simple, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'sites_admin' %}
 {% set title = 'Site erstellen' %}
@@ -22,15 +22,15 @@
         {{ render_brand_admin_link(brand) }}
       </div>
     </div>
-    {{ form_field_simple(form.id, maxlength=40, placeholder='intranet', autofocus='autofocus') }}
-    {{ form_field_simple(form.title, maxlength=40, placeholder='Intranet') }}
-    {{ form_field_simple(form.server_name, placeholder='www.example.com', note='Muss eindeutig sein.') }}
-    {{ form_field_simple(form.party_id) }}
-    {{ form_field_simple(form.board_id) }}
-    {{ form_field_simple(form.storefront_id) }}
-    {{ form_field_check_simple(form.enabled, form.enabled.label.text) }}
-    {{ form_field_check_simple(form.user_account_creation_enabled, form.user_account_creation_enabled.label.text) }}
-    {{ form_field_check_simple(form.login_enabled, form.login_enabled.label.text) }}
+    {{ form_field(form.id, maxlength=40, placeholder='intranet', autofocus='autofocus') }}
+    {{ form_field(form.title, maxlength=40, placeholder='Intranet') }}
+    {{ form_field(form.server_name, placeholder='www.example.com', note='Muss eindeutig sein.') }}
+    {{ form_field(form.party_id) }}
+    {{ form_field(form.board_id) }}
+    {{ form_field(form.storefront_id) }}
+    {{ form_field_check(form.enabled, form.enabled.label.text) }}
+    {{ form_field_check(form.user_account_creation_enabled, form.user_account_creation_enabled.label.text) }}
+    {{ form_field_check(form.login_enabled, form.login_enabled.label.text) }}
 
     {{ form_buttons(_('Create')) }}
   </form>

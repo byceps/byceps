@@ -1,5 +1,5 @@
 {% extends 'layout/admin/shop/storefront.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set title = 'Storefront anlegen' %}
 
@@ -14,9 +14,9 @@
   </div>
   {%- else %}
   <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">
-    {{ form_field_simple(form.id, maxlength=80, autofocus='autofocus') }}
-    {{ form_field_simple(form.catalog_id) }}
-    {{ form_field_simple(form.order_number_sequence_id, note='<a href="%s">Neue Sequenz erstellen</a>'|format(url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id))) }}
+    {{ form_field(form.id, maxlength=80, autofocus='autofocus') }}
+    {{ form_field(form.catalog_id) }}
+    {{ form_field(form.order_number_sequence_id, note='<a href="%s">Neue Sequenz erstellen</a>'|format(url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id))) }}
 
     {{ form_buttons(_('Save'), cancel_url=url_for('.index_for_shop', shop_id=shop.id)) }}
   </form>

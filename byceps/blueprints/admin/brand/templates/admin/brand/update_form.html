@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field_check_simple, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'brands_admin' %}
 {% set current_page_brand = brand %}
@@ -15,9 +15,9 @@
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   <form action="{{ url_for('.update', brand_id=brand.id) }}" method="post">
-    {{ form_field_simple(form.title, maxlength=40, autofocus='autofocus') }}
-    {{ form_field_simple(form.image_filename) }}
-    {{ form_field_check_simple(form.archived) }}
+    {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
+    {{ form_field(form.image_filename) }}
+    {{ form_field_check(form.archived) }}
 
     {{ form_buttons(_('Save')) }}
   </form>

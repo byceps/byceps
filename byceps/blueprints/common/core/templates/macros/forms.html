@@ -1,7 +1,7 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-{%- macro form_field_simple(field, class='', note=None) -%}
+{%- macro form_field(field, class='', note=None) -%}
   <div class="mb {% if field.errors %} invalid{% endif %}">
     {{ field.label(class='form-label') }}
     {{ field(class='form-control ' + class, **kwargs) }}
@@ -13,7 +13,7 @@
 {%- endmacro %}
 
 
-{%- macro form_field_check_simple(field, label=None) -%}
+{%- macro form_field_check(field, label=None) -%}
   <div class="mb {% if field.errors %} invalid{% endif %}">
     {%- with label = label if label is not none else field.label.text %}
     <label class="form-check-label">{{- field(**kwargs) }} <span>{{ label }}</span></label>
@@ -23,7 +23,7 @@
 {%- endmacro %}
 
 
-{%- macro form_field_radio_simple(field) -%}
+{%- macro form_field_radio(field) -%}
   <div class="mb {% if field.errors %} invalid{% endif %}">
     {{ field.label(class='form-label') }}
     <div class="form-control-radios">

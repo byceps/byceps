@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'sites_admin' %}
 {% set title = _('Add news channel') %}
@@ -14,7 +14,7 @@
   <h1>{{ render_icon('add') }} {{ title }}</h1>
 
   <form action="{{ url_for('.add_news_channel', site_id=site.id) }}" method="post">
-    {{ form_field_simple(form.news_channel_id) }}
+    {{ form_field(form.news_channel_id) }}
 
     {{ form_buttons(_('Add')) }}
   </form>

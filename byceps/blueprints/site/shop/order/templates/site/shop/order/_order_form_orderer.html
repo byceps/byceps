@@ -1,22 +1,22 @@
-{% from 'macros/forms.html' import form_datalist, form_field_simple %}
+{% from 'macros/forms.html' import form_datalist, form_field %}
 
     <h2>Deine Daten</h2>
     <div class="row">
       <div class="column-auto column-auto--grow">
-        {{ form_field_simple(form.first_names, maxlength=40, autofocus='autofocus') }}
+        {{ form_field(form.first_names, maxlength=40, autofocus='autofocus') }}
       </div>
       <div class="column-auto column-auto--grow">
-        {{ form_field_simple(form.last_name, maxlength=80) }}
+        {{ form_field(form.last_name, maxlength=80) }}
       </div>
     </div>
-    {{ form_field_simple(form.street, maxlength=40) }}
+    {{ form_field(form.street, maxlength=40) }}
     <div class="row">
       <div class="column-auto">
-        {{ form_field_simple(form.zip_code, size=5, maxlength=5) }}
+        {{ form_field(form.zip_code, size=5, maxlength=5) }}
       </div>
       <div class="column-auto column-auto--grow">
-        {{ form_field_simple(form.city, maxlength=40) }}
+        {{ form_field(form.city, maxlength=40) }}
       </div>
     </div>
     {{ form_datalist('countries', country_names) }}
-    {{ form_field_simple(form.country, maxlength=60) }}
+    {{ form_field(form.country, maxlength=60) }}

@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field_check_simple, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'party_admin' %}
 {% set current_page_party = party %}
@@ -15,28 +15,28 @@
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
   <form action="{{ url_for('.update', party_id=party.id) }}" method="post">
-    {{ form_field_simple(form.title, maxlength=40, autofocus='autofocus') }}
+    {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
     <div class="row">
       <div class="column-auto">
-        {{ form_field_simple(form.starts_on) }}
+        {{ form_field(form.starts_on) }}
       </div>
       <div class="column-auto">
-        {{ form_field_simple(form.starts_at) }}
+        {{ form_field(form.starts_at) }}
       </div>
     </div>
     <div class="row">
       <div class="column-auto">
-        {{ form_field_simple(form.ends_on) }}
+        {{ form_field(form.ends_on) }}
       </div>
       <div class="column-auto">
-        {{ form_field_simple(form.ends_at) }}
+        {{ form_field(form.ends_at) }}
       </div>
     </div>
-    {{ form_field_simple(form.max_ticket_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
-    {{ form_field_check_simple(form.ticket_management_enabled, form.ticket_management_enabled.label.text) }}
-    {{ form_field_check_simple(form.seat_management_enabled, form.seat_management_enabled.label.text) }}
-    {{ form_field_check_simple(form.canceled, form.canceled.label.text) }}
-    {{ form_field_check_simple(form.archived, form.archived.label.text) }}
+    {{ form_field(form.max_ticket_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
+    {{ form_field_check(form.ticket_management_enabled, form.ticket_management_enabled.label.text) }}
+    {{ form_field_check(form.seat_management_enabled, form.seat_management_enabled.label.text) }}
+    {{ form_field_check(form.canceled, form.canceled.label.text) }}
+    {{ form_field_check(form.archived, form.archived.label.text) }}
 
     {{ form_buttons(_('Save')) }}
   </form>

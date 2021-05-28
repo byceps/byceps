@@ -1,5 +1,5 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field_check_simple, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'authentication_login' %}
 {% set title = _('Login') %}
@@ -27,9 +27,9 @@
   <h1>{{ title }}</h1>
 
   <form action="{{ url_for('.login') }}" method="post" id="login-form">
-    {{ form_field_simple(form.screen_name, maxlength=40, autofocus='autofocus') }}
-    {{ form_field_simple(form.password, maxlength=40) }}
-    {{ form_field_check_simple(form.permanent, _('permanently stay logged in')) }}
+    {{ form_field(form.screen_name, maxlength=40, autofocus='autofocus') }}
+    {{ form_field(form.password, maxlength=40) }}
+    {{ form_field_check(form.permanent, _('permanently stay logged in')) }}
 
     <div id="login-failed-notice" class="hidden">
 {{ render_notification(_('Login failed.'), category='danger', icon='warning') }}

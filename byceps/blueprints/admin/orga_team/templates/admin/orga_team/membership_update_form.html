@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
-{% from 'macros/forms.html' import form_buttons, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
 {% set title = 'Orga-Team-Mitgliedschaft bearbeiten' %}
@@ -21,8 +21,8 @@
         {{ render_user_avatar_20_and_admin_link(user) }}
       </div>
     </div>
-    {{ form_field_simple(form.orga_team_id, autofocus='autofocus') }}
-    {{ form_field_simple(form.duties, maxlength=40) }}
+    {{ form_field(form.orga_team_id, autofocus='autofocus') }}
+    {{ form_field(form.duties, maxlength=40) }}
 
     {{ form_buttons(_('Save')) }}
   </form>

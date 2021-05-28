@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/forms.html' import form_buttons, form_field_simple %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'board' %}
 {% set title = 'Beitrag hinzufügen' %}
@@ -16,7 +16,7 @@
   <h1>{{ render_icon('reply') }} {{ title }}</h1>
 
   <form action="{{ url_for('.posting_create', topic_id=topic.id) }}" method="post">
-    {{ form_field_simple(form.body, autofocus='autofocus') }}
+    {{ form_field(form.body, autofocus='autofocus') }}
 {%- include 'site/board/_posting_form_body_supplement.html' %}
 
     {{ form_buttons(_('Add'), cancel_url=url_for('.topic_view', topic_id=topic.id)) }}
