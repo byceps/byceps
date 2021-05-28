@@ -542,20 +542,6 @@ ol.index.fully-linked a:hover {
 
 /* forms */
 
-form .invalid {
-  border-radius: 0;
-  border-width: 1px 0;
-  margin-bottom: 1rem;
-  margin-left: -40px;
-  margin-right: -40px;
-  margin-top: 0;
-  padding: 0.75rem 40px;
-}
-
-form .invalid .errors {
-  margin-top: 0.5rem;
-}
-
 .form-buttons {
   background-color: #e8e8e8;
   border-color: #cccccc;
