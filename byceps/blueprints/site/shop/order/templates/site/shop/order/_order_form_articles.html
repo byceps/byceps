@@ -27,7 +27,7 @@
             {%- set field = form.get_field_for_article(item.article) %}
             {{ field(hidden=not is_available) }}
             {%- if field.errors %}
-            <ol class="errors" style="text-align: left;">
+            <ol class="form-errors" style="text-align: left;">
               {%- for error in field.errors %}
               <li><strong>Fehler:</strong> <span>{{ error }}</span></li>
               {%- endfor %}
