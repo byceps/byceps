@@ -8,17 +8,34 @@
     <label class="form-label" for="field1">Field #1</label>
     <input class="form-control" id="field1" name="field1">
   </div>
-  <div class="form-row-simple erroneous">
-    <label class="form-label" for="field2">Field #2</label>
-    <input class="form-control" id="field2" name="field2">
-    <ol class="errors">
-      <li><strong>Error:</strong> <span>Your answer must be in the form of a question. (<a href="#">More on this.</a>)</span></li>
-    </ol>
+
+  <div class="row">
+    <div class="column-auto">
+
+      <div class="form-row-simple erroneous">
+        <label class="form-label" for="field2">Field #2</label>
+        <input class="form-control" id="field2" name="field2">
+        <ol class="errors">
+          <li><strong>Error:</strong> <span>Your answer must be in the form of a question. (<a href="#">More on this.</a>)</span></li>
+        </ol>
+      </div>
+
+    </div>
+    <div class="column-auto column-auto--grow">
+
+      <div class="form-row-simple">
+        <label class="form-label" for="field3">Field #3</label>
+        <input class="form-control" id="field3" name="field3">
+      </div>
+
+    </div>
   </div>
+
   <div class="form-row-simple">
-    <label class="form-label" for="field3">Field #3</label>
-    <textarea class="form-control" id="field3" name="field1"></textarea>
+    <label class="form-label" for="field4">Field #4</label>
+    <textarea class="form-control" id="field4" name="field4"></textarea>
   </div>
+
   <div class="form-row-simple">
     <label class="form-check-label"><input name="check_it" type="checkbox"> Tick, tick, tick, tick.</label>
   </div>
