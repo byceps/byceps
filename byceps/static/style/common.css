@@ -395,11 +395,16 @@ textarea.collapsible.collapsed {
 }
 
 form .invalid {
+  --padding: 0.375rem;
   background-color: #ff9999;
   border: #ff1a1a solid 1px;
   border-radius: 3px;
-  margin: 0.25rem -1rem;
-  padding: 0.75rem calc(1rem - 1px) 0.5rem calc(1rem - 1px);
+  margin: calc(var(--padding) * -1 - 1px);
+  padding: var(--padding);
+}
+
+form .invalid.mb {
+  margin-bottom: 1rem;
 }
 
 .form-errors li {
