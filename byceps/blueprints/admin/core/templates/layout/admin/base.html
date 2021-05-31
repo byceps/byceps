@@ -27,26 +27,13 @@
       <section class="page-body">
         <div class="container">
 
-          <div class="page-body-grid">
-
-            {%- if not layout_sidebar_hide|default(False) %}
-            <div class="page-body-grid-sidebar">
-              <aside id="sidebar">
-              </aside>
-            </div>{# .page-body-grid-sidebar #}
-            {%- endif %}
-
-            <div class="page-body-grid-main">
-              <main>
+          <main>
 {%- include 'layout/_notifications.html' %}
 {%- block before_body %}{% endblock %}
-                <div{% if not layout_main_raw|default(False) %} id="main"{% endif %}>
+            <div{% if not layout_main_raw|default(False) %} id="main"{% endif %}>
 {%- block body required %}{% endblock %}
-                </div>{# #main #}
-              </main>
-            </div>{# .page-body-grid-main #}
-
-          </div>{# .page-body-grid #}
+            </div>{# #main #}
+          </main>
 
         </div>
       </section>{# .page-body #}

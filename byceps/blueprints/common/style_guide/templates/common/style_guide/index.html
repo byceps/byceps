@@ -1,17 +1,9 @@
 {% extends 'layout/base_auto.html' %}
 {% set title = 'Style Guide' %}
-{% if g.app_mode.is_admin() %}
-{% set layout_sidebar_hide = True %}
-{% endif %}
 
 
 {% block head %}
   <style>
-    #header,
-    #page-grid-sidebar {
-      display: none;
-    }
-
     .styleguide {
       max-width: 1080px;
     }

@@ -63,38 +63,15 @@ a {
 
 }
 
-.page-body-grid {
-  display: flex;
-  flex-direction: column;
-  gap: var(--layout-gutter);
-  padding: var(--layout-gutter);
-}
-
-.page-body-grid-main {
-  flex: 1;
-}
-
-.page-body-grid-sidebar {
-  flex: 0 0 22%;
-}
-
-@media (min-width: 60rem) { /* 960px / 16px */
-
-  .page-body-grid {
-    flex-direction: row;
-  }
-
-}
-
 main {
   font-size: 0.875rem; /* 14px / 16px */
+  padding: var(--layout-gutter);
 }
 
 .notifications {
   margin-bottom: var(--layout-gutter);
 }
 
-#sidebar section,
 #main,
 .box {
   border-color: #cccccc;
@@ -103,7 +80,6 @@ main {
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-#sidebar section,
 #main,
 .box {
   background-color: #ffffff;
@@ -277,27 +253,6 @@ main {
 .header-nav .main-tabs ol {
   border: 0;
   margin: 0;
-}
-
-
-/* sidebar */
-
-.sidebar-section {
-  font-size: 0.875rem; /* 14px / 16px */
-  max-width: 18rem;
-  /* overflow: hidden;  # Would cut off dropdown in section header. */
-}
-
-.sidebar-section + .sidebar-section {
-  margin-top: var(--inner-gutter);
-}
-
-.sidebar-section-header {
-  background-color: #555555;
-  color: #f8f8f8;
-  line-height: 1;
-  padding: 0.5rem 1rem;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 
@@ -762,7 +717,6 @@ main .dropdown-menu {
   }
 
   #header,
-  #sidebar,
   #footer {
     display: none;
   }
