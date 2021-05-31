@@ -21,26 +21,24 @@
 
   <h1>{{ title }}</h1>
 
-  <div class="party-archive">
   {%- for party in parties %}
-    <h2>{{ party.title }}</h2>
-    <p class="meta">{{ render_date_long(party.starts_at|utc_to_local_tz) }} – {{ render_date_long(party.ends_at|utc_to_local_tz) }}</p>
+  <h2>{{ party.title }}</h2>
+  <p class="meta">{{ render_date_long(party.starts_at|utc_to_local_tz) }} – {{ render_date_long(party.ends_at|utc_to_local_tz) }}</p>
 
     {%- with attendees = attendees_by_party_id[party.id]|sort(attribute='screen_name') %}
       {%- if attendees %}
-      <h3>{{ render_icon('users') }} Teilnehmer</h3>
-      <ol class="attendees">
+  <h3>{{ render_icon('users') }} Teilnehmer</h3>
+  <ol class="attendees">
         {%- for user in attendees -%}
           {%- if not user.deleted %}
-        <li>{{- render_user_avatar_20_and_link(user) -}}</li>
+    <li>{{- render_user_avatar_20_and_link(user) -}}</li>
           {%- endif %}
         {%- endfor %}
-      </ol>
+  </ol>
       {%- endif %}
     {%- endwith %}
   {%- else %}
-    <p class="dimmed">Es haben noch keine Partys stattgefunden.</p>
+  <p class="dimmed">Es haben noch keine Partys stattgefunden.</p>
   {%- endfor %}
-  </div>
 
 {%- endblock %}
