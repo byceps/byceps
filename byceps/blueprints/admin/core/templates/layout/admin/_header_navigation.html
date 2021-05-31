@@ -3,39 +3,42 @@
 
 {%- with
   brand = current_page_brand|default,
+  party = current_page_party|default,
   site = current_page_site|default,
-  party = current_page_party|default
+  shop = current_page_shop|default
 %}
         <div class="container header-nav">
           <div class="header-nav-crumbs">
 
             <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_global') }}">Home</a>
 
-            {%- if brand %}
-            <span class="header-nav-crumb-separator"></span>
-            <div style="margin-right: 0.5rem;">{{ render_brand_avatar(brand, '40') }}</div>
-            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"><small class="dimmed">{{ _('Brand') }}</small><br>{{ brand.title }}</a>
-            {%- endif %}
-
-            {%- if party %}
-              {%- with brand = get_brand_for_party(party) %}
+  {%- if party %}
+    {%- with brand = get_brand_for_party(party) %}
             <span class="header-nav-crumb-separator"></span>
             <div style="margin-right: 0.5rem;">{{ render_brand_avatar(brand, '40') }}</div>
             <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"><small class="dimmed">{{ _('Brand') }}</small><br>{{ brand.title }}</a>
             <span class="header-nav-crumb-separator"></span>
-            <a class="header-nav-crumb" href="{{ url_for('party_admin.view', party_id=party.id) }}"><small class="dimmed">{{ _('Site') }}</small><br>{{ party.title }}</a>
-              {%- endwith %}
-            {%- endif %}
-
-            {%- if site %}
-              {%- with brand = get_brand_for_site(site) %}
+            <a class="header-nav-crumb" href="{{ url_for('party_admin.view', party_id=party.id) }}"><small class="dimmed">{{ _('Party') }}</small><br>{{ party.title }}</a>
+    {%- endwith %}
+  {%- elif site %}
+    {%- with brand = get_brand_for_site(site) %}
             <span class="header-nav-crumb-separator"></span>
             <div style="margin-right: 0.5rem;">{{ render_brand_avatar(brand, '40') }}</div>
             <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"><small class="dimmed">{{ _('Brand') }}</small><br>{{ brand.title }}</a>
             <span class="header-nav-crumb-separator"></span>
             <a class="header-nav-crumb" href="{{ url_for('site_admin.view', site_id=site.id) }}"><small class="dimmed">{{ _('Site') }}</small><br>{{ site.title }}</a>
-              {%- endwith %}
-            {%- endif %}
+    {%- endwith %}
+  {%- elif shop %}
+            <span class="header-nav-crumb-separator"></span>
+            <div style="margin-right: 0.5rem;">{{ render_brand_avatar(brand, '40') }}</div>
+            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"><small class="dimmed">{{ _('Brand') }}</small><br>{{ brand.title }}</a>
+            <span class="header-nav-crumb-separator"></span>
+            <a class="header-nav-crumb" href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}"><small class="dimmed">{{ _('Shop') }}</small><br>{{ shop.title }}</a>
+  {%- elif brand %}
+            <span class="header-nav-crumb-separator"></span>
+            <div style="margin-right: 0.5rem;">{{ render_brand_avatar(brand, '40') }}</div>
+            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"><small class="dimmed">{{ _('Brand') }}</small><br>{{ brand.title }}</a>
+  {%- endif %}
 
           </div>
         </div>
