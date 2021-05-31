@@ -1,6 +1,7 @@
 {% extends 'layout/admin/shop.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/order.html' import render_order_payment_state %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/stats.html' import render_bigstats_item %}
 {% set current_page = 'shop_shop_admin' %}
 {% set current_page_brand = brand %}
@@ -30,6 +31,16 @@
       <tr>
         <th>Shop-ID</th>
         <td>{{ shop.id }}</td>
+      </tr>
+      <tr>
+        <th>Status</th>
+        <td>
+        {%- if shop.archived %}
+          {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+        {%- else %}
+          {{ render_tag('aktiv', class='color-success', icon='success') }}
+        {%- endif %}
+        </td>
       </tr>
     </table>
   </div>
