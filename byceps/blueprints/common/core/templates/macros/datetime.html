@@ -4,30 +4,30 @@
 
 
 {%- macro render_date(d, smart=True) -%}
-  {{ _time_element(d|format_date_iso, d|format_date_short(smart=smart)) }}
+  {{ render_time_element(d|format_date_iso, d|format_date_short(smart=smart)) }}
 {%- endmacro %}
 
 
 {%- macro render_date_long(d, smart=True) -%}
-  {{ _time_element(d|format_date_iso, d|format_date_long(smart=smart)) }}
+  {{ render_time_element(d|format_date_iso, d|format_date_long(smart=smart)) }}
 {%- endmacro %}
 
 
 {%- macro render_datetime(dt, seconds=False, smart=True) -%}
-  {{ _time_element(dt|format_datetime_iso, dt|format_datetime_short(seconds=seconds, smart=smart)) }}
+  {{ render_time_element(dt|format_datetime_iso, dt|format_datetime_short(seconds=seconds, smart=smart)) }}
 {%- endmacro %}
 
 
 {%- macro render_datetime_long(dt, seconds=False, smart=True) -%}
-  {{ _time_element(dt|format_datetime_iso, dt|format_datetime_long(smart=smart)) }}
+  {{ render_time_element(dt|format_datetime_iso, dt|format_datetime_long(smart=smart)) }}
 {%- endmacro %}
 
 
 {%- macro render_time(t, seconds=False) -%}
-  {{ _time_element(t|format_datetime_iso, t|format_time(seconds=seconds)) }}
+  {{ render_time_element(t|format_datetime_iso, t|format_time(seconds=seconds)) }}
 {%- endmacro %}
 
 
-{%- macro _time_element(value, label) -%}
+{%- macro render_time_element(value, label) -%}
   <time datetime="{{ value }}">{{ label }}</time>
 {%- endmacro %}
