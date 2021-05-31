@@ -1,0 +1,43 @@
+{%- from 'macros/admin.html' import render_main_tabs %}
+
+
+{%- with navigation = Navigation(_('Party'))
+    .add_item(
+      url_for('admin_dashboard.view_party', party_id=party.id),
+      _('Dashboard'),
+      id='admin_dashboard_party',
+      required_permission=AdminDashboardPermission.view_party,
+      icon='dashboard')
+    .add_item(
+      url_for('orga_team_admin.teams_for_party', party_id=party.id),
+      _('Organizer Teams'),
+      id='orga_team_admin.teams',
+      required_permission=OrgaTeamPermission.view,
+      icon='users')
+    .add_item(
+      url_for('ticketing_admin.index_for_party', party_id=party.id),
+      _('Tickets'),
+      id='ticketing_admin',
+      required_permission=TicketingPermission.view,
+      icon='ticket')
+    .add_item(
+      url_for('seating_admin.index_for_party', party_id=party.id),
+      _('Seating Plans'),
+      id='seating_admin',
+      required_permission=SeatingPermission.view,
+      icon='seating-area')
+    .add_item(
+      url_for('ticketing_checkin_admin.index', party_id=party.id),
+      _('Check-In'),
+      id='ticketing_checkin_admin',
+      required_permission=TicketingPermission.checkin,
+      icon='ticketing-checkin')
+    .add_item(
+      url_for('more_admin.view_party', party_id=party.id),
+      _('More'),
+      id='more_admin_party',
+      required_permission=AdminPermission.access,
+      icon='ellipsis-h')
+-%}
+{{ render_main_tabs(navigation, current_page) }}
+{%- endwith %}
