@@ -19,8 +19,6 @@ from ...typing import BrandID, PartyID, UserID
 from ..party.dbmodels.party import Party as DbParty
 from ..party import service as party_service
 from ..party.transfer.models import Party
-from ..user import service as user_service
-from ..user.transfer.models import User
 
 from .dbmodels.archived_attendance import (
     ArchivedAttendance as DbArchivedAttendance,
@@ -86,14 +84,8 @@ def _get_archived_attendance_party_ids(user_id: UserID) -> set[PartyID]:
     return {row[0] for row in party_id_rows}
 
 
-def get_attendees_for_party(party_id: PartyID) -> set[User]:
-    """Return the party's attendees."""
-    attendee_ids = _get_attendee_ids_for_party(party_id)
-    return user_service.find_users(attendee_ids, include_avatars=True)
-
-
-def _get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
-    """Return the party's attendee IDs."""
+def get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
+    """Return the party's attendees' IDs."""
     ticket_rows = db.session \
         .query(DbTicket.used_by_id) \
         .join(DbCategory) \

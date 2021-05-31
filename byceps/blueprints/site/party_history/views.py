@@ -10,6 +10,7 @@ from flask import abort, g
 
 from ....services.party import service as party_service
 from ....services.ticketing import attendance_service
+from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
@@ -36,7 +37,8 @@ def view(party_id):
     if (party is None) or (party.brand_id != g.brand_id) or not party.archived:
         abort(404)
 
-    attendees = attendance_service.get_attendees_for_party(party_id)
+    attendee_ids = attendance_service.get_attendee_ids_for_party(party_id)
+    attendees = user_service.find_users(attendee_ids, include_avatars=True)
 
     return {
         'party': party,
