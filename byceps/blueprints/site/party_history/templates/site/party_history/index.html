@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/datetime.html' import render_date_long %}
+{% from 'macros/datetime.html' import render_time_element %}
 {% set current_page = 'party_history' %}
 {% set title = 'Party-Historie' %}
 
@@ -9,7 +9,7 @@
 
   {%- for party in parties %}
   <h2><a class="disguised" href="{{ url_for('.view', party_id=party.id) }}">{{ party.title }}</a></h2>
-  <p class="meta">{{ render_date_long(party.starts_at|utc_to_local_tz) }} – {{ render_date_long(party.ends_at|utc_to_local_tz) }}</p>
+  <p class="meta">{{ render_time_element(party.starts_at.date().isoformat(), format_date(party.starts_at, 'full')) }} – {{ render_time_element(party.ends_at.date().isoformat(), format_date(party.ends_at, 'full')) }}</p>
   {%- else %}
   <p class="dimmed">Es haben noch keine Partys stattgefunden.</p>
   {%- endfor %}

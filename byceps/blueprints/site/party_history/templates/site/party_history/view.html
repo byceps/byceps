@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/datetime.html' import render_date_long %}
+{% from 'macros/datetime.html' import render_time_element %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_link %}
 {% set current_page = 'party_history' %}
@@ -20,7 +20,7 @@
 {% block body %}
 
   <h1>{{ title }}</h1>
-  <p class="meta">{{ render_date_long(party.starts_at|utc_to_local_tz) }} – {{ render_date_long(party.ends_at|utc_to_local_tz) }}</p>
+  <p class="meta">{{ render_time_element(party.starts_at.date().isoformat(), format_date(party.starts_at, 'full')) }} – {{ render_time_element(party.ends_at.date().isoformat(), format_date(party.ends_at, 'full')) }}</p>
 
   {%- if attendees %}
   <h2>{{ render_icon('users') }} Teilnehmer</h2>
