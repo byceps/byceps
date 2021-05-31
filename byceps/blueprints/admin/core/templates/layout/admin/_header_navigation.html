@@ -18,7 +18,7 @@
             <div style="margin-right: 0.5rem;">{{ render_brand_avatar(brand, '40') }}</div>
             <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"><small class="dimmed">{{ _('Brand') }}</small><br>{{ brand.title }}</a>
             <span class="header-nav-crumb-separator"></span>
-            <a class="header-nav-crumb" href="{{ url_for('party_admin.view', party_id=party.id) }}"><small class="dimmed">{{ _('Party') }}</small><br>{{ party.title }}</a>
+            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}"><small class="dimmed">{{ _('Party') }}</small><br>{{ party.title }}</a>
     {%- endwith %}
   {%- elif site %}
     {%- with brand = get_brand_for_site(site) %}
