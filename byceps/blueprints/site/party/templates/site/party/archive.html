@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/datetime.html' import render_datetime_long %}
+{% from 'macros/datetime.html' import render_date_long %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_link %}
 {% set current_page = 'party.archive' %}
@@ -24,7 +24,7 @@
   <div class="party-archive">
   {%- for party in parties %}
     <h2>{{ party.title }}</h2>
-    <p class="meta"><time datetime="{{ party.starts_at|format_date_iso }}">{{ party.starts_at|utc_to_local_tz|format_date_long }} – {{ party.ends_at|utc_to_local_tz|format_date_long }}</time></p>
+    <p class="meta">{{ render_date_long(party.starts_at|utc_to_local_tz) }} – {{ render_date_long(party.ends_at|utc_to_local_tz) }}</p>
 
     {%- with attendees = attendees_by_party_id[party.id]|sort(attribute='screen_name') %}
       {%- if attendees %}
