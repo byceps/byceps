@@ -6,7 +6,7 @@ byceps.blueprints.site.party_history.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import g
+from flask import abort, g
 
 from ....services.party import service as party_service
 from ....services.ticketing import attendance_service
@@ -20,13 +20,25 @@ blueprint = create_blueprint('party_archive', __name__)
 @blueprint.get('')
 @templated
 def index():
-    """Show archived parties."""
+    """List archived parties."""
     archived_parties = party_service.get_archived_parties_for_brand(g.brand_id)
-
-    party_ids = {party.id for party in archived_parties}
-    attendees_by_party_id = attendance_service.get_attendees_by_party(party_ids)
 
     return {
         'parties': archived_parties,
-        'attendees_by_party_id': attendees_by_party_id,
+    }
+
+
+@blueprint.get('/<party_id>')
+@templated
+def view(party_id):
+    """Show archived party."""
+    party = party_service.find_party(party_id)
+    if (party is None) or (party.brand_id != g.brand_id) or not party.archived:
+        abort(404)
+
+    attendees = attendance_service.get_attendees_for_party(party_id)
+
+    return {
+        'party': party,
+        'attendees': attendees,
     }

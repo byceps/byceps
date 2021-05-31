@@ -86,64 +86,29 @@ def _get_archived_attendance_party_ids(user_id: UserID) -> set[PartyID]:
     return {row[0] for row in party_id_rows}
 
 
-def get_attendees_by_party(party_ids: set[PartyID]) -> dict[PartyID, set[User]]:
-    """Return the parties' attendees, indexed by party."""
-    if not party_ids:
-        return {}
-
-    attendee_ids_by_party_id = get_attendee_ids_for_parties(party_ids)
-
-    all_attendee_ids = set(
-        chain.from_iterable(attendee_ids_by_party_id.values())
-    )
-    all_attendees = user_service.find_users(
-        all_attendee_ids, include_avatars=True
-    )
-    all_attendees_by_id = user_service.index_users_by_id(all_attendees)
-
-    attendees_by_party_id = {}
-    for party_id in party_ids:
-        attendee_ids = attendee_ids_by_party_id.get(party_id, set())
-
-        attendees = {
-            all_attendees_by_id[attendee_id] for attendee_id in attendee_ids
-        }
-
-        attendees_by_party_id[party_id] = attendees
-
-    return attendees_by_party_id
+def get_attendees_for_party(party_id: PartyID) -> set[User]:
+    """Return the party's attendees."""
+    attendee_ids = _get_attendee_ids_for_party(party_id)
+    return user_service.find_users(attendee_ids, include_avatars=True)
 
 
-def get_attendee_ids_for_parties(
-    party_ids: set[PartyID],
-) -> dict[PartyID, set[UserID]]:
-    """Return the partys' attendee IDs, indexed by party ID."""
-    if not party_ids:
-        return {}
-
+def _get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
+    """Return the party's attendee IDs."""
     ticket_rows = db.session \
-        .query(DbCategory.party_id, DbTicket.used_by_id) \
-        .filter(DbCategory.party_id.in_(party_ids)) \
-        .join(DbTicket) \
+        .query(DbTicket.used_by_id) \
+        .join(DbCategory) \
+        .filter(DbCategory.party_id == party_id) \
         .filter(DbTicket.revoked == False) \
         .filter(DbTicket.used_by_id != None) \
         .all()
 
     archived_attendance_rows = db.session \
-        .query(
-            DbArchivedAttendance.party_id,
-            DbArchivedAttendance.user_id
-        ) \
-        .filter(DbArchivedAttendance.party_id.in_(party_ids)) \
+        .query(DbArchivedAttendance.user_id) \
+        .filter(DbArchivedAttendance.party_id == party_id) \
         .all()
 
     rows = ticket_rows + archived_attendance_rows
-
-    attendee_ids_by_party_id: dict[PartyID, set[UserID]] = defaultdict(set)
-    for party_id, attendee_id in rows:
-        attendee_ids_by_party_id[party_id].add(attendee_id)
-
-    return dict(attendee_ids_by_party_id)
+    return {row for row in rows}
 
 
 def get_top_attendees_for_brand(brand_id: BrandID) -> list[tuple[UserID, int]]:

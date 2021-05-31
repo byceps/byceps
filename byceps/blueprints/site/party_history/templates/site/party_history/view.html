@@ -1,0 +1,36 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/datetime.html' import render_date_long %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user_avatar.html' import render_user_avatar_20_and_link %}
+{% set current_page = 'party_history' %}
+{% set title = party.title %}
+
+{% block head %}
+  <style>
+    .attendees {
+      columns: 10rem;
+    }
+    .attendees {
+      line-height: 1.6;
+      padding-right: 2rem;
+    }
+  </style>
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+  <p class="meta">{{ render_date_long(party.starts_at|utc_to_local_tz) }} – {{ render_date_long(party.ends_at|utc_to_local_tz) }}</p>
+
+  {%- if attendees %}
+  <h2>{{ render_icon('users') }} Teilnehmer</h2>
+  <ol class="attendees">
+    {%- for user in attendees|sort(attribute='screen_name') -%}
+      {%- if not user.deleted %}
+    <li>{{- render_user_avatar_20_and_link(user) -}}</li>
+      {%- endif %}
+    {%- endfor %}
+  </ol>
+  {%- endif %}
+
+{%- endblock %}
