@@ -1,20 +1,10 @@
-body {
-  background-color: #ffffff;
-  border: none;
-}
-
-.page-footer,
-.page-header {
-  display: none;
-}
-
-.container {
-  max-width: none;
+.page-body .container {
+  max-width: 100vw;
   width: auto;
 }
 
-nav.breadcrumbs {
-  margin-top: 0;
+.page-body .box {
+  overflow-x: scroll;
 }
 
 .bar-column {
