@@ -1,3 +1,13 @@
-{%- from 'macros/datetime.html' import render_time_element -%}
+{%- from 'macros/datetime.html' import render_time_element %}
+{%- from 'macros/icons.html' import render_icon %}
 
-  <p class="meta">{{ render_time_element(party.starts_at.date().isoformat(), format_date(party.starts_at, 'full')) }} – {{ render_time_element(party.ends_at.date().isoformat(), format_date(party.ends_at, 'full')) }}</p>
+<div class="dimmed">
+  <span style="margin-right: 0.25rem;">{{ render_icon('date') }}</span>
+  {{ render_time_element(party.starts_at.date().isoformat(), format_date(party.starts_at, 'full')) }} – {{ render_time_element(party.ends_at.date().isoformat(), format_date(party.ends_at, 'full')) }}
+</div>
+{%- if party.max_ticket_quantity %}
+<div class="dimmed" style="margin-top: 0.25rem;">
+  <span style="margin-right: 0.25rem;">{{ render_icon('users') }}</span>
+  {{ party.max_ticket_quantity|separate_thousands }} Teilnehmer
+</div>
+{%- endif %}

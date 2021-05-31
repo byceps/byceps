@@ -1,5 +1,4 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_link %}
 {% set current_page = 'party_history' %}
 {% set title = party.title %}
@@ -10,7 +9,7 @@
       columns: 10rem;
     }
     .attendees {
-      line-height: 1.6;
+      line-height: 1.8;
       padding-right: 2rem;
     }
   </style>
@@ -22,7 +21,7 @@
 {% include 'site/party_history/_meta.html' %}
 
   {%- if attendees %}
-  <h2>{{ render_icon('users') }} Teilnehmer</h2>
+  <h2>Teilnehmer</h2>
   <ol class="attendees">
     {%- for user in attendees|sort(attribute='screen_name') -%}
       {%- if not user.deleted %}
