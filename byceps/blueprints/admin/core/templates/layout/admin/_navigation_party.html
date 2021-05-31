@@ -1,26 +1,15 @@
 {%- from 'macros/admin.html' import render_navigation %}
 {%- from 'macros/admin/brand.html' import render_brand_avatar %}
-{%- from 'macros/admin/party.html' import render_party_admin_link %}
-{%- from 'macros/icons.html' import render_icon -%}
 
 
 <section class="sidebar-section">
   <header class="sidebar-section-header sidebar-section-header--unpadded">
-    <div class="dropdown">
-      <button class="dropdown-toggle button button--clear button--compact">
-        <div class="sidebar-section-header-layout">
-          {{ render_brand_avatar(brand, '32') }}
-          <div>
-            <div class="sidebar-section-category">{{ _('Party') }}</div>
-            {{ party.title }} {{ render_icon('chevron-down') }}
-          </div>
-        </div>
-      </button>
-      <ol class="dropdown-menu">
-        {%- for party in get_parties_for_brand(brand.id)|sort(attribute='starts_at', reverse=True) %}
-        <li>{{ render_party_admin_link(party, class='dropdown-item', dim_archived=True) }}</li>
-        {%- endfor %}
-      </ol>
+    <div class="sidebar-section-header-layout">
+      {{ render_brand_avatar(brand, '32') }}
+      <div>
+        <div class="sidebar-section-category">{{ _('Party') }}</div>
+        {{ party.title }}
+      </div>
     </div>
   </header>
   {%- with navigation = Navigation(_('Party'))

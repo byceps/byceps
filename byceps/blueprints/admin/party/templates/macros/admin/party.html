@@ -64,17 +64,6 @@
 {%- endmacro %}
 
 
-{% macro render_party_admin_link(party, class=None, dim_archived=False) -%}
-<a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}"{% if class %} class="{{ class }}"{% endif %}>
-  {%- if dim_archived and party.archived -%}
-    {{ party.title|dim }}
-  {%- else -%}
-    {{ party.title }}
-  {%- endif -%}
-  </a>
-{%- endmacro %}
-
-
 {% macro _render_ticket_sale_stats(ticket_sale_stats) -%}
   {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
   <div class="progress" style="height: 0.25rem;">

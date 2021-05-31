@@ -7,8 +7,6 @@ byceps.blueprints.admin.core.views
 """
 
 from ....services.brand import service as brand_service
-from ....services.party import service as party_service
-from ....services.site import service as site_service
 from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 
@@ -23,8 +21,6 @@ register_permission_enum(AdminPermission)
 
 @blueprint.app_context_processor
 def inject_template_variables():
-    brands = brand_service.get_all_brands()
-
     def get_brand_for_site(site):
         return brand_service.find_brand(site.brand_id)
 
@@ -32,9 +28,6 @@ def inject_template_variables():
         return brand_service.find_brand(party.brand_id)
 
     return {
-        'all_brands': brands,
         'get_brand_for_site': get_brand_for_site,
         'get_brand_for_party': get_brand_for_party,
-        'get_sites_for_brand': site_service.get_sites_for_brand,
-        'get_parties_for_brand': party_service.get_parties_for_brand,
     }

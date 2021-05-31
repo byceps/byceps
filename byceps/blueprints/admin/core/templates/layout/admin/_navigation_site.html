@@ -1,27 +1,15 @@
 {%- from 'macros/admin.html' import render_navigation %}
 {%- from 'macros/admin/brand.html' import render_brand_avatar %}
-{%- from 'macros/icons.html' import render_icon -%}
 
 
 <section class="sidebar-section">
   <header class="sidebar-section-header sidebar-section-header--unpadded">
-    <div class="dropdown">
-      <button class="dropdown-toggle button button--clear button--compact">
-        <div class="sidebar-section-header-layout">
-          {{ render_brand_avatar(brand, '32') }}
-          <div>
-            <div class="sidebar-section-category">{{ _('Site') }}</div>
-            {{ site.title }} {{ render_icon('chevron-down') }}
-          </div>
-        </div>
-      </button>
-      <ol class="dropdown-menu">
-      {%- with sites = get_sites_for_brand(brand.id) %}
-        {%- for site in sites|sort(attribute='title') %}
-        <li><a class="dropdown-item" href="{{ url_for('site_admin.view', site_id=site.id) }}">{{ site.title if site.enabled else site.title|dim }}</a></li>
-        {%- endfor %}
-      {%- endwith %}
-      </ol>
+    <div class="sidebar-section-header-layout">
+      {{ render_brand_avatar(brand, '32') }}
+      <div>
+        <div class="sidebar-section-category">{{ _('Site') }}</div>
+        {{ site.title }}
+      </div>
     </div>
   </header>
   {%- with navigation = Navigation(_('Site'))

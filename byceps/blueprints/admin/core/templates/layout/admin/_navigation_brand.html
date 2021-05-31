@@ -1,25 +1,15 @@
 {%- from 'macros/admin.html' import render_navigation %}
-{%- from 'macros/admin/brand.html' import render_brand_admin_link, render_brand_avatar %}
-{%- from 'macros/icons.html' import render_icon -%}
+{%- from 'macros/admin/brand.html' import render_brand_avatar %}
 
 
 <section class="sidebar-section">
   <header class="sidebar-section-header sidebar-section-header--unpadded">
-    <div class="dropdown">
-      <button class="dropdown-toggle button button--clear button--compact">
-        <div class="sidebar-section-header-layout">
-          {{ render_brand_avatar(brand, '32') }}
-          <div>
-            <div class="sidebar-section-category">{{ _('Brand') }}</div>
-            {{ brand.title }} {{ render_icon('chevron-down') }}
-          </div>
-        </div>
-      </button>
-      <ol class="dropdown-menu">
-        {%- for brand in all_brands|sort(attribute='title') %}
-        <li>{{ render_brand_admin_link(brand, class='dropdown-item', dim_archived=True) }}</li>
-        {%- endfor %}
-      </ol>
+    <div class="sidebar-section-header-layout">
+      {{ render_brand_avatar(brand, '32') }}
+      <div>
+        <div class="sidebar-section-category">{{ _('Brand') }}</div>
+        {{ brand.title }}
+      </div>
     </div>
   </header>
   {%- with navigation = Navigation(_('Brand'))
