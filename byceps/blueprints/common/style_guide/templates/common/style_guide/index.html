@@ -1,5 +1,8 @@
 {% extends 'layout/base_auto.html' %}
 {% set title = 'Style Guide' %}
+{% if g.app_mode.is_admin() %}
+{% set layout_main_raw = True %}
+{% endif %}
 
 
 {% block head %}
@@ -9,6 +12,9 @@
     }
 
     .example {
+{%- if g.app_mode.is_admin() %}
+      background-color: #ffffff;
+{%- endif %}
       border: rgba(0, 0, 0, 0.5) solid 1px;
       border-radius: 0.2rem;
     }
