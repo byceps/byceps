@@ -23,7 +23,7 @@ from . import config, config_defaults
 from .database import db
 from . import email
 from .util.l10n import set_locale
-from .util import templatefilters
+from .util import templatefilters, templatefunctions
 from .util.templating import SiteTemplateOverridesLoader
 from .util.views import redirect_to
 
@@ -74,6 +74,7 @@ def create_app(
     register_blueprints(app)
 
     templatefilters.register(app)
+    templatefunctions.register(app)
 
     _add_static_file_url_rules(app)
 
