@@ -1,4 +1,4 @@
-{% extends 'layout/admin/shop.html' %}
+{% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/order.html' import render_order_payment_state %}
 {% from 'macros/misc.html' import render_tag %}
@@ -11,7 +11,7 @@
 
 {% block body %}
 
-  <div class="box" style="margin-top: var(--inner-gutter);">
+  <div class="box">
     <div class="row row--equal-sized-centered-columns row--space-between row--wrap bigstats">
       <div class="column-auto">
         <a class="button button--clear" href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open') }}">
