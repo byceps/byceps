@@ -1,0 +1,49 @@
+{%- from 'macros/admin.html' import render_main_tabs %}
+
+
+{%- with navigation = Navigation(_('Shop'))
+    .add_item(
+      url_for('shop_shop_admin.view', shop_id=shop.id),
+      'Shop',
+      id='shop_shop_admin',
+      required_permission=ShopPermission.view,
+      icon='shop')
+    .add_item(
+      url_for('shop_storefront_admin.index_for_shop', shop_id=shop.id),
+      'Storefronts',
+      id='shop_storefront_admin',
+      required_permission=ShopPermission.view,
+      icon='shop')
+    .add_item(
+      url_for('shop_article_admin.index_for_shop', shop_id=shop.id),
+      'Artikel',
+      id='shop_article_admin',
+      required_permission=ShopArticlePermission.view,
+      icon='shop-articles')
+    .add_item(
+      url_for('shop_order_admin.index_for_shop', shop_id=shop.id),
+      'Bestellungen',
+      id='shop_order_admin',
+      required_permission=ShopOrderPermission.view,
+      icon='shop-order')
+    .add_item(
+      url_for('shop_shipping_admin.view_for_shop', shop_id=shop.id),
+      'Versand',
+      id='shop_shipping_admin',
+      required_permission=ShopOrderPermission.view,
+      icon='shipping')
+    .add_item(
+      url_for('shop_email_admin.view_for_shop', shop_id=shop.id),
+      'E-Mail',
+      id='shop_email_admin',
+      required_permission=ShopPermission.view,
+      icon='email')
+    .add_item(
+      url_for('snippet_admin.index_for_scope', scope_type='shop', scope_name=shop.id),
+      'Snippets',
+      id='shop_snippet_admin',
+      required_permission=SnippetPermission.view,
+      icon='snippet')
+-%}
+{{ render_main_tabs(navigation, current_page) }}
+{%- endwith %}

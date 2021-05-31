@@ -1,5 +1,4 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin.html' import render_main_tabs %}
 {% from 'macros/misc.html' import render_tag %}
 
 {% block before_body %}
@@ -9,54 +8,5 @@
       {{- shop.title }}
       {%- if shop.archived %} {{ render_tag('archiviert', class='color-disabled', icon='archived') }}{% endif -%}
     </h1>
-
-{{
-  render_main_tabs(
-    Navigation(None)
-      .add_item(
-        url_for('shop_shop_admin.view', shop_id=shop.id),
-        'Shop',
-        id='shop',
-        required_permission=ShopPermission.view,
-        icon='shop')
-      .add_item(
-        url_for('shop_storefront_admin.index_for_shop', shop_id=shop.id),
-        'Storefronts',
-        id='storefronts',
-        required_permission=ShopPermission.view,
-        icon='shop')
-      .add_item(
-        url_for('shop_article_admin.index_for_shop', shop_id=shop.id),
-        'Artikel',
-        id='articles',
-        required_permission=ShopArticlePermission.view,
-        icon='shop-articles')
-      .add_item(
-        url_for('shop_order_admin.index_for_shop', shop_id=shop.id),
-        'Bestellungen',
-        id='orders',
-        required_permission=ShopOrderPermission.view,
-        icon='shop-order')
-      .add_item(
-        url_for('shop_shipping_admin.view_for_shop', shop_id=shop.id),
-        'Versand',
-        id='shipping',
-        required_permission=ShopOrderPermission.view,
-        icon='shipping')
-      .add_item(
-        url_for('shop_email_admin.view_for_shop', shop_id=shop.id),
-        'E-Mail',
-        id='email',
-        required_permission=ShopPermission.view,
-        icon='email')
-      .add_item(
-        url_for('snippet_admin.index_for_scope', scope_type='shop', scope_name=shop.id),
-        'Snippets',
-        id='snippets',
-        required_permission=SnippetPermission.view,
-        icon='snippet')
-    , current_tab
-  )
-}}
   {%- endwith %}
 {%- endblock %}
