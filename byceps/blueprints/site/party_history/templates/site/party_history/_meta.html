@@ -1,0 +1,3 @@
+{%- from 'macros/datetime.html' import render_time_element -%}
+
+  <p class="meta">{{ render_time_element(party.starts_at.date().isoformat(), format_date(party.starts_at, 'full')) }} – {{ render_time_element(party.ends_at.date().isoformat(), format_date(party.ends_at, 'full')) }}</p>
