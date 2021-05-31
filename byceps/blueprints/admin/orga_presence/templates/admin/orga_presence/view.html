@@ -2,6 +2,7 @@
 {% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
 {% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
 {% set current_page = 'orga_presence' %}
+{% set current_page_party = party %}
 {% set title = 'Anwesenheit' %}
 {% set layout_main_raw = True %}
 
@@ -11,11 +12,6 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>{{ party.title }}</li>
-    </ol>
-  </nav>
   <h1>{{ title }}</h1>
 
   <div>
