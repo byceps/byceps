@@ -8,7 +8,7 @@ Provide and register custom template global functions.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import babel.dates
+import babel
 from flask_babel import get_locale, get_timezone
 
 
@@ -18,6 +18,7 @@ def register(app):
         (_format_date, 'format_date'),
         (_format_datetime, 'format_datetime'),
         (_format_time, 'format_time'),
+        (_format_number, 'format_number'),
     ]
 
     for f, name in functions:
@@ -38,3 +39,7 @@ def _format_time(*args) -> str:
     return babel.dates.format_time(
         *args, locale=get_locale(), tzinfo=get_timezone()
     )
+
+
+def _format_number(*args) -> str:
+    return babel.numbers.format_number(*args, locale=get_locale())

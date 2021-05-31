@@ -29,9 +29,9 @@
         {%- endif %}
   </div>
   <div style="color: #999999; font-size: 0.6875rem; text-align: right;">
-    <strong>{{ ticket_sale_stats.tickets_sold|separate_thousands }}</strong>
+    <strong>{{ format_number(ticket_sale_stats.tickets_sold) }}</strong>
     {{ _('of') }}
-    <strong>{{ ticket_sale_stats.tickets_max|separate_thousands if tickets_total_max_specified else '?' }}</strong>
+    <strong>{{ format_number(ticket_sale_stats.tickets_max) if tickets_total_max_specified else '?' }}</strong>
     {{ _('tickets sold') }}
         {%- if tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
     <div class="centered">{{ render_tag(_('sold out')) }}</div>

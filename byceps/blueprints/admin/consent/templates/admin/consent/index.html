@@ -21,7 +21,7 @@
         {%- for subject, consent_count in subjects_with_consent_counts|sort(attribute='0.name') %}
           <tr>
             <td>{{ subject.title }}<br><span class="dimmed">{{ subject.name }}</span></td>
-            <td class="bignumber number">{{ consent_count|separate_thousands }}</td>
+            <td class="bignumber number">{{ format_number(consent_count) }}</td>
           </tr>
         {%- endfor %}
       </tbody>

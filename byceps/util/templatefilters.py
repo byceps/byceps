@@ -11,7 +11,7 @@ Provide and register custom template filters.
 from datetime import datetime
 
 from flask import current_app
-from flask_babel import format_decimal, gettext
+from flask_babel import gettext
 from jinja2 import pass_eval_context
 from jinja2.filters import do_default, do_trim
 from markupsafe import Markup
@@ -49,11 +49,6 @@ def _wrap_markup_on_autoescape(eval_ctx, value):
     return Markup(value) if eval_ctx.autoescape else value
 
 
-def separate_thousands(number: int) -> str:
-    """Insert locale-specific characters to separate thousands."""
-    return format_decimal(number)
-
-
 def local_tz_to_utc(dt: datetime):
     tz_str = _get_timezone()
 
@@ -88,7 +83,6 @@ def register(app):
         dim,
         fallback,
         money.format_euro_amount,
-        separate_thousands,
         utc_to_local_tz,
     ]
 

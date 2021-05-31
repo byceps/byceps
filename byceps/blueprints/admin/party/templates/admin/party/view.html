@@ -70,7 +70,7 @@
       </tr>
       <tr>
         <th>Maximale Anzahl Tickets</th>
-        <td>{{ party.max_ticket_quantity|separate_thousands if (party.max_ticket_quantity is not none) else 'nicht festgelegt'|dim }}</td>
+        <td>{{ format_number(party.max_ticket_quantity) if (party.max_ticket_quantity is not none) else 'nicht festgelegt'|dim }}</td>
       </tr>
       <tr>
         <th>Ticketverwaltung</th>

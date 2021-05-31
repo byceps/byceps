@@ -41,7 +41,7 @@
         <tr>
           <td><a href="{{ url_for('.channel_view', channel_id=channel.id) }}"><strong>{{ channel.id }}</strong></a></td>
           <td class="monospace">{{ channel.url_prefix }}</td>
-          <td class="centered bignumber">{{ item_count_by_channel_id[channel.id]|separate_thousands }}</td>
+          <td class="centered bignumber">{{ format_number(item_count_by_channel_id[channel.id]) }}</td>
         </tr>
       {%- endfor %}
       </tbody>

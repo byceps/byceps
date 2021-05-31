@@ -73,9 +73,9 @@
   </div>
 
   <div style="font-size: 0.75rem; text-align: center;">
-    <strong>{{ ticket_sale_stats.tickets_sold|separate_thousands }}</strong>
+    <strong>{{ format_number(ticket_sale_stats.tickets_sold) }}</strong>
     von
-    <strong>{{ ticket_sale_stats.tickets_max|separate_thousands if tickets_total_max_specified else '?' }}</strong>
+    <strong>{{ format_number(ticket_sale_stats.tickets_max) if tickets_total_max_specified else '?' }}</strong>
     Tickets verkauft
   </div>
 

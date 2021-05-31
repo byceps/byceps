@@ -8,6 +8,6 @@
 {%- if party.max_ticket_quantity %}
 <div class="dimmed" style="margin-top: 0.25rem;">
   <span style="margin-right: 0.25rem;">{{ render_icon('users') }}</span>
-  {{ party.max_ticket_quantity|separate_thousands }} Teilnehmer
+  {{ format_number(party.max_ticket_quantity) }} Teilnehmer
 </div>
 {%- endif %}

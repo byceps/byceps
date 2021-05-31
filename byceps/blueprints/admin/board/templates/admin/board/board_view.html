@@ -51,8 +51,8 @@
             {%- endif %}
           </td>
           <td>{{ category.description }}</td>
-          <td class="centered bignumber">{{ category.topic_count|separate_thousands }}</td>
-          <td class="centered bignumber">{{ category.posting_count|separate_thousands }}</td>
+          <td class="centered bignumber">{{ format_number(category.topic_count) }}</td>
+          <td class="centered bignumber">{{ format_number(category.posting_count) }}</td>
           <td>
             {%- if has_current_user_permission(BoardCategoryPermission.update) -%}
             <div class="dropdown">
