@@ -25,7 +25,7 @@ from byceps.services.terms import document_service as terms_document_service
 from byceps.services.terms import version_service as terms_version_service
 from byceps.services.user.dbmodels.user import User
 from byceps.services.user import event_service, service as user_service
-from byceps.services.verification_token.dbmodels import Token
+from byceps.services.verification_token.dbmodels import Token as DbToken
 from byceps.services.verification_token.transfer.models import (
     Purpose as TokenPurpose,
 )
@@ -249,7 +249,7 @@ def get_user_count():
 
 
 def find_verification_token(user_id):
-    return Token.query \
+    return DbToken.query \
         .filter_by(user_id=user_id) \
         .for_purpose(TokenPurpose.email_address_confirmation) \
         .first()

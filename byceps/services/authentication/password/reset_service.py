@@ -12,8 +12,8 @@ from ...email import service as email_service
 from ...email.transfer.models import Sender
 from ...user.dbmodels.user import User
 from ...user import service as user_service
-from ...verification_token.dbmodels import Token
 from ...verification_token import service as verification_token_service
+from ...verification_token.transfer.models import Token
 
 from . import service as password_service
 

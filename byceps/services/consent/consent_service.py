@@ -13,7 +13,8 @@ from typing import Iterable, Sequence
 from ...database import db
 from ...typing import UserID
 
-from ..verification_token.dbmodels import Token
+from ..verification_token import service as verification_token_service
+from ..verification_token.transfer.models import Token
 
 from .dbmodels.consent import Consent as DbConsent
 from .dbmodels.subject import Subject as DbSubject
@@ -45,7 +46,8 @@ def consent_to_subjects(
     verification token.
     """
     user_id = verification_token.user_id
-    db.session.delete(verification_token)
+
+    verification_token_service.delete_token(verification_token.token)
 
     for subject_id in subject_ids:
         consent = build_consent(user_id, subject_id, expressed_at)

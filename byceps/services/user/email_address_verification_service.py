@@ -19,8 +19,8 @@ from ..email import service as email_service
 from ..site import service as site_service
 from ..site.transfer.models import SiteID
 from ..user import service as user_service
-from ..verification_token.dbmodels import Token
 from ..verification_token import service as verification_token_service
+from ..verification_token.transfer.models import Token
 
 from . import event_service as user_event_service
 

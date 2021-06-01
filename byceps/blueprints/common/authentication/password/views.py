@@ -22,7 +22,7 @@ from .....services.user import service as user_service
 from .....services.verification_token import (
     service as verification_token_service,
 )
-from .....services.verification_token.dbmodels import Token as VerificationToken
+from .....services.verification_token.transfer.models import Token as VerificationToken
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated

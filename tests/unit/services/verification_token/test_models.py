@@ -9,11 +9,11 @@ from uuid import UUID
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.verification_token.dbmodels import Token
 from byceps.services.verification_token import (
     service as verification_token_service,
 )
 from byceps.services.verification_token.transfer.models import Purpose
+from byceps.services.verification_token.transfer.models import Purpose, Token
 
 
 @pytest.mark.parametrize(
@@ -52,15 +52,12 @@ from byceps.services.verification_token.transfer.models import Purpose
     ],
 )
 def test_is_expired(purpose, now, expected):
-    token = create_verification_token(purpose)
+    token = Token(
+        token='fake',
+        created_at=datetime(2014, 11, 26, 17, 44, 53),
+        user_id=UUID('b57acf68-c258-4b0a-9f00-bb989b36de8a'),
+        purpose=purpose,
+    )
 
     with freeze_time(now):
         assert verification_token_service.is_expired(token) == expected
-
-
-def create_verification_token(purpose):
-    user_id = UUID('b57acf68-c258-4b0a-9f00-bb989b36de8a')
-
-    token = Token(user_id, purpose)
-    token.created_at = datetime(2014, 11, 26, 17, 44, 53)
-    return token
