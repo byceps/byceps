@@ -22,10 +22,11 @@ blueprint = create_blueprint('party_archive', __name__)
 @templated
 def index():
     """List archived parties."""
-    archived_parties = party_service.get_archived_parties_for_brand(g.brand_id)
+    parties = party_service.get_archived_parties_for_brand(g.brand_id)
+    parties = [p for p in parties if not p.canceled]
 
     return {
-        'parties': archived_parties,
+        'parties': parties,
     }
 
 
