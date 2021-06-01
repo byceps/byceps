@@ -44,6 +44,6 @@ def reset_password(verification_token: Token, password: str) -> None:
     """Reset the user's password."""
     user = user_service.get_db_user(verification_token.user_id)
 
-    verification_token_service.delete_token(verification_token)
+    verification_token_service.delete_token(verification_token.token)
 
     password_service.update_password_hash(user.id, password, user.id)

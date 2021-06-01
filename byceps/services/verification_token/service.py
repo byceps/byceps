@@ -37,8 +37,12 @@ def _create_token(user_id: UserID, purpose: Purpose) -> DbToken:
     return token
 
 
-def delete_token(token: DbToken) -> None:
-    db.session.delete(token)
+def delete_token(token: str) -> None:
+    """Delete the token."""
+    db.session.query(DbToken) \
+        .filter_by(token=token) \
+        .delete()
+
     db.session.commit()
 
 

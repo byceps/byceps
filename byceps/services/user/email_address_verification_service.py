@@ -74,7 +74,7 @@ def confirm_email_address(
         'user-email-address-confirmed', user.id, event_data
     )
 
-    verification_token_service.delete_token(verification_token)
+    verification_token_service.delete_token(verification_token.token)
 
     return UserEmailAddressConfirmed(
         occurred_at=event.occurred_at,
