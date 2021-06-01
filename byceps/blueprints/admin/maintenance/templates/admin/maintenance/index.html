@@ -7,6 +7,12 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='style/admin_dashboard.css') }}">
+    <style>
+      table.index.small th,
+      table.index.small td {
+        font-size: 0.6875rem; /* 11px / 16px */
+      }
+    </style>
 {%- endblock %}
 
 {% block body %}
@@ -14,6 +20,19 @@
   <h1>{{ title }}</h1>
 
   <div class="grid dashboard">
+
+  {%- call render_cell('password', 'higher') %}
+    <div class="mb">{{ render_icon('password') }} <span>Verification Tokens</span></div>
+    <table class="index small">
+      {%- for purpose, count in verification_token_counts_by_purpose|dictsort(by='value') %}
+      <tr>
+        <td>{{ purpose.name }}</td>
+        <td class="number">{{ count }}</td>
+      </tr>
+      {%- endfor %}
+    </table>
+  {%- endcall %}
+
   {%- with items = [
     (_('Background Jobs'), 'pending', url_for('jobs_admin.index'), JobsPermission.view),
   ] %}
@@ -25,9 +44,11 @@
       {%- endif %}
     {%- endfor %}
   {%- endwith %}
+
   {%- call render_cell(icon_name='delete', href=url_for('.delete_old_login_events'), data_action='delete-old-login-events') %}
     {{ render_icon('delete') }} <span>{{ _('Delete old login events') }}</span>
   {%- endcall %}
+
   </div>
 
 {%- endblock %}

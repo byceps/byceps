@@ -11,6 +11,9 @@ from datetime import datetime, timedelta
 from flask_babel import gettext
 
 from ....services.user import event_service as user_event_service
+from ....services.verification_token import (
+    service as verification_token_service,
+)
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -27,7 +30,13 @@ blueprint = create_blueprint('maintenance_admin', __name__)
 @templated
 def index():
     """Show maintenance overview."""
-    return {}
+    verification_token_counts_by_purpose = (
+        verification_token_service.count_tokens_by_purpose()
+    )
+
+    return {
+        'verification_token_counts_by_purpose': verification_token_counts_by_purpose,
+    }
 
 
 @blueprint.post('/delete_old_login_events')

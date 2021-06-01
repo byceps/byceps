@@ -6,6 +6,7 @@ byceps.services.verification_token.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from typing import Optional
 
 from ...database import db
@@ -64,3 +65,18 @@ def _find_for_purpose_by_token(
         .filter_by(token=token_value) \
         .for_purpose(purpose) \
         .first()
+
+
+def count_tokens_by_purpose() -> dict[Purpose, int]:
+    """Count verification tokens, grouped by purpose."""
+    rows = db.session \
+        .query(
+            DbToken._purpose,
+            db.func.count(DbToken.token)
+        ) \
+        .group_by(DbToken._purpose) \
+        .all()
+
+    counts_by_name = dict(rows)
+
+    return {purpose: counts_by_name[purpose.name] for purpose in Purpose}
