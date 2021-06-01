@@ -7,7 +7,6 @@ byceps.services.verification_token.dbmodels
 """
 
 from datetime import datetime, timedelta
-from enum import Enum
 import secrets
 
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -16,9 +15,7 @@ from ...database import BaseQuery, db
 from ...typing import UserID
 from ...util.instances import ReprBuilder
 
-
-Purpose = Enum('Purpose',
-    ['email_address_confirmation', 'password_reset', 'terms_consent'])
+from .transfer.models import Purpose
 
 
 def _generate_token_value():

@@ -25,9 +25,9 @@ from byceps.services.terms import document_service as terms_document_service
 from byceps.services.terms import version_service as terms_version_service
 from byceps.services.user.dbmodels.user import User
 from byceps.services.user import event_service, service as user_service
-from byceps.services.verification_token.dbmodels import (
+from byceps.services.verification_token.dbmodels import Token
+from byceps.services.verification_token.transfer.models import (
     Purpose as TokenPurpose,
-    Token,
 )
 
 from tests.helpers import http_client
