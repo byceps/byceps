@@ -53,7 +53,7 @@ a {
   grid-area: footer;
 }
 
-@media (min-width: 60rem) { /* 960px / 16px */
+@media (min-width: 1080px) {
 
   .container {
     --layout-width: 1080px;
@@ -390,7 +390,7 @@ h2 small {
 
 /* tables */
 
-@media (max-width: 60rem) { /* 960px / 16px */
+@media (max-width: 1080px) {
 
   table.index.wide {
     display: block;
