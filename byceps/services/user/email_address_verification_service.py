@@ -36,8 +36,10 @@ def send_email_address_confirmation_email(
     email_config = email_service.get_config(site.brand_id)
     sender = email_config.sender
 
-    verification_token = verification_token_service.create_for_email_address_confirmation(
-        user_id
+    verification_token = (
+        verification_token_service.create_for_email_address_confirmation(
+            user_id, recipient_email_address
+        )
     )
     confirmation_url = (
         f'https://{site.server_name}/users/email_address/'
@@ -70,6 +72,13 @@ def confirm_email_address(
         raise EmailAddressConfirmationFailed(
             'Account has no email address assigned.'
         )
+
+    expected_email_address = verification_token.data.get('email_address')
+    if (
+        not expected_email_address
+        or user.email_address != expected_email_address
+    ):
+        raise EmailAddressConfirmationFailed('Email addresses do not match.')
 
     user.email_address_verified = True
     db.session.commit()

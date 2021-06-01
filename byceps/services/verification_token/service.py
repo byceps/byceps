@@ -17,8 +17,11 @@ from .dbmodels import Token as DbToken
 from .transfer.models import Purpose, Token
 
 
-def create_for_email_address_confirmation(user_id: UserID) -> Token:
-    return _create_token(user_id, Purpose.email_address_confirmation)
+def create_for_email_address_confirmation(
+    user_id: UserID, email_address: str
+) -> Token:
+    data = {'email_address': email_address}
+    return _create_token(user_id, Purpose.email_address_confirmation, data=data)
 
 
 def create_for_password_reset(user_id: UserID) -> Token:

@@ -17,7 +17,9 @@ from tests.helpers import http_client
 
 @pytest.fixture(scope='module')
 def user1(make_user):
-    return make_user('EAC-User1', initialized=False)
+    return make_user(
+        'EAC-User1', email_address='user1@mail.test', initialized=False
+    )
 
 
 @pytest.fixture(scope='module')
@@ -27,12 +29,21 @@ def user2(make_user):
 
 @pytest.fixture(scope='module')
 def user3(make_user):
-    return make_user('EAC-User3', initialized=True)
+    return make_user(
+        'EAC-User3', email_address='user3@mail.test', initialized=True
+    )
 
 
 @pytest.fixture(scope='module')
 def user4(make_user):
     return make_user('EAC-User4', initialized=True)
+
+
+@pytest.fixture(scope='module')
+def user5(make_user):
+    return make_user(
+        'EAC-User5', email_address='user5@mail.test', initialized=True
+    )
 
 
 @pytest.fixture
@@ -54,7 +65,7 @@ def test_valid_token(site_app, user1, role):
     assert not user_before.email_address_verified
     assert not user_before.initialized
 
-    token = create_confirmation_token(user_id)
+    token = create_confirmation_token(user_id, 'user1@mail.test')
 
     # -------------------------------- #
 
@@ -100,7 +111,7 @@ def test_initialized_user(site_app, user3, role):
     assert not user_before.email_address_verified
     assert user_before.initialized
 
-    token = create_confirmation_token(user_id)
+    token = create_confirmation_token(user_id, 'user3@mail.test')
 
     # -------------------------------- #
 
@@ -127,7 +138,28 @@ def test_account_without_email_address(site_app, site, user4, role):
     assert not user_before.email_address_verified
     assert user_before.initialized
 
-    token = create_confirmation_token(user_id)
+    token = create_confirmation_token(user_id, 'user4@mail.test')
+
+    # -------------------------------- #
+
+    response = confirm(site_app, token)
+
+    # -------------------------------- #
+
+    assert response.status_code == 302
+
+    user_after = user_service.get_db_user(user_id)
+    assert not user_before.email_address_verified
+
+
+def test_different_user_and_token_email_addresses(site_app, site, user5, role):
+    user_id = user5.id
+
+    user_before = user_service.get_db_user(user_id)
+    assert not user_before.email_address_verified
+    assert user_before.initialized
+
+    token = create_confirmation_token(user_id, 'user5@mail-other.test')
 
     # -------------------------------- #
 
@@ -154,8 +186,8 @@ def get_role_ids(user_id):
     return authorization_service.find_role_ids_for_user(user_id)
 
 
-def create_confirmation_token(user_id):
+def create_confirmation_token(user_id, email_address):
     token = verification_token_service.create_for_email_address_confirmation(
-        user_id
+        user_id, email_address
     )
     return token.token
