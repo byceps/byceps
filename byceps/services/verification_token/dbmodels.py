@@ -6,6 +6,7 @@ byceps.services.verification_token.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
 import secrets
 
@@ -41,10 +42,18 @@ class Token(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     _purpose = db.Column('purpose', db.UnicodeText, index=True, nullable=False)
+    data = db.Column(db.JSONB, nullable=True)
 
-    def __init__(self, user_id: UserID, purpose: Purpose) -> None:
+    def __init__(
+        self,
+        user_id: UserID,
+        purpose: Purpose,
+        *,
+        data: Optional[dict[str, str]],
+    ) -> None:
         self.user_id = user_id
         self.purpose = purpose
+        self.data = data
 
     @hybrid_property
     def purpose(self) -> Purpose:

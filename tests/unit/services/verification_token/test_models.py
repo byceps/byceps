@@ -57,6 +57,7 @@ def test_is_expired(purpose, now, expected):
         created_at=datetime(2014, 11, 26, 17, 44, 53),
         user_id=UUID('b57acf68-c258-4b0a-9f00-bb989b36de8a'),
         purpose=purpose,
+        data={},
     )
 
     with freeze_time(now):

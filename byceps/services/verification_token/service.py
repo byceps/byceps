@@ -29,8 +29,10 @@ def create_for_terms_consent(user_id: UserID) -> Token:
     return _create_token(user_id, Purpose.terms_consent)
 
 
-def _create_token(user_id: UserID, purpose: Purpose) -> Token:
-    token = DbToken(user_id, purpose)
+def _create_token(
+    user_id: UserID, purpose: Purpose, *, data: Optional[dict[str, str]] = None
+) -> Token:
+    token = DbToken(user_id, purpose, data=data)
 
     db.session.add(token)
     db.session.commit()
@@ -84,6 +86,7 @@ def _db_entity_to_token(token: DbToken) -> Token:
         created_at=token.created_at,
         user_id=token.user_id,
         purpose=token.purpose,
+        data=token.data if token.data is not None else {},
     )
 
 
