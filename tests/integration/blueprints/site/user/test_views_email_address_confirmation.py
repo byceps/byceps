@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.database import db
 from byceps.services.authorization import service as authorization_service
 from byceps.services.user import service as user_service
 from byceps.services.verification_token import (
@@ -27,6 +28,11 @@ def user2(make_user):
 @pytest.fixture(scope='module')
 def user3(make_user):
     return make_user('EAC-User3', initialized=True)
+
+
+@pytest.fixture(scope='module')
+def user4(make_user):
+    return make_user('EAC-User4', initialized=True)
 
 
 @pytest.fixture
@@ -107,6 +113,34 @@ def test_confirm_email_address_for_initialized_user(site_app, user3, role):
     user_after = user_service.get_db_user(user_id)
     assert user_before.email_address_verified
     assert user_after.initialized
+
+
+def test_confirm_email_address_for_account_without_email_address(
+    site_app, site, user4, role
+):
+    user_id = user4.id
+
+    user_with_email_address = user_service.get_db_user(user_id)
+    user_with_email_address.email_address = None
+    db.session.commit()
+
+    user_before = user_service.get_db_user(user_id)
+    assert user_before.email_address is None
+    assert not user_before.email_address_verified
+    assert user_before.initialized
+
+    token = create_confirmation_token(user_id)
+
+    # -------------------------------- #
+
+    response = confirm(site_app, token)
+
+    # -------------------------------- #
+
+    assert response.status_code == 302
+
+    user_after = user_service.get_db_user(user_id)
+    assert not user_before.email_address_verified
 
 
 # helpers

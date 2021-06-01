@@ -54,6 +54,10 @@ def send_email_address_confirmation_email(
     email_service.enqueue_email(sender, recipients, subject, body)
 
 
+class EmailAddressConfirmationFailed(Exception):
+    pass
+
+
 def confirm_email_address(
     verification_token: Token,
 ) -> UserEmailAddressConfirmed:
@@ -61,6 +65,11 @@ def confirm_email_address(
     verification token.
     """
     user = user_service.get_db_user(verification_token.user_id)
+
+    if user.email_address is None:
+        raise EmailAddressConfirmationFailed(
+            'Account has no email address assigned.'
+        )
 
     user.email_address_verified = True
     db.session.commit()
@@ -86,7 +95,7 @@ def confirm_email_address(
 
 
 def invalidate_email_address(
-    user_id: UserID, reason: str, *, initiator_id: Optional[UserID] = None,
+    user_id: UserID, reason: str, *, initiator_id: Optional[UserID] = None
 ) -> UserEmailAddressInvalidated:
     """Invalidate the user's email address by marking it as unverified.
 

@@ -606,7 +606,7 @@ msgstr "Erstellen"
 #: byceps/blueprints/admin/board/templates/admin/board/category_update_form.html:22
 #: byceps/blueprints/admin/brand/templates/admin/brand/email_config_update_form.html:22
 #: byceps/blueprints/admin/brand/templates/admin/brand/update_form.html:22
-#: byceps/blueprints/admin/news/templates/admin/news/image_update_form.html:22
+#: byceps/blueprints/admin/news/templates/admin/news/image_update_form.html:26
 #: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:23
 #: byceps/blueprints/admin/orga/templates/admin/orga/create_orgaflag_form.html:20
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_create_form.html:22
@@ -1018,7 +1018,7 @@ msgstr "Tickets eingecheckt"
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: byceps/blueprints/admin/maintenance/views.py:45
+#: byceps/blueprints/admin/maintenance/views.py:54
 #, python-format
 msgid ""
 "Deleted %(num_deleted)s login events older than %(minimum_age_in_days)s "
@@ -1027,15 +1027,15 @@ msgstr ""
 "%(num_deleted)s Login-Events älter als %(minimum_age_in_days)s Tage "
 "wurden gelöscht."
 
-#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:18
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:37
 msgid "Background Jobs"
 msgstr "Hintergrundjobs"
 
-#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:29
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:49
 msgid "Delete old login events"
 msgstr "Alte Login-Events löschen"
 
-#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:38
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:59
 msgid "Delete old login events?"
 msgstr "Alte Login-Events löschen?"
 
@@ -2543,15 +2543,15 @@ msgstr "Das Thema \"%(title)s\" wurde auf Ankündigungen beschränkt."
 msgid "Topic \"%(title)s\" has been reopened for regular replies."
 msgstr "Das Thema \"%(title)s\" wurde für normale Beiträge geöffnet."
 
-#: byceps/blueprints/site/consent/views.py:79
+#: byceps/blueprints/site/consent/views.py:80
 msgid "Unknown consent subject"
 msgstr "Unbekanntes Zustimmungsthema"
 
-#: byceps/blueprints/site/consent/views.py:87
+#: byceps/blueprints/site/consent/views.py:88
 msgid "Thank you for your consent. Please log in again."
 msgstr "Vielen Dank für deine Zustimmung. Bitte melde dich erneut an."
 
-#: byceps/blueprints/site/consent/views.py:109
+#: byceps/blueprints/site/consent/views.py:110
 msgid "Invalid verification token"
 msgstr "Unbekannter Bestätigungscode"
 
@@ -2902,11 +2902,15 @@ msgstr ""
 "Der Link zur Bestätigung der für den Benutzernamen \"%(screen_name)s\" "
 "hinterlegten E-Mail-Adresse wurde erneut versendet."
 
-#: byceps/blueprints/site/user/email_address/views.py:128
+#: byceps/blueprints/site/user/email_address/views.py:130
+msgid "Email address verification failed."
+msgstr "Die Verifikation der E-Mail-Adresse ist fehlgeschlagen."
+
+#: byceps/blueprints/site/user/email_address/views.py:133
 msgid "Email address has been verified."
 msgstr "Die E-Mail-Adresse wurde bestätigt."
 
-#: byceps/blueprints/site/user/email_address/views.py:133
+#: byceps/blueprints/site/user/email_address/views.py:138
 #, python-format
 msgid "User \"%(screen_name)s\" has been activated."
 msgstr "Das Benutzerkonto \"%(screen_name)s\" wurde aktiviert."

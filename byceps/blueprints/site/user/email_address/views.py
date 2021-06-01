@@ -122,9 +122,14 @@ def confirm(token):
         flash_error(gettext('No valid token specified.'))
         abort(404)
 
-    event = email_address_verification_service.confirm_email_address(
-        verification_token
-    )
+    try:
+        event = email_address_verification_service.confirm_email_address(
+            verification_token
+        )
+    except email_address_verification_service.EmailAddressConfirmationFailed as e:
+        flash_error(gettext('Email address verification failed.'))
+        return redirect_to('authentication_login.login_form')
+
     flash_success(gettext('Email address has been verified.'))
 
     if not user.initialized:
