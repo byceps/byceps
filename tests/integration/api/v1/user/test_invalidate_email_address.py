@@ -9,7 +9,9 @@ from byceps.services.user import (
 )
 
 
-def test_invalidation_of_initialized_user(api_client, make_user):
+def test_invalidation_of_initialized_user(
+    api_client, api_client_authz_header, make_user
+):
     email_address = 'hoarder@mailhost.example'
 
     user = make_user(
@@ -22,7 +24,7 @@ def test_invalidation_of_initialized_user(api_client, make_user):
     user_before = user_service.get_db_user(user.id)
     assert user_before.email_address_verified
 
-    response = send_request(api_client, email_address)
+    response = send_request(api_client, api_client_authz_header, email_address)
     assert response.status_code == 204
 
     user_after = user_service.get_db_user(user.id)
@@ -38,15 +40,20 @@ def test_invalidation_of_initialized_user(api_client, make_user):
     }
 
 
-def test_invalidation_of_unknown_email_address(api_client):
-    response = send_request(api_client, 'unknown_mailbox@mailhost.example')
+def test_invalidation_of_unknown_email_address(
+    api_client, api_client_authz_header
+):
+    response = send_request(
+        api_client, api_client_authz_header, 'unknown_mailbox@mailhost.example'
+    )
     assert response.status_code == 404
 
 
-def send_request(api_client, email_address):
+def send_request(api_client, api_client_authz_header, email_address):
     url = '/api/v1/users/invalidate_email_address'
+    headers = [api_client_authz_header]
     data = {
         'email_address': email_address,
         'reason': 'unknown host',
     }
-    return api_client.post(url, json=data)
+    return api_client.post(url, headers=headers, json=data)

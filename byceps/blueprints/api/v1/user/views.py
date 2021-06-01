@@ -19,6 +19,8 @@ from .....util.framework.blueprint import create_blueprint
 from .....util.views import create_empty_json_response
 from .....util.views import respond_no_content
 
+from ...decorators import api_token_required
+
 from .schemas import InvalidateEmailAddressRequest
 
 
@@ -43,6 +45,7 @@ def get_profile(user_id):
 
 
 @blueprint.post('/invalidate_email_address')
+@api_token_required
 @respond_no_content
 def invalidate_email_address():
     """Invalidate the email address."""
