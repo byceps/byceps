@@ -14,6 +14,10 @@
 
   <h1>{{ render_icon('edit') }} {{ title }}</h1>
 
+  <div class="mb">
+    <img src="{{ image.url_path }}">
+  </div>
+
   <form action="{{ url_for('.image_update', image_id=image.id) }}" method="post">
     {{ form_field(form.alt_text, autofocus='autofocus') }}
     {{ form_field(form.caption) }}
