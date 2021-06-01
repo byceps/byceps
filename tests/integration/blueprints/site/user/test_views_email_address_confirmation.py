@@ -47,7 +47,7 @@ def role(admin_app, site, user1, user2):
     authorization_service.delete_role(role.id)
 
 
-def test_confirm_email_address_with_valid_token(site_app, user1, role):
+def test_valid_token(site_app, user1, role):
     user_id = user1.id
 
     user_before = user_service.get_db_user(user_id)
@@ -71,7 +71,7 @@ def test_confirm_email_address_with_valid_token(site_app, user1, role):
     assert get_role_ids(user_id) == {'board_user'}
 
 
-def test_confirm_email_address_with_unknown_token(site_app, site, user2, role):
+def test_unknown_token(site_app, site, user2, role):
     user_id = user2.id
 
     user_before = user_service.get_db_user(user_id)
@@ -93,7 +93,7 @@ def test_confirm_email_address_with_unknown_token(site_app, site, user2, role):
     assert get_role_ids(user_id) == set()
 
 
-def test_confirm_email_address_for_initialized_user(site_app, user3, role):
+def test_initialized_user(site_app, user3, role):
     user_id = user3.id
 
     user_before = user_service.get_db_user(user_id)
@@ -115,9 +115,7 @@ def test_confirm_email_address_for_initialized_user(site_app, user3, role):
     assert user_after.initialized
 
 
-def test_confirm_email_address_for_account_without_email_address(
-    site_app, site, user4, role
-):
+def test_account_without_email_address(site_app, site, user4, role):
     user_id = user4.id
 
     user_with_email_address = user_service.get_db_user(user_id)
