@@ -7,6 +7,7 @@ byceps.services.verification_token.service
 """
 
 from __future__ import annotations
+from datetime import datetime, timedelta
 from typing import Optional
 
 from ...database import db
@@ -85,3 +86,13 @@ def count_tokens_by_purpose() -> dict[Purpose, int]:
     counts_by_name = dict(rows)
 
     return {purpose: counts_by_name[purpose.name] for purpose in Purpose}
+
+
+def is_expired(token: Token) -> bool:
+    """Return `True` if the token has expired, i.e. it is no longer valid."""
+    if token.purpose != Purpose.password_reset:
+        return False
+
+    now = datetime.utcnow()
+    expires_after = timedelta(hours=24)
+    return now >= (token.created_at + expires_after)

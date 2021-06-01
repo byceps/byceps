@@ -211,7 +211,9 @@ def _verify_reset_token(token: str) -> VerificationToken:
 
 
 def _is_verification_token_valid(token: Optional[VerificationToken]) -> bool:
-    return (token is not None) and not token.is_expired
+    return (token is not None) and not verification_token_service.is_expired(
+        token
+    )
 
 
 # -------------------------------------------------------------------- #

@@ -6,7 +6,7 @@ byceps.services.verification_token.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime
 import secrets
 
 from sqlalchemy.ext.hybrid import hybrid_property
@@ -54,16 +54,6 @@ class Token(db.Model):
     def purpose(self, purpose: Purpose) -> None:
         assert purpose is not None
         self._purpose = purpose.name
-
-    @property
-    def is_expired(self) -> bool:
-        """Return `True` if expired, i.e. it is no longer valid."""
-        if self.purpose == Purpose.password_reset:
-            now = datetime.utcnow()
-            expires_after = timedelta(hours=24)
-            return now >= (self.created_at + expires_after)
-        else:
-            return False
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

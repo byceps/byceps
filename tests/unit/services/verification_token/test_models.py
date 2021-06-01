@@ -10,6 +10,9 @@ from freezegun import freeze_time
 import pytest
 
 from byceps.services.verification_token.dbmodels import Token
+from byceps.services.verification_token import (
+    service as verification_token_service,
+)
 from byceps.services.verification_token.transfer.models import Purpose
 
 
@@ -52,7 +55,7 @@ def test_is_expired(purpose, now, expected):
     token = create_verification_token(purpose)
 
     with freeze_time(now):
-        assert token.is_expired == expected
+        assert verification_token_service.is_expired(token) == expected
 
 
 def create_verification_token(purpose):
