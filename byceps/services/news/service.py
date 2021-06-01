@@ -286,6 +286,19 @@ def find_item_version(version_id: ItemVersionID) -> DbItemVersion:
     return DbItemVersion.query.get(version_id)
 
 
+def has_channel_items(channel_id: ChannelID) -> bool:
+    """Return `True` if the channel contains items."""
+    return db.session \
+        .query(
+            db.session
+                .query(DbItem)
+                .join(DbChannel)
+                .filter(DbChannel.id == channel_id)
+                .exists()
+        ) \
+        .scalar()
+
+
 def get_item_count_by_channel_id() -> dict[ChannelID, int]:
     """Return news item count (including 0) per channel, indexed by
     channel ID.

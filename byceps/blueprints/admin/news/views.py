@@ -18,13 +18,14 @@ from ....services.news import html_service as news_html_service
 from ....services.news import image_service as news_image_service
 from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Channel
+from ....services.site import service as site_service
 from ....services.text_diff import service as text_diff_service
 from ....services.user.service import UserIdRejected
 from ....signals import news as news_signals
 from ....util.authorization import register_permission_enum
 from ....util.datetime.format import format_datetime_short
 from ....util.framework.blueprint import create_blueprint
-from ....util.framework.flash import flash_success
+from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.iterables import pairwise
 from ....util.templatefilters import local_tz_to_utc
@@ -104,7 +105,7 @@ def channel_create(brand_id):
 
     flash_success(
         gettext(
-            'News channel with ID "%(channel_id)s" has been created.',
+            'News channel "%(channel_id)s" has been created.',
             channel_id=channel.id,
         )
     )
@@ -131,6 +132,46 @@ def channel_view(channel_id, page):
         'brand': brand,
         'items': items,
     }
+
+
+@blueprint.delete('/channels/<channel_id>')
+@permission_required(NewsChannelPermission.create)
+@respond_no_content
+def channel_delete(channel_id):
+    """Delete the channel."""
+    channel = _get_channel_or_404(channel_id)
+
+    if news_item_service.has_channel_items(channel.id):
+        flash_error(
+            gettext(
+                'News channel "%(channel_id)s" cannot be deleted because it contains news items.',
+                channel_id=channel.id,
+            )
+        )
+        return
+
+    sites_for_brand = site_service.get_sites_for_brand(channel.brand_id)
+    linked_sites = {
+        site for site in sites_for_brand if channel.id in site.news_channel_ids
+    }
+    if linked_sites:
+        flash_error(
+            gettext(
+                'News channel "%(channel_id)s" cannot be deleted because it is referenced by %(site_count)s site(s).',
+                channel_id=channel.id,
+                site_count=len(linked_sites),
+            )
+        )
+        return
+
+    news_channel_service.delete_channel(channel.id)
+
+    flash_success(
+        gettext(
+            'News channel "%(channel_id)s" has been deleted.',
+            channel_id=channel_id,
+        )
+    )
 
 
 # -------------------------------------------------------------------- #
