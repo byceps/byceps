@@ -15,7 +15,13 @@ from ....typing import UserID
 
 
 Purpose = Enum(
-    'Purpose', ['email_address_confirmation', 'password_reset', 'terms_consent']
+    'Purpose',
+    [
+        'email_address_change',
+        'email_address_confirmation',
+        'password_reset',
+        'terms_consent',
+    ],
 )
 
 

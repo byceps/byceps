@@ -17,6 +17,13 @@ from .dbmodels import Token as DbToken
 from .transfer.models import Purpose, Token
 
 
+def create_for_email_address_change(
+    user_id: UserID, new_email_address: str
+) -> Token:
+    data = {'new_email_address': new_email_address}
+    return _create_token(user_id, Purpose.email_address_change, data=data)
+
+
 def create_for_email_address_confirmation(
     user_id: UserID, email_address: str
 ) -> Token:
@@ -50,6 +57,11 @@ def delete_token(token: str) -> None:
         .delete()
 
     db.session.commit()
+
+
+def find_for_email_address_change_by_token(token_value: str) -> Optional[Token]:
+    purpose = Purpose.email_address_change
+    return _find_for_purpose_by_token(token_value, purpose)
 
 
 def find_for_email_address_confirmation_by_token(
