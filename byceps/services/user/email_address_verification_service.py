@@ -10,6 +10,7 @@ from typing import Optional
 
 from ...database import db
 from ...events.user import (
+    UserEmailAddressChanged,
     UserEmailAddressConfirmed,
     UserEmailAddressInvalidated,
 )
@@ -18,7 +19,7 @@ from ...typing import UserID
 from ..email import service as email_service
 from ..site import service as site_service
 from ..site.transfer.models import SiteID
-from ..user import service as user_service
+from ..user import command_service as user_command_service, service as user_service
 from ..verification_token import service as verification_token_service
 from ..verification_token.transfer.models import Token
 
@@ -63,7 +64,7 @@ class EmailAddressConfirmationFailed(Exception):
 def confirm_email_address(
     verification_token: Token,
 ) -> UserEmailAddressConfirmed:
-    """Confirm the email address of the user assigned with that
+    """Confirm the email address of the user account assigned with that
     verification token.
     """
     user = user_service.get_db_user(verification_token.user_id)
@@ -139,3 +140,59 @@ def invalidate_email_address(
         user_id=user.id,
         user_screen_name=user.screen_name,
     )
+
+
+def send_email_address_change_email(
+    new_email_address: str,
+    recipient_screen_name: str,
+    user_id: UserID,
+    site_id: SiteID,
+) -> None:
+    site = site_service.get_site(site_id)
+
+    email_config = email_service.get_config(site.brand_id)
+    sender = email_config.sender
+
+    verification_token = (
+        verification_token_service.create_for_email_address_change(
+            user_id, new_email_address
+        )
+    )
+    confirmation_url = (
+        f'https://{site.server_name}/users/email_address/'
+        f'change/{verification_token.token}'
+    )
+
+    subject = f'{recipient_screen_name}, bitte bestätige deine neue E-Mail-Adresse'
+    body = (
+        f'Hallo {recipient_screen_name},\n\n'
+        f'bitte bestätige deine neue E-Mail-Adresse, indem du diese URL abrufst: {confirmation_url}'
+    )
+    recipients = [new_email_address]
+
+    email_service.enqueue_email(sender, recipients, subject, body)
+
+
+class EmailAddressChangeFailed(Exception):
+    pass
+
+
+def change_email_address(verification_token: Token) -> UserEmailAddressChanged:
+    """Change the email address of the user account assigned with that
+    verification token.
+    """
+    new_email_address = verification_token.data.get('new_email_address')
+    if not new_email_address:
+        raise EmailAddressChangeFailed('Token contains no email address.')
+
+    user = user_service.get_db_user(verification_token.user_id)
+    verified = True
+    initiator = user
+
+    event = user_command_service.change_email_address(
+        user.id, new_email_address, verified, initiator.id
+    )
+
+    verification_token_service.delete_token(verification_token.token)
+
+    return event

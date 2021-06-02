@@ -6,6 +6,8 @@ byceps.blueprints.site.user.settings.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import re
+
 from flask import g
 from flask_babel import lazy_gettext
 from wtforms import PasswordField, StringField
@@ -17,6 +19,26 @@ from .....services.user import screen_name_validator, service as user_service
 from .....util.l10n import LocalizedForm
 
 from ....common.core.forms import ScreenNameValidator
+
+
+EMAIL_ADDRESS_PATTERN = re.compile(r'^.+?@.+?\..+?$')
+
+
+def validate_email_address(form, field):
+    if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
+        raise ValidationError(lazy_gettext('Invalid email address'))
+
+    if user_service.is_email_address_already_assigned(field.data):
+        raise ValidationError(
+            lazy_gettext('This email address is not available.')
+        )
+
+
+class ChangeEmailAddressForm(LocalizedForm):
+    new_email_address = StringField(
+        lazy_gettext('New email address'),
+        [InputRequired(), Length(min=6, max=120), validate_email_address],
+    )
 
 
 class ChangeScreenNameForm(LocalizedForm):

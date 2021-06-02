@@ -9,9 +9,9 @@ byceps.blueprints.site.user.email_address.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from .....services.user import email_address_verification_service
 from .....services.user import (
     command_service as user_command_service,
+    email_address_verification_service,
     service as user_service,
 )
 from .....services.verification_token import (
@@ -144,3 +144,37 @@ def confirm(token):
     user_signals.email_address_confirmed.send(None, event=event)
 
     return redirect_to('authentication_login.login_form')
+
+
+@blueprint.get('/change/<token>')
+def change(token):
+    """Confirm and change e-mail address of the user account assigned
+    with the verification token.
+    """
+    verification_token = (
+        verification_token_service.find_for_email_address_change_by_token(token)
+    )
+    if verification_token is None:
+        abort(404)
+
+    user = user_service.get_db_user(verification_token.user_id)
+    if (user is None) or user.suspended or user.deleted:
+        flash_error(gettext('No valid token specified.'))
+        abort(404)
+
+    try:
+        event = email_address_verification_service.change_email_address(
+            verification_token
+        )
+    except email_address_verification_service.EmailAddressChangeFailed as e:
+        flash_error(gettext('Email address change failed.'))
+        return redirect_to('authentication_login.login_form')
+
+    flash_success(gettext('Email address has been changed.'))
+
+    user_signals.email_address_changed.send(None, event=event)
+
+    if g.user.authenticated:
+        return redirect_to('user_settings.view')
+    else:
+        return redirect_to('authentication_login.login_form')

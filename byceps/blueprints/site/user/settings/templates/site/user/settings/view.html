@@ -12,6 +12,7 @@
       <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('chevron-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
         <li><a class="dropdown-item" href="{{ url_for('.change_screen_name_form') }}">Benutzername ändern</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.change_email_address_form') }}">E-Mail-Adresse ändern</a></li>
         <li><a class="dropdown-item" href="{{ url_for('.details_update_form') }}">Persönliche Daten ändern</a></li>
         <li><a class="dropdown-item" href="{{ url_for('authentication_password.update_form') }}">Passwort ändern</a></li>
       </ol>

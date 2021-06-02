@@ -15,15 +15,18 @@ from .....services.brand import settings_service as brand_settings_service
 from .....services.country import service as country_service
 from .....services.newsletter import service as newsletter_service
 from .....services.newsletter.transfer.models import ListID as NewsletterListID
-from .....services.user import command_service as user_command_service
-from .....services.user import service as user_service
+from .....services.user import (
+    command_service as user_command_service,
+    email_address_verification_service,
+    service as user_service,
+)
 from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
 from .....util.views import login_required, redirect_to
 
-from .forms import DetailsForm, ChangeScreenNameForm
+from .forms import DetailsForm, ChangeEmailAddressForm, ChangeScreenNameForm
 
 
 blueprint = create_blueprint('user_settings', __name__)
@@ -51,6 +54,48 @@ def view():
         'newsletter_list_id': newsletter_list_id,
         'subscribed_to_newsletter': subscribed_to_newsletter,
     }
+
+
+@blueprint.get('/email_address')
+@login_required
+@templated
+def change_email_address_form(erroneous_form=None):
+    """Show a form to change the current user's email address."""
+    form = erroneous_form if erroneous_form else ChangeEmailAddressForm()
+
+    return {
+        'form': form,
+    }
+
+
+@login_required
+@blueprint.post('/email_address')
+def change_email_address():
+    """Request a change of the current user's email address."""
+    current_user = g.user
+
+    form = ChangeEmailAddressForm(request.form)
+    if not form.validate():
+        return change_email_address_form(form)
+
+    new_email_address = form.new_email_address.data.strip()
+
+    email_address_verification_service.send_email_address_change_email(
+        new_email_address,
+        current_user.screen_name,
+        current_user.id,
+        g.site_id,
+    )
+
+    flash_success(
+        gettext(
+            'An email with a verification link has been sent to your new '
+            'address. The email address of your account will be changed '
+            'to the new address once you visit the link to verify it.'
+        )
+    )
+
+    return redirect_to('.view')
 
 
 @blueprint.get('/screen_name')
