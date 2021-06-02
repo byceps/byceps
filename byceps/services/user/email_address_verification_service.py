@@ -81,12 +81,14 @@ def confirm_email_address(
         raise EmailAddressConfirmationFailed('Email addresses do not match.')
 
     user.email_address_verified = True
-    db.session.commit()
 
     event_data = {'email_address': token_email_address}
-    event = user_event_service.create_event(
+    event = user_event_service.build_event(
         'user-email-address-confirmed', user.id, event_data
     )
+    db.session.add(event)
+
+    db.session.commit()
 
     verification_token_service.delete_token(verification_token.token)
 
@@ -116,7 +118,6 @@ def invalidate_email_address(
         initiator = None
 
     user.email_address_verified = False
-    db.session.commit()
 
     event_data = {
         'email_address': user.email_address,
@@ -124,9 +125,12 @@ def invalidate_email_address(
     }
     if initiator:
         event_data['initiator_id'] = str(initiator.id)
-    event = user_event_service.create_event(
+    event = user_event_service.build_event(
         'user-email-address-invalidated', user.id, event_data
     )
+    db.session.add(event)
+
+    db.session.commit()
 
     return UserEmailAddressInvalidated(
         occurred_at=event.occurred_at,
