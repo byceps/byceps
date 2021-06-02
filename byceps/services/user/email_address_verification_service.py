@@ -73,11 +73,11 @@ def confirm_email_address(
             'Account has no email address assigned.'
         )
 
-    expected_email_address = verification_token.data.get('email_address')
-    if (
-        not expected_email_address
-        or user.email_address != expected_email_address
-    ):
+    token_email_address = verification_token.data.get('email_address')
+    if not token_email_address:
+        raise EmailAddressConfirmationFailed('Token contains no email address.')
+
+    if user.email_address != token_email_address:
         raise EmailAddressConfirmationFailed('Email addresses do not match.')
 
     user.email_address_verified = True
