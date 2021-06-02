@@ -484,11 +484,12 @@ def change_email_address(user_id):
 
     old_email_address = user.email_address
     new_email_address = form.email_address.data.strip()
+    verified = False
     initiator_id = g.user.id
     reason = form.reason.data.strip()
 
     event = user_command_service.change_email_address(
-        user.id, new_email_address, initiator_id, reason=reason
+        user.id, new_email_address, verified, initiator_id, reason=reason
     )
 
     user_signals.email_address_changed.send(None, event=event)

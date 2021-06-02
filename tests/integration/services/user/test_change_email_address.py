@@ -18,6 +18,7 @@ def admin_user(make_user):
 def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     old_email_address = 'zero-cool@users.test'
     new_email_address = 'crash.override@users.test'
+    verified = False
     reason = 'Does not want to be recognized by Acid Burn.'
 
     user = make_user(
@@ -36,7 +37,7 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     # -------------------------------- #
 
     event = user_command_service.change_email_address(
-        user.id, new_email_address, admin_user.id, reason=reason
+        user.id, new_email_address, verified, admin_user.id, reason=reason
     )
 
     # -------------------------------- #
@@ -67,6 +68,7 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
 def test_change_email_address_without_reason(admin_app, make_user, admin_user):
     old_email_address = 'address_with_tyop@users.test'
     new_email_address = 'address_without_typo@users.test'
+    verified = False
 
     user = make_user(
         'WantsEmailAddressChangedWithoutReason',
@@ -77,7 +79,7 @@ def test_change_email_address_without_reason(admin_app, make_user, admin_user):
     # -------------------------------- #
 
     user_command_service.change_email_address(
-        user.id, new_email_address, admin_user.id
+        user.id, new_email_address, verified, admin_user.id
     )
 
     # -------------------------------- #

@@ -176,6 +176,7 @@ def change_screen_name(
 def change_email_address(
     user_id: UserID,
     new_email_address: Optional[str],
+    verified: bool,
     initiator_id: UserID,
     *,
     reason: Optional[str] = None,
@@ -187,7 +188,7 @@ def change_email_address(
     old_email_address = user.email_address
 
     user.email_address = new_email_address
-    user.email_address_verified = False
+    user.email_address_verified = verified
 
     event_data = {
         'old_email_address': old_email_address,
