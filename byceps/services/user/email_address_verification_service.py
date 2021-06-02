@@ -83,11 +83,7 @@ def confirm_email_address(
     user.email_address_verified = True
     db.session.commit()
 
-    # Currently, the user's e-mail address cannot be changed, but that
-    # might be allowed in the future. At that point, the verification
-    # token should be extended to include the e-mail address it refers
-    # to, and that value should be persisted with user event instead.
-    event_data = {'email_address': user.email_address}
+    event_data = {'email_address': token_email_address}
     event = user_event_service.create_event(
         'user-email-address-confirmed', user.id, event_data
     )
