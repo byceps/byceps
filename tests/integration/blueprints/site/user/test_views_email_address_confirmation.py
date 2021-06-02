@@ -76,7 +76,7 @@ def test_valid_token(site_app, user1, role):
     assert response.status_code == 302
 
     user_after = user_service.get_db_user(user_id)
-    assert user_before.email_address_verified
+    assert user_after.email_address_verified
     assert user_after.initialized
 
     assert get_role_ids(user_id) == {'board_user'}
@@ -122,7 +122,7 @@ def test_initialized_user(site_app, user3, role):
     assert response.status_code == 302
 
     user_after = user_service.get_db_user(user_id)
-    assert user_before.email_address_verified
+    assert user_after.email_address_verified
     assert user_after.initialized
 
 
@@ -149,7 +149,7 @@ def test_account_without_email_address(site_app, site, user4, role):
     assert response.status_code == 302
 
     user_after = user_service.get_db_user(user_id)
-    assert not user_before.email_address_verified
+    assert not user_after.email_address_verified
 
 
 def test_different_user_and_token_email_addresses(site_app, site, user5, role):
@@ -170,7 +170,7 @@ def test_different_user_and_token_email_addresses(site_app, site, user5, role):
     assert response.status_code == 302
 
     user_after = user_service.get_db_user(user_id)
-    assert not user_before.email_address_verified
+    assert not user_after.email_address_verified
 
 
 # helpers
