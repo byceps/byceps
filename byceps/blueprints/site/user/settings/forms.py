@@ -39,6 +39,16 @@ class ChangeEmailAddressForm(LocalizedForm):
         lazy_gettext('New email address'),
         [InputRequired(), Length(min=6, max=120), validate_email_address],
     )
+    password = PasswordField(lazy_gettext('Current password'), [InputRequired()])
+
+    @staticmethod
+    def validate_password(form, field):
+        password = field.data
+
+        if not password_service.is_password_valid_for_user(g.user.id, password):
+            raise ValidationError(
+                lazy_gettext('The password does not match the current one.')
+            )
 
 
 class ChangeScreenNameForm(LocalizedForm):

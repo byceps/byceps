@@ -10,6 +10,7 @@
 
   <form action="{{ url_for('.change_email_address') }}" method="post">
     {{ form_field(form.new_email_address, maxlength=120, autofocus='autofocus') }}
+    {{ form_field(form.password, maxlength=100) }}
 
     {{ form_buttons(_('Change'), cancel_url=url_for('.view')) }}
   </form>

@@ -1909,7 +1909,7 @@ msgstr "Zuweisen"
 #: byceps/blueprints/admin/user/templates/admin/user/change_email_address_form.html:16
 #: byceps/blueprints/admin/user/templates/admin/user/change_screen_name_form.html:16
 #: byceps/blueprints/common/authentication/password/templates/common/authentication/password/update_form.html:16
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:14
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:15
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:15
 msgid "Change"
 msgstr "Ändern"
@@ -1962,7 +1962,7 @@ msgstr "Diese E-Mail-Adresse kann nicht verwendet werden."
 
 #: byceps/blueprints/admin/user/forms.py:41
 #: byceps/blueprints/site/user/creation/forms.py:39
-#: byceps/blueprints/site/user/settings/forms.py:69
+#: byceps/blueprints/site/user/settings/forms.py:79
 msgid "This username is not available."
 msgstr "Dieser Benutzername kann nicht verwendet werden."
 
@@ -1978,14 +1978,14 @@ msgstr "Neuer Benutzername"
 #: byceps/blueprints/admin/user/forms.py:88
 #: byceps/blueprints/site/shop/order/forms.py:20
 #: byceps/blueprints/site/user/creation/forms.py:83
-#: byceps/blueprints/site/user/settings/forms.py:83
+#: byceps/blueprints/site/user/settings/forms.py:93
 msgid "First name(s)"
 msgstr "Vorname(n)"
 
 #: byceps/blueprints/admin/user/forms.py:91
 #: byceps/blueprints/site/shop/order/forms.py:23
 #: byceps/blueprints/site/user/creation/forms.py:87
-#: byceps/blueprints/site/user/settings/forms.py:86
+#: byceps/blueprints/site/user/settings/forms.py:96
 msgid "Last name(s)"
 msgstr "Nachname(n)"
 
@@ -2289,10 +2289,13 @@ msgid "New password (confirmation)"
 msgstr "Neues Passwort (Wiederholung)"
 
 #: byceps/blueprints/common/authentication/password/forms.py:62
-msgid "Current Password"
-msgstr "Bisheriges Passwort"
+#: byceps/blueprints/site/user/settings/forms.py:42
+#: byceps/blueprints/site/user/settings/forms.py:67
+msgid "Current password"
+msgstr "Aktuelles Passwort"
 
 #: byceps/blueprints/common/authentication/password/forms.py:72
+#: byceps/blueprints/site/user/settings/forms.py:50
 msgid "The password does not match the current one."
 msgstr "Das eingegebene Passwort stimmt nicht mit dem bisherigen überein."
 
@@ -2699,22 +2702,22 @@ msgid "%(seat_label)s has been released."
 msgstr "%(seat_label)s wurde freigegeben."
 
 #: byceps/blueprints/site/shop/order/forms.py:26
-#: byceps/blueprints/site/user/settings/forms.py:89
+#: byceps/blueprints/site/user/settings/forms.py:99
 msgid "Country"
 msgstr "Land"
 
 #: byceps/blueprints/site/shop/order/forms.py:29
-#: byceps/blueprints/site/user/settings/forms.py:90
+#: byceps/blueprints/site/user/settings/forms.py:100
 msgid "Zip code"
 msgstr "PLZ"
 
 #: byceps/blueprints/site/shop/order/forms.py:31
-#: byceps/blueprints/site/user/settings/forms.py:91
+#: byceps/blueprints/site/user/settings/forms.py:101
 msgid "City"
 msgstr "Stadt"
 
 #: byceps/blueprints/site/shop/order/forms.py:32
-#: byceps/blueprints/site/user/settings/forms.py:92
+#: byceps/blueprints/site/user/settings/forms.py:102
 msgid "Street"
 msgstr "Straße"
 
@@ -2928,27 +2931,23 @@ msgstr "Die Änderung der E-Mail-Adresse ist fehlgeschlagen."
 msgid "Email address has been changed."
 msgstr "Die E-Mail-Adresse wurde geändert."
 
-#: byceps/blueprints/site/user/settings/forms.py:46
+#: byceps/blueprints/site/user/settings/forms.py:56
 msgid "New username"
 msgstr "Neuer Benutzername"
 
-#: byceps/blueprints/site/user/settings/forms.py:57
-msgid "Current password"
-msgstr "Aktuelles Passwort"
-
-#: byceps/blueprints/site/user/settings/forms.py:64
+#: byceps/blueprints/site/user/settings/forms.py:74
 msgid "This already is the current username."
 msgstr "Dies ist bereits der aktuelle Benutzername."
 
-#: byceps/blueprints/site/user/settings/forms.py:78
+#: byceps/blueprints/site/user/settings/forms.py:88
 msgid "Wrong password."
 msgstr "Das Passwort ist nicht korrekt."
 
-#: byceps/blueprints/site/user/settings/forms.py:88
+#: byceps/blueprints/site/user/settings/forms.py:98
 msgid "Date of birth"
 msgstr "Geburtsdatum"
 
-#: byceps/blueprints/site/user/settings/forms.py:94
+#: byceps/blueprints/site/user/settings/forms.py:104
 msgid "Phone number"
 msgstr "Telefonnummer"
 

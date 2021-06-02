@@ -59,7 +59,7 @@ class ResetForm(LocalizedForm):
 
 class UpdateForm(ResetForm):
     old_password = PasswordField(
-        lazy_gettext('Current Password'), [InputRequired()]
+        lazy_gettext('Current password'), [InputRequired()]
     )
 
     @staticmethod
