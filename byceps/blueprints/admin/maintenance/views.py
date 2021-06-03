@@ -39,8 +39,11 @@ def index():
         for purpose, count in verification_token_counts_by_purpose.items()
     }
 
+    verification_token_total = sum(verification_token_counts_by_purpose.values())
+
     return {
         'verification_token_counts_by_purpose_name': verification_token_counts_by_purpose_name,
+        'verification_token_total': verification_token_total,
     }
 
 

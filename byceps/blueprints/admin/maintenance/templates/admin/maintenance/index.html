@@ -22,7 +22,9 @@
   <div class="grid dashboard">
 
   {%- call render_cell('password', 'higher') %}
-    <div class="mb">{{ render_icon('password') }} <span>Verification Tokens</span></div>
+    <div class="mb">
+      {{ render_icon('password') }} <span>Verification Tokens <small class="dimmed">{{ verification_token_total }}</small></span>
+    </div>
     <table class="index small">
       {%- for purpose_name, count in verification_token_counts_by_purpose_name|dictsort(by='key') %}
       <tr>
