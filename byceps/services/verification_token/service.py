@@ -117,7 +117,7 @@ def count_tokens_by_purpose() -> dict[Purpose, int]:
 
     counts_by_name = dict(rows)
 
-    return {purpose: counts_by_name[purpose.name] for purpose in Purpose}
+    return {purpose: counts_by_name.get(purpose.name, 0) for purpose in Purpose}
 
 
 def is_expired(token: Token) -> bool:
