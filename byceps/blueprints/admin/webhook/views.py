@@ -6,6 +6,8 @@ byceps.blueprints.admin.webhook.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import json
+
 from flask import abort, request
 from flask_babel import gettext
 
@@ -148,6 +150,8 @@ def update(webhook_id):
     format = form.format.data.strip()
     url = form.url.data.strip()
     text_prefix = form.text_prefix.data.lstrip()  # Allow trailing whitespace.
+    extra_fields_str = form.extra_fields.data.strip()
+    extra_fields = json.loads(extra_fields_str) if extra_fields_str else None
     description = form.description.data.strip()
     enabled = form.enabled.data
 
@@ -158,6 +162,7 @@ def update(webhook_id):
         url,
         enabled,
         text_prefix=text_prefix,
+        extra_fields=extra_fields,
         description=description,
     )
 

@@ -374,7 +374,7 @@ msgstr ""
 "%(initiator_screen_name)s hat die E-Mail-Adresse des Benutzerkontos "
 "\"%(user_screen_name)s\" invalidiert."
 
-#: byceps/announce/text_assembly/user.py:111
+#: byceps/announce/text_assembly/user.py:109
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has changed personal data of user account "
@@ -383,7 +383,7 @@ msgstr ""
 "%(initiator_screen_name)s hat die persönlichen Daten des Benutzerkontos "
 "\"%(user_screen_name)s\" geändert."
 
-#: byceps/announce/text_assembly/user.py:127
+#: byceps/announce/text_assembly/user.py:125
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has suspended user account "
@@ -392,7 +392,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "gesperrt."
 
-#: byceps/announce/text_assembly/user.py:143
+#: byceps/announce/text_assembly/user.py:141
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has unsuspended user account "
@@ -401,7 +401,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "entsperrt."
 
-#: byceps/announce/text_assembly/user.py:157
+#: byceps/announce/text_assembly/user.py:155
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has deleted user account "
@@ -732,7 +732,7 @@ msgstr "Marke bearbeiten"
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:29
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:75
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:46
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:37
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:38
 msgid "Update"
 msgstr "Bearbeiten"
 
@@ -2221,22 +2221,27 @@ msgid "Text prefix"
 msgstr "Text-Präfix"
 
 #: byceps/blueprints/admin/webhook/forms.py:30
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:65
+msgid "Additional fields"
+msgstr "Zusätzliche Felder"
+
+#: byceps/blueprints/admin/webhook/forms.py:31
 msgid "Enabled"
 msgstr "Aktiv"
 
-#: byceps/blueprints/admin/webhook/views.py:95
+#: byceps/blueprints/admin/webhook/views.py:97
 msgid "Webhook has been created."
 msgstr "Der Webhook wurde erstellt."
 
-#: byceps/blueprints/admin/webhook/views.py:164
+#: byceps/blueprints/admin/webhook/views.py:169
 msgid "Webhook has been updated."
 msgstr "Der Webhook wurde aktualisiert."
 
-#: byceps/blueprints/admin/webhook/views.py:180
+#: byceps/blueprints/admin/webhook/views.py:185
 msgid "Webhook call has been successful."
 msgstr "Der Webhook-Aufruf war erfolgreich."
 
-#: byceps/blueprints/admin/webhook/views.py:184
+#: byceps/blueprints/admin/webhook/views.py:189
 msgid "Webhook call failed:"
 msgstr "Der Webhook-Aufruf ist fehlgeschlagen:"
 
@@ -2246,7 +2251,7 @@ msgstr "Webhook erstellen"
 
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:21
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:76
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:23
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:24
 msgid "Selectors"
 msgstr "Selektoren"
 
@@ -2262,10 +2267,6 @@ msgstr "inaktiv"
 msgid "Test"
 msgstr "Testen"
 
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:65
-msgid "Additional fields"
-msgstr "Zusätzliche Felder"
-
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:78
 msgid "event(s)"
 msgstr "Event(s)"
@@ -2277,6 +2278,10 @@ msgstr "Es sind keine Webhooks definiert."
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:6
 msgid "Update Webhook"
 msgstr "Webhook bearbeiten"
+
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:21
+msgid "Valid JSON or empty"
+msgstr "Gültiges JSON oder leer"
 
 #: byceps/blueprints/api/v1/tourney/avatar/forms.py:17
 msgid "Party ID"

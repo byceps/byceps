@@ -27,6 +27,7 @@ class CreateForm(_BaseForm):
 
 class UpdateForm(_BaseForm):
     text_prefix = StringField(lazy_gettext('Text prefix'), [Optional()])
+    extra_fields = StringField(lazy_gettext('Additional fields'), [Optional()])
     enabled = BooleanField(lazy_gettext('Enabled'))
 
 
