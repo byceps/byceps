@@ -42,6 +42,7 @@ def webhook_settings():
                 'user-account-unsuspended',
                 'user-badge-awarded',
                 'user-details-updated',
+                'user-email-address-changed',
                 'user-email-address-invalidated',
                 'user-screen-name-changed',
                 'user-logged-in',

@@ -50,6 +50,7 @@ from ..events.user import (
     UserAccountSuspended,
     UserAccountUnsuspended,
     UserDetailsUpdated,
+    UserEmailAddressChanged,
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
@@ -116,6 +117,7 @@ EVENT_TYPES_TO_HANDLERS = {
     TourneyParticipantDisqualified: tourney.announce_participant_disqualified,
     UserAccountCreated: user.announce_user_account_created,
     UserScreenNameChanged: user.announce_user_screen_name_changed,
+    UserEmailAddressChanged: user.announce_user_email_address_changed,
     UserEmailAddressInvalidated: user.announce_user_email_address_invalidated,
     UserDetailsUpdated: user.announce_user_details_updated,
     UserAccountSuspended: user.announce_user_account_suspended,
@@ -174,6 +176,7 @@ SIGNALS = [
     tourney_signals.participant_disqualified,
     user_signals.account_created,
     user_signals.screen_name_changed,
+    user_signals.email_address_changed,
     user_signals.email_address_invalidated,
     user_signals.details_updated,
     user_signals.account_suspended,

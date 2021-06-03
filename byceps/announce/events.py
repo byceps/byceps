@@ -48,6 +48,7 @@ from ..events.user import (
     UserAccountSuspended,
     UserAccountUnsuspended,
     UserDetailsUpdated,
+    UserEmailAddressChanged,
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
@@ -94,6 +95,7 @@ EVENT_TYPES_TO_NAMES = {
     UserAccountSuspended:           'user-account-suspended',
     UserAccountUnsuspended:         'user-account-unsuspended',
     UserDetailsUpdated:             'user-details-updated',
+    UserEmailAddressChanged:        'user-email-address-changed',
     UserEmailAddressInvalidated:    'user-email-address-invalidated',
     UserScreenNameChanged:          'user-screen-name-changed',
     UserBadgeAwarded:               'user-badge-awarded',

@@ -14,6 +14,7 @@ from ...events.user import (
     UserAccountSuspended,
     UserAccountUnsuspended,
     UserDetailsUpdated,
+    UserEmailAddressChanged,
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
@@ -37,6 +38,15 @@ def announce_user_screen_name_changed(
 ) -> None:
     """Announce that a user's screen name has been changed."""
     text = user.assemble_text_for_user_screen_name_changed(event)
+
+    call_webhook(webhook, text)
+
+
+def announce_user_email_address_changed(
+    event: UserEmailAddressChanged, webhook: OutgoingWebhook
+) -> None:
+    """Announce that a user's email address has been changed."""
+    text = user.assemble_text_for_user_email_address_changed(event)
 
     call_webhook(webhook, text)
 

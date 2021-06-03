@@ -16,6 +16,7 @@ from ...events.user import (
     UserAccountSuspended,
     UserAccountUnsuspended,
     UserDetailsUpdated,
+    UserEmailAddressChanged,
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
@@ -63,6 +64,22 @@ def assemble_text_for_user_screen_name_changed(
         initiator_screen_name=initiator_screen_name,
         old_screen_name=event.old_screen_name,
         new_screen_name=event.new_screen_name,
+    )
+
+
+@with_locale
+def assemble_text_for_user_email_address_changed(
+    event: UserEmailAddressChanged,
+) -> str:
+    initiator_screen_name = get_screen_name_or_fallback(
+        event.initiator_screen_name
+    )
+    user_screen_name = get_screen_name_or_fallback(event.user_screen_name)
+
+    return gettext(
+        '%(initiator_screen_name)s has changed the email address of user account "%(user_screen_name)s".',
+        initiator_screen_name=initiator_screen_name,
+        user_screen_name=user_screen_name,
     )
 
 

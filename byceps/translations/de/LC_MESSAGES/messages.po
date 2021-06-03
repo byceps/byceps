@@ -329,7 +329,7 @@ msgstr "\"%(participant1_label)s\" vs. \"%(participant2_label)s\""
 msgid "bye"
 msgstr "Freilos"
 
-#: byceps/announce/text_assembly/user.py:39
+#: byceps/announce/text_assembly/user.py:40
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has created user account "
@@ -338,7 +338,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "auf Site \"%(site_title)s\" angelegt."
 
-#: byceps/announce/text_assembly/user.py:46
+#: byceps/announce/text_assembly/user.py:47
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has created user account "
@@ -347,7 +347,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "angelegt."
 
-#: byceps/announce/text_assembly/user.py:61
+#: byceps/announce/text_assembly/user.py:62
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has renamed user account "
@@ -356,7 +356,16 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(old_screen_name)s\" "
 "in \"%(new_screen_name)s\" umbenannt."
 
-#: byceps/announce/text_assembly/user.py:78
+#: byceps/announce/text_assembly/user.py:79
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has changed the email address of user account "
+"\"%(user_screen_name)s\"."
+msgstr ""
+"%(initiator_screen_name)s hat die E-Mail-Adresse des Benutzerkontos "
+"\"%(user_screen_name)s\" geändert."
+
+#: byceps/announce/text_assembly/user.py:95
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has invalidated the email address of user "
@@ -365,7 +374,7 @@ msgstr ""
 "%(initiator_screen_name)s hat die E-Mail-Adresse des Benutzerkontos "
 "\"%(user_screen_name)s\" invalidiert."
 
-#: byceps/announce/text_assembly/user.py:94
+#: byceps/announce/text_assembly/user.py:111
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has changed personal data of user account "
@@ -374,7 +383,7 @@ msgstr ""
 "%(initiator_screen_name)s hat die persönlichen Daten des Benutzerkontos "
 "\"%(user_screen_name)s\" geändert."
 
-#: byceps/announce/text_assembly/user.py:110
+#: byceps/announce/text_assembly/user.py:127
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has suspended user account "
@@ -383,7 +392,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "gesperrt."
 
-#: byceps/announce/text_assembly/user.py:126
+#: byceps/announce/text_assembly/user.py:143
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has unsuspended user account "
@@ -392,7 +401,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "entsperrt."
 
-#: byceps/announce/text_assembly/user.py:140
+#: byceps/announce/text_assembly/user.py:157
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has deleted user account "
@@ -732,6 +741,7 @@ msgstr "Bearbeiten"
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
 #: byceps/blueprints/admin/more/templates/admin/more/view_site.html:17
 #: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:6
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:4
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -1018,7 +1028,7 @@ msgstr "Tickets eingecheckt"
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: byceps/blueprints/admin/maintenance/views.py:54
+#: byceps/blueprints/admin/maintenance/views.py:62
 #, python-format
 msgid ""
 "Deleted %(num_deleted)s login events older than %(minimum_age_in_days)s "
@@ -1027,15 +1037,15 @@ msgstr ""
 "%(num_deleted)s Login-Events älter als %(minimum_age_in_days)s Tage "
 "wurden gelöscht."
 
-#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:37
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:39
 msgid "Background Jobs"
 msgstr "Hintergrundjobs"
 
-#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:49
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:51
 msgid "Delete old login events"
 msgstr "Alte Login-Events löschen"
 
-#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:59
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:61
 msgid "Delete old login events?"
 msgstr "Alte Login-Events löschen?"
 

@@ -9,6 +9,7 @@ from byceps.events.user import (
     UserAccountSuspended,
     UserAccountUnsuspended,
     UserDetailsUpdated,
+    UserEmailAddressChanged,
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
@@ -110,6 +111,29 @@ def test_screen_name_change_announced(app, make_user):
 
     with mocked_irc_bot() as mock:
         user_signals.screen_name_changed.send(None, event=event)
+
+    assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)
+
+
+def test_email_address_changed_announced(app, make_user):
+    expected_text = (
+        'UserSupporter hat die E-Mail-Adresse '
+        'des Benutzerkontos "MailboxHopper" geändert.'
+    )
+
+    admin = make_user('UserSupporter')
+    user = make_user('MailboxHopper')
+
+    event = UserEmailAddressChanged(
+        occurred_at=now(),
+        initiator_id=admin.id,
+        initiator_screen_name=admin.screen_name,
+        user_id=user.id,
+        user_screen_name=user.screen_name,
+    )
+
+    with mocked_irc_bot() as mock:
+        user_signals.email_address_changed.send(None, event=event)
 
     assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)
 
