@@ -34,8 +34,13 @@ def index():
         verification_token_service.count_tokens_by_purpose()
     )
 
+    verification_token_counts_by_purpose_name = {
+        purpose.name: count
+        for purpose, count in verification_token_counts_by_purpose.items()
+    }
+
     return {
-        'verification_token_counts_by_purpose': verification_token_counts_by_purpose,
+        'verification_token_counts_by_purpose_name': verification_token_counts_by_purpose_name,
     }
 
 
