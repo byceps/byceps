@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from flask_babel import lazy_gettext
 from wtforms import BooleanField, StringField
-from wtforms.validators import InputRequired
+from wtforms.validators import InputRequired, Optional
 
 from ....util.l10n import LocalizedForm
 
@@ -26,7 +26,7 @@ class CreateForm(_BaseForm):
 
 
 class UpdateForm(_BaseForm):
-    text_prefix = StringField(lazy_gettext('Text prefix'), [InputRequired()])
+    text_prefix = StringField(lazy_gettext('Text prefix'), [Optional()])
     enabled = BooleanField(lazy_gettext('Enabled'))
 
 
