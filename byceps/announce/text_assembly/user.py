@@ -83,9 +83,7 @@ def assemble_text_for_user_email_address_invalidated(
 
 
 @with_locale
-def assemble_text_for_user_details_updated_changed(
-    event: UserDetailsUpdated,
-) -> str:
+def assemble_text_for_user_details_updated(event: UserDetailsUpdated) -> str:
     initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )

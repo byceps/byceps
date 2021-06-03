@@ -50,11 +50,11 @@ def announce_user_email_address_invalidated(
     call_webhook(webhook, text)
 
 
-def announce_user_details_updated_changed(
+def announce_user_details_updated(
     event: UserDetailsUpdated, webhook: OutgoingWebhook
 ) -> None:
     """Announce that a user's details have been changed."""
-    text = user.assemble_text_for_user_details_updated_changed(event)
+    text = user.assemble_text_for_user_details_updated(event)
 
     call_webhook(webhook, text)
 

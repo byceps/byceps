@@ -117,7 +117,7 @@ EVENT_TYPES_TO_HANDLERS = {
     UserAccountCreated: user.announce_user_account_created,
     UserScreenNameChanged: user.announce_user_screen_name_changed,
     UserEmailAddressInvalidated: user.announce_user_email_address_invalidated,
-    UserDetailsUpdated: user.announce_user_details_updated_changed,
+    UserDetailsUpdated: user.announce_user_details_updated,
     UserAccountSuspended: user.announce_user_account_suspended,
     UserAccountUnsuspended: user.announce_user_account_unsuspended,
     UserAccountDeleted: user.announce_user_account_deleted,
