@@ -159,11 +159,11 @@ def update(webhook_id):
         webhook.id,
         event_selectors,
         format,
+        text_prefix,
+        extra_fields,
         url,
+        description,
         enabled,
-        text_prefix=text_prefix,
-        extra_fields=extra_fields,
-        description=description,
     )
 
     flash_success(gettext('Webhook has been updated.'))

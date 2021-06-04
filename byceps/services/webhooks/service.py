@@ -46,12 +46,11 @@ def update_outgoing_webhook(
     webhook_id: WebhookID,
     event_selectors: EventSelectors,
     format: str,
+    text_prefix: Optional[str],
+    extra_fields: Optional[dict[str, Any]],
     url: str,
+    description: Optional[str],
     enabled: bool,
-    *,
-    text_prefix: Optional[str] = None,
-    extra_fields: Optional[dict[str, Any]] = None,
-    description: Optional[str] = None,
 ) -> OutgoingWebhook:
     """Update an outgoing webhook."""
     webhook = _find_db_webhook(webhook_id)
