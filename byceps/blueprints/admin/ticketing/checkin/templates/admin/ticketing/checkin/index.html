@@ -8,36 +8,11 @@
 {% set title = 'Check-In - %s'|format(party.title) %}
 {% set layout_main_raw = True %}
 
-{% block head %}
-    <style>
-      .box--clear {
-        padding: 0 20px;
-      }
-
-      .box + .notification,
-      .notification + .box {
-        margin-top: 1rem;
-      }
-
-      .box h2 {
-        margin-top: 0;
-      }
-    </style>
-{%- endblock %}
-
 {% block body %}
 
-  <div class="box--clear">
-    <nav class="breadcrumbs">
-      <ol>
-        <li>Ticketing</li>
-        <li>{{ party.title }}</li>
-      </ol>
-    </nav>
-    <h1>Check-In</h1>
-  </div>
+  <h1>Check-In</h1>
 
-  <div class="box">
+  <div class="box mb">
 
     <div class="row row--space-between row--wrap" style="align-items: center;">
       <div class="column-auto">
@@ -49,7 +24,7 @@
         </form>
 
       </div>
-      <div class="column-auto">
+      <div class="column-auto column-auto--grow">
 
         <small>
           <ul style="margin: 0; padding-left: 1rem;">
@@ -68,13 +43,13 @@
 
   {{ render_notification('Die Person muss am <strong>{}</strong> oder früher geboren sein.'.format(render_date(latest_dob_for_checkin, smart=False))|safe, category='warning', icon='warning') }}
 
+  <h2>Tickets {{ render_extra_in_heading(tickets|length) }}</h2>
   <div class="box">
-    <h2>Tickets {{ render_extra_in_heading(tickets|length) }}</h2>
     {%- include 'admin/ticketing/checkin/_ticket_list.html' %}
   </div>
 
+  <h2>Benutzer {{ render_extra_in_heading(users|length) }}</h2>
   <div class="box">
-    <h2>Benutzer {{ render_extra_in_heading(users|length) }}</h2>
     {%- include 'admin/ticketing/checkin/_user_list.html' %}
   </div>
 
