@@ -48,7 +48,7 @@ def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
 def _get_blueprints_common(app: Flask) -> Iterator[BlueprintReg]:
     yield from [
         (app, 'common.authentication.password',  '/authentication/password' ),
-        (app, 'common.core',                     '/core'                    ),
+        (app, 'common.core',                     None                       ),
         (app, 'common.locale',                   '/locale'                  ),
     ]
 
@@ -58,6 +58,7 @@ def _get_blueprints_site(app: Flask) -> Iterator[BlueprintReg]:
         (app, 'site.attendance',                 '/attendance'              ),
         (app, 'site.authentication.login',       '/authentication'          ),
         (app, 'site.board',                      '/board'                   ),
+        (app, 'site.core',                       None                       ),
         (app, 'site.consent',                    '/consent'                 ),
         (app, 'site.dashboard',                  '/dashboard'               ),
         (app, 'site.news',                       '/news'                    ),

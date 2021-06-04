@@ -6,9 +6,16 @@ byceps.blueprints.admin.core.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask import g
+
+from .... import config
 from ....services.brand import service as brand_service
 from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
+from ....util.user_session import (
+    get_current_user,
+    get_locale as get_session_locale,
+)
 
 from .authorization import AdminPermission
 
@@ -31,3 +38,14 @@ def inject_template_variables():
         'get_brand_for_site': get_brand_for_site,
         'get_brand_for_party': get_brand_for_party,
     }
+
+
+@blueprint.before_app_request
+def prepare_request_globals():
+    app_mode = config.get_app_mode()
+    g.app_mode = app_mode
+
+    locale = get_session_locale()
+
+    required_permissions = {AdminPermission.access}
+    g.user = get_current_user(required_permissions, locale)
