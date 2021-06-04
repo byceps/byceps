@@ -766,7 +766,6 @@ msgid "Logged in as"
 msgstr "Eingeloggt als"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:20
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:5
 msgid "Profile"
 msgstr "Profil"
 
@@ -873,7 +872,7 @@ msgid "Organizer Teams"
 msgstr "Orga-Teams"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:19
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:7
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:6
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:74
 #: sites/cozylan/template_overrides/layout/_sidebar_right.html:2
 msgid "Tickets"
@@ -2581,12 +2580,12 @@ msgstr "Unbekannter Bestätigungscode"
 msgid "I consent"
 msgstr "Ich stimme zu"
 
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:6
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:5
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:3
 msgid "Account"
 msgstr "Benutzerkonto"
 
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:8
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:7
 msgid "Orders"
 msgstr "Bestellungen"
 
@@ -3099,11 +3098,15 @@ msgstr "Abmelden"
 msgid "Subscribe"
 msgstr "Anmelden"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:23
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:10
+msgid "View public profile"
+msgstr "Öffentliches Profil ansehen"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:27
 msgid "Remove avatar image?"
 msgstr "Avatarbild entfernen?"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:27
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:31
 msgid "Unsubscribe from newsletter?"
 msgstr "Vom Newsletter abmelden?"
 

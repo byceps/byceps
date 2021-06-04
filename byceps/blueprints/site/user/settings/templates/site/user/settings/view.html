@@ -6,6 +6,10 @@
 
   <h1>{{ title }}</h1>
 
+  <div class="mb">
+    <a href="{{ url_for('user_profile.view', user_id=g.user.id) }}">{{ _('View public profile') }}</a>
+  </div>
+
   {%- with label_column_width = '8rem', data_column_min_width = '12rem' %}
 {%- include 'site/user/settings/_account.html' %}
 {%- include 'site/user/settings/_details_personal.html' %}

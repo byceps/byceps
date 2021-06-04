@@ -2,7 +2,6 @@
 
 
       <li><a class="dropdown-item" href="{{ url_for('dashboard.index') }}">{{ render_icon('dashboard') }} {{ _('Dashboard') }}</a></li>
-      <li><a class="dropdown-item" href="{{ url_for('user_profile.view', user_id=g.user.id) }}">{{ render_icon('user-profile') }} {{ _('Profile') }}</a></li>
       <li><a class="dropdown-item" href="{{ url_for('user_settings.view') }}">{{ render_icon('user') }} {{ _('Account') }}</a></li>
       <li><a class="dropdown-item" href="{{ url_for('ticketing.index_mine') }}">{{ render_icon('ticket') }} {{ _('Tickets') }}</a></li>
       <li><a class="dropdown-item" href="{{ url_for('shop_orders.index') }}">{{ render_icon('invoice') }} {{ _('Orders') }}</a></li>
