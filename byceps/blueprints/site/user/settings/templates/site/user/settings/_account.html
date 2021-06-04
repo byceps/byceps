@@ -7,25 +7,30 @@
     <colgroup>
       <col style="width: {{ label_column_width }};">
       <col style="min-width: {{ data_column_min_width }};">
+      <col>
     </colgroup>
     <tr>
       <th>{{ _('User name') }}</th>
       <td>{{ render_user_screen_name(user) }}</td>
+      <td><a class="button button--compact" href="{{ url_for('.change_screen_name_form') }}" title="{{ _('Change user name') }}">{{ render_icon('edit') }}</a></td>
     </tr>
     <tr>
       <th>{{ _('Email address') }}</th>
       <td>{{ user.email_address if user.email_address else _('not given')|dim }}</td>
+      <td><a class="button button--compact" href="{{ url_for('.change_email_address_form') }}" title="{{ _('Change email address') }}">{{ render_icon('edit') }}</a></td>
+    </tr>
+    <tr>
+      <th>{{ _('Password') }}</th>
+      <td></td>
+      <td><a class="button button--compact" href="{{ url_for('authentication_password.update_form') }}" title="{{ _('Change password') }}">{{ render_icon('edit') }}</a></td>
     </tr>
     <tr>
       <th>{{ _('Avatar') }}</th>
+      <td>{{ render_user_avatar_128(user) }}</td>
       <td>
-        <div style="margin-bottom: 0.5rem;">
-          {{ render_user_avatar_128(user) }}
-        </div>
-
         <div class="dropdown">
-          <button class="dropdown-toggle button button--compact"><span>{{ _('Edit') }}</span> {{ render_icon('chevron-down') -}}</button>
-          <ol class="dropdown-menu">
+          <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+          <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} {{ _('Upload') }}</a></li>
             {%- if user.avatar %}
             <li><a class="dropdown-item" data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} {{ _('Remove') }}</a></li>

@@ -1,15 +1,18 @@
 {% from 'macros/datetime.html' import render_date %}
+{% from 'macros/icons.html' import render_icon %}
 
 
-<h2>{{ _('Personal data') }}</h2>
+  <h2>{{ _('Personal data') }}</h2>
   <table class="index">
     <colgroup>
       <col style="width: {{ label_column_width }};">
       <col style="min-width: {{ data_column_min_width }};">
+      <col>
     </colgroup>
     <tr>
       <th>{{ _('Full name') }}</th>
       <td>{{ user.detail.full_name|fallback }}</td>
+      <td rowspan="4"><a class="button button--compact" href="{{ url_for('.details_update_form') }}" title="{{ _('Change personal data') }}">{{ render_icon('edit') }}</a></td>
     </tr>
     <tr>
       <th>{{ _('Date of birth') }}</th>

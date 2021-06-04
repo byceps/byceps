@@ -1,23 +1,10 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user' %}
 {% set title = _('Account') %}
 
 {% block body %}
 
   <h1>{{ title }}</h1>
-
-  <div style="float: right; margin-left: 40px;">
-    <div class="dropdown">
-      <button class="dropdown-toggle button"><span>{{ _('Actions') }}</span> {{ render_icon('chevron-down') }}</button>
-      <ol class="dropdown-menu dropdown-menu--right">
-        <li><a class="dropdown-item" href="{{ url_for('.change_screen_name_form') }}">{{ _('Change user name') }}</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('.change_email_address_form') }}">{{ _('Change email address') }}</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('.details_update_form') }}">{{ _('Change personal data') }}</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('authentication_password.update_form') }}">{{ _('Change password') }}</a></li>
-      </ol>
-    </div>
-  </div>
 
   {%- with label_column_width = '8rem', data_column_min_width = '12rem' %}
 {%- include 'site/user/settings/_account.html' %}

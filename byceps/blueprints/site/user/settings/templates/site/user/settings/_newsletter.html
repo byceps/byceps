@@ -1,24 +1,25 @@
 {% from 'macros/icons.html' import render_icon %}
 
 
-<h2>{{ _('Newsletter' ) }}</h2>
+  <h2>{{ _('Newsletter' ) }}</h2>
   <table class="index">
     <colgroup>
       <col style="width: {{ label_column_width }};">
       <col style="min-width: {{ data_column_min_width }};">
+      <col>
     </colgroup>
     <tr>
       <th>{{ _('Status') }}</th>
       <td>
+        {%- if subscribed_to_newsletter -%}
+        {{ render_icon('enabled', color='#009900') }} {{ _('subscribed') }}
+        {%- else -%}
+        {{ render_icon('disabled', color='#cc0000') }} {{ _('not subscribed') }}
+        {%- endif -%}
+      </td>
+      <td>
         <div class="dropdown">
-          <button class="dropdown-toggle button button--compact">
-            {%- if subscribed_to_newsletter -%}
-            {{ render_icon('enabled', color='#009900') }} {{ _('subscribed') }}
-            {%- else -%}
-            {{ render_icon('disabled', color='#cc0000') }} {{ _('not subscribed') }}
-            {%- endif -%}
-            {{ ' ' }}{{ render_icon('chevron-down') -}}
-          </button>
+          <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') -}}</button>
           <ol class="dropdown-menu dropdown-menu--right">
             {% if subscribed_to_newsletter -%}
             <li><a class="dropdown-item" data-action="newsletter-unsubscribe" href="{{ url_for('newsletter.unsubscribe', list_id=newsletter_list_id) }}">{{ render_icon('disabled', color='#cc0000') }} {{ _('Unsubscribe') }}</a></li>
