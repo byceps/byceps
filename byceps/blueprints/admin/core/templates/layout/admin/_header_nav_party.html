@@ -33,6 +33,12 @@
       required_permission=TicketingPermission.checkin,
       icon='ticketing-checkin')
     .add_item(
+      url_for('party_admin.view', party_id=party.id),
+      _('Settings'),
+      id='party_admin',
+      required_permission=PartyPermission.view,
+      icon='settings')
+    .add_item(
       url_for('more_admin.view_party', party_id=party.id),
       _('More'),
       id='more_admin_party',

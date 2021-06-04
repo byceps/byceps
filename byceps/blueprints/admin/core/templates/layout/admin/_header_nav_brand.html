@@ -40,6 +40,12 @@
       required_permission=ShopPermission.view,
       icon='shop')
     .add_item(
+      url_for('brand_admin.view', brand_id=brand.id),
+      _('Settings'),
+      id='brand_admin',
+      required_permission=BrandPermission.view,
+      icon='settings')
+    .add_item(
       url_for('more_admin.view_brand', brand_id=brand.id),
       _('More'),
       id='more_admin_brand',
