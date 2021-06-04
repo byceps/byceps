@@ -2,7 +2,7 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user_avatar' %}
-{% set title = 'Avatar hochladen' %}
+{% set title = _('Upload avatar image') %}
 
 {% block body %}
 
@@ -11,10 +11,10 @@
   <form action="{{ url_for('.update') }}" method="post" enctype="multipart/form-data" class="disable-submit-button-on-submit">
   {%- with %}
     {%- set note %}
-      Erlaubte Formate: {{ allowed_types|sort|join(', ') }}<br>
-      Maximale Bildgröße: {{ maximum_dimensions|join(' &times; ')|safe }} Pixel<br>
-      Maximale Dateigröße: 150 KB<br>
-      Falls das Bild nicht quadratisch ist, wird es zugeschnitten.
+      {{ _('Allowed formats') }}: {{ allowed_types|sort|join(', ') }}<br>
+      {{ _('Maximum image dimensions') }}: {{ maximum_dimensions|join(' &times; ')|safe }} {{ _('pixels') }}<br>
+      {{ _('Maximum file size') }}: 150 KB<br>
+      {{ _('If the image is not square it will be cropped.') }}
     {%- endset %}
     {{ form_field(form.image, maxlength=150000, accept='image/*', autofocus='autofocus', note=note) }}
   {%- endwith %}

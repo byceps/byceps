@@ -3,33 +3,32 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_128 %}
 
 
-  <h2>Benutzerkonto</h2>
   <table class="index">
     <colgroup>
       <col style="width: {{ label_column_width }};">
       <col style="min-width: {{ data_column_min_width }};">
     </colgroup>
     <tr>
-      <th>Benutzername</th>
+      <th>{{ _('User name') }}</th>
       <td>{{ render_user_screen_name(user) }}</td>
     </tr>
     <tr>
-      <th>E-Mail-Adresse</th>
-      <td>{{ user.email_address if user.email_address else 'nicht angegeben'|dim }}</td>
+      <th>{{ _('Email address') }}</th>
+      <td>{{ user.email_address if user.email_address else _('not given')|dim }}</td>
     </tr>
     <tr>
-      <th>Avatar</th>
+      <th>{{ _('Avatar') }}</th>
       <td>
         <div style="margin-bottom: 0.5rem;">
           {{ render_user_avatar_128(user) }}
         </div>
 
         <div class="dropdown">
-          <button class="dropdown-toggle button button--compact"><span>Bearbeiten</span> {{ render_icon('chevron-down') -}}</button>
+          <button class="dropdown-toggle button button--compact"><span>{{ _('Edit') }}</span> {{ render_icon('chevron-down') -}}</button>
           <ol class="dropdown-menu">
-            <li><a class="dropdown-item" href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} Hochladen</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} {{ _('Upload') }}</a></li>
             {%- if user.avatar %}
-            <li><a class="dropdown-item" data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} Entfernen</a></li>
+            <li><a class="dropdown-item" data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} {{ _('Remove') }}</a></li>
             {%- endif %}
           </ol>
         </div>

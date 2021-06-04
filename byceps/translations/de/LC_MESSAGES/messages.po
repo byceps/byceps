@@ -737,11 +737,9 @@ msgid "Update"
 msgstr "Bearbeiten"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:44
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
-#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
-#: byceps/blueprints/admin/more/templates/admin/more/view_site.html:17
-#: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:6
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:4
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:44
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:37
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:20
 msgid "Settings"
 msgstr "Einstellungen"
 
@@ -772,6 +770,7 @@ msgid "Profile"
 msgstr "Profil"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:21
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:17
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -789,6 +788,7 @@ msgid "Search user:"
 msgstr "Benutzer suchen:"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header.html:21
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:19
 msgid "Search"
 msgstr "Suchen"
 
@@ -844,10 +844,10 @@ msgstr "Sites"
 msgid "News Channels"
 msgstr "Newskanäle"
 
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:44
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:50
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_global.html:37
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:37
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:20
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:43
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:26
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:6
 #: byceps/blueprints/admin/more/templates/admin/more/view_global.html:5
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:6
@@ -1049,23 +1049,23 @@ msgstr "Alte Login-Events löschen"
 msgid "Delete old login events?"
 msgstr "Alte Login-Events löschen?"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:18
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
 msgid "Newsletter Subscriptions"
 msgstr "Newsletter-Abos"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:19
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:18
 msgid "Discussion Boards"
 msgstr "Foren"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:20
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:19
 msgid "Regular Guests"
 msgstr "Stammgäste"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:21
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:20
 msgid "Brand Snippets"
 msgstr "Marken-Snippets"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:22
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:21
 #: sites/cozylan/template_overrides/layout/_navigation.html:12
 msgid "Terms of Service"
 msgstr "AGB"
@@ -1097,15 +1097,15 @@ msgstr "Benutzer-Abzeichen"
 msgid "Webhooks"
 msgstr "Webhooks"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:18
+#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
 msgid "Organizer Presence"
 msgstr "Orga-Anwesenheit"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:19
+#: byceps/blueprints/admin/more/templates/admin/more/view_party.html:18
 msgid "Tournaments"
 msgstr "Turniere"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_site.html:18
+#: byceps/blueprints/admin/more/templates/admin/more/view_site.html:17
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:137
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:160
 #: sites/cozylan/template_overrides/layout/_navigation.html:13
@@ -1755,6 +1755,7 @@ msgid "Add news channel"
 msgstr "Newskanal hinzufügen"
 
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:117
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:31
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -2001,6 +2002,7 @@ msgstr "Nachname(n)"
 
 #: byceps/blueprints/admin/user/forms.py:94
 #: byceps/blueprints/site/user/creation/forms.py:56
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:16
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
@@ -2185,6 +2187,7 @@ msgid "Update Badge"
 msgstr "Abzeichen bearbeiten"
 
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:52
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:27
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -2399,6 +2402,11 @@ msgstr "Seite nicht gefunden"
 msgid "Sorry, the request page could not be found."
 msgstr "Entschuldigung, die angeforderte Seite wurde nicht gefunden."
 
+#: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:6
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:4
+msgid "Account"
+msgstr "Benutzerkonto"
+
 #: byceps/blueprints/common/core/templates/layout/_current_user_menu_items.html:8
 msgid "Orders"
 msgstr "Bestellungen"
@@ -2426,7 +2434,7 @@ msgstr "Bestätigungs-E-Mail noch nicht erhalten?"
 
 #: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:43
 msgid "Request it again."
-msgstr "Erneut anfodern."
+msgstr "Erneut anfordern."
 
 #: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:45
 msgid "Forgot your password?"
@@ -2595,6 +2603,7 @@ msgid "Amount"
 msgstr "Betrag"
 
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:50
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:11
 msgid "Status"
 msgstr "Status"
 
@@ -2874,7 +2883,32 @@ msgstr "Es ist kein Avatarbild gesetzt, das entfernt werden könnte."
 msgid "Avatar image has been removed."
 msgstr "Dein Avatarbild wurde entfernt."
 
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:5
+msgid "Upload avatar image"
+msgstr "Avatarbild hochladen"
+
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:14
+msgid "Allowed formats"
+msgstr "Erlaubte Formate"
+
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:15
+msgid "Maximum image dimensions"
+msgstr "Maximale Bildgröße"
+
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:15
+msgid "pixels"
+msgstr "Pixel"
+
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:16
+msgid "Maximum file size"
+msgstr "Maximale Dateigröße"
+
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:17
+msgid "If the image is not square it will be cropped."
+msgstr "Falls das Bild nicht quadratisch ist, wird es zugeschnitten."
+
 #: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:22
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:29
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -2887,6 +2921,7 @@ msgid "Bots are not permitted."
 msgstr "Bots sind nicht erlaubt."
 
 #: byceps/blueprints/site/user/creation/forms.py:97
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:4
 msgid "Newsletter"
 msgstr "Newsletter"
 
@@ -2903,6 +2938,22 @@ msgstr ""
 #: byceps/blueprints/site/user/creation/views.py:149
 msgid "User account creation is disabled."
 msgstr "Das Erstellen von Benutzerkonten ist deaktiviert."
+
+#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:4
+msgid "Create user account"
+msgstr "Benutzerkonto erstellen"
+
+#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:12
+msgid "publicly visible"
+msgstr "öffentlich sichtbar"
+
+#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:39
+msgid "I like to subscribe to the newsletter."
+msgstr "Ich möchte den Newsletter erhalten."
+
+#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:42
+msgid "I am a bot."
+msgstr "Ich bin ein Bot."
 
 #: byceps/blueprints/site/user/email_address/views.py:58
 #, python-format
@@ -2946,6 +2997,10 @@ msgstr "Die Änderung der E-Mail-Adresse ist fehlgeschlagen."
 msgid "Email address has been changed."
 msgstr "Die E-Mail-Adresse wurde geändert."
 
+#: byceps/blueprints/site/user/email_address/templates/site/user/email_address/request_confirmation_email_form.html:4
+msgid "Request verification email again"
+msgstr "Bestätigungs-E-Mail erneut anfordern"
+
 #: byceps/blueprints/site/user/settings/forms.py:56
 msgid "New username"
 msgstr "Neuer Benutzername"
@@ -2959,10 +3014,12 @@ msgid "Wrong password."
 msgstr "Das Passwort ist nicht korrekt."
 
 #: byceps/blueprints/site/user/settings/forms.py:98
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:15
 msgid "Date of birth"
 msgstr "Geburtsdatum"
 
 #: byceps/blueprints/site/user/settings/forms.py:104
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:38
 msgid "Phone number"
 msgstr "Telefonnummer"
 
@@ -2984,6 +3041,75 @@ msgstr "Dein Benutzername wurde zu \"%(new_screen_name)s\" geändert."
 #: byceps/blueprints/site/user/settings/views.py:192
 msgid "Your data has been saved."
 msgstr "Deine Daten wurden gespeichert."
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:12
+msgid "User name"
+msgstr "Benutzername"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:17
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:20
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:33
+msgid "not given"
+msgstr "nicht angegeben"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:20
+msgid "Avatar"
+msgstr "Avatar"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:4
+msgid "Personal data"
+msgstr "Persönliche Daten"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:11
+msgid "Full name"
+msgstr "Voller Name"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:25
+msgid "Address"
+msgstr "Adresse"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:16
+msgid "subscribed"
+msgstr "abonniert"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:18
+msgid "not subscribed"
+msgstr "nicht abonniert"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:24
+msgid "Unsubscribe"
+msgstr "Abmelden"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:26
+msgid "Subscribe"
+msgstr "Anmelden"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:5
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:15
+msgid "Change email address"
+msgstr "E-Mail-Adresse ändern"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:5
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:14
+msgid "Change user name"
+msgstr "Benutzername ändern"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/details_update_form.html:4
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:16
+msgid "Change personal data"
+msgstr "Persönliche Daten ändern"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:12
+msgid "Actions"
+msgstr "Aktionen"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:36
+msgid "Remove avatar image?"
+msgstr "Avatarbild entfernen?"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:40
+msgid "Unsubscribe from newsletter?"
+msgstr "Vom Newsletter abmelden?"
 
 #: byceps/blueprints/site/user_group/views.py:40
 #: byceps/blueprints/site/user_group/views.py:54

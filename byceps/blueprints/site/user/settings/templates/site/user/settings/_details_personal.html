@@ -1,28 +1,28 @@
 {% from 'macros/datetime.html' import render_date %}
 
 
-  <h2>Persönliche Daten</h2>
+<h2>{{ _('Personal data') }}</h2>
   <table class="index">
     <colgroup>
       <col style="width: {{ label_column_width }};">
       <col style="min-width: {{ data_column_min_width }};">
     </colgroup>
     <tr>
-      <th>Voller Name</th>
+      <th>{{ _('Full name') }}</th>
       <td>{{ user.detail.full_name|fallback }}</td>
     </tr>
     <tr>
-      <th>Geburtsdatum</th>
+      <th>{{ _('Date of birth') }}</th>
       <td>
         {%- if user.detail.date_of_birth -%}
           {{ render_date(user.detail.date_of_birth, smart=False) }}
         {%- else -%}
-          {{ 'nicht angegeben'|dim }}
+          {{ _('not given')|dim }}
         {%- endif -%}
       </td>
     </tr>
     <tr>
-      <th>Anschrift</th>
+      <th>{{ _('Address') }}</th>
       <td>
         {%- if user.detail.street or user.detail.zip_code or user.detail.city or user.detail.country %}
           {%- if user.detail.street %}{{ user.detail.street }}<br>{% endif -%}
@@ -30,12 +30,12 @@
           {%- if user.detail.city %}{{ user.detail.city }}{% endif -%}
           {%- if user.detail.country %}<br>{{ user.detail.country }}{% endif -%}
         {%- else -%}
-          {{ 'nicht angegeben'|dim }}
+          {{ _('not given')|dim }}
         {%- endif -%}
       </td>
     </tr>
     <tr>
-      <th>Telefonnummer</th>
+      <th>{{ _('Phone number') }}</th>
       <td>{{ user.detail.phone_number|fallback }}</td>
     </tr>
   </table>

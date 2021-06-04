@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user' %}
-{% set title = _('Settings') %}
+{% set title = _('Account') %}
 
 {% block body %}
 
@@ -9,12 +9,12 @@
 
   <div style="float: right; margin-left: 40px;">
     <div class="dropdown">
-      <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('chevron-down') }}</button>
+      <button class="dropdown-toggle button"><span>{{ _('Actions') }}</span> {{ render_icon('chevron-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
-        <li><a class="dropdown-item" href="{{ url_for('.change_screen_name_form') }}">Benutzername ändern</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('.change_email_address_form') }}">E-Mail-Adresse ändern</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('.details_update_form') }}">Persönliche Daten ändern</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('authentication_password.update_form') }}">Passwort ändern</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.change_screen_name_form') }}">{{ _('Change user name') }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.change_email_address_form') }}">{{ _('Change email address') }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.details_update_form') }}">{{ _('Change personal data') }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('authentication_password.update_form') }}">{{ _('Change password') }}</a></li>
       </ol>
     </div>
   </div>
@@ -33,11 +33,11 @@
     <script>
       onDomReady(() => {
         // avatar
-        confirmed_delete_on_click_then_reload('[data-action="avatar-delete"]', 'Avatarbild entfernen?');
+        confirmed_delete_on_click_then_reload('[data-action="avatar-delete"]', '{{ _('Remove avatar image?') }}');
 
         // newsletter
         post_on_click_then_reload('[data-action="newsletter-subscribe"]');
-        confirmed_delete_on_click_then_reload('[data-action="newsletter-unsubscribe"]', 'Wirklich vom Newsletter abmelden?');
+        confirmed_delete_on_click_then_reload('[data-action="newsletter-unsubscribe"]', '{{ _('Unsubscribe from newsletter?') }}');
       });
     </script>
 {% endblock %}
