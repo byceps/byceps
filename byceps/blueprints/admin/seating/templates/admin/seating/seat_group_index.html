@@ -3,37 +3,40 @@
 {% set current_page_party = party %}
 {% set current_tab = 'seat_groups' %}
 {% set title = '%s - Sitzplatz-Gruppen'|format(party.title) %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
   <h1>Sitzplatz-Gruppen {{ render_extra_in_heading(groups|length) }}</h1>
-  {%- if groups %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Bezeichung</th>
-        <th>Ticket-Kategorie</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for group in groups|sort(attribute='title') %}
-      <tr>
-        <td colspan="3"><strong>{{ group.title }}</strong></td>
-      </tr>
-        {%- for seat in group.seats %}
-      <tr>
-        <td>{{ seat.id }}</td>
-        <td>{{ seat.label|fallback }}</td>
-        <td>{{ seat.category.title }}</td>
-      </tr>
+
+  <div class="box">
+    {%- if groups %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Bezeichung</th>
+          <th>Ticket-Kategorie</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for group in groups|sort(attribute='title') %}
+        <tr>
+          <td colspan="3"><strong>{{ group.title }}</strong></td>
+        </tr>
+          {%- for seat in group.seats %}
+        <tr>
+          <td>{{ seat.id }}</td>
+          <td>{{ seat.label|fallback }}</td>
+          <td>{{ seat.category.title }}</td>
+        </tr>
+          {%- endfor %}
         {%- endfor %}
-      {%- endfor %}
-      <tr>
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Es sind keine Sitzplatz-Gruppen für diese Party definiert.</div>
-  {%- endif %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Es sind keine Sitzplatz-Gruppen für diese Party definiert.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

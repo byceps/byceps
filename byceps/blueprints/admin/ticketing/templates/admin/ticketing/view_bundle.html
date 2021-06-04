@@ -6,44 +6,48 @@
 {% set current_page_party = party %}
 {% set current_tab = 'bundles' %}
 {% set title = 'Ticket Bundle %s - Ticketing'|format(bundle.id) %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
   <h1>{{ render_icon('ticket-bundle') }} {{ bundle.id }}</h1>
 
-  <table class="index">
-    <tr>
-      <th>ID</th>
-      <td>{{ bundle.id }}</td>
-    </tr>
-    <tr>
-      <th>Beschreibung</th>
-      <td>{{ bundle.label|fallback }}</td>
-    </tr>
-    <tr>
-      <th>Erstellt</th>
-      <td>{{ render_datetime(bundle.created_at|utc_to_local_tz) }}</td>
-    </tr>
-    <tr>
-      <th>Besitzer/in</th>
-      <td>{{ render_user_avatar_20_and_admin_link(bundle.owned_by) }}</td>
-    </tr>
-    <tr>
-      <th>Party</th>
-      <td>{{ party.title }}</td>
-    </tr>
-    <tr>
-      <th>Kategorie</th>
-      <td>{{ bundle.ticket_category.title }}</td>
-    </tr>
-    <tr>
-      <th>Umfang</th>
-      <td>{{ bundle.ticket_quantity }} Tickets</td>
-    </tr>
-  </table>
+  <div class="box">
+    <table class="index">
+      <tr>
+        <th>ID</th>
+        <td>{{ bundle.id }}</td>
+      </tr>
+      <tr>
+        <th>Beschreibung</th>
+        <td>{{ bundle.label|fallback }}</td>
+      </tr>
+      <tr>
+        <th>Erstellt</th>
+        <td>{{ render_datetime(bundle.created_at|utc_to_local_tz) }}</td>
+      </tr>
+      <tr>
+        <th>Besitzer/in</th>
+        <td>{{ render_user_avatar_20_and_admin_link(bundle.owned_by) }}</td>
+      </tr>
+      <tr>
+        <th>Party</th>
+        <td>{{ party.title }}</td>
+      </tr>
+      <tr>
+        <th>Kategorie</th>
+        <td>{{ bundle.ticket_category.title }}</td>
+      </tr>
+      <tr>
+        <th>Umfang</th>
+        <td>{{ bundle.ticket_quantity }} Tickets</td>
+      </tr>
+    </table>
+  </div>
 
   <h2>Tickets {{ render_extra_in_heading(tickets|length) }}</h1>
-
+  <div class="box">
 {%- include 'admin/ticketing/_ticket_list.html' %}
+  </div>
 
 {%- endblock %}

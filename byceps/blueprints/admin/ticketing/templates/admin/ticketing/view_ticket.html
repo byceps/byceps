@@ -7,6 +7,7 @@
 {% set current_page_party = party %}
 {% set current_tab = 'tickets' %}
 {% set title = 'Ticket %s - Ticketing'|format(ticket.code) %}
+{% set layout_main_raw = True %}
 
 {% block head %}
     <style>
@@ -18,90 +19,104 @@
 
 {% block body %}
 
-  <h1>
-    {{- render_icon('ticket') }} {{ ticket.code }}
-    {%- if ticket.revoked %} {{ render_ticket_flag_revoked() }}{% endif -%}
-    {%- if ticket.user_checked_in %} {{ render_ticket_flag_user_checked_in() }}{% endif -%}
-  </h1>
+  <div class="row row--space-between">
+    <div class="column-auto">
+
+      <h1>
+        {{- render_icon('ticket') }} {{ ticket.code }}
+        {%- if ticket.revoked %} {{ render_ticket_flag_revoked() }}{% endif -%}
+        {%- if ticket.user_checked_in %} {{ render_ticket_flag_user_checked_in() }}{% endif -%}
+      </h1>
+
+    </div>
+    <div class="column-auto column--align-bottom">
 
   {%- if not ticket.revoked and has_current_user_any_permission(TicketingPermission.administrate, TicketingPermission.checkin) %}
-  <div style="float: right; margin-left: 40px;">
-    <div class="dropdown">
-      <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('chevron-down') }}</button>
-      <ol class="dropdown-menu dropdown-menu--right">
-        <li><a class="dropdown-item" href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
-        {%- if has_current_user_permission(TicketingPermission.administrate) and not ticket.user_checked_in %}
-        <li><a class="dropdown-item" data-action="update-code" href="{{ url_for('.update_code', ticket_id=ticket.id) }}">{{ render_icon('edit') }} Code ändern</a></li>
-        {%- endif %}
-        {%- if ticket.user_checked_in %}
-        <li class="dropdown-divider"></li>
-        <li><a class="dropdown-item" data-action="revert-user-check-in" href="{{ url_for('ticketing_checkin_admin.revert_user_check_in', ticket_id=ticket.id) }}">{{ render_icon('disabled') }} Check-In rückgängig machen</a></li>
-        {%- endif %}
-      </ol>
-    </div>
-  </div>
+      <div class="button-row">
+        <div class="dropdown">
+          <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('chevron-down') }}</button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            <li><a class="dropdown-item" href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} Nutzer/in zuweisen</a></li>
+            {%- if has_current_user_permission(TicketingPermission.administrate) and not ticket.user_checked_in %}
+            <li><a class="dropdown-item" data-action="update-code" href="{{ url_for('.update_code', ticket_id=ticket.id) }}">{{ render_icon('edit') }} Code ändern</a></li>
+            {%- endif %}
+            {%- if ticket.user_checked_in %}
+            <li class="dropdown-divider"></li>
+            <li><a class="dropdown-item" data-action="revert-user-check-in" href="{{ url_for('ticketing_checkin_admin.revert_user_check_in', ticket_id=ticket.id) }}">{{ render_icon('disabled') }} Check-In rückgängig machen</a></li>
+            {%- endif %}
+          </ol>
+        </div>
+      </div>
   {%- endif %}
 
-  <table class="index">
-    <tr>
-      <th>ID</th>
-      <td>
-        {{ ticket.id }}
-        <input id="ticket-id-field" value="{{ ticket.id }}" style="position: fixed; top: -1000px;" readonly>
-        <button id="ticket-id-copy-trigger" data-field-id="ticket-id-field" class="button button--compact" title="In die Zwischenablage kopieren">{{ render_icon('clipboard') }}</button>
-      </td>
-    </tr>
-    <tr>
-      <th>Erstellt</th>
-      <td>{{ render_datetime(ticket.created_at|utc_to_local_tz) }}</td>
-    </tr>
-    <tr>
-      <th>Kategorie</th>
-      <td>{{ ticket.category.title }}</td>
-    </tr>
-    <tr>
-      <th>Bundle</th>
-      <td>
-        {%- if ticket.bundle_id %}
-        <a href="{{ url_for('.view_bundle', bundle_id=ticket.bundle_id) }}">Bundle</a>
-        {%- else %}
-        {{ 'eigenständig'|dim }}
-        {%- endif %}
-      </td>
-    </tr>
-    <tr>
-      <th>Bestellung</th>
-      <td>{{ render_order_link(order) if order else None|fallback('nicht hinterlegt') }}</td>
-    </tr>
-    <tr>
-      <th>Besitzer/in</th>
-      <td>{{ render_user_microcard(ticket.owned_by) }}</td>
-    </tr>
-    <tr>
-      <th>Nutzer/in</th>
-      <td>
-        {%- if ticket.used_by -%}
-        {{ render_user_microcard(ticket.used_by) }}
-        {%- else -%}
-        {{ 'keine/r'|dim }}
-        {%- endif -%}
-        <div class="managed-by">{{ 'verwaltet durch'|dim }} {{ render_user_avatar_20_and_admin_link(ticket.get_user_manager()) }}</div>
-      </td>
-    </tr>
-    <tr>
-      <th>Sitzplatz</th>
-      <td>
-        {%- if ticket.occupied_seat -%}
-        {{ ticket.occupied_seat.label|fallback('unbenannter Sitzplatz') }}
-        {%- else -%}
-        {{ 'keiner'|dim }}
-        {%- endif -%}
-        <div class="managed-by">{{ 'verwaltet durch'|dim  }} {{ render_user_avatar_20_and_admin_link(ticket.get_seat_manager()) }}</div>
-      </td>
-    </tr>
-  </table>
+    </div>
+  </div>
 
+  <div class="box">
+    <table class="index">
+      <tr>
+        <th>ID</th>
+        <td>
+          {{ ticket.id }}
+          <input id="ticket-id-field" value="{{ ticket.id }}" style="position: fixed; top: -1000px;" readonly>
+          <button id="ticket-id-copy-trigger" data-field-id="ticket-id-field" class="button button--compact" title="In die Zwischenablage kopieren">{{ render_icon('clipboard') }}</button>
+        </td>
+      </tr>
+      <tr>
+        <th>Erstellt</th>
+        <td>{{ render_datetime(ticket.created_at|utc_to_local_tz) }}</td>
+      </tr>
+      <tr>
+        <th>Kategorie</th>
+        <td>{{ ticket.category.title }}</td>
+      </tr>
+      <tr>
+        <th>Bundle</th>
+        <td>
+          {%- if ticket.bundle_id %}
+          <a href="{{ url_for('.view_bundle', bundle_id=ticket.bundle_id) }}">Bundle</a>
+          {%- else %}
+          {{ 'eigenständig'|dim }}
+          {%- endif %}
+        </td>
+      </tr>
+      <tr>
+        <th>Bestellung</th>
+        <td>{{ render_order_link(order) if order else None|fallback('nicht hinterlegt') }}</td>
+      </tr>
+      <tr>
+        <th>Besitzer/in</th>
+        <td>{{ render_user_microcard(ticket.owned_by) }}</td>
+      </tr>
+      <tr>
+        <th>Nutzer/in</th>
+        <td>
+          {%- if ticket.used_by -%}
+          {{ render_user_microcard(ticket.used_by) }}
+          {%- else -%}
+          {{ 'keine/r'|dim }}
+          {%- endif -%}
+          <div class="managed-by">{{ 'verwaltet durch'|dim }} {{ render_user_avatar_20_and_admin_link(ticket.get_user_manager()) }}</div>
+        </td>
+      </tr>
+      <tr>
+        <th>Sitzplatz</th>
+        <td>
+          {%- if ticket.occupied_seat -%}
+          {{ ticket.occupied_seat.label|fallback('unbenannter Sitzplatz') }}
+          {%- else -%}
+          {{ 'keiner'|dim }}
+          {%- endif -%}
+          <div class="managed-by">{{ 'verwaltet durch'|dim  }} {{ render_user_avatar_20_and_admin_link(ticket.get_seat_manager()) }}</div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <h2>Verlauf</h2>
+  <div class="box">
 {%- include 'admin/ticketing/_ticket_events.html' %}
+  </div>
 
 {%- endblock %}
 

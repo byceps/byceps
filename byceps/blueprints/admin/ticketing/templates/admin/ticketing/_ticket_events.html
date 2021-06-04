@@ -4,7 +4,6 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-  <h2>Verlauf</h2>
   <div class="events">
     {%- for event in events|sort(attribute='occurred_at', reverse=True) %}
       {%- with %}

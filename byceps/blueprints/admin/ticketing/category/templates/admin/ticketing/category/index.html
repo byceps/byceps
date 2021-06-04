@@ -4,6 +4,7 @@
 {% set current_page_party = party %}
 {% set current_tab = 'categories' %}
 {% set title = '%s - Ticket-Kategorien'|format(party.title) %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
@@ -20,36 +21,38 @@
     {%- endif %}
   </div>
 
-  {%- if categories_with_ticket_counts %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Titel<br>ID</th>
-        <th class="number">Tickets<sup>*</sup></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for category, ticket_count in categories_with_ticket_counts|sort(attribute='0.title') %}
+  <div class="box">
+    {%- if categories_with_ticket_counts %}
+    <table class="index wide">
+      <thead>
         <tr>
-          <td><strong>{{ category.title }}</strong><br><span class="dimmed">{{ category.id }}</span></td>
-          <td class="bignumber number">{{ ticket_count }}</td>
-          <td>
-            {%- if has_current_user_permission(TicketingPermission.administrate) %}
-            <div class="button-row button-row--compact button-row--right">
-              <a href="{{ url_for('.update_form', category_id=category.id) }}" class="button" title="Bearbeiten">{{ render_icon('edit') }}</a>
-            </div>
-            {%- endif %}
-          </td>
+          <th>Titel<br>ID</th>
+          <th class="number">Tickets<sup>*</sup></th>
+          <th></th>
         </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
-  <small>
-    <p style="margin-top: 1.5rem;"><sup>*)</sup> erstellte, nicht widerrufene Tickets</p>
-  </small>
-  {%- else %}
-  <div class="dimmed-box centered">Es sind keine Ticket-Kategorien für diese Party definiert.</div>
-  {%- endif %}
+      </thead>
+      <tbody>
+        {%- for category, ticket_count in categories_with_ticket_counts|sort(attribute='0.title') %}
+          <tr>
+            <td><strong>{{ category.title }}</strong><br><span class="dimmed">{{ category.id }}</span></td>
+            <td class="bignumber number">{{ ticket_count }}</td>
+            <td>
+              {%- if has_current_user_permission(TicketingPermission.administrate) %}
+              <div class="button-row button-row--compact button-row--right">
+                <a href="{{ url_for('.update_form', category_id=category.id) }}" class="button" title="Bearbeiten">{{ render_icon('edit') }}</a>
+              </div>
+              {%- endif %}
+            </td>
+          </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    <small>
+      <p style="margin-top: 1.5rem;"><sup>*)</sup> erstellte, nicht widerrufene Tickets</p>
+    </small>
+    {%- else %}
+    <div class="dimmed-box centered">Es sind keine Ticket-Kategorien für diese Party definiert.</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

@@ -5,6 +5,7 @@
 {% set current_page_party = party %}
 {% set current_tab = 'tickets' %}
 {% set title = '%s - Ticketing'|format(party.title) %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
@@ -13,19 +14,21 @@
   <div class="row row--space-between filters">
     <div class="column-auto">
 
-      <form action="{{ url_for('.index_for_party', party_id=party.id) }}" class="single-row unobtrusive">
+      <form action="{{ url_for('.index_for_party', party_id=party.id) }}" class="single-row">
         <input type="search" name="search_term" placeholder="Ticketcode"{%- if search_term %} value="{{ search_term }}"{% endif %}>
-        <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
+        <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
         <a href="{{ url_for('.index_for_party', party_id=party.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
       </form>
 
     </div>
   </div>
 
+  <div class="box">
 {%- with tickets = tickets.items %}
   {%- include 'admin/ticketing/_ticket_list.html' %}
 {%- endwith %}
 
 {{ render_pagination_nav(tickets, '.index_for_party', {'party_id': party.id}) }}
+  </div>
 
 {%- endblock %}

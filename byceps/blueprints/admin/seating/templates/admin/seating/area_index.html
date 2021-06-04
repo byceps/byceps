@@ -4,45 +4,48 @@
 {% set current_page_party = party %}
 {% set current_tab = 'areas' %}
 {% set title = '%s - Bereiche'|format(party.title) %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
   <h1>Bereiche {{ render_extra_in_heading(areas_with_occupied_seat_counts.total) }}</h1>
-  {%- if areas_with_occupied_seat_counts.items %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>Titel<br>Slug</th>
-        <th>Hintergrundbild<br>Größe</th>
-        <th class="number">Plätze<br>belegt</th>
-        <th class="number">Plätze<br>verfügbar</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for area, occupied_seat_count in areas_with_occupied_seat_counts.items|sort(attribute='0.title') %}
-      <tr>
-        <td>
-          {{ area.title }}<br>
-          {{ area.slug|dim }}
-        </td>
-        <td>
-          {%- if area.image_filename %}
-          {{ area.image_filename }}<br>
-          {{ '%d &times; %d Pixel'|format(area.image_width, area.image_height)|dim }}
-          {%- else %}
-          {{ 'nicht angegeben'|dim }}
-          {%- endif %}
-        </td>
-        <td class="bignumber number">{{ occupied_seat_count }}</td>
-        <td class="bignumber number">{{ seat_total_per_area[area.id] }}</td>
-      </tr>
-      {%- endfor %}
-      <tr>
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">Es sind keine Bereiche hinterlegt.</div>
-  {%- endif %}
+
+  <div class="box">
+    {%- if areas_with_occupied_seat_counts.items %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>Titel<br>Slug</th>
+          <th>Hintergrundbild<br>Größe</th>
+          <th class="number">Plätze<br>belegt</th>
+          <th class="number">Plätze<br>verfügbar</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for area, occupied_seat_count in areas_with_occupied_seat_counts.items|sort(attribute='0.title') %}
+        <tr>
+          <td>
+            {{ area.title }}<br>
+            {{ area.slug|dim }}
+          </td>
+          <td>
+            {%- if area.image_filename %}
+            {{ area.image_filename }}<br>
+            {{ '%d &times; %d Pixel'|format(area.image_width, area.image_height)|dim }}
+            {%- else %}
+            {{ 'nicht angegeben'|dim }}
+            {%- endif %}
+          </td>
+          <td class="bignumber number">{{ occupied_seat_count }}</td>
+          <td class="bignumber number">{{ seat_total_per_area[area.id] }}</td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">Es sind keine Bereiche hinterlegt.</div>
+    {%- endif %}
+  </div>
 
 {{ render_pagination_nav(areas_with_occupied_seat_counts, '.area_index', {'party_id': party.id}) }}
 
