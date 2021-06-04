@@ -19,9 +19,9 @@
     {%- set note %}
         Erlaubte Formate: {{ allowed_types|sort|join(', ') }}<br>
         Maximale Bildgröße: {{ maximum_dimensions|join(' &times; ')|safe }} Pixel<br>
-        Maximale Dateigröße: 150 KB
+        Maximale Dateigröße: 250 KB
     {%- endset %}
-    {{ form_field(form.image, maxlength=150000, accept='image/*', autofocus='autofocus', note=note) }}
+    {{ form_field(form.image, maxlength=250000, accept='image/*', autofocus='autofocus', note=note) }}
   {%- endwith %}
     {{ form_field(form.alt_text) }}
     {{ form_field(form.caption) }}
