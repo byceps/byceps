@@ -8,7 +8,6 @@ byceps.blueprints.admin.core.views
 
 from flask import g
 
-from .... import config
 from ....services.brand import service as brand_service
 from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
@@ -42,9 +41,6 @@ def inject_template_variables():
 
 @blueprint.before_app_request
 def prepare_request_globals():
-    app_mode = config.get_app_mode()
-    g.app_mode = app_mode
-
     locale = get_session_locale()
 
     required_permissions = {AdminPermission.access}

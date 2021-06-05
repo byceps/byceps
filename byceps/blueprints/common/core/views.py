@@ -8,8 +8,9 @@ byceps.blueprints.common.core.views
 
 from datetime import date, datetime
 
-from flask import render_template
+from flask import g, render_template
 
+from .... import config
 from ....util.authorization import (
     has_current_user_any_permission,
     has_current_user_permission,
@@ -61,3 +62,8 @@ def add_page_arg(args, page):
 
     args['page'] = page
     return args
+
+
+@blueprint.before_app_request
+def prepare_request_globals():
+    g.app_mode = config.get_app_mode()

@@ -36,9 +36,6 @@ def url_for_site_file(filename, **kwargs) -> Optional[str]:
 
 @blueprint.before_app_request
 def prepare_request_globals():
-    app_mode = config.get_app_mode()
-    g.app_mode = app_mode
-
     locale = get_session_locale()
 
     site_id = config.get_current_site_id()
