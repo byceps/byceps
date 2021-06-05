@@ -11,6 +11,8 @@ from typing import Optional
 from ....database import db
 from ....util.instances import ReprBuilder
 
+# Make shop catalog tables available for database creation.
+from ..catalog.dbmodels import Catalog
 from ..catalog.transfer.models import CatalogID
 from ..order.transfer.models import OrderNumberSequenceID
 from ..shop.transfer.models import ShopID
