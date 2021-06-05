@@ -1,14 +1,19 @@
 :root {
+  --bg-color: #edece5;
+  --bg-color-light: #ddd5c5;
   --border-color: #c4a777;
+  --link-color: #664422;
+  --primary-color: #c4a777;
+  --text-color: #222222;
 }
 
 body {
-  background-color: #eee6bb;
-  color: #222;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 a {
-  color: #664422;
+  color: var(--link-color);
 }
 
 
@@ -175,7 +180,7 @@ a {
 
 .nav-main-item:hover,
 .nav-main-item.current {
-  background-color: #c4a777;
+  background-color: var(--primary-color);
 }
 
 
@@ -200,12 +205,31 @@ main h1 {
   margin-top: 0;
 }
 
+.button,
+.button.button--clear:hover {
+  background-color: var(--bg-color-light);
+  border-color: var(--border-color);
+}
+
+.button.color-primary {
+  background-color: var(--primary-color);
+  border-color: var(--border-color);
+}
+
+.progress {
+  background-color: var(--bg-color-light);
+}
+
+.progress-bar {
+  background-color: var(--primary-color);
+}
+
 .tabs {
   border-color: var(--border-color);
 }
 
 .tabs-tab:hover {
-  background-color: #c4a777;
+  background-color: var(--primary-color);
 }
 
 table.index {
@@ -216,7 +240,16 @@ table.index {
   --news-item-divider-color: var(--border-color);
 }
 
-.button,
-.button.button--clear:hover {
+.user-comment-main header,
+.user-comment-main .body {
   border-color: var(--border-color);
+}
+
+.user-comment-main header {
+  background-color: var(--bg-color-light);
+}
+
+.user-profile-background {
+  background-color: var(--bg-color-light);
+  border-bottom-color: var(--border-color);
 }
