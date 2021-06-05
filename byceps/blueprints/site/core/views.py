@@ -6,6 +6,7 @@ byceps.blueprints.site.core.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from typing import Optional
 
 from flask import g, url_for
@@ -35,7 +36,7 @@ def url_for_site_file(filename, **kwargs) -> Optional[str]:
 
 
 @blueprint.before_app_request
-def prepare_request_globals():
+def prepare_request_globals() -> None:
     locale = get_session_locale()
 
     site_id = config.get_current_site_id()
