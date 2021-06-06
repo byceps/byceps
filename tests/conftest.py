@@ -200,7 +200,7 @@ def deleted_user(make_user):
 # Dependency on `brand` avoids error on clean up.
 @pytest.fixture(scope='session')
 def make_email_config(admin_app, brand):
-    configs = []
+    config_brand_ids = set()
 
     def _wrapper(
         brand_id: BrandID,
@@ -220,14 +220,14 @@ def make_email_config(admin_app, brand):
         )
 
         config = email_service.get_config(brand_id)
-        configs.append(config)
+        config_brand_ids.add(config.brand_id)
 
         return config
 
     yield _wrapper
 
-    for config in configs:
-        email_service.delete_config(config.brand_id)
+    for brand_id in config_brand_ids:
+        email_service.delete_config(brand_id)
 
 
 @pytest.fixture(scope='session')
@@ -251,7 +251,7 @@ def site(email_config, party, board):
 
 @pytest.fixture(scope='session')
 def make_brand(admin_app):
-    brands = []
+    brand_ids = set()
 
     def _wrapper(brand_id=None, title=None):
         if brand_id is None:
@@ -261,13 +261,13 @@ def make_brand(admin_app):
             title = brand_id
 
         brand = brand_service.create_brand(brand_id, title)
-        brands.append(brand)
+        brand_ids.add(brand.id)
         return brand
 
     yield _wrapper
 
-    for brand in brands:
-        brand_service.delete_brand(brand.id)
+    for brand_id in brand_ids:
+        brand_service.delete_brand(brand_id)
 
 
 @pytest.fixture(scope='session')
