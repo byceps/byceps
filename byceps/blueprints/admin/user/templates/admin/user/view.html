@@ -1,5 +1,4 @@
 {% extends 'layout/admin/user.html' %}
-{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/order.html' import render_order_payment_state %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_tab = 'profile' %}
@@ -72,52 +71,31 @@
     <div class="radio-panels">
 
       <div class="radio-panel" id="tabs-panel-account">
-        <h2>Benutzerkonto</h2>
-        <div class="box">
 {%- include 'admin/user/_view_account.html' %}
-        </div>
       </div>
 
       <div class="radio-panel" id="tabs-panel-personal">
-        <h2>Persönliche Daten</h2>
-        <div class="box">
 {%- include 'admin/user/_view_personal.html' %}
-        </div>
       </div>
 
       <div class="radio-panel" id="tabs-panel-newsletter">
-        <h2>Newsletter-Abonnements</h2>
-        <div class="box">
 {%- include 'admin/user/_view_newsletter.html' %}
-        </div>
       </div>
 
       <div class="radio-panel" id="tabs-panel-orders">
-        <h2>Bestellungen {{ render_extra_in_heading(orders|length) }}</h2>
-        <div class="box">
 {%- include 'admin/user/_view_orders.html' %}
-        </div>
       </div>
 
       <div class="radio-panel" id="tabs-panel-tickets">
-        <h2>Tickets</h2>
-        <div class="box">
 {%- include 'admin/user/_view_tickets.html' %}
-        </div>
       </div>
 
       <div class="radio-panel" id="tabs-panel-attended-parties">
-        <h2>Besuchte Partys {{ render_extra_in_heading(attended_parties|length) }}</h2>
-        <div class="box">
 {%- include 'admin/user/_view_attended_parties.html' %}
-        </div>
       </div>
 
       <div class="radio-panel" id="tabs-panel-badges">
-        <h2>Abzeichen {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
-        <div class="box">
 {%- include 'admin/user/_view_badges.html' %}
-        </div>
       </div>
 
     </div>

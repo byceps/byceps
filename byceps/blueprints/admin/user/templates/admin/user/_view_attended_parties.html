@@ -1,3 +1,8 @@
+{%- from 'macros/admin.html' import render_extra_in_heading %}
+
+<h2>Besuchte Partys {{ render_extra_in_heading(attended_parties|length) }}</h2>
+
+<div class="box">
   {%- if attended_parties %}
   <ul class="compact">
     {%- for party in attended_parties %}
@@ -7,3 +12,4 @@
   {%- else %}
   {{ 'keine'|dim }}
   {%- endif %}
+</div>

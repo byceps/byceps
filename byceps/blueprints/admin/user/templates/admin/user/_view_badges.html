@@ -1,6 +1,10 @@
 {%- from 'macros/admin/user_badge.html' import render_user_badges_list %}
+{%- from 'macros/admin.html' import render_extra_in_heading %}
 {%- from 'macros/icons.html' import render_icon %}
 
+<h2>Abzeichen {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
+
+<div class="box">
   <div class="row row--space-between">
     <div class="column-auto">
 
@@ -21,3 +25,4 @@
 
     </div>
   </div>
+</div>

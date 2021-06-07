@@ -1,5 +1,8 @@
 {%- from 'macros/misc.html' import render_tag %}
 
+<h2>Newsletter-Abonnements</h2>
+
+<div class="box">
   {%- if newsletter_subscriptions %}
   <table class="index">
     {%- for list, subscribed in newsletter_subscriptions|sort(attribute='0.title') %}
@@ -12,3 +15,4 @@
   {%- else %}
   {{ 'keine'|dim }}
   {%- endif %}
+</div>

@@ -1,5 +1,8 @@
 {%- from 'macros/datetime.html' import render_date %}
 
+<h2>Persönliche Daten</h2>
+
+<div class="box">
   {%- if user.detail -%}
   <table class="index">
     <tr>
@@ -34,3 +37,4 @@
   {%- else %}
   {{ 'keine'|dim }}
   {%- endif -%}
+</div>

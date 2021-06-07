@@ -1,6 +1,9 @@
 {%- from 'macros/admin/ticketing.html' import render_ticket_flag_revoked, render_ticket_flag_user_checked_in %}
 {%- from 'macros/icons.html' import render_icon %}
 
+<h2>Tickets</h2>
+
+<div class="box">
   {%- if parties_and_tickets %}
   <table class="index wide">
     <thead>
@@ -47,3 +50,4 @@
   {%- else %}
   {{ 'keine'|dim }}
   {%- endif %}
+</div>
