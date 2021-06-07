@@ -6,6 +6,7 @@ byceps.blueprints.admin.webhook.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import dataclasses
 import json
 
 from flask import abort, request
@@ -115,11 +116,12 @@ def update_form(webhook_id, erroneous_form=None):
         field_name = _create_event_field_name(event_type_name)
         event_type_fields[field_name] = True
 
-    form = (
-        erroneous_form
-        if erroneous_form
-        else UpdateForm(obj=webhook, **event_type_fields)
-    )
+    if erroneous_form:
+        form = erroneous_form
+    else:
+        data = dataclasses.asdict(webhook)
+        data['extra_fields'] = json.dumps(webhook.extra_fields)
+        form = UpdateForm(data=data)
 
     return {
         'webhook': webhook,
