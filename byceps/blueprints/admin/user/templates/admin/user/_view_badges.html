@@ -5,14 +5,14 @@
 <div class="row row--space-between" style="margin-bottom: 0.6rem;">
   <div class="column-auto">
 
-    <h2 style="margin: 0;">Abzeichen {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
+    <h2 style="margin: 0;">{{ _('Badges') }} {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
 
   </div>
   <div class="column-auto column--align-bottom">
 
     {%- if has_current_user_permission(UserBadgePermission.award) %}
     <div class="button-row button-row--compact button-row--right">
-      <a class="button" href="{{ url_for('user_badge_admin.award_form', user_id=user.id) }}">{{ render_icon('add') }} <span>Verleihen</span></a>
+      <a class="button" href="{{ url_for('user_badge_admin.award_form', user_id=user.id) }}">{{ render_icon('add') }} <span>{{ _('Award badge') }}</span></a>
     </div>
     {%- endif %}
 
@@ -23,6 +23,6 @@
   {%- if badges_with_awarding_quantity %}
 {{ render_user_badges_list(badges_with_awarding_quantity) }}
   {%- else %}
-  {{ 'keine'|dim }}
+  {{ _('none')|dim }}
   {%- endif %}
 </div>

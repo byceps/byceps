@@ -2,7 +2,7 @@
 {% from 'macros/icons.html' import render_icon %}
 
 
-  <h2>{{ _('Personal data') }}</h2>
+  <h2>{{ _('Personal Data') }}</h2>
   <table class="index">
     <colgroup>
       <col style="width: {{ label_column_width }};">
@@ -10,7 +10,7 @@
       <col>
     </colgroup>
     <tr>
-      <th>{{ _('Full name') }}</th>
+      <th>{{ _('Name') }}</th>
       <td>{{ user.detail.full_name|fallback }}</td>
       <td rowspan="4"><a class="button button--compact" href="{{ url_for('.details_update_form') }}" title="{{ _('Change personal data') }}">{{ render_icon('edit') }}</a></td>
     </tr>

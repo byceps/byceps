@@ -1,26 +1,26 @@
 {%- from 'macros/datetime.html' import render_date %}
 
-<h2>Persönliche Daten</h2>
+<h2>{{ _('Personal Data') }}</h2>
 
 <div class="box">
   {%- if user.detail -%}
   <table class="index">
     <tr>
-      <th>Voller Name</th>
+      <th>{{ _('Name') }}</th>
       <td>{{ user.detail.full_name|fallback }}</td>
     </tr>
     <tr>
-      <th>Geburtsdatum</th>
+      <th>{{ _('Date of birth') }}</th>
       <td>
         {%- if user.detail.date_of_birth -%}
           {{ render_date(user.detail.date_of_birth, smart=False) }}
         {%- else -%}
-          {{ 'nicht angegeben'|dim }}
+          {{ _('not given')|dim }}
         {%- endif -%}
       </td>
     </tr>
     <tr>
-      <th>Anschrift</th>
+      <th>{{ _('Address') }}</th>
       <td>
         {{- user.detail.street|fallback }}<br>
         {%- if user.detail.zip_code %}{{ user.detail.zip_code }}{% endif %}
@@ -30,11 +30,11 @@
       </td>
     </tr>
     <tr>
-      <th>Telefonnummer</th>
+      <th>{{ _('Phone number') }}</th>
       <td>{{ user.detail.phone_number|fallback }}</td>
     </tr>
   </table>
   {%- else %}
-  {{ 'keine'|dim }}
+  {{ _('none')|dim }}
   {%- endif -%}
 </div>

@@ -1,16 +1,16 @@
 {%- from 'macros/admin/ticketing.html' import render_ticket_flag_revoked, render_ticket_flag_user_checked_in %}
 {%- from 'macros/icons.html' import render_icon %}
 
-<h2>Tickets</h2>
+<h2>{{ _('Tickets') }}</h2>
 
 <div class="box">
   {%- if parties_and_tickets %}
   <table class="index wide">
     <thead>
       <tr>
-        <th colspan="2">Code</th>
-        <th>Kategorie</th>
-        <th>Sitzplatz</th>
+        <th colspan="2">{{ _('Code') }}</th>
+        <th>{{ _('Category') }}</th>
+        <th>{{ _('Seat') }}</th>
         <th colspan="3"></th>
       </tr>
     </thead>
@@ -39,15 +39,15 @@
             {%- endif %}
           {%- endwith %}
         </td>
-        <td>{% if ticket.is_owned_by(user.id) %}{{ render_icon('payment', title='gekauft') }}{% endif %}</td>
-        <td>{% if ticket.is_seat_managed_by(user.id) %}{{ render_icon('seating-area', title='verwaltet Sitzplatz') }}{% endif %}</td>
-        <td>{% if ticket.is_user_managed_by(user.id) %}{{ render_icon('user', title='verwaltet Nutzer/in') }}{% endif %}</td>
+        <td>{% if ticket.is_owned_by(user.id) %}{{ render_icon('payment', title=_('Buyer')) }}{% endif %}</td>
+        <td>{% if ticket.is_seat_managed_by(user.id) %}{{ render_icon('seating-area', title=_('manages seat')) }}{% endif %}</td>
+        <td>{% if ticket.is_user_managed_by(user.id) %}{{ render_icon('user', title=_('manages user')) }}{% endif %}</td>
       </tr>
       {%- endfor %}
     </tbody>
     {%- endfor %}
   </table>
   {%- else %}
-  {{ 'keine'|dim }}
+  {{ _('none')|dim }}
   {%- endif %}
 </div>

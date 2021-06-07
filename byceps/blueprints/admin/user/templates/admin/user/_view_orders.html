@@ -2,17 +2,17 @@
 {%- from 'macros/admin.html' import render_extra_in_heading %}
 {%- from 'macros/datetime.html' import render_datetime %}
 
-<h2>Bestellungen {{ render_extra_in_heading(orders|length) }}</h2>
+<h2>{{ _('Orders') }} {{ render_extra_in_heading(orders|length) }}</h2>
 
 <div class="box">
   {%- if orders %}
   <table class="index wide">
     <thead>
       <tr>
-        <th>Zeitpunkt</th>
-        <th>Shop</th>
-        <th>Bestellnr.</th>
-        <th>Status</th>
+        <th>{{ _('Date') }}</th>
+        <th>{{ _('Shop') }}</th>
+        <th>{{ _('Order number') }}</th>
+        <th>{{ _('Status') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -28,6 +28,6 @@
     </tbody>
   </table>
   {%- else %}
-  {{ 'keine'|dim }}
+  {{ _('none')|dim }}
   {%- endif %}
 </div>

@@ -5,7 +5,7 @@
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/stats.html' import render_bigstats_item %}
 {% set current_page = 'user_admin' %}
-{% set title = 'Benutzer' %}
+{% set title = _('Users') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -17,7 +17,7 @@
     {%- if has_current_user_permission(UserPermission.create) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.create_account_form') }}">{{ render_icon('add') }} <span>Benutzer erstellen</span></a>
+        <a class="button" href="{{ url_for('.create_account_form') }}">{{ render_icon('add') }} <span>{{ _('Create account') }}</span></a>
       </div>
     </div>
     {%- endif %}
@@ -27,12 +27,12 @@
     <div class="row row--equal-sized-centered-columns row--space-around row--wrap bigstats">
       <div class="column-auto">
         <a class="button button--clear" href="{{ url_for('.index') }}">
-          {{- render_bigstats_item(format_number(total_overall), '&sum; gesamt'|safe) -}}
+          {{- render_bigstats_item(format_number(total_overall), '&sum; '|safe ~ _('total')) -}}
         </a>
       </div>
       <div class="column-auto">
         <a class="button button--clear" href="{{ url_for('.index', only='active') }}">
-          {{- render_bigstats_item(format_number(total_active), render_tag('aktiv', class='color-success', icon='enabled')) -}}
+          {{- render_bigstats_item(format_number(total_active), render_tag(_('active'), class='color-success', icon='enabled')) -}}
         </a>
       </div>
       <div class="column-auto">
@@ -96,7 +96,7 @@
     </div>
 
     <small>
-      <p>{{ users.total }} {{ 'Ergebnis' if (users.total == 1) else 'Ergebnisse' }}</p>
+      <p>{{ users.total }} {{ _('result') if (users.total == 1) else _('results') }}</p>
     </small>
 
   </div>

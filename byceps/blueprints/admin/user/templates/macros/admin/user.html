@@ -33,7 +33,7 @@
       {%- if not user.deleted -%}
       {{ full_name if full_name is not none else user.detail.full_name }}
       {%- else -%}
-      <em>gelöscht</em>
+      <em>{{ _('deleted') }}</em>
       {%- endif -%}
     </div>
   </div>
@@ -41,17 +41,17 @@
 {%- endmacro %}
 
 
-{% macro render_user_flag_deleted(label='gelöscht', show_label=True) -%}
+{% macro render_user_flag_deleted(label=_('deleted'), show_label=True) -%}
   {{ render_tag(label if show_label else '', class='color-disabled', icon='delete', title=None if show_label else label) }}
 {%- endmacro %}
 
 
-{% macro render_user_flag_suspended(label='gesperrt', show_label=True) -%}
+{% macro render_user_flag_suspended(label=_('suspended'), show_label=True) -%}
   {{ render_tag(label if show_label else '', class='color-danger', icon='lock', title=None if show_label else label) }}
 {%- endmacro %}
 
 
-{% macro render_user_flag_uninitialized(label='nicht aktiviert', show_label=True) -%}
+{% macro render_user_flag_uninitialized(label=_('not initialized'), show_label=True) -%}
   {{ render_tag(label if show_label else '', class='color-info', icon='pending', title=None if show_label else label) }}
 {%- endmacro %}
 
@@ -69,14 +69,14 @@
 
 {% macro render_user_state_filter(user_state_filter) %}
   {%- if user_state_filter.name == 'active' -%}
-    {{ render_tag('aktiv', class='color-success') }}
+    {{ render_tag(_('active'), class='color-success') }}
   {%- elif user_state_filter.name == 'uninitialized' -%}
-    {{ render_tag('nicht aktiviert', class='color-info') }}
+    {{ render_tag(_('not initialized'), class='color-info') }}
   {%- elif user_state_filter.name == 'suspended' -%}
-    {{ render_tag('gesperrt', class='color-danger') }}
+    {{ render_tag(_('suspended'), class='color-danger') }}
   {%- elif user_state_filter.name == 'deleted' -%}
-    {{ render_tag('gelöscht', class='color-disabled') }}
+    {{ render_tag(_('deleted'), class='color-disabled') }}
   {%- else -%}
-    {{ render_tag('keine', class='color-none') }}
+    {{ render_tag(_('none'), class='color-none') }}
   {%- endif -%}
 {%- endmacro %}

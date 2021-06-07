@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_tab = 'profile' %}
 {% set current_tab_user_id = user.id %}
-{% set title = 'Benutzer - %s'|format(user.screen_name) %}
+{% set title = _('Users') ~ ' - ' ~ user.screen_name %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -59,13 +59,13 @@
     <input type="radio" name="user-sections-state" id="tabs-rb-badges">
 
     <ol class="radio-tabs tabs">
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-account" id="tabs-tab-account">Benutzer&shy;konto</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-personal" id="tabs-tab-personal">Persönliche Daten</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-newsletter" id="tabs-tab-newsletter">News&shy;letter</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-orders" id="tabs-tab-orders">Bestel&shy;lungen</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-tickets" id="tabs-tab-tickets">Tickets</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-attended-parties" id="tabs-tab-attended-parties">Besuchte Partys</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-badges" id="tabs-tab-badges">Abzei&shy;chen</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-account" id="tabs-tab-account">{{ _('Account') }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-personal" id="tabs-tab-personal">{{ _('Personal Data') }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-newsletter" id="tabs-tab-newsletter">{{ _('Newsletters') }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-orders" id="tabs-tab-orders">{{ _('Orders') }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-tickets" id="tabs-tab-tickets">{{ _('Tickets') }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-attended-parties" id="tabs-tab-attended-parties">{{ _('Attended Parties') }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-badges" id="tabs-tab-badges">{{ _('Badges') }}</label></li>
     </ol>
 
     <div class="radio-panels">
@@ -109,7 +109,7 @@
   enableCopyToClipboard('user-id-copy-trigger');
 
   onDomReady(() => {
-    confirmed_post_on_click_then_reload('[data-action="user-initialize"]', 'Benutzerkonto initialisieren?');
+    confirmed_post_on_click_then_reload('[data-action="user-initialize"]', '{{ _('Initialize account?') }}');
   });
 </script>
 {% endblock %}

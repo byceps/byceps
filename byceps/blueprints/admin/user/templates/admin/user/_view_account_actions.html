@@ -3,26 +3,26 @@
   {%- if not user.deleted and has_current_user_any_permission(UserPermission.administrate, UserPermission.set_password) %}
   <div class="button-row button-row--compact button-row--right">
     <div class="dropdown">
-      <button class="dropdown-toggle button"><span>Aktionen</span> {{ render_icon('chevron-down') }}</button>
+      <button class="dropdown-toggle button"><span>{{ _('Actions') }}</span> {{ render_icon('chevron-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
         {%- if has_current_user_permission(UserPermission.set_password) %}
-        <li><a class="dropdown-item" href="{{ url_for('.set_password', user_id=user.id) }}">{{ render_icon('password') }} Passwort ändern</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.set_password', user_id=user.id) }}">{{ render_icon('password') }} {{ _('Change password') }}</a></li>
         {%- endif %}
         {%- if has_current_user_permission(UserPermission.administrate) %}
 
           {%- if not user.initialized %}
-        <li><a class="dropdown-item" data-action="user-initialize" href="{{ url_for('.initialize_account', user_id=user.id) }}">{{ render_icon('enabled') }} Initialisieren</a></li>
+        <li><a class="dropdown-item" data-action="user-initialize" href="{{ url_for('.initialize_account', user_id=user.id) }}">{{ render_icon('enabled') }} {{ _('Initialize') }}</a></li>
           {%- endif %}
 
           {%- if not user.suspended %}
-        <li><a class="dropdown-item" href="{{ url_for('.suspend_account', user_id=user.id) }}">{{ render_icon('lock') }} Sperren</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.suspend_account', user_id=user.id) }}">{{ render_icon('lock') }} {{ _('Suspend') }}</a></li>
           {%- else %}
-        <li><a class="dropdown-item" href="{{ url_for('.unsuspend_account', user_id=user.id) }}">{{ render_icon('unlock') }} Entsperren</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.unsuspend_account', user_id=user.id) }}">{{ render_icon('unlock') }} {{ _('Unsuspend') }}</a></li>
           {%- endif %}
 
-        <li><a class="dropdown-item" href="{{ url_for('.change_screen_name_form', user_id=user.id) }}">{{ render_icon('edit') }} Umbenennen</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('.change_email_address_form', user_id=user.id) }}">{{ render_icon('edit') }} E-Mail-Adresse ändern</a></li>
-        <li><a class="dropdown-item" href="{{ url_for('.delete_account_form', user_id=user.id) }}">{{ render_icon('delete') }} Löschen</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.change_screen_name_form', user_id=user.id) }}">{{ render_icon('edit') }} {{ _('Change user name') }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.change_email_address_form', user_id=user.id) }}">{{ render_icon('edit') }} {{ _('Change email address') }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.delete_account_form', user_id=user.id) }}">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
 
         {%- endif %}
       </ol>

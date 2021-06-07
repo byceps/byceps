@@ -8,7 +8,7 @@
 {% from 'macros/misc.html' import render_tag %}
 {% set current_tab = 'events' %}
 {% set current_tab_user_id = user.id %}
-{% set title = 'Benutzer - Ereignisse - %s'|format(user.screen_name) %}
+{% set title = _('Users') ~ ' - ' ~ _('Events') ~ ' - ' ~ user.screen_name %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -31,9 +31,9 @@
     <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
         {%- if logins_included %}
-        <a class="button button--compact" href="{{ url_for('.view_events', user_id=user.id, include_logins='no') }}">{{ render_icon('hidden') }} <span>Logins ausblenden</span></a>
+        <a class="button button--compact" href="{{ url_for('.view_events', user_id=user.id, include_logins='no') }}">{{ render_icon('hidden') }} <span>{{ _('Hide logins') }}</span></a>
         {%- else %}
-        <a class="button button--compact" href="{{ url_for('.view_events', user_id=user.id) }}">{{ render_icon('view') }} <span>Logins anzeigen</span></a>
+        <a class="button button--compact" href="{{ url_for('.view_events', user_id=user.id) }}">{{ render_icon('view') }} <span>{{ _('Show logins') }}</span></a>
         {%- endif %}
       </div>
     </div>

@@ -51,19 +51,19 @@
     Navigation(None)
       .add_item(
         url_for('.view', user_id=user_id),
-        'Übersicht',
+        _('Overview'),
         id='profile',
         required_permission=UserPermission.view,
         icon='user')
       .add_item(
         url_for('.view_events', user_id=user_id),
-        'Ereignisse',
+        _('Events'),
         id='events',
         required_permission=UserPermission.view,
         icon='history')
       .add_item(
         url_for('.view_permissions', user_id=user_id),
-        'Berechtigungen',
+        _('Permissions'),
         id='permissions',
         required_permission=UserPermission.view,
         icon='permission')

@@ -495,6 +495,7 @@ msgstr "Neues Passwort setzen"
 #: byceps/blueprints/admin/party/forms.py:50
 #: byceps/blueprints/admin/shop/storefront/forms.py:38
 #: byceps/blueprints/admin/site/forms.py:73
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:21
 msgid "ID"
 msgstr "ID"
 
@@ -709,6 +710,8 @@ msgstr "Marke erstellen"
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:30
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:50
 #: byceps/blueprints/admin/snippet/forms.py:34
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:9
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:13
 msgid "Name"
 msgstr "Name"
 
@@ -771,6 +774,7 @@ msgid "Profile"
 msgstr "Profil"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:21
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:9
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:25
 msgid "Change password"
 msgstr "Passwort ändern"
@@ -821,6 +825,7 @@ msgstr "Site"
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:38
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:4
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:7
+#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:13
 #: sites/cozylan/template_overrides/layout/_navigation.html:11
 msgid "Shop"
 msgstr "Shop"
@@ -867,6 +872,11 @@ msgstr "Global"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:21
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:24
 #: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:9
+#: byceps/blueprints/admin/user/templates/admin/user/index.html:8
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:6
+#: byceps/blueprints/admin/user/templates/admin/user/view.html:6
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:11
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:5
 #: byceps/blueprints/admin/user/templates/layout/admin/user.html:37
 msgid "Users"
 msgstr "Benutzer"
@@ -876,6 +886,8 @@ msgid "Organizer Teams"
 msgstr "Orga-Teams"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:19
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:4
+#: byceps/blueprints/admin/user/templates/admin/user/view.html:66
 #: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:6
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:74
 #: sites/cozylan/template_overrides/layout/_sidebar_right.html:2
@@ -984,6 +996,7 @@ msgid "All users"
 msgstr "Alle Benutzer"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:18
+#: byceps/blueprints/admin/user/templates/layout/admin/user.html:54
 msgid "Overview"
 msgstr "Übersicht"
 
@@ -1054,6 +1067,7 @@ msgid "Delete old login events?"
 msgstr "Alte Login-Events löschen?"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:17
+#: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:3
 msgid "Newsletter Subscriptions"
 msgstr "Newsletter-Abos"
 
@@ -1075,6 +1089,12 @@ msgid "Terms of Service"
 msgstr "AGB"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_global.html:16
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:24
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:31
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:5
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:25
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:42
+#: byceps/blueprints/admin/user/templates/layout/admin/user.html:66
 msgid "Permissions"
 msgstr "Berechtigungen"
 
@@ -1087,6 +1107,7 @@ msgid "Consents"
 msgstr "Zustimmungen"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_global.html:19
+#: byceps/blueprints/admin/user/templates/admin/user/view.html:64
 msgid "Newsletters"
 msgstr "Newsletter"
 
@@ -1149,6 +1170,7 @@ msgid "Image URL path"
 msgstr "Bild-URL-Pfad"
 
 #: byceps/blueprints/admin/news/forms.py:73
+#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:12
 msgid "Date"
 msgstr "Datum"
 
@@ -1215,6 +1237,7 @@ msgid "News item \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
 
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:49
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:25
 #: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:21
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:51
 msgid "Delete"
@@ -1662,6 +1685,8 @@ msgstr "Der Shop wurde angelegt."
 
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:17
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:18
+#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:5
+#: byceps/blueprints/admin/user/templates/admin/user/view.html:65
 #: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:7
 msgid "Orders"
 msgstr "Bestellungen"
@@ -1862,6 +1887,7 @@ msgid "Mountpoint for \"%(url_path)s\" has been deleted."
 msgstr "Der Mountpoint für \"%(url_path)s\" wurde entfernt."
 
 #: byceps/blueprints/admin/ticketing/forms.py:32
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:11
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:79
 msgid "Code"
 msgstr "Code"
@@ -1965,6 +1991,7 @@ msgid "Logo URL"
 msgstr "Logo-URL"
 
 #: byceps/blueprints/admin/tourney/tourney/forms.py:30
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:12
 msgid "Category"
 msgstr "Kategorie"
 
@@ -2032,6 +2059,7 @@ msgid "Last name(s)"
 msgstr "Nachname(n)"
 
 #: byceps/blueprints/admin/user/forms.py:94
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:46
 #: byceps/blueprints/site/user/creation/forms.py:56
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:18
 msgid "Email address"
@@ -2130,6 +2158,227 @@ msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" zugewiesen."
 msgid "%(role_title)s has been withdrawn from \"%(screen_name)s\"."
 msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" genommen."
 
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:8
+#: byceps/blueprints/admin/user/templates/admin/user/view.html:62
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:5
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:3
+msgid "Account"
+msgstr "Benutzerkonto"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:25
+msgid "Copy to clipboard"
+msgstr "In Zwischenablage kopieren"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:29
+msgid "Date of creation"
+msgstr "Erstellungszeitpunkt"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:33
+msgid "Last login"
+msgstr "Letzter Login"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:38
+#, python-format
+msgid "%(days)s days ago"
+msgstr "vor %(days)s Tagen"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:41
+msgid "unknown"
+msgstr "unbekannt"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:51
+msgid "unverified"
+msgstr "unbestätigt"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:54
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:75
+#: byceps/blueprints/admin/user/templates/admin/user/_view_attended_parties.html:13
+#: byceps/blueprints/admin/user/templates/admin/user/_view_badges.html:26
+#: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:16
+#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:31
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:38
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:51
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:51
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:60
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:80
+msgid "none"
+msgstr "keine"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:59
+msgid "Legacy ID"
+msgstr "Legacy-ID"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:63
+msgid "Orga teams"
+msgstr "Orga-Teams"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:6
+msgid "Actions"
+msgstr "Aktionen"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:14
+msgid "Initialize"
+msgstr "Initialisieren"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:18
+msgid "Suspend"
+msgstr "Sperren"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:20
+msgid "Unsuspend"
+msgstr "Entsperren"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:23
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:15
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:5
+msgid "Change user name"
+msgstr "Benutzername ändern"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:24
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:20
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:5
+msgid "Change email address"
+msgstr "E-Mail-Adresse ändern"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_attended_parties.html:3
+#: byceps/blueprints/admin/user/templates/admin/user/view.html:67
+msgid "Attended Parties"
+msgstr "Besuchte Partys"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_badges.html:8
+#: byceps/blueprints/admin/user/templates/admin/user/view.html:68
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/create_form.html:9
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:7
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:22
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:42
+msgid "Badges"
+msgstr "Abzeichen"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_badges.html:15
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/award_form.html:26
+msgid "Award badge"
+msgstr "Abzeichen verleihen"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:11
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:15
+msgid "subscribed"
+msgstr "abonniert"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:11
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:17
+msgid "not subscribed"
+msgstr "nicht abonniert"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:14
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:48
+msgid "Order number"
+msgstr "Bestellnummer"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:15
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:50
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:12
+msgid "Status"
+msgstr "Status"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:3
+#: byceps/blueprints/admin/user/templates/admin/user/view.html:63
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:5
+msgid "Personal Data"
+msgstr "Persönliche Daten"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:13
+#: byceps/blueprints/site/user/settings/forms.py:98
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:18
+msgid "Date of birth"
+msgstr "Geburtsdatum"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:18
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:19
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:23
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:36
+msgid "not given"
+msgstr "nicht angegeben"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:23
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:28
+msgid "Address"
+msgstr "Adresse"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:33
+#: byceps/blueprints/site/user/settings/forms.py:104
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:41
+msgid "Phone number"
+msgstr "Telefonnummer"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:13
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:80
+msgid "Seat"
+msgstr "Sitzplatz"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:42
+msgid "Buyer"
+msgstr "Käufer/in"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:43
+msgid "manages seat"
+msgstr "verwaltet Sitzplatz"
+
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:44
+msgid "manages user"
+msgstr "verwaltet Nutzer/in"
+
+#: byceps/blueprints/admin/user/templates/admin/user/index.html:20
+msgid "Create account"
+msgstr "Benutzerkonto erstellen"
+
+#: byceps/blueprints/admin/user/templates/admin/user/index.html:30
+msgid "total"
+msgstr "gesamt"
+
+#: byceps/blueprints/admin/user/templates/admin/user/index.html:35
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:72
+msgid "active"
+msgstr "aktiv"
+
+#: byceps/blueprints/admin/user/templates/admin/user/index.html:99
+msgid "result"
+msgstr "Ergebnis"
+
+#: byceps/blueprints/admin/user/templates/admin/user/index.html:99
+msgid "results"
+msgstr "Ergebnisse"
+
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:6
+msgid "Assign permissions"
+msgstr "Berechtigungen zuweisen"
+
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:30
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:41
+msgid "Role"
+msgstr "Rolle"
+
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:57
+msgid "Unassign role"
+msgstr "Rolle entfernen"
+
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:59
+msgid "Assign role"
+msgstr "Rolle zuweisen"
+
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:69
+msgid "There are no roles that could be assigned to the user."
+msgstr ""
+"Es sind keine Rollen hinterlegt, die dem Benutzer zugewiesen werden "
+"könnten."
+
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:78
+msgid "Assign role?"
+msgstr "Rolle zuweisen?"
+
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:79
+msgid "Unassign role?"
+msgstr "Rolle entfernen?"
+
 #: byceps/blueprints/admin/user/templates/admin/user/suspend_account_form.html:15
 msgid "Lock"
 msgstr "Sperren"
@@ -2137,6 +2386,47 @@ msgstr "Sperren"
 #: byceps/blueprints/admin/user/templates/admin/user/unsuspend_account_form.html:15
 msgid "Unlock"
 msgstr "Entsperren"
+
+#: byceps/blueprints/admin/user/templates/admin/user/view.html:112
+msgid "Initialize account?"
+msgstr "Benutzerkonto initialisieren?"
+
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:11
+#: byceps/blueprints/admin/user/templates/layout/admin/user.html:60
+msgid "Events"
+msgstr "Ereignisse"
+
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:34
+msgid "Hide logins"
+msgstr "Logins ausblenden"
+
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:36
+msgid "Show logins"
+msgstr "Logins anzeigen"
+
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:30
+msgid "Manage roles"
+msgstr "Rollen verwalten"
+
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:68
+msgid "No permissions are assigned to the user."
+msgstr "Dem Benutzer sind keine Berechtigungen zugewiesen."
+
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:36
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:44
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:78
+msgid "deleted"
+msgstr "gelöscht"
+
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:49
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:76
+msgid "suspended"
+msgstr "gesperrt"
+
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:54
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:74
+msgid "not initialized"
+msgstr "nicht aktiviert"
 
 #: byceps/blueprints/admin/user_badge/forms.py:36
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:39
@@ -2177,20 +2467,9 @@ msgstr "Das Abzeichen \"%(badge_label)s\" wurde an %(screen_name)s verliehen."
 msgid "Award Badge"
 msgstr "Abzeichen verleihen"
 
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/award_form.html:26
-msgid "Award badge"
-msgstr "Abzeichen verleihen"
-
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/create_form.html:6
 msgid "Create Badge"
 msgstr "Abzeichen erstellen"
-
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/create_form.html:9
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:7
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:22
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:42
-msgid "Badges"
-msgstr "Abzeichen"
 
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:27
 msgid "Create badge"
@@ -2619,27 +2898,13 @@ msgstr "Unbekannter Bestätigungscode"
 msgid "I consent"
 msgstr "Ich stimme zu"
 
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:5
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:3
-msgid "Account"
-msgstr "Benutzerkonto"
-
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:42
 msgid "Open Orders"
 msgstr "Offene Bestellungen"
 
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:48
-msgid "Order number"
-msgstr "Bestellnummer"
-
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:49
 msgid "Amount"
 msgstr "Betrag"
-
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:50
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:12
-msgid "Status"
-msgstr "Status"
 
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:64
 msgid "No open orders."
@@ -2648,10 +2913,6 @@ msgstr "Keine offenen Bestellungen."
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:68
 msgid "All orders"
 msgstr "Alle Bestellungen"
-
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:80
-msgid "Seat"
-msgstr "Sitzplatz"
 
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:92
 msgid "not chosen"
@@ -3031,16 +3292,6 @@ msgstr "Dies ist bereits der aktuelle Benutzername."
 msgid "Wrong password."
 msgstr "Das Passwort ist nicht korrekt."
 
-#: byceps/blueprints/site/user/settings/forms.py:98
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:18
-msgid "Date of birth"
-msgstr "Geburtsdatum"
-
-#: byceps/blueprints/site/user/settings/forms.py:104
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:41
-msgid "Phone number"
-msgstr "Telefonnummer"
-
 #: byceps/blueprints/site/user/settings/views.py:91
 msgid ""
 "An email with a verification link has been sent to your new address. The "
@@ -3064,50 +3315,14 @@ msgstr "Deine Daten wurden gespeichert."
 msgid "User name"
 msgstr "Benutzername"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:15
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:5
-msgid "Change user name"
-msgstr "Benutzername ändern"
-
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:19
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:23
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:36
-msgid "not given"
-msgstr "nicht angegeben"
-
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:20
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:5
-msgid "Change email address"
-msgstr "E-Mail-Adresse ändern"
-
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:28
 msgid "Avatar"
 msgstr "Avatar"
-
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:5
-msgid "Personal data"
-msgstr "Persönliche Daten"
-
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:13
-msgid "Full name"
-msgstr "Voller Name"
 
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:15
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/details_update_form.html:4
 msgid "Change personal data"
 msgstr "Persönliche Daten ändern"
-
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:28
-msgid "Address"
-msgstr "Adresse"
-
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:15
-msgid "subscribed"
-msgstr "abonniert"
-
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:17
-msgid "not subscribed"
-msgstr "nicht abonniert"
 
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:25
 msgid "Unsubscribe"
