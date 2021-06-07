@@ -6,7 +6,9 @@ byceps.blueprints.admin.shop.order.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from enum import Enum
+from typing import Optional
 
 from .....services.shop.order.transfer.models import PaymentState
 from .....util import iterables
@@ -26,21 +28,29 @@ class OrderStateFilter(Enum):
     payment_state_canceled_after_paid  = (PaymentState.canceled_after_paid,  IGNORED)
     waiting_for_shipping               = (None,                              NOT_YET_SHIPPED)
 
-    def __init__(self, payment_state, shipped):
+    def __init__(
+        self, payment_state: Optional[PaymentState], shipped: Optional[bool]
+    ) -> None:
         self.payment_state = payment_state
         self.shipped = shipped
 
     @classmethod
-    def find(cls, only_payment_state, only_shipped):
+    def find(
+        cls,
+        only_payment_state: Optional[PaymentState],
+        only_shipped: Optional[bool],
+    ) -> OrderStateFilter:
         if only_payment_state == PaymentState.paid and not only_shipped:
             return cls.waiting_for_shipping
         elif only_payment_state is not None:
-            return cls.find_for_payment_state(only_payment_state)
+            return cls.find_for_payment_state(only_payment_state) or cls.none
         else:
             return cls.none
 
     @classmethod
-    def find_for_payment_state(cls, payment_state):
+    def find_for_payment_state(
+        cls, payment_state: PaymentState
+    ) -> Optional[OrderStateFilter]:
         def match(order_state_filter):
             return (
                 order_state_filter.payment_state == payment_state
