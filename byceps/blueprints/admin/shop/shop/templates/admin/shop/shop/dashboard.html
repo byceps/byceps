@@ -1,0 +1,21 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/dashboard.html' import render_bigstats_cell %}
+{% from 'macros/admin/shop/order.html' import render_order_payment_state %}
+{% set current_page = 'shop_shop_admin_dashboard' %}
+{% set current_page_brand = brand %}
+{% set current_page_shop = shop %}
+{% set title = _('Dashboard') ~ ' - ' ~ brand.title ~ ' ' ~ _('Shop') %}
+{% set layout_main_raw = True %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/admin_dashboard.css') }}">
+{%- endblock %}
+
+{% block body %}
+
+  <div class="grid dashboard">
+    {{ render_bigstats_cell(format_number(order_counts_by_payment_state[PaymentState.open]), _('Orders') ~ '<br>'|safe ~ render_order_payment_state(PaymentState.open), icon_name='pending', href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open')) }}
+    {{ render_bigstats_cell(format_number(order_counts_by_payment_state[PaymentState.paid]), _('Orders') ~ '<br>'|safe ~ render_order_payment_state(PaymentState.paid), icon_name='success', href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='paid')) }}
+  </div>
+
+{%- endblock %}

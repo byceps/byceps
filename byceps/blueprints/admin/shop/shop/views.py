@@ -32,6 +32,28 @@ blueprint = create_blueprint('shop_shop_admin', __name__)
 register_permission_enum(ShopPermission)
 
 
+@blueprint.get('/shops/<shop_id>/dashboard')
+@permission_required(ShopPermission.view)
+@templated
+def dashboard(shop_id):
+    """Show the shop dashboard."""
+    shop = _get_shop_or_404(shop_id)
+
+    brand = brand_service.get_brand(shop.brand_id)
+
+    order_counts_by_payment_state = (
+        order_service.count_orders_per_payment_state(shop.id)
+    )
+
+    return {
+        'shop': shop,
+        'brand': brand,
+
+        'order_counts_by_payment_state': order_counts_by_payment_state,
+        'PaymentState': PaymentState,
+    }
+
+
 @blueprint.get('/for_shop/<shop_id>')
 @permission_required(ShopPermission.view)
 @templated
