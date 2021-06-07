@@ -88,7 +88,7 @@ def view_for_brand(brand_id):
 
     shop = shop_service.find_shop_for_brand(brand.id)
     if shop is not None:
-        return redirect_to('.view', shop_id=shop.id)
+        return redirect_to('.dashboard', shop_id=shop.id)
 
     return {
         'brand': brand,
