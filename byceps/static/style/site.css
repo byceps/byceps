@@ -631,11 +631,6 @@ main h1 a:not(:hover) {
 
 /* misc */
 
-table.index .bignumber {
-  font-size: 1.6em;
-  vertical-align: middle;
-}
-
 .list-grid {
   display: flex;
   flex-wrap: wrap;
