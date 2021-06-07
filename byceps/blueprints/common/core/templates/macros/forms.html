@@ -6,7 +6,7 @@
     {{ field.label(class='form-label') }}
     {{ field(class='form-control ' + class, **kwargs) }}
     {%- if note %}
-    <div class="form-note">{{ note|dim }}</div>
+    <div class="form-note">{{ note }}</div>
     {%- endif %}
     {{- _errors(field) -}}
   </div>
