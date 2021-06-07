@@ -40,8 +40,8 @@ class OrderStateFilter(Enum):
         only_payment_state: Optional[PaymentState],
         only_shipped: Optional[bool],
     ) -> OrderStateFilter:
-        if only_payment_state == PaymentState.paid and not only_shipped:
-            return cls.waiting_for_shipping
+        if (only_payment_state == PaymentState.paid) and (only_shipped is not None):
+            return cls.waiting_for_shipping if not only_shipped else cls.none
         elif only_payment_state is not None:
             return cls.find_for_payment_state(only_payment_state) or cls.none
         else:
