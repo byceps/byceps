@@ -61,14 +61,14 @@
           <th>Orga-Teams</th>
           <td>
             {%- if orga_activities %}
-            <ol>
+            <ul class="compact">
               {%- for activity in orga_activities|sort(attribute='party.starts_at', reverse=True) %}
               <li>
                 {{- activity.party.title }} – {{ activity.team.title }}
                 {%- if activity.duties %} ({{ activity.duties }}){% endif -%}
               </li>
               {%- endfor %}
-            </ol>
+            </ul>
             {%- else %}
               {{- 'keine'|dim -}}
             {%- endif %}

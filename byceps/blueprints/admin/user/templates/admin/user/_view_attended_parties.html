@@ -1,11 +1,9 @@
   {%- if attended_parties %}
-  <table class="index">
+  <ul class="compact">
     {%- for party in attended_parties %}
-    <tr>
-      <td>{{ party.title }}</td>
-    </tr>
+    <li>{{ party.title }}</li>
     {%- endfor %}
-  </table>
+  </ul>
   {%- else %}
   {{ 'keine'|dim }}
   {%- endif %}

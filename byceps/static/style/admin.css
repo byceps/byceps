@@ -446,6 +446,11 @@ ol.index.fully-linked a:hover {
   padding: 8px 0 0 8px;
 }
 
+ul.compact {
+  margin: 0;
+  padding: 0 0 0 1rem;
+}
+
 
 /* tags */
 
