@@ -18,7 +18,7 @@
   {%- with %}
     {%- set note %}
       {{ _('Allowed formats') }}: {{ allowed_types|sort|join(', ') }}<br>
-      {{ _('Maximum image dimensions') }}: {{ maximum_dimensions|join(' &times; ')|safe }} {{ _('pixels') }}<br>
+      {{ _('Maximum image dimensions') }}: {{ maximum_dimensions.width }} &times; {{ maximum_dimensions.height }} {{ _('pixels') }}<br>
       {{ _('Maximum file size') }}: 250 KB<br>
     {%- endset %}
     {{ form_field(form.image, maxlength=250000, accept='image/*', autofocus='autofocus', note=note) }}
