@@ -17,9 +17,9 @@
   <form action="{{ url_for('.image_create', item_id=item.id) }}" method="post" enctype="multipart/form-data" class="disable-submit-button-on-submit">
   {%- with %}
     {%- set note %}
-        Erlaubte Formate: {{ allowed_types|sort|join(', ') }}<br>
-        Maximale Bildgröße: {{ maximum_dimensions|join(' &times; ')|safe }} Pixel<br>
-        Maximale Dateigröße: 250 KB
+      {{ _('Allowed formats') }}: {{ allowed_types|sort|join(', ') }}<br>
+      {{ _('Maximum image dimensions') }}: {{ maximum_dimensions|join(' &times; ')|safe }} {{ _('pixels') }}<br>
+      {{ _('Maximum file size') }}: 250 KB<br>
     {%- endset %}
     {{ form_field(form.image, maxlength=250000, accept='image/*', autofocus='autofocus', note=note) }}
   {%- endwith %}

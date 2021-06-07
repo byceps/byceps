@@ -740,6 +740,7 @@ msgstr "Bearbeiten"
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:44
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:44
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:37
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:43
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:20
 msgid "Settings"
 msgstr "Einstellungen"
@@ -819,6 +820,7 @@ msgstr "Site"
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav.html:36
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:38
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:4
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:7
 #: sites/cozylan/template_overrides/layout/_navigation.html:11
 msgid "Shop"
 msgstr "Shop"
@@ -826,9 +828,11 @@ msgstr "Shop"
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:8
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_global.html:7
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:7
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:7
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:5
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:4
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:6
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:7
 #: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:4
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:37
 msgid "Dashboard"
@@ -1219,6 +1223,26 @@ msgstr "Löschen"
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:67
 msgid "Delete news channel?"
 msgstr "Newskanal löschen?"
+
+#: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:20
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:14
+msgid "Allowed formats"
+msgstr "Erlaubte Formate"
+
+#: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:21
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:15
+msgid "Maximum image dimensions"
+msgstr "Maximale Bildgröße"
+
+#: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:21
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:15
+msgid "pixels"
+msgstr "Pixel"
+
+#: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:22
+#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:16
+msgid "Maximum file size"
+msgstr "Maximale Dateigröße"
 
 #: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:30
 #: byceps/blueprints/admin/site/templates/admin/site/add_news_channel_form.html:19
@@ -1632,9 +1656,15 @@ msgstr "Bestellung stornieren"
 msgid "Mark as paid"
 msgstr "Als bezahlt markieren"
 
-#: byceps/blueprints/admin/shop/shop/views.py:90
+#: byceps/blueprints/admin/shop/shop/views.py:112
 msgid "Shop has been created."
 msgstr "Der Shop wurde angelegt."
+
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:17
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:18
+#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:7
+msgid "Orders"
+msgstr "Bestellungen"
 
 #: byceps/blueprints/admin/shop/storefront/forms.py:17
 msgid "Catalog"
@@ -2232,23 +2262,23 @@ msgstr "Zusätzliche Felder"
 msgid "Enabled"
 msgstr "Aktiv"
 
-#: byceps/blueprints/admin/webhook/views.py:97
+#: byceps/blueprints/admin/webhook/views.py:98
 msgid "Webhook has been created."
 msgstr "Der Webhook wurde erstellt."
 
-#: byceps/blueprints/admin/webhook/views.py:169
+#: byceps/blueprints/admin/webhook/views.py:171
 msgid "Webhook has been updated."
 msgstr "Der Webhook wurde aktualisiert."
 
-#: byceps/blueprints/admin/webhook/views.py:183
+#: byceps/blueprints/admin/webhook/views.py:185
 msgid "Webhook has been removed."
 msgstr "Der Webhook wurde gelöscht."
 
-#: byceps/blueprints/admin/webhook/views.py:197
+#: byceps/blueprints/admin/webhook/views.py:199
 msgid "Webhook call has been successful."
 msgstr "Der Webhook-Aufruf war erfolgreich."
 
-#: byceps/blueprints/admin/webhook/views.py:201
+#: byceps/blueprints/admin/webhook/views.py:203
 msgid "Webhook call failed:"
 msgstr "Der Webhook-Aufruf ist fehlgeschlagen:"
 
@@ -2594,10 +2624,6 @@ msgstr "Ich stimme zu"
 msgid "Account"
 msgstr "Benutzerkonto"
 
-#: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:7
-msgid "Orders"
-msgstr "Bestellungen"
-
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:42
 msgid "Open Orders"
 msgstr "Offene Bestellungen"
@@ -2894,22 +2920,6 @@ msgstr "Dein Avatarbild wurde entfernt."
 #: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:5
 msgid "Upload avatar image"
 msgstr "Avatarbild hochladen"
-
-#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:14
-msgid "Allowed formats"
-msgstr "Erlaubte Formate"
-
-#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:15
-msgid "Maximum image dimensions"
-msgstr "Maximale Bildgröße"
-
-#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:15
-msgid "pixels"
-msgstr "Pixel"
-
-#: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:16
-msgid "Maximum file size"
-msgstr "Maximale Dateigröße"
 
 #: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:17
 msgid "If the image is not square it will be cropped."
