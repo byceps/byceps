@@ -2,27 +2,27 @@
 {%- from 'macros/admin.html' import render_extra_in_heading %}
 {%- from 'macros/icons.html' import render_icon %}
 
-<h2>Abzeichen {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
+<div class="row row--space-between" style="margin-bottom: 0.6rem;">
+  <div class="column-auto">
+
+    <h2 style="margin: 0;">Abzeichen {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
+
+  </div>
+  <div class="column-auto column--align-bottom">
+
+    {%- if has_current_user_permission(UserBadgePermission.award) %}
+    <div class="button-row button-row--compact button-row--right">
+      <a class="button" href="{{ url_for('user_badge_admin.award_form', user_id=user.id) }}">{{ render_icon('add') }} <span>Verleihen</span></a>
+    </div>
+    {%- endif %}
+
+  </div>
+</div>
 
 <div class="box">
-  <div class="row row--space-between">
-    <div class="column-auto">
-
-      {%- if badges_with_awarding_quantity %}
+  {%- if badges_with_awarding_quantity %}
 {{ render_user_badges_list(badges_with_awarding_quantity) }}
-      {%- else %}
-      {{ 'keine'|dim }}
-      {%- endif %}
-
-    </div>
-    <div class="column-auto">
-
-      {%- if has_current_user_permission(UserBadgePermission.award) %}
-      <div class="button-row button-row--compact button-row--right">
-        <a class="button" href="{{ url_for('user_badge_admin.award_form', user_id=user.id) }}">{{ render_icon('add') }} <span>Verleihen</span></a>
-      </div>
-      {%- endif %}
-
-    </div>
-  </div>
+  {%- else %}
+  {{ 'keine'|dim }}
+  {%- endif %}
 </div>

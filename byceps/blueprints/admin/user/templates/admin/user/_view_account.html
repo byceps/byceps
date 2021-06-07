@@ -2,79 +2,79 @@
 {%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/misc.html' import render_tag %}
 
-<h2>Benutzerkonto</h2>
+<div class="row row--space-between" style="margin-bottom: 0.6rem;">
+  <div class="column-auto">
 
-<div class="box">
-  <div class="row row--space-between">
-    <div class="column-auto">
+    <h2 style="margin: 0;">Benutzerkonto</h2>
 
-      <table class="index">
-        <tr>
-          <th>ID</th>
-          <td>
-            {{ user.id }}
-            <input id="user-id-field" value="{{ user.id }}" style="position: fixed; top: -1000px;" readonly>
-            <button id="user-id-copy-trigger" data-field-id="user-id-field" class="button button--compact" title="In die Zwischenablage kopieren">{{ render_icon('clipboard') }}</button>
-          </td>
-        </tr>
-        <tr>
-          <th>Erstellt</th>
-          <td>{{ render_datetime(user.created_at|utc_to_local_tz) }}</td>
-        </tr>
-        <tr>
-          <th>Letzter Login</th>
-          <td>
-            {%- if recent_login -%}
-            {{ render_datetime(recent_login|utc_to_local_tz) }}
-              {%- if (days_since_recent_login is not none) and (days_since_recent_login > 1) %}
-            <span class="dimmed">(vor {{ days_since_recent_login }} Tagen)</span>
-              {%- endif %}
-            {%- else -%}
-            {{ 'unbekannt'|dim }}
-            {%- endif -%}
-          </td>
-        </tr>
-        <tr>
-          <th>E-Mail-Adresse</th>
-          <td>
-            {%- if user.email_address %}
-            <a href="mailto:{{ user.email_address }}">{{ user.email_address }}</a>
-              {%- if not user.email_address_verified %}
-            {{ render_tag('unbestätigt', class='color-warning') }}
-              {%- endif %}
-            {%- else %}
-            {{ 'keine'|dim }}
-            {%- endif %}
-          </td>
-        </tr>
-        <tr>
-          <th>Legacy-ID</th>
-          <td>{{ user.legacy_id|fallback }}</td>
-        </tr>
-        <tr>
-          <th>Orga-Teams</th>
-          <td>
-            {%- if orga_activities %}
-            <ul class="compact">
-              {%- for activity in orga_activities|sort(attribute='party.starts_at', reverse=True) %}
-              <li>
-                {{- activity.party.title }} – {{ activity.team.title }}
-                {%- if activity.duties %} ({{ activity.duties }}){% endif -%}
-              </li>
-              {%- endfor %}
-            </ul>
-            {%- else %}
-              {{- 'keine'|dim -}}
-            {%- endif %}
-          </td>
-        </tr>
-      </table>
-
-    </div>
-    <div class="column-auto">
+  </div>
+  <div class="column-auto column--align-bottom">
 
 {%- include 'admin/user/_view_account_actions.html' %}
 
-    </div>
   </div>
+</div>
+
+<div class="box">
+  <table class="index">
+    <tr>
+      <th>ID</th>
+      <td>
+        {{ user.id }}
+        <input id="user-id-field" value="{{ user.id }}" style="position: fixed; top: -1000px;" readonly>
+        <button id="user-id-copy-trigger" data-field-id="user-id-field" class="button button--compact" title="In die Zwischenablage kopieren">{{ render_icon('clipboard') }}</button>
+      </td>
+    </tr>
+    <tr>
+      <th>Erstellt</th>
+      <td>{{ render_datetime(user.created_at|utc_to_local_tz) }}</td>
+    </tr>
+    <tr>
+      <th>Letzter Login</th>
+      <td>
+        {%- if recent_login -%}
+        {{ render_datetime(recent_login|utc_to_local_tz) }}
+          {%- if (days_since_recent_login is not none) and (days_since_recent_login > 1) %}
+        <span class="dimmed">(vor {{ days_since_recent_login }} Tagen)</span>
+          {%- endif %}
+        {%- else -%}
+        {{ 'unbekannt'|dim }}
+        {%- endif -%}
+      </td>
+    </tr>
+    <tr>
+      <th>E-Mail-Adresse</th>
+      <td>
+        {%- if user.email_address %}
+        <a href="mailto:{{ user.email_address }}">{{ user.email_address }}</a>
+          {%- if not user.email_address_verified %}
+        {{ render_tag('unbestätigt', class='color-warning') }}
+          {%- endif %}
+        {%- else %}
+        {{ 'keine'|dim }}
+        {%- endif %}
+      </td>
+    </tr>
+    <tr>
+      <th>Legacy-ID</th>
+      <td>{{ user.legacy_id|fallback }}</td>
+    </tr>
+    <tr>
+      <th>Orga-Teams</th>
+      <td>
+        {%- if orga_activities %}
+        <ul class="compact">
+          {%- for activity in orga_activities|sort(attribute='party.starts_at', reverse=True) %}
+          <li>
+            {{- activity.party.title }} – {{ activity.team.title }}
+            {%- if activity.duties %} ({{ activity.duties }}){% endif -%}
+          </li>
+          {%- endfor %}
+        </ul>
+        {%- else %}
+          {{- 'keine'|dim -}}
+        {%- endif %}
+      </td>
+    </tr>
+  </table>
 </div>
