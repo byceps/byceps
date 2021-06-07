@@ -35,21 +35,20 @@
     {%- for webhook in webhooks %}
   <div class="box" style="border-left: {{ '#55cc00' if webhook.enabled else '#aaaaaa' }} solid 0.25rem;">
 
-    <div class="two-column mb">
-
-      <div>
+    <div class="row row--space-between">
+      <div class="column-auto">
         {{ render_tag(_('enabled'), class='color-success') if webhook.enabled else render_tag(_('disabled'), class='color-disabled') }}
         {{ webhook.description|fallback }}
       </div>
-
       {%- if has_current_user_permission(WebhookPermission.administrate) %}
-      <div class="button-row button-row--compact button-row--right">
-        <a class="button" href="{{ url_for('.update_form', webhook_id=webhook.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
-        <a class="button" data-action="test-webhook" href="{{ url_for('.test', webhook_id=webhook.id) }}">{{ render_icon('webhook') }} <span>{{ _('Test') }}</span></a>
+      <div class="column-auto">
+        <div class="button-row button-row--compact button-row--right">
+          <a class="button" href="{{ url_for('.update_form', webhook_id=webhook.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
+          <a class="button" data-action="test-webhook" href="{{ url_for('.test', webhook_id=webhook.id) }}">{{ render_icon('webhook') }} <span>{{ _('Test') }}</span></a>
+        </div>
       </div>
       {%- endif %}
-
-    </div>{# .two-column #}
+    </div>
 
     <div class="two-column">
 
