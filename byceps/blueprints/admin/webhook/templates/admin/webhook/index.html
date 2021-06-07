@@ -44,7 +44,13 @@
       <div class="column-auto">
         <div class="button-row button-row--compact button-row--right">
           <a class="button" href="{{ url_for('.update_form', webhook_id=webhook.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
-          <a class="button" data-action="test-webhook" href="{{ url_for('.test', webhook_id=webhook.id) }}">{{ render_icon('webhook') }} <span>{{ _('Test') }}</span></a>
+          <a class="button" data-action="webhook-test" href="{{ url_for('.test', webhook_id=webhook.id) }}">{{ render_icon('webhook') }} <span>{{ _('Test') }}</span></a>
+          <div class="dropdown">
+            <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
+            <ol class="dropdown-menu dropdown-menu--right">
+              <li><a class="dropdown-item" data-action="webhook-delete" href="{{ url_for('.delete', webhook_id=webhook.id) }}">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
+            </ol>
+          </div>
         </div>
       </div>
       {%- endif %}
@@ -109,7 +115,8 @@
 {% block scripts %}
 <script>
   onDomReady(() => {
-    post_on_click_then_reload('[data-action="test-webhook"]');
+    confirmed_delete_on_click_then_reload('[data-action="webhook-delete"]', '{{ _('Delete webhook?') }}');
+    post_on_click_then_reload('[data-action="webhook-test"]');
   });
 </script>
 {% endblock %}

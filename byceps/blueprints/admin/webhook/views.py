@@ -171,6 +171,18 @@ def update(webhook_id):
     return redirect_to('.index')
 
 
+@blueprint.delete('/webhooks/<uuid:webhook_id>/test')
+@permission_required(WebhookPermission.administrate)
+@respond_no_content
+def delete(webhook_id):
+    """Remove the webhook."""
+    webhook = _get_webhook_or_404(webhook_id)
+
+    webhook_service.delete_outgoing_webhook(webhook.id)
+
+    flash_success(gettext('Webhook has been removed.'))
+
+
 @blueprint.post('/webhooks/<uuid:webhook_id>/test')
 @permission_required(WebhookPermission.administrate)
 @respond_no_content
