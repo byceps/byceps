@@ -42,10 +42,12 @@
         {{ webhook.description|fallback }}
       </div>
 
+      {%- if has_current_user_permission(WebhookPermission.administrate) %}
       <div class="button-row button-row--compact button-row--right">
         <a class="button" href="{{ url_for('.update_form', webhook_id=webhook.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
         <a class="button" data-action="test-webhook" href="{{ url_for('.test', webhook_id=webhook.id) }}">{{ render_icon('webhook') }} <span>{{ _('Test') }}</span></a>
       </div>
+      {%- endif %}
 
     </div>{# .two-column #}
 
