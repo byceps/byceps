@@ -10,7 +10,7 @@
   <h1>{{ render_icon('lock') }} {{ title }}</h1>
 
   <form action="{{ url_for('.suspend_account', user_id=user.id) }}" method="post">
-    {{ form_field(form.reason, maxlength=1000, note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.', autofocus='autofocus') }}
+    {{ form_field(form.reason, maxlength=1000, note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.'|safe, autofocus='autofocus') }}
 
     {{ form_buttons(_('Lock'), icon='lock', cancel_url=url_for('.view', user_id=user.id)) }}
   </form>
