@@ -2,31 +2,29 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-  <table class="index wide">
-    <tr>
-      <th>Benutzer</th>
-      <td colspan="2">{{ render_user_avatar_20_and_admin_link(placed_by) }}</td>
-    </tr>
-    <tr>
-      <th>Name</th>
-      <td colspan="2">{{ order.first_names }} {{ order.last_name }}</td>
-    </tr>
-    <tr>
-      <th>Anschrift</th>
-      <td>
-        {{ order.address.street }}<br>
-        {{ order.address.zip_code }} {{ order.address.city }}<br>
-        {{ order.address.country }}
-      </td>
-      <td>
-          <textarea id="order-address-field" style="position: fixed; top: -1000px;" readonly>{{
-            '%s %s\n%s\n%s %s'|format(
-              order.first_names, order.last_name,
-              order.address.street,
-              order.address.zip_code, order.address.city
-            )
-          }}</textarea>
-          <button id="order-address-copy-trigger" data-field-id="order-address-field" class="button button--compact" title="Anschrift in die Zwischenablage kopieren">{{ render_icon('clipboard') }} <span>Kopieren</span></button>
-      </td>
-    </tr>
-  </table>
+<div class="data-label">{{ _('User') }}</div>
+<div class="data-value">{{ render_user_avatar_20_and_admin_link(placed_by) }}</div>
+
+<div class="data-label">{{ _('Name') }}</div>
+<div class="data-value">{{ order.first_names }} {{ order.last_name }}</div>
+
+<div class="data-label">{{ _('Address') }}</div>
+<div class="row">
+  <div class="column-auto">
+    <div class="data-value">
+      {{ order.address.street }}<br>
+      {{ order.address.zip_code }} {{ order.address.city }}<br>
+      {{ order.address.country }}
+    </div>
+  </div>
+  <div class="column-auto">
+    <textarea id="order-address-field" style="position: fixed; top: -1000px;" readonly>{{
+      '%s %s\n%s\n%s %s'|format(
+        order.first_names, order.last_name,
+        order.address.street,
+        order.address.zip_code, order.address.city
+      )
+    }}</textarea>
+    <button id="order-address-copy-trigger" data-field-id="order-address-field" class="button button--compact" title="Anschrift in die Zwischenablage kopieren"><span>{{ render_icon('clipboard') }}</span></button>
+  </div>
+</div>

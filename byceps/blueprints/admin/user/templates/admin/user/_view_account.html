@@ -16,65 +16,62 @@
 </div>
 
 <div class="box">
-  <table class="index">
-    <tr>
-      <th>{{ _('ID') }}</th>
-      <td>
-        {{ user.id }}
-        <input id="user-id-field" value="{{ user.id }}" style="position: fixed; top: -1000px;" readonly>
-        <button id="user-id-copy-trigger" data-field-id="user-id-field" class="button button--compact" title="{{ _('Copy to clipboard') }}">{{ render_icon('clipboard') }}</button>
-      </td>
-    </tr>
-    <tr>
-      <th>{{ _('Date of creation') }}</th>
-      <td>{{ render_datetime(user.created_at|utc_to_local_tz) }}</td>
-    </tr>
-    <tr>
-      <th>{{ _('Last login') }}</th>
-      <td>
-        {%- if recent_login -%}
-        {{ render_datetime(recent_login|utc_to_local_tz) }}
-          {%- if (days_since_recent_login is not none) and (days_since_recent_login > 1) %}
-        <span class="dimmed">({{ _('%(days)s days ago', days=days_since_recent_login) }})</span>
-          {%- endif %}
-        {%- else -%}
-        {{ _('unknown')|dim }}
-        {%- endif -%}
-      </td>
-    </tr>
-    <tr>
-      <th>{{ _('Email address') }}</th>
-      <td>
-        {%- if user.email_address %}
-        <a href="mailto:{{ user.email_address }}">{{ user.email_address }}</a>
-          {%- if not user.email_address_verified %}
-        {{ render_tag(_('unverified'), class='color-warning') }}
-          {%- endif %}
-        {%- else %}
-        {{ _('none')|dim }}
-        {%- endif %}
-      </td>
-    </tr>
-    <tr>
-      <th>{{ _('Legacy ID') }}</th>
-      <td>{{ user.legacy_id|fallback }}</td>
-    </tr>
-    <tr>
-      <th>{{ _('Orga teams') }}</th>
-      <td>
-        {%- if orga_activities %}
-        <ul class="compact">
-          {%- for activity in orga_activities|sort(attribute='party.starts_at', reverse=True) %}
-          <li>
-            {{- activity.party.title }} – {{ activity.team.title }}
-            {%- if activity.duties %} ({{ activity.duties }}){% endif -%}
-          </li>
-          {%- endfor %}
-        </ul>
-        {%- else %}
-          {{- _('none')|dim -}}
-        {%- endif %}
-      </td>
-    </tr>
-  </table>
+
+  <div class="data-label">{{ _('ID') }}</div>
+  <div class="row mb">
+    <div class="column-auto">
+      <div class="data-value">{{ user.id }}</div>
+    </div>
+    <div class="column-auto">
+      <input id="user-id-field" value="{{ user.id }}" style="position: fixed; top: -1000px;" readonly>
+      <button id="user-id-copy-trigger" data-field-id="user-id-field" class="button button--compact" title="{{ _('Copy to clipboard') }}"><span>{{ render_icon('clipboard') }}</span></button>
+    </div>
+  </div>
+
+  <div class="data-label">{{ _('Date of creation') }}</div>
+  <div class="data-value">{{ render_datetime(user.created_at|utc_to_local_tz) }}</div>
+
+  <div class="data-label">{{ _('Last login') }}</div>
+  <div class="data-value">
+    {%- if recent_login -%}
+    {{ render_datetime(recent_login|utc_to_local_tz) }}
+      {%- if (days_since_recent_login is not none) and (days_since_recent_login > 1) %}
+    <span class="dimmed">({{ _('%(days)s days ago', days=days_since_recent_login) }})</span>
+      {%- endif %}
+    {%- else -%}
+    {{ _('unknown')|dim }}
+    {%- endif -%}
+  </div>
+
+  <div class="data-label">{{ _('Email address') }}</div>
+  <div class="data-value">
+    {%- if user.email_address %}
+    <a href="mailto:{{ user.email_address }}">{{ user.email_address }}</a>
+      {%- if not user.email_address_verified %}
+    {{ render_tag(_('unverified'), class='color-warning') }}
+      {%- endif %}
+    {%- else %}
+    {{ _('none')|dim }}
+    {%- endif %}
+  </div>
+
+  <div class="data-label">{{ _('Legacy ID') }}</div>
+  <div class="data-value">{{ user.legacy_id|fallback }}</div>
+
+  <div class="data-label">{{ _('Orga teams') }}</div>
+  <div class="data-value">
+    {%- if orga_activities %}
+    <ul class="compact">
+      {%- for activity in orga_activities|sort(attribute='party.starts_at', reverse=True) %}
+      <li>
+        {{- activity.party.title }} – {{ activity.team.title }}
+        {%- if activity.duties %} ({{ activity.duties }}){% endif -%}
+      </li>
+      {%- endfor %}
+    </ul>
+    {%- else %}
+    {{- _('none')|dim -}}
+    {%- endif %}
+  </div>
+
 </div>

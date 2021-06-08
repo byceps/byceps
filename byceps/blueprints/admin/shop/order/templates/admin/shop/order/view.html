@@ -70,29 +70,21 @@
 
       <h2 style="margin-top: 0;">&nbsp;</h2>
       <div class="box">
-        <table class="index wide">
-          <tr>
-            <th>Eingang</th>
-            <td>{{ render_datetime(order.created_at|utc_to_local_tz, seconds=True) }}</td>
-          </tr>
-          <tr>
-            <td colspan="2">
-      {%- include 'admin/shop/order/_view_status_flags.html' %}
-            </td>
-          </tr>
-          {%- if order.payment_method %}
-          <tr>
-            <th>Zahlungsart</th>
-            <td>{{ render_order_payment_method(order.payment_method) }}</td>
-          </tr>
-          {%- endif %}
-          {%- if order.is_canceled %}
-          <tr>
-            <th>Begründung für<br>Stornierung</th>
-            <td>{{ order.cancelation_reason|fallback }}</td>
-          </tr>
-          {%- endif %}
-        </table>
+
+{%- include 'admin/shop/order/_view_status_flags.html' %}
+
+        <div class="data-label">{{ _('Date of creation') }}</div>
+        <div class="data-value">{{ render_datetime(order.created_at|utc_to_local_tz, seconds=True) }}</div>
+
+        {%- if order.payment_method %}
+        <div class="data-label">{{ _('Payment type') }}</div>
+        <div class="data-value">{{ render_order_payment_method(order.payment_method) }}</div>
+        {%- endif %}
+
+        {%- if order.is_canceled %}
+        <div class="data-label">{{ _('Reason for cancellation') }}</div>
+        <div class="data-value">{{ order.cancelation_reason|fallback }}</div>
+        {%- endif %}
       </div>
 
     </div>

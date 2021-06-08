@@ -4,36 +4,39 @@
 
 <div class="box">
   {%- if user.detail -%}
-  <table class="index">
-    <tr>
-      <th>{{ _('Name') }}</th>
-      <td>{{ user.detail.full_name|fallback }}</td>
-    </tr>
-    <tr>
-      <th>{{ _('Date of birth') }}</th>
-      <td>
-        {%- if user.detail.date_of_birth -%}
-          {{ render_date(user.detail.date_of_birth, smart=False) }}
-        {%- else -%}
-          {{ _('not given')|dim }}
-        {%- endif -%}
-      </td>
-    </tr>
-    <tr>
-      <th>{{ _('Address') }}</th>
-      <td>
-        {{- user.detail.street|fallback }}<br>
-        {%- if user.detail.zip_code %}{{ user.detail.zip_code }}{% endif %}
-        {{ user.detail.city|fallback -}}
-        <br>
-        {{- user.detail.country|fallback -}}
-      </td>
-    </tr>
-    <tr>
-      <th>{{ _('Phone number') }}</th>
-      <td>{{ user.detail.phone_number|fallback }}</td>
-    </tr>
-  </table>
+
+  <div class="row mb">
+    <div class="column-auto">
+      <div class="data-label">{{ _('First name(s)') }}</div>
+      <div class="data-value">{{ user.detail.first_names|fallback }}</div>
+    </div>
+    <div class="column-auto">
+      <div class="data-label">{{ _('Last name(s)') }}</div>
+      <div class="data-value">{{ user.detail.last_name|fallback }}</div>
+    </div>
+  </div>
+
+  <div class="data-label">{{ _('Date of birth') }}</div>
+  <div class="data-value">
+    {%- if user.detail.date_of_birth -%}
+    {{ render_date(user.detail.date_of_birth, smart=False) }}
+    {%- else -%}
+    {{ _('not given')|dim }}
+    {%- endif -%}
+  </div>
+
+  <div class="data-label">{{ _('Address') }}</div>
+  <div class="data-value">
+    {{- user.detail.street|fallback }}<br>
+    {%- if user.detail.zip_code %}{{ user.detail.zip_code }}{% endif %}
+    {{ user.detail.city|fallback -}}
+    <br>
+    {{- user.detail.country|fallback -}}
+  </div>
+
+  <div class="data-label">{{ _('Phone number') }}</div>
+  <div class="data-value">{{ user.detail.phone_number|fallback }}</div>
+
   {%- else %}
   {{ _('none')|dim }}
   {%- endif -%}

@@ -1,7 +1,7 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-        <ol class="order-status-bar">
+        <ol class="order-status-bar mb">
           <li class="order-status-flag {{ 'set' if order.is_invoiced else '' }}">
             <div class="order-status-flag-icon">{{ render_icon('invoice') }}</div>
             <div class="order-status-flag-label">

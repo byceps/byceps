@@ -495,7 +495,7 @@ msgstr "Neues Passwort setzen"
 #: byceps/blueprints/admin/party/forms.py:50
 #: byceps/blueprints/admin/shop/storefront/forms.py:38
 #: byceps/blueprints/admin/site/forms.py:73
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:21
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:20
 msgid "ID"
 msgstr "ID"
 
@@ -709,8 +709,8 @@ msgstr "Marke erstellen"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:30
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:50
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:8
 #: byceps/blueprints/admin/snippet/forms.py:34
-#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:9
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:13
 msgid "Name"
 msgstr "Name"
@@ -1332,6 +1332,7 @@ msgid "Function"
 msgstr "Aufgabe"
 
 #: byceps/blueprints/admin/orga_team/forms.py:46
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:5
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/award_form.html:19
 msgid "User"
 msgstr "Benutzer"
@@ -1599,6 +1600,7 @@ msgid "Inform orderer via email of cancellation."
 msgstr "Auftraggeber/in per E-Mail über Stornierung informieren"
 
 #: byceps/blueprints/admin/shop/order/forms.py:37
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:80
 msgid "Payment type"
 msgstr "Zahlungsart"
 
@@ -1670,6 +1672,12 @@ msgstr ""
 msgid "Order number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Bestellnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
 
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:11
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:28
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:28
+msgid "Address"
+msgstr "Adresse"
+
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:23
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:20
 msgid "Cancel order"
@@ -1678,6 +1686,15 @@ msgstr "Bestellung stornieren"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/mark_as_paid_form.html:18
 msgid "Mark as paid"
 msgstr "Als bezahlt markieren"
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:76
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:31
+msgid "Date of creation"
+msgstr "Erstellungszeitpunkt"
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:85
+msgid "Reason for cancellation"
+msgstr "Grund für Stornierung"
 
 #: byceps/blueprints/admin/shop/shop/views.py:112
 msgid "Shop has been created."
@@ -2045,6 +2062,7 @@ msgid "Neuer username"
 msgstr "Neuer Benutzername"
 
 #: byceps/blueprints/admin/user/forms.py:88
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:10
 #: byceps/blueprints/site/shop/order/forms.py:20
 #: byceps/blueprints/site/user/creation/forms.py:83
 #: byceps/blueprints/site/user/settings/forms.py:93
@@ -2052,6 +2070,7 @@ msgid "First name(s)"
 msgstr "Vorname(n)"
 
 #: byceps/blueprints/admin/user/forms.py:91
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:14
 #: byceps/blueprints/site/shop/order/forms.py:23
 #: byceps/blueprints/site/user/creation/forms.py:87
 #: byceps/blueprints/site/user/settings/forms.py:96
@@ -2165,24 +2184,20 @@ msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" genommen."
 msgid "Account"
 msgstr "Benutzerkonto"
 
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:25
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:27
 msgid "Copy to clipboard"
 msgstr "In Zwischenablage kopieren"
 
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:29
-msgid "Date of creation"
-msgstr "Erstellungszeitpunkt"
-
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:33
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:34
 msgid "Last login"
 msgstr "Letzter Login"
 
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:38
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:39
 #, python-format
 msgid "%(days)s days ago"
 msgstr "vor %(days)s Tagen"
 
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:41
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:42
 msgid "unknown"
 msgstr "unbekannt"
 
@@ -2191,12 +2206,12 @@ msgid "unverified"
 msgstr "unbestätigt"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:54
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:75
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:73
 #: byceps/blueprints/admin/user/templates/admin/user/_view_attended_parties.html:13
 #: byceps/blueprints/admin/user/templates/admin/user/_view_badges.html:26
 #: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:16
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:31
-#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:38
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:41
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:51
 #: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:51
 #: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:60
@@ -2204,11 +2219,11 @@ msgstr "unbestätigt"
 msgid "none"
 msgstr "keine"
 
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:59
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:58
 msgid "Legacy ID"
 msgstr "Legacy-ID"
 
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:63
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:61
 msgid "Orga teams"
 msgstr "Orga-Teams"
 
@@ -2286,25 +2301,20 @@ msgstr "Status"
 msgid "Personal Data"
 msgstr "Persönliche Daten"
 
-#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:13
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:19
 #: byceps/blueprints/site/user/settings/forms.py:98
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:18
 msgid "Date of birth"
 msgstr "Geburtsdatum"
 
-#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:18
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:24
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:19
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:23
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:36
 msgid "not given"
 msgstr "nicht angegeben"
 
-#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:23
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:28
-msgid "Address"
-msgstr "Adresse"
-
-#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:33
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:37
 #: byceps/blueprints/site/user/settings/forms.py:104
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:41
 msgid "Phone number"
