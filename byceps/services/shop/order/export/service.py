@@ -67,16 +67,7 @@ def _format_export_datetime(dt: datetime) -> str:
     """Format date and time as required by the export format specification."""
     tz_str = current_app.config['SHOP_ORDER_EXPORT_TIMEZONE']
     localized_dt = pendulum.instance(dt).in_tz(tz_str)
-
-    date_time, utc_offset = localized_dt.strftime('%Y-%m-%dT%H:%M:%S|%z').split(
-        '|', 1
-    )
-
-    if len(utc_offset) == 5:
-        # Insert colon between hours and minutes.
-        utc_offset = utc_offset[:3] + ':' + utc_offset[3:]
-
-    return date_time + utc_offset
+    return localized_dt.isoformat()
 
 
 def _render_template(context: dict[str, Any]) -> str:
