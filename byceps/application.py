@@ -90,7 +90,11 @@ def create_app(
 
 
 def _get_user_locale() -> Optional[str]:
-    return g.user.locale
+    user = getattr(g, 'user')
+    if user is None:
+        return None
+
+    return user.locale
 
 
 def _add_static_file_url_rules(app: Flask) -> None:
