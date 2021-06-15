@@ -67,8 +67,8 @@ class User(db.Model):
 
         return orga_team_service.is_orga_for_party(self.id, party_id)
 
-    def to_dto(self, *, include_avatar=False):
-        avatar_url = self.avatar_url if include_avatar else None
+    def to_dto(self) -> UserDTO:
+        avatar_url = None
         is_orga = False  # Information is deliberately not obtained here.
 
         return UserDTO(
