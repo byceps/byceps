@@ -48,12 +48,12 @@ def test_sort():
 
 def create_user_and_birthday(date_of_birth: date) -> tuple[User, Birthday]:
     user = User(
-        '55ecd4f2-37ca-4cab-a771-79cf3dabb7cb',
-        f'born-{date_of_birth}',
-        False,
-        False,
-        None,
-        False,
+        id='55ecd4f2-37ca-4cab-a771-79cf3dabb7cb',
+        screen_name=f'born-{date_of_birth}',
+        suspended=False,
+        deleted=False,
+        avatar_url=None,
+        is_orga=False,
     )
     birthday = Birthday(date_of_birth)
     return user, birthday

@@ -71,11 +71,11 @@ def _to_user_dto(
     avatar_url = avatar_urls_by_user_id.get(user.id)
 
     return User(
-        user.id,
-        user.screen_name,
-        user.suspended,
-        user.deleted,
-        avatar_url,
+        id=user.id,
+        screen_name=user.screen_name,
+        suspended=user.suspended,
+        deleted=user.deleted,
+        avatar_url=avatar_url,
         is_orga=True,
     )
 

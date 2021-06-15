@@ -134,18 +134,18 @@ def _db_entity_to_user_with_creation_details(
 ) -> UserWithCreationDetails:
     is_orga = False  # Not interesting here.
     full_name = user.detail.full_name if user.detail is not None else None
-    detail = Detail(full_name)
+    detail = Detail(full_name=full_name)
 
     return UserWithCreationDetails(
-        user.id,
-        user.screen_name,
-        user.suspended,
-        user.deleted,
-        user.avatar.url if user.avatar else None,
-        is_orga,
-        user.created_at,
-        user.initialized,
-        detail,
+        id=user.id,
+        screen_name=user.screen_name,
+        suspended=user.suspended,
+        deleted=user.deleted,
+        avatar_url=user.avatar.url if user.avatar else None,
+        is_orga=is_orga,
+        created_at=user.created_at,
+        initialized=user.initialized,
+        detail=detail,
     )
 
 

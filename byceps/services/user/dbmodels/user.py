@@ -71,12 +71,12 @@ class User(db.Model):
         is_orga = False  # Information is deliberately not obtained here.
 
         return UserDTO(
-            self.id,
-            self.screen_name,
-            self.suspended,
-            self.deleted,
-            avatar_url,
-            is_orga,
+            id=self.id,
+            screen_name=self.screen_name,
+            suspended=self.suspended,
+            deleted=self.deleted,
+            avatar_url=avatar_url,
+            is_orga=is_orga,
         )
 
     def __eq__(self, other) -> bool:

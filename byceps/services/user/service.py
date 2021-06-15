@@ -186,12 +186,12 @@ def _user_row_to_dto(
     avatar_url = avatar.url if avatar else None
 
     return User(
-        user_id,
-        screen_name,
-        suspended,
-        deleted,
-        avatar_url,
-        is_orga,
+        id=user_id,
+        screen_name=screen_name,
+        suspended=suspended,
+        deleted=deleted,
+        avatar_url=avatar_url,
+        is_orga=is_orga,
     )
 
 
@@ -242,27 +242,27 @@ def _db_entity_to_user(user: DbUser) -> User:
     is_orga = False  # Information is not available here by design.
 
     return User(
-        user.id,
-        user.screen_name,
-        user.suspended,
-        user.deleted,
-        avatar_url,
-        is_orga,
+        id=user.id,
+        screen_name=user.screen_name,
+        suspended=user.suspended,
+        deleted=user.deleted,
+        avatar_url=avatar_url,
+        is_orga=is_orga,
     )
 
 
 def _db_entity_to_user_detail(detail: DbUserDetail) -> UserDetail:
     return UserDetail(
-        detail.first_names,
-        detail.last_name,
-        detail.date_of_birth,
-        detail.country,
-        detail.zip_code,
-        detail.city,
-        detail.street,
-        detail.phone_number,
-        detail.internal_comment,
-        detail.extras,
+        first_names=detail.first_names,
+        last_name=detail.last_name,
+        date_of_birth=detail.date_of_birth,
+        country=detail.country,
+        zip_code=detail.zip_code,
+        city=detail.city,
+        street=detail.street,
+        phone_number=detail.phone_number,
+        internal_comment=detail.internal_comment,
+        extras=detail.extras,
     )
 
 
@@ -271,13 +271,13 @@ def _db_entity_to_user_with_detail(user: DbUser) -> UserWithDetail:
     detail_dto = _db_entity_to_user_detail(user.detail)
 
     return UserWithDetail(
-        user_dto.id,
-        user_dto.screen_name,
-        user_dto.suspended,
-        user_dto.deleted,
-        user_dto.avatar_url,
-        user_dto.is_orga,
-        detail_dto,
+        id=user_dto.id,
+        screen_name=user_dto.screen_name,
+        suspended=user_dto.suspended,
+        deleted=user_dto.deleted,
+        avatar_url=user_dto.avatar_url,
+        is_orga=user_dto.is_orga,
+        detail=detail_dto,
     )
 
 
