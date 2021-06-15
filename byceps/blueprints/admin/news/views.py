@@ -20,6 +20,7 @@ from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Channel
 from ....services.site import service as site_service
 from ....services.text_diff import service as text_diff_service
+from ....services.user import service as user_service
 from ....services.user.service import UserIdRejected
 from ....signals import news as news_signals
 from ....util.authorization import register_permission_enum
@@ -127,10 +128,15 @@ def channel_view(channel_id, page):
 
     items = news_item_service.get_items_paginated(channel_ids, page, per_page)
 
+    user_ids = {item.current_version.creator_id for item in items.items}
+    users = user_service.find_users(user_ids, include_avatars=True)
+    users_by_id = user_service.index_users_by_id(users)
+
     return {
         'channel': channel,
         'brand': brand,
         'items': items,
+        'users_by_id': users_by_id,
     }
 
 
@@ -330,12 +336,15 @@ def _render_item_version(version, item):
     channel = item.channel
     brand = brand_service.find_brand(channel.brand_id)
 
+    creator = user_service.get_user(version.creator_id)
+
     current_version = news_item_service.get_current_item_version(item.id)
     is_current_version = version.id == current_version.id
 
     context = {
         'version': version,
         'brand': brand,
+        'creator': creator,
         'is_current_version': is_current_version,
     }
 
@@ -374,10 +383,15 @@ def item_list_versions(item_id):
     versions = news_item_service.get_item_versions(item.id)
     versions_pairwise = list(pairwise(versions + [None]))
 
+    user_ids = {version.creator_id for version in versions}
+    users = user_service.find_users(user_ids, include_avatars=True)
+    users_by_id = user_service.index_users_by_id(users)
+
     return {
         'item': item,
         'brand': brand,
         'versions_pairwise': versions_pairwise,
+        'users_by_id': users_by_id,
     }
 
 

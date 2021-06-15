@@ -41,7 +41,14 @@ def role_index():
     """List roles."""
     roles = authorization_service.get_all_roles_with_titles()
 
-    return {'roles': roles}
+    user_ids = {user.id for role in roles for user in role.users}
+    users = user_service.find_users(user_ids, include_avatars=True)
+    users_by_id = user_service.index_users_by_id(users)
+
+    return {
+        'roles': roles,
+        'users_by_id': users_by_id,
+    }
 
 
 @blueprint.get('/roles/<role_id>')

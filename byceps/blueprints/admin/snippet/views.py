@@ -14,6 +14,7 @@ from ....services.site import service as site_service
 from ....services.snippet import mountpoint_service, service as snippet_service
 from ....services.snippet.transfer.models import Scope
 from ....services.text_diff import service as text_diff_service
+from ....services.user import service as user_service
 from ....signals import snippet as snippet_signals
 from ....util.authorization import register_permission_enum
 from ....util.datetime.format import format_datetime_short
@@ -57,12 +58,17 @@ def index_for_scope(scope_type, scope_name):
         scope
     )
 
+    user_ids = {snippet.current_version.creator_id for snippet in snippets}
+    users = user_service.find_users(user_ids, include_avatars=True)
+    users_by_id = user_service.index_users_by_id(users)
+
     brand = _find_brand_for_scope(scope)
     site = _find_site_for_scope(scope)
 
     return {
         'scope': scope,
         'snippets': snippets,
+        'users_by_id': users_by_id,
         'brand': brand,
         'site': site,
     }
@@ -88,10 +94,13 @@ def view_version(snippet_version_id):
 
     snippet = version.snippet
     scope = snippet.scope
+    creator = user_service.get_user(version.creator_id)
     is_current_version = version.id == snippet.current_version.id
 
     context = {
+        'version': version,
         'scope': scope,
+        'creator': creator,
         'brand': _find_brand_for_scope(scope),
         'site': _find_site_for_scope(scope),
         'is_current_version': is_current_version,
@@ -101,7 +110,6 @@ def view_version(snippet_version_id):
         snippet_context = get_snippet_context(version)
 
         extra_context = {
-            'version': version,
             'snippet_title': snippet_context['title'],
             'snippet_head': snippet_context['head'],
             'snippet_body': snippet_context['body'],
@@ -109,7 +117,6 @@ def view_version(snippet_version_id):
         }
     except Exception as e:
         extra_context = {
-            'version': version,
             'error_occurred': True,
             'error_message': str(e),
         }
@@ -130,6 +137,10 @@ def history(snippet_id):
     versions = snippet_service.get_versions(snippet.id)
     versions_pairwise = list(pairwise(versions + [None]))
 
+    user_ids = {version.creator_id for version in versions}
+    users = user_service.find_users(user_ids, include_avatars=True)
+    users_by_id = user_service.index_users_by_id(users)
+
     brand = _find_brand_for_scope(scope)
     site = _find_site_for_scope(scope)
 
@@ -137,6 +148,7 @@ def history(snippet_id):
         'scope': scope,
         'snippet': snippet,
         'versions_pairwise': versions_pairwise,
+        'users_by_id': users_by_id,
         'brand': brand,
         'site': site,
     }

@@ -37,7 +37,7 @@
           {%- endif -%}
         </td>
         <td class="nowrap"><a href="{{ url_for('.item_view_version', version_id=version.id) }}">{{ render_datetime(version.created_at|utc_to_local_tz) }}</a></td>
-        <td>{{ render_user_avatar_20_and_name(version.creator) }}</td>
+        <td>{{ render_user_avatar_20_and_name(users_by_id[version.creator_id]) }}</td>
         <td>
           {%- if previous_version -%}
           <a href="{{ url_for('.item_compare_versions', from_version_id=previous_version.id, to_version_id=version.id) }}" title="Änderungen im Vergleich zur vorigen Version anzeigen">Änderungen zeigen</a>

@@ -75,7 +75,7 @@
             {{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}
             {%- endif -%}
             <br>
-            von {{ render_user_avatar_16_and_name(item.current_version.creator) }}
+            von {{ render_user_avatar_16_and_name(users_by_id[item.current_version.creator_id]) }}
           {%- endfilter %}
           </td>
           {%- with image_total = item.images|length %}

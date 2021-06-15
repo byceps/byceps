@@ -82,7 +82,7 @@
           {{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}
           {%- endif %}
         </td>
-        <td>{{ render_user_avatar_20_and_name(snippet.current_version.creator) }}</td>
+        <td>{{ render_user_avatar_20_and_name(users_by_id[snippet.current_version.creator_id]) }}</td>
         <td>
           <div class="button-row button-row--compact button-row--right">
             {%- if has_current_user_permission(SnippetPermission.update) %}

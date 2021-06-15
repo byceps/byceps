@@ -125,6 +125,7 @@ def view(user_id):
 
     return {
         'user': user,
+        'user_dto': user.to_dto(),
         'recent_login': recent_login,
         'days_since_recent_login': days_since_recent_login,
         'orga_activities': orga_activities,
@@ -230,6 +231,7 @@ def set_password_form(user_id, erroneous_form=None):
 
     return {
         'user': user,
+        'user_dto': user.to_dto(),
         'form': form,
     }
 
@@ -298,6 +300,7 @@ def suspend_account_form(user_id, erroneous_form=None):
 
     return {
         'user': user,
+        'user_dto': user.to_dto(),
         'form': form,
     }
 
@@ -357,6 +360,7 @@ def unsuspend_account_form(user_id, erroneous_form=None):
 
     return {
         'user': user,
+        'user_dto': user.to_dto(),
         'form': form,
     }
 
@@ -418,6 +422,7 @@ def delete_account_form(user_id, erroneous_form=None):
 
     return {
         'user': user,
+        'user_dto': user.to_dto(),
         'form': form,
     }
 
@@ -468,6 +473,7 @@ def change_email_address_form(user_id, erroneous_form=None):
 
     return {
         'user': user,
+        'user_dto': user.to_dto(),
         'form': form,
     }
 
@@ -514,6 +520,7 @@ def change_screen_name_form(user_id, erroneous_form=None):
 
     return {
         'user': user,
+        'user_dto': user.to_dto(),
         'form': form,
     }
 
@@ -564,6 +571,7 @@ def view_permissions(user_id):
 
     return {
         'user': user,
+        'user_dto': user.to_dto(),
         'permissions_by_role': permissions_by_role,
     }
 
@@ -583,6 +591,7 @@ def manage_roles(user_id):
 
     return {
         'user': user,
+        'user_dto': user.to_dto(),
         'permissions_by_role': permissions_by_role,
         'user_role_ids': user_role_ids,
     }
@@ -649,6 +658,7 @@ def view_events(user_id):
 
     return {
         'user': user,
+        'user_dto': user.to_dto(),
         'events': events,
         'logins_included': include_logins,
     }

@@ -43,7 +43,7 @@
           {%- elif role.users|length <= user_limit %}
             <ol>
             {%- for user in role.users|sort(attribute='screen_name') %}
-              <li>{{ render_user_avatar_16_and_admin_link(user) }}</li>
+              <li>{{ render_user_avatar_16_and_admin_link(users_by_id[user.id]) }}</li>
             {%- endfor %}
             </ol>
           {%- else %}

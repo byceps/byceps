@@ -37,7 +37,7 @@
   {{ render_backlink(url_for('.index'), _('Users')) }}
 
   <div class="user-head">
-    <div>{{ render_user_avatar_96(user) }}</div>
+    <div>{{ render_user_avatar_96(user_dto) }}</div>
     <div>
       <h1 class="title">{{ render_user_screen_name(user) }}</h1>
       <div class="subtitle">{{ user.detail.full_name|fallback }}</div>
