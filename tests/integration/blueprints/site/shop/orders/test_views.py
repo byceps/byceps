@@ -172,9 +172,8 @@ def test_view_matching_user_but_different_site_and_shop(
 
 
 def create_payment_instructions_snippet(shop_id, admin_id):
-    return create_shop_fragment(
-        shop_id, admin_id, 'payment_instructions', 'Send all ur moneyz!'
-    )
+    body = 'Send {{ format_euro_amount(total_amount) }} moneys for order {{ order_number }}!'
+    return create_shop_fragment(shop_id, admin_id, 'payment_instructions', body)
 
 
 def request_view(app, current_user, order_id):

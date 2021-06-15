@@ -19,6 +19,7 @@ from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
+from .....util.money import format_euro_amount
 from .....util.views import login_required, redirect_to
 
 from ....site.snippet.templating import render_snippet_as_partial
@@ -93,7 +94,12 @@ def _find_order_payment_method_label(payment_method):
 
 def _get_payment_instructions(order):
     scope = Scope('shop', str(order.shop_id))
-    context = {'order_number': order.order_number}
+
+    context = {
+        'order_number': order.order_number,
+        'total_amount': order.total_amount,
+        'format_euro_amount': format_euro_amount,
+    }
 
     return render_snippet_as_partial(
         'payment_instructions', scope=scope, context=context
