@@ -11,6 +11,7 @@ from enum import Enum
 from typing import Optional
 from uuid import UUID
 
+from babel import parse_locale
 from flask import session
 
 from ..services.authentication.session.models.current_user import CurrentUser
@@ -50,17 +51,17 @@ def get_current_user(
     *,
     party_id: Optional[PartyID] = None,
 ) -> CurrentUser:
-    locale = _get_locale()
+    session_locale = _get_session_locale()
 
     user = _find_user(party_id=party_id)
-
     if user is None:
-        return session_service.get_anonymous_current_user(locale)
+        return session_service.get_anonymous_current_user(session_locale)
 
     permissions = get_permissions_for_user(user.id)
-
     if not required_permissions.issubset(permissions):
-        return session_service.get_anonymous_current_user(locale)
+        return session_service.get_anonymous_current_user(session_locale)
+
+    locale = _get_user_locale(user) or session_locale
 
     return session_service.get_authenticated_current_user(
         user, locale, permissions
@@ -103,9 +104,23 @@ def _find_user(*, party_id: Optional[PartyID] = None) -> Optional[User]:
     return user
 
 
-def _get_locale() -> Optional[str]:
+def _get_session_locale() -> Optional[str]:
     """Return the locale set in the session, if any."""
     return session.get(KEY_LOCALE)
+
+
+def _get_user_locale(user: User) -> Optional[str]:
+    """Return the locale set for the user, if any."""
+    locale_str = user.locale
+    if not locale_str:
+        return None
+
+    try:
+        parse_locale(locale_str)
+    except ValueError:
+        return None
+
+    return locale_str
 
 
 def set_locale(locale: str) -> None:
