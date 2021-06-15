@@ -47,10 +47,11 @@ def end() -> None:
 
 def get_current_user(
     required_permissions: set[Enum],
-    locale: Optional[str],
     *,
     party_id: Optional[PartyID] = None,
 ) -> CurrentUser:
+    locale = _get_locale()
+
     user = _find_user(party_id=party_id)
 
     if user is None:
@@ -102,7 +103,7 @@ def _find_user(*, party_id: Optional[PartyID] = None) -> Optional[User]:
     return user
 
 
-def get_locale() -> Optional[str]:
+def _get_locale() -> Optional[str]:
     """Return the locale set in the session, if any."""
     return session.get(KEY_LOCALE)
 

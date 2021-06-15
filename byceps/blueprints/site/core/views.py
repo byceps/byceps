@@ -15,10 +15,7 @@ from .... import config
 from ....services.party import service as party_service
 from ....services.site import service as site_service
 from ....util.framework.blueprint import create_blueprint
-from ....util.user_session import (
-    get_current_user,
-    get_locale as get_session_locale,
-)
+from ....util.user_session import get_current_user
 
 
 blueprint = create_blueprint('core_site', __name__)
@@ -37,8 +34,6 @@ def url_for_site_file(filename, **kwargs) -> Optional[str]:
 
 @blueprint.before_app_request
 def prepare_request_globals() -> None:
-    locale = get_session_locale()
-
     site_id = config.get_current_site_id()
     site = site_service.get_site(site_id)
     g.site_id = site.id
@@ -52,6 +47,4 @@ def prepare_request_globals() -> None:
     g.party_id = party_id
 
     required_permissions = set()
-    g.user = get_current_user(
-        required_permissions, locale, party_id=party_id
-    )
+    g.user = get_current_user(required_permissions, party_id=party_id)
