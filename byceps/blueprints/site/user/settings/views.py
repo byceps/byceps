@@ -74,8 +74,8 @@ def change_email_address_form(erroneous_form=None):
     }
 
 
-@login_required
 @blueprint.post('/email_address')
+@login_required
 def change_email_address():
     """Request a change of the current user's email address."""
     current_user = g.user
@@ -116,8 +116,8 @@ def change_screen_name_form(erroneous_form=None):
     }
 
 
-@login_required
 @blueprint.post('/screen_name')
+@login_required
 def change_screen_name():
     """Change the current user's screen name."""
     current_user = g.user
