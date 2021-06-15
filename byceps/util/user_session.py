@@ -51,7 +51,7 @@ def get_current_user(
     *,
     party_id: Optional[PartyID] = None,
 ) -> CurrentUser:
-    user = get_user(party_id=party_id)
+    user = _find_user(party_id=party_id)
 
     if user is None:
         return session_service.get_anonymous_current_user(locale=locale)
@@ -66,7 +66,7 @@ def get_current_user(
     )
 
 
-def get_user(*, party_id: Optional[PartyID] = None) -> Optional[User]:
+def _find_user(*, party_id: Optional[PartyID] = None) -> Optional[User]:
     """Return the current user if authenticated, `None` if not."""
     user_id_str = session.get(KEY_USER_ID)
     auth_token = session.get(KEY_USER_AUTH_TOKEN)
