@@ -22,7 +22,7 @@ from .blueprints.blueprints import register_blueprints
 from . import config, config_defaults
 from .database import db
 from . import email
-from .util.l10n import set_locale
+from .util.l10n import get_current_user_locale, set_locale
 from .util import templatefilters, templatefunctions
 from .util.templating import SiteTemplateOverridesLoader
 from .util.views import redirect_to
@@ -61,7 +61,7 @@ def create_app(
     set_locale(app.config['LOCALE'])  # Fail if not configured.
 
     babel = Babel(app)
-    babel.locale_selector_func = _get_user_locale
+    babel.locale_selector_func = get_current_user_locale
 
     # Initialize database.
     db.init_app(app)
@@ -87,14 +87,6 @@ def create_app(
     _load_announce_signal_handlers()
 
     return app
-
-
-def _get_user_locale() -> Optional[str]:
-    user = getattr(g, 'user')
-    if user is None:
-        return None
-
-    return user.locale
 
 
 def _add_static_file_url_rules(app: Flask) -> None:
