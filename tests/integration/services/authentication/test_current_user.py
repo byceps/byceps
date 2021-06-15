@@ -34,7 +34,7 @@ def test_get_authenticated_current_user(user):
     locale = 'de'
 
     current_user = session_service.get_authenticated_current_user(
-        user, permissions=permissions, locale=locale
+        user, locale, permissions
     )
 
     assert current_user.id == user.id

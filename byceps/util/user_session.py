@@ -63,7 +63,7 @@ def get_current_user(
         return session_service.get_anonymous_current_user(locale)
 
     return session_service.get_authenticated_current_user(
-        user, permissions=permissions, locale=locale
+        user, locale, permissions
     )
 
 

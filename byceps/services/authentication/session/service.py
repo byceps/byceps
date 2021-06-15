@@ -182,14 +182,10 @@ def get_anonymous_current_user(locale: Optional[str]) -> CurrentUser:
 
 def get_authenticated_current_user(
     user: User,
-    *,
-    permissions: Optional[frozenset[Enum]] = None,
-    locale: Optional[str] = None,
+    locale: Optional[str],
+    permissions: Optional[frozenset[Enum]],
 ) -> CurrentUser:
     """Return an authenticated current user object."""
-    if permissions is None:
-        permissions = frozenset()
-
     return CurrentUser(
         id=user.id,
         screen_name=user.screen_name,
