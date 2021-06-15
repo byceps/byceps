@@ -25,6 +25,22 @@
       <td><a class="button button--compact" href="{{ url_for('authentication_password.update_form') }}" title="{{ _('Change password') }}">{{ render_icon('edit') }}</a></td>
     </tr>
     <tr>
+      <th>{{ _('Language') }}</th>
+      <td>{{ (user_locale.get_display_name(g.user.locale) if user_locale else None)|fallback }}</td>
+      <td>
+        <div class="dropdown">
+          <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+          <ol class="dropdown-menu dropdown-menu--right">
+          {% for locale in locales %}
+            <li><a class="dropdown-item" data-action="locale-update" href="{{ url_for('.update_locale', locale=locale.language) }}">{{ locale.get_display_name(g.user.locale) }}</a></li>
+          {% endfor %}
+            <li class="dropdown-divider"></li>
+            <li><a class="dropdown-item" data-action="locale-update" href="{{ url_for('.update_locale') }}">{{ _('no preference') }}</a></li>
+          </ol>
+        </div>
+      </td>
+    </tr>
+    <tr>
       <th>{{ _('Avatar') }}</th>
       <td>{{ render_user_avatar_128(user) }}</td>
       <td>

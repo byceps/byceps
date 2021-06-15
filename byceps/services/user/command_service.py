@@ -9,6 +9,8 @@ byceps.services.user.command_service
 from datetime import date
 from typing import Any, Optional
 
+from babel import Locale
+
 from ...database import db
 from ...events.user import (
     UserAccountSuspended,
@@ -212,6 +214,14 @@ def change_email_address(
         user_id=user.id,
         user_screen_name=user.screen_name,
     )
+
+
+def update_locale(user_id: UserID, locale: Optional[Locale]) -> None:
+    """Change the user's locale."""
+    user = _get_user(user_id)
+
+    user.locale = locale.language if (locale is not None) else None
+    db.session.commit()
 
 
 def update_user_details(

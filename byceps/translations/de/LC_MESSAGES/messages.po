@@ -1828,7 +1828,7 @@ msgid "Add news channel"
 msgstr "Newskanal hinzufügen"
 
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:117
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:36
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:52
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -3197,7 +3197,7 @@ msgid "If the image is not square it will be cropped."
 msgstr "Falls das Bild nicht quadratisch ist, wird es zugeschnitten."
 
 #: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:22
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:34
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:50
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -3302,7 +3302,7 @@ msgstr "Dies ist bereits der aktuelle Benutzername."
 msgid "Wrong password."
 msgstr "Das Passwort ist nicht korrekt."
 
-#: byceps/blueprints/site/user/settings/views.py:91
+#: byceps/blueprints/site/user/settings/views.py:97
 msgid ""
 "An email with a verification link has been sent to your new address. The "
 "email address of your account will be changed to the new address once you"
@@ -3312,12 +3312,16 @@ msgstr ""
 "gesendet. Die E-Mail-Adresse deines Benutzerkontos wird geändert sobald "
 "du die neue Adresse über den Link bestätigst."
 
-#: byceps/blueprints/site/user/settings/views.py:134
+#: byceps/blueprints/site/user/settings/views.py:140
 #, python-format
 msgid "Your username has been changed to \"%(new_screen_name)s\"."
 msgstr "Dein Benutzername wurde zu \"%(new_screen_name)s\" geändert."
 
-#: byceps/blueprints/site/user/settings/views.py:192
+#: byceps/blueprints/site/user/settings/views.py:159
+msgid "Your language preference has been updated."
+msgstr "Deine Sprachpräferenz wurde aktualisiert."
+
+#: byceps/blueprints/site/user/settings/views.py:211
 msgid "Your data has been saved."
 msgstr "Deine Daten wurden gespeichert."
 
@@ -3326,6 +3330,14 @@ msgid "User name"
 msgstr "Benutzername"
 
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:28
+msgid "Language"
+msgstr "Sprache"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:38
+msgid "no preference"
+msgstr "keine Präferenz"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:44
 msgid "Avatar"
 msgstr "Avatar"
 
@@ -3350,7 +3362,7 @@ msgstr "Öffentliches Profil ansehen"
 msgid "Remove avatar image?"
 msgstr "Avatarbild entfernen?"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:31
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:34
 msgid "Unsubscribe from newsletter?"
 msgstr "Vom Newsletter abmelden?"
 

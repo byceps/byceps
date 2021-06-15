@@ -26,6 +26,9 @@
         // avatar
         confirmed_delete_on_click_then_reload('[data-action="avatar-delete"]', '{{ _('Remove avatar image?') }}');
 
+        // locale
+        post_on_click_then_reload('[data-action="locale-update"]');
+
         // newsletter
         post_on_click_then_reload('[data-action="newsletter-subscribe"]');
         confirmed_delete_on_click_then_reload('[data-action="newsletter-unsubscribe"]', '{{ _('Unsubscribe from newsletter?') }}');

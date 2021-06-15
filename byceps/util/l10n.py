@@ -8,10 +8,12 @@ Localization.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import locale
 from typing import Optional
 import warnings
 
+from babel import Locale
 from flask import current_app, g
 from wtforms import Form
 
@@ -30,6 +32,14 @@ def get_current_user_locale() -> Optional[str]:
         return None
 
     return user.locale
+
+
+BASE_LOCALE = Locale('en')
+
+
+def get_locales() -> list[Locale]:
+    """List available locales."""
+    return [BASE_LOCALE] + current_app.babel_instance.list_translations()
 
 
 class LocalizedForm(Form):

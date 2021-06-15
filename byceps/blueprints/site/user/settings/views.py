@@ -8,6 +8,7 @@ byceps.blueprints.site.user.settings.views
 
 from typing import Optional
 
+from babel import Locale
 from flask import abort, g, request
 from flask_babel import gettext
 
@@ -24,7 +25,8 @@ from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
-from .....util.views import login_required, redirect_to
+from .....util.l10n import get_locales
+from .....util.views import login_required, redirect_to, respond_no_content
 
 from .forms import DetailsForm, ChangeEmailAddressForm, ChangeScreenNameForm
 
@@ -41,6 +43,8 @@ def view():
     if user is None:
         abort(404)
 
+    user_locale = Locale.parse(user.locale) if user.locale else None
+
     newsletter_list_id = _find_newsletter_list_for_brand()
     newsletter_offered = newsletter_list_id is not None
 
@@ -50,6 +54,8 @@ def view():
 
     return {
         'user': user,
+        'user_locale': user_locale,
+        'locales': get_locales(),
         'newsletter_offered': newsletter_offered,
         'newsletter_list_id': newsletter_list_id,
         'subscribed_to_newsletter': subscribed_to_newsletter,
@@ -138,6 +144,19 @@ def change_screen_name():
     )
 
     return redirect_to('.view')
+
+
+@blueprint.post('/locale')
+@login_required
+@respond_no_content
+def update_locale():
+    """Update the current user's locale."""
+    locale_str = request.args.get('locale')
+    locale = Locale.parse(locale_str)
+
+    user_command_service.update_locale(g.user.id, locale)
+
+    flash_success(gettext('Your language preference has been updated.'))
 
 
 @blueprint.get('/details')
