@@ -20,8 +20,6 @@ from ...site.transfer.models import SiteID
 from ...user import event_service as user_event_service, service as user_service
 from ...user.transfer.models import User
 
-from ..exceptions import AuthenticationFailed
-
 from .dbmodels.recent_login import RecentLogin as DbRecentLogin
 from .dbmodels.session_token import SessionToken as DbSessionToken
 from .models.current_user import CurrentUser
@@ -75,23 +73,22 @@ def find_session_token_for_user(user_id: UserID) -> Optional[DbSessionToken]:
         .one_or_none()
 
 
-def authenticate_session(user_id: UserID, auth_token: str) -> None:
-    """Check the client session's validity.
-
-    Return nothing on success, or raise an exception on failure.
-    """
+def is_session_valid(user_id: UserID, auth_token: str) -> bool:
+    """Return `True` if the client session is valid, `False` if not."""
     if user_id is None:
         # User ID must not be empty.
-        raise AuthenticationFailed()
+        return False
 
     if not auth_token:
         # Authentication token must not be empty.
-        raise AuthenticationFailed()
+        return False
 
     if not _is_token_valid_for_user(auth_token, user_id):
         # Session token is unknown or the user ID provided by the
         # client does not match the one stored on the server.
-        raise AuthenticationFailed()
+        return False
+
+    return True
 
 
 def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:

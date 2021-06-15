@@ -13,7 +13,6 @@ from uuid import UUID
 
 from flask import session
 
-from ..services.authentication.exceptions import AuthenticationFailed
 from ..services.authentication.session.models.current_user import CurrentUser
 from ..services.authentication.session import service as session_service
 from ..services.user import service as user_service
@@ -104,20 +103,13 @@ def _load_user(
         return None
 
     # Validate auth token.
-    if (auth_token is None) or not _is_auth_token_valid(user.id, auth_token):
+    if (auth_token is None) or not session_service.is_session_valid(
+        user.id, auth_token
+    ):
         # Bad auth token, not logging in.
         return None
 
     return user
-
-
-def _is_auth_token_valid(user_id: UserID, auth_token: str) -> bool:
-    try:
-        session_service.authenticate_session(user_id, auth_token)
-    except AuthenticationFailed:
-        return False
-    else:
-        return True
 
 
 def get_locale() -> Optional[str]:
