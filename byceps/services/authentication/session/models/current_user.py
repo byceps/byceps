@@ -9,7 +9,6 @@ byceps.services.authentication.session.models.current_user
 from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
-from typing import Optional
 
 from .....services.user.transfer.models import User
 
@@ -20,7 +19,6 @@ class CurrentUser(User):
 
     authenticated: bool
     permissions: frozenset[Enum]
-    locale: Optional[str]
 
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)

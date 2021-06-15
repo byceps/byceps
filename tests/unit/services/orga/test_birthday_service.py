@@ -52,6 +52,7 @@ def create_user_and_birthday(date_of_birth: date) -> tuple[User, Birthday]:
         screen_name=f'born-{date_of_birth}',
         suspended=False,
         deleted=False,
+        locale=None,
         avatar_url=None,
         is_orga=False,
     )

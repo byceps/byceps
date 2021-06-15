@@ -156,6 +156,7 @@ def _get_user_query(
             DbUser.screen_name,
             DbUser.suspended,
             DbUser.deleted,
+            DbUser.locale,
             Avatar if include_avatar else db.null(),
             orga_flag_expression,
         )
@@ -182,7 +183,7 @@ def _get_orga_flag_subquery(party_id: PartyID):
 def _user_row_to_dto(
     row: tuple[UserID, str, bool, bool, Optional[Avatar], bool]
 ) -> User:
-    user_id, screen_name, suspended, deleted, avatar, is_orga = row
+    user_id, screen_name, suspended, deleted, locale, avatar, is_orga = row
     avatar_url = avatar.url if avatar else None
 
     return User(
@@ -190,6 +191,7 @@ def _user_row_to_dto(
         screen_name=screen_name,
         suspended=suspended,
         deleted=deleted,
+        locale=locale,
         avatar_url=avatar_url,
         is_orga=is_orga,
     )
@@ -246,6 +248,7 @@ def _db_entity_to_user(user: DbUser) -> User:
         screen_name=user.screen_name,
         suspended=user.suspended,
         deleted=user.deleted,
+        locale=user.locale,
         avatar_url=avatar_url,
         is_orga=is_orga,
     )
@@ -275,6 +278,7 @@ def _db_entity_to_user_with_detail(user: DbUser) -> UserWithDetail:
         screen_name=user_dto.screen_name,
         suspended=user_dto.suspended,
         deleted=user_dto.deleted,
+        locale=user_dto.locale,
         avatar_url=user_dto.avatar_url,
         is_orga=user_dto.is_orga,
         detail=detail_dto,

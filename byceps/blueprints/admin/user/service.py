@@ -141,6 +141,7 @@ def _db_entity_to_user_with_creation_details(
         screen_name=user.screen_name,
         suspended=user.suspended,
         deleted=user.deleted,
+        locale=user.locale,
         avatar_url=user.avatar.url if user.avatar else None,
         is_orga=is_orga,
         created_at=user.created_at,

@@ -34,6 +34,7 @@ class User(db.Model):
     initialized = db.Column(db.Boolean, default=False, nullable=False)
     suspended = db.Column(db.Boolean, default=False, nullable=False)
     deleted = db.Column(db.Boolean, default=False, nullable=False)
+    locale = db.Column(db.UnicodeText, nullable=True)
     legacy_id = db.Column(db.Integer)
 
     avatar = association_proxy('avatar_selection', 'avatar',
@@ -75,6 +76,7 @@ class User(db.Model):
             screen_name=self.screen_name,
             suspended=self.suspended,
             deleted=self.deleted,
+            locale=self.locale,
             avatar_url=avatar_url,
             is_orga=is_orga,
         )

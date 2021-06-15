@@ -172,11 +172,11 @@ def get_anonymous_current_user(locale: Optional[str]) -> CurrentUser:
         screen_name=None,
         suspended=False,
         deleted=False,
+        locale=locale,
         avatar_url=None,
         is_orga=False,
         authenticated=False,
         permissions=frozenset(),
-        locale=locale,
     )
 
 
@@ -191,9 +191,9 @@ def get_authenticated_current_user(
         screen_name=user.screen_name,
         suspended=False,  # Current user cannot be suspended.
         deleted=False,  # Current user cannot be deleted.
+        locale=locale,
         avatar_url=user.avatar_url,
         is_orga=user.is_orga,
         authenticated=True,
         permissions=permissions,
-        locale=locale,
     )

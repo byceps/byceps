@@ -75,6 +75,7 @@ def _to_user_dto(
         screen_name=user.screen_name,
         suspended=user.suspended,
         deleted=user.deleted,
+        locale=user.locale,
         avatar_url=avatar_url,
         is_orga=True,
     )

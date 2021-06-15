@@ -27,6 +27,7 @@ def create_user(screen_name: str) -> User:
         screen_name=screen_name,
         suspended=False,
         deleted=False,
+        locale=False,
         avatar_url=None,
         is_orga=False,
     )

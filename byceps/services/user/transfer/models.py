@@ -20,6 +20,7 @@ class User:
     screen_name: Optional[str]
     suspended: bool
     deleted: bool
+    locale: Optional[str]
     avatar_url: Optional[str]
     is_orga: bool
 
