@@ -12,7 +12,7 @@ from byceps.util.authorization import create_permission_enum
 def test_get_anonymous_current_user():
     locale = 'en'
 
-    current_user = session_service.get_anonymous_current_user(locale=locale)
+    current_user = session_service.get_anonymous_current_user(locale)
 
     assert current_user.id == UUID('00000000-0000-0000-0000-000000000000')
     assert current_user.screen_name is None
