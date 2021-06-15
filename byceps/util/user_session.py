@@ -67,26 +67,16 @@ def get_current_user(
 
 
 def _find_user(*, party_id: Optional[PartyID] = None) -> Optional[User]:
-    """Return the current user if authenticated, `None` if not."""
-    user_id_str = session.get(KEY_USER_ID)
-    auth_token = session.get(KEY_USER_AUTH_TOKEN)
-
-    return _load_user(user_id_str, auth_token, party_id=party_id)
-
-
-def _load_user(
-    user_id_str: Optional[str],
-    auth_token: Optional[str],
-    *,
-    party_id: Optional[PartyID] = None,
-) -> Optional[User]:
-    """Load the user with that ID.
+    """Return the current user if authenticated, `None` if not.
 
     Return `None` if:
     - the ID is unknown.
     - the account is not enabled.
     - the auth token is invalid.
     """
+    user_id_str = session.get(KEY_USER_ID)
+    auth_token = session.get(KEY_USER_AUTH_TOKEN)
+
     if user_id_str is None:
         return None
 
