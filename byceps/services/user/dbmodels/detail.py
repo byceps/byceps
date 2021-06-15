@@ -21,16 +21,16 @@ class UserDetail(db.Model):
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     user = db.relationship('User', backref=db.backref('detail', uselist=False))
-    first_names = db.Column(db.UnicodeText)
-    last_name = db.Column(db.UnicodeText)
-    date_of_birth = db.Column(db.Date)
-    country = db.Column(db.UnicodeText)
-    zip_code = db.Column(db.UnicodeText)
-    city = db.Column(db.UnicodeText)
-    street = db.Column(db.UnicodeText)
-    phone_number = db.Column(db.UnicodeText)
-    internal_comment = db.Column(db.UnicodeText)
-    extras = db.Column(MutableDict.as_mutable(db.JSONB))
+    first_names = db.Column(db.UnicodeText, nullable=True)
+    last_name = db.Column(db.UnicodeText, nullable=True)
+    date_of_birth = db.Column(db.Date, nullable=True)
+    country = db.Column(db.UnicodeText, nullable=True)
+    zip_code = db.Column(db.UnicodeText, nullable=True)
+    city = db.Column(db.UnicodeText, nullable=True)
+    street = db.Column(db.UnicodeText, nullable=True)
+    phone_number = db.Column(db.UnicodeText, nullable=True)
+    internal_comment = db.Column(db.UnicodeText, nullable=True)
+    extras = db.Column(MutableDict.as_mutable(db.JSONB), nullable=True)
 
     @property
     def full_name(self) -> Optional[str]:
