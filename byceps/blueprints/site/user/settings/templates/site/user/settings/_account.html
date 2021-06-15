@@ -3,56 +3,78 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_128 %}
 
 
-  <table class="index">
-    <colgroup>
-      <col style="width: {{ label_column_width }};">
-      <col style="min-width: {{ data_column_min_width }};">
-      <col>
-    </colgroup>
-    <tr>
-      <th>{{ _('User name') }}</th>
-      <td>{{ render_user_screen_name(user) }}</td>
-      <td><a class="button button--compact" href="{{ url_for('.change_screen_name_form') }}" title="{{ _('Change user name') }}">{{ render_icon('edit') }}</a></td>
-    </tr>
-    <tr>
-      <th>{{ _('Email address') }}</th>
-      <td>{{ user.email_address if user.email_address else _('not given')|dim }}</td>
-      <td><a class="button button--compact" href="{{ url_for('.change_email_address_form') }}" title="{{ _('Change email address') }}">{{ render_icon('edit') }}</a></td>
-    </tr>
-    <tr>
-      <th>{{ _('Password') }}</th>
-      <td></td>
-      <td><a class="button button--compact" href="{{ url_for('authentication_password.update_form') }}" title="{{ _('Change password') }}">{{ render_icon('edit') }}</a></td>
-    </tr>
-    <tr>
-      <th>{{ _('Language') }}</th>
-      <td>{{ (user_locale.get_display_name(g.user.locale) if user_locale else None)|fallback }}</td>
-      <td>
-        <div class="dropdown">
-          <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
-          <ol class="dropdown-menu dropdown-menu--right">
-          {% for locale in locales %}
-            <li><a class="dropdown-item" data-action="locale-update" href="{{ url_for('.update_locale', locale=locale.language) }}">{{ locale.get_display_name(g.user.locale) }}</a></li>
-          {% endfor %}
-            <li class="dropdown-divider"></li>
-            <li><a class="dropdown-item" data-action="locale-update" href="{{ url_for('.update_locale') }}">{{ _('no preference') }}</a></li>
-          </ol>
+  <div class="row">
+    <div class="column-auto">
+
+      <div class="data-label">{{ _('Avatar') }}</div>
+      <div class="row">
+        <div class="column-auto">
+          <div class="data-value">{{ render_user_avatar_128(user) }}</div>
         </div>
-      </td>
-    </tr>
-    <tr>
-      <th>{{ _('Avatar') }}</th>
-      <td>{{ render_user_avatar_128(user) }}</td>
-      <td>
-        <div class="dropdown">
-          <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
-          <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} {{ _('Upload') }}</a></li>
-            {%- if user.avatar %}
-            <li><a class="dropdown-item" data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} {{ _('Remove') }}</a></li>
-            {%- endif %}
-          </ol>
+        <div class="column-auto">
+          <div class="dropdown">
+            <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+            <ol class="dropdown-menu dropdown-menu--right">
+              <li><a class="dropdown-item" href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} {{ _('Upload') }}</a></li>
+              {%- if user.avatar %}
+              <li><a class="dropdown-item" data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} {{ _('Remove') }}</a></li>
+              {%- endif %}
+            </ol>
+          </div>
         </div>
-      </td>
-    </tr>
-  </table>
+      </div>
+
+    </div>
+    <div class="column-auto">
+
+      <div class="data-label">{{ _('User name') }}</div>
+      <div class="row mb">
+        <div class="column-auto column-auto--grow">
+          <div class="data-value">{{ render_user_screen_name(user) }}</div>
+        </div>
+        <div class="column-auto">
+          <a class="button button--compact" href="{{ url_for('.change_screen_name_form') }}" title="{{ _('Change user name') }}">{{ render_icon('edit') }}</a>
+        </div>
+      </div>
+
+      <div class="data-label">{{ _('Email address') }}</div>
+      <div class="row mb">
+        <div class="column-auto column-auto--grow">
+          <div class="data-value">{{ user.email_address if user.email_address else _('not given')|dim }}</div>
+        </div>
+        <div class="column-auto">
+          <a class="button button--compact" href="{{ url_for('.change_email_address_form') }}" title="{{ _('Change email address') }}">{{ render_icon('edit') }}</a>
+        </div>
+      </div>
+
+      <div class="data-label">{{ _('Password') }}</div>
+      <div class="row mb">
+        <div class="column-auto column-auto--grow">
+          <div class="data-value">{{ _('not shown')|dim }}</div>
+        </div>
+        <div class="column-auto">
+          <a class="button button--compact" href="{{ url_for('authentication_password.update_form') }}" title="{{ _('Change password') }}">{{ render_icon('edit') }}</a>
+        </div>
+      </div>
+
+      <div class="data-label">{{ _('Language') }}</div>
+      <div class="row">
+        <div class="column-auto column-auto--grow">
+          <div class="data-value">{{ (user_locale.get_display_name(g.user.locale) if user_locale else None)|fallback }}</div>
+        </div>
+        <div class="column-auto">
+          <div class="dropdown">
+            <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+            <ol class="dropdown-menu dropdown-menu--right">
+            {% for locale in locales %}
+              <li><a class="dropdown-item" data-action="locale-update" href="{{ url_for('.update_locale', locale=locale.language) }}">{{ locale.get_display_name(g.user.locale) }}</a></li>
+            {% endfor %}
+              <li class="dropdown-divider"></li>
+              <li><a class="dropdown-item" data-action="locale-update" href="{{ url_for('.update_locale') }}">{{ _('no preference') }}</a></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>

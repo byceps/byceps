@@ -2,31 +2,33 @@
 {% from 'macros/icons.html' import render_icon %}
 
 
-  <h2>{{ _('Personal Data') }}</h2>
-  <table class="index">
-    <colgroup>
-      <col style="width: {{ label_column_width }};">
-      <col style="min-width: {{ data_column_min_width }};">
-      <col>
-    </colgroup>
+  <h2>{{ _('Personal Data') }} <a class="button button--compact" href="{{ url_for('.details_update_form') }}" title="{{ _('Change personal data') }}">{{ render_icon('edit') }}</a></h2>
+
+  <table>
     <tr>
-      <th>{{ _('Name') }}</th>
-      <td>{{ user.detail.full_name|fallback }}</td>
-      <td rowspan="4"><a class="button button--compact" href="{{ url_for('.details_update_form') }}" title="{{ _('Change personal data') }}">{{ render_icon('edit') }}</a></td>
-    </tr>
-    <tr>
-      <th>{{ _('Date of birth') }}</th>
       <td>
-        {%- if user.detail.date_of_birth -%}
-          {{ render_date(user.detail.date_of_birth, smart=False) }}
-        {%- else -%}
-          {{ _('not given')|dim }}
-        {%- endif -%}
+        <div class="mb">
+          <div class="data-label">{{ _('Name') }}</div>
+          <div class="data-value">{{ user.detail.full_name|fallback }}</div>
+        </div>
+      </td>
+      <td>
+        <div class="mb">
+          <div class="data-label">{{ _('Date of birth') }}</div>
+          <div class="data-value">
+          {%- if user.detail.date_of_birth -%}
+            {{ render_date(user.detail.date_of_birth, smart=False) }}
+          {%- else -%}
+            {{ _('not given')|dim }}
+          {%- endif -%}
+          </div>
+        </div>
       </td>
     </tr>
     <tr>
-      <th>{{ _('Address') }}</th>
       <td>
+        <div class="data-label">{{ _('Address') }}</div>
+        <div class="data-value">
         {%- if user.detail.street or user.detail.zip_code or user.detail.city or user.detail.country %}
           {%- if user.detail.street %}{{ user.detail.street }}<br>{% endif -%}
           {%- if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif %}
@@ -35,10 +37,11 @@
         {%- else -%}
           {{ _('not given')|dim }}
         {%- endif -%}
+        </div>
       </td>
-    </tr>
-    <tr>
-      <th>{{ _('Phone number') }}</th>
-      <td>{{ user.detail.phone_number|fallback }}</td>
+      <td>
+        <div class="data-label">{{ _('Phone number') }}</div>
+        <div class="data-value">{{ user.detail.phone_number|fallback }}</div>
+      </td>
     </tr>
   </table>
