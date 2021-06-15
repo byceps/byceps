@@ -16,7 +16,7 @@
             <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">
               <li><a class="dropdown-item" href="{{ url_for('user_avatar.update_form') }}">{{ render_icon('upload') }} {{ _('Upload') }}</a></li>
-              {%- if user.avatar %}
+              {%- if user.avatar_url %}
               <li><a class="dropdown-item" data-action="avatar-delete" href="{{ url_for('user_avatar.delete', _method='DELETE') }}">{{ render_icon('delete') }} {{ _('Remove') }}</a></li>
               {%- endif %}
             </ol>
@@ -40,7 +40,7 @@
       <div class="data-label">{{ _('Email address') }}</div>
       <div class="row mb">
         <div class="column-auto column-auto--grow">
-          <div class="data-value">{{ user.email_address if user.email_address else _('not given')|dim }}</div>
+          <div class="data-value">{{ email_address if email_address else _('not given')|dim }}</div>
         </div>
         <div class="column-auto">
           <a class="button button--compact" href="{{ url_for('.change_email_address_form') }}" title="{{ _('Change email address') }}">{{ render_icon('edit') }}</a>

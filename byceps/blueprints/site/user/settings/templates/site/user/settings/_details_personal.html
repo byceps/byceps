@@ -9,15 +9,15 @@
       <td>
         <div class="mb">
           <div class="data-label">{{ _('Name') }}</div>
-          <div class="data-value">{{ user.detail.full_name|fallback }}</div>
+          <div class="data-value">{{ detail.full_name|fallback }}</div>
         </div>
       </td>
       <td>
         <div class="mb">
           <div class="data-label">{{ _('Date of birth') }}</div>
           <div class="data-value">
-          {%- if user.detail.date_of_birth -%}
-            {{ render_date(user.detail.date_of_birth, smart=False) }}
+          {%- if detail.date_of_birth -%}
+            {{ render_date(detail.date_of_birth, smart=False) }}
           {%- else -%}
             {{ _('not given')|dim }}
           {%- endif -%}
@@ -29,11 +29,11 @@
       <td>
         <div class="data-label">{{ _('Address') }}</div>
         <div class="data-value">
-        {%- if user.detail.street or user.detail.zip_code or user.detail.city or user.detail.country %}
-          {%- if user.detail.street %}{{ user.detail.street }}<br>{% endif -%}
-          {%- if user.detail.zip_code %}{{ user.detail.zip_code }} {% endif %}
-          {%- if user.detail.city %}{{ user.detail.city }}{% endif -%}
-          {%- if user.detail.country %}<br>{{ user.detail.country }}{% endif -%}
+        {%- if detail.street or detail.zip_code or detail.city or detail.country %}
+          {%- if detail.street %}{{ detail.street }}<br>{% endif -%}
+          {%- if detail.zip_code %}{{ detail.zip_code }} {% endif %}
+          {%- if detail.city %}{{ detail.city }}{% endif -%}
+          {%- if detail.country %}<br>{{ detail.country }}{% endif -%}
         {%- else -%}
           {{ _('not given')|dim }}
         {%- endif -%}
@@ -41,7 +41,7 @@
       </td>
       <td>
         <div class="data-label">{{ _('Phone number') }}</div>
-        <div class="data-value">{{ user.detail.phone_number|fallback }}</div>
+        <div class="data-value">{{ detail.phone_number|fallback }}</div>
       </td>
     </tr>
   </table>

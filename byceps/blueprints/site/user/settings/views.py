@@ -39,9 +39,11 @@ blueprint = create_blueprint('user_settings', __name__)
 @templated
 def view():
     """Show the current user's internal profile."""
-    user = user_service.find_active_db_user(g.user.id)
-    if user is None:
+    db_user = user_service.find_active_db_user(g.user.id)
+    if db_user is None:
         abort(404)
+
+    user = db_user.to_dto()
 
     user_locale = Locale.parse(user.locale) if user.locale else None
 
@@ -56,6 +58,8 @@ def view():
         'user': user,
         'user_locale': user_locale,
         'locales': get_locales(),
+        'email_address': db_user.email_address,
+        'detail': db_user.detail,
         'newsletter_offered': newsletter_offered,
         'newsletter_list_id': newsletter_list_id,
         'subscribed_to_newsletter': subscribed_to_newsletter,
