@@ -9,7 +9,6 @@ byceps.blueprints.admin.user.service
 from __future__ import annotations
 from collections import defaultdict
 from datetime import datetime, timedelta
-from itertools import chain
 from operator import attrgetter
 from typing import Any, Iterator, Optional, Sequence
 
@@ -89,22 +88,22 @@ def _filter_by_state(query, state_filter):
 
 def _filter_by_search_term(query, search_term):
     terms = search_term.split(' ')
-    clauses = chain.from_iterable(map(_generate_search_clauses_for_term, terms))
+    clauses = map(_generate_search_clauses_for_term, terms)
 
     return query \
         .join(DbUserDetail) \
-        .filter(db.or_(*clauses))
+        .filter(db.and_(*clauses))
 
 
-def _generate_search_clauses_for_term(search_term: str) -> list:
+def _generate_search_clauses_for_term(search_term: str):
     ilike_pattern = f'%{search_term}%'
 
-    return [
+    return db.or_(
         DbUser.email_address.ilike(ilike_pattern),
         DbUser.screen_name.ilike(ilike_pattern),
         DbUserDetail.first_names.ilike(ilike_pattern),
         DbUserDetail.last_name.ilike(ilike_pattern),
-    ]
+    )
 
 
 def get_users_created_since(
