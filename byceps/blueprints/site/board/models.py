@@ -54,12 +54,13 @@ class Creator(User):
         cls, user: User, badges: set[Badge], ticket: Optional[Ticket]
     ) -> Creator:
         return cls(
-            user.id,
-            user.screen_name,
-            user.suspended,
-            user.deleted,
-            user.avatar_url,
-            user.is_orga,
-            badges,
-            ticket,
+            id=user.id,
+            screen_name=user.screen_name,
+            suspended=user.suspended,
+            deleted=user.deleted,
+            locale=user.locale,
+            avatar_url=user.avatar_url,
+            is_orga=user.is_orga,
+            badges=badges,
+            ticket=ticket,
         )
