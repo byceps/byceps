@@ -57,8 +57,8 @@ def create_site_app(config_overrides: Optional[dict[str, Any]] = None) -> Flask:
     )
 
 
-def generate_token() -> str:
-    return token_hex(4)
+def generate_token(n: int = 4) -> str:
+    return token_hex(n)
 
 
 @contextmanager
@@ -91,7 +91,7 @@ def current_user_set(app: Flask, current_user: CurrentUser):
 
 
 def create_user(
-    screen_name: str = 'Faith',
+    screen_name: Optional[str] = '__random__',
     *,
     user_id: Optional[UserID] = None,
     created_at: Optional[datetime] = None,
@@ -103,6 +103,9 @@ def create_user(
     legacy_id: Optional[int] = None,
     _commit: bool = True,
 ) -> DbUser:
+    if screen_name == '__random__':
+        screen_name = generate_token(8)
+
     if not user_id:
         user_id = UserID(generate_uuid())
 
@@ -138,7 +141,7 @@ DEFAULT_DATE_OF_BIRTH = date(1993, 2, 15)
 
 
 def create_user_with_detail(
-    screen_name: str = 'Faith',
+    screen_name: Optional[str] = '__random__',
     *,
     user_id: Optional[UserID] = None,
     email_address: Optional[str] = None,
