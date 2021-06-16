@@ -6,7 +6,7 @@
 from byceps.database import db
 
 
-def set_up_database():
+def set_up_database() -> None:
     # Learn about all tables to also drop old ones no longer
     # defined in models.
     db.reflect()
@@ -16,6 +16,6 @@ def set_up_database():
     db.create_all()
 
 
-def tear_down_database():
+def tear_down_database() -> None:
     db.session.remove()
     db.drop_all()

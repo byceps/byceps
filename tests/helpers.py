@@ -11,9 +11,9 @@ from contextlib import contextmanager
 from datetime import date, datetime
 from pathlib import Path
 from secrets import token_hex
-from typing import Any, Optional
+from typing import Any, Iterable, Optional, Union
 
-from flask import appcontext_pushed, g
+from flask import appcontext_pushed, Flask, g
 
 from byceps.application import create_app
 from byceps.database import db, generate_uuid
@@ -22,12 +22,18 @@ from byceps.services.authentication.session.models.current_user import (
 )
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authz_service
+from byceps.services.authorization.transfer.models import PermissionID, RoleID
+from byceps.services.board.transfer.models import BoardID
 from byceps.services.party import service as party_service
+from byceps.services.party.transfer.models import Party
+from byceps.services.shop.storefront.transfer.models import StorefrontID
 from byceps.services.site import service as site_service
+from byceps.services.site.transfer.models import SiteID
 from byceps.services.user import creation_service as user_creation_service
 from byceps.services.user.creation_service import UserCreationFailed
 from byceps.services.user.dbmodels.detail import UserDetail as DbUserDetail
 from byceps.services.user.dbmodels.user import User as DbUser
+from byceps.typing import BrandID, PartyID, UserID
 
 
 _CONFIG_PATH = Path('../config')
@@ -35,20 +41,20 @@ CONFIG_FILENAME_TEST_SITE = _CONFIG_PATH / 'test_site.py'
 CONFIG_FILENAME_TEST_ADMIN = _CONFIG_PATH / 'test_admin.py'
 
 
-def create_admin_app(config_overrides: Optional[dict[str, Any]] = None):
-    app = create_app(
+def create_admin_app(
+    config_overrides: Optional[dict[str, Any]] = None
+) -> Flask:
+    return create_app(
         config_filename=CONFIG_FILENAME_TEST_ADMIN,
         config_overrides=config_overrides,
     )
-    return app
 
 
-def create_site_app(config_overrides: Optional[dict[str, Any]] = None):
-    app = create_app(
+def create_site_app(config_overrides: Optional[dict[str, Any]] = None) -> Flask:
+    return create_app(
         config_filename=CONFIG_FILENAME_TEST_SITE,
         config_overrides=config_overrides,
     )
-    return app
 
 
 def generate_token() -> str:
@@ -56,7 +62,9 @@ def generate_token() -> str:
 
 
 @contextmanager
-def app_context(*, config_filename=CONFIG_FILENAME_TEST_SITE):
+def app_context(
+    *, config_filename: Optional[Union[Path, str]] = CONFIG_FILENAME_TEST_SITE
+):
     app = create_app(config_filename=config_filename)
 
     with app.app_context():
@@ -64,7 +72,7 @@ def app_context(*, config_filename=CONFIG_FILENAME_TEST_SITE):
 
 
 @contextmanager
-def current_party_set(app, party):
+def current_party_set(app: Flask, party: Party):
     def handler(sender, **kwargs):
         g.party_id = party.id
         g.brand_id = party.brand_id
@@ -74,7 +82,7 @@ def current_party_set(app, party):
 
 
 @contextmanager
-def current_user_set(app, current_user: CurrentUser):
+def current_user_set(app: Flask, current_user: CurrentUser):
     def handler(sender, **kwargs):
         g.user = current_user
 
@@ -83,20 +91,20 @@ def current_user_set(app, current_user: CurrentUser):
 
 
 def create_user(
-    screen_name='Faith',
+    screen_name: str = 'Faith',
     *,
-    user_id=None,
-    created_at=None,
-    email_address=None,
-    email_address_verified=False,
-    initialized=True,
-    suspended=False,
-    deleted=False,
-    legacy_id=None,
-    _commit=True,
+    user_id: Optional[UserID] = None,
+    created_at: Optional[datetime] = None,
+    email_address: Optional[str] = None,
+    email_address_verified: bool = False,
+    initialized: bool = True,
+    suspended: bool = False,
+    deleted: bool = False,
+    legacy_id: Optional[int] = None,
+    _commit: bool = True,
 ) -> DbUser:
     if not user_id:
-        user_id = generate_uuid()
+        user_id = UserID(generate_uuid())
 
     if not created_at:
         created_at = datetime.utcnow()
@@ -130,22 +138,22 @@ DEFAULT_DATE_OF_BIRTH = date(1993, 2, 15)
 
 
 def create_user_with_detail(
-    screen_name='Faith',
+    screen_name: str = 'Faith',
     *,
-    user_id=None,
-    email_address=None,
-    initialized=True,
-    suspended=False,
-    deleted=False,
-    legacy_id=None,
-    first_names='John Joseph',
-    last_name='Doe',
+    user_id: Optional[UserID] = None,
+    email_address: Optional[str] = None,
+    initialized: bool = True,
+    suspended: bool = False,
+    deleted: bool = False,
+    legacy_id: Optional[int] = None,
+    first_names: Optional[str] = 'John Joseph',
+    last_name: Optional[str] = 'Doe',
     date_of_birth=DEFAULT_DATE_OF_BIRTH,
-    country='State of Mind',
-    zip_code='31337',
-    city='Atrocity',
-    street='Elite Street 1337',
-    phone_number='555-CALL-ME-MAYBE',
+    country: Optional[str] = 'State of Mind',
+    zip_code: Optional[str] = '31337',
+    city: Optional[str] = 'Atrocity',
+    street: Optional[str] = 'Elite Street 1337',
+    phone_number: Optional[str] = '555-CALL-ME-MAYBE',
 ) -> DbUser:
     user = create_user(
         screen_name,
@@ -179,21 +187,27 @@ def create_user_with_detail(
     return user
 
 
-def create_permissions(permission_ids):
+def create_permissions(permission_ids: Iterable[PermissionID]) -> None:
     for permission_id in permission_ids:
         authz_service.create_permission(
             permission_id, permission_id, ignore_if_exists=True
         )
 
 
-def create_role_with_permissions_assigned(role_id, permission_ids):
+def create_role_with_permissions_assigned(
+    role_id: RoleID, permission_ids: Iterable[PermissionID]
+) -> None:
     role = authz_service.create_role(role_id, role_id, ignore_if_exists=True)
 
     for permission_id in permission_ids:
         authz_service.assign_permission_to_role(permission_id, role_id)
 
 
-def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014'):
+def create_party(
+    brand_id: BrandID,
+    party_id: PartyID = PartyID('acmecon-2014'),
+    title: str = 'ACMECon 2014',
+) -> Party:
     starts_at = datetime(2014, 10, 24, 16, 0)
     ends_at = datetime(2014, 10, 26, 13, 0)
 
@@ -203,17 +217,17 @@ def create_party(brand_id, party_id='acmecon-2014', title='ACMECon 2014'):
 
 
 def create_site(
-    site_id,
-    brand_id,
+    site_id: SiteID,
+    brand_id: BrandID,
     *,
-    title=None,
-    server_name=None,
-    enabled=True,
-    user_account_creation_enabled=True,
-    login_enabled=True,
-    party_id=None,
-    board_id=None,
-    storefront_id=None,
+    title: Optional[str] = None,
+    server_name: Optional[str] = None,
+    enabled: bool = True,
+    user_account_creation_enabled: bool = True,
+    login_enabled: bool = True,
+    party_id: Optional[PartyID] = None,
+    board_id: Optional[BoardID] = None,
+    storefront_id: Optional[StorefrontID] = None,
 ):
     if title is None:
         title = site_id
@@ -236,7 +250,7 @@ def create_site(
 
 
 @contextmanager
-def http_client(app, *, user_id=None):
+def http_client(app: Flask, *, user_id: Optional[UserID] = None):
     """Provide an HTTP client.
 
     If a user ID is given, the client authenticates with the user's
@@ -250,14 +264,16 @@ def http_client(app, *, user_id=None):
     yield client
 
 
-def _add_user_credentials_to_session(client, user_id):
+def _add_user_credentials_to_session(client, user_id: UserID) -> None:
     session_token = session_service.find_session_token_for_user(user_id)
+    if session_token is None:
+        raise Exception(f'Could not find session token for user ID "{user_id}"')
 
     with client.session_transaction() as session:
         session['user_id'] = str(user_id)
         session['user_auth_token'] = str(session_token.token)
 
 
-def login_user(user_id):
+def login_user(user_id: UserID) -> None:
     """Authenticate the user to create a session."""
     session_service.get_session_token(user_id)
