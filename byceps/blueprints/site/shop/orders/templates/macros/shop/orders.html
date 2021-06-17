@@ -11,3 +11,10 @@
     {{ render_tag('offen', icon='pending', class='order-payment-state--open') }}
   {%- endif -%}
 {%- endmacro %}
+
+
+{% macro render_order_overdue_tag(order) %}
+  {%- if order.is_overdue %}
+    {{- render_tag(_('overdue'), icon='warning', class='color-danger') }}
+  {%- endif -%}
+{%- endmacro %}

@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% from 'macros/shop/orders.html' import render_order_payment_state %}
+{% from 'macros/shop/orders.html' import render_order_payment_state, render_order_overdue_tag %}
 {% set current_page = 'shop_orders' %}
 {% set title = 'Deine Bestellungen' %}
 {% block body %}
@@ -30,7 +30,7 @@
         <td><strong><a href="{{ url_for('.view', order_id=order.id) }}">{{ order.order_number }}</a></strong></td>
         <td>{{ render_datetime(order.created_at|utc_to_local_tz) }}</td>
         <td class="number nowrap">{{ order.total_amount|format_euro_amount }}</td>
-        <td class="nowrap">{{ render_order_payment_state(order.payment_state) }}</td>
+        <td class="nowrap">{{- render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }}</td>
       </tr>
       {%- endfor %}
       <tr>
