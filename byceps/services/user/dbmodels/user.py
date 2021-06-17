@@ -18,8 +18,6 @@ from ....util.instances import ReprBuilder
 
 from ...user_avatar.dbmodels import AvatarSelection
 
-from ..transfer.models import User as UserDTO
-
 
 class User(db.Model):
     """A user."""
@@ -66,20 +64,6 @@ class User(db.Model):
         from ...orga_team import service as orga_team_service
 
         return orga_team_service.is_orga_for_party(self.id, party_id)
-
-    def to_dto(self) -> UserDTO:
-        avatar_url = None
-        is_orga = False  # Information is deliberately not obtained here.
-
-        return UserDTO(
-            id=self.id,
-            screen_name=self.screen_name,
-            suspended=self.suspended,
-            deleted=self.deleted,
-            locale=self.locale,
-            avatar_url=avatar_url,
-            is_orga=is_orga,
-        )
 
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)
