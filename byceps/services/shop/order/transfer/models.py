@@ -37,20 +37,26 @@ class OrderNumberSequence:
     value: int
 
 
-PaymentMethod = Enum('PaymentMethod', [
-    'bank_transfer',
-    'cash',
-    'direct_debit',
-    'free',
-])
+PaymentMethod = Enum(
+    'PaymentMethod',
+    [
+        'bank_transfer',
+        'cash',
+        'direct_debit',
+        'free',
+    ],
+)
 
 
-PaymentState = Enum('PaymentState', [
-    'open',
-    'canceled_before_paid',
-    'paid',
-    'canceled_after_paid',
-])
+PaymentState = Enum(
+    'PaymentState',
+    [
+        'open',
+        'canceled_before_paid',
+        'paid',
+        'canceled_after_paid',
+    ],
+)
 
 
 @dataclass(frozen=True)
