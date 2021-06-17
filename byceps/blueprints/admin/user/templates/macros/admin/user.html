@@ -52,7 +52,7 @@
 
 
 {% macro render_user_flag_uninitialized(label=_('not initialized'), show_label=True) -%}
-  {{ render_tag(label if show_label else '', class='color-info', icon='pending', title=None if show_label else label) }}
+  {{ render_tag(label if show_label else '', class='color-warning', icon='pending', title=None if show_label else label) }}
 {%- endmacro %}
 
 
@@ -71,7 +71,7 @@
   {%- if user_state_filter.name == 'active' -%}
     {{ render_tag(_('active'), class='color-success') }}
   {%- elif user_state_filter.name == 'uninitialized' -%}
-    {{ render_tag(_('not initialized'), class='color-info') }}
+    {{ render_tag(_('not initialized'), class='color-warning') }}
   {%- elif user_state_filter.name == 'suspended' -%}
     {{ render_tag(_('suspended'), class='color-danger') }}
   {%- elif user_state_filter.name == 'deleted' -%}
