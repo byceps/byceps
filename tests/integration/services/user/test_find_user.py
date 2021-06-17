@@ -20,7 +20,7 @@ def test_find_user_by_email_address_non_lowercase(site_app, user):
         'Carmen.Sandiego@World.example'
     )
     assert actual is not None
-    assert actual.email_address == 'carmen.sandiego@world.example'
+    assert actual.id == user.id
 
 
 def test_find_user_by_email_address_unknown(site_app, user):

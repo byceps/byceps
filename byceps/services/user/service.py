@@ -197,13 +197,18 @@ def _user_row_to_dto(
     )
 
 
-def find_user_by_email_address(email_address: str) -> Optional[DbUser]:
+def find_user_by_email_address(email_address: str) -> Optional[User]:
     """Return the user with that email address, or `None` if not found."""
-    return DbUser.query \
+    user = DbUser.query \
         .filter(
             db.func.lower(DbUser.email_address) == email_address.lower()
         ) \
         .one_or_none()
+
+    if user is None:
+        return None
+
+    return _db_entity_to_user(user)
 
 
 def find_user_by_screen_name(
