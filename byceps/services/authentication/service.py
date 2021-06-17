@@ -21,22 +21,26 @@ def authenticate(screen_name_or_email_address: str, password: str) -> User:
 
     Return the user object on success, or raise an exception on failure.
     """
-    # Look up user.
-    user = _find_user_by_screen_name_or_email_address(
+    # Look up user by screen name or email address.
+    db_user = _find_user_by_screen_name_or_email_address(
         screen_name_or_email_address
     )
-    if user is None:
+    if db_user is None:
         # Screen name/email address is unknown.
         raise AuthenticationFailed()
 
-    _require_user_account_is_active(user)
+    # Ensure account is initialized, not suspended, and not deleted.
+    user = user_service.find_active_user(db_user.id)
+    if user is None:
+        # Should not happen as the user has been looked up before.
+        raise AuthenticationFailed()
 
     # Verify credentials.
     if not password_service.is_password_valid_for_user(user.id, password):
         # Password does not match.
         raise AuthenticationFailed()
 
-    return user.to_dto()
+    return user
 
 
 def _find_user_by_screen_name_or_email_address(
@@ -50,11 +54,3 @@ def _find_user_by_screen_name_or_email_address(
         return user_service.find_user_by_screen_name(
             screen_name_or_email_address, case_insensitive=True
         )
-
-
-def _require_user_account_is_active(user: DbUser) -> None:
-    """Raise exception if user account has not been initialized, is
-    suspended, or has been deleted.
-    """
-    if (not user.initialized) or user.suspended or user.deleted:
-        raise AuthenticationFailed()
