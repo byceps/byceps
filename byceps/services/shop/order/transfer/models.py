@@ -100,5 +100,5 @@ class Order:
     @property
     def is_overdue(self) -> bool:
         """Return `True` if payment of the order is overdue."""
-        now = datetime.now()
+        now = datetime.utcnow()
         return now > (self.created_at + OVERDUE_THRESHOLD)
