@@ -22,17 +22,20 @@ from ....util.l10n import LocalizedForm
 def validate_user(form, field):
     screen_name = field.data.strip()
 
-    user = user_service.find_db_user_by_screen_name(
+    db_user = user_service.find_db_user_by_screen_name(
         screen_name, case_insensitive=True
     )
 
-    if user is None:
+    if db_user is None:
         raise ValidationError(gettext('Unknown username'))
 
-    if (not user.initialized) or user.suspended or user.deleted:
+    if not db_user.initialized:
         raise ValidationError(gettext('The user account is not active.'))
 
-    user = user.to_dto()
+    user = user_service.get_user(db_user.id)
+
+    if user.suspended or user.deleted:
+        raise ValidationError(gettext('The user account is not active.'))
 
     required_consent_subjects = (
         consent_subject_service.get_subjects_required_for_brand(g.brand_id)
