@@ -425,7 +425,7 @@ msgstr ""
 #: byceps/blueprints/admin/user/forms.py:76
 #: byceps/blueprints/common/authentication/password/forms.py:40
 #: byceps/blueprints/site/authentication/login/forms.py:17
-#: byceps/blueprints/site/ticketing/forms.py:60
+#: byceps/blueprints/site/ticketing/forms.py:63
 #: byceps/blueprints/site/user/creation/forms.py:44
 #: byceps/blueprints/site/user/email_address/forms.py:17
 msgid "Username"
@@ -436,7 +436,7 @@ msgstr "Benutzername"
 #: byceps/blueprints/admin/user/forms.py:133
 #: byceps/blueprints/site/authentication/login/forms.py:18
 #: byceps/blueprints/site/user/creation/forms.py:60
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:23
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:50
 msgid "Password"
 msgstr "Passwort"
 
@@ -711,7 +711,7 @@ msgstr "Marke erstellen"
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:50
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:8
 #: byceps/blueprints/admin/snippet/forms.py:34
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:13
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:11
 msgid "Name"
 msgstr "Name"
 
@@ -775,7 +775,7 @@ msgstr "Profil"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:21
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:9
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:25
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:56
 msgid "Change password"
 msgstr "Passwort ändern"
 
@@ -1178,12 +1178,12 @@ msgstr "Datum"
 msgid "Time"
 msgstr "Uhrzeit"
 
-#: byceps/blueprints/admin/news/views.py:107
+#: byceps/blueprints/admin/news/views.py:108
 #, python-format
 msgid "News channel \"%(channel_id)s\" has been created."
 msgstr "Der Newskanal \"%(channel_id)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/news/views.py:146
+#: byceps/blueprints/admin/news/views.py:152
 #, python-format
 msgid ""
 "News channel \"%(channel_id)s\" cannot be deleted because it contains "
@@ -1192,7 +1192,7 @@ msgstr ""
 "Der Newskanal \"%(channel_id)s\" kann nicht gelöscht werden, da er noch "
 "News enthält."
 
-#: byceps/blueprints/admin/news/views.py:162
+#: byceps/blueprints/admin/news/views.py:168
 #, python-format
 msgid ""
 "News channel \"%(channel_id)s\" cannot be deleted because it is "
@@ -1201,37 +1201,37 @@ msgstr ""
 "Der Newskanal \"%(channel_id)s\" kann nicht gelöscht werden, da er von "
 "%(site_count)s Site(s) referenziert wird."
 
-#: byceps/blueprints/admin/news/views.py:170
+#: byceps/blueprints/admin/news/views.py:176
 #, python-format
 msgid "News channel \"%(channel_id)s\" has been deleted."
 msgstr "Der Newskanal \"%(channel_id)s\" wurde gelöscht."
 
-#: byceps/blueprints/admin/news/views.py:243
+#: byceps/blueprints/admin/news/views.py:249
 #, python-format
 msgid "News image #%(image_number)s has been created."
 msgstr "Das Newsbild #%(image_number)s wurde hinzugefügt."
 
-#: byceps/blueprints/admin/news/views.py:291
+#: byceps/blueprints/admin/news/views.py:297
 #, python-format
 msgid "News image #%(image_number)s has been updated."
 msgstr "Das Newsbild #%(image_number)s wurde aktualisiert."
 
-#: byceps/blueprints/admin/news/views.py:453
+#: byceps/blueprints/admin/news/views.py:467
 #, python-format
 msgid "News item \"%(title)s\" has been created."
 msgstr "Die News \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/news/views.py:501
+#: byceps/blueprints/admin/news/views.py:515
 #, python-format
 msgid "News item \"%(title)s\" has been updated."
 msgstr "Die News \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/news/views.py:543
+#: byceps/blueprints/admin/news/views.py:557
 #, python-format
 msgid "News item \"%(title)s\" will be published later."
 msgstr "Die News \"%(title)s\" wird später veröffentlicht."
 
-#: byceps/blueprints/admin/news/views.py:563
+#: byceps/blueprints/admin/news/views.py:577
 #, python-format
 msgid "News item \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
@@ -1674,7 +1674,7 @@ msgstr "Die Bestellnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt.
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:11
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:28
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:28
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:30
 msgid "Address"
 msgstr "Adresse"
 
@@ -1695,6 +1695,11 @@ msgstr "Erstellungszeitpunkt"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:85
 msgid "Reason for cancellation"
 msgstr "Grund für Stornierung"
+
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:36
+#: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:18
+msgid "overdue"
+msgstr "überfällig"
 
 #: byceps/blueprints/admin/shop/shop/views.py:112
 msgid "Shop has been created."
@@ -1828,7 +1833,7 @@ msgid "Add news channel"
 msgstr "Newskanal hinzufügen"
 
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:117
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:52
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:20
 msgid "Remove"
 msgstr "Entfernen"
 
@@ -1861,44 +1866,44 @@ msgstr "Der URL-Pfad muss mit einem Slash beginnen."
 msgid "Page header"
 msgstr "Seitenkopf"
 
-#: byceps/blueprints/admin/snippet/views.py:195
+#: byceps/blueprints/admin/snippet/views.py:207
 #, python-format
 msgid "Document \"%(name)s\" has been created."
 msgstr "Das Dokument \"%(name)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/snippet/views.py:253
+#: byceps/blueprints/admin/snippet/views.py:265
 #, python-format
 msgid "Document \"%(name)s\" has been updated."
 msgstr "Das Dokument \"%(name)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/snippet/views.py:341
+#: byceps/blueprints/admin/snippet/views.py:353
 #, python-format
 msgid "Fragment \"%(name)s\" has been created."
 msgstr "Das Fragment \"%(name)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/snippet/views.py:391
+#: byceps/blueprints/admin/snippet/views.py:403
 #, python-format
 msgid "Fragment \"%(name)s\" has been updated."
 msgstr "Das Fragment \"%(name)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/snippet/views.py:450
+#: byceps/blueprints/admin/snippet/views.py:462
 #, python-format
 msgid "Snippet \"%(snippet_name)s\" could not be deleted. Is it still mounted?"
 msgstr ""
 "Das Snippet \"%(snippet_name)s\" konnte nicht gelöscht werden. Ist es "
 "noch gemountet?"
 
-#: byceps/blueprints/admin/snippet/views.py:458
+#: byceps/blueprints/admin/snippet/views.py:470
 #, python-format
 msgid "Snippet \"%(name)s\" has been deleted."
 msgstr "Das Snippet \"%(name)s\" wurde gelöscht."
 
-#: byceps/blueprints/admin/snippet/views.py:538
+#: byceps/blueprints/admin/snippet/views.py:550
 #, python-format
 msgid "Mountpoint for \"%(url_path)s\" has been created."
 msgstr "Der Mountpoint für \"%(url_path)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/snippet/views.py:561
+#: byceps/blueprints/admin/snippet/views.py:573
 #, python-format
 msgid "Mountpoint for \"%(url_path)s\" has been deleted."
 msgstr "Der Mountpoint für \"%(url_path)s\" wurde entfernt."
@@ -2080,7 +2085,7 @@ msgstr "Nachname(n)"
 #: byceps/blueprints/admin/user/forms.py:94
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:46
 #: byceps/blueprints/site/user/creation/forms.py:56
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:18
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:40
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
@@ -2112,67 +2117,67 @@ msgstr "Das Benutzerkonto \"%(screen_name)s\" wurde angelegt."
 msgid "An email has been sent to the corresponding address."
 msgstr "Eine E-Mail wurde an die hinterlegte Adresse versendet."
 
-#: byceps/blueprints/admin/user/views.py:253
+#: byceps/blueprints/admin/user/views.py:255
 #, python-format
 msgid "New password has been set for user '%(screen_name)s'."
 msgstr "Für Benutzerkonto '%(screen_name)s' wurde ein neues Passwort gesetzt."
 
-#: byceps/blueprints/admin/user/views.py:274
+#: byceps/blueprints/admin/user/views.py:276
 #, python-format
 msgid "User '%(screen_name)s' has been initialized."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde initialisiert."
 
-#: byceps/blueprints/admin/user/views.py:290
-#: byceps/blueprints/admin/user/views.py:313
+#: byceps/blueprints/admin/user/views.py:293
+#: byceps/blueprints/admin/user/views.py:317
 #, python-format
 msgid "User '%(screen_name)s' is already suspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' ist bereits gesperrt."
 
-#: byceps/blueprints/admin/user/views.py:332
+#: byceps/blueprints/admin/user/views.py:336
 #, python-format
 msgid "User '%(screen_name)s' has been suspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde gesperrt."
 
-#: byceps/blueprints/admin/user/views.py:349
-#: byceps/blueprints/admin/user/views.py:372
+#: byceps/blueprints/admin/user/views.py:354
+#: byceps/blueprints/admin/user/views.py:378
 #, python-format
 msgid "User '%(screen_name)s' is not suspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' ist nicht gesperrt."
 
-#: byceps/blueprints/admin/user/views.py:393
+#: byceps/blueprints/admin/user/views.py:399
 #, python-format
 msgid "User '%(screen_name)s' has been unsuspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde entsperrt."
 
-#: byceps/blueprints/admin/user/views.py:410
-#: byceps/blueprints/admin/user/views.py:433
+#: byceps/blueprints/admin/user/views.py:417
+#: byceps/blueprints/admin/user/views.py:441
 #, python-format
 msgid "User '%(screen_name)s' has already been deleted."
 msgstr "Das Benutzerkonto '%(screen_name)s' ist bereits gelöscht worden."
 
-#: byceps/blueprints/admin/user/views.py:452
+#: byceps/blueprints/admin/user/views.py:460
 #, python-format
 msgid "User '%(screen_name)s' has been deleted."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde gelöscht."
 
-#: byceps/blueprints/admin/user/views.py:498
+#: byceps/blueprints/admin/user/views.py:508
 #, python-format
 msgid "Email address for user '%(screen_name)s' has been updated."
 msgstr "Die E-Mail-Adresse des Benutzerkontos '%(screen_name)s' wurde geändert."
 
-#: byceps/blueprints/admin/user/views.py:543
+#: byceps/blueprints/admin/user/views.py:555
 #, python-format
 msgid "User '%(old_screen_name)s' has been renamed to '%(new_screen_name)s'."
 msgstr ""
 "Das Benutzerkonto '%(old_screen_name)s' wurde umbenannt in "
 "'%(new_screen_name)s'."
 
-#: byceps/blueprints/admin/user/views.py:605
+#: byceps/blueprints/admin/user/views.py:621
 #, python-format
 msgid "%(role_title)s has been assigned to \"%(screen_name)s\"."
 msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" zugewiesen."
 
-#: byceps/blueprints/admin/user/views.py:627
+#: byceps/blueprints/admin/user/views.py:643
 #, python-format
 msgid "%(role_title)s has been withdrawn from \"%(screen_name)s\"."
 msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" genommen."
@@ -2244,13 +2249,13 @@ msgid "Unsuspend"
 msgstr "Entsperren"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:23
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:15
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:36
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:5
 msgid "Change user name"
 msgstr "Benutzername ändern"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:24
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:20
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:46
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:5
 msgid "Change email address"
 msgstr "E-Mail-Adresse ändern"
@@ -2275,12 +2280,12 @@ msgid "Award badge"
 msgstr "Abzeichen verleihen"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:11
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:15
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:11
 msgid "subscribed"
 msgstr "abonniert"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:11
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:17
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:13
 msgid "not subscribed"
 msgstr "nicht abonniert"
 
@@ -2291,7 +2296,7 @@ msgstr "Bestellnummer"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:15
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:50
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:12
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:6
 msgid "Status"
 msgstr "Status"
 
@@ -2303,20 +2308,20 @@ msgstr "Persönliche Daten"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:19
 #: byceps/blueprints/site/user/settings/forms.py:98
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:18
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:17
 msgid "Date of birth"
 msgstr "Geburtsdatum"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:24
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:19
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:23
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:36
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:43
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:22
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:38
 msgid "not given"
 msgstr "nicht angegeben"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:37
 #: byceps/blueprints/site/user/settings/forms.py:104
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:41
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:43
 msgid "Phone number"
 msgstr "Telefonnummer"
 
@@ -3098,19 +3103,19 @@ msgstr ""
 msgid "Place binding order now"
 msgstr "Jetzt kostenpflichtig bestellen"
 
-#: byceps/blueprints/site/shop/orders/views.py:111
-#: byceps/blueprints/site/shop/orders/views.py:139
+#: byceps/blueprints/site/shop/orders/views.py:117
+#: byceps/blueprints/site/shop/orders/views.py:145
 msgid "The order has already been canceled."
 msgstr "Die Bestellung ist bereits storniert worden."
 
-#: byceps/blueprints/site/shop/orders/views.py:116
-#: byceps/blueprints/site/shop/orders/views.py:144
+#: byceps/blueprints/site/shop/orders/views.py:122
+#: byceps/blueprints/site/shop/orders/views.py:150
 msgid "The order has already been paid. You cannot cancel it yourself anymore."
 msgstr ""
 "Die Bestellung ist bereits bezahlt worden. Du kannst sie nicht mehr "
 "selbst stornieren."
 
-#: byceps/blueprints/site/shop/orders/views.py:160
+#: byceps/blueprints/site/shop/orders/views.py:166
 msgid ""
 "The order has already been canceled. The payment state cannot be changed "
 "anymore."
@@ -3118,15 +3123,16 @@ msgstr ""
 "Die Bestellung ist bereits storniert worden. Der Zustand kann nicht mehr "
 "verändert werden."
 
-#: byceps/blueprints/site/shop/orders/views.py:166
+#: byceps/blueprints/site/shop/orders/views.py:172
 msgid "Order has been canceled."
 msgstr "Die Bestellung wurde storniert."
 
 #: byceps/blueprints/site/ticketing/forms.py:33
+#: byceps/blueprints/site/ticketing/forms.py:38
 msgid "The user account is not active."
 msgstr "Das Benutzerkonto ist nicht aktiv."
 
-#: byceps/blueprints/site/ticketing/forms.py:48
+#: byceps/blueprints/site/ticketing/forms.py:51
 #, python-format
 msgid ""
 "User \"%(screen_name)s\" has not yet given all necessary consents. "
@@ -3176,15 +3182,15 @@ msgstr "Tickets können derzeit nicht verändert werden."
 msgid "Somebody has already been checked in with this ticket."
 msgstr "Es ist bereits jemand mit diesem Ticket eingecheckt worden."
 
-#: byceps/blueprints/site/user/avatar/views.py:72
+#: byceps/blueprints/site/user/avatar/views.py:71
 msgid "Avatar image has been updated."
 msgstr "Dein Avatarbild wurde aktualisiert."
 
-#: byceps/blueprints/site/user/avatar/views.py:105
+#: byceps/blueprints/site/user/avatar/views.py:102
 msgid "No avatar image is set that could be removed."
 msgstr "Es ist kein Avatarbild gesetzt, das entfernt werden könnte."
 
-#: byceps/blueprints/site/user/avatar/views.py:107
+#: byceps/blueprints/site/user/avatar/views.py:104
 msgid "Avatar image has been removed."
 msgstr "Dein Avatarbild wurde entfernt."
 
@@ -3197,7 +3203,7 @@ msgid "If the image is not square it will be cropped."
 msgstr "Falls das Bild nicht quadratisch ist, wird es zugeschnitten."
 
 #: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:22
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:50
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:18
 msgid "Upload"
 msgstr "Hochladen"
 
@@ -3302,7 +3308,7 @@ msgstr "Dies ist bereits der aktuelle Benutzername."
 msgid "Wrong password."
 msgstr "Das Passwort ist nicht korrekt."
 
-#: byceps/blueprints/site/user/settings/views.py:97
+#: byceps/blueprints/site/user/settings/views.py:101
 msgid ""
 "An email with a verification link has been sent to your new address. The "
 "email address of your account will be changed to the new address once you"
@@ -3312,45 +3318,49 @@ msgstr ""
 "gesendet. Die E-Mail-Adresse deines Benutzerkontos wird geändert sobald "
 "du die neue Adresse über den Link bestätigst."
 
-#: byceps/blueprints/site/user/settings/views.py:140
+#: byceps/blueprints/site/user/settings/views.py:144
 #, python-format
 msgid "Your username has been changed to \"%(new_screen_name)s\"."
 msgstr "Dein Benutzername wurde zu \"%(new_screen_name)s\" geändert."
 
-#: byceps/blueprints/site/user/settings/views.py:159
+#: byceps/blueprints/site/user/settings/views.py:163
 msgid "Your language preference has been updated."
 msgstr "Deine Sprachpräferenz wurde aktualisiert."
 
-#: byceps/blueprints/site/user/settings/views.py:211
+#: byceps/blueprints/site/user/settings/views.py:215
 msgid "Your data has been saved."
 msgstr "Deine Daten wurden gespeichert."
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:13
-msgid "User name"
-msgstr "Benutzername"
-
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:28
-msgid "Language"
-msgstr "Sprache"
-
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:38
-msgid "no preference"
-msgstr "keine Präferenz"
-
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:44
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:9
 msgid "Avatar"
 msgstr "Avatar"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:15
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:30
+msgid "User name"
+msgstr "Benutzername"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:53
+msgid "not shown"
+msgstr "wird nicht angezeigt"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:60
+msgid "Language"
+msgstr "Sprache"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:73
+msgid "no preference"
+msgstr "keine Präferenz"
+
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:5
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/details_update_form.html:4
 msgid "Change personal data"
 msgstr "Persönliche Daten ändern"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:25
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:22
 msgid "Unsubscribe"
 msgstr "Abmelden"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:27
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:24
 msgid "Subscribe"
 msgstr "Anmelden"
 
@@ -3358,11 +3368,11 @@ msgstr "Anmelden"
 msgid "View public profile"
 msgstr "Öffentliches Profil ansehen"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:27
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:25
 msgid "Remove avatar image?"
 msgstr "Avatarbild entfernen?"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:34
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/view.html:32
 msgid "Unsubscribe from newsletter?"
 msgstr "Vom Newsletter abmelden?"
 
@@ -3389,19 +3399,19 @@ msgstr "Senden"
 msgid "Image credit"
 msgstr "Bild"
 
-#: byceps/services/shop/order/service.py:599
+#: byceps/services/shop/order/service.py:601
 msgid "bank transfer"
 msgstr "Überweisung"
 
-#: byceps/services/shop/order/service.py:600
+#: byceps/services/shop/order/service.py:602
 msgid "cash"
 msgstr "Barzahlung"
 
-#: byceps/services/shop/order/service.py:601
+#: byceps/services/shop/order/service.py:603
 msgid "direct debit"
 msgstr "Lastschrift"
 
-#: byceps/services/shop/order/service.py:602
+#: byceps/services/shop/order/service.py:604
 msgid "free"
 msgstr "kostenlos"
 
