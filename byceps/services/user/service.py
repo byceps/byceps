@@ -181,10 +181,10 @@ def _get_orga_flag_subquery(party_id: PartyID):
 
 
 def _user_row_to_dto(
-    row: tuple[UserID, str, bool, bool, Optional[Avatar], bool]
+    row: tuple[UserID, str, bool, bool, Optional[str], Optional[Avatar], bool]
 ) -> User:
     user_id, screen_name, suspended, deleted, locale, avatar, is_orga = row
-    avatar_url = avatar.url if avatar else None
+    avatar_url = avatar.url if (avatar is not None) else None
 
     return User(
         id=user_id,
