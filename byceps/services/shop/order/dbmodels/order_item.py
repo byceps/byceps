@@ -13,8 +13,6 @@ from .....database import db, generate_uuid
 from ...article.dbmodels.article import Article as DbArticle
 from ...article.transfer.models import ArticleNumber
 
-from ..transfer.models import OrderItem as OrderItemTransferObject
-
 from .order import Order
 
 
@@ -57,14 +55,3 @@ class OrderItem(db.Model):
         self.quantity = quantity
         self.line_amount = line_amount
         self.shipping_required = shipping_required
-
-    def to_transfer_object(self) -> OrderItemTransferObject:
-        return OrderItemTransferObject(
-            self.order_number,
-            self.article_number,
-            self.description,
-            self.unit_price,
-            self.tax_rate,
-            self.quantity,
-            self.line_amount,
-        )

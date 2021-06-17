@@ -34,8 +34,10 @@ from .dbmodels.order_item import OrderItem as DbOrderItem
 from .models.orderer import Orderer
 from . import action_service, sequence_service
 from .transfer.models import (
+    Address,
     Order,
     OrderID,
+    OrderItem,
     OrderNumber,
     PaymentMethod,
     PaymentState,
@@ -85,7 +87,7 @@ def place_order(
         db.session.rollback()
         raise OrderFailed()
 
-    order_dto = order.to_transfer_object()
+    order_dto = _order_to_transfer_object(order)
 
     event = ShopOrderPlaced(
         occurred_at=order.created_at,
@@ -293,7 +295,7 @@ def cancel_order(
     db.session.commit()
 
     action_service.execute_actions(
-        order.to_transfer_object(), payment_state_to, initiator.id
+        _order_to_transfer_object(order), payment_state_to, initiator.id
     )
 
     return ShopOrderCanceled(
@@ -352,7 +354,7 @@ def mark_order_as_paid(
     db.session.commit()
 
     action_service.execute_actions(
-        order.to_transfer_object(), payment_state_to, initiator.id
+        _order_to_transfer_object(order), payment_state_to, initiator.id
     )
 
     return ShopOrderPaid(
@@ -451,13 +453,13 @@ def find_order(order_id: OrderID) -> Optional[Order]:
     if order is None:
         return None
 
-    return order.to_transfer_object()
+    return _order_to_transfer_object(order)
 
 
 def get_order(order_id: OrderID) -> Order:
     """Return the order with that id, or raise an exception."""
     order = _get_order_entity(order_id)
-    return order.to_transfer_object()
+    return _order_to_transfer_object(order)
 
 
 def find_order_with_details(order_id: OrderID) -> Optional[Order]:
@@ -471,7 +473,7 @@ def find_order_with_details(order_id: OrderID) -> Optional[Order]:
     if order is None:
         return None
 
-    return order.to_transfer_object()
+    return _order_to_transfer_object(order)
 
 
 def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
@@ -483,7 +485,7 @@ def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
     if order is None:
         return None
 
-    return order.to_transfer_object()
+    return _order_to_transfer_object(order)
 
 
 def find_orders_by_order_numbers(
@@ -497,7 +499,7 @@ def find_orders_by_order_numbers(
         .filter(DbOrder.order_number.in_(order_numbers)) \
         .all()
 
-    return [order.to_transfer_object() for order in orders]
+    return list(map(_order_to_transfer_object, orders))
 
 
 def get_order_count_by_shop_id() -> dict[ShopID, int]:
@@ -552,7 +554,7 @@ def get_orders_for_shop_paginated(
         query,
         page,
         per_page,
-        item_mapper=lambda order: order.to_transfer_object(),
+        item_mapper=lambda order: _order_to_transfer_object(order),
     )
 
 
@@ -566,7 +568,7 @@ def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
         .order_by(DbOrder.created_at.desc()) \
         .all()
 
-    return [order.to_transfer_object() for order in orders]
+    return list(map(_order_to_transfer_object, orders))
 
 
 def get_orders_placed_by_user_for_shop(
@@ -582,7 +584,7 @@ def get_orders_placed_by_user_for_shop(
         .order_by(DbOrder.created_at.desc()) \
         .all()
 
-    return [order.to_transfer_object() for order in orders]
+    return list(map(_order_to_transfer_object, orders))
 
 
 def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
@@ -616,3 +618,52 @@ def get_payment_date(order_id: OrderID) -> Optional[datetime]:
         .query(DbOrder.payment_state_updated_at) \
         .filter_by(id=order_id) \
         .scalar()
+
+
+def _order_to_transfer_object(order: DbOrder) -> Order:
+    """Create transfer object from order database entity."""
+    address = Address(
+        order.country,
+        order.zip_code,
+        order.city,
+        order.street,
+    )
+
+    items = list(map(order_item_to_transfer_object, order.items))
+
+    return Order(
+        order.id,
+        order.shop_id,
+        order.order_number,
+        order.created_at,
+        order.placed_by_id,
+        order.first_names,
+        order.last_name,
+        address,
+        order.total_amount,
+        items,
+        order.payment_method,
+        order.payment_state,
+        order.is_open,
+        order.is_canceled,
+        order.is_paid,
+        order.is_invoiced,
+        order.is_shipping_required,
+        order.is_shipped,
+        order.cancelation_reason,
+    )
+
+
+def order_item_to_transfer_object(
+    item: DbOrderItem,
+) -> OrderItem:
+    """Create transfer object from order item database entity."""
+    return OrderItem(
+        item.order_number,
+        item.article_number,
+        item.description,
+        item.unit_price,
+        item.tax_rate,
+        item.quantity,
+        item.line_amount,
+    )

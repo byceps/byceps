@@ -19,13 +19,7 @@ from ....user.dbmodels.user import User
 
 from ...shop.transfer.models import ShopID
 
-from ..transfer.models import (
-    Address,
-    Order as OrderTransferObject,
-    OrderNumber,
-    PaymentMethod,
-    PaymentState,
-)
+from ..transfer.models import OrderNumber, PaymentMethod, PaymentState
 
 
 class OrderQuery(BaseQuery):
@@ -141,38 +135,6 @@ class Order(db.Model):
     @property
     def is_shipped(self) -> bool:
         return self.shipped_at is not None
-
-    def to_transfer_object(self) -> OrderTransferObject:
-        address = Address(
-            self.country,
-            self.zip_code,
-            self.city,
-            self.street,
-        )
-
-        items = [item.to_transfer_object() for item in self.items]
-
-        return OrderTransferObject(
-            self.id,
-            self.shop_id,
-            self.order_number,
-            self.created_at,
-            self.placed_by_id,
-            self.first_names,
-            self.last_name,
-            address,
-            self.total_amount,
-            items,
-            self.payment_method,
-            self.payment_state,
-            self.is_open,
-            self.is_canceled,
-            self.is_paid,
-            self.is_invoiced,
-            self.is_shipping_required,
-            self.is_shipped,
-            self.cancelation_reason,
-        )
 
     def __repr__(self) -> str:
         item_count = len(self.items)
