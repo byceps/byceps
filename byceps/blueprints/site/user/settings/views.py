@@ -47,6 +47,7 @@ def view():
 
     email_address = user_service.find_email_address(user.id)
     user_locale = Locale.parse(user.locale) if user.locale else None
+    detail = user_service.get_detail(user.id)
 
     newsletter_list_id = _find_newsletter_list_for_brand()
     newsletter_offered = newsletter_list_id is not None
@@ -60,7 +61,7 @@ def view():
         'user_locale': user_locale,
         'locales': get_locales(),
         'email_address': email_address,
-        'detail': db_user.detail,
+        'detail': detail,
         'newsletter_offered': newsletter_offered,
         'newsletter_list_id': newsletter_list_id,
         'subscribed_to_newsletter': subscribed_to_newsletter,

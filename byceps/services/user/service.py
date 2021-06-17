@@ -348,6 +348,12 @@ def get_email_addresses(user_ids: set[UserID]) -> set[tuple[UserID, str]]:
         .all()
 
 
+def get_detail(user_id: UserID) -> UserDetail:
+    """Return the user's details."""
+    user = get_db_user(user_id)
+    return _db_entity_to_user_detail(user.detail)
+
+
 def get_sort_key_for_screen_name(user: User) -> tuple[bool, str]:
     """Return a key for sorting by screen name.
 
