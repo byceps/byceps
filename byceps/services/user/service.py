@@ -33,22 +33,6 @@ class UserIdRejected(Exception):
     """
 
 
-def find_active_db_user(user_id: UserID) -> Optional[DbUser]:
-    """Return the user with that ID if the account is "active", or
-    `None` if:
-    - the ID is unknown.
-    - the account has not been activated, yet.
-    - the account is currently suspended.
-    - the account is marked as deleted.
-    """
-    return DbUser.query \
-        .filter_by(initialized=True) \
-        .filter_by(suspended=False) \
-        .filter_by(deleted=False) \
-        .filter_by(id=user_id) \
-        .one_or_none()
-
-
 def find_active_user(
     user_id: UserID,
     *,
