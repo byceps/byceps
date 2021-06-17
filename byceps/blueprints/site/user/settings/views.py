@@ -39,7 +39,7 @@ blueprint = create_blueprint('user_settings', __name__)
 @templated
 def view():
     """Show the current user's internal profile."""
-    user = user_service.find_active_user(g.user.id)
+    user = user_service.find_active_user(g.user.id, include_avatar=True)
     if user is None:
         abort(404)
 

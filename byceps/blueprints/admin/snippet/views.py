@@ -94,7 +94,7 @@ def view_version(snippet_version_id):
 
     snippet = version.snippet
     scope = snippet.scope
-    creator = user_service.get_user(version.creator_id)
+    creator = user_service.get_user(version.creator_id, include_avatar=True)
     is_current_version = version.id == snippet.current_version.id
 
     context = {
