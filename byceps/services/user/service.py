@@ -317,12 +317,17 @@ def find_screen_name(user_id: UserID) -> Optional[str]:
     return screen_name
 
 
-def get_email_address(user_id: UserID) -> str:
-    """Return the user's e-mail address."""
-    email_address = db.session \
+def find_email_address(user_id: UserID) -> Optional[str]:
+    """Return the user's e-mail address, if set."""
+    return db.session \
         .query(DbUser.email_address) \
         .filter_by(id=user_id) \
         .scalar()
+
+
+def get_email_address(user_id: UserID) -> str:
+    """Return the user's e-mail address."""
+    email_address = find_email_address(user_id)
 
     if email_address is None:
         raise ValueError(
