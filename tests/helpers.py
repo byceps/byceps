@@ -90,6 +90,9 @@ def current_user_set(app: Flask, current_user: CurrentUser):
         yield
 
 
+DEFAULT_DATE_OF_BIRTH = date(1993, 2, 15)
+
+
 def create_user(
     screen_name: Optional[str] = '__random__',
     *,
@@ -101,7 +104,15 @@ def create_user(
     suspended: bool = False,
     deleted: bool = False,
     legacy_id: Optional[int] = None,
-    _commit: bool = True,
+    with_detail: bool = False,
+    first_names: Optional[str] = 'John Joseph',
+    last_name: Optional[str] = 'Doe',
+    date_of_birth=DEFAULT_DATE_OF_BIRTH,
+    country: Optional[str] = 'State of Mind',
+    zip_code: Optional[str] = '31337',
+    city: Optional[str] = 'Atrocity',
+    street: Optional[str] = 'Elite Street 1337',
+    phone_number: Optional[str] = '555-CALL-ME-MAYBE',
 ) -> DbUser:
     if screen_name == '__random__':
         screen_name = generate_token(8)
@@ -126,61 +137,19 @@ def create_user(
     user.deleted = deleted
     user.legacy_id = legacy_id
 
-    if _commit:
-        db.session.add(user)
-        try:
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            raise UserCreationFailed(e)
-
-    return user
-
-
-DEFAULT_DATE_OF_BIRTH = date(1993, 2, 15)
-
-
-def create_user_with_detail(
-    screen_name: Optional[str] = '__random__',
-    *,
-    user_id: Optional[UserID] = None,
-    email_address: Optional[str] = None,
-    initialized: bool = True,
-    suspended: bool = False,
-    deleted: bool = False,
-    legacy_id: Optional[int] = None,
-    first_names: Optional[str] = 'John Joseph',
-    last_name: Optional[str] = 'Doe',
-    date_of_birth=DEFAULT_DATE_OF_BIRTH,
-    country: Optional[str] = 'State of Mind',
-    zip_code: Optional[str] = '31337',
-    city: Optional[str] = 'Atrocity',
-    street: Optional[str] = 'Elite Street 1337',
-    phone_number: Optional[str] = '555-CALL-ME-MAYBE',
-) -> DbUser:
-    user = create_user(
-        screen_name,
-        user_id=user_id,
-        email_address=email_address,
-        initialized=initialized,
-        suspended=suspended,
-        deleted=deleted,
-        legacy_id=legacy_id,
-        _commit=False,
-    )
-
-    detail = DbUserDetail(user=user)
-
-    detail.first_names = first_names
-    detail.last_name = last_name
-    detail.date_of_birth = date_of_birth
-    detail.country = country
-    detail.zip_code = zip_code
-    detail.city = city
-    detail.street = street
-    detail.phone_number = phone_number
+    if with_detail:
+        detail = DbUserDetail(user=user)
+        detail.first_names = first_names
+        detail.last_name = last_name
+        detail.date_of_birth = date_of_birth
+        detail.country = country
+        detail.zip_code = zip_code
+        detail.city = city
+        detail.street = street
+        detail.phone_number = phone_number
 
     db.session.add(user)
+
     try:
         db.session.commit()
     except Exception as e:

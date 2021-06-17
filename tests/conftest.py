@@ -36,7 +36,6 @@ from tests.helpers import (
     create_site,
     create_site_app,
     create_user,
-    create_user_with_detail,
     generate_token,
     http_client,
 )
@@ -125,7 +124,7 @@ def make_user_with_detail(admin_app):
     user_ids = set()
 
     def _wrapper(*args, **kwargs):
-        user = create_user_with_detail(*args, **kwargs)
+        user = create_user(with_detail=True, *args, **kwargs)
         user_ids.add(user.id)
         user_dto = user_service._db_entity_to_user_with_detail(user)
         return user_dto
