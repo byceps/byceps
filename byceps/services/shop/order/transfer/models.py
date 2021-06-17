@@ -98,7 +98,7 @@ class Order:
     cancelation_reason: Optional[str]
 
     @property
-    def is_overdue(order: Order) -> bool:
+    def is_overdue(self) -> bool:
         """Return `True` if payment of the order is overdue."""
         now = datetime.now()
-        return now > (order.created_at + OVERDUE_THRESHOLD)
+        return now > (self.created_at + OVERDUE_THRESHOLD)
