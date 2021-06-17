@@ -116,8 +116,8 @@ def _db_entity_to_article_number_sequence(
     sequence: DbArticleNumberSequence,
 ) -> ArticleNumberSequence:
     return ArticleNumberSequence(
-        sequence.id,
-        sequence.shop_id,
-        sequence.prefix,
-        sequence.value,
+        id=sequence.id,
+        shop_id=sequence.shop_id,
+        prefix=sequence.prefix,
+        value=sequence.value,
     )

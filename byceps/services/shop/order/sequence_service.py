@@ -113,8 +113,8 @@ def _db_entity_to_order_number_sequence(
     sequence: DbOrderNumberSequence,
 ) -> OrderNumberSequence:
     return OrderNumberSequence(
-        sequence.id,
-        sequence.shop_id,
-        sequence.prefix,
-        sequence.value,
+        id=sequence.id,
+        shop_id=sequence.shop_id,
+        prefix=sequence.prefix,
+        value=sequence.value,
     )

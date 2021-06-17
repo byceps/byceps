@@ -623,34 +623,34 @@ def get_payment_date(order_id: OrderID) -> Optional[datetime]:
 def _order_to_transfer_object(order: DbOrder) -> Order:
     """Create transfer object from order database entity."""
     address = Address(
-        order.country,
-        order.zip_code,
-        order.city,
-        order.street,
+        country=order.country,
+        zip_code=order.zip_code,
+        city=order.city,
+        street=order.street,
     )
 
     items = list(map(order_item_to_transfer_object, order.items))
 
     return Order(
-        order.id,
-        order.shop_id,
-        order.order_number,
-        order.created_at,
-        order.placed_by_id,
-        order.first_names,
-        order.last_name,
-        address,
-        order.total_amount,
-        items,
-        order.payment_method,
-        order.payment_state,
-        order.is_open,
-        order.is_canceled,
-        order.is_paid,
-        order.is_invoiced,
-        order.is_shipping_required,
-        order.is_shipped,
-        order.cancelation_reason,
+        id=order.id,
+        shop_id=order.shop_id,
+        order_number=order.order_number,
+        created_at=order.created_at,
+        placed_by_id=order.placed_by_id,
+        first_names=order.first_names,
+        last_name=order.last_name,
+        address=address,
+        total_amount=order.total_amount,
+        items=items,
+        payment_method=order.payment_method,
+        payment_state=order.payment_state,
+        is_open=order.is_open,
+        is_canceled=order.is_canceled,
+        is_paid=order.is_paid,
+        is_invoiced=order.is_invoiced,
+        is_shipping_required=order.is_shipping_required,
+        is_shipped=order.is_shipped,
+        cancelation_reason=order.cancelation_reason,
     )
 
 
@@ -659,11 +659,11 @@ def order_item_to_transfer_object(
 ) -> OrderItem:
     """Create transfer object from order item database entity."""
     return OrderItem(
-        item.order_number,
-        item.article_number,
-        item.description,
-        item.unit_price,
-        item.tax_rate,
-        item.quantity,
-        item.line_amount,
+        order_number=item.order_number,
+        article_number=item.article_number,
+        description=item.description,
+        unit_price=item.unit_price,
+        tax_rate=item.tax_rate,
+        quantity=item.quantity,
+        line_amount=item.line_amount,
     )
