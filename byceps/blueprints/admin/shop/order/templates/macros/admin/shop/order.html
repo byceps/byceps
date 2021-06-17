@@ -29,3 +29,10 @@
     {{ render_order_payment_state(order_state_filter.payment_state) }}
   {%- endif -%}
 {%- endmacro %}
+
+
+{% macro render_order_overdue_tag(order) %}
+  {%- if order.is_overdue %}
+    {{- render_tag(_('overdue'), icon='warning', class='color-danger') }}
+  {%- endif -%}
+{%- endmacro %}
