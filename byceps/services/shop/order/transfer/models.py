@@ -8,7 +8,7 @@ byceps.services.shop.order.transfer.models
 
 from __future__ import annotations
 from dataclasses import dataclass
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import Decimal
 from enum import Enum
 from typing import NewType, Optional
@@ -72,6 +72,9 @@ class OrderItem:
     line_amount: Decimal
 
 
+OVERDUE_THRESHOLD = timedelta(days=14)
+
+
 @dataclass(frozen=True)
 class Order:
     id: OrderID
@@ -93,3 +96,9 @@ class Order:
     is_shipping_required: bool
     is_shipped: bool
     cancelation_reason: Optional[str]
+
+    @property
+    def is_overdue(order: Order) -> bool:
+        """Return `True` if payment of the order is overdue."""
+        now = datetime.now()
+        return now > (order.created_at + OVERDUE_THRESHOLD)
