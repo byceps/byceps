@@ -10,7 +10,6 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from .....services.image import service as image_service
-from .....services.user import service as user_service
 from .....services.user_avatar import service as avatar_service
 from .....signals import user_avatar as user_avatar_signals
 from .....util.framework.blueprint import create_blueprint
@@ -83,8 +82,6 @@ def _update(user_id, image):
         avatar_service.update_avatar_image(
             user_id, image.stream, ALLOWED_IMAGE_TYPES
         )
-    except user_service.UserIdRejected as e:
-        abort(404)
     except avatar_service.ImageTypeProhibited as e:
         abort(400, str(e))
     except FileExistsError:
