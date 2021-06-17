@@ -12,19 +12,26 @@ from byceps.services.shop.order.transfer.models import Order, PaymentState
 
 
 @pytest.mark.parametrize(
-    'created_at, expected',
+    'created_at, payment_state, expected',
     [
-        (datetime(2021, 6, 12, 12, 0, 0), True),
-        (datetime(2021, 6, 13, 20, 0, 0), False),
-        (datetime(2021, 6, 13, 20, 0, 1), False),
-        (datetime(2021, 6, 14, 12, 0, 0), False),
+        (datetime(2021, 6, 12, 12, 0, 0), PaymentState.open,                 True),
+        (datetime(2021, 6, 12, 12, 0, 0), PaymentState.canceled_before_paid, True),
+        (datetime(2021, 6, 12, 12, 0, 0), PaymentState.paid,                 True),
+        (datetime(2021, 6, 12, 12, 0, 0), PaymentState.canceled_after_paid,  True),
+        (datetime(2021, 6, 13, 20, 0, 0), PaymentState.open,                 False),
+        (datetime(2021, 6, 13, 20, 0, 1), PaymentState.open,                 False),
+        (datetime(2021, 6, 14, 12, 0, 0), PaymentState.open,                 False),
+        (datetime(2021, 6, 14, 12, 0, 0), PaymentState.canceled_before_paid, False),
+        (datetime(2021, 6, 14, 12, 0, 0), PaymentState.paid,                 False),
+        (datetime(2021, 6, 14, 12, 0, 0), PaymentState.canceled_after_paid,  False),
     ],
 )
-def test_is_overdue(created_at, expected):
+def test_is_overdue(
+    created_at: datetime, payment_state: PaymentState, expected: bool
+):
     order = create_order(created_at)
 
     with freeze_time(datetime(2021, 6, 27, 20, 0, 0)) as now:
-        print('\n', order, now)
         assert order.is_overdue == expected
 
 
