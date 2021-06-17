@@ -5,7 +5,6 @@
 
 import pytest
 
-from byceps.services.authentication.password import service as password_service
 from byceps.services.authentication.session import service as session_service
 from byceps.services.user import event_service
 
@@ -25,8 +24,7 @@ def test_login_succeeds(site, client, make_user):
     screen_name = 'SiteLoginTester'
     password = 'correct horse battery staple'
 
-    user = make_user(screen_name)
-    password_service.create_password_hash(user.id, password)
+    user = make_user(screen_name, password=password)
 
     login_events_before = event_service.get_events_of_type_for_user(user.id, 'user-logged-in')
     assert len(login_events_before) == 0

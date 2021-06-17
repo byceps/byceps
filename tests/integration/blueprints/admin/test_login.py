@@ -5,7 +5,6 @@
 
 import pytest
 
-from byceps.services.authentication.password import service as password_service
 from byceps.services.authentication.session import service as session_service
 from byceps.services.user import event_service
 
@@ -26,8 +25,7 @@ def test_login_succeeds(client, make_admin):
     password = 'correct horse battery staple'
     permission_ids = {'admin.access'}
 
-    user = make_admin(screen_name, permission_ids)
-    password_service.create_password_hash(user.id, password)
+    user = make_admin(screen_name, permission_ids, password=password)
 
     login_events_before = event_service.get_events_of_type_for_user(user.id, 'user-logged-in')
     assert len(login_events_before) == 0
@@ -66,8 +64,7 @@ def test_login_fails_lacking_access_permission(client, make_admin):
     password = 'correct horse battery staple'
     permission_ids = set()
 
-    user = make_admin(screen_name, permission_ids)
-    password_service.create_password_hash(user.id, password)
+    user = make_admin(screen_name, permission_ids, password=password)
 
     assert not list(client.cookie_jar)
 

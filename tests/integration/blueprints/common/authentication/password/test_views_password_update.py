@@ -3,25 +3,18 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import pytest
-
 from byceps.services.authentication.password.dbmodels import Credential
-from byceps.services.authentication.password import service as password_service
 from byceps.services.authentication.session import service as session_service
 
 from tests.helpers import http_client, login_user
 
 
-@pytest.fixture
-def user(make_user):
-    return make_user('PasswordUpdater')
-
-
-def test_when_logged_in_endpoint_is_available(site_app, site, user):
+def test_when_logged_in_endpoint_is_available(site_app, site, make_user):
     old_password = 'LekkerBratworsten'
     new_password = 'EvenMoreSecure!!1'
 
-    password_service.create_password_hash(user.id, old_password)
+    user = make_user('PasswordUpdater', password=old_password)
+
     login_user(user.id)
 
     credential_before = find_credential(user.id)

@@ -17,6 +17,7 @@ from flask import appcontext_pushed, Flask, g
 
 from byceps.application import create_app
 from byceps.database import db, generate_uuid
+from byceps.services.authentication.password import service as password_service
 from byceps.services.authentication.session.models.current_user import (
     CurrentUser,
 )
@@ -113,6 +114,7 @@ def create_user(
     city: Optional[str] = 'Atrocity',
     street: Optional[str] = 'Elite Street 1337',
     phone_number: Optional[str] = '555-CALL-ME-MAYBE',
+    password: Optional[str] = None,
 ) -> DbUser:
     if screen_name == '__random__':
         screen_name = generate_token(8)
@@ -155,6 +157,9 @@ def create_user(
     except Exception as e:
         db.session.rollback()
         raise UserCreationFailed(e)
+
+    if password is not None:
+        password_service.create_password_hash(user.id, password)
 
     return user
 

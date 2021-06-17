@@ -9,10 +9,10 @@ from byceps.services.user import event_service
 
 
 def test_update_password_hash(site_app, admin_user, make_user):
-    admin_id = admin_user.id
-    user_id = make_user('PasswordHashUpdater').id
+    user = make_user('PasswordHashUpdater', password='InitialPassw0rd')
 
-    password_service.create_password_hash(user_id, 'InitialPassw0rd')
+    admin_id = admin_user.id
+    user_id = user.id
 
     password_hash_before = get_password_hash(user_id)
     assert password_hash_before is not None

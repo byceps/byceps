@@ -141,8 +141,8 @@ def make_admin(make_user):
     created_permission_ids = set()
     created_role_ids = set()
 
-    def _wrapper(screen_name: str, permission_ids: set[str]):
-        admin = make_user(screen_name)
+    def _wrapper(screen_name: str, permission_ids: set[str], *args, **kwargs):
+        admin = make_user(screen_name, *args, **kwargs)
         user_ids.add(admin.id)
 
         # Create (not yet created) permissions.
