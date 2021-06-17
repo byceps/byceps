@@ -25,7 +25,7 @@ def validate_user(form, field):
     if user is None:
         raise ValidationError(lazy_gettext('Unknown username'))
 
-    field.data = user.to_dto()
+    field.data = user
 
 
 class UpdateCodeForm(LocalizedForm):

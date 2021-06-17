@@ -92,7 +92,7 @@ def request_reset():
         return request_reset_form(form)
 
     screen_name = form.screen_name.data.strip()
-    user = user_service.find_user_by_screen_name(
+    user = user_service.find_db_user_by_screen_name(
         screen_name, case_insensitive=True
     )
 

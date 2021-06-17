@@ -22,7 +22,7 @@ from ....util.l10n import LocalizedForm
 def validate_user(form, field):
     screen_name = field.data.strip()
 
-    user = user_service.find_user_by_screen_name(
+    user = user_service.find_db_user_by_screen_name(
         screen_name, case_insensitive=True
     )
 

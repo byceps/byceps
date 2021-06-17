@@ -213,6 +213,20 @@ def find_user_by_email_address(email_address: str) -> Optional[User]:
 
 def find_user_by_screen_name(
     screen_name: str, *, case_insensitive=False
+) -> Optional[User]:
+    """Return the user with that screen name, or `None` if not found."""
+    user = find_db_user_by_screen_name(
+        screen_name, case_insensitive=case_insensitive
+    )
+
+    if user is None:
+        return None
+
+    return _db_entity_to_user(user)
+
+
+def find_db_user_by_screen_name(
+    screen_name: str, *, case_insensitive=False
 ) -> Optional[DbUser]:
     """Return the user with that screen name, or `None` if not found."""
     query = DbUser.query

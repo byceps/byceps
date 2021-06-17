@@ -31,7 +31,7 @@ def validate_user_screen_name(form, field):
             lazy_gettext('The user already is an organizer for this brand.')
         )
 
-    field.data = user.to_dto()
+    field.data = user
 
 
 class OrgaFlagCreateForm(LocalizedForm):

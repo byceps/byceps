@@ -241,7 +241,7 @@ def send_request(app, form_data):
 
 
 def find_user(screen_name):
-    return user_service.find_user_by_screen_name(screen_name)
+    return user_service.find_db_user_by_screen_name(screen_name)
 
 
 def get_user_count():
