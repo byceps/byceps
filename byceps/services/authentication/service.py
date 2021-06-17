@@ -8,7 +8,8 @@ byceps.services.authentication.service
 
 from typing import Optional
 
-from ..user.dbmodels.user import User as DbUser
+from ...typing import UserID
+
 from ..user import service as user_service
 from ..user.transfer.models import User
 
@@ -22,15 +23,15 @@ def authenticate(screen_name_or_email_address: str, password: str) -> User:
     Return the user object on success, or raise an exception on failure.
     """
     # Look up user by screen name or email address.
-    db_user = _find_user_by_screen_name_or_email_address(
+    user_id = _find_user_id_by_screen_name_or_email_address(
         screen_name_or_email_address
     )
-    if db_user is None:
+    if user_id is None:
         # Screen name/email address is unknown.
         raise AuthenticationFailed()
 
     # Ensure account is initialized, not suspended, and not deleted.
-    user = user_service.find_active_user(db_user.id)
+    user = user_service.find_active_user(user_id)
     if user is None:
         # Should not happen as the user has been looked up before.
         raise AuthenticationFailed()
@@ -43,14 +44,19 @@ def authenticate(screen_name_or_email_address: str, password: str) -> User:
     return user
 
 
-def _find_user_by_screen_name_or_email_address(
+def _find_user_id_by_screen_name_or_email_address(
     screen_name_or_email_address: str,
-) -> Optional[DbUser]:
+) -> Optional[UserID]:
     if '@' in screen_name_or_email_address:
-        return user_service.find_user_by_email_address(
+        user = user_service.find_user_by_email_address(
             screen_name_or_email_address
         )
     else:
-        return user_service.find_user_by_screen_name(
+        user = user_service.find_user_by_screen_name(
             screen_name_or_email_address, case_insensitive=True
         )
+
+    if user is None:
+        return None
+
+    return user.id
