@@ -86,13 +86,11 @@ def get_unconsented_subject_ids(
     user_id: UserID, required_subject_ids: set[SubjectID]
 ) -> set[SubjectID]:
     """Return the IDs of the subjects the user has not consented to."""
-    unconsented_subject_ids = set()
-
-    for subject_id in required_subject_ids:
-        if not has_user_consented_to_subject(user_id, subject_id):
-            unconsented_subject_ids.add(subject_id)
-
-    return unconsented_subject_ids
+    return {
+        subject_id
+        for subject_id in required_subject_ids
+        if not has_user_consented_to_subject(user_id, subject_id)
+    }
 
 
 def has_user_consented_to_all_subjects(
