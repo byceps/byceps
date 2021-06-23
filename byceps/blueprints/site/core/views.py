@@ -42,8 +42,8 @@ def prepare_request_globals() -> None:
 
     party_id = site.party_id
     if party_id is not None:
-        party = party_service.get_party(party_id)
-        party_id = party.id
+        g.party = party_service.get_party(party_id)
+        party_id = g.party.id
     g.party_id = party_id
 
     required_permissions = set()
