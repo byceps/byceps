@@ -13,6 +13,9 @@ from byceps.services.ticketing import ticket_service
 
 def template_context_processor() -> dict[str, Any]:
     """Extend template context."""
+    if g.party_id is None:
+        return {}
+
     sale_stats = ticket_service.get_ticket_sale_stats(g.party_id)
     seat_utilization = seat_service.get_seat_utilization(g.party_id)
 
