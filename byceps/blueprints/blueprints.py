@@ -64,7 +64,6 @@ def _get_blueprints_site(app: Flask) -> Iterator[BlueprintReg]:
         (app, 'site.news',                       '/news'                    ),
         (app, 'site.newsletter',                 '/newsletter'              ),
         (app, 'site.orga_team',                  '/orgas'                   ),
-        (app, 'site.party',                      None                       ),
         (app, 'site.party_history',              '/party_history'           ),
         (app, 'site.seating',                    '/seating'                 ),
         (app, 'site.shop.order',                 '/shop'                    ),
