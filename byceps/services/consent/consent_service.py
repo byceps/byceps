@@ -8,7 +8,7 @@ byceps.services.consent.consent_service
 
 from __future__ import annotations
 from datetime import datetime
-from typing import Iterable, Sequence
+from typing import Iterable
 
 from ...database import db
 from ...typing import UserID
@@ -18,7 +18,7 @@ from ..verification_token.transfer.models import Token
 
 from .dbmodels.consent import Consent as DbConsent
 from .dbmodels.subject import Subject as DbSubject
-from .transfer.models import SubjectID
+from .transfer.models import Consent, SubjectID
 
 
 def build_consent(
@@ -70,11 +70,16 @@ def count_consents_by_subject() -> dict[str, int]:
     return dict(rows)
 
 
-def get_consents_by_user(user_id: UserID) -> Sequence[DbConsent]:
+def get_consents_by_user(user_id: UserID) -> set[Consent]:
     """Return the consents the user submitted."""
-    return DbConsent.query \
+    consents = DbConsent.query \
         .filter_by(user_id=user_id) \
         .all()
+
+    return {
+        Consent(consent.user_id, consent.subject_id, consent.expressed_at)
+        for consent in consents
+    }
 
 
 def get_unconsented_subject_ids(

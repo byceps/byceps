@@ -13,7 +13,7 @@ from operator import attrgetter
 from typing import Any, Iterator, Optional, Sequence
 
 from ....database import db, paginate, Pagination
-from ....services.consent import consent_service
+from ....services.consent import consent_service, subject_service
 from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List as NewsletterList
 from ....services.party import service as party_service
@@ -249,10 +249,14 @@ def _fake_consent_events(user_id: UserID) -> Iterator[DbUserEvent]:
     """Yield the user's consents as volatile events."""
     consents = consent_service.get_consents_by_user(user_id)
 
+    subject_ids = {consent.subject_id for consent in consents}
+    subjects = subject_service.get_subjects(subject_ids)
+    subjects_titles_by_id = {subject.id: subject.title for subject in subjects}
+
     for consent in consents:
         data = {
             'initiator_id': str(user_id),
-            'subject_title': consent.subject.title,
+            'subject_title': subjects_titles_by_id[consent.subject_id],
         }
 
         yield DbUserEvent(
