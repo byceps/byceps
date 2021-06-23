@@ -97,11 +97,10 @@ def has_user_consented_to_all_subjects(
     user_id: UserID, subject_ids: set[SubjectID]
 ) -> bool:
     """Return `True` if the user has consented to all given subjects."""
-    for subject_id in subject_ids:
-        if not has_user_consented_to_subject(user_id, subject_id):
-            return False
-
-    return True
+    return all(
+        has_user_consented_to_subject(user_id, subject_id)
+        for subject_id in subject_ids
+    )
 
 
 def has_user_consented_to_subject(
