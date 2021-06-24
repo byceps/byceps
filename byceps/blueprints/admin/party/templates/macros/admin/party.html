@@ -15,7 +15,7 @@
           </div>
           {%- endif %}
           <div class="column-auto">
-            <a href="{{ url_for('.view', party_id=party.id) }}" class="disguised" style="display: block;">
+            <a href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}" class="disguised" style="display: block;">
               <strong>{{ party.title }}</strong><br>
               <span class="monospace">{{ party.id }}</span>
             </a>
