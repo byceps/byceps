@@ -12,6 +12,7 @@ from flask_babel import gettext
 from ....services.party import service as party_service
 from ....services.shop.order import service as order_service
 from ....services.ticketing import (
+    category_service,
     ticket_bundle_service,
     ticket_service,
     ticket_user_management_service,
@@ -47,16 +48,25 @@ def index_for_party(party_id, page):
 
     per_page = request.args.get('per_page', type=int, default=15)
 
+    only_category_id = request.args.get('only_category')
+
     search_term = request.args.get('search_term', default='').strip()
 
     tickets = ticket_service.get_tickets_with_details_for_party_paginated(
-        party.id, page, per_page, search_term=search_term
+        party.id,
+        page,
+        per_page,
+        search_term=search_term,
+        only_category_id=only_category_id,
     )
+
+    categories = category_service.get_categories_for_party(party.id)
 
     return {
         'party': party,
         'search_term': search_term,
         'tickets': tickets,
+        'categories': categories,
     }
 
 

@@ -23,7 +23,12 @@ from .dbmodels.category import Category as DbCategory
 from .dbmodels.ticket import Ticket as DbTicket
 from .dbmodels.ticket_event import TicketEvent as DbTicketEvent
 from . import ticket_code_service
-from .transfer.models import TicketCode, TicketID, TicketSaleStats
+from .transfer.models import (
+    TicketCategoryID,
+    TicketCode,
+    TicketID,
+    TicketSaleStats,
+)
 
 
 def update_ticket_code(
@@ -250,11 +255,17 @@ def get_ticket_with_details(ticket_id: TicketID) -> Optional[DbTicket]:
 
 
 def get_tickets_with_details_for_party_paginated(
-    party_id: PartyID, page: int, per_page: int, *, search_term=None
+    party_id: PartyID,
+    page: int,
+    per_page: int,
+    *,
+    search_term: Optional[str] = None,
+    only_category_id: Optional[TicketCategoryID] = None,
 ) -> Pagination:
     """Return the party's tickets to show on the specified page."""
     query = DbTicket.query \
         .for_party(party_id) \
+        .join(DbCategory) \
         .options(
             db.joinedload('category'),
             db.joinedload('owned_by'),
@@ -265,6 +276,10 @@ def get_tickets_with_details_for_party_paginated(
         ilike_pattern = f'%{search_term}%'
         query = query \
             .filter(DbTicket.code.ilike(ilike_pattern))
+
+    if only_category_id:
+        query = query \
+            .filter(DbCategory.id == str(only_category_id))
 
     return query \
         .order_by(DbTicket.created_at) \

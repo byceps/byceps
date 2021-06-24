@@ -21,6 +21,19 @@
       </form>
 
     </div>
+    <div class="column-auto">
+
+      <div class="dropdown">
+        <button class="dropdown-toggle button"><span>Einschränkung</span> {{ render_icon('chevron-down') }}</button>
+        <ol class="dropdown-menu dropdown-menu--right">
+          <li><a class="dropdown-item" href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ _('keine') }}</a></li>
+          {%- for category in categories %}
+          <li><a class="dropdown-item" href="{{ url_for('.index_for_party', party_id=party.id, only_category=category.id) }}"><em>{{ _('Category') }}:</em> {{ category.title }}</a></li>
+          {%- endfor %}
+        </ol>
+      </div>
+
+    </div>
   </div>
 
   <div class="box">
