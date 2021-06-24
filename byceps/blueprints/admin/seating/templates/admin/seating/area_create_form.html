@@ -1,0 +1,23 @@
+{% extends 'layout/admin/seating.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set current_page_party = party %}
+{% set current_tab = 'areas' %}
+{% set title = _('Create area') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.area_index', party_id=party.id), _('Areas')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ title }}</h1>
+
+  <form action="{{ url_for('.area_create', party_id=party.id) }}" method="post">
+    {{ form_field(form.slug, autofocus='autofocus') }}
+    {{ form_field(form.title) }}
+
+    {{ form_buttons(_('Create')) }}
+  </form>
+
+{%- endblock %}

@@ -7,6 +7,7 @@ byceps.blueprints.admin.seating.views
 """
 
 from flask import abort, request
+from flask_babel import gettext
 
 from ....services.party import service as party_service
 from ....services.seating import (
@@ -19,10 +20,12 @@ from ....services.ticketing import (
 )
 from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
+from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
-from ....util.views import permission_required
+from ....util.views import permission_required, redirect_to
 
 from .authorization import SeatingPermission
+from .forms import AreaCreateForm
 
 
 blueprint = create_blueprint('seating_admin', __name__)
@@ -76,6 +79,43 @@ def area_index(party_id, page):
         'areas_with_occupied_seat_counts': areas_with_occupied_seat_counts,
         'seat_total_per_area': seat_total_per_area,
     }
+
+
+@blueprint.get('/parties/<party_id>/areas/create')
+@permission_required(SeatingPermission.administrate)
+@templated
+def area_create_form(party_id, erroneous_form=None):
+    """Show form to create a seating area."""
+    party = _get_party_or_404(party_id)
+
+    form = erroneous_form if erroneous_form else AreaCreateForm()
+
+    return {
+        'party': party,
+        'form': form,
+    }
+
+
+@blueprint.post('/parties/<party_id>/areas')
+@permission_required(SeatingPermission.administrate)
+def area_create(party_id):
+    """Create a seating area."""
+    party = _get_party_or_404(party_id)
+
+    form = AreaCreateForm(request.form)
+    if not form.validate():
+        return area_create_form(party.id, form)
+
+    slug = form.slug.data.strip()
+    title = form.title.data.strip()
+
+    area = seating_area_service.create_area(party.id, slug, title)
+
+    flash_success(
+        gettext('Seating area "%(title)s" has been created.', title=area.title)
+    )
+
+    return redirect_to('.area_index', party_id=party.id)
 
 
 @blueprint.get('/parties/<party_id>/seat_groups')

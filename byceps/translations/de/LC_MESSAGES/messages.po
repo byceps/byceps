@@ -501,6 +501,7 @@ msgstr "ID"
 
 #: byceps/blueprints/admin/board/forms.py:23
 #: byceps/blueprints/admin/news/forms.py:47
+#: byceps/blueprints/admin/seating/forms.py:18
 #: byceps/blueprints/admin/user_badge/forms.py:23
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:39
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:71
@@ -512,6 +513,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/news/forms.py:60
 #: byceps/blueprints/admin/orga_team/forms.py:18
 #: byceps/blueprints/admin/party/forms.py:21
+#: byceps/blueprints/admin/seating/forms.py:22
 #: byceps/blueprints/admin/site/forms.py:24
 #: byceps/blueprints/admin/snippet/forms.py:43
 #: byceps/blueprints/admin/ticketing/category/forms.py:18
@@ -601,6 +603,7 @@ msgstr "Die Kategorie \"%(category_title)s\" wurde gelöscht."
 #: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:24
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/team_create_form.html:20
 #: byceps/blueprints/admin/party/templates/admin/party/create_form.html:38
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_create_form.html:20
 #: byceps/blueprints/admin/site/templates/admin/site/create_form.html:35
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/create_form.html:15
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:22
@@ -826,7 +829,7 @@ msgstr "Site"
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:4
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:7
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:13
-#: sites/cozylan/template_overrides/layout/_navigation.html:11
+#: sites/cozylan/template_overrides/layout/_navigation.html:10
 msgid "Shop"
 msgstr "Shop"
 
@@ -890,7 +893,7 @@ msgstr "Orga-Teams"
 #: byceps/blueprints/admin/user/templates/admin/user/view.html:66
 #: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:6
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:74
-#: sites/cozylan/template_overrides/layout/_sidebar_right.html:2
+#: sites/cozylan/template_overrides/layout/_sidebar_right.html:10
 msgid "Tickets"
 msgstr "Tickets"
 
@@ -1084,7 +1087,7 @@ msgid "Brand Snippets"
 msgstr "Marken-Snippets"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:21
-#: sites/cozylan/template_overrides/layout/_navigation.html:12
+#: sites/cozylan/template_overrides/layout/_navigation.html:11
 msgid "Terms of Service"
 msgstr "AGB"
 
@@ -1133,7 +1136,7 @@ msgstr "Turniere"
 #: byceps/blueprints/admin/more/templates/admin/more/view_site.html:17
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:137
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:160
-#: sites/cozylan/template_overrides/layout/_navigation.html:13
+#: sites/cozylan/template_overrides/layout/_navigation.html:12
 msgid "Discussion Board"
 msgstr "Forum"
 
@@ -1338,7 +1341,7 @@ msgid "User"
 msgstr "Benutzer"
 
 #: byceps/blueprints/admin/orga_team/forms.py:54
-#: sites/cozylan/template_overrides/layout/_navigation.html:8
+#: sites/cozylan/template_overrides/layout/_navigation.html:7
 msgid "Team"
 msgstr "Team"
 
@@ -1447,6 +1450,22 @@ msgstr "Die Party \"%(title)s\" wurde angelegt."
 #, python-format
 msgid "Party \"%(title)s\" has been updated."
 msgstr "Die Party \"%(title)s\" wurde aktualisiert."
+
+#: byceps/blueprints/admin/seating/views.py:113
+#, python-format
+msgid "Seating area \"%(title)s\" has been created."
+msgstr "Der Bereich \"%(title)s\" wurde angelegt."
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_create_form.html:6
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:19
+msgid "Create area"
+msgstr "Bereich erstellen"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_create_form.html:9
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:7
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:14
+msgid "Areas"
+msgstr "Bereiche"
 
 #: byceps/blueprints/admin/shop/article/forms.py:33
 #: byceps/blueprints/admin/user_badge/forms.py:38
@@ -3450,35 +3469,31 @@ msgstr "Bitte melde dich an."
 msgid "yesterday"
 msgstr "gestern"
 
-#: sites/cozylan/template_overrides/layout/_navigation.html:7
-msgid "Party Details"
-msgstr "Party-Details"
-
-#: sites/cozylan/template_overrides/layout/_navigation.html:9
+#: sites/cozylan/template_overrides/layout/_navigation.html:8
 msgid "Attendees"
 msgstr "Teilnehmer"
 
-#: sites/cozylan/template_overrides/layout/_navigation.html:10
+#: sites/cozylan/template_overrides/layout/_navigation.html:9
 msgid "Seating Plan"
 msgstr "Sitzplan"
 
-#: sites/cozylan/template_overrides/layout/_sidebar_right.html:13
+#: sites/cozylan/template_overrides/layout/_sidebar_right.html:21
 msgid "Sold out!"
 msgstr "Ausverkauft!"
 
-#: sites/cozylan/template_overrides/layout/_sidebar_right.html:21
+#: sites/cozylan/template_overrides/layout/_sidebar_right.html:29
 msgid "tickets paid"
 msgstr "Tickets bezahlt"
 
-#: sites/cozylan/template_overrides/layout/_sidebar_right.html:24
+#: sites/cozylan/template_overrides/layout/_sidebar_right.html:32
 msgid "Order tickets"
 msgstr "Tickets bestellen"
 
-#: sites/cozylan/template_overrides/layout/_sidebar_right.html:32
+#: sites/cozylan/template_overrides/layout/_sidebar_right.html:42
 msgid "Seats"
 msgstr "Sitzplätze"
 
-#: sites/cozylan/template_overrides/layout/_sidebar_right.html:40
+#: sites/cozylan/template_overrides/layout/_sidebar_right.html:50
 msgid "seats occupied"
 msgstr "Sitzplätze belegt"
 

@@ -1,14 +1,26 @@
 {% extends 'layout/admin/seating.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page_party = party %}
 {% set current_tab = 'areas' %}
-{% set title = '%s - Bereiche'|format(party.title) %}
+{% set title = party.title ~ ' - ' ~ _('Areas') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
-  <h1>Bereiche {{ render_extra_in_heading(areas_with_occupied_seat_counts.total) }}</h1>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h1>{{ _('Areas') }} {{ render_extra_in_heading(areas_with_occupied_seat_counts.total) }}</h1>
+    </div>
+    {%- if has_current_user_permission(SeatingPermission.administrate) %}
+    <div class="column-auto">
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.area_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create area') }}</span></a>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
 
   <div class="box">
     {%- if areas_with_occupied_seat_counts.items %}
