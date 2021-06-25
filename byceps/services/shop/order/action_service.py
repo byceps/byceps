@@ -52,8 +52,8 @@ def create_action(
     db.session.commit()
 
 
-def delete_actions(article_number: ArticleNumber) -> None:
-    """Delete order actions for an article."""
+def delete_actions_for_article(article_number: ArticleNumber) -> None:
+    """Delete all order actions for an article."""
     db.session.query(OrderAction) \
         .filter_by(article_number=article_number) \
         .delete()

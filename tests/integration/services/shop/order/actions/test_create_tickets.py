@@ -43,7 +43,7 @@ def order_action(article, ticket_category):
 
     yield
 
-    action_service.delete_actions(article.item_number)
+    action_service.delete_actions_for_article(article.item_number)
 
 
 @patch('byceps.signals.ticketing.tickets_sold.send')

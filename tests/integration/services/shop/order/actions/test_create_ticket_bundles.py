@@ -41,7 +41,7 @@ def order_action(article, ticket_category, ticket_quantity):
 
     yield
 
-    action_service.delete_actions(article.item_number)
+    action_service.delete_actions_for_article(article.item_number)
 
 
 def test_create_ticket_bundles(
