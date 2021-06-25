@@ -131,7 +131,7 @@
           {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
             <tr>
               <td>{{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</td>
-              <td><a href="{{ url_for('.attachment_remove', article_id=attached_article.id) }}" class="button button--compact attachment-remove" title="Artikelanhang entfernen">{{ render_icon('remove') }}</a></td>
+              <td><a data-action="attachment-remove" href="{{ url_for('.attachment_remove', article_id=attached_article.id) }}" class="button button--compact" title="Artikelanhang entfernen">{{ render_icon('remove') }}</a></td>
             </tr>
           {%- endfor %}
           </table>
@@ -173,7 +173,7 @@
 {% block scripts %}
     <script>
       onDomReady(() => {
-        confirmed_delete_on_click_then_reload('a.attachment-remove', 'Artikelanhang entfernen?');
+        confirmed_delete_on_click_then_reload('[data-action="attachment-remove"]', 'Artikelanhang entfernen?');
       });
     </script>
 {%- endblock %}
