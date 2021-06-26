@@ -19,7 +19,7 @@ from .actions.create_ticket_bundles import create_ticket_bundles
 from .actions.create_tickets import create_tickets
 from .actions.revoke_ticket_bundles import revoke_ticket_bundles
 from .actions.revoke_tickets import revoke_tickets
-from .dbmodels.order_action import OrderAction
+from .dbmodels.order_action import OrderAction as DbOrderAction
 from .transfer.models import ActionParameters, Order, PaymentState
 
 
@@ -46,7 +46,7 @@ def create_action(
     parameters: ActionParameters,
 ) -> None:
     """Create an order action."""
-    action = OrderAction(article_number, payment_state, procedure, parameters)
+    action = DbOrderAction(article_number, payment_state, procedure, parameters)
 
     db.session.add(action)
     db.session.commit()
@@ -54,7 +54,7 @@ def create_action(
 
 def delete_actions_for_article(article_number: ArticleNumber) -> None:
     """Delete all order actions for an article."""
-    db.session.query(OrderAction) \
+    db.session.query(DbOrderAction) \
         .filter_by(article_number=article_number) \
         .delete()
 
@@ -67,9 +67,9 @@ def delete_actions_for_article(article_number: ArticleNumber) -> None:
 
 def get_actions_for_article(
     article_number: ArticleNumber,
-) -> Sequence[OrderAction]:
+) -> Sequence[DbOrderAction]:
     """Return the order actions defined for that article."""
-    return OrderAction.query \
+    return DbOrderAction.query \
         .filter_by(article_number=article_number) \
         .all()
 
@@ -101,17 +101,17 @@ def execute_actions(
 
 def _get_actions(
     article_numbers: set[ArticleNumber], payment_state: PaymentState
-) -> Sequence[OrderAction]:
+) -> Sequence[DbOrderAction]:
     """Return the order actions for those article numbers."""
-    return OrderAction.query \
-        .filter(OrderAction.article_number.in_(article_numbers)) \
+    return DbOrderAction.query \
+        .filter(DbOrderAction.article_number.in_(article_numbers)) \
         .filter_by(_payment_state=payment_state.name) \
         .all()
 
 
 def _execute_procedure(
     order: Order,
-    action: OrderAction,
+    action: DbOrderAction,
     article_quantity: int,
     initiator_id: UserID,
 ) -> None:
