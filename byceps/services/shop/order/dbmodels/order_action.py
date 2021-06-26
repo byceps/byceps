@@ -6,8 +6,6 @@ byceps.services.shop.order.dbmodels.order_action
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Dict
-
 from sqlalchemy.ext.hybrid import hybrid_property
 
 from .....database import db, generate_uuid
@@ -15,10 +13,7 @@ from .....database import db, generate_uuid
 from ...article.dbmodels.article import Article as DbArticle
 from ...article.transfer.models import ArticleNumber
 
-from ..transfer.models import PaymentState
-
-
-Parameters = Dict[str, Any]
+from ..transfer.models import ActionParameters, PaymentState
 
 
 class OrderAction(db.Model):
@@ -40,7 +35,7 @@ class OrderAction(db.Model):
         article_number: ArticleNumber,
         payment_state: PaymentState,
         procedure: str,
-        parameters: Parameters,
+        parameters: ActionParameters,
     ) -> None:
         self.article_number = article_number
         self.payment_state = payment_state

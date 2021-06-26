@@ -14,8 +14,7 @@ from ....user_badge.transfer.models import BadgeAwarding
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..dbmodels.order_action import Parameters
-from ..transfer.models import Order, OrderID
+from ..transfer.models import ActionParameters, Order, OrderID
 
 
 def award_badge(
@@ -23,7 +22,7 @@ def award_badge(
     article_number: ArticleNumber,
     quantity: int,
     initiator_id: UserID,
-    parameters: Parameters,
+    parameters: ActionParameters,
 ) -> None:
     """Award badge to user."""
     badge = badge_service.get_badge(parameters['badge_id'])

@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from decimal import Decimal
 from enum import Enum
-from typing import NewType, Optional
+from typing import Any, Dict, NewType, Optional
 from uuid import UUID
 
 from .....typing import UserID
@@ -110,3 +110,6 @@ class Order:
             return False
 
         return datetime.utcnow() > (self.created_at + OVERDUE_THRESHOLD)
+
+
+ActionParameters = Dict[str, Any]

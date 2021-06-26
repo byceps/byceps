@@ -19,11 +19,11 @@ from .actions.create_ticket_bundles import create_ticket_bundles
 from .actions.create_tickets import create_tickets
 from .actions.revoke_ticket_bundles import revoke_ticket_bundles
 from .actions.revoke_tickets import revoke_tickets
-from .dbmodels.order_action import OrderAction, Parameters
-from .transfer.models import Order, PaymentState
+from .dbmodels.order_action import OrderAction
+from .transfer.models import ActionParameters, Order, PaymentState
 
 
-OrderActionType = Callable[[Order, ArticleNumber, int, Parameters], None]
+OrderActionType = Callable[[Order, ArticleNumber, int, ActionParameters], None]
 
 
 PROCEDURES_BY_NAME = {
@@ -43,7 +43,7 @@ def create_action(
     article_number: ArticleNumber,
     payment_state: PaymentState,
     procedure: str,
-    parameters: Parameters,
+    parameters: ActionParameters,
 ) -> None:
     """Create an order action."""
     action = OrderAction(article_number, payment_state, procedure, parameters)

@@ -14,8 +14,7 @@ from ....ticketing.transfer.models import TicketBundleID
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..dbmodels.order_action import Parameters
-from ..transfer.models import Order, OrderID
+from ..transfer.models import ActionParameters, Order, OrderID
 
 
 def revoke_ticket_bundles(
@@ -23,7 +22,7 @@ def revoke_ticket_bundles(
     article_number: ArticleNumber,
     bundle_quantity: int,
     initiator_id: UserID,
-    parameters: Parameters,
+    parameters: ActionParameters,
 ) -> None:
     """Revoke all ticket bundles in this order."""
     # Fetch all tickets, bundled or not.

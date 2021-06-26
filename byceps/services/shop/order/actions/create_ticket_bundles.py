@@ -17,8 +17,7 @@ from ....ticketing import (
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..dbmodels.order_action import Parameters
-from ..transfer.models import Order, OrderID
+from ..transfer.models import ActionParameters, Order, OrderID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 
@@ -28,7 +27,7 @@ def create_ticket_bundles(
     article_number: ArticleNumber,
     bundle_quantity: int,
     initiator_id: UserID,
-    parameters: Parameters,
+    parameters: ActionParameters,
 ) -> None:
     """Create ticket bundles."""
     category_id = parameters['category_id']
