@@ -113,3 +113,12 @@ class Order:
 
 
 ActionParameters = Dict[str, Any]
+
+
+@dataclass(frozen=True)
+class Action:
+    id: UUID
+    article_number: ArticleNumber
+    payment_state: PaymentState
+    procedure_name: str
+    parameters: ActionParameters

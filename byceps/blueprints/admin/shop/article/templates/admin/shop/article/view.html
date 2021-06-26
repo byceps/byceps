@@ -158,7 +158,7 @@
         {%- for action in actions %}
         <tr>
           <td>{{ render_order_payment_state(action.payment_state) }}</td>
-          <td class="monospace">{{ action.procedure }}<br>{{ action.parameters }}</td>
+          <td class="monospace">{{ action.procedure_name }}<br>{{ action.parameters }}</td>
         </tr>
         {%- endfor %}
       </tbody>
