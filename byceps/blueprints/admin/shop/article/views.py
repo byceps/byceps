@@ -22,7 +22,7 @@ from .....services.shop.article import (
 )
 from .....services.shop.order import (
     action_registry_service,
-    action_service as order_action_service,
+    action_service,
     ordered_articles_service,
     service as order_service,
 )
@@ -100,7 +100,7 @@ def view(article_id):
         article.item_number
     )
 
-    actions = order_action_service.get_actions_for_article(article.item_number)
+    actions = action_service.get_actions_for_article(article.item_number)
     actions.sort(key=lambda a: a.payment_state.name, reverse=True)
 
     return {
