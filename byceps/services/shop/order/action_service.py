@@ -57,7 +57,7 @@ def create_action(
 
 def delete_action(action_id: UUID) -> None:
     """Delete the order action."""
-    db.session.query(OrderAction) \
+    db.session.query(DbOrderAction) \
         .filter_by(id=action_id) \
         .delete()
 
