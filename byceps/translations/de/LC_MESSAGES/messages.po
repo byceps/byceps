@@ -1451,7 +1451,7 @@ msgstr "Die Party \"%(title)s\" wurde angelegt."
 msgid "Party \"%(title)s\" has been updated."
 msgstr "Die Party \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/seating/views.py:113
+#: byceps/blueprints/admin/seating/views.py:115
 #, python-format
 msgid "Seating area \"%(title)s\" has been created."
 msgstr "Der Bereich \"%(title)s\" wurde angelegt."
@@ -1937,8 +1937,8 @@ msgstr "Code"
 msgid "Invalid format"
 msgstr "Ungültiges Format"
 
-#: byceps/blueprints/admin/ticketing/views.py:102
-#: byceps/blueprints/admin/ticketing/views.py:127
+#: byceps/blueprints/admin/ticketing/views.py:112
+#: byceps/blueprints/admin/ticketing/views.py:137
 msgid ""
 "Code cannot be changed as somebody has already been checked in with this "
 "ticket."
@@ -1946,12 +1946,12 @@ msgstr ""
 "Der Code kann nicht geändert werden, da bereits jemand mit diesem Ticket "
 "eingecheckt worden ist."
 
-#: byceps/blueprints/admin/ticketing/views.py:143
+#: byceps/blueprints/admin/ticketing/views.py:153
 #, python-format
 msgid "Code for ticket %(ticket_code)s has been updated."
 msgstr "Der Code von Ticket %(ticket_code)s wurde geändert."
 
-#: byceps/blueprints/admin/ticketing/views.py:189
+#: byceps/blueprints/admin/ticketing/views.py:199
 #: byceps/blueprints/site/ticketing/views.py:154
 #, python-format
 msgid "%(screen_name)s has been assigned as user of ticket %(ticket_code)s."
@@ -2014,6 +2014,27 @@ msgstr "Der Check-In wurde rückgängig gemacht."
 msgid "Assign"
 msgstr "Zuweisen"
 
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:29
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:54
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:73
+#: byceps/blueprints/admin/user/templates/admin/user/_view_attended_parties.html:13
+#: byceps/blueprints/admin/user/templates/admin/user/_view_badges.html:26
+#: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:16
+#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:31
+#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:41
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:51
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:51
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:60
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:80
+msgid "none"
+msgstr "keine"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:31
+#: byceps/blueprints/admin/tourney/tourney/forms.py:30
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:12
+msgid "Category"
+msgstr "Kategorie"
+
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/update_code_form.html:15
 #: byceps/blueprints/admin/user/templates/admin/user/change_email_address_form.html:16
 #: byceps/blueprints/admin/user/templates/admin/user/change_screen_name_form.html:16
@@ -2030,11 +2051,6 @@ msgstr "Untertitel"
 #: byceps/blueprints/admin/tourney/tourney/forms.py:27
 msgid "Logo URL"
 msgstr "Logo-URL"
-
-#: byceps/blueprints/admin/tourney/tourney/forms.py:30
-#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:12
-msgid "Category"
-msgstr "Kategorie"
 
 #: byceps/blueprints/admin/tourney/tourney/forms.py:33
 msgid "Maximum number of attendees"
@@ -2228,20 +2244,6 @@ msgstr "unbekannt"
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:51
 msgid "unverified"
 msgstr "unbestätigt"
-
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:54
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:73
-#: byceps/blueprints/admin/user/templates/admin/user/_view_attended_parties.html:13
-#: byceps/blueprints/admin/user/templates/admin/user/_view_badges.html:26
-#: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:16
-#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:31
-#: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:41
-#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:51
-#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:51
-#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:60
-#: byceps/blueprints/admin/user/templates/macros/admin/user.html:80
-msgid "none"
-msgstr "keine"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:58
 msgid "Legacy ID"
