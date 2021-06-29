@@ -1,0 +1,23 @@
+{% extends 'layout/admin/shop/article.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% from 'macros/icons.html' import render_icon %}
+{% set current_page_shop = shop %}
+{% set title = _('Add action') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.view', article_id=article.id), article.item_number) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ render_icon('add') }} {{ title }}</h1>
+
+  <form action="{{ url_for('.action_create_for_ticket_bundles_creation', article_id=article.id) }}" method="post">
+    {{ form_field(form.category_id, autofocus='autofocus') }}
+    {{ form_field(form.ticket_quantity, type='number', min=0, style='width: 5.5rem;') }}
+
+    {{ form_buttons(_('Add action')) }}
+  </form>
+
+{%- endblock %}

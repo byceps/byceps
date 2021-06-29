@@ -6,6 +6,7 @@ byceps.blueprints.admin.shop.article.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 
@@ -13,18 +14,25 @@ from flask import abort, request
 from flask_babel import gettext
 
 from .....services.brand import service as brand_service
+from .....services.party import service as party_service
+from .....services.party.transfer.models import Party
 from .....services.shop.article import (
     sequence_service as article_sequence_service,
     service as article_service,
 )
 from .....services.shop.order import (
+    action_registry_service,
     action_service as order_action_service,
     ordered_articles_service,
     service as order_service,
 )
 from .....services.shop.order.transfer.models import PaymentState
 from .....services.shop.shop import service as shop_service
+from .....services.ticketing import category_service as ticket_category_service
+from .....services.ticketing.transfer.models import TicketCategory
 from .....services.user import service as user_service
+from .....services.user_badge import badge_service
+from .....typing import BrandID
 from .....util.authorization import register_permission_enum
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
@@ -38,6 +46,9 @@ from .forms import (
     ArticleUpdateForm,
     ArticleAttachmentCreateForm,
     ArticleNumberSequenceCreateForm,
+    RegisterBadgeAwardingActionForm,
+    RegisterTicketBundlesCreationActionForm,
+    RegisterTicketsCreationActionForm,
 )
 
 
@@ -447,6 +458,181 @@ def attachment_remove(article_id):
 
 # -------------------------------------------------------------------- #
 # actions
+
+
+@blueprint.get('/<uuid:article_id>/actions/badge_awarding/create')
+@permission_required(ShopArticlePermission.update)
+@templated
+def action_create_form_for_badge_awarding(article_id, erroneous_form=None):
+    """Show form to register a badge awarding action for the article."""
+    article = _get_article_or_404(article_id)
+
+    shop = shop_service.get_shop(article.shop_id)
+    brand = brand_service.get_brand(shop.brand_id)
+
+    badges = badge_service.get_all_badges()
+
+    form = (
+        erroneous_form if erroneous_form else RegisterBadgeAwardingActionForm()
+    )
+    form.set_badge_choices(badges)
+
+    return {
+        'article': article,
+        'shop': shop,
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.post('/<uuid:article_id>/actions/badge_awarding')
+@permission_required(ShopArticlePermission.update)
+def action_create_for_badge_awarding(article_id):
+    """Register a badge awarding action for the article."""
+    article = _get_article_or_404(article_id)
+
+    badges = badge_service.get_all_badges()
+
+    form = RegisterBadgeAwardingActionForm(request.form)
+    form.set_badge_choices(badges)
+
+    if not form.validate():
+        return action_create_form_for_badge_awarding(article_id, form)
+
+    badge_id = form.badge_id.data
+    badge = badge_service.get_badge(badge_id)
+
+    action_registry_service.register_badge_awarding(
+        article.item_number, badge.id
+    )
+
+    flash_success(gettext('Action has been added.'))
+
+    return redirect_to('.view', article_id=article.id)
+
+
+@blueprint.get('/<uuid:article_id>/actions/tickets_creation/create')
+@permission_required(ShopArticlePermission.update)
+@templated
+def action_create_form_for_tickets_creation(article_id, erroneous_form=None):
+    """Show form to register a tickets creation action for the article."""
+    article = _get_article_or_404(article_id)
+
+    shop = shop_service.get_shop(article.shop_id)
+    brand = brand_service.get_brand(shop.brand_id)
+
+    form = (
+        erroneous_form
+        if erroneous_form
+        else RegisterTicketsCreationActionForm()
+    )
+    form.set_category_choices(_get_categories_with_parties(brand.id))
+
+    return {
+        'article': article,
+        'shop': shop,
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.post('/<uuid:article_id>/actions/tickets_creation')
+@permission_required(ShopArticlePermission.update)
+def action_create_for_tickets_creation(article_id):
+    """Register a tickets creation action for the article."""
+    article = _get_article_or_404(article_id)
+
+    shop = shop_service.get_shop(article.shop_id)
+    brand = brand_service.get_brand(shop.brand_id)
+
+    form = RegisterTicketsCreationActionForm(request.form)
+    form.set_category_choices(_get_categories_with_parties(brand.id))
+
+    if not form.validate():
+        return action_create_form_for_tickets_creation(article_id, form)
+
+    category_id = form.category_id.data
+    category = ticket_category_service.find_category(category_id)
+    if category is None:
+        raise ValueError(f'Unknown category ID "{category_id}"')
+
+    action_registry_service.register_tickets_creation(
+        article.item_number, category.id
+    )
+
+    flash_success(gettext('Action has been added.'))
+
+    return redirect_to('.view', article_id=article.id)
+
+
+@blueprint.get('/<uuid:article_id>/actions/ticket_bundles_creation/create')
+@permission_required(ShopArticlePermission.update)
+@templated
+def action_create_form_for_ticket_bundles_creation(
+    article_id, erroneous_form=None
+):
+    """Show form to register a ticket bundles creation action for the article."""
+    article = _get_article_or_404(article_id)
+
+    shop = shop_service.get_shop(article.shop_id)
+    brand = brand_service.get_brand(shop.brand_id)
+
+    form = (
+        erroneous_form
+        if erroneous_form
+        else RegisterTicketBundlesCreationActionForm()
+    )
+    form.set_category_choices(_get_categories_with_parties(brand.id))
+
+    return {
+        'article': article,
+        'shop': shop,
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.post('/<uuid:article_id>/actions/ticket_bundles_creation')
+@permission_required(ShopArticlePermission.update)
+def action_create_for_ticket_bundles_creation(article_id):
+    """Register a ticket bundles creation action for the article."""
+    article = _get_article_or_404(article_id)
+
+    shop = shop_service.get_shop(article.shop_id)
+    brand = brand_service.get_brand(shop.brand_id)
+
+    form = RegisterTicketBundlesCreationActionForm(request.form)
+    form.set_category_choices(_get_categories_with_parties(brand.id))
+
+    if not form.validate():
+        return action_create_form_for_ticket_bundles_creation(article_id, form)
+
+    category_id = form.category_id.data
+    category = ticket_category_service.find_category(category_id)
+    if category is None:
+        raise ValueError(f'Unknown category ID "{category_id}"')
+
+    ticket_quantity = form.ticket_quantity.data
+
+    action_registry_service.register_ticket_bundles_creation(
+        article.item_number, category.id, ticket_quantity
+    )
+
+    flash_success(gettext('Action has been added.'))
+
+    return redirect_to('.view', article_id=article.id)
+
+
+def _get_categories_with_parties(
+    brand_id: BrandID,
+) -> set[tuple[TicketCategory, Party]]:
+    return {
+        (category, party)
+        for party in party_service.get_active_parties(brand_id)
+        for category in ticket_category_service.get_categories_for_party(
+            party.id
+        )
+    }
 
 
 @blueprint.delete('/actions/<uuid:action_id>')

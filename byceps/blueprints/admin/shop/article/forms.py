@@ -6,8 +6,10 @@ byceps.blueprints.admin.shop.article.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import date, datetime, time
 from decimal import Decimal
+from typing import Iterable
 
 from flask_babel import gettext, lazy_gettext, pgettext
 from wtforms import (
@@ -25,6 +27,9 @@ from wtforms.validators import (
     ValidationError,
 )
 
+from .....services.party.transfer.models import Party
+from .....services.ticketing.transfer.models import TicketCategory
+from .....services.user_badge.transfer.models import Badge
 from .....util.l10n import LocalizedForm
 
 
@@ -189,3 +194,50 @@ class ArticleNumberSequenceCreateForm(LocalizedForm):
     prefix = StringField(
         lazy_gettext('Static prefix'), validators=[InputRequired()]
     )
+
+
+class RegisterBadgeAwardingActionForm(LocalizedForm):
+    badge_id = SelectField(lazy_gettext('Badge'), [InputRequired()])
+
+    def set_badge_choices(
+        self, badges: Iterable[Badge]
+    ) -> list[tuple[str, str]]:
+        choices = [(str(badge.id), badge.label) for badge in badges]
+        choices.sort(key=lambda choice: choice[1])
+        self.badge_id.choices = choices
+
+
+class RegisterTicketsCreationActionForm(LocalizedForm):
+    category_id = SelectField(lazy_gettext('Category'), [InputRequired()])
+
+    def set_category_choices(
+        self, categories_with_parties: Iterable[tuple[TicketCategory, Party]]
+    ) -> list[tuple[str, str]]:
+        self.category_id.choices = _get_category_choices(
+            categories_with_parties
+        )
+
+
+class RegisterTicketBundlesCreationActionForm(LocalizedForm):
+    category_id = SelectField(lazy_gettext('Category'), [InputRequired()])
+    ticket_quantity = IntegerField(
+        lazy_gettext('Ticket quantity'), [InputRequired()]
+    )
+
+    def set_category_choices(
+        self, categories_with_parties: Iterable[tuple[TicketCategory, Party]]
+    ) -> list[tuple[str, str]]:
+        self.category_id.choices = _get_category_choices(
+            categories_with_parties
+        )
+
+
+def _get_category_choices(
+    categories_with_parties: Iterable[tuple[TicketCategory, Party]]
+) -> list[tuple[str, str]]:
+    choices = [
+        (str(category.id), f'{party.title}: {category.title}')
+        for category, party in categories_with_parties
+    ]
+    choices.sort(key=lambda choice: choice[1])
+    return choices
