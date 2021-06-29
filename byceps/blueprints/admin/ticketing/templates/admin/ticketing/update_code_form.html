@@ -3,11 +3,11 @@
 {% set current_page = 'ticket' %}
 {% set current_page_party = party %}
 {% set current_tab = 'tickets' %}
-{% set title = 'Ticket-Code ändern' %}
+{% set page_title = 'Ticket-Code ändern' %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.update_code', ticket_id=ticket.id) }}" method="post">
     {{ form_field(form.code, autofocus='autofocus') }}

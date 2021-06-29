@@ -3,7 +3,7 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'sites_admin' %}
-{% set title = _('Add news channel') %}
+{% set page_title = _('Add news channel') %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view', site_id=site.id), _('Site')) }}
@@ -11,7 +11,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('add') }} {{ title }}</h1>
+  <h1>{{ render_icon('add') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.add_news_channel', site_id=site.id) }}" method="post">
     {{ form_field(form.news_channel_id) }}

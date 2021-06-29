@@ -3,7 +3,7 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
-{% set title = 'Orga-Teams kopieren' %}
+{% set page_title = 'Orga-Teams kopieren' %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.teams_for_party', party_id=party.id), 'Teams "%s"'|format(party.title)) }}

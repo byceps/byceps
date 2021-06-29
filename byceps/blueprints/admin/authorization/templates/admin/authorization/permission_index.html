@@ -1,12 +1,12 @@
 {% extends 'layout/admin/authorization.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% set current_tab = 'permissions' %}
-{% set title = 'Berechtigungen' %}
+{% set page_title = 'Berechtigungen' %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
-  <h1>{{ title }} {{ render_extra_in_heading(permissions|length) }}</h1>
+  <h1>{{ page_title }} {{ render_extra_in_heading(permissions|length) }}</h1>
 
   <div class="box">
     <table class="index wide">

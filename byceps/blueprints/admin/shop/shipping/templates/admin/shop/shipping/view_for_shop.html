@@ -1,11 +1,11 @@
 {% extends 'layout/admin/shop/shipping.html' %}
 {% set current_page_shop = shop %}
-{% set title = 'Versandartikel' %}
+{% set page_title = 'Versandartikel' %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <div class="box">
     {%- if articles_to_ship %}

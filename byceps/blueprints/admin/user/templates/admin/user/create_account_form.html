@@ -3,7 +3,7 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user' %}
-{% set title = 'Benutzerkonto erstellen' %}
+{% set page_title = 'Benutzerkonto erstellen' %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.index'), _('Users')) }}
@@ -11,7 +11,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('add') }} {{ title }}</h1>
+  <h1>{{ render_icon('add') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.create_account') }}" method="post" class="disable-submit-button-on-submit">
     {{ form_field(form.screen_name, maxlength=24, autofocus='autofocus') }}

@@ -1,7 +1,7 @@
 {% extends 'layout/admin/shop/order.html' %}
 {% from 'macros/admin/shop/order.html' import render_order_link %}
 {% from 'macros/forms.html' import form_buttons, form_field_radio %}
-{% set title = 'Bestellung als bezahlt markieren' %}
+{% set page_title = 'Bestellung als bezahlt markieren' %}
 
 {% block body %}
 
@@ -10,7 +10,7 @@
       <li>{{ render_order_link(order) }}</li>
     </ol>
   </nav>
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.mark_as_paid', order_id=order.id) }}" method="post">
     {{ form_field_radio(form.payment_method, autofocus='autofocus') }}

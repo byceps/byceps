@@ -1,10 +1,10 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/misc.html' import render_notification %}
-{% set title = 'Fehler' %}
+{% set page_title = 'Fehler' %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
 {{ render_notification('Entschuldigung, es ist ein Fehler aufgetreten.', category='danger', icon='warning') }}
 

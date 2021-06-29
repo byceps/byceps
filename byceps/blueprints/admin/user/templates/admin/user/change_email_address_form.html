@@ -3,11 +3,11 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_tab = 'profile' %}
 {% set current_tab_user_id = user.id %}
-{% set title = 'E-Mail-Adresse von Benutzer \'%s\' ändern'|format(user.screen_name) %}
+{% set page_title = 'E-Mail-Adresse von Benutzer \'%s\' ändern'|format(user.screen_name) %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.change_email_address', user_id=user.id) }}" method="post">
     {{ form_field(form.email_address, maxlength=120, autofocus='autofocus') }}

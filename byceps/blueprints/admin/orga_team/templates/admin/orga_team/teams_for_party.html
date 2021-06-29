@@ -5,7 +5,7 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_48 %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
-{% set title = 'Orga-Teams' %}
+{% set page_title = 'Orga-Teams' %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -31,7 +31,7 @@
           <li>{{ party.title }}</li>
         </ol>
       </nav>
-      <h1>{{ title }} {{ render_extra_in_heading(teams_and_members|length) }}</h1>
+      <h1>{{ page_title }} {{ render_extra_in_heading(teams_and_members|length) }}</h1>
     </div>
     {%- if has_current_user_permission(OrgaTeamPermission.create) %}
     <div class="column-auto column--align-bottom">

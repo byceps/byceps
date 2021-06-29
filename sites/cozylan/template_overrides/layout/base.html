@@ -1,4 +1,4 @@
-{%- set title = title|default %}
+{%- set page_title = page_title|default %}
 {%- set current_page = current_page|default -%}
 
 
@@ -9,7 +9,7 @@
     <meta name="referrer" content="origin-when-cross-origin">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="BYCEPS">
-    <title>{% if title %}{{ title.replace(' - ', ' &middot; ')|safe }} &middot; {% endif %}CozyLAN</title>
+    <title>{% if page_title %}{{ page_title.replace(' - ', ' &middot; ')|safe }} &middot; {% endif %}CozyLAN</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style/common.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/site.css') }}">
     <link rel="stylesheet" href="{{ url_for_site_file('style/cozylan.css') }}">

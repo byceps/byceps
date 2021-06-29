@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
-{% set title = 'News-Kanal erstellen' %}
+{% set page_title = 'News-Kanal erstellen' %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.channel_index_for_brand', brand_id=brand.id), 'Newskanäle') }}
@@ -12,7 +12,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('add') }} {{ title }}</h1>
+  <h1>{{ render_icon('add') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.channel_create', brand_id=brand.id) }}" method="post">
     {{ form_field(form.channel_id, maxlength=40, placeholder=brand.id, autofocus='autofocus') }}

@@ -1,5 +1,5 @@
 {% extends 'layout/base_auto.html' %}
-{% set title = 'Style Guide' %}
+{% set page_title = 'Style Guide' %}
 {% if g.app_mode.is_admin() %}
 {% set layout_main_raw = True %}
 {% endif %}
@@ -58,7 +58,7 @@
 
 <div class="styleguide">
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <ol class="tabs">
     <li><a class="tabs-tab" href="#blocks">Blocks</a></li>

@@ -6,7 +6,7 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_48 %}
 {% set current_page = 'orga_admin' %}
 {% set current_page_brand = brand %}
-{% set title = 'Organisatoren' %}
+{% set page_title = 'Organisatoren' %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -28,7 +28,7 @@
   <div class="row row--space-between">
     <div class="column-auto">
 
-      <h1 class="nowrap">{{ title }} {{ render_extra_in_heading(orgas_with_birthdays|length) }}</h1>
+      <h1 class="nowrap">{{ page_title }} {{ render_extra_in_heading(orgas_with_birthdays|length) }}</h1>
 
     </div>
     <div class="column-auto column--align-bottom">

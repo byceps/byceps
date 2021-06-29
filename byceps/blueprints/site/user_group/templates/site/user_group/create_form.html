@@ -1,11 +1,11 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page = 'user_group' %}
-{% set title = 'Benutzergruppe erstellen' %}
+{% set page_title = 'Benutzergruppe erstellen' %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.create') }}" method="post">
     {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}

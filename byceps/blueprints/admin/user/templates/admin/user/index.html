@@ -5,14 +5,14 @@
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/stats.html' import render_bigstats_item %}
 {% set current_page = 'user_admin' %}
-{% set title = _('Users') %}
+{% set page_title = _('Users') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>{{ title }}</h1>
+      <h1>{{ page_title }}</h1>
     </div>
     {%- if has_current_user_permission(UserPermission.create) %}
     <div class="column-auto">

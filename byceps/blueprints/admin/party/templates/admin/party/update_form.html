@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'party_admin' %}
 {% set current_page_party = party %}
-{% set title = 'Party bearbeiten' %}
+{% set page_title = 'Party bearbeiten' %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view', party_id=party.id), party.title) }}
@@ -12,7 +12,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('edit') }} {{ title }}</h1>
+  <h1>{{ render_icon('edit') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.update', party_id=party.id) }}" method="post">
     {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}

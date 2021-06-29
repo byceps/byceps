@@ -6,7 +6,7 @@
 {% from 'macros/user.html' import render_user_link %}
 {% from 'macros/user_avatar.html' import render_user_avatar_32 %}
 {% set current_page = 'attendees' %}
-{% set title = 'Teilnehmer' %}
+{% set page_title = 'Teilnehmer' %}
 
 {% block head %}
     <style>
@@ -31,7 +31,7 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.attendees') }}" class="single-row unobtrusive mb">
     <input type="search" name="search_term" placeholder="Benutzername" {%- if search_term %} value="{{ search_term }}"{% endif %}>

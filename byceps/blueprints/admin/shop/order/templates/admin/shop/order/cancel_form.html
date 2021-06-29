@@ -2,7 +2,7 @@
 {% from 'macros/admin/shop/order.html' import render_order_link %}
 {% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
 {% from 'macros/misc.html' import render_notification %}
-{% set title = 'Bestellung stornieren' %}
+{% set page_title = 'Bestellung stornieren' %}
 
 {% block body %}
 
@@ -11,7 +11,7 @@
       <li>{{ render_order_link(order) }}</li>
     </ol>
   </nav>
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.cancel', order_id=order.id) }}" method="post">
     {{ form_field(form.reason, maxlength=1000, autofocus='autofocus') }}

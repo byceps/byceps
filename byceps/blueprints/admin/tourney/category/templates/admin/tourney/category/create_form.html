@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'categories' %}
-{% set title = 'Kategorie erstellen' %}
+{% set page_title = 'Kategorie erstellen' %}
 
 {% block body %}
 
@@ -14,7 +14,7 @@
       <li><a href="{{ url_for('.index', party_id=party.id) }}">Kategorien</a></li>
     </ol>
   </nav>
-  <h1>{{ render_icon('add') }} {{ title }}</h1>
+  <h1>{{ render_icon('add') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
     {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}

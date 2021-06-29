@@ -2,7 +2,7 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'board' %}
-{% set title = 'Thema erstellen' %}
+{% set page_title = 'Thema erstellen' %}
 
 {% block body %}
 
@@ -12,7 +12,7 @@
       <li><a href="{{ url_for('.category_view', slug=category.slug) }}">{{ category.title }}</a></li>
     </ol>
   </nav>
-  <h1>{{ render_icon('add') }} {{ title }}</h1>
+  <h1>{{ render_icon('add') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.topic_create', category_id=category.id) }}" method="post">
     {{ form_field(form.title, maxlength=80, autofocus='autofocus') }}

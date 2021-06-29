@@ -2,7 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/order.html' import render_order_payment_state, render_order_overdue_tag %}
 {% from 'macros/datetime.html' import render_datetime %}
-{% set title = order.order_number %}
+{% set page_title = order.order_number %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -42,7 +42,7 @@
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>{{ render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }} {{ title }}</h1>
+      <h1>{{ render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }} {{ page_title }}</h1>
     </div>
     {%- if has_current_user_any_permission(
       ShopOrderPermission.cancel,

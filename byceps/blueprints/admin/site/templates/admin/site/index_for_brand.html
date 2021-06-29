@@ -4,14 +4,14 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'sites_admin' %}
 {% set current_page_brand = brand %}
-{% set title = 'Sites' %}
+{% set page_title = 'Sites' %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>{{ title }} {{ render_extra_in_heading(sites|length) }}</h1>
+      <h1>{{ page_title }} {{ render_extra_in_heading(sites|length) }}</h1>
     </div>
     {%- if has_current_user_permission(SitePermission.create) %}
     <div class="column-auto">

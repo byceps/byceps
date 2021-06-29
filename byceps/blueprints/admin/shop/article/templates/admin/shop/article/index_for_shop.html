@@ -4,14 +4,14 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% set title = 'Artikel' %}
+{% set page_title = 'Artikel' %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>{{ title }} {{ render_extra_in_heading(articles.total) }}</h1>
+      <h1>{{ page_title }} {{ render_extra_in_heading(articles.total) }}</h1>
     </div>
     {%- if has_current_user_permission(ShopArticlePermission.create) %}
     <div class="column-auto">

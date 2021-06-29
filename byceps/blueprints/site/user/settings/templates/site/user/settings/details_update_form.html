@@ -1,11 +1,11 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_datalist, form_field %}
 {% set current_page = 'user' %}
-{% set title = _('Change personal data') %}
+{% set page_title = _('Change personal data') %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.details_update') }}" method="post">
     {{ form_datalist('countries', country_names) }}

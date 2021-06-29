@@ -1,11 +1,11 @@
 {% extends 'layout/admin/shop/storefront.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
 {% from 'macros/icons.html' import render_icon %}
-{% set title = 'Storefront bearbeiten' %}
+{% set page_title = 'Storefront bearbeiten' %}
 
 {% block body %}
 
-  <h1>{{ render_icon('edit') }} {{ title }}</h1>
+  <h1>{{ render_icon('edit') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.update', storefront_id=storefront.id) }}" method="post">
     {{ form_field(form.catalog_id, autofocus='autofocus') }}

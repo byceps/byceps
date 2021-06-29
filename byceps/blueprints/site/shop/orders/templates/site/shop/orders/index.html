@@ -2,7 +2,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/shop/orders.html' import render_order_payment_state, render_order_overdue_tag %}
 {% set current_page = 'shop_orders' %}
-{% set title = 'Deine Bestellungen' %}
+{% set page_title = 'Deine Bestellungen' %}
 {% block body %}
 
   <nav class="breadcrumbs">
@@ -10,7 +10,7 @@
       <li>Shop</li>
     </ol>
   </nav>
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   {%- if orders %}
   <p>Bestellungen mit dem Status {{ render_order_payment_state(PaymentState.open) }} kannst du selbst stornieren.</p>

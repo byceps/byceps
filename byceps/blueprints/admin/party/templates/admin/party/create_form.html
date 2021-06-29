@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'parties_admin' %}
 {% set current_page_brand = brand %}
-{% set title = 'Party erstellen' %}
+{% set page_title = 'Party erstellen' %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.index_for_brand', brand_id=brand.id), brand.title) }}
@@ -12,7 +12,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('add') }} {{ title }}</h1>
+  <h1>{{ render_icon('add') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.create', brand_id=brand.id) }}" method="post">
     {{ form_field(form.id, maxlength=40, placeholder='%s-42'|format(brand.id), autofocus='autofocus') }}

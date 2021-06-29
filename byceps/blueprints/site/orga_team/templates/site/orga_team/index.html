@@ -2,7 +2,7 @@
 {% from 'macros/user.html' import render_user_screen_name %}
 {% from 'macros/user_avatar.html' import render_user_avatar_96 %}
 {% set current_page = 'orga_team' %}
-{% set title = 'Team' %}
+{% set page_title = 'Team' %}
 
 {% block head %}
   <style>
@@ -52,7 +52,7 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
 {{ render_snippet('orga_team_intro', ignore_if_unknown=True)|safe }}
 

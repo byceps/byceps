@@ -1,11 +1,11 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'shop_order' %}
-{% set title = 'Bestellen' %}
+{% set page_title = 'Bestellen' %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
 {{ render_notification('<a href="%s">Melde dich an</a>, um bestellen zu können.'|format(url_for('authentication_login.login_form'))|safe, category='info', icon='info') }}
 

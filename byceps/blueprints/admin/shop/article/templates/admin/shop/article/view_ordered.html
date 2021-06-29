@@ -4,7 +4,7 @@
 {% from 'macros/admin/user.html' import render_user_microcard %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% set current_page_shop = shop %}
-{% set title = article.description %}
+{% set page_title = article.description %}
 
 {% block body %}
 
@@ -13,7 +13,7 @@
       <li>{{ render_article_link(article) }}</li>
     </ol>
   </nav>
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <p style="margin: 2rem 0;">
     <small>

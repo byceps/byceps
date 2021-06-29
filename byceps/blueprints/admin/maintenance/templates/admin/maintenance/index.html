@@ -2,7 +2,7 @@
 {% from 'macros/admin/dashboard.html' import render_cell %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'maintenance_admin' %}
-{% set title = _('Maintenance') %}
+{% set page_title = _('Maintenance') %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -17,7 +17,7 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <div class="grid dashboard">
 

@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% set title = 'Turniere' %}
+{% set page_title = 'Turniere' %}
 
 {% block head %}
 <style>
@@ -35,7 +35,7 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   {%- if categories_with_tourneys %}
   <table class="index tourney-list">

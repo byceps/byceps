@@ -2,7 +2,7 @@
 {% from 'macros/user.html' import render_user_screen_name %}
 {% from 'macros/user_avatar.html' import render_user_avatar_128 %}
 {% set current_page = 'user_profile.view' %}
-{% set title = '%s - Benutzer'|format(user.screen_name) %}
+{% set page_title = '%s - Benutzer'|format(user.screen_name) %}
 
 {% block head %}
   <style>

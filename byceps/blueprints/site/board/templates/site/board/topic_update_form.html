@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'board' %}
-{% set title = 'Thema bearbeiten' %}
+{% set page_title = 'Thema bearbeiten' %}
 
 {% block body %}
 
@@ -14,7 +14,7 @@
       <li><a href="{{ url_for('.topic_view', topic_id=topic.id) }}">{{ topic.title }}</a></li>
     </ol>
   </nav>
-  <h1>{{ render_icon('edit') }} {{ title }}</h1>
+  <h1>{{ render_icon('edit') }} {{ page_title }}</h1>
 
   {%- if topic.creator_id != g.user.id %}
   <div class="mb">

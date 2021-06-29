@@ -2,14 +2,14 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
-{% set title = 'Storefronts' %}
+{% set page_title = 'Storefronts' %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>{{ title }} {{ render_extra_in_heading(storefronts|length) }}</h1>
+      <h1>{{ page_title }} {{ render_extra_in_heading(storefronts|length) }}</h1>
     </div>
     <div class="column-auto">
       <div class="button-row button-row--right">

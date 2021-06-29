@@ -5,11 +5,11 @@
 {% from 'macros/user.html' import render_user_link %}
 {% from 'macros/user_avatar.html' import render_user_avatar_16_and_link, render_user_avatar_48 %}
 {% set current_page = 'ticket' %}
-{% set title = 'Tickets' %}
+{% set page_title = 'Tickets' %}
 
 {% block body %}
 
-  <h1>{{ render_icon('ticket') }} {{ title }}</h1>
+  <h1>{{ render_icon('ticket') }} {{ page_title }}</h1>
   <p>Dies sind die für dich relevanten (d.h. gekauften, verwalteten und/oder genutzten) Tickets für die Party <strong>{{ party_title }}</strong>.</p>
 
   {%- if not current_user_uses_any_ticket %}

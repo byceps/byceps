@@ -4,7 +4,7 @@
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
-{% set title = 'Orga zu Team hinzufügen' %}
+{% set page_title = 'Orga zu Team hinzufügen' %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.teams_for_party', party_id=party.id), 'Teams "%s"'|format(party.title)) }}
@@ -12,7 +12,7 @@
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   {%- if unassigned_orgas_available %}
   <form action="{{ url_for('.membership_create', team_id=team.id) }}" method="post">

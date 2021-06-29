@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
-{% set title = 'Orga-Team erstellen' %}
+{% set page_title = 'Orga-Team erstellen' %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.teams_for_party', party_id=party.id), 'Teams "%s"'|format(party.title)) }}
@@ -12,7 +12,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('add') }} {{ title }}</h1>
+  <h1>{{ render_icon('add') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.team_create', party_id=party.id) }}" method="post">
     {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}

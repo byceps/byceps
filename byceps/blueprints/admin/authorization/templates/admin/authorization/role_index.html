@@ -2,12 +2,12 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
 {% set current_tab = 'roles' %}
-{% set title = 'Rollen' %}
+{% set page_title = 'Rollen' %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
-  <h1>{{ title }} {{ render_extra_in_heading(roles|length) }}</h1>
+  <h1>{{ page_title }} {{ render_extra_in_heading(roles|length) }}</h1>
 
   <div class="box">
     <table class="index wide">

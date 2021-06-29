@@ -2,11 +2,11 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'authentication_password_update' %}
-{% set title = 'Neues Passwort setzen' %}
+{% set page_title = 'Neues Passwort setzen' %}
 
 {% block body %}
 
-  <h1>{{ render_icon('password') }} {{ title }}</h1>
+  <h1>{{ render_icon('password') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.reset', token=token) }}" method="post">
     {{ form_field(form.new_password, maxlength=40, autofocus='autofocus') }}

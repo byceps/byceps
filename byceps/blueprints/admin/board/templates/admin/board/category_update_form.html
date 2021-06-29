@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'board_admin' %}
 {% set current_page_brand = brand %}
-{% set title = 'Kategorie bearbeiten' %}
+{% set page_title = 'Kategorie bearbeiten' %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.board_view', board_id=category.board_id), 'Kategorie "%s"'|format(category.title)) }}
@@ -12,7 +12,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('edit') }} {{ title }}</h1>
+  <h1>{{ render_icon('edit') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.category_update', category_id=category.id) }}" method="post">
     {{ form_field(form.slug, maxlength=40, autofocus='autofocus') }}

@@ -3,11 +3,11 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_tab = 'profile' %}
 {% set current_tab_user_id = user.id %}
-{% set title = 'Benutzerkonto \'%s\' umbenennen'|format(user.screen_name) %}
+{% set page_title = 'Benutzerkonto \'%s\' umbenennen'|format(user.screen_name) %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.change_screen_name', user_id=user.id) }}" method="post">
     {{ form_field(form.screen_name, maxlength=24, autofocus='autofocus') }}

@@ -1,11 +1,11 @@
 {% extends 'layout/admin/shop/article.html' %}
 {% from 'macros/forms.html' import form_buttons, form_datalist, form_field %}
 {% from 'macros/icons.html' import render_icon %}
-{% set title = 'Artikel anlegen' %}
+{% set page_title = 'Artikel anlegen' %}
 
 {% block body %}
 
-  <h1>{{ render_icon('add') }} {{ title }}</h1>
+  <h1>{{ render_icon('add') }} {{ page_title }}</h1>
 
   {%- if not article_number_sequence_available %}
   <div class="notification color-warning">

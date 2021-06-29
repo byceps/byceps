@@ -4,11 +4,11 @@
 {% from 'macros/misc.html' import render_notification %}
 {% set current_tab = 'profile' %}
 {% set current_tab_user_id = user.id %}
-{% set title = 'Benutzerkonto \'%s\' löschen'|format(user.screen_name) %}
+{% set page_title = 'Benutzerkonto \'%s\' löschen'|format(user.screen_name) %}
 
 {% block body %}
 
-  <h1>{{ render_icon('delete') }} {{ title }}</h1>
+  <h1>{{ render_icon('delete') }} {{ page_title }}</h1>
 
   <div class="mb">
     {{ render_notification('Achtung: Das Löschen des Benutzerkontos geschieht unwiderruflich!', category='danger', icon='warning') }}

@@ -2,7 +2,7 @@
 {% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
 {% set current_page = 'attendance_admin' %}
 {% set current_page_brand = brand %}
-{% set title = 'Häufigste Teilnehmer' %}
+{% set page_title = 'Häufigste Teilnehmer' %}
 
 {% block body %}
 
@@ -11,7 +11,7 @@
       <li>{{ brand.title }}</li>
     </ol>
   </nav>
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <p>Partys der Marke &quot;{{ brand.title }}&quot; insgesamt: <strong>{{ party_total }}</strong></p>
 

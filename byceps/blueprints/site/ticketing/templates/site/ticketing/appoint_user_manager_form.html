@@ -1,11 +1,11 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page = 'ticket' %}
-{% set title = 'Nutzer-Verwaltung von Ticket %s an Benutzer zuweisen'|format(ticket.code) %}
+{% set page_title = 'Nutzer-Verwaltung von Ticket %s an Benutzer zuweisen'|format(ticket.code) %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.appoint_user_manager', ticket_id=ticket.id) }}" method="post">
     {{ form_field(form.user, maxlength=40, autofocus='autofocus') }}

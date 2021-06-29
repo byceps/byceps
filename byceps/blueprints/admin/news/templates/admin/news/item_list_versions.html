@@ -4,7 +4,7 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_name %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
-{% set title = 'Änderungshistorie' %}
+{% set page_title = 'Änderungshistorie' %}
 
 {% block body %}
 
@@ -15,7 +15,7 @@
       <li>Kanal <a href="{{ url_for('.channel_view', channel_id=item.channel.id) }}">{{ item.channel.id }}</a></li>
     </ol>
   </nav>
-  <h1>{{ render_icon('history') }} {{ title }}</h1>
+  <h1>{{ render_icon('history') }} {{ page_title }}</h1>
 
   <table class="index wide">
     <thead>

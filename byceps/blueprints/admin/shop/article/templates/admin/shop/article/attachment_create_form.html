@@ -3,7 +3,7 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_shop = shop %}
-{% set title = 'Artikel anhängen' %}
+{% set page_title = 'Artikel anhängen' %}
 
 {% block body %}
 
@@ -12,7 +12,7 @@
       <li>{{ render_article_link(article) }}</li>
     </ol>
   </nav>
-  <h1>{{ render_icon('add') }} {{ title }}</h1>
+  <h1>{{ render_icon('add') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.attachment_create', article_id=article.id) }}" method="post">
     {{ form_field(form.article_to_attach_id, autofocus='autofocus') }}

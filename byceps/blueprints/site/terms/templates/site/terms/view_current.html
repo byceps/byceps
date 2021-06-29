@@ -1,10 +1,10 @@
 {% extends 'layout/base.html' %}
 {% set current_page = 'terms.view_current' %}
-{% set title = 'Allgemeine Geschäftsbedingungen' %}
+{% set page_title = 'Allgemeine Geschäftsbedingungen' %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <div class="terms">
 {{ version.body|safe }}

@@ -2,7 +2,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_name %}
-{% set title = 'Versionshistorie' %}
+{% set page_title = 'Versionshistorie' %}
 
 {% block body %}
 
@@ -13,7 +13,7 @@
       <li>{{ snippet.name }}</li>
     </ol>
   </nav>
-  <h1>{{ render_icon('history') }} {{ title }}</h1>
+  <h1>{{ render_icon('history') }} {{ page_title }}</h1>
 
   {%- if versions_pairwise %}
   <table class="index wide">

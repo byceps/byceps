@@ -1,11 +1,11 @@
 {% extends 'layout/admin/base.html' %}
 {% set current_page = 'newsletter_admin' %}
-{% set title = 'Newsletter' %}
+{% set page_title = 'Newsletter' %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
-  <h1>{{ title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <div class="box">
     {%- if lists %}

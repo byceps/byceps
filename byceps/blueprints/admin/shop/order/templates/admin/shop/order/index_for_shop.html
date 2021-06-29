@@ -3,12 +3,12 @@
 {% from 'macros/admin/shop/order.html' import render_order_payment_state, render_order_state_filter %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% set title = 'Bestellungen' %}
+{% set page_title = 'Bestellungen' %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
-  <h1>{{ title }} {{ render_extra_in_heading(orders.total) }}</h1>
+  <h1>{{ page_title }} {{ render_extra_in_heading(orders.total) }}</h1>
 
   <div class="row row--space-between filters">
     <div class="column-auto">

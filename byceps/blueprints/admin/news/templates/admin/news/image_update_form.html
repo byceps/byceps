@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = item.brand %}
-{% set title = 'Newsbild bearbeiten' %}
+{% set page_title = 'Newsbild bearbeiten' %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.item_view', item_id=item.id), 'Newspost "%s"'|format(item.title)) }}
@@ -12,7 +12,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('edit') }} {{ title }}</h1>
+  <h1>{{ render_icon('edit') }} {{ page_title }}</h1>
 
   <div class="mb">
     <img src="{{ image.url_path }}">
