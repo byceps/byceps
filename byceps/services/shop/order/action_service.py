@@ -8,6 +8,7 @@ byceps.services.shop.order.action_service
 
 from __future__ import annotations
 from typing import Callable, Sequence
+from uuid import UUID
 
 from ....database import db
 from ....typing import UserID
@@ -54,6 +55,15 @@ def create_action(
     db.session.commit()
 
 
+def delete_action(action_id: UUID) -> None:
+    """Delete the order action."""
+    db.session.query(OrderAction) \
+        .filter_by(id=action_id) \
+        .delete()
+
+    db.session.commit()
+
+
 def delete_actions_for_article(article_number: ArticleNumber) -> None:
     """Delete all order actions for an article."""
     db.session.query(DbOrderAction) \
@@ -61,6 +71,16 @@ def delete_actions_for_article(article_number: ArticleNumber) -> None:
         .delete()
 
     db.session.commit()
+
+
+def find_action(action_id: UUID) -> Optional[Action]:
+    """Return the action with that ID, if found."""
+    action = DbOrderAction.query.get(action_id)
+
+    if action is None:
+        return
+
+    return _db_entity_to_action(action)
 
 
 # -------------------------------------------------------------------- #

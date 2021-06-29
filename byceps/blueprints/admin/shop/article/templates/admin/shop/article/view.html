@@ -152,6 +152,7 @@
         <tr>
           <th>Bezahlstatus</th>
           <th>Prozedur<br>Parameter</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -159,6 +160,13 @@
         <tr>
           <td>{{ render_order_payment_state(action.payment_state) }}</td>
           <td class="monospace">{{ action.procedure_name }}<br>{{ action.parameters }}</td>
+          <td>
+            {%- if has_current_user_permission(ShopArticlePermission.update) %}
+            <div class="button-row button-row--compact button-row--right">
+              <a data-action="action-remove" href="{{ url_for('.action_remove', action_id=action.id) }}" class="button button--compact" title="{{ _('Remove action') }}">{{ render_icon('remove') }}</a>
+            </div>
+            {%- endif %}
+          </td>
         </tr>
         {%- endfor %}
       </tbody>
@@ -174,6 +182,7 @@
     <script>
       onDomReady(() => {
         confirmed_delete_on_click_then_reload('[data-action="attachment-remove"]', 'Artikelanhang entfernen?');
+        confirmed_delete_on_click_then_reload('[data-action="action-remove"]', '{{ _('Remove action?') }}');
       });
     </script>
 {%- endblock %}

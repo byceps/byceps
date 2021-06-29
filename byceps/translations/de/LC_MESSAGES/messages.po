@@ -1587,7 +1587,11 @@ msgstr ""
 "Artikel \"%(article_item_number)s\" ist nun nicht mehr an Artikel "
 "\"%(attached_to_article_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/article/views.py:489
+#: byceps/blueprints/admin/shop/article/views.py:464
+msgid "Action has been removed."
+msgstr "Die Aktion wurde entfernt."
+
+#: byceps/blueprints/admin/shop/article/views.py:508
 #, python-format
 msgid ""
 "Article number sequence could not be created. Is prefix \"%(prefix)s\" "
@@ -1596,7 +1600,7 @@ msgstr ""
 "Die Artikelnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/article/views.py:498
+#: byceps/blueprints/admin/shop/article/views.py:517
 #, python-format
 msgid "Article number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Artikelnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
@@ -1604,6 +1608,14 @@ msgstr "Die Artikelnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt.
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/attachment_create_form.html:21
 msgid "Attach article"
 msgstr "Artikel anhängen"
+
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:166
+msgid "Remove action"
+msgstr "Aktion entfernen"
+
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:185
+msgid "Remove action?"
+msgstr "Aktion entfernen?"
 
 #: byceps/blueprints/admin/shop/order/forms.py:20
 #: byceps/blueprints/admin/user/forms.py:50

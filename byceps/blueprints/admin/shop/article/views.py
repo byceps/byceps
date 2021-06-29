@@ -446,6 +446,25 @@ def attachment_remove(article_id):
 
 
 # -------------------------------------------------------------------- #
+# actions
+
+
+@blueprint.delete('/actions/<uuid:action_id>')
+@permission_required(ShopArticlePermission.update)
+@respond_no_content
+def action_remove(action_id):
+    """Remove the action from the article."""
+    action = action_service.find_action(action_id)
+
+    if action is None:
+        abort(404)
+
+    action_service.delete_action(action.id)
+
+    flash_success(gettext('Action has been removed.'))
+
+
+# -------------------------------------------------------------------- #
 # article number sequences
 
 
