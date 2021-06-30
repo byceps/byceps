@@ -3,7 +3,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_name %}
-{% set page_title = ['%s/%s'|format(scope.type_, scope.name), 'Snippets'] %}
+{% set page_title = ['%s/%s'|format(scope.type_, scope.name), _('Snippets')] %}
 
 {% block before_body %}
   {% if (scope.type_ == 'site') and (site is not none) %}
@@ -13,12 +13,12 @@
       Navigation(None)
         .add_item(
           url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name),
-          'Snippets',
+          _('Snippets'),
           id='snippets',
           required_permission=SnippetPermission.view)
         .add_item(
           url_for('.index_mountpoints', site_id=site.id),
-          'Mountpoints',
+          _('Mountpoints'),
           id='mountpoints',
           required_permission=SnippetPermission.view)
       , current_tab
@@ -30,14 +30,14 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li>Snippets</li>
+      <li>{{ _('Snippets') }}</li>
     </ol>
   </nav>
   <h1>{{ scope.type_ }}/{{ scope.name }}</h1>
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h2>Snippets {{ render_extra_in_heading(snippets|length) }}</h2>
+      <h2>{{ _('Snippets') }} {{ render_extra_in_heading(snippets|length) }}</h2>
     </div>
   {%- if has_current_user_permission(SnippetPermission.create) %}
     <div class="column-auto">
@@ -45,8 +45,8 @@
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Snippet erstellen</span> {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('.create_document_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-document') }} Dokument</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.create_fragment_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-fragment') }} Fragment</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.create_document_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-document') }} {{ _('Document') }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.create_fragment_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-fragment') }} {{ _('Fragment') }}</a></li>
           </ol>
         </div>
       </div>
@@ -69,9 +69,9 @@
       <tr>
         <td class="nowrap">
           {%- if snippet.is_document %}
-          {{ render_icon('snippet-document', title='Dokument') }}
+          {{ render_icon('snippet-document', title=_('Document')) }}
           {%- elif snippet.is_fragment %}
-          {{ render_icon('snippet-fragment', title='Fragment') }}
+          {{ render_icon('snippet-fragment', title=_('Fragment')) }}
           {%- endif %}
           <a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}"><strong>{{ snippet.name }}</strong></a>
         </td>

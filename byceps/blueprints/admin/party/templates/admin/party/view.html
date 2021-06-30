@@ -15,7 +15,7 @@
 
       <nav class="breadcrumbs">
         <ol>
-          <li><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">Partys</a></li>
+          <li><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">{{ _('Parties') }}</a></li>
         </ol>
       </nav>
       <h1>
@@ -25,7 +25,7 @@
         {{ render_tag('abgesagt', class='color-danger', icon='disabled') }}
           {%- endif %}
           {%- if party.archived %}
-        {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+        {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
           {%- endif %}
         {%- endif %}
       </h1>
@@ -35,7 +35,7 @@
 
       <div class="button-row button-row--right">
         {%- if has_current_user_permission(PartyPermission.update) %}
-        <a class="button" href="{{ url_for('.update_form', party_id=party.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+        <a class="button" href="{{ url_for('.update_form', party_id=party.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
         {%- endif %}
       </div>
 
@@ -49,7 +49,7 @@
         <td>{{ party.id }}</td>
       </tr>
       <tr>
-        <th>Marke</th>
+        <th>{{ _('Brand') }}</th>
         <td>{{ brand.title }}</td>
       </tr>
       <tr>

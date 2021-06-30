@@ -24,7 +24,7 @@
     </table>
   </div>
 
-  <h2>Versionen</h2>
+  <h2>{{ _('Versions') }}</h2>
 
   {%- if not document.current_version_id %}
   <div class="mb">
@@ -38,8 +38,8 @@
       <thead>
         <tr>
           <th>Titel<br>ID</th>
-          <th>Erstellt</th>
-          <th class="number">Zustimmungen</th>
+          <th>{{ _('Created') }}</th>
+          <th class="number">{{ _('Consents') }}</th>
         </tr>
       </thead>
       <tbody>

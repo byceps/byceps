@@ -3,19 +3,19 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'categories' %}
-{% set page_title = ['Turnierkategorien', party.title] %}
+{% set page_title = [_('Tourney categories'), party.title] %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>Kategorien {{ render_extra_in_heading(categories|length) }}</h1>
+      <h1>{{ _('Categories') }} {{ render_extra_in_heading(categories|length) }}</h1>
     </div>
     <div class="column-auto">
       {%- if has_current_user_permission(TourneyCategoryPermission.administrate) %}
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Kategorie erstellen</span></a>
+        <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create category') }}</span></a>
       </div>
       {%- endif %}
     </div>
@@ -26,8 +26,8 @@
     <table class="index">
       <thead>
         <tr>
-          <th>Position</th>
-          <th>Titel</th>
+          <th>{{ _('Position') }}</th>
+          <th>{{ _('Title') }}</th>
           <th></th>
         </tr>
       </thead>
@@ -41,9 +41,9 @@
             <div class="dropdown">
               <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
               <ol class="dropdown-menu">
-                <li><a class="dropdown-item" href="{{ url_for('.update_form', category_id=category.id) }}">{{ render_icon('edit') }} Bearbeiten</a></li>
-                <li><a class="dropdown-item" data-action="category-move-up" href="{{ url_for('.move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} Nach oben schieben</a></li>
-                <li><a class="dropdown-item" data-action="category-move-down" href="{{ url_for('.move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} Nach unten schieben</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('.update_form', category_id=category.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
+                <li><a class="dropdown-item" data-action="category-move-up" href="{{ url_for('.move_up', category_id=category.id) }}">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
+                <li><a class="dropdown-item" data-action="category-move-down" href="{{ url_for('.move_down', category_id=category.id) }}">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
               </ol>
             </div>
             {%- endif -%}
@@ -53,7 +53,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">Es sind keine Kategorien hinterlegt.</div>
+    <div class="dimmed-box centered">{{ _('No categories exist.') }}</div>
     {%- endif %}
   </div>
 

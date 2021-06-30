@@ -5,12 +5,12 @@
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'ticketing_checkin_admin' %}
 {% set current_page_party = party %}
-{% set page_title = ['Check-In', party.title] %}
+{% set page_title = [_('Check-In'), party.title] %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
-  <h1>Check-In</h1>
+  <h1>{{ _('Check-In') }}</h1>
 
   <div class="box mb">
 
@@ -28,9 +28,9 @@
 
         <small>
           <ul style="margin: 0; padding-left: 1rem;">
-            <li><strong>Tickets</strong> via Ticketcode</li>
-            <li><strong>Bestellungen</strong> via Bestellnummer</li>
-            <li><strong>Benutzer</strong> via Nick-, Vor-, Nachname, E-Mail-Adresse</li>
+            <li><strong>{{ _('Tickets') }}</strong> via Ticketcode</li>
+            <li><strong>{{ _('Orders') }}</strong> via Bestellnummer</li>
+            <li><strong>{{ _('Users') }}</strong> via Nick-, Vor-, Nachname, E-Mail-Adresse</li>
           </ul>
         </small>
 
@@ -43,12 +43,12 @@
 
   {{ render_notification('Die Person muss am <strong>{}</strong> oder früher geboren sein.'.format(render_date(latest_dob_for_checkin, smart=False))|safe, category='warning', icon='warning') }}
 
-  <h2>Tickets {{ render_extra_in_heading(tickets|length) }}</h2>
+  <h2>{{ _('Tickets') }} {{ render_extra_in_heading(tickets|length) }}</h2>
   <div class="box">
     {%- include 'admin/ticketing/checkin/_ticket_list.html' %}
   </div>
 
-  <h2>Benutzer {{ render_extra_in_heading(users|length) }}</h2>
+  <h2>{{ _('Users') }} {{ render_extra_in_heading(users|length) }}</h2>
   <div class="box">
     {%- include 'admin/ticketing/checkin/_user_list.html' %}
   </div>

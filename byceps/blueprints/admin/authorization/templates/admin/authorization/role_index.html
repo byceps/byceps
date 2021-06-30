@@ -2,7 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
 {% set current_tab = 'roles' %}
-{% set page_title = 'Rollen' %}
+{% set page_title = _('Roles') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -33,13 +33,13 @@
             {%- endfor %}
             </ol>
           {%- else %}
-            {{ 'keine'|dim }}
+            {{ _('none')|dim }}
           {%- endif %}
           </td>
           <td>
           {%- set user_limit = 10 %}
           {%- if not role.users %}
-            {{ 'keine'|dim }}
+            {{ _('none')|dim }}
           {%- elif role.users|length <= user_limit %}
             <ol>
             {%- for user in role.users|sort(attribute='screen_name') %}

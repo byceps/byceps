@@ -1,7 +1,7 @@
 {% extends 'layout/admin/snippet.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
-{% set page_title = ['%s/%s'|format(scope.type_, scope.name), 'Mountpoints'] %}
+{% set page_title = ['%s/%s'|format(scope.type_, scope.name), _('Mountpoints')] %}
 
 {% if scope.type_ == 'site' %}
   {% block before_body %}
@@ -11,12 +11,12 @@
       Navigation(None)
         .add_item(
           url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name),
-          'Snippets',
+          _('Snippets'),
           id='snippets',
           required_permission=SnippetPermission.view)
         .add_item(
           url_for('.index_mountpoints', site_id=site.id),
-          'Mountpoints',
+          _('Mountpoints'),
           id='mountpoints',
           required_permission=SnippetPermission.view)
       , current_tab
@@ -28,7 +28,7 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li>Snippets</li>
+      <li>{{ _('Snippets') }}</li>
     </ol>
   </nav>
   <h1>{{ scope.type_ }}/{{ scope.name }}</h1>
@@ -41,7 +41,7 @@
       <tr>
         <th>URL-Pfad</th>
         <th>Bezeichner</th>
-        <th>Snippet<br>Scope</th>
+        <th>{{ _('Snippet') }}<br>{{ _('Scope') }}</th>
         <th></th>
       </tr>
     </thead>

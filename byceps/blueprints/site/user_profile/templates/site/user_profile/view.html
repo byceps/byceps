@@ -2,7 +2,7 @@
 {% from 'macros/user.html' import render_user_screen_name %}
 {% from 'macros/user_avatar.html' import render_user_avatar_128 %}
 {% set current_page = 'user_profile.view' %}
-{% set page_title = [user.screen_name, 'Benutzer'] %}
+{% set page_title = [user.screen_name, _('Users')] %}
 
 {% block head %}
   <style>
@@ -40,7 +40,7 @@
           {{ attended_parties|length }}
         </div>
         <div class="user-profile-header-cell-bottom stats-label">
-          {{ 'Party' if (attended_parties|length == 1) else 'Partys' }}
+          {{ _('Party') if (attended_parties|length == 1) else _('Parties') }}
         </div>
       </div>
 
@@ -49,7 +49,7 @@
           {{ badges_with_awarding_quantity|length }}
         </div>
         <div class="user-profile-header-cell-bottom stats-label">
-          Abzeichen
+          {{ _('Badges') }}
         </div>
       </div>
 

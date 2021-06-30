@@ -6,7 +6,7 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_48 %}
 {% set current_page = 'orga_admin' %}
 {% set current_page_brand = brand %}
-{% set page_title = 'Organisatoren' %}
+{% set page_title = _('Organizers') %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -39,9 +39,9 @@
         {%- endif %}
 
         {%- if orgas_with_birthdays %}
-        <a class="button" href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} <span>Exportieren <small>{{ 'als Excel-CSV'|dim }}</small></span></a>
+        <a class="button" href="{{ url_for('.export_persons', brand_id=brand.id) }}" download="organizers_{{ brand.id }}.csv">{{ render_icon('download') }} <span>{{ _('Export') }} <small>{{ 'als Excel-CSV'|dim }}</small></span></a>
         {%- else %}
-        <button class="button" disabled>{{ render_icon('download') }} <span>Exportieren <small>{{ 'als Excel-CSV'|dim }}</small></span></button>
+        <button class="button" disabled>{{ render_icon('download') }} <span>{{ _('Export') }} <small>{{ 'als Excel-CSV'|dim }}</small></span></button>
         {%- endif %}
       </div>
 
@@ -53,16 +53,16 @@
     <table class="index wide orgas">
       <thead>
         <tr>
-          <th>Avatar</th>
+          <th>{{ _('Avatar') }}</th>
           <th>
-            Voller Name<br>
-            Benutzername<br>
-            Geburtstag, Alter
+            {{ _('Full name') }}<br>
+            {{ _('Username') }}<br>
+            {{ _('Date of birth') }}, {{ _('Age') }}
           </th>
           <th>
-            Wohnort<br>
-            E-Mail-Adresse<br>
-            Telefonnummer
+            {{ _('City') }}<br>
+            {{ _('Email address') }}<br>
+            {{ _('Phone number') }}
           </th>
           <th></th>
         </tr>
@@ -77,16 +77,16 @@
             {%- if birthday %}
               {{ render_icon('birthday') }}
               {{ render_date(birthday.date_of_birth) }}
-              ({{ birthday.age }} Jahre)
+              ({{ birthday.age }} {{ _('years') }})
             {%- else %}
-              {{ (render_icon('birthday') ~ ' nicht angegeben')|dim }}
+              {{ (render_icon('birthday') ~ ' ' ~ _('not given'))|dim }}
             {%- endif %}
           </td>
           <td>
             {%- if user.email_address %}
             {{ render_icon('email') }} <a href="mailto:{{- user.email_address }}">{{ user.email_address|truncate(36, killwords=True, end='…') }}</a>
             {%- else %}
-            {{ (render_icon('email') ~ ' nicht angegeben')|dim }}
+            {{ (render_icon('email') ~ ' ' ~ _('not given'))|dim }}
             {%- endif %}
             <br>
             {{ render_icon('location') }}
@@ -101,7 +101,7 @@
               {{ render_icon('phone') }}
               {{ user.detail.phone_number }}
             {%- else %}
-              {{ (render_icon('phone') ~ ' nicht angegeben')|dim }}
+              {{ (render_icon('phone') ~ ' ' ~ _('not given'))|dim }}
             {%- endif %}
           </td>
           <td>

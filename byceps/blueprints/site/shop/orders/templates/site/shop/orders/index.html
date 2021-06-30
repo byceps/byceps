@@ -2,12 +2,12 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/shop/orders.html' import render_order_payment_state, render_order_overdue_tag %}
 {% set current_page = 'shop_orders' %}
-{% set page_title = 'Deine Bestellungen' %}
+{% set page_title = _('Your orders') %}
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li>Shop</li>
+      <li>{{ _('Shop') }}</li>
     </ol>
   </nav>
   <h1>{{ page_title }}</h1>
@@ -18,7 +18,7 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Bestellnummer</th>
+        <th>{{ _('Order number') }}</th>
         <th>Zeitpunkt</th>
         <th class="number">Betrag</th>
         <th>Status</th>

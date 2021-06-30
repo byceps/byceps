@@ -3,7 +3,7 @@
 {% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'sites_admin' %}
-{% set page_title = 'Sites' %}
+{% set page_title = _('Sites') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -16,9 +16,9 @@
     <div class="column-auto">
       <div class="button-row button-row--right">
         <div class="dropdown">
-          <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Site erstellen</span></button>
+          <button class="dropdown-toggle button"><span>{{ render_icon('add') }} {{ _('Create site') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><span class="dropdown-item"><strong>Marke:</strong></span></li>
+            <li><span class="dropdown-item"><strong>{{ _('Brand') }}:</strong></span></li>
             <li class="dropdown-divider"></li>
           {%- for brand in brands %}
             <li><a class="dropdown-item" href="{{ url_for('.create_form', brand_id=brand.id) }}"><span style="margin-right: 0.25rem;">{{ render_brand_avatar(brand, '24') }}</span> {{ brand.title }}</a></li>

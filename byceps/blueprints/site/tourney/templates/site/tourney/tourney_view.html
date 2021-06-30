@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime_custom, render_time %}
 {% from 'macros/icons.html' import render_icon %}
-{% set page_title = ['Turnier', tourney.title] %}
+{% set page_title = [_('Tourney'), tourney.title] %}
 
 {% block head %}
 <style>
@@ -54,7 +54,7 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.tourney_index') }}">Turniere</a></li>
+      <li><a href="{{ url_for('.tourney_index') }}">{{ _('Tourneys') }}</a></li>
     </ol>
   </nav>
   <div class="tourney-header">
@@ -92,7 +92,7 @@
   <h2>
     <div class="row" style="align-items: center;">
       <div class="column-auto">
-        Teilnehmer
+        {{ _('Participants') }}
       </div>
       <div class="column-auto">
         <div class="progress">

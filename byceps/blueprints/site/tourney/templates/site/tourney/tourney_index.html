@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% set page_title = 'Turniere' %}
+{% set page_title = _('Tourneys') %}
 
 {% block head %}
 <style>
@@ -43,7 +43,7 @@
       <tr>
         <th></th>
         <th></th>
-        <th class="centered">Teilnehmer</th>
+        <th class="centered">{{ _('Participants') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -75,7 +75,7 @@
     </tbody>
   </table>
   {%- else %}
-  <p class="dimmed">Keine Turniere gefunden.</p>
+  <p class="dimmed">{{ _('No tourneys found.') }}</p>
   {%- endif %}
 
 {%- endblock %}

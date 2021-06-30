@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_notification, render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_16_and_name %}
-{% set page_title = 'Snippetversion ansehen' %}
+{% set page_title = _('View snippet version') %}
 
 {% block head %}
   <style>
@@ -37,7 +37,7 @@
 
       {%- if has_current_user_permission(SnippetPermission.update) -%}
         {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
-      <a class="button" href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+      <a class="button" href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
         {%- endwith %}
       {%- endif -%}
 
@@ -45,7 +45,7 @@
       <div class="dropdown">
         <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
         <ol class="dropdown-menu dropdown-menu--right">
-          <li><a class="dropdown-item" data-action="snippet-delete" href="{{ url_for('.delete_snippet', snippet_id=snippet.id) }}">{{ render_icon('delete') }} Löschen</a></li>
+          <li><a class="dropdown-item" data-action="snippet-delete" href="{{ url_for('.delete_snippet', snippet_id=snippet.id) }}">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
         </ol>
       </div>
       {%- endif %}
@@ -54,25 +54,25 @@
 
     <table class="index">
       <tr>
-        <th>Scope</th>
+        <th>{{ _('Scope') }}</th>
         <td><a href="{{ url_for('.index_for_scope', scope_type=snippet.scope_type, scope_name=snippet.scope_name) }}">{{ snippet.scope_type }}/{{ snippet.scope_name }}</a></td>
       </tr>
       <tr>
-        <th>Snippet</th>
+        <th>{{ _('Snippet') }}</th>
         <td>{{ snippet.name }}</td>
       </tr>
       <tr>
-        <th>Typ</th>
+        <th>{{ _('Type') }}</th>
         <td>
           {%- if snippet.is_document %}
-          {{ render_icon('snippet-document') }} Dokument
+          {{ render_icon('snippet-document') }} {{ _('Document') }}
           {%- elif snippet.is_fragment %}
-          {{ render_icon('snippet-fragment') }} Fragment
+          {{ render_icon('snippet-fragment') }} {{ _('Fragment') }}
           {%- endif %}
         </td>
       </tr>
       <tr>
-        <th>Version</th>
+        <th>{{ _('Version') }}</th>
         <td>
           {{- version.id -}}
           {%- if is_current_version %}
@@ -84,7 +84,7 @@
         </td>
       </tr>
       <tr>
-        <th>Erstellt</th>
+        <th>{{ _('Created') }}</th>
         <td>
           {{ render_datetime(version.created_at|utc_to_local_tz) }} von {{ render_user_avatar_16_and_name(creator) }}<br>
           <a href="{{ url_for('.history', snippet_id=snippet.id) }}">{{ render_icon('history') }} Änderungshistorie ansehen</a>
@@ -118,7 +118,7 @@
 {% block scripts %}
     <script>
       onDomReady(() => {
-        confirmed_delete_on_click('[data-action="snippet-delete"]', 'Snippet löschen?');
+        confirmed_delete_on_click('[data-action="snippet-delete"]', '{{ _('Delete snippet?') }}');
       });
     </script>
 {% endblock %}

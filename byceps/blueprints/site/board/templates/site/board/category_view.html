@@ -5,13 +5,13 @@
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/user_avatar.html' import render_user_avatar_16_and_name %}
 {% set current_page = 'board' %}
-{% set page_title = ['Forum', category.title] %}
+{% set page_title = [_('Board'), category.title] %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
+      <li><a href="{{ url_for('.category_index') }}">{{ _('Board') }}</a></li>
     </ol>
   </nav>
   <h1>{{ category.title }}</h1>
@@ -20,9 +20,9 @@
   <table class="index wide board-topic-index">
     <thead>
       <tr>
-        <th>Thema</th>
-        <th class="centered">Antworten</th>
-        <th>Letzter Beitrag</th>
+        <th>{{ _('Topic') }}</th>
+        <th class="centered">{{ _('Replies') }}</th>
+        <th>{{ _('Latest posting') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -61,9 +61,9 @@
   <div class="button-row button-row--right">
 
     {%- if current_user_may_create_topic %}
-    <a class="button" href="{{ url_for('.topic_create_form', category_id=category.id) }}">{{ render_icon('add') }} <span>Thema hinzufügen</span></a>
+    <a class="button" href="{{ url_for('.topic_create_form', category_id=category.id) }}">{{ render_icon('add') }} <span>{{ _('Create topic') }}</span></a>
     {%- else %}
-    <span class="button button--disabled">{{ render_icon('add') }} <span>Thema hinzufügen</span></span>
+    <span class="button button--disabled">{{ render_icon('add') }} <span>{{ _('Create topic') }}</span></span>
     {%- endif %}
 
     {%- if g.user.authenticated %}

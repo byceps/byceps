@@ -4,19 +4,19 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'tourneys' %}
-{% set page_title = ['Turniere', party.title] %}
+{% set page_title = [_('Tourneys'), party.title] %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>Turniere {{ render_extra_in_heading(tourneys|length) }}</h1>
+      <h1>{{ _('Tourneys') }} {{ render_extra_in_heading(tourneys|length) }}</h1>
     </div>
     <div class="column-auto">
       {%- if has_current_user_permission(TourneyPermission.administrate) %}
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Turnier erstellen</span></a>
+        <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create tourney') }}</span></a>
       </div>
       {%- endif %}
     </div>
@@ -27,9 +27,9 @@
     <table class="index wide">
       <thead>
         <tr>
-          <th>Titel<br>Untertitel</th>
-          <th>Kategorie</th>
-          <th colspan="3">Teilnehmer</th>
+          <th>{{ _('Title') }}<br>{{ _('Subtitle') }}</th>
+          <th>{{ _('Category') }}</th>
+          <th colspan="3">{{ _('Participants') }}</th>
           <th>Beginn</th>
           <th></th>
         </tr>
@@ -49,7 +49,7 @@
           <td>
             {%- if has_current_user_permission(TourneyPermission.administrate) %}
             <div class="button-row button-row--compact">
-              <a class="button button--compact" href="{{ url_for('.update_form', tourney_id=tourney.id) }}">{{ render_icon('edit', title='Turnier bearbeiten') }}</a>
+              <a class="button button--compact" href="{{ url_for('.update_form', tourney_id=tourney.id) }}">{{ render_icon('edit', title=_('Edit tourney')) }}</a>
             </div>
             {%- endif %}
           </td>

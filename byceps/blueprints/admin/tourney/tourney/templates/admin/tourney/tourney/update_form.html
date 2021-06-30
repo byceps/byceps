@@ -3,14 +3,14 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'tourneys' %}
-{% set page_title = 'Turnier bearbeiten' %}
+{% set page_title = _('Edit tourney') %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
       <li>{{ party.title }}</li>
-      <li>Turniere</li>
+      <li>{{ _('Tourneys') }}</li>
       <li>{{ tourney.title }}</li>
     </ol>
   </nav>

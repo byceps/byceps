@@ -11,7 +11,7 @@
   <nav class="breadcrumbs">
     <ol>
       <li>News</li>
-      <li>Marke {{ brand.title }}</li>
+      <li>{{ _('Brand') }} {{ brand.title }}</li>
       <li>Kanal <a href="{{ url_for('.channel_view', channel_id=item.channel.id) }}">{{ item.channel.id }}</a></li>
     </ol>
   </nav>

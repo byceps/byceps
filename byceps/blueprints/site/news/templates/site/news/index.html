@@ -1,11 +1,11 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'news' %}
-{% set page_title = 'Neuigkeiten' %}
+{% set page_title = _('News') %}
 
 {% block body %}
 
-  <h1>Neuigkeiten</h1>
+  <h1>{{ _('News') }}</h1>
 
   <div class="news-items">
     {%- for item in items.items %}

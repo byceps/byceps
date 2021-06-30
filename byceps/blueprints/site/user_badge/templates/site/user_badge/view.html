@@ -2,7 +2,7 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_64 %}
 {% from 'macros/user_badge.html' import render_user_badge %}
 {% set current_page = 'user_badge' %}
-{% set page_title = ['Abzeichen', badge.label] %}
+{% set page_title = [_('Badges'), badge.label] %}
 
 {% block head %}
   <style>
@@ -32,7 +32,7 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index') }}">Abzeichen</a></li>
+      <li><a href="{{ url_for('.index') }}">{{ _('Badges') }}</a></li>
     </ol>
   </nav>
   <h1>{{ badge.label }}</h1>

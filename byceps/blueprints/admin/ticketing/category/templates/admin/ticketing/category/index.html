@@ -3,19 +3,19 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'categories' %}
-{% set page_title = ['Ticket-Kategorien', party.title] %}
+{% set page_title = [_('Ticket categories'), party.title] %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>Ticket-Kategorien {{ render_extra_in_heading(categories_with_ticket_counts|length) }}</h1>
+      <h1>{{ _('Ticket categories') }} {{ render_extra_in_heading(categories_with_ticket_counts|length) }}</h1>
     </div>
     {%- if has_current_user_permission(TicketingPermission.administrate) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Kategorie erstellen</span></a>
+        <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create category') }}</span></a>
       </div>
     </div>
     {%- endif %}
@@ -26,8 +26,8 @@
     <table class="index wide">
       <thead>
         <tr>
-          <th>Titel<br>ID</th>
-          <th class="number">Tickets<sup>*</sup></th>
+          <th>{{ _('Title') }}<br>ID</th>
+          <th class="number">{{ _('Tickets') }}<sup>*</sup></th>
           <th></th>
         </tr>
       </thead>

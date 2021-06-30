@@ -3,7 +3,7 @@
 {% from 'macros/stats.html' import render_bigstats_item %}
 {% set current_page = 'newsletter_admin' %}
 {% set current_page_brand = brand %}
-{% set page_title = ['Newsletter', list_.title] %}
+{% set page_title = [_('Newsletter'), list_.title] %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -13,7 +13,7 @@
 
       <nav class="breadcrumbs">
         <ol>
-          <li><a href="{{ url_for('.index') }}">Newsletter</a></li>
+          <li><a href="{{ url_for('.index') }}">{{ _('Newsletter') }}</a></li>
         </ol>
       </nav>
       <h1>{{ list_.title }}</h1>
@@ -27,7 +27,7 @@
           <button class="dropdown-toggle button">
             <div class="block-with-icon">
               <div class="block-with-icon-icon">{{ render_icon('download') }}</div>
-              <div class="block-with-icon-body">Exportieren {{ render_icon('chevron-down') }}</div>
+              <div class="block-with-icon-body">{{ _('Export') }} {{ render_icon('chevron-down') }}</div>
             </div>
           </button>
           <ol class="dropdown-menu dropdown-menu--right">

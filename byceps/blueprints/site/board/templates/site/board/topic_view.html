@@ -4,13 +4,13 @@
 {% from 'macros/misc.html' import render_notification %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'board' %}
-{% set page_title = ['Forum', topic.title] %}
+{% set page_title = [_('Board'), topic.title] %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
+      <li><a href="{{ url_for('.category_index') }}">{{ _('Board') }}</a></li>
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
     </ol>
   </nav>
@@ -28,7 +28,7 @@
 
   {%- if has_current_user_any_permission(BoardPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
   <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} <span>Moderieren</span></a>
+    <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} <span>{{ _('Moderate') }}</span></a>
   </div>
   {%- endif %}
 
@@ -76,7 +76,7 @@
 
   <nav class="breadcrumbs compact">
     <ol>
-      <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
+      <li><a href="{{ url_for('.category_index') }}">{{ _('Board') }}</a></li>
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
       <li>{{ topic.title }}</li>
     </ol>

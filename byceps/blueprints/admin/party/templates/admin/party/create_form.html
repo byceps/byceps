@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'parties_admin' %}
 {% set current_page_brand = brand %}
-{% set page_title = 'Party erstellen' %}
+{% set page_title = _('Create party') %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.index_for_brand', brand_id=brand.id), brand.title) }}

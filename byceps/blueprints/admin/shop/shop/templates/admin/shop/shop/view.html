@@ -4,7 +4,7 @@
 {% set current_page = 'shop_shop_admin' %}
 {% set current_page_brand = brand %}
 {% set current_page_shop = shop %}
-{% set page_title = 'Shop' %}
+{% set page_title = _('Shop') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -19,9 +19,9 @@
         <th>Status</th>
         <td>
         {%- if shop.archived %}
-          {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+          {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
         {%- else %}
-          {{ render_tag('aktiv', class='color-success', icon='success') }}
+          {{ render_tag(_('active'), class='color-success', icon='success') }}
         {%- endif %}
         </td>
       </tr>

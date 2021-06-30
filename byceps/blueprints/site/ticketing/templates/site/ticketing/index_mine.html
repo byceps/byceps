@@ -5,7 +5,7 @@
 {% from 'macros/user.html' import render_user_link %}
 {% from 'macros/user_avatar.html' import render_user_avatar_16_and_link, render_user_avatar_48 %}
 {% set current_page = 'ticket' %}
-{% set page_title = 'Tickets' %}
+{% set page_title = _('Tickets') %}
 
 {% block body %}
 
@@ -19,7 +19,7 @@
   {%- if tickets %}
   {{ render_tickets(tickets) }}
   {%- else %}
-  <p><em>keine</em></p>
+  <p><em>{{ _('none') }}</em></p>
   {%- endif %}
 
 {%- endblock %}

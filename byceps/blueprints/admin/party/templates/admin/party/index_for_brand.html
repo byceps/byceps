@@ -5,7 +5,7 @@
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page = 'parties_admin' %}
 {% set current_page_brand = brand %}
-{% set page_title = ['Partys', brand.title] %}
+{% set page_title = [_('Parties'), brand.title] %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -17,12 +17,12 @@
           <li>{{ brand.title }}</li>
         </ol>
       </nav>
-      <h1>Partys {{ render_extra_in_heading(parties.total) }}</h1>
+      <h1>{{ _('Parties') }} {{ render_extra_in_heading(parties.total) }}</h1>
     </div>
   {%- if has_current_user_permission(PartyPermission.create) %}
     <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>Party erstellen</span></a>
+        <a class="button" href="{{ url_for('.create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create party') }}</span></a>
       </div>
     </div>
   {%- endif %}
@@ -39,7 +39,7 @@
   </div>
 
   {%- else %}
-  <div class="dimmed-box centered">Für diese Marke sind keine Partys hinterlegt.</div>
+  <div class="dimmed-box centered">{{ _('No parties exist for this brand.') }}</div>
   {%- endif %}
 
 {%- endblock %}

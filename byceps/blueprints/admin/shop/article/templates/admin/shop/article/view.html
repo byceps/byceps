@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page_shop = shop %}
-{% set page_title = ['Artikel', article.item_number] %}
+{% set page_title = [_('Article'), article.item_number] %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -37,13 +37,13 @@
     <div class="column-auto">
       <div class="button-row button-row--right">
         {%- if has_current_user_permission(ShopArticlePermission.update) %}
-        <a class="button" href="{{ url_for('.update_form', article_id=article.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+        <a class="button" href="{{ url_for('.update_form', article_id=article.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
         {%- endif %}
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
             {%- if has_current_user_permission(ShopArticlePermission.update) %}
-            <li><a class="dropdown-item" href="{{ url_for('.attachment_create_form', article_id=article.id) }}">{{ render_icon('attached') }} Artikel anhängen</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.attachment_create_form', article_id=article.id) }}">{{ render_icon('attached') }} {{ _('Attach article') }}</a></li>
             {%- endif %}
             <li><a class="dropdown-item" href="{{ url_for('.view_ordered', article_id=article.id) }}">{{ render_icon('users') }} Käufer auflisten</a></li>
           </ol>
@@ -55,7 +55,7 @@
   <div class="box">
     <table class="index">
       <tr>
-        <th>Beschreibung</th>
+        <th>{{ _('Description') }}</th>
         <td>{{ article.description }}</td>
       </tr>
       <tr>
@@ -145,7 +145,7 @@
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h2>Aktionen</h2>
+      <h2>{{ _('Actions') }}</h2>
     </div>
     {%- if has_current_user_permission(ShopArticlePermission.update) %}
     <div class="column-auto">

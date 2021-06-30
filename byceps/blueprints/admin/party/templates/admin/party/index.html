@@ -4,7 +4,7 @@
 {% from 'macros/admin/party.html' import render_party %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'parties_admin' %}
-{% set page_title = 'Partys' %}
+{% set page_title = _('Parties') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -17,9 +17,9 @@
     <div class="column-auto">
       <div class="button-row button-row--right">
         <div class="dropdown">
-          <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Party erstellen</span> {{ render_icon('chevron-down') }}</button>
+          <button class="dropdown-toggle button"><span>{{ render_icon('add') }} {{ _('Create party') }}</span> {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><span class="dropdown-item"><strong>Marke:</strong></span></li>
+            <li><span class="dropdown-item"><strong>{{ _('Brand') }}:</strong></span></li>
             <li class="dropdown-divider"></li>
           {%- for brand in brands %}
             <li><a class="dropdown-item" href="{{ url_for('.create_form', brand_id=brand.id) }}"><span style="margin-right: 0.25rem;">{{ render_brand_avatar(brand, '24') }}</span> {{ brand.title }}</a></li>
@@ -33,18 +33,18 @@
 
   {%- if parties %}
 
-  <h2>Aktive Partys</h2>
+  <h2>{{ _('Active parties') }}</h2>
     {%- for party in active_parties %}
 {{ render_party(party, days_by_party_id[party.id], ticket_sale_stats_by_party_id[party.id]) }}
     {%- endfor %}
 
-  <h2>Archivierte Partys</h2>
+  <h2>{{ _('Archived parties') }}</h2>
     {%- for party in archived_parties %}
 {{ render_party(party, days_by_party_id[party.id], ticket_sale_stats_by_party_id[party.id]) }}
     {%- endfor %}
 
   {%- else %}
-  <div class="dimmed-box centered">Es sind keine Partys hinterlegt.</div>
+  <div class="dimmed-box centered">{{ _('No parties exist.') }}</div>
   {%- endif %}
 
 {%- endblock %}

@@ -1,6 +1,6 @@
 {% extends 'layout/admin/snippet.html' %}
 {% from 'macros/text_diff.html' import render_difference, render_difference_styles  %}
-{% set page_title = 'Änderungen ansehen' %}
+{% set page_title = _('View changes') %}
 
 {%- block head %}
 {{ render_difference_styles() }}
@@ -10,16 +10,16 @@
 
   <h1>{{ page_title }}</h1>
 
-  <h2>Titel</h2>
+  <h2>{{ _('Title') }}</h2>
 {{ render_difference(diff_title) }}
 
-  <h2>Seitenkopf</h2>
+  <h2>{{ _('Page header') }}</h2>
 {{ render_difference(diff_head) }}
 
-  <h2>Text</h2>
+  <h2>{{ _('Text') }}</h2>
 {{ render_difference(diff_body) }}
 
-  <h2>Bild-URL-Pfad</h2>
+  <h2>{{ _('Image URL path') }}</h2>
 {{ render_difference(diff_image_url_path) }}
 
 {%- endblock %}

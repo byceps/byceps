@@ -4,7 +4,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% set page_title = 'Artikel' %}
+{% set page_title = _('Article') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -16,11 +16,11 @@
     {%- if has_current_user_permission(ShopArticlePermission.create) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>Artikel anlegen</span></a>
+        <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>{{ _('Create article') }}</span></a>
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} Artikelnummer-Sequenz anlegen</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} {{ _('Create article number sequence') }}</a></li>
           </ol>
         </div>
       </div>
@@ -34,7 +34,7 @@
       <thead>
         <tr>
           <th>Artikelnr.</th>
-          <th>Beschreibung</th>
+          <th>{{ _('Description') }}</th>
           <th class="hyphenate number" style="width: 15%;">Stückpreis<br>Steuersatz</th>
           <th class="number">Gesamt</th>
           <th class="hyphenate number" style="width: 11%;">Anzahl<br>verfügbar</th>

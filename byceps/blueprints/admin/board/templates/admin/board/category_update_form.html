@@ -4,10 +4,10 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'board_admin' %}
 {% set current_page_brand = brand %}
-{% set page_title = 'Kategorie bearbeiten' %}
+{% set page_title = _('Edit category') %}
 
 {% block before_body %}
-{{ render_backlink(url_for('.board_view', board_id=category.board_id), 'Kategorie "%s"'|format(category.title)) }}
+{{ render_backlink(url_for('.board_view', board_id=category.board_id), _('Category') ~ ' "%s"'|format(category.title)) }}
 {%- endblock %}
 
 {% block body %}

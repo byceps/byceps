@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/user_badge.html' import render_user_badge_linked %}
 {% set current_page = 'user_badge' %}
-{% set page_title = 'Abzeichen' %}
+{% set page_title = _('Badges') %}
 
 {% block head %}
   <style>
@@ -33,7 +33,7 @@
 
 {% block body %}
 
-  <h1>Abzeichen</h1>
+  <h1>{{ _('Badges') }}<h1>
 
   <ol class="badges">
     {%- for badge in badges|sort(attribute='label') %}

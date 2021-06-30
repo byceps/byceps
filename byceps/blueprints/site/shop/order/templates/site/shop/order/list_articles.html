@@ -15,7 +15,7 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Beschreibung</th>
+        <th>{{ _('Description') }}</th>
         <th class="number" style="width: 15%;">Steuersatz</th>
         <th class="number" style="width: 15%;">Stückpreis</th>
       </tr>
@@ -26,7 +26,7 @@
       <tr{% if not is_available %} class="dimmed"{% endif %}>
         <td><strong>{{ item.article.description }}</strong>
           {%- if not is_available %}
-          <br><em>derzeit nicht verfügbar</em>
+          <br><em>{{ _('currently not available') }}</em>
           {%- endif -%}
         </td>
         <td class="number">{{ item.article.tax_rate|tax_rate_as_percentage }}&thinsp;%</td>

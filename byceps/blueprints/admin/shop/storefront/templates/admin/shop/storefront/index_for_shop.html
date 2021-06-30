@@ -2,7 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
-{% set page_title = 'Storefronts' %}
+{% set page_title = _('Storefronts') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -14,13 +14,13 @@
     <div class="column-auto">
       <div class="button-row button-row--right">
         {%- if has_current_user_permission(ShopPermission.create) %}
-        <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>Storefront anlegen</span></a>
+        <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>{{ _('Create storefront') }}</span></a>
         {%- endif %}
         {%- if has_current_user_permission(ShopPermission.update) %}
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} Bestellnummer-Sequenz anlegen</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id) }}">{{ render_icon('add') }} {{ _('Create order number sequence') }}</a></li>
           </ol>
         </div>
         {%- endif %}
@@ -45,9 +45,9 @@
           <td>{{ order_number_prefixes_by_sequence_id[storefront.order_number_sequence_id] }}</td>
           <td>
             {%- if storefront.closed -%}
-            {{ render_tag('geschlossen', icon='disabled', class='color-disabled') }}
+            {{ render_tag(_('closed'), icon='disabled', class='color-disabled') }}
             {%- else -%}
-            {{ render_tag('geöffnet', icon='success', class='color-success') }}
+            {{ render_tag(_('open'), icon='success', class='color-success') }}
             {%- endif -%}
           </td>
         </tr>

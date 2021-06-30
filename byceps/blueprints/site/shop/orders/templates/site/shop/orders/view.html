@@ -8,8 +8,8 @@
 
   <nav class="breadcrumbs">
     <ol>
-      <li>Shop</li>
-      <li><a href="{{ url_for('.index') }}">Deine Bestellungen</a></li>
+      <li>{{ _('Shop') }}</li>
+      <li><a href="{{ url_for('.index') }}">{{ _('Your orders') }}</a></li>
     </ol>
   </nav>
   <h1>{{ order.order_number }}</h1>

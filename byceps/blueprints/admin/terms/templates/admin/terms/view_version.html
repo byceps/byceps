@@ -13,7 +13,7 @@
         <ol>
           <li>Allgemeine Geschäftsbedingungen</li>
           <li><a href="{{ url_for('.view_document', document_id=version.document_id) }}">{{ version.document.title }}</a></li>
-          <li>Versionen</li>
+          <li>{{ _('Versions') }}</li>
         </ol>
       </nav>
       <h1>{{ version.title }}</h1>

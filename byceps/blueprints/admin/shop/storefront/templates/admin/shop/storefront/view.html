@@ -1,7 +1,7 @@
 {% extends 'layout/admin/shop/storefront.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
-{% set page_title = ['Storefront', storefront.id] %}
+{% set page_title = [_('Storefront'), storefront.id] %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -13,7 +13,7 @@
     {%- if has_current_user_permission(ShopPermission.update) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.update_form', storefront_id=storefront.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+        <a class="button" href="{{ url_for('.update_form', storefront_id=storefront.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
       </div>
     </div>
     {%- endif %}
@@ -22,11 +22,11 @@
   <div class="box">
     <table class="index">
       <tr>
-        <th>Shop</th>
+        <th>{{ _('Shop') }}</th>
         <td><a href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}">{{ shop.title }}</a></td>
       </tr>
       <tr>
-        <th>Katalog</th>
+        <th>{{ _('Catalog') }}</th>
         <td>{{ storefront.catalog_id|fallback }}</td>
       </tr>
       <tr>

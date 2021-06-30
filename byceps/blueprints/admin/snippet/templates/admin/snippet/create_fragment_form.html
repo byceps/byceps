@@ -1,13 +1,13 @@
 {% extends 'layout/admin/snippet.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
-{% set page_title = 'Fragment erstellen' %}
+{% set page_title = _('Create fragment') %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li>Snippets</li>
+      <li>{{ _('Snippets') }}</li>
       <li><a href="{{ url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name) }}">{{ scope.type_ }}/{{ scope.name }}</a></li>
     </ol>
   </nav>

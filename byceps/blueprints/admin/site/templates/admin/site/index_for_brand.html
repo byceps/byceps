@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'sites_admin' %}
 {% set current_page_brand = brand %}
-{% set page_title = 'Sites' %}
+{% set page_title = _('Sites') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -16,7 +16,7 @@
     {%- if has_current_user_permission(SitePermission.create) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.create_form', brand_id=brand.id) }}"><span>{{ render_icon('add') }} Site erstellen</span></a>
+        <a class="button" href="{{ url_for('.create_form', brand_id=brand.id) }}"><span>{{ render_icon('add') }} {{ _('Create site') }}</span></a>
       </div>
     </div>
     {%- endif %}

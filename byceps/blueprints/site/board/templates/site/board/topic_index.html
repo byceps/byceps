@@ -5,7 +5,7 @@
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/user_avatar.html' import render_user_avatar_16_and_name %}
 {% set current_page = 'board' %}
-{% set page_title = 'Forum' %}
+{% set page_title = _('Board') %}
 
 {% block head %}
   <style>
@@ -18,15 +18,15 @@
 
 {% block body %}
 
-  <h1>Forum</h1>
+  <h1>{{ _('Board') }}</h1>
 
   {%- if topics.items %}
   <table class="index wide board-topic-index">
     <thead>
       <tr>
-        <th>Thema</th>
-        <th class="centered">Antworten</th>
-        <th>Letzter Beitrag</th>
+        <th>{{ _('Topic') }}</th>
+        <th class="centered">{{ _('Replies') }}</th>
+        <th>{{ _('Latest posting') }}</th>
       </tr>
     </thead>
     <tbody>

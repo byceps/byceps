@@ -5,30 +5,30 @@
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page_party = party %}
 {% set current_tab = 'bundles' %}
-{% set page_title = ['Ticket-Bundles', party.title] %}
+{% set page_title = [_('Ticket bundles'), party.title] %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
-  <h1>Ticket-Bundles {{ render_extra_in_heading(bundles.total) }}</h1>
+  <h1>{{ _('Ticket bundles') }} {{ render_extra_in_heading(bundles.total) }}</h1>
 
   <div class="box">
     {%- if bundles.items %}
     <table class="index wide">
       <thead>
         <tr>
-          <th>Beschreibung<br>ID</th>
-          <th>Erstellt</th>
-          <th>Besitzer/in</th>
-          <th>Kategorie</th>
-          <th class="number">Tickets</th>
+          <th>{{ _('Description') }}<br>ID</th>
+          <th>{{ _('Created') }}</th>
+          <th>{{ _('Owner') }}</th>
+          <th>{{ _('Category') }}</th>
+          <th class="number">{{ _('Tickets') }}</th>
         </tr>
       </thead>
       <tbody>
         {%- for bundle in bundles.items %}
         <tr>
           <td>
-            <a class="disguised" href="{{ url_for('.view_bundle', bundle_id=bundle.id) }}"><strong>{{ bundle.label|fallback('unbenannt') }}</strong></a><br>
+            <a class="disguised" href="{{ url_for('.view_bundle', bundle_id=bundle.id) }}"><strong>{{ bundle.label|fallback(_('unnamed')) }}</strong></a><br>
             <span class="monospace">{{ bundle.id }}</span>
           </td>
           <td>{{ render_datetime(bundle.created_at|utc_to_local_tz) }}</td>
@@ -40,7 +40,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">keine</div>
+    <div class="dimmed-box centered">{{ _('none') }}</div>
     {%- endif %}
   </div>
 

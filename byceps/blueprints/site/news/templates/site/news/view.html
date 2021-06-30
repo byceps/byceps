@@ -1,12 +1,12 @@
 {% extends 'layout/base.html' %}
 {% set current_page = 'news' %}
-{% set page_title = [item.title, 'Neuigkeiten'] %}
+{% set page_title = [item.title, _('News')] %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.index') }}">Neuigkeiten</a></li>
+      <li><a href="{{ url_for('.index') }}">{{ _('News') }}</a></li>
     </ol>
   </nav>
 

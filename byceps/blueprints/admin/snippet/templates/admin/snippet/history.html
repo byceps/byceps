@@ -2,13 +2,13 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_name %}
-{% set page_title = 'Versionshistorie' %}
+{% set page_title = _('Version history') %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li>Snippets</li>
+      <li>{{ _('Snippets') }}</li>
       <li><a href="{{ url_for('.index_for_scope', scope_type=snippet.scope.type_, scope_name=snippet.scope.name) }}">{{ snippet.scope.type_ }}/{{ snippet.scope.name }}</a></li>
       <li>{{ snippet.name }}</li>
     </ol>
@@ -31,9 +31,9 @@
         <tr>
           <td>
             {%- if version.is_current -%}
-            {{ render_icon('published', title='öffentlich') }}
+            {{ render_icon('published', title=_('public')) }}
             {%- else -%}
-            {{ render_icon('archived', title='archiviert') }}
+            {{ render_icon('archived', title=_('archived')) }}
             {%- endif -%}
           </td>
           <td class="nowrap"><a href="{{ url_for('.view_version', snippet_version_id=version.id) }}">{{ render_datetime(version.created_at|utc_to_local_tz) }}</a></td>

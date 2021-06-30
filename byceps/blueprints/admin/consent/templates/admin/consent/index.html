@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% set current_page = 'consent_admin' %}
-{% set page_title = 'Zustimmungen' %}
+{% set page_title = _('Consents') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -14,7 +14,7 @@
       <thead>
         <tr>
           <th>Titel<br>Name</th>
-          <th class="number">Zustimmungen</th>
+          <th class="number">{{ _('Consents') }}</th>
         </tr>
       </thead>
       <tbody>

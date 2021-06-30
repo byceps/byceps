@@ -4,19 +4,19 @@
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'board_admin' %}
 {% set current_page_brand = brand %}
-{% set page_title = ['Foren', brand.title] %}
+{% set page_title = [_('Boards'), brand.title] %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>Foren {{ render_extra_in_heading(boards|length) }}</h1>
+      <h1>{{ _('Boards') }} {{ render_extra_in_heading(boards|length) }}</h1>
     </div>
   {%- if has_current_user_permission(BoardPermission.create) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.board_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>Forum erstellen</span></a>
+        <a class="button" href="{{ url_for('.board_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create board') }}</span></a>
       </div>
     </div>
   {%- endif %}
@@ -28,9 +28,9 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th class="centered">Kategorien</th>
-          <th class="centered">Themen</th>
-          <th class="centered">Beiträge</th>
+          <th class="centered">{{ _('Categories') }}</th>
+          <th class="centered">{{ _('Topics') }}</th>
+          <th class="centered">{{ _('Postings') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -39,7 +39,7 @@
           <td>
             <a href="{{ url_for('.board_view', board_id=board.id) }}"><strong>{{ board.id }}</strong></a>
             {%- if board.access_restricted %}
-            <br>{{ render_tag('zugriffsbeschränkt') }}
+            <br>{{ render_tag(_('restricted access')) }}
             {%- endif %}
           </td>
           {%- with stats = stats_by_board_id[board.id] %}
@@ -52,7 +52,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">Für diese Marke sind keine Foren hinterlegt.</div>
+    <div class="dimmed-box centered">{{ _('No boards exist for this brand.') }}</div>
     {%- endif %}
   </div>
 

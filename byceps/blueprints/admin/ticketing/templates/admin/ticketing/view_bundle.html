@@ -5,7 +5,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'bundles' %}
-{% set page_title = ['Ticket-Bundle', bundle.id] %}
+{% set page_title = [_('Ticket bundle'), bundle.id] %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -19,33 +19,33 @@
         <td>{{ bundle.id }}</td>
       </tr>
       <tr>
-        <th>Beschreibung</th>
+        <th>{{ _('Description') }}</th>
         <td>{{ bundle.label|fallback }}</td>
       </tr>
       <tr>
-        <th>Erstellt</th>
+        <th>{{ _('Created') }}</th>
         <td>{{ render_datetime(bundle.created_at|utc_to_local_tz) }}</td>
       </tr>
       <tr>
-        <th>Besitzer/in</th>
+        <th>{{ _('Owner') }}</th>
         <td>{{ render_user_avatar_20_and_admin_link(bundle.owned_by) }}</td>
       </tr>
       <tr>
-        <th>Party</th>
+        <th>{{ _('Party') }}</th>
         <td>{{ party.title }}</td>
       </tr>
       <tr>
-        <th>Kategorie</th>
+        <th>{{ _('Category') }}</th>
         <td>{{ bundle.ticket_category.title }}</td>
       </tr>
       <tr>
-        <th>Umfang</th>
-        <td>{{ bundle.ticket_quantity }} Tickets</td>
+        <th>{{ _('Ticket quantity') }}</th>
+        <td>{{ bundle.ticket_quantity }}</td>
       </tr>
     </table>
   </div>
 
-  <h2>Tickets {{ render_extra_in_heading(tickets|length) }}</h1>
+  <h2>{{ _('Tickets') }} {{ render_extra_in_heading(tickets|length) }}</h1>
   <div class="box">
 {%- include 'admin/ticketing/_ticket_list.html' %}
   </div>

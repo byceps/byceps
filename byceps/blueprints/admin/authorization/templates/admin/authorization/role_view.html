@@ -2,7 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
 {% set current_tab = 'roles' %}
-{% set page_title = ['Rollen', role.title] %}
+{% set page_title = [_('Roles'), role.title] %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -35,7 +35,7 @@
       {%- endfor %}
     </ul>
     {%- else %}
-    <p class="dimmed">keine</p>
+    <p class="dimmed">{{ _('none') }}</p>
     {%- endif %}
   </div>
 
@@ -48,7 +48,7 @@
       {%- endfor %}
     </ol>
     {%- else %}
-    <p class="dimmed">keine</p>
+    <p class="dimmed">{{ _('none') }}</p>
     {%- endif %}
   </div>
 

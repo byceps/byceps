@@ -15,7 +15,7 @@
 
       <nav class="breadcrumbs">
         <ol>
-          <li><a href="{{ url_for('site_admin.index') }}">Sites</a></li>
+          <li><a href="{{ url_for('site_admin.index') }}">{{ _('Sites') }}</a></li>
         </ol>
       </nav>
       <h1>
@@ -23,10 +23,10 @@
         {%- if not site.enabled or site.archived -%}
         <br>
           {%- if not site.enabled %}
-        {{ render_tag('deaktiviert', class='color-disabled', icon='disabled') }}
+        {{ render_tag(_('disabled'), class='color-disabled', icon='disabled') }}
           {%- endif %}
           {%- if site.archived %}
-        {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+        {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
           {%- endif %}
         {%- endif -%}
       </h1>
@@ -36,7 +36,7 @@
 
       {%- if has_current_user_permission(SitePermission.update) %}
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.update_form', site_id=site.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+        <a class="button" href="{{ url_for('.update_form', site_id=site.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
       </div>
       {%- endif %}
 
@@ -50,15 +50,15 @@
         <td>{{ site.id }}</td>
       </tr>
       <tr>
-        <th>Servername</th>
+        <th>{{ _('Server name') }}</th>
         <td><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></td>
       </tr>
       <tr>
-        <th>Marke</th>
+        <th>{{ _('Brand') }}</th>
         <td>{{ render_brand_admin_link(brand) }}</td>
       </tr>
       <tr>
-        <th>Party</th>
+        <th>{{ _('Party') }}</th>
         <td>{% if site.party_id %}<a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ site.party_id }}</a>{% else %}{{ ''|fallback }}{% endif %}</td>
       </tr>
       <tr>
@@ -70,7 +70,7 @@
         <td>{{ render_tag('geöffnet', class='color-success') if site.login_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
       </tr>
       <tr>
-        <th>Forum</th>
+        <th>{{ _('Board') }}</th>
         <td>
           {%- if board %}
           <a href="{{ url_for('board_admin.board_view', board_id=board.id) }}">{{ board.id }}</a>
@@ -80,7 +80,7 @@
         </td>
       </tr>
       <tr>
-        <th>Storefront</th>
+        <th>{{ _('Storefront') }}</th>
         <td>
           {%- if storefront %}
           <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}">{{ storefront.id }}</a>
