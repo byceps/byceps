@@ -4,7 +4,7 @@
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page_party = party %}
 {% set current_tab = 'tickets' %}
-{% set page_title = '%s - Ticketing'|format(party.title) %}
+{% set page_title = ['Tickets', party.title] %}
 {% set layout_main_raw = True %}
 
 {% block body %}

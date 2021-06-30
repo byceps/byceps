@@ -1,4 +1,4 @@
-{%- set page_title = page_title|default %}
+{%- from 'macros/page.html' import render_page_title %}
 {%- set current_page = current_page|default -%}
 
 
@@ -9,9 +9,9 @@
     <meta name="referrer" content="origin-when-cross-origin">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="BYCEPS">
+    <title>{{ render_page_title(page_title|default([]), 'BYCEPS') }}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style/common.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/site.css') }}">
-    <title>{% if page_title %}{{ page_title.replace(' - ', ' &middot; ')|safe }} &middot; {% endif %}BYCEPS</title>
 {% block head %}{% endblock %}
   </head>
   <body>

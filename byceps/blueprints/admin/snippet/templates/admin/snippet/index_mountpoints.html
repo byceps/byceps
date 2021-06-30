@@ -1,7 +1,7 @@
 {% extends 'layout/admin/snippet.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
-{% set page_title = '%s/%s - Mountpoints'|format(scope.type_, scope.name) %}
+{% set page_title = ['%s/%s'|format(scope.type_, scope.name), 'Mountpoints'] %}
 
 {% if scope.type_ == 'site' %}
   {% block before_body %}

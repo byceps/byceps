@@ -2,7 +2,7 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_64 %}
 {% from 'macros/user_badge.html' import render_user_badge %}
 {% set current_page = 'user_badge' %}
-{% set page_title = 'Abzeichen - %s'|format(badge.label) %}
+{% set page_title = ['Abzeichen', badge.label] %}
 
 {% block head %}
   <style>

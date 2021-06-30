@@ -1,14 +1,14 @@
 {% extends 'layout/admin/shop/storefront.html' %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
-{% set page_title = 'Storefront ' ~ storefront.id %}
+{% set page_title = ['Storefront', storefront.id] %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>{{ page_title }}</h1>
+      <h1>{{ storefront.id }}</h1>
     </div>
     {%- if has_current_user_permission(ShopPermission.update) %}
     <div class="column-auto">

@@ -1,7 +1,7 @@
 {% extends 'layout/admin/seating.html' %}
 {% set current_page_party = party %}
 {% set current_tab = 'overview' %}
-{% set page_title = '%s - Sitzpläne'|format(party.title) %}
+{% set page_title = ['Sitzpläne', party.title] %}
 {% set layout_main_raw = True %}
 
 {% block body %}

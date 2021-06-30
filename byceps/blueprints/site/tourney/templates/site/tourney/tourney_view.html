@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/datetime.html' import render_datetime_custom, render_time %}
 {% from 'macros/icons.html' import render_icon %}
-{% set page_title = '%s - Turniere'|format(tourney.title) %}
+{% set page_title = ['Turnier', tourney.title] %}
 
 {% block head %}
 <style>

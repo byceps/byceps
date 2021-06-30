@@ -3,7 +3,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_name %}
-{% set page_title = '%s/%s - Snippets'|format(scope.type_, scope.name) %}
+{% set page_title = ['%s/%s'|format(scope.type_, scope.name), 'Snippets'] %}
 
 {% block before_body %}
   {% if (scope.type_ == 'site') and (site is not none) %}

@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/shop/orders.html' import render_order_payment_state, render_order_overdue_tag %}
 {% set current_page = 'shop_orders' %}
-{% set page_title = 'Bestellung ' ~ order.order_number %}
+{% set page_title = ['Bestellung', order.order_number] %}
 {% block body %}
 
   <nav class="breadcrumbs">
