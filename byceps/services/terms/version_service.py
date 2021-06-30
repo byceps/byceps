@@ -9,7 +9,6 @@ byceps.services.terms.version_service
 from typing import Optional, Sequence
 
 from ...database import db
-from ...typing import BrandID
 
 from ..consent.transfer.models import SubjectID as ConsentSubjectID
 from ..snippet.transfer.models import SnippetVersionID
@@ -40,31 +39,6 @@ def create_version(
 def find_version(version_id: VersionID) -> Optional[DbVersion]:
     """Return the version with that ID, or `None` if not found."""
     return DbVersion.query.get(version_id)
-
-
-def find_current_version_for_brand(brand_id: BrandID) -> Optional[DbVersion]:
-    """Return the current version of the document configured for the
-    brand, or `None` if none is configured for the brand or if the
-    document has no current version set.
-    """
-    document_id = document_service.find_document_id_for_brand(brand_id)
-    if not document_id:
-        # Not configured for brand.
-        return None
-
-    document = document_service.find_document(document_id)
-    if not document:
-        raise ValueError(
-            f'Unknown document ID "{document_id}" configured '
-            f'for brand ID "{brand_id}".'
-        )
-
-    if document.current_version_id is None:
-        raise ValueError(
-            f'No current version specified for document ID "{document_id}".'
-        )
-
-    return find_version(document.current_version_id)
 
 
 def get_versions(document_id: DocumentID) -> Sequence[DbVersion]:
