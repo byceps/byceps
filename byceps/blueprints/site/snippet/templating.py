@@ -47,7 +47,7 @@ def get_snippet_context(version):
     body = template.render()
 
     return {
-        'title': title,
+        'page_title': title,
         'current_page': current_page,
         'head': head,
         'body': body,
