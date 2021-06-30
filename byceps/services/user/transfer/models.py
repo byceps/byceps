@@ -38,6 +38,11 @@ class UserDetail:
     internal_comment: Optional[str]
     extras: dict[str, Any]
 
+    @property
+    def full_name(self) -> Optional[str]:
+        names = [self.first_names, self.last_name]
+        return ' '.join(filter(None, names)) or None
+
 
 @dataclass(frozen=True)
 class UserWithDetail(User):
