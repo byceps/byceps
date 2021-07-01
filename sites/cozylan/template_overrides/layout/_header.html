@@ -6,9 +6,11 @@
               <div class="column-auto column-auto--grow">
                 <span class="brand-slogan">Gemütlich zocken.</span>
               </div>
+              {%- if not g.user.locale %}
               <div class="column-auto">
 {%- include 'layout/_locale_selector.html' %}
               </div>
+              {%- endif %}
               <div class="column-auto">
 {%- include 'layout/_current_user.html' %}
               </div>
