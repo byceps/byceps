@@ -23,7 +23,7 @@ from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.terms import document_service as terms_document_service
 from byceps.services.terms import version_service as terms_version_service
-from byceps.services.user.dbmodels.user import User
+from byceps.services.user.dbmodels.user import User as DbUser
 from byceps.services.user import event_service, service as user_service
 from byceps.services.verification_token.dbmodels import Token as DbToken
 from byceps.services.verification_token.transfer.models import (
@@ -245,7 +245,7 @@ def find_user(screen_name):
 
 
 def get_user_count():
-    return User.query.count()
+    return DbUser.query.count()
 
 
 def find_verification_token(user_id):
