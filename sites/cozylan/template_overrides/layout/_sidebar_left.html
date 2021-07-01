@@ -1,19 +1,4 @@
-{% from 'macros/icons.html' import render_icon -%}
-
-
 <div class="sidebar-section">
   <h3>Navigation</h3>
 {%- include 'layout/_navigation.html' with context %}
-</div>
-
-<div class="sidebar-section">
-  <h3>Sprache</h3>
-  <div class="dropdown">
-    <button class="dropdown-toggle button button--clear button--compact"><span>{{ locale_icons_by_code[current_locale.language] }} {{ current_locale.get_display_name(current_locale) }}</span> {{ render_icon('chevron-down') }}</button>
-    <ol class="dropdown-menu">
-      {%- for locale in locales %}
-      <li><a class="dropdown-item{% if locale.language == current_locale.language %} current{% endif %}" href="{{ url_for('locale.set_locale', locale=locale.language) }}">{{ locale_icons_by_code[locale.language] }} {{ locale.get_display_name(current_locale) }}</a></li>
-      {%- endfor %}
-    </ol>
-  </div>
 </div>
