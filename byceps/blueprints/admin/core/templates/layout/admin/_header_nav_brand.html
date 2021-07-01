@@ -22,12 +22,6 @@
       required_permission=PartyPermission.view,
       icon='date')
     .add_item(
-      url_for('orga_admin.persons_for_brand', brand_id=brand.id),
-      _('Organizers'),
-      id='orga_admin',
-      required_permission=OrgaDetailPermission.view,
-      icon='users')
-    .add_item(
       url_for('news_admin.channel_index_for_brand', brand_id=brand.id),
       _('News Channels'),
       id='news_admin',
@@ -39,6 +33,12 @@
       id='shop_shop_admin',
       required_permission=ShopPermission.view,
       icon='shop')
+    .add_item(
+      url_for('orga_admin.persons_for_brand', brand_id=brand.id),
+      _('Organizers'),
+      id='orga_admin',
+      required_permission=OrgaDetailPermission.view,
+      icon='users')
     .add_item(
       url_for('brand_admin.view', brand_id=brand.id),
       _('Settings'),
