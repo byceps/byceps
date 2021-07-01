@@ -528,6 +528,7 @@ msgid "ID"
 msgstr "ID"
 
 #: byceps/blueprints/admin/board/forms.py:23
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:35
 #: byceps/blueprints/admin/news/forms.py:47
 #: byceps/blueprints/admin/seating/forms.py:18
 #: byceps/blueprints/admin/user_badge/forms.py:23
@@ -537,6 +538,7 @@ msgid "Slug"
 msgstr "Slug"
 
 #: byceps/blueprints/admin/board/forms.py:25
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:35
 #: byceps/blueprints/admin/brand/forms.py:18
 #: byceps/blueprints/admin/news/forms.py:60
 #: byceps/blueprints/admin/news/templates/admin/news/item_compare_versions.html:15
@@ -660,6 +662,7 @@ msgstr "Erstellen"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_index_for_brand.html:7
 #: byceps/blueprints/admin/board/templates/admin/board/board_index_for_brand.html:14
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:15
 msgid "Boards"
 msgstr "Foren"
 
@@ -670,11 +673,13 @@ msgid "Categories"
 msgstr "Kategorien"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_index_for_brand.html:32
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:37
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:16
 msgid "Topics"
 msgstr "Themen"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_index_for_brand.html:33
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:38
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:17
 msgid "Postings"
 msgstr "Beiträge"
@@ -687,13 +692,7 @@ msgstr "zugriffsbeschränkt"
 msgid "No boards exist for this brand."
 msgstr "Für diese Marke sind keine Foren hinterlegt."
 
-#: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:7
-#: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:18
-#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:6
-#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:18
-msgid "Create category"
-msgstr "Kategorie erstellen"
-
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:6
 #: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:10
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:73
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:6
@@ -712,6 +711,88 @@ msgstr "Kategorie erstellen"
 #: byceps/blueprints/site/board/templates/site/board/topic_view.html:79
 msgid "Board"
 msgstr "Forum"
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:23
+#: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:7
+#: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:18
+#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:6
+#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:18
+msgid "Create category"
+msgstr "Kategorie erstellen"
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:34
+#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:29
+msgid "Position"
+msgstr "Position"
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:36
+#: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:18
+#: byceps/blueprints/admin/shop/article/forms.py:38
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:37
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:58
+#: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:16
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:20
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:22
+#: byceps/blueprints/admin/user_badge/forms.py:38
+#: byceps/blueprints/admin/webhook/forms.py:19
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:18
+#: byceps/blueprints/site/user_group/forms.py:18
+msgid "Description"
+msgstr "Beschreibung"
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:50
+msgid "hidden"
+msgstr "versteckt"
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:61
+#: byceps/blueprints/admin/party/templates/admin/party/view.html:38
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:40
+#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:16
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:39
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:40
+#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:44
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:52
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:62
+#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:45
+msgid "Move up"
+msgstr "Nach oben verschieben"
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:63
+#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:46
+msgid "Move down"
+msgstr "Nach unten verschieben"
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:65
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:26
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:29
+msgid "Make visible"
+msgstr "Sichtbar machen"
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:67
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:25
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:28
+msgid "Hide"
+msgstr "Verstecken"
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:70
+#: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:49
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:48
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:25
+#: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:21
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:51
+msgid "Delete"
+msgstr "Löschen"
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:81
+msgid "This board contains no categories."
+msgstr "Das Forum enthält keine Kategorien."
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:94
+msgid "Delete category?"
+msgstr "Kategorie löschen?"
 
 #: byceps/blueprints/admin/board/templates/admin/board/category_update_form.html:7
 msgid "Edit category"
@@ -847,7 +928,7 @@ msgid "Parties"
 msgstr "Partys"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:32
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:26
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:38
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:9
 msgid "Organizers"
 msgstr "Organisatoren"
@@ -966,7 +1047,7 @@ msgid "Site"
 msgstr "Site"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav.html:36
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:38
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:32
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:4
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:7
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:7
@@ -1002,7 +1083,7 @@ msgstr "Dashboard"
 msgid "Sites"
 msgstr "Sites"
 
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:32
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:26
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:97
 msgid "News Channels"
 msgstr "Newskanäle"
@@ -1417,14 +1498,6 @@ msgstr "Die News \"%(title)s\" wird später veröffentlicht."
 msgid "News item \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
 
-#: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:49
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:48
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:25
-#: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:21
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:51
-msgid "Delete"
-msgstr "Löschen"
-
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:67
 msgid "Delete news channel?"
 msgstr "Newskanal löschen?"
@@ -1734,16 +1807,6 @@ msgstr "Für diese Marke sind keine Partys hinterlegt."
 msgid "Edit party"
 msgstr "Party bearbeiten"
 
-#: byceps/blueprints/admin/party/templates/admin/party/view.html:38
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:40
-#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:16
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:39
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:40
-#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:44
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:52
-msgid "Edit"
-msgstr "Bearbeiten"
-
 #: byceps/blueprints/admin/seating/views.py:115
 #, python-format
 msgid "Seating area \"%(title)s\" has been created."
@@ -1759,20 +1822,6 @@ msgstr "Bereich erstellen"
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:14
 msgid "Areas"
 msgstr "Bereiche"
-
-#: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:18
-#: byceps/blueprints/admin/shop/article/forms.py:38
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:37
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:58
-#: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:16
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:20
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:22
-#: byceps/blueprints/admin/user_badge/forms.py:38
-#: byceps/blueprints/admin/webhook/forms.py:19
-#: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:18
-#: byceps/blueprints/site/user_group/forms.py:18
-msgid "Description"
-msgstr "Beschreibung"
 
 #: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:19
 msgid "Ticket category"
@@ -2285,6 +2334,7 @@ msgid "Create site"
 msgstr "Site erstellen"
 
 #: byceps/blueprints/admin/site/templates/admin/site/create_form.html:27
+#: byceps/blueprints/admin/site/templates/admin/site/update_form.html:19
 msgid "Has to be unique."
 msgstr "Muss eindeutig sein."
 
@@ -2602,18 +2652,6 @@ msgstr "Turniere"
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:6
 msgid "Tourney categories"
 msgstr "Turnier-Kategorien"
-
-#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:29
-msgid "Position"
-msgstr "Position"
-
-#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:45
-msgid "Move up"
-msgstr "Nach oben verschieben"
-
-#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:46
-msgid "Move down"
-msgstr "Nach unten verschieben"
 
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:56
 msgid "No categories exist."
@@ -3497,16 +3535,6 @@ msgstr "Beitrag hinzufügen"
 msgid "Moderate posting"
 msgstr "Beitrag moderieren"
 
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:25
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:28
-msgid "Hide"
-msgstr "Verstecken"
-
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:26
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:29
-msgid "Make visible"
-msgstr "Sichtbar machen"
-
 #: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:6
 msgid "Edit posting"
 msgstr "Beitrag bearbeiten"
@@ -3597,6 +3625,18 @@ msgstr "Du hast dich zum Newsletter \"%(title)s\" angemeldet."
 #, python-format
 msgid "You have unsubscribed from newsletter \"%(title)s\"."
 msgstr "Du hast dich vom Newsletter \"%(title)s\" abgemeldet."
+
+#: byceps/blueprints/site/party_history/templates/site/party_history/_meta.html:11
+msgid "attendees"
+msgstr "Teilnehmer"
+
+#: byceps/blueprints/site/party_history/templates/site/party_history/index.html:3
+msgid "Party History"
+msgstr "Party-Historie"
+
+#: byceps/blueprints/site/party_history/templates/site/party_history/index.html:13
+msgid "There haven't been any parties yet."
+msgstr "Es haben noch keine Partys stattgefunden."
 
 #: byceps/blueprints/site/party_history/templates/site/party_history/view.html:24
 #: sites/cozylan/template_overrides/layout/_navigation.html:8

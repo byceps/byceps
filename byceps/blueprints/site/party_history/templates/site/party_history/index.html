@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% set current_page = 'party_history' %}
-{% set page_title = 'Party-Historie' %}
+{% set page_title = _('Party History') %}
 
 {% block body %}
 
@@ -10,7 +10,7 @@
   <h2><a class="disguised" href="{{ url_for('.view', party_id=party.id) }}">{{ party.title }}</a></h2>
 {% include 'site/party_history/_meta.html' %}
   {%- else %}
-  <p class="dimmed">Es haben noch keine Partys stattgefunden.</p>
+  <p class="dimmed">{{ _('There haven\'t been any parties yet.') }}</p>
   {%- endfor %}
 
 {%- endblock %}
