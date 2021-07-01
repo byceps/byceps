@@ -72,7 +72,7 @@
         <div>
           {{ render_icon('shop', title='Storefront') }}
           {% if site.storefront_id -%}
-            {%- with storefront = storefronts_by_site_id.get(site.storefront_id) %}
+            {%- with storefront = storefronts_by_id[site.storefront_id] %}
           <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}" class="disguised">{{ storefront.id }}</a>
             {%- endwith %}
           {%- else -%}

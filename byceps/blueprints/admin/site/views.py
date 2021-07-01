@@ -6,6 +6,7 @@ byceps.blueprints.admin.site.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import dataclasses
 from typing import Iterable, Iterator
 
@@ -19,6 +20,10 @@ from ....services.news import channel_service as news_channel_service
 from ....services.party import service as party_service
 from ....services.shop.shop import service as shop_service
 from ....services.shop.storefront import service as storefront_service
+from ....services.shop.storefront.transfer.models import (
+    Storefront,
+    StorefrontID,
+)
 from ....services.site import (
     service as site_service,
     settings_service as site_settings_service,
@@ -55,13 +60,13 @@ def index():
     parties = party_service.get_all_parties()
     party_titles_by_id = {p.id: p.title for p in parties}
 
-    storefronts_by_site_id = _get_storefronts_by_site_id(sites)
+    storefronts_by_id = _get_storefronts_by_id(sites)
 
     return {
         'sites': sites,
         'brands': brands,
         'party_titles_by_id': party_titles_by_id,
-        'storefronts_by_site_id': storefronts_by_site_id,
+        'storefronts_by_id': storefronts_by_id,
     }
 
 
@@ -81,13 +86,13 @@ def index_for_brand(brand_id):
     parties = party_service.get_all_parties()
     party_titles_by_id = {p.id: p.title for p in parties}
 
-    storefronts_by_site_id = _get_storefronts_by_site_id(sites)
+    storefronts_by_id = _get_storefronts_by_id(sites)
 
     return {
         'sites': sites,
         'brand': brand,
         'party_titles_by_id': party_titles_by_id,
-        'storefronts_by_site_id': storefronts_by_site_id,
+        'storefronts_by_id': storefronts_by_id,
     }
 
 
@@ -108,17 +113,12 @@ def _site_to_site_with_brand(site: Site, brand: Brand) -> SiteWithBrand:
     return SiteWithBrand(*(site_tuple + brand_tuple))
 
 
-def _get_storefronts_by_site_id(sites):
+def _get_storefronts_by_id(sites) -> dict[StorefrontID, Storefront]:
     storefront_ids = {
         site.storefront_id for site in sites if site.storefront_id is not None
     }
     storefronts = storefront_service.find_storefronts(storefront_ids)
-    storefronts_by_id = {
-        storefront.id: storefront for storefront in storefronts
-    }
-    return {
-        site.id: storefronts_by_id.get(site.storefront_id) for site in sites
-    }
+    return {storefront.id: storefront for storefront in storefronts}
 
 
 @blueprint.get('/sites/<site_id>')
