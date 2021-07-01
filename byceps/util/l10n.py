@@ -14,7 +14,7 @@ from typing import Optional
 import warnings
 
 from babel import Locale
-from flask import current_app, g
+from flask import current_app, g, request
 from wtforms import Form
 
 
@@ -27,11 +27,14 @@ def set_locale(locale_str: str) -> None:
 
 def get_current_user_locale() -> Optional[str]:
     """Return the locale for the current user, if available."""
+    # Look for a locale on the current user object.
     user = getattr(g, 'user')
-    if user is None:
-        return None
+    if (user is not None) and (user.locale is not None):
+        return user.locale
 
-    return user.locale
+    # Try to match user agent's accepted languages.
+    languages = [locale.language for locale in get_locales()]
+    return request.accept_languages.best_match(languages)
 
 
 BASE_LOCALE = Locale('en')
