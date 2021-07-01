@@ -32,9 +32,12 @@ def get_current_user_locale() -> Optional[str]:
     if (user is not None) and (user.locale is not None):
         return user.locale
 
-    # Try to match user agent's accepted languages.
-    languages = [locale.language for locale in get_locales()]
-    return request.accept_languages.best_match(languages)
+    if request:
+        # Try to match user agent's accepted languages.
+        languages = [locale.language for locale in get_locales()]
+        return request.accept_languages.best_match(languages)
+
+    return None
 
 
 BASE_LOCALE = Locale('en')
