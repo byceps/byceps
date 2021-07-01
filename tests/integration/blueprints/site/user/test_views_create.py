@@ -19,10 +19,6 @@ from byceps.services.newsletter import (
     command_service as newsletter_command_service,
     service as newsletter_service,
 )
-from byceps.services.snippet import service as snippet_service
-from byceps.services.snippet.transfer.models import Scope
-from byceps.services.terms import document_service as terms_document_service
-from byceps.services.terms import version_service as terms_version_service
 from byceps.services.user.dbmodels.user import User as DbUser
 from byceps.services.user import event_service, service as user_service
 from byceps.services.verification_token.dbmodels import Token as DbToken
@@ -34,18 +30,7 @@ from tests.helpers import http_client
 
 
 @pytest.fixture(scope='module')
-def user_admin(make_user):
-    return make_user('CommonUserAdmin')
-
-
-@pytest.fixture(scope='module')
-def terms_consent_subject_id(user_admin, brand):
-    scope = Scope.for_brand(brand.id)
-
-    snippet, _ = snippet_service.create_fragment(
-        scope, 'terms_of_service', user_admin.id, 'Don\'t do anything stupid!'
-    )
-
+def terms_consent_subject_id(brand):
     consent_subject = consent_subject_service.create_subject(
         f'{brand.id}_terms-of-service_v1',
         f'Terms of service for {brand.title} / v1',
@@ -53,25 +38,14 @@ def terms_consent_subject_id(user_admin, brand):
         '/terms/',
     )
 
-    terms_document_id = brand.id
-    terms_document = terms_document_service.create_document(
-        terms_document_id, terms_document_id
-    )
-
-    terms_version = terms_version_service.create_version(
-        terms_document.id, '01-Jan-2016', snippet.id, consent_subject.id
-    )
-
-    consent_subject_id = terms_version.consent_subject_id
-
     consent_subject_service.create_brand_requirement(
-        brand.id, consent_subject_id
+        brand.id, consent_subject.id
     )
 
-    yield consent_subject_id
+    yield consent_subject.id
 
     consent_subject_service.delete_brand_requirement(
-        brand.id, consent_subject_id
+        brand.id, consent_subject.id
     )
 
 
