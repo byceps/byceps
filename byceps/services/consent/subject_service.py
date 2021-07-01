@@ -94,11 +94,11 @@ def get_subjects_with_consent_counts(
 
 def _db_entity_to_subject(subject: DbSubject) -> Subject:
     return Subject(
-        subject.id,
-        subject.name,
-        subject.title,
-        subject.checkbox_label,
-        subject.checkbox_link_target,
+        id=subject.id,
+        name=subject.name,
+        title=subject.title,
+        checkbox_label=subject.checkbox_label,
+        checkbox_link_target=subject.checkbox_link_target,
     )
 
 

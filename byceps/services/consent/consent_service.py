@@ -77,7 +77,11 @@ def get_consents_by_user(user_id: UserID) -> set[Consent]:
         .all()
 
     return {
-        Consent(consent.user_id, consent.subject_id, consent.expressed_at)
+        Consent(
+            user_id=consent.user_id,
+            subject_id=consent.subject_id,
+            expressed_at=consent.expressed_at,
+        )
         for consent in consents
     }
 
