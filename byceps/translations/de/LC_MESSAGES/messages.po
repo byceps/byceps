@@ -1290,7 +1290,7 @@ msgstr "Keine aktiven Shops"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_birthdays.html:7
 msgid "Upcoming Birthdays"
-msgstr "De nächsten Geburtstage"
+msgstr "Die nächsten Geburtstage"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_birthdays.html:26
 msgid "All birthdays"
