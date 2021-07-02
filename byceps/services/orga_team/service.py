@@ -363,10 +363,12 @@ def get_unassigned_orgas_for_party(party_id: PartyID) -> set[User]:
         unassigned_orga_ids_query = unassigned_orga_ids_query \
             .filter(db.not_(DbUser.id.in_(assigned_orga_ids)))
 
-    unassigned_orga_ids = unassigned_orga_ids_query \
+    unassigned_orga_id_rows = unassigned_orga_ids_query \
         .filter_by(deleted=False) \
         .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == party.brand_id) \
         .all()
+
+    unassigned_orga_ids = {row[0] for row in unassigned_orga_id_rows}
 
     return user_service.find_users(unassigned_orga_ids)
 
