@@ -1,19 +1,31 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'consent_admin' %}
 {% set page_title = _('Consents') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
 
-  <h1>{{ page_title }} {{ render_extra_in_heading(subjects_with_consent_counts|length) }}</h1>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h1>{{ page_title }} {{ render_extra_in_heading(subjects_with_consent_counts|length) }}</h1>
+    </div>
+    {%- if has_current_user_permission(ConsentPermission.administrate) %}
+    <div class="column-auto">
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.subject_create_form') }}">{{ render_icon('add') }} <span>{{ _('Create consent subject') }}</span></a>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
 
   <div class="box">
     {%- if subjects_with_consent_counts %}
     <table class="index wide">
       <thead>
         <tr>
-          <th>Titel<br>Name</th>
+          <th>{{ _('Title') }}<br>{{ _('Name') }}</th>
           <th class="number">{{ _('Consents') }}</th>
         </tr>
       </thead>
@@ -27,7 +39,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">Es sind keine zustimmungsbedürftigen Themen hinterlegt.</div>
+    <div class="dimmed-box centered">{{ _('No subjects available.') }}</div>
     {%- endif %}
   </div>
 

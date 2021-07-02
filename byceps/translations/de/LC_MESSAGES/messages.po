@@ -544,6 +544,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/board/forms.py:25
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:35
 #: byceps/blueprints/admin/brand/forms.py:18
+#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:28
 #: byceps/blueprints/admin/news/forms.py:60
 #: byceps/blueprints/admin/news/templates/admin/news/item_compare_versions.html:15
 #: byceps/blueprints/admin/orga_team/forms.py:18
@@ -647,6 +648,7 @@ msgstr "Forum erstellen"
 #: byceps/blueprints/admin/board/templates/admin/board/board_create_form.html:23
 #: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:22
 #: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:20
+#: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:22
 #: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:24
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/team_create_form.html:20
 #: byceps/blueprints/admin/party/templates/admin/party/create_form.html:38
@@ -921,6 +923,7 @@ msgstr "Marke erstellen"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:30
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:50
+#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:28
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:92
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:8
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:37
@@ -994,11 +997,42 @@ msgstr "E-Mail-Konfiguration"
 msgid "Not configured"
 msgstr "Nicht konfiguriert"
 
-#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:4
-#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:17
+#: byceps/blueprints/admin/consent/forms.py:17
+msgid "Internal name"
+msgstr "Interner Name"
+
+#: byceps/blueprints/admin/consent/forms.py:18
+msgid "Internal title"
+msgstr "Interner Titel"
+
+#: byceps/blueprints/admin/consent/forms.py:19
+msgid "Checkbox label"
+msgstr "Checkbox-Beschriftung"
+
+#: byceps/blueprints/admin/consent/forms.py:20
+msgid "Checkbox label link target"
+msgstr "Linkziel der Checkbox-Beschriftung"
+
+#: byceps/blueprints/admin/consent/views.py:75
+#, python-format
+msgid "Consent subject \"%(title)s\" has been created."
+msgstr "Das Zustimmungsthema \"%(title)s\" wurde angelegt."
+
+#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:5
+#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:29
+#: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:9
 #: byceps/blueprints/admin/more/templates/admin/more/view_global.html:18
 msgid "Consents"
 msgstr "Zustimmungen"
+
+#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:17
+#: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:6
+msgid "Create consent subject"
+msgstr "Zustimmungsthema erstellen"
+
+#: byceps/blueprints/admin/consent/templates/admin/consent/index.html:42
+msgid "No subjects available."
+msgstr "Es sind keine Zustimmungsthemen vorhanden."
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:15
 #: byceps/blueprints/site/core/templates/layout/_current_user.html:16
