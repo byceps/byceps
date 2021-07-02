@@ -21,6 +21,18 @@
 
   <div class="grid dashboard">
 
+  {%- with items = [
+    (_('Background Jobs'), 'pending', url_for('jobs_admin.index'), JobsPermission.view),
+  ] %}
+    {%- for label, icon, url, required_permission in items %}
+      {%- if has_current_user_permission(required_permission) %}
+        {%- call render_cell(icon_name=icon, href=url) %}
+          {{ render_icon(icon) }} <span>{{ label }}</span>
+        {%- endcall %}
+      {%- endif %}
+    {%- endfor %}
+  {%- endwith %}
+
   {%- call render_cell('password', 'higher') %}
     <div class="mb">
       {{ render_icon('password') }} <span>Verification Tokens <small class="dimmed">{{ verification_token_total }}</small></span>
@@ -34,18 +46,6 @@
       {%- endfor %}
     </table>
   {%- endcall %}
-
-  {%- with items = [
-    (_('Background Jobs'), 'pending', url_for('jobs_admin.index'), JobsPermission.view),
-  ] %}
-    {%- for label, icon, url, required_permission in items %}
-      {%- if has_current_user_permission(required_permission) %}
-        {%- call render_cell(icon_name=icon, href=url) %}
-          {{ render_icon(icon) }} <span>{{ label }}</span>
-        {%- endcall %}
-      {%- endif %}
-    {%- endfor %}
-  {%- endwith %}
 
   {%- call render_cell(icon_name='delete', href=url_for('.delete_old_login_events'), data_action='delete-old-login-events') %}
     {{ render_icon('delete') }} <span>{{ _('Delete old login events') }}</span>
