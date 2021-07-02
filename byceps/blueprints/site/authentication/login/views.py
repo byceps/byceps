@@ -92,8 +92,8 @@ def login():
         abort(403)
 
     if _is_consent_required(user.id):
-        verification_token = (
-            verification_token_service.create_for_terms_consent(user.id)
+        verification_token = verification_token_service.create_for_consent(
+            user.id
         )
 
         consent_form_url = url_for(

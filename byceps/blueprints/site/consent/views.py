@@ -102,8 +102,8 @@ def _get_unconsented_subjects_for_user(user_id):
 
 
 def _get_verification_token_or_404(token_value: str) -> Token:
-    verification_token = (
-        verification_token_service.find_for_terms_consent_by_token(token_value)
+    verification_token = verification_token_service.find_for_consent_by_token(
+        token_value
     )
 
     if verification_token is None:
