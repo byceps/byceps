@@ -53,11 +53,13 @@
     </table>
   {%- endcall %}
 
-  {%- call render_cell(icon_name='delete', href=url_for('.delete_old_login_events'), data_action='delete-old-login-events') %}
-    <div class="row">
-      <div class="column-auto">{{ render_icon('delete') }}</div>
-      <div class="column-auto column-auto--grow">{{ _('Delete old login events') }}</div>
+  {%- call render_cell('log-in') %}
+    <div class="row mb">
+      <div class="column-auto">{{ render_icon('log-in') }}</div>
+      <div class="column-auto column-auto--grow">{{ _('Login events') }}</div>
     </div>
+
+    <a class="button button--wrapping" href="{{ url_for('.delete_old_login_events') }}" data-action="delete-old-login-events">{{ render_icon('delete') }} <small style="margin-left: 0.5rem; text-align: left;">{{ _('Delete old login events') }}</small></a>
   {%- endcall %}
 
   </div>
