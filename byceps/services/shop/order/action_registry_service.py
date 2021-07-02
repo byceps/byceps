@@ -24,7 +24,7 @@ def register_badge_awarding(
         'badge_id': str(badge_id),
     }
     action_service.create_action(
-        article_number, PaymentState.paid, 'create_tickets', params_create
+        article_number, PaymentState.paid, 'award_badge', params_create
     )
 
 
