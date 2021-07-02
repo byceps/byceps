@@ -7,13 +7,21 @@
 
 <div class="grid">
 
-{%- if active_shops_with_open_orders_counts %}
-  {%- for shop, open_orders_count in active_shops_with_open_orders_counts %}
+{%- if active_shops_with_brands_and_open_orders_counts %}
+  {%- for shop, brand, open_orders_count in active_shops_with_brands_and_open_orders_counts %}
     {%- call render_cell() %}
-  <div><a href="{{ url_for('shop_shop_admin.dashboard', shop_id=shop.id) }}" class="disguised" style="display: block;">{{ shop.title }}</a></div>
+
+  <a href="{{ url_for('shop_shop_admin.dashboard', shop_id=shop.id) }}" class="disguised">
+    <div class="row mb">
+      <div class="column-auto">{{ render_brand_avatar(brand, '40') }}</div>
+      <div class="column-auto column-auto--grow">{{ shop.title }}</div>
+    </div>
+  </a>
+
       {%- if open_orders_count %}
-  <div style="font-size: 0.6875rem; margin-top: 1rem;"><a href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open') }}" class="disguised" style="display: block;"><strong style="color: #ee3322;">{{ open_orders_count }}</strong> {{ _('open orders') }}</a></div>
+  <div style="font-size: 0.6875rem;"><a href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open') }}" class="disguised" style="display: block;"><strong style="color: #ee3322;">{{ open_orders_count }}</strong> {{ _('open orders') }}</a></div>
       {%- endif %}
+
     {%- endcall %}
   {%- endfor %}
 {%- else %}

@@ -59,9 +59,10 @@ def view_global():
         for party in active_parties
     ]
 
+    all_brands_by_id = {brand.id: brand for brand in brand_service.get_all_brands()}
     active_shops = shop_service.get_active_shops()
-    active_shops_with_open_orders_counts = [
-        (shop, shop_order_service.count_open_orders(shop.id))
+    active_shops_with_brands_and_open_orders_counts = [
+        (shop, all_brands_by_id[shop.brand_id], shop_order_service.count_open_orders(shop.id))
         for shop in active_shops
     ]
 
@@ -83,7 +84,7 @@ def view_global():
         'active_brands': active_brands,
         'current_sites': current_sites,
         'active_parties_with_ticket_stats': active_parties_with_ticket_stats,
-        'active_shops_with_open_orders_counts': active_shops_with_open_orders_counts,
+        'active_shops_with_brands_and_open_orders_counts': active_shops_with_brands_and_open_orders_counts,
 
         'user_count': user_count,
         'recent_users': recent_users,
