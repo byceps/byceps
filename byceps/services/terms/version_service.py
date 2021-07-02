@@ -10,30 +10,9 @@ from typing import Optional, Sequence
 
 from ...database import db
 
-from ..consent.transfer.models import SubjectID as ConsentSubjectID
-from ..snippet.transfer.models import SnippetVersionID
-
-from . import document_service
 from .dbmodels.document import Document as DbDocument
 from .dbmodels.version import Version as DbVersion
 from .transfer.models import DocumentID, VersionID
-
-
-def create_version(
-    document_id: DocumentID,
-    title: str,
-    snippet_version_id: SnippetVersionID,
-    consent_subject_id: ConsentSubjectID,
-) -> DbVersion:
-    """Create a new version of that document."""
-    version = DbVersion(
-        document_id, title, snippet_version_id, consent_subject_id
-    )
-
-    db.session.add(version)
-    db.session.commit()
-
-    return version
 
 
 def find_version(version_id: VersionID) -> Optional[DbVersion]:
