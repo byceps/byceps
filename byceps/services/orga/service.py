@@ -74,16 +74,20 @@ def add_orga_flag(
     return orga_flag
 
 
-def remove_orga_flag(orga_flag: DbOrgaFlag, initiator_id: UserID) -> None:
+def remove_orga_flag(
+    brand_id: BrandID, user_id: UserID, initiator_id: UserID
+) -> None:
     """Remove the orga flag."""
-    db.session.delete(orga_flag)
+    db.session.query(DbOrgaFlag) \
+        .filter_by(brand_id=brand_id) \
+        .filter_by(user_id=user_id) \
+        .delete()
 
-    user_id = orga_flag.user_id
     event = user_event_service.build_event(
         'orgaflag-removed',
         user_id,
         {
-            'brand_id': str(orga_flag.brand_id),
+            'brand_id': str(brand_id),
             'initiator_id': str(initiator_id),
         },
     )

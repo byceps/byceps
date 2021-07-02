@@ -57,7 +57,7 @@ def test_membership_create(
 
     # Clean up.
     orga_team_service.delete_membership(membership.id)
-    orga_service.remove_orga_flag(orga_flag, user.id)
+    orga_service.remove_orga_flag(party.brand_id, user.id, user.id)
 
 
 def test_membership_update_form(

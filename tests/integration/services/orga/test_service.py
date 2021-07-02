@@ -13,6 +13,6 @@ def test_flag_changes(brand, admin_user, user):
 
     assert orga_service.is_user_orga(user.id)
 
-    orga_service.remove_orga_flag(flag, admin_user.id)
+    orga_service.remove_orga_flag(brand.id, user.id, admin_user.id)
 
     assert not orga_service.is_user_orga(user.id)

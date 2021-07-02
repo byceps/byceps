@@ -124,7 +124,7 @@ def remove_orgaflag(brand_id, user_id):
     user = orga_flag.user
     initiator = g.user
 
-    orga_service.remove_orga_flag(orga_flag, initiator.id)
+    orga_service.remove_orga_flag(brand.id, user.id, initiator.id)
 
     flash_success(
         gettext(
