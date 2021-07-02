@@ -12,7 +12,6 @@ marrow.mailer==4.0.3
 marrow.util==1.2.3
 marshmallow==3.12.0
 pendulum==2.1.2
-pick==1.0.0
 pillow==8.2.0
 psycopg2-binary==2.8.6
 python-dateutil==2.8.1

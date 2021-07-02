@@ -11,8 +11,7 @@ from typing import Optional
 from ...database import db
 
 from .dbmodels.document import Document as DbDocument
-from .dbmodels.version import Version as DbVersion
-from .transfer.models import Document, DocumentID, VersionID
+from .transfer.models import Document, DocumentID
 
 
 def find_document(document_id: DocumentID) -> Optional[Document]:
@@ -23,22 +22,6 @@ def find_document(document_id: DocumentID) -> Optional[Document]:
         return None
 
     return _db_entity_to_document(document)
-
-
-def set_current_version(document_id: DocumentID, version_id: VersionID) -> None:
-    """Specify the current version of the document."""
-    document = DbDocument.query.get(document_id)
-    if document is None:
-        raise ValueError(
-            f'Unknown terms of service document ID "{document_id}"'
-        )
-
-    version = DbVersion.query.get(version_id)
-    if version is None:
-        raise ValueError(f'Unknown terms of service version ID "{version_id}"')
-
-    document.current_version_id = version.id
-    db.session.commit()
 
 
 def _db_entity_to_document(document: DbDocument) -> Document:
