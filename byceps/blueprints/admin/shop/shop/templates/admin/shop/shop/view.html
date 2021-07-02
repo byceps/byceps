@@ -12,11 +12,11 @@
   <div class="box">
     <table class="index">
       <tr>
-        <th>Shop-ID</th>
+        <th>{{ _('ID') }}</th>
         <td>{{ shop.id }}</td>
       </tr>
       <tr>
-        <th>Status</th>
+        <th>{{ _('Status') }}</th>
         <td>
         {%- if shop.archived %}
           {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
@@ -28,14 +28,14 @@
     </table>
   </div>
 
-  <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>
+  <h2>{{ _('Settings') }} {{ render_extra_in_heading(settings|length) }}</h2>
   <div class="box">
     {%- if settings %}
     <table class="index">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Wert</th>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Value') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -48,7 +48,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">Es sind keine Einstellungen hinterlegt.</div>
+    <div class="dimmed-box centered">{{ _('No settings defined.') }}</div>
     {%- endif %}
   </div>
 

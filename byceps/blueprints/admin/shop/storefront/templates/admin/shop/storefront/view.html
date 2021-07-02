@@ -30,16 +30,16 @@
         <td>{{ storefront.catalog_id|fallback }}</td>
       </tr>
       <tr>
-        <th>Bestellnummer-Sequenz</th>
+        <th>{{ _('Order number sequence') }}</th>
         <td>{{ order_number_prefix }}</td>
       </tr>
       <tr>
-        <th>Status</th>
+        <th>{{ _('Status') }}</th>
         <td>
           {%- if storefront.closed -%}
-          {{ render_tag('geschlossen', icon='disabled', class='color-disabled') }}
+          {{ render_tag(_('closed'), icon='disabled', class='color-disabled') }}
           {%- else -%}
-          {{ render_tag('geöffnet', icon='success', class='color-success') }}
+          {{ render_tag(_('open'), icon='success', class='color-success') }}
           {%- endif -%}
         </td>
       </tr>

@@ -1,7 +1,7 @@
 {% extends 'layout/admin/shop/storefront.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/icons.html' import render_icon %}
-{% set page_title = 'Storefront anlegen' %}
+{% set page_title = _('Create storefront') %}
 
 {% block body %}
 
@@ -10,7 +10,7 @@
   {%- if not order_number_sequence_available %}
   <div class="notification color-warning">
     Es sind keine Bestellnummer-Sequenzen für diesen Shop hinterlegt. Ohne sie können keine Storefronts angelegt werden.<br><br>
-    <a class="button color-primary" href="{{ url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id) }}">Bestellnummer-Sequenz anlegen</a>
+    <a class="button color-primary" href="{{ url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id) }}">{{ _('Create order number sequence') }}</a>
   </div>
   {%- else %}
   <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">

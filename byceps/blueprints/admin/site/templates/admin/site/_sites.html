@@ -18,65 +18,65 @@
         <p><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></p>
         <div>
           {%- if site.enabled %}
-          {{ render_icon_tag('success', 'Site aktiv', 'color-success') }}
+          {{ render_icon_tag('success', _('Site') ~ ' ' ~ _('enabled'), 'color-success') }}
           {%- else %}
-          {{ render_icon_tag('disabled', 'Site deaktiviert', 'color-disabled') }}
+          {{ render_icon_tag('disabled', _('Site') ~ ' ' ~ _('disabled'), 'color-disabled') }}
           {%- endif %}
 
           {%- if site.user_account_creation_enabled %}
-          {{ render_icon_tag('user-create', 'Benutzerregistrierung geöffnet', 'color-success') }}
+          {{ render_icon_tag('user-create', _('User registration') ~ ' ' ~ _('open'), 'color-success') }}
           {%- else %}
-          {{ render_icon_tag('user-create', 'Benutzerregistrierung gesperrt', 'color-disabled') }}
+          {{ render_icon_tag('user-create', _('User registration') ~ ' ' ~ _('closed'), 'color-disabled') }}
           {%- endif %}
 
           {%- if site.login_enabled %}
-          {{ render_icon_tag('log-in', 'Benutzeranmeldung geöffnet', 'color-success') }}
+          {{ render_icon_tag('log-in', _('User login') ~ ' ' ~ _('open'), 'color-success') }}
           {%- else %}
-          {{ render_icon_tag('log-in', 'Benutzeranmeldung gesperrt', 'color-disabled') }}
+          {{ render_icon_tag('log-in', _('User login') ~ ' ' ~ _('closed'), 'color-disabled') }}
           {%- endif %}
 
           {%- if site.archived %}
-          {{ render_icon_tag('archived', 'Site archiviert', 'color-disabled') }}
+          {{ render_icon_tag('archived', _('Site') ~ ' ' ~ _('archived'), 'color-disabled') }}
           {%- endif %}
         </div>
       </div>
 
       <div class="column-auto" style="min-width: 35%;">
-        <div>{{ render_icon('brand', title='Marke') }} <a href="{{ url_for('admin_dashboard.view_brand', brand_id=site.brand_id) }}" class="disguised">{{ site.brand.title }}</a></div>
+        <div>{{ render_icon('brand', title=_('Brand')) }} <a href="{{ url_for('admin_dashboard.view_brand', brand_id=site.brand_id) }}" class="disguised">{{ site.brand.title }}</a></div>
         <div>
-          {{ render_icon('date', title='Party') }}
+          {{ render_icon('date', title=_('Party')) }}
           {% if site.party_id -%}
           <a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}" class="disguised">{{ party_titles_by_id[site.party_id] }}</a>
           {%- else -%}
-          {{ 'keine Party'|dim }}
+          {{ _('no party')|dim }}
           {%- endif -%}
         </div>
         <div>
           {%- if site.news_channel_ids %}
             {%- for channel_id in site.news_channel_ids|sort -%}
-            {{ render_icon('news', title='Newskanal') }} <a href="{{ url_for('news_admin.channel_view', channel_id=channel_id) }}" class="disguised">{{ channel_id }}</a>
+            {{ render_icon('news', title=_('News channel')) }} <a href="{{ url_for('news_admin.channel_view', channel_id=channel_id) }}" class="disguised">{{ channel_id }}</a>
               {%- if not loop.last %}<br>{% endif %}
             {%- endfor %}
           {%- else %}
-          {{ render_icon('news', title='Newskanal') }} {{ 'keine Newskanäle'|dim }}
+          {{ render_icon('news', title=_('News channel')) }} {{ _('no news channels')|dim }}
           {%- endif %}
         </div>
         <div>
-          {{ render_icon('board', title='Forum') }}
+          {{ render_icon('board', title=_('Board')) }}
           {% if site.board_id -%}
           <a href="{{ url_for('board_admin.board_view', board_id=site.board_id) }}" class="disguised">{{ site.board_id }}</a>
           {%- else -%}
-          {{ 'kein Forum'|dim }}
+          {{ _('no board')|dim }}
           {%- endif -%}
         </div>
         <div>
-          {{ render_icon('shop', title='Storefront') }}
+          {{ render_icon('shop', title=_('Storefront')) }}
           {% if site.storefront_id -%}
             {%- with storefront = storefronts_by_id[site.storefront_id] %}
           <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}" class="disguised">{{ storefront.id }}</a>
             {%- endwith %}
           {%- else -%}
-          {{ 'kein Storefront'|dim }}
+          {{ _('no storefront')|dim }}
           {%- endif -%}
         </div>
       </div>
@@ -111,16 +111,16 @@
 
   {%- if sites %}
 
-  <h2>Aktive Sites</h2>
+  <h2>{{ _('Active sites') }}</h2>
     {%- for site in sites|selectattr('enabled') %}
     {{ render_site(site) }}
     {%- endfor %}
 
-  <h2>Inaktive Sites</h2>
+  <h2>{{ _('Inactive sites') }}</h2>
     {%- for site in sites|rejectattr('enabled') %}
     {{ render_site(site) }}
     {%- endfor %}
 
   {%- else %}
-  <div class="dimmed-box centered">Es sind keine Sites hinterlegt.</div>
+  <div class="dimmed-box centered">{{ _('No sites available.') }}</div>
   {%- endif %}

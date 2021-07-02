@@ -35,7 +35,7 @@
           {%- endfor %}
 
           {%- if party.is_over %}
-          {{ render_tag('vorbei', class='color-disabled') }}
+          {{ render_tag(_('over'), class='color-disabled') }}
           {%- endif %}
         </div>
       </div>
@@ -46,16 +46,16 @@
         </div>
 
         {%- if party.ticket_management_enabled %}
-        {{ render_tag('Ticketverwaltung geöffnet', class='color-success', icon='ticket') }}<br>
+        {{ render_tag(_('Ticket management') ~ ' ' ~ _('open'), class='color-success', icon='ticket') }}<br>
         {%- endif %}
         {%- if party.seat_management_enabled %}
-        {{ render_tag('Sitzplatzverwaltung geöffnet', class='color-success', icon='seating-area') }}<br>
+        {{ render_tag(_('Seat management') ~ ' ' ~ _('open'), class='color-success', icon='seating-area') }}<br>
         {%- endif %}
         {%- if party.canceled %}
-        {{ render_tag('abgesagt', class='color-danger', icon='disabled') }}
+        {{ render_tag(_('canceled'), class='color-danger', icon='disabled') }}
         {%- endif %}
         {%- if party.archived %}
-        {{ render_tag('archiviert', class='color-disabled', icon='archived') }}
+        {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
         {%- endif %}
       </div>
 
@@ -74,14 +74,14 @@
 
   <div style="font-size: 0.75rem; text-align: center;">
     <strong>{{ format_number(ticket_sale_stats.tickets_sold) }}</strong>
-    von
+    {{ _('of') }}
     <strong>{{ format_number(ticket_sale_stats.tickets_max) if tickets_total_max_specified else '?' }}</strong>
-    Tickets verkauft
+    {{ _('tickets sold') }}
   </div>
 
     {%- if tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
   <div style="text-align: center;">
-  {{ render_tag('ausverkauft', class='color-success', icon='ticket') }}
+  {{ render_tag(_('sold out'), class='color-success', icon='ticket') }}
   </div>
     {%- endif %}
   {%- endwith %}

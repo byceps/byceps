@@ -46,7 +46,7 @@
   <div class="box">
     <table class="index">
       <tr>
-        <th>ID</th>
+        <th>{{ _('ID') }}</th>
         <td>{{ site.id }}</td>
       </tr>
       <tr>
@@ -62,12 +62,12 @@
         <td>{% if site.party_id %}<a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ site.party_id }}</a>{% else %}{{ ''|fallback }}{% endif %}</td>
       </tr>
       <tr>
-        <th>Benutzer&shy;registrierung</th>
-        <td>{{ render_tag('geöffnet', class='color-success') if site.user_account_creation_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
+        <th>{{ _('User registration') }}</th>
+        <td>{{ render_tag(_('open'), class='color-success') if site.user_account_creation_enabled else render_tag(_('closed'), class='color-disabled', icon='disabled') }}</td>
       </tr>
       <tr>
-        <th>Benutzer&shy;anmeldung</th>
-        <td>{{ render_tag('geöffnet', class='color-success') if site.login_enabled else render_tag('gesperrt', class='color-disabled', icon='disabled') }}</td>
+        <th>{{ _('User login') }}</th>
+        <td>{{ render_tag(_('open'), class='color-success') if site.login_enabled else render_tag(_('closed'), class='color-disabled', icon='disabled') }}</td>
       </tr>
       <tr>
         <th>{{ _('Board') }}</th>
@@ -75,7 +75,7 @@
           {%- if board %}
           <a href="{{ url_for('board_admin.board_view', board_id=board.id) }}">{{ board.id }}</a>
           {%- else %}
-          {{ 'kein Forum verknüpft'|dim }}
+          {{ _('no board assigned')|dim }}
           {%- endif %}
         </td>
       </tr>
@@ -85,7 +85,7 @@
           {%- if storefront %}
           <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}">{{ storefront.id }}</a>
           {%- else %}
-          {{ 'kein Storefront verknüpft'|dim }}
+          {{ _('no storefront assigned')|dim }}
           {%- endif %}
         </td>
       </tr>
@@ -127,14 +127,14 @@
     {%- endif %}
   </div>
 
-  <h2>Einstellungen {{ render_extra_in_heading(settings|length) }}</h2>
+  <h2>{{ _('Settings') }} {{ render_extra_in_heading(settings|length) }}</h2>
   <div class="box">
     {%- if settings %}
     <table class="index">
       <thead>
         <tr>
-          <th>Name</th>
-          <th>Wert</th>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Value') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -147,7 +147,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">Es sind keine Einstellungen hinterlegt.</div>
+    <div class="dimmed-box centered">{{ _('No settings defined.') }}</div>
     {%- endif %}
   </div>
 

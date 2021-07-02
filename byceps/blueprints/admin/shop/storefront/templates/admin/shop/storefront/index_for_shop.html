@@ -33,9 +33,9 @@
     <table class="index wide">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Bestellnummer-Sequenz</th>
-          <th>Status</th>
+          <th>{{ _('ID') }}</th>
+          <th>{{ _('Order number sequence') }}</th>
+          <th>{{ _('Status') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -56,7 +56,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">Es sind keine Storefronts hinterlegt.</div>
+    <div class="dimmed-box centered">{{ _('No storefronts exist.') }}</div>
     {%- endif %}
   </div>
 

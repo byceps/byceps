@@ -31,9 +31,9 @@
       <tr>
         <td>
           {%- if version.is_current -%}
-          {{ render_icon('published', title='öffentlich') }}
+          {{ render_icon('published', title=_('public')) }}
           {%- else -%}
-          {{ render_icon('archived', title='archiviert') }}
+          {{ render_icon('archived', title=_('archived')) }}
           {%- endif -%}
         </td>
         <td class="nowrap"><a href="{{ url_for('.item_view_version', version_id=version.id) }}">{{ render_datetime(version.created_at|utc_to_local_tz) }}</a></td>

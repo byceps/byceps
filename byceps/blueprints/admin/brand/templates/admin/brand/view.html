@@ -19,7 +19,7 @@
       <h1>
         {{ brand.title }}
         {%- if brand.archived %}
-        <br>{{ render_tag('archived', class='color-disabled', icon='archived') }}
+        <br>{{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
         {%- endif %}
       </h1>
     </div>
@@ -61,7 +61,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">{{ _('No settings defined for this brand.') }}</div>
+    <div class="dimmed-box centered">{{ _('No settings defined.') }}</div>
     {%- endif %}
   </div>
 

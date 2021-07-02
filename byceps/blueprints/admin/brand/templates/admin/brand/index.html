@@ -11,7 +11,7 @@
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>Marken {{ render_extra_in_heading(brands|length) }}</h1>
+      <h1>{{ _('Brands') }} {{ render_extra_in_heading(brands|length) }}</h1>
     </div>
   {%- if has_current_user_permission(BrandPermission.create) %}
     <div class="column-auto">
@@ -44,7 +44,7 @@
           </td>
           <td>
           {%- if brand.archived %}
-            {{ render_tag('archived', class='color-disabled', icon='archived') }}
+            {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
           {%- endif %}
           </td>
           <td class="centered bignumber">{{ party_count_by_brand_id[brand.id] }}</td>
