@@ -110,7 +110,7 @@ def view_version(snippet_version_id):
         snippet_context = get_snippet_context(version)
 
         extra_context = {
-            'snippet_title': snippet_context['title'],
+            'snippet_title': snippet_context['page_title'],
             'snippet_head': snippet_context['head'],
             'snippet_body': snippet_context['body'],
             'error_occurred': False,
