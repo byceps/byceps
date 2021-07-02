@@ -16,9 +16,15 @@
 {%- if current_sites %}
   {%- for site in current_sites|sort(attribute='title') %}
     {%- call render_cell(href=url_for('site_admin.view', site_id=site.id)) %}
-  <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(site.brand, '32') }}</div>
-  <div>{{ site.title }}</div>
-  <div class="supplement">{{ site.server_name }}</div>
+  <div class="row">
+    <div class="column-auto">
+      {{ render_brand_avatar(site.brand, '40') }}
+    </div>
+    <div class="column-auto column-auto--grow">
+      <div>{{ site.title }}</div>
+      <div class="supplement">{{ site.server_name }}</div>
+    </div>
+  </div>
     {%- endcall %}
   {%- endfor %}
 {%- else %}
