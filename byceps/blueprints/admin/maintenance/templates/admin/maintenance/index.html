@@ -43,7 +43,7 @@
       <div class="column-auto"><small class="dimmed">{{ verification_token_total }}</small></div>
     </div>
 
-    <table class="index small wide">
+    <table class="index small wide mb">
       {%- for purpose_name, count in verification_token_counts_by_purpose_name|dictsort(by='key') %}
       <tr>
         <td>{{ purpose_name }}</td>
@@ -51,6 +51,8 @@
       </tr>
       {%- endfor %}
     </table>
+
+    <a class="button button--wrapping" href="{{ url_for('.delete_old_verification_tokens') }}" data-action="delete-old-verification-tokens">{{ render_icon('delete') }} <small style="margin-left: 0.5rem; text-align: left;">{{ _('Delete old verification tokens') }}</small></a>
   {%- endcall %}
 
   {%- call render_cell('log-in') %}
@@ -69,6 +71,7 @@
 {% block scripts %}
 <script>
   onDomReady(() => {
+    confirmed_post_on_click_then_reload('[data-action="delete-old-verification-tokens"]', '{{ _('Delete old verification tokens?') }}');
     confirmed_post_on_click_then_reload('[data-action="delete-old-login-events"]', '{{ _('Delete old login events?') }}');
   });
 </script>

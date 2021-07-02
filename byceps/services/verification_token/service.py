@@ -59,6 +59,20 @@ def delete_token(token: str) -> None:
     db.session.commit()
 
 
+def delete_old_tokens(created_before: datetime) -> int:
+    """Delete tokens which were created before the given date.
+
+    Return the number of deleted tokens.
+    """
+    num_deleted = DbToken.query \
+        .filter(DbToken.created_at < created_before) \
+        .delete()
+
+    db.session.commit()
+
+    return num_deleted
+
+
 def find_for_email_address_change_by_token(token_value: str) -> Optional[Token]:
     purpose = Purpose.email_address_change
     return _find_for_purpose_by_token(token_value, purpose)

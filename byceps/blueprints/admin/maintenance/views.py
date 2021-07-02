@@ -39,7 +39,9 @@ def index():
         for purpose, count in verification_token_counts_by_purpose.items()
     }
 
-    verification_token_total = sum(verification_token_counts_by_purpose.values())
+    verification_token_total = sum(
+        verification_token_counts_by_purpose.values()
+    )
 
     return {
         'verification_token_counts_by_purpose_name': verification_token_counts_by_purpose_name,
@@ -61,6 +63,26 @@ def delete_old_login_events():
     flash_success(
         gettext(
             'Deleted %(num_deleted)s login events older than %(minimum_age_in_days)s days.',
+            num_deleted=num_deleted,
+            minimum_age_in_days=minimum_age_in_days,
+        )
+    )
+
+
+@blueprint.post('/delete_old_verification_tokens')
+@permission_required(AdminPermission.access)
+@respond_no_content
+def delete_old_verification_tokens():
+    """Delete verification tokens older than a given number of days."""
+    now = datetime.utcnow()
+    minimum_age_in_days = 7
+    created_before = now - timedelta(days=minimum_age_in_days)
+
+    num_deleted = verification_token_service.delete_old_tokens(created_before)
+
+    flash_success(
+        gettext(
+            'Deleted %(num_deleted)s verification tokens older than %(minimum_age_in_days)s days.',
             num_deleted=num_deleted,
             minimum_age_in_days=minimum_age_in_days,
         )

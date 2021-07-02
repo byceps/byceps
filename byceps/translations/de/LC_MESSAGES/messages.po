@@ -1252,26 +1252,26 @@ msgstr "Aktive Partys"
 msgid "All parties"
 msgstr "Alle Partys"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:33
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:39
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:37
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:48
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:77
 msgid "of"
 msgstr "von"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:35
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:41
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:25
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:79
 msgid "tickets sold"
 msgstr "Tickets verkauft"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:37
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:43
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:35
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:84
 msgid "sold out"
 msgstr "ausverkauft"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:46
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_parties.html:52
 msgid "No active parties"
 msgstr "Keine aktiven Partys"
 
@@ -1279,12 +1279,12 @@ msgstr "Keine aktiven Partys"
 msgid "Active Shops"
 msgstr "Aktive Shops"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:15
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:22
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:22
 msgid "open orders"
 msgstr "offene Bestellungen"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:21
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:29
 msgid "No active shops"
 msgstr "Keine aktiven Shops"
 
@@ -1304,7 +1304,7 @@ msgstr "Aktuelle Sites"
 msgid "All sites"
 msgstr "Alle Sites"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_sites.html:26
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_current_sites.html:32
 msgid "No current sites"
 msgstr "Keine aktuellen Sites"
 
@@ -1374,7 +1374,7 @@ msgstr "Jobs"
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: byceps/blueprints/admin/maintenance/views.py:62
+#: byceps/blueprints/admin/maintenance/views.py:64
 #, python-format
 msgid ""
 "Deleted %(num_deleted)s login events older than %(minimum_age_in_days)s "
@@ -1383,15 +1383,40 @@ msgstr ""
 "%(num_deleted)s Login-Events älter als %(minimum_age_in_days)s Tage "
 "wurden gelöscht."
 
-#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:39
+#: byceps/blueprints/admin/maintenance/views.py:84
+#, python-format
+msgid ""
+"Deleted %(num_deleted)s verification tokens older than "
+"%(minimum_age_in_days)s days."
+msgstr ""
+"%(num_deleted)s Verification Tokens älter als %(minimum_age_in_days)s "
+"Tage wurden gelöscht."
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:25
 msgid "Background Jobs"
 msgstr "Hintergrundjobs"
 
-#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:51
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:42
+msgid "Verification Tokens"
+msgstr "Verification Tokens"
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:55
+msgid "Delete old verification tokens"
+msgstr "Alte Verification Tokens löschen"
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:61
+msgid "Login events"
+msgstr "Login-Events"
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:64
 msgid "Delete old login events"
 msgstr "Alte Login-Events löschen"
 
-#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:61
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:74
+msgid "Delete old verification tokens?"
+msgstr "Alte Verification Tokens löschen?"
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:75
 msgid "Delete old login events?"
 msgstr "Alte Login-Events löschen?"
 
