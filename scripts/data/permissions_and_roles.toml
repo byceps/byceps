@@ -271,14 +271,6 @@ id = 'snippet_mountpoint.delete'
 title = 'Snippet-Mountpoints löschen'
 
 [[permissions]]
-id = 'terms.create'
-title = 'neue AGB-Versionen erstellen'
-
-[[permissions]]
-id = 'terms.view'
-title = 'AGB-Versionen anzeigen'
-
-[[permissions]]
 id = 'ticketing.administrate'
 title = 'Tickets verwalten'
 
@@ -471,7 +463,6 @@ assigned_permissions = [
     'seating.view',
     'snippet.view',
     'snippet.view_history',
-    'terms.view',
     'ticketing.checkin',
     'ticketing.view',
     'tourney.view',
@@ -574,14 +565,6 @@ title = 'Support-Orga'
 assigned_permissions = [
     'shop_order.view',
     'user.view',
-]
-
-[[roles]]
-id = 'terms_editor'
-title = 'AGB verwalten'
-assigned_permissions = [
-    'terms.create',
-    'terms.view',
 ]
 
 [[roles]]

@@ -18,7 +18,6 @@
     (_('Discussion Boards'), 'board', url_for('board_admin.board_index_for_brand', brand_id=brand.id), BoardCategoryPermission.view),
     (_('Regular Guests'), 'users', url_for('attendance_admin.view_for_brand', brand_id=brand.id), AdminPermission.access),
     (_('Brand Snippets'), 'snippet', url_for('snippet_admin.index_for_scope', scope_type='brand', scope_name=brand.id), SnippetPermission.view),
-    (_('Terms of Service'), 'legal', url_for('terms_admin.view_document', document_id=brand.id), TermsPermission.view),
   ] %}
     {%- for label, icon, url, required_permission in items %}
       {%- if has_current_user_permission(required_permission) %}
