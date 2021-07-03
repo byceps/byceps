@@ -13,8 +13,10 @@ from typing import Iterable, Optional
 from ...database import db, paginate, Pagination
 from ...typing import PartyID, UserID
 
+from ..seating.dbmodels.seat import Seat as DbSeat
 from ..ticketing.dbmodels.ticket import Category as DbCategory, Ticket as DbTicket
 from ..user.dbmodels.user import User as DbUser
+from ..user_avatar.dbmodels import AvatarSelection as DbAvatarSelection
 
 from .transfer.models import Attendee, AttendeeTicket
 
@@ -54,8 +56,9 @@ def _get_users_paginated(
     query = DbUser.query \
         .distinct() \
         .options(
-            db.load_only('id', 'screen_name', 'deleted'),
-            db.joinedload('avatar_selection').joinedload('avatar'),
+            db.load_only(DbUser.id, DbUser.screen_name, DbUser.deleted),
+            db.joinedload(DbUser.avatar_selection)
+                .joinedload(DbAvatarSelection.avatar),
         ) \
         .join(DbTicket, DbTicket.used_by_id == DbUser.id) \
         .filter(DbTicket.revoked == False) \
@@ -76,8 +79,9 @@ def _get_tickets_for_users(
 ) -> list[DbTicket]:
     return DbTicket.query \
         .options(
-            db.joinedload('category'),
-            db.joinedload('occupied_seat').joinedload('area'),
+            db.joinedload(DbTicket.category),
+            db.joinedload(DbTicket.occupied_seat)
+                .joinedload(DbSeat.area),
         ) \
         .for_party(party_id) \
         .filter(DbTicket.used_by_id.in_(user_ids)) \

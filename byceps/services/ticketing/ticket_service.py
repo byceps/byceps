@@ -135,7 +135,7 @@ def find_tickets_for_seat_manager(
             (DbTicket.seat_managed_by_id == user_id)
         ) \
         .options(
-            db.joinedload('occupied_seat'),
+            db.joinedload(DbTicket.occupied_seat),
         ) \
         .all()
 
@@ -150,11 +150,11 @@ def find_tickets_related_to_user(user_id: UserID) -> Sequence[DbTicket]:
             (DbTicket.used_by_id == user_id)
         ) \
         .options(
-            db.joinedload('occupied_seat').joinedload('area'),
-            db.joinedload('occupied_seat').joinedload('category'),
-            db.joinedload('seat_managed_by'),
-            db.joinedload('user_managed_by'),
-            db.joinedload('used_by'),
+            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
+            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.category),
+            db.joinedload(DbTicket.seat_managed_by),
+            db.joinedload(DbTicket.user_managed_by),
+            db.joinedload(DbTicket.used_by),
         ) \
         .order_by(DbTicket.created_at) \
         .all()
@@ -173,11 +173,11 @@ def find_tickets_related_to_user_for_party(
             (DbTicket.used_by_id == user_id)
         ) \
         .options(
-            db.joinedload('occupied_seat').joinedload('area'),
-            db.joinedload('occupied_seat').joinedload('category'),
-            db.joinedload('seat_managed_by'),
-            db.joinedload('user_managed_by'),
-            db.joinedload('used_by'),
+            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
+            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.category),
+            db.joinedload(DbTicket.seat_managed_by),
+            db.joinedload(DbTicket.user_managed_by),
+            db.joinedload(DbTicket.used_by),
         ) \
         .order_by(DbTicket.created_at) \
         .all()
@@ -193,7 +193,7 @@ def find_tickets_used_by_user(
         .filter(DbTicket.revoked == False) \
         .outerjoin(DbSeat) \
         .options(
-            db.joinedload('occupied_seat').joinedload('area'),
+            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
         ) \
         .order_by(DbSeat.coord_x, DbSeat.coord_y) \
         .all()
@@ -245,11 +245,11 @@ def get_ticket_with_details(ticket_id: TicketID) -> Optional[DbTicket]:
     """Return the ticket with that id, or `None` if not found."""
     return DbTicket.query \
         .options(
-            db.joinedload('category'),
-            db.joinedload('occupied_seat').joinedload('area'),
-            db.joinedload('owned_by'),
-            db.joinedload('seat_managed_by'),
-            db.joinedload('user_managed_by'),
+            db.joinedload(DbTicket.category),
+            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
+            db.joinedload(DbTicket.owned_by),
+            db.joinedload(DbTicket.seat_managed_by),
+            db.joinedload(DbTicket.user_managed_by),
         ) \
         .get(ticket_id)
 
@@ -267,9 +267,9 @@ def get_tickets_with_details_for_party_paginated(
         .for_party(party_id) \
         .join(DbCategory) \
         .options(
-            db.joinedload('category'),
-            db.joinedload('owned_by'),
-            db.joinedload('occupied_seat').joinedload('area'),
+            db.joinedload(DbTicket.category),
+            db.joinedload(DbTicket.owned_by),
+            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
         )
 
     if search_term:

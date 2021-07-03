@@ -145,6 +145,6 @@ def get_seats_with_tickets_for_area(area_id: AreaID) -> Sequence[DbSeat]:
     return DbSeat.query \
         .filter_by(area_id=area_id) \
         .options(
-            db.joinedload('occupied_by_ticket'),
+            db.joinedload(DbSeat.occupied_by_ticket),
         ) \
         .all()

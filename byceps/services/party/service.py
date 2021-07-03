@@ -138,7 +138,7 @@ def get_all_parties() -> list[Party]:
 def get_all_parties_with_brands() -> list[PartyWithBrand]:
     """Return all parties."""
     parties = DbParty.query \
-        .options(db.joinedload('brand')) \
+        .options(db.joinedload(DbParty.brand)) \
         .all()
 
     return [_db_entity_to_party_with_brand(party) for party in parties]
@@ -154,7 +154,7 @@ def get_active_parties(
         query = query.filter_by(brand_id=brand_id)
 
     if include_brands:
-        query = query.options(db.joinedload('brand'))
+        query = query.options(db.joinedload(DbParty.brand))
 
     parties = query \
         .filter_by(canceled=False) \

@@ -161,7 +161,7 @@ def get_current_sites(
         query = query.filter_by(brand_id=brand_id)
 
     if include_brands:
-        query = query.options(db.joinedload('brand'))
+        query = query.options(db.joinedload(DbSite.brand))
 
     sites = query \
         .filter_by(enabled=True) \

@@ -65,7 +65,7 @@ def _find_order_items(
     common_query = DbOrderItem.query \
         .join(DbOrder) \
         .filter(DbOrder.shop_id == shop_id) \
-        .options(db.joinedload('order')) \
+        .options(db.joinedload(DbOrderItem.order)) \
         .filter(DbOrderItem.shipping_required == True)
 
     definitive_order_items = common_query \

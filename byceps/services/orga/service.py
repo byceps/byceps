@@ -38,7 +38,7 @@ def get_orgas_for_brand(brand_id: BrandID) -> Sequence[DbUser]:
     """Return all users flagged as organizers for the brand."""
     return DbUser.query \
         .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == brand_id) \
-        .options(db.joinedload('detail')) \
+        .options(db.joinedload(DbUser.detail)) \
         .all()
 
 

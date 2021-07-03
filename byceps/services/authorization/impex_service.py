@@ -93,8 +93,8 @@ def _collect_roles() -> Iterator[dict[str, Union[str, list[str]]]]:
     """Collect all roles and the permissions assigned to them."""
     roles = DbRole.query \
         .options(
-            db.undefer('title'),
-            db.joinedload('role_permissions'),
+            db.undefer(DbRole.title),
+            db.joinedload(DbRole.role_permissions),
         ) \
         .order_by(DbRole.id) \
         .all()

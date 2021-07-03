@@ -28,8 +28,8 @@ def count_ordered_articles(
     order_items = DbOrderItem.query \
         .filter_by(article_number=article_number) \
         .options(
-            db.joinedload('order'),
-            db.joinedload('article'),
+            db.joinedload(DbOrderItem.order),
+            db.joinedload(DbOrderItem.article),
         ) \
         .all()
 

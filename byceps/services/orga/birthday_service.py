@@ -50,7 +50,7 @@ def _collect_orgas_with_known_birthdays() -> Iterator[tuple[User, Birthday]]:
         .join(DbOrgaFlag) \
         .join(DbUserDetail) \
         .filter(DbUserDetail.date_of_birth != None) \
-        .options(db.joinedload('detail')) \
+        .options(db.joinedload(DbUser.detail)) \
         .all()
 
     user_ids = {user.id for user in users}

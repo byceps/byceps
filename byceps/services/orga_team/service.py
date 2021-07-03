@@ -15,6 +15,7 @@ from ...typing import PartyID, UserID
 
 from ..orga.dbmodels import OrgaFlag as DbOrgaFlag
 from ..party import service as party_service
+from ..user.dbmodels.detail import UserDetail as DbUserDetail
 from ..user.dbmodels.user import User as DbUser
 from ..user import service as user_service
 from ..user.transfer.models import User
@@ -107,7 +108,7 @@ def get_teams_and_members_for_party(
     """
 
     teams = DbOrgaTeam.query \
-        .options(db.joinedload('memberships')) \
+        .options(db.joinedload(DbOrgaTeam.memberships)) \
         .filter_by(party_id=party_id) \
         .all()
 
@@ -230,7 +231,8 @@ def get_orga_activities_for_user(user_id: UserID) -> set[OrgaActivity]:
     """Return all orga team activities for that user."""
     memberships = DbMembership.query \
         .options(
-            db.joinedload('orga_team').joinedload('party'),
+            db.joinedload(DbMembership.orga_team)
+                .joinedload(DbOrgaTeam.party),
         ) \
         .filter_by(user_id=user_id) \
         .all()
@@ -254,12 +256,12 @@ def get_public_orgas_for_party(party_id: PartyID) -> set[PublicOrga]:
     memberships = DbMembership.query \
         .for_party(party_id) \
         .options(
-            db.joinedload('orga_team'),
-            db.joinedload('user')
-                .load_only('id'),
-            db.joinedload('user')
-                .joinedload('detail')
-                .load_only('first_names', 'last_name'),
+            db.joinedload(DbMembership.orga_team),
+            db.joinedload(DbMembership.user)
+                .load_only(DbUser.id),
+            db.joinedload(DbMembership.user)
+                .joinedload(DbUser.detail)
+                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
         ) \
         .all()
 

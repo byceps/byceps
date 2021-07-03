@@ -26,7 +26,7 @@ def get_presences(party_id: PartyID) -> list[PresenceTimeSlot]:
     """Return all presences for that party."""
     presences = DbPresence.query \
         .for_party(party_id) \
-        .options(db.joinedload('orga')) \
+        .options(db.joinedload(DbPresence.orga)) \
         .all()
 
     return [_presence_to_time_slot(presence) for presence in presences]

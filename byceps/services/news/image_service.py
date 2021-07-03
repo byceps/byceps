@@ -155,7 +155,7 @@ def find_image(image_id: ImageID) -> Optional[Image]:
 def _find_db_image(image_id: ImageID) -> Optional[DbImage]:
     """Return the image with that id, or `None` if not found."""
     return DbImage.query \
-        .options(db.joinedload('item').load_only('channel_id')) \
+        .options(db.joinedload(DbImage.item).load_only('channel_id')) \
         .get(image_id)
 
 

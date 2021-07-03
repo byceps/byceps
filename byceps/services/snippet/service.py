@@ -242,7 +242,8 @@ def get_snippets_for_scope_with_current_versions(
         .filter_by(scope_type=scope.type_) \
         .filter_by(scope_name=scope.name) \
         .options(
-            db.joinedload('current_version_association').joinedload('version')
+            db.joinedload(DbSnippet.current_version_association)
+                .joinedload(DbCurrentVersionAssociation.version)
         ) \
         .all()
 

@@ -214,8 +214,8 @@ def get_all_permissions_with_titles() -> Sequence[DbPermission]:
     """Return all permissions, with titles."""
     return DbPermission.query \
         .options(
-            db.undefer('title'),
-            db.joinedload('role_permissions')
+            db.undefer(DbPermission.title),
+            db.joinedload(DbPermission.role_permissions)
         ) \
         .all()
 
@@ -224,8 +224,9 @@ def get_all_roles_with_titles() -> Sequence[DbRole]:
     """Return all roles, with titles."""
     return DbRole.query \
         .options(
-            db.undefer('title'),
-            db.joinedload('user_roles').joinedload('user')
+            db.undefer(DbRole.title),
+            db.joinedload(DbRole.user_roles)
+                .joinedload(DbUserRole.user)
         ) \
         .all()
 
@@ -237,14 +238,15 @@ def get_permissions_by_roles_with_titles() -> dict[Role, set[Permission]]:
     """
     roles = DbRole.query \
         .options(
-            db.undefer('title'),
+            db.undefer(DbRole.title),
         ) \
         .all()
 
     permissions = DbPermission.query \
         .options(
-            db.undefer('title'),
-            db.joinedload('role_permissions').joinedload('role')
+            db.undefer(DbPermission.title),
+            db.joinedload(DbPermission.role_permissions)
+                .joinedload(DbRolePermission.role)
         ) \
         .all()
 
@@ -260,7 +262,7 @@ def get_permissions_by_roles_for_user_with_titles(
     """
     roles = DbRole.query \
         .options(
-            db.undefer('title'),
+            db.undefer(DbRole.title),
         ) \
         .join(DbUserRole) \
         .filter(DbUserRole.user_id == user_id) \
@@ -271,8 +273,9 @@ def get_permissions_by_roles_for_user_with_titles(
     if role_ids:
         permissions = DbPermission.query \
             .options(
-                db.undefer('title'),
-                db.joinedload('role_permissions').joinedload('role')
+                db.undefer(DbPermission.title),
+                db.joinedload(DbPermission.role_permissions)
+                    .joinedload(DbRolePermission.role)
             ) \
             .join(DbRolePermission) \
             .join(DbRole) \
@@ -311,7 +314,7 @@ def get_permissions_with_title_for_role(
     """Return the permissions assigned to the role."""
     permissions = DbPermission.query \
         .options(
-            db.undefer('title')
+            db.undefer(DbPermission.title)
         ) \
         .join(DbRolePermission) \
         .filter(DbRolePermission.role_id == role_id) \

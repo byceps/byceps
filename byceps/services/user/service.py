@@ -228,7 +228,7 @@ def find_db_user_by_screen_name(
 def find_user_with_details(user_id: UserID) -> Optional[DbUser]:
     """Return the user and its details."""
     return DbUser.query \
-        .options(db.joinedload('detail')) \
+        .options(db.joinedload(DbUser.detail)) \
         .get(user_id)
 
 

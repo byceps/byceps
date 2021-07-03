@@ -31,6 +31,9 @@ from ....services.user.dbmodels.event import (
 from ....services.user.dbmodels.user import User as DbUser
 from ....services.user import service as user_service
 from ....services.user.transfer.models import User
+from ....services.user_avatar.dbmodels import (
+    AvatarSelection as DbAvatarSelection,
+)
 from ....services.user_avatar import service as avatar_service
 from ....services.user_badge import badge_service as user_badge_service
 from ....typing import PartyID, UserID
@@ -46,8 +49,10 @@ def get_users_paginated(
     """
     query = DbUser.query \
         .options(
-            db.joinedload('avatar_selection').joinedload('avatar'),
-            db.joinedload('detail').load_only('first_names', 'last_name'),
+            db.joinedload(DbUser.avatar_selection)
+                .joinedload(DbAvatarSelection.avatar),
+            db.joinedload(DbUser.detail)
+                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
         ) \
         .order_by(DbUser.created_at.desc())
 
@@ -114,8 +119,10 @@ def get_users_created_since(
 
     query = DbUser.query \
         .options(
-            db.joinedload('avatar_selection').joinedload('avatar'),
-            db.joinedload('detail').load_only('first_names', 'last_name'),
+            db.joinedload(DbUser.avatar_selection)
+                .joinedload(DbAvatarSelection.avatar),
+            db.joinedload(DbUser.detail)
+                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
         ) \
         .filter(DbUser.created_at >= filter_starts_at) \
         .order_by(DbUser.created_at.desc())

@@ -195,8 +195,10 @@ def find_article_with_details(article_id: ArticleID) -> Optional[DbArticle]:
     """Return the article with that ID, or `None` if not found."""
     return DbArticle.query \
         .options(
-            db.joinedload('articles_attached_to').joinedload('article'),
-            db.joinedload('attached_articles').joinedload('article'),
+            db.joinedload(DbArticle.articles_attached_to)
+                .joinedload(DbAttachedArticle.article),
+            db.joinedload(DbArticle.attached_articles)
+                .joinedload(DbAttachedArticle.article),
         ) \
         .get(article_id)
 

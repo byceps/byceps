@@ -126,8 +126,8 @@ def get_bundles_for_party_paginated(
         .join(DbCategory) \
         .filter(DbCategory.party_id == party_id) \
         .options(
-            db.joinedload('ticket_category'),
-            db.joinedload('owned_by'),
+            db.joinedload(DbTicketBundle.ticket_category),
+            db.joinedload(DbTicketBundle.owned_by),
         ) \
         .order_by(DbTicketBundle.created_at.desc()) \
         .paginate(page, per_page)

@@ -466,7 +466,7 @@ def find_order_with_details(order_id: OrderID) -> Optional[Order]:
     """Return the order with that id, or `None` if not found."""
     order = DbOrder.query \
         .options(
-            db.joinedload('items'),
+            db.joinedload(DbOrder.items),
         ) \
         .get(order_id)
 
@@ -562,7 +562,7 @@ def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
     """Return orders placed by the user."""
     orders = DbOrder.query \
         .options(
-            db.joinedload('items'),
+            db.joinedload(DbOrder.items),
         ) \
         .placed_by(user_id) \
         .order_by(DbOrder.created_at.desc()) \
@@ -577,7 +577,7 @@ def get_orders_placed_by_user_for_shop(
     """Return orders placed by the user in that shop."""
     orders = DbOrder.query \
         .options(
-            db.joinedload('items'),
+            db.joinedload(DbOrder.items),
         ) \
         .for_shop(shop_id) \
         .placed_by(user_id) \

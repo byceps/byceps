@@ -32,12 +32,12 @@ class ItemQuery(BaseQuery):
 
     def with_channel(self) -> BaseQuery:
         return self.options(
-            db.joinedload('channel'),
+            db.joinedload(Item.channel),
         )
 
     def with_images(self) -> BaseQuery:
         return self.options(
-            db.joinedload('images'),
+            db.joinedload(Item.images),
         )
 
     def published(self) -> BaseQuery:
@@ -50,7 +50,8 @@ class ItemQuery(BaseQuery):
 
     def with_current_version(self) -> BaseQuery:
         return self.options(
-            db.joinedload('current_version_association').joinedload('version'),
+            db.joinedload(Item.current_version_association)
+                .joinedload(CurrentVersionAssociation.version),
         )
 
 
