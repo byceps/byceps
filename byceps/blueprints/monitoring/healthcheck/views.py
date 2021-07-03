@@ -9,6 +9,7 @@ byceps.blueprints.monitoring.healthcheck
 from flask import current_app
 from flask.json import dumps
 
+from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
 
 from ....database import db
@@ -50,7 +51,7 @@ def health():
 
 def _is_rdbms_ok():
     try:
-        db.session.execute('SELECT 1')
+        db.session.execute(text('SELECT 1'))
         return True
     except OperationalError:
         return False
