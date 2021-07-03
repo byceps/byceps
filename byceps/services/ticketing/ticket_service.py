@@ -73,7 +73,7 @@ def delete_ticket(ticket_id: TicketID) -> None:
 
 def find_ticket(ticket_id: TicketID) -> Optional[DbTicket]:
     """Return the ticket with that id, or `None` if not found."""
-    return DbTicket.query.get(ticket_id)
+    return db.session.query(DbTicket).get(ticket_id)
 
 
 def get_ticket(ticket_id: TicketID) -> DbTicket:
@@ -243,7 +243,7 @@ def select_ticket_users_for_party(
 
 def get_ticket_with_details(ticket_id: TicketID) -> Optional[DbTicket]:
     """Return the ticket with that id, or `None` if not found."""
-    return DbTicket.query \
+    return db.session.query(DbTicket) \
         .options(
             db.joinedload(DbTicket.category),
             db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),

@@ -3,7 +3,10 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.authentication.password.dbmodels import Credential
+from byceps.database import db
+from byceps.services.authentication.password.dbmodels import (
+    Credential as DbCredential,
+)
 from byceps.services.authentication.session import service as session_service
 
 from tests.helpers import http_client, login_user
@@ -62,7 +65,7 @@ def test_when_not_logged_in_endpoint_is_unavailable(site_app, site):
 
 
 def find_credential(user_id):
-    return Credential.query.get(user_id)
+    return db.session.query(DbCredential).get(user_id)
 
 
 def find_session_token(user_id):

@@ -81,7 +81,7 @@ def delete_role(role_id: RoleID) -> None:
 
 def find_role(role_id: RoleID) -> Optional[Role]:
     """Return the role with that id, or `None` if not found."""
-    role = DbRole.query.get(role_id)
+    role = db.session.query(DbRole).get(role_id)
 
     if role is None:
         return None
@@ -123,7 +123,8 @@ def deassign_permission_from_role(
     permission_id: PermissionID, role_id: RoleID
 ) -> None:
     """Dessign the permission from the role."""
-    role_permission = DbRolePermission.query.get((role_id, permission_id))
+    role_permission = db.session.query(DbRolePermission) \
+        .get((role_id, permission_id))
 
     if role_permission is None:
         raise ValueError('Unknown role ID and/or permission ID.')
@@ -156,7 +157,7 @@ def deassign_role_from_user(
     role_id: RoleID, user_id: UserID, initiator_id: Optional[UserID] = None
 ) -> None:
     """Deassign the role from the user."""
-    user_role = DbUserRole.query.get((user_id, role_id))
+    user_role = db.session.query(DbUserRole).get((user_id, role_id))
 
     if user_role is None:
         raise ValueError(f'Unknown role ID "{role_id}" and/or user ID "{user_id}".')

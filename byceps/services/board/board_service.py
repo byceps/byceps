@@ -42,7 +42,7 @@ def delete_board(board_id: BoardID) -> None:
 
 def find_board(board_id: BoardID) -> Optional[Board]:
     """Return the board with that id, or `None` if not found."""
-    board = DbBoard.query.get(board_id)
+    board = db.session.query(DbBoard).get(board_id)
 
     if board is None:
         return None

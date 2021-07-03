@@ -20,7 +20,7 @@ from ...image import service as image_service
 from ...image.service import ImageTypeProhibited  # Provide to view functions.
 from ...user import service as user_service
 
-from .dbmodels import Avatar
+from .dbmodels import Avatar as DbAvatar
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
@@ -33,7 +33,7 @@ def create_avatar_image(
     allowed_types: set[ImageType],
     *,
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
-) -> Avatar:
+) -> DbAvatar:
     """Create a new avatar image.
 
     Raise `ImageTypeProhibited` if the stream data is not of one the
@@ -52,7 +52,7 @@ def create_avatar_image(
             stream, image_type.name, maximum_dimensions, force_square=True
         )
 
-    avatar = Avatar(party_id, creator_id, image_type)
+    avatar = DbAvatar(party_id, creator_id, image_type)
     db.session.add(avatar)
     db.session.commit()
 
@@ -64,7 +64,7 @@ def create_avatar_image(
 
 def delete_avatar_image(avatar_id: UUID) -> None:
     """Delete the avatar image."""
-    avatar = Avatar.query.get(avatar_id)
+    avatar = db.session.query(DbAvatar).get(avatar_id)
 
     if avatar is None:
         raise ValueError('Unknown avatar ID')

@@ -53,7 +53,7 @@ def update_password_hash(
 
     password_hash = generate_password_hash(password)
 
-    credential = DbCredential.query.get(user_id)
+    credential = db.session.query(DbCredential).get(user_id)
 
     credential.password_hash = password_hash
     credential.updated_at = now
@@ -72,7 +72,7 @@ def is_password_valid_for_user(user_id: UserID, password: str) -> bool:
     """Return `True` if the password is valid for the user, or `False`
     otherwise.
     """
-    credential = DbCredential.query.get(user_id)
+    credential = db.session.query(DbCredential).get(user_id)
 
     if credential is None:
         # no password stored for user

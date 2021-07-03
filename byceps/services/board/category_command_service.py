@@ -18,7 +18,7 @@ def create_category(
     board_id: BoardID, slug: str, title: str, description: str
 ) -> Category:
     """Create a category in that board."""
-    board = DbBoard.query.get(board_id)
+    board = db.session.query(DbBoard).get(board_id)
     if board is None:
         raise ValueError(f'Unknown board ID "{board_id}"')
 
@@ -107,7 +107,7 @@ def delete_category(category_id: CategoryID) -> None:
 
 
 def _get_category(category_id: CategoryID) -> DbCategory:
-    category = DbCategory.query.get(category_id)
+    category = db.session.query(DbCategory).get(category_id)
 
     if category is None:
         raise ValueError(f'Unknown category ID "{category_id}"')

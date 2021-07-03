@@ -97,7 +97,7 @@ def find_team(team_id: OrgaTeamID) -> Optional[OrgaTeam]:
 
 def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
     """Return the team with that id, or `None` if not found."""
-    return DbOrgaTeam.query.get(team_id)
+    return db.session.query(DbOrgaTeam).get(team_id)
 
 
 def get_teams_and_members_for_party(
@@ -211,7 +211,7 @@ def find_membership(membership_id: MembershipID) -> Optional[Membership]:
 
 def _find_db_membership(membership_id: MembershipID) -> Optional[DbMembership]:
     """Return the membership with that id, or `None` if not found."""
-    return DbMembership.query.get(membership_id)
+    return db.session.query(DbMembership).get(membership_id)
 
 
 def find_orga_team_for_user_and_party(

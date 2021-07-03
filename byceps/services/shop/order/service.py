@@ -431,7 +431,7 @@ def _find_order_entity(order_id: OrderID) -> Optional[DbOrder]:
     """Return the order database entity with that id, or `None` if not
     found.
     """
-    return DbOrder.query.get(order_id)
+    return db.session.query(DbOrder).get(order_id)
 
 
 def _get_order_entity(order_id: OrderID) -> DbOrder:
@@ -464,7 +464,7 @@ def get_order(order_id: OrderID) -> Order:
 
 def find_order_with_details(order_id: OrderID) -> Optional[Order]:
     """Return the order with that id, or `None` if not found."""
-    order = DbOrder.query \
+    order = db.session.query(DbOrder) \
         .options(
             db.joinedload(DbOrder.items),
         ) \

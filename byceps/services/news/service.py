@@ -169,9 +169,11 @@ def find_item(item_id: ItemID) -> Optional[Item]:
 
 def _find_db_item(item_id: ItemID) -> Optional[DbItem]:
     """Return the item with that id, or `None` if not found."""
-    return DbItem.query \
-        .with_channel() \
-        .with_images() \
+    return db.session.query(DbItem) \
+        .options(
+            db.joinedload(DbItem.channel),
+            db.joinedload(DbItem.images)
+        ) \
         .get(item_id)
 
 
@@ -283,7 +285,7 @@ def get_current_item_version(item_id: ItemID) -> DbItemVersion:
 
 def find_item_version(version_id: ItemVersionID) -> DbItemVersion:
     """Return the item version with that ID, or `None` if not found."""
-    return DbItemVersion.query.get(version_id)
+    return db.session.query(DbItemVersion).get(version_id)
 
 
 def has_channel_items(channel_id: ChannelID) -> bool:

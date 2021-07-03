@@ -7,7 +7,10 @@ from unittest.mock import patch
 
 import pytest
 
-from byceps.services.authentication.password.dbmodels import Credential
+from byceps.database import db
+from byceps.services.authentication.password.dbmodels import (
+    Credential as DbCredential,
+)
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authorization_service
 from byceps.services.brand import settings_service as brand_settings_service
@@ -243,7 +246,7 @@ def assert_creation_event_created(user_id, site_id):
 
 
 def assert_password_credentials_created(user_id):
-    credential = Credential.query.get(user_id)
+    credential = db.session.query(DbCredential).get(user_id)
 
     assert credential is not None
     assert credential.password_hash.startswith('pbkdf2:sha256:250000$')

@@ -224,7 +224,7 @@ def delete_snippet(
 
 def find_snippet(snippet_id: SnippetID) -> Optional[DbSnippet]:
     """Return the snippet with that id, or `None` if not found."""
-    return DbSnippet.query.get(snippet_id)
+    return db.session.query(DbSnippet).get(snippet_id)
 
 
 def get_snippets(snippet_ids: set[SnippetID]) -> Sequence[DbSnippet]:
@@ -252,7 +252,7 @@ def find_snippet_version(
     version_id: SnippetVersionID,
 ) -> Optional[DbSnippetVersion]:
     """Return the snippet version with that id, or `None` if not found."""
-    return DbSnippetVersion.query.get(version_id)
+    return db.session.query(DbSnippetVersion).get(version_id)
 
 
 def find_current_version_of_snippet_with_name(

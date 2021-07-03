@@ -108,7 +108,7 @@ def delete_bundle(bundle_id: TicketBundleID) -> None:
 
 def find_bundle(bundle_id: TicketBundleID) -> Optional[DbTicketBundle]:
     """Return the ticket bundle with that id, or `None` if not found."""
-    return DbTicketBundle.query.get(bundle_id)
+    return db.session.query(DbTicketBundle).get(bundle_id)
 
 
 def find_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[DbTicket]:

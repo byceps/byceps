@@ -20,7 +20,7 @@ from .transfer.models import TourneyCategory, TourneyCategoryID
 
 def create_category(party_id: PartyID, title: str) -> TourneyCategory:
     """Create a category for that party."""
-    party = DbParty.query.get(party_id)
+    party = db.session.query(DbParty).get(party_id)
     if party is None:
         raise ValueError(f'Unknown party ID "{party_id}"')
 
@@ -104,7 +104,7 @@ def find_category(category_id: TourneyCategoryID) -> Optional[TourneyCategory]:
 def _find_db_category(
     category_id: TourneyCategoryID,
 ) -> Optional[DbTourneyCategory]:
-    return DbTourneyCategory.query.get(category_id)
+    return db.session.query(DbTourneyCategory).get(category_id)
 
 
 def _get_db_category(category_id: TourneyCategoryID) -> DbTourneyCategory:

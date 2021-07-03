@@ -61,7 +61,7 @@ def find_setting(site_id: SiteID, name: str) -> Optional[SiteSetting]:
     """Return the setting for that site and with that name, or `None`
     if not found.
     """
-    setting = DbSetting.query.get((site_id, name))
+    setting = db.session.query(DbSetting).get((site_id, name))
 
     if setting is None:
         return None

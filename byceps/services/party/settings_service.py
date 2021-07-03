@@ -61,7 +61,7 @@ def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:
     """Return the setting for that party and with that name, or `None`
     if not found.
     """
-    setting = DbSetting.query.get((party_id, name))
+    setting = db.session.query(DbSetting).get((party_id, name))
 
     if setting is None:
         return None

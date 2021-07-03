@@ -29,7 +29,7 @@ def create_category(party_id: PartyID, title: str) -> TicketCategory:
 
 def update_category(category_id: TicketCategoryID, title: str) -> TicketCategory:
     """Update a category."""
-    category = DbCategory.query.get(category_id)
+    category = db.session.query(DbCategory).get(category_id)
 
     if category is None:
         raise ValueError(f'Unknown category ID "{category_id}"')
@@ -58,7 +58,7 @@ def count_categories_for_party(party_id: PartyID) -> int:
 
 def find_category(category_id: TicketCategoryID) -> Optional[TicketCategory]:
     """Return the category with that ID, or `None` if not found."""
-    category = DbCategory.query.get(category_id)
+    category = db.session.query(DbCategory).get(category_id)
 
     if category is None:
         return None

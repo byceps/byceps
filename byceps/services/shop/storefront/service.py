@@ -87,7 +87,7 @@ def _find_db_storefront(storefront_id: StorefrontID) -> Optional[DbStorefront]:
     """Return the database entity for the storefront with that id, or `None`
     if not found.
     """
-    return DbStorefront.query.get(storefront_id)
+    return db.session.query(DbStorefront).get(storefront_id)
 
 
 def get_storefront(storefront_id: StorefrontID) -> Storefront:

@@ -3,7 +3,10 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.authentication.password.dbmodels import Credential
+from byceps.database import db
+from byceps.services.authentication.password.dbmodels import (
+    Credential as DbCredential,
+)
 from byceps.services.authentication.password import service as password_service
 from byceps.services.user import event_service
 
@@ -49,5 +52,5 @@ def test_update_password_hash(site_app, admin_user, make_user):
 
 
 def get_password_hash(user_id):
-    credential = Credential.query.get(user_id)
+    credential = db.session.query(DbCredential).get(user_id)
     return credential.password_hash

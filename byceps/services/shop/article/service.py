@@ -175,7 +175,7 @@ def find_db_article(article_id: ArticleID) -> Optional[DbArticle]:
     """Return the database entity for the article with that ID, or
     `None` if not found.
     """
-    return DbArticle.query.get(article_id)
+    return db.session.query(DbArticle).get(article_id)
 
 
 def _get_db_article(article_id: ArticleID) -> DbArticle:
@@ -193,7 +193,7 @@ def _get_db_article(article_id: ArticleID) -> DbArticle:
 
 def find_article_with_details(article_id: ArticleID) -> Optional[DbArticle]:
     """Return the article with that ID, or `None` if not found."""
-    return DbArticle.query \
+    return db.session.query(DbArticle) \
         .options(
             db.joinedload(DbArticle.articles_attached_to)
                 .joinedload(DbAttachedArticle.article),
@@ -207,7 +207,7 @@ def find_attached_article(
     attached_article_id: AttachedArticleID,
 ) -> Optional[DbAttachedArticle]:
     """Return the attached article with that ID, or `None` if not found."""
-    return DbAttachedArticle.query.get(attached_article_id)
+    return db.session.query(DbAttachedArticle).get(attached_article_id)
 
 
 def get_articles_by_numbers(

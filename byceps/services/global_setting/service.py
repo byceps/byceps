@@ -51,7 +51,7 @@ def remove_setting(name: str) -> None:
 
 def find_setting(name: str) -> Optional[GlobalSetting]:
     """Return the global setting with that name, or `None` if not found."""
-    setting = DbSetting.query.get(name)
+    setting = db.session.query(DbSetting).get(name)
 
     if setting is None:
         return None

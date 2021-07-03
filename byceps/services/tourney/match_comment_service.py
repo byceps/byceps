@@ -24,7 +24,7 @@ def find_comment(
     comment_id: MatchCommentID, *, party_id: Optional[PartyID] = None
 ) -> Optional[MatchComment]:
     """Return the comment, or `None` if not found."""
-    comment = DbMatchComment.query.get(comment_id)
+    comment = db.session.query(DbMatchComment).get(comment_id)
 
     if comment is None:
         return None
@@ -176,7 +176,7 @@ def _get_db_comment(comment_id: MatchCommentID) -> DbMatchComment:
 
     Raise exception if comment ID is unknown.
     """
-    comment = DbMatchComment.query.get(comment_id)
+    comment = db.session.query(DbMatchComment).get(comment_id)
 
     if comment is None:
         raise ValueError('Unknown match comment ID')

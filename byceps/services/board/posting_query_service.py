@@ -31,7 +31,7 @@ def count_postings_for_board(board_id: BoardID) -> int:
 
 def find_posting_by_id(posting_id: PostingID) -> Optional[DbPosting]:
     """Return the posting with that id, or `None` if not found."""
-    return DbPosting.query.get(posting_id)
+    return db.session.query(DbPosting).get(posting_id)
 
 
 def get_posting(posting_id: PostingID) -> DbPosting:

@@ -28,7 +28,7 @@ def count_topics_for_board(board_id: BoardID) -> int:
 
 def find_topic_by_id(topic_id: TopicID) -> Optional[DbTopic]:
     """Return the topic with that id, or `None` if not found."""
-    return DbTopic.query.get(topic_id)
+    return db.session.query(DbTopic).get(topic_id)
 
 
 def get_topic(topic_id: TopicID) -> DbTopic:
