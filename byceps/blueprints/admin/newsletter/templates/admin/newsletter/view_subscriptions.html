@@ -31,8 +31,8 @@
             </div>
           </button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('.export_subscribers', list_id=list_.id) }}" download="subscribers_{{ list_.id }}.json">{{ render_icon('download') }} Benutzernamen und E-Mail-Adressen (als JSON)</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.export_subscriber_email_addresses', list_id=list_.id) }}" download="subscribers_{{ list_.id }}.txt">{{ render_icon('download') }} nur E-Mail-Adressen (als Text)</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.export_subscribers', list_id=list_.id) }}" download="subscribers_{{ list_.id }}.json">{{ render_icon('download') }} {{ _('Usernames and email addresses (as JSON)') }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.export_subscriber_email_addresses', list_id=list_.id) }}" download="subscribers_{{ list_.id }}.txt">{{ render_icon('download') }} {{ _('email addresses only (as plaintext)') }}</a></li>
           </ol>
         </div>
       </div>
@@ -45,13 +45,13 @@
 
     <div class="row row--space-around row--wrap bigstats">
       <div class="column-auto">
-        {{ render_bigstats_item(format_number(totals[State.requested]), 'angefordert', icon_name='enabled', color='#008800') }}
+        {{ render_bigstats_item(format_number(totals[State.requested]), _('requested'), icon_name='enabled', color='#008800') }}
       </div>
       <div class="column-auto">
-        {{ render_bigstats_item(format_number(totals[State.declined]), 'abgelehnt', icon_name='disabled', color='#cc0000') }}
+        {{ render_bigstats_item(format_number(totals[State.declined]), _('rejected'), icon_name='disabled', color='#cc0000') }}
       </div>
       <div class="column-auto">
-        {{ render_bigstats_item(format_number(totals['total']), '&sum; gesamt'|safe) }}
+        {{ render_bigstats_item(format_number(totals['total']), '&sum; '|safe ~ _('total')) }}
       </div>
     </div>
 

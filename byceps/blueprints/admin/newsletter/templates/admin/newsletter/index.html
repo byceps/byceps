@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% set current_page = 'newsletter_admin' %}
-{% set page_title = 'Newsletter' %}
+{% set page_title = _('Newsletter') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -12,8 +12,8 @@
     <table class="index">
       <thead>
         <tr>
-          <th>Titel<br>ID</th>
-          <th class="number">Abonnenten</th>
+          <th>{{ _('Title') }}<br>{{ _('ID') }}</th>
+          <th class="number">{{ _('Subscribers') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -26,7 +26,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">Es sind keine Newsletter-Listen hinterlegt.</div>
+    <div class="dimmed-box centered">{{ _('No subscription lists exist.') }}</div>
     {%- endif %}
   </div>
 

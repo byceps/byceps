@@ -565,6 +565,7 @@ msgstr "mehr als"
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:30
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:38
 #: byceps/blueprints/admin/news/forms.py:24
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/index.html:15
 #: byceps/blueprints/admin/party/forms.py:50
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:48
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:15
@@ -592,6 +593,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/consent/templates/admin/consent/index.html:28
 #: byceps/blueprints/admin/news/forms.py:60
 #: byceps/blueprints/admin/news/templates/admin/news/item_compare_versions.html:15
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/index.html:15
 #: byceps/blueprints/admin/orga_team/forms.py:18
 #: byceps/blueprints/admin/party/forms.py:21
 #: byceps/blueprints/admin/seating/forms.py:22
@@ -1671,6 +1673,7 @@ msgstr "öffentlich"
 msgid "Publish"
 msgstr "Veröffentlichen"
 
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/index.html:3
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:6
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:16
 #: byceps/blueprints/site/user/creation/forms.py:97
@@ -1678,11 +1681,40 @@ msgstr "Veröffentlichen"
 msgid "Newsletter"
 msgstr "Newsletter"
 
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/index.html:16
+msgid "Subscribers"
+msgstr "Abonnenten"
+
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/index.html:29
+msgid "No subscription lists exist."
+msgstr "Es sind keine Newsletter-Listen vorhanden."
+
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:30
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:42
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:44
 msgid "Export"
 msgstr "Exportieren"
+
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:34
+msgid "Usernames and email addresses (as JSON)"
+msgstr "Benutzernamen und E-Mail-Adressen (als JSON)"
+
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:35
+msgid "email addresses only (as plaintext)"
+msgstr "nur E-Mail-Adressen (als Text)"
+
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:48
+msgid "requested"
+msgstr "angefordert"
+
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:51
+msgid "rejected"
+msgstr "abgelehnt"
+
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:54
+#: byceps/blueprints/admin/user/templates/admin/user/index.html:30
+msgid "total"
+msgstr "gesamt"
 
 #: byceps/blueprints/admin/orga/forms.py:26
 #: byceps/blueprints/admin/ticketing/forms.py:26
@@ -3274,10 +3306,6 @@ msgstr "verwaltet Nutzer/in"
 #: byceps/blueprints/admin/user/templates/admin/user/index.html:20
 msgid "Create account"
 msgstr "Benutzerkonto erstellen"
-
-#: byceps/blueprints/admin/user/templates/admin/user/index.html:30
-msgid "total"
-msgstr "gesamt"
 
 #: byceps/blueprints/admin/user/templates/admin/user/index.html:99
 msgid "result"
