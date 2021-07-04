@@ -6,13 +6,24 @@ byceps.blueprints.admin.snippet.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Optional
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
 from ....services.brand import service as brand_service
+from ....services.brand.transfer.models import Brand
 from ....services.site import service as site_service
+from ....services.site.transfer.models import Site, SiteID
+from ....services.snippet.dbmodels.snippet import (
+    Snippet as DbSnippet,
+    SnippetVersion as DbSnippetVersion,
+)
 from ....services.snippet import mountpoint_service, service as snippet_service
-from ....services.snippet.transfer.models import Scope
+from ....services.snippet.transfer.models import (
+    Scope,
+    SnippetID,
+    SnippetVersionID,
+)
 from ....services.text_diff import service as text_diff_service
 from ....services.user import service as user_service
 from ....signals import snippet as snippet_signals
@@ -28,6 +39,7 @@ from ....util.views import (
     respond_no_content,
     respond_no_content_with_location,
 )
+from ....typing import BrandID
 
 from ...site.snippet.templating import get_snippet_context
 
@@ -581,7 +593,7 @@ def delete_mountpoint(mountpoint_id):
 # helpers
 
 
-def _find_snippet_by_id(snippet_id):
+def _find_snippet_by_id(snippet_id: SnippetID) -> DbSnippet:
     snippet = snippet_service.find_snippet(snippet_id)
 
     if snippet is None:
@@ -590,7 +602,7 @@ def _find_snippet_by_id(snippet_id):
     return snippet
 
 
-def _find_version(version_id):
+def _find_version(version_id: SnippetVersionID) -> DbSnippetVersion:
     version = snippet_service.find_snippet_version(version_id)
 
     if version is None:
@@ -599,7 +611,11 @@ def _find_version(version_id):
     return version
 
 
-def _create_html_diff(from_version, to_version, attribute_name):
+def _create_html_diff(
+    from_version: DbSnippetVersion,
+    to_version: DbSnippetVersion,
+    attribute_name: str,
+) -> Optional[str]:
     """Create an HTML diff between the named attribute's value of each
     of the two versions.
     """
@@ -614,15 +630,15 @@ def _create_html_diff(from_version, to_version, attribute_name):
     )
 
 
-def _find_brand_for_scope(scope):
+def _find_brand_for_scope(scope: Scope) -> Optional[Brand]:
     if scope.type_ != 'brand':
         return None
 
-    return brand_service.find_brand(scope.name)
+    return brand_service.find_brand(BrandID(scope.name))
 
 
-def _find_site_for_scope(scope):
+def _find_site_for_scope(scope: Scope) -> Optional[Site]:
     if scope.type_ != 'site':
         return None
 
-    return site_service.find_site(scope.name)
+    return site_service.find_site(SiteID(scope.name))
