@@ -42,4 +42,4 @@ def _format_time(*args) -> str:
 
 
 def _format_number(*args) -> str:
-    return babel.numbers.format_number(*args, locale=get_locale())
+    return babel.numbers.format_decimal(*args, locale=get_locale())
