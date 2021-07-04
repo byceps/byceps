@@ -1,4 +1,5 @@
 {% extends 'layout/admin/seating.html' %}
+{% from 'macros/stats.html' import render_bigstats_item %}
 {% set current_page_party = party %}
 {% set current_tab = 'overview' %}
 {% set page_title = [_('Seating Plans'), party.title] %}
@@ -8,25 +9,29 @@
 
   <h1>{{ _('Seating Plans') }}</h1>
 
-  <div class="box">
-    <table class="index">
-      <tr>
-        <td class="bignumber number">{{ category_count }}</td>
-        <td style="vertical-align: middle;"><a href="{{ url_for('ticketing_category_admin.index', party_id=party.id) }}">{{ ngettext('ticket category', 'ticket categories', category_count) }}</a></td>
-      </tr>
-      <tr>
-        <td class="bignumber number">{{ area_count }}</td>
-        <td style="vertical-align: middle;"><a href="{{ url_for('.area_index', party_id=party.id) }}">{{ ngettext('area', 'areas', area_count) }}</a></td>
-      </tr>
-      <tr>
-        <td class="bignumber number">{{ seat_count }}</td>
-      <td style="vertical-align: middle;">{{ ngettext('seat', 'seats', seat_count) }}</td>
-      </tr>
-      <tr>
-        <td class="bignumber number">{{ group_count }}</td>
-        <td style="vertical-align: middle;"><a href="{{ url_for('.seat_group_index', party_id=party.id) }}">{{ ngettext('seat group', 'seat groups', group_count) }}</a></td>
-      </tr>
-    </table>
+  <div class="box" style="margin-bottom: var(--inner-gutter);">
+    <div class="row row--equal-sized-centered-columns row--space-around row--wrap bigstats">
+      <div class="column-auto">
+        <a class="button button--clear" href="{{ url_for('ticketing_category_admin.index', party_id=party.id) }}">
+          {{- render_bigstats_item(category_count, ngettext('ticket category', 'ticket categories', category_count)) -}}
+        </a>
+      </div>
+      <div class="column-auto">
+        <a class="button button--clear" href="{{ url_for('.area_index', party_id=party.id) }}">
+          {{- render_bigstats_item(area_count, ngettext('area', 'areas', area_count)) -}}
+        </a>
+      </div>
+      <div class="column-auto">
+        <div class="button button--clear">
+          {{- render_bigstats_item(format_number(seat_count), ngettext('seat', 'seats', seat_count)) -}}
+        </div>
+      </div>
+      <div class="column-auto">
+        <a class="button button--clear" href="{{ url_for('.seat_group_index', party_id=party.id) }}">
+          {{- render_bigstats_item(group_count, ngettext('seat group', 'seat groups', group_count)) -}}
+        </a>
+      </div>
+    </div>
   </div>
 
 {%- endblock %}
