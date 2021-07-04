@@ -6,7 +6,7 @@
       <button class="dropdown-toggle button"><span>{{ _('Actions') }}</span> {{ render_icon('chevron-down') }}</button>
       <ol class="dropdown-menu dropdown-menu--right">
         {%- if has_current_user_permission(UserPermission.set_password) %}
-        <li><a class="dropdown-item" href="{{ url_for('.set_password', user_id=user.id) }}">{{ render_icon('password') }} {{ _('Change password') }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.set_password', user_id=user.id) }}">{{ render_icon('password') }} {{ _('Set new password') }}</a></li>
         {%- endif %}
         {%- if has_current_user_permission(UserPermission.administrate) %}
 

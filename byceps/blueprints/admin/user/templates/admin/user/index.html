@@ -57,16 +57,16 @@
     <div class="column-auto">
 
       <form action="{{ url_for('.index') }}" class="single-row">
-        <input type="search" name="search_term" placeholder="Benutzer-, Vor-, Nachname, E-Mail-Adresse" title="Benutzer-, Vor-, Nachname, E-Mail-Adresse"{%- if search_term %} value="{{ search_term }}"{% endif %}>
-        <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
-        <a href="{{ url_for('.index') }}" class="button{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
+        <input type="search" name="search_term" placeholder="{{ _('user name, first name, last name, email address') }}" title="{{ _('user name, first name, last name, email address') }}"{%- if search_term %} value="{{ search_term }}"{% endif %}>
+        <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
+        <a href="{{ url_for('.index') }}" class="button{% if not search_term %} dimmed{% endif %}" title="{{ _('Remove search term constraint') }}">{{ render_icon('remove') }}</a>
       </form>
 
     </div>
     <div class="column-auto">
 
       <div class="filter">
-        <span>{{ render_icon('filter') }} Einschränkung:</span>
+        <span>{{ render_icon('filter') }} {{ _('Filter') }}:</span>
         <div class="dropdown">
           <button class="dropdown-toggle button button--clear">{{ render_user_state_filter(user_state_filter) }} {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
@@ -96,7 +96,7 @@
     </div>
 
     <small>
-      <p>{{ users.total }} {{ _('result') if (users.total == 1) else _('results') }}</p>
+      <p>{{ users.total }} {{ ngettext('result', 'results', users.total) }}</p>
     </small>
 
   </div>

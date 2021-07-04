@@ -5,9 +5,9 @@
 <table class="index wide">
   <thead>
     <tr>
-      <th colspan="2">Benutzername</th>
-      <th>Voller Name</th>
-      <th>Erstellt</th>
+      <th colspan="2">{{ _('Username') }}</th>
+      <th>{{ _('Full name') }}</th>
+      <th>{{ _('Created') }}</th>
     </tr>
   </thead>
   <tbody>
@@ -22,5 +22,5 @@
   </tbody>
 </table>
 {%- else %}
-<div class="dimmed-box centered">keine</div>
+<div class="dimmed-box centered">{{ _('none') }}</div>
 {%- endif %}

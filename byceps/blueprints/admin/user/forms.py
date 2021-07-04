@@ -54,7 +54,7 @@ class ChangeEmailAddressForm(LocalizedForm):
 
 class ChangeScreenNameForm(LocalizedForm):
     screen_name = StringField(
-        lazy_gettext('Neuer username'),
+        lazy_gettext('New username'),
         [
             InputRequired(),
             Length(

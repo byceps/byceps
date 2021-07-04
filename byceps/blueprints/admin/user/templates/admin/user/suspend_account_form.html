@@ -3,14 +3,14 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_tab = 'profile' %}
 {% set current_tab_user_id = user.id %}
-{% set page_title = 'Benutzerkonto \'%s\' sperren'|format(user.screen_name) %}
+{% set page_title = _('Suspend user account \'%(screen_name)s\'', screen_name=user.screen_name) %}
 
 {% block body %}
 
   <h1>{{ render_icon('lock') }} {{ page_title }}</h1>
 
   <form action="{{ url_for('.suspend_account', user_id=user.id) }}" method="post">
-    {{ form_field(form.reason, maxlength=1000, note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.'|safe, autofocus='autofocus') }}
+    {{ form_field(form.reason, maxlength=1000, note=_('The reason will be saved as <em>internal</em> remark.')|safe, autofocus='autofocus') }}
 
     {{ form_buttons(_('Lock'), icon='lock', cancel_url=url_for('.view', user_id=user.id)) }}
   </form>
