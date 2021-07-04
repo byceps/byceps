@@ -6,6 +6,7 @@ byceps.blueprints.admin.snippet.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from typing import Optional
 from flask import abort, g, request, url_for
 from flask_babel import gettext
@@ -526,10 +527,13 @@ def create_mountpoint_form(snippet_id, *, erroneous_form=None):
 
     scope = snippet.scope
 
-    form = erroneous_form if erroneous_form else MountpointCreateForm()
-
     brand = _find_brand_for_scope(scope)
     site = _find_site_for_scope(scope)
+
+    sites = _get_sites_to_potentially_mount_to(brand, site)
+
+    form = erroneous_form if erroneous_form else MountpointCreateForm()
+    form.set_site_id_choices(sites)
 
     return {
         'scope': scope,
@@ -540,13 +544,28 @@ def create_mountpoint_form(snippet_id, *, erroneous_form=None):
     }
 
 
+def _get_sites_to_potentially_mount_to(
+    brand: Optional[Brand] = None, site: Optional[Site] = None
+) -> set[Site]:
+    if site is not None:
+        return {site}
+    elif brand is not None:
+        return site_service.get_sites_for_brand(brand.id)
+    else:
+        return site_service.get_all_sites()
+
+
 @blueprint.post('/snippets/<uuid:snippet_id>/mountpoints')
 @permission_required(SnippetMountpointPermission.create)
 def create_mountpoint(snippet_id):
     """Create a mountpoint."""
     snippet = _find_snippet_by_id(snippet_id)
 
+    sites = site_service.get_all_sites()
+
     form = MountpointCreateForm(request.form)
+    form.set_site_id_choices(sites)
+
     if not form.validate():
         return create_mountpoint_form(snippet.id, erroneous_form=form)
 
@@ -564,6 +583,7 @@ def create_mountpoint(snippet_id):
             url_path=mountpoint.url_path,
         )
     )
+
     return redirect_to('.index_mountpoints', site_id=site_id)
 
 
