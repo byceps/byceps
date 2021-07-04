@@ -2,29 +2,24 @@
 {% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
 {% set current_page = 'attendance_admin' %}
 {% set current_page_brand = brand %}
-{% set page_title = 'Häufigste Teilnehmer' %}
+{% set page_title = _('Most Frequent Attendees') %}
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>{{ brand.title }}</li>
-    </ol>
-  </nav>
   <h1>{{ page_title }}</h1>
 
-  <p>Partys der Marke &quot;{{ brand.title }}&quot; insgesamt: <strong>{{ party_total }}</strong></p>
+  <p>{{ _('Total parties of brand "%(brand_title)s"', brand_title=brand.title) }}: <strong>{{ party_total }}</strong></p>
 
   {%- if most_recent_party %}
-  <p>Neueste enthaltene Party: <strong>{{ most_recent_party.title }}</strong></p>
+  <p>{{ _('Latest included party') }}: <strong>{{ most_recent_party.title }}</strong></p>
   {%- endif %}
 
   {%- if top_attendees %}
   <table class="index">
     <thead>
       <tr>
-        <th>Benutzer</th>
-        <th class="number">Party-Teilnahmen</th>
+        <th>{{ _('User') }}</th>
+        <th class="number">{{ _('Attendances') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -37,7 +32,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="dimmed-box centered">Keine Teilnahmen an Partys dieser Marke gefunden.</div>
+  <div class="dimmed-box centered">{{ _('No attendances at parties of this brand.') }}</div>
   {%- endif %}
 
 {%- endblock %}

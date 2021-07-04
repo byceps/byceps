@@ -419,6 +419,39 @@ msgstr ""
 "%(initiator_screen_name)s hat das Abzeichen \"%(badge_label)s\" an "
 "%(awardee_screen_name)s verliehen."
 
+#: byceps/blueprints/admin/attendance/templates/admin/attendance/view_for_brand.html:5
+#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:19
+msgid "Most Frequent Attendees"
+msgstr "Häufigste Teilnehmer"
+
+#: byceps/blueprints/admin/attendance/templates/admin/attendance/view_for_brand.html:11
+#, python-format
+msgid "Total parties of brand \"%(brand_title)s\""
+msgstr "Partys der Marke \"%(brand_title)s\" insgesamt"
+
+#: byceps/blueprints/admin/attendance/templates/admin/attendance/view_for_brand.html:14
+msgid "Latest included party"
+msgstr "Neueste enthaltene Party"
+
+#: byceps/blueprints/admin/attendance/templates/admin/attendance/view_for_brand.html:21
+#: byceps/blueprints/admin/orga_team/forms.py:46
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:5
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:32
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_user_list.html:20
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:23
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:92
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/award_form.html:19
+msgid "User"
+msgstr "Benutzer"
+
+#: byceps/blueprints/admin/attendance/templates/admin/attendance/view_for_brand.html:22
+msgid "Attendances"
+msgstr "Teilnahmen"
+
+#: byceps/blueprints/admin/attendance/templates/admin/attendance/view_for_brand.html:35
+msgid "No attendances at parties of this brand."
+msgstr "Keine Teilnahmen an Partys dieser Marke gefunden."
+
 #: byceps/blueprints/admin/authentication/login/forms.py:17
 #: byceps/blueprints/admin/orga/forms.py:44
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:59
@@ -1505,10 +1538,6 @@ msgstr "Newsletter-Abos"
 msgid "Discussion Boards"
 msgstr "Foren"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:19
-msgid "Regular Guests"
-msgstr "Stammgäste"
-
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:20
 msgid "Brand Snippets"
 msgstr "Marken-Snippets"
@@ -1852,16 +1881,6 @@ msgstr " (%(team_count)s Teams)"
 #: byceps/blueprints/admin/orga_team/forms.py:42
 msgid "Function"
 msgstr "Aufgabe"
-
-#: byceps/blueprints/admin/orga_team/forms.py:46
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:5
-#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:32
-#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_user_list.html:20
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:23
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:92
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/award_form.html:19
-msgid "User"
-msgstr "Benutzer"
 
 #: byceps/blueprints/admin/orga_team/forms.py:54
 #: sites/cozylan/template_overrides/layout/_navigation.html:7
