@@ -124,7 +124,7 @@ class DeleteAccountForm(LocalizedForm):
 
     @staticmethod
     def validate_verification(form, field):
-        if field.data != 'löschen':
+        if field.data != 'delete account':
             raise ValidationError(lazy_gettext('Invalid confirmation word'))
 
 

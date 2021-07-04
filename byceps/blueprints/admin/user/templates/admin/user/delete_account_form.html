@@ -16,7 +16,7 @@
 
   <form action="{{ url_for('.delete_account', user_id=user.id) }}" method="post">
     {{ form_field(form.reason, maxlength=1000, note='Die Begründung wird als <em>interner</em> Vermerk gespeichert.', autofocus='autofocus') }}
-    {{ form_field(form.verification, note='Bitte zur Bestätigung "löschen" eingeben.') }}
+    {{ form_field(form.verification, note='Bitte zur Bestätigung "delete account" eingeben.') }}
 
     {{ form_buttons(_('Delete'), icon='delete', color='danger', cancel_url=url_for('.view', user_id=user.id)) }}
   </form>
