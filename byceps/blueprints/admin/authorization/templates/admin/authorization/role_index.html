@@ -13,9 +13,9 @@
     <table class="index wide">
       <thead>
         <tr>
-          <th>Rolle</th>
-          <th>zugewiesene Berechtigungen</th>
-          <th>Benutzer mit dieser Rolle</th>
+          <th>{{ _('Role') }}</th>
+          <th>{{ _('Assigned permissions') }}</th>
+          <th>{{ _('Users with this role') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -23,7 +23,7 @@
         <tr>
           <td>
             <strong class="monospace"><a href="{{ url_for('.role_view', role_id=role.id) }}">{{ role.id }}</a></strong><br>
-            {{ role.title|fallback('keine Beschreibung vorhanden') }}
+            {{ role.title|fallback(_('no description available')) }}
           </td>
           <td>
           {%- if role.permissions %}
@@ -47,7 +47,7 @@
             {%- endfor %}
             </ol>
           {%- else %}
-            <em>[mehr als {{ user_limit }}]</em>
+            <em>[{{ _('more than') }} {{ user_limit }}]</em>
           {%- endif %}
           </td>
         </tr>

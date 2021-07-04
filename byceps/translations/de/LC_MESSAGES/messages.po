@@ -489,11 +489,31 @@ msgstr "Passwort vergessen?"
 msgid "Set new password"
 msgstr "Neues Passwort setzen"
 
-#: byceps/blueprints/admin/authorization/templates/admin/authorization/role_index.html:5
-#: byceps/blueprints/admin/authorization/templates/admin/authorization/role_view.html:5
-msgid "Roles"
-msgstr "Rollen"
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/permission_index.html:4
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:16
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:24
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:31
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:5
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:25
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:42
+#: byceps/blueprints/admin/user/templates/layout/admin/user.html:66
+msgid "Permissions"
+msgstr "Berechtigungen"
 
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/permission_index.html:15
+msgid "Permission"
+msgstr "Berechtigung"
+
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/permission_index.html:16
+msgid "Part of these roles"
+msgstr "Teil dieser Rollen"
+
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/permission_index.html:24
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/role_index.html:26
+msgid "no description available"
+msgstr "keine Beschreibung vorhanden"
+
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/permission_index.html:34
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/role_index.html:36
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/role_index.html:42
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/role_view.html:38
@@ -514,6 +534,31 @@ msgstr "Rollen"
 #: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:22
 msgid "none"
 msgstr "keine"
+
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/role_index.html:5
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/role_view.html:5
+msgid "Roles"
+msgstr "Rollen"
+
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/role_index.html:16
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:30
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:41
+msgid "Role"
+msgstr "Rolle"
+
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/role_index.html:17
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/role_view.html:29
+msgid "Assigned permissions"
+msgstr "Zugewiesene Berechtigungen"
+
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/role_index.html:18
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/role_view.html:42
+msgid "Users with this role"
+msgstr "Benutzer mit dieser Rolle"
+
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/role_index.html:50
+msgid "more than"
+msgstr "mehr als"
 
 #: byceps/blueprints/admin/board/forms.py:18
 #: byceps/blueprints/admin/brand/forms.py:25
@@ -1438,16 +1483,6 @@ msgstr "Stammgäste"
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:20
 msgid "Brand Snippets"
 msgstr "Marken-Snippets"
-
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:16
-#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:24
-#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:31
-#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:5
-#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:25
-#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:42
-#: byceps/blueprints/admin/user/templates/layout/admin/user.html:66
-msgid "Permissions"
-msgstr "Berechtigungen"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_global.html:17
 msgid "Global Snippets"
@@ -3255,11 +3290,6 @@ msgstr "Ergebnisse"
 #: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:6
 msgid "Assign permissions"
 msgstr "Berechtigungen zuweisen"
-
-#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:30
-#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:41
-msgid "Role"
-msgstr "Rolle"
 
 #: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:57
 msgid "Unassign role"

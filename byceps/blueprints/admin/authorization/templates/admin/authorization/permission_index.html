@@ -1,7 +1,7 @@
 {% extends 'layout/admin/authorization.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% set current_tab = 'permissions' %}
-{% set page_title = 'Berechtigungen' %}
+{% set page_title = _('Permissions') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -12,8 +12,8 @@
     <table class="index wide">
       <thead>
         <tr>
-          <th>Berechtigung</th>
-          <th>Teil dieser Rollen</th>
+          <th>{{ _('Permission') }}</th>
+          <th>{{ _('Part of these roles') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -21,7 +21,7 @@
         <tr>
           <td>
             <strong class="monospace">{{ permission.id }}</strong><br>
-            {{ permission.title|fallback('keine Beschreibung vorhanden') }}
+            {{ permission.title|fallback(_('no description available')) }}
           </td>
           <td>
           {%- if permission.roles %}
@@ -31,7 +31,7 @@
             {%- endfor %}
             </ol>
           {%- else %}
-            {{ 'keine'|dim }}
+            {{ _('none')|dim }}
           {%- endif %}
           </td>
         </tr>
