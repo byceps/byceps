@@ -9,12 +9,12 @@
     Navigation(None)
       .add_item(
         url_for('tourney_tourney_admin.index', party_id=party.id),
-        'Turniere',
+        _('Tourneys'),
         id='tourneys',
         required_permission=TourneyPermission.view)
       .add_item(
         url_for('tourney_category_admin.index', party_id=party.id),
-        'Kategorien',
+        _('Categories'),
         id='categories',
         required_permission=TourneyCategoryPermission.view)
     , current_tab

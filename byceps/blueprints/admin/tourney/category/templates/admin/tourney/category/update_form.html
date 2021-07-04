@@ -3,15 +3,15 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'categories' %}
-{% set page_title = 'Kategorie bearbeiten' %}
+{% set page_title = _('Edit category') %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
       <li>{{ party.title }}</li>
-      <li>Turniere</li>
-      <li><a href="{{ url_for('.index', party_id=party.id) }}">Kategorien</a></li>
+      <li>{{ _('Tourneys') }}</li>
+      <li><a href="{{ url_for('.index', party_id=party.id) }}">{{ _('Categories') }}</a></li>
       <li>{{ category.title }}</li>
     </ol>
   </nav>

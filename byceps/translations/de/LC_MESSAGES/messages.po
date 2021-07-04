@@ -733,6 +733,8 @@ msgstr "Foren"
 #: byceps/blueprints/admin/ticketing/templates/layout/admin/ticketing.html:24
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:14
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:13
+#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/update_form.html:14
+#: byceps/blueprints/admin/tourney/templates/layout/admin/tourney.html:17
 msgid "Categories"
 msgstr "Kategorien"
 
@@ -861,6 +863,7 @@ msgid "Delete category?"
 msgstr "Kategorie löschen?"
 
 #: byceps/blueprints/admin/board/templates/admin/board/category_update_form.html:7
+#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/update_form.html:6
 msgid "Edit category"
 msgstr "Kategorie bearbeiten"
 
@@ -1996,6 +1999,7 @@ msgid "Edit party"
 msgstr "Party bearbeiten"
 
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:56
+#: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/index.html:33
 msgid "Start"
 msgstr "Beginn"
 
@@ -3260,6 +3264,8 @@ msgid "A user has already been checked in with this ticket."
 msgstr "Es ist bereits jemand mit diesem Ticket eingecheckt worden."
 
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:13
+#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/update_form.html:13
+#: byceps/blueprints/admin/tourney/templates/layout/admin/tourney.html:12
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/create_form.html:13
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/index.html:7
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/index.html:14
@@ -3323,6 +3329,10 @@ msgstr "Teilnehmer"
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/update_form.html:6
 msgid "Edit tourney"
 msgstr "Turnier bearbeiten"
+
+#: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/index.html:61
+msgid "No tourneys exist."
+msgstr "Es sind keine Turniere vorhanden."
 
 #: byceps/blueprints/admin/user/forms.py:31
 #: byceps/blueprints/site/user/creation/forms.py:29
