@@ -28,10 +28,10 @@
 <table class="index wide tickets">
   <thead>
     <tr>
-      <th>Code</th>
-      <th>Nutzer</th>
-      <th>Besitzer</th>
-      <th>Sitzplatz</th>
+      <th>{{ _('Code') }}</th>
+      <th>{{ _('User') }}</th>
+      <th>{{ _('Owner') }}</th>
+      <th>{{ _('Seat') }}</th>
     </tr>
   </thead>
   <tbody>
@@ -45,28 +45,28 @@
         {%- if ticket.used_by -%}
         {{ render_user_microcard(ticket.used_by) }}
         {%- else -%}
-        {{ render_tag('frei', class='available') }}
+        {{ render_tag(_('nobody'), class='color-warning') }}
         {%- endif -%}
       </td>
       <td>{{ render_user_microcard(ticket.owned_by, tiny_avatar=True) }}</td>
       <td>
         {%- if ticket.occupied_seat -%}
-        {{ ticket.occupied_seat.label|fallback('unbenannt') }}
+        {{ ticket.occupied_seat.label|fallback(_('unnamed')) }}
         {%- else -%}
-        {{ render_tag('keiner', class='color-info') }}
+        {{ render_tag(_('no seat'), class='color-warning') }}
         {%- endif -%}
       </td>
       <td style="text-align: right;">
         {%- if ticket.revoked -%}
-        <div class="button button--compact button--disabled color-danger">Kein Einlass!</div>
+        <div class="button button--compact button--disabled color-danger">{{ _('No entry!') }}</div>
         {%- elif ticket.user_checked_in -%}
-        <div class="button button--compact button--disabled color-warning">Bereits eingecheckt!</div>
+        <div class="button button--compact button--disabled color-warning">{{ _('Already checked in!') }}</div>
         {%- elif ticket.used_by and ticket.used_by.deleted -%}
-        <div class="button button--compact button--disabled color-danger"><div>Kein Einlass!<br><small>Nutzer gelöscht</small></div></div>
+        <div class="button button--compact button--disabled color-danger"><div>{{ _('No entry!') }}<br><small>{{ _('Account has been deleted.') }}</small></div></div>
         {%- elif ticket.used_by and ticket.used_by.suspended -%}
-        <div class="button button--compact button--disabled color-danger"><div>Kein Einlass!<br><small>Nutzer gesperrt</small></div></div>
+        <div class="button button--compact button--disabled color-danger"><div>{{ _('No entry!') }}<br><small>{{ _('Account is suspended.') }}</small></div></div>
         {%- elif ticket.used_by -%}
-        <a class="button button-check-in color-primary" data-action="check-in-user" href="{{ url_for('ticketing_checkin_admin.check_in_user', party_id=party.id, ticket_id=ticket.id) }}">{{ render_icon('ticketing-checkin') }} <span>Einchecken</span></a>
+        <a class="button button-check-in color-primary" data-action="check-in-user" href="{{ url_for('ticketing_checkin_admin.check_in_user', party_id=party.id, ticket_id=ticket.id) }}">{{ render_icon('ticketing-checkin') }} <span>{{ _('Check in') }}</span></a>
         {%- endif -%}
       </td>
     </tr>
@@ -74,5 +74,5 @@
   </tbody>
 </table>
 {%- else %}
-<div class="dimmed-box centered">keine</div>
+<div class="dimmed-box centered">{{ _('none') }}</div>
 {%- endif %}

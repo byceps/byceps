@@ -2,10 +2,10 @@
 
 
 {% macro render_ticket_flag_revoked(hide_label=False) -%}
-  {{ render_tag('' if hide_label else 'widerrufen', class='color-danger nowrap', icon='disabled', title='Dieses Ticket ist nicht mehr gültig.') }}
+  {{ render_tag('' if hide_label else _('revoked'), class='color-danger nowrap', icon='disabled', title=_('This ticket is no longer valid.')) }}
 {%- endmacro %}
 
 
 {% macro render_ticket_flag_user_checked_in(hide_label=False) -%}
-  {{ render_tag('' if hide_label else 'eingecheckt', class='color-success nowrap', icon='success', title='Mit diesem Ticket wurde ein Benutzer eingecheckt.') }}
+  {{ render_tag('' if hide_label else _('checked in'), class='color-success nowrap', icon='success', title=_('A user has already been checked in with this ticket.')) }}
 {%- endmacro %}

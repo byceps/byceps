@@ -18,9 +18,9 @@
       <div class="column-auto">
 
         <form action="{{ url_for('.index', party_id=party.id) }}" class="single-row unobtrusive">
-            <input type="search" name="search_term" placeholder="Ticketcode, Bestellnummer, Benutzer-, Vor-, Nachname, E-Mail-Adresse" autofocus>
-            <button type="submit" class="button" title="Suchen" tabindex="-1">{{ render_icon('search') }}</button>
-            <a href="{{ url_for('.index', party_id=party.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="Einschränkung auf Suchbegriff aufheben" tabindex="-1">{{ render_icon('remove') }}</a>
+          <input type="search" name="search_term" placeholder="{{ [_('ticket code'), _('order number'), _('username'), _('first name'), _('last name'), _('email address')]|join(', ') }}" autofocus>
+          <button type="submit" class="button" title="{{ _('Search') }}" tabindex="-1">{{ render_icon('search') }}</button>
+          <a href="{{ url_for('.index', party_id=party.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="{{ _('Remove search term constraint') }}" tabindex="-1">{{ render_icon('remove') }}</a>
         </form>
 
       </div>
@@ -28,9 +28,9 @@
 
         <small>
           <ul style="margin: 0; padding-left: 1rem;">
-            <li><strong>{{ _('Tickets') }}</strong> via Ticketcode</li>
-            <li><strong>{{ _('Orders') }}</strong> via Bestellnummer</li>
-            <li><strong>{{ _('Users') }}</strong> via Nick-, Vor-, Nachname, E-Mail-Adresse</li>
+            <li><strong>{{ _('Tickets') }}</strong> {{ _('via') }} {{ _('ticket code') }}</li>
+            <li><strong>{{ _('Orders') }}</strong> {{ _('via') }} {{ _('order number') }}</li>
+            <li><strong>{{ _('Users') }}</strong> {{ _('via') }} {{ [_('username'), _('first name'), _('last name'), _('email address')]|join(', ') }}</li>
           </ul>
         </small>
 
@@ -41,7 +41,7 @@
 
   {%- if search_term %}
 
-  {{ render_notification('Die Person muss am <strong>{}</strong> oder früher geboren sein.'.format(render_date(latest_dob_for_checkin, smart=False))|safe, category='warning', icon='warning') }}
+  {{ render_notification(_('The person must be born on <strong>%(latest_dob)s</strong> or earlier.', latest_dob=format_date(latest_dob_for_checkin))|safe, category='warning', icon='warning') }}
 
   <h2>{{ _('Tickets') }} {{ render_extra_in_heading(tickets|length) }}</h2>
   <div class="box">

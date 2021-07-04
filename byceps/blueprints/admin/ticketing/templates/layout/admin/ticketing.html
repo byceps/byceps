@@ -9,19 +9,19 @@
     Navigation(None)
       .add_item(
         url_for('ticketing_admin.index_for_party', party_id=party.id),
-        'Tickets',
+        _('Tickets'),
         id='tickets',
         required_permission=TicketingPermission.view,
         icon='ticket')
       .add_item(
         url_for('ticketing_admin.index_bundle_for_party', party_id=party.id),
-        'Ticket-Bundles',
+        _('Ticket Bundles'),
         id='bundles',
         required_permission=TicketingPermission.view,
         icon='ticket-bundle')
       .add_item(
         url_for('ticketing_category_admin.index', party_id=party.id),
-        'Kategorien',
+        _('Categories'),
         id='categories',
         required_permission=TicketingPermission.administrate)
     , current_tab

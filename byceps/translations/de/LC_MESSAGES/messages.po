@@ -518,6 +518,9 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/role_index.html:42
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/role_view.html:38
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/role_view.html:51
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:77
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_user_list.html:43
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:58
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:43
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:29
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:54
@@ -574,6 +577,10 @@ msgstr "mehr als"
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:36
 #: byceps/blueprints/admin/site/forms.py:73
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:49
+#: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:29
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:20
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:18
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:58
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:20
 msgid "ID"
 msgstr "ID"
@@ -723,6 +730,7 @@ msgid "Boards"
 msgstr "Foren"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_index_for_brand.html:31
+#: byceps/blueprints/admin/ticketing/templates/layout/admin/ticketing.html:24
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:14
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:13
 msgid "Categories"
@@ -807,6 +815,7 @@ msgstr "versteckt"
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:16
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:39
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:40
+#: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:42
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:44
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:52
 msgid "Edit"
@@ -858,9 +867,11 @@ msgstr "Kategorie bearbeiten"
 #: byceps/blueprints/admin/board/templates/admin/board/category_update_form.html:10
 #: byceps/blueprints/admin/shop/article/forms.py:211
 #: byceps/blueprints/admin/shop/article/forms.py:222
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:25
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:23
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:31
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:38
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:70
 #: byceps/blueprints/admin/tourney/tourney/forms.py:30
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/index.html:31
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:12
@@ -1115,6 +1126,7 @@ msgid "Search user:"
 msgstr "Benutzer suchen:"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header.html:21
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:22
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:19
 msgid "Search"
 msgstr "Suchen"
@@ -1241,7 +1253,9 @@ msgstr "Orga-Teams"
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:31
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:46
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:24
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:12
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:48
+#: byceps/blueprints/admin/ticketing/templates/layout/admin/ticketing.html:12
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:4
 #: byceps/blueprints/admin/user/templates/admin/user/view.html:66
 #: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:6
@@ -1252,8 +1266,8 @@ msgid "Tickets"
 msgstr "Tickets"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:25
-#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:4
-#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:9
+#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:5
+#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:10
 msgid "Seating Plans"
 msgstr "Sitzpläne"
 
@@ -1833,6 +1847,10 @@ msgstr "Aufgabe"
 
 #: byceps/blueprints/admin/orga_team/forms.py:46
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:5
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:32
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_user_list.html:20
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:23
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:92
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/award_form.html:19
 msgid "User"
 msgstr "Benutzer"
@@ -2069,10 +2087,12 @@ msgid "occupied"
 msgstr "belegt"
 
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:33
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:41
 msgid "available"
 msgstr "verfügbar"
 
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:48
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:85
 #: byceps/util/templatefilters.py:42
 msgid "not specified"
 msgstr "nicht angegeben"
@@ -2081,25 +2101,25 @@ msgstr "nicht angegeben"
 msgid "No areas exist."
 msgstr "Es sind keine Bereiche vorhanden."
 
-#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:15
+#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:16
 msgid "ticket category"
 msgid_plural "ticket categories"
 msgstr[0] "Ticket-Kategorie"
 msgstr[1] "Ticket-Kategorien"
 
-#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:19
+#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:21
 msgid "area"
 msgid_plural "areas"
 msgstr[0] "Bereich"
 msgstr[1] "Bereiche"
 
-#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:23
+#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:26
 msgid "seat"
 msgid_plural "seats"
 msgstr[0] "Sitzplatz"
 msgstr[1] "Sitzplätze"
 
-#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:27
+#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:31
 msgid "seat group"
 msgid_plural "seat groups"
 msgstr[0] "Sitzplatz-Gruppe"
@@ -2304,6 +2324,7 @@ msgid "Edit article"
 msgstr "Artikel bearbeiten"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:148
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:37
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:6
 msgid "Actions"
 msgstr "Aktionen"
@@ -2336,6 +2357,7 @@ msgid "User name"
 msgstr "Benutzername"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_ordered.html:31
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:84
 msgid "Order"
 msgstr "Bestellung"
 
@@ -2914,6 +2936,7 @@ msgstr "Aktuelle Version ansehen"
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:87
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:21
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:26
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:66
 msgid "Created"
 msgstr "Erstellt"
 
@@ -2925,7 +2948,9 @@ msgstr "Es ist ein Fehler aufgetreten."
 msgid "Delete snippet?"
 msgstr "Snippet löschen?"
 
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:31
 #: byceps/blueprints/admin/ticketing/forms.py:32
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:22
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:11
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:79
 msgid "Code"
@@ -2976,6 +3001,14 @@ msgstr "Ticket-Kategorie erstellen"
 msgid "Ticket categories"
 msgstr "Ticket-Kategorien"
 
+#: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:51
+msgid "created, non-revoked tickets"
+msgstr "erstellte, nicht widerrufene Tickets"
+
+#: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:54
+msgid "No ticket categories exist for this party."
+msgstr "Für diese Party sind keine Ticket-Kategorien vorhanden."
+
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/update_form.html:6
 msgid "Edit ticket category"
 msgstr "Ticket-Kategorie bearbeiten"
@@ -3018,6 +3051,125 @@ msgstr ""
 msgid "Check-in has been reverted."
 msgstr "Der Check-In wurde rückgängig gemacht."
 
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:33
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:24
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:22
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:30
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:88
+msgid "Owner"
+msgstr "Besitzer/in"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:34
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:26
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:103
+#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:13
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:80
+msgid "Seat"
+msgstr "Sitzplatz"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:48
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:97
+msgid "nobody"
+msgstr "niemand"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:54
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:48
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:31
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:106
+msgid "unnamed"
+msgstr "unbenannt"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:56
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:50
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:108
+msgid "no seat"
+msgstr "kein Sitzplatz"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:61
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:65
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:67
+msgid "No entry!"
+msgstr "Kein Einlass!"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:63
+msgid "Already checked in!"
+msgstr "Bereits eingecheckt!"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:65
+msgid "Account has been deleted."
+msgstr "Account wurde gelöscht."
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:67
+msgid "Account is suspended."
+msgstr "Account ist gesperrt."
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:69
+msgid "Check in"
+msgstr "Einchecken"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:21
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:31
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:18
+msgid "ticket code"
+msgstr "Ticket-Code"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:21
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:32
+msgid "order number"
+msgstr "Bestellnummer"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:21
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:33
+msgid "username"
+msgstr "Benutzername"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:21
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:33
+msgid "first name"
+msgstr "Vorname"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:21
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:33
+msgid "last name"
+msgstr "Nachname"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:21
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:33
+msgid "email address"
+msgstr "E-Mail-Adresse"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:23
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:20
+msgid "Remove search term constraint"
+msgstr "Einschränkung auf Suchbegriff aufheben"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:31
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:32
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:33
+msgid "via"
+msgstr "via"
+
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:44
+#, python-format
+msgid "The person must be born on <strong>%(latest_dob)s</strong> or earlier."
+msgstr ""
+"Die Person muss am <strong>%(latest_dob)s</strong> oder früher geboren "
+"sein."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/appoint_user_form.html:6
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:9
+msgid "Ticket"
+msgstr "Ticket"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/appoint_user_form.html:6
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:39
+msgid "Assign user"
+msgstr "Nutzer/in zuweisen"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/appoint_user_form.html:10
+msgid "Assign to user"
+msgstr "Nutzer/in zuweisen"
+
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/appoint_user_form.html:15
 #: byceps/blueprints/site/ticketing/templates/site/ticketing/appoint_seat_manager_form.html:13
 #: byceps/blueprints/site/ticketing/templates/site/ticketing/appoint_user_form.html:13
@@ -3030,14 +3182,9 @@ msgstr "Zuweisen"
 msgid "Ticket bundles"
 msgstr "Ticket-Bundles"
 
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:22
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:30
-msgid "Owner"
-msgstr "Besitzer/in"
-
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:31
-msgid "unnamed"
-msgstr "unbenannt"
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:27
+msgid "Filter"
+msgstr "Einschränkung"
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/update_code_form.html:6
 msgid "Change ticket code"
@@ -3055,6 +3202,62 @@ msgstr "Ändern"
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:8
 msgid "Ticket bundle"
 msgstr "Ticket-Bundle"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:41
+msgid "Change code"
+msgstr "Code ändern"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:45
+msgid "Revert check-in"
+msgstr "Check-In rückgängig machen"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:62
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:27
+msgid "Copy to clipboard"
+msgstr "In Zwischenablage kopieren"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:74
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:77
+msgid "Bundle"
+msgstr "Bundle"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:79
+msgid "independent"
+msgstr "eigenständig"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:99
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:110
+msgid "managed by"
+msgstr "verwaltet durch"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:116
+msgid "History"
+msgstr "Verlauf"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:128
+msgid "Revert check-in?"
+msgstr "Check-In rückgängig machen?"
+
+#: byceps/blueprints/admin/ticketing/templates/layout/admin/ticketing.html:18
+msgid "Ticket Bundles"
+msgstr "Ticket-Bundles"
+
+#: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:5
+msgid "revoked"
+msgstr "widerrufen"
+
+#: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:5
+msgid "This ticket is no longer valid."
+msgstr "Das Ticket wurde widerrufen."
+
+#: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:10
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:97
+msgid "checked in"
+msgstr "eingecheckt"
+
+#: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:10
+msgid "A user has already been checked in with this ticket."
+msgstr "Es ist bereits jemand mit diesem Ticket eingecheckt worden."
 
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:13
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/create_form.html:13
@@ -3268,10 +3471,6 @@ msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" genommen."
 msgid "Account"
 msgstr "Benutzerkonto"
 
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:27
-msgid "Copy to clipboard"
-msgstr "In Zwischenablage kopieren"
-
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:34
 msgid "Last login"
 msgstr "Letzter Login"
@@ -3361,11 +3560,6 @@ msgstr "Bestellnummer"
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:5
 msgid "Personal Data"
 msgstr "Persönliche Daten"
-
-#: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:13
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:80
-msgid "Seat"
-msgstr "Sitzplatz"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:42
 msgid "Buyer"
@@ -3988,10 +4182,6 @@ msgstr "Alle Bestellungen"
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:92
 msgid "not chosen"
 msgstr "nicht ausgewählt"
-
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:97
-msgid "checked in"
-msgstr "eingecheckt"
 
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:105
 msgid "You do not use a ticket yet."

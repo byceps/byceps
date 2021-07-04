@@ -26,7 +26,7 @@
     <table class="index wide">
       <thead>
         <tr>
-          <th>{{ _('Title') }}<br>ID</th>
+          <th>{{ _('Title') }}<br>{{ _('ID') }}</th>
           <th class="number">{{ _('Tickets') }}<sup>*</sup></th>
           <th></th>
         </tr>
@@ -39,7 +39,7 @@
             <td>
               {%- if has_current_user_permission(TicketingPermission.administrate) %}
               <div class="button-row button-row--compact button-row--right">
-                <a href="{{ url_for('.update_form', category_id=category.id) }}" class="button" title="Bearbeiten">{{ render_icon('edit') }}</a>
+                <a href="{{ url_for('.update_form', category_id=category.id) }}" class="button" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
               </div>
               {%- endif %}
             </td>
@@ -48,10 +48,10 @@
       </tbody>
     </table>
     <small>
-      <p style="margin-top: 1.5rem;"><sup>*)</sup> erstellte, nicht widerrufene Tickets</p>
+      <p style="margin-top: 1.5rem;"><sup>*)</sup> {{ _('created, non-revoked tickets') }}</p>
     </small>
     {%- else %}
-    <div class="dimmed-box centered">Es sind keine Ticket-Kategorien für diese Party definiert.</div>
+    <div class="dimmed-box centered">{{ _('No ticket categories exist for this party.') }}</div>
     {%- endif %}
   </div>
 
