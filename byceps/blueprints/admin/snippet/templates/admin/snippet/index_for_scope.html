@@ -43,7 +43,7 @@
     <div class="column-auto">
       <div class="button-row button-row--right">
         <div class="dropdown">
-          <button class="dropdown-toggle button"><span>{{ render_icon('add') }} Snippet erstellen</span> {{ render_icon('chevron-down') }}</button>
+          <button class="dropdown-toggle button"><span>{{ render_icon('add') }} {{ _('Create snippet') }}</span> {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.create_document_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-document') }} {{ _('Document') }}</a></li>
             <li><a class="dropdown-item" href="{{ url_for('.create_fragment_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-fragment') }} {{ _('Fragment') }}</a></li>
@@ -58,9 +58,9 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Letzte Änderung</th>
-        <th>durch</th>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Latest change') }}</th>
+        <th>{{ _('by') }}</th>
         <th></th>
       </tr>
     </thead>
@@ -77,7 +77,7 @@
         </td>
         <td class="nowrap">
           {%- if has_current_user_permission(SnippetPermission.view_history) %}
-          {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="Änderungshistorie ansehen">{{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}</a>
+          {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="{{ _('View change history') }}">{{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}</a>
           {%- else %}
           {{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}
           {%- endif %}
@@ -92,9 +92,9 @@
             {%- endif %}
             {%- if snippet.is_document and has_current_user_permission(SnippetMountpointPermission.create) %}
             <div class="dropdown">
-              <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+              <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
               <ol class="dropdown-menu dropdown-menu--right">
-                <li><a class="dropdown-item" href="{{ url_for('.create_mountpoint_form', snippet_id=snippet.id) }}">{{ render_icon('add') }} Mountpoint erstellen</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('.create_mountpoint_form', snippet_id=snippet.id) }}">{{ render_icon('add') }} {{ _('Create mountpoint') }}</a></li>
               </ol>
             </div>
             {%- else %}
@@ -108,7 +108,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="dimmed-box centered">Es sind keine Snippets hinterlegt.</div>
+  <div class="dimmed-box centered">{{ _('No snippets exist in this scope.') }}</div>
   {%- endif %}
 
 {%- endblock %}

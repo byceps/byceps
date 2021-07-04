@@ -20,9 +20,9 @@
     <thead>
       <tr>
         <th></th>
-        <th>geändert</th>
-        <th>durch</th>
-        <th>Unterschiede</th>
+        <th>{{ _('changed') }}</th>
+        <th>{{ _('by') }}</th>
+        <th>{{ _('Differences') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -40,7 +40,7 @@
           <td>{{ render_user_avatar_20_and_name(users_by_id[version.creator_id]) }}</td>
           <td>
             {%- if previous_version -%}
-            <a href="{{ url_for(compare_endpoint, from_version_id=previous_version.id, to_version_id=version.id) }}" title="Änderungen im Vergleich zur vorigen Version anzeigen">Änderungen zeigen</a>
+            <a href="{{ url_for(compare_endpoint, from_version_id=previous_version.id, to_version_id=version.id) }}" title="{{ _('View changes compared to previous version') }}">{{ _('View changes') }}</a>
             {%- endif -%}
           </td>
         </tr>
@@ -49,7 +49,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="dimmed-box centered">Es sind keine Versionen hinterlegt.</div>
+  <div class="dimmed-box centered">{{ _('No versions exist.') }}</div>
   {%- endif %}
 
 {%- endblock %}
