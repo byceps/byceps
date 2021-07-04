@@ -27,10 +27,10 @@
     <table class="index wide">
       <thead>
         <tr>
-          <th>Titel<br>Slug</th>
-          <th>Hintergrundbild<br>Größe</th>
-          <th class="number">Plätze<br>belegt</th>
-          <th class="number">Plätze<br>verfügbar</th>
+          <th>{{ _('Title') }}<br>{{ _('Slug') }}</th>
+          <th>{{ _('Background image') }}<br>{{ _('Dimensions') }}</th>
+          <th class="number">{{ _('Seats') }}<br>{{ _('occupied') }}</th>
+          <th class="number">{{ _('Seats') }}<br>{{ _('available') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -43,9 +43,9 @@
           <td>
             {%- if area.image_filename %}
             {{ area.image_filename }}<br>
-            {{ '%d &times; %d Pixel'|format(area.image_width, area.image_height)|dim }}
+            {% filter dim %}{{ area.image_width }} &times; {{ area.image_height }} {{ _('pixels') }}{% endfilter %}
             {%- else %}
-            {{ 'nicht angegeben'|dim }}
+            {{ _('not specified')|dim }}
             {%- endif %}
           </td>
           <td class="bignumber number">{{ occupied_seat_count }}</td>
@@ -55,7 +55,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">Es sind keine Bereiche hinterlegt.</div>
+    <div class="dimmed-box centered">{{ _('No areas exist.') }}</div>
     {%- endif %}
   </div>
 

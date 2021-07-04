@@ -9,17 +9,17 @@
     Navigation(None)
       .add_item(
         url_for('.index_for_party', party_id=party.id),
-        'Übersicht',
+        _('Overview'),
         id='overview',
         required_permission=SeatingPermission.view)
       .add_item(
         url_for('.area_index', party_id=party.id),
-        'Bereiche',
+        _('Areas'),
         id='areas',
         required_permission=SeatingPermission.view)
       .add_item(
         url_for('.seat_group_index', party_id=party.id),
-        'Gruppen',
+        _('Groups'),
         id='seat_groups',
         required_permission=SeatingPermission.view)
     , current_tab

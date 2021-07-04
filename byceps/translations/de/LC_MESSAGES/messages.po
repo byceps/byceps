@@ -568,6 +568,7 @@ msgstr "mehr als"
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/index.html:15
 #: byceps/blueprints/admin/party/forms.py:50
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:48
+#: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:17
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:15
 #: byceps/blueprints/admin/shop/storefront/forms.py:38
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:36
@@ -581,6 +582,7 @@ msgstr "ID"
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:35
 #: byceps/blueprints/admin/news/forms.py:47
 #: byceps/blueprints/admin/seating/forms.py:18
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:30
 #: byceps/blueprints/admin/user_badge/forms.py:23
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:39
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:71
@@ -597,6 +599,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/orga_team/forms.py:18
 #: byceps/blueprints/admin/party/forms.py:21
 #: byceps/blueprints/admin/seating/forms.py:22
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:30
 #: byceps/blueprints/admin/site/forms.py:24
 #: byceps/blueprints/admin/snippet/forms.py:48
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_documents.html:13
@@ -1249,6 +1252,8 @@ msgid "Tickets"
 msgstr "Tickets"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:25
+#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:4
+#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:9
 msgid "Seating Plans"
 msgstr "Sitzpläne"
 
@@ -1370,6 +1375,7 @@ msgid "All users"
 msgstr "Alle Benutzer"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:18
+#: byceps/blueprints/admin/seating/templates/layout/admin/seating.html:12
 #: byceps/blueprints/admin/user/templates/layout/admin/user.html:54
 msgid "Overview"
 msgstr "Übersicht"
@@ -1637,6 +1643,7 @@ msgid "Maximum image dimensions"
 msgstr "Maximale Bildgröße"
 
 #: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:21
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:46
 #: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:15
 msgid "pixels"
 msgstr "Pixel"
@@ -2039,12 +2046,81 @@ msgstr "Bereich erstellen"
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_create_form.html:9
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:7
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:14
+#: byceps/blueprints/admin/seating/templates/layout/admin/seating.html:17
 msgid "Areas"
 msgstr "Bereiche"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:31
+msgid "Background image"
+msgstr "Hintergrundbild"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:31
+msgid "Dimensions"
+msgstr "Größe"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:32
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:33
+#: sites/cozylan/template_overrides/layout/_sidebar_right.html:42
+msgid "Seats"
+msgstr "Sitzplätze"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:32
+msgid "occupied"
+msgstr "belegt"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:33
+msgid "available"
+msgstr "verfügbar"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:48
+#: byceps/util/templatefilters.py:42
+msgid "not specified"
+msgstr "nicht angegeben"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:58
+msgid "No areas exist."
+msgstr "Es sind keine Bereiche vorhanden."
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:15
+msgid "ticket category"
+msgid_plural "ticket categories"
+msgstr[0] "Ticket-Kategorie"
+msgstr[1] "Ticket-Kategorien"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:19
+msgid "area"
+msgid_plural "areas"
+msgstr[0] "Bereich"
+msgstr[1] "Bereiche"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:23
+msgid "seat"
+msgid_plural "seats"
+msgstr[0] "Sitzplatz"
+msgstr[1] "Sitzplätze"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/index_for_party.html:27
+msgid "seat group"
+msgid_plural "seat groups"
+msgstr[0] "Sitzplatz-Gruppe"
+msgstr[1] "Sitzplatz-Gruppen"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:5
+#: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:10
+msgid "Seat Groups"
+msgstr "Sitzplatz-Gruppen"
 
 #: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:19
 msgid "Ticket category"
 msgstr "Ticket-Kategorie"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:38
+msgid "No seat groups exist for this party."
+msgstr "Für diese Party sind keine Sitzplatz-Gruppen vorhanden."
+
+#: byceps/blueprints/admin/seating/templates/layout/admin/seating.html:22
+msgid "Groups"
+msgstr "Gruppen"
 
 #: byceps/blueprints/admin/shop/article/forms.py:41
 msgid "Unit price"
@@ -4435,10 +4511,6 @@ msgstr "Deine Bestellung (%(order_number)s) ist bezahlt worden."
 msgid "wrote"
 msgstr "schrieb"
 
-#: byceps/util/templatefilters.py:42
-msgid "not specified"
-msgstr "nicht angegeben"
-
 #: byceps/util/views.py:34
 msgid "Please log in."
 msgstr "Bitte melde dich an."
@@ -4462,10 +4534,6 @@ msgstr "Tickets bezahlt"
 #: sites/cozylan/template_overrides/layout/_sidebar_right.html:32
 msgid "Order tickets"
 msgstr "Tickets bestellen"
-
-#: sites/cozylan/template_overrides/layout/_sidebar_right.html:42
-msgid "Seats"
-msgstr "Sitzplätze"
 
 #: sites/cozylan/template_overrides/layout/_sidebar_right.html:50
 msgid "seats occupied"
