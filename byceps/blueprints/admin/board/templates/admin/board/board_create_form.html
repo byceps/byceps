@@ -17,8 +17,8 @@
   <form action="{{ url_for('.board_create', brand_id=brand.id) }}" method="post">
     {{ form_field(form.board_id, maxlength=40, placeholder=brand.id, autofocus='autofocus') }}
 
-    <p>Ein Forum kann sowohl für eine einzelne Party als auch für mehrere oder alle Partys derselben Marke genutzt werden.</p>
-    <p>Tipp: Sofern das Forum nur für eine konkrete Party genutzt werden soll, verwende die ID <em>dieser Party</em> als ID für das Forum. Falls es jedoch partyübergreifend genutzt werden soll, verwende die ID <em>der Marke</em> der Partys als ID für das Forum.</p>
+    <p>{{ _('A board can be used for a single party as well as for multiple or even all partys of the same brand.') }}
+    <p>{{ _('Hint: If the board should be used only for a specific party, use the ID <em>of that party</em> as ID for the board. If, however, it should be used for multiple parties, use the ID <em>of the brand</em> as ID for the board.') }}</p>
 
     {{ form_buttons(_('Create')) }}
   </form>

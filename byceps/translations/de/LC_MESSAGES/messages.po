@@ -600,6 +600,7 @@ msgid "more than"
 msgstr "mehr als"
 
 #: byceps/blueprints/admin/board/forms.py:18
+#: byceps/blueprints/admin/board/templates/admin/board/board_index_for_brand.html:30
 #: byceps/blueprints/admin/brand/forms.py:25
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:30
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:38
@@ -737,6 +738,26 @@ msgstr "Die Kategorie \"%(category_title)s\" wurde gelöscht."
 #: byceps/blueprints/admin/board/templates/admin/board/board_index_for_brand.html:19
 msgid "Create board"
 msgstr "Forum erstellen"
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_create_form.html:20
+msgid ""
+"A board can be used for a single party as well as for multiple or even "
+"all partys of the same brand."
+msgstr ""
+"Ein Forum kann sowohl für eine einzelne Party als auch für mehrere oder "
+"alle Partys derselben Marke genutzt werden."
+
+#: byceps/blueprints/admin/board/templates/admin/board/board_create_form.html:21
+msgid ""
+"Hint: If the board should be used only for a specific party, use the ID "
+"<em>of that party</em> as ID for the board. If, however, it should be "
+"used for multiple parties, use the ID <em>of the brand</em> as ID for the"
+" board."
+msgstr ""
+"Tipp: Sofern das Forum nur für eine konkrete Party genutzt werden soll, "
+"verwende die ID <em>dieser Party</em> als ID für das Forum. Falls es "
+"jedoch partyübergreifend genutzt werden soll, verwende die ID <em>der "
+"Marke</em> der Partys als ID für das Forum."
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_create_form.html:23
 #: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:22
