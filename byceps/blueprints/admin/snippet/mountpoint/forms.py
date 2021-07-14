@@ -16,16 +16,19 @@ from .....services.site.transfer.models import Site
 from .....util.l10n import LocalizedForm
 
 
-class CreateForm(LocalizedForm):
+class SiteSelectForm(LocalizedForm):
     site_id = SelectField(lazy_gettext('Site'), [InputRequired()])
-    endpoint_suffix = StringField(lazy_gettext('Identifier'), [InputRequired()])
-    url_path = StringField(lazy_gettext('URL path'), [InputRequired()])
 
     def set_site_id_choices(self, sites: set[Site]) -> None:
         self.site_id.choices = [
             (site.id, site.title)
             for site in sorted(sites, key=lambda site: site.title)
         ]
+
+
+class CreateForm(LocalizedForm):
+    endpoint_suffix = StringField(lazy_gettext('Identifier'), [InputRequired()])
+    url_path = StringField(lazy_gettext('URL path'), [InputRequired()])
 
     @staticmethod
     def validate_url_path(form, field):

@@ -9,21 +9,19 @@ from byceps.services.snippet import (
 )
 
 
-def test_index_mountpoints(snippet_admin_client, site):
+def test_index(snippet_admin_client, site):
     url = f'/admin/snippets/mountpoints/for_site/{site.id}'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_create_mountpoint_form(
-    snippet_admin_client, global_scope, snippet_admin
-):
+def test_site_select_form(snippet_admin_client, global_scope, snippet_admin):
     _, event = snippet_service.create_fragment(
         global_scope, 'fragment1', snippet_admin.id, 'Body v1'
     )
     snippet_id = event.snippet_id
 
-    url = f'/admin/snippets/mountpoints/for_snippet/{snippet_id}/create'
+    url = f'/admin/snippets/mountpoints/for_snippet/{snippet_id}/select_site'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
@@ -31,17 +29,28 @@ def test_create_mountpoint_form(
     snippet_service.delete_snippet(snippet_id)
 
 
-def test_create_mountpoint(
-    snippet_admin_client, site, global_scope, snippet_admin
-):
+def test_create_form(snippet_admin_client, site, global_scope, snippet_admin):
+    _, event = snippet_service.create_fragment(
+        global_scope, 'fragment1', snippet_admin.id, 'Body v1'
+    )
+    snippet_id = event.snippet_id
+
+    url = f'/admin/snippets/mountpoints/for_snippet/{snippet_id}/for_site/{site.id}/create'
+    response = snippet_admin_client.get(url)
+    assert response.status_code == 200
+
+    # Clean up.
+    snippet_service.delete_snippet(snippet_id)
+
+
+def test_create(snippet_admin_client, site, global_scope, snippet_admin):
     _, event = snippet_service.create_fragment(
         global_scope, 'snippet1', snippet_admin.id, 'Body'
     )
     snippet_id = event.snippet_id
 
-    url = f'/admin/snippets/mountpoints/for_snippet/{snippet_id}'
+    url = f'/admin/snippets/mountpoints/for_snippet/{snippet_id}/for_site/{site.id}'
     form_data = {
-        'site_id': site.id,
         'endpoint_suffix': 'test_suffix',
         'url_path': '/test',
     }
@@ -62,9 +71,7 @@ def test_create_mountpoint(
     snippet_service.delete_snippet(snippet_id)
 
 
-def test_delete_mountpoint(
-    snippet_admin_client, site, global_scope, snippet_admin
-):
+def test_delete(snippet_admin_client, site, global_scope, snippet_admin):
     _, event = snippet_service.create_fragment(
         global_scope, 'snippet2', snippet_admin.id, 'Body'
     )

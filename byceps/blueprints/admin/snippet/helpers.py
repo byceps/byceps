@@ -33,6 +33,15 @@ def find_site_for_scope(scope: Scope) -> Optional[Site]:
     return site_service.find_site(SiteID(scope.name))
 
 
+def find_site_by_id(site_id: SiteID) -> Site:
+    site = site_service.find_site(site_id)
+
+    if site is None:
+        abort(404)
+
+    return site
+
+
 def find_snippet_by_id(snippet_id: SnippetID) -> DbSnippet:
     snippet = snippet_service.find_snippet(snippet_id)
 

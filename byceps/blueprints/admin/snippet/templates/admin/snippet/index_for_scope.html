@@ -94,7 +94,11 @@
             <div class="dropdown">
               <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
               <ol class="dropdown-menu dropdown-menu--right">
-                <li><a class="dropdown-item" href="{{ url_for('snippet_mountpoint_admin.create_form', snippet_id=snippet.id) }}">{{ render_icon('add') }} {{ _('Create mountpoint') }}</a></li>
+                {%- with url = url_for('snippet_mountpoint_admin.create_form', snippet_id=snippet.id, site_id=site.id)
+                               if (scope.type_ == 'site')
+                               else url_for('snippet_mountpoint_admin.site_select_form', snippet_id=snippet.id) %}
+                <li><a class="dropdown-item" href="{{ url }}">{{ render_icon('add') }} {{ _('Create mountpoint') }}</a></li>
+                {%- endwith %}
               </ol>
             </div>
             {%- else %}

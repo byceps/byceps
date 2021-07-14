@@ -645,7 +645,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/seating/forms.py:22
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:30
 #: byceps/blueprints/admin/site/forms.py:24
-#: byceps/blueprints/admin/snippet/forms.py:48
+#: byceps/blueprints/admin/snippet/forms.py:26
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_documents.html:13
 #: byceps/blueprints/admin/ticketing/category/forms.py:18
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:29
@@ -661,7 +661,7 @@ msgstr "Titel"
 #: byceps/blueprints/admin/board/forms.py:28
 #: byceps/blueprints/admin/news/forms.py:62
 #: byceps/blueprints/admin/news/templates/admin/news/item_compare_versions.html:18
-#: byceps/blueprints/admin/snippet/forms.py:40
+#: byceps/blueprints/admin/snippet/forms.py:18
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_documents.html:19
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_fragments.html:13
 #: byceps/blueprints/site/board/forms.py:17
@@ -768,6 +768,7 @@ msgstr ""
 #: byceps/blueprints/admin/party/templates/admin/party/create_form.html:38
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_create_form.html:20
 #: byceps/blueprints/admin/site/templates/admin/site/create_form.html:35
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/create_form.html:24
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/create_form.html:15
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:22
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/create_form.html:33
@@ -957,7 +958,6 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/site/templates/admin/site/update_form.html:29
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_document_form.html:23
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_fragment_form.html:20
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_mountpoint_form.html:22
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/update_document_form.html:23
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/update_fragment_form.html:20
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/update_form.html:15
@@ -1049,7 +1049,7 @@ msgstr "Marke erstellen"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:8
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:37
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:136
-#: byceps/blueprints/admin/snippet/forms.py:39
+#: byceps/blueprints/admin/snippet/forms.py:17
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:61
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:11
 msgid "Name"
@@ -1228,7 +1228,8 @@ msgstr "Party"
 #: byceps/blueprints/admin/site/templates/admin/site/_sites.html:39
 #: byceps/blueprints/admin/site/templates/admin/site/add_news_channel_form.html:9
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:8
-#: byceps/blueprints/admin/snippet/forms.py:20
+#: byceps/blueprints/admin/snippet/mountpoint/forms.py:20
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/create_form.html:18
 msgid "Site"
 msgstr "Site"
 
@@ -1339,16 +1340,16 @@ msgid "Check-In"
 msgstr "Check-In"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:7
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:14
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:31
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/site_select_form.html:7
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_document_form.html:10
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_fragment_form.html:10
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_mountpoint_form.html:10
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:11
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:6
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:16
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:33
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:40
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_mountpoints.html:14
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_mountpoints.html:31
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/update_document_form.html:10
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/update_fragment_form.html:10
 msgid "Snippets"
@@ -1627,7 +1628,7 @@ msgstr "Nur Kleinbuchstaben, Ziffern und Bindestrich sind erlaubt."
 
 #: byceps/blueprints/admin/news/forms.py:64
 #: byceps/blueprints/admin/news/templates/admin/news/item_compare_versions.html:21
-#: byceps/blueprints/admin/snippet/forms.py:50
+#: byceps/blueprints/admin/snippet/forms.py:28
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_documents.html:22
 msgid "Image URL path"
 msgstr "Bild-URL-Pfad"
@@ -2801,66 +2802,108 @@ msgstr "Es sind keine Newskanäle mit dieser Site verknüpft."
 msgid "Remove news channel from site?"
 msgstr "Newskanal aus Site entfernen?"
 
-#: byceps/blueprints/admin/snippet/forms.py:21
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_mountpoints.html:43
-msgid "Identifier"
-msgstr "Bezeichner"
-
-#: byceps/blueprints/admin/snippet/forms.py:22
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_mountpoints.html:42
-msgid "URL path"
-msgstr "URL-Pfad"
-
-#: byceps/blueprints/admin/snippet/forms.py:34
-msgid "URL path has to start with a slash."
-msgstr "Der URL-Pfad muss mit einem Slash beginnen."
-
-#: byceps/blueprints/admin/snippet/forms.py:49
+#: byceps/blueprints/admin/snippet/forms.py:27
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_documents.html:16
 msgid "Page header"
 msgstr "Seitenkopf"
 
-#: byceps/blueprints/admin/snippet/views.py:220
+#: byceps/blueprints/admin/snippet/views.py:212
 #, python-format
 msgid "Document \"%(name)s\" has been created."
 msgstr "Das Dokument \"%(name)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/snippet/views.py:278
+#: byceps/blueprints/admin/snippet/views.py:270
 #, python-format
 msgid "Document \"%(name)s\" has been updated."
 msgstr "Das Dokument \"%(name)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/snippet/views.py:366
+#: byceps/blueprints/admin/snippet/views.py:358
 #, python-format
 msgid "Fragment \"%(name)s\" has been created."
 msgstr "Das Fragment \"%(name)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/snippet/views.py:416
+#: byceps/blueprints/admin/snippet/views.py:408
 #, python-format
 msgid "Fragment \"%(name)s\" has been updated."
 msgstr "Das Fragment \"%(name)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/snippet/views.py:475
+#: byceps/blueprints/admin/snippet/views.py:467
 #, python-format
 msgid "Snippet \"%(snippet_name)s\" could not be deleted. Is it still mounted?"
 msgstr ""
 "Das Snippet \"%(snippet_name)s\" konnte nicht gelöscht werden. Ist es "
 "noch gemountet?"
 
-#: byceps/blueprints/admin/snippet/views.py:483
+#: byceps/blueprints/admin/snippet/views.py:475
 #, python-format
 msgid "Snippet \"%(name)s\" has been deleted."
 msgstr "Das Snippet \"%(name)s\" wurde gelöscht."
 
-#: byceps/blueprints/admin/snippet/views.py:581
+#: byceps/blueprints/admin/snippet/mountpoint/forms.py:30
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:43
+msgid "Identifier"
+msgstr "Bezeichner"
+
+#: byceps/blueprints/admin/snippet/mountpoint/forms.py:31
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:42
+msgid "URL path"
+msgstr "URL-Pfad"
+
+#: byceps/blueprints/admin/snippet/mountpoint/forms.py:37
+msgid "URL path has to start with a slash."
+msgstr "Der URL-Pfad muss mit einem Slash beginnen."
+
+#: byceps/blueprints/admin/snippet/mountpoint/views.py:167
 #, python-format
 msgid "Mountpoint for \"%(url_path)s\" has been created."
 msgstr "Der Mountpoint für \"%(url_path)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/snippet/views.py:605
+#: byceps/blueprints/admin/snippet/mountpoint/views.py:191
 #, python-format
 msgid "Mountpoint for \"%(url_path)s\" has been deleted."
 msgstr "Der Mountpoint für \"%(url_path)s\" wurde entfernt."
+
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/create_form.html:6
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:100
+msgid "Create mountpoint"
+msgstr "Mountpoint erstellen"
+
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/create_form.html:9
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/site_select_form.html:4
+msgid "Select site"
+msgstr "Site auswählen"
+
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:4
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:19
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:21
+msgid "Mountpoints"
+msgstr "Mountpoints"
+
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:44
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:61
+msgid "Snippet"
+msgstr "Snippet"
+
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:44
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:57
+msgid "Scope"
+msgstr "Scope"
+
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:62
+msgid "Remove mountpoint"
+msgstr "Mountpoint entfernen"
+
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:72
+msgid "No mountpoints exist for this site."
+msgstr "Für diese Site sind keine Mountpoints vorhanden."
+
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:80
+msgid "Remove mountpoint?"
+msgstr "Mountpoint entfernen?"
+
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/site_select_form.html:17
+msgid "Continue"
+msgstr "Weiter"
 
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_document_form.html:4
 msgid "Create document"
@@ -2869,11 +2912,6 @@ msgstr "Dokument erstellen"
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_fragment_form.html:4
 msgid "Create fragment"
 msgstr "Fragment erstellen"
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_mountpoint_form.html:4
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:97
-msgid "Create mountpoint"
-msgstr "Mountpoint erstellen"
 
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:5
 msgid "Version history"
@@ -2901,12 +2939,6 @@ msgstr "Änderungen im Vergleich zur vorherigen Version anzeigen"
 msgid "No versions exist."
 msgstr "Es sind keine Versionen vorhanden."
 
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:21
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_mountpoints.html:4
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_mountpoints.html:19
-msgid "Mountpoints"
-msgstr "Mountpoints"
-
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:46
 msgid "Create snippet"
 msgstr "Snippet erstellen"
@@ -2932,31 +2964,9 @@ msgstr "Letzte Änderung"
 msgid "View change history"
 msgstr "Änderungshistorie ansehen"
 
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:111
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:115
 msgid "No snippets exist in this scope."
 msgstr "In diesem Scope sind keine Snippets vorhanden."
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_mountpoints.html:44
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:61
-msgid "Snippet"
-msgstr "Snippet"
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_mountpoints.html:44
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:57
-msgid "Scope"
-msgstr "Scope"
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_mountpoints.html:62
-msgid "Remove mountpoint"
-msgstr "Mountpoint entfernen"
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_mountpoints.html:72
-msgid "No mountpoints exist for this site."
-msgstr "Für diese Site sind keine Mountpoints vorhanden."
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_mountpoints.html:80
-msgid "Remove mountpoint?"
-msgstr "Mountpoint entfernen?"
 
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/update_document_form.html:4
 msgid "Edit document"

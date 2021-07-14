@@ -1,0 +1,20 @@
+{% extends 'layout/admin/snippet.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set page_title = _('Select site') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('snippet_admin.index_for_scope', scope_type=snippet.scope.type_, scope_name=snippet.scope.name), _('Snippets')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <form action="{{ url_for('.site_select', snippet_id=snippet.id) }}" method="post">
+    {{ form_field(form.site_id) }}
+
+    {{ form_buttons(_('Continue')) }}
+  </form>
+
+{%- endblock %}

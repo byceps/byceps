@@ -25,12 +25,13 @@ from .....util.views import permission_required, redirect_to, respond_no_content
 from ..authorization import SnippetPermission
 from ..helpers import (
     find_brand_for_scope,
+    find_site_by_id,
     find_site_for_scope,
     find_snippet_by_id,
 )
 
 from .authorization import SnippetMountpointPermission
-from .forms import CreateForm
+from .forms import CreateForm, SiteSelectForm
 
 
 blueprint = create_blueprint('snippet_mountpoint_admin', __name__)
@@ -65,11 +66,11 @@ def index(site_id):
     }
 
 
-@blueprint.get('/for_snippet/<uuid:snippet_id>/create')
+@blueprint.get('/for_snippet/<uuid:snippet_id>/select_site')
 @permission_required(SnippetMountpointPermission.create)
 @templated
-def create_form(snippet_id, *, erroneous_form=None):
-    """Show form to create a mountpoint."""
+def site_select_form(snippet_id, *, erroneous_form=None):
+    """Show form to select a site to create a mountpoint for."""
     snippet = find_snippet_by_id(snippet_id)
 
     scope = snippet.scope
@@ -79,7 +80,7 @@ def create_form(snippet_id, *, erroneous_form=None):
 
     sites = _get_sites_to_potentially_mount_to(brand, site)
 
-    form = erroneous_form if erroneous_form else CreateForm()
+    form = erroneous_form if erroneous_form else SiteSelectForm()
     form.set_site_id_choices(sites)
 
     return {
@@ -89,6 +90,30 @@ def create_form(snippet_id, *, erroneous_form=None):
         'brand': brand,
         'site': site,
     }
+
+
+@blueprint.post('/for_snippet/<uuid:snippet_id>/select_site')
+@permission_required(SnippetMountpointPermission.create)
+def site_select(snippet_id):
+    """Redirect to form to create a mountpoint."""
+    snippet = find_snippet_by_id(snippet_id)
+
+    scope = snippet.scope
+
+    brand = find_brand_for_scope(scope)
+    site = find_site_for_scope(scope)
+
+    sites = _get_sites_to_potentially_mount_to(brand, site)
+
+    form = SiteSelectForm(request.form)
+    form.set_site_id_choices(sites)
+
+    if not form.validate():
+        return site_select_form(snippet.id, erroneous_form=form)
+
+    site_id = form.site_id.data
+
+    return redirect_to('.create_form', snippet_id=snippet.id, site_id=site_id)
 
 
 def _get_sites_to_potentially_mount_to(
@@ -102,26 +127,40 @@ def _get_sites_to_potentially_mount_to(
         return site_service.get_all_sites()
 
 
-@blueprint.post('/for_snippet/<uuid:snippet_id>')
+@blueprint.get('/for_snippet/<uuid:snippet_id>/for_site/<site_id>/create')
 @permission_required(SnippetMountpointPermission.create)
-def create(snippet_id):
+@templated
+def create_form(snippet_id, site_id, *, erroneous_form=None):
+    """Show form to create a mountpoint."""
+    snippet = find_snippet_by_id(snippet_id)
+    site = find_site_by_id(site_id)
+
+    form = erroneous_form if erroneous_form else CreateForm()
+
+    return {
+        'snippet': snippet,
+        'form': form,
+        'site': site,
+    }
+
+
+@blueprint.post('/for_snippet/<uuid:snippet_id>/for_site/<site_id>')
+@permission_required(SnippetMountpointPermission.create)
+def create(snippet_id, site_id):
     """Create a mountpoint."""
     snippet = find_snippet_by_id(snippet_id)
-
-    sites = site_service.get_all_sites()
+    site = find_site_by_id(site_id)
 
     form = CreateForm(request.form)
-    form.set_site_id_choices(sites)
 
     if not form.validate():
-        return create_form(snippet.id, erroneous_form=form)
+        return create_form(snippet.id, site.id, erroneous_form=form)
 
-    site_id = form.site_id.data
     endpoint_suffix = form.endpoint_suffix.data.strip()
     url_path = form.url_path.data.strip()
 
     mountpoint = mountpoint_service.create_mountpoint(
-        site_id, endpoint_suffix, url_path, snippet.id
+        site.id, endpoint_suffix, url_path, snippet.id
     )
 
     flash_success(
@@ -131,7 +170,7 @@ def create(snippet_id):
         )
     )
 
-    return redirect_to('.index', site_id=site_id)
+    return redirect_to('.index', site_id=site.id)
 
 
 @blueprint.delete('/mountpoints/<uuid:mountpoint_id>')
