@@ -10,12 +10,12 @@
     {{ render_main_tabs(
       Navigation(None)
         .add_item(
-          url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name),
+          url_for('snippet_admin.index_for_scope', scope_type=scope.type_, scope_name=scope.name),
           _('Snippets'),
           id='snippets',
           required_permission=SnippetPermission.view)
         .add_item(
-          url_for('.index_mountpoints', site_id=site.id),
+          url_for('.index', site_id=site.id),
           _('Mountpoints'),
           id='mountpoints',
           required_permission=SnippetPermission.view)
@@ -51,7 +51,7 @@
         <td>{{ mountpoint.url_path }}</td>
         <td>{{ mountpoint.endpoint_suffix }}</td>
         <td>
-          <a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}">{{- snippet.name }}</a><br>
+          <a href="{{ url_for('snippet_admin.view_current_version', snippet_id=snippet.id) }}">{{- snippet.name }}</a><br>
           <span class="dimmed">{{ snippet.scope.type_ }}/{{ snippet.scope.name }}</span>
         </td>
         <td>
@@ -59,7 +59,7 @@
           <div class="dropdown">
             <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">
-              <li><a class="dropdown-item" data-action="mountpoint-delete" href="{{ url_for('.delete_mountpoint', mountpoint_id=mountpoint.id) }}">{{ render_icon('remove') }} {{ _('Remove mountpoint') }}</a></li>
+              <li><a class="dropdown-item" data-action="mountpoint-delete" href="{{ url_for('.delete', mountpoint_id=mountpoint.id) }}">{{ render_icon('remove') }} {{ _('Remove mountpoint') }}</a></li>
             </ol>
           </div>
         {%- endif %}

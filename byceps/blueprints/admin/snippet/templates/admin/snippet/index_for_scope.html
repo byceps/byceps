@@ -17,7 +17,7 @@
           id='snippets',
           required_permission=SnippetPermission.view)
         .add_item(
-          url_for('.index_mountpoints', site_id=site.id),
+          url_for('snippet_mountpoint_admin.index', site_id=site.id),
           _('Mountpoints'),
           id='mountpoints',
           required_permission=SnippetPermission.view)
@@ -94,7 +94,7 @@
             <div class="dropdown">
               <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
               <ol class="dropdown-menu dropdown-menu--right">
-                <li><a class="dropdown-item" href="{{ url_for('.create_mountpoint_form', snippet_id=snippet.id) }}">{{ render_icon('add') }} {{ _('Create mountpoint') }}</a></li>
+                <li><a class="dropdown-item" href="{{ url_for('snippet_mountpoint_admin.create_form', snippet_id=snippet.id) }}">{{ render_icon('add') }} {{ _('Create mountpoint') }}</a></li>
               </ol>
             </div>
             {%- else %}

@@ -1,6 +1,6 @@
 """
-byceps.blueprints.admin.snippet.authorization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.blueprints.admin.snippet.mountpoint.authorization
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -9,13 +9,10 @@ byceps.blueprints.admin.snippet.authorization
 from byceps.util.authorization import create_permission_enum
 
 
-SnippetPermission = create_permission_enum(
-    'snippet',
+SnippetMountpointPermission = create_permission_enum(
+    'snippet_mountpoint',
     [
         'create',
-        'update',
         'delete',
-        'view',
-        'view_history',
     ],
 )

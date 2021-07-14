@@ -10,7 +10,7 @@ from byceps.services.snippet import (
 
 
 def test_index_mountpoints(snippet_admin_client, site):
-    url = f'/admin/snippets/mountpoints/{site.id}'
+    url = f'/admin/snippets/mountpoints/for_site/{site.id}'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
@@ -23,7 +23,7 @@ def test_create_mountpoint_form(
     )
     snippet_id = event.snippet_id
 
-    url = f'/admin/snippets/snippets/{snippet_id}/mountpoints/create'
+    url = f'/admin/snippets/mountpoints/for_snippet/{snippet_id}/create'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
@@ -39,7 +39,7 @@ def test_create_mountpoint(
     )
     snippet_id = event.snippet_id
 
-    url = f'/admin/snippets/snippets/{snippet_id}/mountpoints'
+    url = f'/admin/snippets/mountpoints/for_snippet/{snippet_id}'
     form_data = {
         'site_id': site.id,
         'endpoint_suffix': 'test_suffix',
@@ -75,7 +75,7 @@ def test_delete_mountpoint(
     )
     assert mountpoint_service.find_mountpoint(mountpoint.id) is not None
 
-    url = f'/admin/snippets/mountpoints/{mountpoint.id}'
+    url = f'/admin/snippets/mountpoints/mountpoints/{mountpoint.id}'
     response = snippet_admin_client.delete(url)
     assert response.status_code == 204
 
