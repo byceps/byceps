@@ -221,10 +221,12 @@ msgstr ""
 "%(initiator_screen_name)s hat Ticket \"%(ticket_code)s\", genutzt von "
 "%(user_screen_name)s, eingecheckt."
 
-#: byceps/announce/text_assembly/ticketing.py:42
+#: byceps/announce/text_assembly/ticketing.py:43
 #, python-format
-msgid "%(owner_screen_name)s has paid %(quantity)s ticket(s)."
-msgstr "%(owner_screen_name)s hat %(quantity)s Ticket(s) bezahlt."
+msgid "%(owner_screen_name)s has paid %(quantity)s ticket."
+msgid_plural "%(owner_screen_name)s has paid %(quantity)s tickets."
+msgstr[0] "%(owner_screen_name)s hat %(quantity)s Ticket bezahlt."
+msgstr[1] "%(owner_screen_name)s hat %(quantity)s Tickets bezahlt."
 
 #: byceps/announce/text_assembly/ticketing.py:46
 #, python-format

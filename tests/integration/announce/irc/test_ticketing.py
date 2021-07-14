@@ -46,9 +46,39 @@ def test_ticket_checked_in(app, make_user, admin_user):
 
 
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
-def test_tickets_sold(get_ticket_sale_stats_mock, app, make_user, admin_user):
+def test_single_ticket_sold(get_ticket_sale_stats_mock, app, make_user, admin_user):
     expected_text = (
-        'TreuerKäufer hat 3 Ticket(s) bezahlt. '
+        'Neuling hat 1 Ticket bezahlt. '
+        'Aktuell sind 772 von 1001 Tickets bezahlt.'
+    )
+
+    get_ticket_sale_stats_mock.return_value = TicketSaleStats(
+        tickets_max=1001,
+        tickets_sold=772,
+    )
+
+    user = make_user('Neuling')
+
+    event = TicketsSold(
+        occurred_at=now(),
+        initiator_id=admin_user.id,
+        initiator_screen_name=admin_user.screen_name,
+        party_id='popular-party',
+        owner_id=user.id,
+        owner_screen_name=user.screen_name,
+        quantity=1,
+    )
+
+    with mocked_irc_bot() as mock:
+        ticketing_signals.tickets_sold.send(None, event=event)
+
+    assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)
+
+
+@patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
+def test_multiple_tickets_sold(get_ticket_sale_stats_mock, app, make_user, admin_user):
+    expected_text = (
+        'TreuerKäufer hat 3 Tickets bezahlt. '
         'Aktuell sind 775 von 1001 Tickets bezahlt.'
     )
 
