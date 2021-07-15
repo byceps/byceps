@@ -6,8 +6,16 @@
     }
 
     table.diff {
-      border: #cccccc solid 1px;
+      --border: #aaaaaa solid 1px;
+      border: var(--border);
       font-size: 0.75rem; /* 12px / 16px */
+    }
+
+    /* Override deprecated `rules` attribute of `table` element. */
+    table.diff colgroup,
+    table.diff thead,
+    table.diff tbody {
+      border: var(--border);
     }
 
     table.diff tbody {
