@@ -97,8 +97,7 @@ def _get_payment_instructions(order):
 
     context = {
         'order_number': order.order_number,
-        'total_amount': order.total_amount,
-        'format_euro_amount': format_euro_amount,
+        'total_amount': format_euro_amount(order.total_amount),
     }
 
     return render_snippet_as_partial(
