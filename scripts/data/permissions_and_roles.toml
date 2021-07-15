@@ -446,6 +446,7 @@ assigned_permissions = [
     'orga_team.view',
     'party.view',
     'seating.view',
+    'site.view',
     'snippet.view',
     'snippet.view_history',
     'ticketing.checkin',
