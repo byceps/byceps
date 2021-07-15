@@ -7,7 +7,7 @@
       brand_id=brand.id),
       _('Dashboard'),
       id='admin_dashboard_brand',
-      required_permission=AdminDashboardPermission.view_brand,
+      required_permission=BrandPermission.view,
       icon='dashboard')
     .add_item(
       url_for('site_admin.index_for_brand', brand_id=brand.id),

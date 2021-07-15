@@ -28,24 +28,21 @@ from ....services.shop.shop import service as shop_service
 from ....services.site import service as site_service
 from ....services.ticketing import ticket_service
 from ....services.user import stats_service as user_stats_service
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required
 
+from ..brand.authorization import BrandPermission
+from ..core.authorization import AdminPermission
+from ..party.authorization import PartyPermission
 from ..user.service import get_users_created_since
-
-from .authorization import AdminDashboardPermission
 
 
 blueprint = create_blueprint('admin_dashboard', __name__)
 
 
-register_permission_enum(AdminDashboardPermission)
-
-
 @blueprint.get('')
-@permission_required(AdminDashboardPermission.view_global)
+@permission_required(AdminPermission.access)
 @templated
 def view_global():
     """View dashboard for global entities."""
@@ -96,7 +93,7 @@ def view_global():
 
 
 @blueprint.get('/brands/<brand_id>')
-@permission_required(AdminDashboardPermission.view_brand)
+@permission_required(BrandPermission.view)
 @templated
 def view_brand(brand_id):
     """View dashboard for that brand."""
@@ -163,7 +160,7 @@ def view_brand(brand_id):
 
 
 @blueprint.get('/parties/<party_id>')
-@permission_required(AdminDashboardPermission.view_party)
+@permission_required(PartyPermission.view)
 @templated
 def view_party(party_id):
     """View dashboard for that party."""

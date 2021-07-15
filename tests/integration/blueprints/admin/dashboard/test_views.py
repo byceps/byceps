@@ -30,9 +30,8 @@ def test_view_party(dashboard_admin_client, party):
 def dashboard_admin(make_admin):
     permission_ids = {
         'admin.access',
-        'admin_dashboard.view_brand',
-        'admin_dashboard.view_global',
-        'admin_dashboard.view_party',
+        'brand.view',
+        'party.view',
     }
     admin = make_admin('DashboardAdmin', permission_ids)
     login_user(admin.id)

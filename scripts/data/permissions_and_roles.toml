@@ -7,18 +7,6 @@ id = 'admin.maintain'
 title = 'Wartungsarbeiten ausführen'
 
 [[permissions]]
-id = 'admin_dashboard.view_brand'
-title = 'Admin-Dashboard für Marken anzeigen'
-
-[[permissions]]
-id = 'admin_dashboard.view_global'
-title = 'globales Admin-Dashboard anzeigen'
-
-[[permissions]]
-id = 'admin_dashboard.view_party'
-title = 'Admin-Dashboard für Partys anzeigen'
-
-[[permissions]]
 id = 'board.announce'
 title = 'Ankündigungen erstellen'
 
@@ -448,9 +436,6 @@ id = 'orga'
 title = 'Organisator'
 assigned_permissions = [
     'admin.access',
-    'admin_dashboard.view_brand',
-    'admin_dashboard.view_global',
-    'admin_dashboard.view_party',
     'board.view_hidden',
     'brand.view',
     'news_item.view',

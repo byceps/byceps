@@ -6,7 +6,7 @@
       url_for('admin_dashboard.view_global'),
       _('Dashboard'),
       id='admin_dashboard_global',
-      required_permission=AdminDashboardPermission.view_global,
+      required_permission=AdminPermission.access,
       icon='dashboard')
     .add_item(
       url_for('user_admin.index'),
