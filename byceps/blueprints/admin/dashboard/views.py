@@ -172,6 +172,8 @@ def view_party(party_id):
     if party is None:
         abort(404)
 
+    days = party_service.get_party_days(party)
+
     days_until_party = (party.starts_at.date() - date.today()).days
 
     orga_count = orga_team_service.count_memberships_for_party(party.id)
@@ -187,6 +189,8 @@ def view_party(party_id):
 
     return {
         'party': party,
+
+        'days': days,
         'days_until_party': days_until_party,
 
         'orga_count': orga_count,

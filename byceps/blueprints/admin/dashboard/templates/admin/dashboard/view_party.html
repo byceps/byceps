@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin/dashboard.html' import render_bigstats_cell, render_cell %}
+{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'admin_dashboard_party' %}
 {% set current_page_party = party %}
@@ -18,9 +19,31 @@
 {% block body %}
 
   <div class="grid dashboard">
+
+    {%- call render_cell('date') %}
+      <div class="cell-label">{{ _('Date') }}</div>
+      <div>
+        <div style="font-size: 0.75rem;">
+          {{- render_datetime(party.starts_at|utc_to_local_tz) }} bis<br>
+          {{- render_datetime(party.ends_at|utc_to_local_tz) -}}
+        </div>
+
+        {%- for day in days %}
+        {{ render_tag('{:%a}'.format(day)) }}
+        {%- endfor %}
+
+        {%- if party.is_over %}
+        {{ render_tag(_('over'), class='color-disabled') }}
+        {%- endif %}
+      </div>
+    {%- endcall %}
+
     {{ render_bigstats_cell(format_number(days_until_party), _('days until the party'), icon_name='date') }}
+
     {{ render_bigstats_cell(orga_count, _('organizers in %(team_count)s teams', team_count='<strong>%d</strong>'|format(orga_team_count)|safe), href=url_for('orga_team_admin.teams_for_party', party_id=party.id), icon_name='users') }}
+
     {{ render_bigstats_cell(format_number(seat_count), _('seats in %(area_count)s areas', area_count='<strong>%d</strong>'|format(seating_area_count)|safe), href=url_for('seating_admin.index_for_party', party_id=party.id), icon_name='seating-area') }}
+
     {%- call render_cell(href=url_for('ticketing_admin.index_for_party', party_id=party.id)) %}
       <div class="mb"><div class="cell-label">{{ _('tickets sold') }}</div></div>
       {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
@@ -38,6 +61,7 @@
       </div>
       {%- endwith %}
     {%- endcall %}
+
     {%- call render_cell(href=url_for('ticketing_checkin_admin.index', party_id=party.id)) %}
       <div class="mb"><div class="cell-label">{{ _('tickets checked in') }}</div></div>
       <div class="progress">
@@ -48,6 +72,7 @@
         <div class="column-auto dimmed">{{ _('of') }} {{ format_number(ticket_sale_stats.tickets_sold) }}</div>
       </div>
     {%- endcall %}
+
   </div>
 
 {%- endblock %}
