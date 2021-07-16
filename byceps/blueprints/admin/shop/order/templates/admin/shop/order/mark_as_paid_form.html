@@ -1,21 +1,20 @@
 {% extends 'layout/admin/shop/order.html' %}
-{% from 'macros/admin/shop/order.html' import render_order_link %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field_radio %}
 {% set page_title = 'Bestellung als bezahlt markieren' %}
 
+{% block before_body %}
+{{ render_backlink(url_for('.view', order_id=order.id), order.order_number) }}
+{%- endblock %}
+
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>{{ render_order_link(order) }}</li>
-    </ol>
-  </nav>
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.mark_as_paid', order_id=order.id) }}" method="post">
     {{ form_field_radio(form.payment_method, autofocus='autofocus') }}
 
-    {{ form_buttons(_('Mark as paid'), icon='success', cancel_url=url_for('.view', order_id=order.id)) }}
+    {{ form_buttons(_('Mark as paid'), icon='success') }}
   </form>
 
 {%- endblock %}

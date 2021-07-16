@@ -1,15 +1,14 @@
 {% extends 'layout/admin/snippet.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set page_title = _('Create document') %}
 
+{% block before_body %}
+{{ render_backlink(url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name), _('Snippets')) }}
+{%- endblock %}
+
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>{{ _('Snippets') }}</li>
-      <li><a href="{{ url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name) }}">{{ scope.type_ }}/{{ scope.name }}</a></li>
-    </ol>
-  </nav>
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.create_document', scope_type=scope.type_, scope_name=scope.name) }}" method="post">
@@ -19,7 +18,7 @@
     {{ form_field(form.body, class='monospace') }}
     {{ form_field(form.image_url_path, maxlength=80) }}
 
-    {{ form_buttons(_('Save'), cancel_url=url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name)) }}
+    {{ form_buttons(_('Create')) }}
   </form>
 
 {%- endblock %}

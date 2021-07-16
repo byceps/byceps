@@ -1,8 +1,13 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page_party = party %}
 {% set current_page = 'ticketing_admin' %}
 {% set page_title = _('Create ticket category') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.index', party_id=party.id), _('Ticket categories')) }}
+{%- endblock %}
 
 {% block body %}
 
@@ -11,7 +16,7 @@
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
     {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
 
-    {{ form_buttons(_('Create'), cancel_url=url_for('.index', party_id=party.id)) }}
+    {{ form_buttons(_('Create')) }}
   </form>
 
 {%- endblock %}

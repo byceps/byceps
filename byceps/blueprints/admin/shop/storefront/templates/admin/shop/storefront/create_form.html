@@ -1,6 +1,11 @@
 {% extends 'layout/admin/shop/storefront.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set page_title = _('Create storefront') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.index_for_shop', shop_id=shop.id), _('Storefronts')) }}
+{%- endblock %}
 
 {% block body %}
 
@@ -17,7 +22,7 @@
     {{ form_field(form.catalog_id) }}
     {{ form_field(form.order_number_sequence_id, note='<a href="%s">Neue Sequenz erstellen</a>'|format(url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id))) }}
 
-    {{ form_buttons(_('Save'), cancel_url=url_for('.index_for_shop', shop_id=shop.id)) }}
+    {{ form_buttons(_('Create')) }}
   </form>
   {%- endif %}
 

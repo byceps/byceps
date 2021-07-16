@@ -1,23 +1,22 @@
 {% extends 'layout/admin/shop/article.html' %}
-{% from 'macros/admin/shop/article.html' import render_article_link %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page_shop = shop %}
 {% set page_title = _('Attach article') %}
 
+{% block before_body %}
+{{ render_backlink(url_for('.view', article_id=article.id), article.item_number) }}
+{%- endblock %}
+
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>{{ render_article_link(article) }}</li>
-    </ol>
-  </nav>
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.attachment_create', article_id=article.id) }}" method="post">
     {{ form_field(form.article_to_attach_id, autofocus='autofocus') }}
     {{ form_field(form.quantity, type='number', min=1, max=999, style='width: 4em;') }}
 
-    {{ form_buttons(_('Attach article'), cancel_url=url_for('.view', article_id=article.id)) }}
+    {{ form_buttons(_('Attach article')) }}
   </form>
 
 {%- endblock %}

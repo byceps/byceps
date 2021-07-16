@@ -1,6 +1,11 @@
 {% extends 'layout/admin/shop/article.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_datalist, form_field %}
 {% set page_title = _('Create article') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.index_for_shop', shop_id=shop.id), _('Articles')) }}
+{%- endblock %}
 
 {% block body %}
 
@@ -27,7 +32,7 @@
     {{ form_field(form.total_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
     {{ form_field(form.max_quantity_per_order, type='number', min=1, max=99, style='width: 5.5rem;') }}
 
-    {{ form_buttons(_('Save'), cancel_url=url_for('.index_for_shop', shop_id=shop.id)) }}
+    {{ form_buttons(_('Create')) }}
   </form>
   {%- endif %}
 

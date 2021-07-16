@@ -1,16 +1,15 @@
 {% extends 'layout/admin/shop/article.html' %}
-{% from 'macros/admin/shop/article.html' import render_article_link %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_datalist, form_field_check, form_field %}
 {% set current_page_shop = shop %}
 {% set page_title = _('Edit article') %}
 
+{% block before_body %}
+{{ render_backlink(url_for('.view', article_id=article.id), article.item_number) }}
+{%- endblock %}
+
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>{{ render_article_link(article) }}</li>
-    </ol>
-  </nav>
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.update', article_id=article.id) }}" method="post">
@@ -46,7 +45,7 @@
     {{ form_field_check(form.requires_separate_order, form.requires_separate_order.label.text) }}
     {{ form_field_check(form.shipping_required, form.shipping_required.label.text) }}
 
-    {{ form_buttons(_('Save'), cancel_url=url_for('.view', article_id=article.id)) }}
+    {{ form_buttons(_('Save')) }}
   </form>
 
 {%- endblock %}
