@@ -4,14 +4,13 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_name %}
 {% set page_title = ['%s/%s'|format(scope.type_, scope.name), _('Snippets')] %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
-  <h1>{{ scope.type_ }}/{{ scope.name }}</h1>
-
   <div class="row row--space-between">
     <div class="column-auto">
-      <h2>{{ _('Snippets') }} {{ render_extra_in_heading(snippets|length) }}</h2>
+      <h1>{{ _('Snippets') }} {{ render_extra_in_heading(snippets|length) }}</h1>
     </div>
   {%- if has_current_user_permission(SnippetPermission.create) %}
     <div class="column-auto">
@@ -28,65 +27,69 @@
   {%- endif %}
   </div>
 
-  {%- if snippets %}
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th>{{ _('Name') }}</th>
-        <th>{{ _('Latest change') }}</th>
-        <th>{{ _('by') }}</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for snippet in snippets|sort(attribute='name') %}
-      <tr>
-        <td class="nowrap">
-          {%- if snippet.is_document %}
-          {{ render_icon('snippet-document', title=_('Document')) }}
-          {%- elif snippet.is_fragment %}
-          {{ render_icon('snippet-fragment', title=_('Fragment')) }}
-          {%- endif %}
-          <a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}"><strong>{{ snippet.name }}</strong></a>
-        </td>
-        <td class="nowrap">
-          {%- if has_current_user_permission(SnippetPermission.view_history) %}
-          {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="{{ _('View change history') }}">{{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}</a>
-          {%- else %}
-          {{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}
-          {%- endif %}
-        </td>
-        <td>{{ render_user_avatar_20_and_name(users_by_id[snippet.current_version.creator_id]) }}</td>
-        <td>
-          <div class="button-row button-row--compact button-row--right">
-            {%- if has_current_user_permission(SnippetPermission.update) %}
-              {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
-            <a href="{{ url_for(endpoint, snippet_id=snippet.id) }}" class="button button--compact" title="Bearbeiten">{{ render_icon('edit') }}</a>
-              {%- endwith %}
+  <div class="mb"><strong>{{ _('Scope') }}:</strong> {{ scope.type_ }}/{{ scope.name }}</div>
+
+  <div class="box">
+    {%- if snippets %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Latest change') }}</th>
+          <th>{{ _('by') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for snippet in snippets|sort(attribute='name') %}
+        <tr>
+          <td class="nowrap">
+            {%- if snippet.is_document %}
+            {{ render_icon('snippet-document', title=_('Document')) }}
+            {%- elif snippet.is_fragment %}
+            {{ render_icon('snippet-fragment', title=_('Fragment')) }}
             {%- endif %}
-            {%- if snippet.is_document and has_current_user_permission(SnippetMountpointPermission.create) %}
-            <div class="dropdown">
-              <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
-              <ol class="dropdown-menu dropdown-menu--right">
-                {%- with url = url_for('snippet_mountpoint_admin.create_form', snippet_id=snippet.id, site_id=site.id)
-                               if (scope.type_ == 'site')
-                               else url_for('snippet_mountpoint_admin.site_select_form', snippet_id=snippet.id) %}
-                <li><a class="dropdown-item" href="{{ url }}">{{ render_icon('add') }} {{ _('Create mountpoint') }}</a></li>
-                {%- endwith %}
-              </ol>
-            </div>
+            <a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}"><strong>{{ snippet.name }}</strong></a>
+          </td>
+          <td class="nowrap">
+            {%- if has_current_user_permission(SnippetPermission.view_history) %}
+            {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="{{ _('View change history') }}">{{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}</a>
             {%- else %}
-              {# Occupy width of dropdown button to keep edit buttons horizontally aligned. #}
-              <button class="dropdown-toggle button button--compact" style="visibility: hidden;">{{ render_icon('chevron-down') }}</button>
+            {{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}
             {%- endif %}
-          </div>
-        </td>
-      </tr>
-    {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">{{ _('No snippets exist in this scope.') }}</div>
-  {%- endif %}
+          </td>
+          <td>{{ render_user_avatar_20_and_name(users_by_id[snippet.current_version.creator_id]) }}</td>
+          <td>
+            <div class="button-row button-row--compact button-row--right">
+              {%- if has_current_user_permission(SnippetPermission.update) %}
+                {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
+              <a href="{{ url_for(endpoint, snippet_id=snippet.id) }}" class="button button--compact" title="Bearbeiten">{{ render_icon('edit') }}</a>
+                {%- endwith %}
+              {%- endif %}
+              {%- if snippet.is_document and has_current_user_permission(SnippetMountpointPermission.create) %}
+              <div class="dropdown">
+                <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
+                <ol class="dropdown-menu dropdown-menu--right">
+                  {%- with url = url_for('snippet_mountpoint_admin.create_form', snippet_id=snippet.id, site_id=site.id)
+                                 if (scope.type_ == 'site')
+                                 else url_for('snippet_mountpoint_admin.site_select_form', snippet_id=snippet.id) %}
+                  <li><a class="dropdown-item" href="{{ url }}">{{ render_icon('add') }} {{ _('Create mountpoint') }}</a></li>
+                  {%- endwith %}
+                </ol>
+              </div>
+              {%- else %}
+                {# Occupy width of dropdown button to keep edit buttons horizontally aligned. #}
+                <button class="dropdown-toggle button button--compact" style="visibility: hidden;">{{ render_icon('chevron-down') }}</button>
+              {%- endif %}
+            </div>
+          </td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No snippets exist in this scope.') }}</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}
