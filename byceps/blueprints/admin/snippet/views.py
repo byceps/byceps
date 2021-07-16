@@ -288,7 +288,8 @@ def compare_documents(from_version_id, to_version_id):
     from_version = _find_version(from_version_id)
     to_version = _find_version(to_version_id)
 
-    scope = from_version.snippet.scope
+    snippet = from_version.snippet
+    scope = snippet.scope
 
     if from_version.snippet_id != to_version.snippet_id:
         abort(400, 'The versions do not belong to the same snippet.')
@@ -304,6 +305,7 @@ def compare_documents(from_version_id, to_version_id):
     site = find_site_for_scope(scope)
 
     return {
+        'snippet': snippet,
         'scope': scope,
         'diff_title': html_diff_title,
         'diff_head': html_diff_head,
@@ -426,7 +428,8 @@ def compare_fragments(from_version_id, to_version_id):
     from_version = _find_version(from_version_id)
     to_version = _find_version(to_version_id)
 
-    scope = from_version.snippet.scope
+    snippet = from_version.snippet
+    scope = snippet.scope
 
     if from_version.snippet_id != to_version.snippet_id:
         abort(400, 'The versions do not belong to the same snippet.')
@@ -437,6 +440,7 @@ def compare_fragments(from_version_id, to_version_id):
     site = find_site_for_scope(scope)
 
     return {
+        'snippet': snippet,
         'scope': scope,
         'diff_body': html_diff_body,
         'brand': brand,

@@ -1,9 +1,14 @@
 {% extends 'layout/admin/snippet.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/text_diff.html' import render_difference, render_difference_styles  %}
 {% set page_title = _('View changes') %}
 
 {%- block head %}
 {{ render_difference_styles() }}
+{%- endblock %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.view_current_version', snippet_id=snippet.id), snippet.name) }}
 {%- endblock %}
 
 {% block body %}
