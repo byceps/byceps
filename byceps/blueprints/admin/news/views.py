@@ -342,6 +342,7 @@ def _render_item_version(version, item):
     is_current_version = version.id == current_version.id
 
     context = {
+        'item': item,
         'version': version,
         'brand': brand,
         'creator': creator,
