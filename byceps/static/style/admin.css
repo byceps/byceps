@@ -700,6 +700,14 @@ main .dropdown-menu {
   padding: 1.5rem;
 }
 
+.preview-background {
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent, transparent 8px,
+    #fff8f4 8px, #fff8f4 16px
+  );
+}
+
 
 /* print view */
 
