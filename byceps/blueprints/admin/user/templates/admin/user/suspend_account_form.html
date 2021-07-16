@@ -11,7 +11,7 @@
   <form action="{{ url_for('.suspend_account', user_id=user.id) }}" method="post">
     {{ form_field(form.reason, maxlength=1000, note=_('The reason will be saved as <em>internal</em> remark.')|safe, autofocus='autofocus') }}
 
-    {{ form_buttons(_('Lock'), icon='lock', cancel_url=url_for('.view', user_id=user.id)) }}
+    {{ form_buttons(_('Lock'), icon='lock') }}
   </form>
 
 {%- endblock %}

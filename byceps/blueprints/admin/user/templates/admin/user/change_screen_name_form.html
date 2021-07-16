@@ -13,7 +13,7 @@
     {{ form_field(form.screen_name, maxlength=24, autofocus='autofocus') }}
     {{ form_field(form.reason, maxlength=1000, note=_('The reason will be saved as <em>internal</em> remark.')|safe) }}
 
-    {{ form_buttons(_('Change'), cancel_url=url_for('.view', user_id=user.id)) }}
+    {{ form_buttons(_('Change')) }}
   </form>
 
 {%- endblock %}

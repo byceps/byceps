@@ -17,7 +17,7 @@
     {{ form_field(form.reason, maxlength=1000, note=_('The reason will be saved as <em>internal</em> remark.')|safe, autofocus='autofocus') }}
     {{ form_field(form.verification, note=_('Please enter "delete user" to confirm deletion.')) }}
 
-    {{ form_buttons(_('Delete'), icon='delete', color='danger', cancel_url=url_for('.view', user_id=user.id)) }}
+    {{ form_buttons(_('Delete'), icon='delete', color='danger') }}
   </form>
 
 {%- endblock %}
