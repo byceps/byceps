@@ -1,7 +1,6 @@
 {% extends 'layout/admin/shop/article.html' %}
 {% from 'macros/admin/shop/article.html' import render_article_link %}
 {% from 'macros/forms.html' import form_buttons, form_datalist, form_field_check, form_field %}
-{% from 'macros/icons.html' import render_icon %}
 {% set current_page_shop = shop %}
 {% set page_title = _('Edit article') %}
 
@@ -12,7 +11,7 @@
       <li>{{ render_article_link(article) }}</li>
     </ol>
   </nav>
-  <h1>{{ render_icon('edit') }} {{ page_title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.update', article_id=article.id) }}" method="post">
     {{ form_field(form.description, maxlength=100, autofocus='autofocus') }}

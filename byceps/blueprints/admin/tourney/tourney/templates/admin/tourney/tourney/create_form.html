@@ -1,6 +1,5 @@
 {% extends 'layout/admin/tourney.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
-{% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'tourneys' %}
 {% set page_title = _('Create tourney') %}
@@ -13,7 +12,7 @@
       <li>{{ _('Tourneys') }}</li>
     </ol>
   </nav>
-  <h1>{{ render_icon('add') }} {{ page_title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
     {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}

@@ -2,7 +2,6 @@
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/admin/brand.html' import render_brand_admin_link, render_brand_avatar %}
 {% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
-{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'sites_admin' %}
 {% set page_title = _('Create site') %}
 
@@ -12,7 +11,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('add') }} {{ page_title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.create', brand_id=brand.id) }}" method="post">
     <div class="mb">

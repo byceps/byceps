@@ -2,7 +2,6 @@
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
-{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'user_badge_admin' %}
 {% set page_title = _('Award Badge') %}
 
@@ -12,7 +11,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('badge') }} {{ page_title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.award', user_id=user.id) }}" method="post">
     <div class="mb">

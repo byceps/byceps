@@ -1,6 +1,5 @@
 {% extends 'layout/admin/snippet.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
-{% from 'macros/icons.html' import render_icon %}
 {% set page_title = _('Edit document') %}
 
 {% block body %}
@@ -11,7 +10,7 @@
       <li><a href="{{ url_for('.index_for_scope', scope_type=snippet.scope.type_, scope_name=snippet.scope.name) }}">{{ snippet.scope.type_ }}/{{ snippet.scope.name }}</a></li>
     </ol>
   </nav>
-  <h1>{{ render_icon('edit') }} {{ page_title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.update_document', snippet_id=snippet.id) }}" method="post">
     {{ form_field(form.name, maxlength=40, readonly='readonly', autofocus='autofocus') }}

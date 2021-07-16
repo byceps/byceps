@@ -1,7 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
-{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'site_admin' %}
 {% set current_page_site = site %}
 {% set page_title = _('Edit site') %}
@@ -12,7 +11,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('edit') }} {{ page_title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.update', site_id=site.id) }}" method="post">
     {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}

@@ -1,6 +1,5 @@
 {% extends 'layout/admin/user.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
-{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_tab = 'profile' %}
 {% set current_tab_user_id = user.id %}
@@ -8,7 +7,7 @@
 
 {% block body %}
 
-  <h1>{{ render_icon('delete') }} {{ page_title }}</h1>
+  <h1>{{ page_title }}</h1>
 
   <div class="mb">
     {{ render_notification(_('Warning: Deleting the user account is permanent!'), category='danger', icon='warning') }}
