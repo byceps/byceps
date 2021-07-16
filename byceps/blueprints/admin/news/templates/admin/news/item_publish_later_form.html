@@ -3,10 +3,10 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = item.brand %}
-{% set page_title = 'News später veröffentlichen' %}
+{% set page_title = _('Publish news post later') %}
 
 {% block before_body %}
-{{ render_backlink(url_for('.item_view', item_id=item.id), 'Newspost "%s"'|format(item.title)) }}
+{{ render_backlink(url_for('.item_view', item_id=item.id), _('News post') ~ ' "%s"'|format(item.title)) }}
 {%- endblock %}
 
 {% block body %}

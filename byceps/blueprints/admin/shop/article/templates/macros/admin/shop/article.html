@@ -11,10 +11,10 @@
     {{ render_datetime(article.available_from|utc_to_local_tz, smart=False) }} –<br>
     {{- render_datetime(article.available_until|utc_to_local_tz, smart=False) }}
   {%- elif article.available_from and not article.available_until -%}
-    ab {{ render_datetime(article.available_from|utc_to_local_tz, smart=False) }}
+    {{ _('from') }} {{ render_datetime(article.available_from|utc_to_local_tz, smart=False) }}
   {%- elif not article.available_from and article.available_until -%}
-    bis {{ render_datetime(article.available_until|utc_to_local_tz, smart=False) }}
+    {{ _('until') }} {{ render_datetime(article.available_until|utc_to_local_tz, smart=False) }}
   {%- else -%}
-    {{ 'unbegrenzt'|dim }}
+    {{ _('unlimited')|dim }}
   {%- endif -%}
 {%- endmacro %}

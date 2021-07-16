@@ -13,12 +13,12 @@
 
   {%- if not article_number_sequence_available %}
   <div class="notification color-warning">
-    Es sind keine Artikelnummer-Sequenzen für diesen Shop hinterlegt. Ohne sie können keine Artikel angelegt werden.<br><br>
+    {{ _('No article number sequences are defined for this shop. No articles can be created without a sequence.') }}<br><br>
     <a class="button color-primary" href="{{ url_for('shop_article_admin.create_number_sequence_form', shop_id=shop.id) }}">{{ _('Create article number sequence') }}</a>
   </div>
   {%- else %}
   <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">
-    {{ form_field(form.article_number_sequence_id, note='<a href="%s">Neue Sequenz erstellen</a>'|format(url_for('shop_article_admin.create_number_sequence_form', shop_id=shop.id))|safe, autofocus='autofocus') }}
+    {{ form_field(form.article_number_sequence_id, note='<a href="%s">' ~ _('Create new sequence') ~ '</a>'|format(url_for('shop_article_admin.create_number_sequence_form', shop_id=shop.id))|safe, autofocus='autofocus') }}
     {{ form_field(form.description, maxlength=80) }}
     <div class="row">
       <div class="column-auto">

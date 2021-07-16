@@ -83,7 +83,7 @@
   {%- if error_occurred %}
 
     {%- set notification_body %}
-        {{ _('An error occured.') }}<br>
+        {{ _('An error occurred.') }}<br>
         <pre style="white-space: pre-wrap;">{{ error_message }}</pre>
     {%- endset %}
     {{ render_notification(notification_body, category='danger', icon='warning') }}

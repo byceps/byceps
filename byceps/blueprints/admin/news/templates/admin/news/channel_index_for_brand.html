@@ -3,7 +3,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
-{% set page_title = ['News-Kanäle', brand.title] %}
+{% set page_title = [_('News channels'), brand.title] %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -15,7 +15,7 @@
   {%- if has_current_user_permission(NewsChannelPermission.create) %}
     <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.channel_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>News-Kanal erstellen</span></a>
+        <a class="button" href="{{ url_for('.channel_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create news channel') }}</span></a>
       </div>
     </div>
   {%- endif %}
@@ -26,9 +26,9 @@
     <table class="index wide">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>URL-Präfix</th>
-          <th class="centered">Posts</th>
+          <th>{{ _('ID') }}</th>
+          <th>{{ _('URL prefix') }}</th>
+          <th class="centered">{{ _('News posts') }}</th>
           <th></th>
         </tr>
       </thead>
@@ -50,7 +50,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">Für diese Marke existieren noch keine News-Kanäle.</div>
+    <div class="dimmed-box centered">{{ _('No news channels exist for this brand.') }}</div>
     {%- endif %}
   </div>
 

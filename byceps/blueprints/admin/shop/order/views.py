@@ -239,7 +239,7 @@ def cancel_form(order_id, erroneous_form=None):
         flash_error(
             gettext(
                 'The order has already been canceled. '
-                'The payment status cannot be changed anymore.'
+                'The payment state cannot be changed anymore.'
             )
         )
         return redirect_to('.view', order_id=order.id)
@@ -261,7 +261,7 @@ def cancel_form(order_id, erroneous_form=None):
 @blueprint.post('/<uuid:order_id>/cancel')
 @permission_required(ShopOrderPermission.cancel)
 def cancel(order_id):
-    """Set the payment status of a single order to 'canceled' and
+    """Set the payment state of a single order to 'canceled' and
     release the respective article quantities.
     """
     order = _get_order_or_404(order_id)
@@ -279,7 +279,7 @@ def cancel(order_id):
         flash_error(
             gettext(
                 'The order has already been canceled. '
-                'The payment status cannot be changed anymore.'
+                'The payment state cannot be changed anymore.'
             )
         )
         return redirect_to('.view', order_id=order.id)
@@ -333,7 +333,7 @@ def mark_as_paid_form(order_id, erroneous_form=None):
 @blueprint.post('/<uuid:order_id>/mark_as_paid')
 @permission_required(ShopOrderPermission.mark_as_paid)
 def mark_as_paid(order_id):
-    """Set the payment status of a single order to 'paid'."""
+    """Set the payment state of a single order to 'paid'."""
     order = _get_order_or_404(order_id)
 
     form = MarkAsPaidForm(request.form)

@@ -3,10 +3,10 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
-{% set page_title = 'News-Kanal erstellen' %}
+{% set page_title = _('Create news channel') %}
 
 {% block before_body %}
-{{ render_backlink(url_for('.channel_index_for_brand', brand_id=brand.id), 'Newskanäle') }}
+{{ render_backlink(url_for('.channel_index_for_brand', brand_id=brand.id), _('News channels')) }}
 {%- endblock %}
 
 {% block body %}
@@ -17,8 +17,8 @@
     {{ form_field(form.channel_id, maxlength=40, placeholder=brand.id, autofocus='autofocus') }}
     {{ form_field(form.url_prefix, maxlength=80, placeholder='https://www.example.com/news/') }}
 
-    <p>Ein News-Kanal kann sowohl für eine einzelne Party als auch für mehrere oder alle Partys derselben Marke genutzt werden.</p>
-    <p>Tipp: Sofern der News-Kanal nur für eine konkrete Party genutzt werden soll, verwende die ID <em>dieser Party</em> als ID für den News-Kanal. Falls er jedoch partyübergreifend genutzt werden soll, verwende die ID <em>der Marke</em> der Partys als ID für den News-Kanal.</p>
+    <p>{{ _('A news channel can be used for a single party as well as for multiple or even all partys of the same brand.') }}
+    <p>{{ _('Hint: If the news channel should be used only for a specific party, use the ID <em>of that party</em> as ID for the news channel. If, however, it should be used for multiple parties, use the ID <em>of the brand</em> as ID for the news channel.') }}</p>
 
     {{ form_buttons(_('Create')) }}
   </form>

@@ -33,11 +33,11 @@
     <table class="index wide">
       <thead>
         <tr>
-          <th>Artikelnr.</th>
+          <th>{{ _('Item number') }}</th>
           <th>{{ _('Description') }}</th>
-          <th class="hyphenate number" style="width: 15%;">Stückpreis<br>Steuersatz</th>
-          <th class="number">Gesamt</th>
-          <th class="hyphenate number" style="width: 11%;">Anzahl<br>verfügbar</th>
+          <th class="hyphenate number" style="width: 15%;">{{ _('Unit price') }}<br>{{ _('Tax rate') }}</th>
+          <th class="number">{{ _('Total') }}</th>
+          <th class="hyphenate number" style="width: 11%;">{{ _('Quantity') }}<br>{{ _('available') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -53,19 +53,19 @@
             {{ article.description }}
 
             {%- if article.not_directly_orderable %}
-            <br>{{ render_icon('info') }} {{ 'nur indirekt bestellbar'|dim }}
+            <br>{{ render_icon('info') }} {{ _('can only be ordered indirectly')|dim }}
             {%- endif %}
 
             {%- if article.requires_separate_order %}
-            <br>{{ render_icon('info') }} {{ 'separat zu bestellen'|dim }}
+            <br>{{ render_icon('info') }} {{ _('must be ordered separately')|dim }}
             {%- endif %}
 
             {%- if article.available_from %}
-            <br>{{ render_icon('time') }} {{ 'ab ' + render_datetime(article.available_from|utc_to_local_tz, smart=False)|dim }}
+            <br>{{ render_icon('time') }} {% filter dim %}{{ _('from') }} {{ render_datetime(article.available_from|utc_to_local_tz, smart=False) }}{% endfilter %}
             {%- endif %}
 
             {%- if article.available_until %}
-            <br>{{ render_icon('time') }} {{ 'bis ' + render_datetime(article.available_until|utc_to_local_tz, smart=False)|dim }}
+            <br>{{ render_icon('time') }} {% filter dim %}{{ _('until') }} {{ render_datetime(article.available_until|utc_to_local_tz, smart=False) }}{% endfilter %}
             {%- endif %}
           </td>
           <td class="nowrap number">
@@ -80,7 +80,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">Es sind keine Artikel hinterlegt.</div>
+    <div class="dimmed-box centered">{{ _('No articles exist.') }}</div>
     {%- endif %}
   </div>
 

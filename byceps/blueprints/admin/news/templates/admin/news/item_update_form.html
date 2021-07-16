@@ -3,10 +3,10 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = item.brand %}
-{% set page_title = 'News bearbeiten' %}
+{% set page_title = _('Edit news post') %}
 
 {% block before_body %}
-{{ render_backlink(url_for('.item_view', item_id=item.id), 'Newspost "%s"'|format(item.title)) }}
+{{ render_backlink(url_for('.item_view', item_id=item.id), _('News post') ~ ' "%s"'|format(item.title)) }}
 {%- endblock %}
 
 {% block body %}
@@ -14,7 +14,7 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.item_update', item_id=item.id) }}" method="post">
-    {{ form_field(form.slug, maxlength=100, note='<strong>Achtung:</strong> Eine Änderung des Slugs wirkt sich auf den Permalink der News aus!') }}
+    {{ form_field(form.slug, maxlength=100, note='<strong>' ~ _('Attention') ~ ':</strong> ' ~ _('Changing the slug affects the news post\'s permalink!')) }}
     {{ form_field(form.title, maxlength=100, autofocus='autofocus') }}
     {{ form_field(form.body, class='monospace') }}
     {{ form_field(form.image_url_path, maxlength=100) }}

@@ -6,7 +6,7 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_16_and_name %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
-{% set page_title = 'Newspostversion ansehen' %}
+{% set page_title = _('View news post version') %}
 
 {% block head %}
   <style>
@@ -43,14 +43,14 @@
 
     <div class="button-row button-row--compact" style="float: right;">
       {%- if has_current_user_permission(NewsItemPermission.update) %}
-      <a class="button" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a>
+      <a class="button" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
       <div class="dropdown">
         <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
         <ol class="dropdown-menu dropdown-menu--right">
-          <li><a class="dropdown-item" href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} Bild hinzufügen</a></li>
+          <li><a class="dropdown-item" href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} {{ _('Add image') }}</a></li>
           {%- if not item.published and has_current_user_permission(NewsItemPermission.publish) %}
-          <li><a class="dropdown-item" data-action="item-publish-now" href="{{ url_for('.item_publish_now', item_id=item.id) }}">{{ render_icon('published') }} News jetzt veröffentlichen</a></li>
-          <li><a class="dropdown-item" href="{{ url_for('.item_publish_later_form', item_id=item.id) }}">{{ render_icon('published') }} News später veröffentlichen</a></li>
+          <li><a class="dropdown-item" data-action="item-publish-now" href="{{ url_for('.item_publish_now', item_id=item.id) }}">{{ render_icon('published') }} {{ _('Publish news post now') }}</a></li>
+          <li><a class="dropdown-item" href="{{ url_for('.item_publish_later_form', item_id=item.id) }}">{{ render_icon('published') }} {{ _('Publish news post later') }}</a></li>
           {%- endif %}
         </ol>
       </div>
@@ -59,48 +59,48 @@
 
     <table class="index">
       <tr>
-        <th>Marke</th>
+        <th>{{ _('Brand') }}</th>
         <td>{{ render_brand_avatar(brand, '16') }} <a href="{{ url_for('.channel_index_for_brand', brand_id=brand.id) }}">{{ brand.title }}</a></td>
       </tr>
       <tr>
-        <th>Kanal</th>
+        <th>{{ _('Channel') }}</th>
         <td><a href="{{ url_for('.channel_view', channel_id=item.channel.id) }}">{{ item.channel.id }}</a></td>
       </tr>
       <tr>
-        <th>Slug</th>
+        <th>{{ _('Slug') }}</th>
         <td>{{ item.slug }}</td>
       </tr>
       <tr>
-        <th>Version</th>
+        <th>{{ _('Version') }}</th>
         <td>
           {{- version.id -}}
           {%- if is_current_version %}
-          {{ render_tag('aktuell', class='color-success') }}
+          {{ render_tag(_('current'), class='color-success') }}
           {%- else %}
-          {{ render_tag('veraltet', class='color-warning') }}<br>
-          (<a href="{{ url_for('.item_view', item_id=item.id) }}">zur aktuellen Version</a>)
+          {{ render_tag(_('outdated'), class='color-warning') }}<br>
+          (<a href="{{ url_for('.item_view', item_id=item.id) }}">{{ _('View current version') }}</a>)
           {%- endif %}
         </td>
       </tr>
       <tr>
-        <th>Erstellt</th>
+        <th>{{ _('Created') }}</th>
         <td>
           {{ render_datetime(version.created_at|utc_to_local_tz) }} von {{ render_user_avatar_16_and_name(creator) }}<br>
-          <a href="{{ url_for('.item_list_versions', item_id=item.id) }}">{{ render_icon('history') }} Änderungshistorie ansehen</a>
+          <a href="{{ url_for('.item_list_versions', item_id=item.id) }}">{{ render_icon('history') }} {{ _('View change history') }}</a>
         </td>
       </tr>
       <tr>
-        <th>Veröffentlicht</th>
+        <th>{{ _('Published') }}</th>
         <td>
           {%- if version.item.published %}
           {{- render_datetime(version.item.published_at|utc_to_local_tz) }}
           {%- else %}
-          {{- render_tag('Entwurf') }}
+          {{- render_tag(_('Draft')) }}
           {%- endif -%}
         </td>
       </tr>
       <tr>
-        <th>Bilder ({{ item.images|length }})</th>
+        <th>{{ _('Images') }} ({{ item.images|length }})</th>
         <td>
           {%- if item.images %}
             {%- for image in item.images|sort(attribute='number') %}
@@ -109,34 +109,34 @@
               <div style="margin-left: 1rem;">
                 <table class="index">
                   <tr>
-                    <th>ID</th>
+                    <th>{{ _('ID') }}</th>
                     <td class="monospace">{{ image.id }}</td>
                   </tr>
                   <tr>
-                    <th>Dateiname</th>
+                    <th>{{ _('Filename') }}</th>
                     <td class="monospace">{{ image.filename }}</td>
                   </tr>
                   <tr>
-                    <th>Alternativtext</th>
+                    <th>{{ _('Alternative text') }}</th>
                     <td>{{ image.alt_text|fallback }}</td>
                   </tr>
                   <tr>
-                    <th>Bildunterschrift</th>
+                    <th>{{ _('Caption') }}</th>
                     <td>{{ image.caption|fallback }}</td>
                   </tr>
                   <tr>
-                    <th>Quelle</th>
+                    <th>{{ _('Source') }}</th>
                     <td>{{ image.attribution|fallback }}</td>
                   </tr>
                 </table>
                 {%- if has_current_user_permission(NewsItemPermission.update) -%}
-                <p><a class="button button--compact" href="{{ url_for('.image_update_form', image_id=image.id) }}">{{ render_icon('edit') }} <span>Bearbeiten</span></a></p>
+                <p><a class="button button--compact" href="{{ url_for('.image_update_form', image_id=image.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a></p>
                 {%- endif -%}
               </div>
             </details>
             {%- endfor %}
           {%- else %}
-          {{ 'keine'|dim }}
+          {{ _('none')|dim }}
           {%- endif %}
         </td>
       </tr>
@@ -149,7 +149,7 @@
 
   {%- if error_occurred %}
     {%- set notification_body %}
-        Entschuldigung, es ist ein Fehler aufgetreten.<br>
+        {{ _('Sorry, an error has occurred.') }}<br>
         <pre style="white-space: pre-wrap;">{{ error_message }}</pre>
     {%- endset %}
     {{ render_notification(notification_body, category='danger', icon='warning') }}
@@ -162,7 +162,7 @@
 {% block scripts %}
 <script>
   onDomReady(() => {
-    confirmed_post_on_click_then_reload('[data-action="item-publish-now"]', 'Newspost jetzt veröffentlichen?');
+    confirmed_post_on_click_then_reload('[data-action="item-publish-now"]', '{{ _('Publish news post now?') }}');
   });
 </script>
 {% endblock %}

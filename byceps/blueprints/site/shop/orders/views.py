@@ -135,7 +135,7 @@ def cancel_form(order_id, erroneous_form=None):
 @blueprint.post('/<uuid:order_id>/cancel')
 @login_required
 def cancel(order_id):
-    """Set the payment status of a single order to 'canceled' and
+    """Set the payment state of a single order to 'canceled' and
     release the respective article quantities.
     """
     order = _get_order_by_current_user_or_404(order_id)

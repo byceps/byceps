@@ -16,8 +16,8 @@
 
   <p style="margin: 2rem 0;">
     <small>
-      <span style="float: right;"><strong>Stand:</strong> {{ render_datetime(now|utc_to_local_tz, smart=False) }}</span>
-      <span><strong>{{ quantity_total }}</strong> Stück insgesamt</span>
+      <span style="float: right;"><strong>{{ _('As at') }}:</strong> {{ render_datetime(now|utc_to_local_tz, smart=False) }}</span>
+      <span><strong>{{ quantity_total }}</strong> {{ _('pieces in total') }}</span>
     </small>
   </p>
 
@@ -25,8 +25,8 @@
   <table class="index wide">
     <thead>
       <tr>
-        <th>{{ _('User name') }}<br>Vor- und Nachname</th>
-        <th>Anzahl</th>
+        <th>{{ _('User name') }}<br>{{ _('Full name') }}</th>
+        <th>{{ _('Quantity') }}</th>
         <th colspan="2">{{ _('Order') }}</th>
       </tr>
     </thead>
@@ -45,7 +45,7 @@
     </tbody>
   </table>
   {%- else %}
-  <div class="dimmed-box centered">Dieser Artikel wurde noch nicht bestellt.</div>
+  <div class="dimmed-box centered">{{ _('This article has not been ordered yet.') }}</div>
   {%- endif %}
 
 {%- endblock %}
