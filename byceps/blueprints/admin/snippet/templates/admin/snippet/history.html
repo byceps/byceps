@@ -1,18 +1,16 @@
 {% extends 'layout/admin/snippet.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_name %}
 {% set page_title = _('Version history') %}
 
+{% block before_body %}
+{{ render_backlink(url_for('.view_current_version', snippet_id=snippet.id), snippet.name) }}
+{%- endblock %}
+
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>{{ _('Snippets') }}</li>
-      <li><a href="{{ url_for('.index_for_scope', scope_type=snippet.scope.type_, scope_name=snippet.scope.name) }}">{{ snippet.scope.type_ }}/{{ snippet.scope.name }}</a></li>
-      <li>{{ snippet.name }}</li>
-    </ol>
-  </nav>
   <h1>{{ render_icon('history') }} {{ page_title }}</h1>
 
   {%- if versions_pairwise %}

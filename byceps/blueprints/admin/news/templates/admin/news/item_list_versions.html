@@ -1,4 +1,5 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_name %}
@@ -6,15 +7,12 @@
 {% set current_page_brand = brand %}
 {% set page_title = 'Änderungshistorie' %}
 
+{% block before_body %}
+{{ render_backlink(url_for('.item_view', item_id=item.id), item.title|fallback('&lt;kein Titel&gt;')) }}
+{%- endblock %}
+
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>News</li>
-      <li>{{ _('Brand') }} {{ brand.title }}</li>
-      <li>Kanal <a href="{{ url_for('.channel_view', channel_id=item.channel.id) }}">{{ item.channel.id }}</a></li>
-    </ol>
-  </nav>
   <h1>{{ render_icon('history') }} {{ page_title }}</h1>
 
   <table class="index wide">
