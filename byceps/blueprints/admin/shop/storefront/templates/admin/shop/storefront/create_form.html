@@ -20,7 +20,7 @@
   <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">
     {{ form_field(form.id, maxlength=80, autofocus='autofocus') }}
     {{ form_field(form.catalog_id) }}
-    {{ form_field(form.order_number_sequence_id, note='<a href="%s">Neue Sequenz erstellen</a>'|format(url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id))) }}
+    {{ form_field(form.order_number_sequence_id, note='<a href="%s">Neue Sequenz erstellen</a>'|format(url_for('shop_order_admin.create_number_sequence_form', shop_id=shop.id))|safe) }}
 
     {{ form_buttons(_('Create')) }}
   </form>
