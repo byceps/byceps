@@ -5,27 +5,6 @@
 {% from 'macros/user_avatar.html' import render_user_avatar_20_and_name %}
 {% set page_title = ['%s/%s'|format(scope.type_, scope.name), _('Snippets')] %}
 
-{% block before_body %}
-  {% if (scope.type_ == 'site') and (site is not none) %}
-    {%- from 'macros/admin.html' import render_main_tabs %}
-    {%- set current_tab = 'snippets' %}
-    {{ render_main_tabs(
-      Navigation(None)
-        .add_item(
-          url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name),
-          _('Snippets'),
-          id='snippets',
-          required_permission=SnippetPermission.view)
-        .add_item(
-          url_for('snippet_mountpoint_admin.index', site_id=site.id),
-          _('Mountpoints'),
-          id='mountpoints',
-          required_permission=SnippetPermission.view)
-      , current_tab
-    ) }}
-  {% endif %}
-{%- endblock %}
-
 {% block body %}
 
   <h1>{{ scope.type_ }}/{{ scope.name }}</h1>

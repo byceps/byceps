@@ -1,28 +1,9 @@
-{% extends 'layout/admin/snippet.html' %}
+{% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
+{% set current_page = 'mountpoints' %}
+{% set current_page_site = site %}
 {% set page_title = ['%s/%s'|format(scope.type_, scope.name), _('Mountpoints')] %}
-
-{% if scope.type_ == 'site' %}
-  {% block before_body %}
-    {%- from 'macros/admin.html' import render_main_tabs %}
-    {%- set current_tab = 'mountpoints' %}
-    {{ render_main_tabs(
-      Navigation(None)
-        .add_item(
-          url_for('snippet_admin.index_for_scope', scope_type=scope.type_, scope_name=scope.name),
-          _('Snippets'),
-          id='snippets',
-          required_permission=SnippetPermission.view)
-        .add_item(
-          url_for('.index', site_id=site.id),
-          _('Mountpoints'),
-          id='mountpoints',
-          required_permission=SnippetPermission.view)
-      , current_tab
-    ) }}
-  {%- endblock %}
-{% endif %}
 
 {% block body %}
 
