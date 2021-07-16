@@ -86,6 +86,13 @@ a.dashboard-section-link:hover {
   position: relative;
 }
 
+.cell-label {
+  color: #999999;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
 .bigstats {
   margin-bottom: 0;
 }

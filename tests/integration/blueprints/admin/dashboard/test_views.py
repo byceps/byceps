@@ -26,12 +26,19 @@ def test_view_party(dashboard_admin_client, party):
     assert response.status_code == 200
 
 
+def test_view_site(dashboard_admin_client, site):
+    url = f'/admin/dashboard/sites/{site.id}'
+    response = dashboard_admin_client.get(url)
+    assert response.status_code == 200
+
+
 @pytest.fixture(scope='package')
 def dashboard_admin(make_admin):
     permission_ids = {
         'admin.access',
         'brand.view',
         'party.view',
+        'site.view',
     }
     admin = make_admin('DashboardAdmin', permission_ids)
     login_user(admin.id)

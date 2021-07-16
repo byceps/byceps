@@ -3,6 +3,12 @@
 
 {%- with navigation = Navigation(_('Site'))
     .add_item(
+      url_for('admin_dashboard.view_site', site_id=site.id),
+      _('Dashboard'),
+      id='admin_dashboard_site',
+      required_permission=SitePermission.view,
+      icon='dashboard')
+    .add_item(
       url_for('snippet_admin.index_for_scope', scope_type='site', scope_name=site.id),
       _('Snippets'),
       id='snippet_admin_for_site',

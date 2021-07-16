@@ -15,7 +15,7 @@
 
 {%- if current_sites %}
   {%- for site in current_sites|sort(attribute='title') %}
-    {%- call render_cell(href=url_for('site_admin.view', site_id=site.id)) %}
+    {%- call render_cell(href=url_for('admin_dashboard.view_site', site_id=site.id)) %}
   <div class="row">
     <div class="column-auto">
       {{ render_brand_avatar(site.brand, '40') }}

@@ -11,7 +11,7 @@
     <div class="row row--space-between">
 
       <div class="column-auto" style="min-width: 65%;">
-        <a href="{{ url_for('.view', site_id=site.id) }}" class="disguised" style="display: block;">
+        <a href="{{ url_for('admin_dashboard.view_site', site_id=site.id) }}" class="disguised" style="display: block;">
           <strong>{{ site.title }}</strong><br>
           <span class="monospace">{{ site.id }}</span>
         </a>

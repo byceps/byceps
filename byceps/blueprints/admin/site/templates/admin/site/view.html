@@ -59,7 +59,7 @@
       </tr>
       <tr>
         <th>{{ _('Party') }}</th>
-        <td>{% if site.party_id %}<a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ site.party_id }}</a>{% else %}{{ ''|fallback }}{% endif %}</td>
+        <td>{% if site.party_id %}<a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ site.party_id }}</a>{% else %}{{ _('not assigned')|dim }}{% endif %}</td>
       </tr>
       <tr>
         <th>{{ _('User registration') }}</th>
@@ -75,7 +75,7 @@
           {%- if board %}
           <a href="{{ url_for('board_admin.board_view', board_id=board.id) }}">{{ board.id }}</a>
           {%- else %}
-          {{ _('no board assigned')|dim }}
+          {{ _('not assigned')|dim }}
           {%- endif %}
         </td>
       </tr>
@@ -85,7 +85,7 @@
           {%- if storefront %}
           <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}">{{ storefront.id }}</a>
           {%- else %}
-          {{ _('no storefront assigned')|dim }}
+          {{ _('not assigned')|dim }}
           {%- endif %}
         </td>
       </tr>

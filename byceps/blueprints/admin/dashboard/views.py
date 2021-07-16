@@ -10,11 +10,13 @@ from datetime import date, timedelta
 
 from flask import abort
 
+from ....services.board import board_service
 from ....services.brand import (
     service as brand_service,
     settings_service as brand_settings_service,
 )
 from ....services.consent import subject_service as consent_subject_service
+from ....services.news import channel_service as news_channel_service
 from ....services.newsletter import service as newsletter_service
 from ....services.orga import birthday_service as orga_birthday_service
 from ....services.orga_team import service as orga_team_service
@@ -25,6 +27,7 @@ from ....services.seating import (
 )
 from ....services.shop.order import service as shop_order_service
 from ....services.shop.shop import service as shop_service
+from ....services.shop.storefront import service as storefront_service
 from ....services.site import service as site_service
 from ....services.ticketing import ticket_service
 from ....services.user import stats_service as user_stats_service
@@ -35,6 +38,7 @@ from ....util.views import permission_required
 from ..brand.authorization import BrandPermission
 from ..core.authorization import AdminPermission
 from ..party.authorization import PartyPermission
+from ..site.authorization import SitePermission
 from ..user.service import get_users_created_since
 
 
@@ -193,4 +197,33 @@ def view_party(party_id):
 
         'ticket_sale_stats': ticket_sale_stats,
         'tickets_checked_in': tickets_checked_in,
+    }
+
+
+@blueprint.get('/sites/<site_id>')
+@permission_required(SitePermission.view)
+@templated
+def view_site(site_id):
+    """View dashboard for that site."""
+    site = site_service.find_site(site_id)
+    if site is None:
+        abort(404)
+
+    news_channels = news_channel_service.get_channels(site.news_channel_ids)
+
+    if site.board_id:
+        board = board_service.find_board(site.board_id)
+    else:
+        board = None
+
+    if site.storefront_id:
+        storefront = storefront_service.get_storefront(site.storefront_id)
+    else:
+        storefront = None
+
+    return {
+        'site': site,
+        'news_channels': news_channels,
+        'board': board,
+        'storefront': storefront,
     }

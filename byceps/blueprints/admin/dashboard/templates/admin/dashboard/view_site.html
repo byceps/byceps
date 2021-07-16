@@ -1,0 +1,76 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/dashboard.html' import render_cell %}
+{% from 'macros/misc.html' import render_tag %}
+{% set current_page = 'admin_dashboard_site' %}
+{% set current_page_site = site %}
+{% set page_title = [_('Dashboard'), site.title] %}
+{% set layout_main_raw = True %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/admin_dashboard.css') }}">
+{%- endblock %}
+
+{% block body %}
+
+  <div class="mb">
+  {%- if not site.enabled %}
+    {{ render_tag(_('disabled'), class='color-disabled', icon='disabled') }}
+  {%- endif %}
+  {%- if site.archived %}
+    {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
+  {%- endif %}
+  </div>
+
+  <div class="grid dashboard">
+
+    {%- call render_cell() %}
+      <div class="cell-label">{{ _('ID') }}</div>
+      <div>{{ site.id }}</div>
+    {%- endcall %}
+
+    {%- call render_cell('location') %}
+      <div class="cell-label">{{ _('Server name') }}</div>
+      <div><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></div>
+    {%- endcall %}
+
+    {%- call render_cell('user-create') %}
+      <div class="cell-label">{{ _('User registration') }}</div>
+      <div class="centered">{{ render_tag(_('open'), class='color-success') if site.user_account_creation_enabled else render_tag(_('closed'), class='color-disabled', icon='disabled') }}</div>
+    {%- endcall %}
+
+    {%- call render_cell('log-in') %}
+      <div class="cell-label">{{ _('User login') }}</div>
+      <div class="centered">{{ render_tag(_('open'), class='color-success') if site.login_enabled else render_tag(_('closed'), class='color-disabled', icon='disabled') }}</div>
+    {%- endcall %}
+
+    {%- call render_cell('date', href=(url_for('admin_dashboard.view_party', party_id=site.party_id) if site.party_id else None)) %}
+      <div class="cell-label">{{ _('Party') }}</div>
+      <div>{{ site.party_id|fallback(_('not assigned')) }}</div>
+    {%- endcall %}
+
+    {%- call render_cell('board', href=(url_for('board_admin.board_view', board_id=board.id) if board else None)) %}
+      <div class="cell-label">{{ _('Board') }}</div>
+      <div>{{ board.id if board else None|fallback(_('not assigned')) }}</div>
+    {%- endcall %}
+
+    {%- call render_cell('shop', href=(url_for('shop_storefront_admin.view', storefront_id=storefront.id) if storefront else None)) %}
+      <div class="cell-label">{{ _('Storefront') }}</div>
+      <div>{{ storefront.id if storefront else None|fallback(_('not assigned')) }}</div>
+    {%- endcall %}
+
+    {%- call render_cell('news') %}
+      <div class="cell-label">{{ _('News Channels') }}</div>
+      {%- if news_channels %}
+      <ul class="compact">
+        {%- for channel in news_channels|sort(attribute='id') %}
+        <li><a href="{{ url_for('news_admin.channel_view', channel_id=channel.id) }}" class="disguised">{{ channel.id }}</a></li>
+        {%- endfor %}
+      </ul>
+      {%- else %}
+      {{ _('not assigned')|dim }}
+      {%- endif %}
+    {%- endcall %}
+
+  </div>
+
+{%- endblock %}
