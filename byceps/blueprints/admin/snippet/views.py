@@ -103,6 +103,7 @@ def view_version(snippet_version_id):
     is_current_version = version.id == snippet.current_version.id
 
     context = {
+        'snippet': version.snippet,
         'version': version,
         'scope': scope,
         'creator': creator,

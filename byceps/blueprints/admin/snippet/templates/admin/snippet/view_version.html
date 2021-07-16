@@ -4,25 +4,9 @@
 {% from 'macros/misc.html' import render_notification, render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_16_and_name %}
 {% set page_title = _('View snippet version') %}
+{% set layout_main_raw = True %}
 
 {% block head %}
-  <style>
-    .snippet-head {
-      background-color: #eeeeee;
-      border-bottom: #cccccc solid 1px;
-      margin-bottom: 40px;
-      margin-left: -40px;
-      margin-right: -40px;
-      margin-top: -20px;
-      padding: 20px 40px;
-    }
-
-    .snippet-head table.index > tbody > tr > th,
-    .snippet-head table.index > tbody > tr > td {
-      border: none;
-    }
-  </style>
-
   {%- if not error_occurred and snippet_head %}
 {{ snippet_head|safe }}
   {%- endif %}
@@ -30,70 +14,71 @@
 
 {% block body %}
 
-  <div class="snippet-head">
-  {%- with snippet = version.snippet %}
+  <div class="row row--space-between">
+    <div class="column-auto">
 
-    <div class="button-row button-row--compact" style="float: right;">
-
-      {%- if has_current_user_permission(SnippetPermission.update) -%}
-        {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
-      <a class="button" href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
-        {%- endwith %}
-      {%- endif -%}
-
-      {%- if has_current_user_permission(SnippetPermission.delete) %}
-      <div class="dropdown">
-        <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
-        <ol class="dropdown-menu dropdown-menu--right">
-          <li><a class="dropdown-item" data-action="snippet-delete" href="{{ url_for('.delete_snippet', snippet_id=snippet.id) }}">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
+      <nav class="breadcrumbs">
+        <ol>
+          <li>{{ _('Snippets') }}</li>
+          <li>{{ _('Scope') }}: <a href="{{ url_for('.index_for_scope', scope_type=snippet.scope_type, scope_name=snippet.scope_name) }}">{{ snippet.scope_type }}/{{ snippet.scope_name }}</a></li>
         </ol>
-      </div>
-      {%- endif %}
+      </nav>
+      <h1>
+        {%- if snippet.is_document %}
+        {{ render_icon('snippet-document') }} {{ _('Document') }}
+        {%- elif snippet.is_fragment %}
+        {{ render_icon('snippet-fragment') }} {{ _('Fragment') }}
+        {%- endif %}:
+        {{ snippet.name }}
+      </h1>
 
     </div>
+    <div class="column-auto column--align-bottom">
 
-    <table class="index">
-      <tr>
-        <th>{{ _('Scope') }}</th>
-        <td><a href="{{ url_for('.index_for_scope', scope_type=snippet.scope_type, scope_name=snippet.scope_name) }}">{{ snippet.scope_type }}/{{ snippet.scope_name }}</a></td>
-      </tr>
-      <tr>
-        <th>{{ _('Snippet') }}</th>
-        <td>{{ snippet.name }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Type') }}</th>
-        <td>
-          {%- if snippet.is_document %}
-          {{ render_icon('snippet-document') }} {{ _('Document') }}
-          {%- elif snippet.is_fragment %}
-          {{ render_icon('snippet-fragment') }} {{ _('Fragment') }}
-          {%- endif %}
-        </td>
-      </tr>
-      <tr>
-        <th>{{ _('Version') }}</th>
-        <td>
-          {{- version.id -}}
-          {%- if is_current_version %}
-          {{ render_tag('aktuell', class='color-success') }}
-          {%- else %}
-          {{ render_tag('veraltet', class='color-warning') }}<br>
-          <a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}">{{ _('View current version') }}</a>
-          {%- endif %}
-        </td>
-      </tr>
-      <tr>
-        <th>{{ _('Created') }}</th>
-        <td>
-          {{ render_datetime(version.created_at|utc_to_local_tz) }} {{ _('by') }} {{ render_user_avatar_16_and_name(creator) }}<br>
-          <a href="{{ url_for('.history', snippet_id=snippet.id) }}">{{ render_icon('history') }} {{ _('View change history') }}</a>
-        </td>
-      </tr>
-    </table>
+      <div class="button-row button-row--right">
 
-  {%- endwith %}
+        {%- if has_current_user_permission(SnippetPermission.update) -%}
+          {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
+        <a class="button" href="{{ url_for(endpoint, snippet_id=snippet.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+          {%- endwith %}
+        {%- endif -%}
+
+        {%- if has_current_user_permission(SnippetPermission.delete) %}
+        <div class="dropdown">
+          <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            <li><a class="dropdown-item" data-action="snippet-delete" href="{{ url_for('.delete_snippet', snippet_id=snippet.id) }}">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
+          </ol>
+        </div>
+        {%- endif %}
+
+      </div>
+
+    </div>
   </div>
+
+  <div class="box">
+
+    <div class="data-label">{{ _('Version') }}</div>
+    <div class="data-value">
+      {{- version.id -}}
+      {%- if is_current_version %}
+      {{ render_tag('aktuell', class='color-success') }}
+      {%- else %}
+      {{ render_tag('veraltet', class='color-warning') }}<br>
+      <a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}">{{ _('View current version') }}</a>
+      {%- endif %}
+    </div>
+
+    <div class="data-label">{{ _('Created') }}</div>
+    <div class="data-value">
+      {{ render_datetime(version.created_at|utc_to_local_tz) }} {{ _('by') }} {{ render_user_avatar_16_and_name(creator) }}<br>
+      <a href="{{ url_for('.history', snippet_id=snippet.id) }}">{{ render_icon('history') }} {{ _('View change history') }}</a>
+    </div>
+
+  </div>
+
+  <h2>{{ _('Preview') }}</h2>
 
   {%- if error_occurred %}
 
@@ -105,11 +90,15 @@
 
   {%- else %}
 
-    {%- if snippet_title %}
-  <h1>{{ snippet_title }}</h1>
-    {%- endif %}
+  <div class="box">
+    <article>
+      {%- if snippet_title %}
+      <h1 style="margin-top: 0.5rem;">{{ snippet_title }}</h1>
+      {%- endif %}
 
-  {{- snippet_body|safe }}
+      {{- snippet_body|safe }}
+    </article>
+  </div>
 
   {%- endif %}
 
