@@ -62,6 +62,17 @@
       {%- endwith %}
     {%- endcall %}
 
+    {%- call render_cell(href=url_for('seating_admin.index_for_party', party_id=party.id)) %}
+      <div class="mb"><div class="cell-label">{{ _('seats occupied') }}</div></div>
+      <div class="progress">
+        <div class="progress-bar color-success" style="width: calc(100% * {{ seat_utilization.occupied }} / {{ seat_utilization.total }});"></div>
+      </div>
+      <div class="row row--space-between" style="font-size: 0.75rem;">
+        <div class="column-auto" style="font-weight: bold;">{{ format_number(seat_utilization.occupied) }}</div>
+        <div class="column-auto dimmed">{{ _('of') }} {{ format_number(seat_utilization.total) }}</div>
+      </div>
+    {%- endcall %}
+
     {%- call render_cell(href=url_for('ticketing_checkin_admin.index', party_id=party.id)) %}
       <div class="mb"><div class="cell-label">{{ _('tickets checked in') }}</div></div>
       <div class="progress">

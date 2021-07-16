@@ -187,6 +187,8 @@ def view_party(party_id):
         party.id
     )
 
+    seat_utilization = seat_service.get_seat_utilization(party.id)
+
     return {
         'party': party,
 
@@ -201,6 +203,8 @@ def view_party(party_id):
 
         'ticket_sale_stats': ticket_sale_stats,
         'tickets_checked_in': tickets_checked_in,
+
+        'seat_utilization': seat_utilization,
     }
 
 
