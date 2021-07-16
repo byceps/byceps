@@ -10,11 +10,6 @@
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <nav class="breadcrumbs">
-        <ol>
-          <li>News-Kanäle</li>
-        </ol>
-      </nav>
       <h1>{{ brand.title }} {{ render_extra_in_heading(channels|length) }}</h1>
     </div>
   {%- if has_current_user_permission(NewsChannelPermission.create) %}

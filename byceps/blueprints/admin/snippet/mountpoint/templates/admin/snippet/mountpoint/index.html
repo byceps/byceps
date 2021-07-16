@@ -26,11 +26,6 @@
 
 {% block body %}
 
-  <nav class="breadcrumbs">
-    <ol>
-      <li>{{ _('Snippets') }}</li>
-    </ol>
-  </nav>
   <h1>{{ scope.type_ }}/{{ scope.name }}</h1>
 
   <h2>Mountpoints {{ render_extra_in_heading(mountpoints_and_snippets|length) }}</h2>

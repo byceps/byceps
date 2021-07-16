@@ -13,11 +13,6 @@
   <div class="row row--space-between">
     <div class="column-auto">
 
-      <nav class="breadcrumbs">
-        <ol>
-          <li><a href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) }}">{{ _('Parties') }}</a></li>
-        </ol>
-      </nav>
       <h1>
         {{ party.title }}
         {%- if party.canceled or party.archived %}

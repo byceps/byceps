@@ -11,11 +11,6 @@
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <nav class="breadcrumbs">
-        <ol>
-          <li><a href="{{ url_for('.index') }}">{{ _('Brands') }}</a></li>
-        </ol>
-      </nav>
       <h1>
         {{ brand.title }}
         {%- if brand.archived %}
