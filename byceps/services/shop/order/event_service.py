@@ -12,7 +12,7 @@ from typing import Sequence
 
 from ....database import db
 
-from .dbmodels.order_event import OrderEvent, OrderEventData
+from .dbmodels.order_event import OrderEvent as DbOrderEvent, OrderEventData
 from .transfer.models import OrderID
 
 
@@ -38,16 +38,17 @@ def create_events(
 
 def build_event(
     event_type: str, order_id: OrderID, data: OrderEventData
-) -> OrderEvent:
+) -> DbOrderEvent:
     """Assemble, but not persist, an order event."""
     now = datetime.utcnow()
 
-    return OrderEvent(now, event_type, order_id, data)
+    return DbOrderEvent(now, event_type, order_id, data)
 
 
-def get_events_for_order(order_id: OrderID) -> list[OrderEvent]:
+def get_events_for_order(order_id: OrderID) -> list[DbOrderEvent]:
     """Return the events for that order."""
-    return OrderEvent.query \
-        .filter_by(order_id=order_id) \
-        .order_by(OrderEvent.occurred_at) \
+    return (
+        DbOrderEvent.query.filter_by(order_id=order_id)
+        .order_by(DbOrderEvent.occurred_at)
         .all()
+    )
