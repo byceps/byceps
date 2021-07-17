@@ -385,7 +385,7 @@ def delete_order(order_id: OrderID) -> None:
     order = get_order(order_id)
 
     db.session.query(DbOrderEvent) \
-        .filter_by(order_id=order_id) \
+        .filter_by(order_id=order.id) \
         .delete()
 
     db.session.query(DbOrderItem) \
@@ -393,7 +393,7 @@ def delete_order(order_id: OrderID) -> None:
         .delete()
 
     db.session.query(DbOrder) \
-        .filter_by(id=order_id) \
+        .filter_by(id=order.id) \
         .delete()
 
     db.session.commit()
