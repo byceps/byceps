@@ -1021,16 +1021,19 @@ msgstr "archiviert"
 
 #: byceps/blueprints/admin/brand/forms.py:38
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:79
+#: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:60
 msgid "Sender address"
 msgstr "Absender-Adresse"
 
 #: byceps/blueprints/admin/brand/forms.py:41
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:83
+#: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:64
 msgid "Sender name"
 msgstr "Absender-Name"
 
 #: byceps/blueprints/admin/brand/forms.py:44
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:87
+#: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:68
 msgid "Contact address"
 msgstr "Kontaktadresse"
 
@@ -1404,6 +1407,8 @@ msgid "Shipping"
 msgstr "Versand"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:37
+#: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:6
+#: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:33
 msgid "Email"
 msgstr "E-Mail"
 
@@ -2757,6 +2762,7 @@ msgid "Create article number sequence"
 msgstr "Artikelnummer-Sequenz erstellen"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_form.html:21
+#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/create_form.html:23
 msgid "Create new sequence"
 msgstr "Neue Sequenz erstellen"
 
@@ -2935,6 +2941,26 @@ msgstr "Dieser Artikel wurde noch nicht bestellt."
 #: byceps/blueprints/admin/shop/article/templates/macros/admin/shop/article.html:18
 msgid "unlimited"
 msgstr "unbegrenzt"
+
+#: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:35
+msgid "Examples"
+msgstr "Beispiele"
+
+#: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:40
+msgid "Order confirmation"
+msgstr "Bestellbestätigung"
+
+#: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:45
+msgid "Payment receipt"
+msgstr "Zahlungseingang"
+
+#: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:50
+msgid "Cancelation"
+msgstr "Stornierung"
+
+#: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:56
+msgid "Configuration"
+msgstr "Konfiguration"
 
 #: byceps/blueprints/admin/shop/order/forms.py:24
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:23
@@ -3304,6 +3330,14 @@ msgstr "Storefront \"%(storefront_id)s\" wurde aktualisiert."
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:17
 msgid "Create storefront"
 msgstr "Storefront erstellen"
+
+#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/create_form.html:16
+msgid ""
+"No order number sequences are defined for this shop. No storefronts can "
+"be created without a sequence."
+msgstr ""
+"Es sind keine Bestellnummer-Sequenzen für diesen Shop hinterlegt. Ohne "
+"sie können keine Storefronts angelegt werden."
 
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:59
 msgid "No storefronts exist."
@@ -4986,11 +5020,15 @@ msgstr "Du bist im Begriff, ein Thema von jemand anderem zu verändern."
 msgid ""
 "This topic is meant for announcements. Only <strong>moderators</strong> "
 "are allowed to add posts to it."
-msgstr "Dieses Thema ist für Ankündigungen gedacht. Nur <strong>Moderatoren</strong> dürfen Beiträge hinzufügen."
+msgstr ""
+"Dieses Thema ist für Ankündigungen gedacht. Nur "
+"<strong>Moderatoren</strong> dürfen Beiträge hinzufügen."
 
 #: byceps/blueprints/site/board/templates/site/board/topic_view.html:51
 msgid "This topic is <strong>locked</strong>. No more posts can be added."
-msgstr "Dieses Thema ist <strong>geschlossen</strong>. Es können keine Beiträge mehr hinzugefügt werden."
+msgstr ""
+"Dieses Thema ist <strong>geschlossen</strong>. Es können keine Beiträge "
+"mehr hinzugefügt werden."
 
 #: byceps/blueprints/site/board/templates/site/board/topic_view.html:61
 #, python-format
