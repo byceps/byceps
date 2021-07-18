@@ -11,7 +11,7 @@
   {%- if state_name == 'paid' -%}
     {{ render_tag(_('paid'), icon='success', class='order-paid') }}
   {%- elif state_name == 'canceled_before_paid' -%}
-    {{ render_tag('canceled (b. p.)', icon='disabled', class='order-canceled-before-paid', title=_('canceled before payment')) }}
+    {{ render_tag(_('canceled (b. p.)'), icon='disabled', class='order-canceled-before-paid', title=_('canceled before payment')) }}
   {%- elif state_name == 'canceled_after_paid' -%}
     {{ render_tag(_('canceled (a. p.)'), icon='disabled', class='order-canceled-after-paid', title=_('canceled after payment')) }}
   {%- else -%}

@@ -909,6 +909,7 @@ msgstr "versteckt"
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:42
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:44
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:52
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:46
 msgid "Edit"
 msgstr "Bearbeiten"
 
@@ -1109,7 +1110,6 @@ msgstr "Marke bearbeiten"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:24
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:70
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:46
 msgid "Update"
 msgstr "Bearbeiten"
 
@@ -3231,6 +3231,10 @@ msgid "Mark as not shipped?"
 msgstr "Als nicht versendet markieren?"
 
 #: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:14
+msgid "canceled (b. p.)"
+msgstr "storniert (v. B.)"
+
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:14
 msgid "canceled before payment"
 msgstr "storniert vor Bezahlung"
 
@@ -4497,19 +4501,19 @@ msgstr "Aktiv"
 msgid "Webhook has been created."
 msgstr "Der Webhook wurde erstellt."
 
-#: byceps/blueprints/admin/webhook/views.py:171
+#: byceps/blueprints/admin/webhook/views.py:172
 msgid "Webhook has been updated."
 msgstr "Der Webhook wurde aktualisiert."
 
-#: byceps/blueprints/admin/webhook/views.py:185
+#: byceps/blueprints/admin/webhook/views.py:186
 msgid "Webhook has been removed."
 msgstr "Der Webhook wurde gelöscht."
 
-#: byceps/blueprints/admin/webhook/views.py:199
+#: byceps/blueprints/admin/webhook/views.py:200
 msgid "Webhook call has been successful."
 msgstr "Der Webhook-Aufruf war erfolgreich."
 
-#: byceps/blueprints/admin/webhook/views.py:203
+#: byceps/blueprints/admin/webhook/views.py:204
 msgid "Webhook call failed:"
 msgstr "Der Webhook-Aufruf ist fehlgeschlagen:"
 
@@ -4544,7 +4548,7 @@ msgid "Delete webhook?"
 msgstr "Webhook löschen?"
 
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:5
-msgid "Update Webhook"
+msgid "Edit Webhook"
 msgstr "Webhook bearbeiten"
 
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:20
