@@ -25,6 +25,9 @@ SQLALCHEMY_TRACK_MODIFICATIONS = False
 # job queue
 JOBS_ASYNC = True
 
+# REST API
+API_ENABLED = True
+
 # metrics
 METRICS_ENABLED = False
 

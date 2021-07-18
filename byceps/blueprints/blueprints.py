@@ -23,7 +23,8 @@ def register_blueprints(app: Flask) -> None:
         blueprint = get_blueprint(name)
         parent.register_blueprint(blueprint, url_prefix=url_prefix)
 
-    register_api_blueprints(app)
+    if app.config['API_ENABLED']:
+        register_api_blueprints(app)
 
 
 def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
