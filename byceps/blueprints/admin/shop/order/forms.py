@@ -15,6 +15,10 @@ from .....services.shop.order.transfer.models import PaymentMethod
 from .....util.l10n import LocalizedForm
 
 
+class AddNoteForm(LocalizedForm):
+    text = TextAreaField(lazy_gettext('Text'), validators=[InputRequired()])
+
+
 class CancelForm(LocalizedForm):
     reason = TextAreaField(
         lazy_gettext('Reason'),

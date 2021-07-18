@@ -32,7 +32,7 @@ from .dbmodels.order import Order as DbOrder
 from .dbmodels.order_event import OrderEvent as DbOrderEvent, OrderEventData
 from .dbmodels.order_item import OrderItem as DbOrderItem
 from .models.orderer import Orderer
-from . import action_service, sequence_service
+from . import action_service, event_service, sequence_service
 from .transfer.models import (
     Address,
     Order,
@@ -149,6 +149,20 @@ def _reduce_article_stock(cart: Cart) -> None:
         quantity = cart_item.quantity
 
         article_service.decrease_quantity(article.id, quantity, commit=False)
+
+
+def add_note(order_id: OrderID, author_id: UserID, text: str) -> None:
+    """Add a note to the order."""
+    order = get_order(order_id)
+    author = user_service.get_user(author_id)
+
+    event_type = 'order-note-added'
+    data = {
+        'author_id': str(author.id),
+        'text': text,
+    }
+
+    event_service.create_event(event_type, order.id, data)
 
 
 def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:

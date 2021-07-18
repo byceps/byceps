@@ -2863,7 +2863,11 @@ msgstr "Auftraggeber/in per E-Mail über Stornierung informieren"
 msgid "Payment type"
 msgstr "Zahlungsart"
 
-#: byceps/blueprints/admin/shop/order/views.py:166
+#: byceps/blueprints/admin/shop/order/views.py:195
+msgid "Note has been added."
+msgstr "Die Notiz wurde hinzugefügt."
+
+#: byceps/blueprints/admin/shop/order/views.py:215
 #, python-format
 msgid "Order %(order_number)s has been marked as invoiced."
 msgstr "Bestellung %(order_number)s wurde als in Rechnung gestellt markiert."
@@ -2931,6 +2935,11 @@ msgstr ""
 #, python-format
 msgid "Order number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Bestellnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:7
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/add_note_form.html:4
+msgid "Add note"
+msgstr "Notiz hinzufügen"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:11
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:28

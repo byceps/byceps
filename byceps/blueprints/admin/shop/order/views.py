@@ -30,7 +30,12 @@ from .....util.views import permission_required, redirect_to, respond_no_content
 
 from ..shop.authorization import ShopPermission
 from .authorization import ShopOrderPermission
-from .forms import CancelForm, MarkAsPaidForm, OrderNumberSequenceCreateForm
+from .forms import (
+    AddNoteForm,
+    CancelForm,
+    MarkAsPaidForm,
+    OrderNumberSequenceCreateForm,
+)
 from .models import OrderStateFilter
 from . import service
 
@@ -146,6 +151,50 @@ def export(order_id):
     return Response(
         xml_export['content'], content_type=xml_export['content_type']
     )
+
+
+# -------------------------------------------------------------------- #
+# notes
+
+
+@blueprint.get('/<uuid:order_id>/notes/create')
+@permission_required(ShopOrderPermission.update)
+@templated
+def add_note_form(order_id, erroneous_form=None):
+    """Show form to add a note to the order."""
+    order = _get_order_or_404(order_id)
+
+    shop = shop_service.get_shop(order.shop_id)
+
+    brand = brand_service.get_brand(shop.brand_id)
+
+    form = erroneous_form if erroneous_form else AddNoteForm()
+
+    return {
+        'shop': shop,
+        'brand': brand,
+        'order': order,
+        'form': form,
+    }
+
+
+@blueprint.post('/<uuid:order_id>/notes')
+@permission_required(ShopOrderPermission.update)
+def add_note(order_id):
+    """Add a note to the order."""
+    order = _get_order_or_404(order_id)
+
+    form = AddNoteForm(request.form)
+    if not form.validate():
+        return add_note_form(order_id, form)
+
+    text = form.text.data.strip()
+
+    event = order_service.add_note(order.id, g.user.id, text)
+
+    flash_success(gettext('Note has been added.'))
+
+    return redirect_to('.view', order_id=order.id)
 
 
 # -------------------------------------------------------------------- #

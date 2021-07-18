@@ -52,6 +52,13 @@
             <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
             hat die Rechnung als <strong>doch nicht erstellt</strong> markiert.
           {%- endset %}
+        {%- elif event.event == 'order-note-added' %}
+          {%- set icon_name = 'note' %}
+          {%- set body %}
+            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.author) }}</span>
+            hat eine Notiz hinzugefügt:<br>
+            <blockquote>{{ event.data.text }}</blockquote>
+          {%- endset %}
         {%- elif event.event == 'order-shipped' %}
           {%- set icon_name = 'shipping' %}
           {%- set body %}
