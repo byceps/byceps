@@ -60,7 +60,7 @@
   <div class="row row--space-between">
     <div class="column-auto column-auto--grow">
 
-      <h2 style="margin-top: 0;">Auftraggeber/in</h2>
+      <h2 style="margin-top: 0;">{{ _('Orderer') }}</h2>
       <div class="box">
     {%- include 'admin/shop/order/_view_orderer.html' %}
       </div>
@@ -82,7 +82,7 @@
         {%- endif %}
 
         {%- if order.is_canceled %}
-        <div class="data-label">{{ _('Reason for cancellation') }}</div>
+        <div class="data-label">{{ _('Reason for cancelation') }}</div>
         <div class="data-value">{{ order.cancelation_reason|fallback }}</div>
         {%- endif %}
       </div>

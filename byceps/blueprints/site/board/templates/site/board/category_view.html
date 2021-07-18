@@ -22,7 +22,7 @@
       <tr>
         <th>{{ _('Topic') }}</th>
         <th class="centered">{{ _('Replies') }}</th>
-        <th>{{ _('Latest posting') }}</th>
+        <th>{{ _('Latest post') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -31,27 +31,27 @@
         <td>
           <a class="board-topic-link disguised" href="{{ url_for('.topic_view', topic_id=topic.id) }}">
             <div class="board-topic-title">
-              {%- if topic.posting_limited_to_moderators %}{{ render_icon('announce', title='Ankündigungen') }} {% endif -%}
-              {%- if topic.hidden %}{{ render_icon('hidden', title='versteckt (durch %s)'|format(topic.hidden_by.screen_name)) }} {% endif -%}
-              {%- if topic.locked %}{{ render_icon('lock', title='geschlossen') }} {% endif -%}
-              {%- if topic.pinned %}{{ render_icon('pin', title='angeheftet') }} {% endif -%}
+              {%- if topic.posting_limited_to_moderators %}{{ render_icon('announce', title=_('Announcements')) }} {% endif -%}
+              {%- if topic.hidden %}{{ render_icon('hidden', title='%s (%s %s)'|format(_('hidden'), _('by'), topic.hidden_by.screen_name)) }} {% endif -%}
+              {%- if topic.locked %}{{ render_icon('lock', title=_('locked')) }} {% endif -%}
+              {%- if topic.pinned %}{{ render_icon('pin', title=_('pinned')) }} {% endif -%}
               <strong>{{ topic.title }}</strong>
               {%- if topic.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
             </div>
             <div class="board-topic-initial-posting">
-              begonnen von {{ render_user_avatar_16_and_name(topic.creator) }}
+              {{ _('started by') }} {{ render_user_avatar_16_and_name(topic.creator) }}
             </div>
           </a>
         </td>
         <td class="centered bignumber">{{ format_number(topic.reply_count) }}</td>
-        <td class="nowrap">{{ render_datetime(topic.last_updated_at|utc_to_local_tz) }}<br>von {{ render_user_avatar_16_and_name(topic.last_updated_by) }}</td>
+        <td class="nowrap">{{ render_datetime(topic.last_updated_at|utc_to_local_tz) }}<br>{{ _('by') }} {{ render_user_avatar_16_and_name(topic.last_updated_by) }}</td>
       </tr>
       {%- endfor %}
       <tr>
     </tbody>
   </table>
   {%- else %}
-  <p class="dimmed">In dieser Kategorie gibt es noch keine Themen.</p>
+  <p class="dimmed">{{ _('No topics exist in this category.') }}</p>
   {%- endif %}
 
 {{ render_pagination_nav(topics, 'board.category_view', {'slug': category.slug}, centered=True) }}
@@ -67,14 +67,14 @@
     {%- endif %}
 
     {%- if g.user.authenticated %}
-    <button class="button" data-action="mark-all-topics-in-category-as-viewed" href="{{ url_for('.mark_all_topics_in_category_as_viewed', category_id=category.id) }}" title="Alle Themen in dieser Kategorie als gelesen markieren">{{ render_icon('view') }}</button>
+    <button class="button" data-action="mark-all-topics-in-category-as-viewed" href="{{ url_for('.mark_all_topics_in_category_as_viewed', category_id=category.id) }}" title="{{ _('Mark all topics in this category as unread') }}">{{ render_icon('view') }}</button>
     {%- endif %}
 
   </div>
 
   {%- if not current_user_may_create_topic %}
   <small>
-    <p style="text-align: right;">Du musst <a href="{{ url_for('authentication_login.login_form') }}">angemeldet</a> sein, um Themen hinzufügen zu können.</p>
+    <p style="text-align: right;">{{ _('You have to be <a href="%s">logged in</a> to be able to create topics.')|format(url_for('authentication_login.login_form')) }}</p>
   </small>
   {%- endif %}
 
@@ -83,7 +83,7 @@
 {% block scripts %}
     <script>
       onDomReady(() => {
-        confirmed_post_on_click('[data-action="mark-all-topics-in-category-as-viewed"]', 'Alle Themen in dieser Kategorie als gelesen markieren?');
+        confirmed_post_on_click('[data-action="mark-all-topics-in-category-as-viewed"]', '{{ _('Mark all topics in this category as unread?') }}');
       });
     </script>
 {%- endblock %}

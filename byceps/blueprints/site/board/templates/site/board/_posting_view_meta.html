@@ -10,15 +10,15 @@
           {{- render_user_link(posting.creator) -}}
 
           {%- if posting.creator.ticket %}
-          {{- ' ' }}<span title="Nutzt ein Ticket für die {{ posting.creator.ticket.party_title }}">{{ render_icon('ticket') }}</span>
+          {{- ' ' }}<span title="{{ _('Uses a ticket for') }} {{ posting.creator.ticket.party_title }}">{{ render_icon('ticket') }}</span>
           {%- endif -%}
         </span>
 
         {%- if posting.creator_id == topic.creator_id %}
-        <span>{{ render_tag('Threadstarter', class='tag--outlined') }}</span>
+        <span>{{ render_tag(_('Topic starter'), class='tag--outlined') }}</span>
         {%- endif %}
 
-        <a href="{{ url_for('.posting_view', posting_id=posting.id, _external=True) }}" class="user-comment-permalink" title="Permalink zu diesem Beitrag">{{ render_datetime(posting.created_at|utc_to_local_tz)|replace(', ', ' um ') }}</a>
+        <a href="{{ url_for('.posting_view', posting_id=posting.id, _external=True) }}" class="user-comment-permalink" title="{{ _('Permalink to this post') }}">{{ render_datetime(posting.created_at|utc_to_local_tz)|replace(', ', ' um ') }}</a>
 
         {%- if posting.unseen %}
         <span>{{ render_flag_new() }}</span>

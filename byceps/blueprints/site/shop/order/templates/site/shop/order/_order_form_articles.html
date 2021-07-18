@@ -1,17 +1,17 @@
-    <h2>Artikel</h2>
+    <h2>{{ _('Articles') }}</h2>
     <table class="index wide">
       <thead>
         <tr>
-          <th style="width: 15%;">Anzahl</th>
-          <th>Beschreibung</th>
-          <th class="number" style="width: 15%;">Steuersatz</th>
-          <th class="number" style="width: 15%;">Stückpreis</th>
+          <th style="width: 15%;">{{ _('Quantity') }}</th>
+          <th>{{ _('Description') }}</th>
+          <th class="number" style="width: 15%;">{{ _('Tax rate') }}</th>
+          <th class="number" style="width: 15%;">{{ _('Unit price') }}</th>
         </tr>
       </thead>
       {%- if total_amount is defined %}
       <tfoot>
         <tr>
-          <th colspan="3">Gesamtbetrag</th>
+          <th colspan="3">{{ _('Total amount') }}</th>
           <td class="number"><strong>{{ total_amount|format_euro_amount }}</strong></td>
         </tr>
       </tfoot>
@@ -29,7 +29,7 @@
             {%- if field.errors %}
             <ol class="form-errors" style="text-align: left;">
               {%- for error in field.errors %}
-              <li><strong>Fehler:</strong> <span>{{ error }}</span></li>
+              <li><strong>{{ _('Error') }}:</strong> <span>{{ error }}</span></li>
               {%- endfor %}
             </ol>
             {%- endif -%}
@@ -37,7 +37,7 @@
           {%- endif %}
           <td><strong>{{ item.article.description }}</strong>
             {%- if not is_available %}
-            <br><em>derzeit nicht verfügbar</em>
+            <br><em>{{ _('currently not available') }}</em>
             {%- endif -%}
           </td>
           <td class="number">{{ item.article.tax_rate|tax_rate_as_percentage }}&thinsp;%</td>

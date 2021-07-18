@@ -96,7 +96,7 @@ def topic_view(topic_id, page):
         )
 
         if posting_url_to_redirect_to is not None:
-            # Jump to a specific posting. This requires a redirect.
+            # Jump to a specific post. This requires a redirect.
             return redirect(posting_url_to_redirect_to, code=307)
 
         page = 1
@@ -484,7 +484,7 @@ def topic_move(topic_id):
 @permission_required(BoardPermission.announce)
 @respond_no_content_with_location
 def topic_limit_to_announcements(topic_id):
-    """Limit posting in the topic to moderators."""
+    """Limit post in the topic to moderators."""
     topic = h.get_topic_or_404(topic_id)
 
     board_topic_command_service.limit_topic_to_announcements(topic.id)

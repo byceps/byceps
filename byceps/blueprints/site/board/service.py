@@ -92,7 +92,7 @@ def add_topic_unseen_flag(topics: Sequence[DbTopic], user: CurrentUser) -> None:
 def add_unseen_flag_to_postings(
     postings: Sequence[DbPosting], last_viewed_at: datetime
 ) -> None:
-    """Add the attribute 'unseen' to each posting."""
+    """Add the attribute 'unseen' to each post."""
     for posting in postings:
         posting.unseen = is_posting_unseen(posting, last_viewed_at)
 
@@ -210,7 +210,7 @@ def may_topic_be_updated_by_current_user(topic: DbTopic) -> bool:
 
 
 def may_posting_be_updated_by_current_user(posting: DbPosting) -> bool:
-    """Return `True` if the posting may be updated by the current user."""
+    """Return `True` if the post may be updated by the current user."""
     return (
         not posting.topic.locked
         and g.user.id == posting.creator_id

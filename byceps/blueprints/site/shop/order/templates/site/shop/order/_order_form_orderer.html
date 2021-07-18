@@ -1,6 +1,6 @@
 {% from 'macros/forms.html' import form_datalist, form_field %}
 
-    <h2>Deine Daten</h2>
+    <h2>{{ _('Personal Data') }}</h2>
     <div class="row">
       <div class="column-auto column-auto--grow">
         {{ form_field(form.first_names, maxlength=40, autofocus='autofocus') }}

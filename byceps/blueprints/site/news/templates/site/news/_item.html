@@ -7,7 +7,7 @@
     {%- if item.published %}
     {{ render_date_long(item.published_at|utc_to_local_tz) }}
     {%- else %}
-    {{ render_tag('Entwurf') }}
+    {{ render_tag(_('Draft')) }}
     {%- endif %}
   </footer>
   <div class="body">
@@ -15,7 +15,7 @@
 {{ item.body|safe }}
 {%- else %}
   {% from 'macros/misc.html' import render_notification %}
-  {{ render_notification('Bei der Anzeige der News ist ein Fehler aufgetreten.', category='danger', icon='warning') }}
+  {{ render_notification(_('An error has occurred while rendering the news.'), category='danger', icon='warning') }}
 {%- endif %}
   </div>
 </article>

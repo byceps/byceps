@@ -2,10 +2,10 @@
 
 
 {% macro render_flag_hidden(hidden_by) -%}
-  {{ render_tag('versteckt', class='user-comment-hidden', icon='hidden', title='versteckt (durch %s)'|format(hidden_by.screen_name)) }}
+  {{ render_tag(_('hidden'), class='user-comment-hidden', icon='hidden', title='%s (%s %s)'|format(_('hidden'), _('by'), hidden_by.screen_name)) }}
 {%- endmacro %}
 
 
 {% macro render_flag_new() -%}
-  {{ render_tag('neu') }}
+  {{ render_tag(_('new')) }}
 {%- endmacro %}

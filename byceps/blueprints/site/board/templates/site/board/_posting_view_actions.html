@@ -10,22 +10,22 @@
       {%- if user_may_reply or user_may_update or user_may_hide %}
       <div class="user-comment-actions">
         <div class="dropdown">
-          <button class="dropdown-toggle" title="Beitrags-Aktionen">{{ render_icon('user-comment') }} {{ render_icon('chevron-down') }}</button>
+          <button class="dropdown-toggle" title="{{ _('Actions') }}">{{ render_icon('user-comment') }} {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
             {%- if user_may_reply %}
-            <li><a class="dropdown-item" href="{{ url_for('.posting_create_form', topic_id=topic.id, quote=posting.id) }}" title="Diesen Beitrag zitieren">{{ render_icon('quote') }} Beitrag zitieren</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.posting_create_form', topic_id=topic.id, quote=posting.id) }}" title="{{ _('Cite this post') }}">{{ render_icon('quote') }} {{ _('Cite post') }}</a></li>
             {%- endif %}
 
             {%- if user_may_update %}
               {%- if is_initial_topic_posting %}
-            <li><a class="dropdown-item" href="{{ url_for('.topic_update_form', topic_id=topic.id) }}" title="Dieses Thema bearbeiten">{{ render_icon('edit') }} Thema bearbeiten</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.topic_update_form', topic_id=topic.id) }}" title="{{ _('Edit this topic') }}">{{ render_icon('edit') }} {{ _('Edit topic') }}</a></li>
               {%- else %}
-            <li><a class="dropdown-item" href="{{ url_for('.posting_update_form', posting_id=posting.id) }}" title="Diesen Beitrag bearbeiten">{{ render_icon('edit') }} Beitrag bearbeiten</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.posting_update_form', posting_id=posting.id) }}" title="{{ _('Edit this post') }}">{{ render_icon('edit') }} {{ _('Edit post') }}</a></li>
               {%- endif %}
             {%- endif %}
 
             {%- if user_may_hide %}
-            <li><a class="dropdown-item" href="{{ url_for('.posting_moderate_form', posting_id=posting.id) }}" title="Diesen Beitrag moderieren">{{ render_icon('moderate') }} Moderieren</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.posting_moderate_form', posting_id=posting.id) }}" title="{{ _('Moderate this post') }}">{{ render_icon('moderate') }} {{ _('Moderate') }}</a></li>
             {%- endif %}
           </ol>
         </div>

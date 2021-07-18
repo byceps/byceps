@@ -6,7 +6,7 @@
 {% from 'macros/user.html' import render_user_link %}
 {% from 'macros/user_avatar.html' import render_user_avatar_32 %}
 {% set current_page = 'attendees' %}
-{% set page_title = 'Teilnehmer' %}
+{% set page_title = _('Attendees') %}
 
 {% block head %}
     <style>
@@ -34,10 +34,10 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.attendees') }}" class="single-row unobtrusive mb">
-    <input type="search" name="search_term" placeholder="Benutzername" {%- if search_term %} value="{{ search_term }}"{% endif %}>
-    <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
+    <input type="search" name="search_term" placeholder="{{ _('Username') }}" {%- if search_term %} value="{{ search_term }}"{% endif %}>
+    <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
     {%- if search_term %}
-    <a href="{{ url_for('.attendees') }}" class="button" title="Einschränkung auf Suchbegriff aufheben">{{ render_icon('remove') }}</a>
+    <a href="{{ url_for('.attendees') }}" class="button" title="{{ _('Remove search term constraint') }}">{{ render_icon('remove') }}</a>
     {%- endif %}
   </form>
 
@@ -45,10 +45,10 @@
   <small>
     <div class="row row--space-between mb">
       <div class="column-auto">
-        <p><strong>{{ attendees.total }}</strong> Treffer für Suchbegriff &quot;<strong>{{ search_term }}</strong>&quot;</p>
+        <p><strong>{{ attendees.total }}</strong> {{ _('results for search term') }} &quot;<strong>{{ search_term }}</strong>&quot;</p>
       </div>
       <div class="column-auto">
-        <p><a href="{{ url_for('.attendees') }}">alle Teilnehmer</a></p>
+        <p><a href="{{ url_for('.attendees') }}">{{ _('all attendees') }}</a></p>
       </div>
     </div>
   </small>
@@ -58,8 +58,8 @@
   <table class="index wide attendees-list">
     <thead>
       <tr>
-        <th>Benutzer</th>
-        <th>Sitzplatz</th>
+        <th>{{ _('User') }}</th>
+        <th>{{ _('Seat') }}</th>
         <th></th>
       </tr>
     </thead>
@@ -78,11 +78,11 @@
             <div class="row row--space-between">
               <div class="column-auto">
               {%- with seat = ticket.seat %}
-                {{ render_seat_link(seat.area, seat) if seat else 'nicht ausgewählt'|dim }}
+                {{ render_seat_link(seat.area, seat) if seat else _('not chosen')|dim }}
               {%- endwith %}
               </div>
               {%- if ticket.checked_in %}
-              <div class="column-auto">{{ render_tag('eingecheckt') }}</div>
+              <div class="column-auto">{{ render_tag(_('checked in')) }}</div>
               {%- endif %}
             </div>
             {%- endfor %}
@@ -93,7 +93,7 @@
     </tbody>
   </table>
   {%- else %}
-  <p class="dimmed">Keine Teilnehmer gefunden.</p>
+  <p class="dimmed">{{ _('No attendees found.') }}</p>
   {%- endif %}
 
 {{ render_pagination_nav(attendees, '.attendees', {'search_term': search_term if search_term else None}, centered=True) }}

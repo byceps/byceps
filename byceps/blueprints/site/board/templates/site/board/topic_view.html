@@ -28,7 +28,7 @@
 
   {%- if has_current_user_any_permission(BoardPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
   <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="Thema moderieren">{{ render_icon('moderate') }} <span>{{ _('Moderate') }}</span></a>
+    <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="{{ _('Moderate topic') }}">{{ render_icon('moderate') }} <span>{{ _('Moderate') }}</span></a>
   </div>
   {%- endif %}
 
@@ -42,13 +42,13 @@
 
   {%- if topic.posting_limited_to_moderators %}
     {%- call render_event_row('announce') %}
-      Dieses Thema ist für Ankündigungen gedacht. Nur <strong>Moderatoren</strong> dürfen Beiträge hinzufügen.
+      {{ _('This topic is meant for announcements. Only <strong>moderators</strong> are allowed to add posts to it.') }}
     {%- endcall %}
   {%- endif %}
 
   {%- if topic.locked %}
     {%- call render_event_row('lock') %}
-      Dieses Thema ist <strong>geschlossen</strong>. Es können keine Beiträge mehr hinzugefügt werden.
+      {{ _('This topic is <strong>locked</strong>. No more posts can be added.') }}
     {%- endcall %}
   {%- endif %}
 
@@ -58,17 +58,17 @@
 
   {%- if not current_user_may_reply_generally %}
   <small>
-    <p style="text-align: right;">Du musst <a href="{{ url_for('authentication_login.login_form') }}">angemeldet</a> sein, um antworten zu können.</p>
+    <p style="text-align: right;">{{ _('You have to be <a href="%s">logged in</a> to be able to reply.')|format(url_for('authentication_login.login_form')) }}</p>
   </small>
   {%- elif topic.locked or (topic.posting_limited_to_moderators and not has_current_user_permission(BoardPermission.announce)) %}
   <div class="button-row button-row--right">
-    <span class="button button--disabled">{{ render_icon('reply') }} <span>Antworten</span></span>
+    <span class="button button--disabled">{{ render_icon('reply') }} <span>{{ _('Reply') }}</span></span>
   </div>
   {%- elif is_last_page %}
 {%- include 'site/board/_posting_inline_create_form.html' %}
   {%- else %}
   <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} <span>Antworten</span></a>
+    <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} <span>{{ _('Reply') }}</span></a>
   </div>
   {%- endif %}
 

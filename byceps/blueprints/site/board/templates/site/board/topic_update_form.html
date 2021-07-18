@@ -18,7 +18,7 @@
 
   {%- if topic.creator_id != g.user.id %}
   <div class="mb">
-    {{ render_notification('Du bist im Begriff, ein Thema von jemand anderem zu verändern.', category='danger', icon='warning') }}
+  {{ render_notification(_('You are about to modify a topic created by someone else.'), category='danger', icon='warning') }}
   </div>
   {%- endif %}
 

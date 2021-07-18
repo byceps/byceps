@@ -26,7 +26,7 @@
       <tr>
         <th>{{ _('Topic') }}</th>
         <th class="centered">{{ _('Replies') }}</th>
-        <th>{{ _('Latest posting') }}</th>
+        <th>{{ _('Latest post') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -35,16 +35,16 @@
         <td>
           <a class="board-topic-link disguised" href="{{ url_for('.topic_view', topic_id=topic.id) }}">
             <div class="board-topic-title">
-              {%- if topic.hidden %}<span class="tag tag--outlined">{{ render_icon('hidden', title='versteckt (durch %s)'|format(topic.hidden_by.screen_name)) }}</span> {% endif -%}
-              {%- if topic.locked %}<span class="tag tag--outlined">{{ render_icon('lock', title='geschlossen') }}</span> {% endif -%}
-              {%- if topic.pinned %}<span class="tag tag--outlined">{{ render_icon('pin', title='angeheftet') }}</span> {% endif -%}
+              {%- if topic.hidden %}<span class="tag tag--outlined">{{ render_icon('hidden', title='%s (%s %s)'|format(_('hidden'), _('by'), topic.hidden_by.screen_name)) }}</span> {% endif -%}
+              {%- if topic.locked %}<span class="tag tag--outlined">{{ render_icon('lock', title=_('locked')) }}</span> {% endif -%}
+              {%- if topic.pinned %}<span class="tag tag--outlined">{{ render_icon('pin', title=_('pinned')) }}</span> {% endif -%}
               <strong>{{ topic.title }}</strong>
               {%- if topic.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
             </div>
             <div class="board-topic-initial-posting">
               <span class="board-category-tag">{{ topic.category.title }}</span>
               &middot;
-              begonnen von {{ render_user_avatar_16_and_name(topic.creator) }}
+              {{ _('started by') }} {{ render_user_avatar_16_and_name(topic.creator) }}
             </div>
           </a>
         </td>
@@ -55,7 +55,7 @@
     </tbody>
   </table>
   {%- else %}
-  <p class="dimmed">In dieser Kategorie gibt es noch keine Themen.</p>
+  <p class="dimmed">{{ _('No topics exist in this category.') }}</p>
   {%- endif %}
 
 {{ render_pagination_nav(topics, 'board.topic_index', centered=True) }}

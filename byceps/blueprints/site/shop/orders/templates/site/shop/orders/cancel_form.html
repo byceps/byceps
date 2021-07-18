@@ -1,7 +1,7 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page = 'shop_orders' %}
-{% set page_title = 'Bestellung {} stornieren'.format(order.order_number) %}
+{% set page_title = [_('Cancel order'), order.order_number] %}
 
 {% block body %}
 
@@ -12,7 +12,7 @@
       <li><a href="{{ url_for('.view', order_id=order.id) }}">{{ order.order_number }}</a></li>
     </ol>
   </nav>
-  <h1>Bestellung stornieren</h1>
+  <h1>{{ _('Cancel order') }}</h1>
 
   <form action="{{ url_for('.cancel', order_id=order.id) }}" method="post">
     {{ form_field(form.reason, maxlength=1000) }}

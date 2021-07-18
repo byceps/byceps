@@ -14,8 +14,8 @@
       <tr>
         <th>{{ _('Category') }}</th>
         <th class="centered">{{ _('Topics') }}</th>
-        <th class="centered">{{ _('Postings') }}</th>
-        <th>{{ _('Latest posting') }}</th>
+        <th class="centered">{{ _('Posts') }}</th>
+        <th>{{ _('Latest post') }}</th>
       </tr>
     </thead>
     <tbody>
@@ -35,7 +35,7 @@
         <td class="nowrap">
           {%- if category.last_posting_updated_at and category.last_posting_updated_by -%}
             {{ render_datetime(category.last_posting_updated_at|utc_to_local_tz) }}<br>
-            von {{ render_user_avatar_16_and_name(category.last_posting_updated_by) }}
+            {{ _('by') }} {{ render_user_avatar_16_and_name(category.last_posting_updated_by) }}
           {%- endif -%}
         </td>
       </tr>

@@ -2,18 +2,18 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/seating.html' import render_seating_area_link %}
 {% set current_page = 'seating' %}
-{% set page_title = 'Sitzplan' %}
+{% set page_title = _('Seating plan') %}
 
 {% block body %}
 
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive">
-    <input type="search" name="search_term" placeholder="Benutzername">
-    <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
+    <input type="search" name="search_term" placeholder="{{ _('Username') }}">
+    <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
   </form>
 
-  <h2>Bereiche</h2>
+  <h2>{{ _('Areas') }}</h2>
   <ul>
     {%- for area in areas|sort(attribute='title') %}
     <li>{{ render_seating_area_link(area) }}</li>

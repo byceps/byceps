@@ -25,7 +25,7 @@ class CancelForm(LocalizedForm):
         validators=[InputRequired(), Length(max=1000)],
     )
     send_email = BooleanField(
-        lazy_gettext('Inform orderer via email of cancellation.')
+        lazy_gettext('Inform orderer via email of cancelation.')
     )
 
 

@@ -11,13 +11,13 @@
 
 {{ render_snippet('shop_order_intro', ignore_if_unknown=True)|safe }}
 
-  <h2>Artikel</h2>
+  <h2>{{ _('Articles') }}</h2>
   <table class="index wide">
     <thead>
       <tr>
         <th>{{ _('Description') }}</th>
-        <th class="number" style="width: 15%;">Steuersatz</th>
-        <th class="number" style="width: 15%;">Stückpreis</th>
+        <th class="number" style="width: 15%;">{{ _('Tax rate') }}</th>
+        <th class="number" style="width: 15%;">{{ _('Unit price') }}</th>
       </tr>
     </thead>
     <tbody>

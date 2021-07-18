@@ -16,62 +16,62 @@
 
   {%- if order.is_open %}
   <div class="button-row button-row--right" style="float: right; margin-left: 1rem;">
-    <a class="button" href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('remove') }} <span>Bestellung stornieren</span></a>
+    <a class="button" href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('remove') }} <span>{{ _('Cancel order') }}</span></a>
   </div>
   {%- endif %}
 
   <table class="index" style="margin-top: 2rem;">
     <tr>
-      <th>Zeitpunkt</th>
+      <th>{{ _('Date') }}</th>
       <td>{{ render_datetime(order.created_at|utc_to_local_tz) }}</td>
     </tr>
     <tr>
-      <th>Bezahlstatus</th>
+      <th>{{ _('Payment state') }}</th>
       <td>{{ render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }}</td>
     </tr>
     {%- if order.payment_method %}
     <tr>
-      <th>Zahlungsart</th>
+      <th>{{ _('Payment method') }}</th>
       <td>{{ render_order_payment_method(order.payment_method) }}</td>
     </tr>
     {%- endif %}
     {%- if order.is_canceled %}
     <tr>
-      <th>Begründung für<br>Stornierung</th>
+      <th>{{ _('Reason for cancelation') }}</th>
       <td>{{ order.cancelation_reason|fallback }}</td>
     </tr>
     {%- endif %}
   </table>
 
   {%- if order.is_open %}
-  <h2>Zahlungshinweis</h2>
+  <h2>{{ _('Payment notes') }}</h2>
 {{ payment_instructions|safe }}
   {%- endif %}
 
-  <h2>Auftraggeber/in</h2>
+  <h2>{{ _('Orderer') }}</h2>
   <table class="index">
     <tr>
-      <th>Name</th>
+      <th>{{ _('Full name') }}</th>
       <td>{{ order.first_names }} {{ order.last_name }}</td>
     </tr>
     <tr>
-      <th>Anschrift</th>
+      <th>{{ _('Address') }}</th>
       <td>{{ order.address.street }}<br>{{ order.address.zip_code }} {{ order.address.city }}<br>{{ order.address.country }}</td>
     </tr>
   </table>
 
-  <h2>Artikel</h2>
+  <h2>{{ _('Articles') }}</h2>
   <table class="index wide">
     <thead>
       <tr>
-        <th class="number">Anzahl</th>
-        <th style="width: 100%;">Beschreibung</th>
-        <th class="number">Stückpreis</th>
+        <th class="number">{{ _('Quantity') }}</th>
+        <th style="width: 100%;">{{ _('Description') }}</th>
+        <th class="number">{{ _('Unit price') }}</th>
       </tr>
     </thead>
     <tfoot>
       <tr>
-        <th colspan="2" style="text-align: right;">Gesamtbetrag</th>
+        <th colspan="2" style="text-align: right;">{{ _('Total amount') }}</th>
         <td class="number nowrap"><strong>{{ order.total_amount|format_euro_amount }}</strong></td>
       </tr>
     </tfoot>

@@ -3,13 +3,13 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_screen_name, render_user_link %}
 {% set current_page = 'board' %}
-{% set page_title = 'Thema moderieren' %}
+{% set page_title = _('Moderate topic') %}
 
 {% block body %}
 
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.category_index') }}">Forum</a></li>
+      <li><a href="{{ url_for('.category_index') }}">{{ _('Board') }}</a></li>
       <li><a href="{{ url_for('.category_view', slug=topic.category.slug) }}">{{ topic.category.title }}</a></li>
       <li><a href="{{ url_for('.topic_view', topic_id=topic.id) }}">{{ topic.title }}</a></li>
     </ol>
@@ -66,13 +66,13 @@
     {%- if categories %}
   <div class="button-row">
     <form action="{{ url_for('.topic_move', topic_id=topic.id) }}" method="post">
-      Neue Kategorie:
+      {{ _('New category') }}:
       <select name="category_id">
       {%- for category in categories %}
         <option value="{{ category.id }}">{{ category.title }}</option>
       {%- endfor %}
       </select>
-      <button type="submit" class="button">{{ render_icon('move') }} <span>Verschieben</span></button>
+      <button type="submit" class="button">{{ render_icon('move') }} <span>{{ _('Move') }}</span></button>
     </form>
   </div>
     {%- else %}
@@ -83,7 +83,7 @@
   {%- endif %}
 
   {%- if has_current_user_permission(BoardPermission.announce) %}
-  <h2>{{ render_icon('announce') }} Ankündigungen</h2>
+  <h2>{{ render_icon('announce') }} {{ _('Announcements') }}</h2>
   <p>Das Thema ist {% if not topic.posting_limited_to_moderators %}<strong>nicht</strong> {% endif %} auf Ankündigungen durch Moderatoren beschränkt.</p>
   <div class="button-row">
   {%- if topic.posting_limited_to_moderators %}

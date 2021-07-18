@@ -2,7 +2,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/seating.html' import render_area %}
 {% set current_page = 'seating' %}
-{% set page_title = ['Sitzplatz-Verwaltung' if manage_mode else 'Sitzplan', area.title] %}
+{% set page_title = [_('Seat management') if manage_mode else _('Seating plan'), area.title] %}
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='style/seating.css') }}">
@@ -13,15 +13,15 @@
   {%- if manage_mode %}
   <nav class="breadcrumbs">
     <ol>
-      <li><a href="{{ url_for('.view_area', slug=area.slug) }}">Sitzplan</a></li>
+      <li><a href="{{ url_for('.view_area', slug=area.slug) }}">{{ _('Seating plan') }}</a></li>
     </ol>
   </nav>
   {%- endif %}
-  <h1>{{ 'Sitzplatz-Verwaltung' if manage_mode else 'Sitzplan' }} – {{ area.title }}</h1>
+  <h1>{{ _('Seat management') if manage_mode else _('Seating plan') }} – {{ area.title }}</h1>
 
   <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive mb">
-    <input type="search" name="search_term" placeholder="Benutzername">
-    <button type="submit" class="button" title="Suchen">{{ render_icon('search') }}</button>
+    <input type="search" name="search_term" placeholder="{{ _('Username') }}">
+    <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
   </form>
 
 {%- if seat_management_enabled %}
@@ -31,7 +31,7 @@
 {%- include 'site/seating/_ticket_selector.html' %}
     {%- else %}
   <div class="button-row button-row--right">
-    <a class="button" href="{{ url_for('.manage_seats_in_area', slug=area.slug) }}">Sitzplätze verwalten</a>
+    <a class="button" href="{{ url_for('.manage_seats_in_area', slug=area.slug) }}">{{ _('Manage seats') }}</a>
   </div>
     {%- endif %}
   {%- endif %}
