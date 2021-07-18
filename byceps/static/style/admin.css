@@ -296,17 +296,18 @@ nav.main li {
 /* tabs above main content area */
 
 .main-tabs ol {
-  border-bottom: #cccccc solid 1px;
   display: flex;
+  flex-direction: column;
   list-style: none;
   margin: 0 0.5rem -1px 0.5rem;
   padding: 0;
 }
 
 .main-tab {
+  --border-width: 0.125rem;
   border-color: transparent;
   border-style: solid;
-  border-width: 0 0 0.125rem 0;
+  border-width: 0 0 0 var(--border-width);
   color: #333333;
   display: block;
   font-size: 0.75rem; /* 12px / 16px */
@@ -333,6 +334,18 @@ nav.main li {
 
 .main-tab--current .icon {
   color: #5c5c5c;
+}
+
+@media (min-width: 48rem) { /* 768px / 16px */
+
+  .main-tabs ol {
+    flex-direction: row;
+  }
+
+  .main-tab {
+    border-width: 0 0 var(--border-width) 0;
+  }
+
 }
 
 
