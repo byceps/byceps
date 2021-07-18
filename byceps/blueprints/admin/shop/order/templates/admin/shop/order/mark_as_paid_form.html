@@ -1,7 +1,7 @@
 {% extends 'layout/admin/shop/order.html' %}
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field_radio %}
-{% set page_title = 'Bestellung als bezahlt markieren' %}
+{% set page_title = _('Mark order as paid') %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view', order_id=order.id), order.order_number) }}

@@ -6,9 +6,9 @@
             <div class="order-status-flag-icon">{{ render_icon('invoice') }}</div>
             <div class="order-status-flag-label">
               {%- if order.is_invoiced -%}
-              Rechnung versendet
+              {{ _('invoice sent') }}
               {%- else -%}
-              Rechnung noch nicht versendet
+              {{ _('invoice not sent yet') }}
               {%- endif -%}
             </div>
           </li>
@@ -16,9 +16,9 @@
             <div class="order-status-flag-icon">{{ render_icon('payment') }}</div>
             <div class="order-status-flag-label">
               {%- if order.is_paid -%}
-              bezahlt
+              {{ _('paid') }}
               {%- else -%}
-              noch nicht bezahlt
+              {{ _('not paid yet') }}
               {%- endif -%}
             </div>
           </li>
@@ -27,9 +27,9 @@
             <div class="order-status-flag-icon">{{ render_icon('shipping') }}</div>
             <div class="order-status-flag-label">
               {%- if order.is_shipped -%}
-              Ware versendet
+              {{ _('shipped') }}
               {%- else -%}
-              Ware noch nicht versendet
+              {{ _('not shipped yet') }}
               {%- endif -%}
             </div>
           </li>

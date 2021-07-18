@@ -8,11 +8,11 @@
 <table class="index wide">
   <thead>
     <tr>
-      <th>Bestellnummer<br>Zeitpunkt</th>
-      <th>Besteller</th>
-      <th>Betrag</th>
+      <th>{{ _('Order number') }}<br>{{ _('Date') }}</th>
+      <th>{{ _('Orderer') }}</th>
+      <th>{{ _('Amount') }}</th>
       <th colspan="2"></th>
-      <th>Status</th>
+      <th>{{ _('Status') }}</th>
       <th></th>
     </tr>
   </thead>
@@ -27,16 +27,16 @@
       <td class="number nowrap">{{ order.total_amount|format_euro_amount }}</td>
       <td class="centered">
         {%- if order.is_invoiced %}
-        {{- render_icon('invoice', title='Rechnung erstellt') -}}
+        {{- render_icon('invoice', title=_('invoice created')) -}}
         {%- endif -%}
       </td>
       <td>
         {%- if order.is_shipping_required %}
           {%- if order.is_shipped %}
-            {{- render_icon('shipping', title='Lieferung versendet') -}}
+            {{- render_icon('shipping', title=_('shipped')) -}}
           {%- else -%}
             {%- filter dim %}
-              {{- render_icon('shipping', title='Versand erforderlich') -}}
+              {{- render_icon('shipping', title=_('shipping required')) -}}
             {%- endfilter %}
           {%- endif -%}
         {%- endif -%}
@@ -51,7 +51,7 @@
       </td>
       <td>
         {%- if order.is_open and has_current_user_permission(ShopOrderPermission.mark_as_paid) %}
-        <a class="button button--compact" href="{{ url_for('shop_order_admin.mark_as_paid_form', order_id=order.id) }}" title="Bestellung als bezahlt markieren">{{ render_icon('payment') }}</a>
+        <a class="button button--compact" href="{{ url_for('shop_order_admin.mark_as_paid_form', order_id=order.id) }}" title="{{ _('Mark order as paid') }}">{{ render_icon('payment') }}</a>
         {%- endif %}
       </td>
     </tr>
@@ -60,5 +60,5 @@
   </tbody>
 </table>
 {%- else %}
-<div class="dimmed-box centered">keine</div>
+<div class="dimmed-box centered">{{ _('none') }}</div>
 {%- endif %}

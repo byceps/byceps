@@ -1,6 +1,6 @@
 {% extends 'layout/admin/shop/shipping.html' %}
 {% set current_page_shop = shop %}
-{% set page_title = 'Versandartikel' %}
+{% set page_title = _('Shipping') %}
 {% set layout_main_raw = True %}
 
 {% block body %}
@@ -14,9 +14,9 @@
         <tr>
           <th>{{ _('Article number') }}</th>
           <th>{{ _('Description') }}</th>
-          <th class="number">Bezahlt</th>
-          <th class="number">Offen</th>
-          <th class="number">Summe</th>
+          <th class="number">{{ _('Paid') }}</th>
+          <th class="number">{{ _('Open') }}</th>
+          <th class="number">{{ _('Total') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -32,7 +32,7 @@
       </tbody>
     </table>
     {%- else %}
-    <div class="dimmed-box centered">Derzeit sind keine Artikel bestellt oder bezahlt, die versendet werden müssen.</div>
+    <div class="dimmed-box centered">{{ _('Currently no articles that need to be shipped are ordered or paid.') }}</div>
     {%- endif %}
   </div>
 

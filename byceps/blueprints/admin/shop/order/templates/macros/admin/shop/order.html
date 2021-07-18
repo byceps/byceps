@@ -9,22 +9,22 @@
 {% macro render_order_payment_state(payment_state) %}
   {%- set state_name = payment_state.name %}
   {%- if state_name == 'paid' -%}
-    {{ render_tag('bezahlt', icon='success', class='order-paid') }}
+    {{ render_tag(_('paid'), icon='success', class='order-paid') }}
   {%- elif state_name == 'canceled_before_paid' -%}
-    {{ render_tag('storniert (v. B.)', icon='disabled', class='order-canceled-before-paid', title='storniert vor Bezahlung') }}
+    {{ render_tag('canceled (b. p.)', icon='disabled', class='order-canceled-before-paid', title=_('canceled before payment')) }}
   {%- elif state_name == 'canceled_after_paid' -%}
-    {{ render_tag('storniert (n. B.)', icon='disabled', class='order-canceled-after-paid', title='storniert nach Bezahlung') }}
+    {{ render_tag(_('canceled (a. p.)'), icon='disabled', class='order-canceled-after-paid', title=_('canceled after payment')) }}
   {%- else -%}
-    {{ render_tag('offen', icon='pending', class='order-open') }}
+    {{ render_tag(_('open'), icon='pending', class='order-open') }}
   {%- endif -%}
 {%- endmacro %}
 
 
 {% macro render_order_state_filter(order_state_filter) %}
   {%- if order_state_filter.name == 'none' -%}
-    {{ render_tag('keine', class='color-none') }}
+    {{ render_tag(_('none'), class='color-none') }}
   {%- elif order_state_filter.name == 'waiting_for_shipping' -%}
-    {{ render_tag('auf Versand wartend', icon='shipping', class='order-waiting-for-shipping') }}
+    {{ render_tag(_('waiting for shipping'), icon='shipping', class='order-waiting-for-shipping') }}
   {%- else -%}
     {{ render_order_payment_state(order_state_filter.payment_state) }}
   {%- endif -%}

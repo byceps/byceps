@@ -20,7 +20,7 @@
             hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_before_paid) }}
             (war vorher {{ render_order_payment_state(PaymentState[event.data.former_payment_state]) }}).
             <br><br>
-            Begründung:<br>
+            {{ _('Reason') }}:<br>
             <blockquote>{{ event.data.reason }}</blockquote>
           {%- endset %}
         {%- elif event.event == 'order-paid' %}
@@ -37,7 +37,7 @@
             hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_after_paid) }}
             (war vorher {{ render_order_payment_state(PaymentState[event.data.former_payment_state]) }}).
             <br><br>
-            Begründung:<br>
+            {{ _('Reason') }}:<br>
             <blockquote>{{ event.data.reason }}</blockquote>
           {%- endset %}
         {%- elif event.event == 'order-invoiced' %}
