@@ -9,7 +9,7 @@ byceps.services.board.last_view_service
 from datetime import datetime
 from typing import Optional
 
-from ...database import upsert, upsert_many
+from ...database import db, upsert, upsert_many
 from ...typing import UserID
 
 from .dbmodels.last_category_view import LastCategoryView
@@ -65,6 +65,14 @@ def mark_category_as_just_viewed(
     }
 
     upsert(table, identifier, replacement)
+
+
+def delete_last_category_views(category_id: CategoryID) -> None:
+    """Delete the category's last views."""
+    db.session.query(LastCategoryView) \
+        .filter_by(category_id=category_id) \
+        .delete()
+    db.session.commit()
 
 
 # -------------------------------------------------------------------- #
@@ -134,3 +142,11 @@ def mark_all_topics_in_category_as_viewed(
     ]
 
     upsert_many(table, identifiers, replacement)
+
+
+def delete_last_topic_views(topic_id: TopicID) -> None:
+    """Delete the topic's last views."""
+    db.session.query(LastTopicView) \
+        .filter_by(topic_id=topic_id) \
+        .delete()
+    db.session.commit()

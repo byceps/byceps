@@ -7,6 +7,7 @@ import pytest
 
 from byceps.services.board import (
     category_command_service,
+    last_view_service,
     posting_command_service,
     topic_command_service,
     topic_query_service,
@@ -34,8 +35,10 @@ def another_category(board):
 def _delete_category(category_id):
     topic_ids = topic_query_service.get_all_topic_ids_in_category(category_id)
     for topic_id in topic_ids:
+        last_view_service.delete_last_topic_views(topic_id)
         topic_command_service.delete_topic(topic_id)
 
+    last_view_service.delete_last_category_views(category_id)
     category_command_service.delete_category(category_id)
 
 
@@ -43,6 +46,7 @@ def _delete_category(category_id):
 def topic(category, board_poster):
     topic = create_topic(category.id, board_poster.id)
     yield topic
+    last_view_service.delete_last_topic_views(topic.id)
     topic_command_service.delete_topic(topic.id)
 
 
