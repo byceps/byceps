@@ -126,13 +126,13 @@ def view_ordered(article_id):
 
     brand = brand_service.get_brand(shop.brand_id)
 
-    order_items = ordered_articles_service.get_order_items_for_article(
+    line_items = ordered_articles_service.get_line_items_for_article(
         article.item_number
     )
 
-    quantity_total = sum(item.quantity for item in order_items)
+    quantity_total = sum(item.quantity for item in line_items)
 
-    order_numbers = {item.order_number for item in order_items}
+    order_numbers = {item.order_number for item in line_items}
     orders = order_service.find_orders_by_order_numbers(order_numbers)
     orders_by_order_numbers = {order.order_number: order for order in orders}
 
@@ -140,14 +140,14 @@ def view_ordered(article_id):
     users = user_service.find_users(user_ids, include_avatars=True)
     users_by_id = {user.id: user for user in users}
 
-    def transform(order_item):
-        quantity = order_item.quantity
-        order = orders_by_order_numbers[order_item.order_number]
+    def transform(line_item):
+        quantity = line_item.quantity
+        order = orders_by_order_numbers[line_item.order_number]
         user = users_by_id[order.placed_by_id]
 
         return quantity, order, user
 
-    quantities_orders_users = list(map(transform, order_items))
+    quantities_orders_users = list(map(transform, line_items))
 
     return {
         'article': article,

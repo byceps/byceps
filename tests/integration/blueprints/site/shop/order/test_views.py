@@ -131,9 +131,9 @@ def test_order(
     order = Order.query.filter_by(placed_by_id=orderer.id).one()
     assert_order(order, 'AEC-01-B00005', 1)
 
-    first_order_item = order.items[0]
-    assert_order_item(
-        first_order_item, article.id, article.price, article.tax_rate, 3,
+    first_line_item = order.items[0]
+    assert_line_item(
+        first_line_item, article.id, article.price, article.tax_rate, 3,
     )
 
     order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
@@ -189,9 +189,9 @@ def test_order_single(
     order = Order.query.filter_by(placed_by_id=orderer.id).one()
     assert_order(order, 'AEC-01-B00005', 1)
 
-    first_order_item = order.items[0]
-    assert_order_item(
-        first_order_item, article.id, article.price, article.tax_rate, 1,
+    first_line_item = order.items[0]
+    assert_line_item(
+        first_line_item, article.id, article.price, article.tax_rate, 1,
     )
 
     order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
@@ -239,11 +239,11 @@ def assert_order(order, order_number, item_quantity):
     assert len(order.items) == item_quantity
 
 
-def assert_order_item(order_item, article_id, unit_price, tax_rate, quantity):
-    assert order_item.article.id == article_id
-    assert order_item.unit_price == unit_price
-    assert order_item.tax_rate == tax_rate
-    assert order_item.quantity == quantity
+def assert_line_item(line_item, article_id, unit_price, tax_rate, quantity):
+    assert line_item.article.id == article_id
+    assert line_item.unit_price == unit_price
+    assert line_item.tax_rate == tax_rate
+    assert line_item.quantity == quantity
 
 
 def assert_order_detail_page_works(client, order_detail_page_url, order_number):

@@ -13,8 +13,8 @@ from typing import Optional, Sequence
 
 from ....database import BaseQuery, db, Pagination
 
+from ..order.dbmodels.line_item import LineItem as DbLineItem
 from ..order.dbmodels.order import Order as DbOrder
-from ..order.dbmodels.order_item import OrderItem as DbOrderItem
 from ..order.transfer.models import PaymentState
 from ..shop.dbmodels import Shop as DbShop
 from ..shop.transfer.models import ShopID
@@ -346,12 +346,12 @@ def sum_ordered_articles_by_payment_state(
     """Sum ordered articles for those shops, grouped by order payment state."""
     subquery = db.session \
         .query(
-            DbOrderItem.article_number,
+            DbLineItem.article_number,
             DbOrder._payment_state.label('payment_state'),
-            db.func.sum(DbOrderItem.quantity).label('quantity')
+            db.func.sum(DbLineItem.quantity).label('quantity')
         ) \
         .join(DbOrder) \
-        .group_by(DbOrderItem.article_number, DbOrder._payment_state) \
+        .group_by(DbLineItem.article_number, DbOrder._payment_state) \
         .subquery()
 
     rows = db.session \

@@ -27,7 +27,7 @@ from ..transfer.models import (
     Address,
     Order,
     OrderID,
-    OrderItem,
+    LineItem,
     OrderNumber,
     OrderState,
     PaymentMethod,
@@ -128,7 +128,7 @@ def _build_order(
     address = Address('Germany', '22999', 'Büttenwarder', 'Deichweg 23')
 
     total_amount = Decimal('42.95')
-    items: list[OrderItem] = []
+    items: list[LineItem] = []
     payment_method = PaymentMethod.bank_transfer
 
     return Order(

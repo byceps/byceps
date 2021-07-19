@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.dbmodels.order_item
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.dbmodels.line_item
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -16,8 +16,8 @@ from ...article.transfer.models import ArticleNumber
 from .order import Order
 
 
-class OrderItem(db.Model):
-    """An item that belongs to an order."""
+class LineItem(db.Model):
+    """A line item that belongs to an order."""
 
     __tablename__ = 'shop_order_items'
 
@@ -25,7 +25,7 @@ class OrderItem(db.Model):
     order_number = db.Column(db.UnicodeText, db.ForeignKey('shop_orders.order_number'), index=True, nullable=False)
     order = db.relationship(Order, backref='items')
     article_number = db.Column(db.UnicodeText, db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
-    article = db.relationship(DbArticle, backref='order_items')
+    article = db.relationship(DbArticle, backref='line_items')
     description = db.Column(db.UnicodeText, nullable=False)
     unit_price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
@@ -45,7 +45,7 @@ class OrderItem(db.Model):
         shipping_required: bool,
     ) -> None:
         # Require order instance rather than order number as argument
-        # because order items are created together with the order – and
+        # because line items are created together with the order – and
         # until the order is created, there is no order number assigned.
         self.order = order
         self.article_number = article_number

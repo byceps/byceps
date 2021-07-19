@@ -14,9 +14,9 @@ from ....database import db
 
 from ..article.transfer.models import ArticleNumber
 
-from .dbmodels.order_item import OrderItem as DbOrderItem
-from .service import order_item_to_transfer_object
-from .transfer.models import OrderItem, PaymentState
+from .dbmodels.line_item import LineItem as DbLineItem
+from .service import line_item_to_transfer_object
+from .transfer.models import LineItem, PaymentState
 
 
 def count_ordered_articles(
@@ -25,11 +25,11 @@ def count_ordered_articles(
     """Count how often the article has been ordered, grouped by the
     order's payment state.
     """
-    order_items = DbOrderItem.query \
+    line_items = DbLineItem.query \
         .filter_by(article_number=article_number) \
         .options(
-            db.joinedload(DbOrderItem.order),
-            db.joinedload(DbOrderItem.article),
+            db.joinedload(DbLineItem.order),
+            db.joinedload(DbLineItem.article),
         ) \
         .all()
 
@@ -38,18 +38,18 @@ def count_ordered_articles(
     # article.
     counter = Counter({state: 0 for state in PaymentState})
 
-    for order_item in order_items:
-        counter[order_item.order.payment_state] += order_item.quantity
+    for line_item in line_items:
+        counter[line_item.order.payment_state] += line_item.quantity
 
     return dict(counter)
 
 
-def get_order_items_for_article(
+def get_line_items_for_article(
     article_number: ArticleNumber,
-) -> Sequence[OrderItem]:
-    """Return all order items for that article."""
-    order_items = DbOrderItem.query \
+) -> Sequence[LineItem]:
+    """Return all line items for that article."""
+    line_items = DbLineItem.query \
         .filter_by(article_number=article_number) \
         .all()
 
-    return list(map(order_item_to_transfer_object, order_items))
+    return list(map(line_item_to_transfer_object, line_items))

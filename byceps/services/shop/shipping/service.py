@@ -16,8 +16,8 @@ from ..article.dbmodels.article import Article as DbArticle
 from ....database import db
 
 from ..article.transfer.models import ArticleNumber
+from ..order.dbmodels.line_item import LineItem as DbLineItem
 from ..order.dbmodels.order import Order as DbOrder
-from ..order.dbmodels.order_item import OrderItem as DbOrderItem
 from ..order.transfer.models import PaymentState
 from ..shop.transfer.models import ShopID
 
@@ -31,16 +31,16 @@ def get_articles_to_ship(shop_id: ShopID) -> Sequence[ArticleToShip]:
         PaymentState.paid,
     }
 
-    order_item_quantities = list(
-        _find_order_items(shop_id, relevant_order_payment_states)
+    line_item_quantities = list(
+        _find_line_items(shop_id, relevant_order_payment_states)
     )
 
-    article_numbers = {item.article_number for item in order_item_quantities}
+    article_numbers = {item.article_number for item in line_item_quantities}
     article_descriptions = _get_article_descriptions(article_numbers)
 
     articles_to_ship = list(
         _aggregate_ordered_article_quantites(
-            order_item_quantities, article_descriptions
+            line_item_quantities, article_descriptions
         )
     )
 
@@ -50,37 +50,37 @@ def get_articles_to_ship(shop_id: ShopID) -> Sequence[ArticleToShip]:
 
 
 @dataclass(frozen=True)
-class OrderItemQuantity:
+class LineItemQuantity:
     article_number: ArticleNumber
     payment_state: PaymentState
     quantity: int
 
 
-def _find_order_items(
+def _find_line_items(
     shop_id: ShopID, payment_states: set[PaymentState]
-) -> Iterator[OrderItemQuantity]:
+) -> Iterator[LineItemQuantity]:
     """Return article quantities for the given payment states."""
     payment_state_names = {ps.name for ps in payment_states}
 
-    common_query = DbOrderItem.query \
+    common_query = DbLineItem.query \
         .join(DbOrder) \
         .filter(DbOrder.shop_id == shop_id) \
-        .options(db.joinedload(DbOrderItem.order)) \
-        .filter(DbOrderItem.shipping_required == True)
+        .options(db.joinedload(DbLineItem.order)) \
+        .filter(DbLineItem.shipping_required == True)
 
-    definitive_order_items = common_query \
+    definitive_line_items = common_query \
         .filter(DbOrder._payment_state == PaymentState.paid.name) \
         .filter(DbOrder.shipped_at == None) \
         .all()
 
-    potential_order_items = common_query \
+    potential_line_items = common_query \
         .filter(DbOrder._payment_state == PaymentState.open.name) \
         .all()
 
-    order_items = definitive_order_items + potential_order_items
+    line_items = definitive_line_items + potential_line_items
 
-    for item in order_items:
-        yield OrderItemQuantity(
+    for item in line_items:
+        yield LineItemQuantity(
             item.article_number,
             item.order.payment_state,
             item.quantity
@@ -88,13 +88,13 @@ def _find_order_items(
 
 
 def _aggregate_ordered_article_quantites(
-    order_item_quantities: Sequence[OrderItemQuantity],
+    line_item_quantities: Sequence[LineItemQuantity],
     article_descriptions: dict[ArticleNumber, str],
 ) -> Iterator[ArticleToShip]:
     """Aggregate article quantities per payment state."""
     d: defaultdict[ArticleNumber, Counter] = defaultdict(Counter)
 
-    for item in order_item_quantities:
+    for item in line_item_quantities:
         d[item.article_number][item.payment_state] += item.quantity
 
     for article_number, counter in d.items():

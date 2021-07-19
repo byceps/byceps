@@ -78,7 +78,7 @@ class Address:
 
 
 @dataclass(frozen=True)
-class OrderItem:
+class LineItem:
     order_number: OrderNumber
     article_number: ArticleNumber
     description: str
@@ -102,7 +102,7 @@ class Order:
     last_name: str
     address: Address
     total_amount: Decimal
-    items: list[OrderItem]
+    items: list[LineItem]
     payment_method: Optional[PaymentMethod]
     payment_state: PaymentState
     state: OrderState

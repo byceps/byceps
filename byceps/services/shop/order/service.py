@@ -28,16 +28,16 @@ from ..shop.transfer.models import ShopID
 from ..storefront import service as storefront_service
 from ..storefront.transfer.models import StorefrontID
 
+from .dbmodels.line_item import LineItem as DbLineItem
 from .dbmodels.order import Order as DbOrder
 from .dbmodels.order_event import OrderEvent as DbOrderEvent, OrderEventData
-from .dbmodels.order_item import OrderItem as DbOrderItem
 from .models.orderer import Orderer
 from . import action_service, event_service, sequence_service
 from .transfer.models import (
     Address,
     Order,
     OrderID,
-    OrderItem,
+    LineItem,
     OrderNumber,
     OrderState,
     PaymentMethod,
@@ -70,14 +70,14 @@ def place_order(
     )
 
     order = _build_order(shop.id, order_number, orderer, created_at)
-    order_items = list(_build_order_items(cart, order))
+    line_items = list(_build_line_items(cart, order))
     order.total_amount = cart.calculate_total_amount()
     order.shipping_required = any(
-        item.shipping_required for item in order_items
+        item.shipping_required for item in line_items
     )
 
     db.session.add(order)
-    db.session.add_all(order_items)
+    db.session.add_all(line_items)
 
     _reduce_article_stock(cart)
 
@@ -124,14 +124,14 @@ def _build_order(
     )
 
 
-def _build_order_items(cart: Cart, order: DbOrder) -> Iterator[DbOrderItem]:
-    """Build order items from the cart's content."""
+def _build_line_items(cart: Cart, order: DbOrder) -> Iterator[DbLineItem]:
+    """Build line items from the cart's content."""
     for cart_item in cart.get_items():
         article = cart_item.article
         quantity = cart_item.quantity
         line_amount = cart_item.line_amount
 
-        yield DbOrderItem(
+        yield DbLineItem(
             order,
             article.item_number,
             article.description,
@@ -403,7 +403,7 @@ def delete_order(order_id: OrderID) -> None:
         .filter_by(order_id=order.id) \
         .delete()
 
-    db.session.query(DbOrderItem) \
+    db.session.query(DbLineItem) \
         .filter_by(order_number=order.order_number) \
         .delete()
 
@@ -644,7 +644,7 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
         street=order.street,
     )
 
-    items = list(map(order_item_to_transfer_object, order.items))
+    items = list(map(line_item_to_transfer_object, order.items))
 
     state = _get_order_state(order)
     is_open = order.payment_state == PaymentState.open
@@ -678,11 +678,11 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
     )
 
 
-def order_item_to_transfer_object(
-    item: DbOrderItem,
-) -> OrderItem:
-    """Create transfer object from order item database entity."""
-    return OrderItem(
+def line_item_to_transfer_object(
+    item: DbLineItem,
+) -> LineItem:
+    """Create transfer object from line item database entity."""
+    return LineItem(
         order_number=item.order_number,
         article_number=item.article_number,
         description=item.description,
