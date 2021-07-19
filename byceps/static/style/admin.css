@@ -296,6 +296,7 @@ nav.main li {
 /* tabs above main content area */
 
 .main-tabs ol {
+  border-bottom: #cccccc solid 1px;
   display: flex;
   flex-direction: column;
   list-style: none;
