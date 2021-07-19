@@ -5,10 +5,13 @@
 
 from datetime import datetime
 
-from byceps.services.shop.order.dbmodels.order import Order as DbOrder
 from byceps.services.shop.order.models.orderer import Orderer
-from byceps.services.shop.order.service import _build_order
-from byceps.services.shop.order.transfer.models import OrderNumber, PaymentState
+from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order.transfer.models import (
+    Order,
+    OrderNumber,
+    PaymentState,
+)
 
 
 def test_is_open():
@@ -58,16 +61,18 @@ def test_is_canceled_after_paid():
 # helpers
 
 
-def create_order_with_payment_state(payment_state: PaymentState) -> DbOrder:
+def create_order_with_payment_state(payment_state: PaymentState) -> Order:
     shop_id = 'shop-123'
     order_number = 'AEC-03-B00074'
     orderer = create_orderer()
     created_at = None
 
-    order = _build_order(shop_id, order_number, orderer, created_at)
+    order = order_service._build_order(
+        shop_id, order_number, orderer, created_at
+    )
     order.payment_state = payment_state
 
-    return order
+    return order_service._order_to_transfer_object(order)
 
 
 def create_orderer() -> Orderer:

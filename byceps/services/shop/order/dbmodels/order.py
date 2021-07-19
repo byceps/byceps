@@ -109,33 +109,6 @@ class Order(db.Model):
         assert state is not None
         self._payment_state = state.name
 
-    @property
-    def is_open(self) -> bool:
-        return self.payment_state == PaymentState.open
-
-    @property
-    def is_canceled(self) -> bool:
-        return self.payment_state in {
-            PaymentState.canceled_before_paid,
-            PaymentState.canceled_after_paid,
-        }
-
-    @property
-    def is_paid(self) -> bool:
-        return self.payment_state == PaymentState.paid
-
-    @property
-    def is_invoiced(self) -> bool:
-        return self.invoice_created_at is not None
-
-    @property
-    def is_shipping_required(self) -> bool:
-        return self.shipping_required
-
-    @property
-    def is_shipped(self) -> bool:
-        return self.shipped_at is not None
-
     def __repr__(self) -> str:
         item_count = len(self.items)
 

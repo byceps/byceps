@@ -265,13 +265,13 @@ def cancel_order(
     """
     order = _get_order_entity(order_id)
 
-    if order.is_canceled:
+    if _is_canceled(order):
         raise OrderAlreadyCanceled()
 
     initiator = user_service.get_user(initiator_id)
     orderer_user = user_service.get_user(order.placed_by_id)
 
-    has_order_been_paid = order.is_paid
+    has_order_been_paid = _is_paid(order)
 
     now = datetime.utcnow()
 
@@ -333,7 +333,7 @@ def mark_order_as_paid(
     """Mark the order as paid."""
     order = _get_order_entity(order_id)
 
-    if order.is_paid:
+    if _is_paid(order):
         raise OrderAlreadyMarkedAsPaid()
 
     initiator = user_service.get_user(initiator_id)
@@ -645,6 +645,13 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
 
     items = list(map(order_item_to_transfer_object, order.items))
 
+    is_open = order.payment_state == PaymentState.open
+    is_canceled = _is_canceled(order)
+    is_paid = _is_paid(order)
+    is_invoiced = order.invoice_created_at is not None
+    is_shipping_required = order.shipping_required
+    is_shipped = order.shipped_at is not None
+
     return Order(
         id=order.id,
         shop_id=order.shop_id,
@@ -658,12 +665,12 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
         items=items,
         payment_method=order.payment_method,
         payment_state=order.payment_state,
-        is_open=order.is_open,
-        is_canceled=order.is_canceled,
-        is_paid=order.is_paid,
-        is_invoiced=order.is_invoiced,
-        is_shipping_required=order.is_shipping_required,
-        is_shipped=order.is_shipped,
+        is_open=is_open,
+        is_canceled=is_canceled,
+        is_paid=is_paid,
+        is_invoiced=is_invoiced,
+        is_shipping_required=is_shipping_required,
+        is_shipped=is_shipped,
         cancelation_reason=order.cancelation_reason,
     )
 
@@ -681,3 +688,14 @@ def order_item_to_transfer_object(
         quantity=item.quantity,
         line_amount=item.line_amount,
     )
+
+
+def _is_canceled(order: DbOrder) -> bool:
+    return order.payment_state in {
+        PaymentState.canceled_before_paid,
+        PaymentState.canceled_after_paid,
+    }
+
+
+def _is_paid(order: DbOrder) -> bool:
+    return order.payment_state == PaymentState.paid
