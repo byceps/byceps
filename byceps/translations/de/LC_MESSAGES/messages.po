@@ -886,7 +886,7 @@ msgstr "Position"
 #: byceps/blueprints/admin/webhook/forms.py:19
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:6
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:18
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:68
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:73
 #: byceps/blueprints/site/user_group/forms.py:18
 msgid "Description"
 msgstr "Beschreibung"
@@ -969,6 +969,7 @@ msgstr "Kategorie bearbeiten"
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/index.html:31
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:12
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:15
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:77
 msgid "Category"
 msgstr "Kategorie"
 
@@ -1386,7 +1387,7 @@ msgstr "Storefronts"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:93
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:1
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:14
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:63
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:68
 msgid "Articles"
 msgstr "Artikel"
 
@@ -1559,7 +1560,7 @@ msgstr "noch nicht aktivierte Benutzer"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:11
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:12
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:22
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:25
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:21
 msgid "Date"
 msgstr "Datum"
 
@@ -2213,7 +2214,7 @@ msgstr "Avatar"
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:58
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_ordered.html:28
 #: byceps/blueprints/admin/user/templates/admin/user/_user_list.html:9
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:54
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:62
 msgid "Full name"
 msgstr "Voller Name"
 
@@ -2502,6 +2503,7 @@ msgstr "belegt"
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:40
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:83
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:41
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:118
 msgid "available"
 msgstr "verfügbar"
 
@@ -2562,7 +2564,7 @@ msgstr "Gruppen"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:10
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:8
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:20
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:69
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:74
 msgid "Unit price"
 msgstr "Stückpreis"
 
@@ -2645,7 +2647,7 @@ msgstr "Artikel"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:7
 #: byceps/blueprints/site/shop/order/forms.py:72
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:5
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:67
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:72
 msgid "Quantity"
 msgstr "Anzahl"
 
@@ -2888,7 +2890,7 @@ msgstr ""
 "Artikel aufgeführten Zustände geändert wird."
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:172
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:29
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:27
 msgid "Payment state"
 msgstr "Bezahlstatus"
 
@@ -3065,7 +3067,7 @@ msgstr "Bestellnummer"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:12
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:63
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:51
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:60
 msgid "Orderer"
 msgstr "Besteller"
 
@@ -3132,7 +3134,7 @@ msgstr "E-Mail-Bestätigung erneut senden"
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:4
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:15
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:20
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:19
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:48
 msgid "Cancel order"
 msgstr "Bestellung stornieren"
 
@@ -3146,13 +3148,13 @@ msgstr "Als versendet markieren"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:15
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:14
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:74
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:79
 msgid "Total amount"
 msgstr "Gesamtmenge"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:11
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:28
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:58
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:65
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:30
 msgid "Address"
 msgstr "Adresse"
@@ -3211,7 +3213,7 @@ msgid "Date of creation"
 msgstr "Erstellungszeitpunkt"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:85
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:40
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:39
 msgid "Reason for cancelation"
 msgstr "Grund für Stornierung"
 
@@ -3655,6 +3657,7 @@ msgstr "Snippet löschen?"
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:22
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:11
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:79
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:57
 msgid "Code"
 msgstr "Code"
 
@@ -3769,6 +3772,7 @@ msgstr "Besitzer/in"
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:13
 #: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:62
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:80
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:152
 msgid "Seat"
 msgstr "Sitzplatz"
 
@@ -3787,6 +3791,7 @@ msgstr "unbenannt"
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:56
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:50
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:108
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:157
 msgid "no seat"
 msgstr "kein Sitzplatz"
 
@@ -3945,6 +3950,7 @@ msgstr "Das Ticket wurde widerrufen."
 #: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:10
 #: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:85
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/index.html:97
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:61
 msgid "checked in"
 msgstr "eingecheckt"
 
@@ -4257,6 +4263,7 @@ msgid "Personal Data"
 msgstr "Persönliche Daten"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:42
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:82
 msgid "Buyer"
 msgstr "Käufer/in"
 
@@ -5309,11 +5316,11 @@ msgstr "Die Bestellung wurde storniert."
 msgid "Your orders"
 msgstr "Deine Bestellungen"
 
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:34
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:32
 msgid "Payment method"
 msgstr "Zahlungsart"
 
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:47
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:56
 msgid "Payment notes"
 msgstr "Zahlungshinweis"
 
@@ -5371,6 +5378,16 @@ msgstr "Tickets können derzeit nicht verändert werden."
 #: byceps/blueprints/site/ticketing/views.py:409
 msgid "Somebody has already been checked in with this ticket."
 msgstr "Es ist bereits jemand mit diesem Ticket eingecheckt worden."
+
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:95
+msgctxt "ticket"
+msgid "User"
+msgstr "Nutzer/in"
+
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:126
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:165
+msgid "Manager"
+msgstr "Verwalter/in"
 
 #: byceps/blueprints/site/tourney/templates/site/tourney/tourney_index.html:78
 msgid "No tourneys found."

@@ -52,18 +52,19 @@
           </div>
 
           <div class="ticket-card-cell-block">
-            <div class="label-row">
-              <span class="label">Code</span>
-
-              <span class="label-buttons">
+            <div class="row row--space-between">
+              <div class="column-auto">
+                <div class="data-label">{{ _('Code') }}</div>
+              </div>
+              <div class="column-auto">
                 {%- if ticket.user_checked_in %}
-                {{ render_tag('eingecheckt') }}
+                {{ render_tag(_('checked in')) }}
                 {%- else %}
                 <a class="button button--outline button--compact" href="{{ url_for('.view_printable_html', ticket_id=ticket.id) }}">{{ render_icon('print') }}</a>
                 {%- endif %}
-              </span>
+              </div>
             </div>
-            <span class="ticket-code">{{ ticket.code }}</span>
+            <div class="data-value"><span class="ticket-code">{{ ticket.code }}</span></div>
           </div>
 
         </div>
@@ -73,17 +74,13 @@
         <div class="ticket-card-cell">
 
           <div class="ticket-card-cell-block">
-            <div class="label-row">
-              <span class="label">Kategorie</span>
-            </div>
-            {{ ticket.category.title }}
+            <div class="data-label">{{ _('Category') }}</div>
+            <div class="data-value">{{ ticket.category.title }}</div>
           </div>
 
           <div class="ticket-card-cell-block">
-            <div class="label-row">
-              <span class="label">Käufer/in</span>
-            </div>
-            {{ render_user_avatar_16_and_link(ticket.owned_by) }}
+            <div class="data-label">{{ _('Buyer') }}</div>
+            <div class="data-value">{{ render_user_avatar_16_and_link(ticket.owned_by) }}</div>
           </div>
 
         </div>
@@ -93,11 +90,12 @@
         <div class="ticket-card-cell">
 
           <div class="ticket-card-cell-block">
-            <div class="label-row">
-              <span class="label">Nutzer/in</span>
-
+            <div class="row row--space-between">
+              <div class="column-auto">
+                <div class="data-label">{{ pgettext('ticket', 'User') }}</div>
+              </div>
               {%- if ticket_management_enabled and (user_manager == g.user) and not ticket.user_checked_in %}
-              <span class="label-buttons">
+              <div class="column-auto">
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('chevron-down') -}}</button>
                   <ol class="dropdown-menu dropdown-menu--right">
@@ -107,27 +105,28 @@
                     {%- endif %}
                   </ol>
                 </div>
-              </span>
+              </div>
               {%- endif %}
             </div>
 
-            <div class="ticket-user centered">
+            <div class="ticket-user">
               {%- if ticket.used_by %}
               <div>{{ render_user_avatar_48(ticket.used_by) }}</div>
               {{ render_user_link(ticket.used_by) }}
               {%- else %}
               <div><div class="ticket-user-placeholder"></div></div>
-              {{ render_tag('frei', class='available') }}
+              {{ render_tag(_('available'), class='available') }}
               {%- endif %}
             </div>
           </div>
 
           <div class="ticket-card-cell-block">
-            <div class="label-row">
-              <span class="label">Verwalter/in</span>
-
+            <div class="row row--space-between">
+              <div class="column-auto">
+                <div class="data-label">{{ _('Manager') }}</div>
+              </div>
               {%- if ticket_management_enabled and (ticket.owned_by_id == g.user.id) and not ticket.user_checked_in %}
-              <span class="label-buttons">
+              <div class="column-auto">
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('chevron-down') -}}</button>
                   <ol class="dropdown-menu dropdown-menu--right">
@@ -137,10 +136,10 @@
                     {%- endif %}
                   </ol>
                 </div>
-              </span>
+              </div>
               {%- endif %}
             </div>
-            {{ render_user_avatar_16_and_link(user_manager) }}
+            <div class="data-value">{{ render_user_avatar_16_and_link(user_manager) }}</div>
           </div>
 
         </div>
@@ -150,25 +149,23 @@
         <div class="ticket-card-cell">
 
           <div class="ticket-card-cell-block">
-            <div class="label-row">
-              <span class="label">Sitzplatz</span>
-            </div>
-
-            <div class="centered">
+            <div class="data-label">{{ _('Seat') }}</div>
+            <div class="data-value">
               {%- if ticket.occupied_seat -%}
               {{ render_seat_link(ticket.occupied_seat.area, ticket.occupied_seat) }}
               {%- else -%}
-              {{ render_tag('keiner', class='available') }}
+              {{ render_tag(_('no seat'), class='available') }}
               {%- endif -%}
             </div>
           </div>
 
           <div class="ticket-card-cell-block">
-            <div class="label-row">
-              <span class="label">Verwalter/in</span>
-
+            <div class="row row--space-between">
+              <div class="column-auto">
+                <div class="data-label">{{ _('Manager') }}</div>
+              </div>
               {%- if ticket.owned_by_id == g.user.id %}
-              <span class="label-buttons">
+              <div class="column-auto">
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('chevron-down') -}}</button>
                   <ol class="dropdown-menu dropdown-menu--right">
@@ -178,10 +175,10 @@
                     {%- endif %}
                   </ol>
                 </div>
-              </span>
+              </div>
               {%- endif %}
             </div>
-            {{ render_user_avatar_16_and_link(seat_manager) }}
+            <div class="data-value">{{ render_user_avatar_16_and_link(seat_manager) }}</div>
           </div>
 
         </div>

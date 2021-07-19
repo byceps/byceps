@@ -542,31 +542,11 @@ form.board-posting-create-form-inline .label {
   text-align: center;
 }
 
-.ticket-card-cell .label-row {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 0.25rem;
-}
-
-.ticket-card-cell .label {
-  color: #888888;
-  font-size: 0.625rem; /* 10px / 16px */
-  text-transform: uppercase;
-}
-
-.ticket-card-cell .label-buttons {
-  margin-top: -3px;
-}
-
 .ticket-card-cell a {
   color: currentColor;
 }
 
 .ticket-card-cell a:not(:hover) {
-  text-decoration: none;
-}
-
-.ticket-card-cell .dropdown-item:hover {
   text-decoration: none;
 }
 
