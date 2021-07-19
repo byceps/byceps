@@ -5006,9 +5006,11 @@ msgstr "Alle Themen in dieser Kategorie als gelesen markieren"
 
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:77
 #, python-format
-msgid "You have to be <a href=\"%s\">logged in</a> to be able to create topics."
+msgid ""
+"You have to be <a href=\"%(url)s\">logged in</a> to be able to create "
+"topics."
 msgstr ""
-"Du musst <a href=\"%s\">angemeldet</a> sein, um Themen hinzufügen zu "
+"Du musst <a href=\"%(url)s\">angemeldet</a> sein, um Themen hinzufügen zu "
 "können."
 
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:86
@@ -5060,8 +5062,8 @@ msgstr ""
 
 #: byceps/blueprints/site/board/templates/site/board/topic_view.html:61
 #, python-format
-msgid "You have to be <a href=\"%s\">logged in</a> to be able to reply."
-msgstr "Du musst <a href=\"%s\">angemeldet</a> sein, um antworten zu können."
+msgid "You have to be <a href=\"%(url)s\">logged in</a> to be able to reply."
+msgstr "Du musst <a href=\"%(url)s\">angemeldet</a> sein, um antworten zu können."
 
 #: byceps/blueprints/site/board/templates/site/board/topic_view.html:65
 #: byceps/blueprints/site/board/templates/site/board/topic_view.html:71

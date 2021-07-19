@@ -58,7 +58,7 @@
 
   {%- if not current_user_may_reply_generally %}
   <small>
-    <p style="text-align: right;">{{ _('You have to be <a href="%s">logged in</a> to be able to reply.')|format(url_for('authentication_login.login_form')) }}</p>
+    <p style="text-align: right;">{{ _('You have to be <a href="%(url)s">logged in</a> to be able to reply.', url=url_for('authentication_login.login_form')) }}</p>
   </small>
   {%- elif topic.locked or (topic.posting_limited_to_moderators and not has_current_user_permission(BoardPermission.announce)) %}
   <div class="button-row button-row--right">
