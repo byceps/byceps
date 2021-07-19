@@ -9,7 +9,7 @@ Provide and register custom template global functions.
 """
 
 import babel
-from flask_babel import get_locale, get_timezone
+from flask_babel import get_locale, get_timezone, npgettext, pgettext
 
 
 def register(app):
@@ -19,6 +19,8 @@ def register(app):
         (_format_datetime, 'format_datetime'),
         (_format_time, 'format_time'),
         (_format_number, 'format_number'),
+        (npgettext, 'npgettext'),
+        (pgettext, 'pgettext'),
     ]
 
     for f, name in functions:
