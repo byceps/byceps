@@ -14,34 +14,43 @@
   </nav>
   <h1>{{ order.order_number }}</h1>
 
-  {%- if order.is_open %}
-  <div class="button-row button-row--right" style="float: right; margin-left: 1rem;">
-    <a class="button" href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('remove') }} <span>{{ _('Cancel order') }}</span></a>
-  </div>
-  {%- endif %}
+  <div class="row row--space-between">
+    <div class="column-auto">
 
-  <table class="index" style="margin-top: 2rem;">
-    <tr>
-      <th>{{ _('Date') }}</th>
-      <td>{{ render_datetime(order.created_at|utc_to_local_tz) }}</td>
-    </tr>
-    <tr>
-      <th>{{ _('Payment state') }}</th>
-      <td>{{ render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }}</td>
-    </tr>
-    {%- if order.payment_method %}
-    <tr>
-      <th>{{ _('Payment method') }}</th>
-      <td>{{ render_order_payment_method(order.payment_method) }}</td>
-    </tr>
-    {%- endif %}
-    {%- if order.is_canceled %}
-    <tr>
-      <th>{{ _('Reason for cancelation') }}</th>
-      <td>{{ order.cancelation_reason|fallback }}</td>
-    </tr>
-    {%- endif %}
-  </table>
+      <div class="mb">
+        <div class="data-label">{{ _('Date') }}</div>
+        <div class="data-value">{{ render_datetime(order.created_at|utc_to_local_tz) }}</div>
+      </div>
+
+      <div class="row mb">
+        <div class="column-auto">
+          <div class="data-label">{{ _('Payment state') }}</div>
+          <div class="data-value">{{ render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }}</div>
+        </div>
+        <div class="column-auto">
+        {%- if order.payment_method %}
+          <div class="data-label">{{ _('Payment method') }}</div>
+          <div class="data-value">{{ render_order_payment_method(order.payment_method) }}</div>
+        {%- endif %}
+        </div>
+      </div>
+
+      {%- if order.is_canceled %}
+      <div class="data-label">{{ _('Reason for cancelation') }}</div>
+      <div class="data-value">{{ order.cancelation_reason|fallback }}</div>
+      {%- endif %}
+
+    </div>
+    <div class="column-auto">
+
+      {%- if order.is_open %}
+      <div class="button-row button-row--compact button-row--right">
+        <a class="button" href="{{ url_for('.cancel_form', order_id=order.id) }}">{{ render_icon('remove') }} <span>{{ _('Cancel order') }}</span></a>
+      </div>
+      {%- endif %}
+
+    </div>
+  </div>
 
   {%- if order.is_open %}
   <h2>{{ _('Payment notes') }}</h2>
@@ -49,16 +58,12 @@
   {%- endif %}
 
   <h2>{{ _('Orderer') }}</h2>
-  <table class="index">
-    <tr>
-      <th>{{ _('Full name') }}</th>
-      <td>{{ order.first_names }} {{ order.last_name }}</td>
-    </tr>
-    <tr>
-      <th>{{ _('Address') }}</th>
-      <td>{{ order.address.street }}<br>{{ order.address.zip_code }} {{ order.address.city }}<br>{{ order.address.country }}</td>
-    </tr>
-  </table>
+
+  <div class="data-label">{{ _('Full name') }}</div>
+  <div class="data-value">{{ order.first_names }} {{ order.last_name }}</div>
+
+  <div class="data-label">{{ _('Address') }}</div>
+  <div class="data-value">{{ order.address.street }}</div>
 
   <h2>{{ _('Articles') }}</h2>
   <table class="index wide">
