@@ -15,7 +15,7 @@
   <form action="{{ url_for('.cancel', order_id=order.id) }}" method="post">
     {{ form_field(form.reason, maxlength=1000, autofocus='autofocus') }}
     <div class="mb">
-      {{ render_notification(_('The reason will be disclosed to the orderer.') ~ '<br>'|safe ~ _('It is <em>not</em> an internal remark.'|safe, category='warning', icon='warning') }}
+      {{ render_notification(_('The reason will be disclosed to the orderer.') ~ '<br>'|safe ~ _('It is <em>not</em> an internal remark.')|safe, category='warning', icon='warning') }}
     </div>
     {{ form_field_check(form.send_email, form.send_email.label.text, checked='checked') }}
 

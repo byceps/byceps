@@ -3127,6 +3127,8 @@ msgid "Resend confirmation email"
 msgstr "E-Mail-Bestätigung erneut senden"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:28
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:5
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:22
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:4
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:15
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:20
@@ -3170,6 +3172,14 @@ msgstr "noch nicht bezahlt"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_status_flags.html:32
 msgid "not shipped yet"
 msgstr "noch nicht versendet"
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:18
+msgid "The reason will be disclosed to the orderer."
+msgstr "Die Begründung wird an die bestellende Person weitergegeben."
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:18
+msgid "It is <em>not</em> an internal remark."
+msgstr "Es handelt sich <em>nicht</em> um einen internen Vermerk."
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/create_number_sequence_form.html:4
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/create_form.html:17
@@ -4501,19 +4511,19 @@ msgstr "Aktiv"
 msgid "Webhook has been created."
 msgstr "Der Webhook wurde erstellt."
 
-#: byceps/blueprints/admin/webhook/views.py:172
+#: byceps/blueprints/admin/webhook/views.py:171
 msgid "Webhook has been updated."
 msgstr "Der Webhook wurde aktualisiert."
 
-#: byceps/blueprints/admin/webhook/views.py:186
+#: byceps/blueprints/admin/webhook/views.py:185
 msgid "Webhook has been removed."
 msgstr "Der Webhook wurde gelöscht."
 
-#: byceps/blueprints/admin/webhook/views.py:200
+#: byceps/blueprints/admin/webhook/views.py:199
 msgid "Webhook call has been successful."
 msgstr "Der Webhook-Aufruf war erfolgreich."
 
-#: byceps/blueprints/admin/webhook/views.py:204
+#: byceps/blueprints/admin/webhook/views.py:203
 msgid "Webhook call failed:"
 msgstr "Der Webhook-Aufruf ist fehlgeschlagen:"
 
