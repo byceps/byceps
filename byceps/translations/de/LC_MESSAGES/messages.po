@@ -1618,14 +1618,12 @@ msgstr "Benutzerregistrierung"
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:76
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:49
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:52
-#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:18
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:50
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:42
 #: byceps/blueprints/admin/site/templates/admin/site/_sites.html:27
 #: byceps/blueprints/admin/site/templates/admin/site/_sites.html:33
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:61
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:65
-#: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:11
 msgid "open"
 msgstr "offen"
 
@@ -2391,11 +2389,8 @@ msgid "Seat management open"
 msgstr "Sitzplatzverwaltung geöffnet"
 
 #: byceps/blueprints/admin/party/forms.py:59
-#: byceps/blueprints/admin/party/templates/admin/party/view.html:20
-#: byceps/blueprints/admin/party/templates/macros/admin/party.html:55
-#: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:9
-msgid "canceled"
-msgstr "abgesagt"
+msgid "party"
+msgstr "Party"
 
 #: byceps/blueprints/admin/party/views.py:175
 #, python-format
@@ -2432,6 +2427,12 @@ msgstr "Für diese Marke sind keine Partys vorhanden."
 #: byceps/blueprints/admin/party/templates/admin/party/update_form.html:6
 msgid "Edit party"
 msgstr "Party bearbeiten"
+
+#: byceps/blueprints/admin/party/templates/admin/party/view.html:20
+#: byceps/blueprints/admin/party/templates/macros/admin/party.html:55
+msgctxt "party"
+msgid "canceled"
+msgstr "abgesagt"
 
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:51
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/index.html:33
@@ -3257,6 +3258,12 @@ msgstr "storniert (n. B.)"
 #: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:16
 msgid "canceled after payment"
 msgstr "storniert nach Bezahlung"
+
+#: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:18
+#: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:11
+msgctxt "order"
+msgid "open"
+msgstr "offen"
 
 #: byceps/blueprints/admin/shop/order/templates/macros/admin/shop/order.html:27
 msgid "waiting for shipping"
@@ -5309,6 +5316,11 @@ msgstr ""
 #: byceps/blueprints/site/shop/orders/views.py:171
 msgid "Order has been canceled."
 msgstr "Die Bestellung wurde storniert."
+
+#: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:9
+msgctxt "order"
+msgid "canceled"
+msgstr "storniert"
 
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:11
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:5

@@ -6,9 +6,9 @@
   {%- if state_name == 'paid' -%}
     {{ render_tag(_('paid'), icon='success', class='order-payment-state--paid') }}
   {%- elif state_name in ['canceled_before_paid', 'canceled_after_paid'] -%}
-    {{ render_tag(_('canceled'), icon='disabled', class='order-payment-state--canceled') }}
+    {{ render_tag(pgettext('order', 'canceled'), icon='disabled', class='order-payment-state--canceled') }}
   {%- else -%}
-    {{ render_tag(_('open'), icon='pending', class='order-payment-state--open') }}
+    {{ render_tag(pgettext('order', 'open'), icon='pending', class='order-payment-state--open') }}
   {%- endif -%}
 {%- endmacro %}
 

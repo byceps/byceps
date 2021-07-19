@@ -15,7 +15,7 @@
   {%- elif state_name == 'canceled_after_paid' -%}
     {{ render_tag(_('canceled (a. p.)'), icon='disabled', class='order-canceled-after-paid', title=_('canceled after payment')) }}
   {%- else -%}
-    {{ render_tag(_('open'), icon='pending', class='order-open') }}
+    {{ render_tag(pgettext('order', 'open'), icon='pending', class='order-open') }}
   {%- endif -%}
 {%- endmacro %}
 

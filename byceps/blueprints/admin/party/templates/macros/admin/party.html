@@ -52,7 +52,7 @@
         {{ render_tag(_('Seat management') ~ ' ' ~ _('open'), class='color-success', icon='seating-area') }}<br>
         {%- endif %}
         {%- if party.canceled %}
-        {{ render_tag(_('canceled'), class='color-danger', icon='disabled') }}
+        {{ render_tag(pgettext('party', 'canceled'), class='color-danger', icon='disabled') }}
         {%- endif %}
         {%- if party.archived %}
         {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}

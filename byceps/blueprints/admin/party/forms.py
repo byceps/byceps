@@ -8,7 +8,7 @@ byceps.blueprints.admin.party.forms
 
 from datetime import datetime
 
-from flask_babel import gettext, lazy_gettext
+from flask_babel import gettext, lazy_gettext, lazy_pgettext
 from wtforms import BooleanField, IntegerField, StringField
 from wtforms.fields.html5 import DateField, TimeField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
@@ -56,5 +56,5 @@ class UpdateForm(_BaseForm):
         lazy_gettext('Ticket management open')
     )
     seat_management_enabled = BooleanField(lazy_gettext('Seat management open'))
-    canceled = BooleanField(lazy_gettext('canceled'))
+    canceled = BooleanField(lazy_pgettext('party', 'canceled'))
     archived = BooleanField(lazy_gettext('archived'))
