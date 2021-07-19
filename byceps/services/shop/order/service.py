@@ -39,6 +39,7 @@ from .transfer.models import (
     OrderID,
     OrderItem,
     OrderNumber,
+    OrderState,
     PaymentMethod,
     PaymentState,
 )
@@ -645,6 +646,7 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
 
     items = list(map(order_item_to_transfer_object, order.items))
 
+    state = _get_order_state(order)
     is_open = order.payment_state == PaymentState.open
     is_canceled = _is_canceled(order)
     is_paid = _is_paid(order)
@@ -665,6 +667,7 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
         items=items,
         payment_method=order.payment_method,
         payment_state=order.payment_state,
+        state=state,
         is_open=is_open,
         is_canceled=is_canceled,
         is_paid=is_paid,
@@ -688,6 +691,22 @@ def order_item_to_transfer_object(
         quantity=item.quantity,
         line_amount=item.line_amount,
     )
+
+
+def _get_order_state(order: DbOrder) -> OrderState:
+    is_canceled = _is_canceled(order)
+    is_paid = _is_paid(order)
+    is_shipping_required = order.shipping_required
+    is_shipped = order.shipped_at is not None
+
+    if is_canceled:
+        return OrderState.canceled
+
+    if is_paid:
+        if not is_shipping_required or is_shipped:
+            return OrderState.complete
+
+    return OrderState.open
 
 
 def _is_canceled(order: DbOrder) -> bool:

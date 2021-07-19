@@ -29,6 +29,7 @@ from ..transfer.models import (
     OrderID,
     OrderItem,
     OrderNumber,
+    OrderState,
     PaymentMethod,
     PaymentState,
 )
@@ -44,7 +45,9 @@ def build_example_placed_order_message_text(shop_id: ShopID) -> str:
     """Assemble an exemplary e-mail for a placed order."""
     shop = shop_service.get_shop(shop_id)
 
-    order = _build_order(shop.id, PaymentState.open, is_open=True)
+    order = _build_order(
+        shop.id, PaymentState.open, OrderState.open, is_open=True
+    )
 
     data = _build_email_data(order, shop.brand_id)
 
@@ -62,7 +65,9 @@ def build_example_paid_order_message_text(shop_id: ShopID) -> str:
     """Assemble an exemplary e-mail for a paid order."""
     shop = shop_service.get_shop(shop_id)
 
-    order = _build_order(shop.id, PaymentState.paid, is_paid=True)
+    order = _build_order(
+        shop.id, PaymentState.paid, OrderState.open, is_paid=True
+    )
 
     data = _build_email_data(order, shop.brand_id)
 
@@ -85,6 +90,7 @@ def build_example_canceled_order_message_text(shop_id: ShopID) -> str:
     order = _build_order(
         shop.id,
         PaymentState.canceled_before_paid,
+        OrderState.canceled,
         is_canceled=True,
         cancelation_reason=gettext('Not paid in time.'),
     )
@@ -105,6 +111,7 @@ def _build_order(
     shop_id: ShopID,
     payment_state: PaymentState,
     *,
+    state: OrderState,
     is_open: bool = False,
     is_canceled: bool = False,
     is_paid: bool = False,
@@ -137,6 +144,7 @@ def _build_order(
         items,
         payment_method,
         payment_state,
+        state,
         is_open,
         is_canceled,
         is_paid,

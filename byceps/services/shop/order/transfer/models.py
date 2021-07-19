@@ -37,6 +37,16 @@ class OrderNumberSequence:
     value: int
 
 
+OrderState = Enum(
+    'OrderState',
+    [
+        'open',
+        'canceled',
+        'complete',
+    ],
+)
+
+
 PaymentMethod = Enum(
     'PaymentMethod',
     [
@@ -95,6 +105,7 @@ class Order:
     items: list[OrderItem]
     payment_method: Optional[PaymentMethod]
     payment_state: PaymentState
+    state: OrderState
     is_open: bool
     is_canceled: bool
     is_paid: bool

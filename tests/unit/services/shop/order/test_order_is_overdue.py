@@ -8,7 +8,11 @@ from datetime import datetime
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.shop.order.transfer.models import Order, PaymentState
+from byceps.services.shop.order.transfer.models import (
+    Order,
+    OrderState,
+    PaymentState,
+)
 
 
 @pytest.mark.parametrize(
@@ -49,6 +53,7 @@ def create_order(created_at: datetime) -> Order:
         items=[],
         payment_method=None,
         payment_state=PaymentState.open,
+        state=OrderState.open,
         is_open=True,
         is_canceled=False,
         is_paid=False,
