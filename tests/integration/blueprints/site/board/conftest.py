@@ -12,7 +12,7 @@ from byceps.services.board import (
     topic_query_service,
 )
 
-from tests.helpers import http_client, login_user
+from tests.helpers import login_user
 
 from .helpers import create_category, create_posting, create_topic
 
@@ -72,6 +72,5 @@ def moderator(make_admin):
 
 
 @pytest.fixture(scope='package')
-def moderator_client(site_app, moderator):
-    with http_client(site_app, user_id=moderator.id) as client:
-        yield client
+def moderator_client(make_client, site_app, moderator):
+    return make_client(site_app, user_id=moderator.id)
