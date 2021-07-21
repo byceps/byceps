@@ -21,11 +21,11 @@ from ....services.shop.shop import service as shop_service
 from ....services.site import service as site_service
 from ....services.user import (
     command_service as user_command_service,
+    creation_service as user_creation_service,
     deletion_service as user_deletion_service,
+    service as user_service,
+    stats_service as user_stats_service,
 )
-from ....services.user import creation_service as user_creation_service
-from ....services.user import service as user_service
-from ....services.user import stats_service as user_stats_service
 from ....services.user_badge import awarding_service as badge_awarding_service
 from ....signals import user as user_signals
 from ....util.authorization import register_permission_enum
@@ -144,6 +144,10 @@ def _calculate_days_since(dt: Optional[datetime]) -> Optional[int]:
     return (datetime.utcnow().date() - dt.date()).days
 
 
+# -------------------------------------------------------------------- #
+# account
+
+
 @blueprint.get('/create')
 @permission_required(UserPermission.create)
 @templated
@@ -215,48 +219,6 @@ def create_account():
         )
 
     user_signals.account_created.send(None, event=event)
-
-    return redirect_to('.view', user_id=user.id)
-
-
-@blueprint.get('/<uuid:user_id>/password')
-@permission_required(UserPermission.set_password)
-@templated
-def set_password_form(user_id, erroneous_form=None):
-    """Show a form to set a new password for the user."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user(db_user.id, include_avatar=True)
-
-    form = erroneous_form if erroneous_form else SetPasswordForm()
-
-    return {
-        'user': db_user,
-        'user_dto': user,
-        'form': form,
-    }
-
-
-@blueprint.post('/<uuid:user_id>/password')
-@permission_required(UserPermission.set_password)
-def set_password(user_id):
-    """Set a new password for the user."""
-    user = _get_user_or_404(user_id)
-
-    form = SetPasswordForm(request.form)
-    if not form.validate():
-        return set_password_form(user.id, form)
-
-    new_password = form.password.data
-    initiator_id = g.user.id
-
-    password_service.update_password_hash(user.id, new_password, initiator_id)
-
-    flash_success(
-        gettext(
-            "New password has been set for user '%(screen_name)s'.",
-            screen_name=user.screen_name,
-        )
-    )
 
     return redirect_to('.view', user_id=user.id)
 
@@ -338,6 +300,7 @@ def suspend_account(user_id):
             screen_name=user.screen_name,
         )
     )
+
     return redirect_to('.view', user_id=user.id)
 
 
@@ -401,6 +364,7 @@ def unsuspend_account(user_id):
             screen_name=user.screen_name,
         )
     )
+
     return redirect_to('.view', user_id=user.id)
 
 
@@ -462,55 +426,12 @@ def delete_account(user_id):
             screen_name=user.screen_name,
         )
     )
+
     return redirect_to('.view', user_id=user.id)
 
 
-@blueprint.get('/<uuid:user_id>/change_email_address')
-@permission_required(UserPermission.administrate)
-@templated
-def change_email_address_form(user_id, erroneous_form=None):
-    """Show form to change the user's e-mail address."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user(db_user.id, include_avatar=True)
-
-    form = erroneous_form if erroneous_form else ChangeEmailAddressForm()
-
-    return {
-        'user': db_user,
-        'user_dto': user,
-        'form': form,
-    }
-
-
-@blueprint.post('/<uuid:user_id>/change_email_address')
-@permission_required(UserPermission.administrate)
-def change_email_address(user_id):
-    """Change the user's e-mail address."""
-    user = _get_user_or_404(user_id)
-
-    form = ChangeEmailAddressForm(request.form)
-    if not form.validate():
-        return change_email_address_form(user.id, form)
-
-    old_email_address = user_service.find_email_address(user.id)
-    new_email_address = form.email_address.data.strip()
-    verified = False
-    initiator_id = g.user.id
-    reason = form.reason.data.strip()
-
-    event = user_command_service.change_email_address(
-        user.id, new_email_address, verified, initiator_id, reason=reason
-    )
-
-    user_signals.email_address_changed.send(None, event=event)
-
-    flash_success(
-        gettext(
-            "Email address for user '%(screen_name)s' has been updated.",
-            screen_name=user.screen_name,
-        )
-    )
-    return redirect_to('.view', user_id=user.id)
+# -------------------------------------------------------------------- #
+# screen name
 
 
 @blueprint.get('/<uuid:user_id>/change_screen_name')
@@ -558,7 +479,111 @@ def change_screen_name(user_id):
             new_screen_name=new_screen_name,
         )
     )
+
     return redirect_to('.view', user_id=user.id)
+
+
+# -------------------------------------------------------------------- #
+# email address
+
+
+@blueprint.get('/<uuid:user_id>/change_email_address')
+@permission_required(UserPermission.administrate)
+@templated
+def change_email_address_form(user_id, erroneous_form=None):
+    """Show form to change the user's e-mail address."""
+    db_user = _get_db_user_with_details_or_404(user_id)
+    user = user_service.get_user(db_user.id, include_avatar=True)
+
+    form = erroneous_form if erroneous_form else ChangeEmailAddressForm()
+
+    return {
+        'user': db_user,
+        'user_dto': user,
+        'form': form,
+    }
+
+
+@blueprint.post('/<uuid:user_id>/change_email_address')
+@permission_required(UserPermission.administrate)
+def change_email_address(user_id):
+    """Change the user's e-mail address."""
+    user = _get_user_or_404(user_id)
+
+    form = ChangeEmailAddressForm(request.form)
+    if not form.validate():
+        return change_email_address_form(user.id, form)
+
+    old_email_address = user_service.find_email_address(user.id)
+    new_email_address = form.email_address.data.strip()
+    verified = False
+    initiator_id = g.user.id
+    reason = form.reason.data.strip()
+
+    event = user_command_service.change_email_address(
+        user.id, new_email_address, verified, initiator_id, reason=reason
+    )
+
+    user_signals.email_address_changed.send(None, event=event)
+
+    flash_success(
+        gettext(
+            "Email address for user '%(screen_name)s' has been updated.",
+            screen_name=user.screen_name,
+        )
+    )
+
+    return redirect_to('.view', user_id=user.id)
+
+
+# -------------------------------------------------------------------- #
+# authentication
+
+
+@blueprint.get('/<uuid:user_id>/password')
+@permission_required(UserPermission.set_password)
+@templated
+def set_password_form(user_id, erroneous_form=None):
+    """Show a form to set a new password for the user."""
+    db_user = _get_db_user_with_details_or_404(user_id)
+    user = user_service.get_user(db_user.id, include_avatar=True)
+
+    form = erroneous_form if erroneous_form else SetPasswordForm()
+
+    return {
+        'user': db_user,
+        'user_dto': user,
+        'form': form,
+    }
+
+
+@blueprint.post('/<uuid:user_id>/password')
+@permission_required(UserPermission.set_password)
+def set_password(user_id):
+    """Set a new password for the user."""
+    user = _get_user_or_404(user_id)
+
+    form = SetPasswordForm(request.form)
+    if not form.validate():
+        return set_password_form(user.id, form)
+
+    new_password = form.password.data
+    initiator_id = g.user.id
+
+    password_service.update_password_hash(user.id, new_password, initiator_id)
+
+    flash_success(
+        gettext(
+            "New password has been set for user '%(screen_name)s'.",
+            screen_name=user.screen_name,
+        )
+    )
+
+    return redirect_to('.view', user_id=user.id)
+
+
+# -------------------------------------------------------------------- #
+# authorization
 
 
 @blueprint.get('/<uuid:user_id>/permissions')
@@ -648,6 +673,10 @@ def role_deassign(user_id, role_id):
     )
 
 
+# -------------------------------------------------------------------- #
+# events
+
+
 @blueprint.get('/<uuid:user_id>/events')
 @permission_required(UserPermission.view)
 @templated
@@ -670,6 +699,10 @@ def view_events(user_id):
         'events': events,
         'logins_included': include_logins,
     }
+
+
+# -------------------------------------------------------------------- #
+# helpers
 
 
 def _get_db_user_with_details_or_404(user_id):
