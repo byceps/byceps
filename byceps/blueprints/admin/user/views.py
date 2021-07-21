@@ -23,6 +23,7 @@ from ....services.user import (
     command_service as user_command_service,
     creation_service as user_creation_service,
     deletion_service as user_deletion_service,
+    email_address_verification_service,
     service as user_service,
     stats_service as user_stats_service,
 )
@@ -42,6 +43,7 @@ from .forms import (
     ChangeScreenNameForm,
     CreateAccountForm,
     DeleteAccountForm,
+    InvalidateEmailAddressForm,
     SetPasswordForm,
     SuspendAccountForm,
 )
@@ -529,6 +531,61 @@ def change_email_address(user_id):
     flash_success(
         gettext(
             "Email address for user '%(screen_name)s' has been updated.",
+            screen_name=user.screen_name,
+        )
+    )
+
+    return redirect_to('.view', user_id=user.id)
+
+
+@blueprint.get('/<uuid:user_id>/invalidate_email_address')
+@permission_required(UserPermission.administrate)
+@templated
+def invalidate_email_address_form(user_id, erroneous_form=None):
+    """Show form to invalidate the email address assigned with the account."""
+    db_user = _get_db_user_with_details_or_404(user_id)
+    user = user_service.get_user(db_user.id, include_avatar=True)
+
+    if not db_user.email_address_verified:
+        flash_error(gettext('Email address is already invalidated.'))
+        return redirect_to('.view', user_id=user.id)
+
+    form = erroneous_form if erroneous_form else InvalidateEmailAddressForm()
+
+    return {
+        'user': db_user,
+        'user_dto': user,
+        'form': form,
+    }
+
+
+@blueprint.post('/<uuid:user_id>/invalidate_email_address')
+@permission_required(UserPermission.administrate)
+def invalidate_email_address(user_id):
+    """Invalidate the email address assigned with the account."""
+    db_user = _get_db_user_with_details_or_404(user_id)
+    user = user_service.get_user(db_user.id, include_avatar=True)
+
+    if not db_user.email_address_verified:
+        flash_error(gettext('Email address is already invalidated.'))
+        return redirect_to('.view', user_id=user.id)
+
+    form = InvalidateEmailAddressForm(request.form)
+    if not form.validate():
+        return invalidate_email_address_form(user.id, form)
+
+    initiator_id = g.user.id
+    reason = form.reason.data.strip()
+
+    event = email_address_verification_service.invalidate_email_address(
+        user.id, reason, initiator_id=initiator_id
+    )
+
+    user_signals.email_address_invalidated.send(None, event=event)
+
+    flash_success(
+        gettext(
+            "The email address of user '%(screen_name)s' has been invalidated.",
             screen_name=user.screen_name,
         )
     )

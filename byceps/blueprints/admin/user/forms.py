@@ -135,6 +135,13 @@ class ChangeEmailAddressForm(LocalizedForm):
     )
 
 
+class InvalidateEmailAddressForm(LocalizedForm):
+    reason = TextAreaField(
+        lazy_gettext('Reason'),
+        validators=[InputRequired(), Length(max=1000)],
+    )
+
+
 class SetPasswordForm(LocalizedForm):
     password = PasswordField(
         lazy_gettext('Password'),
