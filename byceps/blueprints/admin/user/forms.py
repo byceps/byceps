@@ -41,36 +41,6 @@ def validate_screen_name_availability(form, field):
         raise ValidationError(lazy_gettext('This username is not available.'))
 
 
-class ChangeEmailAddressForm(LocalizedForm):
-    email_address = StringField(
-        lazy_gettext('New email address'),
-        [InputRequired(), Length(min=6, max=120), validate_email_address],
-    )
-    reason = TextAreaField(
-        lazy_gettext('Reason'),
-        validators=[InputRequired(), Length(max=1000)],
-    )
-
-
-class ChangeScreenNameForm(LocalizedForm):
-    screen_name = StringField(
-        lazy_gettext('New username'),
-        [
-            InputRequired(),
-            Length(
-                min=screen_name_validator.MIN_LENGTH,
-                max=screen_name_validator.MAX_LENGTH,
-            ),
-            ScreenNameValidator(),
-            validate_screen_name_availability,
-        ],
-    )
-    reason = TextAreaField(
-        lazy_gettext('Reason'),
-        validators=[InputRequired(), Length(max=1000)],
-    )
-
-
 class CreateAccountForm(LocalizedForm):
     screen_name = StringField(
         lazy_gettext('Username'),
@@ -113,6 +83,13 @@ class CreateAccountForm(LocalizedForm):
         self.site_id.choices = choices
 
 
+class SuspendAccountForm(LocalizedForm):
+    reason = TextAreaField(
+        lazy_gettext('Reason'),
+        validators=[InputRequired(), Length(max=1000)],
+    )
+
+
 class DeleteAccountForm(LocalizedForm):
     reason = TextAreaField(
         lazy_gettext('Reason'),
@@ -128,6 +105,36 @@ class DeleteAccountForm(LocalizedForm):
             raise ValidationError(lazy_gettext('Invalid confirmation word'))
 
 
+class ChangeScreenNameForm(LocalizedForm):
+    screen_name = StringField(
+        lazy_gettext('New username'),
+        [
+            InputRequired(),
+            Length(
+                min=screen_name_validator.MIN_LENGTH,
+                max=screen_name_validator.MAX_LENGTH,
+            ),
+            ScreenNameValidator(),
+            validate_screen_name_availability,
+        ],
+    )
+    reason = TextAreaField(
+        lazy_gettext('Reason'),
+        validators=[InputRequired(), Length(max=1000)],
+    )
+
+
+class ChangeEmailAddressForm(LocalizedForm):
+    email_address = StringField(
+        lazy_gettext('New email address'),
+        [InputRequired(), Length(min=6, max=120), validate_email_address],
+    )
+    reason = TextAreaField(
+        lazy_gettext('Reason'),
+        validators=[InputRequired(), Length(max=1000)],
+    )
+
+
 class SetPasswordForm(LocalizedForm):
     password = PasswordField(
         lazy_gettext('Password'),
@@ -135,11 +142,4 @@ class SetPasswordForm(LocalizedForm):
             InputRequired(),
             Length(min=MINIMUM_PASSWORD_LENGTH, max=MAXIMUM_PASSWORD_LENGTH),
         ],
-    )
-
-
-class SuspendAccountForm(LocalizedForm):
-    reason = TextAreaField(
-        lazy_gettext('Reason'),
-        validators=[InputRequired(), Length(max=1000)],
     )
