@@ -8,7 +8,7 @@ byceps.services.user.transfer.models
 
 from __future__ import annotations
 from dataclasses import dataclass
-from datetime import date
+from datetime import date, datetime
 from typing import Any, Optional
 
 from ....typing import UserID
@@ -47,3 +47,15 @@ class UserDetail:
 @dataclass(frozen=True)
 class UserWithDetail(User):
     detail: UserDetail
+
+
+@dataclass(frozen=True)
+class UserForAdmin(User):
+    created_at: datetime
+    initialized: bool
+    detail: UserForAdminDetail
+
+
+@dataclass(frozen=True)
+class UserForAdminDetail:
+    full_name: Optional[str]

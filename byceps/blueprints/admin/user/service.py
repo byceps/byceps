@@ -30,7 +30,11 @@ from ....services.user.dbmodels.event import (
 )
 from ....services.user.dbmodels.user import User as DbUser
 from ....services.user import service as user_service
-from ....services.user.transfer.models import User
+from ....services.user.transfer.models import (
+    User,
+    UserForAdmin,
+    UserForAdminDetail,
+)
 from ....services.user_avatar.dbmodels import (
     AvatarSelection as DbAvatarSelection,
 )
@@ -38,7 +42,7 @@ from ....services.user_avatar import service as avatar_service
 from ....services.user_badge import badge_service as user_badge_service
 from ....typing import PartyID, UserID
 
-from .models import Detail, UserStateFilter, UserWithCreationDetails
+from .models import UserStateFilter
 
 
 def get_users_paginated(
@@ -65,7 +69,7 @@ def get_users_paginated(
         query,
         page,
         per_page,
-        item_mapper=_db_entity_to_user_with_creation_details,
+        item_mapper=_db_entity_to_user_for_admin,
     )
 
 
@@ -113,7 +117,7 @@ def _generate_search_clauses_for_term(search_term: str):
 
 def get_users_created_since(
     delta: timedelta, limit: Optional[int] = None
-) -> list[User]:
+) -> list[UserForAdmin]:
     """Return the user accounts created since `delta` ago."""
     filter_starts_at = datetime.utcnow() - delta
 
@@ -132,17 +136,15 @@ def get_users_created_since(
 
     users = query.all()
 
-    return [_db_entity_to_user_with_creation_details(u) for u in users]
+    return [_db_entity_to_user_for_admin(u) for u in users]
 
 
-def _db_entity_to_user_with_creation_details(
-    user: DbUser,
-) -> UserWithCreationDetails:
+def _db_entity_to_user_for_admin(user: DbUser) -> UserForAdmin:
     is_orga = False  # Not interesting here.
     full_name = user.detail.full_name if user.detail is not None else None
-    detail = Detail(full_name=full_name)
+    detail = UserForAdminDetail(full_name=full_name)
 
-    return UserWithCreationDetails(
+    return UserForAdmin(
         id=user.id,
         screen_name=user.screen_name,
         suspended=user.suspended,
