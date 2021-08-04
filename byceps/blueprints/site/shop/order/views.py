@@ -63,13 +63,13 @@ def order_form(erroneous_form=None):
     if not g.user.authenticated:
         return list_articles(article_compilation)
 
-    user = user_service.find_user_with_details(g.user.id)
+    detail = user_service.get_detail(g.user.id)
 
     if erroneous_form:
         form = erroneous_form
     else:
         ArticlesOrderForm = assemble_articles_order_form(article_compilation)
-        form = ArticlesOrderForm(obj=user.detail)
+        form = ArticlesOrderForm(obj=detail)
 
     country_names = country_service.get_country_names()
 
@@ -143,9 +143,9 @@ def order_single_form(article_id, erroneous_form=None):
     storefront = _get_storefront_or_404()
     shop = shop_service.get_shop(storefront.shop_id)
 
-    user = user_service.find_user_with_details(g.user.id)
+    detail = user_service.get_detail(g.user.id)
 
-    form = erroneous_form if erroneous_form else OrderForm(obj=user.detail)
+    form = erroneous_form if erroneous_form else OrderForm(obj=detail)
 
     if storefront.closed:
         flash_notice(gettext('The shop is closed.'))

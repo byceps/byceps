@@ -168,9 +168,9 @@ def update_locale():
 @templated
 def details_update_form(erroneous_form=None):
     """Show a form to update the current user's details."""
-    user = user_service.find_user_with_details(g.user.id)
+    detail = user_service.get_detail(g.user.id)
 
-    form = erroneous_form if erroneous_form else DetailsForm(obj=user.detail)
+    form = erroneous_form if erroneous_form else DetailsForm(obj=detail)
     country_names = country_service.get_country_names()
 
     return {
