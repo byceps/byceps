@@ -37,11 +37,11 @@
   {{ render_backlink(url_for('.index'), _('Users')) }}
 
   <div class="user-head">
-    <div>{{ render_user_avatar_96(user_dto) }}</div>
+    <div>{{ render_user_avatar_96(profile_user) }}</div>
     <div>
-      <h1 class="title">{{ render_user_screen_name(user_dto) }}</h1>
-      <div class="subtitle">{{ user.detail.full_name|fallback }}</div>
-      <div class="flags">{{ render_most_important_user_flag(user) }}</div>
+      <h1 class="title">{{ render_user_screen_name(profile_user) }}</h1>
+      <div class="subtitle">{{ profile_user.detail.full_name|fallback }}</div>
+      <div class="flags">{{ render_most_important_user_flag(profile_user) }}</div>
     </div>
   </div>
 

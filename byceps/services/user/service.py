@@ -257,6 +257,23 @@ def get_db_user(user_id: UserID) -> DbUser:
     return user
 
 
+def get_user_for_admin(user_id: UserID) -> UserForAdmin:
+    """Return the user with that ID, or raise an exception."""
+    user = DbUser.query \
+        .options(
+            db.joinedload(DbUser.avatar_selection)
+                .joinedload(DbAvatarSelection.avatar),
+            db.joinedload(DbUser.detail)
+                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
+        ) \
+        .get(user_id)
+
+    if user is None:
+        raise ValueError(f"Unknown user ID '{user_id}'")
+
+    return _db_entity_to_user_for_admin(user)
+
+
 def _db_entity_to_user(user: DbUser) -> User:
     avatar_url = None
     is_orga = False  # Information is not available here by design.
