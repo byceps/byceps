@@ -12,8 +12,14 @@ from typing import Optional
 from ...database import db, Query
 from ...typing import PartyID, UserID
 
-from ..orga_team.dbmodels import OrgaTeam, Membership as OrgaTeamMembership
-from ..user_avatar.dbmodels import Avatar, AvatarSelection
+from ..orga_team.dbmodels import (
+    OrgaTeam as DbOrgaTeam,
+    Membership as DbOrgaTeamMembership,
+)
+from ..user_avatar.dbmodels import (
+    Avatar as DbAvatar,
+    AvatarSelection as DbAvatarSelection,
+)
 
 from .dbmodels.detail import UserDetail as DbUserDetail
 from .dbmodels.user import User as DbUser
@@ -141,14 +147,14 @@ def _get_user_query(
             DbUser.suspended,
             DbUser.deleted,
             DbUser.locale,
-            Avatar if include_avatar else db.null(),
+            DbAvatar if include_avatar else db.null(),
             orga_flag_expression,
         )
 
     if include_avatar:
         query = query \
-            .outerjoin(AvatarSelection, DbUser.avatar_selection) \
-            .outerjoin(Avatar)
+            .outerjoin(DbAvatarSelection, DbUser.avatar_selection) \
+            .outerjoin(DbAvatar)
 
     return query
 
@@ -156,16 +162,16 @@ def _get_user_query(
 def _get_orga_flag_subquery(party_id: PartyID):
     return db.session \
         .query(
-            db.func.count(OrgaTeamMembership.id)
+            db.func.count(DbOrgaTeamMembership.id)
         ) \
-        .join(OrgaTeam) \
-        .filter(OrgaTeam.party_id == party_id) \
-        .filter(OrgaTeamMembership.user_id == DbUser.id) \
+        .join(DbOrgaTeam) \
+        .filter(DbOrgaTeam.party_id == party_id) \
+        .filter(DbOrgaTeamMembership.user_id == DbUser.id) \
         .exists()
 
 
 def _user_row_to_dto(
-    row: tuple[UserID, str, bool, bool, Optional[str], Optional[Avatar], bool]
+    row: tuple[UserID, str, bool, bool, Optional[str], Optional[DbAvatar], bool]
 ) -> User:
     user_id, screen_name, suspended, deleted, locale, avatar, is_orga = row
     avatar_url = avatar.url if (avatar is not None) else None
