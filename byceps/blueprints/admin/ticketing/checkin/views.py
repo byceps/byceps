@@ -17,6 +17,7 @@ from .....services.ticketing import (
     ticket_service,
     ticket_user_checkin_service,
 )
+from .....services.user import service as user_service
 from .....signals import ticketing as ticketing_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_notice, flash_success
@@ -24,7 +25,6 @@ from .....util.framework.templating import templated
 from .....util.views import permission_required, respond_no_content
 
 from ...ticketing.authorization import TicketingPermission
-from ...user import service as user_blueprint_service
 
 
 blueprint = create_blueprint('ticketing_checkin_admin', __name__)
@@ -86,7 +86,7 @@ def _search_users(search_term, limit):
     page = 1
     per_page = limit
 
-    users_pagination = user_blueprint_service.get_users_paginated(
+    users_pagination = user_service.get_users_paginated(
         page, per_page, search_term=search_term
     )
 

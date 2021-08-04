@@ -9,6 +9,7 @@ byceps.services.user.transfer.models
 from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, datetime
+from enum import Enum
 from typing import Any, Optional
 
 from ....typing import UserID
@@ -59,3 +60,15 @@ class UserForAdmin(User):
 @dataclass(frozen=True)
 class UserForAdminDetail:
     full_name: Optional[str]
+
+
+UserStateFilter = Enum(
+    'UserStateFilter',
+    [
+        'none',
+        'active',
+        'uninitialized',
+        'suspended',
+        'deleted',
+    ],
+)

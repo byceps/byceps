@@ -8,11 +8,9 @@ byceps.blueprints.admin.user.service
 
 from __future__ import annotations
 from collections import defaultdict
-from datetime import datetime, timedelta
 from operator import attrgetter
-from typing import Any, Iterator, Optional, Sequence
+from typing import Any, Iterator, Sequence
 
-from ....database import db, paginate, Pagination
 from ....services.consent import consent_service, subject_service
 from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List as NewsletterList
@@ -23,139 +21,15 @@ from ....services.site import service as site_service
 from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
 from ....services.ticketing import attendance_service, ticket_service
 from ....services.user import event_service
-from ....services.user.dbmodels.detail import UserDetail as DbUserDetail
 from ....services.user.dbmodels.event import (
     UserEvent as DbUserEvent,
     UserEventData,
 )
-from ....services.user.dbmodels.user import User as DbUser
 from ....services.user import service as user_service
-from ....services.user.transfer.models import (
-    User,
-    UserForAdmin,
-    UserForAdminDetail,
-)
-from ....services.user_avatar.dbmodels import (
-    AvatarSelection as DbAvatarSelection,
-)
+from ....services.user.transfer.models import User
 from ....services.user_avatar import service as avatar_service
 from ....services.user_badge import badge_service as user_badge_service
 from ....typing import PartyID, UserID
-
-from .models import UserStateFilter
-
-
-def get_users_paginated(
-    page, per_page, *, search_term=None, state_filter=None
-) -> Pagination:
-    """Return the users to show on the specified page, optionally
-    filtered by search term or flags.
-    """
-    query = DbUser.query \
-        .options(
-            db.joinedload(DbUser.avatar_selection)
-                .joinedload(DbAvatarSelection.avatar),
-            db.joinedload(DbUser.detail)
-                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
-        ) \
-        .order_by(DbUser.created_at.desc())
-
-    query = _filter_by_state(query, state_filter)
-
-    if search_term:
-        query = _filter_by_search_term(query, search_term)
-
-    return paginate(
-        query,
-        page,
-        per_page,
-        item_mapper=_db_entity_to_user_for_admin,
-    )
-
-
-def _filter_by_state(query, state_filter):
-    if state_filter == UserStateFilter.active:
-        return query \
-            .filter_by(initialized=True) \
-            .filter_by(suspended=False) \
-            .filter_by(deleted=False)
-    elif state_filter == UserStateFilter.uninitialized:
-        return query \
-            .filter_by(initialized=False) \
-            .filter_by(suspended=False) \
-            .filter_by(deleted=False)
-    elif state_filter == UserStateFilter.suspended:
-        return query \
-            .filter_by(suspended=True) \
-            .filter_by(deleted=False)
-    elif state_filter == UserStateFilter.deleted:
-        return query \
-            .filter_by(deleted=True)
-    else:
-        return query
-
-
-def _filter_by_search_term(query, search_term):
-    terms = search_term.split(' ')
-    clauses = map(_generate_search_clauses_for_term, terms)
-
-    return query \
-        .join(DbUserDetail) \
-        .filter(db.and_(*clauses))
-
-
-def _generate_search_clauses_for_term(search_term: str):
-    ilike_pattern = f'%{search_term}%'
-
-    return db.or_(
-        DbUser.email_address.ilike(ilike_pattern),
-        DbUser.screen_name.ilike(ilike_pattern),
-        DbUserDetail.first_names.ilike(ilike_pattern),
-        DbUserDetail.last_name.ilike(ilike_pattern),
-    )
-
-
-def get_users_created_since(
-    delta: timedelta, limit: Optional[int] = None
-) -> list[UserForAdmin]:
-    """Return the user accounts created since `delta` ago."""
-    filter_starts_at = datetime.utcnow() - delta
-
-    query = DbUser.query \
-        .options(
-            db.joinedload(DbUser.avatar_selection)
-                .joinedload(DbAvatarSelection.avatar),
-            db.joinedload(DbUser.detail)
-                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
-        ) \
-        .filter(DbUser.created_at >= filter_starts_at) \
-        .order_by(DbUser.created_at.desc())
-
-    if limit is not None:
-        query = query.limit(limit)
-
-    users = query.all()
-
-    return [_db_entity_to_user_for_admin(u) for u in users]
-
-
-def _db_entity_to_user_for_admin(user: DbUser) -> UserForAdmin:
-    is_orga = False  # Not interesting here.
-    full_name = user.detail.full_name if user.detail is not None else None
-    detail = UserForAdminDetail(full_name=full_name)
-
-    return UserForAdmin(
-        id=user.id,
-        screen_name=user.screen_name,
-        suspended=user.suspended,
-        deleted=user.deleted,
-        locale=user.locale,
-        avatar_url=user.avatar.url if user.avatar else None,
-        is_orga=is_orga,
-        created_at=user.created_at,
-        initialized=user.initialized,
-        detail=detail,
-    )
 
 
 def get_parties_and_tickets(

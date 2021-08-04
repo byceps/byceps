@@ -30,7 +30,10 @@ from ....services.shop.shop import service as shop_service
 from ....services.shop.storefront import service as storefront_service
 from ....services.site import service as site_service
 from ....services.ticketing import ticket_service
-from ....services.user import stats_service as user_stats_service
+from ....services.user import (
+    service as user_service,
+    stats_service as user_stats_service,
+)
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required
@@ -39,7 +42,6 @@ from ..brand.authorization import BrandPermission
 from ..core.authorization import AdminPermission
 from ..party.authorization import PartyPermission
 from ..site.authorization import SitePermission
-from ..user.service import get_users_created_since
 
 
 blueprint = create_blueprint('admin_dashboard', __name__)
@@ -70,7 +72,7 @@ def view_global():
     user_count = user_stats_service.count_users()
 
     one_week_ago = timedelta(days=7)
-    recent_users = get_users_created_since(one_week_ago, limit=4)
+    recent_users = user_service.get_users_created_since(one_week_ago, limit=4)
     recent_users_count = user_stats_service.count_users_created_since(
         one_week_ago
     )

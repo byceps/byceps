@@ -27,6 +27,7 @@ from ....services.user import (
     service as user_service,
     stats_service as user_stats_service,
 )
+from ....services.user.transfer.models import UserStateFilter
 from ....services.user_badge import awarding_service as badge_awarding_service
 from ....signals import user as user_signals
 from ....util.authorization import register_permission_enum
@@ -47,7 +48,6 @@ from .forms import (
     SetPasswordForm,
     SuspendAccountForm,
 )
-from .models import UserStateFilter
 from . import service
 
 
@@ -71,7 +71,7 @@ def index(page):
         only, UserStateFilter.none
     )
 
-    users = service.get_users_paginated(
+    users = user_service.get_users_paginated(
         page, per_page, search_term=search_term, state_filter=user_state_filter
     )
 

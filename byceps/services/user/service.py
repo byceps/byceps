@@ -7,9 +7,10 @@ byceps.services.user.service
 """
 
 from __future__ import annotations
+from datetime import datetime, timedelta
 from typing import Optional
 
-from ...database import db, Query
+from ...database import db, paginate, Pagination, Query
 from ...typing import PartyID, UserID
 
 from ..orga_team.dbmodels import (
@@ -23,7 +24,14 @@ from ..user_avatar.dbmodels import (
 
 from .dbmodels.detail import UserDetail as DbUserDetail
 from .dbmodels.user import User as DbUser
-from .transfer.models import User, UserDetail, UserWithDetail
+from .transfer.models import (
+    User,
+    UserDetail,
+    UserForAdmin,
+    UserForAdminDetail,
+    UserStateFilter,
+    UserWithDetail,
+)
 
 
 class UserIdRejected(Exception):
@@ -138,7 +146,8 @@ def _get_user_query(
     orga_flag_expression = db.false()
     if include_orga_flags_for_party_id is not None:
         orga_flag_expression = _get_orga_flag_subquery(
-            include_orga_flags_for_party_id)
+            include_orga_flags_for_party_id
+        )
 
     query = db.session \
         .query(
@@ -294,6 +303,25 @@ def _db_entity_to_user_with_detail(user: DbUser) -> UserWithDetail:
     )
 
 
+def _db_entity_to_user_for_admin(user: DbUser) -> UserForAdmin:
+    is_orga = False  # Not interesting here.
+    full_name = user.detail.full_name if user.detail is not None else None
+    detail = UserForAdminDetail(full_name=full_name)
+
+    return UserForAdmin(
+        id=user.id,
+        screen_name=user.screen_name,
+        suspended=user.suspended,
+        deleted=user.deleted,
+        locale=user.locale,
+        avatar_url=user.avatar.url if user.avatar else None,
+        is_orga=is_orga,
+        created_at=user.created_at,
+        initialized=user.initialized,
+        detail=detail,
+    )
+
+
 def find_screen_name(user_id: UserID) -> Optional[str]:
     """Return the user's screen name, if available."""
     screen_name = db.session \
@@ -386,3 +414,103 @@ def _do_users_matching_filter_exist(
                 .exists()
         ) \
         .scalar()
+
+
+def get_users_created_since(
+    delta: timedelta, limit: Optional[int] = None
+) -> list[UserForAdmin]:
+    """Return the user accounts created since `delta` ago."""
+    filter_starts_at = datetime.utcnow() - delta
+
+    query = DbUser.query \
+        .options(
+            db.joinedload(DbUser.avatar_selection)
+                .joinedload(DbAvatarSelection.avatar),
+            db.joinedload(DbUser.detail)
+                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
+        ) \
+        .filter(DbUser.created_at >= filter_starts_at) \
+        .order_by(DbUser.created_at.desc())
+
+    if limit is not None:
+        query = query.limit(limit)
+
+    users = query.all()
+
+    return [_db_entity_to_user_for_admin(u) for u in users]
+
+
+def get_users_paginated(
+    page: int,
+    per_page: int,
+    *,
+    search_term: Optional[str] = None,
+    state_filter: Optional[UserStateFilter] = None,
+) -> Pagination:
+    """Return the users to show on the specified page, optionally
+    filtered by search term or flags.
+    """
+    query = DbUser.query \
+        .options(
+            db.joinedload(DbUser.avatar_selection)
+                .joinedload(DbAvatarSelection.avatar),
+            db.joinedload(DbUser.detail)
+                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
+        ) \
+        .order_by(DbUser.created_at.desc())
+
+    query = _filter_by_state(query, state_filter)
+
+    if search_term:
+        query = _filter_by_search_term(query, search_term)
+
+    return paginate(
+        query,
+        page,
+        per_page,
+        item_mapper=_db_entity_to_user_for_admin,
+    )
+
+
+def _filter_by_state(
+    query: Query, state_filter: Optional[UserStateFilter] = None
+) -> Query:
+    if state_filter == UserStateFilter.active:
+        return query \
+            .filter_by(initialized=True) \
+            .filter_by(suspended=False) \
+            .filter_by(deleted=False)
+    elif state_filter == UserStateFilter.uninitialized:
+        return query \
+            .filter_by(initialized=False) \
+            .filter_by(suspended=False) \
+            .filter_by(deleted=False)
+    elif state_filter == UserStateFilter.suspended:
+        return query \
+            .filter_by(suspended=True) \
+            .filter_by(deleted=False)
+    elif state_filter == UserStateFilter.deleted:
+        return query \
+            .filter_by(deleted=True)
+    else:
+        return query
+
+
+def _filter_by_search_term(query: Query, search_term: str) -> Query:
+    terms = search_term.split(' ')
+    clauses = map(_generate_search_clauses_for_term, terms)
+
+    return query \
+        .join(DbUserDetail) \
+        .filter(db.and_(*clauses))
+
+
+def _generate_search_clauses_for_term(search_term: str) -> Query:
+    ilike_pattern = f'%{search_term}%'
+
+    return db.or_(
+        DbUser.email_address.ilike(ilike_pattern),
+        DbUser.screen_name.ilike(ilike_pattern),
+        DbUserDetail.first_names.ilike(ilike_pattern),
+        DbUserDetail.last_name.ilike(ilike_pattern),
+    )
