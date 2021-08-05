@@ -257,8 +257,8 @@ def get_db_user(user_id: UserID) -> DbUser:
     return user
 
 
-def get_user_for_admin(user_id: UserID) -> UserForAdmin:
-    """Return the user with that ID, or raise an exception."""
+def find_user_for_admin(user_id: UserID) -> Optional[UserForAdmin]:
+    """Return the user with that ID, or `None` if not found."""
     user = DbUser.query \
         .options(
             db.joinedload(DbUser.avatar_selection)
@@ -269,9 +269,19 @@ def get_user_for_admin(user_id: UserID) -> UserForAdmin:
         .get(user_id)
 
     if user is None:
-        raise ValueError(f"Unknown user ID '{user_id}'")
+        return None
 
     return _db_entity_to_user_for_admin(user)
+
+
+def get_user_for_admin(user_id: UserID) -> UserForAdmin:
+    """Return the user with that ID, or raise an exception."""
+    user = find_user_for_admin(user_id)
+
+    if user is None:
+        raise ValueError(f"Unknown user ID '{user_id}'")
+
+    return user
 
 
 def _db_entity_to_user(user: DbUser) -> User:

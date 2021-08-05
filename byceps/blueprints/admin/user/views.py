@@ -27,7 +27,7 @@ from ....services.user import (
     service as user_service,
     stats_service as user_stats_service,
 )
-from ....services.user.transfer.models import UserStateFilter
+from ....services.user.transfer.models import UserForAdmin, UserStateFilter
 from ....services.user_badge import awarding_service as badge_awarding_service
 from ....signals import user as user_signals
 from ....util.authorization import register_permission_enum
@@ -249,8 +249,7 @@ def initialize_account(user_id):
 @templated
 def suspend_account_form(user_id, erroneous_form=None):
     """Show form to suspend the user account."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user_for_admin(db_user.id)
+    user = _get_user_for_admin_or_404(user_id)
 
     if user.suspended:
         flash_error(
@@ -265,7 +264,7 @@ def suspend_account_form(user_id, erroneous_form=None):
 
     return {
         'profile_user': user,
-        'user': db_user,
+        'user': user,
         'form': form,
     }
 
@@ -311,8 +310,7 @@ def suspend_account(user_id):
 @templated
 def unsuspend_account_form(user_id, erroneous_form=None):
     """Show form to unsuspend the user account."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user_for_admin(db_user.id)
+    user = _get_user_for_admin_or_404(user_id)
 
     if not user.suspended:
         flash_error(
@@ -327,7 +325,7 @@ def unsuspend_account_form(user_id, erroneous_form=None):
 
     return {
         'profile_user': user,
-        'user': db_user,
+        'user': user,
         'form': form,
     }
 
@@ -375,8 +373,7 @@ def unsuspend_account(user_id):
 @templated
 def delete_account_form(user_id, erroneous_form=None):
     """Show form to delete the user account."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user_for_admin(db_user.id)
+    user = _get_user_for_admin_or_404(user_id)
 
     if user.deleted:
         flash_error(
@@ -391,7 +388,7 @@ def delete_account_form(user_id, erroneous_form=None):
 
     return {
         'profile_user': user,
-        'user': db_user,
+        'user': user,
         'form': form,
     }
 
@@ -441,14 +438,13 @@ def delete_account(user_id):
 @templated
 def change_screen_name_form(user_id, erroneous_form=None):
     """Show form to change the user's screen name."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user_for_admin(db_user.id)
+    user = _get_user_for_admin_or_404(user_id)
 
     form = erroneous_form if erroneous_form else ChangeScreenNameForm()
 
     return {
         'profile_user': user,
-        'user': db_user,
+        'user': user,
         'form': form,
     }
 
@@ -494,14 +490,13 @@ def change_screen_name(user_id):
 @templated
 def change_email_address_form(user_id, erroneous_form=None):
     """Show form to change the user's e-mail address."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user_for_admin(db_user.id)
+    user = _get_user_for_admin_or_404(user_id)
 
     form = erroneous_form if erroneous_form else ChangeEmailAddressForm()
 
     return {
         'profile_user': user,
-        'user': db_user,
+        'user': user,
         'form': form,
     }
 
@@ -602,14 +597,13 @@ def invalidate_email_address(user_id):
 @templated
 def set_password_form(user_id, erroneous_form=None):
     """Show a form to set a new password for the user."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user_for_admin(db_user.id)
+    user = _get_user_for_admin_or_404(user_id)
 
     form = erroneous_form if erroneous_form else SetPasswordForm()
 
     return {
         'profile_user': user,
-        'user': db_user,
+        'user': user,
         'form': form,
     }
 
@@ -648,8 +642,7 @@ def set_password(user_id):
 @templated
 def view_permissions(user_id):
     """Show user's permissions."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user_for_admin(db_user.id)
+    user = _get_user_for_admin_or_404(user_id)
 
     permissions_by_role = (
         authorization_service.get_permissions_by_roles_for_user_with_titles(
@@ -659,7 +652,7 @@ def view_permissions(user_id):
 
     return {
         'profile_user': user,
-        'user': db_user,
+        'user': user,
         'permissions_by_role': permissions_by_role,
     }
 
@@ -669,8 +662,7 @@ def view_permissions(user_id):
 @templated
 def manage_roles(user_id):
     """Manage what roles are assigned to the user."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user_for_admin(db_user.id)
+    user = _get_user_for_admin_or_404(user_id)
 
     permissions_by_role = (
         authorization_service.get_permissions_by_roles_with_titles()
@@ -680,7 +672,7 @@ def manage_roles(user_id):
 
     return {
         'profile_user': user,
-        'user': db_user,
+        'user': user,
         'permissions_by_role': permissions_by_role,
         'user_role_ids': user_role_ids,
     }
@@ -739,8 +731,7 @@ def role_deassign(user_id, role_id):
 @templated
 def view_events(user_id):
     """Show user's events."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user_for_admin(db_user.id)
+    user = _get_user_for_admin_or_404(user_id)
 
     events = list(service.get_events(user.id))
 
@@ -752,7 +743,7 @@ def view_events(user_id):
 
     return {
         'profile_user': user,
-        'user': db_user,
+        'user': user,
         'events': events,
         'logins_included': include_logins,
     }
@@ -764,6 +755,15 @@ def view_events(user_id):
 
 def _get_db_user_with_details_or_404(user_id):
     user = user_service.find_user_with_details(user_id)
+
+    if user is None:
+        abort(404)
+
+    return user
+
+
+def _get_user_for_admin_or_404(user_id) -> UserForAdmin:
+    user = user_service.find_user_for_admin(user_id)
 
     if user is None:
         abort(404)
