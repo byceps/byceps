@@ -143,7 +143,8 @@ def order_single_form(article_id, erroneous_form=None):
     storefront = _get_storefront_or_404()
     shop = shop_service.get_shop(storefront.shop_id)
 
-    detail = user_service.get_detail(g.user.id)
+    user = g.user
+    detail = user_service.get_detail(user.id)
 
     form = erroneous_form if erroneous_form else OrderForm(obj=detail)
 
