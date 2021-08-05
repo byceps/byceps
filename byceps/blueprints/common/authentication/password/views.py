@@ -92,7 +92,7 @@ def request_reset():
         return request_reset_form(form)
 
     screen_name = form.screen_name.data.strip()
-    user = user_service.find_db_user_by_screen_name(
+    user = user_service.find_user_by_screen_name(
         screen_name, case_insensitive=True
     )
 
@@ -105,7 +105,9 @@ def request_reset():
         )
         return request_reset_form(form)
 
-    if user.email_address is None:
+    email_address = user_service.get_email_address_data(user.id)
+
+    if email_address.address is None:
         flash_error(
             gettext(
                 'No email address is set for user "%(screen_name)s".',
@@ -114,7 +116,7 @@ def request_reset():
         )
         return request_reset_form(form)
 
-    if not user.email_address_verified:
+    if not email_address.verified:
         flash_error(
             gettext(
                 'The email address for user "%(screen_name)s" has not been verified.',

@@ -49,7 +49,7 @@ def request_confirmation_email():
         return request_confirmation_email_form(form)
 
     screen_name = form.screen_name.data.strip()
-    user = user_service.find_db_user_by_screen_name(
+    user = user_service.find_user_by_screen_name(
         screen_name, case_insensitive=True
     )
 
@@ -62,7 +62,9 @@ def request_confirmation_email():
         )
         return request_confirmation_email_form(form)
 
-    if user.email_address is None:
+    email_address = user_service.get_email_address_data(user.id)
+
+    if email_address.address is None:
         flash_error(
             gettext(
                 'No email address is set for user "%(screen_name)s".',
@@ -71,7 +73,7 @@ def request_confirmation_email():
         )
         return request_confirmation_email_form(form)
 
-    if user.email_address_verified:
+    if email_address.verified:
         flash_notice(
             gettext(
                 'The email address for user "%(screen_name)s" has already been verified.',
@@ -90,7 +92,7 @@ def request_confirmation_email():
         return request_confirmation_email_form()
 
     email_address_verification_service.send_email_address_confirmation_email(
-        user.email_address, user.screen_name, user.id, g.site_id
+        email_address.address, user.screen_name, user.id, g.site_id
     )
 
     flash_success(

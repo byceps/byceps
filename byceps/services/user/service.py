@@ -10,6 +10,8 @@ from __future__ import annotations
 from datetime import datetime, timedelta
 from typing import Optional
 
+from sqlalchemy import select
+
 from ...database import db, paginate, Pagination, Query
 from ...typing import PartyID, UserID
 
@@ -27,6 +29,7 @@ from .dbmodels.user import User as DbUser
 from .transfer.models import (
     User,
     UserDetail,
+    UserEmailAddress,
     UserForAdmin,
     UserForAdminDetail,
     UserStateFilter,
@@ -380,6 +383,25 @@ def get_email_address(user_id: UserID) -> str:
         )
 
     return email_address
+
+
+def get_email_address_data(user_id: UserID) -> UserEmailAddress:
+    """Return the user's e-mail address data."""
+    row = db.session.execute(
+        select(
+            DbUser.email_address,
+            DbUser.email_address_verified,
+        ) \
+        .filter_by(id=user_id)
+    ).one_or_none()
+
+    if row is None:
+        raise ValueError(f"Unknown user ID '{user_id}'")
+
+    return UserEmailAddress(
+        address=row[0],
+        verified=row[1],
+    )
 
 
 def get_email_addresses(user_ids: set[UserID]) -> set[tuple[UserID, str]]:

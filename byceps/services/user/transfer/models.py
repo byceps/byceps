@@ -27,6 +27,12 @@ class User:
 
 
 @dataclass(frozen=True)
+class UserEmailAddress:
+    address: Optional[str]
+    verified: bool
+
+
+@dataclass(frozen=True)
 class UserDetail:
     first_names: Optional[str]
     last_name: Optional[str]

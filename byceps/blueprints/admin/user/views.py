@@ -538,10 +538,10 @@ def change_email_address(user_id):
 @templated
 def invalidate_email_address_form(user_id, erroneous_form=None):
     """Show form to invalidate the email address assigned with the account."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user_for_admin(db_user.id)
+    user = _get_user_for_admin_or_404(user_id)
 
-    if not db_user.email_address_verified:
+    email_address = user_service.get_email_address_data(user_id)
+    if not email_address.verified:
         flash_error(gettext('Email address is already invalidated.'))
         return redirect_to('.view', user_id=user.id)
 
@@ -549,7 +549,7 @@ def invalidate_email_address_form(user_id, erroneous_form=None):
 
     return {
         'profile_user': user,
-        'user': db_user,
+        'user': user,
         'form': form,
     }
 
@@ -558,10 +558,10 @@ def invalidate_email_address_form(user_id, erroneous_form=None):
 @permission_required(UserPermission.administrate)
 def invalidate_email_address(user_id):
     """Invalidate the email address assigned with the account."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user_for_admin(db_user.id)
+    user = _get_user_or_404(user_id)
 
-    if not db_user.email_address_verified:
+    email_address = user_service.get_email_address_data(user_id)
+    if not email_address.verified:
         flash_error(gettext('Email address is already invalidated.'))
         return redirect_to('.view', user_id=user.id)
 
