@@ -526,6 +526,7 @@ msgstr "Passwort vergessen?"
 
 #: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:40
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:9
+#: byceps/blueprints/admin/user/templates/admin/user/set_password_form.html:5
 #: byceps/blueprints/common/authentication/password/templates/common/authentication/password/reset_form.html:5
 msgid "Set new password"
 msgstr "Neues Passwort setzen"
@@ -4262,12 +4263,14 @@ msgid "Unsuspend"
 msgstr "Entsperren"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:23
+#: byceps/blueprints/admin/user/templates/admin/user/change_screen_name_form.html:5
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:36
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/change_screen_name_form.html:5
 msgid "Change user name"
 msgstr "Benutzername ändern"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:24
+#: byceps/blueprints/admin/user/templates/admin/user/change_email_address_form.html:5
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:46
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/change_email_address_form.html:5
 msgid "Change email address"
@@ -4334,11 +4337,6 @@ msgstr "verwaltet Sitzplatz"
 msgid "manages user"
 msgstr "verwaltet Nutzer/in"
 
-#: byceps/blueprints/admin/user/templates/admin/user/change_email_address_form.html:5
-#, python-format
-msgid "Change email address of user '%(screen_name)s'"
-msgstr "E-Mail-Adresse von Benutzer '%(screen_name)s' ändern"
-
 #: byceps/blueprints/admin/user/templates/admin/user/change_email_address_form.html:13
 #: byceps/blueprints/admin/user/templates/admin/user/change_screen_name_form.html:13
 #: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:17
@@ -4346,11 +4344,6 @@ msgstr "E-Mail-Adresse von Benutzer '%(screen_name)s' ändern"
 #: byceps/blueprints/admin/user/templates/admin/user/unsuspend_account_form.html:12
 msgid "The reason will be saved as <em>internal</em> remark."
 msgstr "Der Grund wird als <em>interner Vermerk</em> gespeichert."
-
-#: byceps/blueprints/admin/user/templates/admin/user/change_screen_name_form.html:5
-#, python-format
-msgid "Change screen name of user '%(screen_name)s'"
-msgstr "Benutzername von Benutzer '%(screen_name)s' ändern"
 
 #: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:5
 #: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:4
@@ -4364,9 +4357,8 @@ msgstr ""
 "versendet."
 
 #: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:6
-#, python-format
-msgid "Delete user account '%(screen_name)s'"
-msgstr "Benutzerkonto '%(screen_name)s' löschen"
+msgid "Delete user account"
+msgstr "Benutzerkonto löschen"
 
 #: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:13
 msgid "Warning: Deleting the user account is permanent!"
@@ -4412,24 +4404,17 @@ msgstr "Rolle zuweisen?"
 msgid "Unassign role?"
 msgstr "Rolle entfernen?"
 
-#: byceps/blueprints/admin/user/templates/admin/user/set_password_form.html:5
-#, python-format
-msgid "Set new password for user '%(screen_name)s'"
-msgstr "Neues Passwort für Benutzer '%(screen_name)s' setzen"
-
 #: byceps/blueprints/admin/user/templates/admin/user/suspend_account_form.html:5
-#, python-format
-msgid "Suspend user account '%(screen_name)s'"
-msgstr "Benutzerkonto '%(screen_name)s' sperren"
+msgid "Suspend user account"
+msgstr "Benutzerkonto sperren"
 
 #: byceps/blueprints/admin/user/templates/admin/user/suspend_account_form.html:14
 msgid "Lock"
 msgstr "Sperren"
 
 #: byceps/blueprints/admin/user/templates/admin/user/unsuspend_account_form.html:5
-#, python-format
-msgid "Unsuspend user account '%(screen_name)s'"
-msgstr "Benutzerkonto '%(screen_name)s' entsperren"
+msgid "Unsuspend user account"
+msgstr "Benutzerkonto entsperren"
 
 #: byceps/blueprints/admin/user/templates/admin/user/unsuspend_account_form.html:14
 msgid "Unlock"
