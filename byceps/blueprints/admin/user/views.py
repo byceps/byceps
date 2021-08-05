@@ -100,8 +100,8 @@ def index(page):
 @templated
 def view(user_id):
     """Show a user's interal profile."""
-    db_user = _get_db_user_with_details_or_404(user_id)
-    user = user_service.get_user_for_admin(db_user.id)
+    user = _get_user_for_admin_or_404(user_id)
+    db_user = user_service.find_user_with_details(user.id)
 
     recent_login = session_service.find_recent_login(user.id)
     days_since_recent_login = _calculate_days_since(recent_login)
@@ -751,15 +751,6 @@ def view_events(user_id):
 
 # -------------------------------------------------------------------- #
 # helpers
-
-
-def _get_db_user_with_details_or_404(user_id):
-    user = user_service.find_user_with_details(user_id)
-
-    if user is None:
-        abort(404)
-
-    return user
 
 
 def _get_user_for_admin_or_404(user_id) -> UserForAdmin:
