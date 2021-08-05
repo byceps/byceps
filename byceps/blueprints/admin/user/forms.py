@@ -10,6 +10,7 @@ import re
 
 from flask_babel import lazy_gettext, pgettext
 from wtforms import PasswordField, SelectField, StringField, TextAreaField
+from wtforms.fields.html5 import DateField, TelField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from ....services.site import service as site_service
@@ -139,6 +140,23 @@ class InvalidateEmailAddressForm(LocalizedForm):
     reason = TextAreaField(
         lazy_gettext('Reason'),
         validators=[InputRequired(), Length(max=1000)],
+    )
+
+
+class ChangeDetailsForm(LocalizedForm):
+    first_names = StringField(
+        lazy_gettext('First name(s)'), [InputRequired(), Length(min=2)]
+    )
+    last_name = StringField(
+        lazy_gettext('Last name(s)'), [InputRequired(), Length(min=2, max=80)]
+    )
+    date_of_birth = DateField(lazy_gettext('Date of birth'), [Optional()])
+    country = StringField(lazy_gettext('Country'), [Optional(), Length(max=60)])
+    zip_code = StringField(lazy_gettext('Zip code'), [Optional()])
+    city = StringField(lazy_gettext('City'), [Optional()])
+    street = StringField(lazy_gettext('Street'), [Optional()])
+    phone_number = TelField(
+        lazy_gettext('Phone number'), [Optional(), Length(max=20)]
     )
 
 

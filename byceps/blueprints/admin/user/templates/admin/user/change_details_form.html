@@ -1,0 +1,38 @@
+{% extends 'layout/admin/user.html' %}
+{% from 'macros/forms.html' import form_buttons, form_datalist, form_field %}
+{% set current_tab = 'profile' %}
+{% set current_tab_user_id = user.id %}
+{% set page_title = _('Change personal data') %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <form action="{{ url_for('.change_details', user_id=user.id) }}" method="post">
+    {{ form_datalist('countries', country_names) }}
+
+    <div class="row">
+      <div class="column-auto column-auto--grow">
+        {{ form_field(form.first_names, maxlength=40, autofocus='autofocus') }}
+      </div>
+      <div class="column-auto column-auto--grow">
+        {{ form_field(form.last_name, maxlength=80) }}
+      </div>
+    </div>
+    {{ form_field(form.date_of_birth, size=10) }}
+    {{ form_field(form.street, maxlength=40) }}
+    <div class="row">
+      <div class="column-auto">
+        {{ form_field(form.zip_code, size=5, maxlength=5) }}
+      </div>
+      <div class="column-auto column-auto--grow">
+        {{ form_field(form.city, maxlength=40) }}
+      </div>
+    </div>
+    {{ form_field(form.country, list='countries', maxlength=60) }}
+    {{ form_field(form.phone_number, maxlength=20) }}
+
+    {{ form_buttons(_('Save')) }}
+  </form>
+
+{%- endblock %}

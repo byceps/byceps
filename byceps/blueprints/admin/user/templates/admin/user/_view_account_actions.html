@@ -23,6 +23,7 @@
         <li><a class="dropdown-item" href="{{ url_for('.change_screen_name_form', user_id=user.id) }}">{{ render_icon('edit') }} {{ _('Change user name') }}</a></li>
         <li><a class="dropdown-item" href="{{ url_for('.change_email_address_form', user_id=user.id) }}">{{ render_icon('edit') }} {{ _('Change email address') }}</a></li>
         <li><a class="dropdown-item" href="{{ url_for('.invalidate_email_address_form', user_id=user.id) }}">{{ render_icon('disabled') }} {{ _('Invalidate email address') }}</a></li>
+        <li><a class="dropdown-item" href="{{ url_for('.change_details_form', user_id=user.id) }}">{{ render_icon('edit') }} {{ _('Change personal data') }}</a></li>
         <li><a class="dropdown-item" href="{{ url_for('.delete_account_form', user_id=user.id) }}">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
 
         {%- endif %}

@@ -15,6 +15,7 @@ from flask_babel import gettext
 from ....services.authentication.password import service as password_service
 from ....services.authentication.session import service as session_service
 from ....services.authorization import service as authorization_service
+from ....services.country import service as country_service
 from ....services.orga_team import service as orga_team_service
 from ....services.shop.order import service as order_service
 from ....services.shop.shop import service as shop_service
@@ -40,6 +41,7 @@ from ..authorization.authorization import RolePermission
 
 from .authorization import UserPermission
 from .forms import (
+    ChangeDetailsForm,
     ChangeEmailAddressForm,
     ChangeScreenNameForm,
     CreateAccountForm,
@@ -584,6 +586,69 @@ def invalidate_email_address(user_id):
             screen_name=user.screen_name,
         )
     )
+
+    return redirect_to('.view', user_id=user.id)
+
+
+# -------------------------------------------------------------------- #
+# details
+
+
+@blueprint.get('/<uuid:user_id>/details')
+@permission_required(UserPermission.administrate)
+@templated
+def change_details_form(user_id, erroneous_form=None):
+    """Show a form to change the user's details."""
+    user = _get_user_for_admin_or_404(user_id)
+
+    detail = user_service.get_detail(user_id)
+
+    form = erroneous_form if erroneous_form else ChangeDetailsForm(obj=detail)
+    country_names = country_service.get_country_names()
+
+    return {
+        'profile_user': user,
+        'user': user,
+        'form': form,
+        'country_names': country_names,
+    }
+
+
+@blueprint.post('/<uuid:user_id>/details')
+@permission_required(UserPermission.administrate)
+def change_details(user_id):
+    """Change the user's details."""
+    user = _get_user_or_404(user_id)
+
+    form = ChangeDetailsForm(request.form)
+    if not form.validate():
+        return change_details_form(user.id, form)
+
+    first_names = form.first_names.data.strip()
+    last_name = form.last_name.data.strip()
+    date_of_birth = form.date_of_birth.data
+    country = form.country.data.strip()
+    zip_code = form.zip_code.data.strip()
+    city = form.city.data.strip()
+    street = form.street.data.strip()
+    phone_number = form.phone_number.data.strip()
+
+    event = user_command_service.update_user_details(
+        user.id,
+        first_names,
+        last_name,
+        date_of_birth,
+        country,
+        zip_code,
+        city,
+        street,
+        phone_number,
+        g.user.id,  # initiator_id
+    )
+
+    flash_success(gettext('Changes have been saved.'))
+
+    user_signals.details_updated.send(None, event=event)
 
     return redirect_to('.view', user_id=user.id)
 
