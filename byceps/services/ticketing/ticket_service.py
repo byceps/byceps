@@ -12,7 +12,6 @@ from typing import Optional, Sequence
 from ...database import db, Pagination
 from ...typing import PartyID, UserID
 
-from ..party.dbmodels.party import Party as DbParty
 from ..party import service as party_service
 from ..seating.dbmodels.seat import Seat as DbSeat
 from ..shop.order.transfer.models import OrderNumber
@@ -284,29 +283,6 @@ def get_tickets_with_details_for_party_paginated(
     return query \
         .order_by(DbTicket.created_at) \
         .paginate(page, per_page)
-
-
-def get_ticket_count_by_party_id() -> dict[PartyID, int]:
-    """Return ticket count (including 0) per party, indexed by party ID."""
-    party = db.aliased(DbParty)
-
-    subquery = db.session \
-        .query(
-            db.func.count(DbTicket.id)
-        ) \
-        .join(DbCategory) \
-        .filter(DbCategory.party_id == party.id) \
-        .filter(DbTicket.revoked == False) \
-        .scalar_subquery()
-
-    party_ids_and_ticket_counts = db.session \
-        .query(
-            party.id,
-            subquery
-        ) \
-        .all()
-
-    return dict(party_ids_and_ticket_counts)
 
 
 def count_revoked_tickets_for_party(party_id: PartyID) -> int:
