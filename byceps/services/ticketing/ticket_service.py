@@ -297,8 +297,7 @@ def get_ticket_count_by_party_id() -> dict[PartyID, int]:
         .join(DbCategory) \
         .filter(DbCategory.party_id == party.id) \
         .filter(DbTicket.revoked == False) \
-        .subquery() \
-        .as_scalar()
+        .scalar_subquery()
 
     party_ids_and_ticket_counts = db.session \
         .query(

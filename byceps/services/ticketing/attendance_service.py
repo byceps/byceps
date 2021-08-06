@@ -147,8 +147,7 @@ def _get_top_ticket_attendees_for_parties(
         .join(DbTicket) \
         .filter(DbTicket.revoked == False) \
         .filter(DbTicket.used_by_id == user_id_column) \
-        .subquery() \
-        .as_scalar()
+        .scalar_subquery()
 
     return db.session \
         .query(

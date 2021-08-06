@@ -73,8 +73,7 @@ def get_areas_for_party_paginated(
         .filter(DbTicket.occupied_seat_id != None) \
         .join(DbSeat) \
         .filter(DbSeat.area_id == area.id) \
-        .subquery() \
-        .as_scalar()
+        .scalar_subquery()
 
     return db.session \
         .query(
