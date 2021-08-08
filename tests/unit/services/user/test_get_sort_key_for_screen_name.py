@@ -31,5 +31,4 @@ def create_user(screen_name: str) -> User:
         deleted=False,
         locale=None,
         avatar_url=None,
-        is_orga=False,
     )

@@ -56,7 +56,6 @@ def create_user_and_birthday(date_of_birth: date) -> tuple[User, Birthday]:
         deleted=False,
         locale=None,
         avatar_url=None,
-        is_orga=False,
     )
     birthday = Birthday(date_of_birth)
     return user, birthday

@@ -77,7 +77,6 @@ def _to_user_dto(
         deleted=user.deleted,
         locale=user.locale,
         avatar_url=avatar_url,
-        is_orga=True,
     )
 
 

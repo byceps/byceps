@@ -7,7 +7,6 @@ byceps.services.orga_team.service
 """
 
 from __future__ import annotations
-import dataclasses
 from typing import Optional, Sequence
 
 from sqlalchemy import select
@@ -289,12 +288,7 @@ def _get_public_orga_users_by_id(
     memberships: DbMembership,
 ) -> dict[UserID, User]:
     user_ids = {ms.user_id for ms in memberships}
-
     users = user_service.find_users(user_ids, include_avatars=True)
-
-    # Each of these users is an organizer.
-    users = {dataclasses.replace(u, is_orga=True) for u in users}
-
     return {user.id: user for user in users}
 
 

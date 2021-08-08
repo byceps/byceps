@@ -23,7 +23,6 @@ class User:
     deleted: bool
     locale: Optional[str]
     avatar_url: Optional[str]
-    is_orga: bool
 
 
 @dataclass(frozen=True)

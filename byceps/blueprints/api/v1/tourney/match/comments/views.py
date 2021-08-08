@@ -52,7 +52,6 @@ def get_comment(comment_id):
     comment = _get_comment_or_404(comment_id)
 
     party_id = request.args.get('party_id')
-
     if party_id:
         user_ids = set(_get_user_ids_for_comment(comment))
         orga_ids = orga_team_service.select_orgas_for_party(user_ids, party_id)
@@ -70,12 +69,9 @@ def get_comments_for_match(match_id):
     """Return the comments on the match."""
     match = _get_match_or_404(match_id)
 
+    comments = comment_service.get_comments(match.id, include_hidden=True)
+
     party_id = request.args.get('party_id')
-
-    comments = comment_service.get_comments(
-        match.id, party_id=party_id, include_hidden=True
-    )
-
     if party_id:
         user_ids = set(
             chain.from_iterable(map(_get_user_ids_for_comment, comments))

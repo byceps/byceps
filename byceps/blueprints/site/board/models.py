@@ -47,6 +47,7 @@ class Ticket:
 
 @dataclass(frozen=True)
 class Creator(User):
+    is_orga: bool
     badges: set[Badge]
     ticket: Optional[Ticket]
 

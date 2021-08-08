@@ -9,9 +9,7 @@ byceps.services.user.dbmodels.user
 from datetime import datetime
 from typing import Optional
 
-from flask import g
 from sqlalchemy.ext.associationproxy import association_proxy
-from werkzeug.utils import cached_property
 
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
@@ -53,17 +51,6 @@ class User(db.Model):
     def avatar_url(self) -> Optional[str]:
         avatar = self.avatar
         return avatar.url if (avatar is not None) else None
-
-    @cached_property
-    def is_orga(self) -> bool:
-        party_id = getattr(g, 'party_id', None)
-
-        if party_id is None:
-            return False
-
-        from ...orga_team import service as orga_team_service
-
-        return orga_team_service.is_orga_for_party(self.id, party_id)
 
     def __eq__(self, other) -> bool:
         return (other is not None) and (self.id == other.id)

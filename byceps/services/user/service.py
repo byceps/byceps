@@ -13,7 +13,7 @@ from typing import Optional
 from sqlalchemy import select
 
 from ...database import db, paginate, Pagination, Query
-from ...typing import PartyID, UserID
+from ...typing import UserID
 
 from ..orga_team.dbmodels import (
     OrgaTeam as DbOrgaTeam,
@@ -54,7 +54,6 @@ def find_active_user(
     user_id: UserID,
     *,
     include_avatar: bool = False,
-    include_orga_flag_for_party_id: Optional[PartyID] = None,
 ) -> Optional[User]:
     """Return the user with that ID if the account is "active", or
     `None` if:
@@ -63,7 +62,7 @@ def find_active_user(
     - the account is currently suspended.
     - the account is marked as deleted.
     """
-    query = _get_user_query(include_avatar, include_orga_flag_for_party_id)
+    query = _get_user_query(include_avatar)
 
     row = query \
         .filter(DbUser.initialized == True) \
@@ -82,13 +81,12 @@ def find_user(
     user_id: UserID,
     *,
     include_avatar: bool = False,
-    include_orga_flag_for_party_id: Optional[PartyID] = None,
 ) -> Optional[User]:
     """Return the user with that ID, or `None` if not found.
 
     Include avatar URL if requested.
     """
-    row = _get_user_query(include_avatar, include_orga_flag_for_party_id) \
+    row = _get_user_query(include_avatar) \
         .filter(DbUser.id == user_id) \
         .one_or_none()
 
@@ -98,21 +96,12 @@ def find_user(
     return _user_row_to_dto(row)
 
 
-def get_user(
-    user_id: UserID,
-    *,
-    include_avatar: bool = False,
-    include_orga_flag_for_party_id: Optional[PartyID] = None,
-) -> User:
+def get_user(user_id: UserID, *, include_avatar: bool = False) -> User:
     """Return the user with that ID, or raise an exception.
 
     Include avatar URL if requested.
     """
-    user = find_user(
-        user_id,
-        include_avatar=include_avatar,
-        include_orga_flag_for_party_id=include_orga_flag_for_party_id,
-    )
+    user = find_user(user_id, include_avatar=include_avatar)
 
     if user is None:
         raise ValueError(f"Unknown user ID '{user_id}'")
@@ -124,7 +113,6 @@ def find_users(
     user_ids: set[UserID],
     *,
     include_avatars: bool = False,
-    include_orga_flags_for_party_id: Optional[PartyID] = None,
 ) -> set[User]:
     """Return the users with those IDs.
 
@@ -133,7 +121,7 @@ def find_users(
     if not user_ids:
         return set()
 
-    query = _get_user_query(include_avatars, include_orga_flags_for_party_id)
+    query = _get_user_query(include_avatars)
 
     rows = query \
         .filter(DbUser.id.in_(frozenset(user_ids))) \
@@ -144,14 +132,7 @@ def find_users(
 
 def _get_user_query(
     include_avatar: bool,
-    include_orga_flags_for_party_id: Optional[PartyID] = None,
 ) -> Query:
-    orga_flag_expression = db.false()
-    if include_orga_flags_for_party_id is not None:
-        orga_flag_expression = _get_orga_flag_subquery(
-            include_orga_flags_for_party_id
-        )
-
     query = db.session \
         .query(
             DbUser.id,
@@ -160,7 +141,6 @@ def _get_user_query(
             DbUser.deleted,
             DbUser.locale,
             DbAvatar if include_avatar else db.null(),
-            orga_flag_expression,
         )
 
     if include_avatar:
@@ -171,21 +151,10 @@ def _get_user_query(
     return query
 
 
-def _get_orga_flag_subquery(party_id: PartyID):
-    return db.session \
-        .query(
-            db.func.count(DbOrgaTeamMembership.id)
-        ) \
-        .join(DbOrgaTeam) \
-        .filter(DbOrgaTeam.party_id == party_id) \
-        .filter(DbOrgaTeamMembership.user_id == DbUser.id) \
-        .exists()
-
-
 def _user_row_to_dto(
-    row: tuple[UserID, str, bool, bool, Optional[str], Optional[DbAvatar], bool]
+    row: tuple[UserID, str, bool, bool, Optional[str], Optional[DbAvatar]]
 ) -> User:
-    user_id, screen_name, suspended, deleted, locale, avatar, is_orga = row
+    user_id, screen_name, suspended, deleted, locale, avatar = row
     avatar_url = avatar.url if (avatar is not None) else None
 
     return User(
@@ -195,7 +164,6 @@ def _user_row_to_dto(
         deleted=deleted,
         locale=locale,
         avatar_url=avatar_url,
-        is_orga=is_orga,
     )
 
 
@@ -288,17 +256,13 @@ def get_user_for_admin(user_id: UserID) -> UserForAdmin:
 
 
 def _db_entity_to_user(user: DbUser) -> User:
-    avatar_url = None
-    is_orga = False  # Information is not available here by design.
-
     return User(
         id=user.id,
         screen_name=user.screen_name,
         suspended=user.suspended,
         deleted=user.deleted,
         locale=user.locale,
-        avatar_url=avatar_url,
-        is_orga=is_orga,
+        avatar_url=None,
     )
 
 
@@ -328,13 +292,11 @@ def _db_entity_to_user_with_detail(user: DbUser) -> UserWithDetail:
         deleted=user_dto.deleted,
         locale=user_dto.locale,
         avatar_url=user_dto.avatar_url,
-        is_orga=user_dto.is_orga,
         detail=detail_dto,
     )
 
 
 def _db_entity_to_user_for_admin(user: DbUser) -> UserForAdmin:
-    is_orga = False  # Not interesting here.
     full_name = user.detail.full_name if user.detail is not None else None
     detail = UserForAdminDetail(full_name=full_name)
 
@@ -345,7 +307,6 @@ def _db_entity_to_user_for_admin(user: DbUser) -> UserForAdmin:
         deleted=user.deleted,
         locale=user.locale,
         avatar_url=user.avatar.url if user.avatar else None,
-        is_orga=is_orga,
         created_at=user.created_at,
         initialized=user.initialized,
         detail=detail,

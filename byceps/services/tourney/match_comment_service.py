@@ -14,15 +14,13 @@ from ...database import db
 from ...services.text_markup import service as text_markup_service
 from ...services.user import service as user_service
 from ...services.user.transfer.models import User
-from ...typing import PartyID, UserID
+from ...typing import UserID
 
 from .dbmodels.match_comment import MatchComment as DbMatchComment
 from .transfer.models import MatchID, MatchComment, MatchCommentID
 
 
-def find_comment(
-    comment_id: MatchCommentID, *, party_id: Optional[PartyID] = None
-) -> Optional[MatchComment]:
+def find_comment(comment_id: MatchCommentID) -> Optional[MatchComment]:
     """Return the comment, or `None` if not found."""
     comment = db.session.query(DbMatchComment).get(comment_id)
 
@@ -30,26 +28,24 @@ def find_comment(
         return None
 
     # creator
-    creator = _get_user(comment.created_by_id, party_id)
+    creator = _get_user(comment.created_by_id)
 
     # last editor
     last_editor = None
     if comment.last_edited_by_id:
-        last_editor = _get_user(comment.last_edited_by_id, party_id)
+        last_editor = _get_user(comment.last_edited_by_id)
 
     # moderator
     moderator = None
     if comment.hidden_by_id:
-        moderator = _get_user(comment.hidden_by_id, party_id)
+        moderator = _get_user(comment.hidden_by_id)
 
     return _db_entity_to_comment(
         comment, creator, last_editor=last_editor, moderator=moderator,
     )
 
 
-def get_comment(
-    comment_id: MatchCommentID, *, party_id: Optional[PartyID] = None
-) -> MatchComment:
+def get_comment(comment_id: MatchCommentID) -> MatchComment:
     """Return the comment.
 
     Raise exception if comment ID is unknown.
@@ -65,7 +61,6 @@ def get_comment(
 def get_comments(
     match_id: MatchID,
     *,
-    party_id: Optional[PartyID] = None,
     include_hidden: bool = False,
 ) -> Sequence[MatchComment]:
     """Return comments on the match, ordered chronologically."""
@@ -82,7 +77,7 @@ def get_comments(
 
     # creators
     creator_ids = {comment.created_by_id for comment in db_comments}
-    creators_by_id = _get_users_by_id(creator_ids, party_id=party_id)
+    creators_by_id = _get_users_by_id(creator_ids)
 
     # last editors
     last_editor_ids = {
@@ -90,13 +85,13 @@ def get_comments(
         for comment in db_comments
         if comment.last_edited_by_id
     }
-    last_editors_by_id = _get_users_by_id(last_editor_ids, party_id=party_id)
+    last_editors_by_id = _get_users_by_id(last_editor_ids)
 
     # moderators
     moderator_ids = {
         comment.hidden_by_id for comment in db_comments if comment.hidden_by_id
     }
-    moderators_by_id = _get_users_by_id(moderator_ids, party_id=party_id)
+    moderators_by_id = _get_users_by_id(moderator_ids)
 
     comments = []
     for db_comment in db_comments:
@@ -112,13 +107,8 @@ def get_comments(
     return comments
 
 
-def _get_users_by_id(
-    user_ids: set[UserID], *, party_id: Optional[PartyID] = None
-) -> dict[UserID, User]:
-    users = user_service.find_users(
-        user_ids, include_avatars=True, include_orga_flags_for_party_id=party_id
-    )
-
+def _get_users_by_id(user_ids: set[UserID]) -> dict[UserID, User]:
+    users = user_service.find_users(user_ids, include_avatars=True)
     return user_service.index_users_by_id(users)
 
 
@@ -184,10 +174,8 @@ def _get_db_comment(comment_id: MatchCommentID) -> DbMatchComment:
     return comment
 
 
-def _get_user(user_id: UserID, party_id: Optional[PartyID] = None) -> User:
-    return user_service.get_user(
-        user_id, include_avatar=True, include_orga_flag_for_party_id=party_id
-    )
+def _get_user(user_id: UserID) -> User:
+    return user_service.get_user(user_id, include_avatar=True)
 
 
 def _db_entity_to_comment(

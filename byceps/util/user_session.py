@@ -18,7 +18,7 @@ from ..services.authentication.session.models.current_user import CurrentUser
 from ..services.authentication.session import service as session_service
 from ..services.user import service as user_service
 from ..services.user.transfer.models import User
-from ..typing import PartyID, UserID
+from ..typing import UserID
 
 from .authorization import get_permissions_for_user
 
@@ -46,14 +46,10 @@ def end() -> None:
     session.permanent = False
 
 
-def get_current_user(
-    required_permissions: set[Enum],
-    *,
-    party_id: Optional[PartyID] = None,
-) -> CurrentUser:
+def get_current_user(required_permissions: set[Enum]) -> CurrentUser:
     session_locale = _get_session_locale()
 
-    user = _find_user(party_id=party_id)
+    user = _find_user()
     if user is None:
         return session_service.get_anonymous_current_user(session_locale)
 
@@ -68,7 +64,7 @@ def get_current_user(
     )
 
 
-def _find_user(*, party_id: Optional[PartyID] = None) -> Optional[User]:
+def _find_user() -> Optional[User]:
     """Return the current user if authenticated, `None` if not.
 
     Return `None` if:
@@ -87,9 +83,7 @@ def _find_user(*, party_id: Optional[PartyID] = None) -> Optional[User]:
     except ValueError:
         return None
 
-    user = user_service.find_active_user(
-        user_id, include_avatar=True, include_orga_flag_for_party_id=party_id
-    )
+    user = user_service.find_active_user(user_id, include_avatar=True)
 
     if user is None:
         return None

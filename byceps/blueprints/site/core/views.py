@@ -47,4 +47,4 @@ def prepare_request_globals() -> None:
     g.party_id = party_id
 
     required_permissions = set()
-    g.user = get_current_user(required_permissions, party_id=party_id)
+    g.user = get_current_user(required_permissions)

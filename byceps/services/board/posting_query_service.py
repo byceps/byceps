@@ -10,7 +10,7 @@ from __future__ import annotations
 from typing import Optional
 
 from ...database import db, Pagination
-from ...typing import PartyID, UserID
+from ...typing import UserID
 from ...util.iterables import index_of
 
 from ..user import service as user_service
@@ -47,7 +47,6 @@ def get_posting(posting_id: PostingID) -> DbPosting:
 def paginate_postings(
     topic_id: TopicID,
     include_hidden: bool,
-    party_id: Optional[PartyID],
     page: int,
     postings_per_page: int,
 ) -> Pagination:
@@ -68,7 +67,7 @@ def paginate_postings(
         .paginate(page, postings_per_page)
 
     creator_ids = {posting.creator_id for posting in postings.items}
-    creators_by_id = _get_users_by_id(creator_ids, party_id)
+    creators_by_id = _get_users_by_id(creator_ids)
 
     for posting in postings.items:
         posting.creator = creators_by_id[posting.creator_id]
@@ -76,12 +75,8 @@ def paginate_postings(
     return postings
 
 
-def _get_users_by_id(
-    user_ids: set[UserID], party_id: Optional[PartyID]
-) -> dict[UserID, User]:
-    users = user_service.find_users(
-        user_ids, include_avatars=True, include_orga_flags_for_party_id=party_id
-    )
+def _get_users_by_id(user_ids: set[UserID]) -> dict[UserID, User]:
+    users = user_service.find_users(user_ids, include_avatars=True)
     return user_service.index_users_by_id(users)
 
 
