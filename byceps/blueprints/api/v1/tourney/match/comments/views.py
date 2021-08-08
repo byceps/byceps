@@ -90,7 +90,7 @@ def _comment_to_json(comment: MatchComment) -> dict[str, Any]:
         'last_editor': _potential_user_to_json(last_editor),
         'hidden': comment.hidden,
         'hidden_at': _potential_datetime_to_json(comment.hidden_at),
-        'hidden_by_id': _potential_user_to_json(moderator),
+        'hidden_by': _potential_user_to_json(moderator),
     }
 
 

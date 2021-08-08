@@ -40,7 +40,7 @@ def test_get_comments_for_match(
                 'last_editor': None,
                 'hidden': False,
                 'hidden_at': None,
-                'hidden_by_id': None,
+                'hidden_by': None,
             }
         ]
     }
@@ -82,7 +82,7 @@ def test_get_comments_for_match_with_edited_comment(
                 },
                 'hidden': False,
                 'hidden_at': None,
-                'hidden_by_id': None,
+                'hidden_by': None,
             }
         ]
     }

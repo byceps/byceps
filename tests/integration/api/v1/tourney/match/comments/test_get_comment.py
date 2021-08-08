@@ -36,7 +36,7 @@ def test_get_comment(api_client, api_client_authz_header, comment):
         'last_editor': None,
         'hidden': False,
         'hidden_at': None,
-        'hidden_by_id': None,
+        'hidden_by': None,
     }
 
 
@@ -76,7 +76,7 @@ def test_get_comment_with_edited_comment(
         },
         'hidden': False,
         'hidden_at': None,
-        'hidden_by_id': None,
+        'hidden_by': None,
     }
 
 
