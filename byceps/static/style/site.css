@@ -369,9 +369,13 @@ form.board-posting-create-form-inline .label {
 }
 
 .avatar-orga-overlay {
+  background-image: var(--avatar-orga-overlay-image, none);
+  background-repeat: no-repeat;
+  height: 100%;
   left: 0;
   position: absolute;
   top: 0;
+  width: 100%;
 }
 
 

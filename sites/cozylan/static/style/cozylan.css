@@ -204,6 +204,10 @@ main h1 {
   margin-top: 0;
 }
 
+.avatar-orga-overlay {
+  --avatar-orga-overlay-image: url(/sites/cozylan/style/avatar-orga-overlay.svg);
+}
+
 .button,
 .button.button--clear:hover {
   background-color: var(--bg-color-light);
