@@ -47,7 +47,7 @@ class Ticket:
 @dataclass(frozen=True)
 class Creator(User):
     badges: set[Badge]
-    ticket: Ticket
+    ticket: Optional[Ticket]
 
     @classmethod
     def from_(

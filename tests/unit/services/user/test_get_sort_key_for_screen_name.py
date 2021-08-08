@@ -3,8 +3,10 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.database import generate_uuid
 from byceps.services.user.service import get_sort_key_for_screen_name
 from byceps.services.user.transfer.models import User
+from byceps.typing import UserID
 
 
 def test_get_sort_key_for_screen_name():
@@ -23,11 +25,11 @@ def test_get_sort_key_for_screen_name():
 
 def create_user(screen_name: str) -> User:
     return User(
-        id=None,
+        id=UserID(generate_uuid()),
         screen_name=screen_name,
         suspended=False,
         deleted=False,
-        locale=False,
+        locale=None,
         avatar_url=None,
         is_orga=False,
     )
