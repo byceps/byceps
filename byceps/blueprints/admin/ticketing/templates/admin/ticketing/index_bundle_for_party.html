@@ -1,6 +1,6 @@
 {% extends 'layout/admin/ticketing.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
+{% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page_party = party %}
@@ -32,7 +32,7 @@
             <span class="monospace">{{ bundle.id }}</span>
           </td>
           <td>{{ render_datetime(bundle.created_at|utc_to_local_tz) }}</td>
-          <td>{{ render_user_avatar_20_and_admin_link(bundle.owned_by) }}</td>
+          <td>{{ render_user_avatar_and_admin_link(bundle.owned_by, size=20) }}</td>
           <td>{{ bundle.ticket_category.title }}</td>
           <td class="bignumber number">{{ bundle.ticket_quantity }}</td>
         </tr>

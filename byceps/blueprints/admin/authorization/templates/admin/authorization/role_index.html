@@ -1,6 +1,6 @@
 {% extends 'layout/admin/authorization.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
+{% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {% set current_tab = 'roles' %}
 {% set page_title = _('Roles') %}
 {% set layout_main_raw = True %}
@@ -43,7 +43,7 @@
           {%- elif role.users|length <= user_limit %}
             <ol>
             {%- for user in role.users|sort(attribute='screen_name') %}
-              <li>{{ render_user_avatar_16_and_admin_link(users_by_id[user.id]) }}</li>
+              <li>{{ render_user_avatar_and_admin_link(users_by_id[user.id], size=16) }}</li>
             {%- endfor %}
             </ol>
           {%- else %}

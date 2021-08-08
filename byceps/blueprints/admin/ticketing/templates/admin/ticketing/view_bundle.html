@@ -1,6 +1,6 @@
 {% extends 'layout/admin/ticketing.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
+{% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
@@ -28,7 +28,7 @@
       </tr>
       <tr>
         <th>{{ _('Owner') }}</th>
-        <td>{{ render_user_avatar_20_and_admin_link(bundle.owned_by) }}</td>
+        <td>{{ render_user_avatar_and_admin_link(bundle.owned_by, size=20) }}</td>
       </tr>
       <tr>
         <th>{{ _('Party') }}</th>

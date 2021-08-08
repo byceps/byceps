@@ -1,22 +1,22 @@
 {%- from 'macros/admin/shop/order.html' import render_order_payment_state %}
 {%- from 'macros/admin/ticketing.html' import render_ticket_flag_revoked %}
-{%- from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
+{%- from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/icons.html' import render_icon %}
 
 
   <div class="events">
     {%- for event in events|sort(attribute='occurred_at', reverse=True) %}
-      {%- with %}
+      {%- with avatar_size = 20 %}
         {%- if event.event == 'order-placed' %}
           {%- set icon_name = 'add' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat die Bestellung <strong>aufgegeben</strong>.
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span> hat die Bestellung <strong>aufgegeben</strong>.
           {%- endset %}
         {%- elif event.event == 'order-canceled-before-paid' %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
             hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_before_paid) }}
             (war vorher {{ render_order_payment_state(PaymentState[event.data.former_payment_state]) }}).
             <br><br>
@@ -26,14 +26,14 @@
         {%- elif event.event == 'order-paid' %}
           {%- set icon_name = 'success' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
             hat die Bestellung als {{ render_order_payment_state(PaymentState.paid) }}
             mittels {{ render_order_payment_method(PaymentMethod[event.data.payment_method]) }} markiert.
           {%- endset %}
         {%- elif event.event == 'order-canceled-after-paid' %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
             hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_after_paid) }}
             (war vorher {{ render_order_payment_state(PaymentState[event.data.former_payment_state]) }}).
             <br><br>
@@ -43,44 +43,44 @@
         {%- elif event.event == 'order-invoiced' %}
           {%- set icon_name = 'invoice' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
             hat die Rechnung als <strong>erstellt</strong> markiert.
           {%- endset %}
         {%- elif event.event == 'order-invoiced-withdrawn' %}
           {%- set icon_name = 'remove' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
             hat die Rechnung als <strong>doch nicht erstellt</strong> markiert.
           {%- endset %}
         {%- elif event.event == 'order-note-added' %}
           {%- set icon_name = 'note' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.author) }}</span>
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.author, size=avatar_size) }}</span>
             hat eine Notiz hinzugefügt:<br>
             <blockquote>{{ event.data.text }}</blockquote>
           {%- endset %}
         {%- elif event.event == 'order-shipped' %}
           {%- set icon_name = 'shipping' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
             hat die Lieferung als <strong>versendet</strong> markiert.
           {%- endset %}
         {%- elif event.event == 'order-shipped-withdrawn' %}
           {%- set icon_name = 'remove' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
             hat die Lieferung als <strong>doch nicht versendet</strong> markiert.
           {%- endset %}
         {%- elif event.event == 'order-placed-confirmation-email-resent' %}
           {%- set icon_name = 'email' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span> hat den Versand der Bestellbestätigung per E-Mail <strong>erneut ausgelöst</strong>.
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span> hat den Versand der Bestellbestätigung per E-Mail <strong>erneut ausgelöst</strong>.
           {%- endset %}
         {%- elif event.event == 'badge-awarded' %}
           {%- set icon_name = 'badge' %}
           {%- set body %}
             Das <strong>Badge &quot;{{ event.badge_label }}&quot;</strong> ist an
-            {{ render_user_avatar_20_and_admin_link(event.recipient) }} verliehen worden.
+            {{ render_user_avatar_and_admin_link(event.recipient, size=avatar_size) }} verliehen worden.
           {%- endset %}
         {%- elif event.event == 'ticket-bundle-created' %}
           {%- set icon_name = 'ticket' %}
@@ -91,7 +91,7 @@
           {%- set icon_name = 'ticket' %}
           {%- set body %}
             {%- if event.initiator is defined %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
             {%- else %}
             Jemand
             {%- endif %}
@@ -106,7 +106,7 @@
           {%- set icon_name = 'ticket' %}
           {%- set body %}
             {%- if event.initiator is defined %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
             {%- else %}
             Jemand
             {%- endif %}
@@ -115,7 +115,7 @@
         {%- else %}
           {%- set icon_name = 'disabled' %}
           {%- set body %}
-            <span class="user-link">{{ render_user_avatar_20_and_admin_link(event.initiator) }}</span>
+            <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
             hat die <strong>unbekannte Aktion '{{ event.event }}'</strong> ausgelöst.
           {%- endset %}
         {%- endif %}

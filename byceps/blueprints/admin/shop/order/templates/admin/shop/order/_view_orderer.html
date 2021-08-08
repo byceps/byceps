@@ -1,9 +1,9 @@
-{%- from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
+{%- from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {%- from 'macros/icons.html' import render_icon %}
 
 
 <div class="data-label">{{ _('User') }}</div>
-<div class="data-value">{{ render_user_avatar_20_and_admin_link(placed_by) }}</div>
+<div class="data-value">{{ render_user_avatar_and_admin_link(placed_by, size=20) }}</div>
 
 <div class="data-label">{{ _('Name') }}</div>
 <div class="data-value">{{ order.first_names }} {{ order.last_name }}</div>

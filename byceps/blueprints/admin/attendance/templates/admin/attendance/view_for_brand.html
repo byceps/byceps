@@ -1,5 +1,5 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin/user.html' import render_user_avatar_16_and_admin_link %}
+{% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {% set current_page = 'attendance_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Most Frequent Attendees') %}
@@ -25,7 +25,7 @@
     <tbody>
     {%- for user, attendance_count in top_attendees %}
       <tr>
-        <td>{{ render_user_avatar_16_and_admin_link(user) }}</td>
+        <td>{{ render_user_avatar_and_admin_link(user, size=16) }}</td>
         <td class="number">{{ attendance_count }}</td>
       </tr>
     {%- endfor %}

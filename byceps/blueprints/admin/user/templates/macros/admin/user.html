@@ -8,13 +8,8 @@
 {%- endmacro %}
 
 
-{% macro render_user_avatar_16_and_admin_link(user) -%}
-<span class="nowrap">{{ render_user_avatar(user, size=16) }} {{ render_user_admin_link(user) }}</span>
-{%- endmacro %}
-
-
-{% macro render_user_avatar_20_and_admin_link(user) -%}
-<span class="nowrap">{{ render_user_avatar(user, size=20) }} {{ render_user_admin_link(user) }}</span>
+{% macro render_user_avatar_and_admin_link(user, size) -%}
+<span class="nowrap">{{ render_user_avatar(user, size=size) }} {{ render_user_admin_link(user) }}</span>
 {%- endmacro %}
 
 

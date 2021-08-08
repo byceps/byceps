@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/admin/user.html' import render_user_avatar_20_and_admin_link %}
+{% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
@@ -18,7 +18,7 @@
     <div class="mb">
       <label class="form-label">Orga</label>
       <div>
-        {{ render_user_avatar_20_and_admin_link(user) }}
+        {{ render_user_avatar_and_admin_link(user, size=20) }}
       </div>
     </div>
     {{ form_field(form.orga_team_id, autofocus='autofocus') }}
