@@ -1,5 +1,5 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/user_avatar.html' import render_user_avatar_20_and_link %}
+{% from 'macros/user_avatar.html' import render_user_avatar_and_link %}
 {% set current_page = 'party_history' %}
 {% set page_title = party.title %}
 
@@ -25,7 +25,7 @@
   <ol class="attendees">
     {%- for user in attendees|sort(attribute='screen_name') -%}
       {%- if not user.deleted %}
-    <li>{{- render_user_avatar_20_and_link(user) -}}</li>
+    <li>{{- render_user_avatar_and_link(user, size=20) -}}</li>
       {%- endif %}
     {%- endfor %}
   </ol>

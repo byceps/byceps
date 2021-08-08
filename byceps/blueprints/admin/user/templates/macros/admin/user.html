@@ -1,6 +1,6 @@
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user.html' import render_user_screen_name %}
-{% from 'macros/user_avatar.html' import render_user_avatar_16, render_user_avatar_20, render_user_avatar_image_with_fallback %}
+{% from 'macros/user_avatar.html' import render_user_avatar, render_user_avatar_image_with_fallback %}
 
 
 {% macro render_user_admin_link(user) -%}
@@ -9,12 +9,12 @@
 
 
 {% macro render_user_avatar_16_and_admin_link(user) -%}
-<span class="nowrap">{{ render_user_avatar_16(user) }} {{ render_user_admin_link(user) }}</span>
+<span class="nowrap">{{ render_user_avatar(user, size=16) }} {{ render_user_admin_link(user) }}</span>
 {%- endmacro %}
 
 
 {% macro render_user_avatar_20_and_admin_link(user) -%}
-<span class="nowrap">{{ render_user_avatar_20(user) }} {{ render_user_admin_link(user) }}</span>
+<span class="nowrap">{{ render_user_avatar(user, size=20) }} {{ render_user_admin_link(user) }}</span>
 {%- endmacro %}
 
 

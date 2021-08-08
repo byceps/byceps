@@ -1,9 +1,9 @@
-{%- from 'macros/user_avatar.html' import render_user_avatar_96 %}
+{%- from 'macros/user_avatar.html' import render_user_avatar %}
 {%- from 'macros/user_badge.html' import render_user_badges %}
 
 
     <div class="creator">
-      {{ render_user_avatar_96(posting.creator) }}
+      {{ render_user_avatar(posting.creator, size=96) }}
     </div>
 
     {%- with badges = posting.creator.badges %}

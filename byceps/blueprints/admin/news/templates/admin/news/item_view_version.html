@@ -3,7 +3,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_notification, render_tag %}
-{% from 'macros/user_avatar.html' import render_user_avatar_16_and_name %}
+{% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('View news post version') %}
@@ -77,7 +77,7 @@
 
         <div class="data-label">{{ _('Created') }}</div>
         <div class="data-value">
-          {{ render_datetime(version.created_at|utc_to_local_tz) }} von {{ render_user_avatar_16_and_name(creator) }}<br>
+          {{ render_datetime(version.created_at|utc_to_local_tz) }} von {{ render_user_avatar_and_name(creator, size=16) }}<br>
           <a href="{{ url_for('.item_list_versions', item_id=item.id) }}">{{ render_icon('history') }} {{ _('View change history') }}</a>
         </div>
 

@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/user.html' import render_user_screen_name %}
-{% from 'macros/user_avatar.html' import render_user_avatar_128 %}
+{% from 'macros/user_avatar.html' import render_user_avatar %}
 {% set current_page = 'user_profile.view' %}
 {% set page_title = [user.screen_name, _('Users')] %}
 
@@ -21,7 +21,7 @@
     <div class="user-profile-header">
 
       <div class="user-profile-header-column">
-{{ render_user_avatar_128(user) }}
+{{ render_user_avatar(user, size=128) }}
       </div>
 
       <div class="user-profile-header-column screenname-and-orgateam">

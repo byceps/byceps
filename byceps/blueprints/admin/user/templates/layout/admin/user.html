@@ -3,7 +3,7 @@
 {% from 'macros/admin/user.html' import render_most_important_user_flag %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_screen_name %}
-{% from 'macros/user_avatar.html' import render_user_avatar_96 %}
+{% from 'macros/user_avatar.html' import render_user_avatar %}
 {% set current_page = 'user_admin' %}
 
 {% block before_body %}
@@ -37,7 +37,7 @@
   {{ render_backlink(url_for('.index'), _('Users')) }}
 
   <div class="user-head">
-    <div>{{ render_user_avatar_96(profile_user) }}</div>
+    <div>{{ render_user_avatar(profile_user, size=96) }}</div>
     <div>
       <h1 class="title">{{ render_user_screen_name(profile_user) }}</h1>
       <div class="subtitle">{{ profile_user.detail.full_name|fallback }}</div>

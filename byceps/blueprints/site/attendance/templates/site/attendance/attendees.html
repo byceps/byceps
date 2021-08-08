@@ -4,7 +4,7 @@
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% from 'macros/seating.html' import render_seat_link %}
 {% from 'macros/user.html' import render_user_link %}
-{% from 'macros/user_avatar.html' import render_user_avatar_32 %}
+{% from 'macros/user_avatar.html' import render_user_avatar %}
 {% set current_page = 'attendees' %}
 {% set page_title = _('Attendees') %}
 
@@ -68,7 +68,7 @@
       <tr>
         <td>
           <div class="attendee">
-            <div class="attendee-avatar">{{ render_user_avatar_32(attendee.user) }}</div>
+            <div class="attendee-avatar">{{ render_user_avatar(attendee.user, size=32) }}</div>
             <div class="attendee-name">{{ render_user_link(attendee.user) }}</div>
           </div>
         </td>

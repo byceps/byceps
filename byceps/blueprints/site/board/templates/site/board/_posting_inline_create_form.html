@@ -1,10 +1,10 @@
 {%- from 'macros/forms.html' import form_buttons %}
-{%- from 'macros/user_avatar.html' import render_user_avatar_96 %}
+{%- from 'macros/user_avatar.html' import render_user_avatar %}
 
   <article class="user-comment">
     <aside class="user-comment-aside">
       <div class="creator">
-        {{ render_user_avatar_96(g.user) }}
+        {{ render_user_avatar(g.user, size=96) }}
       </div>
     </aside>
     <div class="user-comment-main">

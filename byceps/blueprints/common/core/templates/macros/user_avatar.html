@@ -1,73 +1,25 @@
 {% from 'macros/user.html' import render_user_link, render_user_screen_name %}
 
 
-{% macro render_user_avatar_16(user) -%}
-  {{ _render_user_avatar(user, '16', with_orga_overlay=false) }}
-{%- endmacro %}
-
-
-{% macro render_user_avatar_16_and_link(user) -%}
-<span class="nowrap">{{ render_user_avatar_16(user) }} {{ render_user_link(user) }}</span>
-{%- endmacro %}
-
-
-{% macro render_user_avatar_16_and_name(user) -%}
-<span class="nowrap">{{ render_user_avatar_16(user) }} {{ render_user_screen_name(user) }}</span>
-{%- endmacro %}
-
-
-{% macro render_user_avatar_20(user) -%}
-  {{ _render_user_avatar(user, '20', with_orga_overlay=false) }}
-{%- endmacro %}
-
-
-{% macro render_user_avatar_20_and_link(user) -%}
-<span class="nowrap">{{ render_user_avatar_20(user) }} {{ render_user_link(user) }}</span>
-{%- endmacro %}
-
-
-{% macro render_user_avatar_20_and_name(user) -%}
-<span class="nowrap">{{ render_user_avatar_20(user) }} {{ render_user_screen_name(user) }}</span>
-{%- endmacro %}
-
-
-{% macro render_user_avatar_32(user) -%}
-  {{ _render_user_avatar(user, '32') }}
-{%- endmacro %}
-
-
-{% macro render_user_avatar_32_and_link(user) -%}
-<span class="nowrap">{{ render_user_avatar_32(user) }} {{ render_user_link(user) }}</span>
-{%- endmacro %}
-
-
-{% macro render_user_avatar_48(user) -%}
-  {{ _render_user_avatar(user, '48') }}
-{%- endmacro %}
-
-
-{% macro render_user_avatar_64(user) -%}
-  {{ _render_user_avatar(user, '64') }}
-{%- endmacro %}
-
-
-{% macro render_user_avatar_96(user) -%}
-  {{ _render_user_avatar(user, '96') }}
-{%- endmacro %}
-
-
-{% macro render_user_avatar_128(user) -%}
-  {{ _render_user_avatar(user, '128') }}
-{%- endmacro %}
-
-
-{% macro _render_user_avatar(user, size_name, with_orga_overlay=true) -%}
-<div class="avatar size-{{ size_name }}{% if with_orga_overlay and user.is_orga %} orga{% endif %}"{% if not user.deleted %} title="{{ user.screen_name }}"{% endif %}>
+{% macro render_user_avatar(user, size) -%}
+  {%- with with_orga_overlay = (size >= 32) %}
+<div class="avatar size-{{ size }}{% if with_orga_overlay and user.is_orga %} orga{% endif %}"{% if not user.deleted %} title="{{ user.screen_name }}"{% endif %}>
   {{- _render_user_avatar_image_with_fallback(user) }}
   {%- if with_orga_overlay and user.is_orga -%}
   <div class="avatar-orga-overlay"></div>
   {%- endif -%}
 </div>
+  {%- endwith %}
+{%- endmacro %}
+
+
+{% macro render_user_avatar_and_link(user, size) -%}
+<span class="nowrap">{{ render_user_avatar(user, size=size) }} {{ render_user_link(user) }}</span>
+{%- endmacro %}
+
+
+{% macro render_user_avatar_and_name(user, size) -%}
+<span class="nowrap">{{ render_user_avatar(user, size=size) }} {{ render_user_screen_name(user) }}</span>
 {%- endmacro %}
 
 

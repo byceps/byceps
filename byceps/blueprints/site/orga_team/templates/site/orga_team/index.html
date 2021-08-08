@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/user.html' import render_user_screen_name %}
-{% from 'macros/user_avatar.html' import render_user_avatar_96 %}
+{% from 'macros/user_avatar.html' import render_user_avatar %}
 {% set current_page = 'orga_team' %}
 {% set page_title = _('Team') %}
 
@@ -60,7 +60,7 @@
     {%- for orga in orgas %}
     <li class="orga">
       <div class="orga-avatar">
-        {{ render_user_avatar_96(orga.user) }}
+        {{ render_user_avatar(orga.user, size=96) }}
       </div>
       <div class="orga-details">
         <strong>{{ render_user_screen_name(orga.user) }}</strong><br>

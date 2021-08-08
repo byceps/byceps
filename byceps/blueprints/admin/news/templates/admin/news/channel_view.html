@@ -4,7 +4,7 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% from 'macros/user_avatar.html' import render_user_avatar_16_and_name %}
+{% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = [_('News channel'), channel.id] %}
@@ -75,7 +75,7 @@
             {{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}
             {%- endif -%}
             <br>
-            {{ _('by') }} {{ render_user_avatar_16_and_name(users_by_id[item.current_version.creator_id]) }}
+            {{ _('by') }} {{ render_user_avatar_and_name(users_by_id[item.current_version.creator_id], size=16) }}
           {%- endfilter %}
           </td>
           {%- with image_total = item.images|length %}

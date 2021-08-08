@@ -3,7 +3,7 @@
 {% from 'macros/admin/user.html' import render_user_admin_link %}
 {% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/user_avatar.html' import render_user_avatar_48 %}
+{% from 'macros/user_avatar.html' import render_user_avatar %}
 {% set current_page = 'orga_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Organizers') %}
@@ -70,7 +70,7 @@
       <tbody>
         {%- for user, birthday in orgas_with_birthdays %}
         <tr>
-          <td>{{ render_user_avatar_48(user) }}</td>
+          <td>{{ render_user_avatar(user, size=48) }}</td>
           <td>
             <strong>{{ render_user_admin_link(user) }}</strong><br>
             {{ user.detail.full_name|fallback }}<br>

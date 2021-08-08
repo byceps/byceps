@@ -2,7 +2,7 @@
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/user_avatar.html' import render_user_avatar_20_and_name %}
+{% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Change history') %}
@@ -35,7 +35,7 @@
           {%- endif -%}
         </td>
         <td class="nowrap"><a href="{{ url_for('.item_view_version', version_id=version.id) }}">{{ render_datetime(version.created_at|utc_to_local_tz) }}</a></td>
-        <td>{{ render_user_avatar_20_and_name(users_by_id[version.creator_id]) }}</td>
+        <td>{{ render_user_avatar_and_name(users_by_id[version.creator_id], size=20) }}</td>
         <td>
           {%- if previous_version -%}
           <a href="{{ url_for('.item_compare_versions', from_version_id=previous_version.id, to_version_id=version.id) }}" title="{{ _('View changes compared to previous version') }}">{{ _('View changes') }}</a>

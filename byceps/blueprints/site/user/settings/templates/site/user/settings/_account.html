@@ -1,6 +1,6 @@
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_screen_name %}
-{% from 'macros/user_avatar.html' import render_user_avatar_128 %}
+{% from 'macros/user_avatar.html' import render_user_avatar %}
 
 
   <div class="row">
@@ -9,7 +9,7 @@
       <div class="data-label">{{ _('Avatar') }}</div>
       <div class="row">
         <div class="column-auto">
-          <div class="data-value">{{ render_user_avatar_128(user) }}</div>
+          <div class="data-value">{{ render_user_avatar(user, size=128) }}</div>
         </div>
         <div class="column-auto">
           <div class="dropdown">

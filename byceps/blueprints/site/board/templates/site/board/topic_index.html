@@ -3,7 +3,7 @@
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
-{% from 'macros/user_avatar.html' import render_user_avatar_16_and_name %}
+{% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
 {% set current_page = 'board' %}
 {% set page_title = _('Board') %}
 
@@ -44,12 +44,12 @@
             <div class="board-topic-initial-posting">
               <span class="board-category-tag">{{ topic.category.title }}</span>
               &middot;
-              {{ _('started by') }} {{ render_user_avatar_16_and_name(topic.creator) }}
+              {{ _('started by') }} {{ render_user_avatar_and_name(topic.creator, size=16) }}
             </div>
           </a>
         </td>
         <td class="centered bignumber">{{ format_number(topic.reply_count) }}</td>
-        <td class="nowrap">{{ render_datetime(topic.last_updated_at|utc_to_local_tz) }}<br>von {{ render_user_avatar_16_and_name(topic.last_updated_by) }}</td>
+        <td class="nowrap">{{ render_datetime(topic.last_updated_at|utc_to_local_tz) }}<br>von {{ render_user_avatar_and_name(topic.last_updated_by, size=16) }}</td>
       </tr>
       {%- endfor %}
     </tbody>

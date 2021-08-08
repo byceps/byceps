@@ -3,7 +3,7 @@
 {% from 'macros/misc.html' import render_notification, render_tag %}
 {% from 'macros/seating.html' import render_seat_link %}
 {% from 'macros/user.html' import render_user_link %}
-{% from 'macros/user_avatar.html' import render_user_avatar_16_and_link, render_user_avatar_48 %}
+{% from 'macros/user_avatar.html' import render_user_avatar, render_user_avatar_and_link %}
 {% set current_page = 'ticket' %}
 {% set page_title = _('Tickets') %}
 
@@ -80,7 +80,7 @@
 
           <div class="ticket-card-cell-block">
             <div class="data-label">{{ _('Buyer') }}</div>
-            <div class="data-value">{{ render_user_avatar_16_and_link(ticket.owned_by) }}</div>
+            <div class="data-value">{{ render_user_avatar_and_link(ticket.owned_by, size=16) }}</div>
           </div>
 
         </div>
@@ -111,7 +111,7 @@
 
             <div class="ticket-user">
               {%- if ticket.used_by %}
-              <div>{{ render_user_avatar_48(ticket.used_by) }}</div>
+              <div>{{ render_user_avatar(ticket.used_by, size=48) }}</div>
               {{ render_user_link(ticket.used_by) }}
               {%- else %}
               <div><div class="ticket-user-placeholder"></div></div>
@@ -139,7 +139,7 @@
               </div>
               {%- endif %}
             </div>
-            <div class="data-value">{{ render_user_avatar_16_and_link(user_manager) }}</div>
+            <div class="data-value">{{ render_user_avatar_and_link(user_manager, size=16) }}</div>
           </div>
 
         </div>
@@ -178,7 +178,7 @@
               </div>
               {%- endif %}
             </div>
-            <div class="data-value">{{ render_user_avatar_16_and_link(seat_manager) }}</div>
+            <div class="data-value">{{ render_user_avatar_and_link(seat_manager, size=16) }}</div>
           </div>
 
         </div>

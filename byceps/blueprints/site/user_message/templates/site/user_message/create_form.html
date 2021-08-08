@@ -1,6 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
-{% from 'macros/user_avatar.html' import render_user_avatar_20_and_link %}
+{% from 'macros/user_avatar.html' import render_user_avatar_and_link %}
 {% set current_page = 'user_message' %}
 {% set page_title = 'Mitteilung an Benutzer senden' %}
 
@@ -11,7 +11,7 @@
   <form action="{{ url_for('.create', recipient_id=recipient.id) }}" method="post">
     <label class="form-label">Empfänger/in</label>
     <div class="mb">
-      {{ render_user_avatar_20_and_link(recipient) }}
+      {{ render_user_avatar_and_link(recipient, size=20) }}
     </div>
     {{ form_field(form.body, maxlength=2000, autofocus='autofocus') }}
 
