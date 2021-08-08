@@ -111,7 +111,7 @@
 
             <div class="ticket-user">
               {%- if ticket.used_by %}
-              <div>{{ render_user_avatar(ticket.used_by, size=48) }}</div>
+              <div>{{ render_user_avatar(ticket.used_by, size=48, orga=ticket.used_by.is_orga) }}</div>
               {{ render_user_link(ticket.used_by) }}
               {%- else %}
               <div><div class="ticket-user-placeholder"></div></div>

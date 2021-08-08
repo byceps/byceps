@@ -68,7 +68,7 @@
       <tr>
         <td>
           <div class="attendee">
-            <div class="attendee-avatar">{{ render_user_avatar(attendee.user, size=32) }}</div>
+            <div class="attendee-avatar">{{ render_user_avatar(attendee.user, size=32, orga=attendee.user.is_orga) }}</div>
             <div class="attendee-name">{{ render_user_link(attendee.user) }}</div>
           </div>
         </td>

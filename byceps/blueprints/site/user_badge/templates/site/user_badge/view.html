@@ -48,7 +48,7 @@
   <ul class="list-grid">
     {%- for user in recipients|sort(attribute='screen_name') %}
     <li><a class="recipient" href="{{ url_for('user_profile.view', user_id=user.id) }}">
-{{ render_user_avatar(user, size=64) }}
+{{ render_user_avatar(user, size=64, orga=user.is_orga) }}
     </a></li>
     {%- endfor %}
   </ul>

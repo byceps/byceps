@@ -1,20 +1,20 @@
 {% from 'macros/user.html' import render_user_link, render_user_screen_name %}
 
 
-{% macro render_user_avatar(user, size) -%}
-<div class="avatar size-{{ size }}{% if size >= 32 and user.is_orga %} orga{% endif %}"{% if not user.deleted %} title="{{ user.screen_name }}"{% endif %}>
+{% macro render_user_avatar(user, size, orga=False) -%}
+<div class="avatar size-{{ size }}{% if size >= 32 and orga %} orga{% endif %}"{% if not user.deleted %} title="{{ user.screen_name }}"{% endif %}>
   {{- render_user_avatar_image_with_fallback(user) }}
 </div>
 {%- endmacro %}
 
 
-{% macro render_user_avatar_and_link(user, size) -%}
-<span class="nowrap">{{ render_user_avatar(user, size=size) }} {{ render_user_link(user) }}</span>
+{% macro render_user_avatar_and_link(user, size, orga=False) -%}
+<span class="nowrap">{{ render_user_avatar(user, size=size, orga=orga) }} {{ render_user_link(user) }}</span>
 {%- endmacro %}
 
 
-{% macro render_user_avatar_and_name(user, size) -%}
-<span class="nowrap">{{ render_user_avatar(user, size=size) }} {{ render_user_screen_name(user) }}</span>
+{% macro render_user_avatar_and_name(user, size, orga=False) -%}
+<span class="nowrap">{{ render_user_avatar(user, size=size, orga=orga) }} {{ render_user_screen_name(user) }}</span>
 {%- endmacro %}
 
 

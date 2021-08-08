@@ -3,7 +3,7 @@
 
 
     <div class="creator">
-      {{ render_user_avatar(posting.creator, size=96) }}
+      {{ render_user_avatar(posting.creator, size=96, orga=posting.creator.is_orga) }}
     </div>
 
     {%- with badges = posting.creator.badges %}
