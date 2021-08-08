@@ -8,12 +8,14 @@ byceps.blueprints.api.v1.tourney.match.views
 
 from __future__ import annotations
 from datetime import datetime
-from typing import Any, Optional
+from itertools import chain
+from typing import Any, Iterator, Optional
 
 from flask import abort, jsonify, request, url_for
 from marshmallow import ValidationError
 from marshmallow.schema import SchemaMeta
 
+from .......services.orga_team import service as orga_team_service
 from .......services.tourney import (
     match_comment_service as comment_service,
     match_service,
@@ -27,6 +29,7 @@ from .......services.tourney.transfer.models import (
 from .......services.user import service as user_service
 from .......services.user.transfer.models import User
 from .......signals import tourney as tourney_signals
+from .......typing import UserID
 from .......util.framework.blueprint import create_blueprint
 from .......util.views import respond_created, respond_no_content
 
@@ -48,9 +51,17 @@ def get_comment(comment_id):
     """Return the comment."""
     comment = _get_comment_or_404(comment_id)
 
-    comment_dto = _comment_to_json(comment)
+    party_id = request.args.get('party_id')
 
-    return jsonify(comment_dto)
+    if party_id:
+        user_ids = set(_get_user_ids_for_comment(comment))
+        orga_ids = orga_team_service.select_orgas_for_party(user_ids, party_id)
+    else:
+        orga_ids = set()
+
+    comment_dict = _comment_to_json(comment, orga_ids)
+
+    return jsonify(comment_dict)
 
 
 @blueprint.get('/matches/<uuid:match_id>/comments')
@@ -65,16 +76,40 @@ def get_comments_for_match(match_id):
         match.id, party_id=party_id, include_hidden=True
     )
 
-    comment_dtos = list(map(_comment_to_json, comments))
+    if party_id:
+        user_ids = set(
+            chain.from_iterable(map(_get_user_ids_for_comment, comments))
+        )
+        orga_ids = orga_team_service.select_orgas_for_party(user_ids, party_id)
+    else:
+        orga_ids = set()
+
+    comment_dicts = [
+        _comment_to_json(comment, orga_ids) for comment in comments
+    ]
 
     return jsonify(
         {
-            'comments': comment_dtos,
+            'comments': comment_dicts,
         }
     )
 
 
-def _comment_to_json(comment: MatchComment) -> dict[str, Any]:
+def _get_user_ids_for_comment(comment: MatchComment) -> Iterator[UserID]:
+    yield comment.created_by.id
+
+    last_editor = comment.last_edited_by
+    if last_editor:
+        yield last_editor.id
+
+    moderator = comment.hidden_by
+    if moderator:
+        yield moderator.id
+
+
+def _comment_to_json(
+    comment: MatchComment, orga_ids: set[UserID]
+) -> dict[str, Any]:
     creator = comment.created_by
     last_editor = comment.last_edited_by
     moderator = comment.hidden_by
@@ -83,14 +118,14 @@ def _comment_to_json(comment: MatchComment) -> dict[str, Any]:
         'comment_id': str(comment.id),
         'match_id': str(comment.match_id),
         'created_at': comment.created_at.isoformat(),
-        'creator': _user_to_json(creator),
+        'creator': _user_to_json(creator, orga_ids),
         'body_text': comment.body_text,
         'body_html': comment.body_html,
         'last_edited_at': _potential_datetime_to_json(comment.last_edited_at),
-        'last_editor': _potential_user_to_json(last_editor),
+        'last_editor': _potential_user_to_json(last_editor, orga_ids),
         'hidden': comment.hidden,
         'hidden_at': _potential_datetime_to_json(comment.hidden_at),
-        'hidden_by': _potential_user_to_json(moderator),
+        'hidden_by': _potential_user_to_json(moderator, orga_ids),
     }
 
 
@@ -98,18 +133,20 @@ def _potential_datetime_to_json(dt: Optional[datetime]) -> Optional[str]:
     return dt.isoformat() if (dt is not None) else None
 
 
-def _potential_user_to_json(user: Optional[User]) -> Optional[dict[str, Any]]:
-    return _user_to_json(user) if (user is not None) else None
+def _potential_user_to_json(
+    user: Optional[User], orga_ids: set[UserID]
+) -> Optional[dict[str, Any]]:
+    return _user_to_json(user, orga_ids) if (user is not None) else None
 
 
-def _user_to_json(user: User) -> dict[str, Any]:
+def _user_to_json(user: User, orga_ids: set[UserID]) -> dict[str, Any]:
     return {
         'user_id': str(user.id),
         'screen_name': user.screen_name,
         'suspended': user.suspended,
         'deleted': user.deleted,
         'avatar_url': user.avatar_url,
-        'is_orga': user.is_orga,
+        'is_orga': user.id in orga_ids,
     }
 
 

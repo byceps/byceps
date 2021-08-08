@@ -20,6 +20,7 @@ from ....services.board import (
     posting_query_service as board_posting_query_service,
 )
 from ....services.board.transfer.models import CategoryWithLastUpdate
+from ....services.orga_team import service as orga_team_service
 from ....services.party import service as party_service
 from ....services.site import settings_service as site_settings_service
 from ....services.ticketing import ticket_service
@@ -117,18 +118,22 @@ def enrich_creators(
     brand_id: BrandID,
     party_id: Optional[PartyID],
 ) -> None:
-    """Enrich creators with their badges."""
+    """Enrich creators with their orga status and badges."""
     creator_ids = {posting.creator_id for posting in postings}
 
     badges_by_user_id = _get_badges_for_users(creator_ids, brand_id)
 
     if party_id is not None:
         party = party_service.get_party(party_id)
+        orga_ids = orga_team_service.select_orgas_for_party(
+            creator_ids, party_id
+        )
         ticket_users = ticket_service.select_ticket_users_for_party(
             creator_ids, party.id
         )
     else:
         party = None
+        orga_ids = set()
         ticket_users = set()
 
     for posting in postings:
@@ -141,7 +146,9 @@ def enrich_creators(
         else:
             ticket = None
 
-        posting.creator = Creator.from_(posting.creator, badges, ticket)
+        posting.creator = Creator.from_(
+            posting.creator, orga_ids, badges, ticket
+        )
 
 
 def _get_badges_for_users(

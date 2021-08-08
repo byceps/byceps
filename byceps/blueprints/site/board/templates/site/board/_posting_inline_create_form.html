@@ -4,7 +4,7 @@
   <article class="user-comment">
     <aside class="user-comment-aside">
       <div class="creator">
-        {{ render_user_avatar(g.user, size=96, orga=g.user.is_orga) }}
+        {{ render_user_avatar(g.user, size=96, orga=is_current_user_orga) }}
       </div>
     </aside>
     <div class="user-comment-main">

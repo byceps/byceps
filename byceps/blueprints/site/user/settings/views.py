@@ -28,6 +28,8 @@ from .....util.framework.templating import templated
 from .....util.l10n import get_locales
 from .....util.views import login_required, redirect_to, respond_no_content
 
+from ...orga_team import service as orga_team_service
+
 from .forms import DetailsForm, ChangeEmailAddressForm, ChangeScreenNameForm
 
 
@@ -47,6 +49,8 @@ def view():
     user_locale = Locale.parse(user.locale) if user.locale else None
     detail = user_service.get_detail(user.id)
 
+    is_orga = orga_team_service.is_orga_for_current_party(user.id)
+
     newsletter_list_id = _find_newsletter_list_for_brand()
     newsletter_offered = newsletter_list_id is not None
 
@@ -60,6 +64,7 @@ def view():
         'locales': get_locales(),
         'email_address': email_address,
         'detail': detail,
+        'is_orga': is_orga,
         'newsletter_offered': newsletter_offered,
         'newsletter_list_id': newsletter_list_id,
         'subscribed_to_newsletter': subscribed_to_newsletter,

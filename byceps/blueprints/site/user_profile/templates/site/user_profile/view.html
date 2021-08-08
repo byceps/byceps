@@ -21,7 +21,7 @@
     <div class="user-profile-header">
 
       <div class="user-profile-header-column">
-{{ render_user_avatar(user, size=128, orga=user.is_orga) }}
+{{ render_user_avatar(user, size=128, orga=orga_team is not none) }}
       </div>
 
       <div class="user-profile-header-column screenname-and-orgateam">

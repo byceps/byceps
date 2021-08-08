@@ -9,6 +9,7 @@ byceps.blueprints.site.attendance.views
 from flask import abort, g, request
 
 from ....services.attendance import service as attendance_service
+from ....services.orga_team import service as orga_team_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 
@@ -32,7 +33,13 @@ def attendees(page):
         g.party_id, page, per_page, search_term=search_term
     )
 
+    attendee_ids = {attendee.user.id for attendee in attendees.items}
+    orga_ids = orga_team_service.select_orgas_for_party(
+        attendee_ids, g.party_id
+    )
+
     return {
         'search_term': search_term,
         'attendees': attendees,
+        'orga_ids': orga_ids,
     }

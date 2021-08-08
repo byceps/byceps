@@ -8,6 +8,7 @@ byceps.blueprints.site.user_badge.views
 
 from flask import abort, g
 
+from ....services.orga_team import service as orga_team_service
 from ....services.user import service as user_service
 from ....services.user_badge import awarding_service, badge_service
 from ....util.framework.blueprint import create_blueprint
@@ -38,14 +39,22 @@ def view(slug):
         abort(404)
 
     awardings = awarding_service.get_awardings_of_badge(badge.id)
-    recipient_ids = [awarding.user_id for awarding in awardings]
+    recipient_ids = {awarding.user_id for awarding in awardings}
     recipients = user_service.find_users(
         recipient_ids,
         include_avatars=True,
         include_orga_flags_for_party_id=g.party_id,
     )
 
+    if g.party_id is not None:
+        orga_ids = orga_team_service.select_orgas_for_party(
+            recipient_ids, g.party_id
+        )
+    else:
+        orga_ids = set()
+
     return {
         'badge': badge,
         'recipients': recipients,
+        'orga_ids': orga_ids,
     }

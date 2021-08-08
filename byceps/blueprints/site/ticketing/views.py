@@ -9,6 +9,7 @@ byceps.blueprints.site.ticketing.views
 from flask import abort, g, request
 from flask_babel import gettext
 
+from ....services.orga_team import service as orga_team_service
 from ....services.party import service as party_service
 from ....services.ticketing import (
     barcode_service,
@@ -49,6 +50,11 @@ def index_mine():
 
     tickets = [ticket for ticket in tickets if not ticket.revoked]
 
+    ticket_user_ids = {ticket.used_by_id for ticket in tickets}
+    orga_ids = orga_team_service.select_orgas_for_party(
+        ticket_user_ids, g.party_id
+    )
+
     current_user_uses_any_ticket = find(
         tickets, lambda t: t.used_by_id == user.id
     )
@@ -56,6 +62,7 @@ def index_mine():
     return {
         'party_title': party.title,
         'tickets': tickets,
+        'orga_ids': orga_ids,
         'current_user_uses_any_ticket': current_user_uses_any_ticket,
         'is_user_allowed_to_print_ticket': _is_user_allowed_to_print_ticket,
         'ticket_management_enabled': _is_ticket_management_enabled(),

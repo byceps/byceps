@@ -10,6 +10,8 @@ from __future__ import annotations
 import dataclasses
 from typing import Optional, Sequence
 
+from sqlalchemy import select
+
 from ...database import db
 from ...typing import PartyID, UserID
 
@@ -389,3 +391,21 @@ def is_orga_for_party(user_id: UserID, party_id: PartyID) -> bool:
                 .exists()
         ) \
         .scalar()
+
+
+def select_orgas_for_party(user_ids: set[UserID], party_id: PartyID) -> set[UserID]:
+    """Return `True` if the user is an organizer (i.e. is member of an
+    organizer team) of that party.
+    """
+    if not user_ids:
+        return set()
+
+    rows = db.session.execute(
+        select(DbMembership.user_id)
+        .select_from(DbMembership)
+        .filter(DbMembership.user_id.in_(user_ids))
+        .join(DbOrgaTeam)
+        .filter(DbOrgaTeam.party_id == party_id)
+    ).scalars().all()
+
+    return set(rows)

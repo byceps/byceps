@@ -46,6 +46,41 @@ def test_get_comments_for_match(
     }
 
 
+def test_get_comments_for_match_with_party_id(
+    api_client, api_client_authz_header, match, comment, party
+):
+    url = f'/api/v1/tourney/matches/{match.id}/comments?party_id={party.id}'
+    headers = [api_client_authz_header]
+
+    response = api_client.get(url, headers=headers)
+    assert response.status_code == 200
+    assert response.content_type == 'application/json'
+    assert response.get_json() == {
+        'comments': [
+            {
+                'comment_id': str(comment.id),
+                'match_id': str(comment.match_id),
+                'created_at': comment.created_at.isoformat(),
+                'creator': {
+                    'user_id': str(comment.created_by.id),
+                    'screen_name': comment.created_by.screen_name,
+                    'suspended': False,
+                    'deleted': False,
+                    'avatar_url': None,
+                    'is_orga': False,
+                },
+                'body_text': 'Denn man tau.',
+                'body_html': 'Denn man tau.',
+                'last_edited_at': None,
+                'last_editor': None,
+                'hidden': False,
+                'hidden_at': None,
+                'hidden_by': None,
+            }
+        ]
+    }
+
+
 def test_get_comments_for_match_with_edited_comment(
     api_client, api_client_authz_header, match, edited_comment
 ):

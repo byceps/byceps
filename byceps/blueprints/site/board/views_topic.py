@@ -29,6 +29,8 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, respond_no_content_with_location
 
+from ..orga_team.service import is_orga_for_current_party
+
 from .authorization import BoardPermission, BoardTopicPermission
 from .blueprint import blueprint
 from .forms import PostingCreateForm, TopicCreateForm, TopicUpdateForm
@@ -116,12 +118,17 @@ def topic_view(topic_id, page):
 
     service.enrich_creators(postings.items, g.brand_id, g.party_id)
 
+    is_current_user_orga = user.authenticated and is_orga_for_current_party(
+        g.user.id
+    )
+
     context = {
         'topic': topic,
         'postings': postings,
         'is_last_page': is_last_page,
         'may_topic_be_updated_by_current_user': service.may_topic_be_updated_by_current_user,
         'may_posting_be_updated_by_current_user': service.may_posting_be_updated_by_current_user,
+        'is_current_user_orga': is_current_user_orga,
     }
 
     if is_last_page:

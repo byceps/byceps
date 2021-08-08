@@ -60,7 +60,7 @@
     {%- for orga in orgas %}
     <li class="orga">
       <div class="orga-avatar">
-        {{ render_user_avatar(orga.user, size=96, orga=orga.user.is_orga) }}
+        {{ render_user_avatar(orga.user, size=96, orga=True) }}
       </div>
       <div class="orga-details">
         <strong>{{ render_user_screen_name(orga.user) }}</strong><br>

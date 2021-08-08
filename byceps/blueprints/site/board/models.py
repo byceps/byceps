@@ -13,6 +13,7 @@ from typing import Optional
 from ....services.board.transfer.models import CategoryWithLastUpdate
 from ....services.user.transfer.models import User
 from ....services.user_badge.transfer.models import Badge
+from ....typing import UserID
 
 
 @dataclass(frozen=True)
@@ -51,7 +52,11 @@ class Creator(User):
 
     @classmethod
     def from_(
-        cls, user: User, badges: set[Badge], ticket: Optional[Ticket]
+        cls,
+        user: User,
+        orga_ids: set[UserID],
+        badges: set[Badge],
+        ticket: Optional[Ticket],
     ) -> Creator:
         return cls(
             id=user.id,
@@ -60,7 +65,7 @@ class Creator(User):
             deleted=user.deleted,
             locale=user.locale,
             avatar_url=user.avatar_url,
-            is_orga=user.is_orga,
+            is_orga=user.id in orga_ids,
             badges=badges,
             ticket=ticket,
         )
