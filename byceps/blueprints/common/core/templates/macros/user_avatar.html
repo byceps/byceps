@@ -2,14 +2,9 @@
 
 
 {% macro render_user_avatar(user, size) -%}
-  {%- with with_orga_overlay = (size >= 32) %}
-<div class="avatar size-{{ size }}{% if with_orga_overlay and user.is_orga %} orga{% endif %}"{% if not user.deleted %} title="{{ user.screen_name }}"{% endif %}>
+<div class="avatar size-{{ size }}{% if size >= 32 and user.is_orga %} orga{% endif %}"{% if not user.deleted %} title="{{ user.screen_name }}"{% endif %}>
   {{- render_user_avatar_image_with_fallback(user) }}
-  {%- if with_orga_overlay and user.is_orga -%}
-  <div class="avatar-orga-overlay"></div>
-  {%- endif -%}
 </div>
-  {%- endwith %}
 {%- endmacro %}
 
 

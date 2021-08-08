@@ -204,8 +204,8 @@ main h1 {
   margin-top: 0;
 }
 
-.avatar-orga-overlay {
-  --avatar-orga-overlay-image: url(/sites/cozylan/style/avatar-orga-overlay.svg);
+.avatar.orga {
+  --overlay-image: url(/sites/cozylan/style/avatar-orga-overlay.svg);
 }
 
 .button,

@@ -364,13 +364,13 @@ form.board-posting-create-form-inline .label {
 
 /* user avatars */
 
-.avatar {
+.avatar.orga {
   position: relative;
 }
 
-.avatar-orga-overlay {
-  background-image: var(--avatar-orga-overlay-image, none);
-  background-repeat: no-repeat;
+.avatar.orga::after {
+  background-image: var(--overlay-image, none);
+  content: "";
   height: 100%;
   left: 0;
   position: absolute;
