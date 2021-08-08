@@ -4746,6 +4746,15 @@ msgstr "Fehler"
 msgid "Cancel"
 msgstr "Abbrechen"
 
+#: byceps/blueprints/common/core/templates/macros/user_avatar.html:23
+#, python-format
+msgid "Avatar of %(screen_name)s"
+msgstr "Avatar von %(screen_name)s"
+
+#: byceps/blueprints/common/core/templates/macros/user_avatar.html:23
+msgid "Avatar of deleted user"
+msgstr "Avatar eines gelöschten Benutzers"
+
 #: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:9
 #: byceps/blueprints/site/party_history/templates/site/party_history/view.html:24
 #: sites/cozylan/template_overrides/layout/_navigation.html:8
@@ -5274,8 +5283,8 @@ msgstr "Sitzplätze verwalten"
 
 #: byceps/blueprints/site/shop/order/views.py:52
 #: byceps/blueprints/site/shop/order/views.py:100
-#: byceps/blueprints/site/shop/order/views.py:151
-#: byceps/blueprints/site/shop/order/views.py:207
+#: byceps/blueprints/site/shop/order/views.py:152
+#: byceps/blueprints/site/shop/order/views.py:208
 msgid "The shop is closed."
 msgstr "Der Shop ist derzeit geschlossen."
 
@@ -5289,26 +5298,26 @@ msgid "No articles have been selected."
 msgstr "Es wurden keine Artikel ausgewählt."
 
 #: byceps/blueprints/site/shop/order/views.py:128
-#: byceps/blueprints/site/shop/order/views.py:243
+#: byceps/blueprints/site/shop/order/views.py:244
 msgid "Placing the order has failed."
 msgstr "Die Bestellung ist fehlgeschlagen."
 
-#: byceps/blueprints/site/shop/order/views.py:166
-#: byceps/blueprints/site/shop/order/views.py:211
+#: byceps/blueprints/site/shop/order/views.py:167
+#: byceps/blueprints/site/shop/order/views.py:212
 msgid "The article cannot be ordered directly."
 msgstr "Der Artikel kann nicht direkt bestellt werden."
 
-#: byceps/blueprints/site/shop/order/views.py:173
-#: byceps/blueprints/site/shop/order/views.py:223
+#: byceps/blueprints/site/shop/order/views.py:174
+#: byceps/blueprints/site/shop/order/views.py:224
 msgid "You cannot place another order."
 msgstr "Du kannst keine weitere Bestellung aufgeben."
 
-#: byceps/blueprints/site/shop/order/views.py:182
-#: byceps/blueprints/site/shop/order/views.py:229
+#: byceps/blueprints/site/shop/order/views.py:183
+#: byceps/blueprints/site/shop/order/views.py:230
 msgid "The article is not available."
 msgstr "Der Artikel ist nicht verfügbar."
 
-#: byceps/blueprints/site/shop/order/views.py:292
+#: byceps/blueprints/site/shop/order/views.py:293
 #, python-format
 msgid "Your order <strong>%(order_number)s</strong> has been placed. Thank you!"
 msgstr ""
