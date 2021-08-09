@@ -126,12 +126,12 @@ def _db_entity_to_outgoing_webhook(
     )
 
     return OutgoingWebhook(
-        webhook.id,
-        event_selectors,
-        webhook.format,
-        webhook.text_prefix,
-        extra_fields,
-        webhook.url,
-        webhook.description,
-        webhook.enabled,
+        id=webhook.id,
+        event_selectors=event_selectors,
+        format=webhook.format,
+        text_prefix=webhook.text_prefix,
+        extra_fields=extra_fields,
+        url=webhook.url,
+        description=webhook.description,
+        enabled=webhook.enabled,
     )
