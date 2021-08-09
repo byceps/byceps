@@ -198,7 +198,7 @@ def occupy_seat(ticket_id, seat_id):
 
     seat = _get_seat_or_404(seat_id)
 
-    if seat.is_occupied:
+    if ticket_service.find_ticket_occupying_seat(seat.id) is not None:
         flash_error(
             gettext(
                 '%(seat_label)s is already occupied.', seat_label=seat.label

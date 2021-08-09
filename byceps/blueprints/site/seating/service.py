@@ -14,6 +14,7 @@ from typing import Iterator, Optional, Sequence
 from ....services.seating.dbmodels.seat import Seat as DbSeat
 from ....services.seating.transfer.models import SeatID
 from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
+from ....services.ticketing import ticket_service
 from ....services.ticketing.transfer.models import (
     TicketCategoryID,
     TicketCode,
@@ -92,7 +93,7 @@ def get_seats(
 def _get_ticket_managed_by_seat(
     seat: DbSeat, users_by_id: dict[UserID, User]
 ) -> Optional[ManagedTicket]:
-    if not seat.is_occupied:
+    if ticket_service.find_ticket_occupying_seat(seat.id) is None:
         return None
 
     ticket = seat.occupied_by_ticket

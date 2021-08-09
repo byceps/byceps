@@ -9,11 +9,14 @@ byceps.services.ticketing.ticket_service
 from __future__ import annotations
 from typing import Optional, Sequence
 
+from sqlalchemy import select
+
 from ...database import db, Pagination
 from ...typing import PartyID, UserID
 
 from ..party import service as party_service
 from ..seating.dbmodels.seat import Seat as DbSeat
+from ..seating.transfer.models import SeatID
 from ..shop.order.transfer.models import OrderNumber
 from ..user.dbmodels.user import User as DbUser
 
@@ -323,3 +326,11 @@ def get_ticket_sale_stats(party_id: PartyID) -> TicketSaleStats:
         tickets_max=party.max_ticket_quantity,
         tickets_sold=sold,
     )
+
+
+def find_ticket_occupying_seat(seat_id: SeatID) -> Optional[DbTicket]:
+    """Return the ticket that occupies that seat, or `None` if not found."""
+    return db.session.execute(
+        select(DbTicket)
+        .filter_by(occupied_seat_id=seat_id)
+    ).one_or_none()

@@ -66,18 +66,12 @@ class Seat(db.Model):
         self.coord_y = point.y
 
     @property
-    def is_occupied(self) -> bool:
-        """Return `True` if the seat is occupied by a ticket."""
-        return self.occupied_by_ticket is not None
-
-    @property
     def has_user(self) -> bool:
         """Return `True` if the seat is occupied by a ticket, and that
         ticket is assigned to a user.
         """
-        return self.is_occupied and (
-            self.occupied_by_ticket.used_by_id is not None
-        )
+        ticket = self.occupied_by_ticket
+        return (ticket is not None) and (ticket.used_by_id is not None)
 
     @property
     def user(self) -> Optional[User]:
