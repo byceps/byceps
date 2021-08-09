@@ -8,6 +8,8 @@ byceps.services.seating.seat_group_service
 
 from typing import Optional, Sequence
 
+from sqlalchemy import select
+
 from ...database import db
 from ...typing import PartyID
 
@@ -100,7 +102,8 @@ def switch_seat_group(
 
 def _ensure_group_is_available(seat_group: DbSeatGroup) -> None:
     """Raise an error if the seat group is occupied."""
-    if seat_group.is_occupied():
+    occupancy = find_occupancy_for_seat_group(seat_group.id)
+    if occupancy is not None:
         raise ValueError('Seat group is already occupied.')
 
 
@@ -155,13 +158,14 @@ def _sort_tickets(tickets: Sequence[DbTicket]) -> Sequence[DbTicket]:
 
 def release_seat_group(seat_group: DbSeatGroup) -> None:
     """Release a seat group so it becomes available again."""
-    if not seat_group.is_occupied():
+    occupancy = find_occupancy_for_seat_group(seat_group.id)
+    if occupancy is None:
         raise ValueError('Seat group is not occupied.')
 
-    for ticket in seat_group.occupancy.ticket_bundle.tickets:
+    for ticket in occupancy.ticket_bundle.tickets:
         ticket.occupied_seat = None
 
-    db.session.delete(seat_group.occupancy)
+    db.session.delete(occupancy)
 
     db.session.commit()
 
@@ -176,6 +180,14 @@ def count_seat_groups_for_party(party_id: PartyID) -> int:
 def find_seat_group(seat_group_id: SeatGroupID) -> Optional[DbSeatGroup]:
     """Return the seat group with that id, or `None` if not found."""
     return db.session.query(DbSeatGroup).get(seat_group_id)
+
+
+def find_occupancy_for_seat_group(seat_group_id: SeatGroupID) -> Optional[DbSeatGroupOccupancy]:
+    """Return the occupancy for that seat group, or `None` if not found."""
+    return db.session.execute(
+        select(DbSeatGroupOccupancy)
+        .filter_by(seat_group_id=seat_group_id)
+    ).one_or_none()
 
 
 def get_all_seat_groups_for_party(party_id: PartyID) -> Sequence[DbSeatGroup]:

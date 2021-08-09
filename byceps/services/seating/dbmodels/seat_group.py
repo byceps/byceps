@@ -48,9 +48,6 @@ class SeatGroup(db.Model):
         self.seat_quantity = seat_quantity
         self.title = title
 
-    def is_occupied(self) -> bool:
-        return self.occupancy is not None
-
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add('id', str(self.id)) \
@@ -58,7 +55,6 @@ class SeatGroup(db.Model):
             .add('ticket_category', self.ticket_category.title) \
             .add_with_lookup('seat_quantity') \
             .add_with_lookup('title') \
-            .add('is_occupied', self.is_occupied()) \
             .build()
 
 
