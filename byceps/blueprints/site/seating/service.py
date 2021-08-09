@@ -41,7 +41,7 @@ class Seat:
     category_id: TicketCategoryID
     label: str
     type_: str
-    ticket: ManagedTicket
+    ticket: Optional[ManagedTicket]
 
 
 def get_users(
@@ -76,15 +76,7 @@ def get_seats(
     seats: Sequence[DbSeat], users_by_id: dict[UserID, User]
 ) -> Iterator[Seat]:
     for seat in seats:
-        if seat.is_occupied:
-            ticket = seat.occupied_by_ticket
-            user = _find_ticket_user(ticket, users_by_id)
-
-            managed_ticket = ManagedTicket(
-                ticket.id, ticket.code, ticket.category.title, user, None
-            )
-        else:
-            managed_ticket = None
+        managed_ticket = _get_ticket_managed_by_seat(seat, users_by_id)
 
         yield Seat(
             seat.id,
@@ -95,6 +87,20 @@ def get_seats(
             seat.type_,
             managed_ticket,
         )
+
+
+def _get_ticket_managed_by_seat(
+    seat: DbSeat, users_by_id: dict[UserID, User]
+) -> Optional[ManagedTicket]:
+    if not seat.is_occupied:
+        return None
+
+    ticket = seat.occupied_by_ticket
+    user = _find_ticket_user(ticket, users_by_id)
+
+    return ManagedTicket(
+        ticket.id, ticket.code, ticket.category.title, user, None
+    )
 
 
 def get_managed_tickets(
