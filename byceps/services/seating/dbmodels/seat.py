@@ -18,6 +18,8 @@ from ...ticketing.dbmodels.category import Category
 from ...ticketing.transfer.models import TicketCategoryID
 from ...user.dbmodels.user import User
 
+from ..transfer.models import AreaID
+
 from .area import Area
 
 
@@ -41,14 +43,14 @@ class Seat(db.Model):
 
     def __init__(
         self,
-        area: Area,
+        area_id: AreaID,
         category_id: TicketCategoryID,
         *,
         coord_x: int = 0,
         coord_y: int = 0,
         type_: Optional[str] = None,
     ) -> None:
-        self.area = area
+        self.area_id = area_id
         self.coord_x = coord_x
         self.coord_y = coord_y
         self.category_id = category_id

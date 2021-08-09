@@ -53,7 +53,7 @@ def tickets(category, ticket_owner):
 
 @pytest.fixture
 def seat(area, category):
-    seat = seat_service.create_seat(area, 0, 0, category.id)
+    seat = seat_service.create_seat(area.id, 0, 0, category.id)
     yield seat
     seat_service.delete_seat(seat.id)
 
@@ -61,7 +61,7 @@ def seat(area, category):
 @pytest.fixture
 def seats(tickets, area):
     seats = [
-        seat_service.create_seat(area, 0, 0, ticket.category_id)
+        seat_service.create_seat(area.id, 0, 0, ticket.category_id)
         for ticket in tickets
     ]
 
