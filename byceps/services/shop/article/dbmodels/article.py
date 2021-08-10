@@ -66,7 +66,7 @@ class Article(db.Model):
     max_quantity_per_order = db.Column(db.Integer, nullable=False)
     not_directly_orderable = db.Column(db.Boolean, default=False, nullable=False)
     separate_order_required = db.Column(db.Boolean, default=False, nullable=False)
-    shipping_required = db.Column(db.Boolean, default=False, nullable=False)
+    shipping_required = db.Column(db.Boolean, nullable=False)
 
     def __init__(
         self,
@@ -78,6 +78,7 @@ class Article(db.Model):
         tax_rate: Decimal,
         total_quantity: int,
         max_quantity_per_order: int,
+        shipping_required: bool,
         *,
         available_from: Optional[datetime] = None,
         available_until: Optional[datetime] = None,
@@ -93,6 +94,7 @@ class Article(db.Model):
         self.total_quantity = total_quantity
         self.quantity = total_quantity  # Initialize with total quantity.
         self.max_quantity_per_order = max_quantity_per_order
+        self.shipping_required = shipping_required
 
     @hybrid_property
     def type_(self) -> ArticleType:

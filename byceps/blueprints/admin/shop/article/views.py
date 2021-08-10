@@ -250,6 +250,7 @@ def create(shop_id):
     total_quantity = form.total_quantity.data
     quantity = total_quantity
     max_quantity_per_order = form.max_quantity_per_order.data
+    shipping_required = (type_ == ArticleType.physical)
 
     article = article_service.create_article(
         shop.id,
@@ -260,6 +261,7 @@ def create(shop_id):
         tax_rate,
         total_quantity,
         max_quantity_per_order,
+        shipping_required,
     )
 
     flash_success(
@@ -353,7 +355,6 @@ def update(article_id):
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
     separate_order_required = form.separate_order_required.data
-    shipping_required = form.shipping_required.data
 
     article = article_service.update_article(
         article.id,
@@ -366,7 +367,6 @@ def update(article_id):
         max_quantity_per_order,
         not_directly_orderable,
         separate_order_required,
-        shipping_required,
     )
 
     flash_success(

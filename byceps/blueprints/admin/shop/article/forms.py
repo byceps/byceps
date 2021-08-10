@@ -105,7 +105,6 @@ class ArticleUpdateForm(_ArticleBaseForm):
     separate_order_required = BooleanField(
         lazy_gettext('must be ordered separately')
     )
-    shipping_required = BooleanField(lazy_gettext('Shipping required'))
 
     @staticmethod
     def validate_available_from_date(form, field):
