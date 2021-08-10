@@ -17,7 +17,7 @@ from _util import call_with_app_context
 
 @click.command()
 @click.argument('minimum_age_in_days', type=int)
-def execute(minimum_age_in_days):
+def execute(minimum_age_in_days) -> None:
     now = datetime.utcnow()
     occurred_before = now - timedelta(days=minimum_age_in_days)
 

@@ -23,8 +23,8 @@ from _util import call_with_app_context
 from _validators import validate_user_id_format
 
 
-def validate_user_ids(ctx, param, user_ids: Iterable[UserID]) -> list[UserID]:
-    def _validate():
+def validate_user_ids(ctx, param, user_ids: Iterable[str]) -> list[UserID]:
+    def _validate() -> Iterator[UserID]:
         for user_id in user_ids:
             yield validate_user_id_format(ctx, param, user_id)
 
@@ -33,7 +33,7 @@ def validate_user_ids(ctx, param, user_ids: Iterable[UserID]) -> list[UserID]:
 
 @click.command()
 @click.argument('user_ids', callback=validate_user_ids, nargs=-1, required=True)
-def execute(user_ids):
+def execute(user_ids) -> None:
     statements = generate_delete_statements_for_users(user_ids)
     for statement in statements:
         print(statement)

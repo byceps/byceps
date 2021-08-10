@@ -18,7 +18,7 @@ from _validators import validate_party, validate_user_id
 @click.command()
 @click.argument('user', callback=validate_user_id)
 @click.argument('party', callback=validate_party)
-def execute(user, party):
+def execute(user, party) -> None:
     click.echo(
         f'Adding attendance of user "{user.screen_name}" '
         f'at party "{party.title}" ... ',

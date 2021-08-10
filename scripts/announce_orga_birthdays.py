@@ -8,6 +8,8 @@ Meant to be called by a daily cronjob or similar mechanism.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from uuid import UUID
+
 import click
 
 from byceps.announce.helpers import call_webhook
@@ -18,7 +20,12 @@ from byceps.services.webhooks.transfer.models import OutgoingWebhook, WebhookID
 from _util import call_with_app_context
 
 
-def validate_webhook_id(ctx, param, webhook_id: WebhookID) -> OutgoingWebhook:
+def validate_webhook_id(ctx, param, webhook_id_value: str) -> OutgoingWebhook:
+    try:
+        webhook_id = WebhookID(UUID(webhook_id_value))
+    except ValueError as e:
+        raise click.BadParameter(f'Invalid webhook ID "{webhook_id_value}": {e}')
+
     webhook = webhook_service.find_webhook(webhook_id)
 
     if webhook is None:
@@ -29,7 +36,7 @@ def validate_webhook_id(ctx, param, webhook_id: WebhookID) -> OutgoingWebhook:
 
 @click.command()
 @click.argument('webhook', callback=validate_webhook_id)
-def execute(webhook: OutgoingWebhook):
+def execute(webhook: OutgoingWebhook) -> None:
     users = birthday_service.get_orgas_with_birthday_today()
 
     for user in users:

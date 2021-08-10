@@ -8,6 +8,7 @@
 
 import click
 
+from byceps.services.snippet.dbmodels.snippet import SnippetVersion
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope, SnippetType
 
@@ -20,7 +21,7 @@ from _validators import validate_site
 @click.argument('source_site', callback=validate_site)
 @click.argument('target_site', callback=validate_site)
 @click.argument('snippet_names', nargs=-1, required=True)
-def execute(ctx, source_site, target_site, snippet_names):
+def execute(ctx, source_site, target_site, snippet_names) -> None:
     source_scope = Scope.for_site(source_site.id)
     target_scope = Scope.for_site(target_site.id)
 
@@ -34,7 +35,7 @@ def execute(ctx, source_site, target_site, snippet_names):
     click.secho('Done.', fg='green')
 
 
-def get_snippet_version(source_scope, snippet_name):
+def get_snippet_version(source_scope: Scope, snippet_name: str) -> SnippetVersion:
     snippet_version = snippet_service.find_current_version_of_snippet_with_name(
         source_scope, snippet_name
     )
@@ -48,7 +49,7 @@ def get_snippet_version(source_scope, snippet_name):
     return snippet_version
 
 
-def copy_snippet(target_scope, snippet_version, ctx):
+def copy_snippet(target_scope: Scope, snippet_version: SnippetVersion, ctx) -> None:
     snippet_type = snippet_version.snippet.type_
 
     if snippet_type == SnippetType.document:
@@ -65,7 +66,7 @@ def copy_snippet(target_scope, snippet_version, ctx):
     )
 
 
-def create_document(target_scope, snippet_version):
+def create_document(target_scope: Scope, snippet_version: SnippetVersion) -> None:
     snippet_service.create_document(
         target_scope,
         snippet_version.snippet.name,
@@ -77,7 +78,7 @@ def create_document(target_scope, snippet_version):
     )
 
 
-def create_fragment(target_scope, snippet_version):
+def create_fragment(target_scope: Scope, snippet_version: SnippetVersion) -> None:
     snippet_service.create_fragment(
         target_scope,
         snippet_version.snippet.name,
@@ -86,7 +87,7 @@ def create_fragment(target_scope, snippet_version):
     )
 
 
-def scope_as_string(scope):
+def scope_as_string(scope: Scope) -> str:
     return f'{scope.type_}/{scope.name}'
 
 

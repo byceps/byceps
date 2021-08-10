@@ -9,17 +9,17 @@
 import click
 
 from byceps.services.board import access_control_service, board_service
-from byceps.services.board.transfer.models import Board
+from byceps.services.board.transfer.models import Board, BoardID
 
 from _util import call_with_app_context
 from _validators import validate_user_screen_name
 
 
-def validate_board(ctx, param, board_id: str) -> Board:
-    board = board_service.find_board(board_id)
+def validate_board(ctx, param, board_id_value: str) -> Board:
+    board = board_service.find_board(BoardID(board_id_value))
 
     if not board:
-        raise click.BadParameter(f'Unknown board ID "{board_id}".')
+        raise click.BadParameter(f'Unknown board ID "{board_id_value}".')
 
     return board
 
@@ -29,7 +29,7 @@ def validate_board(ctx, param, board_id: str) -> Board:
 @click.argument(
     'user', metavar='USER_SCREEN_NAME', callback=validate_user_screen_name
 )
-def execute(board, user):
+def execute(board, user) -> None:
     if access_control_service.has_user_access_to_board(user.id, board.id):
         click.secho(
             f'User "{user.screen_name}" already has access '

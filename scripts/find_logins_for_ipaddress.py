@@ -20,7 +20,7 @@ from _util import call_with_app_context
 
 @click.command()
 @click.argument('ip_address')
-def execute(ip_address: str):
+def execute(ip_address: str) -> None:
     events = find_events(ip_address)
     users_by_id = get_users_by_id(events)
 

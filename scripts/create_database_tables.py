@@ -16,7 +16,7 @@ from _util import call_with_app_context
 
 
 @click.command()
-def execute():
+def execute() -> None:
     click.echo('Creating database tables ... ', nl=False)
 
     db.create_all()

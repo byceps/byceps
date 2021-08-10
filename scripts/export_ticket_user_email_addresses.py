@@ -20,7 +20,7 @@ from _validators import validate_party
 
 @click.command()
 @click.argument('party', callback=validate_party)
-def execute(party):
+def execute(party) -> None:
     email_addresses = list(_get_email_addresses(party.id))
 
     # Sort to produce stable output.

@@ -6,20 +6,23 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Optional
+
 import click
 
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
+from byceps.services.site.transfer.models import Site
 
 from _util import call_with_app_context
 from _validators import validate_site
 
 
-def validate_site_if_given(ctx, param, value):
-    if value is None:
+def validate_site_if_given(ctx, param, site_id_value: str) -> Site:
+    if site_id_value is None:
         return None
 
-    return validate_site(ctx, param, value)
+    return validate_site(ctx, param, site_id_value)
 
 
 @click.command()
@@ -27,7 +30,7 @@ def validate_site_if_given(ctx, param, value):
 @click.argument('search_term')
 @click.option('--site', callback=validate_site_if_given)
 @click.option('-v', '--verbose', is_flag=True)
-def execute(ctx, search_term, site, verbose):
+def execute(ctx, search_term, site, verbose) -> None:
     scope = None
     if site is not None:
         scope = Scope.for_site(site.id)
@@ -57,7 +60,7 @@ def execute(ctx, search_term, site, verbose):
         )
 
 
-def get_scope_label(verbose: bool, scope: Scope) -> str:
+def get_scope_label(verbose: bool, scope: Optional[Scope]) -> str:
     if not verbose:
         return '<unknown>'
 
@@ -67,7 +70,7 @@ def get_scope_label(verbose: bool, scope: Scope) -> str:
     return f'scope "{format_scope(scope)}"'
 
 
-def format_scope(scope):
+def format_scope(scope: Scope) -> str:
     return f'{scope.type_}/{scope.name}'
 
 

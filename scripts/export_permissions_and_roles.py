@@ -14,7 +14,7 @@ from _util import call_with_app_context
 
 
 @click.command()
-def execute():
+def execute() -> None:
     print(impex_service.export())
 
 

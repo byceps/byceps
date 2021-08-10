@@ -50,7 +50,7 @@ from _util import call_with_app_context
     help='determine but do not delete affected records',
 )
 @click.argument('user_ids', nargs=-1, required=True)
-def execute(dry_run, user_ids):
+def execute(dry_run, user_ids) -> None:
     user_ids = set(user_ids)
 
     check_for_undeleted_accounts(user_ids)

@@ -20,7 +20,7 @@ from _util import call_with_app_context
 
 
 @click.command()
-def execute():
+def execute() -> None:
     click.secho('Removing all user sessions ... ', nl=False)
 
     deleted_total = session_service.delete_all_session_tokens()
