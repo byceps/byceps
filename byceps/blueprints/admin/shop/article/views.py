@@ -199,6 +199,8 @@ def create(shop_id):
     shop = _get_shop_or_404(shop_id)
 
     form = ArticleCreateForm(request.form)
+    if not form.validate():
+        return create_form(shop_id, form)
 
     article_number_sequences = (
         article_sequence_service.get_article_number_sequences_for_shop(shop.id)
