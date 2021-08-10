@@ -59,6 +59,10 @@
         <td>{{ article.description }}</td>
       </tr>
       <tr>
+        <th>{{ _('Type') }}</th>
+        <td>{{ type_label }}</td>
+      </tr>
+      <tr>
         <th>{{ _('Unit price') }}</th>
         <td>{{ article.price|format_euro_amount }}</td>
       </tr>

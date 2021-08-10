@@ -8,7 +8,11 @@ from decimal import Decimal
 from typing import Optional
 
 from byceps.services.shop.article import service as article_service
-from byceps.services.shop.article.transfer.models import Article, ArticleNumber
+from byceps.services.shop.article.transfer.models import (
+    Article,
+    ArticleNumber,
+    ArticleType,
+)
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.shop.transfer.models import ShopID
@@ -44,6 +48,7 @@ def create_article(
     shop_id: ShopID,
     *,
     item_number: ArticleNumber = ANY_ARTICLE_ITEM_NUMBER,
+    type_: ArticleType = ArticleType.other,
     description: str = 'Cool thing',
     price: Optional[Decimal] = None,
     tax_rate: Optional[Decimal] = None,
@@ -63,6 +68,7 @@ def create_article(
     return article_service.create_article(
         shop_id,
         item_number,
+        type_,
         description,
         price,
         tax_rate,

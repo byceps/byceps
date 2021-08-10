@@ -20,6 +20,10 @@ from .....services.shop.article import (
     sequence_service as article_sequence_service,
     service as article_service,
 )
+from .....services.shop.article.transfer.models import (
+    ArticleType,
+    get_article_type_label,
+)
 from .....services.shop.order import (
     action_registry_service,
     action_service,
@@ -96,6 +100,8 @@ def view(article_id):
 
     brand = brand_service.get_brand(shop.brand_id)
 
+    type_label = get_article_type_label(article.type_)
+
     totals = ordered_articles_service.count_ordered_articles(
         article.item_number
     )
@@ -107,6 +113,7 @@ def view(article_id):
         'article': article,
         'shop': shop,
         'brand': brand,
+        'type_label': type_label,
         'totals': totals,
         'PaymentState': PaymentState,
         'actions': actions,
@@ -236,6 +243,7 @@ def create(shop_id):
     except article_sequence_service.ArticleNumberGenerationFailed as e:
         abort(500, e.message)
 
+    type_ = ArticleType[form.type_.data]
     description = form.description.data.strip()
     price = form.price.data
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
@@ -246,6 +254,7 @@ def create(shop_id):
     article = article_service.create_article(
         shop.id,
         item_number,
+        type_,
         description,
         price,
         tax_rate,

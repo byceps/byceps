@@ -10,6 +10,7 @@ from byceps.services.shop.article.transfer.models import (
     Article,
     ArticleID,
     ArticleNumber,
+    ArticleType,
 )
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.shop.transfer.models import ShopID
@@ -52,6 +53,7 @@ def create_article() -> Article:
         id=ArticleID(generate_uuid()),
         shop_id=ShopID('any-shop'),
         item_number=ArticleNumber('article-123'),
+        type_=ArticleType.other,
         description='Cool thing',
         price=Decimal('1.99'),
         tax_rate=Decimal('0.19'),

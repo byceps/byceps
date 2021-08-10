@@ -26,6 +26,7 @@ from .transfer.models import (
     Article,
     ArticleID,
     ArticleNumber,
+    ArticleType,
     AttachedArticleID,
 )
 
@@ -37,6 +38,7 @@ class UnknownArticleId(ValueError):
 def create_article(
     shop_id: ShopID,
     item_number: ArticleNumber,
+    type_: ArticleType,
     description: str,
     price: Decimal,
     tax_rate: Decimal,
@@ -47,6 +49,7 @@ def create_article(
     article = DbArticle(
         shop_id,
         item_number,
+        type_,
         description,
         price,
         tax_rate,
@@ -407,6 +410,7 @@ def _db_entity_to_article(article: DbArticle) -> Article:
         id=article.id,
         shop_id=article.shop_id,
         item_number=article.item_number,
+        type_=article.type_,
         description=article.description,
         price=article.price,
         tax_rate=article.tax_rate,

@@ -10,12 +10,14 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional
 
+from sqlalchemy.ext.hybrid import hybrid_property
+
 from .....database import BaseQuery, db, generate_uuid
 from .....util.instances import ReprBuilder
 
 from ...shop.transfer.models import ShopID
 
-from ..transfer.models import ArticleNumber
+from ..transfer.models import ArticleNumber, ArticleType
 
 
 class ArticleQuery(BaseQuery):
@@ -53,6 +55,7 @@ class Article(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)
     item_number = db.Column(db.UnicodeText, unique=True, nullable=False)
+    _type = db.Column('type', db.UnicodeText, nullable=False)
     description = db.Column(db.UnicodeText, nullable=False)
     price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
@@ -69,6 +72,7 @@ class Article(db.Model):
         self,
         shop_id: ShopID,
         item_number: ArticleNumber,
+        type_: ArticleType,
         description: str,
         price: Decimal,
         tax_rate: Decimal,
@@ -80,6 +84,7 @@ class Article(db.Model):
     ) -> None:
         self.shop_id = shop_id
         self.item_number = item_number
+        self._type = type_.name
         self.description = description
         self.price = price
         self.tax_rate = tax_rate
@@ -88,6 +93,10 @@ class Article(db.Model):
         self.total_quantity = total_quantity
         self.quantity = total_quantity  # Initialize with total quantity.
         self.max_quantity_per_order = max_quantity_per_order
+
+    @hybrid_property
+    def type_(self) -> ArticleType:
+        return ArticleType[self._type]
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

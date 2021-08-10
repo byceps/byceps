@@ -1,6 +1,6 @@
 {% extends 'layout/admin/shop/article.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_datalist, form_field %}
+{% from 'macros/forms.html' import form_buttons, form_datalist, form_field, form_field_radio %}
 {% set page_title = _('Create article') %}
 
 {% block before_body %}
@@ -20,6 +20,7 @@
   <form action="{{ url_for('.create', shop_id=shop.id) }}" method="post">
     {{ form_field(form.article_number_sequence_id, note='<a href="%s">%s</a>'|format(url_for('shop_article_admin.create_number_sequence_form', shop_id=shop.id),  _('Create new sequence'))|safe, autofocus='autofocus') }}
     {{ form_field(form.description, maxlength=80) }}
+    {{ form_field_radio(form.type_) }}
     <div class="row">
       <div class="column-auto">
         {{ form_field(form.price, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', note='€') }}
