@@ -62,7 +62,7 @@ class Article(db.Model):
     quantity = db.Column(db.Integer, db.CheckConstraint('quantity >= 0'), nullable=False)
     max_quantity_per_order = db.Column(db.Integer, nullable=False)
     not_directly_orderable = db.Column(db.Boolean, default=False, nullable=False)
-    requires_separate_order = db.Column(db.Boolean, default=False, nullable=False)
+    separate_order_required = db.Column(db.Boolean, default=False, nullable=False)
     shipping_required = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(

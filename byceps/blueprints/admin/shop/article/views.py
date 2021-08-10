@@ -343,7 +343,7 @@ def update(article_id):
     total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
-    requires_separate_order = form.requires_separate_order.data
+    separate_order_required = form.separate_order_required.data
     shipping_required = form.shipping_required.data
 
     article = article_service.update_article(
@@ -356,7 +356,7 @@ def update(article_id):
         total_quantity,
         max_quantity_per_order,
         not_directly_orderable,
-        requires_separate_order,
+        separate_order_required,
         shipping_required,
     )
 

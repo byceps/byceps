@@ -86,7 +86,7 @@ class ArticleUpdateForm(_ArticleBaseForm):
     not_directly_orderable = BooleanField(
         lazy_gettext('can only be ordered indirectly')
     )
-    requires_separate_order = BooleanField(
+    separate_order_required = BooleanField(
         lazy_gettext('must be ordered separately')
     )
     shipping_required = BooleanField(lazy_gettext('Shipping required'))

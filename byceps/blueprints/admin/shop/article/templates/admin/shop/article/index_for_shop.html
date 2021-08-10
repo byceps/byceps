@@ -56,7 +56,7 @@
             <br>{{ render_icon('info') }} {{ _('can only be ordered indirectly')|dim }}
             {%- endif %}
 
-            {%- if article.requires_separate_order %}
+            {%- if article.separate_order_required %}
             <br>{{ render_icon('info') }} {{ _('must be ordered separately')|dim }}
             {%- endif %}
 

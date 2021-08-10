@@ -70,7 +70,7 @@ def update_article(
     total_quantity: int,
     max_quantity_per_order: int,
     not_directly_orderable: bool,
-    requires_separate_order: bool,
+    separate_order_required: bool,
     shipping_required: bool,
 ) -> Article:
     """Update the article."""
@@ -84,7 +84,7 @@ def update_article(
     article.total_quantity = total_quantity
     article.max_quantity_per_order = max_quantity_per_order
     article.not_directly_orderable = not_directly_orderable
-    article.requires_separate_order = requires_separate_order
+    article.separate_order_required = separate_order_required
     article.shipping_required = shipping_required
 
     db.session.commit()
@@ -257,7 +257,7 @@ def get_article_compilation_for_orderable_articles(
     orderable_articles = DbArticle.query \
         .for_shop(shop_id) \
         .filter_by(not_directly_orderable=False) \
-        .filter_by(requires_separate_order=False) \
+        .filter_by(separate_order_required=False) \
         .currently_available() \
         .order_by(DbArticle.description) \
         .all()
@@ -416,6 +416,6 @@ def _db_entity_to_article(article: DbArticle) -> Article:
         quantity=article.quantity,
         max_quantity_per_order=article.max_quantity_per_order,
         not_directly_orderable=article.not_directly_orderable,
-        requires_separate_order=article.requires_separate_order,
+        separate_order_required=article.separate_order_required,
         shipping_required=article.shipping_required,
     )

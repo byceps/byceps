@@ -49,5 +49,5 @@ class Article:
     quantity: int
     max_quantity_per_order: int
     not_directly_orderable: bool
-    requires_separate_order: bool
+    separate_order_required: bool
     shipping_required: bool
