@@ -37,7 +37,7 @@ def extend_order_tuples_with_orderer(
     orders: Sequence[Order],
 ) -> Iterator[OrderWithOrderer]:
     orderer_ids = {order.placed_by_id for order in orders}
-    orderers = user_service.find_users(orderer_ids, include_avatars=True)
+    orderers = user_service.get_users(orderer_ids, include_avatars=True)
     orderers_by_id = user_service.index_users_by_id(orderers)
 
     for order in orders:
@@ -63,7 +63,7 @@ def get_events(order_id: OrderID) -> Iterator[OrderEventData]:
         for event in events
         if 'initiator_id' in event.data
     }
-    users = user_service.find_users(user_ids, include_avatars=True)
+    users = user_service.get_users(user_ids, include_avatars=True)
     users_by_id = {str(user.id): user for user in users}
 
     for event in events:

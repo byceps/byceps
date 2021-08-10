@@ -39,7 +39,7 @@ def view(party_id):
         abort(404)
 
     attendee_ids = attendance_service.get_attendee_ids_for_party(party_id)
-    attendees = user_service.find_users(attendee_ids, include_avatars=True)
+    attendees = user_service.get_users(attendee_ids, include_avatars=True)
 
     return {
         'party': party,

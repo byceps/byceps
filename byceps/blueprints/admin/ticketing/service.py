@@ -61,7 +61,7 @@ def _get_users_by_id(events: Sequence[TicketEvent]) -> dict[str, User]:
         )
     )
 
-    users = user_service.find_users(user_ids, include_avatars=True)
+    users = user_service.get_users(user_ids, include_avatars=True)
     return {str(user.id): user for user in users}
 
 

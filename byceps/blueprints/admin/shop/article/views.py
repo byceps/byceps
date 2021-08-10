@@ -137,8 +137,8 @@ def view_ordered(article_id):
     orders_by_order_numbers = {order.order_number: order for order in orders}
 
     user_ids = {order.placed_by_id for order in orders}
-    users = user_service.find_users(user_ids, include_avatars=True)
-    users_by_id = {user.id: user for user in users}
+    users = user_service.get_users(user_ids, include_avatars=True)
+    users_by_id = user_service.index_users_by_id(users)
 
     def transform(line_item):
         quantity = line_item.quantity

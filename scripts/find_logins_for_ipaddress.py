@@ -39,8 +39,8 @@ def find_events(ip_address: str) -> list[UserEvent]:
 
 def get_users_by_id(events: list[UserEvent]) -> dict[UserID, User]:
     user_ids = {event.user_id for event in events}
-    users = user_service.find_users(user_ids)
-    return {user.id: user for user in users}
+    users = user_service.get_users(user_ids)
+    return user_service.index_users_by_id(users)
 
 
 if __name__ == '__main__':

@@ -40,7 +40,7 @@ def view(slug):
 
     awardings = awarding_service.get_awardings_of_badge(badge.id)
     recipient_ids = {awarding.user_id for awarding in awardings}
-    recipients = user_service.find_users(recipient_ids, include_avatars=True)
+    recipients = user_service.get_users(recipient_ids, include_avatars=True)
 
     if g.party_id is not None:
         orga_ids = orga_team_service.select_orgas_for_party(

@@ -129,7 +129,7 @@ def channel_view(channel_id, page):
     items = news_item_service.get_items_paginated(channel_ids, page, per_page)
 
     user_ids = {item.current_version.creator_id for item in items.items}
-    users = user_service.find_users(user_ids, include_avatars=True)
+    users = user_service.get_users(user_ids, include_avatars=True)
     users_by_id = user_service.index_users_by_id(users)
 
     return {
@@ -385,7 +385,7 @@ def item_list_versions(item_id):
     versions_pairwise = list(pairwise(versions + [None]))
 
     user_ids = {version.creator_id for version in versions}
-    users = user_service.find_users(user_ids, include_avatars=True)
+    users = user_service.get_users(user_ids, include_avatars=True)
     users_by_id = user_service.index_users_by_id(users)
 
     return {

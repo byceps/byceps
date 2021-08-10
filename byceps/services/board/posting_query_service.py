@@ -76,7 +76,7 @@ def paginate_postings(
 
 
 def _get_users_by_id(user_ids: set[UserID]) -> dict[UserID, User]:
-    users = user_service.find_users(user_ids, include_avatars=True)
+    users = user_service.get_users(user_ids, include_avatars=True)
     return user_service.index_users_by_id(users)
 
 

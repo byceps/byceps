@@ -114,8 +114,8 @@ def get_teams_and_members_for_party(
         .all()
 
     user_ids = {ms.user_id for team in teams for ms in team.memberships}
-    users = user_service.find_users(user_ids, include_avatars=True)
-    users_by_id = {user.id: user for user in users}
+    users = user_service.get_users(user_ids, include_avatars=True)
+    users_by_id = user_service.index_users_by_id(users)
 
     def to_member(db_membership: DbMembership) -> Member:
         membership = _db_entity_to_membership(db_membership)
@@ -288,8 +288,8 @@ def _get_public_orga_users_by_id(
     memberships: DbMembership,
 ) -> dict[UserID, User]:
     user_ids = {ms.user_id for ms in memberships}
-    users = user_service.find_users(user_ids, include_avatars=True)
-    return {user.id: user for user in users}
+    users = user_service.get_users(user_ids, include_avatars=True)
+    return user_service.index_users_by_id(users)
 
 
 def has_team_memberships(team_id: OrgaTeamID) -> bool:
@@ -368,7 +368,7 @@ def get_unassigned_orgas_for_party(party_id: PartyID) -> set[User]:
 
     unassigned_orga_ids = {row[0] for row in unassigned_orga_id_rows}
 
-    return user_service.find_users(unassigned_orga_ids)
+    return user_service.get_users(unassigned_orga_ids)
 
 
 def is_orga_for_party(user_id: UserID, party_id: PartyID) -> bool:

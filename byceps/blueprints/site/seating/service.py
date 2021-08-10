@@ -63,7 +63,7 @@ def _get_seat_tickets(seats: Iterable[DbSeat]) -> Iterator[DbTicket]:
 
 def _get_ticket_users_by_id(tickets: Iterable[DbTicket]) -> dict[UserID, User]:
     user_ids = set(_get_ticket_user_ids(tickets))
-    users = user_service.find_users(user_ids, include_avatars=True)
+    users = user_service.get_users(user_ids, include_avatars=True)
     return user_service.index_users_by_id(users)
 
 

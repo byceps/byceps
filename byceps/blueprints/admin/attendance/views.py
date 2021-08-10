@@ -71,5 +71,5 @@ def _replace_user_ids_with_users(attendee_ids):
 
 def _get_users_by_id(attendee_ids):
     user_ids = {user_id for user_id, attendance_count in attendee_ids}
-    users = user_service.find_users(user_ids, include_avatars=False)
+    users = user_service.get_users(user_ids, include_avatars=False)
     return user_service.index_users_by_id(users)

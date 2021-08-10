@@ -109,7 +109,7 @@ def get_user(user_id: UserID, *, include_avatar: bool = False) -> User:
     return user
 
 
-def find_users(
+def get_users(
     user_ids: set[UserID],
     *,
     include_avatars: bool = False,

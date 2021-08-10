@@ -42,7 +42,7 @@ def role_index():
     roles = authorization_service.get_all_roles_with_titles()
 
     user_ids = {user.id for role in roles for user in role.users}
-    users = user_service.find_users(user_ids, include_avatars=True)
+    users = user_service.get_users(user_ids, include_avatars=True)
     users_by_id = user_service.index_users_by_id(users)
 
     return {
@@ -66,7 +66,7 @@ def role_view(role_id):
     )
 
     user_ids = authorization_service.find_user_ids_for_role(role.id)
-    users = user_service.find_users(user_ids, include_avatars=True)
+    users = user_service.get_users(user_ids, include_avatars=True)
 
     return {
         'role': role,

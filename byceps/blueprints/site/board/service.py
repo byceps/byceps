@@ -72,7 +72,7 @@ def add_unseen_postings_flag_to_categories(
 def add_topic_creators(topics: Sequence[DbTopic]) -> None:
     """Add each topic's creator as topic attribute."""
     creator_ids = {t.creator_id for t in topics}
-    creators = user_service.find_users(creator_ids, include_avatars=True)
+    creators = user_service.get_users(creator_ids, include_avatars=True)
     creators_by_id = user_service.index_users_by_id(creators)
 
     for topic in topics:

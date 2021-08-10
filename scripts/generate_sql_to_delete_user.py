@@ -42,7 +42,7 @@ def execute(user_ids):
 def generate_delete_statements_for_users(
     user_ids: Iterable[UserID],
 ) -> Iterator[str]:
-    users = user_service.find_users(user_ids)
+    users = user_service.get_users(set(user_ids))
     existing_user_ids = {u.id for u in users}
 
     for user_id in user_ids:

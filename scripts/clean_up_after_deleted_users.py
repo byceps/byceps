@@ -78,7 +78,7 @@ def execute(dry_run, user_ids):
 
 
 def check_for_undeleted_accounts(user_ids: set[UserID]) -> None:
-    users = user_service.find_users(user_ids)
+    users = user_service.get_users(user_ids)
 
     non_deleted_users = [u for u in users if not u.deleted]
     if non_deleted_users:
