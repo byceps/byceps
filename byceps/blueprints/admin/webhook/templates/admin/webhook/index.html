@@ -7,13 +7,13 @@
 {% set layout_main_raw = True %}
 
 {% block head %}
-  <style>
-    .two-column {
-      display: grid;
-      gap: 0.5rem 2rem;
-      grid-template-columns: repeat(auto-fill, minmax(465px, 1fr));
-    }
-  </style>
+<style>
+.two-column {
+  display: grid;
+  gap: var(--inner-gutter);
+  grid-template-columns: repeat(auto-fill, minmax(465px, 1fr));
+}
+</style>
 {%- endblock %}
 
 {% block body %}
@@ -56,50 +56,47 @@
       {%- endif %}
     </div>
 
+    <div class="data-label">{{ _('URL') }}</div>
+    <div class="data-value mb">{{ webhook.url }}</div>
+
     <div class="two-column">
-
       <div style="overflow-x: auto;">
-        <table class="index">
-          <tr>
-            <th>{{ _('URL') }}</th>
-            <td>{{ webhook.url }}</td>
-          </tr>
-          <tr>
-            <th>{{ _('Format') }}</th>
-            <td>{{ webhook.format }}</td>
-          </tr>
-          <tr>
-            <th>{{ _('Additional fields') }}</th>
-            <td>{{ webhook.extra_fields|fallback }}</td>
-          </tr>
-          <tr>
-            <th>{{ _('Text prefix') }}</th>
-            <td>{{ webhook.text_prefix|fallback }}</td>
-          </tr>
-        </table>
-      </div>
 
-      <div style="font-size: 0.75rem;">
-        <strong>{{ _('Selectors') }}</strong>
-        <details>
-          <summary>{{ webhook.event_selectors|length }} {{ _('event(s)') }}</summary>
-          <ul style="padding-left: 0.75rem;">
-            {%- for event_name, event_filters in webhook.event_selectors|dictsort %}
-            <li>
-              {{ event_name }}
-              {%- if event_filters %}
-              <ul style="padding-left: 1rem;">
-                {%- for key, value in event_filters|dictsort %}
-                <li>
-                  {{ key }} in {{ value }}
-                </li>
-                {%- endfor %}
-              </ul>
-              {%- endif %}
-            </li>
-            {%- endfor %}
-          </ul>
-        </details>
+        <div class="data-label">{{ _('Format') }}</div>
+        <div class="data-value">{{ webhook.format }}</div>
+
+        <div class="data-label">{{ _('Additional fields') }}</div>
+        <div class="data-value">{{ webhook.extra_fields|fallback }}</div>
+
+        <div class="data-label">{{ _('Text prefix') }}</div>
+        <div class="data-value">{{ webhook.text_prefix|fallback }}</div>
+
+      </div>
+      <div>
+
+        <div class="data-label">{{ _('Selectors') }}</div>
+        <div class="data-value">
+          <details style="font-size: 0.75rem;">
+            <summary>{{ webhook.event_selectors|length }} {{ _('event(s)') }}</summary>
+            <ul style="padding-left: 0.75rem;">
+              {%- for event_name, event_filters in webhook.event_selectors|dictsort %}
+              <li>
+                {{ event_name }}
+                {%- if event_filters %}
+                <ul style="padding-left: 1rem;">
+                  {%- for key, value in event_filters|dictsort %}
+                  <li>
+                    {{ key }} in {{ value }}
+                  </li>
+                  {%- endfor %}
+                </ul>
+                {%- endif %}
+              </li>
+              {%- endfor %}
+            </ul>
+          </details>
+        </div>
+
       </div>
 
     </div>{# .two-column #}

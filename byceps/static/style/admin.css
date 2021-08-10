@@ -620,6 +620,7 @@ main .dropdown-menu {
 .user-microcard-names {
   display: flex;
   flex-direction: column;
+  font-size: 0.8125rem; /* 13px / 16px */
   justify-content: space-around;
   white-space: nowrap;
 }
@@ -729,6 +730,15 @@ main .dropdown-menu {
     transparent, transparent 8px,
     #fff8f4 8px, #fff8f4 16px
   );
+}
+
+summary:focus {
+  outline: none;
+}
+
+summary:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 

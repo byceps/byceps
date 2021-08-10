@@ -13,36 +13,34 @@
   <h1>{{ render_icon('ticket-bundle') }} {{ bundle.id }}</h1>
 
   <div class="box">
-    <table class="index">
-      <tr>
-        <th>{{ _('ID') }}</th>
-        <td>{{ bundle.id }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Description') }}</th>
-        <td>{{ bundle.label|fallback }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Created') }}</th>
-        <td>{{ render_datetime(bundle.created_at|utc_to_local_tz) }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Owner') }}</th>
-        <td>{{ render_user_avatar_and_admin_link(bundle.owned_by, size=20) }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Party') }}</th>
-        <td>{{ party.title }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Category') }}</th>
-        <td>{{ bundle.ticket_category.title }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Ticket quantity') }}</th>
-        <td>{{ bundle.ticket_quantity }}</td>
-      </tr>
-    </table>
+
+    <div class="data-label">{{ _('ID') }}</div>
+    <div class="data-value">{{ bundle.id }}</div>
+
+    <div class="data-label">{{ _('Created') }}</div>
+    <div class="data-value mb">{{ render_datetime(bundle.created_at|utc_to_local_tz) }}</div>
+
+    <div class="row mb">
+      <div class="column-auto">
+
+        <div class="data-label">{{ _('Category') }}</div>
+        <div class="data-value">{{ bundle.ticket_category.title }}</div>
+
+      </div>
+      <div class="column-auto">
+
+        <div class="data-label">{{ _('Ticket quantity') }}</div>
+        <div class="data-value">{{ bundle.ticket_quantity }}</div>
+
+      </div>
+    </div>
+
+    <div class="data-label">{{ _('Description') }}</div>
+    <div class="data-value mb">{{ bundle.label|fallback }}</div>
+
+    <div class="data-label">{{ _('Owner') }}</div>
+    <div class="data-value">{{ render_user_avatar_and_admin_link(bundle.owned_by, size=20) }}</div>
+
   </div>
 
   <h2>{{ _('Tickets') }} {{ render_extra_in_heading(tickets|length) }}</h1>

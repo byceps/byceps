@@ -10,22 +10,26 @@
 {% block body %}
 
   <div class="box">
-    <table class="index">
-      <tr>
-        <th>{{ _('ID') }}</th>
-        <td>{{ shop.id }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Status') }}</th>
-        <td>
+    <div class="row">
+      <div class="column-auto">
+
+        <div class="data-label">{{ _('ID') }}</div>
+        <div class="data-value">{{ shop.id }}</div>
+
+      </div>
+      <div class="column-auto">
+
+        <div class="data-label">{{ _('Status') }}</div>
+        <div class="data-value">
         {%- if shop.archived %}
           {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
         {%- else %}
           {{ render_tag(_('active'), class='color-success', icon='success') }}
         {%- endif %}
-        </td>
-      </tr>
-    </table>
+        </div>
+
+      </div>
+    </div>
   </div>
 
   <h2>{{ _('Settings') }} {{ render_extra_in_heading(settings|length) }}</h2>

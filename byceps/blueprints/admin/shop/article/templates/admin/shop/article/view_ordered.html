@@ -14,12 +14,16 @@
 
   <h1>{{ page_title }}</h1>
 
-  <p style="margin: 2rem 0;">
-    <small>
-      <span style="float: right;"><strong>{{ _('As at') }}:</strong> {{ render_datetime(now|utc_to_local_tz, smart=False) }}</span>
-      <span><strong>{{ quantity_total }}</strong> {{ _('pieces in total') }}</span>
-    </small>
-  </p>
+  <div class="row row--space-between mb">
+    <div class="column-auto">
+      <div class="data-label">{{ _('Quantity ordered') }}</div>
+      <div class="data-value"><strong>{{ quantity_total }}</strong> {{ _('pieces in total') }}</div>
+    </div>
+    <div class="column-auto">
+      <div class="data-label">{{ _('As at') }}</div>
+      <div class="data-value">{{ render_datetime(now|utc_to_local_tz, smart=False) }}</div>
+    </div>
+  </div>
 
   {%- if quantities_orders_users %}
   <table class="index wide">

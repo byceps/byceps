@@ -10,11 +10,24 @@
 {% set layout_main_raw = True %}
 
 {% block head %}
-    <style>
-      .managed-by {
-        margin-top: 0.25rem;
-      }
-    </style>
+<style>
+.local-grid {
+  display: grid;
+  gap: var(--inner-gutter);
+  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+}
+
+.local-grid .box {
+  margin-top: 0;
+}
+
+.local-column {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+}
+</style>
 {% endblock %}
 
 {% block body %}
@@ -52,65 +65,90 @@
     </div>
   </div>
 
-  <div class="box">
-    <table class="index">
-      <tr>
-        <th>{{ _('ID') }}</th>
-        <td>
-          {{ ticket.id }}
-          <input id="ticket-id-field" value="{{ ticket.id }}" style="position: fixed; top: -1000px;" readonly>
-          <button id="ticket-id-copy-trigger" data-field-id="ticket-id-field" class="button button--compact" title="{{ _('Copy to clipboard') }}">{{ render_icon('clipboard') }}</button>
-        </td>
-      </tr>
-      <tr>
-        <th>{{ _('Created') }}</th>
-        <td>{{ render_datetime(ticket.created_at|utc_to_local_tz) }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Category') }}</th>
-        <td>{{ ticket.category.title }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Bundle') }}</th>
-        <td>
-          {%- if ticket.bundle_id %}
-          <a href="{{ url_for('.view_bundle', bundle_id=ticket.bundle_id) }}">{{ _('Bundle') }}</a>
-          {%- else %}
-          {{ _('independent')|dim }}
-          {%- endif %}
-        </td>
-      </tr>
-      <tr>
-        <th>{{ _('Order') }}</th>
-        <td>{{ render_order_link(order) if order else None|fallback(_('not specified')) }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Owner') }}</th>
-        <td>{{ render_user_microcard(ticket.owned_by) }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('User') }}</th>
-        <td>
-          {%- if ticket.used_by -%}
-          {{ render_user_microcard(ticket.used_by) }}
-          {%- else -%}
-          {{ _('nobody')|dim }}
-          {%- endif -%}
-          <div class="managed-by">{{ _('managed by')|dim }} {{ render_user_avatar_and_admin_link(ticket.get_user_manager(), size=20) }}</div>
-        </td>
-      </tr>
-      <tr>
-        <th>{{ _('Seat') }}</th>
-        <td>
-          {%- if ticket.occupied_seat -%}
-          {{ ticket.occupied_seat.label|fallback(_('unnamed')) }}
-          {%- else -%}
-          {{ _('no seat')|dim }}
-          {%- endif -%}
-          <div class="managed-by">{{ _('managed by')|dim  }} {{ render_user_avatar_and_admin_link(ticket.get_seat_manager(), size=20) }}</div>
-        </td>
-      </tr>
-    </table>
+  <div class="box mb">
+
+    <div class="data-label">{{ _('ID') }}</div>
+    <div class="data-value">
+      {{ ticket.id }}
+      <input id="ticket-id-field" value="{{ ticket.id }}" style="position: fixed; top: -1000px;" readonly>
+      <button id="ticket-id-copy-trigger" data-field-id="ticket-id-field" class="button button--compact" title="{{ _('Copy to clipboard') }}">{{ render_icon('clipboard') }}</button>
+    </div>
+
+    <div class="data-label">{{ _('Created') }}</div>
+    <div class="data-value">{{ render_datetime(ticket.created_at|utc_to_local_tz) }}</div>
+
+    <div class="data-label">{{ _('Category') }}</div>
+    <div class="data-value">{{ ticket.category.title }}</div>
+
+    <div class="data-label">{{ _('Bundle') }}</div>
+    <div class="data-value">
+      {%- if ticket.bundle_id %}
+      <a href="{{ url_for('.view_bundle', bundle_id=ticket.bundle_id) }}">{{ _('Bundle') }}</a>
+      {%- else %}
+      {{ _('independent')|dim }}
+      {%- endif %}
+    </div>
+
+    <div class="data-label">{{ _('Order') }}</div>
+    <div class="data-value">{{ render_order_link(order) if order else None|fallback(_('not specified')) }}</div>
+
+  </div>
+
+  <div class="local-grid">
+    <div class="box">
+
+      <div class="data-label">{{ _('Owner') }}</div>
+      <div class="data-value">{{ render_user_microcard(ticket.owned_by) }}</div>
+
+    </div>
+    <div class="box">
+
+      <div class="local-column">
+        <div>
+
+          <div class="data-label">{{ _('User') }}</div>
+          <div class="data-value mb">
+            {%- if ticket.used_by -%}
+            {{ render_user_microcard(ticket.used_by) }}
+            {%- else -%}
+            {{ _('nobody')|dim }}
+            {%- endif -%}
+          </div>
+
+        </div>
+        <div>
+
+          <div class="data-label">{{ _('managed by') }}</div>
+          <div class="data-value">{{ render_user_avatar_and_admin_link(ticket.get_user_manager(), size=20) }}</div>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="box">
+
+      <div class="local-column">
+        <div>
+
+          <div class="data-label">{{ _('Seat') }}</div>
+          <div class="data-value mb">
+            {%- if ticket.occupied_seat -%}
+            {{ ticket.occupied_seat.label|fallback(_('unnamed')) }}
+            {%- else -%}
+            {{ _('no seat')|dim }}
+            {%- endif -%}
+          </div>
+
+        </div>
+        <div>
+
+          <div class="data-label">{{ _('managed by') }}</div>
+          <div class="data-value">{{ render_user_avatar_and_admin_link(ticket.get_seat_manager(), size=20) }}</div>
+
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <h2>{{ _('History') }}</h2>

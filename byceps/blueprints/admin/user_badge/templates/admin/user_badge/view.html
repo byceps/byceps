@@ -8,28 +8,31 @@
 {% set layout_main_raw = True %}
 
 {% block head %}
-  <style>
-    .badge-details {
-      display: flex;
-      margin-bottom: 2rem;
-    }
-    .badge-details .badge {
-      flex: 0 0 auto;
-    }
-    .badge-details .description {
-      align-self: center;
-      margin-left: 1rem;
-    }
+<style>
+.badge-details {
+  display: flex;
+  margin-bottom: 2rem;
+}
 
-    a.recipient {
-      border: none;
-      display: block;
-      text-decoration: none;
-    }
-    a.recipient:hover .avatar {
-      outline: currentColor solid 1px;
-    }
-  </style>
+.badge-details .badge {
+  flex: 0 0 auto;
+}
+
+.badge-details .description {
+  align-self: center;
+  margin-left: 1rem;
+}
+
+a.recipient {
+  border: none;
+  display: block;
+  text-decoration: none;
+}
+
+a.recipient:hover .avatar {
+  outline: currentColor solid 1px;
+}
+</style>
 {% endblock %}
 
 {% block body %}
@@ -37,21 +40,21 @@
   <div class="row row--space-between">
     <div class="column-auto">
 
-    <nav class="breadcrumbs">
-      <ol>
-        <li><a href="{{ url_for('.index') }}">{{ _('Badges') }}</a></li>
-      </ol>
-    </nav>
-    <h1>{{ badge.label }}</h1>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{{ url_for('.index') }}">{{ _('Badges') }}</a></li>
+        </ol>
+      </nav>
+      <h1>{{ badge.label }}</h1>
 
     </div>
     <div class="column-auto column--align-bottom">
 
-    {%- if has_current_user_permission(UserBadgePermission.update) %}
-    <div class="button-row button-row--right">
-      <a class="button" href="{{ url_for('.update_form', badge_id=badge.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
-    </div>
-    {%- endif %}
+      {%- if has_current_user_permission(UserBadgePermission.update) %}
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.update_form', badge_id=badge.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+      </div>
+      {%- endif %}
 
     </div>
   </div>
@@ -66,29 +69,27 @@
       <div class="description">{{ badge.description|fallback('No description set.') }}</div>
     </div>
 
-    <table class="index">
-      <tr>
-        <th>{{ _('Slug') }}</th>
-        <td>{{ badge.slug }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Brand') }}</th>
-        <td>
-        {%- if brand %}
-          {{ render_brand_avatar(brand, '16') }}
-          {{ brand.title }}
-        {%- else %}
-        <em>{{ _('unrestricted') }}</em>
-        {%- endif %}
-        </td>
-      </tr>
-      <tr>
-        <th>{{ render_tag(_('featured')) }}</th>
-        <td>{{ _('yes') if badge.featured else _('no') }}</td>
-      </tr>
-    </table>
+    <div class="data-label">{{ _('Slug') }}</div>
+    <div class="data-value">{{ badge.slug }}</div>
 
-    <h2>{{ _('Awarded to %(recipient_count)s users', recipient_count=recipients|length) }}</h2>
+    <div class="data-label">{{ _('Brand') }}</div>
+    <div class="data-value">
+      {%- if brand %}
+        {{ render_brand_avatar(brand, '16') }}
+        {{ brand.title }}
+      {%- else %}
+      <em>{{ _('unrestricted') }}</em>
+      {%- endif %}
+    </div>
+
+    <div class="data-label">{{ render_tag(_('featured')) }}</div>
+    <div class="data-value">{{ _('yes') if badge.featured else _('no') }}</div>
+
+  </div>
+
+  <h2>{{ _('Awarded to %(recipient_count)s users', recipient_count=recipients|length) }}</h2>
+  <div class="box">
+
     {%- if recipients %}
     <ul class="list-grid">
       {%- for user in recipients %}

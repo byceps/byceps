@@ -8,23 +8,14 @@
 
 {% block head %}
 <style>
-  .email-example summary:focus {
-    outline: none;
-  }
-
-  .email-example summary:hover {
-    cursor: pointer;
-    text-decoration: underline;
-  }
-
-  .email-example code {
-    background-color: #eeeeee;
-    display: block;
-    font-size: 0.75rem;
-    max-width: 46rem;
-    overflow-x: scroll;
-    padding: 1rem;
-  }
+.email-example code {
+  background-color: #eeeeee;
+  display: block;
+  font-size: 0.75rem;
+  max-width: 46rem;
+  overflow-x: scroll;
+  padding: 1rem;
+}
 </style>
 {%- endblock %}
 
@@ -55,20 +46,25 @@
 
   <h2>{{ _('Configuration') }}</h2>
   <div class="box">
-    <table class="index">
-      <tr>
-        <th>{{ _('Sender address') }}</th>
-        <td>{{ email_config.sender.address }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Sender name') }}</th>
-        <td>{{ email_config.sender.name|fallback }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Contact address') }}</th>
-        <td>{{ email_config.contact_address|fallback }}</td>
-      </tr>
-    </table>
+
+    <div class="row mb">
+      <div class="column-auto">
+
+        <div class="data-label">{{ _('Sender address') }}</div>
+        <div class="data-value">{{ email_config.sender.address }}</div>
+
+      </div>
+      <div class="column-auto">
+
+        <div class="data-label">{{ _('Sender name') }}</div>
+        <div class="data-value">{{ email_config.sender.name|fallback }}</div>
+
+      </div>
+    </div>
+
+    <div class="data-label">{{ _('Contact address') }}</div>
+    <div class="data-value">{{ email_config.contact_address|fallback }}</div>
+
   </div>
 
 {%- endblock %}

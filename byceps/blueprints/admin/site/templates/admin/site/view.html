@@ -1,5 +1,4 @@
 {% extends 'layout/admin/base.html' %}
-{% from 'macros/admin/brand.html' import render_brand_admin_link %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
@@ -39,52 +38,49 @@
   </div>
 
   <div class="box">
-    <table class="index">
-      <tr>
-        <th>{{ _('ID') }}</th>
-        <td>{{ site.id }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Server name') }}</th>
-        <td><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></td>
-      </tr>
-      <tr>
-        <th>{{ _('Brand') }}</th>
-        <td>{{ render_brand_admin_link(brand) }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Party') }}</th>
-        <td>{% if site.party_id %}<a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ site.party_id }}</a>{% else %}{{ _('not assigned')|dim }}{% endif %}</td>
-      </tr>
-      <tr>
-        <th>{{ _('User registration') }}</th>
-        <td>{{ render_tag(_('open'), class='color-success') if site.user_account_creation_enabled else render_tag(_('closed'), class='color-disabled', icon='disabled') }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('User login') }}</th>
-        <td>{{ render_tag(_('open'), class='color-success') if site.login_enabled else render_tag(_('closed'), class='color-disabled', icon='disabled') }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Board') }}</th>
-        <td>
-          {%- if board %}
-          <a href="{{ url_for('board_admin.board_view', board_id=board.id) }}">{{ board.id }}</a>
-          {%- else %}
-          {{ _('not assigned')|dim }}
-          {%- endif %}
-        </td>
-      </tr>
-      <tr>
-        <th>{{ _('Storefront') }}</th>
-        <td>
-          {%- if storefront %}
-          <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}">{{ storefront.id }}</a>
-          {%- else %}
-          {{ _('not assigned')|dim }}
-          {%- endif %}
-        </td>
-      </tr>
-    </table>
+
+    <div class="data-label">{{ _('ID') }}</div>
+    <div class="data-value">{{ site.id }}</div>
+
+    <div class="data-label">{{ _('Server name') }}</div>
+    <div class="data-value mb"><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></div>
+
+    <div class="row mb">
+      <div class="column-auto">
+
+        <div class="data-label">{{ _('User registration') }}</div>
+        <div class="data-value">{{ render_tag(_('open'), class='color-success') if site.user_account_creation_enabled else render_tag(_('closed'), class='color-disabled', icon='disabled') }}</div>
+
+      </div>
+      <div class="column-auto">
+
+        <div class="data-label">{{ _('User login') }}</div>
+        <div class="data-value">{{ render_tag(_('open'), class='color-success') if site.login_enabled else render_tag(_('closed'), class='color-disabled', icon='disabled') }}</div>
+
+      </div>
+    </div>
+
+    <div class="data-label">{{ _('Party') }}</div>
+    <div class="data-value">{% if site.party_id %}<a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}">{{ site.party_id }}</a>{% else %}{{ _('not assigned')|dim }}{% endif %}</div>
+
+    <div class="data-label">{{ _('Board') }}</div>
+    <div class="data-value">
+      {%- if board %}
+      <a href="{{ url_for('board_admin.board_view', board_id=board.id) }}">{{ board.id }}</a>
+      {%- else %}
+      {{ _('not assigned')|dim }}
+      {%- endif %}
+    </div>
+
+    <div class="data-label">{{ _('Storefront') }}</div>
+    <div class="data-value">
+      {%- if storefront %}
+      <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}">{{ storefront.id }}</a>
+      {%- else %}
+      {{ _('not assigned')|dim }}
+      {%- endif %}
+    </div>
+
   </div>
 
   <div class="row row--space-between">

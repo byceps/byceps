@@ -8,24 +8,35 @@
 {% set layout_main_raw = True %}
 
 {% block head %}
-    <style>
-      .progress {
-        height: 0.3rem;
-      }
+<style>
+.article-grid {
+  display: grid;
+  gap: var(--inner-gutter);
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+}
 
-      .progress-bar.color--available {
-        background-color: #11aa22;
-      }
+.article-grid .box {
+  margin-top: 0;
+}
 
-      .progress-bar.color--ordered {
-        background-color: #eecc00;
-      }
+.progress {
+  height: 0.3rem;
+  margin-top: 0.5rem;
+}
 
-      table.attachments td {
-        border: none !important;
-        text-align: right;
-      }
-    </style>
+.progress-bar.color--available {
+  background-color: #11aa22;
+}
+
+.progress-bar.color--ordered {
+  background-color: #eecc00;
+}
+
+table.attachments td {
+  border: none !important;
+  text-align: right;
+}
+</style>
 {%- endblock %}
 
 {% block body %}
@@ -52,99 +63,102 @@
     </div>
   </div>
 
-  <div class="box">
-    <table class="index">
-      <tr>
-        <th>{{ _('Description') }}</th>
-        <td>{{ article.description }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Type') }}</th>
-        <td>{{ type_label }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Unit price') }}</th>
-        <td>{{ article.price|format_euro_amount }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Tax rate') }}</th>
-        <td>{{ article.tax_rate|tax_rate_as_percentage }}&thinsp;%</td>
-      </tr>
-      <tr>
-        <th>{{ _('Period') }}</th>
-        <td>{{ render_article_temporal_availability(article) }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Availability') }}</th>
-        <td>
-          <div style="line-height: 1.5; width: 16rem;">
-            <div class="progress">
-              <div class="progress-bar color--available" style="width: calc(100% * {{ article.quantity }} / {{ article.total_quantity }});"></div>
-              <div class="progress-bar color--ordered" style="width: calc(100% * {{ totals[PaymentState.open] }} / {{ article.total_quantity }});"></div>
-            </div>
-            <div class="row row--space-between" style="font-size: 0.75rem;">
-              <div class="column-auto">
-                <strong>{{ article.quantity }}</strong> {{ _('available') }}{% if article.quantity < 1 %} {{ render_tag(_('sold out')) }}{% endif %}<br>
-                <strong>{{ totals[PaymentState.open] }}</strong> {{ _('ordered') }}<br>
-                <strong>{{ totals[PaymentState.paid] }}</strong> {{ _('paid') }}
-              </div>
-              <div class="column-auto dimmed">{{ _('of') }} {{ article.total_quantity }}</div>
-            </div>
+  <div class="article-grid">
+    <div class="box">
+
+      <div class="data-label">{{ _('Description') }}</div>
+      <div class="data-value">{{ article.description }}</div>
+
+      <div class="data-label">{{ _('Type') }}</div>
+      <div class="data-value mb">{{ type_label }}</div>
+
+      <div class="row row--space-between">
+        <div class="column-auto">
+
+          <div class="data-label">{{ _('Tax rate') }}</div>
+          <div class="data-value">{{ article.tax_rate|tax_rate_as_percentage }}&thinsp;%</div>
+
+        </div>
+        <div class="column-auto">
+
+          <div class="data-label">{{ _('Unit price') }}</div>
+          <div class="data-value" style="font-size: 1.5rem;">{{ article.price|format_euro_amount }}</div>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="box">
+
+      <div class="data-label">{{ _('Availability') }}</div>
+      <div class="data-value">
+        <div style="line-height: 1.5;">
+          <div class="progress">
+            <div class="progress-bar color--available" style="width: calc(100% * {{ article.quantity }} / {{ article.total_quantity }});"></div>
+            <div class="progress-bar color--ordered" style="width: calc(100% * {{ totals[PaymentState.open] }} / {{ article.total_quantity }});"></div>
           </div>
-        </td>
-      </tr>
-      <tr>
-        <th>{{ _('Total quantity') }}</th>
-        <td>{{ article.total_quantity }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Maximum quantity per order') }}</th>
-        <td>{{ article.max_quantity_per_order }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Can only be ordered indirectly') }}</th>
-        <td>{{ _('yes') if article.not_directly_orderable else _('no') }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Must be ordered separately') }}</th>
-        <td>{{ _('yes') if article.separate_order_required else _('no') }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Shipping required') }}</th>
-        <td>{{ _('yes') if article.shipping_required else _('no') }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Attached to articles') }}</th>
-        <td>
-          {%- if article.articles_attached_to %}
-          <ol>
-          {%- for attached_article in article.articles_attached_to|sort(attribute='attached_to_article.item_number') %}
-          <li>{{ render_article_link(attached_article.attached_to_article) }} ({{ attached_article.quantity }} {{ _('pieces') }})</li>
-          {%- endfor %}
-          </ol>
-          {%- else %}
-          {{ _('none')|dim }}
-          {%- endif %}
-        </td>
-      </tr>
-      <tr>
-        <th>{{ _('Attached articles') }}</th>
-        <td>
-          {%- if article.attached_articles %}
-          <table class="attachments">
-          {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
-            <tr>
-              <td>{{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</td>
-              <td><a data-action="attachment-remove" href="{{ url_for('.attachment_remove', article_id=attached_article.id) }}" class="button button--compact" title="{{ _('Remove attached article') }}">{{ render_icon('remove') }}</a></td>
-            </tr>
-          {%- endfor %}
-          </table>
-          {%- else %}
-          {{ _('none')|dim }}
-          {%- endif %}
-        </td>
-      </tr>
-    </table>
+          <div class="row row--space-between" style="font-size: 0.75rem;">
+            <div class="column-auto">
+              <strong>{{ article.quantity }}</strong> {{ _('available') }}{% if article.quantity < 1 %} {{ render_tag(_('sold out')) }}{% endif %}<br>
+              <strong>{{ totals[PaymentState.open] }}</strong> {{ _('ordered') }}<br>
+              <strong>{{ totals[PaymentState.paid] }}</strong> {{ _('paid') }}
+            </div>
+            <div class="column-auto dimmed">{{ _('of') }} {{ article.total_quantity }}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="data-label">{{ _('Period') }}</div>
+      <div class="data-value">{{ render_article_temporal_availability(article) }}</div>
+
+    </div>
+    <div class="box">
+
+      <div class="data-label">{{ _('Maximum quantity per order') }}</div>
+      <div class="data-value">{{ article.max_quantity_per_order }}</div>
+
+      <div class="data-label">{{ _('Can only be ordered indirectly') }}</div>
+      <div class="data-value">{{ _('yes') if article.not_directly_orderable else _('no') }}</div>
+
+      <div class="data-label">{{ _('Must be ordered separately') }}</div>
+      <div class="data-value">{{ _('yes') if article.separate_order_required else _('no') }}</div>
+
+      <div class="data-label">{{ _('Shipping required') }}</div>
+      <div class="data-value">{{ _('yes') if article.shipping_required else _('no') }}</div>
+
+    </div>
+    <div class="box">
+
+      <div class="data-label">{{ _('Attached to articles') }}</div>
+      <div class="data-value">
+        {%- if article.articles_attached_to %}
+        <ol>
+        {%- for attached_article in article.articles_attached_to|sort(attribute='attached_to_article.item_number') %}
+        <li>{{ render_article_link(attached_article.attached_to_article) }} ({{ attached_article.quantity }} {{ _('pieces') }})</li>
+        {%- endfor %}
+        </ol>
+        {%- else %}
+        {{ _('none')|dim }}
+        {%- endif %}
+      </div>
+
+      <div class="data-label">{{ _('Attached articles') }}</div>
+      <div class="data-value">
+        {%- if article.attached_articles %}
+        <table class="attachments">
+        {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
+          <tr>
+            <td>{{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</td>
+            <td><a data-action="attachment-remove" href="{{ url_for('.attachment_remove', article_id=attached_article.id) }}" class="button button--compact" title="{{ _('Remove attached article') }}">{{ render_icon('remove') }}</a></td>
+          </tr>
+        {%- endfor %}
+        </table>
+        {%- else %}
+        {{ _('none')|dim }}
+        {%- endif %}
+      </div>
+
+    </div>
   </div>
 
   <div class="row row--space-between">

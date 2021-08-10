@@ -20,30 +20,29 @@
   </div>
 
   <div class="box">
-    <table class="index">
-      <tr>
-        <th>{{ _('Shop') }}</th>
-        <td><a href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}">{{ shop.title }}</a></td>
-      </tr>
-      <tr>
-        <th>{{ _('Catalog') }}</th>
-        <td>{{ storefront.catalog_id|fallback }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Order number sequence') }}</th>
-        <td>{{ order_number_prefix }}</td>
-      </tr>
-      <tr>
-        <th>{{ _('Status') }}</th>
-        <td>
-          {%- if storefront.closed -%}
-          {{ render_tag(_('closed'), icon='disabled', class='color-disabled') }}
-          {%- else -%}
-          {{ render_tag(_('open'), icon='success', class='color-success') }}
-          {%- endif -%}
-        </td>
-      </tr>
-    </table>
+
+    <div class="data-label">{{ _('Shop') }}</div>
+    <div class="data-value mb"><a href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}">{{ shop.title }}</a></div>
+
+    <div class="row mb">
+      <div class="column-auto">
+        <div class="data-label">{{ _('Catalog') }}</div>
+        <div class="data-value">{{ storefront.catalog_id|fallback }}</div>
+      </div>
+      <div class="column-auto">
+        <div class="data-label">{{ _('Order number sequence') }}</div>
+        <div class="data-value">{{ order_number_prefix }}</div>
+      </div>
+    </div>
+
+    <div class="data-label">{{ _('Status') }}</div>
+    <div class="data-value">
+      {%- if storefront.closed -%}
+      {{ render_tag(_('closed'), icon='disabled', class='color-disabled') }}
+      {%- else -%}
+      {{ render_tag(_('open'), icon='success', class='color-success') }}
+      {%- endif -%}
+    </div>
   </div>
 
 {%- endblock %}

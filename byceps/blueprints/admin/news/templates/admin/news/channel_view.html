@@ -15,12 +15,10 @@
   <h1>{{ _('News channel') }} &quot;{{ channel.id }}&quot;</h1>
 
   <div class="box">
-    <table class="index">
-      <tr>
-        <th>{{ _('URL prefix') }}</th>
-        <td>{{ channel.url_prefix }}</td>
-      </tr>
-    </table>
+
+    <div class="data-label">{{ _('URL prefix') }}</div>
+    <div class="data-value">{{ channel.url_prefix }}</div>
+
   </div>
 
   <div class="row row--space-between">
