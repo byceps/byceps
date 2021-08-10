@@ -46,7 +46,7 @@ def build_example_placed_order_message_text(shop_id: ShopID) -> str:
     shop = shop_service.get_shop(shop_id)
 
     order = _build_order(
-        shop.id, PaymentState.open, OrderState.open, is_open=True
+        shop.id, PaymentState.open, state=OrderState.open, is_open=True
     )
 
     data = _build_email_data(order, shop.brand_id)
@@ -66,7 +66,7 @@ def build_example_paid_order_message_text(shop_id: ShopID) -> str:
     shop = shop_service.get_shop(shop_id)
 
     order = _build_order(
-        shop.id, PaymentState.paid, OrderState.open, is_paid=True
+        shop.id, PaymentState.paid, state=OrderState.open, is_paid=True
     )
 
     data = _build_email_data(order, shop.brand_id)
@@ -90,7 +90,7 @@ def build_example_canceled_order_message_text(shop_id: ShopID) -> str:
     order = _build_order(
         shop.id,
         PaymentState.canceled_before_paid,
-        OrderState.canceled,
+        state=OrderState.canceled,
         is_canceled=True,
         cancelation_reason=gettext('Not paid in time.'),
     )
