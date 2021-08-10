@@ -16,7 +16,6 @@ from ....util.instances import ReprBuilder
 
 from ...ticketing.dbmodels.category import Category
 from ...ticketing.transfer.models import TicketCategoryID
-from ...user.dbmodels.user import User
 
 from ..transfer.models import AreaID
 
@@ -64,25 +63,6 @@ class Seat(db.Model):
     def coords(self, point: Point) -> None:
         self.coord_x = point.x
         self.coord_y = point.y
-
-    @property
-    def has_user(self) -> bool:
-        """Return `True` if the seat is occupied by a ticket, and that
-        ticket is assigned to a user.
-        """
-        ticket = self.occupied_by_ticket
-        return (ticket is not None) and (ticket.used_by_id is not None)
-
-    @property
-    def user(self) -> Optional[User]:
-        """Return the user to which the ticket that occupies this seat
-        is assigned, or `None` if this seat is not occupied by a ticket
-        or the ticket is not assigned to a user.
-        """
-        if not self.has_user:
-            return None
-
-        return self.occupied_by_ticket.used_by
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

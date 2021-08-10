@@ -56,8 +56,9 @@ def get_users(
 
 def _get_seat_tickets(seats: Iterable[DbSeat]) -> Iterator[DbTicket]:
     for seat in seats:
-        if seat.has_user:
-            yield seat.occupied_by_ticket
+        ticket = seat.occupied_by_ticket
+        if (ticket is not None) and (ticket.used_by_id is not None):
+            yield ticket
 
 
 def _get_ticket_users_by_id(tickets: Iterable[DbTicket]) -> dict[UserID, User]:
