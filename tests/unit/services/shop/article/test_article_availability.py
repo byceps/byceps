@@ -5,12 +5,19 @@
 
 from datetime import datetime
 from decimal import Decimal
+from typing import Optional
 
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.shop.article.transfer.models import Article
+from byceps.database import generate_uuid
+from byceps.services.shop.article.transfer.models import (
+    Article,
+    ArticleID,
+    ArticleNumber,
+)
 from byceps.services.shop.article.service import is_article_available_now
+from byceps.services.shop.shop.transfer.models import ShopID
 
 
 @pytest.mark.parametrize(
@@ -102,12 +109,12 @@ def test_is_available_without_start_and_without_end(now, expected):
 
 
 def create_article(
-    available_from: datetime, available_until: datetime
+    available_from: Optional[datetime], available_until: Optional[datetime]
 ) -> Article:
     return Article(
-        id='00000000-0000-0000-0000-000000000001',
-        shop_id='any-shop',
-        item_number='article-123',
+        id=ArticleID(generate_uuid()),
+        shop_id=ShopID('any-shop'),
+        item_number=ArticleNumber('article-123'),
         description='Cool thing',
         price=Decimal('1.99'),
         tax_rate=Decimal('0.19'),

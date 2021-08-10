@@ -5,8 +5,15 @@
 
 from decimal import Decimal
 
-from byceps.services.shop.article.transfer.models import Article, ArticleNumber
+from byceps.database import generate_uuid
+from byceps.services.shop.article.transfer.models import (
+    Article,
+    ArticleNumber,
+    ArticleID,
+    ArticleNumber,
+)
 from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.shop.transfer.models import ShopID
 
 
 def test_cart_empty_repr():
@@ -16,10 +23,10 @@ def test_cart_empty_repr():
 
 def test_cart_filled_repr():
     article1 = create_article(
-        'a-001', 'Article #1', Decimal('19.99'), Decimal('0.19')
+        ArticleNumber('a-001'), 'Article #1', Decimal('19.99'), Decimal('0.19')
     )
     article2 = create_article(
-        'a-002', 'Article #2', Decimal('24.99'), Decimal('0.19')
+        ArticleNumber('a-002'), 'Article #2', Decimal('24.99'), Decimal('0.19')
     )
 
     cart = Cart()
@@ -39,8 +46,8 @@ def create_article(
     tax_rate: Decimal,
 ) -> Article:
     return Article(
-        id='00000000-0000-0000-0000-000000000001',
-        shop_id='any-shop',
+        id=ArticleID(generate_uuid()),
+        shop_id=ShopID('any-shop'),
         item_number=item_number,
         description=description,
         price=price,

@@ -7,8 +7,14 @@ from decimal import Decimal
 
 from pytest import raises
 
-from byceps.services.shop.article.transfer.models import Article
+from byceps.database import generate_uuid
+from byceps.services.shop.article.transfer.models import (
+    Article,
+    ArticleID,
+    ArticleNumber,
+)
 from byceps.services.shop.cart.models import CartItem
+from byceps.services.shop.shop.transfer.models import ShopID
 
 
 def test_init_with_positive_quantity():
@@ -39,9 +45,9 @@ def create_item(quantity: int) -> CartItem:
 
 def create_article() -> Article:
     return Article(
-        id='00000000-0000-0000-0000-000000000001',
-        shop_id='any-shop',
-        item_number='article-123',
+        id=ArticleID(generate_uuid()),
+        shop_id=ShopID('any-shop'),
+        item_number=ArticleNumber('article-123'),
         description='Cool thing',
         price=Decimal('1.99'),
         tax_rate=Decimal('0.19'),

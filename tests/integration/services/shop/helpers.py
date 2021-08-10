@@ -7,8 +7,8 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional
 
-from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.article import service as article_service
+from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.shop.transfer.models import ShopID
@@ -37,7 +37,7 @@ def create_shop_fragment(shop_id, admin_id, name, body):
     return version.snippet_id
 
 
-ANY_ARTICLE_ITEM_NUMBER = 'AEC-05-A00009'
+ANY_ARTICLE_ITEM_NUMBER = ArticleNumber('AEC-05-A00009')
 
 
 def create_article(

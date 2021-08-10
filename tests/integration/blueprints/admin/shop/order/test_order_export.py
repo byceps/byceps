@@ -17,6 +17,7 @@ from byceps.services.shop.order import (
     service as order_service,
 )
 from byceps.services.shop.storefront import service as storefront_service
+from byceps.services.shop.storefront.transfer.models import StorefrontID
 
 from tests.helpers import login_user
 from tests.integration.services.shop.helpers import (
@@ -118,7 +119,7 @@ def order_number_sequence_id(shop) -> None:
 @pytest.fixture
 def storefront(shop, order_number_sequence_id) -> None:
     storefront = storefront_service.create_storefront(
-        f'{shop.id}-storefront',
+        StorefrontID(f'{shop.id}-storefront'),
         shop.id,
         order_number_sequence_id,
         closed=False,
