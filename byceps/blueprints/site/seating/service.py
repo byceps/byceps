@@ -9,7 +9,7 @@ byceps.blueprints.site.seating.service
 from __future__ import annotations
 from dataclasses import dataclass
 from itertools import chain
-from typing import Iterator, Optional, Sequence
+from typing import Iterator, Optional, Iterable
 
 from ....services.seating.dbmodels.seat import Seat as DbSeat
 from ....services.seating.transfer.models import SeatID
@@ -46,7 +46,7 @@ class Seat:
 
 
 def get_users(
-    seats: Sequence[DbSeat], managed_tickets: Sequence[DbTicket]
+    seats: Iterable[DbSeat], managed_tickets: Iterable[DbTicket]
 ) -> dict[UserID, User]:
     seat_tickets = _get_seat_tickets(seats)
     tickets = chain(seat_tickets, managed_tickets)
@@ -54,19 +54,19 @@ def get_users(
     return _get_ticket_users_by_id(tickets)
 
 
-def _get_seat_tickets(seats: Sequence[DbSeat]) -> Iterator[DbTicket]:
+def _get_seat_tickets(seats: Iterable[DbSeat]) -> Iterator[DbTicket]:
     for seat in seats:
         if seat.has_user:
             yield seat.occupied_by_ticket
 
 
-def _get_ticket_users_by_id(tickets: Sequence[DbTicket]) -> dict[UserID, User]:
+def _get_ticket_users_by_id(tickets: Iterable[DbTicket]) -> dict[UserID, User]:
     user_ids = set(_get_ticket_user_ids(tickets))
     users = user_service.find_users(user_ids, include_avatars=True)
     return user_service.index_users_by_id(users)
 
 
-def _get_ticket_user_ids(tickets: Sequence[DbTicket]) -> Iterator[UserID]:
+def _get_ticket_user_ids(tickets: Iterable[DbTicket]) -> Iterator[UserID]:
     for ticket in tickets:
         user_id = ticket.used_by_id
         if user_id is not None:
@@ -74,7 +74,7 @@ def _get_ticket_user_ids(tickets: Sequence[DbTicket]) -> Iterator[UserID]:
 
 
 def get_seats(
-    seats: Sequence[DbSeat], users_by_id: dict[UserID, User]
+    seats: Iterable[DbSeat], users_by_id: dict[UserID, User]
 ) -> Iterator[Seat]:
     for seat in seats:
         managed_ticket = _get_ticket_managed_by_seat(seat, users_by_id)
@@ -105,7 +105,7 @@ def _get_ticket_managed_by_seat(
 
 
 def get_managed_tickets(
-    managed_tickets: Sequence[DbTicket], users_by_id: dict[UserID, User]
+    managed_tickets: Iterable[DbTicket], users_by_id: dict[UserID, User]
 ) -> Iterator[ManagedTicket]:
     for ticket in managed_tickets:
         user = _find_ticket_user(ticket, users_by_id)
