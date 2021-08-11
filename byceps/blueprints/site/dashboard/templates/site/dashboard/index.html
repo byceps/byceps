@@ -1,10 +1,4 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/board.html' import render_flag_new %}
-{% from 'macros/datetime.html' import render_date_long, render_datetime %}
-{% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_tag %}
-{% from 'macros/seating.html' import render_seat_link %}
-{% from 'macros/shop/orders.html' import render_order_payment_state %}
 {% set page_title = 'Dashboard' %}
 
 {% block head %}
@@ -38,129 +32,17 @@
 
   <div class="dashboard">
     <div class="dashboard-item">
-
-      <h2>{{ _('Open Orders') }}</h2>
-
-      {%- if open_orders %}
-      <table class="index wide">
-        <thead>
-          <tr>
-            <th>{{ _('Order number') }}</th>
-            <th class="number">{{ _('Amount') }}</th>
-            <th><span class="item-meta">{{ _('Status') }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {%- for order in open_orders %}
-          <tr>
-            <td><a class="disguised" href="{{ url_for('shop_orders.view', order_id=order.id) }}">{{ order.order_number }}</a></td>
-            <td class="number nowrap">{{ order.total_amount|format_euro_amount }}</td>
-            <td class="nowrap">{{ render_order_payment_state(order.payment_state) }}</td>
-          </tr>
-          {%- endfor %}
-        </tbody>
-      </table>
-      {%- else %}
-      <p class="dimmed">{{ _('No open orders.') }}</p>
-      {%- endif %}
-
-      <div class="continuative-link">
-        <a class="disguised" href="{{ url_for('shop_orders.index') }}">{{ _('All orders') }}</a> {{ render_icon('arrow-right') }}
-      </div>
-
+{%- include 'site/dashboard/_orders.html' %}
     </div>
     <div class="dashboard-item">
-
-      <h2>{{ _('Tickets') }}</h2>
-      {%- if tickets %}
-      <table class="index wide">
-        <thead>
-          <tr>
-            <th>{{ _('Code') }}</th>
-            <th>{{ _('Seat') }}</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {%- for ticket in tickets %}
-          <tr>
-            <td>{{ ticket.code }}</td>
-            <td>
-              {%- if ticket.occupied_seat -%}
-              {{ render_seat_link(ticket.occupied_seat.area, ticket.occupied_seat) }}
-              {%- else -%}
-              {{ render_tag(_('not chosen'), class='color-danger') }}
-              {%- endif -%}
-            </td>
-            <td>
-              {%- if ticket.user_checked_in %}
-              {{ render_tag(_('checked in'), class='color-success') }}
-              {%- endif %}
-            </td>
-          </tr>
-          {%- endfor %}
-        </tbody>
-      </table>
-      {%- else %}
-      <p class="dimmed">{{ _('You do not use a ticket yet.') }}</p>
-      {%- endif %}
-
-      <div class="continuative-link">
-        <a class="disguised" href="{{ url_for('ticketing.index_mine') }}">{{ _('Ticket management') }}</a> {{ render_icon('arrow-right') }}
-      </div>
-
+{%- include 'site/dashboard/_tickets.html' %}
     </div>
     <div class="dashboard-item">
-
-      <h2>{{ _('News') }}</h2>
-
-      {%- if news_headlines %}
-      <ol class="items">
-        {%- for headline in news_headlines %}
-        <li>
-          <a class="disguised" href="{{ url_for('news.view', slug=headline.slug) }}">{{ headline.title }}</a>
-          <div class="item-meta">{{ render_date_long(headline.published_at|utc_to_local_tz) }}</div>
-        </li>
-        {%- endfor %}
-      </ol>
-      {%- else %}
-      <p class="dimmed">{{ _('No news yet.') }}</p>
-      {%- endif %}
-
-      <div class="continuative-link">
-        <a class="disguised" href="{{ url_for('news.index') }}">{{ _('All news') }}</a> {{ render_icon('arrow-right') }}
-      </div>
-
+{%- include 'site/dashboard/_news.html' %}
     </div>
     <div class="dashboard-item">
-
-      <h2>{{ _('Discussion Board') }}</h2>
-
-      {%- if board_topics %}
-      <ol class="items">
-        {%- for topic in board_topics %}
-        <li>
-          <a class="disguised{% if topic.hidden %} dimmed{% endif %}" href="{{ url_for('board.topic_view', topic_id=topic.id) }}">
-            {{ topic.title }}
-            {%- if topic.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
-          </a>
-          <div class="item-meta">
-            {{ render_datetime(topic.last_updated_at|utc_to_local_tz) }}
-            &middot;
-            {{ topic.category.title }}
-          </div>
-        </li>
-        {%- endfor %}
-      </ol>
-      {%- else %}
-      <p class="dimmed">{{ _('No topics yet.') }}</p>
-      {%- endif %}
-
-      <div class="continuative-link">
-        <a class="disguised" href="{{ url_for('board.category_index') }}">{{ _('Discussion Board') }}</a> {{ render_icon('arrow-right') }}
-      </div>
-
+{%- include 'site/dashboard/_board.html' %}
     </div>
-  </div>{# .dashboard #}
+  </div>
 
 {%- endblock %}

@@ -1,0 +1,31 @@
+{%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/shop/orders.html' import render_order_payment_state %}
+
+<h2>{{ _('Open Orders') }}</h2>
+
+{%- if open_orders %}
+<table class="index wide">
+  <thead>
+    <tr>
+      <th>{{ _('Order number') }}</th>
+      <th class="number">{{ _('Amount') }}</th>
+      <th>{{ _('Status') }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%- for order in open_orders %}
+    <tr>
+      <td><a class="disguised" href="{{ url_for('shop_orders.view', order_id=order.id) }}">{{ order.order_number }}</a></td>
+      <td class="number nowrap">{{ order.total_amount|format_euro_amount }}</td>
+      <td class="nowrap">{{ render_order_payment_state(order.payment_state) }}</td>
+    </tr>
+    {%- endfor %}
+  </tbody>
+</table>
+{%- else %}
+<p class="dimmed">{{ _('No open orders.') }}</p>
+{%- endif %}
+
+<div class="continuative-link">
+  <a class="disguised" href="{{ url_for('shop_orders.index') }}">{{ _('All orders') }}</a> {{ render_icon('arrow-right') }}
+</div>

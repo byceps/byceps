@@ -1,0 +1,21 @@
+{%- from 'macros/datetime.html' import render_date_long %}
+{%- from 'macros/icons.html' import render_icon %}
+
+<h2>{{ _('News') }}</h2>
+
+{%- if news_headlines %}
+<ol class="items">
+  {%- for headline in news_headlines %}
+  <li>
+    <a class="disguised" href="{{ url_for('news.view', slug=headline.slug) }}">{{ headline.title }}</a>
+    <div class="item-meta">{{ render_date_long(headline.published_at|utc_to_local_tz) }}</div>
+  </li>
+  {%- endfor %}
+</ol>
+{%- else %}
+<p class="dimmed">{{ _('No news yet.') }}</p>
+{%- endif %}
+
+<div class="continuative-link">
+  <a class="disguised" href="{{ url_for('news.index') }}">{{ _('All news') }}</a> {{ render_icon('arrow-right') }}
+</div>
