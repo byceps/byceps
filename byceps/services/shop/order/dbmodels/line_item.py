@@ -8,10 +8,12 @@ byceps.services.shop.order.dbmodels.line_item
 
 from decimal import Decimal
 
+from sqlalchemy.ext.hybrid import hybrid_property
+
 from .....database import db, generate_uuid
 
 from ...article.dbmodels.article import Article as DbArticle
-from ...article.transfer.models import ArticleNumber
+from ...article.transfer.models import ArticleNumber, ArticleType
 
 from .order import Order
 
@@ -26,6 +28,7 @@ class LineItem(db.Model):
     order = db.relationship(Order, backref='items')
     article_number = db.Column(db.UnicodeText, db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
     article = db.relationship(DbArticle, backref='line_items')
+    _article_type = db.Column('article_type', db.UnicodeText, nullable=False)
     description = db.Column(db.UnicodeText, nullable=False)
     unit_price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
@@ -37,6 +40,7 @@ class LineItem(db.Model):
         self,
         order: Order,
         article_number: ArticleNumber,
+        article_type: ArticleType,
         description: str,
         unit_price: Decimal,
         tax_rate: Decimal,
@@ -49,9 +53,14 @@ class LineItem(db.Model):
         # until the order is created, there is no order number assigned.
         self.order = order
         self.article_number = article_number
+        self._article_type = article_type.name
         self.description = description
         self.unit_price = unit_price
         self.tax_rate = tax_rate
         self.quantity = quantity
         self.line_amount = line_amount
         self.shipping_required = shipping_required
+
+    @hybrid_property
+    def article_type(self) -> ArticleType:
+        return ArticleType[self._article_type]

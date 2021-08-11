@@ -16,7 +16,7 @@ from uuid import UUID
 
 from .....typing import UserID
 
-from ...article.transfer.models import ArticleNumber
+from ...article.transfer.models import ArticleNumber, ArticleType
 from ...shop.transfer.models import ShopID
 
 
@@ -81,6 +81,7 @@ class Address:
 class LineItem:
     order_number: OrderNumber
     article_number: ArticleNumber
+    article_type: ArticleType
     description: str
     unit_price: Decimal
     tax_rate: Decimal

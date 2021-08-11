@@ -134,6 +134,7 @@ def _build_line_items(cart: Cart, order: DbOrder) -> Iterator[DbLineItem]:
         yield DbLineItem(
             order,
             article.item_number,
+            article.type_,
             article.description,
             article.price,
             article.tax_rate,
@@ -685,6 +686,7 @@ def line_item_to_transfer_object(
     return LineItem(
         order_number=item.order_number,
         article_number=item.article_number,
+        article_type=item.article_type,
         description=item.description,
         unit_price=item.unit_price,
         tax_rate=item.tax_rate,
