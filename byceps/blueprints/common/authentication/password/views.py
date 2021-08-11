@@ -22,7 +22,9 @@ from .....services.user import service as user_service
 from .....services.verification_token import (
     service as verification_token_service,
 )
-from .....services.verification_token.transfer.models import Token as VerificationToken
+from .....services.verification_token.transfer.models import (
+    Token as VerificationToken,
+)
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
@@ -137,7 +139,7 @@ def request_reset():
     sender = _get_sender()
 
     password_reset_service.prepare_password_reset(
-        user, request.url_root, sender=sender
+        user, email_address.address, request.url_root, sender=sender
     )
 
     flash_success(

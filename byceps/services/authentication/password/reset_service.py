@@ -10,8 +10,8 @@ from typing import Optional
 
 from ...email import service as email_service
 from ...email.transfer.models import Sender
-from ...user.dbmodels.user import User
 from ...user import service as user_service
+from ...user.transfer.models import User
 from ...verification_token import service as verification_token_service
 from ...verification_token.transfer.models import Token
 
@@ -19,7 +19,11 @@ from . import service as password_service
 
 
 def prepare_password_reset(
-    user: User, url_root: str, *, sender: Optional[Sender] = None
+    user: User,
+    email_address: str,
+    url_root: str,
+    *,
+    sender: Optional[Sender] = None,
 ) -> None:
     """Create a verification token for password reset and email it to
     the user's address.
@@ -30,7 +34,7 @@ def prepare_password_reset(
 
     confirmation_url = f'{url_root}authentication/password/reset/token/{verification_token.token}'
 
-    recipients = [user.email_address]
+    recipients = [email_address]
     subject = f'{user.screen_name}, so kannst du ein neues Passwort festlegen'
     body = (
         f'Hallo {user.screen_name},\n\n'
