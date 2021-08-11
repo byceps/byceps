@@ -10,7 +10,7 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....database import BaseQuery, db, generate_uuid
+from ....database import db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
@@ -21,21 +21,10 @@ from ..transfer.models import CategoryID
 from .category import Category
 
 
-class TopicQuery(BaseQuery):
-
-    def for_category(self, category_id: CategoryID) -> BaseQuery:
-        return self.filter_by(category_id=category_id)
-
-    def without_hidden(self) -> BaseQuery:
-        """Only return topics every user may see."""
-        return self.filter(Topic.hidden == False)
-
-
 class Topic(db.Model):
     """A topic."""
 
     __tablename__ = 'board_topics'
-    query_class = TopicQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'), index=True, nullable=False)

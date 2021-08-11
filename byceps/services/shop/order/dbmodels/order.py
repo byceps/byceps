@@ -11,7 +11,7 @@ from typing import Optional
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from .....database import BaseQuery, db, generate_uuid
+from .....database import db, generate_uuid
 from .....typing import UserID
 from .....util.instances import ReprBuilder
 
@@ -22,20 +22,10 @@ from ...shop.transfer.models import ShopID
 from ..transfer.models import OrderNumber, PaymentMethod, PaymentState
 
 
-class OrderQuery(BaseQuery):
-
-    def for_shop(self, shop_id: ShopID) -> BaseQuery:
-        return self.filter_by(shop_id=shop_id)
-
-    def placed_by(self, user_id: UserID) -> BaseQuery:
-        return self.filter_by(placed_by_id=user_id)
-
-
 class Order(db.Model):
     """An order for articles, placed by a user."""
 
     __tablename__ = 'shop_orders'
-    query_class = OrderQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, nullable=False)

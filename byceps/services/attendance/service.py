@@ -83,7 +83,7 @@ def _get_tickets_for_users(
             db.joinedload(DbTicket.occupied_seat)
                 .joinedload(DbSeat.area),
         ) \
-        .for_party(party_id) \
+        .filter(DbTicket.party_id == party_id) \
         .filter(DbTicket.used_by_id.in_(user_ids)) \
         .filter(DbTicket.revoked == False) \
         .all()

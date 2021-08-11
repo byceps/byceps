@@ -10,7 +10,7 @@ from __future__ import annotations
 from operator import itemgetter
 from typing import Iterable, Iterator, Optional, Sequence, Union
 
-from ...database import BaseQuery, db
+from ...database import db, Query
 from ...typing import UserID
 
 from ..user.dbmodels.user import User as DbUser
@@ -57,7 +57,7 @@ def get_subscribers(list_id: ListID) -> Iterable[Subscriber]:
     return _get_subscriber_details(subscriber_ids)
 
 
-def _build_query_for_current_subscribers(list_id: ListID) -> BaseQuery:
+def _build_query_for_current_subscribers(list_id: ListID) -> Query:
     """Build a query to return the most recent subscription state
     (grouped by user and list).
 
@@ -139,7 +139,7 @@ def count_subscriptions_by_state(
     return totals
 
 
-def _build_query_for_current_state(list_id: ListID) -> BaseQuery:
+def _build_query_for_current_state(list_id: ListID) -> Query:
     """Build a query to return the number of currently requested and
     declined subscription states for that list.
 
@@ -186,7 +186,7 @@ def _build_query_for_current_state(list_id: ListID) -> BaseQuery:
         )
 
 
-def _build_query_for_latest_expressed_at() -> BaseQuery:
+def _build_query_for_latest_expressed_at() -> Query:
     """Build a query to return the most recent time the subscription
     state was set (grouped by user and list).
 

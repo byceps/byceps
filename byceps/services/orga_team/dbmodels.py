@@ -6,7 +6,7 @@ byceps.services.orga_team.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...database import BaseQuery, db, generate_uuid
+from ...database import db, generate_uuid
 from ...typing import PartyID, UserID
 from ...util.instances import ReprBuilder
 
@@ -44,12 +44,6 @@ class OrgaTeam(db.Model):
             .build()
 
 
-class MembershipQuery(BaseQuery):
-
-    def for_party(self, party_id: PartyID) -> BaseQuery:
-        return self.join(OrgaTeam).filter(OrgaTeam.party_id == party_id)
-
-
 class Membership(db.Model):
     """The assignment of a user to an organizer team."""
 
@@ -57,7 +51,6 @@ class Membership(db.Model):
     __table_args__ = (
         db.UniqueConstraint('orga_team_id', 'user_id'),
     )
-    query_class = MembershipQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     orga_team_id = db.Column(db.Uuid, db.ForeignKey('orga_teams.id'), index=True, nullable=False)

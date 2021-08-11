@@ -6,14 +6,8 @@ byceps.services.orga_presence.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...database import BaseQuery, db, generate_uuid
+from ...database import db, generate_uuid
 from ..user.dbmodels.user import User
-
-
-class TimeSlotQuery(BaseQuery):
-
-    def for_party(self, party_id) -> BaseQuery:
-        return self.filter_by(party_id=party_id)
 
 
 class TimeSlot(db.Model):
@@ -24,7 +18,6 @@ class TimeSlot(db.Model):
         'polymorphic_on': 'type',
         'polymorphic_identity': 'time_slot',
     }
-    query_class = TimeSlotQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)

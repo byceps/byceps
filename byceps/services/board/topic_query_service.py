@@ -53,7 +53,7 @@ def find_topic_visible_for_user(
         )
 
     if not include_hidden:
-        query = query.without_hidden()
+        query = query.filter_by(hidden=False)
 
     return query \
         .filter_by(id=topic_id) \
@@ -106,7 +106,7 @@ def paginate_topics_of_category(
     Pinned topics are returned first.
     """
     return _query_topics(include_hidden) \
-        .for_category(category_id) \
+        .filter_by(category_id=category_id) \
         .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc()) \
         .paginate(page, topics_per_page)
 
@@ -122,7 +122,7 @@ def _query_topics(include_hidden: bool) -> Query:
         )
 
     if not include_hidden:
-        query = query.without_hidden()
+        query = query.filter_by(hidden=False)
 
     return query
 
@@ -131,19 +131,21 @@ def find_default_posting_to_jump_to(
     topic_id: TopicID, include_hidden: bool, last_viewed_at: datetime
 ) -> Optional[DbPosting]:
     """Return the posting of the topic to show by default, or `None`."""
-    postings_query = DbPosting.query.for_topic(topic_id)
+    postings_query = DbPosting.query \
+        .filter_by(topic_id=topic_id)
+
     if not include_hidden:
-        postings_query = postings_query.without_hidden()
+        postings_query = postings_query.filter_by(hidden=False)
 
     first_new_posting = postings_query \
         .filter(DbPosting.created_at > last_viewed_at) \
-        .earliest_to_latest() \
+        .order_by(DbPosting.created_at.asc()) \
         .first()
 
     if first_new_posting is None:
         # Current user has seen all postings so far, so show the last one.
         return postings_query \
-            .latest_to_earliest() \
+            .order_by(DbPosting.created_at.desc()) \
             .first()
 
     return first_new_posting

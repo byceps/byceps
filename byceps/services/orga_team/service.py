@@ -187,14 +187,16 @@ def delete_membership(membership_id: MembershipID) -> None:
 def count_memberships_for_party(party_id: PartyID) -> int:
     """Return the number of memberships the party's teams have in total."""
     return DbMembership.query \
-        .for_party(party_id) \
+        .join(DbOrgaTeam) \
+        .filter(DbOrgaTeam.party_id == party_id) \
         .count()
 
 
 def get_memberships_for_party(party_id: PartyID) -> set[Membership]:
     """Return memberships for that party."""
     memberships = DbMembership.query \
-        .for_party(party_id) \
+        .join(DbOrgaTeam) \
+        .filter(DbOrgaTeam.party_id == party_id) \
         .all()
 
     return {_db_entity_to_membership(membership) for membership in memberships}
@@ -255,7 +257,8 @@ def get_orga_activities_for_user(user_id: UserID) -> set[OrgaActivity]:
 def get_public_orgas_for_party(party_id: PartyID) -> set[PublicOrga]:
     """Return all public orgas for that party."""
     memberships = DbMembership.query \
-        .for_party(party_id) \
+        .join(DbOrgaTeam) \
+        .filter(DbOrgaTeam.party_id == party_id) \
         .options(
             db.joinedload(DbMembership.orga_team),
             db.joinedload(DbMembership.user)

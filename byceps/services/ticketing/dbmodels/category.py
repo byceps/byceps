@@ -6,15 +6,9 @@ byceps.services.ticketing.dbmodels.category
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ....database import BaseQuery, db, generate_uuid
+from ....database import db, generate_uuid
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
-
-
-class CategoryQuery(BaseQuery):
-
-    def for_party(self, party_id: PartyID) -> BaseQuery:
-        return self.filter_by(party_id=party_id)
 
 
 class Category(db.Model):
@@ -24,7 +18,6 @@ class Category(db.Model):
     __table_args__ = (
         db.UniqueConstraint('party_id', 'title'),
     )
-    query_class = CategoryQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)

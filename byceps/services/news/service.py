@@ -194,14 +194,17 @@ def find_aggregated_item_by_slug(
     channels, or `None` if not found.
     """
     query = DbItem.query \
-        .for_channels(channel_ids) \
-        .with_channel() \
-        .with_current_version() \
-        .with_images() \
+        .filter(DbItem.channel_id.in_(channel_ids)) \
+        .options(
+            db.joinedload(DbItem.channel),
+            db.joinedload(DbItem.current_version_association)
+                .joinedload(DbCurrentVersionAssociation.version),
+            db.joinedload(DbItem.images)
+        ) \
         .filter_by(slug=slug)
 
     if published_only:
-        query = query.published()
+        query = query.filter(DbItem.published_at <= datetime.utcnow())
 
     item = query.one_or_none()
 
@@ -222,7 +225,7 @@ def get_aggregated_items_paginated(
     query = _get_items_query(channel_ids)
 
     if published_only:
-        query = query.published()
+        query = query.filter(DbItem.published_at <= datetime.utcnow())
 
     item_mapper = partial(_db_entity_to_item, render_body=True)
 
@@ -242,9 +245,12 @@ def get_recent_headlines(
 ) -> list[Headline]:
     """Return the most recent headlines."""
     items = DbItem.query \
-        .for_channels(channel_ids) \
-        .with_current_version() \
-        .published() \
+        .filter(DbItem.channel_id.in_(channel_ids)) \
+        .options(
+            db.joinedload(DbItem.current_version_association)
+                .joinedload(DbCurrentVersionAssociation.version)
+        ) \
+        .filter(DbItem.published_at <= datetime.utcnow()) \
         .order_by(DbItem.published_at.desc()) \
         .limit(limit) \
         .all()
@@ -261,17 +267,20 @@ def get_recent_headlines(
 
 def _get_items_query(channel_ids: set[ChannelID]) -> Query:
     return DbItem.query \
-        .for_channels(channel_ids) \
-        .with_channel() \
-        .with_current_version() \
-        .with_images() \
+        .filter(DbItem.channel_id.in_(channel_ids)) \
+        .options(
+            db.joinedload(DbItem.channel),
+            db.joinedload(DbItem.current_version_association)
+                .joinedload(DbCurrentVersionAssociation.version),
+            db.joinedload(DbItem.images)
+        ) \
         .order_by(DbItem.published_at.desc())
 
 
 def get_item_versions(item_id: ItemID) -> Sequence[DbItemVersion]:
     """Return all item versions, sorted from most recent to oldest."""
     return DbItemVersion.query \
-        .for_item(item_id) \
+        .filter_by(item_id=item_id) \
         .order_by(DbItemVersion.created_at.desc()) \
         .all()
 

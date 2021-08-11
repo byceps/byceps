@@ -15,10 +15,13 @@ from .dbmodels.topic import Topic as DbTopic
 
 def aggregate_category(category: DbCategory) -> None:
     """Update the category's count and latest fields."""
-    topic_count = DbTopic.query.for_category(category.id).without_hidden().count()
+    topic_count = DbTopic.query \
+        .filter_by(category_id=category.id) \
+        .filter_by(hidden=False) \
+        .count()
 
     posting_query = DbPosting.query \
-        .without_hidden() \
+        .filter(DbPosting.hidden == False) \
         .join(DbTopic) \
             .filter(DbTopic.category_id == category.id)
 
@@ -26,7 +29,7 @@ def aggregate_category(category: DbCategory) -> None:
 
     latest_posting = posting_query \
         .filter(DbTopic.hidden == False) \
-        .latest_to_earliest() \
+        .order_by(DbPosting.created_at.desc()) \
         .first()
 
     category.topic_count = topic_count
@@ -41,11 +44,15 @@ def aggregate_category(category: DbCategory) -> None:
 
 def aggregate_topic(topic: DbTopic) -> None:
     """Update the topic's count and latest fields."""
-    posting_query = DbPosting.query.for_topic(topic.id).without_hidden()
+    posting_query = DbPosting.query \
+        .filter_by(topic_id=topic.id) \
+        .filter_by(hidden=False)
 
     posting_count = posting_query.count()
 
-    latest_posting = posting_query.latest_to_earliest().first()
+    latest_posting = posting_query \
+        .order_by(DbPosting.created_at.desc()) \
+        .first()
 
     topic.posting_count = posting_count
     if latest_posting:

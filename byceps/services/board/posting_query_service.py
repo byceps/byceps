@@ -57,13 +57,13 @@ def paginate_postings(
             db.joinedload(DbPosting.last_edited_by).load_only('screen_name'),
             db.joinedload(DbPosting.hidden_by).load_only('screen_name'),
         ) \
-        .for_topic(topic_id)
+        .filter_by(topic_id=topic_id)
 
     if not include_hidden:
-        query = query.without_hidden()
+        query = query.filter_by(hidden=False)
 
     postings = query \
-        .earliest_to_latest() \
+        .order_by(DbPosting.created_at.asc()) \
         .paginate(page, postings_per_page)
 
     creator_ids = {posting.creator_id for posting in postings.items}
@@ -85,13 +85,13 @@ def calculate_posting_page_number(
 ) -> int:
     """Return the number of the page the posting should appear on."""
     query = DbPosting.query \
-        .for_topic(posting.topic_id)
+        .filter_by(topic_id=posting.topic_id)
 
     if not include_hidden:
-        query = query.without_hidden()
+        query = query.filter_by(hidden=False)
 
     topic_postings = query \
-        .earliest_to_latest() \
+        .order_by(DbPosting.created_at.asc()) \
         .all()
 
     index = index_of(topic_postings, lambda p: p == posting)

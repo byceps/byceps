@@ -8,7 +8,7 @@ byceps.services.board.dbmodels.category
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
-from ....database import BaseQuery, db, generate_uuid
+from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import User
@@ -16,12 +16,6 @@ from ...user.dbmodels.user import User
 from ..transfer.models import BoardID
 
 from .board import Board
-
-
-class CategoryQuery(BaseQuery):
-
-    def for_board(self, board_id: BoardID) -> BaseQuery:
-        return self.filter_by(board_id=board_id)
 
 
 class Category(db.Model):
@@ -32,7 +26,6 @@ class Category(db.Model):
         db.UniqueConstraint('board_id', 'slug'),
         db.UniqueConstraint('board_id', 'title'),
     )
-    query_class = CategoryQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     board_id = db.Column(db.UnicodeText, db.ForeignKey('boards.id'), index=True, nullable=False)

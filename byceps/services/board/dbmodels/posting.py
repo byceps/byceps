@@ -8,38 +8,19 @@ byceps.services.board.dbmodels.posting
 
 from datetime import datetime
 
-from ....database import BaseQuery, db, generate_uuid
+from ....database import db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import User
 
-from ..transfer.models import TopicID
-
 from .topic import Topic
-
-
-class PostingQuery(BaseQuery):
-
-    def for_topic(self, topic_id: TopicID) -> BaseQuery:
-        return self.filter_by(topic_id=topic_id)
-
-    def without_hidden(self) -> BaseQuery:
-        """Only return postings every user may see."""
-        return self.filter(Posting.hidden == False)
-
-    def earliest_to_latest(self) -> BaseQuery:
-        return self.order_by(Posting.created_at.asc())
-
-    def latest_to_earliest(self) -> BaseQuery:
-        return self.order_by(Posting.created_at.desc())
 
 
 class Posting(db.Model):
     """A posting."""
 
     __tablename__ = 'board_postings'
-    query_class = PostingQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'), index=True, nullable=False)

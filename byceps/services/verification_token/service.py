@@ -100,7 +100,7 @@ def _find_for_purpose_by_token(
 ) -> Optional[Token]:
     token = DbToken.query \
         .filter_by(token=token_value) \
-        .for_purpose(purpose) \
+        .filter_by(_purpose=purpose.name) \
         .first()
 
     if token is None:

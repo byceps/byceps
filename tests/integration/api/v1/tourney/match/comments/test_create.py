@@ -106,4 +106,6 @@ def get_comment(comment_id):
 
 
 def get_comment_count_for_match(match_id):
-    return DbMatchComment.query.for_match(match_id).count()
+    return DbMatchComment.query \
+        .filter_by(match_id=match_id) \
+        .count()

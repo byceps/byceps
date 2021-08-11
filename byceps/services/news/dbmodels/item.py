@@ -6,63 +6,32 @@ byceps.services.news.dbmodels.item
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....database import BaseQuery, db, generate_uuid
+from ....database import db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import User
 
-from ..transfer.models import ChannelID, ItemID
+from ..transfer.models import ChannelID
 
 from .channel import Channel
-
-
-class ItemQuery(BaseQuery):
-
-    def for_channels(self, channel_ids: set[ChannelID]) -> BaseQuery:
-        if not channel_ids:
-            raise ValueError('No channel IDs given')
-
-        return self.filter(Item.channel_id.in_(channel_ids))
-
-    def with_channel(self) -> BaseQuery:
-        return self.options(
-            db.joinedload(Item.channel),
-        )
-
-    def with_images(self) -> BaseQuery:
-        return self.options(
-            db.joinedload(Item.images),
-        )
-
-    def published(self) -> BaseQuery:
-        """Return items that have been published and are public at this time.
-
-        This excludes items that have been pre-published for a time that
-        is still in the future.
-        """
-        return self.filter(Item.published_at <= datetime.utcnow())
-
-    def with_current_version(self) -> BaseQuery:
-        return self.options(
-            db.joinedload(Item.current_version_association)
-                .joinedload(CurrentVersionAssociation.version),
-        )
 
 
 class Item(db.Model):
     """A news item.
 
     Each one is expected to have at least one version (the initial one).
+
+    News items with a publication date set are considered public unless
+    that date is in the future (i.e. those items have been pre-published
+    and are awaiting publication).
     """
 
     __tablename__ = 'news_items'
-    query_class = ItemQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
@@ -93,17 +62,10 @@ class Item(db.Model):
             .build()
 
 
-class ItemVersionQuery(BaseQuery):
-
-    def for_item(self, item_id: ItemID) -> BaseQuery:
-        return self.filter_by(item_id=item_id)
-
-
 class ItemVersion(db.Model):
     """A snapshot of a news item at a certain time."""
 
     __tablename__ = 'news_item_versions'
-    query_class = ItemVersionQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     item_id = db.Column(db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False)

@@ -276,7 +276,7 @@ def get_versions(snippet_id: SnippetID) -> Sequence[DbSnippetVersion]:
     """
     return DbSnippetVersion.query \
         .filter_by(snippet_id=snippet_id) \
-        .latest_first() \
+        .order_by(DbSnippetVersion.created_at.desc()) \
         .all()
 
 

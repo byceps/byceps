@@ -12,7 +12,7 @@ import secrets
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ...database import BaseQuery, db
+from ...database import db
 from ...typing import UserID
 from ...util.instances import ReprBuilder
 
@@ -24,19 +24,12 @@ def _generate_token_value():
     return secrets.token_urlsafe()
 
 
-class TokenQuery(BaseQuery):
-
-    def for_purpose(self, purpose) -> BaseQuery:
-        return self.filter_by(_purpose=purpose.name)
-
-
 class Token(db.Model):
     """A private token to authenticate as a certain user for a certain
     action.
     """
 
     __tablename__ = 'verification_tokens'
-    query_class = TokenQuery
 
     token = db.Column(db.UnicodeText, default=_generate_token_value, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)

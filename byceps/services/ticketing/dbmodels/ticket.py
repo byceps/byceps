@@ -9,7 +9,7 @@ byceps.services.ticketing.dbmodels.ticket
 from datetime import datetime
 from typing import Optional
 
-from ....database import BaseQuery, db, generate_uuid
+from ....database import db, generate_uuid
 from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
@@ -21,12 +21,6 @@ from ..transfer.models import TicketCategoryID, TicketCode
 
 from .category import Category
 from .ticket_bundle import TicketBundle
-
-
-class TicketQuery(BaseQuery):
-
-    def for_party(self, party_id: PartyID) -> BaseQuery:
-        return self.filter(Ticket.party_id == party_id)
 
 
 class Ticket(db.Model):
@@ -43,7 +37,6 @@ class Ticket(db.Model):
     __table_args__ = (
         db.UniqueConstraint('party_id', 'code'),
     )
-    query_class = TicketQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)

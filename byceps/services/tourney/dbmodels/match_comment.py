@@ -8,7 +8,7 @@ byceps.services.tourney.dbmodels.match_comment
 
 from datetime import datetime
 
-from ....database import BaseQuery, db, generate_uuid
+from ....database import db, generate_uuid
 from ....typing import UserID
 
 from ...user.dbmodels.user import User
@@ -18,17 +18,10 @@ from ..transfer.models import MatchID
 from .match import Match
 
 
-class MatchCommentQuery(BaseQuery):
-
-    def for_match(self, match_id: MatchID) -> BaseQuery:
-        return self.filter_by(match_id=match_id)
-
-
 class MatchComment(db.Model):
     """An immutable comment on a match by one of the opponents."""
 
     __tablename__ = 'tourney_match_comments'
-    query_class = MatchCommentQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     match_id = db.Column(db.Uuid, db.ForeignKey('tourney_matches.id'), index=True, nullable=False)

@@ -16,7 +16,7 @@ from typing import Optional
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from ....database import BaseQuery, db, generate_uuid
+from ....database import db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
@@ -82,17 +82,10 @@ class Snippet(db.Model):
             .build()
 
 
-class SnippetVersionQuery(BaseQuery):
-
-    def latest_first(self) -> BaseQuery:
-        return self.order_by(SnippetVersion.created_at.desc())
-
-
 class SnippetVersion(db.Model):
     """A snapshot of a snippet at a certain time."""
 
     __tablename__ = 'snippet_versions'
-    query_class = SnippetVersionQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)

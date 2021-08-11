@@ -11,7 +11,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional, Sequence
 
-from ....database import BaseQuery, db, Pagination
+from ....database import db, Pagination
 
 from ..order.dbmodels.line_item import LineItem as DbLineItem
 from ..order.dbmodels.order import Order as DbOrder
@@ -230,7 +230,7 @@ def get_articles_by_numbers(
 def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
     """Return all articles for that shop, ordered by article number."""
     rows = DbArticle.query \
-        .for_shop(shop_id) \
+        .filter_by(shop_id=shop_id) \
         .order_by(DbArticle.item_number) \
         .all()
 
@@ -245,7 +245,7 @@ def get_articles_for_shop_paginated(
     Ordered by article number, reversed.
     """
     return DbArticle.query \
-        .for_shop(shop_id) \
+        .filter_by(shop_id=shop_id) \
         .order_by(DbArticle.item_number.desc()) \
         .paginate(page, per_page)
 
@@ -257,13 +257,26 @@ def get_article_compilation_for_orderable_articles(
     that shop, less the ones that are only orderable in a dedicated
     order.
     """
-    orderable_articles = DbArticle.query \
-        .for_shop(shop_id) \
-        .filter_by(not_directly_orderable=False) \
-        .filter_by(separate_order_required=False) \
-        .currently_available() \
-        .order_by(DbArticle.description) \
-        .all()
+    now = datetime.utcnow()
+
+    orderable_articles = (DbArticle.query
+        .filter_by(shop_id=shop_id)
+        .filter_by(not_directly_orderable=False)
+        .filter_by(separate_order_required=False)
+
+        # Select only articles that are available in between the
+        # temporal boundaries for this article, if specified.
+        .filter(db.or_(
+            DbArticle.available_from == None,
+            now >= DbArticle.available_from
+        ))
+        .filter(db.or_(
+            DbArticle.available_until == None,
+            now < DbArticle.available_until
+        ))
+
+        .order_by(DbArticle.description)
+        .all())
 
     compilation = ArticleCompilation()
 
@@ -325,7 +338,7 @@ def get_attachable_articles(article_id: ArticleID) -> set[Article]:
     unattachable_article_ids = {article.id for article in unattachable_articles}
 
     rows = DbArticle.query \
-        .for_shop(article.shop_id) \
+        .filter_by(shop_id=article.shop_id) \
         .filter(db.not_(DbArticle.id.in_(unattachable_article_ids))) \
         .order_by(DbArticle.item_number) \
         .all()

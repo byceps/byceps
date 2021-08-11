@@ -228,7 +228,7 @@ def get_user_count():
 def find_verification_token(user_id):
     return DbToken.query \
         .filter_by(user_id=user_id) \
-        .for_purpose(TokenPurpose.email_address_confirmation) \
+        .filter_by(_purpose=TokenPurpose.email_address_confirmation.name) \
         .first()
 
 

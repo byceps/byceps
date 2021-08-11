@@ -12,34 +12,12 @@ from typing import Optional
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
-from .....database import BaseQuery, db, generate_uuid
+from .....database import db, generate_uuid
 from .....util.instances import ReprBuilder
 
 from ...shop.transfer.models import ShopID
 
 from ..transfer.models import ArticleNumber, ArticleType
-
-
-class ArticleQuery(BaseQuery):
-
-    def for_shop(self, shop_id: ShopID) -> BaseQuery:
-        return self.filter_by(shop_id=shop_id)
-
-    def currently_available(self) -> BaseQuery:
-        """Select only articles that are available in between the
-        temporal boundaries for this article, if specified.
-        """
-        now = datetime.utcnow()
-
-        return self \
-            .filter(db.or_(
-                Article.available_from == None,
-                now >= Article.available_from
-            )) \
-            .filter(db.or_(
-                Article.available_until == None,
-                now < Article.available_until
-            ))
 
 
 class Article(db.Model):
@@ -50,7 +28,6 @@ class Article(db.Model):
         db.UniqueConstraint('shop_id', 'description'),
         db.CheckConstraint('available_from < available_until'),
     )
-    query_class = ArticleQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)

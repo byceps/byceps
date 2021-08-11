@@ -6,15 +6,9 @@ byceps.services.seating.dbmodels.area
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ....database import BaseQuery, db, generate_uuid
+from ....database import db, generate_uuid
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
-
-
-class AreaQuery(BaseQuery):
-
-    def for_party(self, party_id: PartyID) -> BaseQuery:
-        return self.filter_by(party_id=party_id)
 
 
 class Area(db.Model):
@@ -29,7 +23,6 @@ class Area(db.Model):
         db.UniqueConstraint('party_id', 'slug'),
         db.UniqueConstraint('party_id', 'title'),
     )
-    query_class = AreaQuery
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)

@@ -417,7 +417,7 @@ def delete_order(order_id: OrderID) -> None:
 def count_open_orders(shop_id: ShopID) -> int:
     """Return the number of open orders for the shop."""
     return DbOrder.query \
-        .for_shop(shop_id) \
+        .filter_by(shop_id=shop_id) \
         .filter_by(_payment_state=PaymentState.open.name) \
         .count()
 
@@ -546,7 +546,7 @@ def get_orders_for_shop_paginated(
     returned.
     """
     query = DbOrder.query \
-        .for_shop(shop_id) \
+        .filter_by(shop_id=shop_id) \
         .order_by(DbOrder.created_at.desc())
 
     if search_term:
@@ -579,7 +579,7 @@ def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
         .options(
             db.joinedload(DbOrder.items),
         ) \
-        .placed_by(user_id) \
+        .filter_by(placed_by_id=user_id) \
         .order_by(DbOrder.created_at.desc()) \
         .all()
 
@@ -594,8 +594,8 @@ def get_orders_placed_by_user_for_shop(
         .options(
             db.joinedload(DbOrder.items),
         ) \
-        .for_shop(shop_id) \
-        .placed_by(user_id) \
+        .filter_by(shop_id=shop_id) \
+        .filter_by(placed_by_id=user_id) \
         .order_by(DbOrder.created_at.desc()) \
         .all()
 
@@ -605,8 +605,8 @@ def get_orders_placed_by_user_for_shop(
 def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
     """Return `True` if the user has placed orders in that shop."""
     orders_total = DbOrder.query \
-        .for_shop(shop_id) \
-        .placed_by(user_id) \
+        .filter_by(shop_id=shop_id) \
+        .filter_by(placed_by_id=user_id) \
         .count()
 
     return orders_total > 0
