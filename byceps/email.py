@@ -12,6 +12,9 @@ from __future__ import annotations
 from typing import Optional
 
 from flask import current_app
+# Hack to avoid import error in `marrow.util` on Python 3.8+.
+import sys
+sys.modules['cgi.parse_qsl'] = None
 from marrow.mailer import Mailer
 
 
