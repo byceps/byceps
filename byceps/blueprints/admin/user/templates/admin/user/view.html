@@ -22,7 +22,8 @@
 #tabs-rb-orders:checked ~ .radio-tabs #tabs-tab-orders,
 #tabs-rb-tickets:checked ~ .radio-tabs #tabs-tab-tickets,
 #tabs-rb-badges:checked ~ .radio-tabs #tabs-tab-badges,
-#tabs-rb-attended-parties:checked ~ .radio-tabs #tabs-tab-attended-parties {
+#tabs-rb-attended-parties:checked ~ .radio-tabs #tabs-tab-attended-parties,
+#tabs-rb-orga-activities:checked ~ .radio-tabs #tabs-tab-orga-activities {
   /* copied from `.tabs-tab--current` */
   border-color: #1199ff;
   color: currentColor;
@@ -39,7 +40,8 @@
 #tabs-rb-orders:checked ~ .radio-panels #tabs-panel-orders,
 #tabs-rb-tickets:checked ~ .radio-panels #tabs-panel-tickets,
 #tabs-rb-badges:checked ~ .radio-panels #tabs-panel-badges,
-#tabs-rb-attended-parties:checked ~ .radio-panels #tabs-panel-attended-parties {
+#tabs-rb-attended-parties:checked ~ .radio-panels #tabs-panel-attended-parties,
+#tabs-rb-orga-activities:checked ~ .radio-panels #tabs-panel-orga-activities {
   display: block;
 }
 </style>
@@ -51,6 +53,7 @@
 
     <input type="radio" name="user-sections-state" id="tabs-rb-account" checked>
     <input type="radio" name="user-sections-state" id="tabs-rb-personal">
+    <input type="radio" name="user-sections-state" id="tabs-rb-orga-activities">
     <input type="radio" name="user-sections-state" id="tabs-rb-newsletter">
     <input type="radio" name="user-sections-state" id="tabs-rb-orders">
     <input type="radio" name="user-sections-state" id="tabs-rb-tickets">
@@ -65,6 +68,7 @@
       <li><label class="radio-tab tabs-tab" for="tabs-rb-tickets" id="tabs-tab-tickets">{{ _('Tickets') }}</label></li>
       <li><label class="radio-tab tabs-tab" for="tabs-rb-attended-parties" id="tabs-tab-attended-parties">{{ _('Attended Parties') }}</label></li>
       <li><label class="radio-tab tabs-tab" for="tabs-rb-badges" id="tabs-tab-badges">{{ _('Badges') }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-orga-activities" id="tabs-tab-orga-activities">{{ _('Orga teams') }}</label></li>
     </ol>
 
     <div class="radio-panels">
@@ -95,6 +99,10 @@
 
       <div class="radio-panel" id="tabs-panel-badges">
 {%- include 'admin/user/_view_badges.html' %}
+      </div>
+
+      <div class="radio-panel" id="tabs-panel-orga-activities">
+{%- include 'admin/user/_view_orga_activities.html' %}
       </div>
 
     </div>

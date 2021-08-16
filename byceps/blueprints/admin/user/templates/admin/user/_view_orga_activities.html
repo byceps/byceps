@@ -1,0 +1,30 @@
+{%- from 'macros/admin.html' import render_extra_in_heading %}
+
+<h2>{{ _('Orga teams') }} {{ render_extra_in_heading(orga_activities|length) }}</h2>
+
+<div class="box">
+
+  {%- if orga_activities %}
+  <table class="index">
+    <thead>
+      <tr>
+        <th>{{ _('Party') }}</th>
+        <th>{{ _('Team') }}</th>
+        <th>{{ _('Function') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%- for activity in orga_activities|sort(attribute='party.starts_at', reverse=True) %}
+      <tr>
+        <td>{{- activity.party.title }}</td>
+        <td>{{ activity.team.title }}</td>
+        <td>{{ activity.duties|fallback }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
+  {%- else %}
+  <div class="dimmed-box centered">{{ _('none') }}</div>
+  {%- endif %}
+
+</div>

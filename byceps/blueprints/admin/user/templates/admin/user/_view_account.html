@@ -58,20 +58,4 @@
   <div class="data-label">{{ _('Legacy ID') }}</div>
   <div class="data-value">{{ user.legacy_id|fallback }}</div>
 
-  <div class="data-label">{{ _('Orga teams') }}</div>
-  <div class="data-value">
-    {%- if orga_activities %}
-    <ul class="compact">
-      {%- for activity in orga_activities|sort(attribute='party.starts_at', reverse=True) %}
-      <li>
-        {{- activity.party.title }} – {{ activity.team.title }}
-        {%- if activity.duties %} ({{ activity.duties }}){% endif -%}
-      </li>
-      {%- endfor %}
-    </ul>
-    {%- else %}
-    {{- _('none')|dim -}}
-    {%- endif %}
-  </div>
-
 </div>
