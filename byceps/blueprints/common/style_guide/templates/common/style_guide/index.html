@@ -51,20 +51,14 @@
 {{ code }}
     </div>
     <div class="example-code">
-      {% call render_code_block() -%}
-{{ code }}
-      {%- endcall %}
+      <code class="block">
+{#- Whitespace removal in code block is significant! #}
+{%- filter forceescape -%}
+{{ code|trim }}
+{%- endfilter -%}
+      </code>
     </div>
   </div>
-{% endmacro %}
-
-
-{% macro render_code_block() %}
-  <code class="block">
-  {%- filter forceescape -%}
-    {{ caller() }}
-  {%- endfilter -%}
-  </code>
 {% endmacro %}
 
 
