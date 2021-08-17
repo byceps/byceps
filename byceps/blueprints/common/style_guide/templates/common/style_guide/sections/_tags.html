@@ -5,16 +5,7 @@
 <p>Just a {{ render_tag('tag') }} to attach to things or to represent state.</p>
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_tags }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_tags }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_tags) }}
 
   <p>With pre-defined colors:</p>
 
@@ -27,13 +18,4 @@
 </p>
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_tags_colored }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_tags_colored }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_tags_colored) }}

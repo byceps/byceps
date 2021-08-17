@@ -25,13 +25,4 @@
 
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_progress }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_progress }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_progress) }}

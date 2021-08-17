@@ -45,6 +45,20 @@
 {%- endblock %}
 
 
+{% macro render_example(code) %}
+  <div class="example">
+    <div class="example-result">
+{{ code }}
+    </div>
+    <div class="example-code">
+      {% call render_code_block() -%}
+{{ code }}
+      {%- endcall %}
+    </div>
+  </div>
+{% endmacro %}
+
+
 {% macro render_code_block() %}
   <code class="block">
   {%- filter forceescape -%}

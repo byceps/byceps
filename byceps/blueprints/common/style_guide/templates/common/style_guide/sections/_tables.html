@@ -29,16 +29,7 @@
 </table>
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_table_index }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_table_index }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_table_index) }}
 
   <p>With classes <code>index wide</code>:</p>
 
@@ -71,13 +62,4 @@
 </table>
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_table_index_wide }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_table_index_wide }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_table_index_wide) }}

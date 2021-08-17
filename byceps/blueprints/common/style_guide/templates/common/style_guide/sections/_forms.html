@@ -45,13 +45,4 @@
 </form>
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_form }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_form }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_form) }}

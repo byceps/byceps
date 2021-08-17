@@ -9,16 +9,7 @@
 </ol>
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_tabs_leftaligned }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_tabs_leftaligned }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_tabs_leftaligned) }}
 
   <p>Centered:</p>
 
@@ -31,13 +22,4 @@
 </ol>
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_tabs_centered }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_tabs_centered }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_tabs_centered) }}

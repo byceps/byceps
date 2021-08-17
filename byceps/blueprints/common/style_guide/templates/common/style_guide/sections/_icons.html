@@ -5,16 +5,7 @@
 {{ render_icon('success') }}
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_icons }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_icons }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_icons) }}
 
   <style>
     .icon-grid {

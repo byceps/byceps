@@ -17,13 +17,4 @@
 {{ render_notification('Unsafe content that needs (default) escaping ahead: <script>alert("h4x0r3d!");</script>', category='danger', icon='error') }}
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_notifications }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_notifications }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_notifications) }}

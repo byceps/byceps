@@ -25,13 +25,4 @@
 </div>
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_dropdown }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_dropdown }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_dropdown) }}

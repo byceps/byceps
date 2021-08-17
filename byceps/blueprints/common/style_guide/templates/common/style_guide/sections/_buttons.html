@@ -22,16 +22,7 @@
 </div>
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_buttons }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_buttons }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_buttons) }}
 
   <p>Different colors:</p>
 
@@ -45,16 +36,7 @@
 </div>
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_buttons_colored }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_buttons_colored }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_buttons_colored) }}
 
   <p>Label wrapping:</p>
 
@@ -63,13 +45,4 @@
 <p><a href="#" class="button button--wrapping" style="width: 12rem;">A button with a rather long label, wrapping</a></p>
   {%- endset %}
 
-  <div class="example">
-    <div class="example-result">
-{{ example_buttons_label_wrap }}
-    </div>
-    <div class="example-code">
-      {% call render_code_block() -%}
-{{ example_buttons_label_wrap }}
-      {%- endcall %}
-    </div>
-  </div>
+{{ render_example(example_buttons_label_wrap) }}
