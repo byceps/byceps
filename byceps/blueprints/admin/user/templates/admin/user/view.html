@@ -1,5 +1,5 @@
 {% extends 'layout/admin/user.html' %}
-{% from 'macros/admin/shop/order.html' import render_order_payment_state %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_tab = 'profile' %}
 {% set current_tab_user_id = user.id %}
 {% set page_title = [_('Users'), user.screen_name] %}
@@ -44,8 +44,17 @@
 #tabs-rb-orga-activities:checked ~ .radio-panels #tabs-panel-orga-activities {
   display: block;
 }
+
+.tab-item-count {
+  background-color: #aaaaaa;
+  border-radius: 9px/50%;
+}
 </style>
 {% endblock %}
+
+{% macro render_count(count) -%}
+  {{ render_tag(count, class='tab-item-count') }}
+{%- endmacro %}
 
 {% block body %}
 
@@ -63,12 +72,12 @@
     <ol class="radio-tabs tabs">
       <li><label class="radio-tab tabs-tab" for="tabs-rb-account" id="tabs-tab-account">{{ _('Account') }}</label></li>
       <li><label class="radio-tab tabs-tab" for="tabs-rb-personal" id="tabs-tab-personal">{{ _('Personal Data') }}</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-newsletter" id="tabs-tab-newsletter">{{ _('Newsletters') }}</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-orders" id="tabs-tab-orders">{{ _('Orders') }}</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-tickets" id="tabs-tab-tickets">{{ _('Tickets') }}</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-attended-parties" id="tabs-tab-attended-parties">{{ _('Attended Parties') }}</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-badges" id="tabs-tab-badges">{{ _('Badges') }}</label></li>
-      <li><label class="radio-tab tabs-tab" for="tabs-rb-orga-activities" id="tabs-tab-orga-activities">{{ _('Orga teams') }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-newsletter" id="tabs-tab-newsletter">{{ _('Newsletters') }} {{ render_count(newsletter_subscription_count) }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-orders" id="tabs-tab-orders">{{ _('Orders') }} {{ render_count(orders|length) }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-tickets" id="tabs-tab-tickets">{{ _('Tickets') }} {{ render_count(ticket_count) }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-attended-parties" id="tabs-tab-attended-parties">{{ _('Attended Parties') }} {{ render_count(attended_parties|length) }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-badges" id="tabs-tab-badges">{{ _('Badges') }} {{ render_count(badge_count) }}</label></li>
+      <li><label class="radio-tab tabs-tab" for="tabs-rb-orga-activities" id="tabs-tab-orga-activities">{{ _('Orga teams') }} {{ render_count(orga_activities|length) }}</label></li>
     </ol>
 
     <div class="radio-panels">

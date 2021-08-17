@@ -110,7 +110,12 @@ def view(user_id):
 
     orga_activities = orga_team_service.get_orga_activities_for_user(user.id)
 
-    newsletter_subscriptions = service.get_newsletter_subscriptions(user.id)
+    newsletter_subscription_states = list(
+        service.get_newsletter_subscription_states(user.id)
+    )
+    newsletter_subscription_count = sum(
+        1 for _, subscribed in newsletter_subscription_states if subscribed
+    )
 
     orders = order_service.get_orders_placed_by_user(user.id)
 
@@ -119,12 +124,14 @@ def view(user_id):
     shops_by_id = {shop.id: shop for shop in shops}
 
     parties_and_tickets = service.get_parties_and_tickets(user.id)
+    ticket_count = sum(len(tickets) for _, tickets in parties_and_tickets)
 
     attended_parties = service.get_attended_parties(user.id)
 
     badges_with_awarding_quantity = (
         badge_awarding_service.get_badges_awarded_to_user(user.id)
     )
+    badge_count = len(badges_with_awarding_quantity)
 
     return {
         'profile_user': user,
@@ -132,11 +139,14 @@ def view(user_id):
         'recent_login': recent_login,
         'days_since_recent_login': days_since_recent_login,
         'orga_activities': orga_activities,
-        'newsletter_subscriptions': newsletter_subscriptions,
+        'newsletter_subscription_count': newsletter_subscription_count,
+        'newsletter_subscription_states': newsletter_subscription_states,
         'orders': orders,
         'shops_by_id': shops_by_id,
         'parties_and_tickets': parties_and_tickets,
+        'ticket_count': ticket_count,
         'attended_parties': attended_parties,
+        'badge_count': badge_count,
         'badges_with_awarding_quantity': badges_with_awarding_quantity,
     }
 

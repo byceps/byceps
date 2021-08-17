@@ -3,9 +3,9 @@
 <h2>{{ _('Newsletter Subscriptions') }}</h2>
 
 <div class="box">
-  {%- if newsletter_subscriptions %}
+  {%- if newsletter_subscription_states %}
   <table class="index">
-    {%- for list, subscribed in newsletter_subscriptions|sort(attribute='0.title') %}
+    {%- for list, subscribed in newsletter_subscription_states|sort(attribute='0.title') %}
     <tr>
       <td>{{ list.title }}</td>
       <td>{{ render_tag(_('subscribed'), class='color-success', icon='success') if subscribed else render_tag(_('not subscribed'), class='color-disabled', icon='disabled') }}</td>

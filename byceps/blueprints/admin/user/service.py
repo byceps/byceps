@@ -76,7 +76,7 @@ def get_attended_parties(user_id: UserID) -> list[Party]:
     return attended_parties
 
 
-def get_newsletter_subscriptions(
+def get_newsletter_subscription_states(
     user_id: UserID,
 ) -> Iterator[tuple[NewsletterList, bool]]:
     lists = newsletter_service.get_all_lists()
