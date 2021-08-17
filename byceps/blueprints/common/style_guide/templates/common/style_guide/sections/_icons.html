@@ -1,11 +1,9 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-  {%- set example_icons -%}
+{% call render_example() %}
 {{ render_icon('success') }}
-  {%- endset %}
-
-{{ render_example(example_icons) }}
+{% endcall %}
 
   <style>
     .icon-grid {

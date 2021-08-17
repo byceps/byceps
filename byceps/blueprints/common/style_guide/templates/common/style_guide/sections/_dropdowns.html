@@ -3,7 +3,7 @@
 
   <p>A simple dropdown menu:</p>
 
-  {%- set example_dropdown -%}
+{% call render_example() %}
 <div class="dropdown">
   <button class="dropdown-toggle button"><span>Left-aligned (default)</span> {{ render_icon('chevron-down') }}</button>
   <ol class="dropdown-menu">
@@ -23,6 +23,4 @@
     <li><a class="dropdown-item" href="#">Three</a></li>
   </ol>
 </div>
-  {%- endset %}
-
-{{ render_example(example_dropdown) }}
+{% endcall %}

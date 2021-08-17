@@ -1,21 +1,16 @@
 {%- from 'macros/misc.html' import render_tag %}
 
 
-  {%- set example_tags -%}
+{% call render_example() %}
 <p>Just a {{ render_tag('tag') }} to attach to things or to represent state.</p>
-  {%- endset %}
-
-{{ render_example(example_tags) }}
+{% endcall %}
 
   <p>With pre-defined colors:</p>
 
-  {%- set color = None -%}{# workaround for bug in Jinja 3.0.0 #}
-  {%- set example_tags_colored -%}
+{% call render_example() %}
 <p>
   {%- for color in ('info', 'success', 'warning', 'danger') %}
   {{ render_tag(color, class='color-{}'.format(color)) }}
   {%- endfor %}
 </p>
-  {%- endset %}
-
-{{ render_example(example_tags_colored) }}
+{% endcall %}

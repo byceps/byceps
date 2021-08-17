@@ -1,7 +1,7 @@
 {%- from 'macros/forms.html' import form_buttons %}
 
 
-  {%- set example_form -%}
+{% call render_example() %}
 <form>
 
   <div class="mb">
@@ -43,6 +43,4 @@
   {{ form_buttons('Do it!', cancel_url='#') }}
 
 </form>
-  {%- endset %}
-
-{{ render_example(example_form) }}
+{% endcall %}

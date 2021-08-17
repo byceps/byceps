@@ -1,5 +1,4 @@
-  {%- set example_progress -%}
-
+{% call render_example() %}
 <p>Basic progress bars:</p>
 <div class="progress">
   <div class="progress-bar" style="width: 0%;"></div>
@@ -22,7 +21,4 @@
   <div class="progress-bar color-warning" style="width: 42%;"></div>
   <div class="progress-bar color-success" style="width: 23%;"></div>
 </div>
-
-  {%- endset %}
-
-{{ render_example(example_progress) }}
+{% endcall %}

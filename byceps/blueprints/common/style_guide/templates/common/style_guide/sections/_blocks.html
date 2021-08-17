@@ -1,4 +1,4 @@
-  {%- set example_blocks -%}
+{% call render_example() %}
 <p>Block quote:</p>
 <blockquote>
 {{ lipsum(n=2) }}
@@ -8,6 +8,4 @@
 
 <p>Have a code block, too:</p>
 <pre><code class="block">{{ lipsum(n=1, html=False) }}</code></pre>
-  {%- endset %}
-
-{{ render_example(example_blocks) }}
+{% endcall %}

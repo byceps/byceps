@@ -1,7 +1,7 @@
 {%- from 'macros/misc.html' import render_notification %}
 
 
-  {%- set example_notifications -%}
+{% call render_example() %}
 {{ render_notification('Without category and icon. But at least with <a href="#">a link</a>.'|safe) }}
 
 {{ render_notification('Just FYI. <a href="#">Read more.</a>'|safe, category='info', icon='info') }}
@@ -15,6 +15,4 @@
 {{ render_notification('<p>This did not end well. :( <a href="#">Try again?</a></p><p>To explain the problem, debug information like a stack trace could follow here.</p>'|safe, category='danger', icon='error') }}
 
 {{ render_notification('Unsafe content that needs (default) escaping ahead: <script>alert("h4x0r3d!");</script>', category='danger', icon='error') }}
-  {%- endset %}
-
-{{ render_example(example_notifications) }}
+{% endcall %}

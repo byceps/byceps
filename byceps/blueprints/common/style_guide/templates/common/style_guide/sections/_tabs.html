@@ -1,25 +1,21 @@
   <p>Left-aligned:</p>
 
-  {%- set example_tabs_leftaligned -%}
+{% call render_example() %}
 <ol class="tabs">
   <li><a class="tabs-tab" href="#">Tab 1</a></li>
   <li><a class="tabs-tab tabs-tab--current">Tab 2</a></li>
   <li><a class="tabs-tab" href="#">Tab 3</a></li>
   <li><a class="tabs-tab" href="#">Tab 4</a></li>
 </ol>
-  {%- endset %}
-
-{{ render_example(example_tabs_leftaligned) }}
+{% endcall %}
 
   <p>Centered:</p>
 
-  {%- set example_tabs_centered -%}
+{% call render_example() %}
 <ol class="tabs tabs--centered">
   <li><a class="tabs-tab" href="#">Tab 1</a></li>
   <li><span class="tabs-tab tabs-tab--current">Tab 2</span></li>
   <li><a class="tabs-tab" href="#">Tab 3</a></li>
   <li><a class="tabs-tab" href="#">Tab 4</a></li>
 </ol>
-  {%- endset %}
-
-{{ render_example(example_tabs_centered) }}
+{% endcall %}

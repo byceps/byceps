@@ -1,6 +1,6 @@
   <p>With class <code>index</code>:</p>
 
-  {%- set example_table_index -%}
+{% call render_example() %}
 <table class="index">
   <thead>
     <tr>
@@ -27,13 +27,11 @@
     </tr>
   </tbody>
 </table>
-  {%- endset %}
-
-{{ render_example(example_table_index) }}
+{% endcall %}
 
   <p>With classes <code>index wide</code>:</p>
 
-  {%- set example_table_index_wide -%}
+{% call render_example() %}
 <table class="index wide">
   <thead>
     <tr>
@@ -60,6 +58,4 @@
     </tr>
   </tbody>
 </table>
-  {%- endset %}
-
-{{ render_example(example_table_index_wide) }}
+{% endcall %}

@@ -45,16 +45,16 @@
 {%- endblock %}
 
 
-{% macro render_example(code) %}
+{% macro render_example() %}
   <div class="example">
     <div class="example-result">
-{{ code }}
+{{ caller() }}
     </div>
     <div class="example-code">
       <code class="block">
 {#- Whitespace removal in code block is significant! #}
 {%- filter forceescape -%}
-{{ code|trim }}
+{{ caller()|trim }}
 {%- endfilter -%}
       </code>
     </div>

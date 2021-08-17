@@ -3,7 +3,7 @@
 
   <p>Buttons with different styles and states:</p>
 
-  {%- set example_buttons -%}
+{% call render_example() %}
 <div class="button-row">
   <button class="button">Form Button</button>
   <a href="#" class="button">Link Button</a>
@@ -20,13 +20,11 @@
   <a href="#" class="button button--compact">{{ render_icon('shopping-cart') }} <span>Buy</span></a>
   <a href="#" class="button button--compact">{{ render_icon('chevron-down') }}</a>
 </div>
-  {%- endset %}
-
-{{ render_example(example_buttons) }}
+{% endcall %}
 
   <p>Different colors:</p>
 
-  {%- set example_buttons_colored -%}
+{% call render_example() %}
 <div class="button-row">
   <a href="#" class="button color-primary">Primary</a>
   <a href="#" class="button color-info">Info</a>
@@ -34,15 +32,11 @@
   <a href="#" class="button color-warning">Warning</a>
   <a href="#" class="button color-danger">Danger</a>
 </div>
-  {%- endset %}
-
-{{ render_example(example_buttons_colored) }}
+{% endcall %}
 
   <p>Label wrapping:</p>
 
-  {%- set example_buttons_label_wrap -%}
+{% call render_example() %}
 <p><a href="#" class="button">A button with a rather long label, not wrapping by default</a></p>
 <p><a href="#" class="button button--wrapping" style="width: 12rem;">A button with a rather long label, wrapping</a></p>
-  {%- endset %}
-
-{{ render_example(example_buttons_label_wrap) }}
+{% endcall %}
