@@ -17,7 +17,7 @@ psycopg2-binary==2.9.1
 python-dateutil==2.8.2
 pytzdata==2020.1
 redis==3.5.3
-requests==2.25.1
+requests==2.26.0
 rq==1.8.0
 rq-dashboard==0.6.1
 rtoml==0.7.0
