@@ -15,8 +15,9 @@ from byceps.services.shop.article.dbmodels.article import Article
 from byceps.services.shop.order.dbmodels.line_item import LineItem
 from byceps.services.shop.order.dbmodels.order import Order
 from byceps.services.shop.order.service import find_order_by_order_number
-from byceps.services.shop.order.transfer.models import \
-    PaymentState as OrderPaymentState
+from byceps.services.shop.order.transfer.models import (
+    PaymentState as OrderPaymentState,
+)
 from byceps.services.ticketing.ticket_service import find_ticket_by_code
 from byceps.services.user.dbmodels.detail import UserDetail
 from byceps.services.user.dbmodels.user import User
@@ -26,12 +27,15 @@ from byceps.services.user.service import find_db_user_by_screen_name
 app = create_app()
 
 
-if app.env == 'development':
-    if app.debug:
-        # Enable debug toolbar.
-        from flask_debugtoolbar import DebugToolbarExtension
-        app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-        toolbar = DebugToolbarExtension(app)
+if (
+    app.env == 'development'
+    and app.debug
+    and app.config.get('DEBUG_TOOLBAR_ENABLED', False)
+):
+    from flask_debugtoolbar import DebugToolbarExtension
+
+    app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
+    toolbar = DebugToolbarExtension(app)
 
 
 @app.shell_context_processor
