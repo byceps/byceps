@@ -23,6 +23,11 @@
       padding: 2rem;
     }
 
+    .example summary {
+      padding: 1rem 2rem;
+    }
+
+    .example summary,
     code {
       background-color: rgba(0, 0, 0, 0.75);
       color: #ffffff;
@@ -32,7 +37,7 @@
     code.block {
       display: block;
       line-height: 1.5;
-      padding: 1rem 2rem;
+      padding: 0 2rem 1rem 2rem;
       white-space: pre;
       overflow-x: scroll;
     }
@@ -51,12 +56,15 @@
 {{ caller() }}
     </div>
     <div class="example-code">
-      <code class="block">
+      <details>
+        <summary>Show code</summary>
+        <code class="block">
 {#- Whitespace removal in code block is significant! #}
 {%- filter forceescape -%}
 {{ caller()|trim }}
 {%- endfilter -%}
-      </code>
+        </code>
+      </details>
     </div>
   </div>
 {% endmacro %}
