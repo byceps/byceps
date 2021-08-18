@@ -12,6 +12,8 @@ from uuid import UUID
 
 from ....typing import PartyID
 
+from ...ticketing.transfer.models import TicketCategoryID
+
 
 AreaID = NewType('AreaID', UUID)
 
@@ -28,6 +30,16 @@ class Area:
 
 
 SeatID = NewType('SeatID', UUID)
+
+
+@dataclass(frozen=True)
+class Seat:
+    id: SeatID
+    coord_x: int
+    coord_y: int
+    category_id: TicketCategoryID
+    label: Optional[str]
+    type_: Optional[str]
 
 
 SeatGroupID = NewType('SeatGroupID', UUID)

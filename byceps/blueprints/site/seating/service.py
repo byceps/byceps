@@ -12,14 +12,10 @@ from itertools import chain
 from typing import Iterator, Optional, Iterable
 
 from ....services.seating.dbmodels.seat import Seat as DbSeat
-from ....services.seating.transfer.models import SeatID
+from ....services.seating.transfer.models import Seat
 from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
 from ....services.ticketing import ticket_service
-from ....services.ticketing.transfer.models import (
-    TicketCategoryID,
-    TicketCode,
-    TicketID,
-)
+from ....services.ticketing.transfer.models import TicketCode, TicketID
 from ....services.user import service as user_service
 from ....services.user.transfer.models import User
 from ....typing import UserID
@@ -32,16 +28,6 @@ class ManagedTicket:
     category_label: str
     user: Optional[User]
     occupied_seat_label: Optional[str]
-
-
-@dataclass(frozen=True)
-class Seat:
-    id: SeatID
-    coord_x: int
-    coord_y: int
-    category_id: TicketCategoryID
-    label: str
-    type_: str
 
 
 def get_users(
