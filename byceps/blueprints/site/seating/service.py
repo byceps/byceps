@@ -64,12 +64,12 @@ def get_seats_and_tickets(
 ) -> Iterator[tuple[Seat, Optional[ManagedTicket]]]:
     for seat in seats:
         seat_dto = Seat(
-            seat.id,
-            seat.coord_x,
-            seat.coord_y,
-            seat.category_id,
-            seat.label,
-            seat.type_,
+            id=seat.id,
+            coord_x=seat.coord_x,
+            coord_y=seat.coord_y,
+            category_id=seat.category_id,
+            label=seat.label,
+            type_=seat.type_,
         )
 
         managed_ticket = _get_ticket_managed_by_seat(seat, users_by_id)
@@ -87,7 +87,11 @@ def _get_ticket_managed_by_seat(
     user = _find_ticket_user(ticket, users_by_id)
 
     return ManagedTicket(
-        ticket.id, ticket.code, ticket.category.title, user, None
+        id=ticket.id,
+        code=ticket.code,
+        category_label=ticket.category.title,
+        user=user,
+        occupied_seat_label=None,
     )
 
 
@@ -103,7 +107,11 @@ def get_managed_tickets(
             seat_label = None
 
         yield ManagedTicket(
-            ticket.id, ticket.code, ticket.category.title, user, seat_label
+            id=ticket.id,
+            code=ticket.code,
+            category_label=ticket.category.title,
+            user=user,
+            occupied_seat_label=seat_label,
         )
 
 
