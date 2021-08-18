@@ -47,12 +47,14 @@ class Seat(db.Model):
         *,
         coord_x: int = 0,
         coord_y: int = 0,
+        label: Optional[str] = None,
         type_: Optional[str] = None,
     ) -> None:
         self.area_id = area_id
         self.coord_x = coord_x
         self.coord_y = coord_y
         self.category_id = category_id
+        self.label = label
         self.type_ = type_
 
     @hybrid_property

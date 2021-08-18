@@ -22,10 +22,17 @@ from .transfer.models import AreaID, SeatID, SeatUtilization
 
 
 def create_seat(
-    area_id: AreaID, coord_x: int, coord_y: int, category_id: TicketCategoryID
+    area_id: AreaID,
+    coord_x: int,
+    coord_y: int,
+    category_id: TicketCategoryID,
+    *,
+    label: Optional[str] = None,
 ) -> DbSeat:
     """Create a seat."""
-    seat = DbSeat(area_id, category_id, coord_x=coord_x, coord_y=coord_y)
+    seat = DbSeat(
+        area_id, category_id, coord_x=coord_x, coord_y=coord_y, label=label
+    )
 
     db.session.add(seat)
     db.session.commit()
