@@ -16,8 +16,8 @@
     <div class="column-auto column-auto--grow">
       <div class="ticket-selector button">
         <ol id="ticket-selection">
-          {%- for ticket, seat_label in managed_tickets|sort(attribute='0.code') %}
-          <li class="ticket" data-id="{{ ticket.id }}" data-code="{{ ticket.code }}"{% if seat_label %} data-seat-label="{{ seat_label }}"{% endif %}>
+          {%- for ticket, occupies_seat, seat_label in managed_tickets|sort(attribute='0.code') %}
+          <li class="ticket" data-id="{{ ticket.id }}" data-code="{{ ticket.code }}"{% if occupies_seat and seat_label %} data-seat-label="{{ seat_label }}"{% endif %}>
             <span class="managed-ticket-code">{{ ticket.code }}</span>
 
             <span class="managed-ticket-category">{{ ticket.category_label }}</span>
@@ -31,8 +31,8 @@
             </span>
 
             <span class="managed-ticket-seat">
-            {%- if seat_label -%}
-              {{ seat_label }}
+            {%- if occupies_seat -%}
+              {{ seat_label|fallback(_('unnamed')) }}
             {%- else -%}
               {{ 'kein Sitzplatz'|dim }}
             {%- endif -%}

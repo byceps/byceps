@@ -94,7 +94,7 @@ def _get_seat_ticket(
 
 def get_managed_tickets(
     tickets: Iterable[DbTicket], users_by_id: dict[UserID, User]
-) -> Iterator[tuple[SeatTicket, Optional[str]]]:
+) -> Iterator[tuple[SeatTicket, bool, Optional[str]]]:
     for ticket in tickets:
         user = _find_ticket_user(ticket, users_by_id)
 
@@ -105,12 +105,11 @@ def get_managed_tickets(
             user=user,
         )
 
-        if ticket.occupied_seat_id is not None:
-            seat_label = ticket.occupied_seat.label
-        else:
-            seat_label = None
+        occupies_seat = ticket.occupied_seat_id is not None
 
-        yield managed_ticket, seat_label
+        seat_label = ticket.occupied_seat.label if occupies_seat else None
+
+        yield managed_ticket, occupies_seat, seat_label
 
 
 def _find_ticket_user(
