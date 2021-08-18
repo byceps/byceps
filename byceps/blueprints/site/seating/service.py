@@ -42,7 +42,6 @@ class Seat:
     category_id: TicketCategoryID
     label: str
     type_: str
-    ticket: Optional[ManagedTicket]
 
 
 def get_users(
@@ -74,21 +73,22 @@ def _get_ticket_user_ids(tickets: Iterable[DbTicket]) -> Iterator[UserID]:
             yield user_id
 
 
-def get_seats(
+def get_seats_and_tickets(
     seats: Iterable[DbSeat], users_by_id: dict[UserID, User]
-) -> Iterator[Seat]:
+) -> Iterator[tuple[Seat, Optional[ManagedTicket]]]:
     for seat in seats:
-        managed_ticket = _get_ticket_managed_by_seat(seat, users_by_id)
-
-        yield Seat(
+        seat_dto = Seat(
             seat.id,
             seat.coord_x,
             seat.coord_y,
             seat.category_id,
             seat.label,
             seat.type_,
-            managed_ticket,
         )
+
+        managed_ticket = _get_ticket_managed_by_seat(seat, users_by_id)
+
+        yield seat_dto, managed_ticket
 
 
 def _get_ticket_managed_by_seat(

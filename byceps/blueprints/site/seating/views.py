@@ -21,7 +21,10 @@ from ....services.ticketing import (
     ticket_service,
 )
 from ....services.ticketing.transfer.models import TicketID
-from ....util.authorization import has_current_user_permission, register_permission_enum
+from ....util.authorization import (
+    has_current_user_permission,
+    register_permission_enum,
+)
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -71,12 +74,12 @@ def view_area(slug):
 
     users_by_id = service.get_users(seats, [])
 
-    seats = service.get_seats(seats, users_by_id)
+    seats_and_tickets = service.get_seats_and_tickets(seats, users_by_id)
 
     return {
         'area': area,
         'seat_management_enabled': seat_management_enabled,
-        'seats': seats,
+        'seats_and_tickets': seats_and_tickets,
         'manage_mode': False,
     }
 
@@ -124,7 +127,7 @@ def manage_seats_in_area(slug):
 
     users_by_id = service.get_users(seats, tickets)
 
-    seats = service.get_seats(seats, users_by_id)
+    seats_and_tickets = service.get_seats_and_tickets(seats, users_by_id)
 
     if seat_management_enabled:
         managed_tickets = list(
@@ -135,7 +138,7 @@ def manage_seats_in_area(slug):
 
     return {
         'area': area,
-        'seats': seats,
+        'seats_and_tickets': seats_and_tickets,
         'manage_mode': True,
         'seat_management_enabled': seat_management_enabled,
         'managed_tickets': managed_tickets,
