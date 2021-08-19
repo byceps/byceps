@@ -34,13 +34,10 @@ class OrgaTeam(db.Model):
         self.title = title
 
     def __repr__(self) -> str:
-        membership_count = len(self.memberships)
-
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add_with_lookup('party_id') \
             .add_with_lookup('title') \
-            .add_custom(f'{membership_count:d} members') \
             .build()
 
 
