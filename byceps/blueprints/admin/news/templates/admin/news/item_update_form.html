@@ -1,6 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
+{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = item.brand %}
 {% set page_title = _('Edit news post') %}
@@ -17,9 +18,37 @@
     {{ form_field(form.slug, maxlength=100, note='<strong>' ~ _('Attention') ~ ':</strong> ' ~ _('Changing the slug affects the news post\'s permalink!')) }}
     {{ form_field(form.title, maxlength=100, autofocus='autofocus') }}
     {{ form_field(form.body, class='monospace') }}
+
+    {%- if item.images %}
+    <div class="dropdown mb">
+      <button class="dropdown-toggle button button--compact"><span>{{ _('Insert image') }}</span> {{ render_icon('chevron-down') }}</button>
+      <ol class="dropdown-menu">
+      {%- for image in item.images|sort(attribute='number') %}
+        <li><a class="dropdown-item" data-action="insert-image-{{ image.number }}">#{{ image.number }}</a></li>
+      {%- endfor %}
+      </ol>
+    </div>
+    {%- endif %}
+
     {{ form_field(form.image_url_path, maxlength=100) }}
 
     {{ form_buttons(_('Save')) }}
   </form>
 
 {%- endblock %}
+
+{% block scripts %}
+<script>
+  onDomReady(() => {
+    const textArea = document.querySelector('#body');
+    document.querySelectorAll('a[data-action^="insert-image-"]').forEach(function(triggerElement) {
+      triggerElement.addEventListener('click', function(event) {
+        const imageId = triggerElement.getAttribute('data-action').substr(13);
+        textArea.setRangeText('{{ '{{' }} render_image(' + imageId + ') }}', textArea.selectionEnd, textArea.selectionEnd);
+        textArea.focus();
+        event.preventDefault();
+      });
+    });
+  });
+</script>
+{% endblock %}

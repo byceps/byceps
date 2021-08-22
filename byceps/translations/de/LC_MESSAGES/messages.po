@@ -2076,6 +2076,10 @@ msgstr "Achtung"
 msgid "Changing the slug affects the news post's permalink!"
 msgstr "Eine Änderung des Slugs wirkt sich auf den Permalink der News aus!"
 
+#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:24
+msgid "Insert image"
+msgstr "Bild einfügen"
+
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:9
 msgid "View news post version"
 msgstr "Newspost-Version ansehen"
