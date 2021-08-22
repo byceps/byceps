@@ -89,7 +89,7 @@
       <div class="box">
         <details class="newspost-images">
           <summary>#{{ image.number }}: <span class="monospace">{{ image.filename }}</span></summary>
-          <div class="row row--space-between" style="margin-top: 0;">
+          <div class="row row--space-between mb" style="margin-top: 0;">
             <div class="column-auto">
 
               <div class="data-label">{{ _('ID') }}</div>
@@ -116,6 +116,15 @@
             {%- endif -%}
 
           </div>
+
+          <div class="data-label">{{ _('Preview') }}</div>
+          <div class="data-value">
+            <details>
+              <summary>{{ _('Show') }}</summary>
+                <img src="{{ image.url_path }}" style="border: #cccccc solid 1px; display: block;" loading="lazy">
+            </details>
+          </div>
+
         </details>
       </div>
         {%- endfor %}
