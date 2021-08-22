@@ -220,7 +220,8 @@ def get_articles_by_numbers(
     if not article_numbers:
         return set()
 
-    rows = DbArticle.query \
+    rows = db.session \
+        .query(DbArticle) \
         .filter(DbArticle.item_number.in_(article_numbers)) \
         .all()
 
@@ -229,7 +230,8 @@ def get_articles_by_numbers(
 
 def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
     """Return all articles for that shop, ordered by article number."""
-    rows = DbArticle.query \
+    rows = db.session \
+        .query(DbArticle) \
         .filter_by(shop_id=shop_id) \
         .order_by(DbArticle.item_number) \
         .all()
@@ -244,7 +246,8 @@ def get_articles_for_shop_paginated(
 
     Ordered by article number, reversed.
     """
-    return DbArticle.query \
+    return db.session \
+        .query(DbArticle) \
         .filter_by(shop_id=shop_id) \
         .order_by(DbArticle.item_number.desc()) \
         .paginate(page, per_page)
@@ -259,7 +262,8 @@ def get_article_compilation_for_orderable_articles(
     """
     now = datetime.utcnow()
 
-    orderable_articles = (DbArticle.query
+    orderable_articles = (db.session
+        .query(DbArticle)
         .filter_by(shop_id=shop_id)
         .filter_by(not_directly_orderable=False)
         .filter_by(separate_order_required=False)
@@ -337,7 +341,8 @@ def get_attachable_articles(article_id: ArticleID) -> set[Article]:
 
     unattachable_article_ids = {article.id for article in unattachable_articles}
 
-    rows = DbArticle.query \
+    rows = db.session \
+        .query(DbArticle) \
         .filter_by(shop_id=article.shop_id) \
         .filter(db.not_(DbArticle.id.in_(unattachable_article_ids))) \
         .order_by(DbArticle.item_number) \

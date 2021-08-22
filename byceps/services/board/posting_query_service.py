@@ -24,7 +24,8 @@ from .transfer.models import BoardID, PostingID, TopicID
 
 def count_postings_for_board(board_id: BoardID) -> int:
     """Return the number of postings for that board."""
-    return DbPosting.query \
+    return db.session \
+        .query(DbPosting) \
         .join(DbTopic).join(DbCategory).filter(DbCategory.board_id == board_id) \
         .count()
 
@@ -51,7 +52,8 @@ def paginate_postings(
     postings_per_page: int,
 ) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
-    query = DbPosting.query \
+    query = db.session \
+        .query(DbPosting) \
         .options(
             db.joinedload(DbPosting.topic),
             db.joinedload(DbPosting.last_edited_by).load_only('screen_name'),
@@ -84,7 +86,8 @@ def calculate_posting_page_number(
     posting: DbPosting, include_hidden: bool, postings_per_page: int
 ) -> int:
     """Return the number of the page the posting should appear on."""
-    query = DbPosting.query \
+    query = db.session \
+        .query(DbPosting) \
         .filter_by(topic_id=posting.topic_id)
 
     if not include_hidden:

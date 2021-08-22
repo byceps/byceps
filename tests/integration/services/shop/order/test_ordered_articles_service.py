@@ -82,7 +82,8 @@ def place_order(storefront_id, orderer, article, article_quantity):
 
 
 def set_payment_state(order_number, payment_state):
-    order = DbOrder.query \
+    order = db.session \
+        .query(DbOrder) \
         .filter_by(order_number=order_number) \
         .one_or_none()
     order.payment_state = payment_state

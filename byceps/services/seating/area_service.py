@@ -39,14 +39,16 @@ def delete_area(area_id: str) -> None:
 
 def count_areas_for_party(party_id: PartyID) -> int:
     """Return the number of seating areas for that party."""
-    return DbArea.query \
+    return db.session \
+        .query(DbArea) \
         .filter_by(party_id=party_id) \
         .count()
 
 
 def find_area_for_party_by_slug(party_id: PartyID, slug: str) -> Optional[Area]:
     """Return the area for that party with that slug, or `None` if not found."""
-    area = DbArea.query \
+    area = db.session \
+        .query(DbArea) \
         .filter_by(party_id=party_id) \
         .filter_by(slug=slug) \
         .first()
@@ -59,7 +61,8 @@ def find_area_for_party_by_slug(party_id: PartyID, slug: str) -> Optional[Area]:
 
 def get_areas_for_party(party_id: PartyID) -> list[Area]:
     """Return all areas for that party."""
-    areas = DbArea.query \
+    areas = db.session \
+        .query(DbArea) \
         .filter_by(party_id=party_id) \
         .all()
 

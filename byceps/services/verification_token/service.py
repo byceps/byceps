@@ -64,7 +64,8 @@ def delete_old_tokens(created_before: datetime) -> int:
 
     Return the number of deleted tokens.
     """
-    num_deleted = DbToken.query \
+    num_deleted = db.session \
+        .query(DbToken) \
         .filter(DbToken.created_at < created_before) \
         .delete()
 
@@ -98,7 +99,8 @@ def find_for_consent_by_token(token_value: str) -> Optional[Token]:
 def _find_for_purpose_by_token(
     token_value: str, purpose: Purpose
 ) -> Optional[Token]:
-    token = DbToken.query \
+    token = db.session \
+        .query(DbToken) \
         .filter_by(token=token_value) \
         .filter_by(_purpose=purpose.name) \
         .first()

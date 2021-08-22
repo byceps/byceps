@@ -417,7 +417,8 @@ def delete_order(order_id: OrderID) -> None:
 
 def count_open_orders(shop_id: ShopID) -> int:
     """Return the number of open orders for the shop."""
-    return DbOrder.query \
+    return db.session \
+        .query(DbOrder) \
         .filter_by(shop_id=shop_id) \
         .filter_by(_payment_state=PaymentState.open.name) \
         .count()
@@ -494,7 +495,8 @@ def find_order_with_details(order_id: OrderID) -> Optional[Order]:
 
 def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
     """Return the order with that order number, or `None` if not found."""
-    order = DbOrder.query \
+    order = db.session \
+        .query(DbOrder) \
         .filter_by(order_number=order_number) \
         .one_or_none()
 
@@ -511,7 +513,8 @@ def find_orders_by_order_numbers(
     if not order_numbers:
         return []
 
-    orders = DbOrder.query \
+    orders = db.session \
+        .query(DbOrder) \
         .filter(DbOrder.order_number.in_(order_numbers)) \
         .all()
 
@@ -546,7 +549,8 @@ def get_orders_for_shop_paginated(
     If a payment state is specified, only orders in that state are
     returned.
     """
-    query = DbOrder.query \
+    query = db.session \
+        .query(DbOrder) \
         .filter_by(shop_id=shop_id) \
         .order_by(DbOrder.created_at.desc())
 
@@ -576,7 +580,8 @@ def get_orders_for_shop_paginated(
 
 def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
     """Return orders placed by the user."""
-    orders = DbOrder.query \
+    orders = db.session \
+        .query(DbOrder) \
         .options(
             db.joinedload(DbOrder.items),
         ) \
@@ -591,7 +596,8 @@ def get_orders_placed_by_user_for_shop(
     user_id: UserID, shop_id: ShopID
 ) -> Sequence[Order]:
     """Return orders placed by the user in that shop."""
-    orders = DbOrder.query \
+    orders = db.session \
+        .query(DbOrder) \
         .options(
             db.joinedload(DbOrder.items),
         ) \
@@ -605,7 +611,8 @@ def get_orders_placed_by_user_for_shop(
 
 def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
     """Return `True` if the user has placed orders in that shop."""
-    orders_total = DbOrder.query \
+    orders_total = db.session \
+        .query(DbOrder) \
         .filter_by(shop_id=shop_id) \
         .filter_by(placed_by_id=user_id) \
         .count()

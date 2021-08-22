@@ -72,14 +72,16 @@ def count_teams_for_parties(party_ids: set[PartyID]) -> dict[PartyID, int]:
 
 def count_teams_for_party(party_id: PartyID) -> int:
     """Return the number of orga teams for that party."""
-    return DbOrgaTeam.query \
+    return db.session \
+        .query(DbOrgaTeam) \
         .filter_by(party_id=party_id) \
         .count()
 
 
 def get_teams_for_party(party_id: PartyID) -> set[OrgaTeam]:
     """Return orga teams for that party."""
-    teams = DbOrgaTeam.query \
+    teams = db.session \
+        .query(DbOrgaTeam) \
         .filter_by(party_id=party_id) \
         .all()
 
@@ -107,8 +109,8 @@ def get_teams_and_members_for_party(
     """Return all orga teams and their corresponding memberships for
     that party.
     """
-
-    teams = DbOrgaTeam.query \
+    teams = db.session \
+        .query(DbOrgaTeam) \
         .options(db.joinedload(DbOrgaTeam.memberships)) \
         .filter_by(party_id=party_id) \
         .all()
@@ -186,7 +188,8 @@ def delete_membership(membership_id: MembershipID) -> None:
 
 def count_memberships_for_party(party_id: PartyID) -> int:
     """Return the number of memberships the party's teams have in total."""
-    return DbMembership.query \
+    return db.session \
+        .query(DbMembership) \
         .join(DbOrgaTeam) \
         .filter(DbOrgaTeam.party_id == party_id) \
         .count()
@@ -194,7 +197,8 @@ def count_memberships_for_party(party_id: PartyID) -> int:
 
 def get_memberships_for_party(party_id: PartyID) -> set[Membership]:
     """Return memberships for that party."""
-    memberships = DbMembership.query \
+    memberships = db.session \
+        .query(DbMembership) \
         .join(DbOrgaTeam) \
         .filter(DbOrgaTeam.party_id == party_id) \
         .all()
@@ -223,7 +227,8 @@ def find_orga_team_for_user_and_party(
     """Return the user's membership in an orga team of that party, or
     `None` of user it not part of an orga team for that party.
     """
-    return DbOrgaTeam.query \
+    return db.session \
+        .query(DbOrgaTeam) \
         .join(DbMembership) \
         .filter(DbMembership.user_id == user_id) \
         .filter(DbOrgaTeam.party_id == party_id) \
@@ -232,7 +237,8 @@ def find_orga_team_for_user_and_party(
 
 def get_orga_activities_for_user(user_id: UserID) -> set[OrgaActivity]:
     """Return all orga team activities for that user."""
-    memberships = DbMembership.query \
+    memberships = db.session \
+        .query(DbMembership) \
         .options(
             db.joinedload(DbMembership.orga_team)
                 .joinedload(DbOrgaTeam.party),
@@ -256,7 +262,8 @@ def get_orga_activities_for_user(user_id: UserID) -> set[OrgaActivity]:
 
 def get_public_orgas_for_party(party_id: PartyID) -> set[PublicOrga]:
     """Return all public orgas for that party."""
-    memberships = DbMembership.query \
+    memberships = db.session \
+        .query(DbMembership) \
         .join(DbOrgaTeam) \
         .filter(DbOrgaTeam.party_id == party_id) \
         .options(
@@ -349,7 +356,8 @@ def get_unassigned_orgas_for_party(party_id: PartyID) -> set[User]:
     """Return organizers that are not assigned to a team for the party."""
     party = party_service.get_party(party_id)
 
-    assigned_orgas = DbUser.query \
+    assigned_orgas = db.session \
+        .query(DbUser) \
         .join(DbMembership) \
         .join(DbOrgaTeam) \
         .filter(DbOrgaTeam.party_id == party.id) \

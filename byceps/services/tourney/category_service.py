@@ -118,7 +118,8 @@ def _get_db_category(category_id: TourneyCategoryID) -> DbTourneyCategory:
 
 def get_categories_for_party(party_id: PartyID) -> list[TourneyCategory]:
     """Return the categories for this party."""
-    categories = DbTourneyCategory.query \
+    categories = db.session \
+        .query(DbTourneyCategory) \
         .filter_by(party_id=party_id) \
         .order_by(DbTourneyCategory.position) \
         .all()

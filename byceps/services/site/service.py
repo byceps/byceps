@@ -137,14 +137,15 @@ def get_site(site_id: SiteID) -> Site:
 
 def get_all_sites() -> set[Site]:
     """Return all sites."""
-    sites = DbSite.query.all()
+    sites = db.session.query(DbSite).all()
 
     return {_db_entity_to_site(site) for site in sites}
 
 
 def get_sites_for_brand(brand_id: BrandID) -> set[Site]:
     """Return the sites for that brand."""
-    sites = DbSite.query \
+    sites = db.session \
+        .query(DbSite) \
         .filter_by(brand_id=brand_id) \
         .all()
 
@@ -155,7 +156,7 @@ def get_current_sites(
     brand_id: Optional[BrandID] = None, *, include_brands: bool = False
 ) -> set[Union[Site, SiteWithBrand]]:
     """Return all "current" (i.e. enabled and not archived) sites."""
-    query = DbSite.query
+    query = db.session.query(DbSite)
 
     if brand_id is not None:
         query = query.filter_by(brand_id=brand_id)

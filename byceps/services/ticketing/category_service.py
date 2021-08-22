@@ -51,7 +51,8 @@ def delete_category(category_id: TicketCategoryID) -> None:
 
 def count_categories_for_party(party_id: PartyID) -> int:
     """Return the number of categories for that party."""
-    return DbCategory.query \
+    return db.session \
+        .query(DbCategory) \
         .filter_by(party_id=party_id) \
         .count()
 
@@ -68,7 +69,8 @@ def find_category(category_id: TicketCategoryID) -> Optional[TicketCategory]:
 
 def get_categories_for_party(party_id: PartyID) -> Sequence[TicketCategory]:
     """Return all categories for that party."""
-    categories = DbCategory.query \
+    categories = db.session \
+        .query(DbCategory) \
         .filter_by(party_id=party_id) \
         .all()
 

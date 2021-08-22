@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import click
 
+from byceps.database import db
 from byceps.services.user.dbmodels.event import UserEvent
 from byceps.services.user import service as user_service
 from byceps.services.user.transfer.models import User
@@ -30,7 +31,8 @@ def execute(ip_address: str) -> None:
 
 
 def find_events(ip_address: str) -> list[UserEvent]:
-    return UserEvent.query \
+    return db.session \
+        .query(UserEvent) \
         .filter_by(event_type='user-logged-in') \
         .filter(UserEvent.data['ip_address'].astext == ip_address) \
         .order_by(UserEvent.occurred_at) \

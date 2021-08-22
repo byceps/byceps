@@ -20,7 +20,8 @@ from .transfer.models import BoardID, CategoryID, TopicID
 
 def count_topics_for_board(board_id: BoardID) -> int:
     """Return the number of topics for that board."""
-    return DbTopic.query \
+    return db.session \
+        .query(DbTopic) \
         .join(DbCategory) \
             .filter(DbCategory.board_id == board_id) \
         .count()
@@ -47,7 +48,8 @@ def find_topic_visible_for_user(
     """Return the topic with that id, or `None` if not found or
     invisible for the user.
     """
-    query = DbTopic.query \
+    query = db.session \
+        .query(DbTopic) \
         .options(
             db.joinedload(DbTopic.category),
         )
@@ -112,7 +114,8 @@ def paginate_topics_of_category(
 
 
 def _query_topics(include_hidden: bool) -> Query:
-    query = DbTopic.query \
+    query = db.session \
+        .query(DbTopic) \
         .options(
             db.joinedload(DbTopic.category),
             db.joinedload(DbTopic.last_updated_by),
@@ -131,7 +134,8 @@ def find_default_posting_to_jump_to(
     topic_id: TopicID, include_hidden: bool, last_viewed_at: datetime
 ) -> Optional[DbPosting]:
     """Return the posting of the topic to show by default, or `None`."""
-    postings_query = DbPosting.query \
+    postings_query = db.session \
+        .query(DbPosting) \
         .filter_by(topic_id=topic_id)
 
     if not include_hidden:

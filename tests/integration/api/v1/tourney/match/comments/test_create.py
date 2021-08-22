@@ -5,6 +5,7 @@
 
 import pytest
 
+from byceps.database import db
 from byceps.services.tourney.dbmodels.match_comment import (
     MatchComment as DbMatchComment,
 )
@@ -106,6 +107,7 @@ def get_comment(comment_id):
 
 
 def get_comment_count_for_match(match_id):
-    return DbMatchComment.query \
+    return db.session \
+        .query(DbMatchComment) \
         .filter_by(match_id=match_id) \
         .count()

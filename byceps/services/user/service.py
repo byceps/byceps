@@ -169,7 +169,8 @@ def _user_row_to_dto(
 
 def find_user_by_email_address(email_address: str) -> Optional[User]:
     """Return the user with that email address, or `None` if not found."""
-    user = DbUser.query \
+    user = db.session \
+        .query(DbUser) \
         .filter(
             db.func.lower(DbUser.email_address) == email_address.lower()
         ) \
@@ -199,7 +200,7 @@ def find_db_user_by_screen_name(
     screen_name: str, *, case_insensitive=False
 ) -> Optional[DbUser]:
     """Return the user with that screen name, or `None` if not found."""
-    query = DbUser.query
+    query = db.session.query(DbUser)
 
     if case_insensitive:
         query = query.filter(
@@ -230,7 +231,8 @@ def get_db_user(user_id: UserID) -> DbUser:
 
 def find_user_for_admin(user_id: UserID) -> Optional[UserForAdmin]:
     """Return the user with that ID, or `None` if not found."""
-    user = DbUser.query \
+    user = db.session \
+        .query(DbUser) \
         .options(
             db.joinedload(DbUser.avatar_selection)
                 .joinedload(DbAvatarSelection.avatar),
@@ -432,7 +434,8 @@ def get_users_created_since(
     """Return the user accounts created since `delta` ago."""
     filter_starts_at = datetime.utcnow() - delta
 
-    query = DbUser.query \
+    query = db.session \
+        .query(DbUser) \
         .options(
             db.joinedload(DbUser.avatar_selection)
                 .joinedload(DbAvatarSelection.avatar),
@@ -460,7 +463,8 @@ def get_users_paginated(
     """Return the users to show on the specified page, optionally
     filtered by search term or flags.
     """
-    query = DbUser.query \
+    query = db.session \
+        .query(DbUser) \
         .options(
             db.joinedload(DbUser.avatar_selection)
                 .joinedload(DbAvatarSelection.avatar),

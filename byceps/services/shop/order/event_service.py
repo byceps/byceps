@@ -47,8 +47,8 @@ def build_event(
 
 def get_events_for_order(order_id: OrderID) -> list[DbOrderEvent]:
     """Return the events for that order."""
-    return (
-        DbOrderEvent.query.filter_by(order_id=order_id)
-        .order_by(DbOrderEvent.occurred_at)
+    return db.session \
+        .query(DbOrderEvent) \
+        .filter_by(order_id=order_id) \
+        .order_by(DbOrderEvent.occurred_at) \
         .all()
-    )

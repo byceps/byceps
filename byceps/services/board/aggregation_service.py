@@ -15,12 +15,14 @@ from .dbmodels.topic import Topic as DbTopic
 
 def aggregate_category(category: DbCategory) -> None:
     """Update the category's count and latest fields."""
-    topic_count = DbTopic.query \
+    topic_count = db.session \
+        .query(DbTopic) \
         .filter_by(category_id=category.id) \
         .filter_by(hidden=False) \
         .count()
 
-    posting_query = DbPosting.query \
+    posting_query = db.session \
+        .query(DbPosting) \
         .filter(DbPosting.hidden == False) \
         .join(DbTopic) \
             .filter(DbTopic.category_id == category.id)
@@ -44,7 +46,8 @@ def aggregate_category(category: DbCategory) -> None:
 
 def aggregate_topic(topic: DbTopic) -> None:
     """Update the topic's count and latest fields."""
-    posting_query = DbPosting.query \
+    posting_query = db.session \
+        .query(DbPosting) \
         .filter_by(topic_id=topic.id) \
         .filter_by(hidden=False)
 

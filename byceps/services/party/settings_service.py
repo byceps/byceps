@@ -83,7 +83,8 @@ def find_setting_value(party_id: PartyID, name: str) -> Optional[str]:
 
 def get_settings(party_id: PartyID) -> set[PartySetting]:
     """Return all settings for that party."""
-    settings = DbSetting.query \
+    settings = db.session \
+        .query(DbSetting) \
         .filter_by(party_id=party_id) \
         .all()
 

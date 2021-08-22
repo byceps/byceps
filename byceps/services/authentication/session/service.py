@@ -40,7 +40,8 @@ def get_session_token(user_id: UserID) -> DbSessionToken:
 
     insert_ignore_on_conflict(table, values)
 
-    return DbSessionToken.query \
+    return db.session \
+        .query(DbSessionToken) \
         .filter_by(user_id=user_id) \
         .one()
 
@@ -50,6 +51,7 @@ def delete_session_tokens_for_user(user_id: UserID) -> None:
     db.session.query(DbSessionToken) \
         .filter_by(user_id=user_id) \
         .delete()
+
     db.session.commit()
 
 
@@ -68,7 +70,8 @@ def find_session_token_for_user(user_id: UserID) -> Optional[DbSessionToken]:
     """Return the session token for the user with that ID, or `None` if
     not found.
     """
-    return DbSessionToken.query \
+    return db.session \
+        .query(DbSessionToken) \
         .filter_by(user_id=user_id) \
         .one_or_none()
 
@@ -96,7 +99,8 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
     if not user_id:
         raise ValueError('User ID is invalid.')
 
-    subquery = DbSessionToken.query \
+    subquery = db.session \
+        .query(DbSessionToken) \
         .filter_by(token=token, user_id=user_id) \
         .exists()
 
@@ -143,7 +147,8 @@ def _create_login_event(
 
 def find_recent_login(user_id: UserID) -> Optional[datetime]:
     """Return the time of the user's most recent login, if found."""
-    recent_login = DbRecentLogin.query \
+    recent_login = db.session \
+        .query(DbRecentLogin) \
         .filter_by(user_id=user_id) \
         .one_or_none()
 

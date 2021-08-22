@@ -97,12 +97,13 @@ def delete_party(party_id: PartyID) -> None:
 
 def count_parties() -> int:
     """Return the number of parties (of all brands)."""
-    return DbParty.query.count()
+    return db.session.query(DbParty).count()
 
 
 def count_parties_for_brand(brand_id: BrandID) -> int:
     """Return the number of parties for that brand."""
-    return DbParty.query \
+    return db.session \
+        .query(DbParty) \
         .filter_by(brand_id=brand_id) \
         .count()
 
@@ -129,15 +130,15 @@ def get_party(party_id: PartyID) -> Party:
 
 def get_all_parties() -> list[Party]:
     """Return all parties."""
-    parties = DbParty.query \
-        .all()
+    parties = db.session.query(DbParty).all()
 
     return [_db_entity_to_party(party) for party in parties]
 
 
 def get_all_parties_with_brands() -> list[PartyWithBrand]:
     """Return all parties."""
-    parties = DbParty.query \
+    parties = db.session \
+        .query(DbParty) \
         .options(db.joinedload(DbParty.brand)) \
         .all()
 
@@ -148,7 +149,7 @@ def get_active_parties(
     brand_id: Optional[BrandID] = None, *, include_brands: bool = False
 ) -> list[Union[Party, PartyWithBrand]]:
     """Return active (i.e. non-canceled, non-archived) parties."""
-    query = DbParty.query
+    query = db.session.query(DbParty)
 
     if brand_id is not None:
         query = query.filter_by(brand_id=brand_id)
@@ -172,7 +173,8 @@ def get_active_parties(
 
 def get_archived_parties_for_brand(brand_id: BrandID) -> list[Party]:
     """Return archived parties for that brand."""
-    parties = DbParty.query \
+    parties = db.session \
+        .query(DbParty) \
         .filter_by(brand_id=brand_id) \
         .filter_by(archived=True) \
         .order_by(DbParty.starts_at.desc()) \
@@ -186,7 +188,8 @@ def get_parties(party_ids: set[PartyID]) -> list[Party]:
     if not party_ids:
         return []
 
-    parties = DbParty.query \
+    parties = db.session \
+        .query(DbParty) \
         .filter(DbParty.id.in_(party_ids)) \
         .all()
 
@@ -195,7 +198,8 @@ def get_parties(party_ids: set[PartyID]) -> list[Party]:
 
 def get_parties_for_brand(brand_id: BrandID) -> list[Party]:
     """Return the parties for that brand."""
-    parties = DbParty.query \
+    parties = db.session \
+        .query(DbParty) \
         .filter_by(brand_id=brand_id) \
         .all()
 
@@ -206,7 +210,8 @@ def get_parties_for_brand_paginated(
     brand_id: BrandID, page: int, per_page: int
 ) -> Pagination:
     """Return the parties for that brand to show on the specified page."""
-    query = DbParty.query \
+    query = db.session \
+        .query(DbParty) \
         .filter_by(brand_id=brand_id) \
         .order_by(DbParty.starts_at.desc())
 

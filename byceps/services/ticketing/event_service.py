@@ -36,7 +36,8 @@ def build_event(
 
 def get_events_for_ticket(ticket_id: TicketID) -> list[TicketEvent]:
     """Return the events for that ticket."""
-    return TicketEvent.query \
+    return db.session \
+        .query(TicketEvent) \
         .filter_by(ticket_id=ticket_id) \
         .order_by(TicketEvent.occurred_at) \
         .all()

@@ -113,7 +113,8 @@ def find_bundle(bundle_id: TicketBundleID) -> Optional[DbTicketBundle]:
 
 def find_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[DbTicket]:
     """Return all tickets included in this bundle."""
-    return DbTicket.query \
+    return db.session \
+        .query(DbTicket) \
         .filter(DbTicket.bundle_id == bundle_id) \
         .all()
 
@@ -122,7 +123,8 @@ def get_bundles_for_party_paginated(
     party_id: PartyID, page: int, per_page: int
 ) -> Pagination:
     """Return the party's ticket bundles to show on the specified page."""
-    return DbTicketBundle.query \
+    return db.session \
+        .query(DbTicketBundle) \
         .join(DbCategory) \
         .filter(DbCategory.party_id == party_id) \
         .options(

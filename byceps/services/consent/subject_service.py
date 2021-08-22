@@ -43,7 +43,8 @@ def create_subject(
 
 def get_subjects(subject_ids: set[SubjectID]) -> set[Subject]:
     """Return the subjects."""
-    rows = DbSubject.query \
+    rows = db.session \
+        .query(DbSubject) \
         .filter(DbSubject.id.in_(subject_ids)) \
         .all()
 
@@ -137,7 +138,8 @@ def get_subject_ids_required_for_brand(brand_id: BrandID) -> set[SubjectID]:
 
 def get_subjects_required_for_brand(brand_id: BrandID) -> set[Subject]:
     """Return the subjects required for the brand."""
-    rows = DbSubject.query \
+    rows = db.session \
+        .query(DbSubject) \
         .join(DbBrandRequirement) \
         .filter(DbBrandRequirement.brand_id == brand_id) \
         .all()

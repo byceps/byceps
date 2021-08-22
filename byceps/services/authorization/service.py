@@ -91,7 +91,8 @@ def find_role(role_id: RoleID) -> Optional[Role]:
 
 def find_role_ids_for_user(user_id: UserID) -> set[RoleID]:
     """Return the IDs of the roles assigned to the user."""
-    roles = DbRole.query \
+    roles = db.session \
+        .query(DbRole) \
         .join(DbUserRole) \
         .filter(DbUserRole.user_id == user_id) \
         .all()
@@ -190,7 +191,8 @@ def deassign_all_roles_from_user(
 
 def _is_role_assigned_to_user(role_id: RoleID, user_id: UserID) -> bool:
     """Determine if the role is assigned to the user or not."""
-    subquery = DbUserRole.query \
+    subquery = db.session \
+        .query(DbUserRole) \
         .filter_by(role_id=role_id) \
         .filter_by(user_id=user_id) \
         .exists()
@@ -202,7 +204,8 @@ def get_permission_ids_for_user(user_id: UserID) -> set[PermissionID]:
     """Return the IDs of all permissions the user has through the roles
     assigned to it.
     """
-    role_permissions = DbRolePermission.query \
+    role_permissions = db.session \
+        .query(DbRolePermission) \
         .join(DbRole) \
         .join(DbUserRole) \
         .filter(DbUserRole.user_id == user_id) \
@@ -213,7 +216,8 @@ def get_permission_ids_for_user(user_id: UserID) -> set[PermissionID]:
 
 def get_all_permissions_with_titles() -> Sequence[DbPermission]:
     """Return all permissions, with titles."""
-    return DbPermission.query \
+    return db.session \
+        .query(DbPermission) \
         .options(
             db.undefer(DbPermission.title),
             db.joinedload(DbPermission.role_permissions)
@@ -223,7 +227,8 @@ def get_all_permissions_with_titles() -> Sequence[DbPermission]:
 
 def get_all_roles_with_titles() -> Sequence[DbRole]:
     """Return all roles, with titles."""
-    return DbRole.query \
+    return db.session \
+        .query(DbRole) \
         .options(
             db.undefer(DbRole.title),
             db.joinedload(DbRole.user_roles)
@@ -237,13 +242,15 @@ def get_permissions_by_roles_with_titles() -> dict[Role, set[Permission]]:
 
     Titles are undeferred to avoid lots of additional queries.
     """
-    roles = DbRole.query \
+    roles = db.session \
+        .query(DbRole) \
         .options(
             db.undefer(DbRole.title),
         ) \
         .all()
 
-    permissions = DbPermission.query \
+    permissions = db.session \
+        .query(DbPermission) \
         .options(
             db.undefer(DbPermission.title),
             db.joinedload(DbPermission.role_permissions)
@@ -261,7 +268,8 @@ def get_permissions_by_roles_for_user_with_titles(
 
     Titles are undeferred to avoid lots of additional queries.
     """
-    roles = DbRole.query \
+    roles = db.session \
+        .query(DbRole) \
         .options(
             db.undefer(DbRole.title),
         ) \
@@ -272,7 +280,8 @@ def get_permissions_by_roles_for_user_with_titles(
     role_ids = {r.id for r in roles}
 
     if role_ids:
-        permissions = DbPermission.query \
+        permissions = db.session \
+            .query(DbPermission) \
             .options(
                 db.undefer(DbPermission.title),
                 db.joinedload(DbPermission.role_permissions)
@@ -313,7 +322,8 @@ def get_permissions_with_title_for_role(
     role_id: RoleID,
 ) -> Sequence[Permission]:
     """Return the permissions assigned to the role."""
-    permissions = DbPermission.query \
+    permissions = db.session \
+        .query(DbPermission) \
         .options(
             db.undefer(DbPermission.title)
         ) \

@@ -79,7 +79,8 @@ def delete_config(brand_id: BrandID) -> bool:
     get_config(brand_id)  # Verify ID exists.
 
     try:
-        db.session.query(DbEmailConfig) \
+        db.session \
+            .query(DbEmailConfig) \
             .filter_by(brand_id=brand_id) \
             .delete()
 
@@ -92,7 +93,8 @@ def delete_config(brand_id: BrandID) -> bool:
 
 
 def _find_db_config(brand_id: BrandID) -> Optional[DbEmailConfig]:
-    return DbEmailConfig.query \
+    return db.session \
+        .query(DbEmailConfig) \
         .filter_by(brand_id=brand_id) \
         .one_or_none()
 
@@ -134,7 +136,7 @@ def set_config(
 
 def get_all_configs() -> list[EmailConfig]:
     """Return all configurations."""
-    configs = DbEmailConfig.query.all()
+    config = db.session.query(DbEmailConfig).all()
 
     return [_db_entity_to_config(config) for config in configs]
 

@@ -59,7 +59,7 @@ def _find_db_catalog(catalog_id: CatalogID) -> Optional[DbCatalog]:
 
 def get_all_catalogs() -> list[Catalog]:
     """Return all catalogs."""
-    catalogs = DbCatalog.query.all()
+    catalogs = db.session.query(DbCatalog).all()
 
     return [_db_entity_to_catalog(catalog) for catalog in catalogs]
 
@@ -99,7 +99,8 @@ def delete_collection(collection_id: CollectionID) -> None:
 
 def get_collections_for_catalog(catalog_id: CatalogID) -> list[Collection]:
     """Return the catalog's collections."""
-    collections = DbCollection.query \
+    collections = db.session \
+        .query(DbCollection) \
         .filter_by(catalog_id=catalog_id) \
         .order_by(DbCollection.position) \
         .all()

@@ -64,7 +64,8 @@ def get_comments(
     include_hidden: bool = False,
 ) -> Sequence[MatchComment]:
     """Return comments on the match, ordered chronologically."""
-    query = DbMatchComment.query \
+    query = db.session \
+        .query(DbMatchComment) \
         .filter_by(match_id=match_id)
 
     if not include_hidden:

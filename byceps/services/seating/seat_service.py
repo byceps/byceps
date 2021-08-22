@@ -97,7 +97,8 @@ def count_occupied_seats_by_category(
 
 def count_occupied_seats_for_party(party_id: PartyID) -> int:
     """Count occupied seats for the party."""
-    return DbSeat.query \
+    return db.session \
+        .query(DbSeat) \
         .join(DbTicket) \
         .join(DbTicketCategory) \
         .filter(DbTicket.revoked == False) \
@@ -107,7 +108,8 @@ def count_occupied_seats_for_party(party_id: PartyID) -> int:
 
 def count_seats_for_party(party_id: PartyID) -> int:
     """Return the number of seats in seating areas for that party."""
-    return DbSeat.query \
+    return db.session \
+        .query(DbSeat) \
         .join(DbArea) \
         .filter(DbArea.party_id == party_id) \
         .count()
@@ -156,7 +158,8 @@ def find_seats(seat_ids: set[SeatID]) -> set[DbSeat]:
     if not seat_ids:
         return set()
 
-    seats = DbSeat.query \
+    seats = db.session \
+        .query(DbSeat) \
         .filter(DbSeat.id.in_(frozenset(seat_ids))) \
         .all()
 
@@ -167,7 +170,8 @@ def get_seats_with_tickets_for_area(area_id: AreaID) -> Sequence[DbSeat]:
     """Return the seats and their associated tickets (if available) for
     that area.
     """
-    return DbSeat.query \
+    return db.session \
+        .query(DbSeat) \
         .filter_by(area_id=area_id) \
         .options(
             db.joinedload(DbSeat.occupied_by_ticket),

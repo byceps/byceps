@@ -36,7 +36,8 @@ def get_person_count_by_brand_id() -> dict[BrandID, int]:
 
 def get_orgas_for_brand(brand_id: BrandID) -> Sequence[DbUser]:
     """Return all users flagged as organizers for the brand."""
-    return DbUser.query \
+    return db.session \
+        .query(DbUser) \
         .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == brand_id) \
         .options(db.joinedload(DbUser.detail)) \
         .all()
@@ -46,7 +47,8 @@ def count_orgas_for_brand(brand_id: BrandID) -> int:
     """Return the number of organizers with the organizer flag set for
     that brand.
     """
-    return DbUser.query \
+    return db.session \
+        .query(DbUser) \
         .distinct(DbUser.id) \
         .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == brand_id) \
         .count()
@@ -98,7 +100,8 @@ def remove_orga_flag(
 
 def find_orga_flag(brand_id: BrandID, user_id: UserID) -> Optional[DbOrgaFlag]:
     """Return the orga flag for that brand and user, or `None` if not found."""
-    return DbOrgaFlag.query \
+    return db.session \
+        .query(DbOrgaFlag) \
         .filter_by(brand_id=brand_id) \
         .filter_by(user_id=user_id) \
         .first()

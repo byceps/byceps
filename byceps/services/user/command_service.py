@@ -332,7 +332,8 @@ def _get_user(user_id: UserID) -> DbUser:
 
 def _get_user_detail(user_id: UserID) -> DbUserDetail:
     """Return the user's details, or raise an exception."""
-    detail = DbUserDetail.query \
+    detail = db.session \
+        .query(DbUserDetail) \
         .filter_by(user_id=user_id) \
         .one_or_none()
 

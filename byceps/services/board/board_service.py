@@ -52,7 +52,8 @@ def find_board(board_id: BoardID) -> Optional[Board]:
 
 def get_boards_for_brand(brand_id: BrandID) -> Sequence[Board]:
     """Return all boards that belong to the brand."""
-    boards = DbBoard.query \
+    boards = db.session \
+        .query(DbBoard) \
         .filter_by(brand_id=brand_id) \
         .all()
 

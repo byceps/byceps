@@ -83,7 +83,8 @@ def find_setting_value(site_id: SiteID, name: str) -> Optional[str]:
 
 def get_settings(site_id: SiteID) -> set[SiteSetting]:
     """Return all settings for that site."""
-    settings = DbSetting.query \
+    settings = db.session \
+        .query(DbSetting) \
         .filter_by(site_id=site_id) \
         .all()
 

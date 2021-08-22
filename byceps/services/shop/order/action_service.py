@@ -89,7 +89,8 @@ def find_action(action_id: UUID) -> Optional[Action]:
 
 def get_actions_for_article(article_number: ArticleNumber) -> list[Action]:
     """Return the order actions defined for that article."""
-    actions = DbOrderAction.query \
+    actions = db.session \
+        .query(DbOrderAction) \
         .filter_by(article_number=article_number) \
         .all()
 
@@ -135,7 +136,8 @@ def _get_actions(
     article_numbers: set[ArticleNumber], payment_state: PaymentState
 ) -> Sequence[Action]:
     """Return the order actions for those article numbers."""
-    actions = DbOrderAction.query \
+    actions = db.session \
+        .query(DbOrderAction) \
         .filter(DbOrderAction.article_number.in_(article_numbers)) \
         .filter_by(_payment_state=payment_state.name) \
         .all()

@@ -98,7 +98,8 @@ def get_badge(badge_id: BadgeID) -> Badge:
 
 def find_badge_by_slug(slug: str) -> Optional[Badge]:
     """Return the badge with that slug, or `None` if not found."""
-    badge = DbBadge.query \
+    badge = db.session \
+        .query(DbBadge) \
         .filter_by(slug=slug) \
         .one_or_none()
 
@@ -118,7 +119,8 @@ def get_badges(
     if not badge_ids:
         return set()
 
-    query = DbBadge.query \
+    query = db.session \
+        .query(DbBadge) \
         .filter(DbBadge.id.in_(badge_ids))
 
     if featured_only:
@@ -131,7 +133,7 @@ def get_badges(
 
 def get_all_badges() -> set[Badge]:
     """Return all badges."""
-    badges = DbBadge.query.all()
+    badges = db.session.query(DbBadge).all()
 
     return {_db_entity_to_badge(badge) for badge in badges}
 

@@ -62,7 +62,8 @@ def _find_line_items(
     """Return article quantities for the given payment states."""
     payment_state_names = {ps.name for ps in payment_states}
 
-    common_query = DbLineItem.query \
+    common_query = db.session \
+        .query(DbLineItem) \
         .join(DbOrder) \
         .filter(DbOrder.shop_id == shop_id) \
         .options(db.joinedload(DbLineItem.order)) \
@@ -118,7 +119,8 @@ def _get_article_descriptions(
     if not article_numbers:
         return {}
 
-    articles = DbArticle.query \
+    articles = db.session \
+        .query(DbArticle) \
         .options(db.load_only('item_number', 'description')) \
         .filter(DbArticle.item_number.in_(article_numbers)) \
         .all()

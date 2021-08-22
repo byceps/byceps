@@ -44,7 +44,8 @@ def find_last_category_view(
     user_id: UserID, category_id: CategoryID
 ) -> Optional[LastCategoryView]:
     """Return the user's last view of the category, or `None` if not found."""
-    return LastCategoryView.query \
+    return db.session \
+        .query(LastCategoryView) \
         .filter_by(user_id=user_id, category_id=category_id) \
         .first()
 
@@ -92,7 +93,8 @@ def find_last_topic_view(
     user_id: UserID, topic_id: TopicID
 ) -> Optional[LastTopicView]:
     """Return the user's last view of the topic, or `None` if not found."""
-    return LastTopicView.query \
+    return db.session \
+        .query(LastTopicView) \
         .filter_by(user_id=user_id, topic_id=topic_id) \
         .first()
 

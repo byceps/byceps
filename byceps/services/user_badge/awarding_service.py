@@ -126,7 +126,8 @@ def get_badges_awarded_to_user(user_id: UserID) -> dict[Badge, int]:
     badge_ids = set(badge_ids_with_awarding_quantity.keys())
 
     if badge_ids:
-        badges = DbBadge.query \
+        badges = db.session \
+            .query(DbBadge) \
             .filter(DbBadge.id.in_(badge_ids)) \
             .all()
     else:
@@ -151,7 +152,8 @@ def get_badges_awarded_to_users(
     if not user_ids:
         return {}
 
-    awardings = DbBadgeAwarding.query \
+    awardings = db.session \
+        .query(DbBadgeAwarding) \
         .filter(DbBadgeAwarding.user_id.in_(user_ids)) \
         .all()
 

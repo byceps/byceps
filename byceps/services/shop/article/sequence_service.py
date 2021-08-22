@@ -59,7 +59,8 @@ def get_article_number_sequence(
     sequence_id: ArticleNumberSequenceID,
 ) -> ArticleNumberSequence:
     """Return the article number sequence, or raise an exception."""
-    sequence = DbArticleNumberSequence.query \
+    sequence = db.session \
+        .query(DbArticleNumberSequence) \
         .filter_by(id=sequence_id) \
         .one_or_none()
 
@@ -73,7 +74,8 @@ def get_article_number_sequences_for_shop(
     shop_id: ShopID,
 ) -> list[ArticleNumberSequence]:
     """Return the article number sequences defined for that shop."""
-    sequences = DbArticleNumberSequence.query \
+    sequences = db.session \
+        .query(DbArticleNumberSequence) \
         .filter_by(shop_id=shop_id) \
         .all()
 
@@ -96,7 +98,8 @@ def generate_article_number(
     sequence_id: ArticleNumberSequenceID,
 ) -> ArticleNumber:
     """Generate and reserve the next article number from this sequence."""
-    sequence = DbArticleNumberSequence.query \
+    sequence = db.session \
+        .query(DbArticleNumberSequence) \
         .filter_by(id=sequence_id) \
         .with_for_update() \
         .one_or_none()

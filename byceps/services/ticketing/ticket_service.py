@@ -94,7 +94,8 @@ def find_ticket_by_code(
     """Return the ticket with that code for that party, or `None` if not
     found.
     """
-    return DbTicket.query \
+    return db.session \
+        .query(DbTicket) \
         .filter_by(party_id=party_id) \
         .filter_by(code=code) \
         .one_or_none()
@@ -105,7 +106,8 @@ def find_tickets(ticket_ids: set[TicketID]) -> Sequence[DbTicket]:
     if not ticket_ids:
         return []
 
-    return DbTicket.query \
+    return db.session \
+        .query(DbTicket) \
         .filter(DbTicket.id.in_(ticket_ids)) \
         .all()
 
@@ -114,7 +116,8 @@ def find_tickets_created_by_order(
     order_number: OrderNumber,
 ) -> Sequence[DbTicket]:
     """Return the tickets created by this order (as it was marked as paid)."""
-    return DbTicket.query \
+    return db.session \
+        .query(DbTicket) \
         .filter_by(order_number=order_number) \
         .order_by(DbTicket.created_at) \
         .all()
@@ -126,7 +129,8 @@ def find_tickets_for_seat_manager(
     """Return the tickets for that party whose respective seats the user
     is entitled to manage.
     """
-    return DbTicket.query \
+    return db.session \
+        .query(DbTicket) \
         .filter(DbTicket.party_id == party_id) \
         .filter(DbTicket.revoked == False) \
         .filter(
@@ -144,7 +148,8 @@ def find_tickets_for_seat_manager(
 
 def find_tickets_related_to_user(user_id: UserID) -> Sequence[DbTicket]:
     """Return tickets related to the user."""
-    return DbTicket.query \
+    return db.session \
+        .query(DbTicket) \
         .filter(
             (DbTicket.owned_by_id == user_id) |
             (DbTicket.seat_managed_by_id == user_id) |
@@ -166,7 +171,8 @@ def find_tickets_related_to_user_for_party(
     user_id: UserID, party_id: PartyID
 ) -> Sequence[DbTicket]:
     """Return tickets related to the user for the party."""
-    return DbTicket.query \
+    return db.session \
+        .query(DbTicket) \
         .filter(DbTicket.party_id == party_id) \
         .filter(
             (DbTicket.owned_by_id == user_id) |
@@ -189,7 +195,8 @@ def find_tickets_used_by_user(
     user_id: UserID, party_id: PartyID
 ) -> Sequence[DbTicket]:
     """Return the tickets (if any) used by the user for that party."""
-    return DbTicket.query \
+    return db.session \
+        .query(DbTicket) \
         .filter(DbTicket.party_id == party_id) \
         .filter(DbTicket.used_by_id == user_id) \
         .filter(DbTicket.revoked == False) \
@@ -203,7 +210,8 @@ def find_tickets_used_by_user(
 
 def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user uses any ticket for that party."""
-    q = DbTicket.query \
+    q = db.session \
+        .query(DbTicket) \
         .filter(party_id=party_id) \
         .filter(used_by_id=user_id) \
         .filter(revoked=False)
@@ -230,7 +238,8 @@ def select_ticket_users_for_party(
     if not user_ids:
         return set()
 
-    q = DbTicket.query \
+    q = db.session \
+        .query(DbTicket) \
         .filter(DbTicket.party_id == party_id) \
         .filter(DbTicket.used_by_id == DbUser.id) \
         .filter(DbTicket.revoked == False)
@@ -265,7 +274,8 @@ def get_tickets_with_details_for_party_paginated(
     only_category_id: Optional[TicketCategoryID] = None,
 ) -> Pagination:
     """Return the party's tickets to show on the specified page."""
-    query = DbTicket.query \
+    query = db.session \
+        .query(DbTicket) \
         .filter(DbTicket.party_id == party_id) \
         .join(DbCategory) \
         .options(
@@ -290,7 +300,8 @@ def get_tickets_with_details_for_party_paginated(
 
 def count_revoked_tickets_for_party(party_id: PartyID) -> int:
     """Return the number of revoked tickets for that party."""
-    return DbTicket.query \
+    return db.session \
+        .query(DbTicket) \
         .filter_by(party_id=party_id) \
         .filter_by(revoked=True) \
         .count()
@@ -300,7 +311,8 @@ def count_sold_tickets_for_party(party_id: PartyID) -> int:
     """Return the number of "sold" (i.e. generated and not revoked)
     tickets for that party.
     """
-    return DbTicket.query \
+    return db.session \
+        .query(DbTicket) \
         .filter_by(party_id=party_id) \
         .filter_by(revoked=False) \
         .count()
@@ -310,7 +322,8 @@ def count_tickets_checked_in_for_party(party_id: PartyID) -> int:
     """Return the number tickets for that party that were used to check
     in their respective user.
     """
-    return DbTicket.query \
+    return db.session \
+        .query(DbTicket) \
         .filter_by(party_id=party_id) \
         .filter_by(user_checked_in=True) \
         .count()

@@ -222,11 +222,12 @@ def find_user(screen_name):
 
 
 def get_user_count():
-    return DbUser.query.count()
+    return db.session.query(DbUser).count()
 
 
 def find_verification_token(user_id):
-    return DbToken.query \
+    return db.session \
+        .query(DbToken) \
         .filter_by(user_id=user_id) \
         .filter_by(_purpose=TokenPurpose.email_address_confirmation.name) \
         .first()

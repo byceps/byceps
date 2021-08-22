@@ -72,7 +72,8 @@ def count_consents_by_subject() -> dict[str, int]:
 
 def get_consents_by_user(user_id: UserID) -> set[Consent]:
     """Return the consents the user submitted."""
-    consents = DbConsent.query \
+    consents = db.session \
+        .query(DbConsent) \
         .filter_by(user_id=user_id) \
         .all()
 

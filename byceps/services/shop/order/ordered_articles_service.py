@@ -25,7 +25,8 @@ def count_ordered_articles(
     """Count how often the article has been ordered, grouped by the
     order's payment state.
     """
-    line_items = DbLineItem.query \
+    line_items = db.session \
+        .query(DbLineItem) \
         .filter_by(article_number=article_number) \
         .options(
             db.joinedload(DbLineItem.order),
@@ -48,7 +49,8 @@ def get_line_items_for_article(
     article_number: ArticleNumber,
 ) -> Sequence[LineItem]:
     """Return all line items for that article."""
-    line_items = DbLineItem.query \
+    line_items = db.session \
+        .query(DbLineItem) \
         .filter_by(article_number=article_number) \
         .all()
 

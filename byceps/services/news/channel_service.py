@@ -74,7 +74,8 @@ def get_channel(channel_id: ChannelID) -> Channel:
 
 def get_channels(channel_ids: set[ChannelID]) -> set[Channel]:
     """Return these channels."""
-    channels = DbChannel.query \
+    channels = db.session \
+        .query(DbChannel) \
         .filter(DbChannel.id.in_(channel_ids)) \
         .all()
 
@@ -83,14 +84,15 @@ def get_channels(channel_ids: set[ChannelID]) -> set[Channel]:
 
 def get_all_channels() -> list[Channel]:
     """Return all channels."""
-    channels = DbChannel.query.all()
+    channels = db.session.query(DbChannel).all()
 
     return [_db_entity_to_channel(channel) for channel in channels]
 
 
 def get_channels_for_brand(brand_id: BrandID) -> Sequence[Channel]:
     """Return all channels that belong to the brand."""
-    channels = DbChannel.query \
+    channels = db.session \
+        .query(DbChannel) \
         .filter_by(brand_id=brand_id) \
         .order_by(DbChannel.id) \
         .all()

@@ -193,7 +193,8 @@ def find_aggregated_item_by_slug(
     """Return the news item identified by that slug in one of the given
     channels, or `None` if not found.
     """
-    query = DbItem.query \
+    query = db.session \
+        .query(DbItem) \
         .filter(DbItem.channel_id.in_(channel_ids)) \
         .options(
             db.joinedload(DbItem.channel),
@@ -244,7 +245,8 @@ def get_recent_headlines(
     channel_ids: set[ChannelID], limit: int
 ) -> list[Headline]:
     """Return the most recent headlines."""
-    items = DbItem.query \
+    items = db.session \
+        .query(DbItem) \
         .filter(DbItem.channel_id.in_(channel_ids)) \
         .options(
             db.joinedload(DbItem.current_version_association)
@@ -266,7 +268,8 @@ def get_recent_headlines(
 
 
 def _get_items_query(channel_ids: set[ChannelID]) -> Query:
-    return DbItem.query \
+    return db.session \
+        .query(DbItem) \
         .filter(DbItem.channel_id.in_(channel_ids)) \
         .options(
             db.joinedload(DbItem.channel),
@@ -279,7 +282,8 @@ def _get_items_query(channel_ids: set[ChannelID]) -> Query:
 
 def get_item_versions(item_id: ItemID) -> Sequence[DbItemVersion]:
     """Return all item versions, sorted from most recent to oldest."""
-    return DbItemVersion.query \
+    return db.session \
+        .query(DbItemVersion) \
         .filter_by(item_id=item_id) \
         .order_by(DbItemVersion.created_at.desc()) \
         .all()

@@ -41,7 +41,8 @@ def delete_shop(shop_id: ShopID) -> None:
 
 def find_shop_for_brand(brand_id: BrandID) -> Optional[Shop]:
     """Return the shop for that brand, or `None` if not found."""
-    shop = DbShop.query \
+    shop = db.session \
+        .query(DbShop) \
         .filter_by(brand_id=brand_id) \
         .one_or_none()
 
@@ -96,7 +97,8 @@ def find_shops(shop_ids: set[ShopID]) -> list[Shop]:
     if not shop_ids:
         return []
 
-    shops = DbShop.query \
+    shops = db.session \
+        .query(DbShop) \
         .filter(DbShop.id.in_(shop_ids)) \
         .all()
 
@@ -105,7 +107,8 @@ def find_shops(shop_ids: set[ShopID]) -> list[Shop]:
 
 def get_active_shops() -> list[Shop]:
     """Return all shops that are not archived."""
-    shops = DbShop.query \
+    shops = db.session \
+        .query(DbShop) \
         .filter_by(archived=False) \
         .all()
 

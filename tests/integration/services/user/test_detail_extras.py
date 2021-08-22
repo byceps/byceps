@@ -61,7 +61,8 @@ def get_extras(user_id):
 
 
 def set_extras_to_empty_dict(user_id):
-    detail = UserDetail.query \
+    detail = db.session \
+        .query(UserDetail) \
         .filter_by(user_id=user_id) \
         .one()
 

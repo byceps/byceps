@@ -172,7 +172,8 @@ def release_seat_group(seat_group: DbSeatGroup) -> None:
 
 def count_seat_groups_for_party(party_id: PartyID) -> int:
     """Return the number of seat groups for that party."""
-    return DbSeatGroup.query \
+    return db.session \
+        .query(DbSeatGroup) \
         .filter_by(party_id=party_id) \
         .count()
 
@@ -192,6 +193,7 @@ def find_occupancy_for_seat_group(seat_group_id: SeatGroupID) -> Optional[DbSeat
 
 def get_all_seat_groups_for_party(party_id: PartyID) -> Sequence[DbSeatGroup]:
     """Return all seat groups for that party."""
-    return DbSeatGroup.query \
+    return db.session \
+        .query(DbSeatGroup) \
         .filter_by(party_id=party_id) \
         .all()

@@ -53,7 +53,8 @@ def _get_users_paginated(
 ) -> Pagination:
     # Drop revoked tickets here already to avoid users without tickets
     # being included in the list.
-    query = DbUser.query \
+    query = db.session \
+        .query(DbUser) \
         .distinct() \
         .options(
             db.load_only(DbUser.id, DbUser.screen_name, DbUser.deleted),
@@ -77,7 +78,8 @@ def _get_users_paginated(
 def _get_tickets_for_users(
     party_id: PartyID, user_ids: set[UserID]
 ) -> list[DbTicket]:
-    return DbTicket.query \
+    return db.session \
+        .query(DbTicket) \
         .options(
             db.joinedload(DbTicket.category),
             db.joinedload(DbTicket.occupied_seat)

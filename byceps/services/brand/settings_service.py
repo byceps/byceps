@@ -83,7 +83,8 @@ def find_setting_value(brand_id: BrandID, name: str) -> Optional[str]:
 
 def get_settings(brand_id: BrandID) -> set[BrandSetting]:
     """Return all settings for that brand."""
-    settings = DbSetting.query \
+    settings = db.session \
+        .query(DbSetting) \
         .filter_by(brand_id=brand_id) \
         .all()
 

@@ -57,7 +57,8 @@ def get_order_number_sequence(
     sequence_id: OrderNumberSequenceID,
 ) -> OrderNumberSequence:
     """Return the order number sequence, or raise an exception."""
-    sequence = DbOrderNumberSequence.query \
+    sequence = db.session \
+        .query(DbOrderNumberSequence) \
         .filter_by(id=sequence_id) \
         .one_or_none()
 
@@ -71,7 +72,8 @@ def get_order_number_sequences_for_shop(
     shop_id: ShopID,
 ) -> list[OrderNumberSequence]:
     """Return the order number sequences defined for that shop."""
-    sequences = DbOrderNumberSequence.query \
+    sequences = db.session \
+        .query(DbOrderNumberSequence) \
         .filter_by(shop_id=shop_id) \
         .all()
 
@@ -93,7 +95,8 @@ def generate_order_number(sequence_id: OrderNumberSequenceID) -> OrderNumber:
     """Generate and reserve an unused, unique order number from this
     sequence.
     """
-    sequence = DbOrderNumberSequence.query \
+    sequence = db.session \
+        .query(DbOrderNumberSequence) \
         .filter_by(id=sequence_id) \
         .with_for_update() \
         .one_or_none()

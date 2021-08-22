@@ -55,7 +55,8 @@ def find_participant(participant_id: ParticipantID) -> Optional[Participant]:
 
 def get_participants_for_tourney(tourney_id: TourneyID) -> set[Participant]:
     """Return the participants of the tourney."""
-    participants = DbParticipant.query \
+    participants = db.session \
+        .query(DbParticipant) \
         .filter_by(tourney_id=tourney_id) \
         .all()
 

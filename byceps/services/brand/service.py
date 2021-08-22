@@ -85,7 +85,8 @@ def get_brand(brand_id: BrandID) -> Brand:
 
 def get_all_brands() -> list[Brand]:
     """Return all brands, ordered by title."""
-    brands = DbBrand.query \
+    brands = db.session \
+        .query(DbBrand) \
         .order_by(DbBrand.title) \
         .all()
 
@@ -94,7 +95,8 @@ def get_all_brands() -> list[Brand]:
 
 def get_active_brands() -> set[Brand]:
     """Return active (i.e. non-archived) brands."""
-    brands = DbBrand.query \
+    brands = db.session \
+        .query(DbBrand) \
         .filter_by(archived=False) \
         .all()
 
@@ -103,7 +105,7 @@ def get_active_brands() -> set[Brand]:
 
 def count_brands() -> int:
     """Return the number of brands."""
-    return DbBrand.query.count()
+    return db.session.query(DbBrand).count()
 
 
 def _db_entity_to_brand(brand: DbBrand) -> Brand:

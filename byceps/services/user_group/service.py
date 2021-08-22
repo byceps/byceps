@@ -32,4 +32,4 @@ def create_group(
 
 def get_all_groups() -> list[UserGroup]:
     """Return all groups."""
-    return UserGroup.query.all()
+    return db.session.query(UserGroup).all()

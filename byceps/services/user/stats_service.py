@@ -8,12 +8,15 @@ byceps.services.user.stats_service
 
 from datetime import datetime, timedelta
 
+from ...database import db
+
 from .dbmodels.user import User as DbUser
 
 
 def count_users() -> int:
     """Return the number of users."""
-    return DbUser.query \
+    return db.session \
+        .query(DbUser) \
         .count()
 
 
@@ -21,7 +24,8 @@ def count_users_created_since(delta: timedelta) -> int:
     """Return the number of user accounts created since `delta` ago."""
     filter_starts_at = datetime.utcnow() - delta
 
-    return DbUser.query \
+    return db.session \
+        .query(DbUser) \
         .filter(DbUser.created_at >= filter_starts_at) \
         .count()
 
@@ -31,7 +35,8 @@ def count_active_users() -> int:
 
     Uninitialized, suspended or deleted accounts are excluded.
     """
-    return DbUser.query \
+    return db.session \
+        .query(DbUser) \
         .filter_by(initialized=True) \
         .filter_by(suspended=False) \
         .filter_by(deleted=False) \
@@ -43,7 +48,8 @@ def count_uninitialized_users() -> int:
 
     Suspended or deleted accounts are excluded.
     """
-    return DbUser.query \
+    return db.session \
+        .query(DbUser) \
         .filter_by(initialized=False) \
         .filter_by(suspended=False) \
         .filter_by(deleted=False) \
@@ -52,7 +58,8 @@ def count_uninitialized_users() -> int:
 
 def count_suspended_users() -> int:
     """Return the number of suspended user accounts."""
-    return DbUser.query \
+    return db.session \
+        .query(DbUser) \
         .filter_by(suspended=True) \
         .filter_by(deleted=False) \
         .count()
@@ -60,6 +67,7 @@ def count_suspended_users() -> int:
 
 def count_deleted_users() -> int:
     """Return the number of deleted user accounts."""
-    return DbUser.query \
+    return db.session \
+        .query(DbUser) \
         .filter_by(deleted=True) \
         .count()

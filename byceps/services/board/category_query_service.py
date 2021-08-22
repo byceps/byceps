@@ -21,7 +21,8 @@ from .transfer.models import (
 
 def count_categories_for_board(board_id: BoardID) -> int:
     """Return the number of categories for that board."""
-    return DbCategory.query \
+    return db.session \
+        .query(DbCategory) \
         .filter_by(board_id=board_id) \
         .count()
 
@@ -38,7 +39,8 @@ def find_category_by_id(category_id: CategoryID) -> Optional[Category]:
 
 def find_category_by_slug(board_id: BoardID, slug: str) -> Optional[Category]:
     """Return the category for that board and slug, or `None` if not found."""
-    category = DbCategory.query \
+    category = db.session \
+        .query(DbCategory) \
         .filter_by(board_id=board_id) \
         .filter_by(slug=slug) \
         .first()
@@ -51,7 +53,8 @@ def find_category_by_slug(board_id: BoardID, slug: str) -> Optional[Category]:
 
 def get_categories(board_id: BoardID) -> Sequence[Category]:
     """Return all categories for that board, ordered by position."""
-    categories = DbCategory.query \
+    categories = db.session \
+        .query(DbCategory) \
         .filter_by(board_id=board_id) \
         .order_by(DbCategory.position) \
         .all()
@@ -63,7 +66,8 @@ def get_categories_excluding(
     board_id: BoardID, category_id: CategoryID
 ) -> Sequence[Category]:
     """Return all categories for that board except for the specified one."""
-    categories = DbCategory.query \
+    categories = db.session \
+        .query(DbCategory) \
         .filter_by(board_id=board_id) \
         .filter(DbCategory.id != category_id) \
         .order_by(DbCategory.position) \
@@ -79,7 +83,8 @@ def get_categories_with_last_updates(
 
     Include the creator of the last posting in each category.
     """
-    categories_with_last_update = DbCategory.query \
+    categories_with_last_update = db.session \
+        .query(DbCategory) \
         .filter_by(board_id=board_id) \
         .filter_by(hidden=False) \
         .options(

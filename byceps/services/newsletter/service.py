@@ -36,7 +36,7 @@ def find_list(list_id: ListID) -> Optional[List]:
 
 def get_all_lists() -> Sequence[List]:
     """Return all lists."""
-    lists = DbList.query.all()
+    lists = db.session.query(DbList).all()
 
     return [_db_entity_to_list(list_) for list_ in lists]
 
@@ -213,7 +213,8 @@ def get_subscription_state(
     user_id: UserID, list_id: ListID
 ) -> SubscriptionState:
     """Return the user's current subscription state for that list."""
-    current_subscription = DbSubscriptionUpdate.query \
+    current_subscription = db.session \
+        .query(DbSubscriptionUpdate) \
         .filter_by(user_id=user_id) \
         .filter_by(list_id=list_id) \
         .order_by(DbSubscriptionUpdate.expressed_at.desc()) \
@@ -229,7 +230,8 @@ def get_subscription_updates_for_user(
     user_id: UserID,
 ) -> Sequence[DbSubscriptionUpdate]:
     """Return subscription updates made by the user, for any list."""
-    return DbSubscriptionUpdate.query \
+    return db.session \
+        .query(DbSubscriptionUpdate) \
         .filter_by(user_id=user_id) \
         .all()
 

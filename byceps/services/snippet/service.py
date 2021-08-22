@@ -229,7 +229,8 @@ def find_snippet(snippet_id: SnippetID) -> Optional[DbSnippet]:
 
 def get_snippets(snippet_ids: set[SnippetID]) -> Sequence[DbSnippet]:
     """Return these snippets."""
-    return DbSnippet.query \
+    return db.session \
+        .query(DbSnippet) \
         .filter(DbSnippet.id.in_(snippet_ids)) \
         .all()
 
@@ -238,7 +239,8 @@ def get_snippets_for_scope_with_current_versions(
     scope: Scope,
 ) -> Sequence[DbSnippet]:
     """Return all snippets with their current versions for that scope."""
-    return DbSnippet.query \
+    return db.session \
+        .query(DbSnippet) \
         .filter_by(scope_type=scope.type_) \
         .filter_by(scope_name=scope.name) \
         .options(
@@ -261,7 +263,8 @@ def find_current_version_of_snippet_with_name(
     """Return the current version of the snippet with that name in that
     scope, or `None` if not found.
     """
-    return DbSnippetVersion.query \
+    return db.session \
+        .query(DbSnippetVersion) \
         .join(DbCurrentVersionAssociation) \
         .join(DbSnippet) \
             .filter(DbSnippet.scope_type == scope.type_) \
@@ -274,7 +277,8 @@ def get_versions(snippet_id: SnippetID) -> Sequence[DbSnippetVersion]:
     """Return all versions of that snippet, sorted from most recent to
     oldest.
     """
-    return DbSnippetVersion.query \
+    return db.session \
+        .query(DbSnippetVersion) \
         .filter_by(snippet_id=snippet_id) \
         .order_by(DbSnippetVersion.created_at.desc()) \
         .all()
@@ -284,7 +288,8 @@ def search_snippets(
     search_term: str, scope: Optional[Scope]
 ) -> list[DbSnippetVersion]:
     """Search in (the latest versions of) snippets."""
-    q = DbSnippetVersion.query \
+    q = db.session \
+        .query(DbSnippetVersion) \
         .join(DbCurrentVersionAssociation) \
         .join(DbSnippet)
 

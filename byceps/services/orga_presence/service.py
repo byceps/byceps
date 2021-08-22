@@ -24,7 +24,8 @@ from .transfer.models import PresenceTimeSlot, TaskTimeSlot, TimeSlot
 
 def get_presences(party_id: PartyID) -> list[PresenceTimeSlot]:
     """Return all presences for that party."""
-    presences = DbPresence.query \
+    presences = db.session \
+        .query(DbPresence) \
         .filter_by(party_id=party_id) \
         .options(db.joinedload(DbPresence.orga)) \
         .all()
@@ -34,7 +35,8 @@ def get_presences(party_id: PartyID) -> list[PresenceTimeSlot]:
 
 def get_tasks(party_id: PartyID) -> list[TaskTimeSlot]:
     """Return all tasks for that party."""
-    tasks = DbTask.query \
+    tasks = db.session \
+        .query(DbTask) \
         .filter_by(party_id=party_id) \
         .all()
 

@@ -53,7 +53,8 @@ def find_mountpoint(mountpoint_id: MountpointID) -> Optional[Mountpoint]:
 
 def get_mountpoints_for_site(site_id: SiteID) -> set[Mountpoint]:
     """Return all mountpoints for that site."""
-    mountpoints = DbMountpoint.query \
+    mountpoints = db.session \
+        .query(DbMountpoint) \
         .filter_by(site_id=site_id) \
         .all()
 
@@ -66,7 +67,8 @@ def find_current_snippet_version_for_url_path(
     """Return the current version of the snippet mounted at that URL
     path for that site, or `None` if not found.
     """
-    return SnippetVersion.query \
+    return db.session \
+        .query(SnippetVersion) \
         .join(CurrentVersionAssociation) \
         .join(Snippet) \
         .join(DbMountpoint) \

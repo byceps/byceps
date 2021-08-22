@@ -46,7 +46,8 @@ def collect_orgas_with_next_birthdays(
 
 def _collect_orgas_with_known_birthdays() -> Iterator[tuple[User, Birthday]]:
     """Yield all organizers whose birthday is known."""
-    users = DbUser.query \
+    users = db.session \
+        .query(DbUser) \
         .join(DbOrgaFlag) \
         .join(DbUserDetail) \
         .filter(DbUserDetail.date_of_birth != None) \

@@ -48,7 +48,8 @@ def build_event(
 
 def get_events_for_user(user_id: UserID) -> list[DbUserEvent]:
     """Return the events for that user."""
-    return DbUserEvent.query \
+    return db.session \
+        .query(DbUserEvent) \
         .filter_by(user_id=user_id) \
         .order_by(DbUserEvent.occurred_at) \
         .all()
@@ -58,7 +59,8 @@ def get_events_of_type_for_user(
     user_id: UserID, event_type: str
 ) -> list[DbUserEvent]:
     """Return the events of that type for that user."""
-    return DbUserEvent.query \
+    return db.session \
+        .query(DbUserEvent) \
         .filter_by(user_id=user_id) \
         .filter_by(event_type=event_type) \
         .order_by(DbUserEvent.occurred_at) \
@@ -70,7 +72,8 @@ def delete_user_login_events(occurred_before: datetime) -> int:
 
     Return the number of deleted events.
     """
-    num_deleted = DbUserEvent.query \
+    num_deleted = db.session \
+        .query(DbUserEvent) \
         .filter_by(event_type='user-logged-in') \
         .filter(DbUserEvent.occurred_at < occurred_before) \
         .delete()

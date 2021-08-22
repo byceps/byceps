@@ -75,7 +75,8 @@ def export() -> str:
 
 def _collect_permissions() -> Iterator[dict[str, str]]:
     """Collect all permissions, even those not assigned to any role."""
-    permissions = DbPermission.query \
+    permissions = db.session \
+        .query(DbPermission) \
         .options(
             db.undefer('title'),
         ) \
@@ -91,7 +92,8 @@ def _collect_permissions() -> Iterator[dict[str, str]]:
 
 def _collect_roles() -> Iterator[dict[str, Union[str, list[str]]]]:
     """Collect all roles and the permissions assigned to them."""
-    roles = DbRole.query \
+    roles = db.session \
+        .query(DbRole) \
         .options(
             db.undefer(DbRole.title),
             db.joinedload(DbRole.role_permissions),
