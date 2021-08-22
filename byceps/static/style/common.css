@@ -939,3 +939,12 @@ img {
   font-family: monospace;
   font-size: 0.75rem !important; /* 12px / 16px */
 }
+
+summary:focus {
+  outline: none;
+}
+
+summary:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

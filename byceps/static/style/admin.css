@@ -732,15 +732,6 @@ main .dropdown-menu {
   );
 }
 
-summary:focus {
-  outline: none;
-}
-
-summary:hover {
-  cursor: pointer;
-  text-decoration: underline;
-}
-
 
 /* print view */
 
