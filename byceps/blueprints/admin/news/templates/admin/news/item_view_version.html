@@ -31,6 +31,9 @@
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} {{ _('Add image') }}</a></li>
+            {%- if item.featured_image_id is not none %}
+            <li><a class="dropdown-item" data-action="image-unset-featured" href="{{ url_for('.image_unset_featured', item_id=item.id) }}"><span class="icon"></span> {{ _('Unset image as featured') }}</a></li>
+            {%- endif %}
             {%- if not item.published and has_current_user_permission(NewsItemPermission.publish) %}
             <li><a class="dropdown-item" data-action="item-publish-now" href="{{ url_for('.item_publish_now', item_id=item.id) }}">{{ render_icon('published') }} {{ _('Publish news post now') }}</a></li>
             <li><a class="dropdown-item" href="{{ url_for('.item_publish_later_form', item_id=item.id) }}">{{ render_icon('published') }} {{ _('Publish news post later') }}</a></li>
@@ -88,7 +91,7 @@
         {%- for image in item.images|sort(attribute='number') %}
       <div class="box">
         <details class="newspost-images">
-          <summary>#{{ image.number }}</summary>
+          <summary>#{{ image.number }}{% if image.id == item.featured_image_id %} {{ render_tag('featured') }}{% endif %}</summary>
           <div class="row row--space-between mb" style="margin-top: 0;">
             <div class="column-auto">
 
@@ -109,11 +112,23 @@
 
             </div>
 
-            {%- if has_current_user_permission(NewsItemPermission.update) -%}
+            {%- if has_current_user_permission(NewsItemPermission.update) %}
             <div class="column-auto">
-              <a class="button button--compact" href="{{ url_for('.image_update_form', image_id=image.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+              <div class="button-row button-row--right">
+                <a class="button button--compact" href="{{ url_for('.image_update_form', image_id=image.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+                <div class="dropdown">
+                  <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
+                  <ol class="dropdown-menu dropdown-menu--right">
+                    {%- if image.id == item.featured_image_id %}
+                    <li><a class="dropdown-item" data-action="image-unset-featured" href="{{ url_for('.image_unset_featured', item_id=item.id) }}">{{ _('Unset image as featured') }}</a></li>
+                    {%- else %}
+                    <li><a class="dropdown-item" data-action="image-set-featured" href="{{ url_for('.image_set_featured', image_id=image.id) }}">{{ _('Set image as featured') }}</a></li>
+                    {%- endif %}
+                  </ol>
+                </div>
+              </div>
             </div>
-            {%- endif -%}
+            {%- endif %}
 
           </div>
 
@@ -161,6 +176,8 @@
 <script>
   onDomReady(() => {
     confirmed_post_on_click_then_reload('[data-action="item-publish-now"]', '{{ _('Publish news post now?') }}');
+    confirmed_post_on_click_then_reload('[data-action="image-set-featured"]', '{{ _('Set image as featured?') }}');
+    confirmed_delete_on_click_then_reload('[data-action="image-unset-featured"]', '{{ _('Unset image as featured?') }}');
   });
 </script>
 {% endblock %}

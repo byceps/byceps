@@ -40,6 +40,7 @@ class Item(db.Model):
     slug = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
     published_at = db.Column(db.DateTime, nullable=True)
     current_version = association_proxy('current_version_association', 'version')
+    featured_image_id = db.Column(db.Uuid, nullable=True)
 
     def __init__(self, channel_id: ChannelID, slug: str) -> None:
         self.channel_id = channel_id

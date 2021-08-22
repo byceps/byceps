@@ -18,14 +18,25 @@ from markupsafe import Markup
 from ...util.iterables import find
 from ...util.templating import load_template
 
-from .transfer.models import Image
+from .transfer.models import Image, Item
 
 
-def render_body(raw_body: str, images: list[Image]) -> str:
+def render_body(item: Item, raw_body: str) -> str:
     """Render item's raw body to HTML."""
     template = load_template(raw_body)
-    render_image = partial(_render_image_by_number, images)
-    return template.render(render_image=render_image)
+    render_image = partial(_render_image_by_number, item.images)
+    html = template.render(render_image=render_image)
+
+    if item.featured_image_id:
+        featured_image = find(
+            item.images, lambda image: image.id == item.featured_image_id
+        )
+
+        if featured_image:
+            featured_image_html = _render_image(featured_image)
+            html = featured_image_html + '\n\n' + html
+
+    return html
 
 
 def _render_image_by_number(

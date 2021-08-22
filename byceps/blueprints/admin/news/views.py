@@ -303,6 +303,30 @@ def image_update(image_id):
     return redirect_to('.item_view', item_id=image.item_id)
 
 
+@blueprint.post('/images/<uuid:image_id>/featured')
+@permission_required(NewsItemPermission.update)
+@respond_no_content
+def image_set_featured(image_id):
+    """Set the image as featured image."""
+    image = _get_image_or_404(image_id)
+
+    news_item_service.set_featured_image(image.item_id, image.id)
+
+    flash_success(gettext('Featured image has been set.'))
+
+
+@blueprint.delete('/items/<uuid:item_id>/featured')
+@permission_required(NewsItemPermission.update)
+@respond_no_content
+def image_unset_featured(item_id):
+    """Unset the item's featured image."""
+    item = _get_item_or_404(item_id)
+
+    news_item_service.set_featured_image(item.id, image_id=None)
+
+    flash_success(gettext('Featured image has been unset.'))
+
+
 # -------------------------------------------------------------------- #
 # items
 
@@ -350,7 +374,7 @@ def _render_item_version(version, item):
     }
 
     try:
-        rendered_body = news_html_service.render_body(version.body, item.images)
+        rendered_body = news_html_service.render_body(item, version.body)
 
         context.update(
             {

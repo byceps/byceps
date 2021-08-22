@@ -560,7 +560,7 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/role_index.html:42
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/role_view.html:38
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/role_view.html:51
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:132
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:147
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:141
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:157
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:63
@@ -619,7 +619,7 @@ msgstr "mehr als"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:27
 #: byceps/blueprints/admin/news/forms.py:24
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:29
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:95
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:98
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/index.html:15
 #: byceps/blueprints/admin/party/forms.py:50
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:42
@@ -641,7 +641,7 @@ msgstr "ID"
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:35
 #: byceps/blueprints/admin/news/forms.py:47
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:44
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:51
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:54
 #: byceps/blueprints/admin/seating/forms.py:18
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:30
 #: byceps/blueprints/admin/user_badge/forms.py:23
@@ -901,7 +901,7 @@ msgstr "versteckt"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:61
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:29
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:114
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:118
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:33
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:51
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:16
@@ -978,7 +978,7 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/brand/templates/admin/brand/email_config_update_form.html:21
 #: byceps/blueprints/admin/brand/templates/admin/brand/update_form.html:21
 #: byceps/blueprints/admin/news/templates/admin/news/image_update_form.html:25
-#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:22
+#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:35
 #: byceps/blueprints/admin/orga/templates/admin/orga/create_orgaflag_form.html:19
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_create_form.html:22
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_update_form.html:27
@@ -1770,17 +1770,17 @@ msgid "URL prefix"
 msgstr "URL-Präfix"
 
 #: byceps/blueprints/admin/news/forms.py:32
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:101
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:104
 msgid "Alternative text"
 msgstr "Alternativtext"
 
 #: byceps/blueprints/admin/news/forms.py:33
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:104
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:107
 msgid "Caption"
 msgstr "Bildunterschrift"
 
 #: byceps/blueprints/admin/news/forms.py:34
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:107
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:110
 msgid "Source"
 msgstr "Bildquelle"
 
@@ -1844,22 +1844,30 @@ msgstr "Das Newsbild #%(image_number)s wurde hinzugefügt."
 msgid "News image #%(image_number)s has been updated."
 msgstr "Das Newsbild #%(image_number)s wurde aktualisiert."
 
-#: byceps/blueprints/admin/news/views.py:468
+#: byceps/blueprints/admin/news/views.py:315
+msgid "Featured image has been set."
+msgstr "Das Titelbild wurde gesetzt."
+
+#: byceps/blueprints/admin/news/views.py:327
+msgid "Featured image has been unset."
+msgstr "Das Titelbild wurde entfernt."
+
+#: byceps/blueprints/admin/news/views.py:502
 #, python-format
 msgid "News item \"%(title)s\" has been created."
 msgstr "Die News \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/news/views.py:516
+#: byceps/blueprints/admin/news/views.py:550
 #, python-format
 msgid "News item \"%(title)s\" has been updated."
 msgstr "Die News \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/news/views.py:558
+#: byceps/blueprints/admin/news/views.py:592
 #, python-format
 msgid "News item \"%(title)s\" will be published later."
 msgstr "Die News \"%(title)s\" wird später veröffentlicht."
 
-#: byceps/blueprints/admin/news/views.py:578
+#: byceps/blueprints/admin/news/views.py:612
 #, python-format
 msgid "News item \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
@@ -1930,7 +1938,7 @@ msgid "Latest change"
 msgstr "Letzte Änderung"
 
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:51
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:85
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:88
 msgid "Images"
 msgstr "Bilder"
 
@@ -1944,13 +1952,13 @@ msgid "Image defined"
 msgstr "Bild festgelegt"
 
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:66
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:76
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:79
 #: byceps/blueprints/site/news/templates/site/news/_item.html:10
 msgid "Draft"
 msgstr "Entwurf"
 
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:71
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:68
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:71
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:56
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:76
 msgid "View change history"
@@ -1982,7 +1990,7 @@ msgstr "Bild hinzufügen"
 #: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:9
 #: byceps/blueprints/admin/news/templates/admin/news/image_update_form.html:9
 #: byceps/blueprints/admin/news/templates/admin/news/item_publish_later_form.html:9
-#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:9
+#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:10
 msgid "News post"
 msgstr "Newspost"
 
@@ -2056,7 +2064,7 @@ msgid "View changes compared to previous version"
 msgstr "Änderungen im Vergleich zur vorherigen Version anzeigen"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_publish_later_form.html:6
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:36
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:39
 msgid "Publish news post later"
 msgstr "Newspost später veröffentlichen"
 
@@ -2064,15 +2072,15 @@ msgstr "Newspost später veröffentlichen"
 msgid "Publish"
 msgstr "Veröffentlichen"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:6
+#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:7
 msgid "Edit news post"
 msgstr "Newspost bearbeiten"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:17
+#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:18
 msgid "Attention"
 msgstr "Achtung"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:17
+#: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:18
 msgid "Changing the slug affects the news post's permalink!"
 msgstr "Eine Änderung des Slugs wirkt sich auf den Permalink der News aus!"
 
@@ -2089,28 +2097,33 @@ msgid "Channel"
 msgstr "Kanal"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:35
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:123
+msgid "Unset image as featured"
+msgstr "Nicht als Titelbild verwenden"
+
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:38
 msgid "Publish news post now"
 msgstr "Newspost jetzt veröffentlichen"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:54
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:57
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:62
 msgid "Version"
 msgstr "Version"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:58
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:61
 msgid "current"
 msgstr "aktuell"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:60
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:63
 msgid "outdated"
 msgstr "veraltet"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:61
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:64
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:69
 msgid "View current version"
 msgstr "Aktuelle Version ansehen"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:65
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:68
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:73
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:21
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:20
@@ -2119,31 +2132,43 @@ msgstr "Aktuelle Version ansehen"
 msgid "Created"
 msgstr "Erstellt"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:71
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:74
 msgid "Published"
 msgstr "Veröffentlicht"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:98
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:101
 msgid "Filename"
 msgstr "Dateiname"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:120
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:138
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:125
+msgid "Set image as featured"
+msgstr "Als Titelbild verwenden"
+
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:135
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:153
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:81
 msgid "Preview"
 msgstr "Vorschau"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:123
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:138
 msgid "Show"
 msgstr "Anzeigen"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:147
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:162
 msgid "Sorry, an error has occurred."
 msgstr "Entschuldigung, es ist ein Fehler aufgetreten."
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:163
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:178
 msgid "Publish news post now?"
 msgstr "Newspost jetzt veröffentlichen?"
+
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:179
+msgid "Set image as featured?"
+msgstr "Als Titelbild verwenden?"
+
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:180
+msgid "Unset image as featured?"
+msgstr "Nicht als Titelbild verwenden?"
 
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/index.html:3
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:6

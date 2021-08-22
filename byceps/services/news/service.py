@@ -27,7 +27,14 @@ from .dbmodels.item import (
     ItemVersion as DbItemVersion,
 )
 from . import image_service
-from .transfer.models import ChannelID, Headline, Item, ItemID, ItemVersionID
+from .transfer.models import (
+    ChannelID,
+    Headline,
+    ImageID,
+    Item,
+    ItemID,
+    ItemVersionID,
+)
 
 
 def create_item(
@@ -100,6 +107,14 @@ def _create_version(
         version.image_url_path = image_url_path
 
     return version
+
+
+def set_featured_image(item_id: ItemID, image_id: ImageID) -> None:
+    """Set an image as featured image."""
+    db_item = _get_db_item(item_id)
+
+    db_item.featured_image_id = image_id
+    db.session.commit()
 
 
 def publish_item(
@@ -352,6 +367,7 @@ def _db_entity_to_item(
         external_url=external_url,
         image_url_path=image_url_path,
         images=images,
+        featured_image_id=db_item.featured_image_id,
     )
 
     if render_body:
@@ -373,6 +389,6 @@ def _assemble_image_url_path(item: DbItem) -> Optional[str]:
 def _render_body(item: Item) -> Optional[str]:
     """Render body text to HTML."""
     try:
-        return html_service.render_body(item.body, item.images)
+        return html_service.render_body(item, item.body)
     except Exception as e:
         return None  # Not the best error indicator.
