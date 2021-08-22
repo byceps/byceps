@@ -9,7 +9,6 @@ import pytest
 
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article import service as article_service
-from byceps.services.shop.order.dbmodels.order import Order
 from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
     service as order_service,
@@ -128,12 +127,16 @@ def test_order(
 
     assert get_article_quantity(article.id) == 2
 
-    order = Order.query.filter_by(placed_by_id=orderer.id).one()
+    order = get_single_order_by(orderer.id)
     assert_order(order, 'AEC-01-B00005', 1)
 
     first_line_item = order.items[0]
     assert_line_item(
-        first_line_item, article.id, article.price, article.tax_rate, 3,
+        first_line_item,
+        article.item_number,
+        article.price,
+        article.tax_rate,
+        3,
     )
 
     order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
@@ -186,12 +189,16 @@ def test_order_single(
 
     assert get_article_quantity(article.id) == 4
 
-    order = Order.query.filter_by(placed_by_id=orderer.id).one()
+    order = get_single_order_by(orderer.id)
     assert_order(order, 'AEC-01-B00005', 1)
 
     first_line_item = order.items[0]
     assert_line_item(
-        first_line_item, article.id, article.price, article.tax_rate, 1,
+        first_line_item,
+        article.item_number,
+        article.price,
+        article.tax_rate,
+        1,
     )
 
     order_email_service_mock.send_email_for_incoming_order_to_orderer.assert_called_once_with(
@@ -229,6 +236,12 @@ def get_article_quantity(article_id):
     return article.quantity
 
 
+def get_single_order_by(user_id):
+    orders = order_service.get_orders_placed_by_user(user_id)
+    assert len(orders) == 1
+    return orders[0]
+
+
 def assert_response_headers(response, order_detail_page_url):
     assert response.status_code == 302
     assert response.headers.get('Location') == order_detail_page_url
@@ -239,8 +252,10 @@ def assert_order(order, order_number, item_quantity):
     assert len(order.items) == item_quantity
 
 
-def assert_line_item(line_item, article_id, unit_price, tax_rate, quantity):
-    assert line_item.article.id == article_id
+def assert_line_item(
+    line_item, article_item_number, unit_price, tax_rate, quantity
+):
+    assert line_item.article_number == article_item_number
     assert line_item.unit_price == unit_price
     assert line_item.tax_rate == tax_rate
     assert line_item.quantity == quantity
