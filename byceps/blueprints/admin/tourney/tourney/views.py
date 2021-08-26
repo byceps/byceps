@@ -87,11 +87,11 @@ def create(party_id):
     tourney = tourney_service.create_tourney(
         party.id,
         title,
-        subtitle,
-        logo_url,
         category_id,
         max_participant_count,
         starts_at,
+        subtitle=subtitle,
+        logo_url=logo_url,
     )
 
     flash_success(
