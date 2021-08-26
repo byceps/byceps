@@ -19,7 +19,7 @@ from ....user.dbmodels.user import User
 
 from ...shop.transfer.models import ShopID
 
-from ..transfer.models import OrderNumber, PaymentMethod, PaymentState
+from ..transfer.models import OrderNumber, PaymentState
 
 
 class Order(db.Model):
@@ -41,7 +41,7 @@ class Order(db.Model):
     street = db.Column(db.UnicodeText, nullable=False)
     total_amount = db.Column(db.Numeric(7, 2), nullable=False)
     invoice_created_at = db.Column(db.DateTime, nullable=True)
-    _payment_method = db.Column('payment_method', db.UnicodeText, nullable=True)
+    payment_method = db.Column(db.UnicodeText, nullable=True)
     _payment_state = db.Column('payment_state', db.UnicodeText, index=True, nullable=False)
     payment_state_updated_at = db.Column(db.DateTime, nullable=True)
     payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=True)
@@ -77,18 +77,6 @@ class Order(db.Model):
         self.city = city
         self.street = street
         self.payment_state = PaymentState.open
-
-    @hybrid_property
-    def payment_method(self) -> Optional[PaymentMethod]:
-        if self._payment_method is None:
-            return None
-
-        return PaymentMethod[self._payment_method]
-
-    @payment_method.setter
-    def payment_method(self, method: PaymentMethod) -> None:
-        assert method is not None
-        self._payment_method = method.name
 
     @hybrid_property
     def payment_state(self) -> PaymentState:

@@ -9,11 +9,7 @@ byceps.events.shop
 from dataclasses import dataclass
 from typing import Optional
 
-from ..services.shop.order.transfer.models import (
-    OrderID,
-    OrderNumber,
-    PaymentMethod,
-)
+from ..services.shop.order.transfer.models import OrderID, OrderNumber
 from ..typing import UserID
 
 from .base import _BaseEvent
@@ -39,4 +35,4 @@ class ShopOrderCanceled(_ShopOrderEvent):
 
 @dataclass(frozen=True)
 class ShopOrderPaid(_ShopOrderEvent):
-    payment_method: PaymentMethod
+    payment_method: str

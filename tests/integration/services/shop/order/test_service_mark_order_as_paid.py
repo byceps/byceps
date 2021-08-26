@@ -6,10 +6,7 @@
 import pytest
 
 from byceps.services.shop.order import event_service, service as order_service
-from byceps.services.shop.order.transfer.models import (
-    PaymentMethod,
-    PaymentState,
-)
+from byceps.services.shop.order.transfer.models import PaymentState
 from byceps.util.iterables import find
 
 from tests.integration.services.shop.helpers import create_orderer
@@ -34,12 +31,10 @@ def test_mark_order_as_paid(order, admin_user):
     assert order_before.is_open
     assert not order_before.is_paid
 
-    order_service.mark_order_as_paid(
-        order.id, PaymentMethod.cash, admin_user.id
-    )
+    order_service.mark_order_as_paid(order.id, 'cash', admin_user.id)
 
     order_after = order_service.get_order(order.id)
-    assert order_after.payment_method == PaymentMethod.cash
+    assert order_after.payment_method == 'cash'
     assert order_after.payment_state == PaymentState.paid
     assert not order_after.is_open
     assert order_after.is_paid
@@ -57,7 +52,7 @@ def test_additional_event_data(order, admin_user):
 
     paid_event = order_service.mark_order_as_paid(
         order.id,
-        PaymentMethod.cash,
+        'cash',
         admin_user.id,
         additional_event_data=additional_event_data,
     )

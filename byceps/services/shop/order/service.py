@@ -40,7 +40,6 @@ from .transfer.models import (
     LineItem,
     OrderNumber,
     OrderState,
-    PaymentMethod,
     PaymentState,
 )
 
@@ -327,7 +326,7 @@ def cancel_order(
 
 def mark_order_as_paid(
     order_id: OrderID,
-    payment_method: PaymentMethod,
+    payment_method: str,
     initiator_id: UserID,
     *,
     additional_event_data: Optional[Mapping[str, str]] = None,
@@ -360,7 +359,7 @@ def mark_order_as_paid(
         {
             'initiator_id': str(initiator.id),
             'former_payment_state': payment_state_from.name,
-            'payment_method': payment_method.name,
+            'payment_method': payment_method,
         }
     )
 
@@ -621,14 +620,14 @@ def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
 
 
 _PAYMENT_METHOD_LABELS = {
-    PaymentMethod.bank_transfer: lazy_gettext('bank transfer'),
-    PaymentMethod.cash: lazy_gettext('cash'),
-    PaymentMethod.direct_debit: lazy_gettext('direct debit'),
-    PaymentMethod.free: lazy_gettext('free'),
+    'bank_transfer': lazy_gettext('bank transfer'),
+    'cash': lazy_gettext('cash'),
+    'direct_debit': lazy_gettext('direct debit'),
+    'free': lazy_gettext('free'),
 }
 
 
-def find_payment_method_label(payment_method: PaymentMethod) -> Optional[str]:
+def find_payment_method_label(payment_method: str) -> Optional[str]:
     """Return a label for the payment method."""
     return _PAYMENT_METHOD_LABELS.get(payment_method)
 

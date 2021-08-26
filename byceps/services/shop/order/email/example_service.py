@@ -30,7 +30,6 @@ from ..transfer.models import (
     LineItem,
     OrderNumber,
     OrderState,
-    PaymentMethod,
     PaymentState,
 )
 
@@ -129,7 +128,7 @@ def _build_order(
 
     total_amount = Decimal('42.95')
     items: list[LineItem] = []
-    payment_method = PaymentMethod.bank_transfer
+    payment_method = 'bank_transfer'
 
     return Order(
         order_id,

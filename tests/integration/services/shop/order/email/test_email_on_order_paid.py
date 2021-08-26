@@ -13,7 +13,6 @@ from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
     service as order_service,
 )
-from byceps.services.shop.order.transfer.models import PaymentMethod
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.snippet import service as snippet_service
 
@@ -82,9 +81,7 @@ def test_email_on_order_paid(
 ):
     app = site_app
 
-    order_service.mark_order_as_paid(
-        order.id, PaymentMethod.bank_transfer, order_admin.id
-    )
+    order_service.mark_order_as_paid(order.id, 'bank_transfer', order_admin.id)
 
     current_user = get_current_user_for_user(customer)
     with current_user_set(app, current_user), app.app_context():

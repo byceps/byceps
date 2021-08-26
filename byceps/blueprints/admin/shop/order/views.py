@@ -17,7 +17,7 @@ from .....services.shop.order import (
 )
 from .....services.shop.order.email import service as order_email_service
 from .....services.shop.order.export import service as order_export_service
-from .....services.shop.order.transfer.models import PaymentMethod, PaymentState
+from .....services.shop.order.transfer.models import PaymentState
 from .....services.shop.shop import service as shop_service
 from .....services.ticketing import ticket_service
 from .....services.user import service as user_service
@@ -128,7 +128,6 @@ def view(order_id):
         'placed_by': placed_by,
         'articles_by_item_number': articles_by_item_number,
         'events': events,
-        'PaymentMethod': PaymentMethod,
         'PaymentState': PaymentState,
         'tickets': tickets,
         'render_order_payment_method': _find_order_payment_method_label,
@@ -389,7 +388,7 @@ def mark_as_paid(order_id):
     if not form.validate():
         return mark_as_paid_form(order_id, form)
 
-    payment_method = PaymentMethod[form.payment_method.data]
+    payment_method = form.payment_method.data
     updated_by_id = g.user.id
 
     try:

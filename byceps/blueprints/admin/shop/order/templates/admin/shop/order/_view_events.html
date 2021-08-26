@@ -28,7 +28,7 @@
           {%- set body %}
             <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
             hat die Bestellung als {{ render_order_payment_state(PaymentState.paid) }}
-            mittels {{ render_order_payment_method(PaymentMethod[event.data.payment_method]) }} markiert.
+            mittels {{ render_order_payment_method(event.data.payment_method) }} markiert.
           {%- endset %}
         {%- elif event.event == 'order-canceled-after-paid' %}
           {%- set icon_name = 'disabled' %}

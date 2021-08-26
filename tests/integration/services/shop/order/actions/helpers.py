@@ -5,7 +5,6 @@
 
 from byceps.events.shop import ShopOrderPaid
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order.transfer.models import PaymentMethod
 from byceps.services.shop.order import service as order_service
 from byceps.services.ticketing import ticket_service
 
@@ -25,6 +24,4 @@ def place_order(storefront_id, orderer, articles_with_quantity):
 
 
 def mark_order_as_paid(order_id, admin_id) -> ShopOrderPaid:
-    return order_service.mark_order_as_paid(
-        order_id, PaymentMethod.bank_transfer, admin_id
-    )
+    return order_service.mark_order_as_paid(order_id, 'bank_transfer', admin_id)

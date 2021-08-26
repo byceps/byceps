@@ -13,10 +13,7 @@ from byceps.services.shop.article import service as article_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.dbmodels.order import Order as DbOrder
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.order.transfer.models import (
-    PaymentMethod,
-    PaymentState,
-)
+from byceps.services.shop.order.transfer.models import PaymentState
 
 from tests.helpers import login_user
 from tests.integration.services.shop.helpers import (
@@ -110,7 +107,10 @@ def test_cancel_before_paid(
     order_afterwards = get_order(order_before.id)
     assert response.status_code == 302
     assert_payment(
-        order_afterwards, None, PaymentState.canceled_before_paid, shop_order_admin.id
+        order_afterwards,
+        None,
+        PaymentState.canceled_before_paid,
+        shop_order_admin.id,
     )
 
     assert get_article_quantity(article.id) == 8
@@ -203,7 +203,7 @@ def test_mark_order_as_paid(
     assert response.status_code == 302
     assert_payment(
         order_afterwards,
-        PaymentMethod.direct_debit,
+        'direct_debit',
         PaymentState.paid,
         shop_order_admin.id,
     )
@@ -220,7 +220,7 @@ def test_mark_order_as_paid(
         order_number=placed_order.order_number,
         orderer_id=orderer_user.id,
         orderer_screen_name=orderer_user.screen_name,
-        payment_method=PaymentMethod.direct_debit,
+        payment_method='direct_debit',
     )
     order_paid_signal_send_mock.assert_called_once_with(None, event=event)
 
@@ -268,7 +268,7 @@ def test_cancel_after_paid(
     assert response.status_code == 302
     assert_payment(
         order_afterwards,
-        PaymentMethod.bank_transfer,
+        'bank_transfer',
         PaymentState.canceled_after_paid,
         shop_order_admin.id,
     )

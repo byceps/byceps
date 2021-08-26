@@ -11,7 +11,7 @@ from wtforms import BooleanField, RadioField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
 from .....services.shop.order import service as order_service
-from .....services.shop.order.transfer.models import PaymentMethod
+from .....services.shop.order.transfer.models import PAYMENT_METHODS
 from .....util.l10n import LocalizedForm
 
 
@@ -31,8 +31,8 @@ class CancelForm(LocalizedForm):
 
 def _get_payment_method_choices():
     return [
-        (pm.name, order_service.find_payment_method_label(pm) or pm.name)
-        for pm in PaymentMethod
+        (pm, order_service.find_payment_method_label(pm) or pm)
+        for pm in PAYMENT_METHODS
     ]
 
 
@@ -40,7 +40,7 @@ class MarkAsPaidForm(LocalizedForm):
     payment_method = RadioField(
         lazy_gettext('Payment type'),
         choices=_get_payment_method_choices(),
-        default=PaymentMethod.bank_transfer.name,
+        default='bank_transfer',
         validators=[InputRequired()],
     )
 

@@ -12,7 +12,6 @@ from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
     service as order_service,
 )
-from byceps.services.shop.order.transfer.models import PaymentMethod
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.signals import shop as shop_signals
@@ -91,7 +90,7 @@ def test_shop_order_paid_announced(app, paid_order, orderer_user, shop_admin):
         order_number=order.order_number,
         orderer_id=orderer_user.id,
         orderer_screen_name=orderer_user.screen_name,
-        payment_method=PaymentMethod.bank_transfer,
+        payment_method='bank_transfer',
     )
 
     with mocked_irc_bot() as mock:
@@ -169,7 +168,7 @@ def canceled_order(placed_order, shop_admin):
 @pytest.fixture
 def paid_order(placed_order, shop_admin):
     order_service.mark_order_as_paid(
-        placed_order.id, PaymentMethod.bank_transfer, shop_admin.id
+        placed_order.id, 'bank_transfer', shop_admin.id
     )
 
     return placed_order

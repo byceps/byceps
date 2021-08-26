@@ -47,14 +47,13 @@ OrderState = Enum(
 )
 
 
-PaymentMethod = Enum(
-    'PaymentMethod',
+PAYMENT_METHODS = set(
     [
         'bank_transfer',
         'cash',
         'direct_debit',
         'free',
-    ],
+    ]
 )
 
 
@@ -104,7 +103,7 @@ class Order:
     address: Address
     total_amount: Decimal
     items: list[LineItem]
-    payment_method: Optional[PaymentMethod]
+    payment_method: Optional[str]
     payment_state: PaymentState
     state: OrderState
     is_open: bool
