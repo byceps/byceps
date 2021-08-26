@@ -6,7 +6,7 @@ byceps.blueprints.site.user_group.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import g, request
+from flask import abort, g, request
 from flask_babel import gettext
 
 from ....services.user_group import service as user_group_service
