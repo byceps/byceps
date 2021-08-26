@@ -38,11 +38,6 @@ class _BaseForm(LocalizedForm):
         lazy_gettext('Storefront ID'), validators=[Optional()]
     )
 
-    def set_brand_choices(self):
-        brands = brand_service.get_all_brands()
-        brands.sort(key=lambda brand: brand.title)
-        self.brand_id.choices = [(brand.id, brand.title) for brand in brands]
-
     def set_party_choices(self, brand_id):
         parties = party_service.get_parties_for_brand(brand_id)
         parties.sort(key=lambda party: party.starts_at, reverse=True)
@@ -77,6 +72,11 @@ class CreateForm(_BaseForm):
 class UpdateForm(_BaseForm):
     brand_id = SelectField(lazy_gettext('Brand'), validators=[InputRequired()])
     archived = BooleanField(lazy_gettext('archived'))
+
+    def set_brand_choices(self):
+        brands = brand_service.get_all_brands()
+        brands.sort(key=lambda brand: brand.title)
+        self.brand_id.choices = [(brand.id, brand.title) for brand in brands]
 
 
 class AddNewsChannelForm(LocalizedForm):
