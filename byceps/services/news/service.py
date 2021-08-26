@@ -373,6 +373,6 @@ def _assemble_image_url_path(item: DbItem) -> Optional[str]:
 def _render_body(item: Item) -> Optional[str]:
     """Render body text to HTML."""
     try:
-        return html_service.render_body(item.body, item.channel.id, item.images)
+        return html_service.render_body(item.body, item.images)
     except Exception as e:
         return None  # Not the best error indicator.

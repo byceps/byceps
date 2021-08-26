@@ -18,20 +18,17 @@ from markupsafe import Markup
 from ...util.iterables import find
 from ...util.templating import load_template
 
-from .transfer.models import ChannelID, Image
+from .transfer.models import Image
 
 
-def render_body(
-    raw_body: str, channel_id: ChannelID, images: list[Image]
-) -> str:
+def render_body(raw_body: str, images: list[Image]) -> str:
     """Render item's raw body to HTML."""
     template = load_template(raw_body)
-    render_image = partial(_render_image, channel_id, images)
+    render_image = partial(_render_image, images)
     return template.render(render_image=render_image)
 
 
 def _render_image(
-    channel_id: ChannelID,
     images: list[Image],
     number: int,
     *,

@@ -350,9 +350,7 @@ def _render_item_version(version, item):
     }
 
     try:
-        rendered_body = news_html_service.render_body(
-            version.body, channel.id, item.images
-        )
+        rendered_body = news_html_service.render_body(version.body, item.images)
 
         context.update(
             {
