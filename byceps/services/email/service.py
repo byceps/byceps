@@ -136,7 +136,7 @@ def set_config(
 
 def get_all_configs() -> list[EmailConfig]:
     """Return all configurations."""
-    config = db.session.query(DbEmailConfig).all()
+    configs = db.session.query(DbEmailConfig).all()
 
     return [_db_entity_to_config(config) for config in configs]
 
