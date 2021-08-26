@@ -131,26 +131,26 @@ def _build_order(
     payment_method = 'bank_transfer'
 
     return Order(
-        order_id,
-        shop_id,
-        order_number,
-        created_at,
-        placed_by_id,
-        first_names,
-        last_name,
-        address,
-        total_amount,
-        items,
-        payment_method,
-        payment_state,
-        state,
-        is_open,
-        is_canceled,
-        is_paid,
-        False,  # is_invoiced
-        False,  # is_shipping_required
-        False,  # is_shipped
-        cancelation_reason,
+        id=order_id,
+        shop_id=shop_id,
+        order_number=order_number,
+        created_at=created_at,
+        placed_by_id=placed_by_id,
+        first_names=first_names,
+        last_name=last_name,
+        address=address,
+        total_amount=total_amount,
+        items=items,
+        payment_method=payment_method,
+        payment_state=payment_state,
+        state=state,
+        is_open=is_open,
+        is_canceled=is_canceled,
+        is_paid=is_paid,
+        is_invoiced=False,
+        is_shipping_required=False,
+        is_shipped=False,
+        cancelation_reason=cancelation_reason,
     )
 
 
