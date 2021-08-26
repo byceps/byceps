@@ -61,6 +61,8 @@ def create():
         return redirect_to('.index')
 
     form = CreateForm(request.form)
+    if not form.validate():
+        return create_form(form)
 
     creator = g.user
     title = form.title.data.strip()
