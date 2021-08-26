@@ -334,10 +334,10 @@ def _db_entity_to_item(
     db_item: DbItem, *, render_body: Optional[bool] = False
 ) -> Item:
     channel = _db_entity_to_channel(db_item.channel)
-    external_url = db_item.channel.url_prefix + db_item.slug
+    external_url = channel.url_prefix + db_item.slug
     image_url_path = _assemble_image_url_path(db_item)
     images = [
-        image_service._db_entity_to_image(image, db_item.channel_id)
+        image_service._db_entity_to_image(image, channel.id)
         for image in db_item.images
     ]
 
