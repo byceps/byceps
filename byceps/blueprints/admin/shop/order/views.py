@@ -189,7 +189,7 @@ def add_note(order_id):
 
     text = form.text.data.strip()
 
-    event = order_service.add_note(order.id, g.user.id, text)
+    order_service.add_note(order.id, g.user.id, text)
 
     flash_success(gettext('Note has been added.'))
 
