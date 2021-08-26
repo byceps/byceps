@@ -7,7 +7,7 @@ byceps.services.shop.order.action_service
 """
 
 from __future__ import annotations
-from typing import Callable, Sequence
+from typing import Callable, Optional, Sequence
 from uuid import UUID
 
 from ....database import db

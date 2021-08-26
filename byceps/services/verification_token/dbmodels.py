@@ -9,6 +9,7 @@ byceps.services.verification_token.dbmodels
 from __future__ import annotations
 from datetime import datetime
 import secrets
+from typing import Optional
 
 from sqlalchemy.ext.hybrid import hybrid_property
 
