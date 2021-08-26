@@ -24,23 +24,40 @@ from .transfer.models import Image
 def render_body(raw_body: str, images: list[Image]) -> str:
     """Render item's raw body to HTML."""
     template = load_template(raw_body)
-    render_image = partial(_render_image, images)
+    render_image = partial(_render_image_by_number, images)
     return template.render(render_image=render_image)
 
 
-def _render_image(
+def _render_image_by_number(
     images: list[Image],
     number: int,
     *,
     width: Optional[int] = None,
     height: Optional[int] = None,
-) -> str:
+) -> Markup:
     """Render HTML for image."""
+    image = _get_image_by_number(images, number)
+    html = _render_image(image, width=width, height=height)
+    return Markup(html)
+
+
+def _get_image_by_number(images: list[Image], number: int) -> Image:
+    """Return the image with that number."""
     image = find(images, lambda image: image.number == number)
 
     if image is None:
         raise Exception(f'Unknown image number "{number}"')
 
+    return image
+
+
+def _render_image(
+    image: Image,
+    *,
+    width: Optional[int] = None,
+    height: Optional[int] = None,
+) -> str:
+    """Render HTML for image."""
     figure_attrs = ''
     img_attrs = ''
     figcaption_attrs = ''
@@ -56,16 +73,15 @@ def _render_image(
 
     caption_elem = _render_image_caption(image, figcaption_attrs)
 
-    html = f"""\
+    return f"""\
 <figure{figure_attrs}>
   <img src="{image.url_path}"{img_attrs}>
   {caption_elem}
 </figure>"""
 
-    return Markup(html)
-
 
 def _render_image_caption(image: Image, attrs: str) -> str:
+    """Render HTML for image caption."""
     caption = image.caption or ''
 
     if image.attribution:
