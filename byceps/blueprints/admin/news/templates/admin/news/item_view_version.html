@@ -9,6 +9,22 @@
 {% set page_title = _('View news post version') %}
 {% set layout_main_raw = True %}
 
+{% block head %}
+<style>
+.two-column {
+  display: grid;
+  gap: var(--inner-gutter);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 48rem) { /* 768px / 16px */
+  .two-column {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+</style>
+{%- endblock %}
+
 {% block body %}
 
   <div class="row row--space-between">
@@ -25,7 +41,7 @@
     <div class="column-auto column--align-bottom">
 
       {%- if has_current_user_permission(NewsItemPermission.update) %}
-      <div class="button-row button-row--right">
+      <div class="button-row button-row--nowrap button-row--right">
         <a class="button" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
@@ -46,14 +62,17 @@
     </div>
   </div>
 
-  <div class="row row--space-between">
-    <div class="column-auto" style="flex: 1;">
 
-      <div class="box">
+  <div class="box">
 
+    <div class="two-column">
+
+      <div>
         <div class="data-label">{{ _('Slug') }}</div>
         <div class="data-value">{{ item.slug }}</div>
+      </div>
 
+      <div>
         <div class="data-label">{{ _('Version') }}</div>
         <div class="data-value">
           {{- version.id -}}
@@ -64,13 +83,17 @@
           (<a href="{{ url_for('.item_view', item_id=item.id) }}">{{ _('View current version') }}</a>)
           {%- endif %}
         </div>
+      </div>
 
+      <div>
         <div class="data-label">{{ _('Created') }}</div>
         <div class="data-value">
           {{ render_datetime(version.created_at|utc_to_local_tz) }} von {{ render_user_avatar_and_name(creator, size=16) }}<br>
           <a href="{{ url_for('.item_list_versions', item_id=item.id) }}">{{ render_icon('history') }} {{ _('View change history') }}</a>
         </div>
+      </div>
 
+      <div>
         <div class="data-label">{{ _('Published') }}</div>
         <div class="data-value">
           {%- if version.item.published %}
@@ -79,16 +102,19 @@
           {{- render_tag(_('Draft')) }}
           {%- endif -%}
         </div>
-
       </div>
 
     </div>
-    <div class="column-auto" style="flex: 1;">
 
-      <h2 style="margin-top: 0.5rem;">{{ _('Images') }} {{ render_extra_in_heading(item.images|length) }}</h2>
+  </div>
 
-      {%- if item.images %}
-        {%- for image in item.images|sort(attribute='number') %}
+
+  <h2>{{ _('Images') }} {{ render_extra_in_heading(item.images|length) }}</h2>
+
+  {%- if item.images %}
+  <div class="two-column">
+    {%- for image in item.images|sort(attribute='number') %}
+    <div>
       <div class="box">
         <details class="newspost-images">
           <summary>#{{ image.number }}{% if image.id == item.featured_image_id %} {{ render_tag('featured') }}{% endif %}</summary>
@@ -114,7 +140,7 @@
 
             {%- if has_current_user_permission(NewsItemPermission.update) %}
             <div class="column-auto">
-              <div class="button-row button-row--right">
+              <div class="button-row button-row--nowrap button-row--right">
                 <a class="button button--compact" href="{{ url_for('.image_update_form', image_id=image.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
@@ -142,13 +168,13 @@
 
         </details>
       </div>
-        {%- endfor %}
-      {%- else %}
-      <div class="dimmed-box centered">{{ _('none') }}</div>
-      {%- endif %}
-
     </div>
+    {%- endfor %}
   </div>
+  {%- else %}
+  <div class="dimmed-box centered">{{ _('none') }}</div>
+  {%- endif %}
+
 
   <h2>{{ _('Preview') }}</h2>
 
