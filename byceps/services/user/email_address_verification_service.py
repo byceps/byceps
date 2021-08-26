@@ -19,7 +19,10 @@ from ...typing import UserID
 from ..email import service as email_service
 from ..site import service as site_service
 from ..site.transfer.models import SiteID
-from ..user import command_service as user_command_service, service as user_service
+from ..user import (
+    command_service as user_command_service,
+    service as user_service,
+)
 from ..verification_token import service as verification_token_service
 from ..verification_token.transfer.models import Token
 
@@ -163,7 +166,9 @@ def send_email_address_change_email(
         f'change/{verification_token.token}'
     )
 
-    subject = f'{recipient_screen_name}, bitte bestätige deine neue E-Mail-Adresse'
+    subject = (
+        f'{recipient_screen_name}, bitte bestätige deine neue E-Mail-Adresse'
+    )
     body = (
         f'Hallo {recipient_screen_name},\n\n'
         f'bitte bestätige deine neue E-Mail-Adresse, indem du diese URL abrufst: {confirmation_url}'

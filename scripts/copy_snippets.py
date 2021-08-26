@@ -35,7 +35,9 @@ def execute(ctx, source_site, target_site, snippet_names) -> None:
     click.secho('Done.', fg='green')
 
 
-def get_snippet_version(source_scope: Scope, snippet_name: str) -> SnippetVersion:
+def get_snippet_version(
+    source_scope: Scope, snippet_name: str
+) -> SnippetVersion:
     snippet_version = snippet_service.find_current_version_of_snippet_with_name(
         source_scope, snippet_name
     )
@@ -49,7 +51,9 @@ def get_snippet_version(source_scope: Scope, snippet_name: str) -> SnippetVersio
     return snippet_version
 
 
-def copy_snippet(target_scope: Scope, snippet_version: SnippetVersion, ctx) -> None:
+def copy_snippet(
+    target_scope: Scope, snippet_version: SnippetVersion, ctx
+) -> None:
     snippet_type = snippet_version.snippet.type_
 
     if snippet_type == SnippetType.document:
@@ -66,7 +70,9 @@ def copy_snippet(target_scope: Scope, snippet_version: SnippetVersion, ctx) -> N
     )
 
 
-def create_document(target_scope: Scope, snippet_version: SnippetVersion) -> None:
+def create_document(
+    target_scope: Scope, snippet_version: SnippetVersion
+) -> None:
     snippet_service.create_document(
         target_scope,
         snippet_version.snippet.name,
@@ -78,7 +84,9 @@ def create_document(target_scope: Scope, snippet_version: SnippetVersion) -> Non
     )
 
 
-def create_fragment(target_scope: Scope, snippet_version: SnippetVersion) -> None:
+def create_fragment(
+    target_scope: Scope, snippet_version: SnippetVersion
+) -> None:
     snippet_service.create_fragment(
         target_scope,
         snippet_version.snippet.name,

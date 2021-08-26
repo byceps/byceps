@@ -78,4 +78,6 @@ _ALLOWED_CODE_SYMBOLS = frozenset(_CODE_ALPHABET + ascii_uppercase + digits)
 
 def is_ticket_code_wellformed(code: str) -> bool:
     """Determine if the ticket code is well-formed."""
-    return len(code) == _CODE_LENGTH and set(code).issubset(_ALLOWED_CODE_SYMBOLS)
+    return len(code) == _CODE_LENGTH and set(code).issubset(
+        _ALLOWED_CODE_SYMBOLS
+    )

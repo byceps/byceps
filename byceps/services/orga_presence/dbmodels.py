@@ -28,6 +28,7 @@ class TimeSlot(db.Model):
 
 class Presence(TimeSlot):
     """The scheduled presence of an organizer at a party."""
+
     __mapper_args__ = {
         'polymorphic_identity': 'orga_presence',
     }
@@ -38,6 +39,7 @@ class Presence(TimeSlot):
 
 class Task(TimeSlot):
     """A scheduled task connected to a party."""
+
     __mapper_args__ = {
         'polymorphic_identity': 'task',
     }

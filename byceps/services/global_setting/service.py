@@ -30,7 +30,7 @@ def create_or_update_setting(name: str, value: str) -> GlobalSetting:
     already exists or not.
     """
     table = DbSetting.__table__
-    identifier = {'name': name }
+    identifier = {'name': name}
     replacement = {'value': value}
 
     upsert(table, identifier, replacement)

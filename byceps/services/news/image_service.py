@@ -23,11 +23,13 @@ from . import service as item_service
 from .transfer.models import ChannelID, Image, ImageID, ItemID
 
 
-ALLOWED_IMAGE_TYPES = frozenset([
-    ImageType.jpeg,
-    ImageType.png,
-    ImageType.svg,
-])
+ALLOWED_IMAGE_TYPES = frozenset(
+    [
+        ImageType.jpeg,
+        ImageType.png,
+        ImageType.svg,
+    ],
+)
 
 
 MAXIMUM_DIMENSIONS = Dimensions(2560, 1440)

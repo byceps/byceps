@@ -28,7 +28,10 @@ from ..user.transfer.models import User
 
 from .aggregation_service import aggregate_category, aggregate_topic
 from .dbmodels.category import Category as DbCategory
-from .dbmodels.posting import InitialTopicPostingAssociation, Posting as DbPosting
+from .dbmodels.posting import (
+    InitialTopicPostingAssociation,
+    Posting as DbPosting,
+)
 from .dbmodels.topic import Topic as DbTopic
 from .posting_command_service import update_posting
 from . import topic_query_service

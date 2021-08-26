@@ -71,9 +71,7 @@ def place_order(
     order = _build_order(shop.id, order_number, orderer, created_at)
     line_items = list(_build_line_items(cart, order))
     order.total_amount = cart.calculate_total_amount()
-    order.shipping_required = any(
-        item.shipping_required for item in line_items
-    )
+    order.shipping_required = any(item.shipping_required for item in line_items)
 
     db.session.add(order)
     db.session.add_all(line_items)

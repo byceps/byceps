@@ -41,7 +41,10 @@ def find_comment(comment_id: MatchCommentID) -> Optional[MatchComment]:
         moderator = _get_user(comment.hidden_by_id)
 
     return _db_entity_to_comment(
-        comment, creator, last_editor=last_editor, moderator=moderator,
+        comment,
+        creator,
+        last_editor=last_editor,
+        moderator=moderator,
     )
 
 
@@ -100,7 +103,10 @@ def get_comments(
         moderator = moderators_by_id.get(db_comment.hidden_by_id)
 
         comment = _db_entity_to_comment(
-            db_comment, creator, last_editor=last_editor, moderator=moderator,
+            db_comment,
+            creator,
+            last_editor=last_editor,
+            moderator=moderator,
         )
         comments.append(comment)
 

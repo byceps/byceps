@@ -24,7 +24,9 @@ def validate_seat_group(ctx, param, seat_group_id_value: str) -> DbSeatGroup:
     try:
         seat_group_id = SeatGroupID(UUID(seat_group_id_value))
     except ValueError as e:
-        raise click.BadParameter(f'Invalid seat group ID "{seat_group_id_value}": {e}')
+        raise click.BadParameter(
+            f'Invalid seat group ID "{seat_group_id_value}": {e}'
+        )
 
     seat_group = seat_group_service.find_seat_group(seat_group_id)
 
@@ -34,11 +36,15 @@ def validate_seat_group(ctx, param, seat_group_id_value: str) -> DbSeatGroup:
     return seat_group
 
 
-def validate_ticket_bundle(ctx, param, ticket_bundle_id_value: str) -> TicketBundle:
+def validate_ticket_bundle(
+    ctx, param, ticket_bundle_id_value: str
+) -> TicketBundle:
     try:
         ticket_bundle_id = TicketBundleID(UUID(ticket_bundle_id_value))
     except ValueError as e:
-        raise click.BadParameter(f'Invalid ticket bundle ID "{ticket_bundle_id_value}": {e}')
+        raise click.BadParameter(
+            f'Invalid ticket bundle ID "{ticket_bundle_id_value}": {e}'
+        )
 
     ticket_bundle = ticket_bundle_service.find_bundle(ticket_bundle_id)
 

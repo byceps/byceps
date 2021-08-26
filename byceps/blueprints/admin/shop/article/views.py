@@ -250,7 +250,7 @@ def create(shop_id):
     total_quantity = form.total_quantity.data
     quantity = total_quantity
     max_quantity_per_order = form.max_quantity_per_order.data
-    shipping_required = (type_ == ArticleType.physical)
+    shipping_required = type_ == ArticleType.physical
 
     article = article_service.create_article(
         shop.id,

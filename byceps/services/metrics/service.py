@@ -66,8 +66,8 @@ def _collect_board_metrics(brand_ids: list[BrandID]) -> Iterator[Metric]:
             )
             yield Metric('board_topic_count', topic_count, labels=labels)
 
-            posting_count = board_posting_query_service.count_postings_for_board(
-                board_id
+            posting_count = (
+                board_posting_query_service.count_postings_for_board(board_id)
             )
             yield Metric('board_posting_count', posting_count, labels=labels)
 
@@ -104,8 +104,8 @@ def _collect_shop_ordered_article_metrics(
 def _collect_shop_order_metrics(shops: list[Shop]) -> Iterator[Metric]:
     """Provide order counts grouped by payment state for shops."""
     for shop in shops:
-        order_counts_per_payment_state = order_service.count_orders_per_payment_state(
-            shop.id
+        order_counts_per_payment_state = (
+            order_service.count_orders_per_payment_state(shop.id)
         )
 
         for payment_state, quantity in order_counts_per_payment_state.items():
@@ -124,8 +124,8 @@ def _collect_seating_metrics(
 ) -> Iterator[Metric]:
     """Provide seat occupation counts per party and category."""
     for party_id in active_party_ids:
-        occupied_seat_counts_by_category = seat_service.count_occupied_seats_by_category(
-            party_id
+        occupied_seat_counts_by_category = (
+            seat_service.count_occupied_seats_by_category(party_id)
         )
 
         for category, count in occupied_seat_counts_by_category:
@@ -161,8 +161,8 @@ def _collect_ticket_metrics(active_parties: list[Party]) -> Iterator[Metric]:
         )
         yield Metric('tickets_sold_count', tickets_sold_count, labels=labels)
 
-        tickets_checked_in_count = ticket_service.count_tickets_checked_in_for_party(
-            party_id
+        tickets_checked_in_count = (
+            ticket_service.count_tickets_checked_in_for_party(party_id)
         )
         yield Metric(
             'tickets_checked_in_count', tickets_checked_in_count, labels=labels

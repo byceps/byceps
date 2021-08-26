@@ -40,10 +40,14 @@ def check_in_user(
 
     ticket.user_checked_in = True
 
-    event = event_service.build_event('user-checked-in', ticket.id, {
-        'checked_in_user_id': str(ticket.used_by_id),
-        'initiator_id': str(initiator.id),
-    })
+    event = event_service.build_event(
+        'user-checked-in',
+        ticket.id,
+        {
+            'checked_in_user_id': str(ticket.used_by_id),
+            'initiator_id': str(initiator.id),
+        },
+    )
     db.session.add(event)
 
     db.session.commit()

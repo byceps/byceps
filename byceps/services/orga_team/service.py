@@ -398,7 +398,9 @@ def is_orga_for_party(user_id: UserID, party_id: PartyID) -> bool:
         .scalar()
 
 
-def select_orgas_for_party(user_ids: set[UserID], party_id: PartyID) -> set[UserID]:
+def select_orgas_for_party(
+    user_ids: set[UserID], party_id: PartyID
+) -> set[UserID]:
     """Return `True` if the user is an organizer (i.e. is member of an
     organizer team) of that party.
     """

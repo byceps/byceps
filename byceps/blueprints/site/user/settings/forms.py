@@ -39,7 +39,9 @@ class ChangeEmailAddressForm(LocalizedForm):
         lazy_gettext('New email address'),
         [InputRequired(), Length(min=6, max=120), validate_email_address],
     )
-    password = PasswordField(lazy_gettext('Current password'), [InputRequired()])
+    password = PasswordField(
+        lazy_gettext('Current password'), [InputRequired()]
+    )
 
     @staticmethod
     def validate_password(form, field):

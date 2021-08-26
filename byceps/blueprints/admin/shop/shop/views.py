@@ -48,7 +48,6 @@ def dashboard(shop_id):
     return {
         'shop': shop,
         'brand': brand,
-
         'order_counts_by_payment_state': order_counts_by_payment_state,
         'PaymentState': PaymentState,
     }
@@ -70,10 +69,8 @@ def view(shop_id):
     return {
         'shop': shop,
         'brand': brand,
-
         'order_counts_by_payment_state': order_counts_by_payment_state,
         'PaymentState': PaymentState,
-
         'settings': shop.extra_settings,
     }
 

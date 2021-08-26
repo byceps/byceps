@@ -15,7 +15,9 @@ from ....database import db
 
 from ..shop.transfer.models import ShopID
 
-from .dbmodels.number_sequence import OrderNumberSequence as DbOrderNumberSequence
+from .dbmodels.number_sequence import (
+    OrderNumberSequence as DbOrderNumberSequence,
+)
 from .transfer.models import (
     OrderNumber,
     OrderNumberSequence,

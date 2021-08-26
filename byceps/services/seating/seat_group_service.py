@@ -183,7 +183,9 @@ def find_seat_group(seat_group_id: SeatGroupID) -> Optional[DbSeatGroup]:
     return db.session.query(DbSeatGroup).get(seat_group_id)
 
 
-def find_occupancy_for_seat_group(seat_group_id: SeatGroupID) -> Optional[DbSeatGroupOccupancy]:
+def find_occupancy_for_seat_group(
+    seat_group_id: SeatGroupID,
+) -> Optional[DbSeatGroupOccupancy]:
     """Return the occupancy for that seat group, or `None` if not found."""
     return db.session.execute(
         select(DbSeatGroupOccupancy)

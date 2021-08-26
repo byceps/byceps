@@ -40,10 +40,14 @@ class Category(db.Model):
     last_posting_updated_by = db.relationship(User)
     hidden = db.Column(db.Boolean, default=False, nullable=False)
 
-    board = db.relationship(Board,
-                            backref=db.backref('categories',
-                                               order_by=position,
-                                               collection_class=ordering_list('position', count_from=1)))
+    board = db.relationship(
+        Board,
+        backref=db.backref(
+            'categories',
+            order_by=position,
+            collection_class=ordering_list('position', count_from=1),
+        ),
+    )
 
     def __init__(
         self, board_id: BoardID, slug: str, title: str, description: str

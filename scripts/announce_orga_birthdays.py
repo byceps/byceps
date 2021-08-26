@@ -24,7 +24,9 @@ def validate_webhook_id(ctx, param, webhook_id_value: str) -> OutgoingWebhook:
     try:
         webhook_id = WebhookID(UUID(webhook_id_value))
     except ValueError as e:
-        raise click.BadParameter(f'Invalid webhook ID "{webhook_id_value}": {e}')
+        raise click.BadParameter(
+            f'Invalid webhook ID "{webhook_id_value}": {e}'
+        )
 
     webhook = webhook_service.find_webhook(webhook_id)
 

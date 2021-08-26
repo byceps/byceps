@@ -63,10 +63,7 @@ def paginate(
 
     offset = (page - 1) * per_page
 
-    items = query \
-        .limit(per_page) \
-        .offset(offset) \
-        .all()
+    items = query.limit(per_page).offset(offset).all()
 
     item_count = len(items)
     if page == 1 and item_count < per_page:

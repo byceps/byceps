@@ -53,7 +53,7 @@ PAYMENT_METHODS = set(
         'cash',
         'direct_debit',
         'free',
-    ]
+    ],
 )
 
 

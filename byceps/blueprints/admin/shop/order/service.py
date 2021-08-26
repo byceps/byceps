@@ -135,7 +135,9 @@ def _get_additional_data_for_badge_awarded(event: OrderEvent) -> OrderEventData:
     }
 
 
-def _get_additional_data_for_order_note_added(event: OrderEvent) -> OrderEventData:
+def _get_additional_data_for_order_note_added(
+    event: OrderEvent,
+) -> OrderEventData:
     author_id = event.data['author_id']
     author = user_service.get_user(author_id)
 

@@ -62,10 +62,16 @@ def view_global():
         for party in active_parties
     ]
 
-    all_brands_by_id = {brand.id: brand for brand in brand_service.get_all_brands()}
+    all_brands_by_id = {
+        brand.id: brand for brand in brand_service.get_all_brands()
+    }
     active_shops = shop_service.get_active_shops()
     active_shops_with_brands_and_open_orders_counts = [
-        (shop, all_brands_by_id[shop.brand_id], shop_order_service.count_open_orders(shop.id))
+        (
+            shop,
+            all_brands_by_id[shop.brand_id],
+            shop_order_service.count_open_orders(shop.id),
+        )
         for shop in active_shops
     ]
 
@@ -88,12 +94,10 @@ def view_global():
         'current_sites': current_sites,
         'active_parties_with_ticket_stats': active_parties_with_ticket_stats,
         'active_shops_with_brands_and_open_orders_counts': active_shops_with_brands_and_open_orders_counts,
-
         'user_count': user_count,
         'recent_users': recent_users,
         'recent_users_count': recent_users_count,
         'uninitialized_user_count': uninitialized_user_count,
-
         'orgas_with_next_birthdays': orgas_with_next_birthdays,
     }
 
@@ -151,15 +155,11 @@ def view_brand(brand_id):
 
     return {
         'brand': brand,
-
         'current_sites': current_sites,
         'active_parties_with_ticket_stats': active_parties_with_ticket_stats,
-
         'newsletter_list': newsletter_list,
         'newsletter_subscriber_count': newsletter_subscriber_count,
-
         'consent_subjects_with_consent_counts': consent_subjects_with_consent_counts,
-
         'shop': shop,
         'open_order_count': open_order_count,
     }
@@ -193,19 +193,14 @@ def view_party(party_id):
 
     return {
         'party': party,
-
         'days': days,
         'days_until_party': days_until_party,
-
         'orga_count': orga_count,
         'orga_team_count': orga_team_count,
-
         'seating_area_count': seating_area_count,
         'seat_count': seat_count,
-
         'ticket_sale_stats': ticket_sale_stats,
         'tickets_checked_in': tickets_checked_in,
-
         'seat_utilization': seat_utilization,
     }
 

@@ -264,9 +264,7 @@ def posting_unhide(posting_id):
 
     page = service.calculate_posting_page_number(posting)
 
-    flash_success(
-        gettext('The post has been made visible again.'), icon='view'
-    )
+    flash_success(gettext('The post has been made visible again.'), icon='view')
 
     event = dataclasses.replace(
         event, url=h.build_external_url_for_posting(posting.id)

@@ -27,7 +27,9 @@ def create_category(party_id: PartyID, title: str) -> TicketCategory:
     return _db_entity_to_category(category)
 
 
-def update_category(category_id: TicketCategoryID, title: str) -> TicketCategory:
+def update_category(
+    category_id: TicketCategoryID, title: str
+) -> TicketCategory:
     """Update a category."""
     category = db.session.query(DbCategory).get(category_id)
 
