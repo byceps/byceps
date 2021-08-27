@@ -9,7 +9,7 @@ byceps.blueprints.site.seating.service
 from __future__ import annotations
 from dataclasses import dataclass
 from itertools import chain
-from typing import Iterator, Optional, Iterable
+from typing import Iterable, Iterator, Optional
 
 from ....services.seating.dbmodels.seat import Seat as DbSeat
 from ....services.seating.transfer.models import Seat
