@@ -19,9 +19,15 @@ KEY_APP_MODE = 'app_mode'
 KEY_SITE_ID = 'site_id'
 
 
-AppMode = Enum('AppMode', ['admin', 'site'])
-AppMode.is_admin = lambda self: self == AppMode.admin
-AppMode.is_site = lambda self: self == AppMode.site
+class AppMode(Enum):
+    admin = object()
+    site = object()
+
+    def is_admin(self) -> bool:
+        return self == AppMode.admin
+
+    def is_site(self) -> bool:
+        return self == AppMode.site
 
 
 class ConfigurationError(Exception):
