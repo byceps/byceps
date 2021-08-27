@@ -14,7 +14,7 @@ from .. import config
 from ..util.framework.blueprint import get_blueprint
 
 
-BlueprintReg = Tuple[str, Optional[str]]
+BlueprintReg = Tuple[Flask, str, Optional[str]]
 
 
 def register_blueprints(app: Flask) -> None:
