@@ -9,7 +9,7 @@ from enum import Enum
 from flask import g
 import pytest
 
-from byceps.util.authorization import create_permission_enum, PermissionRegistry
+from byceps.util.authorization import create_permission_enum
 from byceps.util.authorization import (
     has_current_user_any_permission,
     has_current_user_permission,
