@@ -7,6 +7,7 @@ byceps.services.authentication.password.service
 """
 
 from datetime import datetime
+from typing import Optional
 
 from werkzeug.security import (
     check_password_hash as _check_password_hash,
@@ -53,7 +54,7 @@ def update_password_hash(
 
     password_hash = generate_password_hash(password)
 
-    credential = db.session.query(DbCredential).get(user_id)
+    credential = _get_credential_for_user(user_id)
 
     credential.password_hash = password_hash
     credential.updated_at = now
@@ -76,7 +77,7 @@ def is_password_valid_for_user(user_id: UserID, password: str) -> bool:
     """Return `True` if the password is valid for the user, or `False`
     otherwise.
     """
-    credential = db.session.query(DbCredential).get(user_id)
+    credential = _find_credential_for_user(user_id)
 
     if credential is None:
         # no password stored for user
@@ -92,6 +93,21 @@ def check_password_hash(password_hash: str, password: str) -> bool:
     return (password_hash is not None) and _check_password_hash(
         password_hash, password
     )
+
+
+def _find_credential_for_user(user_id: UserID) -> Optional[DbCredential]:
+    """Return the credential for the user, if found."""
+    return db.session.query(DbCredential).get(user_id)
+
+
+def _get_credential_for_user(user_id: UserID) -> DbCredential:
+    """Return the credential for the user, or raise exception if not found."""
+    credential = _find_credential_for_user(user_id)
+
+    if credential is None:
+        raise Exception(f'No credential found for user ID "{user_id}"')
+
+    return credential
 
 
 def delete_password_hash(user_id: UserID) -> None:
