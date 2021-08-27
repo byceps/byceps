@@ -611,19 +611,19 @@ button.button[disabled],
   display: block;
 }
 
+.dropdown-item,
+.dropdown-label {
+  padding: 0.4rem 0.8rem;
+  white-space: nowrap;
+}
+
 .dropdown-item {
   color: currentColor;
-  padding: 0.4rem 0.8rem;
   text-decoration: none;
-  white-space: nowrap;
 }
 
 .dropdown-item:hover {
   background-color: #eeeeee;
-}
-
-.dropdown-label {
-  padding: 0.4rem 0.8rem;
 }
 
 .dropdown-divider {

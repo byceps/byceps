@@ -43,19 +43,15 @@
       {%- if has_current_user_permission(NewsItemPermission.update) %}
       <div class="button-row button-row--nowrap button-row--right">
         <a class="button" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+        {%- if not item.published and has_current_user_permission(NewsItemPermission.publish) %}
         <div class="dropdown">
-          <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
+          <button class="dropdown-toggle button"><span>{{ render_icon('published') }} {{ _('Publish') }} {{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} {{ _('Add image') }}</a></li>
-            {%- if item.featured_image_id is not none %}
-            <li><a class="dropdown-item" data-action="image-unset-featured" href="{{ url_for('.image_unset_featured', item_id=item.id) }}"><span class="icon"></span> {{ _('Unset image as featured') }}</a></li>
-            {%- endif %}
-            {%- if not item.published and has_current_user_permission(NewsItemPermission.publish) %}
-            <li><a class="dropdown-item" data-action="item-publish-now" href="{{ url_for('.item_publish_now', item_id=item.id) }}">{{ render_icon('published') }} {{ _('Publish news post now') }}</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.item_publish_later_form', item_id=item.id) }}">{{ render_icon('published') }} {{ _('Publish news post later') }}</a></li>
-            {%- endif %}
+            <li><a class="dropdown-item" data-action="item-publish-now" href="{{ url_for('.item_publish_now', item_id=item.id) }}">{{ _('Publish now') }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.item_publish_later_form', item_id=item.id) }}">{{ _('Publish later') }}</a></li>
           </ol>
         </div>
+        {%- endif %}
       </div>
       {%- endif %}
 
@@ -105,7 +101,32 @@
   </div>
 
 
-  <h2>{{ _('Images') }} {{ render_extra_in_heading(item.images|length) }}</h2>
+  <div class="row row--space-between">
+    <div class="column-auto">
+
+      <h2>{{ _('Images') }} {{ render_extra_in_heading(item.images|length) }}</h2>
+
+    </div>
+    <div class="column-auto column--align-bottom">
+
+      {%- if has_current_user_permission(NewsItemPermission.update) %}
+      <div class="button-row button-row--nowrap button-row--right">
+        <a class="button button--compact" href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} <span>{{ _('Add image') }}</span></a>
+        <div class="dropdown">
+          <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            {%- if item.featured_image_id is not none %}
+            <li><a class="dropdown-item" data-action="image-unset-featured" href="{{ url_for('.image_unset_featured', item_id=item.id) }}">{{ _('Unset featured image') }}</a></li>
+            {%- else %}
+            <li><span class="dropdown-label dimmed">{{ _('Unset featured image') }}</span></li>
+            {%- endif %}
+          </ol>
+        </div>
+      </div>
+      {%- endif %}
+
+    </div>
+  </div>
 
   {%- if item.images %}
   <div class="two-column">
