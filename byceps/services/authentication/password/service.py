@@ -35,9 +35,8 @@ def generate_password_hash(password: str) -> str:
 
 def create_password_hash(user_id: UserID, password: str) -> None:
     """Create a password-based credential and a session token for the user."""
-    now = datetime.utcnow()
-
     password_hash = generate_password_hash(password)
+    now = datetime.utcnow()
 
     credential = DbCredential(user_id, password_hash, now)
     db.session.add(credential)
@@ -50,14 +49,10 @@ def update_password_hash(
     """Update the password hash and set a newly-generated authentication
     token for the user.
     """
-    now = datetime.utcnow()
-
-    password_hash = generate_password_hash(password)
-
     credential = _get_credential_for_user(user_id)
 
-    credential.password_hash = password_hash
-    credential.updated_at = now
+    credential.password_hash = generate_password_hash(password)
+    credential.updated_at = datetime.utcnow()
 
     event = user_event_service.build_event(
         'password-updated',
