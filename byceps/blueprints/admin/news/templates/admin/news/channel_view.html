@@ -44,10 +44,7 @@
             {{ _('Slug') }}
           </th>
           <th></th>
-          <th class="nowrap">
-            {{ _('Publication') }}<br>
-            {{ _('Latest change') }}
-          </th>
+          <th class="nowrap">{{ _('Latest change') }}</th>
           <th class="centered">{{ _('Images') }}</th>
         </tr>
       </thead>
@@ -55,26 +52,21 @@
       {%- for item in items.items|sort(attribute='created_at', reverse=True) %}
         <tr>
           <td>
+            {%- if not item.published %}
+            {{ render_tag(_('Draft')) }}
+            {%- endif %}
             <a href="{{ url_for('.item_view', item_id=item.id) }}"><strong>{{ item.title|fallback('&lt;' ~ _('untitled') ~ '&gt;') }}</strong></a><br>
             {{ item.slug|dim }}
           </td>
           <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title=_('Image defined')) }}{% endif %}</td>
           <td class="nowrap">
-            {%- if item.published %}
-            <strong>{{ render_datetime(item.published_at|utc_to_local_tz) }}</strong>
-            {%- else %}
-            {{ render_tag(_('Draft')) }}
-            {%- endif %}
-            <br>
-          {%- filter dim %}
             {%- if has_current_user_permission(NewsItemPermission.view) %}
-            {{ render_icon('history') }} <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="{{ _('View change history') }}">{{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}</a>
+            <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="{{ _('View change history') }}">{{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}</a>
             {%- else %}
             {{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}
             {%- endif -%}
             <br>
             {{ _('by') }} {{ render_user_avatar_and_name(users_by_id[item.current_version.creator_id], size=16) }}
-          {%- endfilter %}
           </td>
           {%- with image_total = item.images|length %}
           <td class="centered bignumber{% if image_total == 0 %} dimmed{% endif %}">{{ image_total }}</td>
