@@ -7,15 +7,17 @@ byceps.util.authorization
 """
 
 from __future__ import annotations
-from enum import Enum
+from enum import Enum, EnumMeta
+from typing import Optional
 
 from flask import current_app, g
 
 from ..services.authorization import service as authorization_service
+from ..services.authorization.transfer.models import PermissionID
 from ..typing import UserID
 
 
-def create_permission_enum(key: str, member_names: list[str]) -> Enum:
+def create_permission_enum(key: str, member_names: list[str]) -> EnumMeta:
     """Create a permission enum."""
     name = _derive_enum_name(key)
 
@@ -34,7 +36,7 @@ def _derive_enum_name(key: str) -> str:
     return ''.join(word.title() for word in words)
 
 
-def register_permission_enum(enum: Enum):
+def register_permission_enum(enum: EnumMeta) -> None:
     """Register permission enum."""
     permission_registry.register_enum(enum)
 
@@ -47,18 +49,18 @@ def get_permissions_for_user(user_id: UserID) -> frozenset[Enum]:
 
 class PermissionRegistry:
 
-    def __init__(self):
-        self.enums = {}
+    def __init__(self) -> None:
+        self.enums: dict[str, EnumMeta] = {}
 
-    def register_enum(self, permission_enum):
+    def register_enum(self, permission_enum: EnumMeta) -> None:
         """Add an enum to the registry."""
         self.enums[permission_enum.__key__] = permission_enum
 
-    def get_enums(self):
+    def get_enums(self) -> frozenset[EnumMeta]:
         """Return the registered enums."""
         return frozenset(self.enums.values())
 
-    def get_enum_member(self, permission_id):
+    def get_enum_member(self, permission_id: PermissionID) -> Optional[Enum]:
         """Return the enum that is registered for the given permission
         ID, or `None` if none is.
         """
@@ -83,7 +85,9 @@ class PermissionRegistry:
             )
             return None
 
-    def get_enum_members(self, permission_ids) -> frozenset[Enum]:
+    def get_enum_members(
+        self, permission_ids: set[PermissionID]
+    ) -> frozenset[Enum]:
         """Return the enums that are registered for the permission IDs.
 
         If no enum is found for a permission ID, it is silently ignored.
@@ -101,6 +105,6 @@ def has_current_user_permission(permission: Enum) -> bool:
     return permission in g.user.permissions
 
 
-def has_current_user_any_permission(*permissions: set[Enum]) -> bool:
+def has_current_user_any_permission(*permissions: Enum) -> bool:
     """Return `True` if the current user has any of these permissions."""
     return any(map(has_current_user_permission, permissions))
