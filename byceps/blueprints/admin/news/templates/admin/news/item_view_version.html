@@ -35,7 +35,7 @@
           <li>{{ _('Channel') }}: <a href="{{ url_for('.channel_view', channel_id=item.channel.id) }}">{{ item.channel.id }}</a></li>
         </ol>
       </nav>
-      <h1>{{ item.title }}</h1>
+      <h1>{% if not version.item.published %}{{ render_tag(_('Draft')) }} {% endif %}{{ item.title }}</h1>
 
     </div>
     <div class="column-auto column--align-bottom">
@@ -93,16 +93,12 @@
         </div>
       </div>
 
+      {%- if version.item.published %}
       <div>
         <div class="data-label">{{ _('Published') }}</div>
-        <div class="data-value">
-          {%- if version.item.published %}
-          {{- render_datetime(version.item.published_at|utc_to_local_tz) }}
-          {%- else %}
-          {{- render_tag(_('Draft')) }}
-          {%- endif -%}
-        </div>
+        <div class="data-value">{{ render_datetime(version.item.published_at|utc_to_local_tz) }}</div>
       </div>
+      {%- endif %}
 
     </div>
 
