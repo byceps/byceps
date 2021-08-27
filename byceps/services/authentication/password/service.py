@@ -90,6 +90,25 @@ def check_password_hash(password_hash: str, password: str) -> bool:
     )
 
 
+def migrate_password_hash_if_outdated(user_id: UserID, password: str) -> None:
+    """Recreate the password hash with the current algorithm and parameters."""
+    credential = _get_credential_for_user(user_id)
+
+    if is_password_hash_current(credential.password_hash):
+        return
+
+    credential.password_hash = generate_password_hash(password)
+    credential.updated_at = datetime.utcnow()
+    db.session.commit()
+
+
+def is_password_hash_current(password_hash: str) -> bool:
+    """Return `True` if the password hash was created with the currently
+    configured method (algorithm and parameters).
+    """
+    return password_hash.startswith(PASSWORD_HASH_METHOD + '$')
+
+
 def _find_credential_for_user(user_id: UserID) -> Optional[DbCredential]:
     """Return the credential for the user, if found."""
     return db.session.query(DbCredential).get(user_id)

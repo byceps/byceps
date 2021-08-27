@@ -41,6 +41,8 @@ def authenticate(screen_name_or_email_address: str, password: str) -> User:
         # Password does not match.
         raise AuthenticationFailed()
 
+    password_service.migrate_password_hash_if_outdated(user.id, password)
+
     return user
 
 
