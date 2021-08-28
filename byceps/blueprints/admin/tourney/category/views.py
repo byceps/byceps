@@ -12,7 +12,6 @@ from flask_babel import gettext
 from .....permissions.tourney import TourneyCategoryPermission
 from .....services.party import service as party_service
 from .....services.tourney import category_service
-from .....util.authorization import register_permission_enum
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
@@ -22,9 +21,6 @@ from .forms import CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('tourney_category_admin', __name__)
-
-
-register_permission_enum(TourneyCategoryPermission)
 
 
 @blueprint.get('/for_party/<party_id>')

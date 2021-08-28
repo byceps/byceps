@@ -13,15 +13,11 @@ from flask import g
 
 from ....permissions.admin import AdminPermission
 from ....services.brand import service as brand_service
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.user_session import get_current_user
 
 
 blueprint = create_blueprint('core_admin', __name__)
-
-
-register_permission_enum(AdminPermission)
 
 
 @blueprint.app_context_processor

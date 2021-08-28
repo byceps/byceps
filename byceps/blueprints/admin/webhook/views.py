@@ -17,7 +17,6 @@ from ....announce.helpers import call_webhook
 from ....permissions.webhook import WebhookPermission
 from ....services.webhooks import service as webhook_service
 from ....services.webhooks.transfer.models import OutgoingWebhook, WebhookID
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -31,9 +30,6 @@ from .forms import (
 
 
 blueprint = create_blueprint('webhook_admin', __name__)
-
-
-register_permission_enum(WebhookPermission)
 
 
 WEBHOOK_EVENT_NAMES = frozenset(EVENT_TYPES_TO_NAMES.values())

@@ -25,6 +25,8 @@ def create_permission_enum(key: str, member_names: list[str]) -> EnumMeta:
     permission_enum.__key__ = key
     permission_enum.__repr__ = lambda self: f'<{self}>'
 
+    permission_registry.register_enum(permission_enum)
+
     return permission_enum
 
 
@@ -34,11 +36,6 @@ def _derive_enum_name(key: str) -> str:
     words.append('permission')
 
     return ''.join(word.title() for word in words)
-
-
-def register_permission_enum(enum: EnumMeta) -> None:
-    """Register permission enum."""
-    permission_registry.register_enum(enum)
 
 
 def get_permissions_for_user(user_id: UserID) -> frozenset[Enum]:

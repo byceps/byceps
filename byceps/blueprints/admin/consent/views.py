@@ -11,7 +11,6 @@ from flask_babel import gettext
 
 from ....permissions.consent import ConsentPermission
 from ....services.consent import subject_service
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -21,9 +20,6 @@ from .forms import SubjectCreateForm
 
 
 blueprint = create_blueprint('consent_admin', __name__)
-
-
-register_permission_enum(ConsentPermission)
 
 
 @blueprint.get('/')

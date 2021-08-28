@@ -24,7 +24,6 @@ from ....services.text_diff import service as text_diff_service
 from ....services.user import service as user_service
 from ....services.user.service import UserIdRejected
 from ....signals import news as news_signals
-from ....util.authorization import register_permission_enum
 from ....util.datetime.format import format_datetime_short
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
@@ -44,10 +43,6 @@ from .forms import (
 
 
 blueprint = create_blueprint('news_admin', __name__)
-
-
-register_permission_enum(NewsChannelPermission)
-register_permission_enum(NewsItemPermission)
 
 
 # -------------------------------------------------------------------- #

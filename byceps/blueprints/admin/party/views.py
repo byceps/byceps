@@ -22,7 +22,6 @@ from ....services.party import (
 from ....services.ticketing import ticket_service
 from ....services.ticketing.transfer.models import TicketSaleStats
 from ....typing import PartyID
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -34,9 +33,6 @@ from .forms import CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('party_admin', __name__)
-
-
-register_permission_enum(PartyPermission)
 
 
 @blueprint.get('/')

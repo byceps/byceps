@@ -38,7 +38,6 @@ from .....services.ticketing.transfer.models import TicketCategory
 from .....services.user import service as user_service
 from .....services.user_badge import badge_service
 from .....typing import BrandID
-from .....util.authorization import register_permission_enum
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
@@ -57,9 +56,6 @@ from .forms import (
 
 
 blueprint = create_blueprint('shop_article_admin', __name__)
-
-
-register_permission_enum(ShopArticlePermission)
 
 
 TAX_RATE_DISPLAY_FACTOR = Decimal('100')

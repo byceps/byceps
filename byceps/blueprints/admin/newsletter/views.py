@@ -15,16 +15,12 @@ from ....permissions.newsletter import NewsletterPermission
 from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List
 from ....services.newsletter.types import SubscriptionState
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import jsonified, permission_required, textified
 
 
 blueprint = create_blueprint('newsletter_admin', __name__)
-
-
-register_permission_enum(NewsletterPermission)
 
 
 @dataclass(frozen=True)

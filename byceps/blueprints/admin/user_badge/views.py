@@ -14,7 +14,6 @@ from ....services.brand import service as brand_service
 from ....services.user import service as user_service
 from ....services.user_badge import awarding_service, badge_service
 from ....signals import user_badge as user_badge_signals
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -24,9 +23,6 @@ from .forms import AwardForm, CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('user_badge_admin', __name__)
-
-
-register_permission_enum(UserBadgePermission)
 
 
 # -------------------------------------------------------------------- #

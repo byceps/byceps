@@ -14,7 +14,6 @@ from .....services.brand import service as brand_service
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import PaymentState
 from .....services.shop.shop import service as shop_service
-from .....util.authorization import register_permission_enum
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
@@ -26,9 +25,6 @@ from .....util.views import (
 
 
 blueprint = create_blueprint('shop_shop_admin', __name__)
-
-
-register_permission_enum(ShopPermission)
 
 
 @blueprint.get('/shops/<shop_id>/dashboard')

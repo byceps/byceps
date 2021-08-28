@@ -18,7 +18,6 @@ from ....services.ticketing import (
     ticket_service,
     ticket_user_management_service,
 )
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -29,9 +28,6 @@ from . import service
 
 
 blueprint = create_blueprint('ticketing_admin', __name__)
-
-
-register_permission_enum(TicketingPermission)
 
 
 # -------------------------------------------------------------------- #

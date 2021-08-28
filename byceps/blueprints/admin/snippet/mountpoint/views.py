@@ -20,7 +20,6 @@ from .....services.site import service as site_service
 from .....services.site.transfer.models import Site
 from .....services.snippet import mountpoint_service, service as snippet_service
 from .....services.snippet.transfer.models import Scope
-from .....util.authorization import register_permission_enum
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
@@ -37,9 +36,6 @@ from .forms import CreateForm, SiteSelectForm
 
 
 blueprint = create_blueprint('snippet_mountpoint_admin', __name__)
-
-
-register_permission_enum(SnippetMountpointPermission)
 
 
 @blueprint.get('/for_site/<site_id>')

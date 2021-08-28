@@ -7,16 +7,12 @@ byceps.blueprints.admin.jobs.views
 """
 
 from ....permissions.jobs import JobsPermission
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required
 
 
 blueprint = create_blueprint('jobs_admin', __name__)
-
-
-register_permission_enum(JobsPermission)
 
 
 @blueprint.get('/')

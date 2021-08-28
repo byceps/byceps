@@ -30,7 +30,6 @@ from ....services.site import (
     settings_service as site_settings_service,
 )
 from ....services.site.transfer.models import Site, SiteWithBrand
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -40,9 +39,6 @@ from .forms import AddNewsChannelForm, CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('site_admin', __name__)
-
-
-register_permission_enum(SitePermission)
 
 
 @blueprint.get('/')

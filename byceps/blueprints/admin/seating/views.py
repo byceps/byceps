@@ -19,7 +19,6 @@ from ....services.seating import (
 from ....services.ticketing import (
     category_service as ticketing_category_service,
 )
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -29,9 +28,6 @@ from .forms import AreaCreateForm
 
 
 blueprint = create_blueprint('seating_admin', __name__)
-
-
-register_permission_enum(SeatingPermission)
 
 
 @blueprint.get('/<party_id>')

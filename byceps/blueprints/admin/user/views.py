@@ -33,7 +33,6 @@ from ....services.user import (
 from ....services.user.transfer.models import UserForAdmin, UserStateFilter
 from ....services.user_badge import awarding_service as badge_awarding_service
 from ....signals import user as user_signals
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -53,9 +52,6 @@ from . import service
 
 
 blueprint = create_blueprint('user_admin', __name__)
-
-
-register_permission_enum(UserPermission)
 
 
 @blueprint.get('/', defaults={'page': 1})

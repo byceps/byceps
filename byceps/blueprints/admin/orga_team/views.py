@@ -13,7 +13,6 @@ from ....permissions.orga_team import OrgaTeamPermission
 from ....services.orga_team import service as orga_team_service
 from ....services.party import service as party_service
 from ....services.user import service as user_service
-from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -28,9 +27,6 @@ from .forms import (
 
 
 blueprint = create_blueprint('orga_team_admin', __name__)
-
-
-register_permission_enum(OrgaTeamPermission)
 
 
 # -------------------------------------------------------------------- #
