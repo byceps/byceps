@@ -1,12 +1,12 @@
 """
-byceps.blueprints.site.board.authorization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.permissions.board
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.util.authorization import create_permission_enum
+from ..util.authorization import create_permission_enum
 
 
 BoardPermission = create_permission_enum(
@@ -17,6 +17,16 @@ BoardPermission = create_permission_enum(
         'hide',
         'update_of_others',
         'view_hidden',
+    ],
+)
+
+
+BoardCategoryPermission = create_permission_enum(
+    'board_category',
+    [
+        'create',
+        'update',
+        'view',
     ],
 )
 

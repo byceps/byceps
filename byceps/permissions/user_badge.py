@@ -1,12 +1,12 @@
 """
-byceps.blueprints.admin.user_badge.authorization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.permissions.user_badge
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.util.authorization import create_permission_enum
+from ..util.authorization import create_permission_enum
 
 
 UserBadgePermission = create_permission_enum(

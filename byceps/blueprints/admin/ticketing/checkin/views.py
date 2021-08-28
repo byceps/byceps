@@ -11,6 +11,7 @@ from datetime import date
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
+from .....permissions.ticketing import TicketingPermission
 from .....services.party import service as party_service
 from .....services.ticketing import (
     exceptions as ticket_exceptions,
@@ -23,8 +24,6 @@ from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_notice, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, respond_no_content
-
-from ...ticketing.authorization import TicketingPermission
 
 
 blueprint = create_blueprint('ticketing_checkin_admin', __name__)

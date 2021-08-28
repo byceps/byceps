@@ -12,6 +12,7 @@ from datetime import datetime
 from flask import abort, request
 from flask_babel import gettext
 
+from .....permissions.tourney import TourneyPermission
 from .....services.party import service as party_service
 from .....services.tourney import tourney_service
 from .....util.authorization import register_permission_enum
@@ -20,8 +21,6 @@ from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
 from .....util.templatefilters import local_tz_to_utc, utc_to_local_tz
 from .....util.views import permission_required, redirect_to
-
-from ..authorization import TourneyPermission
 
 from .forms import CreateForm, UpdateForm
 

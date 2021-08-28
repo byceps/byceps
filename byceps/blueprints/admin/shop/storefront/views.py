@@ -9,6 +9,7 @@ byceps.blueprints.admin.shop.storefront.views
 from flask import abort, request
 from flask_babel import gettext
 
+from .....permissions.shop import ShopPermission
 from .....services.brand import service as brand_service
 from .....services.shop.catalog import service as catalog_service
 from .....services.shop.order import sequence_service as order_sequence_service
@@ -18,8 +19,6 @@ from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to
-
-from ..shop.authorization import ShopPermission
 
 from .forms import StorefrontCreateForm, StorefrontUpdateForm
 

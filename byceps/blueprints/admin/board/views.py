@@ -11,6 +11,7 @@ from dataclasses import dataclass
 from flask import abort, request
 from flask_babel import gettext
 
+from ....permissions.board import BoardCategoryPermission, BoardPermission
 from ....services.board import board_service
 from ....services.board import (
     category_command_service as board_category_command_service,
@@ -26,9 +27,6 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
-from ...site.board.authorization import BoardPermission
-
-from .authorization import BoardCategoryPermission
 from .forms import BoardCreateForm, CategoryCreateForm, CategoryUpdateForm
 
 

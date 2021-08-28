@@ -10,6 +10,7 @@ from typing import Optional
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
+from ....permissions.snippet import SnippetPermission
 from ....services.snippet.dbmodels.snippet import (
     SnippetVersion as DbSnippetVersion,
 )
@@ -32,7 +33,6 @@ from ....util.views import (
 
 from ...site.snippet.templating import get_snippet_context
 
-from .authorization import SnippetPermission
 from .forms import (
     DocumentCreateForm,
     DocumentUpdateForm,

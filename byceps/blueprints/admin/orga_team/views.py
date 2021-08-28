@@ -9,6 +9,7 @@ byceps.blueprints.admin.orga_team.views
 from flask import abort, request
 from flask_babel import gettext
 
+from ....permissions.orga_team import OrgaTeamPermission
 from ....services.orga_team import service as orga_team_service
 from ....services.party import service as party_service
 from ....services.user import service as user_service
@@ -18,7 +19,6 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
-from .authorization import OrgaTeamPermission
 from .forms import (
     MembershipCreateForm,
     MembershipUpdateForm,

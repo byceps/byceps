@@ -9,14 +9,13 @@ byceps.blueprints.admin.ticketing.category.views
 from flask import abort, request
 from flask_babel import gettext
 
+from .....permissions.ticketing import TicketingPermission
 from .....services.party import service as party_service
 from .....services.ticketing import category_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to
-
-from ...ticketing.authorization import TicketingPermission
 
 from .forms import CreateOrUpdateForm
 

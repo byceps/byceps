@@ -13,6 +13,7 @@ from typing import Optional
 from flask import abort, g, redirect, request
 from flask_babel import gettext
 
+from ....permissions.board import BoardPermission, BoardTopicPermission
 from ....services.authentication.session.models.current_user import CurrentUser
 from ....services.board import (
     category_query_service as board_category_query_service,
@@ -31,7 +32,6 @@ from ....util.views import permission_required, respond_no_content_with_location
 
 from ..orga_team.service import is_orga_for_current_party
 
-from .authorization import BoardPermission, BoardTopicPermission
 from .blueprint import blueprint
 from .forms import PostingCreateForm, TopicCreateForm, TopicUpdateForm
 from . import _helpers as h, service

@@ -13,6 +13,7 @@ from decimal import Decimal
 from flask import abort, request
 from flask_babel import gettext
 
+from .....permissions.shop import ShopArticlePermission
 from .....services.brand import service as brand_service
 from .....services.party import service as party_service
 from .....services.party.transfer.models import Party
@@ -44,7 +45,6 @@ from .....util.framework.templating import templated
 from .....util.templatefilters import local_tz_to_utc, utc_to_local_tz
 from .....util.views import permission_required, redirect_to, respond_no_content
 
-from .authorization import ShopArticlePermission
 from .forms import (
     ArticleCreateForm,
     ArticleUpdateForm,

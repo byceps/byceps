@@ -8,6 +8,7 @@ byceps.blueprints.admin.attendance.views
 
 from flask import abort
 
+from ....permissions.admin import AdminPermission
 from ....services.brand import service as brand_service
 from ....services.party import service as party_service
 from ....services.ticketing import attendance_service
@@ -15,8 +16,6 @@ from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required
-
-from ..core.authorization import AdminPermission
 
 
 blueprint = create_blueprint('attendance_admin', __name__)

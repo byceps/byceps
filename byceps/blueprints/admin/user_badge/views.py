@@ -9,6 +9,7 @@ byceps.blueprints.admin.user_badge.views
 from flask import abort, g, request
 from flask_babel import gettext
 
+from ....permissions.user_badge import UserBadgePermission
 from ....services.brand import service as brand_service
 from ....services.user import service as user_service
 from ....services.user_badge import awarding_service, badge_service
@@ -19,7 +20,6 @@ from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to
 
-from .authorization import UserBadgePermission
 from .forms import AwardForm, CreateForm, UpdateForm
 
 

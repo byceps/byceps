@@ -11,6 +11,7 @@ import dataclasses
 from flask import g, redirect, request
 from flask_babel import gettext
 
+from ....permissions.board import BoardPermission, BoardPostingPermission
 from ....services.board import (
     last_view_service as board_last_view_service,
     posting_command_service as board_posting_command_service,
@@ -24,7 +25,6 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, respond_no_content_with_location
 
-from .authorization import BoardPermission, BoardPostingPermission
 from .blueprint import blueprint
 from .forms import PostingCreateForm, PostingUpdateForm
 from . import _helpers as h, service

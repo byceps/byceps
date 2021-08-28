@@ -13,6 +13,7 @@ from datetime import date, datetime
 from flask import abort, request
 from flask_babel import gettext
 
+from ....permissions.party import PartyPermission
 from ....services.brand import service as brand_service
 from ....services.party import (
     service as party_service,
@@ -29,7 +30,6 @@ from ....util.iterables import partition
 from ....util.templatefilters import local_tz_to_utc, utc_to_local_tz
 from ....util.views import permission_required, redirect_to
 
-from .authorization import PartyPermission
 from .forms import CreateForm, UpdateForm
 
 

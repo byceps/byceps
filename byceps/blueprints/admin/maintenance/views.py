@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 
 from flask_babel import gettext
 
+from ....permissions.admin import AdminPermission
 from ....services.user import event_service as user_event_service
 from ....services.verification_token import (
     service as verification_token_service,
@@ -18,8 +19,6 @@ from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, respond_no_content
-
-from ..core.authorization import AdminPermission
 
 
 blueprint = create_blueprint('maintenance_admin', __name__)

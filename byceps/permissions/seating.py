@@ -1,12 +1,12 @@
 """
-byceps.blueprints.admin.seating.authorization
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.permissions.seating
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.util.authorization import create_permission_enum
+from ..util.authorization import create_permission_enum
 
 
 SeatingPermission = create_permission_enum(

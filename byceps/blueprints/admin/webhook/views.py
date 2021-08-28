@@ -14,6 +14,7 @@ from flask_babel import gettext
 
 from ....announce.events import EVENT_TYPES_TO_NAMES
 from ....announce.helpers import call_webhook
+from ....permissions.webhook import WebhookPermission
 from ....services.webhooks import service as webhook_service
 from ....services.webhooks.transfer.models import OutgoingWebhook, WebhookID
 from ....util.authorization import register_permission_enum
@@ -22,7 +23,6 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
-from .authorization import WebhookPermission
 from .forms import (
     assemble_create_form,
     assemble_update_form,

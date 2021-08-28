@@ -8,14 +8,13 @@ byceps.blueprints.admin.authorization.views
 
 from flask import abort
 
+from ....permissions.authorization import RolePermission
 from ....services.authorization import service as authorization_service
 from ....services.user import service as user_service
 from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required
-
-from .authorization import RolePermission
 
 
 blueprint = create_blueprint('authorization_admin', __name__)

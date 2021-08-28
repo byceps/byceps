@@ -11,6 +11,10 @@ from typing import Optional
 from flask import abort, request
 from flask_babel import gettext
 
+from .....permissions.snippet import (
+    SnippetMountpointPermission,
+    SnippetPermission,
+)
 from .....services.brand.transfer.models import Brand
 from .....services.site import service as site_service
 from .....services.site.transfer.models import Site
@@ -22,7 +26,6 @@ from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
 
-from ..authorization import SnippetPermission
 from ..helpers import (
     find_brand_for_scope,
     find_site_by_id,
@@ -30,7 +33,6 @@ from ..helpers import (
     find_snippet_by_id,
 )
 
-from .authorization import SnippetMountpointPermission
 from .forms import CreateForm, SiteSelectForm
 
 

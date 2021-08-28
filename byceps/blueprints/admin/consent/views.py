@@ -9,6 +9,7 @@ byceps.blueprints.admin.consent.views
 from flask import request
 from flask_babel import gettext
 
+from ....permissions.consent import ConsentPermission
 from ....services.consent import subject_service
 from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
@@ -16,7 +17,6 @@ from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to
 
-from .authorization import ConsentPermission
 from .forms import SubjectCreateForm
 
 

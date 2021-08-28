@@ -10,6 +10,7 @@ from typing import Optional
 
 from flask import abort, current_app
 
+from .....permissions.shop import ShopPermission
 from .....services.brand import service as brand_service
 from .....services.email import service as email_service
 from .....services.shop.order.email import (
@@ -20,8 +21,6 @@ from .....util.authorization import register_permission_enum
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated
 from .....util.views import permission_required
-
-from ..shop.authorization import ShopPermission
 
 
 blueprint = create_blueprint('shop_email_admin', __name__)

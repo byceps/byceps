@@ -6,15 +6,14 @@ byceps.blueprints.site.board.blueprint
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ....services.text_markup.service import render_html
-from ....util.authorization import register_permission_enum
-from ....util.framework.blueprint import create_blueprint
-
-from .authorization import (
+from ....permissions.board import (
     BoardPermission,
     BoardPostingPermission,
     BoardTopicPermission,
 )
+from ....services.text_markup.service import render_html
+from ....util.authorization import register_permission_enum
+from ....util.framework.blueprint import create_blueprint
 
 
 blueprint = create_blueprint('board', __name__)

@@ -11,6 +11,8 @@ from typing import Optional
 from flask import abort, g, request
 from flask_babel import gettext
 
+from ....permissions.orga import OrgaBirthdayPermission, OrgaDetailPermission
+from ....permissions.orga_team import OrgaTeamPermission
 from ....services.brand import service as brand_service
 from ....services.orga import birthday_service as orga_birthday_service
 from ....services.orga import service as orga_service
@@ -28,9 +30,6 @@ from ....util.views import (
     textified,
 )
 
-from ..orga_team.authorization import OrgaTeamPermission
-
-from .authorization import OrgaBirthdayPermission, OrgaDetailPermission
 from .forms import OrgaFlagCreateForm
 
 

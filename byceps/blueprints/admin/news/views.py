@@ -11,6 +11,7 @@ from datetime import date, datetime
 from flask import abort, g, request
 from flask_babel import gettext
 
+from ....permissions.news import NewsChannelPermission, NewsItemPermission
 from ....services.brand import service as brand_service
 from ....services.image import service as image_service
 from ....services.news import channel_service as news_channel_service
@@ -32,7 +33,6 @@ from ....util.iterables import pairwise
 from ....util.templatefilters import local_tz_to_utc
 from ....util.views import permission_required, redirect_to, respond_no_content
 
-from .authorization import NewsChannelPermission, NewsItemPermission
 from .forms import (
     ChannelCreateForm,
     ImageCreateForm,

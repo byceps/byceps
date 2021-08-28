@@ -12,6 +12,8 @@ from typing import Optional
 from flask import abort, g, request
 from flask_babel import gettext
 
+from ....permissions.authorization import RolePermission
+from ....permissions.user import UserPermission
 from ....services.authentication.password import service as password_service
 from ....services.authentication.session import service as session_service
 from ....services.authorization import service as authorization_service
@@ -37,9 +39,6 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
-from ..authorization.authorization import RolePermission
-
-from .authorization import UserPermission
 from .forms import (
     ChangeDetailsForm,
     ChangeEmailAddressForm,

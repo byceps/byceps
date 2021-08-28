@@ -9,6 +9,7 @@ byceps.blueprints.site.news.views
 from __future__ import annotations
 from flask import abort, g
 
+from ....permissions.news import NewsItemPermission
 from ....services.news import service as news_item_service
 from ....services.news.transfer.models import ChannelID
 from ....services.site import (
@@ -21,8 +22,6 @@ from ....util.authorization import (
 )
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
-
-from ...admin.news.authorization import NewsItemPermission
 
 
 blueprint = create_blueprint('news', __name__)

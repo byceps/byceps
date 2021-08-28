@@ -9,6 +9,7 @@ byceps.blueprints.admin.ticketing.views
 from flask import abort, g, request
 from flask_babel import gettext
 
+from ....permissions.ticketing import TicketingPermission
 from ....services.party import service as party_service
 from ....services.shop.order import service as order_service
 from ....services.ticketing import (
@@ -23,7 +24,6 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to
 
-from .authorization import TicketingPermission
 from .forms import SpecifyUserForm, UpdateCodeForm
 from . import service
 

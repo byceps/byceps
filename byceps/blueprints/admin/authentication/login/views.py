@@ -9,6 +9,7 @@ byceps.blueprints.admin.authentication.login.views
 from flask import abort, g, redirect, request
 from flask_babel import gettext
 
+from .....permissions.admin import AdminPermission
 from .....services.authentication.exceptions import AuthenticationFailed
 from .....services.authentication import service as authentication_service
 from .....services.authentication.session import service as session_service
@@ -20,8 +21,6 @@ from .....util.framework.flash import flash_notice, flash_success
 from .....util.framework.templating import templated
 from .....util import user_session
 from .....util.views import respond_no_content
-
-from ....admin.core.authorization import AdminPermission
 
 from .forms import LoginForm
 

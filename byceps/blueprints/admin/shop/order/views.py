@@ -9,6 +9,7 @@ byceps.blueprints.admin.shop.order.views
 from flask import abort, g, request, Response
 from flask_babel import gettext
 
+from .....permissions.shop import ShopOrderPermission, ShopPermission
 from .....services.brand import service as brand_service
 from .....services.shop.order import (
     event_service as order_event_service,
@@ -28,8 +29,6 @@ from .....util.framework.flash import flash_error, flash_notice, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
 
-from ..shop.authorization import ShopPermission
-from .authorization import ShopOrderPermission
 from .forms import (
     AddNoteForm,
     CancelForm,

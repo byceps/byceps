@@ -9,6 +9,7 @@ byceps.blueprints.admin.brand.views
 from flask import abort, request
 from flask_babel import gettext
 
+from ....permissions.brand import BrandPermission
 from ....services.brand import (
     service as brand_service,
     settings_service as brand_settings_service,
@@ -22,7 +23,6 @@ from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to
 
-from .authorization import BrandPermission
 from .forms import CreateForm, EmailConfigUpdateForm, UpdateForm
 
 

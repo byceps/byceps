@@ -6,12 +6,11 @@ byceps.blueprints.admin.jobs.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from ....permissions.jobs import JobsPermission
 from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required
-
-from .authorization import JobsPermission
 
 
 blueprint = create_blueprint('jobs_admin', __name__)

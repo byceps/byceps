@@ -13,6 +13,7 @@ from typing import Iterable
 
 from flask import abort
 
+from ....permissions.orga_presence import OrgaPresencePermission
 from ....services.orga_presence import service as orga_presence_service
 from ....services.orga_presence.transfer.models import (
     PartyTimeSlot,
@@ -25,8 +26,6 @@ from ....util.authorization import register_permission_enum
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required
-
-from .authorization import OrgaPresencePermission
 
 
 blueprint = create_blueprint('orga_presence', __name__)

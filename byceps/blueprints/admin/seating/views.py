@@ -9,6 +9,7 @@ byceps.blueprints.admin.seating.views
 from flask import abort, request
 from flask_babel import gettext
 
+from ....permissions.seating import SeatingPermission
 from ....services.party import service as party_service
 from ....services.seating import (
     area_service as seating_area_service,
@@ -24,7 +25,6 @@ from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to
 
-from .authorization import SeatingPermission
 from .forms import AreaCreateForm
 
 

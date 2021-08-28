@@ -9,6 +9,7 @@ byceps.blueprints.admin.shop.shop.views
 from flask import abort, request, url_for
 from flask_babel import gettext
 
+from .....permissions.shop import ShopPermission
 from .....services.brand import service as brand_service
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import PaymentState
@@ -22,8 +23,6 @@ from .....util.views import (
     redirect_to,
     respond_no_content_with_location,
 )
-
-from .authorization import ShopPermission
 
 
 blueprint = create_blueprint('shop_shop_admin', __name__)

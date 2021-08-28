@@ -13,6 +13,7 @@ from typing import Iterable, Iterator
 from flask import abort, request
 from flask_babel import gettext
 
+from ....permissions.site import SitePermission
 from ....services.board import board_service
 from ....services.brand import service as brand_service
 from ....services.brand.transfer.models import Brand
@@ -35,7 +36,6 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
-from .authorization import SitePermission
 from .forms import AddNewsChannelForm, CreateForm, UpdateForm
 
 

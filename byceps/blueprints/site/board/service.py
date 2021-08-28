@@ -12,6 +12,11 @@ from typing import Optional, Sequence
 
 from flask import g
 
+from ....permissions.board import (
+    BoardPermission,
+    BoardPostingPermission,
+    BoardTopicPermission,
+)
 from ....services.authentication.session.models.current_user import CurrentUser
 from ....services.board.dbmodels.topic import Topic as DbTopic
 from ....services.board.dbmodels.posting import Posting as DbPosting
@@ -30,11 +35,6 @@ from ....services.user_badge.transfer.models import Badge
 from ....util.authorization import has_current_user_permission
 from ....typing import BrandID, PartyID, UserID
 
-from .authorization import (
-    BoardPermission,
-    BoardPostingPermission,
-    BoardTopicPermission,
-)
 from .models import CategoryWithLastUpdateAndUnseenFlag, Creator, Ticket
 
 

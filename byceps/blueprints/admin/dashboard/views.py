@@ -10,6 +10,10 @@ from datetime import date, timedelta
 
 from flask import abort
 
+from ....permissions.admin import AdminPermission
+from ....permissions.brand import BrandPermission
+from ....permissions.party import PartyPermission
+from ....permissions.site import SitePermission
 from ....services.board import board_service
 from ....services.brand import (
     service as brand_service,
@@ -37,11 +41,6 @@ from ....services.user import (
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required
-
-from ..brand.authorization import BrandPermission
-from ..core.authorization import AdminPermission
-from ..party.authorization import PartyPermission
-from ..site.authorization import SitePermission
 
 
 blueprint = create_blueprint('admin_dashboard', __name__)
