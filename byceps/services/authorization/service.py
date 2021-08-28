@@ -216,15 +216,25 @@ def get_permission_ids_for_user(user_id: UserID) -> set[PermissionID]:
     return {rp.permission_id for rp in role_permissions}
 
 
-def get_all_permissions_with_titles() -> Sequence[DbPermission]:
-    """Return all permissions, with titles."""
-    return db.session \
+def get_all_permissions_with_roles() -> Sequence[
+    tuple[Permission, set[RoleID]]
+]:
+    """Return all permissions with titles and roles."""
+    permissions = db.session \
         .query(DbPermission) \
         .options(
             db.undefer(DbPermission.title),
             db.joinedload(DbPermission.role_permissions)
         ) \
         .all()
+
+    return [
+        (
+            Permission(id=permission.id, title=permission.title),
+            {RoleID(role.id) for role in permission.roles},
+        )
+        for permission in permissions
+    ]
 
 
 def get_all_roles_with_titles() -> Sequence[DbRole]:

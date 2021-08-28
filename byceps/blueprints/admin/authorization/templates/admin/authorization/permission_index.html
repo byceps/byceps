@@ -6,7 +6,7 @@
 
 {% block body %}
 
-  <h1>{{ page_title }} {{ render_extra_in_heading(permissions|length) }}</h1>
+  <h1>{{ page_title }} {{ render_extra_in_heading(permissions_and_roles|length) }}</h1>
 
   <div class="box">
     <table class="index wide">
@@ -17,17 +17,17 @@
         </tr>
       </thead>
       <tbody>
-        {%- for permission in permissions|sort(attribute='id') %}
+        {%- for permission, roles in permissions_and_roles|sort(attribute='0.id') %}
         <tr>
           <td>
             <strong class="monospace">{{ permission.id }}</strong><br>
             {{ permission.title|fallback(_('no description available')) }}
           </td>
           <td>
-          {%- if permission.roles %}
+          {%- if roles %}
             <ol>
-            {%- for role in permission.roles|sort(attribute='id') %}
-              <li class="monospace"><a href="{{ url_for('.role_view', role_id=role.id) }}">{{ role.id }}</a></li>
+            {%- for role_id in roles|sort %}
+              <li class="monospace"><a href="{{ url_for('.role_view', role_id=role_id) }}">{{ role_id }}</a></li>
             {%- endfor %}
             </ol>
           {%- else %}

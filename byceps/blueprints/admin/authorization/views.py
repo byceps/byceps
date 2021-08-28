@@ -29,9 +29,11 @@ register_permission_enum(RolePermission)
 @templated
 def permission_index():
     """List permissions."""
-    permissions = authorization_service.get_all_permissions_with_titles()
+    permissions_and_roles = (
+        authorization_service.get_all_permissions_with_roles()
+    )
 
-    return {'permissions': permissions}
+    return {'permissions_and_roles': permissions_and_roles}
 
 
 @blueprint.get('/roles')
