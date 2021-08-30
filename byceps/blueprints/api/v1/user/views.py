@@ -8,7 +8,6 @@ byceps.blueprints.api.v1.user.views
 
 from flask import abort, jsonify, request
 from marshmallow import ValidationError
-from marshmallow.schema import SchemaMeta
 
 from .....services.user import (
     email_address_verification_service,
