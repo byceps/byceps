@@ -27,7 +27,7 @@ def execute(data_file) -> None:
             )
         except Exception as e:
             click.secho(
-                f'[line {line_number}] Cound not import user: {e}', fg='red'
+                f'[line {line_number}] Could not import user: {e}', fg='red'
             )
 
 
