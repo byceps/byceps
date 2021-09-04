@@ -9,7 +9,6 @@ byceps.services.shop.cart.models
 from __future__ import annotations
 from dataclasses import dataclass, field
 from decimal import Decimal
-from typing import Sequence
 
 from ....util.instances import ReprBuilder
 
@@ -40,7 +39,7 @@ class Cart:
         item = CartItem(article, quantity)
         self._items.append(item)
 
-    def get_items(self) -> Sequence[CartItem]:
+    def get_items(self) -> list[CartItem]:
         return self._items
 
     def calculate_total_amount(self) -> Decimal:

@@ -21,7 +21,7 @@ from ....typing import UserID
 from ...user import service as user_service
 
 from ..article import service as article_service
-from ..cart.models import Cart
+from ..cart.models import Cart, CartItem
 from ..shop.dbmodels import Shop as DbShop
 from ..shop import service as shop_service
 from ..shop.transfer.models import ShopID
@@ -68,15 +68,17 @@ def place_order(
         order_number_sequence.id
     )
 
+    cart_items = cart.get_items()
+
     order = _build_order(shop.id, order_number, orderer, created_at)
-    line_items = list(_build_line_items(cart, order))
+    line_items = list(_build_line_items(cart_items, order))
     order.total_amount = cart.calculate_total_amount()
     order.shipping_required = any(item.shipping_required for item in line_items)
 
     db.session.add(order)
     db.session.add_all(line_items)
 
-    _reduce_article_stock(cart)
+    _reduce_article_stock(cart_items)
 
     try:
         db.session.commit()
@@ -121,9 +123,9 @@ def _build_order(
     )
 
 
-def _build_line_items(cart: Cart, order: DbOrder) -> Iterator[DbLineItem]:
+def _build_line_items(cart_items: list[CartItem], order: DbOrder) -> Iterator[DbLineItem]:
     """Build line items from the cart's content."""
-    for cart_item in cart.get_items():
+    for cart_item in cart_items:
         article = cart_item.article
         quantity = cart_item.quantity
         line_amount = cart_item.line_amount
@@ -141,9 +143,9 @@ def _build_line_items(cart: Cart, order: DbOrder) -> Iterator[DbLineItem]:
         )
 
 
-def _reduce_article_stock(cart: Cart) -> None:
+def _reduce_article_stock(cart_items: list[CartItem]) -> None:
     """Reduce article stock according to what is in the cart."""
-    for cart_item in cart.get_items():
+    for cart_item in cart_items:
         article = cart_item.article
         quantity = cart_item.quantity
 
