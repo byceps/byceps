@@ -5,6 +5,7 @@
 
 from decimal import Decimal
 
+import pytest
 from pytest import raises
 
 from byceps.database import generate_uuid
@@ -18,12 +19,21 @@ from byceps.services.shop.cart.models import CartItem
 from byceps.services.shop.shop.transfer.models import ShopID
 
 
-def test_init_with_positive_quantity():
-    quantity = 1
-
+@pytest.mark.parametrize(
+    'quantity, expected_line_amount',
+    [
+        (1, Decimal('1.99')),
+        (2, Decimal('3.98')),
+        (6, Decimal('11.94')),
+    ],
+)
+def test_init_with_positive_quantity(
+    quantity: int, expected_line_amount: Decimal
+):
     item = create_item(quantity)
 
     assert item.quantity == quantity
+    assert item.line_amount == expected_line_amount
 
 
 def test_init_with_zero_quantity():
