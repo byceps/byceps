@@ -7,6 +7,7 @@ byceps.services.shop.cart.models
 """
 
 from __future__ import annotations
+from dataclasses import dataclass, field
 from decimal import Decimal
 from typing import Sequence
 
@@ -15,23 +16,18 @@ from ....util.instances import ReprBuilder
 from ..article.transfer.models import Article
 
 
+@dataclass(frozen=True)
 class CartItem:
     """An article with a quantity."""
+    article: Article
+    quantity: int
+    line_amount: Decimal = field(init=False)
 
-    def __init__(self, article: Article, quantity: int) -> None:
-        if quantity < 1:
+    def __post_init__(self) -> None:
+        if self.quantity < 1:
             raise ValueError('Quantity must be a positive number.')
 
-        self.article = article
-        self.quantity = quantity
-        self.line_amount = article.price * quantity
-
-    def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add('article', self.article.item_number) \
-            .add_with_lookup('quantity') \
-            .add_with_lookup('line_amount') \
-            .build()
+        object.__setattr__(self, 'line_amount', self.article.price * self.quantity)
 
 
 class Cart:
