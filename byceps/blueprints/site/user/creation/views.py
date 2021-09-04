@@ -103,7 +103,7 @@ def create():
         last_name = None
 
     try:
-        user, event = user_creation_service.create_basic_user(
+        user, event = user_creation_service.create_user(
             screen_name,
             email_address,
             password,

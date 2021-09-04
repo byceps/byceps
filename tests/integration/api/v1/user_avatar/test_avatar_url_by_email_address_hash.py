@@ -50,7 +50,7 @@ def test_unrecognized_hash(api_client):
 
 def create_initialized_user(screen_name, email_address):
     password = 'long enough'
-    user, _ = user_creation_service.create_basic_user(
+    user, _ = user_creation_service.create_user(
         screen_name, email_address, password
     )
     user_command_service.initialize_account(user.id, assign_roles=False)

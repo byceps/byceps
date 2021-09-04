@@ -31,7 +31,7 @@ class UserCreationFailed(Exception):
     pass
 
 
-def create_basic_user(
+def create_user(
     screen_name: Optional[str],
     email_address: Optional[str],
     password: str,

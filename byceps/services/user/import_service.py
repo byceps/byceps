@@ -43,7 +43,7 @@ def parse_user_json(json_data: str) -> dict[str, str]:
 def create_user(user_dict) -> User:
     password = secrets.token_urlsafe(24)
 
-    user, _ = creation_service.create_basic_user(
+    user, _ = creation_service.create_user(
         user_dict['screen_name'],
         user_dict.get('email_address'),
         password,
