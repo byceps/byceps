@@ -40,7 +40,7 @@ class User(db.Model):
     def __init__(
         self,
         created_at: datetime,
-        screen_name: str,
+        screen_name: Optional[str],
         email_address: Optional[str],
     ) -> None:
         self.created_at = created_at

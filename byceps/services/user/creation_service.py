@@ -90,6 +90,7 @@ def _create_user(
     creator_id: Optional[UserID] = None,
     site_id: Optional[SiteID] = None,
 ) -> tuple[User, UserAccountCreated]:
+    creator: Optional[User]
     if creator_id is not None:
         creator = user_service.get_user(creator_id)
     else:
@@ -140,11 +141,13 @@ def build_user(
     screen_name: Optional[str],
     email_address: Optional[str],
 ) -> DbUser:
+    normalized_screen_name: Optional[str]
     if screen_name is not None:
         normalized_screen_name = _normalize_screen_name(screen_name)
     else:
         normalized_screen_name = None
 
+    normalized_email_address: Optional[str]
     if email_address is not None:
         normalized_email_address = _normalize_email_address(email_address)
     else:
