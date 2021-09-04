@@ -18,13 +18,6 @@ from .dbmodels.subject import Subject as DbSubject
 from .transfer.models import Consent, SubjectID
 
 
-def build_consent(
-    user_id: UserID, subject_id: SubjectID, expressed_at: datetime
-) -> DbConsent:
-    """Create user's consent to that subject."""
-    return DbConsent(user_id, subject_id, expressed_at)
-
-
 def consent_to_subject(
     user_id: UserID, subject_id: SubjectID, expressed_at: datetime
 ) -> None:
@@ -39,7 +32,7 @@ def consent_to_subjects(
 ) -> None:
     """Store the user's consent to these subjects."""
     for subject_id in subject_ids:
-        consent = build_consent(user_id, subject_id, expressed_at)
+        consent = DbConsent(user_id, subject_id, expressed_at)
         db.session.add(consent)
 
     db.session.commit()
