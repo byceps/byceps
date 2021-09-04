@@ -7,8 +7,8 @@ byceps.services.user.creation_service
 """
 
 from __future__ import annotations
-from datetime import datetime
-from typing import Optional
+from datetime import date, datetime
+from typing import Any, Optional
 
 from flask import current_app
 
@@ -38,6 +38,14 @@ def create_user(
     *,
     first_names: Optional[str] = None,
     last_name: Optional[str] = None,
+    date_of_birth: Optional[date] = None,
+    country: Optional[str] = None,
+    zip_code: Optional[str] = None,
+    city: Optional[str] = None,
+    street: Optional[str] = None,
+    phone_number: Optional[str] = None,
+    internal_comment: Optional[str] = None,
+    extras: Optional[dict[str, Any]] = None,
     creator_id: Optional[UserID] = None,
     site_id: Optional[SiteID] = None,
 ) -> tuple[User, UserAccountCreated]:
@@ -54,6 +62,14 @@ def create_user(
 
     db_user.detail.first_names = first_names
     db_user.detail.last_name = last_name
+    db_user.detail.date_of_birth = date_of_birth
+    db_user.detail.country = country
+    db_user.detail.zip_code = zip_code
+    db_user.detail.city = city
+    db_user.detail.street = street
+    db_user.detail.phone_number = phone_number
+    db_user.detail.internal_comment = internal_comment
+    db_user.detail.extras = extras
 
     db.session.add(db_user)
 
