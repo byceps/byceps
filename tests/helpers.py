@@ -128,7 +128,7 @@ def create_user(
     if not email_address:
         email_address = f'user{user_id}@users.test'
 
-    user = user_creation_service.build_user(
+    user = user_creation_service.build_db_user(
         created_at, screen_name, email_address
     )
 

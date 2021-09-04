@@ -50,7 +50,7 @@ def create_user(
 
     created_at = datetime.utcnow()
 
-    db_user = build_user(created_at, screen_name, email_address)
+    db_user = build_db_user(created_at, screen_name, email_address)
 
     db_user.detail.first_names = first_names
     db_user.detail.last_name = last_name
@@ -91,7 +91,7 @@ def create_user(
     return user, event
 
 
-def build_user(
+def build_db_user(
     created_at: datetime,
     screen_name: Optional[str],
     email_address: Optional[str],
