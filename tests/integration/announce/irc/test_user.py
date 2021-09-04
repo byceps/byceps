@@ -224,13 +224,12 @@ def test_unsuspended_account_announced(app, make_user):
 
 
 def test_deleted_account_announced(app, make_user):
-    expected_text = (
-        'UberDude hat das Benutzerkonto "Snake" '
-        '(ID "76b0c57f-8909-4b02-90c9-96e0a817f738") gelöscht.'
-    )
-
     admin = make_user('UberDude')
-    user = make_user('Snake', user_id='76b0c57f-8909-4b02-90c9-96e0a817f738')
+    user = make_user('Snake')
+
+    expected_text = (
+        f'UberDude hat das Benutzerkonto "Snake" (ID "{user.id}") gelöscht.'
+    )
 
     event = user_deletion_service.delete_account(
         user.id, admin.id, 'specious reason'

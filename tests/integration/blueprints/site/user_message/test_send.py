@@ -71,34 +71,22 @@ def site2_app(site2, make_site_app):
         yield app
 
 
-USER_ID_ALICE = 'a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8'
-USER_ID_BOB = '11d72bab-3646-4199-b96c-e5e4c6f972bc'
-
-
 @pytest.fixture(scope='module')
 def user_alice(make_user):
-    return make_user(
-        'Alice',
-        user_id=USER_ID_ALICE,
-        email_address='alice@users.test',
-    )
+    return make_user('Alice', email_address='alice@users.test')
 
 
 @pytest.fixture(scope='module')
 def user_bob(make_user):
-    return make_user(
-        'Bob',
-        user_id=USER_ID_BOB,
-        email_address='bob@users.test',
-    )
+    return make_user('Bob', email_address='bob@users.test')
 
 
 @patch('byceps.email.send')
 def test_send_when_logged_in_without_brand_contact_address(
     send_email_mock, site1_app, site1, user_alice, user_bob
 ):
-    sender_id = USER_ID_ALICE
-    recipient_id = USER_ID_BOB
+    sender_id = user_alice.id
+    recipient_id = user_bob.id
     text = '''\
 Hi Bob,
 
@@ -115,12 +103,12 @@ Alice
     )
     expected_email_recipients = ['Bob <bob@users.test>']
     expected_email_subject = 'Mitteilung von Alice (über www1.acmecon.test)'
-    expected_email_body = '''\
+    expected_email_body = f'''\
 Hallo Bob,
 
 Alice möchte dir die folgende Mitteilung zukommen lassen.
 
-Du kannst Alice hier antworten: http://www.acmecon.test/user_messages/to/a4903d8f-0bc6-4af9-aeb9-d7534a0a22e8/create
+Du kannst Alice hier antworten: http://www.acmecon.test/user_messages/to/{user_alice.id}/create
 
 ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 
@@ -156,10 +144,14 @@ Diese Mitteilung wurde über die Website www1.acmecon.test gesendet.\
 
 @patch('byceps.email.send')
 def test_send_when_logged_in_with_brand_contact_address(
-    send_email_mock, site2_app, site2, user_alice, user_bob,
+    send_email_mock,
+    site2_app,
+    site2,
+    user_alice,
+    user_bob,
 ):
-    sender_id = USER_ID_BOB
-    recipient_id = USER_ID_ALICE
+    sender_id = user_bob.id
+    recipient_id = user_alice.id
     text = '''\
 Hey Alice,
 
@@ -176,12 +168,12 @@ Bob
     )
     expected_email_recipients = ['Alice <alice@users.test>']
     expected_email_subject = 'Mitteilung von Bob (über www2.acmecon.test)'
-    expected_email_body = '''\
+    expected_email_body = f'''\
 Hallo Alice,
 
 Bob möchte dir die folgende Mitteilung zukommen lassen.
 
-Du kannst Bob hier antworten: http://www.acmecon.test/user_messages/to/11d72bab-3646-4199-b96c-e5e4c6f972bc/create
+Du kannst Bob hier antworten: http://www.acmecon.test/user_messages/to/{user_bob.id}/create
 
 ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 

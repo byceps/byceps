@@ -97,7 +97,6 @@ DEFAULT_DATE_OF_BIRTH = date(1993, 2, 15)
 def create_user(
     screen_name: Optional[str] = '__random__',
     *,
-    user_id: Optional[UserID] = None,
     created_at: Optional[datetime] = None,
     email_address: Optional[str] = None,
     email_address_verified: bool = False,
@@ -119,8 +118,7 @@ def create_user(
     if screen_name == '__random__':
         screen_name = generate_token(8)
 
-    if not user_id:
-        user_id = UserID(generate_uuid())
+    user_id = UserID(generate_uuid())
 
     if not created_at:
         created_at = datetime.utcnow()
