@@ -44,7 +44,7 @@ def create_article(
     tax_rate: Decimal,
     total_quantity: int,
     max_quantity_per_order: int,
-    shipping_required: bool,
+    processing_required: bool,
 ) -> Article:
     """Create an article."""
     article = DbArticle(
@@ -56,7 +56,7 @@ def create_article(
         tax_rate,
         total_quantity,
         max_quantity_per_order,
-        shipping_required,
+        processing_required,
     )
 
     db.session.add(article)
@@ -439,5 +439,5 @@ def _db_entity_to_article(article: DbArticle) -> Article:
         max_quantity_per_order=article.max_quantity_per_order,
         not_directly_orderable=article.not_directly_orderable,
         separate_order_required=article.separate_order_required,
-        shipping_required=article.shipping_required,
+        processing_required=article.processing_required,
     )

@@ -58,7 +58,7 @@ def create_order(created_at: datetime) -> Order:
         is_canceled=False,
         is_paid=False,
         is_invoiced=False,
-        is_shipping_required=False,
-        is_shipped=False,
+        is_processing_required=False,
+        is_processed=False,
         cancelation_reason=None,
     )

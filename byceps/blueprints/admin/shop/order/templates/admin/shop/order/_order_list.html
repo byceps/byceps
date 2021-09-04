@@ -31,8 +31,8 @@
         {%- endif -%}
       </td>
       <td>
-        {%- if order.is_shipping_required %}
-          {%- if order.is_shipped %}
+        {%- if order.is_processing_required %}
+          {%- if order.is_processed %}
             {{- render_icon('shipping', title=_('shipped')) -}}
           {%- else -%}
             {%- filter dim %}

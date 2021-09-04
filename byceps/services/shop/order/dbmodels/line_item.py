@@ -34,7 +34,7 @@ class LineItem(db.Model):
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     quantity = db.Column(db.Integer, db.CheckConstraint('quantity > 0'), nullable=False)
     line_amount = db.Column(db.Numeric(7, 2), nullable=False)
-    shipping_required = db.Column(db.Boolean, nullable=False)
+    processing_required = db.Column(db.Boolean, nullable=False)
 
     def __init__(
         self,
@@ -46,7 +46,7 @@ class LineItem(db.Model):
         tax_rate: Decimal,
         quantity: int,
         line_amount: Decimal,
-        shipping_required: bool,
+        processing_required: bool,
     ) -> None:
         # Require order instance rather than order number as argument
         # because line items are created together with the order – and
@@ -59,7 +59,7 @@ class LineItem(db.Model):
         self.tax_rate = tax_rate
         self.quantity = quantity
         self.line_amount = line_amount
-        self.shipping_required = shipping_required
+        self.processing_required = processing_required
 
     @hybrid_property
     def article_type(self) -> ArticleType:

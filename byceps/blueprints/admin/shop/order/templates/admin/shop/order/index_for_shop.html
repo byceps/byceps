@@ -31,7 +31,7 @@
             {%- for payment_state in PaymentState %}
             <li><a class="dropdown-item" href="{{ url_for('.index_for_shop', shop_id=shop.id, only_payment_state=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
             {%- endfor %}
-            <li><a class="dropdown-item" href="{{ url_for('.index_for_shop', shop_id=shop.id, only_payment_state=PaymentState.paid.name, only_shipped='false') }}">{{ render_order_state_filter(OrderStateFilter.waiting_for_shipping) }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index_for_shop', shop_id=shop.id, only_payment_state=PaymentState.paid.name, only_processed='false') }}">{{ render_order_state_filter(OrderStateFilter.waiting_for_processing) }}</a></li>
           </ol>
         </div>
       </div>
@@ -47,7 +47,7 @@
   {{ render_pagination_nav(orders, '.index_for_shop', {
       'shop_id': shop.id,
       'only_payment_state': only_payment_state.name if only_payment_state else None,
-      'only_shipped': 'false' if ((only_shipped is not none) and not only_shipped) else None,
+      'only_processed': 'false' if ((only_processed is not none) and not only_processed) else None,
     }) }}
   </div>
 

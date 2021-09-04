@@ -56,7 +56,7 @@ def create_article(
     available_until: Optional[datetime] = None,
     total_quantity: int = 1,
     max_quantity_per_order: int = 10,
-    shipping_required: bool = False,
+    processing_required: bool = False,
 ) -> Article:
     if price is None:
         price = Decimal('24.95')
@@ -75,7 +75,7 @@ def create_article(
         tax_rate,
         total_quantity,
         max_quantity_per_order,
-        shipping_required,
+        processing_required,
     )
 
 

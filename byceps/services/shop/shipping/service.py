@@ -67,11 +67,11 @@ def _find_line_items(
         .join(DbOrder) \
         .filter(DbOrder.shop_id == shop_id) \
         .options(db.joinedload(DbLineItem.order)) \
-        .filter(DbLineItem.shipping_required == True)
+        .filter(DbLineItem.processing_required == True)
 
     definitive_line_items = common_query \
         .filter(DbOrder._payment_state == PaymentState.paid.name) \
-        .filter(DbOrder.shipped_at == None) \
+        .filter(DbOrder.processed_at == None) \
         .all()
 
     potential_line_items = common_query \

@@ -22,11 +22,11 @@
               {%- endif -%}
             </div>
           </li>
-          {%- if order.is_shipping_required %}
-          <li class="order-status-flag {{ 'set' if order.is_shipped else '' }}">
+          {%- if order.is_processing_required %}
+          <li class="order-status-flag {{ 'set' if order.is_processed else '' }}">
             <div class="order-status-flag-icon">{{ render_icon('shipping') }}</div>
             <div class="order-status-flag-label">
-              {%- if order.is_shipped -%}
+              {%- if order.is_processed -%}
               {{ _('shipped') }}
               {%- else -%}
               {{ _('not shipped yet') }}

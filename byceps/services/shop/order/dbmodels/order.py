@@ -47,8 +47,8 @@ class Order(db.Model):
     payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=True)
     payment_state_updated_by = db.relationship(User, foreign_keys=[payment_state_updated_by_id])
     cancelation_reason = db.Column(db.UnicodeText, nullable=True)
-    shipping_required = db.Column(db.Boolean, nullable=False)
-    shipped_at = db.Column(db.DateTime, nullable=True)
+    processing_required = db.Column(db.Boolean, nullable=False)
+    processed_at = db.Column(db.DateTime, nullable=True)
 
     def __init__(
         self,

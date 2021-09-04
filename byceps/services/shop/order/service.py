@@ -73,7 +73,7 @@ def place_order(
     order = _build_order(shop.id, order_number, orderer, created_at)
     line_items = list(_build_line_items(cart_items, order))
     order.total_amount = cart.calculate_total_amount()
-    order.shipping_required = any(item.shipping_required for item in line_items)
+    order.processing_required = any(item.processing_required for item in line_items)
 
     db.session.add(order)
     db.session.add_all(line_items)
@@ -139,7 +139,7 @@ def _build_line_items(cart_items: list[CartItem], order: DbOrder) -> Iterator[Db
             article.tax_rate,
             quantity,
             line_amount,
-            article.shipping_required,
+            article.processing_required,
         )
 
 
@@ -209,7 +209,7 @@ def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     order = _get_order_entity(order_id)
     initiator = user_service.get_user(initiator_id)
 
-    if not order.shipping_required:
+    if not order.processing_required:
         raise ValueError('Order contains no items that require shipping.')
 
     now = datetime.utcnow()
@@ -221,7 +221,7 @@ def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     event = DbOrderEvent(now, event_type, order.id, data)
     db.session.add(event)
 
-    order.shipped_at = now
+    order.processed_at = now
 
     db.session.commit()
 
@@ -231,7 +231,7 @@ def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     order = _get_order_entity(order_id)
     initiator = user_service.get_user(initiator_id)
 
-    if not order.shipping_required:
+    if not order.processing_required:
         raise ValueError('Order contains no items that require shipping.')
 
     now = datetime.utcnow()
@@ -243,7 +243,7 @@ def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     event = DbOrderEvent(now, event_type, order.id, data)
     db.session.add(event)
 
-    order.shipped_at = None
+    order.processed_at = None
 
     db.session.commit()
 
@@ -541,7 +541,7 @@ def get_orders_for_shop_paginated(
     *,
     search_term=None,
     only_payment_state: Optional[PaymentState] = None,
-    only_shipped: Optional[bool] = None,
+    only_processed: Optional[bool] = None,
 ) -> Pagination:
     """Return all orders for that shop, ordered by creation date.
 
@@ -561,13 +561,13 @@ def get_orders_for_shop_paginated(
     if only_payment_state is not None:
         query = query.filter_by(_payment_state=only_payment_state.name)
 
-    if only_shipped is not None:
-        query = query.filter(DbOrder.shipping_required == True)
+    if only_processed is not None:
+        query = query.filter(DbOrder.processing_required == True)
 
-        if only_shipped:
-            query = query.filter(DbOrder.shipped_at != None)
+        if only_processed:
+            query = query.filter(DbOrder.processed_at != None)
         else:
-            query = query.filter(DbOrder.shipped_at == None)
+            query = query.filter(DbOrder.processed_at == None)
 
     return paginate(
         query,
@@ -658,8 +658,8 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
     is_canceled = _is_canceled(order)
     is_paid = _is_paid(order)
     is_invoiced = order.invoice_created_at is not None
-    is_shipping_required = order.shipping_required
-    is_shipped = order.shipped_at is not None
+    is_processing_required = order.processing_required
+    is_processed = order.processed_at is not None
 
     return Order(
         id=order.id,
@@ -679,8 +679,8 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
         is_canceled=is_canceled,
         is_paid=is_paid,
         is_invoiced=is_invoiced,
-        is_shipping_required=is_shipping_required,
-        is_shipped=is_shipped,
+        is_processing_required=is_processing_required,
+        is_processed=is_processed,
         cancelation_reason=order.cancelation_reason,
     )
 
@@ -704,14 +704,14 @@ def line_item_to_transfer_object(
 def _get_order_state(order: DbOrder) -> OrderState:
     is_canceled = _is_canceled(order)
     is_paid = _is_paid(order)
-    is_shipping_required = order.shipping_required
-    is_shipped = order.shipped_at is not None
+    is_processing_required = order.processing_required
+    is_processed = order.processed_at is not None
 
     if is_canceled:
         return OrderState.canceled
 
     if is_paid:
-        if not is_shipping_required or is_shipped:
+        if not is_processing_required or is_processed:
             return OrderState.complete
 
     return OrderState.open

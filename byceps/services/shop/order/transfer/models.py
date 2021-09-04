@@ -110,8 +110,8 @@ class Order:
     is_canceled: bool
     is_paid: bool
     is_invoiced: bool
-    is_shipping_required: bool
-    is_shipped: bool
+    is_processing_required: bool
+    is_processed: bool
     cancelation_reason: Optional[str]
 
     @property

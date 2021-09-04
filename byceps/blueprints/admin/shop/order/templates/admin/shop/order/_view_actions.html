@@ -30,9 +30,9 @@
 
         {%- endif %}
 
-        {%- if order.is_shipping_required %}
+        {%- if order.is_processing_required %}
         <li class="dropdown-divider"></li>
-          {%- if order.is_shipped %}
+          {%- if order.is_processed %}
         <li><a class="dropdown-item" data-action="order-unflag-shipped" href="{{ url_for('.unset_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} {{ _('Mark as <strong>not</strong> shipped')|safe }}</a></li>
           {%- else %}
         <li><a class="dropdown-item" data-action="order-flag-shipped" href="{{ url_for('.set_shipped_flag', order_id=order.id) }}">{{ render_icon('shipping') }} {{ _('Mark as shipped') }}</a></li>

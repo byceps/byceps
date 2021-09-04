@@ -10,16 +10,16 @@ from byceps.services.shop.order.transfer.models import PaymentState
 
 
 @pytest.mark.parametrize(
-    'only_payment_state, only_shipped, expected',
+    'only_payment_state, only_processed, expected',
     [
         (None,                              None,  OrderStateFilter.none),
         (PaymentState.open,                 None,  OrderStateFilter.payment_state_open),
         (PaymentState.canceled_before_paid, None,  OrderStateFilter.payment_state_canceled_before_paid),
         (PaymentState.paid,                 None,  OrderStateFilter.payment_state_paid),
         (PaymentState.canceled_after_paid,  None,  OrderStateFilter.payment_state_canceled_after_paid),
-        (PaymentState.paid,                 False, OrderStateFilter.waiting_for_shipping),
+        (PaymentState.paid,                 False, OrderStateFilter.waiting_for_processing),
         (PaymentState.paid,                 True,  OrderStateFilter.none),
     ],
 )
-def test_find(only_payment_state, only_shipped, expected):
-    assert OrderStateFilter.find(only_payment_state, only_shipped) == expected
+def test_find(only_payment_state, only_processed, expected):
+    assert OrderStateFilter.find(only_payment_state, only_processed) == expected

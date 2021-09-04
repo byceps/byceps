@@ -64,5 +64,5 @@ def create_article() -> Article:
         max_quantity_per_order=1,
         not_directly_orderable=False,
         separate_order_required=False,
-        shipping_required=False,
+        processing_required=False,
     )

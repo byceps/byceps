@@ -19,34 +19,34 @@ from byceps.services.shop.order.transfer.models import (
 from byceps.services.shop.shop.transfer.models import ShopID
 
 
-SHIPPING_REQUIRED = True
-SHIPPED = True
+PROCESSING_REQUIRED = True
+PROCESSED = True
 
 
 @pytest.mark.parametrize(
-    'payment_state, shipping_required, shipped, expected',
+    'payment_state, processing_required, processed, expected',
     [
-        (PaymentState.open,                 not SHIPPING_REQUIRED,  not SHIPPED, OrderState.open    ),
-        (PaymentState.open,                     SHIPPING_REQUIRED,  not SHIPPED, OrderState.open    ),
-        (PaymentState.open,                     SHIPPING_REQUIRED,      SHIPPED, OrderState.open    ),
-        (PaymentState.canceled_before_paid, not SHIPPING_REQUIRED,  not SHIPPED, OrderState.canceled),
-        (PaymentState.canceled_before_paid,     SHIPPING_REQUIRED,  not SHIPPED, OrderState.canceled),
-        (PaymentState.canceled_before_paid,     SHIPPING_REQUIRED,      SHIPPED, OrderState.canceled),
-        (PaymentState.canceled_after_paid,  not SHIPPING_REQUIRED,  not SHIPPED, OrderState.canceled),
-        (PaymentState.canceled_after_paid,      SHIPPING_REQUIRED,  not SHIPPED, OrderState.canceled),
-        (PaymentState.canceled_after_paid,      SHIPPING_REQUIRED,      SHIPPED, OrderState.canceled),
-        (PaymentState.paid,                 not SHIPPING_REQUIRED,  not SHIPPED, OrderState.complete),
-        (PaymentState.paid,                     SHIPPING_REQUIRED,  not SHIPPED, OrderState.open    ),
-        (PaymentState.paid,                     SHIPPING_REQUIRED,      SHIPPED, OrderState.complete),
+        (PaymentState.open,                 not PROCESSING_REQUIRED,  not PROCESSED, OrderState.open    ),
+        (PaymentState.open,                     PROCESSING_REQUIRED,  not PROCESSED, OrderState.open    ),
+        (PaymentState.open,                     PROCESSING_REQUIRED,      PROCESSED, OrderState.open    ),
+        (PaymentState.canceled_before_paid, not PROCESSING_REQUIRED,  not PROCESSED, OrderState.canceled),
+        (PaymentState.canceled_before_paid,     PROCESSING_REQUIRED,  not PROCESSED, OrderState.canceled),
+        (PaymentState.canceled_before_paid,     PROCESSING_REQUIRED,      PROCESSED, OrderState.canceled),
+        (PaymentState.canceled_after_paid,  not PROCESSING_REQUIRED,  not PROCESSED, OrderState.canceled),
+        (PaymentState.canceled_after_paid,      PROCESSING_REQUIRED,  not PROCESSED, OrderState.canceled),
+        (PaymentState.canceled_after_paid,      PROCESSING_REQUIRED,      PROCESSED, OrderState.canceled),
+        (PaymentState.paid,                 not PROCESSING_REQUIRED,  not PROCESSED, OrderState.complete),
+        (PaymentState.paid,                     PROCESSING_REQUIRED,  not PROCESSED, OrderState.open    ),
+        (PaymentState.paid,                     PROCESSING_REQUIRED,      PROCESSED, OrderState.complete),
     ],
 )
 def test_order_state(
     payment_state: PaymentState,
-    shipping_required: bool,
-    shipped: bool,
+    processing_required: bool,
+    processed: bool,
     expected: OrderState,
 ):
-    order = create_order(payment_state, shipping_required, shipped)
+    order = create_order(payment_state, processing_required, processed)
     assert order.state == expected
 
 
@@ -54,7 +54,7 @@ def test_order_state(
 
 
 def create_order(
-    payment_state: PaymentState, shipping_required: bool, shipped: bool
+    payment_state: PaymentState, processing_required: bool, processed: bool
 ) -> Order:
     shop_id = ShopID('shop-123')
     order_number = OrderNumber('ORDER-42')
@@ -65,8 +65,8 @@ def create_order(
         shop_id, order_number, orderer, created_at
     )
     order.payment_state = payment_state
-    order.shipping_required = shipping_required
-    order.shipped_at = created_at if shipped else None
+    order.processing_required = processing_required
+    order.processed_at = created_at if processed else None
 
     return order_service._order_to_transfer_object(order)
 

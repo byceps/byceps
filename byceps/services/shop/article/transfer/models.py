@@ -68,4 +68,4 @@ class Article:
     max_quantity_per_order: int
     not_directly_orderable: bool
     separate_order_required: bool
-    shipping_required: bool
+    processing_required: bool
