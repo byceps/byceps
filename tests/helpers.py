@@ -114,7 +114,7 @@ def create_user(
     city: Optional[str] = 'Atrocity',
     street: Optional[str] = 'Elite Street 1337',
     phone_number: Optional[str] = '555-CALL-ME-MAYBE',
-    password: Optional[str] = None,
+    password: str = 'hunter2',
 ) -> DbUser:
     if screen_name == '__random__':
         screen_name = generate_token(8)
@@ -158,8 +158,7 @@ def create_user(
         db.session.rollback()
         raise UserCreationFailed(e)
 
-    if password is not None:
-        password_service.create_password_hash(user.id, password)
+    password_service.create_password_hash(user.id, password)
 
     return user
 
