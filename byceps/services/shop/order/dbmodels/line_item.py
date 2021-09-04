@@ -21,7 +21,7 @@ from .order import Order
 class LineItem(db.Model):
     """A line item that belongs to an order."""
 
-    __tablename__ = 'shop_order_items'
+    __tablename__ = 'shop_order_line_items'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     order_number = db.Column(db.UnicodeText, db.ForeignKey('shop_orders.order_number'), index=True, nullable=False)
