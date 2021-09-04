@@ -28,8 +28,8 @@ def article(shop):
 
 
 @pytest.fixture
-def orderer(make_user_with_detail):
-    return create_orderer(make_user_with_detail('ArticlesForStatsOrderer'))
+def orderer(make_user):
+    return create_orderer(make_user('ArticlesForStatsOrderer'))
 
 
 def test_count_ordered_articles(admin_app, storefront, article, orderer):

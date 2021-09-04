@@ -64,8 +64,8 @@ def article3(shop):
 
 
 @pytest.fixture(scope='module')
-def orderer_user(make_user_with_detail):
-    return make_user_with_detail('Besteller')
+def orderer_user(make_user):
+    return make_user('Besteller')
 
 
 @pytest.fixture(scope='module')

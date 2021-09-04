@@ -33,10 +33,8 @@ def order_admin(make_user):
 
 
 @pytest.fixture(scope='module')
-def customer(make_user_with_detail):
-    return make_user_with_detail(
-        'Interessent', email_address='interessent@users.test'
-    )
+def customer(make_user):
+    return make_user('Interessent', email_address='interessent@users.test')
 
 
 @pytest.fixture

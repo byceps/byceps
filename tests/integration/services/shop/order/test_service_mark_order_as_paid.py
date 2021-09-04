@@ -13,8 +13,8 @@ from tests.integration.services.shop.helpers import create_orderer
 
 
 @pytest.fixture(scope='module')
-def orderer(make_user_with_detail):
-    return create_orderer(make_user_with_detail('PayingOrderer'))
+def orderer(make_user):
+    return create_orderer(make_user('PayingOrderer'))
 
 
 @pytest.fixture

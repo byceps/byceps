@@ -63,14 +63,14 @@ def storefront2(make_brand):
 
 
 @pytest.fixture(scope='module')
-def orderer1(make_user_with_detail):
-    user = make_user_with_detail('Orderer1')
+def orderer1(make_user):
+    user = make_user('Orderer1')
     return create_orderer(user)
 
 
 @pytest.fixture(scope='module')
-def orderer2(make_user_with_detail):
-    user = make_user_with_detail('Orderer2')
+def orderer2(make_user):
+    user = make_user('Orderer2')
     return create_orderer(user)
 
 

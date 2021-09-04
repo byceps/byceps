@@ -103,8 +103,8 @@ def test_shop_order_paid_announced(app, paid_order, orderer_user, shop_admin):
 
 
 @pytest.fixture(scope='module')
-def orderer_user(make_user_with_detail):
-    return make_user_with_detail('Ken_von_Kaufkraft')
+def orderer_user(make_user):
+    return make_user('Ken_von_Kaufkraft')
 
 
 @pytest.fixture(scope='module')

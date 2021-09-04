@@ -103,7 +103,6 @@ def create_user(
     suspended: bool = False,
     deleted: bool = False,
     legacy_id: Optional[int] = None,
-    with_detail: bool = False,
     first_names: Optional[str] = 'John Joseph',
     last_name: Optional[str] = 'Doe',
     date_of_birth=DEFAULT_DATE_OF_BIRTH,
@@ -135,16 +134,15 @@ def create_user(
     user.deleted = deleted
     user.legacy_id = legacy_id
 
-    if with_detail:
-        detail = DbUserDetail(user=user)
-        detail.first_names = first_names
-        detail.last_name = last_name
-        detail.date_of_birth = date_of_birth
-        detail.country = country
-        detail.zip_code = zip_code
-        detail.city = city
-        detail.street = street
-        detail.phone_number = phone_number
+    detail = DbUserDetail(user=user)
+    detail.first_names = first_names
+    detail.last_name = last_name
+    detail.date_of_birth = date_of_birth
+    detail.country = country
+    detail.zip_code = zip_code
+    detail.city = city
+    detail.street = street
+    detail.phone_number = phone_number
 
     db.session.add(user)
 

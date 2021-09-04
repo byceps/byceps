@@ -35,14 +35,12 @@ def role(permission):
     authorization_service.delete_role(role.id)
 
 
-def test_delete_account(
-    admin_app, permission, role, make_user_with_detail, make_user
-):
+def test_delete_account(admin_app, permission, role, make_user):
     screen_name = 'GetRidOfMe'
     email_address = 'timedout@users.test'
     legacy_id = 22299
 
-    user = make_user_with_detail(
+    user = make_user(
         screen_name, email_address=email_address, legacy_id=legacy_id
     )
 

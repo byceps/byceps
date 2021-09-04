@@ -28,10 +28,8 @@ def order_admin(make_user):
 
 
 @pytest.fixture
-def customer(make_user_with_detail):
-    return make_user_with_detail(
-        'Vorbild', email_address='vorbild@users.test'
-    )
+def customer(make_user):
+    return make_user('Vorbild', email_address='vorbild@users.test')
 
 
 @pytest.fixture

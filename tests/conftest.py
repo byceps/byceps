@@ -110,22 +110,6 @@ def make_user(admin_app):
     def _wrapper(*args, **kwargs):
         user = create_user(*args, **kwargs)
         user_ids.add(user.id)
-        user_dto = user_service._db_entity_to_user(user)
-        return user_dto
-
-    yield _wrapper
-
-    for user_id in user_ids:
-        user_deletion_service.delete_account(user_id, user_id, 'clean up')
-
-
-@pytest.fixture(scope='module')
-def make_user_with_detail(admin_app):
-    user_ids = set()
-
-    def _wrapper(*args, **kwargs):
-        user = create_user(with_detail=True, *args, **kwargs)
-        user_ids.add(user.id)
         user_dto = user_service._db_entity_to_user_with_detail(user)
         return user_dto
 

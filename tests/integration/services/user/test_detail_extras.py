@@ -8,8 +8,8 @@ from byceps.services.user import command_service as user_command_service
 from byceps.services.user.dbmodels.detail import UserDetail
 
 
-def test_set_and_remove(admin_app, make_user_with_detail):
-    user_id = make_user_with_detail('set-and-remove').id
+def test_set_and_remove(admin_app, make_user):
+    user_id = make_user('set-and-remove').id
 
     # Make sure field is `NULL`.
     assert get_extras(user_id) is None
@@ -31,8 +31,8 @@ def test_set_and_remove(admin_app, make_user_with_detail):
     assert get_extras(user_id) == {}
 
 
-def test_remove_unknown_key_from_null_extras(admin_app, make_user_with_detail):
-    user_id = make_user_with_detail('null-extras').id
+def test_remove_unknown_key_from_null_extras(admin_app, make_user):
+    user_id = make_user('null-extras').id
 
     assert get_extras(user_id) is None
 
@@ -40,8 +40,8 @@ def test_remove_unknown_key_from_null_extras(admin_app, make_user_with_detail):
     assert get_extras(user_id) is None
 
 
-def test_remove_unknown_key_from_empty_extras(admin_app, make_user_with_detail):
-    user_id = make_user_with_detail('empty-extras').id
+def test_remove_unknown_key_from_empty_extras(admin_app, make_user):
+    user_id = make_user('empty-extras').id
 
     set_extras_to_empty_dict(user_id)
     assert get_extras(user_id) == {}

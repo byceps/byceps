@@ -10,7 +10,7 @@ from byceps.services.user import command_service as user_command_service
 from byceps.services.user import event_service
 
 
-def test_update_user_address(site_app, make_user_with_detail):
+def test_update_user_address(site_app, make_user):
     old_first_names = 'Rainer'
     old_last_name = 'Zufall'
     old_date_of_birth = None
@@ -29,7 +29,7 @@ def test_update_user_address(site_app, make_user_with_detail):
     new_street = 'Kirchenallee 1'
     new_phone_number = None
 
-    user = make_user_with_detail(
+    user = make_user(
         'RandomUser123',
         first_names=old_first_names,
         last_name=old_last_name,
@@ -93,14 +93,14 @@ def test_update_user_address(site_app, make_user_with_detail):
     }
 
 
-def test_update_user_real_name(site_app, make_user_with_detail):
+def test_update_user_real_name(site_app, make_user):
     old_first_names = 'Rainer'
     old_last_name = 'Zufall'
 
     new_first_names = 'Ryan R.'
     new_last_name = 'Wahnsinn'
 
-    user = make_user_with_detail(
+    user = make_user(
         'Moep',
         first_names=old_first_names,
         last_name=old_last_name,
@@ -144,11 +144,11 @@ def test_update_user_real_name(site_app, make_user_with_detail):
     }
 
 
-def test_remove_user_dob_and_phone_number(site_app, make_user_with_detail):
+def test_remove_user_dob_and_phone_number(site_app, make_user):
     old_date_of_birth = date(1991, 9, 17)
     old_phone_number = '555-fake-anyway'
 
-    user = make_user_with_detail(
+    user = make_user(
         'FakeyMcFake',
         date_of_birth=old_date_of_birth,
         phone_number=old_phone_number,

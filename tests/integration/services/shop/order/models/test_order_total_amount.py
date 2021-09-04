@@ -42,8 +42,8 @@ def article3(shop):
 
 
 @pytest.fixture(scope='module')
-def orderer(make_user_with_detail):
-    return create_orderer(make_user_with_detail('TotalAmountOrderer'))
+def orderer(make_user):
+    return create_orderer(make_user('TotalAmountOrderer'))
 
 
 def test_without_any_items(site_app, storefront, orderer):
