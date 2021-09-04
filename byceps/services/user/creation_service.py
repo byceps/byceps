@@ -32,7 +32,7 @@ class UserCreationFailed(Exception):
 
 
 def create_basic_user(
-    screen_name: str,
+    screen_name: Optional[str],
     email_address: Optional[str],
     password: str,
     *,
@@ -42,31 +42,6 @@ def create_basic_user(
     site_id: Optional[SiteID] = None,
 ) -> tuple[User, UserAccountCreated]:
     """Create a user account and related records."""
-    # user with details
-    user, event = _create_user(
-        screen_name,
-        email_address,
-        first_names=first_names,
-        last_name=last_name,
-        creator_id=creator_id,
-        site_id=site_id,
-    )
-
-    # password
-    password_service.create_password_hash(user.id, password)
-
-    return user, event
-
-
-def _create_user(
-    screen_name: Optional[str],
-    email_address: Optional[str],
-    *,
-    first_names: Optional[str] = None,
-    last_name: Optional[str] = None,
-    creator_id: Optional[UserID] = None,
-    site_id: Optional[SiteID] = None,
-) -> tuple[User, UserAccountCreated]:
     creator: Optional[User]
     if creator_id is not None:
         creator = user_service.get_user(creator_id)
@@ -109,6 +84,9 @@ def _create_user(
         user_screen_name=user.screen_name,
         site_id=site_id,
     )
+
+    # password
+    password_service.create_password_hash(user.id, password)
 
     return user_dto, event
 
