@@ -50,12 +50,12 @@ def create_basic_user(
 
     created_at = datetime.utcnow()
 
-    user = build_user(created_at, screen_name, email_address)
+    db_user = build_user(created_at, screen_name, email_address)
 
-    user.detail.first_names = first_names
-    user.detail.last_name = last_name
+    db_user.detail.first_names = first_names
+    db_user.detail.last_name = last_name
 
-    db.session.add(user)
+    db.session.add(db_user)
 
     try:
         db.session.commit()
@@ -63,6 +63,8 @@ def create_basic_user(
         current_app.logger.error('User creation failed: %s', e)
         db.session.rollback()
         raise UserCreationFailed()
+
+    user = user_service._db_entity_to_user(db_user)
 
     # Create event in separate step as user ID is not available earlier.
     event_data = {}
@@ -74,10 +76,8 @@ def create_basic_user(
         'user-created', user.id, event_data, occurred_at=created_at
     )
 
-    user_dto = user_service._db_entity_to_user(user)
-
     event = UserAccountCreated(
-        occurred_at=user.created_at,
+        occurred_at=db_user.created_at,
         initiator_id=creator.id if creator else None,
         initiator_screen_name=creator.screen_name if creator else None,
         user_id=user.id,
@@ -88,7 +88,7 @@ def create_basic_user(
     # password
     password_service.create_password_hash(user.id, password)
 
-    return user_dto, event
+    return user, event
 
 
 def build_user(
