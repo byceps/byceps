@@ -103,13 +103,13 @@ def create():
         last_name = None
 
     try:
-        user, event = user_creation_service.create_user(
+        user, event = user_creation_service.create_basic_user(
             screen_name,
             email_address,
             password,
-            first_names,
-            last_name,
-            g.site_id,
+            first_names=first_names,
+            last_name=last_name,
+            site_id=g.site_id,
         )
     except user_creation_service.UserCreationFailed:
         flash_error(
@@ -119,6 +119,10 @@ def create():
             )
         )
         return create_form(form)
+
+    user_creation_service.request_email_address_confirmation(
+        user, email_address, g.site_id
+    )
 
     subject_ids = {subject.id for subject in required_consent_subjects}
     consent_service.consent_to_subjects(user.id, subject_ids, now_utc)

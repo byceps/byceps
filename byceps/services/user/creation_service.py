@@ -31,30 +31,6 @@ class UserCreationFailed(Exception):
     pass
 
 
-def create_user(
-    screen_name: str,
-    email_address: str,
-    password: str,
-    first_names: Optional[str],
-    last_name: Optional[str],
-    site_id: SiteID,
-) -> tuple[User, UserAccountCreated]:
-    """Create a user account and related records."""
-    # user with details, password, and roles
-    user, event = create_basic_user(
-        screen_name,
-        email_address,
-        password,
-        first_names=first_names,
-        last_name=last_name,
-        site_id=site_id,
-    )
-
-    request_email_address_confirmation(user, email_address, site_id)
-
-    return user, event
-
-
 def create_basic_user(
     screen_name: str,
     email_address: Optional[str],
@@ -65,6 +41,7 @@ def create_basic_user(
     creator_id: Optional[UserID] = None,
     site_id: Optional[SiteID] = None,
 ) -> tuple[User, UserAccountCreated]:
+    """Create a user account and related records."""
     # user with details
     user, event = _create_user(
         screen_name,
