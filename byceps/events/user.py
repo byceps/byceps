@@ -22,7 +22,7 @@ class _UserEvent(_BaseEvent):
 
 @dataclass(frozen=True)
 class UserAccountCreated(_UserEvent):
-    user_screen_name: str
+    user_screen_name: Optional[str]
     site_id: Optional[SiteID]
 
 
@@ -63,5 +63,5 @@ class UserEmailAddressInvalidated(_UserEvent):
 
 @dataclass(frozen=True)
 class UserScreenNameChanged(_UserEvent):
-    old_screen_name: str
-    new_screen_name: str
+    old_screen_name: Optional[str]
+    new_screen_name: Optional[str]

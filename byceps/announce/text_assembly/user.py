@@ -59,11 +59,14 @@ def assemble_text_for_user_screen_name_changed(
         event.initiator_screen_name
     )
 
+    old_screen_name = get_screen_name_or_fallback(event.old_screen_name)
+    new_screen_name = get_screen_name_or_fallback(event.new_screen_name)
+
     return gettext(
         '%(initiator_screen_name)s has renamed user account "%(old_screen_name)s" to "%(new_screen_name)s".',
         initiator_screen_name=initiator_screen_name,
-        old_screen_name=event.old_screen_name,
-        new_screen_name=event.new_screen_name,
+        old_screen_name=old_screen_name,
+        new_screen_name=new_screen_name,
     )
 
 
