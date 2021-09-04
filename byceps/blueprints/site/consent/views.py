@@ -82,8 +82,9 @@ def consent(token):
 
     expressed_at = datetime.utcnow()
     consent_service.consent_to_subjects(
-        subject_ids_from_form, expressed_at, verification_token
+        user_id, subject_ids_from_form, expressed_at
     )
+    verification_token_service.delete_token(verification_token.token)
 
     flash_success(gettext('Thank you for your consent. Please log in again.'))
     return redirect_to('authentication_login.login_form')

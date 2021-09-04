@@ -13,9 +13,6 @@ from typing import Iterable
 from ...database import db
 from ...typing import UserID
 
-from ..verification_token import service as verification_token_service
-from ..verification_token.transfer.models import Token
-
 from .dbmodels.consent import Consent as DbConsent
 from .dbmodels.subject import Subject as DbSubject
 from .transfer.models import Consent, SubjectID
@@ -29,26 +26,18 @@ def build_consent(
 
 
 def consent_to_subject(
-    subject_id: SubjectID, expressed_at: datetime, verification_token: Token
+    user_id: UserID, subject_id: SubjectID, expressed_at: datetime
 ) -> None:
-    """Store the user's consent to that subject, and invalidate the
-    verification token.
-    """
-    consent_to_subjects([subject_id], expressed_at, verification_token)
+    """Store the user's consent to that subject."""
+    consent_to_subjects(user_id, [subject_id], expressed_at)
 
 
 def consent_to_subjects(
+    user_id: UserID,
     subject_ids: Iterable[SubjectID],
     expressed_at: datetime,
-    verification_token: Token,
 ) -> None:
-    """Store the user's consent to these subjects, and invalidate the
-    verification token.
-    """
-    user_id = verification_token.user_id
-
-    verification_token_service.delete_token(verification_token.token)
-
+    """Store the user's consent to these subjects."""
     for subject_id in subject_ids:
         consent = build_consent(user_id, subject_id, expressed_at)
         db.session.add(consent)
