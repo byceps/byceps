@@ -14,8 +14,11 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from .....services.brand import settings_service as brand_settings_service
-from .....services.consent import subject_service as consent_subject_service
-from .....services.consent.transfer.models import Consent, Subject, SubjectID
+from .....services.consent import (
+    consent_service,
+    subject_service as consent_subject_service,
+)
+from .....services.consent.transfer.models import Consent, Subject
 from .....services.newsletter import (
     command_service as newsletter_command_service,
 )
@@ -99,11 +102,6 @@ def create():
         first_names = None
         last_name = None
 
-    consents = {
-        _assemble_consent(subject.id, now_utc)
-        for subject in required_consent_subjects
-    }
-
     try:
         user, event = user_creation_service.create_user(
             screen_name,
@@ -112,7 +110,6 @@ def create():
             first_names,
             last_name,
             g.site_id,
-            consents=consents,
         )
     except user_creation_service.UserCreationFailed:
         flash_error(
@@ -122,6 +119,9 @@ def create():
             )
         )
         return create_form(form)
+
+    subject_ids = {subject.id for subject in required_consent_subjects}
+    consent_service.consent_to_subjects(user.id, subject_ids, now_utc)
 
     flash_success(
         gettext(
@@ -190,11 +190,3 @@ def _find_site_setting_value(setting_name: str) -> Optional[str]:
     name, or `None` if not configured.
     """
     return site_settings_service.find_setting_value(g.site_id, setting_name)
-
-
-def _assemble_consent(subject_id: SubjectID, expressed_at: datetime) -> Consent:
-    return Consent(
-        user_id=None,  # not available at this point
-        subject_id=subject_id,
-        expressed_at=expressed_at,
-    )

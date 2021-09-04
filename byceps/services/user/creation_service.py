@@ -17,8 +17,6 @@ from ...events.user import UserAccountCreated
 from ...typing import UserID
 
 from ..authentication.password import service as password_service
-from ..consent import consent_service
-from ..consent.transfer.models import Consent
 from ..site.transfer.models import SiteID
 
 from . import email_address_verification_service
@@ -40,8 +38,6 @@ def create_user(
     first_names: Optional[str],
     last_name: Optional[str],
     site_id: SiteID,
-    *,
-    consents: Optional[set[Consent]] = None,
 ) -> tuple[User, UserAccountCreated]:
     """Create a user account and related records."""
     # user with details, password, and roles
@@ -53,19 +49,6 @@ def create_user(
         last_name=last_name,
         site_id=site_id,
     )
-
-    # consents
-    if consents:
-        for consent in consents:
-            # Insert missing user ID.
-            consent = consent_service.build_consent(
-                user.id,
-                consent.subject_id,
-                consent.expressed_at,
-            )
-            db.session.add(consent)
-
-    db.session.commit()
 
     request_email_address_confirmation(user, email_address, site_id)
 
