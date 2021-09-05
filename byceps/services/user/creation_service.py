@@ -59,20 +59,38 @@ def create_user(
 
     created_at = datetime.utcnow()
 
-    db_user = build_db_user(
-        created_at, screen_name, email_address, legacy_id=legacy_id
+    normalized_screen_name: Optional[str]
+    if screen_name is not None:
+        normalized_screen_name = _normalize_screen_name(screen_name)
+    else:
+        normalized_screen_name = None
+
+    normalized_email_address: Optional[str]
+    if email_address is not None:
+        normalized_email_address = _normalize_email_address(email_address)
+    else:
+        normalized_email_address = None
+
+    db_user = DbUser(
+        created_at,
+        normalized_screen_name,
+        normalized_email_address,
+        legacy_id=legacy_id,
     )
 
-    db_user.detail.first_names = first_names
-    db_user.detail.last_name = last_name
-    db_user.detail.date_of_birth = date_of_birth
-    db_user.detail.country = country
-    db_user.detail.zip_code = zip_code
-    db_user.detail.city = city
-    db_user.detail.street = street
-    db_user.detail.phone_number = phone_number
-    db_user.detail.internal_comment = internal_comment
-    db_user.detail.extras = extras
+    detail = DbUserDetail(
+        user=db_user,
+        first_names=first_names,
+        last_name=last_name,
+        date_of_birth=date_of_birth,
+        country=country,
+        zip_code=zip_code,
+        city=city,
+        street=street,
+        phone_number=phone_number,
+        internal_comment=internal_comment,
+        extras=extras,
+    )
 
     db.session.add(db_user)
 
@@ -108,37 +126,6 @@ def create_user(
     password_service.create_password_hash(user.id, password)
 
     return user, event
-
-
-def build_db_user(
-    created_at: datetime,
-    screen_name: Optional[str],
-    email_address: Optional[str],
-    *,
-    legacy_id: Optional[str] = None,
-) -> DbUser:
-    normalized_screen_name: Optional[str]
-    if screen_name is not None:
-        normalized_screen_name = _normalize_screen_name(screen_name)
-    else:
-        normalized_screen_name = None
-
-    normalized_email_address: Optional[str]
-    if email_address is not None:
-        normalized_email_address = _normalize_email_address(email_address)
-    else:
-        normalized_email_address = None
-
-    user = DbUser(
-        created_at,
-        normalized_screen_name,
-        normalized_email_address,
-        legacy_id=legacy_id,
-    )
-
-    detail = DbUserDetail(user=user)
-
-    return user
 
 
 def request_email_address_confirmation(
