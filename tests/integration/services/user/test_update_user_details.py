@@ -6,8 +6,11 @@
 from datetime import date
 
 from byceps.events.user import UserDetailsUpdated
-from byceps.services.user import command_service as user_command_service
-from byceps.services.user import event_service
+from byceps.services.user import (
+    command_service as user_command_service,
+    event_service,
+    service as user_service,
+)
 
 
 def test_update_user_address(site_app, make_user):
@@ -105,6 +108,7 @@ def test_update_user_real_name(site_app, make_user):
         first_names=old_first_names,
         last_name=old_last_name,
     )
+    user_detail = user_service.get_detail(user.id)
 
     events_before = event_service.get_events_for_user(user.id)
     assert len(events_before) == 0
@@ -115,12 +119,12 @@ def test_update_user_real_name(site_app, make_user):
         user.id,
         new_first_names,
         new_last_name,
-        user.detail.date_of_birth,
-        user.detail.country,
-        user.detail.zip_code,
-        user.detail.city,
-        user.detail.street,
-        user.detail.phone_number,
+        user_detail.date_of_birth,
+        user_detail.country,
+        user_detail.zip_code,
+        user_detail.city,
+        user_detail.street,
+        user_detail.phone_number,
         user.id,
     )
 
@@ -153,18 +157,19 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
         date_of_birth=old_date_of_birth,
         phone_number=old_phone_number,
     )
+    user_detail = user_service.get_detail(user.id)
 
     # -------------------------------- #
 
     event = user_command_service.update_user_details(
         user.id,
-        user.detail.first_names,
-        user.detail.last_name,
+        user_detail.first_names,
+        user_detail.last_name,
         None,
-        user.detail.country,
-        user.detail.zip_code,
-        user.detail.city,
-        user.detail.street,
+        user_detail.country,
+        user_detail.zip_code,
+        user_detail.city,
+        user_detail.street,
         '',
         user.id,
     )

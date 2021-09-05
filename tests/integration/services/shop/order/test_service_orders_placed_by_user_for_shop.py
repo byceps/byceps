@@ -64,14 +64,14 @@ def storefront2(make_brand):
 
 @pytest.fixture(scope='module')
 def orderer1(make_user):
-    user = make_user('Orderer1')
-    return create_orderer(user)
+    user = make_user()
+    return create_orderer(user.id)
 
 
 @pytest.fixture(scope='module')
 def orderer2(make_user):
-    user = make_user('Orderer2')
-    return create_orderer(user)
+    user = make_user()
+    return create_orderer(user.id)
 
 
 def test_get_orders_placed_by_user(

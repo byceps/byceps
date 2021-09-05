@@ -22,7 +22,7 @@ def get_current_user_for_user(user) -> CurrentUser:
 def place_order_with_items(
     storefront_id, user, created_at=None, items_with_quantity=None
 ):
-    orderer = create_orderer(user)
+    orderer = create_orderer(user.id)
 
     cart = Cart()
 

@@ -29,7 +29,8 @@ def article(shop):
 
 @pytest.fixture
 def orderer(make_user):
-    return create_orderer(make_user('ArticlesForStatsOrderer'))
+    user = make_user()
+    return create_orderer(user.id)
 
 
 def test_count_ordered_articles(admin_app, storefront, article, orderer):

@@ -18,7 +18,8 @@ from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.shop.transfer.models import ShopID
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
-from byceps.services.user.transfer.models import UserWithDetail
+from byceps.services.user import service as user_service
+from byceps.services.user.transfer.models import UserID
 
 from tests.helpers import generate_token
 
@@ -79,13 +80,15 @@ def create_article(
     )
 
 
-def create_orderer(user: UserWithDetail) -> Orderer:
+def create_orderer(user_id: UserID) -> Orderer:
+    detail = user_service.get_detail(user_id)
+
     return Orderer(
-        user.id,
-        user.detail.first_names,
-        user.detail.last_name,
-        user.detail.country,
-        user.detail.zip_code,
-        user.detail.city,
-        user.detail.street,
+        user_id,
+        detail.first_names,
+        detail.last_name,
+        detail.country,
+        detail.zip_code,
+        detail.city,
+        detail.street,
     )

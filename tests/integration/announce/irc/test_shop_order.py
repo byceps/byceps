@@ -109,7 +109,7 @@ def orderer_user(make_user):
 
 @pytest.fixture(scope='module')
 def orderer(orderer_user):
-    yield create_orderer(orderer_user)
+    yield create_orderer(orderer_user.id)
 
 
 @pytest.fixture(scope='module')

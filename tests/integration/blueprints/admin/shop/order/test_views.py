@@ -70,7 +70,7 @@ def orderer_user(make_user):
 
 @pytest.fixture(scope='module')
 def orderer(orderer_user):
-    return create_orderer(orderer_user)
+    return create_orderer(orderer_user.id)
 
 
 @patch('byceps.signals.shop.order_canceled.send')

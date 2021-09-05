@@ -14,7 +14,8 @@ from tests.integration.services.shop.helpers import create_orderer
 
 @pytest.fixture(scope='module')
 def orderer(make_user):
-    return create_orderer(make_user('PayingOrderer'))
+    user = make_user()
+    return create_orderer(user.id)
 
 
 @pytest.fixture

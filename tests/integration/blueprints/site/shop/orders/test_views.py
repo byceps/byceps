@@ -136,7 +136,7 @@ def user2(make_user):
 
 @pytest.fixture
 def order(storefront1, user1):
-    orderer = create_orderer(user1)
+    orderer = create_orderer(user1.id)
     cart = Cart()
 
     order, _ = order_service.place_order(storefront1.id, orderer, cart)
