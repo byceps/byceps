@@ -66,7 +66,7 @@ def test_award_badge_without_initiator(
     badge = badge1
 
     user_events_before = event_service.get_events_for_user(user.id)
-    assert len(user_events_before) == 0
+    assert len(user_events_before) == 1  # user creation
 
     _, event = awarding_service.award_badge_to_user(badge.id, user.id)
 
@@ -79,9 +79,9 @@ def test_award_badge_without_initiator(
     assert event.badge_label == badge.label
 
     user_events_after = event_service.get_events_for_user(user.id)
-    assert len(user_events_after) == 1
+    assert len(user_events_after) == 2
 
-    user_awarding_event = user_events_after[0]
+    user_awarding_event = user_events_after[1]
     assert user_awarding_event.event_type == 'user-badge-awarded'
     assert user_awarding_event.data == {'badge_id': str(badge.id)}
 
@@ -94,7 +94,7 @@ def test_award_badge_with_initiator(
     badge = badge2
 
     user_events_before = event_service.get_events_for_user(user.id)
-    assert len(user_events_before) == 0
+    assert len(user_events_before) == 1  # user creation
 
     _, event = awarding_service.award_badge_to_user(
         badge.id, user.id, initiator_id=admin_user.id
@@ -109,9 +109,9 @@ def test_award_badge_with_initiator(
     assert event.badge_label == badge.label
 
     user_events_after = event_service.get_events_for_user(user.id)
-    assert len(user_events_after) == 1
+    assert len(user_events_after) == 2
 
-    user_awarding_event = user_events_after[0]
+    user_awarding_event = user_events_after[1]
     assert user_awarding_event.event_type == 'user-badge-awarded'
     assert user_awarding_event.data == {
         'badge_id': str(badge.id),

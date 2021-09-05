@@ -61,7 +61,7 @@ def test_initialize_account_as_user(
     assert not user_before.initialized
 
     events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 0
+    assert len(events_before) == 1  # user creation
 
     role_ids_before = authorization_service.find_role_ids_for_user(user.id)
     assert role_ids_before == set()
@@ -76,13 +76,13 @@ def test_initialize_account_as_user(
     assert user_after.initialized
 
     events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 2
+    assert len(events_after) == 3
 
-    user_enabled_event = events_after[0]
+    user_enabled_event = events_after[1]
     assert user_enabled_event.event_type == 'user-initialized'
     assert user_enabled_event.data == {}
 
-    role_assigned_event = events_after[1]
+    role_assigned_event = events_after[2]
     assert role_assigned_event.event_type == 'role-assigned'
     assert role_assigned_event.data == {
         'role_id': 'board_user',
@@ -104,7 +104,7 @@ def test_initialize_account_as_admin(
     assert not user_before.initialized
 
     events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 0
+    assert len(events_before) == 1  # user creation
 
     role_ids_before = authorization_service.find_role_ids_for_user(user.id)
     assert role_ids_before == set()
@@ -119,15 +119,15 @@ def test_initialize_account_as_admin(
     assert user_after.initialized
 
     events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 2
+    assert len(events_after) == 3
 
-    user_enabled_event = events_after[0]
+    user_enabled_event = events_after[1]
     assert user_enabled_event.event_type == 'user-initialized'
     assert user_enabled_event.data == {
         'initiator_id': str(admin_user.id),
     }
 
-    role_assigned_event = events_after[1]
+    role_assigned_event = events_after[2]
     assert role_assigned_event.event_type == 'role-assigned'
     assert role_assigned_event.data == {
         'initiator_id': str(admin_user.id),
@@ -147,7 +147,7 @@ def test_initialize_already_initialized_account(
     assert user_before.initialized
 
     events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 0
+    assert len(events_before) == 1  # user creation
 
     # -------------------------------- #
 
@@ -162,4 +162,4 @@ def test_initialize_already_initialized_account(
     assert user_after.initialized  # still initialized
 
     events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 0  # no additional user events
+    assert len(events_after) == 1  # no additional user events

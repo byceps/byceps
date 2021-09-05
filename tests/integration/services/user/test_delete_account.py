@@ -71,8 +71,8 @@ def test_delete_account(admin_app, permission, role, make_user):
 
     # events
     events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 1
-    assert events_before[0].event_type == 'role-assigned'
+    assert len(events_before) == 2
+    assert events_before[1].event_type == 'role-assigned'
 
     # authorization
     assert authorization_service.find_role_ids_for_user(user_id) == {'demigod'}
@@ -108,9 +108,9 @@ def test_delete_account(admin_app, permission, role, make_user):
 
     # events
     events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 2
+    assert len(events_after) == 3
 
-    user_enabled_event = events_after[1]
+    user_enabled_event = events_after[2]
     assert user_enabled_event.event_type == 'user-deleted'
     assert user_enabled_event.data == {
         'initiator_id': str(admin_user.id),

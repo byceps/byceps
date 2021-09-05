@@ -26,7 +26,7 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     assert user_before.screen_name == old_screen_name
 
     events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 0
+    assert len(events_before) == 1  # user creation
 
     # -------------------------------- #
 
@@ -47,9 +47,9 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     assert user_after.screen_name == new_screen_name
 
     events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 1
+    assert len(events_after) == 2
 
-    user_enabled_event = events_after[0]
+    user_enabled_event = events_after[1]
     assert user_enabled_event.event_type == 'user-screen-name-changed'
     assert user_enabled_event.data == {
         'old_screen_name': old_screen_name,
@@ -77,7 +77,7 @@ def test_change_screen_name_without_reason(admin_app, make_user, admin_user):
 
     events_after = event_service.get_events_for_user(user_after.id)
 
-    user_enabled_event = events_after[0]
+    user_enabled_event = events_after[1]
     assert user_enabled_event.event_type == 'user-screen-name-changed'
     assert user_enabled_event.data == {
         'old_screen_name': old_screen_name,

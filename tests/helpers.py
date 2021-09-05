@@ -16,8 +16,7 @@ from typing import Any, Iterable, Optional, Union
 from flask import appcontext_pushed, Flask, g
 
 from byceps.application import create_app
-from byceps.database import db, generate_uuid
-from byceps.services.authentication.password import service as password_service
+from byceps.database import db
 from byceps.services.authentication.session.models.current_user import (
     CurrentUser,
 )
@@ -34,8 +33,6 @@ from byceps.services.user import (
     creation_service as user_creation_service,
     service as user_service,
 )
-from byceps.services.user.creation_service import UserCreationFailed
-from byceps.services.user.dbmodels.detail import UserDetail as DbUserDetail
 from byceps.services.user.transfer.models import User
 from byceps.typing import BrandID, PartyID, UserID
 
@@ -119,47 +116,31 @@ def create_user(
     if screen_name == '__random__':
         screen_name = generate_token(8)
 
-    user_id = UserID(generate_uuid())
-
-    created_at = datetime.utcnow()
-
     if not email_address:
-        email_address = f'user{user_id}@users.test'
+        email_address = f'user{generate_token(6)}@users.test'
 
-    db_user = user_creation_service.build_db_user(
-        created_at,
+    user, event = user_creation_service.create_user(
         screen_name,
         email_address,
+        password,
         legacy_id=legacy_id,
+        first_names=first_names,
+        last_name=last_name,
+        date_of_birth=date_of_birth,
+        country=country,
+        zip_code=zip_code,
+        city=city,
+        street=street,
+        phone_number=phone_number,
     )
 
-    db_user.id = user_id
-    db_user.email_address_verified = email_address_verified
-    db_user.initialized = initialized
-    db_user.suspended = suspended
-    db_user.deleted = deleted
-
-    detail = DbUserDetail(user=db_user)
-    detail.first_names = first_names
-    detail.last_name = last_name
-    detail.date_of_birth = date_of_birth
-    detail.country = country
-    detail.zip_code = zip_code
-    detail.city = city
-    detail.street = street
-    detail.phone_number = phone_number
-
-    db.session.add(db_user)
-
-    try:
+    if email_address_verified or initialized or suspended or deleted:
+        db_user = user_service.get_db_user(user.id)
+        db_user.email_address_verified = email_address_verified
+        db_user.initialized = initialized
+        db_user.suspended = suspended
+        db_user.deleted = deleted
         db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        raise UserCreationFailed(e)
-
-    user = user_service._db_entity_to_user(db_user)
-
-    password_service.create_password_hash(user.id, password)
 
     return user
 

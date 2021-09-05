@@ -34,7 +34,7 @@ def test_suspend(admin_app, cheater, admin_user):
     assert not user_before.suspended
 
     events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 0
+    assert len(events_before) == 1  # user creation
 
     # -------------------------------- #
 
@@ -46,9 +46,9 @@ def test_suspend(admin_app, cheater, admin_user):
     assert user_after.suspended
 
     events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 1
+    assert len(events_after) == 2
 
-    suspended_event = events_after[0]
+    suspended_event = events_after[1]
     assert suspended_event.event_type == 'user-suspended'
     assert suspended_event.data == {
         'initiator_id': str(admin_user.id),
@@ -67,7 +67,7 @@ def test_unsuspend(admin_app, remorseful_user, admin_user):
     assert user_before.suspended
 
     events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 1
+    assert len(events_before) == 2
 
     # -------------------------------- #
 
@@ -79,9 +79,9 @@ def test_unsuspend(admin_app, remorseful_user, admin_user):
     assert not user_after.suspended
 
     events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 2
+    assert len(events_after) == 3
 
-    unsuspended_event = events_after[1]
+    unsuspended_event = events_after[2]
     assert unsuspended_event.event_type == 'user-unsuspended'
     assert unsuspended_event.data == {
         'initiator_id': str(admin_user.id),

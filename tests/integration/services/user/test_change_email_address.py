@@ -32,7 +32,7 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     assert user_before.email_address_verified
 
     events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 0
+    assert len(events_before) == 1  # user creation
 
     # -------------------------------- #
 
@@ -53,9 +53,9 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     assert not user_after.email_address_verified
 
     events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 1
+    assert len(events_after) == 2
 
-    user_enabled_event = events_after[0]
+    user_enabled_event = events_after[1]
     assert user_enabled_event.event_type == 'user-email-address-changed'
     assert user_enabled_event.data == {
         'old_email_address': old_email_address,
@@ -88,7 +88,7 @@ def test_change_email_address_without_reason(admin_app, make_user, admin_user):
 
     events_after = event_service.get_events_for_user(user_after.id)
 
-    user_enabled_event = events_after[0]
+    user_enabled_event = events_after[1]
     assert user_enabled_event.event_type == 'user-email-address-changed'
     assert user_enabled_event.data == {
         'old_email_address': old_email_address,

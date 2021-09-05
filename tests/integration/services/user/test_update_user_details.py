@@ -45,7 +45,7 @@ def test_update_user_address(site_app, make_user):
     )
 
     events_before = event_service.get_events_for_user(user.id)
-    assert len(events_before) == 0
+    assert len(events_before) == 1  # user creation
 
     # -------------------------------- #
 
@@ -81,9 +81,9 @@ def test_update_user_address(site_app, make_user):
     assert user_after.detail.phone_number == new_phone_number
 
     events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 1
+    assert len(events_after) == 2
 
-    details_updated_event = events_after[0]
+    details_updated_event = events_after[1]
     assert details_updated_event.event_type == 'user-details-updated'
     assert details_updated_event.data == {
         'initiator_id': str(user.id),
@@ -111,7 +111,7 @@ def test_update_user_real_name(site_app, make_user):
     user_detail = user_service.get_detail(user.id)
 
     events_before = event_service.get_events_for_user(user.id)
-    assert len(events_before) == 0
+    assert len(events_before) == 1  # user creation
 
     # -------------------------------- #
 
@@ -135,9 +135,9 @@ def test_update_user_real_name(site_app, make_user):
     assert user_after.detail.last_name == new_last_name
 
     events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 1
+    assert len(events_after) == 2
 
-    details_updated_event = events_after[0]
+    details_updated_event = events_after[1]
     assert details_updated_event.event_type == 'user-details-updated'
     assert details_updated_event.data == {
         'initiator_id': str(user.id),
@@ -158,6 +158,9 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
         phone_number=old_phone_number,
     )
     user_detail = user_service.get_detail(user.id)
+
+    events_before = event_service.get_events_for_user(user.id)
+    assert len(events_before) == 1  # user creation
 
     # -------------------------------- #
 
@@ -181,9 +184,9 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
     assert user_after.detail.phone_number == ''
 
     events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 1
+    assert len(events_after) == 2
 
-    details_updated_event = events_after[0]
+    details_updated_event = events_after[1]
     assert details_updated_event.event_type == 'user-details-updated'
     assert details_updated_event.data == {
         'initiator_id': str(user.id),
