@@ -23,8 +23,8 @@ from byceps.services.ticketing import (
 from byceps.services.user import (
     command_service as user_command_service,
     deletion_service as user_deletion_service,
-    service as user_service,
 )
+from byceps.services.user.transfer.models import User
 from byceps.typing import BrandID
 
 from tests.database import set_up_database, tear_down_database
@@ -107,11 +107,10 @@ def make_client():
 def make_user(admin_app):
     user_ids = set()
 
-    def _wrapper(*args, **kwargs):
+    def _wrapper(*args, **kwargs) -> User:
         user = create_user(*args, **kwargs)
         user_ids.add(user.id)
-        user_dto = user_service._db_entity_to_user(user)
-        return user_dto
+        return user
 
     yield _wrapper
 

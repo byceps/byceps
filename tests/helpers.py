@@ -30,10 +30,13 @@ from byceps.services.party.transfer.models import Party
 from byceps.services.shop.storefront.transfer.models import StorefrontID
 from byceps.services.site import service as site_service
 from byceps.services.site.transfer.models import SiteID
-from byceps.services.user import creation_service as user_creation_service
+from byceps.services.user import (
+    creation_service as user_creation_service,
+    service as user_service,
+)
 from byceps.services.user.creation_service import UserCreationFailed
 from byceps.services.user.dbmodels.detail import UserDetail as DbUserDetail
-from byceps.services.user.dbmodels.user import User as DbUser
+from byceps.services.user.transfer.models import User
 from byceps.typing import BrandID, PartyID, UserID
 
 
@@ -112,7 +115,7 @@ def create_user(
     street: Optional[str] = 'Elite Street 1337',
     phone_number: Optional[str] = '555-CALL-ME-MAYBE',
     password: str = 'hunter2',
-) -> DbUser:
+) -> User:
     if screen_name == '__random__':
         screen_name = generate_token(8)
 
@@ -123,20 +126,20 @@ def create_user(
     if not email_address:
         email_address = f'user{user_id}@users.test'
 
-    user = user_creation_service.build_db_user(
+    db_user = user_creation_service.build_db_user(
         created_at,
         screen_name,
         email_address,
         legacy_id=legacy_id,
     )
 
-    user.id = user_id
-    user.email_address_verified = email_address_verified
-    user.initialized = initialized
-    user.suspended = suspended
-    user.deleted = deleted
+    db_user.id = user_id
+    db_user.email_address_verified = email_address_verified
+    db_user.initialized = initialized
+    db_user.suspended = suspended
+    db_user.deleted = deleted
 
-    detail = DbUserDetail(user=user)
+    detail = DbUserDetail(user=db_user)
     detail.first_names = first_names
     detail.last_name = last_name
     detail.date_of_birth = date_of_birth
@@ -146,13 +149,15 @@ def create_user(
     detail.street = street
     detail.phone_number = phone_number
 
-    db.session.add(user)
+    db.session.add(db_user)
 
     try:
         db.session.commit()
     except Exception as e:
         db.session.rollback()
         raise UserCreationFailed(e)
+
+    user = user_service._db_entity_to_user(db_user)
 
     password_service.create_password_hash(user.id, password)
 
