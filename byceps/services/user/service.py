@@ -349,8 +349,10 @@ def get_email_addresses(user_ids: set[UserID]) -> set[tuple[UserID, str]]:
 
 def get_detail(user_id: UserID) -> UserDetail:
     """Return the user's details."""
-    user = get_db_user(user_id)
-    detail = user.detail
+    detail = db.session.get(DbUserDetail, user_id)
+
+    if detail is None:
+        raise ValueError(f"Unknown user ID '{user_id}'")
 
     return UserDetail(
         first_names=detail.first_names,
