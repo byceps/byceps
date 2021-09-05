@@ -31,7 +31,7 @@ class User(db.Model):
     suspended = db.Column(db.Boolean, default=False, nullable=False)
     deleted = db.Column(db.Boolean, default=False, nullable=False)
     locale = db.Column(db.UnicodeText, nullable=True)
-    legacy_id = db.Column(db.Integer)
+    legacy_id = db.Column(db.UnicodeText, nullable=True)
 
     avatar = association_proxy('avatar_selection', 'avatar',
                                creator=lambda avatar:

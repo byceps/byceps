@@ -102,7 +102,7 @@ def create_user(
     initialized: bool = True,
     suspended: bool = False,
     deleted: bool = False,
-    legacy_id: Optional[int] = None,
+    legacy_id: Optional[str] = None,
     first_names: Optional[str] = 'John Joseph',
     last_name: Optional[str] = 'Doe',
     date_of_birth=DEFAULT_DATE_OF_BIRTH,

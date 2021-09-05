@@ -38,7 +38,7 @@ def role(permission):
 def test_delete_account(admin_app, permission, role, make_user):
     screen_name = 'GetRidOfMe'
     email_address = 'timedout@users.test'
-    legacy_id = 22299
+    legacy_id = 'user-22299'
 
     user = make_user(
         screen_name, email_address=email_address, legacy_id=legacy_id
