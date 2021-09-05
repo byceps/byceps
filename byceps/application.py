@@ -22,6 +22,7 @@ from .blueprints.blueprints import register_blueprints
 from . import config, config_defaults
 from .database import db
 from . import email
+from .util.authorization import load_permissions
 from .util.l10n import get_current_user_locale, set_locale
 from .util import templatefilters, templatefunctions
 from .util.templating import SiteTemplateOverridesLoader
@@ -70,6 +71,8 @@ def create_app(
     app.redis_client = StrictRedis.from_url(app.config['REDIS_URL'])
 
     email.init_app(app)
+
+    load_permissions()
 
     register_blueprints(app)
 

@@ -8,6 +8,8 @@ byceps.util.authorization
 
 from __future__ import annotations
 from enum import Enum, EnumMeta
+from importlib import import_module
+import pkgutil
 from typing import Optional
 
 from flask import current_app, g
@@ -15,6 +17,16 @@ from flask import current_app, g
 from ..services.authorization import service as authorization_service
 from ..services.authorization.transfer.models import PermissionID
 from ..typing import UserID
+
+
+def load_permissions() -> None:
+    """Load permissions from modules in the permissions package."""
+    pkg_name = f'byceps.permissions'
+    pkg_module = import_module(pkg_name)
+    mod_infos = pkgutil.iter_modules(pkg_module.__path__)
+    mod_names = {mod_info.name for mod_info in mod_infos}
+    for mod_name in mod_names:
+        import_module(f'{pkg_name}.{mod_name}')
 
 
 def create_permission_enum(key: str, member_names: list[str]) -> EnumMeta:
