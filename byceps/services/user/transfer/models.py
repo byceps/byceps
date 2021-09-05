@@ -51,11 +51,6 @@ class UserDetail:
 
 
 @dataclass(frozen=True)
-class UserWithDetail(User):
-    detail: UserDetail
-
-
-@dataclass(frozen=True)
 class UserForAdmin(User):
     created_at: datetime
     initialized: bool

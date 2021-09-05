@@ -33,7 +33,6 @@ from .transfer.models import (
     UserForAdmin,
     UserForAdminDetail,
     UserStateFilter,
-    UserWithDetail,
 )
 
 
@@ -268,36 +267,6 @@ def _db_entity_to_user(user: DbUser) -> User:
     )
 
 
-def _db_entity_to_user_detail(detail: DbUserDetail) -> UserDetail:
-    return UserDetail(
-        first_names=detail.first_names,
-        last_name=detail.last_name,
-        date_of_birth=detail.date_of_birth,
-        country=detail.country,
-        zip_code=detail.zip_code,
-        city=detail.city,
-        street=detail.street,
-        phone_number=detail.phone_number,
-        internal_comment=detail.internal_comment,
-        extras=detail.extras,
-    )
-
-
-def _db_entity_to_user_with_detail(user: DbUser) -> UserWithDetail:
-    user_dto = _db_entity_to_user(user)
-    detail_dto = _db_entity_to_user_detail(user.detail)
-
-    return UserWithDetail(
-        id=user_dto.id,
-        screen_name=user_dto.screen_name,
-        suspended=user_dto.suspended,
-        deleted=user_dto.deleted,
-        locale=user_dto.locale,
-        avatar_url=user_dto.avatar_url,
-        detail=detail_dto,
-    )
-
-
 def _db_entity_to_user_for_admin(user: DbUser) -> UserForAdmin:
     full_name = user.detail.full_name if user.detail is not None else None
     detail = UserForAdminDetail(full_name=full_name)
@@ -381,7 +350,20 @@ def get_email_addresses(user_ids: set[UserID]) -> set[tuple[UserID, str]]:
 def get_detail(user_id: UserID) -> UserDetail:
     """Return the user's details."""
     user = get_db_user(user_id)
-    return _db_entity_to_user_detail(user.detail)
+    detail = user.detail
+
+    return UserDetail(
+        first_names=detail.first_names,
+        last_name=detail.last_name,
+        date_of_birth=detail.date_of_birth,
+        country=detail.country,
+        zip_code=detail.zip_code,
+        city=detail.city,
+        street=detail.street,
+        phone_number=detail.phone_number,
+        internal_comment=detail.internal_comment,
+        extras=detail.extras,
+    )
 
 
 def get_sort_key_for_screen_name(user: User) -> tuple[bool, str]:

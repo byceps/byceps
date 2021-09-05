@@ -110,7 +110,7 @@ def make_user(admin_app):
     def _wrapper(*args, **kwargs):
         user = create_user(*args, **kwargs)
         user_ids.add(user.id)
-        user_dto = user_service._db_entity_to_user_with_detail(user)
+        user_dto = user_service._db_entity_to_user(user)
         return user_dto
 
     yield _wrapper
