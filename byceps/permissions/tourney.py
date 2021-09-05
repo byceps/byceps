@@ -6,10 +6,10 @@ byceps.permissions.tourney
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ..util.authorization import create_permission_enum
+from ..util.authorization import register_permissions
 
 
-TourneyPermission = create_permission_enum(
+register_permissions(
     'tourney',
     [
         'administrate',
@@ -18,7 +18,7 @@ TourneyPermission = create_permission_enum(
 )
 
 
-TourneyCategoryPermission = create_permission_enum(
+register_permissions(
     'tourney_category',
     [
         'administrate',

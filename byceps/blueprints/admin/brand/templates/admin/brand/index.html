@@ -13,7 +13,7 @@
     <div class="column-auto">
       <h1>{{ _('Brands') }} {{ render_extra_in_heading(brands|length) }}</h1>
     </div>
-  {%- if has_current_user_permission(BrandPermission.create) %}
+  {%- if has_current_user_permission('brand.create') %}
     <div class="column-auto">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Create brand') }}</span></a>

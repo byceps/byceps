@@ -6,10 +6,10 @@ byceps.permissions.admin
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ..util.authorization import create_permission_enum
+from ..util.authorization import register_permissions
 
 
-AdminPermission = create_permission_enum(
+register_permissions(
     'admin',
     [
         'access',

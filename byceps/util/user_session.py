@@ -7,7 +7,6 @@ byceps.util.user_session
 """
 
 from __future__ import annotations
-from enum import Enum
 from typing import Optional
 from uuid import UUID
 
@@ -46,7 +45,7 @@ def end() -> None:
     session.permanent = False
 
 
-def get_current_user(required_permissions: set[Enum]) -> CurrentUser:
+def get_current_user(required_permissions: set[str]) -> CurrentUser:
     session_locale = _get_session_locale()
 
     user = _find_user()

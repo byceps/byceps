@@ -13,13 +13,13 @@
 
   <div class="grid dashboard">
   {%- with items = [
-    (_('Permissions'), 'permission', url_for('authorization_admin.role_index'), RolePermission.view),
-    (_('Global Snippets'), 'snippet', url_for('snippet_admin.index_for_scope', scope_type='global', scope_name='global'), SnippetPermission.view),
-    (_('Consents'), 'consent', url_for('consent_admin.index'), ConsentPermission.administrate),
-    (_('Newsletters'), 'email', url_for('newsletter_admin.index'), NewsletterPermission.view_subscriptions),
-    (_('User Badges'), 'badge', url_for('user_badge_admin.index'), UserBadgePermission.view),
-    (_('Webhooks'), 'webhook', url_for('webhook_admin.index'), WebhookPermission.view),
-    (_('Maintenance'), 'administrate', url_for('maintenance_admin.index'), AdminPermission.maintain),
+    (_('Permissions'), 'permission', url_for('authorization_admin.role_index'), 'role.view'),
+    (_('Global Snippets'), 'snippet', url_for('snippet_admin.index_for_scope', scope_type='global', scope_name='global'), 'snippet.view'),
+    (_('Consents'), 'consent', url_for('consent_admin.index'), 'consent.administrate'),
+    (_('Newsletters'), 'email', url_for('newsletter_admin.index'), 'newsletter.view_subscriptions'),
+    (_('User Badges'), 'badge', url_for('user_badge_admin.index'), 'user_badge.view'),
+    (_('Webhooks'), 'webhook', url_for('webhook_admin.index'), 'webhook.view'),
+    (_('Maintenance'), 'administrate', url_for('maintenance_admin.index'), 'admin.maintain'),
   ] %}
     {%- for label, icon, url, required_permission in items %}
       {%- if has_current_user_permission(required_permission) %}

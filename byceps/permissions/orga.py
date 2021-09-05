@@ -6,10 +6,10 @@ byceps.permissions.orga
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ..util.authorization import create_permission_enum
+from ..util.authorization import register_permissions
 
 
-OrgaBirthdayPermission = create_permission_enum(
+register_permissions(
     'orga_birthday',
     [
         'view',
@@ -17,7 +17,7 @@ OrgaBirthdayPermission = create_permission_enum(
 )
 
 
-OrgaDetailPermission = create_permission_enum(
+register_permissions(
     'orga_detail',
     [
         'view',

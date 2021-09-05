@@ -26,7 +26,7 @@
   </div>
 {%- endif %}
 
-  {%- if has_current_user_any_permission(BoardPermission.hide, BoardTopicPermission.lock, BoardTopicPermission.move, BoardTopicPermission.pin) %}
+  {%- if has_current_user_any_permission('board.hide', 'board_topic.lock', 'board_topic.move', 'board_topic.pin') %}
   <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.topic_moderate_form', topic_id=topic.id) }}" title="{{ _('Moderate topic') }}">{{ render_icon('moderate') }} <span>{{ _('Moderate') }}</span></a>
   </div>
@@ -54,13 +54,13 @@
 
   </div>
 
-  {%- set current_user_may_reply_generally = has_current_user_permission(BoardPostingPermission.create) %}
+  {%- set current_user_may_reply_generally = has_current_user_permission('board_posting.create') %}
 
   {%- if not current_user_may_reply_generally %}
   <small>
     <p style="text-align: right;">{{ _('You have to be <a href="%(url)s">logged in</a> to be able to reply.', url=url_for('authentication_login.login_form')) }}</p>
   </small>
-  {%- elif topic.locked or (topic.posting_limited_to_moderators and not has_current_user_permission(BoardPermission.announce)) %}
+  {%- elif topic.locked or (topic.posting_limited_to_moderators and not has_current_user_permission('board.announce')) %}
   <div class="button-row button-row--right">
     <span class="button button--disabled">{{ render_icon('reply') }} <span>{{ _('Reply') }}</span></span>
   </div>

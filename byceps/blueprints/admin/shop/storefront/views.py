@@ -9,7 +9,6 @@ byceps.blueprints.admin.shop.storefront.views
 from flask import abort, request
 from flask_babel import gettext
 
-from .....permissions.shop import ShopPermission
 from .....services.brand import service as brand_service
 from .....services.shop.catalog import service as catalog_service
 from .....services.shop.order import sequence_service as order_sequence_service
@@ -27,7 +26,7 @@ blueprint = create_blueprint('shop_storefront_admin', __name__)
 
 
 @blueprint.get('/for_shop/<shop_id>')
-@permission_required(ShopPermission.view)
+@permission_required('shop.view')
 @templated
 def index_for_shop(shop_id):
     """List storefronts for that shop."""
@@ -58,7 +57,7 @@ def _get_order_number_prefixes_by_sequence_id(storefronts, shop_id):
 
 
 @blueprint.get('/<storefront_id>')
-@permission_required(ShopPermission.view)
+@permission_required('shop.view')
 @templated
 def view(storefront_id):
     """Show a single storefront."""
@@ -82,7 +81,7 @@ def view(storefront_id):
 
 
 @blueprint.get('/for_shop/<shop_id>/create')
-@permission_required(ShopPermission.create)
+@permission_required('shop.create')
 @templated
 def create_form(shop_id, erroneous_form=None):
     """Show form to create a storefront."""
@@ -109,7 +108,7 @@ def create_form(shop_id, erroneous_form=None):
 
 
 @blueprint.post('/for_shop/<shop_id>')
-@permission_required(ShopPermission.create)
+@permission_required('shop.create')
 def create(shop_id):
     """Create a storefront."""
     shop = _get_shop_or_404(shop_id)
@@ -172,7 +171,7 @@ def create(shop_id):
 
 
 @blueprint.get('/<storefront_id>/update')
-@permission_required(ShopPermission.update)
+@permission_required('shop.update')
 @templated
 def update_form(storefront_id, erroneous_form=None):
     """Show form to update a storefront."""
@@ -204,7 +203,7 @@ def update_form(storefront_id, erroneous_form=None):
 
 
 @blueprint.post('/<storefront_id>')
-@permission_required(ShopPermission.update)
+@permission_required('shop.update')
 def update(storefront_id):
     """Update a storefront."""
     storefront = _get_storefront_or_404(storefront_id)

@@ -11,12 +11,12 @@
         url_for('tourney_tourney_admin.index', party_id=party.id),
         _('Tourneys'),
         id='tourneys',
-        required_permission=TourneyPermission.view)
+        required_permission='tourney.view')
       .add_item(
         url_for('tourney_category_admin.index', party_id=party.id),
         _('Categories'),
         id='categories',
-        required_permission=TourneyCategoryPermission.view)
+        required_permission='tourney_category.view')
     , current_tab
   )
 }}

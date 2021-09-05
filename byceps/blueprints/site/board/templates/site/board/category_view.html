@@ -56,7 +56,7 @@
 
 {{ render_pagination_nav(topics, 'board.category_view', {'slug': category.slug}, centered=True) }}
 
-  {%- set current_user_may_create_topic = has_current_user_permission(BoardTopicPermission.create) %}
+  {%- set current_user_may_create_topic = has_current_user_permission('board_topic.create') %}
 
   <div class="button-row button-row--right">
 

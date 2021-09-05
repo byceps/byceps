@@ -10,13 +10,13 @@
         url_for('.role_index'),
         'Rollen',
         id='roles',
-        required_permission=RolePermission.view,
+        required_permission='role.view',
         icon='role')
       .add_item(
         url_for('.permission_index'),
         'Berechtigungen',
         id='permissions',
-        required_permission=RolePermission.view,
+        required_permission='role.view',
         icon='permission')
     , current_tab
   )

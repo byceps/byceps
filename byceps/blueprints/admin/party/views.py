@@ -13,7 +13,6 @@ from datetime import date, datetime
 from flask import abort, request
 from flask_babel import gettext
 
-from ....permissions.party import PartyPermission
 from ....services.brand import service as brand_service
 from ....services.party import (
     service as party_service,
@@ -36,7 +35,7 @@ blueprint = create_blueprint('party_admin', __name__)
 
 
 @blueprint.get('/')
-@permission_required(PartyPermission.view)
+@permission_required('party.view')
 @templated
 def index():
     """List parties."""
@@ -65,7 +64,7 @@ def index():
 
 @blueprint.get('/brands/<brand_id>', defaults={'page': 1})
 @blueprint.get('/brands/<brand_id>/pages/<int:page>')
-@permission_required(PartyPermission.view)
+@permission_required('party.view')
 @templated
 def index_for_brand(brand_id, page):
     """List parties for this brand."""
@@ -103,7 +102,7 @@ def _get_ticket_sale_stats_by_party_id(
 
 
 @blueprint.get('/parties/<party_id>')
-@permission_required(PartyPermission.view)
+@permission_required('party.view')
 @templated
 def view(party_id):
     """Show a party."""
@@ -123,7 +122,7 @@ def view(party_id):
 
 
 @blueprint.get('/for_brand/<brand_id>/create')
-@permission_required(PartyPermission.create)
+@permission_required('party.create')
 @templated
 def create_form(brand_id, erroneous_form=None):
     """Show form to create a party for that brand."""
@@ -138,7 +137,7 @@ def create_form(brand_id, erroneous_form=None):
 
 
 @blueprint.post('/for_brand/<brand_id>')
-@permission_required(PartyPermission.create)
+@permission_required('party.create')
 def create(brand_id):
     """Create a party for that brand."""
     brand = _get_brand_or_404(brand_id)
@@ -175,7 +174,7 @@ def create(brand_id):
 
 
 @blueprint.get('/parties/<party_id>/update')
-@permission_required(PartyPermission.update)
+@permission_required('party.update')
 @templated
 def update_form(party_id, erroneous_form=None):
     """Show form to update the party."""
@@ -208,7 +207,7 @@ def update_form(party_id, erroneous_form=None):
 
 
 @blueprint.post('/parties/<party_id>')
-@permission_required(PartyPermission.update)
+@permission_required('party.update')
 def update(party_id):
     """Update a party."""
     party = _get_party_or_404(party_id)

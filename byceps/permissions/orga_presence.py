@@ -6,10 +6,10 @@ byceps.permissions.orga_presence
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ..util.authorization import create_permission_enum
+from ..util.authorization import register_permissions
 
 
-OrgaPresencePermission = create_permission_enum(
+register_permissions(
     'orga_presence',
     [
         'update',

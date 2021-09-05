@@ -9,7 +9,6 @@ byceps.blueprints.admin.tourney.category.views
 from flask import abort, request
 from flask_babel import gettext
 
-from .....permissions.tourney import TourneyCategoryPermission
 from .....services.party import service as party_service
 from .....services.tourney import category_service
 from .....util.framework.blueprint import create_blueprint
@@ -24,7 +23,7 @@ blueprint = create_blueprint('tourney_category_admin', __name__)
 
 
 @blueprint.get('/for_party/<party_id>')
-@permission_required(TourneyCategoryPermission.view)
+@permission_required('tourney_category.view')
 @templated
 def index(party_id):
     """List tourney categories for that party."""
@@ -39,7 +38,7 @@ def index(party_id):
 
 
 @blueprint.get('/for_party/<party_id>/create')
-@permission_required(TourneyCategoryPermission.administrate)
+@permission_required('tourney_category.administrate')
 @templated
 def create_form(party_id, erroneous_form=None):
     """Show form to create a category."""
@@ -54,7 +53,7 @@ def create_form(party_id, erroneous_form=None):
 
 
 @blueprint.post('/for_party/<party_id>')
-@permission_required(TourneyCategoryPermission.administrate)
+@permission_required('tourney_category.administrate')
 def create(party_id):
     """Create a category."""
     party = _get_party_or_404(party_id)
@@ -77,7 +76,7 @@ def create(party_id):
 
 
 @blueprint.get('/categories/<uuid:category_id>/update')
-@permission_required(TourneyCategoryPermission.administrate)
+@permission_required('tourney_category.administrate')
 @templated
 def update_form(category_id, erroneous_form=None):
     """Show form to update a category."""
@@ -95,7 +94,7 @@ def update_form(category_id, erroneous_form=None):
 
 
 @blueprint.post('/categories/<uuid:category_id>')
-@permission_required(TourneyCategoryPermission.administrate)
+@permission_required('tourney_category.administrate')
 def update(category_id):
     """Update a category."""
     category = _get_category_or_404(category_id)
@@ -116,7 +115,7 @@ def update(category_id):
 
 
 @blueprint.post('/categories/<uuid:category_id>/up')
-@permission_required(TourneyCategoryPermission.administrate)
+@permission_required('tourney_category.administrate')
 @respond_no_content
 def move_up(category_id):
     """Move a category upwards by one position."""
@@ -140,7 +139,7 @@ def move_up(category_id):
 
 
 @blueprint.post('/categories/<uuid:category_id>/down')
-@permission_required(TourneyCategoryPermission.administrate)
+@permission_required('tourney_category.administrate')
 @respond_no_content
 def move_down(category_id):
     """Move a category downwards by one position."""

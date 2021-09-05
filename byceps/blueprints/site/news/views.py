@@ -9,7 +9,6 @@ byceps.blueprints.site.news.views
 from __future__ import annotations
 from flask import abort, g
 
-from ....permissions.news import NewsItemPermission
 from ....services.news import service as news_item_service
 from ....services.news.transfer.models import ChannelID
 from ....services.site import (
@@ -86,4 +85,4 @@ def _get_items_per_page_value():
 
 
 def _may_current_user_view_drafts() -> bool:
-    return has_current_user_permission(NewsItemPermission.view_draft)
+    return has_current_user_permission('news_item.view_draft')

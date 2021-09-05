@@ -9,7 +9,6 @@ byceps.blueprints.admin.ticketing.category.views
 from flask import abort, request
 from flask_babel import gettext
 
-from .....permissions.ticketing import TicketingPermission
 from .....services.party import service as party_service
 from .....services.ticketing import category_service
 from .....util.framework.blueprint import create_blueprint
@@ -24,7 +23,7 @@ blueprint = create_blueprint('ticketing_category_admin', __name__)
 
 
 @blueprint.get('/for_party/<party_id>')
-@permission_required(TicketingPermission.administrate)
+@permission_required('ticketing.administrate')
 @templated
 def index(party_id):
     """List ticket categories for that party."""
@@ -43,7 +42,7 @@ def index(party_id):
 
 
 @blueprint.get('/for_party/<party_id>/create')
-@permission_required(TicketingPermission.administrate)
+@permission_required('ticketing.administrate')
 @templated
 def create_form(party_id, erroneous_form=None):
     """Show form to create a ticket category."""
@@ -58,7 +57,7 @@ def create_form(party_id, erroneous_form=None):
 
 
 @blueprint.post('/for_party/<party_id>')
-@permission_required(TicketingPermission.administrate)
+@permission_required('ticketing.administrate')
 def create(party_id):
     """Create a ticket category."""
     party = _get_party_or_404(party_id)
@@ -82,7 +81,7 @@ def create(party_id):
 
 
 @blueprint.get('/categories/<uuid:category_id>/update')
-@permission_required(TicketingPermission.administrate)
+@permission_required('ticketing.administrate')
 @templated
 def update_form(category_id, erroneous_form=None):
     """Show form to update the category."""
@@ -102,7 +101,7 @@ def update_form(category_id, erroneous_form=None):
 
 
 @blueprint.post('/categories/<uuid:category_id>')
-@permission_required(TicketingPermission.administrate)
+@permission_required('ticketing.administrate')
 def update(category_id):
     """Update the category."""
     category = _get_category_or_404(category_id)

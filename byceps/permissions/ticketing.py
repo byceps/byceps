@@ -6,10 +6,10 @@ byceps.permissions.ticketing
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ..util.authorization import create_permission_enum
+from ..util.authorization import register_permissions
 
 
-TicketingPermission = create_permission_enum(
+register_permissions(
     'ticketing',
     [
         'administrate',

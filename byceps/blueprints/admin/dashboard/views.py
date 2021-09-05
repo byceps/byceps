@@ -10,10 +10,6 @@ from datetime import date, timedelta
 
 from flask import abort
 
-from ....permissions.admin import AdminPermission
-from ....permissions.brand import BrandPermission
-from ....permissions.party import PartyPermission
-from ....permissions.site import SitePermission
 from ....services.board import board_service
 from ....services.brand import (
     service as brand_service,
@@ -47,7 +43,7 @@ blueprint = create_blueprint('admin_dashboard', __name__)
 
 
 @blueprint.get('')
-@permission_required(AdminPermission.access)
+@permission_required('admin.access')
 @templated
 def view_global():
     """View dashboard for global entities."""
@@ -102,7 +98,7 @@ def view_global():
 
 
 @blueprint.get('/brands/<brand_id>')
-@permission_required(BrandPermission.view)
+@permission_required('brand.view')
 @templated
 def view_brand(brand_id):
     """View dashboard for that brand."""
@@ -165,7 +161,7 @@ def view_brand(brand_id):
 
 
 @blueprint.get('/parties/<party_id>')
-@permission_required(PartyPermission.view)
+@permission_required('party.view')
 @templated
 def view_party(party_id):
     """View dashboard for that party."""
@@ -205,7 +201,7 @@ def view_party(party_id):
 
 
 @blueprint.get('/sites/<site_id>')
-@permission_required(SitePermission.view)
+@permission_required('site.view')
 @templated
 def view_site(site_id):
     """View dashboard for that site."""

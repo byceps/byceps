@@ -9,7 +9,6 @@ byceps.blueprints.admin.consent.views
 from flask import request
 from flask_babel import gettext
 
-from ....permissions.consent import ConsentPermission
 from ....services.consent import subject_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
@@ -23,7 +22,7 @@ blueprint = create_blueprint('consent_admin', __name__)
 
 
 @blueprint.get('/')
-@permission_required(ConsentPermission.administrate)
+@permission_required('consent.administrate')
 @templated
 def index():
     """List consent subjects."""
@@ -39,7 +38,7 @@ def index():
 
 
 @blueprint.get('/consents/create')
-@permission_required(ConsentPermission.administrate)
+@permission_required('consent.administrate')
 @templated
 def subject_create_form(erroneous_form=None):
     """Show form to create a consent subject."""
@@ -51,7 +50,7 @@ def subject_create_form(erroneous_form=None):
 
 
 @blueprint.post('/consents')
-@permission_required(ConsentPermission.administrate)
+@permission_required('consent.administrate')
 def subject_create():
     """Create a consent subject."""
     form = SubjectCreateForm(request.form)

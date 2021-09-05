@@ -9,7 +9,6 @@ byceps.blueprints.admin.ticketing.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....permissions.ticketing import TicketingPermission
 from ....services.party import service as party_service
 from ....services.shop.order import service as order_service
 from ....services.ticketing import (
@@ -36,7 +35,7 @@ blueprint = create_blueprint('ticketing_admin', __name__)
 
 @blueprint.get('/tickets/for_party/<party_id>', defaults={'page': 1})
 @blueprint.get('/tickets/for_party/<party_id>/pages/<int:page>')
-@permission_required(TicketingPermission.view)
+@permission_required('ticketing.view')
 @templated
 def index_for_party(party_id, page):
     """List tickets for that party."""
@@ -67,7 +66,7 @@ def index_for_party(party_id, page):
 
 
 @blueprint.get('/tickets/<uuid:ticket_id>')
-@permission_required(TicketingPermission.view)
+@permission_required('ticketing.view')
 @templated
 def view_ticket(ticket_id):
     """Show a ticket."""
@@ -97,7 +96,7 @@ def view_ticket(ticket_id):
 
 
 @blueprint.get('/tickets/<uuid:ticket_id>/code')
-@permission_required(TicketingPermission.administrate)
+@permission_required('ticketing.administrate')
 @templated
 def update_code_form(ticket_id, erroneous_form=None):
     """Show a form to set a custom code for the ticket."""
@@ -123,7 +122,7 @@ def update_code_form(ticket_id, erroneous_form=None):
 
 
 @blueprint.post('/tickets/<uuid:ticket_id>/code')
-@permission_required(TicketingPermission.administrate)
+@permission_required('ticketing.administrate')
 def update_code(ticket_id):
     """Set a custom code for the ticket."""
     ticket = _get_ticket_or_404(ticket_id)
@@ -160,7 +159,7 @@ def update_code(ticket_id):
 
 
 @blueprint.get('/tickets/<uuid:ticket_id>/appoint_user')
-@permission_required(TicketingPermission.checkin)
+@permission_required('ticketing.checkin')
 @templated
 def appoint_user_form(ticket_id, erroneous_form=None):
     """Show a form to select a user to appoint for the ticket."""
@@ -178,7 +177,7 @@ def appoint_user_form(ticket_id, erroneous_form=None):
 
 
 @blueprint.post('/tickets/<uuid:ticket_id>/user')
-@permission_required(TicketingPermission.checkin)
+@permission_required('ticketing.checkin')
 def appoint_user(ticket_id):
     """Appoint a user for the ticket."""
     form = SpecifyUserForm(request.form)
@@ -208,7 +207,7 @@ def appoint_user(ticket_id):
 
 @blueprint.get('/bundles/for_party/<party_id>', defaults={'page': 1})
 @blueprint.get('/bundles/for_party/<party_id>/pages/<int:page>')
-@permission_required(TicketingPermission.view)
+@permission_required('ticketing.view')
 @templated
 def index_bundle_for_party(party_id, page):
     """List ticket bundles for that party."""
@@ -227,7 +226,7 @@ def index_bundle_for_party(party_id, page):
 
 
 @blueprint.get('/bundles/<uuid:bundle_id>')
-@permission_required(TicketingPermission.view)
+@permission_required('ticketing.view')
 @templated
 def view_bundle(bundle_id):
     """Show a ticket bundle."""

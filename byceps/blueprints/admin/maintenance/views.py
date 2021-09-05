@@ -10,7 +10,6 @@ from datetime import datetime, timedelta
 
 from flask_babel import gettext
 
-from ....permissions.admin import AdminPermission
 from ....services.user import event_service as user_event_service
 from ....services.verification_token import (
     service as verification_token_service,
@@ -25,7 +24,7 @@ blueprint = create_blueprint('maintenance_admin', __name__)
 
 
 @blueprint.get('')
-@permission_required(AdminPermission.access)
+@permission_required('admin.maintain')
 @templated
 def index():
     """Show maintenance overview."""
@@ -49,7 +48,7 @@ def index():
 
 
 @blueprint.post('/delete_old_login_events')
-@permission_required(AdminPermission.access)
+@permission_required('admin.maintain')
 @respond_no_content
 def delete_old_login_events():
     """Delete login events older than a given number of days."""
@@ -69,7 +68,7 @@ def delete_old_login_events():
 
 
 @blueprint.post('/delete_old_verification_tokens')
-@permission_required(AdminPermission.access)
+@permission_required('admin.maintain')
 @respond_no_content
 def delete_old_verification_tokens():
     """Delete verification tokens older than a given number of days."""

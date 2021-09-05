@@ -13,7 +13,7 @@
     <div class="column-auto">
       <h1>{{ page_title }} {{ render_extra_in_heading(articles.total) }}</h1>
     </div>
-    {%- if has_current_user_permission(ShopArticlePermission.create) %}
+    {%- if has_current_user_permission('shop_article.create') %}
     <div class="column-auto">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>{{ _('Create article') }}</span></a>

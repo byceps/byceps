@@ -6,38 +6,38 @@
       url_for('admin_dashboard.view_site', site_id=site.id),
       _('Dashboard'),
       id='admin_dashboard_site',
-      required_permission=SitePermission.view,
+      required_permission='site.view',
       icon='dashboard')
     .add_item(
       url_for('snippet_admin.index_for_scope', scope_type='site', scope_name=site.id),
       _('Snippets'),
       id='snippet_admin_for_site',
-      required_permission=SnippetPermission.view,
+      required_permission='snippet.view',
       icon='snippet')
     .add_item(
       url_for('snippet_mountpoint_admin.index', site_id=site.id),
       _('Mountpoints'),
       id='mountpoints',
-      required_permission=SnippetPermission.view,
+      required_permission='snippet.view',
       icon='site')
     .add_item(
       url_for('shop_storefront_admin.view', storefront_id=site.storefront_id) if site.storefront_id else '',
       _('Storefront'),
       id='shop_storefront_admin',
-      required_permission=ShopPermission.view,
+      required_permission='shop.view',
       precondition=site.storefront_id is not none,
       icon='shop')
     .add_item(
       url_for('site_admin.view', site_id=site.id),
       _('Settings'),
       id='site_admin',
-      required_permission=SitePermission.view,
+      required_permission='site.view',
       icon='settings')
     .add_item(
       url_for('more_admin.view_site', site_id=site.id),
       _('More'),
       id='more_admin_site',
-      required_permission=AdminPermission.access,
+      required_permission='admin.access',
       icon='ellipsis-h')
 -%}
 {{ render_main_tabs(navigation, current_page) }}

@@ -8,7 +8,6 @@ byceps.blueprints.admin.attendance.views
 
 from flask import abort
 
-from ....permissions.admin import AdminPermission
 from ....services.brand import service as brand_service
 from ....services.party import service as party_service
 from ....services.ticketing import attendance_service
@@ -22,7 +21,7 @@ blueprint = create_blueprint('attendance_admin', __name__)
 
 
 @blueprint.get('/brands/<brand_id>')
-@permission_required(AdminPermission.access)
+@permission_required('admin.access')
 @templated
 def view_for_brand(brand_id):
     """Show most frequent attendees for parties of this brand."""

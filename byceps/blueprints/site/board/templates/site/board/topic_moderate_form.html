@@ -18,7 +18,7 @@
 
   <p>Thema &quot;{{ topic.title }}&quot; von {{ render_user_link(topic.creator) }}</p>
 
-  {%- if has_current_user_permission(BoardPermission.hide) %}
+  {%- if has_current_user_permission('board.hide') %}
   <h2>{{ render_icon('view') }} Sichtbarkeit</h2>
   <p>Das Thema ist {% if topic.hidden %}<strong>versteckt</strong> ({{ render_datetime(topic.hidden_at|utc_to_local_tz) }} durch {{ render_user_screen_name(topic.hidden_by) }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <div class="button-row">
@@ -32,7 +32,7 @@
   </div>
   {%- endif %}
 
-  {%- if has_current_user_permission(BoardTopicPermission.lock) %}
+  {%- if has_current_user_permission('board_topic.lock') %}
   <h2>{{ render_icon('lock') }} Schreibsperre</h2>
   <p>Das Thema ist {% if topic.locked %}<strong>geschlossen</strong> ({{ render_datetime(topic.locked_at|utc_to_local_tz) }} durch {{ render_user_screen_name(topic.locked_by) }}){% else %}<strong>offen</strong>{% endif %}.</p>
   <div class="button-row">
@@ -46,7 +46,7 @@
   </div>
   {%- endif %}
 
-  {%- if has_current_user_permission(BoardTopicPermission.pin) %}
+  {%- if has_current_user_permission('board_topic.pin') %}
   <h2>{{ render_icon('pin') }} Anheften</h2>
   <p>Das Thema ist {% if topic.pinned %}<strong>angepinnt</strong> ({{ render_datetime(topic.pinned_at|utc_to_local_tz) }} durch {{ render_user_screen_name(topic.pinned_by) }}){% else %}<strong>nicht angepinnt</strong>{% endif %}.</p>
   <div class="button-row">
@@ -60,7 +60,7 @@
   </div>
   {%- endif %}
 
-  {%- if has_current_user_permission(BoardTopicPermission.move) %}
+  {%- if has_current_user_permission('board_topic.move') %}
   <h2>{{ render_icon('move') }} Verschieben</h2>
   <p>Das Thema befindet sich in der Kategorie &quot;{{ topic.category.title }}&quot;.</p>
     {%- if categories %}
@@ -82,7 +82,7 @@
     {%- endif %}
   {%- endif %}
 
-  {%- if has_current_user_permission(BoardPermission.announce) %}
+  {%- if has_current_user_permission('board.announce') %}
   <h2>{{ render_icon('announce') }} {{ _('Announcements') }}</h2>
   <p>Das Thema ist {% if not topic.posting_limited_to_moderators %}<strong>nicht</strong> {% endif %} auf Ankündigungen durch Moderatoren beschränkt.</p>
   <div class="button-row">

@@ -38,7 +38,7 @@ def login_required(func):
     return wrapper
 
 
-def permission_required(permission):
+def permission_required(permission: str):
     """Ensure the current user has the given permission."""
 
     def decorator(func):

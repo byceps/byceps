@@ -11,7 +11,6 @@ import dataclasses
 from flask import g, redirect, request
 from flask_babel import gettext
 
-from ....permissions.board import BoardPermission, BoardPostingPermission
 from ....services.board import (
     last_view_service as board_last_view_service,
     posting_command_service as board_posting_command_service,
@@ -45,7 +44,7 @@ def posting_view(posting_id):
 
 
 @blueprint.get('/topics/<uuid:topic_id>/create')
-@permission_required(BoardPostingPermission.create)
+@permission_required('board_posting.create')
 @templated
 def posting_create_form(topic_id, erroneous_form=None):
     """Show a form to create a post to the topic."""
@@ -80,7 +79,7 @@ def quote_posting_as_bbcode():
 
 
 @blueprint.post('/topics/<uuid:topic_id>/create')
-@permission_required(BoardPostingPermission.create)
+@permission_required('board_posting.create')
 def posting_create(topic_id):
     """Create a post to the topic."""
     topic = h.get_topic_or_404(topic_id)
@@ -100,7 +99,7 @@ def posting_create(topic_id):
         return redirect(h.build_url_for_topic(topic.id))
 
     if topic.posting_limited_to_moderators and not has_current_user_permission(
-        BoardPermission.announce
+        'board.announce'
     ):
         flash_error(
             gettext('Only moderators are allowed to reply in this topic.'),
@@ -131,7 +130,7 @@ def posting_create(topic_id):
 
 
 @blueprint.get('/postings/<uuid:posting_id>/update')
-@permission_required(BoardPostingPermission.update)
+@permission_required('board_posting.update')
 @templated
 def posting_update_form(posting_id, erroneous_form=None):
     """Show form to update a post."""
@@ -169,7 +168,7 @@ def posting_update_form(posting_id, erroneous_form=None):
 
 
 @blueprint.post('/postings/<uuid:posting_id>')
-@permission_required(BoardPostingPermission.update)
+@permission_required('board_posting.update')
 def posting_update(posting_id):
     """Update a post."""
     posting = h.get_posting_or_404(posting_id)
@@ -215,7 +214,7 @@ def posting_update(posting_id):
 
 
 @blueprint.get('/postings/<uuid:posting_id>/moderate')
-@permission_required(BoardPermission.hide)
+@permission_required('board.hide')
 @templated
 def posting_moderate_form(posting_id):
     """Show a form to moderate the post."""
@@ -229,7 +228,7 @@ def posting_moderate_form(posting_id):
 
 
 @blueprint.post('/postings/<uuid:posting_id>/flags/hidden')
-@permission_required(BoardPermission.hide)
+@permission_required('board.hide')
 @respond_no_content_with_location
 def posting_hide(posting_id):
     """Hide a post."""
@@ -251,7 +250,7 @@ def posting_hide(posting_id):
 
 
 @blueprint.delete('/postings/<uuid:posting_id>/flags/hidden')
-@permission_required(BoardPermission.hide)
+@permission_required('board.hide')
 @respond_no_content_with_location
 def posting_unhide(posting_id):
     """Un-hide a post."""

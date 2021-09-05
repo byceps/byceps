@@ -6,10 +6,10 @@ byceps.permissions.board
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ..util.authorization import create_permission_enum
+from ..util.authorization import register_permissions
 
 
-BoardPermission = create_permission_enum(
+register_permissions(
     'board',
     [
         'announce',
@@ -21,7 +21,7 @@ BoardPermission = create_permission_enum(
 )
 
 
-BoardCategoryPermission = create_permission_enum(
+register_permissions(
     'board_category',
     [
         'create',
@@ -31,7 +31,7 @@ BoardCategoryPermission = create_permission_enum(
 )
 
 
-BoardTopicPermission = create_permission_enum(
+register_permissions(
     'board_topic',
     [
         'create',
@@ -43,7 +43,7 @@ BoardTopicPermission = create_permission_enum(
 )
 
 
-BoardPostingPermission = create_permission_enum(
+register_permissions(
     'board_posting',
     [
         'create',

@@ -25,7 +25,7 @@
     <div class="column-auto">
       <h2>{{ _('News posts') }} {{ render_extra_in_heading(items.total) }}</h2>
     </div>
-  {%- if has_current_user_permission(NewsItemPermission.create) %}
+  {%- if has_current_user_permission('news_item.create') %}
     <div class="column-auto">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.item_create_form', channel_id=channel.id) }}">{{ render_icon('add') }} <span>{{ _('Create news post') }}</span></a>
@@ -60,7 +60,7 @@
           </td>
           <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title=_('Image defined')) }}{% endif %}</td>
           <td class="nowrap">
-            {%- if has_current_user_permission(NewsItemPermission.view) %}
+            {%- if has_current_user_permission('news_item.view') %}
             <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="{{ _('View change history') }}">{{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}</a>
             {%- else %}
             {{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}

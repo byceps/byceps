@@ -13,7 +13,6 @@ from decimal import Decimal
 from flask import abort, request
 from flask_babel import gettext
 
-from .....permissions.shop import ShopArticlePermission
 from .....services.brand import service as brand_service
 from .....services.party import service as party_service
 from .....services.party.transfer.models import Party
@@ -63,7 +62,7 @@ TAX_RATE_DISPLAY_FACTOR = Decimal('100')
 
 @blueprint.get('/for_shop/<shop_id>', defaults={'page': 1})
 @blueprint.get('/for_shop/<shop_id>/pages/<int:page>')
-@permission_required(ShopArticlePermission.view)
+@permission_required('shop_article.view')
 @templated
 def index_for_shop(shop_id, page):
     """List articles for that shop."""
@@ -84,7 +83,7 @@ def index_for_shop(shop_id, page):
 
 
 @blueprint.get('/<uuid:article_id>')
-@permission_required(ShopArticlePermission.view)
+@permission_required('shop_article.view')
 @templated
 def view(article_id):
     """Show a single article."""
@@ -117,7 +116,7 @@ def view(article_id):
 
 
 @blueprint.get('/<uuid:article_id>/ordered')
-@permission_required(ShopArticlePermission.view)
+@permission_required('shop_article.view')
 @templated
 def view_ordered(article_id):
     """List the people that have ordered this article, and the
@@ -167,7 +166,7 @@ def view_ordered(article_id):
 
 
 @blueprint.get('/for_shop/<shop_id>/create')
-@permission_required(ShopArticlePermission.create)
+@permission_required('shop_article.create')
 @templated
 def create_form(shop_id, erroneous_form=None):
     """Show form to create an article."""
@@ -196,7 +195,7 @@ def create_form(shop_id, erroneous_form=None):
 
 
 @blueprint.post('/for_shop/<shop_id>')
-@permission_required(ShopArticlePermission.create)
+@permission_required('shop_article.create')
 def create(shop_id):
     """Create an article."""
     shop = _get_shop_or_404(shop_id)
@@ -274,7 +273,7 @@ def create(shop_id):
 
 
 @blueprint.get('/<uuid:article_id>/update')
-@permission_required(ShopArticlePermission.update)
+@permission_required('shop_article.update')
 @templated
 def update_form(article_id, erroneous_form=None):
     """Show form to update an article."""
@@ -319,7 +318,7 @@ def update_form(article_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:article_id>')
-@permission_required(ShopArticlePermission.update)
+@permission_required('shop_article.update')
 def update(article_id):
     """Update an article."""
     article = _get_article_or_404(article_id)
@@ -379,7 +378,7 @@ def update(article_id):
 
 
 @blueprint.get('/<uuid:article_id>/attachments/create')
-@permission_required(ShopArticlePermission.update)
+@permission_required('shop_article.update')
 @templated
 def attachment_create_form(article_id, erroneous_form=None):
     """Show form to attach an article to another article."""
@@ -407,7 +406,7 @@ def attachment_create_form(article_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:article_id>/attachments')
-@permission_required(ShopArticlePermission.update)
+@permission_required('shop_article.update')
 def attachment_create(article_id):
     """Attach an article to another article."""
     article = _get_article_or_404(article_id)
@@ -440,7 +439,7 @@ def attachment_create(article_id):
 
 
 @blueprint.delete('/attachments/<uuid:article_id>')
-@permission_required(ShopArticlePermission.update)
+@permission_required('shop_article.update')
 @respond_no_content
 def attachment_remove(article_id):
     """Remove the attachment link from one article to another."""
@@ -468,7 +467,7 @@ def attachment_remove(article_id):
 
 
 @blueprint.get('/<uuid:article_id>/actions/badge_awarding/create')
-@permission_required(ShopArticlePermission.update)
+@permission_required('shop_article.update')
 @templated
 def action_create_form_for_badge_awarding(article_id, erroneous_form=None):
     """Show form to register a badge awarding action for the article."""
@@ -493,7 +492,7 @@ def action_create_form_for_badge_awarding(article_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:article_id>/actions/badge_awarding')
-@permission_required(ShopArticlePermission.update)
+@permission_required('shop_article.update')
 def action_create_for_badge_awarding(article_id):
     """Register a badge awarding action for the article."""
     article = _get_article_or_404(article_id)
@@ -519,7 +518,7 @@ def action_create_for_badge_awarding(article_id):
 
 
 @blueprint.get('/<uuid:article_id>/actions/tickets_creation/create')
-@permission_required(ShopArticlePermission.update)
+@permission_required('shop_article.update')
 @templated
 def action_create_form_for_tickets_creation(article_id, erroneous_form=None):
     """Show form to register a tickets creation action for the article."""
@@ -544,7 +543,7 @@ def action_create_form_for_tickets_creation(article_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:article_id>/actions/tickets_creation')
-@permission_required(ShopArticlePermission.update)
+@permission_required('shop_article.update')
 def action_create_for_tickets_creation(article_id):
     """Register a tickets creation action for the article."""
     article = _get_article_or_404(article_id)
@@ -573,7 +572,7 @@ def action_create_for_tickets_creation(article_id):
 
 
 @blueprint.get('/<uuid:article_id>/actions/ticket_bundles_creation/create')
-@permission_required(ShopArticlePermission.update)
+@permission_required('shop_article.update')
 @templated
 def action_create_form_for_ticket_bundles_creation(
     article_id, erroneous_form=None
@@ -600,7 +599,7 @@ def action_create_form_for_ticket_bundles_creation(
 
 
 @blueprint.post('/<uuid:article_id>/actions/ticket_bundles_creation')
-@permission_required(ShopArticlePermission.update)
+@permission_required('shop_article.update')
 def action_create_for_ticket_bundles_creation(article_id):
     """Register a ticket bundles creation action for the article."""
     article = _get_article_or_404(article_id)
@@ -643,7 +642,7 @@ def _get_categories_with_parties(
 
 
 @blueprint.delete('/actions/<uuid:action_id>')
-@permission_required(ShopArticlePermission.update)
+@permission_required('shop_article.update')
 @respond_no_content
 def action_remove(action_id):
     """Remove the action from the article."""
@@ -662,7 +661,7 @@ def action_remove(action_id):
 
 
 @blueprint.get('/number_sequences/for_shop/<shop_id>/create')
-@permission_required(ShopArticlePermission.create)
+@permission_required('shop_article.create')
 @templated
 def create_number_sequence_form(shop_id, erroneous_form=None):
     """Show form to create an article number sequence."""
@@ -682,7 +681,7 @@ def create_number_sequence_form(shop_id, erroneous_form=None):
 
 
 @blueprint.post('/number_sequences/for_shop/<shop_id>')
-@permission_required(ShopArticlePermission.create)
+@permission_required('shop_article.create')
 def create_number_sequence(shop_id):
     """Create an article number sequence."""
     shop = _get_shop_or_404(shop_id)

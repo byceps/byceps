@@ -8,7 +8,6 @@ byceps.blueprints.admin.more.views
 
 from flask import abort
 
-from ....permissions.admin import AdminPermission
 from ....services.brand import service as brand_service
 from ....services.party import service as party_service
 from ....services.site import service as site_service
@@ -21,7 +20,7 @@ blueprint = create_blueprint('more_admin', __name__)
 
 
 @blueprint.get('/global')
-@permission_required(AdminPermission.access)
+@permission_required('admin.access')
 @templated
 def view_global():
     """Show more global admin items."""
@@ -29,7 +28,7 @@ def view_global():
 
 
 @blueprint.get('/brands/<brand_id>')
-@permission_required(AdminPermission.access)
+@permission_required('admin.access')
 @templated
 def view_brand(brand_id):
     """Show more brand admin items."""
@@ -41,7 +40,7 @@ def view_brand(brand_id):
 
 
 @blueprint.get('/parties/<party_id>')
-@permission_required(AdminPermission.access)
+@permission_required('admin.access')
 @templated
 def view_party(party_id):
     """Show more party admin items."""
@@ -53,7 +52,7 @@ def view_party(party_id):
 
 
 @blueprint.get('/sites/<site_id>')
-@permission_required(AdminPermission.access)
+@permission_required('admin.access')
 @templated
 def view_site(site_id):
     """Show more site admin items."""

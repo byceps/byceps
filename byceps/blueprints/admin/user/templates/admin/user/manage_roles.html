@@ -52,7 +52,7 @@
             {%- endif %}
           </td>
           <td>
-            {%- if has_current_user_permission(RolePermission.assign) %}
+            {%- if has_current_user_permission('role.assign') %}
               {%- if user_has_role %}
             <a class="button button--compact" data-action="role-deassign" href="{{ url_for('.role_deassign', user_id=user.id, role_id=role.id) }}" title="{{ _('Unassign role') }}">{{ render_icon('remove') }}</a>
               {%- else %}

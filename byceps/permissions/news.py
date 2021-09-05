@@ -6,10 +6,10 @@ byceps.permissions.news
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ..util.authorization import create_permission_enum
+from ..util.authorization import register_permissions
 
 
-NewsChannelPermission = create_permission_enum(
+register_permissions(
     'news_channel',
     [
         'create',
@@ -17,7 +17,7 @@ NewsChannelPermission = create_permission_enum(
 )
 
 
-NewsItemPermission = create_permission_enum(
+register_permissions(
     'news_item',
     [
         'create',

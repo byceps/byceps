@@ -13,7 +13,6 @@ from typing import Iterable
 
 from flask import abort
 
-from ....permissions.orga_presence import OrgaPresencePermission
 from ....services.orga_presence import service as orga_presence_service
 from ....services.orga_presence.transfer.models import (
     PartyTimeSlot,
@@ -31,7 +30,7 @@ blueprint = create_blueprint('orga_presence', __name__)
 
 
 @blueprint.get('/<party_id>')
-@permission_required(OrgaPresencePermission.view)
+@permission_required('orga_presence.view')
 @templated
 def view(party_id):
     """List orga presence and task time slots for that party."""

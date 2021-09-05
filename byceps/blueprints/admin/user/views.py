@@ -12,8 +12,6 @@ from typing import Optional
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....permissions.authorization import RolePermission
-from ....permissions.user import UserPermission
 from ....services.authentication.password import service as password_service
 from ....services.authentication.session import service as session_service
 from ....services.authorization import service as authorization_service
@@ -56,7 +54,7 @@ blueprint = create_blueprint('user_admin', __name__)
 
 @blueprint.get('/', defaults={'page': 1})
 @blueprint.get('/pages/<int:page>')
-@permission_required(UserPermission.view)
+@permission_required('user.view')
 @templated
 def index(page):
     """List users."""
@@ -93,7 +91,7 @@ def index(page):
 
 
 @blueprint.get('/<uuid:user_id>')
-@permission_required(UserPermission.view)
+@permission_required('user.view')
 @templated
 def view(user_id):
     """Show a user's interal profile."""
@@ -158,7 +156,7 @@ def _calculate_days_since(dt: Optional[datetime]) -> Optional[int]:
 
 
 @blueprint.get('/create')
-@permission_required(UserPermission.create)
+@permission_required('user.create')
 @templated
 def create_account_form(erroneous_form=None):
     """Show a form to create a user account."""
@@ -169,7 +167,7 @@ def create_account_form(erroneous_form=None):
 
 
 @blueprint.post('/')
-@permission_required(UserPermission.create)
+@permission_required('user.create')
 def create_account():
     """Create a user account."""
     form = CreateAccountForm(request.form)
@@ -233,7 +231,7 @@ def create_account():
 
 
 @blueprint.post('/<uuid:user_id>/initialize')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 @respond_no_content
 def initialize_account(user_id):
     """Initialize the user account."""
@@ -252,7 +250,7 @@ def initialize_account(user_id):
 
 
 @blueprint.get('/<uuid:user_id>/suspend')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 @templated
 def suspend_account_form(user_id, erroneous_form=None):
     """Show form to suspend the user account."""
@@ -277,7 +275,7 @@ def suspend_account_form(user_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:user_id>/suspend')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 def suspend_account(user_id):
     """Suspend the user account."""
     user = _get_user_or_404(user_id)
@@ -313,7 +311,7 @@ def suspend_account(user_id):
 
 
 @blueprint.get('/<uuid:user_id>/unsuspend')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 @templated
 def unsuspend_account_form(user_id, erroneous_form=None):
     """Show form to unsuspend the user account."""
@@ -338,7 +336,7 @@ def unsuspend_account_form(user_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:user_id>/unsuspend')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 def unsuspend_account(user_id):
     """Unsuspend the user account."""
     user = _get_user_or_404(user_id)
@@ -376,7 +374,7 @@ def unsuspend_account(user_id):
 
 
 @blueprint.get('/<uuid:user_id>/delete')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 @templated
 def delete_account_form(user_id, erroneous_form=None):
     """Show form to delete the user account."""
@@ -401,7 +399,7 @@ def delete_account_form(user_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:user_id>/delete')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 def delete_account(user_id):
     """Delete the user account."""
     user = _get_user_or_404(user_id)
@@ -441,7 +439,7 @@ def delete_account(user_id):
 
 
 @blueprint.get('/<uuid:user_id>/change_screen_name')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 @templated
 def change_screen_name_form(user_id, erroneous_form=None):
     """Show form to change the user's screen name."""
@@ -457,7 +455,7 @@ def change_screen_name_form(user_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:user_id>/change_screen_name')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 def change_screen_name(user_id):
     """Change the user's screen name."""
     user = _get_user_or_404(user_id)
@@ -493,7 +491,7 @@ def change_screen_name(user_id):
 
 
 @blueprint.get('/<uuid:user_id>/change_email_address')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 @templated
 def change_email_address_form(user_id, erroneous_form=None):
     """Show form to change the user's e-mail address."""
@@ -509,7 +507,7 @@ def change_email_address_form(user_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:user_id>/change_email_address')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 def change_email_address(user_id):
     """Change the user's e-mail address."""
     user = _get_user_or_404(user_id)
@@ -541,7 +539,7 @@ def change_email_address(user_id):
 
 
 @blueprint.get('/<uuid:user_id>/invalidate_email_address')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 @templated
 def invalidate_email_address_form(user_id, erroneous_form=None):
     """Show form to invalidate the email address assigned with the account."""
@@ -562,7 +560,7 @@ def invalidate_email_address_form(user_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:user_id>/invalidate_email_address')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 def invalidate_email_address(user_id):
     """Invalidate the email address assigned with the account."""
     user = _get_user_or_404(user_id)
@@ -600,7 +598,7 @@ def invalidate_email_address(user_id):
 
 
 @blueprint.get('/<uuid:user_id>/details')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 @templated
 def change_details_form(user_id, erroneous_form=None):
     """Show a form to change the user's details."""
@@ -620,7 +618,7 @@ def change_details_form(user_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:user_id>/details')
-@permission_required(UserPermission.administrate)
+@permission_required('user.administrate')
 def change_details(user_id):
     """Change the user's details."""
     user = _get_user_or_404(user_id)
@@ -663,7 +661,7 @@ def change_details(user_id):
 
 
 @blueprint.get('/<uuid:user_id>/password')
-@permission_required(UserPermission.set_password)
+@permission_required('user.set_password')
 @templated
 def set_password_form(user_id, erroneous_form=None):
     """Show a form to set a new password for the user."""
@@ -679,7 +677,7 @@ def set_password_form(user_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:user_id>/password')
-@permission_required(UserPermission.set_password)
+@permission_required('user.set_password')
 def set_password(user_id):
     """Set a new password for the user."""
     user = _get_user_or_404(user_id)
@@ -708,7 +706,7 @@ def set_password(user_id):
 
 
 @blueprint.get('/<uuid:user_id>/permissions')
-@permission_required(UserPermission.view)
+@permission_required('user.view')
 @templated
 def view_permissions(user_id):
     """Show user's permissions."""
@@ -728,7 +726,7 @@ def view_permissions(user_id):
 
 
 @blueprint.get('/<uuid:user_id>/roles/assignment')
-@permission_required(RolePermission.assign)
+@permission_required('role.assign')
 @templated
 def manage_roles(user_id):
     """Manage what roles are assigned to the user."""
@@ -749,7 +747,7 @@ def manage_roles(user_id):
 
 
 @blueprint.post('/<uuid:user_id>/roles/<role_id>')
-@permission_required(RolePermission.assign)
+@permission_required('role.assign')
 @respond_no_content
 def role_assign(user_id, role_id):
     """Assign the role to the user."""
@@ -771,7 +769,7 @@ def role_assign(user_id, role_id):
 
 
 @blueprint.delete('/<uuid:user_id>/roles/<role_id>')
-@permission_required(RolePermission.assign)
+@permission_required('role.assign')
 @respond_no_content
 def role_deassign(user_id, role_id):
     """Deassign the role from the user."""
@@ -797,7 +795,7 @@ def role_deassign(user_id, role_id):
 
 
 @blueprint.get('/<uuid:user_id>/events')
-@permission_required(UserPermission.view)
+@permission_required('user.view')
 @templated
 def view_events(user_id):
     """Show user's events."""

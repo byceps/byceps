@@ -10,7 +10,6 @@ from typing import Optional
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
-from ....permissions.snippet import SnippetPermission
 from ....services.snippet.dbmodels.snippet import (
     SnippetVersion as DbSnippetVersion,
 )
@@ -49,7 +48,7 @@ blueprint = create_blueprint('snippet_admin', __name__)
 
 
 @blueprint.get('/for_scope/<scope_type>/<scope_name>')
-@permission_required(SnippetPermission.view)
+@permission_required('snippet.view')
 @templated
 def index_for_scope(scope_type, scope_name):
     """List snippets for that scope."""
@@ -76,7 +75,7 @@ def index_for_scope(scope_type, scope_name):
 
 
 @blueprint.get('/snippets/<uuid:snippet_id>/current_version')
-@permission_required(SnippetPermission.view)
+@permission_required('snippet.view')
 def view_current_version(snippet_id):
     """Show the current version of the snippet."""
     snippet = find_snippet_by_id(snippet_id)
@@ -87,7 +86,7 @@ def view_current_version(snippet_id):
 
 
 @blueprint.get('/versions/<uuid:snippet_version_id>')
-@permission_required(SnippetPermission.view_history)
+@permission_required('snippet.view_history')
 @templated
 def view_version(snippet_version_id):
     """Show the snippet with the given id."""
@@ -129,7 +128,7 @@ def view_version(snippet_version_id):
 
 
 @blueprint.get('/snippets/<uuid:snippet_id>/history')
-@permission_required(SnippetPermission.view_history)
+@permission_required('snippet.view_history')
 @templated
 def history(snippet_id):
     snippet = find_snippet_by_id(snippet_id)
@@ -161,7 +160,7 @@ def history(snippet_id):
 
 
 @blueprint.get('/for_scope/<scope_type>/<scope_name>/documents/create')
-@permission_required(SnippetPermission.create)
+@permission_required('snippet.create')
 @templated
 def create_document_form(scope_type, scope_name):
     """Show form to create a document."""
@@ -181,7 +180,7 @@ def create_document_form(scope_type, scope_name):
 
 
 @blueprint.post('/for_scope/<scope_type>/<scope_name>/documents')
-@permission_required(SnippetPermission.create)
+@permission_required('snippet.create')
 def create_document(scope_type, scope_name):
     """Create a document."""
     scope = Scope(scope_type, scope_name)
@@ -217,7 +216,7 @@ def create_document(scope_type, scope_name):
 
 
 @blueprint.get('/documents/<uuid:snippet_id>/update')
-@permission_required(SnippetPermission.update)
+@permission_required('snippet.update')
 @templated
 def update_document_form(snippet_id):
     """Show form to update a document."""
@@ -241,7 +240,7 @@ def update_document_form(snippet_id):
 
 
 @blueprint.post('/documents/<uuid:snippet_id>')
-@permission_required(SnippetPermission.update)
+@permission_required('snippet.update')
 def update_document(snippet_id):
     """Update a document."""
     form = DocumentUpdateForm(request.form)
@@ -278,7 +277,7 @@ def update_document(snippet_id):
 @blueprint.get(
     '/documents/<uuid:from_version_id>/compare_to/<uuid:to_version_id>'
 )
-@permission_required(SnippetPermission.view_history)
+@permission_required('snippet.view_history')
 @templated
 def compare_documents(from_version_id, to_version_id):
     """Show the difference between two document versions."""
@@ -318,7 +317,7 @@ def compare_documents(from_version_id, to_version_id):
 
 
 @blueprint.get('/for_scope/<scope_type>/<scope_name>/fragments/create')
-@permission_required(SnippetPermission.create)
+@permission_required('snippet.create')
 @templated
 def create_fragment_form(scope_type, scope_name):
     """Show form to create a fragment."""
@@ -338,7 +337,7 @@ def create_fragment_form(scope_type, scope_name):
 
 
 @blueprint.post('/for_scope/<scope_type>/<scope_name>/fragments')
-@permission_required(SnippetPermission.create)
+@permission_required('snippet.create')
 def create_fragment(scope_type, scope_name):
     """Create a fragment."""
     scope = Scope(scope_type, scope_name)
@@ -365,7 +364,7 @@ def create_fragment(scope_type, scope_name):
 
 
 @blueprint.get('/fragments/<uuid:snippet_id>/update')
-@permission_required(SnippetPermission.update)
+@permission_required('snippet.update')
 @templated
 def update_fragment_form(snippet_id):
     """Show form to update a fragment."""
@@ -389,7 +388,7 @@ def update_fragment_form(snippet_id):
 
 
 @blueprint.post('/fragments/<uuid:snippet_id>')
-@permission_required(SnippetPermission.update)
+@permission_required('snippet.update')
 def update_fragment(snippet_id):
     """Update a fragment."""
     form = FragmentUpdateForm(request.form)
@@ -418,7 +417,7 @@ def update_fragment(snippet_id):
 @blueprint.get(
     '/fragments/<uuid:from_version_id>/compare_to/<uuid:to_version_id>'
 )
-@permission_required(SnippetPermission.view_history)
+@permission_required('snippet.view_history')
 @templated
 def compare_fragments(from_version_id, to_version_id):
     """Show the difference between two fragment versions."""
@@ -450,7 +449,7 @@ def compare_fragments(from_version_id, to_version_id):
 
 
 @blueprint.delete('/snippets/<uuid:snippet_id>')
-@permission_required(SnippetPermission.delete)
+@permission_required('snippet.delete')
 @respond_no_content_with_location
 def delete_snippet(snippet_id):
     """Delete a snippet."""

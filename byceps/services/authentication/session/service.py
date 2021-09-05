@@ -8,7 +8,6 @@ byceps.services.authentication.session.service
 
 from __future__ import annotations
 from datetime import datetime
-from enum import Enum
 from typing import Optional
 from uuid import UUID, uuid4
 
@@ -187,7 +186,7 @@ def get_anonymous_current_user(locale: Optional[str]) -> CurrentUser:
 def get_authenticated_current_user(
     user: User,
     locale: Optional[str],
-    permissions: Optional[frozenset[Enum]],
+    permissions: frozenset[str],
 ) -> CurrentUser:
     """Return an authenticated current user object."""
     return CurrentUser(

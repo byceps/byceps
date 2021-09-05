@@ -6,10 +6,10 @@ byceps.permission.snippet
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ..util.authorization import create_permission_enum
+from ..util.authorization import register_permissions
 
 
-SnippetPermission = create_permission_enum(
+register_permissions(
     'snippet',
     [
         'create',
@@ -21,7 +21,7 @@ SnippetPermission = create_permission_enum(
 )
 
 
-SnippetMountpointPermission = create_permission_enum(
+register_permissions(
     'snippet_mountpoint',
     [
         'create',

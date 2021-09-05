@@ -28,7 +28,7 @@
     <div class="column-auto">
       <h1>{{ page_title }} {{ render_extra_in_heading(teams_and_members|length) }}</h1>
     </div>
-    {%- if has_current_user_permission(OrgaTeamPermission.create) %}
+    {%- if has_current_user_permission('orga_team.create') %}
     <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.team_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Team erstellen</span></a>
@@ -55,14 +55,14 @@
         <div>{{ '%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')|dim }}</div>
         {%- endif %}
       </div>
-      {%- if has_current_user_permission(OrgaTeamPermission.administrate_memberships) %}
+      {%- if has_current_user_permission('orga_team.administrate_memberships') %}
       <div class="column-auto">
         <div class="button-row button-row--compact button-row--right">
           <a class="button button--compact" href="{{ url_for('.membership_create_form', team_id=team.id) }}" title="Orga hinzufügen">{{ render_icon('add') }}</a>
           <div class="dropdown">
             <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">
-              {%- if not members and has_current_user_permission(OrgaTeamPermission.delete) %}
+              {%- if not members and has_current_user_permission('orga_team.delete') %}
               <li><a class="dropdown-item" data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} <span>Team entfernen</span></a></li>
               {%- else %}
               <li><span class="dropdown-item button--disabled">{{ render_icon('remove') }} <span>Team entfernen</span></span></li>

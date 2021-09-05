@@ -47,13 +47,13 @@ table.attachments td {
     </div>
     <div class="column-auto">
       <div class="button-row button-row--right">
-        {%- if has_current_user_permission(ShopArticlePermission.update) %}
+        {%- if has_current_user_permission('shop_article.update') %}
         <a class="button" href="{{ url_for('.update_form', article_id=article.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
         {%- endif %}
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
-            {%- if has_current_user_permission(ShopArticlePermission.update) %}
+            {%- if has_current_user_permission('shop_article.update') %}
             <li><a class="dropdown-item" href="{{ url_for('.attachment_create_form', article_id=article.id) }}">{{ render_icon('attached') }} {{ _('Attach article') }}</a></li>
             {%- endif %}
             <li><a class="dropdown-item" href="{{ url_for('.view_ordered', article_id=article.id) }}">{{ render_icon('users') }} {{ _('View buyers') }}</a></li>
@@ -165,7 +165,7 @@ table.attachments td {
     <div class="column-auto">
       <h2>{{ _('Actions') }}</h2>
     </div>
-    {%- if has_current_user_permission(ShopArticlePermission.update) %}
+    {%- if has_current_user_permission('shop_article.update') %}
     <div class="column-auto">
       <div class="button-row button-row--right">
         <div class="dropdown">
@@ -198,7 +198,7 @@ table.attachments td {
           <td>{{ render_order_payment_state(action.payment_state) }}</td>
           <td class="monospace">{{ action.procedure_name }}<br>{{ action.parameters }}</td>
           <td>
-            {%- if has_current_user_permission(ShopArticlePermission.update) %}
+            {%- if has_current_user_permission('shop_article.update') %}
             <div class="button-row button-row--compact button-row--right">
               <a data-action="action-remove" href="{{ url_for('.action_remove', action_id=action.id) }}" class="button button--compact" title="{{ _('Remove action') }}">{{ render_icon('remove') }}</a>
             </div>

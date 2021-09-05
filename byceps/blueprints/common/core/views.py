@@ -16,7 +16,6 @@ from .... import config
 from ....util.authorization import (
     has_current_user_any_permission,
     has_current_user_permission,
-    permission_registry,
 )
 from ....util.framework.blueprint import create_blueprint
 from ....util.navigation import Navigation
@@ -37,7 +36,7 @@ def not_found(error) -> tuple[str, int]:
 
 @blueprint.app_context_processor
 def inject_template_variables() -> dict[str, Any]:
-    context = {
+    return {
         'datetime': datetime,
         'now': datetime.utcnow(),
         'today': date.today(),
@@ -45,12 +44,6 @@ def inject_template_variables() -> dict[str, Any]:
         'has_current_user_any_permission': has_current_user_any_permission,
         'has_current_user_permission': has_current_user_permission,
     }
-
-    # Make permission enums available in templates.
-    for enum in permission_registry.get_enums():
-        context[enum.__name__] = enum
-
-    return context
 
 
 @blueprint.app_template_global()

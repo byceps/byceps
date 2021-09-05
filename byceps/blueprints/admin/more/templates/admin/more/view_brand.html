@@ -14,10 +14,10 @@
 
   <div class="grid dashboard">
   {%- with items = [
-    (_('Newsletter Subscriptions'), 'email', url_for('newsletter_admin.view_subscriptions', list_id=brand.id), NewsletterPermission.view_subscriptions),
-    (_('Discussion Boards'), 'board', url_for('board_admin.board_index_for_brand', brand_id=brand.id), BoardCategoryPermission.view),
-    (_('Most Frequent Attendees'), 'users', url_for('attendance_admin.view_for_brand', brand_id=brand.id), AdminPermission.access),
-    (_('Brand Snippets'), 'snippet', url_for('snippet_admin.index_for_scope', scope_type='brand', scope_name=brand.id), SnippetPermission.view),
+    (_('Newsletter Subscriptions'), 'email', url_for('newsletter_admin.view_subscriptions', list_id=brand.id), 'newsletter.view_subscriptions'),
+    (_('Discussion Boards'), 'board', url_for('board_admin.board_index_for_brand', brand_id=brand.id), 'board_category.view'),
+    (_('Most Frequent Attendees'), 'users', url_for('attendance_admin.view_for_brand', brand_id=brand.id), 'admin.access'),
+    (_('Brand Snippets'), 'snippet', url_for('snippet_admin.index_for_scope', scope_type='brand', scope_name=brand.id), 'snippet.view'),
   ] %}
     {%- for label, icon, url, required_permission in items %}
       {%- if has_current_user_permission(required_permission) %}

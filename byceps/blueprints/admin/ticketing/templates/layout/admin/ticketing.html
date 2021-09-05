@@ -11,19 +11,19 @@
         url_for('ticketing_admin.index_for_party', party_id=party.id),
         _('Tickets'),
         id='tickets',
-        required_permission=TicketingPermission.view,
+        required_permission='ticketing.view',
         icon='ticket')
       .add_item(
         url_for('ticketing_admin.index_bundle_for_party', party_id=party.id),
         _('Ticket Bundles'),
         id='bundles',
-        required_permission=TicketingPermission.view,
+        required_permission='ticketing.view',
         icon='ticket-bundle')
       .add_item(
         url_for('ticketing_category_admin.index', party_id=party.id),
         _('Categories'),
         id='categories',
-        required_permission=TicketingPermission.administrate)
+        required_permission='ticketing.administrate')
     , current_tab
   )
 }}

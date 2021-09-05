@@ -8,7 +8,6 @@ byceps.util.navigation
 
 from __future__ import annotations
 from dataclasses import dataclass
-from enum import Enum
 from typing import Optional
 
 from flask import g
@@ -21,7 +20,7 @@ class NavigationItem:
     endpoint: str
     label: str
     id: Optional[str]
-    required_permission: Optional[Enum]
+    required_permission: Optional[str]
     icon: Optional[str]
 
 
@@ -41,7 +40,7 @@ class Navigation:
         label: str,
         *,
         id: Optional[str] = None,
-        required_permission: Optional[Enum] = None,
+        required_permission: Optional[str] = None,
         precondition: bool = True,
         icon: Optional[str] = None,
     ) -> object:

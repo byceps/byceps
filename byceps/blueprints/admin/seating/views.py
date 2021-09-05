@@ -9,7 +9,6 @@ byceps.blueprints.admin.seating.views
 from flask import abort, request
 from flask_babel import gettext
 
-from ....permissions.seating import SeatingPermission
 from ....services.party import service as party_service
 from ....services.seating import (
     area_service as seating_area_service,
@@ -31,7 +30,7 @@ blueprint = create_blueprint('seating_admin', __name__)
 
 
 @blueprint.get('/<party_id>')
-@permission_required(SeatingPermission.view)
+@permission_required('seating.view')
 @templated
 def index_for_party(party_id):
     """List seating areas for that party."""
@@ -55,7 +54,7 @@ def index_for_party(party_id):
 
 @blueprint.get('/parties/<party_id>/areas', defaults={'page': 1})
 @blueprint.get('/parties/<party_id>/areas/pages/<int:page>')
-@permission_required(SeatingPermission.view)
+@permission_required('seating.view')
 @templated
 def area_index(party_id, page):
     """List seating areas for that party."""
@@ -78,7 +77,7 @@ def area_index(party_id, page):
 
 
 @blueprint.get('/parties/<party_id>/areas/create')
-@permission_required(SeatingPermission.administrate)
+@permission_required('seating.administrate')
 @templated
 def area_create_form(party_id, erroneous_form=None):
     """Show form to create a seating area."""
@@ -93,7 +92,7 @@ def area_create_form(party_id, erroneous_form=None):
 
 
 @blueprint.post('/parties/<party_id>/areas')
-@permission_required(SeatingPermission.administrate)
+@permission_required('seating.administrate')
 def area_create(party_id):
     """Create a seating area."""
     party = _get_party_or_404(party_id)
@@ -115,7 +114,7 @@ def area_create(party_id):
 
 
 @blueprint.get('/parties/<party_id>/seat_groups')
-@permission_required(SeatingPermission.view)
+@permission_required('seating.view')
 @templated
 def seat_group_index(party_id):
     """List seat groups for that party."""

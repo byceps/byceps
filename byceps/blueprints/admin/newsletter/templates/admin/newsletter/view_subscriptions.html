@@ -21,7 +21,7 @@
     </div>
     <div class="column-auto column--align-bottom">
 
-      {%- if has_current_user_permission(NewsletterPermission.export_subscribers) %}
+      {%- if has_current_user_permission('newsletter.export_subscribers') %}
       <div class="button-row button-row--right">
         <div class="dropdown">
           <button class="dropdown-toggle button">

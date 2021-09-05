@@ -6,10 +6,10 @@ byceps.permissions.shop_shop
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ..util.authorization import create_permission_enum
+from ..util.authorization import register_permissions
 
 
-ShopPermission = create_permission_enum(
+register_permissions(
     'shop',
     [
         'create',
@@ -19,7 +19,7 @@ ShopPermission = create_permission_enum(
 )
 
 
-ShopArticlePermission = create_permission_enum(
+register_permissions(
     'shop_article',
     [
         'create',
@@ -29,7 +29,7 @@ ShopArticlePermission = create_permission_enum(
 )
 
 
-ShopOrderPermission = create_permission_enum(
+register_permissions(
     'shop_order',
     [
         'cancel',

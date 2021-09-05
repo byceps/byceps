@@ -9,7 +9,6 @@ byceps.blueprints.admin.shop.shop.views
 from flask import abort, request, url_for
 from flask_babel import gettext
 
-from .....permissions.shop import ShopPermission
 from .....services.brand import service as brand_service
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import PaymentState
@@ -28,7 +27,7 @@ blueprint = create_blueprint('shop_shop_admin', __name__)
 
 
 @blueprint.get('/shops/<shop_id>/dashboard')
-@permission_required(ShopPermission.view)
+@permission_required('shop.view')
 @templated
 def dashboard(shop_id):
     """Show the shop dashboard."""
@@ -49,7 +48,7 @@ def dashboard(shop_id):
 
 
 @blueprint.get('/for_shop/<shop_id>')
-@permission_required(ShopPermission.view)
+@permission_required('shop.view')
 @templated
 def view(shop_id):
     """Show the shop."""
@@ -71,7 +70,7 @@ def view(shop_id):
 
 
 @blueprint.get('/for_brand/<brand_id>')
-@permission_required(ShopPermission.view)
+@permission_required('shop.view')
 @templated
 def view_for_brand(brand_id):
     brand = brand_service.find_brand(brand_id)
@@ -88,7 +87,7 @@ def view_for_brand(brand_id):
 
 
 @blueprint.post('/for_brand/<brand_id>')
-@permission_required(ShopPermission.create)
+@permission_required('shop.create')
 @respond_no_content_with_location
 def create(brand_id):
     """Create a shop."""

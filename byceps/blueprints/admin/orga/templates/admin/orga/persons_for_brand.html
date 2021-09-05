@@ -34,7 +34,7 @@
     <div class="column-auto column--align-bottom">
 
       <div class="button-row button-row--right">
-        {%- if has_current_user_permission(OrgaTeamPermission.administrate_memberships) %}
+        {%- if has_current_user_permission('orga_team.administrate_memberships') %}
         <a class="button" href="{{ url_for('.create_orgaflag_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>Person zum Orga ernennen</span></a>
         {%- endif %}
 
@@ -105,7 +105,7 @@
             {%- endif %}
           </td>
           <td>
-            {%- if has_current_user_permission(OrgaTeamPermission.administrate_memberships) %}
+            {%- if has_current_user_permission('orga_team.administrate_memberships') %}
             <div class="dropdown">
               <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
               <ol class="dropdown-menu dropdown-menu--right">

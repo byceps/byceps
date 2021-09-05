@@ -12,7 +12,7 @@
     <div class="column-auto">
       <h1>{{ _('Snippets') }} {{ render_extra_in_heading(snippets|length) }}</h1>
     </div>
-  {%- if has_current_user_permission(SnippetPermission.create) %}
+  {%- if has_current_user_permission('snippet.create') %}
     <div class="column-auto">
       <div class="button-row button-row--right">
         <div class="dropdown">
@@ -52,7 +52,7 @@
             <a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}"><strong>{{ snippet.name }}</strong></a>
           </td>
           <td class="nowrap">
-            {%- if has_current_user_permission(SnippetPermission.view_history) %}
+            {%- if has_current_user_permission('snippet.view_history') %}
             {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="{{ _('View change history') }}">{{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}</a>
             {%- else %}
             {{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}
@@ -61,12 +61,12 @@
           <td>{{ render_user_avatar_and_name(users_by_id[snippet.current_version.creator_id], size=20) }}</td>
           <td>
             <div class="button-row button-row--compact button-row--right">
-              {%- if has_current_user_permission(SnippetPermission.update) %}
+              {%- if has_current_user_permission('snippet.update') %}
                 {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
               <a href="{{ url_for(endpoint, snippet_id=snippet.id) }}" class="button button--compact" title="Bearbeiten">{{ render_icon('edit') }}</a>
                 {%- endwith %}
               {%- endif %}
-              {%- if snippet.is_document and has_current_user_permission(SnippetMountpointPermission.create) %}
+              {%- if snippet.is_document and has_current_user_permission('snippet_mountpoint.create') %}
               <div class="dropdown">
                 <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
                 <ol class="dropdown-menu dropdown-menu--right">

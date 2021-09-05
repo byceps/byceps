@@ -9,7 +9,6 @@ byceps.blueprints.admin.authentication.login.views
 from flask import abort, g, redirect, request
 from flask_babel import gettext
 
-from .....permissions.admin import AdminPermission
 from .....services.authentication.exceptions import AuthenticationFailed
 from .....services.authentication import service as authentication_service
 from .....services.authentication.session import service as session_service
@@ -87,7 +86,7 @@ def login():
 
 def _require_admin_access_permission(user_id: UserID) -> None:
     permissions = get_permissions_for_user(user_id)
-    if AdminPermission.access not in permissions:
+    if 'admin.access' not in permissions:
         # The user lacks the admin access permission which is required
         # to enter the admin area.
         abort(403)

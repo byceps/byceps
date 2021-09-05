@@ -15,7 +15,7 @@
           </div><!-- /.column -->
           <div class="column column--form">
 
-            {%- if has_current_user_permission(UserPermission.view) %}
+            {%- if has_current_user_permission('user.view') %}
             <form action="{{ url_for('user_admin.index') }}" class="single-row">
               <input type="search" name="search_term" placeholder="{{ _('user name, first name, last name, email address') }}" title="{{ _('Search user:') }} {{ _('user name, first name, last name, email address') }}">
               <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>

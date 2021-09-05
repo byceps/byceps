@@ -8,7 +8,6 @@ byceps.blueprints.admin.authorization.views
 
 from flask import abort
 
-from ....permissions.authorization import RolePermission
 from ....services.authorization import service as authorization_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
@@ -20,7 +19,7 @@ blueprint = create_blueprint('authorization_admin', __name__)
 
 
 @blueprint.get('/permissions')
-@permission_required(RolePermission.view)
+@permission_required('role.view')
 @templated
 def permission_index():
     """List permissions."""
@@ -32,7 +31,7 @@ def permission_index():
 
 
 @blueprint.get('/roles')
-@permission_required(RolePermission.view)
+@permission_required('role.view')
 @templated
 def role_index():
     """List roles."""
@@ -49,7 +48,7 @@ def role_index():
 
 
 @blueprint.get('/roles/<role_id>')
-@permission_required(RolePermission.view)
+@permission_required('role.view')
 @templated
 def role_view(role_id):
     """View role details."""

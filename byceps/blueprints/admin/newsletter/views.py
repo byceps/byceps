@@ -11,7 +11,6 @@ from operator import attrgetter
 
 from flask import abort
 
-from ....permissions.newsletter import NewsletterPermission
 from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List
 from ....services.newsletter.types import SubscriptionState
@@ -29,7 +28,7 @@ class ListWithStats(List):
 
 
 @blueprint.get('/lists')
-@permission_required(NewsletterPermission.view_subscriptions)
+@permission_required('newsletter.view_subscriptions')
 @templated
 def index():
     """List all lists."""
@@ -49,7 +48,7 @@ def _add_subscriber_count(list_):
 
 
 @blueprint.get('/lists/<list_id>/subscriptions')
-@permission_required(NewsletterPermission.view_subscriptions)
+@permission_required('newsletter.view_subscriptions')
 @templated
 def view_subscriptions(list_id):
     """Show user subscription states for that list."""
@@ -65,7 +64,7 @@ def view_subscriptions(list_id):
 
 
 @blueprint.get('/lists/<list_id>/subscriptions/export')
-@permission_required(NewsletterPermission.export_subscribers)
+@permission_required('newsletter.export_subscribers')
 @jsonified
 def export_subscribers(list_id):
     """Export the screen names and email addresses of enabled users
@@ -88,7 +87,7 @@ def assemble_subscriber_export(subscriber):
 
 
 @blueprint.get('/lists/<list_id>/subscriptions/email_addresses/export')
-@permission_required(NewsletterPermission.export_subscribers)
+@permission_required('newsletter.export_subscribers')
 @textified
 def export_subscriber_email_addresses(list_id):
     """Export the email addresses of enabled users which are currently

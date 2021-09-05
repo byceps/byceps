@@ -4,25 +4,24 @@
 """
 
 from __future__ import annotations
-from enum import Enum
 
 from flask import g
 import pytest
 
-from byceps.util.authorization import create_permission_enum
+from byceps.util.authorization import register_permissions
 from byceps.util.authorization import (
     has_current_user_any_permission,
     has_current_user_permission,
 )
 
 
-ChillPermission = create_permission_enum(
+register_permissions(
     'chill', ['browse_the_web', 'play_videogames', 'watch_movies']
 )
 
 
 class CurrentUserMock:
-    def __init__(self, permissions: set[Enum]) -> None:
+    def __init__(self, permissions: set[str]) -> None:
         self.permissions = permissions
 
 
@@ -31,33 +30,33 @@ class CurrentUserMock:
     [
         (
             {},
-            ChillPermission.browse_the_web,
+            'chill.browse_the_web',
             False,
         ),
         (
-            {ChillPermission.watch_movies},
-            ChillPermission.play_videogames,
+            {'chill.watch_movies'},
+            'chill.play_videogames',
             False,
         ),
         (
-            {ChillPermission.watch_movies},
-            ChillPermission.watch_movies,
+            {'chill.watch_movies'},
+            'chill.watch_movies',
             True,
         ),
         (
             {
-                ChillPermission.browse_the_web,
-                ChillPermission.play_videogames,
+                'chill.browse_the_web',
+                'chill.play_videogames',
             },
-            ChillPermission.watch_movies,
+            'chill.watch_movies',
             False,
         ),
         (
             {
-                ChillPermission.browse_the_web,
-                ChillPermission.play_videogames,
+                'chill.browse_the_web',
+                'chill.play_videogames',
             },
-            ChillPermission.play_videogames,
+            'chill.play_videogames',
             True,
         ),
     ],
@@ -75,23 +74,23 @@ def test_has_current_user_permission(
         (
             {},
             {
-                ChillPermission.browse_the_web,
+                'chill.browse_the_web',
             },
             False,
         ),
         (
-            {ChillPermission.watch_movies},
+            {'chill.watch_movies'},
             {
-                ChillPermission.browse_the_web,
-                ChillPermission.play_videogames,
+                'chill.browse_the_web',
+                'chill.play_videogames',
             },
             False,
         ),
         (
-            {ChillPermission.watch_movies},
+            {'chill.watch_movies'},
             {
-                ChillPermission.play_videogames,
-                ChillPermission.watch_movies,
+                'chill.play_videogames',
+                'chill.watch_movies',
             },
             True,
         ),

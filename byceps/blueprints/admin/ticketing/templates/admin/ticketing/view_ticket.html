@@ -44,13 +44,13 @@
     </div>
     <div class="column-auto column--align-bottom">
 
-  {%- if not ticket.revoked and has_current_user_any_permission(TicketingPermission.administrate, TicketingPermission.checkin) %}
+  {%- if not ticket.revoked and has_current_user_any_permission('ticketing.administrate', 'ticketing.checkin') %}
       <div class="button-row">
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ _('Actions') }}</span> {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.appoint_user_form', ticket_id=ticket.id) }}">{{ render_icon('arrow-right') }} {{ _('Assign user') }}</a></li>
-            {%- if has_current_user_permission(TicketingPermission.administrate) and not ticket.user_checked_in %}
+            {%- if has_current_user_permission('ticketing.administrate') and not ticket.user_checked_in %}
             <li><a class="dropdown-item" data-action="update-code" href="{{ url_for('.update_code', ticket_id=ticket.id) }}">{{ render_icon('edit') }} {{ _('Change code') }}</a></li>
             {%- endif %}
             {%- if ticket.user_checked_in %}

@@ -6,49 +6,49 @@
       url_for('shop_shop_admin.dashboard', shop_id=shop.id),
       _('Dashboard'),
       id='shop_shop_admin_dashboard',
-      required_permission=ShopPermission.view,
+      required_permission='shop.view',
       icon='dashboard')
     .add_item(
       url_for('shop_storefront_admin.index_for_shop', shop_id=shop.id),
       _('Storefronts'),
       id='shop_storefront_admin',
-      required_permission=ShopPermission.view,
+      required_permission='shop.view',
       icon='shop')
     .add_item(
       url_for('shop_article_admin.index_for_shop', shop_id=shop.id),
       _('Articles'),
       id='shop_article_admin',
-      required_permission=ShopArticlePermission.view,
+      required_permission='shop_article.view',
       icon='shop-articles')
     .add_item(
       url_for('shop_order_admin.index_for_shop', shop_id=shop.id),
       _('Orders'),
       id='shop_order_admin',
-      required_permission=ShopOrderPermission.view,
+      required_permission='shop_order.view',
       icon='shop-order')
     .add_item(
       url_for('shop_shipping_admin.view_for_shop', shop_id=shop.id),
       _('Shipping'),
       id='shop_shipping_admin',
-      required_permission=ShopOrderPermission.view,
+      required_permission='shop_order.view',
       icon='shipping')
     .add_item(
       url_for('shop_email_admin.view_for_shop', shop_id=shop.id),
       _('Email'),
       id='shop_email_admin',
-      required_permission=ShopPermission.view,
+      required_permission='shop.view',
       icon='email')
     .add_item(
       url_for('shop_shop_admin.view', shop_id=shop.id),
       _('Settings'),
       id='shop_shop_admin',
-      required_permission=ShopPermission.view,
+      required_permission='shop.view',
       icon='settings')
     .add_item(
       url_for('snippet_admin.index_for_scope', scope_type='shop', scope_name=shop.id),
       _('Snippets'),
       id='shop_snippet_admin',
-      required_permission=SnippetPermission.view,
+      required_permission='snippet.view',
       icon='snippet')
 -%}
 {{ render_main_tabs(navigation, current_page) }}

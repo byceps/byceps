@@ -11,7 +11,6 @@ from datetime import date, datetime
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....permissions.news import NewsChannelPermission, NewsItemPermission
 from ....services.brand import service as brand_service
 from ....services.image import service as image_service
 from ....services.news import channel_service as news_channel_service
@@ -50,7 +49,7 @@ blueprint = create_blueprint('news_admin', __name__)
 
 
 @blueprint.get('/brands/<brand_id>')
-@permission_required(NewsItemPermission.view)
+@permission_required('news_item.view')
 @templated
 def channel_index_for_brand(brand_id):
     """List channels for that brand."""
@@ -68,7 +67,7 @@ def channel_index_for_brand(brand_id):
 
 
 @blueprint.get('/for_brand/<brand_id>/channels/create')
-@permission_required(NewsChannelPermission.create)
+@permission_required('news_channel.create')
 @templated
 def channel_create_form(brand_id, erroneous_form=None):
     """Show form to create a channel."""
@@ -83,7 +82,7 @@ def channel_create_form(brand_id, erroneous_form=None):
 
 
 @blueprint.post('/for_brand/<brand_id>/channels')
-@permission_required(NewsChannelPermission.create)
+@permission_required('news_channel.create')
 def channel_create(brand_id):
     """Create a channel."""
     brand = _get_brand_or_404(brand_id)
@@ -110,7 +109,7 @@ def channel_create(brand_id):
 
 @blueprint.get('/channels/<channel_id>', defaults={'page': 1})
 @blueprint.get('/channels/<channel_id>/pages/<int:page>')
-@permission_required(NewsItemPermission.view)
+@permission_required('news_item.view')
 @templated
 def channel_view(channel_id, page):
     """View that channel and list its news items."""
@@ -136,7 +135,7 @@ def channel_view(channel_id, page):
 
 
 @blueprint.delete('/channels/<channel_id>')
-@permission_required(NewsChannelPermission.create)
+@permission_required('news_channel.create')
 @respond_no_content
 def channel_delete(channel_id):
     """Delete the channel."""
@@ -180,7 +179,7 @@ def channel_delete(channel_id):
 
 
 @blueprint.get('/for_item/<item_id>/create')
-@permission_required(NewsItemPermission.update)
+@permission_required('news_item.update')
 @templated
 def image_create_form(item_id, erroneous_form=None):
     """Show form to create a news image."""
@@ -201,7 +200,7 @@ def image_create_form(item_id, erroneous_form=None):
 
 
 @blueprint.post('/for_item/<item_id>')
-@permission_required(NewsItemPermission.update)
+@permission_required('news_item.update')
 def image_create(item_id):
     """Create a news image."""
     item = _get_item_or_404(item_id)
@@ -251,7 +250,7 @@ def image_create(item_id):
 
 
 @blueprint.get('/images/<uuid:image_id>/update')
-@permission_required(NewsItemPermission.update)
+@permission_required('news_item.update')
 @templated
 def image_update_form(image_id, erroneous_form=None):
     """Show form to update a news image."""
@@ -268,7 +267,7 @@ def image_update_form(image_id, erroneous_form=None):
 
 
 @blueprint.post('/images/<uuid:image_id>')
-@permission_required(NewsItemPermission.update)
+@permission_required('news_item.update')
 def image_update(image_id):
     """Update a news image."""
     image = _get_image_or_404(image_id)
@@ -299,7 +298,7 @@ def image_update(image_id):
 
 
 @blueprint.post('/images/<uuid:image_id>/featured')
-@permission_required(NewsItemPermission.update)
+@permission_required('news_item.update')
 @respond_no_content
 def image_set_featured(image_id):
     """Set the image as featured image."""
@@ -311,7 +310,7 @@ def image_set_featured(image_id):
 
 
 @blueprint.delete('/items/<uuid:item_id>/featured')
-@permission_required(NewsItemPermission.update)
+@permission_required('news_item.update')
 @respond_no_content
 def image_unset_featured(item_id):
     """Unset the item's featured image."""
@@ -327,7 +326,7 @@ def image_unset_featured(item_id):
 
 
 @blueprint.get('/items/<uuid:item_id>')
-@permission_required(NewsItemPermission.view)
+@permission_required('news_item.view')
 @templated('admin/news/item_view_version')
 def item_view(item_id):
     """Show the current version of the news item."""
@@ -339,7 +338,7 @@ def item_view(item_id):
 
 
 @blueprint.get('/versions/<uuid:version_id>')
-@permission_required(NewsItemPermission.view)
+@permission_required('news_item.view')
 @templated
 def item_view_version(version_id):
     """Show the news item with the given version."""
@@ -389,7 +388,7 @@ def _render_item_version(version, item):
 
 
 @blueprint.get('/items/<uuid:item_id>/versions')
-@permission_required(NewsItemPermission.view)
+@permission_required('news_item.view')
 @templated
 def item_list_versions(item_id):
     """List news item's versions."""
@@ -414,7 +413,7 @@ def item_list_versions(item_id):
 
 
 @blueprint.get('/items/<uuid:from_version_id>/compare_to/<uuid:to_version_id>')
-@permission_required(NewsItemPermission.view)
+@permission_required('news_item.view')
 @templated
 def item_compare_versions(from_version_id, to_version_id):
     """Show the difference between two news item versions."""
@@ -443,7 +442,7 @@ def item_compare_versions(from_version_id, to_version_id):
 
 
 @blueprint.get('/for_channel/<channel_id>/create')
-@permission_required(NewsItemPermission.create)
+@permission_required('news_item.create')
 @templated
 def item_create_form(channel_id, erroneous_form=None):
     """Show form to create a news item."""
@@ -462,7 +461,7 @@ def item_create_form(channel_id, erroneous_form=None):
 
 
 @blueprint.post('/for_channel/<channel_id>')
-@permission_required(NewsItemPermission.create)
+@permission_required('news_item.create')
 def item_create(channel_id):
     """Create a news item."""
     channel = _get_channel_or_404(channel_id)
@@ -489,7 +488,7 @@ def item_create(channel_id):
 
 
 @blueprint.get('/items/<uuid:item_id>/update')
-@permission_required(NewsItemPermission.update)
+@permission_required('news_item.update')
 @templated
 def item_update_form(item_id, erroneous_form=None):
     """Show form to update a news item."""
@@ -510,7 +509,7 @@ def item_update_form(item_id, erroneous_form=None):
 
 
 @blueprint.post('/items/<uuid:item_id>')
-@permission_required(NewsItemPermission.update)
+@permission_required('news_item.update')
 def item_update(item_id):
     """Update a news item."""
     item = _get_item_or_404(item_id)
@@ -537,7 +536,7 @@ def item_update(item_id):
 
 
 @blueprint.get('/items/<uuid:item_id>/publish_later')
-@permission_required(NewsItemPermission.publish)
+@permission_required('news_item.publish')
 @templated
 def item_publish_later_form(item_id, erroneous_form=None):
     """Show form to publish a news item at a time in the future."""
@@ -552,7 +551,7 @@ def item_publish_later_form(item_id, erroneous_form=None):
 
 
 @blueprint.post('/items/<uuid:item_id>/publish_later')
-@permission_required(NewsItemPermission.publish)
+@permission_required('news_item.publish')
 def item_publish_later(item_id):
     """Publish a news item at a time in the future."""
     item = _get_item_or_404(item_id)
@@ -581,7 +580,7 @@ def item_publish_later(item_id):
 
 
 @blueprint.post('/items/<uuid:item_id>/publish_now')
-@permission_required(NewsItemPermission.publish)
+@permission_required('news_item.publish')
 @respond_no_content
 def item_publish_now(item_id):
     """Publish a news item now."""

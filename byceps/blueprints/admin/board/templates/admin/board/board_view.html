@@ -17,7 +17,7 @@
       </nav>
       <h1>{{ board_id }}</h1>
     </div>
-  {%- if has_current_user_permission(BoardCategoryPermission.create) %}
+  {%- if has_current_user_permission('board_category.create') %}
     <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.category_create_form', board_id=board_id) }}">{{ render_icon('add') }} <span>{{ _('Create category') }}</span></a>
@@ -54,7 +54,7 @@
           <td class="centered bignumber">{{ format_number(category.topic_count) }}</td>
           <td class="centered bignumber">{{ format_number(category.posting_count) }}</td>
           <td>
-            {%- if has_current_user_permission(BoardCategoryPermission.update) -%}
+            {%- if has_current_user_permission('board_category.update') -%}
             <div class="dropdown">
               <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
               <ol class="dropdown-menu dropdown-menu--right">

@@ -13,7 +13,6 @@ from typing import Iterable, Iterator
 from flask import abort, request
 from flask_babel import gettext
 
-from ....permissions.site import SitePermission
 from ....services.board import board_service
 from ....services.brand import service as brand_service
 from ....services.brand.transfer.models import Brand
@@ -42,7 +41,7 @@ blueprint = create_blueprint('site_admin', __name__)
 
 
 @blueprint.get('/')
-@permission_required(SitePermission.view)
+@permission_required('site.view')
 @templated
 def index():
     """List all sites."""
@@ -67,7 +66,7 @@ def index():
 
 
 @blueprint.get('/for_brand/<brand_id>')
-@permission_required(SitePermission.view)
+@permission_required('site.view')
 @templated
 def index_for_brand(brand_id):
     """List sites for this brand."""
@@ -118,7 +117,7 @@ def _get_storefronts_by_id(sites) -> dict[StorefrontID, Storefront]:
 
 
 @blueprint.get('/sites/<site_id>')
-@permission_required(SitePermission.view)
+@permission_required('site.view')
 @templated
 def view(site_id):
     """Show a site's settings."""
@@ -156,7 +155,7 @@ def view(site_id):
 
 
 @blueprint.get('/sites/create/for_brand/<brand_id>')
-@permission_required(SitePermission.create)
+@permission_required('site.create')
 @templated
 def create_form(brand_id, erroneous_form=None):
     """Show form to create a site."""
@@ -172,7 +171,7 @@ def create_form(brand_id, erroneous_form=None):
 
 
 @blueprint.post('/sites/for_brand/<brand_id>')
-@permission_required(SitePermission.create)
+@permission_required('site.create')
 def create(brand_id):
     """Create a site."""
     brand = _get_brand_or_404(brand_id)
@@ -227,7 +226,7 @@ def create(brand_id):
 
 
 @blueprint.get('/sites/<site_id>/update')
-@permission_required(SitePermission.update)
+@permission_required('site.update')
 @templated
 def update_form(site_id, erroneous_form=None):
     """Show form to update the site."""
@@ -244,7 +243,7 @@ def update_form(site_id, erroneous_form=None):
 
 
 @blueprint.post('/sites/<site_id>')
-@permission_required(SitePermission.update)
+@permission_required('site.update')
 def update(site_id):
     """Update the site."""
     site = _get_site_or_404(site_id)
@@ -315,7 +314,7 @@ def _fill_in_common_form_choices(form, brand_id):
 
 
 @blueprint.get('/sites/<site_id>/news_channels/add')
-@permission_required(SitePermission.update)
+@permission_required('site.update')
 @templated
 def add_news_channel_form(site_id, erroneous_form=None):
     """Show form to add a news channel to the site."""
@@ -331,7 +330,7 @@ def add_news_channel_form(site_id, erroneous_form=None):
 
 
 @blueprint.post('/sites/<site_id>/news_channels')
-@permission_required(SitePermission.update)
+@permission_required('site.update')
 def add_news_channel(site_id):
     """Add a news channel to the site."""
     site = _get_site_or_404(site_id)
@@ -359,7 +358,7 @@ def add_news_channel(site_id):
 
 
 @blueprint.delete('/sites/<site_id>/news_channels/<news_channel_id>')
-@permission_required(SitePermission.update)
+@permission_required('site.update')
 @respond_no_content
 def remove_news_channel(site_id, news_channel_id):
     """Remove the news channel from the site."""

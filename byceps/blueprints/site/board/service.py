@@ -12,11 +12,6 @@ from typing import Optional, Sequence
 
 from flask import g
 
-from ....permissions.board import (
-    BoardPermission,
-    BoardPostingPermission,
-    BoardTopicPermission,
-)
 from ....services.authentication.session.models.current_user import CurrentUser
 from ....services.board.dbmodels.topic import Topic as DbTopic
 from ....services.board.dbmodels.posting import Posting as DbPosting
@@ -204,7 +199,7 @@ def _get_site_setting_int_value(key, default_value) -> int:
 
 def may_current_user_view_hidden() -> bool:
     """Return `True' if the current user may view hidden items."""
-    return has_current_user_permission(BoardPermission.view_hidden)
+    return has_current_user_permission('board.view_hidden')
 
 
 def may_topic_be_updated_by_current_user(topic: DbTopic) -> bool:
@@ -212,8 +207,8 @@ def may_topic_be_updated_by_current_user(topic: DbTopic) -> bool:
     return (
         not topic.locked
         and g.user.id == topic.creator_id
-        and has_current_user_permission(BoardTopicPermission.update)
-    ) or has_current_user_permission(BoardPermission.update_of_others)
+        and has_current_user_permission('board_topic.update')
+    ) or has_current_user_permission('board.update_of_others')
 
 
 def may_posting_be_updated_by_current_user(posting: DbPosting) -> bool:
@@ -221,5 +216,5 @@ def may_posting_be_updated_by_current_user(posting: DbPosting) -> bool:
     return (
         not posting.topic.locked
         and g.user.id == posting.creator_id
-        and has_current_user_permission(BoardPostingPermission.update)
-    ) or has_current_user_permission(BoardPermission.update_of_others)
+        and has_current_user_permission('board_posting.update')
+    ) or has_current_user_permission('board.update_of_others')

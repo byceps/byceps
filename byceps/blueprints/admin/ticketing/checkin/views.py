@@ -11,7 +11,6 @@ from datetime import date
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
-from .....permissions.ticketing import TicketingPermission
 from .....services.party import service as party_service
 from .....services.ticketing import (
     exceptions as ticket_exceptions,
@@ -33,7 +32,7 @@ MINIMUM_AGE_IN_YEARS = 18
 
 
 @blueprint.get('/for_party/<party_id>')
-@permission_required(TicketingPermission.checkin)
+@permission_required('ticketing.checkin')
 @templated
 def index(party_id):
     """Provide form to find tickets, then check them in."""
@@ -105,7 +104,7 @@ def _get_tickets_for_users(party_id, users):
 
 
 @blueprint.post('/for_party/<party_id>/tickets/<uuid:ticket_id>/check_in_user')
-@permission_required(TicketingPermission.checkin)
+@permission_required('ticketing.checkin')
 @respond_no_content
 def check_in_user(party_id, ticket_id):
     """Check the user in."""
@@ -161,7 +160,7 @@ def check_in_user(party_id, ticket_id):
 
 
 @blueprint.post('/tickets/<uuid:ticket_id>/revert_user_check_in')
-@permission_required(TicketingPermission.checkin)
+@permission_required('ticketing.checkin')
 @respond_no_content
 def revert_user_check_in(ticket_id):
     """Revert the user check-in state."""

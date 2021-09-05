@@ -11,10 +11,6 @@ from typing import Optional
 from flask import abort, request
 from flask_babel import gettext
 
-from .....permissions.snippet import (
-    SnippetMountpointPermission,
-    SnippetPermission,
-)
 from .....services.brand.transfer.models import Brand
 from .....services.site import service as site_service
 from .....services.site.transfer.models import Site
@@ -39,7 +35,7 @@ blueprint = create_blueprint('snippet_mountpoint_admin', __name__)
 
 
 @blueprint.get('/for_site/<site_id>')
-@permission_required(SnippetPermission.view)
+@permission_required('snippet.view')
 @templated
 def index(site_id):
     """List mountpoints for that site."""
@@ -65,7 +61,7 @@ def index(site_id):
 
 
 @blueprint.get('/for_snippet/<uuid:snippet_id>/select_site')
-@permission_required(SnippetMountpointPermission.create)
+@permission_required('snippet_mountpoint.create')
 @templated
 def site_select_form(snippet_id, *, erroneous_form=None):
     """Show form to select a site to create a mountpoint for."""
@@ -91,7 +87,7 @@ def site_select_form(snippet_id, *, erroneous_form=None):
 
 
 @blueprint.post('/for_snippet/<uuid:snippet_id>/select_site')
-@permission_required(SnippetMountpointPermission.create)
+@permission_required('snippet_mountpoint.create')
 def site_select(snippet_id):
     """Redirect to form to create a mountpoint."""
     snippet = find_snippet_by_id(snippet_id)
@@ -126,7 +122,7 @@ def _get_sites_to_potentially_mount_to(
 
 
 @blueprint.get('/for_snippet/<uuid:snippet_id>/for_site/<site_id>/create')
-@permission_required(SnippetMountpointPermission.create)
+@permission_required('snippet_mountpoint.create')
 @templated
 def create_form(snippet_id, site_id, *, erroneous_form=None):
     """Show form to create a mountpoint."""
@@ -143,7 +139,7 @@ def create_form(snippet_id, site_id, *, erroneous_form=None):
 
 
 @blueprint.post('/for_snippet/<uuid:snippet_id>/for_site/<site_id>')
-@permission_required(SnippetMountpointPermission.create)
+@permission_required('snippet_mountpoint.create')
 def create(snippet_id, site_id):
     """Create a mountpoint."""
     snippet = find_snippet_by_id(snippet_id)
@@ -172,7 +168,7 @@ def create(snippet_id, site_id):
 
 
 @blueprint.delete('/mountpoints/<uuid:mountpoint_id>')
-@permission_required(SnippetMountpointPermission.delete)
+@permission_required('snippet_mountpoint.delete')
 @respond_no_content
 def delete(mountpoint_id):
     """Delete a mountpoint."""

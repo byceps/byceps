@@ -35,9 +35,9 @@
       <h1>{{ render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }} {{ page_title }}</h1>
     </div>
     {%- if has_current_user_any_permission(
-      ShopOrderPermission.cancel,
-      ShopOrderPermission.mark_as_paid,
-      ShopOrderPermission.update
+      'shop_order.cancel',
+      'shop_order.mark_as_paid',
+      'shop_order.update'
     ) %}
     <div class="column-auto">
       <div class="button-row button-row--right">

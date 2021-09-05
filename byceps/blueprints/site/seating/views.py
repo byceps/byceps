@@ -9,7 +9,6 @@ byceps.blueprints.site.seating.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....permissions.seating import SeatingPermission
 from ....services.party import service as party_service
 from ....services.seating import area_service as seating_area_service
 from ....services.seating.dbmodels.seat import Seat
@@ -304,7 +303,7 @@ def _is_seat_management_enabled():
 
 
 def _is_current_user_seating_admin() -> bool:
-    return has_current_user_permission(SeatingPermission.administrate)
+    return has_current_user_permission('seating.administrate')
 
 
 def _get_ticket_or_404(ticket_id: TicketID) -> DbTicket:

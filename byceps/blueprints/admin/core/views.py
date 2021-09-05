@@ -11,7 +11,6 @@ from typing import Any
 
 from flask import g
 
-from ....permissions.admin import AdminPermission
 from ....services.brand import service as brand_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.user_session import get_current_user
@@ -36,5 +35,5 @@ def inject_template_variables() -> dict[str, Any]:
 
 @blueprint.before_app_request
 def prepare_request_globals() -> None:
-    required_permissions = {AdminPermission.access}
+    required_permissions = {'admin.access'}
     g.user = get_current_user(required_permissions)

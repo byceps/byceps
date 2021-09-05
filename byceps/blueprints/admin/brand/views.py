@@ -9,7 +9,6 @@ byceps.blueprints.admin.brand.views
 from flask import abort, request
 from flask_babel import gettext
 
-from ....permissions.brand import BrandPermission
 from ....services.brand import (
     service as brand_service,
     settings_service as brand_settings_service,
@@ -29,7 +28,7 @@ blueprint = create_blueprint('brand_admin', __name__)
 
 
 @blueprint.get('/')
-@permission_required(BrandPermission.view)
+@permission_required('brand.view')
 @templated
 def index():
     """List brands."""
@@ -47,7 +46,7 @@ def index():
 
 
 @blueprint.get('/brands/<brand_id>')
-@permission_required(BrandPermission.view)
+@permission_required('brand.view')
 @templated
 def view(brand_id):
     """Show a brand."""
@@ -64,7 +63,7 @@ def view(brand_id):
 
 
 @blueprint.get('/create')
-@permission_required(BrandPermission.create)
+@permission_required('brand.create')
 @templated
 def create_form(erroneous_form=None):
     """Show form to create a brand."""
@@ -76,7 +75,7 @@ def create_form(erroneous_form=None):
 
 
 @blueprint.post('/')
-@permission_required(BrandPermission.create)
+@permission_required('brand.create')
 def create():
     """Create a brand."""
     form = CreateForm(request.form)
@@ -103,7 +102,7 @@ def create():
 
 
 @blueprint.get('/brands/<brand_id>/update')
-@permission_required(BrandPermission.update)
+@permission_required('brand.update')
 @templated
 def update_form(brand_id, erroneous_form=None):
     """Show form to update a brand."""
@@ -118,7 +117,7 @@ def update_form(brand_id, erroneous_form=None):
 
 
 @blueprint.post('/brands/<brand_id>')
-@permission_required(BrandPermission.update)
+@permission_required('brand.update')
 def update(brand_id):
     """Update a brand."""
     brand = _get_brand_or_404(brand_id)
@@ -146,7 +145,7 @@ def update(brand_id):
 
 
 @blueprint.get('/brands/<brand_id>/email_config/update')
-@permission_required(BrandPermission.update)
+@permission_required('brand.update')
 @templated
 def email_config_update_form(brand_id, erroneous_form=None):
     """Show form to update e-mail config."""
@@ -172,7 +171,7 @@ def email_config_update_form(brand_id, erroneous_form=None):
 
 
 @blueprint.post('/brands/<brand_id>/email_config')
-@permission_required(BrandPermission.update)
+@permission_required('brand.update')
 def email_config_update(brand_id):
     """Update e-mail config."""
     brand = _get_brand_or_404(brand_id)

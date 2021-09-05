@@ -9,7 +9,6 @@ byceps.blueprints.admin.orga_team.views
 from flask import abort, request
 from flask_babel import gettext
 
-from ....permissions.orga_team import OrgaTeamPermission
 from ....services.orga_team import service as orga_team_service
 from ....services.party import service as party_service
 from ....services.user import service as user_service
@@ -34,7 +33,7 @@ blueprint = create_blueprint('orga_team_admin', __name__)
 
 
 @blueprint.get('/teams/<party_id>')
-@permission_required(OrgaTeamPermission.view)
+@permission_required('orga_team.view')
 @templated
 def teams_for_party(party_id):
     """List organizer teams for that party."""
@@ -62,7 +61,7 @@ def teams_for_party(party_id):
 
 
 @blueprint.get('/teams/<party_id>/create')
-@permission_required(OrgaTeamPermission.create)
+@permission_required('orga_team.create')
 @templated
 def team_create_form(party_id, erroneous_form=None):
     """Show form to create an organizer team for a party."""
@@ -77,7 +76,7 @@ def team_create_form(party_id, erroneous_form=None):
 
 
 @blueprint.post('/teams/<party_id>')
-@permission_required(OrgaTeamPermission.create)
+@permission_required('orga_team.create')
 def team_create(party_id):
     """Create an organizer team for a party."""
     party = _get_party_or_404(party_id)
@@ -101,7 +100,7 @@ def team_create(party_id):
 
 
 @blueprint.delete('/teams/<uuid:team_id>')
-@permission_required(OrgaTeamPermission.delete)
+@permission_required('orga_team.delete')
 @respond_no_content
 def team_delete(team_id):
     """Delete the team."""
@@ -124,7 +123,7 @@ def team_delete(team_id):
 
 
 @blueprint.get('/teams/<target_party_id>/copy')
-@permission_required(OrgaTeamPermission.create)
+@permission_required('orga_team.create')
 @templated
 def teams_copy_form(target_party_id, erroneous_form=None):
     """Show form to copy all organizer teams from another party."""
@@ -168,7 +167,7 @@ def teams_copy_form(target_party_id, erroneous_form=None):
 
 
 @blueprint.post('/teams/<target_party_id>/copy')
-@permission_required(OrgaTeamPermission.create)
+@permission_required('orga_team.create')
 def teams_copy(target_party_id):
     """Copy all organizer teams from another party."""
     target_party = _get_party_or_404(target_party_id)
@@ -213,7 +212,7 @@ def teams_copy(target_party_id):
 
 
 @blueprint.get('/teams/<uuid:team_id>/memberships/create')
-@permission_required(OrgaTeamPermission.administrate_memberships)
+@permission_required('orga_team.administrate_memberships')
 @templated
 def membership_create_form(team_id, erroneous_form=None):
     """Show form to assign an organizer to that team."""
@@ -248,7 +247,7 @@ def membership_create_form(team_id, erroneous_form=None):
 
 
 @blueprint.post('/teams/<uuid:team_id>/memberships')
-@permission_required(OrgaTeamPermission.administrate_memberships)
+@permission_required('orga_team.administrate_memberships')
 def membership_create(team_id):
     """Assign an organizer to that team."""
     team = _get_team_or_404(team_id)
@@ -279,7 +278,7 @@ def membership_create(team_id):
 
 
 @blueprint.get('/memberships/<uuid:membership_id>/update')
-@permission_required(OrgaTeamPermission.administrate_memberships)
+@permission_required('orga_team.administrate_memberships')
 @templated
 def membership_update_form(membership_id, erroneous_form=None):
     """Show form to update a membership."""
@@ -308,7 +307,7 @@ def membership_update_form(membership_id, erroneous_form=None):
 
 
 @blueprint.post('/memberships/<uuid:membership_id>')
-@permission_required(OrgaTeamPermission.administrate_memberships)
+@permission_required('orga_team.administrate_memberships')
 def membership_update(membership_id):
     """Update a membership."""
     membership = _get_membership_or_404(membership_id)
@@ -340,7 +339,7 @@ def membership_update(membership_id):
 
 
 @blueprint.delete('/memberships/<uuid:membership_id>')
-@permission_required(OrgaTeamPermission.administrate_memberships)
+@permission_required('orga_team.administrate_memberships')
 @respond_no_content
 def membership_remove(membership_id):
     """Remove an organizer from a team."""

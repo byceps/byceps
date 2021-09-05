@@ -6,10 +6,10 @@ byceps.permissions.orga_team
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ..util.authorization import create_permission_enum
+from ..util.authorization import register_permissions
 
 
-OrgaTeamPermission = create_permission_enum(
+register_permissions(
     'orga_team',
     [
         'administrate_memberships',

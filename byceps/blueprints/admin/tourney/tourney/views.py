@@ -12,7 +12,6 @@ from datetime import datetime
 from flask import abort, request
 from flask_babel import gettext
 
-from .....permissions.tourney import TourneyPermission
 from .....services.party import service as party_service
 from .....services.tourney import tourney_service
 from .....util.framework.blueprint import create_blueprint
@@ -28,7 +27,7 @@ blueprint = create_blueprint('tourney_tourney_admin', __name__)
 
 
 @blueprint.get('/for_party/<party_id>')
-@permission_required(TourneyPermission.view)
+@permission_required('tourney.view')
 @templated
 def index(party_id):
     """List tourneys for that party."""
@@ -43,7 +42,7 @@ def index(party_id):
 
 
 @blueprint.get('/for_party/<party_id>/create')
-@permission_required(TourneyPermission.administrate)
+@permission_required('tourney.administrate')
 @templated
 def create_form(party_id, erroneous_form=None):
     """Show form to create a tourney."""
@@ -59,7 +58,7 @@ def create_form(party_id, erroneous_form=None):
 
 
 @blueprint.post('/for_party/<party_id>')
-@permission_required(TourneyPermission.administrate)
+@permission_required('tourney.administrate')
 def create(party_id):
     """Create a tourney."""
     party = _get_party_or_404(party_id)
@@ -97,7 +96,7 @@ def create(party_id):
 
 
 @blueprint.get('/tourneys/<tourney_id>/update')
-@permission_required(TourneyPermission.administrate)
+@permission_required('tourney.administrate')
 @templated
 def update_form(tourney_id, erroneous_form=None):
     """Show form to update the tourney."""
@@ -129,7 +128,7 @@ def update_form(tourney_id, erroneous_form=None):
 
 
 @blueprint.post('/tourneys/<tourney_id>')
-@permission_required(TourneyPermission.administrate)
+@permission_required('tourney.administrate')
 def update(tourney_id):
     """Update the tourney."""
     tourney = _get_tourney_or_404(tourney_id)

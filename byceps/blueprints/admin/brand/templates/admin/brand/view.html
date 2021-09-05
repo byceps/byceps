@@ -18,7 +18,7 @@
         {%- endif %}
       </h1>
     </div>
-  {%- if has_current_user_permission(BrandPermission.update) %}
+  {%- if has_current_user_permission('brand.update') %}
     <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
@@ -62,7 +62,7 @@
     <div class="column-auto">
       <h2>{{ _('Email Configuration') }}</h2>
     </div>
-    {%- if email_config and has_current_user_permission(BrandPermission.update) %}
+    {%- if email_config and has_current_user_permission('brand.update') %}
     <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button button--compact" href="{{ url_for('.email_config_update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>

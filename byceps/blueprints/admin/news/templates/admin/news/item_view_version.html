@@ -40,10 +40,10 @@
     </div>
     <div class="column-auto column--align-bottom">
 
-      {%- if has_current_user_permission(NewsItemPermission.update) %}
+      {%- if has_current_user_permission('news_item.update') %}
       <div class="button-row button-row--nowrap button-row--right">
         <a class="button" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
-        {%- if not item.published and has_current_user_permission(NewsItemPermission.publish) %}
+        {%- if not item.published and has_current_user_permission('news_item.publish') %}
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('published') }} {{ _('Publish') }} {{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
@@ -109,7 +109,7 @@
     </div>
     <div class="column-auto column--align-bottom">
 
-      {%- if has_current_user_permission(NewsItemPermission.update) %}
+      {%- if has_current_user_permission('news_item.update') %}
       <div class="button-row button-row--nowrap button-row--right">
         <a class="button button--compact" href="{{ url_for('.image_create_form', item_id=item.id) }}">{{ render_icon('add') }} <span>{{ _('Add image') }}</span></a>
         <div class="dropdown">
@@ -155,7 +155,7 @@
 
             </div>
 
-            {%- if has_current_user_permission(NewsItemPermission.update) %}
+            {%- if has_current_user_permission('news_item.update') %}
             <div class="column-auto">
               <div class="button-row button-row--nowrap button-row--right">
                 <a class="button button--compact" href="{{ url_for('.image_update_form', image_id=image.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>

@@ -10,7 +10,6 @@ from typing import Optional
 
 from flask import abort, current_app
 
-from .....permissions.shop import ShopPermission
 from .....services.brand import service as brand_service
 from .....services.email import service as email_service
 from .....services.shop.order.email import (
@@ -26,7 +25,7 @@ blueprint = create_blueprint('shop_email_admin', __name__)
 
 
 @blueprint.get('/for_shop/<shop_id>')
-@permission_required(ShopPermission.view)
+@permission_required('shop.view')
 @templated
 def view_for_shop(shop_id):
     """Show e-mail examples."""

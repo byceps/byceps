@@ -11,7 +11,6 @@ from dataclasses import dataclass
 from flask import abort, request
 from flask_babel import gettext
 
-from ....permissions.board import BoardCategoryPermission, BoardPermission
 from ....services.board import board_service
 from ....services.board import (
     category_command_service as board_category_command_service,
@@ -44,7 +43,7 @@ class BoardStats:
 
 
 @blueprint.get('/brands/<brand_id>')
-@permission_required(BoardCategoryPermission.view)
+@permission_required('board_category.view')
 @templated
 def board_index_for_brand(brand_id):
     """List categories for that brand."""
@@ -70,7 +69,7 @@ def board_index_for_brand(brand_id):
 
 
 @blueprint.get('/boards/<board_id>')
-@permission_required(BoardCategoryPermission.view)
+@permission_required('board_category.view')
 @templated
 def board_view(board_id):
     """View the board."""
@@ -89,7 +88,7 @@ def board_view(board_id):
 
 
 @blueprint.get('/for_brand/<brand_id>/boards/create')
-@permission_required(BoardPermission.create)
+@permission_required('board.create')
 @templated
 def board_create_form(brand_id, erroneous_form=None):
     """Show form to create a board."""
@@ -104,7 +103,7 @@ def board_create_form(brand_id, erroneous_form=None):
 
 
 @blueprint.post('/for_brand/<brand_id>/boards')
-@permission_required(BoardPermission.create)
+@permission_required('board.create')
 def board_create(brand_id):
     """Create a board."""
     brand = _get_brand_or_404(brand_id)
@@ -131,7 +130,7 @@ def board_create(brand_id):
 
 
 @blueprint.get('/categories/for_board/<board_id>/create')
-@permission_required(BoardCategoryPermission.create)
+@permission_required('board_category.create')
 @templated
 def category_create_form(board_id, erroneous_form=None):
     """Show form to create a category."""
@@ -149,7 +148,7 @@ def category_create_form(board_id, erroneous_form=None):
 
 
 @blueprint.post('/categories/for_board/<board_id>')
-@permission_required(BoardCategoryPermission.create)
+@permission_required('board_category.create')
 def category_create(board_id):
     """Create a category."""
     board = _get_board_or_404(board_id)
@@ -176,7 +175,7 @@ def category_create(board_id):
 
 
 @blueprint.get('/categories/<uuid:category_id>/update')
-@permission_required(BoardCategoryPermission.update)
+@permission_required('board_category.update')
 @templated
 def category_update_form(category_id, erroneous_form=None):
     """Show form to update the category."""
@@ -197,7 +196,7 @@ def category_update_form(category_id, erroneous_form=None):
 
 
 @blueprint.post('/categories/<uuid:category_id>')
-@permission_required(BoardCategoryPermission.update)
+@permission_required('board_category.update')
 def category_update(category_id):
     """Update the category."""
     category = _get_category_or_404(category_id)
@@ -224,7 +223,7 @@ def category_update(category_id):
 
 
 @blueprint.post('/categories/<uuid:category_id>/flags/hidden')
-@permission_required(BoardCategoryPermission.update)
+@permission_required('board_category.update')
 @respond_no_content
 def category_hide(category_id):
     """Hide the category."""
@@ -241,7 +240,7 @@ def category_hide(category_id):
 
 
 @blueprint.delete('/categories/<uuid:category_id>/flags/hidden')
-@permission_required(BoardCategoryPermission.update)
+@permission_required('board_category.update')
 @respond_no_content
 def category_unhide(category_id):
     """Un-hide the category."""
@@ -258,7 +257,7 @@ def category_unhide(category_id):
 
 
 @blueprint.post('/categories/<uuid:category_id>/up')
-@permission_required(BoardCategoryPermission.update)
+@permission_required('board_category.update')
 @respond_no_content
 def category_move_up(category_id):
     """Move the category upwards by one position."""
@@ -283,7 +282,7 @@ def category_move_up(category_id):
 
 
 @blueprint.post('/categories/<uuid:category_id>/down')
-@permission_required(BoardCategoryPermission.update)
+@permission_required('board_category.update')
 @respond_no_content
 def category_move_down(category_id):
     """Move the category downwards by one position."""
@@ -308,7 +307,7 @@ def category_move_down(category_id):
 
 
 @blueprint.delete('/categories/<uuid:category_id>')
-@permission_required(BoardCategoryPermission.create)
+@permission_required('board_category.create')
 @respond_no_content
 def category_delete(category_id):
     """Delete a category."""

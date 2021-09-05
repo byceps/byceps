@@ -11,7 +11,7 @@
   <div class="dimmed-box centered">
     <p>{{ _('No shop exists for this brand.') }}</p>
 
-    {%- if has_current_user_permission(ShopPermission.create) %}
+    {%- if has_current_user_permission('shop.create') %}
     <div class="button-row button-row--center">
       <a class="button" data-action="create-shop" href="{{ url_for('.create', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create shop') }}</span></a>
     </div>

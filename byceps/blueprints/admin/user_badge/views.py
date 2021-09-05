@@ -9,7 +9,6 @@ byceps.blueprints.admin.user_badge.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....permissions.user_badge import UserBadgePermission
 from ....services.brand import service as brand_service
 from ....services.user import service as user_service
 from ....services.user_badge import awarding_service, badge_service
@@ -30,7 +29,7 @@ blueprint = create_blueprint('user_badge_admin', __name__)
 
 
 @blueprint.get('/badges')
-@permission_required(UserBadgePermission.view)
+@permission_required('user_badge.view')
 @templated
 def index():
     """List all badges."""
@@ -66,7 +65,7 @@ def index():
 
 
 @blueprint.get('/badges/<uuid:badge_id>')
-@permission_required(UserBadgePermission.view)
+@permission_required('user_badge.view')
 @templated
 def view(badge_id):
     """Show badge details."""
@@ -90,7 +89,7 @@ def view(badge_id):
 
 
 @blueprint.get('/create')
-@permission_required(UserBadgePermission.create)
+@permission_required('user_badge.create')
 @templated
 def create_form(erroneous_form=None):
     """Show form to create a user badge."""
@@ -103,7 +102,7 @@ def create_form(erroneous_form=None):
 
 
 @blueprint.post('/badges')
-@permission_required(UserBadgePermission.create)
+@permission_required('user_badge.create')
 def create():
     """Create a user badge."""
     form = CreateForm(request.form)
@@ -144,7 +143,7 @@ def create():
 
 
 @blueprint.get('/badges/<uuid:badge_id>/update')
-@permission_required(UserBadgePermission.update)
+@permission_required('user_badge.update')
 @templated
 def update_form(badge_id, erroneous_form=None):
     """Show form to update a badge."""
@@ -160,7 +159,7 @@ def update_form(badge_id, erroneous_form=None):
 
 
 @blueprint.post('/badges/<uuid:badge_id>')
-@permission_required(UserBadgePermission.update)
+@permission_required('user_badge.update')
 def update(badge_id):
     """Update a badge."""
     badge = _get_badge_or_404(badge_id)
@@ -200,7 +199,7 @@ def _set_brand_ids_on_form(form):
 
 
 @blueprint.get('/awardings/to/<uuid:user_id>')
-@permission_required(UserBadgePermission.award)
+@permission_required('user_badge.award')
 @templated
 def award_form(user_id, erroneous_form=None):
     """Show form to award a badge to a user."""
@@ -218,7 +217,7 @@ def award_form(user_id, erroneous_form=None):
 
 
 @blueprint.post('/awardings/to/<uuid:user_id>')
-@permission_required(UserBadgePermission.award)
+@permission_required('user_badge.award')
 def award(user_id):
     """Award a badge to a user."""
     form = AwardForm(request.form)

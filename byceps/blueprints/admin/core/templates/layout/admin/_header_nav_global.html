@@ -6,37 +6,37 @@
       url_for('admin_dashboard.view_global'),
       _('Dashboard'),
       id='admin_dashboard_global',
-      required_permission=AdminPermission.access,
+      required_permission='admin.access',
       icon='dashboard')
     .add_item(
       url_for('user_admin.index'),
       _('Users'),
       id='user_admin',
-      required_permission=UserPermission.view,
+      required_permission='user.view',
       icon='users')
     .add_item(
       url_for('brand_admin.index'),
       _('Brands'),
       id='brands_admin',
-      required_permission=BrandPermission.view,
+      required_permission='brand.view',
       icon='brand')
     .add_item(
       url_for('party_admin.index'),
       _('Parties'),
       id='parties_admin',
-      required_permission=PartyPermission.view,
+      required_permission='party.view',
       icon='date')
     .add_item(
       url_for('site_admin.index'),
       _('Sites'),
       id='sites_admin',
-      required_permission=SitePermission.view,
+      required_permission='site.view',
       icon='site')
     .add_item(
       url_for('more_admin.view_global'),
       _('More'),
       id='more_admin_global',
-      required_permission=AdminPermission.access,
+      required_permission='admin.access',
       icon='ellipsis-h')
 -%}
 {{ render_main_tabs(navigation, current_page|default) }}

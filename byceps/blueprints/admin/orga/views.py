@@ -11,8 +11,6 @@ from typing import Optional
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....permissions.orga import OrgaBirthdayPermission, OrgaDetailPermission
-from ....permissions.orga_team import OrgaTeamPermission
 from ....services.brand import service as brand_service
 from ....services.orga import birthday_service as orga_birthday_service
 from ....services.orga import service as orga_service
@@ -36,7 +34,7 @@ blueprint = create_blueprint('orga_admin', __name__)
 
 
 @blueprint.get('/persons/<brand_id>')
-@permission_required(OrgaDetailPermission.view)
+@permission_required('orga_detail.view')
 @templated
 def persons_for_brand(brand_id):
     """List organizers for the brand with details."""
@@ -63,7 +61,7 @@ def _to_birthday(user) -> Optional[Birthday]:
 
 
 @blueprint.get('/persons/<brand_id>/create')
-@permission_required(OrgaTeamPermission.administrate_memberships)
+@permission_required('orga_team.administrate_memberships')
 @templated
 def create_orgaflag_form(brand_id, erroneous_form=None):
     """Show form to give the organizer flag to a user."""
@@ -78,7 +76,7 @@ def create_orgaflag_form(brand_id, erroneous_form=None):
 
 
 @blueprint.post('/persons/<brand_id>')
-@permission_required(OrgaTeamPermission.administrate_memberships)
+@permission_required('orga_team.administrate_memberships')
 def create_orgaflag(brand_id):
     """Give the organizer flag to a user."""
     brand = _get_brand_or_404(brand_id)
@@ -104,7 +102,7 @@ def create_orgaflag(brand_id):
 
 
 @blueprint.delete('/persons/<brand_id>/<uuid:user_id>')
-@permission_required(OrgaTeamPermission.administrate_memberships)
+@permission_required('orga_team.administrate_memberships')
 @respond_no_content
 def remove_orgaflag(brand_id, user_id):
     """Remove the organizer flag for a brand from a person."""
@@ -130,7 +128,7 @@ def remove_orgaflag(brand_id, user_id):
 
 
 @blueprint.get('/persons/<brand_id>/export')
-@permission_required(OrgaDetailPermission.view)
+@permission_required('orga_detail.view')
 @textified
 def export_persons(brand_id):
     """Export the list of organizers for the brand as a CSV document in
@@ -190,7 +188,7 @@ def export_persons(brand_id):
 
 
 @blueprint.get('/birthdays')
-@permission_required(OrgaBirthdayPermission.view)
+@permission_required('orga_birthday.view')
 @templated
 def birthdays():
     orgas = list(

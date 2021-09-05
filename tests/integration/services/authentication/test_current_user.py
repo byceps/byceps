@@ -6,7 +6,7 @@
 from uuid import UUID
 
 from byceps.services.authentication.session import service as session_service
-from byceps.util.authorization import create_permission_enum
+from byceps.util.authorization import register_permissions
 
 
 def test_get_anonymous_current_user():
@@ -25,10 +25,10 @@ def test_get_anonymous_current_user():
 
 
 def test_get_authenticated_current_user(user):
-    permission_enum = create_permission_enum('example', ['do_this', 'do_that'])
+    register_permissions('example', ['do_this', 'do_that'])
     permissions = frozenset([
-        permission_enum.do_this,
-        permission_enum.do_that,
+        'example.do_this',
+        'example.do_that',
     ])
     locale = 'de'
 

@@ -28,7 +28,7 @@
     </div>
     <div class="column-auto column--align-bottom">
 
-      {%- if has_current_user_permission(SitePermission.update) %}
+      {%- if has_current_user_permission('site.update') %}
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.update_form', site_id=site.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
       </div>
@@ -87,7 +87,7 @@
     <div class="column-auto">
       <h2>{{ _('News Channels') }} {{ render_extra_in_heading(news_channels|length) }}</h2>
     </div>
-  {%- if has_current_user_permission(SitePermission.update) %}
+  {%- if has_current_user_permission('site.update') %}
     <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button button--compact" href="{{ url_for('.add_news_channel_form', site_id=site.id) }}">{{ render_icon('add') }} <span>{{ _('Add news channel') }}</span></a>
@@ -102,7 +102,7 @@
       {%- for channel in news_channels|sort(attribute='id') %}
         <tr>
           <td><a href="{{ url_for('news_admin.channel_view', channel_id=channel.id) }}">{{ channel.id }}</a></td>
-          {%- if has_current_user_permission(SitePermission.update) %}
+          {%- if has_current_user_permission('site.update') %}
           <td>
             <div class="button-row button-row--compact button-row--right">
               <a href="{{ url_for('.remove_news_channel', site_id=site.id, news_channel_id=channel.id) }}" data-action="news-channel-remove" class="button button--compact" title="{{ _('Remove') }}">{{ render_icon('remove') }}</a>

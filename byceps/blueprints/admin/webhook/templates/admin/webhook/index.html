@@ -22,7 +22,7 @@
     <div class="column-auto">
       <h1>{{ page_title }} {{ render_extra_in_heading(webhooks|length) }}</h1>
     </div>
-  {%- if has_current_user_permission(WebhookPermission.administrate) %}
+  {%- if has_current_user_permission('webhook.administrate') %}
     <div class="column-auto">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Create webhook') }}</span></a>
@@ -40,7 +40,7 @@
         {{ render_tag(_('enabled'), class='color-success') if webhook.enabled else render_tag(_('disabled'), class='color-disabled') }}
         {{ webhook.description|fallback }}
       </div>
-      {%- if has_current_user_permission(WebhookPermission.administrate) %}
+      {%- if has_current_user_permission('webhook.administrate') %}
       <div class="column-auto">
         <div class="button-row button-row--compact button-row--right">
           <a class="button" href="{{ url_for('.update_form', webhook_id=webhook.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>

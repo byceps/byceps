@@ -20,7 +20,7 @@
 {%- include 'layout/admin/_header.html' %}
       </section>
 
-{%- if has_current_user_permission(AdminPermission.access) %}
+{%- if has_current_user_permission('admin.access') %}
       <section class="page-header-nav">
 {%- include 'layout/admin/_header_nav.html' %}
       </section>

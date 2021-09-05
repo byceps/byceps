@@ -8,7 +8,6 @@ byceps.blueprints.admin.shop.shipping.views
 
 from flask import abort
 
-from .....permissions.shop import ShopOrderPermission
 from .....services.brand import service as brand_service
 from .....services.shop.shipping import service as shipping_service
 from .....services.shop.shop import service as shop_service
@@ -21,7 +20,7 @@ blueprint = create_blueprint('shop_shipping_admin', __name__)
 
 
 @blueprint.get('/for_shop/<shop_id>')
-@permission_required(ShopOrderPermission.view)
+@permission_required('shop_order.view')
 @templated
 def view_for_shop(shop_id):
     """List the articles to ship, or likely to ship, for that shop."""

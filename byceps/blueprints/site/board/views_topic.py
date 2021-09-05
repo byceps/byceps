@@ -13,7 +13,6 @@ from typing import Optional
 from flask import abort, g, redirect, request
 from flask_babel import gettext
 
-from ....permissions.board import BoardPermission, BoardTopicPermission
 from ....services.authentication.session.models.current_user import CurrentUser
 from ....services.board import (
     category_query_service as board_category_query_service,
@@ -171,7 +170,7 @@ def _find_posting_url_to_redirect_to(
 
 
 @blueprint.get('/categories/<category_id>/create')
-@permission_required(BoardTopicPermission.create)
+@permission_required('board_topic.create')
 @templated
 def topic_create_form(category_id, erroneous_form=None):
     """Show a form to create a topic in the category."""
@@ -187,7 +186,7 @@ def topic_create_form(category_id, erroneous_form=None):
 
 
 @blueprint.post('/categories/<category_id>/create')
-@permission_required(BoardTopicPermission.create)
+@permission_required('board_topic.create')
 def topic_create(category_id):
     """Create a topic in the category."""
     category = h.get_category_or_404(category_id)
@@ -216,7 +215,7 @@ def topic_create(category_id):
 
 
 @blueprint.get('/topics/<uuid:topic_id>/update')
-@permission_required(BoardTopicPermission.update)
+@permission_required('board_topic.update')
 @templated
 def topic_update_form(topic_id, erroneous_form=None):
     """Show form to update a topic."""
@@ -253,7 +252,7 @@ def topic_update_form(topic_id, erroneous_form=None):
 
 
 @blueprint.post('/topics/<uuid:topic_id>')
-@permission_required(BoardTopicPermission.update)
+@permission_required('board_topic.update')
 def topic_update(topic_id):
     """Update a topic."""
     topic = h.get_topic_or_404(topic_id)
@@ -290,7 +289,7 @@ def topic_update(topic_id):
 
 
 @blueprint.get('/topics/<uuid:topic_id>/moderate')
-@permission_required(BoardPermission.hide)
+@permission_required('board.hide')
 @templated
 def topic_moderate_form(topic_id):
     """Show a form to moderate the topic."""
@@ -310,7 +309,7 @@ def topic_moderate_form(topic_id):
 
 
 @blueprint.post('/topics/<uuid:topic_id>/flags/hidden')
-@permission_required(BoardPermission.hide)
+@permission_required('board.hide')
 @respond_no_content_with_location
 def topic_hide(topic_id):
     """Hide a topic."""
@@ -333,7 +332,7 @@ def topic_hide(topic_id):
 
 
 @blueprint.delete('/topics/<uuid:topic_id>/flags/hidden')
-@permission_required(BoardPermission.hide)
+@permission_required('board.hide')
 @respond_no_content_with_location
 def topic_unhide(topic_id):
     """Un-hide a topic."""
@@ -359,7 +358,7 @@ def topic_unhide(topic_id):
 
 
 @blueprint.post('/topics/<uuid:topic_id>/flags/locked')
-@permission_required(BoardTopicPermission.lock)
+@permission_required('board_topic.lock')
 @respond_no_content_with_location
 def topic_lock(topic_id):
     """Lock a topic."""
@@ -382,7 +381,7 @@ def topic_lock(topic_id):
 
 
 @blueprint.delete('/topics/<uuid:topic_id>/flags/locked')
-@permission_required(BoardTopicPermission.lock)
+@permission_required('board_topic.lock')
 @respond_no_content_with_location
 def topic_unlock(topic_id):
     """Unlock a topic."""
@@ -405,7 +404,7 @@ def topic_unlock(topic_id):
 
 
 @blueprint.post('/topics/<uuid:topic_id>/flags/pinned')
-@permission_required(BoardTopicPermission.pin)
+@permission_required('board_topic.pin')
 @respond_no_content_with_location
 def topic_pin(topic_id):
     """Pin a topic."""
@@ -428,7 +427,7 @@ def topic_pin(topic_id):
 
 
 @blueprint.delete('/topics/<uuid:topic_id>/flags/pinned')
-@permission_required(BoardTopicPermission.pin)
+@permission_required('board_topic.pin')
 @respond_no_content_with_location
 def topic_unpin(topic_id):
     """Unpin a topic."""
@@ -450,7 +449,7 @@ def topic_unpin(topic_id):
 
 
 @blueprint.post('/topics/<uuid:topic_id>/move')
-@permission_required(BoardTopicPermission.move)
+@permission_required('board_topic.move')
 def topic_move(topic_id):
     """Move a topic from one category to another."""
     topic = h.get_topic_or_404(topic_id)
@@ -488,7 +487,7 @@ def topic_move(topic_id):
 
 
 @blueprint.post('/topics/<uuid:topic_id>/flags/announcements')
-@permission_required(BoardPermission.announce)
+@permission_required('board.announce')
 @respond_no_content_with_location
 def topic_limit_to_announcements(topic_id):
     """Limit post in the topic to moderators."""
@@ -508,7 +507,7 @@ def topic_limit_to_announcements(topic_id):
 
 
 @blueprint.delete('/topics/<uuid:topic_id>/flags/announcements')
-@permission_required(BoardPermission.announce)
+@permission_required('board.announce')
 @respond_no_content_with_location
 def topic_remove_limit_to_announcements(topic_id):
     """Allow non-moderators to post in the topic again."""

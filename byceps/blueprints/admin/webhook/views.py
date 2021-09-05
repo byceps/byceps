@@ -14,7 +14,6 @@ from flask_babel import gettext
 
 from ....announce.events import EVENT_TYPES_TO_NAMES
 from ....announce.helpers import call_webhook
-from ....permissions.webhook import WebhookPermission
 from ....services.webhooks import service as webhook_service
 from ....services.webhooks.transfer.models import OutgoingWebhook, WebhookID
 from ....util.framework.blueprint import create_blueprint
@@ -36,7 +35,7 @@ WEBHOOK_EVENT_NAMES = frozenset(EVENT_TYPES_TO_NAMES.values())
 
 
 @blueprint.get('/')
-@permission_required(WebhookPermission.view)
+@permission_required('webhook.view')
 @templated
 def index():
     """Show webhooks."""
@@ -50,7 +49,7 @@ def index():
 
 
 @blueprint.get('/create')
-@permission_required(WebhookPermission.administrate)
+@permission_required('webhook.administrate')
 @templated
 def create_form(erroneous_form=None):
     """Show form to create a webhook."""
@@ -66,7 +65,7 @@ def create_form(erroneous_form=None):
 
 
 @blueprint.post('/')
-@permission_required(WebhookPermission.administrate)
+@permission_required('webhook.administrate')
 def create():
     """Create a webhook."""
     event_names = WEBHOOK_EVENT_NAMES
@@ -97,7 +96,7 @@ def create():
 
 
 @blueprint.get('/webhooks/<uuid:webhook_id>/update')
-@permission_required(WebhookPermission.administrate)
+@permission_required('webhook.administrate')
 @templated
 def update_form(webhook_id, erroneous_form=None):
     """Show form to update a webhook."""
@@ -127,7 +126,7 @@ def update_form(webhook_id, erroneous_form=None):
 
 
 @blueprint.post('/webhooks/<uuid:webhook_id>')
-@permission_required(WebhookPermission.administrate)
+@permission_required('webhook.administrate')
 def update(webhook_id):
     """Update the webhook."""
     webhook = _get_webhook_or_404(webhook_id)
@@ -170,7 +169,7 @@ def update(webhook_id):
 
 
 @blueprint.delete('/webhooks/<uuid:webhook_id>/test')
-@permission_required(WebhookPermission.administrate)
+@permission_required('webhook.administrate')
 @respond_no_content
 def delete(webhook_id):
     """Remove the webhook."""
@@ -182,7 +181,7 @@ def delete(webhook_id):
 
 
 @blueprint.post('/webhooks/<uuid:webhook_id>/test')
-@permission_required(WebhookPermission.administrate)
+@permission_required('webhook.administrate')
 @respond_no_content
 def test(webhook_id):
     """Call the webhook (synchronously)."""

@@ -9,7 +9,6 @@ byceps.blueprints.admin.shop.order.views
 from flask import abort, g, request, Response
 from flask_babel import gettext
 
-from .....permissions.shop import ShopOrderPermission, ShopPermission
 from .....services.brand import service as brand_service
 from .....services.shop.order import (
     event_service as order_event_service,
@@ -43,7 +42,7 @@ blueprint = create_blueprint('shop_order_admin', __name__)
 
 @blueprint.get('/for_shop/<shop_id>', defaults={'page': 1})
 @blueprint.get('/for_shop/<shop_id>/pages/<int:page>')
-@permission_required(ShopOrderPermission.view)
+@permission_required('shop_order.view')
 @templated
 def index_for_shop(shop_id, page):
     """List orders for that shop."""
@@ -98,7 +97,7 @@ def index_for_shop(shop_id, page):
 
 
 @blueprint.get('/<uuid:order_id>')
-@permission_required(ShopOrderPermission.view)
+@permission_required('shop_order.view')
 @templated
 def view(order_id):
     """Show a single order."""
@@ -136,7 +135,7 @@ def view(order_id):
 
 
 @blueprint.get('/<uuid:order_id>/export')
-@permission_required(ShopOrderPermission.view)
+@permission_required('shop_order.view')
 def export(order_id):
     """Export the order as an XML document."""
     xml_export = order_export_service.export_order_as_xml(order_id)
@@ -154,7 +153,7 @@ def export(order_id):
 
 
 @blueprint.get('/<uuid:order_id>/notes/create')
-@permission_required(ShopOrderPermission.update)
+@permission_required('shop_order.update')
 @templated
 def add_note_form(order_id, erroneous_form=None):
     """Show form to add a note to the order."""
@@ -175,7 +174,7 @@ def add_note_form(order_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:order_id>/notes')
-@permission_required(ShopOrderPermission.update)
+@permission_required('shop_order.update')
 def add_note(order_id):
     """Add a note to the order."""
     order = _get_order_or_404(order_id)
@@ -198,7 +197,7 @@ def add_note(order_id):
 
 
 @blueprint.post('/<uuid:order_id>/flags/invoiced')
-@permission_required(ShopOrderPermission.update)
+@permission_required('shop_order.update')
 @respond_no_content
 def set_invoiced_flag(order_id):
     """Mark the order as invoiced."""
@@ -216,7 +215,7 @@ def set_invoiced_flag(order_id):
 
 
 @blueprint.delete('/<uuid:order_id>/flags/invoiced')
-@permission_required(ShopOrderPermission.update)
+@permission_required('shop_order.update')
 @respond_no_content
 def unset_invoiced_flag(order_id):
     """Mark the order as not invoiced."""
@@ -234,7 +233,7 @@ def unset_invoiced_flag(order_id):
 
 
 @blueprint.post('/<uuid:order_id>/flags/shipped')
-@permission_required(ShopOrderPermission.update)
+@permission_required('shop_order.update')
 @respond_no_content
 def set_shipped_flag(order_id):
     """Mark the order as shipped."""
@@ -252,7 +251,7 @@ def set_shipped_flag(order_id):
 
 
 @blueprint.delete('/<uuid:order_id>/flags/shipped')
-@permission_required(ShopOrderPermission.update)
+@permission_required('shop_order.update')
 @respond_no_content
 def unset_shipped_flag(order_id):
     """Mark the order as not shipped."""
@@ -274,7 +273,7 @@ def unset_shipped_flag(order_id):
 
 
 @blueprint.get('/<uuid:order_id>/cancel')
-@permission_required(ShopOrderPermission.cancel)
+@permission_required('shop_order.cancel')
 @templated
 def cancel_form(order_id, erroneous_form=None):
     """Show form to cancel an order."""
@@ -304,7 +303,7 @@ def cancel_form(order_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:order_id>/cancel')
-@permission_required(ShopOrderPermission.cancel)
+@permission_required('shop_order.cancel')
 def cancel(order_id):
     """Set the payment state of a single order to 'canceled' and
     release the respective article quantities.
@@ -351,7 +350,7 @@ def cancel(order_id):
 
 
 @blueprint.get('/<uuid:order_id>/mark_as_paid')
-@permission_required(ShopOrderPermission.mark_as_paid)
+@permission_required('shop_order.mark_as_paid')
 @templated
 def mark_as_paid_form(order_id, erroneous_form=None):
     """Show form to mark an order as paid."""
@@ -376,7 +375,7 @@ def mark_as_paid_form(order_id, erroneous_form=None):
 
 
 @blueprint.post('/<uuid:order_id>/mark_as_paid')
-@permission_required(ShopOrderPermission.mark_as_paid)
+@permission_required('shop_order.mark_as_paid')
 def mark_as_paid(order_id):
     """Set the payment state of a single order to 'paid'."""
     order = _get_order_or_404(order_id)
@@ -410,7 +409,7 @@ def mark_as_paid(order_id):
 
 
 @blueprint.post('/<uuid:order_id>/resend_incoming_order_email')
-@permission_required(ShopOrderPermission.update)
+@permission_required('shop_order.update')
 @respond_no_content
 def resend_email_for_incoming_order_to_orderer(order_id):
     """Resend the e-mail to the orderer to confirm that the order was placed."""
@@ -438,7 +437,7 @@ def resend_email_for_incoming_order_to_orderer(order_id):
 
 
 @blueprint.get('/number_sequences/for_shop/<shop_id>/create')
-@permission_required(ShopPermission.update)
+@permission_required('shop.update')
 @templated
 def create_number_sequence_form(shop_id, erroneous_form=None):
     """Show form to create an order number sequence."""
@@ -456,7 +455,7 @@ def create_number_sequence_form(shop_id, erroneous_form=None):
 
 
 @blueprint.post('/number_sequences/for_shop/<shop_id>')
-@permission_required(ShopPermission.update)
+@permission_required('shop.update')
 def create_number_sequence(shop_id):
     """Create an order number sequence."""
     shop = _get_shop_or_404(shop_id)
