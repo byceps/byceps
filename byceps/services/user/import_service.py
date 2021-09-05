@@ -21,8 +21,16 @@ from .transfer.models import User
 class UserImportSchema(Schema):
     screen_name = fields.Str(required=True)
     email_address = fields.Str(required=False)
+    legacy_id = fields.Str(required=False)
     first_names = fields.Str(required=False)
     last_name = fields.Str(required=False)
+    date_of_birth = fields.Date(required=False)
+    country = fields.Str(required=False)
+    zip_code = fields.Str(required=False)
+    city = fields.Str(required=False)
+    street = fields.Str(required=False)
+    phone_number = fields.Str(required=False)
+    internal_comment = fields.Str(required=False)
 
 
 def parse_lines(lines: TextIOBase) -> Iterator[str]:
@@ -47,8 +55,16 @@ def create_user(user_dict) -> User:
         user_dict['screen_name'],
         user_dict.get('email_address'),
         password,
+        legacy_id=user_dict.get('legacy_id'),
         first_names=user_dict.get('first_names'),
         last_name=user_dict.get('last_name'),
+        date_of_birth=user_dict.get('date_of_birth'),
+        country=user_dict.get('country'),
+        zip_code=user_dict.get('zip_code'),
+        city=user_dict.get('city'),
+        street=user_dict.get('street'),
+        phone_number=user_dict.get('phone_number'),
+        internal_comment=user_dict.get('internal_comment'),
     )
 
     return user
