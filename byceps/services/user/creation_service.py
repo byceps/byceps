@@ -36,6 +36,7 @@ def create_user(
     email_address: Optional[str],
     password: str,
     *,
+    legacy_id: Optional[str] = None,
     first_names: Optional[str] = None,
     last_name: Optional[str] = None,
     date_of_birth: Optional[date] = None,
@@ -58,7 +59,9 @@ def create_user(
 
     created_at = datetime.utcnow()
 
-    db_user = build_db_user(created_at, screen_name, email_address)
+    db_user = build_db_user(
+        created_at, screen_name, email_address, legacy_id=legacy_id
+    )
 
     db_user.detail.first_names = first_names
     db_user.detail.last_name = last_name
@@ -111,6 +114,8 @@ def build_db_user(
     created_at: datetime,
     screen_name: Optional[str],
     email_address: Optional[str],
+    *,
+    legacy_id: Optional[str] = None,
 ) -> DbUser:
     normalized_screen_name: Optional[str]
     if screen_name is not None:
@@ -124,7 +129,12 @@ def build_db_user(
     else:
         normalized_email_address = None
 
-    user = DbUser(created_at, normalized_screen_name, normalized_email_address)
+    user = DbUser(
+        created_at,
+        normalized_screen_name,
+        normalized_email_address,
+        legacy_id=legacy_id,
+    )
 
     detail = DbUserDetail(user=user)
 

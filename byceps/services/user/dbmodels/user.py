@@ -42,10 +42,13 @@ class User(db.Model):
         created_at: datetime,
         screen_name: Optional[str],
         email_address: Optional[str],
+        *,
+        legacy_id: Optional[str] = None,
     ) -> None:
         self.created_at = created_at
         self.screen_name = screen_name
         self.email_address = email_address
+        self.legacy_id = legacy_id
 
     @property
     def avatar_url(self) -> Optional[str]:

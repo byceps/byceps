@@ -124,7 +124,10 @@ def create_user(
         email_address = f'user{user_id}@users.test'
 
     user = user_creation_service.build_db_user(
-        created_at, screen_name, email_address
+        created_at,
+        screen_name,
+        email_address,
+        legacy_id=legacy_id,
     )
 
     user.id = user_id
@@ -132,7 +135,6 @@ def create_user(
     user.initialized = initialized
     user.suspended = suspended
     user.deleted = deleted
-    user.legacy_id = legacy_id
 
     detail = DbUserDetail(user=user)
     detail.first_names = first_names
