@@ -130,7 +130,7 @@ def test_order(
     order = get_single_order_by(orderer.id)
     assert_order(order, 'AEC-01-B00005', 1)
 
-    first_line_item = order.items[0]
+    first_line_item = order.line_items[0]
     assert_line_item(
         first_line_item,
         article.item_number,
@@ -192,7 +192,7 @@ def test_order_single(
     order = get_single_order_by(orderer.id)
     assert_order(order, 'AEC-01-B00005', 1)
 
-    first_line_item = order.items[0]
+    first_line_item = order.line_items[0]
     assert_line_item(
         first_line_item,
         article.item_number,
@@ -247,9 +247,9 @@ def assert_response_headers(response, order_detail_page_url):
     assert response.headers.get('Location') == order_detail_page_url
 
 
-def assert_order(order, order_number, item_quantity):
+def assert_order(order, order_number, line_item_quantity):
     assert order.order_number == order_number
-    assert len(order.items) == item_quantity
+    assert len(order.line_items) == line_item_quantity
 
 
 def assert_line_item(

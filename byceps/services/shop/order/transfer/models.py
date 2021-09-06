@@ -102,7 +102,7 @@ class Order:
     last_name: str
     address: Address
     total_amount: Decimal
-    items: list[LineItem]
+    line_items: list[LineItem]
     payment_method: Optional[str]
     payment_state: PaymentState
     state: OrderState

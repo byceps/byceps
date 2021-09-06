@@ -81,11 +81,11 @@
       </tr>
     </tfoot>
     <tbody>
-      {%- for item in order.items|sort(attribute='article_number') %}
+      {%- for line_item in order.line_items|sort(attribute='article_number') %}
       <tr>
-        <td class="number">{{ item.quantity }}</td>
-        <td>{{ item.description }}</td>
-        <td class="number nowrap">{{ item.unit_price|format_euro_amount }}</td>
+        <td class="number">{{ line_item.quantity }}</td>
+        <td>{{ line_item.description }}</td>
+        <td class="number nowrap">{{ line_item.unit_price|format_euro_amount }}</td>
       </tr>
       {%- endfor %}
     </tbody>

@@ -50,7 +50,7 @@ def create_order(created_at: datetime) -> Order:
         last_name=None,
         address=None,
         total_amount=None,
-        items=[],
+        line_items=[],
         payment_method=None,
         payment_state=PaymentState.open,
         state=OrderState.open,

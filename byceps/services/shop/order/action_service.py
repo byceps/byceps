@@ -115,13 +115,16 @@ def execute_actions(
     order: Order, payment_state: PaymentState, initiator_id: UserID
 ) -> None:
     """Execute relevant actions for this order in its new payment state."""
-    article_numbers = {item.article_number for item in order.items}
+    article_numbers = {
+        line_item.article_number for line_item in order.line_items
+    }
 
     if not article_numbers:
         return
 
     quantities_by_article_number = {
-        item.article_number: item.quantity for item in order.items
+        line_item.article_number: line_item.quantity
+        for line_item in order.line_items
     }
 
     actions = _get_actions(article_numbers, payment_state)

@@ -17,12 +17,12 @@
       </tr>
     </tfoot>
     <tbody>
-      {%- for item in order.items|sort(attribute='article_number') %}
+      {%- for line_item in order.line_items|sort(attribute='article_number') %}
       <tr>
-        <td class="number">{{ item.quantity }}</td>
-        <td class="nowrap">{{ render_article_link(articles_by_item_number[item.article_number]) }}</td>
-        <td><strong>{{ item.description }}</strong></td>
-        <td class="number">{{ item.unit_price|format_euro_amount }}</td>
+        <td class="number">{{ line_item.quantity }}</td>
+        <td class="nowrap">{{ render_article_link(articles_by_item_number[line_item.article_number]) }}</td>
+        <td><strong>{{ line_item.description }}</strong></td>
+        <td class="number">{{ line_item.unit_price|format_euro_amount }}</td>
       </tr>
       {%- endfor %}
     </tbody>

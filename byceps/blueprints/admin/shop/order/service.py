@@ -47,7 +47,7 @@ def extend_order_tuples_with_orderer(
 
 
 def get_articles_by_item_number(order: Order) -> dict[ArticleNumber, Article]:
-    numbers = {item.article_number for item in order.items}
+    numbers = {line_item.article_number for line_item in order.line_items}
 
     articles = article_service.get_articles_by_numbers(numbers)
 

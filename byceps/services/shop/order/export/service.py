@@ -48,7 +48,7 @@ def _assemble_context(order: Order) -> dict[str, Any]:
     return {
         'order': order,
         'email_address': email_address,
-        'line_items': order.items,
+        'line_items': order.line_items,
         'now': now,
         'format_export_amount': _format_export_amount,
         'format_export_datetime': _format_export_datetime,

@@ -73,7 +73,9 @@ def place_order(
     order = _build_order(shop.id, order_number, orderer, created_at)
     line_items = list(_build_line_items(cart_items, order))
     order.total_amount = cart.calculate_total_amount()
-    order.processing_required = any(item.processing_required for item in line_items)
+    order.processing_required = any(
+        line_item.processing_required for line_item in line_items
+    )
 
     db.session.add(order)
     db.session.add_all(line_items)
@@ -123,7 +125,9 @@ def _build_order(
     )
 
 
-def _build_line_items(cart_items: list[CartItem], order: DbOrder) -> Iterator[DbLineItem]:
+def _build_line_items(
+    cart_items: list[CartItem], order: DbOrder
+) -> Iterator[DbLineItem]:
     """Build line items from the cart's content."""
     for cart_item in cart_items:
         article = cart_item.article
@@ -302,9 +306,9 @@ def cancel_order(
     db.session.add(event)
 
     # Make the reserved quantity of articles available again.
-    for item in order.items:
+    for line_item in order.line_items:
         article_service.increase_quantity(
-            item.article.id, item.quantity, commit=False
+            line_item.article.id, line_item.quantity, commit=False
         )
 
     db.session.commit()
@@ -482,7 +486,7 @@ def find_order_with_details(order_id: OrderID) -> Optional[Order]:
     """Return the order with that id, or `None` if not found."""
     order = db.session.query(DbOrder) \
         .options(
-            db.joinedload(DbOrder.items),
+            db.joinedload(DbOrder.line_items),
         ) \
         .get(order_id)
 
@@ -582,7 +586,7 @@ def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
     orders = db.session \
         .query(DbOrder) \
         .options(
-            db.joinedload(DbOrder.items),
+            db.joinedload(DbOrder.line_items),
         ) \
         .filter_by(placed_by_id=user_id) \
         .order_by(DbOrder.created_at.desc()) \
@@ -598,7 +602,7 @@ def get_orders_placed_by_user_for_shop(
     orders = db.session \
         .query(DbOrder) \
         .options(
-            db.joinedload(DbOrder.items),
+            db.joinedload(DbOrder.line_items),
         ) \
         .filter_by(shop_id=shop_id) \
         .filter_by(placed_by_id=user_id) \
@@ -651,7 +655,7 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
         street=order.street,
     )
 
-    items = list(map(line_item_to_transfer_object, order.items))
+    line_items = list(map(line_item_to_transfer_object, order.line_items))
 
     state = _get_order_state(order)
     is_open = order.payment_state == PaymentState.open
@@ -671,7 +675,7 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
         last_name=order.last_name,
         address=address,
         total_amount=order.total_amount,
-        items=items,
+        line_items=line_items,
         payment_method=order.payment_method,
         payment_state=order.payment_state,
         state=state,
@@ -686,18 +690,18 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
 
 
 def line_item_to_transfer_object(
-    item: DbLineItem,
+    line_item: DbLineItem,
 ) -> LineItem:
     """Create transfer object from line item database entity."""
     return LineItem(
-        order_number=item.order_number,
-        article_number=item.article_number,
-        article_type=item.article_type,
-        description=item.description,
-        unit_price=item.unit_price,
-        tax_rate=item.tax_rate,
-        quantity=item.quantity,
-        line_amount=item.line_amount,
+        order_number=line_item.order_number,
+        article_number=line_item.article_number,
+        article_type=line_item.article_type,
+        description=line_item.description,
+        unit_price=line_item.unit_price,
+        tax_rate=line_item.tax_rate,
+        quantity=line_item.quantity,
+        line_amount=line_item.line_amount,
     )
 
 

@@ -127,7 +127,7 @@ def _build_order(
     address = Address('Germany', '22999', 'Büttenwarder', 'Deichweg 23')
 
     total_amount = Decimal('42.95')
-    items: list[LineItem] = []
+    line_items: list[LineItem] = []
     payment_method = 'bank_transfer'
 
     return Order(
@@ -140,7 +140,7 @@ def _build_order(
         last_name=last_name,
         address=address,
         total_amount=total_amount,
-        items=items,
+        line_items=line_items,
         payment_method=payment_method,
         payment_state=payment_state,
         state=state,
