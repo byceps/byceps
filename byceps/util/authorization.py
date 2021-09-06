@@ -11,6 +11,7 @@ from importlib import import_module
 import pkgutil
 
 from flask import g
+from flask_babel import LazyString
 
 from ..services.authorization import service as authorization_service
 from ..services.authorization.transfer.models import PermissionID
@@ -27,30 +28,35 @@ def load_permissions() -> None:
         import_module(f'{pkg_name}.{mod_name}')
 
 
-def register_permissions(key: str, names: list[str]) -> None:
+def register_permissions(
+    group: str, names_and_labels: list[tuple[str, LazyString]]
+) -> None:
     """Register a permission."""
-    for name in names:
-        permission_registry.register_permission(f'{key}.{name}')
+    for name, label in names_and_labels:
+        permission_id = f'{group}.{name}'
+        permission_registry.register_permission(permission_id, label)
 
 
 def get_permissions_for_user(user_id: UserID) -> frozenset[str]:
     """Return the permissions this user has been granted."""
     permission_ids = authorization_service.get_permission_ids_for_user(user_id)
 
-    return permission_registry.get_registered_permissions(permission_ids)
+    return permission_registry.get_registered_permission_ids(permission_ids)
 
 
 class PermissionRegistry:
     """A collection of valid permissions."""
 
     def __init__(self) -> None:
-        self.permissions: set[str] = set()
+        self.permissions: dict[str, LazyString] = {}
 
-    def register_permission(self, permission: str) -> None:
+    def register_permission(
+        self, permission_id: str, label: LazyString
+    ) -> None:
         """Add permission to the registry."""
-        self.permissions.add(permission)
+        self.permissions[permission_id] = label
 
-    def get_registered_permissions(
+    def get_registered_permission_ids(
         self, permission_ids: set[PermissionID]
     ) -> frozenset[str]:
         """Return the permission IDs that are registered.

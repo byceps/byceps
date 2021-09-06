@@ -349,7 +349,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "angelegt."
 
-#: byceps/announce/text_assembly/user.py:62
+#: byceps/announce/text_assembly/user.py:65
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has renamed user account "
@@ -358,7 +358,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(old_screen_name)s\" "
 "in \"%(new_screen_name)s\" umbenannt."
 
-#: byceps/announce/text_assembly/user.py:79
+#: byceps/announce/text_assembly/user.py:82
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has changed the email address of user account "
@@ -367,7 +367,7 @@ msgstr ""
 "%(initiator_screen_name)s hat die E-Mail-Adresse des Benutzerkontos "
 "\"%(user_screen_name)s\" geändert."
 
-#: byceps/announce/text_assembly/user.py:95
+#: byceps/announce/text_assembly/user.py:98
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has invalidated the email address of user "
@@ -376,7 +376,7 @@ msgstr ""
 "%(initiator_screen_name)s hat die E-Mail-Adresse des Benutzerkontos "
 "\"%(user_screen_name)s\" invalidiert."
 
-#: byceps/announce/text_assembly/user.py:109
+#: byceps/announce/text_assembly/user.py:112
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has changed personal data of user account "
@@ -385,7 +385,7 @@ msgstr ""
 "%(initiator_screen_name)s hat die persönlichen Daten des Benutzerkontos "
 "\"%(user_screen_name)s\" geändert."
 
-#: byceps/announce/text_assembly/user.py:125
+#: byceps/announce/text_assembly/user.py:128
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has suspended user account "
@@ -394,7 +394,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "gesperrt."
 
-#: byceps/announce/text_assembly/user.py:141
+#: byceps/announce/text_assembly/user.py:144
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has unsuspended user account "
@@ -403,7 +403,7 @@ msgstr ""
 "%(initiator_screen_name)s hat das Benutzerkonto \"%(user_screen_name)s\" "
 "entsperrt."
 
-#: byceps/announce/text_assembly/user.py:155
+#: byceps/announce/text_assembly/user.py:158
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has deleted user account "
@@ -481,19 +481,19 @@ msgstr "Benutzername"
 msgid "Password"
 msgstr "Passwort"
 
-#: byceps/blueprints/admin/authentication/login/views.py:38
+#: byceps/blueprints/admin/authentication/login/views.py:36
 #: byceps/blueprints/site/authentication/login/views.py:48
 #, python-format
 msgid "You are already logged in as \"%(screen_name)s\"."
 msgstr "Du bist bereits als Benutzer \"%(screen_name)s\" angemeldet."
 
-#: byceps/blueprints/admin/authentication/login/views.py:80
+#: byceps/blueprints/admin/authentication/login/views.py:78
 #: byceps/blueprints/site/authentication/login/views.py:113
 #, python-format
 msgid "Successfully logged in as %(screen_name)s."
 msgstr "Erfolgreich eingeloggt als %(screen_name)s."
 
-#: byceps/blueprints/admin/authentication/login/views.py:102
+#: byceps/blueprints/admin/authentication/login/views.py:100
 #: byceps/blueprints/site/authentication/login/views.py:139
 msgid "Successfully logged out."
 msgstr "Erfolgreich ausgeloggt."
@@ -688,67 +688,67 @@ msgstr "Titel"
 msgid "Text"
 msgstr "Text"
 
-#: byceps/blueprints/admin/board/views.py:128
+#: byceps/blueprints/admin/board/views.py:120
 #, python-format
 msgid "Board with ID \"%(board_id)s\" has been created."
 msgstr "Das Forum mit der ID \"%(board_id)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/board/views.py:177
-#: byceps/blueprints/admin/tourney/category/views.py:76
+#: byceps/blueprints/admin/board/views.py:169
+#: byceps/blueprints/admin/tourney/category/views.py:70
 #, python-format
 msgid "Category \"%(category_title)s\" has been created."
 msgstr "Die Kategorie \"%(category_title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/board/views.py:225
-#: byceps/blueprints/admin/tourney/category/views.py:115
+#: byceps/blueprints/admin/board/views.py:217
+#: byceps/blueprints/admin/tourney/category/views.py:109
 #, python-format
 msgid "Category \"%(category_title)s\" has been updated."
 msgstr "Die Kategorie \"%(category_title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/board/views.py:243
+#: byceps/blueprints/admin/board/views.py:235
 #, python-format
 msgid "Category \"%(category_title)s\" has been hidden."
 msgstr "Die Kategorie \"%(category_title)s\" wurde versteckt."
 
-#: byceps/blueprints/admin/board/views.py:260
+#: byceps/blueprints/admin/board/views.py:252
 #, python-format
 msgid "Category \"%(category_title)s\" has been made visible."
 msgstr "Die Kategorie \"%(category_title)s\" wurde sichtbar gemacht."
 
-#: byceps/blueprints/admin/board/views.py:278
-#: byceps/blueprints/admin/tourney/category/views.py:134
+#: byceps/blueprints/admin/board/views.py:270
+#: byceps/blueprints/admin/tourney/category/views.py:128
 #, python-format
 msgid "Category \"%(category_title)s\" is already at the top."
 msgstr "Die Kategorie \"%(category_title)s\" befindet sich bereits ganz oben."
 
-#: byceps/blueprints/admin/board/views.py:285
-#: byceps/blueprints/admin/tourney/category/views.py:141
+#: byceps/blueprints/admin/board/views.py:277
+#: byceps/blueprints/admin/tourney/category/views.py:135
 #, python-format
 msgid "Category \"%(category_title)s\" has been moved upwards by one position."
 msgstr ""
 "Die Kategorie \"%(category_title)s\" wurde eine Position nach oben "
 "verschoben."
 
-#: byceps/blueprints/admin/board/views.py:303
-#: byceps/blueprints/admin/tourney/category/views.py:158
+#: byceps/blueprints/admin/board/views.py:295
+#: byceps/blueprints/admin/tourney/category/views.py:152
 #, python-format
 msgid "Category \"%(category_title)s\" is already at the bottom."
 msgstr "Die Kategorie \"%(category_title)s\" befindet sich bereits ganz unten."
 
-#: byceps/blueprints/admin/board/views.py:310
-#: byceps/blueprints/admin/tourney/category/views.py:165
+#: byceps/blueprints/admin/board/views.py:302
+#: byceps/blueprints/admin/tourney/category/views.py:159
 #, python-format
 msgid "Category \"%(category_title)s\" has been moved downwards by one position."
 msgstr ""
 "Die Kategorie \"%(category_title)s\" wurde eine Position nach unten "
 "verschoben."
 
-#: byceps/blueprints/admin/board/views.py:328
+#: byceps/blueprints/admin/board/views.py:320
 #, python-format
 msgid "Category \"%(category_title)s\" could not be deleted."
 msgstr "Die Kategorie \"%(category_title)s\" konnte nicht gelöscht werden."
 
-#: byceps/blueprints/admin/board/views.py:335
+#: byceps/blueprints/admin/board/views.py:327
 #, python-format
 msgid "Category \"%(category_title)s\" has been deleted."
 msgstr "Die Kategorie \"%(category_title)s\" wurde gelöscht."
@@ -1042,17 +1042,17 @@ msgstr "Absender-Name"
 msgid "Contact address"
 msgstr "Kontaktadresse"
 
-#: byceps/blueprints/admin/brand/views.py:104
+#: byceps/blueprints/admin/brand/views.py:99
 #, python-format
 msgid "Brand \"%(title)s\" has been created."
 msgstr "Die Marke \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/brand/views.py:143
+#: byceps/blueprints/admin/brand/views.py:138
 #, python-format
 msgid "Brand \"%(title)s\" has been updated."
 msgstr "Die Marke \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/brand/views.py:198
+#: byceps/blueprints/admin/brand/views.py:193
 msgid "Email configuration has been updated."
 msgstr "Die E-Mail-Konfiguration wurde aktualisiert."
 
@@ -1166,7 +1166,7 @@ msgstr "Checkbox-Beschriftung"
 msgid "Checkbox label link target"
 msgstr "Linkziel der Checkbox-Beschriftung"
 
-#: byceps/blueprints/admin/consent/views.py:75
+#: byceps/blueprints/admin/consent/views.py:70
 #, python-format
 msgid "Consent subject \"%(title)s\" has been created."
 msgstr "Das Zustimmungsthema \"%(title)s\" wurde angelegt."
@@ -1669,7 +1669,7 @@ msgstr "Jobs"
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: byceps/blueprints/admin/maintenance/views.py:64
+#: byceps/blueprints/admin/maintenance/views.py:62
 #, python-format
 msgid ""
 "Deleted %(num_deleted)s login events older than %(minimum_age_in_days)s "
@@ -1678,7 +1678,7 @@ msgstr ""
 "%(num_deleted)s Login-Events älter als %(minimum_age_in_days)s Tage "
 "wurden gelöscht."
 
-#: byceps/blueprints/admin/maintenance/views.py:84
+#: byceps/blueprints/admin/maintenance/views.py:82
 #, python-format
 msgid ""
 "Deleted %(num_deleted)s verification tokens older than "
@@ -1806,12 +1806,12 @@ msgstr "Bild-URL-Pfad"
 msgid "Time"
 msgstr "Uhrzeit"
 
-#: byceps/blueprints/admin/news/views.py:108
+#: byceps/blueprints/admin/news/views.py:102
 #, python-format
 msgid "News channel \"%(channel_id)s\" has been created."
 msgstr "Der Newskanal \"%(channel_id)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/news/views.py:152
+#: byceps/blueprints/admin/news/views.py:146
 #, python-format
 msgid ""
 "News channel \"%(channel_id)s\" cannot be deleted because it contains "
@@ -1820,7 +1820,7 @@ msgstr ""
 "Der Newskanal \"%(channel_id)s\" kann nicht gelöscht werden, da er noch "
 "News enthält."
 
-#: byceps/blueprints/admin/news/views.py:168
+#: byceps/blueprints/admin/news/views.py:162
 #, python-format
 msgid ""
 "News channel \"%(channel_id)s\" cannot be deleted because it is "
@@ -1829,45 +1829,45 @@ msgstr ""
 "Der Newskanal \"%(channel_id)s\" kann nicht gelöscht werden, da er von "
 "%(site_count)s Site(s) referenziert wird."
 
-#: byceps/blueprints/admin/news/views.py:176
+#: byceps/blueprints/admin/news/views.py:170
 #, python-format
 msgid "News channel \"%(channel_id)s\" has been deleted."
 msgstr "Der Newskanal \"%(channel_id)s\" wurde gelöscht."
 
-#: byceps/blueprints/admin/news/views.py:249
+#: byceps/blueprints/admin/news/views.py:243
 #, python-format
 msgid "News image #%(image_number)s has been created."
 msgstr "Das Newsbild #%(image_number)s wurde hinzugefügt."
 
-#: byceps/blueprints/admin/news/views.py:297
+#: byceps/blueprints/admin/news/views.py:291
 #, python-format
 msgid "News image #%(image_number)s has been updated."
 msgstr "Das Newsbild #%(image_number)s wurde aktualisiert."
 
-#: byceps/blueprints/admin/news/views.py:315
+#: byceps/blueprints/admin/news/views.py:309
 msgid "Featured image has been set."
 msgstr "Das Titelbild wurde gesetzt."
 
-#: byceps/blueprints/admin/news/views.py:327
+#: byceps/blueprints/admin/news/views.py:321
 msgid "Featured image has been unset."
 msgstr "Das Titelbild wurde entfernt."
 
-#: byceps/blueprints/admin/news/views.py:490
+#: byceps/blueprints/admin/news/views.py:484
 #, python-format
 msgid "News item \"%(title)s\" has been created."
 msgstr "Die News \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/news/views.py:538
+#: byceps/blueprints/admin/news/views.py:532
 #, python-format
 msgid "News item \"%(title)s\" has been updated."
 msgstr "Die News \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/news/views.py:580
+#: byceps/blueprints/admin/news/views.py:574
 #, python-format
 msgid "News item \"%(title)s\" will be published later."
 msgstr "Die News \"%(title)s\" wird später veröffentlicht."
 
-#: byceps/blueprints/admin/news/views.py:600
+#: byceps/blueprints/admin/news/views.py:594
 #, python-format
 msgid "News item \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
@@ -1928,19 +1928,21 @@ msgstr "Newskanal"
 msgid "Create news post"
 msgstr "Newspost erstellen"
 
-#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:48
-msgid "Publication"
-msgstr "Veröffentlichung"
-
-#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:49
+#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:47
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:38
 msgid "Latest change"
 msgstr "Letzte Änderung"
 
-#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:51
+#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:48
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:107
 msgid "Images"
 msgstr "Bilder"
+
+#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:56
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:38
+#: byceps/blueprints/site/news/templates/site/news/_item.html:10
+msgid "Draft"
+msgstr "Entwurf"
 
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:58
 #: byceps/blueprints/admin/news/templates/admin/news/item_list_versions.html:11
@@ -1951,20 +1953,14 @@ msgstr "kein Titel"
 msgid "Image defined"
 msgstr "Bild festgelegt"
 
-#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:66
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:38
-#: byceps/blueprints/site/news/templates/site/news/_item.html:10
-msgid "Draft"
-msgstr "Entwurf"
-
-#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:71
+#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:64
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:88
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:56
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:76
 msgid "View change history"
 msgstr "Änderungshistorie ansehen"
 
-#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:76
+#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:69
 #: byceps/blueprints/admin/news/templates/admin/news/item_list_versions.html:23
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:22
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:39
@@ -1978,7 +1974,7 @@ msgstr "Änderungshistorie ansehen"
 msgid "by"
 msgstr "durch"
 
-#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:88
+#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:80
 msgid "No news posts exist for this channel."
 msgstr "Für diesen Kanal sind keine Newsposts vorhanden."
 
@@ -2227,12 +2223,12 @@ msgstr "Unbekannter Benutzername"
 msgid "The user already is an organizer for this brand."
 msgstr "Der Benutzer ist bereits Orga für diese Marke."
 
-#: byceps/blueprints/admin/orga/views.py:103
+#: byceps/blueprints/admin/orga/views.py:94
 #, python-format
 msgid "%(screen_name)s has received the orga flag for brand %(brand_title)s."
 msgstr "%(screen_name)s wurde das Orga-Flag für die Marke %(brand_title)s gegeben."
 
-#: byceps/blueprints/admin/orga/views.py:130
+#: byceps/blueprints/admin/orga/views.py:121
 #, python-format
 msgid "%(screen_name)s has lost the orga flag for brand %(brand_title)s."
 msgstr ""
@@ -2339,39 +2335,39 @@ msgstr "Aufgabe"
 msgid "Team"
 msgstr "Team"
 
-#: byceps/blueprints/admin/orga_team/views.py:98
+#: byceps/blueprints/admin/orga_team/views.py:93
 #, python-format
 msgid "Team \"%(team_title)s\" for party \"%(party_title)s\" has been created."
 msgstr ""
 "Das Team \"%(team_title)s\" wurde für die Party \"%(party_title)s\" "
 "erstellt."
 
-#: byceps/blueprints/admin/orga_team/views.py:116
+#: byceps/blueprints/admin/orga_team/views.py:111
 #, python-format
 msgid "Team \"%(team_title)s\" cannot be deleted because it has members."
 msgstr ""
 "Das Team \"%(team_title)s\" kann nicht gelöscht werden weil es Mitglieder"
 " hat."
 
-#: byceps/blueprints/admin/orga_team/views.py:127
+#: byceps/blueprints/admin/orga_team/views.py:122
 #, python-format
 msgid "Team \"%(title)s\" has been deleted."
 msgstr "Das Team \"%(title)s\" wurde gelöscht."
 
-#: byceps/blueprints/admin/orga_team/views.py:140
-#: byceps/blueprints/admin/orga_team/views.py:183
+#: byceps/blueprints/admin/orga_team/views.py:135
+#: byceps/blueprints/admin/orga_team/views.py:178
 msgid "This party already has teams. No additional teams can be copied to it."
 msgstr ""
 "Diese Party hat bereits Teams. Es können keine weiteren hinzukopiert "
 "werden."
 
-#: byceps/blueprints/admin/orga_team/views.py:159
+#: byceps/blueprints/admin/orga_team/views.py:154
 msgid "No other parties exist from which teams could be copied."
 msgstr ""
 "Es sind keine anderen Partys vorhanden, von denen Teams kopiert werden "
 "könnten."
 
-#: byceps/blueprints/admin/orga_team/views.py:203
+#: byceps/blueprints/admin/orga_team/views.py:198
 #, python-format
 msgid ""
 "%(copied_teams_count)s team(s) has/have been copied from party "
@@ -2380,17 +2376,17 @@ msgstr ""
 "%(copied_teams_count)s Team(s) wurde(n) von Party "
 "\"%(source_party_title)s\" zu Party \"%(target_party_title)s\" kopiert."
 
-#: byceps/blueprints/admin/orga_team/views.py:276
+#: byceps/blueprints/admin/orga_team/views.py:271
 #, python-format
 msgid "%(screen_name)s has been added to team \"%(team_title)s\"."
 msgstr "%(screen_name)s wurde in das Team \"%(team_title)s\" aufgenommen."
 
-#: byceps/blueprints/admin/orga_team/views.py:338
+#: byceps/blueprints/admin/orga_team/views.py:333
 #, python-format
 msgid "Membership of %(screen_name)s has been updated."
 msgstr "Die Teammitgliedschaft von %(screen_name)s wurde aktualisiert."
 
-#: byceps/blueprints/admin/orga_team/views.py:359
+#: byceps/blueprints/admin/orga_team/views.py:354
 #, python-format
 msgid "%(screen_name)s has been removed from team \"%(team_title)s\"."
 msgstr "%(screen_name)s wurde aus dem Team \"%(team_title)s\" entfernt."
@@ -2436,12 +2432,12 @@ msgstr "Sitzplatzverwaltung geöffnet"
 msgid "party"
 msgstr "Party"
 
-#: byceps/blueprints/admin/party/views.py:175
+#: byceps/blueprints/admin/party/views.py:170
 #, python-format
 msgid "Party \"%(title)s\" has been created."
 msgstr "Die Party \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/party/views.py:253
+#: byceps/blueprints/admin/party/views.py:248
 #, python-format
 msgid "Party \"%(title)s\" has been updated."
 msgstr "Die Party \"%(title)s\" wurde aktualisiert."
@@ -2508,7 +2504,7 @@ msgstr "Ticketverwaltung"
 msgid "Seat management"
 msgstr "Sitzplatzverwaltung"
 
-#: byceps/blueprints/admin/seating/views.py:115
+#: byceps/blueprints/admin/seating/views.py:110
 #, python-format
 msgid "Seating area \"%(title)s\" has been created."
 msgstr "Der Bereich \"%(title)s\" wurde angelegt."
@@ -2711,26 +2707,26 @@ msgstr "Abzeichen"
 msgid "Ticket quantity"
 msgstr "Ticketanzahl"
 
-#: byceps/blueprints/admin/shop/article/views.py:217
+#: byceps/blueprints/admin/shop/article/views.py:212
 msgid "No article number sequences are defined for this shop."
 msgstr "Für diesen Shop sind keine Artikelnummer-Sequenzen definiert."
 
-#: byceps/blueprints/admin/shop/article/views.py:227
-#: byceps/blueprints/admin/shop/article/views.py:236
+#: byceps/blueprints/admin/shop/article/views.py:222
+#: byceps/blueprints/admin/shop/article/views.py:231
 msgid "No valid article number sequence was specified."
 msgstr "Es wurde keine gültige Artikelnummer-Sequenz angegeben."
 
-#: byceps/blueprints/admin/shop/article/views.py:268
+#: byceps/blueprints/admin/shop/article/views.py:263
 #, python-format
 msgid "Article \"%(item_number)s\" has been created."
 msgstr "Der Artikel \"%(item_number)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/shop/article/views.py:373
+#: byceps/blueprints/admin/shop/article/views.py:368
 #, python-format
 msgid "Article \"%(description)s\" has been updated."
 msgstr "Der Artikel \"%(description)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/shop/article/views.py:436
+#: byceps/blueprints/admin/shop/article/views.py:431
 #, python-format
 msgid ""
 "Article \"%(article_to_attach_item_number)s\" has been attached "
@@ -2739,7 +2735,7 @@ msgstr ""
 "Der Artikel \"%(article_to_attach_item_number)s\" wurde %(quantity)s mal "
 "an den Artikel \"%(article_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/article/views.py:462
+#: byceps/blueprints/admin/shop/article/views.py:457
 #, python-format
 msgid ""
 "Article \"%(article_item_number)s\" is no longer attached to article "
@@ -2748,17 +2744,17 @@ msgstr ""
 "Artikel \"%(article_item_number)s\" ist nun nicht mehr an Artikel "
 "\"%(attached_to_article_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/article/views.py:520
-#: byceps/blueprints/admin/shop/article/views.py:574
-#: byceps/blueprints/admin/shop/article/views.py:632
+#: byceps/blueprints/admin/shop/article/views.py:515
+#: byceps/blueprints/admin/shop/article/views.py:569
+#: byceps/blueprints/admin/shop/article/views.py:627
 msgid "Action has been added."
 msgstr "Die Aktion wurde hinzugefügt."
 
-#: byceps/blueprints/admin/shop/article/views.py:661
+#: byceps/blueprints/admin/shop/article/views.py:656
 msgid "Action has been removed."
 msgstr "Die Aktion wurde entfernt."
 
-#: byceps/blueprints/admin/shop/article/views.py:705
+#: byceps/blueprints/admin/shop/article/views.py:700
 #, python-format
 msgid ""
 "Article number sequence could not be created. Is prefix \"%(prefix)s\" "
@@ -2767,7 +2763,7 @@ msgstr ""
 "Die Artikelnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/article/views.py:714
+#: byceps/blueprints/admin/shop/article/views.py:709
 #, python-format
 msgid "Article number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Artikelnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
@@ -3037,32 +3033,32 @@ msgstr "Auftraggeber/in per E-Mail über Stornierung informieren"
 msgid "Payment type"
 msgstr "Zahlungsart"
 
-#: byceps/blueprints/admin/shop/order/views.py:194
+#: byceps/blueprints/admin/shop/order/views.py:190
 msgid "Note has been added."
 msgstr "Die Notiz wurde hinzugefügt."
 
-#: byceps/blueprints/admin/shop/order/views.py:214
+#: byceps/blueprints/admin/shop/order/views.py:210
 #, python-format
 msgid "Order %(order_number)s has been marked as invoiced."
 msgstr "Bestellung %(order_number)s wurde als in Rechnung gestellt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:232
+#: byceps/blueprints/admin/shop/order/views.py:228
 #, python-format
 msgid "Order %(order_number)s has been marked as not invoiced."
 msgstr "Bestellung %(order_number)s wurde als nicht in Rechnung gestellt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:250
+#: byceps/blueprints/admin/shop/order/views.py:246
 #, python-format
 msgid "Order %(order_number)s has been marked as shipped."
 msgstr "Bestellung %(order_number)s wurde als verschickt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:268
+#: byceps/blueprints/admin/shop/order/views.py:264
 #, python-format
 msgid "Order %(order_number)s has been marked as not shipped."
 msgstr "Bestellung %(order_number)s wurde als nicht verschickt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:288
-#: byceps/blueprints/admin/shop/order/views.py:328
+#: byceps/blueprints/admin/shop/order/views.py:284
+#: byceps/blueprints/admin/shop/order/views.py:324
 #: byceps/blueprints/site/shop/orders/views.py:165
 msgid ""
 "The order has already been canceled. The payment state cannot be changed "
@@ -3071,7 +3067,7 @@ msgstr ""
 "Die Bestellung ist bereits storniert worden; der Bezahlstatus kann nicht "
 "mehr geändert werden."
 
-#: byceps/blueprints/admin/shop/order/views.py:336
+#: byceps/blueprints/admin/shop/order/views.py:332
 msgid ""
 "The order has been canceled and the corresponding articles have been made"
 " available again."
@@ -3079,24 +3075,24 @@ msgstr ""
 "Die Bestellung wurde als storniert markiert und die betroffenen Artikel "
 "in den entsprechenden Stückzahlen wieder zur Bestellung freigegeben."
 
-#: byceps/blueprints/admin/shop/order/views.py:345
+#: byceps/blueprints/admin/shop/order/views.py:341
 msgid "No email has been sent to the orderer."
 msgstr "Es wurde keine E-Mail an den/die Auftraggeber/in versendet."
 
-#: byceps/blueprints/admin/shop/order/views.py:364
-#: byceps/blueprints/admin/shop/order/views.py:399
+#: byceps/blueprints/admin/shop/order/views.py:360
+#: byceps/blueprints/admin/shop/order/views.py:395
 msgid "Order is already marked as paid."
 msgstr "Die Bestellung ist bereits als bezahlt markiert worden."
 
-#: byceps/blueprints/admin/shop/order/views.py:402
+#: byceps/blueprints/admin/shop/order/views.py:398
 msgid "Order has been marked as paid."
 msgstr "Die Bestellung wurde als bezahlt markiert."
 
-#: byceps/blueprints/admin/shop/order/views.py:435
+#: byceps/blueprints/admin/shop/order/views.py:431
 msgid "Email confirmation for placed order has been sent again."
 msgstr "Die E-Mail-Eingangsbestätigung wurde erneut versendet."
 
-#: byceps/blueprints/admin/shop/order/views.py:478
+#: byceps/blueprints/admin/shop/order/views.py:474
 #, python-format
 msgid ""
 "Order number sequence could not be created. Is the prefix \"%(prefix)s\" "
@@ -3105,7 +3101,7 @@ msgstr ""
 "Die Bestellnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/order/views.py:487
+#: byceps/blueprints/admin/shop/order/views.py:483
 #, python-format
 msgid "Order number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Bestellnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
@@ -3344,7 +3340,7 @@ msgstr ""
 "Derzeit sind keine Artikel bestellt oder bezahlt, die versendet werden "
 "müssen."
 
-#: byceps/blueprints/admin/shop/shop/views.py:109
+#: byceps/blueprints/admin/shop/shop/views.py:103
 msgid "Shop has been created."
 msgstr "Der Shop wurde angelegt."
 
@@ -3382,21 +3378,21 @@ msgctxt "catalog"
 msgid "<none>"
 msgstr "<keiner>"
 
-#: byceps/blueprints/admin/shop/storefront/views.py:127
+#: byceps/blueprints/admin/shop/storefront/views.py:125
 msgid "No order number sequences are defined for this shop."
 msgstr "Für diesen Shop sind keine Bestellnummer-Sequenzen definiert."
 
-#: byceps/blueprints/admin/shop/storefront/views.py:141
-#: byceps/blueprints/admin/shop/storefront/views.py:148
+#: byceps/blueprints/admin/shop/storefront/views.py:139
+#: byceps/blueprints/admin/shop/storefront/views.py:146
 msgid "No valid order number sequence was specified."
 msgstr "Es wurde keine gültige Bestellnummer-Sequenz angegeben."
 
-#: byceps/blueprints/admin/shop/storefront/views.py:167
+#: byceps/blueprints/admin/shop/storefront/views.py:165
 #, python-format
 msgid "Storefront \"%(storefront_id)s\" has been created."
 msgstr "Storefront \"%(storefront_id)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/shop/storefront/views.py:235
+#: byceps/blueprints/admin/shop/storefront/views.py:233
 #, python-format
 msgid "Storefront \"%(storefront_id)s\" has been updated."
 msgstr "Storefront \"%(storefront_id)s\" wurde aktualisiert."
@@ -3463,23 +3459,23 @@ msgstr "<keins>"
 msgid "News channel ID"
 msgstr "Newskanal-ID"
 
-#: byceps/blueprints/admin/site/views.py:204
-#: byceps/blueprints/admin/site/views.py:278
+#: byceps/blueprints/admin/site/views.py:199
+#: byceps/blueprints/admin/site/views.py:273
 #, python-format
 msgid "Party ID \"%(party_id)s\" is unknown."
 msgstr "Party-ID \"%(party_id)s\" ist unbekannt."
 
-#: byceps/blueprints/admin/site/views.py:227
+#: byceps/blueprints/admin/site/views.py:222
 #, python-format
 msgid "Site \"%(title)s\" has been created."
 msgstr "Die Site \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/site/views.py:305
+#: byceps/blueprints/admin/site/views.py:300
 #, python-format
 msgid "Site \"%(title)s\" has been updated."
 msgstr "Die Site \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/site/views.py:355
+#: byceps/blueprints/admin/site/views.py:350
 #, python-format
 msgid ""
 "News channel \"%(news_channel_id)s\" has been added to site "
@@ -3488,7 +3484,7 @@ msgstr ""
 "Newskanal \"%(news_channel_id)s\" wurde zur Site \"%(site_title)s\" "
 "hinzugefügt."
 
-#: byceps/blueprints/admin/site/views.py:381
+#: byceps/blueprints/admin/site/views.py:376
 #, python-format
 msgid ""
 "News channel \"%(news_channel_id)s\" has been removed from site "
@@ -3563,34 +3559,34 @@ msgstr "Newskanal aus Site entfernen?"
 msgid "Page header"
 msgstr "Seitenkopf"
 
-#: byceps/blueprints/admin/snippet/views.py:213
+#: byceps/blueprints/admin/snippet/views.py:208
 #, python-format
 msgid "Document \"%(name)s\" has been created."
 msgstr "Das Dokument \"%(name)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/snippet/views.py:271
+#: byceps/blueprints/admin/snippet/views.py:266
 #, python-format
 msgid "Document \"%(name)s\" has been updated."
 msgstr "Das Dokument \"%(name)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/snippet/views.py:361
+#: byceps/blueprints/admin/snippet/views.py:356
 #, python-format
 msgid "Fragment \"%(name)s\" has been created."
 msgstr "Das Fragment \"%(name)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/snippet/views.py:411
+#: byceps/blueprints/admin/snippet/views.py:406
 #, python-format
 msgid "Fragment \"%(name)s\" has been updated."
 msgstr "Das Fragment \"%(name)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/snippet/views.py:472
+#: byceps/blueprints/admin/snippet/views.py:467
 #, python-format
 msgid "Snippet \"%(snippet_name)s\" could not be deleted. Is it still mounted?"
 msgstr ""
 "Das Snippet \"%(snippet_name)s\" konnte nicht gelöscht werden. Ist es "
 "noch gemountet?"
 
-#: byceps/blueprints/admin/snippet/views.py:480
+#: byceps/blueprints/admin/snippet/views.py:475
 #, python-format
 msgid "Snippet \"%(name)s\" has been deleted."
 msgstr "Das Snippet \"%(name)s\" wurde gelöscht."
@@ -3609,12 +3605,12 @@ msgstr "URL-Pfad"
 msgid "URL path has to start with a slash."
 msgstr "Der URL-Pfad muss mit einem Slash beginnen."
 
-#: byceps/blueprints/admin/snippet/mountpoint/views.py:167
+#: byceps/blueprints/admin/snippet/mountpoint/views.py:161
 #, python-format
 msgid "Mountpoint for \"%(url_path)s\" has been created."
 msgstr "Der Mountpoint für \"%(url_path)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/snippet/mountpoint/views.py:191
+#: byceps/blueprints/admin/snippet/mountpoint/views.py:185
 #, python-format
 msgid "Mountpoint for \"%(url_path)s\" has been deleted."
 msgstr "Der Mountpoint für \"%(url_path)s\" wurde entfernt."
@@ -3724,8 +3720,8 @@ msgstr "Code"
 msgid "Invalid format"
 msgstr "Ungültiges Format"
 
-#: byceps/blueprints/admin/ticketing/views.py:112
-#: byceps/blueprints/admin/ticketing/views.py:137
+#: byceps/blueprints/admin/ticketing/views.py:107
+#: byceps/blueprints/admin/ticketing/views.py:132
 msgid ""
 "Code cannot be changed as somebody has already been checked in with this "
 "ticket."
@@ -3733,12 +3729,12 @@ msgstr ""
 "Der Code kann nicht geändert werden, da bereits jemand mit diesem Ticket "
 "eingecheckt worden ist."
 
-#: byceps/blueprints/admin/ticketing/views.py:153
+#: byceps/blueprints/admin/ticketing/views.py:148
 #, python-format
 msgid "Code for ticket %(ticket_code)s has been updated."
 msgstr "Der Code von Ticket %(ticket_code)s wurde geändert."
 
-#: byceps/blueprints/admin/ticketing/views.py:199
+#: byceps/blueprints/admin/ticketing/views.py:194
 #: byceps/blueprints/site/ticketing/views.py:161
 #, python-format
 msgid "%(screen_name)s has been assigned as user of ticket %(ticket_code)s."
@@ -3746,12 +3742,12 @@ msgstr ""
 "%(screen_name)s wurde als Nutzer/in von Ticket %(ticket_code)s "
 "eingetragen."
 
-#: byceps/blueprints/admin/ticketing/category/views.py:76
+#: byceps/blueprints/admin/ticketing/category/views.py:74
 #, python-format
 msgid "Ticket category \"%(title)s\" has been created."
 msgstr "Ticket-Kategorie \"%(title)s\" wurde erstellt."
 
-#: byceps/blueprints/admin/ticketing/category/views.py:120
+#: byceps/blueprints/admin/ticketing/category/views.py:118
 #, python-format
 msgid "Category \"%(title)s\" has been updated."
 msgstr "Ticket-Kategorie \"%(title)s\" wurde aktualisiert."
@@ -3779,7 +3775,7 @@ msgstr "Für diese Party sind keine Ticket-Kategorien vorhanden."
 msgid "Edit ticket category"
 msgstr "Ticket-Kategorie bearbeiten"
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:124
+#: byceps/blueprints/admin/ticketing/checkin/views.py:122
 msgid ""
 "The user account assigned to this ticket has been deleted. Check-in "
 "denied."
@@ -3787,7 +3783,7 @@ msgstr ""
 "Das dem Ticket zugewiesene Benutzerkonto ist gelöscht worden. Der Check-"
 "In ist nicht erlaubt."
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:131
+#: byceps/blueprints/admin/ticketing/checkin/views.py:129
 msgid ""
 "The user account assigned to this ticket has been suspended. Check-in "
 "denied."
@@ -3795,7 +3791,7 @@ msgstr ""
 "Das dem Ticket zugewiesene Benutzerkonto ist gesperrt. Der Check-In ist "
 "nicht erlaubt."
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:142
+#: byceps/blueprints/admin/ticketing/checkin/views.py:140
 #, python-format
 msgid ""
 "User <em>%(screen_name)s</em> has been checked in with ticket <a "
@@ -3804,7 +3800,7 @@ msgstr ""
 "Benutzer <em>%(screen_name)s</em> wurde mit Ticket <a "
 "href=\"%(ticket_url)s\">%(ticket_code)s</a> eingecheckt."
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:154
+#: byceps/blueprints/admin/ticketing/checkin/views.py:152
 #, python-format
 msgid ""
 "Ticket <a href=\"%(ticket_url)s\">%(ticket_code)s</a> does not occupy a "
@@ -3813,7 +3809,7 @@ msgstr ""
 "Ticket <a href=\"%(ticket_url)s\">%(ticket_code)s</a> belegt noch keinen "
 "Sitzplatz."
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:175
+#: byceps/blueprints/admin/ticketing/checkin/views.py:173
 msgid "Check-in has been reverted."
 msgstr "Der Check-In wurde rückgängig gemacht."
 
@@ -4059,12 +4055,12 @@ msgstr "Beginn (Datum)"
 msgid "Start (time)"
 msgstr "Beginn (Uhrzeit)"
 
-#: byceps/blueprints/admin/tourney/tourney/views.py:98
+#: byceps/blueprints/admin/tourney/tourney/views.py:92
 #, python-format
 msgid "Tourney \"%(title)s\" has been created."
 msgstr "Das Turnier \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/tourney/tourney/views.py:168
+#: byceps/blueprints/admin/tourney/tourney/views.py:162
 #, python-format
 msgid "Tourney \"%(title)s\" has been updated."
 msgstr "Das Turnier \"%(title)s\" wurde aktualisiert."
@@ -4170,96 +4166,96 @@ msgstr "PLZ"
 msgid "Street"
 msgstr "Straße"
 
-#: byceps/blueprints/admin/user/views.py:212
-#: byceps/blueprints/site/user/creation/views.py:119
+#: byceps/blueprints/admin/user/views.py:205
+#: byceps/blueprints/site/user/creation/views.py:116
 #, python-format
 msgid "User \"%(screen_name)s\" could not be created."
 msgstr "Das Benutzerkonto für \"%(screen_name)s\" konnte nicht angelegt werden."
 
-#: byceps/blueprints/admin/user/views.py:220
+#: byceps/blueprints/admin/user/views.py:213
 #, python-format
 msgid "User \"%(screen_name)s\" has been created."
 msgstr "Das Benutzerkonto \"%(screen_name)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/user/views.py:231
+#: byceps/blueprints/admin/user/views.py:224
 msgid "An email has been sent to the corresponding address."
 msgstr "Eine E-Mail wurde an die hinterlegte Adresse versendet."
 
-#: byceps/blueprints/admin/user/views.py:252
+#: byceps/blueprints/admin/user/views.py:245
 #, python-format
 msgid "User '%(screen_name)s' has been initialized."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde initialisiert."
 
-#: byceps/blueprints/admin/user/views.py:268
-#: byceps/blueprints/admin/user/views.py:292
+#: byceps/blueprints/admin/user/views.py:261
+#: byceps/blueprints/admin/user/views.py:285
 #, python-format
 msgid "User '%(screen_name)s' is already suspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' ist bereits gesperrt."
 
-#: byceps/blueprints/admin/user/views.py:311
+#: byceps/blueprints/admin/user/views.py:304
 #, python-format
 msgid "User '%(screen_name)s' has been suspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde gesperrt."
 
-#: byceps/blueprints/admin/user/views.py:329
-#: byceps/blueprints/admin/user/views.py:353
+#: byceps/blueprints/admin/user/views.py:322
+#: byceps/blueprints/admin/user/views.py:346
 #, python-format
 msgid "User '%(screen_name)s' is not suspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' ist nicht gesperrt."
 
-#: byceps/blueprints/admin/user/views.py:374
+#: byceps/blueprints/admin/user/views.py:367
 #, python-format
 msgid "User '%(screen_name)s' has been unsuspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde entsperrt."
 
-#: byceps/blueprints/admin/user/views.py:392
-#: byceps/blueprints/admin/user/views.py:416
+#: byceps/blueprints/admin/user/views.py:385
+#: byceps/blueprints/admin/user/views.py:409
 #, python-format
 msgid "User '%(screen_name)s' has already been deleted."
 msgstr "Das Benutzerkonto '%(screen_name)s' ist bereits gelöscht worden."
 
-#: byceps/blueprints/admin/user/views.py:435
+#: byceps/blueprints/admin/user/views.py:428
 #, python-format
 msgid "User '%(screen_name)s' has been deleted."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde gelöscht."
 
-#: byceps/blueprints/admin/user/views.py:486
+#: byceps/blueprints/admin/user/views.py:479
 #, python-format
 msgid "User '%(old_screen_name)s' has been renamed to '%(new_screen_name)s'."
 msgstr ""
 "Das Benutzerkonto '%(old_screen_name)s' wurde umbenannt in "
 "'%(new_screen_name)s'."
 
-#: byceps/blueprints/admin/user/views.py:539
+#: byceps/blueprints/admin/user/views.py:532
 #, python-format
 msgid "Email address for user '%(screen_name)s' has been updated."
 msgstr "Die E-Mail-Adresse des Benutzerkontos '%(screen_name)s' wurde geändert."
 
-#: byceps/blueprints/admin/user/views.py:557
-#: byceps/blueprints/admin/user/views.py:577
+#: byceps/blueprints/admin/user/views.py:550
+#: byceps/blueprints/admin/user/views.py:570
 msgid "Email address is already invalidated."
 msgstr "Diese E-Mail-Adresse ist bereits als nicht validiert markiert."
 
-#: byceps/blueprints/admin/user/views.py:594
+#: byceps/blueprints/admin/user/views.py:587
 #, python-format
 msgid "The email address of user '%(screen_name)s' has been invalidated."
 msgstr "Die E-Mail-Adresse des Benutzerkontos '%(screen_name)s' wurde invalidiert."
 
-#: byceps/blueprints/admin/user/views.py:659
+#: byceps/blueprints/admin/user/views.py:652
 msgid "Changes have been saved."
 msgstr "Die Änderungen wurden gespeichert."
 
-#: byceps/blueprints/admin/user/views.py:702
+#: byceps/blueprints/admin/user/views.py:695
 #, python-format
 msgid "New password has been set for user '%(screen_name)s'."
 msgstr "Für Benutzerkonto '%(screen_name)s' wurde ein neues Passwort gesetzt."
 
-#: byceps/blueprints/admin/user/views.py:770
+#: byceps/blueprints/admin/user/views.py:763
 #, python-format
 msgid "%(role_title)s has been assigned to \"%(screen_name)s\"."
 msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" zugewiesen."
 
-#: byceps/blueprints/admin/user/views.py:792
+#: byceps/blueprints/admin/user/views.py:785
 #, python-format
 msgid "%(role_title)s has been withdrawn from \"%(screen_name)s\"."
 msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" genommen."
@@ -4524,17 +4520,17 @@ msgstr "featured"
 msgid "<no restriction>"
 msgstr "<keine Einschränkung>"
 
-#: byceps/blueprints/admin/user_badge/views.py:142
+#: byceps/blueprints/admin/user_badge/views.py:137
 #, python-format
 msgid "Badge \"%(badge_label)s\" has been created."
 msgstr "Das Abzeichen \"%(badge_label)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/user_badge/views.py:189
+#: byceps/blueprints/admin/user_badge/views.py:184
 #, python-format
 msgid "Badge \"%(badge_label)s\" has been updated."
 msgstr "Das Abzeichen \"%(badge_label)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/user_badge/views.py:251
+#: byceps/blueprints/admin/user_badge/views.py:246
 #, python-format
 msgid "Badge \"%(badge_label)s\" has been awarded to %(screen_name)s."
 msgstr "Das Abzeichen \"%(badge_label)s\" wurde an %(screen_name)s verliehen."
@@ -4605,23 +4601,23 @@ msgstr "Zusätzliche Felder"
 msgid "Enabled"
 msgstr "Aktiv"
 
-#: byceps/blueprints/admin/webhook/views.py:98
+#: byceps/blueprints/admin/webhook/views.py:93
 msgid "Webhook has been created."
 msgstr "Der Webhook wurde erstellt."
 
-#: byceps/blueprints/admin/webhook/views.py:171
+#: byceps/blueprints/admin/webhook/views.py:166
 msgid "Webhook has been updated."
 msgstr "Der Webhook wurde aktualisiert."
 
-#: byceps/blueprints/admin/webhook/views.py:185
+#: byceps/blueprints/admin/webhook/views.py:180
 msgid "Webhook has been removed."
 msgstr "Der Webhook wurde gelöscht."
 
-#: byceps/blueprints/admin/webhook/views.py:199
+#: byceps/blueprints/admin/webhook/views.py:194
 msgid "Webhook call has been successful."
 msgstr "Der Webhook-Aufruf war erfolgreich."
 
-#: byceps/blueprints/admin/webhook/views.py:203
+#: byceps/blueprints/admin/webhook/views.py:198
 msgid "Webhook call failed:"
 msgstr "Der Webhook-Aufruf ist fehlgeschlagen:"
 
@@ -4857,109 +4853,109 @@ msgstr "Die Anmeldung ist deaktiviert."
 msgid "All topics in this category have been marked as read."
 msgstr "Alle Themen in dieser Kategorie wurden als gelesen markiert."
 
-#: byceps/blueprints/site/board/views_posting.py:74
+#: byceps/blueprints/site/board/views_posting.py:73
 msgid "The post to quote has not been found."
 msgstr "Der zu zitierende Beitrag wurde nicht gefunden."
 
-#: byceps/blueprints/site/board/views_posting.py:97
+#: byceps/blueprints/site/board/views_posting.py:96
 msgid "This topic is locked. It cannot be replied to."
 msgstr ""
 "Das Thema ist geschlossen. Es können keine Beiträge mehr hinzugefügt "
 "werden."
 
-#: byceps/blueprints/site/board/views_posting.py:106
+#: byceps/blueprints/site/board/views_posting.py:105
 msgid "Only moderators are allowed to reply in this topic."
 msgstr "In diesem Thema dürfen nur Moderatoren Beiträge hinzufügen."
 
-#: byceps/blueprints/site/board/views_posting.py:120
+#: byceps/blueprints/site/board/views_posting.py:119
 msgid "Your reply has been added."
 msgstr "Deine Antwort wurde hinzugefügt."
 
-#: byceps/blueprints/site/board/views_posting.py:147
-#: byceps/blueprints/site/board/views_posting.py:184
+#: byceps/blueprints/site/board/views_posting.py:146
+#: byceps/blueprints/site/board/views_posting.py:183
 msgid "The post must not be edited because the topic it belongs to is locked."
 msgstr ""
 "Der Beitrag darf nicht bearbeitet werden weil das Thema, zu dem dieser "
 "Beitrag gehört, gesperrt ist."
 
-#: byceps/blueprints/site/board/views_posting.py:155
-#: byceps/blueprints/site/board/views_posting.py:192
+#: byceps/blueprints/site/board/views_posting.py:154
+#: byceps/blueprints/site/board/views_posting.py:191
 msgid "The post must not be edited."
 msgstr "Der Beitrag darf nicht bearbeitet werden."
 
-#: byceps/blueprints/site/board/views_posting.py:159
-#: byceps/blueprints/site/board/views_posting.py:196
+#: byceps/blueprints/site/board/views_posting.py:158
+#: byceps/blueprints/site/board/views_posting.py:195
 msgid "You are not allowed to edit this post."
 msgstr "Du darfst diesen Beitrag nicht bearbeiten."
 
-#: byceps/blueprints/site/board/views_posting.py:207
+#: byceps/blueprints/site/board/views_posting.py:206
 msgid "The post has been updated."
 msgstr "Der Beitrag wurde aktualisiert."
 
-#: byceps/blueprints/site/board/views_posting.py:243
+#: byceps/blueprints/site/board/views_posting.py:242
 msgid "The post has been hidden."
 msgstr "Der Beitrag wurde versteckt."
 
-#: byceps/blueprints/site/board/views_posting.py:267
+#: byceps/blueprints/site/board/views_posting.py:266
 msgid "The post has been made visible again."
 msgstr "Der Beitrag wurde wieder sichtbar gemacht."
 
-#: byceps/blueprints/site/board/views_topic.py:209
+#: byceps/blueprints/site/board/views_topic.py:208
 #, python-format
 msgid "Topic \"%(title)s\" has been created."
 msgstr "Das Thema \"%(title)s\" wurde hinzugefügt."
 
-#: byceps/blueprints/site/board/views_topic.py:230
-#: byceps/blueprints/site/board/views_topic.py:266
+#: byceps/blueprints/site/board/views_topic.py:229
+#: byceps/blueprints/site/board/views_topic.py:265
 msgid "The topic must not be updated because it is locked."
 msgstr "Das Thema darf nicht bearbeitet werden weil es gesperrt ist."
 
-#: byceps/blueprints/site/board/views_topic.py:235
-#: byceps/blueprints/site/board/views_topic.py:271
+#: byceps/blueprints/site/board/views_topic.py:234
+#: byceps/blueprints/site/board/views_topic.py:270
 msgid "The topic must not be updated."
 msgstr "Das Thema darf nicht bearbeitet werden."
 
-#: byceps/blueprints/site/board/views_topic.py:239
-#: byceps/blueprints/site/board/views_topic.py:275
+#: byceps/blueprints/site/board/views_topic.py:238
+#: byceps/blueprints/site/board/views_topic.py:274
 msgid "You are not allowed to update this topic."
 msgstr "Du darfst dieses Thema nicht bearbeiten."
 
-#: byceps/blueprints/site/board/views_topic.py:287
+#: byceps/blueprints/site/board/views_topic.py:286
 #, python-format
 msgid "Topic \"%(title)s\" has been updated."
 msgstr "Das Thema \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/site/board/views_topic.py:323
+#: byceps/blueprints/site/board/views_topic.py:322
 #, python-format
 msgid "Topic \"%(title)s\" has been hidden."
 msgstr "Das Thema \"%(title)s\" wurde versteckt."
 
-#: byceps/blueprints/site/board/views_topic.py:346
+#: byceps/blueprints/site/board/views_topic.py:345
 #, python-format
 msgid "Topic \"%(title)s\" has been made visible again."
 msgstr "Das Thema \"%(title)s\" wurde wieder sichtbar gemacht."
 
-#: byceps/blueprints/site/board/views_topic.py:372
+#: byceps/blueprints/site/board/views_topic.py:371
 #, python-format
 msgid "Topic \"%(title)s\" has been locked."
 msgstr "Das Thema \"%(title)s\" wurde geschlossen."
 
-#: byceps/blueprints/site/board/views_topic.py:395
+#: byceps/blueprints/site/board/views_topic.py:394
 #, python-format
 msgid "Topic \"%(title)s\" has been unlocked."
 msgstr "Das Thema \"%(title)s\" wurde wieder geöffnet."
 
-#: byceps/blueprints/site/board/views_topic.py:418
+#: byceps/blueprints/site/board/views_topic.py:417
 #, python-format
 msgid "Topic \"%(title)s\" has been pinned."
 msgstr "Das Thema \"%(title)s\" wurde angepinnt."
 
-#: byceps/blueprints/site/board/views_topic.py:441
+#: byceps/blueprints/site/board/views_topic.py:440
 #, python-format
 msgid "Topic \"%(title)s\" has been unpinned."
 msgstr "Das Thema \"%(title)s\" wurde wieder gelöst."
 
-#: byceps/blueprints/site/board/views_topic.py:472
+#: byceps/blueprints/site/board/views_topic.py:471
 #, python-format
 msgid ""
 "Topic \"%(topic_title)s\" has been moved from category "
@@ -4969,12 +4965,12 @@ msgstr ""
 "\"%(old_category_title)s\" in die Kategorie \"%(new_category_title)s\" "
 "verschoben."
 
-#: byceps/blueprints/site/board/views_topic.py:500
+#: byceps/blueprints/site/board/views_topic.py:499
 #, python-format
 msgid "Topic \"%(title)s\" has been limited to announcements."
 msgstr "Das Thema \"%(title)s\" wurde auf Ankündigungen beschränkt."
 
-#: byceps/blueprints/site/board/views_topic.py:520
+#: byceps/blueprints/site/board/views_topic.py:519
 #, python-format
 msgid "Topic \"%(title)s\" has been reopened for regular replies."
 msgstr "Das Thema \"%(title)s\" wurde für normale Beiträge geöffnet."
@@ -5167,11 +5163,11 @@ msgstr "Antworten"
 msgid "Unknown consent subject"
 msgstr "Unbekanntes Zustimmungsthema"
 
-#: byceps/blueprints/site/consent/views.py:88
+#: byceps/blueprints/site/consent/views.py:89
 msgid "Thank you for your consent. Please log in again."
 msgstr "Vielen Dank für deine Zustimmung. Bitte melde dich erneut an."
 
-#: byceps/blueprints/site/consent/views.py:110
+#: byceps/blueprints/site/consent/views.py:111
 msgid "Invalid verification token"
 msgstr "Unbekannter Bestätigungscode"
 
@@ -5250,37 +5246,37 @@ msgstr "Party-Historie"
 msgid "There haven't been any parties yet."
 msgstr "Es haben noch keine Partys stattgefunden."
 
-#: byceps/blueprints/site/seating/views.py:94
-#: byceps/blueprints/site/seating/views.py:182
-#: byceps/blueprints/site/seating/views.py:252
+#: byceps/blueprints/site/seating/views.py:86
+#: byceps/blueprints/site/seating/views.py:174
+#: byceps/blueprints/site/seating/views.py:244
 msgid "Seat reservations cannot be changed at this time."
 msgstr "Sitzplatzreservierungen können derzeit nicht verändert werden."
 
-#: byceps/blueprints/site/seating/views.py:157
+#: byceps/blueprints/site/seating/views.py:149
 #, python-format
 msgid "Ticket ID \"%(selected_ticket_id_arg)s\" not found."
 msgstr "Ticket ID \"%(selected_ticket_id_arg)s\" not found."
 
-#: byceps/blueprints/site/seating/views.py:165
+#: byceps/blueprints/site/seating/views.py:157
 #, python-format
 msgid "Ticket \"%(selected_ticket_code)s\" is revoked."
 msgstr "Ticket \"%(selected_ticket_code)s\" wurde widerrufen."
 
-#: byceps/blueprints/site/seating/views.py:195
-#: byceps/blueprints/site/seating/views.py:274
+#: byceps/blueprints/site/seating/views.py:187
+#: byceps/blueprints/site/seating/views.py:266
 #, python-format
 msgid "You are not authorized to manage the seat for ticket %(ticket_code)s."
 msgstr ""
 "Du bist nicht berechtigt, den Sitzplatz für Ticket %(ticket_code)s zu "
 "verwalten."
 
-#: byceps/blueprints/site/seating/views.py:206
+#: byceps/blueprints/site/seating/views.py:198
 #, python-format
 msgid "%(seat_label)s is already occupied."
 msgstr "%(seat_label)s ist bereits belegt."
 
-#: byceps/blueprints/site/seating/views.py:218
-#: byceps/blueprints/site/seating/views.py:287
+#: byceps/blueprints/site/seating/views.py:210
+#: byceps/blueprints/site/seating/views.py:279
 #, python-format
 msgid ""
 "Ticket %(ticket_code)s belongs to a bundle and cannot be managed "
@@ -5289,7 +5285,7 @@ msgstr ""
 "Ticket %(ticket_code)s gehört zu einem Paket und kann nicht einzeln "
 "verwaltet werden."
 
-#: byceps/blueprints/site/seating/views.py:226
+#: byceps/blueprints/site/seating/views.py:218
 #, python-format
 msgid ""
 "Ticket %(ticket_code)s and seat \"%(seat_label)s\" belong to different "
@@ -5298,17 +5294,17 @@ msgstr ""
 "Ticket %(ticket_code)s und %(seat_label)s haben unterschiedliche "
 "Kategorien."
 
-#: byceps/blueprints/site/seating/views.py:237
+#: byceps/blueprints/site/seating/views.py:229
 #, python-format
 msgid "%(seat_label)s has been occupied with ticket %(ticket_code)s."
 msgstr "%(seat_label)s wurde mit Ticket %(ticket_code)s reserviert."
 
-#: byceps/blueprints/site/seating/views.py:260
+#: byceps/blueprints/site/seating/views.py:252
 #, python-format
 msgid "Ticket %(ticket_code)s occupies no seat."
 msgstr "Ticket %(ticket_code)s belegt keinen Sitzplatz."
 
-#: byceps/blueprints/site/seating/views.py:295
+#: byceps/blueprints/site/seating/views.py:287
 #, python-format
 msgid "%(seat_label)s has been released."
 msgstr "%(seat_label)s wurde freigegeben."
@@ -5522,7 +5518,7 @@ msgstr "Bot"
 msgid "Bots are not permitted."
 msgstr "Bots sind nicht erlaubt."
 
-#: byceps/blueprints/site/user/creation/views.py:127
+#: byceps/blueprints/site/user/creation/views.py:131
 #, python-format
 msgid ""
 "User \"%(screen_name)s\" has been created. Before you can log in, please "
@@ -5532,7 +5528,7 @@ msgstr ""
 "damit anmelden kannst, muss zunächst der Link in der an die angegebene "
 "Adresse verschickten E-Mail besucht werden."
 
-#: byceps/blueprints/site/user/creation/views.py:149
+#: byceps/blueprints/site/user/creation/views.py:153
 msgid "User account creation is disabled."
 msgstr "Das Erstellen von Benutzerkonten ist deaktiviert."
 
@@ -5676,6 +5672,338 @@ msgstr "Deine Nachricht an %(screen_name)s wurde versendet."
 msgid "Send"
 msgstr "Senden"
 
+#: byceps/permissions/admin.py:17
+msgid "Access admin area"
+msgstr "Auf den Admin-Bereich zugreifen"
+
+#: byceps/permissions/admin.py:18
+msgid "Carry out maintenance work"
+msgstr "Wartungsarbeiten durchführen"
+
+#: byceps/permissions/authorization.py:17
+msgid "Assign roles"
+msgstr "Rollen zuweisen"
+
+#: byceps/permissions/authorization.py:18
+msgid "View roles"
+msgstr "Rollen anzeigen"
+
+#: byceps/permissions/board.py:17
+msgid "Make board announcements"
+msgstr "Ankündigungen im Forum machen"
+
+#: byceps/permissions/board.py:18
+msgid "Create boards"
+msgstr "Foren erstellen"
+
+#: byceps/permissions/board.py:19
+msgid "Hide board topics and postings"
+msgstr "Themen und Beiträge im Forum verstecken"
+
+#: byceps/permissions/board.py:22
+msgid "Edit board topics and postings by other users"
+msgstr "Themen und Beiträge anderer Benutzer im Forum bearbeiten"
+
+#: byceps/permissions/board.py:24
+msgid "View hidden board topics and postings"
+msgstr "Versteckte Themen und Beiträge im Forum anzeigen"
+
+#: byceps/permissions/board.py:32
+msgid "Create board categories"
+msgstr "Foren-Kategorien erstellen"
+
+#: byceps/permissions/board.py:33
+msgid "Edit board categories"
+msgstr "Foren-Kategorien bearbeiten"
+
+#: byceps/permissions/board.py:34
+msgid "View board categories"
+msgstr "Foren-Kategorien anzeigen"
+
+#: byceps/permissions/board.py:42
+msgid "Create board topics"
+msgstr "Themen im Forum erstellen"
+
+#: byceps/permissions/board.py:43
+msgid "Edit board topics"
+msgstr "Themen im Forum bearbeiten"
+
+#: byceps/permissions/board.py:44
+msgid "Lock/unlock board topics"
+msgstr "Themen im Forum schließen"
+
+#: byceps/permissions/board.py:45
+msgid "Move board topics to other categories"
+msgstr "Themen im Forum in andere Kategorien verschieben"
+
+#: byceps/permissions/board.py:46
+msgid "Pin/unpin board topics"
+msgstr "Themen im Forum anpinnen"
+
+#: byceps/permissions/board.py:54
+msgid "Create board postings"
+msgstr "Beiträge im Forum erstellen"
+
+#: byceps/permissions/board.py:55
+msgid "Edit board postings"
+msgstr "Beiträge im Forum bearbeiten"
+
+#: byceps/permissions/brand.py:17
+msgid "Create brands"
+msgstr "Marken erstellen"
+
+#: byceps/permissions/brand.py:18
+msgid "Edit brands"
+msgstr "Marken bearbeiten"
+
+#: byceps/permissions/brand.py:19
+msgid "View brands"
+msgstr "Marken anzeigen"
+
+#: byceps/permissions/consent.py:17
+msgid "Manage consents"
+msgstr "Zustimmungen verwalten"
+
+#: byceps/permissions/jobs.py:17
+msgid "View jobs"
+msgstr "Jobs anzeigen"
+
+#: byceps/permissions/news.py:17
+msgid "Create news channels"
+msgstr "News-Kanäle erstellen"
+
+#: byceps/permissions/news.py:25
+msgid "Create news items"
+msgstr "News erstellen"
+
+#: byceps/permissions/news.py:26
+msgid "Publish news items"
+msgstr "News veröffentlichen"
+
+#: byceps/permissions/news.py:27
+msgid "Edit news items"
+msgstr "News bearbeiten"
+
+#: byceps/permissions/news.py:28
+msgid "View news items"
+msgstr "News anzeigen"
+
+#: byceps/permissions/news.py:29
+msgid "View news item drafts"
+msgstr "News-Entwürfe anzeigen"
+
+#: byceps/permissions/newsletter.py:17
+msgid "Export newsletter subscribers"
+msgstr "Newsletter-Abonnenten exportieren"
+
+#: byceps/permissions/newsletter.py:18
+msgid "View newsletter subscriptions"
+msgstr "Newsletter-Bestellstatus einsehen"
+
+#: byceps/permissions/orga.py:17
+msgid "View orgas' birthdays"
+msgstr "Geburtstage von Orgas anzeigen"
+
+#: byceps/permissions/orga.py:25
+msgid "View orgas' details"
+msgstr "Orga-Details anzeigen"
+
+#: byceps/permissions/orga_presence.py:17
+msgid "Edit orga presences"
+msgstr "Orga-Anwesenheiten eintragen"
+
+#: byceps/permissions/orga_presence.py:18
+msgid "View orga presences"
+msgstr "Orga-Anwesenheiten anzeigen"
+
+#: byceps/permissions/orga_team.py:19
+msgid "Administrate orga team memberships"
+msgstr "Orga-Team-Mitgliedschaften verwalten"
+
+#: byceps/permissions/orga_team.py:21
+msgid "Create orga teams"
+msgstr "Orga-Teams erstellen"
+
+#: byceps/permissions/orga_team.py:22
+msgid "Delete orga teams"
+msgstr "Orga-Teams löschen"
+
+#: byceps/permissions/orga_team.py:23
+msgid "View orga teams"
+msgstr "Orga-Teams anzeigen"
+
+#: byceps/permissions/party.py:17
+msgid "Create parties"
+msgstr "Partys erstellen"
+
+#: byceps/permissions/party.py:18
+msgid "Edit parties"
+msgstr "Partys bearbeiten"
+
+#: byceps/permissions/party.py:19
+msgid "View parties"
+msgstr "Partys anzeigen"
+
+#: byceps/permissions/seating.py:17
+msgid "Administrate seating"
+msgstr "Sitzpläne und -plätze administrieren"
+
+#: byceps/permissions/seating.py:18
+msgid "View seating administration"
+msgstr "Sitzpläne anzeigen"
+
+#: byceps/permissions/shop.py:17
+msgid "Create shops"
+msgstr "Shops und Storefronts erstellen"
+
+#: byceps/permissions/shop.py:18
+msgid "Edit shops"
+msgstr "Shops und Storefronts bearbeiten"
+
+#: byceps/permissions/shop.py:19
+msgid "View shops"
+msgstr "Shops und Storefronts anzeigen"
+
+#: byceps/permissions/shop.py:27
+msgid "Create shop articles"
+msgstr "Shop-Artikel erstellen"
+
+#: byceps/permissions/shop.py:28
+msgid "Edit shop articles"
+msgstr "Shop-Artikel bearbeiten"
+
+#: byceps/permissions/shop.py:29
+msgid "View shop articles"
+msgstr "Shop-Artikel anzeigen"
+
+#: byceps/permissions/shop.py:37
+msgid "Cancel shop orders"
+msgstr "Bestellungen stornieren"
+
+#: byceps/permissions/shop.py:38
+msgid "Mark shop orders as paid"
+msgstr "Bestellungen als bezahlt markieren"
+
+#: byceps/permissions/shop.py:39
+msgid "Edit shop orders"
+msgstr "Bestellungen bearbeiten"
+
+#: byceps/permissions/shop.py:40
+msgid "View shop orders"
+msgstr "Bestellungen anzeigen"
+
+#: byceps/permissions/site.py:17
+msgid "Create sites"
+msgstr "Sites erstellen"
+
+#: byceps/permissions/site.py:18
+msgid "Edit sites"
+msgstr "Sites bearbeiten"
+
+#: byceps/permissions/site.py:19
+msgid "View sites"
+msgstr "Sites anzeigen"
+
+#: byceps/permissions/snippet.py:17
+msgid "Create snippets"
+msgstr "Snippets erstellen"
+
+#: byceps/permissions/snippet.py:18
+msgid "Edit snippets"
+msgstr "Snippets bearbeiten"
+
+#: byceps/permissions/snippet.py:19
+msgid "Delete snippets"
+msgstr "Snippets löschen"
+
+#: byceps/permissions/snippet.py:20
+msgid "View snippets"
+msgstr "Snippets anzeigen"
+
+#: byceps/permissions/snippet.py:21
+msgid "View snippets' history"
+msgstr "Änderungshistorie von Snippets anzeigen"
+
+#: byceps/permissions/snippet.py:29
+msgid "Create snippet mountpoints"
+msgstr "Snippet-Mountpoints erstellen"
+
+#: byceps/permissions/snippet.py:30
+msgid "Delete snippet mountpoints"
+msgstr "Snippet-Mountpoints löschen"
+
+#: byceps/permissions/ticketing.py:17
+msgid "Administrate ticketing"
+msgstr "Tickets verwalten"
+
+#: byceps/permissions/ticketing.py:20
+msgid "Administrate seat occupancies"
+msgstr "Belegung von Sitzplätzen verwalten"
+
+#: byceps/permissions/ticketing.py:22
+msgid "Check in tickets"
+msgstr "Gäste am Einlass einchecken"
+
+#: byceps/permissions/ticketing.py:23
+msgid "View ticketing"
+msgstr "Tickets anzeigen"
+
+#: byceps/permissions/tourney.py:17
+msgid "Administrate tourneys"
+msgstr "Turniere verwalten"
+
+#: byceps/permissions/tourney.py:18
+msgid "View tourneys"
+msgstr "Turniere anzeigen"
+
+#: byceps/permissions/tourney.py:26
+msgid "Administrate tourney categories"
+msgstr "Turnierkategorien verwalten"
+
+#: byceps/permissions/tourney.py:27
+msgid "View tourney categories"
+msgstr "Turnierkategorien anzeigen"
+
+#: byceps/permissions/user.py:17
+msgid "Administrate users"
+msgstr "Benutzer verwalten"
+
+#: byceps/permissions/user.py:18
+msgid "Create users"
+msgstr "Benutzer erstellen"
+
+#: byceps/permissions/user.py:19
+msgid "Set user passwords"
+msgstr "Benutzerpasswörter setzen"
+
+#: byceps/permissions/user.py:20
+msgid "View users"
+msgstr "Benutzer anzeigen"
+
+#: byceps/permissions/user_badge.py:17
+msgid "Award user badges"
+msgstr "Abzeichen verleihen"
+
+#: byceps/permissions/user_badge.py:18
+msgid "Create user badges"
+msgstr "Abzeichen erstellen"
+
+#: byceps/permissions/user_badge.py:19
+msgid "Edit user badges"
+msgstr "Abzeichen bearbeiten"
+
+#: byceps/permissions/user_badge.py:20
+msgid "View user badges"
+msgstr "Abzeichen anzeigen"
+
+#: byceps/permissions/webhook.py:17
+msgid "Administrate webhooks"
+msgstr "Webhooks verwalten"
+
+#: byceps/permissions/webhook.py:18
+msgid "View webhooks"
+msgstr "Webhooks anzeigen"
+
 #: byceps/services/news/html_service.py:101
 msgid "Image credit"
 msgstr "Bild"
@@ -5688,19 +6016,19 @@ msgstr "physikalisch"
 msgid "other"
 msgstr "sonstiges"
 
-#: byceps/services/shop/order/service.py:621
+#: byceps/services/shop/order/service.py:623
 msgid "bank transfer"
 msgstr "Überweisung"
 
-#: byceps/services/shop/order/service.py:622
+#: byceps/services/shop/order/service.py:624
 msgid "cash"
 msgstr "Barzahlung"
 
-#: byceps/services/shop/order/service.py:623
+#: byceps/services/shop/order/service.py:625
 msgid "direct debit"
 msgstr "Lastschrift"
 
-#: byceps/services/shop/order/service.py:624
+#: byceps/services/shop/order/service.py:626
 msgid "free"
 msgstr "kostenlos"
 

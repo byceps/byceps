@@ -6,13 +6,15 @@ byceps.permissions.orga
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import lazy_gettext
+
 from ..util.authorization import register_permissions
 
 
 register_permissions(
     'orga_birthday',
     [
-        'view',
+        ('view', lazy_gettext("View orgas' birthdays")),
     ],
 )
 
@@ -20,6 +22,6 @@ register_permissions(
 register_permissions(
     'orga_detail',
     [
-        'view',
+        ('view', lazy_gettext("View orgas' details")),
     ],
 )

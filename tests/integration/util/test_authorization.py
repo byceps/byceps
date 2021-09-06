@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from flask import g
+from flask_babel import lazy_gettext
 import pytest
 
 from byceps.util.authorization import register_permissions
@@ -16,7 +17,12 @@ from byceps.util.authorization import (
 
 
 register_permissions(
-    'chill', ['browse_the_web', 'play_videogames', 'watch_movies']
+    'chill',
+    [
+        ('browse_the_web', lazy_gettext('Browse the web')),
+        ('play_video_games', lazy_gettext('Play video games')),
+        ('watch_movies', lazy_gettext('Watch movies')),
+    ],
 )
 
 
@@ -35,7 +41,7 @@ class CurrentUserMock:
         ),
         (
             {'chill.watch_movies'},
-            'chill.play_videogames',
+            'chill.play_video_games',
             False,
         ),
         (
@@ -46,7 +52,7 @@ class CurrentUserMock:
         (
             {
                 'chill.browse_the_web',
-                'chill.play_videogames',
+                'chill.play_video_games',
             },
             'chill.watch_movies',
             False,
@@ -54,9 +60,9 @@ class CurrentUserMock:
         (
             {
                 'chill.browse_the_web',
-                'chill.play_videogames',
+                'chill.play_video_games',
             },
-            'chill.play_videogames',
+            'chill.play_video_games',
             True,
         ),
     ],
@@ -82,14 +88,14 @@ def test_has_current_user_permission(
             {'chill.watch_movies'},
             {
                 'chill.browse_the_web',
-                'chill.play_videogames',
+                'chill.play_video_games',
             },
             False,
         ),
         (
             {'chill.watch_movies'},
             {
-                'chill.play_videogames',
+                'chill.play_video_games',
                 'chill.watch_movies',
             },
             True,
