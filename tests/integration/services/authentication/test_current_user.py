@@ -5,6 +5,8 @@
 
 from uuid import UUID
 
+from flask_babel import lazy_gettext
+
 from byceps.services.authentication.session import service as session_service
 from byceps.util.authorization import register_permissions
 
@@ -25,11 +27,19 @@ def test_get_anonymous_current_user():
 
 
 def test_get_authenticated_current_user(user):
-    register_permissions('example', ['do_this', 'do_that'])
-    permissions = frozenset([
-        'example.do_this',
-        'example.do_that',
-    ])
+    register_permissions(
+        'example',
+        [
+            ('do_this', lazy_gettext('Do this')),
+            ('do_that', lazy_gettext('Do that')),
+        ],
+    )
+    permissions = frozenset(
+        [
+            'example.do_this',
+            'example.do_that',
+        ]
+    )
     locale = 'de'
 
     current_user = session_service.get_authenticated_current_user(
