@@ -27,7 +27,7 @@ class LineItem(db.Model):
     order_number = db.Column(db.UnicodeText, db.ForeignKey('shop_orders.order_number'), index=True, nullable=False)
     order = db.relationship(Order, backref='items')
     article_number = db.Column(db.UnicodeText, db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
-    article = db.relationship(DbArticle, backref='line_items')
+    article = db.relationship(DbArticle)
     _article_type = db.Column('article_type', db.UnicodeText, nullable=False)
     description = db.Column(db.UnicodeText, nullable=False)
     unit_price = db.Column(db.Numeric(6, 2), nullable=False)
