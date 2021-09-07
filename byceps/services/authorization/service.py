@@ -16,7 +16,8 @@ from sqlalchemy.exc import IntegrityError
 from ...database import db
 from ...typing import UserID
 
-from ..user import event_service as user_event_service
+from ..user import event_service as user_event_service, service as user_service
+from ..user.transfer.models import User
 
 from .dbmodels import (
     Permission as DbPermission,
@@ -246,16 +247,30 @@ def get_all_role_ids() -> set[RoleID]:
     ).scalars().all()
 
 
-def get_all_roles_with_titles() -> Sequence[DbRole]:
-    """Return all roles, with titles."""
-    return db.session \
-        .query(DbRole) \
+def get_all_roles_with_permissions_and_users() -> list[
+    tuple[Role, set[PermissionID], set[User]]
+]:
+    """Return all roles with titles, permission IDs, and assigned users."""
+    db_roles = db.session.execute(
+        select(DbRole)
         .options(
             db.undefer(DbRole.title),
             db.joinedload(DbRole.user_roles)
                 .joinedload(DbUserRole.user)
-        ) \
-        .all()
+        )
+    ).scalars().unique().all()
+
+    return [
+        (
+            _db_entity_to_role(db_role),
+            {permission.id for permission in db_role.permissions},
+            {
+                user_service._db_entity_to_user(db_user)
+                for db_user in db_role.users
+            },
+        )
+        for db_role in db_roles
+    ]
 
 
 def get_permission_ids_by_role() -> dict[Role, frozenset[PermissionID]]:

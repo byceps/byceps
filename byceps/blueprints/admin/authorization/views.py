@@ -43,14 +43,16 @@ def permission_index():
 @templated
 def role_index():
     """List roles."""
-    roles = authorization_service.get_all_roles_with_titles()
+    roles_permissions_users = (
+        authorization_service.get_all_roles_with_permissions_and_users()
+    )
 
-    user_ids = {user.id for role in roles for user in role.users}
+    user_ids = {user.id for _, _, users in roles_permissions_users for user in users}
     users = user_service.get_users(user_ids, include_avatars=True)
     users_by_id = user_service.index_users_by_id(users)
 
     return {
-        'roles': roles,
+        'roles_permissions_users': roles_permissions_users,
         'users_by_id': users_by_id,
     }
 
