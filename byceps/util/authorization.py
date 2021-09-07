@@ -70,12 +70,12 @@ class PermissionRegistry:
         """Return all registered permission IDs."""
         return frozenset(self._permissions.keys())
 
-    def get_all_registered_permissions(self) -> set[Permission]:
+    def get_registered_permissions(self) -> frozenset[Permission]:
         """Return all registered permissions."""
-        return {
+        return frozenset(
             Permission(id=permission_id, title=label)
             for permission_id, label in self._permissions.items()
-        }
+        )
 
 
 permission_registry = PermissionRegistry()

@@ -24,7 +24,7 @@ blueprint = create_blueprint('authorization_admin', __name__)
 @templated
 def permission_index():
     """List permissions."""
-    all_permissions = permission_registry.get_all_registered_permissions()
+    all_permissions = permission_registry.get_registered_permissions()
 
     role_ids_by_permission_id = (
         authorization_service.get_assigned_roles_for_permissions()
@@ -65,7 +65,7 @@ def role_view(role_id):
     if role is None:
         abort(404)
 
-    all_permissions = permission_registry.get_all_registered_permissions()
+    all_permissions = permission_registry.get_registered_permissions()
 
     role_permission_ids = authorization_service.get_permission_ids_for_role(
         role.id
