@@ -17,16 +17,16 @@
         </tr>
       </thead>
       <tbody>
-        {%- for permission, roles in permissions_and_roles|sort(attribute='0.id') %}
+        {%- for permission, role_ids in permissions_and_roles|sort(attribute='0.id') %}
         <tr>
           <td>
             <strong class="monospace">{{ permission.id }}</strong><br>
             {{ permission.title|fallback(_('no description available')) }}
           </td>
           <td>
-          {%- if roles %}
+          {%- if role_ids %}
             <ol>
-            {%- for role_id in roles|sort %}
+            {%- for role_id in role_ids|sort %}
               <li class="monospace"><a href="{{ url_for('.role_view', role_id=role_id) }}">{{ role_id }}</a></li>
             {%- endfor %}
             </ol>

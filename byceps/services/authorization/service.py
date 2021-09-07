@@ -7,6 +7,7 @@ byceps.services.authorization.service
 """
 
 from __future__ import annotations
+from collections import defaultdict
 from typing import Optional, Sequence
 
 from sqlalchemy import select
@@ -217,25 +218,25 @@ def get_permission_ids_for_user(user_id: UserID) -> set[PermissionID]:
     return {rp.permission_id for rp in role_permissions}
 
 
-def get_all_permissions_with_roles() -> Sequence[
-    tuple[Permission, set[RoleID]]
-]:
-    """Return all permissions with titles and roles."""
-    permissions = db.session \
-        .query(DbPermission) \
-        .options(
-            db.undefer(DbPermission.title),
-            db.joinedload(DbPermission.role_permissions)
-        ) \
-        .all()
+def get_assigned_roles_for_permissions() -> dict[PermissionID, set[RoleID]]:
+    """Return the IDs of roles that have permissions assigned, indexed
+    by permission ID.
+    """
+    role_ids_by_permission_id = defaultdict(set)
 
-    return [
-        (
-            Permission(id=permission.id, title=permission.title),
-            {RoleID(role.id) for role in permission.roles},
-        )
-        for permission in permissions
+    rows = db.session.execute(
+        select(DbRolePermission.permission_id, DbRolePermission.role_id)
+    ).all()
+
+    permission_ids_and_role_ids = [
+        (PermissionID(permission_id), RoleID(role_id))
+        for permission_id, role_id in rows
     ]
+
+    for permission_id, role_id in permission_ids_and_role_ids:
+        role_ids_by_permission_id[permission_id].add(role_id)
+
+    return dict(role_ids_by_permission_id)
 
 
 def get_all_roles_with_titles() -> Sequence[DbRole]:

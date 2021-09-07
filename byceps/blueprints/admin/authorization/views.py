@@ -24,9 +24,16 @@ blueprint = create_blueprint('authorization_admin', __name__)
 @templated
 def permission_index():
     """List permissions."""
-    permissions_and_roles = (
-        authorization_service.get_all_permissions_with_roles()
+    all_permissions = permission_registry.get_all_registered_permissions()
+
+    role_ids_by_permission_id = (
+        authorization_service.get_assigned_roles_for_permissions()
     )
+
+    permissions_and_roles = [
+        (permission, role_ids_by_permission_id.get(permission.id, frozenset()))
+        for permission in all_permissions
+    ]
 
     return {'permissions_and_roles': permissions_and_roles}
 
