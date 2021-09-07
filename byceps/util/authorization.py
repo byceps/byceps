@@ -39,14 +39,18 @@ def register_permissions(
 
 def get_permissions_for_user(user_id: UserID) -> frozenset[str]:
     """Return the permissions this user has been granted."""
-    permission_ids = authorization_service.get_permission_ids_for_user(user_id)
-
     registered_permission_ids = (
-        permission_registry.get_registered_permission_ids(permission_ids)
+        permission_registry.get_registered_permission_ids()
+    )
+    user_permission_ids = authorization_service.get_permission_ids_for_user(
+        user_id
     )
 
+    # Ignore unregistered permission IDs.
     return frozenset(
-        str(permission_id) for permission_id in registered_permission_ids
+        str(permission_id)
+        for permission_id in registered_permission_ids
+        if permission_id in user_permission_ids
     )
 
 
@@ -62,15 +66,9 @@ class PermissionRegistry:
         """Add permission to the registry."""
         self._permissions[permission_id] = label
 
-    def get_registered_permission_ids(
-        self, permission_ids: set[PermissionID]
-    ) -> frozenset[PermissionID]:
-        """Return the permission IDs that are registered.
-
-        If a given permission ID is not registered, it is silently
-        ignored.
-        """
-        return frozenset(p for p in self._permissions if p in permission_ids)
+    def get_registered_permission_ids(self) -> frozenset[PermissionID]:
+        """Return all registered permission IDs."""
+        return frozenset(self._permissions.keys())
 
     def get_all_registered_permissions(self) -> set[Permission]:
         """Return all registered permissions."""
