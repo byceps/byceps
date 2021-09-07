@@ -8,7 +8,7 @@ byceps.services.authorization.service
 
 from __future__ import annotations
 from collections import defaultdict
-from typing import Optional, Sequence
+from typing import Iterable, Optional, Sequence
 
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -251,85 +251,65 @@ def get_all_roles_with_titles() -> Sequence[DbRole]:
         .all()
 
 
-def get_permissions_by_roles_with_titles() -> dict[Role, set[Permission]]:
-    """Return all roles with their assigned permissions.
+def get_permission_ids_by_role() -> dict[Role, frozenset[PermissionID]]:
+    """Return all roles with their assigned permission IDs.
 
-    Titles are undeferred to avoid lots of additional queries.
+    Role titles are undeferred to avoid lots of additional queries.
     """
-    roles = db.session \
-        .query(DbRole) \
-        .options(
-            db.undefer(DbRole.title),
-        ) \
-        .all()
+    db_roles = db.session.execute(
+        select(DbRole)
+        .options(db.undefer(DbRole.title))
+    ).scalars().unique().all()
 
-    permissions = db.session \
-        .query(DbPermission) \
-        .options(
-            db.undefer(DbPermission.title),
-            db.joinedload(DbPermission.role_permissions)
-                .joinedload(DbRolePermission.role)
-        ) \
-        .all()
+    role_ids_and_permission_ids = db.session.execute(
+        select(DbRolePermission.role_id, DbRolePermission.permission_id)
+    ).all()
 
-    return _index_permissions_by_role(permissions, roles)
+    return _index_permission_ids_by_role(role_ids_and_permission_ids, db_roles)
 
 
-def get_permissions_by_roles_for_user_with_titles(
+def get_permission_ids_by_role_for_user(
     user_id: UserID,
-) -> dict[Role, set[Permission]]:
-    """Return permissions grouped by their respective roles for that user.
+) -> dict[Role, frozenset[PermissionID]]:
+    """Return permission IDs grouped by their respective roles for that
+    user.
 
-    Titles are undeferred to avoid lots of additional queries.
+    Role titles are undeferred to avoid lots of additional queries.
     """
-    roles = db.session \
-        .query(DbRole) \
-        .options(
-            db.undefer(DbRole.title),
-        ) \
-        .join(DbUserRole) \
-        .filter(DbUserRole.user_id == user_id) \
-        .all()
+    db_roles = db.session.execute(
+        select(DbRole)
+        .options(db.undefer(DbRole.title))
+        .join(DbUserRole)
+        .filter(DbUserRole.user_id == user_id)
+    ).scalars().unique().all()
 
-    role_ids = {r.id for r in roles}
+    role_ids_and_permission_ids = db.session.execute(
+        select(DbRolePermission.role_id, DbRolePermission.permission_id)
+        .join(DbRole)
+        .join(DbUserRole)
+        .filter(DbUserRole.user_id == user_id)
+    ).all()
 
-    if role_ids:
-        permissions = db.session \
-            .query(DbPermission) \
-            .options(
-                db.undefer(DbPermission.title),
-                db.joinedload(DbPermission.role_permissions)
-                    .joinedload(DbRolePermission.role)
-            ) \
-            .join(DbRolePermission) \
-            .join(DbRole) \
-            .filter(DbRole.id.in_(role_ids)) \
-            .all()
-    else:
-        permissions = []
-
-    return _index_permissions_by_role(permissions, roles)
+    return _index_permission_ids_by_role(role_ids_and_permission_ids, db_roles)
 
 
-def _index_permissions_by_role(
-    permissions: list[DbPermission], roles: list[DbRole]
-) -> dict[Role, set[Permission]]:
-    permissions_by_role: dict[DbRole, set[DbPermission]] = {
-        role: set() for role in roles
-    }
+def _index_permission_ids_by_role(
+    role_ids_and_permission_ids: Iterable[tuple[RoleID, PermissionID]],
+    db_roles: Iterable[DbRole],
+) -> dict[Role, frozenset[PermissionID]]:
+    """Index permission IDs by role."""
+    permission_ids_by_role_id = defaultdict(set)
+    for role_id, permission_id in role_ids_and_permission_ids:
+        permission_ids_by_role_id[role_id].add(permission_id)
 
-    for permission in permissions:
-        for role in permission.roles:
-            if role in permissions_by_role:
-                permissions_by_role[role].add(permission)
+    permission_ids_by_role = {}
 
-    # Convert database entities to transfer objects.
-    return {
-        _db_entity_to_role(role): {
-            _db_entity_to_permission(permission) for permission in permissions
-        }
-        for role, permissions in permissions_by_role.items()
-    }
+    for db_role in db_roles:
+        role = _db_entity_to_role(db_role)
+        permission_ids = frozenset(permission_ids_by_role_id[role.id])
+        permission_ids_by_role[role] = permission_ids
+
+    return permission_ids_by_role
 
 
 def get_permission_ids_for_role(role_id: RoleID) -> set[PermissionID]:

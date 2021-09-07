@@ -6,6 +6,7 @@ byceps.blueprints.admin.user.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
 from typing import Optional
 
@@ -15,6 +16,11 @@ from flask_babel import gettext
 from ....services.authentication.password import service as password_service
 from ....services.authentication.session import service as session_service
 from ....services.authorization import service as authorization_service
+from ....services.authorization.transfer.models import (
+    Role,
+    Permission,
+    PermissionID,
+)
 from ....services.country import service as country_service
 from ....services.orga_team import service as orga_team_service
 from ....services.shop.order import service as order_service
@@ -31,6 +37,7 @@ from ....services.user import (
 from ....services.user.transfer.models import UserForAdmin, UserStateFilter
 from ....services.user_badge import awarding_service as badge_awarding_service
 from ....signals import user as user_signals
+from ....util.authorization import permission_registry
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -712,10 +719,12 @@ def view_permissions(user_id):
     """Show user's permissions."""
     user = _get_user_for_admin_or_404(user_id)
 
-    permissions_by_role = (
-        authorization_service.get_permissions_by_roles_for_user_with_titles(
-            user.id
-        )
+    user_permission_ids_by_role = (
+        authorization_service.get_permission_ids_by_role_for_user(user.id)
+    )
+
+    permissions_by_role = _index_permissions_by_role(
+        user_permission_ids_by_role
     )
 
     return {
@@ -732,9 +741,9 @@ def manage_roles(user_id):
     """Manage what roles are assigned to the user."""
     user = _get_user_for_admin_or_404(user_id)
 
-    permissions_by_role = (
-        authorization_service.get_permissions_by_roles_with_titles()
-    )
+    permission_ids_by_role = authorization_service.get_permission_ids_by_role()
+
+    permissions_by_role = _index_permissions_by_role(permission_ids_by_role)
 
     user_role_ids = authorization_service.find_role_ids_for_user(user.id)
 
@@ -743,6 +752,24 @@ def manage_roles(user_id):
         'user': user,
         'permissions_by_role': permissions_by_role,
         'user_role_ids': user_role_ids,
+    }
+
+
+def _index_permissions_by_role(
+    permission_ids_by_role: dict[Role, frozenset[PermissionID]]
+) -> dict[Role, frozenset[Permission]]:
+    registered_permissions_by_id = {
+        permission.id: permission
+        for permission in permission_registry.get_registered_permissions()
+    }
+
+    return {
+        role: frozenset(
+            registered_permissions_by_id[permission_id]
+            for permission_id in permission_ids
+            if permission_id in registered_permissions_by_id
+        )
+        for role, permission_ids in permission_ids_by_role.items()
     }
 
 
