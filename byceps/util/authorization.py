@@ -33,7 +33,7 @@ def register_permissions(
 ) -> None:
     """Register a permission."""
     for name, label in names_and_labels:
-        permission_id = f'{group}.{name}'
+        permission_id = PermissionID(f'{group}.{name}')
         permission_registry.register_permission(permission_id, label)
 
 
@@ -41,24 +41,30 @@ def get_permissions_for_user(user_id: UserID) -> frozenset[str]:
     """Return the permissions this user has been granted."""
     permission_ids = authorization_service.get_permission_ids_for_user(user_id)
 
-    return permission_registry.get_registered_permission_ids(permission_ids)
+    registered_permission_ids = (
+        permission_registry.get_registered_permission_ids(permission_ids)
+    )
+
+    return frozenset(
+        str(permission_id) for permission_id in registered_permission_ids
+    )
 
 
 class PermissionRegistry:
     """A collection of valid permissions."""
 
     def __init__(self) -> None:
-        self._permissions: dict[str, LazyString] = {}
+        self._permissions: dict[PermissionID, LazyString] = {}
 
     def register_permission(
-        self, permission_id: str, label: LazyString
+        self, permission_id: PermissionID, label: LazyString
     ) -> None:
         """Add permission to the registry."""
         self._permissions[permission_id] = label
 
     def get_registered_permission_ids(
         self, permission_ids: set[PermissionID]
-    ) -> frozenset[str]:
+    ) -> frozenset[PermissionID]:
         """Return the permission IDs that are registered.
 
         If a given permission ID is not registered, it is silently
@@ -69,7 +75,7 @@ class PermissionRegistry:
     def get_all_registered_permissions(self) -> set[Permission]:
         """Return all registered permissions."""
         return {
-            Permission(id=PermissionID(permission_id), title=label)
+            Permission(id=permission_id, title=label)
             for permission_id, label in self._permissions.items()
         }
 
