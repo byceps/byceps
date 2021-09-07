@@ -239,6 +239,13 @@ def get_assigned_roles_for_permissions() -> dict[PermissionID, set[RoleID]]:
     return dict(role_ids_by_permission_id)
 
 
+def get_all_role_ids() -> set[RoleID]:
+    """Return all role IDs."""
+    return db.session.execute(
+        select(DbRole.id)
+    ).scalars().all()
+
+
 def get_all_roles_with_titles() -> Sequence[DbRole]:
     """Return all roles, with titles."""
     return db.session \
