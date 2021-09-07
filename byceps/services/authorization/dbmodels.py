@@ -17,29 +17,6 @@ from ..user.dbmodels.user import User
 from .transfer.models import PermissionID, RoleID
 
 
-class Permission(db.Model):
-    """A permission for a specific task.
-
-    Can be assigned to one or more roles.
-    """
-
-    __tablename__ = 'authz_permissions'
-
-    id = db.Column(db.UnicodeText, primary_key=True)
-    title = db.deferred(db.Column(db.UnicodeText, unique=True, nullable=False))
-
-    roles = association_proxy('role_permissions', 'role')
-
-    def __init__(self, permission_id: PermissionID, title: str) -> None:
-        self.id = permission_id
-        self.title = title
-
-    def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .build()
-
-
 class Role(db.Model):
     """A role.
 
@@ -53,7 +30,6 @@ class Role(db.Model):
     id = db.Column(db.UnicodeText, primary_key=True)
     title = db.deferred(db.Column(db.UnicodeText, unique=True, nullable=False))
 
-    permissions = association_proxy('role_permissions', 'permission')
     users = association_proxy('user_roles', 'user')
 
     def __init__(self, role_id: RoleID, title: str) -> None:
@@ -75,8 +51,7 @@ class RolePermission(db.Model):
     role = db.relationship(Role,
                            backref=db.backref('role_permissions', collection_class=set, lazy='joined'),
                            collection_class=set)
-    permission_id = db.Column(db.UnicodeText, db.ForeignKey('authz_permissions.id'), primary_key=True)
-    permission = db.relationship(Permission, backref='role_permissions', collection_class=set, lazy='joined')
+    permission_id = db.Column(db.UnicodeText, primary_key=True)
 
     def __init__(self, role_id: RoleID, permission_id: PermissionID) -> None:
         self.role_id = role_id
@@ -84,8 +59,8 @@ class RolePermission(db.Model):
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
-            .add_with_lookup('role') \
-            .add_with_lookup('permission') \
+            .add_with_lookup('role_id') \
+            .add_with_lookup('permission_id') \
             .build()
 
 

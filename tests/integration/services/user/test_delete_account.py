@@ -15,20 +15,18 @@ from byceps.services.user import event_service
 
 
 @pytest.fixture
-def role(permission_tickle_mortals):
-    permission = permission_tickle_mortals
-
+def role():
     role = authorization_service.create_role('demigod', 'Demigod')
-    authorization_service.assign_permission_to_role(permission.id, role.id)
+    authorization_service.assign_permission_to_role(
+        'board.view_hidden', role.id
+    )
 
     yield role
 
     authorization_service.delete_role(role.id)
 
 
-def test_delete_account(admin_app, permission_tickle_mortals, role, make_user):
-    permission = permission_tickle_mortals
-
+def test_delete_account(admin_app, role, make_user):
     screen_name = 'GetRidOfMe'
     email_address = 'timedout@users.test'
     legacy_id = 'user-22299'
@@ -70,7 +68,7 @@ def test_delete_account(admin_app, permission_tickle_mortals, role, make_user):
     # authorization
     assert authorization_service.find_role_ids_for_user(user_id) == {'demigod'}
     assert authorization_service.get_permission_ids_for_user(user_id) == {
-        'tickle_mortals'
+        'board.view_hidden'
     }
 
     # -------------------------------- #

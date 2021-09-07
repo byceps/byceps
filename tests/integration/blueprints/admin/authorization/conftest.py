@@ -28,18 +28,6 @@ def role_admin_client(make_client, admin_app, role_admin):
 
 
 @pytest.fixture(scope='module')
-def permission():
-    permission_id = 'spin_around'
-    title = 'Spin around'
-
-    permission = authz_service.create_permission(permission_id, title)
-
-    yield permission
-
-    authz_service.delete_permission(permission.id)
-
-
-@pytest.fixture(scope='module')
 def role():
     role_id = 'spin_doctor'
     title = 'Dr. Spin'

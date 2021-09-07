@@ -16,7 +16,7 @@ import rtoml
 
 from ...database import db
 
-from .dbmodels import Permission as DbPermission, Role as DbRole
+from .dbmodels import Role as DbRole
 from .transfer.models import PermissionID, RoleID
 from . import service
 
@@ -25,23 +25,15 @@ from . import service
 # import
 
 
-def import_from_file(path: Path) -> tuple[int, int]:
-    """Import permissions, roles, and their relations from TOML."""
+def import_from_file(path: Path) -> int:
+    """Import roles and their assigned permissions from TOML."""
     data = rtoml.load(path)
 
-    permissions = data['permissions']
     roles = data['roles']
 
-    _create_permissions(permissions)
     _create_roles(roles)
 
-    return len(permissions), len(roles)
-
-
-def _create_permissions(permissions: list[dict[str, str]]) -> None:
-    for permission in permissions:
-        permission_id = PermissionID(permission['id'])
-        service.create_permission(permission_id, permission['title'])
+    return len(roles)
 
 
 def _create_roles(roles: list[dict[str, Union[str, list[str]]]]) -> None:
@@ -61,33 +53,12 @@ def _create_roles(roles: list[dict[str, Union[str, list[str]]]]) -> None:
 
 
 def export() -> str:
-    """Export all permissions, roles, and their relations as TOML."""
-    permissions = list(_collect_permissions())
+    """Export roles and their assigned permissions as TOML."""
     roles = list(_collect_roles())
 
-    data = {
-        'permissions': permissions,
-        'roles': roles,
-    }
+    data = {'roles': roles}
 
     return rtoml.dumps(data, pretty=True)
-
-
-def _collect_permissions() -> Iterator[dict[str, str]]:
-    """Collect all permissions, even those not assigned to any role."""
-    permissions = db.session \
-        .query(DbPermission) \
-        .options(
-            db.undefer('title'),
-        ) \
-        .order_by(DbPermission.id) \
-        .all()
-
-    for permission in permissions:
-        yield {
-            'id': permission.id,
-            'title': permission.title,
-        }
 
 
 def _collect_roles() -> Iterator[dict[str, Union[str, list[str]]]]:
@@ -102,7 +73,10 @@ def _collect_roles() -> Iterator[dict[str, Union[str, list[str]]]]:
         .all()
 
     for role in roles:
-        permission_ids = [permission.id for permission in role.permissions]
+        permission_ids = [
+            role_permission.permission_id
+            for role_permission in role.role_permissions
+        ]
         permission_ids.sort()
 
         yield {

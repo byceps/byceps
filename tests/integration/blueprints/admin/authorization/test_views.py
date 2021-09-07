@@ -4,7 +4,7 @@
 """
 
 
-def test_permission_index(role_admin_client, permission):
+def test_permission_index(role_admin_client):
     url = '/admin/authorization/permissions'
     response = role_admin_client.get(url)
     assert response.status_code == 200

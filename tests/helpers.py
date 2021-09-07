@@ -145,13 +145,6 @@ def create_user(
     return user
 
 
-def create_permissions(permission_ids: Iterable[PermissionID]) -> None:
-    for permission_id in permission_ids:
-        authz_service.create_permission(
-            permission_id, permission_id, ignore_if_exists=True
-        )
-
-
 def create_role_with_permissions_assigned(
     role_id: RoleID, permission_ids: Iterable[PermissionID]
 ) -> None:

@@ -8,35 +8,32 @@ import pytest
 from byceps.services.authorization import service
 
 
-def test_assign_permission_to_role(admin_app, permission_tickle_mortals, role):
-    permission = permission_tickle_mortals
+PERMISSION_ID = 'board.view_hidden'
 
+
+def test_assign_permission_to_role(admin_app, role):
     role_permission_ids_before = get_permission_ids_for_role(role)
-    assert permission.id not in role_permission_ids_before
+    assert PERMISSION_ID not in role_permission_ids_before
 
-    service.assign_permission_to_role(permission.id, role.id)
+    service.assign_permission_to_role(PERMISSION_ID, role.id)
 
     role_permission_ids_after = get_permission_ids_for_role(role)
-    assert permission.id in role_permission_ids_after
+    assert PERMISSION_ID in role_permission_ids_after
 
     # Clean up.
-    service.deassign_permission_from_role(permission.id, role.id)
+    service.deassign_permission_from_role(PERMISSION_ID, role.id)
 
 
-def test_deassign_permission_from_role(
-    admin_app, permission_tickle_mortals, role
-):
-    permission = permission_tickle_mortals
-
-    service.assign_permission_to_role(permission.id, role.id)
+def test_deassign_permission_from_role(admin_app, role):
+    service.assign_permission_to_role(PERMISSION_ID, role.id)
 
     role_permission_ids_before = get_permission_ids_for_role(role)
-    assert permission.id in role_permission_ids_before
+    assert PERMISSION_ID in role_permission_ids_before
 
-    service.deassign_permission_from_role(permission.id, role.id)
+    service.deassign_permission_from_role(PERMISSION_ID, role.id)
 
     role_permission_ids_after = get_permission_ids_for_role(role)
-    assert permission.id not in role_permission_ids_after
+    assert PERMISSION_ID not in role_permission_ids_after
 
 
 @pytest.fixture

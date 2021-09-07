@@ -8,7 +8,7 @@ byceps.services.authorization.service
 
 from __future__ import annotations
 from collections import defaultdict
-from typing import Iterable, Optional, Sequence
+from typing import Iterable, Optional
 
 from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
@@ -20,37 +20,11 @@ from ..user import event_service as user_event_service, service as user_service
 from ..user.transfer.models import User
 
 from .dbmodels import (
-    Permission as DbPermission,
     Role as DbRole,
     RolePermission as DbRolePermission,
     UserRole as DbUserRole,
 )
-from .transfer.models import Permission, PermissionID, Role, RoleID
-
-
-def create_permission(
-    permission_id: PermissionID, title: str, *, ignore_if_exists: bool = False
-) -> Permission:
-    """Create a permission."""
-    permission = DbPermission(permission_id, title)
-
-    db.session.add(permission)
-
-    if ignore_if_exists:
-        _commit_ignoring_integrity_error()
-    else:
-        db.session.commit()
-
-    return _db_entity_to_permission(permission)
-
-
-def delete_permission(permission_id: PermissionID) -> None:
-    """Delete a permission."""
-    db.session.query(DbPermission) \
-        .filter_by(id=permission_id) \
-        .delete()
-
-    db.session.commit()
+from .transfer.models import PermissionID, Role, RoleID
 
 
 def create_role(
@@ -263,7 +237,10 @@ def get_all_roles_with_permissions_and_users() -> list[
     return [
         (
             _db_entity_to_role(db_role),
-            {permission.id for permission in db_role.permissions},
+            {
+                role_permission.permission_id
+                for role_permission in db_role.role_permissions
+            },
             {
                 user_service._db_entity_to_user(db_user)
                 for db_user in db_role.users
@@ -349,13 +326,6 @@ def _commit_ignoring_integrity_error() -> None:
         db.session.commit()
     except IntegrityError:
         db.session.rollback()
-
-
-def _db_entity_to_permission(permission: DbPermission) -> Permission:
-    return Permission(
-        permission.id,
-        permission.title,
-    )
 
 
 def _db_entity_to_role(role: DbRole) -> Role:

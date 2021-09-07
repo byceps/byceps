@@ -7,10 +7,7 @@ import pytest
 
 from byceps.services.authorization import service as authorization_service
 
-from tests.helpers import (
-    create_permissions,
-    create_role_with_permissions_assigned,
-)
+from tests.helpers import create_role_with_permissions_assigned
 
 
 def test_get_permission_ids_for_user_without_user_permissions(site_app, user):
@@ -31,15 +28,8 @@ def test_get_permission_ids_for_user_with_user_permissions(
 
 @pytest.fixture
 def permissions(user, admin_user):
-    permission_ids = {
-        'see_everything',
-        'tickle_demigods',
-        'tickle_mere_mortals',
-    }
     role_id_god = 'god'
     role_id_demigod = 'demigod'
-
-    create_permissions(permission_ids)
 
     create_role_with_permissions_assigned(
         role_id_god, {'see_everything', 'tickle_demigods'}
@@ -59,6 +49,3 @@ def permissions(user, admin_user):
 
     for role_id in role_id_god, role_id_demigod:
         authorization_service.delete_role(role_id)
-
-    for permission_id in permission_ids:
-        authorization_service.delete_permission(permission_id)

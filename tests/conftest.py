@@ -31,7 +31,6 @@ from tests.database import set_up_database, tear_down_database
 from tests.helpers import (
     create_admin_app,
     create_party,
-    create_permissions,
     create_role_with_permissions_assigned,
     create_site,
     create_site_app,
@@ -104,15 +103,6 @@ def make_client():
 
 
 @pytest.fixture(scope='session')
-def permission_tickle_mortals(admin_app):
-    permission = authz_service.create_permission(
-        'tickle_mortals', 'Tickle mortals'
-    )
-    yield permission
-    authz_service.delete_permission(permission.id)
-
-
-@pytest.fixture(scope='session')
 def make_user(admin_app):
     user_ids = set()
 
@@ -130,17 +120,11 @@ def make_user(admin_app):
 @pytest.fixture(scope='session')
 def make_admin(make_user):
     user_ids = set()
-    created_permission_ids = set()
     created_role_ids = set()
 
     def _wrapper(screen_name: str, permission_ids: set[str], *args, **kwargs):
         admin = make_user(screen_name, *args, **kwargs)
         user_ids.add(admin.id)
-
-        # Create (not yet created) permissions.
-        new_permission_ids = permission_ids.difference(created_permission_ids)
-        create_permissions(new_permission_ids)
-        created_permission_ids.update(new_permission_ids)
 
         # Create role.
         role_id = f'admin_{token_hex(3)}'
@@ -161,9 +145,6 @@ def make_admin(make_user):
 
     for role_id in created_role_ids:
         authz_service.delete_role(role_id)
-
-    for permission_id in created_permission_ids:
-        authz_service.delete_permission(permission_id)
 
 
 @pytest.fixture(scope='session')

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Export all permissions, roles, and their relations as TOML to STDOUT.
+"""Export roles and their assigned permissions as TOML to STDOUT.
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
