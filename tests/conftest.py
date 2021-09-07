@@ -104,6 +104,15 @@ def make_client():
 
 
 @pytest.fixture(scope='session')
+def permission_tickle_mortals(admin_app):
+    permission = authz_service.create_permission(
+        'tickle_mortals', 'Tickle mortals'
+    )
+    yield permission
+    authz_service.delete_permission(permission.id)
+
+
+@pytest.fixture(scope='session')
 def make_user(admin_app):
     user_ids = set()
 

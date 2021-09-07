@@ -25,7 +25,7 @@ def test_get_permission_ids_for_user_with_user_permissions(
     assert actual == {
         'see_everything',
         'tickle_demigods',
-        'tickle_mortals',
+        'tickle_mere_mortals',
     }
 
 
@@ -34,7 +34,7 @@ def permissions(user, admin_user):
     permission_ids = {
         'see_everything',
         'tickle_demigods',
-        'tickle_mortals',
+        'tickle_mere_mortals',
     }
     role_id_god = 'god'
     role_id_demigod = 'demigod'
@@ -44,7 +44,7 @@ def permissions(user, admin_user):
     create_role_with_permissions_assigned(
         role_id_god, {'see_everything', 'tickle_demigods'}
     )
-    create_role_with_permissions_assigned(role_id_demigod, {'tickle_mortals'})
+    create_role_with_permissions_assigned(role_id_demigod, {'tickle_mere_mortals'})
 
     authorization_service.assign_role_to_user(
         role_id_god, user.id, initiator_id=admin_user.id
