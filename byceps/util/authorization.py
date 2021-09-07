@@ -14,7 +14,7 @@ from flask import g
 from flask_babel import LazyString
 
 from ..services.authorization import service as authorization_service
-from ..services.authorization.transfer.models import PermissionID
+from ..services.authorization.transfer.models import Permission, PermissionID
 from ..typing import UserID
 
 
@@ -48,13 +48,13 @@ class PermissionRegistry:
     """A collection of valid permissions."""
 
     def __init__(self) -> None:
-        self.permissions: dict[str, LazyString] = {}
+        self._permissions: dict[str, LazyString] = {}
 
     def register_permission(
         self, permission_id: str, label: LazyString
     ) -> None:
         """Add permission to the registry."""
-        self.permissions[permission_id] = label
+        self._permissions[permission_id] = label
 
     def get_registered_permission_ids(
         self, permission_ids: set[PermissionID]
@@ -64,7 +64,14 @@ class PermissionRegistry:
         If a given permission ID is not registered, it is silently
         ignored.
         """
-        return frozenset(p for p in self.permissions if p in permission_ids)
+        return frozenset(p for p in self._permissions if p in permission_ids)
+
+    def get_all_registered_permissions(self) -> set[Permission]:
+        """Return all registered permissions."""
+        return {
+            Permission(id=PermissionID(permission_id), title=label)
+            for permission_id, label in self._permissions.items()
+        }
 
 
 permission_registry = PermissionRegistry()

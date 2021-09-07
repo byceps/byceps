@@ -47,6 +47,4 @@ def role():
 
 
 def get_permission_ids_for_role(role):
-    permissions = service.get_permissions_with_title_for_role(role.id)
-
-    return {p.id for p in permissions}
+    return service.get_permission_ids_for_role(role.id)

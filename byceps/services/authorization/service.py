@@ -9,6 +9,7 @@ byceps.services.authorization.service
 from __future__ import annotations
 from typing import Optional, Sequence
 
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 from ...database import db
@@ -330,20 +331,14 @@ def _index_permissions_by_role(
     }
 
 
-def get_permissions_with_title_for_role(
-    role_id: RoleID,
-) -> Sequence[Permission]:
-    """Return the permissions assigned to the role."""
-    permissions = db.session \
-        .query(DbPermission) \
-        .options(
-            db.undefer(DbPermission.title)
-        ) \
-        .join(DbRolePermission) \
-        .filter(DbRolePermission.role_id == role_id) \
-        .all()
+def get_permission_ids_for_role(role_id: RoleID) -> set[PermissionID]:
+    """Return the permission IDs assigned to the role."""
+    permission_ids = db.session.execute(
+        select(DbRolePermission.permission_id)
+        .filter_by(role_id=role_id)
+    ).scalars().all()
 
-    return [_db_entity_to_permission(permission) for permission in permissions]
+    return {PermissionID(permission_id) for permission_id in permission_ids}
 
 
 def _commit_ignoring_integrity_error() -> None:

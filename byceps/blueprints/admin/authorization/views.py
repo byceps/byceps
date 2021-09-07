@@ -10,6 +10,7 @@ from flask import abort
 
 from ....services.authorization import service as authorization_service
 from ....services.user import service as user_service
+from ....util.authorization import permission_registry
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required
@@ -57,9 +58,17 @@ def role_view(role_id):
     if role is None:
         abort(404)
 
-    permissions = authorization_service.get_permissions_with_title_for_role(
+    all_permissions = permission_registry.get_all_registered_permissions()
+
+    role_permission_ids = authorization_service.get_permission_ids_for_role(
         role.id
     )
+
+    permissions = {
+        permission
+        for permission in all_permissions
+        if permission.id in role_permission_ids
+    }
 
     user_ids = authorization_service.find_user_ids_for_role(role.id)
     users = user_service.get_users(user_ids, include_avatars=True)
