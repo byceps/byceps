@@ -17,6 +17,7 @@ from pendulum import DateTime
 from ...database import db
 from ...typing import PartyID
 from ...util.datetime.range import create_adjacent_ranges, DateTimeRange
+from ...util.datetime.timezone import get_timezone_string
 
 from .dbmodels import Presence as DbPresence, Task as DbTask
 from .transfer.models import PresenceTimeSlot, TaskTimeSlot, TimeSlot
@@ -66,8 +67,8 @@ def get_hour_ranges(time_slots: list[TimeSlot]) -> Iterator[DateTimeRange]:
 
 
 def _get_hour_starts(dt_ranges: Sequence[DateTimeRange]) -> Iterator[datetime]:
-    min_starts_at = _find_earliest_start(dt_ranges)
-    max_ends_at = _find_latest_end(dt_ranges)
+    min_starts_at = _to_local_pendulum_datetime(_find_earliest_start(dt_ranges))
+    max_ends_at = _to_local_pendulum_datetime(_find_latest_end(dt_ranges))
 
     period = pendulum.period(min_starts_at, max_ends_at)
     hour_starts = period.range('hours')
@@ -81,6 +82,10 @@ def _find_earliest_start(dt_ranges: Sequence[DateTimeRange]) -> datetime:
 
 def _find_latest_end(dt_ranges: Sequence[DateTimeRange]) -> datetime:
     return max(dt_range.end for dt_range in dt_ranges)
+
+
+def _to_local_pendulum_datetime(dt: datetime) -> DateTime:
+    return pendulum.instance(dt).in_tz(get_timezone_string())
 
 
 def _to_datetimes_without_tzinfo(dts: Sequence[DateTime]) -> Iterator[datetime]:
