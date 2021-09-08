@@ -25,6 +25,8 @@ build:
               file: '.coverage'
               format: 'py-cc'
 
-checks:
-  python:
-    duplicate_code: false
+tools:
+  python_analyzer:
+    config:
+      duplication_detector:
+        enabled: false
