@@ -70,6 +70,8 @@ def _get_hour_starts(dt_ranges: Sequence[DateTimeRange]) -> Iterator[datetime]:
     min_starts_at = _to_local_pendulum_datetime(_find_earliest_start(dt_ranges))
     max_ends_at = _to_local_pendulum_datetime(_find_latest_end(dt_ranges))
 
+    min_starts_at = min_starts_at.set(minute=0, second=0, microsecond=0)
+
     period = pendulum.period(min_starts_at, max_ends_at)
     hour_starts = period.range('hours')
 
