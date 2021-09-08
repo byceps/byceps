@@ -20,7 +20,7 @@
         <tr>
           <th colspan="3"></th>
           {%- for day, hour_total in days_and_hour_totals %}
-          <th colspan="{{ hour_total }}">{{ render_datetime_custom(day, '%A') }}</th>
+          <th colspan="{{ hour_total }}">{{ format_date(day, 'EEEE') }}</th>
           {%- endfor %}
         </tr>
         <tr>
