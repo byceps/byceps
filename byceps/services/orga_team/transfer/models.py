@@ -7,7 +7,7 @@ byceps.services.orga_team.transfer.models
 """
 
 from dataclasses import dataclass
-from typing import NewType
+from typing import NewType, Optional
 from uuid import UUID
 
 from ....typing import PartyID, UserID
@@ -34,7 +34,7 @@ class Membership:
     id: MembershipID
     orga_team_id: OrgaTeamID
     user_id: UserID
-    duties: str
+    duties: Optional[str]
 
 
 @dataclass(frozen=True)
@@ -48,7 +48,7 @@ class OrgaActivity:
     user_id: UserID
     party: Party
     team: OrgaTeam
-    duties: str
+    duties: Optional[str]
 
 
 @dataclass(frozen=True)
@@ -56,4 +56,4 @@ class PublicOrga:
     user: User
     full_name: str
     team_name: str
-    duties: str
+    duties: Optional[str]

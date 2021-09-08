@@ -54,7 +54,7 @@ class Membership(db.Model):
     orga_team = db.relationship(OrgaTeam, collection_class=set, backref='memberships')
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     user = db.relationship(User, collection_class=set, backref='orga_team_memberships')
-    duties = db.Column(db.UnicodeText)
+    duties = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(self, orga_team_id: OrgaTeamID, user_id: UserID) -> None:
         self.orga_team_id = orga_team_id
