@@ -15,10 +15,6 @@ from sqlalchemy import select
 from ...database import db, paginate, Pagination, Query
 from ...typing import UserID
 
-from ..orga_team.dbmodels import (
-    OrgaTeam as DbOrgaTeam,
-    Membership as DbOrgaTeamMembership,
-)
 from ..user_avatar.dbmodels import (
     Avatar as DbAvatar,
     AvatarSelection as DbAvatarSelection,
