@@ -8,16 +8,13 @@ Provide and register custom template filters.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from datetime import datetime
-
-from flask import current_app
 from flask_babel import gettext
 from jinja2 import pass_eval_context
 from jinja2.filters import do_default, do_trim
 from markupsafe import Markup
-import pendulum
 
 from .datetime import format as dateformat
+from .datetime.timezone import utc_to_local_tz
 from . import money
 
 
@@ -47,26 +44,6 @@ def fallback(eval_ctx, value, fallback=None):
 
 def _wrap_markup_on_autoescape(eval_ctx, value):
     return Markup(value) if eval_ctx.autoescape else value
-
-
-def local_tz_to_utc(dt: datetime):
-    tz_str = _get_timezone()
-
-    return (pendulum.instance(dt)
-        .set(tz=tz_str)
-        .in_tz(pendulum.UTC)
-        # Keep SQLAlchemy from converting it to another zone.
-        .replace(tzinfo=None))
-
-
-def utc_to_local_tz(dt: datetime) -> datetime:
-    """Convert naive date/time object from UTC to configured time zone."""
-    tz_str = _get_timezone()
-    return pendulum.instance(dt).in_tz(tz_str)
-
-
-def _get_timezone() -> str:
-    return current_app.config['TIMEZONE']
 
 
 def register(app):

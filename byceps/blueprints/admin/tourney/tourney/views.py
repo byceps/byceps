@@ -14,10 +14,10 @@ from flask_babel import gettext
 
 from .....services.party import service as party_service
 from .....services.tourney import tourney_service
+from .....util.datetime.timezone import local_tz_to_utc, utc_to_local_tz
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
-from .....util.templatefilters import local_tz_to_utc, utc_to_local_tz
 from .....util.views import permission_required, redirect_to
 
 from .forms import CreateForm, UpdateForm

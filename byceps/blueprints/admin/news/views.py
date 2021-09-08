@@ -24,11 +24,11 @@ from ....services.user import service as user_service
 from ....services.user.service import UserIdRejected
 from ....signals import news as news_signals
 from ....util.datetime.format import format_datetime_short
+from ....util.datetime.timezone import local_tz_to_utc
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.iterables import pairwise
-from ....util.templatefilters import local_tz_to_utc
 from ....util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import (

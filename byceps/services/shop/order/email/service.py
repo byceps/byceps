@@ -27,8 +27,8 @@ from .....services.snippet.service import SnippetNotFound
 from .....services.snippet.transfer.models import Scope
 from .....services.user import service as user_service
 from .....typing import BrandID
+from .....util.datetime.timezone import utc_to_local_tz
 from .....util.money import format_euro_amount
-from .....util.templatefilters import utc_to_local_tz
 from .....util.templating import create_sandboxed_environment, load_template
 
 from ...shop.transfer.models import ShopID

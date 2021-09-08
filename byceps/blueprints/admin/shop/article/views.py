@@ -37,10 +37,10 @@ from .....services.ticketing.transfer.models import TicketCategory
 from .....services.user import service as user_service
 from .....services.user_badge import badge_service
 from .....typing import BrandID
+from .....util.datetime.timezone import local_tz_to_utc, utc_to_local_tz
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
-from .....util.templatefilters import local_tz_to_utc, utc_to_local_tz
 from .....util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import (
