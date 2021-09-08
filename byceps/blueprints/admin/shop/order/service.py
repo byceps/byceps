@@ -127,7 +127,7 @@ def _get_additional_data_for_badge_awarded(event: OrderEvent) -> OrderEventData:
     badge = user_badge_service.get_badge(badge_id)
 
     recipient_id = event.data['recipient_id']
-    recipient = user_service.get_user(recipient_id)
+    recipient = user_service.get_user(recipient_id, include_avatar=True)
 
     return {
         'badge_label': badge.label,
@@ -139,7 +139,7 @@ def _get_additional_data_for_order_note_added(
     event: OrderEvent,
 ) -> OrderEventData:
     author_id = event.data['author_id']
-    author = user_service.get_user(author_id)
+    author = user_service.get_user(author_id, include_avatar=True)
 
     return {
         'author': author,
