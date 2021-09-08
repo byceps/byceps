@@ -24,7 +24,9 @@ from .dbmodels.order_action import OrderAction as DbOrderAction
 from .transfer.models import Action, ActionParameters, Order, PaymentState
 
 
-OrderActionType = Callable[[Order, ArticleNumber, int, ActionParameters], None]
+OrderActionType = Callable[
+    [Order, ArticleNumber, int, UserID, ActionParameters], None
+]
 
 
 PROCEDURES_BY_NAME = {
@@ -78,7 +80,7 @@ def find_action(action_id: UUID) -> Optional[Action]:
     action = db.session.query(DbOrderAction).get(action_id)
 
     if action is None:
-        return
+        return None
 
     return _db_entity_to_action(action)
 
