@@ -14,13 +14,19 @@
       </tr>
     </thead>
     <tbody>
-      {%- for activity in orga_activities|sort(attribute='party.starts_at', reverse=True) %}
+    {%- for activity in orga_activities|sort(attribute='party.starts_at', reverse=True) %}
+      {%- for team_and_duties in activity.teams_and_duties|sort(attribute='team_title') %}
       <tr>
-        <td>{{- activity.party.title }}</td>
-        <td>{{ activity.team.title }}</td>
-        <td>{{ activity.duties|fallback }}</td>
+        {%- if loop.first %}
+          {%- with team_count = activity.teams_and_duties|length %}
+        <td{% if team_count > 1 %} rowspan="{{ team_count }}"{% endif %}>{{ activity.party.title }}</td>
+          {%- endwith %}
+        {%- endif %}
+        <td>{{ team_and_duties.team_title }}</td>
+        <td>{{ team_and_duties.duties|fallback }}</td>
       </tr>
       {%- endfor %}
+    {%- endfor %}
     </tbody>
   </table>
   {%- else %}

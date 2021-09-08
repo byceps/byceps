@@ -21,7 +21,7 @@
     <div class="user-profile-header">
 
       <div class="user-profile-header-column">
-{{ render_user_avatar(user, size=128, orga=orga_team is not none) }}
+{{ render_user_avatar(user, size=128, orga=(orga_teams|length > 0)) }}
       </div>
 
       <div class="user-profile-header-column screenname-and-orgateam">
@@ -29,8 +29,8 @@
           {{ render_user_screen_name(user) }}
         </div>
         <div class="user-profile-header-cell-bottom orgateam">
-          {%- if orga_team %}
-          {{ orga_team.title }}
+          {%- if orga_teams %}
+          {{ orga_teams|map(attribute='title')|join(', ') }}
           {%- endif %}
         </div>
       </div>

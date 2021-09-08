@@ -7,7 +7,8 @@ byceps.services.orga_team.service
 """
 
 from __future__ import annotations
-from typing import Optional, Sequence
+from itertools import groupby
+from typing import Iterable, Optional, Sequence
 
 from sqlalchemy import select
 
@@ -16,6 +17,7 @@ from ...typing import PartyID, UserID
 
 from ..orga.dbmodels import OrgaFlag as DbOrgaFlag
 from ..party import service as party_service
+from ..party.transfer.models import PartyID
 from ..user.dbmodels.detail import UserDetail as DbUserDetail
 from ..user.dbmodels.user import User as DbUser
 from ..user import service as user_service
@@ -30,6 +32,7 @@ from .transfer.models import (
     OrgaTeam,
     OrgaTeamID,
     PublicOrga,
+    TeamAndDuties,
 )
 
 
@@ -221,43 +224,58 @@ def _find_db_membership(membership_id: MembershipID) -> Optional[DbMembership]:
     return db.session.query(DbMembership).get(membership_id)
 
 
-def find_orga_team_for_user_and_party(
+def get_orga_teams_for_user_and_party(
     user_id: UserID, party_id: PartyID
-) -> Optional[OrgaTeam]:
-    """Return the user's membership in an orga team of that party, or
-    `None` of user it not part of an orga team for that party.
-    """
-    return db.session \
-        .query(DbOrgaTeam) \
-        .join(DbMembership) \
-        .filter(DbMembership.user_id == user_id) \
-        .filter(DbOrgaTeam.party_id == party_id) \
-        .one_or_none()
+) -> set[OrgaTeam]:
+    """Return the user's memberships in any orga teams of that party."""
+    db_orga_teams = db.session.execute(
+        select(DbOrgaTeam)
+        .join(DbMembership)
+        .filter(DbMembership.user_id == user_id)
+        .filter(DbOrgaTeam.party_id == party_id)
+    ).scalars().all()
+
+    return {_db_entity_to_team(team) for team in db_orga_teams}
 
 
 def get_orga_activities_for_user(user_id: UserID) -> set[OrgaActivity]:
     """Return all orga team activities for that user."""
-    memberships = db.session \
-        .query(DbMembership) \
-        .options(
-            db.joinedload(DbMembership.orga_team)
-                .joinedload(DbOrgaTeam.party),
-        ) \
-        .filter_by(user_id=user_id) \
-        .all()
+    memberships = db.session.execute(
+        select(DbMembership)
+        .options(db.joinedload(DbMembership.orga_team))
+        .filter_by(user_id=user_id)
+    ).scalars().all()
 
-    def to_activity(membership: DbMembership) -> OrgaActivity:
-        party = party_service._db_entity_to_party(membership.orga_team.party)
-        team = _db_entity_to_team(membership.orga_team)
+    party_ids = {ms.orga_team.party_id for ms in memberships}
+    parties = party_service.get_parties(party_ids)
+    parties_by_id = {party.id: party for party in parties}
 
+    def to_activity(
+        user_id: UserID, party_id: PartyID, memberships: Iterable[DbMembership]
+    ) -> OrgaActivity:
         return OrgaActivity(
-            membership.user_id,
-            party,
-            team,
-            membership.duties,
+            user_id=user_id,
+            party=parties_by_id[party_id],
+            teams_and_duties=to_teams_and_duties(memberships),
         )
 
-    return {to_activity(ms) for ms in memberships}
+    def to_teams_and_duties(
+        memberships: Iterable[DbMembership],
+    ) -> frozenset[TeamAndDuties]:
+        return frozenset(
+            TeamAndDuties(
+                team_title=ms.orga_team.title,
+                duties=ms.duties,
+            ) for ms in memberships
+        )
+
+    key_func = lambda ms: (ms.user_id, ms.orga_team.party_id)
+    return {
+        to_activity(user_id, party_id, ms)
+        for (user_id, party_id), ms in groupby(
+            sorted(memberships, key=key_func), key=key_func
+        )
+    }
 
 
 def get_public_orgas_for_party(party_id: PartyID) -> set[PublicOrga]:
@@ -352,32 +370,30 @@ def copy_teams_and_memberships(
 # organizers
 
 
-def get_unassigned_orgas_for_party(party_id: PartyID) -> set[User]:
-    """Return organizers that are not assigned to a team for the party."""
-    party = party_service.get_party(party_id)
+def get_unassigned_orgas_for_team(team: OrgaTeam) -> set[User]:
+    """Return eligible organizers that are not assigned to this team."""
+    party = party_service.get_party(team.party_id)
 
-    assigned_orgas = db.session \
-        .query(DbUser) \
-        .join(DbMembership) \
-        .join(DbOrgaTeam) \
-        .filter(DbOrgaTeam.party_id == party.id) \
-        .options(db.load_only(DbUser.id)) \
-        .all()
-    assigned_orga_ids = frozenset(user.id for user in assigned_orgas)
+    assigned_orga_ids = set(
+        db.session.execute(
+            select(DbMembership.user_id)
+            .filter_by(orga_team_id=team.id)
+        ).scalars().all()
+    )
 
-    unassigned_orga_ids_query = db.session \
-        .query(DbUser.id)
+    unassigned_orga_ids_select = select(DbUser.id)
 
     if assigned_orga_ids:
-        unassigned_orga_ids_query = unassigned_orga_ids_query \
+        unassigned_orga_ids_select = unassigned_orga_ids_select \
             .filter(db.not_(DbUser.id.in_(assigned_orga_ids)))
 
-    unassigned_orga_id_rows = unassigned_orga_ids_query \
-        .filter_by(deleted=False) \
-        .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == party.brand_id) \
-        .all()
-
-    unassigned_orga_ids = {row[0] for row in unassigned_orga_id_rows}
+    unassigned_orga_ids = set(
+        db.session.execute(
+            unassigned_orga_ids_select
+            .filter(DbUser.deleted == False)
+            .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == party.brand_id)
+        ).scalars().all()
+    )
 
     return user_service.get_users(unassigned_orga_ids)
 

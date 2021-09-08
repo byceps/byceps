@@ -6,6 +6,7 @@ byceps.services.orga_team.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from typing import NewType, Optional
 from uuid import UUID
@@ -44,11 +45,16 @@ class Member:
 
 
 @dataclass(frozen=True)
+class TeamAndDuties:
+    team_title: str
+    duties: Optional[str]
+
+
+@dataclass(frozen=True)
 class OrgaActivity:
     user_id: UserID
     party: Party
-    team: OrgaTeam
-    duties: Optional[str]
+    teams_and_duties: frozenset[TeamAndDuties]
 
 
 @dataclass(frozen=True)

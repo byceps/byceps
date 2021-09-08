@@ -33,7 +33,7 @@ def view(user_id):
         badge_awarding_service.get_badges_awarded_to_user(user.id)
     )
 
-    orga_team = orga_team_service.find_orga_team_for_user_and_party(
+    orga_teams = orga_team_service.get_orga_teams_for_user_and_party(
         user.id, g.party_id
     )
 
@@ -48,7 +48,7 @@ def view(user_id):
     return {
         'user': user,
         'badges_with_awarding_quantity': badges_with_awarding_quantity,
-        'orga_team': orga_team,
+        'orga_teams': orga_teams,
         'current_party_tickets': current_party_tickets,
         'attended_parties': attended_parties,
     }

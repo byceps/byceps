@@ -220,9 +220,7 @@ def membership_create_form(team_id, erroneous_form=None):
 
     party = party_service.get_party(team.party_id)
 
-    unassigned_orgas = orga_team_service.get_unassigned_orgas_for_party(
-        team.party_id
-    )
+    unassigned_orgas = orga_team_service.get_unassigned_orgas_for_team(team)
 
     if not unassigned_orgas:
         return {
@@ -252,9 +250,7 @@ def membership_create(team_id):
     """Assign an organizer to that team."""
     team = _get_team_or_404(team_id)
 
-    unassigned_orgas = orga_team_service.get_unassigned_orgas_for_party(
-        team.party_id
-    )
+    unassigned_orgas = orga_team_service.get_unassigned_orgas_for_team(team)
 
     form = MembershipCreateForm(request.form)
     form.set_user_choices(unassigned_orgas)
