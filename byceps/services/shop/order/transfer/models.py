@@ -77,6 +77,19 @@ class Address:
 
 
 @dataclass(frozen=True)
+class Orderer:
+    """Someone who orders articles."""
+
+    user_id: UserID
+    first_names: str
+    last_name: str
+    country: str
+    zip_code: str
+    city: str
+    street: str
+
+
+@dataclass(frozen=True)
 class LineItem:
     order_number: OrderNumber
     article_number: ArticleNumber

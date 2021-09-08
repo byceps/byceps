@@ -8,10 +8,10 @@ from decimal import Decimal
 
 import pytest
 
-from byceps.services.shop.order.models.orderer import Orderer
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models import (
     Order,
+    Orderer,
     OrderNumber,
     OrderState,
     PaymentState,

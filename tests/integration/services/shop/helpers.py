@@ -13,7 +13,7 @@ from byceps.services.shop.article.transfer.models import (
     ArticleNumber,
     ArticleType,
 )
-from byceps.services.shop.order.models.orderer import Orderer
+from byceps.services.shop.order.transfer.models import Orderer
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.shop.transfer.models import ShopID
 from byceps.services.snippet import service as snippet_service
