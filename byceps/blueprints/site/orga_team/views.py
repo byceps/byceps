@@ -21,6 +21,9 @@ from ....util.framework.templating import templated
 blueprint = create_blueprint('orga_team', __name__)
 
 
+GROUP_BY_TEAM = False
+
+
 @blueprint.get('/')
 @templated
 def index():
@@ -29,15 +32,28 @@ def index():
         # No party is configured for the current site.
         abort(404)
 
-    orgas = orga_team_service.get_public_orgas_for_party(g.party_id)
-    orgas = _merge_public_orgas(orgas)
-    orgas = sorted(
-        orgas,
-        key=lambda orga: user_service.get_sort_key_for_screen_name(orga.user),
-    )
+    public_orgas = orga_team_service.get_public_orgas_for_party(g.party_id)
+
+    if GROUP_BY_TEAM:
+        orgas_by_team_name = defaultdict(list)
+        for orga in public_orgas:
+            orgas_by_team_name[orga.team_name].append(orga)
+
+        teams = list(sorted(orgas_by_team_name.items()))
+    else:
+        orgas = list(_merge_public_orgas(public_orgas))
+        teams = [(None, orgas)]
+
+    for _, orgas in teams:
+        orgas.sort(
+            key=lambda orga: user_service.get_sort_key_for_screen_name(
+                orga.user
+            )
+        )
 
     return {
-        'orgas': orgas,
+        'group_by_team': GROUP_BY_TEAM,
+        'teams': teams,
     }
 
 

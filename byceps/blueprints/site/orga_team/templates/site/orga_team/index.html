@@ -9,6 +9,9 @@
     .orga-overview {
       display: flex;
       flex-direction: column;
+    }
+
+    .orga-overview--centered {
       justify-content: center;
     }
 
@@ -56,7 +59,11 @@
 
 {{ render_snippet('orga_team_intro', ignore_if_unknown=True)|safe }}
 
-  <ol class="orga-overview">
+  {%- for team_name, orgas in teams %}
+    {%- if group_by_team %}
+  <h2>{{ team_name }}</h2>
+    {%- endif %}
+    <ol class="orga-overview{% if not group_by_team %} orga-overview--centered{% endif %}">
     {%- for orga in orgas %}
     <li class="orga">
       <div class="orga-avatar">
@@ -75,5 +82,6 @@
     </li>
     {%- endfor %}
   </ol>
+  {%- endfor %}
 
 {%- endblock %}
