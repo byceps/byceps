@@ -34,10 +34,7 @@ blueprint = create_blueprint('orga_presence', __name__)
 @templated
 def view(party_id):
     """List orga presence and task time slots for that party."""
-    party = party_service.find_party(party_id)
-
-    if party is None:
-        abort(404)
+    party = _get_party_or_404(party_id)
 
     party_time_slot = PartyTimeSlot.from_party(party)
     presences = orga_presence_service.get_presences(party.id)
@@ -78,3 +75,12 @@ def is_instant_contained_in_time_slots(
     instant: datetime, time_slots: Iterable[TimeSlot]
 ) -> bool:
     return any(time_slot.range.contains(instant) for time_slot in time_slots)
+
+
+def _get_party_or_404(party_id):
+    party = party_service.find_party(party_id)
+
+    if party is None:
+        abort(404)
+
+    return party
