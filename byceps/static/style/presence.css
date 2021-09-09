@@ -4,7 +4,7 @@
 }
 
 .page-body .box {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 
 .bar-column {

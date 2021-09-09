@@ -3,7 +3,7 @@
 {% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
 {% set current_page = 'orga_presence' %}
 {% set current_page_party = party %}
-{% set page_title = 'Anwesenheit' %}
+{% set page_title = _('Organizer Presence') %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -24,9 +24,9 @@
           {%- endfor %}
         </tr>
         <tr>
-          <th>Aufgabe/Orga</th>
-          <th>Beginn</th>
-          <th>Ende</th>
+          <th></th>
+          <th>{{ _('Start') }}</th>
+          <th>{{ _('End') }}</th>
           {%- for hour_range in hour_ranges %}
           <th class="bar-column">{{ render_datetime_custom(hour_range.start, '%H') }}:00</th>
           {%- endfor %}
