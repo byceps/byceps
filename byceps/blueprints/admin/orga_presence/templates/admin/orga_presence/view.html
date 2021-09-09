@@ -79,6 +79,7 @@
         <tr>
           <th>{{ _('Start') }}</th>
           <th>{{ _('End') }}</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -86,6 +87,7 @@
         <tr>
           <td class="nowrap">{{ format_date(presence.starts_at) }}, {{ format_time(presence.starts_at, 'short') }}</td>
           <td class="nowrap">{{ format_date(presence.ends_at) }}, {{ format_time(presence.ends_at, 'short') }}</td>
+          <td><a class="button button--compact" data-action="time-slot-delete" href="{{ url_for('.time_slot_delete', time_slot_id=presence.id) }}" title="{{ _('Remove presence') }}">{{ render_icon('remove') }}</a></td>
         </tr>
       {%- endfor %}
       </tbody>
@@ -95,12 +97,18 @@
 
 {%- endblock %}
 
+{% block scripts %}
+    <script>
+      onDomReady(() => {
+        confirmed_delete_on_click_then_reload('[data-action="time-slot-delete"]', '{{ _('Remove presence?') }}');
+      });
+    </script>
+{%- endblock %}
 
 {% macro render_range_columns(time_slot) -%}
           <td class="nowrap">{{ render_datetime(time_slot.range.start, smart=False) }}</td>
           <td class="nowrap">{{ render_datetime(time_slot.range.end, smart=False) }}</td>
 {%- endmacro %}
-
 
 {% macro render_bar_columns(time_slots) -%}
       {%- for hour_range in hour_ranges %}

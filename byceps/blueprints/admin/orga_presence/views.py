@@ -24,7 +24,7 @@ from ....services.user.transfer.models import User
 from ....util.datetime.timezone import local_tz_to_utc
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to
+from ....util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import build_presence_create_form
 
@@ -134,6 +134,14 @@ def create(party_id):
     )
 
     return redirect_to('.view', party_id=party.id)
+
+
+@blueprint.delete('/time_slots/<time_slot_id>')
+@permission_required('orga_presence.update')
+@respond_no_content
+def time_slot_delete(time_slot_id):
+    """Delete the time slot."""
+    orga_presence_service.delete_time_slot(time_slot_id)
 
 
 def _get_party_or_404(party_id):

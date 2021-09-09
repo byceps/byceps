@@ -10,9 +10,11 @@ from __future__ import annotations
 from datetime import date, datetime
 from itertools import groupby
 from typing import Iterator, Sequence
+from uuid import UUID
 
 import pendulum
 from pendulum import DateTime
+from sqlalchemy import delete
 
 from ...database import db
 from ...typing import PartyID, UserID
@@ -21,7 +23,11 @@ from ...util.datetime.timezone import get_timezone_string
 
 from ..party import service as party_service
 
-from .dbmodels import Presence as DbPresence, Task as DbTask
+from .dbmodels import (
+    Presence as DbPresence,
+    Task as DbTask,
+    TimeSlot as DbTimeSlot,
+)
 from .transfer.models import PresenceTimeSlot, TaskTimeSlot, TimeSlot
 
 
@@ -38,6 +44,15 @@ def create_presence(
     db.session.commit()
 
     return _presence_to_time_slot(presence)
+
+
+def delete_time_slot(time_slot_id: UUID) -> None:
+    """Delete a time slot."""
+    db.session.execute(
+        delete(DbTimeSlot)
+        .where(DbTimeSlot.id == time_slot_id)
+        .execution_options(synchronize_session='fetch')
+    )
 
 
 def get_presences(party_id: PartyID) -> list[PresenceTimeSlot]:
