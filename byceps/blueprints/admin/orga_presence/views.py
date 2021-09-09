@@ -11,7 +11,7 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Iterable
 
-from flask import abort, g
+from flask import abort, g, request
 
 from ....services.orga_presence import service as orga_presence_service
 from ....services.orga_presence.transfer.models import (
@@ -21,9 +21,12 @@ from ....services.orga_presence.transfer.models import (
 )
 from ....services.party import service as party_service
 from ....services.user.transfer.models import User
+from ....util.datetime.timezone import local_tz_to_utc
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
-from ....util.views import permission_required
+from ....util.views import permission_required, redirect_to
+
+from .forms import build_presence_create_form
 
 
 blueprint = create_blueprint('orga_presence', __name__)
@@ -80,6 +83,57 @@ def is_instant_contained_in_time_slots(
     instant: datetime, time_slots: Iterable[TimeSlot]
 ) -> bool:
     return any(time_slot.range.contains(instant) for time_slot in time_slots)
+
+
+@blueprint.get('/<party_id>/presences/create')
+@permission_required('orga_presence.update')
+@templated
+def create_form(party_id, erroneous_form=None):
+    """Show form to create a presence for that party."""
+    party = _get_party_or_404(party_id)
+
+    party_time_slot = PartyTimeSlot.from_party(party)
+    valid_range = party_time_slot.range
+
+    CreateForm = build_presence_create_form(valid_range)
+    form = erroneous_form if erroneous_form else CreateForm()
+
+    return {
+        'party': party,
+        'valid_range': valid_range,
+        'form': form,
+    }
+
+
+@blueprint.post('/<party_id>/presences')
+@permission_required('orga_presence.update')
+def create(party_id):
+    """Create a presence for that party."""
+    party = _get_party_or_404(party_id)
+
+    party_time_slot = PartyTimeSlot.from_party(party)
+
+    CreateForm = build_presence_create_form(party_time_slot.range)
+    form = CreateForm(request.form)
+
+    if not form.validate():
+        return create_form(party.id, form)
+
+    starts_at = local_tz_to_utc(
+        datetime.combine(form.starts_on.data, form.starts_at.data)
+    )
+    ends_at = local_tz_to_utc(
+        datetime.combine(form.ends_on.data, form.ends_at.data)
+    )
+
+    orga_presence_service.create_presence(
+        party.id,
+        g.user.id,
+        starts_at,
+        ends_at,
+    )
+
+    return redirect_to('.view', party_id=party.id)
 
 
 def _get_party_or_404(party_id):

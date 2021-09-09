@@ -1,0 +1,44 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set current_page = 'orga_presence' %}
+{% set current_page_party = party %}
+{% set page_title = _('Organizer Presence') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.view', party_id=party.id), party.title) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <div class="data-label">{{ _('Valid range') }}</div>
+  <div class="data-value mb">
+    {{ format_date(valid_range.start) }}, {{ format_time(valid_range.start, 'short') }}
+    –
+    {{ format_date(valid_range.end) }}, {{ format_time(valid_range.end, 'short') }}
+  </div>
+
+  <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
+    <div class="row">
+      <div class="column-auto">
+        {{ form_field(form.starts_on) }}
+      </div>
+      <div class="column-auto">
+        {{ form_field(form.starts_at) }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="column-auto">
+        {{ form_field(form.ends_on) }}
+      </div>
+      <div class="column-auto">
+        {{ form_field(form.ends_at) }}
+      </div>
+    </div>
+
+    {{ form_buttons(_('Add')) }}
+  </form>
+
+{%- endblock %}

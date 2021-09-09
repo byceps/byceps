@@ -15,12 +15,29 @@ import pendulum
 from pendulum import DateTime
 
 from ...database import db
-from ...typing import PartyID
+from ...typing import PartyID, UserID
 from ...util.datetime.range import create_adjacent_ranges, DateTimeRange
 from ...util.datetime.timezone import get_timezone_string
 
+from ..party import service as party_service
+
 from .dbmodels import Presence as DbPresence, Task as DbTask
 from .transfer.models import PresenceTimeSlot, TaskTimeSlot, TimeSlot
+
+
+def create_presence(
+    party_id: PartyID, orga_id: UserID, starts_at: datetime, ends_at: datetime
+) -> PresenceTimeSlot:
+    """Create a presence for the orga during the party."""
+    party = party_service.get_party(party_id)
+
+    presence = DbPresence(
+        party_id=party.id, starts_at=starts_at, ends_at=ends_at, orga_id=orga_id
+    )
+    db.session.add(presence)
+    db.session.commit()
+
+    return _presence_to_time_slot(presence)
 
 
 def get_presences(party_id: PartyID) -> list[PresenceTimeSlot]:

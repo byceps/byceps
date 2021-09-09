@@ -18,8 +18,14 @@ class DateTimeRange(namedtuple('DateTimeRange', ['start', 'end'])):
 
     __slots__ = ()
 
-    def contains(self, datetime: datetime) -> bool:
-        return self.start <= datetime < self.end
+    def contains(self, dt: datetime) -> bool:
+        return self.start <= dt < self.end
+
+    def __contains__(self, dt: datetime) -> bool:
+        """Return `True` if the date/time is contained in the range
+        represented by this object.
+        """
+        return self.contains(dt)
 
     def __repr__(self) -> str:
         return f'[{self.start}..{self.end})'

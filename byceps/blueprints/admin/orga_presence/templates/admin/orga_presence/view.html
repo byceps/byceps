@@ -2,6 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
+{% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'orga_presence' %}
 {% set current_page_party = party %}
 {% set page_title = _('Organizer Presence') %}
@@ -58,7 +59,20 @@
   </div>
 
   <div class="box">
-    <h2 style="margin-top: 0;">{{ _('My Presence') }} {{ render_extra_in_heading(current_user_presences|length) }}</h2>
+
+    <div class="row">
+      <div class="column-auto">
+        <h2 style="margin-top: 0;">{{ _('My Presence') }} {{ render_extra_in_heading(current_user_presences|length) }}</h2>
+      </div>
+      {%- if has_current_user_permission('orga_presence.update') %}
+      <div class="column-auto">
+        <div class="button-row button-row--compact button-row--right">
+          <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
+        </div>
+      </div>
+      {%- endif %}
+    </div>
+
     {%- if current_user_presences %}
     <table class="index">
       <thead>
