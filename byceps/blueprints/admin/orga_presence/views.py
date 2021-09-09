@@ -11,7 +11,7 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Iterable
 
-from flask import abort
+from flask import abort, g
 
 from ....services.orga_presence import service as orga_presence_service
 from ....services.orga_presence.transfer.models import (
@@ -49,6 +49,10 @@ def view(party_id):
         orga_presence_service.get_days_and_hour_totals(hour_ranges)
     )
 
+    current_user_presences = [
+        presence for presence in presences if presence.orga.id == g.user.id
+    ]
+
     return {
         'party': party,
         'days_and_hour_totals': days_and_hour_totals,
@@ -57,6 +61,7 @@ def view(party_id):
         'presences_by_orga': presences_by_orga,
         'tasks': tasks,
         'is_instant_contained_in_time_slots': is_instant_contained_in_time_slots,
+        'current_user_presences': current_user_presences,
     }
 
 

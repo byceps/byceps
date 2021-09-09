@@ -1,4 +1,5 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
 {% set current_page = 'orga_presence' %}
@@ -54,6 +55,28 @@
         {%- endfor %}
       </tbody>
     </table>
+  </div>
+
+  <div class="box">
+    <h2 style="margin-top: 0;">{{ _('My Presence') }} {{ render_extra_in_heading(current_user_presences|length) }}</h2>
+    {%- if current_user_presences %}
+    <table class="index">
+      <thead>
+        <tr>
+          <th>{{ _('Start') }}</th>
+          <th>{{ _('End') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for presence in current_user_presences|sort(attribute='starts_at, ends_at') %}
+        <tr>
+          <td class="nowrap">{{ format_date(presence.starts_at) }}, {{ format_time(presence.starts_at, 'short') }}</td>
+          <td class="nowrap">{{ format_date(presence.ends_at) }}, {{ format_time(presence.ends_at, 'short') }}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {%- endif %}
   </div>
 
 {%- endblock %}
