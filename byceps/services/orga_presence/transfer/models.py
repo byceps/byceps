@@ -10,6 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
+from uuid import UUID
 
 from ...party.transfer.models import Party
 from ...user.transfer.models import User
@@ -47,13 +48,19 @@ class PartyTimeSlot(TimeSlot):
 
 @dataclass(frozen=True)
 class PresenceTimeSlot(TimeSlot):
+    id: UUID
     orga: User
 
     @classmethod
     def from_(
-        cls, orga: User, starts_at: datetime, ends_at: datetime
+        cls,
+        time_slot_id: UUID,
+        orga: User,
+        starts_at: datetime,
+        ends_at: datetime,
     ) -> PresenceTimeSlot:
         return cls(
+            id=time_slot_id,
             type=TimeSlotType.presence,
             starts_at=starts_at,
             ends_at=ends_at,
@@ -63,13 +70,19 @@ class PresenceTimeSlot(TimeSlot):
 
 @dataclass(frozen=True)
 class TaskTimeSlot(TimeSlot):
+    id: UUID
     title: str
 
     @classmethod
     def from_(
-        cls, title: str, starts_at: datetime, ends_at: datetime
+        cls,
+        time_slot_id: UUID,
+        title: str,
+        starts_at: datetime,
+        ends_at: datetime,
     ) -> TaskTimeSlot:
         return cls(
+            id=time_slot_id,
             type=TimeSlotType.task,
             starts_at=starts_at,
             ends_at=ends_at,

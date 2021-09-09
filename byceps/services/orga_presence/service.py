@@ -63,6 +63,7 @@ def get_tasks(party_id: PartyID) -> list[TaskTimeSlot]:
 
 def _presence_to_time_slot(presence: DbPresence) -> PresenceTimeSlot:
     return PresenceTimeSlot.from_(
+        presence.id,
         presence.orga,
         presence.starts_at,
         presence.ends_at,
@@ -70,7 +71,12 @@ def _presence_to_time_slot(presence: DbPresence) -> PresenceTimeSlot:
 
 
 def _task_to_time_slot(task: DbTask) -> TaskTimeSlot:
-    return TaskTimeSlot.from_(task.title, task.starts_at, task.ends_at)
+    return TaskTimeSlot.from_(
+        task.id,
+        task.title,
+        task.starts_at,
+        task.ends_at,
+    )
 
 
 # -------------------------------------------------------------------- #
