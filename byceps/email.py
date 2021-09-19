@@ -9,16 +9,16 @@ Sending e-mail.
 """
 
 from __future__ import annotations
-from typing import Optional
+from typing import Any, Optional
 
-from flask import current_app
+from flask import current_app, Flask
 # Hack to avoid import error in `marrow.util` on Python 3.8+.
 import sys
 sys.modules['cgi.parse_qsl'] = None
 from marrow.mailer import Mailer
 
 
-def init_app(app):
+def init_app(app: Flask) -> None:
     marrowmailer_config_key = 'MARROWMAILER_CONFIG'
 
     if marrowmailer_config_key not in app.config:
@@ -29,7 +29,7 @@ def init_app(app):
     app.marrowmailer = Mailer(mailer_config)
 
 
-def _get_config(app):
+def _get_config(app: Flask) -> dict[str, Any]:
     if app.config.get('MAIL_SUPPRESS_SEND', False) or app.testing:
         return {
             'transport.use': 'mock',
