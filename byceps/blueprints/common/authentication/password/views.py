@@ -67,10 +67,7 @@ def update():
 
     flash_success(gettext('Password has been updated. Please log in again.'))
 
-    if g.app_mode.is_admin():
-        return redirect_to('authentication_login_admin.login_form')
-    else:
-        return redirect_to('authentication_login.login_form')
+    return _redirect_to_login_form()
 
 
 # -------------------------------------------------------------------- #
@@ -189,7 +186,8 @@ def reset(token):
     password_reset_service.reset_password(verification_token, password)
 
     flash_success(gettext('Password has been updated.'))
-    return redirect_to('authentication_login.login_form')
+
+    return _redirect_to_login_form()
 
 
 def _verify_reset_token(token: str) -> VerificationToken:
@@ -230,3 +228,10 @@ def _get_current_user_or_404():
         abort(404)
 
     return user
+
+
+def _redirect_to_login_form():
+    if g.app_mode.is_admin():
+        return redirect_to('authentication_login_admin.login_form')
+    else:
+        return redirect_to('authentication_login.login_form')
