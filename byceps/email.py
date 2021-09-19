@@ -36,7 +36,7 @@ def _get_config(app: Flask) -> dict[str, Any]:
         }
 
     config = {
-        'transport.use': 'smtp',
+        'transport.use': app.config.get('MAIL_TRANSPORT', 'smtp'),
         'transport.host': app.config.get('MAIL_SERVER', 'localhost'),
         'transport.port': app.config.get('MAIL_PORT', 25),
         'transport.debug': app.config.get('MAIL_DEBUG', app.debug),
