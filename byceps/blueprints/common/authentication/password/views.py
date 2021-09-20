@@ -122,7 +122,10 @@ def request_reset():
                 screen_name=screen_name,
             )
         )
-        return redirect_to('user_email_address.request_confirmation_email')
+        if g.app_mode.is_admin():
+            return request_reset_form(form)
+        else:
+            return redirect_to('user_email_address.request_confirmation_email')
 
     if user.suspended:
         flash_error(
