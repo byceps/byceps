@@ -40,15 +40,20 @@ def make_tourney():
 
 @pytest.fixture(scope='package')
 def make_participant():
-    def _wrapper(participant_id, name):
+    def _wrapper(participant_id: str, name: str) -> Participant:
         return Participant(participant_id, name)
 
-    yield _wrapper
+    return _wrapper
 
 
 @pytest.fixture(scope='package')
 def make_match():
-    def _wrapper(match_id, tourney, participant1, participant2):
+    def _wrapper(
+        match_id: str,
+        tourney: Tourney,
+        participant1: Participant,
+        participant2: Participant,
+    ) -> Match:
         return Match(
             match_id,
             tourney.id,
@@ -58,4 +63,4 @@ def make_match():
             participant2.name,
         )
 
-    yield _wrapper
+    return _wrapper

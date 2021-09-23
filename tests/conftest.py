@@ -7,25 +7,30 @@ from __future__ import annotations
 from pathlib import Path
 from secrets import token_hex
 from tempfile import TemporaryDirectory
-from typing import Optional
+from typing import Any, Optional
 
+from flask import Flask
 import pytest
 
 from byceps.services.authorization import service as authz_service
 from byceps.services.board import board_service
 from byceps.services.brand import service as brand_service
+from byceps.services.brand.transfer.models import Brand
 from byceps.services.email import service as email_service
+from byceps.services.email.transfer.models import EmailConfig
 from byceps.services.party import service as party_service
+from byceps.services.party.transfer.models import Party
 from byceps.services.site import service as site_service
 from byceps.services.ticketing import (
     category_service as ticketing_category_service,
 )
+from byceps.services.ticketing.transfer.models import TicketCategory
 from byceps.services.user import (
     command_service as user_command_service,
     deletion_service as user_deletion_service,
 )
 from byceps.services.user.transfer.models import User
-from byceps.typing import BrandID
+from byceps.typing import BrandID, PartyID, UserID
 
 from tests.database import set_up_database, tear_down_database
 from tests.helpers import (
@@ -47,7 +52,7 @@ CONFIG_PATH_DATA_KEY = 'PATH_DATA'
 def make_admin_app(data_path):
     """Provide the admin web application."""
 
-    def _wrapper(**config_overrides):
+    def _wrapper(**config_overrides: dict[str, Any]) -> Flask:
         if CONFIG_PATH_DATA_KEY not in config_overrides:
             config_overrides[CONFIG_PATH_DATA_KEY] = data_path
         return create_admin_app(config_overrides)
@@ -69,7 +74,7 @@ def admin_app(make_admin_app):
 def make_site_app(admin_app, data_path):
     """Provide a site web application."""
 
-    def _wrapper(**config_overrides):
+    def _wrapper(**config_overrides: dict[str, Any]) -> Flask:
         if CONFIG_PATH_DATA_KEY not in config_overrides:
             config_overrides[CONFIG_PATH_DATA_KEY] = data_path
         return create_site_app(config_overrides)
@@ -82,20 +87,20 @@ def site_app(make_site_app):
     """Provide a site web application."""
     app = make_site_app()
     with app.app_context():
-        yield app
+        return app
 
 
 @pytest.fixture(scope='session')
 def data_path():
     with TemporaryDirectory() as d:
-        yield Path(d)
+        return Path(d)
 
 
 @pytest.fixture(scope='package')
 def make_client():
     """Provide a test HTTP client against the application."""
 
-    def _wrapper(app, *, user_id=None):
+    def _wrapper(app: Flask, *, user_id: Optional[UserID] = None):
         with http_client(app, user_id=user_id) as client:
             return client
 
@@ -122,7 +127,9 @@ def make_admin(make_user):
     user_ids = set()
     created_role_ids = set()
 
-    def _wrapper(screen_name: str, permission_ids: set[str], *args, **kwargs):
+    def _wrapper(
+        screen_name: str, permission_ids: set[str], *args, **kwargs
+    ) -> User:
         admin = make_user(screen_name, *args, **kwargs)
         user_ids.add(admin.id)
 
@@ -183,7 +190,7 @@ def make_email_config(admin_app, brand):
         sender_address: Optional[str] = None,
         sender_name: Optional[str] = None,
         contact_address: Optional[str] = None,
-    ):
+    ) -> EmailConfig:
         if sender_address is None:
             sender_address = f'{generate_token()}@domain.example'
 
@@ -206,7 +213,7 @@ def make_email_config(admin_app, brand):
 
 
 @pytest.fixture(scope='session')
-def email_config(make_email_config, brand):
+def email_config(make_email_config, brand) -> EmailConfig:
     return make_email_config(brand.id, sender_address='noreply@acmecon.test')
 
 
@@ -228,9 +235,11 @@ def site(email_config, party, board):
 def make_brand(admin_app):
     brand_ids = set()
 
-    def _wrapper(brand_id=None, title=None):
+    def _wrapper(
+        brand_id: Optional[BrandID] = None, title: Optional[str] = None
+    ) -> Brand:
         if brand_id is None:
-            brand_id = generate_token()
+            brand_id = BrandID(generate_token())
 
         if title is None:
             title = brand_id
@@ -254,7 +263,7 @@ def brand(make_brand):
 def make_party(admin_app, make_brand):
     party_ids = set()
 
-    def _wrapper(*args, **kwargs):
+    def _wrapper(*args, **kwargs) -> Party:
         party = create_party(*args, **kwargs)
         party_ids.add(party.id)
         return party
@@ -274,7 +283,7 @@ def party(make_party, brand):
 def make_ticket_category(admin_app, party):
     category_ids = set()
 
-    def _wrapper(party_id, title):
+    def _wrapper(party_id: PartyID, title: str) -> TicketCategory:
         category = ticketing_category_service.create_category(party_id, title)
         category_ids.add(category.id)
         return category
