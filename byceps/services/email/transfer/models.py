@@ -9,6 +9,7 @@ byceps.services.email.transfer.models
 from __future__ import annotations
 from dataclasses import dataclass
 from email.utils import formataddr
+from typing import Optional
 
 from ....typing import BrandID
 
@@ -16,12 +17,11 @@ from ....typing import BrandID
 @dataclass(frozen=True)
 class Sender:
     address: str
-    name: str
+    name: Optional[str]
 
     def format(self):
         """Format the sender as a string value suitable for an e-mail header."""
-        realname = self.name if self.name else False
-        return formataddr((realname, self.address))
+        return formataddr((self.name, self.address))
 
 
 @dataclass(frozen=True)
