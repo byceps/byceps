@@ -40,7 +40,7 @@ def _get_config(app: Flask) -> dict[str, Any]:
         'transport.host': app.config.get('MAIL_SERVER', 'localhost'),
         'transport.port': app.config.get('MAIL_PORT', 25),
         'transport.debug': app.config.get('MAIL_DEBUG', app.debug),
-        'message.author': app.config.get('MAIL_DEFAULT_SENDER', None),
+        'message.author': app.config['MAIL_DEFAULT_SENDER'],
     }
 
     username = app.config.get('MAIL_USERNAME', None)

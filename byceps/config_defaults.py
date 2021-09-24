@@ -50,6 +50,9 @@ BABEL_DEFAULT_TIMEZONE = TIMEZONE
 # static content files path
 PATH_DATA = Path('./data')
 
+# e-mail
+MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@byceps.example>'
+
 # home page
 ROOT_REDIRECT_TARGET = None
 

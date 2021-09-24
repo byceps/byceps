@@ -19,7 +19,7 @@ def test_get_config_with_defaults():
         'transport.host': 'localhost',
         'transport.port': 25,
         'transport.debug': False,
-        'message.author': None,
+        'message.author': 'BYCEPS <noreply@byceps.example>',
     }
 
 
