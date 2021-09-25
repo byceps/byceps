@@ -6,8 +6,6 @@ byceps.services.authentication.password.reset_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
-
 from ...email import service as email_service
 from ...email.transfer.models import NameAndAddress
 from ...user import service as user_service
@@ -22,8 +20,7 @@ def prepare_password_reset(
     user: User,
     email_address: str,
     url_root: str,
-    *,
-    sender: Optional[NameAndAddress] = None,
+    sender: NameAndAddress,
 ) -> None:
     """Create a verification token for password reset and email it to
     the user's address.

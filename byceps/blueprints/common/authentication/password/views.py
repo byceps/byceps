@@ -139,7 +139,7 @@ def request_reset():
     sender = _get_sender()
 
     password_reset_service.prepare_password_reset(
-        user, email_address.address, request.url_root, sender=sender
+        user, email_address.address, request.url_root, sender
     )
 
     flash_success(
