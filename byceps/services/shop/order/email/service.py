@@ -18,7 +18,7 @@ from flask_babel import gettext
 from jinja2 import FileSystemLoader
 
 from .....services.email import service as email_service
-from .....services.email.transfer.models import Message, Sender
+from .....services.email.transfer.models import Message
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models import Order, OrderID
 from .....services.shop.shop import service as shop_service

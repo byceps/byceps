@@ -16,7 +16,7 @@ from .....services.authentication.password import (
     service as password_service,
 )
 from .....services.email import service as email_service
-from .....services.email.transfer.models import Sender
+from .....services.email.transfer.models import NameAndAddress
 from .....services.site import service as site_service
 from .....services.user import service as user_service
 from .....services.verification_token import (
@@ -152,7 +152,7 @@ def request_reset():
     return request_reset_form()
 
 
-def _get_sender() -> Optional[Sender]:
+def _get_sender() -> Optional[NameAndAddress]:
     if not g.app_mode.is_site():
         return None
 

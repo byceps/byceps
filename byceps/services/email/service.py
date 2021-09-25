@@ -17,7 +17,7 @@ from ...typing import BrandID
 from ...util.jobqueue import enqueue
 
 from .dbmodels import EmailConfig as DbEmailConfig
-from .transfer.models import EmailConfig, Message, Sender
+from .transfer.models import EmailConfig, Message, NameAndAddress
 
 
 class UnknownEmailConfigId(ValueError):
@@ -149,7 +149,10 @@ def enqueue_message(message: Message) -> None:
 
 
 def enqueue_email(
-    sender: Optional[Sender], recipients: list[str], subject: str, body: str
+    sender: Optional[NameAndAddress],
+    recipients: list[str],
+    subject: str,
+    body: str,
 ) -> None:
     """Enqueue e-mail to be sent asynchronously."""
     sender_str = sender.format() if (sender is not None) else None
@@ -165,13 +168,13 @@ def send_email(
 
 
 def _db_entity_to_config(config: DbEmailConfig) -> EmailConfig:
-    sender = Sender(
-        config.sender_address,
-        config.sender_name,
+    sender = NameAndAddress(
+        name=config.sender_name,
+        address=config.sender_address,
     )
 
     return EmailConfig(
-        config.brand_id,
-        sender,
-        config.contact_address,
+        brand_id=config.brand_id,
+        sender=sender,
+        contact_address=config.contact_address,
     )

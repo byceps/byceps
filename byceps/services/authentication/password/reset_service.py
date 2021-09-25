@@ -9,7 +9,7 @@ byceps.services.authentication.password.reset_service
 from typing import Optional
 
 from ...email import service as email_service
-from ...email.transfer.models import Sender
+from ...email.transfer.models import NameAndAddress
 from ...user import service as user_service
 from ...user.transfer.models import User
 from ...verification_token import service as verification_token_service
@@ -23,7 +23,7 @@ def prepare_password_reset(
     email_address: str,
     url_root: str,
     *,
-    sender: Optional[Sender] = None,
+    sender: Optional[NameAndAddress] = None,
 ) -> None:
     """Create a verification token for password reset and email it to
     the user's address.

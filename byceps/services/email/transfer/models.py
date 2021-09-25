@@ -15,25 +15,27 @@ from ....typing import BrandID
 
 
 @dataclass(frozen=True)
-class Sender:
-    address: str
+class NameAndAddress:
     name: Optional[str]
+    address: str
 
     def format(self):
-        """Format the sender as a string value suitable for an e-mail header."""
+        """Format the name and address as a string value suitable for an
+        e-mail header.
+        """
         return formataddr((self.name, self.address))
 
 
 @dataclass(frozen=True)
 class EmailConfig:
     brand_id: BrandID
-    sender: Sender
+    sender: NameAndAddress
     contact_address: str
 
 
 @dataclass(frozen=True)
 class Message:
-    sender: Sender
+    sender: NameAndAddress
     recipients: list[str]
     subject: str
     body: str
