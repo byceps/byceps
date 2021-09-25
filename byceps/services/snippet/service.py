@@ -13,6 +13,7 @@ from typing import Optional, Sequence
 from ...database import db
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from ...services.user import service as user_service
+from ...services.user.transfer.models import User
 from ...typing import UserID
 
 from .dbmodels.snippet import (
@@ -186,6 +187,7 @@ def delete_snippet(
     if snippet is None:
         raise ValueError('Unknown snippet ID')
 
+    initiator: Optional[User]
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
     else:

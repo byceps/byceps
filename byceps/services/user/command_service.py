@@ -29,6 +29,7 @@ from .dbmodels.detail import UserDetail as DbUserDetail
 from .dbmodels.event import UserEventData
 from .dbmodels.user import User as DbUser
 from . import service as user_service
+from .transfer.models import User
 
 
 def initialize_account(
@@ -43,6 +44,7 @@ def initialize_account(
     """
     user = _get_user(user_id)
 
+    initiator: Optional[User]
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
     else:

@@ -32,7 +32,7 @@ class Match:
 
 @pytest.fixture(scope='package')
 def make_tourney():
-    def _wrapper(tourney_id, title):
+    def _wrapper(tourney_id: str, title: str) -> Tourney:
         return Tourney(tourney_id, title)
 
     yield _wrapper

@@ -27,6 +27,7 @@ from ..verification_token import service as verification_token_service
 from ..verification_token.transfer.models import Token
 
 from . import event_service as user_event_service
+from .transfer.models import User
 
 
 def send_email_address_confirmation_email(
@@ -116,6 +117,7 @@ def invalidate_email_address(
     """
     user = user_service.get_db_user(user_id)
 
+    initiator: Optional[User]
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
     else:

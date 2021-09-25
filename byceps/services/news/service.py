@@ -17,6 +17,7 @@ from ...events.news import NewsItemPublished
 from ...typing import UserID
 
 from ..user import service as user_service
+from ..user.transfer.models import User
 
 from .channel_service import _db_entity_to_channel
 from . import html_service
@@ -133,6 +134,7 @@ def publish_item(
     if publish_at is None:
         publish_at = now
 
+    initiator: Optional[User]
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
     else:

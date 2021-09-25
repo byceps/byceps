@@ -15,7 +15,8 @@ from ...database import db
 from ...events.user_badge import UserBadgeAwarded
 from ...typing import UserID
 
-from ..user import event_service, service as user_service
+from ..user import event_service as user_event_service, service as user_service
+from ..user.transfer.models import User
 
 from .badge_service import _db_entity_to_badge, get_badge, get_badges
 from .dbmodels.awarding import BadgeAwarding as DbBadgeAwarding
@@ -36,6 +37,7 @@ def award_badge_to_user(
     user = user_service.get_user(user_id)
     awarded_at = datetime.utcnow()
 
+    initiator: Optional[User]
     if initiator_id is not None:
         initiator = user_service.get_user(initiator_id)
     else:
@@ -44,13 +46,13 @@ def award_badge_to_user(
     awarding = DbBadgeAwarding(badge_id, user_id, awarded_at=awarded_at)
     db.session.add(awarding)
 
-    event_data = {'badge_id': str(badge_id)}
+    user_event_data = {'badge_id': str(badge_id)}
     if initiator_id:
-        event_data['initiator_id'] = str(initiator_id)
-    event = event_service.build_event(
-        'user-badge-awarded', user_id, event_data, occurred_at=awarded_at
+        user_event_data['initiator_id'] = str(initiator_id)
+    user_event = user_event_service.build_event(
+        'user-badge-awarded', user_id, user_event_data, occurred_at=awarded_at
     )
-    db.session.add(event)
+    db.session.add(user_event)
 
     db.session.commit()
 
