@@ -8,7 +8,7 @@ byceps.blueprints.common.authentication.password.views
 
 from typing import Optional
 
-from flask import abort, g, request
+from flask import abort, current_app, g, request
 from flask_babel import gettext
 
 from .....services.authentication.password import (
@@ -152,13 +152,14 @@ def request_reset():
     return request_reset_form()
 
 
-def _get_sender() -> Optional[NameAndAddress]:
-    if not g.app_mode.is_site():
-        return None
-
-    site = site_service.get_site(g.site_id)
-    email_config = email_service.get_config(site.brand_id)
-    return email_config.sender
+def _get_sender() -> NameAndAddress:
+    if g.app_mode.is_site():
+        site = site_service.get_site(g.site_id)
+        email_config = email_service.get_config(site.brand_id)
+        return email_config.sender
+    else:
+        default_sender = current_app.config['MAIL_DEFAULT_SENDER']
+        return email_service.parse_address(default_sender)
 
 
 @blueprint.get('/reset/token/<token>')

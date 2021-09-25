@@ -7,6 +7,7 @@ byceps.services.email.service
 """
 
 from __future__ import annotations
+from email.utils import parseaddr
 from typing import Optional
 
 from sqlalchemy.exc import IntegrityError
@@ -139,6 +140,16 @@ def get_all_configs() -> list[EmailConfig]:
     configs = db.session.query(DbEmailConfig).all()
 
     return [_db_entity_to_config(config) for config in configs]
+
+
+def parse_address(address_str: str) -> NameAndAddress:
+    """Parse a string into name and address parts."""
+    name, address = parseaddr(address_str)
+
+    if not name and not address:
+        raise ValueError(f'Could not parse name and address value: "{address}"')
+
+    return NameAndAddress(name, address)
 
 
 def enqueue_message(message: Message) -> None:
