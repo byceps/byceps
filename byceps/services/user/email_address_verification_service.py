@@ -17,6 +17,7 @@ from ...events.user import (
 from ...typing import UserID
 
 from ..email import service as email_service
+from ..email.transfer.models import NameAndAddress
 from ..site import service as site_service
 from ..site.transfer.models import SiteID
 from ..user import (
@@ -30,7 +31,7 @@ from . import event_service as user_event_service
 from .transfer.models import User
 
 
-def send_email_address_confirmation_email(
+def send_email_address_confirmation_email_for_site(
     recipient_email_address: str,
     recipient_screen_name: str,
     user_id: UserID,
@@ -41,13 +42,29 @@ def send_email_address_confirmation_email(
     email_config = email_service.get_config(site.brand_id)
     sender = email_config.sender
 
+    send_email_address_confirmation_email(
+        recipient_email_address,
+        recipient_screen_name,
+        user_id,
+        site.server_name,
+        sender,
+    )
+
+
+def send_email_address_confirmation_email(
+    recipient_email_address: str,
+    recipient_screen_name: str,
+    user_id: UserID,
+    server_name: str,
+    sender: NameAndAddress,
+) -> None:
     verification_token = (
         verification_token_service.create_for_email_address_confirmation(
             user_id, recipient_email_address
         )
     )
     confirmation_url = (
-        f'https://{site.server_name}/users/email_address/'
+        f'https://{server_name}/users/email_address/'
         f'confirmation/{verification_token.token}'
     )
 
@@ -147,7 +164,7 @@ def invalidate_email_address(
     )
 
 
-def send_email_address_change_email(
+def send_email_address_change_email_for_site(
     new_email_address: str,
     recipient_screen_name: str,
     user_id: UserID,
@@ -158,13 +175,29 @@ def send_email_address_change_email(
     email_config = email_service.get_config(site.brand_id)
     sender = email_config.sender
 
+    send_email_address_change_email(
+        new_email_address,
+        recipient_screen_name,
+        user_id,
+        site.server_name,
+        sender,
+    )
+
+
+def send_email_address_change_email(
+    new_email_address: str,
+    recipient_screen_name: str,
+    user_id: UserID,
+    server_name: str,
+    sender: NameAndAddress,
+) -> None:
     verification_token = (
         verification_token_service.create_for_email_address_change(
             user_id, new_email_address
         )
     )
     confirmation_url = (
-        f'https://{site.server_name}/users/email_address/'
+        f'https://{server_name}/users/email_address/'
         f'change/{verification_token.token}'
     )
 

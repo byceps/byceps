@@ -95,7 +95,7 @@ def change_email_address():
 
     new_email_address = form.new_email_address.data.strip()
 
-    email_address_verification_service.send_email_address_change_email(
+    email_address_verification_service.send_email_address_change_email_for_site(
         new_email_address,
         current_user.screen_name,
         current_user.id,
