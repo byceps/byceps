@@ -9,6 +9,8 @@ byceps.services.user_avatar.service
 from __future__ import annotations
 from typing import BinaryIO, Optional
 
+from sqlalchemy import select
+
 from ...database import db
 from ...typing import UserID
 from ...util.image import create_thumbnail
@@ -76,6 +78,14 @@ def remove_avatar_image(user_id: UserID) -> None:
 
     db.session.delete(selection)
     db.session.commit()
+
+
+def get_db_avatar(avatar_id: AvatarID) -> DbAvatar:
+    """Return the avatar with that ID, or raise exception if not found."""
+    return db.session.execute(
+        select(DbAvatar)
+        .filter_by(id=avatar_id)
+    ).scalar_one()
 
 
 def get_avatars_uploaded_by_user(user_id: UserID) -> list[AvatarUpdate]:
