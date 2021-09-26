@@ -26,5 +26,6 @@ def test_path(data_path, site_app, user, image_extension, image_type):
 
     avatar = user_avatar_service.get_db_avatar(avatar_id)
     expected_filename = f'{avatar.id}.{image_extension}'
+    expected = data_path / 'global' / 'users' / 'avatars' / expected_filename
 
-    assert avatar.path == data_path / 'global/users/avatars' / expected_filename
+    assert avatar.path == expected
