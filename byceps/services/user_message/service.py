@@ -8,6 +8,7 @@ Send an e-mail message from one user to another.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from email.utils import formataddr
 from pathlib import Path
@@ -22,7 +23,7 @@ from ...util import templating
 from ..email import service as email_service
 from ..email.transfer.models import Message
 from ..site import service as site_service
-from ..site.transfer.models import Site, SiteID
+from ..site.transfer.models import SiteID
 from ..user import service as user_service
 from ..user.transfer.models import User
 
@@ -55,12 +56,33 @@ def create_message(
     sender_contact_url: str,
     site_id: SiteID,
 ) -> Message:
-    """Create a message."""
+    """Assemble an email message with the rendered template as its body."""
     sender = _get_user(sender_id)
     recipient = _get_user(recipient_id)
     site = site_service.get_site(site_id)
+    email_config = email_service.get_config(site.brand_id)
 
-    return _assemble_message(sender, recipient, text, sender_contact_url, site)
+    template_context = {
+        'sender_screen_name': sender.screen_name,
+        'recipient_screen_name': recipient.screen_name,
+        'text': text.strip(),
+        'sender_contact_url': sender_contact_url,
+        'website_server_name': site.server_name,
+        'website_contact_address': email_config.contact_address,
+    }
+
+    message_template_render_result = _render_message_template(template_context)
+
+    recipient_address = user_service.get_email_address(recipient.id)
+    recipient_str = _to_name_and_address_string(
+        recipient.screen_name, recipient_address
+    )
+    recipient_strs = [recipient_str]
+
+    subject = message_template_render_result.subject
+    body = message_template_render_result.body
+
+    return Message(email_config.sender, recipient_strs, subject, body)
 
 
 def _get_user(user_id: UserID) -> User:
@@ -72,65 +94,15 @@ def _get_user(user_id: UserID) -> User:
     return user
 
 
-def _assemble_message(
-    sender_user: User,
-    recipient: User,
-    text: str,
-    sender_contact_url: str,
-    site: Site,
-) -> Message:
-    """Assemble an email message with the rendered template as its body."""
-    email_config = email_service.get_config(site.brand_id)
-
-    website_contact_address = email_config.contact_address
-
-    message_template_render_result = _render_message_template(
-        sender_user,
-        recipient,
-        text,
-        sender_contact_url,
-        site,
-        website_contact_address,
-    )
-
-    sender = email_config.sender
-
-    recipient_address = user_service.get_email_address(recipient.id)
-    recipient_str = _to_name_and_address_string(
-        recipient.screen_name, recipient_address
-    )
-    recipient_strs = [recipient_str]
-
-    subject = message_template_render_result.subject
-    body = message_template_render_result.body
-
-    return Message(sender, recipient_strs, subject, body)
-
-
 def _to_name_and_address_string(name: Optional[str], address: str) -> str:
     # If `name` evaluates to `False`, just the address is returned.
     return formataddr((name, address))
 
 
 def _render_message_template(
-    sender: User,
-    recipient: User,
-    text: str,
-    sender_contact_url: str,
-    site: Site,
-    website_contact_address: Optional[str],
+    context: dict[str, Optional[str]]
 ) -> MessageTemplateRenderResult:
     template = _get_template('message.txt')
-
-    context = {
-        'sender_screen_name': sender.screen_name,
-        'recipient_screen_name': recipient.screen_name,
-        'text': text.strip(),
-        'sender_contact_url': sender_contact_url,
-        'website_server_name': site.server_name,
-        'website_contact_address': website_contact_address,
-    }
-
     module = template.make_module(context)
     subject = getattr(module, 'subject')
     body = template.render(**context)
