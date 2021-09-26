@@ -108,7 +108,7 @@ Hallo Bob,
 
 Alice möchte dir die folgende Mitteilung zukommen lassen.
 
-Du kannst Alice hier antworten: http://www.acmecon.test/user_messages/to/{user_alice.id}/create
+Du kannst Alice hier antworten: http://www.acmecon.test/user_messages/to/{user_alice.id}
 
 ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 
@@ -173,7 +173,7 @@ Hallo Alice,
 
 Bob möchte dir die folgende Mitteilung zukommen lassen.
 
-Du kannst Bob hier antworten: http://www.acmecon.test/user_messages/to/{user_bob.id}/create
+Du kannst Bob hier antworten: http://www.acmecon.test/user_messages/to/{user_bob.id}
 
 ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 
@@ -222,7 +222,7 @@ def test_send_when_not_logged_in(site1_app, site1):
 
 
 def send_request(app, recipient_id, text, *, current_user_id=None):
-    url = f'/user_messages/to/{recipient_id}/create'
+    url = f'/user_messages/to/{recipient_id}'
 
     form_data = {'body': text}
 

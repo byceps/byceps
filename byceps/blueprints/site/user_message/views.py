@@ -24,11 +24,11 @@ from .forms import CreateForm
 blueprint = create_blueprint('user_message', __name__)
 
 
-@blueprint.get('/to/<uuid:recipient_id>/create')
+@blueprint.get('/to/<uuid:recipient_id>')
 @login_required
 @templated
 def create_form(recipient_id, erroneous_form=None):
-    """Show a form to create a message to send to the user."""
+    """Show a form to send a message to the user."""
     recipient = _get_user_or_404(recipient_id)
 
     form = erroneous_form if erroneous_form else CreateForm()
@@ -39,10 +39,10 @@ def create_form(recipient_id, erroneous_form=None):
     }
 
 
-@blueprint.post('/to/<uuid:recipient_id>/create')
+@blueprint.post('/to/<uuid:recipient_id>')
 @login_required
 def create(recipient_id):
-    """Create a message to send to the user."""
+    """Send a message to the user."""
     recipient = _get_user_or_404(recipient_id)
 
     form = CreateForm(request.form)
