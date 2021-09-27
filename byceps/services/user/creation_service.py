@@ -36,6 +36,7 @@ def create_user(
     email_address: Optional[str],
     password: str,
     *,
+    locale: Optional[str] = None,
     legacy_id: Optional[str] = None,
     first_names: Optional[str] = None,
     last_name: Optional[str] = None,
@@ -75,6 +76,7 @@ def create_user(
         created_at,
         normalized_screen_name,
         normalized_email_address,
+        locale=locale,
         legacy_id=legacy_id,
     )
 
