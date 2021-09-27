@@ -73,16 +73,11 @@ def create_message(
 
     message_template_render_result = _render_message_template(template_context)
 
-    recipient_address = user_service.get_email_address(recipient.id)
-    recipient_str = _to_name_and_address_string(
-        recipient.screen_name, recipient_address
-    )
-    recipient_strs = [recipient_str]
-
+    recipients = [_get_user_address(recipient)]
     subject = message_template_render_result.subject
     body = message_template_render_result.body
 
-    return Message(email_config.sender, recipient_strs, subject, body)
+    return Message(email_config.sender, recipients, subject, body)
 
 
 def _get_user(user_id: UserID) -> User:
@@ -94,9 +89,10 @@ def _get_user(user_id: UserID) -> User:
     return user
 
 
-def _to_name_and_address_string(name: Optional[str], address: str) -> str:
+def _get_user_address(user: User) -> str:
+    email_address = user_service.get_email_address(user.id)
     # If `name` evaluates to `False`, just the address is returned.
-    return formataddr((name, address))
+    return formataddr((user.screen_name, email_address))
 
 
 def _render_message_template(
