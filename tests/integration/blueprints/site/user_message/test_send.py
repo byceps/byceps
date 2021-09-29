@@ -134,7 +134,8 @@ Diese Mitteilung wurde über die Website www1.acmecon.test gesendet.\
     assert response.status_code == 302
     assert response.location == expected_response_location
 
-    send_email_mock.assert_called_once_with(
+    assert_email(
+        send_email_mock,
         expected_email_sender,
         expected_email_recipients,
         expected_email_subject,
@@ -200,7 +201,8 @@ Bei Fragen kontaktiere uns bitte per E-Mail an: help@acmecon.test\
     assert response.status_code == 302
     assert response.location == expected_response_location
 
-    send_email_mock.assert_called_once_with(
+    assert_email(
+        send_email_mock,
         expected_email_sender,
         expected_email_recipients,
         expected_email_subject,
@@ -231,3 +233,16 @@ def send_request(app, recipient_id, text, *, current_user_id=None):
 
     with http_client(app, user_id=current_user_id) as client:
         return client.post(url, data=form_data)
+
+
+def assert_email(
+    mock, expected_sender, expected_recipients, expected_subject, expected_body
+):
+    calls = mock.call_args_list
+    assert len(calls) == 1
+
+    args = calls[0].args
+    assert args[0] == expected_sender
+    assert args[1] == expected_recipients
+    assert args[2] == expected_subject
+    assert args[3] == expected_body

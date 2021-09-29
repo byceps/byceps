@@ -24,7 +24,11 @@ from tests.integration.services.shop.helpers import (
     create_shop_fragment,
 )
 
-from .helpers import get_current_user_for_user, place_order_with_items
+from .helpers import (
+    assert_email,
+    get_current_user_for_user,
+    place_order_with_items,
+)
 
 
 @pytest.fixture(scope='package')
@@ -129,12 +133,10 @@ def test_email_on_order_placed(send_email_mock, site_app, customer, order):
     with current_user_set(app, current_user), app.app_context():
         order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
-    expected_to_orderer_sender = 'noreply@acmecon.test'
-    expected_to_orderer_recipients = ['interessent@users.test']
-    expected_to_orderer_subject = (
-        'Deine Bestellung (AC-14-B00253) ist eingegangen.'
-    )
-    expected_to_orderer_body = '''
+    expected_sender = 'noreply@acmecon.test'
+    expected_recipients = ['interessent@users.test']
+    expected_subject = 'Deine Bestellung (AC-14-B00253) ist eingegangen.'
+    expected_body = '''
 Hallo Interessent,
 
 vielen Dank für deine Bestellung mit der Nummer AC-14-B00253 am 15.08.2014 über unsere Website.
@@ -174,11 +176,12 @@ Acme Entertainment Convention
 E-Mail: noreply@acmecon.test
     '''.strip()
 
-    send_email_mock.assert_called_once_with(
-        expected_to_orderer_sender,
-        expected_to_orderer_recipients,
-        expected_to_orderer_subject,
-        expected_to_orderer_body,
+    assert_email(
+        send_email_mock,
+        expected_sender,
+        expected_recipients,
+        expected_subject,
+        expected_body,
     )
 
 

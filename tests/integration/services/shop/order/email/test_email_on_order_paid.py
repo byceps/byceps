@@ -19,7 +19,11 @@ from byceps.services.snippet import service as snippet_service
 from tests.helpers import current_user_set
 from tests.integration.services.shop.helpers import create_shop_fragment
 
-from .helpers import get_current_user_for_user, place_order_with_items
+from .helpers import (
+    assert_email,
+    get_current_user_for_user,
+    place_order_with_items,
+)
 
 
 @pytest.fixture
@@ -108,8 +112,12 @@ Acme Entertainment Convention
 E-Mail: noreply@acmecon.test
     '''.strip()
 
-    send_email_mock.assert_called_once_with(
-        expected_sender, expected_recipients, expected_subject, expected_body
+    assert_email(
+        send_email_mock,
+        expected_sender,
+        expected_recipients,
+        expected_subject,
+        expected_body,
     )
 
 

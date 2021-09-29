@@ -35,3 +35,16 @@ def place_order_with_items(
     )
 
     return order
+
+
+def assert_email(
+    mock, expected_sender, expected_recipients, expected_subject, expected_body
+):
+    calls = mock.call_args_list
+    assert len(calls) == 1
+
+    args = calls[0].args
+    assert args[0] == expected_sender
+    assert args[1] == expected_recipients
+    assert args[2] == expected_subject
+    assert args[3] == expected_body

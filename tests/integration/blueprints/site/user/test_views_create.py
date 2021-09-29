@@ -169,8 +169,12 @@ Hallo Hiro,
 bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: https://www.acmecon.test/users/email_address/confirmation/{verification_token.token}
     '''.strip()
 
-    send_email_mock.assert_called_once_with(
-        expected_sender, expected_recipients, expected_subject, expected_body
+    assert_email(
+        send_email_mock,
+        expected_sender,
+        expected_recipients,
+        expected_subject,
+        expected_body,
     )
 
 
@@ -256,3 +260,16 @@ def assert_password_credentials_created(user_id):
 
 def assert_consent(user_id, subject_id):
     assert consent_service.has_user_consented_to_subject(user_id, subject_id)
+
+
+def assert_email(
+    mock, expected_sender, expected_recipients, expected_subject, expected_body
+):
+    calls = mock.call_args_list
+    assert len(calls) == 1
+
+    args = calls[0].args
+    assert args[0] == expected_sender
+    assert args[1] == expected_recipients
+    assert args[2] == expected_subject
+    assert args[3] == expected_body
