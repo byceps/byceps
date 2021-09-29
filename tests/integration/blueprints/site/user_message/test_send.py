@@ -73,12 +73,12 @@ def site2_app(site2, make_site_app):
 
 @pytest.fixture(scope='module')
 def user_alice(make_user):
-    return make_user('Alice', email_address='alice@users.test')
+    return make_user('Alice', email_address='alice@users.test', locale='de')
 
 
 @pytest.fixture(scope='module')
 def user_bob(make_user):
-    return make_user('Bob', email_address='bob@users.test')
+    return make_user('Bob', email_address='bob@users.test', locale='en')
 
 
 @patch('byceps.email.send')
@@ -102,15 +102,15 @@ Alice
         'ACME Entertainment Convention <noreply@acmecon.test>'
     )
     expected_email_recipients = ['Bob <bob@users.test>']
-    expected_email_subject = 'Mitteilung von Alice (über www1.acmecon.test)'
+    expected_email_subject = 'Message from Alice (via www1.acmecon.test)'
     expected_email_body = f'''\
-Hallo Bob,
+Hello Bob,
 
-Alice möchte dir die folgende Mitteilung zukommen lassen.
+Alice has sent you the following message.
 
-Du kannst hier antworten: http://www.acmecon.test/user_messages/to/{user_alice.id}
+You can reply here: http://www.acmecon.test/user_messages/to/{user_alice.id}
 
-ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
+ATTENTION: Do *not* reply to this email. Follow the link instead.
 
 ---8<-------------------------------------
 
@@ -124,7 +124,7 @@ Alice
 ---8<-------------------------------------
 
 -- 
-Diese Mitteilung wurde über die Website www1.acmecon.test gesendet.\
+This message was sent via website www1.acmecon.test.\
 '''
 
     response = send_request(

@@ -11,9 +11,10 @@ Send an e-mail message from one user to another.
 from email.utils import formataddr
 from typing import Optional
 
-from flask import current_app
+from flask_babel import gettext
 
 from ...typing import UserID
+from ...util.l10n import force_user_locale
 from ...util import templating
 
 from ..email import service as email_service
@@ -52,21 +53,21 @@ def create_message(
     site = site_service.get_site(site_id)
     email_config = email_service.get_config(site.brand_id)
 
+    recipients = [_get_user_address(recipient)]
+
     sender_screen_name = sender.screen_name or f'user-{sender.id}'
     website_server_name = site.server_name
 
-    recipients = [_get_user_address(recipient)]
-    subject = (
-        f'Mitteilung von {sender.screen_name} (über {website_server_name})'
-    )
-    body = _get_body(
-        recipient.screen_name,
-        sender_screen_name,
-        text,
-        sender_contact_url,
-        website_server_name,
-        email_config.contact_address,
-    )
+    with force_user_locale(recipient):
+        subject = _get_subject(sender_screen_name, website_server_name)
+        body = _get_body(
+            recipient.screen_name,
+            sender_screen_name,
+            text,
+            sender_contact_url,
+            website_server_name,
+            email_config.contact_address,
+        )
 
     return Message(email_config.sender, recipients, subject, body)
 
@@ -86,6 +87,14 @@ def _get_user_address(user: User) -> str:
     return formataddr((user.screen_name, email_address))
 
 
+def _get_subject(sender_screen_name: str, website_server_name: str) -> str:
+    return gettext(
+        'Message from %(sender_screen_name)s (via %(website_server_name)s)',
+        sender_screen_name=sender_screen_name,
+        website_server_name=website_server_name,
+    )
+
+
 def _get_body(
     recipient_screen_name: Optional[str],
     sender_screen_name: str,
@@ -94,25 +103,31 @@ def _get_body(
     website_server_name: str,
     website_contact_address: Optional[str],
 ) -> str:
-    body = f'''\
-Hallo {recipient_screen_name},
+    paragraphs = [
+        gettext('Hello %(screen_name)s,', screen_name=recipient_screen_name),
+        gettext(
+            '%(screen_name)s has sent you the following message.',
+            screen_name=sender_screen_name,
+        ),
+        gettext('You can reply here: %(url)s', url=sender_contact_url),
+        gettext(
+            'ATTENTION: Do *not* reply to this email. Follow the link instead.'
+        ),
+        '---8<-------------------------------------',
+        text.strip(),
+        '---8<-------------------------------------',
+        '-- \n'
+        + gettext(
+            'This message was sent via website %(server_name)s.',
+            server_name=website_server_name,
+        ),
+    ]
 
-{sender_screen_name} möchte dir die folgende Mitteilung zukommen lassen.
-
-Du kannst hier antworten: {sender_contact_url}
-
-ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
-
----8<-------------------------------------
-
-{text.strip()}
-
----8<-------------------------------------
-
--- 
-Diese Mitteilung wurde über die Website {website_server_name} gesendet.'''
-
+    body = '\n\n'.join(paragraphs)
     if website_contact_address:
-        body += f'\nBei Fragen kontaktiere uns bitte per E-Mail an: {website_contact_address}'
+        body += '\n' + gettext(
+            'If you have any questions, please contact us via email to: %(email_address)s',
+            email_address=website_contact_address,
+        )
 
     return body

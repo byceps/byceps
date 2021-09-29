@@ -6091,6 +6091,42 @@ msgstr "Deine Bestellung (%(order_number)s) ist bezahlt worden."
 msgid "wrote"
 msgstr "schrieb"
 
+#: byceps/services/user_message/service.py:91
+#, python-format
+msgid "Message from %(sender_screen_name)s (via %(website_server_name)s)"
+msgstr "Mitteilung von %(sender_screen_name)s (über %(website_server_name)s)"
+
+#: byceps/services/user_message/service.py:107
+#, python-format
+msgid "Hello %(screen_name)s,"
+msgstr "Hallo %(screen_name)s,"
+
+#: byceps/services/user_message/service.py:108
+#, python-format
+msgid "%(screen_name)s has sent you the following message."
+msgstr "%(screen_name)s möchte dir die folgende Mitteilung zukommen lassen."
+
+#: byceps/services/user_message/service.py:112
+#, python-format
+msgid "You can reply here: %(url)s"
+msgstr "Du kannst hier antworten: %(url)s"
+
+#: byceps/services/user_message/service.py:113
+msgid "ATTENTION: Do *not* reply to this email. Follow the link instead."
+msgstr "ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link."
+
+#: byceps/services/user_message/service.py:120
+#, python-format
+msgid "This message was sent via website %(server_name)s."
+msgstr "Diese Mitteilung wurde über die Website %(server_name)s gesendet."
+
+#: byceps/services/user_message/service.py:128
+#, python-format
+msgid ""
+"If you have any questions, please contact us via email to: "
+"%(email_address)s"
+msgstr "Bei Fragen kontaktiere uns bitte per E-Mail an: %(email_address)s"
+
 #: byceps/util/views.py:34
 msgid "Please log in."
 msgstr "Bitte melde dich an."

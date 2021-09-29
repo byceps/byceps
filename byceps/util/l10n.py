@@ -9,13 +9,17 @@ Localization.
 """
 
 from __future__ import annotations
+from contextlib import contextmanager
 import locale
-from typing import Optional
+from typing import Iterator, Optional
 import warnings
 
 from babel import Locale
 from flask import current_app, g, request
+from flask_babel import force_locale
 from wtforms import Form
+
+from ..services.user.transfer.models import User
 
 
 def set_locale(locale_str: str) -> None:
@@ -38,6 +42,23 @@ def get_current_user_locale() -> Optional[str]:
         return request.accept_languages.best_match(languages)
 
     return None
+
+
+@contextmanager
+def force_user_locale(user: User) -> Iterator[None]:
+    """Execute code with the user's preferred locale."""
+    locale = get_user_locale(user)
+    with force_locale(locale):
+        yield
+
+
+def get_user_locale(user: User) -> str:
+    """Return the user's preferred locale.
+
+    If no preference is set for the user, return the app's default
+    locale.
+    """
+    return user.locale or current_app.config['LOCALE']
 
 
 BASE_LOCALE = Locale('en')
