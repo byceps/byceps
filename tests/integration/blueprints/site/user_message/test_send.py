@@ -108,7 +108,7 @@ Hallo Bob,
 
 Alice möchte dir die folgende Mitteilung zukommen lassen.
 
-Du kannst Alice hier antworten: http://www.acmecon.test/user_messages/to/{user_alice.id}
+Du kannst hier antworten: http://www.acmecon.test/user_messages/to/{user_alice.id}
 
 ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 
@@ -173,7 +173,7 @@ Hallo Alice,
 
 Bob möchte dir die folgende Mitteilung zukommen lassen.
 
-Du kannst Bob hier antworten: http://www.acmecon.test/user_messages/to/{user_bob.id}
+Du kannst hier antworten: http://www.acmecon.test/user_messages/to/{user_bob.id}
 
 ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 

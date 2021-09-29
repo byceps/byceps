@@ -8,14 +8,10 @@ Send an e-mail message from one user to another.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-from dataclasses import dataclass
 from email.utils import formataddr
-from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Optional
 
 from flask import current_app
-from jinja2 import Environment, FileSystemLoader, Template
 
 from ...typing import UserID
 from ...util import templating
@@ -26,12 +22,6 @@ from ..site import service as site_service
 from ..site.transfer.models import SiteID
 from ..user import service as user_service
 from ..user.transfer.models import User
-
-
-@dataclass(frozen=True)
-class MessageTemplateRenderResult:
-    subject: str
-    body: str
 
 
 def send_message(
@@ -62,20 +52,21 @@ def create_message(
     site = site_service.get_site(site_id)
     email_config = email_service.get_config(site.brand_id)
 
-    template_context = {
-        'sender_screen_name': sender.screen_name,
-        'recipient_screen_name': recipient.screen_name,
-        'text': text.strip(),
-        'sender_contact_url': sender_contact_url,
-        'website_server_name': site.server_name,
-        'website_contact_address': email_config.contact_address,
-    }
-
-    message_template_render_result = _render_message_template(template_context)
+    sender_screen_name = sender.screen_name or f'user-{sender.id}'
+    website_server_name = site.server_name
 
     recipients = [_get_user_address(recipient)]
-    subject = message_template_render_result.subject
-    body = message_template_render_result.body
+    subject = (
+        f'Mitteilung von {sender.screen_name} (über {website_server_name})'
+    )
+    body = _get_body(
+        recipient.screen_name,
+        sender_screen_name,
+        text,
+        sender_contact_url,
+        website_server_name,
+        email_config.contact_address,
+    )
 
     return Message(email_config.sender, recipients, subject, body)
 
@@ -95,29 +86,33 @@ def _get_user_address(user: User) -> str:
     return formataddr((user.screen_name, email_address))
 
 
-def _render_message_template(
-    context: dict[str, Optional[str]]
-) -> MessageTemplateRenderResult:
-    template = _get_template('message.txt')
-    module = template.make_module(context)
-    subject = getattr(module, 'subject')
-    body = template.render(**context)
+def _get_body(
+    recipient_screen_name: Optional[str],
+    sender_screen_name: str,
+    text: str,
+    sender_contact_url: str,
+    website_server_name: str,
+    website_contact_address: Optional[str],
+) -> str:
+    body = f'''\
+Hallo {recipient_screen_name},
 
-    return MessageTemplateRenderResult(subject, body)
+{sender_screen_name} möchte dir die folgende Mitteilung zukommen lassen.
 
+Du kannst hier antworten: {sender_contact_url}
 
-def _get_template(name: str) -> Template:
-    env = _create_template_env()
-    return env.get_template(name)
+ACHTUNG: Antworte *nicht* auf diese E-Mail, sondern folge dem Link.
 
+---8<-------------------------------------
 
-def _create_template_env() -> Environment:
-    templates_path = (
-        Path(current_app.root_path) / 'services' / 'user_message' / 'templates'
-    )
+{text.strip()}
 
-    loader = FileSystemLoader(templates_path)
+---8<-------------------------------------
 
-    return templating.create_sandboxed_environment(
-        loader=loader, autoescape=False
-    )
+-- 
+Diese Mitteilung wurde über die Website {website_server_name} gesendet.'''
+
+    if website_contact_address:
+        body += f'\nBei Fragen kontaktiere uns bitte per E-Mail an: {website_contact_address}'
+
+    return body
