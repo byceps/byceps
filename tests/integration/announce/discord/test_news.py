@@ -77,12 +77,8 @@ def channel(brand):
 
 
 @pytest.fixture(scope='module')
-def editor(make_user):
-    return make_user('RasendeReporterin')
-
-
-@pytest.fixture(scope='module')
-def item(channel, editor):
+def item(channel, make_user):
+    editor = make_user()
     slug = 'zieh-dir-das-rein'
     title = 'Zieh dir das rein!'
     body = 'any body'

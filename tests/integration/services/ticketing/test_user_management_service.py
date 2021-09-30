@@ -64,7 +64,7 @@ def test_appoint_and_withdraw_user_manager(admin_app, ticket, ticket_manager):
 
 
 def test_appoint_and_withdraw_user(admin_app, ticket, make_user):
-    ticket_user = make_user('TicketUserToAppointAndWithdraw')
+    ticket_user = make_user()
 
     assert ticket.used_by_id is None
 

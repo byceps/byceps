@@ -33,7 +33,7 @@ def test_membership_create_form(orga_team_admin_client, team_tournaments):
 def test_membership_create(
     orga_team_admin_client, party, team_tournaments, make_user
 ):
-    user = make_user('OrgaTeamCandidate1')
+    user = make_user()
     team = team_tournaments
     orga_flag = orga_service.add_orga_flag(party.brand_id, user.id, user.id)
 
@@ -63,7 +63,7 @@ def test_membership_create(
 def test_membership_update_form(
     orga_team_admin_client, party, team_tournaments, make_user
 ):
-    user = make_user('OrgaTeamCandidate2')
+    user = make_user()
     team = team_tournaments
     membership = orga_team_service.create_membership(team.id, user.id, 'PUBG')
 
@@ -78,7 +78,7 @@ def test_membership_update_form(
 def test_membership_update(
     orga_team_admin_client, party, team_support, team_tournaments, make_user
 ):
-    user = make_user('OrgaTeamCandidate3')
+    user = make_user()
     team1 = team_support
     team2 = team_tournaments
     membership = orga_team_service.create_membership(team1.id, user.id, 'all')
@@ -105,7 +105,7 @@ def test_membership_update(
 def test_membership_remove(
     orga_team_admin_client, party, team_tournaments, make_user
 ):
-    user = make_user('OrgaTeamCandidate4')
+    user = make_user()
     team = team_tournaments
     membership = orga_team_service.create_membership(team.id, user.id, 'CS:GO')
 

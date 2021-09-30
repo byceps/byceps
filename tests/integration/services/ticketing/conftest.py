@@ -18,14 +18,14 @@ def another_category(make_ticket_category, party):
 
 @pytest.fixture(scope='package')
 def ticketing_admin(make_user):
-    return make_user('TicketingAdmin')
+    return make_user()
 
 
 @pytest.fixture(scope='package')
 def ticket_manager(make_user):
-    return make_user('TicketManager')
+    return make_user()
 
 
 @pytest.fixture(scope='package')
 def ticket_owner(make_user):
-    return make_user('TicketOwner')
+    return make_user()

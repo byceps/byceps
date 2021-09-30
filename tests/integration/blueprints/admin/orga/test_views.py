@@ -19,7 +19,7 @@ def test_create_orgaflag_form(orga_admin_client, brand):
 
 
 def test_create_and_remove_orgaflag(orga_admin_client, brand, make_user):
-    user = make_user('OrgaCandidate')
+    user = make_user()
     assert not is_orga_for_brand(user.id, brand.id)
 
     url = f'/admin/orgas/persons/{brand.id}'

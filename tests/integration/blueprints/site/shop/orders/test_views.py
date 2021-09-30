@@ -126,12 +126,12 @@ def site2_app(site2, make_site_app):
 
 @pytest.fixture(scope='module')
 def user1(make_user):
-    return make_user('OrdersUser1')
+    return make_user()
 
 
 @pytest.fixture(scope='module')
 def user2(make_user):
-    return make_user('OrdersUser2')
+    return make_user()
 
 
 @pytest.fixture

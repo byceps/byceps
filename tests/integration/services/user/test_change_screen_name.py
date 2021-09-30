@@ -12,7 +12,7 @@ from byceps.services.user import event_service
 
 @pytest.fixture(scope='module')
 def admin_user(make_user):
-    return make_user('ScreenNameAddressAdmin')
+    return make_user()
 
 
 def test_change_screen_name_with_reason(admin_app, make_user, admin_user):

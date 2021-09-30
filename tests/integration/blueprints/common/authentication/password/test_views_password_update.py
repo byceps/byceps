@@ -16,7 +16,7 @@ def test_when_logged_in_endpoint_is_available(site_app, site, make_user):
     old_password = 'LekkerBratworsten'
     new_password = 'EvenMoreSecure!!1'
 
-    user = make_user('PasswordUpdater', password=old_password)
+    user = make_user(password=old_password)
 
     login_user(user.id)
 

@@ -12,7 +12,7 @@ from byceps.services.user import event_service
 
 @pytest.fixture(scope='module')
 def admin_user(make_user):
-    return make_user('EmailAddressAdmin')
+    return make_user()
 
 
 def test_change_email_address_with_reason(admin_app, make_user, admin_user):
@@ -22,7 +22,6 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     reason = 'Does not want to be recognized by Acid Burn.'
 
     user = make_user(
-        'WantsEmailAddressChangedWithReason',
         email_address=old_email_address,
         email_address_verified=True,
     )
@@ -71,7 +70,6 @@ def test_change_email_address_without_reason(admin_app, make_user, admin_user):
     verified = False
 
     user = make_user(
-        'WantsEmailAddressChangedWithoutReason',
         email_address=old_email_address,
         email_address_verified=True,
     )

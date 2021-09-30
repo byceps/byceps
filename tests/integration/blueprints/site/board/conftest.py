@@ -59,7 +59,7 @@ def posting(topic, board_poster):
 
 @pytest.fixture(scope='package')
 def board_poster(make_user):
-    return make_user('BoardPoster')
+    return make_user()
 
 
 @pytest.fixture(scope='package')

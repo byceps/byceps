@@ -15,7 +15,6 @@ def test_invalidation_of_initialized_user(
     email_address = 'hoarder@mailhost.example'
 
     user = make_user(
-        'InitializedUser',
         email_address=email_address,
         email_address_verified=True,
         initialized=True,

@@ -24,7 +24,7 @@ def test_current_party_is_considered(party1, party2, make_user):
     scope_site2015 = Scope.for_site(party2.id)
 
     name = 'info'
-    creator = make_user('PartySnippetEditor')
+    creator = make_user()
 
     fragment_info2014_version = create_fragment(
         scope_site2014, name, creator.id

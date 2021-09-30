@@ -33,7 +33,6 @@ def test_update_user_address(site_app, make_user):
     new_phone_number = None
 
     user = make_user(
-        'RandomUser123',
         first_names=old_first_names,
         last_name=old_last_name,
         date_of_birth=old_date_of_birth,
@@ -104,7 +103,6 @@ def test_update_user_real_name(site_app, make_user):
     new_last_name = 'Wahnsinn'
 
     user = make_user(
-        'Moep',
         first_names=old_first_names,
         last_name=old_last_name,
     )
@@ -153,7 +151,6 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
     old_phone_number = '555-fake-anyway'
 
     user = make_user(
-        'FakeyMcFake',
         date_of_birth=old_date_of_birth,
         phone_number=old_phone_number,
     )

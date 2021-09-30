@@ -35,7 +35,7 @@ def test_delete_account(admin_app, role, make_user):
         screen_name, email_address=email_address, legacy_id=legacy_id
     )
 
-    admin_user = make_user('AdminWhoMayDeleteUsers')
+    admin_user = make_user()
 
     user_id = user.id
 

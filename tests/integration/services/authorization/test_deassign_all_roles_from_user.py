@@ -30,12 +30,12 @@ def test_deassign_all_roles_from_user(admin_app, user1, user2, roles):
 
 @pytest.fixture
 def user1(make_user):
-    return make_user('UserWithRoles1')
+    return make_user()
 
 
 @pytest.fixture
 def user2(make_user):
-    return make_user('UserWithRoles2')
+    return make_user()
 
 
 @pytest.fixture

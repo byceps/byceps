@@ -36,7 +36,7 @@ def ticketing_admin_client(make_client, admin_app, ticketing_admin):
 
 @pytest.fixture(scope='package')
 def ticket_owner(make_user):
-    return make_user('Ticket_Owner')
+    return make_user()
 
 
 @pytest.fixture(scope='package')

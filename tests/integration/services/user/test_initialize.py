@@ -13,17 +13,17 @@ from byceps.services.user import event_service
 
 @pytest.fixture(scope='module')
 def admin_user(make_user):
-    return make_user('UserInitializingAdmin')
+    return make_user()
 
 
 @pytest.fixture(scope='module')
 def uninitialized_user_created_online(make_user):
-    return make_user('CreatedOnline', initialized=False)
+    return make_user(initialized=False)
 
 
 @pytest.fixture(scope='module')
 def uninitialized_user_created_at_party_checkin_by_admin(make_user):
-    return make_user('CreatedAtPartyCheckInByAdmin', initialized=False)
+    return make_user(initialized=False)
 
 
 @pytest.fixture(scope='module')

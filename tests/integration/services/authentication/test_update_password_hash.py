@@ -12,7 +12,7 @@ from byceps.services.user import event_service
 
 
 def test_update_password_hash(site_app, admin_user, make_user):
-    user = make_user('PasswordHashUpdater', password='InitialPassw0rd')
+    user = make_user(password='InitialPassw0rd')
 
     admin_id = admin_user.id
     user_id = user.id

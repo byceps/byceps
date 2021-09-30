@@ -29,7 +29,7 @@ from .helpers import get_current_user_for_user, place_order_with_items
 
 @pytest.fixture(scope='package')
 def order_admin(make_user):
-    return make_user('PlacedEmailShopOrderAdmin')
+    return make_user()
 
 
 @pytest.fixture(scope='module')

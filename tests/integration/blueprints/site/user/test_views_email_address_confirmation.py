@@ -17,33 +17,27 @@ from tests.helpers import http_client
 
 @pytest.fixture(scope='module')
 def user1(make_user):
-    return make_user(
-        'EAC-User1', email_address='user1@mail.test', initialized=False
-    )
+    return make_user(email_address='user1@mail.test', initialized=False)
 
 
 @pytest.fixture(scope='module')
 def user2(make_user):
-    return make_user('EAC-User2', initialized=False)
+    return make_user(initialized=False)
 
 
 @pytest.fixture(scope='module')
 def user3(make_user):
-    return make_user(
-        'EAC-User3', email_address='user3@mail.test', initialized=True
-    )
+    return make_user(email_address='user3@mail.test', initialized=True)
 
 
 @pytest.fixture(scope='module')
 def user4(make_user):
-    return make_user('EAC-User4', initialized=True)
+    return make_user(initialized=True)
 
 
 @pytest.fixture(scope='module')
 def user5(make_user):
-    return make_user(
-        'EAC-User5', email_address='user5@mail.test', initialized=True
-    )
+    return make_user(email_address='user5@mail.test', initialized=True)
 
 
 @pytest.fixture

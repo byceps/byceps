@@ -92,7 +92,7 @@ def cart(article_bungalow, article_guest_fee, article_table):
 
 @pytest.fixture
 def orderer(make_user):
-    user = make_user('ÖderBesteller', email_address='h-w.mustermann@users.test')
+    user = make_user(email_address='h-w.mustermann@users.test')
 
     return Orderer(
         user.id,

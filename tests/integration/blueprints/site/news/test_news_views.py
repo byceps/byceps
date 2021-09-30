@@ -16,7 +16,7 @@ from tests.helpers import create_site, http_client
 
 @pytest.fixture(scope='module')
 def editor(make_user):
-    return make_user('Journalist')
+    return make_user()
 
 
 @pytest.fixture(scope='module')

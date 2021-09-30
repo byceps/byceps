@@ -10,7 +10,7 @@ from byceps.services.ticketing import attendance_service
 
 @pytest.fixture
 def another_user(make_user):
-    return make_user('AnotherUser')
+    return make_user()
 
 
 def test_create_archived_attendance(

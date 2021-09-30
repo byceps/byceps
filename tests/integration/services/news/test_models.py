@@ -13,7 +13,7 @@ from byceps.services.news import (
 
 @pytest.fixture(scope='module')
 def editor(make_user):
-    return make_user('NewsEditor')
+    return make_user()
 
 
 @pytest.fixture(scope='module')

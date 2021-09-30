@@ -13,7 +13,6 @@ from tests.helpers import http_client
 
 def test_valid_token(site_app, site, make_user):
     user = make_user(
-        'EmailChangeSuccess',
         email_address='change-success-before@mail.test',
         email_address_verified=True,
     )
@@ -39,7 +38,6 @@ def test_valid_token(site_app, site, make_user):
 
 def test_unknown_token(site_app, site, make_user):
     user = make_user(
-        'EmailChangeFail',
         email_address='change-fail@mail.test',
         email_address_verified=True,
     )

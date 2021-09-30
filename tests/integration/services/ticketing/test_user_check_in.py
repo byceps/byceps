@@ -36,7 +36,7 @@ def ticket(admin_app, category, ticket_owner):
 
 
 def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
-    ticket_user = make_user('TicketUserToCheckIn')
+    ticket_user = make_user()
 
     ticket_before = ticket
 
@@ -102,7 +102,7 @@ def test_check_in_user_with_ticket_without_assigned_user(
 def test_check_in_user_with_revoked_ticket(
     admin_app, party, ticket, ticketing_admin, make_user
 ):
-    ticket_user = make_user('TicketUserWithRevokedTicket')
+    ticket_user = make_user()
 
     ticket.revoked = True
     ticket.used_by_id = ticket_user.id
@@ -115,7 +115,7 @@ def test_check_in_user_with_revoked_ticket(
 def test_check_in_user_with_ticket_user_already_checked_in(
     admin_app, party, ticket, ticketing_admin, make_user
 ):
-    ticket_user = make_user('AlreadyCheckedInTicketUser')
+    ticket_user = make_user()
 
     ticket.used_by_id = ticket_user.id
     ticket.user_checked_in = True
@@ -128,7 +128,7 @@ def test_check_in_user_with_ticket_user_already_checked_in(
 def test_check_in_suspended_user(
     admin_app, party, ticket, ticketing_admin, make_user
 ):
-    ticket_user = make_user('SuspendedTicketUser', suspended=True)
+    ticket_user = make_user(suspended=True)
 
     ticket.used_by_id = ticket_user.id
     db.session.commit()
