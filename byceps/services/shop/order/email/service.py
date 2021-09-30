@@ -166,10 +166,7 @@ def _get_template_context(order_email_data: OrderEmailData) -> dict[str, Any]:
 
 
 def _get_footer(order: Order) -> str:
-    fragment = _get_snippet_body(order.shop_id, 'email_footer')
-
-    template = load_template(fragment)
-    return template.render()
+    return _get_snippet_body(order.shop_id, 'email_footer')
 
 
 def _assemble_email_to_orderer(
