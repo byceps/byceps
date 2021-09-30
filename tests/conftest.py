@@ -79,9 +79,9 @@ def make_site_app(admin_app, data_path):
 
 
 @pytest.fixture(scope='session')
-def site_app(make_site_app):
+def site_app(make_site_app, site):
     """Provide a site web application."""
-    app = make_site_app()
+    app = make_site_app(SITE_ID=site.id)
     with app.app_context():
         return app
 
