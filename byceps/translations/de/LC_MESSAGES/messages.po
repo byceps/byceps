@@ -5634,7 +5634,7 @@ msgstr "Dies ist bereits der aktuelle Benutzername."
 msgid "Wrong password."
 msgstr "Das Passwort ist nicht korrekt."
 
-#: byceps/blueprints/site/user/settings/views.py:106
+#: byceps/blueprints/site/user/settings/views.py:103
 msgid ""
 "An email with a verification link has been sent to your new address. The "
 "email address of your account will be changed to the new address once you"
@@ -5644,16 +5644,16 @@ msgstr ""
 "gesendet. Die E-Mail-Adresse deines Benutzerkontos wird geändert sobald "
 "du die neue Adresse über den Link bestätigst."
 
-#: byceps/blueprints/site/user/settings/views.py:149
+#: byceps/blueprints/site/user/settings/views.py:146
 #, python-format
 msgid "Your username has been changed to \"%(new_screen_name)s\"."
 msgstr "Dein Benutzername wurde zu \"%(new_screen_name)s\" geändert."
 
-#: byceps/blueprints/site/user/settings/views.py:168
+#: byceps/blueprints/site/user/settings/views.py:165
 msgid "Your language preference has been updated."
 msgstr "Deine Sprachpräferenz wurde aktualisiert."
 
-#: byceps/blueprints/site/user/settings/views.py:220
+#: byceps/blueprints/site/user/settings/views.py:217
 msgid "Your data has been saved."
 msgstr "Deine Daten wurden gespeichert."
 
@@ -6091,15 +6091,29 @@ msgstr "Deine Bestellung (%(order_number)s) ist bezahlt worden."
 msgid "wrote"
 msgstr "schrieb"
 
-#: byceps/services/user_message/service.py:91
+#: byceps/services/user/email_address_verification_service.py:72
+#: byceps/services/user/email_address_verification_service.py:209
 #, python-format
-msgid "Message from %(sender_screen_name)s (via %(website_server_name)s)"
-msgstr "Mitteilung von %(sender_screen_name)s (über %(website_server_name)s)"
+msgid "%(screen_name)s, please verify your email address"
+msgstr "%(screen_name)s, bitte bestätige deine E-Mail-Adresse"
 
+#: byceps/services/user/email_address_verification_service.py:77
+#: byceps/services/user/email_address_verification_service.py:214
 #: byceps/services/user_message/service.py:107
 #, python-format
 msgid "Hello %(screen_name)s,"
 msgstr "Hallo %(screen_name)s,"
+
+#: byceps/services/user/email_address_verification_service.py:79
+#: byceps/services/user/email_address_verification_service.py:216
+#, python-format
+msgid "please verify your email address by accessing this URL: %(url)s"
+msgstr "bitte bestätige deine E-Mail-Adresse indem du diese URL aufrufst: %(url)s"
+
+#: byceps/services/user_message/service.py:91
+#, python-format
+msgid "Message from %(sender_screen_name)s (via %(website_server_name)s)"
+msgstr "Mitteilung von %(sender_screen_name)s (über %(website_server_name)s)"
 
 #: byceps/services/user_message/service.py:108
 #, python-format

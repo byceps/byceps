@@ -8,6 +8,8 @@ byceps.services.user.email_address_verification_service
 
 from typing import Optional
 
+from flask_babel import gettext
+
 from ...database import db
 from ...events.user import (
     UserEmailAddressChanged,
@@ -15,6 +17,7 @@ from ...events.user import (
     UserEmailAddressInvalidated,
 )
 from ...typing import UserID
+from ...util.l10n import force_user_locale
 
 from ..email import service as email_service
 from ..email.transfer.models import NameAndAddress
@@ -52,6 +55,8 @@ def send_email_address_confirmation_email(
     server_name: str,
     sender: NameAndAddress,
 ) -> None:
+    recipients = [email_address]
+
     verification_token = (
         verification_token_service.create_for_email_address_confirmation(
             user.id, email_address
@@ -62,13 +67,20 @@ def send_email_address_confirmation_email(
         f'confirmation/{verification_token.token}'
     )
 
-    recipient_screen_name = _get_user_screen_name_or_fallback(user)
-    subject = f'{recipient_screen_name}, bitte bestätige deine E-Mail-Adresse'
-    body = (
-        f'Hallo {recipient_screen_name},\n\n'
-        f'bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: {confirmation_url}'
-    )
-    recipients = [email_address]
+    with force_user_locale(user):
+        recipient_screen_name = _get_user_screen_name_or_fallback(user)
+        subject = gettext(
+            '%(screen_name)s, please verify your email address',
+            screen_name=recipient_screen_name,
+        )
+        body = (
+            gettext('Hello %(screen_name)s,', screen_name=recipient_screen_name)
+            + '\n\n'
+            + gettext(
+                'please verify your email address by accessing this URL: %(url)s',
+                url=confirmation_url,
+            )
+        )
 
     email_service.enqueue_email(sender, recipients, subject, body)
 
@@ -180,6 +192,8 @@ def send_email_address_change_email(
     server_name: str,
     sender: NameAndAddress,
 ) -> None:
+    recipients = [new_email_address]
+
     verification_token = (
         verification_token_service.create_for_email_address_change(
             user.id, new_email_address
@@ -190,15 +204,20 @@ def send_email_address_change_email(
         f'change/{verification_token.token}'
     )
 
-    recipient_screen_name = _get_user_screen_name_or_fallback(user)
-    subject = (
-        f'{recipient_screen_name}, bitte bestätige deine neue E-Mail-Adresse'
-    )
-    body = (
-        f'Hallo {recipient_screen_name},\n\n'
-        f'bitte bestätige deine neue E-Mail-Adresse, indem du diese URL abrufst: {confirmation_url}'
-    )
-    recipients = [new_email_address]
+    with force_user_locale(user):
+        recipient_screen_name = _get_user_screen_name_or_fallback(user)
+        subject = gettext(
+            '%(screen_name)s, please verify your email address',
+            screen_name=recipient_screen_name,
+        )
+        body = (
+            gettext('Hello %(screen_name)s,', screen_name=recipient_screen_name)
+            + '\n\n'
+            + gettext(
+                'please verify your email address by accessing this URL: %(url)s',
+                url=confirmation_url,
+            )
+        )
 
     email_service.enqueue_email(sender, recipients, subject, body)
 
