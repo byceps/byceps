@@ -1,6 +1,0 @@
-{% for line_item in order.line_items|sort(attribute='description') %}
-  Bezeichnung: {{ line_item.description }}
-  Anzahl: {{ line_item.quantity }}
-  Stückpreis: {{ line_item.unit_price|format_euro_amount }}
-{% endfor %}
-  Gesamtbetrag: {{ order.total_amount|format_euro_amount }}

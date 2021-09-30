@@ -1,9 +1,0 @@
-{% extends '_base.txt' %}
-
-{% block body %}
-Hallo {{ orderer_screen_name }},
-
-deine Bestellung mit der Nummer {{ order.order_number }} vom {{ (order.created_at|utc_to_local_tz).strftime('%d.%m.%Y') }} wurde von uns aus folgendem Grund storniert:
-
-{{ order.cancelation_reason }}
-{% endblock %}

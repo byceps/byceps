@@ -10,12 +10,9 @@ Notification e-mails about shop orders
 
 from __future__ import annotations
 from dataclasses import dataclass
-from pathlib import Path
-from typing import Any
+from typing import Iterator
 
-from flask import current_app
 from flask_babel import gettext
-from jinja2 import FileSystemLoader
 
 from .....services.email import service as email_service
 from .....services.email.transfer.models import Message
@@ -29,7 +26,7 @@ from .....services.user import service as user_service
 from .....typing import BrandID
 from .....util.datetime.timezone import utc_to_local_tz
 from .....util.money import format_euro_amount
-from .....util.templating import create_sandboxed_environment, load_template
+from .....util.templating import load_template
 
 from ...shop.transfer.models import ShopID
 
@@ -45,7 +42,7 @@ class OrderEmailData:
 def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
     data = _get_order_email_data(order_id)
 
-    message = _assemble_email_for_incoming_order_to_orderer(data)
+    message = _assemble_email_for_placed_order_to_orderer(data)
 
     _send_email(message)
 
@@ -66,26 +63,42 @@ def send_email_for_paid_order_to_orderer(order_id: OrderID) -> None:
     _send_email(message)
 
 
-def _assemble_email_for_incoming_order_to_orderer(
+def _assemble_email_for_placed_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
     order = data.order
+    order_number = order.order_number
 
     subject = gettext(
         'Your order (%(order_number)s) has been received.',
-        order_number=order.order_number,
+        order_number=order_number,
     )
-    template_name = 'order_placed.txt'
-    template_context = _get_template_context(data)
-    template_context['payment_instructions'] = _get_payment_instructions(order)
+
+    date_str = _get_order_date_str(order)
+    line_items = [
+        '\n'.join(
+            [
+                f'  Bezeichnung: {line_item.description}',
+                f'  Anzahl: {line_item.quantity}',
+                f'  Stückpreis: {format_euro_amount(line_item.unit_price)}',
+            ]
+        )
+        for line_item in sorted(order.line_items, key=lambda li: li.description)
+    ]
+    payment_instructions = _get_payment_instructions(order)
+    paragraphs = [
+        f'vielen Dank für deine Bestellung mit der Nummer {order_number} am {date_str} über unsere Website.',
+        'Folgende Artikel hast du bestellt:',
+        *line_items,
+        f'  Gesamtbetrag: {format_euro_amount(order.total_amount)}',
+        payment_instructions,
+    ]
+    body = _assemble_body(data, paragraphs)
+
     recipient_address = data.orderer_email_address
 
     return _assemble_email_to_orderer(
-        subject,
-        template_name,
-        template_context,
-        data.brand_id,
-        recipient_address,
+        subject, body, data.brand_id, recipient_address
     )
 
 
@@ -102,38 +115,49 @@ def _get_payment_instructions(order: Order) -> str:
 def _assemble_email_for_canceled_order_to_orderer(
     data: OrderEmailData,
 ) -> Message:
+    order = data.order
+    order_number = order.order_number
+
     subject = '\u274c ' + gettext(
         'Your order (%(order_number)s) has been canceled.',
-        order_number=data.order.order_number,
+        order_number=order_number,
     )
-    template_name = 'order_canceled.txt'
-    template_context = _get_template_context(data)
+
+    date_str = _get_order_date_str(order)
+    cancelation_reason = order.cancelation_reason or ''
+    paragraphs = [
+        f'deine Bestellung mit der Nummer {order_number} vom {date_str} wurde von uns aus folgendem Grund storniert:',
+        cancelation_reason,
+    ]
+    body = _assemble_body(data, paragraphs)
+
     recipient_address = data.orderer_email_address
 
     return _assemble_email_to_orderer(
-        subject,
-        template_name,
-        template_context,
-        data.brand_id,
-        recipient_address,
+        subject, body, data.brand_id, recipient_address
     )
 
 
 def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
+    order = data.order
+    order_number = order.order_number
+
     subject = '\u2705 ' + gettext(
         'Your order (%(order_number)s) has been paid.',
-        order_number=data.order.order_number,
+        order_number=order_number,
     )
-    template_name = 'order_paid.txt'
-    template_context = _get_template_context(data)
+
+    date_str = _get_order_date_str(order)
+    paragraphs = [
+        f'vielen Dank für deine Bestellung mit der Nummer {order_number} am {date_str} über unsere Website.',
+        'Wir haben deine Zahlung erhalten und deine Bestellung als „bezahlt“ erfasst.',
+    ]
+    body = _assemble_body(data, paragraphs)
+
     recipient_address = data.orderer_email_address
 
     return _assemble_email_to_orderer(
-        subject,
-        template_name,
-        template_context,
-        data.brand_id,
-        recipient_address,
+        subject, body, data.brand_id, recipient_address
     )
 
 
@@ -154,35 +178,32 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     )
 
 
-def _get_template_context(order_email_data: OrderEmailData) -> dict[str, Any]:
-    """Collect data required for an order e-mail template."""
-    footer = _get_footer(order_email_data.order)
+def _assemble_body(data: OrderEmailData, paragraphs: list[str]) -> str:
+    """Assemble the plain text part of the email."""
+    orderer_screen_name = data.orderer_screen_name
 
-    return {
-        'order': order_email_data.order,
-        'orderer_screen_name': order_email_data.orderer_screen_name,
-        'footer': footer,
-    }
+    salutation = f'Hallo {orderer_screen_name},'
+    footer = _get_snippet_body(data.order.shop_id, 'email_footer')
 
-
-def _get_footer(order: Order) -> str:
-    return _get_snippet_body(order.shop_id, 'email_footer')
+    return '\n\n'.join([salutation] + paragraphs + [footer])
 
 
 def _assemble_email_to_orderer(
     subject: str,
-    template_name: str,
-    template_context: dict[str, Any],
+    body: str,
     brand_id: BrandID,
     recipient_address: str,
 ) -> Message:
     """Assemble an email message with the rendered template as its body."""
     config = email_service.get_config(brand_id)
     sender = config.sender
-    body = _render_template(template_name, **template_context)
     recipients = [recipient_address]
 
     return Message(sender, recipients, subject, body)
+
+
+def _get_order_date_str(order: Order) -> str:
+    return utc_to_local_tz(order.created_at).strftime('%d.%m.%Y')
 
 
 def _get_snippet_body(shop_id: ShopID, name: str) -> str:
@@ -195,28 +216,7 @@ def _get_snippet_body(shop_id: ShopID, name: str) -> str:
     if not version:
         raise SnippetNotFound(scope, name)
 
-    return version.body
-
-
-def _render_template(name: str, **context: dict[str, Any]) -> str:
-    templates_path = (
-        Path(current_app.root_path)
-        / 'services'
-        / 'shop'
-        / 'order'
-        / 'email'
-        / 'templates'
-    )
-
-    loader = FileSystemLoader(templates_path)
-
-    env = create_sandboxed_environment(loader=loader)
-    env.filters['format_euro_amount'] = format_euro_amount
-    env.filters['utc_to_local_tz'] = utc_to_local_tz
-
-    template = env.get_template(name)
-
-    return template.render(**context)
+    return version.body.strip()
 
 
 def _send_email(message: Message) -> None:
