@@ -5462,6 +5462,115 @@ msgstr ""
 "Benutzer \"%(screen_name)s\" hat noch nicht alle erforderlichen "
 "Zustimmungen erteilt. Erneutes Einloggen ist erforderlich."
 
+#: byceps/blueprints/site/ticketing/notification_service.py:25
+#, python-format
+msgid "%(screen_name)s has assigned ticket %(ticket_code)s to you."
+msgstr "%(screen_name)s hat dir Ticket %(ticket_code)s zugewiesen."
+
+#: byceps/blueprints/site/ticketing/notification_service.py:31
+#, python-format
+msgid ""
+"%(screen_name)s has assigned ticket %(ticket_code)s to you which entitles"
+" you to attend %(party_title)s."
+msgstr ""
+"%(screen_name)s hat dir Ticket %(ticket_code)s zugewiesen, was dich zur "
+"Teilnahme an der %(party_title)s berechtigt."
+
+#: byceps/blueprints/site/ticketing/notification_service.py:45
+#, python-format
+msgid "%(screen_name)s has withdrawn ticket %(ticket_code)s from you."
+msgstr "%(screen_name)s hat Ticket %(ticket_code)s zurückgezogen."
+
+#: byceps/blueprints/site/ticketing/notification_service.py:51
+#, python-format
+msgid ""
+"%(screen_name)s has withdrawn ticket %(ticket_code)s for %(party_title)s,"
+" which was previously assigned to you, from you."
+msgstr ""
+"%(screen_name)s hat das dir bisher zugewiesene Ticket %(ticket_code)s für"
+" die %(party_title)s zurückgezogen."
+
+#: byceps/blueprints/site/ticketing/notification_service.py:67
+#, python-format
+msgid ""
+"%(screen_name)s has assigned user management for ticket %(ticket_code)s "
+"to you."
+msgstr ""
+"%(screen_name)s hat dir die Nutzerverwaltung für Ticket %(ticket_code)s "
+"übertragen."
+
+#: byceps/blueprints/site/ticketing/notification_service.py:73
+#, python-format
+msgid ""
+"%(screen_name)s has assigned user management for ticket %(ticket_code)s "
+"for %(party_title)s to you."
+msgstr ""
+"%(screen_name)s hat dir die Verwaltung des Nutzers von Ticket "
+"%(ticket_code)s für die %(party_title)s übertragen."
+
+#: byceps/blueprints/site/ticketing/notification_service.py:89
+#, python-format
+msgid ""
+"%(screen_name)s has withdrawn user management for ticket %(ticket_code)s "
+"from you."
+msgstr ""
+"%(screen_name)s hat die Übertragung der Nutzerverwaltung für Ticket "
+"%(ticket_code)s an dich zurückgezogen."
+
+#: byceps/blueprints/site/ticketing/notification_service.py:95
+#, python-format
+msgid ""
+"%(screen_name)s has withdrawn user management for ticket %(ticket_code)s "
+"for %(party_title)s, which was previously assigned to you, from you."
+msgstr ""
+"%(screen_name)s hat die dir bisher übertragene Verwaltung des Nutzers von"
+" Ticket %(ticket_code)s für die %(party_title)s zurückgezogen."
+
+#: byceps/blueprints/site/ticketing/notification_service.py:111
+#, python-format
+msgid ""
+"%(screen_name)s has assigned seat management for ticket %(ticket_code)s "
+"to you."
+msgstr ""
+"%(screen_name)s hat dir die Sitzplatzverwaltung für Ticket "
+"%(ticket_code)s übertragen."
+
+#: byceps/blueprints/site/ticketing/notification_service.py:117
+#, python-format
+msgid ""
+"%(screen_name)s has assigned seat management for ticket %(ticket_code)s "
+"for %(party_title)s to you."
+msgstr ""
+"%(screen_name)s hat dir die Verwaltung des Sitzplatzes von Ticket "
+"%(ticket_code)s für die %(party_title)s übertragen."
+
+#: byceps/blueprints/site/ticketing/notification_service.py:133
+#, python-format
+msgid ""
+"%(screen_name)s has withdrawn seat management for ticket %(ticket_code)s "
+"from you."
+msgstr ""
+"%(screen_name)s hat die Übertragung der Sitzplatzverwaltung für Ticket "
+"%(ticket_code)s an dich zurückgezogen."
+
+#: byceps/blueprints/site/ticketing/notification_service.py:139
+#, python-format
+msgid ""
+"%(screen_name)s has withdrawn seat management for ticket %(ticket_code)s "
+"for %(party_title)s, which was previously assigned to you, from you."
+msgstr ""
+"%(screen_name)s hat die dir bisher übertragene Verwaltung des Sitzplatzes"
+" von Ticket %(ticket_code)s für die %(party_title)s zurückgezogen."
+
+#: byceps/blueprints/site/ticketing/notification_service.py:164
+#: byceps/services/authentication/password/reset_service.py:47
+#: byceps/services/user/email_address_verification_service.py:77
+#: byceps/services/user/email_address_verification_service.py:214
+#: byceps/services/user_message/service.py:107
+#, python-format
+msgid "Hello %(screen_name)s,"
+msgstr "Hallo %(screen_name)s,"
+
 #: byceps/blueprints/site/ticketing/views.py:193
 #, python-format
 msgid "You have been assigned as user of ticket %(ticket_code)s."
@@ -6044,14 +6153,6 @@ msgstr "Webhooks anzeigen"
 #, python-format
 msgid "%(screen_name)s, this is how you can set a new password"
 msgstr "%(screen_name)s, so kannst du ein neues Passwort festlegen"
-
-#: byceps/services/authentication/password/reset_service.py:47
-#: byceps/services/user/email_address_verification_service.py:77
-#: byceps/services/user/email_address_verification_service.py:214
-#: byceps/services/user_message/service.py:107
-#, python-format
-msgid "Hello %(screen_name)s,"
-msgstr "Hallo %(screen_name)s,"
 
 #: byceps/services/authentication/password/reset_service.py:49
 #, python-format

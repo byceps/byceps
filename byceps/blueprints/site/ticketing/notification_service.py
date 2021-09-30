@@ -7,6 +7,7 @@ byceps.blueprints.site.ticketing.notification_service
 """
 
 from flask import g
+from flask_babel import gettext
 
 from ....services.email import service as email_service
 from ....services.party import service as party_service
@@ -14,17 +15,25 @@ from ....services.site import service as site_service
 from ....services.ticketing.dbmodels.ticket import Ticket
 from ....services.user import service as user_service
 from ....services.user.transfer.models import User
+from ....util.l10n import force_user_locale
 
 
 def notify_appointed_user(ticket: Ticket, user: User, manager: User) -> None:
     party_title = _get_party_title()
 
-    subject = f'{manager.screen_name} hat dir Ticket {ticket.code} zugewiesen.'
+    with force_user_locale(user):
+        subject = gettext(
+            '%(screen_name)s has assigned ticket %(ticket_code)s to you.',
+            screen_name=manager.screen_name,
+            ticket_code=ticket.code,
+        )
 
-    body = (
-        f'{manager.screen_name} hat dir Ticket {ticket.code} zugewiesen, '
-        f'was dich zur Teilnahme an der {party_title} berechtigt.'
-    )
+        body = gettext(
+            '%(screen_name)s has assigned ticket %(ticket_code)s to you which entitles you to attend %(party_title)s.',
+            screen_name=manager.screen_name,
+            ticket_code=ticket.code,
+            party_title=party_title,
+        )
 
     _enqueue_email(user, subject, body)
 
@@ -32,12 +41,19 @@ def notify_appointed_user(ticket: Ticket, user: User, manager: User) -> None:
 def notify_withdrawn_user(ticket: Ticket, user: User, manager: User) -> None:
     party_title = _get_party_title()
 
-    subject = f'{manager.screen_name} hat Ticket {ticket.code} zurückgezogen.'
+    with force_user_locale(user):
+        subject = gettext(
+            '%(screen_name)s has withdrawn ticket %(ticket_code)s from you.',
+            screen_name=manager.screen_name,
+            ticket_code=ticket.code,
+        )
 
-    body = (
-        f'{manager.screen_name} hat das dir bisher zugewiesene Ticket '
-        f'{ticket.code} für die {party_title} zurückgezogen.'
-    )
+        body = gettext(
+            '%(screen_name)s has withdrawn ticket %(ticket_code)s for %(party_title)s, which was previously assigned to you, from you.',
+            screen_name=manager.screen_name,
+            ticket_code=ticket.code,
+            party_title=party_title,
+        )
 
     _enqueue_email(user, subject, body)
 
@@ -47,15 +63,19 @@ def notify_appointed_user_manager(
 ) -> None:
     party_title = _get_party_title()
 
-    subject = (
-        f'{manager.screen_name} hat dir die Nutzerverwaltung '
-        f'für Ticket {ticket.code} übertragen.'
-    )
+    with force_user_locale(user):
+        subject = gettext(
+            '%(screen_name)s has assigned user management for ticket %(ticket_code)s to you.',
+            screen_name=manager.screen_name,
+            ticket_code=ticket.code,
+        )
 
-    body = (
-        f'{manager.screen_name} hat dir die Verwaltung des Nutzers '
-        f'von Ticket {ticket.code} für die {party_title} übertragen.'
-    )
+        body = gettext(
+            '%(screen_name)s has assigned user management for ticket %(ticket_code)s for %(party_title)s to you.',
+            screen_name=manager.screen_name,
+            ticket_code=ticket.code,
+            party_title=party_title,
+        )
 
     _enqueue_email(user, subject, body)
 
@@ -65,16 +85,19 @@ def notify_withdrawn_user_manager(
 ) -> None:
     party_title = _get_party_title()
 
-    subject = (
-        f'{manager.screen_name} hat die Übertragung der Nutzerverwaltung '
-        f'für Ticket {ticket.code} an dich zurückgezogen.'
-    )
+    with force_user_locale(user):
+        subject = gettext(
+            '%(screen_name)s has withdrawn user management for ticket %(ticket_code)s from you.',
+            screen_name=manager.screen_name,
+            ticket_code=ticket.code,
+        )
 
-    body = (
-        f'{manager.screen_name} hat die dir bisher übertragene Verwaltung '
-        f'des Nutzers von Ticket {ticket.code} für die {party_title} '
-        'zurückgezogen.'
-    )
+        body = gettext(
+            '%(screen_name)s has withdrawn user management for ticket %(ticket_code)s for %(party_title)s, which was previously assigned to you, from you.',
+            screen_name=manager.screen_name,
+            ticket_code=ticket.code,
+            party_title=party_title,
+        )
 
     _enqueue_email(user, subject, body)
 
@@ -84,15 +107,19 @@ def notify_appointed_seat_manager(
 ) -> None:
     party_title = _get_party_title()
 
-    subject = (
-        f'{manager.screen_name} hat dir die Sitzplatzverwaltung '
-        f'für Ticket {ticket.code} übertragen.'
-    )
+    with force_user_locale(user):
+        subject = gettext(
+            '%(screen_name)s has assigned seat management for ticket %(ticket_code)s to you.',
+            screen_name=manager.screen_name,
+            ticket_code=ticket.code,
+        )
 
-    body = (
-        f'{manager.screen_name} hat dir die Verwaltung des Sitzplatzes '
-        f'von Ticket {ticket.code} für die {party_title} übertragen.'
-    )
+        body = gettext(
+            '%(screen_name)s has assigned seat management for ticket %(ticket_code)s for %(party_title)s to you.',
+            screen_name=manager.screen_name,
+            ticket_code=ticket.code,
+            party_title=party_title,
+        )
 
     _enqueue_email(user, subject, body)
 
@@ -102,16 +129,19 @@ def notify_withdrawn_seat_manager(
 ) -> None:
     party_title = _get_party_title()
 
-    subject = (
-        f'{manager.screen_name} hat die Übertragung der Sitzplatzverwaltung '
-        f'für Ticket {ticket.code} an dich zurückgezogen.'
-    )
+    with force_user_locale(user):
+        subject = gettext(
+            '%(screen_name)s has withdrawn seat management for ticket %(ticket_code)s from you.',
+            screen_name=manager.screen_name,
+            ticket_code=ticket.code,
+        )
 
-    body = (
-        f'{manager.screen_name} hat die dir bisher übertragene Verwaltung '
-        f'des Sitzplatzes von Ticket {ticket.code} für die {party_title} '
-        'zurückgezogen.'
-    )
+        body = gettext(
+            '%(screen_name)s has withdrawn seat management for ticket %(ticket_code)s for %(party_title)s, which was previously assigned to you, from you.',
+            screen_name=manager.screen_name,
+            ticket_code=ticket.code,
+            party_title=party_title,
+        )
 
     _enqueue_email(user, subject, body)
 
@@ -129,7 +159,11 @@ def _enqueue_email(recipient: User, subject: str, body: str) -> None:
     recipient_address = user_service.get_email_address(recipient.id)
     recipients = [recipient_address]
 
-    salutation = f'Hallo {recipient.screen_name},\n\n'
+    with force_user_locale(recipient):
+        salutation = (
+            gettext('Hello %(screen_name)s,', screen_name=recipient.screen_name)
+            + '\n\n'
+        )
     body = salutation + body
 
     email_service.enqueue_email(sender, recipients, subject, body)
