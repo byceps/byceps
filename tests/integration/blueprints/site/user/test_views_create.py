@@ -160,7 +160,7 @@ def test_create(
     verification_token = find_verification_token(user.id)
     assert verification_token is not None
 
-    expected_sender = 'noreply@acmecon.test'
+    expected_sender = 'ACME Entertainment Convention <noreply@acmecon.test>'
     expected_recipients = ['hiro@metaverse.org']
     expected_subject = 'Hiro, bitte bestätige deine E-Mail-Adresse'
     expected_body = f'''

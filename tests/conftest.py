@@ -181,7 +181,12 @@ def make_email_config(admin_app):
 
 @pytest.fixture(scope='session')
 def email_config(make_email_config, brand) -> EmailConfig:
-    return make_email_config(brand.id, sender_address='noreply@acmecon.test')
+    return make_email_config(
+        brand.id,
+        sender_address='noreply@acmecon.test',
+        sender_name='ACME Entertainment Convention',
+        contact_address='help@acmecon.test',
+    )
 
 
 @pytest.fixture(scope='session')
