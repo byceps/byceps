@@ -6,6 +6,10 @@ byceps.services.authentication.password.reset_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask_babel import gettext
+
+from ....util.l10n import force_user_locale
+
 from ...email import service as email_service
 from ...email.transfer.models import NameAndAddress
 from ...user import service as user_service
@@ -25,18 +29,27 @@ def prepare_password_reset(
     """Create a verification token for password reset and email it to
     the user's address.
     """
+    recipients = [email_address]
+
     verification_token = verification_token_service.create_for_password_reset(
         user.id
     )
-
     confirmation_url = f'{url_root}authentication/password/reset/token/{verification_token.token}'
 
-    recipients = [email_address]
-    subject = f'{user.screen_name}, so kannst du ein neues Passwort festlegen'
-    body = (
-        f'Hallo {user.screen_name},\n\n'
-        f'dort kannst du ein neues Passwort festlegen:\n{confirmation_url}'
-    )
+    screen_name = user.screen_name or f'user-{user.id}'
+
+    with force_user_locale(user):
+        subject = gettext(
+            '%(screen_name)s, this is how you can set a new password',
+            screen_name=screen_name,
+        )
+        body = (
+            gettext('Hello %(screen_name)s,', screen_name=screen_name)
+            + '\n\n'
+            + gettext(
+                'you can set a new password here: %(url)s', url=confirmation_url
+            )
+        )
 
     email_service.enqueue_email(sender, recipients, subject, body)
 

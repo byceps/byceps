@@ -6040,6 +6040,24 @@ msgstr "Webhooks verwalten"
 msgid "View webhooks"
 msgstr "Webhooks anzeigen"
 
+#: byceps/services/authentication/password/reset_service.py:42
+#, python-format
+msgid "%(screen_name)s, this is how you can set a new password"
+msgstr "%(screen_name)s, so kannst du ein neues Passwort festlegen"
+
+#: byceps/services/authentication/password/reset_service.py:47
+#: byceps/services/user/email_address_verification_service.py:77
+#: byceps/services/user/email_address_verification_service.py:214
+#: byceps/services/user_message/service.py:107
+#, python-format
+msgid "Hello %(screen_name)s,"
+msgstr "Hallo %(screen_name)s,"
+
+#: byceps/services/authentication/password/reset_service.py:49
+#, python-format
+msgid "you can set a new password here: %(url)s"
+msgstr "hier kannst du ein neues Passwort festlegen: %(url)s"
+
 #: byceps/services/news/html_service.py:101
 msgid "Image credit"
 msgstr "Bild"
@@ -6096,13 +6114,6 @@ msgstr "schrieb"
 #, python-format
 msgid "%(screen_name)s, please verify your email address"
 msgstr "%(screen_name)s, bitte bestätige deine E-Mail-Adresse"
-
-#: byceps/services/user/email_address_verification_service.py:77
-#: byceps/services/user/email_address_verification_service.py:214
-#: byceps/services/user_message/service.py:107
-#, python-format
-msgid "Hello %(screen_name)s,"
-msgstr "Hallo %(screen_name)s,"
 
 #: byceps/services/user/email_address_verification_service.py:79
 #: byceps/services/user/email_address_verification_service.py:216
