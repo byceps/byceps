@@ -576,7 +576,7 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/user/templates/admin/user/_view_badges.html:26
 #: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:16
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:31
-#: byceps/blueprints/admin/user/templates/admin/user/_view_orga_activities.html:27
+#: byceps/blueprints/admin/user/templates/admin/user/_view_orga_activities.html:33
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:41
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:51
 #: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:51
@@ -1749,6 +1749,8 @@ msgid "Webhooks"
 msgstr "Webhooks"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
+#: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/create_form.html:6
+#: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:8
 msgid "Organizer Presence"
 msgstr "Orga-Anwesenheit"
 
@@ -2012,6 +2014,8 @@ msgid "Maximum file size"
 msgstr "Maximale Dateigröße"
 
 #: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:29
+#: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/create_form.html:41
+#: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:70
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/add_note_form.html:17
 #: byceps/blueprints/admin/site/templates/admin/site/add_news_channel_form.html:18
 #: byceps/blueprints/site/board/templates/site/board/_posting_inline_create_form.html:16
@@ -2314,6 +2318,63 @@ msgstr "morgen"
 msgid "in %(days)s days"
 msgstr "in %(days)s Tagen"
 
+#: byceps/blueprints/admin/orga_presence/forms.py:29
+#: byceps/blueprints/admin/party/forms.py:25
+msgid "Start date"
+msgstr "Startdatum"
+
+#: byceps/blueprints/admin/orga_presence/forms.py:34
+#: byceps/blueprints/admin/party/forms.py:28
+msgid "Start time"
+msgstr "Startzeit"
+
+#: byceps/blueprints/admin/orga_presence/forms.py:39
+#: byceps/blueprints/admin/party/forms.py:30
+msgid "End date"
+msgstr "Enddatum"
+
+#: byceps/blueprints/admin/orga_presence/forms.py:44
+#: byceps/blueprints/admin/party/forms.py:31
+msgid "End time"
+msgstr "Endzeit"
+
+#: byceps/blueprints/admin/orga_presence/forms.py:75
+msgid "Value must be in valid range."
+msgstr "Wert muss im gültigen Bereich liegen."
+
+#: byceps/blueprints/admin/orga_presence/forms.py:87
+msgid "Start value must be before end value."
+msgstr "Der Beginn muss vor dem Ende liegen."
+
+#: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/create_form.html:16
+msgid "Valid range"
+msgstr "Gültiger Bereich"
+
+#: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:30
+#: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:80
+#: byceps/blueprints/admin/party/templates/admin/party/view.html:48
+#: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/index.html:33
+msgid "Start"
+msgstr "Beginn"
+
+#: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:31
+#: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:81
+#: byceps/blueprints/admin/party/templates/admin/party/view.html:54
+msgid "End"
+msgstr "Ende"
+
+#: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:65
+msgid "My Presence"
+msgstr "Meine Anwesenheit"
+
+#: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:90
+msgid "Remove presence"
+msgstr "Anwesenheit entfernen"
+
+#: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:103
+msgid "Remove presence?"
+msgstr "Anwesenheit entfernen?"
+
 #: byceps/blueprints/admin/orga_team/forms.py:24
 msgid "From party"
 msgstr "Von Party"
@@ -2376,17 +2437,17 @@ msgstr ""
 "%(copied_teams_count)s Team(s) wurde(n) von Party "
 "\"%(source_party_title)s\" zu Party \"%(target_party_title)s\" kopiert."
 
-#: byceps/blueprints/admin/orga_team/views.py:271
+#: byceps/blueprints/admin/orga_team/views.py:267
 #, python-format
 msgid "%(screen_name)s has been added to team \"%(team_title)s\"."
 msgstr "%(screen_name)s wurde in das Team \"%(team_title)s\" aufgenommen."
 
-#: byceps/blueprints/admin/orga_team/views.py:333
+#: byceps/blueprints/admin/orga_team/views.py:329
 #, python-format
 msgid "Membership of %(screen_name)s has been updated."
 msgstr "Die Teammitgliedschaft von %(screen_name)s wurde aktualisiert."
 
-#: byceps/blueprints/admin/orga_team/views.py:354
+#: byceps/blueprints/admin/orga_team/views.py:350
 #, python-format
 msgid "%(screen_name)s has been removed from team \"%(team_title)s\"."
 msgstr "%(screen_name)s wurde aus dem Team \"%(team_title)s\" entfernt."
@@ -2394,22 +2455,6 @@ msgstr "%(screen_name)s wurde aus dem Team \"%(team_title)s\" entfernt."
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_copy_form.html:19
 msgid "Copy"
 msgstr "Kopieren"
-
-#: byceps/blueprints/admin/party/forms.py:25
-msgid "Start date"
-msgstr "Startdatum"
-
-#: byceps/blueprints/admin/party/forms.py:28
-msgid "Start time"
-msgstr "Startzeit"
-
-#: byceps/blueprints/admin/party/forms.py:30
-msgid "End date"
-msgstr "Enddatum"
-
-#: byceps/blueprints/admin/party/forms.py:31
-msgid "End time"
-msgstr "Endzeit"
 
 #: byceps/blueprints/admin/party/forms.py:33
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:70
@@ -2473,15 +2518,6 @@ msgstr "Party bearbeiten"
 msgctxt "party"
 msgid "canceled"
 msgstr "abgesagt"
-
-#: byceps/blueprints/admin/party/templates/admin/party/view.html:48
-#: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/index.html:33
-msgid "Start"
-msgstr "Beginn"
-
-#: byceps/blueprints/admin/party/templates/admin/party/view.html:54
-msgid "End"
-msgstr "Ende"
 
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:60
 msgid "Days"
@@ -2550,7 +2586,7 @@ msgstr "verfügbar"
 
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:48
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:93
-#: byceps/util/templatefilters.py:42
+#: byceps/util/templatefilters.py:39
 msgid "not specified"
 msgstr "nicht angegeben"
 
@@ -4166,96 +4202,96 @@ msgstr "PLZ"
 msgid "Street"
 msgstr "Straße"
 
-#: byceps/blueprints/admin/user/views.py:205
+#: byceps/blueprints/admin/user/views.py:212
 #: byceps/blueprints/site/user/creation/views.py:116
 #, python-format
 msgid "User \"%(screen_name)s\" could not be created."
 msgstr "Das Benutzerkonto für \"%(screen_name)s\" konnte nicht angelegt werden."
 
-#: byceps/blueprints/admin/user/views.py:213
+#: byceps/blueprints/admin/user/views.py:220
 #, python-format
 msgid "User \"%(screen_name)s\" has been created."
 msgstr "Das Benutzerkonto \"%(screen_name)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/user/views.py:224
+#: byceps/blueprints/admin/user/views.py:231
 msgid "An email has been sent to the corresponding address."
 msgstr "Eine E-Mail wurde an die hinterlegte Adresse versendet."
 
-#: byceps/blueprints/admin/user/views.py:245
+#: byceps/blueprints/admin/user/views.py:252
 #, python-format
 msgid "User '%(screen_name)s' has been initialized."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde initialisiert."
 
-#: byceps/blueprints/admin/user/views.py:261
-#: byceps/blueprints/admin/user/views.py:285
+#: byceps/blueprints/admin/user/views.py:268
+#: byceps/blueprints/admin/user/views.py:292
 #, python-format
 msgid "User '%(screen_name)s' is already suspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' ist bereits gesperrt."
 
-#: byceps/blueprints/admin/user/views.py:304
+#: byceps/blueprints/admin/user/views.py:311
 #, python-format
 msgid "User '%(screen_name)s' has been suspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde gesperrt."
 
-#: byceps/blueprints/admin/user/views.py:322
-#: byceps/blueprints/admin/user/views.py:346
+#: byceps/blueprints/admin/user/views.py:329
+#: byceps/blueprints/admin/user/views.py:353
 #, python-format
 msgid "User '%(screen_name)s' is not suspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' ist nicht gesperrt."
 
-#: byceps/blueprints/admin/user/views.py:367
+#: byceps/blueprints/admin/user/views.py:374
 #, python-format
 msgid "User '%(screen_name)s' has been unsuspended."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde entsperrt."
 
-#: byceps/blueprints/admin/user/views.py:385
-#: byceps/blueprints/admin/user/views.py:409
+#: byceps/blueprints/admin/user/views.py:392
+#: byceps/blueprints/admin/user/views.py:416
 #, python-format
 msgid "User '%(screen_name)s' has already been deleted."
 msgstr "Das Benutzerkonto '%(screen_name)s' ist bereits gelöscht worden."
 
-#: byceps/blueprints/admin/user/views.py:428
+#: byceps/blueprints/admin/user/views.py:435
 #, python-format
 msgid "User '%(screen_name)s' has been deleted."
 msgstr "Das Benutzerkonto '%(screen_name)s' wurde gelöscht."
 
-#: byceps/blueprints/admin/user/views.py:479
+#: byceps/blueprints/admin/user/views.py:486
 #, python-format
 msgid "User '%(old_screen_name)s' has been renamed to '%(new_screen_name)s'."
 msgstr ""
 "Das Benutzerkonto '%(old_screen_name)s' wurde umbenannt in "
 "'%(new_screen_name)s'."
 
-#: byceps/blueprints/admin/user/views.py:532
+#: byceps/blueprints/admin/user/views.py:539
 #, python-format
 msgid "Email address for user '%(screen_name)s' has been updated."
 msgstr "Die E-Mail-Adresse des Benutzerkontos '%(screen_name)s' wurde geändert."
 
-#: byceps/blueprints/admin/user/views.py:550
-#: byceps/blueprints/admin/user/views.py:570
+#: byceps/blueprints/admin/user/views.py:557
+#: byceps/blueprints/admin/user/views.py:577
 msgid "Email address is already invalidated."
 msgstr "Diese E-Mail-Adresse ist bereits als nicht validiert markiert."
 
-#: byceps/blueprints/admin/user/views.py:587
+#: byceps/blueprints/admin/user/views.py:594
 #, python-format
 msgid "The email address of user '%(screen_name)s' has been invalidated."
 msgstr "Die E-Mail-Adresse des Benutzerkontos '%(screen_name)s' wurde invalidiert."
 
-#: byceps/blueprints/admin/user/views.py:652
+#: byceps/blueprints/admin/user/views.py:659
 msgid "Changes have been saved."
 msgstr "Die Änderungen wurden gespeichert."
 
-#: byceps/blueprints/admin/user/views.py:695
+#: byceps/blueprints/admin/user/views.py:702
 #, python-format
 msgid "New password has been set for user '%(screen_name)s'."
 msgstr "Für Benutzerkonto '%(screen_name)s' wurde ein neues Passwort gesetzt."
 
-#: byceps/blueprints/admin/user/views.py:763
+#: byceps/blueprints/admin/user/views.py:790
 #, python-format
 msgid "%(role_title)s has been assigned to \"%(screen_name)s\"."
 msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" zugewiesen."
 
-#: byceps/blueprints/admin/user/views.py:785
+#: byceps/blueprints/admin/user/views.py:812
 #, python-format
 msgid "%(role_title)s has been withdrawn from \"%(screen_name)s\"."
 msgstr "%(screen_name)s wurde die Rolle \"%(role_title)s\" genommen."
@@ -4694,12 +4730,12 @@ msgstr "Das eingegebene Passwort stimmt nicht mit dem bisherigen überein."
 msgid "Password has been updated. Please log in again."
 msgstr "Dein Passwort wurde geändert. Bitte melde dich erneut an."
 
-#: byceps/blueprints/common/authentication/password/views.py:103
+#: byceps/blueprints/common/authentication/password/views.py:100
 #, python-format
 msgid "User name \"%(screen_name)s\" is unknown."
 msgstr "Der Benutzername \"%(screen_name)s\" ist unbekannt."
 
-#: byceps/blueprints/common/authentication/password/views.py:114
+#: byceps/blueprints/common/authentication/password/views.py:111
 #: byceps/blueprints/site/user/email_address/views.py:69
 #, python-format
 msgid "No email address is set for user \"%(screen_name)s\"."
@@ -4707,7 +4743,7 @@ msgstr ""
 "Für das Benutzerkonto \"%(screen_name)s\" ist keine E-Mail-Adresse "
 "hinterlegt."
 
-#: byceps/blueprints/common/authentication/password/views.py:123
+#: byceps/blueprints/common/authentication/password/views.py:120
 #, python-format
 msgid "The email address for user \"%(screen_name)s\" has not been verified."
 msgstr ""
@@ -4729,18 +4765,18 @@ msgstr ""
 "Ein Link zum Setzen eines neuen Passworts für den Benutzernamen "
 "\"%(screen_name)s\" wurde an die hinterlegte E-Mail-Adresse versendet."
 
-#: byceps/blueprints/common/authentication/password/views.py:191
+#: byceps/blueprints/common/authentication/password/views.py:192
 msgid "Password has been updated."
 msgstr "Das Passwort wurde geändert."
 
-#: byceps/blueprints/common/authentication/password/views.py:202
+#: byceps/blueprints/common/authentication/password/views.py:204
 #, python-format
 msgid "Invalid token. A token expires after %(hours)s hours."
 msgstr ""
 "Es wurde kein gültiges Token angegeben. Ein Token ist nur %(hours)s "
 "Stunden lang gültig."
 
-#: byceps/blueprints/common/authentication/password/views.py:211
+#: byceps/blueprints/common/authentication/password/views.py:213
 #: byceps/blueprints/site/user/email_address/views.py:124
 #: byceps/blueprints/site/user/email_address/views.py:164
 msgid "No valid token specified."
@@ -6016,19 +6052,19 @@ msgstr "physikalisch"
 msgid "other"
 msgstr "sonstiges"
 
-#: byceps/services/shop/order/service.py:623
+#: byceps/services/shop/order/service.py:627
 msgid "bank transfer"
 msgstr "Überweisung"
 
-#: byceps/services/shop/order/service.py:624
+#: byceps/services/shop/order/service.py:628
 msgid "cash"
 msgstr "Barzahlung"
 
-#: byceps/services/shop/order/service.py:625
+#: byceps/services/shop/order/service.py:629
 msgid "direct debit"
 msgstr "Lastschrift"
 
-#: byceps/services/shop/order/service.py:626
+#: byceps/services/shop/order/service.py:630
 msgid "free"
 msgstr "kostenlos"
 
