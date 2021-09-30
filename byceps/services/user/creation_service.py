@@ -137,10 +137,9 @@ def request_email_address_confirmation(
     address.
     """
     normalized_email_address = _normalize_email_address(email_address)
-    screen_name = user.screen_name if user.screen_name else 'UnknownUser'
 
     email_address_verification_service.send_email_address_confirmation_email_for_site(
-        normalized_email_address, screen_name, user.id, site_id
+        user, normalized_email_address, site_id
     )
 
 

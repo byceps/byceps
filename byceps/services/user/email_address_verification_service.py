@@ -32,9 +32,8 @@ from .transfer.models import User
 
 
 def send_email_address_confirmation_email_for_site(
-    recipient_email_address: str,
-    recipient_screen_name: str,
-    user_id: UserID,
+    user: User,
+    email_address: str,
     site_id: SiteID,
 ) -> None:
     site = site_service.get_site(site_id)
@@ -43,24 +42,19 @@ def send_email_address_confirmation_email_for_site(
     sender = email_config.sender
 
     send_email_address_confirmation_email(
-        recipient_email_address,
-        recipient_screen_name,
-        user_id,
-        site.server_name,
-        sender,
+        user, email_address, site.server_name, sender
     )
 
 
 def send_email_address_confirmation_email(
-    recipient_email_address: str,
-    recipient_screen_name: str,
-    user_id: UserID,
+    user: User,
+    email_address: str,
     server_name: str,
     sender: NameAndAddress,
 ) -> None:
     verification_token = (
         verification_token_service.create_for_email_address_confirmation(
-            user_id, recipient_email_address
+            user.id, email_address
         )
     )
     confirmation_url = (
@@ -68,12 +62,13 @@ def send_email_address_confirmation_email(
         f'confirmation/{verification_token.token}'
     )
 
+    recipient_screen_name = _get_user_screen_name_or_fallback(user)
     subject = f'{recipient_screen_name}, bitte bestätige deine E-Mail-Adresse'
     body = (
         f'Hallo {recipient_screen_name},\n\n'
         f'bitte bestätige deine E-Mail-Adresse, indem du diese URL abrufst: {confirmation_url}'
     )
-    recipients = [recipient_email_address]
+    recipients = [email_address]
 
     email_service.enqueue_email(sender, recipients, subject, body)
 
@@ -165,9 +160,8 @@ def invalidate_email_address(
 
 
 def send_email_address_change_email_for_site(
+    user: User,
     new_email_address: str,
-    recipient_screen_name: str,
-    user_id: UserID,
     site_id: SiteID,
 ) -> None:
     site = site_service.get_site(site_id)
@@ -176,24 +170,19 @@ def send_email_address_change_email_for_site(
     sender = email_config.sender
 
     send_email_address_change_email(
-        new_email_address,
-        recipient_screen_name,
-        user_id,
-        site.server_name,
-        sender,
+        user, new_email_address, site.server_name, sender
     )
 
 
 def send_email_address_change_email(
+    user: User,
     new_email_address: str,
-    recipient_screen_name: str,
-    user_id: UserID,
     server_name: str,
     sender: NameAndAddress,
 ) -> None:
     verification_token = (
         verification_token_service.create_for_email_address_change(
-            user_id, new_email_address
+            user.id, new_email_address
         )
     )
     confirmation_url = (
@@ -201,6 +190,7 @@ def send_email_address_change_email(
         f'change/{verification_token.token}'
     )
 
+    recipient_screen_name = _get_user_screen_name_or_fallback(user)
     subject = (
         f'{recipient_screen_name}, bitte bestätige deine neue E-Mail-Adresse'
     )
@@ -236,3 +226,7 @@ def change_email_address(verification_token: Token) -> UserEmailAddressChanged:
     verification_token_service.delete_token(verification_token.token)
 
     return event
+
+
+def _get_user_screen_name_or_fallback(user: User) -> str:
+    return user.screen_name or f'user-{user.id}'
