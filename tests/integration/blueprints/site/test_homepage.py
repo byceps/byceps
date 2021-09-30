@@ -8,7 +8,7 @@ import pytest
 from tests.helpers import http_client
 
 
-def test_homepage(site_app, site):
+def test_homepage(site_app):
     with http_client(site_app) as client:
         response = client.get('/')
 

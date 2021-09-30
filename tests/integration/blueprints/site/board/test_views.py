@@ -27,42 +27,42 @@ def logged_in_client(make_client, site_app, board_user):
     return make_client(site_app, user_id=board_user.id)
 
 
-def test_category_index_anonymously(site_app, site, anonymous_client):
+def test_category_index_anonymously(site_app, anonymous_client):
     url = '/board/'
     assert_success_response(anonymous_client, url)
 
 
-def test_category_index_logged_in(site_app, site, logged_in_client):
+def test_category_index_logged_in(site_app, logged_in_client):
     url = '/board/'
     assert_success_response(logged_in_client, url)
 
 
-def test_category_view_anonymously(site_app, site, anonymous_client, category):
+def test_category_view_anonymously(site_app, anonymous_client, category):
     url = f'/board/categories/{category.slug}'
     assert_success_response(anonymous_client, url)
 
 
-def test_category_view_logged_in(site_app, site, logged_in_client, category):
+def test_category_view_logged_in(site_app, logged_in_client, category):
     url = f'/board/categories/{category.slug}'
     assert_success_response(logged_in_client, url)
 
 
-def test_topic_index_anonymously(site_app, site, anonymous_client, topic):
+def test_topic_index_anonymously(site_app, anonymous_client, topic):
     url = '/board/topics'
     assert_success_response(anonymous_client, url)
 
 
-def test_topic_index_logged_in(site_app, site, logged_in_client, topic):
+def test_topic_index_logged_in(site_app, logged_in_client, topic):
     url = '/board/topics'
     assert_success_response(logged_in_client, url)
 
 
-def test_topic_view_anonymously(site_app, site, anonymous_client, topic):
+def test_topic_view_anonymously(site_app, anonymous_client, topic):
     url = f'/board/topics/{topic.id}'
     assert_success_response(anonymous_client, url)
 
 
-def test_topic_view_logged_in(site_app, site, logged_in_client, topic):
+def test_topic_view_logged_in(site_app, logged_in_client, topic):
     url = f'/board/topics/{topic.id}'
     assert_success_response(logged_in_client, url)
 

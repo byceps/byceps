@@ -6,7 +6,7 @@
 from tests.helpers import http_client, login_user
 
 
-def test_when_logged_in(site_app, site, user):
+def test_when_logged_in(site_app, user):
     login_user(user.id)
 
     response = send_request(site_app, user_id=user.id)
@@ -15,7 +15,7 @@ def test_when_logged_in(site_app, site, user):
     assert response.mimetype == 'text/html'
 
 
-def test_when_not_logged_in(site_app, site):
+def test_when_not_logged_in(site_app):
     response = send_request(site_app)
 
     assert response.status_code == 302
