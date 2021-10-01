@@ -153,19 +153,27 @@ def appoint_user(ticket_id):
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
 
-    user = form.user.data
+    previous_user = ticket.used_by if ticket.used_by_id != g.user.id else None
+    new_user = form.user.data
 
-    ticket_user_management_service.appoint_user(ticket.id, user.id, manager.id)
+    ticket_user_management_service.appoint_user(
+        ticket.id, new_user.id, manager.id
+    )
 
     flash_success(
         gettext(
             '%(screen_name)s has been assigned as user of ticket %(ticket_code)s.',
-            screen_name=user.screen_name,
+            screen_name=new_user.screen_name,
             ticket_code=ticket.code,
         )
     )
 
-    notification_service.notify_appointed_user(ticket, user, manager)
+    if previous_user:
+        notification_service.notify_withdrawn_user(
+            ticket, previous_user, manager
+        )
+
+    notification_service.notify_appointed_user(ticket, new_user, manager)
 
     return redirect_to('.index_mine')
 
