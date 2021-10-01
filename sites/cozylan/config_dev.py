@@ -13,7 +13,8 @@ SITE_ID = 'cozylan'
 
 MAIL_DEBUG = True
 MAIL_DEFAULT_SENDER = 'CozyLAN <noreply@cozylan.example>'
-MAIL_SUPPRESS_SEND = True
+MAIL_SUPPRESS_SEND = False
+MAIL_TRANSPORT = 'logging'
 
 DEBUG_TOOLBAR_ENABLED = True
 STYLE_GUIDE_ENABLED = True
