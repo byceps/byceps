@@ -185,6 +185,8 @@ def withdraw_user(ticket_id):
     if not ticket.is_user_managed_by(manager.id):
         abort(403)
 
+    previous_user = ticket.used_by if ticket.used_by_id != g.user.id else None
+
     ticket_user_management_service.appoint_user(
         ticket.id, manager.id, manager.id
     )
@@ -195,6 +197,11 @@ def withdraw_user(ticket_id):
             ticket_code=ticket.code,
         )
     )
+
+    if previous_user:
+        notification_service.notify_withdrawn_user(
+            ticket, previous_user, manager
+        )
 
 
 # -------------------------------------------------------------------- #
