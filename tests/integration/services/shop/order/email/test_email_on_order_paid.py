@@ -4,6 +4,7 @@
 """
 
 from datetime import datetime
+from typing import Iterator
 from unittest.mock import patch
 
 import pytest
@@ -14,10 +15,10 @@ from byceps.services.shop.order import (
     service as order_service,
 )
 from byceps.services.shop.storefront import service as storefront_service
+from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.snippet import service as snippet_service
 
 from tests.helpers import current_user_set
-from tests.integration.services.shop.helpers import create_shop_fragment
 
 from .helpers import (
     assert_email,
@@ -27,46 +28,27 @@ from .helpers import (
 
 
 @pytest.fixture
-def order_admin(make_user):
-    return make_user()
-
-
-@pytest.fixture
 def customer(make_user):
     return make_user('Vorbild', email_address='vorbild@users.test')
 
 
 @pytest.fixture
-def order_number_sequence_id(shop) -> None:
-    sequence_id = order_sequence_service.create_order_number_sequence(
-        shop.id, 'AC-14-B', value=21
-    )
-
-    yield sequence_id
-
-    order_sequence_service.delete_order_number_sequence(sequence_id)
-
-
-@pytest.fixture
-def storefront(shop, order_number_sequence_id) -> None:
-    storefront = storefront_service.create_storefront(
-        f'{shop.id}-storefront',
-        shop.id,
-        order_number_sequence_id,
-        closed=False,
-    )
+def storefront(
+    make_order_number_sequence_id, make_storefront
+) -> Iterator[Storefront]:
+    order_number_sequence_id = make_order_number_sequence_id(21)
+    storefront = make_storefront(order_number_sequence_id)
 
     yield storefront
 
     storefront_service.delete_storefront(storefront.id)
+    order_sequence_service.delete_order_number_sequence(
+        order_number_sequence_id
+    )
 
 
 @pytest.fixture
-def order(storefront, customer, order_admin):
-    email_footer_snippet_id = create_email_footer_snippet(
-        storefront.shop_id, order_admin.id
-    )
-
+def order(storefront, customer, email_footer_snippet_id):
     created_at = datetime(2014, 9, 23, 18, 40, 53)
 
     order = place_order_with_items(storefront.id, customer, created_at, [])
@@ -118,26 +100,4 @@ E-Mail: noreply@acmecon.test
         expected_recipients,
         expected_subject,
         expected_body,
-    )
-
-
-# helpers
-
-
-def create_email_footer_snippet(shop_id, admin_id):
-    return create_shop_fragment(
-        shop_id,
-        admin_id,
-        'email_footer',
-        '''
-Für Fragen stehen wir gerne zur Verfügung.
-
-Viele Grüße,
-das Team der Acme Entertainment Convention
-
--- 
-Acme Entertainment Convention
-
-E-Mail: noreply@acmecon.test
-''',
     )
