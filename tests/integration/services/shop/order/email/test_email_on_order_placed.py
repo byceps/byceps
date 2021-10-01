@@ -143,11 +143,11 @@ vielen Dank für deine Bestellung mit der Nummer AC-14-B00253 am 15.08.2014 übe
 
 Folgende Artikel hast du bestellt:
 
-  Bezeichnung: Einzelticket, Kategorie Loge
+  Beschreibung: Einzelticket, Kategorie Loge
   Anzahl: 5
   Stückpreis: 99,00 €
 
-  Bezeichnung: T-Shirt, Größe L
+  Beschreibung: T-Shirt, Größe L
   Anzahl: 2
   Stückpreis: 14,95 €
 

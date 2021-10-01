@@ -99,7 +99,7 @@ Hallo Vorbild,
 
 vielen Dank für deine Bestellung mit der Nummer AC-14-B00022 am 23.09.2014 über unsere Website.
 
-Wir haben deine Zahlung erhalten und deine Bestellung als „bezahlt“ erfasst.
+Wir haben deine Zahlung erhalten und deine Bestellung als bezahlt markiert.
 
 Für Fragen stehen wir gerne zur Verfügung.
 
