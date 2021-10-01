@@ -43,8 +43,9 @@ def assert_email(
     calls = mock.call_args_list
     assert len(calls) == 1
 
-    args = calls[0].args
-    assert args[0] == expected_sender
-    assert args[1] == expected_recipients
-    assert args[2] == expected_subject
-    assert args[3] == expected_body
+    pos_args, _ = calls[0]
+    actual_sender, actual_recipients, actual_subject, actual_body = pos_args
+    assert actual_sender == expected_sender
+    assert actual_recipients == expected_recipients
+    assert actual_subject == expected_subject
+    assert actual_body == expected_body
