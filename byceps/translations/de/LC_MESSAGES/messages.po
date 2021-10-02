@@ -4448,7 +4448,7 @@ msgid "Warning: Deleting the user account is permanent!"
 msgstr "Achtung: Das Löschen des Benutzerkontos geschieht unwiderruflich!"
 
 #: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:18
-msgid "Please enter \"delete user\" to confirm deletion."
+msgid "Please enter \"delete account\" to confirm deletion."
 msgstr "Bitte zur Bestätigung \"delete account\" eingeben."
 
 #: byceps/blueprints/admin/user/templates/admin/user/index.html:20
