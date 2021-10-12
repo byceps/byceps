@@ -44,8 +44,7 @@ class OrderEmailData:
 def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
     data = _get_order_email_data(order_id)
 
-    with force_user_locale(data.orderer):
-        message = _assemble_email_for_incoming_order_to_orderer(data)
+    message = _assemble_email_for_incoming_order_to_orderer(data)
 
     _send_email(message)
 
@@ -53,8 +52,7 @@ def send_email_for_incoming_order_to_orderer(order_id: OrderID) -> None:
 def send_email_for_canceled_order_to_orderer(order_id: OrderID) -> None:
     data = _get_order_email_data(order_id)
 
-    with force_user_locale(data.orderer):
-        message = _assemble_email_for_canceled_order_to_orderer(data)
+    message = _assemble_email_for_canceled_order_to_orderer(data)
 
     _send_email(message)
 
@@ -62,8 +60,7 @@ def send_email_for_canceled_order_to_orderer(order_id: OrderID) -> None:
 def send_email_for_paid_order_to_orderer(order_id: OrderID) -> None:
     data = _get_order_email_data(order_id)
 
-    with force_user_locale(data.orderer):
-        message = _assemble_email_for_paid_order_to_orderer(data)
+    message = _assemble_email_for_paid_order_to_orderer(data)
 
     _send_email(message)
 
@@ -74,48 +71,54 @@ def _assemble_email_for_incoming_order_to_orderer(
     order = data.order
     order_number = order.order_number
 
-    subject = gettext(
-        'Your order (%(order_number)s) has been received.',
-        order_number=order_number,
-    )
-
-    date_str = _get_order_date_str(order)
-    indentation = '  '
-    line_items = [
-        '\n'.join(
-            [
-                indentation
-                + gettext('Description')
-                + ': '
-                + line_item.description,
-                indentation + gettext('Quantity') + ': ' + str(line_item.quantity),
-                indentation
-                + gettext('Unit price')
-                + ': '
-                + format_euro_amount(line_item.unit_price),
-            ]
-        )
-        for line_item in sorted(order.line_items, key=lambda li: li.description)
-    ]
-    total_amount = (
-        indentation
-        + gettext('Total amount')
-        + ': '
-        + format_euro_amount(order.total_amount)
-    )
-    payment_instructions = _get_payment_instructions(order)
-    paragraphs = [
-        gettext(
-            'thank you for your order %(order_number)s on %(order_date)s through our website.',
+    with force_user_locale(data.orderer):
+        subject = gettext(
+            'Your order (%(order_number)s) has been received.',
             order_number=order_number,
-            order_date=date_str,
-        ),
-        gettext('You have ordered these items:'),
-        *line_items,
-        total_amount,
-        payment_instructions,
-    ]
-    body = _assemble_body(data, paragraphs)
+        )
+
+        date_str = _get_order_date_str(order)
+        indentation = '  '
+        line_items = [
+            '\n'.join(
+                [
+                    indentation
+                    + gettext('Description')
+                    + ': '
+                    + line_item.description,
+                    indentation
+                    + gettext('Quantity')
+                    + ': '
+                    + str(line_item.quantity),
+                    indentation
+                    + gettext('Unit price')
+                    + ': '
+                    + format_euro_amount(line_item.unit_price),
+                ]
+            )
+            for line_item in sorted(
+                order.line_items, key=lambda li: li.description
+            )
+        ]
+        total_amount = (
+            indentation
+            + gettext('Total amount')
+            + ': '
+            + format_euro_amount(order.total_amount)
+        )
+        payment_instructions = _get_payment_instructions(order)
+        paragraphs = [
+            gettext(
+                'thank you for your order %(order_number)s on %(order_date)s through our website.',
+                order_number=order_number,
+                order_date=date_str,
+            ),
+            gettext('You have ordered these items:'),
+            *line_items,
+            total_amount,
+            payment_instructions,
+        ]
+        body = _assemble_body(data, paragraphs)
 
     recipient_address = data.orderer_email_address
 
@@ -140,22 +143,23 @@ def _assemble_email_for_canceled_order_to_orderer(
     order = data.order
     order_number = order.order_number
 
-    subject = '\u274c ' + gettext(
-        'Your order (%(order_number)s) has been canceled.',
-        order_number=order_number,
-    )
-
-    date_str = _get_order_date_str(order)
-    cancelation_reason = order.cancelation_reason or ''
-    paragraphs = [
-        gettext(
-            'your order %(order_number)s on %(order_date)s has been canceled by us for this reason:',
+    with force_user_locale(data.orderer):
+        subject = '\u274c ' + gettext(
+            'Your order (%(order_number)s) has been canceled.',
             order_number=order_number,
-            order_date=date_str,
-        ),
-        cancelation_reason,
-    ]
-    body = _assemble_body(data, paragraphs)
+        )
+
+        date_str = _get_order_date_str(order)
+        cancelation_reason = order.cancelation_reason or ''
+        paragraphs = [
+            gettext(
+                'your order %(order_number)s on %(order_date)s has been canceled by us for this reason:',
+                order_number=order_number,
+                order_date=date_str,
+            ),
+            cancelation_reason,
+        ]
+        body = _assemble_body(data, paragraphs)
 
     recipient_address = data.orderer_email_address
 
@@ -168,23 +172,24 @@ def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
     order = data.order
     order_number = order.order_number
 
-    subject = '\u2705 ' + gettext(
-        'Your order (%(order_number)s) has been paid.',
-        order_number=order_number,
-    )
-
-    date_str = _get_order_date_str(order)
-    paragraphs = [
-        gettext(
-            'thank you for your order %(order_number)s on %(order_date)s through our website.',
+    with force_user_locale(data.orderer):
+        subject = '\u2705 ' + gettext(
+            'Your order (%(order_number)s) has been paid.',
             order_number=order_number,
-            order_date=date_str,
-        ),
-        gettext(
-            'We have received your payment and have marked your order as paid.'
-        ),
-    ]
-    body = _assemble_body(data, paragraphs)
+        )
+
+        date_str = _get_order_date_str(order)
+        paragraphs = [
+            gettext(
+                'thank you for your order %(order_number)s on %(order_date)s through our website.',
+                order_number=order_number,
+                order_date=date_str,
+            ),
+            gettext(
+                'We have received your payment and have marked your order as paid.'
+            ),
+        ]
+        body = _assemble_body(data, paragraphs)
 
     recipient_address = data.orderer_email_address
 

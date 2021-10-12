@@ -11,7 +11,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional
 
-from flask_babel import gettext
+from flask_babel import force_locale, gettext
 
 from .....config import ConfigurationError
 from .....database import generate_uuid
@@ -167,7 +167,7 @@ def _build_email_data(
 ) -> OrderEmailData:
     orderer = User(
         id=EXAMPLE_USER_ID,
-        screen_name='Besteller',
+        screen_name='Orderer',
         suspended=False,
         deleted=False,
         locale=locale,
@@ -178,7 +178,7 @@ def _build_email_data(
         order=order,
         brand_id=brand_id,
         orderer=orderer,
-        orderer_email_address='besteller@example.com',
+        orderer_email_address='orderer@example.com',
     )
 
 

@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import pytest
+
 from byceps.services.shop.order.email import example_service
 
 from tests.helpers import current_user_set
@@ -10,30 +12,18 @@ from tests.helpers import current_user_set
 from .helpers import get_current_user_for_user
 
 
-def test_example_placed_order_message_text(
-    admin_app,
-    order_admin,
-    shop,
-    email_payment_instructions_snippet_id,
-    email_footer_snippet_id,
-):
-    app = admin_app
-    current_user = get_current_user_for_user(order_admin)
-
-    with current_user_set(app, current_user), app.app_context():
-        actual = example_service.build_example_placed_order_message_text(
-            shop.id, 'de'
-        )
-
-    assert (
-        actual
-        == '''\
+@pytest.mark.parametrize(
+    'locale, expected',
+    [
+        (
+            'de',
+            '''\
 From: NameAndAddress(name=None, address='noreply@acmecon.test')
-To: ['besteller@example.com']
+To: ['orderer@example.com']
 Subject: Deine Bestellung (AWSM-ORDR-9247) ist eingegangen.
 
 
-Hallo Besteller,
+Hallo Orderer,
 
 vielen Dank für deine Bestellung mit der Nummer AWSM-ORDR-9247 am 12.10.2021 über unsere Website.
 
@@ -62,34 +52,81 @@ das Team der Acme Entertainment Convention
 Acme Entertainment Convention
 
 E-Mail: noreply@acmecon.test
-'''
-    )
+''',
+        ),
+        (
+            'en',
+            '''\
+From: NameAndAddress(name=None, address='noreply@acmecon.test')
+To: ['orderer@example.com']
+Subject: Your order (AWSM-ORDR-9247) has been received.
 
 
-def test_example_paid_order_message_text(
+Hello Orderer,
+
+thank you for your order AWSM-ORDR-9247 on 12.10.2021 through our website.
+
+You have ordered these items:
+
+  Total amount: 42,95 €
+
+Bitte überweise den Gesamtbetrag auf folgendes Konto:
+
+  Zahlungsempfänger: <Name>
+  IBAN: <IBAN>
+  BIC: <BIC>
+  Bank: <Kreditinstitut>
+  Verwendungszweck: AWSM-ORDR-9247
+
+Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
+
+Hier kannst du deine Bestellungen einsehen: https://www.acmecon.test/shop/orders
+
+Für Fragen stehen wir gerne zur Verfügung.
+
+Viele Grüße,
+das Team der Acme Entertainment Convention
+
+-- 
+Acme Entertainment Convention
+
+E-Mail: noreply@acmecon.test
+''',
+        ),
+    ],
+)
+def test_example_placed_order_message_text(
     admin_app,
     order_admin,
     shop,
     email_payment_instructions_snippet_id,
     email_footer_snippet_id,
+    locale,
+    expected,
 ):
     app = admin_app
     current_user = get_current_user_for_user(order_admin)
 
     with current_user_set(app, current_user), app.app_context():
-        actual = example_service.build_example_paid_order_message_text(
-            shop.id, 'de'
+        actual = example_service.build_example_placed_order_message_text(
+            shop.id, locale
         )
 
-    assert (
-        actual
-        == '''\
+    assert actual == expected
+
+
+@pytest.mark.parametrize(
+    'locale, expected',
+    [
+        (
+            'de',
+            '''\
 From: NameAndAddress(name=None, address='noreply@acmecon.test')
-To: ['besteller@example.com']
+To: ['orderer@example.com']
 Subject: ✅ Deine Bestellung (AWSM-ORDR-9247) ist bezahlt worden.
 
 
-Hallo Besteller,
+Hallo Orderer,
 
 vielen Dank für deine Bestellung mit der Nummer AWSM-ORDR-9247 am 12.10.2021 über unsere Website.
 
@@ -104,34 +141,67 @@ das Team der Acme Entertainment Convention
 Acme Entertainment Convention
 
 E-Mail: noreply@acmecon.test
-'''
-    )
+''',
+        ),
+        (
+            'en',
+            '''\
+From: NameAndAddress(name=None, address='noreply@acmecon.test')
+To: ['orderer@example.com']
+Subject: ✅ Your order (AWSM-ORDR-9247) has been paid.
 
 
-def test_example_canceled_order_message_text(
+Hello Orderer,
+
+thank you for your order AWSM-ORDR-9247 on 12.10.2021 through our website.
+
+We have received your payment and have marked your order as paid.
+
+Für Fragen stehen wir gerne zur Verfügung.
+
+Viele Grüße,
+das Team der Acme Entertainment Convention
+
+-- 
+Acme Entertainment Convention
+
+E-Mail: noreply@acmecon.test
+''',
+        ),
+    ],
+)
+def test_example_paid_order_message_text(
     admin_app,
     order_admin,
     shop,
     email_payment_instructions_snippet_id,
     email_footer_snippet_id,
+    locale,
+    expected,
 ):
     app = admin_app
     current_user = get_current_user_for_user(order_admin)
 
     with current_user_set(app, current_user), app.app_context():
-        actual = example_service.build_example_canceled_order_message_text(
-            shop.id, 'de'
+        actual = example_service.build_example_paid_order_message_text(
+            shop.id, locale
         )
 
-    assert (
-        actual
-        == '''\
+    assert actual == expected
+
+
+@pytest.mark.parametrize(
+    'locale, expected',
+    [
+        (
+            'de',
+            '''\
 From: NameAndAddress(name=None, address='noreply@acmecon.test')
-To: ['besteller@example.com']
+To: ['orderer@example.com']
 Subject: ❌ Deine Bestellung (AWSM-ORDR-9247) ist storniert worden.
 
 
-Hallo Besteller,
+Hallo Orderer,
 
 deine Bestellung mit der Nummer AWSM-ORDR-9247 vom 12.10.2021 wurde von uns aus folgendem Grund storniert:
 
@@ -146,5 +216,50 @@ das Team der Acme Entertainment Convention
 Acme Entertainment Convention
 
 E-Mail: noreply@acmecon.test
-'''
-    )
+''',
+        ),
+        (
+            'en',
+            '''\
+From: NameAndAddress(name=None, address='noreply@acmecon.test')
+To: ['orderer@example.com']
+Subject: ❌ Your order (AWSM-ORDR-9247) has been canceled.
+
+
+Hello Orderer,
+
+your order AWSM-ORDR-9247 on 12.10.2021 has been canceled by us for this reason:
+
+Kein fristgerechter Geldeingang feststellbar.
+
+Für Fragen stehen wir gerne zur Verfügung.
+
+Viele Grüße,
+das Team der Acme Entertainment Convention
+
+-- 
+Acme Entertainment Convention
+
+E-Mail: noreply@acmecon.test
+''',
+        ),
+    ],
+)
+def test_example_canceled_order_message_text(
+    admin_app,
+    order_admin,
+    shop,
+    email_payment_instructions_snippet_id,
+    email_footer_snippet_id,
+    locale,
+    expected,
+):
+    app = admin_app
+    current_user = get_current_user_for_user(order_admin)
+
+    with current_user_set(app, current_user), app.app_context():
+        actual = example_service.build_example_canceled_order_message_text(
+            shop.id, locale
+        )
+
+    assert actual == expected
