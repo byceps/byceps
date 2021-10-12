@@ -18,11 +18,11 @@ from .....database import generate_uuid
 from .....typing import BrandID, UserID
 
 from ....email.transfer.models import Message
+from ....user.transfer.models import User
 
 from ...shop import service as shop_service
 from ...shop.transfer.models import ShopID
 
-from ..email.service import OrderEmailData
 from ..transfer.models import (
     Address,
     Order,
@@ -34,6 +34,10 @@ from ..transfer.models import (
 )
 
 from . import service as shop_order_email_service
+from .service import OrderEmailData
+
+
+EXAMPLE_USER_ID = UserID(generate_uuid())
 
 
 class EmailAssemblyFailed(Exception):
@@ -120,7 +124,7 @@ def _build_order(
     order_number = OrderNumber('AWSM-ORDR-9247')
 
     created_at = datetime.utcnow()
-    placed_by_id = UserID(generate_uuid())
+    placed_by_id = EXAMPLE_USER_ID
 
     first_names = 'Bella-Bernadine'
     last_name = 'Ballerwurm'
@@ -155,9 +159,19 @@ def _build_order(
 
 
 def _build_email_data(order: Order, brand_id: BrandID) -> OrderEmailData:
+    orderer = User(
+        id=EXAMPLE_USER_ID,
+        screen_name='Besteller',
+        suspended=False,
+        deleted=False,
+        locale='en',
+        avatar_url=None,
+    )
+
     return OrderEmailData(
         order=order,
         brand_id=brand_id,
+        orderer=orderer,
         orderer_screen_name='Besteller',
         orderer_email_address='besteller@example.com',
     )
