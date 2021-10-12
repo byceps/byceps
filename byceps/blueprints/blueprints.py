@@ -135,6 +135,7 @@ def register_api_blueprints(app: Flask) -> None:
         ('snippet',                 '/snippets'             ),
         ('tourney.avatar',          '/tourney/avatars'      ),
         ('tourney.match.comments',  '/tourney'              ),
+        ('ticketing',               '/ticketing'            ),
         ('user',                    '/users'                ),
         ('user_avatar',             '/user_avatars'         ),
         ('user_badge',              '/user_badges'          ),

@@ -160,12 +160,19 @@ def create_party(
     brand_id: BrandID,
     party_id: PartyID = PartyID('acmecon-2014'),
     title: str = 'ACMECon 2014',
+    *,
+    max_ticket_quantity: Optional[int] = None,
 ) -> Party:
     starts_at = datetime(2014, 10, 24, 16, 0)
     ends_at = datetime(2014, 10, 26, 13, 0)
 
     return party_service.create_party(
-        party_id, brand_id, title, starts_at, ends_at
+        party_id,
+        brand_id,
+        title,
+        starts_at,
+        ends_at,
+        max_ticket_quantity=max_ticket_quantity,
     )
 
 
