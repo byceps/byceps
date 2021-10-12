@@ -22,7 +22,7 @@ def test_example_placed_order_message_text(
 
     with current_user_set(app, current_user), app.app_context():
         actual = example_service.build_example_placed_order_message_text(
-            shop.id
+            shop.id, 'de'
         )
 
     assert (
@@ -77,7 +77,9 @@ def test_example_paid_order_message_text(
     current_user = get_current_user_for_user(order_admin)
 
     with current_user_set(app, current_user), app.app_context():
-        actual = example_service.build_example_paid_order_message_text(shop.id)
+        actual = example_service.build_example_paid_order_message_text(
+            shop.id, 'de'
+        )
 
     assert (
         actual
@@ -118,7 +120,7 @@ def test_example_canceled_order_message_text(
 
     with current_user_set(app, current_user), app.app_context():
         actual = example_service.build_example_canceled_order_message_text(
-            shop.id
+            shop.id, 'de'
         )
 
     assert (

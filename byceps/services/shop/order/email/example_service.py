@@ -44,7 +44,9 @@ class EmailAssemblyFailed(Exception):
     pass
 
 
-def build_example_placed_order_message_text(shop_id: ShopID) -> str:
+def build_example_placed_order_message_text(
+    shop_id: ShopID, locale: str
+) -> str:
     """Assemble an exemplary e-mail for a placed order."""
     shop = shop_service.get_shop(shop_id)
 
@@ -52,7 +54,7 @@ def build_example_placed_order_message_text(shop_id: ShopID) -> str:
         shop.id, PaymentState.open, state=OrderState.open, is_open=True
     )
 
-    data = _build_email_data(order, shop.brand_id)
+    data = _build_email_data(order, shop.brand_id, locale)
 
     try:
         message = shop_order_email_service._assemble_email_for_incoming_order_to_orderer(
@@ -64,7 +66,7 @@ def build_example_placed_order_message_text(shop_id: ShopID) -> str:
     return _render_message(message)
 
 
-def build_example_paid_order_message_text(shop_id: ShopID) -> str:
+def build_example_paid_order_message_text(shop_id: ShopID, locale: str) -> str:
     """Assemble an exemplary e-mail for a paid order."""
     shop = shop_service.get_shop(shop_id)
 
@@ -72,7 +74,7 @@ def build_example_paid_order_message_text(shop_id: ShopID) -> str:
         shop.id, PaymentState.paid, state=OrderState.open, is_paid=True
     )
 
-    data = _build_email_data(order, shop.brand_id)
+    data = _build_email_data(order, shop.brand_id, locale)
 
     try:
         message = (
@@ -86,7 +88,9 @@ def build_example_paid_order_message_text(shop_id: ShopID) -> str:
     return _render_message(message)
 
 
-def build_example_canceled_order_message_text(shop_id: ShopID) -> str:
+def build_example_canceled_order_message_text(
+    shop_id: ShopID, locale: str
+) -> str:
     """Assemble an exemplary e-mail for a canceled order."""
     shop = shop_service.get_shop(shop_id)
 
@@ -98,7 +102,7 @@ def build_example_canceled_order_message_text(shop_id: ShopID) -> str:
         cancelation_reason=gettext('Not paid in time.'),
     )
 
-    data = _build_email_data(order, shop.brand_id)
+    data = _build_email_data(order, shop.brand_id, locale)
 
     try:
         message = shop_order_email_service._assemble_email_for_canceled_order_to_orderer(
@@ -158,13 +162,15 @@ def _build_order(
     )
 
 
-def _build_email_data(order: Order, brand_id: BrandID) -> OrderEmailData:
+def _build_email_data(
+    order: Order, brand_id: BrandID, locale: str
+) -> OrderEmailData:
     orderer = User(
         id=EXAMPLE_USER_ID,
         screen_name='Besteller',
         suspended=False,
         deleted=False,
-        locale='en',
+        locale=locale,
         avatar_url=None,
     )
 

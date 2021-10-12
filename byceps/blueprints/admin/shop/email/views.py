@@ -8,7 +8,7 @@ byceps.blueprints.admin.shop.email.views
 
 from typing import Optional
 
-from flask import abort, current_app
+from flask import abort, current_app, g
 
 from .....services.brand import service as brand_service
 from .....services.email import service as email_service
@@ -59,7 +59,7 @@ def _get_example_placed_order_message_text(shop_id) -> Optional[str]:
     try:
         return (
             example_order_email_service.build_example_placed_order_message_text(
-                shop_id
+                shop_id, g.user.locale
             )
         )
     except example_order_email_service.EmailAssemblyFailed as e:
@@ -73,7 +73,7 @@ def _get_example_paid_order_message_text(shop_id) -> Optional[str]:
     try:
         return (
             example_order_email_service.build_example_paid_order_message_text(
-                shop_id
+                shop_id, g.user.locale
             )
         )
     except example_order_email_service.EmailAssemblyFailed as e:
@@ -86,7 +86,7 @@ def _get_example_paid_order_message_text(shop_id) -> Optional[str]:
 def _get_example_canceled_order_message_text(shop_id) -> Optional[str]:
     try:
         return example_order_email_service.build_example_canceled_order_message_text(
-            shop_id
+            shop_id, g.user.locale
         )
     except example_order_email_service.EmailAssemblyFailed as e:
         current_app.logger.error(
