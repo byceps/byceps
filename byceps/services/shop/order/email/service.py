@@ -38,7 +38,6 @@ class OrderEmailData:
     order: Order
     brand_id: BrandID
     orderer: User
-    orderer_screen_name: str
     orderer_email_address: str
 
 
@@ -201,23 +200,20 @@ def _get_order_email_data(order_id: OrderID) -> OrderEmailData:
     shop = shop_service.get_shop(order.shop_id)
     orderer_id = order.placed_by_id
     orderer = user_service.get_user(orderer_id)
-    screen_name = orderer.screen_name or 'UnknownUser'
     email_address = user_service.get_email_address(orderer_id)
 
     return OrderEmailData(
         order=order,
         brand_id=shop.brand_id,
         orderer=orderer,
-        orderer_screen_name=screen_name,
         orderer_email_address=email_address,
     )
 
 
 def _assemble_body(data: OrderEmailData, paragraphs: list[str]) -> str:
     """Assemble the plain text part of the email."""
-    salutation = gettext(
-        'Hello %(screen_name)s,', screen_name=data.orderer_screen_name
-    )
+    screen_name = data.orderer.screen_name or 'UnknownUser'
+    salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
     footer = _get_snippet_body(data.order.shop_id, 'email_footer')
 
     return '\n\n'.join([salutation] + paragraphs + [footer])

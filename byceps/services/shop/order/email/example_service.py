@@ -172,7 +172,6 @@ def _build_email_data(order: Order, brand_id: BrandID) -> OrderEmailData:
         order=order,
         brand_id=brand_id,
         orderer=orderer,
-        orderer_screen_name='Besteller',
         orderer_email_address='besteller@example.com',
     )
 
