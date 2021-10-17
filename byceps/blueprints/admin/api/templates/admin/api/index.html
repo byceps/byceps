@@ -1,5 +1,9 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
+{% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
 {% set current_page = 'api_admin' %}
 {% set page_title = _('API') %}
 {% set layout_main_raw = True %}
@@ -17,4 +21,53 @@
   {%- endif %}
   </div>
 
+  <h2>{{ _('API Tokens') }} {{ render_extra_in_heading(api_tokens|length) }}</h2>
+  <div class="box">
+    {%- if api_tokens %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>{{ _('Created at') }}</th>
+          <th>{{ _('Created by') }}</th>
+          <th>{{ _('Permissions') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for api_token in api_tokens|sort(attribute='created_at', reverse=True) %}
+        <tr>
+          <td class="nowrap">{{ render_datetime(api_token.created_at|utc_to_local_tz) }}</td>
+          <td>{{ render_user_avatar_and_name(users_by_id[api_token.creator_id], size=20) }}</td>
+          <td>
+            <details>
+              <summary>{{ api_token.permissions|length }} {{ _('permissions') }}</summary>
+              <ul style="margin: 0.5rem 0 0 0; padding-left: 1rem;">
+                {%- for permission_id in api_token.permissions %}
+                <li>{{ permission_id }}</li>
+                {%- endfor %}
+              </ul>
+            </details>
+          </td>
+          <td>
+            <div class="button-row button-row--compact button-row--right">
+              <a class="button button--compact" href="{{ url_for('.delete_api_token', api_token_id=api_token.id) }}" data-action="delete-api-token" title="{{ _('Delete API token') }}">{{ render_icon('delete') }}</a>
+            </div>
+          </td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No API tokens defined.') }}</div>
+    {%- endif %}
+  </div>
+
 {%- endblock %}
+
+{% block scripts %}
+<script>
+  onDomReady(() => {
+    confirmed_delete_on_click_then_reload('[data-action="delete-api-token"]', '{{ _('Delete API token?') }}');
+  });
+</script>
+{% endblock %}
