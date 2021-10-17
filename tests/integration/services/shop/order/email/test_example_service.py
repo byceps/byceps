@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from freezegun import freeze_time
 import pytest
 
 from byceps.services.shop.order.email import example_service
@@ -12,6 +13,10 @@ from tests.helpers import current_user_set
 from .helpers import get_current_user_for_user
 
 
+ORDER_PLACED_AT = '2021-10-12 12:34:56'
+
+
+@freeze_time(ORDER_PLACED_AT)
 @pytest.mark.parametrize(
     'locale, expected',
     [
@@ -115,6 +120,7 @@ def test_example_placed_order_message_text(
     assert actual == expected
 
 
+@freeze_time(ORDER_PLACED_AT)
 @pytest.mark.parametrize(
     'locale, expected',
     [
@@ -190,6 +196,7 @@ def test_example_paid_order_message_text(
     assert actual == expected
 
 
+@freeze_time(ORDER_PLACED_AT)
 @pytest.mark.parametrize(
     'locale, expected',
     [
