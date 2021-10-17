@@ -421,6 +421,38 @@ msgstr ""
 "%(initiator_screen_name)s hat das Abzeichen \"%(badge_label)s\" an "
 "%(awardee_screen_name)s verliehen."
 
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:4
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:21
+msgid "API"
+msgstr "API"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:11
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:15
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:22
+#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:38
+#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:38
+#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:15
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/_orders.html:12
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:24
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:6
+msgid "Status"
+msgstr "Status"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:14
+#: byceps/blueprints/admin/site/forms.py:31
+#: byceps/blueprints/admin/site/templates/admin/site/_sites.html:21
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:40
+msgid "enabled"
+msgstr "aktiv"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:16
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:17
+#: byceps/blueprints/admin/site/templates/admin/site/_sites.html:23
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:20
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:40
+msgid "disabled"
+msgstr "deaktiviert"
+
 #: byceps/blueprints/admin/attendance/templates/admin/attendance/view_for_brand.html:5
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:19
 msgid "Most Frequent Attendees"
@@ -889,7 +921,7 @@ msgstr "Position"
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:18
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:73
 #: byceps/blueprints/site/user_group/forms.py:18
-#: byceps/services/shop/order/email/service.py:89
+#: byceps/services/shop/order/email/service.py:86
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -1594,13 +1626,6 @@ msgstr "Sitzplätze belegt"
 msgid "tickets checked in"
 msgstr "Tickets eingecheckt"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:17
-#: byceps/blueprints/admin/site/templates/admin/site/_sites.html:23
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:20
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:40
-msgid "disabled"
-msgstr "deaktiviert"
-
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:32
 #: byceps/blueprints/admin/site/forms.py:28
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:45
@@ -1666,7 +1691,7 @@ msgstr "Jobs"
 
 #: byceps/blueprints/admin/jobs/templates/admin/jobs/index.html:8
 #: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:5
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:22
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:23
 msgid "Maintenance"
 msgstr "Wartung"
 
@@ -1742,7 +1767,7 @@ msgstr "Newsletter"
 msgid "User Badges"
 msgstr "Benutzer-Abzeichen"
 
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:21
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:22
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:8
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:6
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:8
@@ -2726,7 +2751,7 @@ msgstr "Artikel"
 #: byceps/blueprints/site/shop/order/forms.py:73
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:5
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:72
-#: byceps/services/shop/order/email/service.py:92
+#: byceps/services/shop/order/email/service.py:90
 msgid "Quantity"
 msgstr "Anzahl"
 
@@ -2746,26 +2771,26 @@ msgstr "Abzeichen"
 msgid "Ticket quantity"
 msgstr "Ticketanzahl"
 
-#: byceps/blueprints/admin/shop/article/views.py:212
+#: byceps/blueprints/admin/shop/article/views.py:210
 msgid "No article number sequences are defined for this shop."
 msgstr "Für diesen Shop sind keine Artikelnummer-Sequenzen definiert."
 
-#: byceps/blueprints/admin/shop/article/views.py:222
-#: byceps/blueprints/admin/shop/article/views.py:231
+#: byceps/blueprints/admin/shop/article/views.py:220
+#: byceps/blueprints/admin/shop/article/views.py:229
 msgid "No valid article number sequence was specified."
 msgstr "Es wurde keine gültige Artikelnummer-Sequenz angegeben."
 
-#: byceps/blueprints/admin/shop/article/views.py:263
+#: byceps/blueprints/admin/shop/article/views.py:261
 #, python-format
 msgid "Article \"%(item_number)s\" has been created."
 msgstr "Der Artikel \"%(item_number)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/shop/article/views.py:368
+#: byceps/blueprints/admin/shop/article/views.py:366
 #, python-format
 msgid "Article \"%(description)s\" has been updated."
 msgstr "Der Artikel \"%(description)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/shop/article/views.py:431
+#: byceps/blueprints/admin/shop/article/views.py:429
 #, python-format
 msgid ""
 "Article \"%(article_to_attach_item_number)s\" has been attached "
@@ -2774,7 +2799,7 @@ msgstr ""
 "Der Artikel \"%(article_to_attach_item_number)s\" wurde %(quantity)s mal "
 "an den Artikel \"%(article_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/article/views.py:457
+#: byceps/blueprints/admin/shop/article/views.py:455
 #, python-format
 msgid ""
 "Article \"%(article_item_number)s\" is no longer attached to article "
@@ -2783,17 +2808,17 @@ msgstr ""
 "Artikel \"%(article_item_number)s\" ist nun nicht mehr an Artikel "
 "\"%(attached_to_article_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/article/views.py:515
-#: byceps/blueprints/admin/shop/article/views.py:569
-#: byceps/blueprints/admin/shop/article/views.py:627
+#: byceps/blueprints/admin/shop/article/views.py:513
+#: byceps/blueprints/admin/shop/article/views.py:567
+#: byceps/blueprints/admin/shop/article/views.py:625
 msgid "Action has been added."
 msgstr "Die Aktion wurde hinzugefügt."
 
-#: byceps/blueprints/admin/shop/article/views.py:656
+#: byceps/blueprints/admin/shop/article/views.py:654
 msgid "Action has been removed."
 msgstr "Die Aktion wurde entfernt."
 
-#: byceps/blueprints/admin/shop/article/views.py:700
+#: byceps/blueprints/admin/shop/article/views.py:698
 #, python-format
 msgid ""
 "Article number sequence could not be created. Is prefix \"%(prefix)s\" "
@@ -2802,7 +2827,7 @@ msgstr ""
 "Die Artikelnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/article/views.py:709
+#: byceps/blueprints/admin/shop/article/views.py:707
 #, python-format
 msgid "Article number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Artikelnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
@@ -3165,17 +3190,6 @@ msgstr "Besteller"
 msgid "Amount"
 msgstr "Betrag"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:15
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:22
-#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:38
-#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:38
-#: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:15
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/_orders.html:12
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:24
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:6
-msgid "Status"
-msgstr "Status"
-
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:30
 msgid "invoice created"
 msgstr "Rechnung erstellt"
@@ -3237,7 +3251,7 @@ msgstr "Als versendet markieren"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:15
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:14
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:79
-#: byceps/services/shop/order/email/service.py:103
+#: byceps/services/shop/order/email/service.py:105
 msgid "Total amount"
 msgstr "Gesamtbetrag"
 
@@ -3457,12 +3471,6 @@ msgstr "Es sind keine Storefronts vorhanden."
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/update_form.html:4
 msgid "Edit storefront"
 msgstr "Storefront bearbeiten"
-
-#: byceps/blueprints/admin/site/forms.py:31
-#: byceps/blueprints/admin/site/templates/admin/site/_sites.html:21
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:40
-msgid "enabled"
-msgstr "aktiv"
 
 #: byceps/blueprints/admin/site/forms.py:33
 msgid "User registration open"
@@ -3775,7 +3783,7 @@ msgid "Code for ticket %(ticket_code)s has been updated."
 msgstr "Der Code von Ticket %(ticket_code)s wurde geändert."
 
 #: byceps/blueprints/admin/ticketing/views.py:194
-#: byceps/blueprints/site/ticketing/views.py:161
+#: byceps/blueprints/site/ticketing/views.py:164
 #, python-format
 msgid "%(screen_name)s has been assigned as user of ticket %(ticket_code)s."
 msgstr ""
@@ -5568,7 +5576,7 @@ msgstr ""
 
 #: byceps/blueprints/site/ticketing/notification_service.py:164
 #: byceps/services/authentication/password/reset_service.py:47
-#: byceps/services/shop/order/email/service.py:218
+#: byceps/services/shop/order/email/service.py:221
 #: byceps/services/user/email_address_verification_service.py:77
 #: byceps/services/user/email_address_verification_service.py:214
 #: byceps/services/user_message/service.py:107
@@ -5576,12 +5584,12 @@ msgstr ""
 msgid "Hello %(screen_name)s,"
 msgstr "Hallo %(screen_name)s,"
 
-#: byceps/blueprints/site/ticketing/views.py:193
+#: byceps/blueprints/site/ticketing/views.py:203
 #, python-format
 msgid "You have been assigned as user of ticket %(ticket_code)s."
 msgstr "Du wurdest als Nutzer/in von Ticket %(ticket_code)s eingetragen."
 
-#: byceps/blueprints/site/ticketing/views.py:253
+#: byceps/blueprints/site/ticketing/views.py:268
 #, python-format
 msgid ""
 "%(screen_name)s has been assigned as user manager of ticket "
@@ -5590,12 +5598,12 @@ msgstr ""
 "%(screen_name)s wurde als Nutzer-Verwalter/in von Ticket %(ticket_code)s "
 "eingetragen."
 
-#: byceps/blueprints/site/ticketing/views.py:286
+#: byceps/blueprints/site/ticketing/views.py:301
 #, python-format
 msgid "User manager of ticket %(ticket_code)s has been removed."
 msgstr "Der Nutzer-Verwalter von Ticket %(ticket_code)s wurde entfernt."
 
-#: byceps/blueprints/site/ticketing/views.py:344
+#: byceps/blueprints/site/ticketing/views.py:359
 #, python-format
 msgid ""
 "%(screen_name)s has been assigned as seat manager of ticket "
@@ -5604,16 +5612,16 @@ msgstr ""
 "%(screen_name)s wurde als Sitzplatz-Verwalter/in von Ticket "
 "%(ticket_code)s eingetragen."
 
-#: byceps/blueprints/site/ticketing/views.py:375
+#: byceps/blueprints/site/ticketing/views.py:390
 #, python-format
 msgid "Seat manager of ticket %(ticket_code)s has been removed."
 msgstr "Der Sitzplatz-Verwalter von Ticket %(ticket_code)s wurde entfernt."
 
-#: byceps/blueprints/site/ticketing/views.py:389
+#: byceps/blueprints/site/ticketing/views.py:404
 msgid "Tickets cannot be updated at this time."
 msgstr "Tickets können derzeit nicht verändert werden."
 
-#: byceps/blueprints/site/ticketing/views.py:416
+#: byceps/blueprints/site/ticketing/views.py:431
 msgid "Somebody has already been checked in with this ticket."
 msgstr "Es ist bereits jemand mit diesem Ticket eingecheckt worden."
 
@@ -5829,6 +5837,10 @@ msgstr "Auf den Admin-Bereich zugreifen"
 #: byceps/permissions/admin.py:18
 msgid "Carry out maintenance work"
 msgstr "Wartungsarbeiten durchführen"
+
+#: byceps/permissions/api.py:17
+msgid "Administrate API"
+msgstr "API verwalten"
 
 #: byceps/permissions/authorization.py:17
 msgid "Assign roles"
@@ -6192,17 +6204,17 @@ msgstr "Lastschrift"
 msgid "free"
 msgstr "kostenlos"
 
-#: byceps/services/shop/order/email/example_service.py:94
+#: byceps/services/shop/order/email/example_service.py:102
 msgid "Not paid in time."
 msgstr "Kein fristgerechter Geldeingang feststellbar."
 
-#: byceps/services/shop/order/email/service.py:78
+#: byceps/services/shop/order/email/service.py:75
 #, python-format
 msgid "Your order (%(order_number)s) has been received."
 msgstr "Deine Bestellung (%(order_number)s) ist eingegangen."
 
-#: byceps/services/shop/order/email/service.py:109
-#: byceps/services/shop/order/email/service.py:179
+#: byceps/services/shop/order/email/service.py:111
+#: byceps/services/shop/order/email/service.py:183
 #, python-format
 msgid ""
 "thank you for your order %(order_number)s on %(order_date)s through our "
@@ -6211,16 +6223,16 @@ msgstr ""
 "vielen Dank für deine Bestellung mit der Nummer %(order_number)s am "
 "%(order_date)s über unsere Website."
 
-#: byceps/services/shop/order/email/service.py:114
+#: byceps/services/shop/order/email/service.py:116
 msgid "You have ordered these items:"
 msgstr "Folgende Artikel hast du bestellt:"
 
-#: byceps/services/shop/order/email/service.py:144
+#: byceps/services/shop/order/email/service.py:147
 #, python-format
 msgid "Your order (%(order_number)s) has been canceled."
 msgstr "Deine Bestellung (%(order_number)s) ist storniert worden."
 
-#: byceps/services/shop/order/email/service.py:152
+#: byceps/services/shop/order/email/service.py:155
 #, python-format
 msgid ""
 "your order %(order_number)s on %(order_date)s has been canceled by us for"
@@ -6229,12 +6241,12 @@ msgstr ""
 "deine Bestellung mit der Nummer %(order_number)s vom %(order_date)s wurde"
 " von uns aus folgendem Grund storniert:"
 
-#: byceps/services/shop/order/email/service.py:172
+#: byceps/services/shop/order/email/service.py:176
 #, python-format
 msgid "Your order (%(order_number)s) has been paid."
 msgstr "Deine Bestellung (%(order_number)s) ist bezahlt worden."
 
-#: byceps/services/shop/order/email/service.py:184
+#: byceps/services/shop/order/email/service.py:188
 msgid "We have received your payment and have marked your order as paid."
 msgstr ""
 "Wir haben deine Zahlung erhalten und deine Bestellung als bezahlt "

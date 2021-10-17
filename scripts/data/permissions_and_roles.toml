@@ -1,4 +1,11 @@
 [[roles]]
+id = 'api_admin'
+title = 'API verwalten'
+assigned_permissions = [
+    'api.administrate',
+]
+
+[[roles]]
 id = 'authorization_admin'
 title = 'Rechte und Rollen verwalten'
 assigned_permissions = [

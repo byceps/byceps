@@ -1,0 +1,20 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/misc.html' import render_tag %}
+{% set current_page = 'api_admin' %}
+{% set page_title = _('API') %}
+{% set layout_main_raw = True %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <div class="data-label">{{ _('Status') }}</div>
+  <div class="data-value">
+  {%- if api_enabled %}
+    {{ render_tag(_('enabled'), class='color-success', icon='enabled') }}
+  {%- else %}
+    {{ render_tag(_('disabled'), class='color-disabled', icon='disabled') }}
+  {%- endif %}
+  </div>
+
+{%- endblock %}

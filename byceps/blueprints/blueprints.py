@@ -86,6 +86,7 @@ def _get_blueprints_site(app: Flask) -> Iterator[BlueprintReg]:
 
 def _get_blueprints_admin(app: Flask) -> Iterator[BlueprintReg]:
     yield from [
+        (app, 'admin.api',                       '/admin/api'               ),
         (app, 'admin.attendance',                '/admin/attendance'        ),
         (app, 'admin.authentication.login',      '/authentication'          ),
         (app, 'admin.authorization',             '/admin/authorization'     ),
