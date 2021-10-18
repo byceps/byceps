@@ -23,6 +23,17 @@
 {%- endmacro %}
 
 
+{%- macro form_field_checkboxes(field) -%}
+  <div class="mb{% if field.errors %} invalid{% endif %}">
+    {{ field.label(class='form-label') }}
+    <div class="form-control-checkboxes">
+      {{- field(**kwargs) }}
+    </div>
+    {{- _errors(field) -}}
+  </div>
+{%- endmacro %}
+
+
 {%- macro form_field_radio(field) -%}
   <div class="mb{% if field.errors %} invalid{% endif %}">
     {{ field.label(class='form-label') }}

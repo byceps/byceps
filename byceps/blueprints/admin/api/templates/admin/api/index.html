@@ -21,7 +21,17 @@
   {%- endif %}
   </div>
 
-  <h2>{{ _('API Tokens') }} {{ render_extra_in_heading(api_tokens|length) }}</h2>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h2>{{ _('API Tokens') }} {{ render_extra_in_heading(api_tokens|length) }}</h2>
+    </div>
+    <div class="column-auto column--align-bottom">
+      <div class="button-row button-row--right">
+        <a class="button button--compact" href="{{ url_for('.create_api_token_form') }}">{{ render_icon('add') }} <span>{{ _('Create API token') }}</span></a>
+      </div>
+    </div>
+  </div>
+
   <div class="box">
     {%- if api_tokens %}
     <table class="index wide">
