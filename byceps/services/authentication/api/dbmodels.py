@@ -29,6 +29,7 @@ class ApiToken(db.Model):
     token = db.Column(db.UnicodeText, nullable=False)
     permissions = db.Column(MutableList.as_mutable(db.JSONB), nullable=False)
     description = db.Column(db.UnicodeText, nullable=True)
+    suspended = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(
         self,

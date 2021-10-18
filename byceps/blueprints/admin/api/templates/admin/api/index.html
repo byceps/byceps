@@ -46,7 +46,9 @@ code {
 
   {%- if api_tokens %}
     {%- for api_token in api_tokens|sort(attribute='created_at', reverse=True) %}
-  <div class="box">
+  <div class="box" style="border-left: {{ '#ff2222' if api_token.suspended else '#55cc00' }} solid 0.25rem;">
+
+    <div class="mb">{{ render_tag(_('suspended'), class='color-danger') if api_token.suspended else render_tag(_('enabled'), class='color-success') }}</div>
 
     <div class="row row--space-between">
       <div class="column-auto column-auto--grow">

@@ -25,3 +25,4 @@ class ApiToken:
     token: str
     permissions: frozenset[PermissionID]
     description: Optional[str]
+    suspended: bool

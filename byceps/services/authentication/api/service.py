@@ -70,4 +70,5 @@ def _db_entity_to_api_token(db_api_token: DbApiToken) -> ApiToken:
         token=db_api_token.token,
         permissions=frozenset(db_api_token.permissions),
         description=db_api_token.description,
+        suspended=db_api_token.suspended,
     )
