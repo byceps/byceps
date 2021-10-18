@@ -421,12 +421,93 @@ msgstr ""
 "%(initiator_screen_name)s hat das Abzeichen \"%(badge_label)s\" an "
 "%(awardee_screen_name)s verliehen."
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:4
+#: byceps/blueprints/admin/api/forms.py:35
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:86
+#: byceps/blueprints/admin/authorization/templates/admin/authorization/permission_index.html:4
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:16
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:24
+#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:31
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:5
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:25
+#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:42
+#: byceps/blueprints/admin/user/templates/layout/admin/user.html:66
+msgid "Permissions"
+msgstr "Berechtigungen"
+
+#: byceps/blueprints/admin/api/forms.py:40
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:59
+#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:36
+#: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:18
+#: byceps/blueprints/admin/shop/article/forms.py:43
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:37
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:69
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:9
+#: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:16
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:20
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:38
+#: byceps/blueprints/admin/user_badge/forms.py:38
+#: byceps/blueprints/admin/webhook/forms.py:19
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:6
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:18
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:73
+#: byceps/blueprints/site/user_group/forms.py:18
+#: byceps/services/shop/order/email/service.py:86
+msgid "Description"
+msgstr "Beschreibung"
+
+#: byceps/blueprints/admin/api/views.py:74
+msgid "API token has been created."
+msgstr "API-Token wurde angelegt."
+
+#: byceps/blueprints/admin/api/views.py:86
+msgid "API token has been deleted."
+msgstr "API-Token wurde gelöscht."
+
+#: byceps/blueprints/admin/api/templates/admin/api/create_api_token_form.html:5
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:42
+msgid "Create API token"
+msgstr "API-Token erstellen"
+
+#: byceps/blueprints/admin/api/templates/admin/api/create_api_token_form.html:8
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:38
+msgid "API Tokens"
+msgstr "API-Tokens"
+
+#: byceps/blueprints/admin/api/templates/admin/api/create_api_token_form.html:19
+#: byceps/blueprints/admin/board/templates/admin/board/board_create_form.html:22
+#: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:21
+#: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:19
+#: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:21
+#: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:23
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/team_create_form.html:19
+#: byceps/blueprints/admin/party/templates/admin/party/create_form.html:37
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_create_form.html:20
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_form.html:36
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_number_sequence_form.html:18
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/create_number_sequence_form.html:17
+#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/create_form.html:25
+#: byceps/blueprints/admin/site/templates/admin/site/create_form.html:34
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/create_form.html:24
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_document_form.html:21
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_fragment_form.html:18
+#: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/create_form.html:19
+#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:19
+#: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/create_form.html:31
+#: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:29
+#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/create_form.html:23
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:34
+#: byceps/blueprints/site/board/templates/site/board/topic_create_form.html:22
+#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:44
+#: byceps/blueprints/site/user_group/templates/site/user_group/create_form.html:14
+msgid "Create"
+msgstr "Erstellen"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:8
 #: byceps/blueprints/admin/more/templates/admin/more/view_global.html:21
 msgid "API"
 msgstr "API"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:11
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:27
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:15
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:22
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:38
@@ -438,20 +519,65 @@ msgstr "API"
 msgid "Status"
 msgstr "Status"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:14
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:30
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:51
 #: byceps/blueprints/admin/site/forms.py:31
 #: byceps/blueprints/admin/site/templates/admin/site/_sites.html:21
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:40
 msgid "enabled"
 msgstr "aktiv"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:16
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:32
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:17
 #: byceps/blueprints/admin/site/templates/admin/site/_sites.html:23
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:20
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:40
 msgid "disabled"
 msgstr "deaktiviert"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:51
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:44
+#: byceps/blueprints/admin/user/templates/macros/admin/user.html:71
+msgid "suspended"
+msgstr "gesperrt"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:68
+msgid "Created at"
+msgstr "Erstellt um"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:74
+msgid "Created by"
+msgstr "Erstellt von"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:89
+msgid "permissions"
+msgstr "Berechtigungen"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:101
+msgid "Token"
+msgstr "Token"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:104
+msgid "Reveal"
+msgstr "Anzeigen"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:108
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:74
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:27
+msgid "Copy to clipboard"
+msgstr "In Zwischenablage kopieren"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:120
+msgid "Delete API token"
+msgstr "API-Token löschen"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:130
+msgid "No API tokens defined."
+msgstr "Es sind keine API-Tokens konfiguriert."
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:143
+msgid "Delete API token?"
+msgstr "API-Token löschen?"
 
 #: byceps/blueprints/admin/attendance/templates/admin/attendance/view_for_brand.html:5
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:19
@@ -562,17 +688,6 @@ msgstr "Passwort vergessen?"
 #: byceps/blueprints/common/authentication/password/templates/common/authentication/password/reset_form.html:5
 msgid "Set new password"
 msgstr "Neues Passwort setzen"
-
-#: byceps/blueprints/admin/authorization/templates/admin/authorization/permission_index.html:4
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:16
-#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:24
-#: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:31
-#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:5
-#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:25
-#: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:42
-#: byceps/blueprints/admin/user/templates/layout/admin/user.html:66
-msgid "Permissions"
-msgstr "Berechtigungen"
 
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/permission_index.html:15
 msgid "Permission"
@@ -810,34 +925,6 @@ msgstr ""
 "jedoch partyübergreifend genutzt werden soll, verwende die ID <em>der "
 "Marke</em> der Partys als ID für das Forum."
 
-#: byceps/blueprints/admin/board/templates/admin/board/board_create_form.html:22
-#: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:21
-#: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:19
-#: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:21
-#: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:23
-#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/team_create_form.html:19
-#: byceps/blueprints/admin/party/templates/admin/party/create_form.html:37
-#: byceps/blueprints/admin/seating/templates/admin/seating/area_create_form.html:20
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_form.html:36
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_number_sequence_form.html:18
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/create_number_sequence_form.html:17
-#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/create_form.html:25
-#: byceps/blueprints/admin/site/templates/admin/site/create_form.html:34
-#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/create_form.html:24
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_document_form.html:21
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_fragment_form.html:18
-#: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/create_form.html:19
-#: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:19
-#: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/create_form.html:31
-#: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:29
-#: byceps/blueprints/admin/user_badge/templates/admin/user_badge/create_form.html:23
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:34
-#: byceps/blueprints/site/board/templates/site/board/topic_create_form.html:22
-#: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:44
-#: byceps/blueprints/site/user_group/templates/site/user_group/create_form.html:14
-msgid "Create"
-msgstr "Erstellen"
-
 #: byceps/blueprints/admin/board/templates/admin/board/board_index_for_brand.html:7
 #: byceps/blueprints/admin/board/templates/admin/board/board_index_for_brand.html:14
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:15
@@ -905,25 +992,6 @@ msgstr "Kategorie erstellen"
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:29
 msgid "Position"
 msgstr "Position"
-
-#: byceps/blueprints/admin/board/templates/admin/board/board_view.html:36
-#: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:18
-#: byceps/blueprints/admin/shop/article/forms.py:43
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:37
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:69
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:9
-#: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:16
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:20
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:38
-#: byceps/blueprints/admin/user_badge/forms.py:38
-#: byceps/blueprints/admin/webhook/forms.py:19
-#: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:6
-#: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:18
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:73
-#: byceps/blueprints/site/user_group/forms.py:18
-#: byceps/services/shop/order/email/service.py:86
-msgid "Description"
-msgstr "Beschreibung"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:50
 #: byceps/blueprints/site/board/templates/macros/board.html:5
@@ -4016,11 +4084,6 @@ msgstr "Code ändern"
 msgid "Revert check-in"
 msgstr "Check-In rückgängig machen"
 
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:74
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:27
-msgid "Copy to clipboard"
-msgstr "In Zwischenablage kopieren"
-
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:83
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:86
 msgid "Bundle"
@@ -4543,11 +4606,6 @@ msgstr "Dem Benutzer sind keine Berechtigungen zugewiesen."
 msgid "deleted"
 msgstr "gelöscht"
 
-#: byceps/blueprints/admin/user/templates/macros/admin/user.html:44
-#: byceps/blueprints/admin/user/templates/macros/admin/user.html:71
-msgid "suspended"
-msgstr "gesperrt"
-
 #: byceps/blueprints/admin/user/templates/macros/admin/user.html:49
 #: byceps/blueprints/admin/user/templates/macros/admin/user.html:69
 msgid "not initialized"
@@ -4827,13 +4885,13 @@ msgstr "Seite nicht gefunden"
 msgid "Sorry, the request page could not be found."
 msgstr "Entschuldigung, die angeforderte Seite wurde nicht gefunden."
 
-#: byceps/blueprints/common/core/templates/macros/forms.html:41
+#: byceps/blueprints/common/core/templates/macros/forms.html:52
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:32
 msgid "Error"
 msgstr "Fehler"
 
-#: byceps/blueprints/common/core/templates/macros/forms.html:54
-#: byceps/blueprints/common/core/templates/macros/forms.html:57
+#: byceps/blueprints/common/core/templates/macros/forms.html:65
+#: byceps/blueprints/common/core/templates/macros/forms.html:68
 msgid "Cancel"
 msgstr "Abbrechen"
 
