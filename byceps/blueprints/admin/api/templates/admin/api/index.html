@@ -30,6 +30,7 @@
           <th>{{ _('Created at') }}</th>
           <th>{{ _('Created by') }}</th>
           <th>{{ _('Permissions') }}</th>
+          <th>{{ _('Description') }}</th>
           <th></th>
         </tr>
       </thead>
@@ -48,6 +49,7 @@
               </ul>
             </details>
           </td>
+          <td>{{ api_token.description|fallback }}</td>
           <td>
             <div class="button-row button-row--compact button-row--right">
               <a class="button button--compact" href="{{ url_for('.delete_api_token', api_token_id=api_token.id) }}" data-action="delete-api-token" title="{{ _('Delete API token') }}">{{ render_icon('delete') }}</a>

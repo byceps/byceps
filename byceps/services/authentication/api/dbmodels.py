@@ -8,6 +8,7 @@ byceps.services.authentication.api.dbmodels
 
 from __future__ import annotations
 from datetime import datetime
+from typing import Optional
 
 from sqlalchemy.ext.mutable import MutableList
 
@@ -27,10 +28,17 @@ class ApiToken(db.Model):
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     token = db.Column(db.UnicodeText, nullable=False)
     permissions = db.Column(MutableList.as_mutable(db.JSONB), nullable=False)
+    description = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(
-        self, creator_id: UserID, token: str, permissions: set[PermissionID]
+        self,
+        creator_id: UserID,
+        token: str,
+        permissions: set[PermissionID],
+        *,
+        description: Optional[str],
     ) -> None:
         self.creator_id = creator_id
         self.token = token
         self.permissions = list(permissions)
+        self.description = description

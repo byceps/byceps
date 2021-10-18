@@ -9,6 +9,7 @@ byceps.services.authentication.api.transfer.models
 from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Optional
 from uuid import UUID
 
 from .....typing import UserID
@@ -23,3 +24,4 @@ class ApiToken:
     creator_id: UserID
     # Token omitted intentionally as it is sensitive.
     permissions: frozenset[PermissionID]
+    description: Optional[str]
