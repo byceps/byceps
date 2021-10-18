@@ -32,47 +32,69 @@
     </div>
   </div>
 
+  {%- if api_tokens %}
+    {%- for api_token in api_tokens|sort(attribute='created_at', reverse=True) %}
   <div class="box">
-    {%- if api_tokens %}
-    <table class="index wide">
-      <thead>
-        <tr>
-          <th>{{ _('Created at') }}</th>
-          <th>{{ _('Created by') }}</th>
-          <th>{{ _('Permissions') }}</th>
-          <th>{{ _('Description') }}</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        {%- for api_token in api_tokens|sort(attribute='created_at', reverse=True) %}
-        <tr>
-          <td class="nowrap">{{ render_datetime(api_token.created_at|utc_to_local_tz) }}</td>
-          <td>{{ render_user_avatar_and_name(users_by_id[api_token.creator_id], size=20) }}</td>
-          <td>
-            <details>
-              <summary>{{ api_token.permissions|length }} {{ _('permissions') }}</summary>
-              <ul style="margin: 0.5rem 0 0 0; padding-left: 1rem;">
-                {%- for permission_id in api_token.permissions %}
-                <li>{{ permission_id }}</li>
-                {%- endfor %}
-              </ul>
-            </details>
-          </td>
-          <td>{{ api_token.description|fallback }}</td>
-          <td>
-            <div class="button-row button-row--compact button-row--right">
-              <a class="button button--compact" href="{{ url_for('.delete_api_token', api_token_id=api_token.id) }}" data-action="delete-api-token" title="{{ _('Delete API token') }}">{{ render_icon('delete') }}</a>
+
+    <div class="row row--space-between">
+      <div class="column-auto column-auto--grow">
+
+        <div class="row mb">
+          <div class="column-auto" style="flex-basis: 50%;">
+
+            <div class="data-label">{{ _('Description') }}</div>
+            <div class="data-value">{{ api_token.description|fallback }}</div>
+
+          </div>
+          <div class="column-auto" style="flex-basis: 50%;">
+
+            <div class="row">
+              <div class="column-auto" style="flex-basis: 50%;">
+
+                <div class="data-label">{{ _('Created at') }}</div>
+                <div class="data-value">{{ render_datetime(api_token.created_at|utc_to_local_tz) }}</div>
+
+              </div>
+              <div class="column-auto" style="flex-basis: 50%;">
+
+                <div class="data-label">{{ _('Created by') }}</div>
+                <div class="data-value">{{ render_user_avatar_and_name(users_by_id[api_token.creator_id], size=20) }}</div>
+
+              </div>
             </div>
-          </td>
-        </tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-    {%- else %}
-    <div class="dimmed-box centered">{{ _('No API tokens defined.') }}</div>
-    {%- endif %}
+
+          </div>
+        </div>
+
+        <div class="data-label">{{ _('Permissions') }}</div>
+        <div class="data-value">
+          <details>
+            <summary>{{ api_token.permissions|length }} {{ _('permissions') }}</summary>
+            <ul style="margin: 0.5rem 0 0 0; padding-left: 1rem;">
+              {%- for permission_id in api_token.permissions %}
+              <li>{{ permission_id }}</li>
+              {%- endfor %}
+            </ul>
+          </details>
+        </div>
+
+      </div>
+      <div class="column-auto">
+
+        <div class="button-row button-row--compact button-row--right">
+          <a class="button button--compact" href="{{ url_for('.delete_api_token', api_token_id=api_token.id) }}" data-action="delete-api-token" title="{{ _('Delete API token') }}">{{ render_icon('delete') }}</a>
+        </div>
+
+      </div>
+    </div>
+
   </div>
+    {%- endfor %}
+  {%- else %}
+  <div class="box">
+    <div class="dimmed-box centered">{{ _('No API tokens defined.') }}</div>
+  </div>
+  {%- endif %}
 
 {%- endblock %}
 
