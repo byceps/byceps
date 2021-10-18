@@ -8,6 +8,18 @@
 {% set page_title = _('API') %}
 {% set layout_main_raw = True %}
 
+{% block head %}
+<style>
+code {
+  background-color: #eeeeee;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 0.75rem !important;
+  padding: 0 0.125rem;
+}
+</style>
+{%- endblock %}
+
 {% block body %}
 
   <h1>{{ page_title }}</h1>
@@ -66,16 +78,37 @@
           </div>
         </div>
 
-        <div class="data-label">{{ _('Permissions') }}</div>
-        <div class="data-value">
-          <details>
-            <summary>{{ api_token.permissions|length }} {{ _('permissions') }}</summary>
-            <ul style="margin: 0.5rem 0 0 0; padding-left: 1rem;">
-              {%- for permission_id in api_token.permissions %}
-              <li>{{ permission_id }}</li>
-              {%- endfor %}
-            </ul>
-          </details>
+        <div class="row">
+          <div class="column-auto" style="flex-basis: 50%;">
+
+            <div class="data-label">{{ _('Permissions') }}</div>
+            <div class="data-value">
+              <details>
+                <summary>{{ api_token.permissions|length }} {{ _('permissions') }}</summary>
+                <ul style="margin: 0.5rem 0 0 0; padding-left: 1rem;">
+                  {%- for permission_id in api_token.permissions %}
+                  <li>{{ permission_id }}</li>
+                  {%- endfor %}
+                </ul>
+              </details>
+            </div>
+
+          </div>
+          <div class="column-auto" style="flex-basis: 50%;">
+
+            <div class="data-label">{{ _('Token') }}</div>
+            <div class="data-value">
+              <details>
+                <summary>{{ _('Reveal') }}</summary>
+                <div class="nowrap">
+                  <code>{{ api_token.token|fallback }}</code>
+                  <input id="token-field-{{ api_token.id }}" value="{{ api_token.token }}" style="position: fixed; top: -1000px;" readonly>
+                  <button id="token-copy-trigger-{{ api_token.id }}" data-field-id="token-field-{{ api_token.id }}" class="button button--compact" title="{{ _('Copy to clipboard') }}">{{ render_icon('clipboard') }}</button>
+                </div>
+              </details>
+            </div>
+
+          </div>
         </div>
 
       </div>
@@ -100,6 +133,10 @@
 
 {% block scripts %}
 <script>
+  {%- for api_token in api_tokens %}
+  enableCopyToClipboard('token-copy-trigger-{{ api_token.id }}');
+  {%- endfor %}
+
   onDomReady(() => {
     confirmed_delete_on_click_then_reload('[data-action="delete-api-token"]', '{{ _('Delete API token?') }}');
   });

@@ -22,6 +22,6 @@ class ApiToken:
     id: UUID
     created_at: datetime
     creator_id: UserID
-    # Token omitted intentionally as it is sensitive.
+    token: str
     permissions: frozenset[PermissionID]
     description: Optional[str]

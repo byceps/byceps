@@ -67,6 +67,7 @@ def _db_entity_to_api_token(db_api_token: DbApiToken) -> ApiToken:
         id=db_api_token.id,
         created_at=db_api_token.created_at,
         creator_id=db_api_token.creator_id,
+        token=db_api_token.token,
         permissions=frozenset(db_api_token.permissions),
         description=db_api_token.description,
     )
