@@ -14,6 +14,8 @@ from typing import Optional
 
 from flask import abort, current_app, request
 
+from ...services.authentication.api import service as api_service
+
 
 def api_token_required(func):
     """Ensure the request is authenticated via API token."""
@@ -28,25 +30,42 @@ def api_token_required(func):
 
 
 def _has_valid_api_token() -> bool:
-    configured_token = current_app.config.get('API_TOKEN')
-    if configured_token is None:
-        return False
-
-    request_token = _extract_api_token_from_request()
+    request_token = _extract_token_from_request()
     if request_token is None:
         return False
 
-    return hmac.compare_digest(request_token, configured_token.encode())
+    return _matches_legacy_token(request_token) or _matches_api_token(
+        request_token
+    )
 
 
-def _extract_api_token_from_request() -> Optional[bytes]:
+def _extract_token_from_request() -> Optional[str]:
     header_value = request.headers.get('Authorization')
     if header_value is None:
         return None
 
-    token_b64 = header_value.replace('Bearer ', '', 1)
+    return header_value.replace('Bearer ', '', 1)
 
+
+def _matches_legacy_token(request_token: str) -> bool:
+    configured_token = current_app.config.get('API_TOKEN')
+    if configured_token is None:
+        return False
+
+    token_base64decoded = _decode_base64(request_token)
+    if token_base64decoded is None:
+        return False
+
+    return hmac.compare_digest(token_base64decoded, configured_token.encode())
+
+
+def _decode_base64(value: str) -> Optional[bytes]:
     try:
-        return base64.b64decode(token_b64)
+        return base64.b64decode(value)
     except (TypeError, ValueError, binascii.Error):
         return None
+
+
+def _matches_api_token(request_token: str) -> bool:
+    api_token = api_service.find_api_token_by_token(request_token)
+    return api_token is not None

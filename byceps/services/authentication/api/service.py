@@ -41,6 +41,18 @@ def create_api_token(
     return _db_entity_to_api_token(db_api_token)
 
 
+def find_api_token_by_token(token: str) -> Optional[ApiToken]:
+    """Return the API token for that token, or nothing if not found."""
+    db_api_token = db.session.execute(
+        select(DbApiToken).filter_by(token=token)
+    ).scalars().one_or_none()
+
+    if db_api_token is None:
+        return None
+
+    return _db_entity_to_api_token(db_api_token)
+
+
 def get_all_api_tokens() -> list[ApiToken]:
     """Return all API tokens."""
     db_api_tokens = db.session.execute(
