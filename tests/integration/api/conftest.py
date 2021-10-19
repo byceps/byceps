@@ -5,12 +5,13 @@
 API-specific fixtures
 """
 
+from __future__ import annotations
+
 import pytest
 
-from .helpers import assemble_authorization_header
-
-
-API_TOKEN = 'testing-TESTING'
+from byceps.services.authentication.api import service as api_service
+from byceps.services.authentication.api.transfer.models import ApiToken
+from byceps.services.authorization.transfer.models import PermissionID
 
 
 @pytest.fixture(scope='package')
@@ -25,6 +26,11 @@ def api_client(api_app):
 
 
 @pytest.fixture(scope='package')
-def api_client_authz_header():
-    """Provide a test HTTP client against the API."""
-    return assemble_authorization_header(API_TOKEN)
+def api_token(admin_user) -> ApiToken:
+    permissions: set[PermissionID] = set()
+    return api_service.create_api_token(admin_user.id, permissions)
+
+
+@pytest.fixture(scope='package')
+def api_client_authz_header(api_token: ApiToken):
+    return 'Authorization', f'Bearer {api_token.token}'

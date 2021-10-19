@@ -26,7 +26,7 @@ def create_api_token(
     creator_id: UserID,
     permissions: set[PermissionID],
     *,
-    description: Optional[str],
+    description: Optional[str] = None,
 ) -> ApiToken:
     """Create an API token."""
     num_bytes = 40
