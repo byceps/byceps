@@ -223,8 +223,7 @@ TOML file. Import it into the database:
 .. code-block:: sh
 
    $ BYCEPS_CONFIG=../config/yourconfig.py ./import_permissions_and_roles.py data/permissions_and_roles.toml
-   Importing 75 permissions ... done.
-   Importing 29 roles ... done.
+   Imported 32 roles.
 
 With the authorization data in place, create the initial user (which
 will get all available roles assigned):
@@ -237,7 +236,7 @@ will get all available roles assigned):
    Password:
    Creating user "Flynn" ... done.
    Enabling user "Flynn" ... done.
-   Assigning 29 roles to user "Flynn" ... done.
+   Assigning 32 roles to user "Flynn" ... done.
 
 Those roles allow the user to log in to the admin backend and make all
 administrative functionality available.
