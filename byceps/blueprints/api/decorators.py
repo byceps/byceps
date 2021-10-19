@@ -10,6 +10,7 @@ from functools import wraps
 from typing import Optional
 
 from flask import abort, request
+from werkzeug.datastructures import WWWAuthenticate
 
 from ...services.authentication.api import service as api_service
 
@@ -20,7 +21,8 @@ def api_token_required(func):
     @wraps(func)
     def wrapper(*args, **kwargs):
         if not _has_valid_api_token():
-            abort(401, www_authenticate='Bearer')
+            www_authenticate = WWWAuthenticate('Bearer')
+            abort(401, www_authenticate=www_authenticate)
         return func(*args, **kwargs)
 
     return wrapper
