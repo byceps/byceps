@@ -32,7 +32,7 @@ def _has_valid_api_token() -> bool:
         return False
 
     api_token = api_service.find_api_token_by_token(request_token)
-    return api_token is not None
+    return api_token is not None and not api_token.suspended
 
 
 def _extract_token_from_request() -> Optional[str]:
