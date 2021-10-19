@@ -13,6 +13,7 @@ from flask import abort, request
 from werkzeug.datastructures import WWWAuthenticate
 
 from ...services.authentication.api import service as api_service
+from ...services.authentication.api.transfer.models import ApiToken
 
 
 def api_token_required(func):
@@ -20,21 +21,28 @@ def api_token_required(func):
 
     @wraps(func)
     def wrapper(*args, **kwargs):
-        if not _has_valid_api_token():
+        api_token = _find_valid_api_token()
+
+        if api_token is None:
             www_authenticate = WWWAuthenticate('Bearer')
             abort(401, www_authenticate=www_authenticate)
+
+        if api_token.suspended:
+            www_authenticate = WWWAuthenticate('Bearer')
+            www_authenticate['error'] = 'invalid_token'
+            abort(401, www_authenticate=www_authenticate)
+
         return func(*args, **kwargs)
 
     return wrapper
 
 
-def _has_valid_api_token() -> bool:
+def _find_valid_api_token() -> Optional[ApiToken]:
     request_token = _extract_token_from_request()
     if request_token is None:
-        return False
+        return None
 
-    api_token = api_service.find_api_token_by_token(request_token)
-    return api_token is not None and not api_token.suspended
+    return api_service.find_api_token_by_token(request_token)
 
 
 def _extract_token_from_request() -> Optional[str]:
