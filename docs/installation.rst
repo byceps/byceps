@@ -155,9 +155,9 @@ Create a database user named ``byceps``:
 
 You should be prompted to enter a password. Do that.
 
-Create a copy of ``config/development_admin.py`` and, in the copy,
-replace the example password in the value of
-``SQLALCHEMY_DATABASE_URI`` with the one you just entered.
+Create a copy of ``config/admin_dev.py`` and, in the copy, replace the
+example password in the value of ``SQLALCHEMY_DATABASE_URI`` with the
+one you just entered.
 
 Create a schema, also named ``byceps``:
 
