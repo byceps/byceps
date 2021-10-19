@@ -21,7 +21,7 @@ def view_as_json():
 
     if not user.authenticated:
         # Return empty response.
-        return Response(status=403)
+        return Response(status=401)
 
     return jsonify(
         {

@@ -84,12 +84,12 @@ def login():
     password = form.password.data
     permanent = form.permanent.data
     if not all([screen_name, password]):
-        abort(403)
+        abort(401)
 
     try:
         user = authentication_service.authenticate(screen_name, password)
     except AuthenticationFailed:
-        abort(403)
+        abort(401)
 
     if _is_consent_required(user.id):
         verification_token = verification_token_service.create_for_consent(

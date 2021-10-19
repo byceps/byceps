@@ -84,4 +84,4 @@ def test_login_fails(client):
     }
 
     response = client.post('/authentication/login', data=form_data)
-    assert response.status_code == 403
+    assert response.status_code == 401

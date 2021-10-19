@@ -58,12 +58,12 @@ def login():
     password = form.password.data
     permanent = form.permanent.data
     if not all([screen_name, password]):
-        abort(403)
+        abort(401)
 
     try:
         user = authentication_service.authenticate(screen_name, password)
     except AuthenticationFailed:
-        abort(403)
+        abort(401)
 
     _require_admin_access_permission(user.id)
 

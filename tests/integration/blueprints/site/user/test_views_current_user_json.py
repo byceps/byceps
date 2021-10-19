@@ -27,7 +27,7 @@ def test_when_logged_in(site_app, site, user):
 def test_when_not_logged_in(site_app, site):
     response = send_request(site_app)
 
-    assert response.status_code == 403
+    assert response.status_code == 401
     assert response.get_data() == b''
 
 
