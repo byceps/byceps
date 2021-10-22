@@ -22,7 +22,7 @@
     (_('Webhooks'), 'webhook', url_for('webhook_admin.index'), 'webhook.view'),
     (_('Maintenance'), 'administrate', url_for('maintenance_admin.index'), 'admin.maintain'),
   ] %}
-    {%- for label, icon, url, required_permission in items %}
+    {%- for label, icon, url, required_permission in items|sort(attribute='0') %}
       {%- if has_current_user_permission(required_permission) %}
         {%- call render_cell(icon_name=icon, href=url) %}
           {{ render_icon(icon) }} <span>{{ label }}</span>

@@ -19,7 +19,7 @@
     (_('Most Frequent Attendees'), 'users', url_for('attendance_admin.view_for_brand', brand_id=brand.id), 'admin.access'),
     (_('Brand Snippets'), 'snippet', url_for('snippet_admin.index_for_scope', scope_type='brand', scope_name=brand.id), 'snippet.view'),
   ] %}
-    {%- for label, icon, url, required_permission in items %}
+    {%- for label, icon, url, required_permission in items|sort(attribute='0') %}
       {%- if has_current_user_permission(required_permission) %}
         {%- call render_cell(icon_name=icon, href=url) %}
           {{ render_icon(icon) }} <span>{{ label }}</span>
