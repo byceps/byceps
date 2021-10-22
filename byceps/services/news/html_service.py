@@ -10,8 +10,9 @@ Render HTML fragments from news items and images.
 
 from __future__ import annotations
 from functools import partial
-from typing import Optional
+from typing import Any, Optional
 
+from flask import current_app
 from flask_babel import gettext
 from markupsafe import Markup
 
@@ -69,39 +70,20 @@ def _render_image(
     height: Optional[int] = None,
 ) -> str:
     """Render HTML for image."""
-    figure_attrs = ''
-    img_attrs = ''
-    figcaption_attrs = ''
-
-    if image.alt_text:
-        img_attrs += f' alt="{image.alt_text}"'
-
-    if width:
-        img_attrs += f' width="{width}"'
-        figcaption_attrs += f' style="max-width: {width}px;"'
-    if height:
-        img_attrs += f' height="{height}"'
-
-    caption_elem = _render_image_caption(image, figcaption_attrs)
-
-    return f"""\
-<figure{figure_attrs}>
-  <img src="{image.url_path}"{img_attrs}>
-  {caption_elem}
-</figure>"""
+    template_path = 'services/news/templates/_image.html'
+    template_context = {
+        'image': image,
+        'width': width,
+        'height': height,
+        'image_credit_label': gettext('Image credit'),
+    }
+    return _render_template(template_path, template_context)
 
 
-def _render_image_caption(image: Image, attrs: str) -> str:
-    """Render HTML for image caption."""
-    caption = image.caption or ''
+def _render_template(path: str, context: dict[str, Any]) -> str:
+    """Load and render export template."""
+    with current_app.open_resource(path, 'r') as f:
+        source = f.read()
 
-    if image.attribution:
-        if caption:
-            caption += ' '
-        credit_label = gettext('Image credit')
-        caption += f'<small>{credit_label}: {image.attribution}</small>'
-
-    if not caption:
-        return ''
-
-    return f'<figcaption{attrs}>{caption}</figcaption>'
+    template = load_template(source)
+    return template.render(**context)

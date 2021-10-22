@@ -1,0 +1,15 @@
+<figure>
+  <img src="{{ image.url_path }}"
+    {%- if image.alt_text %} alt="{{ image.alt_text }}"{% endif -%}
+    {%- if image.width %} width="{{ width }}"{% endif -%}
+    {%- if image.height %} height="{{ width }}"{% endif -%}
+  >
+  {%- if image.caption %}
+  <figcaption{% if width %} style="max-width: {{ width }}px;"{% endif %}>
+    {{ image.caption }}
+    {%- if image.attribution %}
+    <small>{{ image_credit_label }}: {{ image.attribution }}</small>
+    {%- endif %}
+  </figcaption>
+  {%- endif %}
+</figure>
