@@ -1,5 +1,4 @@
-{% from 'macros/admin/brand.html' import render_brand_avatar %}
-{% from 'macros/admin/dashboard.html' import render_cell %}
+{% from 'macros/admin/dashboard.html' import render_cell, render_site_cell %}
 
 
 <div class="row row--space-between">
@@ -15,17 +14,7 @@
 
 {%- if current_sites %}
   {%- for site in current_sites|sort(attribute='title') %}
-    {%- call render_cell(href=url_for('admin_dashboard.view_site', site_id=site.id)) %}
-  <div class="row">
-    <div class="column-auto">
-      {{ render_brand_avatar(site.brand, '40') }}
-    </div>
-    <div class="column-auto column-auto--grow">
-      <div>{{ site.title }}</div>
-      <div class="supplement">{{ site.server_name }}</div>
-    </div>
-  </div>
-    {%- endcall %}
+  {{ render_site_cell(site) }}
   {%- endfor %}
 {%- else %}
   {%- call render_cell() %}
