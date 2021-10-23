@@ -21,17 +21,17 @@
       required_permission='brand.view',
       icon='brand')
     .add_item(
-      url_for('party_admin.index'),
-      _('Parties'),
-      id='parties_admin',
-      required_permission='party.view',
-      icon='date')
-    .add_item(
       url_for('site_admin.index'),
       _('Sites'),
       id='sites_admin',
       required_permission='site.view',
       icon='site')
+    .add_item(
+      url_for('party_admin.index'),
+      _('Parties'),
+      id='parties_admin',
+      required_permission='party.view',
+      icon='date')
     .add_item(
       url_for('more_admin.view_global'),
       _('More'),
