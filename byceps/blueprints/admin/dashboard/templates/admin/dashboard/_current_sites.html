@@ -14,7 +14,7 @@
 
 {%- if current_sites %}
   {%- for site in current_sites|sort(attribute='title') %}
-  {{ render_site_cell(site) }}
+  {{ render_site_cell(site, show_brand_avatar=show_brand_avatar) }}
   {%- endfor %}
 {%- else %}
   {%- call render_cell() %}

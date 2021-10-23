@@ -28,12 +28,14 @@
 {%- endmacro %}
 
 
-{%- macro render_party_cell(party, ticket_sale_stats) -%}
+{%- macro render_party_cell(party, ticket_sale_stats, show_brand_avatar) -%}
   {%- call render_cell(href=url_for('admin_dashboard.view_party', party_id=party.id)) %}
   <div class="row">
+    {%- if show_brand_avatar %}
     <div class="column-auto">
       {{ render_brand_avatar(party.brand, '40') }}
     </div>
+    {%- endif %}
     <div class="column-auto column-auto--grow">
       <div>{{ party.title }}</div>
       <div class="supplement">{{ render_date(party.starts_at, smart=False) }}–{{ render_date(party.ends_at, smart=False) }}</div>
@@ -60,12 +62,14 @@
   {%- endcall %}
 {%- endmacro %}
 
-{%- macro render_site_cell(site) -%}
+{%- macro render_site_cell(site, show_brand_avatar) -%}
   {%- call render_cell(href=url_for('admin_dashboard.view_site', site_id=site.id)) %}
   <div class="row">
+    {%- if show_brand_avatar %}
     <div class="column-auto">
       {{ render_brand_avatar(site.brand, '40') }}
     </div>
+    {%- endif %}
     <div class="column-auto column-auto--grow">
       <div>{{ site.title }}</div>
       <div class="supplement">{{ site.server_name }}</div>

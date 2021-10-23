@@ -14,7 +14,7 @@
 
 {%- if active_parties_with_ticket_stats %}
   {%- for party, ticket_sale_stats in active_parties_with_ticket_stats %}
-  {{ render_party_cell(party, ticket_sale_stats) }}
+  {{ render_party_cell(party, ticket_sale_stats, show_brand_avatar=show_brand_avatar) }}
   {%- endfor %}
 {%- else %}
   {%- call render_cell() %}
