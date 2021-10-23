@@ -43,12 +43,12 @@
   </div>
 
     {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
-  <div class="progress" style="height: 0.25rem; margin-top: 1rem;">
+  <div class="progress mt">
       {%- if tickets_total_max_specified %}
     <div class="progress-bar color-success" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
       {%- endif %}
   </div>
-  <div style="color: #999999; font-size: 0.6875rem; text-align: right;">
+  <div class="progress-label small">
     <strong>{{ format_number(ticket_sale_stats.tickets_sold) }}</strong>
     {{ _('of') }}
     <strong>{{ format_number(ticket_sale_stats.tickets_max) if tickets_total_max_specified else '?' }}</strong>

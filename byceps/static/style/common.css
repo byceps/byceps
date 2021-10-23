@@ -922,6 +922,10 @@ img {
   margin-bottom: 1rem;
 }
 
+.mt {
+  margin-top: 1rem;
+}
+
 .centered {
   text-align: center;
 }

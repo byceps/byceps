@@ -9,11 +9,6 @@
 
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='style/admin_dashboard.css') }}">
-    <style>
-      .progress {
-        height: 0.25rem;
-      }
-    </style>
 {%- endblock %}
 
 {% block body %}
@@ -52,7 +47,7 @@
         <div class="progress-bar color-success" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
         {%- endif %}
       </div>
-      <div class="row row--space-between" style="font-size: 0.75rem;">
+      <div class="row row--space-between small">
         <div class="column-auto" style="font-weight: bold;">{{ format_number(ticket_sale_stats.tickets_sold) }}</div>
         {%- if tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
         <div class="column-auto">{{ render_tag(_('sold out')) }}</div>
@@ -67,7 +62,7 @@
       <div class="progress">
         <div class="progress-bar color-success" style="width: calc(100% * {{ seat_utilization.occupied }} / {{ seat_utilization.total }});"></div>
       </div>
-      <div class="row row--space-between" style="font-size: 0.75rem;">
+      <div class="row row--space-between small">
         <div class="column-auto" style="font-weight: bold;">{{ format_number(seat_utilization.occupied) }}</div>
         <div class="column-auto dimmed">{{ _('of') }} {{ format_number(seat_utilization.total) }}</div>
       </div>
@@ -78,7 +73,7 @@
       <div class="progress">
         <div class="progress-bar color-success" style="width: calc(100% * {{ tickets_checked_in }} / {{ ticket_sale_stats.tickets_sold }});"></div>
       </div>
-      <div class="row row--space-between" style="font-size: 0.75rem;">
+      <div class="row row--space-between small">
         <div class="column-auto" style="font-weight: bold;">{{ format_number(tickets_checked_in) }}</div>
         <div class="column-auto dimmed">{{ _('of') }} {{ format_number(ticket_sale_stats.tickets_sold) }}</div>
       </div>

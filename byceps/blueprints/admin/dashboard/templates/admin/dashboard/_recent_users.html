@@ -21,7 +21,7 @@
   {%- endfor %}
 </ol>
 {%- else %}
-<p>{{ _('None recently')|dim }}</p>
+{{ _('None recently')|dim }}
 {%- endif %}
 
-<p style="float: right;"><a href="{{ url_for('user_admin.index') }}">{{ _('All users') }} &rarr;</a></p>
+<div class="mt small" style="text-align: right;"><a href="{{ url_for('user_admin.index') }}">{{ _('All users') }} &rarr;</a></div>

@@ -93,6 +93,19 @@ a.dashboard-section-link:hover {
   text-transform: uppercase;
 }
 
+.cell .progress {
+  height: 0.25rem;
+}
+
+.cell .progress-label {
+  color: #999999;
+  text-align: right;
+}
+
+.cell .small {
+  font-size: 0.6875rem;
+}
+
 .bigstats {
   margin-bottom: 0;
 }
