@@ -1,0 +1,86 @@
+{% from 'macros/icons.html' import render_icon %}
+
+
+{%- macro render_icon_tag(icon, title, class) -%}
+  <span class="icon-tag {{ class }}" title="{{ title }}">{{ render_icon(icon) }}</span>
+{%- endmacro %}
+
+
+{%- macro render_site(site, party_titles_by_id, storefronts_by_id) %}
+  <div class="box" style="border-left: {{ '#55cc00' if site.enabled else '#aaaaaa' }} solid 0.25rem;">
+    <div class="row row--space-between">
+
+      <div class="column-auto" style="min-width: 65%;">
+        <a href="{{ url_for('admin_dashboard.view_site', site_id=site.id) }}" class="disguised" style="display: block;">
+          <strong>{{ site.title }}</strong><br>
+          <span class="monospace">{{ site.id }}</span>
+        </a>
+        <p><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></p>
+        <div>
+          {%- if site.enabled %}
+          {{ render_icon_tag('success', _('Site') ~ ' ' ~ _('enabled'), 'color-success') }}
+          {%- else %}
+          {{ render_icon_tag('disabled', _('Site') ~ ' ' ~ _('disabled'), 'color-disabled') }}
+          {%- endif %}
+
+          {%- if site.user_account_creation_enabled %}
+          {{ render_icon_tag('user-create', _('User registration') ~ ' ' ~ _('open'), 'color-success') }}
+          {%- else %}
+          {{ render_icon_tag('user-create', _('User registration') ~ ' ' ~ _('closed'), 'color-disabled') }}
+          {%- endif %}
+
+          {%- if site.login_enabled %}
+          {{ render_icon_tag('log-in', _('User login') ~ ' ' ~ _('open'), 'color-success') }}
+          {%- else %}
+          {{ render_icon_tag('log-in', _('User login') ~ ' ' ~ _('closed'), 'color-disabled') }}
+          {%- endif %}
+
+          {%- if site.archived %}
+          {{ render_icon_tag('archived', _('Site') ~ ' ' ~ _('archived'), 'color-disabled') }}
+          {%- endif %}
+        </div>
+      </div>
+
+      <div class="column-auto" style="min-width: 35%;">
+        <div>{{ render_icon('brand', title=_('Brand')) }} <a href="{{ url_for('admin_dashboard.view_brand', brand_id=site.brand_id) }}" class="disguised">{{ site.brand.title }}</a></div>
+        <div>
+          {{ render_icon('date', title=_('Party')) }}
+          {% if site.party_id -%}
+          <a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}" class="disguised">{{ party_titles_by_id[site.party_id] }}</a>
+          {%- else -%}
+          {{ _('no party')|dim }}
+          {%- endif -%}
+        </div>
+        <div>
+          {%- if site.news_channel_ids %}
+            {%- for channel_id in site.news_channel_ids|sort -%}
+            {{ render_icon('news', title=_('News channel')) }} <a href="{{ url_for('news_admin.channel_view', channel_id=channel_id) }}" class="disguised">{{ channel_id }}</a>
+              {%- if not loop.last %}<br>{% endif %}
+            {%- endfor %}
+          {%- else %}
+          {{ render_icon('news', title=_('News channel')) }} {{ _('no news channels')|dim }}
+          {%- endif %}
+        </div>
+        <div>
+          {{ render_icon('board', title=_('Board')) }}
+          {% if site.board_id -%}
+          <a href="{{ url_for('board_admin.board_view', board_id=site.board_id) }}" class="disguised">{{ site.board_id }}</a>
+          {%- else -%}
+          {{ _('no board')|dim }}
+          {%- endif -%}
+        </div>
+        <div>
+          {{ render_icon('shop', title=_('Storefront')) }}
+          {% if site.storefront_id -%}
+            {%- with storefront = storefronts_by_id[site.storefront_id] %}
+          <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}" class="disguised">{{ storefront.id }}</a>
+            {%- endwith %}
+          {%- else -%}
+          {{ _('no storefront')|dim }}
+          {%- endif -%}
+        </div>
+      </div>
+
+    </div>{# .row #}
+  </div>{# .box #}
+{%- endmacro %}
