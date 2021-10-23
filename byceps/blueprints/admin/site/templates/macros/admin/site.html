@@ -1,3 +1,4 @@
+{% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% from 'macros/icons.html' import render_icon %}
 
 
@@ -6,16 +7,27 @@
 {%- endmacro %}
 
 
-{%- macro render_site(site, party_titles_by_id, storefronts_by_id) %}
+{%- macro render_site(site, party_titles_by_id, storefronts_by_id, show_brand_avatar=True) %}
   <div class="box" style="border-left: {{ '#55cc00' if site.enabled else '#aaaaaa' }} solid 0.25rem;">
     <div class="row row--space-between">
 
       <div class="column-auto" style="min-width: 65%;">
-        <a href="{{ url_for('admin_dashboard.view_site', site_id=site.id) }}" class="disguised" style="display: block;">
-          <strong>{{ site.title }}</strong><br>
-          <span class="monospace">{{ site.id }}</span>
-        </a>
+        <div class="row">
+          {%- if show_brand_avatar %}
+          <div class="column-auto">
+            <div style="margin-right: -0.25rem;">{{ render_brand_avatar(site.brand, '40') }}</div>
+          </div>
+          {%- endif %}
+          <div class="column-auto">
+            <a href="{{ url_for('admin_dashboard.view_site', site_id=site.id) }}" class="disguised" style="display: block;">
+              <strong>{{ site.title }}</strong><br>
+              <span class="monospace">{{ site.id }}</span>
+            </a>
+          </div>
+        </div>
+
         <p><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></p>
+
         <div>
           {%- if site.enabled %}
           {{ render_icon_tag('success', _('Site') ~ ' ' ~ _('enabled'), 'color-success') }}

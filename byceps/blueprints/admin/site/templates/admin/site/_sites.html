@@ -28,12 +28,12 @@
 
   <h2>{{ _('Active sites') }}</h2>
     {%- for site in sites|selectattr('enabled') %}
-    {{ render_site(site, party_titles_by_id, storefronts_by_id) }}
+    {{ render_site(site, party_titles_by_id, storefronts_by_id, show_brand_avatar=show_brand_avatar) }}
     {%- endfor %}
 
   <h2>{{ _('Inactive sites') }}</h2>
     {%- for site in sites|rejectattr('enabled') %}
-    {{ render_site(site, party_titles_by_id, storefronts_by_id) }}
+    {{ render_site(site, party_titles_by_id, storefronts_by_id, show_brand_avatar=show_brand_avatar) }}
     {%- endfor %}
 
   {%- else %}
