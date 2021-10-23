@@ -28,7 +28,7 @@
 {%- endmacro %}
 
 
-{%- macro render_party_cell(party, ticket_sale_stats, show_brand_avatar) -%}
+{%- macro render_party_cell(party, ticket_sale_stats, seat_utilization, show_brand_avatar) -%}
   {%- call render_cell(href=url_for('admin_dashboard.view_party', party_id=party.id)) %}
   <div class="row">
     {%- if show_brand_avatar %}
@@ -58,6 +58,16 @@
       {%- endif %}
   </div>
     {%- endwith %}
+
+  <div class="progress mt">
+    <div class="progress-bar color-success" style="width: calc(100% * {{ seat_utilization.occupied }} / {{ seat_utilization.total }});"></div>
+  </div>
+  <div class="progress-label small">
+    <strong>{{ format_number(seat_utilization.occupied) }}</strong>
+    {{ _('of') }}
+    <strong>{{ format_number(seat_utilization.total) }}</strong>
+    {{ _('seats occupied') }}
+  </div>
 
   {%- endcall %}
 {%- endmacro %}

@@ -52,8 +52,12 @@ def view_global():
     current_sites = site_service.get_current_sites(include_brands=True)
 
     active_parties = party_service.get_active_parties(include_brands=True)
-    active_parties_with_ticket_stats = [
-        (party, ticket_service.get_ticket_sale_stats(party.id))
+    active_parties_with_stats = [
+        (
+            party,
+            ticket_service.get_ticket_sale_stats(party.id),
+            seat_service.get_seat_utilization(party.id),
+        )
         for party in active_parties
     ]
 
@@ -87,7 +91,7 @@ def view_global():
     return {
         'active_brands': active_brands,
         'current_sites': current_sites,
-        'active_parties_with_ticket_stats': active_parties_with_ticket_stats,
+        'active_parties_with_stats': active_parties_with_stats,
         'active_shops_with_brands_and_open_orders_counts': active_shops_with_brands_and_open_orders_counts,
         'user_count': user_count,
         'recent_users': recent_users,
@@ -113,8 +117,12 @@ def view_brand(brand_id):
     active_parties = party_service.get_active_parties(
         brand_id=brand.id, include_brands=True
     )
-    active_parties_with_ticket_stats = [
-        (party, ticket_service.get_ticket_sale_stats(party.id))
+    active_parties_with_stats = [
+        (
+            party,
+            ticket_service.get_ticket_sale_stats(party.id),
+            seat_service.get_seat_utilization(party.id),
+        )
         for party in active_parties
     ]
 
@@ -151,7 +159,7 @@ def view_brand(brand_id):
     return {
         'brand': brand,
         'current_sites': current_sites,
-        'active_parties_with_ticket_stats': active_parties_with_ticket_stats,
+        'active_parties_with_stats': active_parties_with_stats,
         'newsletter_list': newsletter_list,
         'newsletter_subscriber_count': newsletter_subscriber_count,
         'consent_subjects_with_consent_counts': consent_subjects_with_consent_counts,
