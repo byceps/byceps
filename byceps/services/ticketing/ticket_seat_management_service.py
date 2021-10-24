@@ -9,11 +9,10 @@ byceps.services.ticketing.ticket_seat_management_service
 from ...database import db
 from ...typing import UserID
 
-from ..seating.dbmodels.seat import Seat as DbSeat
 # Load `Seat.assignment` backref.
 from ..seating.dbmodels.seat_group import SeatGroup as DbSeatGroup
 from ..seating import seat_service, seat_group_service
-from ..seating.transfer.models import SeatID
+from ..seating.transfer.models import Seat, SeatID
 
 from . import event_service
 from .exceptions import (
@@ -154,7 +153,7 @@ def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: DbTicket) -> None:
         )
 
 
-def _deny_seat_management_if_seat_belongs_to_group(seat: DbSeat) -> None:
+def _deny_seat_management_if_seat_belongs_to_group(seat: Seat) -> None:
     if seat_group_service.is_seat_part_of_a_group(seat.id):
         raise SeatChangeDeniedForGroupSeat(
             f"Seat '{seat.label}' belongs to a group and, thus, "

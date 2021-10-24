@@ -28,16 +28,16 @@ def create_seat(
     category_id: TicketCategoryID,
     *,
     label: Optional[str] = None,
-) -> DbSeat:
+) -> Seat:
     """Create a seat."""
-    seat = DbSeat(
+    db_seat = DbSeat(
         area_id, category_id, coord_x=coord_x, coord_y=coord_y, label=label
     )
 
-    db.session.add(seat)
+    db.session.add(db_seat)
     db.session.commit()
 
-    return seat
+    return _db_entity_to_seat(db_seat)
 
 
 def create_seats(area_id: AreaID, seats: Iterator[Seat]) -> None:
@@ -138,12 +138,17 @@ def get_seat_total_per_area(party_id: PartyID) -> dict[AreaID, int]:
     return dict(area_ids_and_seat_counts)
 
 
-def find_seat(seat_id: SeatID) -> Optional[DbSeat]:
+def find_seat(seat_id: SeatID) -> Optional[Seat]:
     """Return the seat with that id, or `None` if not found."""
-    return db.session.query(DbSeat).get(seat_id)
+    db_seat = db.session.query(DbSeat).get(seat_id)
+
+    if db_seat is None:
+        return None
+
+    return _db_entity_to_seat(db_seat)
 
 
-def get_seat(seat_id: SeatID) -> DbSeat:
+def get_seat(seat_id: SeatID) -> Seat:
     """Return the seat with that id, or raise an exception."""
     seat = find_seat(seat_id)
 
@@ -153,17 +158,17 @@ def get_seat(seat_id: SeatID) -> DbSeat:
     return seat
 
 
-def find_seats(seat_ids: set[SeatID]) -> set[DbSeat]:
+def find_seats(seat_ids: set[SeatID]) -> set[Seat]:
     """Return the seats with those IDs."""
     if not seat_ids:
         return set()
 
-    seats = db.session \
+    db_seats = db.session \
         .query(DbSeat) \
         .filter(DbSeat.id.in_(frozenset(seat_ids))) \
         .all()
 
-    return set(seats)
+    return {_db_entity_to_seat(db_seat) for db_seat in db_seats}
 
 
 def get_seats_with_tickets_for_area(area_id: AreaID) -> Sequence[DbSeat]:
@@ -177,3 +182,14 @@ def get_seats_with_tickets_for_area(area_id: AreaID) -> Sequence[DbSeat]:
             db.joinedload(DbSeat.occupied_by_ticket),
         ) \
         .all()
+
+
+def _db_entity_to_seat(db_seat: DbSeat) -> Seat:
+    return Seat(
+        id=db_seat.id,
+        coord_x=db_seat.coord_x,
+        coord_y=db_seat.coord_y,
+        category_id=db_seat.category_id,
+        label=db_seat.label,
+        type_=db_seat.type_,
+    )
