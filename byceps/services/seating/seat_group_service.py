@@ -23,7 +23,7 @@ from .dbmodels.seat_group import (
     SeatGroup as DbSeatGroup,
     SeatGroupAssignment as DbSeatGroupAssignment,
 )
-from .transfer.models import SeatGroupID
+from .transfer.models import SeatID, SeatGroupID
 
 
 def create_seat_group(
@@ -199,3 +199,12 @@ def get_all_seat_groups_for_party(party_id: PartyID) -> Sequence[DbSeatGroup]:
         .query(DbSeatGroup) \
         .filter_by(party_id=party_id) \
         .all()
+
+
+def is_seat_part_of_a_group(seat_id: SeatID) -> bool:
+    """Return whether or not the seat is part of a seat group."""
+    return db.session.execute(
+        select(
+            select(DbSeatGroupAssignment).filter_by(seat_id=seat_id).exists()
+        )
+    ).scalar_one()

@@ -12,7 +12,7 @@ from ...typing import UserID
 from ..seating.dbmodels.seat import Seat as DbSeat
 # Load `Seat.assignment` backref.
 from ..seating.dbmodels.seat_group import SeatGroup as DbSeatGroup
-from ..seating import seat_service
+from ..seating import seat_service, seat_group_service
 from ..seating.transfer.models import SeatID
 
 from . import event_service
@@ -155,7 +155,7 @@ def _deny_seat_management_if_ticket_belongs_to_bundle(ticket: DbTicket) -> None:
 
 
 def _deny_seat_management_if_seat_belongs_to_group(seat: DbSeat) -> None:
-    if seat.assignment is not None:
+    if seat_group_service.is_seat_part_of_a_group(seat.id):
         raise SeatChangeDeniedForGroupSeat(
             f"Seat '{seat.label}' belongs to a group and, thus, "
             'cannot be occupied by a single ticket, or removed separately.'
