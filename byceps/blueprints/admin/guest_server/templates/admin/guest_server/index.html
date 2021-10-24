@@ -1,4 +1,5 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin/user.html' import render_user_microcard %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
@@ -38,7 +39,7 @@ code {
           <div class="column-auto" style="flex-basis: 33%;">
 
             <div class="data-label">{{ _('Owner') }}</div>
-            <div class="data-value">{{ render_user_avatar_and_name(users_by_id[server.owner_id], size=20) }}</div>
+            <div class="data-value">{{ render_user_microcard(users_by_id[server.owner_id]) }}</div>
 
           </div>
           <div class="column-auto" style="flex-basis: 33%;">

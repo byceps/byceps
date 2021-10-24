@@ -252,6 +252,25 @@ def get_user_for_admin(user_id: UserID) -> UserForAdmin:
     return user
 
 
+def get_users_for_admin(user_ids: set[UserID]) -> set[UserForAdmin]:
+    """Return the users with those IDs."""
+    if not user_ids:
+        return set()
+
+    users = db.session.execute(
+        select(DbUser)
+        .options(
+            db.joinedload(DbUser.avatar_selection)
+                .joinedload(DbAvatarSelection.avatar),
+            db.joinedload(DbUser.detail)
+                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
+        )
+        .filter(DbUser.id.in_(frozenset(user_ids)))
+    ).scalars().all()
+
+    return {_db_entity_to_user_for_admin(user) for user in users}
+
+
 def _db_entity_to_user(user: DbUser) -> User:
     return User(
         id=user.id,
