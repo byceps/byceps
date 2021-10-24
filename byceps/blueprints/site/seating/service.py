@@ -64,17 +64,33 @@ def get_seats_and_tickets(
     users_by_id: dict[UserID, User],
 ) -> Iterator[tuple[Seat, Optional[SeatTicket]]]:
     for seat, ticket in seats_with_tickets:
-        seat_ticket = _get_seat_ticket(ticket, users_by_id)
+        if ticket is not None:
+            seat_ticket = _build_seat_ticket(ticket, users_by_id)
+        else:
+            seat_ticket = None
+
         yield seat, seat_ticket
 
 
-def _get_seat_ticket(
-    ticket: Optional[DbTicket], users_by_id: dict[UserID, User]
-) -> Optional[SeatTicket]:
-    if ticket is None:
-        return None
+def get_managed_tickets(
+    tickets: Iterable[DbTicket], users_by_id: dict[UserID, User]
+) -> Iterator[tuple[SeatTicket, bool, Optional[str]]]:
+    for ticket in tickets:
+        managed_ticket = _build_seat_ticket(ticket, users_by_id)
+        occupies_seat = ticket.occupied_seat_id is not None
+        seat_label = ticket.occupied_seat.label if occupies_seat else None
 
-    user = _find_ticket_user(ticket, users_by_id)
+        yield managed_ticket, occupies_seat, seat_label
+
+
+def _build_seat_ticket(
+    ticket: DbTicket, users_by_id: dict[UserID, User]
+) -> SeatTicket:
+    user: Optional[User]
+    if ticket.used_by_id is not None:
+        user = users_by_id[ticket.used_by_id]
+    else:
+        user = None
 
     return SeatTicket(
         id=ticket.id,
@@ -82,32 +98,3 @@ def _get_seat_ticket(
         category_label=ticket.category.title,
         user=user,
     )
-
-
-def get_managed_tickets(
-    tickets: Iterable[DbTicket], users_by_id: dict[UserID, User]
-) -> Iterator[tuple[SeatTicket, bool, Optional[str]]]:
-    for ticket in tickets:
-        user = _find_ticket_user(ticket, users_by_id)
-
-        managed_ticket = SeatTicket(
-            id=ticket.id,
-            code=ticket.code,
-            category_label=ticket.category.title,
-            user=user,
-        )
-
-        occupies_seat = ticket.occupied_seat_id is not None
-
-        seat_label = ticket.occupied_seat.label if occupies_seat else None
-
-        yield managed_ticket, occupies_seat, seat_label
-
-
-def _find_ticket_user(
-    ticket: DbTicket, users_by_id: dict[UserID, User]
-) -> Optional[User]:
-    if ticket.used_by_id is None:
-        return None
-
-    return users_by_id[ticket.used_by_id]
