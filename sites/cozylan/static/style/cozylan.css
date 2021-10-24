@@ -257,8 +257,3 @@ table.index {
   background-color: var(--bg-color-light);
   border-bottom-color: var(--border-color);
 }
-
-.seat-tooltip {
-  background-color: var(--bg-color-lighter);
-  border-color: var(--border-color) !important;
-}
