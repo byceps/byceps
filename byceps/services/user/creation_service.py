@@ -19,8 +19,7 @@ from ...typing import UserID
 from ..authentication.password import service as password_service
 from ..site.transfer.models import SiteID
 
-from . import email_address_verification_service
-from . import event_service
+from . import email_address_service, event_service
 from .dbmodels.detail import UserDetail as DbUserDetail
 from .dbmodels.user import User as DbUser
 from . import service as user_service
@@ -138,7 +137,7 @@ def request_email_address_confirmation(
     """
     normalized_email_address = _normalize_email_address(email_address)
 
-    email_address_verification_service.send_email_address_confirmation_email_for_site(
+    email_address_service.send_email_address_confirmation_email_for_site(
         user, normalized_email_address, site_id
     )
 

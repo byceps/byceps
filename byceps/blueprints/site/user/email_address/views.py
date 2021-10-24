@@ -11,7 +11,7 @@ from flask_babel import gettext
 
 from .....services.user import (
     command_service as user_command_service,
-    email_address_verification_service,
+    email_address_service,
     service as user_service,
 )
 from .....services.verification_token import (
@@ -91,7 +91,7 @@ def request_confirmation_email():
         )
         return request_confirmation_email_form()
 
-    email_address_verification_service.send_email_address_confirmation_email_for_site(
+    email_address_service.send_email_address_confirmation_email_for_site(
         user, email_address.address, g.site_id
     )
 
@@ -125,10 +125,8 @@ def confirm(token):
         abort(404)
 
     try:
-        event = email_address_verification_service.confirm_email_address(
-            verification_token
-        )
-    except email_address_verification_service.EmailAddressConfirmationFailed as e:
+        event = email_address_service.confirm_email_address(verification_token)
+    except email_address_service.EmailAddressConfirmationFailed as e:
         flash_error(gettext('Email address verification failed.'))
         return redirect_to('authentication_login.login_form')
 
@@ -165,10 +163,8 @@ def change(token):
         abort(404)
 
     try:
-        event = email_address_verification_service.change_email_address(
-            verification_token
-        )
-    except email_address_verification_service.EmailAddressChangeFailed as e:
+        event = email_address_service.change_email_address(verification_token)
+    except email_address_service.EmailAddressChangeFailed as e:
         flash_error(gettext('Email address change failed.'))
         return redirect_to('authentication_login.login_form')
 

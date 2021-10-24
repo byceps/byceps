@@ -30,7 +30,7 @@ from ....services.user import (
     command_service as user_command_service,
     creation_service as user_creation_service,
     deletion_service as user_deletion_service,
-    email_address_verification_service,
+    email_address_service,
     service as user_service,
     stats_service as user_stats_service,
 )
@@ -584,7 +584,7 @@ def invalidate_email_address(user_id):
     initiator_id = g.user.id
     reason = form.reason.data.strip()
 
-    event = email_address_verification_service.invalidate_email_address(
+    event = email_address_service.invalidate_email_address(
         user.id, reason, initiator_id=initiator_id
     )
 
