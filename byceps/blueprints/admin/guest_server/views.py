@@ -39,6 +39,7 @@ def index(party_id):
     users_by_id = user_service.index_users_by_id(users)
 
     return {
+        'party': party,
         'servers': servers,
         'users_by_id': users_by_id,
     }
