@@ -29,11 +29,17 @@ def create_seat(
     coord_y: int,
     category_id: TicketCategoryID,
     *,
+    rotation: Optional[int] = None,
     label: Optional[str] = None,
 ) -> Seat:
     """Create a seat."""
     db_seat = DbSeat(
-        area_id, category_id, coord_x=coord_x, coord_y=coord_y, label=label
+        area_id,
+        category_id,
+        coord_x=coord_x,
+        coord_y=coord_y,
+        rotation=rotation,
+        label=label,
     )
 
     db.session.add(db_seat)
@@ -50,6 +56,7 @@ def create_seats(area_id: AreaID, seats: Iterator[Seat]) -> None:
             seat.category_id,
             coord_x=seat.coord_x,
             coord_y=seat.coord_y,
+            rotation=seat.rotation,
             label=seat.label,
             type_=seat.type_,
         )
@@ -198,6 +205,7 @@ def _db_entity_to_seat(db_seat: DbSeat) -> Seat:
         id=db_seat.id,
         coord_x=db_seat.coord_x,
         coord_y=db_seat.coord_y,
+        rotation=db_seat.rotation,
         category_id=db_seat.category_id,
         label=db_seat.label,
         type_=db_seat.type_,

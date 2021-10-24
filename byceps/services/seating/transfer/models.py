@@ -37,6 +37,7 @@ class Seat:
     id: SeatID
     coord_x: int
     coord_y: int
+    rotation: Optional[int]
     category_id: TicketCategoryID
     label: Optional[str]
     type_: Optional[str]

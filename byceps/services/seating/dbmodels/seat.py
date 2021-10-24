@@ -35,6 +35,7 @@ class Seat(db.Model):
     area = db.relationship(Area, backref='seats')
     coord_x = db.Column(db.Integer, nullable=False)
     coord_y = db.Column(db.Integer, nullable=False)
+    rotation = db.Column(db.SmallInteger, nullable=True)
     category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), index=True, nullable=False)
     category = db.relationship(Category)
     label = db.Column(db.UnicodeText, nullable=True)
@@ -47,12 +48,14 @@ class Seat(db.Model):
         *,
         coord_x: int = 0,
         coord_y: int = 0,
+        rotation: Optional[int] = None,
         label: Optional[str] = None,
         type_: Optional[str] = None,
     ) -> None:
         self.area_id = area_id
         self.coord_x = coord_x
         self.coord_y = coord_y
+        self.rotation = rotation
         self.category_id = category_id
         self.label = label
         self.type_ = type_

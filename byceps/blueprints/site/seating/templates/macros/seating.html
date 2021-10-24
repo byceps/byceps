@@ -29,6 +29,6 @@
         {%- endif %}
       {%- endif -%}
     >
-      <div class="seat{% if seat.type_ %} seat-type--{{ seat.type_ }}{% endif %}{% if ticket %} seat--occupied{% endif %}"></div>
+      <div class="seat{% if seat.type_ %} seat-type--{{ seat.type_ }}{% endif %}{% if ticket %} seat--occupied{% endif %}"{% if seat.rotation %} style="transform: rotate({{ seat.rotation }}deg);"{% endif %}></div>
     </div>
 {%- endmacro %}
