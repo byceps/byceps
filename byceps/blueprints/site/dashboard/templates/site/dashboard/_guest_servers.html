@@ -28,3 +28,7 @@
 {%- else %}
 <p class="dimmed">{{ _('No servers registered.') }}</p>
 {%- endif %}
+
+<div class="button-row button-row--center">
+  <a class="button" href="{{ url_for('guest_server.create_form') }}">{{ _('Register guest server') }}</a>
+</div>

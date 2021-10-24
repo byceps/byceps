@@ -62,6 +62,7 @@ def _get_blueprints_site(app: Flask) -> Iterator[BlueprintReg]:
         (app, 'site.consent',                    '/consent'                 ),
         (app, 'site.core',                       None                       ),
         (app, 'site.dashboard',                  '/dashboard'               ),
+        (app, 'site.guest_server',               '/guest_servers'           ),
         (app, 'site.news',                       '/news'                    ),
         (app, 'site.newsletter',                 '/newsletter'              ),
         (app, 'site.orga_team',                  '/orgas'                   ),
