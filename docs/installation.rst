@@ -236,7 +236,7 @@ will get all available roles assigned):
    Password:
    Creating user "Flynn" ... done.
    Enabling user "Flynn" ... done.
-   Assigning 32 roles to user "Flynn" ... done.
+   Assigning 33 roles to user "Flynn" ... done.
 
 Those roles allow the user to log in to the admin backend and make all
 administrative functionality available.

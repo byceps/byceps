@@ -95,6 +95,7 @@ def _get_blueprints_admin(app: Flask) -> Iterator[BlueprintReg]:
         (app, 'admin.consent',                   '/admin/consent'           ),
         (app, 'admin.core',                      None                       ),
         (app, 'admin.dashboard',                 '/admin/dashboard'         ),
+        (app, 'admin.guest_server',              '/admin/guest_servers'     ),
         (app, 'admin.news',                      '/admin/news'              ),
         (app, 'admin.newsletter',                '/admin/newsletter'        ),
         (app, 'admin.jobs',                      '/admin/jobs'              ),

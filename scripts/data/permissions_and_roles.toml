@@ -73,6 +73,14 @@ title = 'Zustimmungen verwalten'
 assigned_permissions = ['consent.administrate']
 
 [[roles]]
+id = 'guest_server_admin'
+title = 'Gastserver verwalten'
+assigned_permissions = [
+    'guest_server.administrate',
+    'guest_server.view',
+]
+
+[[roles]]
 id = 'jobs_admin'
 title = 'Jobs verwalten'
 assigned_permissions = ['jobs.view']

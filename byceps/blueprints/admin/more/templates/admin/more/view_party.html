@@ -14,6 +14,7 @@
 
   <div class="grid dashboard">
   {%- with items = [
+    (_('Guest Servers'), 'server', url_for('guest_server_admin.index', party_id=party.id), 'guest_server.view'),
     (_('Organizer Presence'), 'date-okay', url_for('orga_presence.view', party_id=party.id), 'orga_presence.view'),
     (_('Tournaments'), 'trophy', url_for('tourney_tourney_admin.index', party_id=party.id), 'tourney.view'),
   ] %}

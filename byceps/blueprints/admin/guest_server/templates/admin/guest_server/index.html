@@ -1,0 +1,111 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/datetime.html' import render_datetime %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
+{% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
+{% set current_page = 'guest_server_admin' %}
+{% set page_title = _('Guest Servers') %}
+{% set layout_main_raw = True %}
+
+{% block head %}
+<style>
+code {
+  background-color: #eeeeee;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 0.75rem !important;
+  padding: 0 0.125rem;
+}
+</style>
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }} {{ render_extra_in_heading(servers|length) }}</h1>
+
+  {%- if servers %}
+    {%- for server in servers|sort(attribute='created_at', reverse=True) %}
+  <div class="box" style="border-left: {{ '#55cc00' if server.approved else '#ffcc11' }} solid 0.25rem;">
+
+    <div class="mb">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</div>
+
+    <div class="row row--space-between">
+      <div class="column-auto column-auto--grow">
+
+        <div class="row mb">
+          <div class="column-auto" style="flex-basis: 33%;">
+
+            <div class="data-label">{{ _('Owner') }}</div>
+            <div class="data-value">{{ render_user_avatar_and_name(users_by_id[server.owner_id], size=20) }}</div>
+
+          </div>
+          <div class="column-auto" style="flex-basis: 33%;">
+
+            <div class="data-label">{{ _('Created by') }}</div>
+            <div class="data-value">{{ render_user_avatar_and_name(users_by_id[server.creator_id], size=20) }}</div>
+
+          </div>
+          <div class="column-auto" style="flex-basis: 33%;">
+
+            <div class="data-label">{{ _('Created at') }}</div>
+            <div class="data-value">{{ render_datetime(server.created_at|utc_to_local_tz) }}</div>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="column-auto" style="flex-basis: 33%;">
+
+            <div class="data-label">{{ _('Notes by owner') }}</div>
+            <div class="data-value">{{ server.notes_owner|fallback(_('none')) }}</div>
+
+          </div>
+          <div class="column-auto" style="flex-basis: 33%;">
+
+            <div class="data-label">{{ _('Notes by admin') }}</div>
+            <div class="data-value">{{ server.notes_admin|fallback(_('none')) }}</div>
+
+          </div>
+          <div class="column-auto" style="flex-basis: 33%;">
+
+            <div class="data-label">{{ _('IP address') }} {{ _('and') }} {{ _('Hostname') }}</div>
+            <table class="index">
+              {%- for address in server.addresses|sort(attribute='ip_address, hostname') %}
+              <tr>
+                <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-danger') }}{% endif %}</td>
+                <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% else %}{{ _('not given')|dim }}{% endif %}</td>
+              </tr>
+              {%- endfor %}
+            </table>
+
+          </div>
+        </div>
+
+      </div>
+      <div class="column-auto">
+
+        <div class="button-row button-row--compact button-row--right">
+          <a class="button button--compact" href="{{ url_for('.delete_server', server_id=server.id) }}" data-action="delete-server" title="{{ _('Delete server') }}">{{ render_icon('delete') }}</a>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+    {%- endfor %}
+  {%- else %}
+  <div class="box">
+    <div class="dimmed-box centered">{{ _('No servers registered.') }}</div>
+  </div>
+  {%- endif %}
+
+{%- endblock %}
+
+{% block scripts %}
+<script>
+  onDomReady(() => {
+    confirmed_delete_on_click_then_reload('[data-action="delete-server"]', '{{ _('Delete server?') }}');
+  });
+</script>
+{% endblock %}
