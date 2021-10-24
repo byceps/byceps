@@ -9,6 +9,8 @@ byceps.services.seating.seat_service
 from __future__ import annotations
 from typing import Iterator, Optional, Sequence
 
+from sqlalchemy import select
+
 from ...database import db
 from ...typing import PartyID
 
@@ -171,17 +173,24 @@ def find_seats(seat_ids: set[SeatID]) -> set[Seat]:
     return {_db_entity_to_seat(db_seat) for db_seat in db_seats}
 
 
-def get_seats_with_tickets_for_area(area_id: AreaID) -> Sequence[DbSeat]:
+def get_seats_with_tickets_for_area(
+    area_id: AreaID,
+) -> Sequence[tuple[Seat, Optional[DbTicket]]]:
     """Return the seats and their associated tickets (if available) for
     that area.
     """
-    return db.session \
-        .query(DbSeat) \
-        .filter_by(area_id=area_id) \
+    db_seats = db.session.execute(
+        select(DbSeat)
+        .filter_by(area_id=area_id)
         .options(
             db.joinedload(DbSeat.occupied_by_ticket),
-        ) \
-        .all()
+        )
+    ).scalars().all()
+
+    return [
+        (_db_entity_to_seat(db_seat), db_seat.occupied_by_ticket)
+        for db_seat in db_seats
+    ]
 
 
 def _db_entity_to_seat(db_seat: DbSeat) -> Seat:

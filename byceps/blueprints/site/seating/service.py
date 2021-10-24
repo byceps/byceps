@@ -29,17 +29,19 @@ class SeatTicket:
 
 
 def get_users(
-    seats: Iterable[DbSeat], managed_tickets: Iterable[DbTicket]
+    seats_with_tickets: Iterable[tuple[Seat, DbTicket]],
+    managed_tickets: Iterable[DbTicket],
 ) -> dict[UserID, User]:
-    seat_tickets = _get_seat_tickets(seats)
+    seat_tickets = _get_seat_tickets(seats_with_tickets)
     tickets = chain(seat_tickets, managed_tickets)
 
     return _get_ticket_users_by_id(tickets)
 
 
-def _get_seat_tickets(seats: Iterable[DbSeat]) -> Iterator[DbTicket]:
-    for seat in seats:
-        ticket = seat.occupied_by_ticket
+def _get_seat_tickets(
+    seats_with_tickets: Iterable[tuple[Seat, DbTicket]]
+) -> Iterator[DbTicket]:
+    for seat, ticket in seats_with_tickets:
         if (ticket is not None) and (ticket.used_by_id is not None):
             yield ticket
 
@@ -58,27 +60,17 @@ def _get_ticket_user_ids(tickets: Iterable[DbTicket]) -> Iterator[UserID]:
 
 
 def get_seats_and_tickets(
-    seats: Iterable[DbSeat], users_by_id: dict[UserID, User]
+    seats_with_tickets: Iterable[tuple[Seat, DbTicket]],
+    users_by_id: dict[UserID, User],
 ) -> Iterator[tuple[Seat, Optional[SeatTicket]]]:
-    for seat in seats:
-        seat_dto = Seat(
-            id=seat.id,
-            coord_x=seat.coord_x,
-            coord_y=seat.coord_y,
-            category_id=seat.category_id,
-            label=seat.label,
-            type_=seat.type_,
-        )
-
-        seat_ticket = _get_seat_ticket(seat, users_by_id)
-
-        yield seat_dto, seat_ticket
+    for seat, ticket in seats_with_tickets:
+        seat_ticket = _get_seat_ticket(ticket, users_by_id)
+        yield seat, seat_ticket
 
 
 def _get_seat_ticket(
-    seat: DbSeat, users_by_id: dict[UserID, User]
+    ticket: Optional[DbTicket], users_by_id: dict[UserID, User]
 ) -> Optional[SeatTicket]:
-    ticket = seat.occupied_by_ticket
     if ticket is None:
         return None
 

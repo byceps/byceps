@@ -62,11 +62,13 @@ def view_area(slug):
 
     seat_management_enabled = _is_seat_management_enabled()
 
-    seats = seat_service.get_seats_with_tickets_for_area(area.id)
+    seats_with_tickets = seat_service.get_seats_with_tickets_for_area(area.id)
 
-    users_by_id = service.get_users(seats, [])
+    users_by_id = service.get_users(seats_with_tickets, [])
 
-    seats_and_tickets = service.get_seats_and_tickets(seats, users_by_id)
+    seats_and_tickets = service.get_seats_and_tickets(
+        seats_with_tickets, users_by_id
+    )
 
     return {
         'area': area,
@@ -108,7 +110,7 @@ def manage_seats_in_area(slug):
     elif seat_management_enabled:
         seat_manager_id = g.user.id
 
-    seats = seat_service.get_seats_with_tickets_for_area(area.id)
+    seats_with_tickets = seat_service.get_seats_with_tickets_for_area(area.id)
 
     if seat_manager_id is not None:
         tickets = ticket_service.find_tickets_for_seat_manager(
@@ -117,9 +119,11 @@ def manage_seats_in_area(slug):
     else:
         tickets = []
 
-    users_by_id = service.get_users(seats, tickets)
+    users_by_id = service.get_users(seats_with_tickets, tickets)
 
-    seats_and_tickets = service.get_seats_and_tickets(seats, users_by_id)
+    seats_and_tickets = service.get_seats_and_tickets(
+        seats_with_tickets, users_by_id
+    )
 
     if seat_management_enabled:
         managed_tickets = list(
