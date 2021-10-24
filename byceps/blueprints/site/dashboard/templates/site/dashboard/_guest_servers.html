@@ -1,0 +1,30 @@
+{%- from 'macros/misc.html' import render_tag %}
+
+<h2>{{ _('Guest Servers') }}</h2>
+
+{%- if guest_servers %}
+<table class="index wide">
+  <thead>
+    <tr>
+      <th>{{ _('Status') }}</th>
+      <th>{{ _('IP address') }}</th>
+      <th>{{ _('Hostname') }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%- for server in guest_servers %}
+      {%- for address in server.addresses %}
+    <tr>
+        {%- if loop.first %}
+      <td colspan="{{ server.addresses|length }}">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</td>
+        {%- endif %}
+      <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-disabled') }}{% endif %}</td>
+      <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% else %}{{ _('not given')|dim }}{% endif %}</td>
+    </tr>
+      {%- endfor %}
+    {%- endfor %}
+  </tbody>
+</table>
+{%- else %}
+<p class="dimmed">{{ _('No servers registered.') }}</p>
+{%- endif %}

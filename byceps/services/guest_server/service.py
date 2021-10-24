@@ -65,6 +65,20 @@ def get_all_servers_for_party(party_id: PartyID) -> list[Server]:
     return [_db_entity_to_server(db_server) for db_server in db_servers]
 
 
+def get_servers_for_owner_and_party(
+    owner_id: UserID, party_id: PartyID
+) -> list[Server]:
+    """Return the servers owned by the user for the party."""
+    db_servers = db.session.execute(
+        select(DbServer)
+        .filter_by(owner_id=owner_id)
+        .filter_by(party_id=party_id)
+        .join(DbAddress)
+    ).scalars().unique().all()
+
+    return [_db_entity_to_server(db_server) for db_server in db_servers]
+
+
 def delete_server(server_id: ServerID) -> None:
     """Delete a server and its addresses."""
     db.session.execute(

@@ -18,6 +18,7 @@ from ....services.board import (
     access_control_service as board_access_control_service,
     topic_query_service as board_topic_query_service,
 )
+from ....services.guest_server import service as guest_server_service
 from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Headline as NewsHeadline
 from ....services.shop.order import service as order_service
@@ -54,12 +55,14 @@ def index():
     tickets = _get_tickets(user.id)
     news_headlines = _get_news_headlines(site)
     board_topics = _get_board_topics(site, g.user)
+    guest_servers = guest_server_service.get_servers_for_owner_and_party(g.user.id, g.party_id)
 
     return {
         'open_orders': open_orders,
         'tickets': tickets,
         'news_headlines': news_headlines,
         'board_topics': board_topics,
+        'guest_servers': guest_servers,
     }
 
 
