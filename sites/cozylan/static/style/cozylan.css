@@ -1,6 +1,7 @@
 :root {
   --bg-color: #edece5;
   --bg-color-light: #ddd5c5;
+  --bg-color-lighter: #f9f9f7;
   --border-color: #c4a777;
   --link-color: #664422;
   --primary-color: #c4a777;
@@ -255,4 +256,9 @@ table.index {
 .user-profile-background {
   background-color: var(--bg-color-light);
   border-bottom-color: var(--border-color);
+}
+
+.seat-tooltip {
+  background-color: var(--bg-color-lighter);
+  border-color: var(--border-color) !important;
 }

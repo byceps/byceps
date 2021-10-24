@@ -168,8 +168,8 @@
 /* tooltip */
 
 .seat-tooltip {
-  background-color: #111111;
   border: #888888 solid 1px;
+  border-radius: 3px;
   bottom: 2rem;
   font-size: 0.75rem; /* 12px / 16px */
   left: -0.5rem;
