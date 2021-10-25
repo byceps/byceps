@@ -6,13 +6,23 @@ byceps.blueprints.site.guest_server.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import re
+
 from flask_babel import lazy_gettext
 from wtforms import StringField, TextAreaField
-from wtforms.validators import Optional
+from wtforms.validators import Length, Optional, Regexp
 
 from ....util.l10n import LocalizedForm
 
 
+HOSTNAME_REGEX = re.compile('^[a-z][a-z0-9-\.]+$')
+
+
 class CreateForm(LocalizedForm):
-    hostname = StringField(lazy_gettext('Hostname'), validators=[Optional()])
-    notes = TextAreaField(lazy_gettext('Notes'), validators=[Optional()])
+    hostname = StringField(
+        lazy_gettext('Hostname'),
+        validators=[Optional(), Length(max=32), Regexp(HOSTNAME_REGEX)],
+    )
+    notes = TextAreaField(
+        lazy_gettext('Notes'), validators=[Optional(), Length(max=1000)]
+    )
