@@ -45,7 +45,7 @@ def create():
 
     form = CreateForm(request.form)
     if not form.validate():
-        return create_form(recipient.id, form)
+        return create_form(form)
 
     hostname = form.hostname.data.strip()
     notes = form.notes.data.strip()
