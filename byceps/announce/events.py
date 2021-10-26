@@ -23,6 +23,7 @@ from ..events.board import (
     BoardTopicUnlocked,
     BoardTopicUnpinned,
 )
+from ..events.guest_server import GuestServerRegistered
 from ..events.news import NewsItemPublished
 from ..events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ..events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
@@ -68,6 +69,7 @@ EVENT_TYPES_TO_NAMES = {
     BoardPostingCreated:            'board-posting-created',
     BoardPostingHidden:             'board-posting-hidden',
     BoardPostingUnhidden:           'board-posting-unhidden',
+    GuestServerRegistered:          'guest-server-registered',
     NewsItemPublished:              'news-item-published',
     ShopOrderCanceled:              'shop-order-canceled',
     ShopOrderPaid:                  'shop-order-paid',

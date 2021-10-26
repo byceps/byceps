@@ -27,6 +27,7 @@ def webhook_settings():
                 'board-posting-created',
                 'board-posting-hidden',
                 'board-posting-unhidden',
+                'guest-server-registered',
                 'news-item-published',
                 'shop-order-canceled',
                 'shop-order-paid',

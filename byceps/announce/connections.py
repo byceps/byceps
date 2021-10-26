@@ -25,6 +25,7 @@ from ..events.board import (
     BoardTopicUnlocked,
     BoardTopicUnpinned,
 )
+from ..events.guest_server import GuestServerRegistered
 from ..events.news import NewsItemPublished
 from ..events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ..events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
@@ -57,6 +58,7 @@ from ..events.user import (
 from ..events.user_badge import UserBadgeAwarded
 from ..signals import auth as auth_signals
 from ..signals import board as board_signals
+from ..signals import guest_server as guest_server_signals
 from ..signals import news as news_signals
 from ..signals import shop as shop_signals
 from ..signals import snippet as snippet_signals
@@ -69,6 +71,7 @@ from ..util.jobqueue import enqueue
 from .handlers import (
     auth,
     board,
+    guest_server,
     news,
     shop_order,
     snippet,
@@ -93,6 +96,7 @@ EVENT_TYPES_TO_HANDLERS = {
     BoardPostingCreated: board.announce_board_posting_created,
     BoardPostingHidden: board.announce_board_posting_hidden,
     BoardPostingUnhidden: board.announce_board_posting_unhidden,
+    GuestServerRegistered: guest_server.announce_guest_server_registered,
     NewsItemPublished: news.announce_news_item_published,
     ShopOrderPlaced: shop_order.announce_order_placed,
     ShopOrderPaid: shop_order.announce_order_paid,
@@ -152,6 +156,7 @@ SIGNALS = [
     board_signals.posting_created,
     board_signals.posting_hidden,
     board_signals.posting_unhidden,
+    guest_server_signals.guest_server_registered,
     news_signals.item_published,
     shop_signals.order_placed,
     shop_signals.order_paid,

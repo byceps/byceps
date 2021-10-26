@@ -13,7 +13,11 @@ from uuid import UUID
 from sqlalchemy import delete, select
 
 from ...database import db
+from ...events.guest_server import GuestServerRegistered
 from ...typing import PartyID, UserID
+
+from ..party import service as party_service
+from ..user import service as user_service
 
 from .dbmodels import Address as DbAddress, Server as DbServer
 from .transfer.models import Address, AddressID, IPAddress, Server, ServerID
@@ -26,10 +30,14 @@ def create_server(
     *,
     notes_owner: Optional[str] = None,
     hostname: Optional[str] = None,
-) -> Server:
+) -> tuple[Server, GuestServerRegistered]:
     """Create a server."""
+    party = party_service.get_party(party_id)
+    creator = user_service.get_user(creator_id)
+    owner = user_service.get_user(owner_id)
+
     db_server = DbServer(
-        party_id, creator_id, owner_id, notes_owner=notes_owner
+        party.id, creator.id, owner.id, notes_owner=notes_owner
     )
     db.session.add(db_server)
 
@@ -38,7 +46,19 @@ def create_server(
 
     db.session.commit()
 
-    return _db_entity_to_server(db_server)
+    server = _db_entity_to_server(db_server)
+
+    event = GuestServerRegistered(
+        occurred_at=server.created_at,
+        initiator_id=creator.id,
+        initiator_screen_name=creator.screen_name,
+        party_id=party.id,
+        owner_id=owner.id,
+        owner_screen_name=owner.screen_name,
+        server_id=server.id,
+    )
+
+    return server, event
 
 
 def find_server(server_id: ServerID) -> Optional[Server]:

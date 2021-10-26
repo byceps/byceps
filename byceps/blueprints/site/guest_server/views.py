@@ -12,6 +12,7 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from ....services.guest_server import service as guest_server_service
+from ....signals import guest_server as guest_server_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -50,11 +51,13 @@ def create():
     hostname = form.hostname.data.strip()
     notes = form.notes.data.strip()
 
-    guest_server_service.create_server(
+    server, event = guest_server_service.create_server(
         g.party_id, g.user.id, g.user.id, notes_owner=notes, hostname=hostname
     )
 
     flash_success(gettext('Your server has been registered.'))
+
+    guest_server_signals.guest_server_registered.send(None, event=event)
 
     return redirect_to('dashboard.index')
 

@@ -148,6 +148,15 @@ msgstr "\"%(brand_title)s\"-Forum"
 msgid " in %(board_label)s"
 msgstr " im %(board_label)s"
 
+#: byceps/announce/text_assembly/guest_server.py:27
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has registered a guest server owned by "
+"\"%(owner_screen_name)s."
+msgstr ""
+"%(initiator_screen_name)s hat einen Gastserver von %(owner_screen_name)s "
+"registriert."
+
 #: byceps/announce/text_assembly/news.py:20
 #, python-format
 msgid "The news \"%(title)s\" has been published. %(url)s"
@@ -1810,7 +1819,7 @@ msgstr "und"
 
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:74
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:11
-#: byceps/blueprints/site/guest_server/forms.py:17
+#: byceps/blueprints/site/guest_server/forms.py:23
 msgid "Hostname"
 msgstr "Hostname"
 
@@ -5399,11 +5408,11 @@ msgstr "Alle Bestellungen"
 msgid "You do not use a ticket yet."
 msgstr "Du nutzt noch kein Ticket."
 
-#: byceps/blueprints/site/guest_server/forms.py:18
+#: byceps/blueprints/site/guest_server/forms.py:27
 msgid "Notes"
 msgstr "Anmerkungen"
 
-#: byceps/blueprints/site/guest_server/views.py:57
+#: byceps/blueprints/site/guest_server/views.py:58
 msgid "Your server has been registered."
 msgstr "Dein Server wurde registriert."
 
