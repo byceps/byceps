@@ -19,8 +19,50 @@ from ...typing import PartyID, UserID
 from ..party import service as party_service
 from ..user import service as user_service
 
-from .dbmodels import Address as DbAddress, Server as DbServer
-from .transfer.models import Address, AddressID, IPAddress, Server, ServerID
+from .dbmodels import (
+    Address as DbAddress,
+    Server as DbServer,
+    Setting as DbSetting,
+)
+from .transfer.models import (
+    Address,
+    AddressID,
+    IPAddress,
+    Server,
+    ServerID,
+    Setting,
+)
+
+
+def get_setting_for_party(party_id: PartyID) -> Setting:
+    """Return the setting for the party."""
+    db_setting = db.session.execute(
+        select(DbSetting)
+        .filter_by(party_id=party_id)
+    ).scalars().one_or_none()
+
+    if db_setting is None:
+        return Setting(
+            party_id=party_id,
+            netmask=None,
+            gateway=None,
+            dns_servers=[],
+            domain=None,
+        )
+
+    dns_servers = [
+        ip_address
+        for ip_address in (db_setting.dns_server1, db_setting.dns_server2)
+        if ip_address
+    ]
+
+    return Setting(
+        party_id=db_setting.party_id,
+        netmask=db_setting.netmask,
+        gateway=db_setting.gateway,
+        dns_servers=dns_servers,
+        domain=db_setting.domain,
+    )
 
 
 def create_server(

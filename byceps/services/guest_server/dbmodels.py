@@ -20,6 +20,71 @@ from ...util.instances import ReprBuilder
 from .transfer.models import IPAddress
 
 
+class Setting(db.Model):
+    """A party-specific setting for guest servers."""
+
+    __tablename__ = 'guest_server_settings'
+
+    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True)
+    _netmask = db.Column('netmask', postgresql.INET, nullable=True)
+    _gateway = db.Column('gateway', postgresql.INET, nullable=True)
+    _dns_server1 = db.Column('dns_server1', postgresql.INET, nullable=True)
+    _dns_server2 = db.Column('dns_server2', postgresql.INET, nullable=True)
+    domain = db.Column(db.UnicodeText, nullable=True)
+
+    def __init__(self, party_id: PartyID) -> None:
+        self.party_id = party_id
+
+    @hybrid_property
+    def netmask(self) -> Optional[IPAddress]:
+        if not self._netmask:
+            return None
+
+        return ipaddress.ip_address(self._netmask)
+
+    @netmask.setter
+    def netmask(self, netmask: Optional[IPAddress]) -> None:
+        self._netmask = str(netmask) if netmask else None
+
+    @hybrid_property
+    def gateway(self) -> Optional[IPAddress]:
+        if not self._gateway:
+            return None
+
+        return ipaddress.ip_address(self._gateway)
+
+    @gateway.setter
+    def gateway(self, ip_address: Optional[IPAddress]) -> None:
+        self._gateway = str(ip_address) if ip_address else None
+
+    @hybrid_property
+    def dns_server1(self) -> Optional[IPAddress]:
+        if not self._dns_server1:
+            return None
+
+        return ipaddress.ip_address(self._dns_server1)
+
+    @dns_server1.setter
+    def dns_server1(self, ip_address: Optional[IPAddress]) -> None:
+        self._dns_server1 = str(ip_address) if ip_address else None
+
+    @hybrid_property
+    def dns_server2(self) -> Optional[IPAddress]:
+        if not self._dns_server2:
+            return None
+
+        return ipaddress.ip_address(self._dns_server2)
+
+    @dns_server2.setter
+    def dns_server2(self, ip_address: Optional[IPAddress]) -> None:
+        self._dns_server2 = str(ip_address) if ip_address else None
+
+    def __repr__(self) -> str:
+        return ReprBuilder(self) \
+            .add_with_lookup('party_id') \
+            .build()
+
+
 class Server(db.Model):
     """A guest server."""
 

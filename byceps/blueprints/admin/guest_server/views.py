@@ -30,7 +30,9 @@ def index(party_id):
     if party is None:
         abort(404)
 
-    servers = guest_server_service.get_all_servers_for_party(party_id)
+    setting = guest_server_service.get_setting_for_party(party.id)
+
+    servers = guest_server_service.get_all_servers_for_party(party.id)
 
     creator_ids = {server.creator_id for server in servers}
     owner_ids = {server.owner_id for server in servers}
@@ -40,6 +42,7 @@ def index(party_id):
 
     return {
         'party': party,
+        'setting': setting,
         'servers': servers,
         'users_by_id': users_by_id,
     }

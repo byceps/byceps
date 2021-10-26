@@ -55,7 +55,12 @@ def index():
     tickets = _get_tickets(user.id)
     news_headlines = _get_news_headlines(site)
     board_topics = _get_board_topics(site, g.user)
-    guest_servers = guest_server_service.get_servers_for_owner_and_party(g.user.id, g.party_id)
+    guest_servers = guest_server_service.get_servers_for_owner_and_party(
+        g.user.id, g.party_id
+    )
+    guest_server_setting = guest_server_service.get_setting_for_party(
+        g.party_id
+    )
 
     return {
         'open_orders': open_orders,
@@ -63,6 +68,7 @@ def index():
         'news_headlines': news_headlines,
         'board_topics': board_topics,
         'guest_servers': guest_servers,
+        'guest_server_setting': guest_server_setting,
     }
 
 

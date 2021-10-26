@@ -15,13 +15,13 @@ from wtforms.validators import Length, Optional, Regexp
 from ....util.l10n import LocalizedForm
 
 
-HOSTNAME_REGEX = re.compile('^[a-z][a-z0-9-\.]+$')
+HOSTNAME_REGEX = re.compile('^[a-z][a-z0-9-]+$')
 
 
 class CreateForm(LocalizedForm):
     hostname = StringField(
         lazy_gettext('Hostname'),
-        validators=[Optional(), Length(max=32), Regexp(HOSTNAME_REGEX)],
+        validators=[Optional(), Length(max=20), Regexp(HOSTNAME_REGEX)],
     )
     notes = TextAreaField(
         lazy_gettext('Notes'), validators=[Optional(), Length(max=1000)]

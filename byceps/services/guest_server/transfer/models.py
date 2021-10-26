@@ -26,6 +26,15 @@ AddressID = NewType('AddressID', UUID)
 
 
 @dataclass(frozen=True)
+class Setting:
+    party_id: PartyID
+    netmask: Optional[IPAddress]
+    gateway: Optional[IPAddress]
+    dns_servers: list[IPAddress]
+    domain: Optional[str]
+
+
+@dataclass(frozen=True)
 class Server:
     id: ServerID
     party_id: PartyID

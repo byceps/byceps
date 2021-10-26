@@ -9,7 +9,7 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.create') }}" method="post">
-    {{ form_field(form.hostname, placeholder='myserver.lan', autofocus='autofocus') }}
+    {{ form_field(form.hostname, placeholder='myserver', autofocus='autofocus') }}
     {{ form_field(form.notes) }}
 
     {{ form_buttons(_('Create')) }}
