@@ -16,6 +16,7 @@ from ....services.brand import (
     settings_service as brand_settings_service,
 )
 from ....services.consent import subject_service as consent_subject_service
+from ....services.guest_server import service as guest_server_service
 from ....services.news import channel_service as news_channel_service
 from ....services.newsletter import service as newsletter_service
 from ....services.orga import birthday_service as orga_birthday_service
@@ -194,6 +195,8 @@ def view_party(party_id):
 
     seat_utilization = seat_service.get_seat_utilization(party.id)
 
+    guest_servers = guest_server_service.get_all_servers_for_party(party.id)
+
     return {
         'party': party,
         'days': days,
@@ -205,6 +208,7 @@ def view_party(party_id):
         'ticket_sale_stats': ticket_sale_stats,
         'tickets_checked_in': tickets_checked_in,
         'seat_utilization': seat_utilization,
+        'guest_servers': guest_servers,
     }
 
 
