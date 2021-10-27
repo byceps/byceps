@@ -48,7 +48,7 @@ def create():
     if not form.validate():
         return create_form(form)
 
-    hostname = form.hostname.data.strip()
+    hostname = form.hostname.data.strip().lower()
     notes = form.notes.data.strip()
 
     server, event = guest_server_service.create_server(

@@ -15,7 +15,7 @@ from wtforms.validators import Length, Optional, Regexp
 from ....util.l10n import LocalizedForm
 
 
-HOSTNAME_REGEX = re.compile('^[a-z][a-z0-9-]+$')
+HOSTNAME_REGEX = re.compile('^[A-Za-z][A-Za-z0-9-]+$')
 
 
 class CreateForm(LocalizedForm):
