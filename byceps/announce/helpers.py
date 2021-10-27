@@ -41,7 +41,7 @@ def matches_selectors(
     actual_value: str,
 ) -> bool:
     event_name = get_name_for_event(event)
-    if event_name not in webhook.event_selectors:
+    if event_name not in webhook.event_types:
         # This should not happen as only webhooks supporting this
         # event type should have been selected before calling an
         # event announcement handler.

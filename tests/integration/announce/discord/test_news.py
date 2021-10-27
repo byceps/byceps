@@ -46,8 +46,8 @@ def webhook_settings(channel):
 
     webhooks = [
         webhook_service.create_outgoing_webhook(
-            # event_selectors
-            {'news-item-published': None},
+            # event_types
+            {'news-item-published'},
             # event_filters
             {'news-item-published': {'channel_id': [news_channel_id]}},
             format,

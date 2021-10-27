@@ -76,10 +76,11 @@ def create():
     if not form.validate():
         return create_form(form)
 
-    event_selectors = {}
-    for event_name in event_names:
-        if form.get_field_for_event_name(event_name).data:
-            event_selectors[event_name] = None
+    event_types = {
+        event_name
+        for event_name in event_names
+        if form.get_field_for_event_name(event_name).data
+    }
 
     event_filters = {}
     format = form.format.data.strip()
@@ -88,7 +89,7 @@ def create():
     enabled = False
 
     webhook = webhook_service.create_outgoing_webhook(
-        event_selectors,
+        event_types,
         event_filters,
         format,
         url,
@@ -113,7 +114,7 @@ def update_form(webhook_id, erroneous_form=None):
 
     # Pre-fill event type checkboxes.
     event_type_fields = {}
-    for event_type_name in webhook.event_selectors:
+    for event_type_name in webhook.event_types:
         field_name = _create_event_field_name(event_type_name)
         event_type_fields[field_name] = True
 
@@ -145,10 +146,11 @@ def update(webhook_id):
     if not form.validate():
         return update_form(webhook.id, form)
 
-    event_selectors = {}
-    for event_name in event_names:
-        if form.get_field_for_event_name(event_name).data:
-            event_selectors[event_name] = None
+    event_types = {
+        event_name
+        for event_name in event_names
+        if form.get_field_for_event_name(event_name).data
+    }
 
     event_filters = {}
     format = form.format.data.strip()
@@ -161,7 +163,7 @@ def update(webhook_id):
 
     webhook = webhook_service.update_outgoing_webhook(
         webhook.id,
-        event_selectors,
+        event_types,
         event_filters,
         format,
         text_prefix,

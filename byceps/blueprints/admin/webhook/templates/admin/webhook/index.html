@@ -80,9 +80,9 @@
             <div class="data-label">{{ _('Selectors') }}</div>
             <div class="data-value">
               <details style="font-size: 0.75rem;">
-                <summary>{{ webhook.event_selectors|length }} {{ ngettext('event', 'events', webhook.event_selectors|length) }}</summary>
+                <summary>{{ webhook.event_types|length }} {{ ngettext('event', 'events', webhook.event_types|length) }}</summary>
                 <ul style="padding-left: 0.75rem;">
-                  {%- for event_name, _ in webhook.event_selectors|dictsort %}
+                  {%- for event_name in webhook.event_types %}
                   <li>{{ event_name }}</li>
                   {%- endfor %}
                 </ul>

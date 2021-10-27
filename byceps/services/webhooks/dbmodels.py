@@ -9,11 +9,12 @@ byceps.services.webhooks.dbmodels
 from __future__ import annotations
 from typing import Any, Optional
 
-from sqlalchemy.ext.mutable import MutableDict
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.ext.mutable import MutableDict, MutableList
 
 from ...database import db, generate_uuid
 
-from .transfer.models import EventFilters, EventSelectors
+from .transfer.models import EventFilters
 
 
 class OutgoingWebhook(db.Model):
@@ -22,7 +23,7 @@ class OutgoingWebhook(db.Model):
     __tablename__ = 'outgoing_webhooks'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    event_selectors = db.Column(MutableDict.as_mutable(db.JSONB), nullable=True)
+    _event_types = db.Column('event_types', MutableList.as_mutable(db.JSONB), nullable=False)
     event_filters = db.Column(MutableDict.as_mutable(db.JSONB), nullable=True)
     format = db.Column(db.UnicodeText, nullable=False)
     text_prefix = db.Column(db.UnicodeText, nullable=True)
@@ -33,7 +34,7 @@ class OutgoingWebhook(db.Model):
 
     def __init__(
         self,
-        event_selectors: EventSelectors,
+        event_types: set[str],
         event_filters: EventFilters,
         format: str,
         url: str,
@@ -43,7 +44,7 @@ class OutgoingWebhook(db.Model):
         extra_fields: Optional[dict[str, Any]] = None,
         description: Optional[str] = None,
     ) -> None:
-        self.event_selectors = event_selectors
+        self.event_types = event_types
         self.event_filters = event_filters
         self.format = format
         self.text_prefix = text_prefix
@@ -51,3 +52,11 @@ class OutgoingWebhook(db.Model):
         self.url = url
         self.description = description
         self.enabled = enabled
+
+    @hybrid_property
+    def event_types(self) -> set[str]:
+        return set(self._event_types)
+
+    @event_types.setter
+    def event_types(self, event_types: set[str]) -> None:
+        self._event_types = list(event_types)

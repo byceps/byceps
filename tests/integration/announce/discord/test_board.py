@@ -92,10 +92,10 @@ def webhook_settings(board):
 
     webhooks = [
         webhook_service.create_outgoing_webhook(
-            # event_selectors
+            # event_types
             {
-                'board-posting-created': None,
-                'board-topic-created': None,
+                'board-posting-created',
+                'board-topic-created',
             },
             # event_filters
             {

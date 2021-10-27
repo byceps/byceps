@@ -12,10 +12,10 @@ from .helpers import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
 
 @pytest.fixture(scope='module')
 def webhook_settings():
-    event_selector_sets = [
+    event_types_and_channels = [
         # internal
-        dict.fromkeys(
-            [
+        (
+            {
                 'board-topic-created',
                 'board-topic-hidden',
                 'board-topic-locked',
@@ -47,11 +47,12 @@ def webhook_settings():
                 'user-email-address-invalidated',
                 'user-screen-name-changed',
                 'user-logged-in',
-            ]
+            },
+            CHANNEL_ORGA_LOG,
         ),
         # public
-        dict.fromkeys(
-            [
+        (
+            {
                 'board-topic-created',
                 'board-posting-created',
                 'news-item-published',
@@ -68,24 +69,24 @@ def webhook_settings():
                 'tourney-participant-eliminated',
                 'tourney-participant-warned',
                 'tourney-participant-disqualified',
-            ]
+            },
+            CHANNEL_PUBLIC,
         ),
     ]
-    channels = [CHANNEL_ORGA_LOG, CHANNEL_PUBLIC]
     format = 'weitersager'
     url = 'http://127.0.0.1:12345/'
     enabled = True
 
     webhooks = [
         webhook_service.create_outgoing_webhook(
-            event_selectors,
+            event_types,
             {},  # event_filters
             format,
             url,
             enabled,
             extra_fields={'channel': channel},
         )
-        for event_selectors, channel in zip(event_selector_sets, channels)
+        for event_types, channel in event_types_and_channels
     ]
 
     yield

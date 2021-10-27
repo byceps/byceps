@@ -12,16 +12,11 @@ from typing import Any, Optional
 from ...database import db
 
 from .dbmodels import OutgoingWebhook as DbOutgoingWebhook
-from .transfer.models import (
-    EventFilters,
-    EventSelectors,
-    OutgoingWebhook,
-    WebhookID,
-)
+from .transfer.models import EventFilters, OutgoingWebhook, WebhookID
 
 
 def create_outgoing_webhook(
-    event_selectors: EventSelectors,
+    event_types: set[str],
     event_filters: EventFilters,
     format: str,
     url: str,
@@ -33,7 +28,7 @@ def create_outgoing_webhook(
 ) -> OutgoingWebhook:
     """Create an outgoing webhook."""
     webhook = DbOutgoingWebhook(
-        event_selectors,
+        event_types,
         event_filters,
         format,
         url,
@@ -51,7 +46,7 @@ def create_outgoing_webhook(
 
 def update_outgoing_webhook(
     webhook_id: WebhookID,
-    event_selectors: EventSelectors,
+    event_types: set[str],
     event_filters: EventFilters,
     format: str,
     text_prefix: Optional[str],
@@ -65,7 +60,7 @@ def update_outgoing_webhook(
     if webhook is None:
         raise ValueError(f'Unknown webhook ID "{webhook_id}"')
 
-    webhook.event_selectors = event_selectors
+    webhook.event_types = event_types
     webhook.event_filters = event_filters
     webhook.format = format
     webhook.text_prefix = text_prefix
@@ -114,7 +109,7 @@ def get_enabled_outgoing_webhooks(event_type: str) -> list[OutgoingWebhook]:
     event type.
     """
     webhooks = db.session.query(DbOutgoingWebhook) \
-        .filter(DbOutgoingWebhook.event_selectors.has_key(event_type)) \
+        .filter(DbOutgoingWebhook._event_types.contains([event_type])) \
         .filter_by(enabled=True) \
         .all()
 
@@ -124,12 +119,6 @@ def get_enabled_outgoing_webhooks(event_type: str) -> list[OutgoingWebhook]:
 def _db_entity_to_outgoing_webhook(
     webhook: DbOutgoingWebhook,
 ) -> OutgoingWebhook:
-    event_selectors = (
-        dict(webhook.event_selectors)
-        if (webhook.event_selectors is not None)
-        else {}
-    )
-
     event_filters = (
         dict(webhook.event_filters)
         if (webhook.event_filters is not None)
@@ -142,7 +131,7 @@ def _db_entity_to_outgoing_webhook(
 
     return OutgoingWebhook(
         id=webhook.id,
-        event_selectors=event_selectors,
+        event_types=webhook.event_types,
         event_filters=event_filters,
         format=webhook.format,
         text_prefix=webhook.text_prefix,

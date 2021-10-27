@@ -15,16 +15,13 @@ from uuid import UUID
 WebhookID = NewType('WebhookID', UUID)
 
 
-EventSelectors = Dict[str, Optional[Dict[str, List[str]]]]
-
-
 EventFilters = Dict[str, Optional[Dict[str, List[str]]]]
 
 
 @dataclass(frozen=True)
 class OutgoingWebhook:
     id: WebhookID
-    event_selectors: EventSelectors
+    event_types: set[str]
     event_filters: EventFilters
     format: str
     text_prefix: Optional[str]
