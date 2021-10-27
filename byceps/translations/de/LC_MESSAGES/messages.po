@@ -4818,23 +4818,23 @@ msgstr "Zusätzliche Felder"
 msgid "Enabled"
 msgstr "Aktiv"
 
-#: byceps/blueprints/admin/webhook/views.py:93
+#: byceps/blueprints/admin/webhook/views.py:99
 msgid "Webhook has been created."
 msgstr "Der Webhook wurde erstellt."
 
-#: byceps/blueprints/admin/webhook/views.py:166
+#: byceps/blueprints/admin/webhook/views.py:174
 msgid "Webhook has been updated."
 msgstr "Der Webhook wurde aktualisiert."
 
-#: byceps/blueprints/admin/webhook/views.py:180
+#: byceps/blueprints/admin/webhook/views.py:188
 msgid "Webhook has been removed."
 msgstr "Der Webhook wurde gelöscht."
 
-#: byceps/blueprints/admin/webhook/views.py:194
+#: byceps/blueprints/admin/webhook/views.py:202
 msgid "Webhook call has been successful."
 msgstr "Der Webhook-Aufruf war erfolgreich."
 
-#: byceps/blueprints/admin/webhook/views.py:198
+#: byceps/blueprints/admin/webhook/views.py:206
 msgid "Webhook call failed:"
 msgstr "Der Webhook-Aufruf ist fehlgeschlagen:"
 
@@ -4843,7 +4843,7 @@ msgid "Create Webhook"
 msgstr "Webhook erstellen"
 
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:20
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:77
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:80
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:23
 msgid "Selectors"
 msgstr "Selektoren"
@@ -4856,15 +4856,27 @@ msgstr "Webhook erstellen"
 msgid "Test"
 msgstr "Testen"
 
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:80
-msgid "event(s)"
-msgstr "Event(s)"
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:83
+msgid "event"
+msgid_plural "events"
+msgstr[0] "Event"
+msgstr[1] "Events"
 
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:107
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:95
+msgid "Filters"
+msgstr "Einschränkungen"
+
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:98
+msgid "filter"
+msgid_plural "filters"
+msgstr[0] "Einschränkung"
+msgstr[1] "Einschränkungen"
+
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:128
 msgid "No webhooks defined."
 msgstr "Es sind keine Webhooks definiert."
 
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:115
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:136
 msgid "Delete webhook?"
 msgstr "Webhook löschen?"
 

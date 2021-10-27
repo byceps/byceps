@@ -18,10 +18,14 @@ WebhookID = NewType('WebhookID', UUID)
 EventSelectors = Dict[str, Optional[Dict[str, List[str]]]]
 
 
+EventFilters = Dict[str, Optional[Dict[str, List[str]]]]
+
+
 @dataclass(frozen=True)
 class OutgoingWebhook:
     id: WebhookID
     event_selectors: EventSelectors
+    event_filters: EventFilters
     format: str
     text_prefix: Optional[str]
     extra_fields: dict[str, Any]

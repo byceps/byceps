@@ -94,6 +94,11 @@ def webhook_settings(board):
         webhook_service.create_outgoing_webhook(
             # event_selectors
             {
+                'board-posting-created': None,
+                'board-topic-created': None,
+            },
+            # event_filters
+            {
                 'board-posting-created': {'board_id': [board_id]},
                 'board-topic-created': {'board_id': [board_id]},
             },

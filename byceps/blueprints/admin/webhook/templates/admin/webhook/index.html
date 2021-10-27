@@ -74,27 +74,46 @@
       </div>
       <div>
 
-        <div class="data-label">{{ _('Selectors') }}</div>
-        <div class="data-value">
-          <details style="font-size: 0.75rem;">
-            <summary>{{ webhook.event_selectors|length }} {{ _('event(s)') }}</summary>
-            <ul style="padding-left: 0.75rem;">
-              {%- for event_name, event_filters in webhook.event_selectors|dictsort %}
-              <li>
-                {{ event_name }}
-                {%- if event_filters %}
-                <ul style="padding-left: 1rem;">
-                  {%- for key, value in event_filters|dictsort %}
+        <div class="row mb">
+          <div class="column-auto" style="flex-basis: 50%;">
+
+            <div class="data-label">{{ _('Selectors') }}</div>
+            <div class="data-value">
+              <details style="font-size: 0.75rem;">
+                <summary>{{ webhook.event_selectors|length }} {{ ngettext('event', 'events', webhook.event_selectors|length) }}</summary>
+                <ul style="padding-left: 0.75rem;">
+                  {%- for event_name, _ in webhook.event_selectors|dictsort %}
+                  <li>{{ event_name }}</li>
+                  {%- endfor %}
+                </ul>
+              </details>
+            </div>
+
+          </div>
+
+          <div class="column-auto" style="flex-basis: 50%;">
+            <div class="data-label">{{ _('Filters') }}</div>
+            <div class="data-value">
+              <details style="font-size: 0.75rem;">
+                <summary>{{ webhook.event_filters|length }} {{ ngettext('filter', 'filters', webhook.event_filters|length) }}</summary>
+                <ul style="padding-left: 0.75rem;">
+                  {%- for event_name, event_filters in webhook.event_filters|dictsort %}
                   <li>
-                    {{ key }} in {{ value }}
+                    {{ event_name }}
+                    {%- if event_filters %}
+                    <ul style="padding-left: 1rem;">
+                      {%- for key, value in event_filters|dictsort %}
+                      <li>{{ key }} in {{ value }}</li>
+                      {%- endfor %}
+                    </ul>
+                    {%- endif %}
                   </li>
                   {%- endfor %}
                 </ul>
-                {%- endif %}
-              </li>
-              {%- endfor %}
-            </ul>
-          </details>
+              </details>
+            </div>
+
+          </div>
         </div>
 
       </div>

@@ -79,6 +79,7 @@ def webhook_settings():
     webhooks = [
         webhook_service.create_outgoing_webhook(
             event_selectors,
+            {},  # event_filters
             format,
             url,
             enabled,

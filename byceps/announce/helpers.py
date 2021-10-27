@@ -47,14 +47,11 @@ def matches_selectors(
         # event announcement handler.
         return False
 
-    event_selector = webhook.event_selectors.get(event_name)
-    if event_selector is None:
-        # If no specific matcher rule is defined, a value of `None`
-        # is okay (as it allows the event name to be contained in
-        # the dictionary as a key).
-        event_selector = {}
+    event_filter = webhook.event_filters.get(event_name)
+    if event_filter is None:
+        return True
 
-    allowed_values = event_selector.get(attribute_name)
+    allowed_values = event_filter.get(attribute_name)
     return (allowed_values is None) or (actual_value in allowed_values)
 
 

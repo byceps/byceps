@@ -81,13 +81,19 @@ def create():
         if form.get_field_for_event_name(event_name).data:
             event_selectors[event_name] = None
 
+    event_filters = {}
     format = form.format.data.strip()
     url = form.url.data.strip()
     description = form.description.data.strip()
     enabled = False
 
     webhook = webhook_service.create_outgoing_webhook(
-        event_selectors, format, url, enabled, description=description
+        event_selectors,
+        event_filters,
+        format,
+        url,
+        enabled,
+        description=description,
     )
 
     flash_success(gettext('Webhook has been created.'))
@@ -144,6 +150,7 @@ def update(webhook_id):
         if form.get_field_for_event_name(event_name).data:
             event_selectors[event_name] = None
 
+    event_filters = {}
     format = form.format.data.strip()
     url = form.url.data.strip()
     text_prefix = form.text_prefix.data.lstrip()  # Allow trailing whitespace.
@@ -155,6 +162,7 @@ def update(webhook_id):
     webhook = webhook_service.update_outgoing_webhook(
         webhook.id,
         event_selectors,
+        event_filters,
         format,
         text_prefix,
         extra_fields,

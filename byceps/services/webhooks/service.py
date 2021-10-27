@@ -12,11 +12,17 @@ from typing import Any, Optional
 from ...database import db
 
 from .dbmodels import OutgoingWebhook as DbOutgoingWebhook
-from .transfer.models import EventSelectors, OutgoingWebhook, WebhookID
+from .transfer.models import (
+    EventFilters,
+    EventSelectors,
+    OutgoingWebhook,
+    WebhookID,
+)
 
 
 def create_outgoing_webhook(
     event_selectors: EventSelectors,
+    event_filters: EventFilters,
     format: str,
     url: str,
     enabled: bool,
@@ -28,6 +34,7 @@ def create_outgoing_webhook(
     """Create an outgoing webhook."""
     webhook = DbOutgoingWebhook(
         event_selectors,
+        event_filters,
         format,
         url,
         enabled,
@@ -45,6 +52,7 @@ def create_outgoing_webhook(
 def update_outgoing_webhook(
     webhook_id: WebhookID,
     event_selectors: EventSelectors,
+    event_filters: EventFilters,
     format: str,
     text_prefix: Optional[str],
     extra_fields: Optional[dict[str, Any]],
@@ -58,6 +66,7 @@ def update_outgoing_webhook(
         raise ValueError(f'Unknown webhook ID "{webhook_id}"')
 
     webhook.event_selectors = event_selectors
+    webhook.event_filters = event_filters
     webhook.format = format
     webhook.text_prefix = text_prefix
     webhook.extra_fields = extra_fields
@@ -121,6 +130,12 @@ def _db_entity_to_outgoing_webhook(
         else {}
     )
 
+    event_filters = (
+        dict(webhook.event_filters)
+        if (webhook.event_filters is not None)
+        else {}
+    )
+
     extra_fields = (
         dict(webhook.extra_fields) if (webhook.extra_fields is not None) else {}
     )
@@ -128,6 +143,7 @@ def _db_entity_to_outgoing_webhook(
     return OutgoingWebhook(
         id=webhook.id,
         event_selectors=event_selectors,
+        event_filters=event_filters,
         format=webhook.format,
         text_prefix=webhook.text_prefix,
         extra_fields=extra_fields,
