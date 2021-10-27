@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field %}
+{% from 'macros/forms.html' import form_buttons, form_field_checkboxes, form_field %}
 {% set current_page = 'webhook_admin' %}
 {% set page_title = _('Create Webhook') %}
 
@@ -16,20 +16,7 @@
     {{ form_field(form.description, autofocus='autofocus') }}
     {{ form_field(form.format) }}
     {{ form_field(form.url) }}
-    <div class="mb">
-      <label class="form-label">{{ _('Selectors') }}</label>
-      <div class="form-control-checkboxes">
-        <fieldset>
-          <ul>
-          {%- for event_name in event_names|sort %}
-            {%- with field = form.get_field_for_event_name(event_name) %}
-            <li><label class="form-check-label">{{- field() }} {{ event_name }}</label></li>
-            {%- endwith %}
-          {%- endfor %}
-          </ul>
-        </fieldset>
-      </div>
-    </div>
+    {{ form_field_checkboxes(form.event_types) }}
 
     {{ form_buttons(_('Create')) }}
   </form>

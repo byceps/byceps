@@ -77,7 +77,7 @@
         <div class="row mb">
           <div class="column-auto" style="flex-basis: 50%;">
 
-            <div class="data-label">{{ _('Selectors') }}</div>
+            <div class="data-label">{{ _('Event types') }}</div>
             <div class="data-value">
               <details style="font-size: 0.75rem;">
                 <summary>{{ webhook.event_types|length }} {{ ngettext('event', 'events', webhook.event_types|length) }}</summary>
@@ -92,7 +92,7 @@
           </div>
 
           <div class="column-auto" style="flex-basis: 50%;">
-            <div class="data-label">{{ _('Filters') }}</div>
+            <div class="data-label">{{ _('Event filters') }}</div>
             <div class="data-value">
               <details style="font-size: 0.75rem;">
                 <summary>{{ webhook.event_filters|length }} {{ ngettext('filter', 'filters', webhook.event_filters|length) }}</summary>

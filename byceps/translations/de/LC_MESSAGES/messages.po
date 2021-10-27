@@ -455,7 +455,7 @@ msgstr "Berechtigungen"
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:20
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:38
 #: byceps/blueprints/admin/user_badge/forms.py:38
-#: byceps/blueprints/admin/webhook/forms.py:19
+#: byceps/blueprints/admin/webhook/forms.py:31
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:6
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:18
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:73
@@ -504,7 +504,7 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/create_form.html:31
 #: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:29
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/create_form.html:23
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:34
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:21
 #: byceps/blueprints/site/board/templates/site/board/topic_create_form.html:22
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:15
 #: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:44
@@ -1113,7 +1113,7 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/user/templates/admin/user/invalidate_email_address_form.html:14
 #: byceps/blueprints/admin/user/templates/admin/user/set_password_form.html:14
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/update_form.html:23
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:37
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:24
 #: byceps/blueprints/common/authentication/password/templates/common/authentication/password/reset_form.html:15
 #: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:27
 #: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:30
@@ -4794,59 +4794,58 @@ msgstr "An %(recipient_count)s Personen verliehen"
 msgid "This badge has not been awarded yet."
 msgstr "Dieses Abzeichen wurde bisher nicht verliehen."
 
-#: byceps/blueprints/admin/webhook/forms.py:20
+#: byceps/blueprints/admin/webhook/forms.py:32
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:65
 msgid "Format"
 msgstr "Format"
 
-#: byceps/blueprints/admin/webhook/forms.py:21
+#: byceps/blueprints/admin/webhook/forms.py:33
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:59
 msgid "URL"
 msgstr "URL"
 
-#: byceps/blueprints/admin/webhook/forms.py:29
+#: byceps/blueprints/admin/webhook/forms.py:35
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:80
+msgid "Event types"
+msgstr "Event-Typen"
+
+#: byceps/blueprints/admin/webhook/forms.py:46
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:71
 msgid "Text prefix"
 msgstr "Text-Präfix"
 
-#: byceps/blueprints/admin/webhook/forms.py:30
+#: byceps/blueprints/admin/webhook/forms.py:47
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:68
 msgid "Additional fields"
 msgstr "Zusätzliche Felder"
 
-#: byceps/blueprints/admin/webhook/forms.py:31
+#: byceps/blueprints/admin/webhook/forms.py:48
 msgid "Enabled"
 msgstr "Aktiv"
 
-#: byceps/blueprints/admin/webhook/views.py:99
+#: byceps/blueprints/admin/webhook/views.py:80
 msgid "Webhook has been created."
 msgstr "Der Webhook wurde erstellt."
 
-#: byceps/blueprints/admin/webhook/views.py:174
+#: byceps/blueprints/admin/webhook/views.py:138
 msgid "Webhook has been updated."
 msgstr "Der Webhook wurde aktualisiert."
 
-#: byceps/blueprints/admin/webhook/views.py:188
+#: byceps/blueprints/admin/webhook/views.py:152
 msgid "Webhook has been removed."
 msgstr "Der Webhook wurde gelöscht."
 
-#: byceps/blueprints/admin/webhook/views.py:202
+#: byceps/blueprints/admin/webhook/views.py:166
 msgid "Webhook call has been successful."
 msgstr "Der Webhook-Aufruf war erfolgreich."
 
-#: byceps/blueprints/admin/webhook/views.py:206
+#: byceps/blueprints/admin/webhook/views.py:170
 msgid "Webhook call failed:"
 msgstr "Der Webhook-Aufruf ist fehlgeschlagen:"
 
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:5
 msgid "Create Webhook"
 msgstr "Webhook erstellen"
-
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:20
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:80
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/update_form.html:23
-msgid "Selectors"
-msgstr "Selektoren"
 
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:28
 msgid "Create webhook"
@@ -4863,8 +4862,8 @@ msgstr[0] "Event"
 msgstr[1] "Events"
 
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:95
-msgid "Filters"
-msgstr "Einschränkungen"
+msgid "Event filters"
+msgstr "Event-Einschränkungen"
 
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:98
 msgid "filter"
@@ -4872,11 +4871,11 @@ msgid_plural "filters"
 msgstr[0] "Einschränkung"
 msgstr[1] "Einschränkungen"
 
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:128
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:126
 msgid "No webhooks defined."
 msgstr "Es sind keine Webhooks definiert."
 
-#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:136
+#: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:134
 msgid "Delete webhook?"
 msgstr "Webhook löschen?"
 

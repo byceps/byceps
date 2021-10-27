@@ -12,7 +12,6 @@ import json
 from flask import abort, request
 from flask_babel import gettext
 
-from ....announce.events import EVENT_TYPES_TO_NAMES
 from ....announce.helpers import call_webhook
 from ....services.webhooks import service as webhook_service
 from ....services.webhooks.transfer.models import OutgoingWebhook, WebhookID
@@ -21,17 +20,10 @@ from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
-from .forms import (
-    assemble_create_form,
-    assemble_update_form,
-    _create_event_field_name,
-)
+from .forms import CreateForm, UpdateForm
 
 
 blueprint = create_blueprint('webhook_admin', __name__)
-
-
-WEBHOOK_EVENT_NAMES = frozenset(EVENT_TYPES_TO_NAMES.values())
 
 
 @blueprint.get('/')
@@ -53,14 +45,10 @@ def index():
 @templated
 def create_form(erroneous_form=None):
     """Show form to create a webhook."""
-    event_names = WEBHOOK_EVENT_NAMES
-    CreateForm = assemble_create_form(event_names)
-
     form = erroneous_form if erroneous_form else CreateForm()
 
     return {
         'form': form,
-        'event_names': event_names,
     }
 
 
@@ -68,20 +56,12 @@ def create_form(erroneous_form=None):
 @permission_required('webhook.administrate')
 def create():
     """Create a webhook."""
-    event_names = WEBHOOK_EVENT_NAMES
-    CreateForm = assemble_create_form(event_names)
-
     form = CreateForm(request.form)
 
     if not form.validate():
         return create_form(form)
 
-    event_types = {
-        event_name
-        for event_name in event_names
-        if form.get_field_for_event_name(event_name).data
-    }
-
+    event_types = set(form.event_types.data)
     event_filters = {}
     format = form.format.data.strip()
     url = form.url.data.strip()
@@ -109,15 +89,6 @@ def update_form(webhook_id, erroneous_form=None):
     """Show form to update a webhook."""
     webhook = _get_webhook_or_404(webhook_id)
 
-    event_names = WEBHOOK_EVENT_NAMES
-    UpdateForm = assemble_update_form(event_names)
-
-    # Pre-fill event type checkboxes.
-    event_type_fields = {}
-    for event_type_name in webhook.event_types:
-        field_name = _create_event_field_name(event_type_name)
-        event_type_fields[field_name] = True
-
     if erroneous_form:
         form = erroneous_form
     else:
@@ -128,7 +99,6 @@ def update_form(webhook_id, erroneous_form=None):
     return {
         'webhook': webhook,
         'form': form,
-        'event_names': event_names,
     }
 
 
@@ -138,20 +108,12 @@ def update(webhook_id):
     """Update the webhook."""
     webhook = _get_webhook_or_404(webhook_id)
 
-    event_names = WEBHOOK_EVENT_NAMES
-    UpdateForm = assemble_update_form(event_names)
-
     form = UpdateForm(request.form)
 
     if not form.validate():
         return update_form(webhook.id, form)
 
-    event_types = {
-        event_name
-        for event_name in event_names
-        if form.get_field_for_event_name(event_name).data
-    }
-
+    event_types = set(form.event_types.data)
     event_filters = {}
     format = form.format.data.strip()
     url = form.url.data.strip()
