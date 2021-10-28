@@ -12,8 +12,7 @@ from .models import ImageType
 
 
 # See: https://www.w3.org/Graphics/GIF/spec-gif89a.txt
-GIF_SIGNATURE = b'GIF'
-GIF_VERSIONS = frozenset([b'87a', b'89a'])
+GIF_SIGNATURE_AND_VERSIONS = frozenset([b'GIF87a', b'GIF89a'])
 
 # See: https://en.wikipedia.org/wiki/JPEG#Syntax_and_structure
 JPEG_MARKER_SOI = b'\xff\xd8'
@@ -29,7 +28,7 @@ def guess_type(stream: BinaryIO) -> Optional[ImageType]:
     header = stream.read(8)
     stream.seek(0)
 
-    if (header[:3] == GIF_SIGNATURE) and (header[3:6] in GIF_VERSIONS):
+    if header[:6] in GIF_SIGNATURE_AND_VERSIONS:
         return ImageType.gif
     elif header[:8] == PNG_SIGNATURE:
         return ImageType.png
