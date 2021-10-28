@@ -18,6 +18,7 @@ from byceps.util.image.models import ImageType
         ('gif' , ImageType.gif ),
         ('jpeg', ImageType.jpeg),
         ('png' , ImageType.png ),
+        ('webp', ImageType.webp),
     ],
 )
 def test_hybrid_image_type_getter(database_value, expected):
@@ -35,6 +36,7 @@ def test_hybrid_image_type_getter(database_value, expected):
         (ImageType.gif , 'gif' ),
         (ImageType.jpeg, 'jpeg'),
         (ImageType.png , 'png' ),
+        (ImageType.webp, 'webp'),
     ],
 )
 def test_hybrid_image_type_setter(image_type, expected):
