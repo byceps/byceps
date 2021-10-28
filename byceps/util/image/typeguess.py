@@ -30,9 +30,9 @@ def guess_type(stream: BinaryIO) -> Optional[ImageType]:
 
     if header[:6] in GIF_SIGNATURE_AND_VERSIONS:
         return ImageType.gif
-    elif header[:8] == PNG_SIGNATURE:
+    elif header.startswith(PNG_SIGNATURE):
         return ImageType.png
-    elif header[:2] == JPEG_MARKER_SOI:
+    elif header.startswith(JPEG_MARKER_SOI):
         return ImageType.jpeg
 
     if _is_svg(stream):
