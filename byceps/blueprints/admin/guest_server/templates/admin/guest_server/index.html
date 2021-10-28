@@ -88,7 +88,8 @@ code {
       {%- if has_current_user_permission('guest_server.administrate') %}
       <div class="column-auto">
 
-        <div class="button-row button-row--compact button-row--right">
+        <div class="button-row button-row--compact button-row--nowrap button-row--right">
+          <a class="button button--compact" href="{{ url_for('.server_update_form', server_id=server.id) }}" title="{{ _('Update server') }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
           <a class="button button--compact" href="{{ url_for('.delete_server', server_id=server.id) }}" data-action="delete-server" title="{{ _('Delete server') }}">{{ render_icon('delete') }}</a>
         </div>
 

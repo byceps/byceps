@@ -21,7 +21,7 @@ from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
-from .forms import SettingUpdateForm
+from .forms import ServerUpdateForm, SettingUpdateForm
 
 
 blueprint = create_blueprint('guest_server_admin', __name__)
@@ -102,6 +102,43 @@ def setting_update(party_id):
 # servers
 
 
+@blueprint.get('/servers/<server_id>/update')
+@permission_required('guest_server.administrate')
+@templated
+def server_update_form(server_id, erroneous_form=None):
+    """Show form to update a server."""
+    server = _get_server_or_404(server_id)
+    party = party_service.get_party(server.party_id)
+
+    form = erroneous_form if erroneous_form else ServerUpdateForm(obj=server)
+
+    return {
+        'party': party,
+        'server': server,
+        'form': form,
+    }
+
+
+@blueprint.post('/servers/<server_id>')
+@permission_required('guest_server.administrate')
+def server_update(server_id):
+    """Update a server."""
+    server = _get_server_or_404(server_id)
+
+    form = ServerUpdateForm(request.form)
+    if not form.validate():
+        return server_update_form(server.id, form)
+
+    notes_admin = form.notes_admin.data.strip() or None
+    approved = form.approved.data
+
+    guest_server_service.update_server(server.id, notes_admin, approved)
+
+    flash_success(gettext('Changes have been saved.'))
+
+    return redirect_to('.index', party_id=server.party_id)
+
+
 @blueprint.delete('/guest_servers/<uuid:server_id>')
 @permission_required('guest_server.administrate')
 @respond_no_content
@@ -127,3 +164,12 @@ def _get_party_or_404(party_id):
         abort(404)
 
     return party
+
+
+def _get_server_or_404(server_id):
+    server = guest_server_service.find_server(server_id)
+
+    if server is None:
+        abort(404)
+
+    return server

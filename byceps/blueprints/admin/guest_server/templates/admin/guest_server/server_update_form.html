@@ -1,0 +1,23 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
+{% set current_page = 'guest_server_admin' %}
+{% set current_page_party = party %}
+{% set page_title = _('Update server') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.index', party_id=party.id), _('Guest Servers')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <form action="{{ url_for('.server_update', server_id=server.id) }}" method="post">
+    {{ form_field(form.notes_admin, autofocus='autofocus') }}
+    {{ form_field_check(form.approved) }}
+
+    {{ form_buttons(_('Save')) }}
+  </form>
+
+{%- endblock %}

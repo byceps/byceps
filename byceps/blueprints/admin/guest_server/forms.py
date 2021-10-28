@@ -7,7 +7,7 @@ byceps.blueprints.admin.guest_server.forms
 """
 
 from flask_babel import lazy_gettext
-from wtforms import StringField
+from wtforms import BooleanField, StringField, TextAreaField
 from wtforms.validators import IPAddress, Optional
 
 from ....util.l10n import LocalizedForm
@@ -29,3 +29,10 @@ class SettingUpdateForm(LocalizedForm):
         validators=[Optional(), IPAddress(ipv6=True)],
     )
     domain = StringField(lazy_gettext('Domain'), validators=[Optional()])
+
+
+class ServerUpdateForm(LocalizedForm):
+    notes_admin = TextAreaField(
+        lazy_gettext('Notes by admin'), validators=[Optional()]
+    )
+    approved = BooleanField(lazy_gettext('approved'), validators=[Optional()])

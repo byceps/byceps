@@ -137,6 +137,28 @@ def create_server(
     return server, event
 
 
+def update_server(
+    server_id: ServerID,
+    notes_admin: Optional[str],
+    approved: bool,
+) -> Server:
+    """Update the server."""
+    db_server = db.session.execute(
+        select(DbServer)
+        .filter_by(id=server_id)
+    ).scalars().one_or_none()
+
+    if db_server is None:
+        raise ValueError(f'Unknown server ID "{server_id}"')
+
+    db_server.notes_admin = notes_admin
+    db_server.approved = approved
+
+    db.session.commit()
+
+    return _db_entity_to_server(db_server)
+
+
 def find_server(server_id: ServerID) -> Optional[Server]:
     """Return the server, if found."""
     db_server = db.session.execute(
