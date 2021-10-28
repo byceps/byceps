@@ -11,16 +11,6 @@ from typing import BinaryIO, Optional
 from .models import ImageType
 
 
-# See: https://www.w3.org/Graphics/GIF/spec-gif89a.txt
-GIF_SIGNATURE_AND_VERSIONS = frozenset([b'GIF87a', b'GIF89a'])
-
-# See: https://en.wikipedia.org/wiki/JPEG#Syntax_and_structure
-JPEG_MARKER_SOI = b'\xff\xd8'
-
-# See: https://tools.ietf.org/html/rfc2083#page-11
-PNG_SIGNATURE = b'\x89PNG\r\n\x1a\n'
-
-
 def guess_type(stream: BinaryIO) -> Optional[ImageType]:
     """Return the guessed type, or `None` if the type could not be
     guessed or is not allowed (i.e. not a member of the enum).
@@ -28,17 +18,33 @@ def guess_type(stream: BinaryIO) -> Optional[ImageType]:
     header = stream.read(8)
     stream.seek(0)
 
-    if header[:6] in GIF_SIGNATURE_AND_VERSIONS:
+    if _is_gif(header):
         return ImageType.gif
-    elif header.startswith(PNG_SIGNATURE):
-        return ImageType.png
-    elif header.startswith(JPEG_MARKER_SOI):
+    elif _is_jpeg(header):
         return ImageType.jpeg
+    elif _is_png(header):
+        return ImageType.png
 
     if _is_svg(stream):
         return ImageType.svg
 
     return None
+
+
+def _is_gif(header: bytes) -> bool:
+    # See: https://www.w3.org/Graphics/GIF/spec-gif89a.txt
+    return header[:6] in (b'GIF87a', b'GIF89a')
+
+
+def _is_jpeg(header: bytes) -> bool:
+    # See: https://en.wikipedia.org/wiki/JPEG#Syntax_and_structure
+    jpeg_marker_soi = b'\xff\xd8'
+    return header.startswith(jpeg_marker_soi)
+
+
+def _is_png(header: bytes) -> bool:
+    # See: https://tools.ietf.org/html/rfc2083#page-11
+    return header.startswith(b'\x89PNG\r\n\x1a\n')
 
 
 def _is_svg(stream: BinaryIO) -> bool:
