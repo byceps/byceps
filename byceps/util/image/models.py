@@ -20,4 +20,4 @@ class Dimensions(namedtuple('Dimensions', ['width', 'height'])):
         return self.width == self.height
 
 
-ImageType = Enum('ImageType', ['gif', 'jpeg', 'png', 'svg'])
+ImageType = Enum('ImageType', ['gif', 'jpeg', 'png', 'svg', 'webp'])

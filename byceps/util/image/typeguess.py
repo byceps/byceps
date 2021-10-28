@@ -15,7 +15,7 @@ def guess_type(stream: BinaryIO) -> Optional[ImageType]:
     """Return the guessed type, or `None` if the type could not be
     guessed or is not allowed (i.e. not a member of the enum).
     """
-    header = stream.read(8)
+    header = stream.read(12)
     stream.seek(0)
 
     if _is_gif(header):
@@ -24,6 +24,8 @@ def guess_type(stream: BinaryIO) -> Optional[ImageType]:
         return ImageType.jpeg
     elif _is_png(header):
         return ImageType.png
+    elif _is_webp(header):
+        return ImageType.webp
 
     if _is_svg(stream):
         return ImageType.svg
@@ -45,6 +47,10 @@ def _is_jpeg(header: bytes) -> bool:
 def _is_png(header: bytes) -> bool:
     # See: https://tools.ietf.org/html/rfc2083#page-11
     return header.startswith(b'\x89PNG\r\n\x1a\n')
+
+
+def _is_webp(header: bytes) -> bool:
+    return header.startswith(b'RIFF') and header[8:12] == b'WEBP'
 
 
 def _is_svg(stream: BinaryIO) -> bool:
