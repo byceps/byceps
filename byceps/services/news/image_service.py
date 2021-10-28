@@ -28,6 +28,7 @@ ALLOWED_IMAGE_TYPES = frozenset(
         ImageType.jpeg,
         ImageType.png,
         ImageType.svg,
+        ImageType.webp,
     ],
 )
 
