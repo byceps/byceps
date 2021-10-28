@@ -85,6 +85,7 @@ code {
         </div>
 
       </div>
+      {%- if has_current_user_permission('guest_server.administrate') %}
       <div class="column-auto">
 
         <div class="button-row button-row--compact button-row--right">
@@ -92,6 +93,7 @@ code {
         </div>
 
       </div>
+      {%- endif %}
     </div>
 
   </div>
@@ -102,7 +104,19 @@ code {
   </div>
   {%- endif %}
 
-  <h2>{{ _('Further Settings') }}</h2>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h2>{{ _('Further Settings') }}</h2>
+    </div>
+    {%- if has_current_user_permission('guest_server.administrate') %}
+    <div class="column-auto column--align-bottom">
+      <div class="button-row button-row--right">
+        <a class="button button--compact" href="{{ url_for('.setting_update_form', party_id=party.id) }}" title="{{ _('Update settings') }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
+
   <div class="box">
     <div class="row row--space-between">
       <div class="column-auto" style="flex-basis: 25%;">

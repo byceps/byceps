@@ -6,29 +6,33 @@ byceps.blueprints.admin.guest_server.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort
+import ipaddress
+from typing import Optional
+
+from flask import abort, request
 from flask_babel import gettext
 
 from ....services.guest_server import service as guest_server_service
+from ....services.guest_server.transfer.models import IPAddress
 from ....services.party import service as party_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
-from ....util.views import permission_required, respond_no_content
+from ....util.views import permission_required, redirect_to, respond_no_content
+
+from .forms import SettingUpdateForm
 
 
 blueprint = create_blueprint('guest_server_admin', __name__)
 
 
 @blueprint.get('/for_party/<party_id>')
-@permission_required('guest_server.administrate')
+@permission_required('guest_server.view')
 @templated
 def index(party_id):
     """Show guest servers for a party."""
-    party = party_service.find_party(party_id)
-    if party is None:
-        abort(404)
+    party = _get_party_or_404(party_id)
 
     setting = guest_server_service.get_setting_for_party(party.id)
 
@@ -48,6 +52,56 @@ def index(party_id):
     }
 
 
+# -------------------------------------------------------------------- #
+# setting
+
+
+@blueprint.get('/for_party/<party_id>/settings/update')
+@permission_required('guest_server.administrate')
+@templated
+def setting_update_form(party_id, erroneous_form=None):
+    """Show form to update the settings for a party."""
+    party = _get_party_or_404(party_id)
+
+    setting = guest_server_service.get_setting_for_party(party.id)
+
+    form = erroneous_form if erroneous_form else SettingUpdateForm(obj=setting)
+
+    return {
+        'party': party,
+        'form': form,
+    }
+
+
+@blueprint.post('/for_party/<party_id>/settings')
+@permission_required('guest_server.administrate')
+def setting_update(party_id):
+    """Update the settings for a party."""
+    party = _get_party_or_404(party_id)
+
+    form = SettingUpdateForm(request.form)
+    if not form.validate():
+        return setting_update_form(party.id, form)
+
+    netmask = _to_ip_address(form.netmask.data.strip())
+    gateway = _to_ip_address(form.gateway.data.strip())
+    dns_server1 = _to_ip_address(form.dns_server1.data.strip())
+    dns_server2 = _to_ip_address(form.dns_server2.data.strip())
+    domain = form.domain.data.strip() or None
+
+    guest_server_service.update_setting(
+        party.id, netmask, gateway, dns_server1, dns_server2, domain
+    )
+
+    flash_success(gettext('Changes have been saved.'))
+
+    return redirect_to('.index', party_id=party.id)
+
+
+# -------------------------------------------------------------------- #
+# servers
+
+
 @blueprint.delete('/guest_servers/<uuid:server_id>')
 @permission_required('guest_server.administrate')
 @respond_no_content
@@ -56,3 +110,20 @@ def delete_server(server_id):
     guest_server_service.delete_server(server_id)
 
     flash_success(gettext('Server has been deleted.'))
+
+
+# -------------------------------------------------------------------- #
+# helpers
+
+
+def _to_ip_address(value: str) -> Optional[IPAddress]:
+    return ipaddress.ip_address(value) if value else None
+
+
+def _get_party_or_404(party_id):
+    party = party_service.find_party(party_id)
+
+    if party is None:
+        abort(404)
+
+    return party

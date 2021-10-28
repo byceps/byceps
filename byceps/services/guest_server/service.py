@@ -58,6 +58,32 @@ def get_setting_for_party(party_id: PartyID) -> Setting:
     return _db_entity_to_setting(db_setting)
 
 
+def update_setting(
+    party_id: PartyID,
+    netmask: Optional[IPAddress],
+    gateway: Optional[IPAddress],
+    dns_server1: Optional[IPAddress],
+    dns_server2: Optional[IPAddress],
+    domain: Optional[str],
+) -> Setting:
+    """Update the setting for the party."""
+    party = party_service.get_party(party_id)
+
+    db_setting = db.session.execute(
+        select(DbSetting)
+    ).scalar_one()
+
+    db_setting.netmask = netmask
+    db_setting.gateway = gateway
+    db_setting.dns_server1 = dns_server1
+    db_setting.dns_server2 = dns_server2
+    db_setting.domain = domain
+
+    db.session.commit()
+
+    return _db_entity_to_setting(db_setting)
+
+
 def _db_entity_to_setting(db_setting: DbSetting) -> Setting:
     return Setting(
         party_id=db_setting.party_id,

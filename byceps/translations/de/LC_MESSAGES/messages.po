@@ -1018,6 +1018,7 @@ msgid "hidden"
 msgstr "versteckt"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:61
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:111
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:45
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:161
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:33
@@ -1095,6 +1096,7 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/board/templates/admin/board/category_update_form.html:21
 #: byceps/blueprints/admin/brand/templates/admin/brand/email_config_update_form.html:21
 #: byceps/blueprints/admin/brand/templates/admin/brand/update_form.html:21
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_update_form.html:42
 #: byceps/blueprints/admin/news/templates/admin/news/image_update_form.html:25
 #: byceps/blueprints/admin/news/templates/admin/news/item_update_form.html:35
 #: byceps/blueprints/admin/orga/templates/admin/orga/create_orgaflag_form.html:19
@@ -1714,6 +1716,7 @@ msgstr "Tickets eingecheckt"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:83
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:10
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_update_form.html:9
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:3
 msgid "Guest Servers"
@@ -1790,7 +1793,34 @@ msgstr "Benutzeranmeldung"
 msgid "not assigned"
 msgstr "nicht verknüpft"
 
-#: byceps/blueprints/admin/guest_server/views.py:58
+#: byceps/blueprints/admin/guest_server/forms.py:18
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:120
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:32
+msgid "Netmask"
+msgstr "Netzmaske"
+
+#: byceps/blueprints/admin/guest_server/forms.py:21
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:132
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:42
+msgid "Gateway"
+msgstr "Gateway"
+
+#: byceps/blueprints/admin/guest_server/forms.py:24
+#: byceps/blueprints/admin/guest_server/forms.py:28
+msgid "DNS server"
+msgstr "DNS-Server"
+
+#: byceps/blueprints/admin/guest_server/forms.py:31
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:160
+msgid "Domain"
+msgstr "Domäne"
+
+#: byceps/blueprints/admin/guest_server/views.py:92
+#: byceps/blueprints/admin/user/views.py:659
+msgid "Changes have been saved."
+msgstr "Die Änderungen wurden gespeichert."
+
+#: byceps/blueprints/admin/guest_server/views.py:108
 msgid "Server has been deleted."
 msgstr "Der Server wurde gelöscht."
 
@@ -1843,50 +1873,40 @@ msgid "Delete server"
 msgstr "Server löschen"
 
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:101
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:65
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:68
 msgid "No servers registered."
 msgstr "Es sind keine Server registriert."
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:105
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:107
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:29
 msgid "Further Settings"
 msgstr "Weitere Einstellungen"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:110
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:32
-msgid "Netmask"
-msgstr "Netzmaske"
-
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:115
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:127
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:141
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:153
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:125
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:137
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:152
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:165
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:48
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:93
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:37
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:47
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:59
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:60
 #: byceps/util/templatefilters.py:39
 msgid "not specified"
 msgstr "nicht angegeben"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:122
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:42
-msgid "Gateway"
-msgstr "Gateway"
-
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:134
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:144
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:52
 msgid "DNS servers"
 msgstr "DNS-Server"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:148
-msgid "Domain"
-msgstr "Domäne"
-
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:166
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:178
 msgid "Delete server?"
 msgstr "Server löschen?"
+
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_update_form.html:6
+msgid "Update settings"
+msgstr "Einstellungen bearbeiten"
 
 #: byceps/blueprints/admin/jobs/templates/admin/jobs/index.html:4
 msgid "Jobs"
@@ -4463,10 +4483,6 @@ msgstr "Diese E-Mail-Adresse ist bereits als nicht validiert markiert."
 msgid "The email address of user '%(screen_name)s' has been invalidated."
 msgstr "Die E-Mail-Adresse des Benutzerkontos '%(screen_name)s' wurde invalidiert."
 
-#: byceps/blueprints/admin/user/views.py:659
-msgid "Changes have been saved."
-msgstr "Die Änderungen wurden gespeichert."
-
 #: byceps/blueprints/admin/user/views.py:702
 #, python-format
 msgid "New password has been set for user '%(screen_name)s'."
@@ -5415,7 +5431,7 @@ msgstr "Ich stimme zu"
 msgid "No topics yet."
 msgstr "Es gibt noch keine Themen."
 
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:69
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:72
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:5
 msgid "Register guest server"
 msgstr "Gastserver anmelden"
@@ -5836,15 +5852,15 @@ msgstr "Keine Turniere gefunden."
 msgid "Tourney"
 msgstr "Turnier"
 
-#: byceps/blueprints/site/user/avatar/views.py:71
+#: byceps/blueprints/site/user/avatar/views.py:72
 msgid "Avatar image has been updated."
 msgstr "Dein Avatarbild wurde aktualisiert."
 
-#: byceps/blueprints/site/user/avatar/views.py:102
+#: byceps/blueprints/site/user/avatar/views.py:103
 msgid "No avatar image is set that could be removed."
 msgstr "Es ist kein Avatarbild gesetzt, das entfernt werden könnte."
 
-#: byceps/blueprints/site/user/avatar/views.py:104
+#: byceps/blueprints/site/user/avatar/views.py:105
 msgid "Avatar image has been removed."
 msgstr "Dein Avatarbild wurde entfernt."
 
