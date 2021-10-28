@@ -30,7 +30,8 @@ class Setting:
     party_id: PartyID
     netmask: Optional[IPAddress]
     gateway: Optional[IPAddress]
-    dns_servers: list[IPAddress]
+    dns_server1: Optional[IPAddress]
+    dns_server2: Optional[IPAddress]
     domain: Optional[str]
 
 

@@ -133,13 +133,15 @@ code {
 
         <div class="data-label">{{ _('DNS servers') }}</div>
         <div class="data-value">
-          {%- if setting.dns_servers %}
-            {%- for dns_server in setting.dns_servers %}
+        {%- with dns_servers = [setting.dns_server1, setting.dns_server2]|reject('none')|list %}
+          {%- if dns_servers %}
+            {%- for dns_server in dns_servers %}
           <span class="monospace">{{ dns_server }}</span>{% if not loop.last %}, {% endif %}
             {%- endfor %}
           {%- else %}
           {{ _('not specified')|dim }}
           {%- endif %}
+        {%- endwith %}
         </div>
 
       </div>

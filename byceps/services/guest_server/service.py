@@ -34,6 +34,10 @@ from .transfer.models import (
 )
 
 
+# -------------------------------------------------------------------- #
+# setting
+
+
 def get_setting_for_party(party_id: PartyID) -> Setting:
     """Return the setting for the party."""
     db_setting = db.session.execute(
@@ -46,23 +50,27 @@ def get_setting_for_party(party_id: PartyID) -> Setting:
             party_id=party_id,
             netmask=None,
             gateway=None,
-            dns_servers=[],
+            dns_server1=None,
+            dns_server2=None,
             domain=None,
         )
 
-    dns_servers = [
-        ip_address
-        for ip_address in (db_setting.dns_server1, db_setting.dns_server2)
-        if ip_address
-    ]
+    return _db_entity_to_setting(db_setting)
 
+
+def _db_entity_to_setting(db_setting: DbSetting) -> Setting:
     return Setting(
         party_id=db_setting.party_id,
         netmask=db_setting.netmask,
         gateway=db_setting.gateway,
-        dns_servers=dns_servers,
+        dns_server1=db_setting.dns_server1,
+        dns_server2=db_setting.dns_server2,
         domain=db_setting.domain,
     )
+
+
+# -------------------------------------------------------------------- #
+# server
 
 
 def create_server(

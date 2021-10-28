@@ -51,13 +51,16 @@
     <tr>
       <th>{{ _('DNS servers') }}</th>
       <td>
-        {%- if guest_server_setting.dns_servers %}
-          {%- for dns_server in guest_server_setting.dns_servers %}
+      {%- with dns_servers = [guest_server_setting.dns_server1, guest_server_setting.dns_server2]|reject('none')|list %}
+        {%- if dns_servers %}
+          {%- for dns_server in dns_servers %}
         <span class="monospace">{{ dns_server }}</span>{% if not loop.last %}, {% endif %}
           {%- endfor %}
         {%- else %}
         {{ _('not specified')|dim }}
         {%- endif %}
+      {%- endwith %}
+      </td>
     </tr>
   </table>
 </details>
