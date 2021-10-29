@@ -6,10 +6,20 @@ byceps.blueprints.admin.guest_server.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import re
+
 from flask_babel import lazy_gettext
 from wtforms import BooleanField, StringField, TextAreaField
-from wtforms.validators import IPAddress, Optional
+from wtforms.validators import (
+    InputRequired,
+    IPAddress,
+    Length,
+    Optional,
+    Regexp,
+    ValidationError,
+)
 
+from ....services.user import service as user_service
 from ....util.l10n import LocalizedForm
 
 
@@ -31,6 +41,39 @@ class SettingUpdateForm(LocalizedForm):
     domain = StringField(lazy_gettext('Domain'), validators=[Optional()])
 
 
+HOSTNAME_REGEX = re.compile('^[A-Za-z][A-Za-z0-9-]+$')
+
+
+def validate_user(form, field):
+    screen_name = field.data.strip()
+
+    user = user_service.find_user_by_screen_name(
+        screen_name, case_insensitive=True
+    )
+
+    if user is None:
+        raise ValidationError(lazy_gettext('Unknown username'))
+
+    field.data = user
+
+
+class ServerCreateForm(LocalizedForm):
+    owner = StringField(lazy_gettext('Owner'), [InputRequired(), validate_user])
+    ip_address = StringField(
+        lazy_gettext('IP address'),
+        validators=[Optional(), IPAddress(ipv6=True)],
+    )
+    hostname = StringField(
+        lazy_gettext('Hostname'),
+        validators=[Optional(), Length(max=20), Regexp(HOSTNAME_REGEX)],
+    )
+    notes_admin = TextAreaField(
+        lazy_gettext('Notes by admin'),
+        validators=[Optional(), Length(max=1000)],
+    )
+    approved = BooleanField(lazy_gettext('approved'), validators=[Optional()])
+
+
 class ServerUpdateForm(LocalizedForm):
     notes_admin = TextAreaField(
         lazy_gettext('Notes by admin'), validators=[Optional()]
@@ -43,4 +86,7 @@ class AddressUpdateForm(LocalizedForm):
         lazy_gettext('IP address'),
         validators=[Optional(), IPAddress(ipv6=True)],
     )
-    hostname = StringField(lazy_gettext('Hostname'), validators=[Optional()])
+    hostname = StringField(
+        lazy_gettext('Hostname'),
+        validators=[Optional(), Length(max=20), Regexp(HOSTNAME_REGEX)],
+    )

@@ -59,7 +59,7 @@ def create():
         g.party_id, g.user.id, g.user.id, notes_owner=notes, hostname=hostname
     )
 
-    flash_success(gettext('Your server has been registered.'))
+    flash_success(gettext('The server has been registered.'))
 
     guest_server_signals.guest_server_registered.send(None, event=event)
 

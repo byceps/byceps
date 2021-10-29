@@ -9,19 +9,25 @@ byceps.blueprints.admin.guest_server.views
 import ipaddress
 from typing import Optional
 
-from flask import abort, request
+from flask import abort, g, request
 from flask_babel import gettext
 
 from ....services.guest_server import service as guest_server_service
 from ....services.guest_server.transfer.models import IPAddress
 from ....services.party import service as party_service
 from ....services.user import service as user_service
+from ....signals import guest_server as guest_server_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
-from .forms import AddressUpdateForm, ServerUpdateForm, SettingUpdateForm
+from .forms import (
+    AddressUpdateForm,
+    ServerCreateForm,
+    ServerUpdateForm,
+    SettingUpdateForm,
+)
 
 
 blueprint = create_blueprint('guest_server_admin', __name__)
@@ -100,6 +106,55 @@ def setting_update(party_id):
 
 # -------------------------------------------------------------------- #
 # servers
+
+
+@blueprint.get('/for_party/<party_id>/servers/create')
+@permission_required('guest_server.administrate')
+@templated
+def server_create_form(party_id, erroneous_form=None):
+    """Show a form to create a server."""
+    party = _get_party_or_404(party_id)
+
+    form = erroneous_form if erroneous_form else ServerCreateForm()
+
+    return {
+        'party': party,
+        'form': form,
+    }
+
+
+@blueprint.post('/for_party/<party_id>/servers')
+@permission_required('guest_server.administrate')
+def server_create(party_id):
+    """Create a server."""
+    party = _get_party_or_404(party_id)
+
+    form = ServerCreateForm(request.form)
+    if not form.validate():
+        return server_create_form(party_id, form)
+
+    creator = g.user
+    owner = form.owner.data
+    notes_admin = form.notes_admin.data.strip()
+    approved = form.approved.data
+    ip_address = _to_ip_address(form.ip_address.data.strip())
+    hostname = form.hostname.data.strip() or None
+
+    server, event = guest_server_service.create_server(
+        party.id,
+        creator.id,
+        owner.id,
+        notes_admin=notes_admin,
+        approved=approved,
+        ip_address=ip_address,
+        hostname=hostname,
+    )
+
+    flash_success(gettext('The server has been registered.'))
+
+    guest_server_signals.guest_server_registered.send(None, event=event)
+
+    return redirect_to('.index', party_id=party.id)
 
 
 @blueprint.get('/servers/<server_id>/update')

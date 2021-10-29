@@ -24,7 +24,18 @@ code {
 
 {% block body %}
 
-  <h1>{{ page_title }} {{ render_extra_in_heading(servers|length) }}</h1>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h1>{{ page_title }} {{ render_extra_in_heading(servers|length) }}</h1>
+    </div>
+    {%- if has_current_user_permission('guest_server.administrate') %}
+    <div class="column-auto column--align-bottom">
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.server_create_form', party_id=party.id) }}" title="{{ _('Register guest server') }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
 
   {%- if servers %}
     {%- for server in servers|sort(attribute='created_at', reverse=True) %}

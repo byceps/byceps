@@ -106,11 +106,15 @@ class Server(db.Model):
         owner_id: UserID,
         *,
         notes_owner: Optional[str] = None,
+        notes_admin: Optional[str] = None,
+        approved: bool = False,
     ) -> None:
         self.party_id = party_id
         self.creator_id = creator_id
         self.owner_id = owner_id
         self.notes_owner = notes_owner
+        self.notes_admin = notes_admin
+        self.approved = approved
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
@@ -134,9 +138,11 @@ class Address(db.Model):
         self,
         server: Server,
         *,
+        ip_address: Optional[IPAddress] = None,
         hostname: Optional[str] = None,
     ) -> None:
         self.server = server
+        self.ip_address = ip_address
         self.hostname = hostname
 
     @hybrid_property

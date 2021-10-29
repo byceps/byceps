@@ -105,6 +105,9 @@ def create_server(
     owner_id: UserID,
     *,
     notes_owner: Optional[str] = None,
+    notes_admin: Optional[str] = None,
+    approved: bool = False,
+    ip_address: Optional[IPAddress] = None,
     hostname: Optional[str] = None,
 ) -> tuple[Server, GuestServerRegistered]:
     """Create a server."""
@@ -113,11 +116,16 @@ def create_server(
     owner = user_service.get_user(owner_id)
 
     db_server = DbServer(
-        party.id, creator.id, owner.id, notes_owner=notes_owner
+        party.id,
+        creator.id,
+        owner.id,
+        notes_owner=notes_owner,
+        notes_admin=notes_admin,
+        approved=approved,
     )
     db.session.add(db_server)
 
-    db_address = DbAddress(db_server, hostname=hostname)
+    db_address = DbAddress(db_server, ip_address=ip_address, hostname=hostname)
     db.session.add(db_address)
 
     db.session.commit()
