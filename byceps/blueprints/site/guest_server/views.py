@@ -13,6 +13,7 @@ from flask_babel import gettext
 
 from ....services.guest_server import service as guest_server_service
 from ....signals import guest_server as guest_server_signals
+from ....typing import PartyID
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -29,12 +30,15 @@ blueprint = create_blueprint('guest_server', __name__)
 @templated
 def create_form(erroneous_form=None):
     """Show a form to create a guest server."""
-    _ensure_party_or_404()
+    party_id = _ensure_party_or_404()
+
+    setting = guest_server_service.get_setting_for_party(party_id)
 
     form = erroneous_form if erroneous_form else CreateForm()
 
     return {
         'form': form,
+        'domain': setting.domain,
     }
 
 
@@ -62,6 +66,10 @@ def create():
     return redirect_to('dashboard.index')
 
 
-def _ensure_party_or_404():
-    if g.party_id is None:
+def _ensure_party_or_404() -> PartyID:
+    party_id = g.party_id
+
+    if party_id is None:
         abort(404)
+
+    return party_id

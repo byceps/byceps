@@ -487,6 +487,7 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:21
 #: byceps/blueprints/admin/brand/templates/admin/brand/create_form.html:19
 #: byceps/blueprints/admin/consent/templates/admin/consent/subject_create_form.html:21
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_create_form.html:24
 #: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:23
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/team_create_form.html:19
 #: byceps/blueprints/admin/party/templates/admin/party/create_form.html:37
@@ -506,7 +507,7 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/create_form.html:23
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/create_form.html:21
 #: byceps/blueprints/site/board/templates/site/board/topic_create_form.html:22
-#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:15
+#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:14
 #: byceps/blueprints/site/user/creation/templates/site/user/creation/create_form.html:44
 #: byceps/blueprints/site/user_group/templates/site/user_group/create_form.html:14
 msgid "Create"
@@ -1720,6 +1721,7 @@ msgstr "Tickets eingecheckt"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:83
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_update_form.html:9
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:10
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_create_form.html:8
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_update_form.html:9
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_update_form.html:9
 #: byceps/blueprints/admin/more/templates/admin/more/view_party.html:17
@@ -1929,6 +1931,12 @@ msgstr "DNS-Server"
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:186
 msgid "Delete server?"
 msgstr "Server löschen?"
+
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_create_form.html:5
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:72
+#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:4
+msgid "Register guest server"
+msgstr "Gastserver anmelden"
 
 #: byceps/blueprints/admin/jobs/templates/admin/jobs/index.html:4
 msgid "Jobs"
@@ -5453,11 +5461,6 @@ msgstr "Ich stimme zu"
 msgid "No topics yet."
 msgstr "Es gibt noch keine Themen."
 
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:72
-#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:5
-msgid "Register guest server"
-msgstr "Gastserver anmelden"
-
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_news.html:4
 #: byceps/blueprints/site/news/templates/site/news/index.html:4
 #: byceps/blueprints/site/news/templates/site/news/index.html:8
@@ -5495,9 +5498,18 @@ msgstr "Du nutzt noch kein Ticket."
 msgid "Notes"
 msgstr "Anmerkungen"
 
-#: byceps/blueprints/site/guest_server/views.py:58
+#: byceps/blueprints/site/guest_server/views.py:62
 msgid "Your server has been registered."
 msgstr "Dein Server wurde registriert."
+
+#: byceps/blueprints/site/guest_server/templates/site/guest_server/create_form.html:11
+#, python-format
+msgid ""
+"Just the hostname. The suffix <code>%(suffix)s</code> will be added "
+"automatically."
+msgstr ""
+"Nur der Hostname. Der Anhang <code>%(suffix)s</code> wird automatisch "
+"hinzugefügt."
 
 #: byceps/blueprints/site/news/templates/site/news/_item.html:18
 msgid "An error has occurred while rendering the news."
