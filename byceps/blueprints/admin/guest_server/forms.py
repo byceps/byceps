@@ -36,3 +36,11 @@ class ServerUpdateForm(LocalizedForm):
         lazy_gettext('Notes by admin'), validators=[Optional()]
     )
     approved = BooleanField(lazy_gettext('approved'), validators=[Optional()])
+
+
+class AddressUpdateForm(LocalizedForm):
+    ip_address = StringField(
+        lazy_gettext('IP address'),
+        validators=[Optional(), IPAddress(ipv6=True)],
+    )
+    hostname = StringField(lazy_gettext('Hostname'), validators=[Optional()])

@@ -77,6 +77,9 @@ code {
               <tr>
                 <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-danger') }}{% endif %}</td>
                 <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>{% else %}{{ _('not given')|dim }}{% endif %}</td>
+                {%- if has_current_user_permission('guest_server.administrate') %}
+                <td><a class="button button--compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a></td>
+                {%- endif %}
               </tr>
               {%- endfor %}
             </table>

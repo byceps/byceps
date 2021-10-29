@@ -218,6 +218,7 @@ def _db_entity_to_server(db_server: DbServer) -> Server:
     addresses = {
         Address(
             id=db_address.id,
+            server_id=db_server.id,
             ip_address=db_address.ip_address,
             hostname=db_address.hostname,
         )
@@ -234,4 +235,52 @@ def _db_entity_to_server(db_server: DbServer) -> Server:
         notes_admin=db_server.notes_admin,
         approved=db_server.approved,
         addresses=addresses,
+    )
+
+
+# -------------------------------------------------------------------- #
+# address
+
+
+def find_address(address_id: AddressID) -> Optional[Address]:
+    """Return the address, if found."""
+    db_address = db.session.execute(
+        select(DbAddress)
+        .filter_by(id=address_id)
+    ).scalars().one_or_none()
+
+    if db_address is None:
+        return None
+
+    return _db_entity_to_address(db_address)
+
+
+def update_address(
+    address_id: AddressID,
+    ip_address: Optional[IPAddress],
+    hostname: Optional[str],
+) -> Address:
+    """Update the address."""
+    db_address = db.session.execute(
+        select(DbAddress)
+        .filter_by(id=address_id)
+    ).scalars().one_or_none()
+
+    if db_address is None:
+        raise ValueError(f'Unknown address ID "{address_id}"')
+
+    db_address.ip_address = ip_address
+    db_address.hostname = hostname
+
+    db.session.commit()
+
+    return _db_entity_to_address(db_address)
+
+
+def _db_entity_to_address(db_address: DbAddress) -> Address:
+    return Address(
+        id=db_address.id,
+        server_id=db_address.server_id,
+        ip_address=db_address.ip_address,
+        hostname=db_address.hostname,
     )

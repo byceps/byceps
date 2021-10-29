@@ -51,5 +51,6 @@ class Server:
 @dataclass(frozen=True)
 class Address:
     id: AddressID
-    ip_address: IPAddress
-    hostname: str
+    server_id: ServerID
+    ip_address: Optional[IPAddress]
+    hostname: Optional[str]

@@ -21,7 +21,7 @@ from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
-from .forms import ServerUpdateForm, SettingUpdateForm
+from .forms import AddressUpdateForm, ServerUpdateForm, SettingUpdateForm
 
 
 blueprint = create_blueprint('guest_server_admin', __name__)
@@ -150,6 +150,49 @@ def delete_server(server_id):
 
 
 # -------------------------------------------------------------------- #
+# address
+
+
+@blueprint.get('/addresses/<address_id>/update')
+@permission_required('guest_server.administrate')
+@templated
+def address_update_form(address_id, erroneous_form=None):
+    """Show form to update an address."""
+    address = _get_address_or_404(address_id)
+    server = guest_server_service.find_server(address.server_id)
+    party = party_service.get_party(server.party_id)
+
+    form = erroneous_form if erroneous_form else AddressUpdateForm(obj=address)
+
+    return {
+        'party': party,
+        'address': address,
+        'form': form,
+    }
+
+
+@blueprint.post('/addresses/<address_id>')
+@permission_required('guest_server.administrate')
+def address_update(address_id):
+    """Update an address."""
+    address = _get_address_or_404(address_id)
+    server = guest_server_service.find_server(address.server_id)
+
+    form = AddressUpdateForm(request.form)
+    if not form.validate():
+        return address_update_form(address.id, form)
+
+    ip_address = _to_ip_address(form.ip_address.data.strip())
+    hostname = form.hostname.data.strip() or None
+
+    guest_server_service.update_address(address.id, ip_address, hostname)
+
+    flash_success(gettext('Changes have been saved.'))
+
+    return redirect_to('.index', party_id=server.party_id)
+
+
+# -------------------------------------------------------------------- #
 # helpers
 
 
@@ -173,3 +216,12 @@ def _get_server_or_404(server_id):
         abort(404)
 
     return server
+
+
+def _get_address_or_404(address_id):
+    address = guest_server_service.find_address(address_id)
+
+    if address is None:
+        abort(404)
+
+    return address
