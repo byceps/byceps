@@ -157,7 +157,7 @@ def server_create(party_id):
     return redirect_to('.index', party_id=party.id)
 
 
-@blueprint.get('/servers/<server_id>/update')
+@blueprint.get('/servers/<uuid:server_id>/update')
 @permission_required('guest_server.administrate')
 @templated
 def server_update_form(server_id, erroneous_form=None):
@@ -174,7 +174,7 @@ def server_update_form(server_id, erroneous_form=None):
     }
 
 
-@blueprint.post('/servers/<server_id>')
+@blueprint.post('/servers/<uuid:server_id>')
 @permission_required('guest_server.administrate')
 def server_update(server_id):
     """Update a server."""
@@ -208,7 +208,7 @@ def delete_server(server_id):
 # address
 
 
-@blueprint.get('/addresses/<address_id>/update')
+@blueprint.get('/addresses/<uuid:address_id>/update')
 @permission_required('guest_server.administrate')
 @templated
 def address_update_form(address_id, erroneous_form=None):
@@ -226,7 +226,7 @@ def address_update_form(address_id, erroneous_form=None):
     }
 
 
-@blueprint.post('/addresses/<address_id>')
+@blueprint.post('/addresses/<uuid:address_id>')
 @permission_required('guest_server.administrate')
 def address_update(address_id):
     """Update an address."""
