@@ -54,9 +54,9 @@
           <td>
             {%- if has_current_user_permission('role.assign') %}
               {%- if user_has_role %}
-            <a class="button button--compact" data-action="role-deassign" href="{{ url_for('.role_deassign', user_id=user.id, role_id=role.id) }}" title="{{ _('Unassign role') }}">{{ render_icon('remove') }}</a>
+            <a class="button button--compact color-danger" data-action="role-deassign" href="{{ url_for('.role_deassign', user_id=user.id, role_id=role.id) }}" title="{{ _('Unassign role') }}">{{ render_icon('remove') }}</a>
               {%- else %}
-            <a class="button button--compact" data-action="role-assign" href="{{ url_for('.role_assign', user_id=user.id, role_id=role.id) }}" title="{{ _('Assign role') }}">{{ render_icon('add') }}</a>
+            <a class="button button--compact color-success" data-action="role-assign" href="{{ url_for('.role_assign', user_id=user.id, role_id=role.id) }}" title="{{ _('Assign role') }}">{{ render_icon('add') }}</a>
               {%- endif %}
             {%- endif %}
           </td>
