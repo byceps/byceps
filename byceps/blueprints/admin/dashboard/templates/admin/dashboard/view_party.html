@@ -79,11 +79,13 @@
       </div>
     {%- endcall %}
 
+  {%- if has_current_user_permission('guest_server.view') %}
     {%- call render_cell(href=url_for('guest_server_admin.index', party_id=party.id)) %}
       <div class="cell-label">{{ _('Guest Servers') }}</div>
       <div>{{ guest_servers|selectattr('approved')|list|length }} {{ render_tag(_('approved'), class='color-success') }}</div>
       <div>{{ guest_servers|rejectattr('approved')|list|length }} {{ render_tag(_('pending'), class='color-warning') }}</div>
     {%- endcall %}
+  {%- endif %}
 
   </div>
 
