@@ -121,6 +121,7 @@ assigned_permissions = [
     'admin.access',
     'board.view_hidden',
     'brand.view',
+    'guest_server.view',
     'news_item.view',
     'orga_birthday.view',
     'orga_detail.view',
