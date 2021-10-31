@@ -13,10 +13,10 @@
   </thead>
   <tbody>
     {%- for server in guest_servers %}
-      {%- for address in server.addresses %}
+      {%- for address in sort_guest_server_addresses(server.addresses) %}
     <tr>
         {%- if loop.first %}
-      <td colspan="{{ server.addresses|length }}">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</td>
+      <td rowspan="{{ server.addresses|length }}">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</td>
         {%- endif %}
       <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-disabled') }}{% endif %}</td>
       <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% if guest_server_setting.domain %}.{{ guest_server_setting.domain }}{% endif %}</span>{% else %}{{ _('not given')|dim }}{% endif %}</td>

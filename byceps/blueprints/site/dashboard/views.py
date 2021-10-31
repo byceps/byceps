@@ -35,6 +35,7 @@ from ....util.framework.templating import templated
 from ....util.views import login_required
 
 from ..board import service as board_helper_service
+from ..guest_server.views import _sort_addresses
 
 
 blueprint = create_blueprint('dashboard', __name__)
@@ -69,6 +70,7 @@ def index():
         'board_topics': board_topics,
         'guest_servers': guest_servers,
         'guest_server_setting': guest_server_setting,
+        'sort_guest_server_addresses': _sort_addresses,
     }
 
 
