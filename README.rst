@@ -51,9 +51,9 @@ Code Status
 |badge_code-climate_maintainability|
 
 
-.. |badge_travis-ci_build| image:: https://travis-ci.org/byceps/byceps.svg?branch=main
+.. |badge_travis-ci_build| image:: https://api.travis-ci.com/byceps/byceps.svg?branch=main
    :alt: Build Status
-   :target: https://travis-ci.org/byceps/byceps
+   :target: https://app.travis-ci.com/github/byceps/byceps
 
 .. |badge_scrutinizer-ci_coverage| image:: https://scrutinizer-ci.com/g/byceps/byceps/badges/coverage.png?b=main
    :alt: Scrutinizer Code Coverage
