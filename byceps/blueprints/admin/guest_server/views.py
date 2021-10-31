@@ -6,14 +6,15 @@ byceps.blueprints.admin.guest_server.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import ipaddress
-from typing import Optional
+from typing import Iterable, Optional
 
 from flask import abort, g, request
 from flask_babel import gettext
 
 from ....services.guest_server import service as guest_server_service
-from ....services.guest_server.transfer.models import IPAddress
+from ....services.guest_server.transfer.models import Address, IPAddress
 from ....services.party import service as party_service
 from ....services.user import service as user_service
 from ....signals import guest_server as guest_server_signals
@@ -55,6 +56,7 @@ def index(party_id):
         'setting': setting,
         'servers': servers,
         'users_by_id': users_by_id,
+        'sort_addresses': _sort_addresses,
     }
 
 
@@ -251,10 +253,6 @@ def address_update(address_id):
 # helpers
 
 
-def _to_ip_address(value: str) -> Optional[IPAddress]:
-    return ipaddress.ip_address(value) if value else None
-
-
 def _get_party_or_404(party_id):
     party = party_service.find_party(party_id)
 
@@ -280,3 +278,25 @@ def _get_address_or_404(address_id):
         abort(404)
 
     return address
+
+
+def _to_ip_address(value: str) -> Optional[IPAddress]:
+    return ipaddress.ip_address(value) if value else None
+
+
+def _sort_addresses(addresses: Iterable[Address]) -> list[Address]:
+    """Sort addresses.
+
+    By IP address first, hostname second. `None` at the end.
+    """
+    return list(
+        sorted(
+            addresses,
+            key=lambda addr: (
+                addr.ip_address is None,
+                addr.ip_address,
+                addr.hostname is None,
+                addr.hostname,
+            ),
+        )
+    )

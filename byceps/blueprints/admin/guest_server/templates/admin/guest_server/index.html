@@ -84,7 +84,7 @@ code {
 
             <div class="data-label">{{ _('IP address') }} {{ _('and') }} {{ _('Hostname') }}</div>
             <table class="index">
-              {%- for address in server.addresses|sort(attribute='ip_address, hostname') %}
+              {%- for address in sort_addresses(server.addresses) %}
               <tr>
                 <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-danger') }}{% endif %}</td>
                 <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>{% else %}{{ _('not given')|dim }}{% endif %}</td>
