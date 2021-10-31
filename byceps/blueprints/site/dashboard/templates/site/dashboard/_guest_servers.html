@@ -1,3 +1,4 @@
+{%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/misc.html' import render_tag %}
 
 <h2>{{ _('Guest Servers') }}</h2>
@@ -20,6 +21,9 @@
         {%- endif %}
       <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-disabled') }}{% endif %}</td>
       <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% if guest_server_setting.domain %}.{{ guest_server_setting.domain }}{% endif %}</span>{% else %}{{ _('not given')|dim }}{% endif %}</td>
+        {%- if loop.first and server.approved %}
+      <td rowspan="{{ server.addresses|length }}"><a class="button button--compact" href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}" title="{{ _('View printable server card') }}">{{ render_icon('print') }}</a></td>
+        {%- endif %}
     </tr>
       {%- endfor %}
     {%- endfor %}

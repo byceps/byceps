@@ -50,6 +50,7 @@ def _get_blueprints_common(app: Flask) -> Iterator[BlueprintReg]:
     yield from [
         (app, 'common.authentication.password',  '/authentication/password' ),
         (app, 'common.core',                     None                       ),
+        (app, 'common.guest_server',             None                       ),
         (app, 'common.locale',                   '/locale'                  ),
     ]
 
