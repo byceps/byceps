@@ -41,7 +41,7 @@
     ) %}
     <div class="column-auto">
       <div class="button-row button-row--right">
-    {%- include 'admin/shop/order/_view_actions.html' %}
+{% include 'admin/shop/order/_view_actions.html' %}
       </div>
     </div>
     {%- endif %}
@@ -52,7 +52,7 @@
 
       <h2 style="margin-top: 0;">{{ _('Orderer') }}</h2>
       <div class="box">
-    {%- include 'admin/shop/order/_view_orderer.html' %}
+{% include 'admin/shop/order/_view_orderer.html' %}
       </div>
 
     </div>
@@ -61,7 +61,7 @@
       <h2 style="margin-top: 0;">&nbsp;</h2>
       <div class="box">
 
-{%- include 'admin/shop/order/_view_status_flags.html' %}
+{% include 'admin/shop/order/_view_status_flags.html' %}
 
         <div class="data-label">{{ _('Date of creation') }}</div>
         <div class="data-value">{{ render_datetime(order.created_at|utc_to_local_tz, seconds=True) }}</div>
@@ -82,17 +82,17 @@
 
   <h2>{{ _('Articles') }}</h2>
   <div class="box">
-{%- include 'admin/shop/order/_view_articles.html' %}
+{% include 'admin/shop/order/_view_articles.html' %}
   </div>
 
   <h2>{{ _('History') }}</h2>
   <div class="box">
-{%- include 'admin/shop/order/_view_events.html' %}
+{% include 'admin/shop/order/_view_events.html' %}
   </div>
 
   <h2>{{ _('Tickets') }} {{ render_extra_in_heading(tickets|length) }}</h1>
   <div class="box">
-{%- include 'admin/ticketing/_ticket_list.html' %}
+{% include 'admin/ticketing/_ticket_list.html' %}
   </div>
 
 {%- endblock %}

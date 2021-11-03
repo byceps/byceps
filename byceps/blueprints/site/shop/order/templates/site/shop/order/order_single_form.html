@@ -7,14 +7,14 @@
 
   <h1>{{ page_title }}</h1>
 
-{%- if article %}
+  {%- if article %}
   <form action="{{ url_for('.order_single', article_id=(article.id if article else '')) }}" method="post" class="disable-submit-button-on-submit">
 
-{%- include 'site/shop/order/_order_form_orderer.html' %}
-{%- include 'site/shop/order/_order_form_articles.html' %}
+{% include 'site/shop/order/_order_form_orderer.html' %}
+{% include 'site/shop/order/_order_form_articles.html' %}
 
     {{ form_buttons(_('Place binding order now')) }}
   </form>
-{%- endif %}
+  {%- endif %}
 
 {%- endblock %}

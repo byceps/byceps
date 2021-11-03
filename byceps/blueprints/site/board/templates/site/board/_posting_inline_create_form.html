@@ -12,7 +12,7 @@
         <form action="{{ url_for('.posting_create', topic_id=topic.id) }}" method="post" class="board-posting-create-form-inline">
           {{ form.body(class='form-control collapsible collapsed') }}
           <div class="collapsible-neighbor">
-          {%- include 'site/board/_posting_form_body_supplement.html' -%}
+{% include 'site/board/_posting_form_body_supplement.html' -%}
           {{ form_buttons(_('Add'), cancel_button=True) }}
           </div>
         </form>

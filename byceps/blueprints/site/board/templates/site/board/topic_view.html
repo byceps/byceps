@@ -37,7 +37,7 @@
   <div class="user-comments">
 
   {%- for posting in postings.items %}
-{%- include 'site/board/_posting_view.html' %}
+{% include 'site/board/_posting_view.html' %}
   {%- endfor %}
 
   {%- if topic.posting_limited_to_moderators %}
@@ -65,7 +65,7 @@
     <span class="button button--disabled">{{ render_icon('reply') }} <span>{{ _('Reply') }}</span></span>
   </div>
   {%- elif is_last_page %}
-{%- include 'site/board/_posting_inline_create_form.html' %}
+{% include 'site/board/_posting_inline_create_form.html' %}
   {%- else %}
   <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.posting_create_form', topic_id=topic.id) }}">{{ render_icon('reply') }} <span>{{ _('Reply') }}</span></a>

@@ -85,7 +85,7 @@
   <div class="box">
 
     {%- with users = users.items %}
-      {%- include 'admin/user/_user_list.html' %}
+{% include 'admin/user/_user_list.html' %}
     {%- endwith %}
 
     <div style="margin-top: var(--inner-gutter);">

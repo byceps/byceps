@@ -17,13 +17,13 @@
   <body>
 
     <header class="container">
-{%- include 'layout/_current_user.html' %}
+{% include 'layout/_current_user.html' %}
     </header>
 
     <section class="container">
       <main>
-{%- include 'layout/_notifications.html' %}
-{%- block body required %}{% endblock %}
+{% include 'layout/_notifications.html' %}
+{% block body required %}{% endblock %}
       </main>
     </section>
 

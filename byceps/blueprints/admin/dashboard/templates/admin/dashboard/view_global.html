@@ -10,13 +10,13 @@
 
 {% block body %}
 
-{%- include 'admin/dashboard/_active_brands.html' %}
+{% include 'admin/dashboard/_active_brands.html' %}
 
-{%- with show_brand_avatar = True %}
-  {%- include 'admin/dashboard/_current_sites.html' %}
-  {%- include 'admin/dashboard/_active_parties.html' %}
-  {%- include 'admin/dashboard/_active_shops.html' %}
-{%- endwith %}
+  {%- with show_brand_avatar = True %}
+{% include 'admin/dashboard/_current_sites.html' %}
+{% include 'admin/dashboard/_active_parties.html' %}
+{% include 'admin/dashboard/_active_shops.html' %}
+  {%- endwith %}
 
 <div class="dashboard-section-title">{{ _('Users') }}</div>
 
@@ -25,10 +25,10 @@
     {{ render_bigstats_cell(recent_users_count, _('new users in the last 7 days'), href=url_for('user_admin.index'), icon_name='users', color='#008800') }}
     {{ render_bigstats_cell(uninitialized_user_count, _('uninitialized users'), href=url_for('user_admin.index', only='uninitialized'), icon_name='users', color='#1199ff') }}
     {%- call render_cell('users', 'higher') %}
-{%- include 'admin/dashboard/_recent_users.html' %}
+{% include 'admin/dashboard/_recent_users.html' %}
     {%- endcall %}
     {%- call render_cell('birthday', 'wider') %}
-{%- include 'admin/dashboard/_birthdays.html' %}
+{% include 'admin/dashboard/_birthdays.html' %}
     {%- endcall %}
   </div>
 

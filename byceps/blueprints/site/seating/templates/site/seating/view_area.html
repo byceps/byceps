@@ -24,21 +24,21 @@
     <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
   </form>
 
-{%- if seat_management_enabled %}
+  {%- if seat_management_enabled %}
 
-  {%- if g.user.authenticated %}
-    {%- if manage_mode %}
-{%- include 'site/seating/_ticket_selector.html' %}
-    {%- else %}
+    {%- if g.user.authenticated %}
+      {%- if manage_mode %}
+{% include 'site/seating/_ticket_selector.html' %}
+      {%- else %}
   <div class="button-row button-row--right">
     <a class="button" href="{{ url_for('.manage_seats_in_area', slug=area.slug) }}">{{ _('Manage seats') }}</a>
   </div>
+      {%- endif %}
     {%- endif %}
+
+{% include 'site/seating/_legend.html' %}
+
   {%- endif %}
-
-{%- include 'site/seating/_legend.html' %}
-
-{%- endif %}
 
 {{ render_area(area, seats_and_tickets) }}
 

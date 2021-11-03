@@ -10,10 +10,10 @@
     <a href="{{ url_for('user_profile.view', user_id=g.user.id) }}">{{ _('View public profile') }}</a>
   </div>
 
-{%- include 'site/user/settings/_account.html' %}
-{%- include 'site/user/settings/_details_personal.html' %}
+{% include 'site/user/settings/_account.html' %}
+{% include 'site/user/settings/_details_personal.html' %}
   {%- if newsletter_offered %}
-{%- include 'site/user/settings/_newsletter.html' %}
+{% include 'site/user/settings/_newsletter.html' %}
   {%- endif %}
 
 {%- endblock %}

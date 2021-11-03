@@ -17,7 +17,7 @@
   <form action="{{ url_for('.topic_create', category_id=category.id) }}" method="post">
     {{ form_field(form.title, maxlength=80, autofocus='autofocus') }}
     {{ form_field(form.body) }}
-{%- include 'site/board/_posting_form_body_supplement.html' %}
+{% include 'site/board/_posting_form_body_supplement.html' %}
 
     {{ form_buttons(_('Create'), cancel_url=url_for('.category_view', slug=category.slug)) }}
   </form>

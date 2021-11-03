@@ -3,7 +3,7 @@
 {% from 'macros/text_diff.html' import render_difference, render_difference_styles  %}
 {% set page_title = _('View changes') %}
 
-{%- block head %}
+{% block head %}
 {{ render_difference_styles() }}
 {%- endblock %}
 

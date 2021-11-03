@@ -41,7 +41,7 @@
 
   <div class="box">
   {%- with orders = orders.items %}
-    {%- include 'admin/shop/order/_order_list.html' %}
+{% include 'admin/shop/order/_order_list.html' %}
   {%- endwith %}
 
   {{ render_pagination_nav(orders, '.index_for_shop', {

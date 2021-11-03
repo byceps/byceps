@@ -17,23 +17,23 @@
     <div class="page-layout">
 
       <section class="page-header">
-{%- include 'layout/admin/_header.html' %}
+{% include 'layout/admin/_header.html' %}
       </section>
 
-{%- if has_current_user_permission('admin.access') %}
+      {%- if has_current_user_permission('admin.access') %}
       <section class="page-header-nav">
-{%- include 'layout/admin/_header_nav.html' %}
+{% include 'layout/admin/_header_nav.html' %}
       </section>
-{%- endif %}
+      {%- endif %}
 
       <section class="page-body">
         <div class="container">
 
           <main>
-{%- include 'layout/_notifications.html' %}
-{%- block before_body %}{% endblock %}
+{% include 'layout/_notifications.html' %}
+{% block before_body %}{% endblock %}
             <div{% if not layout_main_raw|default(False) %} id="main"{% endif %}>
-{%- block body required %}{% endblock %}
+{% block body required %}{% endblock %}
             </div>{# #main #}
           </main>
 

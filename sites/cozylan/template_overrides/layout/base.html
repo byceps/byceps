@@ -21,7 +21,7 @@
 
       <header class="page-header">
         <div class="container">
-{%- include 'layout/_header.html' %}
+{% include 'layout/_header.html' %}
         </div>
       </header>
 
@@ -30,18 +30,18 @@
           <div class="page-body-grid">
 
             <aside class="page-sidebar-left">
-{%- include 'layout/_sidebar_left.html' with context %}
+{% include 'layout/_sidebar_left.html' with context %}
             </aside>
 
             <section class="page-main">
               <main>
-{%- include 'layout/_notifications.html' %}
-{%- block body required %}{% endblock %}
+{% include 'layout/_notifications.html' %}
+{% block body required %}{% endblock %}
               </main>
             </section>
 
             <aside class="page-sidebar-right">
-{%- include 'layout/_sidebar_right.html' %}
+{% include 'layout/_sidebar_right.html' %}
             </aside>
 
           </div>{# .page-body-grid #}
@@ -50,7 +50,7 @@
 
       <footer class="page-footer">
         <div class="container">
-{%- include 'layout/_footer.html' %}
+{% include 'layout/_footer.html' %}
         </div>
       </footer>
 

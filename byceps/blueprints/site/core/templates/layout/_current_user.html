@@ -18,7 +18,7 @@
         </span>
       </li>
       <li class="dropdown-divider"></li>
-{%- include 'layout/_current_user_menu_items.html' %}
+{% include 'layout/_current_user_menu_items.html' %}
       <li class="dropdown-divider"></li>
       <li><a class="dropdown-item" data-action="logout" href="{{ url_for('authentication_login.logout', _method='POST') }}">{{ render_icon('log-out') }} {{ _('Log out') }}</a></li>
     </ol>

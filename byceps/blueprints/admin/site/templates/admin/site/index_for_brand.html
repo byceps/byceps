@@ -22,8 +22,8 @@
     {%- endif %}
   </div>
 
-{%- with show_brand_avatar = False %}
-{%- include 'admin/site/_sites.html' %}
-{%- endwith %}
+  {%- with show_brand_avatar = False %}
+{% include 'admin/site/_sites.html' %}
+  {%- endwith %}
 
 {%- endblock %}

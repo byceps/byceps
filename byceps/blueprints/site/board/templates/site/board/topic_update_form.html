@@ -25,7 +25,7 @@
   <form action="{{ url_for('.topic_update', topic_id=topic.id) }}" method="post">
     {{ form_field(form.title, maxlength=80, autofocus='autofocus') }}
     {{ form_field(form.body) }}
-{%- include 'site/board/_posting_form_body_supplement.html' %}
+{% include 'site/board/_posting_form_body_supplement.html' %}
 
     {{ form_buttons(_('Save'), cancel_url=url_for('.topic_view', topic_id=topic.id)) }}
   </form>

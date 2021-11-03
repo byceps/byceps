@@ -37,9 +37,9 @@
   </div>
 
   <div class="box">
-{%- with tickets = tickets.items %}
-  {%- include 'admin/ticketing/_ticket_list.html' %}
-{%- endwith %}
+  {%- with tickets = tickets.items %}
+{% include 'admin/ticketing/_ticket_list.html' %}
+  {%- endwith %}
 
 {{ render_pagination_nav(tickets, '.index_for_party', {'party_id': party.id}) }}
   </div>

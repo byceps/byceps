@@ -45,12 +45,12 @@
 
   <h2>{{ _('Tickets') }} {{ render_extra_in_heading(tickets|length) }}</h2>
   <div class="box">
-    {%- include 'admin/ticketing/checkin/_ticket_list.html' %}
+{% include 'admin/ticketing/checkin/_ticket_list.html' %}
   </div>
 
   <h2>{{ _('Users') }} {{ render_extra_in_heading(users|length) }}</h2>
   <div class="box">
-    {%- include 'admin/ticketing/checkin/_user_list.html' %}
+{% include 'admin/ticketing/checkin/_user_list.html' %}
   </div>
 
   {%- endif %}
