@@ -935,7 +935,7 @@ img {
 }
 
 .dimmed {
-  opacity: 0.5;
+  color: var(--color-dim);
 }
 
 .hyphenate {

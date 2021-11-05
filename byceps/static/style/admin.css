@@ -730,7 +730,7 @@ main .dropdown-menu {
 .dimmed-box {
   border-radius: 3px;
   border: #dddddd solid 1px;
-  color: #666666;
+  color: var(--color-dim);
   padding: 1.5rem;
 }
 
