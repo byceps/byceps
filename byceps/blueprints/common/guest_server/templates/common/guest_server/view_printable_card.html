@@ -108,16 +108,8 @@ td {
       </h1>
 
       <h2>{{ _('Owner') }}</h2>
-      <div class="row">
-        <div class="column-auto">
-          <div class="data-label">{{ _('Name') }}</div>
-          <div class="data-value">{{ owner_full_name }}</div>
-        </div>
-        <div class="column-auto">
-          <div class="data-label">{{ _('Username') }}</div>
-          <div class="data-value">{{ render_user_screen_name(owner) }}</div>
-        </div>
-      </div>
+      <div class="data-label">{{ _('Username') }}</div>
+      <div class="data-value">{{ render_user_screen_name(owner) }}</div>
 
       <h2>{{ _('Network') }}</h2>
       <table class="index">

@@ -33,7 +33,6 @@ def view_printable_card(server_id):
     party = party_service.get_party(server.party_id)
 
     owner = user_service.get_user(server.owner_id)
-    owner_detail = user_service.get_detail(owner.id)
 
     _ensure_user_allowed_to_view_printable_card(server)
 
@@ -42,7 +41,6 @@ def view_printable_card(server_id):
     return {
         'party_title': party.title,
         'owner': owner,
-        'owner_full_name': owner_detail.full_name,
         'addresses': addresses,
     }
 
