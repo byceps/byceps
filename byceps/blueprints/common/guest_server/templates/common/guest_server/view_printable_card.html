@@ -111,7 +111,7 @@ td {
           </td>
           <td class="monospace">
             {%- if address.hostname %}
-            {{ address.hostname }}
+            {{ address.hostname }}{% if domain %}.{{ domain }}{% endif %}
             {%- else %}
             <span class="missing"></span>
             {%- endif %}

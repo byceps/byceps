@@ -32,16 +32,17 @@ def view_printable_card(server_id):
     server = _get_server_or_404(server_id)
     party = party_service.get_party(server.party_id)
 
-    owner = user_service.get_user(server.owner_id)
-
     _ensure_user_allowed_to_view_printable_card(server)
 
+    owner = user_service.get_user(server.owner_id)
     addresses = _sort_addresses(server.addresses)
+    setting = guest_server_service.get_setting_for_party(party.id)
 
     return {
         'party_title': party.title,
         'owner': owner,
         'addresses': addresses,
+        'domain': setting.domain,
     }
 
 
