@@ -34,7 +34,7 @@ blueprint = create_blueprint('guest_server', __name__)
 @templated
 def create_form(erroneous_form=None):
     """Show a form to create a guest server."""
-    party_id = _ensure_party_or_404()
+    party_id = _get_current_party_id_or_404()
 
     setting = guest_server_service.get_setting_for_party(party_id)
 
@@ -50,7 +50,7 @@ def create_form(erroneous_form=None):
 @login_required
 def create():
     """Create a guest server."""
-    _ensure_party_or_404()
+    party_id = _get_current_party_id_or_404()
 
     form = CreateForm(request.form)
     if not form.validate():
@@ -60,7 +60,7 @@ def create():
     notes = form.notes.data.strip()
 
     server, event = guest_server_service.create_server(
-        g.party_id, g.user.id, g.user.id, notes_owner=notes, hostname=hostname
+        party_id, g.user.id, g.user.id, notes_owner=notes, hostname=hostname
     )
 
     flash_success(gettext('The server has been registered.'))
@@ -70,7 +70,7 @@ def create():
     return redirect_to('dashboard.index')
 
 
-def _ensure_party_or_404() -> PartyID:
+def _get_current_party_id_or_404() -> PartyID:
     party_id = g.party_id
 
     if party_id is None:
