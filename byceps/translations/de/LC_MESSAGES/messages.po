@@ -634,7 +634,6 @@ msgstr "Keine Teilnahmen an Partys dieser Marke gefunden."
 #: byceps/blueprints/admin/user/forms.py:47
 #: byceps/blueprints/admin/user/templates/admin/user/_user_list.html:8
 #: byceps/blueprints/common/authentication/password/forms.py:40
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:117
 #: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:37
 #: byceps/blueprints/site/authentication/login/forms.py:17
 #: byceps/blueprints/site/seating/templates/site/seating/index.html:12
@@ -1209,7 +1208,6 @@ msgstr "Marke erstellen"
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:127
 #: byceps/blueprints/admin/snippet/forms.py:17
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:37
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:113
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:11
 msgid "Name"
 msgstr "Name"
@@ -1374,6 +1372,7 @@ msgstr "Marke"
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:63
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:58
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orga_activities.html:11
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:95
 #: byceps/blueprints/site/user_profile/templates/site/user_profile/view.html:43
 msgid "Party"
 msgstr "Party"
@@ -1720,7 +1719,7 @@ msgstr "Sitzplätze belegt"
 msgid "tickets checked in"
 msgstr "Tickets eingecheckt"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:83
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:84
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_update_form.html:9
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:10
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_create_form.html:9
@@ -1731,7 +1730,7 @@ msgstr "Tickets eingecheckt"
 msgid "Guest Servers"
 msgstr "Gastserver"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:84
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:85
 #: byceps/blueprints/admin/guest_server/forms.py:74
 #: byceps/blueprints/admin/guest_server/forms.py:81
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:44
@@ -1739,7 +1738,7 @@ msgstr "Gastserver"
 msgid "approved"
 msgstr "genehmigt"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:85
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:86
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:44
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:20
 msgid "pending"
@@ -1840,14 +1839,14 @@ msgstr "Unbekannter Benutzername"
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:22
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:41
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:100
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:110
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:98
 msgid "Owner"
 msgstr "Besitzer/in"
 
 #: byceps/blueprints/admin/guest_server/forms.py:63
 #: byceps/blueprints/admin/guest_server/forms.py:86
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:85
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:126
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:101
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:11
 msgid "IP address"
 msgstr "IP-Adresse"
@@ -1855,7 +1854,7 @@ msgstr "IP-Adresse"
 #: byceps/blueprints/admin/guest_server/forms.py:67
 #: byceps/blueprints/admin/guest_server/forms.py:90
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:85
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:127
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:101
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:12
 #: byceps/blueprints/site/guest_server/forms.py:23
 msgid "Hostname"
@@ -1911,6 +1910,7 @@ msgid "Notes by owner"
 msgstr "Anmerkungen des Besitzers"
 
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/index.html:85
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:101
 msgid "and"
 msgstr "und"
 
@@ -5099,13 +5099,9 @@ msgstr "Avatar eines gelöschten Benutzers"
 msgid "Guest server card"
 msgstr "Gastserver-Card anzeigen"
 
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:106
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:93
 msgid "Guest server"
 msgstr "Gastserver"
-
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:122
-msgid "Network"
-msgstr "Netzwerk"
 
 #: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:9
 #: byceps/blueprints/site/party_history/templates/site/party_history/view.html:24
