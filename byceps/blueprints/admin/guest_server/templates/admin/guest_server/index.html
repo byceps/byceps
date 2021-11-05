@@ -41,63 +41,9 @@ code {
     {%- for server in servers|sort(attribute='created_at', reverse=True) %}
   <div class="box" style="border-left: {{ '#55cc00' if server.approved else '#ffcc11' }} solid 0.25rem;">
 
-    <div class="mb">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</div>
-
     <div class="row row--space-between">
-      <div class="column-auto column-auto--grow">
-
-        <div class="row mb">
-          <div class="column-auto" style="flex-basis: 33%;">
-
-            <div class="data-label">{{ _('Owner') }}</div>
-            <div class="data-value">{{ render_user_microcard(users_by_id[server.owner_id]) }}</div>
-
-          </div>
-          <div class="column-auto" style="flex-basis: 33%;">
-
-            <div class="data-label">{{ _('Created by') }}</div>
-            <div class="data-value">{{ render_user_avatar_and_name(users_by_id[server.creator_id], size=20) }}</div>
-
-          </div>
-          <div class="column-auto" style="flex-basis: 33%;">
-
-            <div class="data-label">{{ _('Created at') }}</div>
-            <div class="data-value">{{ render_datetime(server.created_at|utc_to_local_tz) }}</div>
-
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="column-auto" style="flex-basis: 33%;">
-
-            <div class="data-label">{{ _('Notes by owner') }}</div>
-            <div class="data-value">{{ server.notes_owner|fallback(_('none')) }}</div>
-
-          </div>
-          <div class="column-auto" style="flex-basis: 33%;">
-
-            <div class="data-label">{{ _('Notes by admin') }}</div>
-            <div class="data-value">{{ server.notes_admin|fallback(_('none')) }}</div>
-
-          </div>
-          <div class="column-auto" style="flex-basis: 33%;">
-
-            <div class="data-label">{{ _('IP address') }} {{ _('and') }} {{ _('Hostname') }}</div>
-            <table class="index">
-              {%- for address in sort_addresses(server.addresses) %}
-              <tr>
-                <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-danger') }}{% endif %}</td>
-                <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>{% else %}{{ _('not given')|dim }}{% endif %}</td>
-                {%- if has_current_user_permission('guest_server.administrate') %}
-                <td><a class="button button--compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a></td>
-                {%- endif %}
-              </tr>
-              {%- endfor %}
-            </table>
-
-          </div>
-        </div>
-
+      <div class="column-auto">
+        {{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}
       </div>
       {%- if has_current_user_permission('guest_server.administrate') %}
       <div class="column-auto">
@@ -110,6 +56,62 @@ code {
 
       </div>
       {%- endif %}
+    </div>
+
+    <div class="mt">
+      <div class="row">
+        <div class="column-auto" style="flex-basis: 33%;">
+
+          <div class="data-label">{{ _('Owner') }}</div>
+          <div class="data-value">{{ render_user_microcard(users_by_id[server.owner_id]) }}</div>
+
+        </div>
+        <div class="column-auto" style="flex-basis: 33%;">
+
+          <div class="data-label">{{ _('Created by') }}</div>
+          <div class="data-value">{{ render_user_avatar_and_name(users_by_id[server.creator_id], size=20) }}</div>
+
+        </div>
+        <div class="column-auto" style="flex-basis: 33%;">
+
+          <div class="data-label">{{ _('Created at') }}</div>
+          <div class="data-value">{{ render_datetime(server.created_at|utc_to_local_tz) }}</div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="mt">
+      <div class="row">
+        <div class="column-auto" style="flex-basis: 33%;">
+
+          <div class="data-label">{{ _('Notes by owner') }}</div>
+          <div class="data-value">{{ server.notes_owner|fallback(_('none')) }}</div>
+
+        </div>
+        <div class="column-auto" style="flex-basis: 33%;">
+
+          <div class="data-label">{{ _('Notes by admin') }}</div>
+          <div class="data-value">{{ server.notes_admin|fallback(_('none')) }}</div>
+
+        </div>
+        <div class="column-auto" style="flex-basis: 33%;">
+
+          <div class="data-label">{{ _('IP address') }} {{ _('and') }} {{ _('Hostname') }}</div>
+          <table class="index">
+            {%- for address in sort_addresses(server.addresses) %}
+            <tr>
+              <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-danger') }}{% endif %}</td>
+              <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>{% else %}{{ _('not given')|dim }}{% endif %}</td>
+              {%- if has_current_user_permission('guest_server.administrate') %}
+              <td><a class="button button--compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a></td>
+              {%- endif %}
+            </tr>
+            {%- endfor %}
+          </table>
+
+        </div>
+      </div>
     </div>
 
   </div>
