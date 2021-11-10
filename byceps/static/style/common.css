@@ -415,21 +415,31 @@ textarea.collapsible.collapsed {
   margin-top: 0.5rem;
 }
 
+form .form-form-errors,
 form .invalid {
   --padding: 0.375rem;
   background-color: #ff9999;
   border: #ff1a1a solid 1px;
   border-radius: 3px;
+  display: inline-block;
   margin: calc(var(--padding) * -1 - 1px);
   padding: var(--padding);
 }
 
+form .form-form-errors.mb,
 form .invalid.mb {
   margin-bottom: 1rem;
 }
 
 .form-errors li {
   font-size: 0.6875rem; /* 11px / 16px */
+}
+
+form .form-form-errors li {
+  margin: 0.125rem 0;
+}
+
+form .invalid .form-errors li {
   margin-top: 0.25rem;
 }
 

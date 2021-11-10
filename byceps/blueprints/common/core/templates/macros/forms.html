@@ -8,7 +8,7 @@
     {%- if note %}
     <div class="form-note">{{ note }}</div>
     {%- endif %}
-    {{- _errors(field) -}}
+    {{- _form_field_errors(field) -}}
   </div>
 {%- endmacro %}
 
@@ -18,7 +18,7 @@
     {%- with label = label if label is not none else field.label.text %}
     <label class="form-check-label">{{- field(**kwargs) }} <span>{{ label }}</span></label>
     {%- endwith %}
-    {{- _errors(field) -}}
+    {{- _form_field_errors(field) -}}
   </div>
 {%- endmacro %}
 
@@ -29,7 +29,7 @@
     <div class="form-control-checkboxes">
       {{- field(**kwargs) }}
     </div>
-    {{- _errors(field) -}}
+    {{- _form_field_errors(field) -}}
   </div>
 {%- endmacro %}
 
@@ -40,15 +40,29 @@
     <div class="form-control-radios">
       {{- field(**kwargs) }}
     </div>
-    {{- _errors(field) -}}
+    {{- _form_field_errors(field) -}}
   </div>
 {%- endmacro %}
 
 
-{%- macro _errors(field) -%}
-    {%- if field.errors %}
+{%- macro form_form_errors(form) %}
+  {%- if form.form_errors %}
+  <div class="form-form-errors mb">
+{{ _errors(form.form_errors) -}}
+  </div>
+  {%- endif %}
+{%- endmacro %}
+
+
+{%- macro _form_field_errors(field) %}
+  {{- _errors(field.errors) -}}
+{%- endmacro %}
+
+
+{%- macro _errors(errors) %}
+    {%- if errors %}
     <ol class="form-errors">
-      {%- for error in field.errors %}
+      {%- for error in errors %}
       <li><strong>{{ _('Error') }}:</strong> <span>{{ error }}</span></li>
       {%- endfor %}
     </ol>
