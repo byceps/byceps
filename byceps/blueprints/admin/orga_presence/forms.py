@@ -9,7 +9,7 @@ byceps.blueprints.admin.orga_presence.forms
 from datetime import datetime
 
 from flask_babel import gettext, lazy_gettext
-from wtforms.fields.html5 import DateField, TimeField
+from wtforms import DateField, TimeField
 from wtforms.validators import InputRequired, ValidationError
 
 from ....util.datetime.range import DateTimeRange

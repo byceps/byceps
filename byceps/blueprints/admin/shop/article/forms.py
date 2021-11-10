@@ -14,13 +14,14 @@ from typing import Iterable
 from flask_babel import gettext, lazy_gettext, pgettext
 from wtforms import (
     BooleanField,
+    DateField,
     DecimalField,
     IntegerField,
     RadioField,
     SelectField,
     StringField,
+    TimeField,
 )
-from wtforms.fields.html5 import DateField, TimeField
 from wtforms.validators import (
     InputRequired,
     NumberRange,

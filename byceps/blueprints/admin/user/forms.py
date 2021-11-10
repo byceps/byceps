@@ -9,8 +9,14 @@ byceps.blueprints.admin.user.forms
 import re
 
 from flask_babel import lazy_gettext, pgettext
-from wtforms import PasswordField, SelectField, StringField, TextAreaField
-from wtforms.fields.html5 import DateField, TelField
+from wtforms import (
+    DateField,
+    PasswordField,
+    SelectField,
+    StringField,
+    TelField,
+    TextAreaField,
+)
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from ....services.site import service as site_service

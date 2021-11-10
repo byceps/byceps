@@ -9,8 +9,7 @@ byceps.blueprints.admin.news.forms
 import re
 
 from flask_babel import lazy_gettext
-from wtforms import FileField, StringField, TextAreaField
-from wtforms.fields.html5 import DateField, TimeField
+from wtforms import DateField, FileField, StringField, TextAreaField, TimeField
 from wtforms.validators import InputRequired, Length, Optional, Regexp
 
 from ....util.l10n import LocalizedForm

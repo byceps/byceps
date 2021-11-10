@@ -9,8 +9,13 @@ byceps.blueprints.admin.party.forms
 from datetime import datetime
 
 from flask_babel import gettext, lazy_gettext, lazy_pgettext
-from wtforms import BooleanField, IntegerField, StringField
-from wtforms.fields.html5 import DateField, TimeField
+from wtforms import (
+    BooleanField,
+    DateField,
+    IntegerField,
+    StringField,
+    TimeField,
+)
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from ....util.l10n import LocalizedForm

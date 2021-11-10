@@ -10,8 +10,7 @@ import re
 
 from flask import g
 from flask_babel import lazy_gettext
-from wtforms import PasswordField, StringField
-from wtforms.fields.html5 import DateField, TelField
+from wtforms import DateField, PasswordField, StringField, TelField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from .....services.authentication.password import service as password_service

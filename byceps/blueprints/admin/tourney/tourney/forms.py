@@ -7,8 +7,7 @@ byceps.blueprints.admin.tourney.tourney.forms
 """
 
 from flask_babel import lazy_gettext
-from wtforms import SelectField, StringField
-from wtforms.fields.html5 import DateField, IntegerField, TimeField
+from wtforms import DateField, IntegerField, SelectField, StringField, TimeField
 from wtforms.validators import InputRequired, Length, Optional
 
 from .....services.tourney import category_service
