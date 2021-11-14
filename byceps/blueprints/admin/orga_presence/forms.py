@@ -77,15 +77,9 @@ def build_presence_create_form(dt_range: DateTimeRange):
                     valid = False
 
             if starts_at >= ends_at:
-                for field in (
-                    self.starts_on,
-                    self.starts_at,
-                    self.ends_on,
-                    self.ends_at,
-                ):
-                    field.errors.append(
-                        gettext('Start value must be before end value.')
-                    )
+                self.form_errors.append(
+                    gettext('Start value must be before end value.')
+                )
                 valid = False
 
             return valid

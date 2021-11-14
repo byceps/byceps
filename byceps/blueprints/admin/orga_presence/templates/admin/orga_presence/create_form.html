@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_form_errors %}
 {% set current_page = 'orga_presence' %}
 {% set current_page_party = party %}
 {% set page_title = _('Organizer Presence') %}
@@ -21,6 +21,7 @@
   </div>
 
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
+{{ form_form_errors(form) }}
     <div class="row">
       <div class="column-auto">
         {{ form_field(form.starts_on) }}
