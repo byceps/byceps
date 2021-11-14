@@ -1,26 +1,14 @@
-{% extends 'layout/admin/base.html' %}
+{% extends 'layout/admin/guest_server.html' %}
 {% from 'macros/admin/user.html' import render_user_microcard %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
-{% set current_page = 'guest_server_admin' %}
 {% set current_page_party = party %}
+{% set current_tab = 'servers' %}
 {% set page_title = _('Guest Servers') %}
 {% set layout_main_raw = True %}
-
-{% block head %}
-<style>
-code {
-  background-color: #eeeeee;
-  border-radius: 5px;
-  font-family: monospace;
-  font-size: 0.75rem !important;
-  padding: 0 0.125rem;
-}
-</style>
-{%- endblock %}
 
 {% block body %}
 
@@ -121,76 +109,6 @@ code {
     <div class="dimmed-box centered">{{ _('No servers registered.') }}</div>
   </div>
   {%- endif %}
-
-  <div class="row row--space-between">
-    <div class="column-auto">
-      <h2>{{ _('Further Settings') }}</h2>
-    </div>
-    {%- if has_current_user_permission('guest_server.administrate') %}
-    <div class="column-auto column--align-bottom">
-      <div class="button-row button-row--right">
-        <a class="button button--compact" href="{{ url_for('.setting_update_form', party_id=party.id) }}" title="{{ _('Update settings') }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
-      </div>
-    </div>
-    {%- endif %}
-  </div>
-
-  <div class="box">
-    <div class="row row--space-between">
-      <div class="column-auto" style="flex-basis: 25%;">
-
-        <div class="data-label">{{ _('Netmask') }}</div>
-        <div class="data-value">
-          {%- if setting.netmask %}
-          <span class="monospace">{{ setting.netmask }}
-          {%- else %}
-          {{ _('not specified')|dim }}
-          {%- endif %}
-        </div>
-
-      </div>
-      <div class="column-auto" style="flex-basis: 25%;">
-
-        <div class="data-label">{{ _('Gateway') }}</div>
-        <div class="data-value">
-          {%- if setting.gateway %}
-          <span class="monospace">{{ setting.gateway }}</span>
-          {%- else %}
-          {{ _('not specified')|dim }}
-          {%- endif %}
-        </div>
-
-      </div>
-      <div class="column-auto" style="flex-basis: 25%;">
-
-        <div class="data-label">{{ _('DNS servers') }}</div>
-        <div class="data-value">
-        {%- with dns_servers = [setting.dns_server1, setting.dns_server2]|reject('none')|list %}
-          {%- if dns_servers %}
-            {%- for dns_server in dns_servers %}
-          <span class="monospace">{{ dns_server }}</span>{% if not loop.last %}, {% endif %}
-            {%- endfor %}
-          {%- else %}
-          {{ _('not specified')|dim }}
-          {%- endif %}
-        {%- endwith %}
-        </div>
-
-      </div>
-      <div class="column-auto" style="flex-basis: 25%;">
-
-        <div class="data-label">{{ _('Domain') }}</div>
-        <div class="data-value">
-          {%- if setting.domain %}
-          <span class="monospace">{{ setting.domain }}</span>
-          {%- else %}
-          {{ _('not specified')|dim }}
-          {%- endif %}
-        </div>
-
-      </div>
-    </div>
-  </div>
 
 {%- endblock %}
 

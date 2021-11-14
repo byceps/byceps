@@ -64,6 +64,21 @@ def index(party_id):
 # setting
 
 
+@blueprint.get('/for_party/<party_id>/settings')
+@permission_required('guest_server.view')
+@templated
+def setting_view(party_id):
+    """Show settings for a party."""
+    party = _get_party_or_404(party_id)
+
+    setting = guest_server_service.get_setting_for_party(party.id)
+
+    return {
+        'party': party,
+        'setting': setting,
+    }
+
+
 @blueprint.get('/for_party/<party_id>/settings/update')
 @permission_required('guest_server.administrate')
 @templated
@@ -103,7 +118,7 @@ def setting_update(party_id):
 
     flash_success(gettext('Changes have been saved.'))
 
-    return redirect_to('.index', party_id=party.id)
+    return redirect_to('.setting_view', party_id=party.id)
 
 
 # -------------------------------------------------------------------- #

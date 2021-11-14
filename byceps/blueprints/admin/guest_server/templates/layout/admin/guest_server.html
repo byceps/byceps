@@ -1,0 +1,24 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_main_tabs %}
+{% set current_page = 'guest_server_admin' %}
+
+{% block before_body %}
+  {%- with party = current_page_party %}
+{{
+  render_main_tabs(
+    Navigation(None)
+      .add_item(
+        url_for('.index', party_id=party.id),
+        _('Servers'),
+        id='servers',
+        icon='server')
+      .add_item(
+        url_for('.setting_view', party_id=party.id),
+        _('Settings'),
+        id='setting',
+        icon='settings')
+    , current_tab
+  )
+}}
+  {%- endwith %}
+{%- endblock %}
