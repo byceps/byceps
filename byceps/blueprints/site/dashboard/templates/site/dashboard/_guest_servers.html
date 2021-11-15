@@ -8,27 +8,31 @@
   <thead>
     <tr>
       <th>{{ _('Status') }}</th>
-      <th>{{ _('IP address') }}</th>
+      <th class="nowrap">{{ _('IP address') }}</th>
       <th>{{ _('Hostname') }}</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
-    {%- for server in guest_servers %}
-      {%- for address in sort_guest_server_addresses(server.addresses) %}
+  {%- for server in guest_servers %}
+    {%- for address in sort_guest_server_addresses(server.addresses) %}
     <tr>
-        {%- if loop.first %}
+      {%- if loop.first %}
       <td rowspan="{{ server.addresses|length }}">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</td>
-        {%- endif %}
+      {%- endif %}
       <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-disabled') }}{% endif %}</td>
       <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% if guest_server_setting.domain %}.{{ guest_server_setting.domain }}{% endif %}</span>{% else %}{{ _('not given')|dim }}{% endif %}</td>
-        {%- if loop.first and server.approved %}
-      <td rowspan="{{ server.addresses|length }}"><a class="button button--compact" href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}" title="{{ _('View printable server card') }}">{{ render_icon('print') }}</a></td>
-        {%- endif %}
+      {%- if loop.first and server.approved %}
+      <td rowspan="{{ server.addresses|length }}"><a class="button button--compact" style="margin-left: 0.5rem;" href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}" title="{{ _('View printable server card') }}">{{ render_icon('print') }}</a></td>
+      {%- else %}
+      <td></td>
+      {%- endif %}
     </tr>
-      {%- endfor %}
     {%- endfor %}
+  {%- endfor %}
   </tbody>
 </table>
+
 <details>
   <summary class="mt">{{ _('Further Settings') }}</summary>
   <table class="index mt wide">
