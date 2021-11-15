@@ -10,7 +10,7 @@ from __future__ import annotations
 import ipaddress
 from typing import Iterable, Optional
 
-from flask import abort, g, request
+from flask import abort, g, request, url_for
 from flask_babel import gettext
 
 from ....services.guest_server import service as guest_server_service
@@ -21,7 +21,11 @@ from ....signals import guest_server as guest_server_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
-from ....util.views import permission_required, redirect_to, respond_no_content
+from ....util.views import (
+    permission_required,
+    redirect_to,
+    respond_no_content_with_location,
+)
 
 from .forms import (
     AddressUpdateForm,
@@ -125,6 +129,28 @@ def setting_update(party_id):
 # servers
 
 
+@blueprint.get('/servers/<server_id>')
+@permission_required('guest_server.view')
+@templated
+def server_view(server_id):
+    """Show guest server."""
+    server = _get_server_or_404(server_id)
+    party = party_service.get_party(server.party_id)
+    setting = guest_server_service.get_setting_for_party(party.id)
+
+    user_ids = {server.creator_id, server.owner_id}
+    users = user_service.get_users_for_admin(user_ids)
+    users_by_id = user_service.index_users_by_id(users)
+
+    return {
+        'party': party,
+        'server': server,
+        'setting': setting,
+        'users_by_id': users_by_id,
+        'sort_addresses': _sort_addresses,
+    }
+
+
 @blueprint.get('/for_party/<party_id>/servers/create')
 @permission_required('guest_server.administrate')
 @templated
@@ -171,7 +197,7 @@ def server_create(party_id):
 
     guest_server_signals.guest_server_registered.send(None, event=event)
 
-    return redirect_to('.index', party_id=party.id)
+    return redirect_to('.server_view', server_id=server.id)
 
 
 @blueprint.get('/servers/<uuid:server_id>/update')
@@ -208,17 +234,23 @@ def server_update(server_id):
 
     flash_success(gettext('Changes have been saved.'))
 
-    return redirect_to('.index', party_id=server.party_id)
+    return redirect_to('.server_view', server_id=server.id)
 
 
 @blueprint.delete('/guest_servers/<uuid:server_id>')
 @permission_required('guest_server.administrate')
-@respond_no_content
+@respond_no_content_with_location
 def delete_server(server_id):
     """Delete a guest server."""
+    server = _get_server_or_404(server_id)
+
+    party_id = server.party_id
+
     guest_server_service.delete_server(server_id)
 
     flash_success(gettext('Server has been deleted.'))
+
+    return url_for('.index', party_id=party_id)
 
 
 # -------------------------------------------------------------------- #
@@ -261,7 +293,7 @@ def address_update(address_id):
 
     flash_success(gettext('Changes have been saved.'))
 
-    return redirect_to('.index', party_id=server.party_id)
+    return redirect_to('.server_view', server_id=server.id)
 
 
 # -------------------------------------------------------------------- #

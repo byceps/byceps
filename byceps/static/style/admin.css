@@ -74,16 +74,12 @@ main {
 
 #main,
 .box {
+  background-color: #ffffff;
   border-color: #cccccc;
+  border-radius: 3px;
   border-style: solid;
   border-width: 1px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-#main,
-.box {
-  background-color: #ffffff;
-  border-radius: 3px;
 }
 
 #main {
@@ -99,11 +95,22 @@ main {
 }
 
 .box {
+  display: block;
   padding: 20px;
 }
 
 .box + .box {
   margin-top: var(--inner-gutter);
+}
+
+a.box {
+  color: inherit;
+  text-decoration: none;
+}
+
+a.box:hover {
+  background-color: #f4f4f4;
+  border-color: #bbbbbb;
 }
 
 
