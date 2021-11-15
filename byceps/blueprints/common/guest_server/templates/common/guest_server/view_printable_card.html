@@ -82,6 +82,10 @@ td {
   font-family: monospace;
 }
 
+.qrcode {
+  margin-top: 1.5rem;
+}
+
 {% include 'common/guest_server/_printable_card_styles.html' ignore missing %}
     </style>
   </head>
@@ -119,6 +123,8 @@ td {
         </tr>
         {%- endfor %}
       </table>
+
+      <img class="qrcode" src="{{ qrcode|safe }}">
 
     </div>
 

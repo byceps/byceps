@@ -10,11 +10,18 @@ from __future__ import annotations
 from typing import Iterable
 
 from flask import abort, g
+import qrcode
+from qrcode.image.svg import SvgPathImage
 
 from ....services.guest_server import service as guest_server_service
 from ....services.guest_server.transfer.models import Address, Server
-from ....services.party import service as party_service
+from ....services.party import (
+    service as party_service,
+    settings_service as party_settings_service,
+)
+from ....services.site import service as site_service
 from ....services.user import service as user_service
+from ....typing import PartyID
 from ....util.authorization import has_current_user_permission
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
@@ -38,11 +45,19 @@ def view_printable_card(server_id):
     addresses = _sort_addresses(server.addresses)
     setting = guest_server_service.get_setting_for_party(party.id)
 
+    site_server_name = _get_site_server_name(party.id)
+    qrcode_data = (
+        f'https://{site_server_name}/guest_servers/servers/{server.id}/admin'
+    )
+    qrcode_svg = _generate_qrcode_svg(qrcode_data)
+    qrcode_svg_inline = _inline_svg(qrcode_svg)
+
     return {
         'party_title': party.title,
         'owner': owner,
         'addresses': addresses,
         'domain': setting.domain,
+        'qrcode': qrcode_svg_inline,
     }
 
 
@@ -81,3 +96,41 @@ def _sort_addresses(addresses: Iterable[Address]) -> list[Address]:
             ),
         )
     )
+
+
+def _get_site_server_name(party_id: PartyID) -> str:
+    """Return the server name of the party's primary site."""
+    primary_party_site_id = party_settings_service.find_setting_value(
+        party_id, 'primary_party_site_id'
+    )
+    if not primary_party_site_id:
+        abort(500, 'Primary Party site ID not configured.')
+
+    site = site_service.get_site(primary_party_site_id)
+    return site.server_name
+
+
+def _generate_qrcode_svg(data: str) -> str:
+    """Generate QR code as SVG."""
+    image = qrcode.make(data, border=0, box_size=10, image_factory=SvgPathImage)
+    return image.to_string().decode('utf-8')
+
+
+def _inline_svg(svg: str) -> str:
+    """Encode SVG to be used inline as part of a data URI.
+
+    Replacements are not complete, but sufficient for this case.
+
+    See https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
+    for details.
+    """
+    replaced = (
+        svg
+        .replace('\n', '%0A')
+        .replace('#', '%23')
+        .replace('<', '%3C')
+        .replace('>', '%3E')
+        .replace('"', '\'')
+    )
+
+    return 'data:image/svg+xml,' + replaced

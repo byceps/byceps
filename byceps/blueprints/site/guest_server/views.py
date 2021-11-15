@@ -11,9 +11,10 @@ Send messages from one user to another.
 from __future__ import annotations
 from typing import Iterable
 
-from flask import abort, g, request
+from flask import abort, g, redirect, request
 from flask_babel import gettext
 
+from ....services.global_setting import service as global_settings_service
 from ....services.guest_server import service as guest_server_service
 from ....services.guest_server.transfer.models import Address
 from ....signals import guest_server as guest_server_signals
@@ -21,7 +22,7 @@ from ....typing import PartyID
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
-from ....util.views import login_required, redirect_to
+from ....util.views import login_required, permission_required, redirect_to
 
 from .forms import CreateForm
 
@@ -68,6 +69,24 @@ def create():
     guest_server_signals.guest_server_registered.send(None, event=event)
 
     return redirect_to('dashboard.index')
+
+
+@blueprint.get('/servers/<server_id>/admin')
+@permission_required('guest_server.administrate')
+def server_view(server_id):
+    """Show guest server."""
+    server = guest_server_service.find_server(server_id)
+    if server is None:
+        abort(404)
+
+    admin_url_root = global_settings_service.find_setting_value(
+        'admin_url_root'
+    )
+    if not admin_url_root:
+        abort(500, 'Admin URL root not configured.')
+
+    url = f'https://{admin_url_root}/admin/guest_servers/servers/{server.id}'
+    return redirect(url)
 
 
 def _get_current_party_id_or_404() -> PartyID:
