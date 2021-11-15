@@ -52,7 +52,7 @@ def index(party_id):
     creator_ids = {server.creator_id for server in servers}
     owner_ids = {server.owner_id for server in servers}
     user_ids = creator_ids.union(owner_ids)
-    users = user_service.get_users_for_admin(user_ids)
+    users = user_service.get_users(user_ids)
     users_by_id = user_service.index_users_by_id(users)
 
     return {
