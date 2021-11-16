@@ -1,4 +1,5 @@
 {% extends 'layout/admin/guest_server.html' %}
+{% from 'macros/admin/guest_server.html' import render_hostname, render_ip_address %}
 {% from 'macros/admin/user.html' import render_user_microcard %}
 {% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
@@ -73,8 +74,8 @@
           <table class="index">
             {%- for address in sort_addresses(server.addresses) %}
             <tr>
-              <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-danger') }}{% endif %}</td>
-              <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>{% else %}{{ _('not given')|dim }}{% endif %}</td>
+              <td>{{ render_ip_address(address) }}</td>
+              <td>{{ render_hostname(address, setting) }}</td>
               {%- if has_current_user_permission('guest_server.administrate') %}
               <td><a class="button button--compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a></td>
               {%- endif %}

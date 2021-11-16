@@ -1,0 +1,19 @@
+{% from 'macros/misc.html' import render_tag %}
+
+
+{%- macro render_ip_address(address) %}
+  {%- if address.ip_address -%}
+  <span class="monospace">{{ address.ip_address }}</span>
+  {%- else -%}
+  {{ render_tag(_('none'), class='color-danger') }}
+  {%- endif %}
+{%- endmacro %}
+
+
+{%- macro render_hostname(address, setting) %}
+  {%- if address.hostname -%}
+  <span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>
+  {%- else -%}
+  {{ _('not given')|dim }}
+  {%- endif %}
+{%- endmacro %}

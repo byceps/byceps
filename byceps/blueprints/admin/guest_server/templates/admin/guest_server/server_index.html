@@ -1,5 +1,6 @@
 {% extends 'layout/admin/guest_server.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/guest_server.html' import render_hostname, render_ip_address %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
@@ -53,8 +54,8 @@
           <table class="index">
             {%- for address in sort_addresses(server.addresses) %}
             <tr>
-              <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-danger') }}{% endif %}</td>
-              <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>{% else %}{{ _('not given')|dim }}{% endif %}</td>
+              <td>{{ render_ip_address(address) }}</td>
+              <td>{{ render_hostname(address, setting) }}</td>
             </tr>
             {%- endfor %}
           </table>
