@@ -16,10 +16,9 @@ from wtforms.validators import (
     Length,
     Optional,
     Regexp,
-    ValidationError,
 )
 
-from ....services.user import service as user_service
+from ....util.forms import UserScreenNameField
 from ....util.l10n import LocalizedForm
 
 
@@ -44,21 +43,8 @@ class SettingUpdateForm(LocalizedForm):
 HOSTNAME_REGEX = re.compile('^[A-Za-z][A-Za-z0-9-]+$')
 
 
-def validate_user(form, field):
-    screen_name = field.data.strip()
-
-    user = user_service.find_user_by_screen_name(
-        screen_name, case_insensitive=True
-    )
-
-    if user is None:
-        raise ValidationError(lazy_gettext('Unknown username'))
-
-    field.data = user
-
-
 class ServerCreateForm(LocalizedForm):
-    owner = StringField(lazy_gettext('Owner'), [InputRequired(), validate_user])
+    owner = UserScreenNameField(lazy_gettext('Owner'), [InputRequired()])
     ip_address = StringField(
         lazy_gettext('IP address'),
         validators=[Optional(), IPAddress(ipv6=True)],

@@ -11,21 +11,8 @@ from wtforms import StringField
 from wtforms.validators import InputRequired, ValidationError
 
 from ....services.ticketing import ticket_code_service
-from ....services.user import service as user_service
+from ....util.forms import UserScreenNameField
 from ....util.l10n import LocalizedForm
-
-
-def validate_user(form, field):
-    screen_name = field.data.strip()
-
-    user = user_service.find_user_by_screen_name(
-        screen_name, case_insensitive=True
-    )
-
-    if user is None:
-        raise ValidationError(lazy_gettext('Unknown username'))
-
-    field.data = user
 
 
 class UpdateCodeForm(LocalizedForm):
@@ -38,6 +25,4 @@ class UpdateCodeForm(LocalizedForm):
 
 
 class SpecifyUserForm(LocalizedForm):
-    user = StringField(
-        lazy_gettext('Username'), [InputRequired(), validate_user]
-    )
+    user = UserScreenNameField(lazy_gettext('Username'), [InputRequired()])
