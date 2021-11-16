@@ -193,7 +193,38 @@ def server_delete(server_id):
 
 
 # -------------------------------------------------------------------- #
-# address
+# addresses
+
+
+@blueprint.get('/for_party/<party_id>/addresses')
+@permission_required('guest_server.view')
+@templated
+def address_index(party_id):
+    """Show addresses for a party."""
+    party = _get_party_or_404(party_id)
+
+    servers = guest_server_service.get_all_servers_for_party(party.id)
+
+    addresses = []
+    for server in servers:
+        addresses.extend(server.addresses)
+
+    user_ids = {server.owner_id for server in servers}
+    users = user_service.get_users(user_ids)
+    users_by_id = user_service.index_users_by_id(users)
+    owners_by_server_id = {
+        server.id: users_by_id[server.owner_id] for server in servers
+    }
+
+    setting = guest_server_service.get_setting_for_party(party.id)
+
+    return {
+        'party': party,
+        'addresses': addresses,
+        'sort_addresses': _sort_addresses,
+        'owners_by_server_id': owners_by_server_id,
+        'setting': setting,
+    }
 
 
 @blueprint.get('/addresses/<uuid:address_id>/update')

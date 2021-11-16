@@ -1,0 +1,48 @@
+{% extends 'layout/admin/guest_server.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/admin/guest_server.html' import render_hostname, render_ip_address %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
+{% set current_page_party = party %}
+{% set current_tab = 'addresses' %}
+{% set page_title = [_('Guest Servers'), _('Addresses')] %}
+{% set layout_main_raw = True %}
+
+{% block body %}
+
+  <h1>{{ _('Addresses') }} {{ render_extra_in_heading(addresses|length) }}</h1>
+
+  <div class="box">
+    {%- if addresses %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>{{ _('IP address') }}</th>
+          <th>{{ _('Hostname') }}</th>
+          <th>{{ _('Server') }}</th>
+          <th>{{ _('Owner') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for address in sort_addresses(addresses) %}
+        <tr>
+          <td>{{ render_ip_address(address) }}</td>
+          <td>{{ render_hostname(address, setting) }}</td>
+          <td><a href="{{ url_for('.server_view', server_id=address.server_id) }}">{{ _('Show') }}</a></td>
+          <td>{{ render_user_avatar_and_name(owners_by_server_id[address.server_id], size=20) }}</td>
+          <td>
+            {%- if has_current_user_permission('guest_server.administrate') %}
+            <a class="button button--compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a>
+            {%- endif %}
+          </td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No addresses registered.') }}</div>
+    {%- endif %}
+  </div>
+
+{%- endblock %}

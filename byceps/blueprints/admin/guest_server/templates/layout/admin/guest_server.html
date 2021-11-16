@@ -13,6 +13,10 @@
         id='servers',
         icon='server')
       .add_item(
+        url_for('.address_index', party_id=party.id),
+        _('Addresses'),
+        id='addresses')
+      .add_item(
         url_for('.setting_view', party_id=party.id),
         _('Settings'),
         id='setting',
