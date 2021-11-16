@@ -8,13 +8,17 @@ byceps.blueprints.admin.guest_server.views
 
 from __future__ import annotations
 import ipaddress
-from typing import Iterable, Optional
+from typing import Iterable, Iterator, Optional
 
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
 from ....services.guest_server import service as guest_server_service
-from ....services.guest_server.transfer.models import Address, IPAddress
+from ....services.guest_server.transfer.models import (
+    Address,
+    IPAddress,
+    Setting,
+)
 from ....services.party import service as party_service
 from ....services.user import service as user_service
 from ....signals import guest_server as guest_server_signals
@@ -25,6 +29,7 @@ from ....util.views import (
     permission_required,
     redirect_to,
     respond_no_content_with_location,
+    textified,
 )
 
 from .forms import (
@@ -225,6 +230,41 @@ def address_index(party_id):
         'owners_by_server_id': owners_by_server_id,
         'setting': setting,
     }
+
+
+@blueprint.get('/for_party/<party_id>/addresses/export')
+@permission_required('guest_server.view')
+@textified
+def address_export(party_id):
+    """Export addresses for a party."""
+    party = _get_party_or_404(party_id)
+
+    servers = guest_server_service.get_all_servers_for_party(party.id)
+
+    addresses = []
+    for server in servers:
+        addresses.extend(server.addresses)
+    addresses = _sort_addresses(addresses)
+
+    setting = guest_server_service.get_setting_for_party(party.id)
+
+    return '\n'.join(_generate_export_lines(addresses, setting))
+
+
+def _generate_export_lines(
+    addresses: Iterable[Address], setting: Setting
+) -> Iterator[str]:
+    for address in addresses:
+        if not address.ip_address or not address.hostname:
+            continue
+
+        ip_address = address.ip_address
+
+        hostname = address.hostname
+        if setting.domain:
+            hostname += f'.{setting.domain}'
+
+        yield f'{ip_address} {hostname}'
 
 
 @blueprint.get('/addresses/<uuid:address_id>/update')
