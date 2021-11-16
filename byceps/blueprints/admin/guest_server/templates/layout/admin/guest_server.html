@@ -8,7 +8,7 @@
   render_main_tabs(
     Navigation(None)
       .add_item(
-        url_for('.index', party_id=party.id),
+        url_for('.server_index', party_id=party.id),
         _('Servers'),
         id='servers',
         icon='server')

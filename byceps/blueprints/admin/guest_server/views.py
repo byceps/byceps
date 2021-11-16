@@ -38,10 +38,14 @@ from .forms import (
 blueprint = create_blueprint('guest_server_admin', __name__)
 
 
-@blueprint.get('/for_party/<party_id>')
+# -------------------------------------------------------------------- #
+# servers
+
+
+@blueprint.get('/for_party/<party_id>/servers')
 @permission_required('guest_server.view')
 @templated
-def index(party_id):
+def server_index(party_id):
     """Show guest servers for a party."""
     party = _get_party_or_404(party_id)
 
@@ -62,71 +66,6 @@ def index(party_id):
         'users_by_id': users_by_id,
         'sort_addresses': _sort_addresses,
     }
-
-
-# -------------------------------------------------------------------- #
-# setting
-
-
-@blueprint.get('/for_party/<party_id>/settings')
-@permission_required('guest_server.view')
-@templated
-def setting_view(party_id):
-    """Show settings for a party."""
-    party = _get_party_or_404(party_id)
-
-    setting = guest_server_service.get_setting_for_party(party.id)
-
-    return {
-        'party': party,
-        'setting': setting,
-    }
-
-
-@blueprint.get('/for_party/<party_id>/settings/update')
-@permission_required('guest_server.administrate')
-@templated
-def setting_update_form(party_id, erroneous_form=None):
-    """Show form to update the settings for a party."""
-    party = _get_party_or_404(party_id)
-
-    setting = guest_server_service.get_setting_for_party(party.id)
-
-    form = erroneous_form if erroneous_form else SettingUpdateForm(obj=setting)
-
-    return {
-        'party': party,
-        'form': form,
-    }
-
-
-@blueprint.post('/for_party/<party_id>/settings')
-@permission_required('guest_server.administrate')
-def setting_update(party_id):
-    """Update the settings for a party."""
-    party = _get_party_or_404(party_id)
-
-    form = SettingUpdateForm(request.form)
-    if not form.validate():
-        return setting_update_form(party.id, form)
-
-    netmask = _to_ip_address(form.netmask.data.strip())
-    gateway = _to_ip_address(form.gateway.data.strip())
-    dns_server1 = _to_ip_address(form.dns_server1.data.strip())
-    dns_server2 = _to_ip_address(form.dns_server2.data.strip())
-    domain = form.domain.data.strip() or None
-
-    guest_server_service.update_setting(
-        party.id, netmask, gateway, dns_server1, dns_server2, domain
-    )
-
-    flash_success(gettext('Changes have been saved.'))
-
-    return redirect_to('.setting_view', party_id=party.id)
-
-
-# -------------------------------------------------------------------- #
-# servers
 
 
 @blueprint.get('/servers/<server_id>')
@@ -250,7 +189,7 @@ def server_delete(server_id):
 
     flash_success(gettext('Server has been deleted.'))
 
-    return url_for('.index', party_id=party_id)
+    return url_for('.server_index', party_id=party_id)
 
 
 # -------------------------------------------------------------------- #
@@ -294,6 +233,67 @@ def address_update(address_id):
     flash_success(gettext('Changes have been saved.'))
 
     return redirect_to('.server_view', server_id=server.id)
+
+
+# -------------------------------------------------------------------- #
+# setting
+
+
+@blueprint.get('/for_party/<party_id>/settings')
+@permission_required('guest_server.view')
+@templated
+def setting_view(party_id):
+    """Show settings for a party."""
+    party = _get_party_or_404(party_id)
+
+    setting = guest_server_service.get_setting_for_party(party.id)
+
+    return {
+        'party': party,
+        'setting': setting,
+    }
+
+
+@blueprint.get('/for_party/<party_id>/settings/update')
+@permission_required('guest_server.administrate')
+@templated
+def setting_update_form(party_id, erroneous_form=None):
+    """Show form to update the settings for a party."""
+    party = _get_party_or_404(party_id)
+
+    setting = guest_server_service.get_setting_for_party(party.id)
+
+    form = erroneous_form if erroneous_form else SettingUpdateForm(obj=setting)
+
+    return {
+        'party': party,
+        'form': form,
+    }
+
+
+@blueprint.post('/for_party/<party_id>/settings')
+@permission_required('guest_server.administrate')
+def setting_update(party_id):
+    """Update the settings for a party."""
+    party = _get_party_or_404(party_id)
+
+    form = SettingUpdateForm(request.form)
+    if not form.validate():
+        return setting_update_form(party.id, form)
+
+    netmask = _to_ip_address(form.netmask.data.strip())
+    gateway = _to_ip_address(form.gateway.data.strip())
+    dns_server1 = _to_ip_address(form.dns_server1.data.strip())
+    dns_server2 = _to_ip_address(form.dns_server2.data.strip())
+    domain = form.domain.data.strip() or None
+
+    guest_server_service.update_setting(
+        party.id, netmask, gateway, dns_server1, dns_server2, domain
+    )
+
+    flash_success(gettext('Changes have been saved.'))
+
+    return redirect_to('.setting_view', party_id=party.id)
 
 
 # -------------------------------------------------------------------- #
