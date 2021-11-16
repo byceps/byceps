@@ -240,7 +240,7 @@ def server_update(server_id):
 @blueprint.delete('/guest_servers/<uuid:server_id>')
 @permission_required('guest_server.administrate')
 @respond_no_content_with_location
-def delete_server(server_id):
+def server_delete(server_id):
     """Delete a guest server."""
     server = _get_server_or_404(server_id)
 
