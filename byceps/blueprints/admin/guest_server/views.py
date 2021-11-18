@@ -254,17 +254,29 @@ def address_export(party_id):
 def _generate_export_lines(
     addresses: Iterable[Address], setting: Setting
 ) -> Iterator[str]:
-    for address in addresses:
-        if not address.ip_address or not address.hostname:
-            continue
+    complete_pairs = (
+        (ip_address, _get_full_hostname(hostname, setting))
+        for ip_address, hostname in _select_complete_address_pairs(addresses)
+    )
+    return (
+        f'{ip_address} {hostname}' for ip_address, hostname in complete_pairs
+    )
 
-        ip_address = address.ip_address
 
-        hostname = address.hostname
-        if setting.domain:
-            hostname += f'.{setting.domain}'
+def _select_complete_address_pairs(
+    addresses: Iterable[Address],
+) -> Iterator[tuple[IPAddress, str]]:
+    """Return (IP address, hostname) tuples if both are set."""
+    return (
+        (address.ip_address, address.hostname)
+        for address in addresses
+        if address.ip_address and address.hostname
+    )
 
-        yield f'{ip_address} {hostname}'
+
+def _get_full_hostname(hostname: str, setting: Setting) -> str:
+    """Return the hostname with the domain (if configured) appended."""
+    return hostname + '.' + setting.domain if setting.domain else hostname
 
 
 @blueprint.get('/addresses/<uuid:address_id>/update')
