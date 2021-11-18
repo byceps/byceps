@@ -22,6 +22,7 @@ from ....services.guest_server.transfer.models import (
 from ....services.party import service as party_service
 from ....services.user import service as user_service
 from ....signals import guest_server as guest_server_signals
+from ....util.export import serialize_tuples_to_csv
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -248,19 +249,21 @@ def address_export(party_id):
 
     setting = guest_server_service.get_setting_for_party(party.id)
 
-    return '\n'.join(_generate_export_lines(addresses, setting))
+    return _generate_addresses_csv(addresses, setting)
 
 
-def _generate_export_lines(
+def _generate_addresses_csv(
     addresses: Iterable[Address], setting: Setting
 ) -> Iterator[str]:
-    complete_pairs = (
-        (ip_address, _get_full_hostname(hostname, setting))
+    """Return IP address and hostname pairs as CSV with headers."""
+    field_names = [('IP address', 'hostname')]
+
+    rows = [
+        (str(ip_address), _get_full_hostname(hostname, setting))
         for ip_address, hostname in _select_complete_address_pairs(addresses)
-    )
-    return (
-        f'{ip_address} {hostname}' for ip_address, hostname in complete_pairs
-    )
+    ]
+
+    return serialize_tuples_to_csv(field_names + rows)
 
 
 def _select_complete_address_pairs(
