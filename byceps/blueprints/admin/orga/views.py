@@ -16,7 +16,7 @@ from ....services.orga import birthday_service as orga_birthday_service
 from ....services.orga import service as orga_service
 from ....services.orga.transfer.models import Birthday
 from ....services.user import service as user_service
-from ....util.export import serialize_to_csv
+from ....util.export import serialize_dicts_to_csv
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -184,7 +184,7 @@ def export_persons(brand_id):
     orgas = [orga for orga in orgas if not orga.deleted]
     orgas.sort(key=user_service.get_sort_key_for_screen_name)
     rows = map(to_dict, orgas)
-    return serialize_to_csv(field_names, rows)
+    return serialize_dicts_to_csv(field_names, rows, delimiter=';')
 
 
 @blueprint.get('/birthdays')

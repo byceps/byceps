@@ -5,10 +5,10 @@
 
 import pytest
 
-from byceps.util.export import serialize_to_csv
+from byceps.util.export import serialize_dicts_to_csv
 
 
-def test_serialize_to_csv():
+def test_serialize_dicts_to_csv():
     field_names = ['name', 'color']
     rows = [
         {'name': 'Sonic the Hedgehog', 'color': 'blue'},
@@ -16,7 +16,7 @@ def test_serialize_to_csv():
         {'name': 'Ultraman', 'color': 'white/red'},
     ]
 
-    actual = serialize_to_csv(field_names, rows)
+    actual = serialize_dicts_to_csv(field_names, rows, delimiter=';')
 
     assert list(actual) == [
         'name;color\r\n',
