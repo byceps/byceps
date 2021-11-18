@@ -151,10 +151,7 @@ def update_server(
     approved: bool,
 ) -> Server:
     """Update the server."""
-    db_server = db.session.execute(
-        select(DbServer)
-        .filter_by(id=server_id)
-    ).scalars().one_or_none()
+    db_server = _find_db_server(server_id)
 
     if db_server is None:
         raise ValueError(f'Unknown server ID "{server_id}"')
@@ -169,10 +166,7 @@ def update_server(
 
 def find_server(server_id: ServerID) -> Optional[Server]:
     """Return the server, if found."""
-    db_server = db.session.execute(
-        select(DbServer)
-        .filter_by(id=server_id)
-    ).scalars().one_or_none()
+    db_server = _find_db_server(server_id)
 
     if db_server is None:
         return None
@@ -222,6 +216,13 @@ def delete_server(server_id: ServerID) -> None:
     db.session.commit()
 
 
+def _find_db_server(server_id: ServerID) -> Optional[DbServer]:
+    return db.session.execute(
+        select(DbServer)
+        .filter_by(id=server_id)
+    ).scalars().one_or_none()
+
+
 def _db_entity_to_server(db_server: DbServer) -> Server:
     addresses = {
         Address(
@@ -252,10 +253,7 @@ def _db_entity_to_server(db_server: DbServer) -> Server:
 
 def find_address(address_id: AddressID) -> Optional[Address]:
     """Return the address, if found."""
-    db_address = db.session.execute(
-        select(DbAddress)
-        .filter_by(id=address_id)
-    ).scalars().one_or_none()
+    db_address = _find_db_address(address_id)
 
     if db_address is None:
         return None
@@ -269,10 +267,7 @@ def update_address(
     hostname: Optional[str],
 ) -> Address:
     """Update the address."""
-    db_address = db.session.execute(
-        select(DbAddress)
-        .filter_by(id=address_id)
-    ).scalars().one_or_none()
+    db_address = _find_db_address(address_id)
 
     if db_address is None:
         raise ValueError(f'Unknown address ID "{address_id}"')
@@ -283,6 +278,13 @@ def update_address(
     db.session.commit()
 
     return _db_entity_to_address(db_address)
+
+
+def _find_db_address(address_id: AddressID) -> Optional[DbAddress]:
+    return db.session.execute(
+        select(DbAddress)
+        .filter_by(id=address_id)
+    ).scalars().one_or_none()
 
 
 def _db_entity_to_address(db_address: DbAddress) -> Address:
