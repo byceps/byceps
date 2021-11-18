@@ -50,11 +50,14 @@ h1 {
   margin: 0;
 }
 
-h2 {
+.mt {
+  margin-top: 1.5rem;
+}
+
+.data-label {
   color: var(--color-dim);
   font-size: 1rem;
   margin-bottom: 0.5rem;
-  margin-top: 1.5rem;
 }
 
 table {
@@ -82,10 +85,6 @@ td {
   font-family: monospace;
 }
 
-.qrcode {
-  margin-top: 1.5rem;
-}
-
 {% include 'common/guest_server/_printable_card_styles.html' ignore missing %}
     </style>
   </head>
@@ -96,35 +95,42 @@ td {
 
       <h1>{{ _('Guest server') }}</h1>
 
-      <h2>{{ _('Party') }}</h2>
+      <div class="data-label mt">{{ _('Party') }}</div>
       <div>{{ party_title }}</div>
 
-      <h2>{{ _('Owner') }}</h2>
+      <div class="data-label mt">{{ _('Owner') }}</div>
       <div>{{ render_user_screen_name(owner) }}</div>
 
-      <h2>{{ _('IP address') }} {{ _('and') }} {{ _('Hostname') }}</h2>
-      <table class="index">
-        {%- for address in addresses %}
-        <tr>
-          <td class="monospace">
-            {%- if address.ip_address %}
-            {{ address.ip_address }}
-            {%- else %}
-            <span class="missing"></span>
-            {%- endif %}
-          </td>
-          <td class="monospace">
-            {%- if address.hostname %}
-            {{ address.hostname }}{% if domain %}.{{ domain }}{% endif %}
-            {%- else %}
-            <span class="missing"></span>
-            {%- endif %}
-          </td>
-        </tr>
-        {%- endfor %}
+      <table class="mt">
+        <thead>
+          <tr>
+            <th class="data-label">{{ _('IP address') }}</th>
+            <th class="data-label">{{ _('Hostname') }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for address in addresses %}
+          <tr>
+            <td class="monospace">
+              {%- if address.ip_address %}
+              {{ address.ip_address }}
+              {%- else %}
+              <span class="missing"></span>
+              {%- endif %}
+            </td>
+            <td class="monospace">
+              {%- if address.hostname %}
+              {{ address.hostname }}{% if domain %}.{{ domain }}{% endif %}
+              {%- else %}
+              <span class="missing"></span>
+              {%- endif %}
+            </td>
+          </tr>
+          {%- endfor %}
+        </tbody>
       </table>
 
-      <img class="qrcode" src="{{ qrcode|safe }}">
+      <img class="mt" src="{{ qrcode|safe }}">
 
     </div>
 
