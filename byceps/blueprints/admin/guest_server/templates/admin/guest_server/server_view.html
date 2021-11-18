@@ -70,17 +70,24 @@
       <div class="row">
         <div class="column-auto" style="flex-basis: 33%;">
 
-          <div class="data-label">{{ _('IP address') }} {{ _('and') }} {{ _('Hostname') }}</div>
           <table class="index">
-            {%- for address in sort_addresses(server.addresses) %}
-            <tr>
-              <td>{{ render_ip_address(address) }}</td>
-              <td>{{ render_hostname(address, setting) }}</td>
-              {%- if has_current_user_permission('guest_server.administrate') %}
-              <td><a class="button button--compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a></td>
-              {%- endif %}
-            </tr>
-            {%- endfor %}
+            <thead>
+              <tr>
+                <th class="data-label">{{ _('IP address') }}</th>
+                <th class="data-label">{{ _('Hostname') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for address in sort_addresses(server.addresses) %}
+              <tr>
+                <td>{{ render_ip_address(address) }}</td>
+                <td>{{ render_hostname(address, setting) }}</td>
+                {%- if has_current_user_permission('guest_server.administrate') %}
+                <td><a class="button button--compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a></td>
+                {%- endif %}
+              </tr>
+              {%- endfor %}
+            </tbody>
           </table>
 
         </div>

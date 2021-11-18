@@ -50,14 +50,21 @@
       <div class="row">
         <div class="column-auto" style="flex-basis: 33%;">
 
-          <div class="data-label">{{ _('IP address') }} {{ _('and') }} {{ _('Hostname') }}</div>
           <table class="index">
-            {%- for address in sort_addresses(server.addresses) %}
-            <tr>
-              <td>{{ render_ip_address(address) }}</td>
-              <td>{{ render_hostname(address, setting) }}</td>
-            </tr>
-            {%- endfor %}
+            <thead>
+              <tr>
+                <th class="data-label">{{ _('IP address') }}</th>
+                <th class="data-label">{{ _('Hostname') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for address in sort_addresses(server.addresses) %}
+              <tr>
+                <td>{{ render_ip_address(address) }}</td>
+                <td>{{ render_hostname(address, setting) }}</td>
+              </tr>
+              {%- endfor %}
+            </tbody>
           </table>
 
         </div>

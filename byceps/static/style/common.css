@@ -354,6 +354,10 @@ table.wide {
   margin-top: 1rem;
 }
 
+.index th.data-label {
+  font-weight: normal;
+}
+
 
 /* forms */
 

@@ -1943,8 +1943,6 @@ msgstr "Gastserver anmelden"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:53
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:73
 #: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:105
 msgid "and"
 msgstr "und"
