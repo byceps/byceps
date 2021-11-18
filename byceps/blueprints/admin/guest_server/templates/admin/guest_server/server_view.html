@@ -75,6 +75,9 @@
               <tr>
                 <th class="data-label">{{ _('IP address') }}</th>
                 <th class="data-label">{{ _('Hostname') }}</th>
+                {%- if has_current_user_permission('guest_server.administrate') %}
+                <td><a class="button button--compact" href="{{ url_for('.address_create_form', server_id=server.id) }}" title="{{ _('Add server address') }}">{{ render_icon('add') }}</a></th>
+                {%- endif %}
               </tr>
             </thead>
             <tbody>

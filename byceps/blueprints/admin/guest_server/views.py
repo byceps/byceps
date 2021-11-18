@@ -34,6 +34,7 @@ from ....util.views import (
 )
 
 from .forms import (
+    AddressCreateForm,
     AddressUpdateForm,
     ServerCreateForm,
     ServerUpdateForm,
@@ -280,6 +281,45 @@ def _select_complete_address_pairs(
 def _get_full_hostname(hostname: str, setting: Setting) -> str:
     """Return the hostname with the domain (if configured) appended."""
     return hostname + '.' + setting.domain if setting.domain else hostname
+
+
+@blueprint.get('/servers/<uuid:server_id>/addresses/create')
+@permission_required('guest_server.administrate')
+@templated
+def address_create_form(server_id, erroneous_form=None):
+    """Show a form to add an address to a server."""
+    server = _get_server_or_404(server_id)
+    party = party_service.get_party(server.party_id)
+
+    form = erroneous_form if erroneous_form else AddressCreateForm()
+
+    return {
+        'party': party,
+        'server': server,
+        'form': form,
+    }
+
+
+@blueprint.post('/servers/<uuid:server_id>/addresses')
+@permission_required('guest_server.administrate')
+def address_create(server_id):
+    """Add an address to a server."""
+    server = _get_server_or_404(server_id)
+
+    form = AddressCreateForm(request.form)
+    if not form.validate():
+        return address_create_form(server_id, form)
+
+    ip_address = _to_ip_address(form.ip_address.data.strip())
+    hostname = form.hostname.data.strip() or None
+
+    address = guest_server_service.create_address(
+        server.id, ip_address, hostname
+    )
+
+    flash_success(gettext('The address has been added.'))
+
+    return redirect_to('.server_view', server_id=server.id)
 
 
 @blueprint.get('/addresses/<uuid:address_id>/update')

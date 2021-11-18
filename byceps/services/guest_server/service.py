@@ -151,10 +151,7 @@ def update_server(
     approved: bool,
 ) -> Server:
     """Update the server."""
-    db_server = _find_db_server(server_id)
-
-    if db_server is None:
-        raise ValueError(f'Unknown server ID "{server_id}"')
+    db_server = _get_db_server(server_id)
 
     db_server.notes_admin = notes_admin
     db_server.approved = approved
@@ -223,6 +220,15 @@ def _find_db_server(server_id: ServerID) -> Optional[DbServer]:
     ).scalars().one_or_none()
 
 
+def _get_db_server(server_id: ServerID) -> DbServer:
+    db_server = _find_db_server(server_id)
+
+    if db_server is None:
+        raise ValueError(f'Unknown server ID "{server_id}"')
+
+    return db_server
+
+
 def _db_entity_to_server(db_server: DbServer) -> Server:
     addresses = {
         Address(
@@ -257,6 +263,22 @@ def find_address(address_id: AddressID) -> Optional[Address]:
 
     if db_address is None:
         return None
+
+    return _db_entity_to_address(db_address)
+
+
+def create_address(
+    server_id: ServerID,
+    ip_address: Optional[IPAddress] = None,
+    hostname: Optional[str] = None,
+) -> Address:
+    """Append an address to a server."""
+    db_server = _get_db_server(server_id)
+
+    db_address = DbAddress(db_server, ip_address=ip_address, hostname=hostname)
+    db.session.add(db_address)
+
+    db.session.commit()
 
     return _db_entity_to_address(db_address)
 

@@ -723,10 +723,10 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/role_index.html:42
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/role_view.html:38
 #: byceps/blueprints/admin/authorization/templates/admin/authorization/role_view.html:51
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:67
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:73
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:90
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:96
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:74
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:80
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:100
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:106
 #: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:8
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:189
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:141
@@ -1102,6 +1102,7 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/board/templates/admin/board/category_update_form.html:21
 #: byceps/blueprints/admin/brand/templates/admin/brand/email_config_update_form.html:21
 #: byceps/blueprints/admin/brand/templates/admin/brand/update_form.html:21
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_create_form.html:21
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_update_form.html:20
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_update_form.html:20
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_update_form.html:42
@@ -1379,7 +1380,7 @@ msgstr "Marke"
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:63
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:58
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orga_activities.html:11
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:99
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:98
 #: byceps/blueprints/site/user_profile/templates/site/user_profile/view.html:43
 msgid "Party"
 msgstr "Party"
@@ -1727,6 +1728,7 @@ msgid "tickets checked in"
 msgstr "Tickets eingecheckt"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:84
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_create_form.html:9
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:8
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_update_form.html:9
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_create_form.html:9
@@ -1846,16 +1848,16 @@ msgstr "Domäne"
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:22
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:41
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:100
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:102
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:101
 msgid "Owner"
 msgstr "Besitzer/in"
 
 #: byceps/blueprints/admin/guest_server/forms.py:49
 #: byceps/blueprints/admin/guest_server/forms.py:72
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:29
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:53
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:73
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:105
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:56
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:76
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:107
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:11
 msgid "IP address"
 msgstr "IP-Adresse"
@@ -1863,9 +1865,9 @@ msgstr "IP-Adresse"
 #: byceps/blueprints/admin/guest_server/forms.py:53
 #: byceps/blueprints/admin/guest_server/forms.py:76
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:30
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:53
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:73
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:105
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:57
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:77
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:108
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:12
 #: byceps/blueprints/site/guest_server/forms.py:23
 msgid "Hostname"
@@ -1873,26 +1875,39 @@ msgstr "Hostname"
 
 #: byceps/blueprints/admin/guest_server/forms.py:57
 #: byceps/blueprints/admin/guest_server/forms.py:65
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:72
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:95
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:79
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:105
 msgid "Notes by admin"
 msgstr "Anmerkungen des Admins"
 
-#: byceps/blueprints/admin/guest_server/views.py:140
+#: byceps/blueprints/admin/guest_server/forms.py:88
+msgid "Provide at least an IP address or a hostname."
+msgstr ""
+
+#: byceps/blueprints/admin/guest_server/views.py:142
 #: byceps/blueprints/site/guest_server/views.py:67
 msgid "The server has been registered."
 msgstr "Der Server wurde registriert."
 
-#: byceps/blueprints/admin/guest_server/views.py:179
-#: byceps/blueprints/admin/guest_server/views.py:304
-#: byceps/blueprints/admin/guest_server/views.py:365
+#: byceps/blueprints/admin/guest_server/views.py:181
+#: byceps/blueprints/admin/guest_server/views.py:359
+#: byceps/blueprints/admin/guest_server/views.py:420
 #: byceps/blueprints/admin/user/views.py:659
 msgid "Changes have been saved."
 msgstr "Die Änderungen wurden gespeichert."
 
-#: byceps/blueprints/admin/guest_server/views.py:195
+#: byceps/blueprints/admin/guest_server/views.py:197
 msgid "Server has been deleted."
 msgstr "Der Server wurde gelöscht."
+
+#: byceps/blueprints/admin/guest_server/views.py:320
+msgid "The address has been added."
+msgstr "Die Adresse wurde hinzugefügt."
+
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_create_form.html:6
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:79
+msgid "Add server address"
+msgstr "Server-Adresse hinzufügen"
 
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:8
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:15
@@ -1917,7 +1932,7 @@ msgstr "Anzeigen"
 
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:45
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_update_form.html:6
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:80
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:89
 msgid "Update server address"
 msgstr "Server-Adresse bearbeiten"
 
@@ -1943,12 +1958,12 @@ msgstr "Gastserver anmelden"
 msgid "Add"
 msgstr "Hinzufügen"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:66
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:89
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:73
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:99
 msgid "Notes by owner"
 msgstr "Anmerkungen des Besitzers"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:83
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:90
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:76
 msgid "No servers registered."
 msgstr "Es sind keine Server registriert."
@@ -1967,7 +1982,7 @@ msgstr "Druckbare Gastserver-Card ansehen"
 msgid "Delete server"
 msgstr "Server löschen"
 
-#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:109
+#: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:119
 msgid "Delete server?"
 msgstr "Server löschen?"
 
@@ -5132,7 +5147,7 @@ msgstr "Avatar eines gelöschten Benutzers"
 msgid "Guest server card"
 msgstr "Gastserver-Card anzeigen"
 
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:97
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:96
 msgid "Guest server"
 msgstr "Gastserver"
 

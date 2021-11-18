@@ -8,7 +8,7 @@ byceps.blueprints.admin.guest_server.forms
 
 import re
 
-from flask_babel import lazy_gettext
+from flask_babel import gettext, lazy_gettext
 from wtforms import BooleanField, StringField, TextAreaField
 from wtforms.validators import (
     InputRequired,
@@ -67,7 +67,7 @@ class ServerUpdateForm(LocalizedForm):
     approved = BooleanField(lazy_gettext('approved'), validators=[Optional()])
 
 
-class AddressUpdateForm(LocalizedForm):
+class _AddressBaseForm(LocalizedForm):
     ip_address = StringField(
         lazy_gettext('IP address'),
         validators=[Optional(), IPAddress(ipv6=True)],
@@ -76,3 +76,21 @@ class AddressUpdateForm(LocalizedForm):
         lazy_gettext('Hostname'),
         validators=[Optional(), Length(max=20), Regexp(HOSTNAME_REGEX)],
     )
+
+
+class AddressCreateForm(_AddressBaseForm):
+    def validate(self) -> bool:
+        if not super().validate():
+            return False
+
+        if not self.ip_address.data and not self.hostname.data.strip():
+            self.form_errors.append(
+                gettext('Provide at least an IP address or a hostname.')
+            )
+            return False
+
+        return True
+
+
+class AddressUpdateForm(_AddressBaseForm):
+    pass
