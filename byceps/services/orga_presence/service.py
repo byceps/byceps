@@ -130,7 +130,7 @@ def _to_local_pendulum_datetime(dt: datetime) -> DateTime:
 
 def _to_datetimes_without_tzinfo(dts: Sequence[DateTime]) -> Iterator[datetime]:
     for dt in dts:
-        yield dt.replace(tzinfo=None)
+        yield datetime.fromtimestamp(dt.timestamp())
 
 
 def get_days_and_hour_totals(
