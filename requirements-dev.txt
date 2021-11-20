@@ -3,5 +3,5 @@ black==21.11b1
 Flask-DebugToolbar==0.11.0
 flask-shell-ipython==0.4.1
 mypy==0.910
-Sphinx==4.1.2
+Sphinx==4.3.0
 sqlalchemy2-stubs==0.0.2a19
