@@ -8,7 +8,7 @@ byceps.blueprints.admin.snippet.views
 
 from typing import Optional
 from flask import abort, g, request, url_for
-from flask_babel import gettext
+from flask_babel import format_datetime, gettext
 
 from ....services.snippet.dbmodels.snippet import (
     SnippetVersion as DbSnippetVersion,
@@ -18,7 +18,6 @@ from ....services.snippet.transfer.models import Scope, SnippetVersionID
 from ....services.text_diff import service as text_diff_service
 from ....services.user import service as user_service
 from ....signals import snippet as snippet_signals
-from ....util.datetime.format import format_datetime_short
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -501,8 +500,8 @@ def _create_html_diff(
     """Create an HTML diff between the named attribute's value of each
     of the two versions.
     """
-    from_description = format_datetime_short(from_version.created_at)
-    to_description = format_datetime_short(to_version.created_at)
+    from_description = format_datetime(from_version.created_at)
+    to_description = format_datetime(to_version.created_at)
 
     from_text = getattr(from_version, attribute_name)
     to_text = getattr(to_version, attribute_name)

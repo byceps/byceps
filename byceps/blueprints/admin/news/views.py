@@ -9,7 +9,7 @@ byceps.blueprints.admin.news.views
 from datetime import date, datetime
 
 from flask import abort, g, request
-from flask_babel import gettext
+from flask_babel import format_datetime, gettext
 
 from ....services.brand import service as brand_service
 from ....services.image import service as image_service
@@ -23,7 +23,6 @@ from ....services.text_diff import service as text_diff_service
 from ....services.user import service as user_service
 from ....services.user.service import UserIdRejected
 from ....signals import news as news_signals
-from ....util.datetime.format import format_datetime_short
 from ....util.datetime.timezone import local_tz_to_utc
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
@@ -648,8 +647,8 @@ def _create_html_diff(from_version, to_version, attribute_name):
     """Create an HTML diff between the named attribute's value of each
     of the two versions.
     """
-    from_description = format_datetime_short(from_version.created_at)
-    to_description = format_datetime_short(to_version.created_at)
+    from_description = format_datetime(from_version.created_at)
+    to_description = format_datetime(to_version.created_at)
 
     from_text = getattr(from_version, attribute_name)
     to_text = getattr(to_version, attribute_name)
