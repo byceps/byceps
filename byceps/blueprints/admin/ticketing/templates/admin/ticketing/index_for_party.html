@@ -52,7 +52,10 @@
 {% include 'admin/ticketing/_ticket_list.html' %}
   {%- endwith %}
 
-{{ render_pagination_nav(tickets, '.index_for_party', {'party_id': party.id}) }}
+{{ render_pagination_nav(tickets, '.index_for_party', {
+  'party_id': party.id,
+  'only_category': only_category.id if only_category else None,
+}) }}
   </div>
 
 {%- endblock %}
