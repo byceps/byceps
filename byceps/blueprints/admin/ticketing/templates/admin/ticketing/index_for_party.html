@@ -27,8 +27,8 @@
         <span>{{ _('Category') }}:</span>
         <button class="dropdown-toggle button button--compact">
           <span>
-            {%- if only_category %}
-            {{ only_category.title }}
+            {%- if filter_category %}
+            {{ filter_category.title }}
             {%- else %}
             {{ _('all') }}
             {%- endif %}
@@ -39,7 +39,7 @@
           <li><a class="dropdown-item" href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ _('all') }}</a></li>
           <li class="dropdown-divider"></li>
           {%- for category in categories|sort(attribute='title') %}
-          <li><a class="dropdown-item" href="{{ url_for('.index_for_party', party_id=party.id, only_category=category.id) }}">{{ category.title }}</a></li>
+          <li><a class="dropdown-item" href="{{ url_for('.index_for_party', party_id=party.id, category=category.id) }}">{{ category.title }}</a></li>
           {%- endfor %}
         </ol>
       </div>
@@ -54,7 +54,7 @@
 
 {{ render_pagination_nav(tickets, '.index_for_party', {
   'party_id': party.id,
-  'only_category': only_category.id if only_category else None,
+  'category': filter_category.id if filter_category else None,
 }) }}
   </div>
 

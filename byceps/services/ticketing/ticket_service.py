@@ -271,7 +271,7 @@ def get_tickets_with_details_for_party_paginated(
     per_page: int,
     *,
     search_term: Optional[str] = None,
-    only_category_id: Optional[TicketCategoryID] = None,
+    filter_category_id: Optional[TicketCategoryID] = None,
 ) -> Pagination:
     """Return the party's tickets to show on the specified page."""
     query = db.session \
@@ -289,9 +289,9 @@ def get_tickets_with_details_for_party_paginated(
         query = query \
             .filter(DbTicket.code.ilike(ilike_pattern))
 
-    if only_category_id:
+    if filter_category_id:
         query = query \
-            .filter(DbCategory.id == str(only_category_id))
+            .filter(DbCategory.id == str(filter_category_id))
 
     return query \
         .order_by(DbTicket.created_at) \

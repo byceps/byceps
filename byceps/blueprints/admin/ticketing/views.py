@@ -43,17 +43,17 @@ def index_for_party(party_id, page):
 
     per_page = request.args.get('per_page', type=int, default=15)
 
-    only_category_id = request.args.get('only_category')
-    only_category = category_service.find_category(only_category_id)
-
     search_term = request.args.get('search_term', default='').strip()
+
+    filter_category_id = request.args.get('category')
+    filter_category = category_service.find_category(filter_category_id)
 
     tickets = ticket_service.get_tickets_with_details_for_party_paginated(
         party.id,
         page,
         per_page,
         search_term=search_term,
-        only_category_id=only_category_id,
+        filter_category_id=filter_category.id if filter_category is not None else None,
     )
 
     categories = category_service.get_categories_for_party(party.id)
@@ -63,7 +63,7 @@ def index_for_party(party_id, page):
         'search_term': search_term,
         'tickets': tickets,
         'categories': categories,
-        'only_category': only_category,
+        'filter_category': filter_category,
     }
 
 
