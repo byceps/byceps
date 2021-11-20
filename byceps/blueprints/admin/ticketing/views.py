@@ -17,6 +17,7 @@ from ....services.ticketing import (
     ticket_service,
     ticket_user_management_service,
 )
+from ....services.ticketing.ticket_service import FilterMode
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -48,12 +49,37 @@ def index_for_party(party_id, page):
     filter_category_id = request.args.get('category')
     filter_category = category_service.find_category(filter_category_id)
 
+    try:
+        filter_revoked = FilterMode[request.args.get('revoked')]
+    except KeyError:
+        filter_revoked = None
+
+    try:
+        filter_checked_in = FilterMode[request.args.get('checked_in')]
+    except KeyError:
+        filter_checked_in = None
+
+    filter_args = {}
+    if filter_category is not None:
+        filter_args['category'] = filter_category_id
+    if filter_revoked is not None:
+        filter_args['revoked'] = filter_revoked.name
+    if filter_checked_in is not None:
+        filter_args['checked_in'] = filter_checked_in.name
+
+    def _get_filter_args(**kwargs) -> dict[str, str]:
+        args = filter_args.copy()
+        args.update(**kwargs)
+        return args
+
     tickets = ticket_service.get_tickets_with_details_for_party_paginated(
         party.id,
         page,
         per_page,
         search_term=search_term,
         filter_category_id=filter_category.id if filter_category is not None else None,
+        filter_revoked=filter_revoked,
+        filter_checked_in=filter_checked_in,
     )
 
     categories = category_service.get_categories_for_party(party.id)
@@ -64,6 +90,9 @@ def index_for_party(party_id, page):
         'tickets': tickets,
         'categories': categories,
         'filter_category': filter_category,
+        'filter_revoked': filter_revoked,
+        'filter_checked_in': filter_checked_in,
+        'get_filter_args': _get_filter_args,
     }
 
 

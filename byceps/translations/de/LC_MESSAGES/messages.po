@@ -1087,7 +1087,7 @@ msgstr "Kategorie bearbeiten"
 #: byceps/blueprints/admin/shop/article/forms.py:238
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:25
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:23
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:27
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:30
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:26
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:80
 #: byceps/blueprints/admin/tourney/tourney/forms.py:29
@@ -3237,6 +3237,10 @@ msgstr "Nur indirekt bestellbar"
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:121
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:124
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:127
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:59
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:72
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:86
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:99
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:86
 msgid "yes"
 msgstr "ja"
@@ -3244,6 +3248,10 @@ msgstr "ja"
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:121
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:124
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:127
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:61
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:73
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:88
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:100
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:86
 msgid "no"
 msgstr "nein"
@@ -4074,8 +4082,8 @@ msgstr "Code"
 msgid "Invalid format"
 msgstr "Ungültiges Format"
 
-#: byceps/blueprints/admin/ticketing/views.py:109
-#: byceps/blueprints/admin/ticketing/views.py:134
+#: byceps/blueprints/admin/ticketing/views.py:138
+#: byceps/blueprints/admin/ticketing/views.py:163
 msgid ""
 "Code cannot be changed as somebody has already been checked in with this "
 "ticket."
@@ -4083,12 +4091,12 @@ msgstr ""
 "Der Code kann nicht geändert werden, da bereits jemand mit diesem Ticket "
 "eingecheckt worden ist."
 
-#: byceps/blueprints/admin/ticketing/views.py:150
+#: byceps/blueprints/admin/ticketing/views.py:179
 #, python-format
 msgid "Code for ticket %(ticket_code)s has been updated."
 msgstr "Der Code von Ticket %(ticket_code)s wurde geändert."
 
-#: byceps/blueprints/admin/ticketing/views.py:196
+#: byceps/blueprints/admin/ticketing/views.py:225
 #: byceps/blueprints/site/ticketing/views.py:165
 #, python-format
 msgid "%(screen_name)s has been assigned as user of ticket %(ticket_code)s."
@@ -4289,10 +4297,30 @@ msgstr "Zuweisen"
 msgid "Ticket bundles"
 msgstr "Ticket-Bundles"
 
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:33
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:39
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:36
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:42
 msgid "all"
 msgstr "alle"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:54
+#: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:5
+msgid "revoked"
+msgstr "widerrufen"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:64
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:70
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:91
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:97
+msgid "unfiltered"
+msgstr "ungefiltert"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:81
+#: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:10
+#: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:85
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/_tickets.html:29
+#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:61
+msgid "checked in"
+msgstr "eingecheckt"
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/update_code_form.html:6
 msgid "Change ticket code"
@@ -4342,19 +4370,8 @@ msgid "Ticket Bundles"
 msgstr "Ticket-Bundles"
 
 #: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:5
-msgid "revoked"
-msgstr "widerrufen"
-
-#: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:5
 msgid "This ticket is no longer valid."
 msgstr "Das Ticket wurde widerrufen."
-
-#: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:10
-#: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:85
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/_tickets.html:29
-#: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:61
-msgid "checked in"
-msgstr "eingecheckt"
 
 #: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:10
 msgid "A user has already been checked in with this ticket."

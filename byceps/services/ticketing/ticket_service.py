@@ -7,6 +7,7 @@ byceps.services.ticketing.ticket_service
 """
 
 from __future__ import annotations
+from enum import Enum
 from typing import Optional, Sequence
 
 from sqlalchemy import select
@@ -265,6 +266,9 @@ def get_ticket_with_details(ticket_id: TicketID) -> Optional[DbTicket]:
         .get(ticket_id)
 
 
+FilterMode = Enum('FilterMode', ['select', 'reject'])
+
+
 def get_tickets_with_details_for_party_paginated(
     party_id: PartyID,
     page: int,
@@ -272,6 +276,8 @@ def get_tickets_with_details_for_party_paginated(
     *,
     search_term: Optional[str] = None,
     filter_category_id: Optional[TicketCategoryID] = None,
+    filter_revoked: Optional[FilterMode] = None,
+    filter_checked_in: Optional[FilterMode] = None,
 ) -> Pagination:
     """Return the party's tickets to show on the specified page."""
     query = db.session \
@@ -292,6 +298,14 @@ def get_tickets_with_details_for_party_paginated(
     if filter_category_id:
         query = query \
             .filter(DbCategory.id == str(filter_category_id))
+
+    if filter_revoked is not None:
+        query = query \
+            .filter(DbTicket.revoked == (filter_revoked is FilterMode.select))
+
+    if filter_checked_in is not None:
+        query = query \
+            .filter(DbTicket.user_checked_in == (filter_checked_in is FilterMode.select))
 
     return query \
         .order_by(DbTicket.created_at) \
