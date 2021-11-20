@@ -21,14 +21,25 @@
       </form>
 
     </div>
-    <div class="column-auto">
+    <div class="column-auto column--align-bottom">
 
       <div class="dropdown">
-        <button class="dropdown-toggle button"><span>{{ _('Filter') }}</span> {{ render_icon('chevron-down') }}</button>
+        <span>{{ _('Category') }}:</span>
+        <button class="dropdown-toggle button button--compact">
+          <span>
+            {%- if only_category %}
+            {{ only_category.title }}
+            {%- else %}
+            {{ _('all') }}
+            {%- endif %}
+          </span>
+          {{ render_icon('chevron-down') }}
+        </button>
         <ol class="dropdown-menu dropdown-menu--right">
-          <li><a class="dropdown-item" href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ _('none') }}</a></li>
-          {%- for category in categories %}
-          <li><a class="dropdown-item" href="{{ url_for('.index_for_party', party_id=party.id, only_category=category.id) }}"><em>{{ _('Category') }}:</em> {{ category.title }}</a></li>
+          <li><a class="dropdown-item" href="{{ url_for('.index_for_party', party_id=party.id) }}">{{ _('all') }}</a></li>
+          <li class="dropdown-divider"></li>
+          {%- for category in categories|sort(attribute='title') %}
+          <li><a class="dropdown-item" href="{{ url_for('.index_for_party', party_id=party.id, only_category=category.id) }}">{{ category.title }}</a></li>
           {%- endfor %}
         </ol>
       </div>

@@ -737,7 +737,6 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_user_list.html:43
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:58
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:43
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:29
 #: byceps/blueprints/admin/user/templates/admin/user/_user_list.html:25
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:54
 #: byceps/blueprints/admin/user/templates/admin/user/_view_attended_parties.html:13
@@ -1088,7 +1087,7 @@ msgstr "Kategorie bearbeiten"
 #: byceps/blueprints/admin/shop/article/forms.py:238
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_list.html:25
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:23
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:31
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:27
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:26
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:80
 #: byceps/blueprints/admin/tourney/tourney/forms.py:29
@@ -3609,7 +3608,6 @@ msgid "Remove search term constraint"
 msgstr "Einschränkung auf Suchbegriff aufheben"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:26
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:27
 #: byceps/blueprints/admin/user/templates/admin/user/index.html:69
 msgid "Filter"
 msgstr "Einschränkung"
@@ -4076,8 +4074,8 @@ msgstr "Code"
 msgid "Invalid format"
 msgstr "Ungültiges Format"
 
-#: byceps/blueprints/admin/ticketing/views.py:107
-#: byceps/blueprints/admin/ticketing/views.py:132
+#: byceps/blueprints/admin/ticketing/views.py:109
+#: byceps/blueprints/admin/ticketing/views.py:134
 msgid ""
 "Code cannot be changed as somebody has already been checked in with this "
 "ticket."
@@ -4085,12 +4083,12 @@ msgstr ""
 "Der Code kann nicht geändert werden, da bereits jemand mit diesem Ticket "
 "eingecheckt worden ist."
 
-#: byceps/blueprints/admin/ticketing/views.py:148
+#: byceps/blueprints/admin/ticketing/views.py:150
 #, python-format
 msgid "Code for ticket %(ticket_code)s has been updated."
 msgstr "Der Code von Ticket %(ticket_code)s wurde geändert."
 
-#: byceps/blueprints/admin/ticketing/views.py:194
+#: byceps/blueprints/admin/ticketing/views.py:196
 #: byceps/blueprints/site/ticketing/views.py:165
 #, python-format
 msgid "%(screen_name)s has been assigned as user of ticket %(ticket_code)s."
@@ -4290,6 +4288,11 @@ msgstr "Zuweisen"
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:13
 msgid "Ticket bundles"
 msgstr "Ticket-Bundles"
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:33
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:39
+msgid "all"
+msgstr "alle"
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/update_code_form.html:6
 msgid "Change ticket code"

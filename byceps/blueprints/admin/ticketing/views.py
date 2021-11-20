@@ -44,6 +44,7 @@ def index_for_party(party_id, page):
     per_page = request.args.get('per_page', type=int, default=15)
 
     only_category_id = request.args.get('only_category')
+    only_category = category_service.find_category(only_category_id)
 
     search_term = request.args.get('search_term', default='').strip()
 
@@ -62,6 +63,7 @@ def index_for_party(party_id, page):
         'search_term': search_term,
         'tickets': tickets,
         'categories': categories,
+        'only_category': only_category,
     }
 
 
