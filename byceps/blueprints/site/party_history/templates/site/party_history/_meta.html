@@ -2,7 +2,7 @@
 
 <div class="dimmed">
   <span style="margin-right: 0.25rem;">{{ render_icon('date') }}</span>
-  <time datetime="{{ party.starts_at.date().isoformat() }}">{{ format_date(party.starts_at, 'full') }}</time> – <time datetime="{{ party.ends_at.date().isoformat() }}">{{ format_date(party.ends_at, 'full') }}</time>
+  <time datetime="{{ party.starts_at.date().isoformat() }}">{{ party.starts_at|dateformat('full') }}</time> – <time datetime="{{ party.ends_at.date().isoformat() }}">{{ party.ends_at|dateformat('full') }}</time>
 </div>
 {%- if party.max_ticket_quantity %}
 <div class="dimmed" style="margin-top: 0.25rem;">

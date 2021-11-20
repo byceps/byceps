@@ -40,7 +40,7 @@
 
   {%- if search_term %}
 
-  {{ render_notification(_('The person must be born on <strong>%(latest_dob)s</strong> or earlier.', latest_dob=format_date(latest_dob_for_checkin))|safe, category='warning', icon='warning') }}
+  {{ render_notification(_('The person must be born on <strong>%(latest_dob)s</strong> or earlier.', latest_dob=latest_dob_for_checkin|dateformat)|safe, category='warning', icon='warning') }}
 
   <h2>{{ _('Tickets') }} {{ render_extra_in_heading(tickets|length) }}</h2>
   <div class="box">

@@ -9,15 +9,12 @@ Provide and register custom template global functions.
 """
 
 import babel
-from flask_babel import get_locale, get_timezone, npgettext, pgettext
+from flask_babel import get_locale, npgettext, pgettext
 
 
 def register(app):
     """Make functions available as global functions in templates."""
     functions = [
-        (_format_date, 'format_date'),
-        (_format_datetime, 'format_datetime'),
-        (_format_time, 'format_time'),
         (_format_number, 'format_number'),
         (npgettext, 'npgettext'),
         (pgettext, 'pgettext'),
@@ -25,22 +22,6 @@ def register(app):
 
     for f, name in functions:
         app.add_template_global(f, name)
-
-
-def _format_date(*args) -> str:
-    return babel.dates.format_date(*args, locale=get_locale())
-
-
-def _format_datetime(*args) -> str:
-    return babel.dates.format_datetime(
-        *args, locale=get_locale(), tzinfo=get_timezone()
-    )
-
-
-def _format_time(*args) -> str:
-    return babel.dates.format_time(
-        *args, locale=get_locale(), tzinfo=get_timezone()
-    )
 
 
 def _format_number(*args) -> str:

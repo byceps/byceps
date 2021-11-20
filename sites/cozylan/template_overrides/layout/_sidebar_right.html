@@ -1,7 +1,7 @@
 {%- if g.party is defined %}
 <div class="sidebar-section">
   <h3>{{ g.party.title }}</h3>
-  {{ format_date(g.party.starts_at, 'medium') }}–{{ format_date(g.party.ends_at, 'medium') }}
+  {{ g.party.starts_at|dateformat }}–{{ g.party.ends_at|dateformat }}
 </div>
 {%- endif %}
 
