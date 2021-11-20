@@ -16,7 +16,7 @@
 
 
 {% macro render_time_element(date, label) -%}
-  <time datetime="{{ date.isoformat() }}" title="{{ date.strftime('%d.%m.%Y') }}">{{ label }}</time>
+  <time datetime="{{ date.isoformat() }}" title="{{ date|dateformat }}">{{ label }}</time>
 {%- endmacro %}
 
 
