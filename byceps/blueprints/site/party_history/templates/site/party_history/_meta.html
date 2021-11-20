@@ -1,9 +1,8 @@
-{%- from 'macros/datetime.html' import render_time_element %}
 {%- from 'macros/icons.html' import render_icon %}
 
 <div class="dimmed">
   <span style="margin-right: 0.25rem;">{{ render_icon('date') }}</span>
-  {{ render_time_element(party.starts_at.date().isoformat(), format_date(party.starts_at, 'full')) }} – {{ render_time_element(party.ends_at.date().isoformat(), format_date(party.ends_at, 'full')) }}
+  <time datetime="{{ party.starts_at.date().isoformat() }}">{{ format_date(party.starts_at, 'full') }}</time> – <time datetime="{{ party.ends_at.date().isoformat() }}">{{ format_date(party.ends_at, 'full') }}</time>
 </div>
 {%- if party.max_ticket_quantity %}
 <div class="dimmed" style="margin-top: 0.25rem;">
