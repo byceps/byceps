@@ -13,7 +13,7 @@ marrow.util==1.2.3
 marshmallow==3.14.1
 pendulum==2.1.2
 pillow==8.4.0
-psycopg2-binary==2.9.1
+psycopg2-binary==2.9.2
 python-dateutil==2.8.2
 pytzdata==2020.1
 qrcode==7.3.1
