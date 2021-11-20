@@ -22,7 +22,7 @@
 
 {% macro render_order_state_filter(order_state_filter) %}
   {%- if order_state_filter.name == 'none' -%}
-    {{ render_tag(_('none'), class='color-none') }}
+    {{ render_tag(_('all'), class='color-none') }}
   {%- elif order_state_filter.name == 'waiting_for_processing' -%}
     {{ render_tag(_('waiting for shipping'), icon='shipping', class='order-waiting-for-shipping') }}
   {%- else -%}

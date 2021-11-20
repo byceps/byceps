@@ -20,14 +20,15 @@
       </form>
 
     </div>
-    <div class="column-auto">
+    <div class="column-auto column--align-bottom">
 
       <div class="filter">
-        <span>{{ render_icon('filter') }} {{ _('Filter') }}:</span>
+        <span>{{ _('Status') }}:</span>
         <div class="dropdown">
-          <button class="dropdown-toggle button button--clear">{{ render_order_state_filter(order_state_filter) }} {{ render_icon('chevron-down') }}</button>
+          <button class="dropdown-toggle button button--clear button--compact">{{ render_order_state_filter(order_state_filter) }} {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.index_for_shop', shop_id=shop.id) }}">{{ render_order_state_filter(OrderStateFilter.none) }}</a></li>
+            <li class="dropdown-divider"></li>
             {%- for payment_state in PaymentState %}
             <li><a class="dropdown-item" href="{{ url_for('.index_for_shop', shop_id=shop.id, only_payment_state=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
             {%- endfor %}
