@@ -1,4 +1,3 @@
-{%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/icons.html' import render_icon %}
 {%- from 'macros/misc.html' import render_tag %}
 
@@ -29,12 +28,12 @@
   </div>
 
   <div class="data-label">{{ _('Date of creation') }}</div>
-  <div class="data-value">{{ render_datetime(user.created_at|utc_to_local_tz) }}</div>
+  <div class="data-value">{{ user.created_at|datetimeformat }}</div>
 
   <div class="data-label">{{ _('Last login') }}</div>
   <div class="data-value">
     {%- if recent_login -%}
-    {{ render_datetime(recent_login|utc_to_local_tz) }}
+    {{ recent_login|datetimeformat }}
       {%- if (days_since_recent_login is not none) and (days_since_recent_login > 1) %}
     <span class="dimmed">({{ _('%(days)s days ago', days=days_since_recent_login) }})</span>
       {%- endif %}

@@ -1,4 +1,3 @@
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 
 
@@ -12,7 +11,7 @@
     </div>
     {%- if timestamp %}
     <div class="event-column">
-      <span class="event-timestamp">{{ render_datetime(timestamp) }}</span>
+      <span class="event-timestamp">{{ timestamp|dateformat }}, {{ timestamp|timeformat('short') }}</span>
     </div>
     {%- endif %}
   </div>

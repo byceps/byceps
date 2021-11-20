@@ -1,6 +1,5 @@
 {%- from 'macros/admin/ticketing.html' import render_ticket_flag_revoked, render_ticket_flag_user_checked_in %}
 {%- from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
-{%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/icons.html' import render_icon %}
 
 
@@ -120,7 +119,7 @@
       <div class="event-icon">{{ render_icon(icon_name) }}</div>
       <div class="event-data">
         <div class="event-body">{{ body|safe }}</div>
-        <div class="event-timestamp">{{ render_datetime(event.occurred_at|utc_to_local_tz) }}</div>
+        <div class="event-timestamp">{{ event.occurred_at|datetimeformat }}</div>
       </div>
     </div>
       {%- endwith %}

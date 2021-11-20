@@ -1,5 +1,4 @@
 {% extends 'layout/admin/snippet.html' %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_notification, render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
@@ -72,7 +71,7 @@
 
     <div class="data-label">{{ _('Created') }}</div>
     <div class="data-value">
-      {{ render_datetime(version.created_at|utc_to_local_tz) }} {{ _('by') }} {{ render_user_avatar_and_name(creator, size=16) }}<br>
+      {{ version.created_at|datetimeformat }} {{ _('by') }} {{ render_user_avatar_and_name(creator, size=16) }}<br>
       <a href="{{ url_for('.history', snippet_id=snippet.id) }}">{{ render_icon('history') }} {{ _('View change history') }}</a>
     </div>
 

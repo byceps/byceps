@@ -1,6 +1,5 @@
 {% extends 'layout/admin/tourney.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'tourneys' %}
@@ -45,7 +44,7 @@
           <td class="bignumber number" style="padding-right: 0;">{{ tourney.current_participant_count }}</td>
           <td class="bignumber dimmed" style="padding-left: 0.25rem; padding-right: 0.25rem;">/</td>
           <td class="bignumber">{{ tourney.max_participant_count }}</td>
-          <td>{{ render_datetime(tourney.starts_at|utc_to_local_tz) }}</td>
+          <td>{{ tourney.starts_at|dateformat }}, {{ tourney.starts_at|timeformat('short') }}</td>
           <td>
             {%- if has_current_user_permission('tourney.administrate') %}
             <div class="button-row button-row--compact">

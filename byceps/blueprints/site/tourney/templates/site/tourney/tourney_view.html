@@ -1,5 +1,4 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/datetime.html' import render_datetime_custom, render_time %}
 {% from 'macros/icons.html' import render_icon %}
 {% set page_title = [_('Tourney'), tourney.title] %}
 
@@ -82,10 +81,7 @@
   <table class="index">
     <tr>
       <th>Beginn</th>
-      <td>
-        {{ render_datetime_custom(tourney.starts_at|utc_to_local_tz, '%A') }},
-        {{ render_time(tourney.starts_at|utc_to_local_tz) }}
-      </td>
+      <td>{{ tourney.starts_at|dateformat('EEEE') }}, {{ tourney.starts_at|timeformat('short') }}</td>
     </tr>
   </table>
 

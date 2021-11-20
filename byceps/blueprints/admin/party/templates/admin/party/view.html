@@ -1,6 +1,5 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'party_admin' %}
@@ -46,13 +45,13 @@
       <div class="column-auto">
 
         <div class="data-label">{{ _('Start') }}</div>
-        <div class="data-value">{{ render_datetime(party.starts_at|utc_to_local_tz) }}</div>
+        <div class="data-value">{{ party.starts_at|dateformat }}, {{ party.starts_at|timeformat('short') }}</div>
 
       </div>
       <div class="column-auto">
 
         <div class="data-label">{{ _('End') }}</div>
-        <div class="data-value">{{ render_datetime(party.ends_at|utc_to_local_tz) }}</div>
+        <div class="data-value">{{ party.ends_at|dateformat }}, {{ party.ends_at|timeformat('short') }}</div>
 
       </div>
       <div class="column-auto">

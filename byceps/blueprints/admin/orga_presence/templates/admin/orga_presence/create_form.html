@@ -15,9 +15,9 @@
 
   <div class="data-label">{{ _('Valid range') }}</div>
   <div class="data-value mb">
-    {{ format_date(valid_range.start) }}, {{ format_time(valid_range.start, 'short') }}
+    {{ valid_range.start|dateformat }}, {{ valid_range.start|timeformat('short') }}
     –
-    {{ format_date(valid_range.end) }}, {{ format_time(valid_range.end, 'short') }}
+    {{ valid_range.end|dateformat }}, {{ valid_range.end|timeformat('short') }}
   </div>
 
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">

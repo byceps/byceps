@@ -1,6 +1,5 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
@@ -66,7 +65,7 @@ code {
               <div class="column-auto" style="flex-basis: 50%;">
 
                 <div class="data-label">{{ _('Created at') }}</div>
-                <div class="data-value">{{ render_datetime(api_token.created_at|utc_to_local_tz) }}</div>
+                <div class="data-value">{{ api_token.created_at|datetimeformat }}</div>
 
               </div>
               <div class="column-auto" style="flex-basis: 50%;">

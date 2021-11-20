@@ -1,6 +1,3 @@
-{% from 'macros/datetime.html' import render_datetime %}
-
-
 {% macro render_article_link(article) -%}
   <a href="{{ url_for('shop_article_admin.view', article_id=article.id) }}" title="{{ article.description }}">{{ article.item_number }}</a>
 {%- endmacro %}
@@ -8,12 +5,12 @@
 
 {% macro render_article_temporal_availability(article) -%}
   {%- if article.available_from and article.available_until -%}
-    {{ render_datetime(article.available_from|utc_to_local_tz, smart=False) }} –<br>
-    {{- render_datetime(article.available_until|utc_to_local_tz, smart=False) }}
+    {{ article.available_from|datetimeformat }} –<br>
+    {{- article.available_until|datetimeformat }}
   {%- elif article.available_from and not article.available_until -%}
-    {{ _('from') }} {{ render_datetime(article.available_from|utc_to_local_tz, smart=False) }}
+    {{ _('from') }} {{ article.available_from|datetimeformat }}
   {%- elif not article.available_from and article.available_until -%}
-    {{ _('until') }} {{ render_datetime(article.available_until|utc_to_local_tz, smart=False) }}
+    {{ _('until') }} {{ article.available_until|datetimeformat }}
   {%- else -%}
     {{ _('unlimited')|dim }}
   {%- endif -%}

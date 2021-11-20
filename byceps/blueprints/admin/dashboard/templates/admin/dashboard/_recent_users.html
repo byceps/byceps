@@ -1,5 +1,4 @@
 {% from 'macros/admin/user.html' import render_most_important_user_flag %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/user.html' import render_user_screen_name %}
 {% from 'macros/user_avatar.html' import render_user_avatar %}
 
@@ -15,7 +14,7 @@
         <span>{{ render_most_important_user_flag(user, show_label=False) }}</span>
       </div>
       <div class="supplement">{{ user.detail.full_name|fallback }}</div>
-      <div class="supplement">{{ render_datetime(user.created_at|utc_to_local_tz) }}</div>
+      <div class="supplement">{{ user.created_at|datetimeformat }}</div>
     </a>
   </li>
   {%- endfor %}

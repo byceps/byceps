@@ -1,6 +1,5 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
 {% set current_page = 'news_admin' %}
@@ -34,7 +33,7 @@
           {{ render_icon('archived', title=_('archived')) }}
           {%- endif -%}
         </td>
-        <td class="nowrap"><a href="{{ url_for('.item_view_version', version_id=version.id) }}">{{ render_datetime(version.created_at|utc_to_local_tz) }}</a></td>
+        <td class="nowrap"><a href="{{ url_for('.item_view_version', version_id=version.id) }}">{{ version.created_at|datetimeformat }}</a></td>
         <td>{{ render_user_avatar_and_name(users_by_id[version.creator_id], size=20) }}</td>
         <td>
           {%- if previous_version -%}

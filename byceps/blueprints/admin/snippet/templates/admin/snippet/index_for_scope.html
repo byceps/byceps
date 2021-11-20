@@ -1,6 +1,5 @@
 {% extends 'layout/admin/snippet.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
 {% set page_title = ['%s/%s'|format(scope.type_, scope.name), _('Snippets')] %}
@@ -53,9 +52,9 @@
           </td>
           <td class="nowrap">
             {%- if has_current_user_permission('snippet.view_history') %}
-            {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="{{ _('View change history') }}">{{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}</a>
+            {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="{{ _('View change history') }}">{{ snippet.current_version.created_at|datetimeformat }}</a>
             {%- else %}
-            {{ render_datetime(snippet.current_version.created_at|utc_to_local_tz) }}
+            {{ snippet.current_version.created_at|datetimeformat }}
             {%- endif %}
           </td>
           <td>{{ render_user_avatar_and_name(users_by_id[snippet.current_version.creator_id], size=20) }}</td>

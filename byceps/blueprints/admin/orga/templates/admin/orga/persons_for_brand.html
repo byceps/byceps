@@ -1,7 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/user.html' import render_user_admin_link %}
-{% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar %}
 {% set current_page = 'orga_admin' %}
@@ -76,7 +75,7 @@
             {{ user.detail.full_name|fallback }}<br>
             {%- if birthday %}
               {{ render_icon('birthday') }}
-              {{ render_date(birthday.date_of_birth) }}
+              {{ birthday.date_of_birth|dateformat }}
               ({{ birthday.age }} {{ _('years') }})
             {%- else %}
               {{ (render_icon('birthday') ~ ' ' ~ _('not given'))|dim }}

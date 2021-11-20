@@ -1,5 +1,4 @@
 {% from 'macros/admin/brand.html' import render_brand_avatar %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/misc.html' import render_tag %}
 
 
@@ -26,8 +25,8 @@
       <div class="column-auto" style="width: 30%;">
         <div>
           <div style="font-size: 0.75rem;">
-            {{- render_datetime(party.starts_at|utc_to_local_tz) }} bis<br>
-            {{- render_datetime(party.ends_at|utc_to_local_tz) -}}
+            {{- party.starts_at|dateformat }}, {{ party.starts_at|timeformat('short') }} {{ _('until') }}<br>
+            {{- party.ends_at|dateformat }}, {{ party.ends_at|timeformat('short') }}
           </div>
 
           {%- for day in days %}

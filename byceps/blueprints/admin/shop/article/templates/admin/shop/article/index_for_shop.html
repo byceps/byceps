@@ -1,7 +1,6 @@
 {% extends 'layout/admin/shop/article.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/article.html' import render_article_link %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set page_title = _('Article') %}
@@ -61,11 +60,11 @@
             {%- endif %}
 
             {%- if article.available_from %}
-            <br>{{ render_icon('time') }} {% filter dim %}{{ _('from') }} {{ render_datetime(article.available_from|utc_to_local_tz, smart=False) }}{% endfilter %}
+            <br>{{ render_icon('time') }} {% filter dim %}{{ _('from') }} {{ article.available_from|datetimeformat }}{% endfilter %}
             {%- endif %}
 
             {%- if article.available_until %}
-            <br>{{ render_icon('time') }} {% filter dim %}{{ _('until') }} {{ render_datetime(article.available_until|utc_to_local_tz, smart=False) }}{% endfilter %}
+            <br>{{ render_icon('time') }} {% filter dim %}{{ _('until') }} {{ article.available_until|datetimeformat }}{% endfilter %}
             {%- endif %}
           </td>
           <td class="nowrap number">

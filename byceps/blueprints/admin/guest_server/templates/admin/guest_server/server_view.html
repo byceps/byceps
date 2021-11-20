@@ -1,7 +1,6 @@
 {% extends 'layout/admin/guest_server.html' %}
 {% from 'macros/admin/guest_server.html' import render_hostname, render_ip_address %}
 {% from 'macros/admin/user.html' import render_user_microcard %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
@@ -57,7 +56,7 @@
         <div class="column-auto" style="flex-basis: 33%;">
 
           <div class="data-label">{{ _('Created at') }}</div>
-          <div class="data-value">{{ render_datetime(server.created_at|utc_to_local_tz) }}</div>
+          <div class="data-value">{{ server.created_at|datetimeformat }}</div>
 
         </div>
         <div class="column-auto" style="flex-basis: 33%;">

@@ -1,7 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
-{% from 'macros/datetime.html' import render_datetime, render_datetime_custom %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'orga_presence' %}
 {% set current_page_party = party %}
@@ -30,7 +29,7 @@
           <th>{{ _('Start') }}</th>
           <th>{{ _('End') }}</th>
           {%- for hour_range in hour_ranges %}
-          <th class="bar-column">{{ render_datetime_custom(hour_range.start, '%H') }}:00</th>
+          <th class="bar-column">{{ hour_range.start|timeformat('short', rebase=False) }}</th>
           {%- endfor %}
         </tr>
       </thead>
@@ -85,8 +84,8 @@
       <tbody>
       {%- for presence in current_user_presences|sort(attribute='starts_at, ends_at') %}
         <tr>
-          <td class="nowrap">{{ format_date(presence.starts_at) }}, {{ format_time(presence.starts_at, 'short') }}</td>
-          <td class="nowrap">{{ format_date(presence.ends_at) }}, {{ format_time(presence.ends_at, 'short') }}</td>
+          <td class="nowrap">{{ presence.starts_at|dateformat }}, {{ presence.starts_at|timeformat('short') }}</td>
+          <td class="nowrap">{{ presence.ends_at|dateformat }}, {{ presence.ends_at|timeformat('short') }}</td>
           <td><a class="button button--compact" data-action="time-slot-delete" href="{{ url_for('.time_slot_delete', time_slot_id=presence.id) }}" title="{{ _('Remove presence') }}">{{ render_icon('remove') }}</a></td>
         </tr>
       {%- endfor %}
@@ -106,8 +105,8 @@
 {%- endblock %}
 
 {% macro render_range_columns(time_slot) -%}
-          <td class="nowrap">{{ render_datetime(time_slot.range.start, smart=False) }}</td>
-          <td class="nowrap">{{ render_datetime(time_slot.range.end, smart=False) }}</td>
+          <td class="nowrap">{{ time_slot.range.start|dateformat }}, {{ time_slot.range.start|timeformat('short') }}</td>
+          <td class="nowrap">{{ time_slot.range.end|dateformat }}, {{ time_slot.range.end|timeformat('short') }}</td>
 {%- endmacro %}
 
 {% macro render_bar_columns(time_slots) -%}

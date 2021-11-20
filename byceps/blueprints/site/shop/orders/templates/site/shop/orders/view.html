@@ -1,5 +1,4 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/shop/orders.html' import render_order_payment_state, render_order_overdue_tag %}
 {% set current_page = 'shop_orders' %}
@@ -19,7 +18,7 @@
 
       <div class="mb">
         <div class="data-label">{{ _('Date') }}</div>
-        <div class="data-value">{{ render_datetime(order.created_at|utc_to_local_tz) }}</div>
+        <div class="data-value">{{ order.created_at|dateformat }}, {{ order.created_at|timeformat('short') }}</div>
       </div>
 
       <div class="row mb">

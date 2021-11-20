@@ -1,7 +1,6 @@
 {% extends 'layout/admin/shop/order.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/order.html' import render_order_payment_state, render_order_overdue_tag %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% set page_title = order.order_number %}
 {% set layout_main_raw = True %}
 
@@ -64,7 +63,7 @@
 {% include 'admin/shop/order/_view_status_flags.html' %}
 
         <div class="data-label">{{ _('Date of creation') }}</div>
-        <div class="data-value">{{ render_datetime(order.created_at|utc_to_local_tz, seconds=True) }}</div>
+        <div class="data-value">{{ order.created_at|datetimeformat }}</div>
 
         {%- if order.payment_method %}
         <div class="data-label">{{ _('Payment type') }}</div>

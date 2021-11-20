@@ -1,4 +1,3 @@
-{%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/user.html' import render_user_link %}
 
 
@@ -16,7 +15,7 @@
     </div>
     {%- if posting.edit_count %}
     <footer>
-      <p>{{ posting.edit_count }} {{ _('times edited') }}, {{ _('lastly') }}: {{ render_datetime(posting.last_edited_at|utc_to_local_tz) }} {{ _('by') }} {{ render_user_link(posting.last_edited_by) }}</p>
+      <p>{{ posting.edit_count }} {{ _('times edited') }}, {{ _('lastly') }}: {{ posting.last_edited_at|dateformat }}, {{ posting.last_edited_at|timeformat('short') }} {{ _('by') }} {{ render_user_link(posting.last_edited_by) }}</p>
     </footer>
     {%- endif %}
   </div>

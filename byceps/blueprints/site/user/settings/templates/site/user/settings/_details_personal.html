@@ -1,4 +1,3 @@
-{% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
 
 
@@ -17,7 +16,7 @@
           <div class="data-label">{{ _('Date of birth') }}</div>
           <div class="data-value">
           {%- if detail.date_of_birth -%}
-            {{ render_date(detail.date_of_birth, smart=False) }}
+            {{ detail.date_of_birth|dateformat }}
           {%- else -%}
             {{ _('not given')|dim }}
           {%- endif -%}

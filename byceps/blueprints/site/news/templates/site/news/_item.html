@@ -1,11 +1,10 @@
-{%- from 'macros/datetime.html' import render_date_long %}
 {%- from 'macros/misc.html' import render_tag %}
 
 <article class="news-item">
   <h1><a href="{{ url_for('.view', slug=item.slug) }}">{{ item.title }}</a></h1>
   <footer class="meta">
     {%- if item.published %}
-    {{ render_date_long(item.published_at|utc_to_local_tz) }}
+    {{ item.published_at|dateformat('full') }}
     {%- else %}
     {{ render_tag(_('Draft')) }}
     {%- endif %}

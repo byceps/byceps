@@ -1,5 +1,4 @@
 {%- from 'macros/board.html' import render_flag_new %}
-{%- from 'macros/datetime.html' import render_datetime %}
 {%- from 'macros/icons.html' import render_icon %}
 
 <h2>{{ _('Discussion Board') }}</h2>
@@ -13,7 +12,7 @@
       {%- if topic.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
     </a>
     <div class="item-meta">
-      {{ render_datetime(topic.last_updated_at|utc_to_local_tz) }}
+      {{ topic.last_updated_at|dateformat }}, {{ topic.last_updated_at|timeformat('short') }}
       &middot;
       {{ topic.category.title }}
     </div>

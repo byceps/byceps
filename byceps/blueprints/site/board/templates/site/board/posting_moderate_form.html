@@ -1,5 +1,4 @@
 {% extends 'layout/base.html' %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user.html' import render_user_screen_name, render_user_link %}
 {% set current_page = 'board' %}
@@ -19,7 +18,7 @@
   <p>Beitrag von {{ render_user_link(posting.creator) }} im Thema &quot;{{ posting.topic.title }}&quot;</p>
 
   <h2>{{ render_icon('view') }} Sichtbarkeit</h2>
-  <p>Der Beitrag ist {% if posting.hidden %}<strong>versteckt</strong> (am {{ render_datetime(posting.hidden_at|utc_to_local_tz) }} durch {{ render_user_screen_name(posting.hidden_by) }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
+  <p>Der Beitrag ist {% if posting.hidden %}<strong>versteckt</strong> ({{ posting.hidden_at|datetimeformat }} {{ _('by') }} {{ render_user_screen_name(posting.hidden_by) }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
   <div class="button-row">
   {%- if posting.hidden %}
     <span class="button button--disabled">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></span>

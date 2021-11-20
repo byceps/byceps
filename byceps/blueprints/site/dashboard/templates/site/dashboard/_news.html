@@ -1,4 +1,3 @@
-{%- from 'macros/datetime.html' import render_date_long %}
 {%- from 'macros/icons.html' import render_icon %}
 
 <h2>{{ _('News') }}</h2>
@@ -8,7 +7,7 @@
   {%- for headline in news_headlines %}
   <li>
     <a class="disguised" href="{{ url_for('news.view', slug=headline.slug) }}">{{ headline.title }}</a>
-    <div class="item-meta">{{ render_date_long(headline.published_at|utc_to_local_tz) }}</div>
+    <div class="item-meta">{{ headline.published_at|dateformat('full') }}</div>
   </li>
   {%- endfor %}
 </ol>

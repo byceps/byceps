@@ -1,7 +1,6 @@
 {% extends 'layout/admin/ticketing.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'bundles' %}
@@ -18,7 +17,7 @@
     <div class="data-value">{{ bundle.id }}</div>
 
     <div class="data-label">{{ _('Created') }}</div>
-    <div class="data-value mb">{{ render_datetime(bundle.created_at|utc_to_local_tz) }}</div>
+    <div class="data-value mb">{{ bundle.created_at|datetimeformat }}</div>
 
     <div class="row mb">
       <div class="column-auto">

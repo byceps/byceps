@@ -1,5 +1,4 @@
 {% from 'macros/admin/brand.html' import render_brand_avatar %}
-{% from 'macros/datetime.html' import render_date %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/stats.html' import render_bigstats_item %}
@@ -38,7 +37,7 @@
     {%- endif %}
     <div class="column-auto column-auto--grow">
       <div>{{ party.title }}</div>
-      <div class="supplement">{{ render_date(party.starts_at, smart=False) }}–{{ render_date(party.ends_at, smart=False) }}</div>
+      <div class="supplement">{{ party.starts_at|dateformat }}–{{ party.ends_at|dateformat }}</div>
     </div>
   </div>
 

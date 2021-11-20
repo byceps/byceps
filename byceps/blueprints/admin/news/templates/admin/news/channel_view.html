@@ -1,6 +1,5 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/datetime.html' import render_datetime %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
@@ -61,9 +60,9 @@
           <td>{% if item.current_version.image_url_path %} {{ render_icon('image', title=_('Image defined')) }}{% endif %}</td>
           <td class="nowrap">
             {%- if has_current_user_permission('news_item.view') %}
-            <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="{{ _('View change history') }}">{{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}</a>
+            <a href="{{ url_for('.item_list_versions', item_id=item.id) }}" title="{{ _('View change history') }}">{{ item.current_version.created_at|datetimeformat }}</a>
             {%- else %}
-            {{ render_datetime(item.current_version.created_at|utc_to_local_tz) }}
+            {{ item.current_version.created_at|datetimeformat }}
             {%- endif -%}
             <br>
             {{ _('by') }} {{ render_user_avatar_and_name(users_by_id[item.current_version.creator_id], size=16) }}
