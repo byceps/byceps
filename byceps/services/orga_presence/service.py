@@ -53,6 +53,7 @@ def delete_time_slot(time_slot_id: UUID) -> None:
         .where(DbTimeSlot.id == time_slot_id)
         .execution_options(synchronize_session='fetch')
     )
+    db.session.commit()
 
 
 def get_presences(party_id: PartyID) -> list[PresenceTimeSlot]:
