@@ -125,7 +125,11 @@ def confirm(token):
         abort(404)
 
     try:
-        event = email_address_service.confirm_email_address(verification_token)
+        event = (
+            email_address_service.confirm_email_address_via_verification_token(
+                verification_token
+            )
+        )
     except email_address_service.EmailAddressConfirmationFailed as e:
         flash_error(gettext('Email address verification failed.'))
         return redirect_to('authentication_login.login_form')

@@ -89,37 +89,48 @@ class EmailAddressConfirmationFailed(Exception):
     pass
 
 
-def confirm_email_address(
+def confirm_email_address_via_verification_token(
     verification_token: Token,
 ) -> UserEmailAddressConfirmed:
     """Confirm the email address of the user account assigned with that
     verification token.
     """
-    user = user_service.get_db_user(verification_token.user_id)
+    user_id = verification_token.user_id
+
+    token_email_address = verification_token.data.get('email_address')
+    if not token_email_address:
+        raise EmailAddressConfirmationFailed('Token contains no email address.')
+
+    event = confirm_email_address(user_id, token_email_address)
+
+    verification_token_service.delete_token(verification_token.token)
+
+    return event
+
+
+def confirm_email_address(
+    user_id: UserID, email_address_to_confirm: str
+) -> UserEmailAddressConfirmed:
+    """Confirm the email address of the user account."""
+    user = user_service.get_db_user(user_id)
 
     if user.email_address is None:
         raise EmailAddressConfirmationFailed(
             'Account has no email address assigned.'
         )
 
-    token_email_address = verification_token.data.get('email_address')
-    if not token_email_address:
-        raise EmailAddressConfirmationFailed('Token contains no email address.')
-
-    if user.email_address != token_email_address:
+    if user.email_address != email_address_to_confirm:
         raise EmailAddressConfirmationFailed('Email addresses do not match.')
 
     user.email_address_verified = True
 
-    event_data = {'email_address': token_email_address}
+    event_data = {'email_address': user.email_address}
     event = user_event_service.build_event(
         'user-email-address-confirmed', user.id, event_data
     )
     db.session.add(event)
 
     db.session.commit()
-
-    verification_token_service.delete_token(verification_token.token)
 
     return UserEmailAddressConfirmed(
         occurred_at=event.occurred_at,
