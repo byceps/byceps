@@ -13,8 +13,11 @@ import click
 
 from byceps.services.authorization import service as authorization_service
 from byceps.services.authorization.transfer.models import RoleID
-from byceps.services.user import command_service as user_command_service
-from byceps.services.user import creation_service as user_creation_service
+from byceps.services.user import (
+    command_service as user_command_service,
+    creation_service as user_creation_service,
+    email_address_service as user_email_address_service,
+)
 from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 
@@ -34,9 +37,12 @@ def execute(screen_name, email_address, password) -> None:
     user_command_service.initialize_account(user.id)
     click.secho('done.', fg='green')
 
+    user_email_address_service.confirm_email_address(user.id, email_address)
+
     role_ids = _get_role_ids()
     click.echo(
-        f'Assigning {len(role_ids)} roles to user "{screen_name}" ... ', nl=False
+        f'Assigning {len(role_ids)} roles to user "{screen_name}" ... ',
+        nl=False,
     )
     _assign_roles_to_user(role_ids, user.id)
     click.secho('done.', fg='green')
