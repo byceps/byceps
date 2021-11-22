@@ -82,7 +82,7 @@
         </tr>
       </thead>
       <tbody>
-      {%- for presence in current_user_presences|sort(attribute='starts_at, ends_at') %}
+      {%- for presence in current_user_presences|sort(attribute='starts_at,ends_at') %}
         <tr>
           <td class="nowrap">{{ presence.starts_at|dateformat }}, {{ presence.starts_at|timeformat('short') }}</td>
           <td class="nowrap">{{ presence.ends_at|dateformat }}, {{ presence.ends_at|timeformat('short') }}</td>
