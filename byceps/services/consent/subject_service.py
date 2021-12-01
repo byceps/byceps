@@ -79,7 +79,7 @@ def get_subjects_with_consent_counts(
         ) \
         .outerjoin(DbConsent)
 
-    if limit_to_subject_ids:
+    if limit_to_subject_ids is not None:
         query = query \
             .filter(DbSubject.id.in_(limit_to_subject_ids))
 
