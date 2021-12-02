@@ -10,7 +10,7 @@ from typing import Optional
 
 from babel import Locale
 from flask import abort, g, request
-from flask_babel import gettext
+from flask_babel import force_locale, gettext
 
 from .....services.brand import settings_service as brand_settings_service
 from .....services.country import service as country_service
@@ -162,7 +162,8 @@ def update_locale():
 
     user_command_service.update_locale(g.user.id, locale)
 
-    flash_success(gettext('Your language preference has been updated.'))
+    with force_locale(locale):
+        flash_success(gettext('Your language preference has been updated.'))
 
 
 @blueprint.get('/details')
