@@ -23,7 +23,7 @@ from . import config, config_defaults
 from .database import db
 from . import email
 from .util.authorization import load_permissions
-from .util.l10n import get_current_user_locale, set_locale
+from .util.l10n import get_current_user_locale
 from .util import templatefilters, templatefunctions
 from .util.templating import SiteTemplateOverridesLoader
 from .util.views import redirect_to
@@ -57,9 +57,6 @@ def create_app(
     #     `app.jinja_env.undefined = ` as that would create the Jinja
     #      environment too early.
     app.jinja_options['undefined'] = jinja2.StrictUndefined
-
-    # Set the locale.
-    set_locale(app.config['LOCALE'])  # Fail if not configured.
 
     babel = Babel(app)
     babel.locale_selector_func = get_current_user_locale

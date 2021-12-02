@@ -10,9 +10,7 @@ Localization.
 
 from __future__ import annotations
 from contextlib import contextmanager
-import locale
 from typing import Iterator, Optional
-import warnings
 
 from babel import Locale
 from flask import current_app, g, request
@@ -20,13 +18,6 @@ from flask_babel import force_locale
 from wtforms import Form
 
 from ..services.user.transfer.models import User
-
-
-def set_locale(locale_str: str) -> None:
-    try:
-        locale.setlocale(locale.LC_ALL, locale_str)
-    except locale.Error:
-        warnings.warn(f'Could not set locale to "{locale_str}".')
 
 
 def get_current_user_locale() -> Optional[str]:
