@@ -7,6 +7,7 @@ byceps.blueprints.admin.shop.article.views
 """
 
 from __future__ import annotations
+import dataclasses
 from datetime import datetime
 from decimal import Decimal
 
@@ -21,6 +22,7 @@ from .....services.shop.article import (
     service as article_service,
 )
 from .....services.shop.article.transfer.models import (
+    Article,
     ArticleType,
     get_article_type_label,
 )
@@ -281,30 +283,17 @@ def update_form(article_id, erroneous_form=None):
 
     brand = brand_service.get_brand(shop.brand_id)
 
+    data = dataclasses.asdict(article)
     if article.available_from:
-        article.available_from = utc_to_local_tz(article.available_from)
+        available_from_local = utc_to_local_tz(article.available_from)
+        data['available_from_date'] = available_from_local.date()
+        data['available_from_time'] = available_from_local.time()
     if article.available_until:
-        article.available_until = utc_to_local_tz(article.available_until)
+        available_until_local = utc_to_local_tz(article.available_until)
+        data['available_until_date'] = available_until_local.date()
+        data['available_until_time'] = available_until_local.time()
 
-    form = (
-        erroneous_form
-        if erroneous_form
-        else ArticleUpdateForm(
-            obj=article,
-            available_from_date=article.available_from.date()
-            if article.available_from
-            else None,
-            available_from_time=article.available_from.time()
-            if article.available_from
-            else None,
-            available_until_date=article.available_until.date()
-            if article.available_until
-            else None,
-            available_until_time=article.available_until.time()
-            if article.available_until
-            else None,
-        )
-    )
+    form = erroneous_form if erroneous_form else ArticleUpdateForm(data=data)
     form.tax_rate.data = article.tax_rate * TAX_RATE_DISPLAY_FACTOR
 
     return {
@@ -725,8 +714,8 @@ def _get_shop_or_404(shop_id):
     return shop
 
 
-def _get_article_or_404(article_id):
-    article = article_service.find_db_article(article_id)
+def _get_article_or_404(article_id) -> Article:
+    article = article_service.find_article(article_id)
 
     if article is None:
         abort(404)
