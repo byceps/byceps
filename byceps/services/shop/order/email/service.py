@@ -12,7 +12,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Iterator
 
-from flask_babel import gettext
+from flask_babel import format_date, gettext
 
 from .....services.email import service as email_service
 from .....services.email.transfer.models import Message
@@ -25,7 +25,6 @@ from .....services.snippet.transfer.models import Scope
 from .....services.user import service as user_service
 from .....services.user.transfer.models import User
 from .....typing import BrandID
-from .....util.datetime.timezone import utc_to_local_tz
 from .....util.l10n import force_user_locale
 from .....util.money import format_euro_amount
 from .....util.templating import load_template
@@ -77,7 +76,7 @@ def _assemble_email_for_incoming_order_to_orderer(
             order_number=order_number,
         )
 
-        date_str = _get_order_date_str(order)
+        date_str = format_date(order.created_at)
         indentation = '  '
         line_items = [
             '\n'.join(
@@ -149,7 +148,7 @@ def _assemble_email_for_canceled_order_to_orderer(
             order_number=order_number,
         )
 
-        date_str = _get_order_date_str(order)
+        date_str = format_date(order.created_at)
         cancelation_reason = order.cancelation_reason or ''
         paragraphs = [
             gettext(
@@ -178,7 +177,7 @@ def _assemble_email_for_paid_order_to_orderer(data: OrderEmailData) -> Message:
             order_number=order_number,
         )
 
-        date_str = _get_order_date_str(order)
+        date_str = format_date(order.created_at)
         paragraphs = [
             gettext(
                 'thank you for your order %(order_number)s on %(order_date)s through our website.',
@@ -236,10 +235,6 @@ def _assemble_email_to_orderer(
     recipients = [recipient_address]
 
     return Message(sender, recipients, subject, body)
-
-
-def _get_order_date_str(order: Order) -> str:
-    return utc_to_local_tz(order.created_at).strftime('%d.%m.%Y')
 
 
 def _get_snippet_body(shop_id: ShopID, name: str) -> str:

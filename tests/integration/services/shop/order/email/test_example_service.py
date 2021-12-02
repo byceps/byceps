@@ -69,7 +69,7 @@ Subject: Your order (AWSM-ORDR-9247) has been received.
 
 Hello Orderer,
 
-thank you for your order AWSM-ORDR-9247 on 12.10.2021 through our website.
+thank you for your order AWSM-ORDR-9247 on Oct 12, 2021 through our website.
 
 You have ordered these items:
 
@@ -159,7 +159,7 @@ Subject: ✅ Your order (AWSM-ORDR-9247) has been paid.
 
 Hello Orderer,
 
-thank you for your order AWSM-ORDR-9247 on 12.10.2021 through our website.
+thank you for your order AWSM-ORDR-9247 on Oct 12, 2021 through our website.
 
 We have received your payment and have marked your order as paid.
 
@@ -235,7 +235,7 @@ Subject: ❌ Your order (AWSM-ORDR-9247) has been canceled.
 
 Hello Orderer,
 
-your order AWSM-ORDR-9247 on 12.10.2021 has been canceled by us for this reason:
+your order AWSM-ORDR-9247 on Oct 12, 2021 has been canceled by us for this reason:
 
 Kein fristgerechter Geldeingang feststellbar.
 
