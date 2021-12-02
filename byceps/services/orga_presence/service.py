@@ -12,6 +12,7 @@ from itertools import groupby
 from typing import Iterator, Sequence
 from uuid import UUID
 
+from flask import current_app
 import pendulum
 from pendulum import DateTime
 from sqlalchemy import delete
@@ -19,7 +20,6 @@ from sqlalchemy import delete
 from ...database import db
 from ...typing import PartyID, UserID
 from ...util.datetime.range import create_adjacent_ranges, DateTimeRange
-from ...util.datetime.timezone import get_timezone_string
 
 from ..party import service as party_service
 
@@ -126,7 +126,7 @@ def _find_latest_end(dt_ranges: Sequence[DateTimeRange]) -> datetime:
 
 
 def _to_local_pendulum_datetime(dt: datetime) -> DateTime:
-    return pendulum.instance(dt).in_tz(get_timezone_string())
+    return pendulum.instance(dt).in_tz(current_app.config['TIMEZONE'])
 
 
 def _to_datetimes_without_tzinfo(dts: Sequence[DateTime]) -> Iterator[datetime]:
