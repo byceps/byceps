@@ -72,9 +72,9 @@
   </div>
 
   <div style="font-size: 0.75rem; text-align: center;">
-    <strong>{{ format_number(ticket_sale_stats.tickets_sold) }}</strong>
+    <strong>{{ ticket_sale_stats.tickets_sold|numberformat }}</strong>
     {{ _('of') }}
-    <strong>{{ format_number(ticket_sale_stats.tickets_max) if tickets_total_max_specified else '?' }}</strong>
+    <strong>{{ ticket_sale_stats.tickets_max|numberformat if tickets_total_max_specified else '?' }}</strong>
     {{ _('tickets sold') }}
   </div>
 

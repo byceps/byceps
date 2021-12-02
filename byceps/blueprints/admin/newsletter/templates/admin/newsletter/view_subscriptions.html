@@ -45,13 +45,13 @@
 
     <div class="row row--space-around row--wrap bigstats">
       <div class="column-auto">
-        {{ render_bigstats_item(format_number(totals[State.requested]), _('requested'), icon_name='enabled', color='#008800') }}
+        {{ render_bigstats_item(totals[State.requested]|numberformat, _('requested'), icon_name='enabled', color='#008800') }}
       </div>
       <div class="column-auto">
-        {{ render_bigstats_item(format_number(totals[State.declined]), _('rejected'), icon_name='disabled', color='#cc0000') }}
+        {{ render_bigstats_item(totals[State.declined]|numberformat, _('rejected'), icon_name='disabled', color='#cc0000') }}
       </div>
       <div class="column-auto">
-        {{ render_bigstats_item(format_number(totals['total']), '&sum; '|safe ~ _('total')) }}
+        {{ render_bigstats_item(totals['total']|numberformat, '&sum; '|safe ~ _('total')) }}
       </div>
     </div>
 

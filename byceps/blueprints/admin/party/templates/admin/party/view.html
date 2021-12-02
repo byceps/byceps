@@ -67,7 +67,7 @@
     </div>
 
     <div class="data-label">{{ _('Maximum number of tickets') }}</div>
-    <div class="data-value mb">{{ format_number(party.max_ticket_quantity) if (party.max_ticket_quantity is not none) else _('not defined')|dim }}</div>
+    <div class="data-value mb">{{ party.max_ticket_quantity|numberformat if (party.max_ticket_quantity is not none) else _('not defined')|dim }}</div>
 
     <div class="row">
       <div class="column-auto">

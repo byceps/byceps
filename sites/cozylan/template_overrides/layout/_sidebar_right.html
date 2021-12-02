@@ -22,9 +22,9 @@
         {%- endif %}
       {%- endif %}
 
-  {{ format_number(ticket_sale_stats.tickets_sold) }}
+  {{ ticket_sale_stats.tickets_sold|numberformat }}
         {%- if tickets_total_max_specified %}
-  / {{ format_number(ticket_sale_stats.tickets_max) }}
+  / {{ ticket_sale_stats.tickets_max|numberformat }}
         {%- endif %}
   <br>{{ _('tickets paid') }}
 
@@ -45,8 +45,8 @@
     <div class="progress-bar" style="width: calc(100% * {{ seat_utilization.occupied }} / {{ seat_utilization.total }});"></div>
   </div>
 
-  {{ format_number(seat_utilization.occupied) }}
-  / {{ format_number(seat_utilization.total) }}
+  {{ seat_utilization.occupied|numberformat }}
+  / {{ seat_utilization.total|numberformat }}
   <br>{{ _('seats occupied') }}
 </div>
 {%- endif %}

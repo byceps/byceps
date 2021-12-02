@@ -47,7 +47,7 @@
             </div>
           </a>
         </td>
-        <td class="centered bignumber">{{ format_number(topic.reply_count) }}</td>
+        <td class="centered bignumber">{{ topic.reply_count|numberformat }}</td>
         <td class="nowrap">{{ topic.last_updated_at|dateformat }}, {{ topic.last_updated_at|timeformat('short') }}<br>{{ _('by') }} {{ render_user_avatar_and_name(topic.last_updated_by, size=16) }}</td>
       </tr>
       {%- endfor %}

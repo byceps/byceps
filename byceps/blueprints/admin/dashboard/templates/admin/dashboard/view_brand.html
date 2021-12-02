@@ -23,7 +23,7 @@
     {{ render_bigstats_cell(open_order_count, _('open orders'), href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open'), icon_name='invoice') }}
     {%- endif %}
     {%- if newsletter_list %}
-    {{ render_bigstats_cell(format_number(newsletter_subscriber_count), _('Subscribers to newsletter "%(title)s"', title=newsletter_list.title), href=url_for('newsletter_admin.view_subscriptions', list_id=newsletter_list.id), icon_name='email', color='#008800') }}
+    {{ render_bigstats_cell(newsletter_subscriber_count|numberformat, _('Subscribers to newsletter "%(title)s"', title=newsletter_list.title), href=url_for('newsletter_admin.view_subscriptions', list_id=newsletter_list.id), icon_name='email', color='#008800') }}
     {%- endif %}
     {%- call render_cell('legal', 'wider') %}
     <h2 class="hyphenate">{{ _('Required Consents') }}</h2>
@@ -33,7 +33,7 @@
           {%- for subject, count in consent_subjects_with_consent_counts -%}
           <tr>
             <td>{{ subject.title }}</td>
-            <td class="bignumber number">{{ format_number(count) }}</td>
+            <td class="bignumber number">{{ count|numberformat }}</td>
           </tr>
           {%- endfor -%}
         </table>

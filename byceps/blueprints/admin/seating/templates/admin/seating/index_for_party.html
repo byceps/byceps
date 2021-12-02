@@ -23,7 +23,7 @@
       </div>
       <div class="column-auto">
         <div class="button button--clear">
-          {{- render_bigstats_item(format_number(seat_count), ngettext('seat', 'seats', seat_count)) -}}
+          {{- render_bigstats_item(seat_count|numberformat, ngettext('seat', 'seats', seat_count)) -}}
         </div>
       </div>
       <div class="column-auto">

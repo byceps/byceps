@@ -27,27 +27,27 @@
     <div class="row row--equal-sized-centered-columns row--space-around row--wrap bigstats">
       <div class="column-auto">
         <a class="button button--clear" href="{{ url_for('.index') }}">
-          {{- render_bigstats_item(format_number(total_overall), '&sum; '|safe ~ _('total')) -}}
+          {{- render_bigstats_item(total_overall|numberformat, '&sum; '|safe ~ _('total')) -}}
         </a>
       </div>
       <div class="column-auto">
         <a class="button button--clear" href="{{ url_for('.index', only='active') }}">
-          {{- render_bigstats_item(format_number(total_active), render_tag(_('active'), class='color-success', icon='enabled')) -}}
+          {{- render_bigstats_item(total_active|numberformat, render_tag(_('active'), class='color-success', icon='enabled')) -}}
         </a>
       </div>
       <div class="column-auto">
         <a class="button button--clear" href="{{ url_for('.index', only='uninitialized') }}">
-          {{- render_bigstats_item(format_number(total_uninitialized), render_user_flag_uninitialized()) -}}
+          {{- render_bigstats_item(total_uninitialized|numberformat, render_user_flag_uninitialized()) -}}
         </a>
       </div>
       <div class="column-auto">
         <a class="button button--clear" href="{{ url_for('.index', only='suspended') }}">
-          {{- render_bigstats_item(format_number(total_suspended), render_user_flag_suspended()) -}}
+          {{- render_bigstats_item(total_suspended|numberformat, render_user_flag_suspended()) -}}
         </a>
       </div>
       <div class="column-auto">
         <a class="button button--clear" href="{{ url_for('.index', only='deleted') }}">
-          {{- render_bigstats_item(format_number(total_deleted), render_user_flag_deleted()) -}}
+          {{- render_bigstats_item(total_deleted|numberformat, render_user_flag_deleted()) -}}
         </a>
       </div>
     </div>

@@ -44,8 +44,8 @@
           </td>
           {%- with stats = stats_by_board_id[board.id] %}
           <td class="centered bignumber">{{ stats.category_count }}</td>
-          <td class="centered bignumber">{{ format_number(stats.topic_count) }}</td>
-          <td class="centered bignumber">{{ format_number(stats.posting_count) }}</td>
+          <td class="centered bignumber">{{ stats.topic_count|numberformat }}</td>
+          <td class="centered bignumber">{{ stats.posting_count|numberformat }}</td>
           {%- endwith %}
         </tr>
       {%- endfor %}

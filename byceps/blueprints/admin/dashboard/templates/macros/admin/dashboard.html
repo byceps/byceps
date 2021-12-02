@@ -48,9 +48,9 @@
       {%- endif %}
   </div>
   <div class="progress-label small">
-    <strong>{{ format_number(ticket_sale_stats.tickets_sold) }}</strong>
+    <strong>{{ ticket_sale_stats.tickets_sold|numberformat }}</strong>
     {{ _('of') }}
-    <strong>{{ format_number(ticket_sale_stats.tickets_max) if tickets_total_max_specified else '?' }}</strong>
+    <strong>{{ ticket_sale_stats.tickets_max|numberformat if tickets_total_max_specified else '?' }}</strong>
     {{ _('tickets sold') }}
       {%- if tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
     <div class="centered">{{ render_tag(_('sold out')) }}</div>
@@ -62,9 +62,9 @@
     <div class="progress-bar color-success" style="width: calc(100% * {{ seat_utilization.occupied }} / {{ seat_utilization.total }});"></div>
   </div>
   <div class="progress-label small">
-    <strong>{{ format_number(seat_utilization.occupied) }}</strong>
+    <strong>{{ seat_utilization.occupied|numberformat }}</strong>
     {{ _('of') }}
-    <strong>{{ format_number(seat_utilization.total) }}</strong>
+    <strong>{{ seat_utilization.total|numberformat }}</strong>
     {{ _('seats occupied') }}
   </div>
 

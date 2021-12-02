@@ -29,8 +29,8 @@
             <div class="board-category-description">{{ category.description }}</div>
           </a>
         </td>
-        <td class="centered bignumber">{{ format_number(category.topic_count) }}</td>
-        <td class="centered bignumber">{{ format_number(category.posting_count) }}</td>
+        <td class="centered bignumber">{{ category.topic_count|numberformat }}</td>
+        <td class="centered bignumber">{{ category.posting_count|numberformat }}</td>
         <td class="nowrap">
           {%- if category.last_posting_updated_at and category.last_posting_updated_by -%}
             {{ category.last_posting_updated_at|dateformat }}, {{ category.last_posting_updated_at|timeformat('short') }}<br>
