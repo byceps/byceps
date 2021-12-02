@@ -115,7 +115,7 @@ def order(
 def test_email_on_order_placed(send_email_mock, site_app, customer, order):
     app = site_app
 
-    current_user = get_current_user_for_user(customer)
+    current_user = get_current_user_for_user(customer, 'de')
     with current_user_set(app, current_user), app.app_context():
         order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
@@ -131,13 +131,13 @@ Folgende Artikel hast du bestellt:
 
   Beschreibung: Einzelticket, Kategorie Loge
   Anzahl: 5
-  Stückpreis: 99,00 €
+  Stückpreis: 99,00\xa0€
 
   Beschreibung: T-Shirt, Größe L
   Anzahl: 2
-  Stückpreis: 14,95 €
+  Stückpreis: 14,95\xa0€
 
-  Gesamtbetrag: 524,90 €
+  Gesamtbetrag: 524,90\xa0€
 
 Bitte überweise den Gesamtbetrag auf folgendes Konto:
 

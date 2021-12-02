@@ -34,7 +34,7 @@ vielen Dank für deine Bestellung mit der Nummer AWSM-ORDR-9247 am 12.10.2021 ü
 
 Folgende Artikel hast du bestellt:
 
-  Gesamtbetrag: 42,95 €
+  Gesamtbetrag: 42,95\xa0€
 
 Bitte überweise den Gesamtbetrag auf folgendes Konto:
 
@@ -73,7 +73,7 @@ thank you for your order AWSM-ORDR-9247 on 12.10.2021 through our website.
 
 You have ordered these items:
 
-  Total amount: 42,95 €
+  Total amount: €42.95
 
 Bitte überweise den Gesamtbetrag auf folgendes Konto:
 
@@ -110,7 +110,7 @@ def test_example_placed_order_message_text(
     expected,
 ):
     app = admin_app
-    current_user = get_current_user_for_user(order_admin)
+    current_user = get_current_user_for_user(order_admin, locale)
 
     with current_user_set(app, current_user), app.app_context():
         actual = example_service.build_example_placed_order_message_text(
@@ -186,7 +186,7 @@ def test_example_paid_order_message_text(
     expected,
 ):
     app = admin_app
-    current_user = get_current_user_for_user(order_admin)
+    current_user = get_current_user_for_user(order_admin, locale)
 
     with current_user_set(app, current_user), app.app_context():
         actual = example_service.build_example_paid_order_message_text(
@@ -262,7 +262,7 @@ def test_example_canceled_order_message_text(
     expected,
 ):
     app = admin_app
-    current_user = get_current_user_for_user(order_admin)
+    current_user = get_current_user_for_user(order_admin, locale)
 
     with current_user_set(app, current_user), app.app_context():
         actual = example_service.build_example_canceled_order_message_text(

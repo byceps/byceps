@@ -9,13 +9,14 @@ from byceps.services.authentication.session.models.current_user import (
 from byceps.services.authentication.session import service as session_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
+from byceps.services.user.transfer.models import User
 
 from tests.integration.services.shop.helpers import create_orderer
 
 
-def get_current_user_for_user(user) -> CurrentUser:
+def get_current_user_for_user(user: User, locale: str) -> CurrentUser:
     return session_service.get_authenticated_current_user(
-        user, locale=None, permissions=frozenset()
+        user, locale=locale, permissions=frozenset()
     )
 
 

@@ -67,7 +67,7 @@ def test_email_on_order_paid(
 
     order_service.mark_order_as_paid(order.id, 'bank_transfer', order_admin.id)
 
-    current_user = get_current_user_for_user(customer)
+    current_user = get_current_user_for_user(customer, 'de')
     with current_user_set(app, current_user), app.app_context():
         order_email_service.send_email_for_paid_order_to_orderer(order.id)
 
