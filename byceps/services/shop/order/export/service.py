@@ -15,7 +15,6 @@ from flask import current_app
 import pendulum
 
 from .....services.user import service as user_service
-from .....util.money import to_two_places
 from .....util.templating import load_template
 
 from .. import service as order_service
@@ -59,7 +58,9 @@ def _format_export_amount(amount: Decimal) -> str:
     """Format the monetary amount as required by the export format
     specification.
     """
-    quantized = to_two_places(amount)
+    # Quantize to two decimal places.
+    quantized = amount.quantize(Decimal('.00'))
+
     return f'{quantized:.2f}'
 
 
