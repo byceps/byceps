@@ -10,11 +10,10 @@ import dataclasses
 from datetime import datetime
 
 from flask import abort, request
-from flask_babel import gettext
+from flask_babel import gettext, to_user_timezone, to_utc
 
 from .....services.party import service as party_service
 from .....services.tourney import tourney_service
-from .....util.datetime.timezone import local_tz_to_utc, utc_to_local_tz
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
@@ -74,16 +73,15 @@ def create(party_id):
     logo_url = form.logo_url.data.strip()
     category_id = form.category_id.data
     max_participant_count = form.max_participant_count.data
-    starts_at = local_tz_to_utc(
-        datetime.combine(form.starts_on.data, form.starts_at.data)
-    )
+    starts_at_local = datetime.combine(form.starts_on.data, form.starts_at.data)
+    starts_at_utc = to_utc(starts_at_local)
 
     tourney = tourney_service.create_tourney(
         party.id,
         title,
         category_id,
         max_participant_count,
-        starts_at,
+        starts_at_utc,
         subtitle=subtitle,
         logo_url=logo_url,
     )
@@ -104,20 +102,12 @@ def update_form(tourney_id, erroneous_form=None):
 
     party = party_service.find_party(tourney.party_id)
 
-    tourney = dataclasses.replace(
-        tourney,
-        starts_at=utc_to_local_tz(tourney.starts_at),
-    )
+    data = dataclasses.asdict(tourney)
+    starts_at_local = to_user_timezone(tourney.starts_at)
+    data['starts_on'] = starts_at_local.date()
+    data['starts_at'] = starts_at_local.time()
 
-    form = (
-        erroneous_form
-        if erroneous_form
-        else UpdateForm(
-            obj=tourney,
-            starts_on=tourney.starts_at.date(),
-            starts_at=tourney.starts_at.time(),
-        )
-    )
+    form = erroneous_form if erroneous_form else UpdateForm(data=data)
     form.set_category_choices(tourney.party_id)
 
     return {
@@ -144,9 +134,8 @@ def update(tourney_id):
     logo_url = form.logo_url.data.strip()
     category_id = form.category_id.data
     max_participant_count = form.max_participant_count.data
-    starts_at = local_tz_to_utc(
-        datetime.combine(form.starts_on.data, form.starts_at.data)
-    )
+    starts_at_local = datetime.combine(form.starts_on.data, form.starts_at.data)
+    starts_at_utc = to_utc(starts_at_local)
 
     tourney = tourney_service.update_tourney(
         tourney.id,
@@ -155,7 +144,7 @@ def update(tourney_id):
         logo_url,
         category_id,
         max_participant_count,
-        starts_at,
+        starts_at_utc,
     )
 
     flash_success(

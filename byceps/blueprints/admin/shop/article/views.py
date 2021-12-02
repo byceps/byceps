@@ -12,7 +12,7 @@ from datetime import datetime
 from decimal import Decimal
 
 from flask import abort, request
-from flask_babel import gettext
+from flask_babel import gettext, to_user_timezone, to_utc
 
 from .....services.brand import service as brand_service
 from .....services.party import service as party_service
@@ -39,7 +39,6 @@ from .....services.ticketing.transfer.models import TicketCategory
 from .....services.user import service as user_service
 from .....services.user_badge import badge_service
 from .....typing import BrandID
-from .....util.datetime.timezone import local_tz_to_utc, utc_to_local_tz
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
@@ -285,11 +284,11 @@ def update_form(article_id, erroneous_form=None):
 
     data = dataclasses.asdict(article)
     if article.available_from:
-        available_from_local = utc_to_local_tz(article.available_from)
+        available_from_local = to_user_timezone(article.available_from)
         data['available_from_date'] = available_from_local.date()
         data['available_from_time'] = available_from_local.time()
     if article.available_until:
-        available_until_local = utc_to_local_tz(article.available_until)
+        available_until_local = to_user_timezone(article.available_until)
         data['available_until_date'] = available_until_local.date()
         data['available_until_time'] = available_until_local.time()
 
@@ -317,22 +316,23 @@ def update(article_id):
     description = form.description.data.strip()
     price = form.price.data
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
+
     if form.available_from_date.data and form.available_from_time.data:
-        available_from = local_tz_to_utc(
-            datetime.combine(
-                form.available_from_date.data, form.available_from_time.data
-            )
+        available_from_local = datetime.combine(
+            form.available_from_date.data, form.available_from_time.data
         )
+        available_from_utc = to_utc(available_from_local)
     else:
-        available_from = None
+        available_from_utc = None
+
     if form.available_until_date.data and form.available_until_time.data:
-        available_until = local_tz_to_utc(
-            datetime.combine(
-                form.available_until_date.data, form.available_until_time.data
-            )
+        available_until_local = datetime.combine(
+            form.available_until_date.data, form.available_until_time.data
         )
+        available_until_utc = to_utc(available_until_local)
     else:
-        available_until = None
+        available_until_utc = None
+
     total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
     not_directly_orderable = form.not_directly_orderable.data
@@ -343,8 +343,8 @@ def update(article_id):
         description,
         price,
         tax_rate,
-        available_from,
-        available_until,
+        available_from_utc,
+        available_until_utc,
         total_quantity,
         max_quantity_per_order,
         not_directly_orderable,

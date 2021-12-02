@@ -8,20 +8,19 @@ byceps.blueprints.admin.orga_presence.forms
 
 from datetime import datetime
 
-from flask_babel import gettext, lazy_gettext
+from flask_babel import gettext, lazy_gettext, to_user_timezone, to_utc
 from wtforms import DateField, TimeField
 from wtforms.validators import InputRequired, ValidationError
 
 from ....util.datetime.range import DateTimeRange
-from ....util.datetime.timezone import local_tz_to_utc, utc_to_local_tz
 from ....util.l10n import LocalizedForm
 
 
 def build_presence_create_form(dt_range: DateTimeRange):
 
     dt_range = dt_range._replace(
-        start=utc_to_local_tz(dt_range.start).replace(tzinfo=None),
-        end=utc_to_local_tz(dt_range.end).replace(tzinfo=None),
+        start=to_user_timezone(dt_range.start).replace(tzinfo=None),
+        end=to_user_timezone(dt_range.end).replace(tzinfo=None),
     )
 
     class CreateForm(LocalizedForm):
@@ -52,17 +51,11 @@ def build_presence_create_form(dt_range: DateTimeRange):
 
             valid = True
 
-            starts_at = local_tz_to_utc(
-                datetime.combine(
-                    self.starts_on.data,
-                    self.starts_at.data,
-                )
+            starts_at = to_utc(
+                datetime.combine(self.starts_on.data, self.starts_at.data)
             )
-            ends_at = local_tz_to_utc(
-                datetime.combine(
-                    self.ends_on.data,
-                    self.ends_at.data,
-                )
+            ends_at = to_utc(
+                datetime.combine(self.ends_on.data, self.ends_at.data)
             )
 
             for dt, field_date, field_time in [

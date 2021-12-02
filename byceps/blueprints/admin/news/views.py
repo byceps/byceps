@@ -9,7 +9,7 @@ byceps.blueprints.admin.news.views
 from datetime import date, datetime
 
 from flask import abort, g, request
-from flask_babel import format_datetime, gettext
+from flask_babel import format_datetime, gettext, to_utc
 
 from ....services.brand import service as brand_service
 from ....services.image import service as image_service
@@ -23,7 +23,6 @@ from ....services.text_diff import service as text_diff_service
 from ....services.user import service as user_service
 from ....services.user.service import UserIdRejected
 from ....signals import news as news_signals
-from ....util.datetime.timezone import local_tz_to_utc
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -559,7 +558,7 @@ def item_publish_later(item_id):
     if not form.validate():
         return item_publish_later_form(item.id, form)
 
-    publish_at = local_tz_to_utc(
+    publish_at = to_utc(
         datetime.combine(form.publish_on.data, form.publish_at.data)
     )
 

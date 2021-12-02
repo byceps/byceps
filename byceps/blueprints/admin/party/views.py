@@ -11,7 +11,7 @@ import dataclasses
 from datetime import date, datetime
 
 from flask import abort, request
-from flask_babel import gettext
+from flask_babel import gettext, to_user_timezone, to_utc
 
 from ....services.brand import service as brand_service
 from ....services.party import (
@@ -21,7 +21,6 @@ from ....services.party import (
 from ....services.ticketing import ticket_service
 from ....services.ticketing.transfer.models import TicketSaleStats
 from ....typing import PartyID
-from ....util.datetime.timezone import local_tz_to_utc, utc_to_local_tz
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -149,20 +148,18 @@ def create(brand_id):
 
     party_id = form.id.data.strip().lower()
     title = form.title.data.strip()
-    starts_at = local_tz_to_utc(
-        datetime.combine(form.starts_on.data, form.starts_at.data)
-    )
-    ends_at = local_tz_to_utc(
-        datetime.combine(form.ends_on.data, form.ends_at.data)
-    )
+    starts_at_local = datetime.combine(form.starts_on.data, form.starts_at.data)
+    starts_at_utc = to_utc(starts_at_local)
+    ends_at_local = datetime.combine(form.ends_on.data, form.ends_at.data)
+    ends_at_utc = to_utc(ends_at_local)
     max_ticket_quantity = form.max_ticket_quantity.data
 
     party = party_service.create_party(
         party_id,
         brand.id,
         title,
-        starts_at,
-        ends_at,
+        starts_at_utc,
+        ends_at_utc,
         max_ticket_quantity=max_ticket_quantity,
     )
 
@@ -181,23 +178,20 @@ def update_form(party_id, erroneous_form=None):
     party = _get_party_or_404(party_id)
     brand = brand_service.find_brand(party.brand_id)
 
-    party = dataclasses.replace(
-        party,
-        starts_at=utc_to_local_tz(party.starts_at),
-        ends_at=utc_to_local_tz(party.ends_at),
+    starts_at_local = to_user_timezone(party.starts_at)
+    ends_at_local = to_user_timezone(party.ends_at)
+
+    data = dataclasses.asdict(party)
+    data.update(
+        {
+            'starts_on': starts_at_local.date(),
+            'starts_at': starts_at_local.time(),
+            'ends_on': ends_at_local.date(),
+            'ends_at': ends_at_local.time(),
+        }
     )
 
-    form = (
-        erroneous_form
-        if erroneous_form
-        else UpdateForm(
-            obj=party,
-            starts_on=party.starts_at.date(),
-            starts_at=party.starts_at.time(),
-            ends_on=party.ends_at.date(),
-            ends_at=party.ends_at.time(),
-        )
-    )
+    form = erroneous_form if erroneous_form else UpdateForm(data=data)
 
     return {
         'brand': brand,
@@ -217,12 +211,10 @@ def update(party_id):
         return update_form(party.id, form)
 
     title = form.title.data.strip()
-    starts_at = local_tz_to_utc(
-        datetime.combine(form.starts_on.data, form.starts_at.data)
-    )
-    ends_at = local_tz_to_utc(
-        datetime.combine(form.ends_on.data, form.ends_at.data)
-    )
+    starts_at_local = datetime.combine(form.starts_on.data, form.starts_at.data)
+    starts_at_utc = to_utc(starts_at_local)
+    ends_at_local = datetime.combine(form.ends_on.data, form.ends_at.data)
+    ends_at_utc = to_utc(ends_at_local)
     max_ticket_quantity = form.max_ticket_quantity.data
     ticket_management_enabled = form.ticket_management_enabled.data
     seat_management_enabled = form.seat_management_enabled.data
@@ -233,8 +225,8 @@ def update(party_id):
         party = party_service.update_party(
             party.id,
             title,
-            starts_at,
-            ends_at,
+            starts_at_utc,
+            ends_at_utc,
             max_ticket_quantity,
             ticket_management_enabled,
             seat_management_enabled,

@@ -12,6 +12,7 @@ from datetime import datetime
 from typing import Iterable
 
 from flask import abort, g, request
+from flask_babel import to_utc
 
 from ....services.orga_presence import service as orga_presence_service
 from ....services.orga_presence.transfer.models import (
@@ -21,7 +22,6 @@ from ....services.orga_presence.transfer.models import (
 )
 from ....services.party import service as party_service
 from ....services.user.transfer.models import User
-from ....util.datetime.timezone import local_tz_to_utc
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
@@ -119,18 +119,16 @@ def create(party_id):
     if not form.validate():
         return create_form(party.id, form)
 
-    starts_at = local_tz_to_utc(
-        datetime.combine(form.starts_on.data, form.starts_at.data)
-    )
-    ends_at = local_tz_to_utc(
-        datetime.combine(form.ends_on.data, form.ends_at.data)
-    )
+    starts_at_local = datetime.combine(form.starts_on.data, form.starts_at.data)
+    starts_at_utc = to_utc(starts_at_local)
+    ends_at_local = datetime.combine(form.ends_on.data, form.ends_at.data)
+    ends_at_utc = to_utc(ends_at_local)
 
     orga_presence_service.create_presence(
         party.id,
         g.user.id,
-        starts_at,
-        ends_at,
+        starts_at_utc,
+        ends_at_utc,
     )
 
     return redirect_to('.view', party_id=party.id)
