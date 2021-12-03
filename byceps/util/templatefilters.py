@@ -13,8 +13,6 @@ from jinja2 import pass_eval_context
 from jinja2.filters import do_default, do_trim
 from markupsafe import Markup
 
-from . import money
-
 
 @pass_eval_context
 def dim(eval_ctx, value):
@@ -49,7 +47,6 @@ def register(app):
     functions = [
         dim,
         fallback,
-        money.format_euro_amount,
     ]
 
     for f in functions:

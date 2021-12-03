@@ -82,7 +82,7 @@ table.attachments td {
         <div class="column-auto">
 
           <div class="data-label">{{ _('Unit price') }}</div>
-          <div class="data-value" style="font-size: 1.5rem;">{{ article.price|format_euro_amount }}</div>
+          <div class="data-value" style="font-size: 1.5rem;">{{ article.price|currencyformat('EUR') }}</div>
 
         </div>
       </div>

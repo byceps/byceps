@@ -76,7 +76,7 @@
     <tfoot>
       <tr>
         <th colspan="2" style="text-align: right;">{{ _('Total amount') }}</th>
-        <td class="number"><strong>{{ order.total_amount|format_euro_amount }}</strong></td>
+        <td class="number"><strong>{{ order.total_amount|currencyformat('EUR') }}</strong></td>
       </tr>
     </tfoot>
     <tbody>
@@ -84,7 +84,7 @@
       <tr>
         <td class="number">{{ line_item.quantity }}</td>
         <td>{{ line_item.description }}</td>
-        <td class="number">{{ line_item.unit_price|format_euro_amount }}</td>
+        <td class="number">{{ line_item.unit_price|currencyformat('EUR') }}</td>
       </tr>
       {%- endfor %}
     </tbody>

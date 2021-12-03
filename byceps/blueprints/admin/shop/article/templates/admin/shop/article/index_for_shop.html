@@ -68,7 +68,7 @@
             {%- endif %}
           </td>
           <td class="nowrap number">
-            {{- article.price|format_euro_amount }}<br>
+            {{- article.price|currencyformat('EUR') }}<br>
             {{- '%s&thinsp;%%'|safe|format(article.tax_rate|tax_rate_as_percentage)|dim -}}
           </td>
           <td class="number">{{ article.total_quantity }}</td>

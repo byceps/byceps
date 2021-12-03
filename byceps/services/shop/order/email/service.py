@@ -12,7 +12,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Iterator
 
-from flask_babel import format_date, gettext
+from flask_babel import format_currency, format_date, gettext
 
 from .....services.email import service as email_service
 from .....services.email.transfer.models import Message
@@ -26,7 +26,6 @@ from .....services.user import service as user_service
 from .....services.user.transfer.models import User
 from .....typing import BrandID
 from .....util.l10n import force_user_locale
-from .....util.money import format_euro_amount
 from .....util.templating import load_template
 
 from ...shop.transfer.models import ShopID
@@ -92,7 +91,7 @@ def _assemble_email_for_incoming_order_to_orderer(
                     indentation
                     + gettext('Unit price')
                     + ': '
-                    + format_euro_amount(line_item.unit_price),
+                    + format_currency(line_item.unit_price, 'EUR'),
                 ]
             )
             for line_item in sorted(
@@ -103,7 +102,7 @@ def _assemble_email_for_incoming_order_to_orderer(
             indentation
             + gettext('Total amount')
             + ': '
-            + format_euro_amount(order.total_amount)
+            + format_currency(order.total_amount, 'EUR')
         )
         payment_instructions = _get_payment_instructions(order)
         paragraphs = [

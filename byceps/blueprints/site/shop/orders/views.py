@@ -7,7 +7,7 @@ byceps.blueprints.site.shop.orders.views
 """
 
 from flask import abort, g, request
-from flask_babel import gettext
+from flask_babel import format_currency, gettext
 
 from .....services.shop.order.email import service as order_email_service
 from .....services.shop.order import service as order_service
@@ -19,7 +19,6 @@ from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
-from .....util.money import format_euro_amount
 from .....util.views import login_required, redirect_to
 
 from ....site.snippet.templating import render_snippet_as_partial
@@ -97,7 +96,7 @@ def _get_payment_instructions(order):
 
     context = {
         'order_number': order.order_number,
-        'total_amount': format_euro_amount(order.total_amount),
+        'total_amount': format_currency(order.total_amount, 'EUR'),
     }
 
     return render_snippet_as_partial(
