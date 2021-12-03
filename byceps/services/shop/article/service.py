@@ -432,7 +432,7 @@ def _db_entity_to_article(article: DbArticle) -> Article:
         shop_id=article.shop_id,
         item_number=article.item_number,
         type_=article.type_,
-        type_params=article.type_params or {},
+        type_params=article.type_params,
         description=article.description,
         price=article.price,
         tax_rate=article.tax_rate,

@@ -12,6 +12,7 @@ from byceps.services.shop.article.transfer.models import (
     Article,
     ArticleNumber,
     ArticleType,
+    ArticleTypeParams,
 )
 from byceps.services.shop.order.transfer.models import Orderer
 from byceps.services.shop.shop import service as shop_service
@@ -58,6 +59,7 @@ def create_article(
     *,
     item_number: ArticleNumber = ANY_ARTICLE_ITEM_NUMBER,
     type_: ArticleType = ArticleType.other,
+    type_params: ArticleTypeParams = None,
     description: str = 'Cool thing',
     price: Optional[Decimal] = None,
     tax_rate: Optional[Decimal] = None,
