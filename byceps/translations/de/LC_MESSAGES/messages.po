@@ -3307,7 +3307,7 @@ msgstr "Tickets erstellen"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:176
 msgid "Create ticket bundles"
-msgstr "Ticket-Bundles erstellen"
+msgstr "Ticketpakete erstellen"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:185
 msgid ""
@@ -4303,7 +4303,7 @@ msgstr "Zuweisen"
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:7
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:12
 msgid "Ticket bundles"
-msgstr "Ticket-Bundles"
+msgstr "Ticketpakete"
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:54
 #: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:5
@@ -4340,7 +4340,7 @@ msgstr "Ändern"
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:7
 msgid "Ticket bundle"
-msgstr "Ticket-Bundle"
+msgstr "Ticketpaket"
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:53
 msgid "Change code"
@@ -4353,7 +4353,7 @@ msgstr "Check-In rückgängig machen"
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:82
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:85
 msgid "Bundle"
-msgstr "Bundle"
+msgstr "Paket"
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:87
 msgid "independent"
@@ -4370,7 +4370,7 @@ msgstr "Check-In rückgängig machen?"
 
 #: byceps/blueprints/admin/ticketing/templates/layout/admin/ticketing.html:18
 msgid "Ticket Bundles"
-msgstr "Ticket-Bundles"
+msgstr "Ticketpakete"
 
 #: byceps/blueprints/admin/ticketing/templates/macros/admin/ticketing.html:5
 msgid "This ticket is no longer valid."

@@ -84,7 +84,7 @@
         {%- elif event.event == 'ticket-bundle-created' %}
           {%- set icon_name = 'ticket' %}
           {%- set body %}
-            Ein <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=event.bundle_id) }}">Ticket Bundle</a></strong> mit {{ event.ticket_quantity }} Tickets der Kategorie &quot;{{ event.ticket_category_title|fallback('unbekannt') }}&quot; ist erzeugt worden.
+            Ein <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=event.bundle_id) }}">Ticketpaket</a></strong> mit {{ event.ticket_quantity }} Tickets der Kategorie &quot;{{ event.ticket_category_title|fallback('unbekannt') }}&quot; ist erzeugt worden.
           {%- endset %}
         {%- elif event.event == 'ticket-bundle-revoked' %}
           {%- set icon_name = 'ticket' %}
@@ -94,7 +94,7 @@
             {%- else %}
             Jemand
             {%- endif %}
-            hat das <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=event.bundle_id) }}">Ticket Bundle</a></strong> {{ render_ticket_flag_revoked() }}.
+            hat das <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=event.bundle_id) }}">Ticketpaket</a></strong> {{ render_ticket_flag_revoked() }}.
           {%- endset %}
         {%- elif event.event == 'ticket-created' %}
           {%- set icon_name = 'ticket' %}
