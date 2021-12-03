@@ -45,6 +45,8 @@ def create_article(
     total_quantity: int,
     max_quantity_per_order: int,
     processing_required: bool,
+    *,
+    type_params: Optional[dict[str, str]] = None,
 ) -> Article:
     """Create an article."""
     article = DbArticle(
@@ -57,6 +59,7 @@ def create_article(
         total_quantity,
         max_quantity_per_order,
         processing_required,
+        type_params=type_params,
     )
 
     db.session.add(article)
@@ -429,6 +432,7 @@ def _db_entity_to_article(article: DbArticle) -> Article:
         shop_id=article.shop_id,
         item_number=article.item_number,
         type_=article.type_,
+        type_params=article.type_params or {},
         description=article.description,
         price=article.price,
         tax_rate=article.tax_rate,

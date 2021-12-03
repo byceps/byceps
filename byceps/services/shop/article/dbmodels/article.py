@@ -6,6 +6,7 @@ byceps.services.shop.article.dbmodels.article
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 from typing import Optional
@@ -33,6 +34,7 @@ class Article(db.Model):
     shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)
     item_number = db.Column(db.UnicodeText, unique=True, nullable=False)
     _type = db.Column('type', db.UnicodeText, nullable=False)
+    type_params = db.Column(db.JSONB, nullable=True)
     description = db.Column(db.UnicodeText, nullable=False)
     price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
@@ -57,12 +59,14 @@ class Article(db.Model):
         max_quantity_per_order: int,
         processing_required: bool,
         *,
+        type_params: Optional[dict[str, str]] = None,
         available_from: Optional[datetime] = None,
         available_until: Optional[datetime] = None,
     ) -> None:
         self.shop_id = shop_id
         self.item_number = item_number
         self._type = type_.name
+        self.type_params = type_params
         self.description = description
         self.price = price
         self.tax_rate = tax_rate

@@ -6,6 +6,7 @@ byceps.services.shop.article.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
@@ -58,6 +59,7 @@ class Article:
     shop_id: ShopID
     item_number: ArticleNumber
     type_: ArticleType
+    type_params: dict[str, str]
     description: str
     price: Decimal
     tax_rate: Decimal
