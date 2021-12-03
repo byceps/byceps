@@ -1881,7 +1881,7 @@ msgstr "Anmerkungen des Admins"
 
 #: byceps/blueprints/admin/guest_server/forms.py:88
 msgid "Provide at least an IP address or a hostname."
-msgstr ""
+msgstr "Mindestens eine IP-Adresse oder ein Hostname muss angegeben werden."
 
 #: byceps/blueprints/admin/guest_server/views.py:142
 #: byceps/blueprints/site/guest_server/views.py:67
