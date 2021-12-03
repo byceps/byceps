@@ -106,7 +106,7 @@ def orderer(make_user):
 
 
 @pytest.fixture
-def order_number_sequence_id(shop) -> None:
+def order_number_sequence_id(shop):
     sequence_id = order_sequence_service.create_order_number_sequence(
         shop.id, 'LR-08-B', value=26
     )
@@ -117,7 +117,7 @@ def order_number_sequence_id(shop) -> None:
 
 
 @pytest.fixture
-def storefront(shop, order_number_sequence_id) -> None:
+def storefront(shop, order_number_sequence_id):
     storefront = storefront_service.create_storefront(
         StorefrontID(f'{shop.id}-storefront'),
         shop.id,
