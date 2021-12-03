@@ -29,13 +29,14 @@ from wtforms.validators import (
     ValidationError,
 )
 
-from .....services.party.transfer.models import Party
+from .....services.party import service as party_service
 from .....services.shop.article.transfer.models import (
     ArticleType,
     get_article_type_label,
 )
-from .....services.ticketing.transfer.models import TicketCategory
+from .....services.ticketing import category_service as ticket_category_service
 from .....services.user_badge.transfer.models import Badge
+from .....typing import BrandID
 from .....util.l10n import LocalizedForm
 
 
@@ -226,12 +227,8 @@ class RegisterBadgeAwardingActionForm(LocalizedForm):
 class RegisterTicketsCreationActionForm(LocalizedForm):
     category_id = SelectField(lazy_gettext('Category'), [InputRequired()])
 
-    def set_category_choices(
-        self, categories_with_parties: Iterable[tuple[TicketCategory, Party]]
-    ) -> list[tuple[str, str]]:
-        self.category_id.choices = _get_category_choices(
-            categories_with_parties
-        )
+    def set_category_choices(self, brand_id: BrandID) -> list[tuple[str, str]]:
+        self.category_id.choices = _get_ticket_category_choices(brand_id)
 
 
 class RegisterTicketBundlesCreationActionForm(LocalizedForm):
@@ -240,20 +237,17 @@ class RegisterTicketBundlesCreationActionForm(LocalizedForm):
         lazy_gettext('Ticket quantity'), [InputRequired()]
     )
 
-    def set_category_choices(
-        self, categories_with_parties: Iterable[tuple[TicketCategory, Party]]
-    ) -> list[tuple[str, str]]:
-        self.category_id.choices = _get_category_choices(
-            categories_with_parties
-        )
+    def set_category_choices(self, brand_id: BrandID) -> list[tuple[str, str]]:
+        self.category_id.choices = _get_ticket_category_choices(brand_id)
 
 
-def _get_category_choices(
-    categories_with_parties: Iterable[tuple[TicketCategory, Party]]
-) -> list[tuple[str, str]]:
+def _get_ticket_category_choices(brand_id: BrandID) -> list[tuple[str, str]]:
     choices = [
         (str(category.id), f'{party.title}: {category.title}')
-        for category, party in categories_with_parties
+        for party in party_service.get_active_parties(brand_id)
+        for category in ticket_category_service.get_categories_for_party(
+            party.id
+        )
     ]
     choices.sort(key=lambda choice: choice[1])
     return choices

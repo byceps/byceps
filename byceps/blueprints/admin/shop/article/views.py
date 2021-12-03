@@ -15,8 +15,6 @@ from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
 from .....services.brand import service as brand_service
-from .....services.party import service as party_service
-from .....services.party.transfer.models import Party
 from .....services.shop.article import (
     sequence_service as article_sequence_service,
     service as article_service,
@@ -35,10 +33,8 @@ from .....services.shop.order import (
 from .....services.shop.order.transfer.models import PaymentState
 from .....services.shop.shop import service as shop_service
 from .....services.ticketing import category_service as ticket_category_service
-from .....services.ticketing.transfer.models import TicketCategory
 from .....services.user import service as user_service
 from .....services.user_badge import badge_service
-from .....typing import BrandID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
@@ -519,7 +515,7 @@ def action_create_form_for_tickets_creation(article_id, erroneous_form=None):
         if erroneous_form
         else RegisterTicketsCreationActionForm()
     )
-    form.set_category_choices(_get_categories_with_parties(brand.id))
+    form.set_category_choices(brand.id)
 
     return {
         'article': article,
@@ -539,7 +535,7 @@ def action_create_for_tickets_creation(article_id):
     brand = brand_service.get_brand(shop.brand_id)
 
     form = RegisterTicketsCreationActionForm(request.form)
-    form.set_category_choices(_get_categories_with_parties(brand.id))
+    form.set_category_choices(brand.id)
 
     if not form.validate():
         return action_create_form_for_tickets_creation(article_id, form)
@@ -575,7 +571,7 @@ def action_create_form_for_ticket_bundles_creation(
         if erroneous_form
         else RegisterTicketBundlesCreationActionForm()
     )
-    form.set_category_choices(_get_categories_with_parties(brand.id))
+    form.set_category_choices(brand.id)
 
     return {
         'article': article,
@@ -595,7 +591,7 @@ def action_create_for_ticket_bundles_creation(article_id):
     brand = brand_service.get_brand(shop.brand_id)
 
     form = RegisterTicketBundlesCreationActionForm(request.form)
-    form.set_category_choices(_get_categories_with_parties(brand.id))
+    form.set_category_choices(brand.id)
 
     if not form.validate():
         return action_create_form_for_ticket_bundles_creation(article_id, form)
@@ -614,18 +610,6 @@ def action_create_for_ticket_bundles_creation(article_id):
     flash_success(gettext('Action has been added.'))
 
     return redirect_to('.view', article_id=article.id)
-
-
-def _get_categories_with_parties(
-    brand_id: BrandID,
-) -> set[tuple[TicketCategory, Party]]:
-    return {
-        (category, party)
-        for party in party_service.get_active_parties(brand_id)
-        for category in ticket_category_service.get_categories_for_party(
-            party.id
-        )
-    }
 
 
 @blueprint.delete('/actions/<uuid:action_id>')
