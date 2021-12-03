@@ -72,10 +72,16 @@ def index_for_shop(shop_id, page):
         shop.id, page, per_page
     )
 
+    # Inherit order of enum members.
+    article_type_names_and_labels = [
+        (type_.name, get_article_type_label(type_)) for type_ in ArticleType
+    ]
+
     return {
         'shop': shop,
         'brand': brand,
         'articles': articles,
+        'article_type_names_and_labels': article_type_names_and_labels,
     }
 
 
@@ -162,12 +168,13 @@ def view_ordered(article_id):
 # create
 
 
-@blueprint.get('/for_shop/<shop_id>/create')
+@blueprint.get('/for_shop/<shop_id>/create/<type>')
 @permission_required('shop_article.create')
 @templated
-def create_form(shop_id, erroneous_form=None):
+def create_form(shop_id, type, erroneous_form=None):
     """Show form to create an article."""
     shop = _get_shop_or_404(shop_id)
+    type_ = _get_article_type_or_400(type)
 
     brand = brand_service.get_brand(shop.brand_id)
 
@@ -186,16 +193,19 @@ def create_form(shop_id, erroneous_form=None):
     return {
         'shop': shop,
         'brand': brand,
+        'article_type_name': type_.name,
+        'article_type_label': get_article_type_label(type_),
         'article_number_sequence_available': article_number_sequence_available,
         'form': form,
     }
 
 
-@blueprint.post('/for_shop/<shop_id>')
+@blueprint.post('/for_shop/<shop_id>/<type>')
 @permission_required('shop_article.create')
-def create(shop_id):
+def create(shop_id, type):
     """Create an article."""
     shop = _get_shop_or_404(shop_id)
+    type_ = _get_article_type_or_400(type)
 
     form = ArticleCreateForm(request.form)
 
@@ -206,16 +216,16 @@ def create(shop_id):
         flash_error(
             gettext('No article number sequences are defined for this shop.')
         )
-        return create_form(shop_id, form)
+        return create_form(shop_id, type_, form)
 
     form.set_article_number_sequence_choices(article_number_sequences)
     if not form.validate():
-        return create_form(shop_id, form)
+        return create_form(shop_id, type_, form)
 
     article_number_sequence_id = form.article_number_sequence_id.data
     if not article_number_sequence_id:
         flash_error(gettext('No valid article number sequence was specified.'))
-        return create_form(shop_id, form)
+        return create_form(shop_id, type_, form)
 
     article_number_sequence = (
         article_sequence_service.get_article_number_sequence(
@@ -224,7 +234,7 @@ def create(shop_id):
     )
     if article_number_sequence.shop_id != shop.id:
         flash_error(gettext('No valid article number sequence was specified.'))
-        return create_form(shop_id, form)
+        return create_form(shop_id, type_, form)
 
     try:
         item_number = article_sequence_service.generate_article_number(
@@ -233,7 +243,6 @@ def create(shop_id):
     except article_sequence_service.ArticleNumberGenerationFailed as e:
         abort(500, e.message)
 
-    type_ = ArticleType[form.type_.data]
     description = form.description.data.strip()
     price = form.price.data
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
@@ -705,3 +714,10 @@ def _get_article_or_404(article_id) -> Article:
         abort(404)
 
     return article
+
+
+def _get_article_type_or_400(value: str) -> ArticleType:
+    try:
+        return ArticleType[value]
+    except KeyError:
+        abort(400, 'Unknown article type')

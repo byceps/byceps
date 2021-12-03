@@ -15,7 +15,14 @@
     {%- if has_current_user_permission('shop_article.create') %}
     <div class="column-auto">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>{{ _('Create article') }}</span></a>
+        <div class="dropdown">
+          <button class="dropdown-toggle button">{{ render_icon('add') }} <span>{{ _('Create article') }}</span> {{ render_icon('chevron-down') }}</button>
+          <ol class="dropdown-menu dropdown-menu--right">
+            {%- for name, label in article_type_names_and_labels %}
+            <li><a class="dropdown-item" href="{{ url_for('.create_form', shop_id=shop.id, type=name) }}">{{ _('Type') }}: {{ label }}</a></li>
+            {%- endfor %}
+          </ol>
+        </div>
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">

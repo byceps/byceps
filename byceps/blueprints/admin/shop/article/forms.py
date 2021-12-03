@@ -17,7 +17,6 @@ from wtforms import (
     DateField,
     DecimalField,
     IntegerField,
-    RadioField,
     SelectField,
     StringField,
     TimeField,
@@ -30,10 +29,6 @@ from wtforms.validators import (
 )
 
 from .....services.party import service as party_service
-from .....services.shop.article.transfer.models import (
-    ArticleType,
-    get_article_type_label,
-)
 from .....services.ticketing import category_service as ticket_category_service
 from .....services.user_badge.transfer.models import Badge
 from .....typing import BrandID
@@ -64,20 +59,9 @@ class _ArticleBaseForm(LocalizedForm):
     )
 
 
-def _get_article_type_choices() -> list[tuple[str, str]]:
-    return [
-        (type_.name, get_article_type_label(type_)) for type_ in ArticleType
-    ]
-
-
 class ArticleCreateForm(_ArticleBaseForm):
     article_number_sequence_id = SelectField(
         lazy_gettext('Article number sequence'), validators=[InputRequired()]
-    )
-    type_ = RadioField(
-        lazy_gettext('Type'),
-        choices=_get_article_type_choices(),
-        validators=[InputRequired()],
     )
 
     def set_article_number_sequence_choices(self, sequences):
