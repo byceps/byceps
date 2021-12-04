@@ -7,14 +7,16 @@ byceps.services.orga_presence.service
 """
 
 from __future__ import annotations
-from datetime import date, datetime
+from datetime import date, datetime, timedelta, timezone
 from itertools import groupby
 from typing import Iterator, Sequence
 from uuid import UUID
+try:
+    from zoneinfo import ZoneInfo
+except ImportError:
+    from backports.zoneinfo import ZoneInfo
 
 from flask import current_app
-import pendulum
-from pendulum import DateTime
 from sqlalchemy import delete
 
 from ...database import db
@@ -106,15 +108,25 @@ def get_hour_ranges(time_slots: list[TimeSlot]) -> Iterator[DateTimeRange]:
 
 
 def _get_hour_starts(dt_ranges: Sequence[DateTimeRange]) -> Iterator[datetime]:
-    min_starts_at = _to_local_pendulum_datetime(_find_earliest_start(dt_ranges))
-    max_ends_at = _to_local_pendulum_datetime(_find_latest_end(dt_ranges))
+    min_starts_at_utc = _find_earliest_start(dt_ranges)
+    max_ends_at_utc = _find_latest_end(dt_ranges)
 
-    min_starts_at = min_starts_at.set(minute=0, second=0, microsecond=0)
+    # Generate full hours.
+    min_starts_at_utc = min_starts_at_utc.replace(
+        minute=0, second=0, microsecond=0
+    )
 
-    period = pendulum.period(min_starts_at, max_ends_at)
-    hour_starts = period.range('hours')
+    min_starts_at_utc = min_starts_at_utc.replace(tzinfo=timezone.utc)
+    max_ends_at_utc = max_ends_at_utc.replace(tzinfo=timezone.utc)
 
-    return _to_datetimes_without_tzinfo(hour_starts)
+    local_tz = ZoneInfo(current_app.config['TIMEZONE'])
+    min_starts_at_local = min_starts_at_utc.astimezone(local_tz)
+    max_ends_at_local = max_ends_at_utc.astimezone(local_tz)
+
+    hour_starts = _generate_hour_starts(min_starts_at_local, max_ends_at_local)
+
+    # Remove timezone info for comparability with naive datetimes.
+    return (dt.replace(tzinfo=None) for dt in hour_starts)
 
 
 def _find_earliest_start(dt_ranges: Sequence[DateTimeRange]) -> datetime:
@@ -125,13 +137,12 @@ def _find_latest_end(dt_ranges: Sequence[DateTimeRange]) -> datetime:
     return max(dt_range.end for dt_range in dt_ranges)
 
 
-def _to_local_pendulum_datetime(dt: datetime) -> DateTime:
-    return pendulum.instance(dt).in_tz(current_app.config['TIMEZONE'])
-
-
-def _to_datetimes_without_tzinfo(dts: Sequence[DateTime]) -> Iterator[datetime]:
-    for dt in dts:
-        yield datetime.fromtimestamp(dt.timestamp())
+def _generate_hour_starts(start: datetime, end: datetime) -> Iterator[datetime]:
+    one_hour = timedelta(hours=1)
+    x = start
+    while x <= end:
+        yield x
+        x += one_hour
 
 
 def get_days_and_hour_totals(
