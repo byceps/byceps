@@ -8,6 +8,7 @@ byceps.services.user.command_service
 
 from datetime import date
 from typing import Any, Optional
+from warnings import warn
 
 from babel import Locale
 
@@ -70,7 +71,16 @@ def initialize_account(
 def _assign_roles(
     user_id: UserID, *, initiator_id: Optional[UserID] = None
 ) -> None:
-    board_user_role = authorization_service.find_role(RoleID('board_user'))
+    board_user_role_name = 'board_user'
+    board_user_role = authorization_service.find_role(
+        RoleID(board_user_role_name)
+    )
+    if board_user_role is None:
+        warn(
+            f'Role "{board_user_role_name}" not found; '
+            f'not assigning it to user "{user_id}".'
+        )
+        return
 
     authorization_service.assign_role_to_user(
         board_user_role.id, user_id, initiator_id=initiator_id
