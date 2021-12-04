@@ -69,6 +69,16 @@ def find_category(category_id: TicketCategoryID) -> Optional[TicketCategory]:
     return _db_entity_to_category(category)
 
 
+def get_category(category_id: TicketCategoryID) -> TicketCategory:
+    """Return the category with that ID, or raise an exception not found."""
+    category = find_category(category_id)
+
+    if category is None:
+        raise ValueError(f'Unknown ticket category ID "{category_id}"')
+
+    return category
+
+
 def get_categories_for_party(party_id: PartyID) -> Sequence[TicketCategory]:
     """Return all categories for that party."""
     categories = db.session \

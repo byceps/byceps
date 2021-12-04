@@ -35,9 +35,7 @@ def create_ticket_bundles(
     owned_by_id = order.placed_by_id
     order_number = order.order_number
 
-    category = ticket_category_service.find_category(category_id)
-    if category is None:
-        raise ValueError(f'Unknown ticket category ID for order {order_number}')
+    category = ticket_category_service.get_category(category_id)
 
     for _ in range(bundle_quantity):
         bundle = ticket_bundle_service.create_bundle(

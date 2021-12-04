@@ -27,7 +27,7 @@ def create_tickets_sold_event(
 ) -> TicketsSold:
     occurred_at = order_service.get_payment_date(order_id)
     initiator_screen_name = user_service.find_screen_name(initiator_id)
-    category = category_service.find_category(category_id)
+    category = category_service.get_category(category_id)
     owner_screen_name = user_service.find_screen_name(owner_id)
 
     return TicketsSold(

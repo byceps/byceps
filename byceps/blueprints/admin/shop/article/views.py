@@ -550,9 +550,7 @@ def action_create_for_tickets_creation(article_id):
         return action_create_form_for_tickets_creation(article_id, form)
 
     category_id = form.category_id.data
-    category = ticket_category_service.find_category(category_id)
-    if category is None:
-        raise ValueError(f'Unknown category ID "{category_id}"')
+    category = ticket_category_service.get_category(category_id)
 
     action_registry_service.register_tickets_creation(
         article.item_number, category.id
@@ -606,9 +604,7 @@ def action_create_for_ticket_bundles_creation(article_id):
         return action_create_form_for_ticket_bundles_creation(article_id, form)
 
     category_id = form.category_id.data
-    category = ticket_category_service.find_category(category_id)
-    if category is None:
-        raise ValueError(f'Unknown category ID "{category_id}"')
+    category = ticket_category_service.get_category(category_id)
 
     ticket_quantity = form.ticket_quantity.data
 

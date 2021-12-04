@@ -80,7 +80,7 @@ def view_printable_html(ticket_id):
         # Hide ticket ID validity rather than openly denying access.
         abort(404)
 
-    ticket_category = ticket_category_service.find_category(ticket.category_id)
+    ticket_category = ticket_category_service.get_category(ticket.category_id)
     party = party_service.get_party(ticket_category.party_id)
 
     barcode_svg = barcode_service.render_svg(ticket.code)
