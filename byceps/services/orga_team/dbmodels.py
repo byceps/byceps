@@ -6,6 +6,8 @@ byceps.services.orga_team.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Optional
+
 from ...database import db, generate_uuid
 from ...typing import PartyID, UserID
 from ...util.instances import ReprBuilder
@@ -56,9 +58,16 @@ class Membership(db.Model):
     user = db.relationship(User, collection_class=set, backref='orga_team_memberships')
     duties = db.Column(db.UnicodeText, nullable=True)
 
-    def __init__(self, orga_team_id: OrgaTeamID, user_id: UserID) -> None:
+    def __init__(
+        self,
+        orga_team_id: OrgaTeamID,
+        user_id: UserID,
+        *,
+        duties: Optional[str] = None,
+    ) -> None:
         self.orga_team_id = orga_team_id
         self.user_id = user_id
+        self.duties = duties
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

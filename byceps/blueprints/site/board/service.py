@@ -22,6 +22,7 @@ from ....services.board import (
 from ....services.board.transfer.models import CategoryWithLastUpdate
 from ....services.orga_team import service as orga_team_service
 from ....services.party import service as party_service
+from ....services.party.transfer.models import Party
 from ....services.site import settings_service as site_settings_service
 from ....services.ticketing import ticket_service
 from ....services.user import service as user_service
@@ -118,6 +119,7 @@ def enrich_creators(
 
     badges_by_user_id = _get_badges_for_users(creator_ids, brand_id)
 
+    party: Optional[Party]
     if party_id is not None:
         party = party_service.get_party(party_id)
         orga_ids = orga_team_service.select_orgas_for_party(
@@ -136,7 +138,8 @@ def enrich_creators(
 
         badges: set[Badge] = badges_by_user_id.get(user_id, set())
 
-        if user_id in ticket_users:
+        ticket: Optional[Ticket]
+        if (party is not None) and (user_id in ticket_users):
             ticket = Ticket(party.title)
         else:
             ticket = None

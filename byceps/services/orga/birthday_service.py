@@ -89,7 +89,7 @@ def sort_users_by_next_birthday(
             users_and_birthdays,
             key=lambda user_and_birthday: (
                 user_and_birthday[1].days_until_next_birthday,
-                -user_and_birthday[1].age,
+                -(user_and_birthday[1].age or 0),
             ),
         )
     )

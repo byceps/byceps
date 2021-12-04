@@ -10,7 +10,7 @@ from __future__ import annotations
 import dataclasses
 from datetime import datetime
 from functools import partial
-from typing import Optional, Sequence
+from typing import Optional, Union
 
 from ...database import db, paginate, Pagination, Query
 from ...events.news import NewsItemPublished
@@ -259,7 +259,7 @@ def get_items_paginated(
 
 
 def get_recent_headlines(
-    channel_ids: set[ChannelID], limit: int
+    channel_ids: Union[frozenset[ChannelID], set[ChannelID]], limit: int
 ) -> list[Headline]:
     """Return the most recent headlines."""
     items = db.session \
@@ -297,7 +297,7 @@ def _get_items_query(channel_ids: set[ChannelID]) -> Query:
         .order_by(DbItem.published_at.desc())
 
 
-def get_item_versions(item_id: ItemID) -> Sequence[DbItemVersion]:
+def get_item_versions(item_id: ItemID) -> list[DbItemVersion]:
     """Return all item versions, sorted from most recent to oldest."""
     return db.session \
         .query(DbItemVersion) \

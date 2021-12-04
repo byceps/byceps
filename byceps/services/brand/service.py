@@ -109,6 +109,7 @@ def count_brands() -> int:
 
 
 def _db_entity_to_brand(brand: DbBrand) -> Brand:
+    image_url_path: Optional[str]
     if brand.image_filename:
         image_url_path = f'/data/global/brand_images/{brand.image_filename}'
     else:

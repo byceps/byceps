@@ -203,4 +203,7 @@ def get_participant_label(
     if participant_id is None:
         return gettext('bye')
 
+    if not participant_name:
+        return '<unnamed>'
+
     return participant_name

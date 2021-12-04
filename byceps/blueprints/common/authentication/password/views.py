@@ -6,8 +6,6 @@ byceps.blueprints.common.authentication.password.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
-
 from flask import abort, current_app, g, request
 from flask_babel import gettext
 
@@ -199,7 +197,9 @@ def _verify_reset_token(token: str) -> VerificationToken:
         verification_token_service.find_for_password_reset_by_token(token)
     )
 
-    if not _is_verification_token_valid(verification_token):
+    if (verification_token is None) or verification_token_service.is_expired(
+        verification_token
+    ):
         flash_error(
             gettext(
                 'Invalid token. A token expires after %(hours)s hours.',
@@ -214,12 +214,6 @@ def _verify_reset_token(token: str) -> VerificationToken:
         abort(404)
 
     return verification_token
-
-
-def _is_verification_token_valid(token: Optional[VerificationToken]) -> bool:
-    return (token is not None) and not verification_token_service.is_expired(
-        token
-    )
 
 
 # -------------------------------------------------------------------- #

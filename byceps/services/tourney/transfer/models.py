@@ -50,7 +50,7 @@ class TourneyWithCategory(Tourney):
 
     @classmethod
     def from_tourney_and_category(
-        cls: TourneyWithCategory,
+        cls,
         tourney: Tourney,
         category: TourneyCategory,
         current_participant_count: int,

@@ -132,6 +132,9 @@ EVENT_TYPES_TO_HANDLERS = {
 
 
 def receive_signal(sender, *, event: Optional[_BaseEvent] = None) -> None:
+    if event is None:
+        return None
+
     event_type = type(event)
 
     handler = EVENT_TYPES_TO_HANDLERS.get(event_type)

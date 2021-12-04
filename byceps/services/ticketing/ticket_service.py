@@ -8,7 +8,7 @@ byceps.services.ticketing.ticket_service
 
 from __future__ import annotations
 from enum import Enum
-from typing import Optional, Sequence
+from typing import Optional
 
 from sqlalchemy import select
 
@@ -102,7 +102,7 @@ def find_ticket_by_code(
         .one_or_none()
 
 
-def find_tickets(ticket_ids: set[TicketID]) -> Sequence[DbTicket]:
+def find_tickets(ticket_ids: set[TicketID]) -> list[DbTicket]:
     """Return the tickets with those ids."""
     if not ticket_ids:
         return []
@@ -115,7 +115,7 @@ def find_tickets(ticket_ids: set[TicketID]) -> Sequence[DbTicket]:
 
 def find_tickets_created_by_order(
     order_number: OrderNumber,
-) -> Sequence[DbTicket]:
+) -> list[DbTicket]:
     """Return the tickets created by this order (as it was marked as paid)."""
     return db.session \
         .query(DbTicket) \
@@ -126,7 +126,7 @@ def find_tickets_created_by_order(
 
 def find_tickets_for_seat_manager(
     user_id: UserID, party_id: PartyID
-) -> Sequence[DbTicket]:
+) -> list[DbTicket]:
     """Return the tickets for that party whose respective seats the user
     is entitled to manage.
     """
@@ -147,7 +147,7 @@ def find_tickets_for_seat_manager(
         .all()
 
 
-def find_tickets_related_to_user(user_id: UserID) -> Sequence[DbTicket]:
+def find_tickets_related_to_user(user_id: UserID) -> list[DbTicket]:
     """Return tickets related to the user."""
     return db.session \
         .query(DbTicket) \
@@ -170,7 +170,7 @@ def find_tickets_related_to_user(user_id: UserID) -> Sequence[DbTicket]:
 
 def find_tickets_related_to_user_for_party(
     user_id: UserID, party_id: PartyID
-) -> Sequence[DbTicket]:
+) -> list[DbTicket]:
     """Return tickets related to the user for the party."""
     return db.session \
         .query(DbTicket) \
@@ -194,7 +194,7 @@ def find_tickets_related_to_user_for_party(
 
 def find_tickets_used_by_user(
     user_id: UserID, party_id: PartyID
-) -> Sequence[DbTicket]:
+) -> list[DbTicket]:
     """Return the tickets (if any) used by the user for that party."""
     return db.session \
         .query(DbTicket) \

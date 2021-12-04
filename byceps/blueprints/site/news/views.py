@@ -7,6 +7,8 @@ byceps.blueprints.site.news.views
 """
 
 from __future__ import annotations
+from typing import Union
+
 from flask import abort, g
 
 from ....services.news import service as news_item_service
@@ -64,7 +66,7 @@ def view(slug):
     }
 
 
-def _get_channel_ids() -> set[ChannelID]:
+def _get_channel_ids() -> Union[frozenset[ChannelID], set[ChannelID]]:
     site = site_service.get_site(g.site_id)
 
     if not site.news_channel_ids:
@@ -73,7 +75,7 @@ def _get_channel_ids() -> set[ChannelID]:
     return site.news_channel_ids
 
 
-def _get_items_per_page_value():
+def _get_items_per_page_value() -> int:
     items_per_page = site_settings_service.find_setting_value(
         g.site_id, 'news_items_per_page'
     )

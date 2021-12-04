@@ -92,7 +92,7 @@ def _fake_order_placement_event(order_id: OrderID) -> OrderEvent:
 
 
 def _get_additional_data(
-    event: OrderEvent, users_by_id: dict[UserID, User]
+    event: OrderEvent, users_by_id: dict[str, User]
 ) -> OrderEventData:
     if event.event_type == 'badge-awarded':
         return _get_additional_data_for_badge_awarded(event)
@@ -113,7 +113,7 @@ def _get_additional_data(
 
 
 def _get_additional_data_for_standard_event(
-    event: OrderEvent, users_by_id: dict[UserID, User]
+    event: OrderEvent, users_by_id: dict[str, User]
 ) -> OrderEventData:
     initiator_id = event.data['initiator_id']
 
@@ -165,7 +165,7 @@ def _get_additional_data_for_ticket_bundle_created(
 
 
 def _get_additional_data_for_ticket_bundle_revoked(
-    event: OrderEvent, users_by_id: dict[UserID, User]
+    event: OrderEvent, users_by_id: dict[str, User]
 ) -> OrderEventData:
     bundle_id = event.data['ticket_bundle_id']
 
@@ -195,7 +195,7 @@ def _get_additional_data_for_ticket_created(
 
 
 def _get_additional_data_for_ticket_revoked(
-    event: OrderEvent, users_by_id: dict[UserID, User]
+    event: OrderEvent, users_by_id: dict[str, User]
 ) -> OrderEventData:
     ticket_id = event.data['ticket_id']
     ticket_code = event.data['ticket_code']

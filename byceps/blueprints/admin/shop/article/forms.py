@@ -200,9 +200,7 @@ class ArticleNumberSequenceCreateForm(LocalizedForm):
 class RegisterBadgeAwardingActionForm(LocalizedForm):
     badge_id = SelectField(lazy_gettext('Badge'), [InputRequired()])
 
-    def set_badge_choices(
-        self, badges: Iterable[Badge]
-    ) -> list[tuple[str, str]]:
+    def set_badge_choices(self, badges: Iterable[Badge]) -> None:
         choices = [(str(badge.id), badge.label) for badge in badges]
         choices.sort(key=lambda choice: choice[1])
         self.badge_id.choices = choices
@@ -211,7 +209,7 @@ class RegisterBadgeAwardingActionForm(LocalizedForm):
 class RegisterTicketsCreationActionForm(LocalizedForm):
     category_id = SelectField(lazy_gettext('Category'), [InputRequired()])
 
-    def set_category_choices(self, brand_id: BrandID) -> list[tuple[str, str]]:
+    def set_category_choices(self, brand_id: BrandID) -> None:
         self.category_id.choices = _get_ticket_category_choices(brand_id)
 
 
@@ -221,7 +219,7 @@ class RegisterTicketBundlesCreationActionForm(LocalizedForm):
         lazy_gettext('Ticket quantity'), [InputRequired()]
     )
 
-    def set_category_choices(self, brand_id: BrandID) -> list[tuple[str, str]]:
+    def set_category_choices(self, brand_id: BrandID) -> None:
         self.category_id.choices = _get_ticket_category_choices(brand_id)
 
 

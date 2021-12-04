@@ -147,13 +147,10 @@ def _db_entity_to_team(team: DbOrgaTeam) -> OrgaTeam:
 
 
 def create_membership(
-    team_id: OrgaTeamID, user_id: UserID, duties: str
+    team_id: OrgaTeamID, user_id: UserID, duties: Optional[str]
 ) -> Membership:
     """Assign the user to the team."""
-    membership = DbMembership(team_id, user_id)
-
-    if duties:
-        membership.duties = duties
+    membership = DbMembership(team_id, user_id, duties=duties)
 
     db.session.add(membership)
     db.session.commit()
