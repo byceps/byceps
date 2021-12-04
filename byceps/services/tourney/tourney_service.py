@@ -39,10 +39,7 @@ def create_tourney(
 ) -> Tourney:
     """Create a tourney."""
     party = party_service.get_party(party_id)
-
-    category = category_service.find_category(category_id)
-    if category is None:
-        raise ValueError(f'Unknown tourney category ID "{category_id}"')
+    category = category_service.get_category(category_id)
 
     tourney = DbTourney(
         party.id,
