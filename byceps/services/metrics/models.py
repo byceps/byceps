@@ -38,7 +38,7 @@ def _escape_label_value(value: str) -> str:
 class Metric:
     name: str
     value: float
-    labels: list[Label] = field(default_factory=dict)
+    labels: list[Label] = field(default_factory=list)
 
     def serialize(self) -> str:
         labels_str = ''
