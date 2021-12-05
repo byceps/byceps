@@ -13,6 +13,7 @@ from flask import Flask
 import pytest
 
 from byceps.services.authorization import service as authz_service
+from byceps.services.authorization.transfer.models import PermissionID, RoleID
 from byceps.services.board import board_service
 from byceps.services.brand import service as brand_service
 from byceps.services.brand.transfer.models import Brand
@@ -114,12 +115,13 @@ def make_user(admin_app):
 @pytest.fixture(scope='session')
 def make_admin(make_user):
     def _wrapper(
-        screen_name: str, permission_ids: set[str], *args, **kwargs
+        screen_name: str, permission_id_strs: set[str], *args, **kwargs
     ) -> User:
         admin = make_user(screen_name, *args, **kwargs)
 
         # Create role.
-        role_id = f'admin_{token_hex(3)}'
+        role_id = RoleID(f'admin_{token_hex(3)}')
+        permission_ids = [PermissionID(p_id) for p_id in permission_id_strs]
         create_role_with_permissions_assigned(role_id, permission_ids)
 
         # Assign role to user.

@@ -9,6 +9,7 @@ import pytest
 
 from byceps.services.party import service
 from byceps.services.party.transfer.models import Party
+from byceps.typing import BrandID, PartyID
 
 
 @pytest.mark.parametrize(
@@ -52,8 +53,8 @@ def test_get_party_days(starts_at, ends_at, expected):
 
 def create_party(starts_at: datetime, ends_at: datetime) -> Party:
     return Party(
-        'anylan-20',
-        'anylan',
+        PartyID('anylan-20'),
+        BrandID('anylan'),
         'AnyLAN #20',
         starts_at,
         ends_at,

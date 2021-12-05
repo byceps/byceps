@@ -9,6 +9,7 @@ from freezegun import freeze_time
 import pytest
 
 from byceps.services.party.transfer.models import Party
+from byceps.typing import BrandID, PartyID
 
 
 @pytest.mark.parametrize(
@@ -33,8 +34,8 @@ def test_is_over(now, expected):
 def create_party(ends_at: datetime) -> Party:
     starts_at = ends_at - timedelta(days=2)
     return Party(
-        'anylan-20',
-        'anylan',
+        PartyID('anylan-20'),
+        BrandID('anylan'),
         'AnyLAN #20',
         starts_at,
         ends_at,

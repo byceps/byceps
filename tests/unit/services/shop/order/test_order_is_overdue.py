@@ -4,15 +4,22 @@
 """
 
 from datetime import datetime
+from decimal import Decimal
+from uuid import UUID
 
 from freezegun import freeze_time
 import pytest
 
 from byceps.services.shop.order.transfer.models import (
+    Address,
     Order,
+    OrderID,
+    OrderNumber,
     OrderState,
     PaymentState,
 )
+from byceps.services.shop.shop.transfer.models import ShopID
+from byceps.typing import UserID
 
 
 @pytest.mark.parametrize(
@@ -41,15 +48,15 @@ def test_is_overdue(
 
 def create_order(created_at: datetime) -> Order:
     return Order(
-        id=None,
-        shop_id=None,
-        order_number=None,
+        id=OrderID(UUID('000414c5-4474-4f5a-970a-47fd286557d4')),
+        shop_id=ShopID('anyshop'),
+        order_number=OrderNumber('ORDER-31337'),
         created_at=created_at,
-        placed_by_id=None,
-        first_names=None,
-        last_name=None,
-        address=None,
-        total_amount=None,
+        placed_by_id=UserID(UUID('b1a18832-22d4-4df5-8077-848611633332')),
+        first_names='n/a',
+        last_name='n/a',
+        address=Address('n/a', 'n/a', 'n/a', 'n/a'),
+        total_amount=Decimal('31337.00'),
         line_items=[],
         payment_method=None,
         payment_state=PaymentState.open,

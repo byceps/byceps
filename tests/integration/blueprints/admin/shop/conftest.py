@@ -3,13 +3,20 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Iterator
+
 import pytest
 
 from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
 )
+from byceps.services.shop.order.transfer.models import OrderNumberSequenceID
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
+from byceps.services.shop.storefront.transfer.models import (
+    Storefront,
+    StorefrontID,
+)
 
 from tests.integration.services.shop.helpers import create_shop
 
@@ -25,10 +32,13 @@ def shop(make_brand):
 
 
 @pytest.fixture(scope='module')
-def order_number_sequence_id(shop) -> None:
+def order_number_sequence_id(shop) -> Iterator[OrderNumberSequenceID]:
     sequence_id = order_sequence_service.create_order_number_sequence(
         shop.id, 'ORDER-'
     )
+
+    if sequence_id is None:
+        raise Exception('Could not obtain order number sequence ID')
 
     yield sequence_id
 
@@ -36,12 +46,11 @@ def order_number_sequence_id(shop) -> None:
 
 
 @pytest.fixture(scope='module')
-def storefront(shop, order_number_sequence_id) -> None:
+def storefront(shop, order_number_sequence_id) -> Iterator[Storefront]:
+    storefront_id = StorefrontID(f'{shop.id}-storefront')
+
     storefront = storefront_service.create_storefront(
-        f'{shop.id}-storefront',
-        shop.id,
-        order_number_sequence_id,
-        closed=False,
+        storefront_id, shop.id, order_number_sequence_id, closed=False
     )
 
     yield storefront

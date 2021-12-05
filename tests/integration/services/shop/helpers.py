@@ -33,7 +33,7 @@ def create_shop(
     title: Optional[str] = None,
 ) -> Shop:
     if shop_id is None:
-        shop_id = generate_token()
+        shop_id = ShopID(generate_token())
 
     if title is None:
         title = shop_id
@@ -95,10 +95,10 @@ def create_orderer(user_id: UserID) -> Orderer:
 
     return Orderer(
         user_id,
-        detail.first_names,
-        detail.last_name,
-        detail.country,
-        detail.zip_code,
-        detail.city,
-        detail.street,
+        detail.first_names or 'n/a',
+        detail.last_name or 'n/a',
+        detail.country or 'n/a',
+        detail.zip_code or 'n/a',
+        detail.city or 'n/a',
+        detail.street or 'n/a',
     )

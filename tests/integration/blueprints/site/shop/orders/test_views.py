@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Iterator
+
 import pytest
 
 from byceps.services.shop.cart.models import Cart
@@ -10,9 +12,13 @@ from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
     service as order_service,
 )
-from byceps.services.shop.order.transfer.models import Orderer
+from byceps.services.shop.order.transfer.models import OrderNumberSequenceID
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
+from byceps.services.shop.storefront.transfer.models import (
+    Storefront,
+    StorefrontID,
+)
 from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
 
@@ -47,34 +53,39 @@ def shop2(admin_app, make_brand):
 
 
 @pytest.fixture
-def order_number_sequence_id1(shop1) -> None:
+def order_number_sequence_id1(shop1) -> Iterator[OrderNumberSequenceID]:
     sequence_id = order_sequence_service.create_order_number_sequence(
         shop1.id, 'LF-02-B'
     )
 
+    if sequence_id is None:
+        raise Exception('Could not obtain order number sequence ID')
+
     yield sequence_id
 
     order_sequence_service.delete_order_number_sequence(sequence_id)
 
 
 @pytest.fixture
-def order_number_sequence_id2(shop2) -> None:
+def order_number_sequence_id2(shop2) -> Iterator[OrderNumberSequenceID]:
     sequence_id = order_sequence_service.create_order_number_sequence(
         shop2.id, 'SHOP-02-B'
     )
 
+    if sequence_id is None:
+        raise Exception('Could not obtain order number sequence ID')
+
     yield sequence_id
 
     order_sequence_service.delete_order_number_sequence(sequence_id)
 
 
 @pytest.fixture
-def storefront1(shop1, order_number_sequence_id1) -> None:
+def storefront1(shop1, order_number_sequence_id1) -> Iterator[Storefront]:
+    storefront_id = StorefrontID(f'{shop1.id}-storefront')
+
     storefront = storefront_service.create_storefront(
-        f'{shop1.id}-storefront',
-        shop1.id,
-        order_number_sequence_id1,
-        closed=False,
+        storefront_id, shop1.id, order_number_sequence_id1, closed=False
     )
 
     yield storefront
@@ -83,12 +94,11 @@ def storefront1(shop1, order_number_sequence_id1) -> None:
 
 
 @pytest.fixture
-def storefront2(shop2, order_number_sequence_id2) -> None:
+def storefront2(shop2, order_number_sequence_id2) -> Iterator[Storefront]:
+    storefront_id = StorefrontID(f'{shop2.id}-storefront')
+
     storefront = storefront_service.create_storefront(
-        f'{shop2.id}-storefront',
-        shop2.id,
-        order_number_sequence_id2,
-        closed=False,
+        storefront_id, shop2.id, order_number_sequence_id2, closed=False
     )
 
     yield storefront

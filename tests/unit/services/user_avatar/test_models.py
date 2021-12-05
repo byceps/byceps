@@ -8,6 +8,7 @@ from uuid import UUID
 import pytest
 
 from byceps.services.user_avatar.dbmodels import Avatar
+from byceps.typing import UserID
 from byceps.util.image.models import ImageType
 
 
@@ -49,5 +50,5 @@ def test_hybrid_image_type_setter(image_type, expected):
 
 
 def create_avatar() -> Avatar:
-    creator_id = UUID('a96629ac-b17d-43d8-b93d-ec5a9fe9ba67')
+    creator_id = UserID(UUID('a96629ac-b17d-43d8-b93d-ec5a9fe9ba67'))
     return Avatar(creator_id, ImageType.jpeg)

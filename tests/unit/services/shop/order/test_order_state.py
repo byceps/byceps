@@ -5,6 +5,7 @@
 
 from datetime import datetime
 from decimal import Decimal
+from uuid import UUID
 
 import pytest
 
@@ -17,6 +18,7 @@ from byceps.services.shop.order.transfer.models import (
     PaymentState,
 )
 from byceps.services.shop.shop.transfer.models import ShopID
+from byceps.typing import UserID
 
 
 PROCESSING_REQUIRED = True
@@ -73,7 +75,7 @@ def create_order(
 
 def create_orderer() -> Orderer:
     return Orderer(
-        user_id='937a2112-62b5-4824-b5c0-430396b94591',
+        user_id=UserID(UUID('937a2112-62b5-4824-b5c0-430396b94591')),
         first_names='Burkhardt',
         last_name='Playhardt',
         country='Country',
