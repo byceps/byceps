@@ -8,10 +8,13 @@ byceps.services.guest_server.models
 
 from datetime import datetime
 import ipaddress
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from sqlalchemy.dialects import postgresql
-from sqlalchemy.ext.hybrid import hybrid_property
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import db, generate_uuid
 from ...typing import PartyID, UserID

@@ -9,9 +9,12 @@ byceps.services.verification_token.dbmodels
 from __future__ import annotations
 from datetime import datetime
 import secrets
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
-from sqlalchemy.ext.hybrid import hybrid_property
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import db
 from ...typing import UserID

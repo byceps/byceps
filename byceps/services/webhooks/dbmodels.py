@@ -7,9 +7,12 @@ byceps.services.webhooks.dbmodels
 """
 
 from __future__ import annotations
-from typing import Any, Optional
+from typing import Any, Optional, TYPE_CHECKING
 
-from sqlalchemy.ext.hybrid import hybrid_property
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.mutable import MutableDict, MutableList
 
 from ...database import db, generate_uuid

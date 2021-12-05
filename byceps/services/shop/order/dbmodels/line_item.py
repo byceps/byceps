@@ -7,8 +7,12 @@ byceps.services.shop.order.dbmodels.line_item
 """
 
 from decimal import Decimal
+from typing import TYPE_CHECKING
 
-from sqlalchemy.ext.hybrid import hybrid_property
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from .....database import db, generate_uuid
 

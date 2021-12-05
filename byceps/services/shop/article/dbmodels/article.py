@@ -9,9 +9,12 @@ byceps.services.shop.article.dbmodels.article
 from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
-from sqlalchemy.ext.hybrid import hybrid_property
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from .....database import db, generate_uuid
 from .....util.instances import ReprBuilder

@@ -7,9 +7,12 @@ byceps.services.seating.dbmodels.seat
 """
 
 from collections import namedtuple
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
-from sqlalchemy.ext.hybrid import hybrid_property
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder

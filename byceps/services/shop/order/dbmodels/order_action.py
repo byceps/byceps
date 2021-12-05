@@ -6,7 +6,12 @@ byceps.services.shop.order.dbmodels.order_action
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from sqlalchemy.ext.hybrid import hybrid_property
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from .....database import db, generate_uuid
 

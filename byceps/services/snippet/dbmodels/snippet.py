@@ -11,10 +11,13 @@ page.
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 from sqlalchemy.ext.associationproxy import association_proxy
-from sqlalchemy.ext.hybrid import hybrid_property
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import db, generate_uuid
 from ....typing import UserID

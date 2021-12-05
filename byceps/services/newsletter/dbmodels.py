@@ -8,8 +8,12 @@ byceps.services.newsletter.dbmodels
 
 from dataclasses import dataclass
 from datetime import datetime
+from typing import TYPE_CHECKING
 
-from sqlalchemy.ext.hybrid import hybrid_property
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import db
 from ...typing import UserID

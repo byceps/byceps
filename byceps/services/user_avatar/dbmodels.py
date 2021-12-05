@@ -8,9 +8,13 @@ byceps.services.user_avatar.dbmodels
 
 from datetime import datetime
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 from flask import current_app
-from sqlalchemy.ext.hybrid import hybrid_property
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from ...database import db, generate_uuid
 from ...typing import UserID

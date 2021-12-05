@@ -8,11 +8,14 @@ byceps.services.tourney.avatar.dbmodels
 
 from datetime import datetime
 from pathlib import Path
-from typing import NewType
+from typing import NewType, TYPE_CHECKING
 from uuid import UUID
 
 from flask import current_app
-from sqlalchemy.ext.hybrid import hybrid_property
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import db, generate_uuid
 from ....typing import PartyID, UserID
