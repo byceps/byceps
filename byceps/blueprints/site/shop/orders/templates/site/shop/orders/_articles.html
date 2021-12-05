@@ -1,0 +1,24 @@
+  <table class="index wide">
+    <thead>
+      <tr>
+        <th class="number">{{ _('Quantity') }}</th>
+        <th style="width: 100%;">{{ _('Description') }}</th>
+        <th class="number">{{ _('Unit price') }}</th>
+      </tr>
+    </thead>
+    <tfoot>
+      <tr>
+        <th colspan="2" style="text-align: right;">{{ _('Total amount') }}</th>
+        <td class="number"><strong>{{ order.total_amount|currencyformat('EUR') }}</strong></td>
+      </tr>
+    </tfoot>
+    <tbody>
+      {%- for line_item in order.line_items|sort(attribute='article_number') %}
+      <tr>
+        <td class="number">{{ line_item.quantity }}</td>
+        <td>{{ line_item.description }}</td>
+        <td class="number">{{ line_item.unit_price|currencyformat('EUR') }}</td>
+      </tr>
+      {%- endfor %}
+    </tbody>
+  </table>
