@@ -425,9 +425,12 @@ form .invalid {
   background-color: #ff9999;
   border: #ff1a1a solid 1px;
   border-radius: 3px;
-  display: inline-block;
   margin: calc(var(--padding) * -1 - 1px);
   padding: var(--padding);
+}
+
+form .form-form-errors {
+  display: inline-block;
 }
 
 form .form-form-errors.mb,
