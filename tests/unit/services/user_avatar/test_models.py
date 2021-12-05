@@ -14,7 +14,6 @@ from byceps.util.image.models import ImageType
 @pytest.mark.parametrize(
     'database_value, expected',
     [
-        (None  , None          ),
         ('gif' , ImageType.gif ),
         ('jpeg', ImageType.jpeg),
         ('png' , ImageType.png ),
@@ -32,7 +31,6 @@ def test_hybrid_image_type_getter(database_value, expected):
 @pytest.mark.parametrize(
     'image_type, expected',
     [
-        (None          , None  ),
         (ImageType.gif , 'gif' ),
         (ImageType.jpeg, 'jpeg'),
         (ImageType.png , 'png' ),
