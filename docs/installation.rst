@@ -21,26 +21,27 @@ Debian
 
 `Debian Linux`_ is the recommended operating system to run BYCEPS on.
 
-The following packages are available as part of the current (as of
-August 2019) Debian "Buster" release:
+To install packages, become the ``root`` user (or prefix the following
+commands with ``sudo`` to obtain superuser permissions):
 
-* ``git``
-* ``postgresql-11``
-* ``python3.7``
-* ``python3.7-dev``
-* ``python3.7-venv``
-* ``redis-server``
+.. code-block:: sh
 
-Additional required packages should be suggested for installation by
-the package manager.
+   $ su -
 
-Update the package list and install the necessary packages (as the root
-user):
+Update the list of packages before installing any:
 
 .. code-block:: sh
 
     # aptitude update
-    # aptitude install git postgresql-11 python3.7 python3.7-dev python3.7-venv redis-server
+
+On Debian "Bullseye" 11 or Debian "Buster" 10, install these packages:
+
+.. code-block:: sh
+
+    # aptitude install git postgresql python3 python3-dev python3-venv redis-server
+
+Additional required packages should be suggested for installation by
+the package manager.
 
 Refer to the Debian documentation for further details.
 
