@@ -156,9 +156,9 @@ Create a database user named ``byceps``:
 
 You should be prompted to enter a password. Do that.
 
-Create a copy of ``config/admin_dev.py`` and, in the copy, replace the
-example password in the value of ``SQLALCHEMY_DATABASE_URI`` with the
-one you just entered.
+Create a copy of ``config/admin_dev.py`` (``config/admin_dev_custom.py``
+from here on) and, in the copy, replace the example password in the
+value of ``SQLALCHEMY_DATABASE_URI`` with the one you just entered.
 
 Create a schema, also named ``byceps``:
 
@@ -166,7 +166,8 @@ Create a schema, also named ``byceps``:
 
     postgres@host$ createdb --encoding=UTF8 --template=template0 --owner byceps byceps
 
-To run the tests, a dedicated user and database have to be created:
+To run the tests (optional), a dedicated user and database have to be
+created:
 
 .. code-block:: sh
 
@@ -216,7 +217,7 @@ Create the necessary tables:
 
 .. code-block:: sh
 
-   $ BYCEPS_CONFIG=../config/yourconfig.py ./create_database_tables.py
+   $ BYCEPS_CONFIG=../config/admin_dev_custom.py ./create_database_tables.py
    Creating database tables ... done.
 
 An initial set of authorization permissions and roles is provided as a
@@ -224,7 +225,7 @@ TOML file. Import it into the database:
 
 .. code-block:: sh
 
-   $ BYCEPS_CONFIG=../config/yourconfig.py ./import_permissions_and_roles.py data/permissions_and_roles.toml
+   $ BYCEPS_CONFIG=../config/admin_dev_custom.py ./import_permissions_and_roles.py data/permissions_and_roles.toml
    Imported 32 roles.
 
 With the authorization data in place, create the initial user (which
@@ -232,7 +233,7 @@ will get all available roles assigned):
 
 .. code-block:: sh
 
-   $ BYCEPS_CONFIG=../config/yourconfig.py ./create_initial_admin_user.py
+   $ BYCEPS_CONFIG=../config/admin_dev_custom.py ./create_initial_admin_user.py
    Screen name: Flynn
    Email address: flynn@flynns-arcade.net
    Password:
