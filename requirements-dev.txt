@@ -1,5 +1,5 @@
 -r requirements-test.txt
-black==21.11b1
+black==21.12b0
 Flask-DebugToolbar==0.11.0
 flask-shell-ipython==0.4.1
 mypy==0.910
