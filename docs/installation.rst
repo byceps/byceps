@@ -6,8 +6,8 @@ Requirements
 ------------
 
 * Python_ 3.7 or higher
-* PostgreSQL_ 9.6 or higher
-* Redis_ 2.8 or higher
+* PostgreSQL_ 11 or higher
+* Redis_ 5.0 or higher
 * Git_ (for downloading and updating BYCEPS, but not strictly for running it)
 
 .. _Python: https://www.python.org/
