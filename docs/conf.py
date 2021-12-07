@@ -46,7 +46,7 @@ exclude_patterns = ['_build']
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'alabaster'
+html_theme = 'furo'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
@@ -54,5 +54,19 @@ html_theme = 'alabaster'
 html_static_path = ['_static']
 
 html_theme_options = {
-    'show_powered_by': False,
+    'dark_css_variables': {
+        'color-brand-primary': '#33aa88',
+        'color-brand-content': '#33aa88',
+    },
+    'light_css_variables': {
+        'color-brand-primary': '#33aa88',
+        'color-brand-content': '#33aa88',
+    },
 }
+
+html_title = 'BYCEPS'
+
+html_logo = 'logo.svg'
+
+pygments_style = 'trac'
+pygments_dark_style = 'gruvbox-dark'
