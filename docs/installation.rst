@@ -179,7 +179,8 @@ Connect to the database:
 
     $ psql
 
-Load the ``pgcrypto`` extension:
+Load the ``pgcrypto`` extension (only necessary on PostgreSQL versions
+before 13):
 
 .. code-block:: psql
 
