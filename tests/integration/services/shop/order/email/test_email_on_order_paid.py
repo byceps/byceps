@@ -37,7 +37,9 @@ def customer(make_user):
 def storefront(
     shop: Shop, make_order_number_sequence_id, make_storefront
 ) -> Iterator[Storefront]:
-    order_number_sequence_id = make_order_number_sequence_id(shop.id, 21)
+    order_number_sequence_id = make_order_number_sequence_id(
+        shop.id, 'AC-14-B', 21
+    )
     storefront = make_storefront(shop.id, order_number_sequence_id)
 
     yield storefront

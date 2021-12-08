@@ -34,9 +34,11 @@ def order_admin(make_user):
 
 @pytest.fixture
 def make_order_number_sequence_id():
-    def _wrapper(shop_id: ShopID, value: int) -> OrderNumberSequenceID:
+    def _wrapper(
+        shop_id: ShopID, prefix: str, value: int
+    ) -> OrderNumberSequenceID:
         return order_sequence_service.create_order_number_sequence(
-            shop_id, 'AC-14-B', value=value
+            shop_id, prefix, value=value
         )
 
     return _wrapper
