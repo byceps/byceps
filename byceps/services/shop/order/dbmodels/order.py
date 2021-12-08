@@ -22,7 +22,7 @@ from ....user.dbmodels.user import User
 
 from ...shop.transfer.models import ShopID
 
-from ..transfer.models import OrderNumber, PaymentState
+from ..transfer.models.order import OrderNumber, PaymentState
 
 
 class Order(db.Model):

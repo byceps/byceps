@@ -19,7 +19,7 @@ from .....services.shop.order.dbmodels.order_event import (
 )
 from .....services.shop.order import event_service as order_event_service
 from .....services.shop.order import service as order_service
-from .....services.shop.order.transfer.models import Order, OrderID
+from .....services.shop.order.transfer.models.order import Order, OrderID
 from .....services.ticketing import category_service as ticket_category_service
 from .....services.user.dbmodels.user import User as DbUser
 from .....services.user import service as user_service

@@ -18,7 +18,8 @@ from .....database import db, generate_uuid
 from ...article.dbmodels.article import Article as DbArticle
 from ...article.transfer.models import ArticleNumber
 
-from ..transfer.models import ActionParameters, PaymentState
+from ..transfer.models.action import ActionParameters
+from ..transfer.models.order import PaymentState
 
 
 class OrderAction(db.Model):

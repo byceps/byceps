@@ -13,7 +13,7 @@ from typing import Sequence
 from ....database import db
 
 from .dbmodels.order_event import OrderEvent as DbOrderEvent, OrderEventData
-from .transfer.models import OrderID
+from .transfer.models.order import OrderID
 
 
 def create_event(

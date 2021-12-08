@@ -10,7 +10,7 @@ from uuid import UUID
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.shop.order.transfer.models import (
+from byceps.services.shop.order.transfer.models.order import (
     Address,
     Order,
     OrderID,

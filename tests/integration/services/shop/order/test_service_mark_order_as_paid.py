@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.shop.order import event_service, service as order_service
-from byceps.services.shop.order.transfer.models import PaymentState
+from byceps.services.shop.order.transfer.models.order import PaymentState
 from byceps.util.iterables import find
 
 from tests.integration.services.shop.helpers import create_orderer

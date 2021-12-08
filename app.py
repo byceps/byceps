@@ -15,7 +15,7 @@ from byceps.services.shop.article.dbmodels.article import Article
 from byceps.services.shop.order.dbmodels.line_item import LineItem
 from byceps.services.shop.order.dbmodels.order import Order
 from byceps.services.shop.order.service import find_order_by_order_number
-from byceps.services.shop.order.transfer.models import (
+from byceps.services.shop.order.transfer.models.order import (
     PaymentState as OrderPaymentState,
 )
 from byceps.services.ticketing.ticket_service import find_ticket_by_code

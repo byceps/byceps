@@ -23,7 +23,7 @@ from ....user.transfer.models import User
 from ...shop import service as shop_service
 from ...shop.transfer.models import ShopID
 
-from ..transfer.models import (
+from ..transfer.models.order import (
     Address,
     Order,
     OrderID,

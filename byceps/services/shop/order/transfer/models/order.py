@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.transfer.models.order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,30 +11,19 @@ from dataclasses import dataclass
 from datetime import datetime, timedelta
 from decimal import Decimal
 from enum import Enum
-from typing import Any, Dict, NewType, Optional
+from typing import NewType, Optional
 from uuid import UUID
 
-from .....typing import UserID
+from ......typing import UserID
 
-from ...article.transfer.models import ArticleNumber, ArticleType
-from ...shop.transfer.models import ShopID
+from ....article.transfer.models import ArticleNumber, ArticleType
+from ....shop.transfer.models import ShopID
 
 
 OrderID = NewType('OrderID', UUID)
 
 
 OrderNumber = NewType('OrderNumber', str)
-
-
-OrderNumberSequenceID = NewType('OrderNumberSequenceID', UUID)
-
-
-@dataclass(frozen=True)
-class OrderNumberSequence:
-    id: OrderNumberSequenceID
-    shop_id: ShopID
-    prefix: str
-    value: int
 
 
 OrderState = Enum(
@@ -134,15 +123,3 @@ class Order:
             return False
 
         return datetime.utcnow() > (self.created_at + OVERDUE_THRESHOLD)
-
-
-ActionParameters = Dict[str, Any]
-
-
-@dataclass(frozen=True)
-class Action:
-    id: UUID
-    article_number: ArticleNumber
-    payment_state: PaymentState
-    procedure_name: str
-    parameters: ActionParameters

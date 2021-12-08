@@ -12,7 +12,7 @@ from typing import Optional
 from ....database import db
 
 from ..catalog.transfer.models import CatalogID
-from ..order.transfer.models import OrderNumberSequenceID
+from ..order.transfer.models.number_sequence import OrderNumberSequenceID
 from ..shop.transfer.models import ShopID
 
 from .dbmodels import Storefront as DbStorefront

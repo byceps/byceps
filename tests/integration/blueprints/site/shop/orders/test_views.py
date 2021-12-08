@@ -12,7 +12,9 @@ from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
     service as order_service,
 )
-from byceps.services.shop.order.transfer.models import OrderNumberSequenceID
+from byceps.services.shop.order.transfer.models.number_sequence import (
+    OrderNumberSequenceID,
+)
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import (

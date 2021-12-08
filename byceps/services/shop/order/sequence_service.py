@@ -18,11 +18,11 @@ from ..shop.transfer.models import ShopID
 from .dbmodels.number_sequence import (
     OrderNumberSequence as DbOrderNumberSequence,
 )
-from .transfer.models import (
-    OrderNumber,
+from .transfer.models.number_sequence import (
     OrderNumberSequence,
     OrderNumberSequenceID,
 )
+from .transfer.models.order import OrderNumber
 
 
 def create_order_number_sequence(

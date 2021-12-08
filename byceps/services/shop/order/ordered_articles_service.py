@@ -16,7 +16,7 @@ from ..article.transfer.models import ArticleNumber
 
 from .dbmodels.line_item import LineItem as DbLineItem
 from .service import line_item_to_transfer_object
-from .transfer.models import LineItem, PaymentState
+from .transfer.models.order import LineItem, PaymentState
 
 
 def count_ordered_articles(

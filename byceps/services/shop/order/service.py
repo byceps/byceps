@@ -32,7 +32,7 @@ from .dbmodels.line_item import LineItem as DbLineItem
 from .dbmodels.order import Order as DbOrder
 from .dbmodels.order_event import OrderEvent as DbOrderEvent, OrderEventData
 from . import action_service, event_service, sequence_service
-from .transfer.models import (
+from .transfer.models.order import (
     Address,
     Order,
     OrderID,

@@ -11,7 +11,7 @@ from flask_babel import gettext
 
 from .....services.brand import service as brand_service
 from .....services.shop.order import service as order_service
-from .....services.shop.order.transfer.models import PaymentState
+from .....services.shop.order.transfer.models.order import PaymentState
 from .....services.shop.shop import service as shop_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success

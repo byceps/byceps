@@ -16,7 +16,8 @@ from ....ticketing import ticket_revocation_service, ticket_service
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..transfer.models import ActionParameters, Order, OrderID
+from ..transfer.models.action import ActionParameters
+from ..transfer.models.order import Order, OrderID
 
 
 def revoke_tickets(

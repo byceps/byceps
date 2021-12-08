@@ -21,7 +21,8 @@ from .actions.create_tickets import create_tickets
 from .actions.revoke_ticket_bundles import revoke_ticket_bundles
 from .actions.revoke_tickets import revoke_tickets
 from .dbmodels.order_action import OrderAction as DbOrderAction
-from .transfer.models import Action, ActionParameters, Order, PaymentState
+from .transfer.models.action import Action, ActionParameters
+from .transfer.models.order import Order, PaymentState
 
 
 OrderActionType = Callable[

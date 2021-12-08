@@ -17,7 +17,8 @@ from ....ticketing import (
 from ...article.transfer.models import ArticleNumber
 
 from .. import event_service
-from ..transfer.models import ActionParameters, Order, OrderID
+from ..transfer.models.action import ActionParameters
+from ..transfer.models.order import Order, OrderID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 

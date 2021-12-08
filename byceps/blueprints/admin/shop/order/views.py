@@ -17,7 +17,7 @@ from .....services.shop.order import (
 )
 from .....services.shop.order.email import service as order_email_service
 from .....services.shop.order.export import service as order_export_service
-from .....services.shop.order.transfer.models import PaymentState
+from .....services.shop.order.transfer.models.order import PaymentState
 from .....services.shop.shop import service as shop_service
 from .....services.ticketing import ticket_service
 from .....services.user import service as user_service
