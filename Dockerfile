@@ -1,4 +1,4 @@
-FROM python:3.7-buster
+FROM python:3.9-bullseye
 
 # Install Debian dependencies.
 # A final `apt-get clean` is part of the Debian base image.
