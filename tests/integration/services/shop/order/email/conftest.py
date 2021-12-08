@@ -33,7 +33,7 @@ def order_admin(make_user):
 
 
 @pytest.fixture
-def make_order_number_sequence_id():
+def make_order_number_sequence():
     def _wrapper(
         shop_id: ShopID, prefix: str, value: int
     ) -> OrderNumberSequenceID:
