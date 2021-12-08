@@ -14,7 +14,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt
 from ...database import db
 from ...typing import PartyID, UserID
 
-from ..shop.order.transfer.models.order import OrderNumber
+from ..shop.order.transfer.models.number import OrderNumber
 
 from .dbmodels.ticket import Ticket as DbTicket
 from .dbmodels.ticket_bundle import TicketBundle as DbTicketBundle

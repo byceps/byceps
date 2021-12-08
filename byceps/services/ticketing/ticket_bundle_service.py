@@ -13,7 +13,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt
 from ...database import db, Pagination
 from ...typing import PartyID, UserID
 
-from ..shop.order.transfer.models.order import OrderNumber
+from ..shop.order.transfer.models.number import OrderNumber
 
 from .dbmodels.category import Category as DbCategory
 from .dbmodels.ticket import Ticket as DbTicket

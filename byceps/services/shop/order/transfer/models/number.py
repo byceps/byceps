@@ -22,3 +22,6 @@ class OrderNumberSequence:
     shop_id: ShopID
     prefix: str
     value: int
+
+
+OrderNumber = NewType('OrderNumber', str)

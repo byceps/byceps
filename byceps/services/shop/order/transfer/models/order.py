@@ -20,11 +20,10 @@ from ....article.transfer.models import ArticleNumber, ArticleType
 from ....shop.transfer.models import ShopID
 from ....storefront.transfer.models import StorefrontID
 
+from .number import OrderNumber
+
 
 OrderID = NewType('OrderID', UUID)
-
-
-OrderNumber = NewType('OrderNumber', str)
 
 
 OrderState = Enum(

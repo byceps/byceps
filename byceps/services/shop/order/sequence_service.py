@@ -22,7 +22,7 @@ from .transfer.models.number import (
     OrderNumberSequence,
     OrderNumberSequenceID,
 )
-from .transfer.models.order import OrderNumber
+from .transfer.models.number import OrderNumber
 
 
 def create_order_number_sequence(

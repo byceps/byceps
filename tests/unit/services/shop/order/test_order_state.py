@@ -10,10 +10,10 @@ from uuid import UUID
 import pytest
 
 from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order.transfer.models.number import OrderNumber
 from byceps.services.shop.order.transfer.models.order import (
     Order,
     Orderer,
-    OrderNumber,
     OrderState,
     PaymentState,
 )

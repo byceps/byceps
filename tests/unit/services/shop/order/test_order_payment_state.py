@@ -7,10 +7,10 @@ from datetime import datetime
 from uuid import UUID
 
 from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order.transfer.models.number import OrderNumber
 from byceps.services.shop.order.transfer.models.order import (
     Order,
     Orderer,
-    OrderNumber,
     PaymentState,
 )
 from byceps.services.shop.shop.transfer.models import ShopID

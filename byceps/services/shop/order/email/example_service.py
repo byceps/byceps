@@ -24,12 +24,12 @@ from ...shop import service as shop_service
 from ...shop.transfer.models import ShopID
 from ...storefront.transfer.models import StorefrontID
 
+from ..transfer.models.number import OrderNumber
 from ..transfer.models.order import (
     Address,
     Order,
     OrderID,
     LineItem,
-    OrderNumber,
     OrderState,
     PaymentState,
 )
