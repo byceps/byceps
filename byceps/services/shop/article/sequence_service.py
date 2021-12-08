@@ -25,13 +25,16 @@ from .transfer.models import (
 )
 
 
+class ArticleNumberSequenceCreationFailed(Exception):
+    pass
+
+
 def create_article_number_sequence(
     shop_id: ShopID, prefix: str, *, value: Optional[int] = None
-) -> Optional[ArticleNumberSequenceID]:
+) -> ArticleNumberSequenceID:
     """Create an article number sequence.
 
-    Return the resulting sequence's ID, or `None` if the sequence could
-    not be created.
+    Return the resulting sequence's ID.
     """
     sequence = DbArticleNumberSequence(shop_id, prefix, value=value)
 
@@ -39,9 +42,11 @@ def create_article_number_sequence(
 
     try:
         db.session.commit()
-    except IntegrityError as e:
+    except IntegrityError as exc:
         db.session.rollback()
-        return None
+        raise ArticleNumberSequenceCreationFailed(
+            f'Could not sequence with prefix "{prefix}"'
+        ) from exc
 
     return sequence.id
 

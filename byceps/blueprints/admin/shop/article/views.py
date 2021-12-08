@@ -668,10 +668,11 @@ def create_number_sequence(shop_id):
 
     prefix = form.prefix.data.strip()
 
-    sequence_id = article_sequence_service.create_article_number_sequence(
-        shop.id, prefix
-    )
-    if sequence_id is None:
+    try:
+        sequence_id = article_sequence_service.create_article_number_sequence(
+            shop.id, prefix
+        )
+    except article_sequence_service.ArticleNumberSequenceCreationFailed:
         flash_error(
             gettext(
                 'Article number sequence could not be created. '
