@@ -14,6 +14,7 @@ from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
     service as order_service,
 )
+from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.snippet import service as snippet_service
@@ -34,10 +35,10 @@ def customer(make_user):
 
 @pytest.fixture
 def storefront(
-    make_order_number_sequence_id, make_storefront
+    shop: Shop, make_order_number_sequence_id, make_storefront
 ) -> Iterator[Storefront]:
-    order_number_sequence_id = make_order_number_sequence_id(21)
-    storefront = make_storefront(order_number_sequence_id)
+    order_number_sequence_id = make_order_number_sequence_id(shop.id, 21)
+    storefront = make_storefront(shop.id, order_number_sequence_id)
 
     yield storefront
 

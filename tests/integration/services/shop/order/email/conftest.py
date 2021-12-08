@@ -11,7 +11,7 @@ from byceps.services.shop.order import (
 from byceps.services.shop.order.transfer.models.number import (
     OrderNumberSequenceID,
 )
-from byceps.services.shop.shop.transfer.models import Shop
+from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import (
     Storefront,
@@ -20,6 +20,7 @@ from byceps.services.shop.storefront.transfer.models import (
 from byceps.services.snippet.transfer.models import SnippetID
 from byceps.services.user.transfer.models import User
 
+from tests.helpers import generate_token
 from tests.integration.services.shop.helpers import create_shop_fragment
 
 
@@ -32,23 +33,23 @@ def order_admin(make_user):
 
 
 @pytest.fixture
-def make_order_number_sequence_id(shop: Shop):
-    def _wrapper(value: int) -> OrderNumberSequenceID:
+def make_order_number_sequence_id():
+    def _wrapper(shop_id: ShopID, value: int) -> OrderNumberSequenceID:
         return order_sequence_service.create_order_number_sequence(
-            shop.id, 'AC-14-B', value=value
+            shop_id, 'AC-14-B', value=value
         )
 
     return _wrapper
 
 
 @pytest.fixture
-def make_storefront(shop: Shop):
-    def _wrapper(order_number_sequence_id: OrderNumberSequenceID) -> Storefront:
+def make_storefront():
+    def _wrapper(
+        shop_id: ShopID, order_number_sequence_id: OrderNumberSequenceID
+    ) -> Storefront:
+        storefront_id = StorefrontID(generate_token())
         return storefront_service.create_storefront(
-            StorefrontID(f'{shop.id}-storefront'),
-            shop.id,
-            order_number_sequence_id,
-            closed=False,
+            storefront_id, shop_id, order_number_sequence_id, closed=False
         )
 
     return _wrapper
