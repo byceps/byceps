@@ -1,0 +1,12 @@
+**/__pycache__
+.coverage
+.git
+.eggs
+.mypy_cache
+.pytest_cache
+.scrutinizer.yml
+.travis.yml
+*.egg-info
+assets
+docs
+venv
