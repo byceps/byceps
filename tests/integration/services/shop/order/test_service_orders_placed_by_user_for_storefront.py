@@ -4,7 +4,6 @@
 """
 
 from __future__ import annotations
-from typing import Iterator
 
 import pytest
 
@@ -33,48 +32,35 @@ def shop(make_brand) -> Shop:
 
 
 @pytest.fixture
-def storefront1(shop: Shop) -> Iterator[Storefront]:
+def storefront1(shop: Shop) -> Storefront:
     order_number_sequence_id = (
         order_sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
     )
     if order_number_sequence_id is None:
         raise Exception('Could not obtain order number sequence ID')
 
-    storefront = storefront_service.create_storefront(
+    return storefront_service.create_storefront(
         StorefrontID(f'{shop.id}-{generate_token()}'),
         shop.id,
         order_number_sequence_id,
         closed=False,
     )
 
-    yield storefront
-
-    storefront_service.delete_storefront(storefront.id)
-    order_sequence_service.delete_order_number_sequence(
-        order_number_sequence_id
-    )
 
 
 @pytest.fixture
-def storefront2(shop: Shop) -> Iterator[Storefront]:
+def storefront2(shop: Shop) -> Storefront:
     order_number_sequence_id = (
         order_sequence_service.create_order_number_sequence(shop.id, 'LF-03-B')
     )
     if order_number_sequence_id is None:
         raise Exception('Could not obtain order number sequence ID')
 
-    storefront = storefront_service.create_storefront(
+    return storefront_service.create_storefront(
         StorefrontID(f'{shop.id}-{generate_token()}'),
         shop.id,
         order_number_sequence_id,
         closed=False,
-    )
-
-    yield storefront
-
-    storefront_service.delete_storefront(storefront.id)
-    order_sequence_service.delete_order_number_sequence(
-        order_number_sequence_id
     )
 
 
@@ -111,9 +97,6 @@ def test_get_orders_placed_by_user(
 
     orders_orderer1_storefront2 = get_orders_by_user(orderer1, storefront2.id)
     assert orders_orderer1_storefront2 == [order5]
-
-    for order in order1, order2, order3, order4, order5:
-        order_service.delete_order(order.id)
 
 
 # helpers
