@@ -95,7 +95,5 @@ class Order(db.Model):
             .add_with_lookup('id') \
             .add('shop', self.shop_id) \
             .add_with_lookup('order_number') \
-            .add('placed_by', self.placed_by.screen_name) \
-            .add_custom(f'{len(self.line_items):d} line items') \
             .add_custom(self.payment_state.name) \
             .build()
