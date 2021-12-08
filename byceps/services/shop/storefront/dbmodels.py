@@ -14,7 +14,7 @@ from ....util.instances import ReprBuilder
 # Make shop catalog tables available for database creation.
 from ..catalog.dbmodels import Catalog
 from ..catalog.transfer.models import CatalogID
-from ..order.transfer.models.number_sequence import OrderNumberSequenceID
+from ..order.transfer.models.number import OrderNumberSequenceID
 from ..shop.transfer.models import ShopID
 
 from .transfer.models import StorefrontID

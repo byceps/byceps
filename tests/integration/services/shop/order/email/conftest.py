@@ -8,7 +8,7 @@ import pytest
 from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
 )
-from byceps.services.shop.order.transfer.models.number_sequence import (
+from byceps.services.shop.order.transfer.models.number import (
     OrderNumberSequenceID,
 )
 from byceps.services.shop.shop.transfer.models import Shop
