@@ -34,14 +34,9 @@ def order_admin(make_user):
 @pytest.fixture
 def make_order_number_sequence_id(shop: Shop):
     def _wrapper(value: int) -> OrderNumberSequenceID:
-        sequence_id = order_sequence_service.create_order_number_sequence(
+        return order_sequence_service.create_order_number_sequence(
             shop.id, 'AC-14-B', value=value
         )
-
-        if sequence_id is None:
-            raise Exception('Got no order number sequence ID')
-
-        return sequence_id
 
     return _wrapper
 

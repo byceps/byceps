@@ -64,9 +64,6 @@ def order_number_sequence_id(shop) -> Iterator[OrderNumberSequenceID]:
         shop.id, 'AEC-01-B', value=4
     )
 
-    if sequence_id is None:
-        raise Exception('Could not obtain order number sequence ID')
-
     yield sequence_id
 
     order_sequence_service.delete_order_number_sequence(sequence_id)

@@ -25,13 +25,16 @@ from .transfer.models.number import (
 from .transfer.models.number import OrderNumber
 
 
+class OrderNumberSequenceCreationFailed(Exception):
+    pass
+
+
 def create_order_number_sequence(
     shop_id: ShopID, prefix: str, *, value: Optional[int] = None
-) -> Optional[OrderNumberSequenceID]:
+) -> OrderNumberSequenceID:
     """Create an order number sequence.
 
-    Return the resulting sequence's ID, or `None` if the sequence could
-    not be created.
+    Return the resulting sequence's ID.
     """
     sequence = DbOrderNumberSequence(shop_id, prefix, value=value)
 
@@ -39,9 +42,11 @@ def create_order_number_sequence(
 
     try:
         db.session.commit()
-    except IntegrityError as e:
+    except IntegrityError as exc:
         db.session.rollback()
-        return None
+        raise OrderNumberSequenceCreationFailed(
+            f'Could not create order number sequence with prefix "{prefix}"'
+        ) from exc
 
     return sequence.id
 

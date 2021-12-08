@@ -36,8 +36,6 @@ def storefront1(shop: Shop) -> Storefront:
     order_number_sequence_id = (
         order_sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
     )
-    if order_number_sequence_id is None:
-        raise Exception('Could not obtain order number sequence ID')
 
     return storefront_service.create_storefront(
         StorefrontID(f'{shop.id}-{generate_token()}'),
@@ -53,8 +51,6 @@ def storefront2(shop: Shop) -> Storefront:
     order_number_sequence_id = (
         order_sequence_service.create_order_number_sequence(shop.id, 'LF-03-B')
     )
-    if order_number_sequence_id is None:
-        raise Exception('Could not obtain order number sequence ID')
 
     return storefront_service.create_storefront(
         StorefrontID(f'{shop.id}-{generate_token()}'),

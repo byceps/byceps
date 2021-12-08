@@ -466,10 +466,11 @@ def create_number_sequence(shop_id):
 
     prefix = form.prefix.data.strip()
 
-    sequence_id = order_sequence_service.create_order_number_sequence(
-        shop.id, prefix
-    )
-    if sequence_id is None:
+    try:
+        sequence_id = order_sequence_service.create_order_number_sequence(
+            shop.id, prefix
+        )
+    except order_sequence_service.OrderNumberSequenceCreationFailed:
         flash_error(
             gettext(
                 'Order number sequence could not be created. '
