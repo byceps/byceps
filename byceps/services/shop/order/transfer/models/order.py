@@ -18,6 +18,7 @@ from ......typing import UserID
 
 from ....article.transfer.models import ArticleNumber, ArticleType
 from ....shop.transfer.models import ShopID
+from ....storefront.transfer.models import StorefrontID
 
 
 OrderID = NewType('OrderID', UUID)
@@ -97,6 +98,7 @@ OVERDUE_THRESHOLD = timedelta(days=14)
 class Order:
     id: OrderID
     shop_id: ShopID
+    storefront_id: StorefrontID
     order_number: OrderNumber
     created_at: datetime
     placed_by_id: UserID

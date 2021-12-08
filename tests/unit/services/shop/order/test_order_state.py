@@ -18,6 +18,7 @@ from byceps.services.shop.order.transfer.models.order import (
     PaymentState,
 )
 from byceps.services.shop.shop.transfer.models import ShopID
+from byceps.services.shop.storefront.transfer.models import StorefrontID
 from byceps.typing import UserID
 
 
@@ -59,12 +60,13 @@ def create_order(
     payment_state: PaymentState, processing_required: bool, processed: bool
 ) -> Order:
     shop_id = ShopID('shop-123')
+    storefront_id = StorefrontID('storefront-123')
     order_number = OrderNumber('ORDER-42')
     orderer = create_orderer()
     created_at = datetime.utcnow()
 
     order = order_service._build_order(
-        shop_id, order_number, orderer, created_at
+        shop_id, storefront_id, order_number, orderer, created_at
     )
     order.payment_state = payment_state
     order.processing_required = processing_required

@@ -19,6 +19,7 @@ from byceps.services.shop.order.transfer.models.order import (
     PaymentState,
 )
 from byceps.services.shop.shop.transfer.models import ShopID
+from byceps.services.shop.storefront.transfer.models import StorefrontID
 from byceps.typing import UserID
 
 
@@ -50,6 +51,7 @@ def create_order(created_at: datetime) -> Order:
     return Order(
         id=OrderID(UUID('000414c5-4474-4f5a-970a-47fd286557d4')),
         shop_id=ShopID('anyshop'),
+        storefront_id=StorefrontID('anyshop-99'),
         order_number=OrderNumber('ORDER-31337'),
         created_at=created_at,
         placed_by_id=UserID(UUID('b1a18832-22d4-4df5-8077-848611633332')),

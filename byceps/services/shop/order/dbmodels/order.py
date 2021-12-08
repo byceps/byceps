@@ -21,6 +21,7 @@ from .....util.instances import ReprBuilder
 from ....user.dbmodels.user import User
 
 from ...shop.transfer.models import ShopID
+from ...storefront.transfer.models import StorefrontID
 
 from ..transfer.models.order import OrderNumber, PaymentState
 
@@ -33,6 +34,7 @@ class Order(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, nullable=False)
     shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)
+    storefront_id = db.Column(db.UnicodeText, db.ForeignKey('shop_storefronts.id'), index=True, nullable=False)
     order_number = db.Column(db.UnicodeText, unique=True, nullable=False)
     placed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     placed_by = db.relationship(User, foreign_keys=[placed_by_id])
@@ -56,6 +58,7 @@ class Order(db.Model):
     def __init__(
         self,
         shop_id: ShopID,
+        storefront_id: StorefrontID,
         order_number: OrderNumber,
         placed_by_id: UserID,
         first_names: str,
@@ -71,6 +74,7 @@ class Order(db.Model):
             created_at = datetime.utcnow()
         self.created_at = created_at
         self.shop_id = shop_id
+        self.storefront_id = storefront_id
         self.order_number = order_number
         self.placed_by_id = placed_by_id
         self.first_names = first_names

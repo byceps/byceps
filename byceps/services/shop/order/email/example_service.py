@@ -22,6 +22,7 @@ from ....user.transfer.models import User
 
 from ...shop import service as shop_service
 from ...shop.transfer.models import ShopID
+from ...storefront.transfer.models import StorefrontID
 
 from ..transfer.models.order import (
     Address,
@@ -125,6 +126,7 @@ def _build_order(
     cancelation_reason: Optional[str] = None,
 ) -> Order:
     order_id = OrderID(generate_uuid())
+    storefront_id = StorefrontID('storefront-1')
     order_number = OrderNumber('AWSM-ORDR-9247')
 
     created_at = datetime.utcnow()
@@ -141,6 +143,7 @@ def _build_order(
     return Order(
         id=order_id,
         shop_id=shop_id,
+        storefront_id=storefront_id,
         order_number=order_number,
         created_at=created_at,
         placed_by_id=placed_by_id,

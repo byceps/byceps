@@ -70,7 +70,9 @@ def place_order(
 
     cart_items = cart.get_items()
 
-    order = _build_order(shop.id, order_number, orderer, created_at)
+    order = _build_order(
+        shop.id, storefront.id, order_number, orderer, created_at
+    )
     line_items = list(_build_line_items(cart_items, order))
     order.total_amount = cart.calculate_total_amount()
     order.processing_required = any(
@@ -106,6 +108,7 @@ def place_order(
 
 def _build_order(
     shop_id: ShopID,
+    storefront_id: StorefrontID,
     order_number: OrderNumber,
     orderer: Orderer,
     created_at: Optional[datetime],
@@ -113,6 +116,7 @@ def _build_order(
     """Build an order."""
     return DbOrder(
         shop_id,
+        storefront_id,
         order_number,
         orderer.user_id,
         orderer.first_names,
@@ -668,6 +672,7 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
     return Order(
         id=order.id,
         shop_id=order.shop_id,
+        storefront_id=order.storefront_id,
         order_number=order.order_number,
         created_at=order.created_at,
         placed_by_id=order.placed_by_id,

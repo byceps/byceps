@@ -14,6 +14,7 @@ from byceps.services.shop.order.transfer.models.order import (
     PaymentState,
 )
 from byceps.services.shop.shop.transfer.models import ShopID
+from byceps.services.shop.storefront.transfer.models import StorefrontID
 from byceps.typing import UserID
 
 
@@ -66,12 +67,13 @@ def test_is_canceled_after_paid():
 
 def create_order_with_payment_state(payment_state: PaymentState) -> Order:
     shop_id = ShopID('shop-123')
+    storefront_id = StorefrontID('storefront-123')
     order_number = OrderNumber('AEC-03-B00074')
     orderer = create_orderer()
     created_at = None
 
     order = order_service._build_order(
-        shop_id, order_number, orderer, created_at
+        shop_id, storefront_id, order_number, orderer, created_at
     )
     order.payment_state = payment_state
 
