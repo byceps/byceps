@@ -41,8 +41,8 @@ def index():
     storefront_id = site.storefront_id
     if storefront_id is not None:
         storefront = storefront_service.get_storefront(storefront_id)
-        orders = order_service.get_orders_placed_by_user_for_shop(
-            g.user.id, storefront.shop_id
+        orders = order_service.get_orders_placed_by_user_for_storefront(
+            g.user.id, storefront.id
         )
     else:
         orders = []
@@ -70,7 +70,7 @@ def view(order_id):
 
     site = site_service.get_site(g.site_id)
     storefront = storefront_service.get_storefront(site.storefront_id)
-    if order.shop_id != storefront.shop_id:
+    if order.storefront_id != storefront.id:
         # Order does not belong to the current site's storefront.
         abort(404)
 

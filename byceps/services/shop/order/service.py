@@ -599,16 +599,16 @@ def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
     return list(map(_order_to_transfer_object, orders))
 
 
-def get_orders_placed_by_user_for_shop(
-    user_id: UserID, shop_id: ShopID
-) -> Sequence[Order]:
-    """Return orders placed by the user in that shop."""
+def get_orders_placed_by_user_for_storefront(
+    user_id: UserID, storefront_id: StorefrontID
+) -> list[Order]:
+    """Return orders placed by the user through that storefront."""
     orders = db.session \
         .query(DbOrder) \
         .options(
             db.joinedload(DbOrder.line_items),
         ) \
-        .filter_by(shop_id=shop_id) \
+        .filter_by(storefront_id=storefront_id) \
         .filter_by(placed_by_id=user_id) \
         .order_by(DbOrder.created_at.desc()) \
         .all()

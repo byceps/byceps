@@ -81,8 +81,8 @@ def _get_open_orders(site: Site, user_id: UserID) -> list[Order]:
 
     storefront = storefront_service.get_storefront(storefront_id)
 
-    orders = order_service.get_orders_placed_by_user_for_shop(
-        user_id, storefront.shop_id
+    orders = order_service.get_orders_placed_by_user_for_storefront(
+        user_id, storefront.id
     )
 
     orders = [order for order in orders if order.is_open]
