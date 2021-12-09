@@ -72,9 +72,9 @@ def test_create_tickets(
         assert ticket.used_by_id == orderer.user_id
 
     events = order_event_service.get_events_for_order(order.id)
-    ticket_created_events = {
+    ticket_created_events = [
         event for event in events if event.event_type == 'ticket-created'
-    }
+    ]
     assert len(ticket_created_events) == ticket_quantity
 
     tickets_sold_event = TicketsSold(

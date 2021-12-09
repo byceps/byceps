@@ -7,15 +7,12 @@ byceps.services.shop.order.dbmodels.order_event
 """
 
 from datetime import datetime
-from typing import Any, Dict
 
 from .....database import db, generate_uuid
 from .....util.instances import ReprBuilder
 
+from ..transfer.models.event import OrderEventData
 from ..transfer.models.order import OrderID
-
-
-OrderEventData = Dict[str, Any]
 
 
 class OrderEvent(db.Model):

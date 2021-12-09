@@ -68,11 +68,11 @@ def test_create_ticket_bundles(
         assert ticket.used_by_id == orderer.user_id
 
     events = order_event_service.get_events_for_order(order.id)
-    ticket_bundle_created_events = {
+    ticket_bundle_created_events = [
         event
         for event in events
         if event.event_type == 'ticket-bundle-created'
-    }
+    ]
     assert len(ticket_bundle_created_events) == bundle_quantity
 
     tear_down_bundles(tickets_after_paid)

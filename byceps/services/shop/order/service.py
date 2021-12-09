@@ -30,8 +30,9 @@ from ..storefront.transfer.models import StorefrontID
 
 from .dbmodels.line_item import LineItem as DbLineItem
 from .dbmodels.order import Order as DbOrder
-from .dbmodels.order_event import OrderEvent as DbOrderEvent, OrderEventData
+from .dbmodels.order_event import OrderEvent as DbOrderEvent
 from . import action_service, event_service, sequence_service
+from .transfer.models.event import OrderEventData
 from .transfer.models.number import OrderNumber
 from .transfer.models.order import (
     Address,

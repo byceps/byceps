@@ -10,15 +10,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 import dataclasses
 from typing import Iterator, Sequence
+from uuid import UUID
 
 from .....services.shop.article import service as article_service
 from .....services.shop.article.transfer.models import Article, ArticleNumber
-from .....services.shop.order.dbmodels.order_event import (
-    OrderEvent,
-    OrderEventData,
-)
 from .....services.shop.order import event_service as order_event_service
 from .....services.shop.order import service as order_service
+from .....services.shop.order.transfer.models.event import OrderEvent, OrderEventData
 from .....services.shop.order.transfer.models.order import Order, OrderID
 from .....services.ticketing import category_service as ticket_category_service
 from .....services.user.dbmodels.user import User as DbUser
@@ -88,7 +86,13 @@ def _fake_order_placement_event(order_id: OrderID) -> OrderEvent:
         'initiator_id': str(order.placed_by_id),
     }
 
-    return OrderEvent(order.created_at, 'order-placed', order.id, data)
+    return OrderEvent(
+        id=UUID('00000000-0000-0000-0000-000000000001'),
+        occurred_at=order.created_at,
+        event_type='order-placed',
+        order_id=order.id,
+        data=data,
+    )
 
 
 def _get_additional_data(
