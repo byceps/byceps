@@ -9,6 +9,7 @@ from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
 )
 from byceps.services.shop.order.transfer.models.number import (
+    OrderNumberSequence,
     OrderNumberSequenceID,
 )
 from byceps.services.shop.shop.transfer.models import Shop, ShopID
@@ -36,11 +37,10 @@ def order_admin(make_user):
 def make_order_number_sequence():
     def _wrapper(
         shop_id: ShopID, prefix: str, value: int
-    ) -> OrderNumberSequenceID:
-        sequence = order_sequence_service.create_order_number_sequence(
+    ) -> OrderNumberSequence:
+        return order_sequence_service.create_order_number_sequence(
             shop_id, prefix, value=value
         )
-        return sequence.id
 
     return _wrapper
 
