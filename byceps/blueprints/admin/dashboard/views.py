@@ -50,8 +50,6 @@ def view_global():
     """View dashboard for global entities."""
     active_brands = brand_service.get_active_brands()
 
-    current_sites = site_service.get_current_sites(include_brands=True)
-
     active_parties = party_service.get_active_parties(include_brands=True)
     active_parties_with_stats = [
         (
@@ -91,7 +89,6 @@ def view_global():
 
     return {
         'active_brands': active_brands,
-        'current_sites': current_sites,
         'active_parties_with_stats': active_parties_with_stats,
         'active_shops_with_brands_and_open_orders_counts': active_shops_with_brands_and_open_orders_counts,
         'user_count': user_count,
