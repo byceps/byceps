@@ -30,12 +30,12 @@ def test_generate_order_number_default(admin_app, shop1):
     shop = shop1
 
     sequence = order_sequence_service.create_order_number_sequence(
-        shop.id, 'AEC-01-B'
+        shop.id, 'ONE-01-B'
     )
 
     actual = order_sequence_service.generate_order_number(sequence.id)
 
-    assert actual == 'AEC-01-B00001'
+    assert actual == 'ONE-01-B00001'
 
     order_sequence_service.delete_order_number_sequence(sequence.id)
 

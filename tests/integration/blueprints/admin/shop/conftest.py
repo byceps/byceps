@@ -7,12 +7,6 @@ from typing import Iterator
 
 import pytest
 
-from byceps.services.shop.order import (
-    sequence_service as order_sequence_service,
-)
-from byceps.services.shop.order.transfer.models.number import (
-    OrderNumberSequence,
-)
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import (
     Storefront,
@@ -30,19 +24,9 @@ def shop(make_brand):
 
 
 @pytest.fixture(scope='module')
-def order_number_sequence(shop) -> Iterator[OrderNumberSequence]:
-    sequence = order_sequence_service.create_order_number_sequence(
-        shop.id, 'ORDER-'
-    )
-
-    yield sequence
-
-    order_sequence_service.delete_order_number_sequence(sequence.id)
-
-
-@pytest.fixture(scope='module')
-def storefront(shop, order_number_sequence) -> Iterator[Storefront]:
+def storefront(shop, make_order_number_sequence) -> Iterator[Storefront]:
     storefront_id = StorefrontID(f'{shop.id}-storefront')
+    order_number_sequence = make_order_number_sequence(shop.id)
 
     storefront = storefront_service.create_storefront(
         storefront_id, shop.id, order_number_sequence.id, closed=False

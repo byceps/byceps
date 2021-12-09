@@ -8,10 +8,7 @@ from __future__ import annotations
 import pytest
 
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import (
-    sequence_service as order_sequence_service,
-    service as order_service,
-)
+from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models.order import Order, Orderer
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.shop.transfer.models import Shop
@@ -32,30 +29,26 @@ def shop(make_brand) -> Shop:
 
 
 @pytest.fixture
-def storefront1(shop: Shop) -> Storefront:
-    order_number_sequence = order_sequence_service.create_order_number_sequence(
-        shop.id, 'LF-02-B'
+def storefront1(shop: Shop, make_order_number_sequence) -> Storefront:
+    storefront_id = StorefrontID(f'{shop.id}-{generate_token()}')
+    order_number_sequence = make_order_number_sequence(
+        shop.id, prefix='LF-02-B'
     )
 
     return storefront_service.create_storefront(
-        StorefrontID(f'{shop.id}-{generate_token()}'),
-        shop.id,
-        order_number_sequence.id,
-        closed=False,
+        storefront_id, shop.id, order_number_sequence.id, closed=False
     )
 
 
 @pytest.fixture
-def storefront2(shop: Shop) -> Storefront:
-    order_number_sequence = order_sequence_service.create_order_number_sequence(
-        shop.id, 'LF-03-B'
+def storefront2(shop: Shop, make_order_number_sequence) -> Storefront:
+    storefront_id = StorefrontID(f'{shop.id}-{generate_token()}')
+    order_number_sequence = make_order_number_sequence(
+        shop.id, prefix='LF-03-B'
     )
 
     return storefront_service.create_storefront(
-        StorefrontID(f'{shop.id}-{generate_token()}'),
-        shop.id,
-        order_number_sequence.id,
-        closed=False,
+        storefront_id, shop.id, order_number_sequence.id, closed=False
     )
 
 

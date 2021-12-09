@@ -8,13 +8,7 @@ from typing import Iterator
 import pytest
 
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import (
-    sequence_service as order_sequence_service,
-    service as order_service,
-)
-from byceps.services.shop.order.transfer.models.number import (
-    OrderNumberSequence,
-)
+from byceps.services.shop.order import service as order_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import (
     Storefront,
@@ -51,33 +45,12 @@ def shop2(admin_app, make_brand):
 
 
 @pytest.fixture
-def order_number_sequence1(shop1) -> Iterator[OrderNumberSequence]:
-    sequence = order_sequence_service.create_order_number_sequence(
-        shop1.id, 'LF-02-B'
-    )
-
-    yield sequence
-
-    order_sequence_service.delete_order_number_sequence(sequence.id)
-
-
-@pytest.fixture
-def order_number_sequence2(shop2) -> Iterator[OrderNumberSequence]:
-    sequence = order_sequence_service.create_order_number_sequence(
-        shop2.id, 'SHOP-02-B'
-    )
-
-    yield sequence
-
-    order_sequence_service.delete_order_number_sequence(sequence.id)
-
-
-@pytest.fixture
-def storefront1(shop1, order_number_sequence1) -> Iterator[Storefront]:
+def storefront1(shop1, make_order_number_sequence) -> Iterator[Storefront]:
     storefront_id = StorefrontID(f'{shop1.id}-storefront')
+    order_number_sequence = make_order_number_sequence(shop1.id)
 
     storefront = storefront_service.create_storefront(
-        storefront_id, shop1.id, order_number_sequence1.id, closed=False
+        storefront_id, shop1.id, order_number_sequence.id, closed=False
     )
 
     yield storefront
@@ -86,11 +59,12 @@ def storefront1(shop1, order_number_sequence1) -> Iterator[Storefront]:
 
 
 @pytest.fixture
-def storefront2(shop2, order_number_sequence2) -> Iterator[Storefront]:
+def storefront2(shop2, make_order_number_sequence) -> Iterator[Storefront]:
     storefront_id = StorefrontID(f'{shop2.id}-storefront')
+    order_number_sequence = make_order_number_sequence(shop2.id)
 
     storefront = storefront_service.create_storefront(
-        storefront_id, shop2.id, order_number_sequence2.id, closed=False
+        storefront_id, shop2.id, order_number_sequence.id, closed=False
     )
 
     yield storefront

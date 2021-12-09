@@ -10,13 +10,7 @@ import pytest
 
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article import service as article_service
-from byceps.services.shop.order import (
-    sequence_service as order_sequence_service,
-    service as order_service,
-)
-from byceps.services.shop.order.transfer.models.number import (
-    OrderNumberSequence,
-)
+from byceps.services.shop.order import service as order_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import (
     Storefront,
@@ -43,7 +37,7 @@ COMMON_FORM_DATA = {
 }
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def shop(make_brand, admin_user):
     brand = make_brand()
     shop = create_shop(brand.id)
@@ -56,20 +50,12 @@ def shop(make_brand, admin_user):
     snippet_service.delete_snippet(snippet_id)
 
 
-@pytest.fixture
-def order_number_sequence(shop) -> Iterator[OrderNumberSequence]:
-    sequence = order_sequence_service.create_order_number_sequence(
-        shop.id, 'AEC-01-B', value=4
-    )
-
-    yield sequence
-
-    order_sequence_service.delete_order_number_sequence(sequence.id)
-
-
-@pytest.fixture
-def storefront(shop, order_number_sequence) -> Iterator[Storefront]:
+@pytest.fixture(scope='module')
+def storefront(shop, make_order_number_sequence) -> Iterator[Storefront]:
     storefront_id = StorefrontID(f'{shop.id}-storefront')
+    order_number_sequence = make_order_number_sequence(
+        shop.id, prefix='ORDR-23-B', value=4
+    )
 
     storefront = storefront_service.create_storefront(
         storefront_id, shop.id, order_number_sequence.id, closed=False
@@ -80,7 +66,7 @@ def storefront(shop, order_number_sequence) -> Iterator[Storefront]:
     storefront_service.delete_storefront(storefront.id)
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def site(make_brand, storefront):
     brand = make_brand()
     site = create_site(
@@ -90,7 +76,7 @@ def site(make_brand, storefront):
     site_service.delete_site(site.id)
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def site_app(site, make_site_app):
     app = make_site_app(SITE_ID=site.id)
     with app.app_context():
@@ -105,7 +91,7 @@ def article(admin_app, shop):
     article_service.delete_article(article_id)
 
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def orderer(admin_app, user):
     login_user(user.id)
     return user
@@ -136,7 +122,7 @@ def test_order(
     assert get_article_quantity(article.id) == 2
 
     order = get_single_order_by(orderer.id)
-    assert_order(order, 'AEC-01-B00005', 1)
+    assert_order(order, 'ORDR-23-B00005', 1)
 
     first_line_item = order.line_items[0]
     assert_line_item(
@@ -198,7 +184,7 @@ def test_order_single(
     assert get_article_quantity(article.id) == 4
 
     order = get_single_order_by(orderer.id)
-    assert_order(order, 'AEC-01-B00005', 1)
+    assert_order(order, 'ORDR-23-B00006', 1)
 
     first_line_item = order.line_items[0]
     assert_line_item(
@@ -272,4 +258,4 @@ def assert_line_item(
 def assert_order_detail_page_works(client, order_detail_page_url, order_number):
     response = client.get(order_detail_page_url)
     assert response.status_code == 200
-    assert 'AEC-01-B00005' in response.get_data(as_text=True)
+    assert order_number in response.get_data(as_text=True)
