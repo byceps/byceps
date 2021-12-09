@@ -60,13 +60,13 @@ def shop(make_brand, admin_user):
 
 @pytest.fixture
 def order_number_sequence_id(shop) -> Iterator[OrderNumberSequenceID]:
-    sequence_id = order_sequence_service.create_order_number_sequence(
+    sequence = order_sequence_service.create_order_number_sequence(
         shop.id, 'AEC-01-B', value=4
     )
 
-    yield sequence_id
+    yield sequence.id
 
-    order_sequence_service.delete_order_number_sequence(sequence_id)
+    order_sequence_service.delete_order_number_sequence(sequence.id)
 
 
 @pytest.fixture

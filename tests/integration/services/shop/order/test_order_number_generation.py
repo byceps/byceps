@@ -32,19 +32,15 @@ def shop2(make_brand):
 def test_generate_order_number_default(admin_app, shop1):
     shop = shop1
 
-    order_number_sequence_id = (
-        order_sequence_service.create_order_number_sequence(shop.id, 'AEC-01-B')
+    sequence = order_sequence_service.create_order_number_sequence(
+        shop.id, 'AEC-01-B'
     )
 
-    actual = order_sequence_service.generate_order_number(
-        order_number_sequence_id
-    )
+    actual = order_sequence_service.generate_order_number(sequence.id)
 
     assert actual == 'AEC-01-B00001'
 
-    order_sequence_service.delete_order_number_sequence(
-        order_number_sequence_id
-    )
+    order_sequence_service.delete_order_number_sequence(sequence.id)
 
 
 def test_generate_order_number_custom(admin_app, shop2):
@@ -52,18 +48,12 @@ def test_generate_order_number_custom(admin_app, shop2):
 
     last_assigned_order_sequence_number = 206
 
-    order_number_sequence_id = (
-        order_sequence_service.create_order_number_sequence(
-            shop.id, 'LOL-03-B', value=last_assigned_order_sequence_number
-        )
+    sequence = order_sequence_service.create_order_number_sequence(
+        shop.id, 'LOL-03-B', value=last_assigned_order_sequence_number
     )
 
-    actual = order_sequence_service.generate_order_number(
-        order_number_sequence_id
-    )
+    actual = order_sequence_service.generate_order_number(sequence.id)
 
     assert actual == 'LOL-03-B00207'
 
-    order_sequence_service.delete_order_number_sequence(
-        order_number_sequence_id
-    )
+    order_sequence_service.delete_order_number_sequence(sequence.id)

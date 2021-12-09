@@ -33,29 +33,28 @@ def shop(make_brand) -> Shop:
 
 @pytest.fixture
 def storefront1(shop: Shop) -> Storefront:
-    order_number_sequence_id = (
-        order_sequence_service.create_order_number_sequence(shop.id, 'LF-02-B')
+    order_number_sequence = order_sequence_service.create_order_number_sequence(
+        shop.id, 'LF-02-B'
     )
 
     return storefront_service.create_storefront(
         StorefrontID(f'{shop.id}-{generate_token()}'),
         shop.id,
-        order_number_sequence_id,
+        order_number_sequence.id,
         closed=False,
     )
 
 
-
 @pytest.fixture
 def storefront2(shop: Shop) -> Storefront:
-    order_number_sequence_id = (
-        order_sequence_service.create_order_number_sequence(shop.id, 'LF-03-B')
+    order_number_sequence = order_sequence_service.create_order_number_sequence(
+        shop.id, 'LF-03-B'
     )
 
     return storefront_service.create_storefront(
         StorefrontID(f'{shop.id}-{generate_token()}'),
         shop.id,
-        order_number_sequence_id,
+        order_number_sequence.id,
         closed=False,
     )
 

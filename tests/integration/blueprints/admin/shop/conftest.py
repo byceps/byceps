@@ -35,13 +35,13 @@ def shop(make_brand):
 
 @pytest.fixture(scope='module')
 def order_number_sequence_id(shop) -> Iterator[OrderNumberSequenceID]:
-    sequence_id = order_sequence_service.create_order_number_sequence(
+    sequence = order_sequence_service.create_order_number_sequence(
         shop.id, 'ORDER-'
     )
 
-    yield sequence_id
+    yield sequence.id
 
-    order_sequence_service.delete_order_number_sequence(sequence_id)
+    order_sequence_service.delete_order_number_sequence(sequence.id)
 
 
 @pytest.fixture(scope='module')

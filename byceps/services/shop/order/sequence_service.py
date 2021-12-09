@@ -31,11 +31,8 @@ class OrderNumberSequenceCreationFailed(Exception):
 
 def create_order_number_sequence(
     shop_id: ShopID, prefix: str, *, value: Optional[int] = None
-) -> OrderNumberSequenceID:
-    """Create an order number sequence.
-
-    Return the resulting sequence's ID.
-    """
+) -> OrderNumberSequence:
+    """Create an order number sequence."""
     sequence = DbOrderNumberSequence(shop_id, prefix, value=value)
 
     db.session.add(sequence)
@@ -48,7 +45,7 @@ def create_order_number_sequence(
             f'Could not create order number sequence with prefix "{prefix}"'
         ) from exc
 
-    return sequence.id
+    return _db_entity_to_order_number_sequence(sequence)
 
 
 def delete_order_number_sequence(sequence_id: OrderNumberSequenceID) -> None:

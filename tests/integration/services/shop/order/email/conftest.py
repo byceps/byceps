@@ -37,9 +37,10 @@ def make_order_number_sequence():
     def _wrapper(
         shop_id: ShopID, prefix: str, value: int
     ) -> OrderNumberSequenceID:
-        return order_sequence_service.create_order_number_sequence(
+        sequence = order_sequence_service.create_order_number_sequence(
             shop_id, prefix, value=value
         )
+        return sequence.id
 
     return _wrapper
 

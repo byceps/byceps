@@ -107,13 +107,13 @@ def orderer(make_user):
 
 @pytest.fixture
 def order_number_sequence_id(shop):
-    sequence_id = order_sequence_service.create_order_number_sequence(
+    sequence = order_sequence_service.create_order_number_sequence(
         shop.id, 'LR-08-B', value=26
     )
 
-    yield sequence_id
+    yield sequence.id
 
-    order_sequence_service.delete_order_number_sequence(sequence_id)
+    order_sequence_service.delete_order_number_sequence(sequence.id)
 
 
 @pytest.fixture
