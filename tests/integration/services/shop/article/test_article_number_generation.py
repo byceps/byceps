@@ -8,7 +8,6 @@ import pytest
 from byceps.services.shop.article import (
     sequence_service as article_sequence_service,
 )
-from byceps.services.shop.shop import service as shop_service
 
 from tests.integration.services.shop.helpers import create_shop
 
@@ -16,17 +15,15 @@ from tests.integration.services.shop.helpers import create_shop
 @pytest.fixture(scope='module')
 def shop1(make_brand):
     brand = make_brand()
-    shop = create_shop(brand.id)
-    yield shop
-    shop_service.delete_shop(shop.id)
+
+    return create_shop(brand.id)
 
 
 @pytest.fixture(scope='module')
 def shop2(make_brand):
     brand = make_brand()
-    shop = create_shop(brand.id)
-    yield shop
-    shop_service.delete_shop(shop.id)
+
+    return create_shop(brand.id)
 
 
 def test_generate_article_number_default(admin_app, shop1):

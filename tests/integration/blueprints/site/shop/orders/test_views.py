@@ -15,7 +15,6 @@ from byceps.services.shop.order import (
 from byceps.services.shop.order.transfer.models.number import (
     OrderNumberSequence,
 )
-from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import (
     Storefront,
@@ -41,7 +40,6 @@ def shop1(admin_app, make_brand, admin_user):
     yield shop
 
     snippet_service.delete_snippet(snippet_id)
-    shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture
@@ -50,8 +48,6 @@ def shop2(admin_app, make_brand):
     shop = create_shop(brand.id)
 
     yield shop
-
-    shop_service.delete_shop(shop.id)
 
 
 @pytest.fixture

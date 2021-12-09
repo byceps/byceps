@@ -9,7 +9,6 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
 )
-from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import StorefrontID
 
@@ -22,11 +21,8 @@ def shop(make_brand, make_email_config):
     email_config = make_email_config(
         brand.id, sender_address='noreply@acmecon.test'
     )
-    shop = create_shop(brand.id)
 
-    yield shop
-
-    shop_service.delete_shop(shop.id)
+    return create_shop(brand.id)
 
 
 @pytest.fixture

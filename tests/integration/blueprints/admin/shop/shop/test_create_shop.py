@@ -39,6 +39,3 @@ def test_create_shop(make_brand, shop_admin_client):
     assert shop.id == brand.id
     assert shop.brand_id == brand.id
     assert shop.title == brand.title
-
-    # Clean up.
-    shop_service.delete_shop(shop.id)
