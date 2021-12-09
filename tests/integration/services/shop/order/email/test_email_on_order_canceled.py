@@ -10,10 +10,7 @@ from unittest.mock import patch
 import pytest
 
 from byceps.services.shop.order.email import service as order_email_service
-from byceps.services.shop.order import (
-    sequence_service as order_sequence_service,
-    service as order_service,
-)
+from byceps.services.shop.order import service as order_service
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import Storefront
@@ -38,16 +35,13 @@ def storefront(
     shop: Shop, make_order_number_sequence, make_storefront
 ) -> Iterator[Storefront]:
     order_number_sequence = make_order_number_sequence(
-        shop.id, prefix='AC-14-B', value=16
+        shop.id, prefix='CD-22-B', value=16
     )
     storefront = make_storefront(shop.id, order_number_sequence.id)
 
     yield storefront
 
     storefront_service.delete_storefront(storefront.id)
-    order_sequence_service.delete_order_number_sequence(
-        order_number_sequence.id
-    )
 
 
 @pytest.fixture
@@ -78,12 +72,12 @@ def test_email_on_order_canceled(
     expected_sender = 'noreply@acmecon.test'
     expected_recipients = ['versager@users.test']
     expected_subject = (
-        '\u274c Deine Bestellung (AC-14-B00017) ist storniert worden.'
+        '\u274c Deine Bestellung (CD-22-B00017) ist storniert worden.'
     )
     expected_body = '''
 Hallo Versager,
 
-deine Bestellung mit der Nummer AC-14-B00017 vom 06.11.2014 wurde von uns aus folgendem Grund storniert:
+deine Bestellung mit der Nummer CD-22-B00017 vom 06.11.2014 wurde von uns aus folgendem Grund storniert:
 
 Du hast nicht rechtzeitig bezahlt.
 

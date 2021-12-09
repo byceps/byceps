@@ -12,10 +12,7 @@ import pytest
 
 from byceps.services.shop.article import service as article_service
 from byceps.services.shop.order.email import service as order_email_service
-from byceps.services.shop.order import (
-    sequence_service as order_sequence_service,
-    service as order_service,
-)
+from byceps.services.shop.order import service as order_service
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import Storefront
@@ -43,23 +40,20 @@ def storefront(
     shop: Shop, make_order_number_sequence, make_storefront
 ) -> Iterator[Storefront]:
     order_number_sequence = make_order_number_sequence(
-        shop.id, prefix='AC-14-B', value=252
+        shop.id, prefix='AB-11-B', value=252
     )
     storefront = make_storefront(shop.id, order_number_sequence.id)
 
     yield storefront
 
     storefront_service.delete_storefront(storefront.id)
-    order_sequence_service.delete_order_number_sequence(
-        order_number_sequence.id
-    )
 
 
 @pytest.fixture
 def article1(shop: Shop):
     article = create_article(
         shop.id,
-        'AC-14-A00003',
+        'AB-11-A00003',
         'Einzelticket, Kategorie Loge',
         Decimal('99.00'),
         123,
@@ -75,7 +69,7 @@ def article1(shop: Shop):
 def article2(shop: Shop):
     article = create_article(
         shop.id,
-        'AC-14-A00007',
+        'AB-11-A00007',
         'T-Shirt, Größe L',
         Decimal('14.95'),
         50,
@@ -124,11 +118,11 @@ def test_email_on_order_placed(send_email_mock, site_app, customer, order):
 
     expected_sender = 'noreply@acmecon.test'
     expected_recipients = ['interessent@users.test']
-    expected_subject = 'Deine Bestellung (AC-14-B00253) ist eingegangen.'
+    expected_subject = 'Deine Bestellung (AB-11-B00253) ist eingegangen.'
     expected_body = '''
 Hallo Interessent,
 
-vielen Dank für deine Bestellung mit der Nummer AC-14-B00253 am 15.08.2014 über unsere Website.
+vielen Dank für deine Bestellung mit der Nummer AB-11-B00253 am 15.08.2014 über unsere Website.
 
 Folgende Artikel hast du bestellt:
 
@@ -148,7 +142,7 @@ Bitte überweise den Gesamtbetrag auf folgendes Konto:
   IBAN: <IBAN>
   BIC: <BIC>
   Bank: <Kreditinstitut>
-  Verwendungszweck: AC-14-B00253
+  Verwendungszweck: AB-11-B00253
 
 Wir werden dich informieren, sobald wir deine Zahlung erhalten haben.
 

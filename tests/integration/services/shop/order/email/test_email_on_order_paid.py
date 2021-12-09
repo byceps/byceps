@@ -10,10 +10,7 @@ from unittest.mock import patch
 import pytest
 
 from byceps.services.shop.order.email import service as order_email_service
-from byceps.services.shop.order import (
-    sequence_service as order_sequence_service,
-    service as order_service,
-)
+from byceps.services.shop.order import service as order_service
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import Storefront
@@ -38,16 +35,13 @@ def storefront(
     shop: Shop, make_order_number_sequence, make_storefront
 ) -> Iterator[Storefront]:
     order_number_sequence = make_order_number_sequence(
-        shop.id, prefix='AC-14-B', value=21
+        shop.id, prefix='EF-33-B', value=21
     )
     storefront = make_storefront(shop.id, order_number_sequence.id)
 
     yield storefront
 
     storefront_service.delete_storefront(storefront.id)
-    order_sequence_service.delete_order_number_sequence(
-        order_number_sequence.id
-    )
 
 
 @pytest.fixture
@@ -77,12 +71,12 @@ def test_email_on_order_paid(
     expected_sender = 'noreply@acmecon.test'
     expected_recipients = ['vorbild@users.test']
     expected_subject = (
-        '\u2705 Deine Bestellung (AC-14-B00022) ist bezahlt worden.'
+        '\u2705 Deine Bestellung (EF-33-B00022) ist bezahlt worden.'
     )
     expected_body = '''
 Hallo Vorbild,
 
-vielen Dank für deine Bestellung mit der Nummer AC-14-B00022 am 23.09.2014 über unsere Website.
+vielen Dank für deine Bestellung mit der Nummer EF-33-B00022 am 23.09.2014 über unsere Website.
 
 Wir haben deine Zahlung erhalten und deine Bestellung als bezahlt markiert.
 
