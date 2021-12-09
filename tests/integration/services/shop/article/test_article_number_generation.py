@@ -30,25 +30,21 @@ def test_generate_article_number_default(admin_app, shop1):
     shop = shop1
 
     sequence = article_sequence_service.create_article_number_sequence(
-        shop.id, 'AEC-01-A'
+        shop.id, 'ONE-01-A'
     )
 
     actual = article_sequence_service.generate_article_number(sequence.id)
 
-    assert actual == 'AEC-01-A00001'
-
-    article_sequence_service.delete_article_number_sequence(sequence.id)
+    assert actual == 'ONE-01-A00001'
 
 
 def test_generate_article_number_custom(admin_app, shop2):
     shop = shop2
 
     sequence = article_sequence_service.create_article_number_sequence(
-        shop.id, 'XYZ-09-A', value=41
+        shop.id, 'TWO-02-A', value=41
     )
 
     actual = article_sequence_service.generate_article_number(sequence.id)
 
-    assert actual == 'XYZ-09-A00042'
-
-    article_sequence_service.delete_article_number_sequence(sequence.id)
+    assert actual == 'TWO-02-A00042'
