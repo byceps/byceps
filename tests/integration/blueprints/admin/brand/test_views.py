@@ -49,10 +49,6 @@ def test_create(brand_admin_client):
     assert email_config.sender.name == 'gaLANt'
     assert email_config.contact_address == 'info@galant.example'
 
-    # Clean up.
-    email_service.delete_config(brand_id)
-    brand_service.delete_brand(brand_id)
-
 
 def test_update_form(brand_admin_client, brand):
     url = f'/admin/brands/brands/{brand.id}/update'
