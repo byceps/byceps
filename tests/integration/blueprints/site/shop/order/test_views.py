@@ -10,11 +10,7 @@ import pytest
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article import service as article_service
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.storefront import service as storefront_service
-from byceps.services.shop.storefront.transfer.models import (
-    Storefront,
-    StorefrontID,
-)
+from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
 
@@ -50,15 +46,12 @@ def shop(make_brand, admin_user):
 
 
 @pytest.fixture(scope='module')
-def storefront(shop, make_order_number_sequence) -> Storefront:
-    storefront_id = StorefrontID(f'{shop.id}-storefront')
+def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
     order_number_sequence = make_order_number_sequence(
         shop.id, prefix='ORDR-23-B', value=4
     )
 
-    return storefront_service.create_storefront(
-        storefront_id, shop.id, order_number_sequence.id, closed=False
-    )
+    return make_storefront(shop.id, order_number_sequence.id)
 
 
 @pytest.fixture(scope='module')

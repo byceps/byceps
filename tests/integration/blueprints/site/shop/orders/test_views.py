@@ -7,11 +7,7 @@ import pytest
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.storefront import service as storefront_service
-from byceps.services.shop.storefront.transfer.models import (
-    Storefront,
-    StorefrontID,
-)
+from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
 
@@ -43,23 +39,17 @@ def shop2(admin_app, make_brand):
 
 
 @pytest.fixture
-def storefront1(shop1, make_order_number_sequence) -> Storefront:
-    storefront_id = StorefrontID(f'{shop1.id}-storefront')
+def storefront1(shop1, make_order_number_sequence, make_storefront) -> Storefront:
     order_number_sequence = make_order_number_sequence(shop1.id)
 
-    return storefront_service.create_storefront(
-        storefront_id, shop1.id, order_number_sequence.id, closed=False
-    )
+    return make_storefront(shop1.id, order_number_sequence.id)
 
 
 @pytest.fixture
-def storefront2(shop2, make_order_number_sequence) -> Storefront:
-    storefront_id = StorefrontID(f'{shop2.id}-storefront')
+def storefront2(shop2, make_order_number_sequence, make_storefront) -> Storefront:
     order_number_sequence = make_order_number_sequence(shop2.id)
 
-    return storefront_service.create_storefront(
-        storefront_id, shop2.id, order_number_sequence.id, closed=False
-    )
+    return make_storefront(shop2.id, order_number_sequence.id)
 
 
 @pytest.fixture

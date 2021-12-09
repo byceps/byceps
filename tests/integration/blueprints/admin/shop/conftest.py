@@ -5,11 +5,7 @@
 
 import pytest
 
-from byceps.services.shop.storefront import service as storefront_service
-from byceps.services.shop.storefront.transfer.models import (
-    Storefront,
-    StorefrontID,
-)
+from byceps.services.shop.storefront.transfer.models import Storefront
 
 from tests.integration.services.shop.helpers import create_shop
 
@@ -22,10 +18,7 @@ def shop(make_brand):
 
 
 @pytest.fixture(scope='module')
-def storefront(shop, make_order_number_sequence) -> Storefront:
-    storefront_id = StorefrontID(f'{shop.id}-storefront')
+def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
     order_number_sequence = make_order_number_sequence(shop.id)
 
-    return storefront_service.create_storefront(
-        storefront_id, shop.id, order_number_sequence.id, closed=False
-    )
+    return make_storefront(shop.id, order_number_sequence.id)

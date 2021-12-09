@@ -12,7 +12,6 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models.order import Order, Orderer
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.shop.transfer.models import Shop
-from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import (
     Storefront,
     StorefrontID,
@@ -29,27 +28,21 @@ def shop(make_brand) -> Shop:
 
 
 @pytest.fixture
-def storefront1(shop: Shop, make_order_number_sequence) -> Storefront:
-    storefront_id = StorefrontID(f'{shop.id}-{generate_token()}')
+def storefront1(shop: Shop, make_order_number_sequence, make_storefront) -> Storefront:
     order_number_sequence = make_order_number_sequence(
         shop.id, prefix='LF-02-B'
     )
 
-    return storefront_service.create_storefront(
-        storefront_id, shop.id, order_number_sequence.id, closed=False
-    )
+    return make_storefront(shop.id, order_number_sequence.id)
 
 
 @pytest.fixture
-def storefront2(shop: Shop, make_order_number_sequence) -> Storefront:
-    storefront_id = StorefrontID(f'{shop.id}-{generate_token()}')
+def storefront2(shop: Shop, make_order_number_sequence, make_storefront) -> Storefront:
     order_number_sequence = make_order_number_sequence(
         shop.id, prefix='LF-03-B'
     )
 
-    return storefront_service.create_storefront(
-        storefront_id, shop.id, order_number_sequence.id, closed=False
-    )
+    return make_storefront(shop.id, order_number_sequence.id)
 
 
 @pytest.fixture(scope='module')

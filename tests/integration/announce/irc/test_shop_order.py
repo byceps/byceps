@@ -9,11 +9,7 @@ import byceps.announce.connections  # Connect signal handlers.
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.storefront import service as storefront_service
-from byceps.services.shop.storefront.transfer.models import (
-    Storefront,
-    StorefrontID,
-)
+from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.signals import shop as shop_signals
 
 from tests.integration.services.shop.helpers import create_orderer, create_shop
@@ -125,13 +121,10 @@ def shop(app, make_brand):
 
 
 @pytest.fixture(scope='module')
-def storefront(shop, make_order_number_sequence) -> Storefront:
-    storefront_id = StorefrontID(f'{shop.id}-storefront')
+def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
     order_number_sequence = make_order_number_sequence(shop.id, prefix='ORDER-')
 
-    return storefront_service.create_storefront(
-        storefront_id, shop.id, order_number_sequence.id, closed=False
-    )
+    return make_storefront(shop.id, order_number_sequence.id)
 
 
 @pytest.fixture
