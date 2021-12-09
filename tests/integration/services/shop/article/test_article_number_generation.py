@@ -32,40 +32,26 @@ def shop2(make_brand):
 def test_generate_article_number_default(admin_app, shop1):
     shop = shop1
 
-    article_number_sequence_id = (
-        article_sequence_service.create_article_number_sequence(
-            shop.id, 'AEC-01-A'
-        )
+    sequence = article_sequence_service.create_article_number_sequence(
+        shop.id, 'AEC-01-A'
     )
 
-    actual = article_sequence_service.generate_article_number(
-        article_number_sequence_id
-    )
+    actual = article_sequence_service.generate_article_number(sequence.id)
 
     assert actual == 'AEC-01-A00001'
 
-    article_sequence_service.delete_article_number_sequence(
-        article_number_sequence_id
-    )
+    article_sequence_service.delete_article_number_sequence(sequence.id)
 
 
 def test_generate_article_number_custom(admin_app, shop2):
     shop = shop2
 
-    article_number_sequence_id = (
-        article_sequence_service.create_article_number_sequence(
-            shop.id,
-            'XYZ-09-A',
-            value=41,
-        )
+    sequence = article_sequence_service.create_article_number_sequence(
+        shop.id, 'XYZ-09-A', value=41
     )
 
-    actual = article_sequence_service.generate_article_number(
-        article_number_sequence_id
-    )
+    actual = article_sequence_service.generate_article_number(sequence.id)
 
     assert actual == 'XYZ-09-A00042'
 
-    article_sequence_service.delete_article_number_sequence(
-        article_number_sequence_id
-    )
+    article_sequence_service.delete_article_number_sequence(sequence.id)

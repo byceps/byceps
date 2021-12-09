@@ -669,9 +669,7 @@ def create_number_sequence(shop_id):
     prefix = form.prefix.data.strip()
 
     try:
-        sequence_id = article_sequence_service.create_article_number_sequence(
-            shop.id, prefix
-        )
+        article_sequence_service.create_article_number_sequence(shop.id, prefix)
     except article_sequence_service.ArticleNumberSequenceCreationFailed:
         flash_error(
             gettext(

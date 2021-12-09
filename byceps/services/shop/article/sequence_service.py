@@ -31,11 +31,8 @@ class ArticleNumberSequenceCreationFailed(Exception):
 
 def create_article_number_sequence(
     shop_id: ShopID, prefix: str, *, value: Optional[int] = None
-) -> ArticleNumberSequenceID:
-    """Create an article number sequence.
-
-    Return the resulting sequence's ID.
-    """
+) -> ArticleNumberSequence:
+    """Create an article number sequence."""
     sequence = DbArticleNumberSequence(shop_id, prefix, value=value)
 
     db.session.add(sequence)
@@ -48,7 +45,7 @@ def create_article_number_sequence(
             f'Could not sequence with prefix "{prefix}"'
         ) from exc
 
-    return sequence.id
+    return _db_entity_to_article_number_sequence(sequence)
 
 
 def delete_article_number_sequence(
