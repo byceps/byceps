@@ -11,7 +11,7 @@ from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
 )
 from byceps.services.shop.order.transfer.models.number import (
-    OrderNumberSequenceID,
+    OrderNumberSequence,
 )
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
@@ -34,22 +34,22 @@ def shop(make_brand):
 
 
 @pytest.fixture(scope='module')
-def order_number_sequence_id(shop) -> Iterator[OrderNumberSequenceID]:
+def order_number_sequence(shop) -> Iterator[OrderNumberSequence]:
     sequence = order_sequence_service.create_order_number_sequence(
         shop.id, 'ORDER-'
     )
 
-    yield sequence.id
+    yield sequence
 
     order_sequence_service.delete_order_number_sequence(sequence.id)
 
 
 @pytest.fixture(scope='module')
-def storefront(shop, order_number_sequence_id) -> Iterator[Storefront]:
+def storefront(shop, order_number_sequence) -> Iterator[Storefront]:
     storefront_id = StorefrontID(f'{shop.id}-storefront')
 
     storefront = storefront_service.create_storefront(
-        storefront_id, shop.id, order_number_sequence_id, closed=False
+        storefront_id, shop.id, order_number_sequence.id, closed=False
     )
 
     yield storefront

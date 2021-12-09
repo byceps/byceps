@@ -13,7 +13,7 @@ from byceps.services.shop.order import (
     service as order_service,
 )
 from byceps.services.shop.order.transfer.models.number import (
-    OrderNumberSequenceID,
+    OrderNumberSequence,
 )
 from byceps.services.shop.shop import service as shop_service
 from byceps.services.shop.storefront import service as storefront_service
@@ -55,33 +55,33 @@ def shop2(admin_app, make_brand):
 
 
 @pytest.fixture
-def order_number_sequence_id1(shop1) -> Iterator[OrderNumberSequenceID]:
+def order_number_sequence1(shop1) -> Iterator[OrderNumberSequence]:
     sequence = order_sequence_service.create_order_number_sequence(
         shop1.id, 'LF-02-B'
     )
 
-    yield sequence.id
+    yield sequence
 
     order_sequence_service.delete_order_number_sequence(sequence.id)
 
 
 @pytest.fixture
-def order_number_sequence_id2(shop2) -> Iterator[OrderNumberSequenceID]:
+def order_number_sequence2(shop2) -> Iterator[OrderNumberSequence]:
     sequence = order_sequence_service.create_order_number_sequence(
         shop2.id, 'SHOP-02-B'
     )
 
-    yield sequence.id
+    yield sequence
 
     order_sequence_service.delete_order_number_sequence(sequence.id)
 
 
 @pytest.fixture
-def storefront1(shop1, order_number_sequence_id1) -> Iterator[Storefront]:
+def storefront1(shop1, order_number_sequence1) -> Iterator[Storefront]:
     storefront_id = StorefrontID(f'{shop1.id}-storefront')
 
     storefront = storefront_service.create_storefront(
-        storefront_id, shop1.id, order_number_sequence_id1, closed=False
+        storefront_id, shop1.id, order_number_sequence1.id, closed=False
     )
 
     yield storefront
@@ -90,11 +90,11 @@ def storefront1(shop1, order_number_sequence_id1) -> Iterator[Storefront]:
 
 
 @pytest.fixture
-def storefront2(shop2, order_number_sequence_id2) -> Iterator[Storefront]:
+def storefront2(shop2, order_number_sequence2) -> Iterator[Storefront]:
     storefront_id = StorefrontID(f'{shop2.id}-storefront')
 
     storefront = storefront_service.create_storefront(
-        storefront_id, shop2.id, order_number_sequence_id2, closed=False
+        storefront_id, shop2.id, order_number_sequence2.id, closed=False
     )
 
     yield storefront

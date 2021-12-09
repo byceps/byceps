@@ -106,22 +106,22 @@ def orderer(make_user):
 
 
 @pytest.fixture
-def order_number_sequence_id(shop):
+def order_number_sequence(shop):
     sequence = order_sequence_service.create_order_number_sequence(
         shop.id, 'LR-08-B', value=26
     )
 
-    yield sequence.id
+    yield sequence
 
     order_sequence_service.delete_order_number_sequence(sequence.id)
 
 
 @pytest.fixture
-def storefront(shop, order_number_sequence_id):
+def storefront(shop, order_number_sequence):
     storefront = storefront_service.create_storefront(
         StorefrontID(f'{shop.id}-storefront'),
         shop.id,
-        order_number_sequence_id,
+        order_number_sequence.id,
         closed=False,
     )
 
