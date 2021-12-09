@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Optional
+
 import pytest
 
 from byceps.services.shop.order import (
@@ -36,8 +38,14 @@ def order_admin(make_user):
 @pytest.fixture
 def make_order_number_sequence():
     def _wrapper(
-        shop_id: ShopID, prefix: str, value: int
+        shop_id: ShopID,
+        *,
+        prefix: Optional[str] = None,
+        value: Optional[int] = None,
     ) -> OrderNumberSequence:
+        if prefix is None:
+            prefix = f'{generate_token()}-O'
+
         return order_sequence_service.create_order_number_sequence(
             shop_id, prefix, value=value
         )

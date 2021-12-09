@@ -38,7 +38,7 @@ def storefront(
     shop: Shop, make_order_number_sequence, make_storefront
 ) -> Iterator[Storefront]:
     order_number_sequence = make_order_number_sequence(
-        shop.id, 'AC-14-B', 16
+        shop.id, prefix='AC-14-B', value=16
     )
     storefront = make_storefront(shop.id, order_number_sequence.id)
 
