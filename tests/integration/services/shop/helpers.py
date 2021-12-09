@@ -51,16 +51,13 @@ def create_shop_fragment(
     return version.snippet_id
 
 
-ANY_ARTICLE_ITEM_NUMBER = ArticleNumber('AEC-05-A00009')
-
-
 def create_article(
     shop_id: ShopID,
     *,
-    item_number: ArticleNumber = ANY_ARTICLE_ITEM_NUMBER,
+    item_number: Optional[ArticleNumber] = None,
     type_: ArticleType = ArticleType.other,
     type_params: ArticleTypeParams = None,
-    description: str = 'Cool thing',
+    description: Optional[str] = None,
     price: Optional[Decimal] = None,
     tax_rate: Optional[Decimal] = None,
     available_from: Optional[datetime] = None,
@@ -69,6 +66,12 @@ def create_article(
     max_quantity_per_order: int = 10,
     processing_required: bool = False,
 ) -> Article:
+    if item_number is None:
+        item_number = ArticleNumber(generate_token())
+
+    if description is None:
+        description = generate_token()
+
     if price is None:
         price = Decimal('24.95')
 

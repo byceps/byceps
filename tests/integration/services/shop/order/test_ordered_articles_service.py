@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.database import db
-from byceps.services.shop.article import service as article_service
+from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.dbmodels.order import Order as DbOrder
 from byceps.services.shop.order import ordered_articles_service
@@ -21,10 +21,7 @@ from tests.integration.services.shop.helpers import (
 
 @pytest.fixture
 def article(shop):
-    article = create_article(shop.id, total_quantity=100)
-    article_id = article.id
-    yield article
-    article_service.delete_article(article_id)
+    return create_article(shop.id, total_quantity=100)
 
 
 @pytest.fixture

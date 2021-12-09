@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+from typing import Iterable
 from unittest.mock import patch
 
 import pytest
@@ -10,10 +12,17 @@ import pytest
 from byceps.database import db
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid
 from byceps.services.shop.article import service as article_service
+from byceps.services.shop.article.transfer.models import (
+    Article,
+    ArticleID,
+    ArticleNumber,
+)
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.dbmodels.order import Order as DbOrder
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models.order import PaymentState
+from byceps.services.shop.shop.transfer.models import Shop, ShopID
+from byceps.services.shop.storefront.transfer.models import Storefront
 
 from tests.helpers import login_user
 from tests.integration.services.shop.helpers import (
@@ -40,27 +49,18 @@ def shop_order_admin_client(make_client, admin_app, shop_order_admin):
 
 
 @pytest.fixture
-def article1(shop):
-    article = create_article(shop.id, 'item-001', 8)
-    article_id = article.id
-    yield article
-    article_service.delete_article(article_id)
+def article1(shop: Shop) -> Article:
+    return create_article(shop.id, 'item-001', 8)
 
 
 @pytest.fixture
-def article2(shop):
-    article = create_article(shop.id, 'item-002', 8)
-    article_id = article.id
-    yield article
-    article_service.delete_article(article_id)
+def article2(shop: Shop) -> Article:
+    return create_article(shop.id, 'item-002', 8)
 
 
 @pytest.fixture
-def article3(shop):
-    article = create_article(shop.id, 'item-003', 8)
-    article_id = article.id
-    yield article
-    article_service.delete_article(article_id)
+def article3(shop: Shop) -> Article:
+    return create_article(shop.id, 'item-003', 8)
 
 
 @pytest.fixture(scope='module')
@@ -78,8 +78,8 @@ def orderer(orderer_user):
 def test_cancel_before_paid(
     order_email_service_mock,
     order_canceled_signal_send_mock,
-    storefront,
-    article1,
+    storefront: Storefront,
+    article1: Article,
     shop_order_admin,
     orderer_user,
     orderer,
@@ -138,8 +138,8 @@ def test_cancel_before_paid(
 def test_cancel_before_paid_without_sending_email(
     order_email_service_mock,
     order_canceled_signal_send_mock,
-    storefront,
-    article2,
+    storefront: Storefront,
+    article2: Article,
     shop_order_admin,
     orderer_user,
     orderer,
@@ -184,7 +184,7 @@ def test_cancel_before_paid_without_sending_email(
 def test_mark_order_as_paid(
     order_email_service_mock,
     order_paid_signal_send_mock,
-    storefront,
+    storefront: Storefront,
     shop_order_admin,
     orderer_user,
     orderer,
@@ -234,8 +234,8 @@ def test_cancel_after_paid(
     order_email_service_mock,
     order_paid_signal_send_mock,
     order_canceled_signal_send_mock,
-    storefront,
-    article3,
+    storefront: Storefront,
+    article3: Article,
     shop_order_admin,
     orderer_user,
     orderer,
@@ -296,21 +296,25 @@ def test_cancel_after_paid(
 # helpers
 
 
-def create_article(shop_id, item_number, total_quantity):
+def create_article(
+    shop_id: ShopID, item_number: str, total_quantity: int
+) -> Article:
     return _create_article(
         shop_id,
-        item_number=item_number,
+        item_number=ArticleNumber(item_number),
         description=item_number,
         total_quantity=total_quantity,
     )
 
 
-def get_article_quantity(article_id):
+def get_article_quantity(article_id: ArticleID) -> int:
     article = article_service.get_article(article_id)
     return article.quantity
 
 
-def place_order(storefront_id, orderer, quantified_articles):
+def place_order(
+    storefront_id, orderer, quantified_articles: Iterable[tuple[Article, int]]
+):
     cart = Cart()
 
     for article, quantity_to_order in quantified_articles:
@@ -321,14 +325,14 @@ def place_order(storefront_id, orderer, quantified_articles):
     return order
 
 
-def assert_payment_is_open(order):
+def assert_payment_is_open(order) -> None:
     assert order.payment_method is None  # default
     assert order.payment_state == PaymentState.open
     assert order.payment_state_updated_at is None
     assert order.payment_state_updated_by_id is None
 
 
-def assert_payment(order, method, state, updated_by_id):
+def assert_payment(order, method, state, updated_by_id) -> None:
     assert order.payment_method == method
     assert order.payment_state == state
     assert order.payment_state_updated_at is not None

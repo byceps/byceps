@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.shop.article import service as article_service
+from byceps.services.shop.article.transfer.models import Article
 
 from tests.helpers import generate_token
 from tests.integration.services.shop.helpers import (
@@ -15,11 +15,8 @@ from tests.integration.services.shop.helpers import (
 
 
 @pytest.fixture
-def article(shop):
-    article = create_article(shop.id, total_quantity=10)
-    article_id = article.id
-    yield article
-    article_service.delete_article(article_id)
+def article(shop) -> Article:
+    return create_article(shop.id, total_quantity=10)
 
 
 @pytest.fixture

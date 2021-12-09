@@ -3,42 +3,60 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from decimal import Decimal
+from typing import Iterable
 
 import pytest
 
-from byceps.services.shop.article import service as article_service
+from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
+from byceps.services.shop.shop.transfer.models import Shop
+from byceps.services.shop.storefront.transfer.models import (
+    Storefront,
+    StorefrontID,
+)
 
 from tests.integration.services.shop.helpers import (
     create_article as _create_article,
     create_orderer,
+    create_shop,
 )
 
 
-@pytest.fixture
-def article1(shop):
-    article = create_article(shop.id, 1, Decimal('49.95'))
-    article_id = article.id
-    yield article
-    article_service.delete_article(article_id)
+@pytest.fixture(scope='module')
+def shop(make_brand, make_email_config):
+    brand = make_brand()
+    email_config = make_email_config(
+        brand.id, sender_address='noreply@acmecon.test'
+    )
+
+    return create_shop(brand.id)
 
 
-@pytest.fixture
-def article2(shop):
-    article = create_article(shop.id, 2, Decimal('6.20'))
-    article_id = article.id
-    yield article
-    article_service.delete_article(article_id)
+@pytest.fixture(scope='module')
+def storefront(
+    shop: Shop, make_order_number_sequence, make_storefront
+) -> Storefront:
+    order_number_sequence = make_order_number_sequence(shop.id)
+
+    return make_storefront(shop.id, order_number_sequence.id)
 
 
-@pytest.fixture
-def article3(shop):
-    article = create_article(shop.id, 3, Decimal('12.53'))
-    article_id = article.id
-    yield article
-    article_service.delete_article(article_id)
+@pytest.fixture(scope='module')
+def article1(shop: Shop) -> Article:
+    return create_article(shop.id, 1, Decimal('49.95'))
+
+
+@pytest.fixture(scope='module')
+def article2(shop: Shop) -> Article:
+    return create_article(shop.id, 2, Decimal('6.20'))
+
+
+@pytest.fixture(scope='module')
+def article3(shop: Shop) -> Article:
+    return create_article(shop.id, 3, Decimal('12.53'))
 
 
 @pytest.fixture(scope='module')
@@ -47,7 +65,7 @@ def orderer(make_user):
     return create_orderer(user.id)
 
 
-def test_without_any_items(site_app, storefront, orderer):
+def test_without_any_items(site_app, storefront: Storefront, orderer):
     order = place_order(storefront.id, orderer, [])
 
     assert order.total_amount == Decimal('0.00')
@@ -55,10 +73,16 @@ def test_without_any_items(site_app, storefront, orderer):
     order_service.delete_order(order.id)
 
 
-def test_with_single_item(site_app, storefront, orderer, article1):
-    order = place_order(storefront.id, orderer, [
-        (article1, 1),
-    ])
+def test_with_single_item(
+    site_app, storefront: Storefront, orderer, article1: Article
+):
+    order = place_order(
+        storefront.id,
+        orderer,
+        [
+            (article1, 1),
+        ],
+    )
 
     assert order.total_amount == Decimal('49.95')
 
@@ -67,17 +91,21 @@ def test_with_single_item(site_app, storefront, orderer, article1):
 
 def test_with_multiple_items(
     site_app,
-    storefront,
+    storefront: Storefront,
     orderer,
-    article1,
-    article2,
-    article3,
+    article1: Article,
+    article2: Article,
+    article3: Article,
 ):
-    order = place_order(storefront.id, orderer, [
-        (article1, 3),
-        (article2, 1),
-        (article3, 4),
-    ])
+    order = place_order(
+        storefront.id,
+        orderer,
+        [
+            (article1, 3),
+            (article2, 1),
+            (article3, 4),
+        ],
+    )
 
     assert order.total_amount == Decimal('206.17')
 
@@ -87,8 +115,8 @@ def test_with_multiple_items(
 # helpers
 
 
-def create_article(shop_id, number, price):
-    item_number = f'LF-01-A{number:05d}'
+def create_article(shop_id, number, price) -> Article:
+    item_number = ArticleNumber(f'LF-01-A{number:05d}')
     description = f'Artikel #{number:d}'
 
     return _create_article(
@@ -100,7 +128,11 @@ def create_article(shop_id, number, price):
     )
 
 
-def place_order(storefront_id, orderer, articles):
+def place_order(
+    storefront_id: StorefrontID,
+    orderer,
+    articles: Iterable[tuple[Article, int]],
+):
     cart = Cart()
     for article, quantity in articles:
         cart.add_item(article, quantity)

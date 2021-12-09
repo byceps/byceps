@@ -9,10 +9,11 @@ from decimal import Decimal
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.shop.article import service as article_service
+from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models.order import Orderer
+from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront.transfer.models import Storefront
 
 from tests.helpers import login_user
@@ -28,55 +29,44 @@ def shop_order_admin(make_admin):
 
 
 @pytest.fixture
-def article_bungalow(shop):
-    article = create_article(
+def article_bungalow(shop: Shop) -> Article:
+    return create_article(
         shop.id,
         'LR-08-A00003',
         'LANresort 2015: Bungalow 4 Plätze',
         Decimal('355.00'),
         Decimal('0.07'),
     )
-    article_id = article.id
-
-    yield article
-
-    article_service.delete_article(article_id)
 
 
 @pytest.fixture
-def article_guest_fee(shop):
-    article = create_article(
+def article_guest_fee(shop: Shop) -> Article:
+    return create_article(
         shop.id,
         'LR-08-A00006',
         'Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
         Decimal('6.00'),
         Decimal('0.19'),
     )
-    article_id = article.id
-
-    yield article
-
-    article_service.delete_article(article_id)
 
 
 @pytest.fixture
-def article_table(shop):
-    article = create_article(
+def article_table(shop: Shop) -> Article:
+    return create_article(
         shop.id,
         'LR-08-A00002',
         'Tisch (zur Miete), 200 x 80 cm',
         Decimal('20.00'),
         Decimal('0.19'),
     )
-    article_id = article.id
-
-    yield article
-
-    article_service.delete_article(article_id)
 
 
 @pytest.fixture
-def cart(article_bungalow, article_guest_fee, article_table):
+def cart(
+    article_bungalow: Article,
+    article_guest_fee: Article,
+    article_table: Article,
+) -> Cart:
     cart = Cart()
 
     cart.add_item(article_bungalow, 1)
@@ -102,7 +92,9 @@ def orderer(make_user):
 
 
 @pytest.fixture
-def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
+def storefront(
+    shop: Shop, make_order_number_sequence, make_storefront
+) -> Storefront:
     order_number_sequence = make_order_number_sequence(
         shop.id, prefix='LR-08-B', value=26
     )
@@ -111,7 +103,7 @@ def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
 
 
 @pytest.fixture
-def order(storefront, cart, orderer):
+def order(storefront: Storefront, cart: Cart, orderer):
     created_at = datetime(2015, 2, 26, 12, 26, 24)  # UTC
 
     order, _ = order_service.place_order(
@@ -159,7 +151,13 @@ def test_serialize_unknown_order(admin_app, shop_order_admin, make_client):
 # helpers
 
 
-def create_article(shop_id, item_number, description, price, tax_rate):
+def create_article(
+    shop_id: ShopID,
+    item_number: str,
+    description: str,
+    price: Decimal,
+    tax_rate: Decimal,
+) -> Article:
     return _create_article(
         shop_id,
         item_number=item_number,

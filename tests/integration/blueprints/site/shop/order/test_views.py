@@ -3,15 +3,23 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from decimal import Decimal
 from unittest.mock import patch
 
 import pytest
 
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article import service as article_service
+from byceps.services.shop.article.transfer.models import (
+    Article,
+    ArticleID,
+    ArticleNumber,
+)
 from byceps.services.shop.order import service as order_service
+from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.site import service as site_service
+from byceps.services.site.transfer.models import Site, SiteID
 from byceps.services.snippet import service as snippet_service
 
 from tests.helpers import create_site, generate_token, http_client, login_user
@@ -33,7 +41,7 @@ COMMON_FORM_DATA = {
 
 
 @pytest.fixture(scope='module')
-def shop(make_brand, admin_user):
+def shop(make_brand, admin_user) -> Shop:
     brand = make_brand()
     shop = create_shop(brand.id)
     snippet_id = create_shop_fragment(
@@ -46,7 +54,9 @@ def shop(make_brand, admin_user):
 
 
 @pytest.fixture(scope='module')
-def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
+def storefront(
+    shop: Shop, make_order_number_sequence, make_storefront
+) -> Storefront:
     order_number_sequence = make_order_number_sequence(
         shop.id, prefix='ORDR-23-B', value=4
     )
@@ -55,28 +65,27 @@ def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
 
 
 @pytest.fixture(scope='module')
-def site(make_brand, storefront):
+def site(make_brand, storefront: Storefront) -> Site:
     brand = make_brand()
     site = create_site(
-        'acmecon-2014-shop-website', brand.id, storefront_id=storefront.id
+        SiteID('acmecon-2014-shop-website'),
+        brand.id,
+        storefront_id=storefront.id,
     )
     yield site
     site_service.delete_site(site.id)
 
 
 @pytest.fixture(scope='module')
-def site_app(site, make_site_app):
+def site_app(site: Site, make_site_app):
     app = make_site_app(SITE_ID=site.id)
     with app.app_context():
         yield app
 
 
 @pytest.fixture
-def article(admin_app, shop):
-    article = create_article(shop.id, total_quantity=5)
-    article_id = article.id
-    yield article
-    article_service.delete_article(article_id)
+def article(admin_app, shop: Shop) -> Article:
+    return create_article(shop.id, total_quantity=5)
 
 
 @pytest.fixture(scope='module')
@@ -91,10 +100,10 @@ def test_order(
     order_email_service_mock,
     order_placed_mock,
     site_app,
-    site,
+    site: Site,
     admin_user,
     orderer,
-    article,
+    article: Article,
 ):
     assert get_article_quantity(article.id) == 5
 
@@ -154,10 +163,10 @@ def test_order_single(
     order_email_service_mock,
     order_placed_mock,
     site_app,
-    site,
+    site: Site,
     admin_user,
     orderer,
-    article,
+    article: Article,
 ):
     assert get_article_quantity(article.id) == 5
 
@@ -213,7 +222,7 @@ def test_order_single(
 # helpers
 
 
-def get_article_quantity(article_id):
+def get_article_quantity(article_id: ArticleID) -> int:
     article = article_service.get_article(article_id)
     return article.quantity
 
@@ -224,19 +233,23 @@ def get_single_order_by(user_id):
     return orders[0]
 
 
-def assert_response_headers(response, order_detail_page_url):
+def assert_response_headers(response, order_detail_page_url: str) -> None:
     assert response.status_code == 302
     assert response.headers.get('Location') == order_detail_page_url
 
 
-def assert_order(order, order_number, line_item_quantity):
+def assert_order(order, order_number, line_item_quantity: int) -> None:
     assert order.order_number == order_number
     assert len(order.line_items) == line_item_quantity
 
 
 def assert_line_item(
-    line_item, article_item_number, unit_price, tax_rate, quantity
-):
+    line_item,
+    article_item_number: ArticleNumber,
+    unit_price: Decimal,
+    tax_rate: Decimal,
+    quantity: int,
+) -> None:
     assert line_item.article_number == article_item_number
     assert line_item.unit_price == unit_price
     assert line_item.tax_rate == tax_rate

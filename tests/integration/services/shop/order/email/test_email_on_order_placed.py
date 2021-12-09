@@ -9,10 +9,10 @@ from unittest.mock import patch
 
 import pytest
 
-from byceps.services.shop.article import service as article_service
+from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.shop.transfer.models import Shop
+from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.snippet import service as snippet_service
 
@@ -45,42 +45,32 @@ def storefront(
 
 
 @pytest.fixture
-def article1(shop: Shop):
-    article = create_article(
+def article1(shop: Shop) -> Article:
+    return create_article(
         shop.id,
         'AB-11-A00003',
         'Einzelticket, Kategorie Loge',
         Decimal('99.00'),
         123,
     )
-    article_id = article.id
-
-    yield article
-
-    article_service.delete_article(article_id)
 
 
 @pytest.fixture
-def article2(shop: Shop):
-    article = create_article(
+def article2(shop: Shop) -> Article:
+    return create_article(
         shop.id,
         'AB-11-A00007',
         'T-Shirt, Größe L',
         Decimal('14.95'),
         50,
     )
-    article_id = article.id
-
-    yield article
-
-    article_service.delete_article(article_id)
 
 
 @pytest.fixture
 def order(
     storefront,
-    article1,
-    article2,
+    article1: Article,
+    article2: Article,
     customer,
     email_payment_instructions_snippet_id,
     email_footer_snippet_id,
@@ -166,7 +156,13 @@ E-Mail: noreply@acmecon.test
 # helpers
 
 
-def create_article(shop_id, item_number, description, price, total_quantity):
+def create_article(
+    shop_id: ShopID,
+    item_number: str,
+    description: str,
+    price: Decimal,
+    total_quantity: int,
+) -> Article:
     return _create_article(
         shop_id,
         item_number=item_number,
