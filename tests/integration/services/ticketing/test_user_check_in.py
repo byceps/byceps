@@ -7,7 +7,6 @@ import pytest
 from pytest import raises
 
 from byceps.database import db
-from byceps.services.party import service as party_service
 from byceps.events.ticketing import TicketCheckedIn
 from byceps.services.ticketing import (
     event_service,
@@ -87,9 +86,6 @@ def test_check_in_user_with_ticket_for_another_party(
 
     with raises(TicketBelongsToDifferentParty):
         check_in_user(other_party.id, ticket.id, ticketing_admin.id)
-
-    # Clean up.
-    party_service.delete_party(other_party.id)
 
 
 def test_check_in_user_with_ticket_without_assigned_user(

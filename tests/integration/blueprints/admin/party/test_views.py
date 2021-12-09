@@ -59,9 +59,6 @@ def test_create(party_admin_client, brand):
     assert party.ends_at == datetime(2020, 9, 20, 11, 0)  # UTC
     assert party.max_ticket_quantity == max_ticket_quantity
 
-    # Clean up.
-    party_service.delete_party(party_id)
-
 
 def test_update_form(party_admin_client, party):
     url = f'/admin/parties/parties/{party.id}/update'

@@ -4,9 +4,9 @@
 """
 
 from byceps.services.orga_team import service as orga_team_service
-from byceps.services.party import service as party_service
+from byceps.services.party.transfer.models import Party, PartyID
 
-from tests.helpers import create_party
+from tests.helpers import create_party as _create_party, generate_token
 
 
 def test_teams_for_party(orga_team_admin_client, party):
@@ -41,8 +41,8 @@ def test_team_create_and_delete(orga_team_admin_client, party):
 
 
 def test_teams_copy_form_with_target_party_teams(orga_team_admin_client, brand):
-    source_party = create_party(brand.id, party_id='source', title='Source')
-    target_party = create_party(brand.id, party_id='target', title='Target')
+    source_party = create_source_party(brand.id)
+    target_party = create_target_party(brand.id)
 
     team = orga_team_service.create_team(target_party.id, 'Security')
 
@@ -52,24 +52,19 @@ def test_teams_copy_form_with_target_party_teams(orga_team_admin_client, brand):
 
     # Clean up.
     orga_team_service.delete_team(team.id)
-    for party in source_party, target_party:
-        party_service.delete_party(party.id)
 
 
 def test_teams_copy_form_without_source_teams(orga_team_admin_client, brand):
-    target_party = create_party(brand.id, party_id='target', title='Target')
+    target_party = create_target_party(brand.id)
 
     url = f'/admin/orga_teams/teams/{target_party.id}/copy'
     response = orga_team_admin_client.get(url)
     assert response.status_code == 302
 
-    # Clean up.
-    party_service.delete_party(target_party.id)
-
 
 def test_teams_copy_form_with_source_teams(orga_team_admin_client, brand):
-    source_party = create_party(brand.id, party_id='source', title='Source')
-    target_party = create_party(brand.id, party_id='target', title='Target')
+    source_party = create_source_party(brand.id)
+    target_party = create_target_party(brand.id)
 
     team = orga_team_service.create_team(source_party.id, 'Tech')
 
@@ -79,13 +74,11 @@ def test_teams_copy_form_with_source_teams(orga_team_admin_client, brand):
 
     # Clean up.
     orga_team_service.delete_team(team.id)
-    for party in source_party, target_party:
-        party_service.delete_party(party.id)
 
 
 def test_teams_copy(orga_team_admin_client, brand):
-    source_party = create_party(brand.id, party_id='source', title='Source')
-    target_party = create_party(brand.id, party_id='target', title='Target')
+    source_party = create_source_party(brand.id)
+    target_party = create_target_party(brand.id)
 
     team1 = orga_team_service.create_team(source_party.id, 'Support')
     team2 = orga_team_service.create_team(source_party.id, 'Tech')
@@ -105,5 +98,19 @@ def test_teams_copy(orga_team_admin_client, brand):
     new_teams = orga_team_service.get_teams_for_party(target_party.id)
     for team in {team1, team2}.union(new_teams):
         orga_team_service.delete_team(team.id)
-    for party in source_party, target_party:
-        party_service.delete_party(party.id)
+
+
+def create_source_party(brand_id) -> Party:
+    return _create_party(
+        brand_id,
+        party_id=PartyID(f'source-{generate_token()}'),
+        title=f'Source-{generate_token()}',
+    )
+
+
+def create_target_party(brand_id) -> Party:
+    return _create_party(
+        brand_id,
+        party_id=PartyID(f'target-{generate_token()}'),
+        title=f'Target-{generate_token()}',
+    )
