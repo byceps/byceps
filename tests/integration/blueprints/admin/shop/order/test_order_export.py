@@ -14,7 +14,10 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.models.order import Orderer
 from byceps.services.shop.storefront import service as storefront_service
-from byceps.services.shop.storefront.transfer.models import StorefrontID
+from byceps.services.shop.storefront.transfer.models import (
+    Storefront,
+    StorefrontID,
+)
 
 from tests.helpers import login_user
 from tests.integration.services.shop.helpers import (
@@ -103,19 +106,15 @@ def orderer(make_user):
 
 
 @pytest.fixture
-def storefront(shop, make_order_number_sequence):
+def storefront(shop, make_order_number_sequence) -> Storefront:
     storefront_id = StorefrontID(f'{shop.id}-storefront')
     order_number_sequence = make_order_number_sequence(
         shop.id, prefix='LR-08-B', value=26
     )
 
-    storefront = storefront_service.create_storefront(
+    return storefront_service.create_storefront(
         storefront_id, shop.id, order_number_sequence.id, closed=False
     )
-
-    yield storefront
-
-    storefront_service.delete_storefront(storefront.id)
 
 
 @pytest.fixture

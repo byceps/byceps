@@ -7,7 +7,10 @@ import pytest
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.storefront import service as storefront_service
-from byceps.services.shop.storefront.transfer.models import StorefrontID
+from byceps.services.shop.storefront.transfer.models import (
+    Storefront,
+    StorefrontID,
+)
 
 from tests.integration.services.shop.helpers import create_shop
 
@@ -23,17 +26,13 @@ def shop(make_brand, make_email_config):
 
 
 @pytest.fixture
-def storefront(shop, make_order_number_sequence):
+def storefront(shop, make_order_number_sequence) -> Storefront:
     storefront_id = StorefrontID(f'{shop.id}-storefront')
     order_number_sequence = make_order_number_sequence(shop.id)
 
-    storefront = storefront_service.create_storefront(
+    return storefront_service.create_storefront(
         storefront_id, shop.id, order_number_sequence.id, closed=False
     )
-
-    yield storefront
-
-    storefront_service.delete_storefront(storefront.id)
 
 
 @pytest.fixture

@@ -5,7 +5,6 @@
 
 from datetime import datetime
 from decimal import Decimal
-from typing import Iterator
 from unittest.mock import patch
 
 import pytest
@@ -14,7 +13,6 @@ from byceps.services.shop.article import service as article_service
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.shop.transfer.models import Shop
-from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.snippet import service as snippet_service
 
@@ -38,15 +36,12 @@ def customer(make_user):
 @pytest.fixture
 def storefront(
     shop: Shop, make_order_number_sequence, make_storefront
-) -> Iterator[Storefront]:
+) -> Storefront:
     order_number_sequence = make_order_number_sequence(
         shop.id, prefix='AB-11-B', value=252
     )
-    storefront = make_storefront(shop.id, order_number_sequence.id)
 
-    yield storefront
-
-    storefront_service.delete_storefront(storefront.id)
+    return make_storefront(shop.id, order_number_sequence.id)
 
 
 @pytest.fixture

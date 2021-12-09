@@ -3,7 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterator
 from unittest.mock import patch
 
 import pytest
@@ -51,19 +50,15 @@ def shop(make_brand, admin_user):
 
 
 @pytest.fixture(scope='module')
-def storefront(shop, make_order_number_sequence) -> Iterator[Storefront]:
+def storefront(shop, make_order_number_sequence) -> Storefront:
     storefront_id = StorefrontID(f'{shop.id}-storefront')
     order_number_sequence = make_order_number_sequence(
         shop.id, prefix='ORDR-23-B', value=4
     )
 
-    storefront = storefront_service.create_storefront(
+    return storefront_service.create_storefront(
         storefront_id, shop.id, order_number_sequence.id, closed=False
     )
-
-    yield storefront
-
-    storefront_service.delete_storefront(storefront.id)
 
 
 @pytest.fixture(scope='module')

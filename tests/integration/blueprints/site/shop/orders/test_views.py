@@ -3,8 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterator
-
 import pytest
 
 from byceps.services.shop.cart.models import Cart
@@ -45,31 +43,23 @@ def shop2(admin_app, make_brand):
 
 
 @pytest.fixture
-def storefront1(shop1, make_order_number_sequence) -> Iterator[Storefront]:
+def storefront1(shop1, make_order_number_sequence) -> Storefront:
     storefront_id = StorefrontID(f'{shop1.id}-storefront')
     order_number_sequence = make_order_number_sequence(shop1.id)
 
-    storefront = storefront_service.create_storefront(
+    return storefront_service.create_storefront(
         storefront_id, shop1.id, order_number_sequence.id, closed=False
     )
 
-    yield storefront
-
-    storefront_service.delete_storefront(storefront.id)
-
 
 @pytest.fixture
-def storefront2(shop2, make_order_number_sequence) -> Iterator[Storefront]:
+def storefront2(shop2, make_order_number_sequence) -> Storefront:
     storefront_id = StorefrontID(f'{shop2.id}-storefront')
     order_number_sequence = make_order_number_sequence(shop2.id)
 
-    storefront = storefront_service.create_storefront(
+    return storefront_service.create_storefront(
         storefront_id, shop2.id, order_number_sequence.id, closed=False
     )
-
-    yield storefront
-
-    storefront_service.delete_storefront(storefront.id)
 
 
 @pytest.fixture
