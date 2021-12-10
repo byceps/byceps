@@ -16,7 +16,7 @@ from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List as NewsletterList
 from ....services.party import service as party_service
 from ....services.party.transfer.models import Party
-from ....services.shop.order import event_service as order_event_service
+from ....services.shop.order import log_service as order_log_service
 from ....services.shop.order import service as order_service
 from ....services.site import service as site_service
 from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
@@ -180,16 +180,16 @@ def _get_order_events(initiator_id: UserID) -> Iterator[DbUserEvent]:
             'order-placed',
         ]
     )
-    events = order_event_service.get_events_of_types_by_initiator(
+    log_entries = order_log_service.get_entries_of_types_by_initiator(
         event_types, initiator_id
     )
 
-    order_ids = frozenset([event.order_id for event in events])
+    order_ids = frozenset([entry.order_id for entry in log_entries])
     orders = order_service.get_orders(order_ids)
     orders_by_id = {order.id: order for order in orders}
 
-    for event in events:
-        order = orders_by_id[event.order_id]
+    for entry in log_entries:
+        order = orders_by_id[entry.order_id]
         data = {
             'initiator_id': str(initiator_id),
             'order_id': str(order.id),
@@ -197,7 +197,7 @@ def _get_order_events(initiator_id: UserID) -> Iterator[DbUserEvent]:
         }
 
         yield DbUserEvent(
-            event.occurred_at, event.event_type, initiator_id, data
+            entry.occurred_at, entry.event_type, initiator_id, data
         )
 
 

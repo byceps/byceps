@@ -18,7 +18,7 @@ from ....ticketing import (
 
 from ...article.transfer.models import ArticleNumber
 
-from .. import event_service
+from .. import log_service
 from ..transfer.models.action import ActionParameters
 from ..transfer.models.order import Order, OrderID
 
@@ -48,7 +48,7 @@ def create_tickets(
         used_by_id=owned_by_id,
     )
 
-    _create_order_events(order.id, tickets)
+    _create_order_log_entries(order.id, tickets)
 
     tickets_sold_event = create_tickets_sold_event(
         order.id, initiator_id, category_id, owned_by_id, quantity
@@ -56,7 +56,9 @@ def create_tickets(
     send_tickets_sold_event(tickets_sold_event)
 
 
-def _create_order_events(order_id: OrderID, tickets: Sequence[Ticket]) -> None:
+def _create_order_log_entries(
+    order_id: OrderID, tickets: Sequence[Ticket]
+) -> None:
     event_type = 'ticket-created'
 
     datas = [
@@ -69,4 +71,4 @@ def _create_order_events(order_id: OrderID, tickets: Sequence[Ticket]) -> None:
         for ticket in tickets
     ]
 
-    event_service.create_events(event_type, order_id, datas)
+    log_service.create_entries(event_type, order_id, datas)

@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.dbmodels.order_event
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.dbmodels.log
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,14 +11,14 @@ from datetime import datetime
 from .....database import db, generate_uuid
 from .....util.instances import ReprBuilder
 
-from ..transfer.models.event import OrderEventData
+from ..transfer.models.log import OrderLogEntryData
 from ..transfer.models.order import OrderID
 
 
-class OrderEvent(db.Model):
-    """An event that refers to an order."""
+class OrderLogEntry(db.Model):
+    """A log entry regarding an order."""
 
-    __tablename__ = 'shop_order_events'
+    __tablename__ = 'shop_order_log_entries'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     occurred_at = db.Column(db.DateTime, nullable=False)
@@ -31,7 +31,7 @@ class OrderEvent(db.Model):
         occurred_at: datetime,
         event_type: str,
         order_id: OrderID,
-        data: OrderEventData,
+        data: OrderLogEntryData,
     ) -> None:
         self.occurred_at = occurred_at
         self.event_type = event_type

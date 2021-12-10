@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.transfer.models.event
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.transfer.models.log
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -14,13 +14,13 @@ from uuid import UUID
 from .order import OrderID
 
 
-OrderEventData = Dict[str, Any]
+OrderLogEntryData = Dict[str, Any]
 
 
 @dataclass(frozen=True)
-class OrderEvent:
+class OrderLogEntry:
     id: UUID
     occurred_at: datetime
     event_type: str
     order_id: OrderID
-    data: OrderEventData
+    data: OrderLogEntryData

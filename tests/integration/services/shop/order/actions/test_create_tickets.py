@@ -10,7 +10,7 @@ from pytest import raises
 
 from byceps.events.ticketing import TicketsSold
 from byceps.services.shop.order import action_service, action_registry_service
-from byceps.services.shop.order import event_service as order_event_service
+from byceps.services.shop.order import log_service as order_log_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.ticket_creation_service import (
@@ -71,11 +71,11 @@ def test_create_tickets(
         assert ticket.owned_by_id == orderer.user_id
         assert ticket.used_by_id == orderer.user_id
 
-    events = order_event_service.get_events_for_order(order.id)
-    ticket_created_events = [
-        event for event in events if event.event_type == 'ticket-created'
+    log_entries = order_log_service.get_entries_for_order(order.id)
+    ticket_created_log_entries = [
+        entry for entry in log_entries if entry.event_type == 'ticket-created'
     ]
-    assert len(ticket_created_events) == ticket_quantity
+    assert len(ticket_created_log_entries) == ticket_quantity
 
     tickets_sold_event = TicketsSold(
         occurred_at=shop_order_paid_event.occurred_at,

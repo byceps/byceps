@@ -13,7 +13,7 @@ from ....user_badge.transfer.models import BadgeAwarding
 
 from ...article.transfer.models import ArticleNumber
 
-from .. import event_service
+from .. import log_service
 from ..transfer.models.action import ActionParameters
 from ..transfer.models.order import Order, OrderID
 
@@ -32,10 +32,10 @@ def award_badge(
     for _ in range(quantity):
         awarding, _ = awarding_service.award_badge_to_user(badge.id, user_id)
 
-        _create_order_event(order.id, awarding)
+        _create_order_log_entry(order.id, awarding)
 
 
-def _create_order_event(order_id: OrderID, awarding: BadgeAwarding) -> None:
+def _create_order_log_entry(order_id: OrderID, awarding: BadgeAwarding) -> None:
     event_type = 'badge-awarded'
     data = {
         'awarding_id': str(awarding.id),
@@ -43,4 +43,4 @@ def _create_order_event(order_id: OrderID, awarding: BadgeAwarding) -> None:
         'recipient_id': str(awarding.user_id),
     }
 
-    event_service.create_event(event_type, order_id, data)
+    log_service.create_entry(event_type, order_id, data)

@@ -11,7 +11,7 @@ from flask_babel import gettext
 
 from .....services.brand import service as brand_service
 from .....services.shop.order import (
-    event_service as order_event_service,
+    log_service as order_log_service,
     sequence_service as order_sequence_service,
     service as order_service,
 )
@@ -113,7 +113,7 @@ def view(order_id):
 
     articles_by_item_number = service.get_articles_by_item_number(order)
 
-    events = service.get_enriched_events_for_order(order.id)
+    log_entries = service.get_enriched_log_entry_data_for_order(order.id)
 
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
 
@@ -123,7 +123,7 @@ def view(order_id):
         'order': order,
         'placed_by': placed_by,
         'articles_by_item_number': articles_by_item_number,
-        'events': events,
+        'log_entries': log_entries,
         'PaymentState': PaymentState,
         'tickets': tickets,
         'render_order_payment_method': _find_order_payment_method_label,
@@ -419,7 +419,7 @@ def resend_email_for_incoming_order_to_orderer(order_id):
 
     order_email_service.send_email_for_incoming_order_to_orderer(order.id)
 
-    order_event_service.create_event(
+    order_log_service.create_entry(
         'order-placed-confirmation-email-resent',
         order.id,
         {

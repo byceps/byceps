@@ -16,7 +16,7 @@ from ....ticketing import (
 
 from ...article.transfer.models import ArticleNumber
 
-from .. import event_service
+from .. import log_service
 from ..transfer.models.action import ActionParameters
 from ..transfer.models.order import Order, OrderID
 
@@ -48,7 +48,7 @@ def create_ticket_bundles(
             used_by_id=owned_by_id,
         )
 
-        _create_order_event(order.id, bundle)
+        _create_order_log_entry(order.id, bundle)
 
     tickets_sold_event = create_tickets_sold_event(
         order.id, initiator_id, category_id, owned_by_id, ticket_quantity
@@ -56,7 +56,9 @@ def create_ticket_bundles(
     send_tickets_sold_event(tickets_sold_event)
 
 
-def _create_order_event(order_id: OrderID, ticket_bundle: TicketBundle) -> None:
+def _create_order_log_entry(
+    order_id: OrderID, ticket_bundle: TicketBundle
+) -> None:
     event_type = 'ticket-bundle-created'
 
     data = {
@@ -66,4 +68,4 @@ def _create_order_event(order_id: OrderID, ticket_bundle: TicketBundle) -> None:
         'ticket_bundle_owner_id': str(ticket_bundle.owned_by_id),
     }
 
-    event_service.create_event(event_type, order_id, data)
+    log_service.create_entry(event_type, order_id, data)

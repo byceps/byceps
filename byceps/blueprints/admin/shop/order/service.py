@@ -13,8 +13,11 @@ from typing import Iterable, Iterator, Sequence
 
 from .....services.shop.article import service as article_service
 from .....services.shop.article.transfer.models import Article, ArticleNumber
-from .....services.shop.order import event_service as order_event_service
-from .....services.shop.order.transfer.models.event import OrderEvent, OrderEventData
+from .....services.shop.order import log_service as order_log_service
+from .....services.shop.order.transfer.models.log import (
+    OrderLogEntry,
+    OrderLogEntryData,
+)
 from .....services.shop.order.transfer.models.order import Order, OrderID
 from .....services.ticketing import category_service as ticket_category_service
 from .....services.user.dbmodels.user import User as DbUser
@@ -50,69 +53,77 @@ def get_articles_by_item_number(order: Order) -> dict[ArticleNumber, Article]:
     return {article.item_number: article for article in articles}
 
 
-def get_enriched_events_for_order(order_id: OrderID) -> list[OrderEventData]:
-    events = order_event_service.get_events_for_order(order_id)
-    return list(enrich_events(events))
+def get_enriched_log_entry_data_for_order(
+    order_id: OrderID,
+) -> list[OrderLogEntryData]:
+    log_entries = order_log_service.get_entries_for_order(order_id)
+    return list(_enrich_log_entry_data(log_entries))
 
 
-def enrich_events(events: Iterable[OrderEvent]) -> Iterator[OrderEventData]:
+def _enrich_log_entry_data(
+    log_entries: Iterable[OrderLogEntry],
+) -> Iterator[OrderLogEntryData]:
     user_ids = {
-        event.data['initiator_id']
-        for event in events
-        if 'initiator_id' in event.data
+        entry.data['initiator_id']
+        for entry in log_entries
+        if 'initiator_id' in entry.data
     }
     users = user_service.get_users(user_ids, include_avatars=True)
     users_by_id = {str(user.id): user for user in users}
 
-    for event in events:
+    for entry in log_entries:
         data = {
-            'event': event.event_type,
-            'occurred_at': event.occurred_at,
-            'data': event.data,
+            'event_type': entry.event_type,
+            'occurred_at': entry.occurred_at,
+            'data': entry.data,
         }
 
-        additional_data = _get_additional_data(event, users_by_id)
+        additional_data = _get_additional_data(entry, users_by_id)
         data.update(additional_data)
 
         yield data
 
 
 def _get_additional_data(
-    event: OrderEvent, users_by_id: dict[str, User]
-) -> OrderEventData:
-    if event.event_type == 'badge-awarded':
-        return _get_additional_data_for_badge_awarded(event)
-    elif event.event_type == 'order-note-added':
-        return _get_additional_data_for_order_note_added(event)
-    elif event.event_type == 'ticket-bundle-created':
-        return _get_additional_data_for_ticket_bundle_created(event)
-    elif event.event_type == 'ticket-bundle-revoked':
+    log_entry: OrderLogEntry, users_by_id: dict[str, User]
+) -> OrderLogEntryData:
+    if log_entry.event_type == 'badge-awarded':
+        return _get_additional_data_for_badge_awarded(log_entry)
+    elif log_entry.event_type == 'order-note-added':
+        return _get_additional_data_for_order_note_added(log_entry)
+    elif log_entry.event_type == 'ticket-bundle-created':
+        return _get_additional_data_for_ticket_bundle_created(log_entry)
+    elif log_entry.event_type == 'ticket-bundle-revoked':
         return _get_additional_data_for_ticket_bundle_revoked(
-            event, users_by_id
+            log_entry, users_by_id
         )
-    elif event.event_type == 'ticket-created':
-        return _get_additional_data_for_ticket_created(event)
-    elif event.event_type == 'ticket-revoked':
-        return _get_additional_data_for_ticket_revoked(event, users_by_id)
+    elif log_entry.event_type == 'ticket-created':
+        return _get_additional_data_for_ticket_created(log_entry)
+    elif log_entry.event_type == 'ticket-revoked':
+        return _get_additional_data_for_ticket_revoked(log_entry, users_by_id)
     else:
-        return _get_additional_data_for_standard_event(event, users_by_id)
+        return _get_additional_data_for_standard_log_entry(
+            log_entry, users_by_id
+        )
 
 
-def _get_additional_data_for_standard_event(
-    event: OrderEvent, users_by_id: dict[str, User]
-) -> OrderEventData:
-    initiator_id = event.data['initiator_id']
+def _get_additional_data_for_standard_log_entry(
+    log_entry: OrderLogEntry, users_by_id: dict[str, User]
+) -> OrderLogEntryData:
+    initiator_id = log_entry.data['initiator_id']
 
     return {
         'initiator': users_by_id[initiator_id],
     }
 
 
-def _get_additional_data_for_badge_awarded(event: OrderEvent) -> OrderEventData:
-    badge_id = event.data['badge_id']
+def _get_additional_data_for_badge_awarded(
+    log_entry: OrderLogEntry,
+) -> OrderLogEntryData:
+    badge_id = log_entry.data['badge_id']
     badge = user_badge_service.get_badge(badge_id)
 
-    recipient_id = event.data['recipient_id']
+    recipient_id = log_entry.data['recipient_id']
     recipient = user_service.get_user(recipient_id, include_avatar=True)
 
     return {
@@ -122,9 +133,9 @@ def _get_additional_data_for_badge_awarded(event: OrderEvent) -> OrderEventData:
 
 
 def _get_additional_data_for_order_note_added(
-    event: OrderEvent,
-) -> OrderEventData:
-    author_id = event.data['author_id']
+    log_entry: OrderLogEntry,
+) -> OrderLogEntryData:
+    author_id = log_entry.data['author_id']
     author = user_service.get_user(author_id, include_avatar=True)
 
     return {
@@ -133,12 +144,12 @@ def _get_additional_data_for_order_note_added(
 
 
 def _get_additional_data_for_ticket_bundle_created(
-    event: OrderEvent,
-) -> OrderEventData:
-    bundle_id = event.data['ticket_bundle_id']
-    category_id = event.data['ticket_bundle_category_id']
-    ticket_quantity = event.data['ticket_bundle_ticket_quantity']
-    owner_id = event.data['ticket_bundle_owner_id']
+    log_entry: OrderLogEntry,
+) -> OrderLogEntryData:
+    bundle_id = log_entry.data['ticket_bundle_id']
+    category_id = log_entry.data['ticket_bundle_category_id']
+    ticket_quantity = log_entry.data['ticket_bundle_ticket_quantity']
+    owner_id = log_entry.data['ticket_bundle_owner_id']
 
     category = ticket_category_service.find_category(category_id)
     category_title = category.title if (category is not None) else None
@@ -151,15 +162,15 @@ def _get_additional_data_for_ticket_bundle_created(
 
 
 def _get_additional_data_for_ticket_bundle_revoked(
-    event: OrderEvent, users_by_id: dict[str, User]
-) -> OrderEventData:
-    bundle_id = event.data['ticket_bundle_id']
+    log_entry: OrderLogEntry, users_by_id: dict[str, User]
+) -> OrderLogEntryData:
+    bundle_id = log_entry.data['ticket_bundle_id']
 
     data = {
         'bundle_id': bundle_id,
     }
 
-    initiator_id = event.data.get('initiator_id')
+    initiator_id = log_entry.data.get('initiator_id')
     if initiator_id:
         data['initiator'] = users_by_id[initiator_id]
 
@@ -167,12 +178,12 @@ def _get_additional_data_for_ticket_bundle_revoked(
 
 
 def _get_additional_data_for_ticket_created(
-    event: OrderEvent,
-) -> OrderEventData:
-    ticket_id = event.data['ticket_id']
-    ticket_code = event.data['ticket_code']
-    category_id = event.data['ticket_category_id']
-    owner_id = event.data['ticket_owner_id']
+    log_entry: OrderLogEntry,
+) -> OrderLogEntryData:
+    ticket_id = log_entry.data['ticket_id']
+    ticket_code = log_entry.data['ticket_code']
+    category_id = log_entry.data['ticket_category_id']
+    owner_id = log_entry.data['ticket_owner_id']
 
     return {
         'ticket_id': ticket_id,
@@ -181,16 +192,16 @@ def _get_additional_data_for_ticket_created(
 
 
 def _get_additional_data_for_ticket_revoked(
-    event: OrderEvent, users_by_id: dict[str, User]
-) -> OrderEventData:
-    ticket_id = event.data['ticket_id']
-    ticket_code = event.data['ticket_code']
+    log_entry: OrderLogEntry, users_by_id: dict[str, User]
+) -> OrderLogEntryData:
+    ticket_id = log_entry.data['ticket_id']
+    ticket_code = log_entry.data['ticket_code']
 
     data = {
         'ticket_code': ticket_code,
     }
 
-    initiator_id = event.data.get('initiator_id')
+    initiator_id = log_entry.data.get('initiator_id')
     if initiator_id:
         data['initiator'] = users_by_id[initiator_id]
 

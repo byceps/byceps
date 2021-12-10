@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.shop.order import action_service, action_registry_service
-from byceps.services.shop.order import event_service as order_event_service
+from byceps.services.shop.order import log_service as order_log_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.ticketing import ticket_service, ticket_bundle_service
 
@@ -67,13 +67,13 @@ def test_create_ticket_bundles(
         assert ticket.owned_by_id == orderer.user_id
         assert ticket.used_by_id == orderer.user_id
 
-    events = order_event_service.get_events_for_order(order.id)
-    ticket_bundle_created_events = [
-        event
-        for event in events
-        if event.event_type == 'ticket-bundle-created'
+    log_entries = order_log_service.get_entries_for_order(order.id)
+    ticket_bundle_created_log_entries = [
+        entry
+        for entry in log_entries
+        if entry.event_type == 'ticket-bundle-created'
     ]
-    assert len(ticket_bundle_created_events) == bundle_quantity
+    assert len(ticket_bundle_created_log_entries) == bundle_quantity
 
     tear_down_bundles(tickets_after_paid)
 

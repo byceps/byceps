@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.shop.order import event_service, service as order_service
+from byceps.services.shop.order import log_service, service as order_service
 from byceps.services.shop.order.transfer.models.order import PaymentState
 from byceps.util.iterables import find
 
@@ -41,8 +41,8 @@ def test_mark_order_as_paid(order, admin_user):
     assert order_after.is_paid
 
 
-def test_additional_event_data(order, admin_user):
-    additional_event_data = {
+def test_additional_log_entry_data(order, admin_user):
+    additional_log_entry_data = {
         # attempts to override internal properties
         'initiator_id': 'fake-initiator-id',
         'former_payment_state': 'random',
@@ -51,21 +51,21 @@ def test_additional_event_data(order, admin_user):
         'external_payment_id': '555-gimme-da-moneys',
     }
 
-    paid_event = order_service.mark_order_as_paid(
+    order_service.mark_order_as_paid(
         order.id,
         'cash',
         admin_user.id,
-        additional_event_data=additional_event_data,
+        additional_log_entry_data=additional_log_entry_data,
     )
 
-    events = event_service.get_events_for_order(order.id)
-    paid_event = find(events, lambda e: e.event_type == 'order-paid')
+    log_entries = log_service.get_entries_for_order(order.id)
+    paid_log_entry = find(log_entries, lambda e: e.event_type == 'order-paid')
 
-    # Internal properties must not be overridden by additional event
+    # Internal properties must not be overridden by additional log entry
     # data passed to the service.
-    assert paid_event.data['initiator_id'] == str(admin_user.id)
-    assert paid_event.data['former_payment_state'] == 'open'
-    assert paid_event.data['payment_method'] == 'cash'
+    assert paid_log_entry.data['initiator_id'] == str(admin_user.id)
+    assert paid_log_entry.data['former_payment_state'] == 'open'
+    assert paid_log_entry.data['payment_method'] == 'cash'
 
     # Other properties get passed unchanged.
-    assert paid_event.data['external_payment_id'] == '555-gimme-da-moneys'
+    assert paid_log_entry.data['external_payment_id'] == '555-gimme-da-moneys'

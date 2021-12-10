@@ -30,10 +30,10 @@ from ..storefront import service as storefront_service
 from ..storefront.transfer.models import StorefrontID
 
 from .dbmodels.line_item import LineItem as DbLineItem
+from .dbmodels.log import OrderLogEntry as DbOrderLogEntry
 from .dbmodels.order import Order as DbOrder
-from .dbmodels.order_event import OrderEvent as DbOrderEvent
-from . import action_service, event_service, sequence_service
-from .transfer.models.event import OrderEventData
+from . import action_service, log_service, sequence_service
+from .transfer.models.log import OrderLogEntryData
 from .transfer.models.number import OrderNumber
 from .transfer.models.order import (
     Address,
@@ -98,11 +98,11 @@ def place_order(
 
     order = _order_to_transfer_object(db_order)
 
-    # Create event in separate step as order ID is not available earlier.
-    event_data = {'initiator_id': str(orderer_user.id)}
-    event_service.create_event('order-placed', order.id, event_data)
+    # Create log entry in separate step as order ID is not available earlier.
+    log_entry_data = {'initiator_id': str(orderer_user.id)}
+    log_service.create_entry('order-placed', order.id, log_entry_data)
 
-    order_placed_event = ShopOrderPlaced(
+    event = ShopOrderPlaced(
         occurred_at=order.created_at,
         initiator_id=orderer_user.id,
         initiator_screen_name=orderer_user.screen_name,
@@ -112,7 +112,7 @@ def place_order(
         orderer_screen_name=orderer_user.screen_name,
     )
 
-    return order, order_placed_event
+    return order, event
 
 
 def _build_order(
@@ -180,7 +180,7 @@ def add_note(order_id: OrderID, author_id: UserID, text: str) -> None:
         'text': text,
     }
 
-    event_service.create_event(event_type, order.id, data)
+    log_service.create_entry(event_type, order.id, data)
 
 
 def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
@@ -194,8 +194,8 @@ def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
         'initiator_id': str(initiator.id),
     }
 
-    event = DbOrderEvent(now, event_type, order.id, data)
-    db.session.add(event)
+    log_entry = DbOrderLogEntry(now, event_type, order.id, data)
+    db.session.add(log_entry)
 
     order.invoice_created_at = now
 
@@ -213,8 +213,8 @@ def unset_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
         'initiator_id': str(initiator.id),
     }
 
-    event = DbOrderEvent(now, event_type, order.id, data)
-    db.session.add(event)
+    log_entry = DbOrderLogEntry(now, event_type, order.id, data)
+    db.session.add(log_entry)
 
     order.invoice_created_at = None
 
@@ -235,8 +235,8 @@ def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
         'initiator_id': str(initiator.id),
     }
 
-    event = DbOrderEvent(now, event_type, order.id, data)
-    db.session.add(event)
+    log_entry = DbOrderLogEntry(now, event_type, order.id, data)
+    db.session.add(log_entry)
 
     order.processed_at = now
 
@@ -257,8 +257,8 @@ def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
         'initiator_id': str(initiator.id),
     }
 
-    event = DbOrderEvent(now, event_type, order.id, data)
-    db.session.add(event)
+    log_entry = DbOrderLogEntry(now, event_type, order.id, data)
+    db.session.add(log_entry)
 
     order.processed_at = None
 
@@ -315,8 +315,8 @@ def cancel_order(
         'reason': reason,
     }
 
-    event = DbOrderEvent(now, event_type, order.id, data)
-    db.session.add(event)
+    log_entry = DbOrderLogEntry(now, event_type, order.id, data)
+    db.session.add(log_entry)
 
     # Make the reserved quantity of articles available again.
     for line_item in order.line_items:
@@ -346,7 +346,7 @@ def mark_order_as_paid(
     payment_method: str,
     initiator_id: UserID,
     *,
-    additional_event_data: Optional[Mapping[str, str]] = None,
+    additional_log_entry_data: Optional[Mapping[str, str]] = None,
 ) -> ShopOrderPaid:
     """Mark the order as paid."""
     order = _get_order_entity(order_id)
@@ -369,10 +369,10 @@ def mark_order_as_paid(
     event_type = 'order-paid'
     # Add required, internally set properties after given additional
     # ones to ensure the former are not overridden by the latter.
-    event_data: OrderEventData = {}
-    if additional_event_data is not None:
-        event_data.update(additional_event_data)
-    event_data.update(
+    log_entry_data: OrderLogEntryData = {}
+    if additional_log_entry_data is not None:
+        log_entry_data.update(additional_log_entry_data)
+    log_entry_data.update(
         {
             'initiator_id': str(initiator.id),
             'former_payment_state': payment_state_from.name,
@@ -380,8 +380,8 @@ def mark_order_as_paid(
         }
     )
 
-    event = DbOrderEvent(now, event_type, order.id, event_data)
-    db.session.add(event)
+    log_entry = DbOrderLogEntry(now, event_type, order.id, log_entry_data)
+    db.session.add(log_entry)
 
     db.session.commit()
 
@@ -416,7 +416,7 @@ def delete_order(order_id: OrderID) -> None:
     """Delete an order."""
     order = get_order(order_id)
 
-    db.session.query(DbOrderEvent) \
+    db.session.query(DbOrderLogEntry) \
         .filter_by(order_id=order.id) \
         .delete()
 

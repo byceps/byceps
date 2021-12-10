@@ -15,7 +15,7 @@ from ....ticketing import ticket_revocation_service, ticket_service
 
 from ...article.transfer.models import ArticleNumber
 
-from .. import event_service
+from .. import log_service
 from ..transfer.models.action import ActionParameters
 from ..transfer.models.order import Order, OrderID
 
@@ -33,10 +33,10 @@ def revoke_tickets(
     ticket_ids = {t.id for t in tickets}
     ticket_revocation_service.revoke_tickets(ticket_ids, initiator_id)
 
-    _create_order_events(order.id, tickets, initiator_id)
+    _create_order_log_entries(order.id, tickets, initiator_id)
 
 
-def _create_order_events(
+def _create_order_log_entries(
     order_id: OrderID, tickets: Sequence[Ticket], initiator_id: UserID
 ) -> None:
     event_type = 'ticket-revoked'
@@ -50,4 +50,4 @@ def _create_order_events(
         for ticket in tickets
     ]
 
-    event_service.create_events(event_type, order_id, datas)
+    log_service.create_entries(event_type, order_id, datas)

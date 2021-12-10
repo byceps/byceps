@@ -13,7 +13,7 @@ from ....ticketing.transfer.models import TicketBundleID
 
 from ...article.transfer.models import ArticleNumber
 
-from .. import event_service
+from .. import log_service
 from ..transfer.models.action import ActionParameters
 from ..transfer.models.order import Order, OrderID
 
@@ -33,10 +33,10 @@ def revoke_ticket_bundles(
 
     for bundle_id in bundle_ids:
         ticket_bundle_service.revoke_bundle(bundle_id, initiator_id)
-        _create_order_event(order.id, bundle_id, initiator_id)
+        _create_order_log_entry(order.id, bundle_id, initiator_id)
 
 
-def _create_order_event(
+def _create_order_log_entry(
     order_id: OrderID, bundle_id: TicketBundleID, initiator_id: UserID
 ) -> None:
     event_type = 'ticket-bundle-revoked'
@@ -46,4 +46,4 @@ def _create_order_event(
         'initiator_id': str(initiator_id),
     }
 
-    event_service.create_event(event_type, order_id, data)
+    log_service.create_entry(event_type, order_id, data)
