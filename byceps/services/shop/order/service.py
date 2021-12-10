@@ -97,7 +97,11 @@ def place_order(
 
     order = _order_to_transfer_object(db_order)
 
-    event = ShopOrderPlaced(
+    # Create event in separate step as order ID is not available earlier.
+    event_data = {'initiator_id': str(orderer_user.id)}
+    event_service.create_event('order-placed', order.id, event_data)
+
+    order_placed_event = ShopOrderPlaced(
         occurred_at=order.created_at,
         initiator_id=orderer_user.id,
         initiator_screen_name=orderer_user.screen_name,
@@ -107,7 +111,7 @@ def place_order(
         orderer_screen_name=orderer_user.screen_name,
     )
 
-    return order, event
+    return order, order_placed_event
 
 
 def _build_order(
