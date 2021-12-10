@@ -96,10 +96,10 @@ OVERDUE_THRESHOLD = timedelta(days=14)
 @dataclass(frozen=True)
 class Order:
     id: OrderID
+    created_at: datetime
     shop_id: ShopID
     storefront_id: StorefrontID
     order_number: OrderNumber
-    created_at: datetime
     placed_by_id: UserID
     first_names: str
     last_name: str

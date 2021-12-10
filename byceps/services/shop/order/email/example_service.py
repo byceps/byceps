@@ -142,10 +142,10 @@ def _build_order(
 
     return Order(
         id=order_id,
+        created_at=created_at,
         shop_id=shop_id,
         storefront_id=storefront_id,
         order_number=order_number,
-        created_at=created_at,
         placed_by_id=placed_by_id,
         first_names=first_names,
         last_name=last_name,

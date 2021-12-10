@@ -50,10 +50,10 @@ def test_is_overdue(
 def create_order(created_at: datetime) -> Order:
     return Order(
         id=OrderID(UUID('000414c5-4474-4f5a-970a-47fd286557d4')),
+        created_at=created_at,
         shop_id=ShopID('anyshop'),
         storefront_id=StorefrontID('anyshop-99'),
         order_number=OrderNumber('ORDER-31337'),
-        created_at=created_at,
         placed_by_id=UserID(UUID('b1a18832-22d4-4df5-8077-848611633332')),
         first_names='n/a',
         last_name='n/a',

@@ -675,10 +675,10 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
 
     return Order(
         id=order.id,
+        created_at=order.created_at,
         shop_id=order.shop_id,
         storefront_id=order.storefront_id,
         order_number=order.order_number,
-        created_at=order.created_at,
         placed_by_id=order.placed_by_id,
         first_names=order.first_names,
         last_name=order.last_name,
