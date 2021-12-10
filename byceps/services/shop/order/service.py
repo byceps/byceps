@@ -74,17 +74,17 @@ def place_order(
     if created_at is None:
         created_at = datetime.utcnow()
 
-    order = _build_order(
+    db_order = _build_order(
         created_at, shop.id, storefront.id, order_number, orderer
     )
-    line_items = list(_build_line_items(cart_items, order))
-    order.total_amount = cart.calculate_total_amount()
-    order.processing_required = any(
-        line_item.processing_required for line_item in line_items
+    db_line_items = list(_build_line_items(cart_items, db_order))
+    db_order.total_amount = cart.calculate_total_amount()
+    db_order.processing_required = any(
+        db_line_item.processing_required for db_line_item in db_line_items
     )
 
-    db.session.add(order)
-    db.session.add_all(line_items)
+    db.session.add(db_order)
+    db.session.add_all(db_line_items)
 
     _reduce_article_stock(cart_items)
 
@@ -95,7 +95,7 @@ def place_order(
         db.session.rollback()
         raise OrderFailed()
 
-    order_dto = _order_to_transfer_object(order)
+    order = _order_to_transfer_object(db_order)
 
     event = ShopOrderPlaced(
         occurred_at=order.created_at,
@@ -107,7 +107,7 @@ def place_order(
         orderer_screen_name=orderer_user.screen_name,
     )
 
-    return order_dto, event
+    return order, event
 
 
 def _build_order(
