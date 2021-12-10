@@ -30,7 +30,7 @@ from byceps.services.consent.dbmodels.consent import Consent
 from byceps.services.newsletter.dbmodels import (
     SubscriptionUpdate as NewsletterSubscriptionUpdate,
 )
-from byceps.services.user.dbmodels.event import UserEvent
+from byceps.services.user.dbmodels.event import UserEvent as DbUserEvent
 from byceps.services.user import service as user_service
 from byceps.services.user_avatar.dbmodels import (
     AvatarSelection as UserAvatarSelection,
@@ -150,9 +150,9 @@ def delete_user_events(user_ids: set[UserID]) -> int:
     for the given users.
     """
     return (
-        db.session.query(UserEvent)
-        .filter(UserEvent.user_id.in_(user_ids))
-        .filter(UserEvent.event_type != 'user-deleted')
+        db.session.query(DbUserEvent)
+        .filter(DbUserEvent.user_id.in_(user_ids))
+        .filter(DbUserEvent.event_type != 'user-deleted')
         .delete(synchronize_session=False)
     )
 

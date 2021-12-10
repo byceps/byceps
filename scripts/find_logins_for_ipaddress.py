@@ -11,7 +11,7 @@ from __future__ import annotations
 import click
 
 from byceps.database import db
-from byceps.services.user.dbmodels.event import UserEvent
+from byceps.services.user.dbmodels.event import UserEvent as DbUserEvent
 from byceps.services.user import service as user_service
 from byceps.services.user.transfer.models import User
 from byceps.typing import PartyID, UserID
@@ -30,16 +30,16 @@ def execute(ip_address: str) -> None:
         click.echo(f'{event.occurred_at}\t{ip_address}\t{user.screen_name}')
 
 
-def find_events(ip_address: str) -> list[UserEvent]:
+def find_events(ip_address: str) -> list[DbUserEvent]:
     return db.session \
-        .query(UserEvent) \
+        .query(DbUserEvent) \
         .filter_by(event_type='user-logged-in') \
-        .filter(UserEvent.data['ip_address'].astext == ip_address) \
-        .order_by(UserEvent.occurred_at) \
+        .filter(DbUserEvent.data['ip_address'].astext == ip_address) \
+        .order_by(DbUserEvent.occurred_at) \
         .all()
 
 
-def get_users_by_id(events: list[UserEvent]) -> dict[UserID, User]:
+def get_users_by_id(events: list[DbUserEvent]) -> dict[UserID, User]:
     user_ids = {event.user_id for event in events}
     users = user_service.get_users(user_ids)
     return user_service.index_users_by_id(users)

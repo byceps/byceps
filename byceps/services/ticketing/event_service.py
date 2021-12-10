@@ -11,7 +11,7 @@ from datetime import datetime
 
 from ...database import db
 
-from .dbmodels.ticket_event import TicketEvent, TicketEventData
+from .dbmodels.ticket_event import TicketEvent as DbTicketEvent, TicketEventData
 from .transfer.models import TicketID
 
 
@@ -27,17 +27,17 @@ def create_event(
 
 def build_event(
     event_type: str, ticket_id: TicketID, data: TicketEventData
-) -> TicketEvent:
+) -> DbTicketEvent:
     """Assemble, but not persist, a ticket event."""
     now = datetime.utcnow()
 
-    return TicketEvent(now, event_type, ticket_id, data)
+    return DbTicketEvent(now, event_type, ticket_id, data)
 
 
-def get_events_for_ticket(ticket_id: TicketID) -> list[TicketEvent]:
+def get_events_for_ticket(ticket_id: TicketID) -> list[DbTicketEvent]:
     """Return the events for that ticket."""
     return db.session \
-        .query(TicketEvent) \
+        .query(DbTicketEvent) \
         .filter_by(ticket_id=ticket_id) \
-        .order_by(TicketEvent.occurred_at) \
+        .order_by(DbTicketEvent.occurred_at) \
         .all()

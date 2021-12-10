@@ -12,7 +12,7 @@ from typing import Any, Iterator, Optional, Sequence
 from ....services.seating import seat_service
 from ....services.ticketing import event_service
 from ....services.ticketing.dbmodels.ticket_event import (
-    TicketEvent,
+    TicketEvent as DbTicketEvent,
     TicketEventData,
 )
 from ....services.ticketing import ticket_service
@@ -39,15 +39,15 @@ def get_events(ticket_id: TicketID) -> Iterator[TicketEventData]:
         yield data
 
 
-def _fake_ticket_creation_event(ticket_id: TicketID) -> TicketEvent:
+def _fake_ticket_creation_event(ticket_id: TicketID) -> DbTicketEvent:
     ticket = ticket_service.get_ticket(ticket_id)
 
     data: TicketEventData = {}
 
-    return TicketEvent(ticket.created_at, 'ticket-created', ticket.id, data)
+    return DbTicketEvent(ticket.created_at, 'ticket-created', ticket.id, data)
 
 
-def _get_users_by_id(events: Sequence[TicketEvent]) -> dict[str, User]:
+def _get_users_by_id(events: Sequence[DbTicketEvent]) -> dict[str, User]:
     user_ids = set(
         _find_values_for_keys(
             events,
@@ -66,7 +66,7 @@ def _get_users_by_id(events: Sequence[TicketEvent]) -> dict[str, User]:
 
 
 def _find_values_for_keys(
-    events: Sequence[TicketEvent], keys: set[str]
+    events: Sequence[DbTicketEvent], keys: set[str]
 ) -> Iterator[Any]:
     for event in events:
         for key in keys:
@@ -76,7 +76,7 @@ def _find_values_for_keys(
 
 
 def _get_additional_data(
-    event: TicketEvent, users_by_id: dict[str, User]
+    event: DbTicketEvent, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
     yield from _get_initiators(event, users_by_id)
 
@@ -117,7 +117,7 @@ def _get_additional_data(
 
 
 def _get_initiators(
-    event: TicketEvent, users_by_id: dict[str, User]
+    event: DbTicketEvent, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
     if event.event_type in {
         'seat-manager-appointed',
@@ -139,7 +139,7 @@ def _get_initiators(
 
 
 def _get_additional_data_for_user_initiated_event(
-    event: TicketEvent, users_by_id: dict[str, User]
+    event: DbTicketEvent, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
     initiator_id = event.data.get('initiator_id')
     if initiator_id is not None:
@@ -147,7 +147,7 @@ def _get_additional_data_for_user_initiated_event(
 
 
 def _get_additional_data_for_seat_occupied_event(
-    event: TicketEvent,
+    event: DbTicketEvent,
 ) -> Iterator[tuple[str, Any]]:
     seat_id = event.data['seat_id']
     seat = seat_service.get_seat(seat_id)
@@ -160,7 +160,7 @@ def _get_additional_data_for_seat_occupied_event(
 
 
 def _get_additional_data_for_seat_released_event(
-    event: TicketEvent,
+    event: DbTicketEvent,
 ) -> Iterator[tuple[str, Any]]:
     seat_id = event.data.get('seat_id')
     if seat_id:
@@ -169,7 +169,7 @@ def _get_additional_data_for_seat_released_event(
 
 
 def _get_additional_data_for_ticket_revoked_event(
-    event: TicketEvent,
+    event: DbTicketEvent,
 ) -> Iterator[tuple[str, Any]]:
     reason = event.data.get('reason')
     if reason:
@@ -177,7 +177,7 @@ def _get_additional_data_for_ticket_revoked_event(
 
 
 def _look_up_user_for_id(
-    event: TicketEvent,
+    event: DbTicketEvent,
     users_by_id: dict[str, User],
     user_id_key: str,
     user_key: str,

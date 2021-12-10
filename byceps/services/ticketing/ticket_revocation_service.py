@@ -12,8 +12,8 @@ from typing import Optional
 from ...database import db
 from ...typing import UserID
 
+from .dbmodels.ticket_event import TicketEvent as DbTicketEvent
 from . import event_service, ticket_seat_management_service
-from .event_service import TicketEvent
 from . import ticket_service
 from .transfer.models import TicketID
 
@@ -61,7 +61,7 @@ def revoke_tickets(
 
 def _build_ticket_revoked_event(
     ticket_id: TicketID, initiator_id: UserID, reason: Optional[str] = None
-) -> TicketEvent:
+) -> DbTicketEvent:
     data = {
         'initiator_id': str(initiator_id),
     }
