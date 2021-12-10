@@ -9,7 +9,7 @@ byceps.blueprints.admin.shop.order.service
 from __future__ import annotations
 from dataclasses import dataclass
 import dataclasses
-from typing import Iterator, Sequence
+from typing import Iterable, Iterator, Sequence
 from uuid import UUID
 
 from .....services.shop.article import service as article_service
@@ -52,10 +52,14 @@ def get_articles_by_item_number(order: Order) -> dict[ArticleNumber, Article]:
     return {article.item_number: article for article in articles}
 
 
-def get_events(order_id: OrderID) -> Iterator[OrderEventData]:
-    events = order_event_service.get_events_for_order(order_id)
-    events.insert(0, _fake_order_placement_event(order_id))
+def get_events_for_order(order_id: OrderID) -> Iterator[OrderEventData]:
+    events = [_fake_order_placement_event(order_id)]
+    events.extend(order_event_service.get_events_for_order(order_id))
 
+    return enrich_events(events)
+
+
+def enrich_events(events: Iterable[OrderEvent]) -> Iterator[OrderEventData]:
     user_ids = {
         event.data['initiator_id']
         for event in events
