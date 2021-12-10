@@ -8,7 +8,7 @@ byceps.services.shop.order.event_service
 
 from __future__ import annotations
 from datetime import datetime
-from typing import Any, Sequence
+from typing import Any, Optional, Sequence
 
 from sqlalchemy import select
 
@@ -20,10 +20,14 @@ from .transfer.models.order import OrderID
 
 
 def create_event(
-    event_type: str, order_id: OrderID, data: OrderEventData
+    event_type: str,
+    order_id: OrderID,
+    data: OrderEventData,
+    *,
+    occurred_at: Optional[datetime] = None,
 ) -> None:
     """Create an order event."""
-    event = build_event(event_type, order_id, data)
+    event = build_event(event_type, order_id, data, occurred_at=occurred_at)
 
     db.session.add(event)
     db.session.commit()
@@ -40,12 +44,17 @@ def create_events(
 
 
 def build_event(
-    event_type: str, order_id: OrderID, data: OrderEventData
+    event_type: str,
+    order_id: OrderID,
+    data: OrderEventData,
+    *,
+    occurred_at: Optional[datetime] = None,
 ) -> DbOrderEvent:
     """Assemble, but not persist, an order event."""
-    now = datetime.utcnow()
+    if occurred_at is None:
+        occurred_at = datetime.utcnow()
 
-    return DbOrderEvent(now, event_type, order_id, data)
+    return DbOrderEvent(occurred_at, event_type, order_id, data)
 
 
 def get_events_for_order(order_id: OrderID) -> list[OrderEvent]:
