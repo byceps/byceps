@@ -71,8 +71,11 @@ def place_order(
 
     cart_items = cart.get_items()
 
+    if created_at is None:
+        created_at = datetime.utcnow()
+
     order = _build_order(
-        shop.id, storefront.id, order_number, orderer, created_at
+        created_at, shop.id, storefront.id, order_number, orderer
     )
     line_items = list(_build_line_items(cart_items, order))
     order.total_amount = cart.calculate_total_amount()
@@ -108,14 +111,15 @@ def place_order(
 
 
 def _build_order(
+    created_at: datetime,
     shop_id: ShopID,
     storefront_id: StorefrontID,
     order_number: OrderNumber,
     orderer: Orderer,
-    created_at: Optional[datetime],
 ) -> DbOrder:
     """Build an order."""
     return DbOrder(
+        created_at,
         shop_id,
         storefront_id,
         order_number,
@@ -126,7 +130,6 @@ def _build_order(
         orderer.zip_code,
         orderer.city,
         orderer.street,
-        created_at=created_at,
     )
 
 

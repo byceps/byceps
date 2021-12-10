@@ -7,7 +7,7 @@ byceps.services.shop.order.dbmodels.order
 """
 
 from datetime import datetime
-from typing import Optional, TYPE_CHECKING
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     hybrid_property = property
@@ -58,6 +58,7 @@ class Order(db.Model):
 
     def __init__(
         self,
+        created_at: datetime,
         shop_id: ShopID,
         storefront_id: StorefrontID,
         order_number: OrderNumber,
@@ -67,12 +68,8 @@ class Order(db.Model):
         country: str,
         zip_code: str,
         city: str,
-        street,
-        *,
-        created_at: Optional[datetime] = None,
+        street: str,
     ) -> None:
-        if created_at is None:
-            created_at = datetime.utcnow()
         self.created_at = created_at
         self.shop_id = shop_id
         self.storefront_id = storefront_id

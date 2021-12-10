@@ -70,10 +70,10 @@ def create_order_with_payment_state(payment_state: PaymentState) -> Order:
     storefront_id = StorefrontID('storefront-123')
     order_number = OrderNumber('AEC-03-B00074')
     orderer = create_orderer()
-    created_at = None
+    created_at = datetime.utcnow()
 
     order = order_service._build_order(
-        shop_id, storefront_id, order_number, orderer, created_at
+        created_at, shop_id, storefront_id, order_number, orderer
     )
     order.payment_state = payment_state
 
