@@ -52,11 +52,11 @@ def get_articles_by_item_number(order: Order) -> dict[ArticleNumber, Article]:
     return {article.item_number: article for article in articles}
 
 
-def get_events_for_order(order_id: OrderID) -> Iterator[OrderEventData]:
+def get_events_for_order(order_id: OrderID) -> list[OrderEventData]:
     events = [_fake_order_placement_event(order_id)]
     events.extend(order_event_service.get_events_for_order(order_id))
 
-    return enrich_events(events)
+    return list(enrich_events(events))
 
 
 def enrich_events(events: Iterable[OrderEvent]) -> Iterator[OrderEventData]:

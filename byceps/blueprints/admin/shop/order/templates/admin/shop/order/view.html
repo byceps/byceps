@@ -84,12 +84,12 @@
 {% include 'admin/shop/order/_view_articles.html' %}
   </div>
 
-  <h2>{{ _('History') }}</h2>
+  <h2>{{ _('Events') }} {{ render_extra_in_heading(events|length) }}</h2>
   <div class="box">
 {% include 'admin/shop/order/_view_events.html' %}
   </div>
 
-  <h2>{{ _('Tickets') }} {{ render_extra_in_heading(tickets|length) }}</h1>
+  <h2>{{ _('Tickets') }} {{ render_extra_in_heading(tickets|length) }}</h2>
   <div class="box">
 {% include 'admin/ticketing/_ticket_list.html' %}
   </div>
