@@ -10,12 +10,10 @@ from __future__ import annotations
 from dataclasses import dataclass
 import dataclasses
 from typing import Iterable, Iterator, Sequence
-from uuid import UUID
 
 from .....services.shop.article import service as article_service
 from .....services.shop.article.transfer.models import Article, ArticleNumber
 from .....services.shop.order import event_service as order_event_service
-from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.models.event import OrderEvent, OrderEventData
 from .....services.shop.order.transfer.models.order import Order, OrderID
 from .....services.ticketing import category_service as ticket_category_service
@@ -52,10 +50,8 @@ def get_articles_by_item_number(order: Order) -> dict[ArticleNumber, Article]:
     return {article.item_number: article for article in articles}
 
 
-def get_events_for_order(order_id: OrderID) -> list[OrderEventData]:
-    events = [_fake_order_placement_event(order_id)]
-    events.extend(order_event_service.get_events_for_order(order_id))
-
+def get_enriched_events_for_order(order_id: OrderID) -> list[OrderEventData]:
+    events = order_event_service.get_events_for_order(order_id)
     return list(enrich_events(events))
 
 
@@ -79,24 +75,6 @@ def enrich_events(events: Iterable[OrderEvent]) -> Iterator[OrderEventData]:
         data.update(additional_data)
 
         yield data
-
-
-def _fake_order_placement_event(order_id: OrderID) -> OrderEvent:
-    order = order_service.find_order_with_details(order_id)
-    if order is None:
-        raise ValueError('Unknown order ID')
-
-    data = {
-        'initiator_id': str(order.placed_by_id),
-    }
-
-    return OrderEvent(
-        id=UUID('00000000-0000-0000-0000-000000000001'),
-        occurred_at=order.created_at,
-        event_type='order-placed',
-        order_id=order.id,
-        data=data,
-    )
 
 
 def _get_additional_data(

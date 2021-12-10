@@ -113,7 +113,7 @@ def view(order_id):
 
     articles_by_item_number = service.get_articles_by_item_number(order)
 
-    events = service.get_events_for_order(order.id)
+    events = service.get_enriched_events_for_order(order.id)
 
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
 
