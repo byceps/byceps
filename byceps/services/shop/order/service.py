@@ -12,6 +12,7 @@ from typing import Iterator, Mapping, Optional, Sequence
 
 from flask import current_app
 from flask_babel import lazy_gettext
+from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 
 from ....database import db, paginate, Pagination
@@ -548,6 +549,20 @@ def get_order_count_by_shop_id() -> dict[ShopID, int]:
         .all()
 
     return dict(shop_ids_and_order_counts)
+
+
+def get_orders(order_ids: frozenset[OrderID]) -> list[Order]:
+    """Return the orders with these ids."""
+    if not order_ids:
+        return []
+
+    db_orders = db.session.execute(
+        select(DbOrder)
+        .options(db.joinedload(DbOrder.line_items))
+        .filter(DbOrder.id.in_(order_ids))
+    ).scalars().unique().all()
+
+    return [_order_to_transfer_object(db_order) for db_order in db_orders]
 
 
 def get_orders_for_shop_paginated(

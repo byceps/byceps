@@ -1,6 +1,5 @@
 {% extends 'layout/admin/user.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/shop/order.html' import render_order_link %}
 {% from 'macros/admin/user.html' import render_user_avatar_and_admin_link, render_user_flag_deleted, render_user_flag_suspended %}
 {% from 'macros/admin/user_badge.html' import render_user_badge_linked %}
 {% from 'macros/icons.html' import render_icon %}
@@ -198,7 +197,9 @@
           {%- elif event.event == 'order-placed' %}
             {%- set icon_name = 'shopping-cart' %}
             {%- set body %}
-              <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span> hat Bestellung {{ render_order_link(event.data.order) }} aufgegeben.
+              <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
+              hat Bestellung <a href="{{ url_for('shop_order_admin.view', order_id=event.data.order_id) }}">{{ event.data.order_number }}</a>
+              aufgegeben.
             {%- endset %}
           {%- elif event.event == 'orgaflag-added' %}
             {%- set icon_name = 'enabled' %}

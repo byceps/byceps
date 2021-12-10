@@ -13,6 +13,7 @@ from typing import Any, Optional, Sequence
 from sqlalchemy import select
 
 from ....database import db
+from ....typing import UserID
 
 from .dbmodels.order_event import OrderEvent as DbOrderEvent
 from .transfer.models.event import OrderEvent, OrderEventData
@@ -62,6 +63,23 @@ def get_events_for_order(order_id: OrderID) -> list[OrderEvent]:
     db_events = db.session.execute(
         select(DbOrderEvent)
         .filter_by(order_id=order_id)
+        .order_by(DbOrderEvent.occurred_at)
+    ).scalars().all()
+
+    return [_db_entity_to_event(db_event) for db_event in db_events]
+
+
+def get_events_of_types_by_initiator(
+    event_types: frozenset[str], initiator_id: UserID
+) -> list[OrderEvent]:
+    """Return the events of these types initiated by the user."""
+    if not event_types:
+        return []
+
+    db_events = db.session.execute(
+        select(DbOrderEvent)
+        .filter(DbOrderEvent.event_type.in_(event_types))
+        .filter(DbOrderEvent.data['initiator_id'].astext == str(initiator_id))
         .order_by(DbOrderEvent.occurred_at)
     ).scalars().all()
 

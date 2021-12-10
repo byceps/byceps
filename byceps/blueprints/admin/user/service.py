@@ -16,6 +16,7 @@ from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List as NewsletterList
 from ....services.party import service as party_service
 from ....services.party.transfer.models import Party
+from ....services.shop.order import event_service as order_event_service
 from ....services.shop.order import service as order_service
 from ....services.site import service as site_service
 from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
@@ -90,7 +91,7 @@ def get_events(user_id: UserID) -> Iterator[UserEventData]:
     events.extend(_fake_avatar_update_events(user_id))
     events.extend(_fake_consent_events(user_id))
     events.extend(_fake_newsletter_subscription_update_events(user_id))
-    events.extend(_fake_order_events(user_id))
+    events.extend(_get_order_events(user_id))
 
     user_ids = {
         event.data['initiator_id']
@@ -169,17 +170,32 @@ def _fake_newsletter_subscription_update_events(
         yield DbUserEvent(update.expressed_at, event_type, user_id, data)
 
 
-def _fake_order_events(user_id: UserID) -> Iterator[DbUserEvent]:
-    """Yield the orders placed by the user as volatile events."""
-    orders = order_service.get_orders_placed_by_user(user_id)
+def _get_order_events(initiator_id: UserID) -> Iterator[DbUserEvent]:
+    """Yield orders events initiated by the user."""
+    event_types = frozenset(
+        [
+            'order-placed',
+        ]
+    )
+    events = order_event_service.get_events_of_types_by_initiator(
+        event_types, initiator_id
+    )
 
-    for order in orders:
+    order_ids = frozenset([event.order_id for event in events])
+    orders = order_service.get_orders(order_ids)
+    orders_by_id = {order.id: order for order in orders}
+
+    for event in events:
+        order = orders_by_id[event.order_id]
         data = {
-            'initiator_id': str(user_id),
-            'order': order,
+            'initiator_id': str(initiator_id),
+            'order_id': str(order.id),
+            'order_number': order.order_number,
         }
 
-        yield DbUserEvent(order.created_at, 'order-placed', user_id, data)
+        yield DbUserEvent(
+            event.occurred_at, event.event_type, initiator_id, data
+        )
 
 
 def _get_additional_data(
