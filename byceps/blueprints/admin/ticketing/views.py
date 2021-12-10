@@ -78,7 +78,9 @@ def index_for_party(party_id, page):
         page,
         per_page,
         search_term=search_term,
-        filter_category_id=filter_category.id if filter_category is not None else None,
+        filter_category_id=filter_category.id
+        if filter_category is not None
+        else None,
         filter_revoked=filter_revoked,
         filter_checked_in=filter_checked_in,
     )
@@ -113,13 +115,13 @@ def view_ticket(ticket_id):
     else:
         order = None
 
-    events = service.get_events(ticket.id)
+    log_entries = service.get_log_entries(ticket.id)
 
     return {
         'party': party,
         'ticket': ticket,
         'order': order,
-        'events': events,
+        'log_entries': log_entries,
     }
 
 

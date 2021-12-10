@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.ticketing import (
-    event_service,
+    log_service,
     ticket_bundle_service as bundle_service,
     ticket_service,
 )
@@ -21,8 +21,10 @@ def test_revoke_bundle(admin_app, bundle, ticketing_admin):
     for ticket_before in tickets_before:
         assert not ticket_before.revoked
 
-        events_before = event_service.get_events_for_ticket(ticket_before.id)
-        assert len(events_before) == 0
+        log_entries_before = log_service.get_entries_for_ticket(
+            ticket_before.id
+        )
+        assert len(log_entries_before) == 0
 
     # -------------------------------- #
 
@@ -36,12 +38,12 @@ def test_revoke_bundle(admin_app, bundle, ticketing_admin):
     for ticket_after in tickets_after:
         assert ticket_after.revoked
 
-        events_after = event_service.get_events_for_ticket(ticket_after.id)
-        assert len(events_after) == 1
+        log_entries_after = log_service.get_entries_for_ticket(ticket_after.id)
+        assert len(log_entries_after) == 1
 
-        ticket_revoked_event = events_after[0]
-        assert ticket_revoked_event.event_type == 'ticket-revoked'
-        assert ticket_revoked_event.data == {
+        ticket_revoked_log_entry = log_entries_after[0]
+        assert ticket_revoked_log_entry.event_type == 'ticket-revoked'
+        assert ticket_revoked_log_entry.data == {
             'initiator_id': str(ticketing_admin.id),
         }
 

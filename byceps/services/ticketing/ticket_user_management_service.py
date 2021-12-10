@@ -11,7 +11,7 @@ from ...typing import UserID
 
 from ..user import service as user_service
 
-from . import event_service
+from . import log_service
 from .exceptions import (
     TicketIsRevoked,
     UserAccountSuspended,
@@ -33,7 +33,7 @@ def appoint_user_manager(
 
     ticket.user_managed_by_id = manager_id
 
-    event = event_service.build_event(
+    log_entry = log_service.build_log_entry(
         'user-manager-appointed',
         ticket.id,
         {
@@ -41,7 +41,7 @@ def appoint_user_manager(
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
@@ -55,14 +55,14 @@ def withdraw_user_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     ticket.user_managed_by_id = None
 
-    event = event_service.build_event(
+    log_entry = log_service.build_log_entry(
         'user-manager-withdrawn',
         ticket.id,
         {
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
@@ -90,7 +90,7 @@ def appoint_user(
 
     ticket.used_by_id = user_id
 
-    event = event_service.build_event(
+    log_entry = log_service.build_log_entry(
         'user-appointed',
         ticket.id,
         {
@@ -98,7 +98,7 @@ def appoint_user(
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
@@ -115,13 +115,13 @@ def withdraw_user(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     ticket.used_by_id = None
 
-    event = event_service.build_event(
+    log_entry = log_service.build_log_entry(
         'user-withdrawn',
         ticket.id,
         {
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()

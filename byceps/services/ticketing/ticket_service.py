@@ -21,10 +21,10 @@ from ..seating.transfer.models import SeatID
 from ..shop.order.transfer.models.number import OrderNumber
 from ..user.dbmodels.user import User as DbUser
 
-from . import event_service
+from . import log_service
 from .dbmodels.category import Category as DbCategory
 from .dbmodels.ticket import Ticket as DbTicket
-from .dbmodels.ticket_event import TicketEvent as DbTicketEvent
+from .dbmodels.log import TicketLogEntry as DbTicketLogEntry
 from . import ticket_code_service
 from .transfer.models import (
     TicketCategoryID,
@@ -47,7 +47,7 @@ def update_ticket_code(
 
     ticket.code = code
 
-    event = event_service.build_event(
+    log_entry = log_service.build_log_entry(
         'ticket-code-changed',
         ticket.id,
         {
@@ -56,14 +56,14 @@ def update_ticket_code(
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
 
 def delete_ticket(ticket_id: TicketID) -> None:
-    """Delete a ticket and its events."""
-    db.session.query(DbTicketEvent) \
+    """Delete a ticket and its log entries."""
+    db.session.query(DbTicketLogEntry) \
         .filter_by(ticket_id=ticket_id) \
         .delete()
 

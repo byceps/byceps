@@ -12,8 +12,8 @@ from typing import Optional
 from ...database import db
 from ...typing import UserID
 
-from .dbmodels.ticket_event import TicketEvent as DbTicketEvent
-from . import event_service, ticket_seat_management_service
+from .dbmodels.log import TicketLogEntry as DbTicketLogEntry
+from . import log_service, ticket_seat_management_service
 from . import ticket_service
 from .transfer.models import TicketID
 
@@ -30,8 +30,8 @@ def revoke_ticket(
 
     ticket.revoked = True
 
-    event = _build_ticket_revoked_event(ticket.id, initiator_id, reason)
-    db.session.add(event)
+    log_entry = build_ticket_revoked_log_entry(ticket.id, initiator_id, reason)
+    db.session.add(log_entry)
 
     db.session.commit()
 
@@ -53,15 +53,17 @@ def revoke_tickets(
     for ticket in tickets:
         ticket.revoked = True
 
-        event = _build_ticket_revoked_event(ticket.id, initiator_id, reason)
-        db.session.add(event)
+        log_entry = build_ticket_revoked_log_entry(
+            ticket.id, initiator_id, reason
+        )
+        db.session.add(log_entry)
 
     db.session.commit()
 
 
-def _build_ticket_revoked_event(
+def build_ticket_revoked_log_entry(
     ticket_id: TicketID, initiator_id: UserID, reason: Optional[str] = None
-) -> DbTicketEvent:
+) -> DbTicketLogEntry:
     data = {
         'initiator_id': str(initiator_id),
     }
@@ -69,4 +71,4 @@ def _build_ticket_revoked_event(
     if reason:
         data['reason'] = reason
 
-    return event_service.build_event('ticket-revoked', ticket_id, data)
+    return log_service.build_log_entry('ticket-revoked', ticket_id, data)

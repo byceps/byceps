@@ -14,7 +14,7 @@ from ..seating.dbmodels.seat_group import SeatGroup as DbSeatGroup
 from ..seating import seat_service, seat_group_service
 from ..seating.transfer.models import Seat, SeatID
 
-from . import event_service
+from . import log_service
 from .exceptions import (
     SeatChangeDeniedForBundledTicket,
     SeatChangeDeniedForGroupSeat,
@@ -34,7 +34,7 @@ def appoint_seat_manager(
 
     ticket.seat_managed_by_id = manager_id
 
-    event = event_service.build_event(
+    log_entry = log_service.build_log_entry(
         'seat-manager-appointed',
         ticket.id,
         {
@@ -42,7 +42,7 @@ def appoint_seat_manager(
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
@@ -53,14 +53,14 @@ def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     ticket.seat_managed_by_id = None
 
-    event = event_service.build_event(
+    log_entry = log_service.build_log_entry(
         'seat-manager-withdrawn',
         ticket.id,
         {
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
@@ -86,15 +86,17 @@ def occupy_seat(
 
     ticket.occupied_seat_id = seat.id
 
-    event_data = {
+    log_entry_data = {
         'seat_id': str(seat.id),
         'initiator_id': str(initiator_id),
     }
     if previous_seat_id is not None:
-        event_data['previous_seat_id'] = str(previous_seat_id)
+        log_entry_data['previous_seat_id'] = str(previous_seat_id)
 
-    event = event_service.build_event('seat-occupied', ticket.id, event_data)
-    db.session.add(event)
+    log_entry = log_service.build_log_entry(
+        'seat-occupied', ticket.id, log_entry_data
+    )
+    db.session.add(log_entry)
 
     db.session.commit()
 
@@ -113,7 +115,7 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     ticket.occupied_seat_id = None
 
-    event = event_service.build_event(
+    log_entry = log_service.build_log_entry(
         'seat-released',
         ticket.id,
         {
@@ -121,7 +123,7 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 

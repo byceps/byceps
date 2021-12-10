@@ -10,10 +10,10 @@ from __future__ import annotations
 from typing import Any, Iterator, Optional, Sequence
 
 from ....services.seating import seat_service
-from ....services.ticketing import event_service
-from ....services.ticketing.dbmodels.ticket_event import (
-    TicketEvent as DbTicketEvent,
-    TicketEventData,
+from ....services.ticketing import log_service
+from ....services.ticketing.dbmodels.log import (
+    TicketLogEntry as DbTicketLogEntry,
+    TicketLogEntryData,
 )
 from ....services.ticketing import ticket_service
 from ....services.ticketing.transfer.models import TicketID
@@ -21,36 +21,40 @@ from ....services.user import service as user_service
 from ....services.user.transfer.models import User
 
 
-def get_events(ticket_id: TicketID) -> Iterator[TicketEventData]:
-    events = event_service.get_events_for_ticket(ticket_id)
-    events.insert(0, _fake_ticket_creation_event(ticket_id))
+def get_log_entries(ticket_id: TicketID) -> Iterator[TicketLogEntryData]:
+    log_entries = log_service.get_entries_for_ticket(ticket_id)
+    log_entries.insert(0, _fake_ticket_creation_log_entry(ticket_id))
 
-    users_by_id = _get_users_by_id(events)
+    users_by_id = _get_users_by_id(log_entries)
 
-    for event in events:
+    for log_entry in log_entries:
         data = {
-            'event': event.event_type,
-            'occurred_at': event.occurred_at,
-            'data': event.data,
+            'event_type': log_entry.event_type,
+            'occurred_at': log_entry.occurred_at,
+            'data': log_entry.data,
         }
 
-        data.update(_get_additional_data(event, users_by_id))
+        data.update(_get_additional_data(log_entry, users_by_id))
 
         yield data
 
 
-def _fake_ticket_creation_event(ticket_id: TicketID) -> DbTicketEvent:
+def _fake_ticket_creation_log_entry(ticket_id: TicketID) -> DbTicketLogEntry:
     ticket = ticket_service.get_ticket(ticket_id)
 
-    data: TicketEventData = {}
+    data: TicketLogEntryData = {}
 
-    return DbTicketEvent(ticket.created_at, 'ticket-created', ticket.id, data)
+    return DbTicketLogEntry(
+        ticket.created_at, 'ticket-created', ticket.id, data
+    )
 
 
-def _get_users_by_id(events: Sequence[DbTicketEvent]) -> dict[str, User]:
+def _get_users_by_id(
+    log_entries: Sequence[DbTicketLogEntry],
+) -> dict[str, User]:
     user_ids = set(
         _find_values_for_keys(
-            events,
+            log_entries,
             {
                 'initiator_id',
                 'appointed_seat_manager_id',
@@ -66,50 +70,50 @@ def _get_users_by_id(events: Sequence[DbTicketEvent]) -> dict[str, User]:
 
 
 def _find_values_for_keys(
-    events: Sequence[DbTicketEvent], keys: set[str]
+    log_entries: Sequence[DbTicketLogEntry], keys: set[str]
 ) -> Iterator[Any]:
-    for event in events:
+    for log_entry in log_entries:
         for key in keys:
-            value = event.data.get(key)
+            value = log_entry.data.get(key)
             if value is not None:
                 yield value
 
 
 def _get_additional_data(
-    event: DbTicketEvent, users_by_id: dict[str, User]
+    log_entry: DbTicketLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
-    yield from _get_initiators(event, users_by_id)
+    yield from _get_initiators(log_entry, users_by_id)
 
-    if event.event_type == 'seat-manager-appointed':
+    if log_entry.event_type == 'seat-manager-appointed':
         yield _look_up_user_for_id(
-            event,
+            log_entry,
             users_by_id,
             'appointed_seat_manager_id',
             'appointed_seat_manager',
         )
 
-    if event.event_type == 'seat-occupied':
-        yield from _get_additional_data_for_seat_occupied_event(event)
+    if log_entry.event_type == 'seat-occupied':
+        yield from _get_additional_data_for_seat_occupied_event(log_entry)
 
-    if event.event_type == 'seat-released':
-        yield from _get_additional_data_for_seat_released_event(event)
+    if log_entry.event_type == 'seat-released':
+        yield from _get_additional_data_for_seat_released_event(log_entry)
 
-    if event.event_type == 'ticket-revoked':
-        yield from _get_additional_data_for_ticket_revoked_event(event)
+    if log_entry.event_type == 'ticket-revoked':
+        yield from _get_additional_data_for_ticket_revoked_event(log_entry)
 
-    if event.event_type == 'user-appointed':
+    if log_entry.event_type == 'user-appointed':
         yield _look_up_user_for_id(
-            event, users_by_id, 'appointed_user_id', 'appointed_user'
+            log_entry, users_by_id, 'appointed_user_id', 'appointed_user'
         )
 
-    if event.event_type in {'user-checked-in', 'user-check-in-reverted'}:
+    if log_entry.event_type in {'user-checked-in', 'user-check-in-reverted'}:
         yield _look_up_user_for_id(
-            event, users_by_id, 'checked_in_user_id', 'checked_in_user'
+            log_entry, users_by_id, 'checked_in_user_id', 'checked_in_user'
         )
 
-    if event.event_type == 'user-manager-appointed':
+    if log_entry.event_type == 'user-manager-appointed':
         yield _look_up_user_for_id(
-            event,
+            log_entry,
             users_by_id,
             'appointed_user_manager_id',
             'appointed_user_manager',
@@ -117,9 +121,9 @@ def _get_additional_data(
 
 
 def _get_initiators(
-    event: DbTicketEvent, users_by_id: dict[str, User]
+    log_entry: DbTicketLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
-    if event.event_type in {
+    if log_entry.event_type in {
         'seat-manager-appointed',
         'seat-manager-withdrawn',
         'seat-occupied',
@@ -134,54 +138,54 @@ def _get_initiators(
         'user-withdrawn',
     }:
         yield from _get_additional_data_for_user_initiated_event(
-            event, users_by_id
+            log_entry, users_by_id
         )
 
 
 def _get_additional_data_for_user_initiated_event(
-    event: DbTicketEvent, users_by_id: dict[str, User]
+    log_entry: DbTicketLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
-    initiator_id = event.data.get('initiator_id')
+    initiator_id = log_entry.data.get('initiator_id')
     if initiator_id is not None:
         yield 'initiator', users_by_id[initiator_id]
 
 
 def _get_additional_data_for_seat_occupied_event(
-    event: DbTicketEvent,
+    log_entry: DbTicketLogEntry,
 ) -> Iterator[tuple[str, Any]]:
-    seat_id = event.data['seat_id']
+    seat_id = log_entry.data['seat_id']
     seat = seat_service.get_seat(seat_id)
     yield 'seat_label', seat.label
 
-    previous_seat_id = event.data.get('previous_seat_id')
+    previous_seat_id = log_entry.data.get('previous_seat_id')
     if previous_seat_id:
         previous_seat = seat_service.get_seat(previous_seat_id)
         yield 'previous_seat_label', previous_seat.label
 
 
 def _get_additional_data_for_seat_released_event(
-    event: DbTicketEvent,
+    log_entry: DbTicketLogEntry,
 ) -> Iterator[tuple[str, Any]]:
-    seat_id = event.data.get('seat_id')
+    seat_id = log_entry.data.get('seat_id')
     if seat_id:
         seat = seat_service.get_seat(seat_id)
         yield 'seat_label', seat.label
 
 
 def _get_additional_data_for_ticket_revoked_event(
-    event: DbTicketEvent,
+    log_entry: DbTicketLogEntry,
 ) -> Iterator[tuple[str, Any]]:
-    reason = event.data.get('reason')
+    reason = log_entry.data.get('reason')
     if reason:
         yield 'reason', reason
 
 
 def _look_up_user_for_id(
-    event: DbTicketEvent,
+    log_entry: DbTicketLogEntry,
     users_by_id: dict[str, User],
     user_id_key: str,
     user_key: str,
 ) -> tuple[str, Optional[User]]:
-    user_id = event.data[user_id_key]
+    user_id = log_entry.data[user_id_key]
     user = users_by_id.get(user_id)
     return user_key, user

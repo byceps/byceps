@@ -8,7 +8,7 @@ from unittest.mock import patch
 from pytest import raises
 
 from byceps.services.ticketing import (
-    event_service,
+    log_service,
     ticket_code_service,
     ticket_creation_service,
     ticket_service,
@@ -26,9 +26,7 @@ def test_create_ticket(admin_app, category, ticket_owner):
     ticket_service.delete_ticket(ticket.id)
 
 
-@patch(
-    'byceps.services.ticketing.ticket_code_service._generate_ticket_code'
-)
+@patch('byceps.services.ticketing.ticket_code_service._generate_ticket_code')
 def test_create_ticket_with_existing_code(
     generate_ticket_code_mock, admin_app, category, ticket_owner
 ):
@@ -62,9 +60,7 @@ def test_create_tickets(admin_app, category, ticket_owner):
         ticket_service.delete_ticket(ticket.id)
 
 
-@patch(
-    'byceps.services.ticketing.ticket_code_service._generate_ticket_code'
-)
+@patch('byceps.services.ticketing.ticket_code_service._generate_ticket_code')
 def test_create_tickets_with_clashing_generated_codes(
     generate_ticket_code_mock, admin_app, category, ticket_owner
 ):
@@ -95,5 +91,5 @@ def assert_created_ticket(ticket, expected_category_id, expected_owner_id):
     assert not ticket.revoked
     assert not ticket.user_checked_in
 
-    events = event_service.get_events_for_ticket(ticket.id)
-    assert len(events) == 0
+    log_entries = log_service.get_entries_for_ticket(ticket.id)
+    assert len(log_entries) == 0

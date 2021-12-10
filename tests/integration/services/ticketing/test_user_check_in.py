@@ -9,7 +9,7 @@ from pytest import raises
 from byceps.database import db
 from byceps.events.ticketing import TicketCheckedIn
 from byceps.services.ticketing import (
-    event_service,
+    log_service,
     ticket_creation_service,
     ticket_service,
     ticket_user_checkin_service,
@@ -44,8 +44,8 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
 
     assert not ticket_before.user_checked_in
 
-    events_before = event_service.get_events_for_ticket(ticket_before.id)
-    assert len(events_before) == 0
+    log_entries_before = log_service.get_entries_for_ticket(ticket_before.id)
+    assert len(log_entries_before) == 0
 
     # -------------------------------- #
 
@@ -68,12 +68,12 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
     assert event.user_id == ticket_user.id
     assert event.user_screen_name == ticket_user.screen_name
 
-    ticket_events_after = event_service.get_events_for_ticket(ticket_after.id)
-    assert len(ticket_events_after) == 1
+    log_entries_after = log_service.get_entries_for_ticket(ticket_after.id)
+    assert len(log_entries_after) == 1
 
-    ticket_checked_in_event = ticket_events_after[0]
-    assert ticket_checked_in_event.event_type == 'user-checked-in'
-    assert ticket_checked_in_event.data == {
+    ticket_checked_in_log_entry = log_entries_after[0]
+    assert ticket_checked_in_log_entry.event_type == 'user-checked-in'
+    assert ticket_checked_in_log_entry.data == {
         'checked_in_user_id': str(ticket_user.id),
         'initiator_id': str(ticketing_admin.id),
     }

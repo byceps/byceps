@@ -19,9 +19,7 @@ from .dbmodels.category import Category as DbCategory
 from .dbmodels.ticket import Ticket as DbTicket
 from .dbmodels.ticket_bundle import TicketBundle as DbTicketBundle
 from .ticket_creation_service import build_tickets, TicketCreationFailed
-from .ticket_revocation_service import (
-    _build_ticket_revoked_event as build_ticket_revoked_event,
-)
+from .ticket_revocation_service import build_ticket_revoked_log_entry
 from .transfer.models import TicketBundleID, TicketCategoryID
 
 
@@ -82,8 +80,10 @@ def revoke_bundle(
     for ticket in bundle.tickets:
         ticket.revoked = True
 
-        event = build_ticket_revoked_event(ticket.id, initiator_id, reason)
-        db.session.add(event)
+        log_entry = build_ticket_revoked_log_entry(
+            ticket.id, initiator_id, reason
+        )
+        db.session.add(log_entry)
 
     db.session.commit()
 
