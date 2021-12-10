@@ -174,6 +174,9 @@ def _get_order_events(initiator_id: UserID) -> Iterator[DbUserEvent]:
     """Yield orders events initiated by the user."""
     event_types = frozenset(
         [
+            'order-canceled-after-paid',
+            'order-canceled-before-paid',
+            'order-paid',
             'order-placed',
         ]
     )
@@ -216,6 +219,9 @@ def _get_additional_data(
         'consent-expressed',
         'newsletter-requested',
         'newsletter-declined',
+        'order-canceled-after-paid',
+        'order-canceled-before-paid',
+        'order-paid',
         'order-placed',
         'orgaflag-added',
         'orgaflag-removed',

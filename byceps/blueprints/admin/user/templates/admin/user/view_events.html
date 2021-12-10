@@ -194,6 +194,27 @@
               <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
               hat den Newsletter &quot;{{ event.data.list_.title }}&quot; {{ render_tag('abbestellt', icon='disabled', class='newsletter-unsubscribed') }}.
             {%- endset %}
+          {%- elif event.event == 'order-canceled-after-paid' %}
+            {%- set icon_name = 'shopping-cart' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
+              hat Bestellung <a href="{{ url_for('shop_order_admin.view', order_id=event.data.order_id) }}">{{ event.data.order_number }}</a>
+              storniert (nach Bezahlung).
+            {%- endset %}
+          {%- elif event.event == 'order-canceled-before-paid' %}
+            {%- set icon_name = 'shopping-cart' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
+              hat Bestellung <a href="{{ url_for('shop_order_admin.view', order_id=event.data.order_id) }}">{{ event.data.order_number }}</a>
+              storniert (vor Bezahlung).
+            {%- endset %}
+          {%- elif event.event == 'order-paid' %}
+            {%- set icon_name = 'shopping-cart' %}
+            {%- set body %}
+              <span class="user-link">{{ render_user_avatar_and_admin_link(event.initiator, size=avatar_size) }}</span>
+              hat Bestellung <a href="{{ url_for('shop_order_admin.view', order_id=event.data.order_id) }}">{{ event.data.order_number }}</a>
+              als bezahlt markiert.
+            {%- endset %}
           {%- elif event.event == 'order-placed' %}
             {%- set icon_name = 'shopping-cart' %}
             {%- set body %}
