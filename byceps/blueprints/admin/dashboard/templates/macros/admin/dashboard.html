@@ -18,8 +18,8 @@
 {%- endmacro %}
 
 
-{%- macro render_bigstats_cell(value, caption, href=None, icon_name=None, color=None) -%}
-  {%- call render_cell(icon_name, href=href) %}
+{%- macro render_bigstats_cell(value, caption, href=None, icon_name=None, color=None, additional_classes=None) -%}
+  {%- call render_cell(icon_name, additional_classes=additional_classes, href=href) %}
         <div class="bigstats">
           {{ render_bigstats_item(value, caption, color=color) }}
         </div>

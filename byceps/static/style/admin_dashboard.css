@@ -37,6 +37,10 @@ a.dashboard-section-link:hover {
   margin-bottom: var(--inner-gutter);
 }
 
+.grid .cell--fitted {
+  align-self: start;
+}
+
 .grid .cell--higher {
   grid-row: span 2;
 }
