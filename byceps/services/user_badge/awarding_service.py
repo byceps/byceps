@@ -15,7 +15,7 @@ from ...database import db
 from ...events.user_badge import UserBadgeAwarded
 from ...typing import UserID
 
-from ..user import event_service as user_event_service, service as user_service
+from ..user import log_service as user_log_service, service as user_service
 from ..user.transfer.models import User
 
 from .badge_service import _db_entity_to_badge, get_badge, get_badges
@@ -49,7 +49,7 @@ def award_badge_to_user(
     user_event_data = {'badge_id': str(badge_id)}
     if initiator_id:
         user_event_data['initiator_id'] = str(initiator_id)
-    user_event = user_event_service.build_event(
+    user_event = user_log_service.build_log_entry(
         'user-badge-awarded', user_id, user_event_data, occurred_at=awarded_at
     )
     db.session.add(user_event)

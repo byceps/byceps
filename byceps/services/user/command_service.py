@@ -25,11 +25,10 @@ from ...typing import UserID
 from ..authorization import service as authorization_service
 from ..authorization.transfer.models import RoleID
 
-from . import event_service
 from .dbmodels.detail import UserDetail as DbUserDetail
-from .dbmodels.event import UserEventData
+from .dbmodels.log import UserLogEntryData
 from .dbmodels.user import User as DbUser
-from . import service as user_service
+from . import log_service, service as user_service
 from .transfer.models import User
 
 
@@ -59,7 +58,7 @@ def initialize_account(
     event_data = {}
     if initiator:
         event_data['initiator_id'] = str(initiator.id)
-    event = event_service.build_event('user-initialized', user.id, event_data)
+    event = log_service.build_log_entry('user-initialized', user.id, event_data)
     db.session.add(event)
 
     db.session.commit()
@@ -96,7 +95,7 @@ def suspend_account(
 
     user.suspended = True
 
-    event = event_service.build_event(
+    event = log_service.build_log_entry(
         'user-suspended',
         user.id,
         {
@@ -126,7 +125,7 @@ def unsuspend_account(
 
     user.suspended = False
 
-    event = event_service.build_event(
+    event = log_service.build_log_entry(
         'user-unsuspended',
         user.id,
         {
@@ -170,7 +169,7 @@ def change_screen_name(
     if reason:
         event_data['reason'] = reason
 
-    event = event_service.build_event(
+    event = log_service.build_log_entry(
         'user-screen-name-changed', user.id, event_data
     )
     db.session.add(event)
@@ -212,7 +211,7 @@ def change_email_address(
     if reason:
         event_data['reason'] = reason
 
-    event = event_service.build_event(
+    event = log_service.build_log_entry(
         'user-email-address-changed', user.id, event_data
     )
     db.session.add(event)
@@ -285,7 +284,7 @@ def update_user_details(
     _add_if_different(
         event_data, 'phone_number', old_phone_number, phone_number
     )
-    event = event_service.build_event(
+    event = log_service.build_log_entry(
         'user-details-updated', user_id, event_data
     )
     db.session.add(event)
@@ -303,7 +302,7 @@ def update_user_details(
 
 
 def _add_if_different(
-    event_data: UserEventData, base_key_name: str, old_value: str, new_value
+    event_data: UserLogEntryData, base_key_name: str, old_value: str, new_value
 ) -> None:
     if old_value != new_value:
         event_data[f'old_{base_key_name}'] = _to_str_if_not_none(old_value)

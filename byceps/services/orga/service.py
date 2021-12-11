@@ -14,7 +14,7 @@ from ...typing import BrandID, UserID
 
 from ..brand.dbmodels.brand import Brand as DbBrand
 from ..brand import service as brand_service
-from ..user import event_service as user_event_service
+from ..user import log_service as user_log_service
 from ..user.dbmodels.user import User as DbUser
 
 from .dbmodels import OrgaFlag as DbOrgaFlag
@@ -61,7 +61,7 @@ def add_orga_flag(
     orga_flag = DbOrgaFlag(brand_id, user_id)
     db.session.add(orga_flag)
 
-    event = user_event_service.build_event(
+    event = user_log_service.build_log_entry(
         'orgaflag-added',
         user_id,
         {
@@ -85,7 +85,7 @@ def remove_orga_flag(
         .filter_by(user_id=user_id) \
         .delete()
 
-    event = user_event_service.build_event(
+    event = user_log_service.build_log_entry(
         'orgaflag-removed',
         user_id,
         {

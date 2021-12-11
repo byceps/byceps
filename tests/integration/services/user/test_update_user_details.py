@@ -8,7 +8,7 @@ from datetime import date
 from byceps.events.user import UserDetailsUpdated
 from byceps.services.user import (
     command_service as user_command_service,
-    event_service,
+    log_service,
     service as user_service,
 )
 
@@ -43,8 +43,8 @@ def test_update_user_address(site_app, make_user):
         phone_number=old_phone_number,
     )
 
-    events_before = event_service.get_events_for_user(user.id)
-    assert len(events_before) == 1  # user creation
+    log_entries_before = log_service.get_entries_for_user(user.id)
+    assert len(log_entries_before) == 1  # user creation
 
     # -------------------------------- #
 
@@ -79,10 +79,10 @@ def test_update_user_address(site_app, make_user):
     assert user_after.detail.street == new_street
     assert user_after.detail.phone_number == new_phone_number
 
-    events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 2
+    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    assert len(log_entries_after) == 2
 
-    details_updated_event = events_after[1]
+    details_updated_event = log_entries_after[1]
     assert details_updated_event.event_type == 'user-details-updated'
     assert details_updated_event.data == {
         'initiator_id': str(user.id),
@@ -108,8 +108,8 @@ def test_update_user_real_name(site_app, make_user):
     )
     user_detail = user_service.get_detail(user.id)
 
-    events_before = event_service.get_events_for_user(user.id)
-    assert len(events_before) == 1  # user creation
+    log_entries_before = log_service.get_entries_for_user(user.id)
+    assert len(log_entries_before) == 1  # user creation
 
     # -------------------------------- #
 
@@ -132,12 +132,12 @@ def test_update_user_real_name(site_app, make_user):
     assert user_after.detail.first_names == new_first_names
     assert user_after.detail.last_name == new_last_name
 
-    events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 2
+    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    assert len(log_entries_after) == 2
 
-    details_updated_event = events_after[1]
-    assert details_updated_event.event_type == 'user-details-updated'
-    assert details_updated_event.data == {
+    details_updated_log_entry = log_entries_after[1]
+    assert details_updated_log_entry.event_type == 'user-details-updated'
+    assert details_updated_log_entry.data == {
         'initiator_id': str(user.id),
         'old_first_names': old_first_names,
         'new_first_names': new_first_names,
@@ -156,8 +156,8 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
     )
     user_detail = user_service.get_detail(user.id)
 
-    events_before = event_service.get_events_for_user(user.id)
-    assert len(events_before) == 1  # user creation
+    log_entries_before = log_service.get_entries_for_user(user.id)
+    assert len(log_entries_before) == 1  # user creation
 
     # -------------------------------- #
 
@@ -180,12 +180,12 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
     assert user_after.detail.date_of_birth is None
     assert user_after.detail.phone_number == ''
 
-    events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 2
+    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    assert len(log_entries_after) == 2
 
-    details_updated_event = events_after[1]
-    assert details_updated_event.event_type == 'user-details-updated'
-    assert details_updated_event.data == {
+    details_updated_log_entry = log_entries_after[1]
+    assert details_updated_log_entry.event_type == 'user-details-updated'
+    assert details_updated_log_entry.data == {
         'initiator_id': str(user.id),
         'old_date_of_birth': '1991-09-17',
         'new_date_of_birth': None,

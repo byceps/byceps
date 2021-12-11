@@ -7,7 +7,7 @@ import pytest
 
 from byceps.database import db
 from byceps.events.user_badge import UserBadgeAwarded
-from byceps.services.user import event_service
+from byceps.services.user import log_service
 from byceps.services.user_badge import awarding_service, badge_service
 from byceps.services.user_badge.dbmodels.awarding import (
     BadgeAwarding as DbBadgeAwarding,
@@ -65,8 +65,8 @@ def test_award_badge_without_initiator(
     user = user1
     badge = badge1
 
-    user_events_before = event_service.get_events_for_user(user.id)
-    assert len(user_events_before) == 1  # user creation
+    log_entries_before = log_service.get_entries_for_user(user.id)
+    assert len(log_entries_before) == 1  # user creation
 
     _, event = awarding_service.award_badge_to_user(badge.id, user.id)
 
@@ -78,12 +78,12 @@ def test_award_badge_without_initiator(
     assert event.badge_id == badge.id
     assert event.badge_label == badge.label
 
-    user_events_after = event_service.get_events_for_user(user.id)
-    assert len(user_events_after) == 2
+    log_entries_after = log_service.get_entries_for_user(user.id)
+    assert len(log_entries_after) == 2
 
-    user_awarding_event = user_events_after[1]
-    assert user_awarding_event.event_type == 'user-badge-awarded'
-    assert user_awarding_event.data == {'badge_id': str(badge.id)}
+    user_awarding_log_entry = log_entries_after[1]
+    assert user_awarding_log_entry.event_type == 'user-badge-awarded'
+    assert user_awarding_log_entry.data == {'badge_id': str(badge.id)}
 
 
 def test_award_badge_with_initiator(
@@ -93,8 +93,8 @@ def test_award_badge_with_initiator(
 
     badge = badge2
 
-    user_events_before = event_service.get_events_for_user(user.id)
-    assert len(user_events_before) == 1  # user creation
+    log_entries_before = log_service.get_entries_for_user(user.id)
+    assert len(log_entries_before) == 1  # user creation
 
     _, event = awarding_service.award_badge_to_user(
         badge.id, user.id, initiator_id=admin_user.id
@@ -108,19 +108,26 @@ def test_award_badge_with_initiator(
     assert event.badge_id == badge.id
     assert event.badge_label == badge.label
 
-    user_events_after = event_service.get_events_for_user(user.id)
-    assert len(user_events_after) == 2
+    log_entries_after = log_service.get_entries_for_user(user.id)
+    assert len(log_entries_after) == 2
 
-    user_awarding_event = user_events_after[1]
-    assert user_awarding_event.event_type == 'user-badge-awarded'
-    assert user_awarding_event.data == {
+    user_awarding_log_entry = log_entries_after[1]
+    assert user_awarding_log_entry.event_type == 'user-badge-awarded'
+    assert user_awarding_log_entry.data == {
         'badge_id': str(badge.id),
         'initiator_id': str(admin_user.id),
     }
 
 
 def test_count_awardings(
-    site_app, user1, user2, user3, badge1, badge2, badge3, awardings_scope,
+    site_app,
+    user1,
+    user2,
+    user3,
+    badge1,
+    badge2,
+    badge3,
+    awardings_scope,
 ):
     awarding_service.award_badge_to_user(badge1.id, user1.id)
     awarding_service.award_badge_to_user(badge1.id, user1.id)

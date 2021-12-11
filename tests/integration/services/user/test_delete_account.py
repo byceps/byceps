@@ -11,7 +11,7 @@ from byceps.services.user import (
     command_service as user_command_service,
     deletion_service as user_deletion_service,
 )
-from byceps.services.user import event_service
+from byceps.services.user import log_service
 
 
 @pytest.fixture
@@ -60,10 +60,10 @@ def test_delete_account(admin_app, role, make_user):
     assert user_before.detail.street is not None
     assert user_before.detail.phone_number is not None
 
-    # events
-    events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 2
-    assert events_before[1].event_type == 'role-assigned'
+    # log entries
+    log_entries_before = log_service.get_entries_for_user(user_before.id)
+    assert len(log_entries_before) == 2
+    assert log_entries_before[1].event_type == 'role-assigned'
 
     # authorization
     assert authorization_service.find_role_ids_for_user(user_id) == {'demigod'}
@@ -97,13 +97,13 @@ def test_delete_account(admin_app, role, make_user):
     # avatar
     assert user_after.avatar_selection is None
 
-    # events
-    events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 3
+    # log entries
+    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    assert len(log_entries_after) == 3
 
-    user_enabled_event = events_after[2]
-    assert user_enabled_event.event_type == 'user-deleted'
-    assert user_enabled_event.data == {
+    user_enabled_log_entry = log_entries_after[2]
+    assert user_enabled_log_entry.event_type == 'user-deleted'
+    assert user_enabled_log_entry.data == {
         'initiator_id': str(admin_user.id),
         'reason': reason,
     }

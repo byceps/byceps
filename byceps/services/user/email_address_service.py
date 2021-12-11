@@ -30,7 +30,7 @@ from ..user import (
 from ..verification_token import service as verification_token_service
 from ..verification_token.transfer.models import Token
 
-from . import event_service as user_event_service
+from . import log_service as user_log_service
 from .transfer.models import User
 
 
@@ -125,7 +125,7 @@ def confirm_email_address(
     user.email_address_verified = True
 
     event_data = {'email_address': user.email_address}
-    event = user_event_service.build_event(
+    event = user_log_service.build_log_entry(
         'user-email-address-confirmed', user.id, event_data
     )
     db.session.add(event)
@@ -166,7 +166,7 @@ def invalidate_email_address(
     }
     if initiator:
         event_data['initiator_id'] = str(initiator.id)
-    event = user_event_service.build_event(
+    event = user_log_service.build_log_entry(
         'user-email-address-invalidated', user.id, event_data
     )
     db.session.add(event)

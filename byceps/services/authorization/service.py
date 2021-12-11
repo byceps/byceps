@@ -16,7 +16,7 @@ from sqlalchemy.exc import IntegrityError
 from ...database import db
 from ...typing import UserID
 
-from ..user import event_service as user_event_service, service as user_service
+from ..user import log_service as user_log_service, service as user_service
 from ..user.transfer.models import User
 
 from .dbmodels import (
@@ -125,7 +125,9 @@ def assign_role_to_user(
     event_data = {'role_id': str(role_id)}
     if initiator_id is not None:
         event_data['initiator_id'] = str(initiator_id)
-    event = user_event_service.build_event('role-assigned', user_id, event_data)
+    event = user_log_service.build_log_entry(
+        'role-assigned', user_id, event_data
+    )
     db.session.add(event)
 
     db.session.commit()
@@ -147,7 +149,7 @@ def deassign_role_from_user(
     event_data = {'role_id': str(role_id)}
     if initiator_id is not None:
         event_data['initiator_id'] = str(initiator_id)
-    event = user_event_service.build_event(
+    event = user_log_service.build_log_entry(
         'role-deassigned', user_id, event_data
     )
     db.session.add(event)

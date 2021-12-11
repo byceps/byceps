@@ -16,7 +16,7 @@ from ....events.auth import UserLoggedIn
 from ....typing import UserID
 
 from ...site.transfer.models import SiteID
-from ...user import event_service as user_event_service, service as user_service
+from ...user import log_service as user_log_service, service as user_service
 from ...user.transfer.models import User
 
 from .dbmodels.recent_login import RecentLogin as DbRecentLogin
@@ -139,7 +139,7 @@ def _create_login_event(
     data = {'ip_address': ip_address}
     if site_id:
         data['site_id'] = site_id
-    user_event_service.create_event(
+    user_log_service.create_entry(
         'user-logged-in', user_id, data, occurred_at=occurred_at
     )
 

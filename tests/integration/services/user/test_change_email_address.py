@@ -7,7 +7,7 @@ import pytest
 
 from byceps.events.user import UserEmailAddressChanged
 from byceps.services.user import command_service as user_command_service
-from byceps.services.user import event_service
+from byceps.services.user import log_service
 
 
 @pytest.fixture(scope='module')
@@ -30,8 +30,8 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     assert user_before.email_address == old_email_address
     assert user_before.email_address_verified
 
-    events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 1  # user creation
+    log_entries_before = log_service.get_entries_for_user(user_before.id)
+    assert len(log_entries_before) == 1  # user creation
 
     # -------------------------------- #
 
@@ -51,12 +51,12 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     assert user_after.email_address == new_email_address
     assert not user_after.email_address_verified
 
-    events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 2
+    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    assert len(log_entries_after) == 2
 
-    user_enabled_event = events_after[1]
-    assert user_enabled_event.event_type == 'user-email-address-changed'
-    assert user_enabled_event.data == {
+    user_enabled_log_entry = log_entries_after[1]
+    assert user_enabled_log_entry.event_type == 'user-email-address-changed'
+    assert user_enabled_log_entry.data == {
         'old_email_address': old_email_address,
         'new_email_address': new_email_address,
         'initiator_id': str(admin_user.id),
@@ -84,11 +84,11 @@ def test_change_email_address_without_reason(admin_app, make_user, admin_user):
 
     user_after = user_command_service._get_user(user.id)
 
-    events_after = event_service.get_events_for_user(user_after.id)
+    log_entries_after = log_service.get_entries_for_user(user_after.id)
 
-    user_enabled_event = events_after[1]
-    assert user_enabled_event.event_type == 'user-email-address-changed'
-    assert user_enabled_event.data == {
+    user_enabled_log_entry = log_entries_after[1]
+    assert user_enabled_log_entry.event_type == 'user-email-address-changed'
+    assert user_enabled_log_entry.data == {
         'old_email_address': old_email_address,
         'new_email_address': new_email_address,
         'initiator_id': str(admin_user.id),

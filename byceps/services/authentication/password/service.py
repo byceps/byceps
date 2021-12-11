@@ -17,7 +17,7 @@ from werkzeug.security import (
 from ....database import db
 from ....typing import UserID
 
-from ...user import event_service as user_event_service
+from ...user import log_service as user_log_service
 
 from ..session import service as session_service
 
@@ -54,7 +54,7 @@ def update_password_hash(
     credential.password_hash = generate_password_hash(password)
     credential.updated_at = datetime.utcnow()
 
-    event = user_event_service.build_event(
+    event = user_log_service.build_log_entry(
         'password-updated',
         user_id,
         {

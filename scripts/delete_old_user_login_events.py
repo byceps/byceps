@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 import click
 
-from byceps.services.user import event_service as user_event_service
+from byceps.services.user import log_service as user_log_service
 
 from _util import call_with_app_context
 
@@ -26,7 +26,9 @@ def execute(minimum_age_in_days) -> None:
         f'(i.e. before {occurred_before:%Y-%m-%d %H:%M:%S}) ...'
     )
 
-    num_deleted = user_event_service.delete_user_login_events(occurred_before)
+    num_deleted = user_log_service.delete_user_login_log_entries(
+        occurred_before
+    )
 
     click.secho(f'{num_deleted} user login events deleted.')
 

@@ -23,7 +23,7 @@ from byceps.services.newsletter import (
     service as newsletter_service,
 )
 from byceps.services.user.dbmodels.user import User as DbUser
-from byceps.services.user import event_service, service as user_service
+from byceps.services.user import log_service, service as user_service
 from byceps.services.verification_token.dbmodels import Token as DbToken
 from byceps.services.verification_token.transfer.models import (
     Purpose as TokenPurpose,
@@ -127,8 +127,8 @@ def test_create(
     assert not user.initialized
     assert not user.deleted
 
-    # events
-    assert_creation_event_created(user.id, site.id)
+    # log entries
+    assert_creation_log_entry_created(user.id, site.id)
 
     # password
     assert_password_credentials_created(user.id)
@@ -241,13 +241,15 @@ def is_subscribed_to_newsletter(user_id, brand_id):
     return newsletter_service.is_subscribed(user_id, brand_id)
 
 
-def assert_creation_event_created(user_id, site_id):
-    events = event_service.get_events_of_type_for_user(user_id, 'user-created')
-    assert len(events) == 1
+def assert_creation_log_entry_created(user_id, site_id):
+    log_entries = log_service.get_log_entries_of_type_for_user(
+        user_id, 'user-created'
+    )
+    assert len(log_entries) == 1
 
-    first_event = events[0]
-    assert first_event.event_type == 'user-created'
-    assert first_event.data == {'site_id': site_id}
+    first_log_entry = log_entries[0]
+    assert first_log_entry.event_type == 'user-created'
+    assert first_log_entry.data == {'site_id': site_id}
 
 
 def assert_password_credentials_created(user_id):

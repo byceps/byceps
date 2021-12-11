@@ -19,7 +19,7 @@ from ...typing import UserID
 from ..authentication.password import service as password_service
 from ..site.transfer.models import SiteID
 
-from . import email_address_service, event_service
+from . import email_address_service, log_service
 from .dbmodels.detail import UserDetail as DbUserDetail
 from .dbmodels.user import User as DbUser
 from . import service as user_service
@@ -110,7 +110,7 @@ def create_user(
         event_data['initiator_id'] = str(creator.id)
     if site_id is not None:
         event_data['site_id'] = site_id
-    event_service.create_event(
+    log_service.create_entry(
         'user-created', user.id, event_data, occurred_at=created_at
     )
 

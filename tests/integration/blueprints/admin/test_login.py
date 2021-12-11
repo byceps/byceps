@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.authentication.session import service as session_service
-from byceps.services.user import event_service
+from byceps.services.user import log_service
 
 
 @pytest.fixture
@@ -27,8 +27,10 @@ def test_login_succeeds(client, make_admin):
 
     user = make_admin(screen_name, permission_ids, password=password)
 
-    login_events_before = event_service.get_events_of_type_for_user(user.id, 'user-logged-in')
-    assert len(login_events_before) == 0
+    login_log_entries_before = log_service.get_log_entries_of_type_for_user(
+        user.id, 'user-logged-in'
+    )
+    assert len(login_log_entries_before) == 0
 
     assert session_service.find_recent_login(user.id) is None
 
@@ -43,10 +45,12 @@ def test_login_succeeds(client, make_admin):
     assert response.status_code == 204
     assert response.location is None
 
-    login_events_after = event_service.get_events_of_type_for_user(user.id, 'user-logged-in')
-    assert len(login_events_after) == 1
-    login_event = login_events_after[0]
-    assert login_event.data == {'ip_address': '127.0.0.1'}
+    login_log_entries_after = log_service.get_log_entries_of_type_for_user(
+        user.id, 'user-logged-in'
+    )
+    assert len(login_log_entries_after) == 1
+    login_log_entry = login_log_entries_after[0]
+    assert login_log_entry.data == {'ip_address': '127.0.0.1'}
 
     assert session_service.find_recent_login(user.id) is not None
 

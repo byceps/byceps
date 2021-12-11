@@ -30,7 +30,7 @@ from byceps.services.consent.dbmodels.consent import Consent
 from byceps.services.newsletter.dbmodels import (
     SubscriptionUpdate as NewsletterSubscriptionUpdate,
 )
-from byceps.services.user.dbmodels.event import UserEvent as DbUserEvent
+from byceps.services.user.dbmodels.log import UserLogEntry as DbUserLogEntry
 from byceps.services.user import service as user_service
 from byceps.services.user_avatar.dbmodels import (
     AvatarSelection as UserAvatarSelection,
@@ -70,7 +70,7 @@ def execute(dry_run, user_ids) -> None:
         delete_newsletter_subscription_updates,
     )
     delete('user avatar selections', delete_user_avatar_selections)
-    delete('user events', delete_user_events)
+    delete('user log entries', delete_user_log_entries)
     delete('verification tokens', delete_verification_tokens)
 
     if not dry_run:
@@ -145,14 +145,14 @@ def delete_user_avatar_selections(user_ids: set[UserID]) -> int:
     return _execute_delete_for_users_query(UserAvatarSelection, user_ids)
 
 
-def delete_user_events(user_ids: set[UserID]) -> int:
-    """Delete user events (execpt for those that justify the deletion)
-    for the given users.
+def delete_user_log_entries(user_ids: set[UserID]) -> int:
+    """Delete user log entries (except for those that justify the
+    deletion) for the given users.
     """
     return (
-        db.session.query(DbUserEvent)
-        .filter(DbUserEvent.user_id.in_(user_ids))
-        .filter(DbUserEvent.event_type != 'user-deleted')
+        db.session.query(DbUserLogEntry)
+        .filter(DbUserLogEntry.user_id.in_(user_ids))
+        .filter(DbUserLogEntry.event_type != 'user-deleted')
         .delete(synchronize_session=False)
     )
 

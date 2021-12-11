@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 from flask_babel import gettext
 
-from ....services.user import event_service as user_event_service
+from ....services.user import log_service as user_log_service
 from ....services.verification_token import (
     service as verification_token_service,
 )
@@ -56,7 +56,9 @@ def delete_old_login_events():
     minimum_age_in_days = 90
     occurred_before = now - timedelta(days=minimum_age_in_days)
 
-    num_deleted = user_event_service.delete_user_login_events(occurred_before)
+    num_deleted = user_log_service.delete_user_login_log_entries(
+        occurred_before
+    )
 
     flash_success(
         gettext(

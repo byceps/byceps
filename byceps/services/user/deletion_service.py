@@ -14,7 +14,7 @@ from ...typing import UserID
 
 from ..authorization import service as authorization_service
 
-from . import event_service
+from . import log_service
 from .dbmodels.user import User as DbUser
 from . import service as user_service
 
@@ -31,7 +31,7 @@ def delete_account(
     user.deleted = True
     _anonymize_account(user)
 
-    event = event_service.build_event(
+    event = log_service.build_log_entry(
         'user-deleted',
         user.id,
         {

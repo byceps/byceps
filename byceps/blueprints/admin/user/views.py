@@ -828,18 +828,20 @@ def view_events(user_id):
     """Show user's events."""
     user = _get_user_for_admin_or_404(user_id)
 
-    events = list(service.get_events(user.id))
+    log_entries = list(service.get_log_entries(user.id))
 
     include_logins = request.args.get('include_logins', default='yes') == 'yes'
     if not include_logins:
-        events = [
-            event for event in events if event['event'] != 'user-logged-in'
+        log_entries = [
+            entry
+            for entry in log_entries
+            if entry['event_type'] != 'user-logged-in'
         ]
 
     return {
         'profile_user': user,
         'user': user,
-        'events': events,
+        'log_entries': log_entries,
         'logins_included': include_logins,
     }
 

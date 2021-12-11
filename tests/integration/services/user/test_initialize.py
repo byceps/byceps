@@ -8,7 +8,7 @@ from pytest import raises
 
 from byceps.services.authorization import service as authorization_service
 from byceps.services.user import command_service as user_command_service
-from byceps.services.user import event_service
+from byceps.services.user import log_service
 
 
 @pytest.fixture(scope='module')
@@ -60,8 +60,8 @@ def test_initialize_account_as_user(
     user_before = user_command_service._get_user(user.id)
     assert not user_before.initialized
 
-    events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 1  # user creation
+    log_entries_before = log_service.get_entries_for_user(user_before.id)
+    assert len(log_entries_before) == 1  # user creation
 
     role_ids_before = authorization_service.find_role_ids_for_user(user.id)
     assert role_ids_before == set()
@@ -75,16 +75,16 @@ def test_initialize_account_as_user(
     user_after = user_command_service._get_user(user.id)
     assert user_after.initialized
 
-    events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 3
+    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    assert len(log_entries_after) == 3
 
-    user_enabled_event = events_after[1]
-    assert user_enabled_event.event_type == 'user-initialized'
-    assert user_enabled_event.data == {}
+    user_enabled_log_entry = log_entries_after[1]
+    assert user_enabled_log_entry.event_type == 'user-initialized'
+    assert user_enabled_log_entry.data == {}
 
-    role_assigned_event = events_after[2]
-    assert role_assigned_event.event_type == 'role-assigned'
-    assert role_assigned_event.data == {
+    role_assigned_log_entry = log_entries_after[2]
+    assert role_assigned_log_entry.event_type == 'role-assigned'
+    assert role_assigned_log_entry.data == {
         'role_id': 'board_user',
     }
 
@@ -103,8 +103,8 @@ def test_initialize_account_as_admin(
     user_before = user_command_service._get_user(user.id)
     assert not user_before.initialized
 
-    events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 1  # user creation
+    log_entries_before = log_service.get_entries_for_user(user_before.id)
+    assert len(log_entries_before) == 1  # user creation
 
     role_ids_before = authorization_service.find_role_ids_for_user(user.id)
     assert role_ids_before == set()
@@ -118,18 +118,18 @@ def test_initialize_account_as_admin(
     user_after = user_command_service._get_user(user.id)
     assert user_after.initialized
 
-    events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 3
+    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    assert len(log_entries_after) == 3
 
-    user_enabled_event = events_after[1]
-    assert user_enabled_event.event_type == 'user-initialized'
-    assert user_enabled_event.data == {
+    user_enabled_log_entry = log_entries_after[1]
+    assert user_enabled_log_entry.event_type == 'user-initialized'
+    assert user_enabled_log_entry.data == {
         'initiator_id': str(admin_user.id),
     }
 
-    role_assigned_event = events_after[2]
-    assert role_assigned_event.event_type == 'role-assigned'
-    assert role_assigned_event.data == {
+    role_assigned_log_entry = log_entries_after[2]
+    assert role_assigned_log_entry.event_type == 'role-assigned'
+    assert role_assigned_log_entry.data == {
         'initiator_id': str(admin_user.id),
         'role_id': 'board_user',
     }
@@ -146,8 +146,8 @@ def test_initialize_already_initialized_account(
     user_before = user_command_service._get_user(user.id)
     assert user_before.initialized
 
-    events_before = event_service.get_events_for_user(user_before.id)
-    assert len(events_before) == 1  # user creation
+    log_entries_before = log_service.get_entries_for_user(user_before.id)
+    assert len(log_entries_before) == 1  # user creation
 
     # -------------------------------- #
 
@@ -161,5 +161,5 @@ def test_initialize_already_initialized_account(
     user_after = user_command_service._get_user(user.id)
     assert user_after.initialized  # still initialized
 
-    events_after = event_service.get_events_for_user(user_after.id)
-    assert len(events_after) == 1  # no additional user events
+    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    assert len(log_entries_after) == 1  # no additional user log entries

@@ -21,12 +21,11 @@ from ....services.shop.order import service as order_service
 from ....services.site import service as site_service
 from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
 from ....services.ticketing import attendance_service, ticket_service
-from ....services.user import event_service
-from ....services.user.dbmodels.event import (
-    UserEvent as DbUserEvent,
-    UserEventData,
+from ....services.user.dbmodels.log import (
+    UserLogEntry as DbUserLogEntry,
+    UserLogEntryData,
 )
-from ....services.user import service as user_service
+from ....services.user import log_service, service as user_service
 from ....services.user.transfer.models import User
 from ....services.user_avatar import service as avatar_service
 from ....services.user_badge import badge_service as user_badge_service
@@ -86,36 +85,40 @@ def get_newsletter_subscription_states(
         yield list_, is_subscribed
 
 
-def get_events(user_id: UserID) -> Iterator[UserEventData]:
-    events = event_service.get_events_for_user(user_id)
-    events.extend(_fake_avatar_update_events(user_id))
-    events.extend(_fake_consent_events(user_id))
-    events.extend(_fake_newsletter_subscription_update_events(user_id))
-    events.extend(_get_order_events(user_id))
+def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
+    log_entries = log_service.get_entries_for_user(user_id)
+    log_entries.extend(_fake_avatar_update_log_entries(user_id))
+    log_entries.extend(_fake_consent_log_entries(user_id))
+    log_entries.extend(
+        _fake_newsletter_subscription_update_log_entries(user_id)
+    )
+    log_entries.extend(_get_order_log_entries(user_id))
 
     user_ids = {
-        event.data['initiator_id']
-        for event in events
-        if 'initiator_id' in event.data
+        entry.data['initiator_id']
+        for entry in log_entries
+        if 'initiator_id' in entry.data
     }
     users = user_service.get_users(user_ids, include_avatars=True)
     users_by_id = {str(user.id): user for user in users}
 
-    for event in events:
+    for entry in log_entries:
         data = {
-            'event': event.event_type,
-            'occurred_at': event.occurred_at,
-            'data': event.data,
+            'event_type': entry.event_type,
+            'occurred_at': entry.occurred_at,
+            'data': entry.data,
         }
 
-        additional_data = _get_additional_data(event, users_by_id)
+        additional_data = _get_additional_data(entry, users_by_id)
         data.update(additional_data)
 
         yield data
 
 
-def _fake_avatar_update_events(user_id: UserID) -> Iterator[DbUserEvent]:
-    """Yield the user's avatar updates as volatile events."""
+def _fake_avatar_update_log_entries(
+    user_id: UserID,
+) -> Iterator[DbUserLogEntry]:
+    """Yield the user's avatar updates as volatile log entries."""
     avatar_updates = avatar_service.get_avatars_uploaded_by_user(user_id)
 
     for avatar_update in avatar_updates:
@@ -124,13 +127,13 @@ def _fake_avatar_update_events(user_id: UserID) -> Iterator[DbUserEvent]:
             'url_path': avatar_update.url_path,
         }
 
-        yield DbUserEvent(
+        yield DbUserLogEntry(
             avatar_update.occurred_at, 'user-avatar-updated', user_id, data
         )
 
 
-def _fake_consent_events(user_id: UserID) -> Iterator[DbUserEvent]:
-    """Yield the user's consents as volatile events."""
+def _fake_consent_log_entries(user_id: UserID) -> Iterator[DbUserLogEntry]:
+    """Yield the user's consents as volatile log entries."""
     consents = consent_service.get_consents_by_user(user_id)
 
     subject_ids = {consent.subject_id for consent in consents}
@@ -143,15 +146,15 @@ def _fake_consent_events(user_id: UserID) -> Iterator[DbUserEvent]:
             'subject_title': subjects_titles_by_id[consent.subject_id],
         }
 
-        yield DbUserEvent(
+        yield DbUserLogEntry(
             consent.expressed_at, 'consent-expressed', user_id, data
         )
 
 
-def _fake_newsletter_subscription_update_events(
+def _fake_newsletter_subscription_update_log_entries(
     user_id: UserID,
-) -> Iterator[DbUserEvent]:
-    """Yield the user's newsletter subscription updates as volatile events."""
+) -> Iterator[DbUserLogEntry]:
+    """Yield the user's newsletter subscription updates as volatile log entries."""
     lists = newsletter_service.get_all_lists()
     lists_by_id = {list_.id: list_ for list_ in lists}
 
@@ -167,11 +170,11 @@ def _fake_newsletter_subscription_update_events(
             'initiator_id': str(user_id),
         }
 
-        yield DbUserEvent(update.expressed_at, event_type, user_id, data)
+        yield DbUserLogEntry(update.expressed_at, event_type, user_id, data)
 
 
-def _get_order_events(initiator_id: UserID) -> Iterator[DbUserEvent]:
-    """Yield orders events initiated by the user."""
+def _get_order_log_entries(initiator_id: UserID) -> Iterator[DbUserLogEntry]:
+    """Yield orders log entries initiated by the user."""
     event_types = frozenset(
         [
             'order-canceled-after-paid',
@@ -196,15 +199,15 @@ def _get_order_events(initiator_id: UserID) -> Iterator[DbUserEvent]:
             'order_number': order.order_number,
         }
 
-        yield DbUserEvent(
+        yield DbUserLogEntry(
             entry.occurred_at, entry.event_type, initiator_id, data
         )
 
 
 def _get_additional_data(
-    event: DbUserEvent, users_by_id: dict[str, User]
+    log_entry: DbUserLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
-    if event.event_type in {
+    if log_entry.event_type in {
         'user-created',
         'user-deleted',
         'user-details-updated',
@@ -230,33 +233,33 @@ def _get_additional_data(
         'role-deassigned',
         'user-badge-awarded',
     }:
-        yield from _get_additional_data_for_user_initiated_event(
-            event, users_by_id
+        yield from _get_additional_data_for_user_initiated_log_entry(
+            log_entry, users_by_id
         )
 
-    if event.event_type == 'user-badge-awarded':
-        badge = user_badge_service.find_badge(event.data['badge_id'])
+    if log_entry.event_type == 'user-badge-awarded':
+        badge = user_badge_service.find_badge(log_entry.data['badge_id'])
         yield 'badge', badge
 
-    if event.event_type == 'user-details-updated':
+    if log_entry.event_type == 'user-details-updated':
         details = {
             k: v
-            for k, v in event.data.items()
+            for k, v in log_entry.data.items()
             if k.startswith('old_') or k.startswith('new_')
         }
         yield 'details', details
 
-    if event.event_type in {'user-created', 'user-logged-in'}:
-        site_id = event.data.get('site_id')
+    if log_entry.event_type in {'user-created', 'user-logged-in'}:
+        site_id = log_entry.data.get('site_id')
         if site_id:
             site = site_service.find_site(site_id)
             if site is not None:
                 yield 'site', site
 
 
-def _get_additional_data_for_user_initiated_event(
-    event: DbUserEvent, users_by_id: dict[str, User]
+def _get_additional_data_for_user_initiated_log_entry(
+    log_entry: DbUserLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
-    initiator_id = event.data.get('initiator_id')
+    initiator_id = log_entry.data.get('initiator_id')
     if initiator_id is not None:
         yield 'initiator', users_by_id[initiator_id]
