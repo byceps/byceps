@@ -366,7 +366,9 @@ def _render_item_version(version, item):
     }
 
     try:
-        rendered_body = news_html_service.render_body(item, version.body)
+        rendered_body = news_html_service.render_body(
+            item, version.body, version.body_format
+        )
 
         context.update(
             {

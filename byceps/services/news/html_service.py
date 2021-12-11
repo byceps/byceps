@@ -15,18 +15,22 @@ from typing import Any, Optional
 from flask import current_app
 from flask_babel import gettext
 from markupsafe import Markup
+import mistletoe
 
 from ...util.iterables import find
 from ...util.templating import load_template
 
-from .transfer.models import Image, Item
+from .transfer.models import BodyFormat, Image, Item
 
 
-def render_body(item: Item, raw_body: str) -> str:
+def render_body(item: Item, raw_body: str, body_format: BodyFormat) -> str:
     """Render item's raw body to HTML."""
     template = load_template(raw_body)
     render_image = partial(_render_image_by_number, item.images)
     html = template.render(render_image=render_image)
+
+    if body_format == BodyFormat.markdown:
+        html = mistletoe.markdown(html)
 
     if item.featured_image_id:
         featured_image = find(

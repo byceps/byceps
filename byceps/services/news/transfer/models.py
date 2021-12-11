@@ -28,7 +28,7 @@ ItemVersionID = NewType('ItemVersionID', UUID)
 ImageID = NewType('ImageID', UUID)
 
 
-BodyFormat = Enum('BodyFormat', ['html'])
+BodyFormat = Enum('BodyFormat', ['html', 'markdown'])
 
 
 @dataclass(frozen=True)
