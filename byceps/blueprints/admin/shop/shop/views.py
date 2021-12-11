@@ -56,10 +56,24 @@ def dashboard(shop_id):
     }
 
 
+_LATEST_LOG_ENTRIES_EVENT_TYPES = frozenset(
+    [
+        'order-canceled-after-paid',
+        'order-canceled-before-paid',
+        'order-note-added',
+        'order-paid',
+        'order-placed',
+        'order-placed-confirmation-email-resent',
+    ]
+)
+
+
 def _get_latest_log_entries(
     shop_id: ShopID, limit=8
 ) -> list[OrderLogEntryData]:
-    log_entries = log_service.get_latest_entries_for_shop(shop_id, limit)
+    log_entries = log_service.get_latest_entries_for_shop(
+        shop_id, _LATEST_LOG_ENTRIES_EVENT_TYPES, limit
+    )
     return list(enrich_log_entry_data(log_entries))
 
 

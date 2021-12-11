@@ -90,13 +90,17 @@ def get_entries_by_initiator(
 
 
 def get_latest_entries_for_shop(
-    shop_id: ShopID, limit: int
+    shop_id: ShopID, event_types: frozenset[str], limit: int
 ) -> list[OrderLogEntry]:
-    """Return the most recent log entries for that shop."""
+    """Return the most recent log entries of these types for that shop."""
+    if not event_types:
+        return []
+
     db_entries = db.session.execute(
         select(DbOrderLogEntry)
         .join(DbOrder)
         .filter(DbOrder.shop_id == shop_id)
+        .filter(DbOrderLogEntry.event_type.in_(event_types))
         .order_by(DbOrderLogEntry.occurred_at.desc())
         .limit(limit)
     ).scalars().all()
