@@ -177,8 +177,8 @@ def get_badges_awarded_to_users(
 
 def _db_entity_to_badge_awarding(entity: DbBadgeAwarding) -> BadgeAwarding:
     return BadgeAwarding(
-        entity.id,
-        entity.badge_id,
-        entity.user_id,
-        entity.awarded_at
+        id=entity.id,
+        badge_id=entity.badge_id,
+        user_id=entity.user_id,
+        awarded_at=entity.awarded_at,
     )
