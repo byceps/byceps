@@ -6,13 +6,16 @@ byceps.blueprints.admin.shop.shop.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from flask import abort, request, url_for
 from flask_babel import gettext
 
 from .....services.brand import service as brand_service
 from .....services.shop.order import log_service, service as order_service
+from .....services.shop.order.transfer.log import OrderLogEntryData
 from .....services.shop.order.transfer.order import PaymentState
 from .....services.shop.shop import service as shop_service
+from .....services.shop.shop.transfer.models import ShopID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
@@ -41,8 +44,7 @@ def dashboard(shop_id):
         order_service.count_orders_per_payment_state(shop.id)
     )
 
-    latest_log_entries = log_service.get_latest_entries_for_shop(shop.id, 8)
-    log_entries = enrich_log_entry_data(latest_log_entries)
+    log_entries = _get_latest_log_entries(shop.id)
 
     return {
         'shop': shop,
@@ -52,6 +54,13 @@ def dashboard(shop_id):
         'log_entries': log_entries,
         'render_order_payment_method': order_service.find_payment_method_label,
     }
+
+
+def _get_latest_log_entries(
+    shop_id: ShopID, limit=8
+) -> list[OrderLogEntryData]:
+    log_entries = log_service.get_latest_entries_for_shop(shop_id, limit)
+    return list(enrich_log_entry_data(log_entries))
 
 
 @blueprint.get('/for_shop/<shop_id>')
