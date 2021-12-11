@@ -37,11 +37,11 @@ a.dashboard-section-link:hover {
   margin-bottom: var(--inner-gutter);
 }
 
-.grid .cell.higher {
+.grid .cell--higher {
   grid-row: span 2;
 }
 
-.grid .cell.wider {
+.grid .cell--wider {
   grid-column: span 2;
 }
 

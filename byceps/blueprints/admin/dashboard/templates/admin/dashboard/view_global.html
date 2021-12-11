@@ -23,10 +23,10 @@
     {{ render_bigstats_cell(user_count|numberformat, _('Users'), href=url_for('user_admin.index'), icon_name='users') }}
     {{ render_bigstats_cell(recent_users_count, _('new users in the last 7 days'), href=url_for('user_admin.index'), icon_name='users', color='#008800') }}
     {{ render_bigstats_cell(uninitialized_user_count, _('uninitialized users'), href=url_for('user_admin.index', only='uninitialized'), icon_name='users', color='#1199ff') }}
-    {%- call render_cell('users', 'higher') %}
+    {%- call render_cell('users', 'cell--higher') %}
 {% include 'admin/dashboard/_recent_users.html' %}
     {%- endcall %}
-    {%- call render_cell('birthday', 'wider') %}
+    {%- call render_cell('birthday', 'cell--wider') %}
 {% include 'admin/dashboard/_birthdays.html' %}
     {%- endcall %}
   </div>
