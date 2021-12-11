@@ -10,6 +10,7 @@ from byceps.services.news import (
     channel_service as news_channel_service,
     service as news_service,
 )
+from byceps.services.news.transfer.models import BodyFormat
 from byceps.signals import news as news_signals
 
 from .helpers import (
@@ -62,8 +63,11 @@ def item(channel, make_user):
     slug = 'zieh-dir-das-rein'
     title = 'Zieh dir das rein!'
     body = 'any body'
+    body_format = BodyFormat.html
 
-    item = news_service.create_item(channel.id, slug, editor.id, title, body)
+    item = news_service.create_item(
+        channel.id, slug, editor.id, title, body, body_format
+    )
 
     yield item
 

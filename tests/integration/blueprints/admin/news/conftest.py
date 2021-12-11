@@ -6,6 +6,7 @@
 import pytest
 
 from byceps.services.news import channel_service, service as item_service
+from byceps.services.news.transfer.models import BodyFormat
 
 from tests.helpers import login_user
 
@@ -50,6 +51,7 @@ def item(channel, news_admin):
         news_admin.id,
         'Save the Date!',
         'Party will be next year.',
+        BodyFormat.html,
     )
 
     yield item

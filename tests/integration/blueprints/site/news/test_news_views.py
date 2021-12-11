@@ -9,6 +9,7 @@ from byceps.services.news import (
     channel_service as news_channel_service,
     service as news_service,
 )
+from byceps.services.news.transfer.models import BodyFormat
 from byceps.services.site import service as site_service
 
 from tests.helpers import create_site, http_client
@@ -24,7 +25,9 @@ def news_channel(brand):
     channel_id = f'{brand.id}-public'
     url_prefix = 'https://www.acmecon.test/news/'
 
-    channel = news_channel_service.create_channel(brand.id, channel_id, url_prefix)
+    channel = news_channel_service.create_channel(
+        brand.id, channel_id, url_prefix
+    )
 
     yield channel
 
@@ -36,7 +39,11 @@ def unpublished_news_item(news_channel, editor):
     slug = 'top-article'
     title = 'You will not believe this! [WIP]'
     body = 'Well, …'
-    item = news_service.create_item(news_channel.id, slug, editor.id, title, body)
+    body_format = BodyFormat.html
+
+    item = news_service.create_item(
+        news_channel.id, slug, editor.id, title, body, body_format
+    )
 
     yield item
 
@@ -48,7 +55,11 @@ def published_news_item(news_channel, editor):
     slug = 'first-post'
     title = 'First Post!'
     body = 'Kann losgehen.'
-    item = news_service.create_item(news_channel.id, slug, editor.id, title, body)
+    body_format = BodyFormat.html
+
+    item = news_service.create_item(
+        news_channel.id, slug, editor.id, title, body, body_format
+    )
     news_service.publish_item(item.id)
 
     yield item
@@ -86,7 +97,9 @@ def test_view_single_published_news_item(news_site_app, published_news_item):
     assert response.status_code == 200
 
 
-def test_view_single_unpublished_news_item(news_site_app, unpublished_news_item):
+def test_view_single_unpublished_news_item(
+    news_site_app, unpublished_news_item
+):
     with http_client(news_site_app) as client:
         response = client.get(f'/news/{unpublished_news_item.slug}')
 

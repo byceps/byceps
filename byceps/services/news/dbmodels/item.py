@@ -7,6 +7,12 @@ byceps.services.news.dbmodels.item
 """
 
 from datetime import datetime
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
@@ -16,7 +22,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import User
 
-from ..transfer.models import ChannelID
+from ..transfer.models import BodyFormat, ChannelID
 
 from .channel import Channel
 
@@ -76,15 +82,31 @@ class ItemVersion(db.Model):
     creator = db.relationship(User)
     title = db.Column(db.UnicodeText, nullable=False)
     body = db.Column(db.UnicodeText, nullable=False)
+    _body_format = db.Column('body_format', db.UnicodeText, nullable=False)
     image_url_path = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(
-        self, item: Item, creator_id: UserID, title: str, body: str
+        self,
+        item: Item,
+        creator_id: UserID,
+        title: str,
+        body: str,
+        body_format: BodyFormat,
     ) -> None:
         self.item = item
         self.creator_id = creator_id
         self.title = title
         self.body = body
+        self.body_format = body_format
+
+    @hybrid_property
+    def body_format(self) -> BodyFormat:
+        return BodyFormat[self._body_format]
+
+    @body_format.setter
+    def body_format(self, body_format: BodyFormat) -> None:
+        assert body_format is not None
+        self._body_format = body_format.name
 
     @property
     def is_current(self) -> bool:

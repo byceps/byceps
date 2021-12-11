@@ -9,6 +9,7 @@ byceps.services.news.transfer.models
 from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
+from enum import Enum
 from typing import NewType, Optional
 from uuid import UUID
 
@@ -25,6 +26,9 @@ ItemVersionID = NewType('ItemVersionID', UUID)
 
 
 ImageID = NewType('ImageID', UUID)
+
+
+BodyFormat = Enum('BodyFormat', ['html'])
 
 
 @dataclass(frozen=True)
@@ -57,6 +61,7 @@ class Item:
     published: bool
     title: str
     body: str
+    body_format: BodyFormat
     external_url: str
     image_url_path: Optional[str]
     images: list[Image]

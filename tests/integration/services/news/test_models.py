@@ -9,6 +9,7 @@ from byceps.services.news import (
     channel_service as news_channel_service,
     service as news_service,
 )
+from byceps.services.news.transfer.models import BodyFormat
 
 
 @pytest.fixture(scope='module')
@@ -75,9 +76,16 @@ def test_image_url_without_image(news_item_without_image):
 def create_item(channel_id, slug, editor_id, *, image_url_path=None):
     title = 'the title'
     body = 'the body'
+    body_format = BodyFormat.html
 
     item = news_service.create_item(
-        channel_id, slug, editor_id, title, body, image_url_path=image_url_path
+        channel_id,
+        slug,
+        editor_id,
+        title,
+        body,
+        body_format,
+        image_url_path=image_url_path,
     )
 
     # Return aggregated version of item.

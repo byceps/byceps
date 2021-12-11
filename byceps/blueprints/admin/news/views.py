@@ -17,7 +17,7 @@ from ....services.news import channel_service as news_channel_service
 from ....services.news import html_service as news_html_service
 from ....services.news import image_service as news_image_service
 from ....services.news import service as news_item_service
-from ....services.news.transfer.models import Channel
+from ....services.news.transfer.models import BodyFormat, Channel
 from ....services.site import service as site_service
 from ....services.text_diff import service as text_diff_service
 from ....services.user import service as user_service
@@ -472,10 +472,17 @@ def item_create(channel_id):
     creator = g.user
     title = form.title.data.strip()
     body = form.body.data.strip()
+    body_format = BodyFormat.html
     image_url_path = form.image_url_path.data.strip()
 
     item = news_item_service.create_item(
-        channel.id, slug, creator.id, title, body, image_url_path=image_url_path
+        channel.id,
+        slug,
+        creator.id,
+        title,
+        body,
+        body_format,
+        image_url_path=image_url_path,
     )
 
     flash_success(
@@ -520,10 +527,17 @@ def item_update(item_id):
     slug = form.slug.data.strip().lower()
     title = form.title.data.strip()
     body = form.body.data.strip()
+    body_format = BodyFormat.html
     image_url_path = form.image_url_path.data.strip()
 
     item = news_item_service.update_item(
-        item.id, slug, creator.id, title, body, image_url_path=image_url_path
+        item.id,
+        slug,
+        creator.id,
+        title,
+        body,
+        body_format,
+        image_url_path=image_url_path,
     )
 
     flash_success(

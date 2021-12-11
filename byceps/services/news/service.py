@@ -29,6 +29,7 @@ from .dbmodels.item import (
 )
 from . import image_service
 from .transfer.models import (
+    BodyFormat,
     ChannelID,
     Headline,
     ImageID,
@@ -44,6 +45,7 @@ def create_item(
     creator_id: UserID,
     title: str,
     body: str,
+    body_format: BodyFormat,
     *,
     image_url_path: Optional[str] = None,
 ) -> Item:
@@ -54,7 +56,12 @@ def create_item(
     db.session.add(item)
 
     version = _create_version(
-        item, creator_id, title, body, image_url_path=image_url_path
+        item,
+        creator_id,
+        title,
+        body,
+        body_format,
+        image_url_path=image_url_path,
     )
     db.session.add(version)
 
@@ -72,6 +79,7 @@ def update_item(
     creator_id: UserID,
     title: str,
     body: str,
+    body_format: BodyFormat,
     *,
     image_url_path: Optional[str] = None,
 ) -> Item:
@@ -83,7 +91,12 @@ def update_item(
     item.slug = slug
 
     version = _create_version(
-        item, creator_id, title, body, image_url_path=image_url_path
+        item,
+        creator_id,
+        title,
+        body,
+        body_format,
+        image_url_path=image_url_path,
     )
     db.session.add(version)
 
@@ -99,10 +112,11 @@ def _create_version(
     creator_id: UserID,
     title: str,
     body: str,
+    body_format: BodyFormat,
     *,
     image_url_path: Optional[str] = None,
 ) -> DbItemVersion:
-    version = DbItemVersion(item, creator_id, title, body)
+    version = DbItemVersion(item, creator_id, title, body, body_format)
 
     if image_url_path:
         version.image_url_path = image_url_path
@@ -366,6 +380,7 @@ def _db_entity_to_item(
         published=db_item.published_at is not None,
         title=db_item.current_version.title,
         body=db_item.current_version.body,
+        body_format=db_item.current_version.body_format,
         external_url=external_url,
         image_url_path=image_url_path,
         images=images,
