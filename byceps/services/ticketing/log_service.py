@@ -9,9 +9,12 @@ byceps.services.ticketing.log_service
 from __future__ import annotations
 from datetime import datetime
 
+from sqlalchemy import select
+
 from ...database import db
 
-from .dbmodels.log import TicketLogEntry as DbTicketLogEntry, TicketLogEntryData
+from .dbmodels.log import TicketLogEntry as DbTicketLogEntry
+from .transfer.log import TicketLogEntry, TicketLogEntryData
 from .transfer.models import TicketID
 
 
@@ -34,10 +37,22 @@ def build_log_entry(
     return DbTicketLogEntry(now, event_type, ticket_id, data)
 
 
-def get_entries_for_ticket(ticket_id: TicketID) -> list[DbTicketLogEntry]:
+def get_entries_for_ticket(ticket_id: TicketID) -> list[TicketLogEntry]:
     """Return the log entries for that ticket."""
-    return db.session \
-        .query(DbTicketLogEntry) \
-        .filter_by(ticket_id=ticket_id) \
-        .order_by(DbTicketLogEntry.occurred_at) \
-        .all()
+    db_entries = db.session.execute(
+        select(DbTicketLogEntry)
+        .filter_by(ticket_id=ticket_id)
+        .order_by(DbTicketLogEntry.occurred_at)
+    ).scalars().all()
+
+    return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
+
+
+def _db_entity_to_entry(db_entry: DbTicketLogEntry) -> TicketLogEntry:
+    return TicketLogEntry(
+        id=db_entry.id,
+        occurred_at=db_entry.occurred_at,
+        event_type=db_entry.event_type,
+        ticket_id=db_entry.ticket_id,
+        data=db_entry.data.copy(),
+    )

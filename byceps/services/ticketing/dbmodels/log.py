@@ -7,15 +7,12 @@ byceps.services.ticketing.dbmodels.log
 """
 
 from datetime import datetime
-from typing import Any, Dict
 
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
+from ..transfer.log import TicketLogEntryData
 from ..transfer.models import TicketID
-
-
-TicketLogEntryData = Dict[str, Any]
 
 
 class TicketLogEntry(db.Model):

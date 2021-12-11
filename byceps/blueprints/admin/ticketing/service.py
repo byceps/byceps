@@ -7,15 +7,15 @@ byceps.blueprints.admin.ticketing.service
 """
 
 from __future__ import annotations
-from typing import Any, Iterator, Optional, Sequence
+from typing import Any, Iterable, Iterator, Optional
+from uuid import UUID
 
 from ....services.seating import seat_service
-from ....services.ticketing import log_service
-from ....services.ticketing.dbmodels.log import (
-    TicketLogEntry as DbTicketLogEntry,
+from ....services.ticketing import log_service, ticket_service
+from ....services.ticketing.transfer.log import (
+    TicketLogEntry,
     TicketLogEntryData,
 )
-from ....services.ticketing import ticket_service
 from ....services.ticketing.transfer.models import TicketID
 from ....services.user import service as user_service
 from ....services.user.transfer.models import User
@@ -39,18 +39,21 @@ def get_log_entries(ticket_id: TicketID) -> Iterator[TicketLogEntryData]:
         yield data
 
 
-def _fake_ticket_creation_log_entry(ticket_id: TicketID) -> DbTicketLogEntry:
+def _fake_ticket_creation_log_entry(ticket_id: TicketID) -> TicketLogEntry:
     ticket = ticket_service.get_ticket(ticket_id)
-
     data: TicketLogEntryData = {}
 
-    return DbTicketLogEntry(
-        ticket.created_at, 'ticket-created', ticket.id, data
+    return TicketLogEntry(
+        id=UUID('00000000-0000-0000-0000-000000000001'),
+        occurred_at=ticket.created_at,
+        event_type='ticket-created',
+        ticket_id=ticket.id,
+        data=data,
     )
 
 
 def _get_users_by_id(
-    log_entries: Sequence[DbTicketLogEntry],
+    log_entries: Iterable[TicketLogEntry],
 ) -> dict[str, User]:
     user_ids = set(
         _find_values_for_keys(
@@ -70,7 +73,7 @@ def _get_users_by_id(
 
 
 def _find_values_for_keys(
-    log_entries: Sequence[DbTicketLogEntry], keys: set[str]
+    log_entries: Iterable[TicketLogEntry], keys: set[str]
 ) -> Iterator[Any]:
     for log_entry in log_entries:
         for key in keys:
@@ -80,7 +83,7 @@ def _find_values_for_keys(
 
 
 def _get_additional_data(
-    log_entry: DbTicketLogEntry, users_by_id: dict[str, User]
+    log_entry: TicketLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
     yield from _get_initiators(log_entry, users_by_id)
 
@@ -121,7 +124,7 @@ def _get_additional_data(
 
 
 def _get_initiators(
-    log_entry: DbTicketLogEntry, users_by_id: dict[str, User]
+    log_entry: TicketLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
     if log_entry.event_type in {
         'seat-manager-appointed',
@@ -143,7 +146,7 @@ def _get_initiators(
 
 
 def _get_additional_data_for_user_initiated_event(
-    log_entry: DbTicketLogEntry, users_by_id: dict[str, User]
+    log_entry: TicketLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
     initiator_id = log_entry.data.get('initiator_id')
     if initiator_id is not None:
@@ -151,7 +154,7 @@ def _get_additional_data_for_user_initiated_event(
 
 
 def _get_additional_data_for_seat_occupied_event(
-    log_entry: DbTicketLogEntry,
+    log_entry: TicketLogEntry,
 ) -> Iterator[tuple[str, Any]]:
     seat_id = log_entry.data['seat_id']
     seat = seat_service.get_seat(seat_id)
@@ -164,7 +167,7 @@ def _get_additional_data_for_seat_occupied_event(
 
 
 def _get_additional_data_for_seat_released_event(
-    log_entry: DbTicketLogEntry,
+    log_entry: TicketLogEntry,
 ) -> Iterator[tuple[str, Any]]:
     seat_id = log_entry.data.get('seat_id')
     if seat_id:
@@ -173,7 +176,7 @@ def _get_additional_data_for_seat_released_event(
 
 
 def _get_additional_data_for_ticket_revoked_event(
-    log_entry: DbTicketLogEntry,
+    log_entry: TicketLogEntry,
 ) -> Iterator[tuple[str, Any]]:
     reason = log_entry.data.get('reason')
     if reason:
@@ -181,7 +184,7 @@ def _get_additional_data_for_ticket_revoked_event(
 
 
 def _look_up_user_for_id(
-    log_entry: DbTicketLogEntry,
+    log_entry: TicketLogEntry,
     users_by_id: dict[str, User],
     user_id_key: str,
     user_key: str,
