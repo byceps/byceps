@@ -195,8 +195,8 @@ def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
             'order-placed',
         ]
     )
-    log_entries = order_log_service.get_entries_of_types_by_initiator(
-        event_types, initiator_id
+    log_entries = order_log_service.get_entries_by_initiator(
+        initiator_id, event_types
     )
 
     order_ids = frozenset([entry.order_id for entry in log_entries])

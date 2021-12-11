@@ -72,8 +72,8 @@ def get_entries_for_order(order_id: OrderID) -> list[OrderLogEntry]:
     return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
 
 
-def get_entries_of_types_by_initiator(
-    event_types: frozenset[str], initiator_id: UserID
+def get_entries_by_initiator(
+    initiator_id: UserID, event_types: frozenset[str]
 ) -> list[OrderLogEntry]:
     """Return the log entries of these types initiated by the user."""
     if not event_types:
