@@ -10,10 +10,13 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional
 
+from sqlalchemy import select
+
 from ...database import db
 from ...typing import UserID
 
-from .dbmodels.log import UserLogEntry as DbUserLogEntry, UserLogEntryData
+from .dbmodels.log import UserLogEntry as DbUserLogEntry
+from .transfer.log import UserLogEntry, UserLogEntryData
 
 
 def create_entry(
@@ -44,25 +47,29 @@ def build_log_entry(
     return DbUserLogEntry(occurred_at, event_type, user_id, data)
 
 
-def get_entries_for_user(user_id: UserID) -> list[DbUserLogEntry]:
+def get_entries_for_user(user_id: UserID) -> list[UserLogEntry]:
     """Return the log entries for that user."""
-    return db.session \
-        .query(DbUserLogEntry) \
-        .filter_by(user_id=user_id) \
-        .order_by(DbUserLogEntry.occurred_at) \
-        .all()
+    db_entries = db.session.execute(
+        select(DbUserLogEntry)
+        .filter_by(user_id=user_id)
+        .order_by(DbUserLogEntry.occurred_at)
+    ).scalars().all()
+
+    return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
 
 
 def get_log_entries_of_type_for_user(
     user_id: UserID, event_type: str
-) -> list[DbUserLogEntry]:
+) -> list[UserLogEntry]:
     """Return the log entries of that type for that user."""
-    return db.session \
-        .query(DbUserLogEntry) \
-        .filter_by(user_id=user_id) \
-        .filter_by(event_type=event_type) \
-        .order_by(DbUserLogEntry.occurred_at) \
-        .all()
+    db_entries = db.session.execute(
+        select(DbUserLogEntry)
+        .filter_by(user_id=user_id)
+        .filter_by(event_type=event_type)
+        .order_by(DbUserLogEntry.occurred_at)
+    ).scalars().all()
+
+    return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
 
 
 def delete_user_login_log_entries(occurred_before: datetime) -> int:
@@ -79,3 +86,13 @@ def delete_user_login_log_entries(occurred_before: datetime) -> int:
     db.session.commit()
 
     return num_deleted
+
+
+def _db_entity_to_entry(db_entry: DbUserLogEntry) -> UserLogEntry:
+    return UserLogEntry(
+        id=db_entry.id,
+        occurred_at=db_entry.occurred_at,
+        event_type=db_entry.event_type,
+        user_id=db_entry.user_id,
+        data=db_entry.data.copy(),
+    )

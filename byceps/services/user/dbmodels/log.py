@@ -7,14 +7,12 @@ byceps.services.user.dbmodels.log
 """
 
 from datetime import datetime
-from typing import Any, Dict
 
 from ....database import db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-
-UserLogEntryData = Dict[str, Any]
+from ..transfer.log import UserLogEntryData
 
 
 class UserLogEntry(db.Model):

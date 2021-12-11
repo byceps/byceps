@@ -26,9 +26,9 @@ from ..authorization import service as authorization_service
 from ..authorization.transfer.models import RoleID
 
 from .dbmodels.detail import UserDetail as DbUserDetail
-from .dbmodels.log import UserLogEntryData
 from .dbmodels.user import User as DbUser
 from . import log_service, service as user_service
+from .transfer.log import UserLogEntryData
 from .transfer.models import User
 
 

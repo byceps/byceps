@@ -10,6 +10,7 @@ from __future__ import annotations
 from collections import defaultdict
 from operator import attrgetter
 from typing import Any, Iterator, Sequence
+from uuid import UUID
 
 from ....services.consent import consent_service, subject_service
 from ....services.newsletter import service as newsletter_service
@@ -21,11 +22,8 @@ from ....services.shop.order import service as order_service
 from ....services.site import service as site_service
 from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
 from ....services.ticketing import attendance_service, ticket_service
-from ....services.user.dbmodels.log import (
-    UserLogEntry as DbUserLogEntry,
-    UserLogEntryData,
-)
 from ....services.user import log_service, service as user_service
+from ....services.user.transfer.log import UserLogEntry, UserLogEntryData
 from ....services.user.transfer.models import User
 from ....services.user_avatar import service as avatar_service
 from ....services.user_badge import badge_service as user_badge_service
@@ -117,7 +115,7 @@ def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
 
 def _fake_avatar_update_log_entries(
     user_id: UserID,
-) -> Iterator[DbUserLogEntry]:
+) -> Iterator[UserLogEntry]:
     """Yield the user's avatar updates as volatile log entries."""
     avatar_updates = avatar_service.get_avatars_uploaded_by_user(user_id)
 
@@ -127,12 +125,16 @@ def _fake_avatar_update_log_entries(
             'url_path': avatar_update.url_path,
         }
 
-        yield DbUserLogEntry(
-            avatar_update.occurred_at, 'user-avatar-updated', user_id, data
+        yield UserLogEntry(
+            id=UUID('00000000-0000-0000-0000-000000000001'),
+            occurred_at=avatar_update.occurred_at,
+            event_type='user-avatar-updated',
+            user_id=user_id,
+            data=data,
         )
 
 
-def _fake_consent_log_entries(user_id: UserID) -> Iterator[DbUserLogEntry]:
+def _fake_consent_log_entries(user_id: UserID) -> Iterator[UserLogEntry]:
     """Yield the user's consents as volatile log entries."""
     consents = consent_service.get_consents_by_user(user_id)
 
@@ -146,14 +148,18 @@ def _fake_consent_log_entries(user_id: UserID) -> Iterator[DbUserLogEntry]:
             'subject_title': subjects_titles_by_id[consent.subject_id],
         }
 
-        yield DbUserLogEntry(
-            consent.expressed_at, 'consent-expressed', user_id, data
+        yield UserLogEntry(
+            id=UUID('00000000-0000-0000-0000-000000000001'),
+            occurred_at=consent.expressed_at,
+            event_type='consent-expressed',
+            user_id=user_id,
+            data=data,
         )
 
 
 def _fake_newsletter_subscription_update_log_entries(
     user_id: UserID,
-) -> Iterator[DbUserLogEntry]:
+) -> Iterator[UserLogEntry]:
     """Yield the user's newsletter subscription updates as volatile log entries."""
     lists = newsletter_service.get_all_lists()
     lists_by_id = {list_.id: list_ for list_ in lists}
@@ -170,10 +176,16 @@ def _fake_newsletter_subscription_update_log_entries(
             'initiator_id': str(user_id),
         }
 
-        yield DbUserLogEntry(update.expressed_at, event_type, user_id, data)
+        yield UserLogEntry(
+            id=UUID('00000000-0000-0000-0000-000000000001'),
+            occurred_at=update.expressed_at,
+            event_type=event_type,
+            user_id=user_id,
+            data=data,
+        )
 
 
-def _get_order_log_entries(initiator_id: UserID) -> Iterator[DbUserLogEntry]:
+def _get_order_log_entries(initiator_id: UserID) -> Iterator[UserLogEntry]:
     """Yield orders log entries initiated by the user."""
     event_types = frozenset(
         [
@@ -199,13 +211,17 @@ def _get_order_log_entries(initiator_id: UserID) -> Iterator[DbUserLogEntry]:
             'order_number': order.order_number,
         }
 
-        yield DbUserLogEntry(
-            entry.occurred_at, entry.event_type, initiator_id, data
+        yield UserLogEntry(
+            id=UUID('00000000-0000-0000-0000-000000000001'),
+            occurred_at=entry.occurred_at,
+            event_type=entry.event_type,
+            user_id=initiator_id,
+            data=data,
         )
 
 
 def _get_additional_data(
-    log_entry: DbUserLogEntry, users_by_id: dict[str, User]
+    log_entry: UserLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
     if log_entry.event_type in {
         'user-created',
@@ -258,7 +274,7 @@ def _get_additional_data(
 
 
 def _get_additional_data_for_user_initiated_log_entry(
-    log_entry: DbUserLogEntry, users_by_id: dict[str, User]
+    log_entry: UserLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
     initiator_id = log_entry.data.get('initiator_id')
     if initiator_id is not None:
