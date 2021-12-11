@@ -26,7 +26,7 @@
   ] %}
     {%- for label, icon, url, required_permission in items %}
       {%- if has_current_user_permission(required_permission) %}
-        {%- call render_cell(icon_name=icon, href=url) %}
+        {%- call render_cell(icon_name=icon, additional_classes='cell--fitted', href=url) %}
     <div class="row">
       <div class="column-auto">{{ render_icon(icon) }}</div>
       <div class="column-auto column-auto--grow">{{ label }}</div>
@@ -36,7 +36,7 @@
     {%- endfor %}
   {%- endwith %}
 
-  {%- call render_cell('password', 'cell--higher') %}
+  {%- call render_cell('password') %}
     <div class="row mb">
       <div class="column-auto">{{ render_icon('password') }}</div>
       <div class="column-auto column-auto--grow">{{ _('Verification Tokens') }}</div>
@@ -55,7 +55,7 @@
     <a class="button button--wrapping" href="{{ url_for('.delete_old_verification_tokens') }}" data-action="delete-old-verification-tokens">{{ render_icon('delete') }} <small style="margin-left: 0.5rem; text-align: left;">{{ _('Delete old verification tokens') }}</small></a>
   {%- endcall %}
 
-  {%- call render_cell('log-in') %}
+  {%- call render_cell('log-in', 'cell--fitted') %}
     <div class="row mb">
       <div class="column-auto">{{ render_icon('log-in') }}</div>
       <div class="column-auto column-auto--grow">{{ _('Login events') }}</div>
