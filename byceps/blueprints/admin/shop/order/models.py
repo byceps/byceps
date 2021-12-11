@@ -10,7 +10,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import Optional
 
-from .....services.shop.order.transfer.models.order import PaymentState
+from .....services.shop.order.transfer.order import PaymentState
 from .....util import iterables
 
 

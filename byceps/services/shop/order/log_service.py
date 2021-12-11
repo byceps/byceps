@@ -16,8 +16,8 @@ from ....database import db
 from ....typing import UserID
 
 from .dbmodels.log import OrderLogEntry as DbOrderLogEntry
-from .transfer.models.log import OrderLogEntry, OrderLogEntryData
-from .transfer.models.order import OrderID
+from .transfer.log import OrderLogEntry, OrderLogEntryData
+from .transfer.order import OrderID
 
 
 def create_entry(

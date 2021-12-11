@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.transfer.models.order
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.transfer.order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -14,11 +14,11 @@ from enum import Enum
 from typing import NewType, Optional
 from uuid import UUID
 
-from ......typing import UserID
+from .....typing import UserID
 
-from ....article.transfer.models import ArticleNumber, ArticleType
-from ....shop.transfer.models import ShopID
-from ....storefront.transfer.models import StorefrontID
+from ...article.transfer.models import ArticleNumber, ArticleType
+from ...shop.transfer.models import ShopID
+from ...storefront.transfer.models import StorefrontID
 
 from .number import OrderNumber
 

@@ -10,7 +10,7 @@ import pytest
 from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
 )
-from byceps.services.shop.order.transfer.models.number import (
+from byceps.services.shop.order.transfer.number import (
     OrderNumberSequence,
     OrderNumberSequenceID,
 )

@@ -15,7 +15,7 @@ from ....database import db, Pagination
 
 from ..order.dbmodels.line_item import LineItem as DbLineItem
 from ..order.dbmodels.order import Order as DbOrder
-from ..order.transfer.models.order import PaymentState
+from ..order.transfer.order import PaymentState
 from ..shop.dbmodels import Shop as DbShop
 from ..shop.transfer.models import ShopID
 

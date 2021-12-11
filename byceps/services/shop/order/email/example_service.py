@@ -24,8 +24,8 @@ from ...shop import service as shop_service
 from ...shop.transfer.models import ShopID
 from ...storefront.transfer.models import StorefrontID
 
-from ..transfer.models.number import OrderNumber
-from ..transfer.models.order import (
+from ..transfer.number import OrderNumber
+from ..transfer.order import (
     Address,
     Order,
     OrderID,

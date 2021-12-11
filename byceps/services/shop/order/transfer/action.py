@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.transfer.models.action
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.transfer.action
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import Any, Dict
 from uuid import UUID
 
-from ....article.transfer.models import ArticleNumber
+from ...article.transfer.models import ArticleNumber
 
 from .order import PaymentState
 

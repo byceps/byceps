@@ -30,7 +30,7 @@ from .....services.shop.order import (
     ordered_articles_service,
     service as order_service,
 )
-from .....services.shop.order.transfer.models.order import PaymentState
+from .....services.shop.order.transfer.order import PaymentState
 from .....services.shop.shop import service as shop_service
 from .....services.ticketing import category_service as ticket_category_service
 from .....services.user import service as user_service

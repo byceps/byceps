@@ -14,8 +14,8 @@ from ....user_badge.transfer.models import BadgeAwarding
 from ...article.transfer.models import ArticleNumber
 
 from .. import log_service
-from ..transfer.models.action import ActionParameters
-from ..transfer.models.order import Order, OrderID
+from ..transfer.action import ActionParameters
+from ..transfer.order import Order, OrderID
 
 
 def award_badge(

@@ -11,8 +11,8 @@ from ...user_badge.transfer.models import BadgeID
 
 from ..article.transfer.models import ArticleNumber
 
-from .transfer.models.action import ActionParameters
-from .transfer.models.order import PaymentState
+from .transfer.action import ActionParameters
+from .transfer.order import PaymentState
 
 from . import action_service
 

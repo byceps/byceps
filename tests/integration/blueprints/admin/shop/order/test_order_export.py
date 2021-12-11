@@ -12,7 +12,7 @@ import pytest
 from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.order.transfer.models.order import Orderer
+from byceps.services.shop.order.transfer.order import Orderer
 from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront.transfer.models import Storefront
 

@@ -17,7 +17,7 @@ from flask_babel import format_currency, format_date, gettext
 from .....services.email import service as email_service
 from .....services.email.transfer.models import Message
 from .....services.shop.order import service as order_service
-from .....services.shop.order.transfer.models.order import Order, OrderID
+from .....services.shop.order.transfer.order import Order, OrderID
 from .....services.shop.shop import service as shop_service
 from .....services.snippet import service as snippet_service
 from .....services.snippet.service import SnippetNotFound

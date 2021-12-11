@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import NewType, Optional
 
 from ...catalog.transfer.models import CatalogID
-from ...order.transfer.models.number import OrderNumberSequenceID
+from ...order.transfer.number import OrderNumberSequenceID
 from ...shop.transfer.models import ShopID
 
 

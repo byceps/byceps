@@ -15,7 +15,7 @@ from ....ticketing.transfer.models import TicketCategoryID
 from ....user import service as user_service
 
 from .. import service as order_service
-from ..transfer.models.order import OrderID
+from ..transfer.order import OrderID
 
 
 def create_tickets_sold_event(

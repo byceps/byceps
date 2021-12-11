@@ -14,11 +14,11 @@ from typing import Iterable, Iterator, Sequence
 from .....services.shop.article import service as article_service
 from .....services.shop.article.transfer.models import Article, ArticleNumber
 from .....services.shop.order import log_service as order_log_service
-from .....services.shop.order.transfer.models.log import (
+from .....services.shop.order.transfer.log import (
     OrderLogEntry,
     OrderLogEntryData,
 )
-from .....services.shop.order.transfer.models.order import Order, OrderID
+from .....services.shop.order.transfer.order import Order, OrderID
 from .....services.ticketing import category_service as ticket_category_service
 from .....services.user.dbmodels.user import User as DbUser
 from .....services.user import service as user_service

@@ -33,9 +33,9 @@ from .dbmodels.line_item import LineItem as DbLineItem
 from .dbmodels.log import OrderLogEntry as DbOrderLogEntry
 from .dbmodels.order import Order as DbOrder
 from . import action_service, log_service, sequence_service
-from .transfer.models.log import OrderLogEntryData
-from .transfer.models.number import OrderNumber
-from .transfer.models.order import (
+from .transfer.log import OrderLogEntryData
+from .transfer.number import OrderNumber
+from .transfer.order import (
     Address,
     Order,
     OrderID,

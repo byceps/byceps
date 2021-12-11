@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.blueprints.admin.shop.order.models import OrderStateFilter
-from byceps.services.shop.order.transfer.models.order import PaymentState
+from byceps.services.shop.order.transfer.order import PaymentState
 
 
 @pytest.mark.parametrize(
