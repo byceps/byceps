@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""Delete login user events older than a given number of days.
+"""Delete login user log entries older than a given number of days.
 
 :Copyright: 2006-2021 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -22,7 +22,8 @@ def execute(minimum_age_in_days) -> None:
     occurred_before = now - timedelta(days=minimum_age_in_days)
 
     click.secho(
-        f'Deleting all user login events older than {minimum_age_in_days} days '
+        'Deleting all user login log entries '
+        f'older than {minimum_age_in_days} days '
         f'(i.e. before {occurred_before:%Y-%m-%d %H:%M:%S}) ...'
     )
 
@@ -30,7 +31,7 @@ def execute(minimum_age_in_days) -> None:
         occurred_before
     )
 
-    click.secho(f'{num_deleted} user login events deleted.')
+    click.secho(f'{num_deleted} user login log entries deleted.')
 
 
 if __name__ == '__main__':

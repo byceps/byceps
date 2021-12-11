@@ -61,7 +61,7 @@
       <div class="column-auto column-auto--grow">{{ _('Login events') }}</div>
     </div>
 
-    <a class="button button--wrapping" href="{{ url_for('.delete_old_login_events') }}" data-action="delete-old-login-events">{{ render_icon('delete') }} <small style="margin-left: 0.5rem; text-align: left;">{{ _('Delete old login events') }}</small></a>
+    <a class="button button--wrapping" href="{{ url_for('.delete_old_login_log_entries') }}" data-action="delete-old-login-log-entries">{{ render_icon('delete') }} <small style="margin-left: 0.5rem; text-align: left;">{{ _('Delete old login events') }}</small></a>
   {%- endcall %}
 
   </div>
@@ -72,7 +72,7 @@
 <script>
   onDomReady(() => {
     confirmed_post_on_click_then_reload('[data-action="delete-old-verification-tokens"]', '{{ _('Delete old verification tokens?') }}');
-    confirmed_post_on_click_then_reload('[data-action="delete-old-login-events"]', '{{ _('Delete old login events?') }}');
+    confirmed_post_on_click_then_reload('[data-action="delete-old-login-log-entries"]', '{{ _('Delete old login events?') }}');
   });
 </script>
 {% endblock %}

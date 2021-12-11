@@ -31,7 +31,7 @@ def delete_account(
     user.deleted = True
     _anonymize_account(user)
 
-    event = log_service.build_log_entry(
+    log_entry = log_service.build_log_entry(
         'user-deleted',
         user.id,
         {
@@ -39,7 +39,7 @@ def delete_account(
             'reason': reason,
         },
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     # Deassign authorization roles.
     authorization_service.deassign_all_roles_from_user(
@@ -49,7 +49,7 @@ def delete_account(
     db.session.commit()
 
     return UserAccountDeleted(
-        occurred_at=event.occurred_at,
+        occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,

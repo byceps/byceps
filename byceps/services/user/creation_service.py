@@ -104,14 +104,14 @@ def create_user(
 
     user = user_service._db_entity_to_user(db_user)
 
-    # Create event in separate step as user ID is not available earlier.
-    event_data = {}
+    # Create log entry in separate step as user ID is not available earlier.
+    log_entry_data = {}
     if creator is not None:
-        event_data['initiator_id'] = str(creator.id)
+        log_entry_data['initiator_id'] = str(creator.id)
     if site_id is not None:
-        event_data['site_id'] = site_id
+        log_entry_data['site_id'] = site_id
     log_service.create_entry(
-        'user-created', user.id, event_data, occurred_at=created_at
+        'user-created', user.id, log_entry_data, occurred_at=created_at
     )
 
     event = UserAccountCreated(

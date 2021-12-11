@@ -115,7 +115,7 @@ def log_in_user(
     occurred_at = datetime.utcnow()
     user = user_service.get_user(user_id)
 
-    _create_login_event(user_id, occurred_at, ip_address, site_id=site_id)
+    _create_login_log_entry(user_id, occurred_at, ip_address, site_id=site_id)
     _record_recent_login(user_id, occurred_at)
 
     event = UserLoggedIn(
@@ -128,14 +128,14 @@ def log_in_user(
     return session_token.token, event
 
 
-def _create_login_event(
+def _create_login_log_entry(
     user_id: UserID,
     occurred_at: datetime,
     ip_address: str,
     *,
     site_id: Optional[SiteID] = None,
 ) -> None:
-    """Create an event that represents a user login."""
+    """Create a log entry that represents a user login."""
     data = {'ip_address': ip_address}
     if site_id:
         data['site_id'] = site_id

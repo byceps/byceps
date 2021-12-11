@@ -82,9 +82,9 @@ def test_update_user_address(site_app, make_user):
     log_entries_after = log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 2
 
-    details_updated_event = log_entries_after[1]
-    assert details_updated_event.event_type == 'user-details-updated'
-    assert details_updated_event.data == {
+    details_updated_log_entry = log_entries_after[1]
+    assert details_updated_log_entry.event_type == 'user-details-updated'
+    assert details_updated_log_entry.data == {
         'initiator_id': str(user.id),
         'old_zip_code': old_zip_code,
         'new_zip_code': new_zip_code,

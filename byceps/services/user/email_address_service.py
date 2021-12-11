@@ -124,16 +124,16 @@ def confirm_email_address(
 
     user.email_address_verified = True
 
-    event_data = {'email_address': user.email_address}
-    event = user_log_service.build_log_entry(
-        'user-email-address-confirmed', user.id, event_data
+    log_entry_data = {'email_address': user.email_address}
+    log_entry = user_log_service.build_log_entry(
+        'user-email-address-confirmed', user.id, log_entry_data
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
     return UserEmailAddressConfirmed(
-        occurred_at=event.occurred_at,
+        occurred_at=log_entry.occurred_at,
         initiator_id=user.id,
         initiator_screen_name=user.screen_name,
         user_id=user.id,
@@ -160,21 +160,21 @@ def invalidate_email_address(
 
     user.email_address_verified = False
 
-    event_data = {
+    log_entry_data = {
         'email_address': user.email_address,
         'reason': reason,
     }
     if initiator:
-        event_data['initiator_id'] = str(initiator.id)
-    event = user_log_service.build_log_entry(
-        'user-email-address-invalidated', user.id, event_data
+        log_entry_data['initiator_id'] = str(initiator.id)
+    log_entry = user_log_service.build_log_entry(
+        'user-email-address-invalidated', user.id, log_entry_data
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
     return UserEmailAddressInvalidated(
-        occurred_at=event.occurred_at,
+        occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id if initiator else None,
         initiator_screen_name=initiator.screen_name if initiator else None,
         user_id=user.id,

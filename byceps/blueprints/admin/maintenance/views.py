@@ -47,11 +47,11 @@ def index():
     }
 
 
-@blueprint.post('/delete_old_login_events')
+@blueprint.post('/delete_old_login_log_entries')
 @permission_required('admin.maintain')
 @respond_no_content
-def delete_old_login_events():
-    """Delete login events older than a given number of days."""
+def delete_old_login_log_entries():
+    """Delete login log entries older than a given number of days."""
     now = datetime.utcnow()
     minimum_age_in_days = 90
     occurred_before = now - timedelta(days=minimum_age_in_days)
@@ -62,7 +62,7 @@ def delete_old_login_events():
 
     flash_success(
         gettext(
-            'Deleted %(num_deleted)s login events older than %(minimum_age_in_days)s days.',
+            'Deleted %(num_deleted)s login log entries older than %(minimum_age_in_days)s days.',
             num_deleted=num_deleted,
             minimum_age_in_days=minimum_age_in_days,
         )

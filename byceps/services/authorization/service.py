@@ -122,13 +122,13 @@ def assign_role_to_user(
     user_role = DbUserRole(user_id, role_id)
     db.session.add(user_role)
 
-    event_data = {'role_id': str(role_id)}
+    log_entry_data = {'role_id': str(role_id)}
     if initiator_id is not None:
-        event_data['initiator_id'] = str(initiator_id)
-    event = user_log_service.build_log_entry(
-        'role-assigned', user_id, event_data
+        log_entry_data['initiator_id'] = str(initiator_id)
+    log_entry = user_log_service.build_log_entry(
+        'role-assigned', user_id, log_entry_data
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
@@ -146,13 +146,13 @@ def deassign_role_from_user(
 
     db.session.delete(user_role)
 
-    event_data = {'role_id': str(role_id)}
+    log_entry_data = {'role_id': str(role_id)}
     if initiator_id is not None:
-        event_data['initiator_id'] = str(initiator_id)
-    event = user_log_service.build_log_entry(
-        'role-deassigned', user_id, event_data
+        log_entry_data['initiator_id'] = str(initiator_id)
+    log_entry = user_log_service.build_log_entry(
+        'role-deassigned', user_id, log_entry_data
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 

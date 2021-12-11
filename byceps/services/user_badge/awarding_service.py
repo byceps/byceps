@@ -46,13 +46,16 @@ def award_badge_to_user(
     awarding = DbBadgeAwarding(badge_id, user_id, awarded_at=awarded_at)
     db.session.add(awarding)
 
-    user_event_data = {'badge_id': str(badge_id)}
+    user_log_entry_data = {'badge_id': str(badge_id)}
     if initiator_id:
-        user_event_data['initiator_id'] = str(initiator_id)
-    user_event = user_log_service.build_log_entry(
-        'user-badge-awarded', user_id, user_event_data, occurred_at=awarded_at
+        user_log_entry_data['initiator_id'] = str(initiator_id)
+    user_log_entry = user_log_service.build_log_entry(
+        'user-badge-awarded',
+        user_id,
+        user_log_entry_data,
+        occurred_at=awarded_at,
     )
-    db.session.add(user_event)
+    db.session.add(user_log_entry)
 
     db.session.commit()
 

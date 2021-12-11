@@ -55,11 +55,13 @@ def initialize_account(
 
     user.initialized = True
 
-    event_data = {}
+    log_entry_data = {}
     if initiator:
-        event_data['initiator_id'] = str(initiator.id)
-    event = log_service.build_log_entry('user-initialized', user.id, event_data)
-    db.session.add(event)
+        log_entry_data['initiator_id'] = str(initiator.id)
+    log_entry = log_service.build_log_entry(
+        'user-initialized', user.id, log_entry_data
+    )
+    db.session.add(log_entry)
 
     db.session.commit()
 
@@ -95,7 +97,7 @@ def suspend_account(
 
     user.suspended = True
 
-    event = log_service.build_log_entry(
+    log_entry = log_service.build_log_entry(
         'user-suspended',
         user.id,
         {
@@ -103,12 +105,12 @@ def suspend_account(
             'reason': reason,
         },
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
     return UserAccountSuspended(
-        occurred_at=event.occurred_at,
+        occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,
@@ -125,7 +127,7 @@ def unsuspend_account(
 
     user.suspended = False
 
-    event = log_service.build_log_entry(
+    log_entry = log_service.build_log_entry(
         'user-unsuspended',
         user.id,
         {
@@ -133,12 +135,12 @@ def unsuspend_account(
             'reason': reason,
         },
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
     return UserAccountUnsuspended(
-        occurred_at=event.occurred_at,
+        occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,
@@ -161,23 +163,23 @@ def change_screen_name(
 
     user.screen_name = new_screen_name
 
-    event_data = {
+    log_entry_data = {
         'old_screen_name': old_screen_name,
         'new_screen_name': new_screen_name,
         'initiator_id': str(initiator.id),
     }
     if reason:
-        event_data['reason'] = reason
+        log_entry_data['reason'] = reason
 
-    event = log_service.build_log_entry(
-        'user-screen-name-changed', user.id, event_data
+    log_entry = log_service.build_log_entry(
+        'user-screen-name-changed', user.id, log_entry_data
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
     return UserScreenNameChanged(
-        occurred_at=event.occurred_at,
+        occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,
@@ -203,23 +205,23 @@ def change_email_address(
     user.email_address = new_email_address
     user.email_address_verified = verified
 
-    event_data = {
+    log_entry_data = {
         'old_email_address': old_email_address,
         'new_email_address': new_email_address,
         'initiator_id': str(initiator.id),
     }
     if reason:
-        event_data['reason'] = reason
+        log_entry_data['reason'] = reason
 
-    event = log_service.build_log_entry(
-        'user-email-address-changed', user.id, event_data
+    log_entry = log_service.build_log_entry(
+        'user-email-address-changed', user.id, log_entry_data
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
     return UserEmailAddressChanged(
-        occurred_at=event.occurred_at,
+        occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,
@@ -269,31 +271,33 @@ def update_user_details(
     detail.street = street
     detail.phone_number = phone_number
 
-    event_data = {
+    log_entry_data = {
         'initiator_id': str(initiator.id),
     }
-    _add_if_different(event_data, 'first_names', old_first_names, first_names)
-    _add_if_different(event_data, 'last_name', old_last_name, last_name)
     _add_if_different(
-        event_data, 'date_of_birth', old_date_of_birth, date_of_birth
+        log_entry_data, 'first_names', old_first_names, first_names
     )
-    _add_if_different(event_data, 'country', old_country, country)
-    _add_if_different(event_data, 'zip_code', old_zip_code, zip_code)
-    _add_if_different(event_data, 'city', old_city, city)
-    _add_if_different(event_data, 'street', old_street, street)
+    _add_if_different(log_entry_data, 'last_name', old_last_name, last_name)
     _add_if_different(
-        event_data, 'phone_number', old_phone_number, phone_number
+        log_entry_data, 'date_of_birth', old_date_of_birth, date_of_birth
     )
-    event = log_service.build_log_entry(
-        'user-details-updated', user_id, event_data
+    _add_if_different(log_entry_data, 'country', old_country, country)
+    _add_if_different(log_entry_data, 'zip_code', old_zip_code, zip_code)
+    _add_if_different(log_entry_data, 'city', old_city, city)
+    _add_if_different(log_entry_data, 'street', old_street, street)
+    _add_if_different(
+        log_entry_data, 'phone_number', old_phone_number, phone_number
     )
-    db.session.add(event)
+    log_entry = log_service.build_log_entry(
+        'user-details-updated', user_id, log_entry_data
+    )
+    db.session.add(log_entry)
 
     db.session.commit()
 
     user = user_service.get_user(detail.user_id)
     return UserDetailsUpdated(
-        occurred_at=event.occurred_at,
+        occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
         user_id=user.id,
@@ -302,11 +306,14 @@ def update_user_details(
 
 
 def _add_if_different(
-    event_data: UserLogEntryData, base_key_name: str, old_value: str, new_value
+    log_entry_data: UserLogEntryData,
+    base_key_name: str,
+    old_value: str,
+    new_value,
 ) -> None:
     if old_value != new_value:
-        event_data[f'old_{base_key_name}'] = _to_str_if_not_none(old_value)
-        event_data[f'new_{base_key_name}'] = _to_str_if_not_none(new_value)
+        log_entry_data[f'old_{base_key_name}'] = _to_str_if_not_none(old_value)
+        log_entry_data[f'new_{base_key_name}'] = _to_str_if_not_none(new_value)
 
 
 def _to_str_if_not_none(value: Any) -> Optional[str]:

@@ -54,14 +54,14 @@ def update_password_hash(
     credential.password_hash = generate_password_hash(password)
     credential.updated_at = datetime.utcnow()
 
-    event = user_log_service.build_log_entry(
+    log_entry = user_log_service.build_log_entry(
         'password-updated',
         user_id,
         {
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(event)
+    db.session.add(log_entry)
 
     db.session.commit()
 
