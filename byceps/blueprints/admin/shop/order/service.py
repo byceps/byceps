@@ -57,10 +57,10 @@ def get_enriched_log_entry_data_for_order(
     order_id: OrderID,
 ) -> list[OrderLogEntryData]:
     log_entries = order_log_service.get_entries_for_order(order_id)
-    return list(_enrich_log_entry_data(log_entries))
+    return list(enrich_log_entry_data(log_entries))
 
 
-def _enrich_log_entry_data(
+def enrich_log_entry_data(
     log_entries: Iterable[OrderLogEntry],
 ) -> Iterator[OrderLogEntryData]:
     user_ids = {

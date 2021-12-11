@@ -15,7 +15,10 @@ from sqlalchemy import select
 from ....database import db
 from ....typing import UserID
 
+from ..shop.transfer.models import ShopID
+
 from .dbmodels.log import OrderLogEntry as DbOrderLogEntry
+from .dbmodels.order import Order as DbOrder
 from .transfer.log import OrderLogEntry, OrderLogEntryData
 from .transfer.order import OrderID
 
@@ -81,6 +84,21 @@ def get_entries_of_types_by_initiator(
         .filter(DbOrderLogEntry.event_type.in_(event_types))
         .filter(DbOrderLogEntry.data['initiator_id'].astext == str(initiator_id))
         .order_by(DbOrderLogEntry.occurred_at)
+    ).scalars().all()
+
+    return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
+
+
+def get_latest_entries_for_shop(
+    shop_id: ShopID, limit: int
+) -> list[OrderLogEntry]:
+    """Return the most recent log entries for that shop."""
+    db_entries = db.session.execute(
+        select(DbOrderLogEntry)
+        .join(DbOrder)
+        .filter(DbOrder.shop_id == shop_id)
+        .order_by(DbOrderLogEntry.occurred_at.desc())
+        .limit(limit)
     ).scalars().all()
 
     return [_db_entity_to_entry(db_entry) for db_entry in db_entries]

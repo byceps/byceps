@@ -10,7 +10,7 @@ from flask import abort, request, url_for
 from flask_babel import gettext
 
 from .....services.brand import service as brand_service
-from .....services.shop.order import service as order_service
+from .....services.shop.order import log_service, service as order_service
 from .....services.shop.order.transfer.order import PaymentState
 from .....services.shop.shop import service as shop_service
 from .....util.framework.blueprint import create_blueprint
@@ -21,6 +21,8 @@ from .....util.views import (
     redirect_to,
     respond_no_content_with_location,
 )
+
+from ..order.service import enrich_log_entry_data
 
 
 blueprint = create_blueprint('shop_shop_admin', __name__)
@@ -39,11 +41,16 @@ def dashboard(shop_id):
         order_service.count_orders_per_payment_state(shop.id)
     )
 
+    latest_log_entries = log_service.get_latest_entries_for_shop(shop.id, 8)
+    log_entries = enrich_log_entry_data(latest_log_entries)
+
     return {
         'shop': shop,
         'brand': brand,
         'order_counts_by_payment_state': order_counts_by_payment_state,
         'PaymentState': PaymentState,
+        'log_entries': log_entries,
+        'render_order_payment_method': order_service.find_payment_method_label,
     }
 
 

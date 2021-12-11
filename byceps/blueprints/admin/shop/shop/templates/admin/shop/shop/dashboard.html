@@ -14,8 +14,13 @@
 {% block body %}
 
   <div class="grid dashboard">
-    {{ render_bigstats_cell(order_counts_by_payment_state[PaymentState.open]|numberformat, _('Orders') ~ '<br>'|safe ~ render_order_payment_state(PaymentState.open), icon_name='pending', href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open')) }}
-    {{ render_bigstats_cell(order_counts_by_payment_state[PaymentState.paid]|numberformat, _('Orders') ~ '<br>'|safe ~ render_order_payment_state(PaymentState.paid), icon_name='success', href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='paid')) }}
+    {{ render_bigstats_cell(order_counts_by_payment_state[PaymentState.open]|numberformat, _('Orders') ~ '<br>'|safe ~ render_order_payment_state(PaymentState.open), icon_name='pending', href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open'), additional_classes='cell--fitted') }}
+    {{ render_bigstats_cell(order_counts_by_payment_state[PaymentState.paid]|numberformat, _('Orders') ~ '<br>'|safe ~ render_order_payment_state(PaymentState.paid), icon_name='success', href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='paid'), additional_classes='cell--fitted') }}
+    <div class="cell cell--wider">
+      <div class="box">
+{% include 'admin/shop/order/_view_events.html' %}
+      </div>
+    </div>
   </div>
 
 {%- endblock %}
