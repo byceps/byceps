@@ -425,16 +425,24 @@ def item_compare_versions(from_version_id, to_version_id):
     channel = item.channel
     brand = brand_service.find_brand(channel.brand_id)
 
-    html_diff_title = _create_html_diff(from_version, to_version, 'title')
-    html_diff_body = _create_html_diff(from_version, to_version, 'body')
+    html_diff_title = _create_html_diff(
+        from_version, to_version, lambda version: version.title
+    )
+    html_diff_body = _create_html_diff(
+        from_version, to_version, lambda version: version.body
+    )
+    html_diff_body_format = _create_html_diff(
+        from_version, to_version, lambda version: version.body_format.name
+    )
     html_diff_image_url_path = _create_html_diff(
-        from_version, to_version, 'image_url_path'
+        from_version, to_version, lambda version: version.image_url_path
     )
 
     return {
         'brand': brand,
         'diff_title': html_diff_title,
         'diff_body': html_diff_body,
+        'diff_body_format': html_diff_body_format,
         'diff_image_url_path': html_diff_image_url_path,
     }
 
@@ -656,15 +664,15 @@ def _find_version(version_id):
     return version
 
 
-def _create_html_diff(from_version, to_version, attribute_name):
+def _create_html_diff(from_version, to_version, attribute_getter):
     """Create an HTML diff between the named attribute's value of each
     of the two versions.
     """
     from_description = format_datetime(from_version.created_at)
     to_description = format_datetime(to_version.created_at)
 
-    from_text = getattr(from_version, attribute_name)
-    to_text = getattr(to_version, attribute_name)
+    from_text = attribute_getter(from_version)
+    to_text = attribute_getter(to_version)
 
     return text_diff_service.create_html_diff(
         from_text, to_text, from_description, to_description
