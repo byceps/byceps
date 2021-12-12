@@ -83,7 +83,7 @@ Change into the BYCEPS path and create a virtual environment (named
 .. code-block:: sh
 
     $ cd byceps
-    $ python3.7 -m venv --system-site-packages venv
+    $ python3 -m venv venv
 
 Activate it (but don't change into its path):
 
@@ -106,7 +106,7 @@ Make sure the correct version of Python is used:
 .. code-block:: sh
 
     (venv)$ python -V
-    Python 3.7.3
+    Python 3.9.2
 
 It's probably a good idea to update pip_ to the current version:
 
