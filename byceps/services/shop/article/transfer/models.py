@@ -35,11 +35,15 @@ class ArticleNumberSequence:
     value: int
 
 
-ArticleType = Enum('ArticleType', ['physical', 'other'])
+ArticleType = Enum(
+    'ArticleType', ['physical', 'ticket', 'ticket_bundle', 'other']
+)
 
 
 _ARTICLE_TYPE_LABELS = {
     ArticleType.physical: lazy_gettext('physical'),
+    ArticleType.ticket: lazy_gettext('Ticket'),
+    ArticleType.ticket_bundle: lazy_gettext('Ticket bundle'),
     ArticleType.other: lazy_gettext('other'),
 }
 

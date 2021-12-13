@@ -249,7 +249,11 @@ def create(shop_id, type):
     total_quantity = form.total_quantity.data
     quantity = total_quantity
     max_quantity_per_order = form.max_quantity_per_order.data
-    processing_required = type_ == ArticleType.physical
+    processing_required = type_ in (
+        ArticleType.physical,
+        ArticleType.ticket,
+        ArticleType.ticket_bundle,
+    )
 
     article = article_service.create_article(
         shop.id,
