@@ -1,0 +1,24 @@
+{% from 'macros/misc.html' import render_notification -%}
+
+
+<!DOCTYPE html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8">
+    <meta name="referrer" content="origin-when-cross-origin">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/admin.css') }}">
+  </head>
+  <body style="background-color: transparent; margin: 20px;">
+
+{%- if error_occurred %}
+    <h1>{{ _('Error') }}</h1>
+{{ render_notification('<pre style="white-space: pre-wrap;">%s</pre>'|format(error_message)|safe, category='danger') }}
+{%- else %}
+    <h1>{{ title }}</h1>
+{{ body|safe }}
+{%- endif %}
+
+  </body>
+</html>

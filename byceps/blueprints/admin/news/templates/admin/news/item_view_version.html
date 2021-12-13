@@ -1,7 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_notification, render_tag %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
@@ -191,22 +191,8 @@
 
   <h2>{{ _('Preview') }}</h2>
 
-  <div class="box preview-background">
-    <article>
-
-      <h1 style="margin-top: 0.5rem;">{{ version.title }}</h1>
-
-      {%- if error_occurred %}
-        {%- set notification_body %}
-          {{ _('Sorry, an error has occurred.') }}<br>
-          <pre style="white-space: pre-wrap;">{{ error_message }}</pre>
-        {%- endset %}
-        {{ render_notification(notification_body, category='danger', icon='warning') }}
-      {%- else %}
-{{ rendered_body|safe }}
-      {%- endif %}
-
-    </article>
+  <div class="box preview-background" style="padding: 0;">
+<iframe src="{{ url_for('.item_view_version_preview', version_id=version.id) }}" title="News item preview" style="border: none; height: 60rem; width: 100%;" sandbox></iframe>
   </div>
 
 {%- endblock %}

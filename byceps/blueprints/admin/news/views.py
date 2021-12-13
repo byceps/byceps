@@ -351,7 +351,7 @@ def item_view_version(version_id):
     current_version = news_item_service.get_current_item_version(item.id)
     is_current_version = version.id == current_version.id
 
-    context = {
+    return {
         'item': item,
         'version': version,
         'brand': brand,
@@ -359,26 +359,31 @@ def item_view_version(version_id):
         'is_current_version': is_current_version,
     }
 
+
+@blueprint.get('/versions/<uuid:version_id>/preview')
+@permission_required('news_item.view')
+@templated
+def item_view_version_preview(version_id):
+    """Show a preview of the news item with the given version."""
+    version = _find_version(version_id)
+
+    item = news_item_service.find_item(version.item_id)
+
     try:
         rendered_body = news_html_service.render_body(
             item, version.body, version.body_format
         )
 
-        context.update(
-            {
-                'rendered_body': rendered_body,
-                'error_occurred': False,
-            }
-        )
+        return {
+            'title': version.title,
+            'body': rendered_body,
+            'error_occurred': False,
+        }
     except Exception as e:
-        context.update(
-            {
-                'error_occurred': True,
-                'error_message': str(e),
-            }
-        )
-
-    return context
+        return {
+            'error_occurred': True,
+            'error_message': str(e),
+        }
 
 
 @blueprint.get('/items/<uuid:item_id>/versions')
