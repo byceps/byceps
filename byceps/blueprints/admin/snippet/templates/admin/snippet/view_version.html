@@ -1,15 +1,9 @@
 {% extends 'layout/admin/snippet.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_notification, render_tag %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
 {% set page_title = _('View snippet version') %}
 {% set layout_main_raw = True %}
-
-{% block head %}
-  {%- if not error_occurred and snippet_head %}
-{{ snippet_head|safe }}
-  {%- endif %}
-{% endblock %}
 
 {% block body %}
 
@@ -79,27 +73,9 @@
 
   <h2>{{ _('Preview') }}</h2>
 
-  {%- if error_occurred %}
-
-    {%- set notification_body %}
-        {{ _('An error occurred.') }}<br>
-        <pre style="white-space: pre-wrap;">{{ error_message }}</pre>
-    {%- endset %}
-    {{ render_notification(notification_body, category='danger', icon='warning') }}
-
-  {%- else %}
-
-  <div class="box preview-background">
-    <article>
-      {%- if snippet_title %}
-      <h1 style="margin-top: 0.5rem;">{{ snippet_title }}</h1>
-      {%- endif %}
-
-      {{- snippet_body|safe }}
-    </article>
+  <div class="box preview-background" style="padding: 0;">
+<iframe src="{{ url_for('.view_version_preview', snippet_version_id=version.id) }}" title="Snippet preview" style="border: none; height: 60rem; width: 100%;" sandbox></iframe>
   </div>
-
-  {%- endif %}
 
 {%- endblock %}
 

@@ -127,6 +127,29 @@ def view_version(snippet_version_id):
     return context
 
 
+@blueprint.get('/versions/<uuid:snippet_version_id>/preview')
+@permission_required('snippet.view_history')
+@templated
+def view_version_preview(snippet_version_id):
+    """Show a preview of the snippet with the given id."""
+    version = find_snippet_version(snippet_version_id)
+
+    try:
+        snippet_context = get_snippet_context(version)
+
+        return {
+            'title': snippet_context['page_title'],
+            'head': snippet_context['head'],
+            'body': snippet_context['body'],
+            'error_occurred': False,
+        }
+    except Exception as e:
+        return {
+            'error_occurred': True,
+            'error_message': str(e),
+        }
+
+
 @blueprint.get('/snippets/<uuid:snippet_id>/history')
 @permission_required('snippet.view_history')
 @templated
