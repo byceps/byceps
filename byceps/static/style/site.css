@@ -419,12 +419,6 @@ form.board-posting-create-form-inline .label {
   padding-top: 4px;
 }
 
-.user-profile-layout {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0 40px 40px 40px;
-}
-
 .user-profile-primary {
   flex: 0 1 auto;
   margin-bottom: 20px;
@@ -468,19 +462,11 @@ form.board-posting-create-form-inline .label {
 
 }
 
-.user-profile-secondary {
-  flex: 1 0;
-}
-
-.user-profile-details {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 2rem -2rem -2rem 0;
-}
-
-.user-profile-detail-block {
-  flex: 1 1 14rem;
-  margin: 0 2rem 2rem 0;
+.user-profile-detail-blocks {
+  display: grid;
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fill, minmax(288px, 1fr));
+  padding: 0 40px;
 }
 
 .user-profile-detail-block h2 {
