@@ -325,14 +325,13 @@ def image_unset_featured(item_id):
 
 @blueprint.get('/items/<uuid:item_id>')
 @permission_required('news_item.view')
-@templated('admin/news/item_view_version')
 def item_view(item_id):
     """Show the current version of the news item."""
     item = _get_item_or_404(item_id)
 
     version = news_item_service.get_current_item_version(item.id)
 
-    return _render_item_version(version, item)
+    return item_view_version(version.id)
 
 
 @blueprint.get('/versions/<uuid:version_id>')
@@ -344,11 +343,6 @@ def item_view_version(version_id):
 
     item = news_item_service.find_item(version.item_id)
 
-    return _render_item_version(version, item)
-
-
-def _render_item_version(version, item):
-    """Render the news item version."""
     channel = item.channel
     brand = brand_service.find_brand(channel.brand_id)
 
