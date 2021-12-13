@@ -13,9 +13,16 @@ from ....services.brand import service as brand_service
 from ....services.brand.transfer.models import Brand
 from ....services.site import service as site_service
 from ....services.site.transfer.models import Site, SiteID
-from ....services.snippet.dbmodels.snippet import Snippet as DbSnippet
+from ....services.snippet.dbmodels.snippet import (
+    Snippet as DbSnippet,
+    SnippetVersion as DbSnippetVersion,
+)
 from ....services.snippet import mountpoint_service, service as snippet_service
-from ....services.snippet.transfer.models import Scope, SnippetID
+from ....services.snippet.transfer.models import (
+    Scope,
+    SnippetID,
+    SnippetVersionID,
+)
 from ....typing import BrandID
 
 
@@ -49,3 +56,12 @@ def find_snippet_by_id(snippet_id: SnippetID) -> DbSnippet:
         abort(404)
 
     return snippet
+
+
+def find_snippet_version(version_id: SnippetVersionID) -> DbSnippetVersion:
+    version = snippet_service.find_snippet_version(version_id)
+
+    if version is None:
+        abort(404)
+
+    return version

@@ -14,7 +14,7 @@ from ....services.snippet.dbmodels.snippet import (
     SnippetVersion as DbSnippetVersion,
 )
 from ....services.snippet import service as snippet_service
-from ....services.snippet.transfer.models import Scope, SnippetVersionID
+from ....services.snippet.transfer.models import Scope
 from ....services.text_diff import service as text_diff_service
 from ....services.user import service as user_service
 from ....signals import snippet as snippet_signals
@@ -40,6 +40,7 @@ from .helpers import (
     find_brand_for_scope,
     find_site_for_scope,
     find_snippet_by_id,
+    find_snippet_version,
 )
 
 
@@ -89,7 +90,7 @@ def view_current_version(snippet_id):
 @templated
 def view_version(snippet_version_id):
     """Show the snippet with the given id."""
-    version = _find_version(snippet_version_id)
+    version = find_snippet_version(snippet_version_id)
 
     snippet = version.snippet
     scope = snippet.scope
@@ -280,8 +281,8 @@ def update_document(snippet_id):
 @templated
 def compare_documents(from_version_id, to_version_id):
     """Show the difference between two document versions."""
-    from_version = _find_version(from_version_id)
-    to_version = _find_version(to_version_id)
+    from_version = find_snippet_version(from_version_id)
+    to_version = find_snippet_version(to_version_id)
 
     snippet = from_version.snippet
     scope = snippet.scope
@@ -420,8 +421,8 @@ def update_fragment(snippet_id):
 @templated
 def compare_fragments(from_version_id, to_version_id):
     """Show the difference between two fragment versions."""
-    from_version = _find_version(from_version_id)
-    to_version = _find_version(to_version_id)
+    from_version = find_snippet_version(from_version_id)
+    to_version = find_snippet_version(to_version_id)
 
     snippet = from_version.snippet
     scope = snippet.scope
@@ -481,15 +482,6 @@ def delete_snippet(snippet_id):
 
 # -------------------------------------------------------------------- #
 # helpers
-
-
-def _find_version(version_id: SnippetVersionID) -> DbSnippetVersion:
-    version = snippet_service.find_snippet_version(version_id)
-
-    if version is None:
-        abort(404)
-
-    return version
 
 
 def _create_html_diff(
