@@ -463,9 +463,10 @@ form.board-posting-create-form-inline .label {
 }
 
 .user-profile-detail-blocks {
+  --column-min-width: 270px;
   display: grid;
   grid-gap: 2rem;
-  grid-template-columns: repeat(auto-fill, minmax(288px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(var(--column-min-width), 1fr));
   padding: 0 40px;
 }
 
