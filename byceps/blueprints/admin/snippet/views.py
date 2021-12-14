@@ -119,6 +119,7 @@ def view_version_preview(snippet_version_id):
         snippet_context = get_snippet_context(version)
 
         return {
+            'type': version.snippet.type_.name,
             'title': snippet_context['page_title'],
             'head': snippet_context['head'],
             'body': snippet_context['body'],
