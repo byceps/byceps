@@ -97,7 +97,7 @@ def view_version(snippet_version_id):
     creator = user_service.get_user(version.creator_id, include_avatar=True)
     is_current_version = version.id == snippet.current_version.id
 
-    context = {
+    return {
         'snippet': version.snippet,
         'version': version,
         'scope': scope,
@@ -106,25 +106,6 @@ def view_version(snippet_version_id):
         'site': find_site_for_scope(scope),
         'is_current_version': is_current_version,
     }
-
-    try:
-        snippet_context = get_snippet_context(version)
-
-        extra_context = {
-            'snippet_title': snippet_context['page_title'],
-            'snippet_head': snippet_context['head'],
-            'snippet_body': snippet_context['body'],
-            'error_occurred': False,
-        }
-    except Exception as e:
-        extra_context = {
-            'error_occurred': True,
-            'error_message': str(e),
-        }
-
-    context.update(extra_context)
-
-    return context
 
 
 @blueprint.get('/versions/<uuid:snippet_version_id>/preview')
