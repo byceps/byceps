@@ -30,10 +30,12 @@ class CancelForm(LocalizedForm):
 
 
 def _get_payment_method_choices():
-    return [
+    choices = [
         (pm, order_service.find_payment_method_label(pm) or pm)
         for pm in PAYMENT_METHODS
     ]
+    choices.sort()
+    return choices
 
 
 class MarkAsPaidForm(LocalizedForm):
