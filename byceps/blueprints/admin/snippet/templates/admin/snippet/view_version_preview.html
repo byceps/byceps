@@ -13,17 +13,19 @@
 {{ head|safe }}
 {%- endif %}
   </head>
-  <body style="background-color: transparent; margin: 20px;">
+  <body style="background-color: transparent;">
 
+    <main>
 {%- if error_occurred %}
-    <h1>{{ _('Error') }}</h1>
+      <h1>{{ _('Error') }}</h1>
 {{ render_notification('<pre style="white-space: pre-wrap;">%s</pre>'|format(error_message)|safe, category='danger') }}
 {%- else %}
   {%- if type == 'document' %}
-    <h1>{{ title }}</h1>
+      <h1>{{ title }}</h1>
   {%- endif %}
 {{ body|safe }}
 {%- endif %}
+    </main>
 
   </body>
 </html>

@@ -10,15 +10,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style/common.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/admin.css') }}">
   </head>
-  <body style="background-color: transparent; margin: 20px;">
+  <body style="background-color: transparent;">
 
+    <main>
 {%- if error_occurred %}
-    <h1>{{ _('Error') }}</h1>
+      <h1>{{ _('Error') }}</h1>
 {{ render_notification('<pre style="white-space: pre-wrap;">%s</pre>'|format(error_message)|safe, category='danger') }}
 {%- else %}
-    <h1>{{ title }}</h1>
+      <h1>{{ title }}</h1>
 {{ body|safe }}
 {%- endif %}
+    </main>
 
   </body>
 </html>
