@@ -138,7 +138,7 @@ def view_ordered(article_id):
     quantity_total = sum(item.quantity for item in line_items)
 
     order_numbers = {item.order_number for item in line_items}
-    orders = order_service.find_orders_by_order_numbers(order_numbers)
+    orders = order_service.get_orders_for_order_numbers(order_numbers)
     orders_by_order_numbers = {order.order_number: order for order in orders}
 
     user_ids = {order.placed_by_id for order in orders}

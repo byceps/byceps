@@ -522,7 +522,7 @@ def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
     return _order_to_transfer_object(order)
 
 
-def find_orders_by_order_numbers(
+def get_orders_for_order_numbers(
     order_numbers: set[OrderNumber],
 ) -> Sequence[Order]:
     """Return the orders with those order numbers."""
