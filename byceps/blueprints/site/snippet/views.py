@@ -13,14 +13,16 @@ from ....util.framework.blueprint import create_blueprint
 
 from .templating import (
     render_snippet_as_page,
-    render_snippet_as_partial,
+    render_snippet_as_partial_from_template,
     url_for_snippet,
 )
 
 
 blueprint = create_blueprint('snippet', __name__)
 
-blueprint.add_app_template_global(render_snippet_as_partial, 'render_snippet')
+blueprint.add_app_template_global(
+    render_snippet_as_partial_from_template, 'render_snippet'
+)
 blueprint.add_app_template_global(url_for_snippet)
 
 

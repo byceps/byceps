@@ -61,6 +61,30 @@ def get_snippet_context(version: SnippetVersion) -> Context:
     }
 
 
+def render_snippet_as_partial_from_template(
+    name: str,
+    *,
+    scope: Optional[str] = None,
+    ignore_if_unknown: bool = False,
+) -> str:
+    """Render the latest version of the snippet with the given name and
+    return the result.
+
+    This function is meant to be made available in templates.
+    """
+    scope_obj = _parse_scope_string(scope) if (scope is not None) else None
+
+    return render_snippet_as_partial(
+        name, scope=scope_obj, ignore_if_unknown=ignore_if_unknown
+    )
+
+
+def _parse_scope_string(value: str) -> Scope:
+    """Parse a slash-separated string into a scope object."""
+    type_, name = value.partition('/')[::2]
+    return Scope(type_, name)
+
+
 def render_snippet_as_partial(
     name: str,
     *,
@@ -101,7 +125,7 @@ def _render_template(source, *, context: Optional[Context] = None) -> str:
 
 def _load_template_with_globals(source: str) -> Template:
     template_globals = {
-        'render_snippet': render_snippet_as_partial,
+        'render_snippet': render_snippet_as_partial_from_template,
         'url_for': url_for,
         'url_for_snippet': url_for_snippet,
     }
