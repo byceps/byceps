@@ -24,7 +24,7 @@ from ..session import service as session_service
 from .dbmodels import Credential as DbCredential
 
 
-PASSWORD_HASH_ITERATIONS = 250000
+PASSWORD_HASH_ITERATIONS = 320000
 PASSWORD_HASH_METHOD = 'pbkdf2:sha256:%d' % PASSWORD_HASH_ITERATIONS
 
 
