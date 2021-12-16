@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired
 from .....util.l10n import LocalizedForm
 
 
-class LoginForm(LocalizedForm):
+class LogInForm(LocalizedForm):
     screen_name = StringField(lazy_gettext('Username'), [InputRequired()])
     password = PasswordField(lazy_gettext('Password'), [InputRequired()])
     permanent = BooleanField()

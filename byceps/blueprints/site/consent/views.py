@@ -87,7 +87,7 @@ def consent(token):
     verification_token_service.delete_token(verification_token.token)
 
     flash_success(gettext('Thank you for your consent. Please log in again.'))
-    return redirect_to('authentication_login.login_form')
+    return redirect_to('authentication_login.log_in_form')
 
 
 def _get_unconsented_subjects_for_user(user_id):

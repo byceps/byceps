@@ -21,16 +21,16 @@ from .....util.framework.templating import templated
 from .....util import user_session
 from .....util.views import respond_no_content
 
-from .forms import LoginForm
+from .forms import LogInForm
 
 
 blueprint = create_blueprint('authentication_login_admin', __name__)
 
 
-@blueprint.get('/login')
+@blueprint.get('/log_in')
 @templated
-def login_form():
-    """Show login form."""
+def log_in_form():
+    """Show form to log in."""
     if g.user.authenticated:
         flash_notice(
             gettext(
@@ -40,19 +40,19 @@ def login_form():
         )
         return redirect('/')
 
-    form = LoginForm()
+    form = LogInForm()
 
     return {'form': form}
 
 
-@blueprint.post('/login')
+@blueprint.post('/log_in')
 @respond_no_content
-def login():
+def log_in():
     """Allow the user to authenticate with e-mail address and password."""
     if g.user.authenticated:
         return
 
-    form = LoginForm(request.form)
+    form = LogInForm(request.form)
 
     screen_name = form.screen_name.data.strip()
     password = form.password.data
@@ -92,9 +92,9 @@ def _require_admin_access_permission(user_id: UserID) -> None:
         abort(403)
 
 
-@blueprint.post('/logout')
+@blueprint.post('/log_out')
 @respond_no_content
-def logout():
+def log_out():
     """Log out user by deleting the corresponding cookie."""
     user_session.end()
     flash_success(gettext('Successfully logged out.'))

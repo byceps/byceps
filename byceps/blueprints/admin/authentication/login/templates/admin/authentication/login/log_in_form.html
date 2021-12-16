@@ -1,8 +1,8 @@
-{% extends 'layout/base.html' %}
+{% extends 'layout/admin/base.html' %}
 {% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'authentication_login' %}
-{% set page_title = _('Login') %}
+{% set page_title = _('Log in') %}
 
 
 {% block head %}
@@ -25,8 +25,7 @@
 
   <h1>{{ page_title }}</h1>
 
-  {%- if login_enabled %}
-  <form action="{{ url_for('.login') }}" method="post" id="login-form">
+  <form action="{{ url_for('.log_in') }}" method="post" id="login-form">
     {{ form_field(form.screen_name, maxlength=40, autofocus='autofocus') }}
     {{ form_field(form.password, maxlength=40) }}
     {{ form_field_check(form.permanent, _('permanently stay logged in')) }}
@@ -38,14 +37,7 @@
     {{ form_buttons(_('Log in')) }}
   </form>
 
-    {% if user_account_creation_enabled %}
-  <p>{{ _('Not registered yet?') }} <a href="{{ url_for('user_creation.create_form') }}">{{ _('Create an account.') }}</a></p>
-  <p>{{ _('Confirmation email not received yet?') }} <a href="{{ url_for('user_email_address.request_confirmation_email_form') }}">{{ _('Request it again.') }}</a></p>
-    {%- endif %}
-  <p>{{ _('Forgot your password?') }} <a href="{{ url_for('authentication_password.request_reset_form') }}">{{ _('Set new password.') }}</a></p>
-  {%- else %}
-{{ render_notification(_('Login is disabled.'), category='warning', icon='warning') }}
-  {%- endif %}
+  <p>{{ _('Forgot password?') }} <a href="{{ url_for('authentication_password.request_reset_form') }}">{{ _('Set new password') }}</a></p>
 
 {%- endblock %}
 

@@ -15,7 +15,7 @@ def client(admin_app, site):
 
 
 def test_login_form(client):
-    response = client.get('/authentication/login')
+    response = client.get('/authentication/log_in')
 
     assert response.status_code == 200
 
@@ -41,7 +41,7 @@ def test_login_succeeds(client, make_admin):
         'password': password,
     }
 
-    response = client.post('/authentication/login', data=form_data)
+    response = client.post('/authentication/log_in', data=form_data)
     assert response.status_code == 204
     assert response.location is None
 
@@ -77,7 +77,7 @@ def test_login_fails_lacking_access_permission(client, make_admin):
         'password': password,
     }
 
-    response = client.post('/authentication/login', data=form_data)
+    response = client.post('/authentication/log_in', data=form_data)
     assert response.status_code == 403
 
 
@@ -87,5 +87,5 @@ def test_login_fails(client):
         'password': 'TotallyWrongPassword',
     }
 
-    response = client.post('/authentication/login', data=form_data)
+    response = client.post('/authentication/log_in', data=form_data)
     assert response.status_code == 401

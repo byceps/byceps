@@ -132,7 +132,7 @@ def confirm(token):
         )
     except email_address_service.EmailAddressConfirmationFailed as e:
         flash_error(gettext('Email address verification failed.'))
-        return redirect_to('authentication_login.login_form')
+        return redirect_to('authentication_login.log_in_form')
 
     flash_success(gettext('Email address has been verified.'))
 
@@ -147,7 +147,7 @@ def confirm(token):
 
     user_signals.email_address_confirmed.send(None, event=event)
 
-    return redirect_to('authentication_login.login_form')
+    return redirect_to('authentication_login.log_in_form')
 
 
 @blueprint.get('/change/<token>')
@@ -170,7 +170,7 @@ def change(token):
         event = email_address_service.change_email_address(verification_token)
     except email_address_service.EmailAddressChangeFailed as e:
         flash_error(gettext('Email address change failed.'))
-        return redirect_to('authentication_login.login_form')
+        return redirect_to('authentication_login.log_in_form')
 
     flash_success(gettext('Email address has been changed.'))
 
@@ -179,4 +179,4 @@ def change(token):
     if g.user.authenticated:
         return redirect_to('user_settings.view')
     else:
-        return redirect_to('authentication_login.login_form')
+        return redirect_to('authentication_login.log_in_form')

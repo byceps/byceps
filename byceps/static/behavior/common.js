@@ -211,13 +211,13 @@ onDomReady(() => {
 
 // Enable log-out.
 onDomReady(() => {
-  document.querySelectorAll('a[data-action="logout"]')
+  document.querySelectorAll('a[data-action="log-out"]')
     .forEach(anchor => {
       anchor.addEventListener('click', event => {
         if (confirm('Wirklich abmelden?')) {
           const href = anchor.getAttribute('href');
           fetch(href, {method: 'POST'})
-            .then(response => location.href = '/authentication/login');
+            .then(response => location.href = '/authentication/log_in');
         };
 
         event.preventDefault();

@@ -230,6 +230,6 @@ def _get_current_user_or_404():
 
 def _redirect_to_login_form():
     if g.app_mode.is_admin():
-        return redirect_to('authentication_login_admin.login_form')
+        return redirect_to('authentication_login_admin.log_in_form')
     else:
-        return redirect_to('authentication_login.login_form')
+        return redirect_to('authentication_login.log_in_form')

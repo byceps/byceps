@@ -7,7 +7,7 @@
 
   <h1>{{ page_title }}</h1>
 
-{{ render_notification('<a href="%s">Melde dich an</a>, um bestellen zu können.'|format(url_for('authentication_login.login_form'))|safe, category='info', icon='info') }}
+{{ render_notification('<a href="%s">Melde dich an</a>, um bestellen zu können.'|format(url_for('authentication_login.log_in_form'))|safe, category='info', icon='info') }}
 
 {{ render_snippet('shop_order_intro', ignore_if_unknown=True)|safe }}
 

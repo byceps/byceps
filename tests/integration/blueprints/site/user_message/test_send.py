@@ -156,7 +156,7 @@ def test_send_when_not_logged_in(site_app):
     response = send_request(site_app, recipient_id, text)
 
     assert response.status_code == 302
-    assert response.location == 'http://www.acmecon.test/authentication/login'
+    assert response.location == 'http://www.acmecon.test/authentication/log_in'
 
 
 # helpers

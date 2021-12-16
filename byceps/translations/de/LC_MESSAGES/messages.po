@@ -673,33 +673,30 @@ msgstr "Erfolgreich eingeloggt als %(screen_name)s."
 msgid "Successfully logged out."
 msgstr "Erfolgreich ausgeloggt."
 
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:5
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:5
-msgid "Login"
-msgstr "Anmelden"
-
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:31
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:32
-msgid "permanently stay logged in"
-msgstr "dauerhaft eingeloggt bleiben"
-
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:34
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:35
-msgid "Login failed."
-msgstr "Die Anmeldung ist fehlgeschlagen."
-
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:37
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:5
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:37
 #: byceps/blueprints/admin/core/templates/layout/admin/_current_user.html:27
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:38
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:5
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:38
 #: byceps/blueprints/site/core/templates/layout/_current_user.html:28
 msgid "Log in"
 msgstr "Anmelden"
 
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:40
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:31
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:32
+msgid "permanently stay logged in"
+msgstr "dauerhaft eingeloggt bleiben"
+
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:34
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:35
+msgid "Login failed."
+msgstr "Die Anmeldung ist fehlgeschlagen."
+
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:40
 msgid "Forgot password?"
 msgstr "Passwort vergessen?"
 
-#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/login_form.html:40
+#: byceps/blueprints/admin/authentication/login/templates/admin/authentication/login/log_in_form.html:40
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:9
 #: byceps/blueprints/admin/user/templates/admin/user/set_password_form.html:5
 #: byceps/blueprints/common/authentication/password/templates/common/authentication/password/reset_form.html:5
@@ -5202,31 +5199,31 @@ msgstr "nicht ausgewählt"
 msgid "No attendees found."
 msgstr "Keine Teilnehmer gefunden."
 
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:42
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:42
 msgid "Not registered yet?"
 msgstr "Noch nicht registriert?"
 
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:42
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:42
 msgid "Create an account."
 msgstr "Erstelle ein Benutzerkonto."
 
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:43
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:43
 msgid "Confirmation email not received yet?"
 msgstr "Bestätigungs-E-Mail noch nicht erhalten?"
 
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:43
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:43
 msgid "Request it again."
 msgstr "Erneut anfordern."
 
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:45
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:45
 msgid "Forgot your password?"
 msgstr "Passwort vergessen?"
 
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:45
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:45
 msgid "Set new password."
 msgstr "Setze ein neues Passwort."
 
-#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/login_form.html:47
+#: byceps/blueprints/site/authentication/login/templates/site/authentication/login/log_in_form.html:47
 msgid "Login is disabled."
 msgstr "Die Anmeldung ist deaktiviert."
 

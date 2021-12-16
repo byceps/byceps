@@ -29,7 +29,7 @@ from .....util.framework.templating import templated
 from .....util import user_session
 from .....util.views import redirect_to, respond_no_content
 
-from .forms import LoginForm
+from .forms import LogInForm
 
 
 blueprint = create_blueprint('authentication_login', __name__)
@@ -39,10 +39,10 @@ blueprint = create_blueprint('authentication_login', __name__)
 # log in/out
 
 
-@blueprint.get('/login')
+@blueprint.get('/log_in')
 @templated
-def login_form():
-    """Show login form."""
+def log_in_form():
+    """Show form to log in."""
     if g.user.authenticated:
         flash_notice(
             gettext(
@@ -57,7 +57,7 @@ def login_form():
             'login_enabled': False,
         }
 
-    form = LoginForm()
+    form = LogInForm()
 
     site = _get_site()
 
@@ -68,9 +68,9 @@ def login_form():
     }
 
 
-@blueprint.post('/login')
+@blueprint.post('/log_in')
 @respond_no_content
-def login():
+def log_in():
     """Allow the user to authenticate with e-mail address and password."""
     if g.user.authenticated:
         return
@@ -78,7 +78,7 @@ def login():
     if not _is_site_login_enabled():
         abort(403, 'Log in to this site is generally disabled.')
 
-    form = LoginForm(request.form)
+    form = LogInForm(request.form)
 
     screen_name = form.screen_name.data.strip()
     password = form.password.data
@@ -131,9 +131,9 @@ def _is_consent_required(user_id: UserID) -> bool:
     )
 
 
-@blueprint.post('/logout')
+@blueprint.post('/log_out')
 @respond_no_content
-def logout():
+def log_out():
     """Log out user by deleting the corresponding cookie."""
     user_session.end()
     flash_success(gettext('Successfully logged out.'))

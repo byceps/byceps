@@ -15,7 +15,7 @@ def client(site_app, site):
 
 
 def test_login_form(client):
-    response = client.get('/authentication/login')
+    response = client.get('/authentication/log_in')
 
     assert response.status_code == 200
 
@@ -40,7 +40,7 @@ def test_login_succeeds(site, client, make_user):
         'password': password,
     }
 
-    response = client.post('/authentication/login', data=form_data)
+    response = client.post('/authentication/log_in', data=form_data)
     assert response.status_code == 204
     # Location (used by JavaScript redirect) should point to user
     # user dashboard.
@@ -73,5 +73,5 @@ def test_login_fails(client):
         'password': 'TotallyWrongPassword',
     }
 
-    response = client.post('/authentication/login', data=form_data)
+    response = client.post('/authentication/log_in', data=form_data)
     assert response.status_code == 401

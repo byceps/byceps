@@ -26,7 +26,7 @@ def get_avatar_url_by_email_address_hash(md5_hash):
     """
     # No extra checks are done regarding user account states because:
     # - uninitialized accounts shouldn't have been able to upload
-    #   avatars yet because they cannot login.
+    #   avatars yet because they cannot log in.
     # - suspended accounts should still have their avatars (if there was
     #   an issue with an avatar, it should have been removed manually in
     #   the first place).
