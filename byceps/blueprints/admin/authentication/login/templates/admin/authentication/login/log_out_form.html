@@ -1,0 +1,15 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/forms.html' import form_buttons %}
+{% set current_page = 'authentication_login' %}
+{% set page_title = _('Log out') %}
+
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <form action="{{ url_for('.log_out') }}" method="post">
+    {{ form_buttons(_('Log out')) }}
+  </form>
+
+{%- endblock %}

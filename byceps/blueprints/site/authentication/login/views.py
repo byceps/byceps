@@ -6,7 +6,7 @@ byceps.blueprints.site.authentication.login.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, request, url_for
+from flask import abort, g, redirect, request, url_for
 from flask_babel import gettext
 
 from .....services.authentication.exceptions import AuthenticationFailed
@@ -131,12 +131,21 @@ def _is_consent_required(user_id: UserID) -> bool:
     )
 
 
+@blueprint.get('/log_out')
+@templated
+def log_out_form():
+    """Show form to log out."""
+    if not g.user.authenticated:
+        return redirect('/')
+
+
 @blueprint.post('/log_out')
-@respond_no_content
 def log_out():
     """Log out user by deleting the corresponding cookie."""
     user_session.end()
+
     flash_success(gettext('Successfully logged out.'))
+    return redirect('/')
 
 
 # helpers

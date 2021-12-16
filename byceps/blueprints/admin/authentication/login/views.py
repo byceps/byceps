@@ -19,7 +19,7 @@ from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_notice, flash_success
 from .....util.framework.templating import templated
 from .....util import user_session
-from .....util.views import respond_no_content
+from .....util.views import redirect_to, respond_no_content
 
 from .forms import LogInForm
 
@@ -92,9 +92,18 @@ def _require_admin_access_permission(user_id: UserID) -> None:
         abort(403)
 
 
+@blueprint.get('/log_out')
+@templated
+def log_out_form():
+    """Show form to log out."""
+    if not g.user.authenticated:
+        return redirect('/')
+
+
 @blueprint.post('/log_out')
-@respond_no_content
 def log_out():
     """Log out user by deleting the corresponding cookie."""
     user_session.end()
+
     flash_success(gettext('Successfully logged out.'))
+    return redirect_to('.log_in_form')
