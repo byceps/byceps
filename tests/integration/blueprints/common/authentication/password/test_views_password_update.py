@@ -9,7 +9,7 @@ from byceps.services.authentication.password.dbmodels import (
 )
 from byceps.services.authentication.session import service as session_service
 
-from tests.helpers import http_client, login_user
+from tests.helpers import http_client, log_in_user
 
 
 def test_when_logged_in_endpoint_is_available(site_app, site, make_user):
@@ -18,7 +18,7 @@ def test_when_logged_in_endpoint_is_available(site_app, site, make_user):
 
     user = make_user(password=old_password)
 
-    login_user(user.id)
+    log_in_user(user.id)
 
     credential_before = find_credential(user.id)
     assert credential_before is not None

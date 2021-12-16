@@ -7,7 +7,7 @@ import pytest
 
 from byceps.services.user_badge import badge_service
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 @pytest.fixture(scope='package')
@@ -20,7 +20,7 @@ def user_badge_admin(make_admin):
         'user_badge.view',
     }
     admin = make_admin('UserBadgeAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

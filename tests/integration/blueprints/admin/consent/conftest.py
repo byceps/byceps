@@ -5,7 +5,7 @@
 
 import pytest
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 @pytest.fixture(scope='package')
@@ -15,7 +15,7 @@ def consent_admin(make_admin):
         'consent.administrate',
     }
     admin = make_admin('ConsentAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

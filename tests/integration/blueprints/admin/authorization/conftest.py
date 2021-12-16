@@ -7,7 +7,7 @@ import pytest
 
 import byceps.services.authorization.service as authz_service
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 @pytest.fixture(scope='package')
@@ -18,7 +18,7 @@ def role_admin(make_admin):
         'role.view',
     }
     admin = make_admin('RoleAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

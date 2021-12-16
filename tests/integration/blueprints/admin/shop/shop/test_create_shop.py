@@ -7,7 +7,7 @@ import pytest
 
 import byceps.services.shop.shop.service as shop_service
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 @pytest.fixture(scope='package')
@@ -17,7 +17,7 @@ def shop_admin(make_admin):
         'shop.create',
     }
     admin = make_admin('ShopAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

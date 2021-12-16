@@ -16,7 +16,7 @@ from byceps.services.shop.order.transfer.order import Orderer
 from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront.transfer.models import Storefront
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 from tests.integration.services.shop.helpers import (
     create_article as _create_article,
 )
@@ -122,7 +122,7 @@ def test_serialize_existing_order(
     filename = request.fspath.dirpath('order_export.xml')
     expected = filename.read_text('iso-8859-1').rstrip()
 
-    login_user(shop_order_admin.id)
+    log_in_user(shop_order_admin.id)
     client = make_client(admin_app, user_id=shop_order_admin.id)
 
     url = f'/admin/shop/orders/{order.id}/export'
@@ -139,7 +139,7 @@ def test_serialize_existing_order(
 def test_serialize_unknown_order(admin_app, shop_order_admin, make_client):
     unknown_order_id = '00000000-0000-0000-0000-000000000000'
 
-    login_user(shop_order_admin.id)
+    log_in_user(shop_order_admin.id)
     client = make_client(admin_app, user_id=shop_order_admin.id)
 
     url = f'/admin/shop/orders/{unknown_order_id}/export'

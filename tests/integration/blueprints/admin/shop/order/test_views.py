@@ -24,7 +24,7 @@ from byceps.services.shop.order.transfer.order import PaymentState
 from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront.transfer.models import Storefront
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 from tests.integration.services.shop.helpers import (
     create_article as _create_article,
     create_orderer,
@@ -39,7 +39,7 @@ def shop_order_admin(make_admin):
         'shop_order.mark_as_paid',
     }
     admin = make_admin('ShopOrderAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

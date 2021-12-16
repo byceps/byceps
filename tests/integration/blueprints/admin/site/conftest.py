@@ -5,7 +5,7 @@
 
 import pytest
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 @pytest.fixture(scope='package')
@@ -17,7 +17,7 @@ def site_admin(make_admin):
         'site.view',
     }
     admin = make_admin('SiteAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

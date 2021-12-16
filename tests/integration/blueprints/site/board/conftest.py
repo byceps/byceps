@@ -13,7 +13,7 @@ from byceps.services.board import (
     topic_query_service,
 )
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 from .helpers import create_category, create_posting, create_topic
 
@@ -71,7 +71,7 @@ def moderator(make_admin):
         'board_topic.pin',
     }
     moderator = make_admin('BoardModerator', permission_ids)
-    login_user(moderator.id)
+    log_in_user(moderator.id)
     yield moderator
 
 

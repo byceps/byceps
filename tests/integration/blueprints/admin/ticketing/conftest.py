@@ -12,7 +12,7 @@ from byceps.services.ticketing import (
     ticket_service,
 )
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 @pytest.fixture(scope='package')
@@ -25,7 +25,7 @@ def ticketing_admin(make_admin):
         'ticketing.view',
     }
     admin = make_admin('Ticketing_Admin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

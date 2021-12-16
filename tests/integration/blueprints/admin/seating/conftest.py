@@ -5,7 +5,7 @@
 
 import pytest
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 @pytest.fixture(scope='package')
@@ -16,7 +16,7 @@ def seating_admin(make_admin):
         'seating.view',
     }
     admin = make_admin('SeatingAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

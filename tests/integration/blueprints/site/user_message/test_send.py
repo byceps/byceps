@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 import pytest
 
-from tests.helpers import http_client, login_user
+from tests.helpers import http_client, log_in_user
 
 
 @pytest.fixture(scope='module')
@@ -168,7 +168,7 @@ def send_request(app, recipient_id, text, *, current_user_id=None):
     form_data = {'body': text}
 
     if current_user_id is not None:
-        login_user(current_user_id)
+        log_in_user(current_user_id)
 
     with http_client(app, user_id=current_user_id) as client:
         return client.post(url, data=form_data)

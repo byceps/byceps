@@ -11,7 +11,7 @@ from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
 
-from tests.helpers import create_site, http_client, login_user
+from tests.helpers import create_site, http_client, log_in_user
 from tests.integration.services.shop.helpers import (
     create_orderer,
     create_shop,
@@ -133,7 +133,7 @@ def create_payment_instructions_snippet(shop_id, admin_id):
 
 
 def request_view(app, current_user, order_id):
-    login_user(current_user.id)
+    log_in_user(current_user.id)
 
     url = f'/shop/orders/{order_id!s}'
 

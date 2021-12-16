@@ -22,7 +22,7 @@ from byceps.services.site import service as site_service
 from byceps.services.site.transfer.models import Site, SiteID
 from byceps.services.snippet import service as snippet_service
 
-from tests.helpers import create_site, generate_token, http_client, login_user
+from tests.helpers import create_site, generate_token, http_client, log_in_user
 from tests.integration.services.shop.helpers import (
     create_article,
     create_shop,
@@ -90,7 +90,7 @@ def article(admin_app, shop: Shop) -> Article:
 
 @pytest.fixture(scope='module')
 def orderer(admin_app, user):
-    login_user(user.id)
+    log_in_user(user.id)
     return user
 
 

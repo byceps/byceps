@@ -7,7 +7,7 @@ import pytest
 
 from byceps.services.snippet.transfer.models import Scope
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 @pytest.fixture(scope='package')
@@ -23,7 +23,7 @@ def snippet_admin(make_admin):
         'snippet_mountpoint.delete',
     }
     admin = make_admin('SnippetAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

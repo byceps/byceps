@@ -5,7 +5,7 @@
 
 import pytest
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 def test_view_for_brand(jobs_admin_client):
@@ -21,7 +21,7 @@ def jobs_admin(make_admin):
         'jobs.view',
     }
     admin = make_admin('JobsAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

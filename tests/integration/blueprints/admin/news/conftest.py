@@ -8,7 +8,7 @@ import pytest
 from byceps.services.news import channel_service, service as item_service
 from byceps.services.news.transfer.models import BodyFormat
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 @pytest.fixture(scope='package')
@@ -23,7 +23,7 @@ def news_admin(make_admin):
         'news_item.view_draft',
     }
     admin = make_admin('NewsAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

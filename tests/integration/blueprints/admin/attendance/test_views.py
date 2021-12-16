@@ -5,7 +5,7 @@
 
 import pytest
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 def test_view_for_brand(admin_client, brand):
@@ -18,7 +18,7 @@ def test_view_for_brand(admin_client, brand):
 def admin(make_admin):
     permission_ids = {'admin.access'}
     admin = make_admin('AttendanceAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

@@ -5,7 +5,7 @@
 
 import pytest
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 @pytest.fixture(scope='package')
@@ -18,7 +18,7 @@ def orga_team_admin(make_admin):
         'orga_team.view',
     }
     admin = make_admin('OrgaTeamAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

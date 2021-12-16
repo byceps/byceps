@@ -5,7 +5,7 @@
 
 import pytest
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 from .helpers import find_topic
 
@@ -13,7 +13,7 @@ from .helpers import find_topic
 @pytest.fixture(scope='package')
 def board_user(make_user):
     user = make_user()
-    login_user(user.id)
+    log_in_user(user.id)
     yield user
 
 

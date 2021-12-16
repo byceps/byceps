@@ -234,6 +234,6 @@ def _add_user_credentials_to_session(client, user_id: UserID) -> None:
         session['user_auth_token'] = str(session_token.token)
 
 
-def login_user(user_id: UserID) -> None:
+def log_in_user(user_id: UserID) -> None:
     """Authenticate the user to create a session."""
     session_service.get_session_token(user_id)

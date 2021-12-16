@@ -5,7 +5,7 @@
 
 import pytest
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 def test_view_global(dashboard_admin_client):
@@ -41,7 +41,7 @@ def dashboard_admin(make_admin):
         'site.view',
     }
     admin = make_admin('DashboardAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 

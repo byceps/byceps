@@ -15,7 +15,7 @@ from byceps.services.newsletter import command_service
 from byceps.services.newsletter.types import SubscriptionState
 from byceps.services.user import command_service as user_command_service
 
-from tests.helpers import login_user
+from tests.helpers import log_in_user
 
 
 def test_export_subscribers(newsletter_list, subscribers, client):
@@ -99,7 +99,7 @@ def test_export_subscriber_email_addresses(newsletter_list, subscribers, client)
 def newsletter_admin(make_admin):
     permission_ids = {'admin.access', 'newsletter.export_subscribers'}
     admin = make_admin('NewsletterAdmin', permission_ids)
-    login_user(admin.id)
+    log_in_user(admin.id)
     return admin
 
 
