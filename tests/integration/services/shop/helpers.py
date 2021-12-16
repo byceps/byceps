@@ -20,8 +20,7 @@ from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope, SnippetID
 from byceps.services.user import service as user_service
-from byceps.services.user.transfer.models import UserID
-from byceps.typing import BrandID
+from byceps.typing import BrandID, UserID
 
 from tests.helpers import generate_token
 
@@ -42,11 +41,11 @@ def create_shop(
 
 
 def create_shop_fragment(
-    shop_id: ShopID, admin_id: UserID, name: str, body: str
+    shop_id: ShopID, creator_id: UserID, name: str, body: str
 ) -> SnippetID:
     scope = Scope('shop', shop_id)
 
-    version, _ = snippet_service.create_fragment(scope, name, admin_id, body)
+    version, _ = snippet_service.create_fragment(scope, name, creator_id, body)
 
     return version.snippet_id
 
