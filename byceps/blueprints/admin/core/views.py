@@ -14,6 +14,7 @@ from flask import g
 from ....services.brand import service as brand_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.user_session import get_current_user
+from ....util.views import redirect_to
 
 
 blueprint = create_blueprint('core_admin', __name__)
@@ -37,3 +38,11 @@ def inject_template_variables() -> dict[str, Any]:
 def prepare_request_globals() -> None:
     required_permissions = {'admin.access'}
     g.user = get_current_user(required_permissions)
+
+
+@blueprint.get('/')
+def homepage():
+    if g.user.authenticated:
+        return redirect_to('admin_dashboard.view_global')
+    else:
+        return redirect_to('authentication_login_admin.log_in_form')

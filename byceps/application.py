@@ -26,7 +26,6 @@ from .util.authorization import load_permissions
 from .util.l10n import get_current_user_locale
 from .util import templatefilters, templatefunctions
 from .util.templating import SiteTemplateOverridesLoader
-from .util.views import redirect_to
 
 
 def create_app(
@@ -101,12 +100,6 @@ def _add_static_file_url_rules(app: Flask) -> None:
 
 def _init_admin_app(app: Flask) -> None:
     """Initialize admin application."""
-    app.add_url_rule(
-        '/',
-        endpoint='root',
-        view_func=lambda: redirect_to('admin_dashboard.view_global'),
-    )
-
     if app.config['RQ_DASHBOARD_ENABLED']:
         import rq_dashboard
 
