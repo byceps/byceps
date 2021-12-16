@@ -537,6 +537,24 @@ def get_orders_for_order_numbers(
     return list(map(_order_to_transfer_object, orders))
 
 
+def get_order_ids_for_order_numbers(
+    order_numbers: set[OrderNumber],
+) -> dict[OrderNumber, OrderID]:
+    """Return the order IDs for those order numbers."""
+    if not order_numbers:
+        return {}
+
+    order_ids_and_numbers = db.session.execute(
+        select(DbOrder.id, DbOrder.order_number)
+        .filter(DbOrder.order_number.in_(order_numbers))
+    ).all()
+
+    return {
+        order_number: order_id
+        for order_id, order_number in order_ids_and_numbers
+    }
+
+
 def get_order_count_by_shop_id() -> dict[ShopID, int]:
     """Return order count (including 0) per shop, indexed by shop ID."""
     shop_ids_and_order_counts = db.session \
