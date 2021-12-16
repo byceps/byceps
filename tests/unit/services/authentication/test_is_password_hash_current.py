@@ -28,12 +28,12 @@ from byceps.services.authentication.password import service as password_service
         ),
         (
             # matches configured algorithm and iteration count
-            'pbkdf2:sha256:250000$rNGHJHbqxDsNHHJr$e0fd1fe49f3d3aeda97f36af78283d2de557efa270ab6cb281ad6ca9879d7c2c',
+            'pbkdf2:sha256:320000$rNGHJHbqxDsNHHJr$e0fd1fe49f3d3aeda97f36af78283d2de557efa270ab6cb281ad6ca9879d7c2c',
             True,
         ),
         (
             # higher number of iterations, but not the one configured
-            'pbkdf2:sha256:260000$hGZgOpv58UJaX91I$6f2afba4a2a1637cc25d2143de9ec91ce0897a79d79ce59ce85792e275be5418',
+            'pbkdf2:sha256:500000$hGZgOpv58UJaX91I$6f2afba4a2a1637cc25d2143de9ec91ce0897a79d79ce59ce85792e275be5418',
             False,
         ),
     ],
