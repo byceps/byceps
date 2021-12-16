@@ -15,7 +15,6 @@ from .....services.authentication.password import (
 )
 from .....services.email import service as email_service
 from .....services.email.transfer.models import NameAndAddress
-from .....services.site import service as site_service
 from .....services.user import service as user_service
 from .....services.verification_token import (
     service as verification_token_service,
@@ -152,8 +151,7 @@ def request_reset():
 
 def _get_sender() -> NameAndAddress:
     if g.app_mode.is_site():
-        site = site_service.get_site(g.site_id)
-        email_config = email_service.get_config(site.brand_id)
+        email_config = email_service.get_config(g.brand_id)
         return email_config.sender
     else:
         default_sender = current_app.config['MAIL_DEFAULT_SENDER']
