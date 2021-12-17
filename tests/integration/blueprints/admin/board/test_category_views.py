@@ -3,10 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.board import (
-    category_command_service,
-    category_query_service,
-)
+from byceps.services.board import category_query_service
 
 
 def test_create_form(board_admin_client, board):
@@ -36,9 +33,6 @@ def test_create(board_admin_client, board):
     assert category.slug == slug
     assert category.title == title
     assert category.description == description
-
-    # Clean up.
-    category_command_service.delete_category(category.id)
 
 
 def test_update_form(board_admin_client, category):

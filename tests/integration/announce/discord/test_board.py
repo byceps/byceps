@@ -127,13 +127,9 @@ def category(board):
     title = 'Support'
     description = f'How can I help you, dear Sir/Madam?'
 
-    category = category_command_service.create_category(
+    return category_command_service.create_category(
         board.id, slug, title, description
     )
-
-    yield category
-
-    category_command_service.delete_category(category.id)
 
 
 @pytest.fixture(scope='module')
@@ -145,9 +141,7 @@ def topic(category, creator):
         category.id, creator.id, title, body
     )
 
-    yield topic
-
-    topic_command_service.delete_topic(topic.id)
+    return topic
 
 
 @pytest.fixture(scope='module')
@@ -156,6 +150,4 @@ def posting(topic, creator):
         topic.id, creator.id, 'This is nice and all, but check out my website!'
     )
 
-    yield posting
-
-    posting_command_service.delete_posting(posting.id)
+    return posting

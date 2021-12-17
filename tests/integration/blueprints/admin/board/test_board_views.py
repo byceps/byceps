@@ -39,6 +39,3 @@ def test_create(board_admin_client, brand):
     assert board is not None
     assert board.id == board_id
     assert board.brand_id == brand.id
-
-    # Clean up.
-    board_service.delete_board(board_id)

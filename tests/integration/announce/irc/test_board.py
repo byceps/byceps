@@ -407,32 +407,24 @@ def moderator(make_user):
 
 @pytest.fixture(scope='module')
 def category(board):
-    category = _create_category(board.id, number=1)
-    yield category
-    category_command_service.delete_category(category.id)
+    return _create_category(board.id, number=1)
 
 
 @pytest.fixture(scope='module')
 def another_category(board):
-    category = _create_category(board.id, number=2)
-    yield category
-    category_command_service.delete_category(category.id)
+    return _create_category(board.id, number=2)
 
 
 @pytest.fixture(scope='module')
 def topic(category, creator):
-    topic = _create_topic(
+    return _create_topic(
         category.id, creator.id, number=192, title='Brötchen zum Frühstück'
     )
-    yield topic
-    topic_command_service.delete_topic(topic.id)
 
 
 @pytest.fixture(scope='module')
 def posting(topic, creator):
-    posting = _create_posting(topic.id, creator.id)
-    yield posting
-    posting_command_service.delete_posting(posting.id)
+    return _create_posting(topic.id, creator.id)
 
 
 def _create_category(board_id, *, number=1):

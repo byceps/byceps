@@ -36,10 +36,6 @@ def category(board):
     title = 'Beauty Tips'
     description = 'Make it pretty!'
 
-    category = category_command_service.create_category(
+    return category_command_service.create_category(
         board.id, slug, title, description
     )
-
-    yield category
-
-    category_command_service.delete_category(category.id)
