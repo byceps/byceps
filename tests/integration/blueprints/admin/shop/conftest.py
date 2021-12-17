@@ -7,14 +7,12 @@ import pytest
 
 from byceps.services.shop.storefront.transfer.models import Storefront
 
-from tests.integration.services.shop.helpers import create_shop
-
 
 @pytest.fixture(scope='module')
-def shop(make_brand):
+def shop(make_brand, make_shop):
     brand = make_brand()
 
-    return create_shop(brand.id)
+    return make_shop(brand.id)
 
 
 @pytest.fixture(scope='module')

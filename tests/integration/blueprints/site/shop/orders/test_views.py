@@ -14,15 +14,14 @@ from byceps.services.snippet import service as snippet_service
 from tests.helpers import create_site, http_client, log_in_user
 from tests.integration.services.shop.helpers import (
     create_orderer,
-    create_shop,
     create_shop_fragment,
 )
 
 
 @pytest.fixture
-def shop1(admin_app, make_brand, admin_user):
+def shop1(admin_app, make_brand, make_shop, admin_user):
     brand = make_brand()
-    shop = create_shop(brand.id)
+    shop = make_shop(brand.id)
     snippet_id = create_payment_instructions_snippet(shop.id, admin_user.id)
 
     yield shop
@@ -31,22 +30,26 @@ def shop1(admin_app, make_brand, admin_user):
 
 
 @pytest.fixture
-def shop2(admin_app, make_brand):
+def shop2(admin_app, make_brand, make_shop):
     brand = make_brand()
-    shop = create_shop(brand.id)
+    shop = make_shop(brand.id)
 
     yield shop
 
 
 @pytest.fixture
-def storefront1(shop1, make_order_number_sequence, make_storefront) -> Storefront:
+def storefront1(
+    shop1, make_order_number_sequence, make_storefront
+) -> Storefront:
     order_number_sequence = make_order_number_sequence(shop1.id)
 
     return make_storefront(shop1.id, order_number_sequence.id)
 
 
 @pytest.fixture
-def storefront2(shop2, make_order_number_sequence, make_storefront) -> Storefront:
+def storefront2(
+    shop2, make_order_number_sequence, make_storefront
+) -> Storefront:
     order_number_sequence = make_order_number_sequence(shop2.id)
 
     return make_storefront(shop2.id, order_number_sequence.id)

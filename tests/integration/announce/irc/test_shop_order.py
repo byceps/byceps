@@ -12,7 +12,7 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.signals import shop as shop_signals
 
-from tests.integration.services.shop.helpers import create_orderer, create_shop
+from tests.integration.services.shop.helpers import create_orderer
 
 from .helpers import (
     assert_submitted_data,
@@ -114,10 +114,10 @@ def shop_admin(make_user):
 
 
 @pytest.fixture(scope='module')
-def shop(app, make_brand):
+def shop(app, make_brand, make_shop):
     brand = make_brand()
 
-    return create_shop(brand.id)
+    return make_shop(brand.id)
 
 
 @pytest.fixture(scope='module')

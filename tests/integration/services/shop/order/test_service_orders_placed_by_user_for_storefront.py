@@ -18,17 +18,20 @@ from byceps.services.shop.storefront.transfer.models import (
 )
 
 from tests.helpers import generate_token
-from tests.integration.services.shop.helpers import create_orderer, create_shop
+from tests.integration.services.shop.helpers import create_orderer
 
 
 @pytest.fixture
-def shop(make_brand) -> Shop:
+def shop(make_brand, make_shop) -> Shop:
     brand = make_brand()
-    return create_shop(brand.id)
+
+    return make_shop(brand.id)
 
 
 @pytest.fixture
-def storefront1(shop: Shop, make_order_number_sequence, make_storefront) -> Storefront:
+def storefront1(
+    shop: Shop, make_order_number_sequence, make_storefront
+) -> Storefront:
     order_number_sequence = make_order_number_sequence(
         shop.id, prefix='LF-02-B'
     )
@@ -37,7 +40,9 @@ def storefront1(shop: Shop, make_order_number_sequence, make_storefront) -> Stor
 
 
 @pytest.fixture
-def storefront2(shop: Shop, make_order_number_sequence, make_storefront) -> Storefront:
+def storefront2(
+    shop: Shop, make_order_number_sequence, make_storefront
+) -> Storefront:
     order_number_sequence = make_order_number_sequence(
         shop.id, prefix='LF-03-B'
     )

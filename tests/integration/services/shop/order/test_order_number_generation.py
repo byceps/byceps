@@ -9,21 +9,19 @@ from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
 )
 
-from tests.integration.services.shop.helpers import create_shop
+
+@pytest.fixture(scope='module')
+def shop1(make_brand, make_shop):
+    brand = make_brand()
+
+    return make_shop(brand.id)
 
 
 @pytest.fixture(scope='module')
-def shop1(make_brand):
+def shop2(make_brand, make_shop):
     brand = make_brand()
 
-    return create_shop(brand.id)
-
-
-@pytest.fixture(scope='module')
-def shop2(make_brand):
-    brand = make_brand()
-
-    return create_shop(brand.id)
+    return make_shop(brand.id)
 
 
 def test_generate_order_number_default(admin_app, shop1):

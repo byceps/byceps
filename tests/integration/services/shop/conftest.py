@@ -8,17 +8,15 @@ import pytest
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.storefront.transfer.models import Storefront
 
-from tests.integration.services.shop.helpers import create_shop
-
 
 @pytest.fixture
-def shop(make_brand, make_email_config):
+def shop(make_brand, make_email_config, make_shop):
     brand = make_brand()
     email_config = make_email_config(
         brand.id, sender_address='noreply@acmecon.test'
     )
 
-    return create_shop(brand.id)
+    return make_shop(brand.id)
 
 
 @pytest.fixture

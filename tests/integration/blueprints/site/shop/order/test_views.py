@@ -25,7 +25,6 @@ from byceps.services.snippet import service as snippet_service
 from tests.helpers import create_site, generate_token, http_client, log_in_user
 from tests.integration.services.shop.helpers import (
     create_article,
-    create_shop,
     create_shop_fragment,
 )
 
@@ -41,9 +40,9 @@ COMMON_FORM_DATA = {
 
 
 @pytest.fixture(scope='module')
-def shop(make_brand, admin_user) -> Shop:
+def shop(make_brand, make_shop, admin_user) -> Shop:
     brand = make_brand()
-    shop = create_shop(brand.id)
+    shop = make_shop(brand.id)
     snippet_id = create_shop_fragment(
         shop.id, admin_user.id, 'payment_instructions', 'Send all ur moneyz!'
     )

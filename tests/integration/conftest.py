@@ -28,7 +28,8 @@ from byceps.services.shop.order.transfer.number import (
     OrderNumberSequence,
     OrderNumberSequenceID,
 )
-from byceps.services.shop.shop.transfer.models import ShopID
+from byceps.services.shop.shop import service as shop_service
+from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront import service as storefront_service
 from byceps.services.shop.storefront.transfer.models import (
     Storefront,
@@ -268,6 +269,25 @@ def make_ticket_category(admin_app: Flask):
 def board(brand: Brand) -> Board:
     board_id = BoardID(generate_token())
     return board_service.create_board(brand.id, board_id)
+
+
+@pytest.fixture(scope='session')
+def make_shop(admin_app: Flask):
+    def _wrapper(
+        brand_id: BrandID,
+        *,
+        shop_id: Optional[ShopID] = None,
+        title: Optional[str] = None,
+    ) -> Shop:
+        if shop_id is None:
+            shop_id = ShopID(generate_token())
+
+        if title is None:
+            title = shop_id
+
+        return shop_service.create_shop(shop_id, brand_id, title)
+
+    return _wrapper
 
 
 @pytest.fixture(scope='session')
