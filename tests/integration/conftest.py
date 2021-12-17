@@ -7,7 +7,7 @@ from __future__ import annotations
 from pathlib import Path
 from secrets import token_hex
 from tempfile import TemporaryDirectory
-from typing import Any, Optional
+from typing import Any, Iterator, Optional
 
 from flask import Flask
 import pytest
@@ -15,6 +15,7 @@ import pytest
 from byceps.services.authorization import service as authz_service
 from byceps.services.authorization.transfer.models import PermissionID, RoleID
 from byceps.services.board import board_service
+from byceps.services.board.transfer.models import Board, BoardID
 from byceps.services.brand import service as brand_service
 from byceps.services.brand.transfer.models import Brand
 from byceps.services.email import service as email_service
@@ -34,6 +35,7 @@ from byceps.services.shop.storefront.transfer.models import (
     StorefrontID,
 )
 from byceps.services.site import service as site_service
+from byceps.services.site.transfer.models import Site, SiteID
 from byceps.services.ticketing import (
     category_service as ticketing_category_service,
 )
@@ -59,10 +61,10 @@ _CONFIG_PATH_DATA_KEY = 'PATH_DATA'
 
 
 @pytest.fixture(scope='session')
-def make_admin_app(data_path):
+def make_admin_app(data_path: Path):
     """Provide the admin web application."""
 
-    def _wrapper(**config_overrides: dict[str, Any]) -> Flask:
+    def _wrapper(**config_overrides: Any) -> Flask:
         if _CONFIG_PATH_DATA_KEY not in config_overrides:
             config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
         return create_admin_app(config_overrides)
@@ -71,7 +73,7 @@ def make_admin_app(data_path):
 
 
 @pytest.fixture(scope='session')
-def admin_app(make_admin_app):
+def admin_app(make_admin_app) -> Iterator[Flask]:
     """Provide the admin web application."""
     app = make_admin_app()
     with app.app_context():
@@ -93,7 +95,7 @@ def make_site_app(admin_app, data_path):
 
 
 @pytest.fixture(scope='session')
-def site_app(make_site_app, site):
+def site_app(make_site_app, site: Site) -> Flask:
     """Provide a site web application."""
     app = make_site_app(SITE_ID=site.id)
     with app.app_context():
@@ -101,7 +103,7 @@ def site_app(make_site_app, site):
 
 
 @pytest.fixture(scope='session')
-def data_path():
+def data_path() -> Path:
     with TemporaryDirectory() as d:
         return Path(d)
 
@@ -118,7 +120,7 @@ def make_client():
 
 
 @pytest.fixture(scope='session')
-def make_user(admin_app):
+def make_user(admin_app: Flask):
     def _wrapper(*args, **kwargs) -> User:
         return create_user(*args, **kwargs)
 
@@ -146,32 +148,32 @@ def make_admin(make_user):
 
 
 @pytest.fixture(scope='session')
-def admin_user(make_user):
+def admin_user(make_user) -> User:
     return make_user('Admin')
 
 
 @pytest.fixture(scope='session')
-def user(make_user):
+def user(make_user) -> User:
     return make_user('User')
 
 
 @pytest.fixture(scope='session')
-def uninitialized_user(make_user):
+def uninitialized_user(make_user) -> User:
     return make_user('UninitializedUser', initialized=False)
 
 
 @pytest.fixture(scope='session')
-def suspended_user(make_user):
+def suspended_user(make_user) -> User:
     return make_user('SuspendedUser', suspended=True)
 
 
 @pytest.fixture(scope='session')
-def deleted_user(make_user):
+def deleted_user(make_user) -> User:
     return make_user('DeletedUser', deleted=True)
 
 
 @pytest.fixture(scope='session')
-def make_email_config(admin_app):
+def make_email_config(admin_app: Flask):
     def _wrapper(
         brand_id: BrandID,
         *,
@@ -195,7 +197,7 @@ def make_email_config(admin_app):
 
 
 @pytest.fixture(scope='session')
-def email_config(make_email_config, brand) -> EmailConfig:
+def email_config(make_email_config, brand: Brand) -> EmailConfig:
     return make_email_config(
         brand.id,
         sender_address='noreply@acmecon.test',
@@ -205,9 +207,11 @@ def email_config(make_email_config, brand) -> EmailConfig:
 
 
 @pytest.fixture(scope='session')
-def site(email_config, party, board):
+def site(
+    email_config: EmailConfig, party: Party, board: Board
+) -> Iterator[Site]:
     site = create_site(
-        'acmecon-2014-website',
+        SiteID('acmecon-2014-website'),
         party.brand_id,
         title='ACMECon 2014 website',
         server_name='www.acmecon.test',
@@ -219,7 +223,7 @@ def site(email_config, party, board):
 
 
 @pytest.fixture(scope='session')
-def make_brand(admin_app):
+def make_brand(admin_app: Flask):
     def _wrapper(
         brand_id: Optional[BrandID] = None, title: Optional[str] = None
     ) -> Brand:
@@ -235,12 +239,12 @@ def make_brand(admin_app):
 
 
 @pytest.fixture(scope='session')
-def brand(make_brand):
+def brand(make_brand) -> Brand:
     return make_brand('acmecon', 'ACME Entertainment Convention')
 
 
 @pytest.fixture(scope='session')
-def make_party(admin_app, make_brand):
+def make_party(admin_app: Flask, make_brand):
     def _wrapper(*args, **kwargs) -> Party:
         return create_party(*args, **kwargs)
 
@@ -248,12 +252,12 @@ def make_party(admin_app, make_brand):
 
 
 @pytest.fixture(scope='session')
-def party(make_party, brand):
+def party(make_party, brand: Brand) -> Party:
     return make_party(brand.id)
 
 
 @pytest.fixture(scope='session')
-def make_ticket_category(admin_app, party):
+def make_ticket_category(admin_app: Flask, party: Party):
     def _wrapper(party_id: PartyID, title: str) -> TicketCategory:
         return ticketing_category_service.create_category(party_id, title)
 
@@ -261,8 +265,8 @@ def make_ticket_category(admin_app, party):
 
 
 @pytest.fixture(scope='session')
-def board(brand):
-    board_id = brand.id
+def board(brand: Brand) -> Iterator[Board]:
+    board_id = BoardID(brand.id)
     board = board_service.create_board(brand.id, board_id)
     yield board
     board_service.delete_board(board.id)

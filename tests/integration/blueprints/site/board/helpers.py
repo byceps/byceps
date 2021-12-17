@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Optional
+
 from byceps.services.board import (
     category_command_service,
     posting_command_service,
@@ -10,11 +12,26 @@ from byceps.services.board import (
     topic_command_service,
     topic_query_service,
 )
+from byceps.services.board.dbmodels.posting import Posting as DbPosting
+from byceps.services.board.dbmodels.topic import Topic as DbTopic
+from byceps.services.board.transfer.models import (
+    BoardID,
+    Category,
+    CategoryID,
+    PostingID,
+    TopicID,
+)
+from byceps.typing import UserID
 
 
 def create_category(
-    board_id, *, number=1, slug=None, title=None, description=None
-):
+    board_id: BoardID,
+    *,
+    number: int = 1,
+    slug: Optional[str] = None,
+    title: Optional[str] = None,
+    description: Optional[str] = None,
+) -> Category:
     if slug is None:
         slug = f'category-{number}'
 
@@ -29,7 +46,14 @@ def create_category(
     )
 
 
-def create_topic(category_id, creator_id, *, number=1, title=None, body=None):
+def create_topic(
+    category_id: CategoryID,
+    creator_id: UserID,
+    *,
+    number: int = 1,
+    title: Optional[str] = None,
+    body: Optional[str] = None,
+) -> DbTopic:
     if title is None:
         title = f'Thema {number}'
 
@@ -43,7 +67,13 @@ def create_topic(category_id, creator_id, *, number=1, title=None, body=None):
     return topic
 
 
-def create_posting(topic_id, creator_id, *, number=1, body=None):
+def create_posting(
+    topic_id: TopicID,
+    creator_id: UserID,
+    *,
+    number: int = 1,
+    body: Optional[str] = None,
+) -> DbPosting:
     if body is None:
         body = f'Inhalt von Beitrag {number}.'
 
@@ -54,9 +84,9 @@ def create_posting(topic_id, creator_id, *, number=1, body=None):
     return posting
 
 
-def find_topic(topic_id):
+def find_topic(topic_id: TopicID) -> Optional[DbTopic]:
     return topic_query_service.find_topic_by_id(topic_id)
 
 
-def find_posting(posting_id):
+def find_posting(posting_id: PostingID) -> Optional[DbPosting]:
     return posting_query_service.find_posting_by_id(posting_id)
