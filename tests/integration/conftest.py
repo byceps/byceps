@@ -244,7 +244,7 @@ def brand(make_brand) -> Brand:
 
 
 @pytest.fixture(scope='session')
-def make_party(admin_app: Flask, make_brand):
+def make_party(admin_app: Flask):
     def _wrapper(*args, **kwargs) -> Party:
         return create_party(*args, **kwargs)
 
@@ -257,7 +257,7 @@ def party(make_party, brand: Brand) -> Party:
 
 
 @pytest.fixture(scope='session')
-def make_ticket_category(admin_app: Flask, party: Party):
+def make_ticket_category(admin_app: Flask):
     def _wrapper(party_id: PartyID, title: str) -> TicketCategory:
         return ticketing_category_service.create_category(party_id, title)
 
