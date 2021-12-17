@@ -28,8 +28,6 @@ from .....typing import BrandID
 from .....util.l10n import force_user_locale
 from .....util.templating import load_template
 
-from ...shop.transfer.models import ShopID
-
 
 @dataclass(frozen=True)
 class OrderEmailData:
@@ -126,7 +124,8 @@ def _assemble_email_for_incoming_order_to_orderer(
 
 
 def _get_payment_instructions(order: Order) -> str:
-    fragment = _get_snippet_body(order.shop_id, 'email_payment_instructions')
+    scope = Scope('shop', str(order.shop_id))
+    fragment = _get_snippet_body(scope, 'email_payment_instructions')
 
     template = load_template(fragment)
     return template.render(
@@ -217,7 +216,9 @@ def _assemble_body(data: OrderEmailData, paragraphs: list[str]) -> str:
     """Assemble the plain text part of the email."""
     screen_name = data.orderer.screen_name or 'UnknownUser'
     salutation = gettext('Hello %(screen_name)s,', screen_name=screen_name)
-    footer = _get_snippet_body(data.order.shop_id, 'email_footer')
+
+    scope = Scope.for_brand(data.brand_id)
+    footer = _get_snippet_body(scope, 'email_footer')
 
     return '\n\n'.join([salutation] + paragraphs + [footer])
 
@@ -236,9 +237,7 @@ def _assemble_email_to_orderer(
     return Message(sender, recipients, subject, body)
 
 
-def _get_snippet_body(shop_id: ShopID, name: str) -> str:
-    scope = Scope('shop', str(shop_id))
-
+def _get_snippet_body(scope: Scope, name: str) -> str:
     version = snippet_service.find_current_version_of_snippet_with_name(
         scope, name
     )

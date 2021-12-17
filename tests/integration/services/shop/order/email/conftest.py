@@ -21,26 +21,6 @@ def order_admin(make_user):
 
 
 @pytest.fixture
-def email_footer_snippet_id(shop: Shop, order_admin: User) -> SnippetID:
-    return create_shop_fragment(
-        shop.id,
-        order_admin.id,
-        'email_footer',
-        '''
-Für Fragen stehen wir gerne zur Verfügung.
-
-Viele Grüße,
-das Team der Acme Entertainment Convention
-
--- 
-Acme Entertainment Convention
-
-E-Mail: noreply@acmecon.test
-''',
-    )
-
-
-@pytest.fixture
 def email_payment_instructions_snippet_id(
     shop: Shop, order_admin: User
 ) -> SnippetID:
