@@ -23,6 +23,8 @@ from byceps.services.board.transfer.models import (
 )
 from byceps.typing import UserID
 
+from tests.helpers import generate_token
+
 
 def create_category(
     board_id: BoardID,
@@ -33,10 +35,10 @@ def create_category(
     description: Optional[str] = None,
 ) -> Category:
     if slug is None:
-        slug = f'category-{number}'
+        slug = generate_token()
 
     if title is None:
-        title = f'Kategorie {number}'
+        title = generate_token()
 
     if description is None:
         description = f'Hier geht es um Kategorie {number}'

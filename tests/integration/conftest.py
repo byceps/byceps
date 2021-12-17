@@ -266,7 +266,7 @@ def make_ticket_category(admin_app: Flask, party: Party):
 
 @pytest.fixture(scope='session')
 def board(brand: Brand) -> Iterator[Board]:
-    board_id = BoardID(brand.id)
+    board_id = BoardID(generate_token())
     board = board_service.create_board(brand.id, board_id)
     yield board
     board_service.delete_board(board.id)
