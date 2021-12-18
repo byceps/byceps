@@ -12,13 +12,11 @@ from __future__ import annotations
 from typing import Any, Callable, Iterable, Optional, TypeVar
 import uuid
 
-from sqlalchemy.dialects.postgresql import insert
+from flask_sqlalchemy import Pagination, SQLAlchemy
+from sqlalchemy.dialects.postgresql import insert, JSONB, UUID
+from sqlalchemy.orm import Query
 from sqlalchemy.sql.dml import Insert
 from sqlalchemy.sql.schema import Table
-
-from flask_sqlalchemy import Pagination, SQLAlchemy
-from sqlalchemy.dialects.postgresql import JSONB, UUID
-from sqlalchemy.orm import Query
 
 
 F = TypeVar('F')
