@@ -30,13 +30,6 @@ a.dashboard-section-link:hover {
   margin-top: var(--inner-gutter);
 }
 
-.grid {
-  display: grid;
-  gap: var(--inner-gutter);
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  margin-bottom: var(--inner-gutter);
-}
-
 .grid .cell--fitted {
   align-self: start;
 }

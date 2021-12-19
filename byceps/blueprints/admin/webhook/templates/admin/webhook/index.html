@@ -6,16 +6,6 @@
 {% set page_title = _('Webhooks') %}
 {% set layout_main_raw = True %}
 
-{% block head %}
-<style>
-.two-column {
-  display: grid;
-  gap: var(--inner-gutter);
-  grid-template-columns: repeat(auto-fill, minmax(465px, 1fr));
-}
-</style>
-{%- endblock %}
-
 {% block body %}
 
   <div class="row row--space-between">
@@ -59,7 +49,7 @@
     <div class="data-label">{{ _('URL') }}</div>
     <div class="data-value mb">{{ webhook.url }}</div>
 
-    <div class="two-column">
+    <div class="grid" style="--column-min-width: 465px;">
       <div style="overflow-x: auto;">
 
         <div class="data-label">{{ _('Format') }}</div>
@@ -118,7 +108,7 @@
 
       </div>
 
-    </div>{# .two-column #}
+    </div>{# .grid #}
 
   </div>{# .box #}
     {%- endfor %}

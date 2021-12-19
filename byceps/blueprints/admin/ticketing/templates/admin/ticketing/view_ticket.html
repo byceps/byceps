@@ -10,12 +10,6 @@
 
 {% block head %}
 <style>
-.local-grid {
-  display: grid;
-  gap: var(--inner-gutter);
-  grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
-}
-
 .local-grid .box {
   margin-top: 0;
 }
@@ -93,7 +87,7 @@
 
   </div>
 
-  <div class="local-grid">
+  <div class="grid local-grid" style="--column-min-width: 16rem;">
     <div class="box">
 
       <div class="data-label">{{ _('Owner') }}</div>

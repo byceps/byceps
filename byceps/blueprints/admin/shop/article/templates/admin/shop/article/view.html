@@ -9,12 +9,6 @@
 
 {% block head %}
 <style>
-.article-grid {
-  display: grid;
-  gap: var(--inner-gutter);
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-}
-
 .article-grid .box {
   margin-top: 0;
 }
@@ -63,7 +57,7 @@ table.attachments td {
     </div>
   </div>
 
-  <div class="article-grid">
+  <div class="grid article-grid" style="--column-min-width: 12rem;">
     <div class="box">
 
       <div class="data-label">{{ _('Description') }}</div>

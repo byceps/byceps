@@ -13,12 +13,6 @@
       .team h2 {
         margin: 0;
       }
-
-      .members {
-        display: grid;
-        gap: 1rem 2rem;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      }
     </style>
 {%- endblock %}
 
@@ -75,7 +69,7 @@
     </div>
 
       {%- if members %}
-    <div class="members">
+    <div class="grid" style="--column-min-width: 240px; gap: 1rem 2rem;">
         {%- for member in members %}
       <div class="row row--space-between">
         <div class="column-auto">
