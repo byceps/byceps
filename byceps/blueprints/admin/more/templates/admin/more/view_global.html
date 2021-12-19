@@ -11,7 +11,7 @@
 
 {% block body %}
 
-  <div class="grid dashboard">
+  <div class="grid">
   {%- with items = [
     (_('Permissions'), 'permission', url_for('authorization_admin.role_index'), 'role.view'),
     (_('Global Snippets'), 'snippet', url_for('snippet_admin.index_for_scope', scope_type='global', scope_name='global'), 'snippet.view'),

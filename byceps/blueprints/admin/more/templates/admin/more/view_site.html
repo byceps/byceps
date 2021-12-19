@@ -12,7 +12,7 @@
 
 {% block body %}
 
-  <div class="grid dashboard">
+  <div class="grid">
   {%- with items = [
     (_('Discussion Board'), 'board', url_for('board_admin.board_view', board_id=site.board_id) if site.board_id else '', 'board_category.view', site.board_id is not none),
   ] %}

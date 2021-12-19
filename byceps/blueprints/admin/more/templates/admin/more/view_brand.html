@@ -12,7 +12,7 @@
 
 {% block body %}
 
-  <div class="grid dashboard">
+  <div class="grid">
   {%- with items = [
     (_('Newsletter Subscriptions'), 'email', url_for('newsletter_admin.view_subscriptions', list_id=brand.id), 'newsletter.view_subscriptions'),
     (_('Discussion Boards'), 'board', url_for('board_admin.board_index_for_brand', brand_id=brand.id), 'board_category.view'),

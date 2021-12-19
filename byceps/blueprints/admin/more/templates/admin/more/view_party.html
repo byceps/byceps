@@ -12,7 +12,7 @@
 
 {% block body %}
 
-  <div class="grid dashboard">
+  <div class="grid">
   {%- with items = [
     (_('Guest Servers'), 'server', url_for('guest_server_admin.server_index', party_id=party.id), 'guest_server.view'),
     (_('Organizer Presence'), 'date-okay', url_for('orga_presence.view', party_id=party.id), 'orga_presence.view'),
