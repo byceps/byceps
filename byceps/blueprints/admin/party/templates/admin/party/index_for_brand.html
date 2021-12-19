@@ -29,7 +29,7 @@
 {{ render_party(party, days_by_party_id[party.id], ticket_sale_stats_by_party_id[party.id], show_brand_avatar=False) }}
     {%- endfor %}
 
-  <div style="margin-top: var(--inner-gutter);">
+  <div class="mt">
 {{ render_pagination_nav(parties, '.index_for_brand', {
   'brand_id': brand.id,
   'per_page': per_page,

@@ -11,7 +11,7 @@
 
   <h1>{{ _('Tickets') }} {{ render_extra_in_heading(tickets.total) }}</h1>
 
-  <div class="row row--space-between filters">
+  <div class="row row--space-between mb">
     <div class="column-auto">
 
       <form action="{{ url_for('.index_for_party', party_id=party.id) }}" class="single-row">

@@ -23,7 +23,7 @@
     {%- endif %}
   </div>
 
-  <div class="box" style="margin-bottom: var(--inner-gutter);">
+  <div class="box mb">
     <div class="row row--equal-sized-centered-columns row--space-around row--wrap bigstats">
       <div class="column-auto">
         <a class="button button--clear" href="{{ url_for('.index') }}">
@@ -53,7 +53,7 @@
     </div>
   </div>
 
-  <div class="row row--space-between row--wrap filters">
+  <div class="row row--space-between row--wrap mb">
     <div class="column-auto">
 
       <form action="{{ url_for('.index') }}" class="single-row">
@@ -88,7 +88,7 @@
 {% include 'admin/user/_user_list.html' %}
     {%- endwith %}
 
-    <div style="margin-top: var(--inner-gutter);">
+    <div class="mt">
     {{ render_pagination_nav(users, '.index', {
         'only': only if only else None,
         'search_term': search_term if search_term else None,

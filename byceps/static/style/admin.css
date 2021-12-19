@@ -563,10 +563,6 @@ main .dropdown-menu {
 
 /* filters */
 
-.filters {
-  margin-bottom: 20px;
-}
-
 .filter {
   font-size: 0.75rem; /* 12px / 16px */
   white-space: nowrap;
@@ -729,6 +725,14 @@ main .dropdown-menu {
 
 
 /* misc */
+
+.mb {
+  margin-bottom: var(--inner-gutter);
+}
+
+.mt {
+  margin-top: var(--inner-gutter);
+}
 
 .column--align-bottom {
   align-self: flex-end;
