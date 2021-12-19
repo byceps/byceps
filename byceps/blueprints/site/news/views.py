@@ -44,6 +44,7 @@ def index(page):
     return {
         'items': items,
         'page': page,
+        'per_page': items_per_page,
     }
 
 

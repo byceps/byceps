@@ -90,6 +90,9 @@
     {%- endif %}
   </div>
 
-{{ render_pagination_nav(articles, '.index_for_shop', {'shop_id': shop.id}) }}
+{{ render_pagination_nav(articles, '.index_for_shop', {
+  'shop_id': shop.id,
+  'per_page': per_page,
+}) }}
 
 {%- endblock %}

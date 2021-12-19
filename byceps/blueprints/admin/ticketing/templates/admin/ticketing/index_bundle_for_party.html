@@ -43,6 +43,9 @@
     {%- endif %}
   </div>
 
-{{ render_pagination_nav(bundles, '.index_bundle_for_party', {'party_id': party.id}) }}
+{{ render_pagination_nav(bundles, '.index_bundle_for_party', {
+  'party_id': party.id,
+  'per_page': per_page,
+}) }}
 
 {%- endblock %}

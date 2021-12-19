@@ -71,6 +71,7 @@ def area_index(party_id, page):
 
     return {
         'party': party,
+        'per_page': per_page,
         'areas_with_occupied_seat_counts': areas_with_occupied_seat_counts,
         'seat_total_per_area': seat_total_per_area,
     }

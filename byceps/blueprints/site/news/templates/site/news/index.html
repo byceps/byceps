@@ -12,7 +12,9 @@
 {% include 'site/news/_item.html' %}
     {%- endfor %}
 
-{{ render_pagination_nav(items, 'news.index') }}
+{{ render_pagination_nav(items, 'news.index', {
+  'per_page': per_page,
+}) }}
   </div>
 
 {%- endblock %}

@@ -45,11 +45,12 @@
 {% include 'admin/shop/order/_order_list.html' %}
   {%- endwith %}
 
-  {{ render_pagination_nav(orders, '.index_for_shop', {
-      'shop_id': shop.id,
-      'only_payment_state': only_payment_state.name if only_payment_state else None,
-      'only_processed': 'false' if ((only_processed is not none) and not only_processed) else None,
-    }) }}
+{{ render_pagination_nav(orders, '.index_for_shop', {
+  'shop_id': shop.id,
+  'per_page': per_page,
+  'only_payment_state': only_payment_state.name if only_payment_state else None,
+  'only_processed': 'false' if ((only_processed is not none) and not only_processed) else None,
+}) }}
   </div>
 
 {%- endblock %}

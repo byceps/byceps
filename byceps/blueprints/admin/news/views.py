@@ -128,6 +128,7 @@ def channel_view(channel_id, page):
         'channel': channel,
         'brand': brand,
         'items': items,
+        'per_page': per_page,
         'users_by_id': users_by_id,
     }
 

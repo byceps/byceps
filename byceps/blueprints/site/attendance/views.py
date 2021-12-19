@@ -39,6 +39,7 @@ def attendees(page):
     )
 
     return {
+        'per_page': per_page,
         'search_term': search_term,
         'attendees': attendees,
         'orga_ids': orga_ids,

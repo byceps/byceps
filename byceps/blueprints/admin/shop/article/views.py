@@ -82,6 +82,7 @@ def index_for_shop(shop_id, page):
         'brand': brand,
         'articles': articles,
         'article_type_names_and_labels': article_type_names_and_labels,
+        'per_page': per_page,
     }
 
 

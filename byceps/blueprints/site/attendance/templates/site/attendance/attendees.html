@@ -96,6 +96,9 @@
   <p class="dimmed">{{ _('No attendees found.') }}</p>
   {%- endif %}
 
-{{ render_pagination_nav(attendees, '.attendees', {'search_term': search_term if search_term else None}, centered=True) }}
+{{ render_pagination_nav(attendees, '.attendees', {
+  'per_page': per_page,
+  'search_term': search_term if search_term else None,
+}, centered=True) }}
 
 {%- endblock %}

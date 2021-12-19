@@ -114,6 +114,7 @@
 
 {{ render_pagination_nav(tickets, '.index_for_party', {
   'party_id': party.id,
+  'per_page': per_page,
   'category': filter_category.id if filter_category else None,
   'revoked': filter_revoked.name if filter_revoked else None,
   'checked_in': filter_checked_in.name if filter_checked_in else None,

@@ -59,6 +59,9 @@
     {%- endif %}
   </div>
 
-{{ render_pagination_nav(areas_with_occupied_seat_counts, '.area_index', {'party_id': party.id}) }}
+{{ render_pagination_nav(areas_with_occupied_seat_counts, '.area_index', {
+  'party_id': party.id,
+  'per_page': per_page,
+}) }}
 
 {%- endblock %}

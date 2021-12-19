@@ -85,6 +85,7 @@ def index_for_shop(shop_id, page):
     return {
         'shop': shop,
         'brand': brand,
+        'per_page': per_page,
         'search_term': search_term,
         'PaymentState': PaymentState,
         'only_payment_state': only_payment_state,

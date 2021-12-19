@@ -89,6 +89,7 @@ def index_for_party(party_id, page):
 
     return {
         'party': party,
+        'per_page': per_page,
         'search_term': search_term,
         'tickets': tickets,
         'categories': categories,
@@ -256,6 +257,7 @@ def index_bundle_for_party(party_id, page):
     return {
         'party': party,
         'bundles': bundles,
+        'per_page': per_page,
     }
 
 
