@@ -10,6 +10,8 @@ from __future__ import annotations
 from collections import defaultdict
 from typing import Iterable, Optional
 
+from sqlalchemy import select
+
 from ...database import db, paginate, Pagination
 from ...typing import PartyID, UserID
 
@@ -56,8 +58,11 @@ def _get_users_paginated(
 ) -> Pagination:
     # Drop revoked tickets here already to avoid users without tickets
     # being included in the list.
-    query = db.session \
-        .query(DbUser) \
+
+    items_query = select(
+        DbUser,
+        db.func.lower(DbUser.screen_name).label('screen_name_lower')
+    ) \
         .distinct() \
         .options(
             db.load_only(DbUser.id, DbUser.screen_name, DbUser.deleted),
@@ -66,16 +71,23 @@ def _get_users_paginated(
         ) \
         .join(DbTicket, DbTicket.used_by_id == DbUser.id) \
         .filter(DbTicket.revoked == False) \
+        .join(DbCategory).filter(DbCategory.party_id == party_id) \
+        .order_by('screen_name_lower')
+
+    count_query = select(db.func.count(db.distinct(DbUser.id))) \
+        .join(DbTicket, DbTicket.used_by_id == DbUser.id) \
+        .filter(DbTicket.revoked == False) \
         .join(DbCategory).filter(DbCategory.party_id == party_id)
 
     if search_term:
-        query = query \
+        items_query = items_query \
+            .filter(DbUser.screen_name.ilike(f'%{search_term}%'))
+        count_query = count_query \
             .filter(DbUser.screen_name.ilike(f'%{search_term}%'))
 
-    query = query \
-        .order_by(db.func.lower(DbUser.screen_name))
-
-    return paginate(query, page, per_page)
+    return paginate(
+        items_query, count_query, page, per_page, scalar_result=True
+    )
 
 
 def _get_tickets_for_users(

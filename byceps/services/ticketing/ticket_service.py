@@ -12,7 +12,7 @@ from typing import Optional
 
 from sqlalchemy import select
 
-from ...database import db, Pagination
+from ...database import db, paginate, Pagination
 from ...typing import PartyID, UserID
 
 from ..party import service as party_service
@@ -280,36 +280,48 @@ def get_tickets_with_details_for_party_paginated(
     filter_checked_in: Optional[FilterMode] = None,
 ) -> Pagination:
     """Return the party's tickets to show on the specified page."""
-    query = db.session \
-        .query(DbTicket) \
+    items_query = select(DbTicket) \
         .filter(DbTicket.party_id == party_id) \
         .join(DbCategory) \
         .options(
             db.joinedload(DbTicket.category),
             db.joinedload(DbTicket.owned_by),
             db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
-        )
+        ) \
+        .order_by(DbTicket.created_at)
+
+    count_query = select(db.func.count(DbTicket.id)) \
+        .filter(DbTicket.party_id == party_id) \
+        .join(DbCategory)
 
     if search_term:
         ilike_pattern = f'%{search_term}%'
-        query = query \
+        items_query = items_query \
+            .filter(DbTicket.code.ilike(ilike_pattern))
+        count_query = count_query \
             .filter(DbTicket.code.ilike(ilike_pattern))
 
     if filter_category_id:
-        query = query \
+        items_query = items_query \
+            .filter(DbCategory.id == str(filter_category_id))
+        count_query = count_query \
             .filter(DbCategory.id == str(filter_category_id))
 
     if filter_revoked is not None:
-        query = query \
+        items_query = items_query \
+            .filter(DbTicket.revoked == (filter_revoked is FilterMode.select))
+        count_query = count_query \
             .filter(DbTicket.revoked == (filter_revoked is FilterMode.select))
 
     if filter_checked_in is not None:
-        query = query \
+        items_query = items_query \
+            .filter(DbTicket.user_checked_in == (filter_checked_in is FilterMode.select))
+        count_query = count_query \
             .filter(DbTicket.user_checked_in == (filter_checked_in is FilterMode.select))
 
-    return query \
-        .order_by(DbTicket.created_at) \
-        .paginate(page, per_page)
+    return paginate(
+        items_query, count_query, page, per_page, scalar_result=True
+    )
 
 
 def count_revoked_tickets_for_party(party_id: PartyID) -> int:

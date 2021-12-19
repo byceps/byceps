@@ -9,7 +9,9 @@ byceps.services.board.posting_query_service
 from __future__ import annotations
 from typing import Optional
 
-from ...database import db, Pagination
+from sqlalchemy import select
+
+from ...database import db, paginate, Pagination
 from ...typing import UserID
 from ...util.iterables import index_of
 
@@ -49,24 +51,28 @@ def paginate_postings(
     topic_id: TopicID,
     include_hidden: bool,
     page: int,
-    postings_per_page: int,
+    per_page: int,
 ) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
-    query = db.session \
-        .query(DbPosting) \
+    items_query = select(DbPosting) \
         .options(
             db.joinedload(DbPosting.topic),
             db.joinedload(DbPosting.last_edited_by).load_only('screen_name'),
             db.joinedload(DbPosting.hidden_by).load_only('screen_name'),
         ) \
+        .filter_by(topic_id=topic_id) \
+        .order_by(DbPosting.created_at.asc())
+
+    count_query = select(db.func.count(DbPosting.id)) \
         .filter_by(topic_id=topic_id)
 
     if not include_hidden:
-        query = query.filter_by(hidden=False)
+        items_query = items_query.filter_by(hidden=False)
+        count_query = count_query.filter_by(hidden=False)
 
-    postings = query \
-        .order_by(DbPosting.created_at.asc()) \
-        .paginate(page, postings_per_page)
+    postings = paginate(
+        items_query, count_query, page, per_page, scalar_result=True
+    )
 
     creator_ids = {posting.creator_id for posting in postings.items}
     creators_by_id = _get_users_by_id(creator_ids)

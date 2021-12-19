@@ -11,7 +11,9 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional, Sequence
 
-from ....database import db, Pagination
+from sqlalchemy import select
+
+from ....database import db, paginate, Pagination
 
 from ..order.dbmodels.line_item import LineItem as DbLineItem
 from ..order.dbmodels.order import Order as DbOrder
@@ -249,11 +251,16 @@ def get_articles_for_shop_paginated(
 
     Ordered by article number, reversed.
     """
-    return db.session \
-        .query(DbArticle) \
+    items_query = select(DbArticle) \
         .filter_by(shop_id=shop_id) \
-        .order_by(DbArticle.item_number.desc()) \
-        .paginate(page, per_page)
+        .order_by(DbArticle.item_number.desc())
+
+    count_query = select(db.func.count(DbArticle.id)) \
+        .filter_by(shop_id=shop_id)
+
+    return paginate(
+        items_query, count_query, page, per_page, scalar_result=True
+    )
 
 
 def get_article_compilation_for_orderable_articles(

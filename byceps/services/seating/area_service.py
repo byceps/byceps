@@ -9,6 +9,8 @@ byceps.services.seating.area_service
 from __future__ import annotations
 from typing import Optional
 
+from sqlalchemy import select
+
 from ...database import db, paginate, Pagination
 from ...typing import PartyID
 
@@ -85,7 +87,7 @@ def get_areas_for_party_paginated(
         .filter(DbSeat.area_id == area.id) \
         .scalar_subquery()
 
-    query = db.session \
+    items_query = db.session \
         .query(
             area,
             subquery
@@ -93,13 +95,18 @@ def get_areas_for_party_paginated(
         .filter(area.party_id == party_id) \
         .group_by(area.id)
 
+    count_query = select(db.func.count(DbArea.id)) \
+        .filter(area.party_id == party_id)
+
     def item_mapper(
         area_and_ticket_count: tuple[DbArea, int]
     ) -> tuple[Area, int]:
         area, ticket_count = area_and_ticket_count
         return _db_entity_to_area(area), ticket_count
 
-    return paginate(query, page, per_page, item_mapper=item_mapper)
+    return paginate(
+        items_query, count_query, page, per_page, item_mapper=item_mapper
+    )
 
 
 def _db_entity_to_area(area: DbArea) -> Area:

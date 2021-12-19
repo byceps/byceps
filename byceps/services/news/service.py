@@ -12,7 +12,10 @@ from datetime import datetime
 from functools import partial
 from typing import Optional, Union
 
-from ...database import db, paginate, Pagination, Query
+from sqlalchemy import select
+from sqlalchemy.sql import Select
+
+from ...database import db, paginate, Pagination
 from ...events.news import NewsItemPublished
 from ...typing import UserID
 
@@ -254,22 +257,43 @@ def get_aggregated_items_paginated(
     published_only: bool = False,
 ) -> Pagination:
     """Return the news items to show on the specified page."""
-    query = _get_items_query(channel_ids)
+    items_query = _get_items_query(channel_ids)
+    count_query = _get_count_query(channel_ids)
 
     if published_only:
-        query = query.filter(DbItem.published_at <= datetime.utcnow())
+        items_query = items_query \
+            .filter(DbItem.published_at <= datetime.utcnow())
+        count_query = count_query \
+            .filter(DbItem.published_at <= datetime.utcnow())
 
     item_mapper = partial(_db_entity_to_item, render_body=True)
 
-    return paginate(query, page, items_per_page, item_mapper=item_mapper)
+    return paginate(
+        items_query,
+        count_query,
+        page,
+        items_per_page,
+        scalar_result=True,
+        unique_result=True,
+        item_mapper=item_mapper,
+    )
 
 
 def get_items_paginated(
     channel_ids: set[ChannelID], page: int, items_per_page: int
 ) -> Pagination:
     """Return the news items to show on the specified page."""
-    return _get_items_query(channel_ids) \
-        .paginate(page, items_per_page)
+    items_query = _get_items_query(channel_ids)
+    count_query = _get_count_query(channel_ids)
+
+    return paginate(
+        items_query,
+        count_query,
+        page,
+        items_per_page,
+        scalar_result=True,
+        unique_result=True,
+    )
 
 
 def get_recent_headlines(
@@ -298,9 +322,8 @@ def get_recent_headlines(
     ]
 
 
-def _get_items_query(channel_ids: set[ChannelID]) -> Query:
-    return db.session \
-        .query(DbItem) \
+def _get_items_query(channel_ids: set[ChannelID]) -> Select:
+    return select(DbItem) \
         .filter(DbItem.channel_id.in_(channel_ids)) \
         .options(
             db.joinedload(DbItem.channel),
@@ -309,6 +332,11 @@ def _get_items_query(channel_ids: set[ChannelID]) -> Query:
             db.joinedload(DbItem.images)
         ) \
         .order_by(DbItem.published_at.desc())
+
+
+def _get_count_query(channel_ids: set[ChannelID]) -> Select:
+    return select(db.func.count(DbItem.id)) \
+        .filter(DbItem.channel_id.in_(channel_ids))
 
 
 def get_item_versions(item_id: ItemID) -> list[DbItemVersion]:

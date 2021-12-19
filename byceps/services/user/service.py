@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 from sqlalchemy import select
+from sqlalchemy.sql import Select
 
 from ...database import db, paginate, Pagination, Query
 from ...typing import UserID
@@ -462,8 +463,7 @@ def get_users_paginated(
     """Return the users to show on the specified page, optionally
     filtered by search term or flags.
     """
-    query = db.session \
-        .query(DbUser) \
+    items_query = select(DbUser) \
         .options(
             db.joinedload(DbUser.avatar_selection)
                 .joinedload(DbAvatarSelection.avatar),
@@ -472,22 +472,28 @@ def get_users_paginated(
         ) \
         .order_by(DbUser.created_at.desc())
 
-    query = _filter_by_state(query, state_filter)
+    count_query = select(db.func.count(DbUser.id))
+
+    items_query = _filter_by_state(items_query, state_filter)
+    count_query = _filter_by_state(count_query, state_filter)
 
     if search_term:
-        query = _filter_by_search_term(query, search_term)
+        items_query = _filter_by_search_term(items_query, search_term)
+        count_query = _filter_by_search_term(count_query, search_term)
 
     return paginate(
-        query,
+        items_query,
+        count_query,
         page,
         per_page,
+        scalar_result=True,
         item_mapper=_db_entity_to_user_for_admin,
     )
 
 
 def _filter_by_state(
-    query: Query, state_filter: Optional[UserStateFilter] = None
-) -> Query:
+    query: Select, state_filter: Optional[UserStateFilter] = None
+) -> Select:
     if state_filter == UserStateFilter.active:
         return query \
             .filter_by(initialized=True) \
@@ -509,7 +515,7 @@ def _filter_by_state(
         return query
 
 
-def _filter_by_search_term(query: Query, search_term: str) -> Query:
+def _filter_by_search_term(query: Select, search_term: str) -> Select:
     terms = search_term.split(' ')
     clauses = map(_generate_search_clauses_for_term, terms)
 
@@ -518,7 +524,7 @@ def _filter_by_search_term(query: Query, search_term: str) -> Query:
         .filter(db.and_(*clauses))
 
 
-def _generate_search_clauses_for_term(search_term: str) -> Query:
+def _generate_search_clauses_for_term(search_term: str) -> Select:
     ilike_pattern = f'%{search_term}%'
 
     return db.or_(

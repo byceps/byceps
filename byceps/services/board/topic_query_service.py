@@ -10,7 +10,10 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Optional
 
-from ...database import db, Pagination, Query
+from sqlalchemy import select
+from sqlalchemy.sql import Select
+
+from ...database import db, paginate, Pagination
 
 from .dbmodels.category import Category as DbCategory
 from .dbmodels.posting import Posting as DbPosting
@@ -66,25 +69,33 @@ def get_recent_topics(
     board_id: BoardID, include_hidden: bool, limit: int
 ) -> list[DbTopic]:
     """Paginate topics in that board."""
-    return _query_topics(include_hidden) \
+    query = _query_topics(include_hidden) \
         .join(DbCategory) \
             .filter(DbCategory.board_id == board_id) \
             .filter(DbCategory.hidden == False) \
         .order_by(DbTopic.last_updated_at.desc()) \
-        .limit(limit) \
-        .all()
+        .limit(limit)
+
+    return db.session.execute(query).scalars().all()
 
 
 def paginate_topics(
-    board_id: BoardID, include_hidden: bool, page: int, topics_per_page: int
+    board_id: BoardID, include_hidden: bool, page: int, per_page: int
 ) -> Pagination:
     """Paginate topics in that board."""
-    return _query_topics(include_hidden) \
+    items_query = _query_topics(include_hidden) \
         .join(DbCategory) \
             .filter(DbCategory.board_id == board_id) \
             .filter(DbCategory.hidden == False) \
-        .order_by(DbTopic.last_updated_at.desc()) \
-        .paginate(page, topics_per_page)
+        .order_by(DbTopic.last_updated_at.desc())
+
+    count_query = select(db.func.count(DbTopic.id))
+    if not include_hidden:
+        count_query = count_query.filter_by(hidden=False)
+
+    return paginate(
+        items_query, count_query, page, per_page, scalar_result=True
+    )
 
 
 def get_all_topic_ids_in_category(category_id: CategoryID) -> set[TopicID]:
@@ -101,21 +112,27 @@ def paginate_topics_of_category(
     category_id: CategoryID,
     include_hidden: bool,
     page: int,
-    topics_per_page: int,
+    per_page: int,
 ) -> Pagination:
     """Paginate topics in that category, as visible for the user.
 
     Pinned topics are returned first.
     """
-    return _query_topics(include_hidden) \
+    items_query = _query_topics(include_hidden) \
         .filter_by(category_id=category_id) \
-        .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc()) \
-        .paginate(page, topics_per_page)
+        .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc())
+
+    count_query = select(db.func.count(DbTopic.id))
+    if not include_hidden:
+        count_query = count_query.filter_by(hidden=False)
+
+    return paginate(
+        items_query, count_query, page, per_page, scalar_result=True
+    )
 
 
-def _query_topics(include_hidden: bool) -> Query:
-    query = db.session \
-        .query(DbTopic) \
+def _query_topics(include_hidden: bool) -> Select:
+    query = select(DbTopic) \
         .options(
             db.joinedload(DbTopic.category),
             db.joinedload(DbTopic.last_updated_by),

@@ -597,32 +597,42 @@ def get_orders_for_shop_paginated(
     If a payment state is specified, only orders in that state are
     returned.
     """
-    query = db.session \
-        .query(DbOrder) \
+    items_query = select(DbOrder) \
         .filter_by(shop_id=shop_id) \
         .order_by(DbOrder.created_at.desc())
 
+    count_query = select(db.func.count(DbOrder.id)) \
+        .filter_by(shop_id=shop_id) \
+
     if search_term:
         ilike_pattern = f'%{search_term}%'
-        query = query \
+        items_query = items_query \
+            .filter(DbOrder.order_number.ilike(ilike_pattern))
+        count_query = count_query \
             .filter(DbOrder.order_number.ilike(ilike_pattern))
 
     if only_payment_state is not None:
-        query = query.filter_by(_payment_state=only_payment_state.name)
+        items_query = items_query.filter_by(_payment_state=only_payment_state.name)
+        count_query = count_query.filter_by(_payment_state=only_payment_state.name)
 
     if only_processed is not None:
-        query = query.filter(DbOrder.processing_required == True)
+        items_query = items_query.filter(DbOrder.processing_required == True)
+        count_query = count_query.filter(DbOrder.processing_required == True)
 
         if only_processed:
-            query = query.filter(DbOrder.processed_at != None)
+            items_query = items_query.filter(DbOrder.processed_at != None)
+            count_query = count_query.filter(DbOrder.processed_at != None)
         else:
-            query = query.filter(DbOrder.processed_at == None)
+            items_query = items_query.filter(DbOrder.processed_at == None)
+            count_query = count_query.filter(DbOrder.processed_at == None)
 
     return paginate(
-        query,
+        items_query,
+        count_query,
         page,
         per_page,
-        item_mapper=lambda order: _order_to_transfer_object(order),
+        scalar_result=True,
+        item_mapper=_order_to_transfer_object,
     )
 
 

@@ -8,9 +8,10 @@ byceps.services.ticketing.ticket_bundle_service
 
 from typing import Optional, Sequence
 
+from sqlalchemy import select
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
 
-from ...database import db, Pagination
+from ...database import db, paginate, Pagination
 from ...typing import PartyID, UserID
 
 from ..shop.order.transfer.number import OrderNumber
@@ -123,13 +124,19 @@ def get_bundles_for_party_paginated(
     party_id: PartyID, page: int, per_page: int
 ) -> Pagination:
     """Return the party's ticket bundles to show on the specified page."""
-    return db.session \
-        .query(DbTicketBundle) \
+    items_query = select(DbTicketBundle) \
         .join(DbCategory) \
         .filter(DbCategory.party_id == party_id) \
         .options(
             db.joinedload(DbTicketBundle.ticket_category),
             db.joinedload(DbTicketBundle.owned_by),
         ) \
-        .order_by(DbTicketBundle.created_at.desc()) \
-        .paginate(page, per_page)
+        .order_by(DbTicketBundle.created_at.desc())
+
+    count_query = select(db.func.count(DbTicketBundle.id)) \
+        .join(DbCategory) \
+        .filter(DbCategory.party_id == party_id)
+
+    return paginate(
+        items_query, count_query, page, per_page, scalar_result=True
+    )

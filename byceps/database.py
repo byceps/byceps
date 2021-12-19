@@ -15,6 +15,7 @@ import uuid
 from flask_sqlalchemy import Pagination, SQLAlchemy
 from sqlalchemy.dialects.postgresql import insert, JSONB, UUID
 from sqlalchemy.orm import Query
+from sqlalchemy.sql import Select
 from sqlalchemy.sql.dml import Insert
 from sqlalchemy.sql.schema import Table
 
@@ -46,10 +47,13 @@ def generate_uuid() -> uuid.UUID:
 
 
 def paginate(
-    query: Query,
+    items_query: Select,
+    count_query: Select,
     page: int,
     per_page: int,
     *,
+    scalar_result: bool = False,
+    unique_result: bool = False,
     item_mapper: Optional[Mapper] = None,
 ) -> Pagination:
     """Return `per_page` items from page `page`."""
@@ -61,13 +65,22 @@ def paginate(
 
     offset = (page - 1) * per_page
 
-    items = query.limit(per_page).offset(offset).all()
+    items_result = db.session.execute(
+        items_query
+        .limit(per_page)
+        .offset(offset)
+    )
+    if scalar_result:
+        items_result = items_result.scalars()
+    if unique_result:
+        items_result = items_result.unique()
+    items = items_result.all()
 
     item_count = len(items)
     if page == 1 and item_count < per_page:
         total = item_count
     else:
-        total = query.order_by(None).count()
+        total = db.session.scalar(count_query)
 
     if item_mapper is not None:
         items = [item_mapper(item) for item in items]

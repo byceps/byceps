@@ -11,6 +11,8 @@ import dataclasses
 from datetime import date, datetime, timedelta
 from typing import Optional, Union
 
+from sqlalchemy import select
+
 from ...database import db, paginate, Pagination
 from ...typing import BrandID, PartyID
 
@@ -210,12 +212,21 @@ def get_parties_for_brand_paginated(
     brand_id: BrandID, page: int, per_page: int
 ) -> Pagination:
     """Return the parties for that brand to show on the specified page."""
-    query = db.session \
-        .query(DbParty) \
+    items_query = select(DbParty) \
         .filter_by(brand_id=brand_id) \
         .order_by(DbParty.starts_at.desc())
 
-    return paginate(query, page, per_page, item_mapper=_db_entity_to_party)
+    count_query = select(db.func.count(DbParty.id)) \
+        .filter_by(brand_id=brand_id)
+
+    return paginate(
+        items_query,
+        count_query,
+        page,
+        per_page,
+        scalar_result=True,
+        item_mapper=_db_entity_to_party,
+    )
 
 
 def get_party_count_by_brand_id() -> dict[BrandID, int]:
