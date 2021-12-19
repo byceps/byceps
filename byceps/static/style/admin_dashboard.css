@@ -20,14 +20,7 @@ a.dashboard-section-link:hover {
 .flex-grid {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: var(--inner-gutter);
-  margin-left: calc(var(--inner-gutter) * -1);
-  margin-top: calc(var(--inner-gutter) * -1);
-}
-
-.flex-grid .cell {
-  margin-left: var(--inner-gutter);
-  margin-top: var(--inner-gutter);
+  gap: var(--inner-gutter);
 }
 
 .grid .cell--fitted {
