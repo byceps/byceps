@@ -71,7 +71,7 @@ def remove_avatar_image(user_id: UserID) -> None:
     The avatar will be unlinked from the user, but the database record
     as well as the image file itself won't be removed, though.
     """
-    selection = db.session.query(DbAvatarSelection).get(user_id)
+    selection = db.session.get(DbAvatarSelection, user_id)
 
     if selection is None:
         raise ValueError(f'No avatar set for user ID {user_id}.')

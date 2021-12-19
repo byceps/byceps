@@ -39,7 +39,7 @@ def delete_match(match_id: MatchID) -> None:
 
 def find_match(match_id: MatchID) -> Optional[Match]:
     """Return the match with that id, or `None` if not found."""
-    match = db.session.query(DbMatch).get(match_id)
+    match = db.session.get(DbMatch, match_id)
 
     if match is None:
         return None

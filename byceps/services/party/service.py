@@ -65,7 +65,7 @@ def update_party(
     archived: bool,
 ) -> Party:
     """Update a party."""
-    party = db.session.query(DbParty).get(party_id)
+    party = db.session.get(DbParty, party_id)
 
     if party is None:
         raise UnknownPartyId(party_id)
@@ -112,7 +112,7 @@ def count_parties_for_brand(brand_id: BrandID) -> int:
 
 def find_party(party_id: PartyID) -> Optional[Party]:
     """Return the party with that id, or `None` if not found."""
-    party = db.session.query(DbParty).get(party_id)
+    party = db.session.get(DbParty, party_id)
 
     if party is None:
         return None

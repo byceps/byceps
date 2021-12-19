@@ -64,7 +64,7 @@ def create_avatar_image(
 
 def delete_avatar_image(avatar_id: UUID) -> None:
     """Delete the avatar image."""
-    avatar = db.session.query(DbAvatar).get(avatar_id)
+    avatar = db.session.get(DbAvatar, avatar_id)
 
     if avatar is None:
         raise ValueError('Unknown avatar ID')

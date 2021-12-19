@@ -288,7 +288,7 @@ def move_topic(
     now = datetime.utcnow()
 
     old_category = topic.category
-    new_category = db.session.query(DbCategory).get(new_category_id)
+    new_category = db.session.get(DbCategory, new_category_id)
 
     topic.category = new_category
     db.session.commit()

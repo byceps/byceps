@@ -51,7 +51,7 @@ def update_badge(
     featured: bool,
 ) -> Badge:
     """Update a badge."""
-    badge = db.session.query(DbBadge).get(badge_id)
+    badge = db.session.get(DbBadge, badge_id)
     if not badge:
         raise ValueError(f'Unknown badge ID: "{badge_id}"')
 
@@ -78,7 +78,7 @@ def delete_badge(badge_id: BadgeID) -> None:
 
 def find_badge(badge_id: BadgeID) -> Optional[Badge]:
     """Return the badge with that id, or `None` if not found."""
-    badge = db.session.query(DbBadge).get(badge_id)
+    badge = db.session.get(DbBadge, badge_id)
 
     if badge is None:
         return None

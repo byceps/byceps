@@ -32,7 +32,7 @@ def create_mountpoint(
 
 def delete_mountpoint(mountpoint_id: MountpointID) -> None:
     """Delete the mountpoint."""
-    mountpoint = db.session.query(DbMountpoint).get(mountpoint_id)
+    mountpoint = db.session.get(DbMountpoint, mountpoint_id)
 
     if mountpoint is None:
         raise ValueError(f"Unknown mountpoint ID '{mountpoint_id}'.")
@@ -43,7 +43,7 @@ def delete_mountpoint(mountpoint_id: MountpointID) -> None:
 
 def find_mountpoint(mountpoint_id: MountpointID) -> Optional[Mountpoint]:
     """Return the mountpoint with that id, or `None` if not found."""
-    mountpoint = db.session.query(DbMountpoint).get(mountpoint_id)
+    mountpoint = db.session.get(DbMountpoint, mountpoint_id)
 
     if mountpoint is None:
         return None

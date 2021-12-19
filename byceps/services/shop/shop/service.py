@@ -66,7 +66,7 @@ def _find_db_shop(shop_id: ShopID) -> Optional[DbShop]:
     """Return the database entity for the shop with that id, or `None`
     if not found.
     """
-    return db.session.query(DbShop).get(shop_id)
+    return db.session.get(DbShop, shop_id)
 
 
 def get_shop(shop_id: ShopID) -> Shop:

@@ -26,7 +26,7 @@ from .types import SubscriptionState
 
 def find_list(list_id: ListID) -> Optional[List]:
     """Return the list with that ID, or `None` if not found."""
-    list_ = db.session.query(DbList).get(list_id)
+    list_ = db.session.get(DbList, list_id)
 
     if list_ is None:
         return None

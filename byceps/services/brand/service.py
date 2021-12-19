@@ -70,7 +70,7 @@ def find_brand(brand_id: BrandID) -> Optional[Brand]:
 
 def _get_db_brand(brand_id: BrandID) -> DbBrand:
     """Return the brand with that ID."""
-    return db.session.query(DbBrand).get(brand_id)
+    return db.session.get(DbBrand, brand_id)
 
 
 def get_brand(brand_id: BrandID) -> Brand:

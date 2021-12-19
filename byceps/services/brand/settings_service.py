@@ -61,7 +61,7 @@ def find_setting(brand_id: BrandID, name: str) -> Optional[BrandSetting]:
     """Return the setting for that brand and with that name, or `None`
     if not found.
     """
-    setting = db.session.query(DbSetting).get((brand_id, name))
+    setting = db.session.get(DbSetting, (brand_id, name))
 
     if setting is None:
         return None

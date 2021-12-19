@@ -94,7 +94,7 @@ def find_webhook(webhook_id: WebhookID) -> Optional[OutgoingWebhook]:
 
 def _find_db_webhook(webhook_id: WebhookID) -> Optional[DbOutgoingWebhook]:
     """Return the webhook database entity with that ID, if found."""
-    return db.session.query(DbOutgoingWebhook).get(webhook_id)
+    return db.session.get(DbOutgoingWebhook, webhook_id)
 
 
 def get_all_webhooks() -> list[OutgoingWebhook]:

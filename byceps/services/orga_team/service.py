@@ -103,7 +103,7 @@ def find_team(team_id: OrgaTeamID) -> Optional[OrgaTeam]:
 
 def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
     """Return the team with that id, or `None` if not found."""
-    return db.session.query(DbOrgaTeam).get(team_id)
+    return db.session.get(DbOrgaTeam, team_id)
 
 
 def get_teams_and_members_for_party(

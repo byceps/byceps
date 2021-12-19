@@ -78,7 +78,7 @@ def delete_actions_for_article(article_number: ArticleNumber) -> None:
 
 def find_action(action_id: UUID) -> Optional[Action]:
     """Return the action with that ID, if found."""
-    action = db.session.query(DbOrderAction).get(action_id)
+    action = db.session.get(DbOrderAction, action_id)
 
     if action is None:
         return None

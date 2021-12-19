@@ -44,7 +44,7 @@ def delete_channel(channel_id: ChannelID) -> None:
 
 
 def _find_db_channel(channel_id: ChannelID) -> Optional[DbChannel]:
-    return db.session.query(DbChannel).get(channel_id)
+    return db.session.get(DbChannel, channel_id)
 
 
 def get_db_channel(channel_id: ChannelID) -> DbChannel:

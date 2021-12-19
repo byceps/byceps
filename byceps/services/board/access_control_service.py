@@ -28,7 +28,7 @@ def grant_access_to_board(
 
 def revoke_access_to_board(grant_id: BoardAccessGrantID) -> None:
     """Revoke the user's access to the board."""
-    grant = db.session.query(BoardAccessGrant).get(grant_id)
+    grant = db.session.get(BoardAccessGrant, grant_id)
 
     if grant is None:
         raise ValueError(f"Unknown board grant ID '{grant_id}'")

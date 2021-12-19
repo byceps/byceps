@@ -45,7 +45,7 @@ def delete_participant(participant_id: ParticipantID) -> None:
 
 def find_participant(participant_id: ParticipantID) -> Optional[Participant]:
     """Return the participant with that id, or `None` if not found."""
-    participant = db.session.query(DbParticipant).get(participant_id)
+    participant = db.session.get(DbParticipant, participant_id)
 
     if participant is None:
         return None

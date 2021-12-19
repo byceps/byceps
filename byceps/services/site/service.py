@@ -107,7 +107,7 @@ def delete_site(site_id: SiteID) -> None:
 
 
 def _find_db_site(site_id: SiteID) -> Optional[DbSite]:
-    return db.session.query(DbSite).get(site_id)
+    return db.session.get(DbSite, site_id)
 
 
 def _get_db_site(site_id: SiteID) -> DbSite:

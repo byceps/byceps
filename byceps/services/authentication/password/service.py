@@ -111,7 +111,7 @@ def is_password_hash_current(password_hash: str) -> bool:
 
 def _find_credential_for_user(user_id: UserID) -> Optional[DbCredential]:
     """Return the credential for the user, if found."""
-    return db.session.query(DbCredential).get(user_id)
+    return db.session.get(DbCredential, user_id)
 
 
 def _get_credential_for_user(user_id: UserID) -> DbCredential:

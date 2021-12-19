@@ -22,7 +22,7 @@ from .transfer.models import MatchID, MatchComment, MatchCommentID
 
 def find_comment(comment_id: MatchCommentID) -> Optional[MatchComment]:
     """Return the comment, or `None` if not found."""
-    comment = db.session.query(DbMatchComment).get(comment_id)
+    comment = db.session.get(DbMatchComment, comment_id)
 
     if comment is None:
         return None
@@ -172,7 +172,7 @@ def _get_db_comment(comment_id: MatchCommentID) -> DbMatchComment:
 
     Raise exception if comment ID is unknown.
     """
-    comment = db.session.query(DbMatchComment).get(comment_id)
+    comment = db.session.get(DbMatchComment, comment_id)
 
     if comment is None:
         raise ValueError('Unknown match comment ID')

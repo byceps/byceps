@@ -103,7 +103,7 @@ def find_tourney(tourney_id: TourneyID) -> Optional[Tourney]:
 
 
 def _find_db_tourney(tourney_id: TourneyID) -> Optional[DbTourney]:
-    return db.session.query(DbTourney).get(tourney_id)
+    return db.session.get(DbTourney, tourney_id)
 
 
 def get_tourney(tourney_id: TourneyID) -> Tourney:

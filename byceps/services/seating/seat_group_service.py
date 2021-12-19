@@ -180,7 +180,7 @@ def count_seat_groups_for_party(party_id: PartyID) -> int:
 
 def find_seat_group(seat_group_id: SeatGroupID) -> Optional[DbSeatGroup]:
     """Return the seat group with that id, or `None` if not found."""
-    return db.session.query(DbSeatGroup).get(seat_group_id)
+    return db.session.get(DbSeatGroup, seat_group_id)
 
 
 def find_occupancy_for_seat_group(

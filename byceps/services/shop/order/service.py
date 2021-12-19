@@ -464,7 +464,7 @@ def _find_order_entity(order_id: OrderID) -> Optional[DbOrder]:
     """Return the order database entity with that id, or `None` if not
     found.
     """
-    return db.session.query(DbOrder).get(order_id)
+    return db.session.get(DbOrder, order_id)
 
 
 def _get_order_entity(order_id: OrderID) -> DbOrder:

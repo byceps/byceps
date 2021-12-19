@@ -183,7 +183,7 @@ def find_db_article(article_id: ArticleID) -> Optional[DbArticle]:
     """Return the database entity for the article with that ID, or
     `None` if not found.
     """
-    return db.session.query(DbArticle).get(article_id)
+    return db.session.get(DbArticle, article_id)
 
 
 def _get_db_article(article_id: ArticleID) -> DbArticle:
@@ -215,7 +215,7 @@ def find_attached_article(
     attached_article_id: AttachedArticleID,
 ) -> Optional[DbAttachedArticle]:
     """Return the attached article with that ID, or `None` if not found."""
-    return db.session.query(DbAttachedArticle).get(attached_article_id)
+    return db.session.get(DbAttachedArticle, attached_article_id)
 
 
 def get_articles_by_numbers(

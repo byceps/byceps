@@ -54,7 +54,7 @@ def _find_db_catalog(catalog_id: CatalogID) -> Optional[DbCatalog]:
     """Return the catalog database entity with that ID, or `None` if not
     found.
     """
-    return db.session.query(DbCatalog).get(catalog_id)
+    return db.session.get(DbCatalog, catalog_id)
 
 
 def get_all_catalogs() -> list[Catalog]:
@@ -125,7 +125,7 @@ def add_article_to_collection(
     article_number: ArticleNumber, collection_id: CollectionID
 ) -> CatalogArticleID:
     """Add article to collection."""
-    collection = db.session.query(DbCollection).get(collection_id)
+    collection = db.session.get(DbCollection, collection_id)
     if collection is None:
         raise ValueError(f'Unknown collection ID "{collection_id}"')
 

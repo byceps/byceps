@@ -76,7 +76,7 @@ def delete_ticket(ticket_id: TicketID) -> None:
 
 def find_ticket(ticket_id: TicketID) -> Optional[DbTicket]:
     """Return the ticket with that id, or `None` if not found."""
-    return db.session.query(DbTicket).get(ticket_id)
+    return db.session.get(DbTicket, ticket_id)
 
 
 def get_ticket(ticket_id: TicketID) -> DbTicket:

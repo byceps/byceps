@@ -217,7 +217,7 @@ def find_user_with_details(user_id: UserID) -> Optional[DbUser]:
 
 def get_db_user(user_id: UserID) -> DbUser:
     """Return the user with that ID, or raise an exception."""
-    user = db.session.query(DbUser).get(user_id)
+    user = db.session.get(DbUser, user_id)
 
     if user is None:
         raise ValueError(f"Unknown user ID '{user_id}'")

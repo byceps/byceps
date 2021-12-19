@@ -357,7 +357,7 @@ def get_current_item_version(item_id: ItemID) -> DbItemVersion:
 
 def find_item_version(version_id: ItemVersionID) -> DbItemVersion:
     """Return the item version with that ID, or `None` if not found."""
-    return db.session.query(DbItemVersion).get(version_id)
+    return db.session.get(DbItemVersion, version_id)
 
 
 def has_channel_items(channel_id: ChannelID) -> bool:

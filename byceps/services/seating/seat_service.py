@@ -149,7 +149,7 @@ def get_seat_total_per_area(party_id: PartyID) -> dict[AreaID, int]:
 
 def find_seat(seat_id: SeatID) -> Optional[Seat]:
     """Return the seat with that id, or `None` if not found."""
-    db_seat = db.session.query(DbSeat).get(seat_id)
+    db_seat = db.session.get(DbSeat, seat_id)
 
     if db_seat is None:
         return None
