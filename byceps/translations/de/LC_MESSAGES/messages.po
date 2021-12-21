@@ -1234,6 +1234,7 @@ msgstr "Partys"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:32
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:38
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:13
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:8
 msgid "Organizers"
 msgstr "Organisatoren"
@@ -1437,10 +1438,14 @@ msgid "Sites"
 msgstr "Sites"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:26
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:62
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:88
-msgid "News Channels"
-msgstr "Newskanäle"
+#: byceps/blueprints/site/dashboard/templates/site/dashboard/_news.html:3
+#: byceps/blueprints/site/news/templates/site/news/index.html:4
+#: byceps/blueprints/site/news/templates/site/news/index.html:8
+#: byceps/blueprints/site/news/templates/site/news/view.html:3
+#: byceps/blueprints/site/news/templates/site/news/view.html:9
+#: sites/cozylan/template_overrides/layout/_navigation.html:6
+msgid "News"
+msgstr "News"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:50
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_global.html:37
@@ -1472,10 +1477,6 @@ msgstr "Global"
 #: byceps/blueprints/site/user_profile/templates/site/user_profile/view.html:5
 msgid "Users"
 msgstr "Benutzer"
-
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:13
-msgid "Organizer Teams"
-msgstr "Orga-Teams"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:19
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:92
@@ -1824,6 +1825,11 @@ msgstr "Benutzeranmeldung"
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:80
 msgid "not assigned"
 msgstr "nicht verknüpft"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:62
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:88
+msgid "News Channels"
+msgstr "Newskanäle"
 
 #: byceps/blueprints/admin/guest_server/forms.py:27
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_view.html:27
@@ -5579,15 +5585,6 @@ msgstr "Es gibt noch keine Themen."
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:37
 msgid "Further Settings"
 msgstr "Weitere Einstellungen"
-
-#: byceps/blueprints/site/dashboard/templates/site/dashboard/_news.html:3
-#: byceps/blueprints/site/news/templates/site/news/index.html:4
-#: byceps/blueprints/site/news/templates/site/news/index.html:8
-#: byceps/blueprints/site/news/templates/site/news/view.html:3
-#: byceps/blueprints/site/news/templates/site/news/view.html:9
-#: sites/cozylan/template_overrides/layout/_navigation.html:6
-msgid "News"
-msgstr "News"
 
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_news.html:15
 msgid "No news yet."
