@@ -38,42 +38,49 @@
   </table>
 
   <h2>{{ _('Further Settings') }}</h2>
-  <table class="index">
-    <tr>
-      <th>{{ _('Netmask') }}</th>
-      <td>
+
+  <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));">
+    <div>
+
+      <div class="data-label">{{ _('Netmask') }}</div>
+      <div class="data-value">
         {%- if setting.netmask %}
         <span class="monospace">{{ setting.netmask }}
         {%- else %}
         {{ _('not specified')|dim }}
         {%- endif %}
-      </td>
-    </tr>
-    <tr>
-      <th>{{ _('Gateway') }}</th>
-      <td>
+      </div>
+
+    </div>
+    <div>
+
+      <div class="data-label">{{ _('Gateway') }}</div>
+      <div class="data-value">
         {%- if setting.gateway %}
         <span class="monospace">{{ setting.gateway }}
         {%- else %}
         {{ _('not specified')|dim }}
         {%- endif %}
-      </td>
-    </tr>
-    <tr>
-      <th>{{ _('DNS servers') }}</th>
-      <td>
-      {%- with dns_servers = [setting.dns_server1, setting.dns_server2]|reject('none')|list %}
-        {%- if dns_servers %}
-          {%- for dns_server in dns_servers %}
-        <span class="monospace">{{ dns_server }}</span>{% if not loop.last %}, {% endif %}
-          {%- endfor %}
-        {%- else %}
-        {{ _('not specified')|dim }}
-        {%- endif %}
-      {%- endwith %}
-      </td>
-    </tr>
-  </table>
+      </div>
+
+    </div>
+    <div>
+
+      <div class="data-label">{{ _('DNS servers') }}</div>
+      <div class="data-value">
+        {%- with dns_servers = [setting.dns_server1, setting.dns_server2]|reject('none')|list %}
+          {%- if dns_servers %}
+            {%- for dns_server in dns_servers %}
+          <span class="monospace">{{ dns_server }}</span>{% if not loop.last %}, {% endif %}
+            {%- endfor %}
+          {%- else %}
+          {{ _('not specified')|dim }}
+          {%- endif %}
+        {%- endwith %}
+      </div>
+
+    </div>
+  </div>
   {%- else %}
   <p class="dimmed">{{ _('No servers registered.') }}</p>
   {%- endif %}
