@@ -30,6 +30,26 @@ from .forms import CreateForm
 blueprint = create_blueprint('guest_server', __name__)
 
 
+@blueprint.get('')
+@login_required
+@templated
+def index():
+    """List current user's guest servers."""
+    party_id = _get_current_party_id_or_404()
+
+    servers = guest_server_service.get_servers_for_owner_and_party(
+        g.user.id, party_id
+    )
+
+    setting = guest_server_service.get_setting_for_party(party_id)
+
+    return {
+        'servers': servers,
+        'setting': setting,
+        'sort_addresses': _sort_addresses,
+    }
+
+
 @blueprint.get('/create')
 @login_required
 @templated
@@ -68,7 +88,7 @@ def create():
 
     guest_server_signals.guest_server_registered.send(None, event=event)
 
-    return redirect_to('dashboard.index')
+    return redirect_to('.index')
 
 
 @blueprint.get('/servers/<server_id>/admin')

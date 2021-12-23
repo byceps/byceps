@@ -1,0 +1,85 @@
+{% extends 'layout/base.html' %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
+{% set current_page = 'guest_server' %}
+{% set page_title = _('Guest Servers') %}
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  {%- if servers %}
+  <table class="index">
+    <thead>
+      <tr>
+        <th>{{ _('Status') }}</th>
+        <th class="nowrap">{{ _('IP address') }}</th>
+        <th>{{ _('Hostname') }}</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for server in servers %}
+      {%- for address in sort_addresses(server.addresses) %}
+      <tr>
+        {%- if loop.first %}
+        <td rowspan="{{ server.addresses|length }}">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</td>
+        {%- endif %}
+        <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-disabled') }}{% endif %}</td>
+        <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>{% else %}{{ _('not given')|dim }}{% endif %}</td>
+        {%- if loop.first and server.approved %}
+        <td rowspan="{{ server.addresses|length }}"><a class="button button--compact" style="margin-left: 0.5rem;" href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}" title="{{ _('View printable server card') }}">{{ render_icon('print') }}</a></td>
+        {%- else %}
+        <td></td>
+        {%- endif %}
+      </tr>
+      {%- endfor %}
+    {%- endfor %}
+    </tbody>
+  </table>
+
+  <h2>{{ _('Further Settings') }}</h2>
+  <table class="index">
+    <tr>
+      <th>{{ _('Netmask') }}</th>
+      <td>
+        {%- if setting.netmask %}
+        <span class="monospace">{{ setting.netmask }}
+        {%- else %}
+        {{ _('not specified')|dim }}
+        {%- endif %}
+      </td>
+    </tr>
+    <tr>
+      <th>{{ _('Gateway') }}</th>
+      <td>
+        {%- if setting.gateway %}
+        <span class="monospace">{{ setting.gateway }}
+        {%- else %}
+        {{ _('not specified')|dim }}
+        {%- endif %}
+      </td>
+    </tr>
+    <tr>
+      <th>{{ _('DNS servers') }}</th>
+      <td>
+      {%- with dns_servers = [setting.dns_server1, setting.dns_server2]|reject('none')|list %}
+        {%- if dns_servers %}
+          {%- for dns_server in dns_servers %}
+        <span class="monospace">{{ dns_server }}</span>{% if not loop.last %}, {% endif %}
+          {%- endfor %}
+        {%- else %}
+        {{ _('not specified')|dim }}
+        {%- endif %}
+      {%- endwith %}
+      </td>
+    </tr>
+  </table>
+  {%- else %}
+  <p class="dimmed">{{ _('No servers registered.') }}</p>
+  {%- endif %}
+
+  <div class="button-row button-row--center">
+    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Register guest server') }}</span></a>
+  </div>
+
+{%- endblock %}
