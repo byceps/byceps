@@ -28,6 +28,9 @@ from ....util.views import login_required, permission_required, redirect_to
 from .forms import CreateForm
 
 
+SERVER_LIMIT_PER_USER = 5
+
+
 blueprint = create_blueprint('guest_server', __name__)
 
 
@@ -62,6 +65,14 @@ def create_form(erroneous_form=None):
         flash_success(gettext('Using a ticket for this party is required.'))
         return redirect_to('.index')
 
+    if _server_limit_reached(party_id):
+        flash_success(
+            gettext(
+                'You have already registered the maximum number of servers allowed.'
+            )
+        )
+        return redirect_to('.index')
+
     setting = guest_server_service.get_setting_for_party(party_id)
 
     form = erroneous_form if erroneous_form else CreateForm()
@@ -80,6 +91,14 @@ def create():
 
     if not _current_user_uses_ticket_for_party(party_id):
         flash_success(gettext('Using a ticket for this party is required.'))
+        return redirect_to('.index')
+
+    if _server_limit_reached(party_id):
+        flash_success(
+            gettext(
+                'You have already registered the maximum number of servers allowed.'
+            )
+        )
         return redirect_to('.index')
 
     form = CreateForm(request.form)
@@ -129,6 +148,13 @@ def _get_current_party_id_or_404() -> PartyID:
 
 def _current_user_uses_ticket_for_party(party_id: PartyID) -> bool:
     return ticket_service.uses_any_ticket_for_party(g.user.id, party_id)
+
+
+def _server_limit_reached(party_id: PartyID) -> bool:
+    count = guest_server_service.count_servers_for_owner_and_party(
+        g.user.id, party_id
+    )
+    return count >= SERVER_LIMIT_PER_USER
 
 
 def _sort_addresses(addresses: Iterable[Address]) -> list[Address]:

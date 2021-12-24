@@ -196,6 +196,16 @@ def get_servers_for_owner_and_party(
     return [_db_entity_to_server(db_server) for db_server in db_servers]
 
 
+def count_servers_for_owner_and_party( owner_id: UserID, party_id: PartyID
+) -> int:
+    """Return the number of servers owned by the user for the party."""
+    return db.session.scalar(
+        select(db.func.count(DbServer.id))
+        .filter_by(owner_id=owner_id)
+        .filter_by(party_id=party_id)
+    )
+
+
 def delete_server(server_id: ServerID) -> None:
     """Delete a server and its addresses."""
     db.session.execute(
