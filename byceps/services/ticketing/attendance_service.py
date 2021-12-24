@@ -11,6 +11,7 @@ from collections import Counter, defaultdict
 from datetime import datetime
 from itertools import chain
 
+from sqlalchemy import select
 from sqlalchemy.dialects.postgresql import insert
 
 from ...database import db, upsert
@@ -87,21 +88,20 @@ def _get_archived_attendance_party_ids(user_id: UserID) -> set[PartyID]:
 
 def get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
     """Return the party's attendees' IDs."""
-    ticket_rows = db.session \
-        .query(DbTicket.used_by_id) \
-        .join(DbCategory) \
-        .filter(DbCategory.party_id == party_id) \
-        .filter(DbTicket.revoked == False) \
-        .filter(DbTicket.used_by_id != None) \
-        .all()
+    ticket_rows = db.session.execute(
+        select(DbTicket.used_by_id)
+        .join(DbCategory)
+        .filter(DbCategory.party_id == party_id)
+        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.used_by_id != None)
+    ).scalars().all()
 
-    archived_attendance_rows = db.session \
-        .query(DbArchivedAttendance.user_id) \
-        .filter(DbArchivedAttendance.party_id == party_id) \
-        .all()
+    archived_attendance_rows = db.session.execute(
+        select(DbArchivedAttendance.user_id)
+        .filter(DbArchivedAttendance.party_id == party_id)
+    ).scalars().all()
 
-    rows = ticket_rows + archived_attendance_rows
-    return {row[0] for row in rows}
+    return set(ticket_rows + archived_attendance_rows)
 
 
 def get_top_attendees_for_brand(brand_id: BrandID) -> list[tuple[UserID, int]]:
