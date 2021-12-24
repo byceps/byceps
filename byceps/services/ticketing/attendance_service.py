@@ -65,6 +65,7 @@ def _get_attended_party_ids(user_id: UserID) -> set[PartyID]:
     party_id_rows = db.session \
         .query(DbParty.id) \
         .filter(DbParty.ends_at < datetime.utcnow()) \
+        .filter(DbParty.canceled == False) \
         .join(DbCategory) \
         .join(DbTicket) \
         .filter(DbTicket.revoked == False) \
