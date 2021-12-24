@@ -17,6 +17,7 @@ from flask_babel import gettext
 from ....services.global_setting import service as global_settings_service
 from ....services.guest_server import service as guest_server_service
 from ....services.guest_server.transfer.models import Address
+from ....services.ticketing import ticket_service
 from ....signals import guest_server as guest_server_signals
 from ....typing import PartyID
 from ....util.framework.blueprint import create_blueprint
@@ -57,6 +58,10 @@ def create_form(erroneous_form=None):
     """Show a form to create a guest server."""
     party_id = _get_current_party_id_or_404()
 
+    if not _current_user_uses_ticket_for_party(party_id):
+        flash_success(gettext('Using a ticket for this party is required.'))
+        return redirect_to('.index')
+
     setting = guest_server_service.get_setting_for_party(party_id)
 
     form = erroneous_form if erroneous_form else CreateForm()
@@ -72,6 +77,10 @@ def create_form(erroneous_form=None):
 def create():
     """Create a guest server."""
     party_id = _get_current_party_id_or_404()
+
+    if not _current_user_uses_ticket_for_party(party_id):
+        flash_success(gettext('Using a ticket for this party is required.'))
+        return redirect_to('.index')
 
     form = CreateForm(request.form)
     if not form.validate():
@@ -116,6 +125,10 @@ def _get_current_party_id_or_404() -> PartyID:
         abort(404)
 
     return party_id
+
+
+def _current_user_uses_ticket_for_party(party_id: PartyID) -> bool:
+    return ticket_service.uses_any_ticket_for_party(g.user.id, party_id)
 
 
 def _sort_addresses(addresses: Iterable[Address]) -> list[Address]:
