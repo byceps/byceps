@@ -148,14 +148,14 @@ msgstr "\"%(brand_title)s\"-Forum"
 msgid " in %(board_label)s"
 msgstr " im %(board_label)s"
 
-#: byceps/announce/text_assembly/guest_server.py:27
+#: byceps/announce/text_assembly/guest_server.py:29
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has registered a guest server owned by "
-"\"%(owner_screen_name)s."
+"\"%(owner_screen_name)s for party \"%(party_title)s\"."
 msgstr ""
 "%(initiator_screen_name)s hat einen Gastserver von %(owner_screen_name)s "
-"registriert."
+"für die Party \"%(party_title)s\" registriert."
 
 #: byceps/announce/text_assembly/news.py:20
 #, python-format
