@@ -35,7 +35,12 @@ def index():
 def view(party_id):
     """Show archived party."""
     party = party_service.find_party(party_id)
-    if (party is None) or (party.brand_id != g.brand_id) or not party.archived:
+    if (
+        (party is None)
+        or (party.brand_id != g.brand_id)
+        or not party.archived
+        or party.canceled
+    ):
         abort(404)
 
     attendee_ids = attendance_service.get_attendee_ids_for_party(party_id)
