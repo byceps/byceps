@@ -101,7 +101,7 @@ def get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
         .all()
 
     rows = ticket_rows + archived_attendance_rows
-    return {row for row in rows}
+    return {row[0] for row in rows}
 
 
 def get_top_attendees_for_brand(brand_id: BrandID) -> list[tuple[UserID, int]]:
