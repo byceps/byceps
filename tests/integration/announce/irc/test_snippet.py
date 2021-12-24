@@ -10,10 +10,10 @@ from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.signals import snippet as snippet_signals
 
-from .helpers import assert_submitted_data, CHANNEL_ORGA_LOG, mocked_irc_bot
+from .helpers import assert_submitted_data, CHANNEL_INTERNAL, mocked_irc_bot
 
 
-EXPECTED_CHANNEL = CHANNEL_ORGA_LOG
+EXPECTED_CHANNEL = CHANNEL_INTERNAL
 
 
 def test_announce_snippet_document_created(

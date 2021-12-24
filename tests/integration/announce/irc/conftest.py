@@ -7,13 +7,12 @@ import pytest
 
 from byceps.services.webhooks import service as webhook_service
 
-from .helpers import CHANNEL_ORGA_LOG, CHANNEL_PUBLIC
+from .helpers import CHANNEL_INTERNAL, CHANNEL_PUBLIC
 
 
 @pytest.fixture(scope='module')
 def webhook_settings():
     event_types_and_channels = [
-        # internal
         (
             {
                 'board-topic-created',
@@ -48,9 +47,8 @@ def webhook_settings():
                 'user-screen-name-changed',
                 'user-logged-in',
             },
-            CHANNEL_ORGA_LOG,
+            CHANNEL_INTERNAL,
         ),
-        # public
         (
             {
                 'board-topic-created',

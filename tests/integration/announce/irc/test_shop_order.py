@@ -16,7 +16,7 @@ from tests.integration.services.shop.helpers import create_orderer
 
 from .helpers import (
     assert_submitted_data,
-    CHANNEL_ORGA_LOG,
+    CHANNEL_INTERNAL,
     CHANNEL_PUBLIC,
     mocked_irc_bot,
     now,
@@ -24,7 +24,7 @@ from .helpers import (
 
 
 def test_shop_order_placed_announced(app, placed_order, orderer_user):
-    expected_channel = CHANNEL_ORGA_LOG
+    expected_channel = CHANNEL_INTERNAL
     expected_text = 'Ken_von_Kaufkraft hat Bestellung ORDER-00001 aufgegeben.'
 
     order = placed_order
@@ -47,7 +47,7 @@ def test_shop_order_placed_announced(app, placed_order, orderer_user):
 def test_shop_order_canceled_announced(
     app, canceled_order, orderer_user, shop_admin
 ):
-    expected_channel = CHANNEL_ORGA_LOG
+    expected_channel = CHANNEL_INTERNAL
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00002 von Ken_von_Kaufkraft '
         'storniert.'
@@ -71,7 +71,7 @@ def test_shop_order_canceled_announced(
 
 
 def test_shop_order_paid_announced(app, paid_order, orderer_user, shop_admin):
-    expected_channel = CHANNEL_ORGA_LOG
+    expected_channel = CHANNEL_INTERNAL
     expected_text = (
         'ShoppingSheriff hat Bestellung ORDER-00003 von Ken_von_Kaufkraft '
         'als per Überweisung bezahlt markiert.'

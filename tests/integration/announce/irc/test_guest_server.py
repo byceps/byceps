@@ -7,10 +7,10 @@ import byceps.announce.connections  # Connect signal handlers.
 from byceps.services.guest_server import service as guest_server_service
 from byceps.signals import guest_server as guest_server_signals
 
-from .helpers import assert_submitted_data, CHANNEL_ORGA_LOG, mocked_irc_bot
+from .helpers import assert_submitted_data, CHANNEL_INTERNAL, mocked_irc_bot
 
 
-EXPECTED_CHANNEL = CHANNEL_ORGA_LOG
+EXPECTED_CHANNEL = CHANNEL_INTERNAL
 
 
 def test_guest_server_registered(app, party, admin_user, user):

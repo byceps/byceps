@@ -12,13 +12,13 @@ from byceps.signals import ticketing as ticketing_signals
 
 from .helpers import (
     assert_submitted_data,
-    CHANNEL_ORGA_LOG,
+    CHANNEL_INTERNAL,
     mocked_irc_bot,
     now,
 )
 
 
-EXPECTED_CHANNEL = CHANNEL_ORGA_LOG
+EXPECTED_CHANNEL = CHANNEL_INTERNAL
 
 
 def test_ticket_checked_in(app, make_user, admin_user):

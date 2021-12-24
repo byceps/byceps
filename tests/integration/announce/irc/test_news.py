@@ -15,7 +15,7 @@ from byceps.signals import news as news_signals
 
 from .helpers import (
     assert_request_data,
-    CHANNEL_ORGA_LOG,
+    CHANNEL_INTERNAL,
     CHANNEL_PUBLIC,
     get_submitted_json,
     mocked_irc_bot,
@@ -24,7 +24,7 @@ from .helpers import (
 
 def test_published_news_item_announced(app, item):
     expected_channel1 = CHANNEL_PUBLIC
-    expected_channel2 = CHANNEL_ORGA_LOG
+    expected_channel2 = CHANNEL_INTERNAL
     expected_text = (
         'Die News "Zieh dir das rein!" wurde veröffentlicht. '
         + 'https://acme.example.com/news/zieh-dir-das-rein'

@@ -9,10 +9,10 @@ import byceps.announce.connections  # Connect signal handlers.
 from byceps.services.authentication.session import service as session_service
 from byceps.signals import auth as auth_signals
 
-from .helpers import assert_submitted_data, CHANNEL_ORGA_LOG, mocked_irc_bot
+from .helpers import assert_submitted_data, CHANNEL_INTERNAL, mocked_irc_bot
 
 
-EXPECTED_CHANNEL = CHANNEL_ORGA_LOG
+EXPECTED_CHANNEL = CHANNEL_INTERNAL
 
 
 def test_user_logged_in_into_admin_app_announced(app, user):

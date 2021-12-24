@@ -13,7 +13,7 @@ from requests_mock import Mocker
 
 BOT_URL = 'http://127.0.0.1:12345'
 
-CHANNEL_ORGA_LOG = '#acmeparty-internal-log'
+CHANNEL_INTERNAL = '#acmeparty-internal-log'
 CHANNEL_PUBLIC = '#acmeparty'
 
 

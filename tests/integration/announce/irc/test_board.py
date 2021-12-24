@@ -29,7 +29,7 @@ from byceps.signals import board as board_signals
 from .helpers import (
     assert_request_data,
     assert_submitted_data,
-    CHANNEL_ORGA_LOG,
+    CHANNEL_INTERNAL,
     CHANNEL_PUBLIC,
     get_submitted_json,
     mocked_irc_bot,
@@ -39,7 +39,7 @@ from .helpers import (
 
 def test_announce_topic_created(app, board, topic, creator):
     expected_channel1 = CHANNEL_PUBLIC
-    expected_channel2 = CHANNEL_ORGA_LOG
+    expected_channel2 = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
@@ -67,7 +67,7 @@ def test_announce_topic_created(app, board, topic, creator):
 
 
 def test_announce_topic_hidden(app, board, topic, creator, moderator):
-    expected_channel = CHANNEL_ORGA_LOG
+    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum das Thema '
@@ -96,7 +96,7 @@ def test_announce_topic_hidden(app, board, topic, creator, moderator):
 
 
 def test_announce_topic_unhidden(app, board, topic, creator, moderator):
-    expected_channel = CHANNEL_ORGA_LOG
+    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum das Thema '
@@ -125,7 +125,7 @@ def test_announce_topic_unhidden(app, board, topic, creator, moderator):
 
 
 def test_announce_topic_locked(app, board, topic, creator, moderator):
-    expected_channel = CHANNEL_ORGA_LOG
+    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum das Thema '
@@ -154,7 +154,7 @@ def test_announce_topic_locked(app, board, topic, creator, moderator):
 
 
 def test_announce_topic_unlocked(app, board, topic, creator, moderator):
-    expected_channel = CHANNEL_ORGA_LOG
+    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -183,7 +183,7 @@ def test_announce_topic_unlocked(app, board, topic, creator, moderator):
 
 
 def test_announce_topic_pinned(app, board, topic, creator, moderator):
-    expected_channel = CHANNEL_ORGA_LOG
+    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -212,7 +212,7 @@ def test_announce_topic_pinned(app, board, topic, creator, moderator):
 
 
 def test_announce_topic_unpinned(app, board, topic, creator, moderator):
-    expected_channel = CHANNEL_ORGA_LOG
+    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -243,7 +243,7 @@ def test_announce_topic_unpinned(app, board, topic, creator, moderator):
 def test_announce_topic_moved(
     app, board, category, another_category, topic, creator, moderator
 ):
-    expected_channel = CHANNEL_ORGA_LOG
+    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -277,7 +277,7 @@ def test_announce_topic_moved(
 
 def test_announce_posting_created(app, board, posting, creator):
     expected_channel1 = CHANNEL_PUBLIC
-    expected_channel2 = CHANNEL_ORGA_LOG
+    expected_channel2 = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
@@ -331,7 +331,7 @@ def test_announce_posting_created_on_muted_topic(app, board, posting, creator):
 
 
 def test_announce_posting_hidden(app, board, posting, creator, moderator):
-    expected_channel = CHANNEL_ORGA_LOG
+    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -362,7 +362,7 @@ def test_announce_posting_hidden(app, board, posting, creator, moderator):
 
 
 def test_announce_posting_unhidden(app, board, posting, creator, moderator):
-    expected_channel = CHANNEL_ORGA_LOG
+    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '

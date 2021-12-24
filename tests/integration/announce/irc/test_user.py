@@ -18,14 +18,14 @@ from byceps.signals import user as user_signals
 
 from .helpers import (
     assert_submitted_data,
-    CHANNEL_ORGA_LOG,
+    CHANNEL_INTERNAL,
     CHANNEL_PUBLIC,
     mocked_irc_bot,
     now,
 )
 
 
-EXPECTED_CHANNEL = CHANNEL_ORGA_LOG
+EXPECTED_CHANNEL = CHANNEL_INTERNAL
 
 
 def test_account_created_announced(app, make_user):
