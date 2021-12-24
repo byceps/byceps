@@ -213,9 +213,9 @@ def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user uses any ticket for that party."""
     q = db.session \
         .query(DbTicket) \
-        .filter(party_id=party_id) \
-        .filter(used_by_id=user_id) \
-        .filter(revoked=False)
+        .filter_by(party_id=party_id) \
+        .filter_by(used_by_id=user_id) \
+        .filter_by(revoked=False)
 
     return db.session.query(q.exists()).scalar()
 
