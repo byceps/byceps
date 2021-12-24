@@ -24,4 +24,4 @@ rtoml==0.7.1
 sqlalchemy==1.4.28
 tenacity==8.0.1
 werkzeug==2.0.2
-wtforms==3.0.0
+wtforms==3.0.1
