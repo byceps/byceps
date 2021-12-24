@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_radio %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Create news post') %}
@@ -16,6 +16,7 @@
   <form action="{{ url_for('.item_create', channel_id=channel.id) }}" method="post">
     {{ form_field(form.slug, maxlength=80, autofocus='autofocus') }}
     {{ form_field(form.title, maxlength=80) }}
+    {{ form_field_radio(form.body_format) }}
     {{ form_field(form.body, class='monospace') }}
     {{ form_field(form.image_url_path, maxlength=80) }}
 

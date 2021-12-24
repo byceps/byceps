@@ -482,7 +482,7 @@ def item_create(channel_id):
     creator = g.user
     title = form.title.data.strip()
     body = form.body.data.strip()
-    body_format = BodyFormat.html
+    body_format = form.body_format.data
     image_url_path = form.image_url_path.data.strip()
 
     item = news_item_service.create_item(
@@ -511,11 +511,14 @@ def item_update_form(item_id, erroneous_form=None):
 
     current_version = news_item_service.get_current_item_version(item.id)
 
-    form = (
-        erroneous_form
-        if erroneous_form
-        else ItemUpdateForm(obj=current_version, slug=item.slug)
-    )
+    data = {
+        'slug': item.slug,
+        'title': current_version.title,
+        'body_format': current_version.body_format.name,
+        'body': current_version.body,
+        'image_url_path': current_version.image_url_path,
+    }
+    form = erroneous_form if erroneous_form else ItemUpdateForm(data=data)
 
     return {
         'item': item,
@@ -537,7 +540,7 @@ def item_update(item_id):
     slug = form.slug.data.strip().lower()
     title = form.title.data.strip()
     body = form.body.data.strip()
-    body_format = BodyFormat.html
+    body_format = form.body_format.data
     image_url_path = form.image_url_path.data.strip()
 
     item = news_item_service.update_item(

@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_backlink %}
-{% from 'macros/forms.html' import form_buttons, form_field %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_radio %}
 {% from 'macros/icons.html' import render_icon %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = item.brand %}
@@ -17,6 +17,7 @@
   <form action="{{ url_for('.item_update', item_id=item.id) }}" method="post">
     {{ form_field(form.slug, maxlength=100, note='<strong>' ~ _('Attention') ~ ':</strong> ' ~ _('Changing the slug affects the news post\'s permalink!')) }}
     {{ form_field(form.title, maxlength=100, autofocus='autofocus') }}
+    {{ form_field_radio(form.body_format) }}
     {{ form_field(form.body, class='monospace') }}
 
     {%- if item.images %}

@@ -9,9 +9,17 @@ byceps.blueprints.admin.news.forms
 import re
 
 from flask_babel import lazy_gettext
-from wtforms import DateField, FileField, StringField, TextAreaField, TimeField
+from wtforms import (
+    DateField,
+    FileField,
+    RadioField,
+    StringField,
+    TextAreaField,
+    TimeField,
+)
 from wtforms.validators import InputRequired, Length, Optional, Regexp
 
+from ....services.news.transfer.models import BodyFormat
 from ....util.l10n import LocalizedForm
 
 
@@ -57,6 +65,15 @@ class ItemCreateForm(LocalizedForm):
     )
     title = StringField(
         lazy_gettext('Title'), [InputRequired(), Length(max=100)]
+    )
+    body_format = RadioField(
+        lazy_gettext('Text format'),
+        choices=[
+            (BodyFormat.html.name, 'HTML'),
+            (BodyFormat.markdown.name, 'Markdown'),
+        ],
+        coerce=lambda value: BodyFormat[value],
+        validators=[InputRequired()],
     )
     body = TextAreaField(lazy_gettext('Text'), [InputRequired()])
     image_url_path = StringField(

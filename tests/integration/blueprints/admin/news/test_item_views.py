@@ -48,6 +48,7 @@ def test_create(news_admin_client, channel, news_admin):
     form_data = {
         'slug': slug,
         'title': title,
+        'body_format': 'html',
         'body': body,
         'image_url_path': image_url_path,
     }
