@@ -45,6 +45,11 @@ CONFIG_FILENAME_TEST_ADMIN = _CONFIG_PATH / 'test_admin.py'
 def create_admin_app(
     config_overrides: Optional[dict[str, Any]] = None
 ) -> Flask:
+    if config_overrides is None:
+        config_overrides = {}
+
+    config_overrides['APP_MODE'] = 'admin'
+
     return create_app(
         config_filename=CONFIG_FILENAME_TEST_ADMIN,
         config_overrides=config_overrides,
@@ -57,6 +62,7 @@ def create_site_app(
     if config_overrides is None:
         config_overrides = {}
 
+    config_overrides['APP_MODE'] = 'site'
     config_overrides['SITE_ID'] = site_id
 
     return create_app(
