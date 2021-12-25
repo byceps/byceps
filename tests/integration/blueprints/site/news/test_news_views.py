@@ -80,7 +80,7 @@ def news_site(news_channel):
 
 @pytest.fixture(scope='module')
 def news_site_app(make_site_app, news_site):
-    return make_site_app(SITE_ID=news_site.id)
+    return make_site_app(news_site.id)
 
 
 def test_view_news_frontpage(news_site_app):

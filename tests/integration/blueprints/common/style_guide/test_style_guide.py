@@ -22,7 +22,7 @@ def test_admin_style_guide_when_disabled(admin_app):
 
 
 def test_site_style_guide_when_enabled(make_site_app, site):
-    debug_site_app = make_site_app(SITE_ID=site.id, STYLE_GUIDE_ENABLED=True)
+    debug_site_app = make_site_app(site.id, STYLE_GUIDE_ENABLED=True)
     assert_response_status_code(debug_site_app, 200)
 
 

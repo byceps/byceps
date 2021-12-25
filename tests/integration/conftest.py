@@ -87,10 +87,10 @@ def admin_app(make_admin_app) -> Iterator[Flask]:
 def make_site_app(admin_app, data_path):
     """Provide a site web application."""
 
-    def _wrapper(**config_overrides: dict[str, Any]) -> Flask:
+    def _wrapper(site_id: SiteID, **config_overrides: dict[str, Any]) -> Flask:
         if _CONFIG_PATH_DATA_KEY not in config_overrides:
             config_overrides[_CONFIG_PATH_DATA_KEY] = data_path
-        return create_site_app(config_overrides)
+        return create_site_app(site_id, config_overrides)
 
     return _wrapper
 
@@ -98,7 +98,7 @@ def make_site_app(admin_app, data_path):
 @pytest.fixture(scope='session')
 def site_app(make_site_app, site: Site) -> Flask:
     """Provide a site web application."""
-    app = make_site_app(SITE_ID=site.id)
+    app = make_site_app(site.id)
     with app.app_context():
         return app
 

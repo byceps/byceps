@@ -71,14 +71,14 @@ def site2(brand, storefront2):
 
 @pytest.fixture
 def site1_app(site1, make_site_app):
-    app = make_site_app(SITE_ID=site1.id)
+    app = make_site_app(site1.id)
     with app.app_context():
         yield app
 
 
 @pytest.fixture
 def site2_app(site2, make_site_app):
-    app = make_site_app(SITE_ID=site2.id)
+    app = make_site_app(site2.id)
     with app.app_context():
         yield app
 

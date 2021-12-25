@@ -51,7 +51,14 @@ def create_admin_app(
     )
 
 
-def create_site_app(config_overrides: Optional[dict[str, Any]] = None) -> Flask:
+def create_site_app(
+    site_id: SiteID, config_overrides: Optional[dict[str, Any]] = None
+) -> Flask:
+    if config_overrides is None:
+        config_overrides = {}
+
+    config_overrides['SITE_ID'] = site_id
+
     return create_app(
         config_filename=CONFIG_FILENAME_TEST_SITE,
         config_overrides=config_overrides,

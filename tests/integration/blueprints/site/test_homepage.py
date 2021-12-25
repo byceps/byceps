@@ -19,7 +19,7 @@ def test_homepage(site_app):
 
 
 def test_homepage_with_root_redirect(make_site_app, site):
-    site_app = make_site_app(SITE_ID=site.id, ROOT_REDIRECT_TARGET='welcome')
+    site_app = make_site_app(site.id, ROOT_REDIRECT_TARGET='welcome')
 
     with http_client(site_app) as client:
         response = client.get('/')
