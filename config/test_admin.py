@@ -1,7 +1,6 @@
 # an admin app configuration file to be used in tests
 
 SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-SERVER_NAME = 'admin.acmecon.test'
 SESSION_COOKIE_SECURE = True
 TESTING = True
 

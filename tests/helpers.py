@@ -48,6 +48,7 @@ def create_admin_app(
     if config_overrides is None:
         config_overrides = {}
 
+    config_overrides['SERVER_NAME'] = 'admin.acmecon.test'
     config_overrides['APP_MODE'] = 'admin'
 
     return create_app(
@@ -62,6 +63,7 @@ def create_site_app(
     if config_overrides is None:
         config_overrides = {}
 
+    config_overrides['SERVER_NAME'] = 'www.acmecon.test'
     config_overrides['APP_MODE'] = 'site'
     config_overrides['SITE_ID'] = site_id
 
