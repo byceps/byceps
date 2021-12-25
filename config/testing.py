@@ -1,4 +1,4 @@
-# a site app configuration file to be used in tests
+# a configuration file to be used in tests
 
 SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 SESSION_COOKIE_SECURE = True

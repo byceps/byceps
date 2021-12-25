@@ -37,9 +37,7 @@ from byceps.services.user.transfer.models import User
 from byceps.typing import BrandID, PartyID, UserID
 
 
-_CONFIG_PATH = Path('../config')
-CONFIG_FILENAME_TEST_SITE = _CONFIG_PATH / 'test_site.py'
-CONFIG_FILENAME_TEST_ADMIN = _CONFIG_PATH / 'test_admin.py'
+CONFIG_FILENAME_TESTING = Path('..') / 'config' / 'testing.py'
 
 
 def create_admin_app(
@@ -52,7 +50,7 @@ def create_admin_app(
     config_overrides['APP_MODE'] = 'admin'
 
     return create_app(
-        config_filename=CONFIG_FILENAME_TEST_ADMIN,
+        config_filename=CONFIG_FILENAME_TESTING,
         config_overrides=config_overrides,
     )
 
@@ -68,7 +66,7 @@ def create_site_app(
     config_overrides['SITE_ID'] = site_id
 
     return create_app(
-        config_filename=CONFIG_FILENAME_TEST_SITE,
+        config_filename=CONFIG_FILENAME_TESTING,
         config_overrides=config_overrides,
     )
 
@@ -79,7 +77,7 @@ def generate_token(n: int = 4) -> str:
 
 @contextmanager
 def app_context(
-    *, config_filename: Optional[Union[Path, str]] = CONFIG_FILENAME_TEST_SITE
+    *, config_filename: Optional[Union[Path, str]] = CONFIG_FILENAME_TESTING
 ):
     app = create_app(config_filename=config_filename)
 
