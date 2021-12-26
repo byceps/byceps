@@ -7,9 +7,10 @@ byceps.blueprints.site.core.views
 """
 
 from __future__ import annotations
+from http import HTTPStatus
 from typing import Optional
 
-from flask import g, url_for
+from flask import abort, current_app, g, redirect, url_for
 
 from .... import config
 from ....services.party import service as party_service
@@ -48,3 +49,17 @@ def prepare_request_globals() -> None:
 
     required_permissions: set[str] = set()
     g.user = get_current_user(required_permissions)
+
+
+@blueprint.get('/')
+def homepage():
+    """Set an optional URL path to redirect to from the root URL path (`/`).
+
+    Important: Don't specify the target with a leading slash unless you
+    really mean the root of the host.
+    """
+    target_url = current_app.config['ROOT_REDIRECT_TARGET']
+    if target_url is None:
+        abort(404)
+
+    return redirect(target_url, code=HTTPStatus.TEMPORARY_REDIRECT)

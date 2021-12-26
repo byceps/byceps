@@ -61,7 +61,7 @@ def _get_blueprints_site(app: Flask) -> Iterator[BlueprintReg]:
         (app, 'site.authentication.login',       '/authentication'          ),
         (app, 'site.board',                      '/board'                   ),
         (app, 'site.consent',                    '/consent'                 ),
-        (app, 'site.core',                       None                       ),
+        (app, 'site.core',                       '/'                        ),
         (app, 'site.dashboard',                  '/dashboard'               ),
         (app, 'site.guest_server',               '/guest_servers'           ),
         (app, 'site.news',                       '/news'                    ),

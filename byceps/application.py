@@ -7,13 +7,12 @@ byceps.application
 """
 
 from __future__ import annotations
-from http import HTTPStatus
 from importlib import import_module
 import os
 from pathlib import Path
 from typing import Any, Callable, Optional, Union
 
-from flask import current_app, Flask, g, redirect
+from flask import current_app, Flask, g
 from flask_babel import Babel
 import jinja2
 from redis import StrictRedis
@@ -108,30 +107,12 @@ def _init_admin_app(app: Flask) -> None:
 
 def _init_site_app(app: Flask) -> None:
     """Initialize site application."""
-    _set_url_root_path(app)
-
     # Incorporate site-specific template overrides.
     app.jinja_loader = SiteTemplateOverridesLoader()
 
     # Set up site-aware template context processor.
     app._site_context_processors = {}
     app.context_processor(_get_site_template_context)
-
-
-def _set_url_root_path(app: Flask) -> None:
-    """Set an optional URL path to redirect to from the root URL path (`/`).
-
-    Important: Don't specify the target with a leading slash unless you
-    really mean the root of the host.
-    """
-    target_url = app.config['ROOT_REDIRECT_TARGET']
-    if target_url is None:
-        return
-
-    def _redirect():
-        return redirect(target_url, code=HTTPStatus.TEMPORARY_REDIRECT)
-
-    app.add_url_rule('/', endpoint='root', view_func=_redirect)
 
 
 def _get_site_template_context() -> dict[str, Any]:
