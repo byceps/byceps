@@ -149,8 +149,9 @@ def make_admin(make_user):
 
 
 @pytest.fixture(scope='session')
-def admin_user(make_user) -> User:
-    return make_user('Admin')
+def admin_user(make_admin) -> User:
+    permission_ids = {'admin.access'}
+    return make_admin('Admin', permission_ids)
 
 
 @pytest.fixture(scope='session')
