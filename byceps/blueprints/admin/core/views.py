@@ -7,14 +7,14 @@ byceps.blueprints.admin.core.views
 """
 
 from __future__ import annotations
+from http import HTTPStatus
 from typing import Any
 
-from flask import g
+from flask import g, redirect, url_for
 
 from ....services.brand import service as brand_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.user_session import get_current_user
-from ....util.views import redirect_to
 
 
 blueprint = create_blueprint('core_admin', __name__)
@@ -43,6 +43,8 @@ def prepare_request_globals() -> None:
 @blueprint.get('/')
 def homepage():
     if g.user.authenticated:
-        return redirect_to('admin_dashboard.view_global')
+        url = url_for('admin_dashboard.view_global')
     else:
-        return redirect_to('authentication_login_admin.log_in_form')
+        url = url_for('authentication_login_admin.log_in_form')
+
+    return redirect(url, code=HTTPStatus.TEMPORARY_REDIRECT)
