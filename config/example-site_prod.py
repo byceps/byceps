@@ -22,5 +22,4 @@ APP_MODE = 'site'
 SITE_ID = 'example-site'
 
 MAIL_DEBUG = False
-MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@site.example>'
 MAIL_SUPPRESS_SEND = False

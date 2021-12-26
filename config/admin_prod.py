@@ -14,7 +14,6 @@ RQ_DASHBOARD_ENABLED = True
 APP_MODE = 'admin'
 
 MAIL_DEBUG = False
-MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@admin.example>'
 MAIL_SUPPRESS_SEND = False
 
 DEBUG_TOOLBAR_ENABLED = False
