@@ -12,7 +12,6 @@ APP_MODE = 'site'
 SITE_ID = 'cozylan'
 
 MAIL_DEBUG = True
-MAIL_DEFAULT_SENDER = 'CozyLAN <noreply@cozylan.example>'
 MAIL_SUPPRESS_SEND = False
 MAIL_TRANSPORT = 'logging'
 
