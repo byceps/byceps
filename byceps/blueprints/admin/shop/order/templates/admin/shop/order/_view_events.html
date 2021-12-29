@@ -1,4 +1,4 @@
-{%- from 'macros/admin/log.html' import render_log_entry, render_log_user %}
+{%- from 'macros/admin/log.html' import render_log_entry, render_log_reason, render_log_user %}
 {%- from 'macros/admin/shop/order.html' import render_order_payment_state %}
 {%- from 'macros/admin/ticketing.html' import render_ticket_flag_revoked %}
 
@@ -15,9 +15,7 @@
           {{ render_log_user(log_entry.initiator) }}
           hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_before_paid) }}
           (war vorher {{ render_order_payment_state(PaymentState[log_entry.data.former_payment_state]) }}).
-          <br><br>
-          {{ _('Reason') }}:<br>
-          <blockquote>{{ log_entry.data.reason }}</blockquote>
+          {{ render_log_reason(log_entry.data.reason) }}
         {%- endcall %}
       {%- elif log_entry.event_type == 'order-paid' %}
         {%- call render_log_entry('success', log_entry.occurred_at) %}
@@ -30,9 +28,7 @@
           {{ render_log_user(log_entry.initiator) }}
           hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_after_paid) }}
           (war vorher {{ render_order_payment_state(PaymentState[log_entry.data.former_payment_state]) }}).
-          <br><br>
-          {{ _('Reason') }}:<br>
-          <blockquote>{{ log_entry.data.reason }}</blockquote>
+          {{ render_log_reason(log_entry.data.reason) }}
         {%- endcall %}
       {%- elif log_entry.event_type == 'order-invoiced' %}
         {%- call render_log_entry('invoice', log_entry.occurred_at) %}

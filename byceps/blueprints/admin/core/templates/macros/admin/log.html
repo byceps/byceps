@@ -15,6 +15,14 @@
 {%- endmacro %}
 
 
+{% macro render_log_reason(reason) -%}
+          <div style="margin-top: 0.5rem;">
+            {{ _('Reason') }}:
+            <blockquote>{{ reason }}</blockquote>
+          </div>
+{%- endmacro %}
+
+
 {% macro render_log_user(user) -%}
 <span class="user-link">{{ render_user_avatar_and_admin_link(user, size=20) }}</span>
 {%- endmacro %}

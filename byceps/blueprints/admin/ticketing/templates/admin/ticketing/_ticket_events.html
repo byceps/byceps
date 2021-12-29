@@ -1,4 +1,4 @@
-{%- from 'macros/admin/log.html' import render_log_entry, render_log_user %}
+{%- from 'macros/admin/log.html' import render_log_entry, render_log_reason, render_log_user %}
 {%- from 'macros/admin/ticketing.html' import render_ticket_flag_revoked, render_ticket_flag_user_checked_in %}
 
 
@@ -55,7 +55,7 @@
           {%- endif %}
           hat das Ticket {{ render_ticket_flag_revoked() }}.
           {%- if log_entry.reason is defined %}
-          Begründung: &quot;{{ log_entry.reason }}&quot;
+          {{ render_log_reason(log_entry.reason) }}
           {%- endif -%}
         {%- endcall %}
       {%- elif log_entry.event_type == 'user-manager-appointed' %}

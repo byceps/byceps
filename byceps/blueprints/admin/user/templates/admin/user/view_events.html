@@ -1,6 +1,6 @@
 {% extends 'layout/admin/user.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/log.html' import render_log_entry, render_log_user %}
+{% from 'macros/admin/log.html' import render_log_entry, render_log_reason, render_log_user %}
 {% from 'macros/admin/user.html' import render_user_flag_deleted, render_user_flag_suspended %}
 {% from 'macros/admin/user_badge.html' import render_user_badge_linked %}
 {% from 'macros/icons.html' import render_icon %}
@@ -67,19 +67,19 @@
           {%- call render_log_entry('lock', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat das Benutzerkonto {{ render_user_flag_suspended() }}.
-            <div style="margin-top: 0.5rem;">Begründung: <em>{{ log_entry.data.reason }}</em></div>
+            {{ render_log_reason(log_entry.data.reason) }}
           {%- endcall %}
         {%- elif log_entry.event_type == 'user-unsuspended' %}
           {%- call render_log_entry('unlock', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat das Benutzerkonto {{ render_tag('entsperrt', icon='unlock', class='color-success') }}.
-            <div style="margin-top: 0.5rem;">Begründung: <em>{{ log_entry.data.reason }}</em></div>
+            {{ render_log_reason(log_entry.data.reason) }}
           {%- endcall %}
         {%- elif log_entry.event_type == 'user-deleted' %}
           {%- call render_log_entry('delete', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat das Benutzerkonto {{ render_user_flag_deleted() }}.
-            <div style="margin-top: 0.5rem;">Begründung: <em>{{ log_entry.data.reason }}</em></div>
+            {{ render_log_reason(log_entry.data.reason) }}
           {%- endcall %}
         {%- elif log_entry.event_type == 'user-logged-in' %}
           {%- call render_log_entry('log-in', log_entry.occurred_at) %}
@@ -95,7 +95,7 @@
             {{ render_log_user(log_entry.initiator) }}
             hat das Benutzerkonto &quot;{{ log_entry.data.old_screen_name }}&quot; umbenannt in &quot;{{ log_entry.data.new_screen_name }}&quot;.
             {%- if 'reason' in log_entry.data %}
-            <div style="margin-top: 0.5rem;">Begründung: <em>{{ log_entry.data.reason }}</em></div>
+            {{ render_log_reason(log_entry.data.reason) }}
             {%- endif %}
           {%- endcall %}
         {%- elif log_entry.event_type == 'user-email-address-changed' %}
@@ -115,7 +115,7 @@
             {%- endif %}
             geändert.
             {%- if 'reason' in log_entry.data %}
-            <div style="margin-top: 0.5rem;">Begründung: <em>{{ log_entry.data.reason }}</em></div>
+            {{ render_log_reason(log_entry.data.reason) }}
             {%- endif %}
           {%- endcall %}
         {%- elif log_entry.event_type == 'user-email-address-confirmed' %}
@@ -131,7 +131,7 @@
             Jemand
             {%- endif %}
             hat die E-Mail-Adresse {{ log_entry.data.email_address }} <strong>invalidiert</strong>.
-            <div style="margin-top: 0.5rem;">Begründung: <em>{{ log_entry.data.reason }}</em></div>
+            {{ render_log_reason(log_entry.data.reason) }}
           {%- endcall %}
         {%- elif log_entry.event_type == 'user-details-updated' %}
           {%- call render_log_entry('edit', log_entry.occurred_at) %}
