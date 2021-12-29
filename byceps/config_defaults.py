@@ -50,6 +50,9 @@ BABEL_DEFAULT_TIMEZONE = TIMEZONE
 # static content files path
 PATH_DATA = Path('./data')
 
+# Limit incoming request content.
+MAX_CONTENT_LENGTH = 4000000
+
 # e-mail
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@byceps.example>'
 

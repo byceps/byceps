@@ -1,8 +1,5 @@
 # Exemplary production configuration for a public site
 
-# Limit incoming request content.
-MAX_CONTENT_LENGTH = 4000000
-
 # Enable this if you want a tool like Sentry
 # handle exceptions rather than Flask.
 PROPAGATE_EXCEPTIONS = False
