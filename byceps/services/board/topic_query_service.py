@@ -89,7 +89,10 @@ def paginate_topics(
             .filter(DbCategory.hidden == False) \
         .order_by(DbTopic.last_updated_at.desc())
 
-    count_query = _count_topics(include_hidden)
+    count_query = _count_topics(include_hidden) \
+        .join(DbCategory) \
+            .filter(DbCategory.board_id == board_id) \
+            .filter(DbCategory.hidden == False)
 
     return paginate(
         items_query, count_query, page, per_page, scalar_result=True
@@ -120,7 +123,8 @@ def paginate_topics_of_category(
         .filter_by(category_id=category_id) \
         .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc())
 
-    count_query = _count_topics(include_hidden)
+    count_query = _count_topics(include_hidden) \
+        .filter_by(category_id=category_id)
 
     return paginate(
         items_query, count_query, page, per_page, scalar_result=True
