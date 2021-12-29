@@ -11,7 +11,6 @@ REDIS_URL = 'redis://127.0.0.1:6379/0'
 APP_MODE = 'site'
 SITE_ID = 'cozylan'
 
-MAIL_DEBUG = True
 MAIL_SUPPRESS_SEND = False
 MAIL_TRANSPORT = 'logging'
 

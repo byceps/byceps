@@ -18,5 +18,4 @@ REDIS_URL = 'unix:///var/run/redis/redis.sock?db=0'
 APP_MODE = 'site'
 SITE_ID = 'example-site'
 
-MAIL_DEBUG = False
 MAIL_SUPPRESS_SEND = False
