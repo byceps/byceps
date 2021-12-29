@@ -1,5 +1,8 @@
 # Exemplary production configuration for a public site
 
+import os
+
+
 # Enable this if you want a tool like Sentry
 # handle exceptions rather than Flask.
 PROPAGATE_EXCEPTIONS = False
@@ -14,4 +17,4 @@ SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byce
 REDIS_URL = 'unix:///var/run/redis/redis.sock?db=0'
 
 APP_MODE = 'site'
-SITE_ID = 'example-site'
+SITE_ID = os.environ.get('SITE_ID')
