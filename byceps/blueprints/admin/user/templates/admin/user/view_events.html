@@ -42,8 +42,7 @@
     <div class="events">
       {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
         {%- if log_entry.event_type == 'user-created' %}
-          {%- set icon_name = 'add' %}
-          {%- set body %}
+          {%- call render_log_entry('add', log_entry.occurred_at) %}
             {%- if log_entry.initiator is defined %}
             {{ render_log_user(log_entry.initiator) }}
             {%- else %}
@@ -54,60 +53,53 @@
             auf Site &quot;{{ log_entry.site.title }}&quot;
             {%- endif %}
             <strong>angelegt</strong>.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-initialized' %}
-          {%- set icon_name = 'enabled' %}
-          {%- set body %}
+          {%- call render_log_entry('enabled', log_entry.occurred_at) %}
             {%- if log_entry.initiator is defined %}
             {{ render_log_user(log_entry.initiator) }}
             {%- else %}
             Jemand
             {%- endif %}
             hat das Benutzerkonto <strong>initialisiert</strong>.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-suspended' %}
-          {%- set icon_name = 'lock' %}
-          {%- set body %}
+          {%- call render_log_entry('lock', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat das Benutzerkonto {{ render_user_flag_suspended() }}.
             <div style="margin-top: 0.5rem;">Begründung: <em>{{ log_entry.data.reason }}</em></div>
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-unsuspended' %}
-          {%- set icon_name = 'unlock' %}
-          {%- set body %}
+          {%- call render_log_entry('unlock', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat das Benutzerkonto {{ render_tag('entsperrt', icon='unlock', class='color-success') }}.
             <div style="margin-top: 0.5rem;">Begründung: <em>{{ log_entry.data.reason }}</em></div>
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-deleted' %}
-          {%- set icon_name = 'delete' %}
-          {%- set body %}
+          {%- call render_log_entry('delete', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat das Benutzerkonto {{ render_user_flag_deleted() }}.
             <div style="margin-top: 0.5rem;">Begründung: <em>{{ log_entry.data.reason }}</em></div>
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-logged-in' %}
-          {%- set icon_name = 'log-in' %}
-          {%- set body %}
+          {%- call render_log_entry('log-in', log_entry.occurred_at) %}
             {{ render_log_user(user) }}
             hat sich von IP-Adresse {{ log_entry.data.ip_address }} <strong>erfolgreich angemeldet</strong>
             {%- if log_entry.site is defined %}
             auf Site &quot;{{ log_entry.site.title }}&quot;
             {%- endif -%}
             .
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-screen-name-changed' %}
-          {%- set icon_name = 'user' %}
-          {%- set body %}
+          {%- call render_log_entry('user', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat das Benutzerkonto &quot;{{ log_entry.data.old_screen_name }}&quot; umbenannt in &quot;{{ log_entry.data.new_screen_name }}&quot;.
             {%- if 'reason' in log_entry.data %}
             <div style="margin-top: 0.5rem;">Begründung: <em>{{ log_entry.data.reason }}</em></div>
             {%- endif %}
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-email-address-changed' %}
-          {%- set icon_name = 'user' %}
-          {%- set body %}
+          {%- call render_log_entry('user', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat die E-Mail-Adresse von
             {%- if log_entry.data.old_email_address %}
@@ -125,16 +117,14 @@
             {%- if 'reason' in log_entry.data %}
             <div style="margin-top: 0.5rem;">Begründung: <em>{{ log_entry.data.reason }}</em></div>
             {%- endif %}
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-email-address-confirmed' %}
-          {%- set icon_name = 'email' %}
-          {%- set body %}
+          {%- call render_log_entry('email', log_entry.occurred_at) %}
             {{ render_log_user(user) }}
             hat die E-Mail-Adresse {{ log_entry.data.email_address }} <strong>verifiziert</strong>.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-email-address-invalidated' %}
-          {%- set icon_name = 'email' %}
-          {%- set body %}
+          {%- call render_log_entry('email', log_entry.occurred_at) %}
             {%- if log_entry.initiator is defined %}
             {{ render_log_user(log_entry.initiator) }}
             {%- else %}
@@ -142,10 +132,9 @@
             {%- endif %}
             hat die E-Mail-Adresse {{ log_entry.data.email_address }} <strong>invalidiert</strong>.
             <div style="margin-top: 0.5rem;">Begründung: <em>{{ log_entry.data.reason }}</em></div>
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-details-updated' %}
-          {%- set icon_name = 'edit' %}
-          {%- set body %}
+          {%- call render_log_entry('edit', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat persönliche Daten von
             {{ render_log_user(user) }}
@@ -158,90 +147,77 @@
               </tr>
             {%- endfor %}
             </table></blockquote>
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'password-updated' %}
-          {%- set icon_name = 'password' %}
-          {%- set body %}
+          {%- call render_log_entry('password', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat ein <strong>neues Passwort gesetzt</strong>.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-avatar-updated' %}
-          {%- set icon_name = 'upload' %}
-          {%- set body %}
+          {%- call render_log_entry('upload', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat ein <a href="{{ log_entry.data.url_path }}">neues Avatarbild</a> hochgeladen.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'consent-expressed' %}
-          {%- set icon_name = 'legal' %}
-          {%- set body %}
+          {%- call render_log_entry('legal', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat &quot;{{ log_entry.data.subject_title }}&quot; <strong>akzeptiert</strong>.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'privacy-policy-accepted' %}
-          {%- set icon_name = 'legal' %}
-          {%- set body %}
+          {%- call render_log_entry('legal', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat die <strong>Datenschutzbestimmungen akzeptiert</strong>.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'newsletter-requested' %}
-          {%- set icon_name = 'email' %}
-          {%- set body %}
+          {%- call render_log_entry('email', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat den Newsletter &quot;{{ log_entry.data.list_.title }}&quot; {{ render_tag('angefordert', icon='success', class='newsletter-subscribed') }}.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'newsletter-declined' %}
-          {%- set icon_name = 'email' %}
-          {%- set body %}
+          {%- call render_log_entry('email', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat den Newsletter &quot;{{ log_entry.data.list_.title }}&quot; {{ render_tag('abbestellt', icon='disabled', class='newsletter-unsubscribed') }}.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'order-canceled-after-paid' %}
-          {%- set icon_name = 'shopping-cart' %}
-          {%- set body %}
+          {%- call render_log_entry('shopping-cart', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat Bestellung <a href="{{ url_for('shop_order_admin.view', order_id=log_entry.data.order_id) }}">{{ log_entry.data.order_number }}</a>
             storniert (nach Bezahlung).
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'order-canceled-before-paid' %}
-          {%- set icon_name = 'shopping-cart' %}
-          {%- set body %}
+          {%- call render_log_entry('shopping-cart', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat Bestellung <a href="{{ url_for('shop_order_admin.view', order_id=log_entry.data.order_id) }}">{{ log_entry.data.order_number }}</a>
             storniert (vor Bezahlung).
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'order-paid' %}
-          {%- set icon_name = 'shopping-cart' %}
-          {%- set body %}
+          {%- call render_log_entry('shopping-cart', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat Bestellung <a href="{{ url_for('shop_order_admin.view', order_id=log_entry.data.order_id) }}">{{ log_entry.data.order_number }}</a>
             als bezahlt markiert.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'order-placed' %}
-          {%- set icon_name = 'shopping-cart' %}
-          {%- set body %}
+          {%- call render_log_entry('shopping-cart', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat Bestellung <a href="{{ url_for('shop_order_admin.view', order_id=log_entry.data.order_id) }}">{{ log_entry.data.order_number }}</a>
             aufgegeben.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'orgaflag-added' %}
-          {%- set icon_name = 'enabled' %}
-          {%- set body %}
+          {%- call render_log_entry('enabled', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat
             {{ render_log_user(user) }}
             für die Marke <strong>{{ log_entry.data.brand_id }}</strong> zum Orga ernannt.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'orgaflag-removed' %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
+          {%- call render_log_entry('disabled', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat
             {{ render_log_user(user) }}
             für die Marke <strong>{{ log_entry.data.brand_id }}</strong> den Orgastatus entzogen.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'role-assigned' %}
-          {%- set icon_name = 'permission' %}
-          {%- set body %}
+          {%- call render_log_entry('permission', log_entry.occurred_at) %}
             {%- if log_entry.initiator is defined %}
             {{ render_log_user(log_entry.initiator) }}
             {%- else %}
@@ -250,18 +226,16 @@
             hat
             {{ render_log_user(user) }}
             die Rolle <strong>{{ log_entry.data.role_id }}</strong> zugewiesen.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'role-deassigned' %}
-          {%- set icon_name = 'permission' %}
-          {%- set body %}
+          {%- call render_log_entry('permission', log_entry.occurred_at) %}
             {{ render_log_user(log_entry.initiator) }}
             hat
             {{ render_log_user(user) }}
             die Rolle <strong>{{ log_entry.data.role_id }}</strong> genommen.
-          {%- endset %}
+          {%- endcall %}
         {%- elif log_entry.event_type == 'user-badge-awarded' %}
-          {%- set icon_name = 'badge' %}
-          {%- set body %}
+          {%- call render_log_entry('badge', log_entry.occurred_at) %}
             {%- if log_entry.initiator is defined %}
             {{ render_log_user(log_entry.initiator) }}
             {%- else %}
@@ -270,14 +244,12 @@
             hat
             {{ render_log_user(user) }}
             das Abzeichen {{ render_user_badge_linked(log_entry.badge, 24) }} <strong>{{ log_entry.badge.label }}</strong> verliehen.
-          {%- endset %}
+          {%- endcall %}
         {%- else %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
+          {%- call render_log_entry('disabled', log_entry.occurred_at) %}
             <strong>Unbekannte Aktion '{{ log_entry.event_type }}'</strong> ist ausgelöst worden.
-          {%- endset %}
+          {%- endcall %}
         {%- endif %}
-{{ render_log_entry(icon_name, log_entry.occurred_at, body) }}
       {%- endfor %}
     </div>
   </div>

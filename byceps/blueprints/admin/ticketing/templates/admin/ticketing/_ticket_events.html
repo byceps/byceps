@@ -5,32 +5,28 @@
   <div class="events">
     {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
       {%- if log_entry.event_type == 'seat-manager-appointed' %}
-        {%- set icon_name = 'administrate' %}
-        {%- set body %}
+        {%- call render_log_entry('administrate', log_entry.occurred_at) %}
           {{ render_log_user(log_entry.initiator) }}
           hat
           {{ render_log_user(log_entry.appointed_seat_manager) }}
           die <strong>Sitzplatz-Verwaltung</strong> übertragen.
-        {%- endset %}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'seat-manager-withdrawn' %}
-        {%- set icon_name = 'administrate' %}
-        {%- set body %}
+        {%- call render_log_entry('administrate', log_entry.occurred_at) %}
           {{ render_log_user(log_entry.initiator) }}
           hat sich die <strong>Sitzplatz-Verwaltung</strong> zurückgeholt.
-        {%- endset %}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'seat-occupied' %}
-        {%- set icon_name = 'seating-area' %}
-        {%- set body %}
+        {%- call render_log_entry('seating-area', log_entry.occurred_at) %}
           {{ render_log_user(log_entry.initiator) }}
           hat Sitzplatz <strong>{{ log_entry.seat_label }}</strong>
           {%- if log_entry.previous_seat_label is defined %}
           (vorher <strong>{{ log_entry.previous_seat_label }}</strong>)
           {%- endif %}
           reserviert.
-        {%- endset %}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'seat-released' %}
-        {%- set icon_name = 'disabled' %}
-        {%- set body %}
+        {%- call render_log_entry('disabled', log_entry.occurred_at) %}
           {{ render_log_user(log_entry.initiator) }}
           hat
           {%- if log_entry.seat_label is defined %}
@@ -39,22 +35,19 @@
           den Sitzplatz
           {%- endif %}
           freigegeben.
-        {%- endset %}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'ticket-code-changed' %}
-        {%- set icon_name = 'edit' %}
-        {%- set body %}
+        {%- call render_log_entry('edit', log_entry.occurred_at) %}
           {{ render_log_user(log_entry.initiator) }}
           hat
           den <strong>Code geändert</strong> ({{ log_entry.data.old_code }} &rarr; {{ log_entry.data.new_code }}).
-        {%- endset %}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'ticket-created' %}
-        {%- set icon_name = 'add' %}
-        {%- set body %}
+        {%- call render_log_entry('add', log_entry.occurred_at) %}
           Das Ticket ist <strong>erzeugt worden</strong>.
-        {%- endset %}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'ticket-revoked' %}
-        {%- set icon_name = 'disabled' %}
-        {%- set body %}
+        {%- call render_log_entry('disabled', log_entry.occurred_at) %}
           {%- if log_entry.initiator is defined %}
           {{ render_log_user(log_entry.initiator) }}
           {%- else %}
@@ -64,24 +57,21 @@
           {%- if log_entry.reason is defined %}
           Begründung: &quot;{{ log_entry.reason }}&quot;
           {%- endif -%}
-        {%- endset %}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'user-manager-appointed' %}
-        {%- set icon_name = 'administrate' %}
-        {%- set body %}
+        {%- call render_log_entry('administrate', log_entry.occurred_at) %}
           {{ render_log_user(log_entry.initiator) }}
           hat
           {{ render_log_user(log_entry.appointed_user_manager) }}
           die <strong>Nutzer-Verwaltung</strong> übertragen.
-        {%- endset %}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'user-manager-withdrawn' %}
-        {%- set icon_name = 'administrate' %}
-        {%- set body %}
+        {%- call render_log_entry('administrate', log_entry.occurred_at) %}
           {{ render_log_user(log_entry.initiator) }}
           hat sich die <strong>Nutzer-Verwaltung</strong> zurückgeholt.
-        {%- endset %}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'user-appointed' %}
-        {%- set icon_name = 'user' %}
-        {%- set body %}
+        {%- call render_log_entry('user', log_entry.occurred_at) %}
           {{ render_log_user(log_entry.initiator) }}
           hat
           {%- if log_entry.appointed_user %}
@@ -90,36 +80,31 @@
           <strong>einen unbekannten Benutzer</strong>
           {%- endif %}
           als <strong>Ticketnutzer</strong> eingetragen.
-        {%- endset %}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'user-withdrawn' %}
-        {%- set icon_name = 'user' %}
-        {%- set body %}
+        {%- call render_log_entry('user', log_entry.occurred_at) %}
           {{ render_log_user(log_entry.initiator) }}
           hat sich selbst als <strong>Ticketnutzer</strong> eingetragen.
-        {%- endset %}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'user-checked-in' %}
-        {%- set icon_name = 'success' %}
-        {%- set body %}
+        {%- call render_log_entry('success', log_entry.occurred_at) %}
           {{ render_log_user(log_entry.initiator) }}
           hat
           {{ render_log_user(log_entry.checked_in_user) }}
           für die Veranstaltung {{ render_ticket_flag_user_checked_in() }}.
-        {%- endset %}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'user-check-in-reverted' %}
-        {%- set icon_name = 'success' %}
-        {%- set body %}
+        {%- call render_log_entry('success', log_entry.occurred_at) %}
           {{ render_log_user(log_entry.initiator) }}
           hat den <strong>Check-In</strong> von
           Ticketnutzer
           {{ render_log_user(log_entry.checked_in_user) }}
           <strong>rückgangig gemacht</strong>.
-        {%- endset %}
+        {%- endcall %}
       {%- else %}
-        {%- set icon_name = 'disabled' %}
-        {%- set body %}
+        {%- call render_log_entry('disabled', log_entry.occurred_at) %}
           <strong>Unbekannte Aktion '{{ log_entry.event_type }}'</strong> ist ausgelöst worden.
-        {%- endset %}
+        {%- endcall %}
       {%- endif %}
-{{ render_log_entry(icon_name, log_entry.occurred_at, body) }}
     {%- endfor %}
   </div>

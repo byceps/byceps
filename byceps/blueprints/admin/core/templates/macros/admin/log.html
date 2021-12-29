@@ -2,11 +2,13 @@
 {% from 'macros/icons.html' import render_icon %}
 
 
-{% macro render_log_entry(icon_name, timestamp, body) -%}
+{% macro render_log_entry(icon_name, timestamp) -%}
     <div class="event">
       <div class="event-icon">{{ render_icon(icon_name) }}</div>
       <div class="event-data">
-        <div class="event-body">{{ body|safe }}</div>
+        <div class="event-body">
+{{ caller() }}
+        </div>
         <div class="event-timestamp">{{ timestamp|datetimeformat }}</div>
       </div>
     </div>
