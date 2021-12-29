@@ -53,8 +53,5 @@ PATH_DATA = Path('./data')
 # e-mail
 MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@byceps.example>'
 
-# home page
-ROOT_REDIRECT_TARGET = None
-
 # shop
 SHOP_ORDER_EXPORT_TIMEZONE = 'Europe/Berlin'

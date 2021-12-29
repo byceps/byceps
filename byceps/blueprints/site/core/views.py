@@ -10,7 +10,7 @@ from __future__ import annotations
 from http import HTTPStatus
 from typing import Optional
 
-from flask import abort, current_app, g, redirect, url_for
+from flask import g, redirect, url_for
 
 from .... import config
 from ....services.party import service as party_service
@@ -58,8 +58,4 @@ def homepage():
     Important: Don't specify the target with a leading slash unless you
     really mean the root of the host.
     """
-    target_url = current_app.config['ROOT_REDIRECT_TARGET']
-    if target_url is None:
-        abort(404)
-
-    return redirect(target_url, code=HTTPStatus.TEMPORARY_REDIRECT)
+    return redirect(url_for('news.index'), code=HTTPStatus.TEMPORARY_REDIRECT)
