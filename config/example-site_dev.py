@@ -3,7 +3,7 @@
 DEBUG = True
 
 SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-SESSION_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = False
 
 SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byceps'
 

@@ -9,8 +9,6 @@ PROPAGATE_EXCEPTIONS = False
 #     $ python -c 'import os; print(os.urandom(24))'
 SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 
-SESSION_COOKIE_SECURE = True
-
 SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byceps'
 
 REDIS_URL = 'unix:///var/run/redis/redis.sock?db=0'

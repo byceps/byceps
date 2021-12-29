@@ -2,7 +2,6 @@
 
 # TODO: Adjust `SECRET_KEY`!
 SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
-SESSION_COOKIE_SECURE = True
 
 # TODO: Adjust `SQLALCHEMY_DATABASE_URI`!
 SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byceps'
