@@ -1,120 +1,126 @@
+{%- from 'macros/admin/log.html' import render_log_user %}
 {%- from 'macros/admin/ticketing.html' import render_ticket_flag_revoked, render_ticket_flag_user_checked_in %}
-{%- from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {%- from 'macros/icons.html' import render_icon %}
 
 
   <div class="events">
     {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
-      {%- with avatar_size = 20 %}
-        {%- if log_entry.event_type == 'seat-manager-appointed' %}
-          {%- set icon_name = 'administrate' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span> hat
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.appointed_seat_manager, size=avatar_size) }}</span>
-            die <strong>Sitzplatz-Verwaltung</strong> übertragen.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'seat-manager-withdrawn' %}
-          {%- set icon_name = 'administrate' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat sich die <strong>Sitzplatz-Verwaltung</strong> zurückgeholt.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'seat-occupied' %}
-          {%- set icon_name = 'seating-area' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat Sitzplatz <strong>{{ log_entry.seat_label }}</strong>
-            {%- if log_entry.previous_seat_label is defined %}
-            (vorher <strong>{{ log_entry.previous_seat_label }}</strong>)
-            {%- endif %}
-            reserviert.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'seat-released' %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat
-            {%- if log_entry.seat_label is defined %}
-            Sitzplatz <strong>{{ log_entry.seat_label }}</strong>
-            {%- else %}
-            den Sitzplatz
-            {%- endif %}
-            freigegeben.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'ticket-code-changed' %}
-          {%- set icon_name = 'edit' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span> hat
-            den <strong>Code geändert</strong> ({{ log_entry.data.old_code }} &rarr; {{ log_entry.data.new_code }}).
-          {%- endset %}
-        {%- elif log_entry.event_type == 'ticket-created' %}
-          {%- set icon_name = 'add' %}
-          {%- set body %}
-            Das Ticket ist <strong>erzeugt worden</strong>.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'ticket-revoked' %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
-            {%- if log_entry.initiator is defined %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            {%- else %}
-            Jemand
-            {%- endif %}
-            hat das Ticket {{ render_ticket_flag_revoked() }}.
-            {%- if log_entry.reason is defined %}
-            Begründung: &quot;{{ log_entry.reason }}&quot;
-            {%- endif -%}
-          {%- endset %}
-        {%- elif log_entry.event_type == 'user-manager-appointed' %}
-          {%- set icon_name = 'administrate' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span> hat
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.appointed_user_manager, size=avatar_size) }}</span>
-            die <strong>Nutzer-Verwaltung</strong> übertragen.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'user-manager-withdrawn' %}
-          {%- set icon_name = 'administrate' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat sich die <strong>Nutzer-Verwaltung</strong> zurückgeholt.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'user-appointed' %}
-          {%- set icon_name = 'user' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span> hat
-            {%- if log_entry.appointed_user %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.appointed_user, size=avatar_size) }}</span>
-            {%- else %}
-            <strong>einen unbekannten Benutzer</strong>
-            {%- endif %}
-            als <strong>Ticketnutzer</strong> eingetragen.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'user-withdrawn' %}
-          {%- set icon_name = 'user' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat sich selbst als <strong>Ticketnutzer</strong> eingetragen.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'user-checked-in' %}
-          {%- set icon_name = 'success' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span> hat
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.checked_in_user, size=avatar_size) }}</span>
-            für die Veranstaltung {{ render_ticket_flag_user_checked_in() }}.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'user-check-in-reverted' %}
-          {%- set icon_name = 'success' %}
-          {%- set body %}
-          <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span> hat den <strong>Check-In</strong> von
-            Ticketnutzer <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.checked_in_user, size=avatar_size) }}</span>
-            <strong>rückgangig gemacht</strong>.
-          {%- endset %}
-        {%- else %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
-            <strong>Unbekannte Aktion '{{ log_entry.event_type }}'</strong> ist ausgelöst worden.
-          {%- endset %}
-        {%- endif %}
+      {%- if log_entry.event_type == 'seat-manager-appointed' %}
+        {%- set icon_name = 'administrate' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat
+          {{ render_log_user(log_entry.appointed_seat_manager) }}
+          die <strong>Sitzplatz-Verwaltung</strong> übertragen.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'seat-manager-withdrawn' %}
+        {%- set icon_name = 'administrate' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat sich die <strong>Sitzplatz-Verwaltung</strong> zurückgeholt.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'seat-occupied' %}
+        {%- set icon_name = 'seating-area' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat Sitzplatz <strong>{{ log_entry.seat_label }}</strong>
+          {%- if log_entry.previous_seat_label is defined %}
+          (vorher <strong>{{ log_entry.previous_seat_label }}</strong>)
+          {%- endif %}
+          reserviert.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'seat-released' %}
+        {%- set icon_name = 'disabled' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat
+          {%- if log_entry.seat_label is defined %}
+          Sitzplatz <strong>{{ log_entry.seat_label }}</strong>
+          {%- else %}
+          den Sitzplatz
+          {%- endif %}
+          freigegeben.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'ticket-code-changed' %}
+        {%- set icon_name = 'edit' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat
+          den <strong>Code geändert</strong> ({{ log_entry.data.old_code }} &rarr; {{ log_entry.data.new_code }}).
+        {%- endset %}
+      {%- elif log_entry.event_type == 'ticket-created' %}
+        {%- set icon_name = 'add' %}
+        {%- set body %}
+          Das Ticket ist <strong>erzeugt worden</strong>.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'ticket-revoked' %}
+        {%- set icon_name = 'disabled' %}
+        {%- set body %}
+          {%- if log_entry.initiator is defined %}
+          {{ render_log_user(log_entry.initiator) }}
+          {%- else %}
+          Jemand
+          {%- endif %}
+          hat das Ticket {{ render_ticket_flag_revoked() }}.
+          {%- if log_entry.reason is defined %}
+          Begründung: &quot;{{ log_entry.reason }}&quot;
+          {%- endif -%}
+        {%- endset %}
+      {%- elif log_entry.event_type == 'user-manager-appointed' %}
+        {%- set icon_name = 'administrate' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat
+          {{ render_log_user(log_entry.appointed_user_manager) }}
+          die <strong>Nutzer-Verwaltung</strong> übertragen.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'user-manager-withdrawn' %}
+        {%- set icon_name = 'administrate' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat sich die <strong>Nutzer-Verwaltung</strong> zurückgeholt.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'user-appointed' %}
+        {%- set icon_name = 'user' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat
+          {%- if log_entry.appointed_user %}
+          {{ render_log_user(log_entry.appointed_user) }}
+          {%- else %}
+          <strong>einen unbekannten Benutzer</strong>
+          {%- endif %}
+          als <strong>Ticketnutzer</strong> eingetragen.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'user-withdrawn' %}
+        {%- set icon_name = 'user' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat sich selbst als <strong>Ticketnutzer</strong> eingetragen.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'user-checked-in' %}
+        {%- set icon_name = 'success' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat
+          {{ render_log_user(log_entry.checked_in_user) }}
+          für die Veranstaltung {{ render_ticket_flag_user_checked_in() }}.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'user-check-in-reverted' %}
+        {%- set icon_name = 'success' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat den <strong>Check-In</strong> von
+          Ticketnutzer
+          {{ render_log_user(log_entry.checked_in_user) }}
+          <strong>rückgangig gemacht</strong>.
+        {%- endset %}
+      {%- else %}
+        {%- set icon_name = 'disabled' %}
+        {%- set body %}
+          <strong>Unbekannte Aktion '{{ log_entry.event_type }}'</strong> ist ausgelöst worden.
+        {%- endset %}
+      {%- endif %}
     <div class="event">
       <div class="event-icon">{{ render_icon(icon_name) }}</div>
       <div class="event-data">
@@ -122,6 +128,5 @@
         <div class="event-timestamp">{{ log_entry.occurred_at|datetimeformat }}</div>
       </div>
     </div>
-      {%- endwith %}
     {%- endfor %}
   </div>

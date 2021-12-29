@@ -1,0 +1,6 @@
+{% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
+
+
+{% macro render_log_user(user) -%}
+<span class="user-link">{{ render_user_avatar_and_admin_link(user, size=20) }}</span>
+{%- endmacro %}

@@ -1,123 +1,125 @@
+{%- from 'macros/admin/log.html' import render_log_user %}
 {%- from 'macros/admin/shop/order.html' import render_order_payment_state %}
 {%- from 'macros/admin/ticketing.html' import render_ticket_flag_revoked %}
-{%- from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
 {%- from 'macros/icons.html' import render_icon %}
 
 
   <div class="events">
     {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
-      {%- with avatar_size = 20 %}
-        {%- if log_entry.event_type == 'order-placed' %}
-          {%- set icon_name = 'add' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span> hat die Bestellung <strong>aufgegeben</strong>.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'order-canceled-before-paid' %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_before_paid) }}
-            (war vorher {{ render_order_payment_state(PaymentState[log_entry.data.former_payment_state]) }}).
-            <br><br>
-            {{ _('Reason') }}:<br>
-            <blockquote>{{ log_entry.data.reason }}</blockquote>
-          {%- endset %}
-        {%- elif log_entry.event_type == 'order-paid' %}
-          {%- set icon_name = 'success' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat die Bestellung als {{ render_order_payment_state(PaymentState.paid) }}
-            mittels {{ render_order_payment_method(log_entry.data.payment_method) }} markiert.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'order-canceled-after-paid' %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_after_paid) }}
-            (war vorher {{ render_order_payment_state(PaymentState[log_entry.data.former_payment_state]) }}).
-            <br><br>
-            {{ _('Reason') }}:<br>
-            <blockquote>{{ log_entry.data.reason }}</blockquote>
-          {%- endset %}
-        {%- elif log_entry.event_type == 'order-invoiced' %}
-          {%- set icon_name = 'invoice' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat die Rechnung als <strong>erstellt</strong> markiert.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'order-invoiced-withdrawn' %}
-          {%- set icon_name = 'remove' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat die Rechnung als <strong>doch nicht erstellt</strong> markiert.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'order-note-added' %}
-          {%- set icon_name = 'note' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.author, size=avatar_size) }}</span>
-            hat eine Notiz hinzugefügt:<br>
-            <blockquote>{{ log_entry.data.text }}</blockquote>
-          {%- endset %}
-        {%- elif log_entry.event_type == 'order-shipped' %}
-          {%- set icon_name = 'shipping' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat die Lieferung als <strong>versendet</strong> markiert.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'order-shipped-withdrawn' %}
-          {%- set icon_name = 'remove' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat die Lieferung als <strong>doch nicht versendet</strong> markiert.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'order-placed-confirmation-email-resent' %}
-          {%- set icon_name = 'email' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span> hat den Versand der Bestellbestätigung per E-Mail <strong>erneut ausgelöst</strong>.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'badge-awarded' %}
-          {%- set icon_name = 'badge' %}
-          {%- set body %}
-            Das <strong>Badge &quot;{{ log_entry.badge_label }}&quot;</strong> ist an
-            {{ render_user_avatar_and_admin_link(log_entry.recipient, size=avatar_size) }} verliehen worden.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'ticket-bundle-created' %}
-          {%- set icon_name = 'ticket' %}
-          {%- set body %}
-            Ein <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=log_entry.bundle_id) }}">Ticketpaket</a></strong> mit {{ log_entry.ticket_quantity }} Tickets der Kategorie &quot;{{ log_entry.ticket_category_title|fallback('unbekannt') }}&quot; ist erzeugt worden.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'ticket-bundle-revoked' %}
-          {%- set icon_name = 'ticket' %}
-          {%- set body %}
-            {%- if log_entry.initiator is defined %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            {%- else %}
-            Jemand
-            {%- endif %}
-            hat das <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=log_entry.bundle_id) }}">Ticketpaket</a></strong> {{ render_ticket_flag_revoked() }}.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'ticket-created' %}
-          {%- set icon_name = 'ticket' %}
-          {%- set body %}
-            Das <strong><a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=log_entry.ticket_id) }}">Ticket {{ log_entry.ticket_code }}</a></strong> ist erzeugt worden.
-          {%- endset %}
-        {%- elif log_entry.event_type == 'ticket-revoked' %}
-          {%- set icon_name = 'ticket' %}
-          {%- set body %}
-            {%- if log_entry.initiator is defined %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            {%- else %}
-            Jemand
-            {%- endif %}
-            hat das <strong>Ticket {{ log_entry.ticket_code }}</strong> {{ render_ticket_flag_revoked() }}.
-          {%- endset %}
-        {%- else %}
-          {%- set icon_name = 'disabled' %}
-          {%- set body %}
-            <span class="user-link">{{ render_user_avatar_and_admin_link(log_entry.initiator, size=avatar_size) }}</span>
-            hat die <strong>unbekannte Aktion '{{ log_entry.event_type }}'</strong> ausgelöst.
-          {%- endset %}
-        {%- endif %}
+      {%- if log_entry.event_type == 'order-placed' %}
+        {%- set icon_name = 'add' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat die Bestellung <strong>aufgegeben</strong>.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'order-canceled-before-paid' %}
+        {%- set icon_name = 'disabled' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_before_paid) }}
+          (war vorher {{ render_order_payment_state(PaymentState[log_entry.data.former_payment_state]) }}).
+          <br><br>
+          {{ _('Reason') }}:<br>
+          <blockquote>{{ log_entry.data.reason }}</blockquote>
+        {%- endset %}
+      {%- elif log_entry.event_type == 'order-paid' %}
+        {%- set icon_name = 'success' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat die Bestellung als {{ render_order_payment_state(PaymentState.paid) }}
+          mittels {{ render_order_payment_method(log_entry.data.payment_method) }} markiert.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'order-canceled-after-paid' %}
+        {%- set icon_name = 'disabled' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat die Bestellung {{ render_order_payment_state(PaymentState.canceled_after_paid) }}
+          (war vorher {{ render_order_payment_state(PaymentState[log_entry.data.former_payment_state]) }}).
+          <br><br>
+          {{ _('Reason') }}:<br>
+          <blockquote>{{ log_entry.data.reason }}</blockquote>
+        {%- endset %}
+      {%- elif log_entry.event_type == 'order-invoiced' %}
+        {%- set icon_name = 'invoice' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat die Rechnung als <strong>erstellt</strong> markiert.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'order-invoiced-withdrawn' %}
+        {%- set icon_name = 'remove' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat die Rechnung als <strong>doch nicht erstellt</strong> markiert.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'order-note-added' %}
+        {%- set icon_name = 'note' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.author) }}
+          hat eine Notiz hinzugefügt:<br>
+          <blockquote>{{ log_entry.data.text }}</blockquote>
+        {%- endset %}
+      {%- elif log_entry.event_type == 'order-shipped' %}
+        {%- set icon_name = 'shipping' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat die Lieferung als <strong>versendet</strong> markiert.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'order-shipped-withdrawn' %}
+        {%- set icon_name = 'remove' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat die Lieferung als <strong>doch nicht versendet</strong> markiert.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'order-placed-confirmation-email-resent' %}
+        {%- set icon_name = 'email' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat den Versand der Bestellbestätigung per E-Mail <strong>erneut ausgelöst</strong>.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'badge-awarded' %}
+        {%- set icon_name = 'badge' %}
+        {%- set body %}
+          Das <strong>Badge &quot;{{ log_entry.badge_label }}&quot;</strong> ist an
+          {{ render_log_user(log_entry.recipient) }}
+          verliehen worden.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'ticket-bundle-created' %}
+        {%- set icon_name = 'ticket' %}
+        {%- set body %}
+          Ein <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=log_entry.bundle_id) }}">Ticketpaket</a></strong> mit {{ log_entry.ticket_quantity }} Tickets der Kategorie &quot;{{ log_entry.ticket_category_title|fallback('unbekannt') }}&quot; ist erzeugt worden.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'ticket-bundle-revoked' %}
+        {%- set icon_name = 'ticket' %}
+        {%- set body %}
+          {%- if log_entry.initiator is defined %}
+          {{ render_log_user(log_entry.initiator) }}
+          {%- else %}
+          Jemand
+          {%- endif %}
+          hat das <strong><a href="{{ url_for('ticketing_admin.view_bundle', bundle_id=log_entry.bundle_id) }}">Ticketpaket</a></strong> {{ render_ticket_flag_revoked() }}.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'ticket-created' %}
+        {%- set icon_name = 'ticket' %}
+        {%- set body %}
+          Das <strong><a href="{{ url_for('ticketing_admin.view_ticket', ticket_id=log_entry.ticket_id) }}">Ticket {{ log_entry.ticket_code }}</a></strong> ist erzeugt worden.
+        {%- endset %}
+      {%- elif log_entry.event_type == 'ticket-revoked' %}
+        {%- set icon_name = 'ticket' %}
+        {%- set body %}
+          {%- if log_entry.initiator is defined %}
+          {{ render_log_user(log_entry.initiator) }}
+          {%- else %}
+          Jemand
+          {%- endif %}
+          hat das <strong>Ticket {{ log_entry.ticket_code }}</strong> {{ render_ticket_flag_revoked() }}.
+        {%- endset %}
+      {%- else %}
+        {%- set icon_name = 'disabled' %}
+        {%- set body %}
+          {{ render_log_user(log_entry.initiator) }}
+          hat die <strong>unbekannte Aktion '{{ log_entry.event_type }}'</strong> ausgelöst.
+        {%- endset %}
+      {%- endif %}
     <div class="event">
       <div class="event-icon">{{ render_icon(icon_name) }}</div>
       <div class="event-data">
@@ -125,6 +127,5 @@
         <div class="event-timestamp">{{ log_entry.occurred_at|datetimeformat }}</div>
       </div>
     </div>
-      {%- endwith %}
     {%- endfor %}
   </div>
