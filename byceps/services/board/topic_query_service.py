@@ -89,9 +89,7 @@ def paginate_topics(
             .filter(DbCategory.hidden == False) \
         .order_by(DbTopic.last_updated_at.desc())
 
-    count_query = select(db.func.count(DbTopic.id))
-    if not include_hidden:
-        count_query = count_query.filter_by(hidden=False)
+    count_query = _count_topics(include_hidden)
 
     return paginate(
         items_query, count_query, page, per_page, scalar_result=True
@@ -122,9 +120,7 @@ def paginate_topics_of_category(
         .filter_by(category_id=category_id) \
         .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc())
 
-    count_query = select(db.func.count(DbTopic.id))
-    if not include_hidden:
-        count_query = count_query.filter_by(hidden=False)
+    count_query = _count_topics(include_hidden)
 
     return paginate(
         items_query, count_query, page, per_page, scalar_result=True
@@ -141,6 +137,14 @@ def _query_topics(include_hidden: bool) -> Select:
             db.joinedload(DbTopic.pinned_by),
         )
 
+    if not include_hidden:
+        query = query.filter_by(hidden=False)
+
+    return query
+
+
+def _count_topics(include_hidden: bool) -> Select:
+    query = select(db.func.count(DbTopic.id))
     if not include_hidden:
         query = query.filter_by(hidden=False)
 
