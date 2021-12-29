@@ -1,6 +1,6 @@
 {% extends 'layout/admin/user.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/log.html' import render_log_user %}
+{% from 'macros/admin/log.html' import render_log_entry, render_log_user %}
 {% from 'macros/admin/user.html' import render_user_flag_deleted, render_user_flag_suspended %}
 {% from 'macros/admin/user_badge.html' import render_user_badge_linked %}
 {% from 'macros/icons.html' import render_icon %}
@@ -277,13 +277,7 @@
             <strong>Unbekannte Aktion '{{ log_entry.event_type }}'</strong> ist ausgelöst worden.
           {%- endset %}
         {%- endif %}
-      <div class="event">
-        <div class="event-icon">{{ render_icon(icon_name) }}</div>
-        <div class="event-data">
-          <div class="event-body">{{ body|safe }}</div>
-          <div class="event-timestamp">{{ log_entry.occurred_at|datetimeformat }}</div>
-        </div>
-      </div>
+{{ render_log_entry(icon_name, log_entry.occurred_at, body) }}
       {%- endfor %}
     </div>
   </div>

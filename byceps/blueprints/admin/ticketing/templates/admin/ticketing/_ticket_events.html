@@ -1,6 +1,5 @@
-{%- from 'macros/admin/log.html' import render_log_user %}
+{%- from 'macros/admin/log.html' import render_log_entry, render_log_user %}
 {%- from 'macros/admin/ticketing.html' import render_ticket_flag_revoked, render_ticket_flag_user_checked_in %}
-{%- from 'macros/icons.html' import render_icon %}
 
 
   <div class="events">
@@ -121,12 +120,6 @@
           <strong>Unbekannte Aktion '{{ log_entry.event_type }}'</strong> ist ausgelöst worden.
         {%- endset %}
       {%- endif %}
-    <div class="event">
-      <div class="event-icon">{{ render_icon(icon_name) }}</div>
-      <div class="event-data">
-        <div class="event-body">{{ body|safe }}</div>
-        <div class="event-timestamp">{{ log_entry.occurred_at|datetimeformat }}</div>
-      </div>
-    </div>
+{{ render_log_entry(icon_name, log_entry.occurred_at, body) }}
     {%- endfor %}
   </div>

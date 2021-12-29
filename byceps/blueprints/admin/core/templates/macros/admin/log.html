@@ -1,4 +1,16 @@
 {% from 'macros/admin/user.html' import render_user_avatar_and_admin_link %}
+{% from 'macros/icons.html' import render_icon %}
+
+
+{% macro render_log_entry(icon_name, timestamp, body) -%}
+    <div class="event">
+      <div class="event-icon">{{ render_icon(icon_name) }}</div>
+      <div class="event-data">
+        <div class="event-body">{{ body|safe }}</div>
+        <div class="event-timestamp">{{ timestamp|datetimeformat }}</div>
+      </div>
+    </div>
+{%- endmacro %}
 
 
 {% macro render_log_user(user) -%}
