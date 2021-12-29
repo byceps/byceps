@@ -10,6 +10,4 @@ REDIS_URL = 'redis://127.0.0.1:6379/0'
 APP_MODE = 'site'
 SITE_ID = 'example-site'
 
-MAIL_SUPPRESS_SEND = True
-
 STYLE_GUIDE_ENABLED = True
