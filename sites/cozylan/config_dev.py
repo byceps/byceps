@@ -1,6 +1,7 @@
 # Examplary development configuration for the "CozyLAN" demo site
 
 DEBUG = True
+
 SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
 SESSION_COOKIE_SECURE = False
 
