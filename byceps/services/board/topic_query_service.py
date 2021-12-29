@@ -68,7 +68,7 @@ def find_topic_visible_for_user(
 def get_recent_topics(
     board_id: BoardID, include_hidden: bool, limit: int
 ) -> list[DbTopic]:
-    """Paginate topics in that board."""
+    """Return recent topics in that board."""
     query = _query_topics(include_hidden) \
         .join(DbCategory) \
             .filter(DbCategory.board_id == board_id) \
