@@ -198,6 +198,7 @@ def _get_additional_data_for_ticket_revoked(
     ticket_code = log_entry.data['ticket_code']
 
     data = {
+        'ticket_id': ticket_id,
         'ticket_code': ticket_code,
     }
 
