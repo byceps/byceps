@@ -4,7 +4,7 @@
 {% from 'macros/misc.html' import render_notification %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
-{% set page_title = 'Orga zu Team hinzufügen' %}
+{% set page_title = _('Add orga to team') %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.teams_for_party', party_id=party.id), 'Teams "%s"'|format(party.title)) }}
@@ -22,7 +22,7 @@
     {{ form_buttons(_('Save')) }}
   </form>
   {%- else %}
-  {{ render_notification('Es sind keine Orgas vorhanden, die noch keinem Team dieser Party zugewiesen sind.', category='info', icon='info') }}
+  {{ render_notification(_('No orgas are available who are not yet assigned to a team for this party.'), category='info', icon='info') }}
   {%- endif %}
 
 {%- endblock %}

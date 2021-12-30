@@ -2844,9 +2844,92 @@ msgstr "Die Teammitgliedschaft von %(screen_name)s wurde aktualisiert."
 msgid "%(screen_name)s has been removed from team \"%(team_title)s\"."
 msgstr "%(screen_name)s wurde aus dem Team \"%(team_title)s\" entfernt."
 
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_create_form.html:7
+msgid "Add orga to team"
+msgstr "Orga zu Team hinzufügen"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_create_form.html:25
+msgid "No orgas are available who are not yet assigned to a team for this party."
+msgstr ""
+"Es sind keine Orgas vorhanden, die noch keinem Team dieser Party "
+"zugewiesen sind."
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_update_form.html:7
+msgid "Edit orga team membership"
+msgstr "Orga-Team-Mitgliedschaft bearbeiten"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_update_form.html:19
+msgid "Orga"
+msgstr "Orga"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/team_create_form.html:6
+msgid "Create orga team"
+msgstr "Orga-Team erstellen"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_copy_form.html:6
+msgid "Copy orga teams"
+msgstr "Orga-Teams kopieren"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_copy_form.html:14
+msgid "Copy orga teams from another party"
+msgstr "Orga-Teams von anderer Party kopieren"
+
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_copy_form.html:19
 msgid "Copy"
 msgstr "Kopieren"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:8
+#: byceps/blueprints/admin/user/templates/admin/user/_view_orga_activities.html:3
+#: byceps/blueprints/admin/user/templates/admin/user/view.html:80
+msgid "Orga teams"
+msgstr "Orga-Teams"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:28
+msgid "Create team"
+msgstr "Team erstellen"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:32
+msgid "Copy teams from another party"
+msgstr "Teams von anderer Party kopieren"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:49
+msgid "person"
+msgid_plural "persons"
+msgstr[0] "Person"
+msgstr[1] "Personen"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:55
+msgid "Add orga"
+msgstr "Orga hinzufügen"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:60
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:62
+msgid "Remove team"
+msgstr "Team entfernen"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:90
+msgid "Edit membership and duties"
+msgstr "Teamzugehörigkeit und Aufgabe bearbeiten"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:91
+msgid "Remove person from team"
+msgstr "Person aus Team entfernen"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:99
+msgid "This team has no members."
+msgstr "Dieses Team hat keine Mitglieder."
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:106
+msgid "No orga teams are defined."
+msgstr "Es sind keine Orga-Teams vorhanden."
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:115
+msgid "Remove team?"
+msgstr "Team entfernen?"
+
+#: byceps/blueprints/admin/orga_team/templates/admin/orga_team/teams_for_party.html:116
+msgid "Remove person from team?"
+msgstr "Person aus Team entfernen?"
 
 #: byceps/blueprints/admin/party/forms.py:38
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:69
@@ -4972,11 +5055,6 @@ msgstr "abonniert"
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:13
 msgid "not subscribed"
 msgstr "nicht abonniert"
-
-#: byceps/blueprints/admin/user/templates/admin/user/_view_orga_activities.html:3
-#: byceps/blueprints/admin/user/templates/admin/user/view.html:80
-msgid "Orga teams"
-msgstr "Orga-Teams"
 
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:1
 #: byceps/blueprints/admin/user/templates/admin/user/view.html:74

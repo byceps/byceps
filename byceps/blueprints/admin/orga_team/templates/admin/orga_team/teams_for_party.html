@@ -5,7 +5,7 @@
 {% from 'macros/user_avatar.html' import render_user_avatar %}
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
-{% set page_title = 'Orga-Teams' %}
+{% set page_title = _('Orga teams') %}
 {% set layout_main_raw = True %}
 
 {% block head %}
@@ -25,11 +25,11 @@
     {%- if has_current_user_permission('orga_team.create') %}
     <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
-        <a class="button" href="{{ url_for('.team_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>Team erstellen</span></a>
+        <a class="button" href="{{ url_for('.team_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create team') }}</span></a>
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('.teams_copy_form', target_party_id=party.id) }}">{{ render_icon('copy') }} <span>Teams von anderer Party kopieren</span></a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.teams_copy_form', target_party_id=party.id) }}">{{ render_icon('copy') }} <span>{{ _('Copy teams from another party') }}</span></a></li>
           </ol>
         </div>
       </div>
@@ -46,20 +46,20 @@
       <div class="column-auto">
         <h2>{{ team.title }}</h2>
         {%- if members %}
-        <div>{{ '%d %s'|format(member_total, 'Person' if member_total == 1 else 'Personen')|dim }}</div>
+        <div>{% filter dim %}{{ member_total}} {{ ngettext('person', 'persons', member_total) }}{% endfilter %}</div>
         {%- endif %}
       </div>
       {%- if has_current_user_permission('orga_team.administrate_memberships') %}
       <div class="column-auto">
         <div class="button-row button-row--compact button-row--right">
-          <a class="button button--compact" href="{{ url_for('.membership_create_form', team_id=team.id) }}" title="Orga hinzufügen">{{ render_icon('add') }}</a>
+          <a class="button button--compact" href="{{ url_for('.membership_create_form', team_id=team.id) }}" title="{{ _('Add orga') }}">{{ render_icon('add') }}</a>
           <div class="dropdown">
             <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">
               {%- if not members and has_current_user_permission('orga_team.delete') %}
-              <li><a class="dropdown-item" data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} <span>Team entfernen</span></a></li>
+              <li><a class="dropdown-item" data-action="team-delete" href="{{ url_for('.team_delete', team_id=team.id) }}">{{ render_icon('remove') }} <span>{{ _('Remove team') }}</span></a></li>
               {%- else %}
-              <li><span class="dropdown-item button--disabled">{{ render_icon('remove') }} <span>Team entfernen</span></span></li>
+              <li><span class="dropdown-item button--disabled">{{ render_icon('remove') }} <span>{{ _('Remove team') }}</span></span></li>
               {%- endif %}
             </ol>
           </div>
@@ -87,8 +87,8 @@
           <div class="dropdown">
             <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">
-              <li><a class="dropdown-item" href="{{ url_for('.membership_update_form', membership_id=member.membership.id) }}">{{ render_icon('edit') }} Teamzugehörigkeit und Aufgabe bearbeiten</a></li>
-              <li><a class="dropdown-item" data-action="membership-remove" href="{{ url_for('.membership_remove', membership_id=member.membership.id) }}">{{ render_icon('remove') }} Person aus Team entfernen</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('.membership_update_form', membership_id=member.membership.id) }}">{{ render_icon('edit') }} {{ _('Edit membership and duties') }}</a></li>
+              <li><a class="dropdown-item" data-action="membership-remove" href="{{ url_for('.membership_remove', membership_id=member.membership.id) }}">{{ render_icon('remove') }} {{ _('Remove person from team') }}</a></li>
             </ol>
           </div>
         </div>
@@ -96,14 +96,14 @@
         {%- endfor %}
     </div>
       {%- else %}
-    <div class="dimmed-box centered">Dieses Team hat keine Mitglieder.</div>
+    <div class="dimmed-box centered">{{ _('This team has no members.') }}</div>
       {%- endif %}
 
   </div>
     {%- endfor %}
   {%- else %}
   <div class="box">
-    <div class="dimmed-box centered">Es sind keine Orga-Teams hinterlegt.</div>
+    <div class="dimmed-box centered">{{ _('No orga teams are defined.') }}</div>
   </div>
   {%- endif %}
 
@@ -112,8 +112,8 @@
 {% block scripts %}
     <script>
       onDomReady(() => {
-        confirmed_delete_on_click_then_reload('[data-action="team-delete"]', 'Team entfernen?');
-        confirmed_delete_on_click_then_reload('[data-action="membership-remove"]', 'Person aus dem Team entfernen?');
+        confirmed_delete_on_click_then_reload('[data-action="team-delete"]', '{{ _('Remove team?') }}');
+        confirmed_delete_on_click_then_reload('[data-action="membership-remove"]', '{{ _('Remove person from team?') }}');
       });
     </script>
 {%- endblock %}
