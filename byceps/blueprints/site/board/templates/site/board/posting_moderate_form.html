@@ -15,10 +15,16 @@
   </nav>
   <h1>{{ render_icon('moderate') }} {{ page_title }}</h1>
 
-  <p>Beitrag von {{ render_user_link(posting.creator) }} im Thema &quot;{{ posting.topic.title }}&quot;</p>
+  <p>{{ _('Posting by %(creator)s in topic &quot;%(topic)s&quot;', creator=render_user_link(posting.creator), topic=posting.topic.title) }}
 
-  <h2>{{ render_icon('view') }} Sichtbarkeit</h2>
-  <p>Der Beitrag ist {% if posting.hidden %}<strong>versteckt</strong> ({{ posting.hidden_at|datetimeformat }} {{ _('by') }} {{ render_user_screen_name(posting.hidden_by) }}){% else %}<strong>sichtbar</strong>{% endif %}.</p>
+  <h2>{{ render_icon('view') }} {{ _('Visibility') }}</h2>
+
+  {%- if posting.hidden %}
+  <p>{{ _('The posting is <strong>hidden</strong> (%(timestamp)s by %(moderator)s).', timestamp=posting.hidden_at|datetimeformat, moderator=render_user_screen_name(posting.hidden_by)) }}</p>
+  {%- else %}
+  <p>{{ _('The posting is <strong>visible</strong>.') }}</p>
+  {%- endif %}
+
   <div class="button-row">
   {%- if posting.hidden %}
     <span class="button button--disabled">{{ render_icon('hidden') }} <span>{{ _('Hide') }}</span></span>

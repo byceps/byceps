@@ -1059,14 +1059,18 @@ msgid "Move down"
 msgstr "Nach unten verschieben"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:65
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:25
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:28
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:31
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:34
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:32
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:35
 msgid "Make visible"
 msgstr "Sichtbar machen"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:67
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:24
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:27
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:30
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:33
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:31
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:34
 msgid "Hide"
 msgstr "Verstecken"
 
@@ -2382,12 +2386,8 @@ msgstr "Änderungshistorie ansehen"
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:37
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:34
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:46
-#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:21
 #: byceps/blueprints/site/board/templates/site/board/topic_index.html:37
 #: byceps/blueprints/site/board/templates/site/board/topic_index.html:51
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:22
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:36
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:50
 msgid "by"
 msgstr "durch"
 
@@ -5152,6 +5152,8 @@ msgid "Suspend user account"
 msgstr "Benutzerkonto sperren"
 
 #: byceps/blueprints/admin/user/templates/admin/user/suspend_account_form.html:14
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:51
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:54
 msgid "Lock"
 msgstr "Sperren"
 
@@ -5160,6 +5162,8 @@ msgid "Unsuspend user account"
 msgstr "Benutzerkonto entsperren"
 
 #: byceps/blueprints/admin/user/templates/admin/user/unsuspend_account_form.html:14
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:52
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:55
 msgid "Unlock"
 msgstr "Entsperren"
 
@@ -5981,7 +5985,7 @@ msgid "Replies"
 msgstr "Antworten"
 
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:33
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:85
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:105
 msgid "Announcements"
 msgstr "Ankündigungen"
 
@@ -6036,6 +6040,27 @@ msgstr "Beitrag hinzufügen"
 msgid "Moderate post"
 msgstr "Beitrag moderieren"
 
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:18
+#, python-format
+msgid "Posting by %(creator)s in topic &quot;%(topic)s&quot;"
+msgstr "Beitrag von %(creator)s im Thema &quot;%(topic)s&quot;"
+
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:20
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:21
+msgid "Visibility"
+msgstr "Sichtbarkeit"
+
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:23
+#, python-format
+msgid "The posting is <strong>hidden</strong> (%(timestamp)s by %(moderator)s)."
+msgstr ""
+"Der Beitrag ist <strong>versteckt</strong> (%(timestamp)s von "
+"%(moderator)s)."
+
+#: byceps/blueprints/site/board/templates/site/board/posting_moderate_form.html:25
+msgid "The posting is <strong>visible</strong>."
+msgstr "Der Beitrag ist <strong>sichtbar</strong>."
+
 #: byceps/blueprints/site/board/templates/site/board/posting_update_form.html:20
 msgid "You are about to modify a post created by someone else."
 msgstr "Du bist im Begriff, einen Beitrag von jemand anderem zu verändern."
@@ -6045,17 +6070,113 @@ msgstr "Du bist im Begriff, einen Beitrag von jemand anderem zu verändern."
 msgid "Moderate topic"
 msgstr "Thema moderieren"
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:68
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:18
+#, python-format
+msgid "Topic &quot;%(topic)s&quot; by %(creator)s"
+msgstr "Thema &quot;%(topic)s&quot; von %(creator)s"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:24
+#, python-format
+msgid "The topic is <strong>hidden</strong> (%(timestamp)s by %(moderator)s)."
+msgstr ""
+"Das Thema ist <strong>versteckt</strong> (%(timestamp)s von "
+"%(moderator)s)."
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:26
+msgid "The topic is <strong>visible</strong>."
+msgstr "Das Thema ist <strong>sichtbar</strong>."
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:41
+msgid "Write lock"
+msgstr "Schreibschutz"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:44
+#, python-format
+msgid "The topic is <strong>locked</strong> (%(timestamp)s by %(moderator)s)."
+msgstr ""
+"Das Thema ist <strong>geschlossen</strong> (%(timestamp)s von "
+"%(moderator)s)."
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:46
+msgid "The topic is <strong>not locked</strong>."
+msgstr "Das Thema ist <strong>offen</strong>."
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:61
+msgid "Pinning"
+msgstr "Anheften"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:64
+#, python-format
+msgid "The topic is <strong>pinned</strong> (%(timestamp)s by %(moderator)s)."
+msgstr ""
+"Das Thema ist <strong>angeheftet</strong> (%(timestamp)s von "
+"%(moderator)s)."
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:66
+msgid "The topic is <strong>not pinned</strong>."
+msgstr "Das Thema ist <strong>nicht angeheftet</strong>."
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:71
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:74
+msgid "Pin"
+msgstr "Anheften"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:72
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:75
+msgid "Unpin"
+msgstr "Lösen"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:81
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:94
+msgid "Move"
+msgstr "Verschieben"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:83
+#, python-format
+msgid "This topic is in category &quot;%(category)s&quot;."
+msgstr "Dieses Thema befindet sich in der Kategorie &quot;%(category)s&quot;."
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:88
 msgid "New category"
 msgstr "Neue Kategorie"
 
-#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:74
-msgid "Move"
-msgstr "Verschieben"
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:99
+msgid ""
+"There are no other categories in this board. Thus, this topic cannot be "
+"moved."
+msgstr ""
+"Es gibt keine anderen Kategorien in diesem Forum, daher kann das Thema "
+"nicht verschoben werden."
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:108
+msgid "The topic is <strong>not limited</strong> to announcements by moderators."
+msgstr ""
+"Das Thema ist <strong>nicht beschränkt</strong> auf Ankündigungen von "
+"Moderatoren."
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:110
+msgid "The topic is <strong>limited to announcements</strong> by moderators."
+msgstr ""
+"Das Thema ist <strong>beschränkt auf Ankündigungen</strong> von "
+"Moderatoren."
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:115
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:118
+msgid "Limit to announcements"
+msgstr "Auf Ankündigungen beschränken"
+
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:116
+#: byceps/blueprints/site/board/templates/site/board/topic_moderate_form.html:119
+msgid "Open for all postings"
+msgstr "Für alle Beiträge öffnen"
 
 #: byceps/blueprints/site/board/templates/site/board/topic_update_form.html:21
 msgid "You are about to modify a topic created by someone else."
 msgstr "Du bist im Begriff, ein Thema von jemand anderem zu verändern."
+
+#: byceps/blueprints/site/board/templates/site/board/topic_view.html:23
+msgid "This topic is hidden."
+msgstr "Dieses Thema ist versteckt."
 
 #: byceps/blueprints/site/board/templates/site/board/topic_view.html:45
 msgid ""

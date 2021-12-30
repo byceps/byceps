@@ -20,7 +20,7 @@
   <div class="notifications">
 
   {%- if topic.hidden %}
-{{ render_notification('Dieses Thema ist versteckt.', category='info', icon='hidden') }}
+{{ render_notification(_('This topic is hidden.'), category='info', icon='hidden') }}
   {%- endif %}
 
   </div>
