@@ -6,104 +6,135 @@
     {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
       {%- if log_entry.event_type == 'seat-manager-appointed' %}
         {%- call render_log_entry('administrate', log_entry.occurred_at) %}
-          {{ render_log_user(log_entry.initiator) }}
-          hat
-          {{ render_log_user(log_entry.appointed_seat_manager) }}
-          die <strong>Sitzplatz-Verwaltung</strong> übertragen.
+          {{ _(
+            '%(initiator)s has assigned seat management to %(user)s.',
+            initiator=render_log_user(log_entry.initiator),
+            user=render_log_user(log_entry.appointed_seat_manager),
+          ) }}
         {%- endcall %}
       {%- elif log_entry.event_type == 'seat-manager-withdrawn' %}
         {%- call render_log_entry('administrate', log_entry.occurred_at) %}
-          {{ render_log_user(log_entry.initiator) }}
-          hat sich die <strong>Sitzplatz-Verwaltung</strong> zurückgeholt.
+          {{ _(
+            '%(initiator)s has brought back seat management.',
+            initiator=render_log_user(log_entry.initiator),
+          ) }}
         {%- endcall %}
       {%- elif log_entry.event_type == 'seat-occupied' %}
         {%- call render_log_entry('seating-area', log_entry.occurred_at) %}
-          {{ render_log_user(log_entry.initiator) }}
-          hat Sitzplatz <strong>{{ log_entry.seat_label }}</strong>
           {%- if log_entry.previous_seat_label is defined %}
-          (vorher <strong>{{ log_entry.previous_seat_label }}</strong>)
+          {{ _(
+            '%(initiator)s has <strong>reserved</strong> seat "%(seat)s" (previously "%(previous_seat)s").',
+            initiator=render_log_user(log_entry.initiator),
+            seat=log_entry.seat_label,
+            previous_seat=log_entry.previous_seat_label,
+          ) }}
+          {%- else %}
+          {{ _(
+            '%(initiator)s has <strong>reserved</strong> seat "%(seat)s".',
+            initiator=render_log_user(log_entry.initiator),
+            seat=log_entry.seat_label,
+          ) }}
           {%- endif %}
-          reserviert.
         {%- endcall %}
       {%- elif log_entry.event_type == 'seat-released' %}
         {%- call render_log_entry('disabled', log_entry.occurred_at) %}
-          {{ render_log_user(log_entry.initiator) }}
-          hat
           {%- if log_entry.seat_label is defined %}
-          Sitzplatz <strong>{{ log_entry.seat_label }}</strong>
+          {{ _(
+            '%(initiator)s has <strong>released</strong> seat "%(seat)s".',
+            initiator=render_log_user(log_entry.initiator),
+            seat=log_entry.seat_label,
+          ) }}
           {%- else %}
-          den Sitzplatz
+          {{ _(
+            '%(initiator)s has <strong>released</strong> the seat.',
+            initiator=render_log_user(log_entry.initiator),
+          ) }}
           {%- endif %}
-          freigegeben.
         {%- endcall %}
       {%- elif log_entry.event_type == 'ticket-code-changed' %}
         {%- call render_log_entry('edit', log_entry.occurred_at) %}
-          {{ render_log_user(log_entry.initiator) }}
-          hat
-          den <strong>Code geändert</strong> ({{ log_entry.data.old_code }} &rarr; {{ log_entry.data.new_code }}).
+          {{ _(
+            '%(initiator)s has <strong>changed the code</strong> ("%(old_code)s" &rarr; "%(new_code)s").',
+            initiator=render_log_user(log_entry.initiator),
+            old_code=log_entry.data.old_code,
+            new_code=log_entry.data.new_code,
+          ) }}
         {%- endcall %}
       {%- elif log_entry.event_type == 'ticket-created' %}
         {%- call render_log_entry('add', log_entry.occurred_at) %}
-          Das Ticket ist <strong>erzeugt worden</strong>.
+          {{ _('The ticket has been <strong>created</strong>.') }}
         {%- endcall %}
       {%- elif log_entry.event_type == 'ticket-revoked' %}
         {%- call render_log_entry('disabled', log_entry.occurred_at) %}
-          {%- if log_entry.initiator is defined %}
-          {{ render_log_user(log_entry.initiator) }}
-          {%- else %}
-          Jemand
-          {%- endif %}
-          hat das Ticket {{ render_ticket_flag_revoked() }}.
+          {{ _(
+            '%(initiator)s has %(verb)s the ticket.',
+            initiator=(render_log_user(log_entry.initiator) if (log_entry.initiator is defined) else _('Someone')),
+            verb=render_ticket_flag_revoked(),
+          ) }}
           {%- if log_entry.reason is defined %}
           {{ render_log_reason(log_entry.reason) }}
           {%- endif -%}
         {%- endcall %}
       {%- elif log_entry.event_type == 'user-manager-appointed' %}
         {%- call render_log_entry('administrate', log_entry.occurred_at) %}
-          {{ render_log_user(log_entry.initiator) }}
-          hat
-          {{ render_log_user(log_entry.appointed_user_manager) }}
-          die <strong>Nutzer-Verwaltung</strong> übertragen.
+          {{ _(
+            '%(initiator)s has assigned user management to %(user)s.',
+            initiator=render_log_user(log_entry.initiator),
+            user=render_log_user(log_entry.appointed_user_manager),
+          ) }}
         {%- endcall %}
       {%- elif log_entry.event_type == 'user-manager-withdrawn' %}
         {%- call render_log_entry('administrate', log_entry.occurred_at) %}
-          {{ render_log_user(log_entry.initiator) }}
-          hat sich die <strong>Nutzer-Verwaltung</strong> zurückgeholt.
+          {{ _(
+            '%(initiator)s has brought back user management.',
+            initiator=render_log_user(log_entry.initiator),
+          ) }}
         {%- endcall %}
       {%- elif log_entry.event_type == 'user-appointed' %}
         {%- call render_log_entry('user', log_entry.occurred_at) %}
-          {{ render_log_user(log_entry.initiator) }}
-          hat
           {%- if log_entry.appointed_user %}
-          {{ render_log_user(log_entry.appointed_user) }}
+          {{ _(
+            '%(initiator)s has <strong>assigned</strong> %(user)s as ticket user.',
+            initiator=render_log_user(log_entry.initiator),
+            user=render_log_user(log_entry.appointed_user),
+          ) }}
           {%- else %}
-          <strong>einen unbekannten Benutzer</strong>
+          {{ _(
+            '%(initiator)s has <strong>assigned</strong> an unknown user as ticket user.',
+            initiator=render_log_user(log_entry.initiator),
+          ) }}
           {%- endif %}
-          als <strong>Ticketnutzer</strong> eingetragen.
         {%- endcall %}
       {%- elif log_entry.event_type == 'user-withdrawn' %}
         {%- call render_log_entry('user', log_entry.occurred_at) %}
-          {{ render_log_user(log_entry.initiator) }}
-          hat sich selbst als <strong>Ticketnutzer</strong> eingetragen.
+          {{ _(
+            '%(initiator)s has assigned themselves as ticket user.',
+            initiator=render_log_user(log_entry.initiator),
+          ) }}
         {%- endcall %}
       {%- elif log_entry.event_type == 'user-checked-in' %}
         {%- call render_log_entry('success', log_entry.occurred_at) %}
-          {{ render_log_user(log_entry.initiator) }}
-          hat
-          {{ render_log_user(log_entry.checked_in_user) }}
-          für die Veranstaltung {{ render_ticket_flag_user_checked_in() }}.
+          {{ _(
+            '%(initiator)s has %(verb)s %(user)s for the party.',
+            initiator=render_log_user(log_entry.initiator),
+            user=render_log_user(log_entry.checked_in_user),
+            verb=render_ticket_flag_user_checked_in(),
+          ) }}
         {%- endcall %}
       {%- elif log_entry.event_type == 'user-check-in-reverted' %}
         {%- call render_log_entry('success', log_entry.occurred_at) %}
-          {{ render_log_user(log_entry.initiator) }}
-          hat den <strong>Check-In</strong> von
-          Ticketnutzer
-          {{ render_log_user(log_entry.checked_in_user) }}
-          <strong>rückgangig gemacht</strong>.
+          {{ _(
+            '%(initiator)s has <strong>reverted the check-in</strong> of %(user)s.',
+            initiator=render_log_user(log_entry.initiator),
+            user=render_log_user(log_entry.checked_in_user),
+          ) }}
         {%- endcall %}
       {%- else %}
         {%- call render_log_entry('disabled', log_entry.occurred_at) %}
-          <strong>Unbekannte Aktion '{{ log_entry.event_type }}'</strong> ist ausgelöst worden.
+          {{ _(
+            '<strong>Unknown event</strong> "%(event_type)s" has occurred.',
+            event_type=log_entry.event_type,
+          ) }}
         {%- endcall %}
       {%- endif %}
     {%- endfor %}

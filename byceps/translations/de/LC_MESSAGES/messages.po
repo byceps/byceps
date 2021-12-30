@@ -3695,6 +3695,7 @@ msgstr ""
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:107
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:123
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:71
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:36
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:42
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:50
@@ -4426,6 +4427,107 @@ msgid "The person must be born on <strong>%(latest_dob)s</strong> or earlier."
 msgstr ""
 "Die Person muss am <strong>%(latest_dob)s</strong> oder früher geboren "
 "sein."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:9
+#, python-format
+msgid "%(initiator)s has assigned seat management to %(user)s."
+msgstr "%(initiator)s hat %(user)s die Sitzplatzverwaltung übertragen."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:17
+#, python-format
+msgid "%(initiator)s has brought back seat management."
+msgstr "%(initiator)s hat die Sitzplatzverwaltung zurückgeholt."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:25
+#, python-format
+msgid ""
+"%(initiator)s has <strong>reserved</strong> seat \"%(seat)s\" (previously"
+" \"%(previous_seat)s\")."
+msgstr ""
+"%(initiator)s hat Sitzplatz \"%(seat)s\" (vorher \"%(previous_seat)s\") "
+"<strong>reserviert</strong>."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:32
+#, python-format
+msgid "%(initiator)s has <strong>reserved</strong> seat \"%(seat)s\"."
+msgstr "%(initiator)s hat Sitzplatz \"%(seat)s\" <strong>reserviert</strong>."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:42
+#, python-format
+msgid "%(initiator)s has <strong>released</strong> seat \"%(seat)s\"."
+msgstr "%(initiator)s hat Sitzplatz \"%(seat)s\" <strong>freigegeben</strong>."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:48
+#, python-format
+msgid "%(initiator)s has <strong>released</strong> the seat."
+msgstr "%(initiator)s hat den Sitzplatz <strong>freigegeben</strong>."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:56
+#, python-format
+msgid ""
+"%(initiator)s has <strong>changed the code</strong> (\"%(old_code)s\" "
+"&rarr; \"%(new_code)s\")."
+msgstr ""
+"%(initiator)s hat den <strong>Code geändert</strong> (\"%(old_code)s\" "
+"&rarr; \"%(new_code)s\")."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:65
+msgid "The ticket has been <strong>created</strong>."
+msgstr "Das Ticket wurde <strong>angelegt</strong>."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:69
+#, python-format
+msgid "%(initiator)s has %(verb)s the ticket."
+msgstr "%(initiator)s hat das Ticket %(verb)s."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:80
+#, python-format
+msgid "%(initiator)s has assigned user management to %(user)s."
+msgstr "%(initiator)s hat %(user)s die Nutzerverwaltung übertragen."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:88
+#, python-format
+msgid "%(initiator)s has brought back user management."
+msgstr "%(initiator)s hat die Nutzerverwaltung zurückgeholt."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:96
+#, python-format
+msgid "%(initiator)s has <strong>assigned</strong> %(user)s as ticket user."
+msgstr "%(initiator)s hat %(user)s als Ticketnutzer <strong>eingetragen</strong>."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:102
+#, python-format
+msgid ""
+"%(initiator)s has <strong>assigned</strong> an unknown user as ticket "
+"user."
+msgstr ""
+"%(initiator)s hat einen unbekannten Benutzer als Ticketnutzer "
+"<strong>eingetragen</strong>."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:110
+#, python-format
+msgid "%(initiator)s has assigned themselves as ticket user."
+msgstr ""
+"%(initiator)s hat sich selbst als Ticketnutzer "
+"<strong>eingetragen</strong>."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:117
+#, python-format
+msgid "%(initiator)s has %(verb)s %(user)s for the party."
+msgstr "%(initiator)s hat %(user)s für die Party %(verb)s."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:126
+#, python-format
+msgid "%(initiator)s has <strong>reverted the check-in</strong> of %(user)s."
+msgstr ""
+"%(initiator)s hat den Check-In von %(user)s <strong>rückgängig "
+"gemacht</strong>."
+
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:134
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:281
+#, python-format
+msgid "<strong>Unknown event</strong> \"%(event_type)s\" has occurred."
+msgstr "<strong>Unbekanntes Ereignis</strong> \"%(event_type)s\" ist eingetreten."
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/appoint_user_form.html:6
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:8
@@ -5209,11 +5311,6 @@ msgid ""
 msgstr ""
 "%(initiator)s hat das Badge %(badge_image)s \"%(badge_label)s\" an "
 "\"%(user)s\" <strong>verliehen</strong>."
-
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:281
-#, python-format
-msgid "<strong>Unknown event</strong> \"%(event_type)s\" has occurred."
-msgstr "<strong>Unbekanntes Ereignis</strong> \"%(event_type)s\" ist eingetreten."
 
 #: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:30
 msgid "Manage roles"
