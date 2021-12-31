@@ -13,7 +13,12 @@ from .....services.brand import service as brand_service
 from .....services.shop.catalog import service as catalog_service
 from .....services.shop.order import sequence_service as order_sequence_service
 from .....services.shop.shop import service as shop_service
+from .....services.shop.shop.transfer.models import Shop, ShopID
 from .....services.shop.storefront import service as storefront_service
+from .....services.shop.storefront.transfer.models import (
+    Storefront,
+    StorefrontID,
+)
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
@@ -238,7 +243,7 @@ def update(storefront_id):
     return redirect_to('.view', storefront_id=storefront.id)
 
 
-def _get_shop_or_404(shop_id):
+def _get_shop_or_404(shop_id: ShopID) -> Shop:
     shop = shop_service.find_shop(shop_id)
 
     if shop is None:
@@ -247,7 +252,7 @@ def _get_shop_or_404(shop_id):
     return shop
 
 
-def _get_storefront_or_404(storefront_id):
+def _get_storefront_or_404(storefront_id: StorefrontID) -> Storefront:
     storefront = storefront_service.find_storefront(storefront_id)
 
     if storefront is None:
