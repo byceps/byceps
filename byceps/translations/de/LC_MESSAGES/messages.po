@@ -18,6 +18,19 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.9.1\n"
 
+#: byceps/announce/text_assembly/_helpers.py:18
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:107
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:123
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:71
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:36
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:42
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:50
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:130
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:255
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:273
+msgid "Someone"
+msgstr "Jemand"
+
 #: byceps/announce/text_assembly/auth.py:28
 #, python-format
 msgid "%(screen_name)s has logged in on site \"%(site_title)s\"."
@@ -3775,18 +3788,6 @@ msgid ""
 msgstr ""
 "%(initiator)s hat das <a href=\"%(url)s\">Ticketpaket</a> "
 "<strong>widerrufen</strong>."
-
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:107
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:123
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:71
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:36
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:42
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:50
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:130
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:255
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:273
-msgid "Someone"
-msgstr "Jemand"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:113
 #, python-format

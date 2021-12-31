@@ -10,12 +10,12 @@ from functools import wraps
 from typing import Optional
 
 from flask import current_app
-from flask_babel import force_locale
+from flask_babel import force_locale, gettext
 
 
 def get_screen_name_or_fallback(screen_name: Optional[str]) -> str:
     """Return the screen name or a fallback value."""
-    return screen_name if screen_name else 'Jemand'
+    return screen_name if screen_name else gettext('Someone')
 
 
 def with_locale(handler):
