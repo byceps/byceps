@@ -33,11 +33,9 @@ from .transfer.models import (
 # catalog
 
 
-def create_catalog(
-    catalog_id: CatalogID, shop_id: ShopID, title: str
-) -> Catalog:
+def create_catalog(shop_id: ShopID, title: str) -> Catalog:
     """Create a catalog."""
-    db_catalog = DbCatalog(catalog_id, shop_id, title)
+    db_catalog = DbCatalog(shop_id, title)
 
     db.session.add(db_catalog)
     db.session.commit()

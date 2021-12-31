@@ -15,7 +15,7 @@ from ...article.transfer.models import ArticleNumber
 from ...shop.transfer.models import ShopID
 
 
-CatalogID = NewType('CatalogID', str)
+CatalogID = NewType('CatalogID', UUID)
 
 
 CollectionID = NewType('CollectionID', UUID)
