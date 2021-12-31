@@ -12,6 +12,7 @@ from typing import NewType
 from uuid import UUID
 
 from ...article.transfer.models import ArticleNumber
+from ...shop.transfer.models import ShopID
 
 
 CatalogID = NewType('CatalogID', str)
@@ -26,6 +27,7 @@ CatalogArticleID = NewType('CatalogArticleID', UUID)
 @dataclass(frozen=True)
 class Catalog:
     id: CatalogID
+    shop_id: ShopID
     title: str
 
 

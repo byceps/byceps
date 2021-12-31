@@ -12,6 +12,7 @@ from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
 from ..article.transfer.models import ArticleNumber
+from ..shop.transfer.models import ShopID
 
 from .transfer.models import CatalogID, CollectionID
 
@@ -22,10 +23,14 @@ class Catalog(db.Model):
     __tablename__ = 'shop_catalogs'
 
     id = db.Column(db.UnicodeText, primary_key=True)
+    shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
 
-    def __init__(self, catalog_id: CatalogID, title: str) -> None:
+    def __init__(
+        self, catalog_id: CatalogID, shop_id: ShopID, title: str
+    ) -> None:
         self.id = catalog_id
+        self.shop_id = shop_id
         self.title = title
 
     def __repr__(self) -> str:

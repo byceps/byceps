@@ -12,6 +12,7 @@ from typing import Optional
 from ....database import db
 
 from ..article.transfer.models import ArticleNumber
+from ..shop.transfer.models import ShopID
 
 from .dbmodels import (
     Catalog as DbCatalog,
@@ -30,9 +31,11 @@ from .transfer.models import (
 # catalog
 
 
-def create_catalog(catalog_id: CatalogID, title: str) -> Catalog:
+def create_catalog(
+    catalog_id: CatalogID, shop_id: ShopID, title: str
+) -> Catalog:
     """Create a catalog."""
-    db_catalog = DbCatalog(catalog_id, title)
+    db_catalog = DbCatalog(catalog_id, shop_id, title)
 
     db.session.add(db_catalog)
     db.session.commit()
@@ -67,6 +70,7 @@ def get_all_catalogs() -> list[Catalog]:
 def _db_entity_to_catalog(db_catalog: DbCatalog) -> Catalog:
     return Catalog(
         id=db_catalog.id,
+        shop_id=db_catalog.shop_id,
         title=db_catalog.title,
     )
 
