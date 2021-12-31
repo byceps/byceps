@@ -9,6 +9,8 @@ byceps.services.shop.catalog.service
 from __future__ import annotations
 from typing import Optional
 
+from sqlalchemy import select
+
 from ....database import db
 
 from ..article.transfer.models import ArticleNumber
@@ -60,9 +62,12 @@ def _find_db_catalog(catalog_id: CatalogID) -> Optional[DbCatalog]:
     return db.session.get(DbCatalog, catalog_id)
 
 
-def get_all_catalogs() -> list[Catalog]:
-    """Return all catalogs."""
-    db_catalogs = db.session.query(DbCatalog).all()
+def get_catalogs_for_shop(shop_id: ShopID) -> list[Catalog]:
+    """Return all catalogs for that shop."""
+    db_catalogs = db.session.execute(
+        select(DbCatalog)
+        .filter_by(shop_id=shop_id)
+    ).scalars().all()
 
     return [_db_entity_to_catalog(db_catalog) for db_catalog in db_catalogs]
 
