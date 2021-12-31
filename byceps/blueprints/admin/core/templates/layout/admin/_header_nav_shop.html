@@ -15,6 +15,12 @@
       required_permission='shop.view',
       icon='shop')
     .add_item(
+      url_for('shop_catalog_admin.index_for_shop', shop_id=shop.id),
+      _('Catalogs'),
+      id='shop_catalog_admin',
+      required_permission='shop.view',
+      icon='catalog')
+    .add_item(
       url_for('shop_article_admin.index_for_shop', shop_id=shop.id),
       _('Articles'),
       id='shop_article_admin',

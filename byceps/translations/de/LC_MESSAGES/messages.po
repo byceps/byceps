@@ -815,6 +815,7 @@ msgstr "mehr als"
 #: byceps/blueprints/admin/party/forms.py:55
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:41
 #: byceps/blueprints/admin/seating/templates/admin/seating/seat_group_index.html:17
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/view.html:11
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:16
 #: byceps/blueprints/admin/shop/storefront/forms.py:38
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:36
@@ -853,6 +854,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/party/forms.py:26
 #: byceps/blueprints/admin/seating/forms.py:22
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:30
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/index_for_shop.html:15
 #: byceps/blueprints/admin/site/forms.py:24
 #: byceps/blueprints/admin/snippet/forms.py:26
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_documents.html:18
@@ -1276,7 +1278,7 @@ msgstr "Bearbeiten"
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:37
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_brand.html:44
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:37
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:43
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:49
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:32
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_view.html:5
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_view.html:12
@@ -1538,6 +1540,11 @@ msgid "Storefronts"
 msgstr "Storefronts"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:19
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/index_for_shop.html:3
+msgid "Catalogs"
+msgstr "Kataloge"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:25
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_form.html:7
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_number_sequence_form.html:8
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:82
@@ -1547,7 +1554,7 @@ msgstr "Storefronts"
 msgid "Articles"
 msgstr "Artikel"
 
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:25
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:31
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:6
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:17
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:18
@@ -1558,18 +1565,18 @@ msgstr "Artikel"
 msgid "Orders"
 msgstr "Bestellungen"
 
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:31
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:37
 #: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:3
 msgid "Shipping"
 msgstr "Versand"
 
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:37
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:43
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:6
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:24
 msgid "Email"
 msgstr "E-Mail"
 
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:49
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:55
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:13
 #: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/site_select_form.html:7
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_document_form.html:7
@@ -3517,6 +3524,16 @@ msgstr "Dieser Artikel wurde noch nicht bestellt."
 msgid "unlimited"
 msgstr "unbegrenzt"
 
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/index_for_shop.html:27
+msgid "No catalogs exist."
+msgstr "Es sind keine Kataloge vorhanden."
+
+#: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/view.html:2
+#: byceps/blueprints/admin/shop/storefront/forms.py:17
+#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:29
+msgid "Catalog"
+msgstr "Katalog"
+
 #: byceps/blueprints/admin/shop/email/templates/admin/shop/email/view_for_shop.html:26
 msgid "Examples"
 msgstr "Beispiele"
@@ -3974,11 +3991,6 @@ msgstr "Shop erstellen"
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view_for_brand.html:26
 msgid "Create shop?"
 msgstr "Shop erstellen?"
-
-#: byceps/blueprints/admin/shop/storefront/forms.py:17
-#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:29
-msgid "Catalog"
-msgstr "Katalog"
 
 #: byceps/blueprints/admin/shop/storefront/forms.py:19
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:37

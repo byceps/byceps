@@ -1,0 +1,16 @@
+{% extends 'layout/admin/shop/catalog.html' %}
+{% set page_title = [_('Catalog'), catalog.id] %}
+{% set layout_main_raw = True %}
+
+{% block body %}
+
+  <h1>{{ catalog.title }}</h1>
+
+  <div class="box">
+
+    <div class="data-label">{{ _('ID') }}</div>
+    <div class="data-value">{{ catalog.id }}</div>
+
+  </div>
+
+{%- endblock %}

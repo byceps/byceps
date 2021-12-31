@@ -1,0 +1,31 @@
+{% extends 'layout/admin/shop/catalog.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% set page_title = _('Catalogs') %}
+{% set layout_main_raw = True %}
+
+{% block body %}
+
+  <h1>{{ page_title }} {{ render_extra_in_heading(catalogs|length) }}</h1>
+
+  <div class="box">
+    {%- if catalogs %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>{{ _('Title') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for catalog in catalogs|sort(attribute='id') %}
+        <tr>
+          <td><a href="{{ url_for('.view', catalog_id=catalog.id) }}">{{ catalog.title }}</a></td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No catalogs exist.') }}</div>
+    {%- endif %}
+  </div>
+
+{%- endblock %}
