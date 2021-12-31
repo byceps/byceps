@@ -25,7 +25,7 @@ def count_ordered_articles(
     """Count how often the article has been ordered, grouped by the
     order's payment state.
     """
-    line_items = db.session \
+    db_line_items = db.session \
         .query(DbLineItem) \
         .filter_by(article_number=article_number) \
         .options(
@@ -39,8 +39,8 @@ def count_ordered_articles(
     # article.
     counter = Counter({state: 0 for state in PaymentState})
 
-    for line_item in line_items:
-        counter[line_item.order.payment_state] += line_item.quantity
+    for db_line_item in db_line_items:
+        counter[db_line_item.order.payment_state] += db_line_item.quantity
 
     return dict(counter)
 
@@ -49,9 +49,9 @@ def get_line_items_for_article(
     article_number: ArticleNumber,
 ) -> Sequence[LineItem]:
     """Return all line items for that article."""
-    line_items = db.session \
+    db_line_items = db.session \
         .query(DbLineItem) \
         .filter_by(article_number=article_number) \
         .all()
 
-    return list(map(line_item_to_transfer_object, line_items))
+    return list(map(line_item_to_transfer_object, db_line_items))

@@ -35,7 +35,7 @@ def get_articles_to_ship(shop_id: ShopID) -> Sequence[ArticleToShip]:
         _find_line_items(shop_id, relevant_order_payment_states)
     )
 
-    article_numbers = {item.article_number for item in line_item_quantities}
+    article_numbers = {liq.article_number for liq in line_item_quantities}
     article_descriptions = _get_article_descriptions(article_numbers)
 
     articles_to_ship = list(
@@ -78,13 +78,13 @@ def _find_line_items(
         .filter(DbOrder._payment_state == PaymentState.open.name) \
         .all()
 
-    line_items = definitive_line_items + potential_line_items
+    db_line_items = definitive_line_items + potential_line_items
 
-    for item in line_items:
+    for db_line_item in db_line_items:
         yield LineItemQuantity(
-            item.article_number,
-            item.order.payment_state,
-            item.quantity
+            article_number=db_line_item.article_number,
+            payment_state=db_line_item.order.payment_state,
+            quantity=db_line_item.quantity,
         )
 
 
@@ -95,8 +95,8 @@ def _aggregate_ordered_article_quantites(
     """Aggregate article quantities per payment state."""
     d: defaultdict[ArticleNumber, Counter] = defaultdict(Counter)
 
-    for item in line_item_quantities:
-        d[item.article_number][item.payment_state] += item.quantity
+    for liq in line_item_quantities:
+        d[liq.article_number][liq.payment_state] += liq.quantity
 
     for article_number, counter in d.items():
         description = article_descriptions[article_number]
@@ -104,10 +104,10 @@ def _aggregate_ordered_article_quantites(
         quantity_open = counter[PaymentState.open]
 
         yield ArticleToShip(
-            article_number,
-            description,
-            quantity_paid,
-            quantity_open,
+            article_number=article_number,
+            description=description,
+            quantity_paid=quantity_paid,
+            quantity_open=quantity_open,
             quantity_total=quantity_paid + quantity_open,
         )
 
@@ -119,10 +119,13 @@ def _get_article_descriptions(
     if not article_numbers:
         return {}
 
-    articles = db.session \
+    db_articles = db.session \
         .query(DbArticle) \
         .options(db.load_only('item_number', 'description')) \
         .filter(DbArticle.item_number.in_(article_numbers)) \
         .all()
 
-    return {a.item_number: a.description for a in articles}
+    return {
+        db_article.item_number: db_article.description
+        for db_article in db_articles
+    }

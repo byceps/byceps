@@ -22,12 +22,12 @@ class UnknownShopId(ValueError):
 
 def create_shop(shop_id: ShopID, brand_id: BrandID, title: str) -> Shop:
     """Create a shop."""
-    shop = DbShop(shop_id, brand_id, title)
+    db_shop = DbShop(shop_id, brand_id, title)
 
-    db.session.add(shop)
+    db.session.add(db_shop)
     db.session.commit()
 
-    return _db_entity_to_shop(shop)
+    return _db_entity_to_shop(db_shop)
 
 
 def delete_shop(shop_id: ShopID) -> None:
@@ -41,25 +41,25 @@ def delete_shop(shop_id: ShopID) -> None:
 
 def find_shop_for_brand(brand_id: BrandID) -> Optional[Shop]:
     """Return the shop for that brand, or `None` if not found."""
-    shop = db.session \
+    db_shop = db.session \
         .query(DbShop) \
         .filter_by(brand_id=brand_id) \
         .one_or_none()
 
-    if shop is None:
+    if db_shop is None:
         return None
 
-    return _db_entity_to_shop(shop)
+    return _db_entity_to_shop(db_shop)
 
 
 def find_shop(shop_id: ShopID) -> Optional[Shop]:
     """Return the shop with that id, or `None` if not found."""
-    shop = _find_db_shop(shop_id)
+    db_shop = _find_db_shop(shop_id)
 
-    if shop is None:
+    if db_shop is None:
         return None
 
-    return _db_entity_to_shop(shop)
+    return _db_entity_to_shop(db_shop)
 
 
 def _find_db_shop(shop_id: ShopID) -> Optional[DbShop]:
@@ -84,12 +84,12 @@ def _get_db_shop(shop_id: ShopID) -> DbShop:
 
     Raise an exception if not found.
     """
-    shop = _find_db_shop(shop_id)
+    db_shop = _find_db_shop(shop_id)
 
-    if shop is None:
+    if db_shop is None:
         raise UnknownShopId(shop_id)
 
-    return shop
+    return db_shop
 
 
 def find_shops(shop_ids: set[ShopID]) -> list[Shop]:
@@ -97,55 +97,57 @@ def find_shops(shop_ids: set[ShopID]) -> list[Shop]:
     if not shop_ids:
         return []
 
-    shops = db.session \
+    db_shops = db.session \
         .query(DbShop) \
         .filter(DbShop.id.in_(shop_ids)) \
         .all()
 
-    return [_db_entity_to_shop(shop) for shop in shops]
+    return [_db_entity_to_shop(db_shop) for db_shop in db_shops]
 
 
 def get_active_shops() -> list[Shop]:
     """Return all shops that are not archived."""
-    shops = db.session \
+    db_shops = db.session \
         .query(DbShop) \
         .filter_by(archived=False) \
         .all()
 
-    return [_db_entity_to_shop(shop) for shop in shops]
+    return [_db_entity_to_shop(db_shop) for db_shop in db_shops]
 
 
 def set_extra_setting(shop_id: ShopID, key: str, value: str) -> None:
     """Set a value for a key in the shop's extra settings."""
-    shop = _get_db_shop(shop_id)
+    db_shop = _get_db_shop(shop_id)
 
-    if shop.extra_settings is None:
-        shop.extra_settings = {}
+    if db_shop.extra_settings is None:
+        db_shop.extra_settings = {}
 
-    shop.extra_settings[key] = value
+    db_shop.extra_settings[key] = value
 
     db.session.commit()
 
 
 def remove_extra_setting(shop_id: ShopID, key: str) -> None:
     """Remove the entry with that key from the shop's extra settings."""
-    shop = _get_db_shop(shop_id)
+    db_shop = _get_db_shop(shop_id)
 
-    if (shop.extra_settings is None) or (key not in shop.extra_settings):
+    if (db_shop.extra_settings is None) or (key not in db_shop.extra_settings):
         return
 
-    del shop.extra_settings[key]
+    del db_shop.extra_settings[key]
 
     db.session.commit()
 
 
-def _db_entity_to_shop(shop: DbShop) -> Shop:
-    settings = shop.extra_settings if (shop.extra_settings is not None) else {}
+def _db_entity_to_shop(db_shop: DbShop) -> Shop:
+    settings = (
+        db_shop.extra_settings if (db_shop.extra_settings is not None) else {}
+    )
 
     return Shop(
-        shop.id,
-        shop.brand_id,
-        shop.title,
-        shop.archived,
-        settings,
+        id=db_shop.id,
+        brand_id=db_shop.brand_id,
+        title=db_shop.title,
+        archived=db_shop.archived,
+        extra_settings=settings,
     )

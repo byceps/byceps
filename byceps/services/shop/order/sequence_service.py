@@ -30,9 +30,9 @@ def create_order_number_sequence(
     shop_id: ShopID, prefix: str, *, value: Optional[int] = None
 ) -> OrderNumberSequence:
     """Create an order number sequence."""
-    sequence = DbOrderNumberSequence(shop_id, prefix, value=value)
+    db_sequence = DbOrderNumberSequence(shop_id, prefix, value=value)
 
-    db.session.add(sequence)
+    db.session.add(db_sequence)
 
     try:
         db.session.commit()
@@ -42,7 +42,7 @@ def create_order_number_sequence(
             f'Could not create order number sequence with prefix "{prefix}"'
         ) from exc
 
-    return _db_entity_to_order_number_sequence(sequence)
+    return _db_entity_to_order_number_sequence(db_sequence)
 
 
 def delete_order_number_sequence(sequence_id: OrderNumberSequenceID) -> None:
@@ -58,28 +58,29 @@ def get_order_number_sequence(
     sequence_id: OrderNumberSequenceID,
 ) -> OrderNumberSequence:
     """Return the order number sequence, or raise an exception."""
-    sequence = db.session \
+    db_sequence = db.session \
         .query(DbOrderNumberSequence) \
         .filter_by(id=sequence_id) \
         .one_or_none()
 
-    if sequence is None:
+    if db_sequence is None:
         raise ValueError(f'Unknown order number sequence ID "{sequence_id}"')
 
-    return _db_entity_to_order_number_sequence(sequence)
+    return _db_entity_to_order_number_sequence(db_sequence)
 
 
 def get_order_number_sequences_for_shop(
     shop_id: ShopID,
 ) -> list[OrderNumberSequence]:
     """Return the order number sequences defined for that shop."""
-    sequences = db.session \
+    db_sequences = db.session \
         .query(DbOrderNumberSequence) \
         .filter_by(shop_id=shop_id) \
         .all()
 
     return [
-        _db_entity_to_order_number_sequence(sequence) for sequence in sequences
+        _db_entity_to_order_number_sequence(db_sequence)
+        for db_sequence in db_sequences
     ]
 
 
@@ -96,29 +97,29 @@ def generate_order_number(sequence_id: OrderNumberSequenceID) -> OrderNumber:
     """Generate and reserve an unused, unique order number from this
     sequence.
     """
-    sequence = db.session \
+    db_sequence = db.session \
         .query(DbOrderNumberSequence) \
         .filter_by(id=sequence_id) \
         .with_for_update() \
         .one_or_none()
 
-    if sequence is None:
+    if db_sequence is None:
         raise OrderNumberGenerationFailed(
             f'No order number sequence found for ID "{sequence_id}".'
         )
 
-    sequence.value = DbOrderNumberSequence.value + 1
+    db_sequence.value = DbOrderNumberSequence.value + 1
     db.session.commit()
 
-    return OrderNumber(f'{sequence.prefix}{sequence.value:05d}')
+    return OrderNumber(f'{db_sequence.prefix}{db_sequence.value:05d}')
 
 
 def _db_entity_to_order_number_sequence(
-    sequence: DbOrderNumberSequence,
+    db_sequence: DbOrderNumberSequence,
 ) -> OrderNumberSequence:
     return OrderNumberSequence(
-        id=sequence.id,
-        shop_id=sequence.shop_id,
-        prefix=sequence.prefix,
-        value=sequence.value,
+        id=db_sequence.id,
+        shop_id=db_sequence.shop_id,
+        prefix=db_sequence.prefix,
+        value=db_sequence.value,
     )

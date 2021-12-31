@@ -51,7 +51,7 @@ def create_article(
     type_params: Optional[dict[str, str]] = None,
 ) -> Article:
     """Create an article."""
-    article = DbArticle(
+    db_article = DbArticle(
         shop_id,
         item_number,
         type_,
@@ -64,10 +64,10 @@ def create_article(
         type_params=type_params,
     )
 
-    db.session.add(article)
+    db.session.add(db_article)
     db.session.commit()
 
-    return _db_entity_to_article(article)
+    return _db_entity_to_article(db_article)
 
 
 def update_article(
@@ -83,21 +83,21 @@ def update_article(
     separate_order_required: bool,
 ) -> Article:
     """Update the article."""
-    article = _get_db_article(article_id)
+    db_article = _get_db_article(article_id)
 
-    article.description = description
-    article.price = price
-    article.tax_rate = tax_rate
-    article.available_from = available_from
-    article.available_until = available_until
-    article.total_quantity = total_quantity
-    article.max_quantity_per_order = max_quantity_per_order
-    article.not_directly_orderable = not_directly_orderable
-    article.separate_order_required = separate_order_required
+    db_article.description = description
+    db_article.price = price
+    db_article.tax_rate = tax_rate
+    db_article.available_from = available_from
+    db_article.available_until = available_until
+    db_article.total_quantity = total_quantity
+    db_article.max_quantity_per_order = max_quantity_per_order
+    db_article.not_directly_orderable = not_directly_orderable
+    db_article.separate_order_required = separate_order_required
 
     db.session.commit()
 
-    return _db_entity_to_article(article)
+    return _db_entity_to_article(db_article)
 
 
 def attach_article(
@@ -106,11 +106,11 @@ def attach_article(
     article_number_to_attach_to: ArticleNumber,
 ) -> None:
     """Attach an article to another article."""
-    attached_article = DbAttachedArticle(
+    db_attached_article = DbAttachedArticle(
         article_number_to_attach, quantity, article_number_to_attach_to
     )
 
-    db.session.add(attached_article)
+    db.session.add(db_attached_article)
     db.session.commit()
 
 
@@ -158,12 +158,12 @@ def delete_article(article_id: ArticleID) -> None:
 
 def find_article(article_id: ArticleID) -> Optional[Article]:
     """Return the article with that ID, or `None` if not found."""
-    article = find_db_article(article_id)
+    db_article = find_db_article(article_id)
 
-    if article is None:
+    if db_article is None:
         return None
 
-    return _db_entity_to_article(article)
+    return _db_entity_to_article(db_article)
 
 
 def get_article(article_id: ArticleID) -> Article:
@@ -191,12 +191,12 @@ def _get_db_article(article_id: ArticleID) -> DbArticle:
 
     Raise an exception if not found.
     """
-    article = find_db_article(article_id)
+    db_article = find_db_article(article_id)
 
-    if article is None:
+    if db_article is None:
         raise UnknownArticleId(article_id)
 
-    return article
+    return db_article
 
 
 def find_article_with_details(article_id: ArticleID) -> Optional[DbArticle]:
@@ -225,23 +225,23 @@ def get_articles_by_numbers(
     if not article_numbers:
         return set()
 
-    rows = db.session \
+    db_articles = db.session \
         .query(DbArticle) \
         .filter(DbArticle.item_number.in_(article_numbers)) \
         .all()
 
-    return {_db_entity_to_article(row) for row in rows}
+    return {_db_entity_to_article(db_article) for db_article in db_articles}
 
 
 def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
     """Return all articles for that shop, ordered by article number."""
-    rows = db.session \
+    db_articles = db.session \
         .query(DbArticle) \
         .filter_by(shop_id=shop_id) \
         .order_by(DbArticle.item_number) \
         .all()
 
-    return [_db_entity_to_article(row) for row in rows]
+    return [_db_entity_to_article(db_article) for db_article in db_articles]
 
 
 def get_articles_for_shop_paginated(
@@ -272,7 +272,7 @@ def get_article_compilation_for_orderable_articles(
     """
     now = datetime.utcnow()
 
-    orderable_articles = (db.session
+    db_orderable_articles = (db.session
         .query(DbArticle)
         .filter_by(shop_id=shop_id)
         .filter_by(not_directly_orderable=False)
@@ -294,12 +294,12 @@ def get_article_compilation_for_orderable_articles(
 
     compilation = ArticleCompilation()
 
-    for article in orderable_articles:
+    for db_article in db_orderable_articles:
         compilation.append(
-            ArticleCompilationItem(_db_entity_to_article(article))
+            ArticleCompilationItem(_db_entity_to_article(db_article))
         )
 
-        _add_attached_articles(compilation, article.attached_articles)
+        _add_attached_articles(compilation, db_article.attached_articles)
 
     return compilation
 
@@ -310,17 +310,17 @@ def get_article_compilation_for_single_article(
     """Return a compilation built from just the given article plus the
     articles attached to it (if any).
     """
-    article = _get_db_article(article_id)
+    db_article = _get_db_article(article_id)
 
     compilation = ArticleCompilation()
 
     compilation.append(
         ArticleCompilationItem(
-            _db_entity_to_article(article), fixed_quantity=fixed_quantity
+            _db_entity_to_article(db_article), fixed_quantity=fixed_quantity
         )
     )
 
-    _add_attached_articles(compilation, article.attached_articles)
+    _add_attached_articles(compilation, db_article.attached_articles)
 
     return compilation
 
@@ -341,24 +341,26 @@ def _add_attached_articles(
 
 def get_attachable_articles(article_id: ArticleID) -> set[Article]:
     """Return the articles that can be attached to that article."""
-    article = _get_db_article(article_id)
+    db_article = _get_db_article(article_id)
 
-    attached_articles = {
-        attached.article for attached in article.attached_articles
+    db_attached_articles = {
+        db_attached.article for db_attached in db_article.attached_articles
     }
 
-    unattachable_articles = {article}.union(attached_articles)
+    db_unattachable_articles = {db_article}.union(db_attached_articles)
 
-    unattachable_article_ids = {article.id for article in unattachable_articles}
+    unattachable_article_ids = {
+        db_article.id for db_article in db_unattachable_articles
+    }
 
-    rows = db.session \
+    db_articles = db.session \
         .query(DbArticle) \
-        .filter_by(shop_id=article.shop_id) \
+        .filter_by(shop_id=db_article.shop_id) \
         .filter(db.not_(DbArticle.id.in_(unattachable_article_ids))) \
         .order_by(DbArticle.item_number) \
         .all()
 
-    return {_db_entity_to_article(row) for row in rows}
+    return {_db_entity_to_article(db_article) for db_article in db_articles}
 
 
 def is_article_available_now(article: Article) -> bool:
@@ -433,22 +435,22 @@ def sum_ordered_articles_by_payment_state(
     return list(generate())
 
 
-def _db_entity_to_article(article: DbArticle) -> Article:
+def _db_entity_to_article(db_article: DbArticle) -> Article:
     return Article(
-        id=article.id,
-        shop_id=article.shop_id,
-        item_number=article.item_number,
-        type_=article.type_,
-        type_params=article.type_params,
-        description=article.description,
-        price=article.price,
-        tax_rate=article.tax_rate,
-        available_from=article.available_from,
-        available_until=article.available_until,
-        total_quantity=article.total_quantity,
-        quantity=article.quantity,
-        max_quantity_per_order=article.max_quantity_per_order,
-        not_directly_orderable=article.not_directly_orderable,
-        separate_order_required=article.separate_order_required,
-        processing_required=article.processing_required,
+        id=db_article.id,
+        shop_id=db_article.shop_id,
+        item_number=db_article.item_number,
+        type_=db_article.type_,
+        type_params=db_article.type_params,
+        description=db_article.description,
+        price=db_article.price,
+        tax_rate=db_article.tax_rate,
+        available_from=db_article.available_from,
+        available_until=db_article.available_until,
+        total_quantity=db_article.total_quantity,
+        quantity=db_article.quantity,
+        max_quantity_per_order=db_article.max_quantity_per_order,
+        not_directly_orderable=db_article.not_directly_orderable,
+        separate_order_required=db_article.separate_order_required,
+        processing_required=db_article.processing_required,
     )

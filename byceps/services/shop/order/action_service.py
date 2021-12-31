@@ -50,11 +50,11 @@ def create_action(
     parameters: ActionParameters,
 ) -> None:
     """Create an order action."""
-    action = DbOrderAction(
+    db_action = DbOrderAction(
         article_number, payment_state, procedure_name, parameters
     )
 
-    db.session.add(action)
+    db.session.add(db_action)
     db.session.commit()
 
 
@@ -78,12 +78,12 @@ def delete_actions_for_article(article_number: ArticleNumber) -> None:
 
 def find_action(action_id: UUID) -> Optional[Action]:
     """Return the action with that ID, if found."""
-    action = db.session.get(DbOrderAction, action_id)
+    db_action = db.session.get(DbOrderAction, action_id)
 
-    if action is None:
+    if db_action is None:
         return None
 
-    return _db_entity_to_action(action)
+    return _db_entity_to_action(db_action)
 
 
 # -------------------------------------------------------------------- #
@@ -92,21 +92,21 @@ def find_action(action_id: UUID) -> Optional[Action]:
 
 def get_actions_for_article(article_number: ArticleNumber) -> list[Action]:
     """Return the order actions defined for that article."""
-    actions = db.session \
+    db_actions = db.session \
         .query(DbOrderAction) \
         .filter_by(article_number=article_number) \
         .all()
 
-    return [_db_entity_to_action(action) for action in actions]
+    return [_db_entity_to_action(db_action) for db_action in db_actions]
 
 
-def _db_entity_to_action(action: DbOrderAction) -> Action:
+def _db_entity_to_action(db_action: DbOrderAction) -> Action:
     return Action(
-        id=action.id,
-        article_number=action.article_number,
-        payment_state=action.payment_state,
-        procedure_name=action.procedure,
-        parameters=action.parameters,
+        id=db_action.id,
+        article_number=db_action.article_number,
+        payment_state=db_action.payment_state,
+        procedure_name=db_action.procedure,
+        parameters=db_action.parameters,
     )
 
 
@@ -142,13 +142,13 @@ def _get_actions(
     article_numbers: set[ArticleNumber], payment_state: PaymentState
 ) -> Sequence[Action]:
     """Return the order actions for those article numbers."""
-    actions = db.session \
+    db_actions = db.session \
         .query(DbOrderAction) \
         .filter(DbOrderAction.article_number.in_(article_numbers)) \
         .filter_by(_payment_state=payment_state.name) \
         .all()
 
-    return [_db_entity_to_action(action) for action in actions]
+    return [_db_entity_to_action(db_action) for db_action in db_actions]
 
 
 def _execute_procedure(

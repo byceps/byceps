@@ -31,9 +31,11 @@ def create_entry(
     occurred_at: Optional[datetime] = None,
 ) -> None:
     """Create an order log entry."""
-    entry = build_log_entry(event_type, order_id, data, occurred_at=occurred_at)
+    db_entry = build_log_entry(
+        event_type, order_id, data, occurred_at=occurred_at
+    )
 
-    db.session.add(entry)
+    db.session.add(db_entry)
     db.session.commit()
 
 
@@ -41,9 +43,9 @@ def create_entries(
     event_type: str, order_id: OrderID, datas: Sequence[OrderLogEntryData]
 ) -> None:
     """Create a sequence of order log entries."""
-    entries = [build_log_entry(event_type, order_id, data) for data in datas]
+    db_entries = [build_log_entry(event_type, order_id, data) for data in datas]
 
-    db.session.add_all(entries)
+    db.session.add_all(db_entries)
     db.session.commit()
 
 

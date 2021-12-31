@@ -32,7 +32,7 @@ def create_storefront(
     catalog_id: Optional[CatalogID] = None,
 ) -> Storefront:
     """Create a storefront."""
-    storefront = DbStorefront(
+    db_storefront = DbStorefront(
         storefront_id,
         shop_id,
         order_number_sequence_id,
@@ -40,10 +40,10 @@ def create_storefront(
         catalog_id=catalog_id,
     )
 
-    db.session.add(storefront)
+    db.session.add(db_storefront)
     db.session.commit()
 
-    return _db_entity_to_storefront(storefront)
+    return _db_entity_to_storefront(db_storefront)
 
 
 def update_storefront(
@@ -53,15 +53,15 @@ def update_storefront(
     closed: bool,
 ) -> Storefront:
     """Update a storefront."""
-    storefront = _get_db_storefront(storefront_id)
+    db_storefront = _get_db_storefront(storefront_id)
 
-    storefront.catalog_id = catalog_id
-    storefront.order_number_sequence_id = order_number_sequence_id
-    storefront.closed = closed
+    db_storefront.catalog_id = catalog_id
+    db_storefront.order_number_sequence_id = order_number_sequence_id
+    db_storefront.closed = closed
 
     db.session.commit()
 
-    return _db_entity_to_storefront(storefront)
+    return _db_entity_to_storefront(db_storefront)
 
 
 def delete_storefront(storefront_id: StorefrontID) -> None:
@@ -75,12 +75,12 @@ def delete_storefront(storefront_id: StorefrontID) -> None:
 
 def find_storefront(storefront_id: StorefrontID) -> Optional[Storefront]:
     """Return the storefront with that id, or `None` if not found."""
-    storefront = _find_db_storefront(storefront_id)
+    db_storefront = _find_db_storefront(storefront_id)
 
-    if storefront is None:
+    if db_storefront is None:
         return None
 
-    return _db_entity_to_storefront(storefront)
+    return _db_entity_to_storefront(db_storefront)
 
 
 def _find_db_storefront(storefront_id: StorefrontID) -> Optional[DbStorefront]:
@@ -105,12 +105,12 @@ def _get_db_storefront(storefront_id: StorefrontID) -> DbStorefront:
 
     Raise an exception if not found.
     """
-    storefront = _find_db_storefront(storefront_id)
+    db_storefront = _find_db_storefront(storefront_id)
 
-    if storefront is None:
+    if db_storefront is None:
         raise UnknownStorefrontId(storefront_id)
 
-    return storefront
+    return db_storefront
 
 
 def find_storefronts(storefront_ids: set[StorefrontID]) -> list[Storefront]:
@@ -118,19 +118,25 @@ def find_storefronts(storefront_ids: set[StorefrontID]) -> list[Storefront]:
     if not storefront_ids:
         return []
 
-    storefronts = db.session \
+    db_storefronts = db.session \
         .query(DbStorefront) \
         .filter(DbStorefront.id.in_(storefront_ids)) \
         .all()
 
-    return [_db_entity_to_storefront(storefront) for storefront in storefronts]
+    return [
+        _db_entity_to_storefront(db_storefront)
+        for db_storefront in db_storefronts
+    ]
 
 
 def get_all_storefronts() -> list[Storefront]:
     """Return all storefronts."""
-    storefronts = db.session.query(DbStorefront).all()
+    db_storefronts = db.session.query(DbStorefront).all()
 
-    return [_db_entity_to_storefront(storefront) for storefront in storefronts]
+    return [
+        _db_entity_to_storefront(db_storefront)
+        for db_storefront in db_storefronts
+    ]
 
 
 def get_storefronts_for_shop(shop_id: ShopID) -> set[Storefront]:
@@ -143,11 +149,11 @@ def get_storefronts_for_shop(shop_id: ShopID) -> set[Storefront]:
     return {_db_entity_to_storefront(row) for row in rows}
 
 
-def _db_entity_to_storefront(storefront: DbStorefront) -> Storefront:
+def _db_entity_to_storefront(db_storefront: DbStorefront) -> Storefront:
     return Storefront(
-        storefront.id,
-        storefront.shop_id,
-        storefront.catalog_id,
-        storefront.order_number_sequence_id,
-        storefront.closed,
+        id=db_storefront.id,
+        shop_id=db_storefront.shop_id,
+        catalog_id=db_storefront.catalog_id,
+        order_number_sequence_id=db_storefront.order_number_sequence_id,
+        closed=db_storefront.closed,
     )

@@ -139,7 +139,7 @@ def _build_order(
 
 
 def _build_line_items(
-    cart_items: list[CartItem], order: DbOrder
+    cart_items: list[CartItem], db_order: DbOrder
 ) -> Iterator[DbLineItem]:
     """Build line items from the cart's content."""
     for cart_item in cart_items:
@@ -148,7 +148,7 @@ def _build_line_items(
         line_amount = cart_item.line_amount
 
         yield DbLineItem(
-            order,
+            db_order,
             article.item_number,
             article.type_,
             article.description,
@@ -185,7 +185,7 @@ def add_note(order_id: OrderID, author_id: UserID, text: str) -> None:
 
 def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Record that the invoice for that order has been (externally) created."""
-    order = _get_order_entity(order_id)
+    db_order = _get_order_entity(order_id)
     initiator = user_service.get_user(initiator_id)
 
     now = datetime.utcnow()
@@ -194,17 +194,17 @@ def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
         'initiator_id': str(initiator.id),
     }
 
-    log_entry = DbOrderLogEntry(now, event_type, order.id, data)
+    log_entry = DbOrderLogEntry(now, event_type, db_order.id, data)
     db.session.add(log_entry)
 
-    order.invoice_created_at = now
+    db_order.invoice_created_at = now
 
     db.session.commit()
 
 
 def unset_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Withdraw record of the invoice for that order having been created."""
-    order = _get_order_entity(order_id)
+    db_order = _get_order_entity(order_id)
     initiator = user_service.get_user(initiator_id)
 
     now = datetime.utcnow()
@@ -213,20 +213,20 @@ def unset_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:
         'initiator_id': str(initiator.id),
     }
 
-    log_entry = DbOrderLogEntry(now, event_type, order.id, data)
+    log_entry = DbOrderLogEntry(now, event_type, db_order.id, data)
     db.session.add(log_entry)
 
-    order.invoice_created_at = None
+    db_order.invoice_created_at = None
 
     db.session.commit()
 
 
 def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Mark the order as shipped."""
-    order = _get_order_entity(order_id)
+    db_order = _get_order_entity(order_id)
     initiator = user_service.get_user(initiator_id)
 
-    if not order.processing_required:
+    if not db_order.processing_required:
         raise ValueError('Order contains no items that require shipping.')
 
     now = datetime.utcnow()
@@ -235,20 +235,20 @@ def set_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
         'initiator_id': str(initiator.id),
     }
 
-    log_entry = DbOrderLogEntry(now, event_type, order.id, data)
+    log_entry = DbOrderLogEntry(now, event_type, db_order.id, data)
     db.session.add(log_entry)
 
-    order.processed_at = now
+    db_order.processed_at = now
 
     db.session.commit()
 
 
 def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
     """Mark the order as not shipped."""
-    order = _get_order_entity(order_id)
+    db_order = _get_order_entity(order_id)
     initiator = user_service.get_user(initiator_id)
 
-    if not order.processing_required:
+    if not db_order.processing_required:
         raise ValueError('Order contains no items that require shipping.')
 
     now = datetime.utcnow()
@@ -257,10 +257,10 @@ def unset_shipped_flag(order_id: OrderID, initiator_id: UserID) -> None:
         'initiator_id': str(initiator.id),
     }
 
-    log_entry = DbOrderLogEntry(now, event_type, order.id, data)
+    log_entry = DbOrderLogEntry(now, event_type, db_order.id, data)
     db.session.add(log_entry)
 
-    order.processed_at = None
+    db_order.processed_at = None
 
     db.session.commit()
 
@@ -281,28 +281,28 @@ def cancel_order(
     Reserved quantities of articles from that order are made available
     again.
     """
-    order = _get_order_entity(order_id)
+    db_order = _get_order_entity(order_id)
 
-    if _is_canceled(order):
+    if _is_canceled(db_order):
         raise OrderAlreadyCanceled()
 
     initiator = user_service.get_user(initiator_id)
-    orderer_user = user_service.get_user(order.placed_by_id)
+    orderer_user = user_service.get_user(db_order.placed_by_id)
 
-    has_order_been_paid = _is_paid(order)
+    has_order_been_paid = _is_paid(db_order)
 
     now = datetime.utcnow()
 
     updated_at = now
-    payment_state_from = order.payment_state
+    payment_state_from = db_order.payment_state
     payment_state_to = (
         PaymentState.canceled_after_paid
         if has_order_been_paid
         else PaymentState.canceled_before_paid
     )
 
-    _update_payment_state(order, payment_state_to, updated_at, initiator.id)
-    order.cancelation_reason = reason
+    _update_payment_state(db_order, payment_state_to, updated_at, initiator.id)
+    db_order.cancelation_reason = reason
 
     event_type = (
         'order-canceled-after-paid'
@@ -315,27 +315,27 @@ def cancel_order(
         'reason': reason,
     }
 
-    log_entry = DbOrderLogEntry(now, event_type, order.id, data)
+    log_entry = DbOrderLogEntry(now, event_type, db_order.id, data)
     db.session.add(log_entry)
 
     # Make the reserved quantity of articles available again.
-    for line_item in order.line_items:
+    for db_line_item in db_order.line_items:
         article_service.increase_quantity(
-            line_item.article.id, line_item.quantity, commit=False
+            db_line_item.article.id, db_line_item.quantity, commit=False
         )
 
     db.session.commit()
 
     action_service.execute_actions(
-        _order_to_transfer_object(order), payment_state_to, initiator.id
+        _order_to_transfer_object(db_order), payment_state_to, initiator.id
     )
 
     return ShopOrderCanceled(
         occurred_at=updated_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        order_id=order.id,
-        order_number=order.order_number,
+        order_id=db_order.id,
+        order_number=db_order.order_number,
         orderer_id=orderer_user.id,
         orderer_screen_name=orderer_user.screen_name,
     )
@@ -349,22 +349,22 @@ def mark_order_as_paid(
     additional_log_entry_data: Optional[Mapping[str, str]] = None,
 ) -> ShopOrderPaid:
     """Mark the order as paid."""
-    order = _get_order_entity(order_id)
+    db_order = _get_order_entity(order_id)
 
-    if _is_paid(order):
+    if _is_paid(db_order):
         raise OrderAlreadyMarkedAsPaid()
 
     initiator = user_service.get_user(initiator_id)
-    orderer_user = user_service.get_user(order.placed_by_id)
+    orderer_user = user_service.get_user(db_order.placed_by_id)
 
     now = datetime.utcnow()
 
     updated_at = now
-    payment_state_from = order.payment_state
+    payment_state_from = db_order.payment_state
     payment_state_to = PaymentState.paid
 
-    order.payment_method = payment_method
-    _update_payment_state(order, payment_state_to, updated_at, initiator.id)
+    db_order.payment_method = payment_method
+    _update_payment_state(db_order, payment_state_to, updated_at, initiator.id)
 
     event_type = 'order-paid'
     # Add required, internally set properties after given additional
@@ -380,21 +380,21 @@ def mark_order_as_paid(
         }
     )
 
-    log_entry = DbOrderLogEntry(now, event_type, order.id, log_entry_data)
+    log_entry = DbOrderLogEntry(now, event_type, db_order.id, log_entry_data)
     db.session.add(log_entry)
 
     db.session.commit()
 
     action_service.execute_actions(
-        _order_to_transfer_object(order), payment_state_to, initiator.id
+        _order_to_transfer_object(db_order), payment_state_to, initiator.id
     )
 
     return ShopOrderPaid(
         occurred_at=updated_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        order_id=order.id,
-        order_number=order.order_number,
+        order_id=db_order.id,
+        order_number=db_order.order_number,
         orderer_id=orderer_user.id,
         orderer_screen_name=orderer_user.screen_name,
         payment_method=payment_method,
@@ -402,14 +402,14 @@ def mark_order_as_paid(
 
 
 def _update_payment_state(
-    order: DbOrder,
+    db_order: DbOrder,
     state: PaymentState,
     updated_at: datetime,
     initiator_id: UserID,
 ) -> None:
-    order.payment_state = state
-    order.payment_state_updated_at = updated_at
-    order.payment_state_updated_by_id = initiator_id
+    db_order.payment_state = state
+    db_order.payment_state_updated_at = updated_at
+    db_order.payment_state_updated_by_id = initiator_id
 
 
 def delete_order(order_id: OrderID) -> None:
@@ -471,55 +471,55 @@ def _get_order_entity(order_id: OrderID) -> DbOrder:
     """Return the order database entity with that id, or raise an
     exception.
     """
-    order = _find_order_entity(order_id)
+    db_order = _find_order_entity(order_id)
 
-    if order is None:
+    if db_order is None:
         raise ValueError(f'Unknown order ID "{order_id}"')
 
-    return order
+    return db_order
 
 
 def find_order(order_id: OrderID) -> Optional[Order]:
     """Return the order with that id, or `None` if not found."""
-    order = _find_order_entity(order_id)
+    db_order = _find_order_entity(order_id)
 
-    if order is None:
+    if db_order is None:
         return None
 
-    return _order_to_transfer_object(order)
+    return _order_to_transfer_object(db_order)
 
 
 def get_order(order_id: OrderID) -> Order:
     """Return the order with that id, or raise an exception."""
-    order = _get_order_entity(order_id)
-    return _order_to_transfer_object(order)
+    db_order = _get_order_entity(order_id)
+    return _order_to_transfer_object(db_order)
 
 
 def find_order_with_details(order_id: OrderID) -> Optional[Order]:
     """Return the order with that id, or `None` if not found."""
-    order = db.session.query(DbOrder) \
+    db_order = db.session.query(DbOrder) \
         .options(
             db.joinedload(DbOrder.line_items),
         ) \
         .get(order_id)
 
-    if order is None:
+    if db_order is None:
         return None
 
-    return _order_to_transfer_object(order)
+    return _order_to_transfer_object(db_order)
 
 
 def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
     """Return the order with that order number, or `None` if not found."""
-    order = db.session \
+    db_order = db.session \
         .query(DbOrder) \
         .filter_by(order_number=order_number) \
         .one_or_none()
 
-    if order is None:
+    if db_order is None:
         return None
 
-    return _order_to_transfer_object(order)
+    return _order_to_transfer_object(db_order)
 
 
 def get_orders_for_order_numbers(
@@ -529,12 +529,12 @@ def get_orders_for_order_numbers(
     if not order_numbers:
         return []
 
-    orders = db.session \
+    db_orders = db.session \
         .query(DbOrder) \
         .filter(DbOrder.order_number.in_(order_numbers)) \
         .all()
 
-    return list(map(_order_to_transfer_object, orders))
+    return list(map(_order_to_transfer_object, db_orders))
 
 
 def get_order_ids_for_order_numbers(
@@ -638,7 +638,7 @@ def get_orders_for_shop_paginated(
 
 def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
     """Return orders placed by the user."""
-    orders = db.session \
+    db_orders = db.session \
         .query(DbOrder) \
         .options(
             db.joinedload(DbOrder.line_items),
@@ -647,14 +647,14 @@ def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
         .order_by(DbOrder.created_at.desc()) \
         .all()
 
-    return list(map(_order_to_transfer_object, orders))
+    return list(map(_order_to_transfer_object, db_orders))
 
 
 def get_orders_placed_by_user_for_storefront(
     user_id: UserID, storefront_id: StorefrontID
 ) -> list[Order]:
     """Return orders placed by the user through that storefront."""
-    orders = db.session \
+    db_orders = db.session \
         .query(DbOrder) \
         .options(
             db.joinedload(DbOrder.line_items),
@@ -664,7 +664,7 @@ def get_orders_placed_by_user_for_storefront(
         .order_by(DbOrder.created_at.desc()) \
         .all()
 
-    return list(map(_order_to_transfer_object, orders))
+    return list(map(_order_to_transfer_object, db_orders))
 
 
 def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
@@ -746,26 +746,26 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
 
 
 def line_item_to_transfer_object(
-    line_item: DbLineItem,
+    db_line_item: DbLineItem,
 ) -> LineItem:
     """Create transfer object from line item database entity."""
     return LineItem(
-        order_number=line_item.order_number,
-        article_number=line_item.article_number,
-        article_type=line_item.article_type,
-        description=line_item.description,
-        unit_price=line_item.unit_price,
-        tax_rate=line_item.tax_rate,
-        quantity=line_item.quantity,
-        line_amount=line_item.line_amount,
+        order_number=db_line_item.order_number,
+        article_number=db_line_item.article_number,
+        article_type=db_line_item.article_type,
+        description=db_line_item.description,
+        unit_price=db_line_item.unit_price,
+        tax_rate=db_line_item.tax_rate,
+        quantity=db_line_item.quantity,
+        line_amount=db_line_item.line_amount,
     )
 
 
-def _get_order_state(order: DbOrder) -> OrderState:
-    is_canceled = _is_canceled(order)
-    is_paid = _is_paid(order)
-    is_processing_required = order.processing_required
-    is_processed = order.processed_at is not None
+def _get_order_state(db_order: DbOrder) -> OrderState:
+    is_canceled = _is_canceled(db_order)
+    is_paid = _is_paid(db_order)
+    is_processing_required = db_order.processing_required
+    is_processed = db_order.processed_at is not None
 
     if is_canceled:
         return OrderState.canceled
@@ -777,12 +777,12 @@ def _get_order_state(order: DbOrder) -> OrderState:
     return OrderState.open
 
 
-def _is_canceled(order: DbOrder) -> bool:
-    return order.payment_state in {
+def _is_canceled(db_order: DbOrder) -> bool:
+    return db_order.payment_state in {
         PaymentState.canceled_before_paid,
         PaymentState.canceled_after_paid,
     }
 
 
-def _is_paid(order: DbOrder) -> bool:
-    return order.payment_state == PaymentState.paid
+def _is_paid(db_order: DbOrder) -> bool:
+    return db_order.payment_state == PaymentState.paid
