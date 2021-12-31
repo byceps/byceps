@@ -115,7 +115,7 @@ def create(shop_id):
 
     form = StorefrontCreateForm(request.form)
 
-    catalogs = catalog_service.catalogs_for_shop(shop.id)
+    catalogs = catalog_service.get_catalogs_for_shop(shop.id)
 
     order_number_sequences = (
         order_sequence_service.get_order_number_sequences_for_shop(shop.id)
@@ -181,7 +181,7 @@ def update_form(storefront_id, erroneous_form=None):
 
     brand = brand_service.get_brand(shop.brand_id)
 
-    catalogs = catalog_service.catalogs_for_shop(shop.id)
+    catalogs = catalog_service.get_catalogs_for_shop(storefront.shop_id)
     order_number_sequences = (
         order_sequence_service.get_order_number_sequences_for_shop(shop.id)
     )
@@ -208,7 +208,7 @@ def update(storefront_id):
     """Update a storefront."""
     storefront = _get_storefront_or_404(storefront_id)
 
-    catalogs = catalog_service.catalogs_for_shop(shop.id)
+    catalogs = catalog_service.get_catalogs_for_shop(storefront.shop_id)
     order_number_sequences = (
         order_sequence_service.get_order_number_sequences_for_shop(
             storefront.shop_id
