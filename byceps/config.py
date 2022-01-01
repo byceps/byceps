@@ -42,14 +42,14 @@ def init_app(app: Flask) -> None:
     app.extensions[EXTENSION_KEY] = {}
 
     app_mode = _determine_app_mode(app)
-    set_extension_value(KEY_APP_MODE, app_mode, app)
+    _set_extension_value(KEY_APP_MODE, app_mode, app)
 
     if app_mode.is_site():
         site_id = _determine_site_id(app)
-        set_extension_value(KEY_SITE_ID, site_id, app)
+        _set_extension_value(KEY_SITE_ID, site_id, app)
 
 
-def get_extension_value(key: str, app: Optional[Flask] = None) -> Any:
+def _get_extension_value(key: str, app: Optional[Flask] = None) -> Any:
     """Return the value for the key in this application's own extension
     namespace.
 
@@ -63,7 +63,7 @@ def get_extension_value(key: str, app: Optional[Flask] = None) -> Any:
     return extension[key]
 
 
-def set_extension_value(key: str, value: Any, app: Flask) -> None:
+def _set_extension_value(key: str, value: Any, app: Flask) -> None:
     """Set/replace the value for the key in this application's own
     extension namespace.
     """
@@ -88,7 +88,7 @@ def _determine_app_mode(app: Flask) -> AppMode:
 
 def get_app_mode(app: Optional[Flask] = None) -> AppMode:
     """Return the mode the site should run in."""
-    return get_extension_value(KEY_APP_MODE, app)
+    return _get_extension_value(KEY_APP_MODE, app)
 
 
 # -------------------------------------------------------------------- #
@@ -105,4 +105,4 @@ def _determine_site_id(app: Flask) -> SiteID:
 
 def get_current_site_id(app: Optional[Flask] = None) -> SiteID:
     """Return the id of the current site."""
-    return get_extension_value(KEY_SITE_ID, app)
+    return _get_extension_value(KEY_SITE_ID, app)
