@@ -100,15 +100,14 @@ def _add_static_file_url_rules(app: Flask) -> None:
 
 def _init_admin_app(app: Flask) -> None:
     """Initialize admin application."""
-    if app.config['RQ_DASHBOARD_ENABLED']:
-        import rq_dashboard
+    import rq_dashboard
 
-        @rq_dashboard.blueprint.before_request
-        def require_permission():
-            if not has_current_user_permission('jobs.view'):
-                abort(403)
+    @rq_dashboard.blueprint.before_request
+    def require_permission():
+        if not has_current_user_permission('jobs.view'):
+            abort(403)
 
-        app.register_blueprint(rq_dashboard.blueprint, url_prefix='/admin/rq')
+    app.register_blueprint(rq_dashboard.blueprint, url_prefix='/admin/rq')
 
 
 def _init_site_app(app: Flask) -> None:
