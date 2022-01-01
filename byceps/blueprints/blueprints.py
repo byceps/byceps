@@ -10,16 +10,16 @@ from typing import Iterator, Optional, Tuple
 
 from flask import Flask
 
-from .. import config
+from ..config import AppMode
 from ..util.framework.blueprint import get_blueprint
 
 
 BlueprintReg = Tuple[Flask, str, Optional[str]]
 
 
-def register_blueprints(app: Flask) -> None:
+def register_blueprints(app: Flask, app_mode: AppMode) -> None:
     """Register blueprints depending on the configuration."""
-    for parent, name, url_prefix in _get_blueprints(app):
+    for parent, name, url_prefix in _get_blueprints(app, app_mode):
         blueprint = get_blueprint(name)
         parent.register_blueprint(blueprint, url_prefix=url_prefix)
 
@@ -27,14 +27,13 @@ def register_blueprints(app: Flask) -> None:
         register_api_blueprints(app)
 
 
-def _get_blueprints(app: Flask) -> Iterator[BlueprintReg]:
+def _get_blueprints(app: Flask, app_mode: AppMode) -> Iterator[BlueprintReg]:
     """Yield blueprints to register on the application."""
     yield from _get_blueprints_common(app)
 
-    current_mode = config.get_app_mode(app)
-    if current_mode.is_site():
+    if app_mode.is_site():
         yield from _get_blueprints_site(app)
-    elif current_mode.is_admin():
+    elif app_mode.is_admin():
         yield from _get_blueprints_admin(app)
 
     yield (app, 'monitoring.healthcheck', '/health')

@@ -67,16 +67,17 @@ def create_app(
 
     email.init_app(app)
 
+    app_mode = config.get_app_mode(app)
+
     load_permissions()
 
-    register_blueprints(app)
+    register_blueprints(app, app_mode)
 
     templatefilters.register(app)
     templatefunctions.register(app)
 
     _add_static_file_url_rules(app)
 
-    app_mode = config.get_app_mode(app)
     if app_mode.is_admin():
         _init_admin_app(app)
     elif app_mode.is_site():
