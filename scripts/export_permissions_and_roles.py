@@ -2,7 +2,7 @@
 
 """Export roles and their assigned permissions as TOML to STDOUT.
 
-:Copyright: 2006-2021 Jochen Kupperschmidt
+:Copyright: 2006-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

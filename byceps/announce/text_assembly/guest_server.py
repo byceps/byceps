@@ -4,7 +4,7 @@ byceps.announce.text_assembly.guest_server
 
 Announce user badge events.
 
-:Copyright: 2006-2021 Jochen Kupperschmidt
+:Copyright: 2006-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

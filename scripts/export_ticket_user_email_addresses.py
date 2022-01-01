@@ -2,7 +2,7 @@
 
 """Export the email addresses of ticket users for a party as CSV.
 
-:Copyright: 2006-2021 Jochen Kupperschmidt
+:Copyright: 2006-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

@@ -8,7 +8,7 @@ terms of service.
 
 Sessions will be recreated on demand after successful login.
 
-:Copyright: 2006-2021 Jochen Kupperschmidt
+:Copyright: 2006-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

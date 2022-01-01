@@ -37,7 +37,7 @@ Other sites using BYCEPS:
 .. _OrgaTalk: https://www.orgatalk.de/
 
 
-:Copyright: 2006-2021 Jochen Kupperschmidt
+:Copyright: 2006-2022 Jochen Kupperschmidt
 :License: Revised BSD (see ``LICENSE`` file for details)
 :Website: https://byceps.nwsnet.de/
 

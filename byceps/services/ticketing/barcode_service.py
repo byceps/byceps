@@ -6,7 +6,7 @@ Render Code 128 (set B) barcodes as SVG images.
 
 This implementation only supports code set B.
 
-:Copyright: 2006-2021 Jochen Kupperschmidt
+:Copyright: 2006-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
