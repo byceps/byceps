@@ -12,7 +12,7 @@ import os
 from pathlib import Path
 from typing import Any, Callable, Optional, Union
 
-from flask import current_app, Flask, g
+from flask import abort, current_app, Flask, g
 from flask_babel import Babel
 import jinja2
 from redis import StrictRedis
@@ -21,7 +21,7 @@ from .blueprints.blueprints import register_blueprints
 from . import config, config_defaults
 from .database import db
 from . import email
-from .util.authorization import load_permissions
+from .util.authorization import has_current_user_permission, load_permissions
 from .util.l10n import get_current_user_locale
 from .util import templatefilters, templatefunctions
 from .util.templating import SiteTemplateOverridesLoader
@@ -101,6 +101,11 @@ def _init_admin_app(app: Flask) -> None:
     """Initialize admin application."""
     if app.config['RQ_DASHBOARD_ENABLED']:
         import rq_dashboard
+
+        @rq_dashboard.blueprint.before_request
+        def require_permission():
+            if not has_current_user_permission('jobs.view'):
+                abort(403)
 
         app.register_blueprint(rq_dashboard.blueprint, url_prefix='/admin/rq')
 
