@@ -21,10 +21,14 @@ KEY_SITE_ID = 'site_id'
 
 class AppMode(Enum):
     admin = object()
+    base = object()
     site = object()
 
     def is_admin(self) -> bool:
         return self == AppMode.admin
+
+    def is_base(self) -> bool:
+        return self == AppMode.base
 
     def is_site(self) -> bool:
         return self == AppMode.site
@@ -74,7 +78,7 @@ def set_extension_value(key: str, value: Any, app: Flask) -> None:
 def _determine_app_mode(app: Flask) -> AppMode:
     value = app.config.get('APP_MODE')
     if value is None:
-        raise ConfigurationError('No app mode configured.')
+        return AppMode.base
 
     try:
         return AppMode[value]

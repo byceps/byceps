@@ -29,20 +29,22 @@ def register_blueprints(app: Flask, app_mode: AppMode) -> None:
 
 def _get_blueprints(app: Flask, app_mode: AppMode) -> Iterator[BlueprintReg]:
     """Yield blueprints to register on the application."""
-    yield from _get_blueprints_common(app)
+    if app_mode.is_admin() or app_mode.is_site():
+        yield from _get_blueprints_common(app)
 
-    if app_mode.is_site():
-        yield from _get_blueprints_site(app)
-    elif app_mode.is_admin():
+    if app_mode.is_admin():
         yield from _get_blueprints_admin(app)
+    elif app_mode.is_site():
+        yield from _get_blueprints_site(app)
 
     yield (app, 'monitoring.healthcheck', '/health')
 
     if app.config['METRICS_ENABLED']:
         yield (app, 'monitoring.metrics', '/metrics')
 
-    if app.config.get('STYLE_GUIDE_ENABLED', False):
-        yield (app, 'common.style_guide', '/style_guide')
+    if app_mode.is_admin() or app_mode.is_site():
+        if app.config.get('STYLE_GUIDE_ENABLED', False):
+            yield (app, 'common.style_guide', '/style_guide')
 
 
 def _get_blueprints_common(app: Flask) -> Iterator[BlueprintReg]:
