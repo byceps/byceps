@@ -1,4 +1,7 @@
-# Exemplary development configuration for the admin application
+# Exemplary development configuration
+
+import os
+
 
 DEBUG = True
 
@@ -9,7 +12,8 @@ SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byce
 
 REDIS_URL = 'redis://127.0.0.1:6379/0'
 
-APP_MODE = 'admin'
+APP_MODE = os.environ.get('APP_MODE')
+SITE_ID = os.environ.get('SITE_ID')
 
 MAIL_TRANSPORT = 'logging'
 

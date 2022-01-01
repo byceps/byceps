@@ -94,12 +94,13 @@ Run the tests:
 Serving
 =======
 
-To spin up a local server (only for development purposes!) on port 5000
-with debugging middleware and in-browser code evaluation:
+To spin up a local server (only for development purposes!) for the
+admin app on port 5000 with debugging middleware and in-browser code
+evaluation:
 
 .. code:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/admin_dev.py FLASK_ENV=development flask run
+    (venv)$ BYCEPS_CONFIG=../config/development.py APP_MODE=admin FLASK_ENV=development flask run
 
 In a production environment, it is recommended to have the application
 served by uWSGI_ or Gunicorn_.
@@ -121,7 +122,7 @@ BYCEPS' functionality as well as the persisted data.
 
 .. code:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/admin_dev.py flask shell
+    (venv)$ BYCEPS_CONFIG=../config/development.py flask shell
 
 Installation of an extra package makes the shell easier to use due to features
 like command history and auto-completion:
