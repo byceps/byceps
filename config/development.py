@@ -5,7 +5,7 @@ import os
 
 DEBUG = True
 
-SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+SECRET_KEY = 'secret-key-for-development'
 SESSION_COOKIE_SECURE = False
 
 SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byceps'

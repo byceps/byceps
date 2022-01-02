@@ -7,11 +7,10 @@ import os
 # handle exceptions rather than Flask.
 PROPAGATE_EXCEPTIONS = False
 
-# TODO: Adjust `SECRET_KEY`!
-# Set a custom secret key for running in production!
+# Set a custom secret key before running in production!
 # To generate one:
-#     $ python -c 'import os; print(os.urandom(24))'
-#SECRET_KEY = b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00'
+#     $ python -c 'import secrets; print(secrets.token_hex())'
+#SECRET_KEY = ''
 
 # TODO: Adjust `SQLALCHEMY_DATABASE_URI`!
 SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://byceps:boioioing@127.0.0.1/byceps'
