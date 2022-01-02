@@ -77,21 +77,14 @@ def get_areas_for_party_paginated(
     """Return the areas for that party."""
     area = db.aliased(DbArea)
 
-    subquery = db.session \
-        .query(
-            db.func.count(DbTicket.id)
-        ) \
+    subquery = select(db.func.count(DbTicket.id)) \
         .filter(DbTicket.revoked == False) \
         .filter(DbTicket.occupied_seat_id != None) \
         .join(DbSeat) \
         .filter(DbSeat.area_id == area.id) \
         .scalar_subquery()
 
-    items_query = db.session \
-        .query(
-            area,
-            subquery
-        ) \
+    items_query = select(area, subquery) \
         .filter(area.party_id == party_id) \
         .group_by(area.id)
 
