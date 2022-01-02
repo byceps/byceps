@@ -45,7 +45,6 @@ from byceps.services.user import command_service as user_command_service
 from byceps.services.user.transfer.models import User
 from byceps.typing import BrandID, PartyID, UserID
 
-from tests.database import set_up_database, tear_down_database
 from tests.helpers import (
     create_admin_app,
     create_party,
@@ -56,6 +55,8 @@ from tests.helpers import (
     generate_token,
     http_client,
 )
+
+from .database import set_up_database, tear_down_database
 
 
 _CONFIG_PATH_DATA_KEY = 'PATH_DATA'
