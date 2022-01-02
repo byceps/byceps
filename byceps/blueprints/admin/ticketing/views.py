@@ -48,7 +48,10 @@ def index_for_party(party_id, page):
     search_term = request.args.get('search_term', default='').strip()
 
     filter_category_id = request.args.get('category')
-    filter_category = category_service.find_category(filter_category_id)
+    if filter_category_id:
+        filter_category = category_service.find_category(filter_category_id)
+    else:
+        filter_category = None
 
     try:
         filter_revoked = FilterMode[request.args.get('revoked')]
