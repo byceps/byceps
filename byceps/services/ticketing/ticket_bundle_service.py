@@ -43,27 +43,27 @@ def create_bundle(
     if ticket_quantity < 1:
         raise ValueError('Ticket quantity must be positive.')
 
-    bundle = DbTicketBundle(
+    db_bundle = DbTicketBundle(
         party_id, category_id, ticket_quantity, owned_by_id, label=label
     )
-    db.session.add(bundle)
+    db.session.add(db_bundle)
 
-    tickets = list(
+    db_tickets = list(
         build_tickets(
             party_id,
             category_id,
             owned_by_id,
             ticket_quantity,
-            bundle=bundle,
+            bundle=db_bundle,
             order_number=order_number,
             used_by_id=used_by_id,
         )
     )
-    db.session.add_all(tickets)
+    db.session.add_all(db_tickets)
 
     db.session.commit()
 
-    return bundle
+    return db_bundle
 
 
 def revoke_bundle(
@@ -73,27 +73,27 @@ def revoke_bundle(
     reason: Optional[str] = None,
 ) -> None:
     """Revoke the tickets included in this bundle."""
-    bundle = find_bundle(bundle_id)
+    db_bundle = find_bundle(bundle_id)
 
-    if bundle is None:
+    if db_bundle is None:
         raise ValueError('Unknown ticket bundle ID.')
 
-    for ticket in bundle.tickets:
-        ticket.revoked = True
+    for db_ticket in db_bundle.tickets:
+        db_ticket.revoked = True
 
-        log_entry = build_ticket_revoked_log_entry(
-            ticket.id, initiator_id, reason
+        db_log_entry = build_ticket_revoked_log_entry(
+            db_ticket.id, initiator_id, reason
         )
-        db.session.add(log_entry)
+        db.session.add(db_log_entry)
 
     db.session.commit()
 
 
 def delete_bundle(bundle_id: TicketBundleID) -> None:
     """Delete a bundle and the tickets assigned to it."""
-    bundle = find_bundle(bundle_id)
+    db_bundle = find_bundle(bundle_id)
 
-    if bundle is None:
+    if db_bundle is None:
         raise ValueError('Unknown ticket bundle ID.')
 
     db.session.query(DbTicket) \

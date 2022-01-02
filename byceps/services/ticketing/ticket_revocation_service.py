@@ -22,16 +22,18 @@ def revoke_ticket(
     ticket_id: TicketID, initiator_id: UserID, *, reason: Optional[str] = None
 ) -> None:
     """Revoke the ticket."""
-    ticket = ticket_service.get_ticket(ticket_id)
+    db_ticket = ticket_service.get_ticket(ticket_id)
 
     # Release seat.
-    if ticket.occupied_seat_id:
-        ticket_seat_management_service.release_seat(ticket.id, initiator_id)
+    if db_ticket.occupied_seat_id:
+        ticket_seat_management_service.release_seat(db_ticket.id, initiator_id)
 
-    ticket.revoked = True
+    db_ticket.revoked = True
 
-    log_entry = build_ticket_revoked_log_entry(ticket.id, initiator_id, reason)
-    db.session.add(log_entry)
+    db_log_entry = build_ticket_revoked_log_entry(
+        db_ticket.id, initiator_id, reason
+    )
+    db.session.add(db_log_entry)
 
     db.session.commit()
 
@@ -43,20 +45,22 @@ def revoke_tickets(
     reason: Optional[str] = None,
 ) -> None:
     """Revoke the tickets."""
-    tickets = ticket_service.find_tickets(ticket_ids)
+    db_tickets = ticket_service.find_tickets(ticket_ids)
 
     # Release seats.
-    for ticket in tickets:
-        if ticket.occupied_seat_id:
-            ticket_seat_management_service.release_seat(ticket.id, initiator_id)
+    for db_ticket in db_tickets:
+        if db_ticket.occupied_seat_id:
+            ticket_seat_management_service.release_seat(
+                db_ticket.id, initiator_id
+            )
 
-    for ticket in tickets:
-        ticket.revoked = True
+    for db_ticket in db_tickets:
+        db_ticket.revoked = True
 
-        log_entry = build_ticket_revoked_log_entry(
-            ticket.id, initiator_id, reason
+        db_log_entry = build_ticket_revoked_log_entry(
+            db_ticket.id, initiator_id, reason
         )
-        db.session.add(log_entry)
+        db.session.add(db_log_entry)
 
     db.session.commit()
 

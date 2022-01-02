@@ -42,7 +42,8 @@ def create_ticket(
 ) -> DbTicket:
     """Create a single ticket."""
     quantity = 1
-    tickets = create_tickets(
+
+    db_tickets = create_tickets(
         party_id,
         category_id,
         owned_by_id,
@@ -50,7 +51,8 @@ def create_ticket(
         order_number=order_number,
         used_by_id=used_by_id,
     )
-    return tickets[0]
+
+    return db_tickets[0]
 
 
 @retry(
@@ -68,7 +70,7 @@ def create_tickets(
     used_by_id: Optional[UserID] = None,
 ) -> Sequence[DbTicket]:
     """Create a number of tickets of the same category for a single owner."""
-    tickets = list(
+    db_tickets = list(
         build_tickets(
             party_id,
             category_id,
@@ -79,7 +81,7 @@ def create_tickets(
         )
     )
 
-    db.session.add_all(tickets)
+    db.session.add_all(db_tickets)
 
     try:
         db.session.commit()
@@ -87,7 +89,7 @@ def create_tickets(
         db.session.rollback()
         raise TicketCreationFailedWithConflict(e)
 
-    return tickets
+    return db_tickets
 
 
 def build_tickets(

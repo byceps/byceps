@@ -32,58 +32,58 @@ def check_in_user(
     party_id: PartyID, ticket_id: TicketID, initiator_id: UserID
 ) -> TicketCheckedIn:
     """Record that the ticket was used to check in its user."""
-    ticket = _get_ticket_for_checkin(party_id, ticket_id)
+    db_ticket = _get_ticket_for_checkin(party_id, ticket_id)
 
     initiator = user_service.get_user(initiator_id)
 
-    user = _get_user_for_checkin(ticket.used_by_id)
+    user = _get_user_for_checkin(db_ticket.used_by_id)
 
-    ticket.user_checked_in = True
+    db_ticket.user_checked_in = True
 
-    log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_log_entry(
         'user-checked-in',
-        ticket.id,
+        db_ticket.id,
         {
-            'checked_in_user_id': str(ticket.used_by_id),
+            'checked_in_user_id': str(db_ticket.used_by_id),
             'initiator_id': str(initiator.id),
         },
     )
-    db.session.add(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
 
     return TicketCheckedIn(
-        occurred_at=log_entry.occurred_at,
+        occurred_at=db_log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        ticket_id=ticket.id,
-        ticket_code=ticket.code,
-        occupied_seat_id=ticket.occupied_seat_id,
+        ticket_id=db_ticket.id,
+        ticket_code=db_ticket.code,
+        occupied_seat_id=db_ticket.occupied_seat_id,
         user_id=user.id,
         user_screen_name=user.screen_name,
     )
 
 
 def _get_ticket_for_checkin(party_id: PartyID, ticket_id: TicketID) -> DbTicket:
-    ticket = ticket_service.get_ticket(ticket_id)
+    db_ticket = ticket_service.get_ticket(ticket_id)
 
-    if ticket.party_id != party_id:
+    if db_ticket.party_id != party_id:
         raise TicketBelongsToDifferentParty(
-            f'Ticket {ticket_id} belongs to another party ({ticket.party_id}).'
+            f'Ticket {ticket_id} belongs to another party ({db_ticket.party_id}).'
         )
 
-    if ticket.revoked:
+    if db_ticket.revoked:
         raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
-    if ticket.used_by_id is None:
+    if db_ticket.used_by_id is None:
         raise TicketLacksUser(f'Ticket {ticket_id} has no user assigned.')
 
-    if ticket.user_checked_in:
+    if db_ticket.user_checked_in:
         raise UserAlreadyCheckedIn(
             f'Ticket {ticket_id} has already been used to check in a user.'
         )
 
-    return ticket
+    return db_ticket
 
 
 def _get_user_for_checkin(user_id: UserID) -> User:
@@ -107,23 +107,23 @@ def _get_user_for_checkin(user_id: UserID) -> User:
 
 def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Revert a user check-in that was done by mistake."""
-    ticket = ticket_service.get_ticket(ticket_id)
+    db_ticket = ticket_service.get_ticket(ticket_id)
 
     initiator = user_service.get_user(initiator_id)
 
-    if not ticket.user_checked_in:
+    if not db_ticket.user_checked_in:
         raise ValueError(f'User of ticket {ticket_id} has not been checked in.')
 
-    ticket.user_checked_in = False
+    db_ticket.user_checked_in = False
 
-    log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_log_entry(
         'user-check-in-reverted',
-        ticket.id,
+        db_ticket.id,
         {
-            'checked_in_user_id': str(ticket.used_by_id),
+            'checked_in_user_id': str(db_ticket.used_by_id),
             'initiator_id': str(initiator.id),
         },
     )
-    db.session.add(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()

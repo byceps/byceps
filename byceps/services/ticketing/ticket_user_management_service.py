@@ -26,43 +26,43 @@ def appoint_user_manager(
     ticket_id: TicketID, manager_id: UserID, initiator_id: UserID
 ) -> None:
     """Appoint the user as the ticket's user manager."""
-    ticket = ticket_service.get_ticket(ticket_id)
+    db_ticket = ticket_service.get_ticket(ticket_id)
 
-    if ticket.revoked:
+    if db_ticket.revoked:
         raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
-    ticket.user_managed_by_id = manager_id
+    db_ticket.user_managed_by_id = manager_id
 
-    log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_log_entry(
         'user-manager-appointed',
-        ticket.id,
+        db_ticket.id,
         {
             'appointed_user_manager_id': str(manager_id),
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
 
 
 def withdraw_user_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Withdraw the ticket's custom user manager."""
-    ticket = ticket_service.get_ticket(ticket_id)
+    db_ticket = ticket_service.get_ticket(ticket_id)
 
-    if ticket.revoked:
+    if db_ticket.revoked:
         raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
-    ticket.user_managed_by_id = None
+    db_ticket.user_managed_by_id = None
 
-    log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_log_entry(
         'user-manager-withdrawn',
-        ticket.id,
+        db_ticket.id,
         {
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
 
@@ -71,12 +71,12 @@ def appoint_user(
     ticket_id: TicketID, user_id: UserID, initiator_id: UserID
 ) -> None:
     """Appoint the user as the ticket's user."""
-    ticket = ticket_service.get_ticket(ticket_id)
+    db_ticket = ticket_service.get_ticket(ticket_id)
 
-    if ticket.revoked:
+    if db_ticket.revoked:
         raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
-    if ticket.user_checked_in:
+    if db_ticket.user_checked_in:
         raise UserAlreadyCheckedIn('Ticket user has already been checked in.')
 
     user = user_service.find_user(user_id)
@@ -88,40 +88,40 @@ def appoint_user(
             f'User account {user.screen_name} is suspended.'
         )
 
-    ticket.used_by_id = user_id
+    db_ticket.used_by_id = user_id
 
-    log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_log_entry(
         'user-appointed',
-        ticket.id,
+        db_ticket.id,
         {
             'appointed_user_id': str(user_id),
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
 
 
 def withdraw_user(ticket_id: TicketID, initiator_id: UserID) -> None:
     """Withdraw the ticket's user."""
-    ticket = ticket_service.get_ticket(ticket_id)
+    db_ticket = ticket_service.get_ticket(ticket_id)
 
-    if ticket.revoked:
+    if db_ticket.revoked:
         raise TicketIsRevoked(f'Ticket {ticket_id} has been revoked.')
 
-    if ticket.user_checked_in:
+    if db_ticket.user_checked_in:
         raise UserAlreadyCheckedIn('Ticket user has already been checked in.')
 
-    ticket.used_by_id = None
+    db_ticket.used_by_id = None
 
-    log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_log_entry(
         'user-withdrawn',
-        ticket.id,
+        db_ticket.id,
         {
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()

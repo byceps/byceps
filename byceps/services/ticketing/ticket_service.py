@@ -38,25 +38,25 @@ def update_ticket_code(
     ticket_id: TicketID, code: str, initiator_id: UserID
 ) -> None:
     """Set a custom code for the ticket."""
-    ticket = get_ticket(ticket_id)
+    db_ticket = get_ticket(ticket_id)
 
     if not ticket_code_service.is_ticket_code_wellformed(code):
         raise ValueError(f'Ticket code "{code}" is not well-formed')
 
-    old_code = ticket.code
+    old_code = db_ticket.code
 
-    ticket.code = code
+    db_ticket.code = code
 
-    log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_log_entry(
         'ticket-code-changed',
-        ticket.id,
+        db_ticket.id,
         {
             'old_code': old_code,
             'new_code': code,
             'initiator_id': str(initiator_id),
         },
     )
-    db.session.add(log_entry)
+    db.session.add(db_log_entry)
 
     db.session.commit()
 
@@ -81,12 +81,12 @@ def find_ticket(ticket_id: TicketID) -> Optional[DbTicket]:
 
 def get_ticket(ticket_id: TicketID) -> DbTicket:
     """Return the ticket with that id, or raise an exception."""
-    ticket = find_ticket(ticket_id)
+    db_ticket = find_ticket(ticket_id)
 
-    if ticket is None:
+    if db_ticket is None:
         raise ValueError(f'Unknown ticket ID "{ticket_id}"')
 
-    return ticket
+    return db_ticket
 
 
 def find_ticket_by_code(
