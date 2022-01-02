@@ -89,7 +89,7 @@ def get_areas_for_party_paginated(
         .group_by(area.id)
 
     count_query = select(db.func.count(DbArea.id)) \
-        .filter(area.party_id == party_id)
+        .filter(DbArea.party_id == party_id)
 
     def item_mapper(
         area_and_ticket_count: tuple[DbArea, int]
