@@ -156,8 +156,8 @@ Create a database user named ``byceps``:
 
 You should be prompted to enter a password. Do that.
 
-Create a copy of ``config/development.py``
-(``config/development_custom.py`` from here on) and, in the copy,
+Create a copy of ``config/development-example.py``
+(``config/development.py`` from here on) and, in the copy,
 replace the example password in the value of ``SQLALCHEMY_DATABASE_URI``
 with the one you just entered.
 
@@ -218,7 +218,7 @@ Create the necessary tables:
 
 .. code-block:: sh
 
-   $ BYCEPS_CONFIG=../config/development_custom.py ./create_database_tables.py
+   $ BYCEPS_CONFIG=../config/development.py ./create_database_tables.py
    Creating database tables ... done.
 
 An initial set of authorization permissions and roles is provided as a
@@ -226,7 +226,7 @@ TOML file. Import it into the database:
 
 .. code-block:: sh
 
-   $ BYCEPS_CONFIG=../config/development_custom.py ./import_permissions_and_roles.py data/permissions_and_roles.toml
+   $ BYCEPS_CONFIG=../config/development.py ./import_permissions_and_roles.py data/permissions_and_roles.toml
    Imported 32 roles.
 
 With the authorization data in place, create the initial user (which
@@ -234,7 +234,7 @@ will get all available roles assigned):
 
 .. code-block:: sh
 
-   $ BYCEPS_CONFIG=../config/development_custom.py ./create_initial_admin_user.py
+   $ BYCEPS_CONFIG=../config/development.py ./create_initial_admin_user.py
    Screen name: Flynn
    Email address: flynn@flynns-arcade.net
    Password:
