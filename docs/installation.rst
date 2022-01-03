@@ -218,7 +218,7 @@ Create the necessary tables:
 
 .. code-block:: sh
 
-   $ BYCEPS_CONFIG=../config/development.py ./create_database_tables.py
+   $ BYCEPS_CONFIG=../config/development.py APP_MODE=admin ./create_database_tables.py
    Creating database tables ... done.
 
 An initial set of authorization permissions and roles is provided as a
