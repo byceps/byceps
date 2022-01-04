@@ -64,6 +64,8 @@ This way, it should be easy to pull in future updates to BYCEPS using
 Git. (And there currently are no release tarballs anyway.)
 
 
+.. _virtual-env:
+
 Virtual Environment
 -------------------
 
@@ -207,18 +209,21 @@ Expected result (the actual UUID hopefully is different!):
 Database Tables
 ---------------
 
+.. important:: Before continuing, make sure that the :ref:`virtual
+   environment <virtual-env>` is set up and activated.
+
 Scripts are provided to create and populate database tables. Change the
 path to be able to call them:
 
 .. code-block:: sh
 
-   $ cd scripts
+   (venv)$ cd scripts
 
 Create the necessary tables:
 
 .. code-block:: sh
 
-   $ BYCEPS_CONFIG=../config/development.py ./create_database_tables.py
+   (venv)$ BYCEPS_CONFIG=../config/development.py ./create_database_tables.py
    Creating database tables ... done.
 
 An initial set of authorization permissions and roles is provided as a
@@ -226,7 +231,7 @@ TOML file. Import it into the database:
 
 .. code-block:: sh
 
-   $ BYCEPS_CONFIG=../config/development.py ./import_permissions_and_roles.py data/permissions_and_roles.toml
+   (venv)$ BYCEPS_CONFIG=../config/development.py ./import_permissions_and_roles.py data/permissions_and_roles.toml
    Imported 32 roles.
 
 With the authorization data in place, create the initial user (which
@@ -234,7 +239,7 @@ will get all available roles assigned):
 
 .. code-block:: sh
 
-   $ BYCEPS_CONFIG=../config/development.py ./create_initial_admin_user.py
+   (venv)$ BYCEPS_CONFIG=../config/development.py ./create_initial_admin_user.py
    Screen name: Flynn
    Email address: flynn@flynns-arcade.net
    Password:
