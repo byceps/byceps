@@ -88,6 +88,7 @@
         {%- call render_log_entry('badge', log_entry.occurred_at) %}
           {{ _(
             'Badge "%(badge)s" has been <strong>awarded</strong> to %(user)s.',
+            badge=log_entry.badge_label,
             user=render_log_user(log_entry.recipient),
           ) }}
         {%- endcall %}
