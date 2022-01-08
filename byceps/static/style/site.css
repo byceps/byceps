@@ -67,6 +67,14 @@ h2 {
 
 /* board */
 
+.board-category-title .tag,
+.board-topic-title .tag {
+  float: left;
+  margin-right: 0.3rem;
+  margin-top: 0.1rem;
+  text-transform: uppercase;
+}
+
 .board-category-description,
 .board-topic-initial-posting {
   color: #888888;
