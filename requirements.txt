@@ -17,7 +17,7 @@ pillow==9.0.0
 psycopg2-binary==2.9.3
 qrcode==7.3.1
 redis==4.1.0
-requests==2.26.0
+requests==2.27.1
 rq==1.10.1
 rq-dashboard==0.6.1
 rtoml==0.7.1
