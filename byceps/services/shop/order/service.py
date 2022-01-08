@@ -529,10 +529,11 @@ def get_orders_for_order_numbers(
     if not order_numbers:
         return []
 
-    db_orders = db.session \
-        .query(DbOrder) \
-        .filter(DbOrder.order_number.in_(order_numbers)) \
-        .all()
+    db_orders = db.session.execute(
+        select(DbOrder)
+        .options(db.joinedload(DbOrder.line_items))
+        .filter(DbOrder.order_number.in_(order_numbers))
+    ).scalars().unique().all()
 
     return list(map(_order_to_transfer_object, db_orders))
 
@@ -598,6 +599,7 @@ def get_orders_for_shop_paginated(
     returned.
     """
     items_query = select(DbOrder) \
+        .options(db.joinedload(DbOrder.line_items)) \
         .filter_by(shop_id=shop_id) \
         .order_by(DbOrder.created_at.desc())
 
@@ -632,6 +634,7 @@ def get_orders_for_shop_paginated(
         page,
         per_page,
         scalar_result=True,
+        unique_result=True,
         item_mapper=_order_to_transfer_object,
     )
 
