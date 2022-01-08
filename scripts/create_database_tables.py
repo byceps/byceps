@@ -9,11 +9,13 @@ Existing tables will be ignored, and those not existing will be created.
 """
 
 from importlib import import_module
+from itertools import chain
 from pathlib import Path
 from typing import Iterator
 
 import click
 
+import byceps
 from byceps.database import db
 
 from _util import call_with_app_context
@@ -38,10 +40,19 @@ def _load_dbmodels() -> None:
 
 
 def _collect_dbmodel_paths() -> Iterator[Path]:
-    path = Path('byceps') / 'services'
+    package_paths = map(Path, byceps.__path__)
+    for package_path in package_paths:
+        services_path = Path(package_path) / 'services'
 
-    yield from path.glob('**/dbmodels.py')
-    yield from path.glob('**/dbmodels/*.py')
+        module_paths = chain(
+            services_path.glob('**/dbmodels.py'),
+            services_path.glob('**/dbmodels/*.py'),
+        )
+
+        # Obtain relative paths that can be
+        # transformed into package imports.
+        for module_path in module_paths:
+            yield module_path.relative_to(package_path.parent)
 
 
 def _get_module_name_for_path(path: Path) -> str:
