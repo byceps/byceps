@@ -1,5 +1,6 @@
 :root {
   --dimmed-color: #808080;
+  --link-color: #0066c6;
 }
 
 
@@ -51,6 +52,7 @@ textarea {
 
 a {
   background-color: transparent;
+  color: var(--link-color);
 }
 
 a:active,

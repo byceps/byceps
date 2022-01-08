@@ -13,10 +13,6 @@ body {
   color: var(--text-color);
 }
 
-a {
-  color: var(--link-color);
-}
-
 
 /* page layout */
 
