@@ -5,4 +5,4 @@ Flask-DebugToolbar==0.11.0
 flask-shell-ipython==0.4.1
 mypy==0.931
 sqlalchemy2-stubs==0.0.2a19
-types-freezegun==1.1.3
+types-freezegun==1.1.6
