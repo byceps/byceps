@@ -1,5 +1,5 @@
 :root {
-  --color-dim: #808080;
+  --dimmed-color: #808080;
 }
 
 
@@ -350,7 +350,7 @@ table.wide {
 /* data display */
 
 .data-label {
-  color: var(--color-dim);
+  color: var(--dimmed-color);
   font-size: 0.75rem; /* 12px / 16px */
   margin-bottom: 0.25rem;
 }
@@ -423,7 +423,7 @@ textarea.collapsible.collapsed {
 }
 
 .form-note {
-  color: var(--color-dim);
+  color: var(--dimmed-color);
   font-size: 0.75rem; /* 12px / 16px */
   margin-top: 0.5rem;
 }
@@ -961,7 +961,7 @@ img {
 }
 
 .dimmed {
-  color: var(--color-dim);
+  color: var(--dimmed-color);
 }
 
 .hyphenate {

@@ -751,7 +751,7 @@ main .dropdown-menu {
 .dimmed-box {
   border-radius: 3px;
   border: #dddddd solid 1px;
-  color: var(--color-dim);
+  color: var(--dimmed-color);
   padding: 1.5rem;
 }
 
