@@ -26,7 +26,9 @@
         {{ render_tag('{:%a}'.format(day)) }}
         {%- endfor %}
 
-        {%- if party.is_over %}
+        {%- if party.canceled %}
+        {{ render_tag(pgettext('party', 'canceled'), class='color-danger') }}
+        {%- elif party.is_over %}
         {{ render_tag(_('over'), class='color-disabled') }}
         {%- endif %}
       </div>
