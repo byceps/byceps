@@ -15,7 +15,6 @@
       <h1>
         {{- site.title }}
         {%- if not site.enabled or site.archived -%}
-        <br>
           {%- if not site.enabled %}
         {{ render_tag(_('disabled'), class='color-disabled', icon='disabled') }}
           {%- endif %}
