@@ -74,8 +74,7 @@ h2 {
   text-transform: uppercase;
 }
 
-.board-category-description,
-.board-topic-initial-posting {
+.board-index-item-meta {
   color: var(--dimmed-color);
 }
 

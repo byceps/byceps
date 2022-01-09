@@ -26,7 +26,7 @@
               <strong>{{ category.title }}</strong>
               {%- if category.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
             </div>
-            <div class="board-category-description">{{ category.description }}</div>
+            <div class="board-index-item-meta">{{ category.description }}</div>
           </a>
         </td>
         <td class="centered bignumber">{{ category.topic_count|numberformat }}</td>
