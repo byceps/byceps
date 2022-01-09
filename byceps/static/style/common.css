@@ -710,6 +710,11 @@ nav.pagination li.current {
   overflow: hidden;
 }
 
+.progress--separated {
+  background-color: transparent;
+  gap: 0.125rem;
+}
+
 .progress-bar {
   background-color: #666666;
   height: 100%;
