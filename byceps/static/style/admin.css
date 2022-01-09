@@ -6,6 +6,10 @@ body {
   line-height: 1.4;
 }
 
+a:not(:hover) {
+  text-decoration: none;
+}
+
 
 /* layout */
 
