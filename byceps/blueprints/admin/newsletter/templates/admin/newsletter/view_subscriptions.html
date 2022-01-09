@@ -1,6 +1,5 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/stats.html' import render_bigstats_item %}
 {% set current_page = 'newsletter_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = [_('Newsletter'), list_.title] %}
@@ -43,16 +42,15 @@
 
   <div class="box">
 
-    <div class="row row--space-around row--wrap bigstats">
-      <div class="column-auto">
-        {{ render_bigstats_item(totals[State.requested]|numberformat, _('requested'), icon_name='enabled', color='#008800') }}
-      </div>
-      <div class="column-auto">
-        {{ render_bigstats_item(totals[State.declined]|numberformat, _('rejected'), icon_name='disabled', color='#cc0000') }}
-      </div>
-      <div class="column-auto">
-        {{ render_bigstats_item(totals['total']|numberformat, '&sum; '|safe ~ _('total')) }}
-      </div>
+    <div class="progress progress--separated">
+      <div class="progress-bar color-success" style="width: calc(100% * {{ totals[State.requested] }} / {{ user_count }});"></div>
+      <div class="progress-bar color-danger" style="width: calc(100% * {{ totals[State.declined] }} / {{ user_count }});"></div>
+      <div class="progress-bar" style="background-color: #dddddd; width: calc(100% * {{ user_count - totals['total'] }} / {{ user_count }});"></div>
+    </div>
+    <div class="row row--space-between">
+      <div class="column-auto"><strong>{{ totals[State.requested]|numberformat }}</strong> {{ _('requested') }}</div>
+      <div class="column-auto"><strong>{{ totals[State.declined]|numberformat }}</strong> {{ _('rejected') }}</div>
+      <div class="column-auto"><strong>{{ user_count|numberformat }}</strong> {{ _('Users') }} {{ _('total') }}</div>
     </div>
 
   </div>
