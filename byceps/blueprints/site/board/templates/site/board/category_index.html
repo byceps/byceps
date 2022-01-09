@@ -21,7 +21,7 @@
       {%- for category in categories|sort(attribute='position') %}
       <tr>
         <td>
-          <a class="board-category-link disguised" href="{{ url_for('.category_view', slug=category.slug) }}">
+          <a class="board-index-item-link disguised" href="{{ url_for('.category_view', slug=category.slug) }}">
             <div class="board-category-title">
               <strong>{{ category.title }}</strong>
               {%- if category.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
