@@ -177,7 +177,7 @@ body {
 
 .nav-main-item:hover,
 .nav-main-item.current {
-  background-color: var(--primary-color);
+  background-color: var(--bg-color-light);
 }
 
 
@@ -222,6 +222,10 @@ main h1 {
 .button.button--clear:hover {
   background-color: var(--bg-color-light);
   border-color: var(--border-color);
+}
+
+.button.button--outlined:hover {
+  background-color: var(--bg-color-light);
 }
 
 .button.color-primary {
