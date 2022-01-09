@@ -34,11 +34,11 @@
       </div>
     {%- endcall %}
 
-    {{ render_bigstats_cell(days_until_party|numberformat, _('days until the party'), icon_name='date') }}
+    {{ render_bigstats_cell(days_until_party|numberformat, ngettext('day until the party', 'days until the party', days_until_party), icon_name='date') }}
 
-    {{ render_bigstats_cell(orga_count, _('organizers in %(team_count)s teams', team_count='<strong>%d</strong>'|format(orga_team_count)|safe), href=url_for('orga_team_admin.teams_for_party', party_id=party.id), icon_name='users') }}
+    {{ render_bigstats_cell(orga_count, ngettext('organizer in %(team_count)s teams', 'organizers in %(team_count)s teams', orga_count, team_count='<strong>%d</strong>'|format(orga_team_count)|safe), href=url_for('orga_team_admin.teams_for_party', party_id=party.id), icon_name='users') }}
 
-    {{ render_bigstats_cell(seat_count|numberformat, _('seats in %(area_count)s areas', area_count='<strong>%d</strong>'|format(seating_area_count)|safe), href=url_for('seating_admin.index_for_party', party_id=party.id), icon_name='seating-area') }}
+    {{ render_bigstats_cell(seat_count|numberformat, ngettext('seat in %(area_count)s areas', 'seats in %(area_count)s areas', seat_count, area_count='<strong>%d</strong>'|format(seating_area_count)|safe), href=url_for('seating_admin.index_for_party', party_id=party.id), icon_name='seating-area') }}
 
     {%- call render_cell(href=url_for('ticketing_admin.index_for_party', party_id=party.id)) %}
       <div class="cell-label">{{ _('tickets sold') }}</div>

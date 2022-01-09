@@ -20,10 +20,10 @@
 
   <div class="grid dashboard">
     {%- if shop %}
-    {{ render_bigstats_cell(open_order_count, _('open orders'), href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open'), icon_name='invoice') }}
+    {{ render_bigstats_cell(open_order_count, ngettext('open order', 'open orders', open_order_count), href=url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open'), icon_name='invoice') }}
     {%- endif %}
     {%- if newsletter_list %}
-    {{ render_bigstats_cell(newsletter_subscriber_count|numberformat, _('Subscribers to newsletter "%(title)s"', title=newsletter_list.title), href=url_for('newsletter_admin.view_subscriptions', list_id=newsletter_list.id), icon_name='email', color='#008800') }}
+    {{ render_bigstats_cell(newsletter_subscriber_count|numberformat, ngettext('subscriber to newsletter "%(title)s"', 'subscribers to newsletter "%(title)s"', newsletter_subscriber_count, title=newsletter_list.title), href=url_for('newsletter_admin.view_subscriptions', list_id=newsletter_list.id), icon_name='email', color='#008800') }}
     {%- endif %}
     {%- call render_cell('legal', 'cell--wider') %}
     <h2 class="hyphenate">{{ _('Required Consents') }}</h2>

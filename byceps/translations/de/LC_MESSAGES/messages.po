@@ -19,8 +19,8 @@ msgstr ""
 "Generated-By: Babel 2.9.1\n"
 
 #: byceps/announce/text_assembly/_helpers.py:18
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:107
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:123
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:108
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:124
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:71
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:36
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:42
@@ -558,7 +558,7 @@ msgstr "aktiv"
 
 #: byceps/blueprints/admin/api/templates/admin/api/index.html:31
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:17
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:20
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:19
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:35
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:30
 msgid "disabled"
@@ -820,7 +820,7 @@ msgstr "mehr als"
 #: byceps/blueprints/admin/shop/storefront/forms.py:38
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:36
 #: byceps/blueprints/admin/site/forms.py:68
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:42
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:41
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:29
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:19
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:16
@@ -1006,7 +1006,7 @@ msgstr "Für diese Marke sind keine Foren vorhanden."
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:6
 #: byceps/blueprints/admin/board/templates/admin/board/category_create_form.html:9
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:52
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:66
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:65
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:76
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:5
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:9
@@ -1054,7 +1054,7 @@ msgstr "versteckt"
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:32
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:45
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:16
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:33
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:32
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:35
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:42
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:44
@@ -1175,7 +1175,7 @@ msgstr "Bild-Dateiname"
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:57
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:25
 #: byceps/blueprints/admin/site/forms.py:74
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:23
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:22
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:51
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:33
 msgid "archived"
@@ -1238,7 +1238,7 @@ msgstr "Marke erstellen"
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:95
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:8
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:41
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:127
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:126
 #: byceps/blueprints/admin/snippet/forms.py:17
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:36
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:10
@@ -1285,21 +1285,21 @@ msgstr "Bearbeiten"
 #: byceps/blueprints/admin/guest_server/templates/layout/admin/guest_server.html:21
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:89
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:35
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:121
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:120
 msgid "Settings"
 msgstr "Einstellungen"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:44
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:96
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:42
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:128
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:127
 msgid "Value"
 msgstr "Wert"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:57
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:109
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:55
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:141
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:140
 msgid "No settings defined."
 msgstr "Es sind keine Einstellungen vorhanden."
 
@@ -1401,10 +1401,10 @@ msgstr "Marke"
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_party.html:4
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:47
 #: byceps/blueprints/admin/site/forms.py:30
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:63
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:62
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:58
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orga_activities.html:11
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:98
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:94
 #: byceps/blueprints/site/user_profile/templates/site/user_profile/view.html:43
 msgid "Party"
 msgstr "Party"
@@ -1487,7 +1487,7 @@ msgstr "Global"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_global.html:13
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:20
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:23
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:53
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:32
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:50
 #: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:8
@@ -1556,8 +1556,6 @@ msgstr "Artikel"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:31
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:6
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:17
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:18
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:31
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:4
 #: byceps/blueprints/admin/user/templates/admin/user/view.html:76
@@ -1595,7 +1593,7 @@ msgstr "Mountpoints"
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:25
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:57
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:4
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:75
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:74
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:84
 msgid "Storefront"
 msgstr "Storefront"
@@ -1641,8 +1639,10 @@ msgstr "Aktive Shops"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:21
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:23
-msgid "open orders"
-msgstr "offene Bestellungen"
+msgid "open order"
+msgid_plural "open orders"
+msgstr[0] "offene Bestellung"
+msgstr[1] "offene Bestellungen"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:28
 msgid "No active shops"
@@ -1688,8 +1688,10 @@ msgstr "Übersicht"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:26
 #, python-format
-msgid "Subscribers to newsletter \"%(title)s\""
-msgstr "Abonnenten von Newsletter \"%(title)s\""
+msgid "subscriber to newsletter \"%(title)s\""
+msgid_plural "subscribers to newsletter \"%(title)s\""
+msgstr[0] "Abonnent von Newsletter \"%(title)s\""
+msgstr[1] "Abonnenten von Newsletter \"%(title)s\""
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_brand.html:29
 msgid "Required Consents"
@@ -1699,13 +1701,23 @@ msgstr "Erforderliche Zustimmungen"
 msgid "None required"
 msgstr "Keine erforderlich"
 
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:23
+msgid "user"
+msgid_plural "users"
+msgstr[0] "Benutzer"
+msgstr[1] "Benutzer"
+
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:24
-msgid "new users in the last 7 days"
-msgstr "neue Benutzer in den letzten 7 Tagen"
+msgid "new user in the last 7 days"
+msgid_plural "new users in the last 7 days"
+msgstr[0] "neuer Benutzer in den letzten 7 Tagen"
+msgstr[1] "neue Benutzer in den letzten 7 Tagen"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:25
-msgid "uninitialized users"
-msgstr "noch nicht aktivierte Benutzer"
+msgid "uninitialized user"
+msgid_plural "uninitialized users"
+msgstr[0] "noch nicht aktivierter Benutzer"
+msgstr[1] "noch nicht aktivierte Benutzer"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:18
 #: byceps/blueprints/admin/news/forms.py:89
@@ -1724,40 +1736,53 @@ msgid "until"
 msgstr "bis"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:30
+#: byceps/blueprints/admin/party/templates/admin/party/view.html:19
+#: byceps/blueprints/admin/party/templates/macros/admin/party.html:54
+msgctxt "party"
+msgid "canceled"
+msgstr "abgesagt"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:32
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:37
 msgid "over"
 msgstr "vorbei"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:35
-msgid "days until the party"
-msgstr "Tage bis zur Party"
-
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:37
-#, python-format
-msgid "organizers in %(team_count)s teams"
-msgstr "Organisatoren in %(team_count)s Teams"
+msgid "day until the party"
+msgid_plural "days until the party"
+msgstr[0] "Tag bis zur Party"
+msgstr[1] "Tage bis zur Party"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:39
 #, python-format
-msgid "seats in %(area_count)s areas"
-msgstr "Sitzplätze in %(area_count)s Bereichen"
+msgid "organizer in %(team_count)s teams"
+msgid_plural "organizers in %(team_count)s teams"
+msgstr[0] "Organisator in %(team_count)s Teams"
+msgstr[1] "Organisatoren in %(team_count)s Teams"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:42
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:41
+#, python-format
+msgid "seat in %(area_count)s areas"
+msgid_plural "seats in %(area_count)s areas"
+msgstr[0] "Sitzplatz in %(area_count)s Bereichen"
+msgstr[1] "Sitzplätze in %(area_count)s Bereichen"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:44
 #: byceps/blueprints/admin/dashboard/templates/macros/admin/dashboard.html:54
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:78
 msgid "tickets sold"
 msgstr "Tickets verkauft"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:52
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:54
 #: byceps/blueprints/admin/dashboard/templates/macros/admin/dashboard.html:56
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:83
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:96
 msgid "sold out"
 msgstr "ausverkauft"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:54
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:66
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:77
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:56
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:68
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:79
 #: byceps/blueprints/admin/dashboard/templates/macros/admin/dashboard.html:52
 #: byceps/blueprints/admin/dashboard/templates/macros/admin/dashboard.html:66
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:76
@@ -1765,17 +1790,17 @@ msgstr "ausverkauft"
 msgid "of"
 msgstr "von"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:60
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:62
 #: byceps/blueprints/admin/dashboard/templates/macros/admin/dashboard.html:68
 #: sites/cozylan/template_overrides/layout/_sidebar_right.html:50
 msgid "seats occupied"
 msgstr "Sitzplätze belegt"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:71
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:73
 msgid "tickets checked in"
 msgstr "Tickets eingecheckt"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:83
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:85
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_create_form.html:9
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:8
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_update_form.html:9
@@ -1793,7 +1818,7 @@ msgstr "Tickets eingecheckt"
 msgid "Guest Servers"
 msgstr "Gastserver"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:84
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:94
 #: byceps/blueprints/admin/guest_server/forms.py:60
 #: byceps/blueprints/admin/guest_server/forms.py:67
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:41
@@ -1803,7 +1828,7 @@ msgstr "Gastserver"
 msgid "approved"
 msgstr "genehmigt"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:85
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:95
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:41
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:32
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:20
@@ -1813,12 +1838,12 @@ msgstr "wartend"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:32
 #: byceps/blueprints/admin/site/forms.py:28
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:45
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:44
 msgid "Server name"
 msgstr "Servername"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:37
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:51
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:50
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:39
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:41
 msgid "User registration"
@@ -1832,8 +1857,8 @@ msgstr "Benutzerregistrierung"
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:51
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:50
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:43
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:52
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:58
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:51
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:57
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:39
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:45
 msgid "open"
@@ -1846,15 +1871,15 @@ msgstr "offen"
 #: byceps/blueprints/admin/shop/storefront/forms.py:42
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:48
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:41
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:52
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:58
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:51
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:57
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:41
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:47
 msgid "closed"
 msgstr "geschlossen"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:42
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:57
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:56
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:45
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:47
 msgid "User login"
@@ -1864,14 +1889,14 @@ msgstr "Benutzeranmeldung"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:53
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:58
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:70
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:64
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:71
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:80
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:63
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:70
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:79
 msgid "not assigned"
 msgstr "nicht verknüpft"
 
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:62
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:88
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:87
 msgid "News Channels"
 msgstr "Newskanäle"
 
@@ -1906,7 +1931,7 @@ msgstr "Domäne"
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:21
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:40
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:93
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:101
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:97
 msgid "Owner"
 msgstr "Besitzer/in"
 
@@ -1915,7 +1940,7 @@ msgstr "Besitzer/in"
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:29
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:56
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:75
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:107
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:103
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:11
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:15
 msgid "IP address"
@@ -1926,7 +1951,7 @@ msgstr "IP-Adresse"
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:30
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:57
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:76
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:108
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:104
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_guest_servers.html:12
 #: byceps/blueprints/site/guest_server/forms.py:23
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:16
@@ -1976,7 +2001,7 @@ msgid "Addresses"
 msgstr "Adressen"
 
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/address_index.html:19
-#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:30
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:29
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:41
 #: byceps/blueprints/admin/orga/templates/admin/orga/persons_for_brand.html:43
 msgid "Export"
@@ -2604,8 +2629,8 @@ msgid "Error"
 msgstr "Fehler"
 
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/index.html:3
-#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:6
-#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:16
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:5
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:15
 #: byceps/blueprints/site/user/creation/forms.py:97
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_newsletter.html:4
 msgid "Newsletter"
@@ -2619,23 +2644,23 @@ msgstr "Abonnenten"
 msgid "No subscription lists exist."
 msgstr "Es sind keine Newsletter-Listen vorhanden."
 
-#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:34
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:33
 msgid "Usernames and email addresses (as JSON)"
 msgstr "Benutzernamen und E-Mail-Adressen (als JSON)"
 
-#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:35
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:34
 msgid "email addresses only (as plaintext)"
 msgstr "nur E-Mail-Adressen (als Text)"
 
-#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:48
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:51
 msgid "requested"
 msgstr "angefordert"
 
-#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:51
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:52
 msgid "rejected"
 msgstr "abgelehnt"
 
-#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:54
+#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:53
 #: byceps/blueprints/admin/user/templates/admin/user/index.html:30
 msgid "total"
 msgstr "gesamt"
@@ -3007,12 +3032,6 @@ msgstr "Für diese Marke sind keine Partys vorhanden."
 #: byceps/blueprints/admin/party/templates/admin/party/update_form.html:6
 msgid "Edit party"
 msgstr "Party bearbeiten"
-
-#: byceps/blueprints/admin/party/templates/admin/party/view.html:19
-#: byceps/blueprints/admin/party/templates/macros/admin/party.html:54
-msgctxt "party"
-msgid "canceled"
-msgstr "abgesagt"
 
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:59
 msgid "Days"
@@ -3788,7 +3807,7 @@ msgstr ""
 msgid "Badge \"%(badge)s\" has been <strong>awarded</strong> to %(user)s."
 msgstr "Das Abzeichen \"%(badge)s\" wurde an %(user)s <strong>verliehen</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:96
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:97
 #, python-format
 msgid ""
 "A <a href=\"%(url)s\">ticket bundle</a> with \"%(ticket_quantity)s\" "
@@ -3797,7 +3816,7 @@ msgstr ""
 "Ein <a href=\"%(url)s\">Ticketpaket</a> mit \"%(ticket_quantity)s\" "
 "Tickets der Kategorie \"%(ticket_category)s\" wurde erstellt."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:105
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:106
 #, python-format
 msgid ""
 "%(initiator)s has <strong>revoked</strong> the <a href=\"%(url)s\">ticket"
@@ -3806,12 +3825,12 @@ msgstr ""
 "%(initiator)s hat das <a href=\"%(url)s\">Ticketpaket</a> "
 "<strong>widerrufen</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:113
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:114
 #, python-format
 msgid "<a href=\"%(url)s\">Ticket %(code)s</a> has been <strong>created</strong>."
 msgstr "<a href=\"%(url)s\">Ticket %(code)s</a> wurde <strong>angelegt</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:121
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:122
 #, python-format
 msgid ""
 "%(initiator)s has <strong>revoked</strong> <a href=\"%(url)s\">ticket "
@@ -3820,7 +3839,7 @@ msgstr ""
 "%(initiator)s hat <a href=\"%(url)s\">Ticket %(code)s</a> "
 "<strong>widerrufen</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:130
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:131
 #, python-format
 msgid ""
 "%(initiator)s has initiated <strong>unknown event</strong> "
@@ -3974,6 +3993,13 @@ msgstr ""
 msgid "Shop has been created."
 msgstr "Der Shop wurde angelegt."
 
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:17
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/dashboard.html:18
+msgid "order"
+msgid_plural "orders"
+msgstr[0] "Bestellung"
+msgstr[1] "Bestellungen"
+
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:27
 #: byceps/blueprints/admin/user/templates/admin/user/index.html:35
 #: byceps/blueprints/admin/user/templates/macros/admin/user.html:67
@@ -4003,21 +4029,21 @@ msgctxt "catalog"
 msgid "<none>"
 msgstr "<keiner>"
 
-#: byceps/blueprints/admin/shop/storefront/views.py:125
+#: byceps/blueprints/admin/shop/storefront/views.py:130
 msgid "No order number sequences are defined for this shop."
 msgstr "Für diesen Shop sind keine Bestellnummer-Sequenzen definiert."
 
-#: byceps/blueprints/admin/shop/storefront/views.py:139
-#: byceps/blueprints/admin/shop/storefront/views.py:146
+#: byceps/blueprints/admin/shop/storefront/views.py:144
+#: byceps/blueprints/admin/shop/storefront/views.py:151
 msgid "No valid order number sequence was specified."
 msgstr "Es wurde keine gültige Bestellnummer-Sequenz angegeben."
 
-#: byceps/blueprints/admin/shop/storefront/views.py:165
+#: byceps/blueprints/admin/shop/storefront/views.py:170
 #, python-format
 msgid "Storefront \"%(storefront_id)s\" has been created."
 msgstr "Storefront \"%(storefront_id)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/shop/storefront/views.py:233
+#: byceps/blueprints/admin/shop/storefront/views.py:238
 #, python-format
 msgid "Storefront \"%(storefront_id)s\" has been updated."
 msgstr "Storefront \"%(storefront_id)s\" wurde aktualisiert."
@@ -4035,7 +4061,7 @@ msgstr ""
 "Es sind keine Bestellnummer-Sequenzen für diesen Shop hinterlegt. Ohne "
 "sie können keine Storefronts angelegt werden."
 
-#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:59
+#: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:58
 msgid "No storefronts exist."
 msgstr "Es sind keine Storefronts vorhanden."
 
@@ -4125,7 +4151,7 @@ msgid "No sites available."
 msgstr "Es sind keine Sites verfügbar."
 
 #: byceps/blueprints/admin/site/templates/admin/site/add_news_channel_form.html:5
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:93
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:92
 msgid "Add news channel"
 msgstr "Newskanal hinzufügen"
 
@@ -4144,16 +4170,16 @@ msgstr "Muss eindeutig sein."
 msgid "Edit site"
 msgstr "Site bearbeiten"
 
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:108
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:107
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:20
 msgid "Remove"
 msgstr "Entfernen"
 
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:117
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:116
 msgid "No news channels are assigned to this site."
 msgstr "Es sind keine Newskanäle mit dieser Site verknüpft."
 
-#: byceps/blueprints/admin/site/templates/admin/site/view.html:150
+#: byceps/blueprints/admin/site/templates/admin/site/view.html:149
 msgid "Remove news channel from site?"
 msgstr "Newskanal aus Site entfernen?"
 
@@ -4335,8 +4361,8 @@ msgstr "Code"
 msgid "Invalid format"
 msgstr "Ungültiges Format"
 
-#: byceps/blueprints/admin/ticketing/views.py:142
-#: byceps/blueprints/admin/ticketing/views.py:167
+#: byceps/blueprints/admin/ticketing/views.py:145
+#: byceps/blueprints/admin/ticketing/views.py:170
 msgid ""
 "Code cannot be changed as somebody has already been checked in with this "
 "ticket."
@@ -4344,12 +4370,12 @@ msgstr ""
 "Der Code kann nicht geändert werden, da bereits jemand mit diesem Ticket "
 "eingecheckt worden ist."
 
-#: byceps/blueprints/admin/ticketing/views.py:183
+#: byceps/blueprints/admin/ticketing/views.py:186
 #, python-format
 msgid "Code for ticket %(ticket_code)s has been updated."
 msgstr "Der Code von Ticket %(ticket_code)s wurde geändert."
 
-#: byceps/blueprints/admin/ticketing/views.py:229
+#: byceps/blueprints/admin/ticketing/views.py:232
 #: byceps/blueprints/site/ticketing/views.py:176
 #, python-format
 msgid "%(screen_name)s has been assigned as user of ticket %(ticket_code)s."
@@ -5729,7 +5755,7 @@ msgstr "Avatar eines gelöschten Benutzers"
 msgid "Guest server card"
 msgstr "Gastserver-Card anzeigen"
 
-#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:96
+#: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:92
 msgid "Guest server"
 msgstr "Gastserver"
 
@@ -7222,19 +7248,19 @@ msgstr "physikalisch"
 msgid "other"
 msgstr "sonstiges"
 
-#: byceps/services/shop/order/service.py:682
+#: byceps/services/shop/order/service.py:685
 msgid "bank transfer"
 msgstr "Überweisung"
 
-#: byceps/services/shop/order/service.py:683
+#: byceps/services/shop/order/service.py:686
 msgid "cash"
 msgstr "Barzahlung"
 
-#: byceps/services/shop/order/service.py:684
+#: byceps/services/shop/order/service.py:687
 msgid "direct debit"
 msgstr "Lastschrift"
 
-#: byceps/services/shop/order/service.py:685
+#: byceps/services/shop/order/service.py:688
 msgid "free"
 msgstr "kostenlos"
 

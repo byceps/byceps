@@ -18,7 +18,7 @@
   </a>
 
       {%- if open_orders_count %}
-  <div class="small"><a href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open') }}" class="disguised" style="display: block;"><strong style="color: #ee3322;">{{ open_orders_count }}</strong> {{ _('open orders') }}</a></div>
+  <div class="small"><a href="{{ url_for('shop_order_admin.index_for_shop', shop_id=shop.id, only_payment_state='open') }}" class="disguised" style="display: block;"><strong style="color: #ee3322;">{{ open_orders_count }}</strong> {{ ngettext('open order', 'open orders', open_orders_count) }}</a></div>
       {%- endif %}
 
     {%- endcall %}
