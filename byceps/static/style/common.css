@@ -891,6 +891,7 @@ table.user-badges-list td {
   background-color: #ff2222;
 }
 
+.progress-bar.color-disabled,
 .tag.color-disabled {
   background-color: #aaaaaa;
 }

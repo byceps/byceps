@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin/dashboard.html' import render_bigstats_cell, render_cell %}
-{% from 'macros/misc.html' import render_tag %}
+{% from 'macros/misc.html' import render_distribution_bar, render_tag %}
 {% set current_page = 'admin_dashboard_party' %}
 {% set current_page_party = party %}
 {% set page_title = [_('Dashboard'), party.title] %}
@@ -83,19 +83,22 @@
   {%- if has_current_user_permission('guest_server.view') %}
     {%- call render_cell(href=url_for('guest_server_admin.server_index', party_id=party.id)) %}
       <div class="cell-label">{{ _('Guest Servers') }}</div>
-      {%- with approved_count = guest_servers|selectattr('approved')|list|length,
-               pending_count = guest_servers|rejectattr('approved')|list|length %}
-        {%- with total_count = approved_count + pending_count %}
-      <div class="progress progress--separated mt">
-        <div class="progress-bar color-success" style="width: calc(100% * {{ approved_count }} / {{ total_count }});"></div>
-        <div class="progress-bar color-warning" style="width: calc(100% * {{ pending_count }} / {{ total_count }});"></div>
-      </div>
-      <div class="row row--space-between small">
-        <div class="column-auto"><strong>{{ approved_count }}</strong> {{ _('approved') }}</div>
-        <div class="column-auto"><strong>{{ pending_count }}</strong> {{ _('pending') }}</div>
-      </div>
+      <div class="mt">
+        {%- with approved_count = guest_servers|selectattr('approved')|list|length,
+                 pending_count = guest_servers|rejectattr('approved')|list|length %}
+{{ render_distribution_bar(
+  [
+    (approved_count, 'color-success'),
+    (pending_count, 'color-warning'),
+  ],
+  approved_count + pending_count
+) }}
+        <div class="row row--space-between small">
+          <div class="column-auto"><strong>{{ approved_count }}</strong> {{ _('approved') }}</div>
+          <div class="column-auto"><strong>{{ pending_count }}</strong> {{ _('pending') }}</div>
+        </div>
         {%- endwith %}
-      {%- endwith %}
+      </div>
 
     {%- endcall %}
   {%- endif %}

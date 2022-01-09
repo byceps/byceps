@@ -1,5 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_distribution_bar %}
 {% set current_page = 'newsletter_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = [_('Newsletter'), list_.title] %}
@@ -42,11 +43,14 @@
 
   <div class="box">
 
-    <div class="progress progress--separated">
-      <div class="progress-bar color-success" style="width: calc(100% * {{ totals[State.requested] }} / {{ user_count }});"></div>
-      <div class="progress-bar color-danger" style="width: calc(100% * {{ totals[State.declined] }} / {{ user_count }});"></div>
-      <div class="progress-bar" style="background-color: #dddddd; width: calc(100% * {{ user_count - totals['total'] }} / {{ user_count }});"></div>
-    </div>
+{{ render_distribution_bar(
+  [
+    (totals[State.requested], 'color-success'),
+    (totals[State.declined], 'color-danger'),
+    (user_count - totals['total'], 'color-disabled'),
+  ],
+  user_count
+) }}
     <div class="row row--space-between">
       <div class="column-auto"><strong>{{ totals[State.requested]|numberformat }}</strong> {{ _('requested') }}</div>
       <div class="column-auto"><strong>{{ totals[State.declined]|numberformat }}</strong> {{ _('rejected') }}</div>
