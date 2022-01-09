@@ -41,9 +41,9 @@
     {{ render_bigstats_cell(seat_count|numberformat, _('seats in %(area_count)s areas', area_count='<strong>%d</strong>'|format(seating_area_count)|safe), href=url_for('seating_admin.index_for_party', party_id=party.id), icon_name='seating-area') }}
 
     {%- call render_cell(href=url_for('ticketing_admin.index_for_party', party_id=party.id)) %}
-      <div class="mb"><div class="cell-label">{{ _('tickets sold') }}</div></div>
+      <div class="cell-label">{{ _('tickets sold') }}</div>
       {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
-      <div class="progress">
+      <div class="progress mt">
         {%- if tickets_total_max_specified %}
         <div class="progress-bar color-success" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
         {%- endif %}
@@ -59,8 +59,8 @@
     {%- endcall %}
 
     {%- call render_cell(href=url_for('seating_admin.index_for_party', party_id=party.id)) %}
-      <div class="mb"><div class="cell-label">{{ _('seats occupied') }}</div></div>
-      <div class="progress">
+      <div class="cell-label">{{ _('seats occupied') }}</div>
+      <div class="progress mt">
         <div class="progress-bar color-success" style="width: calc(100% * {{ seat_utilization.occupied }} / {{ seat_utilization.total }});"></div>
       </div>
       <div class="row row--space-between small">
@@ -70,8 +70,8 @@
     {%- endcall %}
 
     {%- call render_cell(href=url_for('ticketing_checkin_admin.index', party_id=party.id)) %}
-      <div class="mb"><div class="cell-label">{{ _('tickets checked in') }}</div></div>
-      <div class="progress">
+      <div class="cell-label">{{ _('tickets checked in') }}</div>
+      <div class="progress mt">
         <div class="progress-bar color-success" style="width: calc(100% * {{ tickets_checked_in }} / {{ ticket_sale_stats.tickets_sold }});"></div>
       </div>
       <div class="row row--space-between small">
