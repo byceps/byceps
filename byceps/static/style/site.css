@@ -67,8 +67,7 @@ h2 {
 
 /* board */
 
-.board-category-title .tag,
-.board-topic-title .tag {
+.board-index-item-title .tag {
   float: left;
   margin-right: 0.3rem;
   margin-top: 0.1rem;

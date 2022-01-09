@@ -22,7 +22,7 @@
       <tr>
         <td>
           <a class="board-index-item-link disguised" href="{{ url_for('.category_view', slug=category.slug) }}">
-            <div class="board-category-title">
+            <div class="board-index-item-title">
               <strong>{{ category.title }}</strong>
               {%- if category.contains_unseen_postings %} {{ render_flag_new() }}{% endif %}
             </div>
