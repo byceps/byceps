@@ -67,6 +67,19 @@ h2 {
 
 /* board */
 
+.board-index-item-link {
+  --board-index-item-hover-bg-color: #dddddd;
+  border-radius: 3px;
+  display: block;
+  margin: -0.1rem -0.3rem;
+  padding: 0.1rem 0.3rem;
+}
+
+.board-index-item-link:hover {
+  background-color: var(--board-index-item-hover-bg-color);
+  text-decoration: none;
+}
+
 .board-index-item-title .tag {
   float: left;
   margin-right: 0.3rem;

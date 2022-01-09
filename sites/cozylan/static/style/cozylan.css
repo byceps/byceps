@@ -196,6 +196,18 @@ body {
 }
 
 
+/* board */
+
+.board-index-item-link {
+  --board-index-item-hover-bg-color: var(--bg-color-light);
+  border: 1px solid transparent;
+}
+
+.board-index-item-link:hover {
+  border-color: var(--border-color);
+}
+
+
 /* misc */
 
 main h1 {
