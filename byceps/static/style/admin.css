@@ -700,7 +700,7 @@ main .dropdown-menu {
 }
 
 .event-data {
-  color: #888888;
+  color: var(--dimmed-color);
   flex: 1 1 auto;
   margin-left: 1rem;
   margin-top: 0.25rem;

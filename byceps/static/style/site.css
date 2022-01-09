@@ -77,7 +77,7 @@ h2 {
 
 .board-category-description,
 .board-topic-initial-posting {
-  color: #888888;
+  color: var(--dimmed-color);
 }
 
 @media (max-width: 35.9375rem) { /* 575px / 16px */
@@ -200,7 +200,7 @@ form.board-posting-create-form-inline .label {
 }
 
 .user-comment-meta-top a.user-comment-permalink {
-  color: #888888;
+  color: var(--dimmed-color);
 }
 
 @media (min-width: 48rem) { /* 768px / 16px */
