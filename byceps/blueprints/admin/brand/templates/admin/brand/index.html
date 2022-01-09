@@ -36,10 +36,10 @@
         {%- for brand in brands %}
         <tr>
           <td>
-            <div style="float: left; margin-right: 0.5rem;">{{ render_brand_avatar(brand, '32') }}</div>
+            <div style="float: left; margin-right: 0.75rem;">{{ render_brand_avatar(brand, '32') }}</div>
             <div>
-              <strong><a class="disguised" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">{{ brand.title }}</a></strong><br>
-              {{ brand.id }}
+              <a class="disguised" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"><strong>{{ brand.title }}</strong></a><br>
+              {{ brand.id|dim }}
             </div>
           </td>
           <td>

@@ -18,7 +18,7 @@
       <tbody>
         {%- for catalog in catalogs|sort(attribute='id') %}
         <tr>
-          <td><a href="{{ url_for('.view', catalog_id=catalog.id) }}">{{ catalog.title }}</a></td>
+          <td><a href="{{ url_for('.view', catalog_id=catalog.id) }}"><strong>{{ catalog.title }}</strong></a></td>
         </tr>
         {%- endfor %}
       </tbody>

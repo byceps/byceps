@@ -37,7 +37,7 @@
         {%- for area, occupied_seat_count in areas_with_occupied_seat_counts.items|sort(attribute='0.title') %}
         <tr>
           <td>
-            {{ area.title }}<br>
+            <strong>{{ area.title }}</strong><br>
             {{ area.slug|dim }}
           </td>
           <td>

@@ -33,7 +33,7 @@
     {%- for user, birthday in orgas %}
       {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
       <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>
-        {{ render_user_avatar_and_admin_link(user, size=20) }}
+        <strong>{{ render_user_avatar_and_admin_link(user, size=20) }}</strong>
         {% if is_today %}{{ render_icon('birthday') }}{% endif %}
         {%- set relative_days_label = render_relative_days_until(days_until_next_birthday) %}
         wird {{ render_time_element(birthday.date_of_birth, relative_days_label) }}

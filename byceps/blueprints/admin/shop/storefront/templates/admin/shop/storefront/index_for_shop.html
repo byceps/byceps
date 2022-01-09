@@ -41,7 +41,7 @@
       <tbody>
         {%- for storefront in storefronts|sort(attribute='id') %}
         <tr>
-          <td><a href="{{ url_for('.view', storefront_id=storefront.id) }}">{{ storefront.id }}</a></td>
+          <td><a href="{{ url_for('.view', storefront_id=storefront.id) }}"><strong>{{ storefront.id }}</strong></a></td>
           <td>{{ order_number_prefixes_by_sequence_id[storefront.order_number_sequence_id] }}</td>
           <td>
             {%- if storefront.closed -%}

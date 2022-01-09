@@ -28,7 +28,7 @@
     <div class="row row--space-between">
       <div class="column-auto">
         {{ render_tag(_('enabled'), class='color-success') if webhook.enabled else render_tag(_('disabled'), class='color-disabled') }}
-        {{ webhook.description|fallback }}
+        <strong style="margin-left: 0.15rem;">{{ webhook.description|fallback }}</strong>
       </div>
       {%- if has_current_user_permission('webhook.administrate') %}
       <div class="column-auto">

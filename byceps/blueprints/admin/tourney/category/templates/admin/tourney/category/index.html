@@ -35,7 +35,7 @@
       {%- for category in categories|sort(attribute='position') %}
         <tr>
           <td class="number">{{ category.position }}</td>
-          <td>{{ category.title }}</td>
+          <td><strong>{{ category.title }}</strong></td>
           <td>
             {%- if has_current_user_permission('tourney_category.administrate') -%}
             <div class="dropdown">

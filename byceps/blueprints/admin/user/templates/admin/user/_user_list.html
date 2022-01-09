@@ -12,7 +12,7 @@
   <tbody>
     {%- for user in users %}
     <tr>
-      <td>{{ render_user_avatar_and_admin_link(user, size=16) }}</td>
+      <td><strong>{{ render_user_avatar_and_admin_link(user, size=16) }}</strong></td>
       <td>{{ render_most_important_user_flag(user, show_label=False) }}</td>
       <td>{{ user.detail.full_name|fallback }}</td>
       <td>{{ user.created_at|datetimeformat }}</td>
