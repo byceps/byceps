@@ -16,8 +16,8 @@ Requirements
 .. _Git: https://git-scm.com/
 
 
-Debian
-------
+Install Debian Packages
+-----------------------
 
 `Debian Linux`_ is the recommended operating system to run BYCEPS on.
 
@@ -48,8 +48,8 @@ Refer to the Debian documentation for further details.
 .. _Debian Linux: https://www.debian.org/
 
 
-BYCEPS
-------
+Obtain BYCEPS
+-------------
 
 Grab a copy of BYCEPS itself. For now, the best way probably is to
 clone the Git repository from GitHub:
@@ -66,8 +66,8 @@ Git. (And there currently are no release tarballs anyway.)
 
 .. _virtual-env:
 
-Virtual Environment
--------------------
+Set Up a Virtual Python Environment
+-----------------------------------
 
 The installation should happen in an isolated Python_ environment just
 for BYCEPS so that its requirements don't clash with different versions
@@ -132,8 +132,8 @@ scripts:
 .. _dot command: https://en.wikipedia.org/wiki/Dot_(Unix)
 
 
-Database
---------
+Prepare PostgreSQL
+------------------
 
 There should already be a system user, likely ``postgres``.
 
@@ -206,8 +206,8 @@ Expected result (the actual UUID hopefully is different!):
     (1 row)
 
 
-Database Tables
----------------
+Create Database Tables
+----------------------
 
 .. important:: Before continuing, make sure that the :ref:`virtual
    environment <virtual-env>` is set up and activated.
