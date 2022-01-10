@@ -9,5 +9,6 @@ Installation
    debian-packages
    byceps
    virtual-env
+   byceps-config-file
    postgresql
    database-tables
