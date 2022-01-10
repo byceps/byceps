@@ -25,7 +25,7 @@
   </div>
   {%- else %}
   <div>
-    <a href="{{ url_for('authentication_login.log_in_form') }}" class="button button--outlined">{{ render_icon('log-in') }} <span>{{ _('Log in') }}</span></a>
+    <a href="{{ url_for('authentication_login.log_in_form') }}" class="button">{{ render_icon('log-in') }} <span>{{ _('Log in') }}</span></a>
   </div>
   {%- endif %}
 </div>
