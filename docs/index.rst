@@ -17,7 +17,7 @@ for more than a decade.
 
    concepts/index
    blueprints/index
-   installation
+   installation/index
    license
 
 
