@@ -71,7 +71,8 @@ Code Status
 Installation
 ============
 
-See `installation instructions <docs/installation/index.rst>`_.
+See `installation instructions
+<https://byceps.readthedocs.io/en/latest/installation/index.html>`_.
 
 
 Testing
