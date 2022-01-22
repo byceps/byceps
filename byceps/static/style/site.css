@@ -438,12 +438,6 @@ form.board-posting-create-form-inline .label {
   padding-top: 4px;
 }
 
-.user-profile-primary {
-  flex: 0 1 auto;
-  margin-bottom: 20px;
-  padding-right: 40px;
-}
-
 .user-profile .screenname,
 .user-profile .orgateam {
   font-weight: bold;
