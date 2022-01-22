@@ -404,18 +404,22 @@ form.board-posting-create-form-inline .label {
   --header-bg-color: #f4f4f4;
   --header-bg-height: 104px;
   --header-border-color: #dddddd;
+  position: relative;
 }
 
-.user-profile-background {
+.user-profile::before {
   background-color: var(--header-bg-color);
   border-bottom: var(--header-border-color) solid 1px;
+  content: "";
   height: var(--header-bg-height);
+  position: absolute;
+  width: 100%;
+  z-index: -1;
 }
 
 .user-profile-header {
   display: flex;
   justify-content: space-between;
-  margin-top: calc(var(--header-bg-height) * -1);
   padding: 40px;
 }
 
