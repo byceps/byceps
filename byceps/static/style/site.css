@@ -404,6 +404,10 @@ form.board-posting-create-form-inline .label {
   --header-bg-color: #f4f4f4;
   --header-bg-height: 104px;
   --header-border-color: #dddddd;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 40px;
   position: relative;
 }
 
@@ -412,7 +416,9 @@ form.board-posting-create-form-inline .label {
   border-bottom: var(--header-border-color) solid 1px;
   content: "";
   height: var(--header-bg-height);
+  left: 0;
   position: absolute;
+  top: 0;
   width: 100%;
   z-index: -1;
 }
@@ -420,7 +426,6 @@ form.board-posting-create-form-inline .label {
 .user-profile-header {
   display: flex;
   justify-content: space-between;
-  padding: 40px;
 }
 
 .user-profile-header-column {
@@ -490,7 +495,6 @@ form.board-posting-create-form-inline .label {
   display: grid;
   grid-gap: 2rem;
   grid-template-columns: repeat(auto-fill, minmax(var(--column-min-width), 1fr));
-  padding: 0 40px;
 }
 
 .user-profile-detail-block h2 {
