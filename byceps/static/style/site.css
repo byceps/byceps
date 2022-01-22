@@ -400,16 +400,22 @@ form.board-posting-create-form-inline .label {
 
 /* user profile */
 
+.user-profile {
+  --header-bg-color: #f4f4f4;
+  --header-bg-height: 104px;
+  --header-border-color: #dddddd;
+}
+
 .user-profile-background {
-  background-color: #f4f4f4;
-  border-bottom: #dddddd solid 1px;
-  height: 104px;
+  background-color: var(--header-bg-color);
+  border-bottom: var(--header-border-color) solid 1px;
+  height: var(--header-bg-height);
 }
 
 .user-profile-header {
   display: flex;
   justify-content: space-between;
-  margin-top: -104px;
+  margin-top: calc(var(--header-bg-height) * -1);
   padding: 40px;
 }
 

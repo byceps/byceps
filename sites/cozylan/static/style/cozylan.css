@@ -266,7 +266,7 @@ table.index {
   background-color: var(--bg-color-light);
 }
 
-.user-profile-background {
-  background-color: var(--bg-color-light);
-  border-bottom-color: var(--border-color);
+.user-profile {
+  --header-bg-color: var(--bg-color-light);
+  --header-border-color: var(--border-color);
 }
