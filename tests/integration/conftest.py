@@ -79,7 +79,7 @@ def admin_app(make_admin_app) -> Iterator[Flask]:
     with app.app_context():
         set_up_database()
         yield app
-        tear_down_database()
+        # tear_down_database()
 
 
 @pytest.fixture(scope='session')
