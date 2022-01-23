@@ -7,29 +7,30 @@ import pytest
 
 from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import log_service as order_log_service
+from byceps.services.shop.order.transfer.order import Order
 from byceps.services.ticketing import ticket_service, ticket_bundle_service
 
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
 
 @pytest.fixture(scope='module')
-def ticket_quantity():
+def ticket_quantity() -> int:
     return 5
 
 
 @pytest.fixture(scope='module')
-def bundle_quantity():
+def bundle_quantity() -> int:
     return 2
 
 
 @pytest.fixture
-def order(article, bundle_quantity, storefront, orderer):
+def order(article, bundle_quantity, storefront, orderer) -> Order:
     articles_with_quantity = [(article, bundle_quantity)]
     return place_order(storefront.id, orderer, articles_with_quantity)
 
 
 @pytest.fixture
-def order_action(article, ticket_category, ticket_quantity):
+def order_action(article, ticket_category, ticket_quantity) -> None:
     action_registry_service.register_ticket_bundles_creation(
         article.item_number, ticket_category.id, ticket_quantity
     )
@@ -45,7 +46,7 @@ def test_create_ticket_bundles(
     orderer,
     order,
     order_action,
-):
+) -> None:
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
 
@@ -72,7 +73,7 @@ def test_create_ticket_bundles(
 # helpers
 
 
-def tear_down_bundles(tickets):
+def tear_down_bundles(tickets) -> None:
     bundle_ids = {t.bundle_id for t in tickets}
 
     for ticket in tickets:

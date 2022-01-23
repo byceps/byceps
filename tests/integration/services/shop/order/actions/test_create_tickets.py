@@ -11,6 +11,7 @@ from pytest import raises
 from byceps.events.ticketing import TicketsSold
 from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import log_service as order_log_service
+from byceps.services.shop.order.transfer.order import Order
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.ticket_creation_service import (
     TicketCreationFailed,
@@ -20,18 +21,18 @@ from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
 
 @pytest.fixture(scope='module')
-def ticket_quantity():
+def ticket_quantity() -> int:
     return 4
 
 
 @pytest.fixture
-def order(article, ticket_quantity, storefront, orderer):
+def order(article, ticket_quantity, storefront, orderer) -> Order:
     articles_with_quantity = [(article, ticket_quantity)]
     return place_order(storefront.id, orderer, articles_with_quantity)
 
 
 @pytest.fixture
-def order_action(article, ticket_category):
+def order_action(article, ticket_category) -> None:
     action_registry_service.register_tickets_creation(
         article.item_number, ticket_category.id
     )
@@ -49,7 +50,7 @@ def test_create_tickets(
     orderer,
     order,
     order_action,
-):
+) -> None:
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
 
@@ -93,7 +94,7 @@ def test_create_tickets_with_same_code_fails(
     orderer,
     order,
     order_action,
-):
+) -> None:
     generate_ticket_code_mock.side_effect = lambda: 'EQUAL'
 
     with raises(TicketCreationFailed):
@@ -111,7 +112,7 @@ def test_create_tickets_with_temporarily_equal_code_and_retry_succeeds(
     orderer,
     order,
     order_action,
-):
+) -> None:
     code_generation_retries = 4  # Depends on implemented default value.
     necessary_outer_retries = 5  # Depends on argument to `retry` decorator.
     codes = ['EQUAL'] * code_generation_retries * necessary_outer_retries

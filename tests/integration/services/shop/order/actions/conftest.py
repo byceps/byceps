@@ -5,7 +5,12 @@
 
 import pytest
 
+from byceps.services.party.transfer.models import Party
 from byceps.services.shop.article.transfer.models import Article
+from byceps.services.shop.order.transfer.order import Orderer
+from byceps.services.shop.shop.transfer.models import Shop
+from byceps.services.ticketing.transfer.models import TicketCategory
+from byceps.services.user.transfer.models import User
 
 from tests.helpers import generate_token
 from tests.integration.services.shop.helpers import (
@@ -15,21 +20,21 @@ from tests.integration.services.shop.helpers import (
 
 
 @pytest.fixture
-def article(shop) -> Article:
+def article(shop: Shop) -> Article:
     return create_article(shop.id, total_quantity=10)
 
 
 @pytest.fixture
-def ticket_category(make_ticket_category, party):
+def ticket_category(make_ticket_category, party: Party) -> TicketCategory:
     title = 'Deluxe-' + generate_token()
     return make_ticket_category(party.id, title)
 
 
 @pytest.fixture(scope='module')
-def orderer_user(make_user):
+def orderer_user(make_user) -> User:
     return make_user()
 
 
 @pytest.fixture(scope='module')
-def orderer(orderer_user):
+def orderer(orderer_user: User) -> Orderer:
     return create_orderer(orderer_user.id)
