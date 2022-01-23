@@ -5,7 +5,6 @@
 
 from __future__ import annotations
 from pathlib import Path
-from secrets import token_hex
 from tempfile import TemporaryDirectory
 from typing import Any, Iterator, Optional
 
@@ -137,7 +136,7 @@ def make_admin(make_user):
         admin = make_user(screen_name, *args, **kwargs)
 
         # Create role.
-        role_id = RoleID(f'admin_{token_hex(3)}')
+        role_id = RoleID(f'admin_{generate_token()}')
         permission_ids = [PermissionID(p_id) for p_id in permission_id_strs]
         create_role_with_permissions_assigned(role_id, permission_ids)
 
