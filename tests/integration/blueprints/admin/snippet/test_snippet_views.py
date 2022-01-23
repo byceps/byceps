@@ -14,12 +14,8 @@ def test_index_for_scope(snippet_admin_client, global_scope):
     assert response.status_code == 200
 
 
-def test_view_current_version(
-    snippet_admin_client, global_scope, snippet_admin
-):
-    _, event = snippet_service.create_document(
-        global_scope, 'test1', snippet_admin.id, 'Title', 'Body'
-    )
+def test_view_current_version(snippet_admin_client, make_document):
+    _, event = make_document()
     snippet_id = event.snippet_id
 
     url = f'/admin/snippets/snippets/{snippet_id}/current_version'
@@ -30,10 +26,8 @@ def test_view_current_version(
     snippet_service.delete_snippet(snippet_id)
 
 
-def test_view_version(snippet_admin_client, global_scope, snippet_admin):
-    version, event = snippet_service.create_document(
-        global_scope, 'test1', snippet_admin.id, 'Title', 'Body'
-    )
+def test_view_version(snippet_admin_client, make_document):
+    version, event = make_document()
     snippet_id = event.snippet_id
 
     url = f'/admin/snippets/versions/{version.id}'
@@ -44,10 +38,8 @@ def test_view_version(snippet_admin_client, global_scope, snippet_admin):
     snippet_service.delete_snippet(snippet_id)
 
 
-def test_history(snippet_admin_client, global_scope, snippet_admin):
-    _, event = snippet_service.create_document(
-        global_scope, 'test1', snippet_admin.id, 'Title', 'Body'
-    )
+def test_history(snippet_admin_client, make_document):
+    _, event = make_document()
     snippet_id = event.snippet_id
 
     url = f'/admin/snippets/snippets/{snippet_id}/history'
@@ -58,10 +50,8 @@ def test_history(snippet_admin_client, global_scope, snippet_admin):
     snippet_service.delete_snippet(snippet_id)
 
 
-def test_compare_documents(snippet_admin_client, global_scope, snippet_admin):
-    version1, event = snippet_service.create_document(
-        global_scope, 'document1', snippet_admin.id, 'Title v1', 'Body v1'
-    )
+def test_compare_documents(snippet_admin_client, snippet_admin, make_document):
+    version1, event = make_document()
     snippet_id = event.snippet_id
 
     version2, _ = snippet_service.update_document(
@@ -76,10 +66,8 @@ def test_compare_documents(snippet_admin_client, global_scope, snippet_admin):
     snippet_service.delete_snippet(snippet_id)
 
 
-def test_compare_fragments(snippet_admin_client, global_scope, snippet_admin):
-    version1, event = snippet_service.create_fragment(
-        global_scope, 'fragment1', snippet_admin.id, 'Body v1'
-    )
+def test_compare_fragments(snippet_admin_client, snippet_admin, make_fragment):
+    version1, event = make_fragment()
     snippet_id = event.snippet_id
 
     version2, _ = snippet_service.update_fragment(
@@ -94,10 +82,14 @@ def test_compare_fragments(snippet_admin_client, global_scope, snippet_admin):
     snippet_service.delete_snippet(snippet_id)
 
 
-def test_create_document_form(snippet_admin_client, global_scope):
+def test_create_document_form(
+    snippet_admin_client, global_scope, make_fragment
+):
     scope = global_scope
 
-    url = f'/admin/snippets/for_scope/{scope.type_}/{scope.name}/documents/create'
+    url = (
+        f'/admin/snippets/for_scope/{scope.type_}/{scope.name}/documents/create'
+    )
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
@@ -105,15 +97,15 @@ def test_create_document_form(snippet_admin_client, global_scope):
 def test_create_fragment_form(snippet_admin_client, global_scope):
     scope = global_scope
 
-    url = f'/admin/snippets/for_scope/{scope.type_}/{scope.name}/fragments/create'
+    url = (
+        f'/admin/snippets/for_scope/{scope.type_}/{scope.name}/fragments/create'
+    )
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_delete_snippet(snippet_admin_client, global_scope, snippet_admin):
-    _, event = snippet_service.create_fragment(
-        global_scope, 'fragment1', snippet_admin.id, 'Body v1'
-    )
+def test_delete_snippet(snippet_admin_client, make_fragment):
+    _, event = make_fragment()
     snippet_id = event.snippet_id
 
     url = f'/admin/snippets/snippets/{snippet_id}'

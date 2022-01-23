@@ -15,10 +15,8 @@ def test_index(snippet_admin_client, site):
     assert response.status_code == 200
 
 
-def test_site_select_form(snippet_admin_client, global_scope, snippet_admin):
-    _, event = snippet_service.create_fragment(
-        global_scope, 'fragment1', snippet_admin.id, 'Body v1'
-    )
+def test_site_select_form(snippet_admin_client, make_fragment):
+    _, event = make_fragment()
     snippet_id = event.snippet_id
 
     url = f'/admin/snippets/mountpoints/for_snippet/{snippet_id}/select_site'
@@ -29,10 +27,8 @@ def test_site_select_form(snippet_admin_client, global_scope, snippet_admin):
     snippet_service.delete_snippet(snippet_id)
 
 
-def test_create_form(snippet_admin_client, site, global_scope, snippet_admin):
-    _, event = snippet_service.create_fragment(
-        global_scope, 'fragment1', snippet_admin.id, 'Body v1'
-    )
+def test_create_form(snippet_admin_client, site, make_fragment):
+    _, event = make_fragment()
     snippet_id = event.snippet_id
 
     url = f'/admin/snippets/mountpoints/for_snippet/{snippet_id}/for_site/{site.id}/create'
@@ -43,10 +39,8 @@ def test_create_form(snippet_admin_client, site, global_scope, snippet_admin):
     snippet_service.delete_snippet(snippet_id)
 
 
-def test_create(snippet_admin_client, site, global_scope, snippet_admin):
-    _, event = snippet_service.create_fragment(
-        global_scope, 'snippet1', snippet_admin.id, 'Body'
-    )
+def test_create(snippet_admin_client, site, make_fragment):
+    _, event = make_fragment()
     snippet_id = event.snippet_id
 
     url = f'/admin/snippets/mountpoints/for_snippet/{snippet_id}/for_site/{site.id}'
@@ -71,10 +65,8 @@ def test_create(snippet_admin_client, site, global_scope, snippet_admin):
     snippet_service.delete_snippet(snippet_id)
 
 
-def test_delete(snippet_admin_client, site, global_scope, snippet_admin):
-    _, event = snippet_service.create_fragment(
-        global_scope, 'snippet2', snippet_admin.id, 'Body'
-    )
+def test_delete(snippet_admin_client, site, make_fragment):
+    _, event = make_fragment()
     snippet_id = event.snippet_id
 
     mountpoint = mountpoint_service.create_mountpoint(
