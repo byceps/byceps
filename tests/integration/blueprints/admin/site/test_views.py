@@ -51,9 +51,6 @@ def test_create(site_admin_client, brand):
     assert site.board_id is None
     assert site.storefront_id is None
 
-    # Clean up.
-    site_service.delete_site(site_id)
-
 
 def test_update_form(site_admin_client, site):
     url = f'/admin/sites/sites/{site.id}/update'

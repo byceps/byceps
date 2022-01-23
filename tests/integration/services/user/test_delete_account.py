@@ -111,6 +111,3 @@ def test_delete_account(admin_app, role, make_user):
     # authorization
     assert authorization_service.find_role_ids_for_user(user_id) == set()
     assert authorization_service.get_permission_ids_for_user(user_id) == set()
-
-    # Clean up.
-    authorization_service.deassign_all_roles_from_user(user.id)

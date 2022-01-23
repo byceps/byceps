@@ -42,6 +42,3 @@ def test_create(news_admin_client, brand):
     assert channel.id == channel_id
     assert channel.brand_id == brand.id
     assert channel.url_prefix == url_prefix
-
-    # Clean up.
-    channel_service.delete_channel(channel_id)

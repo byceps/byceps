@@ -20,9 +20,6 @@ def test_assign_permission_to_role(admin_app, role):
     role_permission_ids_after = get_permission_ids_for_role(role)
     assert PERMISSION_ID in role_permission_ids_after
 
-    # Clean up.
-    service.deassign_permission_from_role(PERMISSION_ID, role.id)
-
 
 def test_deassign_permission_from_role(admin_app, role):
     service.assign_permission_to_role(PERMISSION_ID, role.id)

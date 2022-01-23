@@ -53,9 +53,6 @@ def test_create(user_badge_admin_client, brand):
     assert badge.brand_id == brand.id
     assert badge.featured
 
-    # Clean up.
-    badge_service.delete_badge(badge.id)
-
 
 def test_update_form(user_badge_admin_client, badge):
     url = f'/admin/user_badges/badges/{badge.id}/update'

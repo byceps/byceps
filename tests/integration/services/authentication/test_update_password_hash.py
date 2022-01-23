@@ -44,9 +44,6 @@ def test_update_password_hash(site_app, admin_user, make_user):
         'initiator_id': str(admin_id),
     }
 
-    # Clean up.
-    password_service.delete_password_hash(user_id)
-
 
 # helpers
 

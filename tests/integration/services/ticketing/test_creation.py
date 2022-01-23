@@ -11,7 +11,6 @@ from byceps.services.ticketing import (
     log_service,
     ticket_code_service,
     ticket_creation_service,
-    ticket_service,
 )
 
 
@@ -21,9 +20,6 @@ def test_create_ticket(admin_app, category, ticket_owner):
     )
 
     assert_created_ticket(ticket, category.id, ticket_owner.id)
-
-    # Clean up.
-    ticket_service.delete_ticket(ticket.id)
 
 
 @patch('byceps.services.ticketing.ticket_code_service._generate_ticket_code')
@@ -42,9 +38,6 @@ def test_create_ticket_with_existing_code(
             category.party_id, category.id, ticket_owner.id
         )
 
-    # Clean up.
-    ticket_service.delete_ticket(existing_ticket.id)
-
 
 def test_create_tickets(admin_app, category, ticket_owner):
     quantity = 3
@@ -54,10 +47,6 @@ def test_create_tickets(admin_app, category, ticket_owner):
 
     for ticket in tickets:
         assert_created_ticket(ticket, category.id, ticket_owner.id)
-
-    # Clean up.
-    for ticket in tickets:
-        ticket_service.delete_ticket(ticket.id)
 
 
 @patch('byceps.services.ticketing.ticket_code_service._generate_ticket_code')
