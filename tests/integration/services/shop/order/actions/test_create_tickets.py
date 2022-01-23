@@ -9,9 +9,8 @@ import pytest
 from pytest import raises
 
 from byceps.events.ticketing import TicketsSold
-from byceps.services.shop.order import action_service, action_registry_service
+from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import log_service as order_log_service
-from byceps.services.shop.order import service as order_service
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.ticket_creation_service import (
     TicketCreationFailed,
@@ -28,11 +27,7 @@ def ticket_quantity():
 @pytest.fixture
 def order(article, ticket_quantity, storefront, orderer):
     articles_with_quantity = [(article, ticket_quantity)]
-    order = place_order(storefront.id, orderer, articles_with_quantity)
-
-    yield order
-
-    order_service.delete_order(order.id)
+    return place_order(storefront.id, orderer, articles_with_quantity)
 
 
 @pytest.fixture
@@ -40,10 +35,6 @@ def order_action(article, ticket_category):
     action_registry_service.register_tickets_creation(
         article.item_number, ticket_category.id
     )
-
-    yield
-
-    action_service.delete_actions_for_article(article.item_number)
 
 
 @patch('byceps.signals.ticketing.tickets_sold.send')
@@ -90,10 +81,6 @@ def test_create_tickets(
         None, event=tickets_sold_event
     )
 
-    # Clean up.
-    for ticket in tickets_after_paid:
-        ticket_service.delete_ticket(ticket.id)
-
 
 @patch('byceps.services.ticketing.ticket_code_service._generate_ticket_code')
 def test_create_tickets_with_same_code_fails(
@@ -139,7 +126,3 @@ def test_create_tickets_with_temporarily_equal_code_and_retry_succeeds(
 
     tickets_after_paid = get_tickets_for_order(order)
     assert len(tickets_after_paid) == ticket_quantity
-
-    # Clean up.
-    for ticket in tickets_after_paid:
-        ticket_service.delete_ticket(ticket.id)

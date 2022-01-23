@@ -5,9 +5,8 @@
 
 import pytest
 
-from byceps.services.shop.order import action_service, action_registry_service
+from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import log_service as order_log_service
-from byceps.services.shop.order import service as order_service
 from byceps.services.ticketing import ticket_service, ticket_bundle_service
 
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
@@ -26,11 +25,7 @@ def bundle_quantity():
 @pytest.fixture
 def order(article, bundle_quantity, storefront, orderer):
     articles_with_quantity = [(article, bundle_quantity)]
-    order = place_order(storefront.id, orderer, articles_with_quantity)
-
-    yield order
-
-    order_service.delete_order(order.id)
+    return place_order(storefront.id, orderer, articles_with_quantity)
 
 
 @pytest.fixture
@@ -38,10 +33,6 @@ def order_action(article, ticket_category, ticket_quantity):
     action_registry_service.register_ticket_bundles_creation(
         article.item_number, ticket_category.id, ticket_quantity
     )
-
-    yield
-
-    action_service.delete_actions_for_article(article.item_number)
 
 
 def test_create_ticket_bundles(
