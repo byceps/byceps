@@ -69,12 +69,9 @@ def test_create(news_admin_client, channel, news_admin):
     assert item.external_url == 'https://newssite.example/posts/what-a-blast'
     assert (
         item.image_url_path
-        == '/data/global/news_channels/test-channel-1/party-action.jpeg'
+        == f'/data/global/news_channels/{channel.id}/party-action.jpeg'
     )
     assert item.images == []
-
-    # Clean up.
-    item_service.delete_item(item.id)
 
 
 def test_update_form(news_admin_client, item):

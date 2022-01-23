@@ -3,12 +3,15 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Optional
+
 import pytest
 
+from byceps.services.brand.transfer.models import Brand
 from byceps.services.news import channel_service, service as item_service
-from byceps.services.news.transfer.models import BodyFormat
+from byceps.services.news.transfer.models import BodyFormat, Channel, ChannelID
 
-from tests.helpers import log_in_user
+from tests.helpers import generate_token, log_in_user
 
 
 @pytest.fixture(scope='package')
@@ -32,28 +35,31 @@ def news_admin_client(make_client, admin_app, news_admin):
     return make_client(admin_app, user_id=news_admin.id)
 
 
-@pytest.fixture()
-def channel(brand):
-    channel = channel_service.create_channel(
-        brand.id, 'test-channel-1', 'https://newssite.example/posts/'
-    )
+@pytest.fixture
+def make_channel(brand: Brand):
+    def _wrapper(channel_id: Optional[ChannelID] = None) -> Channel:
+        if channel_id is None:
+            channel_id = ChannelID(generate_token())
 
-    yield channel
+        return channel_service.create_channel(
+            brand.id, channel_id, 'https://newssite.example/posts/'
+        )
 
-    channel_service.delete_channel(channel.id)
+    return _wrapper
 
 
-@pytest.fixture()
+@pytest.fixture
+def channel(make_channel):
+    return make_channel()
+
+
+@pytest.fixture
 def item(channel, news_admin):
-    item = item_service.create_item(
+    return item_service.create_item(
         channel.id,
-        'save-the-date',
+        f'save-the-date-{generate_token()}',
         news_admin.id,
         'Save the Date!',
         'Party will be next year.',
         BodyFormat.html,
     )
-
-    yield item
-
-    item_service.delete_item(item.id)
