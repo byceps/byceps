@@ -34,7 +34,6 @@ from byceps.services.shop.storefront.transfer.models import (
     Storefront,
     StorefrontID,
 )
-from byceps.services.site import service as site_service
 from byceps.services.site.transfer.models import Site, SiteID
 from byceps.services.ticketing import (
     category_service as ticketing_category_service,
@@ -209,10 +208,8 @@ def email_config(make_email_config, brand: Brand) -> EmailConfig:
 
 
 @pytest.fixture(scope='session')
-def site(
-    email_config: EmailConfig, party: Party, board: Board
-) -> Iterator[Site]:
-    site = create_site(
+def site(email_config: EmailConfig, party: Party, board: Board) -> Site:
+    return create_site(
         SiteID('acmecon-2014-website'),
         party.brand_id,
         title='ACMECon 2014 website',
@@ -220,8 +217,6 @@ def site(
         party_id=party.id,
         board_id=board.id,
     )
-    yield site
-    site_service.delete_site(site.id)
 
 
 @pytest.fixture(scope='session')

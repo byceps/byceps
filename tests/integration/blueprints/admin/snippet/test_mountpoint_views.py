@@ -55,9 +55,6 @@ def test_create(snippet_admin_client, site, make_fragment):
     assert mountpoint.url_path == url_path
     assert mountpoint.snippet_id == snippet_id
 
-    # Clean up.
-    mountpoint_service.delete_mountpoint(mountpoint.id)
-
 
 def test_delete(snippet_admin_client, site, make_fragment):
     _, event = make_fragment()
