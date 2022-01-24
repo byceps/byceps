@@ -20,6 +20,13 @@ class MultiCheckboxField(SelectMultipleField):
     widget = ListWidget(prefix_label=False)
     option_widget = CheckboxInput()
 
+    class _Option(SelectMultipleField._Option):
+        def __init__(self, *args, **kwargs) -> None:
+            # Do not pass validators to checkbox sub-widgets to prevent
+            # them from always having the `required` flag set.
+            kwargs.pop('validators', None)
+            super().__init__(*args, **kwargs)
+
 
 class UserScreenNameField(Field):
     """A field which takes a user screen name and stores the
