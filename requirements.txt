@@ -16,7 +16,7 @@ mistletoe==0.8.1
 pillow==9.0.0
 psycopg2-binary==2.9.3
 qrcode==7.3.1
-redis==4.1.0
+redis==4.1.1
 requests==2.27.1
 rq==1.10.1
 rq-dashboard==0.6.1
