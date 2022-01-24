@@ -3,44 +3,29 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterator
-
 import pytest
 
+from byceps.services.brand.transfer.models import Brand
 from byceps.services.orga import service as orga_service
 from byceps.services.orga_team import service as orga_team_service
-from byceps.services.orga_team.transfer.models import OrgaTeam
-from byceps.services.party.transfer.models import Party
-
-
-@pytest.fixture(scope='module')
-def team_support(party: Party) -> Iterator[OrgaTeam]:
-    team = orga_team_service.create_team(party.id, 'Support')
-    yield team
-    orga_team_service.delete_team(team.id)
-
-
-@pytest.fixture(scope='module')
-def team_tournaments(party: Party) -> Iterator[OrgaTeam]:
-    team = orga_team_service.create_team(party.id, 'Tournaments')
-    yield team
-    orga_team_service.delete_team(team.id)
 
 
 def test_membership_create_form(
-    orga_team_admin_client, team_tournaments: OrgaTeam
+    orga_team_admin_client, brand: Brand, make_party, make_team
 ) -> None:
-    team = team_tournaments
+    party = make_party(brand.id)
+    team = make_team(party.id)
     url = f'/admin/orga_teams/teams/{team.id}/memberships/create'
     response = orga_team_admin_client.get(url)
     assert response.status_code == 200
 
 
 def test_membership_create(
-    orga_team_admin_client, party: Party, team_tournaments: OrgaTeam, make_user
+    orga_team_admin_client, brand: Brand, make_party, make_team, make_user
 ) -> None:
     user = make_user()
-    team = team_tournaments
+    party = make_party(brand.id)
+    team = make_team(party.id)
     orga_flag = orga_service.add_orga_flag(party.brand_id, user.id, user.id)
 
     assert orga_team_service.count_memberships_for_party(party.id) == 0
@@ -67,10 +52,11 @@ def test_membership_create(
 
 
 def test_membership_update_form(
-    orga_team_admin_client, party: Party, team_tournaments: OrgaTeam, make_user
+    orga_team_admin_client, brand: Brand, make_party, make_team, make_user
 ) -> None:
     user = make_user()
-    team = team_tournaments
+    party = make_party(brand.id)
+    team = make_team(party.id)
     membership = orga_team_service.create_membership(team.id, user.id, 'PUBG')
 
     url = f'/admin/orga_teams/memberships/{membership.id}/update'
@@ -82,15 +68,12 @@ def test_membership_update_form(
 
 
 def test_membership_update(
-    orga_team_admin_client,
-    party: Party,
-    team_support: OrgaTeam,
-    team_tournaments: OrgaTeam,
-    make_user,
+    orga_team_admin_client, brand: Brand, make_party, make_team, make_user
 ) -> None:
     user = make_user()
-    team1 = team_support
-    team2 = team_tournaments
+    party = make_party(brand.id)
+    team1 = make_team(party.id, 'Support')
+    team2 = make_team(party.id, 'Tournaments')
     membership_before = orga_team_service.create_membership(
         team1.id, user.id, 'all'
     )
@@ -116,10 +99,11 @@ def test_membership_update(
 
 
 def test_membership_remove(
-    orga_team_admin_client, party: Party, team_tournaments: OrgaTeam, make_user
+    orga_team_admin_client, brand: Brand, make_party, make_team, make_user
 ) -> None:
     user = make_user()
-    team = team_tournaments
+    party = make_party(brand.id)
+    team = make_team(party.id)
     membership = orga_team_service.create_membership(team.id, user.id, 'CS:GO')
 
     url = f'/admin/orga_teams/memberships/{membership.id}'
