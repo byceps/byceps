@@ -3,11 +3,9 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.brand.transfer.models import Brand, BrandID
+from byceps.services.brand.transfer.models import Brand
 from byceps.services.orga_team import service as orga_team_service
 from byceps.services.party.transfer.models import Party
-
-from tests.helpers import create_party as _create_party
 
 
 def test_teams_for_party(orga_team_admin_client, party: Party) -> None:
@@ -42,10 +40,10 @@ def test_team_create_and_delete(orga_team_admin_client, party: Party) -> None:
 
 
 def test_teams_copy_form_with_target_party_teams(
-    orga_team_admin_client, brand: Brand
+    orga_team_admin_client, brand: Brand, make_party
 ) -> None:
-    source_party = create_source_party(brand.id)
-    target_party = create_target_party(brand.id)
+    source_party = make_party(brand.id)
+    target_party = make_party(brand.id)
 
     team = orga_team_service.create_team(target_party.id, 'Security')
 
@@ -58,9 +56,9 @@ def test_teams_copy_form_with_target_party_teams(
 
 
 def test_teams_copy_form_without_source_teams(
-    orga_team_admin_client, brand: Brand
+    orga_team_admin_client, brand: Brand, make_party
 ) -> None:
-    target_party = create_target_party(brand.id)
+    target_party = make_party(brand.id)
 
     url = f'/admin/orga_teams/teams/{target_party.id}/copy'
     response = orga_team_admin_client.get(url)
@@ -68,10 +66,10 @@ def test_teams_copy_form_without_source_teams(
 
 
 def test_teams_copy_form_with_source_teams(
-    orga_team_admin_client, brand: Brand
+    orga_team_admin_client, brand: Brand, make_party
 ) -> None:
-    source_party = create_source_party(brand.id)
-    target_party = create_target_party(brand.id)
+    source_party = make_party(brand.id)
+    target_party = make_party(brand.id)
 
     team = orga_team_service.create_team(source_party.id, 'Tech')
 
@@ -83,9 +81,9 @@ def test_teams_copy_form_with_source_teams(
     orga_team_service.delete_team(team.id)
 
 
-def test_teams_copy(orga_team_admin_client, brand: Brand) -> None:
-    source_party = create_source_party(brand.id)
-    target_party = create_target_party(brand.id)
+def test_teams_copy(orga_team_admin_client, brand: Brand, make_party) -> None:
+    source_party = make_party(brand.id)
+    target_party = make_party(brand.id)
 
     team1 = orga_team_service.create_team(source_party.id, 'Support')
     team2 = orga_team_service.create_team(source_party.id, 'Tech')
@@ -105,11 +103,3 @@ def test_teams_copy(orga_team_admin_client, brand: Brand) -> None:
     new_teams = orga_team_service.get_teams_for_party(target_party.id)
     for team in {team1, team2}.union(new_teams):
         orga_team_service.delete_team(team.id)
-
-
-def create_source_party(brand_id: BrandID) -> Party:
-    return _create_party(brand_id)
-
-
-def create_target_party(brand_id: BrandID) -> Party:
-    return _create_party(brand_id)

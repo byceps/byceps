@@ -22,8 +22,6 @@ from byceps.services.ticketing.exceptions import (
     UserAlreadyCheckedIn,
 )
 
-from tests.helpers import create_party
-
 
 @pytest.fixture
 def ticket(admin_app, category, ticket_owner):
@@ -80,9 +78,9 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
 
 
 def test_check_in_user_with_ticket_for_another_party(
-    admin_app, brand, ticket, ticketing_admin
+    admin_app, brand, make_party, ticket, ticketing_admin
 ):
-    other_party = create_party(brand.id)
+    other_party = make_party(brand.id)
 
     with raises(TicketBelongsToDifferentParty):
         check_in_user(other_party.id, ticket.id, ticketing_admin.id)
