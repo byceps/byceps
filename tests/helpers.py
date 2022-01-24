@@ -171,11 +171,17 @@ def create_role_with_permissions_assigned(
 
 def create_party(
     brand_id: BrandID,
-    party_id: PartyID = PartyID('acmecon-2014'),
-    title: str = 'ACMECon 2014',
+    party_id: Optional[PartyID] = None,
+    title: Optional[str] = None,
     *,
     max_ticket_quantity: Optional[int] = None,
 ) -> Party:
+    if party_id is None:
+        party_id = PartyID(generate_token())
+
+    if title is None:
+        title = generate_token()
+
     starts_at = datetime(2014, 10, 24, 16, 0)
     ends_at = datetime(2014, 10, 26, 13, 0)
 

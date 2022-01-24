@@ -5,9 +5,9 @@
 
 from byceps.services.brand.transfer.models import Brand, BrandID
 from byceps.services.orga_team import service as orga_team_service
-from byceps.services.party.transfer.models import Party, PartyID
+from byceps.services.party.transfer.models import Party
 
-from tests.helpers import create_party as _create_party, generate_token
+from tests.helpers import create_party as _create_party
 
 
 def test_teams_for_party(orga_team_admin_client, party: Party) -> None:
@@ -108,16 +108,8 @@ def test_teams_copy(orga_team_admin_client, brand: Brand) -> None:
 
 
 def create_source_party(brand_id: BrandID) -> Party:
-    return _create_party(
-        brand_id,
-        party_id=PartyID(f'source-{generate_token()}'),
-        title=f'Source-{generate_token()}',
-    )
+    return _create_party(brand_id)
 
 
 def create_target_party(brand_id: BrandID) -> Party:
-    return _create_party(
-        brand_id,
-        party_id=PartyID(f'target-{generate_token()}'),
-        title=f'Target-{generate_token()}',
-    )
+    return _create_party(brand_id)
