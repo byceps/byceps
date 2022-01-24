@@ -9,11 +9,16 @@ byceps.util.forms
 from typing import Optional
 
 from flask_babel import lazy_gettext
-from wtforms import Field
-from wtforms.widgets import TextInput
+from wtforms import Field, SelectMultipleField
+from wtforms.widgets import CheckboxInput, ListWidget, TextInput
 
 from ..services.user import service as user_service
 from ..services.user.transfer.models import User
+
+
+class MultiCheckboxField(SelectMultipleField):
+    widget = ListWidget(prefix_label=False)
+    option_widget = CheckboxInput()
 
 
 class UserScreenNameField(Field):

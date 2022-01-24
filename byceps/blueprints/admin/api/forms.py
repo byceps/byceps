@@ -9,17 +9,12 @@ byceps.blueprints.admin.api.forms
 from __future__ import annotations
 
 from flask_babel import lazy_gettext
-from wtforms import SelectMultipleField, StringField
+from wtforms import StringField
 from wtforms.validators import InputRequired, Optional
-from wtforms.widgets import CheckboxInput, ListWidget
 
 from ....util.authorization import permission_registry
+from ....util.forms import MultiCheckboxField
 from ....util.l10n import LocalizedForm
-
-
-class MultiCheckboxField(SelectMultipleField):
-    widget = ListWidget(prefix_label=False)
-    option_widget = CheckboxInput()
 
 
 def _get_permission_choices() -> list[tuple[str, str]]:
