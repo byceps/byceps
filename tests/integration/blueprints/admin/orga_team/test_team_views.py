@@ -3,25 +3,26 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.services.brand.transfer.models import Brand, BrandID
 from byceps.services.orga_team import service as orga_team_service
 from byceps.services.party.transfer.models import Party, PartyID
 
 from tests.helpers import create_party as _create_party, generate_token
 
 
-def test_teams_for_party(orga_team_admin_client, party):
+def test_teams_for_party(orga_team_admin_client, party: Party) -> None:
     url = f'/admin/orga_teams/teams/{party.id}'
     response = orga_team_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_team_create_form(orga_team_admin_client, party):
+def test_team_create_form(orga_team_admin_client, party: Party) -> None:
     url = f'/admin/orga_teams/teams/{party.id}/create'
     response = orga_team_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_team_create_and_delete(orga_team_admin_client, party):
+def test_team_create_and_delete(orga_team_admin_client, party: Party) -> None:
     assert orga_team_service.count_teams_for_party(party.id) == 0
 
     url = f'/admin/orga_teams/teams/{party.id}'
@@ -40,7 +41,9 @@ def test_team_create_and_delete(orga_team_admin_client, party):
     assert orga_team_service.count_teams_for_party(party.id) == 0
 
 
-def test_teams_copy_form_with_target_party_teams(orga_team_admin_client, brand):
+def test_teams_copy_form_with_target_party_teams(
+    orga_team_admin_client, brand: Brand
+) -> None:
     source_party = create_source_party(brand.id)
     target_party = create_target_party(brand.id)
 
@@ -54,7 +57,9 @@ def test_teams_copy_form_with_target_party_teams(orga_team_admin_client, brand):
     orga_team_service.delete_team(team.id)
 
 
-def test_teams_copy_form_without_source_teams(orga_team_admin_client, brand):
+def test_teams_copy_form_without_source_teams(
+    orga_team_admin_client, brand: Brand
+) -> None:
     target_party = create_target_party(brand.id)
 
     url = f'/admin/orga_teams/teams/{target_party.id}/copy'
@@ -62,7 +67,9 @@ def test_teams_copy_form_without_source_teams(orga_team_admin_client, brand):
     assert response.status_code == 302
 
 
-def test_teams_copy_form_with_source_teams(orga_team_admin_client, brand):
+def test_teams_copy_form_with_source_teams(
+    orga_team_admin_client, brand: Brand
+) -> None:
     source_party = create_source_party(brand.id)
     target_party = create_target_party(brand.id)
 
@@ -76,7 +83,7 @@ def test_teams_copy_form_with_source_teams(orga_team_admin_client, brand):
     orga_team_service.delete_team(team.id)
 
 
-def test_teams_copy(orga_team_admin_client, brand):
+def test_teams_copy(orga_team_admin_client, brand: Brand) -> None:
     source_party = create_source_party(brand.id)
     target_party = create_target_party(brand.id)
 
@@ -100,7 +107,7 @@ def test_teams_copy(orga_team_admin_client, brand):
         orga_team_service.delete_team(team.id)
 
 
-def create_source_party(brand_id) -> Party:
+def create_source_party(brand_id: BrandID) -> Party:
     return _create_party(
         brand_id,
         party_id=PartyID(f'source-{generate_token()}'),
@@ -108,7 +115,7 @@ def create_source_party(brand_id) -> Party:
     )
 
 
-def create_target_party(brand_id) -> Party:
+def create_target_party(brand_id: BrandID) -> Party:
     return _create_party(
         brand_id,
         party_id=PartyID(f'target-{generate_token()}'),
