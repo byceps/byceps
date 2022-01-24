@@ -46,6 +46,7 @@ def test_teams_copy_form_with_target_party_teams(
     target_party = make_party(brand.id)
 
     team = orga_team_service.create_team(target_party.id, 'Security')
+    assert orga_team_service.count_teams_for_party(target_party.id) == 1
 
     url = f'/admin/orga_teams/teams/{target_party.id}/copy'
     response = orga_team_admin_client.get(url)
@@ -60,6 +61,8 @@ def test_teams_copy_form_without_source_teams(
 ) -> None:
     target_party = make_party(brand.id)
 
+    assert orga_team_service.count_teams_for_party(target_party.id) == 0
+
     url = f'/admin/orga_teams/teams/{target_party.id}/copy'
     response = orga_team_admin_client.get(url)
     assert response.status_code == 302
@@ -72,6 +75,8 @@ def test_teams_copy_form_with_source_teams(
     target_party = make_party(brand.id)
 
     team = orga_team_service.create_team(source_party.id, 'Tech')
+
+    assert orga_team_service.count_teams_for_party(target_party.id) == 0
 
     url = f'/admin/orga_teams/teams/{target_party.id}/copy'
     response = orga_team_admin_client.get(url)
