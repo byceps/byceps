@@ -6,6 +6,18 @@
 {% set page_title = _('Article') %}
 {% set layout_main_raw = True %}
 
+{% block head %}
+<style>
+.progress-bar.color--available {
+  background-color: #11aa22;
+}
+
+.progress-bar.color--ordered {
+  background-color: #eecc00;
+}
+</style>
+{%- endblock %}
+
 {% block body %}
 
   <div class="row row--space-between">
@@ -45,6 +57,7 @@
           <th class="hyphenate number" style="width: 15%;">{{ _('Unit price') }}<br>{{ _('Tax rate') }}</th>
           <th class="hyphenate number" style="width: 11%;">{{ _('Quantity') }}<br>{{ _('available') }}</th>
           <th class="number">{{ _('Total') }}</th>
+          <th>{{ _('Availability') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -82,6 +95,12 @@
           </td>
           <td class="number bignumber{% if article.quantity == 0 %} dimmed{% endif %}">{{ article.quantity }}</td>
           <td class="number">{{ article.total_quantity }}</td>
+          <td>
+            <div class="progress">
+              <div class="progress-bar color--available" style="width: calc(100% * {{ article.quantity }} / {{ article.total_quantity }});"></div>
+              <div class="progress-bar color--ordered" style="width: calc(100% * {{ totals_by_article_number[article.item_number][PaymentState.open] }} / {{ article.total_quantity }});"></div>
+            </div>
+          </td>
         </tr>
         {%- endfor %}
         <tr>

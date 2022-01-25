@@ -77,11 +77,20 @@ def index_for_shop(shop_id, page):
         type_: get_article_type_label(type_) for type_ in ArticleType
     }
 
+    totals_by_article_number = {
+        article.item_number: ordered_articles_service.count_ordered_articles(
+            article.item_number
+        )
+        for article in articles.items
+    }
+
     return {
         'shop': shop,
         'brand': brand,
         'articles': articles,
         'article_type_labels_by_type': article_type_labels_by_type,
+        'totals_by_article_number': totals_by_article_number,
+        'PaymentState': PaymentState,
         'per_page': per_page,
     }
 
