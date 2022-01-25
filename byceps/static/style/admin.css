@@ -560,7 +560,12 @@ main .dropdown-menu {
   top: calc(100% - 1px);
 }
 
-.dropdown-item {
+.dropdown-menu {
+  padding: 0.25rem 0;
+}
+
+.dropdown-item,
+.dropdown-label {
   border-radius: 0.25rem;
   margin: 0.25rem 0.5rem;
   padding: 0.25rem 0.5rem;
