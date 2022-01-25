@@ -43,8 +43,8 @@
           <th>{{ _('Description') }}</th>
           <th>{{ _('Type') }}</th>
           <th class="hyphenate number" style="width: 15%;">{{ _('Unit price') }}<br>{{ _('Tax rate') }}</th>
-          <th class="number">{{ _('Total') }}</th>
           <th class="hyphenate number" style="width: 11%;">{{ _('Quantity') }}<br>{{ _('available') }}</th>
+          <th class="number">{{ _('Total') }}</th>
         </tr>
       </thead>
       <tbody>
@@ -80,8 +80,8 @@
             {{- article.price|currencyformat('EUR') }}<br>
             {{- '%s&thinsp;%%'|safe|format(article.tax_rate|tax_rate_as_percentage)|dim -}}
           </td>
-          <td class="number">{{ article.total_quantity }}</td>
           <td class="number bignumber{% if article.quantity == 0 %} dimmed{% endif %}">{{ article.quantity }}</td>
+          <td class="number">{{ article.total_quantity }}</td>
         </tr>
         {%- endfor %}
         <tr>
