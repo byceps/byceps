@@ -18,8 +18,8 @@
         <div class="dropdown">
           <button class="dropdown-toggle button">{{ render_icon('add') }} <span>{{ _('Create article') }}</span> {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
-            {%- for name, label in article_type_names_and_labels %}
-            <li><a class="dropdown-item" href="{{ url_for('.create_form', shop_id=shop.id, type=name) }}">{{ _('Type') }}: {{ label }}</a></li>
+            {%- for type, label in article_type_labels_by_type.items() %}
+            <li><a class="dropdown-item" href="{{ url_for('.create_form', shop_id=shop.id, type=type.name) }}">{{ _('Type') }}: {{ label }}</a></li>
             {%- endfor %}
           </ol>
         </div>
@@ -41,6 +41,7 @@
         <tr>
           <th>{{ _('Item number') }}</th>
           <th>{{ _('Description') }}</th>
+          <th>{{ _('Type') }}</th>
           <th class="hyphenate number" style="width: 15%;">{{ _('Unit price') }}<br>{{ _('Tax rate') }}</th>
           <th class="number">{{ _('Total') }}</th>
           <th class="hyphenate number" style="width: 11%;">{{ _('Quantity') }}<br>{{ _('available') }}</th>
@@ -74,6 +75,7 @@
             <br>{{ render_icon('time') }} {% filter dim %}{{ _('until') }} {{ article.available_until|datetimeformat }}{% endfilter %}
             {%- endif %}
           </td>
+          <td>{{ article_type_labels_by_type[article.type_] }}</td>
           <td class="nowrap number">
             {{- article.price|currencyformat('EUR') }}<br>
             {{- '%s&thinsp;%%'|safe|format(article.tax_rate|tax_rate_as_percentage)|dim -}}

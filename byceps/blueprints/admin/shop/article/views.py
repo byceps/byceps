@@ -73,15 +73,15 @@ def index_for_shop(shop_id, page):
     )
 
     # Inherit order of enum members.
-    article_type_names_and_labels = [
-        (type_.name, get_article_type_label(type_)) for type_ in ArticleType
-    ]
+    article_type_labels_by_type = {
+        type_: get_article_type_label(type_) for type_ in ArticleType
+    }
 
     return {
         'shop': shop,
         'brand': brand,
         'articles': articles,
-        'article_type_names_and_labels': article_type_names_and_labels,
+        'article_type_labels_by_type': article_type_labels_by_type,
         'per_page': per_page,
     }
 
