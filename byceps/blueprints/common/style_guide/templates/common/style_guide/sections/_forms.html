@@ -44,3 +44,23 @@
 
 </form>
 {% endcall %}
+
+  <p>Field prefix and suffix:</p>
+
+{% call render_example() %}
+<div class="mb">
+  <label class="form-label" for="amount_eur">Amount (in EUR)</label>
+  <div class="form-control-wrapper">
+    <input class="form-control" id="amount_eur" name="amount_eur" size=8>
+    <span>€</span>
+  </div>
+</div>
+
+<div class="mb">
+  <label class="form-label" for="amount_eur">Amount (in USD)</label>
+  <div class="form-control-wrapper">
+    <span>$</span>
+    <input class="form-control" id="amount_eur" name="amount_eur" size=8>
+  </div>
+</div>
+{% endcall %}

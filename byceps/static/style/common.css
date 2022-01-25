@@ -397,6 +397,12 @@ label {
   margin-top: 0.125rem;
 }
 
+.form-control-wrapper {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
+
 .form-control {
   display: block;
 }

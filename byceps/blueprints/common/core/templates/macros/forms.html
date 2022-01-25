@@ -1,13 +1,25 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 
-{%- macro form_field(field, class='', note=None) -%}
+{%- macro form_field(field, class='', prefix=None, suffix=None, note=None) -%}
   <div class="mb{% if field.errors %} invalid{% endif %}">
     {{ field.label(class='form-label') }}
+  {%- if prefix is not none or suffix is not none %}
+    <div class="form-control-wrapper">
+  {%- if prefix is not none %}
+    {{ prefix }}
+  {%- endif %}
+  {%- endif %}
     {{ field(class='form-control ' + class, **kwargs) }}
-    {%- if note %}
+  {%- if suffix is not none %}
+    {{ suffix }}
+  {%- endif %}
+  {%- if prefix is not none or suffix is not none %}
+    </div>
+  {%- endif %}
+  {%- if note is not none %}
     <div class="form-note">{{ note }}</div>
-    {%- endif %}
+  {%- endif %}
     {{- _form_field_errors(field) -}}
   </div>
 {%- endmacro %}
