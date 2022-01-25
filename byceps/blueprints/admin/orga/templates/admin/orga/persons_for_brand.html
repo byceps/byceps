@@ -10,10 +10,6 @@
 
 {% block head %}
   <style>
-    .orgas tr td:first-child {
-      vertical-align: middle;
-    }
-
     .orgas th,
     .orgas td {
       line-height: 1.6;
@@ -49,7 +45,7 @@
 
   <div class="box">
     {%- if orgas_with_birthdays %}
-    <table class="index wide orgas">
+    <table class="index index--v-centered wide orgas">
       <thead>
         <tr>
           <th>{{ _('Avatar') }}</th>

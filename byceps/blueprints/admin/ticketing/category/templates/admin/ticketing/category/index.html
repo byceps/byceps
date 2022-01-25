@@ -23,7 +23,7 @@
 
   <div class="box">
     {%- if categories_with_ticket_counts %}
-    <table class="index wide">
+    <table class="index index--v-centered wide">
       <thead>
         <tr>
           <th>{{ _('Title') }}<br>{{ _('ID') }}</th>
@@ -39,7 +39,7 @@
             <td>
               {%- if has_current_user_permission('ticketing.administrate') %}
               <div class="button-row button-row--compact button-row--right">
-                <a href="{{ url_for('.update_form', category_id=category.id) }}" class="button" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
+                <a href="{{ url_for('.update_form', category_id=category.id) }}" class="button button--compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
               </div>
               {%- endif %}
             </td>

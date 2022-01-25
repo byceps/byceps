@@ -336,9 +336,13 @@ table.index > tbody > tr > td {
   border-width: 1px 0;
 }
 
+table.index.index--v-centered th,
+table.index.index--v-centered td {
+  vertical-align: middle;
+}
+
 table.index .bignumber {
   font-size: 1.5rem;
-  vertical-align: middle;
 }
 
 table.index .details {

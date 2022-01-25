@@ -4,10 +4,6 @@
 
 {% block head %}
 <style>
-  .tourney-list td {
-    vertical-align: middle;
-  }
-
   .tourney-category {
     font-weight: bold;
     margin: 0.5rem 0;
@@ -38,7 +34,7 @@
   <h1>{{ page_title }}</h1>
 
   {%- if categories_with_tourneys %}
-  <table class="index tourney-list">
+  <table class="index index--v-centered">
     <thead>
       <tr>
         <th></th>

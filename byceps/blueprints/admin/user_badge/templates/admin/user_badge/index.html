@@ -7,14 +7,6 @@
 {% set page_title = _('Badges') %}
 {% set layout_main_raw = True %}
 
-{% block head %}
-  <style>
-    table.badges td {
-      vertical-align: middle;
-    }
-  </style>
-{%- endblock %}
-
 {% block body %}
 
   <div class="row row--space-between">
@@ -32,7 +24,7 @@
 
   <div class="box">
     {%- if badges %}
-    <table class="index wide badges">
+    <table class="index index--v-centered wide">
       <thead>
         <tr>
           <th>{{ _('Image') }}</th>

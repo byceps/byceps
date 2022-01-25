@@ -29,7 +29,7 @@
     <h2 class="hyphenate">{{ _('Required Consents') }}</h2>
       <p class="centered">
         {%- if consent_subjects_with_consent_counts -%}
-        <table class="index">
+        <table class="index index--v-centered">
           {%- for subject, count in consent_subjects_with_consent_counts -%}
           <tr>
             <td>{{ subject.title }}</td>
