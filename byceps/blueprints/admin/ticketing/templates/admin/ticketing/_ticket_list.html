@@ -3,16 +3,7 @@
 {%- from 'macros/misc.html' import render_tag %}
 
 {%- if tickets %}
-<style>
-  .tickets a {
-    color: currentColor;
-  }
-  .tickets a:not(:hover) {
-    text-decoration: none;
-  }
-</style>
-
-<table class="index index--v-centered wide tickets">
+<table class="index index--v-centered wide">
   <thead>
     <tr>
       <th>{{ _('Code') }}</th>
