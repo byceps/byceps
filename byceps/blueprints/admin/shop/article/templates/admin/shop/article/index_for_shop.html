@@ -2,6 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/article.html' import render_article_link %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_progress_bar %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set page_title = _('Article') %}
 {% set layout_main_raw = True %}
@@ -97,8 +98,8 @@
           <td class="number">{{ article.total_quantity }}</td>
           <td>
             <div class="progress">
-              <div class="progress-bar color--available" style="width: calc(100% * {{ article.quantity }} / {{ article.total_quantity }});"></div>
-              <div class="progress-bar color--ordered" style="width: calc(100% * {{ totals_by_article_number[article.item_number][PaymentState.open] }} / {{ article.total_quantity }});"></div>
+              {{ render_progress_bar(article.quantity, article.total_quantity, 'color--available') }}
+              {{ render_progress_bar(totals_by_article_number[article.item_number][PaymentState.open], article.total_quantity, 'color--ordered') }}
             </div>
           </td>
         </tr>

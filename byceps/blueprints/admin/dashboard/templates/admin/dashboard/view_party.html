@@ -1,6 +1,6 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin/dashboard.html' import render_bigstats_cell, render_cell %}
-{% from 'macros/misc.html' import render_distribution_bar, render_tag %}
+{% from 'macros/misc.html' import render_distribution_bar, render_progress_bar, render_tag %}
 {% set current_page = 'admin_dashboard_party' %}
 {% set current_page_party = party %}
 {% set page_title = [_('Dashboard'), party.title] %}
@@ -45,7 +45,7 @@
       {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
       <div class="progress mt">
         {%- if tickets_total_max_specified %}
-        <div class="progress-bar color-success" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
+        {{ render_progress_bar(ticket_sale_stats.tickets_sold, ticket_sale_stats.tickets_max, 'color-success') }}
         {%- endif %}
       </div>
       <div class="row row--space-between small">
@@ -61,7 +61,7 @@
     {%- call render_cell(href=url_for('seating_admin.index_for_party', party_id=party.id)) %}
       <div class="cell-label">{{ _('seats occupied') }}</div>
       <div class="progress mt">
-        <div class="progress-bar color-success" style="width: calc(100% * {{ seat_utilization.occupied }} / {{ seat_utilization.total }});"></div>
+        {{ render_progress_bar(seat_utilization.occupied, seat_utilization.total, 'color-success') }}
       </div>
       <div class="row row--space-between small">
         <div class="column-auto" style="font-weight: bold;">{{ seat_utilization.occupied|numberformat }}</div>
@@ -72,7 +72,7 @@
     {%- call render_cell(href=url_for('ticketing_checkin_admin.index', party_id=party.id)) %}
       <div class="cell-label">{{ _('tickets checked in') }}</div>
       <div class="progress mt">
-        <div class="progress-bar color-success" style="width: calc(100% * {{ tickets_checked_in }} / {{ ticket_sale_stats.tickets_sold }});"></div>
+        {{ render_progress_bar(tickets_checked_in, ticket_sale_stats.tickets_sold, 'color-success') }}
       </div>
       <div class="row row--space-between small">
         <div class="column-auto" style="font-weight: bold;">{{ tickets_checked_in|numberformat }}</div>

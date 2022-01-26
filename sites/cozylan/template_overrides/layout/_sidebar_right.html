@@ -1,3 +1,6 @@
+{%- from 'macros/misc.html' import render_progress_bar %}
+
+
 {%- if g.party is defined %}
 <div class="sidebar-section">
   <h3>{{ g.party.title }}</h3>
@@ -14,7 +17,7 @@
 
       {%- if tickets_total_max_specified %}
   <div class="progress">
-    <div class="progress-bar" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
+    {{ render_progress_bar(ticket_sale_stats.tickets_sold, ticket_sale_stats.tickets_max) }}
   </div>
 
         {%- if sold_out %}
@@ -42,7 +45,7 @@
   <h3>{{ _('Seats') }}</h3>
 
   <div class="progress">
-    <div class="progress-bar" style="width: calc(100% * {{ seat_utilization.occupied }} / {{ seat_utilization.total }});"></div>
+    {{ render_progress_bar(seat_utilization.occupied, seat_utilization.total) }}
   </div>
 
   {{ seat_utilization.occupied|numberformat }}

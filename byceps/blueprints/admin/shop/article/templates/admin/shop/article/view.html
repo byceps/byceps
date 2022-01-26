@@ -2,7 +2,7 @@
 {% from 'macros/admin/shop/article.html' import render_article_link, render_article_temporal_availability %}
 {% from 'macros/admin/shop/order.html' import render_order_payment_state %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_tag %}
+{% from 'macros/misc.html' import render_progress_bar, render_tag %}
 {% set current_page_shop = shop %}
 {% set page_title = [_('Article'), article.item_number] %}
 {% set layout_main_raw = True %}
@@ -88,8 +88,8 @@ table.attachments td {
       <div class="data-value">
         <div style="line-height: 1.5;">
           <div class="progress">
-            <div class="progress-bar color--available" style="width: calc(100% * {{ article.quantity }} / {{ article.total_quantity }});"></div>
-            <div class="progress-bar color--ordered" style="width: calc(100% * {{ totals[PaymentState.open] }} / {{ article.total_quantity }});"></div>
+            {{ render_progress_bar(article.quantity, article.total_quantity, 'color--available') }}
+            {{ render_progress_bar(totals[PaymentState.open], article.total_quantity, 'color--ordered') }}
           </div>
           <div class="row row--space-between" style="font-size: 0.75rem;">
             <div class="column-auto">

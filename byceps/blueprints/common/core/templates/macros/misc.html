@@ -5,10 +5,15 @@
 <div class="progress{% if total %} progress--separated{% endif %}">
   {%- for value, class in values_and_classes %}
     {%- if value %}
-    <div class="progress-bar{% if class %} {{ class }}{% endif %}" style="width: calc(100% * {{ value }} / {{ total }});"></div>
+    {{ render_progress_bar(value, total, class) }}
     {%- endif %}
   {%- endfor %}
 </div>
+{%- endmacro %}
+
+
+{% macro render_progress_bar(value, total, class=None) -%}
+<div class="progress-bar{% if class is not none %} {{ class }}{% endif %}" style="width: calc(100% * {{ value }} / {{ total }});"></div>
 {%- endmacro %}
 
 

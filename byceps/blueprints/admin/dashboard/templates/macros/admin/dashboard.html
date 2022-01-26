@@ -1,6 +1,6 @@
 {% from 'macros/admin/brand.html' import render_brand_avatar %}
 {% from 'macros/icons.html' import render_icon %}
-{% from 'macros/misc.html' import render_tag %}
+{% from 'macros/misc.html' import render_progress_bar, render_tag %}
 {% from 'macros/stats.html' import render_bigstats_item %}
 
 
@@ -44,7 +44,7 @@
     {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
   <div class="progress mt">
       {%- if tickets_total_max_specified %}
-    <div class="progress-bar color-success" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
+    {{ render_progress_bar(ticket_sale_stats.tickets_sold, ticket_sale_stats.tickets_max, 'color-success') }}
       {%- endif %}
   </div>
   <div class="progress-label small">
@@ -59,7 +59,7 @@
     {%- endwith %}
 
   <div class="progress mt">
-    <div class="progress-bar color-success" style="width: calc(100% * {{ seat_utilization.occupied }} / {{ seat_utilization.total }});"></div>
+    {{ render_progress_bar(seat_utilization.occupied, seat_utilization.total, 'color-success') }}
   </div>
   <div class="progress-label small">
     <strong>{{ seat_utilization.occupied|numberformat }}</strong>

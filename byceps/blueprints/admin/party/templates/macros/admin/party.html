@@ -1,5 +1,5 @@
 {% from 'macros/admin/brand.html' import render_brand_avatar %}
-{% from 'macros/misc.html' import render_tag %}
+{% from 'macros/misc.html' import render_progress_bar, render_tag %}
 
 
 {%- macro render_party(party, days, ticket_sale_stats, show_brand_avatar=True) %}
@@ -67,7 +67,7 @@
   {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
   <div class="progress" style="height: 0.25rem;">
     {%- if tickets_total_max_specified %}
-    <div class="progress-bar color-success" style="width: calc(100% * {{ ticket_sale_stats.tickets_sold }} / {{ ticket_sale_stats.tickets_max }});"></div>
+    {{ render_progress_bar(ticket_sale_stats.tickets_sold, ticket_sale_stats.tickets_max, 'color-success') }}
     {%- endif %}
   </div>
 
