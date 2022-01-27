@@ -404,6 +404,7 @@ form.board-posting-create-form-inline .label {
   --header-bg-color: #f4f4f4;
   --header-bg-height: 104px;
   --header-border-color: #dddddd;
+  --header-border-radius: 3px;
   display: flex;
   flex-direction: column;
   gap: 40px;
@@ -414,6 +415,7 @@ form.board-posting-create-form-inline .label {
 .user-profile::before {
   background-color: var(--header-bg-color);
   border-bottom: var(--header-border-color) solid 1px;
+  border-radius: var(--header-border-radius) var(--header-border-radius) 0 0;
   content: "";
   height: var(--header-bg-height);
   left: 0;
