@@ -2113,8 +2113,9 @@ msgid "not given"
 msgstr "nicht angegeben"
 
 #: byceps/blueprints/admin/jobs/templates/admin/jobs/index.html:4
-msgid "Jobs"
-msgstr "Jobs"
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:25
+msgid "Background Jobs"
+msgstr "Hintergrundjobs"
 
 #: byceps/blueprints/admin/jobs/templates/admin/jobs/index.html:8
 #: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:5
@@ -2139,10 +2140,6 @@ msgid ""
 msgstr ""
 "%(num_deleted)s Verification Tokens älter als %(minimum_age_in_days)s "
 "Tage wurden gelöscht."
-
-#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:25
-msgid "Background Jobs"
-msgstr "Hintergrundjobs"
 
 #: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:42
 msgid "Verification Tokens"

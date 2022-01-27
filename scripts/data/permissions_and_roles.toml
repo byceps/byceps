@@ -82,7 +82,7 @@ assigned_permissions = [
 
 [[roles]]
 id = 'jobs_admin'
-title = 'Jobs verwalten'
+title = 'Hintergrundjobs verwalten'
 assigned_permissions = ['jobs.view']
 
 [[roles]]
