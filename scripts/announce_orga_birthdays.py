@@ -11,13 +11,12 @@ Meant to be called by a daily cronjob or similar mechanism.
 from uuid import UUID
 
 import click
+from flask.cli import with_appcontext
 
 from byceps.announce.helpers import call_webhook
 from byceps.services.orga import birthday_service
 from byceps.services.webhooks import service as webhook_service
 from byceps.services.webhooks.transfer.models import OutgoingWebhook, WebhookID
-
-from _util import call_with_app_context
 
 
 def validate_webhook_id(ctx, param, webhook_id_value: str) -> OutgoingWebhook:
@@ -38,6 +37,7 @@ def validate_webhook_id(ctx, param, webhook_id_value: str) -> OutgoingWebhook:
 
 @click.command()
 @click.argument('webhook', callback=validate_webhook_id)
+@with_appcontext
 def execute(webhook: OutgoingWebhook) -> None:
     users = birthday_service.get_orgas_with_birthday_today()
 
@@ -49,4 +49,4 @@ def execute(webhook: OutgoingWebhook) -> None:
 
 
 if __name__ == '__main__':
-    call_with_app_context(execute)
+    execute()

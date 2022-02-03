@@ -7,17 +7,18 @@
 """
 
 import click
+from flask.cli import with_appcontext
 
 from byceps.services.ticketing import attendance_service
 from byceps.services.user import service as user_service
 
-from _util import call_with_app_context
 from _validators import validate_party, validate_user_id
 
 
 @click.command()
 @click.argument('user', callback=validate_user_id)
 @click.argument('party', callback=validate_party)
+@with_appcontext
 def execute(user, party) -> None:
     click.echo(
         f'Adding attendance of user "{user.screen_name}" '
@@ -31,4 +32,4 @@ def execute(user, party) -> None:
 
 
 if __name__ == '__main__':
-    call_with_app_context(execute)
+    execute()

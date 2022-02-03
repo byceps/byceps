@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Callable
 
 import click
+from flask.cli import with_appcontext
 
 from byceps.database import db
 from byceps.services.authentication.password.dbmodels import Credential
@@ -40,8 +41,6 @@ from byceps.services.verification_token.dbmodels import (
 )
 from byceps.typing import UserID
 
-from _util import call_with_app_context
-
 
 @click.command()
 @click.option(
@@ -50,6 +49,7 @@ from _util import call_with_app_context
     help='determine but do not delete affected records',
 )
 @click.argument('user_ids', nargs=-1, required=True)
+@with_appcontext
 def execute(dry_run, user_ids) -> None:
     user_ids = set(user_ids)
 
@@ -172,4 +172,4 @@ def _execute_delete_for_users_query(model, user_ids: set[UserID]) -> int:
 
 
 if __name__ == '__main__':
-    call_with_app_context(execute)
+    execute()

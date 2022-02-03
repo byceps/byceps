@@ -7,14 +7,14 @@
 """
 
 import click
+from flask.cli import with_appcontext
 
 from byceps.services.user import import_service
-
-from _util import call_with_app_context
 
 
 @click.command()
 @click.argument('data_file', type=click.File())
+@with_appcontext
 def execute(data_file) -> None:
     lines = import_service.parse_lines(data_file)
     for line_number, line in enumerate(lines, start=1):
@@ -32,4 +32,4 @@ def execute(data_file) -> None:
 
 
 if __name__ == '__main__':
-    call_with_app_context(execute)
+    execute()

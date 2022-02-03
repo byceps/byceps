@@ -9,14 +9,14 @@
 from datetime import datetime, timedelta
 
 import click
+from flask.cli import with_appcontext
 
 from byceps.services.user import log_service as user_log_service
-
-from _util import call_with_app_context
 
 
 @click.command()
 @click.argument('minimum_age_in_days', type=int)
+@with_appcontext
 def execute(minimum_age_in_days) -> None:
     now = datetime.utcnow()
     occurred_before = now - timedelta(days=minimum_age_in_days)
@@ -35,4 +35,4 @@ def execute(minimum_age_in_days) -> None:
 
 
 if __name__ == '__main__':
-    call_with_app_context(execute)
+    execute()

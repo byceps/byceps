@@ -14,14 +14,14 @@ from pathlib import Path
 from typing import Iterator
 
 import click
+from flask.cli import with_appcontext
 
 import byceps
 from byceps.database import db
 
-from _util import call_with_app_context
-
 
 @click.command()
+@with_appcontext
 def execute() -> None:
     click.echo('Creating database tables ... ', nl=False)
 
@@ -65,4 +65,4 @@ def _get_module_name_for_path(path: Path) -> str:
 
 
 if __name__ == '__main__':
-    call_with_app_context(execute)
+    execute()

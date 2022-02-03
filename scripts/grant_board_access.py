@@ -7,11 +7,11 @@
 """
 
 import click
+from flask.cli import with_appcontext
 
 from byceps.services.board import access_control_service, board_service
 from byceps.services.board.transfer.models import Board, BoardID
 
-from _util import call_with_app_context
 from _validators import validate_user_screen_name
 
 
@@ -29,6 +29,7 @@ def validate_board(ctx, param, board_id_value: str) -> Board:
 @click.argument(
     'user', metavar='USER_SCREEN_NAME', callback=validate_user_screen_name
 )
+@with_appcontext
 def execute(board, user) -> None:
     if access_control_service.has_user_access_to_board(user.id, board.id):
         click.secho(
@@ -48,4 +49,4 @@ def execute(board, user) -> None:
 
 
 if __name__ == '__main__':
-    call_with_app_context(execute)
+    execute()

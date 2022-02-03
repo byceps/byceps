@@ -7,18 +7,18 @@
 """
 
 import click
+from flask.cli import with_appcontext
 
 from byceps.services.authorization import impex_service
-
-from _util import call_with_app_context
 
 
 @click.command()
 @click.argument('data_file', type=click.File())
+@with_appcontext
 def execute(data_file) -> None:
     role_count = impex_service.import_from_file(data_file)
     click.secho(f'Imported {role_count} roles.', fg='green')
 
 
 if __name__ == '__main__':
-    call_with_app_context(execute)
+    execute()

@@ -9,6 +9,7 @@
 from uuid import UUID
 
 import click
+from flask.cli import with_appcontext
 
 from byceps.services.seating.dbmodels.seat_group import SeatGroup as DbSeatGroup
 from byceps.services.seating import seat_group_service
@@ -16,8 +17,6 @@ from byceps.services.seating.transfer.models import SeatGroupID
 from byceps.services.ticketing.dbmodels.ticket_bundle import TicketBundle
 from byceps.services.ticketing import ticket_bundle_service
 from byceps.services.ticketing.transfer.models import TicketBundleID
-
-from _util import call_with_app_context
 
 
 def validate_seat_group(ctx, param, seat_group_id_value: str) -> DbSeatGroup:
@@ -59,6 +58,7 @@ def validate_ticket_bundle(
 @click.command()
 @click.argument('seat_group', callback=validate_seat_group)
 @click.argument('ticket_bundle', callback=validate_ticket_bundle)
+@with_appcontext
 def execute(seat_group, ticket_bundle) -> None:
     seat_group_service.occupy_seat_group(seat_group, ticket_bundle)
 
@@ -66,4 +66,4 @@ def execute(seat_group, ticket_bundle) -> None:
 
 
 if __name__ == '__main__':
-    call_with_app_context(execute)
+    execute()

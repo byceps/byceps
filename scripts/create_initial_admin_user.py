@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Iterable, Sequence
 
 import click
+from flask.cli import with_appcontext
 
 from byceps.services.authorization import service as authorization_service
 from byceps.services.authorization.transfer.models import RoleID
@@ -21,13 +22,12 @@ from byceps.services.user import (
 from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 
-from _util import call_with_app_context
-
 
 @click.command()
 @click.option('--screen_name', prompt=True)
 @click.option('--email_address', prompt=True)
 @click.option('--password', prompt=True, hide_input=True)
+@with_appcontext
 def execute(screen_name, email_address, password) -> None:
     click.echo(f'Creating user "{screen_name}" ... ', nl=False)
     user = _create_user(screen_name, email_address, password)
@@ -68,4 +68,4 @@ def _assign_roles_to_user(role_ids: set[RoleID], user_id: UserID) -> None:
 
 
 if __name__ == '__main__':
-    call_with_app_context(execute)
+    execute()

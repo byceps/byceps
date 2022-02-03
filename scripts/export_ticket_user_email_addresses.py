@@ -9,17 +9,18 @@
 from typing import Iterator
 
 import click
+from flask.cli import with_appcontext
 
 from byceps.services.ticketing import ticket_service
 from byceps.services.user import service as user_service
 from byceps.typing import PartyID
 
-from _util import call_with_app_context
 from _validators import validate_party
 
 
 @click.command()
 @click.argument('party', callback=validate_party)
+@with_appcontext
 def execute(party) -> None:
     email_addresses = list(_get_email_addresses(party.id))
 
@@ -40,4 +41,4 @@ def _get_email_addresses(party_id: PartyID) -> Iterator[str]:
 
 
 if __name__ == '__main__':
-    call_with_app_context(execute)
+    execute()
