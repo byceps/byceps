@@ -136,16 +136,16 @@ def export_persons(brand_id):
     """
     brand = _get_brand_or_404(brand_id)
 
-    field_name_screen_name = 'Benutzername'
-    field_name_first_name = 'Vorname'
-    field_name_last_name = 'Nachname'
-    field_name_date_of_birth = 'Geburtstag'
-    field_name_street = 'Straße'
-    field_name_zip_code = 'PLZ'
-    field_name_city = 'Ort'
-    field_name_country = 'Land'
-    field_name_email_address = 'E-Mail-Adresse'
-    field_name_phone_number = 'Telefonnummer'
+    field_name_screen_name = gettext('Username')
+    field_name_first_name = gettext('First name')
+    field_name_last_name = gettext('Last name')
+    field_name_date_of_birth = gettext('Date of birth')
+    field_name_street = gettext('Street')
+    field_name_zip_code = gettext('Zip code')
+    field_name_city = gettext('City')
+    field_name_country = gettext('Country')
+    field_name_email_address = gettext('Email address')
+    field_name_phone_number = gettext('Phone number')
 
     field_names = [
         field_name_screen_name,
