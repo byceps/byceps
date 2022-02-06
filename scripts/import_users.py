@@ -20,7 +20,7 @@ def execute(data_file) -> None:
     for line_number, line in enumerate(lines, start=1):
         try:
             user_dict = import_service.parse_user_json(line)
-            user = import_service.create_user(user_dict)
+            user = import_service.import_user(user_dict)
             click.secho(
                 f'[line {line_number}] Imported user {user.screen_name}.',
                 fg='green',

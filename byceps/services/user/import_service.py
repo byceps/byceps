@@ -48,7 +48,7 @@ def parse_user_json(json_data: str) -> dict[str, str]:
         raise Exception(str(e.normalized_messages()))
 
 
-def create_user(user_dict) -> User:
+def import_user(user_dict) -> User:
     password = secrets.token_urlsafe(24)
 
     user, _ = creation_service.create_user(
