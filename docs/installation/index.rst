@@ -11,4 +11,4 @@ Installation
    virtual-env
    byceps-config-file
    postgresql
-   database-tables
+   populate-database

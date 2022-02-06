@@ -1,5 +1,5 @@
-Create Database Tables
-======================
+Populate Database
+=================
 
 .. important:: Before continuing, make sure that the :doc:`virtual
    environment </installation/virtual-env>` is set up and activated.
