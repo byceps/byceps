@@ -3,6 +3,7 @@
 body {
   background-color: #f4f4f4;
   color: #333333;
+  font-size: 0.875rem; /* 14px / 16px */
   line-height: 1.4;
 }
 
@@ -63,8 +64,7 @@ a:not(:hover) {
 
 }
 
-main {
-  font-size: 0.875rem; /* 14px / 16px */
+.page-body-inner {
   padding: var(--layout-gutter);
 }
 
@@ -532,7 +532,7 @@ h1 .tag .icon {
 
 /* dropdowns */
 
-main .dropdown-menu {
+.page-body-inner .dropdown-menu {
   border-radius: 3px;
   top: calc(100% - 1px);
 }
