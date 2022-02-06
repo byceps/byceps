@@ -261,43 +261,6 @@ a.box:hover {
 }
 
 
-/* main navigation */
-
-nav.main ol {
-  margin: 0.75rem 0;
-  width: 100%;
-}
-
-nav.main li {
-  display: block;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-item {
-  border-radius: 0.25rem;
-  color: #5c5c5c;
-  display: flex;
-  line-height: 1.1;
-  margin: 0.25rem 0.75rem;
-  padding: 0.25rem 0.5rem;
-  text-decoration: none;
-  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
-}
-
-.nav-item:hover,
-.nav-item--current {
-  background-color: #eeeeee;
-  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
-  color: currentColor;
-}
-
-.nav-item-icon {
-  flex: 0 0 auto;
-  margin-right: 0.4em;
-}
-
-
 /* tabs above main content area */
 
 .main-tabs ol {
