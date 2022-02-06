@@ -17,10 +17,10 @@ from .....util.l10n import LocalizedForm
 
 class OrderForm(LocalizedForm):
     first_name = StringField(
-        lazy_gettext('First name(s)'), validators=[Length(min=2)]
+        lazy_gettext('First name'), validators=[Length(min=2)]
     )
     last_name = StringField(
-        lazy_gettext('Last name(s)'), validators=[Length(min=2)]
+        lazy_gettext('Last name'), validators=[Length(min=2)]
     )
     country = StringField(
         lazy_gettext('Country'), validators=[Length(min=2, max=60)]

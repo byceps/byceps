@@ -4850,8 +4850,8 @@ msgstr "Dieser Benutzername kann nicht verwendet werden."
 #: byceps/blueprints/site/shop/order/forms.py:20
 #: byceps/blueprints/site/user/creation/forms.py:83
 #: byceps/blueprints/site/user/settings/forms.py:94
-msgid "First name(s)"
-msgstr "Vorname(n)"
+msgid "First name"
+msgstr "Vorname"
 
 #: byceps/blueprints/admin/user/forms.py:68
 #: byceps/blueprints/admin/user/forms.py:157
@@ -4859,8 +4859,8 @@ msgstr "Vorname(n)"
 #: byceps/blueprints/site/shop/order/forms.py:23
 #: byceps/blueprints/site/user/creation/forms.py:87
 #: byceps/blueprints/site/user/settings/forms.py:97
-msgid "Last name(s)"
-msgstr "Nachname(n)"
+msgid "Last name"
+msgstr "Nachname"
 
 #: byceps/blueprints/admin/user/forms.py:81
 msgid "Site ID"

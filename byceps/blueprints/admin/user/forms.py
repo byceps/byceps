@@ -62,10 +62,10 @@ class CreateAccountForm(LocalizedForm):
         ],
     )
     first_name = StringField(
-        lazy_gettext('First name(s)'), [InputRequired(), Length(min=2, max=40)]
+        lazy_gettext('First name'), [InputRequired(), Length(min=2, max=40)]
     )
     last_name = StringField(
-        lazy_gettext('Last name(s)'), [InputRequired(), Length(min=2, max=80)]
+        lazy_gettext('Last name'), [InputRequired(), Length(min=2, max=80)]
     )
     email_address = StringField(
         lazy_gettext('Email address'),
@@ -151,10 +151,10 @@ class InvalidateEmailAddressForm(LocalizedForm):
 
 class ChangeDetailsForm(LocalizedForm):
     first_name = StringField(
-        lazy_gettext('First name(s)'), [InputRequired(), Length(min=2)]
+        lazy_gettext('First name'), [InputRequired(), Length(min=2)]
     )
     last_name = StringField(
-        lazy_gettext('Last name(s)'), [InputRequired(), Length(min=2, max=80)]
+        lazy_gettext('Last name'), [InputRequired(), Length(min=2, max=80)]
     )
     date_of_birth = DateField(lazy_gettext('Date of birth'), [Optional()])
     country = StringField(lazy_gettext('Country'), [Optional(), Length(max=60)])
