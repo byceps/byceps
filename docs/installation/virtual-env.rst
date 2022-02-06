@@ -55,8 +55,8 @@ Install the Python depdendencies via pip_:
 
     (venv)$ pip install -r requirements.txt
 
-Install BYCEPS in editable mode to make ``import byceps`` work in
-scripts:
+Install BYCEPS in editable mode to make the ``byceps`` command as well
+as the package of the same name available:
 
 .. code-block:: sh
 

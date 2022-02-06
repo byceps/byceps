@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Export roles and their assigned permissions as TOML to STDOUT.
 
 :Copyright: 2006-2022 Jochen Kupperschmidt
@@ -9,14 +7,11 @@
 import click
 from flask.cli import with_appcontext
 
-from byceps.services.authorization import impex_service
+from ...services.authorization import impex_service
 
 
 @click.command()
 @with_appcontext
-def execute() -> None:
+def export_roles() -> None:
+    """Export authorization roles."""
     print(impex_service.export())
-
-
-if __name__ == '__main__':
-    execute()

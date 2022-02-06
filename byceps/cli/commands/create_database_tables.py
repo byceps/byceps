@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 """Create the initial database structure.
 
 Existing tables will be ignored, and those not existing will be created.
@@ -17,12 +15,13 @@ import click
 from flask.cli import with_appcontext
 
 import byceps
-from byceps.database import db
+from ...database import db
 
 
 @click.command()
 @with_appcontext
-def execute() -> None:
+def create_database_tables() -> None:
+    """Create database tables."""
     click.echo('Creating database tables ... ', nl=False)
 
     _load_dbmodels()
@@ -62,7 +61,3 @@ def _get_module_name_for_path(path: Path) -> str:
         path = path.parent
 
     return str(path).replace('/', '.')
-
-
-if __name__ == '__main__':
-    execute()
