@@ -235,10 +235,9 @@ a.box:hover {
 }
 
 .header-nav-crumbs {
-  align-items: center;
+  align-items: stretch;
   display: flex;
   margin: 1.5rem 0 1rem 0;
-  min-height: 2.8rem;
 }
 
 .header-nav-crumb {
@@ -253,10 +252,15 @@ a.box:hover {
   font-size: 0.8125rem; /* 13px / 16px */
 }
 
+.header-nav-crumb-separator {
+  align-self: center;
+  display: flex;
+}
+
 .header-nav-crumb-separator::before {
   color: #aaaaaa;
   content: "›";
-  margin: 0 0.75rem;
+  padding: 0 0.75rem;
 }
 
 .header-nav-crumb:not(:hover) {
