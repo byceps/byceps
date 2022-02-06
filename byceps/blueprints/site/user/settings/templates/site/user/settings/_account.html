@@ -27,13 +27,13 @@
     </div>
     <div class="column-auto">
 
-      <div class="data-label">{{ _('User name') }}</div>
+      <div class="data-label">{{ _('Username') }}</div>
       <div class="row mb">
         <div class="column-auto column-auto--grow">
           <div class="data-value">{{ render_user_screen_name(user) }}</div>
         </div>
         <div class="column-auto">
-          <a class="button button--compact" href="{{ url_for('.change_screen_name_form') }}" title="{{ _('Change user name') }}">{{ render_icon('edit') }}</a>
+          <a class="button button--compact" href="{{ url_for('.change_screen_name_form') }}" title="{{ _('Change username') }}">{{ render_icon('edit') }}</a>
         </div>
       </div>
 

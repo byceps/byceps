@@ -95,7 +95,7 @@ def request_reset():
     if (user is None) or user.deleted:
         flash_error(
             gettext(
-                'User name "%(screen_name)s" is unknown.',
+                'Username "%(screen_name)s" is unknown.',
                 screen_name=screen_name,
             )
         )

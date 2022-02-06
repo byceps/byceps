@@ -57,7 +57,7 @@
     <div class="column-auto">
 
       <form action="{{ url_for('.index') }}" class="single-row">
-        <input type="search" name="search_term" placeholder="{{ _('user name, first name, last name, email address') }}" title="{{ _('user name, first name, last name, email address') }}"{%- if search_term %} value="{{ search_term }}"{% endif %}>
+        <input type="search" name="search_term" placeholder="{{ _('username, first name, last name, email address') }}" title="{{ _('username, first name, last name, email address') }}"{%- if search_term %} value="{{ search_term }}"{% endif %}>
         <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
         <a href="{{ url_for('.index') }}" class="button{% if not search_term %} dimmed{% endif %}" title="{{ _('Remove search term constraint') }}">{{ render_icon('remove') }}</a>
       </form>
