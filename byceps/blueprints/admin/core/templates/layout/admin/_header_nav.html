@@ -15,29 +15,64 @@
   {%- if party %}
     {%- with brand = get_brand_for_party(party) %}
             <span class="header-nav-crumb-separator"></span>
-            <div style="margin-right: 0.5rem;">{{ render_brand_avatar(brand, '40') }}</div>
-            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"><small class="dimmed">{{ _('Brand') }}</small><br>{{ brand.title }}</a>
+            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">
+              {{ render_brand_avatar(brand, '40') }}
+              <div>
+                <div class="header-nav-crumb-meta">{{ _('Brand') }}</div>
+                {{ brand.title }}
+              </div>
+            </a>
             <span class="header-nav-crumb-separator"></span>
-            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}"><small class="dimmed">{{ _('Party') }}</small><br>{{ party.title }}</a>
+            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_party', party_id=party.id) }}">
+              <div>
+                <div class="header-nav-crumb-meta">{{ _('Party') }}</div>
+                {{ party.title }}
+              </div>
+            </a>
     {%- endwith %}
   {%- elif site %}
     {%- with brand = get_brand_for_site(site) %}
             <span class="header-nav-crumb-separator"></span>
-            <div style="margin-right: 0.5rem;">{{ render_brand_avatar(brand, '40') }}</div>
-            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"><small class="dimmed">{{ _('Brand') }}</small><br>{{ brand.title }}</a>
+            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">
+              {{ render_brand_avatar(brand, '40') }}
+              <div>
+                <div class="header-nav-crumb-meta">{{ _('Brand') }}</div>
+                {{ brand.title }}
+              </div>
+            </a>
             <span class="header-nav-crumb-separator"></span>
-            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_site', site_id=site.id) }}"><small class="dimmed">{{ _('Site') }}</small><br>{{ site.title }}</a>
+            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_site', site_id=site.id) }}">
+              <div>
+                <div class="header-nav-crumb-meta">{{ _('Site') }}</div>
+                {{ site.title }}
+              </div>
+            </a>
     {%- endwith %}
   {%- elif shop %}
             <span class="header-nav-crumb-separator"></span>
-            <div style="margin-right: 0.5rem;">{{ render_brand_avatar(brand, '40') }}</div>
-            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"><small class="dimmed">{{ _('Brand') }}</small><br>{{ brand.title }}</a>
+            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">
+              {{ render_brand_avatar(brand, '40') }}
+              <div>
+                <div class="header-nav-crumb-meta">{{ _('Brand') }}</div>
+                {{ brand.title }}
+              </div>
+            </a>
             <span class="header-nav-crumb-separator"></span>
-            <a class="header-nav-crumb" href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}"><small class="dimmed">{{ _('Shop') }}</small><br>{{ shop.title }}</a>
+            <a class="header-nav-crumb" href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}">
+              <div>
+                <div class="header-nav-crumb-meta">{{ _('Shop') }}</div>
+                {{ shop.title }}
+              </div>
+            </a>
   {%- elif brand %}
             <span class="header-nav-crumb-separator"></span>
-            <div style="margin-right: 0.5rem;">{{ render_brand_avatar(brand, '40') }}</div>
-            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}"><small class="dimmed">{{ _('Brand') }}</small><br>{{ brand.title }}</a>
+            <a class="header-nav-crumb" href="{{ url_for('admin_dashboard.view_brand', brand_id=brand.id) }}">
+              {{ render_brand_avatar(brand, '40') }}
+              <div>
+                <div class="header-nav-crumb-meta">{{ _('Brand') }}</div>
+                {{ brand.title }}
+              </div>
+            </a>
   {%- endif %}
 
           </div>

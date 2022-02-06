@@ -242,7 +242,15 @@ a.box:hover {
 }
 
 .header-nav-crumb {
+  align-items: center;
   color: #666666;
+  display: flex;
+  gap: 0 0.5rem;
+}
+
+.header-nav-crumb-meta {
+  color: var(--dimmed-color);
+  font-size: 0.8125rem; /* 13px / 16px */
 }
 
 .header-nav-crumb-separator::before {
