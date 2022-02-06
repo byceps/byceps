@@ -143,13 +143,11 @@ a.box:hover {
   flex: 1 0 auto;
 }
 
-#header-content .brand {
-  margin-left: 0.5rem;
-}
-
 #header-content .brand-icon {
   display: inline-block;
   fill: #e4c444;
+  margin-right: -0.5rem;
+  margin-top: 0.5rem;
   width: 0.75rem;
 }
 
