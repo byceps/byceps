@@ -3,11 +3,8 @@
 body {
   background-color: #f4f4f4;
   color: #333333;
-  line-height: 1.4;
-}
-
-main {
   font-size: 0.875rem; /* 14px / 16px */
+  line-height: 1.4;
 }
 
 
@@ -658,11 +655,6 @@ main h1 a:not(:hover) {
   .container {
     max-width: none;
     width: auto;
-  }
-
-  main {
-    margin: 0;
-    padding: 0;
   }
 
   .button-row {
