@@ -81,7 +81,7 @@ def create_orderer(user_id: UserID) -> Orderer:
 
     return Orderer(
         user_id,
-        detail.first_names or 'n/a',
+        detail.first_name or 'n/a',
         detail.last_name or 'n/a',
         detail.country or 'n/a',
         detail.zip_code or 'n/a',

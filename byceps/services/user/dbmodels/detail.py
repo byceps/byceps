@@ -21,7 +21,7 @@ class UserDetail(db.Model):
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     user = db.relationship('User', backref=db.backref('detail', uselist=False))
-    first_names = db.Column(db.UnicodeText, nullable=True)
+    first_name = db.Column(db.UnicodeText, nullable=True)
     last_name = db.Column(db.UnicodeText, nullable=True)
     date_of_birth = db.Column(db.Date, nullable=True)
     country = db.Column(db.UnicodeText, nullable=True)
@@ -34,12 +34,12 @@ class UserDetail(db.Model):
 
     @property
     def full_name(self) -> Optional[str]:
-        names = [self.first_names, self.last_name]
+        names = [self.first_name, self.last_name]
         return ' '.join(filter(None, names)) or None
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('user_id') \
-            .add_with_lookup('first_names') \
+            .add_with_lookup('first_name') \
             .add_with_lookup('last_name') \
             .build()

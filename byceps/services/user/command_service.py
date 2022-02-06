@@ -239,7 +239,7 @@ def update_locale(user_id: UserID, locale: Optional[Locale]) -> None:
 
 def update_user_details(
     user_id: UserID,
-    first_names: str,
+    first_name: str,
     last_name: str,
     date_of_birth: date,
     country: str,
@@ -253,7 +253,7 @@ def update_user_details(
     detail = _get_user_detail(user_id)
     initiator = user_service.get_user(initiator_id)
 
-    old_first_names = detail.first_names
+    old_first_name = detail.first_name
     old_last_name = detail.last_name
     old_date_of_birth = detail.date_of_birth
     old_country = detail.country
@@ -262,7 +262,7 @@ def update_user_details(
     old_street = detail.street
     old_phone_number = detail.phone_number
 
-    detail.first_names = first_names
+    detail.first_name = first_name
     detail.last_name = last_name
     detail.date_of_birth = date_of_birth
     detail.country = country
@@ -275,7 +275,7 @@ def update_user_details(
         'initiator_id': str(initiator.id),
     }
     _add_if_different(
-        log_entry_data, 'first_names', old_first_names, first_names
+        log_entry_data, 'first_name', old_first_name, first_name
     )
     _add_if_different(log_entry_data, 'last_name', old_last_name, last_name)
     _add_if_different(

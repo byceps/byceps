@@ -287,7 +287,7 @@ def get_public_orgas_for_party(party_id: PartyID) -> set[PublicOrga]:
                 .load_only(DbUser.id),
             db.joinedload(DbMembership.user)
                 .joinedload(DbUser.detail)
-                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
+                .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
         ) \
         .all()
 

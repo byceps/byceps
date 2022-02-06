@@ -14,7 +14,7 @@ from byceps.services.user import (
 
 
 def test_update_user_address(site_app, make_user):
-    old_first_names = 'Rainer'
+    old_first_name = 'Rainer'
     old_last_name = 'Zufall'
     old_date_of_birth = None
     old_country = 'Germany'
@@ -23,7 +23,7 @@ def test_update_user_address(site_app, make_user):
     old_street = 'Dorfweg 23'
     old_phone_number = None
 
-    new_first_names = 'Rainer'
+    new_first_name = 'Rainer'
     new_last_name = 'Zufall'
     new_date_of_birth = None
     new_country = 'Germany'
@@ -33,7 +33,7 @@ def test_update_user_address(site_app, make_user):
     new_phone_number = None
 
     user = make_user(
-        first_names=old_first_names,
+        first_name=old_first_name,
         last_name=old_last_name,
         date_of_birth=old_date_of_birth,
         country=old_country,
@@ -50,7 +50,7 @@ def test_update_user_address(site_app, make_user):
 
     event = user_command_service.update_user_details(
         user.id,
-        new_first_names,
+        new_first_name,
         new_last_name,
         new_date_of_birth,
         new_country,
@@ -70,7 +70,7 @@ def test_update_user_address(site_app, make_user):
     assert event.user_screen_name == user.screen_name
 
     user_after = user_command_service._get_user(user.id)
-    assert user_after.detail.first_names == new_first_names
+    assert user_after.detail.first_name == new_first_name
     assert user_after.detail.last_name == new_last_name
     assert user_after.detail.date_of_birth == new_date_of_birth
     assert user_after.detail.country == new_country
@@ -96,14 +96,14 @@ def test_update_user_address(site_app, make_user):
 
 
 def test_update_user_real_name(site_app, make_user):
-    old_first_names = 'Rainer'
+    old_first_name = 'Rainer'
     old_last_name = 'Zufall'
 
-    new_first_names = 'Ryan R.'
+    new_first_name = 'Ryan R.'
     new_last_name = 'Wahnsinn'
 
     user = make_user(
-        first_names=old_first_names,
+        first_name=old_first_name,
         last_name=old_last_name,
     )
     user_detail = user_service.get_detail(user.id)
@@ -115,7 +115,7 @@ def test_update_user_real_name(site_app, make_user):
 
     event = user_command_service.update_user_details(
         user.id,
-        new_first_names,
+        new_first_name,
         new_last_name,
         user_detail.date_of_birth,
         user_detail.country,
@@ -129,7 +129,7 @@ def test_update_user_real_name(site_app, make_user):
     # -------------------------------- #
 
     user_after = user_command_service._get_user(user.id)
-    assert user_after.detail.first_names == new_first_names
+    assert user_after.detail.first_name == new_first_name
     assert user_after.detail.last_name == new_last_name
 
     log_entries_after = log_service.get_entries_for_user(user_after.id)
@@ -139,8 +139,8 @@ def test_update_user_real_name(site_app, make_user):
     assert details_updated_log_entry.event_type == 'user-details-updated'
     assert details_updated_log_entry.data == {
         'initiator_id': str(user.id),
-        'old_first_names': old_first_names,
-        'new_first_names': new_first_names,
+        'old_first_name': old_first_name,
+        'new_first_name': new_first_name,
         'old_last_name': old_last_name,
         'new_last_name': new_last_name,
     }
@@ -163,7 +163,7 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
 
     event = user_command_service.update_user_details(
         user.id,
-        user_detail.first_names,
+        user_detail.first_name,
         user_detail.last_name,
         None,
         user_detail.country,

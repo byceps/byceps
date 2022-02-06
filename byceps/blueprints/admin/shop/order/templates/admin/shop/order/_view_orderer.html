@@ -6,7 +6,7 @@
 <div class="data-value">{{ render_user_avatar_and_admin_link(placed_by, size=20) }}</div>
 
 <div class="data-label">{{ _('Name') }}</div>
-<div class="data-value">{{ order.first_names }} {{ order.last_name }}</div>
+<div class="data-value">{{ order.first_name }} {{ order.last_name }}</div>
 
 <div class="data-label">{{ _('Address') }}</div>
 <div class="row">
@@ -20,7 +20,7 @@
   <div class="column-auto">
     <textarea id="order-address-field" style="position: fixed; top: -1000px;" readonly>{{
       '%s %s\n%s\n%s %s'|format(
-        order.first_names, order.last_name,
+        order.first_name, order.last_name,
         order.address.street,
         order.address.zip_code, order.address.city
       )

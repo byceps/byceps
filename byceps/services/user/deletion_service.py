@@ -64,7 +64,7 @@ def _anonymize_account(user: DbUser) -> None:
     user.legacy_id = None
 
     # Remove details.
-    user.detail.first_names = None
+    user.detail.first_name = None
     user.detail.last_name = None
     user.detail.date_of_birth = None
     user.detail.country = None

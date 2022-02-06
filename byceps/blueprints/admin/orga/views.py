@@ -137,7 +137,7 @@ def export_persons(brand_id):
     brand = _get_brand_or_404(brand_id)
 
     field_name_screen_name = 'Benutzername'
-    field_name_first_names = 'Vorname'
+    field_name_first_name = 'Vorname'
     field_name_last_name = 'Nachname'
     field_name_date_of_birth = 'Geburtstag'
     field_name_street = 'Straße'
@@ -149,7 +149,7 @@ def export_persons(brand_id):
 
     field_names = [
         field_name_screen_name,
-        field_name_first_names,
+        field_name_first_name,
         field_name_last_name,
         field_name_date_of_birth,
         field_name_street,
@@ -169,7 +169,7 @@ def export_persons(brand_id):
 
         return {
             field_name_screen_name: user.screen_name,
-            field_name_first_names: user.detail.first_names,
+            field_name_first_name: user.detail.first_name,
             field_name_last_name: user.detail.last_name,
             field_name_date_of_birth: date_of_birth,
             field_name_street: user.detail.street,

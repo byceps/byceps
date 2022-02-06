@@ -193,7 +193,7 @@ def details_update():
     if not form.validate():
         return details_update_form(form)
 
-    first_names = form.first_names.data.strip()
+    first_name = form.first_name.data.strip()
     last_name = form.last_name.data.strip()
     date_of_birth = form.date_of_birth.data
     country = form.country.data.strip()
@@ -204,7 +204,7 @@ def details_update():
 
     event = user_command_service.update_user_details(
         current_user.id,
-        first_names,
+        first_name,
         last_name,
         date_of_birth,
         country,

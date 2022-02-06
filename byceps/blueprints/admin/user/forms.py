@@ -61,7 +61,7 @@ class CreateAccountForm(LocalizedForm):
             validate_screen_name_availability,
         ],
     )
-    first_names = StringField(
+    first_name = StringField(
         lazy_gettext('First name(s)'), [InputRequired(), Length(min=2, max=40)]
     )
     last_name = StringField(
@@ -150,7 +150,7 @@ class InvalidateEmailAddressForm(LocalizedForm):
 
 
 class ChangeDetailsForm(LocalizedForm):
-    first_names = StringField(
+    first_name = StringField(
         lazy_gettext('First name(s)'), [InputRequired(), Length(min=2)]
     )
     last_name = StringField(

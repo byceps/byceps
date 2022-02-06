@@ -103,7 +103,7 @@ def test_create(
 
     form_data = {
         'screen_name': screen_name,
-        'first_names': 'Hiroaki',
+        'first_name': 'Hiroaki',
         'last_name': 'Protagonist',
         'email_address': 'hiro@metaverse.org',
         'password': 'Snow_Crash',
@@ -141,7 +141,7 @@ def test_create(
     assert user.avatar is None
 
     # details
-    assert user.detail.first_names == 'Hiroaki'
+    assert user.detail.first_name == 'Hiroaki'
     assert user.detail.last_name == 'Protagonist'
 
     # authorization
@@ -192,7 +192,7 @@ def test_create_without_newsletter_subscription(
 
     form_data = {
         'screen_name': screen_name,
-        'first_names': 'Hiroaki',
+        'first_name': 'Hiroaki',
         'last_name': 'Protagonist',
         'email_address': 'hiro2@metaverse.org',
         'password': 'Snow_Crash',

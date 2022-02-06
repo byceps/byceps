@@ -36,7 +36,7 @@
     <tbody>
     {%- for quantity, order, user in quantities_orders_users|sort(attribute='1.order_number', reverse=True) %}
       <tr>
-        <td>{{ render_user_microcard(user, full_name='%s %s'|format(order.first_names, order.last_name)) }}</td>
+        <td>{{ render_user_microcard(user, full_name='%s %s'|format(order.first_name, order.last_name)) }}</td>
         <td class="bignumber centered">{{ quantity }}</td>
         <td>{{ render_order_link(order) }}<br>{{ order.created_at|datetimeformat|dim }}</td>
         <td>{{ render_order_payment_state(order.payment_state) }}</td>

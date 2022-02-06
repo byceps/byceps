@@ -83,7 +83,7 @@ def create_order_with_payment_state(payment_state: PaymentState) -> Order:
 def create_orderer() -> Orderer:
     return Orderer(
         user_id=UserID(UUID('d8a9c61c-2286-41b3-85ae-7d9f7a2f3357')),
-        first_names='John Joseph',
+        first_name='John Joseph',
         last_name='Doe',
         country='State of Mind',
         zip_code='31337',

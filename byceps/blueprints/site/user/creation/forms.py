@@ -79,7 +79,7 @@ def assemble_user_create_form(
     extra_fields = {}
 
     if real_name_required:
-        extra_fields['first_names'] = StringField(
+        extra_fields['first_name'] = StringField(
             lazy_gettext('First name(s)'),
             [InputRequired(), Length(min=2, max=40)],
         )

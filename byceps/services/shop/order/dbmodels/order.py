@@ -39,7 +39,7 @@ class Order(db.Model):
     order_number = db.Column(db.UnicodeText, unique=True, nullable=False)
     placed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     placed_by = db.relationship(User, foreign_keys=[placed_by_id])
-    first_names = db.Column(db.UnicodeText, nullable=False)
+    first_name = db.Column(db.UnicodeText, nullable=False)
     last_name = db.Column(db.UnicodeText, nullable=False)
     country = db.Column(db.UnicodeText, nullable=False)
     zip_code = db.Column(db.UnicodeText, nullable=False)
@@ -63,7 +63,7 @@ class Order(db.Model):
         storefront_id: StorefrontID,
         order_number: OrderNumber,
         placed_by_id: UserID,
-        first_names: str,
+        first_name: str,
         last_name: str,
         country: str,
         zip_code: str,
@@ -75,7 +75,7 @@ class Order(db.Model):
         self.storefront_id = storefront_id
         self.order_number = order_number
         self.placed_by_id = placed_by_id
-        self.first_names = first_names
+        self.first_name = first_name
         self.last_name = last_name
         self.country = country
         self.zip_code = zip_code

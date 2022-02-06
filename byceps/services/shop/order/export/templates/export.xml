@@ -15,7 +15,7 @@
 							<ADDRESS>
 								<NAME></NAME>
 								<NAME2>{{ order.last_name }}</NAME2>
-								<NAME3>{{ order.first_names }}</NAME3>
+								<NAME3>{{ order.first_name }}</NAME3>
 								<STREET>{{ order.address.street }}</STREET>
 								<ZIP>{{ order.address.zip_code }}</ZIP>
 								<CITY>{{ order.address.city }}</CITY>
@@ -28,7 +28,7 @@
 							<ADDRESS>
 								<NAME></NAME>
 								<NAME2>{{ order.last_name }}</NAME2>
-								<NAME3>{{ order.first_names }}</NAME3>
+								<NAME3>{{ order.first_name }}</NAME3>
 								<STREET>{{ order.address.street }}</STREET>
 								<ZIP>{{ order.address.zip_code }}</ZIP>
 								<CITY>{{ order.address.city }}</CITY>

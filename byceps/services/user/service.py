@@ -233,7 +233,7 @@ def find_user_for_admin(user_id: UserID) -> Optional[UserForAdmin]:
             db.joinedload(DbUser.avatar_selection)
                 .joinedload(DbAvatarSelection.avatar),
             db.joinedload(DbUser.detail)
-                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
+                .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
         ) \
         .get(user_id)
 
@@ -264,7 +264,7 @@ def get_users_for_admin(user_ids: set[UserID]) -> set[UserForAdmin]:
             db.joinedload(DbUser.avatar_selection)
                 .joinedload(DbAvatarSelection.avatar),
             db.joinedload(DbUser.detail)
-                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
+                .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
         )
         .filter(DbUser.id.in_(frozenset(user_ids)))
     ).scalars().all()
@@ -371,7 +371,7 @@ def get_detail(user_id: UserID) -> UserDetail:
         raise ValueError(f"Unknown user ID '{user_id}'")
 
     return UserDetail(
-        first_names=detail.first_names,
+        first_name=detail.first_name,
         last_name=detail.last_name,
         date_of_birth=detail.date_of_birth,
         country=detail.country,
@@ -440,7 +440,7 @@ def get_users_created_since(
             db.joinedload(DbUser.avatar_selection)
                 .joinedload(DbAvatarSelection.avatar),
             db.joinedload(DbUser.detail)
-                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
+                .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
         ) \
         .filter(DbUser.created_at >= filter_starts_at) \
         .order_by(DbUser.created_at.desc())
@@ -468,7 +468,7 @@ def get_users_paginated(
             db.joinedload(DbUser.avatar_selection)
                 .joinedload(DbAvatarSelection.avatar),
             db.joinedload(DbUser.detail)
-                .load_only(DbUserDetail.first_names, DbUserDetail.last_name),
+                .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
         ) \
         .order_by(DbUser.created_at.desc())
 
@@ -530,6 +530,6 @@ def _generate_search_clauses_for_term(search_term: str) -> Select:
     return db.or_(
         DbUser.email_address.ilike(ilike_pattern),
         DbUser.screen_name.ilike(ilike_pattern),
-        DbUserDetail.first_names.ilike(ilike_pattern),
+        DbUserDetail.first_name.ilike(ilike_pattern),
         DbUserDetail.last_name.ilike(ilike_pattern),
     )

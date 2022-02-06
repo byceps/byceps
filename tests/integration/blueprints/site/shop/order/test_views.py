@@ -30,7 +30,7 @@ from tests.integration.services.shop.helpers import (
 
 
 COMMON_FORM_DATA = {
-    'first_names': 'Hiro',
+    'first_name': 'Hiro',
     'last_name': 'Protagonist',
     'country': 'State of Mind',
     'zip_code': '31337',

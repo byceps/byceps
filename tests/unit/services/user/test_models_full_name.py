@@ -12,7 +12,7 @@ from byceps.services.user.dbmodels.detail import UserDetail as DbUserDetail
 
 
 @pytest.mark.parametrize(
-    'first_names, last_name, expected',
+    'first_name, last_name, expected',
     [
         (None,          None    , None                ),
         ('Giesbert Z.', None    , 'Giesbert Z.'       ),
@@ -20,13 +20,13 @@ from byceps.services.user.dbmodels.detail import UserDetail as DbUserDetail
         ('Giesbert Z.', 'Blümli', 'Giesbert Z. Blümli'),
     ],
 )
-def test_full_name(first_names, last_name, expected):
-    user = create_user(first_names, last_name)
+def test_full_name(first_name, last_name, expected):
+    user = create_user(first_name, last_name)
 
     assert user.detail.full_name == expected
 
 
-def create_user(first_names: str, last_name: str) -> DbUser:
+def create_user(first_name: str, last_name: str) -> DbUser:
     created_at = datetime.utcnow()
     screen_name = 'Anyone'
     email_address = 'anyone@example.test'
@@ -34,7 +34,7 @@ def create_user(first_names: str, last_name: str) -> DbUser:
     user = DbUser(created_at, screen_name, email_address)
 
     detail = DbUserDetail(user=user)
-    detail.first_names = first_names
+    detail.first_name = first_name
     detail.last_name = last_name
 
     return user

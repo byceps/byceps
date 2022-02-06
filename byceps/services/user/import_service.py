@@ -22,7 +22,7 @@ class UserImportSchema(Schema):
     screen_name = fields.Str(required=True)
     email_address = fields.Str(required=False)
     legacy_id = fields.Str(required=False)
-    first_names = fields.Str(required=False)
+    first_name = fields.Str(required=False)
     last_name = fields.Str(required=False)
     date_of_birth = fields.Date(required=False)
     country = fields.Str(required=False)
@@ -56,7 +56,7 @@ def create_user(user_dict) -> User:
         user_dict.get('email_address'),
         password,
         legacy_id=user_dict.get('legacy_id'),
-        first_names=user_dict.get('first_names'),
+        first_name=user_dict.get('first_name'),
         last_name=user_dict.get('last_name'),
         date_of_birth=user_dict.get('date_of_birth'),
         country=user_dict.get('country'),

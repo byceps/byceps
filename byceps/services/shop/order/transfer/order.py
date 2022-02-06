@@ -70,7 +70,7 @@ class Orderer:
     """Someone who orders articles."""
 
     user_id: UserID
-    first_names: str
+    first_name: str
     last_name: str
     country: str
     zip_code: str
@@ -101,7 +101,7 @@ class Order:
     storefront_id: StorefrontID
     order_number: OrderNumber
     placed_by_id: UserID
-    first_names: str
+    first_name: str
     last_name: str
     address: Address
     total_amount: Decimal

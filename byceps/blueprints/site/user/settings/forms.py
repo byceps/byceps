@@ -90,7 +90,7 @@ class ChangeScreenNameForm(LocalizedForm):
 
 
 class DetailsForm(LocalizedForm):
-    first_names = StringField(
+    first_name = StringField(
         lazy_gettext('First name(s)'), [InputRequired(), Length(min=2)]
     )
     last_name = StringField(

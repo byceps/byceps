@@ -184,7 +184,7 @@ def create_account():
         return create_account_form(form)
 
     screen_name = form.screen_name.data.strip()
-    first_names = form.first_names.data.strip()
+    first_name = form.first_name.data.strip()
     last_name = form.last_name.data.strip()
     email_address = form.email_address.data.lower()
     password = form.password.data
@@ -202,7 +202,7 @@ def create_account():
             screen_name,
             email_address,
             password,
-            first_names=first_names,
+            first_name=first_name,
             last_name=last_name,
             creator_id=initiator_id,
             # Do not pass site ID here; the account is not created on a site.
@@ -634,7 +634,7 @@ def change_details(user_id):
     if not form.validate():
         return change_details_form(user.id, form)
 
-    first_names = form.first_names.data.strip()
+    first_name = form.first_name.data.strip()
     last_name = form.last_name.data.strip()
     date_of_birth = form.date_of_birth.data
     country = form.country.data.strip()
@@ -645,7 +645,7 @@ def change_details(user_id):
 
     event = user_command_service.update_user_details(
         user.id,
-        first_names,
+        first_name,
         last_name,
         date_of_birth,
         country,

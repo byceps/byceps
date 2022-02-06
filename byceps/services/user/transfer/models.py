@@ -33,7 +33,7 @@ class UserEmailAddress:
 
 @dataclass(frozen=True)
 class UserDetail:
-    first_names: Optional[str]
+    first_name: Optional[str]
     last_name: Optional[str]
     date_of_birth: Optional[date]
     country: Optional[str]
@@ -46,7 +46,7 @@ class UserDetail:
 
     @property
     def full_name(self) -> Optional[str]:
-        names = [self.first_names, self.last_name]
+        names = [self.first_name, self.last_name]
         return ' '.join(filter(None, names)) or None
 
 

@@ -37,7 +37,7 @@ def create_user(
     *,
     locale: Optional[str] = None,
     legacy_id: Optional[str] = None,
-    first_names: Optional[str] = None,
+    first_name: Optional[str] = None,
     last_name: Optional[str] = None,
     date_of_birth: Optional[date] = None,
     country: Optional[str] = None,
@@ -81,7 +81,7 @@ def create_user(
 
     detail = DbUserDetail(
         user=db_user,
-        first_names=first_names,
+        first_name=first_name,
         last_name=last_name,
         date_of_birth=date_of_birth,
         country=country,

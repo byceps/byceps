@@ -51,7 +51,7 @@ def test_delete_account(admin_app, role, make_user):
     assert user_before.legacy_id == legacy_id
 
     # details
-    assert user_before.detail.first_names is not None
+    assert user_before.detail.first_name is not None
     assert user_before.detail.last_name is not None
     assert user_before.detail.date_of_birth is not None
     assert user_before.detail.country is not None
@@ -85,7 +85,7 @@ def test_delete_account(admin_app, role, make_user):
     assert user_after.legacy_id is None
 
     # details
-    assert user_after.detail.first_names is None
+    assert user_after.detail.first_name is None
     assert user_after.detail.last_name is None
     assert user_after.detail.date_of_birth is None
     assert user_after.detail.country is None

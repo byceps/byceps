@@ -132,7 +132,7 @@ def _build_order(
     created_at = datetime.utcnow()
     placed_by_id = EXAMPLE_USER_ID
 
-    first_names = 'Bella-Bernadine'
+    first_name = 'Bella-Bernadine'
     last_name = 'Ballerwurm'
     address = Address('Germany', '22999', 'Büttenwarder', 'Deichweg 23')
 
@@ -147,7 +147,7 @@ def _build_order(
         storefront_id=storefront_id,
         order_number=order_number,
         placed_by_id=placed_by_id,
-        first_names=first_names,
+        first_name=first_name,
         last_name=last_name,
         address=address,
         total_amount=total_amount,

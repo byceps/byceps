@@ -96,10 +96,10 @@ def create():
     now_utc = datetime.utcnow()
 
     if real_name_required:
-        first_names = form.first_names.data.strip()
+        first_name = form.first_name.data.strip()
         last_name = form.last_name.data.strip()
     else:
-        first_names = None
+        first_name = None
         last_name = None
 
     try:
@@ -107,7 +107,7 @@ def create():
             screen_name,
             email_address,
             password,
-            first_names=first_names,
+            first_name=first_name,
             last_name=last_name,
             site_id=g.site_id,
         )

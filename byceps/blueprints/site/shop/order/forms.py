@@ -16,7 +16,7 @@ from .....util.l10n import LocalizedForm
 
 
 class OrderForm(LocalizedForm):
-    first_names = StringField(
+    first_name = StringField(
         lazy_gettext('First name(s)'), validators=[Length(min=2)]
     )
     last_name = StringField(
@@ -35,7 +35,7 @@ class OrderForm(LocalizedForm):
     def get_orderer(self, user_id):
         return Orderer(
             user_id,
-            self.first_names.data.strip(),
+            self.first_name.data.strip(),
             self.last_name.data.strip(),
             self.country.data.strip(),
             self.zip_code.data.strip(),
