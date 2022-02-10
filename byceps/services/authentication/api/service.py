@@ -46,7 +46,7 @@ def find_api_token_by_token(token: str) -> Optional[ApiToken]:
     db_api_token = db.session.execute(
         select(DbApiToken)
         .filter_by(token=token)
-    ).scalars().one_or_none()
+    ).scalar_one_or_none()
 
     if db_api_token is None:
         return None

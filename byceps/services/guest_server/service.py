@@ -231,7 +231,7 @@ def _find_db_server(server_id: ServerID) -> Optional[DbServer]:
     return db.session.execute(
         select(DbServer)
         .filter_by(id=server_id)
-    ).scalars().one_or_none()
+    ).scalar_one_or_none()
 
 
 def _get_db_server(server_id: ServerID) -> DbServer:
@@ -320,7 +320,7 @@ def _find_db_address(address_id: AddressID) -> Optional[DbAddress]:
     return db.session.execute(
         select(DbAddress)
         .filter_by(id=address_id)
-    ).scalars().one_or_none()
+    ).scalar_one_or_none()
 
 
 def _db_entity_to_address(db_address: DbAddress) -> Address:
