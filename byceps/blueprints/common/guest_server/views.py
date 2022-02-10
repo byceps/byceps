@@ -105,7 +105,7 @@ def _get_site_server_name(party_id: PartyID) -> str:
         party_id, 'primary_party_site_id'
     )
     if not primary_party_site_id:
-        abort(500, 'Primary Party site ID not configured.')
+        abort(500, 'Primary party site ID not configured.')
 
     site = site_service.get_site(SiteID(primary_party_site_id))
     return site.server_name
