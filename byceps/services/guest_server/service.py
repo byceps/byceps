@@ -40,10 +40,7 @@ from .transfer.models import (
 
 def get_setting_for_party(party_id: PartyID) -> Setting:
     """Return the setting for the party."""
-    db_setting = db.session.execute(
-        select(DbSetting)
-        .filter_by(party_id=party_id)
-    ).scalars().one_or_none()
+    db_setting = _get_db_setting(party_id)
 
     if db_setting is None:
         return Setting(
@@ -69,9 +66,7 @@ def update_setting(
     """Update the setting for the party."""
     party = party_service.get_party(party_id)
 
-    db_setting = db.session.execute(
-        select(DbSetting)
-    ).scalar_one()
+    db_setting = _get_db_setting(party_id) or DbSetting(party_id)
 
     db_setting.netmask = netmask
     db_setting.gateway = gateway
@@ -79,9 +74,17 @@ def update_setting(
     db_setting.dns_server2 = dns_server2
     db_setting.domain = domain
 
+    db.session.add(db_setting)
     db.session.commit()
 
     return _db_entity_to_setting(db_setting)
+
+
+def _get_db_setting(party_id: PartyID) -> Optional[DbSetting]:
+    return db.session.execute(
+        select(DbSetting)
+        .filter_by(party_id=party_id)
+    ).scalar_one_or_none()
 
 
 def _db_entity_to_setting(db_setting: DbSetting) -> Setting:
@@ -196,7 +199,8 @@ def get_servers_for_owner_and_party(
     return [_db_entity_to_server(db_server) for db_server in db_servers]
 
 
-def count_servers_for_owner_and_party( owner_id: UserID, party_id: PartyID
+def count_servers_for_owner_and_party(
+    owner_id: UserID, party_id: PartyID
 ) -> int:
     """Return the number of servers owned by the user for the party."""
     return db.session.scalar(
