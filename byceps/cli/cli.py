@@ -14,6 +14,7 @@ from flask.cli import AppGroup
 from .commands.create_database_tables import create_database_tables
 from .commands.create_superuser import create_superuser
 from .commands.export_roles import export_roles
+from .commands.generate_secret_key import generate_secret_key
 from .commands.import_roles import import_roles
 
 
@@ -26,6 +27,7 @@ for func in [
     create_database_tables,
     create_superuser,
     export_roles,
+    generate_secret_key,
     import_roles,
 ]:
     cli.add_command(func)
