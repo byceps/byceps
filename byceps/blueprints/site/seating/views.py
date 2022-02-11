@@ -77,10 +77,13 @@ def view_area(slug):
         seats_with_tickets, users_by_id
     )
 
+    seat_utilization = seat_service.get_seat_utilization(g.party_id)
+
     return {
         'area': area,
         'seat_management_enabled': seat_management_enabled,
         'seats_and_tickets': seats_and_tickets,
+        'seat_utilization': seat_utilization,
         'manage_mode': False,
     }
 

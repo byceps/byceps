@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_progress_bar %}
 {% from 'macros/seating.html' import render_area %}
 {% set current_page = 'seating' %}
 {% set page_title = [_('Seat management') if manage_mode else _('Seating plan'), area.title] %}
@@ -36,7 +37,20 @@
       {%- endif %}
     {%- endif %}
 
+  <div class="row row--space-between">
+    <div class="column-auto">
 {% include 'site/seating/_legend.html' %}
+    </div>
+    <div class="column-auto">
+      <small>
+        <p><strong>{{ _('Utilization') }}</strong></p>
+        <div class="progress">
+          {{ render_progress_bar(seat_utilization.occupied, seat_utilization.total) }}
+        </div>
+        {{ seat_utilization.occupied }} / {{ seat_utilization.total }} {{ _('seats occupied') }}
+      </small>
+    </div>
+  </div>
 
   {%- endif %}
 
