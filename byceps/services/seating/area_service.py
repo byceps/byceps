@@ -10,6 +10,7 @@ from __future__ import annotations
 from typing import Optional
 
 from sqlalchemy import select
+from sqlalchemy.sql import Select
 
 from ...database import db, paginate, Pagination
 from ...typing import PartyID
@@ -61,20 +62,34 @@ def find_area_for_party_by_slug(party_id: PartyID, slug: str) -> Optional[Area]:
     return _db_entity_to_area(area)
 
 
-def get_areas_for_party(party_id: PartyID) -> list[Area]:
-    """Return all areas for that party."""
-    areas = db.session \
-        .query(DbArea) \
-        .filter_by(party_id=party_id) \
-        .all()
-
-    return [_db_entity_to_area(area) for area in areas]
+def get_areas_with_seat_utilization(
+    party_id: PartyID,
+) -> list[Area, SeatUtilization]:
+    """Return all areas and their seat utilization for that party."""
+    query = _get_areas_with_seat_utilization_query(party_id)
+    rows = db.session.execute(query).all()
+    return [_map_areas_with_seat_utilization_row(row) for row in rows]
 
 
 def get_areas_with_seat_utilization_paginated(
     party_id: PartyID, page: int, per_page: int
 ) -> Pagination:
     """Return areas and their seat utilization for that party, paginated."""
+    items_query = _get_areas_with_seat_utilization_query(party_id)
+
+    count_query = select(db.func.count(DbArea.id)) \
+        .filter(DbArea.party_id == party_id)
+
+    return paginate(
+        items_query,
+        count_query,
+        page,
+        per_page,
+        item_mapper=_map_areas_with_seat_utilization_row,
+    )
+
+
+def _get_areas_with_seat_utilization_query(party_id: PartyID) -> Select:
     area = db.aliased(DbArea)
 
     subquery_occupied_seat_count = select(db.func.count(DbTicket.id)) \
@@ -88,7 +103,7 @@ def get_areas_with_seat_utilization_paginated(
         .filter_by(area_id=area.id) \
         .scalar_subquery()
 
-    items_query = select(
+    return select(
             area,
             subquery_occupied_seat_count,
             subquery_total_seat_count,
@@ -96,21 +111,15 @@ def get_areas_with_seat_utilization_paginated(
         .filter(area.party_id == party_id) \
         .group_by(area.id)
 
-    count_query = select(db.func.count(DbArea.id)) \
-        .filter(DbArea.party_id == party_id)
 
-    def item_mapper(
-        row: tuple[DbArea, int, int]
-    ) -> tuple[Area, SeatUtilization]:
-        area, occupied_seat_count, total_seat_count = row
-        utilization = SeatUtilization(
-            occupied=occupied_seat_count, total=total_seat_count
-        )
-        return _db_entity_to_area(area), utilization
-
-    return paginate(
-        items_query, count_query, page, per_page, item_mapper=item_mapper
+def _map_areas_with_seat_utilization_row(
+    row: tuple[DbArea, int, int]
+) -> tuple[Area, SeatUtilization]:
+    area, occupied_seat_count, total_seat_count = row
+    utilization = SeatUtilization(
+        occupied=occupied_seat_count, total=total_seat_count
     )
+    return _db_entity_to_area(area), utilization
 
 
 def _db_entity_to_area(area: DbArea) -> Area:

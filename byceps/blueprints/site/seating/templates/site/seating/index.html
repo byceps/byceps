@@ -1,5 +1,6 @@
 {% extends 'layout/base.html' %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_progress_bar %}
 {% from 'macros/seating.html' import render_seating_area_link %}
 {% set current_page = 'seating' %}
 {% set page_title = _('Seating plan') %}
@@ -14,10 +15,41 @@
   </form>
 
   <h2>{{ _('Areas') }}</h2>
-  <ul>
-    {%- for area in areas|sort(attribute='title') %}
-    <li>{{ render_seating_area_link(area) }}</li>
+  <table class="index index--v-centered">
+    <thead>
+      <tr>
+        <th>{{ _('Name') }}</th>
+        <th>{{ _('Utilization') }}</th>
+        <th class="number">{{ _('Seats') }}<br>{{ _('occupied') }}</th>
+        <th class="number">{{ _('Seats') }}<br>{{ _('available') }}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {%- for area, utilization in areas_with_utilization|sort(attribute='0.title') %}
+      <tr>
+        <td>{{ render_seating_area_link(area) }}</td>
+        <td>
+          <div class="progress">
+            {{ render_progress_bar(utilization.occupied, utilization.total) }}
+          </div>
+        </td>
+        <td class="bignumber number">{{ utilization.occupied }}</td>
+        <td class="bignumber number">{{ utilization.total }}</td>
+      </tr>
     {%- endfor %}
-  </ul>
+    </tbody>
+    <tfoot>
+      <tr>
+        <td>{{ _('Total') }}</td>
+        <td>
+          <div class="progress">
+            {{ render_progress_bar(total_seat_utilization.occupied, total_seat_utilization.total) }}
+          </div>
+        </td>
+        <td class="bignumber number">{{ total_seat_utilization.occupied }}</td>
+        <td class="bignumber number">{{ total_seat_utilization.total }}</td>
+      </tr>
+    </tfoot>
+  </table>
 
 {%- endblock %}

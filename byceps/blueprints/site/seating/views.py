@@ -40,10 +40,18 @@ def index():
         # No party is configured for the current site.
         abort(404)
 
-    areas = seating_area_service.get_areas_for_party(g.party_id)
+    areas_with_utilization = (
+        seating_area_service.get_areas_with_seat_utilization(g.party_id)
+    )
+
+    seat_utilizations = [awu[1] for awu in areas_with_utilization]
+    total_seat_utilization = seat_service.aggregate_seat_utilizations(
+        seat_utilizations
+    )
 
     return {
-        'areas': areas,
+        'areas_with_utilization': areas_with_utilization,
+        'total_seat_utilization': total_seat_utilization,
     }
 
 
