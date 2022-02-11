@@ -8,7 +8,7 @@ commands with ``sudo`` to obtain superuser permissions):
 
 .. code-block:: sh
 
-   $ su -
+    $ su -
 
 Update the list of packages before installing any:
 
