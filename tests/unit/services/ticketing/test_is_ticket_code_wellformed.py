@@ -20,5 +20,5 @@ from byceps.services.ticketing import ticket_code_service
         ('ZWXLNG', False),  # denied: too long
     ],
 )
-def test_(code, expected):
+def test_is_ticket_code_wellformed(code, expected):
     assert ticket_code_service.is_ticket_code_wellformed(code) == expected
