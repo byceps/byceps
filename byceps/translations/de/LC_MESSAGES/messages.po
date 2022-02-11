@@ -1405,9 +1405,11 @@ msgstr "Marke"
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:58
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orga_activities.html:11
 #: byceps/blueprints/common/guest_server/templates/common/guest_server/view_printable_card.html:94
-#: byceps/blueprints/site/user_profile/templates/site/user_profile/view.html:43
+#: byceps/blueprints/site/user_profile/templates/site/user_profile/view.html:41
 msgid "Party"
-msgstr "Party"
+msgid_plural "Parties"
+msgstr[0] "Party"
+msgstr[1] "Partys"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav.html:29
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:4
@@ -4454,7 +4456,9 @@ msgstr "Der Check-In wurde rückgängig gemacht."
 #: byceps/blueprints/site/dashboard/templates/site/dashboard/_tickets.html:12
 #: byceps/blueprints/site/ticketing/templates/site/ticketing/index_mine.html:159
 msgid "Seat"
-msgstr "Sitzplatz"
+msgid_plural "Seats"
+msgstr[0] "Sitzplatz"
+msgstr[1] "Sitzplätze"
 
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/_ticket_list.html:48
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:107
@@ -6901,6 +6905,14 @@ msgid ""
 msgstr ""
 "Die Person kann dir über das Kontaktformular auf deiner Profilseite "
 "antworten."
+
+#: byceps/blueprints/site/user_profile/templates/site/user_profile/_attended_parties.html:2
+msgid "Attended parties"
+msgstr "Besuchte Partys"
+
+#: byceps/blueprints/site/user_profile/templates/site/user_profile/_contact.html:5
+msgid "Contact"
+msgstr "Kontakt"
 
 #: byceps/permissions/admin.py:17
 msgid "Access admin area"

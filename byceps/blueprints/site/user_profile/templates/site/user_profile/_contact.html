@@ -2,7 +2,7 @@
 
 
 <div class="user-profile-detail-block">
-  <h2>Kontakt</h2>
+  <h2>{{ _('Contact') }}</h2>
 
-  <p><a class="button" href="{{ url_for('user_message.create_form', recipient_id=user.id) }}">{{ render_icon('email') }} <span>Mitteilung senden</span></a></p>
+  <p><a class="button" href="{{ url_for('user_message.create_form', recipient_id=user.id) }}">{{ render_icon('email') }} <span>{{ _('Send message') }}</span></a></p>
 </div>

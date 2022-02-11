@@ -38,7 +38,7 @@
           {{ attended_parties|length }}
         </div>
         <div class="user-profile-header-cell-bottom stats-label">
-          {{ _('Party') if (attended_parties|length == 1) else _('Parties') }}
+          {{ ngettext('Party', 'Parties', attended_parties|length) }}
         </div>
       </div>
 

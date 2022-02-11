@@ -4,11 +4,11 @@
 
 <div class="user-profile-detail-block">
   {%- if current_party_tickets %}
-  <h2>{{ 'Sitzplätze' if (current_party_tickets|length > 1) else 'Sitzplatz' }}</h2>
+  <h2>{{ ngettext('Seat', 'Seats', current_party_tickets|length) }}</h2>
 
   <ol>
     {%- for ticket in current_party_tickets %}
-    <li>{{ render_seating_area_link(ticket.occupied_seat.area, ticket.occupied_seat.label) if ticket.occupied_seat else 'nicht ausgewählt'|dim }}{% if ticket.user_checked_in %} {{ render_tag('eingecheckt') }}{% endif %}</li>
+    <li>{{ render_seating_area_link(ticket.occupied_seat.area, ticket.occupied_seat.label) if ticket.occupied_seat else _('not chosen')|dim }}{% if ticket.user_checked_in %} {{ render_tag(_('checked in')) }}{% endif %}</li>
     {%- endfor %}
   </ol>
   {%- endif %}
