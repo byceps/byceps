@@ -8,7 +8,6 @@ from typing import Any
 from flask import g
 from flask_babel import get_locale
 
-from byceps.services.seating import seat_service
 from byceps.services.ticketing import ticket_service
 from byceps.util.l10n import get_locales
 
@@ -22,9 +21,6 @@ def template_context_processor() -> dict[str, Any]:
 
     if g.party_id is not None:
         sale_stats = ticket_service.get_ticket_sale_stats(g.party_id)
-        seat_utilization = seat_service.get_seat_utilization(g.party_id)
-
         context['ticket_sale_stats'] = sale_stats
-        context['seat_utilization'] = seat_utilization
 
     return context

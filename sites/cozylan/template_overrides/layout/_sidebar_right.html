@@ -40,20 +40,6 @@
 </div>
 {%- endif %}
 
-{%- if seat_utilization is defined %}
-<div class="sidebar-section">
-  <h3>{{ _('Seats') }}</h3>
-
-  <div class="progress">
-    {{ render_progress_bar(seat_utilization.occupied, seat_utilization.total) }}
-  </div>
-
-  {{ seat_utilization.occupied|numberformat }}
-  / {{ seat_utilization.total|numberformat }}
-  <br>{{ _('seats occupied') }}
-</div>
-{%- endif %}
-
 <div class="sidebar-section">
   <h3>Sponsoren</h3>
 </div>
