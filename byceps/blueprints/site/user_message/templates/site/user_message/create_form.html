@@ -2,14 +2,14 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% from 'macros/user_avatar.html' import render_user_avatar_and_link %}
 {% set current_page = 'user_message' %}
-{% set page_title = 'Mitteilung an Benutzer senden' %}
+{% set page_title = _('Send message') %}
 
 {% block body %}
 
-  <h1>Mitteilung senden</h1>
+  <h1>{{ _('Send message') }}</h1>
 
   <form action="{{ url_for('.create', recipient_id=recipient.id) }}" method="post">
-    <label class="form-label">Empfänger/in</label>
+    <label class="form-label">{{ _('Recipient') }}</label>
     <div class="mb">
       {{ render_user_avatar_and_link(recipient, size=20) }}
     </div>
@@ -18,8 +18,8 @@
     {{ form_buttons(_('Send')) }}
   </form>
 
-  <p style="margin-top: 1.5rem;">Über dieses Formular kannst du der Person eine Nachricht zukommen lassen.</p>
-  <p>Dazu senden wir ihr eine E-Mail mit deinem Text. Deine E-Mail-Adresse geben wir dabei <em>nicht</em> weiter.</p>
-  <p>Die Person kann dir über das Kontaktformular auf deiner Profilseite antworten.</p>
+  <p style="margin-top: 2rem;">{{ _('You can send a message to the person using this form.') }}</p>
+  <p>{{ _('They will get an email with your message text. Your email address will <em>not</em> be exposed, though.') }}</p>
+  <p>{{ _('The person can reply to you using the contact form linked on your profile page.') }}</p>
 
 {%- endblock %}

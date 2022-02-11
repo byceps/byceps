@@ -6869,9 +6869,38 @@ msgstr "Die Gruppe \"%(group_title)s\" wurde erstellt."
 msgid "Your message to %(screen_name)s has been sent."
 msgstr "Deine Nachricht an %(screen_name)s wurde versendet."
 
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:5
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:9
+msgid "Send message"
+msgstr "Mitteilung senden"
+
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:12
+msgid "Recipient"
+msgstr "Empfänger/in"
+
 #: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:18
 msgid "Send"
 msgstr "Senden"
+
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:21
+msgid "You can send a message to the person using this form."
+msgstr "Über dieses Formular kannst du der Person eine Nachricht zukommen lassen."
+
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:22
+msgid ""
+"They will get an email with your message text. Your email address will "
+"<em>not</em> be exposed, though."
+msgstr ""
+"Dazu senden wir ihr eine E-Mail mit deinem Text. Deine E-Mail-Adresse "
+"geben wir dabei <em>nicht</em> weiter."
+
+#: byceps/blueprints/site/user_message/templates/site/user_message/create_form.html:23
+msgid ""
+"The person can reply to you using the contact form linked on your profile"
+" page."
+msgstr ""
+"Die Person kann dir über das Kontaktformular auf deiner Profilseite "
+"antworten."
 
 #: byceps/permissions/admin.py:17
 msgid "Access admin area"
