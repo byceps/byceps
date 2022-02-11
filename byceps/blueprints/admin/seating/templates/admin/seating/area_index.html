@@ -1,6 +1,7 @@
 {% extends 'layout/admin/seating.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_progress_bar %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page_party = party %}
 {% set current_tab = 'areas' %}
@@ -11,7 +12,7 @@
 
   <div class="row row--space-between">
     <div class="column-auto">
-      <h1>{{ _('Areas') }} {{ render_extra_in_heading(areas_with_occupied_seat_counts.total) }}</h1>
+      <h1>{{ _('Areas') }} {{ render_extra_in_heading(areas_with_utilization.total) }}</h1>
     </div>
     {%- if has_current_user_permission('seating.administrate') %}
     <div class="column-auto">
@@ -23,7 +24,7 @@
   </div>
 
   <div class="box">
-    {%- if areas_with_occupied_seat_counts.items %}
+    {%- if areas_with_utilization.items %}
     <table class="index index--v-centered wide">
       <thead>
         <tr>
@@ -31,10 +32,11 @@
           <th>{{ _('Background image') }}<br>{{ _('Dimensions') }}</th>
           <th class="number">{{ _('Seats') }}<br>{{ _('occupied') }}</th>
           <th class="number">{{ _('Seats') }}<br>{{ _('available') }}</th>
+          <th>{{ _('Utilization') }}</th>
         </tr>
       </thead>
       <tbody>
-        {%- for area, occupied_seat_count in areas_with_occupied_seat_counts.items|sort(attribute='0.title') %}
+        {%- for area, utilization in areas_with_utilization.items|sort(attribute='0.title') %}
         <tr>
           <td>
             <strong>{{ area.title }}</strong><br>
@@ -48,18 +50,36 @@
             {{ _('not specified')|dim }}
             {%- endif %}
           </td>
-          <td class="bignumber number">{{ occupied_seat_count }}</td>
-          <td class="bignumber number">{{ seat_total_per_area[area.id] }}</td>
+          <td class="bignumber number">{{ utilization.occupied }}</td>
+          <td class="bignumber number">{{ utilization.total }}</td>
+          <td>
+            <div class="progress">
+              {{ render_progress_bar(utilization.occupied, utilization.total) }}
+            </div>
+          </td>
         </tr>
         {%- endfor %}
       </tbody>
+      <tfoot>
+        <tr>
+          <td><strong>{{ _('Total') }}</strong></td>
+          <td></td>
+          <td class="bignumber number">{{ total_seat_utilization.occupied }}</td>
+          <td class="bignumber number">{{ total_seat_utilization.total }}</td>
+          <td>
+            <div class="progress">
+              {{ render_progress_bar(total_seat_utilization.occupied, total_seat_utilization.total) }}
+            </div>
+          </td>
+        </tr>
+      </tfoot>
     </table>
     {%- else %}
     <div class="dimmed-box centered">{{ _('No areas exist.') }}</div>
     {%- endif %}
   </div>
 
-{{ render_pagination_nav(areas_with_occupied_seat_counts, '.area_index', {
+{{ render_pagination_nav(areas_with_utilization, '.area_index', {
   'party_id': party.id,
   'per_page': per_page,
 }) }}

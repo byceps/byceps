@@ -18,7 +18,7 @@ from ..ticketing.dbmodels.ticket import Ticket as DbTicket
 
 from .dbmodels.area import Area as DbArea
 from .dbmodels.seat import Seat as DbSeat
-from .transfer.models import Area
+from .transfer.models import Area, SeatUtilization
 
 
 def create_area(party_id: PartyID, slug: str, title: str) -> Area:
@@ -71,20 +71,28 @@ def get_areas_for_party(party_id: PartyID) -> list[Area]:
     return [_db_entity_to_area(area) for area in areas]
 
 
-def get_areas_for_party_paginated(
+def get_areas_with_seat_utilization_paginated(
     party_id: PartyID, page: int, per_page: int
 ) -> Pagination:
-    """Return the areas for that party."""
+    """Return areas and their seat utilization for that party, paginated."""
     area = db.aliased(DbArea)
 
-    subquery = select(db.func.count(DbTicket.id)) \
+    subquery_occupied_seat_count = select(db.func.count(DbTicket.id)) \
         .filter(DbTicket.revoked == False) \
         .filter(DbTicket.occupied_seat_id != None) \
         .join(DbSeat) \
         .filter(DbSeat.area_id == area.id) \
         .scalar_subquery()
 
-    items_query = select(area, subquery) \
+    subquery_total_seat_count = select(db.func.count(DbSeat.id)) \
+        .filter_by(area_id=area.id) \
+        .scalar_subquery()
+
+    items_query = select(
+            area,
+            subquery_occupied_seat_count,
+            subquery_total_seat_count,
+        ) \
         .filter(area.party_id == party_id) \
         .group_by(area.id)
 
@@ -92,10 +100,13 @@ def get_areas_for_party_paginated(
         .filter(DbArea.party_id == party_id)
 
     def item_mapper(
-        area_and_ticket_count: tuple[DbArea, int]
-    ) -> tuple[Area, int]:
-        area, ticket_count = area_and_ticket_count
-        return _db_entity_to_area(area), ticket_count
+        row: tuple[DbArea, int, int]
+    ) -> tuple[Area, SeatUtilization]:
+        area, occupied_seat_count, total_seat_count = row
+        utilization = SeatUtilization(
+            occupied=occupied_seat_count, total=total_seat_count
+        )
+        return _db_entity_to_area(area), utilization
 
     return paginate(
         items_query, count_query, page, per_page, item_mapper=item_mapper

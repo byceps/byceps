@@ -61,19 +61,22 @@ def area_index(party_id, page):
     party = _get_party_or_404(party_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
-    areas_with_occupied_seat_counts = (
-        seating_area_service.get_areas_for_party_paginated(
+    areas_with_utilization = (
+        seating_area_service.get_areas_with_seat_utilization_paginated(
             party.id, page, per_page
         )
     )
 
-    seat_total_per_area = seat_service.get_seat_total_per_area(party.id)
+    seat_utilizations = [awu[1] for awu in areas_with_utilization.items]
+    total_seat_utilization = seat_service.aggregate_seat_utilizations(
+        seat_utilizations
+    )
 
     return {
         'party': party,
         'per_page': per_page,
-        'areas_with_occupied_seat_counts': areas_with_occupied_seat_counts,
-        'seat_total_per_area': seat_total_per_area,
+        'areas_with_utilization': areas_with_utilization,
+        'total_seat_utilization': total_seat_utilization,
     }
 
 

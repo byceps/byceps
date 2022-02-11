@@ -7,7 +7,7 @@ byceps.services.seating.seat_service
 """
 
 from __future__ import annotations
-from typing import Iterator, Optional, Sequence
+from typing import Iterable, Iterator, Optional, Sequence
 
 from sqlalchemy import select
 
@@ -132,19 +132,14 @@ def get_seat_utilization(party_id: PartyID) -> SeatUtilization:
     return SeatUtilization(occupied_seat_count, total_seat_count)
 
 
-def get_seat_total_per_area(party_id: PartyID) -> dict[AreaID, int]:
-    """Return the number of seats per area for that party."""
-    area_ids_and_seat_counts = db.session \
-        .query(
-            DbArea.id,
-            db.func.count(DbSeat.id)
-        ) \
-        .filter_by(party_id=party_id) \
-        .outerjoin(DbSeat) \
-        .group_by(DbArea.id) \
-        .all()
-
-    return dict(area_ids_and_seat_counts)
+def aggregate_seat_utilizations(
+    seat_utilizations: Iterable[SeatUtilization],
+) -> SeatUtilization:
+    """Aggregate multiple seat utilizations into one."""
+    return SeatUtilization(
+        occupied=sum(su.occupied for su in seat_utilizations),
+        total=sum(su.total for su in seat_utilizations),
+    )
 
 
 def find_seat(seat_id: SeatID) -> Optional[Seat]:

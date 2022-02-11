@@ -3097,7 +3097,11 @@ msgstr "belegt"
 msgid "available"
 msgstr "verfügbar"
 
-#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:58
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:35
+msgid "Utilization"
+msgstr "Auslastung"
+
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:66
 msgid "No areas exist."
 msgstr "Es sind keine Bereiche vorhanden."
 
