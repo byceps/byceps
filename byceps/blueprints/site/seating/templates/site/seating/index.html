@@ -33,8 +33,8 @@
             {{ render_progress_bar(utilization.occupied, utilization.total) }}
           </div>
         </td>
-        <td class="bignumber number">{{ utilization.occupied }}</td>
-        <td class="bignumber number">{{ utilization.total }}</td>
+        <td class="bignumber number">{{ utilization.occupied|numberformat }}</td>
+        <td class="bignumber number">{{ utilization.total|numberformat }}</td>
       </tr>
     {%- endfor %}
     </tbody>
@@ -46,8 +46,8 @@
             {{ render_progress_bar(total_seat_utilization.occupied, total_seat_utilization.total) }}
           </div>
         </td>
-        <td class="bignumber number">{{ total_seat_utilization.occupied }}</td>
-        <td class="bignumber number">{{ total_seat_utilization.total }}</td>
+        <td class="bignumber number">{{ total_seat_utilization.occupied|numberformat }}</td>
+        <td class="bignumber number">{{ total_seat_utilization.total|numberformat }}</td>
       </tr>
     </tfoot>
   </table>

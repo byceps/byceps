@@ -47,7 +47,7 @@
         <div class="progress">
           {{ render_progress_bar(seat_utilization.occupied, seat_utilization.total) }}
         </div>
-        {{ seat_utilization.occupied }} / {{ seat_utilization.total }} {{ _('seats occupied') }}
+        {{ seat_utilization.occupied|numberformat }} / {{ seat_utilization.total|numberformat }} {{ _('seats occupied') }}
       </small>
     </div>
   </div>
