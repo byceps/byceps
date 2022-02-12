@@ -142,9 +142,12 @@ def manage_seats_in_area(slug):
     else:
         managed_tickets = []
 
+    seat_utilization = seat_service.get_seat_utilization(g.party_id)
+
     return {
         'area': area,
         'seats_and_tickets': seats_and_tickets,
+        'seat_utilization': seat_utilization,
         'manage_mode': True,
         'seat_management_enabled': seat_management_enabled,
         'managed_tickets': managed_tickets,
