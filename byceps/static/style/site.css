@@ -8,6 +8,15 @@ body {
 }
 
 
+/* header */
+
+.current-user .dropdown-toggle {
+  align-items: center;
+  display: flex;
+  gap: 0.25rem;
+}
+
+
 /* notifications */
 
 .notifications {
