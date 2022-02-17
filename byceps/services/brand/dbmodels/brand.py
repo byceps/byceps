@@ -1,5 +1,5 @@
 """
-byceps.services.dbbrand.models.brand
+byceps.services.brand.dbmodels.brand
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2006-2022 Jochen Kupperschmidt
