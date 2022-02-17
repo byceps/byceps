@@ -85,7 +85,7 @@ h2 {
   text-decoration: none;
 }
 
-.board-index-item-title .tag {
+.tag.board-index-tag-new {
   display: inline-block;
   margin-right: 0.25rem;
   margin-top: -0.125rem;
