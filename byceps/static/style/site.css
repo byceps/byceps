@@ -86,9 +86,9 @@ h2 {
 }
 
 .board-index-item-title .tag {
-  float: left;
-  margin-right: 0.3rem;
-  margin-top: 0.1rem;
+  display: inline-block;
+  margin-right: 0.25rem;
+  margin-top: -0.125rem;
   text-transform: uppercase;
 }
 
