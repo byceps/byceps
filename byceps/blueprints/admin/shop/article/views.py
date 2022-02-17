@@ -68,8 +68,14 @@ def index_for_shop(shop_id, page):
     brand = brand_service.get_brand(shop.brand_id)
 
     per_page = request.args.get('per_page', type=int, default=15)
+
+    search_term = request.args.get('search_term', default='').strip()
+
     articles = article_service.get_articles_for_shop_paginated(
-        shop.id, page, per_page
+        shop.id,
+        page,
+        per_page,
+        search_term=search_term,
     )
 
     # Inherit order of enum members.
@@ -92,6 +98,7 @@ def index_for_shop(shop_id, page):
         'totals_by_article_number': totals_by_article_number,
         'PaymentState': PaymentState,
         'per_page': per_page,
+        'search_term': search_term,
     }
 
 

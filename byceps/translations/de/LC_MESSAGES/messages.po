@@ -3418,7 +3418,25 @@ msgstr "Typ"
 msgid "Create new sequence"
 msgstr "Neue Sequenz erstellen"
 
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:55
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:51
+#: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:15
+msgid "Article number"
+msgstr "Artikelnummer"
+
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:51
+msgid "description"
+msgstr "Beschreibung"
+
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:53
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:25
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:22
+#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:20
+#: byceps/blueprints/admin/user/templates/admin/user/index.html:62
+#: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:40
+msgid "Remove search term constraint"
+msgstr "Einschränkung auf Suchbegriff aufheben"
+
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:61
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:8
 msgid "Item number"
 msgstr "Artikelnummer"
@@ -3939,14 +3957,6 @@ msgstr "Es handelt sich <em>nicht</em> um einen internen Vermerk."
 msgid "Create order number sequence"
 msgstr "Bestellnummer-Sequenz erstellen"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:25
-#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:22
-#: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_for_party.html:20
-#: byceps/blueprints/admin/user/templates/admin/user/index.html:62
-#: byceps/blueprints/site/attendance/templates/site/attendance/attendees.html:40
-msgid "Remove search term constraint"
-msgstr "Einschränkung auf Suchbegriff aufheben"
-
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/mark_as_paid_form.html:17
 msgid "Mark as paid"
 msgstr "Als bezahlt markieren"
@@ -4024,10 +4034,6 @@ msgstr "auf Versand wartend"
 #: byceps/blueprints/site/shop/orders/templates/macros/shop/orders.html:18
 msgid "overdue"
 msgstr "überfällig"
-
-#: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:15
-msgid "Article number"
-msgstr "Artikelnummer"
 
 #: byceps/blueprints/admin/shop/shipping/templates/admin/shop/shipping/view_for_shop.html:17
 msgid "Paid"

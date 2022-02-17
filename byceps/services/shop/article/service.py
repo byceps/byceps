@@ -245,7 +245,11 @@ def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
 
 
 def get_articles_for_shop_paginated(
-    shop_id: ShopID, page: int, per_page: int
+    shop_id: ShopID,
+    page: int,
+    per_page: int,
+    *,
+    search_term=None,
 ) -> Pagination:
     """Return all articles for that shop, paginated.
 
@@ -257,6 +261,21 @@ def get_articles_for_shop_paginated(
 
     count_query = select(db.func.count(DbArticle.id)) \
         .filter_by(shop_id=shop_id)
+
+    if search_term:
+        ilike_pattern = f'%{search_term}%'
+        items_query = items_query.filter(
+            db.or_(
+                DbArticle.item_number.ilike(ilike_pattern),
+                DbArticle.description.ilike(ilike_pattern),
+            )
+        )
+        count_query = count_query.filter(
+            db.or_(
+                DbArticle.item_number.ilike(ilike_pattern),
+                DbArticle.description.ilike(ilike_pattern),
+            )
+        )
 
     return paginate(
         items_query, count_query, page, per_page, scalar_result=True

@@ -47,6 +47,12 @@
     {%- endif %}
   </div>
 
+  <form action="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="single-row mb">
+    <input type="search" name="search_term" placeholder="{{ _('Article number') }}, {{ _('description') }}"{%- if search_term %} value="{{ search_term }}"{% endif %} autofocus>
+    <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
+    <a href="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="{{ _('Remove search term constraint') }}">{{ render_icon('remove') }}</a>
+  </form>
+
   <div class="box">
     {%- if articles.items %}
     <table class="index index--v-centered wide">
@@ -115,6 +121,7 @@
 {{ render_pagination_nav(articles, '.index_for_shop', {
   'shop_id': shop.id,
   'per_page': per_page,
+  'search_term': search_term if search_term else None,
 }) }}
 
 {%- endblock %}
