@@ -412,6 +412,16 @@ label {
   padding: 0;
 }
 
+input.form-control:not([type='checkbox']):not([type='radio']),
+select.form-control,
+textarea.form-control {
+  background-color: #ffffff;
+  border: #bbbbbb solid 1px;
+  border-radius: 3px;
+  font-size: 0.875rem; /* 14px / 16px */
+  padding: 0.4rem;
+}
+
 input.form-control:not([size]):not([type='checkbox']):not([type='date']):not([type='radio']):not([type='time']),
 textarea.form-control {
   width: 100%;
