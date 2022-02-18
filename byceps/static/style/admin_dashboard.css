@@ -69,7 +69,7 @@ a.dashboard-section-link:hover {
 }
 
 .cell-label {
-  color: #999999;
+  color: #888888;
   font-size: 0.75rem;
   margin-bottom: 0.25rem;
   text-transform: uppercase;
@@ -80,7 +80,7 @@ a.dashboard-section-link:hover {
 }
 
 .cell .progress-label {
-  color: #999999;
+  color: #888888;
   text-align: right;
 }
 
@@ -129,7 +129,7 @@ a.dashboard-section-link:hover {
 }
 
 .supplement {
-  color: #999999;
+  color: #888888;
   font-size: 0.6875rem; /* 11px / 16px */
   margin-top: 0.15rem;
 }
