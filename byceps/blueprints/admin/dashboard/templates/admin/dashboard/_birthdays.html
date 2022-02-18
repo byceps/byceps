@@ -4,8 +4,8 @@
 {% from 'macros/user_avatar.html' import render_user_avatar %}
 
 
-<h2>{{ _('Upcoming Birthdays') }}</h2>
-<ol class="birthdays">
+<div class="cell-label">{{ _('Upcoming Birthdays') }}</div>
+<ol class="birthdays mt">
 {%- for user, birthday in orgas_with_next_birthdays %}
   {%- with days_until_next_birthday = birthday.days_until_next_birthday, is_today = birthday.is_today %}
   <li{% if is_today %} class="hastoday"{% elif days_until_next_birthday > 14 %} class="dimmed"{% endif %}>

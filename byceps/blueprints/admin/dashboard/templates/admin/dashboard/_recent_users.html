@@ -3,24 +3,26 @@
 {% from 'macros/user_avatar.html' import render_user_avatar %}
 
 
-<h2>{{ _('Newest Users') }}</h2>
-{%- if recent_users %}
-<ol class="fancy-list">
-  {%- for user in recent_users %}
-  <li>
-    <a href="{{ url_for('user_admin.view', user_id=user.id) }}">
-      <div class="item" style="display: flex; justify-content: space-between;">
-        <span>{{ render_user_avatar(user, size=20) }} {{ render_user_screen_name(user) }}</span>
-        <span>{{ render_most_important_user_flag(user, show_label=False) }}</span>
-      </div>
-      <div class="supplement">{{ user.detail.full_name|fallback }}</div>
-      <div class="supplement">{{ user.created_at|datetimeformat }}</div>
-    </a>
-  </li>
-  {%- endfor %}
-</ol>
-{%- else %}
-{{ _('None recently')|dim }}
-{%- endif %}
+<div class="cell-label">{{ _('Newest Users') }}</div>
+<div class="mt">
+  {%- if recent_users %}
+  <ol class="fancy-list">
+    {%- for user in recent_users %}
+    <li>
+      <a href="{{ url_for('user_admin.view', user_id=user.id) }}">
+        <div class="item" style="display: flex; justify-content: space-between;">
+          <span>{{ render_user_avatar(user, size=20) }} {{ render_user_screen_name(user) }}</span>
+          <span>{{ render_most_important_user_flag(user, show_label=False) }}</span>
+        </div>
+        <div class="supplement">{{ user.detail.full_name|fallback }}</div>
+        <div class="supplement">{{ user.created_at|datetimeformat }}</div>
+      </a>
+    </li>
+    {%- endfor %}
+  </ol>
+  {%- else %}
+  {{ _('None recently')|dim }}
+  {%- endif %}
+</div>
 
 <div class="mt small" style="text-align: right;"><a href="{{ url_for('user_admin.index') }}">{{ _('All users') }} &rarr;</a></div>
