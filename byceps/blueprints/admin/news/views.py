@@ -64,6 +64,34 @@ def channel_index_for_brand(brand_id):
     }
 
 
+@blueprint.get('/channels/<channel_id>', defaults={'page': 1})
+@blueprint.get('/channels/<channel_id>/pages/<int:page>')
+@permission_required('news_item.view')
+@templated
+def channel_view(channel_id, page):
+    """View that channel and list its news items."""
+    channel = _get_channel_or_404(channel_id)
+
+    brand = brand_service.find_brand(channel.brand_id)
+
+    channel_ids = {channel.id}
+    per_page = request.args.get('per_page', type=int, default=15)
+
+    items = news_item_service.get_items_paginated(channel_ids, page, per_page)
+
+    user_ids = {item.current_version.creator_id for item in items.items}
+    users = user_service.get_users(user_ids, include_avatars=True)
+    users_by_id = user_service.index_users_by_id(users)
+
+    return {
+        'channel': channel,
+        'brand': brand,
+        'items': items,
+        'per_page': per_page,
+        'users_by_id': users_by_id,
+    }
+
+
 @blueprint.get('/for_brand/<brand_id>/channels/create')
 @permission_required('news_channel.create')
 @templated
@@ -103,34 +131,6 @@ def channel_create(brand_id):
         )
     )
     return redirect_to('.channel_view', channel_id=channel.id)
-
-
-@blueprint.get('/channels/<channel_id>', defaults={'page': 1})
-@blueprint.get('/channels/<channel_id>/pages/<int:page>')
-@permission_required('news_item.view')
-@templated
-def channel_view(channel_id, page):
-    """View that channel and list its news items."""
-    channel = _get_channel_or_404(channel_id)
-
-    brand = brand_service.find_brand(channel.brand_id)
-
-    channel_ids = {channel.id}
-    per_page = request.args.get('per_page', type=int, default=15)
-
-    items = news_item_service.get_items_paginated(channel_ids, page, per_page)
-
-    user_ids = {item.current_version.creator_id for item in items.items}
-    users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = user_service.index_users_by_id(users)
-
-    return {
-        'channel': channel,
-        'brand': brand,
-        'items': items,
-        'per_page': per_page,
-        'users_by_id': users_by_id,
-    }
 
 
 @blueprint.delete('/channels/<channel_id>')
