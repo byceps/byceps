@@ -3,6 +3,7 @@
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('View changes') %}
+{% set layout_main_raw = True %}
 
 {% block head %}
 {{ render_difference_styles() }}
@@ -13,15 +14,23 @@
   <h1>{{ page_title }}</h1>
 
   <h2>{{ _('Title') }}</h2>
+  <div class="box">
 {{ render_difference(diff_title) }}
+  </div>
 
   <h2>{{ _('Text') }}</h2>
+  <div class="box">
 {{ render_difference(diff_body) }}
+  </div>
 
   <h2>{{ _('Text format') }}</h2>
+  <div class="box">
 {{ render_difference(diff_body_format) }}
+  </div>
 
   <h2>{{ _('Image URL path') }}</h2>
+  <div class="box">
 {{ render_difference(diff_image_url_path) }}
+  </div>
 
 {%- endblock %}

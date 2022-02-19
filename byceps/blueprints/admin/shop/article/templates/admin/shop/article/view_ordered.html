@@ -4,6 +4,7 @@
 {% from 'macros/admin/user.html' import render_user_microcard %}
 {% set current_page_shop = shop %}
 {% set page_title = article.description %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view', article_id=article.id), article.item_number) }}
@@ -24,28 +25,30 @@
     </div>
   </div>
 
-  {%- if quantities_orders_users %}
-  <table class="index index--v-centered wide">
-    <thead>
-      <tr>
-        <th>{{ _('Username') }}<br>{{ _('Full name') }}</th>
-        <th class="centered">{{ _('Quantity') }}</th>
-        <th colspan="2">{{ _('Order') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for quantity, order, user in quantities_orders_users|sort(attribute='1.order_number', reverse=True) %}
-      <tr>
-        <td>{{ render_user_microcard(user, full_name='%s %s'|format(order.first_name, order.last_name)) }}</td>
-        <td class="bignumber centered">{{ quantity }}</td>
-        <td>{{ render_order_link(order) }}<br>{{ order.created_at|datetimeformat|dim }}</td>
-        <td>{{ render_order_payment_state(order.payment_state) }}</td>
-      </tr>
-    {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">{{ _('This article has not been ordered yet.') }}</div>
-  {%- endif %}
+  <div class="box">
+    {%- if quantities_orders_users %}
+    <table class="index index--v-centered wide">
+      <thead>
+        <tr>
+          <th>{{ _('Username') }}<br>{{ _('Full name') }}</th>
+          <th class="centered">{{ _('Quantity') }}</th>
+          <th colspan="2">{{ _('Order') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for quantity, order, user in quantities_orders_users|sort(attribute='1.order_number', reverse=True) %}
+        <tr>
+          <td>{{ render_user_microcard(user, full_name='%s %s'|format(order.first_name, order.last_name)) }}</td>
+          <td class="bignumber centered">{{ quantity }}</td>
+          <td>{{ render_order_link(order) }}<br>{{ order.created_at|datetimeformat|dim }}</td>
+          <td>{{ render_order_payment_state(order.payment_state) }}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('This article has not been ordered yet.') }}</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

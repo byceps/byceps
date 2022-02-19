@@ -3,19 +3,22 @@
 {% set current_page = 'shop_shop_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Shop') %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
   <h1>{{ page_title }}</h1>
 
-  <div class="dimmed-box centered">
-    <p>{{ _('No shop exists for this brand.') }}</p>
+  <div class="box">
+    <div class="dimmed-box centered">
+      <p>{{ _('No shop exists for this brand.') }}</p>
 
-    {%- if has_current_user_permission('shop.create') %}
-    <div class="button-row button-row--center">
-      <a class="button" data-action="create-shop" href="{{ url_for('.create', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create shop') }}</span></a>
+      {%- if has_current_user_permission('shop.create') %}
+      <div class="button-row button-row--center">
+        <a class="button" data-action="create-shop" href="{{ url_for('.create', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create shop') }}</span></a>
+      </div>
+      {%- endif %}
     </div>
-    {%- endif %}
   </div>
 
 {%- endblock %}

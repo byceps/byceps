@@ -3,6 +3,7 @@
 {% set current_page = 'attendance_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Most Frequent Attendees') %}
+{% set layout_main_raw = True %}
 
 {% block body %}
 
@@ -14,25 +15,27 @@
   <p>{{ _('Latest included party') }}: <strong>{{ most_recent_party.title }}</strong></p>
   {%- endif %}
 
-  {%- if top_attendees %}
-  <table class="index index--v-centered ">
-    <thead>
-      <tr>
-        <th>{{ _('User') }}</th>
-        <th class="number">{{ _('Attendances') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-    {%- for user, attendance_count in top_attendees %}
-      <tr>
-        <td>{{ render_user_avatar_and_admin_link(user, size=16) }}</td>
-        <td class="number">{{ attendance_count }}</td>
-      </tr>
-    {%- endfor %}
-    </tbody>
-  </table>
-  {%- else %}
-  <div class="dimmed-box centered">{{ _('No attendances at parties of this brand.') }}</div>
-  {%- endif %}
+  <div class="box">
+    {%- if top_attendees %}
+    <table class="index index--v-centered ">
+      <thead>
+        <tr>
+          <th>{{ _('User') }}</th>
+          <th class="number">{{ _('Attendances') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for user, attendance_count in top_attendees %}
+        <tr>
+          <td>{{ render_user_avatar_and_admin_link(user, size=16) }}</td>
+          <td class="number">{{ attendance_count }}</td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No attendances at parties of this brand.') }}</div>
+    {%- endif %}
+  </div>
 
 {%- endblock %}

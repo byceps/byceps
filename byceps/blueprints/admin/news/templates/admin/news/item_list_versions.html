@@ -5,6 +5,7 @@
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Change history') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.item_view', item_id=item.id), item.title|fallback('&lt;' ~ _('untitled') ~ '&gt;')) }}
@@ -14,35 +15,37 @@
 
   <h1>{{ render_icon('history') }} {{ page_title }}</h1>
 
-  <table class="index wide">
-    <thead>
-      <tr>
-        <th></th>
-        <th>{{ _('changed') }}</th>
-        <th>{{ _('by') }}</th>
-        <th>{{ _('Differences') }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      {%- for version, previous_version in versions_pairwise %}
-      <tr>
-        <td>
-          {%- if version.is_current -%}
-          {{ render_icon('published', title=_('public')) }}
-          {%- else -%}
-          {{ render_icon('archived', title=_('archived')) }}
-          {%- endif -%}
-        </td>
-        <td class="nowrap"><a href="{{ url_for('.item_view_version', version_id=version.id) }}">{{ version.created_at|datetimeformat }}</a></td>
-        <td>{{ render_user_avatar_and_name(users_by_id[version.creator_id], size=20) }}</td>
-        <td>
-          {%- if previous_version -%}
-          <a href="{{ url_for('.item_compare_versions', from_version_id=previous_version.id, to_version_id=version.id) }}" title="{{ _('View changes compared to previous version') }}">{{ _('View changes') }}</a>
-          {%- endif -%}
-        </td>
-      </tr>
-      {%- endfor %}
-    </tbody>
-  </table>
+  <div class="box">
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th></th>
+          <th>{{ _('changed') }}</th>
+          <th>{{ _('by') }}</th>
+          <th>{{ _('Differences') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for version, previous_version in versions_pairwise %}
+        <tr>
+          <td>
+            {%- if version.is_current -%}
+            {{ render_icon('published', title=_('public')) }}
+            {%- else -%}
+            {{ render_icon('archived', title=_('archived')) }}
+            {%- endif -%}
+          </td>
+          <td class="nowrap"><a href="{{ url_for('.item_view_version', version_id=version.id) }}">{{ version.created_at|datetimeformat }}</a></td>
+          <td>{{ render_user_avatar_and_name(users_by_id[version.creator_id], size=20) }}</td>
+          <td>
+            {%- if previous_version -%}
+            <a href="{{ url_for('.item_compare_versions', from_version_id=previous_version.id, to_version_id=version.id) }}" title="{{ _('View changes compared to previous version') }}">{{ _('View changes') }}</a>
+            {%- endif -%}
+          </td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
 
 {%- endblock %}
