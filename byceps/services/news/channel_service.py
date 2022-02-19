@@ -13,20 +13,30 @@ from ...database import db
 from ...typing import BrandID
 
 from ..brand import service as brand_service
+from ..site.transfer.models import SiteID
 
 from .dbmodels.channel import Channel as DbChannel
 from .transfer.models import Channel, ChannelID
 
 
 def create_channel(
-    brand_id: BrandID, channel_id: ChannelID, url_prefix: str
+    brand_id: BrandID,
+    channel_id: ChannelID,
+    url_prefix: str,
+    *,
+    announcement_site_id: Optional[SiteID] = None,
 ) -> Channel:
     """Create a channel for that brand."""
     brand = brand_service.find_brand(brand_id)
     if brand is None:
         raise ValueError(f'Unknown brand ID "{brand_id}"')
 
-    channel = DbChannel(channel_id, brand.id, url_prefix)
+    channel = DbChannel(
+        channel_id,
+        brand.id,
+        url_prefix,
+        announcement_site_id=announcement_site_id,
+    )
 
     db.session.add(channel)
     db.session.commit()
@@ -102,7 +112,8 @@ def get_channels_for_brand(brand_id: BrandID) -> Sequence[Channel]:
 
 def _db_entity_to_channel(channel: DbChannel) -> Channel:
     return Channel(
-        channel.id,
-        channel.brand_id,
-        channel.url_prefix,
+        id=channel.id,
+        brand_id=channel.brand_id,
+        url_prefix=channel.url_prefix,
+        announcement_site_id=channel.announcement_site_id,
     )

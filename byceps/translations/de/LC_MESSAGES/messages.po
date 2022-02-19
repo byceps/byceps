@@ -2226,8 +2226,18 @@ msgstr "Forum"
 msgid "URL prefix"
 msgstr "URL-Präfix"
 
-#: byceps/blueprints/admin/news/forms.py:39
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:146
+#: byceps/blueprints/admin/news/forms.py:40
+msgid "Site for announcement"
+msgstr "Site für Ankündigungen"
+
+#: byceps/blueprints/admin/news/forms.py:50
+#: byceps/blueprints/admin/user/forms.py:89
+msgctxt "site"
+msgid "<none>"
+msgstr "<keine>"
+
+#: byceps/blueprints/admin/news/forms.py:56
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:145
 msgid "Alternative text"
 msgstr "Alternativtext"
 
@@ -2344,7 +2354,15 @@ msgstr "Newskanal erstellen"
 msgid "News channels"
 msgstr "Newskanäle"
 
-#: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:20
+#: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:19
+msgid ""
+"This site's server name will be used in the URL when announcing news "
+"items from this channel."
+msgstr ""
+"Der Servername dieser Site wird in der URL verwendet, wenn News aus "
+"diesem Kanal angekündigt werden."
+
+#: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:21
 msgid ""
 "A news channel can be used for a single party as well as for multiple or "
 "even all partys of the same brand."
@@ -4914,11 +4932,6 @@ msgstr "Dieser Benutzername kann nicht verwendet werden."
 #: byceps/blueprints/admin/user/forms.py:81
 msgid "Site ID"
 msgstr "Site-ID"
-
-#: byceps/blueprints/admin/user/forms.py:89
-msgctxt "site"
-msgid "<none>"
-msgstr "<keine>"
 
 #: byceps/blueprints/admin/user/forms.py:106
 msgid "Confirmation"

@@ -8,11 +8,12 @@ byceps.blueprints.admin.news.forms
 
 import re
 
-from flask_babel import lazy_gettext
+from flask_babel import lazy_gettext, pgettext
 from wtforms import (
     DateField,
     FileField,
     RadioField,
+    SelectField,
     StringField,
     TextAreaField,
     TimeField,
@@ -20,6 +21,8 @@ from wtforms import (
 from wtforms.validators import InputRequired, Length, Optional, Regexp
 
 from ....services.news.transfer.models import BodyFormat
+from ....services.site import service as site_service
+from ....typing import BrandID
 from ....util.l10n import LocalizedForm
 
 
@@ -33,6 +36,20 @@ class ChannelCreateForm(LocalizedForm):
     url_prefix = StringField(
         lazy_gettext('URL prefix'), [InputRequired(), Length(max=80)]
     )
+    announcement_site_id = SelectField(
+        lazy_gettext('Site for announcement'), [Optional()]
+    )
+
+    def set_announcement_site_id_choices(self, brand_id: BrandID) -> None:
+        sites = site_service.get_sites_for_brand(brand_id)
+
+        choices = [
+            (str(site.id), site.title)
+            for site in sorted(sites, key=lambda site: site.title)
+        ]
+        choices.insert(0, ('', pgettext('site', '<none>')))
+
+        self.announcement_site_id.choices = choices
 
 
 class _ImageFormBase(LocalizedForm):

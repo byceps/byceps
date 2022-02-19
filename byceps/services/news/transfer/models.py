@@ -36,6 +36,9 @@ class Channel:
     id: ChannelID
     brand_id: BrandID
     url_prefix: str
+    # Should be `SiteID` instead of `str`,
+    # but circular imports prevent this.
+    announcement_site_id: Optional[str]
 
 
 @dataclass(frozen=True)

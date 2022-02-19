@@ -72,7 +72,11 @@ def channel_view(channel_id, page):
     """View that channel and list its news items."""
     channel = _get_channel_or_404(channel_id)
 
-    brand = brand_service.find_brand(channel.brand_id)
+    brand = brand_service.get_brand(channel.brand_id)
+    if channel.announcement_site_id is not None:
+        announcement_site = site_service.get_site(channel.announcement_site_id)
+    else:
+        announcement_site = None
 
     channel_ids = {channel.id}
     per_page = request.args.get('per_page', type=int, default=15)
@@ -86,6 +90,7 @@ def channel_view(channel_id, page):
     return {
         'channel': channel,
         'brand': brand,
+        'announcement_site': announcement_site,
         'items': items,
         'per_page': per_page,
         'users_by_id': users_by_id,
@@ -100,6 +105,7 @@ def channel_create_form(brand_id, erroneous_form=None):
     brand = _get_brand_or_404(brand_id)
 
     form = erroneous_form if erroneous_form else ChannelCreateForm()
+    form.set_announcement_site_id_choices(brand.id)
 
     return {
         'brand': brand,
@@ -114,14 +120,20 @@ def channel_create(brand_id):
     brand = _get_brand_or_404(brand_id)
 
     form = ChannelCreateForm(request.form)
+    form.set_announcement_site_id_choices(brand.id)
+
     if not form.validate():
         return channel_create_form(brand.id, form)
 
     channel_id = form.channel_id.data.strip().lower()
     url_prefix = form.url_prefix.data.strip()
+    announcement_site_id = form.announcement_site_id.data or None
 
     channel = news_channel_service.create_channel(
-        brand.id, channel_id, url_prefix
+        brand.id,
+        channel_id,
+        url_prefix,
+        announcement_site_id=announcement_site_id,
     )
 
     flash_success(
