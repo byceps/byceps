@@ -4,6 +4,7 @@
 {% set current_page = 'guest_server_admin' %}
 {% set current_page_party = party %}
 {% set page_title = _('Update server') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.server_index', party_id=party.id), _('Guest Servers')) }}

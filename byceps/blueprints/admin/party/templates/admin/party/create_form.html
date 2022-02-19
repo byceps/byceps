@@ -4,6 +4,7 @@
 {% set current_page = 'parties_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Create party') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.index_for_brand', brand_id=brand.id), brand.title) }}

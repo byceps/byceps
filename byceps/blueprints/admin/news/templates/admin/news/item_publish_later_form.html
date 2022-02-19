@@ -4,6 +4,7 @@
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = item.brand %}
 {% set page_title = _('Publish news post later') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.item_view', item_id=item.id), _('News post') ~ ' "%s"'|format(item.title)) }}

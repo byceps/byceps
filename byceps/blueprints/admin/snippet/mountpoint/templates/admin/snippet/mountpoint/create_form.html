@@ -4,6 +4,7 @@
 {% set current_page = 'mountpoints' %}
 {% set current_page_site = site %}
 {% set page_title = _('Create mountpoint') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.site_select_form', snippet_id=snippet.id), _('Select site')) }}

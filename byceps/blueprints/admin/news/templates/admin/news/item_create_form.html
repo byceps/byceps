@@ -4,6 +4,7 @@
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Create news post') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.channel_view', channel_id=channel.id), _('News channel') ~ ' "%s"'|format(channel.id)) }}

@@ -4,6 +4,7 @@
 {% set current_page = 'brand_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Update Email Configuration') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view', brand_id=brand.id), brand.title) }}

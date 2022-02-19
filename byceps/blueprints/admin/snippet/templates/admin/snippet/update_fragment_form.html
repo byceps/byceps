@@ -2,6 +2,7 @@
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set page_title = _('Edit fragment') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view_current_version', snippet_id=snippet.id), snippet.name) }}

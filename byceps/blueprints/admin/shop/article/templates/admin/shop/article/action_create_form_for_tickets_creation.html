@@ -3,6 +3,7 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page_shop = shop %}
 {% set page_title = _('Add action') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view', article_id=article.id), article.item_number) }}

@@ -2,6 +2,7 @@
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
 {% set page_title = _('Edit storefront') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view', storefront_id=storefront.id), _('Storefronts')) }}

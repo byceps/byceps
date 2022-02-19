@@ -4,6 +4,7 @@
 {% from 'macros/forms.html' import form_buttons, form_field_check, form_field %}
 {% set current_page = 'sites_admin' %}
 {% set page_title = _('Create site') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.index'), _('Sites')) }}

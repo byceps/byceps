@@ -5,6 +5,7 @@
 {% set current_page = 'orga_team_admin.teams' %}
 {% set current_page_party = party %}
 {% set page_title = _('Edit orga team membership') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.teams_for_party', party_id=party.id), 'Teams "%s"'|format(party.title)) }}

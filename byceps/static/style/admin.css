@@ -508,28 +508,6 @@ h1 .tag .icon {
 }
 
 
-/* forms */
-
-.form-buttons {
-  --gutter: 20px;
-  background-color: #e8e8e8;
-  border-color: #cccccc;
-  border-style: solid;
-  border-width: 1px 0;
-  margin-left: calc(var(--gutter) * -1);
-  margin-right: calc(var(--gutter) * -1);
-  padding: 1rem var(--gutter);
-}
-
-@media (min-width: 36rem) { /* 576px / 16px */
-
-  .form-buttons {
-    --gutter: 40px;
-  }
-
-}
-
-
 /* dropdowns */
 
 .page-body-inner .dropdown-menu {

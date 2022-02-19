@@ -4,6 +4,7 @@
 {% set current_page_party = party %}
 {% set current_tab = 'areas' %}
 {% set page_title = _('Create area') %}
+{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.area_index', party_id=party.id), _('Areas')) }}
