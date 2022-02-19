@@ -31,17 +31,17 @@ def create_channel(
     if brand is None:
         raise ValueError(f'Unknown brand ID "{brand_id}"')
 
-    channel = DbChannel(
+    db_channel = DbChannel(
         channel_id,
         brand.id,
         url_prefix,
         announcement_site_id=announcement_site_id,
     )
 
-    db.session.add(channel)
+    db.session.add(db_channel)
     db.session.commit()
 
-    return _db_entity_to_channel(channel)
+    return _db_entity_to_channel(db_channel)
 
 
 def delete_channel(channel_id: ChannelID) -> None:
@@ -58,62 +58,62 @@ def _find_db_channel(channel_id: ChannelID) -> Optional[DbChannel]:
 
 
 def get_db_channel(channel_id: ChannelID) -> DbChannel:
-    channel = _find_db_channel(channel_id)
+    db_channel = _find_db_channel(channel_id)
 
-    if channel is None:
+    if db_channel is None:
         raise ValueError(f'Unknown channel ID "{channel_id}"')
 
-    return channel
+    return db_channel
 
 
 def find_channel(channel_id: ChannelID) -> Optional[Channel]:
     """Return the channel with that id, or `None` if not found."""
-    channel = _find_db_channel(channel_id)
+    db_channel = _find_db_channel(channel_id)
 
-    if channel is None:
+    if db_channel is None:
         return None
 
-    return _db_entity_to_channel(channel)
+    return _db_entity_to_channel(db_channel)
 
 
 def get_channel(channel_id: ChannelID) -> Channel:
     """Return the channel with that id, or raise an exception."""
-    channel = get_db_channel(channel_id)
-    return _db_entity_to_channel(channel)
+    db_channel = get_db_channel(channel_id)
+    return _db_entity_to_channel(db_channel)
 
 
 def get_channels(channel_ids: set[ChannelID]) -> set[Channel]:
     """Return these channels."""
-    channels = db.session \
+    db_channels = db.session \
         .query(DbChannel) \
         .filter(DbChannel.id.in_(channel_ids)) \
         .all()
 
-    return {_db_entity_to_channel(channel) for channel in channels}
+    return {_db_entity_to_channel(db_channel) for db_channel in db_channels}
 
 
 def get_all_channels() -> list[Channel]:
     """Return all channels."""
-    channels = db.session.query(DbChannel).all()
+    db_channels = db.session.query(DbChannel).all()
 
-    return [_db_entity_to_channel(channel) for channel in channels]
+    return [_db_entity_to_channel(db_channel) for db_channel in db_channels]
 
 
 def get_channels_for_brand(brand_id: BrandID) -> Sequence[Channel]:
     """Return all channels that belong to the brand."""
-    channels = db.session \
+    db_channels = db.session \
         .query(DbChannel) \
         .filter_by(brand_id=brand_id) \
         .order_by(DbChannel.id) \
         .all()
 
-    return [_db_entity_to_channel(channel) for channel in channels]
+    return [_db_entity_to_channel(db_channel) for db_channel in db_channels]
 
 
-def _db_entity_to_channel(channel: DbChannel) -> Channel:
+def _db_entity_to_channel(db_channel: DbChannel) -> Channel:
     return Channel(
-        id=channel.id,
-        brand_id=channel.brand_id,
-        url_prefix=channel.url_prefix,
-        announcement_site_id=channel.announcement_site_id,
+        id=db_channel.id,
+        brand_id=db_channel.brand_id,
+        url_prefix=db_channel.url_prefix,
+        announcement_site_id=db_channel.announcement_site_id,
     )

@@ -65,7 +65,7 @@ def create_image(
     number = _get_next_available_number(item.id)
     filename = f'{image_id}.{image_type.name}'
 
-    image = DbImage(
+    db_image = DbImage(
         image_id,
         creator_id,
         item.id,
@@ -76,7 +76,7 @@ def create_image(
         attribution=attribution,
     )
 
-    db.session.add(image)
+    db.session.add(db_image)
     db.session.commit()
 
     path = (
@@ -90,7 +90,7 @@ def create_image(
     # Might raise `FileExistsError`.
     upload.store(stream, path, create_parent_path_if_nonexistent=True)
 
-    return _db_entity_to_image(image, item.channel.id)
+    return _db_entity_to_image(db_image, item.channel.id)
 
 
 def _check_image_dimensions(image_dimensions: Dimensions) -> None:
@@ -131,28 +131,28 @@ def update_image(
     attribution: Optional[str] = None,
 ) -> Image:
     """Update a news image."""
-    image = _find_db_image(image_id)
+    db_image = _find_db_image(image_id)
 
-    if image is None:
+    if db_image is None:
         raise ValueError(f'Unknown news image ID "{image_id}".')
 
-    image.alt_text = alt_text
-    image.caption = caption
-    image.attribution = attribution
+    db_image.alt_text = alt_text
+    db_image.caption = caption
+    db_image.attribution = attribution
 
     db.session.commit()
 
-    return _db_entity_to_image(image, image.item.channel_id)
+    return _db_entity_to_image(db_image, db_image.item.channel_id)
 
 
 def find_image(image_id: ImageID) -> Optional[Image]:
     """Return the image with that id, or `None` if not found."""
-    image = _find_db_image(image_id)
+    db_image = _find_db_image(image_id)
 
-    if image is None:
+    if db_image is None:
         return None
 
-    return _db_entity_to_image(image, image.item.channel_id)
+    return _db_entity_to_image(db_image, db_image.item.channel_id)
 
 
 def _find_db_image(image_id: ImageID) -> Optional[DbImage]:
@@ -163,18 +163,18 @@ def _find_db_image(image_id: ImageID) -> Optional[DbImage]:
         .get(image_id)
 
 
-def _db_entity_to_image(image: DbImage, channel_id: ChannelID) -> Image:
-    url_path = f'/data/global/news_channels/{channel_id}/{image.filename}'
+def _db_entity_to_image(db_image: DbImage, channel_id: ChannelID) -> Image:
+    url_path = f'/data/global/news_channels/{channel_id}/{db_image.filename}'
 
     return Image(
-        id=image.id,
-        created_at=image.created_at,
-        creator_id=image.creator_id,
-        item_id=image.item_id,
-        number=image.number,
-        filename=image.filename,
+        id=db_image.id,
+        created_at=db_image.created_at,
+        creator_id=db_image.creator_id,
+        item_id=db_image.item_id,
+        number=db_image.number,
+        filename=db_image.filename,
         url_path=url_path,
-        alt_text=image.alt_text,
-        caption=image.caption,
-        attribution=image.attribution,
+        alt_text=db_image.alt_text,
+        caption=db_image.caption,
+        attribution=db_image.attribution,
     )
