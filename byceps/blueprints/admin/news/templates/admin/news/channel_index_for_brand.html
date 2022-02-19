@@ -11,7 +11,7 @@
     <div class="column-auto">
       <h1>{{ brand.title }} {{ render_extra_in_heading(channels|length) }}</h1>
     </div>
-  {%- if has_current_user_permission('news_channel.create') %}
+  {%- if has_current_user_permission('news_channel.administrate') %}
     <div class="column-auto column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.channel_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create news channel') }}</span></a>
@@ -39,7 +39,7 @@
           <td class="monospace">{{ channel.url_prefix }}</td>
           <td class="centered bignumber">{{ item_count|numberformat }}</td>
           <td>
-          {%- if item_count == 0 and has_current_user_permission('news_channel.create') %}
+          {%- if item_count == 0 and has_current_user_permission('news_channel.administrate') %}
             <a href="{{ url_for('.channel_delete', channel_id=channel.id) }}" data-action="channel-delete" class="button button--compact" title="{{ _('Delete') }}">{{ render_icon('remove') }}</a>
           {%- endif %}
           </td>

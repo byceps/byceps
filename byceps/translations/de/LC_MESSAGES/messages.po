@@ -7072,8 +7072,8 @@ msgid "View jobs"
 msgstr "Jobs anzeigen"
 
 #: byceps/permissions/news.py:17
-msgid "Create news channels"
-msgstr "News-Kanäle erstellen"
+msgid "Administrate news channels"
+msgstr "News-Kanäle verwalten"
 
 #: byceps/permissions/news.py:25
 msgid "Create news items"

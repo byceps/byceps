@@ -93,7 +93,7 @@ assigned_permissions = ['admin.maintain']
 [[roles]]
 id = 'news_admin'
 title = 'News verwalten'
-assigned_permissions = ['news_channel.create']
+assigned_permissions = ['news_channel.administrate']
 
 [[roles]]
 id = 'news_editor'

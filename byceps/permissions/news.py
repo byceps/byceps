@@ -14,7 +14,7 @@ from ..util.authorization import register_permissions
 register_permissions(
     'news_channel',
     [
-        ('create', lazy_gettext('Create news channels')),
+        ('administrate', lazy_gettext('Administrate news channels')),
     ],
 )
 

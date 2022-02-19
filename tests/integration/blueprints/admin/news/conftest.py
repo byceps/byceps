@@ -18,7 +18,7 @@ from tests.helpers import generate_token, log_in_user
 def news_admin(make_admin):
     permission_ids = {
         'admin.access',
-        'news_channel.create',
+        'news_channel.administrate',
         'news_item.create',
         'news_item.publish',
         'news_item.update',

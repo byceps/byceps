@@ -98,7 +98,7 @@ def channel_view(channel_id, page):
 
 
 @blueprint.get('/for_brand/<brand_id>/channels/create')
-@permission_required('news_channel.create')
+@permission_required('news_channel.administrate')
 @templated
 def channel_create_form(brand_id, erroneous_form=None):
     """Show form to create a channel."""
@@ -114,7 +114,7 @@ def channel_create_form(brand_id, erroneous_form=None):
 
 
 @blueprint.post('/for_brand/<brand_id>/channels')
-@permission_required('news_channel.create')
+@permission_required('news_channel.administrate')
 def channel_create(brand_id):
     """Create a channel."""
     brand = _get_brand_or_404(brand_id)
@@ -146,7 +146,7 @@ def channel_create(brand_id):
 
 
 @blueprint.delete('/channels/<channel_id>')
-@permission_required('news_channel.create')
+@permission_required('news_channel.administrate')
 @respond_no_content
 def channel_delete(channel_id):
     """Delete the channel."""
