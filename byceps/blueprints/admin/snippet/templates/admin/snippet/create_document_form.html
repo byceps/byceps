@@ -2,7 +2,6 @@
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set page_title = _('Create document') %}
-{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name), _('Snippets')) }}

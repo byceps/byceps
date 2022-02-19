@@ -2,9 +2,6 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page = 'authentication_password_request_reset' %}
 {% set page_title = _('Request password reset') %}
-{% if g.app_mode.is_admin() %}
-{% set layout_main_raw = True %}
-{% endif %}
 
 {% block body %}
 

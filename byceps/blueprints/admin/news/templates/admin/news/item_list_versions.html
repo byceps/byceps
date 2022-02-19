@@ -5,7 +5,6 @@
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Change history') %}
-{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.item_view', item_id=item.id), item.title|fallback('&lt;' ~ _('untitled') ~ '&gt;')) }}

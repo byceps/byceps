@@ -4,7 +4,6 @@
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Create news channel') %}
-{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.channel_index_for_brand', brand_id=brand.id), _('News channels')) }}

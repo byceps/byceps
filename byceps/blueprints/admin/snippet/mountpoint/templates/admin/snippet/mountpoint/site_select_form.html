@@ -2,7 +2,6 @@
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set page_title = _('Select site') %}
-{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('snippet_admin.index_for_scope', scope_type=snippet.scope.type_, scope_name=snippet.scope.name), _('Snippets')) }}

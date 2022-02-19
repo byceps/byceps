@@ -4,7 +4,6 @@
 {% set current_page = 'site_admin' %}
 {% set current_page_site = site %}
 {% set page_title = _('Edit site') %}
-{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view', site_id=site.id), site.title) }}

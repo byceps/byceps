@@ -4,7 +4,6 @@
 {% set current_page_party = party %}
 {% set current_page = 'ticketing_admin' %}
 {% set page_title = _('Create ticket category') %}
-{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.index', party_id=party.id), _('Ticket categories')) }}

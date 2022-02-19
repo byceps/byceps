@@ -4,7 +4,6 @@
 {% set current_page = 'board_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = _('Edit category') %}
-{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.board_view', board_id=category.board_id), _('Category') ~ ' "%s"'|format(category.title)) }}

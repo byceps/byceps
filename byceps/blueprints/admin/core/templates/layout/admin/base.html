@@ -32,11 +32,9 @@
           <div class="page-body-inner">
 {% include 'layout/_notifications.html' %}
 {% block before_body %}{% endblock %}
-            <div{% if not layout_main_raw|default(False) %} id="main"{% endif %}>
-              <main>
+            <main>
 {% block body required %}{% endblock %}
-              </main>
-            </div>{# #main #}
+            </main>
           </div>
 
         </div>

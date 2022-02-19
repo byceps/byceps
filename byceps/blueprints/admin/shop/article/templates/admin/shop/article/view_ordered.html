@@ -4,7 +4,6 @@
 {% from 'macros/admin/user.html' import render_user_microcard %}
 {% set current_page_shop = shop %}
 {% set page_title = article.description %}
-{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view', article_id=article.id), article.item_number) }}

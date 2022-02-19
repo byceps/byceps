@@ -4,7 +4,6 @@
 {% from 'macros/forms.html' import form_buttons, form_field %}
 {% set current_page = 'user_badge_admin' %}
 {% set page_title = _('Award Badge') %}
-{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('user_admin.view', user_id=user.id), user.screen_name) }}

@@ -2,7 +2,6 @@
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_datalist, form_field %}
 {% set page_title = _('Create article') %}
-{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.index_for_shop', shop_id=shop.id), _('Articles')) }}

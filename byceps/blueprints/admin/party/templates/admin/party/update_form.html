@@ -4,7 +4,6 @@
 {% set current_page = 'party_admin' %}
 {% set current_page_party = party %}
 {% set page_title = _('Edit party') %}
-{% set layout_main_raw = True %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view', party_id=party.id), party.title) }}
