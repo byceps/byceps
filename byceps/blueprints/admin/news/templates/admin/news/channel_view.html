@@ -10,7 +10,18 @@
 
 {% block body %}
 
-  <h1>{{ _('News channel') }} &quot;{{ channel.id }}&quot;</h1>
+  <div class="row row--space-between">
+    <div class="column-auto">
+      <h1>{{ _('News channel') }} &quot;{{ channel.id }}&quot;</h1>
+    </div>
+  {%- if has_current_user_permission('news_channel.administrate') %}
+    <div class="column-auto column--align-bottom">
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.channel_update_form', channel_id=channel.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
+      </div>
+    </div>
+  {%- endif %}
+  </div>
 
   <div class="box">
 

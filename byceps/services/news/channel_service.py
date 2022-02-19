@@ -44,6 +44,20 @@ def create_channel(
     return _db_entity_to_channel(db_channel)
 
 
+def update_channel(
+    channel_id: ChannelID,
+    announcement_site_id: Optional[SiteID],
+) -> Channel:
+    """Update a channel."""
+    db_channel = get_db_channel(channel_id)
+
+    db_channel.announcement_site_id = announcement_site_id
+
+    db.session.commit()
+
+    return _db_entity_to_channel(db_channel)
+
+
 def delete_channel(channel_id: ChannelID) -> None:
     """Delete a news channel."""
     db.session.query(DbChannel) \

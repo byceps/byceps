@@ -1,0 +1,22 @@
+{% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set current_page = 'news_admin' %}
+{% set current_page_brand = brand %}
+{% set page_title = _('Edit news channel') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.channel_index_for_brand', brand_id=brand.id), _('News channels')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <form action="{{ url_for('.channel_update', channel_id=channel.id) }}" method="post">
+    {{ form_field(form.announcement_site_id, note=_("This site's server name will be used in the URL when announcing news items from this channel.")) }}
+
+    {{ form_buttons(_('Save')) }}
+  </form>
+
+{%- endblock %}

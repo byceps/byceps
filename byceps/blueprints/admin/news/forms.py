@@ -29,13 +29,7 @@ from ....util.l10n import LocalizedForm
 SLUG_REGEX = re.compile('^[a-z0-9-]+$')
 
 
-class ChannelCreateForm(LocalizedForm):
-    channel_id = StringField(
-        lazy_gettext('ID'), validators=[InputRequired(), Length(min=1, max=40)]
-    )
-    url_prefix = StringField(
-        lazy_gettext('URL prefix'), [InputRequired(), Length(max=80)]
-    )
+class _ChannelFormBase(LocalizedForm):
     announcement_site_id = SelectField(
         lazy_gettext('Site for announcement'), [Optional()]
     )
@@ -50,6 +44,19 @@ class ChannelCreateForm(LocalizedForm):
         choices.insert(0, ('', pgettext('site', '<none>')))
 
         self.announcement_site_id.choices = choices
+
+
+class ChannelCreateForm(_ChannelFormBase):
+    channel_id = StringField(
+        lazy_gettext('ID'), validators=[InputRequired(), Length(min=1, max=40)]
+    )
+    url_prefix = StringField(
+        lazy_gettext('URL prefix'), [InputRequired(), Length(max=80)]
+    )
+
+
+class ChannelUpdateForm(_ChannelFormBase):
+    pass
 
 
 class _ImageFormBase(LocalizedForm):

@@ -31,6 +31,7 @@ from ....util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import (
     ChannelCreateForm,
+    ChannelUpdateForm,
     ImageCreateForm,
     ImageUpdateForm,
     ItemCreateForm,
@@ -142,6 +143,51 @@ def channel_create(brand_id):
             channel_id=channel.id,
         )
     )
+
+    return redirect_to('.channel_view', channel_id=channel.id)
+
+
+@blueprint.get('/channels/<channel_id>/update')
+@permission_required('news_channel.administrate')
+@templated
+def channel_update_form(channel_id, erroneous_form=None):
+    """Show form to update a channel."""
+    channel = _get_channel_or_404(channel_id)
+
+    brand = brand_service.get_brand(channel.brand_id)
+
+    form = erroneous_form if erroneous_form else ChannelUpdateForm(obj=channel)
+    form.set_announcement_site_id_choices(brand.id)
+
+    return {
+        'brand': brand,
+        'channel': channel,
+        'form': form,
+    }
+
+
+@blueprint.post('/channels/<channel_id>')
+@permission_required('news_channel.administrate')
+def channel_update(channel_id):
+    """Update a channel."""
+    channel = _get_channel_or_404(channel_id)
+
+    brand = brand_service.get_brand(channel.brand_id)
+
+    form = ChannelUpdateForm(request.form)
+    form.set_announcement_site_id_choices(brand.id)
+
+    if not form.validate():
+        return channel_update_form(channel.id, form)
+
+    announcement_site_id = form.announcement_site_id.data or None
+
+    channel = news_channel_service.update_channel(
+        channel.id, announcement_site_id
+    )
+
+    flash_success(gettext('Changes have been saved.'))
+
     return redirect_to('.channel_view', channel_id=channel.id)
 
 

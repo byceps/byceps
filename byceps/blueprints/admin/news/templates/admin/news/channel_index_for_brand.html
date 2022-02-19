@@ -39,8 +39,11 @@
           <td class="monospace">{{ channel.url_prefix }}</td>
           <td class="centered bignumber">{{ item_count|numberformat }}</td>
           <td>
-          {%- if item_count == 0 and has_current_user_permission('news_channel.administrate') %}
+          {%- if has_current_user_permission('news_channel.administrate') %}
+            <a href="{{ url_for('.channel_update_form', channel_id=channel.id) }}" class="button button--compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
+            {%- if item_count == 0 %}
             <a href="{{ url_for('.channel_delete', channel_id=channel.id) }}" data-action="channel-delete" class="button button--compact" title="{{ _('Delete') }}">{{ render_icon('remove') }}</a>
+            {%- endif %}
           {%- endif %}
           </td>
         </tr>
