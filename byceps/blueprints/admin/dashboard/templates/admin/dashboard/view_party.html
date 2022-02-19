@@ -39,7 +39,7 @@
 
     {{ render_bigstats_cell(seat_count|numberformat, ngettext('seat in %(area_count)s areas', 'seats in %(area_count)s areas', seat_count, area_count='<strong>%d</strong>'|format(seating_area_count)|safe), href=url_for('seating_admin.index_for_party', party_id=party.id), icon_name='seating-area') }}
 
-    {%- call render_cell(href=url_for('ticketing_admin.index_for_party', party_id=party.id)) %}
+    {%- call render_cell('ticket', href=url_for('ticketing_admin.index_for_party', party_id=party.id)) %}
       <div class="cell-label">{{ _('tickets sold') }}</div>
       {%- with tickets_total_max_specified = (ticket_sale_stats.tickets_max is not none) %}
       <div class="progress mt">
@@ -57,7 +57,7 @@
       {%- endwith %}
     {%- endcall %}
 
-    {%- call render_cell(href=url_for('seating_admin.index_for_party', party_id=party.id)) %}
+    {%- call render_cell('seating-area', href=url_for('seating_admin.index_for_party', party_id=party.id)) %}
       <div class="cell-label">{{ _('seats occupied') }}</div>
       <div class="progress mt">
         {{ render_progress_bar(seat_utilization.occupied, seat_utilization.total, 'color-success') }}
@@ -68,7 +68,7 @@
       </div>
     {%- endcall %}
 
-    {%- call render_cell(href=url_for('ticketing_checkin_admin.index', party_id=party.id)) %}
+    {%- call render_cell('ticketing-checkin', href=url_for('ticketing_checkin_admin.index', party_id=party.id)) %}
       <div class="cell-label">{{ _('tickets checked in') }}</div>
       <div class="progress mt">
         {{ render_progress_bar(tickets_checked_in, ticket_sale_stats.tickets_sold, 'color-success') }}
@@ -80,7 +80,7 @@
     {%- endcall %}
 
   {%- if has_current_user_permission('guest_server.view') %}
-    {%- call render_cell(href=url_for('guest_server_admin.server_index', party_id=party.id)) %}
+    {%- call render_cell('server', href=url_for('guest_server_admin.server_index', party_id=party.id)) %}
       <div class="cell-label">{{ _('Guest Servers') }}</div>
       <div class="mt">
         {%- with approved_count = guest_servers|selectattr('approved')|list|length,
