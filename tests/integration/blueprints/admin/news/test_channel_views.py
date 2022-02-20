@@ -24,9 +24,10 @@ def test_create_form(news_admin_client, brand):
     assert response.status_code == 200
 
 
-def test_create(news_admin_client, brand):
+def test_create(news_admin_client, brand, site):
     channel_id = 'test-channel-2'
     url_prefix = 'https://24-7-news.example/items/'
+    announcement_site_id = site.id
 
     assert channel_service.find_channel(channel_id) is None
 
@@ -34,6 +35,7 @@ def test_create(news_admin_client, brand):
     form_data = {
         'channel_id': channel_id,
         'url_prefix': url_prefix,
+        'announcement_site_id': str(announcement_site_id),
     }
     response = news_admin_client.post(url, data=form_data)
 
@@ -42,3 +44,4 @@ def test_create(news_admin_client, brand):
     assert channel.id == channel_id
     assert channel.brand_id == brand.id
     assert channel.url_prefix == url_prefix
+    assert channel.announcement_site_id == announcement_site_id
