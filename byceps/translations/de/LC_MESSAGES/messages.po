@@ -2235,8 +2235,8 @@ msgstr "Site für Ankündigungen"
 #: byceps/blueprints/admin/news/forms.py:44
 #: byceps/blueprints/admin/user/forms.py:89
 msgctxt "site"
-msgid "<none>"
-msgstr "<keine>"
+msgid "none"
+msgstr "keine"
 
 #: byceps/blueprints/admin/news/forms.py:54
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:29
@@ -3273,8 +3273,8 @@ msgstr "Artikelnummer-Sequenz"
 #: byceps/blueprints/admin/shop/article/forms.py:71
 #: byceps/blueprints/admin/shop/storefront/forms.py:33
 msgctxt "sequence"
-msgid "<none>"
-msgstr "<keine>"
+msgid "none"
+msgstr "keine"
 
 #: byceps/blueprints/admin/shop/article/forms.py:77
 msgid "Available from date"
@@ -4117,8 +4117,8 @@ msgstr "Bestellnummer-Sequenz"
 
 #: byceps/blueprints/admin/shop/storefront/forms.py:26
 msgctxt "catalog"
-msgid "<none>"
-msgstr "<keiner>"
+msgid "none"
+msgstr "keiner"
 
 #: byceps/blueprints/admin/shop/storefront/views.py:130
 msgid "No order number sequences are defined for this shop."
@@ -4178,18 +4178,18 @@ msgstr "Storefront-ID"
 
 #: byceps/blueprints/admin/site/forms.py:46
 msgctxt "party"
-msgid "<none>"
-msgstr "<keine>"
+msgid "none"
+msgstr "keine"
 
 #: byceps/blueprints/admin/site/forms.py:54
 msgctxt "board"
-msgid "<none>"
-msgstr "<keins>"
+msgid "none"
+msgstr "keins"
 
 #: byceps/blueprints/admin/site/forms.py:62
 msgctxt "storefront"
-msgid "<none>"
-msgstr "<keins>"
+msgid "none"
+msgstr "keins"
 
 #: byceps/blueprints/admin/site/forms.py:84
 msgid "News channel ID"

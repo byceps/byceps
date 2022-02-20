@@ -41,7 +41,7 @@ class _ChannelFormBase(LocalizedForm):
             (str(site.id), site.title)
             for site in sorted(sites, key=lambda site: site.title)
         ]
-        choices.insert(0, ('', pgettext('site', '<none>')))
+        choices.insert(0, ('', '<' + pgettext('site', 'none') + '>'))
 
         self.announcement_site_id.choices = choices
 

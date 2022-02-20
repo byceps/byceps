@@ -23,14 +23,14 @@ class _BaseForm(LocalizedForm):
         catalogs.sort(key=lambda catalog: catalog.title)
 
         choices = [(str(catalog.id), catalog.title) for catalog in catalogs]
-        choices.insert(0, ('', pgettext('catalog', '<none>')))
+        choices.insert(0, ('', '<' + pgettext('catalog', 'none') + '>'))
         self.catalog_id.choices = choices
 
     def set_order_number_sequence_choices(self, sequences):
         sequences.sort(key=lambda seq: seq.prefix)
 
         choices = [(str(seq.id), seq.prefix) for seq in sequences]
-        choices.insert(0, ('', pgettext('sequence', '<none>')))
+        choices.insert(0, ('', '<' + pgettext('sequence', 'none') + '>'))
         self.order_number_sequence_id.choices = choices
 
 

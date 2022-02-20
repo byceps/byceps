@@ -43,7 +43,7 @@ class _BaseForm(LocalizedForm):
         parties.sort(key=lambda party: party.starts_at, reverse=True)
 
         choices = [(p.id, p.title) for p in parties]
-        choices.insert(0, ('', pgettext('party', '<none>')))
+        choices.insert(0, ('', '<' + pgettext('party', 'none') + '>'))
         self.party_id.choices = choices
 
     def set_board_choices(self, brand_id):
@@ -51,7 +51,7 @@ class _BaseForm(LocalizedForm):
         boards.sort(key=lambda board: board.id)
 
         choices = [(b.id, b.id) for b in boards]
-        choices.insert(0, ('', pgettext('board', '<none>')))
+        choices.insert(0, ('', '<' + pgettext('board', 'none') + '>'))
         self.board_id.choices = choices
 
     def set_storefront_choices(self):
@@ -59,7 +59,7 @@ class _BaseForm(LocalizedForm):
         storefronts.sort(key=lambda storefront: storefront.id)
 
         choices = [(s.id, s.id) for s in storefronts]
-        choices.insert(0, ('', pgettext('storefront', '<none>')))
+        choices.insert(0, ('', '<' + pgettext('storefront', 'none') + '>'))
         self.storefront_id.choices = choices
 
 

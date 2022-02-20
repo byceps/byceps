@@ -86,7 +86,7 @@ class CreateAccountForm(LocalizedForm):
         sites.sort(key=lambda site: site.id)
 
         choices = [(str(site.id), site.id) for site in sites]
-        choices.insert(0, ('', pgettext('site', '<none>')))
+        choices.insert(0, ('', '<' + pgettext('site', 'none') + '>'))
         self.site_id.choices = choices
 
 
