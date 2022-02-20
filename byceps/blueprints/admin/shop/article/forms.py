@@ -72,6 +72,27 @@ class ArticleCreateForm(_ArticleBaseForm):
         self.article_number_sequence_id.choices = choices
 
 
+class TicketArticleCreateForm(ArticleCreateForm):
+    ticket_category_id = SelectField(
+        lazy_gettext('Ticket category'), [InputRequired()]
+    )
+
+    def set_ticket_category_choices(self, brand_id: BrandID) -> None:
+        self.ticket_category_id.choices = _get_ticket_category_choices(brand_id)
+
+
+class TicketBundleArticleCreateForm(ArticleCreateForm):
+    ticket_category_id = SelectField(
+        lazy_gettext('Ticket category'), [InputRequired()]
+    )
+    ticket_quantity = IntegerField(
+        lazy_gettext('Ticket quantity'), [InputRequired()]
+    )
+
+    def set_ticket_category_choices(self, brand_id: BrandID) -> None:
+        self.ticket_category_id.choices = _get_ticket_category_choices(brand_id)
+
+
 class ArticleUpdateForm(_ArticleBaseForm):
     available_from_date = DateField(
         lazy_gettext('Available from date'), validators=[Optional()]

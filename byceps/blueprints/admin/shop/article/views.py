@@ -48,6 +48,8 @@ from .forms import (
     RegisterBadgeAwardingActionForm,
     RegisterTicketBundlesCreationActionForm,
     RegisterTicketsCreationActionForm,
+    TicketArticleCreateForm,
+    TicketBundleArticleCreateForm,
 )
 
 
@@ -217,6 +219,76 @@ def create_form(shop_id, type, erroneous_form=None):
     }
 
 
+@blueprint.get('/for_shop/<shop_id>/create/ticket')
+@permission_required('shop_article.create')
+@templated
+def create_ticket_form(shop_id, erroneous_form=None):
+    """Show form to create a ticket article."""
+    shop = _get_shop_or_404(shop_id)
+    type_ = ArticleType.ticket
+
+    brand = brand_service.get_brand(shop.brand_id)
+
+    article_number_sequences = (
+        article_sequence_service.get_article_number_sequences_for_shop(shop.id)
+    )
+    article_number_sequence_available = bool(article_number_sequences)
+
+    form = (
+        erroneous_form
+        if erroneous_form
+        else TicketArticleCreateForm(
+            price=Decimal('0.0'), tax_rate=Decimal('19.0')
+        )
+    )
+    form.set_article_number_sequence_choices(article_number_sequences)
+    form.set_ticket_category_choices(brand.id)
+
+    return {
+        'shop': shop,
+        'brand': brand,
+        'article_type_name': type_.name,
+        'article_type_label': get_article_type_label(type_),
+        'article_number_sequence_available': article_number_sequence_available,
+        'form': form,
+    }
+
+
+@blueprint.get('/for_shop/<shop_id>/create/ticket_bundle')
+@permission_required('shop_article.create')
+@templated
+def create_ticket_bundle_form(shop_id, erroneous_form=None):
+    """Show form to create a ticket bundle article."""
+    shop = _get_shop_or_404(shop_id)
+    type_ = ArticleType.ticket_bundle
+
+    brand = brand_service.get_brand(shop.brand_id)
+
+    article_number_sequences = (
+        article_sequence_service.get_article_number_sequences_for_shop(shop.id)
+    )
+    article_number_sequence_available = bool(article_number_sequences)
+
+    form = (
+        erroneous_form
+        if erroneous_form
+        else TicketBundleArticleCreateForm(
+            price=Decimal('0.0'), tax_rate=Decimal('19.0')
+        )
+    )
+    form.set_article_number_sequence_choices(article_number_sequences)
+    form.set_ticket_category_choices(brand.id)
+
+    return {
+        'shop': shop,
+        'brand': brand,
+        'article_type_name': type_.name,
+        'article_type_label': get_article_type_label(type_),
+        'article_number_sequence_available': article_number_sequence_available,
+        'form': form,
+    }
+
+
 @blueprint.post('/for_shop/<shop_id>/<type>')
 @permission_required('shop_article.create')
 def create(shop_id, type):
@@ -224,7 +296,12 @@ def create(shop_id, type):
     shop = _get_shop_or_404(shop_id)
     type_ = _get_article_type_or_400(type)
 
-    form = ArticleCreateForm(request.form)
+    if type_ == ArticleType.ticket:
+        form = TicketArticleCreateForm(request.form)
+    elif type_ == ArticleType.ticket_bundle:
+        form = TicketBundleArticleCreateForm(request.form)
+    else:
+        form = ArticleCreateForm(request.form)
 
     article_number_sequences = (
         article_sequence_service.get_article_number_sequences_for_shop(shop.id)
@@ -236,6 +313,9 @@ def create(shop_id, type):
         return create_form(shop_id, type_, form)
 
     form.set_article_number_sequence_choices(article_number_sequences)
+    if type_ in (ArticleType.ticket, ArticleType.ticket_bundle):
+        form.set_ticket_category_choices(shop.brand_id)
+
     if not form.validate():
         return create_form(shop_id, type_, form)
 
@@ -272,6 +352,16 @@ def create(shop_id, type):
         ArticleType.ticket_bundle,
     )
 
+    if type_ in (ArticleType.ticket, ArticleType.ticket_bundle):
+        type_params = {
+            'ticket_category_id': form.ticket_category_id.data,
+        }
+
+        if type_ == ArticleType.ticket_bundle:
+            type_params['ticket_quantity'] = form.ticket_quantity.data
+    else:
+        type_params = None
+
     article = article_service.create_article(
         shop.id,
         item_number,
@@ -282,6 +372,7 @@ def create(shop_id, type):
         total_quantity,
         max_quantity_per_order,
         processing_required,
+        type_params=type_params,
     )
 
     flash_success(
