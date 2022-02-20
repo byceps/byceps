@@ -27,6 +27,7 @@
         <tr>
           <th>{{ _('ID') }}</th>
           <th>{{ _('URL prefix') }}</th>
+          <th>{{ _('Site for announcement') }}</th>
           <th class="centered">{{ _('News posts') }}</th>
           <th></th>
         </tr>
@@ -37,6 +38,15 @@
         <tr>
           <td><a href="{{ url_for('.channel_view', channel_id=channel.id) }}"><strong>{{ channel.id }}</strong></a></td>
           <td class="monospace">{{ channel.url_prefix }}</td>
+          <td>
+          {%- with site_id = channel.announcement_site_id %}
+            {%- if site_id is not none %}
+            <a href="{{ url_for('admin_dashboard.view_site', site_id=site_id) }}">{{ announcement_sites_by_channel_id[site_id].title }}</a>
+            {%- else %}
+            {{ pgettext('site', 'none')|dim }}
+            {%- endif %}
+          {%- endwith %}
+          </td>
           <td class="centered bignumber">{{ item_count|numberformat }}</td>
           <td>
           {%- if has_current_user_permission('news_channel.administrate') %}

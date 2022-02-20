@@ -10,6 +10,8 @@ from __future__ import annotations
 import dataclasses
 from typing import Optional, Union
 
+from sqlalchemy import select
+
 from ...database import db
 from ...typing import BrandID, PartyID
 
@@ -140,6 +142,19 @@ def get_all_sites() -> set[Site]:
     sites = db.session.query(DbSite).all()
 
     return {_db_entity_to_site(site) for site in sites}
+
+
+def get_sites(site_ids: set[SiteID]) -> list[Site]:
+    """Return the sites with those IDs."""
+    if not site_ids:
+        return []
+
+    db_sites = db.session.execute(
+        select(DbSite)
+        .filter(DbSite.id.in_(site_ids))
+    ).scalars().all()
+
+    return [_db_entity_to_site(db_site) for db_site in db_sites]
 
 
 def get_sites_for_brand(brand_id: BrandID) -> set[Site]:

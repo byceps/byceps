@@ -56,11 +56,19 @@ def channel_index_for_brand(brand_id):
 
     channels = news_channel_service.get_channels_for_brand(brand.id)
 
+    announcement_site_ids = {
+        channel.announcement_site_id for channel in channels
+    }
+    announcement_sites_by_channel_id = {
+        site.id: site for site in site_service.get_sites(announcement_site_ids)
+    }
+
     item_count_by_channel_id = news_item_service.get_item_count_by_channel_id()
 
     return {
         'brand': brand,
         'channels': channels,
+        'announcement_sites_by_channel_id': announcement_sites_by_channel_id,
         'item_count_by_channel_id': item_count_by_channel_id,
     }
 
