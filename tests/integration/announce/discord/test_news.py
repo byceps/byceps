@@ -8,20 +8,12 @@ import pytest
 
 import byceps.announce.connections  # Connect signal handlers.
 from byceps.services.brand.transfer.models import Brand
-from byceps.services.news import (
-    channel_service as news_channel_service,
-    service as news_service,
-)
-from byceps.services.news.transfer.models import (
-    BodyFormat,
-    Channel,
-    ChannelID,
-    Item,
-)
+from byceps.services.news import service as news_service
+from byceps.services.news.transfer.models import BodyFormat, Channel, Item
 from byceps.services.webhooks import service as webhook_service
 from byceps.signals import news as news_signals
 
-from tests.helpers import generate_token
+from tests.integration.services.news.conftest import make_channel
 
 from .helpers import assert_request, mocked_webhook_receiver
 
@@ -70,11 +62,10 @@ def webhook_settings(channel: Channel) -> None:
 
 
 @pytest.fixture
-def channel(brand: Brand) -> Channel:
-    channel_id = ChannelID(generate_token())
+def channel(brand: Brand, make_channel) -> Channel:
     url_prefix = 'https://acme.example.com/news/'
 
-    return news_channel_service.create_channel(brand.id, channel_id, url_prefix)
+    return make_channel(brand.id, url_prefix=url_prefix)
 
 
 @pytest.fixture
