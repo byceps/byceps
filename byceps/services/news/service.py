@@ -164,6 +164,11 @@ def publish_item(
 
     item = _db_entity_to_item(db_item)
 
+    if item.channel.url_prefix is not None:
+        external_url = item.channel.url_prefix + item.slug
+    else:
+        external_url = None
+
     return NewsItemPublished(
         occurred_at=now,
         initiator_id=initiator.id if initiator else None,
@@ -172,7 +177,7 @@ def publish_item(
         channel_id=item.channel.id,
         published_at=item.published_at,
         title=item.title,
-        external_url=item.external_url,
+        external_url=external_url,
     )
 
 
@@ -396,11 +401,6 @@ def _db_entity_to_item(
 ) -> Item:
     channel = _db_entity_to_channel(db_item.channel)
 
-    if channel.url_prefix is not None:
-        external_url = channel.url_prefix + db_item.slug
-    else:
-        external_url = None
-
     image_url_path = _assemble_image_url_path(db_item)
     images = [
         image_service._db_entity_to_image(image, channel.id)
@@ -416,7 +416,6 @@ def _db_entity_to_item(
         title=db_item.current_version.title,
         body=db_item.current_version.body,
         body_format=db_item.current_version.body_format,
-        external_url=external_url,
         image_url_path=image_url_path,
         images=images,
         featured_image_id=db_item.featured_image_id,

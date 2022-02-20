@@ -66,7 +66,6 @@ def test_create(news_admin_client, channel, news_admin):
     assert not item.published
     assert item.title == title
     assert item.body == body
-    assert item.external_url == 'https://newssite.example/posts/what-a-blast'
     assert (
         item.image_url_path
         == f'/data/global/news_channels/{channel.id}/party-action.jpeg'

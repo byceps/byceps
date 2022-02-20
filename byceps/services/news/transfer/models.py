@@ -65,7 +65,6 @@ class Item:
     title: str
     body: str
     body_format: BodyFormat
-    external_url: Optional[str]
     image_url_path: Optional[str]
     images: list[Image]
     featured_image_id: Optional[ImageID]
