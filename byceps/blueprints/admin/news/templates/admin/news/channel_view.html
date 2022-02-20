@@ -29,7 +29,13 @@
     <div class="data-value">{{ channel.url_prefix|fallback }}</div>
 
     <div class="data-label">{{ _('Site for announcement') }}</div>
-    <div class="data-value">{{ announcement_site.title|fallback }}</div>
+    <div class="data-value">
+      {%- if announcement_site is not none %}
+      <a href="{{ url_for('admin_dashboard.view_site', site_id=announcement_site.id) }}">{{ announcement_site.title }}</a>
+      {%- else %}
+      {{ pgettext('site', 'none')|dim }}
+      {%- endif %}
+    </div>
 
   </div>
 
