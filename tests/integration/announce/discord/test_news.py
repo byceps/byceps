@@ -3,16 +3,25 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask import Flask
 import pytest
 
 import byceps.announce.connections  # Connect signal handlers.
+from byceps.services.brand.transfer.models import Brand
 from byceps.services.news import (
     channel_service as news_channel_service,
     service as news_service,
 )
-from byceps.services.news.transfer.models import BodyFormat
+from byceps.services.news.transfer.models import (
+    BodyFormat,
+    Channel,
+    ChannelID,
+    Item,
+)
 from byceps.services.webhooks import service as webhook_service
 from byceps.signals import news as news_signals
+
+from tests.helpers import generate_token
 
 from .helpers import assert_request, mocked_webhook_receiver
 
@@ -20,7 +29,9 @@ from .helpers import assert_request, mocked_webhook_receiver
 WEBHOOK_URL = 'https://webhoooks.test/news'
 
 
-def test_published_news_item_announced(webhook_settings, admin_app, item):
+def test_published_news_item_announced(
+    webhook_settings, admin_app: Flask, item: Item
+) -> None:
     expected_content = (
         '[News] Die News "Zieh dir das rein!" wurde veröffentlicht. '
         + 'https://acme.example.com/news/zieh-dir-das-rein'
@@ -37,15 +48,15 @@ def test_published_news_item_announced(webhook_settings, admin_app, item):
 # helpers
 
 
-@pytest.fixture(scope='module')
-def webhook_settings(channel):
+@pytest.fixture
+def webhook_settings(channel: Channel) -> None:
     news_channel_ids = [str(channel.id), 'totally-different-id']
     format = 'discord'
     text_prefix = '[News] '
     url = WEBHOOK_URL
     enabled = True
 
-    webhooks = [
+    for news_channel_id in news_channel_ids:
         webhook_service.create_outgoing_webhook(
             # event_types
             {'news-item-published'},
@@ -56,41 +67,24 @@ def webhook_settings(channel):
             enabled,
             text_prefix=text_prefix,
         )
-        for news_channel_id in news_channel_ids
-    ]
-
-    yield
-
-    for webhook in webhooks:
-        webhook_service.delete_outgoing_webhook(webhook.id)
 
 
-@pytest.fixture(scope='module')
-def channel(brand):
-    channel_id = f'{brand.id}-test'
+@pytest.fixture
+def channel(brand: Brand) -> Channel:
+    channel_id = ChannelID(generate_token())
     url_prefix = 'https://acme.example.com/news/'
 
-    channel = news_channel_service.create_channel(
-        brand.id, channel_id, url_prefix
-    )
-
-    yield channel
-
-    news_channel_service.delete_channel(channel_id)
+    return news_channel_service.create_channel(brand.id, channel_id, url_prefix)
 
 
-@pytest.fixture(scope='module')
-def item(channel, make_user):
+@pytest.fixture
+def item(channel: Channel, make_user) -> Item:
     editor = make_user()
     slug = 'zieh-dir-das-rein'
     title = 'Zieh dir das rein!'
     body = 'any body'
     body_format = BodyFormat.html
 
-    item = news_service.create_item(
+    return news_service.create_item(
         channel.id, slug, editor.id, title, body, body_format
     )
-
-    yield item
-
-    news_service.delete_item(item.id)

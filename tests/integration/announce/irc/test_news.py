@@ -3,15 +3,24 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask import Flask
 import pytest
 
 import byceps.announce.connections  # Connect signal handlers.
+from byceps.services.brand.transfer.models import Brand
 from byceps.services.news import (
     channel_service as news_channel_service,
     service as news_service,
 )
-from byceps.services.news.transfer.models import BodyFormat
+from byceps.services.news.transfer.models import (
+    BodyFormat,
+    Channel,
+    ChannelID,
+    Item,
+)
 from byceps.signals import news as news_signals
+
+from tests.helpers import generate_token
 
 from .helpers import (
     assert_request_data,
@@ -22,12 +31,12 @@ from .helpers import (
 )
 
 
-def test_published_news_item_announced(app, item):
+def test_published_news_item_announced(app: Flask, item: Item) -> None:
     expected_channel1 = CHANNEL_PUBLIC
     expected_channel2 = CHANNEL_INTERNAL
     expected_text = (
-        'Die News "Zieh dir das rein!" wurde veröffentlicht. '
-        + 'https://acme.example.com/news/zieh-dir-das-rein'
+        'Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
+        + 'https://acme.example.com/news/zieh-dir-das-mal-rein'
     )
 
     event = news_service.publish_item(item.id)
@@ -43,32 +52,22 @@ def test_published_news_item_announced(app, item):
 # helpers
 
 
-@pytest.fixture(scope='module')
-def channel(brand):
-    channel_id = f'{brand.id}-test'
+@pytest.fixture
+def channel(brand: Brand) -> Channel:
+    channel_id = ChannelID(generate_token())
     url_prefix = 'https://acme.example.com/news/'
 
-    channel = news_channel_service.create_channel(
-        brand.id, channel_id, url_prefix
-    )
-
-    yield channel
-
-    news_channel_service.delete_channel(channel_id)
+    return news_channel_service.create_channel(brand.id, channel_id, url_prefix)
 
 
-@pytest.fixture(scope='module')
-def item(channel, make_user):
+@pytest.fixture
+def item(channel: Channel, make_user) -> Item:
     editor = make_user()
-    slug = 'zieh-dir-das-rein'
-    title = 'Zieh dir das rein!'
+    slug = 'zieh-dir-das-mal-rein'
+    title = 'Zieh dir das mal rein!'
     body = 'any body'
     body_format = BodyFormat.html
 
-    item = news_service.create_item(
+    return news_service.create_item(
         channel.id, slug, editor.id, title, body, body_format
     )
-
-    yield item
-
-    news_service.delete_item(item.id)
