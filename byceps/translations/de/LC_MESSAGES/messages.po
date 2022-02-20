@@ -2406,9 +2406,8 @@ msgid "Delete news channel?"
 msgstr "Newskanal löschen?"
 
 #: byceps/blueprints/admin/news/templates/admin/news/channel_update_form.html:6
-#, fuzzy
 msgid "Edit news channel"
-msgstr "Newskanal hinzufügen"
+msgstr "Newskanal bearbeiten"
 
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:9
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:15
