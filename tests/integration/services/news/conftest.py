@@ -9,6 +9,7 @@ import pytest
 
 from byceps.services.news import channel_service
 from byceps.services.news.transfer.models import Channel, ChannelID
+from byceps.services.site.transfer.models import SiteID
 from byceps.typing import BrandID
 
 from tests.helpers import generate_token
@@ -21,12 +22,16 @@ def make_channel():
         channel_id: Optional[ChannelID] = None,
         *,
         url_prefix: Optional[str] = None,
+        announcement_site_id: Optional[SiteID] = None,
     ) -> Channel:
         if channel_id is None:
             channel_id = ChannelID(generate_token())
 
         return channel_service.create_channel(
-            brand_id, channel_id, url_prefix=url_prefix
+            brand_id,
+            channel_id,
+            url_prefix=url_prefix,
+            announcement_site_id=announcement_site_id,
         )
 
     return _wrapper

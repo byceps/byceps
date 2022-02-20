@@ -19,6 +19,8 @@ from ...database import db, paginate, Pagination
 from ...events.news import NewsItemPublished
 from ...typing import UserID
 
+from ..site import service as site_service
+from ..site.transfer.models import SiteID
 from ..user import service as user_service
 from ..user.transfer.models import User
 
@@ -164,8 +166,9 @@ def publish_item(
 
     item = _db_entity_to_item(db_item)
 
-    if item.channel.url_prefix is not None:
-        external_url = item.channel.url_prefix + item.slug
+    if item.channel.announcement_site_id is not None:
+        site = site_service.get_site(SiteID(item.channel.announcement_site_id))
+        external_url = f'https://{site.server_name}/news/{item.slug}'
     else:
         external_url = None
 

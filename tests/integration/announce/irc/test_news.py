@@ -10,6 +10,7 @@ import byceps.announce.connections  # Connect signal handlers.
 from byceps.services.brand.transfer.models import Brand
 from byceps.services.news import service as news_service
 from byceps.services.news.transfer.models import BodyFormat, Channel, Item
+from byceps.services.site.transfer.models import Site
 from byceps.signals import news as news_signals
 
 from tests.integration.services.news.conftest import make_channel
@@ -30,7 +31,7 @@ def test_published_news_item_announced_with_url(
     expected_channel2 = CHANNEL_INTERNAL
     expected_text = (
         'Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
-        + 'https://acme.example.com/news/zieh-dir-das-mal-rein'
+        + 'https://www.acmecon.test/news/zieh-dir-das-mal-rein'
     )
 
     event = news_service.publish_item(item_with_url.id)
@@ -66,13 +67,12 @@ def test_published_news_item_announced_without_url(
 
 
 @pytest.fixture
-def channel_with_url_prefix(brand: Brand, make_channel) -> Channel:
-    url_prefix = 'https://acme.example.com/news/'
-    return make_channel(brand.id, url_prefix=url_prefix)
+def channel_with_site(brand: Brand, site: Site, make_channel) -> Channel:
+    return make_channel(brand.id, announcement_site_id=site.id)
 
 
 @pytest.fixture
-def channel_without_url_prefix(brand: Brand, make_channel) -> Channel:
+def channel_without_site(brand: Brand, make_channel) -> Channel:
     return make_channel(brand.id)
 
 
@@ -91,16 +91,16 @@ def make_item(make_user):
 
 
 @pytest.fixture
-def item_with_url(make_item, channel_with_url_prefix: Channel) -> Item:
+def item_with_url(make_item, channel_with_site: Channel) -> Item:
     slug = 'zieh-dir-das-mal-rein'
     title = 'Zieh dir das mal rein!'
 
-    return make_item(channel_with_url_prefix, slug, title)
+    return make_item(channel_with_site, slug, title)
 
 
 @pytest.fixture
-def item_without_url(make_item, channel_without_url_prefix: Channel) -> Item:
+def item_without_url(make_item, channel_without_site: Channel) -> Item:
     slug = 'zieh-dir-auch-das-mal-rein'
     title = 'Zieh dir auch das mal rein!'
 
-    return make_item(channel_without_url_prefix, slug, title)
+    return make_item(channel_without_site, slug, title)
