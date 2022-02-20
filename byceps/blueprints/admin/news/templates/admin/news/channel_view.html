@@ -26,7 +26,7 @@
   <div class="box">
 
     <div class="data-label">{{ _('URL prefix') }}</div>
-    <div class="data-value">{{ channel.url_prefix }}</div>
+    <div class="data-value">{{ channel.url_prefix|fallback }}</div>
 
     <div class="data-label">{{ _('Site for announcement') }}</div>
     <div class="data-value">{{ announcement_site.title|fallback }}</div>

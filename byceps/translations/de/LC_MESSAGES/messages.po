@@ -172,8 +172,8 @@ msgstr ""
 
 #: byceps/announce/text_assembly/news.py:20
 #, python-format
-msgid "The news \"%(title)s\" has been published. %(url)s"
-msgstr "Die News \"%(title)s\" wurde veröffentlicht. %(url)s"
+msgid "The news \"%(title)s\" has been published."
+msgstr "Die News \"%(title)s\" wurde veröffentlicht."
 
 #: byceps/announce/text_assembly/shop_order.py:23
 #, python-format

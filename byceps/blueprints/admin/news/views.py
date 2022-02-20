@@ -133,7 +133,7 @@ def channel_create(brand_id):
     channel = news_channel_service.create_channel(
         brand.id,
         channel_id,
-        url_prefix,
+        url_prefix=url_prefix,
         announcement_site_id=announcement_site_id,
     )
 

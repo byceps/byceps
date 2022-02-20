@@ -17,8 +17,11 @@ from ._helpers import with_locale
 
 @with_locale
 def assemble_text_for_news_item_published(event: NewsItemPublished) -> str:
-    return gettext(
-        'The news "%(title)s" has been published. %(url)s',
-        title=event.title,
-        url=event.external_url,
+    text = gettext(
+        'The news "%(title)s" has been published.', title=event.title
     )
+
+    if event.external_url is not None:
+        text += f' {event.external_url}'
+
+    return text

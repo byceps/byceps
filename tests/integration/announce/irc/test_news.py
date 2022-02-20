@@ -23,7 +23,9 @@ from .helpers import (
 )
 
 
-def test_published_news_item_announced(app: Flask, item: Item) -> None:
+def test_published_news_item_announced_with_url(
+    app: Flask, item_with_url: Item
+) -> None:
     expected_channel1 = CHANNEL_PUBLIC
     expected_channel2 = CHANNEL_INTERNAL
     expected_text = (
@@ -31,7 +33,26 @@ def test_published_news_item_announced(app: Flask, item: Item) -> None:
         + 'https://acme.example.com/news/zieh-dir-das-mal-rein'
     )
 
-    event = news_service.publish_item(item.id)
+    event = news_service.publish_item(item_with_url.id)
+
+    with mocked_irc_bot() as mock:
+        news_signals.item_published.send(None, event=event)
+
+    actual1, actual2 = get_submitted_json(mock, 2)
+    assert_request_data(actual1, expected_channel1, expected_text)
+    assert_request_data(actual2, expected_channel2, expected_text)
+
+
+def test_published_news_item_announced_without_url(
+    app: Flask, item_without_url: Item
+) -> None:
+    expected_channel1 = CHANNEL_PUBLIC
+    expected_channel2 = CHANNEL_INTERNAL
+    expected_text = (
+        'Die News "Zieh dir auch das mal rein!" wurde veröffentlicht.'
+    )
+
+    event = news_service.publish_item(item_without_url.id)
 
     with mocked_irc_bot() as mock:
         news_signals.item_published.send(None, event=event)
@@ -45,20 +66,41 @@ def test_published_news_item_announced(app: Flask, item: Item) -> None:
 
 
 @pytest.fixture
-def channel(brand: Brand, make_channel) -> Channel:
+def channel_with_url_prefix(brand: Brand, make_channel) -> Channel:
     url_prefix = 'https://acme.example.com/news/'
-
     return make_channel(brand.id, url_prefix=url_prefix)
 
 
 @pytest.fixture
-def item(channel: Channel, make_user) -> Item:
-    editor = make_user()
+def channel_without_url_prefix(brand: Brand, make_channel) -> Channel:
+    return make_channel(brand.id)
+
+
+@pytest.fixture
+def make_item(make_user):
+    def _wrapper(channel: Channel, slug: str, title: str) -> Item:
+        editor = make_user()
+        body = 'any body'
+        body_format = BodyFormat.html
+
+        return news_service.create_item(
+            channel.id, slug, editor.id, title, body, body_format
+        )
+
+    return _wrapper
+
+
+@pytest.fixture
+def item_with_url(make_item, channel_with_url_prefix: Channel) -> Item:
     slug = 'zieh-dir-das-mal-rein'
     title = 'Zieh dir das mal rein!'
-    body = 'any body'
-    body_format = BodyFormat.html
 
-    return news_service.create_item(
-        channel.id, slug, editor.id, title, body, body_format
-    )
+    return make_item(channel_with_url_prefix, slug, title)
+
+
+@pytest.fixture
+def item_without_url(make_item, channel_without_url_prefix: Channel) -> Item:
+    slug = 'zieh-dir-auch-das-mal-rein'
+    title = 'Zieh dir auch das mal rein!'
+
+    return make_item(channel_without_url_prefix, slug, title)

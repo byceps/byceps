@@ -21,15 +21,34 @@ from .helpers import assert_request, mocked_webhook_receiver
 WEBHOOK_URL = 'https://webhoooks.test/news'
 
 
-def test_published_news_item_announced(
-    webhook_settings, admin_app: Flask, item: Item
+def test_published_news_item_announced_with_url(
+    admin_app: Flask, item_with_url: Item
 ) -> None:
     expected_content = (
         '[News] Die News "Zieh dir das rein!" wurde veröffentlicht. '
         + 'https://acme.example.com/news/zieh-dir-das-rein'
     )
 
-    event = news_service.publish_item(item.id)
+    create_webhooks(item_with_url.channel)
+
+    event = news_service.publish_item(item_with_url.id)
+
+    with mocked_webhook_receiver(WEBHOOK_URL) as mock:
+        news_signals.item_published.send(None, event=event)
+
+    assert_request(mock, expected_content)
+
+
+def test_published_news_item_announced_without_url(
+    admin_app: Flask, item_without_url: Item
+) -> None:
+    expected_content = (
+        '[News] Die News "Zieh dir auch das rein!" wurde veröffentlicht.'
+    )
+
+    create_webhooks(item_without_url.channel)
+
+    event = news_service.publish_item(item_without_url.id)
 
     with mocked_webhook_receiver(WEBHOOK_URL) as mock:
         news_signals.item_published.send(None, event=event)
@@ -41,7 +60,17 @@ def test_published_news_item_announced(
 
 
 @pytest.fixture
-def webhook_settings(channel: Channel) -> None:
+def channel_with_url_prefix(brand: Brand, make_channel) -> Channel:
+    url_prefix = 'https://acme.example.com/news/'
+    return make_channel(brand.id, url_prefix=url_prefix)
+
+
+@pytest.fixture
+def channel_without_url_prefix(brand: Brand, make_channel) -> Channel:
+    return make_channel(brand.id)
+
+
+def create_webhooks(channel: Channel) -> None:
     news_channel_ids = [str(channel.id), 'totally-different-id']
     format = 'discord'
     text_prefix = '[News] '
@@ -62,20 +91,30 @@ def webhook_settings(channel: Channel) -> None:
 
 
 @pytest.fixture
-def channel(brand: Brand, make_channel) -> Channel:
-    url_prefix = 'https://acme.example.com/news/'
+def make_item(make_user):
+    def _wrapper(channel: Channel, slug: str, title: str) -> Item:
+        editor = make_user()
+        body = 'any body'
+        body_format = BodyFormat.html
 
-    return make_channel(brand.id, url_prefix=url_prefix)
+        return news_service.create_item(
+            channel.id, slug, editor.id, title, body, body_format
+        )
+
+    return _wrapper
 
 
 @pytest.fixture
-def item(channel: Channel, make_user) -> Item:
-    editor = make_user()
+def item_with_url(make_item, channel_with_url_prefix: Channel) -> Item:
     slug = 'zieh-dir-das-rein'
     title = 'Zieh dir das rein!'
-    body = 'any body'
-    body_format = BodyFormat.html
 
-    return news_service.create_item(
-        channel.id, slug, editor.id, title, body, body_format
-    )
+    return make_item(channel_with_url_prefix, slug, title)
+
+
+@pytest.fixture
+def item_without_url(make_item, channel_without_url_prefix: Channel) -> Item:
+    slug = 'zieh-dir-auch-das-rein'
+    title = 'Zieh dir auch das rein!'
+
+    return make_item(channel_without_url_prefix, slug, title)

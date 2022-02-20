@@ -22,8 +22,8 @@ from .transfer.models import Channel, ChannelID
 def create_channel(
     brand_id: BrandID,
     channel_id: ChannelID,
-    url_prefix: str,
     *,
+    url_prefix: Optional[str] = None,
     announcement_site_id: Optional[SiteID] = None,
 ) -> Channel:
     """Create a channel for that brand."""
@@ -34,7 +34,7 @@ def create_channel(
     db_channel = DbChannel(
         channel_id,
         brand.id,
-        url_prefix,
+        url_prefix=url_prefix,
         announcement_site_id=announcement_site_id,
     )
 

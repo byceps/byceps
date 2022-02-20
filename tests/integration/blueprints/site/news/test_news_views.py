@@ -26,7 +26,7 @@ def news_channel(brand):
     url_prefix = 'https://www.acmecon.test/news/'
 
     channel = news_channel_service.create_channel(
-        brand.id, channel_id, url_prefix
+        brand.id, channel_id, url_prefix=url_prefix
     )
 
     yield channel

@@ -37,7 +37,8 @@ def news_admin_client(make_client, admin_app, news_admin):
 
 @pytest.fixture
 def channel(brand: Brand, make_channel) -> Channel:
-    return make_channel(brand.id)
+    url_prefix = 'https://newssite.example/posts/'
+    return make_channel(brand.id, url_prefix=url_prefix)
 
 
 @pytest.fixture

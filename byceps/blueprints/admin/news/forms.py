@@ -51,7 +51,7 @@ class ChannelCreateForm(_ChannelFormBase):
         lazy_gettext('ID'), validators=[InputRequired(), Length(min=1, max=40)]
     )
     url_prefix = StringField(
-        lazy_gettext('URL prefix'), [InputRequired(), Length(max=80)]
+        lazy_gettext('URL prefix'), [Optional(), Length(max=80)]
     )
 
 

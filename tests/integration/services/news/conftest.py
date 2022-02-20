@@ -25,9 +25,8 @@ def make_channel():
         if channel_id is None:
             channel_id = ChannelID(generate_token())
 
-        if url_prefix is None:
-            url_prefix = 'https://newssite.example/posts/'
-
-        return channel_service.create_channel(brand_id, channel_id, url_prefix)
+        return channel_service.create_channel(
+            brand_id, channel_id, url_prefix=url_prefix
+        )
 
     return _wrapper

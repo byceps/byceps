@@ -8,6 +8,7 @@ byceps.events.news
 
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Optional
 
 from ..services.news.transfer.models import ChannelID, ItemID
 
@@ -20,4 +21,4 @@ class NewsItemPublished(_BaseEvent):
     channel_id: ChannelID
     published_at: datetime
     title: str
-    external_url: str
+    external_url: Optional[str]
