@@ -15,6 +15,7 @@ from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
 from .....services.brand import service as brand_service
+from .....services.party import service as party_service
 from .....services.shop.article import (
     sequence_service as article_sequence_service,
     service as article_service,
@@ -119,6 +120,18 @@ def view(article_id):
 
     type_label = get_article_type_label(article.type_)
 
+    if article.type_ in (ArticleType.ticket, ArticleType.ticket_bundle):
+        ticket_category = ticket_category_service.find_category(
+            article.type_params['ticket_category_id']
+        )
+        if ticket_category is not None:
+            ticket_party = party_service.get_party(ticket_category.party_id)
+        else:
+            ticket_party = None
+    else:
+        ticket_party = None
+        ticket_category = None
+
     totals = ordered_articles_service.count_ordered_articles(
         article.item_number
     )
@@ -131,6 +144,8 @@ def view(article_id):
         'shop': shop,
         'brand': brand,
         'type_label': type_label,
+        'ticket_category': ticket_category,
+        'ticket_party': ticket_party,
         'totals': totals,
         'PaymentState': PaymentState,
         'actions': actions,

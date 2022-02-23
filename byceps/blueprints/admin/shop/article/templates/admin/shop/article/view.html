@@ -77,24 +77,42 @@
   </div>
 
   <div class="grid article-grid mt" style="--column-min-width: 12rem;">
-    <div style="display: flex; flex-direction: column;">
+    <div class="box">
 
-      <div class="box">
-        <div class="data-label">{{ _('Type') }}</div>
-        <div class="data-value">{{ type_label }}</div>
+      <div class="data-label">{{ _('Type') }}</div>
+      <div class="data-value">
+        {%- if article.type_.name == 'ticket' %}
+        {{ render_icon('ticket') }}
+        {%- elif article.type_.name == 'ticket_bundle' %}
+        {{ render_icon('ticket-bundle') }}
+        {%- endif %}
+        {{ type_label }}
       </div>
 
-      <h3>{{ _('Parameters') }}</h3>
-      <div class="box" style="flex: 1;">
-      {%- if article.type_params %}
-        {%- for key, value in article.type_params.items() %}
-        <div class="data-label">{{ key }}</div>
-        <div class="data-value">{{ value }}</div>
-        {%- endfor %}
-      {%- else %}
-        {{ _('none')|dim }}
+      {%- if article.type_.name in ('ticket', 'ticket_bundle') %}
+      <div class="data-label">{{ _('Party') }}</div>
+      <div class="data-value">
+        {%- if ticket_party %}
+        <a href="{{ url_for('admin_dashboard.view_party', party_id=ticket_category.party_id) }}">{{ ticket_party.title }}</a>
+        {%- else %}
+        <em>{{ _('unknown')|dim }}</em> ({{ article.type_params['ticket_category_id'] }})
+        {%- endif %}
+      </div>
+
+      <div class="data-label">{{ _('Ticket category') }}</div>
+      <div class="data-value">
+        {%- if ticket_category %}
+        <a href="{{ url_for('ticketing_category_admin.index', party_id=ticket_category.party_id) }}">{{ ticket_category.title }}</a>
+        {%- else %}
+        <em>{{ _('unknown')|dim }}</em> ({{ article.type_params['ticket_category_id'] }})
+        {%- endif %}
+      </div>
       {%- endif %}
-      </div>
+
+      {%- if article.type_.name == 'ticket_bundle' %}
+      <div class="data-label">{{ _('Ticket quantity') }}</div>
+      <div class="data-value">{{ article.type_params['ticket_quantity'] }}</div>
+      {%- endif %}
 
     </div>
     <div class="box">
