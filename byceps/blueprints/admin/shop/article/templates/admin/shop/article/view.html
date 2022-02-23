@@ -24,11 +24,6 @@
 .progress-bar.color--ordered {
   background-color: #eecc00;
 }
-
-table.attachments td {
-  border: none !important;
-  text-align: right;
-}
 </style>
 {%- endblock %}
 
@@ -138,14 +133,12 @@ table.attachments td {
       <div class="data-label">{{ _('Attached articles') }}</div>
       <div class="data-value">
         {%- if article.attached_articles %}
-        <table class="attachments">
         {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
-          <tr>
-            <td>{{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</td>
-            <td><a data-action="attachment-remove" href="{{ url_for('.attachment_remove', article_id=attached_article.id) }}" class="button button--compact" title="{{ _('Remove attached article') }}">{{ render_icon('remove') }}</a></td>
-          </tr>
+        <div class="row row--space-between">
+          <div>{{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</div>
+          <div><a data-action="attachment-remove" href="{{ url_for('.attachment_remove', article_id=attached_article.id) }}" class="button button--compact" title="{{ _('Remove attached article') }}">{{ render_icon('remove') }}</a></div>
+        </div>
         {%- endfor %}
-        </table>
         {%- else %}
         {{ _('none')|dim }}
         {%- endif %}
