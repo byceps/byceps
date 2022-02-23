@@ -6,6 +6,7 @@ byceps.services.shop.article.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
@@ -53,9 +54,6 @@ def get_article_type_label(article_type: ArticleType) -> str:
     return _ARTICLE_TYPE_LABELS[article_type]
 
 
-ArticleTypeParams = Optional[None]
-
-
 AttachedArticleID = NewType('AttachedArticleID', UUID)
 
 
@@ -65,7 +63,7 @@ class Article:
     shop_id: ShopID
     item_number: ArticleNumber
     type_: ArticleType
-    type_params: ArticleTypeParams
+    type_params: Optional[dict[str, str]]
     description: str
     price: Decimal
     tax_rate: Decimal
