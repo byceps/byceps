@@ -77,10 +77,24 @@
   </div>
 
   <div class="grid article-grid mt" style="--column-min-width: 12rem;">
-    <div class="box">
+    <div style="display: flex; flex-direction: column;">
 
-      <div class="data-label">{{ _('Type') }}</div>
-      <div class="data-value">{{ type_label }}</div>
+      <div class="box">
+        <div class="data-label">{{ _('Type') }}</div>
+        <div class="data-value">{{ type_label }}</div>
+      </div>
+
+      <h3>{{ _('Parameters') }}</h3>
+      <div class="box" style="flex: 1;">
+      {%- if article.type_params %}
+        {%- for key, value in article.type_params.items() %}
+        <div class="data-label">{{ key }}</div>
+        <div class="data-value">{{ value }}</div>
+        {%- endfor %}
+      {%- else %}
+        {{ _('none')|dim }}
+      {%- endif %}
+      </div>
 
     </div>
     <div class="box">
