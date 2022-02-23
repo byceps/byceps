@@ -220,17 +220,17 @@ def find_attached_article(
 
 def get_articles_by_numbers(
     article_numbers: set[ArticleNumber],
-) -> set[Article]:
+) -> list[Article]:
     """Return the articles with those numbers."""
     if not article_numbers:
-        return set()
+        return list()
 
     db_articles = db.session \
         .query(DbArticle) \
         .filter(DbArticle.item_number.in_(article_numbers)) \
         .all()
 
-    return {_db_entity_to_article(db_article) for db_article in db_articles}
+    return [_db_entity_to_article(db_article) for db_article in db_articles]
 
 
 def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
@@ -358,7 +358,7 @@ def _add_attached_articles(
         )
 
 
-def get_attachable_articles(article_id: ArticleID) -> set[Article]:
+def get_attachable_articles(article_id: ArticleID) -> list[Article]:
     """Return the articles that can be attached to that article."""
     db_article = _get_db_article(article_id)
 
@@ -379,7 +379,7 @@ def get_attachable_articles(article_id: ArticleID) -> set[Article]:
         .order_by(DbArticle.item_number) \
         .all()
 
-    return {_db_entity_to_article(db_article) for db_article in db_articles}
+    return [_db_entity_to_article(db_article) for db_article in db_articles]
 
 
 def is_article_available_now(article: Article) -> bool:

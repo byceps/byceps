@@ -87,7 +87,7 @@ def test_cancel_before_paid(
 ):
     article = article1
 
-    quantified_articles_to_order = {(article, 3)}
+    quantified_articles_to_order = [(article, 3)]
     placed_order = place_order(
         storefront.id, orderer, quantified_articles_to_order
     )
@@ -147,7 +147,7 @@ def test_cancel_before_paid_without_sending_email(
 ):
     article = article2
 
-    quantified_articles_to_order = {(article, 3)}
+    quantified_articles_to_order = [(article, 3)]
     placed_order = place_order(
         storefront.id, orderer, quantified_articles_to_order
     )
@@ -243,7 +243,7 @@ def test_cancel_after_paid(
 ):
     article = article3
 
-    quantified_articles_to_order = {(article, 3)}
+    quantified_articles_to_order = [(article, 3)]
     placed_order = place_order(
         storefront.id, orderer, quantified_articles_to_order
     )
