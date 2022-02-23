@@ -41,9 +41,6 @@
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
-            {%- if has_current_user_permission('shop_article.update') %}
-            <li><a class="dropdown-item" href="{{ url_for('.attachment_create_form', article_id=article.id) }}">{{ render_icon('attached') }} {{ _('Attach article') }}</a></li>
-            {%- endif %}
             <li><a class="dropdown-item" href="{{ url_for('.view_ordered', article_id=article.id) }}">{{ render_icon('users') }} {{ _('View buyers') }}</a></li>
           </ol>
         </div>
@@ -130,7 +127,16 @@
         {%- endif %}
       </div>
 
-      <div class="data-label">{{ _('Attached articles') }}</div>
+      <div class="row row--space-between mt">
+        <div>
+          <div class="data-label">{{ _('Attached articles') }}</div>
+        </div>
+        {%- if has_current_user_permission('shop_article.update') %}
+        <div>
+          <a class="button button--compact" href="{{ url_for('.attachment_create_form', article_id=article.id) }}" title="{{ _('Attach article') }}">{{ render_icon('attached') }}</a></li>
+        </div>
+        {%- endif %}
+      </div>
       <div class="data-value">
         {%- if article.attached_articles %}
         {%- for attached_article in article.attached_articles|sort(attribute='article.item_number') %}
