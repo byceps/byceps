@@ -117,7 +117,7 @@ def create_article(
         shop_id=ShopID('any-shop'),
         item_number=ArticleNumber('article-123'),
         type_=ArticleType.other,
-        type_params=None,
+        type_params={},
         description='Cool thing',
         price=Decimal('1.99'),
         tax_rate=Decimal('0.19'),

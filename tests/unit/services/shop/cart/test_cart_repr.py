@@ -51,7 +51,7 @@ def create_article(
         shop_id=ShopID('any-shop'),
         item_number=item_number,
         type_=ArticleType.other,
-        type_params=None,
+        type_params={},
         description=description,
         price=price,
         tax_rate=tax_rate,

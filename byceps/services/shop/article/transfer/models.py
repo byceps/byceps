@@ -63,7 +63,7 @@ class Article:
     shop_id: ShopID
     item_number: ArticleNumber
     type_: ArticleType
-    type_params: Optional[dict[str, str]]
+    type_params: dict[str, str]
     description: str
     price: Decimal
     tax_rate: Decimal
