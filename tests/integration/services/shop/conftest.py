@@ -7,6 +7,7 @@ import pytest
 
 from byceps.services.brand.transfer.models import Brand
 from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope, SnippetID
@@ -49,12 +50,14 @@ E-Mail: noreply@acmecon.test
 
 
 @pytest.fixture
-def shop(shop_brand, make_email_config, make_shop):
+def shop(shop_brand: Brand, make_email_config, make_shop) -> Shop:
     return make_shop(shop_brand.id)
 
 
 @pytest.fixture
-def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
+def storefront(
+    shop: Shop, make_order_number_sequence, make_storefront
+) -> Storefront:
     order_number_sequence = make_order_number_sequence(shop.id)
 
     return make_storefront(shop.id, order_number_sequence.id)

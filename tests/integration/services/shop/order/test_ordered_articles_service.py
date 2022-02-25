@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from flask import Flask
 import pytest
 
 from byceps.database import db
@@ -11,7 +12,17 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.dbmodels.order import Order as DbOrder
 from byceps.services.shop.order import ordered_articles_service
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.order.transfer.order import PaymentState
+from byceps.services.shop.order.transfer.number import OrderNumber
+from byceps.services.shop.order.transfer.order import (
+    Order,
+    Orderer,
+    PaymentState,
+)
+from byceps.services.shop.shop.transfer.models import Shop
+from byceps.services.shop.storefront.transfer.models import (
+    Storefront,
+    StorefrontID,
+)
 
 from tests.integration.services.shop.helpers import (
     create_article,
@@ -20,17 +31,19 @@ from tests.integration.services.shop.helpers import (
 
 
 @pytest.fixture
-def article(shop):
+def article(shop: Shop) -> Article:
     return create_article(shop.id, total_quantity=100)
 
 
 @pytest.fixture
-def orderer(make_user):
+def orderer(make_user) -> Orderer:
     user = make_user()
     return create_orderer(user.id)
 
 
-def test_count_ordered_articles(admin_app, storefront, article, orderer):
+def test_count_ordered_articles(
+    admin_app: Flask, storefront: Storefront, article: Article, orderer: Orderer
+):
     expected = {
         PaymentState.open: 12,
         PaymentState.canceled_before_paid: 7,
@@ -70,7 +83,12 @@ def test_count_ordered_articles(admin_app, storefront, article, orderer):
 # helpers
 
 
-def place_order(storefront_id, orderer, article, article_quantity):
+def place_order(
+    storefront_id: StorefrontID,
+    orderer: Orderer,
+    article: Article,
+    article_quantity: int,
+) -> Order:
     cart = Cart()
     cart.add_item(article, article_quantity)
 
@@ -79,7 +97,9 @@ def place_order(storefront_id, orderer, article, article_quantity):
     return order
 
 
-def set_payment_state(order_number, payment_state):
+def set_payment_state(
+    order_number: OrderNumber, payment_state: PaymentState
+) -> None:
     order = db.session \
         .query(DbOrder) \
         .filter_by(order_number=order_number) \

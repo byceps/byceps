@@ -5,17 +5,22 @@
 
 from unittest.mock import patch
 
+from flask import Flask
 import pytest
 from pytest import raises
 
 from byceps.events.ticketing import TicketsSold
+from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import log_service as order_log_service
-from byceps.services.shop.order.transfer.order import Order
+from byceps.services.shop.order.transfer.order import Order, Orderer
+from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.ticket_creation_service import (
     TicketCreationFailed,
 )
+from byceps.services.ticketing.transfer.models import TicketCategory
+from byceps.services.user.transfer.models import User
 
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
@@ -26,13 +31,15 @@ def ticket_quantity() -> int:
 
 
 @pytest.fixture
-def order(article, ticket_quantity, storefront, orderer) -> Order:
+def order(
+    article: Article, ticket_quantity, storefront: Storefront, orderer: Orderer
+) -> Order:
     articles_with_quantity = [(article, ticket_quantity)]
     return place_order(storefront.id, orderer, articles_with_quantity)
 
 
 @pytest.fixture
-def order_action(article, ticket_category) -> None:
+def order_action(article: Article, ticket_category: TicketCategory) -> None:
     action_registry_service.register_tickets_creation(
         article.item_number, ticket_category.id
     )
@@ -41,14 +48,14 @@ def order_action(article, ticket_category) -> None:
 @patch('byceps.signals.ticketing.tickets_sold.send')
 def test_create_tickets(
     tickets_sold_signal_send_mock,
-    admin_app,
-    article,
-    ticket_category,
-    ticket_quantity,
-    admin_user,
-    orderer_user,
-    orderer,
-    order,
+    admin_app: Flask,
+    article: Article,
+    ticket_category: TicketCategory,
+    ticket_quantity: int,
+    admin_user: User,
+    orderer_user: User,
+    orderer: Orderer,
+    order: Order,
     order_action,
 ) -> None:
     tickets_before_paid = get_tickets_for_order(order)
@@ -86,13 +93,13 @@ def test_create_tickets(
 @patch('byceps.services.ticketing.ticket_code_service._generate_ticket_code')
 def test_create_tickets_with_same_code_fails(
     generate_ticket_code_mock,
-    admin_app,
-    article,
-    ticket_category,
-    ticket_quantity,
-    admin_user,
-    orderer,
-    order,
+    admin_app: Flask,
+    article: Article,
+    ticket_category: TicketCategory,
+    ticket_quantity: int,
+    admin_user: User,
+    orderer: Orderer,
+    order: Order,
     order_action,
 ) -> None:
     generate_ticket_code_mock.side_effect = lambda: 'EQUAL'
@@ -104,13 +111,13 @@ def test_create_tickets_with_same_code_fails(
 @patch('byceps.services.ticketing.ticket_code_service._generate_ticket_code')
 def test_create_tickets_with_temporarily_equal_code_and_retry_succeeds(
     generate_ticket_code_mock,
-    admin_app,
-    article,
-    ticket_category,
-    ticket_quantity,
-    admin_user,
-    orderer,
-    order,
+    admin_app: Flask,
+    article: Article,
+    ticket_category: TicketCategory,
+    ticket_quantity: int,
+    admin_user: User,
+    orderer: Orderer,
+    order: Order,
     order_action,
 ) -> None:
     code_generation_retries = 4  # Depends on implemented default value.

@@ -7,14 +7,18 @@ from datetime import datetime
 from decimal import Decimal
 from unittest.mock import patch
 
+from flask import Flask
 import pytest
 
-from byceps.services.shop.article.transfer.models import Article
+from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order.transfer.order import Order
 from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet.transfer.models import SnippetID
+from byceps.services.user.transfer.models import User
 
 from tests.helpers import current_user_set
 from tests.integration.services.shop.helpers import (
@@ -29,7 +33,7 @@ from .helpers import (
 
 
 @pytest.fixture(scope='module')
-def customer(make_user):
+def customer(make_user) -> User:
     return make_user('Interessent', email_address='interessent@users.test')
 
 
@@ -68,12 +72,12 @@ def article2(shop: Shop) -> Article:
 
 @pytest.fixture
 def order(
-    storefront,
+    storefront: Storefront,
     article1: Article,
     article2: Article,
-    customer,
-    email_payment_instructions_snippet_id,
-    email_footer_snippet_id,
+    customer: User,
+    email_payment_instructions_snippet_id: SnippetID,
+    email_footer_snippet_id: SnippetID,
 ):
     created_at = datetime(2014, 8, 15, 20, 7, 43)
 
@@ -94,7 +98,9 @@ def order(
 
 
 @patch('byceps.email.send')
-def test_email_on_order_placed(send_email_mock, site_app, customer, order):
+def test_email_on_order_placed(
+    send_email_mock, site_app: Flask, customer: User, order: Order
+):
     app = site_app
 
     current_user = get_current_user_for_user(customer, 'de')
@@ -165,7 +171,7 @@ def create_article(
 ) -> Article:
     return _create_article(
         shop_id,
-        item_number=item_number,
+        item_number=ArticleNumber(item_number),
         description=description,
         price=price,
         total_quantity=total_quantity,

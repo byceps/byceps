@@ -7,12 +7,14 @@ from __future__ import annotations
 from decimal import Decimal
 from typing import Iterable
 
+from flask import Flask
 import pytest
 
 from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.shop.transfer.models import Shop
+from byceps.services.shop.order.transfer.order import Order, Orderer
+from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront.transfer.models import (
     Storefront,
     StorefrontID,
@@ -59,12 +61,14 @@ def article3(shop: Shop) -> Article:
 
 
 @pytest.fixture(scope='module')
-def orderer(make_user):
+def orderer(make_user) -> Orderer:
     user = make_user()
     return create_orderer(user.id)
 
 
-def test_without_any_items(site_app, storefront: Storefront, orderer):
+def test_without_any_items(
+    site_app: Flask, storefront: Storefront, orderer: Orderer
+):
     order = place_order(storefront.id, orderer, [])
 
     assert order.total_amount == Decimal('0.00')
@@ -73,7 +77,7 @@ def test_without_any_items(site_app, storefront: Storefront, orderer):
 
 
 def test_with_single_item(
-    site_app, storefront: Storefront, orderer, article1: Article
+    site_app: Flask, storefront: Storefront, orderer: Orderer, article1: Article
 ):
     order = place_order(
         storefront.id,
@@ -89,9 +93,9 @@ def test_with_single_item(
 
 
 def test_with_multiple_items(
-    site_app,
+    site_app: Flask,
     storefront: Storefront,
-    orderer,
+    orderer: Orderer,
     article1: Article,
     article2: Article,
     article3: Article,
@@ -114,7 +118,7 @@ def test_with_multiple_items(
 # helpers
 
 
-def create_article(shop_id, number, price) -> Article:
+def create_article(shop_id: ShopID, number: int, price: Decimal) -> Article:
     item_number = ArticleNumber(f'LF-01-A{number:05d}')
     description = f'Artikel #{number:d}'
 
@@ -129,9 +133,9 @@ def create_article(shop_id, number, price) -> Article:
 
 def place_order(
     storefront_id: StorefrontID,
-    orderer,
+    orderer: Orderer,
     articles: Iterable[tuple[Article, int]],
-):
+) -> Order:
     cart = Cart()
     for article, quantity in articles:
         cart.add_item(article, quantity)

@@ -6,15 +6,17 @@
 from datetime import datetime
 from decimal import Decimal
 
+from flask import Flask
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.shop.article.transfer.models import Article
+from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.order.transfer.order import Orderer
+from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront.transfer.models import Storefront
+from byceps.services.user.transfer.models import User
 
 from tests.helpers import log_in_user
 from tests.integration.services.shop.helpers import (
@@ -23,7 +25,7 @@ from tests.integration.services.shop.helpers import (
 
 
 @pytest.fixture(scope='package')
-def shop_order_admin(make_admin):
+def shop_order_admin(make_admin) -> User:
     permission_ids = {'admin.access', 'shop_order.view'}
     return make_admin('ShopOrderExportAdmin', permission_ids)
 
@@ -77,7 +79,7 @@ def cart(
 
 
 @pytest.fixture
-def orderer(make_user):
+def orderer(make_user) -> Orderer:
     user = make_user(email_address='h-w.mustermann@users.test')
 
     return Orderer(
@@ -103,7 +105,7 @@ def storefront(
 
 
 @pytest.fixture
-def order(storefront: Storefront, cart: Cart, orderer):
+def order(storefront: Storefront, cart: Cart, orderer: Orderer):
     created_at = datetime(2015, 2, 26, 12, 26, 24)  # UTC
 
     order, _ = order_service.place_order(
@@ -117,7 +119,7 @@ def order(storefront: Storefront, cart: Cart, orderer):
 
 @freeze_time('2015-04-15 07:54:18')  # UTC
 def test_serialize_existing_order(
-    request, admin_app, shop_order_admin, make_client, order
+    request, admin_app: Flask, shop_order_admin: User, make_client, order: Order
 ):
     filename = request.fspath.dirpath('order_export.xml')
     expected = filename.read_text('iso-8859-1').rstrip()
@@ -136,7 +138,9 @@ def test_serialize_existing_order(
 
 
 @freeze_time('2015-04-15 07:54:18')  # UTC
-def test_serialize_unknown_order(admin_app, shop_order_admin, make_client):
+def test_serialize_unknown_order(
+    admin_app: Flask, shop_order_admin: User, make_client
+):
     unknown_order_id = '00000000-0000-0000-0000-000000000000'
 
     log_in_user(shop_order_admin.id)
@@ -160,7 +164,7 @@ def create_article(
 ) -> Article:
     return _create_article(
         shop_id,
-        item_number=item_number,
+        item_number=ArticleNumber(item_number),
         description=description,
         price=price,
         tax_rate=tax_rate,

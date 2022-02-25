@@ -4,9 +4,10 @@
 """
 
 from __future__ import annotations
-from typing import Iterable
+from typing import Iterable, Optional
 from unittest.mock import patch
 
+from flask import Flask
 import pytest
 
 from byceps.database import db
@@ -20,9 +21,19 @@ from byceps.services.shop.article.transfer.models import (
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.dbmodels.order import Order as DbOrder
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.order.transfer.order import PaymentState
+from byceps.services.shop.order.transfer.order import (
+    Order,
+    Orderer,
+    OrderID,
+    PaymentState,
+)
 from byceps.services.shop.shop.transfer.models import Shop, ShopID
-from byceps.services.shop.storefront.transfer.models import Storefront
+from byceps.services.shop.storefront.transfer.models import (
+    Storefront,
+    StorefrontID,
+)
+from byceps.services.user.transfer.models import User
+from byceps.typing import UserID
 
 from tests.helpers import log_in_user
 from tests.integration.services.shop.helpers import (
@@ -32,7 +43,7 @@ from tests.integration.services.shop.helpers import (
 
 
 @pytest.fixture(scope='package')
-def shop_order_admin(make_admin):
+def shop_order_admin(make_admin) -> User:
     permission_ids = {
         'admin.access',
         'shop_order.cancel',
@@ -44,7 +55,9 @@ def shop_order_admin(make_admin):
 
 
 @pytest.fixture(scope='package')
-def shop_order_admin_client(make_client, admin_app, shop_order_admin):
+def shop_order_admin_client(
+    make_client, admin_app: Flask, shop_order_admin: User
+):
     return make_client(admin_app, user_id=shop_order_admin.id)
 
 
@@ -64,12 +77,12 @@ def article3(shop: Shop) -> Article:
 
 
 @pytest.fixture(scope='module')
-def orderer_user(make_user):
+def orderer_user(make_user) -> User:
     return make_user()
 
 
 @pytest.fixture(scope='module')
-def orderer(orderer_user):
+def orderer(orderer_user: User) -> Orderer:
     return create_orderer(orderer_user.id)
 
 
@@ -80,9 +93,9 @@ def test_cancel_before_paid(
     order_canceled_signal_send_mock,
     storefront: Storefront,
     article1: Article,
-    shop_order_admin,
-    orderer_user,
-    orderer,
+    shop_order_admin: User,
+    orderer_user: User,
+    orderer: Orderer,
     shop_order_admin_client,
 ):
     article = article1
@@ -140,9 +153,9 @@ def test_cancel_before_paid_without_sending_email(
     order_canceled_signal_send_mock,
     storefront: Storefront,
     article2: Article,
-    shop_order_admin,
-    orderer_user,
-    orderer,
+    shop_order_admin: User,
+    orderer_user: User,
+    orderer: Orderer,
     shop_order_admin_client,
 ):
     article = article2
@@ -185,9 +198,9 @@ def test_mark_order_as_paid(
     order_email_service_mock,
     order_paid_signal_send_mock,
     storefront: Storefront,
-    shop_order_admin,
-    orderer_user,
-    orderer,
+    shop_order_admin: User,
+    orderer_user: User,
+    orderer: Orderer,
     shop_order_admin_client,
 ):
     placed_order = place_order(storefront.id, orderer, [])
@@ -236,9 +249,9 @@ def test_cancel_after_paid(
     order_canceled_signal_send_mock,
     storefront: Storefront,
     article3: Article,
-    shop_order_admin,
-    orderer_user,
-    orderer,
+    shop_order_admin: User,
+    orderer_user: User,
+    orderer: Orderer,
     shop_order_admin_client,
 ):
     article = article3
@@ -313,8 +326,10 @@ def get_article_quantity(article_id: ArticleID) -> int:
 
 
 def place_order(
-    storefront_id, orderer, quantified_articles: Iterable[tuple[Article, int]]
-):
+    storefront_id: StorefrontID,
+    orderer: Orderer,
+    quantified_articles: Iterable[tuple[Article, int]],
+) -> Order:
     cart = Cart()
 
     for article, quantity_to_order in quantified_articles:
@@ -325,19 +340,24 @@ def place_order(
     return order
 
 
-def assert_payment_is_open(order) -> None:
+def assert_payment_is_open(order: DbOrder) -> None:
     assert order.payment_method is None  # default
     assert order.payment_state == PaymentState.open
     assert order.payment_state_updated_at is None
     assert order.payment_state_updated_by_id is None
 
 
-def assert_payment(order, method, state, updated_by_id) -> None:
+def assert_payment(
+    order: DbOrder,
+    method: Optional[str],
+    state: PaymentState,
+    updated_by_id: UserID,
+) -> None:
     assert order.payment_method == method
     assert order.payment_state == state
     assert order.payment_state_updated_at is not None
     assert order.payment_state_updated_by_id == updated_by_id
 
 
-def get_order(order_id):
+def get_order(order_id: OrderID) -> DbOrder:
     return db.session.query(DbOrder).get(order_id)

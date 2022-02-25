@@ -3,12 +3,20 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
+
+from flask import Flask
 import pytest
 
+from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import log_service as order_log_service
-from byceps.services.shop.order.transfer.order import Order
+from byceps.services.shop.order.transfer.order import Order, Orderer
+from byceps.services.shop.storefront.transfer.models import Storefront
+from byceps.services.ticketing.dbmodels.ticket import Ticket as DbTicket
 from byceps.services.ticketing import ticket_service, ticket_bundle_service
+from byceps.services.ticketing.transfer.models import TicketCategory
+from byceps.services.user.transfer.models import User
 
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
@@ -24,27 +32,34 @@ def bundle_quantity() -> int:
 
 
 @pytest.fixture
-def order(article, bundle_quantity, storefront, orderer) -> Order:
+def order(
+    article: Article,
+    bundle_quantity: int,
+    storefront: Storefront,
+    orderer: Orderer,
+) -> Order:
     articles_with_quantity = [(article, bundle_quantity)]
     return place_order(storefront.id, orderer, articles_with_quantity)
 
 
 @pytest.fixture
-def order_action(article, ticket_category, ticket_quantity) -> None:
+def order_action(
+    article: Article, ticket_category: TicketCategory, ticket_quantity: int
+) -> None:
     action_registry_service.register_ticket_bundles_creation(
         article.item_number, ticket_category.id, ticket_quantity
     )
 
 
 def test_create_ticket_bundles(
-    admin_app,
-    article,
-    ticket_category,
-    ticket_quantity,
-    bundle_quantity,
-    admin_user,
-    orderer,
-    order,
+    admin_app: Flask,
+    article: Article,
+    ticket_category: TicketCategory,
+    ticket_quantity: int,
+    bundle_quantity: int,
+    admin_user: User,
+    orderer: Orderer,
+    order: Order,
     order_action,
 ) -> None:
     tickets_before_paid = get_tickets_for_order(order)
@@ -73,7 +88,7 @@ def test_create_ticket_bundles(
 # helpers
 
 
-def tear_down_bundles(tickets) -> None:
+def tear_down_bundles(tickets: list[DbTicket]) -> None:
     bundle_ids = {t.bundle_id for t in tickets}
 
     for ticket in tickets:
