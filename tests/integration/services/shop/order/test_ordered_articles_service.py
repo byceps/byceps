@@ -24,15 +24,12 @@ from byceps.services.shop.storefront.transfer.models import (
     StorefrontID,
 )
 
-from tests.integration.services.shop.helpers import (
-    create_article,
-    create_orderer,
-)
+from tests.integration.services.shop.helpers import create_orderer
 
 
 @pytest.fixture
-def article(shop: Shop) -> Article:
-    return create_article(shop.id, total_quantity=100)
+def article(make_article, shop: Shop) -> Article:
+    return make_article(shop.id, total_quantity=100)
 
 
 @pytest.fixture

@@ -14,6 +14,7 @@ from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import log_service as order_log_service
 from byceps.services.shop.order.transfer.order import Order, Orderer
+from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.ticket_creation_service import (
@@ -23,6 +24,11 @@ from byceps.services.ticketing.transfer.models import TicketCategory
 from byceps.services.user.transfer.models import User
 
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
+
+
+@pytest.fixture
+def article(make_article, shop: Shop) -> Article:
+    return make_article(shop.id, total_quantity=10)
 
 
 @pytest.fixture(scope='module')

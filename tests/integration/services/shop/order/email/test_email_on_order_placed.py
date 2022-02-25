@@ -21,9 +21,6 @@ from byceps.services.snippet.transfer.models import SnippetID
 from byceps.services.user.transfer.models import User
 
 from tests.helpers import current_user_set
-from tests.integration.services.shop.helpers import (
-    create_article as _create_article,
-)
 
 from .helpers import (
     assert_email,
@@ -49,24 +46,24 @@ def storefront(
 
 
 @pytest.fixture
-def article1(shop: Shop) -> Article:
-    return create_article(
+def article1(make_article, shop: Shop) -> Article:
+    return make_article(
         shop.id,
-        'AB-11-A00003',
-        'Einzelticket, Kategorie Loge',
-        Decimal('99.00'),
-        123,
+        item_number=ArticleNumber('AB-11-A00003'),
+        description='Einzelticket, Kategorie Loge',
+        price=Decimal('99.00'),
+        total_quantity=123,
     )
 
 
 @pytest.fixture
-def article2(shop: Shop) -> Article:
-    return create_article(
+def article2(make_article, shop: Shop) -> Article:
+    return make_article(
         shop.id,
-        'AB-11-A00007',
-        'T-Shirt, Größe L',
-        Decimal('14.95'),
-        50,
+        item_number=ArticleNumber('AB-11-A00007'),
+        description='T-Shirt, Größe L',
+        price=Decimal('14.95'),
+        total_quantity=50,
     )
 
 
@@ -156,23 +153,4 @@ E-Mail: noreply@acmecon.test
         expected_recipients,
         expected_subject,
         expected_body,
-    )
-
-
-# helpers
-
-
-def create_article(
-    shop_id: ShopID,
-    item_number: str,
-    description: str,
-    price: Decimal,
-    total_quantity: int,
-) -> Article:
-    return _create_article(
-        shop_id,
-        item_number=ArticleNumber(item_number),
-        description=description,
-        price=price,
-        total_quantity=total_quantity,
     )

@@ -14,14 +14,12 @@ from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.order import Order, Orderer
-from byceps.services.shop.shop.transfer.models import Shop, ShopID
+from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.user.transfer.models import User
 
 from tests.helpers import log_in_user
-from tests.integration.services.shop.helpers import (
-    create_article as _create_article,
-)
+from tests.integration.services.shop.conftest import make_article
 
 
 @pytest.fixture(scope='package')
@@ -31,35 +29,38 @@ def shop_order_admin(make_admin) -> User:
 
 
 @pytest.fixture
-def article_bungalow(shop: Shop) -> Article:
-    return create_article(
+def article_bungalow(make_article, shop: Shop) -> Article:
+    return make_article(
         shop.id,
-        'LR-08-A00003',
-        'LANresort 2015: Bungalow 4 Plätze',
-        Decimal('355.00'),
-        Decimal('0.07'),
+        item_number=ArticleNumber('LR-08-A00003'),
+        description='LANresort 2015: Bungalow 4 Plätze',
+        price=Decimal('355.00'),
+        tax_rate=Decimal('0.07'),
+        total_quantity=10,
     )
 
 
 @pytest.fixture
-def article_guest_fee(shop: Shop) -> Article:
-    return create_article(
+def article_guest_fee(make_article, shop: Shop) -> Article:
+    return make_article(
         shop.id,
-        'LR-08-A00006',
-        'Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
-        Decimal('6.00'),
-        Decimal('0.19'),
+        item_number=ArticleNumber('LR-08-A00006'),
+        description='Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
+        price=Decimal('6.00'),
+        tax_rate=Decimal('0.19'),
+        total_quantity=10,
     )
 
 
 @pytest.fixture
-def article_table(shop: Shop) -> Article:
-    return create_article(
+def article_table(make_article, shop: Shop) -> Article:
+    return make_article(
         shop.id,
-        'LR-08-A00002',
-        'Tisch (zur Miete), 200 x 80 cm',
-        Decimal('20.00'),
-        Decimal('0.19'),
+        item_number=ArticleNumber('LR-08-A00002'),
+        description='Tisch (zur Miete), 200 x 80 cm',
+        price=Decimal('20.00'),
+        tax_rate=Decimal('0.19'),
+        total_quantity=10,
     )
 
 
@@ -150,23 +151,3 @@ def test_serialize_unknown_order(
     response = client.get(url)
 
     assert response.status_code == 404
-
-
-# helpers
-
-
-def create_article(
-    shop_id: ShopID,
-    item_number: str,
-    description: str,
-    price: Decimal,
-    tax_rate: Decimal,
-) -> Article:
-    return _create_article(
-        shop_id,
-        item_number=ArticleNumber(item_number),
-        description=description,
-        price=price,
-        tax_rate=tax_rate,
-        total_quantity=10,
-    )

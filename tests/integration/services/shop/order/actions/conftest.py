@@ -6,22 +6,12 @@
 import pytest
 
 from byceps.services.party.transfer.models import Party
-from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.order.transfer.order import Orderer
-from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.ticketing.transfer.models import TicketCategory
 from byceps.services.user.transfer.models import User
 
 from tests.helpers import generate_token
-from tests.integration.services.shop.helpers import (
-    create_article,
-    create_orderer,
-)
-
-
-@pytest.fixture
-def article(shop: Shop) -> Article:
-    return create_article(shop.id, total_quantity=10)
+from tests.integration.services.shop.helpers import create_orderer
 
 
 @pytest.fixture

@@ -14,16 +14,13 @@ from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.order import Order, Orderer
-from byceps.services.shop.shop.transfer.models import Shop, ShopID
+from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import (
     Storefront,
     StorefrontID,
 )
 
-from tests.integration.services.shop.helpers import (
-    create_article as _create_article,
-    create_orderer,
-)
+from tests.integration.services.shop.helpers import create_orderer
 
 
 @pytest.fixture(scope='module')
@@ -46,18 +43,36 @@ def storefront(
 
 
 @pytest.fixture(scope='module')
-def article1(shop: Shop) -> Article:
-    return create_article(shop.id, 1, Decimal('49.95'))
+def article1(make_article, shop: Shop) -> Article:
+    return make_article(
+        shop.id,
+        item_number=ArticleNumber('LF-01-A00001'),
+        description='Artikel #1',
+        price=Decimal('49.95'),
+        total_quantity=50,
+    )
 
 
 @pytest.fixture(scope='module')
-def article2(shop: Shop) -> Article:
-    return create_article(shop.id, 2, Decimal('6.20'))
+def article2(make_article, shop: Shop) -> Article:
+    return make_article(
+        shop.id,
+        item_number=ArticleNumber('LF-01-A00002'),
+        description='Artikel #2',
+        price=Decimal('6.20'),
+        total_quantity=50,
+    )
 
 
 @pytest.fixture(scope='module')
-def article3(shop: Shop) -> Article:
-    return create_article(shop.id, 3, Decimal('12.53'))
+def article3(make_article, shop: Shop) -> Article:
+    return make_article(
+        shop.id,
+        item_number=ArticleNumber('LF-01-A00003'),
+        description='Artikel #3',
+        price=Decimal('12.53'),
+        total_quantity=50,
+    )
 
 
 @pytest.fixture(scope='module')
@@ -116,19 +131,6 @@ def test_with_multiple_items(
 
 
 # helpers
-
-
-def create_article(shop_id: ShopID, number: int, price: Decimal) -> Article:
-    item_number = ArticleNumber(f'LF-01-A{number:05d}')
-    description = f'Artikel #{number:d}'
-
-    return _create_article(
-        shop_id,
-        item_number=item_number,
-        description=description,
-        price=price,
-        total_quantity=50,
-    )
 
 
 def place_order(

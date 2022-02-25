@@ -27,7 +27,7 @@ from byceps.services.shop.order.transfer.order import (
     OrderID,
     PaymentState,
 )
-from byceps.services.shop.shop.transfer.models import Shop, ShopID
+from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import (
     Storefront,
     StorefrontID,
@@ -36,10 +36,8 @@ from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 
 from tests.helpers import log_in_user
-from tests.integration.services.shop.helpers import (
-    create_article as _create_article,
-    create_orderer,
-)
+from tests.integration.services.shop.conftest import make_article
+from tests.integration.services.shop.helpers import create_orderer
 
 
 @pytest.fixture(scope='package')
@@ -62,18 +60,33 @@ def shop_order_admin_client(
 
 
 @pytest.fixture
-def article1(shop: Shop) -> Article:
-    return create_article(shop.id, 'item-001', 8)
+def article1(make_article, shop: Shop) -> Article:
+    return make_article(
+        shop.id,
+        item_number=ArticleNumber('item-001'),
+        description='Item #1',
+        total_quantity=8,
+    )
 
 
 @pytest.fixture
-def article2(shop: Shop) -> Article:
-    return create_article(shop.id, 'item-002', 8)
+def article2(make_article, shop: Shop) -> Article:
+    return make_article(
+        shop.id,
+        item_number=ArticleNumber('item-002'),
+        description='Item #2',
+        total_quantity=8,
+    )
 
 
 @pytest.fixture
-def article3(shop: Shop) -> Article:
-    return create_article(shop.id, 'item-003', 8)
+def article3(make_article, shop: Shop) -> Article:
+    return make_article(
+        shop.id,
+        item_number=ArticleNumber('item-003'),
+        description='Item #3',
+        total_quantity=8,
+    )
 
 
 @pytest.fixture(scope='module')
@@ -307,17 +320,6 @@ def test_cancel_after_paid(
 
 
 # helpers
-
-
-def create_article(
-    shop_id: ShopID, item_number: str, total_quantity: int
-) -> Article:
-    return _create_article(
-        shop_id,
-        item_number=ArticleNumber(item_number),
-        description=item_number,
-        total_quantity=total_quantity,
-    )
 
 
 def get_article_quantity(article_id: ArticleID) -> int:

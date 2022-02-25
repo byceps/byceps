@@ -30,10 +30,8 @@ from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 
 from tests.helpers import create_site, generate_token, http_client, log_in_user
-from tests.integration.services.shop.helpers import (
-    create_article,
-    create_shop_fragment,
-)
+from tests.integration.services.shop.conftest import make_article
+from tests.integration.services.shop.helpers import create_shop_fragment
 
 
 COMMON_FORM_DATA: dict[str, str] = {
@@ -90,8 +88,8 @@ def site_app(site: Site, make_site_app):
 
 
 @pytest.fixture
-def article(admin_app: Flask, shop: Shop) -> Article:
-    return create_article(shop.id, total_quantity=5)
+def article(make_article, admin_app: Flask, shop: Shop) -> Article:
+    return make_article(shop.id, total_quantity=5)
 
 
 @pytest.fixture(scope='module')
