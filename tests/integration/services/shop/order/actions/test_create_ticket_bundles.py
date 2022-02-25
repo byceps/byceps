@@ -30,7 +30,7 @@ def article(make_article, shop: Shop) -> Article:
 
 
 @pytest.fixture(scope='module')
-def ticket_quantity() -> int:
+def ticket_quantity_per_bundle() -> int:
     return 5
 
 
@@ -54,10 +54,10 @@ def order(
 def order_action(
     article: Article,
     ticket_category: TicketCategory,
-    ticket_quantity: int,
+    ticket_quantity_per_bundle: int,
 ) -> None:
     action_registry_service.register_ticket_bundles_creation(
-        article.item_number, ticket_category.id, ticket_quantity
+        article.item_number, ticket_category.id, ticket_quantity_per_bundle
     )
 
 
@@ -67,7 +67,7 @@ def test_create_ticket_bundles(
     admin_app: Flask,
     article: Article,
     ticket_category: TicketCategory,
-    ticket_quantity: int,
+    ticket_quantity_per_bundle: int,
     bundle_quantity: int,
     admin_user: User,
     orderer_user: User,
@@ -75,13 +75,15 @@ def test_create_ticket_bundles(
     order: Order,
     order_action,
 ) -> None:
+    expected_ticket_total = 10
+
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
 
     shop_order_paid_event = mark_order_as_paid(order.id, admin_user.id)
 
     tickets_after_paid = get_tickets_for_order(order)
-    assert len(tickets_after_paid) == ticket_quantity * bundle_quantity
+    assert len(tickets_after_paid) == expected_ticket_total
 
     for ticket in tickets_after_paid:
         assert ticket.owned_by_id == orderer.user_id
@@ -102,7 +104,7 @@ def test_create_ticket_bundles(
         party_id=ticket_category.party_id,
         owner_id=orderer_user.id,
         owner_screen_name=orderer_user.screen_name,
-        quantity=ticket_quantity,
+        quantity=expected_ticket_total,
     )
     tickets_sold_signal_send_mock.assert_called_once_with(
         None, event=tickets_sold_event

@@ -47,12 +47,13 @@ def create_ticket_bundles(
 
         _create_creation_order_log_entry(order.id, bundle)
 
+    total_quantity = ticket_quantity_per_bundle * bundle_quantity
     tickets_sold_event = create_tickets_sold_event(
         order.id,
         initiator_id,
         ticket_category_id,
         owned_by_id,
-        ticket_quantity_per_bundle,
+        total_quantity,
     )
     send_tickets_sold_event(tickets_sold_event)
 
