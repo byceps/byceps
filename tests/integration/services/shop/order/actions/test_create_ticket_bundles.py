@@ -4,10 +4,12 @@
 """
 
 from __future__ import annotations
+from unittest.mock import patch
 
 from flask import Flask
 import pytest
 
+from byceps.events.ticketing import TicketsSold
 from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import log_service as order_log_service
@@ -50,20 +52,25 @@ def order(
 
 @pytest.fixture
 def order_action(
-    article: Article, ticket_category: TicketCategory, ticket_quantity: int
+    article: Article,
+    ticket_category: TicketCategory,
+    ticket_quantity: int,
 ) -> None:
     action_registry_service.register_ticket_bundles_creation(
         article.item_number, ticket_category.id, ticket_quantity
     )
 
 
+@patch('byceps.signals.ticketing.tickets_sold.send')
 def test_create_ticket_bundles(
+    tickets_sold_signal_send_mock,
     admin_app: Flask,
     article: Article,
     ticket_category: TicketCategory,
     ticket_quantity: int,
     bundle_quantity: int,
     admin_user: User,
+    orderer_user: User,
     orderer: Orderer,
     order: Order,
     order_action,
@@ -71,7 +78,7 @@ def test_create_ticket_bundles(
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
 
-    mark_order_as_paid(order.id, admin_user.id)
+    shop_order_paid_event = mark_order_as_paid(order.id, admin_user.id)
 
     tickets_after_paid = get_tickets_for_order(order)
     assert len(tickets_after_paid) == ticket_quantity * bundle_quantity
@@ -87,6 +94,19 @@ def test_create_ticket_bundles(
         if entry.event_type == 'ticket-bundle-created'
     ]
     assert len(ticket_bundle_created_log_entries) == bundle_quantity
+
+    tickets_sold_event = TicketsSold(
+        occurred_at=shop_order_paid_event.occurred_at,
+        initiator_id=admin_user.id,
+        initiator_screen_name=admin_user.screen_name,
+        party_id=ticket_category.party_id,
+        owner_id=orderer_user.id,
+        owner_screen_name=orderer_user.screen_name,
+        quantity=ticket_quantity,
+    )
+    tickets_sold_signal_send_mock.assert_called_once_with(
+        None, event=tickets_sold_event
+    )
 
     tear_down_bundles(tickets_after_paid)
 
