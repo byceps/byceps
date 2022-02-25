@@ -14,8 +14,6 @@ from ....ticketing import (
     ticket_bundle_service,
 )
 
-from ...article.transfer.models import ArticleNumber
-
 from .. import log_service
 from ..transfer.action import ActionParameters
 from ..transfer.order import Order, OrderID
@@ -25,7 +23,6 @@ from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 
 def create_ticket_bundles(
     order: Order,
-    article_number: ArticleNumber,
     bundle_quantity: int,
     initiator_id: UserID,
     parameters: ActionParameters,

@@ -11,8 +11,6 @@ from .....typing import UserID
 from ....user_badge import awarding_service, badge_service
 from ....user_badge.transfer.models import BadgeAwarding
 
-from ...article.transfer.models import ArticleNumber
-
 from .. import log_service
 from ..transfer.action import ActionParameters
 from ..transfer.order import Order, OrderID
@@ -20,7 +18,6 @@ from ..transfer.order import Order, OrderID
 
 def award_badge(
     order: Order,
-    article_number: ArticleNumber,
     quantity: int,
     initiator_id: UserID,
     parameters: ActionParameters,

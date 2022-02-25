@@ -13,8 +13,6 @@ from .....typing import UserID
 from ....ticketing.dbmodels.ticket import Ticket
 from ....ticketing import ticket_revocation_service, ticket_service
 
-from ...article.transfer.models import ArticleNumber
-
 from .. import log_service
 from ..transfer.action import ActionParameters
 from ..transfer.order import Order, OrderID
@@ -22,7 +20,6 @@ from ..transfer.order import Order, OrderID
 
 def revoke_tickets(
     order: Order,
-    article_number: ArticleNumber,
     quantity: int,
     initiator_id: UserID,
     parameters: ActionParameters,

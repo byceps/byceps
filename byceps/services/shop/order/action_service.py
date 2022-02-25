@@ -25,9 +25,7 @@ from .transfer.action import Action, ActionParameters
 from .transfer.order import Order, PaymentState
 
 
-OrderActionType = Callable[
-    [Order, ArticleNumber, int, UserID, ActionParameters], None
-]
+OrderActionType = Callable[[Order, int, UserID, ActionParameters], None]
 
 
 PROCEDURES_BY_NAME = {
@@ -160,13 +158,7 @@ def _execute_procedure(
     """Execute the procedure configured for that order action."""
     procedure = _get_procedure(action.procedure_name, action.article_number)
 
-    procedure(
-        order,
-        action.article_number,
-        article_quantity,
-        initiator_id,
-        action.parameters,
-    )
+    procedure(order, article_quantity, initiator_id, action.parameters)
 
 
 def _get_procedure(name: str, article_number: ArticleNumber) -> OrderActionType:
