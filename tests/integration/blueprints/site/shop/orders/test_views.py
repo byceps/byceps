@@ -12,10 +12,8 @@ from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service
 
 from tests.helpers import create_site, http_client, log_in_user
-from tests.integration.services.shop.helpers import (
-    create_orderer,
-    create_shop_fragment,
-)
+from tests.integration.services.shop.conftest import make_orderer
+from tests.integration.services.shop.helpers import create_shop_fragment
 
 
 @pytest.fixture
@@ -94,8 +92,8 @@ def user2(make_user):
 
 
 @pytest.fixture
-def order(storefront1, user1):
-    orderer = create_orderer(user1.id)
+def order(make_orderer, storefront1, user1):
+    orderer = make_orderer(user1.id)
     cart = Cart()
 
     order, _ = order_service.place_order(storefront1.id, orderer, cart)

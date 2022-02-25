@@ -36,8 +36,7 @@ from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 
 from tests.helpers import log_in_user
-from tests.integration.services.shop.conftest import make_article
-from tests.integration.services.shop.helpers import create_orderer
+from tests.integration.services.shop.conftest import make_article, make_orderer
 
 
 @pytest.fixture(scope='package')
@@ -95,8 +94,8 @@ def orderer_user(make_user) -> User:
 
 
 @pytest.fixture(scope='module')
-def orderer(orderer_user: User) -> Orderer:
-    return create_orderer(orderer_user.id)
+def orderer(make_orderer, orderer_user: User) -> Orderer:
+    return make_orderer(orderer_user.id)
 
 
 @patch('byceps.signals.shop.order_canceled.send')

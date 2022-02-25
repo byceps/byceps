@@ -20,8 +20,6 @@ from byceps.services.shop.storefront.transfer.models import (
     StorefrontID,
 )
 
-from tests.integration.services.shop.helpers import create_orderer
-
 
 @pytest.fixture(scope='module')
 def shop(make_brand, make_email_config, make_shop):
@@ -76,9 +74,9 @@ def article3(make_article, shop: Shop) -> Article:
 
 
 @pytest.fixture(scope='module')
-def orderer(make_user) -> Orderer:
+def orderer(make_user, make_orderer) -> Orderer:
     user = make_user()
-    return create_orderer(user.id)
+    return make_orderer(user.id)
 
 
 def test_without_any_items(

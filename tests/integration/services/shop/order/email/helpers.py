@@ -11,8 +11,6 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import service as order_service
 from byceps.services.user.transfer.models import User
 
-from tests.integration.services.shop.helpers import create_orderer
-
 
 def get_current_user_for_user(user: User, locale: str) -> CurrentUser:
     return session_service.get_authenticated_current_user(
@@ -21,10 +19,8 @@ def get_current_user_for_user(user: User, locale: str) -> CurrentUser:
 
 
 def place_order_with_items(
-    storefront_id, user, created_at=None, items_with_quantity=None
+    storefront_id, orderer, created_at=None, items_with_quantity=None
 ):
-    orderer = create_orderer(user.id)
-
     cart = Cart()
 
     if items_with_quantity is not None:

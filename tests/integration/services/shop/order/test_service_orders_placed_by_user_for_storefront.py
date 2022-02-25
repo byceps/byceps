@@ -18,7 +18,6 @@ from byceps.services.shop.storefront.transfer.models import (
 )
 
 from tests.helpers import generate_token
-from tests.integration.services.shop.helpers import create_orderer
 
 
 @pytest.fixture
@@ -51,15 +50,15 @@ def storefront2(
 
 
 @pytest.fixture(scope='module')
-def orderer1(make_user) -> Orderer:
+def orderer1(make_user, make_orderer) -> Orderer:
     user = make_user()
-    return create_orderer(user.id)
+    return make_orderer(user.id)
 
 
 @pytest.fixture(scope='module')
-def orderer2(make_user) -> Orderer:
+def orderer2(make_user, make_orderer) -> Orderer:
     user = make_user()
-    return create_orderer(user.id)
+    return make_orderer(user.id)
 
 
 def test_get_orders_placed_by_user(

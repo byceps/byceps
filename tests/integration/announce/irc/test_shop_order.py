@@ -12,7 +12,7 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.signals import shop as shop_signals
 
-from tests.integration.services.shop.helpers import create_orderer
+from tests.integration.services.shop.conftest import make_orderer
 
 from .helpers import (
     assert_submitted_data,
@@ -104,8 +104,8 @@ def orderer_user(make_user):
 
 
 @pytest.fixture(scope='module')
-def orderer(orderer_user):
-    yield create_orderer(orderer_user.id)
+def orderer(make_orderer, orderer_user):
+    return make_orderer(orderer_user.id)
 
 
 @pytest.fixture(scope='module')

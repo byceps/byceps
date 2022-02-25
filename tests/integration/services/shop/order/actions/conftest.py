@@ -11,7 +11,6 @@ from byceps.services.ticketing.transfer.models import TicketCategory
 from byceps.services.user.transfer.models import User
 
 from tests.helpers import generate_token
-from tests.integration.services.shop.helpers import create_orderer
 
 
 @pytest.fixture
@@ -26,5 +25,5 @@ def orderer_user(make_user) -> User:
 
 
 @pytest.fixture(scope='module')
-def orderer(orderer_user: User) -> Orderer:
-    return create_orderer(orderer_user.id)
+def orderer(make_orderer, orderer_user: User) -> Orderer:
+    return make_orderer(orderer_user.id)

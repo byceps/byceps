@@ -9,13 +9,11 @@ from byceps.services.shop.order import log_service, service as order_service
 from byceps.services.shop.order.transfer.order import PaymentState
 from byceps.util.iterables import find
 
-from tests.integration.services.shop.helpers import create_orderer
-
 
 @pytest.fixture(scope='module')
-def orderer(make_user):
+def orderer(make_user, make_orderer):
     user = make_user()
-    return create_orderer(user.id)
+    return make_orderer(user.id)
 
 
 @pytest.fixture

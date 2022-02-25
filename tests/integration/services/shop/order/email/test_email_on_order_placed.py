@@ -13,7 +13,7 @@ import pytest
 from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
-from byceps.services.shop.order.transfer.order import Order
+from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.snippet import service as snippet_service
@@ -32,6 +32,11 @@ from .helpers import (
 @pytest.fixture(scope='module')
 def customer(make_user) -> User:
     return make_user('Interessent', email_address='interessent@users.test')
+
+
+@pytest.fixture
+def orderer(make_orderer, customer: User) -> Orderer:
+    return make_orderer(customer.id)
 
 
 @pytest.fixture
@@ -72,7 +77,7 @@ def order(
     storefront: Storefront,
     article1: Article,
     article2: Article,
-    customer: User,
+    orderer: Orderer,
     email_payment_instructions_snippet_id: SnippetID,
     email_footer_snippet_id: SnippetID,
 ):
@@ -84,7 +89,7 @@ def order(
     ]
 
     order = place_order_with_items(
-        storefront.id, customer, created_at, items_with_quantity
+        storefront.id, orderer, created_at, items_with_quantity
     )
 
     yield order

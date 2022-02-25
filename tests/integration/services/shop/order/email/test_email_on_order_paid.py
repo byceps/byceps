@@ -10,9 +10,11 @@ import pytest
 
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order.transfer.order import Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.snippet import service as snippet_service
+from byceps.services.user.transfer.models import User
 
 from tests.helpers import current_user_set
 
@@ -24,8 +26,13 @@ from .helpers import (
 
 
 @pytest.fixture
-def customer(make_user):
+def customer(make_user) -> User:
     return make_user('Vorbild', email_address='vorbild@users.test')
+
+
+@pytest.fixture
+def orderer(make_orderer, customer: User) -> Orderer:
+    return make_orderer(customer.id)
 
 
 @pytest.fixture
@@ -40,10 +47,10 @@ def storefront(
 
 
 @pytest.fixture
-def order(storefront, customer, email_footer_snippet_id):
+def order(storefront: Storefront, orderer: Orderer, email_footer_snippet_id):
     created_at = datetime(2014, 9, 23, 18, 40, 53)
 
-    order = place_order_with_items(storefront.id, customer, created_at, [])
+    order = place_order_with_items(storefront.id, orderer, created_at, [])
 
     yield order
 
@@ -53,7 +60,7 @@ def order(storefront, customer, email_footer_snippet_id):
 
 @patch('byceps.email.send')
 def test_email_on_order_paid(
-    send_email_mock, site_app, customer, order_admin, order
+    send_email_mock, site_app, customer: User, order_admin, order
 ):
     app = site_app
 
