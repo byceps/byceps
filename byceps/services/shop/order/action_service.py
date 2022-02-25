@@ -140,6 +140,9 @@ def _get_actions(
     article_numbers: set[ArticleNumber], payment_state: PaymentState
 ) -> Sequence[Action]:
     """Return the order actions for those article numbers."""
+    if not article_numbers:
+        return []
+
     db_actions = db.session \
         .query(DbOrderAction) \
         .filter(DbOrderAction.article_number.in_(article_numbers)) \
