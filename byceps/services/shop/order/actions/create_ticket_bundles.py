@@ -8,17 +8,10 @@ byceps.services.shop.order.actions.create_ticket_bundles
 
 from .....typing import UserID
 
-from ....ticketing.dbmodels.ticket_bundle import TicketBundle
-from ....ticketing import (
-    category_service as ticket_category_service,
-    ticket_bundle_service,
-)
-
-from .. import log_service
 from ..transfer.action import ActionParameters
-from ..transfer.order import Order, OrderID
+from ..transfer.order import Order
 
-from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
+from . import ticket_bundle
 
 
 def create_ticket_bundles(
@@ -28,41 +21,13 @@ def create_ticket_bundles(
     parameters: ActionParameters,
 ) -> None:
     """Create ticket bundles."""
-    category_id = parameters['category_id']
-    ticket_quantity = parameters['ticket_quantity']
-    owned_by_id = order.placed_by_id
-    order_number = order.order_number
+    ticket_category_id = parameters['category_id']
+    ticket_quantity_per_bundle = parameters['ticket_quantity']
 
-    category = ticket_category_service.get_category(category_id)
-
-    for _ in range(bundle_quantity):
-        bundle = ticket_bundle_service.create_bundle(
-            category.party_id,
-            category.id,
-            ticket_quantity,
-            owned_by_id,
-            order_number=order_number,
-            used_by_id=owned_by_id,
-        )
-
-        _create_order_log_entry(order.id, bundle)
-
-    tickets_sold_event = create_tickets_sold_event(
-        order.id, initiator_id, category_id, owned_by_id, ticket_quantity
+    ticket_bundle.create_ticket_bundles(
+        order,
+        ticket_category_id,
+        ticket_quantity_per_bundle,
+        bundle_quantity,
+        initiator_id,
     )
-    send_tickets_sold_event(tickets_sold_event)
-
-
-def _create_order_log_entry(
-    order_id: OrderID, ticket_bundle: TicketBundle
-) -> None:
-    event_type = 'ticket-bundle-created'
-
-    data = {
-        'ticket_bundle_id': str(ticket_bundle.id),
-        'ticket_bundle_category_id': str(ticket_bundle.ticket_category_id),
-        'ticket_bundle_ticket_quantity': ticket_bundle.ticket_quantity,
-        'ticket_bundle_owner_id': str(ticket_bundle.owned_by_id),
-    }
-
-    log_service.create_entry(event_type, order_id, data)
