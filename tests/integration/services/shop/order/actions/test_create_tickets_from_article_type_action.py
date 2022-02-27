@@ -11,7 +11,6 @@ from pytest import raises
 
 from byceps.events.ticketing import TicketsSold
 from byceps.services.shop.article.transfer.models import Article
-from byceps.services.shop.order import action_registry_service
 from byceps.services.shop.order import log_service as order_log_service
 from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop
@@ -23,12 +22,14 @@ from byceps.services.ticketing.ticket_creation_service import (
 from byceps.services.ticketing.transfer.models import TicketCategory
 from byceps.services.user.transfer.models import User
 
+from ...helpers import create_ticket_article
+
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
 
 @pytest.fixture
-def article(make_article, shop: Shop) -> Article:
-    return make_article(shop.id)
+def article(shop: Shop, ticket_category: TicketCategory) -> Article:
+    return create_ticket_article(shop.id, ticket_category.id)
 
 
 @pytest.fixture(scope='module')
@@ -44,13 +45,6 @@ def order(
     return place_order(storefront.id, orderer, articles_with_quantity)
 
 
-@pytest.fixture
-def order_action(article: Article, ticket_category: TicketCategory) -> None:
-    action_registry_service.register_tickets_creation(
-        article.item_number, ticket_category.id
-    )
-
-
 @patch('byceps.signals.ticketing.tickets_sold.send')
 def test_create_tickets(
     tickets_sold_signal_send_mock,
@@ -62,7 +56,6 @@ def test_create_tickets(
     orderer_user: User,
     orderer: Orderer,
     order: Order,
-    order_action,
 ) -> None:
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
@@ -106,7 +99,6 @@ def test_create_tickets_with_same_code_fails(
     admin_user: User,
     orderer: Orderer,
     order: Order,
-    order_action,
 ) -> None:
     generate_ticket_code_mock.side_effect = lambda: 'EQUAL'
 
@@ -124,12 +116,11 @@ def test_create_tickets_with_temporarily_equal_code_and_retry_succeeds(
     admin_user: User,
     orderer: Orderer,
     order: Order,
-    order_action,
 ) -> None:
     code_generation_retries = 4  # Depends on implemented default value.
     necessary_outer_retries = 5  # Depends on argument to `retry` decorator.
     codes = ['EQUAL'] * code_generation_retries * necessary_outer_retries
-    codes += ['TICK1', 'TICK2', 'TICK3', 'TICK4']
+    codes += ['TCKT1', 'TCKT2', 'TCKT3', 'TCKT4']
     codes_iter = iter(codes)
     generate_ticket_code_mock.side_effect = lambda: next(codes_iter)
 
