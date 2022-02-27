@@ -218,6 +218,16 @@ def find_attached_article(
     return db.session.get(DbAttachedArticle, attached_article_id)
 
 
+def get_article_by_number(article_number: ArticleNumber) -> Article:
+    """Return the article with that item number."""
+    db_article = db.session.execute(
+        select(DbArticle)
+        .filter_by(item_number=article_number)
+    ).scalar_one()
+
+    return _db_entity_to_article(db_article)
+
+
 def get_articles_by_numbers(
     article_numbers: set[ArticleNumber],
 ) -> list[Article]:

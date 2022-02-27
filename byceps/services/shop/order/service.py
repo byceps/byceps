@@ -9,6 +9,7 @@ byceps.services.shop.order.service
 from __future__ import annotations
 from datetime import datetime
 from typing import Iterator, Mapping, Optional, Sequence
+from uuid import UUID
 
 from flask import current_app
 from flask_babel import lazy_gettext
@@ -19,9 +20,11 @@ from ....database import db, paginate, Pagination
 from ....events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ....typing import UserID
 
+from ...ticketing.transfer.models import TicketCategoryID
 from ...user import service as user_service
 
 from ..article import service as article_service
+from ..article.transfer.models import ArticleType
 from ..cart.models import Cart, CartItem
 from ..shop.dbmodels import Shop as DbShop
 from ..shop import service as shop_service
@@ -29,6 +32,8 @@ from ..shop.transfer.models import ShopID
 from ..storefront import service as storefront_service
 from ..storefront.transfer.models import StorefrontID
 
+from .actions import ticket as ticket_actions
+from .actions import ticket_bundle as ticket_bundle_actions
 from .dbmodels.line_item import LineItem as DbLineItem
 from .dbmodels.log import OrderLogEntry as DbOrderLogEntry
 from .dbmodels.order import Order as DbOrder
@@ -329,7 +334,7 @@ def cancel_order(
     order = _order_to_transfer_object(db_order)
 
     if payment_state_to == PaymentState.canceled_after_paid:
-        action_service.execute_revocation_actions(order, initiator.id)
+        _execute_article_revocation_actions(order, initiator.id)
 
     return ShopOrderCanceled(
         occurred_at=updated_at,
@@ -388,7 +393,7 @@ def mark_order_as_paid(
 
     order = _order_to_transfer_object(db_order)
 
-    action_service.execute_creation_actions(order, initiator.id)
+    _execute_article_creation_actions(order, initiator.id)
 
     return ShopOrderPaid(
         occurred_at=updated_at,
@@ -411,6 +416,61 @@ def _update_payment_state(
     db_order.payment_state = state
     db_order.payment_state_updated_at = updated_at
     db_order.payment_state_updated_by_id = initiator_id
+
+
+def _execute_article_creation_actions(
+    order: Order, initiator_id: UserID
+) -> None:
+    # based on article type
+    for line_item in order.line_items:
+        if line_item.article_type in (
+            ArticleType.ticket,
+            ArticleType.ticket_bundle,
+        ):
+            article = article_service.get_article_by_number(
+                line_item.article_number
+            )
+
+            ticket_category_id = TicketCategoryID(
+                UUID(article.type_params['ticket_category_id'])
+            )
+
+            if line_item.article_type == ArticleType.ticket:
+                ticket_quantity = line_item.quantity
+
+                ticket_actions.create_tickets(
+                    order, ticket_category_id, ticket_quantity, initiator_id
+                )
+            elif line_item.article_type == ArticleType.ticket_bundle:
+                ticket_quantity_per_bundle = int(
+                    article.type_params['ticket_quantity']
+                )
+                bundle_quantity = line_item.quantity
+
+                ticket_bundle_actions.create_ticket_bundles(
+                    order,
+                    ticket_category_id,
+                    ticket_quantity_per_bundle,
+                    bundle_quantity,
+                    initiator_id,
+                )
+
+    # based on order action registered for article number
+    action_service.execute_creation_actions(order, initiator_id)
+
+
+def _execute_article_revocation_actions(
+    order: Order, initiator_id: UserID
+) -> None:
+    # based on article type
+    for line_item in order.line_items:
+        if line_item.article_type == ArticleType.ticket:
+            ticket_actions.revoke_tickets(order, initiator_id)
+        elif line_item.article_type == ArticleType.ticket_bundle:
+            ticket_bundle_actions.revoke_ticket_bundles(order, initiator_id)
+
+    # based on order action registered for article number
+    action_service.execute_revocation_actions(order, initiator_id)
 
 
 def delete_order(order_id: OrderID) -> None:
