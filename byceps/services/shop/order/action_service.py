@@ -112,7 +112,17 @@ def _db_entity_to_action(db_action: DbOrderAction) -> Action:
 # execution
 
 
-def execute_actions(
+def execute_creation_actions(order: Order, initiator_id: UserID) -> None:
+    """Execute item creation actions for this order."""
+    _execute_actions(order, PaymentState.paid, initiator_id)
+
+
+def execute_revocation_actions(order: Order, initiator_id: UserID) -> None:
+    """Execute item revocation actions for this order."""
+    _execute_actions(order, PaymentState.canceled_after_paid, initiator_id)
+
+
+def _execute_actions(
     order: Order, payment_state: PaymentState, initiator_id: UserID
 ) -> None:
     """Execute relevant actions for this order in its new payment state."""

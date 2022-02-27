@@ -328,7 +328,8 @@ def cancel_order(
 
     order = _order_to_transfer_object(db_order)
 
-    action_service.execute_actions(order, payment_state_to, initiator.id)
+    if payment_state_to == PaymentState.canceled_after_paid:
+        action_service.execute_revocation_actions(order, initiator.id)
 
     return ShopOrderCanceled(
         occurred_at=updated_at,
@@ -387,7 +388,7 @@ def mark_order_as_paid(
 
     order = _order_to_transfer_object(db_order)
 
-    action_service.execute_actions(order, payment_state_to, initiator.id)
+    action_service.execute_creation_actions(order, initiator.id)
 
     return ShopOrderPaid(
         occurred_at=updated_at,
