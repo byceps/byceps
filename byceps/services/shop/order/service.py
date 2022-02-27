@@ -326,16 +326,16 @@ def cancel_order(
 
     db.session.commit()
 
-    action_service.execute_actions(
-        _order_to_transfer_object(db_order), payment_state_to, initiator.id
-    )
+    order = _order_to_transfer_object(db_order)
+
+    action_service.execute_actions(order, payment_state_to, initiator.id)
 
     return ShopOrderCanceled(
         occurred_at=updated_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        order_id=db_order.id,
-        order_number=db_order.order_number,
+        order_id=order.id,
+        order_number=order.order_number,
         orderer_id=orderer_user.id,
         orderer_screen_name=orderer_user.screen_name,
     )
@@ -385,16 +385,16 @@ def mark_order_as_paid(
 
     db.session.commit()
 
-    action_service.execute_actions(
-        _order_to_transfer_object(db_order), payment_state_to, initiator.id
-    )
+    order = _order_to_transfer_object(db_order)
+
+    action_service.execute_actions(order, payment_state_to, initiator.id)
 
     return ShopOrderPaid(
         occurred_at=updated_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        order_id=db_order.id,
-        order_number=db_order.order_number,
+        order_id=order.id,
+        order_number=order.order_number,
         orderer_id=orderer_user.id,
         orderer_screen_name=orderer_user.screen_name,
         payment_method=payment_method,
