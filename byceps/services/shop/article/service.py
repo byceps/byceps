@@ -15,6 +15,8 @@ from sqlalchemy import select
 
 from ....database import db, paginate, Pagination
 
+from ...ticketing.transfer.models import TicketCategoryID
+
 from ..order.dbmodels.line_item import LineItem as DbLineItem
 from ..order.dbmodels.order import Order as DbOrder
 from ..order.transfer.order import PaymentState
@@ -69,6 +71,68 @@ def create_article(
     db.session.commit()
 
     return _db_entity_to_article(db_article)
+
+
+def create_ticket_article(
+    shop_id: ShopID,
+    item_number: ArticleNumber,
+    description: str,
+    price: Decimal,
+    tax_rate: Decimal,
+    total_quantity: int,
+    max_quantity_per_order: int,
+    ticket_category_id: TicketCategoryID,
+) -> Article:
+    """Create an article that represents a ticket."""
+    type_params: ArticleTypeParams = {
+        'ticket_category_id': str(ticket_category_id),
+    }
+    processing_required = True
+
+    return create_article(
+        shop_id,
+        item_number,
+        ArticleType.ticket,
+        description,
+        price,
+        tax_rate,
+        total_quantity,
+        max_quantity_per_order,
+        processing_required,
+        type_params=type_params,
+    )
+
+
+def create_ticket_bundle_article(
+    shop_id: ShopID,
+    item_number: ArticleNumber,
+    description: str,
+    price: Decimal,
+    tax_rate: Decimal,
+    total_quantity: int,
+    max_quantity_per_order: int,
+    ticket_category_id: TicketCategoryID,
+    ticket_quantity: int,
+) -> Article:
+    """Create an article that represents a ticket bundle."""
+    type_params: ArticleTypeParams = {
+        'ticket_category_id': str(ticket_category_id),
+        'ticket_quantity': ticket_quantity,
+    }
+    processing_required = True
+
+    return create_article(
+        shop_id,
+        item_number,
+        ArticleType.ticket_bundle,
+        description,
+        price,
+        tax_rate,
+        total_quantity,
+        max_quantity_per_order,
+        processing_required,
+        type_params=type_params,
+    )
 
 
 def update_article(

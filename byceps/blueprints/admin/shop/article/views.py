@@ -361,34 +361,45 @@ def create(shop_id, type):
     total_quantity = form.total_quantity.data
     quantity = total_quantity
     max_quantity_per_order = form.max_quantity_per_order.data
-    processing_required = type_ in (
-        ArticleType.physical,
-        ArticleType.ticket,
-        ArticleType.ticket_bundle,
-    )
 
-    if type_ in (ArticleType.ticket, ArticleType.ticket_bundle):
-        type_params = {
-            'ticket_category_id': form.ticket_category_id.data,
-        }
-
-        if type_ == ArticleType.ticket_bundle:
-            type_params['ticket_quantity'] = form.ticket_quantity.data
+    if type_ == ArticleType.ticket:
+        article = article_service.create_ticket_article(
+            shop.id,
+            item_number,
+            description,
+            price,
+            tax_rate,
+            total_quantity,
+            max_quantity_per_order,
+            form.ticket_category_id.data,
+        )
+    elif type_ == ArticleType.ticket_bundle:
+        article = article_service.create_ticket_bundle_article(
+            shop.id,
+            item_number,
+            description,
+            price,
+            tax_rate,
+            total_quantity,
+            max_quantity_per_order,
+            form.ticket_category_id.data,
+            form.ticket_quantity.data,
+        )
     else:
-        type_params = None
+        processing_required = type_ == ArticleType.physical
 
-    article = article_service.create_article(
-        shop.id,
-        item_number,
-        type_,
-        description,
-        price,
-        tax_rate,
-        total_quantity,
-        max_quantity_per_order,
-        processing_required,
-        type_params=type_params,
-    )
+        article = article_service.create_article(
+            shop.id,
+            item_number,
+            type_,
+            description,
+            price,
+            tax_rate,
+            total_quantity,
+            max_quantity_per_order,
+            processing_required,
+            type_params=type_params,
+        )
 
     flash_success(
         gettext(
