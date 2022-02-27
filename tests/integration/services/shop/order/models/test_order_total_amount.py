@@ -47,7 +47,6 @@ def article1(make_article, shop: Shop) -> Article:
         item_number=ArticleNumber('LF-01-A00001'),
         description='Artikel #1',
         price=Decimal('49.95'),
-        total_quantity=50,
     )
 
 
@@ -58,7 +57,6 @@ def article2(make_article, shop: Shop) -> Article:
         item_number=ArticleNumber('LF-01-A00002'),
         description='Artikel #2',
         price=Decimal('6.20'),
-        total_quantity=50,
     )
 
 
@@ -69,7 +67,6 @@ def article3(make_article, shop: Shop) -> Article:
         item_number=ArticleNumber('LF-01-A00003'),
         description='Artikel #3',
         price=Decimal('12.53'),
-        total_quantity=50,
     )
 
 

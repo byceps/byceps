@@ -27,7 +27,7 @@ from byceps.services.shop.storefront.transfer.models import (
 
 @pytest.fixture
 def article(make_article, shop: Shop) -> Article:
-    return make_article(shop.id, total_quantity=100)
+    return make_article(shop.id)
 
 
 @pytest.fixture

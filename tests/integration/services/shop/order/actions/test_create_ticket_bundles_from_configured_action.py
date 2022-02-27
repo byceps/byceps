@@ -26,7 +26,7 @@ from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 
 @pytest.fixture
 def article(make_article, shop: Shop) -> Article:
-    return make_article(shop.id, total_quantity=8)
+    return make_article(shop.id)
 
 
 @pytest.fixture(scope='module')

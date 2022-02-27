@@ -45,7 +45,7 @@ def create_article(
     tax_rate: Optional[Decimal] = None,
     available_from: Optional[datetime] = None,
     available_until: Optional[datetime] = None,
-    total_quantity: int = 1,
+    total_quantity: int = 999,
     max_quantity_per_order: int = 10,
     processing_required: bool = False,
 ) -> Article:
@@ -60,8 +60,6 @@ def create_article(
 
     if tax_rate is None:
         tax_rate = Decimal('0.19')
-
-    quantity = total_quantity
 
     return article_service.create_article(
         shop_id,

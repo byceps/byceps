@@ -36,7 +36,6 @@ def article_bungalow(make_article, shop: Shop) -> Article:
         description='LANresort 2015: Bungalow 4 Plätze',
         price=Decimal('355.00'),
         tax_rate=Decimal('0.07'),
-        total_quantity=10,
     )
 
 
@@ -48,7 +47,6 @@ def article_guest_fee(make_article, shop: Shop) -> Article:
         description='Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
         price=Decimal('6.00'),
         tax_rate=Decimal('0.19'),
-        total_quantity=10,
     )
 
 
@@ -60,7 +58,6 @@ def article_table(make_article, shop: Shop) -> Article:
         description='Tisch (zur Miete), 200 x 80 cm',
         price=Decimal('20.00'),
         tax_rate=Decimal('0.19'),
-        total_quantity=10,
     )
 
 

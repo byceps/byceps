@@ -57,7 +57,6 @@ def article1(make_article, shop: Shop) -> Article:
         item_number=ArticleNumber('AB-11-A00003'),
         description='Einzelticket, Kategorie Loge',
         price=Decimal('99.00'),
-        total_quantity=123,
     )
 
 
@@ -68,7 +67,6 @@ def article2(make_article, shop: Shop) -> Article:
         item_number=ArticleNumber('AB-11-A00007'),
         description='T-Shirt, Größe L',
         price=Decimal('14.95'),
-        total_quantity=50,
     )
 
 
