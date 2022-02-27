@@ -6,7 +6,6 @@ byceps.services.shop.article.dbmodels.article
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 from typing import Optional, TYPE_CHECKING
@@ -21,7 +20,7 @@ from .....util.instances import ReprBuilder
 
 from ...shop.transfer.models import ShopID
 
-from ..transfer.models import ArticleNumber, ArticleType
+from ..transfer.models import ArticleNumber, ArticleType, ArticleTypeParams
 
 
 class Article(db.Model):
@@ -62,7 +61,7 @@ class Article(db.Model):
         max_quantity_per_order: int,
         processing_required: bool,
         *,
-        type_params: Optional[dict[str, str]] = None,
+        type_params: Optional[ArticleTypeParams] = None,
         available_from: Optional[datetime] = None,
         available_until: Optional[datetime] = None,
     ) -> None:

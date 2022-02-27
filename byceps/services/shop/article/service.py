@@ -29,6 +29,7 @@ from .transfer.models import (
     ArticleID,
     ArticleNumber,
     ArticleType,
+    ArticleTypeParams,
     AttachedArticleID,
 )
 
@@ -48,7 +49,7 @@ def create_article(
     max_quantity_per_order: int,
     processing_required: bool,
     *,
-    type_params: Optional[dict[str, str]] = None,
+    type_params: Optional[ArticleTypeParams] = None,
 ) -> Article:
     """Create an article."""
     db_article = DbArticle(

@@ -6,12 +6,11 @@ byceps.services.shop.article.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import NewType, Optional
+from typing import Dict, NewType, Optional, Union
 from uuid import UUID
 
 from flask_babel import lazy_gettext
@@ -54,6 +53,9 @@ def get_article_type_label(article_type: ArticleType) -> str:
     return _ARTICLE_TYPE_LABELS[article_type]
 
 
+ArticleTypeParams = Dict[str, Union[str, int]]
+
+
 AttachedArticleID = NewType('AttachedArticleID', UUID)
 
 
@@ -63,7 +65,7 @@ class Article:
     shop_id: ShopID
     item_number: ArticleNumber
     type_: ArticleType
-    type_params: dict[str, str]
+    type_params: ArticleTypeParams
     description: str
     price: Decimal
     tax_rate: Decimal

@@ -3,7 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from datetime import datetime
 from decimal import Decimal
 from typing import Optional
@@ -13,6 +12,7 @@ from byceps.services.shop.article.transfer.models import (
     Article,
     ArticleNumber,
     ArticleType,
+    ArticleTypeParams,
 )
 from byceps.services.shop.order.transfer.order import Orderer
 from byceps.services.shop.shop.transfer.models import ShopID
@@ -39,7 +39,7 @@ def create_article(
     *,
     item_number: Optional[ArticleNumber] = None,
     type_: ArticleType = ArticleType.other,
-    type_params: Optional[dict[str, str]] = None,
+    type_params: Optional[ArticleTypeParams] = None,
     description: Optional[str] = None,
     price: Optional[Decimal] = None,
     tax_rate: Optional[Decimal] = None,

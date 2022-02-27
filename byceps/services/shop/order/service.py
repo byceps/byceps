@@ -432,7 +432,7 @@ def _execute_article_creation_actions(
             )
 
             ticket_category_id = TicketCategoryID(
-                UUID(article.type_params['ticket_category_id'])
+                UUID(str(article.type_params['ticket_category_id']))
             )
 
             if line_item.article_type == ArticleType.ticket:
