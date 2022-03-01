@@ -25,5 +25,5 @@ def create_tickets(
     ticket_category_id = parameters['category_id']
 
     ticket.create_tickets(
-        order, ticket_category_id, ticket_quantity, initiator_id
+        order, line_item_id, ticket_category_id, ticket_quantity, initiator_id
     )

@@ -17,13 +17,14 @@ from ....ticketing import (
 from ....ticketing.transfer.models import TicketBundleID, TicketCategoryID
 
 from .. import log_service
-from ..transfer.order import Order, OrderID
+from ..transfer.order import LineItemID, Order, OrderID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 
 
 def create_ticket_bundles(
     order: Order,
+    line_item_id: LineItemID,
     ticket_category_id: TicketCategoryID,
     ticket_quantity_per_bundle: int,
     bundle_quantity: int,

@@ -27,6 +27,7 @@ def create_ticket_bundles(
 
     ticket_bundle.create_ticket_bundles(
         order,
+        line_item_id,
         ticket_category_id,
         ticket_quantity_per_bundle,
         bundle_quantity,

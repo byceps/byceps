@@ -439,7 +439,11 @@ def _execute_article_creation_actions(
                 ticket_quantity = line_item.quantity
 
                 ticket_actions.create_tickets(
-                    order, ticket_category_id, ticket_quantity, initiator_id
+                    order,
+                    line_item.id,
+                    ticket_category_id,
+                    ticket_quantity,
+                    initiator_id,
                 )
             elif line_item.article_type == ArticleType.ticket_bundle:
                 ticket_quantity_per_bundle = int(
@@ -449,6 +453,7 @@ def _execute_article_creation_actions(
 
                 ticket_bundle_actions.create_ticket_bundles(
                     order,
+                    line_item.id,
                     ticket_category_id,
                     ticket_quantity_per_bundle,
                     bundle_quantity,
