@@ -162,9 +162,9 @@ def _build_query_for_current_state(list_id: ListID) -> Query:
             ON nso.user_id = nsi.user_id
               AND nso.list_id = nsi.list_id
               AND nso.expressed_at = nsi.latest_expressed_at
-        WHERE list_id = {list_id}
+        WHERE nso.list_id = {list_id}
         GROUP BY
-          list_id,
+          nso.list_id,
           state
     """
     subquery = _build_query_for_latest_expressed_at().subquery()
