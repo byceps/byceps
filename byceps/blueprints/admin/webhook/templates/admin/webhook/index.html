@@ -71,7 +71,7 @@
               <details style="font-size: 0.75rem;">
                 <summary>{{ webhook.event_types|length }} {{ ngettext('event', 'events', webhook.event_types|length) }}</summary>
                 <ul style="padding-left: 0.75rem;">
-                  {%- for event_name in webhook.event_types %}
+                  {%- for event_name in webhook.event_types|sort %}
                   <li>{{ event_name }}</li>
                   {%- endfor %}
                 </ul>
