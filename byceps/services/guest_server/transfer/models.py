@@ -2,7 +2,7 @@
 byceps.services.guest_server.transfer.models
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2006-2020 Jochen Kupperschmidt
+:Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
 """
 

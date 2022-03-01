@@ -1,6 +1,6 @@
 """Import roles and their assigned permissions from a TOML file.
 
-:Copyright: 2006-2022 Jochen Kupperschmidt
+:Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

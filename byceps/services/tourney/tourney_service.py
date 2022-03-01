@@ -2,7 +2,7 @@
 byceps.services.tourney.tourney_service
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2006-2018 Jochen Kupperschmidt
+:Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

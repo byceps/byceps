@@ -6,7 +6,7 @@ Validators for use with Click_.
 
 .. _Click: https://click.palletsprojects.com/
 
-:Copyright: 2006-2022 Jochen Kupperschmidt
+:Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

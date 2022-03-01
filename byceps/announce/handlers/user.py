@@ -4,7 +4,7 @@ byceps.announce.handlers.user
 
 Announce user events.
 
-:Copyright: 2006-2022 Jochen Kupperschmidt
+:Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

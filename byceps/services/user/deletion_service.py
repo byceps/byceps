@@ -4,7 +4,7 @@ byceps.services.user.deletion_service
 
 User account anonymization and removal
 
-:Copyright: 2006-2022 Jochen Kupperschmidt
+:Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
