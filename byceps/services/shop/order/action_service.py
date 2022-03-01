@@ -130,20 +130,17 @@ def _execute_actions(
         line_item.article_number for line_item in order.line_items
     }
 
-    if not article_numbers:
-        return
-
-    quantities_by_article_number = {
-        line_item.article_number: line_item.quantity
-        for line_item in order.line_items
+    actions = _get_actions(article_numbers, payment_state)
+    actions_by_article_number = {
+        action.article_number: action for action in actions
     }
 
-    actions = _get_actions(article_numbers, payment_state)
+    for line_item in order.line_items:
+        action = actions_by_article_number.get(line_item.article_number)
+        if action is None:
+            continue
 
-    for action in actions:
-        article_quantity = quantities_by_article_number[action.article_number]
-
-        _execute_procedure(order, action, article_quantity, initiator_id)
+        _execute_procedure(order, action, line_item.quantity, initiator_id)
 
 
 def _get_actions(
