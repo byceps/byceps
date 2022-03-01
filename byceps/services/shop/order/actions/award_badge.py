@@ -13,11 +13,12 @@ from ....user_badge.transfer.models import BadgeAwarding
 
 from .. import log_service
 from ..transfer.action import ActionParameters
-from ..transfer.order import Order, OrderID
+from ..transfer.order import LineItemID, Order, OrderID
 
 
 def award_badge(
     order: Order,
+    line_item_id: LineItemID,
     quantity: int,
     initiator_id: UserID,
     parameters: ActionParameters,

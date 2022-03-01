@@ -9,13 +9,14 @@ byceps.services.shop.order.actions.create_tickets
 from .....typing import UserID
 
 from ..transfer.action import ActionParameters
-from ..transfer.order import Order
+from ..transfer.order import LineItemID, Order
 
 from . import ticket
 
 
 def create_tickets(
     order: Order,
+    line_item_id: LineItemID,
     ticket_quantity: int,
     initiator_id: UserID,
     parameters: ActionParameters,
