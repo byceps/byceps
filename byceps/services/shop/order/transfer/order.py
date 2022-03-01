@@ -92,6 +92,7 @@ class LineItem:
     tax_rate: Decimal
     quantity: int
     line_amount: Decimal
+    processing_result: dict[str, str]
 
 
 OVERDUE_THRESHOLD = timedelta(days=14)

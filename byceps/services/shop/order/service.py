@@ -828,6 +828,7 @@ def line_item_to_transfer_object(
         tax_rate=db_line_item.tax_rate,
         quantity=db_line_item.quantity,
         line_amount=db_line_item.line_amount,
+        processing_result=db_line_item.processing_result or {},
     )
 
 

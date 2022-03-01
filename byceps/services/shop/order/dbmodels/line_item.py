@@ -39,6 +39,7 @@ class LineItem(db.Model):
     quantity = db.Column(db.Integer, db.CheckConstraint('quantity > 0'), nullable=False)
     line_amount = db.Column(db.Numeric(7, 2), nullable=False)
     processing_required = db.Column(db.Boolean, nullable=False)
+    processing_result = db.Column(db.JSONB, nullable=True)
 
     def __init__(
         self,
