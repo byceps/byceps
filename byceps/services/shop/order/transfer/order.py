@@ -23,6 +23,9 @@ from ...storefront.transfer.models import StorefrontID
 from .number import OrderNumber
 
 
+LineItemID = NewType('LineItemID', UUID)
+
+
 OrderID = NewType('OrderID', UUID)
 
 
@@ -80,6 +83,7 @@ class Orderer:
 
 @dataclass(frozen=True)
 class LineItem:
+    id: LineItemID
     order_number: OrderNumber
     article_number: ArticleNumber
     article_type: ArticleType

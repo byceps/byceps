@@ -814,6 +814,7 @@ def line_item_to_transfer_object(
 ) -> LineItem:
     """Create transfer object from line item database entity."""
     return LineItem(
+        id=db_line_item.id,
         order_number=db_line_item.order_number,
         article_number=db_line_item.article_number,
         article_type=db_line_item.article_type,
