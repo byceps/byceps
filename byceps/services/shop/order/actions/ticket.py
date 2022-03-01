@@ -6,7 +6,7 @@ byceps.services.shop.order.actions.ticket
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Sequence
+from typing import Any, Sequence
 
 from .....typing import UserID
 
@@ -19,7 +19,7 @@ from ....ticketing import (
 )
 from ....ticketing.transfer.models import TicketCategoryID
 
-from .. import log_service
+from .. import log_service, service as order_service
 from ..transfer.order import LineItemID, Order, OrderID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
@@ -48,6 +48,11 @@ def create_tickets(
     )
 
     _create_creation_order_log_entries(order.id, tickets)
+
+    data: dict[str, Any] = {
+        'ticket_ids': list(sorted(str(ticket.id) for ticket in tickets))
+    }
+    order_service.update_line_item_processing_result(line_item_id, data)
 
     tickets_sold_event = create_tickets_sold_event(
         order.id, initiator_id, ticket_category_id, owned_by_id, ticket_quantity

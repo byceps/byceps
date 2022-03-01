@@ -6,6 +6,8 @@ byceps.services.shop.order.actions.ticket_bundle
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Any
+
 from .....typing import UserID
 
 from ....ticketing.dbmodels.ticket_bundle import TicketBundle
@@ -16,7 +18,7 @@ from ....ticketing import (
 )
 from ....ticketing.transfer.models import TicketBundleID, TicketCategoryID
 
-from .. import log_service
+from .. import log_service, service as order_service
 from ..transfer.order import LineItemID, Order, OrderID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
@@ -36,6 +38,7 @@ def create_ticket_bundles(
 
     ticket_category = ticket_category_service.get_category(ticket_category_id)
 
+    bundle_ids = set()
     for _ in range(bundle_quantity):
         bundle = ticket_bundle_service.create_bundle(
             ticket_category.party_id,
@@ -46,7 +49,16 @@ def create_ticket_bundles(
             used_by_id=owned_by_id,
         )
 
+        bundle_ids.add(bundle.id)
+
         _create_creation_order_log_entry(order.id, bundle)
+
+    data: dict[str, Any] = {
+        'ticket_bundle_ids': list(
+            sorted(str(bundle_id) for bundle_id in bundle_ids)
+        )
+    }
+    order_service.update_line_item_processing_result(line_item_id, data)
 
     total_quantity = ticket_quantity_per_bundle * bundle_quantity
     tickets_sold_event = create_tickets_sold_event(

@@ -8,7 +8,7 @@ byceps.services.shop.order.service
 
 from __future__ import annotations
 from datetime import datetime
-from typing import Iterator, Mapping, Optional, Sequence
+from typing import Any, Iterator, Mapping, Optional, Sequence
 from uuid import UUID
 
 from flask import current_app
@@ -42,6 +42,7 @@ from .transfer.log import OrderLogEntryData
 from .transfer.number import OrderNumber
 from .transfer.order import (
     Address,
+    LineItemID,
     Order,
     OrderID,
     LineItem,
@@ -476,6 +477,19 @@ def _execute_article_revocation_actions(
 
     # based on order action registered for article number
     action_service.execute_revocation_actions(order, initiator_id)
+
+
+def update_line_item_processing_result(
+    line_item_id: LineItemID, data: dict[str, Any]
+) -> None:
+    """Update the line item's processing result data."""
+    db_line_item = db.session.get(DbLineItem, line_item_id)
+
+    if db_line_item is None:
+        raise ValueError(f'Unknown line item ID "{line_item_id}"')
+
+    db_line_item.processing_result = data
+    db.session.commit()
 
 
 def delete_order(order_id: OrderID) -> None:

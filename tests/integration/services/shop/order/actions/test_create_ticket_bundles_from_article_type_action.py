@@ -12,6 +12,7 @@ import pytest
 from byceps.events.ticketing import TicketsSold
 from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.order import log_service as order_log_service
+from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
@@ -89,6 +90,17 @@ def test_create_ticket_bundles(
         if entry.event_type == 'ticket-bundle-created'
     ]
     assert len(ticket_bundle_created_log_entries) == bundle_quantity
+
+    line_items_after = order_service.get_order(order.id).line_items
+    assert len(line_items_after) == 1
+
+    bundle_ids = {ticket.bundle_id for ticket in tickets_after_paid}
+    ticket_bundle_line_item = line_items_after[0]
+    assert ticket_bundle_line_item.processing_result == {
+        'ticket_bundle_ids': list(
+            sorted(str(bundle_id) for bundle_id in bundle_ids)
+        ),
+    }
 
     tickets_sold_event = TicketsSold(
         occurred_at=shop_order_paid_event.occurred_at,
