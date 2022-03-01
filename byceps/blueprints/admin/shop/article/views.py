@@ -398,7 +398,6 @@ def create(shop_id, type):
             total_quantity,
             max_quantity_per_order,
             processing_required,
-            type_params=type_params,
         )
 
     flash_success(
