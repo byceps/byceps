@@ -140,7 +140,8 @@ def _execute_actions(
         if action is None:
             continue
 
-        _execute_procedure(order, action, line_item.quantity, initiator_id)
+        procedure = _get_procedure(action.procedure_name, action.article_number)
+        procedure(order, line_item.quantity, initiator_id, action.parameters)
 
 
 def _get_actions(
@@ -157,18 +158,6 @@ def _get_actions(
         .all()
 
     return [_db_entity_to_action(db_action) for db_action in db_actions]
-
-
-def _execute_procedure(
-    order: Order,
-    action: Action,
-    article_quantity: int,
-    initiator_id: UserID,
-) -> None:
-    """Execute the procedure configured for that order action."""
-    procedure = _get_procedure(action.procedure_name, action.article_number)
-
-    procedure(order, article_quantity, initiator_id, action.parameters)
 
 
 def _get_procedure(name: str, article_number: ArticleNumber) -> OrderActionType:
