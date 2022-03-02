@@ -135,14 +135,10 @@ def channel_create(brand_id):
         return channel_create_form(brand.id, form)
 
     channel_id = form.channel_id.data.strip().lower()
-    url_prefix = form.url_prefix.data.strip()
     announcement_site_id = form.announcement_site_id.data or None
 
     channel = news_channel_service.create_channel(
-        brand.id,
-        channel_id,
-        url_prefix=url_prefix,
-        announcement_site_id=announcement_site_id,
+        brand.id, channel_id, announcement_site_id=announcement_site_id
     )
 
     flash_success(

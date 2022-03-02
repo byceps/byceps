@@ -23,7 +23,6 @@ def create_channel(
     brand_id: BrandID,
     channel_id: ChannelID,
     *,
-    url_prefix: Optional[str] = None,
     announcement_site_id: Optional[SiteID] = None,
 ) -> Channel:
     """Create a channel for that brand."""
@@ -32,10 +31,7 @@ def create_channel(
         raise ValueError(f'Unknown brand ID "{brand_id}"')
 
     db_channel = DbChannel(
-        channel_id,
-        brand.id,
-        url_prefix=url_prefix,
-        announcement_site_id=announcement_site_id,
+        channel_id, brand.id, announcement_site_id=announcement_site_id
     )
 
     db.session.add(db_channel)
@@ -128,6 +124,5 @@ def _db_entity_to_channel(db_channel: DbChannel) -> Channel:
     return Channel(
         id=db_channel.id,
         brand_id=db_channel.brand_id,
-        url_prefix=db_channel.url_prefix,
         announcement_site_id=db_channel.announcement_site_id,
     )

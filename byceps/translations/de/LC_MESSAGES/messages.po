@@ -2238,13 +2238,7 @@ msgctxt "site"
 msgid "none"
 msgstr "keine"
 
-#: byceps/blueprints/admin/news/forms.py:54
-#: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:29
-#: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:28
-msgid "URL prefix"
-msgstr "URL-Präfix"
-
-#: byceps/blueprints/admin/news/forms.py:63
+#: byceps/blueprints/admin/news/forms.py:60
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:145
 msgid "Alternative text"
 msgstr "Alternativtext"

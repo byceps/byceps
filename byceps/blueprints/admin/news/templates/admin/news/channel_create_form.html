@@ -15,7 +15,6 @@
 
   <form action="{{ url_for('.channel_create', brand_id=brand.id) }}" method="post">
     {{ form_field(form.channel_id, maxlength=40, placeholder=brand.id, autofocus='autofocus') }}
-    {{ form_field(form.url_prefix, maxlength=80, placeholder='https://www.example.com/news/') }}
     {{ form_field(form.announcement_site_id, note=_("This site's server name will be used in the URL when announcing news items from this channel.")) }}
 
     <p>{{ _('A news channel can be used for a single party as well as for multiple or even all partys of the same brand.') }}

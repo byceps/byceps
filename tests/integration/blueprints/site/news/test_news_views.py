@@ -23,11 +23,8 @@ def editor(make_user):
 @pytest.fixture(scope='module')
 def news_channel(brand):
     channel_id = f'{brand.id}-public'
-    url_prefix = 'https://www.acmecon.test/news/'
 
-    channel = news_channel_service.create_channel(
-        brand.id, channel_id, url_prefix=url_prefix
-    )
+    channel = news_channel_service.create_channel(brand.id, channel_id)
 
     yield channel
 

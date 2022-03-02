@@ -35,7 +35,6 @@ BodyFormat = Enum('BodyFormat', ['html', 'markdown'])
 class Channel:
     id: ChannelID
     brand_id: BrandID
-    url_prefix: Optional[str]
     # Should be `SiteID` instead of `str`,
     # but circular imports prevent this.
     announcement_site_id: Optional[str]
