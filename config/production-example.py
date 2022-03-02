@@ -9,7 +9,7 @@ PROPAGATE_EXCEPTIONS = False
 
 # Set a custom secret key before running in production!
 # To generate one:
-#     $ python -c 'import secrets; print(secrets.token_hex())'
+#     $ byceps generate-secret-key
 #SECRET_KEY = ''
 
 # TODO: Adjust `SQLALCHEMY_DATABASE_URI`!
