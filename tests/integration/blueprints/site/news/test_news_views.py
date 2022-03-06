@@ -24,11 +24,7 @@ def editor(make_user):
 def news_channel(brand):
     channel_id = f'{brand.id}-public'
 
-    channel = news_channel_service.create_channel(brand.id, channel_id)
-
-    yield channel
-
-    news_channel_service.delete_channel(channel_id)
+    return news_channel_service.create_channel(brand.id, channel_id)
 
 
 @pytest.fixture(scope='module')
@@ -38,13 +34,9 @@ def unpublished_news_item(news_channel, editor):
     body = 'Well, …'
     body_format = BodyFormat.html
 
-    item = news_service.create_item(
+    return news_service.create_item(
         news_channel.id, slug, editor.id, title, body, body_format
     )
-
-    yield item
-
-    news_service.delete_item(item.id)
 
 
 @pytest.fixture(scope='module')
@@ -58,21 +50,14 @@ def published_news_item(news_channel, editor):
         news_channel.id, slug, editor.id, title, body, body_format
     )
     news_service.publish_item(item.id)
-
-    yield item
-
-    news_service.delete_item(item.id)
+    return item
 
 
 @pytest.fixture(scope='module')
 def news_site(news_channel):
     site = create_site('newsflash', news_channel.brand_id)
     site_service.add_news_channel(site.id, news_channel.id)
-
-    yield site
-
-    site_service.remove_news_channel(site.id, news_channel.id)
-    site_service.delete_site(site.id)
+    return site
 
 
 @pytest.fixture(scope='module')
