@@ -24,7 +24,7 @@
       {%- for item in article_compilation %}
         {%- with is_available = (item.article.quantity > 0) %}
       <tr{% if not is_available %} class="dimmed"{% endif %}>
-        <td><strong>{{ item.article.description }}</strong>
+        <td>{{ item.article.description }}
           {%- if not is_available %}
           <br><em>{{ _('currently not available') }}</em>
           {%- endif -%}
