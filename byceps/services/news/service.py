@@ -184,6 +184,21 @@ def publish_item(
     )
 
 
+def unpublish_item(
+    item_id: ItemID,
+    *,
+    initiator_id: Optional[UserID] = None,
+) -> NewsItemPublished:
+    """Unublish a news item."""
+    db_item = _get_db_item(item_id)
+
+    if not db_item.published:
+        raise ValueError('News item is not published')
+
+    db_item.published_at = None
+    db.session.commit()
+
+
 def delete_item(item_id: ItemID) -> None:
     """Delete a news item and its versions."""
     db.session.query(DbCurrentVersionAssociation) \

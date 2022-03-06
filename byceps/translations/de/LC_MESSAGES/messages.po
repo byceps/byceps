@@ -2346,6 +2346,11 @@ msgstr "Die News \"%(title)s\" wird später veröffentlicht."
 msgid "News item \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
 
+#: byceps/blueprints/admin/news/views.py:695
+#, python-format
+msgid "News item \"%(title)s\" has been unpublished."
+msgstr "Die Veröffentlichung der News \"%(title)s\" wurde zurückgezogen."
+
 #: byceps/blueprints/admin/news/templates/admin/news/channel_create_form.html:6
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:17
 msgid "Create news channel"
@@ -2582,7 +2587,11 @@ msgstr "Jetzt veröffentlichen"
 msgid "Publish later"
 msgstr "Später veröffentlichen"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:70
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:52
+msgid "Unpublish"
+msgstr "Veröffentlichung zurückziehen"
+
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:74
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:54
 msgid "Version"
 msgstr "Version"
@@ -2640,7 +2649,11 @@ msgstr "Vorschau"
 msgid "Publish news post now?"
 msgstr "Newspost jetzt veröffentlichen?"
 
-#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:203
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:207
+msgid "Unpublish news post?"
+msgstr "Veröffentlichung des Newsposts zurückziehen?"
+
+#: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:208
 msgid "Set image as featured?"
 msgstr "Als Titelbild verwenden?"
 

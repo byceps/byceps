@@ -115,3 +115,19 @@ def test_publish_now(news_admin_client, item):
     item_after = item_service.find_item(item.id)
     assert item_after.published_at is not None
     assert item_after.published
+
+
+def test_unpublish(news_admin_client, item):
+    item_service.publish_item(item.id)
+
+    item_before = item_service.find_item(item.id)
+    assert item_before.published_at is not None
+    assert item_before.published
+
+    url = f'/admin/news/items/{item.id}/unpublish'
+    response = news_admin_client.post(url)
+    assert response.status_code == 204
+
+    item_after = item_service.find_item(item.id)
+    assert item_after.published_at is None
+    assert not item_after.published

@@ -682,6 +682,20 @@ def item_publish_now(item_id):
     )
 
 
+@blueprint.post('/items/<uuid:item_id>/unpublish')
+@permission_required('news_item.publish')
+@respond_no_content
+def item_unpublish(item_id):
+    """Unpublish a news item."""
+    item = _get_item_or_404(item_id)
+
+    news_item_service.unpublish_item(item.id)
+
+    flash_success(
+        gettext('News item "%(title)s" has been unpublished.', title=item.title)
+    )
+
+
 # -------------------------------------------------------------------- #
 # helpers
 

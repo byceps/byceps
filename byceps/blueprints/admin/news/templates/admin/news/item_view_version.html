@@ -41,12 +41,16 @@
       {%- if has_current_user_permission('news_item.update') %}
       <div class="button-row button-row--nowrap button-row--right">
         <a class="button" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
-        {%- if not item.published and has_current_user_permission('news_item.publish') %}
+        {%- if has_current_user_permission('news_item.publish') %}
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('published') }} {{ _('Publish') }} {{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
+            {%- if not item.published %}
             <li><a class="dropdown-item" data-action="item-publish-now" href="{{ url_for('.item_publish_now', item_id=item.id) }}">{{ _('Publish now') }}</a></li>
             <li><a class="dropdown-item" href="{{ url_for('.item_publish_later_form', item_id=item.id) }}">{{ _('Publish later') }}</a></li>
+            {%- else %}
+            <li><a class="dropdown-item" data-action="item-unpublish" href="{{ url_for('.item_unpublish', item_id=item.id) }}">{{ _('Unpublish') }}</a></li>
+            {%- endif %}
           </ol>
         </div>
         {%- endif %}
@@ -200,6 +204,7 @@
 <script>
   onDomReady(() => {
     confirmed_post_on_click_then_reload('[data-action="item-publish-now"]', '{{ _('Publish news post now?') }}');
+    confirmed_post_on_click_then_reload('[data-action="item-unpublish"]', '{{ _('Unpublish news post?') }}');
     confirmed_post_on_click_then_reload('[data-action="image-set-featured"]', '{{ _('Set image as featured?') }}');
     confirmed_delete_on_click_then_reload('[data-action="image-unset-featured"]', '{{ _('Unset image as featured?') }}');
   });
