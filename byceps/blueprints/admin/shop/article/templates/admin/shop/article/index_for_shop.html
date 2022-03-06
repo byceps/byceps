@@ -71,7 +71,7 @@
         <tr>
           <td class="nowrap">
             <strong>{{ render_article_link(article) }}</strong>
-            {%- for attached_article in article.attached_articles %}
+            {%- for attached_article in article.attached_articles|sort(attribute='article_number') %}
               <div style="font-size: 0.625rem;">{{ render_icon('attached') }} {{ attached_article.quantity }} &times; {{ render_article_link(attached_article.article) }}</div>
             {%- endfor %}
           </td>
