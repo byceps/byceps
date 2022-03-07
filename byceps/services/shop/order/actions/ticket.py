@@ -78,7 +78,9 @@ def _create_creation_order_log_entries(
     log_service.create_entries(event_type, order_id, datas)
 
 
-def revoke_tickets(order: Order, initiator_id: UserID) -> None:
+def revoke_tickets(
+    order: Order, line_item_id: LineItemID, initiator_id: UserID
+) -> None:
     """Revoke all tickets in the order."""
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
 

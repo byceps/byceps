@@ -30,7 +30,7 @@ OrderActionType = Callable[
 ]
 
 
-PROCEDURES_BY_NAME = {
+PROCEDURES_BY_NAME: dict[str, OrderActionType] = {
     'award_badge': award_badge,
     'create_ticket_bundles': create_ticket_bundles,
     'revoke_ticket_bundles': revoke_ticket_bundles,

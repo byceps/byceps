@@ -86,7 +86,9 @@ def _create_creation_order_log_entry(
     log_service.create_entry(event_type, order_id, data)
 
 
-def revoke_ticket_bundles(order: Order, initiator_id: UserID) -> None:
+def revoke_ticket_bundles(
+    order: Order, line_item_id: LineItemID, initiator_id: UserID
+) -> None:
     """Revoke all ticket bundles in this order."""
     # Fetch all tickets, bundled or not.
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)

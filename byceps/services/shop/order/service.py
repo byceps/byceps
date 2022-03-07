@@ -471,9 +471,11 @@ def _execute_article_revocation_actions(
     # based on article type
     for line_item in order.line_items:
         if line_item.article_type == ArticleType.ticket:
-            ticket_actions.revoke_tickets(order, initiator_id)
+            ticket_actions.revoke_tickets(order, line_item.id, initiator_id)
         elif line_item.article_type == ArticleType.ticket_bundle:
-            ticket_bundle_actions.revoke_ticket_bundles(order, initiator_id)
+            ticket_bundle_actions.revoke_ticket_bundles(
+                order, line_item.id, initiator_id
+            )
 
     # based on order action registered for article number
     action_service.execute_revocation_actions(order, initiator_id)
