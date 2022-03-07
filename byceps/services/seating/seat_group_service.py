@@ -192,7 +192,7 @@ def find_seat_group_occupied_by_ticket_bundle(
     return db.session.execute(
         select(DbSeatGroupOccupancy.seat_group_id)
         .filter_by(ticket_bundle_id=ticket_bundle_id)
-    ).one_or_none()
+    ).scalar_one_or_none()
 
 
 def find_occupancy_for_seat_group(
@@ -202,7 +202,7 @@ def find_occupancy_for_seat_group(
     return db.session.execute(
         select(DbSeatGroupOccupancy)
         .filter_by(seat_group_id=seat_group_id)
-    ).one_or_none()
+    ).scalar_one_or_none()
 
 
 def get_all_seat_groups_for_party(party_id: PartyID) -> Sequence[DbSeatGroup]:
