@@ -156,9 +156,9 @@ def _sort_tickets(tickets: Sequence[DbTicket]) -> Sequence[DbTicket]:
     return list(sorted(tickets, key=lambda t: t.created_at))
 
 
-def release_seat_group(seat_group: DbSeatGroup) -> None:
+def release_seat_group(seat_group_id: SeatGroupID) -> None:
     """Release a seat group so it becomes available again."""
-    occupancy = find_occupancy_for_seat_group(seat_group.id)
+    occupancy = find_occupancy_for_seat_group(seat_group_id)
     if occupancy is None:
         raise ValueError('Seat group is not occupied.')
 
