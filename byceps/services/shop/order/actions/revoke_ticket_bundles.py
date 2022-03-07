@@ -11,7 +11,7 @@ from .....typing import UserID
 from ..transfer.action import ActionParameters
 from ..transfer.order import Order
 
-from . import ticket
+from . import ticket_bundle
 
 
 def revoke_ticket_bundles(
@@ -21,4 +21,4 @@ def revoke_ticket_bundles(
     parameters: ActionParameters,
 ) -> None:
     """Revoke all ticket bundles in this order."""
-    ticket.revoke_ticket_bundles(order, initiator_id)
+    ticket_bundle.revoke_ticket_bundles(order, initiator_id)
