@@ -7,6 +7,7 @@ byceps.services.shop.order.actions.ticket
 """
 
 from typing import Any, Sequence
+from uuid import UUID
 
 from .....typing import UserID
 
@@ -17,7 +18,7 @@ from ....ticketing import (
     ticket_revocation_service,
     ticket_service,
 )
-from ....ticketing.transfer.models import TicketCategoryID
+from ....ticketing.transfer.models import TicketCategoryID, TicketID
 
 from .. import log_service, service as order_service
 from ..transfer.order import LineItem, Order, OrderID
@@ -81,10 +82,13 @@ def _create_creation_order_log_entries(
 def revoke_tickets(
     order: Order, line_item: LineItem, initiator_id: UserID
 ) -> None:
-    """Revoke all tickets in the order."""
-    tickets = ticket_service.find_tickets_created_by_order(order.order_number)
+    """Revoke all tickets related to the line item."""
+    ticket_id_strs = line_item.processing_result['ticket_ids']
+    ticket_ids = {
+        TicketID(UUID(ticket_id_str)) for ticket_id_str in ticket_id_strs
+    }
+    tickets = ticket_service.find_tickets(ticket_ids)
 
-    ticket_ids = {t.id for t in tickets}
     ticket_revocation_service.revoke_tickets(ticket_ids, initiator_id)
 
     _create_revocation_order_log_entries(order.id, tickets, initiator_id)

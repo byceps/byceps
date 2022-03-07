@@ -7,13 +7,13 @@ byceps.services.shop.order.actions.ticket_bundle
 """
 
 from typing import Any
+from uuid import UUID
 
 from .....typing import UserID
 
 from ....ticketing.dbmodels.ticket_bundle import TicketBundle
 from ....ticketing import (
     category_service as ticket_category_service,
-    ticket_service,
     ticket_bundle_service,
 )
 from ....ticketing.transfer.models import TicketBundleID, TicketCategoryID
@@ -89,11 +89,11 @@ def _create_creation_order_log_entry(
 def revoke_ticket_bundles(
     order: Order, line_item: LineItem, initiator_id: UserID
 ) -> None:
-    """Revoke all ticket bundles in this order."""
-    # Fetch all tickets, bundled or not.
-    tickets = ticket_service.find_tickets_created_by_order(order.order_number)
-
-    bundle_ids = {t.bundle_id for t in tickets if t.bundle_id}
+    """Revoke all ticket bundles related to the line item."""
+    bundle_id_strs = line_item.processing_result['ticket_bundle_ids']
+    bundle_ids = {
+        TicketBundleID(UUID(bundle_id_str)) for bundle_id_str in bundle_id_strs
+    }
 
     for bundle_id in bundle_ids:
         ticket_bundle_service.revoke_bundle(bundle_id, initiator_id)
