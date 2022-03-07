@@ -14,6 +14,7 @@ from tenacity import retry, retry_if_exception_type, stop_after_attempt
 from ...database import db, paginate, Pagination
 from ...typing import PartyID, UserID
 
+from ..seating import seat_group_service
 from ..shop.order.transfer.number import OrderNumber
 
 from .dbmodels.category import Category as DbCategory
@@ -74,6 +75,14 @@ def revoke_bundle(
 ) -> None:
     """Revoke the tickets included in this bundle."""
     db_bundle = get_bundle(bundle_id)
+
+    seat_group_id = (
+        seat_group_service.find_seat_group_occupied_by_ticket_bundle(
+            db_bundle.id
+        )
+    )
+    if seat_group_id is not None:
+        seat_group_service.release_seat_group(seat_group_id)
 
     for db_ticket in db_bundle.tickets:
         db_ticket.revoked = True

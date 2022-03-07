@@ -15,7 +15,7 @@ from ...typing import PartyID
 
 from ..ticketing.dbmodels.ticket import Ticket as DbTicket
 from ..ticketing.dbmodels.ticket_bundle import TicketBundle as DbTicketBundle
-from ..ticketing.transfer.models import TicketCategoryID
+from ..ticketing.transfer.models import TicketBundleID, TicketCategoryID
 
 from .dbmodels.seat import Seat as DbSeat
 from .dbmodels.seat_group import (
@@ -181,6 +181,18 @@ def count_seat_groups_for_party(party_id: PartyID) -> int:
 def find_seat_group(seat_group_id: SeatGroupID) -> Optional[DbSeatGroup]:
     """Return the seat group with that id, or `None` if not found."""
     return db.session.get(DbSeatGroup, seat_group_id)
+
+
+def find_seat_group_occupied_by_ticket_bundle(
+    ticket_bundle_id: TicketBundleID,
+) -> Optional[SeatGroupID]:
+    """Return the ID of the seat group occupied by that ticket bundle,
+    or `None` if not found.
+    """
+    return db.session.execute(
+        select(DbSeatGroupOccupancy.seat_group_id)
+        .filter_by(ticket_bundle_id=ticket_bundle_id)
+    ).one_or_none()
 
 
 def find_occupancy_for_seat_group(
