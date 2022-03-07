@@ -13,13 +13,12 @@ from ....user_badge.transfer.models import BadgeAwarding
 
 from .. import log_service
 from ..transfer.action import ActionParameters
-from ..transfer.order import LineItemID, Order, OrderID
+from ..transfer.order import LineItem, Order, OrderID
 
 
 def award_badge(
     order: Order,
-    line_item_id: LineItemID,
-    quantity: int,
+    line_item: LineItem,
     initiator_id: UserID,
     parameters: ActionParameters,
 ) -> None:
@@ -27,7 +26,7 @@ def award_badge(
     badge = badge_service.get_badge(parameters['badge_id'])
     user_id = order.placed_by_id
 
-    for _ in range(quantity):
+    for _ in range(line_item.quantity):
         awarding, _ = awarding_service.award_badge_to_user(badge.id, user_id)
 
         _create_order_log_entry(order.id, awarding)

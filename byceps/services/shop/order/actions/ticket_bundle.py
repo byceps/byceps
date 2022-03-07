@@ -19,22 +19,22 @@ from ....ticketing import (
 from ....ticketing.transfer.models import TicketBundleID, TicketCategoryID
 
 from .. import log_service, service as order_service
-from ..transfer.order import LineItemID, Order, OrderID
+from ..transfer.order import LineItem, Order, OrderID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 
 
 def create_ticket_bundles(
     order: Order,
-    line_item_id: LineItemID,
+    line_item: LineItem,
     ticket_category_id: TicketCategoryID,
     ticket_quantity_per_bundle: int,
-    bundle_quantity: int,
     initiator_id: UserID,
 ) -> None:
     """Create ticket bundles."""
     owned_by_id = order.placed_by_id
     order_number = order.order_number
+    bundle_quantity = line_item.quantity
 
     ticket_category = ticket_category_service.get_category(ticket_category_id)
 
@@ -58,7 +58,7 @@ def create_ticket_bundles(
             sorted(str(bundle_id) for bundle_id in bundle_ids)
         )
     }
-    order_service.update_line_item_processing_result(line_item_id, data)
+    order_service.update_line_item_processing_result(line_item.id, data)
 
     total_quantity = ticket_quantity_per_bundle * bundle_quantity
     tickets_sold_event = create_tickets_sold_event(
@@ -87,7 +87,7 @@ def _create_creation_order_log_entry(
 
 
 def revoke_ticket_bundles(
-    order: Order, line_item_id: LineItemID, initiator_id: UserID
+    order: Order, line_item: LineItem, initiator_id: UserID
 ) -> None:
     """Revoke all ticket bundles in this order."""
     # Fetch all tickets, bundled or not.

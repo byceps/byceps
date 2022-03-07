@@ -441,9 +441,8 @@ def _execute_article_creation_actions(
 
                 ticket_actions.create_tickets(
                     order,
-                    line_item.id,
+                    line_item,
                     ticket_category_id,
-                    ticket_quantity,
                     initiator_id,
                 )
             elif line_item.article_type == ArticleType.ticket_bundle:
@@ -454,10 +453,9 @@ def _execute_article_creation_actions(
 
                 ticket_bundle_actions.create_ticket_bundles(
                     order,
-                    line_item.id,
+                    line_item,
                     ticket_category_id,
                     ticket_quantity_per_bundle,
-                    bundle_quantity,
                     initiator_id,
                 )
 
@@ -471,10 +469,10 @@ def _execute_article_revocation_actions(
     # based on article type
     for line_item in order.line_items:
         if line_item.article_type == ArticleType.ticket:
-            ticket_actions.revoke_tickets(order, line_item.id, initiator_id)
+            ticket_actions.revoke_tickets(order, line_item, initiator_id)
         elif line_item.article_type == ArticleType.ticket_bundle:
             ticket_bundle_actions.revoke_ticket_bundles(
-                order, line_item.id, initiator_id
+                order, line_item, initiator_id
             )
 
     # based on order action registered for article number

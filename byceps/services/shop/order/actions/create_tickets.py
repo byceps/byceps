@@ -9,21 +9,18 @@ byceps.services.shop.order.actions.create_tickets
 from .....typing import UserID
 
 from ..transfer.action import ActionParameters
-from ..transfer.order import LineItemID, Order
+from ..transfer.order import LineItem, Order
 
 from . import ticket
 
 
 def create_tickets(
     order: Order,
-    line_item_id: LineItemID,
-    ticket_quantity: int,
+    line_item: LineItem,
     initiator_id: UserID,
     parameters: ActionParameters,
 ) -> None:
     """Create tickets."""
     ticket_category_id = parameters['category_id']
 
-    ticket.create_tickets(
-        order, line_item_id, ticket_category_id, ticket_quantity, initiator_id
-    )
+    ticket.create_tickets(order, line_item, ticket_category_id, initiator_id)

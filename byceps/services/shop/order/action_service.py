@@ -22,12 +22,10 @@ from .actions.revoke_ticket_bundles import revoke_ticket_bundles
 from .actions.revoke_tickets import revoke_tickets
 from .dbmodels.order_action import OrderAction as DbOrderAction
 from .transfer.action import Action, ActionParameters
-from .transfer.order import LineItemID, Order, PaymentState
+from .transfer.order import LineItem, Order, PaymentState
 
 
-OrderActionType = Callable[
-    [Order, LineItemID, int, UserID, ActionParameters], None
-]
+OrderActionType = Callable[[Order, LineItem, UserID, ActionParameters], None]
 
 
 PROCEDURES_BY_NAME: dict[str, OrderActionType] = {
@@ -143,13 +141,7 @@ def _execute_actions(
             continue
 
         procedure = _get_procedure(action.procedure_name, action.article_number)
-        procedure(
-            order,
-            line_item.id,
-            line_item.quantity,
-            initiator_id,
-            action.parameters,
-        )
+        procedure(order, line_item, initiator_id, action.parameters)
 
 
 def _get_actions(

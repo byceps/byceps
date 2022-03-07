@@ -20,21 +20,21 @@ from ....ticketing import (
 from ....ticketing.transfer.models import TicketCategoryID
 
 from .. import log_service, service as order_service
-from ..transfer.order import LineItemID, Order, OrderID
+from ..transfer.order import LineItem, Order, OrderID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 
 
 def create_tickets(
     order: Order,
-    line_item_id: LineItemID,
+    line_item: LineItem,
     ticket_category_id: TicketCategoryID,
-    ticket_quantity: int,
     initiator_id: UserID,
 ) -> None:
     """Create tickets."""
     owned_by_id = order.placed_by_id
     order_number = order.order_number
+    ticket_quantity = line_item.quantity
 
     ticket_category = ticket_category_service.get_category(ticket_category_id)
 
@@ -52,7 +52,7 @@ def create_tickets(
     data: dict[str, Any] = {
         'ticket_ids': list(sorted(str(ticket.id) for ticket in tickets))
     }
-    order_service.update_line_item_processing_result(line_item_id, data)
+    order_service.update_line_item_processing_result(line_item.id, data)
 
     tickets_sold_event = create_tickets_sold_event(
         order.id, initiator_id, ticket_category_id, owned_by_id, ticket_quantity
@@ -79,7 +79,7 @@ def _create_creation_order_log_entries(
 
 
 def revoke_tickets(
-    order: Order, line_item_id: LineItemID, initiator_id: UserID
+    order: Order, line_item: LineItem, initiator_id: UserID
 ) -> None:
     """Revoke all tickets in the order."""
     tickets = ticket_service.find_tickets_created_by_order(order.order_number)
