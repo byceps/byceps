@@ -73,10 +73,7 @@ def revoke_bundle(
     reason: Optional[str] = None,
 ) -> None:
     """Revoke the tickets included in this bundle."""
-    db_bundle = find_bundle(bundle_id)
-
-    if db_bundle is None:
-        raise ValueError('Unknown ticket bundle ID.')
+    db_bundle = get_bundle(bundle_id)
 
     for db_ticket in db_bundle.tickets:
         db_ticket.revoked = True
@@ -91,10 +88,7 @@ def revoke_bundle(
 
 def delete_bundle(bundle_id: TicketBundleID) -> None:
     """Delete a bundle and the tickets assigned to it."""
-    db_bundle = find_bundle(bundle_id)
-
-    if db_bundle is None:
-        raise ValueError('Unknown ticket bundle ID.')
+    db_bundle = get_bundle(bundle_id)
 
     db.session.query(DbTicket) \
         .filter_by(bundle_id=bundle_id) \
@@ -110,6 +104,16 @@ def delete_bundle(bundle_id: TicketBundleID) -> None:
 def find_bundle(bundle_id: TicketBundleID) -> Optional[DbTicketBundle]:
     """Return the ticket bundle with that id, or `None` if not found."""
     return db.session.get(DbTicketBundle, bundle_id)
+
+
+def get_bundle(bundle_id: TicketBundleID) -> DbTicketBundle:
+    """Return the ticket bundle with that id, or raise an exception."""
+    db_bundle = find_bundle(bundle_id)
+
+    if db_bundle is None:
+        raise ValueError(f'Unknown ticket bundle ID "{bundle_id}"')
+
+    return db_bundle
 
 
 def find_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[DbTicket]:
