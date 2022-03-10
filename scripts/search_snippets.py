@@ -9,12 +9,12 @@
 from typing import Optional
 
 import click
-from flask.cli import with_appcontext
 
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.site.transfer.models import Site
 
+from _util import call_with_app_context
 from _validators import validate_site
 
 
@@ -30,7 +30,6 @@ def validate_site_if_given(ctx, param, site_id_value: str) -> Site:
 @click.argument('search_term')
 @click.option('--site', callback=validate_site_if_given)
 @click.option('-v', '--verbose', is_flag=True)
-@with_appcontext
 def execute(ctx, search_term, site, verbose) -> None:
     scope = None
     if site is not None:
@@ -76,4 +75,4 @@ def format_scope(scope: Scope) -> str:
 
 
 if __name__ == '__main__':
-    execute()
+    call_with_app_context(execute)

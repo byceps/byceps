@@ -13,13 +13,13 @@ Sessions will be recreated on demand after successful login.
 """
 
 import click
-from flask.cli import with_appcontext
 
 from byceps.services.authentication.session import service as session_service
 
+from _util import call_with_app_context
+
 
 @click.command()
-@with_appcontext
 def execute() -> None:
     click.secho('Removing all user sessions ... ', nl=False)
 
@@ -28,4 +28,4 @@ def execute() -> None:
 
 
 if __name__ == '__main__':
-    execute()
+    call_with_app_context(execute)

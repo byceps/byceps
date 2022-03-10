@@ -15,11 +15,11 @@ from __future__ import annotations
 from typing import Iterable, Iterator
 
 import click
-from flask.cli import with_appcontext
 
 from byceps.services.user import service as user_service
 from byceps.typing import UserID
 
+from _util import call_with_app_context
 from _validators import validate_user_id_format
 
 
@@ -33,7 +33,6 @@ def validate_user_ids(ctx, param, user_ids: Iterable[str]) -> list[UserID]:
 
 @click.command()
 @click.argument('user_ids', callback=validate_user_ids, nargs=-1, required=True)
-@with_appcontext
 def execute(user_ids) -> None:
     statements = generate_delete_statements_for_users(user_ids)
     for statement in statements:
@@ -72,4 +71,4 @@ def generate_delete_statements_for_user(user_id: UserID) -> Iterator[str]:
 
 
 if __name__ == '__main__':
-    execute()
+    call_with_app_context(execute)

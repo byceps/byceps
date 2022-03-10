@@ -10,7 +10,6 @@ from __future__ import annotations
 from datetime import datetime
 
 import click
-from flask.cli import with_appcontext
 from sqlalchemy import select
 
 from byceps.database import db
@@ -19,10 +18,11 @@ from byceps.services.user import service as user_service
 from byceps.services.user.transfer.models import User
 from byceps.typing import PartyID, UserID
 
+from _util import call_with_app_context
+
 
 @click.command()
 @click.argument('ip_address')
-@with_appcontext
 def execute(ip_address: str) -> None:
     occurred_at_and_user_ids = find_log_entries(ip_address)
 
@@ -57,4 +57,4 @@ def get_users_by_id(
 
 
 if __name__ == '__main__':
-    execute()
+    call_with_app_context(execute)
