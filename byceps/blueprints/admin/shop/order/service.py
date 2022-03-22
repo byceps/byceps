@@ -13,7 +13,10 @@ from typing import Iterable, Iterator, Sequence
 
 from .....services.shop.article import service as article_service
 from .....services.shop.article.transfer.models import Article, ArticleNumber
-from .....services.shop.order import log_service as order_log_service
+from .....services.shop.order import (
+    log_service as order_log_service,
+    service as order_service,
+)
 from .....services.shop.order.transfer.log import (
     OrderLogEntry,
     OrderLogEntryData,
@@ -63,6 +66,10 @@ def get_enriched_log_entry_data_for_order(
 def enrich_log_entry_data(
     log_entries: Iterable[OrderLogEntry],
 ) -> Iterator[OrderLogEntryData]:
+    order_ids = frozenset([entry.order_id for entry in log_entries])
+    orders = order_service.get_orders(order_ids)
+    orders_by_id = {order.id: order for order in orders}
+
     user_ids = {
         entry.data['initiator_id']
         for entry in log_entries
@@ -72,9 +79,13 @@ def enrich_log_entry_data(
     users_by_id = {str(user.id): user for user in users}
 
     for entry in log_entries:
+        order = orders_by_id[entry.order_id]
+
         data = {
             'event_type': entry.event_type,
             'occurred_at': entry.occurred_at,
+            'order_id': str(order.id),
+            'order_number': order.order_number,
             'data': entry.data,
         }
 

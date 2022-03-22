@@ -19,8 +19,8 @@ msgstr ""
 "Generated-By: Babel 2.9.1\n"
 
 #: byceps/announce/text_assembly/_helpers.py:18
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:108
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:124
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:128
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:144
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:71
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:35
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:41
@@ -3866,73 +3866,107 @@ msgid "Total amount"
 msgstr "Gesamtbetrag"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:9
-#, python-format
-msgid "%(initiator)s has <strong>placed</strong> the order."
-msgstr "%(initiator)s hat die Bestellung <strong>aufgegeben</strong>."
-
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:16
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:36
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:225
 #, python-format
 msgid ""
-"%(initiator)s has marked the order as %(new_payment_state)s (previously "
-"%(former_payment_state)s)."
+"%(initiator)s has <strong>placed</strong> order <a "
+"href=\"%(order_url)s\">%(order_number)s</a>."
 msgstr ""
-"%(initiator)s hat die Bestellung als %(new_payment_state)s markiert "
-"(vorher %(former_payment_state)s)."
+"%(initiator)s hat Bestellung <a "
+"href=\"%(order_url)s\">%(order_number)s</a> <strong>aufgegeben</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:26
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:18
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:42
 #, python-format
 msgid ""
-"%(initiator)s has marked the order as %(new_payment_state)s via "
+"%(initiator)s has marked order <a "
+"href=\"%(order_url)s\">%(order_number)s</a> as %(new_payment_state)s "
+"(previously %(former_payment_state)s)."
+msgstr ""
+"%(initiator)s hat Bestellung <a "
+"href=\"%(order_url)s\">%(order_number)s</a> als %(new_payment_state)s "
+"markiert (vorher %(former_payment_state)s)."
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:30
+#, python-format
+msgid ""
+"%(initiator)s has marked order <a "
+"href=\"%(order_url)s\">%(order_number)s</a> as %(new_payment_state)s via "
 "%(payment_method)s (previously %(former_payment_state)s)."
 msgstr ""
-"%(initiator)s hat die Bestellung als %(new_payment_state)s via "
-"%(payment_method)s markiert (vorher %(former_payment_state)s)."
+"%(initiator)s hat Bestellung <a "
+"href=\"%(order_url)s\">%(order_number)s</a> als %(new_payment_state)s via"
+" %(payment_method)s markiert (vorher %(former_payment_state)s)."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:46
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:54
 #, python-format
-msgid "%(initiator)s has marked the order as <strong>invoiced</strong>."
-msgstr "%(initiator)s hat die Rechnung als <strong>erstellt</strong> markiert."
-
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:53
-#, python-format
-msgid "%(initiator)s has marked the order as <strong>not invoiced</strong>."
+msgid ""
+"%(initiator)s has marked order <a "
+"href=\"%(order_url)s\">%(order_number)s</a> as <strong>invoiced</strong>."
 msgstr ""
-"%(initiator)s hat die Rechnung als <strong>nicht erstellt</strong> "
-"markiert."
+"%(initiator)s hat die Rechnung für Bestellung <a "
+"href=\"%(order_url)s\">%(order_number)s</a> als <strong>erstellt</strong>"
+" markiert."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:60
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:63
 #, python-format
-msgid "%(author)s has added a <strong>note</strong>:"
-msgstr "%(author)s hat eine <strong>Notiz hinzugefügt</strong>."
-
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:68
-#, python-format
-msgid "%(initiator)s has marked the order as <strong>shipped</strong>."
-msgstr "%(initiator)s hat die Bestellung als <strong>versendet</strong> markiert."
-
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:75
-#, python-format
-msgid "%(initiator)s has marked the order as <strong>not shipped</strong>."
+msgid ""
+"%(initiator)s has marked order <a "
+"href=\"%(order_url)s\">%(order_number)s</a> as <strong>not "
+"invoiced</strong>."
 msgstr ""
-"%(initiator)s hat die Bestellung als <strong>nicht versendet</strong> "
-"markiert."
+"%(initiator)s hat die Rechnung für Bestellung <a "
+"href=\"%(order_url)s\">%(order_number)s</a> als <strong>nicht "
+"erstellt</strong> markiert."
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:72
+#, python-format
+msgid ""
+"%(author)s has added a <strong>note</strong> to order <a "
+"href=\"%(order_url)s\">%(order_number)s</a>:"
+msgstr ""
+"%(author)s hat zu Bestellung <a "
+"href=\"%(order_url)s\">%(order_number)s</a> eine <strong>Notiz "
+"hinzugefügt</strong>:"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:82
 #, python-format
 msgid ""
-"%(initiator)s has <strong>re-triggered sending</strong> of the order "
-"confirmation email."
+"%(initiator)s has marked order <a "
+"href=\"%(order_url)s\">%(order_number)s</a> as <strong>shipped</strong>."
 msgstr ""
-"%(initiator)s hat den Versand der Bestellbestätigung per E-Mail "
-"<strong>erneut ausgelöst</strong>."
+"%(initiator)s hat Bestellung <a "
+"href=\"%(order_url)s\">%(order_number)s</a> als "
+"<strong>versendet</strong> markiert."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:89
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:91
+#, python-format
+msgid ""
+"%(initiator)s has marked order <a "
+"href=\"%(order_url)s\">%(order_number)s</a> as <strong>not "
+"shipped</strong>."
+msgstr ""
+"%(initiator)s hat Bestellung <a "
+"href=\"%(order_url)s\">%(order_number)s</a> als <strong>nicht "
+"versendet</strong> markiert."
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:100
+#, python-format
+msgid ""
+"%(initiator)s has <strong>re-triggered sending</strong> of the "
+"confirmation email for order <a "
+"href=\"%(order_url)s\">%(order_number)s</a>."
+msgstr ""
+"%(initiator)s hat den Versand der Bestellbestätigung per E-Mail für "
+"Bestellung <a href=\"%(order_url)s\">%(order_number)s</a> <strong>erneut "
+"ausgelöst</strong>."
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:109
 #, python-format
 msgid "Badge \"%(badge)s\" has been <strong>awarded</strong> to %(user)s."
 msgstr "Das Abzeichen \"%(badge)s\" wurde an %(user)s <strong>verliehen</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:97
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:117
 #, python-format
 msgid ""
 "A <a href=\"%(url)s\">ticket bundle</a> with \"%(ticket_quantity)s\" "
@@ -3941,7 +3975,7 @@ msgstr ""
 "Ein <a href=\"%(url)s\">Ticketpaket</a> mit \"%(ticket_quantity)s\" "
 "Tickets der Kategorie \"%(ticket_category)s\" wurde erstellt."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:106
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:126
 #, python-format
 msgid ""
 "%(initiator)s has <strong>revoked</strong> the <a href=\"%(url)s\">ticket"
@@ -3950,12 +3984,12 @@ msgstr ""
 "%(initiator)s hat das <a href=\"%(url)s\">Ticketpaket</a> "
 "<strong>widerrufen</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:114
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:134
 #, python-format
 msgid "<a href=\"%(url)s\">Ticket %(code)s</a> has been <strong>created</strong>."
 msgstr "<a href=\"%(url)s\">Ticket %(code)s</a> wurde <strong>angelegt</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:122
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:142
 #, python-format
 msgid ""
 "%(initiator)s has <strong>revoked</strong> <a href=\"%(url)s\">ticket "
@@ -3964,7 +3998,7 @@ msgstr ""
 "%(initiator)s hat <a href=\"%(url)s\">Ticket %(code)s</a> "
 "<strong>widerrufen</strong>."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:131
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:151
 #, python-format
 msgid ""
 "%(initiator)s has initiated <strong>unknown event</strong> "
@@ -5459,15 +5493,6 @@ msgstr ""
 "%(initiator)s hat Bestellung <a "
 "href=\"%(order_url)s\">%(order_number)s</a> <strong>als bezahlt "
 "markiert</strong>."
-
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:225
-#, python-format
-msgid ""
-"%(initiator)s has <strong>placed</strong> order <a "
-"href=\"%(order_url)s\">%(order_number)s</a>."
-msgstr ""
-"%(initiator)s hat Bestellung <a "
-"href=\"%(order_url)s\">%(order_number)s</a> <strong>aufgegeben</strong>."
 
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:234
 #, python-format
