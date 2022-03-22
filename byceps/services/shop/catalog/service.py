@@ -43,6 +43,20 @@ def create_catalog(shop_id: ShopID, title: str) -> Catalog:
     return _db_entity_to_catalog(db_catalog)
 
 
+def update_catalog(catalog_id: CatalogID, title: str) -> Catalog:
+    """Update a catalog."""
+    db_catalog = _find_db_catalog(catalog_id)
+
+    if db_catalog is None:
+        raise ValueError(f'Unknown shop catalog ID "{catalog_id}"')
+
+    db_catalog.title = title
+
+    db.session.commit()
+
+    return _db_entity_to_catalog(db_catalog)
+
+
 def find_catalog(catalog_id: CatalogID) -> Optional[Catalog]:
     """Return the catalog with that ID, or `None` if not found."""
     db_catalog = _find_db_catalog(catalog_id)
@@ -51,6 +65,16 @@ def find_catalog(catalog_id: CatalogID) -> Optional[Catalog]:
         return None
 
     return _db_entity_to_catalog(db_catalog)
+
+
+def get_catalog(catalog_id: CatalogID) -> Catalog:
+    """Return the catalog with that ID."""
+    catalog = find_catalog(catalog_id)
+
+    if catalog is None:
+        raise ValueError(f'Unknown shop catalog ID "{catalog_id}"')
+
+    return catalog
 
 
 def _find_db_catalog(catalog_id: CatalogID) -> Optional[DbCatalog]:
@@ -95,6 +119,20 @@ def create_collection(catalog_id: CatalogID, title: str) -> Collection:
     return _db_entity_to_collection(db_collection)
 
 
+def update_collection(collection_id: CollectionID, title: str) -> Collection:
+    """Update a collection."""
+    db_collection = _find_db_collection(collection_id)
+
+    if db_collection is None:
+        raise ValueError(f'Unknown shop collection ID "{collection_id}"')
+
+    db_collection.title = title
+
+    db.session.commit()
+
+    return _db_entity_to_collection(db_collection)
+
+
 def delete_collection(collection_id: CollectionID) -> None:
     """Delete the collection."""
     db.session.execute(
@@ -102,6 +140,23 @@ def delete_collection(collection_id: CollectionID) -> None:
         .where(DbCollection.id == collection_id)
     )
     db.session.commit()
+
+
+def find_collection(collection_id: CollectionID) -> Optional[Collection]:
+    """Return the collection with that ID, or `None` if not found."""
+    db_collection = _find_db_collection(collection_id)
+
+    if db_collection is None:
+        return None
+
+    return _db_entity_to_collection(db_collection)
+
+
+def _find_db_collection(collection_id: CollectionID) -> Optional[DbCollection]:
+    """Return the collection database entity with that ID, or `None` if
+    not found.
+    """
+    return db.session.get(DbCollection, collection_id)
 
 
 def get_collections_for_catalog(catalog_id: CatalogID) -> list[Collection]:
