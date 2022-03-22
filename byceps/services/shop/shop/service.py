@@ -9,6 +9,8 @@ byceps.services.shop.shop.service
 from __future__ import annotations
 from typing import Optional
 
+from sqlalchemy import delete, select
+
 from ....database import db
 from ....typing import BrandID
 
@@ -32,19 +34,19 @@ def create_shop(shop_id: ShopID, brand_id: BrandID, title: str) -> Shop:
 
 def delete_shop(shop_id: ShopID) -> None:
     """Delete a shop."""
-    db.session.query(DbShop) \
-        .filter_by(id=shop_id) \
-        .delete()
-
+    db.session.execute(
+        delete(DbShop)
+        .where(DbShop.id == shop_id)
+    )
     db.session.commit()
 
 
 def find_shop_for_brand(brand_id: BrandID) -> Optional[Shop]:
     """Return the shop for that brand, or `None` if not found."""
-    db_shop = db.session \
-        .query(DbShop) \
-        .filter_by(brand_id=brand_id) \
-        .one_or_none()
+    db_shop = db.session.execute(
+        select(DbShop)
+        .filter_by(brand_id=brand_id)
+    ).scalar_one_or_none()
 
     if db_shop is None:
         return None
@@ -97,20 +99,20 @@ def find_shops(shop_ids: set[ShopID]) -> list[Shop]:
     if not shop_ids:
         return []
 
-    db_shops = db.session \
-        .query(DbShop) \
-        .filter(DbShop.id.in_(shop_ids)) \
-        .all()
+    db_shops = db.session.execute(
+        select(DbShop)
+        .filter(DbShop.id.in_(shop_ids))
+    ).scalars().all()
 
     return [_db_entity_to_shop(db_shop) for db_shop in db_shops]
 
 
 def get_active_shops() -> list[Shop]:
     """Return all shops that are not archived."""
-    db_shops = db.session \
-        .query(DbShop) \
-        .filter_by(archived=False) \
-        .all()
+    db_shops = db.session.execute(
+        select(DbShop)
+        .filter_by(archived=False)
+    ).scalars().all()
 
     return [_db_entity_to_shop(db_shop) for db_shop in db_shops]
 

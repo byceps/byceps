@@ -9,6 +9,8 @@ byceps.services.shop.storefront.service
 from __future__ import annotations
 from typing import Optional
 
+from sqlalchemy import delete, select
+
 from ....database import db
 
 from ..catalog.transfer.models import CatalogID
@@ -66,10 +68,10 @@ def update_storefront(
 
 def delete_storefront(storefront_id: StorefrontID) -> None:
     """Delete a storefront."""
-    db.session.query(DbStorefront) \
-        .filter_by(id=storefront_id) \
-        .delete()
-
+    db.session.execute(
+        delete(DbStorefront)
+        .where(DbStorefront.id == storefront_id)
+    )
     db.session.commit()
 
 
@@ -118,10 +120,10 @@ def find_storefronts(storefront_ids: set[StorefrontID]) -> list[Storefront]:
     if not storefront_ids:
         return []
 
-    db_storefronts = db.session \
-        .query(DbStorefront) \
-        .filter(DbStorefront.id.in_(storefront_ids)) \
-        .all()
+    db_storefronts = db.session.execute(
+        select(DbStorefront)
+        .filter(DbStorefront.id.in_(storefront_ids))
+    ).scalars().all()
 
     return [
         _db_entity_to_storefront(db_storefront)
@@ -131,7 +133,9 @@ def find_storefronts(storefront_ids: set[StorefrontID]) -> list[Storefront]:
 
 def get_all_storefronts() -> list[Storefront]:
     """Return all storefronts."""
-    db_storefronts = db.session.query(DbStorefront).all()
+    db_storefronts = db.session.execute(
+        select(DbStorefront)
+    ).scalars().all()
 
     return [
         _db_entity_to_storefront(db_storefront)
@@ -141,10 +145,10 @@ def get_all_storefronts() -> list[Storefront]:
 
 def get_storefronts_for_shop(shop_id: ShopID) -> set[Storefront]:
     """Return all storefronts for that shop."""
-    rows = db.session \
-        .query(DbStorefront) \
-        .filter_by(shop_id=shop_id) \
-        .all()
+    rows = db.session.execute(
+        select(DbStorefront)
+        .filter_by(shop_id=shop_id)
+    ).scalars().all()
 
     return {_db_entity_to_storefront(row) for row in rows}
 

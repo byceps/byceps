@@ -9,7 +9,7 @@ byceps.services.shop.catalog.service
 from __future__ import annotations
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from ....database import db
 
@@ -97,20 +97,20 @@ def create_collection(catalog_id: CatalogID, title: str) -> Collection:
 
 def delete_collection(collection_id: CollectionID) -> None:
     """Delete the collection."""
-    db.session.query(DbCollection) \
-        .filter_by(id=collection_id) \
-        .delete()
-
+    db.session.execute(
+        delete(DbCollection)
+        .where(DbCollection.id == collection_id)
+    )
     db.session.commit()
 
 
 def get_collections_for_catalog(catalog_id: CatalogID) -> list[Collection]:
     """Return the catalog's collections."""
-    db_collections = db.session \
-        .query(DbCollection) \
-        .filter_by(catalog_id=catalog_id) \
-        .order_by(DbCollection.position) \
-        .all()
+    db_collections = db.session.execute(
+        select(DbCollection)
+        .filter_by(catalog_id=catalog_id)
+        .order_by(DbCollection.position)
+    ).scalars().all()
 
     return [
         _db_entity_to_collection(db_collection)
@@ -151,8 +151,8 @@ def remove_article_from_collection(
     catalog_article_id: CatalogArticleID,
 ) -> None:
     """Remove article from collection."""
-    db.session.query(DbCatalogArticle) \
-        .filter_by(id=catalog_article_id) \
-        .delete()
-
+    db.session.execute(
+        delete(DbCatalogArticle)
+        .where(DbCatalogArticle.id == catalog_article_id)
+    )
     db.session.commit()
