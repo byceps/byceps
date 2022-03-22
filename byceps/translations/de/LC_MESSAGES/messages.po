@@ -3699,8 +3699,8 @@ msgid "Configuration"
 msgstr "Konfiguration"
 
 #: byceps/blueprints/admin/shop/order/forms.py:28
-msgid "Inform orderer via email of cancelation."
-msgstr "Auftraggeber/in per E-Mail über Stornierung informieren"
+msgid "Actively inform orderer via email of cancelation"
+msgstr "Auftraggeber/in aktiv per E-Mail über Stornierung informieren"
 
 #: byceps/blueprints/admin/shop/order/forms.py:43
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:68
@@ -3842,7 +3842,7 @@ msgstr "E-Mail-Bestätigung erneut senden"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_actions.html:28
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:5
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:22
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:28
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:4
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:15
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/cancel_form.html:20
@@ -4030,13 +4030,13 @@ msgstr "noch nicht bezahlt"
 msgid "not shipped yet"
 msgstr "noch nicht versendet"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:18
-msgid "The reason will be disclosed to the orderer."
-msgstr "Die Begründung wird an die bestellende Person weitergegeben."
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:21
+msgid "The reason is visible to the orderer."
+msgstr "Die Begründung ist für die bestellende Person sichtbar."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:18
-msgid "It is <em>not</em> an internal remark."
-msgstr "Es handelt sich <em>nicht</em> um einen internen Vermerk."
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/cancel_form.html:22
+msgid "This is not an internal remark."
+msgstr "Es handelt sich nicht um einen internen Vermerk."
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/create_number_sequence_form.html:4
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/create_form.html:17
