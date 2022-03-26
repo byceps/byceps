@@ -32,7 +32,7 @@
         </tr>
       </thead>
       <tbody>
-        {%- for role, permissions in permissions_by_role.items()|sort(attribute='0.id') %}
+        {%- for role, permissions in permissions_by_role|items|sort(attribute='0.id') %}
           {%- with user_has_role = (role.id in user_role_ids) %}
         <tr>
           <td{% if not user_has_role %} class="dimmed"{% endif %}>

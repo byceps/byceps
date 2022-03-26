@@ -19,7 +19,7 @@
 
 {% macro render_user_badges_list(badges_with_awarding_quantity) %}
 <table class="user-badges-list">
-  {%- for badge, quantity in badges_with_awarding_quantity.items()|sort(attribute='0.label') %}
+  {%- for badge, quantity in badges_with_awarding_quantity|items|sort(attribute='0.label') %}
   <tr>
     <td>{{ render_user_badge_linked(badge, 32) }}</td>
     <td>{{ badge.label }}</td>

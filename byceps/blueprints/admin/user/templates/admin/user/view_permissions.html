@@ -42,7 +42,7 @@
         </tr>
       </thead>
       <tbody>
-        {%- for role, permissions in permissions_by_role.items()|sort(attribute='0.id') %}
+        {%- for role, permissions in permissions_by_role|items|sort(attribute='0.id') %}
         <tr>
           <td>
             <strong>{{ role.title }}</strong><br>

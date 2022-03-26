@@ -45,7 +45,7 @@
           {{ render_bar_columns([task]) }}
         </tr>
         {%- endfor %}
-        {%- for orga, presences in presences_by_orga.items()|sort(attribute='0.screen_name') %}
+        {%- for orga, presences in presences_by_orga|items|sort(attribute='0.screen_name') %}
         <tr class="presence">
           <td>{{ render_user_avatar_and_admin_link(orga, size=16) }}</td>
           <td colspan="2"></td>

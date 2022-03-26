@@ -30,7 +30,7 @@
         <div class="dropdown">
           <button class="dropdown-toggle button">{{ render_icon('add') }} <span>{{ _('Create article') }}</span> {{ render_icon('chevron-down') }}</button>
           <ol class="dropdown-menu dropdown-menu--right">
-            {%- for type, label in article_type_labels_by_type.items() %}
+            {%- for type, label in article_type_labels_by_type|items %}
             <li><a class="dropdown-item" href="{{ url_for('.create_form', shop_id=shop.id, type=type.name) }}">{{ label }}</a></li>
             {%- endfor %}
           </ol>

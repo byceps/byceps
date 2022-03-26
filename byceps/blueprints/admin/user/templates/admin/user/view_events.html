@@ -139,7 +139,7 @@
               user=render_log_user(user),
             ) }}
             <blockquote><table>
-            {%- for key, value in log_entry.details.items()|sort %}
+            {%- for key, value in log_entry.details|items|sort %}
               <tr>
                 <th>{{ key }}</th>
                 <td>{{ value|fallback }}</td>
