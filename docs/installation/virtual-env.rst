@@ -10,7 +10,7 @@ pip_.
 
 .. _Python: https://www.python.org/
 .. _virtualenv: https://www.virtualenv.org/
-.. _pip: https://www.pip-installer.org/
+.. _pip: https://pip.pypa.io/
 
 Change into the BYCEPS path and create a virtual environment (named
 "venv") there:
