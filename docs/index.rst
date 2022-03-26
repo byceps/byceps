@@ -19,6 +19,7 @@ for more than a decade.
    blueprints/index
    installation/index
    running/index
+   upgrading/index
    license
 
 
