@@ -45,6 +45,7 @@ def view(party_id):
 
     attendee_ids = attendance_service.get_attendee_ids_for_party(party_id)
     attendees = user_service.get_users(attendee_ids, include_avatars=True)
+    attendees = [attendee for attendee in attendees if not attendee.deleted]
 
     return {
         'party': party,
