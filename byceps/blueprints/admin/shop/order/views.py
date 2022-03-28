@@ -65,10 +65,11 @@ def index_for_shop(shop_id, page):
         }
         return valid_values.get(value, False)
 
+    only_overdue = request.args.get('only_overdue', type=_str_to_bool)
     only_processed = request.args.get('only_processed', type=_str_to_bool)
 
     order_state_filter = OrderStateFilter.find(
-        only_payment_state, only_processed
+        only_payment_state, only_overdue, only_processed
     )
 
     orders = order_service.get_orders_for_shop_paginated(
@@ -77,6 +78,7 @@ def index_for_shop(shop_id, page):
         per_page,
         search_term=search_term,
         only_payment_state=only_payment_state,
+        only_overdue=only_overdue,
         only_processed=only_processed,
     )
 
@@ -89,6 +91,7 @@ def index_for_shop(shop_id, page):
         'search_term': search_term,
         'PaymentState': PaymentState,
         'only_payment_state': only_payment_state,
+        'only_overdue': only_overdue,
         'only_processed': only_processed,
         'OrderStateFilter': OrderStateFilter,
         'order_state_filter': order_state_filter,

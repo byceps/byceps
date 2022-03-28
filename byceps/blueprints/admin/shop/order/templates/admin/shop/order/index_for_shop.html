@@ -2,6 +2,7 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/admin/shop/order.html' import render_order_payment_state, render_order_state_filter %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/pagination.html' import render_pagination_nav %}
 {% set page_title = _('Orders') %}
 
@@ -15,6 +16,9 @@
       <form action="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="single-row">
         {%- if only_payment_state %}
         <input type="hidden" name="only_payment_state" value="{{ only_payment_state.name }}">
+        {%- endif %}
+        {%- if (only_overdue is not none) and not only_overdue %}
+        <input type="hidden" name="only_overdue" value="false">
         {%- endif %}
         {%- if (only_processed is not none) and not only_processed %}
         <input type="hidden" name="only_processed" value="false">
@@ -34,6 +38,7 @@
           <ol class="dropdown-menu dropdown-menu--right">
             <li><a class="dropdown-item" href="{{ url_for('.index_for_shop', shop_id=shop.id, search_term=search_term) }}">{{ render_order_state_filter(OrderStateFilter.none) }}</a></li>
             <li class="dropdown-divider"></li>
+            <li><a class="dropdown-item" href="{{ url_for('.index_for_shop', shop_id=shop.id, search_term=search_term, only_payment_state=PaymentState.open.name, only_overdue='true') }}">{{ render_order_payment_state(PaymentState.open) }} {{ render_tag(_('overdue'), icon='warning', class='color-danger') }}</a></li>
             {%- for payment_state in PaymentState %}
             <li><a class="dropdown-item" href="{{ url_for('.index_for_shop', shop_id=shop.id, search_term=search_term, only_payment_state=payment_state.name) }}">{{ render_order_payment_state(payment_state) }}</a></li>
             {%- endfor %}

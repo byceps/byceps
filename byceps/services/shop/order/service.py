@@ -674,6 +674,7 @@ def get_orders_for_shop_paginated(
     *,
     search_term=None,
     only_payment_state: Optional[PaymentState] = None,
+    only_overdue: Optional[bool] = None,
     only_processed: Optional[bool] = None,
 ) -> Pagination:
     """Return all orders for that shop, ordered by creation date.
@@ -699,6 +700,20 @@ def get_orders_for_shop_paginated(
     if only_payment_state is not None:
         items_query = items_query.filter_by(_payment_state=only_payment_state.name)
         count_query = count_query.filter_by(_payment_state=only_payment_state.name)
+
+        if (only_payment_state == PaymentState.open) and (only_overdue is not None):
+            now = datetime.utcnow()
+
+            if only_overdue:
+                items_query = items_query \
+                    .filter(DbOrder.created_at + OVERDUE_THRESHOLD < now)
+                count_query = items_query \
+                    .filter(DbOrder.created_at + OVERDUE_THRESHOLD < now)
+            else:
+                items_query = items_query \
+                    .filter(DbOrder.created_at + OVERDUE_THRESHOLD >= now)
+                count_query = items_query \
+                    .filter(DbOrder.created_at + OVERDUE_THRESHOLD >= now)
 
     if only_processed is not None:
         items_query = items_query.filter(DbOrder.processing_required == True)
