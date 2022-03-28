@@ -17,15 +17,21 @@
         {%- if only_payment_state %}
         <input type="hidden" name="only_payment_state" value="{{ only_payment_state.name }}">
         {%- endif %}
-        {%- if (only_overdue is not none) and not only_overdue %}
-        <input type="hidden" name="only_overdue" value="false">
+        {%- if only_overdue is not none %}
+        <input type="hidden" name="only_overdue" value="{{ 'true' if only_overdue else 'false' }}">
         {%- endif %}
         {%- if (only_processed is not none) and not only_processed %}
         <input type="hidden" name="only_processed" value="false">
         {%- endif %}
         <input type="search" name="search_term" placeholder="{{ _('Order number') }}"{%- if search_term %} value="{{ search_term }}"{% endif %} autofocus>
         <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
-        <a href="{{ url_for('.index_for_shop', shop_id=shop.id, only_payment_state=(only_payment_state.name if only_payment_state else None), only_processed=('false' if ((only_processed is not none) and not only_processed) else None)) }}" class="button{% if not search_term %} dimmed{% endif %}" title="{{ _('Remove search term constraint') }}">{{ render_icon('remove') }}</a>
+        <a href="{{ url_for(
+          '.index_for_shop',
+          shop_id=shop.id,
+          only_payment_state=(only_payment_state.name if only_payment_state else None),
+          only_overdue=(('true' if only_overdue else 'false') if (only_overdue is not none) else None),
+          only_processed=('false' if ((only_processed is not none) and not only_processed) else None)
+        ) }}" class="button{% if not search_term %} dimmed{% endif %}" title="{{ _('Remove search term constraint') }}">{{ render_icon('remove') }}</a>
       </form>
 
     </div>
@@ -60,6 +66,7 @@
   'per_page': per_page,
   'search_term': search_term if search_term else None,
   'only_payment_state': only_payment_state.name if only_payment_state else None,
+  'only_overdue': ('true' if only_overdue else 'false') if (only_overdue is not none) else None,
   'only_processed': 'false' if ((only_processed is not none) and not only_processed) else None,
 }) }}
   </div>
