@@ -7,7 +7,7 @@ byceps.services.shop.order.service
 """
 
 from __future__ import annotations
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Iterator, Mapping, Optional, Sequence
 from uuid import UUID
 
@@ -50,6 +50,9 @@ from .transfer.order import (
     OrderState,
     PaymentState,
 )
+
+
+OVERDUE_THRESHOLD = timedelta(days=14)
 
 
 class OrderFailed(Exception):
@@ -800,6 +803,7 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
     is_canceled = _is_canceled(order)
     is_paid = _is_paid(order)
     is_invoiced = order.invoice_created_at is not None
+    is_overdue = _is_overdue(order)
     is_processing_required = order.processing_required
     is_processed = order.processed_at is not None
 
@@ -822,10 +826,19 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
         is_canceled=is_canceled,
         is_paid=is_paid,
         is_invoiced=is_invoiced,
+        is_overdue=is_overdue,
         is_processing_required=is_processing_required,
         is_processed=is_processed,
         cancelation_reason=order.cancelation_reason,
     )
+
+
+def _is_overdue(db_order: DbOrder) -> bool:
+    """Return `True` if payment of the order is overdue."""
+    if db_order.payment_state != PaymentState.open:
+        return False
+
+    return datetime.utcnow() > (db_order.created_at + OVERDUE_THRESHOLD)
 
 
 def line_item_to_transfer_object(

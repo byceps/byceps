@@ -159,6 +159,7 @@ def _build_order(
         is_canceled=is_canceled,
         is_paid=is_paid,
         is_invoiced=False,
+        is_overdue=False,
         is_processing_required=False,
         is_processed=False,
         cancelation_reason=cancelation_reason,
