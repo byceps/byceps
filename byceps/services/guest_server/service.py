@@ -245,13 +245,7 @@ def _get_db_server(server_id: ServerID) -> DbServer:
 
 def _db_entity_to_server(db_server: DbServer) -> Server:
     addresses = {
-        Address(
-            id=db_address.id,
-            server_id=db_server.id,
-            ip_address=db_address.ip_address,
-            hostname=db_address.hostname,
-        )
-        for db_address in db_server.addresses
+        _db_entity_to_address(db_address) for db_address in db_server.addresses
     }
 
     return Server(
