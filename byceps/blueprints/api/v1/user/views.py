@@ -20,7 +20,7 @@ from ...decorators import api_token_required
 from .schemas import InvalidateEmailAddressRequest
 
 
-blueprint = create_blueprint('user', __name__)
+blueprint = create_blueprint('user_api', __name__)
 
 
 @blueprint.get('/<uuid:user_id>/profile')

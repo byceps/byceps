@@ -18,7 +18,7 @@ from .....util.framework.blueprint import create_blueprint
 from ...decorators import api_token_required
 
 
-blueprint = create_blueprint('ticketing', __name__)
+blueprint = create_blueprint('ticketing_api', __name__)
 
 
 @blueprint.get('/sale_stats/<party_id>')

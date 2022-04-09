@@ -13,7 +13,7 @@ from .....services.user_avatar.dbmodels import FALLBACK_AVATAR_URL_PATH
 from .....util.framework.blueprint import create_blueprint
 
 
-blueprint = create_blueprint('user_avatar', __name__)
+blueprint = create_blueprint('user_avatar_api', __name__)
 
 
 @blueprint.get('/by_email_hash/<md5_hash>')
