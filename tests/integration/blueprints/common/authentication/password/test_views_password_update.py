@@ -40,7 +40,7 @@ def test_when_logged_in_endpoint_is_available(site_app, site, make_user):
     response = send_request(site_app, form_data, user_id=user.id)
 
     assert response.status_code == 302
-    assert response.headers.get('Location') == 'http://www.acmecon.test/authentication/log_in'
+    assert response.location == '/authentication/log_in'
 
     credential_after = find_credential(user.id)
     session_token_after = find_session_token(user.id)

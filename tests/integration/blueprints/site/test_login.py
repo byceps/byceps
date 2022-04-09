@@ -44,7 +44,7 @@ def test_login_succeeds(site, client, make_user):
     assert response.status_code == 204
     # Location (used by JavaScript redirect) should point to user
     # user dashboard.
-    assert response.location == 'http://www.acmecon.test/dashboard'
+    assert response.location == '/dashboard'
 
     login_log_entries_after = log_service.get_log_entries_of_type_for_user(
         user.id, 'user-logged-in'

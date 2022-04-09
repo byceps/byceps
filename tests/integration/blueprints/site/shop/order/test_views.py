@@ -149,7 +149,7 @@ def test_order(
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 
-    order_detail_page_url = f'http://www.acmecon.test/shop/orders/{order.id}'
+    order_detail_page_url = f'/shop/orders/{order.id}'
 
     assert_response_headers(response, order_detail_page_url)
 
@@ -211,7 +211,7 @@ def test_order_single(
     )
     order_placed_mock.assert_called_once_with(None, event=event)
 
-    order_detail_page_url = f'http://www.acmecon.test/shop/orders/{order.id}'
+    order_detail_page_url = f'/shop/orders/{order.id}'
 
     assert_response_headers(response, order_detail_page_url)
 
@@ -239,7 +239,7 @@ def get_single_order_by(user_id: UserID) -> Order:
 
 def assert_response_headers(response, order_detail_page_url: str) -> None:
     assert response.status_code == 302
-    assert response.headers.get('Location') == order_detail_page_url
+    assert response.location == order_detail_page_url
 
 
 def assert_order(

@@ -13,9 +13,7 @@ def test_homepage_unauthenticated(admin_app):
         response = client.get('/')
 
     assert response.status_code == 307
-    assert (
-        response.location == 'http://admin.acmecon.test/authentication/log_in'
-    )
+    assert response.location == '/authentication/log_in'
 
 
 def test_homepage_authenticated(admin_app, admin_user):
@@ -25,4 +23,4 @@ def test_homepage_authenticated(admin_app, admin_user):
         response = client.get('/')
 
     assert response.status_code == 307
-    assert response.location == 'http://admin.acmecon.test/admin/dashboard'
+    assert response.location == '/admin/dashboard'

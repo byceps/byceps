@@ -11,4 +11,4 @@ def test_homepage(site_app):
         response = client.get('/')
 
     assert response.status_code == 307
-    assert response.location == 'http://www.acmecon.test/news/'
+    assert response.location == '/news/'

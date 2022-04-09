@@ -35,7 +35,7 @@ kthxbye,
 Alice
 '''
 
-    expected_response_location = f'http://www.acmecon.test/users/{recipient_id}'
+    expected_response_location = f'/users/{recipient_id}'
 
     expected_email_sender = (
         'ACME Entertainment Convention <noreply@acmecon.test>'
@@ -101,7 +101,7 @@ Best,
 Bob
 '''
 
-    expected_response_location = f'http://www.acmecon.test/users/{recipient_id}'
+    expected_response_location = f'/users/{recipient_id}'
 
     expected_email_sender = (
         'ACME Entertainment Convention <noreply@acmecon.test>'
@@ -156,7 +156,7 @@ def test_send_when_not_logged_in(site_app):
     response = send_request(site_app, recipient_id, text)
 
     assert response.status_code == 302
-    assert response.location == 'http://www.acmecon.test/authentication/log_in'
+    assert response.location == '/authentication/log_in'
 
 
 # helpers
