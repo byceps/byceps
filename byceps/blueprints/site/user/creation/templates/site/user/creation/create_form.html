@@ -14,12 +14,12 @@
     {%- if form.first_name is defined and form.last_name is defined %}
     <div class="row">
       {%- if form.first_name is defined %}
-      <div class="column-auto column-auto--grow">
+      <div class="column-auto column--grow">
         {{ form_field(form.first_name, maxlength=40) }}
       </div>
       {%- endif %}
       {%- if form.last_name is defined %}
-      <div class="column-auto column-auto--grow">
+      <div class="column-auto column--grow">
         {{ form_field(form.last_name, maxlength=80) }}
       </div>
       {%- endif %}

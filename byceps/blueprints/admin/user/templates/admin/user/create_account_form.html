@@ -15,10 +15,10 @@
   <form action="{{ url_for('.create_account') }}" method="post" class="disable-submit-button-on-submit">
     {{ form_field(form.screen_name, maxlength=24, autofocus='autofocus') }}
     <div class="row">
-      <div class="column-auto column-auto--grow">
+      <div class="column-auto column--grow">
         {{ form_field(form.first_name, maxlength=40) }}
       </div>
-      <div class="column-auto column-auto--grow">
+      <div class="column-auto column--grow">
         {{ form_field(form.last_name, maxlength=80) }}
       </div>
     </div>

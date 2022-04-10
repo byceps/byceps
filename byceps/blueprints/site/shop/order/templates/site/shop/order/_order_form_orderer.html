@@ -2,10 +2,10 @@
 
     <h2>{{ _('Personal Data') }}</h2>
     <div class="row">
-      <div class="column-auto column-auto--grow">
+      <div class="column-auto column--grow">
         {{ form_field(form.first_name, maxlength=40, autofocus='autofocus') }}
       </div>
-      <div class="column-auto column-auto--grow">
+      <div class="column-auto column--grow">
         {{ form_field(form.last_name, maxlength=80) }}
       </div>
     </div>
@@ -14,7 +14,7 @@
       <div class="column-auto">
         {{ form_field(form.zip_code, size=5, maxlength=5) }}
       </div>
-      <div class="column-auto column-auto--grow">
+      <div class="column-auto column--grow">
         {{ form_field(form.city, maxlength=40) }}
       </div>
     </div>

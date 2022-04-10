@@ -29,7 +29,7 @@
 
       <div class="data-label">{{ _('Username') }}</div>
       <div class="row mb">
-        <div class="column-auto column-auto--grow">
+        <div class="column-auto column--grow">
           <div class="data-value">{{ render_user_screen_name(user) }}</div>
         </div>
         <div class="column-auto">
@@ -39,7 +39,7 @@
 
       <div class="data-label">{{ _('Email address') }}</div>
       <div class="row mb">
-        <div class="column-auto column-auto--grow">
+        <div class="column-auto column--grow">
           <div class="data-value">{{ email_address if email_address else _('not given')|dim }}</div>
         </div>
         <div class="column-auto">
@@ -49,7 +49,7 @@
 
       <div class="data-label">{{ _('Password') }}</div>
       <div class="row mb">
-        <div class="column-auto column-auto--grow">
+        <div class="column-auto column--grow">
           <div class="data-value">{{ _('not shown')|dim }}</div>
         </div>
         <div class="column-auto">
@@ -59,7 +59,7 @@
 
       <div class="data-label">{{ _('Language') }}</div>
       <div class="row">
-        <div class="column-auto column-auto--grow">
+        <div class="column-auto column--grow">
           <div class="data-value">{{ (user_locale.get_display_name(g.user.locale) if user_locale else None)|fallback }}</div>
         </div>
         <div class="column-auto">

@@ -35,7 +35,7 @@
       {{ render_brand_avatar(party.brand, '40') }}
     </div>
     {%- endif %}
-    <div class="column-auto column-auto--grow">
+    <div class="column-auto column--grow">
       <div>{{ party.title }}</div>
       <div class="supplement">{{ party.starts_at|dateformat }}–{{ party.ends_at|dateformat }}</div>
     </div>
@@ -79,7 +79,7 @@
       {{ render_brand_avatar(site.brand, '40') }}
     </div>
     {%- endif %}
-    <div class="column-auto column-auto--grow">
+    <div class="column-auto column--grow">
       <div>{{ site.title }}</div>
       <div class="supplement">{{ site.server_name }}</div>
     </div>

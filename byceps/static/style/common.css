@@ -146,7 +146,7 @@ img {
 .column-auto {
 }
 
-.column-auto--grow {
+.column--grow {
   flex-grow: 1;
 }
 
