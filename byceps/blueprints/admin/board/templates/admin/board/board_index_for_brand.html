@@ -9,11 +9,11 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ _('Boards') }} {{ render_extra_in_heading(boards|length) }}</h1>
     </div>
   {%- if has_current_user_permission('board.create') %}
-    <div class="column-auto">
+    <div>
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.board_create_form', brand_id=brand.id) }}">{{ render_icon('add') }} <span>{{ _('Create board') }}</span></a>
       </div>

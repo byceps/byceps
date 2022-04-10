@@ -48,11 +48,11 @@
         {%- endif %}
       </div>
       <div class="row row--space-between small">
-        <div class="column-auto" style="font-weight: bold;">{{ ticket_sale_stats.tickets_sold|numberformat }}</div>
+        <div style="font-weight: bold;">{{ ticket_sale_stats.tickets_sold|numberformat }}</div>
         {%- if tickets_total_max_specified and ticket_sale_stats.tickets_sold >= ticket_sale_stats.tickets_max %}
-        <div class="column-auto">{{ render_tag(_('sold out')) }}</div>
+        <div>{{ render_tag(_('sold out')) }}</div>
         {%- endif %}
-        <div class="column-auto dimmed">{{ _('of') }} {{ ticket_sale_stats.tickets_max|numberformat if tickets_total_max_specified else '?' }}</div>
+        <div class="dimmed">{{ _('of') }} {{ ticket_sale_stats.tickets_max|numberformat if tickets_total_max_specified else '?' }}</div>
       </div>
       {%- endwith %}
     {%- endcall %}
@@ -63,8 +63,8 @@
         {{ render_progress_bar(seat_utilization.occupied, seat_utilization.total, 'color-success') }}
       </div>
       <div class="row row--space-between small">
-        <div class="column-auto" style="font-weight: bold;">{{ seat_utilization.occupied|numberformat }}</div>
-        <div class="column-auto dimmed">{{ _('of') }} {{ seat_utilization.total|numberformat }}</div>
+        <div style="font-weight: bold;">{{ seat_utilization.occupied|numberformat }}</div>
+        <div class="dimmed">{{ _('of') }} {{ seat_utilization.total|numberformat }}</div>
       </div>
     {%- endcall %}
 
@@ -74,8 +74,8 @@
         {{ render_progress_bar(tickets_checked_in, ticket_sale_stats.tickets_sold, 'color-success') }}
       </div>
       <div class="row row--space-between small">
-        <div class="column-auto" style="font-weight: bold;">{{ tickets_checked_in|numberformat }}</div>
-        <div class="column-auto dimmed">{{ _('of') }} {{ ticket_sale_stats.tickets_sold|numberformat }}</div>
+        <div style="font-weight: bold;">{{ tickets_checked_in|numberformat }}</div>
+        <div class="dimmed">{{ _('of') }} {{ ticket_sale_stats.tickets_sold|numberformat }}</div>
       </div>
     {%- endcall %}
 
@@ -93,8 +93,8 @@
   approved_count + pending_count
 ) }}
         <div class="row row--space-between small">
-          <div class="column-auto"><strong>{{ approved_count }}</strong> {{ _('approved') }}</div>
-          <div class="column-auto"><strong>{{ pending_count }}</strong> {{ _('pending') }}</div>
+          <div><strong>{{ approved_count }}</strong> {{ _('approved') }}</div>
+          <div><strong>{{ pending_count }}</strong> {{ _('pending') }}</div>
         </div>
         {%- endwith %}
       </div>

@@ -18,11 +18,11 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ page_title }} {{ render_extra_in_heading(teams_and_members|length) }}</h1>
     </div>
     {%- if has_current_user_permission('orga_team.create') %}
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.team_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create team') }}</span></a>
         <div class="dropdown">
@@ -42,14 +42,14 @@
       {%- set member_total = members|length %}
 
     <div class="row row--space-between mb">
-      <div class="column-auto">
+      <div>
         <h2>{{ team.title }}</h2>
         {%- if members %}
         <div>{% filter dim %}{{ member_total}} {{ ngettext('person', 'persons', member_total) }}{% endfilter %}</div>
         {%- endif %}
       </div>
       {%- if has_current_user_permission('orga_team.administrate_memberships') %}
-      <div class="column-auto">
+      <div>
         <div class="button-row button-row--compact button-row--right">
           <a class="button button--compact" href="{{ url_for('.membership_create_form', team_id=team.id) }}" title="{{ _('Add orga') }}">{{ render_icon('add') }}</a>
           <div class="dropdown">
@@ -71,18 +71,18 @@
     <div class="grid" style="--column-min-width: 240px; gap: 1rem 2rem;">
         {%- for member in members %}
       <div class="row row--space-between">
-        <div class="column-auto">
+        <div>
           <div class="row">
-            <div class="column-auto">
+            <div>
               {{ render_user_avatar(member.user, size=48) }}
             </div>
-            <div class="column-auto">
+            <div>
               {{ render_user_admin_link(member.user) }}<br>
               {{ member.membership.duties|fallback }}
             </div>
           </div>
         </div>
-        <div class="column-auto">
+        <div>
           <div class="dropdown">
             <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
             <ol class="dropdown-menu dropdown-menu--right">

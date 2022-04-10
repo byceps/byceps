@@ -20,12 +20,12 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
 
       <h1 class="nowrap">{{ page_title }} {{ render_extra_in_heading(orgas_with_birthdays|length) }}</h1>
 
     </div>
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
 
       <div class="button-row button-row--right">
         {%- if has_current_user_permission('orga_team.administrate_memberships') %}

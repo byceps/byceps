@@ -2,10 +2,10 @@
 
 {% block additional_fields %}
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.ticket_category_id) }}
       </div>
-      <div class="column-auto">
+      <div>
         {{ form_field(form.ticket_quantity, type='number', min=0, style='width: 5.5rem;') }}
       </div>
     </div>

@@ -25,7 +25,7 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
 
       <h1>
         {{- render_icon('ticket') }} {{ ticket.code }}
@@ -34,7 +34,7 @@
       </h1>
 
     </div>
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
 
   {%- if not ticket.revoked and has_current_user_any_permission('ticketing.administrate', 'ticketing.checkin') %}
       <div class="button-row">

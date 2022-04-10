@@ -9,7 +9,7 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
 
       <h1>
         {{- site.title }}
@@ -24,7 +24,7 @@
       </h1>
 
     </div>
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
 
       {%- if has_current_user_permission('site.update') %}
       <div class="button-row button-row--right">
@@ -44,13 +44,13 @@
     <div class="data-value mb"><a href="https://{{ site.server_name }}/" class="disguised">{{ site.server_name }}</a></div>
 
     <div class="row mb">
-      <div class="column-auto">
+      <div>
 
         <div class="data-label">{{ _('User registration') }}</div>
         <div class="data-value">{{ render_tag(_('open'), class='color-success') if site.user_account_creation_enabled else render_tag(_('closed'), class='color-disabled', icon='disabled') }}</div>
 
       </div>
-      <div class="column-auto">
+      <div>
 
         <div class="data-label">{{ _('User login') }}</div>
         <div class="data-value">{{ render_tag(_('open'), class='color-success') if site.login_enabled else render_tag(_('closed'), class='color-disabled', icon='disabled') }}</div>
@@ -82,11 +82,11 @@
   </div>
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h2>{{ _('News Channels') }} {{ render_extra_in_heading(news_channels|length) }}</h2>
     </div>
   {%- if has_current_user_permission('site.update') %}
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button button--compact" href="{{ url_for('.add_news_channel_form', site_id=site.id) }}">{{ render_icon('add') }} <span>{{ _('Add news channel') }}</span></a>
       </div>

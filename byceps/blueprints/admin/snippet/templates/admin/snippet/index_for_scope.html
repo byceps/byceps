@@ -7,11 +7,11 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ _('Snippets') }} {{ render_extra_in_heading(snippets|length) }}</h1>
     </div>
   {%- if has_current_user_permission('snippet.create') %}
-    <div class="column-auto">
+    <div>
       <div class="button-row button-row--right">
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('add') }} {{ _('Create snippet') }}</span> {{ render_icon('chevron-down') }}</button>

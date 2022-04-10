@@ -6,11 +6,11 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ storefront.id }}</h1>
     </div>
     {%- if has_current_user_permission('shop.update') %}
-    <div class="column-auto">
+    <div>
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.update_form', storefront_id=storefront.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
       </div>
@@ -24,11 +24,11 @@
     <div class="data-value mb"><a href="{{ url_for('shop_shop_admin.view', shop_id=shop.id) }}">{{ shop.title }}</a></div>
 
     <div class="row mb">
-      <div class="column-auto">
+      <div>
         <div class="data-label">{{ _('Catalog') }}</div>
         <div class="data-value">{{ storefront.catalog_id|fallback }}</div>
       </div>
-      <div class="column-auto">
+      <div>
         <div class="data-label">{{ _('Order number sequence') }}</div>
         <div class="data-value">{{ order_number_prefix }}</div>
       </div>

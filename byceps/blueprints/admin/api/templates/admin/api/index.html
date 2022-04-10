@@ -32,10 +32,10 @@ code {
   </div>
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h2>{{ _('API Tokens') }} {{ render_extra_in_heading(api_tokens|length) }}</h2>
     </div>
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button button--compact" href="{{ url_for('.create_api_token_form') }}">{{ render_icon('add') }} <span>{{ _('Create API token') }}</span></a>
       </div>
@@ -49,25 +49,25 @@ code {
     <div class="mb">{{ render_tag(_('suspended'), class='color-danger') if api_token.suspended else render_tag(_('enabled'), class='color-success') }}</div>
 
     <div class="row row--space-between">
-      <div class="column-auto column--grow">
+      <div class="column--grow">
 
         <div class="row mb">
-          <div class="column-auto" style="flex-basis: 50%;">
+          <div style="flex-basis: 50%;">
 
             <div class="data-label">{{ _('Description') }}</div>
             <div class="data-value">{{ api_token.description|fallback }}</div>
 
           </div>
-          <div class="column-auto" style="flex-basis: 50%;">
+          <div style="flex-basis: 50%;">
 
             <div class="row">
-              <div class="column-auto" style="flex-basis: 50%;">
+              <div style="flex-basis: 50%;">
 
                 <div class="data-label">{{ _('Created at') }}</div>
                 <div class="data-value">{{ api_token.created_at|datetimeformat }}</div>
 
               </div>
-              <div class="column-auto" style="flex-basis: 50%;">
+              <div style="flex-basis: 50%;">
 
                 <div class="data-label">{{ _('Created by') }}</div>
                 <div class="data-value">{{ render_user_avatar_and_name(users_by_id[api_token.creator_id], size=20) }}</div>
@@ -79,7 +79,7 @@ code {
         </div>
 
         <div class="row">
-          <div class="column-auto" style="flex-basis: 50%;">
+          <div style="flex-basis: 50%;">
 
             <div class="data-label">{{ _('Permissions') }}</div>
             <div class="data-value">
@@ -94,7 +94,7 @@ code {
             </div>
 
           </div>
-          <div class="column-auto" style="flex-basis: 50%;">
+          <div style="flex-basis: 50%;">
 
             <div class="data-label">{{ _('Token') }}</div>
             <div class="data-value">
@@ -112,7 +112,7 @@ code {
         </div>
 
       </div>
-      <div class="column-auto">
+      <div>
 
         <div class="button-row button-row--compact button-row--right">
           <a class="button button--compact" href="{{ url_for('.delete_api_token', api_token_id=api_token.id) }}" data-action="delete-api-token" title="{{ _('Delete API token') }}">{{ render_icon('delete') }}</a>

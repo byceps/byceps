@@ -15,10 +15,10 @@
 
   <form action="{{ url_for('.item_publish_later', item_id=item.id) }}" method="post">
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.publish_on, autofocus='autofocus') }}
       </div>
-      <div class="column-auto">
+      <div>
         {{ form_field(form.publish_at) }}
       </div>
     </div>

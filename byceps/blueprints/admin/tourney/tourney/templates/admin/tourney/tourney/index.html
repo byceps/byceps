@@ -8,10 +8,10 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ _('Tourneys') }} {{ render_extra_in_heading(tourneys|length) }}</h1>
     </div>
-    <div class="column-auto">
+    <div>
       {%- if has_current_user_permission('tourney.administrate') %}
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create tourney') }}</span></a>

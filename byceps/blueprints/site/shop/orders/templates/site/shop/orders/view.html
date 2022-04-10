@@ -14,7 +14,7 @@
   <h1>{{ order.order_number }}</h1>
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
 
       <div class="mb">
         <div class="data-label">{{ _('Date') }}</div>
@@ -22,11 +22,11 @@
       </div>
 
       <div class="row mb">
-        <div class="column-auto">
+        <div>
           <div class="data-label">{{ _('Payment state') }}</div>
           <div class="data-value">{{ render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }}</div>
         </div>
-        <div class="column-auto">
+        <div>
         {%- if order.payment_method %}
           <div class="data-label">{{ _('Payment method') }}</div>
           <div class="data-value">{{ render_order_payment_method(order.payment_method) }}</div>
@@ -40,7 +40,7 @@
       {%- endif %}
 
     </div>
-    <div class="column-auto">
+    <div>
 
       {%- if order.is_open %}
       <div class="button-row button-row--compact button-row--right">

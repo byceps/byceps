@@ -17,18 +17,18 @@
     {{ form_field(form.id, maxlength=40, placeholder='%s-42'|format(brand.id), autofocus='autofocus') }}
     {{ form_field(form.title, maxlength=40, placeholder='%s 42'|format(brand.title)) }}
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.starts_on) }}
       </div>
-      <div class="column-auto">
+      <div>
         {{ form_field(form.starts_at) }}
       </div>
     </div>
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.ends_on) }}
       </div>
-      <div class="column-auto">
+      <div>
         {{ form_field(form.ends_at) }}
       </div>
     </div>

@@ -10,11 +10,11 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ page_title }}</h1>
     </div>
     {%- if has_current_user_permission('user.create') %}
-    <div class="column-auto">
+    <div>
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_account_form') }}">{{ render_icon('add') }} <span>{{ _('Create account') }}</span></a>
       </div>
@@ -24,27 +24,27 @@
 
   <div class="box mb">
     <div class="row row--equal-sized-centered-columns row--space-around row--wrap bigstats">
-      <div class="column-auto">
+      <div>
         <a class="button button--clear" href="{{ url_for('.index') }}">
           {{- render_bigstats_item(total_overall|numberformat, '&sum; '|safe ~ _('total')) -}}
         </a>
       </div>
-      <div class="column-auto">
+      <div>
         <a class="button button--clear" href="{{ url_for('.index', only='active') }}">
           {{- render_bigstats_item(total_active|numberformat, render_tag(_('active'), class='color-success', icon='enabled')) -}}
         </a>
       </div>
-      <div class="column-auto">
+      <div>
         <a class="button button--clear" href="{{ url_for('.index', only='uninitialized') }}">
           {{- render_bigstats_item(total_uninitialized|numberformat, render_user_flag_uninitialized()) -}}
         </a>
       </div>
-      <div class="column-auto">
+      <div>
         <a class="button button--clear" href="{{ url_for('.index', only='suspended') }}">
           {{- render_bigstats_item(total_suspended|numberformat, render_user_flag_suspended()) -}}
         </a>
       </div>
-      <div class="column-auto">
+      <div>
         <a class="button button--clear" href="{{ url_for('.index', only='deleted') }}">
           {{- render_bigstats_item(total_deleted|numberformat, render_user_flag_deleted()) -}}
         </a>
@@ -53,7 +53,7 @@
   </div>
 
   <div class="row row--space-between row--wrap mb">
-    <div class="column-auto">
+    <div>
 
       <form action="{{ url_for('.index') }}" class="single-row">
         <input type="search" name="search_term" placeholder="{{ _('username, first name, last name, email address') }}" title="{{ _('username, first name, last name, email address') }}"{%- if search_term %} value="{{ search_term }}"{% endif %}>
@@ -62,7 +62,7 @@
       </form>
 
     </div>
-    <div class="column-auto">
+    <div>
 
       <div class="filter">
         <span>{{ render_icon('filter') }} {{ _('Filter') }}:</span>

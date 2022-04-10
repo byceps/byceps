@@ -10,22 +10,22 @@
 
   <div class="box">
     <div class="row row--equal-sized-centered-columns row--space-around row--wrap bigstats">
-      <div class="column-auto">
+      <div>
         <a class="button button--clear" href="{{ url_for('ticketing_category_admin.index', party_id=party.id) }}">
           {{- render_bigstats_item(category_count, ngettext('ticket category', 'ticket categories', category_count)) -}}
         </a>
       </div>
-      <div class="column-auto">
+      <div>
         <a class="button button--clear" href="{{ url_for('.area_index', party_id=party.id) }}">
           {{- render_bigstats_item(area_count, ngettext('area', 'areas', area_count)) -}}
         </a>
       </div>
-      <div class="column-auto">
+      <div>
         <div class="button button--clear">
           {{- render_bigstats_item(seat_count|numberformat, ngettext('seat', 'seats', seat_count)) -}}
         </div>
       </div>
-      <div class="column-auto">
+      <div>
         <a class="button button--clear" href="{{ url_for('.seat_group_index', party_id=party.id) }}">
           {{- render_bigstats_item(group_count, ngettext('seat group', 'seat groups', group_count)) -}}
         </a>

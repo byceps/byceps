@@ -58,7 +58,7 @@
   </nav>
   <div class="tourney-header">
     <div class="row">
-      <div class="column-auto">
+      <div>
         <div class="tourney-icon">
           {%- if tourney.logo_url %}
             <img src="{{ tourney.logo_url }}">
@@ -67,7 +67,7 @@
           {%- endif %}
         </div>
       </div>
-      <div class="column-auto">
+      <div>
         <h1>
           <div class="tourney-title">{{ tourney.title }}</div>
           {%- if tourney.subtitle %}
@@ -87,17 +87,17 @@
 
   <h2>
     <div class="row" style="align-items: center;">
-      <div class="column-auto">
+      <div>
         {{ _('Participants') }}
       </div>
-      <div class="column-auto">
+      <div>
         <div class="progress">
           {%- with percentage = 100 * tourney.current_participant_count / tourney.max_participant_count %}
           <div class="progress-bar color--{% if percentage < 100 %}{% if percentage < 70 %}available{% else %}scarce{% endif %}{% else %}full{% endif %}" style="width: {{ percentage }}%;"></div>
           {%- endwith %}
         </div>
       </div>
-      <div class="column-auto">
+      <div>
         <small class="dimmed nowrap">{{ tourney.current_participant_count }} / {{ tourney.max_participant_count }}</small>
       </div>
     </div>

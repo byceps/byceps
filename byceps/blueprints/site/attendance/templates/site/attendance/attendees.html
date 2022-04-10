@@ -44,10 +44,10 @@
   {%- if search_term %}
   <small>
     <div class="row row--space-between mb">
-      <div class="column-auto">
+      <div>
         <p><strong>{{ attendees.total }}</strong> {{ _('results for search term') }} &quot;<strong>{{ search_term }}</strong>&quot;</p>
       </div>
-      <div class="column-auto">
+      <div>
         <p><a href="{{ url_for('.attendees') }}">{{ _('all attendees') }}</a></p>
       </div>
     </div>
@@ -76,13 +76,13 @@
           <div class="attendee-seats">
             {%- for ticket in attendee.tickets %}
             <div class="row row--space-between">
-              <div class="column-auto">
+              <div>
               {%- with seat = ticket.seat %}
                 {{ render_seat_link(seat.area, seat) if seat else _('not chosen')|dim }}
               {%- endwith %}
               </div>
               {%- if ticket.checked_in %}
-              <div class="column-auto">{{ render_tag(_('checked in')) }}</div>
+              <div>{{ render_tag(_('checked in')) }}</div>
               {%- endif %}
             </div>
             {%- endfor %}

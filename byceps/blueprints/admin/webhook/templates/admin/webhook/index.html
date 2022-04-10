@@ -8,11 +8,11 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ page_title }} {{ render_extra_in_heading(webhooks|length) }}</h1>
     </div>
   {%- if has_current_user_permission('webhook.administrate') %}
-    <div class="column-auto">
+    <div>
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Create webhook') }}</span></a>
       </div>
@@ -25,12 +25,12 @@
   <div class="box" style="border-left: {{ '#55cc00' if webhook.enabled else '#aaaaaa' }} solid 0.25rem;">
 
     <div class="row row--space-between">
-      <div class="column-auto">
+      <div>
         {{ render_tag(_('enabled'), class='color-success') if webhook.enabled else render_tag(_('disabled'), class='color-disabled') }}
         <strong style="margin-left: 0.15rem;">{{ webhook.description|fallback }}</strong>
       </div>
       {%- if has_current_user_permission('webhook.administrate') %}
-      <div class="column-auto">
+      <div>
         <div class="button-row button-row--compact button-row--right">
           <a class="button" href="{{ url_for('.update_form', webhook_id=webhook.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
           <a class="button" data-action="webhook-test" href="{{ url_for('.test', webhook_id=webhook.id) }}">{{ render_icon('webhook') }} <span>{{ _('Test') }}</span></a>
@@ -64,7 +64,7 @@
       <div>
 
         <div class="row mb">
-          <div class="column-auto" style="flex-basis: 50%;">
+          <div style="flex-basis: 50%;">
 
             <div class="data-label">{{ _('Event types') }}</div>
             <div class="data-value">
@@ -80,7 +80,7 @@
 
           </div>
 
-          <div class="column-auto" style="flex-basis: 50%;">
+          <div style="flex-basis: 50%;">
             <div class="data-label">{{ _('Event filters') }}</div>
             <div class="data-value">
               <details style="font-size: 0.75rem;">

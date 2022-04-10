@@ -10,11 +10,11 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ _('Areas') }} {{ render_extra_in_heading(areas_with_utilization.total) }}</h1>
     </div>
     {%- if has_current_user_permission('seating.administrate') %}
-    <div class="column-auto">
+    <div>
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.area_create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create area') }}</span></a>
       </div>

@@ -9,7 +9,7 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>
         {{ brand.title }}
         {%- if brand.archived %}
@@ -18,7 +18,7 @@
       </h1>
     </div>
   {%- if has_current_user_permission('brand.update') %}
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
       </div>
@@ -58,11 +58,11 @@
   </div>
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h2>{{ _('Email Configuration') }}</h2>
     </div>
     {%- if email_config and has_current_user_permission('brand.update') %}
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button button--compact" href="{{ url_for('.email_config_update_form', brand_id=brand.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
       </div>
@@ -72,13 +72,13 @@
   <div class="box">
     {%- if email_config %}
     <div class="row mb">
-      <div class="column-auto">
+      <div>
 
       <div class="data-label">{{ _('Sender address') }}</div>
       <div class="data-value">{{ email_config.sender.address }}</div>
 
       </div>
-      <div class="column-auto">
+      <div>
 
       <div class="data-label">{{ _('Sender name') }}</div>
       <div class="data-value">{{ email_config.sender.name|fallback }}</div>

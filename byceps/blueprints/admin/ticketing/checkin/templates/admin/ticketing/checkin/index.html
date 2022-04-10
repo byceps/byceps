@@ -13,7 +13,7 @@
   <div class="box mb">
 
     <div class="row row--space-between row--wrap" style="align-items: center;">
-      <div class="column-auto">
+      <div>
 
         <form action="{{ url_for('.index', party_id=party.id) }}" class="single-row unobtrusive">
           <input type="search" name="search_term" placeholder="{{ [_('ticket code'), _('order number'), _('username'), _('first name'), _('last name'), _('email address')]|join(', ') }}" autofocus>
@@ -22,7 +22,7 @@
         </form>
 
       </div>
-      <div class="column-auto column--grow">
+      <div class="column--grow">
 
         <small>
           <ul style="margin: 0; padding-left: 1rem;">

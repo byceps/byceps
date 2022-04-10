@@ -7,11 +7,11 @@
   {%- if image.caption %}
   <figcaption{% if width %} style="max-width: {{ width }}px;"{% endif %}>
     <div class="row row--space-between">
-      <div class="column-auto">
+      <div>
         {{ image.caption }}
       </div>
       {%- if image.attribution %}
-      <div class="column-auto">
+      <div>
         <small>{{ image_credit_label }}: {{ image.attribution }}</small>
       </div>
       {%- endif %}

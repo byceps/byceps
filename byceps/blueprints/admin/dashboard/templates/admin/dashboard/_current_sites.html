@@ -2,10 +2,10 @@
 
 
 <div class="row row--space-between">
-  <div class="column-auto">
+  <div>
     <div class="dashboard-section-title">{{ _('Current Sites') }}</div>
   </div>
-  <div class="column-auto">
+  <div>
     <a class="dashboard-section-link" href="{{ url_for('site_admin.index_for_brand', brand_id=brand.id) if brand|default else url_for('site_admin.index') }}">{{ _('All sites') }} &rarr;</a>
   </div>
 </div>

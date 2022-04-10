@@ -11,7 +11,7 @@
   <h1>{{ page_title }} {{ render_extra_in_heading(orders.total) }}</h1>
 
   <div class="row row--space-between mb">
-    <div class="column-auto">
+    <div>
 
       <form action="{{ url_for('.index_for_shop', shop_id=shop.id) }}" class="single-row">
         {%- if only_payment_state %}
@@ -35,7 +35,7 @@
       </form>
 
     </div>
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
 
       <div class="filter">
         <span>{{ _('Status') }}:</span>

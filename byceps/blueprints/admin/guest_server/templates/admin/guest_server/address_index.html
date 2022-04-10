@@ -10,10 +10,10 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ _('Addresses') }} {{ render_extra_in_heading(addresses|length) }}</h1>
     </div>
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.address_export', party_id=party.id) }}">{{ render_icon('download') }} <span>{{ _('Export') }}</span></a>
       </div>

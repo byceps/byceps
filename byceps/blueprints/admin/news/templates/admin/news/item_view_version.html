@@ -26,7 +26,7 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
 
       <nav class="breadcrumbs">
         <ol>
@@ -36,7 +36,7 @@
       <h1>{% if not version.item.published %}{{ render_tag(_('Draft')) }} {% endif %}{{ item.title }}</h1>
 
     </div>
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
 
       {%- if has_current_user_permission('news_item.update') %}
       <div class="button-row button-row--nowrap button-row--right">
@@ -104,12 +104,12 @@
 
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
 
       <h2>{{ _('Images') }} {{ render_extra_in_heading(item.images|length) }}</h2>
 
     </div>
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
 
       {%- if has_current_user_permission('news_item.update') %}
       <div class="button-row button-row--nowrap button-row--right">
@@ -138,7 +138,7 @@
         <details class="newspost-images">
           <summary>#{{ image.number }}{% if image.id == item.featured_image_id %} {{ render_tag('featured') }}{% endif %}</summary>
           <div class="row row--space-between mb" style="margin-top: 0;">
-            <div class="column-auto">
+            <div>
 
               <div class="data-label">{{ _('ID') }}</div>
               <div class="data-value monospace">{{ image.id }}</div>
@@ -158,7 +158,7 @@
             </div>
 
             {%- if has_current_user_permission('news_item.update') %}
-            <div class="column-auto">
+            <div>
               <div class="button-row button-row--nowrap button-row--right">
                 <a class="button button--compact" href="{{ url_for('.image_update_form', image_id=image.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
                 <div class="dropdown">

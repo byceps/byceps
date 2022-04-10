@@ -31,11 +31,11 @@
   {%- call render_cell(href=url_for('admin_dashboard.view_party', party_id=party.id)) %}
   <div class="row">
     {%- if show_brand_avatar %}
-    <div class="column-auto">
+    <div>
       {{ render_brand_avatar(party.brand, '40') }}
     </div>
     {%- endif %}
-    <div class="column-auto column--grow">
+    <div class="column--grow">
       <div>{{ party.title }}</div>
       <div class="supplement">{{ party.starts_at|dateformat }}–{{ party.ends_at|dateformat }}</div>
     </div>
@@ -75,11 +75,11 @@
   {%- call render_cell(href=url_for('admin_dashboard.view_site', site_id=site.id)) %}
   <div class="row">
     {%- if show_brand_avatar %}
-    <div class="column-auto">
+    <div>
       {{ render_brand_avatar(site.brand, '40') }}
     </div>
     {%- endif %}
-    <div class="column-auto column--grow">
+    <div class="column--grow">
       <div>{{ site.title }}</div>
       <div class="supplement">{{ site.server_name }}</div>
     </div>

@@ -11,7 +11,7 @@
   <h1>{{ _('Tickets') }} {{ render_extra_in_heading(tickets.total) }}</h1>
 
   <div class="row row--space-between mb">
-    <div class="column-auto">
+    <div>
 
       <form action="{{ url_for('.index_for_party', party_id=party.id) }}" class="single-row">
       <input type="search" name="search_term" placeholder="{{ _('ticket code') }}"{%- if search_term %} value="{{ search_term }}"{% endif %}>
@@ -20,10 +20,10 @@
       </form>
 
     </div>
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
 
       <div class="row">
-        <div class="column-auto">
+        <div>
 
           <div class="dropdown">
             <span>{{ _('Category') }}:</span>
@@ -47,7 +47,7 @@
           </div>
 
         </div>
-        <div class="column-auto">
+        <div>
 
           <div class="dropdown">
             <span>{{ _('revoked') }}:</span>
@@ -74,7 +74,7 @@
           </div>
 
         </div>
-        <div class="column-auto">
+        <div>
 
           <div class="dropdown">
             <span>{{ _('checked in') }}:</span>

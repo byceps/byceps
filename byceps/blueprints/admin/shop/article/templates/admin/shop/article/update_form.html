@@ -15,27 +15,27 @@
   <form action="{{ url_for('.update', article_id=article.id) }}" method="post">
     {{ form_field(form.description, maxlength=100, autofocus='autofocus') }}
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.price, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', suffix='€') }}
       </div>
-      <div class="column-auto">
+      <div>
         {{ form_field(form.tax_rate, list='tax_rates', size=5, maxlength=5, style='text-align: right; width: 5.5rem;', suffix='%') }}
         {{ form_datalist('tax_rates', ['0.0', '7.0', '19.0']) }}
       </div>
     </div>
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.available_from_date) }}
       </div>
-      <div class="column-auto">
+      <div>
         {{ form_field(form.available_from_time) }}
       </div>
     </div>
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.available_until_date) }}
       </div>
-      <div class="column-auto">
+      <div>
         {{ form_field(form.available_until_time) }}
       </div>
     </div>

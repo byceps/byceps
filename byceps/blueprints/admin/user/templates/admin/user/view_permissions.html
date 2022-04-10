@@ -20,10 +20,10 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h2>{{ _('Permissions') }}</h2>
     </div>
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
       {%- if has_current_user_permission('role.assign') %}
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.manage_roles', user_id=user.id) }}">{{ render_icon('permission') }} <span>{{ _('Manage roles') }}</span></a>

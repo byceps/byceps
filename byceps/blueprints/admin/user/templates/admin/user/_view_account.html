@@ -2,12 +2,12 @@
 {%- from 'macros/misc.html' import render_tag %}
 
 <div class="row row--space-between" style="margin-bottom: 0.6rem;">
-  <div class="column-auto">
+  <div>
 
     <h2 style="margin: 0;">{{ _('Account') }}</h2>
 
   </div>
-  <div class="column-auto column--align-bottom">
+  <div class="column--align-bottom">
 
 {% include 'admin/user/_view_account_actions.html' %}
 
@@ -18,10 +18,10 @@
 
   <div class="data-label">{{ _('ID') }}</div>
   <div class="row mb">
-    <div class="column-auto">
+    <div>
       <div class="data-value">{{ user.id }}</div>
     </div>
-    <div class="column-auto">
+    <div>
       <input id="user-id-field" value="{{ user.id }}" style="position: fixed; top: -1000px;" readonly>
       <button id="user-id-copy-trigger" data-field-id="user-id-field" class="button button--compact" title="{{ _('Copy to clipboard') }}"><span>{{ render_icon('clipboard') }}</span></button>
     </div>

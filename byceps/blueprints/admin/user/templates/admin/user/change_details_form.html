@@ -12,20 +12,20 @@
     {{ form_datalist('countries', country_names) }}
 
     <div class="row">
-      <div class="column-auto column--grow">
+      <div class="column--grow">
         {{ form_field(form.first_name, maxlength=40, autofocus='autofocus') }}
       </div>
-      <div class="column-auto column--grow">
+      <div class="column--grow">
         {{ form_field(form.last_name, maxlength=80) }}
       </div>
     </div>
     {{ form_field(form.date_of_birth, size=10) }}
     {{ form_field(form.street, maxlength=40) }}
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.zip_code, size=5, maxlength=5) }}
       </div>
-      <div class="column-auto column--grow">
+      <div class="column--grow">
         {{ form_field(form.city, maxlength=40) }}
       </div>
     </div>

@@ -23,18 +23,18 @@
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
 {{ form_form_errors(form) }}
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.starts_on) }}
       </div>
-      <div class="column-auto">
+      <div>
         {{ form_field(form.starts_at) }}
       </div>
     </div>
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.ends_on) }}
       </div>
-      <div class="column-auto">
+      <div>
         {{ form_field(form.ends_at) }}
       </div>
     </div>

@@ -10,14 +10,14 @@
 
 <div class="data-label">{{ _('Address') }}</div>
 <div class="row">
-  <div class="column-auto">
+  <div>
     <div class="data-value">
       {{ order.address.street }}<br>
       {{ order.address.zip_code }} {{ order.address.city }}<br>
       {{ order.address.country }}
     </div>
   </div>
-  <div class="column-auto">
+  <div>
     <textarea id="order-address-field" style="position: fixed; top: -1000px;" readonly>{{
       '%s %s\n%s\n%s %s'|format(
         order.first_name, order.last_name,

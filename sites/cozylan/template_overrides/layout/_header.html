@@ -1,26 +1,26 @@
           <div class="page-header-inner">
             <div class="row row--space-between row--vertically-centered">
-              <div class="column-auto">
+              <div>
 
                 <div class="page-header-columns row row--space-between row--vertically-centered">
-                  <div class="column-auto">
+                  <div>
                     <a href="/" class="brand-logo"><span>CozyLAN</span></a>
                   </div>
-                  <div class="column-auto">
+                  <div>
                     <span class="brand-slogan">Gemütlich zocken.</span>
                   </div>
                 </div>
 
               </div>
-              <div class="column-auto">
+              <div>
 
                 <div class="row row--space-between row--vertically-centered">
                   {%- if not g.user.locale %}
-                  <div class="column-auto">
+                  <div>
 {% include 'layout/_locale_selector.html' %}
                   </div>
                   {%- endif %}
-                  <div class="column-auto">
+                  <div>
 {% include 'layout/_current_user.html' %}
                   </div>
                 </div>

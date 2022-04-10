@@ -143,9 +143,6 @@ img {
   flex-wrap: wrap;
 }
 
-.column-auto {
-}
-
 .column--grow {
   flex-grow: 1;
 }

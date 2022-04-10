@@ -21,11 +21,11 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ page_title }} {{ render_extra_in_heading(articles.total) }}</h1>
     </div>
     {%- if has_current_user_permission('shop_article.create') %}
-    <div class="column-auto">
+    <div>
       <div class="button-row button-row--right">
         <div class="dropdown">
           <button class="dropdown-toggle button">{{ render_icon('add') }} <span>{{ _('Create article') }}</span> {{ render_icon('chevron-down') }}</button>

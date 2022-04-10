@@ -59,11 +59,11 @@
   <div class="box">
 
     <div class="row">
-      <div class="column-auto">
+      <div>
         <h2 style="margin-top: 0;">{{ _('My Presence') }} {{ render_extra_in_heading(current_user_presences|length) }}</h2>
       </div>
       {%- if has_current_user_permission('orga_presence.update') %}
-      <div class="column-auto">
+      <div>
         <div class="button-row button-row--compact button-row--right">
           <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Add') }}</span></a>
         </div>

@@ -7,11 +7,11 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ _('Settings') }}</h1>
     </div>
     {%- if has_current_user_permission('guest_server.administrate') %}
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.setting_update_form', party_id=party.id) }}" title="{{ _('Update settings') }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
       </div>
@@ -21,7 +21,7 @@
 
   <div class="box">
     <div class="row row--space-between">
-      <div class="column-auto" style="flex-basis: 25%;">
+      <div style="flex-basis: 25%;">
 
         <div class="data-label">{{ _('Netmask') }}</div>
         <div class="data-value">
@@ -33,7 +33,7 @@
         </div>
 
       </div>
-      <div class="column-auto" style="flex-basis: 25%;">
+      <div style="flex-basis: 25%;">
 
         <div class="data-label">{{ _('Gateway') }}</div>
         <div class="data-value">
@@ -45,7 +45,7 @@
         </div>
 
       </div>
-      <div class="column-auto" style="flex-basis: 25%;">
+      <div style="flex-basis: 25%;">
 
         <div class="data-label">{{ _('DNS servers') }}</div>
         <div class="data-value">
@@ -61,7 +61,7 @@
         </div>
 
       </div>
-      <div class="column-auto" style="flex-basis: 25%;">
+      <div style="flex-basis: 25%;">
 
         <div class="data-label">{{ _('Domain') }}</div>
         <div class="data-value">

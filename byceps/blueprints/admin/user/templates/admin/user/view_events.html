@@ -10,10 +10,10 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h2>{{ _('Events') }} {{ render_extra_in_heading(log_entries|length) }}</h2>
     </div>
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
       <div class="button-row button-row--right">
         {%- if logins_included %}
         <a class="button button--compact" href="{{ url_for('.view_events', user_id=user.id, include_logins='no') }}">{{ render_icon('hidden') }} <span>{{ _('Hide logins') }}</span></a>

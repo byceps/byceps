@@ -8,7 +8,7 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <nav class="breadcrumbs">
         <ol>
           <li><a href="{{ url_for('.board_index_for_brand', brand_id=board_brand_id) }}">{{ _('Boards') }}</a></li>
@@ -17,7 +17,7 @@
       <h1>{{ board_id }}</h1>
     </div>
   {%- if has_current_user_permission('board_category.create') %}
-    <div class="column-auto column--align-bottom">
+    <div class="column--align-bottom">
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.category_create_form', board_id=board_id) }}">{{ render_icon('add') }} <span>{{ _('Create category') }}</span></a>
       </div>

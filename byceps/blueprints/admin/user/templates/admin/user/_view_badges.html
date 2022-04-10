@@ -3,12 +3,12 @@
 {%- from 'macros/icons.html' import render_icon %}
 
 <div class="row row--space-between" style="margin-bottom: 0.6rem;">
-  <div class="column-auto">
+  <div>
 
     <h2 style="margin: 0;">{{ _('Badges') }} {{ render_extra_in_heading(badges_with_awarding_quantity|length) }}</h2>
 
   </div>
-  <div class="column-auto column--align-bottom">
+  <div class="column--align-bottom">
 
     {%- if has_current_user_permission('user_badge.award') %}
     <div class="button-row button-row--compact button-row--right">

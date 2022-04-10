@@ -2,10 +2,10 @@
 
 
 <div class="row row--space-between">
-  <div class="column-auto">
+  <div>
     <div class="dashboard-section-title">{{ _('Active Parties') }}</div>
   </div>
-  <div class="column-auto">
+  <div>
     <a class="dashboard-section-link" href="{{ url_for('party_admin.index_for_brand', brand_id=brand.id) if brand|default else url_for('party_admin.index') }}">{{ _('All parties') }} &rarr;</a>
   </div>
 </div>

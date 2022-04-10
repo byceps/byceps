@@ -8,11 +8,11 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ _('Ticket categories') }} {{ render_extra_in_heading(categories_with_ticket_counts|length) }}</h1>
     </div>
     {%- if has_current_user_permission('ticketing.administrate') %}
-    <div class="column-auto">
+    <div>
       <div class="button-row button-row--right">
         <a class="button" href="{{ url_for('.create_form', party_id=party.id) }}">{{ render_icon('add') }} <span>{{ _('Create category') }}</span></a>
       </div>

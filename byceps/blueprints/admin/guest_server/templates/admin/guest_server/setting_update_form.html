@@ -16,25 +16,25 @@
   <form action="{{ url_for('.setting_update', party_id=party.id) }}" method="post">
 
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.netmask, autofocus='autofocus') }}
       </div>
-      <div class="column-auto">
+      <div>
         {{ form_field(form.gateway) }}
       </div>
     </div>
 
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.dns_server1) }}
       </div>
-      <div class="column-auto">
+      <div>
         {{ form_field(form.dns_server2) }}
       </div>
     </div>
 
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.domain) }}
       </div>
     </div>

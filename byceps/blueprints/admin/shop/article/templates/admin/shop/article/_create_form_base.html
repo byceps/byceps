@@ -26,10 +26,10 @@
     {{ form_field(form.description, maxlength=80) }}
 {% block additional_fields %}{% endblock %}
     <div class="row">
-      <div class="column-auto">
+      <div>
         {{ form_field(form.price, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', suffix='€') }}
       </div>
-      <div class="column-auto">
+      <div>
         {{ form_field(form.tax_rate, list='tax_rates', size=5, maxlength=5, style='text-align: right; width: 5.5rem;', suffix='%') }}
         {{ form_datalist('tax_rates', ['0.0', '7.0', '19.0']) }}
       </div>

@@ -13,7 +13,7 @@
   {%- endwith %}
 
   <div class="row row--space-between">
-    <div class="column-auto column--grow">
+    <div class="column--grow">
       <div class="ticket-selector button">
         <ol id="ticket-selection">
           {%- for ticket, occupies_seat, seat_label in managed_tickets|sort(attribute='0.code') %}
@@ -44,7 +44,7 @@
         {{ render_icon('chevron-down') }}
       </div>
     </div>
-    <div class="column-auto">
+    <div>
       <button class="button" id="release-seat-trigger" title="Sitzplatz freigeben">{{ render_icon('remove') }}</button>
     </div>
   </div>

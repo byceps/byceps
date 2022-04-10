@@ -11,7 +11,7 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ page_title }}</h1>
     </div>
   </div>
@@ -19,19 +19,19 @@
   <div class="box" style="border-left: {{ '#55cc00' if server.approved else '#ffcc11' }} solid 0.25rem;">
 
     <div class="row">
-      <div class="column-auto" style="flex-basis: 33%;">
+      <div style="flex-basis: 33%;">
 
         <div class="data-label">{{ _('Owner') }}</div>
         <div class="data-value">{{ render_user_microcard(users_by_id[server.owner_id]) }}</div>
 
       </div>
-      <div class="column-auto" style="flex-basis: 33%;">
+      <div style="flex-basis: 33%;">
 
         <div class="data-label">{{ _('Status') }}</div>
         <div class="data-value">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</div>
 
       </div>
-      <div class="column-auto" style="flex-basis: 33%;">
+      <div style="flex-basis: 33%;">
 
         {%- if has_current_user_permission('guest_server.administrate') %}
         <div class="button-row button-row--compact button-row--nowrap button-row--right">
@@ -46,19 +46,19 @@
 
     <div class="mt">
       <div class="row">
-        <div class="column-auto" style="flex-basis: 33%;">
+        <div style="flex-basis: 33%;">
 
           <div class="data-label">{{ _('Created by') }}</div>
           <div class="data-value">{{ render_user_avatar_and_name(users_by_id[server.creator_id], size=20) }}</div>
 
         </div>
-        <div class="column-auto" style="flex-basis: 33%;">
+        <div style="flex-basis: 33%;">
 
           <div class="data-label">{{ _('Created at') }}</div>
           <div class="data-value">{{ server.created_at|datetimeformat }}</div>
 
         </div>
-        <div class="column-auto" style="flex-basis: 33%;">
+        <div style="flex-basis: 33%;">
 
         </div>
       </div>
@@ -66,7 +66,7 @@
 
     <div class="mt">
       <div class="row">
-        <div class="column-auto" style="flex-basis: 33%;">
+        <div style="flex-basis: 33%;">
 
           <table class="index">
             <thead>
@@ -92,13 +92,13 @@
           </table>
 
         </div>
-        <div class="column-auto" style="flex-basis: 33%;">
+        <div style="flex-basis: 33%;">
 
           <div class="data-label">{{ _('Notes by owner') }}</div>
           <div class="data-value">{{ server.notes_owner|fallback(_('none')) }}</div>
 
         </div>
-        <div class="column-auto" style="flex-basis: 33%;">
+        <div style="flex-basis: 33%;">
 
           <div class="data-label">{{ _('Notes by admin') }}</div>
           <div class="data-value">{{ server.notes_admin|fallback(_('none')) }}</div>

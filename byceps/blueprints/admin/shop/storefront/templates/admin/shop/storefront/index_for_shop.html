@@ -7,10 +7,10 @@
 {% block body %}
 
   <div class="row row--space-between">
-    <div class="column-auto">
+    <div>
       <h1>{{ page_title }} {{ render_extra_in_heading(storefronts|length) }}</h1>
     </div>
-    <div class="column-auto">
+    <div>
       <div class="button-row button-row--right">
         {%- if has_current_user_permission('shop.create') %}
         <a class="button" href="{{ url_for('.create_form', shop_id=shop.id) }}">{{ render_icon('add') }} <span>{{ _('Create storefront') }}</span></a>

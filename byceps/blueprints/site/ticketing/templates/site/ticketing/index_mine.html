@@ -53,10 +53,10 @@
 
           <div class="ticket-card-cell-block">
             <div class="row row--space-between">
-              <div class="column-auto">
+              <div>
                 <div class="data-label">{{ _('Code') }}</div>
               </div>
-              <div class="column-auto">
+              <div>
                 {%- if ticket.user_checked_in %}
                 {{ render_tag(_('checked in')) }}
                 {%- else %}
@@ -98,11 +98,11 @@
 
           <div class="ticket-card-cell-block">
             <div class="row row--space-between">
-              <div class="column-auto">
+              <div>
                 <div class="data-label">{{ pgettext('ticket', 'User') }}</div>
               </div>
               {%- if ticket_management_enabled and (user_manager == g.user) and not ticket.user_checked_in %}
-              <div class="column-auto">
+              <div>
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('chevron-down') -}}</button>
                   <ol class="dropdown-menu dropdown-menu--right">
@@ -129,11 +129,11 @@
 
           <div class="ticket-card-cell-block">
             <div class="row row--space-between">
-              <div class="column-auto">
+              <div>
                 <div class="data-label">{{ _('Manager') }}</div>
               </div>
               {%- if ticket_management_enabled and (ticket.owned_by_id == g.user.id) and not ticket.user_checked_in %}
-              <div class="column-auto">
+              <div>
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('chevron-down') -}}</button>
                   <ol class="dropdown-menu dropdown-menu--right">
@@ -168,11 +168,11 @@
 
           <div class="ticket-card-cell-block">
             <div class="row row--space-between">
-              <div class="column-auto">
+              <div>
                 <div class="data-label">{{ _('Manager') }}</div>
               </div>
               {%- if ticket.owned_by_id == g.user.id %}
-              <div class="column-auto">
+              <div>
                 <div class="dropdown">
                   <button class="dropdown-toggle button button--outline button--compact">{{ render_icon('chevron-down') -}}</button>
                   <ol class="dropdown-menu dropdown-menu--right">
