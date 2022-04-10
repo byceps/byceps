@@ -15,8 +15,8 @@ from byceps.services.authorization.transfer.models import PermissionID
 
 
 @pytest.fixture(scope='package')
-def api_app(admin_app):
-    return admin_app
+def api_app(make_admin_app):
+    return make_admin_app(API_ENABLED=True)
 
 
 @pytest.fixture(scope='package')
