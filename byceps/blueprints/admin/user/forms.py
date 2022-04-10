@@ -32,6 +32,8 @@ EMAIL_ADDRESS_PATTERN = re.compile(r'^.+?@.+?\..+?$')
 MINIMUM_PASSWORD_LENGTH = 10
 MAXIMUM_PASSWORD_LENGTH = 100
 
+ACCOUNT_DELETION_VERIFICATION_TEXT = 'delete account'
+
 
 def validate_email_address(form, field):
     if EMAIL_ADDRESS_PATTERN.search(field.data) is None:
@@ -108,7 +110,7 @@ class DeleteAccountForm(LocalizedForm):
 
     @staticmethod
     def validate_verification(form, field):
-        if field.data != 'delete account':
+        if field.data != ACCOUNT_DELETION_VERIFICATION_TEXT:
             raise ValidationError(lazy_gettext('Invalid confirmation word'))
 
 

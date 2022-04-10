@@ -44,6 +44,7 @@ from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import (
+    ACCOUNT_DELETION_VERIFICATION_TEXT,
     ChangeDetailsForm,
     ChangeEmailAddressForm,
     ChangeScreenNameForm,
@@ -402,6 +403,7 @@ def delete_account_form(user_id, erroneous_form=None):
         'profile_user': user,
         'user': user,
         'form': form,
+        'verification_text': ACCOUNT_DELETION_VERIFICATION_TEXT,
     }
 
 
