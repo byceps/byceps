@@ -3,6 +3,35 @@
 {% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'guest_server' %}
 {% set page_title = _('Guest Servers') %}
+
+{% block head %}
+  <style>
+    .servers {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .server {
+      border: #999999 solid 1px;
+      border-radius: 1rem;
+      display: flex;
+      gap: 1rem 1.5rem;
+      padding: 1rem 1.5rem;
+    }
+
+    .server-addresses {
+      column-gap: 1rem;
+      display: grid;
+      grid-template-columns: 1;
+    }
+
+    .server-addresses--approved {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  </style>
+{%- endblock %}
+
 {% block body %}
 
   <div class="row row--space-between">
@@ -17,80 +46,95 @@
   </div>
 
   {%- if servers %}
-  <table class="index">
-    <thead>
-      <tr>
-        <th>{{ _('Status') }}</th>
-        <th class="nowrap">{{ _('IP address') }}</th>
-        <th>{{ _('Hostname') }}</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
+
+  <div class="servers">
     {%- for server in servers %}
-      {%- for address in sort_addresses(server.addresses) %}
-      <tr>
-        {%- if loop.first %}
-        <td rowspan="{{ server.addresses|length }}">
+    <div class="row row--space-between server">
+      <div>
+
+        <div class="data-label">{{ _('Status') }}</div>
+        <div class="data-value">
           {%- if server.approved -%}
           {{ render_tag(_('approved'), class='color-success') }}
           {%- else -%}
           {{ render_tag(_('pending'), class='color-warning') }}
           {%- endif -%}
-        </td>
-        {%- endif %}
-        <td>
-          {%- if address.ip_address -%}
-          <span class="monospace">{{ address.ip_address }}</span>
-          {%- else -%}
-          {{ render_tag(_('none'), class='color-disabled') }}
-          {%- endif -%}
-        </td>
-        <td>
-          {%- if address.hostname -%}
-          <span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>
-          {%- else -%}
-          {{ _('not given')|dim }}
-          {%- endif -%}
-        </td>
-        {%- if loop.first and server.approved %}
-        <td rowspan="{{ server.addresses|length }}"><a class="button button--compact" style="margin-left: 0.5rem;" href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}" title="{{ _('View printable server card') }}">{{ render_icon('print') }}</a></td>
-        {%- else %}
-        <td></td>
-        {%- endif %}
-      </tr>
-      {%- endfor %}
+        </div>
+
+      </div>
+      <div class="column--grow">
+
+        <div class="server-addresses{% if server.approved %} server-addresses--approved{% endif %}">
+
+          {%- if server.approved %}
+          <div class="data-label">{{ _('IP address') }}</div>
+          {%- endif %}
+          <div class="data-label">{{ _('Hostname') }}</div>
+          {%- if server.approved %}
+          <div class="data-label">{{ _('Netmask') }}</div>
+          <div class="data-label">{{ _('Gateway') }}</div>
+          {%- endif %}
+
+        {%- for address in sort_addresses(server.addresses) %}
+
+          {%- if server.approved %}
+
+          <div class="data-value">
+            {%- if address.ip_address -%}
+            <span class="monospace">{{ address.ip_address }}</span>
+            {%- else -%}
+            {{ render_tag(_('none'), class='color-disabled') }}
+            {%- endif -%}
+          </div>
+
+          {%- endif %}
+
+          <div class="data-value">
+            {%- if address.hostname -%}
+            <span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>
+            {%- else -%}
+            {{ _('not given')|dim }}
+            {%- endif -%}
+          </div>
+
+          {%- if server.approved %}
+
+          <div class="data-value">
+            {%- if setting.netmask -%}
+            <span class="monospace">{{ setting.netmask }}</span>
+            {%- else -%}
+            {{ _('not specified')|dim }}
+            {%- endif -%}
+          </div>
+
+          <div class="data-value">
+            {%- if setting.gateway -%}
+            <span class="monospace">{{ setting.gateway }}</span>
+            {%- else -%}
+            {{ _('not specified')|dim }}
+            {%- endif -%}
+          </div>
+
+          {%- endif %}
+
+        {%- endfor %}
+        </div>
+
+      </div>
+      {%- if server.approved %}
+      <div>
+
+        <a class="button button--compact" href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}" title="{{ _('View printable server card') }}">{{ render_icon('print') }}</a>
+
+      </div>
+      {%- endif %}
+    </div>
     {%- endfor %}
-    </tbody>
-  </table>
+  </div>
 
   <h2>{{ _('Further Settings') }}</h2>
 
-  <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));">
-    <div>
-
-      <div class="data-label">{{ _('Netmask') }}</div>
-      <div class="data-value">
-        {%- if setting.netmask %}
-        <span class="monospace">{{ setting.netmask }}
-        {%- else %}
-        {{ _('not specified')|dim }}
-        {%- endif %}
-      </div>
-
-    </div>
-    <div>
-
-      <div class="data-label">{{ _('Gateway') }}</div>
-      <div class="data-value">
-        {%- if setting.gateway %}
-        <span class="monospace">{{ setting.gateway }}
-        {%- else %}
-        {{ _('not specified')|dim }}
-        {%- endif %}
-      </div>
-
-    </div>
+  <div class="row">
     <div>
 
       <div class="data-label">{{ _('DNS servers') }}</div>
@@ -98,12 +142,24 @@
         {%- with dns_servers = [setting.dns_server1, setting.dns_server2]|reject('none')|list %}
           {%- if dns_servers %}
             {%- for dns_server in dns_servers %}
-          <span class="monospace">{{ dns_server }}</span>{% if not loop.last %}, {% endif %}
+        <span class="monospace">{{ dns_server }}</span>{% if not loop.last %}, {% endif %}
             {%- endfor %}
           {%- else %}
           {{ _('not specified')|dim }}
           {%- endif %}
         {%- endwith %}
+      </div>
+
+    </div>
+    <div>
+
+      <div class="data-label">{{ _('Domain') }}</div>
+      <div class="data-value">
+        {%- if setting.domain -%}
+        <span class="monospace">{{ setting.domain }}</span>
+        {%- else -%}
+        {{ _('not specified')|dim }}
+        {%- endif -%}
       </div>
 
     </div>
