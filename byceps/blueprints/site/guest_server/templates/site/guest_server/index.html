@@ -22,10 +22,28 @@
       {%- for address in sort_addresses(server.addresses) %}
       <tr>
         {%- if loop.first %}
-        <td rowspan="{{ server.addresses|length }}">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</td>
+        <td rowspan="{{ server.addresses|length }}">
+          {%- if server.approved -%}
+          {{ render_tag(_('approved'), class='color-success') }}
+          {%- else -%}
+          {{ render_tag(_('pending'), class='color-warning') }}
+          {%- endif -%}
+        </td>
         {%- endif %}
-        <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-disabled') }}{% endif %}</td>
-        <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>{% else %}{{ _('not given')|dim }}{% endif %}</td>
+        <td>
+          {%- if address.ip_address -%}
+          <span class="monospace">{{ address.ip_address }}</span>
+          {%- else -%}
+          {{ render_tag(_('none'), class='color-disabled') }}
+          {%- endif -%}
+        </td>
+        <td>
+          {%- if address.hostname -%}
+          <span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>
+          {%- else -%}
+          {{ _('not given')|dim }}
+          {%- endif -%}
+        </td>
         {%- if loop.first and server.approved %}
         <td rowspan="{{ server.addresses|length }}"><a class="button button--compact" style="margin-left: 0.5rem;" href="{{ url_for('guest_server_common.view_printable_card', server_id=server.id) }}" title="{{ _('View printable server card') }}">{{ render_icon('print') }}</a></td>
         {%- else %}
