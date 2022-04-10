@@ -39,6 +39,7 @@ def create_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
         }) \
         .on_conflict_do_nothing(constraint=table.primary_key)
     db.session.execute(query)
+    db.session.commit()
 
 
 def delete_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
