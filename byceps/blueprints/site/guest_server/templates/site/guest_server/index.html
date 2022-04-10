@@ -5,7 +5,16 @@
 {% set page_title = _('Guest Servers') %}
 {% block body %}
 
-  <h1>{{ page_title }}</h1>
+  <div class="row row--space-between">
+    <div>
+      <h1>{{ page_title }}</h1>
+    </div>
+    <div>
+      <div class="button-row button-row--compact button-row--right">
+        <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Register guest server') }}</span></a>
+      </div>
+    </div>
+  </div>
 
   {%- if servers %}
   <table class="index">
@@ -102,9 +111,5 @@
   {%- else %}
   <p class="dimmed">{{ _('No servers registered.') }}</p>
   {%- endif %}
-
-  <div class="button-row button-row--center">
-    <a class="button" href="{{ url_for('.create_form') }}">{{ render_icon('add') }} <span>{{ _('Register guest server') }}</span></a>
-  </div>
 
 {%- endblock %}
