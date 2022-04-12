@@ -1,5 +1,5 @@
 {%- from 'macros/board.html' import render_flag_new %}
-{%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/guest_server.html' import render_continuative_link %}
 
 <h2>{{ _('Discussion Board') }}</h2>
 
@@ -23,6 +23,4 @@
 <p class="dimmed">{{ _('No topics yet.') }}</p>
 {%- endif %}
 
-<div class="continuative-link">
-  <a class="disguised" href="{{ url_for('board.category_index') }}">{{ _('Discussion Board') }}</a> {{ render_icon('arrow-right') }}
-</div>
+{{ render_continuative_link(url_for('board.category_index'), _('Discussion Board')) }}

@@ -1,4 +1,4 @@
-{%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/guest_server.html' import render_continuative_link %}
 {%- from 'macros/misc.html' import render_tag %}
 {%- from 'macros/seating.html' import render_seat_link %}
 
@@ -37,6 +37,4 @@
 <p class="dimmed">{{ _('You do not use a ticket yet.') }}</p>
 {%- endif %}
 
-<div class="continuative-link">
-  <a class="disguised" href="{{ url_for('ticketing.index_mine') }}">{{ _('Ticket management') }}</a> {{ render_icon('arrow-right') }}
-</div>
+{{ render_continuative_link(url_for('ticketing.index_mine'), _('Ticket management')) }}

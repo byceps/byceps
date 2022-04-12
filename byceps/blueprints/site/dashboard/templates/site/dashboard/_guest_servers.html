@@ -1,4 +1,4 @@
-{%- from 'macros/icons.html' import render_icon %}
+{%- from 'macros/guest_server.html' import render_continuative_link %}
 {%- from 'macros/misc.html' import render_tag %}
 
 <h2>{{ _('Guest Servers') }}</h2>
@@ -27,6 +27,4 @@
 <p class="dimmed">{{ _('No servers registered.') }}</p>
 {%- endif %}
 
-<div class="continuative-link">
-  <a class="disguised" href="{{ url_for('guest_server.index') }}">{{ _('Guest Servers') }}</a> {{ render_icon('arrow-right') }}
-</div>
+{{ render_continuative_link(url_for('guest_server.index'), _('Guest Servers')) }}
