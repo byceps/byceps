@@ -3,29 +3,26 @@
 
 <h2>{{ _('Guest Servers') }}</h2>
 
+
 {%- if guest_servers %}
-<table class="index wide">
-  <thead>
-    <tr>
-      <th>{{ _('Status') }}</th>
-      <th class="nowrap">{{ _('IP address') }}</th>
-      <th>{{ _('Hostname') }}</th>
-    </tr>
-  </thead>
-  <tbody>
-  {%- for server in guest_servers %}
-    {%- for address in sort_guest_server_addresses(server.addresses) %}
-    <tr>
-      {%- if loop.first %}
-      <td rowspan="{{ server.addresses|length }}">{{ render_tag(_('approved'), class='color-success') if server.approved else render_tag(_('pending'), class='color-warning') }}</td>
-      {%- endif %}
-      <td>{% if address.ip_address %}<span class="monospace">{{ address.ip_address }}</span>{% else %}{{ render_tag(_('none'), class='color-disabled') }}{% endif %}</td>
-      <td>{% if address.hostname %}<span class="monospace">{{ address.hostname }}{% if guest_server_setting.domain %}.{{ guest_server_setting.domain }}{% endif %}</span>{% else %}{{ _('not given')|dim }}{% endif %}</td>
-    </tr>
-    {%- endfor %}
-  {%- endfor %}
-  </tbody>
-</table>
+<div class="row" style="gap: 1.5rem; justify-content: center;">
+{%- with guest_servers_pending_count = guest_servers|rejectattr('approved')|list|length %}
+  {%- if guest_servers_pending_count %}
+  <div class="centered">
+    <div style="font-size: 2rem; font weight: bold;">{{ guest_servers_pending_count }}</div>
+    <div>{{ render_tag(_('pending'), class='color-warning') }}</div>
+  </div>
+  {%- endif %}
+{%- endwith %}
+{%- with guest_servers_approved_count = guest_servers|selectattr('approved')|list|length %}
+  {%- if guest_servers_approved_count %}
+  <div class="centered">
+    <div style="font-size: 2rem; font weight: bold;">{{ guest_servers_approved_count }}</div>
+    {{ render_tag(_('approved'), class='color-success') }}
+  </div>
+  {%- endif %}
+{%- endwith %}
+</div>
 {%- else %}
 <p class="dimmed">{{ _('No servers registered.') }}</p>
 {%- endif %}

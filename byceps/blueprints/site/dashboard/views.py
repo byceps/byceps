@@ -59,9 +59,6 @@ def index():
     guest_servers = guest_server_service.get_servers_for_owner_and_party(
         g.user.id, g.party_id
     )
-    guest_server_setting = guest_server_service.get_setting_for_party(
-        g.party_id
-    )
 
     return {
         'open_orders': open_orders,
@@ -69,7 +66,6 @@ def index():
         'news_headlines': news_headlines,
         'board_topics': board_topics,
         'guest_servers': guest_servers,
-        'guest_server_setting': guest_server_setting,
         'sort_guest_server_addresses': _sort_addresses,
     }
 
