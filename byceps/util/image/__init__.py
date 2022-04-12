@@ -38,7 +38,7 @@ def create_thumbnail(
     if force_square:
         image = _crop_to_square(image)
 
-    image.thumbnail(maximum_dimensions, resample=Image.ANTIALIAS)
+    image.thumbnail(maximum_dimensions, resample=Image.Resampling.LANCZOS)
 
     image.save(output_stream, format=image_type)
 
