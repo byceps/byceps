@@ -215,13 +215,11 @@ def delete_server(server_id: ServerID) -> None:
     db.session.execute(
         delete(DbAddress)
         .where(DbAddress.server_id == server_id)
-        .execution_options(synchronize_session='fetch')
     )
 
     db.session.execute(
         delete(DbServer)
         .where(DbServer.id == server_id)
-        .execution_options(synchronize_session='fetch')
     )
 
     db.session.commit()
