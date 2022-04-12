@@ -14,6 +14,28 @@
   {%- if address.hostname -%}
   <span class="monospace">{{ address.hostname }}{% if setting.domain %}.{{ setting.domain }}{% endif %}</span>
   {%- else -%}
-  {{ _('not given')|dim }}
+  {{ _('not specified')|dim }}
+  {%- endif %}
+{%- endmacro %}
+
+
+{%- macro render_netmask(address, setting) %}
+  {%- if address.netmask -%}
+  <span class="monospace">{{ address.netmask }}</span>
+  {%- elif setting.netmask -%}
+  <span class="monospace">{{ setting.netmask|dim }}</span>
+  {%- else -%}
+  {{ _('not specified')|dim }}
+  {%- endif %}
+{%- endmacro %}
+
+
+{%- macro render_gateway(address, setting) %}
+  {%- if address.gateway -%}
+  <span class="monospace">{{ address.gateway }}</span>
+  {%- elif setting.gateway -%}
+  <span class="monospace">{{ setting.gateway|dim }}</span>
+  {%- else -%}
+  {{ _('not specified')|dim }}
   {%- endif %}
 {%- endmacro %}

@@ -136,6 +136,8 @@ class Address(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     _ip_address = db.Column('ip_address', postgresql.INET, nullable=True)
     hostname = db.Column(db.UnicodeText, nullable=True)
+    _netmask = db.Column('netmask', postgresql.INET, nullable=True)
+    _gateway = db.Column('gateway', postgresql.INET, nullable=True)
 
     def __init__(
         self,
@@ -143,10 +145,14 @@ class Address(db.Model):
         *,
         ip_address: Optional[IPAddress] = None,
         hostname: Optional[str] = None,
+        netmask: Optional[IPAddress] = None,
+        gateway: Optional[IPAddress] = None,
     ) -> None:
         self.server = server
         self.ip_address = ip_address
         self.hostname = hostname
+        self.netmask = netmask
+        self.gateway = gateway
 
     @hybrid_property
     def ip_address(self) -> Optional[IPAddress]:
@@ -158,6 +164,28 @@ class Address(db.Model):
     @ip_address.setter
     def ip_address(self, ip_address: Optional[IPAddress]) -> None:
         self._ip_address = str(ip_address) if ip_address else None
+
+    @hybrid_property
+    def netmask(self) -> Optional[IPAddress]:
+        if not self._netmask:
+            return None
+
+        return ipaddress.ip_address(self._netmask)
+
+    @netmask.setter
+    def netmask(self, netmask: Optional[IPAddress]) -> None:
+        self._netmask = str(netmask) if netmask else None
+
+    @hybrid_property
+    def gateway(self) -> Optional[IPAddress]:
+        if not self._gateway:
+            return None
+
+        return ipaddress.ip_address(self._gateway)
+
+    @gateway.setter
+    def gateway(self, ip_address: Optional[IPAddress]) -> None:
+        self._gateway = str(ip_address) if ip_address else None
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \

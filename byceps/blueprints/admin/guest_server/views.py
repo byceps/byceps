@@ -128,6 +128,8 @@ def server_create(party_id):
     approved = form.approved.data
     ip_address = _to_ip_address(form.ip_address.data.strip())
     hostname = form.hostname.data.strip() or None
+    netmask = _to_ip_address(form.netmask.data.strip())
+    gateway = _to_ip_address(form.gateway.data.strip())
 
     server, event = guest_server_service.create_server(
         party.id,
@@ -137,6 +139,8 @@ def server_create(party_id):
         approved=approved,
         ip_address=ip_address,
         hostname=hostname,
+        netmask=netmask,
+        gateway=gateway,
     )
 
     flash_success(gettext('The server has been registered.'))
@@ -312,9 +316,11 @@ def address_create(server_id):
 
     ip_address = _to_ip_address(form.ip_address.data.strip())
     hostname = form.hostname.data.strip() or None
+    netmask = _to_ip_address(form.netmask.data.strip())
+    gateway = _to_ip_address(form.gateway.data.strip())
 
     address = guest_server_service.create_address(
-        server.id, ip_address, hostname
+        server.id, ip_address, hostname, netmask, gateway
     )
 
     flash_success(gettext('The address has been added.'))
@@ -353,8 +359,12 @@ def address_update(address_id):
 
     ip_address = _to_ip_address(form.ip_address.data.strip())
     hostname = form.hostname.data.strip() or None
+    netmask = _to_ip_address(form.netmask.data.strip())
+    gateway = _to_ip_address(form.gateway.data.strip())
 
-    guest_server_service.update_address(address.id, ip_address, hostname)
+    guest_server_service.update_address(
+        address.id, ip_address, hostname, netmask, gateway
+    )
 
     flash_success(gettext('Changes have been saved.'))
 

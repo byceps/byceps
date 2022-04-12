@@ -16,12 +16,18 @@
   <form action="{{ url_for('.server_create', party_id=party.id) }}" method="post">
     {{ form_field(form.owner, maxlength=40, autofocus='autofocus') }}
 
-    <div class="row">
-      <div>
+    <div class="row row--wrap">
+      <div class="column--grow">
         {{ form_field(form.ip_address) }}
       </div>
-      <div>
+      <div class="column--grow">
         {{ form_field(form.hostname) }}
+      </div>
+      <div class="column--grow">
+        {{ form_field(form.netmask) }}
+      </div>
+      <div class="column--grow">
+        {{ form_field(form.gateway) }}
       </div>
     </div>
 

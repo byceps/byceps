@@ -16,6 +16,8 @@
   <form action="{{ url_for('.address_update', address_id=address.id) }}" method="post">
     {{ form_field(form.ip_address, autofocus='autofocus') }}
     {{ form_field(form.hostname) }}
+    {{ form_field(form.netmask) }}
+    {{ form_field(form.gateway) }}
 
     {{ form_buttons(_('Save')) }}
   </form>

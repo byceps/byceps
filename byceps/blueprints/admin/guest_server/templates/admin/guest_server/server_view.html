@@ -1,5 +1,5 @@
 {% extends 'layout/admin/guest_server.html' %}
-{% from 'macros/admin/guest_server.html' import render_hostname, render_ip_address %}
+{% from 'macros/admin/guest_server.html' import render_gateway, render_hostname, render_ip_address, render_netmask %}
 {% from 'macros/admin/user.html' import render_user_microcard %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
@@ -64,46 +64,45 @@
       </div>
     </div>
 
-    <div class="mt">
-      <div class="row">
-        <div style="flex-basis: 33%;">
+    <table class="index mt">
+      <thead>
+        <tr>
+          <th class="data-label">{{ _('IP address') }}</th>
+          <th class="data-label">{{ _('Hostname') }}</th>
+          <th class="data-label">{{ _('Netmask') }}</th>
+          <th class="data-label">{{ _('Gateway') }}</th>
+          {%- if has_current_user_permission('guest_server.administrate') %}
+          <td><a class="button button--compact" href="{{ url_for('.address_create_form', server_id=server.id) }}" title="{{ _('Add server address') }}">{{ render_icon('add') }}</a></th>
+          {%- endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {%- for address in sort_addresses(server.addresses) %}
+        <tr>
+          <td>{{ render_ip_address(address) }}</td>
+          <td>{{ render_hostname(address, setting) }}</td>
+          <td>{{ render_netmask(address, setting) }}</td>
+          <td>{{ render_gateway(address, setting) }}</td>
+          {%- if has_current_user_permission('guest_server.administrate') %}
+          <td><a class="button button--compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a></td>
+          {%- endif %}
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
 
-          <table class="index">
-            <thead>
-              <tr>
-                <th class="data-label">{{ _('IP address') }}</th>
-                <th class="data-label">{{ _('Hostname') }}</th>
-                {%- if has_current_user_permission('guest_server.administrate') %}
-                <td><a class="button button--compact" href="{{ url_for('.address_create_form', server_id=server.id) }}" title="{{ _('Add server address') }}">{{ render_icon('add') }}</a></th>
-                {%- endif %}
-              </tr>
-            </thead>
-            <tbody>
-              {%- for address in sort_addresses(server.addresses) %}
-              <tr>
-                <td>{{ render_ip_address(address) }}</td>
-                <td>{{ render_hostname(address, setting) }}</td>
-                {%- if has_current_user_permission('guest_server.administrate') %}
-                <td><a class="button button--compact" href="{{ url_for('.address_update_form', address_id=address.id) }}" title="{{ _('Update server address') }}">{{ render_icon('edit') }}</a></td>
-                {%- endif %}
-              </tr>
-              {%- endfor %}
-            </tbody>
-          </table>
+    <div class="row mt">
+      <div style="flex-basis: 50%;">
 
-        </div>
-        <div style="flex-basis: 33%;">
+        <div class="data-label">{{ _('Notes by owner') }}</div>
+        <div class="data-value">{{ server.notes_owner|fallback(_('none')) }}</div>
 
-          <div class="data-label">{{ _('Notes by owner') }}</div>
-          <div class="data-value">{{ server.notes_owner|fallback(_('none')) }}</div>
+      </div>
+      <div style="flex-basis: 50%;">
 
-        </div>
-        <div style="flex-basis: 33%;">
+        <div class="data-label">{{ _('Notes by admin') }}</div>
+        <div class="data-value">{{ server.notes_admin|fallback(_('none')) }}</div>
 
-          <div class="data-label">{{ _('Notes by admin') }}</div>
-          <div class="data-value">{{ server.notes_admin|fallback(_('none')) }}</div>
-
-        </div>
       </div>
     </div>
 

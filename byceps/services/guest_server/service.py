@@ -112,6 +112,8 @@ def create_server(
     approved: bool = False,
     ip_address: Optional[IPAddress] = None,
     hostname: Optional[str] = None,
+    netmask: Optional[IPAddress] = None,
+    gateway: Optional[IPAddress] = None,
 ) -> tuple[Server, GuestServerRegistered]:
     """Create a server."""
     party = party_service.get_party(party_id)
@@ -277,11 +279,19 @@ def create_address(
     server_id: ServerID,
     ip_address: Optional[IPAddress] = None,
     hostname: Optional[str] = None,
+    netmask: Optional[IPAddress] = None,
+    gateway: Optional[IPAddress] = None,
 ) -> Address:
     """Append an address to a server."""
     db_server = _get_db_server(server_id)
 
-    db_address = DbAddress(db_server, ip_address=ip_address, hostname=hostname)
+    db_address = DbAddress(
+        db_server,
+        ip_address=ip_address,
+        hostname=hostname,
+        netmask=netmask,
+        gateway=gateway,
+    )
     db.session.add(db_address)
 
     db.session.commit()
@@ -293,6 +303,8 @@ def update_address(
     address_id: AddressID,
     ip_address: Optional[IPAddress],
     hostname: Optional[str],
+    netmask: Optional[IPAddress] = None,
+    gateway: Optional[IPAddress] = None,
 ) -> Address:
     """Update the address."""
     db_address = _find_db_address(address_id)
@@ -302,6 +314,8 @@ def update_address(
 
     db_address.ip_address = ip_address
     db_address.hostname = hostname
+    db_address.netmask = netmask
+    db_address.gateway = gateway
 
     db.session.commit()
 
@@ -321,4 +335,6 @@ def _db_entity_to_address(db_address: DbAddress) -> Address:
         server_id=db_address.server_id,
         ip_address=db_address.ip_address,
         hostname=db_address.hostname,
+        netmask=db_address.netmask,
+        gateway=db_address.gateway,
     )

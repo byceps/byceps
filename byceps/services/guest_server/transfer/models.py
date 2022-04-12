@@ -54,3 +54,5 @@ class Address:
     server_id: ServerID
     ip_address: Optional[IPAddress]
     hostname: Optional[str]
+    netmask: Optional[IPAddress]
+    gateway: Optional[IPAddress]
