@@ -73,12 +73,3 @@ def _update_subscription_state(
 
     db.session.add(subscription_update)
     db.session.commit()
-
-
-def delete_subscription_updates(user_id: UserID, list_id: ListID) -> None:
-    """Delete all subscription updates for the user and list."""
-    db.session.query(DbSubscriptionUpdate) \
-        .filter_by(user_id=user_id, list_id=list_id) \
-        .delete()
-
-    db.session.commit()

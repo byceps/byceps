@@ -105,15 +105,11 @@ def newsletter_admin(make_admin):
 
 @pytest.fixture(scope='module')
 def newsletter_list(admin_app):
-    newsletter_list = command_service.create_list('example', 'Example')
-    yield newsletter_list
-    command_service.delete_list(newsletter_list.id)
+    return command_service.create_list('example', 'Example')
 
 
 @pytest.fixture(scope='module')
 def subscribers(make_user, newsletter_list):
-    user_ids = []
-
     for number, initialized, email_address_verified, suspended, deleted, states in [
         ( 1, True , True , False, False, [SubscriptionState.requested                             ]),
         ( 2, True , True , False, False, [SubscriptionState.declined                              ]),
@@ -135,14 +131,7 @@ def subscribers(make_user, newsletter_list):
             deleted=deleted,
         )
 
-        user_ids.append(user.id)
-
         add_subscriptions(user.id, newsletter_list.id, states)
-
-    yield
-
-    for user_id in user_ids:
-        command_service.delete_subscription_updates(user_id, newsletter_list.id)
 
 
 def add_subscriptions(user_id, list_id, states):
