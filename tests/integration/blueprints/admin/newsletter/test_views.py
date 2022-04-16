@@ -67,8 +67,10 @@ def test_export_subscribers(newsletter_list, subscribers, client):
     assert response.json == expected_data
 
 
-def test_export_subscriber_email_addresses(newsletter_list, subscribers, client):
-    expected_data = '\n'.join([
+def test_export_subscriber_email_addresses(
+    newsletter_list, subscribers, client
+):
+    expected_email_addresses = [
         'user001@users.test',
         # User #2 has declined a subscription.
         # User #3 is not initialized.
@@ -80,7 +82,8 @@ def test_export_subscriber_email_addresses(newsletter_list, subscribers, client)
         # User #8 has been suspended, and thus should be excluded.
         # User #9 has been deleted, and thus should be excluded.
         'user010@users.test',
-    ]).encode('utf-8')
+    ]
+    expected_data = '\n'.join(expected_email_addresses).encode('utf-8')
 
     url = f'/admin/newsletter/lists/{newsletter_list.id}/subscriptions/email_addresses/export'
     response = client.get(url)
@@ -106,7 +109,14 @@ def newsletter_list(admin_app):
 
 @pytest.fixture(scope='module')
 def subscribers(make_user, newsletter_list):
-    for number, initialized, email_address_verified, suspended, deleted, states in [
+    for (
+        number,
+        initialized,
+        email_address_verified,
+        suspended,
+        deleted,
+        states,
+    ) in [
         ( 1, True , True , False, False, [SubscriptionState.requested                             ]),
         ( 2, True , True , False, False, [SubscriptionState.declined                              ]),
         ( 3, False, True , False, False, [SubscriptionState.requested                             ]),
