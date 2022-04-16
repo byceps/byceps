@@ -17,3 +17,9 @@ ListID = NewType('ListID', str)
 class List:
     id: ListID
     title: str
+
+
+@dataclass(frozen=True)
+class Subscriber:
+    screen_name: str
+    email_address: str

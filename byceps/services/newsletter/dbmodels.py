@@ -6,7 +6,6 @@ byceps.services.newsletter.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from dataclasses import dataclass
 from datetime import datetime
 from typing import TYPE_CHECKING
 
@@ -39,12 +38,6 @@ class List(db.Model):
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .build()
-
-
-@dataclass(frozen=True)
-class Subscriber:
-    screen_name: str
-    email_address: str
 
 
 class SubscriptionUpdate(db.Model):
