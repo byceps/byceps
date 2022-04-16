@@ -8,10 +8,17 @@ byceps.services.newsletter.command_service
 
 from datetime import datetime
 
+from sqlalchemy import delete
+from sqlalchemy.dialects.postgresql import insert
+
 from ...database import db
 from ...typing import UserID
 
-from .dbmodels import List as DbList, SubscriptionUpdate as DbSubscriptionUpdate
+from .dbmodels import (
+    List as DbList,
+    Subscription as DbSubscription,
+    SubscriptionUpdate as DbSubscriptionUpdate,
+)
 from .service import find_list, _db_entity_to_list
 from .transfer.models import List, ListID
 from .types import SubscriptionState
@@ -46,6 +53,21 @@ def subscribe(user_id: UserID, list_id: ListID, expressed_at: datetime) -> None:
         user_id, list_id, expressed_at, SubscriptionState.requested
     )
 
+    table = DbSubscription.__table__
+    query = (
+        insert(table)
+        .values(
+            {
+                'user_id': str(user_id),
+                'list_id': str(list_id),
+            }
+        )
+        .on_conflict_do_nothing(constraint=table.primary_key)
+    )
+    db.session.execute(query)
+
+    db.session.commit()
+
 
 def unsubscribe(
     user_id: UserID, list_id: ListID, expressed_at: datetime
@@ -54,6 +76,14 @@ def unsubscribe(
     _update_subscription_state(
         user_id, list_id, expressed_at, SubscriptionState.declined
     )
+
+    db.session.execute(
+        delete(DbSubscription)
+        .where(DbSubscription.user_id == user_id)
+        .where(DbSubscription.list_id == list_id)
+    )
+
+    db.session.commit()
 
 
 def _update_subscription_state(
@@ -72,4 +102,3 @@ def _update_subscription_state(
     )
 
     db.session.add(subscription_update)
-    db.session.commit()

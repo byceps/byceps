@@ -28,6 +28,7 @@ from byceps.services.board.dbmodels.last_topic_view import (
 )
 from byceps.services.consent.dbmodels.consent import Consent
 from byceps.services.newsletter.dbmodels import (
+    Subscription as NewsletterSubscription,
     SubscriptionUpdate as NewsletterSubscriptionUpdate,
 )
 from byceps.services.user.dbmodels.log import UserLogEntry as DbUserLogEntry
@@ -65,6 +66,7 @@ def execute(dry_run, user_ids) -> None:
     delete('board category view marks', delete_board_category_lastviews)
     delete('board topic view marks', delete_board_topic_lastviews)
     delete('consents', delete_consents)
+    delete('newsletter subscriptions', delete_newsletter_subscriptions)
     delete(
         'newsletter subscription updates',
         delete_newsletter_subscription_updates,
@@ -129,6 +131,11 @@ def delete_board_topic_lastviews(user_ids: set[UserID]) -> int:
 def delete_consents(user_ids: set[UserID]) -> int:
     """Delete consents from the given users."""
     return _execute_delete_for_users_query(Consent, user_ids)
+
+
+def delete_newsletter_subscriptions(user_ids: set[UserID]) -> int:
+    """Delete newsletter subscriptions for the given users."""
+    return _execute_delete_for_users_query(NewsletterSubscription, user_ids)
 
 
 def delete_newsletter_subscription_updates(user_ids: set[UserID]) -> int:
