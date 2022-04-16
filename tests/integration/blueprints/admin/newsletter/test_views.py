@@ -7,10 +7,6 @@ from datetime import datetime
 
 import pytest
 
-from byceps.database import db
-from byceps.services.newsletter.dbmodels import (
-    SubscriptionUpdate as DbSubscriptionUpdate,
-)
 from byceps.services.newsletter import command_service
 from byceps.services.newsletter.types import SubscriptionState
 from byceps.services.user import command_service as user_command_service
@@ -131,22 +127,17 @@ def subscribers(make_user, newsletter_list):
             deleted=deleted,
         )
 
-        add_subscriptions(user.id, newsletter_list.id, states)
+        list_id = newsletter_list.id
 
+        for state in states:
+            # Timestamp must not be identical for multiple
+            # `(user_id, list_id)` pairs.
+            expressed_at = datetime.utcnow()
 
-def add_subscriptions(user_id, list_id, states):
-    for state in states:
-        # Timestamp must not be identical for multiple
-        # `(user_id, list_id)` pairs.
-        expressed_at = datetime.utcnow()
-
-        subscription_update = DbSubscriptionUpdate(
-            user_id, list_id, expressed_at, state
-        )
-
-        db.session.add(subscription_update)
-
-    db.session.commit()
+            if state == SubscriptionState.requested:
+                command_service.subscribe(user.id, list_id, expressed_at)
+            elif state == SubscriptionState.declined:
+                command_service.unsubscribe(user.id, list_id, expressed_at)
 
 
 @pytest.fixture(scope='package')
