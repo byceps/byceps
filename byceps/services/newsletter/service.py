@@ -7,15 +7,20 @@ byceps.services.newsletter.service
 """
 
 from __future__ import annotations
-from operator import itemgetter
 from typing import Iterable, Iterator, Optional, Sequence
 
-from ...database import db, Query
+from sqlalchemy import select
+
+from ...database import db
 from ...typing import UserID
 
 from ..user.dbmodels.user import User as DbUser
 
-from .dbmodels import List as DbList, SubscriptionUpdate as DbSubscriptionUpdate
+from .dbmodels import (
+    List as DbList,
+    Subscription as DbSubscription,
+    SubscriptionUpdate as DbSubscriptionUpdate,
+)
 from .transfer.models import List, ListID, Subscriber
 from .types import SubscriptionState
 
@@ -39,58 +44,23 @@ def get_all_lists() -> Sequence[List]:
 
 def count_subscribers_for_list(list_id: ListID) -> int:
     """Return the number of users that are currently subscribed to that list."""
-    return _build_query_for_current_subscribers(list_id).count()
+    return db.session.execute(
+        select(db.func.count())
+        .select_from(DbSubscription)
+        .filter_by(list_id=list_id)
+    ).scalar_one()
 
 
 def get_subscribers(list_id: ListID) -> Iterable[Subscriber]:
     """Yield screen name and email address of the initialized users that
     are currently subscribed to the list.
     """
-    subscriber_id_rows = _build_query_for_current_subscribers(list_id).all()
+    subscriber_ids = db.session.scalars(
+        select(DbSubscription.user_id)
+        .filter_by(list_id=list_id)
+    ).all()
 
-    subscriber_ids = set(map(itemgetter(0), subscriber_id_rows))
-
-    return _get_subscriber_details(subscriber_ids)
-
-
-def _build_query_for_current_subscribers(list_id: ListID) -> Query:
-    """Build a query to return the most recent subscription state
-    (grouped by user and list).
-
-    The generated SQL should be equivalent to this:
-
-        SELECT
-          nso.user_id
-        FROM newsletter_subscription_updates AS nso
-          JOIN (
-            SELECT
-              user_id,
-              list_id,
-              MAX(expressed_at) AS latest_expressed_at
-            FROM newsletter_subscription_updates
-            GROUP BY
-              user_id,
-              list_id
-          ) AS nsi
-            ON nso.user_id = nsi.user_id
-              AND nso.list_id = nsi.list_id
-              AND nso.expressed_at = nsi.latest_expressed_at
-        WHERE nso.state = 'requested'
-          AND nso.list_id = <list_id>
-    """
-    subquery = _build_query_for_latest_expressed_at().subquery()
-
-    return db.session \
-        .query(
-            DbSubscriptionUpdate.user_id
-        ) \
-        .join(subquery, db.and_(
-            DbSubscriptionUpdate.user_id == subquery.c.user_id,
-            DbSubscriptionUpdate.list_id == subquery.c.list_id,
-            DbSubscriptionUpdate.expressed_at == subquery.c.latest_expressed_at
-        )) \
-        .filter(DbSubscriptionUpdate._state == SubscriptionState.requested.name) \
-        .filter(DbSubscriptionUpdate.list_id == list_id)
+    return _get_subscriber_details(set(subscriber_ids))
 
 
 def _get_subscriber_details(user_ids: set[UserID]) -> Iterator[Subscriber]:
@@ -118,29 +88,6 @@ def _get_subscriber_details(user_ids: set[UserID]) -> Iterator[Subscriber]:
         )
 
 
-def _build_query_for_latest_expressed_at() -> Query:
-    """Build a query to return the most recent time the subscription
-    state was set (grouped by user and list).
-
-    The generated SQL should be equivalent to this:
-
-        SELECT user_id, list_id, MAX(expressed_at) AS latest_expressed_at
-        FROM newsletter_subscription_updates
-        GROUP BY user_id, list_id
-    """
-    return db.session \
-        .query(
-            DbSubscriptionUpdate.user_id,
-            DbSubscriptionUpdate.list_id,
-            db.func.max(DbSubscriptionUpdate.expressed_at)
-                .label('latest_expressed_at')
-        ) \
-        .group_by(
-            DbSubscriptionUpdate.user_id,
-            DbSubscriptionUpdate.list_id
-        )
-
-
 def get_subscription_updates_for_user(
     user_id: UserID,
 ) -> Sequence[DbSubscriptionUpdate]:
@@ -153,17 +100,13 @@ def get_subscription_updates_for_user(
 
 def is_subscribed(user_id: UserID, list_id: ListID) -> bool:
     """Return if the user is subscribed to the list or not."""
-    current_subscription = db.session \
-        .query(DbSubscriptionUpdate) \
-        .filter_by(user_id=user_id) \
-        .filter_by(list_id=list_id) \
-        .order_by(DbSubscriptionUpdate.expressed_at.desc()) \
-        .first()
-
-    if current_subscription is None:
-        return False
-
-    return current_subscription.state == SubscriptionState.requested
+    return db.session.execute(
+        select(
+            db.exists()
+            .where(DbSubscription.user_id == user_id)
+            .where(DbSubscription.list_id == list_id)
+        )
+    ).scalar_one()
 
 
 def _db_entity_to_list(list_: DbList) -> List:
