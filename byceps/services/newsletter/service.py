@@ -208,23 +208,6 @@ def _build_query_for_latest_expressed_at() -> Query:
         )
 
 
-def get_subscription_state(
-    user_id: UserID, list_id: ListID
-) -> SubscriptionState:
-    """Return the user's current subscription state for that list."""
-    current_subscription = db.session \
-        .query(DbSubscriptionUpdate) \
-        .filter_by(user_id=user_id) \
-        .filter_by(list_id=list_id) \
-        .order_by(DbSubscriptionUpdate.expressed_at.desc()) \
-        .first()
-
-    if current_subscription is None:
-        return SubscriptionState.declined
-
-    return current_subscription.state
-
-
 def get_subscription_updates_for_user(
     user_id: UserID,
 ) -> Sequence[DbSubscriptionUpdate]:
@@ -237,8 +220,17 @@ def get_subscription_updates_for_user(
 
 def is_subscribed(user_id: UserID, list_id: ListID) -> bool:
     """Return if the user is subscribed to the list or not."""
-    subscription_state = get_subscription_state(user_id, list_id)
-    return subscription_state == SubscriptionState.requested
+    current_subscription = db.session \
+        .query(DbSubscriptionUpdate) \
+        .filter_by(user_id=user_id) \
+        .filter_by(list_id=list_id) \
+        .order_by(DbSubscriptionUpdate.expressed_at.desc()) \
+        .first()
+
+    if current_subscription is None:
+        return False
+
+    return current_subscription.state == SubscriptionState.requested
 
 
 def _db_entity_to_list(list_: DbList) -> List:
