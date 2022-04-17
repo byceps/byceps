@@ -12,9 +12,8 @@ from datetime import datetime
 from itertools import chain
 
 from sqlalchemy import select
-from sqlalchemy.dialects.postgresql import insert
 
-from ...database import db, upsert
+from ...database import db, insert_ignore_on_conflict, upsert
 from ...typing import BrandID, PartyID, UserID
 
 from ..party.dbmodels.party import Party as DbParty
@@ -32,14 +31,12 @@ def create_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
     """Create an archived attendance of the user at the party."""
     table = DbArchivedAttendance.__table__
 
-    query = insert(table) \
-        .values({
-            'user_id': str(user_id),
-            'party_id': str(party_id),
-        }) \
-        .on_conflict_do_nothing(constraint=table.primary_key)
-    db.session.execute(query)
-    db.session.commit()
+    values = {
+        'user_id': str(user_id),
+        'party_id': str(party_id),
+    }
+
+    insert_ignore_on_conflict(table, values)
 
 
 def delete_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
