@@ -44,15 +44,13 @@
 
 {{ render_distribution_bar(
   [
-    (totals[State.requested], 'color-success'),
-    (totals[State.declined], 'color-danger'),
-    (user_count - totals['total'], 'color-disabled'),
+    (subscription_count, 'color-success'),
+    (user_count - subscription_count, 'color-disabled'),
   ],
   user_count
 ) }}
     <div class="row row--space-between">
-      <div><strong>{{ totals[State.requested]|numberformat }}</strong> {{ _('requested') }}</div>
-      <div><strong>{{ totals[State.declined]|numberformat }}</strong> {{ _('rejected') }}</div>
+      <div><strong>{{ subscription_count|numberformat }}</strong> {{ _('requested') }}</div>
       <div><strong>{{ user_count|numberformat }}</strong> {{ _('Users') }} {{ _('total') }}</div>
     </div>
 

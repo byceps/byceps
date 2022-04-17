@@ -13,7 +13,6 @@ from flask import abort
 
 from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List
-from ....services.newsletter.types import SubscriptionState
 from ....services.user import stats_service as user_stats_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
@@ -55,13 +54,12 @@ def view_subscriptions(list_id):
     """Show user subscription states for that list."""
     list_ = _get_list_or_404(list_id)
 
-    totals = newsletter_service.count_subscriptions_by_state(list_.id)
+    subscription_count = newsletter_service.count_subscribers_for_list(list_.id)
     user_count = user_stats_service.count_users()
 
     return {
         'list_': list_,
-        'totals': totals,
-        'State': SubscriptionState,
+        'subscription_count': subscription_count,
         'user_count': user_count,
     }
 

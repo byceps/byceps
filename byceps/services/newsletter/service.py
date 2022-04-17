@@ -8,7 +8,7 @@ byceps.services.newsletter.service
 
 from __future__ import annotations
 from operator import itemgetter
-from typing import Iterable, Iterator, Optional, Sequence, Union
+from typing import Iterable, Iterator, Optional, Sequence
 
 from ...database import db, Query
 from ...typing import UserID
@@ -115,73 +115,6 @@ def _get_subscriber_details(user_ids: set[UserID]) -> Iterator[Subscriber]:
         yield Subscriber(
             screen_name=row.screen_name,
             email_address=row.email_address,
-        )
-
-
-def count_subscriptions_by_state(
-    list_id: ListID,
-) -> dict[Union[SubscriptionState, str], int]:
-    """Return the totals for each state as well as an overall total."""
-    rows = _build_query_for_current_state(list_id) \
-        .all()
-
-    totals: dict[Union[SubscriptionState, str], int] = {
-        state: 0 for state in SubscriptionState
-    }
-
-    for state_name, count in rows:
-        state = SubscriptionState[state_name]
-        totals[state] = count
-
-    totals['total'] = sum(totals.values())
-
-    return totals
-
-
-def _build_query_for_current_state(list_id: ListID) -> Query:
-    """Build a query to return the number of currently requested and
-    declined subscription states for that list.
-
-    The generated SQL should be equivalent to this:
-
-        SELECT
-          nso.state,
-          COUNT(nso.state)
-        FROM newsletter_subscription_updates AS nso
-          JOIN (
-            SELECT
-              user_id,
-              list_id,
-              MAX(expressed_at) AS latest_expressed_at
-            FROM newsletter_subscription_updates
-            GROUP BY
-              user_id,
-              list_id
-          ) AS nsi
-            ON nso.user_id = nsi.user_id
-              AND nso.list_id = nsi.list_id
-              AND nso.expressed_at = nsi.latest_expressed_at
-        WHERE nso.list_id = {list_id}
-        GROUP BY
-          nso.list_id,
-          state
-    """
-    subquery = _build_query_for_latest_expressed_at().subquery()
-
-    return db.session \
-        .query(
-            DbSubscriptionUpdate._state,
-            db.func.count(DbSubscriptionUpdate._state),
-        ) \
-        .join(subquery, db.and_(
-            DbSubscriptionUpdate.user_id == subquery.c.user_id,
-            DbSubscriptionUpdate.list_id == subquery.c.list_id,
-            DbSubscriptionUpdate.expressed_at == subquery.c.latest_expressed_at
-        )) \
-        .filter_by(list_id=list_id) \
-        .group_by(
-            DbSubscriptionUpdate.list_id,
-            DbSubscriptionUpdate._state,
         )
 
 

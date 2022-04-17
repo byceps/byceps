@@ -2701,10 +2701,6 @@ msgstr "nur E-Mail-Adressen (als Text)"
 msgid "requested"
 msgstr "angefordert"
 
-#: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:55
-msgid "rejected"
-msgstr "abgelehnt"
-
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:56
 #: byceps/blueprints/admin/user/templates/admin/user/index.html:29
 msgid "total"
