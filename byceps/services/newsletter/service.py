@@ -112,7 +112,10 @@ def _get_subscriber_details(user_ids: set[UserID]) -> Iterator[Subscriber]:
         .all()
 
     for row in rows:
-        yield Subscriber(row.screen_name, row.email_address)
+        yield Subscriber(
+            screen_name=row.screen_name,
+            email_address=row.email_address,
+        )
 
 
 def count_subscriptions_by_state(
@@ -240,6 +243,6 @@ def is_subscribed(user_id: UserID, list_id: ListID) -> bool:
 
 def _db_entity_to_list(list_: DbList) -> List:
     return List(
-        list_.id,
-        list_.title,
+        id=list_.id,
+        title=list_.title,
     )
