@@ -4012,10 +4012,6 @@ msgstr ""
 "%(initiator)s hat <strong>unbekanntes Ereignis</strong> "
 "\"%(event_type)s\" ausgelöst."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_invoices.html:4
-msgid "view"
-msgstr "ansehen"
-
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:8
 #: byceps/blueprints/site/shop/order/forms.py:19
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:62
@@ -4068,16 +4064,18 @@ msgstr "Als bezahlt markieren"
 msgid "Date of creation"
 msgstr "Erstellungszeitpunkt"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:73
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:67
+msgid "Invoice"
+msgid_plural "Invoices"
+msgstr[0] "Rechnung"
+msgstr[1] "Rechnungen"
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:87
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:38
 msgid "Reason for cancelation"
 msgstr "Grund für Stornierung"
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:86
-msgid "Invoices"
-msgstr "Rechnungen"
-
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:91
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:100
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:8
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:14
 #: byceps/blueprints/admin/user/templates/layout/admin/user.html:60

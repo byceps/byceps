@@ -64,6 +64,20 @@
         <div class="data-label">{{ _('Date of creation') }}</div>
         <div class="data-value">{{ order.created_at|datetimeformat }}</div>
 
+        <div class="data-label">{{ ngettext('Invoice', 'Invoices', invoices|length) }}</div>
+        <div class="data-value">
+        {%- if invoices %}
+          {%- for invoice in invoices|sort(attribute='number') %}
+            {%- if invoice.url %}<a href="{{ invoice.url }}">{% endif %}
+            {{- invoice.number }}
+            {%- if invoice.url %}</a>{% endif %}
+            {%- if not loop.last %}, {% endif %}
+          {%- endfor %}
+        {%- else %}
+        {{ _('none')|dim }}
+        {%- endif %}
+        </div>
+
         {%- if order.payment_method %}
         <div class="data-label">{{ _('Payment type') }}</div>
         <div class="data-value">{{ render_order_payment_method(order.payment_method) }}</div>
@@ -81,11 +95,6 @@
   <h2>{{ _('Articles') }}</h2>
   <div class="box">
 {% include 'admin/shop/order/_view_articles.html' %}
-  </div>
-
-  <h2>{{ _('Invoices') }}</h2>
-  <div class="box">
-{% include 'admin/shop/order/_view_invoices.html' %}
   </div>
 
   <h2>{{ _('Events') }} {{ render_extra_in_heading(log_entries|length) }}</h2>
