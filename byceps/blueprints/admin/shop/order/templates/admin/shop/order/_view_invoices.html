@@ -1,0 +1,9 @@
+{%- if invoices %}
+<ul>
+  {%- for invoice in invoices|sort(attribute='number') %}
+  <li>{{ invoice.number }}{% if invoice.url %} (<a href="{{ invoice.url }}">{{ _('view') }}</a>){% endif %}</li>
+  {%- endfor %}
+</ul>
+{%- else %}
+<div class="dimmed-box centered">{{ _('none') }}</div>
+{%- endif %}

@@ -3897,6 +3897,15 @@ msgstr ""
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:54
 #, python-format
 msgid ""
+"Invoice %(invoice_number)s was created for order <a "
+"href=\"%(order_url)s\">%(order_number)s</a>."
+msgstr ""
+"Rechnung %(invoice_number)s für Bestellung <a "
+"href=\"%(order_url)s\">%(order_number)s</a> wurde erstellt."
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:63
+#, python-format
+msgid ""
 "%(initiator)s has marked order <a "
 "href=\"%(order_url)s\">%(order_number)s</a> as <strong>invoiced</strong>."
 msgstr ""
@@ -4003,6 +4012,10 @@ msgstr ""
 "%(initiator)s hat <strong>unbekanntes Ereignis</strong> "
 "\"%(event_type)s\" ausgelöst."
 
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_invoices.html:4
+msgid "view"
+msgstr "ansehen"
+
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:8
 #: byceps/blueprints/site/shop/order/forms.py:19
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:62
@@ -4061,6 +4074,10 @@ msgid "Reason for cancelation"
 msgstr "Grund für Stornierung"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:86
+msgid "Invoices"
+msgstr "Rechnungen"
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:91
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:8
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:14
 #: byceps/blueprints/admin/user/templates/layout/admin/user.html:60

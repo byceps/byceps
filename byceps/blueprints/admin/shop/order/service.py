@@ -100,6 +100,8 @@ def _get_additional_data(
 ) -> OrderLogEntryData:
     if log_entry.event_type == 'badge-awarded':
         return _get_additional_data_for_badge_awarded(log_entry)
+    elif log_entry.event_type == 'order-invoice-created':
+        return {}
     elif log_entry.event_type == 'order-note-added':
         return _get_additional_data_for_order_note_added(log_entry)
     elif log_entry.event_type == 'ticket-bundle-created':
