@@ -34,13 +34,13 @@ class OrderForm(LocalizedForm):
 
     def get_orderer(self, user_id):
         return Orderer(
-            user_id,
-            self.first_name.data.strip(),
-            self.last_name.data.strip(),
-            self.country.data.strip(),
-            self.zip_code.data.strip(),
-            self.city.data.strip(),
-            self.street.data.strip(),
+            user_id=user_id,
+            first_name=self.first_name.data.strip(),
+            last_name=self.last_name.data.strip(),
+            country=self.country.data.strip(),
+            zip_code=self.zip_code.data.strip(),
+            city=self.city.data.strip(),
+            street=self.street.data.strip(),
         )
 
 

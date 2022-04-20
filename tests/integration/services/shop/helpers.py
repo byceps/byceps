@@ -156,11 +156,11 @@ def create_orderer(user_id: UserID) -> Orderer:
     detail = user_service.get_detail(user_id)
 
     return Orderer(
-        user_id,
-        detail.first_name or 'n/a',
-        detail.last_name or 'n/a',
-        detail.country or 'n/a',
-        detail.zip_code or 'n/a',
-        detail.city or 'n/a',
-        detail.street or 'n/a',
+        user_id=user_id,
+        first_name=detail.first_name or 'n/a',
+        last_name=detail.last_name or 'n/a',
+        country=detail.country or 'n/a',
+        zip_code=detail.zip_code or 'n/a',
+        city=detail.city or 'n/a',
+        street=detail.street or 'n/a',
     )

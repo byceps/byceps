@@ -81,13 +81,13 @@ def orderer(make_user) -> Orderer:
     user = make_user(email_address='h-w.mustermann@users.test')
 
     return Orderer(
-        user.id,
-        'Hans-Werner',
-        'Mustermann',
-        'Deutschland',
-        '42000',
-        'Hauptstadt',
-        'Nebenstraße 23a',
+        user_id=user.id,
+        first_name='Hans-Werner',
+        last_name='Mustermann',
+        country='Deutschland',
+        zip_code='42000',
+        city='Hauptstadt',
+        street='Nebenstraße 23a',
     )
 
 
