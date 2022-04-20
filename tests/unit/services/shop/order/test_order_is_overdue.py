@@ -49,6 +49,7 @@ def create_db_order(created_at: datetime) -> DbOrder:
         storefront_id=StorefrontID('anyshop-99'),
         order_number=OrderNumber('ORDER-31337'),
         placed_by_id=UserID(UUID('b1a18832-22d4-4df5-8077-848611633332')),
+        company=None,
         first_name='n/a',
         last_name='n/a',
         country='n/a',

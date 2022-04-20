@@ -73,6 +73,7 @@ class Orderer:
     """Someone who orders articles."""
 
     user_id: UserID
+    company: Optional[str]
     first_name: str
     last_name: str
     country: str
@@ -103,6 +104,7 @@ class Order:
     storefront_id: StorefrontID
     order_number: OrderNumber
     placed_by_id: UserID
+    company: Optional[str]
     first_name: str
     last_name: str
     address: Address

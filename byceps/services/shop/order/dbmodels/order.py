@@ -7,7 +7,7 @@ byceps.services.shop.order.dbmodels.order
 """
 
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
     hybrid_property = property
@@ -39,6 +39,7 @@ class Order(db.Model):
     order_number = db.Column(db.UnicodeText, unique=True, nullable=False)
     placed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     placed_by = db.relationship(User, foreign_keys=[placed_by_id])
+    company = db.Column(db.UnicodeText, nullable=True)
     first_name = db.Column(db.UnicodeText, nullable=False)
     last_name = db.Column(db.UnicodeText, nullable=False)
     country = db.Column(db.UnicodeText, nullable=False)
@@ -63,6 +64,7 @@ class Order(db.Model):
         storefront_id: StorefrontID,
         order_number: OrderNumber,
         placed_by_id: UserID,
+        company: Optional[str],
         first_name: str,
         last_name: str,
         country: str,
@@ -75,6 +77,7 @@ class Order(db.Model):
         self.storefront_id = storefront_id
         self.order_number = order_number
         self.placed_by_id = placed_by_id
+        self.company = company
         self.first_name = first_name
         self.last_name = last_name
         self.country = country

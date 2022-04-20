@@ -4003,9 +4003,15 @@ msgstr ""
 "%(initiator)s hat <strong>unbekanntes Ereignis</strong> "
 "\"%(event_type)s\" ausgelöst."
 
-#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:11
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:8
+#: byceps/blueprints/site/shop/order/forms.py:19
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:62
+msgid "Company"
+msgstr "Firma"
+
+#: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:14
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:26
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:64
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:69
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:29
 msgid "Address"
 msgstr "Adresse"
@@ -6572,6 +6578,15 @@ msgstr ""
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:29
 msgid "currently not available"
 msgstr "derzeit nicht verfügbar"
+
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_orderer.html:3
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:59
+msgid "Billing and shipping address"
+msgstr "Rechnungs- und Lieferadresse"
+
+#: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_orderer.html:4
+msgid "optional"
+msgstr "optional"
 
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/order_form.html:18
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/order_single_form.html:16

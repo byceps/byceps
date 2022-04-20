@@ -157,6 +157,7 @@ def create_orderer(user_id: UserID) -> Orderer:
 
     return Orderer(
         user_id=user_id,
+        company=None,
         first_name=detail.first_name or 'n/a',
         last_name=detail.last_name or 'n/a',
         country=detail.country or 'n/a',

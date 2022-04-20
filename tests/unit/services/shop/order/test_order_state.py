@@ -78,6 +78,7 @@ def create_order(
 def create_orderer() -> Orderer:
     return Orderer(
         user_id=UserID(UUID('937a2112-62b5-4824-b5c0-430396b94591')),
+        company=None,
         first_name='Burkhardt',
         last_name='Playhardt',
         country='Country',

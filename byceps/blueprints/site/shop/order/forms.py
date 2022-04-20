@@ -8,7 +8,7 @@ byceps.blueprints.site.shop.order.forms
 
 from flask_babel import lazy_gettext
 from wtforms import SelectField, StringField
-from wtforms.validators import InputRequired, Length
+from wtforms.validators import InputRequired, Length, Optional
 
 from .....services.shop.cart.models import Cart
 from .....services.shop.order.transfer.order import Orderer
@@ -16,6 +16,7 @@ from .....util.l10n import LocalizedForm
 
 
 class OrderForm(LocalizedForm):
+    company = StringField(lazy_gettext('Company'), validators=[Optional()])
     first_name = StringField(
         lazy_gettext('First name'), validators=[Length(min=2)]
     )
@@ -35,6 +36,7 @@ class OrderForm(LocalizedForm):
     def get_orderer(self, user_id):
         return Orderer(
             user_id=user_id,
+            company=(self.company.data or '').strip(),
             first_name=self.first_name.data.strip(),
             last_name=self.last_name.data.strip(),
             country=self.country.data.strip(),

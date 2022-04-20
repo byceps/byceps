@@ -82,6 +82,7 @@ def orderer(make_user) -> Orderer:
 
     return Orderer(
         user_id=user.id,
+        company=None,
         first_name='Hans-Werner',
         last_name='Mustermann',
         country='Deutschland',

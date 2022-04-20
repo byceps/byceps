@@ -115,6 +115,7 @@ def test_order(
     article_quantity_key = f'article_{article.id}'
     form_data: dict[str, Union[int, str]] = {
         **COMMON_FORM_DATA,
+        'company': 'ACME Corp.',
         article_quantity_key: 3,
     }
     with http_client(site_app, user_id=orderer_user.id) as client:

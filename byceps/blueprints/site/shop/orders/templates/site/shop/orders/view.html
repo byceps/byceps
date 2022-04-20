@@ -56,7 +56,12 @@
 {{ payment_instructions|safe }}
   {%- endif %}
 
-  <h2>{{ _('Orderer') }}</h2>
+  <h2>{{ _('Billing and shipping address') }}</h2>
+
+  {%- if order.company %}
+  <div class="data-label">{{ _('Company') }}</div>
+  <div class="data-value">{{ order.company }}</div>
+  {%- endif %}
 
   <div class="data-label">{{ _('Full name') }}</div>
   <div class="data-value">{{ order.first_name }} {{ order.last_name }}</div>
