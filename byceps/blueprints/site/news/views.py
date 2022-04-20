@@ -7,16 +7,17 @@ byceps.blueprints.site.news.views
 """
 
 from __future__ import annotations
-from typing import Union
+from typing import Optional, Union
 
 from flask import abort, g
 
 from ....services.news import service as news_item_service
-from ....services.news.transfer.models import ChannelID
+from ....services.news.transfer.models import ChannelID, Item
 from ....services.site import (
     service as site_service,
     settings_service as site_settings_service,
 )
+from ....services.site.transfer.models import SiteID
 from ....util.authorization import has_current_user_permission
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
@@ -62,8 +63,11 @@ def view(slug):
     if item is None:
         abort(404)
 
+    external_item_url = _get_external_url(item)
+
     return {
         'item': item,
+        'external_item_url': external_item_url,
     }
 
 
@@ -89,3 +93,12 @@ def _get_items_per_page_value() -> int:
 
 def _may_current_user_view_drafts() -> bool:
     return has_current_user_permission('news_item.view_draft')
+
+
+def _get_external_url(item: Item) -> Optional[str]:
+    announcement_site_id = item.channel.announcement_site_id
+    if announcement_site_id is None:
+        return None
+
+    announcement_site = site_service.get_site(SiteID(announcement_site_id))
+    return f'https://{announcement_site.server_name}/news/{item.slug}'
