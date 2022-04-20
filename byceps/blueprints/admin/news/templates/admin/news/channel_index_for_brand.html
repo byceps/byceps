@@ -1,6 +1,7 @@
 {% extends 'layout/admin/base.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% set current_page = 'news_admin' %}
 {% set current_page_brand = brand %}
 {% set page_title = [_('News channels'), brand.title] %}
@@ -25,7 +26,7 @@
     <table class="index index--v-centered wide">
       <thead>
         <tr>
-          <th>{{ _('ID') }}</th>
+          <th colspan="2">{{ _('ID') }}</th>
           <th>{{ _('Site for announcement') }}</th>
           <th class="centered">{{ _('News posts') }}</th>
           <th></th>
@@ -36,6 +37,11 @@
         {%- with item_count = item_count_by_channel_id[channel.id] %}
         <tr>
           <td><a href="{{ url_for('.channel_view', channel_id=channel.id) }}"><strong>{{ channel.id }}</strong></a></td>
+          <td>
+          {%- if channel.archived %}
+            {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
+          {%- endif %}
+          </td>
           <td>
           {%- with site_id = channel.announcement_site_id %}
             {%- if site_id is not none %}

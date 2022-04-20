@@ -10,6 +10,7 @@ import re
 
 from flask_babel import lazy_gettext, pgettext
 from wtforms import (
+    BooleanField,
     DateField,
     FileField,
     RadioField,
@@ -53,7 +54,7 @@ class ChannelCreateForm(_ChannelFormBase):
 
 
 class ChannelUpdateForm(_ChannelFormBase):
-    pass
+    archived = BooleanField(lazy_gettext('archived'))
 
 
 class _ImageFormBase(LocalizedForm):

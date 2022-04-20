@@ -185,9 +185,10 @@ def channel_update(channel_id):
         return channel_update_form(channel.id, form)
 
     announcement_site_id = form.announcement_site_id.data or None
+    archived = form.archived.data
 
     channel = news_channel_service.update_channel(
-        channel.id, announcement_site_id
+        channel.id, announcement_site_id, archived
     )
 
     flash_success(gettext('Changes have been saved.'))

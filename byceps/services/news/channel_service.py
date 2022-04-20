@@ -43,11 +43,13 @@ def create_channel(
 def update_channel(
     channel_id: ChannelID,
     announcement_site_id: Optional[SiteID],
+    archived: bool,
 ) -> Channel:
     """Update a channel."""
     db_channel = get_db_channel(channel_id)
 
     db_channel.announcement_site_id = announcement_site_id
+    db_channel.archived = archived
 
     db.session.commit()
 
@@ -125,4 +127,5 @@ def _db_entity_to_channel(db_channel: DbChannel) -> Channel:
         id=db_channel.id,
         brand_id=db_channel.brand_id,
         announcement_site_id=db_channel.announcement_site_id,
+        archived=db_channel.archived,
     )

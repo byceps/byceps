@@ -25,6 +25,7 @@ class Channel(db.Model):
     id = db.Column(db.UnicodeText, primary_key=True)
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False)
     announcement_site_id = db.Column(db.UnicodeText, db.ForeignKey('sites.id'), nullable=True)
+    archived = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(
         self,

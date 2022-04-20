@@ -38,6 +38,7 @@ class Channel:
     # Should be `SiteID` instead of `str`,
     # but circular imports prevent this.
     announcement_site_id: Optional[str]
+    archived: bool
 
 
 @dataclass(frozen=True)
