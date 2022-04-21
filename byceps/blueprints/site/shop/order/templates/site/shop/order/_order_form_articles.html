@@ -15,16 +15,21 @@
           {%- if item.has_fixed_quantity() %}
           <td class="number">{{ item.fixed_quantity }}</td>
           {%- else %}
-          <td class="number">
-            {%- set field = form.get_field_for_article(item.article) %}
-            {{ field(hidden=not is_available) }}
+          <td>
+          {%- with field = form.get_field_for_article(item.article) %}
+            {%- if is_available %}
+            {{ field(class='form-control') }}
+            {%- else %}
+            {{ field(hidden=true) }}
+            {%- endif %}
             {%- if field.errors %}
-            <ol class="form-errors" style="text-align: left;">
+            <ol class="form-errors">
               {%- for error in field.errors %}
               <li><strong>{{ _('Error') }}:</strong> <span>{{ error }}</span></li>
               {%- endfor %}
             </ol>
             {%- endif -%}
+          {%- endwith -%}
           </td>
           {%- endif %}
           <td>{{ item.article.description }}
