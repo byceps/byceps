@@ -20,7 +20,7 @@
   {%- if note is not none %}
     <div class="form-note">{{ note }}</div>
   {%- endif %}
-    {{- _form_field_errors(field) -}}
+    {{- form_field_errors(field) -}}
   </div>
 {%- endmacro %}
 
@@ -30,7 +30,7 @@
     {%- with label = label if label is not none else field.label.text %}
     <label class="form-check-label">{{- field(**kwargs) }} <span>{{ label }}</span></label>
     {%- endwith %}
-    {{- _form_field_errors(field) -}}
+    {{- form_field_errors(field) -}}
   </div>
 {%- endmacro %}
 
@@ -41,7 +41,7 @@
     <div class="form-control-checkboxes">
       {{- field(**kwargs) }}
     </div>
-    {{- _form_field_errors(field) -}}
+    {{- form_field_errors(field) -}}
   </div>
 {%- endmacro %}
 
@@ -52,7 +52,7 @@
     <div class="form-control-radios">
       {{- field(**kwargs) }}
     </div>
-    {{- _form_field_errors(field) -}}
+    {{- form_field_errors(field) -}}
   </div>
 {%- endmacro %}
 
@@ -66,7 +66,7 @@
 {%- endmacro %}
 
 
-{%- macro _form_field_errors(field) %}
+{%- macro form_field_errors(field) %}
   {{- _errors(field.errors) -}}
 {%- endmacro %}
 
