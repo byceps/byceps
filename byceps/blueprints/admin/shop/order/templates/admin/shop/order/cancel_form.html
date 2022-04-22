@@ -13,18 +13,23 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.cancel', order_id=order.id) }}" method="post">
-    {{ form_field(
-      form.reason,
-      maxlength=1000,
-      note='%s %s %s'|format(
-        render_icon('warning'),
-        _('The reason is visible to the orderer.'),
-        _('This is not an internal remark.')
-      )|safe,
-      style="height: 8rem;",
-      autofocus='autofocus')
-    }}
-    {{ form_field_check(form.send_email, form.send_email.label.text, checked='checked') }}
+    <div class="box">
+
+      {{ form_field(
+        form.reason,
+        maxlength=1000,
+        note='%s %s %s'|format(
+          render_icon('warning'),
+          _('The reason is visible to the orderer.'),
+          _('This is not an internal remark.')
+        )|safe,
+        style="height: 8rem;",
+        autofocus='autofocus')
+      }}
+
+      {{ form_field_check(form.send_email, form.send_email.label.text, checked='checked') }}
+
+    </div>
 
     {{ form_buttons(_('Cancel order'), icon='disabled') }}
   </form>

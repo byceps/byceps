@@ -21,22 +21,28 @@
   </div>
 
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
+    <div class="box">
+
 {{ form_form_errors(form) }}
-    <div class="row">
-      <div>
-        {{ form_field(form.starts_on) }}
+
+      <div class="row">
+        <div>
+          {{ form_field(form.starts_on) }}
+        </div>
+        <div>
+          {{ form_field(form.starts_at) }}
+        </div>
       </div>
-      <div>
-        {{ form_field(form.starts_at) }}
+
+      <div class="row">
+        <div>
+          {{ form_field(form.ends_on) }}
+        </div>
+        <div>
+          {{ form_field(form.ends_at) }}
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div>
-        {{ form_field(form.ends_on) }}
-      </div>
-      <div>
-        {{ form_field(form.ends_at) }}
-      </div>
+
     </div>
 
     {{ form_buttons(_('Add')) }}

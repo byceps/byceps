@@ -14,13 +14,18 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.award', user_id=user.id) }}" method="post">
-    <div class="mb">
-      <label class="form-label">{{ _('User') }}</label>
-      <div>
-        {{ render_user_avatar_and_admin_link(user, size=20) }}
+    <div class="box">
+
+      <div class="mb">
+        <label class="form-label">{{ _('User') }}</label>
+        <div>
+          {{ render_user_avatar_and_admin_link(user, size=20) }}
+        </div>
       </div>
+
+      {{ form_field(form.badge_id, autofocus='autofocus') }}
+
     </div>
-    {{ form_field(form.badge_id, autofocus='autofocus') }}
 
     {{ form_buttons(_('Award badge')) }}
   </form>

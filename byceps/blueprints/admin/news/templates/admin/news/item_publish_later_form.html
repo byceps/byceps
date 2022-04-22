@@ -14,12 +14,14 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.item_publish_later', item_id=item.id) }}" method="post">
-    <div class="row">
-      <div>
-        {{ form_field(form.publish_on, autofocus='autofocus') }}
-      </div>
-      <div>
-        {{ form_field(form.publish_at) }}
+    <div class="box">
+      <div class="row">
+        <div>
+          {{ form_field(form.publish_on, autofocus='autofocus') }}
+        </div>
+        <div>
+          {{ form_field(form.publish_at) }}
+        </div>
       </div>
     </div>
 

@@ -12,7 +12,9 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.mark_as_paid', order_id=order.id) }}" method="post">
-    {{ form_field_radio(form.payment_method, autofocus='autofocus') }}
+    <div class="box">
+      {{ form_field_radio(form.payment_method, autofocus='autofocus') }}
+    </div>
 
     {{ form_buttons(_('Mark as paid'), icon='success') }}
   </form>

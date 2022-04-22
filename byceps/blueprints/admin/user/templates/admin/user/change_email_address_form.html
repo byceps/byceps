@@ -9,8 +9,10 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.change_email_address', user_id=user.id) }}" method="post">
-    {{ form_field(form.email_address, maxlength=120, autofocus='autofocus') }}
-    {{ form_field(form.reason, maxlength=1000, note=_('The reason will be saved as <em>internal</em> remark.')|safe) }}
+    <div class="box">
+      {{ form_field(form.email_address, maxlength=120, autofocus='autofocus') }}
+      {{ form_field(form.reason, maxlength=1000, note=_('The reason will be saved as <em>internal</em> remark.')|safe) }}
+    </div>
 
     {{ form_buttons(_('Change')) }}
   </form>

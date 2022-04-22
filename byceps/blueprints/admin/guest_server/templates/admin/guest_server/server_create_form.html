@@ -14,25 +14,27 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.server_create', party_id=party.id) }}" method="post">
-    {{ form_field(form.owner, maxlength=40, autofocus='autofocus') }}
+    <div class="box">
+      {{ form_field(form.owner, maxlength=40, autofocus='autofocus') }}
 
-    <div class="row row--wrap">
-      <div class="column--grow">
-        {{ form_field(form.ip_address) }}
+      <div class="row row--wrap">
+        <div class="column--grow">
+          {{ form_field(form.ip_address) }}
+        </div>
+        <div class="column--grow">
+          {{ form_field(form.hostname) }}
+        </div>
+        <div class="column--grow">
+          {{ form_field(form.netmask) }}
+        </div>
+        <div class="column--grow">
+          {{ form_field(form.gateway) }}
+        </div>
       </div>
-      <div class="column--grow">
-        {{ form_field(form.hostname) }}
-      </div>
-      <div class="column--grow">
-        {{ form_field(form.netmask) }}
-      </div>
-      <div class="column--grow">
-        {{ form_field(form.gateway) }}
-      </div>
+
+      {{ form_field(form.notes_admin) }}
+      {{ form_field_check(form.approved) }}
     </div>
-
-    {{ form_field(form.notes_admin) }}
-    {{ form_field_check(form.approved) }}
 
     {{ form_buttons(_('Create')) }}
   </form>

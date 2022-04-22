@@ -14,9 +14,11 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.email_config_update', brand_id=brand.id) }}" method="post">
-    {{ form_field(form.sender_address, autofocus='autofocus') }}
-    {{ form_field(form.sender_name) }}
-    {{ form_field(form.contact_address) }}
+    <div class="box">
+      {{ form_field(form.sender_address, autofocus='autofocus') }}
+      {{ form_field(form.sender_name) }}
+      {{ form_field(form.contact_address) }}
+    </div>
 
     {{ form_buttons(_('Save')) }}
   </form>

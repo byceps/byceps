@@ -9,7 +9,9 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.invalidate_email_address', user_id=user.id) }}" method="post">
-    {{ form_field(form.reason, maxlength=1000, autofocus='autofocus') }}
+    <div class="box">
+      {{ form_field(form.reason, maxlength=1000, autofocus='autofocus') }}
+    </div>
 
     {{ form_buttons(_('Save'), icon='disabled') }}
   </form>

@@ -10,7 +10,9 @@
   <h1>{{ _('Assign to user') }}</h1>
 
   <form action="{{ url_for('.appoint_user', ticket_id=ticket.id) }}" method="post">
-    {{ form_field(form.user, maxlength=40, autofocus='autofocus') }}
+    <div class="box">
+      {{ form_field(form.user, maxlength=40, autofocus='autofocus') }}
+    </div>
 
     {{ form_buttons(_('Assign')) }}
   </form>

@@ -16,8 +16,10 @@
 
   {%- if unassigned_orgas_available %}
   <form action="{{ url_for('.membership_create', team_id=team.id) }}" method="post">
-    {{ form_field(form.user_id, autofocus='autofocus') }}
-    {{ form_field(form.duties, maxlength=40) }}
+    <div class="box">
+      {{ form_field(form.user_id, autofocus='autofocus') }}
+      {{ form_field(form.duties, maxlength=40) }}
+    </div>
 
     {{ form_buttons(_('Save')) }}
   </form>

@@ -13,36 +13,44 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.update', article_id=article.id) }}" method="post">
-    {{ form_field(form.description, maxlength=100, autofocus='autofocus') }}
-    <div class="row">
-      <div>
-        {{ form_field(form.price, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', suffix='€') }}
+    <div class="box">
+
+      {{ form_field(form.description, maxlength=100, autofocus='autofocus') }}
+
+      <div class="row">
+        <div>
+          {{ form_field(form.price, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', suffix='€') }}
+        </div>
+        <div>
+          {{ form_field(form.tax_rate, list='tax_rates', size=5, maxlength=5, style='text-align: right; width: 5.5rem;', suffix='%') }}
+          {{ form_datalist('tax_rates', ['0.0', '7.0', '19.0']) }}
+        </div>
       </div>
-      <div>
-        {{ form_field(form.tax_rate, list='tax_rates', size=5, maxlength=5, style='text-align: right; width: 5.5rem;', suffix='%') }}
-        {{ form_datalist('tax_rates', ['0.0', '7.0', '19.0']) }}
+
+      <div class="row">
+        <div>
+          {{ form_field(form.available_from_date) }}
+        </div>
+        <div>
+          {{ form_field(form.available_from_time) }}
+        </div>
       </div>
+
+      <div class="row">
+        <div>
+          {{ form_field(form.available_until_date) }}
+        </div>
+        <div>
+          {{ form_field(form.available_until_time) }}
+        </div>
+      </div>
+
+      {{ form_field(form.total_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
+      {{ form_field(form.max_quantity_per_order, type='number', min=1, max=99, style='width: 5.5rem;') }}
+      {{ form_field_check(form.not_directly_orderable, form.not_directly_orderable.label.text) }}
+      {{ form_field_check(form.separate_order_required, form.separate_order_required.label.text) }}
+
     </div>
-    <div class="row">
-      <div>
-        {{ form_field(form.available_from_date) }}
-      </div>
-      <div>
-        {{ form_field(form.available_from_time) }}
-      </div>
-    </div>
-    <div class="row">
-      <div>
-        {{ form_field(form.available_until_date) }}
-      </div>
-      <div>
-        {{ form_field(form.available_until_time) }}
-      </div>
-    </div>
-    {{ form_field(form.total_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
-    {{ form_field(form.max_quantity_per_order, type='number', min=1, max=99, style='width: 5.5rem;') }}
-    {{ form_field_check(form.not_directly_orderable, form.not_directly_orderable.label.text) }}
-    {{ form_field_check(form.separate_order_required, form.separate_order_required.label.text) }}
 
     {{ form_buttons(_('Save')) }}
   </form>

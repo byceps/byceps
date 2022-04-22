@@ -15,23 +15,25 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.item_update', item_id=item.id) }}" method="post">
-    {{ form_field(form.slug, maxlength=100, note='<strong>' ~ _('Attention') ~ ':</strong> ' ~ _('Changing the slug affects the news post\'s permalink!')) }}
-    {{ form_field(form.title, maxlength=100, autofocus='autofocus') }}
-    {{ form_field_radio(form.body_format) }}
-    {{ form_field(form.body, class='monospace') }}
+    <div class="box">
+      {{ form_field(form.slug, maxlength=100, note='<strong>' ~ _('Attention') ~ ':</strong> ' ~ _('Changing the slug affects the news post\'s permalink!')) }}
+      {{ form_field(form.title, maxlength=100, autofocus='autofocus') }}
+      {{ form_field_radio(form.body_format) }}
+      {{ form_field(form.body, class='monospace') }}
 
-    {%- if item.images %}
-    <div class="dropdown mb">
-      <button class="dropdown-toggle button button--compact"><span>{{ _('Insert image') }}</span> {{ render_icon('chevron-down') }}</button>
-      <ol class="dropdown-menu">
-      {%- for image in item.images|sort(attribute='number') %}
-        <li><a class="dropdown-item" data-action="insert-image-{{ image.number }}">#{{ image.number }}</a></li>
-      {%- endfor %}
-      </ol>
+      {%- if item.images %}
+      <div class="dropdown mb">
+        <button class="dropdown-toggle button button--compact"><span>{{ _('Insert image') }}</span> {{ render_icon('chevron-down') }}</button>
+        <ol class="dropdown-menu">
+        {%- for image in item.images|sort(attribute='number') %}
+          <li><a class="dropdown-item" data-action="insert-image-{{ image.number }}">#{{ image.number }}</a></li>
+        {%- endfor %}
+        </ol>
+      </div>
+      {%- endif %}
+
+      {{ form_field(form.image_url_path, maxlength=100) }}
     </div>
-    {%- endif %}
-
-    {{ form_field(form.image_url_path, maxlength=100) }}
 
     {{ form_buttons(_('Save')) }}
   </form>

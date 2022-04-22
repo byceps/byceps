@@ -452,12 +452,15 @@ form .invalid {
   background-color: #ff9999;
   border: #ff1a1a solid 1px;
   border-radius: 3px;
-  margin: calc(var(--padding) * -1 - 1px);
   padding: var(--padding);
 }
 
 form .form-form-errors {
   display: inline-block;
+}
+
+form .invalid {
+  margin: calc(var(--padding) * -1 - 1px);
 }
 
 form .form-form-errors.mb,

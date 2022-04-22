@@ -13,7 +13,9 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.add_news_channel', site_id=site.id) }}" method="post">
-    {{ form_field(form.news_channel_id) }}
+    <div class="box">
+      {{ form_field(form.news_channel_id) }}
+    </div>
 
     {{ form_buttons(_('Add')) }}
   </form>

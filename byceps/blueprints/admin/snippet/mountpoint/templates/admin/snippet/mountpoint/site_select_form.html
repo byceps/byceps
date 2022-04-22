@@ -12,7 +12,9 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.site_select', snippet_id=snippet.id) }}" method="post">
-    {{ form_field(form.site_id, autofocus='autofocus') }}
+    <div class="box">
+      {{ form_field(form.site_id, autofocus='autofocus') }}
+    </div>
 
     {{ form_buttons(_('Continue')) }}
   </form>

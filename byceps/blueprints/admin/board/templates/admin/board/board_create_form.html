@@ -14,10 +14,12 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.board_create', brand_id=brand.id) }}" method="post">
-    {{ form_field(form.board_id, maxlength=40, placeholder=brand.id, autofocus='autofocus') }}
+    <div class="box">
+      {{ form_field(form.board_id, maxlength=40, placeholder=brand.id, autofocus='autofocus') }}
 
-    <p>{{ _('A board can be used for a single party as well as for multiple or even all partys of the same brand.') }}
-    <p>{{ _('Hint: If the board should be used only for a specific party, use the ID <em>of that party</em> as ID for the board. If, however, it should be used for multiple parties, use the ID <em>of the brand</em> as ID for the board.') }}</p>
+      <p>{{ _('A board can be used for a single party as well as for multiple or even all partys of the same brand.') }}
+      <p>{{ _('Hint: If the board should be used only for a specific party, use the ID <em>of that party</em> as ID for the board. If, however, it should be used for multiple parties, use the ID <em>of the brand</em> as ID for the board.') }}</p>
+    </div>
 
     {{ form_buttons(_('Create')) }}
   </form>

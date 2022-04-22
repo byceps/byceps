@@ -14,22 +14,27 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.create', brand_id=brand.id) }}" method="post">
-    <div class="mb">
-      <label class="form-label">{{ _('Brand') }}</label>
-      <div>
-        {{ render_brand_avatar(brand, '64') }}<br>
-        {{ render_brand_admin_link(brand) }}
+    <div class="box">
+
+      <div class="mb">
+        <label class="form-label">{{ _('Brand') }}</label>
+        <div>
+          {{ render_brand_avatar(brand, '64') }}<br>
+          {{ render_brand_admin_link(brand) }}
+        </div>
       </div>
+
+      {{ form_field(form.id, maxlength=40, placeholder='intranet', autofocus='autofocus') }}
+      {{ form_field(form.title, maxlength=40, placeholder='Intranet') }}
+      {{ form_field(form.server_name, placeholder='www.example.com', note=_('Has to be unique.')) }}
+      {{ form_field(form.party_id) }}
+      {{ form_field(form.board_id) }}
+      {{ form_field(form.storefront_id) }}
+      {{ form_field_check(form.enabled, form.enabled.label.text) }}
+      {{ form_field_check(form.user_account_creation_enabled, form.user_account_creation_enabled.label.text) }}
+      {{ form_field_check(form.login_enabled, form.login_enabled.label.text) }}
+
     </div>
-    {{ form_field(form.id, maxlength=40, placeholder='intranet', autofocus='autofocus') }}
-    {{ form_field(form.title, maxlength=40, placeholder='Intranet') }}
-    {{ form_field(form.server_name, placeholder='www.example.com', note=_('Has to be unique.')) }}
-    {{ form_field(form.party_id) }}
-    {{ form_field(form.board_id) }}
-    {{ form_field(form.storefront_id) }}
-    {{ form_field_check(form.enabled, form.enabled.label.text) }}
-    {{ form_field_check(form.user_account_creation_enabled, form.user_account_creation_enabled.label.text) }}
-    {{ form_field_check(form.login_enabled, form.login_enabled.label.text) }}
 
     {{ form_buttons(_('Create')) }}
   </form>

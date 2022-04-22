@@ -14,12 +14,17 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.create', snippet_id=snippet.id, site_id=site.id) }}" method="post">
-    <div class="mb">
-      <div class="form-label">{{ _('Site') }}</div>
-      <div>{{ site.title }}</div>
+    <div class="box">
+
+      <div class="mb">
+        <div class="form-label">{{ _('Site') }}</div>
+        <div>{{ site.title }}</div>
+      </div>
+
+      {{ form_field(form.endpoint_suffix, value=snippet.name, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.url_path, value='/', maxlength=40) }}
+
     </div>
-    {{ form_field(form.endpoint_suffix, value=snippet.name, maxlength=40, autofocus='autofocus') }}
-    {{ form_field(form.url_path, value='/', maxlength=40) }}
 
     {{ form_buttons(_('Create')) }}
   </form>

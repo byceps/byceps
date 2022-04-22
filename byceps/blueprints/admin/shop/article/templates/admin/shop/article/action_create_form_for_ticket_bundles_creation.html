@@ -13,8 +13,10 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.action_create_for_ticket_bundles_creation', article_id=article.id) }}" method="post">
-    {{ form_field(form.category_id, autofocus='autofocus') }}
-    {{ form_field(form.ticket_quantity, type='number', min=0, style='width: 5.5rem;') }}
+    <div class="box">
+      {{ form_field(form.category_id, autofocus='autofocus') }}
+      {{ form_field(form.ticket_quantity, type='number', min=0, style='width: 5.5rem;') }}
+    </div>
 
     {{ form_buttons(_('Add action')) }}
   </form>

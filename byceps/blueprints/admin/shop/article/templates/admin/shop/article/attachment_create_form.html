@@ -13,8 +13,10 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.attachment_create', article_id=article.id) }}" method="post">
-    {{ form_field(form.article_to_attach_id, autofocus='autofocus') }}
-    {{ form_field(form.quantity, type='number', min=1, max=999, style='width: 4em;') }}
+    <div class="box">
+      {{ form_field(form.article_to_attach_id, autofocus='autofocus') }}
+      {{ form_field(form.quantity, type='number', min=1, max=999, style='width: 4em;') }}
+    </div>
 
     {{ form_buttons(_('Attach article')) }}
   </form>

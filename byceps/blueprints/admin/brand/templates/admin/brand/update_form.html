@@ -14,9 +14,11 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.update', brand_id=brand.id) }}" method="post">
-    {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
-    {{ form_field(form.image_filename) }}
-    {{ form_field_check(form.archived) }}
+    <div class="box">
+      {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.image_filename) }}
+      {{ form_field_check(form.archived) }}
+    </div>
 
     {{ form_buttons(_('Save')) }}
   </form>

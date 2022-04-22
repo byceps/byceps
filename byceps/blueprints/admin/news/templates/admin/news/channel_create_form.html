@@ -14,11 +14,13 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.channel_create', brand_id=brand.id) }}" method="post">
-    {{ form_field(form.channel_id, maxlength=40, placeholder=brand.id, autofocus='autofocus') }}
-    {{ form_field(form.announcement_site_id, note=_("This site's server name will be used in the URL when announcing news items from this channel.")) }}
+    <div class="box">
+      {{ form_field(form.channel_id, maxlength=40, placeholder=brand.id, autofocus='autofocus') }}
+      {{ form_field(form.announcement_site_id, note=_("This site's server name will be used in the URL when announcing news items from this channel.")) }}
 
-    <p>{{ _('A news channel can be used for a single party as well as for multiple or even all partys of the same brand.') }}
-    <p>{{ _('Hint: If the news channel should be used only for a specific party, use the ID <em>of that party</em> as ID for the news channel. If, however, it should be used for multiple parties, use the ID <em>of the brand</em> as ID for the news channel.') }}</p>
+      <p>{{ _('A news channel can be used for a single party as well as for multiple or even all partys of the same brand.') }}
+      <p>{{ _('Hint: If the news channel should be used only for a specific party, use the ID <em>of that party</em> as ID for the news channel. If, however, it should be used for multiple parties, use the ID <em>of the brand</em> as ID for the news channel.') }}</p>
+    </div>
 
     {{ form_buttons(_('Create')) }}
   </form>

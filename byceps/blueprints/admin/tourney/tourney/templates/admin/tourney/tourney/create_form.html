@@ -14,18 +14,23 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.create', party_id=party.id) }}" method="post">
-    {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
-    {{ form_field(form.subtitle, maxlength=80) }}
-    {{ form_field(form.logo_url, maxlength=120) }}
-    {{ form_field(form.category_id) }}
-    {{ form_field(form.max_participant_count, min=0, max=999, style='width: 4rem;') }}
-    <div class="row">
-      <div>
-        {{ form_field(form.starts_on) }}
+    <div class="box">
+
+      {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.subtitle, maxlength=80) }}
+      {{ form_field(form.logo_url, maxlength=120) }}
+      {{ form_field(form.category_id) }}
+      {{ form_field(form.max_participant_count, min=0, max=999, style='width: 4rem;') }}
+
+      <div class="row">
+        <div>
+          {{ form_field(form.starts_on) }}
+        </div>
+        <div>
+          {{ form_field(form.starts_at) }}
+        </div>
       </div>
-      <div>
-        {{ form_field(form.starts_at) }}
-      </div>
+
     </div>
 
     {{ form_buttons(_('Create')) }}

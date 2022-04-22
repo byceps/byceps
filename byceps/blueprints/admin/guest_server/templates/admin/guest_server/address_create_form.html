@@ -14,11 +14,13 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.address_create', server_id=server.id) }}" method="post">
+    <div class="box">
 {{ form_form_errors(form) }}
-    {{ form_field(form.ip_address, autofocus='autofocus') }}
-    {{ form_field(form.hostname) }}
-    {{ form_field(form.netmask) }}
-    {{ form_field(form.gateway) }}
+      {{ form_field(form.ip_address, autofocus='autofocus') }}
+      {{ form_field(form.hostname) }}
+      {{ form_field(form.netmask) }}
+      {{ form_field(form.gateway) }}
+    </div>
 
     {{ form_buttons(_('Save')) }}
   </form>

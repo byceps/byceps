@@ -14,28 +14,35 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.update', party_id=party.id) }}" method="post">
-    {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
-    <div class="row">
-      <div>
-        {{ form_field(form.starts_on) }}
+    <div class="box">
+
+      {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
+
+      <div class="row">
+        <div>
+          {{ form_field(form.starts_on) }}
+        </div>
+        <div>
+          {{ form_field(form.starts_at) }}
+        </div>
       </div>
-      <div>
-        {{ form_field(form.starts_at) }}
+
+      <div class="row">
+        <div>
+          {{ form_field(form.ends_on) }}
+        </div>
+        <div>
+          {{ form_field(form.ends_at) }}
+        </div>
       </div>
+
+      {{ form_field(form.max_ticket_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
+      {{ form_field_check(form.ticket_management_enabled, form.ticket_management_enabled.label.text) }}
+      {{ form_field_check(form.seat_management_enabled, form.seat_management_enabled.label.text) }}
+      {{ form_field_check(form.canceled, form.canceled.label.text) }}
+      {{ form_field_check(form.archived, form.archived.label.text) }}
+
     </div>
-    <div class="row">
-      <div>
-        {{ form_field(form.ends_on) }}
-      </div>
-      <div>
-        {{ form_field(form.ends_at) }}
-      </div>
-    </div>
-    {{ form_field(form.max_ticket_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
-    {{ form_field_check(form.ticket_management_enabled, form.ticket_management_enabled.label.text) }}
-    {{ form_field_check(form.seat_management_enabled, form.seat_management_enabled.label.text) }}
-    {{ form_field_check(form.canceled, form.canceled.label.text) }}
-    {{ form_field_check(form.archived, form.archived.label.text) }}
 
     {{ form_buttons(_('Save')) }}
   </form>

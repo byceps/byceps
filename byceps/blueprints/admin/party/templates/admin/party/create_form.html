@@ -14,25 +14,32 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.create', brand_id=brand.id) }}" method="post">
-    {{ form_field(form.id, maxlength=40, placeholder='%s-42'|format(brand.id), autofocus='autofocus') }}
-    {{ form_field(form.title, maxlength=40, placeholder='%s 42'|format(brand.title)) }}
-    <div class="row">
-      <div>
-        {{ form_field(form.starts_on) }}
+    <div class="box">
+
+      {{ form_field(form.id, maxlength=40, placeholder='%s-42'|format(brand.id), autofocus='autofocus') }}
+      {{ form_field(form.title, maxlength=40, placeholder='%s 42'|format(brand.title)) }}
+
+      <div class="row">
+        <div>
+          {{ form_field(form.starts_on) }}
+        </div>
+        <div>
+          {{ form_field(form.starts_at) }}
+        </div>
       </div>
-      <div>
-        {{ form_field(form.starts_at) }}
+
+      <div class="row">
+        <div>
+          {{ form_field(form.ends_on) }}
+        </div>
+        <div>
+          {{ form_field(form.ends_at) }}
+        </div>
       </div>
+
+      {{ form_field(form.max_ticket_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
+
     </div>
-    <div class="row">
-      <div>
-        {{ form_field(form.ends_on) }}
-      </div>
-      <div>
-        {{ form_field(form.ends_at) }}
-      </div>
-    </div>
-    {{ form_field(form.max_ticket_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
 
     {{ form_buttons(_('Create')) }}
   </form>

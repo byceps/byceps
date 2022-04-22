@@ -14,16 +14,18 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.update', site_id=site.id) }}" method="post">
-    {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
-    {{ form_field(form.server_name, note=_('Has to be unique.')) }}
-    {{ form_field(form.brand_id) }}
-    {{ form_field(form.party_id) }}
-    {{ form_field(form.board_id) }}
-    {{ form_field(form.storefront_id) }}
-    {{ form_field_check(form.enabled, form.enabled.label.text) }}
-    {{ form_field_check(form.user_account_creation_enabled, form.user_account_creation_enabled.label.text) }}
-    {{ form_field_check(form.login_enabled, form.login_enabled.label.text) }}
-    {{ form_field_check(form.archived, form.archived.label.text) }}
+    <div class="box">
+      {{ form_field(form.title, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.server_name, note=_('Has to be unique.')) }}
+      {{ form_field(form.brand_id) }}
+      {{ form_field(form.party_id) }}
+      {{ form_field(form.board_id) }}
+      {{ form_field(form.storefront_id) }}
+      {{ form_field_check(form.enabled, form.enabled.label.text) }}
+      {{ form_field_check(form.user_account_creation_enabled, form.user_account_creation_enabled.label.text) }}
+      {{ form_field_check(form.login_enabled, form.login_enabled.label.text) }}
+      {{ form_field_check(form.archived, form.archived.label.text) }}
+    </div>
 
     {{ form_buttons(_('Save')) }}
   </form>

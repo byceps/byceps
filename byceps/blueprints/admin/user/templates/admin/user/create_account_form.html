@@ -13,18 +13,24 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.create_account') }}" method="post" class="disable-submit-button-on-submit">
-    {{ form_field(form.screen_name, maxlength=24, autofocus='autofocus') }}
-    <div class="row">
-      <div class="column--grow">
-        {{ form_field(form.first_name, maxlength=40) }}
+    <div class="box">
+
+      {{ form_field(form.screen_name, maxlength=24, autofocus='autofocus') }}
+
+      <div class="row">
+        <div class="column--grow">
+          {{ form_field(form.first_name, maxlength=40) }}
+        </div>
+        <div class="column--grow">
+          {{ form_field(form.last_name, maxlength=80) }}
+        </div>
       </div>
-      <div class="column--grow">
-        {{ form_field(form.last_name, maxlength=80) }}
-      </div>
+
+      {{ form_field(form.email_address, type='email', maxlength=120) }}
+      {{ form_field(form.password, maxlength=40) }}
+      {{ form_field(form.site_id, note=_('The email to activate the account will use this site as its sender.')) }}
+
     </div>
-    {{ form_field(form.email_address, type='email', maxlength=120) }}
-    {{ form_field(form.password, maxlength=40) }}
-    {{ form_field(form.site_id, note=_('The email to activate the account will use this site as its sender.')) }}
 
     {{ form_buttons(_('Create')) }}
   </form>

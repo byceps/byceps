@@ -14,7 +14,9 @@
   <h1>{{ _('Copy orga teams from another party') }}</h1>
 
   <form action="{{ url_for('.teams_copy', target_party_id=party.id) }}" method="post">
-    {{ form_field(form.party_id, autofocus='autofocus') }}
+    <div class="box">
+      {{ form_field(form.party_id, autofocus='autofocus') }}
+    </div>
 
     {{ form_buttons(_('Copy')) }}
   </form>

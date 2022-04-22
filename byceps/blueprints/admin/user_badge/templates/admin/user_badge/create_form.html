@@ -13,12 +13,14 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.create') }}" method="post">
-    {{ form_field(form.slug, maxlength=40, autofocus='autofocus') }}
-    {{ form_field(form.label, maxlength=80) }}
-    {{ form_field(form.description) }}
-    {{ form_field(form.image_filename, maxlength=80) }}
-    {{ form_field(form.brand_id) }}
-    {{ form_field_check(form.featured, form.featured.label.text) }}
+    <div class="box">
+      {{ form_field(form.slug, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.label, maxlength=80) }}
+      {{ form_field(form.description) }}
+      {{ form_field(form.image_filename, maxlength=80) }}
+      {{ form_field(form.brand_id) }}
+      {{ form_field_check(form.featured, form.featured.label.text) }}
+    </div>
 
     {{ form_buttons(_('Create')) }}
   </form>

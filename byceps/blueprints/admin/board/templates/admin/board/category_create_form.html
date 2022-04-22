@@ -14,9 +14,11 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.category_create', board_id=board.id) }}" method="post">
-    {{ form_field(form.slug, maxlength=40, autofocus='autofocus') }}
-    {{ form_field(form.title, maxlength=40) }}
-    {{ form_field(form.description, maxlength=80) }}
+    <div class="box">
+      {{ form_field(form.slug, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.title, maxlength=40) }}
+      {{ form_field(form.description, maxlength=80) }}
+    </div>
 
     {{ form_buttons(_('Create')) }}
   </form>

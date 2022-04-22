@@ -12,9 +12,11 @@
   <h1>{{ page_title }}</h1>
 
   <form action="{{ url_for('.update', storefront_id=storefront.id) }}" method="post">
-    {{ form_field(form.catalog_id, autofocus='autofocus') }}
-    {{ form_field(form.order_number_sequence_id) }}
-    {{ form_field_check(form.closed, form.closed.label.text) }}
+    <div class="box">
+      {{ form_field(form.catalog_id, autofocus='autofocus') }}
+      {{ form_field(form.order_number_sequence_id) }}
+      {{ form_field_check(form.closed, form.closed.label.text) }}
+    </div>
 
     {{ form_buttons(_('Save')) }}
   </form>
