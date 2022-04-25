@@ -63,7 +63,7 @@ def server_index(party_id):
     creator_ids = {server.creator_id for server in servers}
     owner_ids = {server.owner_id for server in servers}
     user_ids = creator_ids.union(owner_ids)
-    users = user_service.get_users(user_ids)
+    users = user_service.get_users(user_ids, include_avatars=True)
     users_by_id = user_service.index_users_by_id(users)
 
     return {
@@ -221,7 +221,7 @@ def address_index(party_id):
         addresses.extend(server.addresses)
 
     user_ids = {server.owner_id for server in servers}
-    users = user_service.get_users(user_ids)
+    users = user_service.get_users(user_ids, include_avatars=True)
     users_by_id = user_service.index_users_by_id(users)
     owners_by_server_id = {
         server.id: users_by_id[server.owner_id] for server in servers
