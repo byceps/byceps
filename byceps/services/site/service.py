@@ -8,7 +8,7 @@ byceps.services.site.service
 
 from __future__ import annotations
 import dataclasses
-from typing import Optional, Union
+from typing import Callable, Optional, Union
 
 from sqlalchemy import select
 
@@ -184,6 +184,7 @@ def get_current_sites(
         .filter_by(archived=False) \
         .all()
 
+    transform: Callable[[DbSite], Union[Site, SiteWithBrand]]
     if include_brands:
         transform = _db_entity_to_site_with_brand
     else:
