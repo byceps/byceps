@@ -32,7 +32,7 @@ def add_invoice(
     invoice = _db_entity_to_invoice(db_invoice)
 
     log_entry_data = {'invoice_number': invoice.number}
-    db_log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_entry(
         'order-invoice-created', invoice.order_id, log_entry_data
     )
     db.session.add(db_log_entry)

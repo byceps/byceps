@@ -27,13 +27,13 @@ def create_entry(
     occurred_at: Optional[datetime] = None,
 ) -> None:
     """Create a user log entry."""
-    entry = build_log_entry(event_type, user_id, data, occurred_at=occurred_at)
+    entry = build_entry(event_type, user_id, data, occurred_at=occurred_at)
 
     db.session.add(entry)
     db.session.commit()
 
 
-def build_log_entry(
+def build_entry(
     event_type: str,
     user_id: UserID,
     data: UserLogEntryData,
@@ -58,7 +58,7 @@ def get_entries_for_user(user_id: UserID) -> list[UserLogEntry]:
     return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
 
 
-def get_log_entries_of_type_for_user(
+def get_entries_of_type_for_user(
     user_id: UserID, event_type: str
 ) -> list[UserLogEntry]:
     """Return the log entries of that type for that user."""
@@ -72,7 +72,7 @@ def get_log_entries_of_type_for_user(
     return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
 
 
-def delete_user_login_log_entries(occurred_before: datetime) -> int:
+def delete_login_entries(occurred_before: datetime) -> int:
     """Delete login log entries which occurred before the given date.
 
     Return the number of deleted log entries.

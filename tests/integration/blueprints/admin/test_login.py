@@ -27,7 +27,7 @@ def test_login_succeeds(client, make_admin):
 
     user = make_admin(screen_name, permission_ids, password=password)
 
-    login_log_entries_before = log_service.get_log_entries_of_type_for_user(
+    login_log_entries_before = log_service.get_entries_of_type_for_user(
         user.id, 'user-logged-in'
     )
     assert len(login_log_entries_before) == 0
@@ -45,7 +45,7 @@ def test_login_succeeds(client, make_admin):
     assert response.status_code == 204
     assert response.location is None
 
-    login_log_entries_after = log_service.get_log_entries_of_type_for_user(
+    login_log_entries_after = log_service.get_entries_of_type_for_user(
         user.id, 'user-logged-in'
     )
     assert len(login_log_entries_after) == 1

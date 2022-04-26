@@ -22,13 +22,13 @@ def create_entry(
     event_type: str, ticket_id: TicketID, data: TicketLogEntryData
 ) -> None:
     """Create a ticket log entry."""
-    db_entry = build_log_entry(event_type, ticket_id, data)
+    db_entry = build_entry(event_type, ticket_id, data)
 
     db.session.add(db_entry)
     db.session.commit()
 
 
-def build_log_entry(
+def build_entry(
     event_type: str, ticket_id: TicketID, data: TicketLogEntryData
 ) -> DbTicketLogEntry:
     """Assemble, but not persist, a ticket log entry."""

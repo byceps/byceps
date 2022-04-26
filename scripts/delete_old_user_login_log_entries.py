@@ -27,9 +27,7 @@ def execute(minimum_age_in_days) -> None:
         f'(i.e. before {occurred_before:%Y-%m-%d %H:%M:%S}) ...'
     )
 
-    num_deleted = user_log_service.delete_user_login_log_entries(
-        occurred_before
-    )
+    num_deleted = user_log_service.delete_login_entries(occurred_before)
 
     click.secho(f'{num_deleted} user login log entries deleted.')
 

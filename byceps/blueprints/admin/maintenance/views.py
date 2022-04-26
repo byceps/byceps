@@ -56,9 +56,7 @@ def delete_old_login_log_entries():
     minimum_age_in_days = 90
     occurred_before = now - timedelta(days=minimum_age_in_days)
 
-    num_deleted = user_log_service.delete_user_login_log_entries(
-        occurred_before
-    )
+    num_deleted = user_log_service.delete_login_entries(occurred_before)
 
     flash_success(
         gettext(

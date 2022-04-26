@@ -75,4 +75,4 @@ def build_ticket_revoked_log_entry(
     if reason:
         data['reason'] = reason
 
-    return log_service.build_log_entry('ticket-revoked', ticket_id, data)
+    return log_service.build_entry('ticket-revoked', ticket_id, data)

@@ -49,7 +49,7 @@ def award_badge_to_user(
     user_log_entry_data = {'badge_id': str(badge_id)}
     if initiator_id:
         user_log_entry_data['initiator_id'] = str(initiator_id)
-    user_log_entry = user_log_service.build_log_entry(
+    user_log_entry = user_log_service.build_entry(
         'user-badge-awarded',
         user_id,
         user_log_entry_data,

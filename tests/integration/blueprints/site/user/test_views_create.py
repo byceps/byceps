@@ -242,7 +242,7 @@ def is_subscribed_to_newsletter(user_id, brand_id):
 
 
 def assert_creation_log_entry_created(user_id, site_id):
-    log_entries = log_service.get_log_entries_of_type_for_user(
+    log_entries = log_service.get_entries_of_type_for_user(
         user_id, 'user-created'
     )
     assert len(log_entries) == 1

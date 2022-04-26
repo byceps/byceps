@@ -31,7 +31,7 @@ def delete_account(
     user.deleted = True
     _anonymize_account(user)
 
-    log_entry = log_service.build_log_entry(
+    log_entry = log_service.build_entry(
         'user-deleted',
         user.id,
         {

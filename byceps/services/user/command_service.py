@@ -58,7 +58,7 @@ def initialize_account(
     log_entry_data = {}
     if initiator:
         log_entry_data['initiator_id'] = str(initiator.id)
-    log_entry = log_service.build_log_entry(
+    log_entry = log_service.build_entry(
         'user-initialized', user.id, log_entry_data
     )
     db.session.add(log_entry)
@@ -97,7 +97,7 @@ def suspend_account(
 
     user.suspended = True
 
-    log_entry = log_service.build_log_entry(
+    log_entry = log_service.build_entry(
         'user-suspended',
         user.id,
         {
@@ -127,7 +127,7 @@ def unsuspend_account(
 
     user.suspended = False
 
-    log_entry = log_service.build_log_entry(
+    log_entry = log_service.build_entry(
         'user-unsuspended',
         user.id,
         {
@@ -171,7 +171,7 @@ def change_screen_name(
     if reason:
         log_entry_data['reason'] = reason
 
-    log_entry = log_service.build_log_entry(
+    log_entry = log_service.build_entry(
         'user-screen-name-changed', user.id, log_entry_data
     )
     db.session.add(log_entry)
@@ -213,7 +213,7 @@ def change_email_address(
     if reason:
         log_entry_data['reason'] = reason
 
-    log_entry = log_service.build_log_entry(
+    log_entry = log_service.build_entry(
         'user-email-address-changed', user.id, log_entry_data
     )
     db.session.add(log_entry)
@@ -288,7 +288,7 @@ def update_user_details(
     _add_if_different(
         log_entry_data, 'phone_number', old_phone_number, phone_number
     )
-    log_entry = log_service.build_log_entry(
+    log_entry = log_service.build_entry(
         'user-details-updated', user_id, log_entry_data
     )
     db.session.add(log_entry)

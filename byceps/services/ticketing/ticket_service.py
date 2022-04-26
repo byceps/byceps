@@ -47,7 +47,7 @@ def update_ticket_code(
 
     db_ticket.code = code
 
-    db_log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_entry(
         'ticket-code-changed',
         db_ticket.id,
         {

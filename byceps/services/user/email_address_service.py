@@ -125,7 +125,7 @@ def confirm_email_address(
     user.email_address_verified = True
 
     log_entry_data = {'email_address': user.email_address}
-    log_entry = user_log_service.build_log_entry(
+    log_entry = user_log_service.build_entry(
         'user-email-address-confirmed', user.id, log_entry_data
     )
     db.session.add(log_entry)
@@ -166,7 +166,7 @@ def invalidate_email_address(
     }
     if initiator:
         log_entry_data['initiator_id'] = str(initiator.id)
-    log_entry = user_log_service.build_log_entry(
+    log_entry = user_log_service.build_entry(
         'user-email-address-invalidated', user.id, log_entry_data
     )
     db.session.add(log_entry)

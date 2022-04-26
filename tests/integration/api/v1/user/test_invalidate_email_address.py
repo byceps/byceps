@@ -29,7 +29,7 @@ def test_invalidation_of_initialized_user(
     user_after = user_service.get_db_user(user.id)
     assert not user_after.email_address_verified
 
-    log_entries = user_log_service.get_log_entries_of_type_for_user(
+    log_entries = user_log_service.get_entries_of_type_for_user(
         user.id, 'user-email-address-invalidated'
     )
     assert len(log_entries) == 1

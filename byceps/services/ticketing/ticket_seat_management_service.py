@@ -34,7 +34,7 @@ def appoint_seat_manager(
 
     db_ticket.seat_managed_by_id = manager_id
 
-    db_log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_entry(
         'seat-manager-appointed',
         db_ticket.id,
         {
@@ -53,7 +53,7 @@ def withdraw_seat_manager(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     db_ticket.seat_managed_by_id = None
 
-    db_log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_entry(
         'seat-manager-withdrawn',
         db_ticket.id,
         {
@@ -93,7 +93,7 @@ def occupy_seat(
     if previous_seat_id is not None:
         log_entry_data['previous_seat_id'] = str(previous_seat_id)
 
-    db_log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_entry(
         'seat-occupied', db_ticket.id, log_entry_data
     )
     db.session.add(db_log_entry)
@@ -115,7 +115,7 @@ def release_seat(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     db_ticket.occupied_seat_id = None
 
-    db_log_entry = log_service.build_log_entry(
+    db_log_entry = log_service.build_entry(
         'seat-released',
         db_ticket.id,
         {
