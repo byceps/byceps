@@ -71,7 +71,7 @@
             {%- if invoice.url %}<a href="{{ invoice.url }}">{% endif %}
             {{- invoice.number }}
             {%- if invoice.url %}</a>{% endif %}
-            {%- if not loop.last %}, {% endif %}
+            {%- if not loop.last %}<br>{% endif %}
           {%- endfor %}
         {%- else %}
         {{ _('none')|dim }}
