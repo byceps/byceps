@@ -3918,7 +3918,7 @@ msgid ""
 "href=\"%(order_url)s\">%(order_number)s</a> as <strong>invoiced</strong>."
 msgstr ""
 "%(initiator)s hat die Rechnung für Bestellung <a "
-"href=\"%(order_url)s\">%(order_number)s</a> als <strong>erstellt</strong>"
+"href=\"%(order_url)s\">%(order_number)s</a> als <strong>versendet</strong>"
 " markiert."
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:72
@@ -3930,7 +3930,7 @@ msgid ""
 msgstr ""
 "%(initiator)s hat die Rechnung für Bestellung <a "
 "href=\"%(order_url)s\">%(order_number)s</a> als <strong>nicht "
-"erstellt</strong> markiert."
+"versendet</strong> markiert."
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:81
 #, python-format
