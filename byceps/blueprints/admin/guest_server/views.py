@@ -8,7 +8,7 @@ byceps.blueprints.admin.guest_server.views
 
 from __future__ import annotations
 import ipaddress
-from typing import Iterable, Iterator, Optional
+from typing import Iterable, Optional
 
 from flask import abort, g, request, url_for
 from flask_babel import gettext
@@ -238,48 +238,46 @@ def address_index(party_id):
     }
 
 
-@blueprint.get('/for_party/<party_id>/addresses/export')
+@blueprint.get('/for_party/<party_id>/addresses/export/netbox')
 @permission_required('guest_server.view')
 @textified
-def address_export(party_id):
-    """Export addresses for a party."""
+def address_export_netbox(party_id):
+    """Export addresses for a party as NetBox-compatible CSV.
+
+    Suitable for importing into NetBox
+    (https://github.com/netbox-community/netbox).
+    """
     party = _get_party_or_404(party_id)
-
-    servers = guest_server_service.get_all_servers_for_party(party.id)
-
-    addresses = []
-    for server in servers:
-        addresses.extend(server.addresses)
-    addresses = _sort_addresses(addresses)
 
     setting = guest_server_service.get_setting_for_party(party.id)
 
-    return _generate_addresses_csv(addresses, setting)
+    all_servers = guest_server_service.get_all_servers_for_party(party.id)
+    approved_servers = [server for server in all_servers if server.approved]
 
+    owner_ids = {server.owner_id for server in approved_servers}
+    owners = user_service.get_users(owner_ids, include_avatars=False)
+    owners_by_id = user_service.index_users_by_id(owners)
 
-def _generate_addresses_csv(
-    addresses: Iterable[Address], setting: Setting
-) -> Iterator[str]:
-    """Return IP address and hostname pairs as CSV with headers."""
-    field_names = [('IP address', 'hostname')]
+    # field names as defined by NetBox
+    field_names = ('address', 'status', 'dns_name', 'description')
 
-    rows = [
-        (str(ip_address), _get_full_hostname(hostname, setting))
-        for ip_address, hostname in _select_complete_address_pairs(addresses)
-    ]
+    rows = []
 
-    return serialize_tuples_to_csv(field_names + rows)
+    for server in approved_servers:
+        for address in server.addresses:
+            if address.ip_address and address.hostname:
+                rows.append(
+                    (
+                        f'{str(address.ip_address)}/24',
+                        'active',
+                        _get_full_hostname(address.hostname, setting),
+                        owners_by_id[server.owner_id].screen_name or 'unknown',
+                    )
+                )
 
+    rows.sort()
 
-def _select_complete_address_pairs(
-    addresses: Iterable[Address],
-) -> Iterator[tuple[IPAddress, str]]:
-    """Return (IP address, hostname) tuples if both are set."""
-    return (
-        (address.ip_address, address.hostname)
-        for address in addresses
-        if address.ip_address and address.hostname
-    )
+    return serialize_tuples_to_csv([field_names] + rows)
 
 
 def _get_full_hostname(hostname: str, setting: Setting) -> str:
