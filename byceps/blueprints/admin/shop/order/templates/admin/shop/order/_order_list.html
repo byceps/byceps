@@ -10,7 +10,7 @@
       <th>{{ _('Order number') }}<br>{{ _('Date') }}</th>
       <th>{{ _('Orderer') }}</th>
       <th>{{ _('Amount') }}</th>
-      <th colspan="2"></th>
+      <th></th>
       <th>{{ _('Status') }}</th>
       <th></th>
     </tr>
@@ -21,11 +21,6 @@
       <td class="nowrap"><strong>{{ render_order_link(order) }}</strong><br>{{ order.created_at|datetimeformat|dim }}</td>
       <td>{{ render_user_microcard(order.placed_by, full_name='%s %s'|format(order.first_name, order.last_name)) }}</td>
       <td class="number">{{ order.total_amount|currencyformat('EUR') }}</td>
-      <td class="centered">
-        {%- if order.is_invoiced %}
-        {{- render_icon('invoice', title=_('invoice created')) -}}
-        {%- endif -%}
-      </td>
       <td>
         {%- if order.is_processing_required %}
           {%- if order.is_processed %}
