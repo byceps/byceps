@@ -1,6 +1,6 @@
 {% extends 'layout/admin/guest_server.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
-{% from 'macros/admin/guest_server.html' import render_hostname, render_ip_address %}
+{% from 'macros/admin/guest_server.html' import render_gateway, render_hostname, render_ip_address, render_netmask %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
 {% set current_page_party = party %}
@@ -27,6 +27,8 @@
         <tr>
           <th>{{ _('IP address') }}</th>
           <th>{{ _('Hostname') }}</th>
+          <th>{{ _('Netmask') }}</th>
+          <th>{{ _('Gateway') }}</th>
           <th>{{ _('Server') }}</th>
           <th>{{ _('Owner') }}</th>
           <th></th>
@@ -37,6 +39,8 @@
         <tr>
           <td>{{ render_ip_address(address) }}</td>
           <td>{{ render_hostname(address, setting) }}</td>
+          <td>{{ render_netmask(address, setting) }}</td>
+          <td>{{ render_gateway(address, setting) }}</td>
           <td><a href="{{ url_for('.server_view', server_id=address.server_id) }}">{{ _('Show') }}</a></td>
           <td>{{ render_user_avatar_and_name(owners_by_server_id[address.server_id], size=20) }}</td>
           <td>
