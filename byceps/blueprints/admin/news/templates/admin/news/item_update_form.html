@@ -16,7 +16,7 @@
 
   <form action="{{ url_for('.item_update', item_id=item.id) }}" method="post">
     <div class="box">
-      {{ form_field(form.slug, maxlength=100, note='<strong>' ~ _('Attention') ~ ':</strong> ' ~ _('Changing the slug affects the news post\'s permalink!')) }}
+      {{ form_field(form.slug, maxlength=100, note='<strong>'|safe ~ _('Attention') ~ ':</strong> '|safe ~ _('Changing the slug affects the news post\'s permalink!')) }}
       {{ form_field(form.title, maxlength=100, autofocus='autofocus') }}
       {{ form_field_radio(form.body_format) }}
       {{ form_field(form.body, class='monospace') }}
