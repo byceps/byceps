@@ -126,8 +126,6 @@ def _render_template(source, *, context: Optional[Context] = None) -> str:
 def _load_template_with_globals(source: str) -> Template:
     template_globals = {
         'render_snippet': render_snippet_as_partial_from_template,
-        'url_for': url_for,
-        'url_for_snippet': url_for_snippet,
     }
 
     return load_template(source, template_globals=template_globals)
