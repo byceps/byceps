@@ -25,6 +25,7 @@ from ..events.board import (
 )
 from ..events.guest_server import GuestServerRegistered
 from ..events.news import NewsItemPublished
+from ..events.page import PageCreated, PageDeleted, PageUpdated
 from ..events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ..events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from ..events.ticketing import TicketCheckedIn, TicketsSold
@@ -71,6 +72,9 @@ EVENT_TYPES_TO_NAMES = {
     BoardPostingUnhidden:           'board-posting-unhidden',
     GuestServerRegistered:          'guest-server-registered',
     NewsItemPublished:              'news-item-published',
+    PageCreated:                    'page-created',
+    PageDeleted:                    'page-deleted',
+    PageUpdated:                    'page-updated',
     ShopOrderCanceled:              'shop-order-canceled',
     ShopOrderPaid:                  'shop-order-paid',
     ShopOrderPlaced:                'shop-order-placed',

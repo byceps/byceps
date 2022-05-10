@@ -27,6 +27,7 @@ from ..events.board import (
 )
 from ..events.guest_server import GuestServerRegistered
 from ..events.news import NewsItemPublished
+from ..events.page import PageCreated, PageDeleted, PageUpdated
 from ..events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ..events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from ..events.ticketing import TicketCheckedIn, TicketsSold
@@ -60,6 +61,7 @@ from ..signals import auth as auth_signals
 from ..signals import board as board_signals
 from ..signals import guest_server as guest_server_signals
 from ..signals import news as news_signals
+from ..signals import page as page_signals
 from ..signals import shop as shop_signals
 from ..signals import snippet as snippet_signals
 from ..signals import ticketing as ticketing_signals
@@ -73,6 +75,7 @@ from .handlers import (
     board as board_handlers,
     guest_server as guest_server_handlers,
     news as news_handlers,
+    page as page_handlers,
     shop_order as shop_order_handlers,
     snippet as snippet_handlers,
     ticketing as ticketing_handlers,
@@ -98,6 +101,9 @@ EVENT_TYPES_TO_HANDLERS = {
     BoardPostingUnhidden: board_handlers.announce_board_posting_unhidden,
     GuestServerRegistered: guest_server_handlers.announce_guest_server_registered,
     NewsItemPublished: news_handlers.announce_news_item_published,
+    PageCreated: page_handlers.announce_page_created,
+    PageUpdated: page_handlers.announce_page_updated,
+    PageDeleted: page_handlers.announce_page_deleted,
     ShopOrderPlaced: shop_order_handlers.announce_order_placed,
     ShopOrderPaid: shop_order_handlers.announce_order_paid,
     ShopOrderCanceled: shop_order_handlers.announce_order_canceled,
@@ -161,6 +167,9 @@ SIGNALS = [
     board_signals.posting_unhidden,
     guest_server_signals.guest_server_registered,
     news_signals.item_published,
+    page_signals.page_created,
+    page_signals.page_updated,
+    page_signals.page_deleted,
     shop_signals.order_placed,
     shop_signals.order_paid,
     shop_signals.order_canceled,

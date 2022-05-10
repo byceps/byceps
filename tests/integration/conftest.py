@@ -19,6 +19,7 @@ from byceps.services.brand import service as brand_service
 from byceps.services.brand.transfer.models import Brand
 from byceps.services.email import service as email_service
 from byceps.services.email.transfer.models import EmailConfig
+from byceps.services.language import service as language_service
 from byceps.services.party.transfer.models import Party
 from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
@@ -78,6 +79,7 @@ def admin_app(make_admin_app) -> Iterator[Flask]:
     app = make_admin_app()
     with app.app_context():
         set_up_database()
+        language_service.create_language('en')
         yield app
         # tear_down_database()
 

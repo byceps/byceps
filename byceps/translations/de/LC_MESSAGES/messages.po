@@ -175,6 +175,33 @@ msgstr ""
 msgid "The news \"%(title)s\" has been published."
 msgstr "Die News \"%(title)s\" wurde veröffentlicht."
 
+#: byceps/announce/text_assembly/page.py:24
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has created page \"%(page_name)s\" in site "
+"\"%(site_id)s\"."
+msgstr ""
+"%(initiator_screen_name)s hat die Seite \"%(page_name)s\" in Site "
+"\"%(site_id)s\" angelegt."
+
+#: byceps/announce/text_assembly/page.py:38
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has updated page \"%(page_name)s\" in site "
+"\"%(site_id)s\"."
+msgstr ""
+"%(initiator_screen_name)s hat die Seite \"%(page_name)s\" in Site "
+"\"%(site_id)s\" aktualisiert."
+
+#: byceps/announce/text_assembly/page.py:52
+#, python-format
+msgid ""
+"%(initiator_screen_name)s has deleted page \"%(page_name)s\" in site "
+"\"%(site_id)s\"."
+msgstr ""
+"%(initiator_screen_name)s hat die Seite \"%(page_name)s\" in Site "
+"\"%(site_id)s\" gelöscht."
+
 #: byceps/announce/text_assembly/shop_order.py:23
 #, python-format
 msgid "%(orderer_screen_name)s has placed order %(order_number)s."
