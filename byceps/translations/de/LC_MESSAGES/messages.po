@@ -202,19 +202,19 @@ msgstr ""
 #: byceps/announce/text_assembly/snippet.py:30
 #, python-format
 msgid ""
-"%(editor_screen_name)s has created snippet %(snippet_type)s "
+"%(initiator_screen_name)s has created snippet %(snippet_type)s "
 "\"%(snippet_name)s\" in scope \"%(scope)s\"."
 msgstr ""
-"%(editor_screen_name)s hat das Snippet-%(snippet_type)s "
+"%(initiator_screen_name)s hat das Snippet-%(snippet_type)s "
 "\"%(snippet_name)s\" im Scope \"%(scope)s\" angelegt."
 
 #: byceps/announce/text_assembly/snippet.py:45
 #, python-format
 msgid ""
-"%(editor_screen_name)s has updated snippet %(snippet_type)s "
+"%(initiator_screen_name)s has updated snippet %(snippet_type)s "
 "\"%(snippet_name)s\" in scope \"%(scope)s\"."
 msgstr ""
-"%(editor_screen_name)s hat das Snippet-%(snippet_type)s "
+"%(initiator_screen_name)s hat das Snippet-%(snippet_type)s "
 "\"%(snippet_name)s\" im Scope \"%(scope)s\" aktualisiert."
 
 #: byceps/announce/text_assembly/snippet.py:59

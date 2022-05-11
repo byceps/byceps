@@ -18,13 +18,13 @@ from ._helpers import get_screen_name_or_fallback, with_locale
 
 @with_locale
 def assemble_text_for_snippet_created(event: SnippetCreated) -> str:
-    editor_screen_name = get_screen_name_or_fallback(
+    initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
 
     return gettext(
-        '%(editor_screen_name)s has created snippet %(snippet_type)s "%(snippet_name)s" in scope "%(scope)s".',
-        editor_screen_name=editor_screen_name,
+        '%(initiator_screen_name)s has created snippet %(snippet_type)s "%(snippet_name)s" in scope "%(scope)s".',
+        initiator_screen_name=initiator_screen_name,
         snippet_type=_get_snippet_type_label(event.snippet_type),
         snippet_name=event.snippet_name,
         scope=_get_scope_label(event.scope),
@@ -33,13 +33,13 @@ def assemble_text_for_snippet_created(event: SnippetCreated) -> str:
 
 @with_locale
 def assemble_text_for_snippet_updated(event: SnippetUpdated) -> str:
-    editor_screen_name = get_screen_name_or_fallback(
+    initiator_screen_name = get_screen_name_or_fallback(
         event.initiator_screen_name
     )
 
     return gettext(
-        '%(editor_screen_name)s has updated snippet %(snippet_type)s "%(snippet_name)s" in scope "%(scope)s".',
-        editor_screen_name=editor_screen_name,
+        '%(initiator_screen_name)s has updated snippet %(snippet_type)s "%(snippet_name)s" in scope "%(scope)s".',
+        initiator_screen_name=initiator_screen_name,
         snippet_type=_get_snippet_type_label(event.snippet_type),
         snippet_name=event.snippet_name,
         scope=_get_scope_label(event.scope),
