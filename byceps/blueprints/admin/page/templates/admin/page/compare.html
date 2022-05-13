@@ -1,0 +1,33 @@
+{% extends 'layout/admin/page.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/text_diff.html' import render_difference, render_difference_styles  %}
+{% set page_title = _('View changes') %}
+
+{% block head %}
+{{ render_difference_styles() }}
+{%- endblock %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.view_current_version', page_id=page.id), page.name) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <h2>{{ _('Title') }}</h2>
+  <div class="box">
+{{ render_difference(diff_title) }}
+  </div>
+
+  <h2>{{ _('Page header') }}</h2>
+  <div class="box">
+{{ render_difference(diff_head) }}
+  </div>
+
+  <h2>{{ _('Text') }}</h2>
+  <div class="box">
+{{ render_difference(diff_body) }}
+  </div>
+
+{%- endblock %}

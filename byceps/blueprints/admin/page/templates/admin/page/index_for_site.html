@@ -1,0 +1,65 @@
+{% extends 'layout/admin/page.html' %}
+{% from 'macros/admin.html' import render_extra_in_heading %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
+{% set page_title = [site.title, _('Pages')] %}
+
+{% block body %}
+
+  <div class="row row--space-between">
+    <div>
+      <h1>{{ _('Pages') }} {{ render_extra_in_heading(pages|length) }}</h1>
+    </div>
+  {%- if has_current_user_permission('page.create') %}
+    <div>
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.create_form', site_id=site.id) }}">{{ render_icon('add') }} <span>{{ _('Create page') }}</span></a>
+      </div>
+    </div>
+  {%- endif %}
+  </div>
+
+  <div class="box">
+    {%- if pages %}
+    <table class="index index--v-centered wide">
+      <thead>
+        <tr>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Language') }}</th>
+          <th>{{ _('URL path') }}</th>
+          <th>{{ _('Latest change') }}</th>
+          <th>{{ _('by') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      {%- for page in pages|sort(attribute='name') %}
+        <tr>
+          <td><a href="{{ url_for('.view_current_version', page_id=page.id) }}"><strong>{{ page.name }}</strong></a></td>
+          <td>{{ page.language_code }}</td>
+          <td class="monospace">{{ page.url_path }}</td>
+          <td class="nowrap">
+            {%- if has_current_user_permission('page.view_history') %}
+            {{ render_icon('history') }} <a href="{{ url_for('.history', page_id=page.id) }}" title="{{ _('View change history') }}">{{ page.current_version.created_at|datetimeformat }}</a>
+            {%- else %}
+            {{ page.current_version.created_at|datetimeformat }}
+            {%- endif %}
+          </td>
+          <td>{{ render_user_avatar_and_name(users_by_id[page.current_version.creator_id], size=20) }}</td>
+          <td>
+            <div class="button-row button-row--compact button-row--right">
+              {%- if has_current_user_permission('page.update') %}
+              <a href="{{ url_for('.update_form', page_id=page.id) }}" class="button button--compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
+              {%- endif %}
+            </div>
+          </td>
+        </tr>
+      {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No pages exist for this site.') }}</div>
+    {%- endif %}
+  </div>
+
+{%- endblock %}

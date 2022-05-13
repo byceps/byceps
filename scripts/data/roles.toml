@@ -128,6 +128,8 @@ assigned_permissions = [
     'orga_presence.update',
     'orga_presence.view',
     'orga_team.view',
+    'page.view',
+    'page.view_history',
     'party.view',
     'seating.view',
     'site.view',
@@ -147,6 +149,23 @@ assigned_permissions = [
     'orga_team.create',
     'orga_team.delete',
     'orga_team.view',
+]
+
+[[roles]]
+id = 'page_admin'
+title = 'Seiten verwalten'
+assigned_permissions = [
+    'page.delete',
+]
+
+[[roles]]
+id = 'page_editor'
+title = 'Seiten bearbeiten'
+assigned_permissions = [
+    'page.create',
+    'page.update',
+    'page.view',
+    'page.view_history',
 ]
 
 [[roles]]

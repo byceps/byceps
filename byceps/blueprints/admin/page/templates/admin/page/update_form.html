@@ -1,0 +1,27 @@
+{% extends 'layout/admin/page.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set page_title = [_('Edit page'), site.title] %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.view_current_version', page_id=page.id), page.name) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ _('Edit page') }}</h1>
+
+  <form action="{{ url_for('.update', page_id=page.id) }}" method="post">
+    <div class="box">
+      {{ form_field(form.name, maxlength=40, readonly='readonly', autofocus='autofocus') }}
+      {{ form_field(form.language_code) }}
+      {{ form_field(form.url_path) }}
+      {{ form_field(form.title, maxlength=80) }}
+      {{ form_field(form.head, class='monospace') }}
+      {{ form_field(form.body, class='monospace') }}
+    </div>
+
+    {{ form_buttons(_('Save')) }}
+  </form>
+
+{%- endblock %}

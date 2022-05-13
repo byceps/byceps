@@ -1,0 +1,52 @@
+{% extends 'layout/admin/page.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/icons.html' import render_icon %}
+{% from 'macros/user_avatar.html' import render_user_avatar_and_name %}
+{% set page_title = _('Version history') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.view_current_version', page_id=page.id), page.name) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ render_icon('history') }} {{ page_title }}</h1>
+
+  <div class="box">
+    {%- if versions_pairwise %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th></th>
+          <th>{{ _('changed') }}</th>
+          <th>{{ _('by') }}</th>
+          <th>{{ _('Differences') }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for version, previous_version in versions_pairwise %}
+        <tr>
+          <td>
+            {%- if version.is_current -%}
+            {{ render_icon('published', title=_('public')) }}
+            {%- else -%}
+            {{ render_icon('archived', title=_('archived')) }}
+            {%- endif -%}
+          </td>
+          <td class="nowrap"><a href="{{ url_for('.view_version', version_id=version.id) }}">{{ version.created_at|datetimeformat }}</a></td>
+          <td>{{ render_user_avatar_and_name(users_by_id[version.creator_id], size=20) }}</td>
+          <td>
+            {%- if previous_version -%}
+            <a href="{{ url_for('.compare', from_version_id=previous_version.id, to_version_id=version.id) }}" title="{{ _('View changes compared to previous version') }}">{{ _('View changes') }}</a>
+            {%- endif -%}
+          </td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No versions exist.') }}</div>
+    {%- endif %}
+  </div>
+
+{%- endblock %}

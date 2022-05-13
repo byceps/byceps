@@ -24,7 +24,7 @@ from .dbmodels import (
     Page as DbPage,
     Version as DbVersion,
 )
-from .transfer.models import Page, PageID, Version, VersionID
+from .transfer.models import Page, PageAggregate, PageID, Version, VersionID
 
 
 def create_page(
@@ -229,6 +229,58 @@ def _get_db_versions(page_id: PageID) -> list[DbVersion]:
         select(DbVersion)
         .filter_by(page_id=page_id)
         .order_by(DbVersion.created_at.desc())
+    ).all()
+
+
+def find_current_version_id(page_id: PageID) -> Optional[VersionID]:
+    """Return the ID of current version of the page."""
+    return db.session.scalar(
+        select(DbCurrentVersionAssociation.version_id)
+        .filter(DbCurrentVersionAssociation.page_id == page_id)
+    )
+
+
+def is_current_version(page_id: PageID, version_id: VersionID) -> bool:
+    """Return `True` if the given version is the current version of the page."""
+    return db.session.scalar(
+        select(
+            db.exists()
+            .where(DbCurrentVersionAssociation.page_id == page_id)
+            .where(DbCurrentVersionAssociation.version_id == version_id)
+        )
+    )
+
+
+def find_page_aggregate(version_id: VersionID) -> Optional[PageAggregate]:
+    """Return an aggregated page for that version."""
+    version = get_version(version_id)
+    if version is None:
+        return None
+
+    page = get_page(version.page_id)
+
+    return PageAggregate(
+        id=page.id,
+        site_id=page.site_id,
+        name=page.name,
+        language_code=page.language_code,
+        url_path=page.url_path,
+        published=page.published,
+        title=version.title,
+        head=version.head,
+        body=version.body,
+    )
+
+
+def get_pages_for_site_with_current_versions(site_id: SiteID) -> list[DbPage]:
+    """Return all pages with their current versions for that site."""
+    return db.session.scalars(
+        select(DbPage)
+        .filter_by(site_id=site_id)
+        .options(
+            db.joinedload(DbPage.current_version_association)
+                .joinedload(DbCurrentVersionAssociation.version)
+        )
     ).all()
 
 

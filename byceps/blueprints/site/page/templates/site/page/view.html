@@ -1,0 +1,15 @@
+{% extends 'layout/base.html' %}
+
+{% block head %}
+  {%- if head %}
+{{ head|safe }}
+  {%- endif -%}
+{% endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+{{ body|safe }}
+
+{%- endblock %}

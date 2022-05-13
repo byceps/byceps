@@ -107,6 +107,7 @@ def _get_blueprints_admin(app: Flask) -> Iterator[BlueprintReg]:
         (app, 'admin.orga',                      '/admin/orgas'             ),
         (app, 'admin.orga_presence',             '/admin/presence'          ),
         (app, 'admin.orga_team',                 '/admin/orga_teams'        ),
+        (app, 'admin.page',                      '/admin/pages'             ),
         (app, 'admin.party',                     '/admin/parties'           ),
         (app, 'admin.seating',                   '/admin/seating'           ),
         (app, 'admin.shop',                      None                       ),

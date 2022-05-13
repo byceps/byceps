@@ -9,6 +9,12 @@
       required_permission='site.view',
       icon='dashboard')
     .add_item(
+      url_for('page_admin.index_for_site', site_id=site.id),
+      _('Pages'),
+      id='page_admin',
+      required_permission='page.view',
+      icon='page')
+    .add_item(
       url_for('snippet_admin.index_for_scope', scope_type='site', scope_name=site.id),
       _('Snippets'),
       id='snippet_admin_for_site',

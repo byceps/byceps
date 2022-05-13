@@ -1626,7 +1626,14 @@ msgstr "E-Mail"
 msgid "Snippets"
 msgstr "Snippets"
 
-#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:19
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:13
+#: byceps/blueprints/admin/page/templates/admin/page/create_form.html:7
+#: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:5
+#: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:11
+msgid "Pages"
+msgstr "Seiten"
+
+#: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:25
 #: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:6
 msgid "Mountpoints"
 msgstr "Mountpoints"
@@ -3098,6 +3105,85 @@ msgstr "Team entfernen?"
 msgid "Remove person from team?"
 msgstr "Person aus Team entfernen?"
 
+#: byceps/blueprints/admin/page/forms.py:21
+msgid "Language code"
+msgstr "Sprachcode"
+
+#: byceps/blueprints/admin/page/forms.py:23
+#: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:29
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:59
+#: byceps/blueprints/admin/snippet/mountpoint/forms.py:31
+#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:17
+msgid "URL path"
+msgstr "URL-Pfad"
+
+#: byceps/blueprints/admin/page/forms.py:26
+msgid "Header"
+msgstr "Seitenkopf"
+
+#: byceps/blueprints/admin/page/views.py:231
+msgid "Page has been created."
+msgstr "Die Seite wurde erstellt."
+
+#: byceps/blueprints/admin/page/views.py:289
+msgid "Page has been updated."
+msgstr "Die Seite wurde aktualisiert."
+
+#: byceps/blueprints/admin/page/views.py:310
+#, python-format
+msgid "Page \"%(name)s\" could not be deleted."
+msgstr "Die Seite \"%(name)s\" konnte nicht gelöscht werden."
+
+#: byceps/blueprints/admin/page/views.py:314
+#, python-format
+msgid "Page \"%(name)s\" has been deleted."
+msgstr "Die Seite \"%(name)s\" wurde gelöscht."
+
+#: byceps/blueprints/admin/page/templates/admin/page/compare.html:23
+#: byceps/blueprints/admin/snippet/forms.py:27
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_documents.html:23
+msgid "Page header"
+msgstr "Seitenkopf"
+
+#: byceps/blueprints/admin/page/templates/admin/page/create_form.html:4
+#: byceps/blueprints/admin/page/templates/admin/page/create_form.html:12
+#: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:16
+msgid "Create page"
+msgstr "Seite erstellen"
+
+#: byceps/blueprints/admin/page/templates/admin/page/history.html:5
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:5
+msgid "Version history"
+msgstr "Versionshistorie"
+
+#: byceps/blueprints/admin/page/templates/admin/page/history.html:48
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:50
+msgid "No versions exist."
+msgstr "Es sind keine Versionen vorhanden."
+
+#: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:28
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:56
+#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:60
+msgid "Language"
+msgstr "Sprache"
+
+#: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:61
+msgid "No pages exist for this site."
+msgstr "Es existieren keine Seiten für diese Site."
+
+#: byceps/blueprints/admin/page/templates/admin/page/update_form.html:4
+#: byceps/blueprints/admin/page/templates/admin/page/update_form.html:12
+msgid "Edit page"
+msgstr "Seite bearbeiten"
+
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:5
+msgid "View page version"
+msgstr "Seiten-Version ansehen"
+
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:75
+msgid "Delete page?"
+msgstr "Seite löschen?"
+
 #: byceps/blueprints/admin/party/forms.py:38
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:68
 msgid "Maximum number of tickets"
@@ -4399,11 +4485,6 @@ msgstr "kein Forum"
 msgid "no storefront"
 msgstr "kein Storefront"
 
-#: byceps/blueprints/admin/snippet/forms.py:27
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_documents.html:23
-msgid "Page header"
-msgstr "Seitenkopf"
-
 #: byceps/blueprints/admin/snippet/views.py:213
 #, python-format
 msgid "Document \"%(name)s\" has been created."
@@ -4440,11 +4521,6 @@ msgstr "Das Snippet \"%(name)s\" wurde gelöscht."
 #: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:18
 msgid "Identifier"
 msgstr "Bezeichner"
-
-#: byceps/blueprints/admin/snippet/mountpoint/forms.py:31
-#: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/index.html:17
-msgid "URL path"
-msgstr "URL-Pfad"
 
 #: byceps/blueprints/admin/snippet/mountpoint/forms.py:37
 msgid "URL path has to start with a slash."
@@ -4503,14 +4579,6 @@ msgstr "Dokument erstellen"
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_fragment_form.html:4
 msgid "Create fragment"
 msgstr "Fragment erstellen"
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:5
-msgid "Version history"
-msgstr "Versionshistorie"
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:50
-msgid "No versions exist."
-msgstr "Es sind keine Versionen vorhanden."
 
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:17
 msgid "Create snippet"
@@ -6491,6 +6559,11 @@ msgstr "Du hast dich zum Newsletter \"%(title)s\" angemeldet."
 msgid "You have unsubscribed from newsletter \"%(title)s\"."
 msgstr "Du hast dich vom Newsletter \"%(title)s\" abgemeldet."
 
+#: byceps/blueprints/site/page/templates/site/page/error.html:9
+#: byceps/blueprints/site/snippet/templates/site/snippet/error.html:9
+msgid "Sorry, an error has occurred."
+msgstr "Entschuldigung, ein Fehler ist aufgetreten."
+
 #: byceps/blueprints/site/party_history/templates/site/party_history/_meta.html:10
 msgid "attendees"
 msgstr "Teilnehmer"
@@ -6677,10 +6750,6 @@ msgstr "Zahlungsart"
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:55
 msgid "Payment notes"
 msgstr "Zahlungshinweis"
-
-#: byceps/blueprints/site/snippet/templates/site/snippet/error.html:9
-msgid "Sorry, an error has occurred."
-msgstr "Entschuldigung, ein Fehler ist aufgetreten."
 
 #: byceps/blueprints/site/ticketing/forms.py:33
 #: byceps/blueprints/site/ticketing/forms.py:38
@@ -7000,10 +7069,6 @@ msgstr "Deine Daten wurden gespeichert."
 msgid "not shown"
 msgstr "wird nicht angezeigt"
 
-#: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:60
-msgid "Language"
-msgstr "Sprache"
-
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:73
 msgid "no preference"
 msgstr "keine Präferenz"
@@ -7256,6 +7321,26 @@ msgstr "Orga-Teams löschen"
 #: byceps/permissions/orga_team.py:23
 msgid "View orga teams"
 msgstr "Orga-Teams anzeigen"
+
+#: byceps/permissions/page.py:17
+msgid "Create pages"
+msgstr "Seiten erstellen"
+
+#: byceps/permissions/page.py:18
+msgid "Edit pages"
+msgstr "Seiten bearbeiten"
+
+#: byceps/permissions/page.py:19
+msgid "Delete pages"
+msgstr "Seiten löschen"
+
+#: byceps/permissions/page.py:20
+msgid "View pages"
+msgstr "Seiten anzeigen"
+
+#: byceps/permissions/page.py:21
+msgid "View pages' history"
+msgstr "Änderungshistorie von Seiten anzeigen"
 
 #: byceps/permissions/party.py:17
 msgid "Create parties"

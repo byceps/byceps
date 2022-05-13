@@ -1,0 +1,27 @@
+{% extends 'layout/admin/page.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set page_title = [_('Create page'), site.title] %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.index_for_site', site_id=site.id), _('Pages')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ _('Create page') }}</h1>
+
+  <form action="{{ url_for('.create', site_id=site.id) }}" method="post">
+    <div class="box">
+      {{ form_field(form.name, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.language_code) }}
+      {{ form_field(form.url_path) }}
+      {{ form_field(form.title, maxlength=80) }}
+      {{ form_field(form.head, class='monospace') }}
+      {{ form_field(form.body, class='monospace') }}
+    </div>
+
+    {{ form_buttons(_('Create')) }}
+  </form>
+
+{%- endblock %}
