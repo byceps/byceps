@@ -55,9 +55,9 @@
     <div class="data-value">
       {{- version.id -}}
       {%- if is_current_version %}
-      {{ render_tag('aktuell', class='color-success') }}
+      {{ render_tag(_('current'), class='color-success') }}
       {%- else %}
-      {{ render_tag('veraltet', class='color-warning') }}<br>
+      {{ render_tag(_('outdated'), class='color-warning') }}<br>
       <a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}">{{ _('View current version') }}</a>
       {%- endif %}
     </div>

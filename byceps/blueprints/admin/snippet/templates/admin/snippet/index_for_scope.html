@@ -61,7 +61,7 @@
             <div class="button-row button-row--compact button-row--right">
               {%- if has_current_user_permission('snippet.update') %}
                 {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
-              <a href="{{ url_for(endpoint, snippet_id=snippet.id) }}" class="button button--compact" title="Bearbeiten">{{ render_icon('edit') }}</a>
+              <a href="{{ url_for(endpoint, snippet_id=snippet.id) }}" class="button button--compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
                 {%- endwith %}
               {%- endif %}
               {%- if snippet.is_document and has_current_user_permission('snippet_mountpoint.create') %}

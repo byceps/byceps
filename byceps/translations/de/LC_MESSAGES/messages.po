@@ -6651,6 +6651,10 @@ msgstr "Zahlungsart"
 msgid "Payment notes"
 msgstr "Zahlungshinweis"
 
+#: byceps/blueprints/site/snippet/templates/site/snippet/error.html:9
+msgid "Sorry, an error has occurred."
+msgstr "Entschuldigung, ein Fehler ist aufgetreten."
+
 #: byceps/blueprints/site/ticketing/forms.py:33
 #: byceps/blueprints/site/ticketing/forms.py:38
 msgid "The user account is not active."
