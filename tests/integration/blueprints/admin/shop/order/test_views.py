@@ -46,7 +46,7 @@ def shop_order_admin(make_admin) -> User:
         'shop_order.cancel',
         'shop_order.mark_as_paid',
     }
-    admin = make_admin('ShopOrderAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

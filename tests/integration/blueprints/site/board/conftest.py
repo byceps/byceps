@@ -50,7 +50,7 @@ def moderator(make_admin) -> User:
         'board_topic.move',
         'board_topic.pin',
     }
-    moderator = make_admin('BoardModerator', permission_ids)
+    moderator = make_admin(permission_ids)
     log_in_user(moderator.id)
     return moderator
 

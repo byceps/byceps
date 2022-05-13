@@ -13,7 +13,7 @@ def more_admin(make_admin):
     permission_ids = {
         'admin.access',
     }
-    admin = make_admin('MoreAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

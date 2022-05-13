@@ -129,10 +129,8 @@ def make_user(admin_app: Flask):
 
 @pytest.fixture(scope='session')
 def make_admin(make_user):
-    def _wrapper(
-        screen_name: str, permission_id_strs: set[str], *args, **kwargs
-    ) -> User:
-        admin = make_user(screen_name, *args, **kwargs)
+    def _wrapper(permission_id_strs: set[str], *args, **kwargs) -> User:
+        admin = make_user(*args, **kwargs)
 
         # Create role.
         role_id = RoleID(f'admin_{generate_token()}')
@@ -150,7 +148,7 @@ def make_admin(make_user):
 @pytest.fixture(scope='session')
 def admin_user(make_admin) -> User:
     permission_ids = {'admin.access'}
-    return make_admin('Admin', permission_ids)
+    return make_admin(permission_ids, screen_name='Admin')
 
 
 @pytest.fixture(scope='session')

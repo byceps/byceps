@@ -20,7 +20,7 @@ def board_admin(make_admin):
         'board_category.update',
         'board_category.view',
     }
-    admin = make_admin('BoardAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

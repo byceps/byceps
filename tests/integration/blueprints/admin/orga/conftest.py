@@ -16,7 +16,7 @@ def orga_admin(make_admin):
         'orga_detail.view',
         'orga_team.administrate_memberships',
     }
-    admin = make_admin('OrgaAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

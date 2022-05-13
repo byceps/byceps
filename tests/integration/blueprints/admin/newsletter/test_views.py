@@ -97,7 +97,7 @@ def test_export_subscriber_email_addresses(
 @pytest.fixture(scope='package')
 def newsletter_admin(make_admin):
     permission_ids = {'admin.access', 'newsletter.export_subscribers'}
-    admin = make_admin('NewsletterAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

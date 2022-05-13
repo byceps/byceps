@@ -14,7 +14,7 @@ def consent_admin(make_admin):
         'admin.access',
         'consent.administrate',
     }
-    admin = make_admin('ConsentAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

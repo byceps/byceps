@@ -40,7 +40,7 @@ def dashboard_admin(make_admin):
         'party.view',
         'site.view',
     }
-    admin = make_admin('DashboardAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

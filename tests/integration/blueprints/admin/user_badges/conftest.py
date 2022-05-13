@@ -19,7 +19,7 @@ def user_badge_admin(make_admin):
         'user_badge.update',
         'user_badge.view',
     }
-    admin = make_admin('UserBadgeAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

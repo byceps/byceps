@@ -16,7 +16,7 @@ def brand_admin(make_admin):
         'brand.update',
         'brand.view',
     }
-    admin = make_admin('BrandAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

@@ -17,7 +17,7 @@ def test_view_for_brand(admin_client, brand):
 @pytest.fixture(scope='package')
 def admin(make_admin):
     permission_ids = {'admin.access'}
-    admin = make_admin('AttendanceAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

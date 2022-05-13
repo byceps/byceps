@@ -16,7 +16,7 @@ def party_admin(make_admin):
         'party.update',
         'party.view',
     }
-    admin = make_admin('PartyAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

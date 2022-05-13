@@ -16,7 +16,7 @@ def shop_admin(make_admin):
         'admin.access',
         'shop.create',
     }
-    admin = make_admin('ShopAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

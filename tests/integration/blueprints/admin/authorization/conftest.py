@@ -17,7 +17,7 @@ def role_admin(make_admin):
         'role.assign',
         'role.view',
     }
-    admin = make_admin('RoleAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

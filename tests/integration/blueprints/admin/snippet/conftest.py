@@ -31,7 +31,7 @@ def snippet_admin(make_admin):
         'snippet_mountpoint.create',
         'snippet_mountpoint.delete',
     }
-    admin = make_admin('SnippetAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

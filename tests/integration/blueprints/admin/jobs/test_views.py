@@ -20,7 +20,7 @@ def jobs_admin(make_admin):
         'admin.access',
         'jobs.view',
     }
-    admin = make_admin('JobsAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

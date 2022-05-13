@@ -24,7 +24,7 @@ def ticketing_admin(make_admin):
         'ticketing.checkin',
         'ticketing.view',
     }
-    admin = make_admin('Ticketing_Admin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

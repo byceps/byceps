@@ -25,7 +25,9 @@ def test_login_succeeds(client, make_admin):
     password = 'correct horse battery staple'
     permission_ids = {'admin.access'}
 
-    user = make_admin(screen_name, permission_ids, password=password)
+    user = make_admin(
+        permission_ids, screen_name=screen_name, password=password
+    )
 
     login_log_entries_before = log_service.get_entries_of_type_for_user(
         user.id, 'user-logged-in'
@@ -68,7 +70,9 @@ def test_login_fails_lacking_access_permission(client, make_admin):
     password = 'correct horse battery staple'
     permission_ids = set()
 
-    user = make_admin(screen_name, permission_ids, password=password)
+    user = make_admin(
+        permission_ids, screen_name=screen_name, password=password
+    )
 
     assert not list(client.cookie_jar)
 

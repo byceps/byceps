@@ -25,7 +25,7 @@ def news_admin(make_admin):
         'news_item.view',
         'news_item.view_draft',
     }
-    admin = make_admin('NewsAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

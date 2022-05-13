@@ -25,7 +25,7 @@ from tests.integration.services.shop.conftest import make_article
 @pytest.fixture(scope='package')
 def shop_order_admin(make_admin) -> User:
     permission_ids = {'admin.access', 'shop_order.view'}
-    return make_admin('ShopOrderExportAdmin', permission_ids)
+    return make_admin(permission_ids)
 
 
 @pytest.fixture

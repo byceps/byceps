@@ -18,7 +18,7 @@ def user_admin(make_admin):
         'user.set_password',
         'user.view',
     }
-    admin = make_admin('UserAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

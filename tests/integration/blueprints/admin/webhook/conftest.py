@@ -15,7 +15,7 @@ def webhook_admin(make_admin):
         'webhook.administrate',
         'webhook.view',
     }
-    admin = make_admin('WebhookAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

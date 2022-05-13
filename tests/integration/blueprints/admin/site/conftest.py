@@ -16,7 +16,7 @@ def site_admin(make_admin):
         'site.update',
         'site.view',
     }
-    admin = make_admin('SiteAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 

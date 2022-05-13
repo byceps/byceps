@@ -15,7 +15,7 @@ def seating_admin(make_admin):
         'seating.administrate',
         'seating.view',
     }
-    admin = make_admin('SeatingAdmin', permission_ids)
+    admin = make_admin(permission_ids)
     log_in_user(admin.id)
     return admin
 
