@@ -7,12 +7,35 @@ byceps.blueprints.site.page.templating
 """
 
 from __future__ import annotations
-from typing import Any, Dict, Optional
+import sys
+import traceback
+from typing import Any, Dict, Optional, Union
 
+from flask import abort, render_template
+from jinja2 import TemplateNotFound
+
+from ....services.page.transfer.models import Page, Version
 from ....util.templating import load_template
 
 
 Context = Dict[str, Any]
+
+
+def render_page(page: Page, version: Version) -> Union[str, tuple[str, int]]:
+    """Render the page, or an error page if that fails."""
+    try:
+        context = build_template_context(
+            version.title, version.head, version.body
+        )
+        context['current_page'] = page.name
+        return render_template('site/page/view.html', **context)
+    except TemplateNotFound:
+        abort(404)
+    except Exception as e:
+        print('Error in page markup:', e, file=sys.stderr)
+        traceback.print_exc()
+        context = {'message': str(e)}
+        return render_template('site/page/error.html', **context), 500
 
 
 def build_template_context(

@@ -251,6 +251,21 @@ def is_current_version(page_id: PageID, version_id: VersionID) -> bool:
     )
 
 
+def find_current_version_for_url_path(
+    site_id: SiteID, url_path: str
+) -> Optional[Version]:
+    """Return the current version of the page with that URL path for
+    that site.
+    """
+    return db.session.execute(
+        select(DbVersion)
+        .join(DbCurrentVersionAssociation)
+        .join(DbPage)
+        .filter(DbPage.site_id == site_id)
+        .filter(DbPage.url_path == url_path)
+    ).scalar_one_or_none()
+
+
 def find_page_aggregate(version_id: VersionID) -> Optional[PageAggregate]:
     """Return an aggregated page for that version."""
     version = get_version(version_id)
