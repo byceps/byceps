@@ -16,7 +16,7 @@ from ....services.snippet.dbmodels.snippet import SnippetVersion
 from ....services.snippet import service as snippet_service
 from ....services.snippet.service import SnippetNotFound
 from ....services.snippet.transfer.models import Scope
-from ....util.templating import get_variable_value, load_template
+from ....util.templating import load_template
 
 
 Context = Dict[str, Any]
@@ -26,7 +26,6 @@ def get_snippet_context(version: SnippetVersion) -> Context:
     """Return the snippet context to insert into the outer template."""
     template = _load_template_with_globals(version.body)
 
-    current_page = get_variable_value(template, 'current_page')
     title = version.title
     head = _render_template(version.head) if version.head else None
     body = template.render()

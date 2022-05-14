@@ -50,16 +50,6 @@ def create_sandboxed_environment(
     return ImmutableSandboxedEnvironment(loader=loader, autoescape=autoescape)
 
 
-def get_variable_value(template: Template, name: str) -> Optional[Any]:
-    """Return the named variable's value from the template, or `None` if
-    the variable is not defined.
-    """
-    try:
-        return getattr(template.module, name)
-    except AttributeError:
-        return None
-
-
 class SiteTemplateOverridesLoader(BaseLoader):
     """Look for site-specific template overrides."""
 
