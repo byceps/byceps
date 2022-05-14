@@ -46,7 +46,7 @@ class Page(db.Model):
         nullable=False,
     )
     language = db.relationship(Language)
-    url_path = db.Column(db.UnicodeText, unique=True, nullable=False)
+    url_path = db.Column(db.UnicodeText, index=True, nullable=False)
     published = db.Column(db.Boolean, nullable=False)
 
     current_version = association_proxy(
