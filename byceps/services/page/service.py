@@ -266,6 +266,16 @@ def find_current_version_for_url_path(
     ).scalar_one_or_none()
 
 
+def get_url_paths_by_page_name_for_site(site_id: SiteID) -> dict[str, str]:
+    """Return mapping from page names to URL paths for that site."""
+    rows = db.session.execute(
+        select(DbPage.name, DbPage.url_path)
+        .filter_by(site_id=site_id)
+    ).all()
+
+    return {name: url_path for name, url_path in rows}
+
+
 def find_page_aggregate(version_id: VersionID) -> Optional[PageAggregate]:
     """Return an aggregated page for that version."""
     version = get_version(version_id)

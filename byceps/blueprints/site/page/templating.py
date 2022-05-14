@@ -11,9 +11,10 @@ import sys
 import traceback
 from typing import Any, Dict, Optional, Union
 
-from flask import abort, render_template
+from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
 
+from ....services.page import service as page_service
 from ....services.page.transfer.models import Page, Version
 from ....util.templating import load_template
 
@@ -53,6 +54,43 @@ def build_template_context(
 
 
 def _render_template(source: str) -> str:
-    template_globals: Context = {}
+    template_globals: Context = {
+        'url_for_page': url_for_page,
+    }
+
     template = load_template(source, template_globals=template_globals)
     return template.render()
+
+
+def url_for_page(name: str, **kwargs) -> Optional[str]:
+    """Render an URL pointing to the page's URL path."""
+    site_id = getattr(g, 'site_id', None)
+    if site_id is None:
+        return None
+
+    # Page name is unique per site.
+
+    url_paths_by_page_name = _get_url_paths_by_page_name(site_id)
+
+    url_path = url_paths_by_page_name[name]
+
+    return url_for(f'page.view', url_path=url_path, **kwargs)
+
+
+def _get_url_paths_by_page_name(site_id) -> dict[str, str]:
+    """Return site-specific mapping from page names to URL paths.
+
+    Preferrably from request-local cache, if available. From the
+    database if not yet cached.
+    """
+    request_context_key = f'page_url_paths_by_page_name_for_site_{site_id}'
+
+    url_paths_by_page_name_from_request_context = g.get(request_context_key)
+    if url_paths_by_page_name_from_request_context:
+        return url_paths_by_page_name_from_request_context
+    else:
+        url_paths_by_page_name_from_database = (
+            page_service.get_url_paths_by_page_name_for_site(site_id)
+        )
+        setattr(g, request_context_key, url_paths_by_page_name_from_database)
+        return url_paths_by_page_name_from_database

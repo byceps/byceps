@@ -11,10 +11,12 @@ from flask import abort, g
 from ....services.page import service as page_service
 from ....util.framework.blueprint import create_blueprint
 
-from .templating import render_page
+from .templating import render_page, url_for_page
 
 
 blueprint = create_blueprint('page', __name__)
+
+blueprint.add_app_template_global(url_for_page)
 
 
 @blueprint.get('/<path:url_path>')
