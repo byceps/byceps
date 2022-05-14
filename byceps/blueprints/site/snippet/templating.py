@@ -32,7 +32,6 @@ def get_snippet_context(version: SnippetVersion) -> Context:
 
     return {
         'page_title': title,
-        'current_page': current_page,
         'head': head,
         'body': body,
     }
