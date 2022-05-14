@@ -18,6 +18,8 @@ from ....services.page import service as page_service
 from ....services.page.transfer.models import Page, Version
 from ....util.templating import load_template
 
+from ..snippet.templating import render_snippet_as_partial_from_template
+
 
 Context = Dict[str, Any]
 
@@ -55,6 +57,7 @@ def build_template_context(
 
 def _render_template(source: str) -> str:
     template_globals: Context = {
+        'render_snippet': render_snippet_as_partial_from_template,
         'url_for_page': url_for_page,
     }
 
