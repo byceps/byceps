@@ -14,7 +14,6 @@ from ...database import db
 from ..site.transfer.models import SiteID
 
 from .dbmodels.mountpoint import Mountpoint as DbMountpoint
-from .dbmodels.snippet import CurrentVersionAssociation, Snippet, SnippetVersion
 from .transfer.models import Mountpoint, MountpointID, SnippetID
 
 
@@ -59,22 +58,6 @@ def get_mountpoints_for_site(site_id: SiteID) -> set[Mountpoint]:
         .all()
 
     return {_db_entity_to_mountpoint(mp) for mp in mountpoints}
-
-
-def find_current_snippet_version_for_url_path(
-    site_id: SiteID, url_path: str
-) -> SnippetVersion:
-    """Return the current version of the snippet mounted at that URL
-    path for that site, or `None` if not found.
-    """
-    return db.session \
-        .query(SnippetVersion) \
-        .join(CurrentVersionAssociation) \
-        .join(Snippet) \
-        .join(DbMountpoint) \
-        .filter(DbMountpoint.site_id == site_id) \
-        .filter(DbMountpoint.url_path == url_path) \
-        .one_or_none()
 
 
 def _db_entity_to_mountpoint(entity: DbMountpoint) -> Mountpoint:
