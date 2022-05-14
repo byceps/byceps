@@ -269,7 +269,7 @@ def update(page_id):
     form.set_language_code_choices()
 
     if not form.validate():
-        return update_form(site.id, form)
+        return update_form(page.id, form)
 
     language_code = form.language_code.data
     url_path = form.url_path.data.strip()
