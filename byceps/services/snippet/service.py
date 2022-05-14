@@ -36,7 +36,6 @@ def create_document(
     body: str,
     *,
     head: Optional[str] = None,
-    image_url_path: Optional[str] = None,
 ) -> tuple[DbSnippetVersion, SnippetCreated]:
     """Create a document and its initial version, and return that version."""
     return _create_snippet(
@@ -47,7 +46,6 @@ def create_document(
         body,
         title=title,
         head=head,
-        image_url_path=image_url_path,
     )
 
 
@@ -58,12 +56,9 @@ def update_document(
     body: str,
     *,
     head: Optional[str] = None,
-    image_url_path: Optional[str] = None,
 ) -> tuple[DbSnippetVersion, SnippetUpdated]:
     """Update document with a new version, and return that version."""
-    return _update_snippet(
-        snippet_id, creator_id, title, head, body, image_url_path
-    )
+    return _update_snippet(snippet_id, creator_id, title, head, body)
 
 
 # -------------------------------------------------------------------- #
@@ -83,11 +78,8 @@ def update_fragment(
     """Update fragment with a new version, and return that version."""
     title = None
     head = None
-    image_url_path = None
 
-    return _update_snippet(
-        snippet_id, creator_id, title, head, body, image_url_path
-    )
+    return _update_snippet(snippet_id, creator_id, title, head, body)
 
 
 # -------------------------------------------------------------------- #
@@ -103,7 +95,6 @@ def _create_snippet(
     *,
     title: Optional[str] = None,
     head: Optional[str] = None,
-    image_url_path: Optional[str] = None,
 ) -> tuple[DbSnippetVersion, SnippetCreated]:
     """Create a snippet and its initial version, and return that version."""
     creator = user_service.get_user(creator_id)
@@ -111,9 +102,7 @@ def _create_snippet(
     snippet = DbSnippet(scope, name, type_)
     db.session.add(snippet)
 
-    version = DbSnippetVersion(
-        snippet, creator_id, title, head, body, image_url_path
-    )
+    version = DbSnippetVersion(snippet, creator_id, title, head, body)
     db.session.add(version)
 
     current_version_association = DbCurrentVersionAssociation(snippet, version)
@@ -141,7 +130,6 @@ def _update_snippet(
     title: Optional[str],
     head: Optional[str],
     body: str,
-    image_url_path: Optional[str],
 ) -> tuple[DbSnippetVersion, SnippetUpdated]:
     """Update snippet with a new version, and return that version."""
     snippet = find_snippet(snippet_id)
@@ -150,9 +138,7 @@ def _update_snippet(
 
     creator = user_service.get_user(creator_id)
 
-    version = DbSnippetVersion(
-        snippet, creator_id, title, head, body, image_url_path
-    )
+    version = DbSnippetVersion(snippet, creator_id, title, head, body)
     db.session.add(version)
 
     snippet.current_version = version
@@ -306,14 +292,13 @@ def search_snippets(
                     DbSnippetVersion.title.contains(search_term),
                     DbSnippetVersion.head.contains(search_term),
                     DbSnippetVersion.body.contains(search_term),
-                    DbSnippetVersion.image_url_path.contains(search_term),
                 )
             ) \
         .all()
 
 
-class SnippetNotFound(Exception):
 
+class SnippetNotFound(Exception):
     def __init__(self, scope: Scope, name: str) -> None:
         self.scope = scope
         self.name = name

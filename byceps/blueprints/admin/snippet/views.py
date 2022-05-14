@@ -197,7 +197,6 @@ def create_document(scope_type, scope_name):
     title = form.title.data.strip()
     head = form.head.data.strip()
     body = form.body.data.strip()
-    image_url_path = form.image_url_path.data.strip()
 
     version, event = snippet_service.create_document(
         scope,
@@ -206,7 +205,6 @@ def create_document(scope_type, scope_name):
         title,
         body,
         head=head,
-        image_url_path=image_url_path,
     )
 
     flash_success(
@@ -256,7 +254,6 @@ def update_document(snippet_id):
     title = form.title.data.strip()
     head = form.head.data.strip()
     body = form.body.data.strip()
-    image_url_path = form.image_url_path.data.strip()
 
     version, event = snippet_service.update_document(
         snippet.id,
@@ -264,7 +261,6 @@ def update_document(snippet_id):
         title,
         body,
         head=head,
-        image_url_path=image_url_path,
     )
 
     flash_success(
@@ -298,9 +294,6 @@ def compare_documents(from_version_id, to_version_id):
     html_diff_title = _create_html_diff(from_version, to_version, 'title')
     html_diff_head = _create_html_diff(from_version, to_version, 'head')
     html_diff_body = _create_html_diff(from_version, to_version, 'body')
-    html_diff_image_url_path = _create_html_diff(
-        from_version, to_version, 'image_url_path'
-    )
 
     brand = find_brand_for_scope(scope)
     site = find_site_for_scope(scope)
@@ -311,7 +304,6 @@ def compare_documents(from_version_id, to_version_id):
         'diff_title': html_diff_title,
         'diff_head': html_diff_head,
         'diff_body': html_diff_body,
-        'diff_image_url_path': html_diff_image_url_path,
         'brand': brand,
         'site': site,
     }

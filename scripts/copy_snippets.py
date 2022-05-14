@@ -80,7 +80,6 @@ def create_document(
         snippet_version.title,
         snippet_version.body,
         head=snippet_version.head,
-        image_url_path=snippet_version.image_url_path,
     )
 
 

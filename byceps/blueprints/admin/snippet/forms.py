@@ -25,7 +25,6 @@ class FragmentUpdateForm(FragmentCreateForm):
 class DocumentCreateForm(FragmentCreateForm):
     title = StringField(lazy_gettext('Title'), [InputRequired()])
     head = TextAreaField(lazy_gettext('Page header'))
-    image_url_path = StringField(lazy_gettext('Image URL path'))
 
 
 class DocumentUpdateForm(DocumentCreateForm):

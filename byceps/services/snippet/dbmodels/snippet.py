@@ -99,7 +99,6 @@ class SnippetVersion(db.Model):
     title = db.Column(db.UnicodeText, nullable=True)
     head = db.Column(db.UnicodeText, nullable=True)
     body = db.Column(db.UnicodeText, nullable=False)
-    image_url_path = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(
         self,
@@ -108,14 +107,12 @@ class SnippetVersion(db.Model):
         title: Optional[str],
         head: Optional[str],
         body: str,
-        image_url_path: Optional[str],
     ) -> None:
         self.snippet = snippet
         self.creator_id = creator_id
         self.title = title
         self.head = head
         self.body = body
-        self.image_url_path = image_url_path
 
     @property
     def is_current(self) -> bool:
