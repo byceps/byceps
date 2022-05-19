@@ -722,17 +722,19 @@ h1 .tag .icon {
     text-shadow: none !important;
   }
 
-  body {
-    border: none;
-  }
-
-  #header,
-  #footer {
+  .main-tabs,
+  .page-footer,
+  .page-header,
+  .page-header-nav {
     display: none;
   }
 
   .page-body-grid {
     display: block;
+  }
+
+  .box {
+    border: none;
   }
 
   table {
