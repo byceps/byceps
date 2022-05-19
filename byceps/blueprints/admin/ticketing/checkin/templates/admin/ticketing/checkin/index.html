@@ -16,7 +16,7 @@
       <div>
 
         <form action="{{ url_for('.index', party_id=party.id) }}" class="single-row unobtrusive">
-          <input type="search" name="search_term" placeholder="{{ [_('ticket code'), _('order number'), _('username'), _('first name'), _('last name'), _('email address')]|join(', ') }}" autofocus>
+          <input type="search" name="search_term" placeholder="{{ [_('ticket code'), _('order number'), _('username'), _('first name'), _('last name'), _('email address')]|join(', ') }}" class="form-control" autofocus>
           <button type="submit" class="button" title="{{ _('Search') }}" tabindex="-1">{{ render_icon('search') }}</button>
           <a href="{{ url_for('.index', party_id=party.id) }}" class="button{% if not search_term %} dimmed{% endif %}" title="{{ _('Remove search term constraint') }}" tabindex="-1">{{ render_icon('remove') }}</a>
         </form>

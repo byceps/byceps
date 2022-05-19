@@ -21,7 +21,7 @@
   <h1>{{ _('Seat management') if manage_mode else _('Seating plan') }} – {{ area.title }}</h1>
 
   <form action="{{ url_for('attendance.attendees') }}" class="single-row unobtrusive mb">
-    <input type="search" name="search_term" placeholder="{{ _('Username') }}">
+    <input type="search" name="search_term" placeholder="{{ _('Username') }}" class="form-control">
     <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
   </form>
 

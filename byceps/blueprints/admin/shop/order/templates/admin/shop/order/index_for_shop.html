@@ -23,7 +23,7 @@
         {%- if (only_processed is not none) and not only_processed %}
         <input type="hidden" name="only_processed" value="false">
         {%- endif %}
-        <input type="search" name="search_term" placeholder="{{ _('Order number') }}"{%- if search_term %} value="{{ search_term }}"{% endif %} autofocus>
+        <input type="search" name="search_term" placeholder="{{ _('Order number') }}"{%- if search_term %} value="{{ search_term }}"{% endif %} class="form-control" autofocus>
         <button type="submit" class="button" title="{{ _('Search') }}">{{ render_icon('search') }}</button>
         <a href="{{ url_for(
           '.index_for_shop',
