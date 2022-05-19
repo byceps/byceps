@@ -423,6 +423,10 @@ textarea.form-control {
   width: 100%;
 }
 
+input.form-control[readonly] {
+  background-color: #e8e8e8 !important;
+}
+
 input[type='number'] {
   text-align: right;
 }
