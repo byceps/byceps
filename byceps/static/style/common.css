@@ -501,8 +501,6 @@ form.single-row {
 form.single-row .button,
 form.single-row input {
   font-size: 0.875rem; /* 14px / 16px */
-  padding-bottom: 0.2rem;
-  padding-top: 0.2rem;
 }
 
 form.single-row input {
