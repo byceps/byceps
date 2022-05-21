@@ -170,6 +170,9 @@ onDomReady(() => {
  */
 function enableCopyToClipboard(triggerElementId) {
   const triggerElement = document.getElementById(triggerElementId);
+  if (triggerElement == null) {
+    return;
+  }
 
   triggerElement.addEventListener('click', () => {
     const fieldId = triggerElement.dataset.fieldId;
