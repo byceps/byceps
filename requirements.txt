@@ -22,7 +22,7 @@ requests==2.27.1
 rq==1.10.1
 rq-dashboard==0.6.1
 rtoml==0.8.0
-sqlalchemy==1.4.36
+sqlalchemy==1.4.39
 tenacity==8.0.1
 werkzeug==2.2.0
 wtforms==3.0.1
