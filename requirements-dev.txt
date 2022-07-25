@@ -1,6 +1,6 @@
 -r requirements-docs.txt
 -r requirements-test.txt
-black==22.3.0
+black==22.6.0
 Flask-DebugToolbar==0.13.1
 flask-shell-ipython==0.4.1
 mypy==0.950
