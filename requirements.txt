@@ -1,4 +1,4 @@
-babel==2.10.1
+babel==2.10.3
 backports.zoneinfo;python_version<"3.9"
 bbcode==1.1.0
 blinker==1.4
