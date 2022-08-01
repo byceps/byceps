@@ -22,6 +22,7 @@ requests==2.28.1
 rq==1.10.1
 rq-dashboard==0.6.1
 rtoml==0.8.0
+setuptools==62.6.0
 sqlalchemy==1.4.39
 tenacity==8.0.1
 werkzeug==2.2.0
