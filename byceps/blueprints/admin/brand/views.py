@@ -13,7 +13,7 @@ from ....services.brand import (
     service as brand_service,
     settings_service as brand_settings_service,
 )
-from ....services.email import service as email_service
+from ....services.email import config_service as email_config_service
 from ....services.orga import service as orga_service
 from ....services.party import service as party_service
 from ....util.framework.blueprint import create_blueprint
@@ -53,7 +53,7 @@ def view(brand_id):
     brand = _get_brand_or_404(brand_id)
 
     settings = brand_settings_service.get_settings(brand.id)
-    email_config = email_service.get_config(brand.id)
+    email_config = email_config_service.get_config(brand.id)
 
     return {
         'brand': brand,
@@ -88,7 +88,7 @@ def create():
 
     brand = brand_service.create_brand(brand_id, title)
 
-    email_service.create_config(
+    email_config_service.create_config(
         brand.id,
         sender_address=f'noreply@{brand.id}.example',
         sender_name=brand.title,
@@ -151,7 +151,7 @@ def email_config_update_form(brand_id, erroneous_form=None):
     """Show form to update e-mail config."""
     brand = _get_brand_or_404(brand_id)
 
-    config = email_service.get_config(brand.id)
+    config = email_config_service.get_config(brand.id)
 
     form = (
         erroneous_form
@@ -176,7 +176,7 @@ def email_config_update(brand_id):
     """Update e-mail config."""
     brand = _get_brand_or_404(brand_id)
 
-    config = email_service.get_config(brand.id)
+    config = email_config_service.get_config(brand.id)
 
     form = EmailConfigUpdateForm(request.form)
     if not form.validate():
@@ -186,7 +186,7 @@ def email_config_update(brand_id):
     sender_name = form.sender_name.data.strip()
     contact_address = form.contact_address.data.strip()
 
-    config = email_service.update_config(
+    config = email_config_service.update_config(
         config.brand_id, sender_address, sender_name, contact_address
     )
 

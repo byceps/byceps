@@ -14,7 +14,10 @@ from typing import Iterator
 
 from flask_babel import format_currency, format_date, gettext
 
-from .....services.email import service as email_service
+from .....services.email import (
+    config_service as email_config_service,
+    service as email_service,
+)
 from .....services.email.transfer.models import Message
 from .....services.shop.order import service as order_service
 from .....services.shop.order.transfer.order import Order, OrderID
@@ -230,7 +233,7 @@ def _assemble_email_to_orderer(
     recipient_address: str,
 ) -> Message:
     """Assemble an email message with the rendered template as its body."""
-    config = email_service.get_config(brand_id)
+    config = email_config_service.get_config(brand_id)
     sender = config.sender
     recipients = [recipient_address]
 

@@ -17,7 +17,7 @@ from byceps.services.board import board_service
 from byceps.services.board.transfer.models import Board, BoardID
 from byceps.services.brand import service as brand_service
 from byceps.services.brand.transfer.models import Brand
-from byceps.services.email import service as email_service
+from byceps.services.email import config_service as email_config_service
 from byceps.services.email.transfer.models import EmailConfig
 from byceps.services.language import service as language_service
 from byceps.services.party.transfer.models import Party
@@ -185,14 +185,14 @@ def make_email_config(admin_app: Flask):
         if sender_address is None:
             sender_address = f'{generate_token()}@domain.example'
 
-        email_service.set_config(
+        email_config_service.set_config(
             brand_id,
             sender_address,
             sender_name=sender_name,
             contact_address=contact_address,
         )
 
-        return email_service.get_config(brand_id)
+        return email_config_service.get_config(brand_id)
 
     return _wrapper
 

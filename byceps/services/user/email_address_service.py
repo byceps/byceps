@@ -19,7 +19,10 @@ from ...events.user import (
 from ...typing import UserID
 from ...util.l10n import force_user_locale
 
-from ..email import service as email_service
+from ..email import (
+    config_service as email_config_service,
+    service as email_service,
+)
 from ..email.transfer.models import NameAndAddress
 from ..site import service as site_service
 from ..site.transfer.models import SiteID
@@ -41,7 +44,7 @@ def send_email_address_confirmation_email_for_site(
 ) -> None:
     site = site_service.get_site(site_id)
 
-    email_config = email_service.get_config(site.brand_id)
+    email_config = email_config_service.get_config(site.brand_id)
     sender = email_config.sender
 
     send_email_address_confirmation_email(
@@ -189,7 +192,7 @@ def send_email_address_change_email_for_site(
 ) -> None:
     site = site_service.get_site(site_id)
 
-    email_config = email_service.get_config(site.brand_id)
+    email_config = email_config_service.get_config(site.brand_id)
     sender = email_config.sender
 
     send_email_address_change_email(

@@ -9,7 +9,10 @@ byceps.blueprints.site.ticketing.notification_service
 from flask import g
 from flask_babel import gettext
 
-from ....services.email import service as email_service
+from ....services.email import (
+    config_service as email_config_service,
+    service as email_service,
+)
 from ....services.party import service as party_service
 from ....services.site import service as site_service
 from ....services.ticketing.dbmodels.ticket import Ticket
@@ -153,7 +156,7 @@ def _get_party_title():
 
 def _enqueue_email(recipient: User, subject: str, body: str) -> None:
     site = site_service.get_site(g.site_id)
-    email_config = email_service.get_config(site.brand_id)
+    email_config = email_config_service.get_config(site.brand_id)
     sender = email_config.sender
 
     recipient_address = user_service.get_email_address(recipient.id)

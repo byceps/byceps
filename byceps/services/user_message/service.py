@@ -17,7 +17,10 @@ from ...typing import UserID
 from ...util.l10n import force_user_locale
 from ...util import templating
 
-from ..email import service as email_service
+from ..email import (
+    config_service as email_config_service,
+    service as email_service,
+)
 from ..email.transfer.models import Message
 from ..site import service as site_service
 from ..site.transfer.models import SiteID
@@ -51,7 +54,7 @@ def create_message(
     sender = _get_user(sender_id)
     recipient = _get_user(recipient_id)
     site = site_service.get_site(site_id)
-    email_config = email_service.get_config(site.brand_id)
+    email_config = email_config_service.get_config(site.brand_id)
 
     recipients = [_get_user_address(recipient)]
 
