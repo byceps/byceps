@@ -19,14 +19,8 @@ from marrow.mailer import Mailer
 
 
 def init_app(app: Flask) -> None:
-    marrowmailer_config_key = 'MARROWMAILER_CONFIG'
-
-    if marrowmailer_config_key not in app.config:
-        app.config[marrowmailer_config_key] = _get_config(app)
-
-    mailer_config = app.config.get(marrowmailer_config_key)
-
-    app.marrowmailer = Mailer(mailer_config)
+    config = _get_config(app)
+    app.marrowmailer = Mailer(config)
 
 
 def _get_config(app: Flask) -> dict[str, Any]:
