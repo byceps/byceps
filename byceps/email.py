@@ -24,7 +24,7 @@ def init_app(app: Flask) -> None:
 
 
 def _get_config(app: Flask) -> dict[str, Any]:
-    if app.config.get('MAIL_SUPPRESS_SEND', False) or app.testing:
+    if app.config.get('MAIL_SUPPRESS_SEND', False):
         return {
             'transport.use': 'mock',
         }
