@@ -24,11 +24,6 @@ def init_app(app: Flask) -> None:
 
 
 def _get_config(app: Flask) -> dict[str, Any]:
-    if app.config.get('MAIL_SUPPRESS_SEND', False):
-        return {
-            'transport.use': 'mock',
-        }
-
     config = {
         'transport.use': app.config.get('MAIL_TRANSPORT', 'smtp'),
         'transport.host': app.config.get('MAIL_SERVER', 'localhost'),
@@ -58,12 +53,17 @@ def send(
     sender: Optional[str], recipients: list[str], subject: str, body: str
 ) -> None:
     """Assemble and send an e-mail."""
+    if current_app.config.get('MAIL_SUPPRESS_SEND', False):
+        current_app.logger.debug('Suppressing sending of email.')
+        return
+
     mailer = current_app.marrowmailer
 
     message = mailer.new(
         author=sender, to=recipients, subject=subject, plain=body, brand=False
     )
 
+    current_app.logger.debug('Sending email.')
     mailer.start()
     mailer.send(message)
     mailer.stop()
