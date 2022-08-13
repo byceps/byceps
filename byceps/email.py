@@ -2,53 +2,17 @@
 byceps.email
 ~~~~~~~~~~~~
 
-Sending e-mail.
+Send e-mail.
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
 from __future__ import annotations
-from typing import Any
+from email.message import EmailMessage
+from smtplib import SMTP
 
-from flask import current_app, Flask
-
-# Hack to avoid import error in `marrow.util` on Python 3.8+.
-import sys
-
-sys.modules['cgi.parse_qsl'] = None
-from marrow.mailer import Mailer
-
-
-def init_app(app: Flask) -> None:
-    config = _get_config(app)
-    app.marrowmailer = Mailer(config)
-
-
-def _get_config(app: Flask) -> dict[str, Any]:
-    config = {
-        'transport.use': app.config.get('MAIL_TRANSPORT', 'smtp'),
-        'transport.host': app.config.get('MAIL_SERVER', 'localhost'),
-        'transport.port': app.config.get('MAIL_PORT', 25),
-        'transport.debug': app.config.get('MAIL_DEBUG', app.debug),
-        'message.author': app.config['MAIL_DEFAULT_SENDER'],
-    }
-
-    username = app.config.get('MAIL_USERNAME', None)
-    if username is not None:
-        config['transport.username'] = username
-
-    password = app.config.get('MAIL_PASSWORD', None)
-    if password is not None:
-        config['transport.password'] = password
-
-    if app.config.get('MAIL_USE_SSL', False):
-        config['transport.tls'] = 'ssl'
-
-    if app.config.get('MAIL_USE_TLS', False):
-        config['transport.tls'] = 'required'
-
-    return config
+from flask import current_app
 
 
 def send(sender: str, recipients: list[str], subject: str, body: str) -> None:
@@ -57,13 +21,35 @@ def send(sender: str, recipients: list[str], subject: str, body: str) -> None:
         current_app.logger.debug('Suppressing sending of email.')
         return
 
-    mailer = current_app.marrowmailer
-
-    message = mailer.new(
-        author=sender, to=recipients, subject=subject, plain=body, brand=False
-    )
+    message = _build_message(sender, recipients, subject, body)
 
     current_app.logger.debug('Sending email.')
-    mailer.start()
-    mailer.send(message)
-    mailer.stop()
+    _send_via_smtp(message)
+
+
+def _build_message(
+    sender: str, recipients: list[str], subject: str, body: str
+) -> EmailMessage:
+    """Assemble message."""
+    message = EmailMessage()
+    message['From'] = sender
+    message['To'] = ', '.join(recipients)
+    message['Subject'] = subject
+    message.set_content(body)
+    return message
+
+
+def _send_via_smtp(message: EmailMessage) -> None:
+    """Send email via SMTP."""
+    config = current_app.config
+
+    host = config.get('MAIL_HOST', 'localhost')
+    port = config.get('MAIL_PORT', 25)
+    username = config.get('MAIL_USERNAME', None)
+    password = config.get('MAIL_PASSWORD', None)
+
+    with SMTP(host, port) as smtp:
+        if username and password:
+            smtp.login(username, password)
+
+        smtp.send_message(message)

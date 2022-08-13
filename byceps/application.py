@@ -20,7 +20,6 @@ from redis import StrictRedis
 from .blueprints.blueprints import register_blueprints
 from . import config, config_defaults
 from .database import db
-from . import email
 from .util.authorization import has_current_user_permission, load_permissions
 from .util.l10n import get_current_user_locale
 from .util import templatefilters, templatefunctions
@@ -64,8 +63,6 @@ def create_app(
 
     # Initialize Redis client.
     app.redis_client = StrictRedis.from_url(app.config['REDIS_URL'])
-
-    email.init_app(app)
 
     app_mode = config.get_app_mode(app)
 
