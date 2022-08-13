@@ -20,7 +20,7 @@ def user_bob(make_user):
     return make_user('Bob', email_address='bob@users.test', locale='en')
 
 
-@patch('byceps.email.send')
+@patch('byceps.services.email.service.send')
 def test_send_when_logged_in_without_brand_contact_address(
     send_email_mock, site_app, user_alice, user_bob
 ):
@@ -83,7 +83,7 @@ If you have any questions, please contact us via email to: help@acmecon.test\
     )
 
 
-@patch('byceps.email.send')
+@patch('byceps.services.email.service.send')
 def test_send_when_logged_in_with_brand_contact_address(
     send_email_mock,
     site_app,
