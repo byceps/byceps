@@ -9,11 +9,13 @@ Sending e-mail.
 """
 
 from __future__ import annotations
-from typing import Any, Optional
+from typing import Any
 
 from flask import current_app, Flask
+
 # Hack to avoid import error in `marrow.util` on Python 3.8+.
 import sys
+
 sys.modules['cgi.parse_qsl'] = None
 from marrow.mailer import Mailer
 
@@ -49,9 +51,7 @@ def _get_config(app: Flask) -> dict[str, Any]:
     return config
 
 
-def send(
-    sender: Optional[str], recipients: list[str], subject: str, body: str
-) -> None:
+def send(sender: str, recipients: list[str], subject: str, body: str) -> None:
     """Assemble and send an e-mail."""
     if current_app.config.get('MAIL_SUPPRESS_SEND', False):
         current_app.logger.debug('Suppressing sending of email.')
