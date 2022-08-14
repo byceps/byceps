@@ -53,8 +53,5 @@ PATH_DATA = Path('./data')
 # Limit incoming request content.
 MAX_CONTENT_LENGTH = 4000000
 
-# e-mail
-MAIL_DEFAULT_SENDER = 'BYCEPS <noreply@byceps.example>'
-
 # shop
 SHOP_ORDER_EXPORT_TIMEZONE = 'Europe/Berlin'

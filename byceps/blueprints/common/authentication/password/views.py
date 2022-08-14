@@ -6,7 +6,7 @@ byceps.blueprints.common.authentication.password.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, current_app, g, request
+from flask import abort, g, request
 from flask_babel import gettext
 
 from .....services.authentication.password import (
@@ -18,6 +18,7 @@ from .....services.email import (
     service as email_service,
 )
 from .....services.email.transfer.models import NameAndAddress
+from .....services.global_setting import service as global_settings_service
 from .....services.user import service as user_service
 from .....services.verification_token import (
     service as verification_token_service,
@@ -156,9 +157,15 @@ def _get_sender() -> NameAndAddress:
     if g.app_mode.is_site():
         email_config = email_config_service.get_config(g.brand_id)
         return email_config.sender
+    elif g.app_mode.is_admin():
+        address_str = global_settings_service.find_setting_value(
+            'admin_email_sender'
+        )
+        if not address_str:
+            address_str = 'BYCEPS <noreply@byceps.example>'
+        return email_service.parse_address(address_str)
     else:
-        default_sender = current_app.config['MAIL_DEFAULT_SENDER']
-        return email_service.parse_address(default_sender)
+        abort(500, 'Unexpected app mode, cannot obtain email sender')
 
 
 @blueprint.get('/reset/token/<token>')
