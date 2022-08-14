@@ -77,7 +77,7 @@ def url_for_page(name: str, **kwargs) -> Optional[str]:
 
     url_path = url_paths_by_page_name[name]
 
-    return url_for(f'page.view', url_path=url_path, **kwargs)
+    return url_for('page.view', url_path=url_path, **kwargs)
 
 
 def _get_url_paths_by_page_name(site_id) -> dict[str, str]:
