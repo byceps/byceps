@@ -18,8 +18,8 @@ def import_users(data_file) -> None:
     lines = import_service.parse_lines(data_file)
     for line_number, line in enumerate(lines, start=1):
         try:
-            user_dict = import_service.parse_user_json(line)
-            user = import_service.import_user(user_dict)
+            user_to_import = import_service.parse_user_json(line)
+            user = import_service.import_user(user_to_import)
             click.secho(
                 f'[line {line_number}] Imported user {user.screen_name}.',
                 fg='green',
