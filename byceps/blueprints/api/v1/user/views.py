@@ -7,7 +7,7 @@ byceps.blueprints.api.v1.user.views
 """
 
 from flask import abort, jsonify, request
-from marshmallow import ValidationError
+from pydantic import ValidationError
 
 from .....services.user import email_address_service, service as user_service
 from .....signals import user as user_signals
@@ -17,7 +17,7 @@ from .....util.views import respond_no_content
 
 from ...decorators import api_token_required
 
-from .schemas import InvalidateEmailAddressRequest
+from .models import InvalidateEmailAddressRequest
 
 
 blueprint = create_blueprint('user_api', __name__)
@@ -45,21 +45,16 @@ def get_profile(user_id):
 @respond_no_content
 def invalidate_email_address():
     """Invalidate the email address."""
-    schema = InvalidateEmailAddressRequest()
-    request_data = request.get_json()
-
     try:
-        req = schema.load(request_data)
+        req = InvalidateEmailAddressRequest.parse_obj(request.get_json())
     except ValidationError as e:
-        abort(400, str(e.normalized_messages()))
+        abort(400, e.json())
 
-    user = user_service.find_user_by_email_address(req['email_address'])
+    user = user_service.find_user_by_email_address(req.email_address)
 
     if user is None:
         abort(404, 'Unknown email address')
 
-    event = email_address_service.invalidate_email_address(
-        user.id, req['reason']
-    )
+    event = email_address_service.invalidate_email_address(user.id, req.reason)
 
     user_signals.email_address_invalidated.send(None, event=event)

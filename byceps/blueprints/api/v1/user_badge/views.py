@@ -7,7 +7,7 @@ byceps.blueprints.api.v1.user_badge.views
 """
 
 from flask import abort, request
-from marshmallow import ValidationError
+from pydantic import ValidationError
 
 from .....services.user import service as user_service
 from .....services.user_badge import awarding_service, badge_service
@@ -17,7 +17,7 @@ from .....util.views import respond_no_content
 
 from ...decorators import api_token_required
 
-from .schemas import AwardBadgeToUserRequest
+from .models import AwardBadgeToUserRequest
 
 
 blueprint = create_blueprint('user_badge_api', __name__)
@@ -31,21 +31,20 @@ def award_badge_to_user():
     if not request.is_json:
         abort(415)
 
-    schema = AwardBadgeToUserRequest()
     try:
-        req = schema.load(request.get_json())
+        req = AwardBadgeToUserRequest.parse_obj(request.get_json())
     except ValidationError as e:
-        abort(400, str(e.normalized_messages()))
+        abort(400, e.json())
 
-    badge = badge_service.find_badge_by_slug(req['badge_slug'])
+    badge = badge_service.find_badge_by_slug(req.badge_slug)
     if not badge:
         abort(400, 'Badge slug unknown')
 
-    user = user_service.find_user(req['user_id'])
+    user = user_service.find_user(req.user_id)
     if not user:
         abort(400, 'User ID unknown')
 
-    initiator = user_service.find_user(req['initiator_id'])
+    initiator = user_service.find_user(req.initiator_id)
     if not initiator:
         abort(400, 'Initiator ID unknown')
 

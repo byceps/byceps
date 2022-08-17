@@ -12,8 +12,8 @@ from itertools import chain
 from typing import Any, Iterator, Optional
 
 from flask import abort, jsonify, request, url_for
-from marshmallow import ValidationError
-from marshmallow.schema import SchemaMeta
+from pydantic import ValidationError
+from pydantic.main import ModelMetaclass
 
 from .......services.orga_team import service as orga_team_service
 from .......services.tourney import (
@@ -35,7 +35,7 @@ from .......util.views import respond_created, respond_no_content
 
 from .....decorators import api_token_required
 
-from .schemas import (
+from .models import (
     CreateMatchCommentRequest,
     ModerateMatchCommentRequest,
     UpdateMatchCommentRequest,
@@ -160,15 +160,15 @@ def create():
     """Create a comment on a match."""
     req = _parse_request(CreateMatchCommentRequest)
 
-    match = match_service.find_match(req['match_id'])
+    match = match_service.find_match(req.match_id)
     if not match:
         abort(400, 'Unknown match ID')
 
-    creator = user_service.find_active_user(req['creator_id'])
+    creator = user_service.find_active_user(req.creator_id)
     if not creator:
         abort(400, 'Creator ID does not reference an active user.')
 
-    body = req['body'].strip()
+    body = req.body.strip()
 
     comment = comment_service.create_comment(match.id, creator.id, body)
 
@@ -186,11 +186,11 @@ def update(comment_id):
 
     req = _parse_request(UpdateMatchCommentRequest)
 
-    editor = user_service.find_active_user(req['editor_id'])
+    editor = user_service.find_active_user(req.editor_id)
     if not editor:
         abort(400, 'Editor ID does not reference an active user.')
 
-    body = req['body'].strip()
+    body = req.body.strip()
 
     comment_service.update_comment(comment.id, editor.id, body)
 
@@ -204,7 +204,7 @@ def hide(comment_id):
 
     req = _parse_request(ModerateMatchCommentRequest)
 
-    initiator = user_service.find_active_user(req['initiator_id'])
+    initiator = user_service.find_active_user(req.initiator_id)
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
@@ -220,7 +220,7 @@ def unhide(comment_id):
 
     req = _parse_request(ModerateMatchCommentRequest)
 
-    initiator = user_service.find_active_user(req['initiator_id'])
+    initiator = user_service.find_active_user(req.initiator_id)
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
@@ -245,13 +245,8 @@ def _get_comment_or_404(comment_id: MatchCommentID) -> MatchComment:
     return comment
 
 
-def _parse_request(schema_class: SchemaMeta) -> dict[str, Any]:
-    schema = schema_class()
-    request_data = request.get_json()
-
+def _parse_request(model_class: ModelMetaclass) -> BaseModel:
     try:
-        req = schema.load(request_data)
+        return model_class.parse_obj(request.get_json())
     except ValidationError as e:
-        abort(400, str(e.normalized_messages()))
-
-    return req
+        abort(400, e.json())

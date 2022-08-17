@@ -7,7 +7,7 @@ byceps.blueprints.api.v1.attendance.views
 """
 
 from flask import abort, request
-from marshmallow import ValidationError
+from pydantic import ValidationError
 
 from .....services.party import service as party_service
 from .....services.ticketing import attendance_service
@@ -17,7 +17,7 @@ from .....util.views import respond_no_content
 
 from ...decorators import api_token_required
 
-from .schemas import CreateArchivedAttendanceRequest
+from .models import CreateArchivedAttendanceRequest
 
 
 blueprint = create_blueprint('attendance_api', __name__)
@@ -31,17 +31,16 @@ def create_archived_attendance():
     if not request.is_json:
         abort(415)
 
-    schema = CreateArchivedAttendanceRequest()
     try:
-        req = schema.load(request.get_json())
+        req = CreateArchivedAttendanceRequest.parse_obj(request.get_json())
     except ValidationError as e:
-        abort(400, str(e.normalized_messages()))
+        abort(400, e.json())
 
-    user = user_service.find_user(req['user_id'])
+    user = user_service.find_user(req.user_id)
     if not user:
         abort(400, 'User ID unknown')
 
-    party = party_service.find_party(req['party_id'])
+    party = party_service.find_party(req.party_id)
     if not party:
         abort(400, 'Party ID unknown')
 
