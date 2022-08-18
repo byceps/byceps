@@ -9,11 +9,10 @@ byceps.blueprints.api.v1.tourney.match.views
 from __future__ import annotations
 from datetime import datetime
 from itertools import chain
-from typing import Any, Iterator, Optional
+from typing import Any, Iterator, Optional, Type
 
 from flask import abort, jsonify, request, url_for
-from pydantic import ValidationError
-from pydantic.main import ModelMetaclass
+from pydantic import BaseModel, ValidationError
 
 from .......services.orga_team import service as orga_team_service
 from .......services.tourney import (
@@ -245,7 +244,7 @@ def _get_comment_or_404(comment_id: MatchCommentID) -> MatchComment:
     return comment
 
 
-def _parse_request(model_class: ModelMetaclass) -> BaseModel:
+def _parse_request(model_class: Type[BaseModel]) -> BaseModel:
     try:
         return model_class.parse_obj(request.get_json())
     except ValidationError as e:
