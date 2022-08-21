@@ -15,7 +15,7 @@
               <div>
 
                 <div class="row row--space-between row--vertically-centered">
-                  {%- if not g.user.locale %}
+                  {%- if not g.user.authenticated %}
                   <div>
 {% include 'layout/_locale_selector.html' %}
                   </div>
