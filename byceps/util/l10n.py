@@ -14,7 +14,7 @@ from typing import Iterator, Optional
 
 from babel import Locale
 from flask import current_app, g, request
-from flask_babel import force_locale
+from flask_babel import force_locale, get_locale
 from wtforms import Form
 
 from ..services.user.transfer.models import User
@@ -60,8 +60,23 @@ def get_locales() -> list[Locale]:
     return [BASE_LOCALE] + current_app.babel_instance.list_translations()
 
 
-class LocalizedForm(Form):
+def get_locale_str() -> Optional[str]:
+    """Return the current locale as a string.
 
+    Return `None` outside of a request.
+    """
+    locale = get_locale()
+    if locale is None:
+        return None
+
+    locale_str = locale.language
+    if locale.territory:
+        locale_str += '_' + locale.territory
+
+    return locale_str
+
+
+class LocalizedForm(Form):
     def __init__(self, *args, **kwargs):
         locales = current_app.config['LOCALES_FORMS']
         kwargs['meta'] = {'locales': locales}

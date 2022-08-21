@@ -71,6 +71,11 @@ def url_for_page(name: str, **kwargs) -> Optional[str]:
     if site_id is None:
         return None
 
+    return url_for_site_page(site_id, name, **kwargs)
+
+
+def url_for_site_page(site_id: str, name: str, **kwargs) -> str:
+    """Render an URL pointing to the page's URL path."""
     # Page name is unique per site.
 
     url_paths_by_page_name = _get_url_paths_by_page_name(site_id)

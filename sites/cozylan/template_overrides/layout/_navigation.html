@@ -1,21 +1,7 @@
-{%- macro render_nav_item(url, label, nav_item_id) -%}
-<li><a class="nav-main-item{% if nav_item_id == current_page %} current{% endif %}" href="{{ url }}">{{ label }}</a></li>
-{%- endmacro -%}
-
-{%- set navigation_items = [
-    ('news.index',            _('News'),              'news'      ),
-    ('orga_team.index',       _('Team'),              'orga_team' ),
-    ('attendance.attendees',  _('Attendees'),         'attendees' ),
-    ('seating.index',         _('Seating Plan'),      'seating'   ),
-    ('shop_order.order_form', _('Shop'),              'shop_order'),
-    ('board.category_index',  _('Discussion Board'),  'board'     ),
-] -%}
-
-
   <nav class="nav-main">
     <ol>
-      {%- for endpoint, label, id in navigation_items %}
-      {{ render_nav_item(url_for(endpoint), label, id) }}
+      {%- for item in get_nav_menu_items('main') %}
+      <li><a class="nav-main-item{% if item.current_page_id == current_page %} current{% endif %}" href="{{ item.target }}">{{ item.label }}</a></li>
       {%- endfor %}
     </ol>
   </nav>
