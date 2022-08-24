@@ -1,0 +1,40 @@
+{% extends 'layout/admin/site/navigation.html' %}
+{% from 'macros/misc.html' import render_tag %}
+{% set page_title = _('Menus') %}
+
+{% block body %}
+
+  <div class="row row--space-between">
+    <h1>{{ page_title }}</h1>
+  </div>
+
+  <div class="box">
+    {%- if menus %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>{{ _('Name') }}</th>
+          <th>{{ _('Language') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for menu in menus|sort(attribute='name,language_code') %}
+        <tr>
+          <td><a href="{{ url_for('.view', menu_id=menu.id) }}"><strong>{{ menu.name }}</strong></a></td>
+          <td>{{ menu.language_code }}</td>
+          <td>
+            {%- if menu.hidden -%}
+            {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+            {%- endif -%}
+          </td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No menus exist.') }}</div>
+    {%- endif %}
+  </div>
+
+{%- endblock %}

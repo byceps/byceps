@@ -1,0 +1,62 @@
+{% extends 'layout/admin/site/navigation.html' %}
+{% from 'macros/misc.html' import render_tag %}
+{% set page_title = [_('Menu'), menu.name] %}
+
+{% block body %}
+
+  <div class="row row--space-between">
+    <div>
+      <h1>
+        {{- menu.name }} ({{ menu.language_code }})
+        {%- if menu.hidden %}
+        {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+        {%- endif -%}
+      </h1>
+    </div>
+  </div>
+
+  <div class="box">
+
+    <div class="data-label">{{ _('Language') }}</div>
+    <div class="data-value">{{ menu.language_code }}</div>
+
+  </div>
+
+  <h2>{{ _('Items') }}</h2>
+
+  <div class="box">
+
+    {%- if menu.items %}
+    <table class="index wide">
+      <thead>
+        <tr>
+          <th>{{ _('Target type') }}</th>
+          <th>{{ _('Target') }}</th>
+          <th>{{ _('Label') }}</th>
+          <th>{{ _('Current page ID') }}</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for item in menu.items|sort(attribute='position') %}
+        <tr>
+          <td>{{ item.target_type.name }}</td>
+          <td>{{ item.target }}</td>
+          <td>{{ item.label }}</td>
+          <td>{{ item.current_page_id }}</td>
+          <td>
+            {%- if item.hidden -%}
+            {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+            {%- endif -%}
+          </td>
+        </tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+    {%- else %}
+    <div class="dimmed-box centered">{{ _('No menus exist.') }}</div>
+    {%- endif %}
+
+  </div>
+
+{%- endblock %}

@@ -37,6 +37,7 @@ class Menu:
 class Item:
     id: ItemID
     menu_id: MenuID
+    position: int
     target_type: ItemTargetType
     target: str
     label: str
@@ -50,3 +51,8 @@ class ItemForRendering:
     label: str
     current_page_id: str
     children: list[ItemForRendering]
+
+
+@dataclass(frozen=True)
+class MenuAggregate(Menu):
+    items: list[Item]

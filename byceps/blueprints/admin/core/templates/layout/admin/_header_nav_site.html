@@ -27,6 +27,12 @@
       required_permission='snippet.view',
       icon='site')
     .add_item(
+      url_for('site_navigation_admin.index_for_site', site_id=site.id),
+      _('Navigation'),
+      id='site_navigation_admin',
+      required_permission='site.view',
+      icon='site')
+    .add_item(
       url_for('shop_storefront_admin.view', storefront_id=site.storefront_id) if site.storefront_id else '',
       _('Storefront'),
       id='shop_storefront_admin',
