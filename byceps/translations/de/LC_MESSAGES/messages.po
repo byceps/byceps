@@ -537,6 +537,7 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_number_sequence_form.html:20
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/create_number_sequence_form.html:19
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/create_form.html:27
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_create_form.html:21
 #: byceps/blueprints/admin/site/templates/admin/site/create_form.html:39
 #: byceps/blueprints/admin/snippet/mountpoint/templates/admin/snippet/mountpoint/create_form.html:29
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/create_document_form.html:22
@@ -1073,6 +1074,10 @@ msgid "Position"
 msgstr "Position"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:49
+#: byceps/blueprints/admin/site/navigation/forms.py:21
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:38
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:12
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:49
 #: byceps/blueprints/site/board/templates/macros/board.html:5
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:35
 #: byceps/blueprints/site/board/templates/site/board/topic_index.html:38
@@ -1285,7 +1290,8 @@ msgstr "Marke erstellen"
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:94
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:11
 #: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:40
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:16
+#: byceps/blueprints/admin/site/navigation/forms.py:17
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:26
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:125
 #: byceps/blueprints/admin/snippet/forms.py:17
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:35
@@ -3140,6 +3146,7 @@ msgid "Remove person from team?"
 msgstr "Person aus Team entfernen?"
 
 #: byceps/blueprints/admin/page/forms.py:21
+#: byceps/blueprints/admin/site/navigation/forms.py:19
 msgid "Language code"
 msgstr "Sprachcode"
 
@@ -3197,7 +3204,7 @@ msgstr "Es sind keine Versionen vorhanden."
 
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:28
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:56
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:17
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:27
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:20
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:60
 msgid "Language"
@@ -4456,11 +4463,22 @@ msgstr ""
 "Newskanal \"%(news_channel_id)s\" has been removed from site "
 "\"%(site_title)s\"."
 
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:3
+#: byceps/blueprints/admin/site/navigation/views.py:101
+#, python-format
+msgid "Menu \"%(name)s\" has been created."
+msgstr "Das Menü \"%(name)s\" wurde angelegt."
+
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:4
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_create_form.html:7
 msgid "Menus"
 msgstr "Menüs"
 
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:36
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:15
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_create_form.html:4
+msgid "Create menu"
+msgstr "Menü erstellen"
+
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:46
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:57
 msgid "No menus exist."
 msgstr "Es sind keine Menüs vorhanden."
@@ -7473,6 +7491,10 @@ msgstr "Sites bearbeiten"
 #: byceps/permissions/site.py:19
 msgid "View sites"
 msgstr "Sites anzeigen"
+
+#: byceps/permissions/site.py:27
+msgid "Administrate site navigation"
+msgstr "Site-Navigation administrieren"
 
 #: byceps/permissions/snippet.py:17
 msgid "Create snippets"

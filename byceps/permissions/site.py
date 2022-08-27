@@ -19,3 +19,11 @@ register_permissions(
         ('view', lazy_gettext('View sites')),
     ],
 )
+
+
+register_permissions(
+    'site_navigation',
+    [
+        ('administrate', lazy_gettext('Administrate site navigation')),
+    ],
+)

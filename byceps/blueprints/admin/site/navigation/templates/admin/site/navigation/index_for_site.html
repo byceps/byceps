@@ -1,11 +1,21 @@
 {% extends 'layout/admin/site/navigation.html' %}
+{% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_tag %}
 {% set page_title = _('Menus') %}
 
 {% block body %}
 
   <div class="row row--space-between">
-    <h1>{{ page_title }}</h1>
+    <div>
+      <h1>{{ page_title }}</h1>
+    </div>
+    <div>
+      <div class="button-row button-row--right">
+        {%- if has_current_user_permission('site_navigation.administrate') %}
+        <a class="button" href="{{ url_for('.menu_create_form', site_id=site.id) }}">{{ render_icon('add') }} <span>{{ _('Create menu') }}</span></a>
+        {%- endif %}
+      </div>
+    </div>
   </div>
 
   <div class="box">

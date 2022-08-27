@@ -227,6 +227,7 @@ assigned_permissions = [
     'site.create',
     'site.update',
     'site.view',
+    'site_navigation.administrate',
 ]
 
 [[roles]]
