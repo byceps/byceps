@@ -40,6 +40,24 @@ def create_menu(
     return _db_entity_to_menu(db_menu)
 
 
+def update_menu(
+    menu_id: MenuID,
+    name: str,
+    language_code: str,
+    hidden: bool,
+) -> Menu:
+    """Update a menu."""
+    db_menu = _get_db_menu(menu_id)
+
+    db_menu.name = name
+    db_menu.language_code = language_code
+    db_menu.hidden = hidden
+
+    db.session.commit()
+
+    return _db_entity_to_menu(db_menu)
+
+
 def create_item(
     menu_id: MenuID,
     target_type: ItemTargetType,

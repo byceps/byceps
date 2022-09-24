@@ -1076,8 +1076,8 @@ msgstr "Position"
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:49
 #: byceps/blueprints/admin/site/navigation/forms.py:21
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:38
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:12
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:49
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:13
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:57
 #: byceps/blueprints/site/board/templates/macros/board.html:5
 #: byceps/blueprints/site/board/templates/site/board/category_view.html:35
 #: byceps/blueprints/site/board/templates/site/board/topic_index.html:38
@@ -1096,6 +1096,7 @@ msgstr "versteckt"
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:31
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:40
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:15
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:20
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:31
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:64
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:34
@@ -1188,6 +1189,7 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/party/templates/admin/party/update_form.html:47
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/update_form.html:55
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/update_form.html:21
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_update_form.html:21
 #: byceps/blueprints/admin/site/templates/admin/site/update_form.html:30
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/update_document_form.html:22
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/update_fragment_form.html:20
@@ -3205,7 +3207,7 @@ msgstr "Es sind keine Versionen vorhanden."
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:28
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:56
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:27
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:20
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:28
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_account.html:60
 msgid "Language"
 msgstr "Sprache"
@@ -4463,10 +4465,15 @@ msgstr ""
 "Newskanal \"%(news_channel_id)s\" has been removed from site "
 "\"%(site_title)s\"."
 
-#: byceps/blueprints/admin/site/navigation/views.py:101
+#: byceps/blueprints/admin/site/navigation/views.py:105
 #, python-format
 msgid "Menu \"%(name)s\" has been created."
 msgstr "Das Menü \"%(name)s\" wurde angelegt."
+
+#: byceps/blueprints/admin/site/navigation/views.py:145
+#, python-format
+msgid "Menu \"%(name)s\" has been updated."
+msgstr "Das Menü \"%(name)s\" wurde aktualisiert."
 
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:4
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_create_form.html:7
@@ -4479,33 +4486,38 @@ msgid "Create menu"
 msgstr "Menü erstellen"
 
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:46
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:57
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:65
 msgid "No menus exist."
 msgstr "Es sind keine Menüs vorhanden."
 
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:3
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_update_form.html:4
+msgid "Edit menu"
+msgstr "Menü bearbeiten"
+
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_update_form.html:7
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:4
 msgid "Menu"
 msgstr "Menü"
 
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:25
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:33
 msgid "Items"
 msgstr "Elemente"
 
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:33
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:41
 msgid "Target type"
 msgstr "Zielart"
 
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:34
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:42
 msgid "Target"
 msgstr "Ziel"
 
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:35
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:43
 #: byceps/blueprints/admin/user_badge/forms.py:36
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/index.html:30
 msgid "Label"
 msgstr "Bezeichnung"
 
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:36
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:44
 msgid "Current page ID"
 msgstr "ID der aktuellen Seite"
 

@@ -23,3 +23,7 @@ class _MenuBaseForm(LocalizedForm):
 
 class MenuCreateForm(_MenuBaseForm):
     pass
+
+
+class MenuUpdateForm(_MenuBaseForm):
+    pass

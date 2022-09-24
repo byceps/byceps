@@ -13,13 +13,17 @@ from .....services.brand import service as brand_service
 from .....services.site import service as site_service
 from .....services.site.transfer.models import Site, SiteID
 from .....services.site_navigation import service as navigation_service
-from .....services.site_navigation.transfer.models import MenuAggregate, MenuID
+from .....services.site_navigation.transfer.models import (
+    Menu,
+    MenuAggregate,
+    MenuID,
+)
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to
 
-from .forms import MenuCreateForm
+from .forms import MenuCreateForm, MenuUpdateForm
 
 
 blueprint = create_blueprint('site_navigation_admin', __name__)
@@ -103,6 +107,47 @@ def menu_create(site_id):
     return redirect_to('.view', menu_id=menu.id)
 
 
+@blueprint.get('/menus/<menu_id>/update')
+@permission_required('site_navigation.administrate')
+@templated
+def menu_update_form(menu_id, erroneous_form=None):
+    """Show form to update the menu."""
+    menu = _get_menu_or_404(menu_id)
+
+    site = site_service.get_site(menu.site_id)
+    brand = brand_service.get_brand(site.brand_id)
+
+    form = erroneous_form if erroneous_form else MenuUpdateForm(obj=menu)
+
+    return {
+        'menu': menu,
+        'site': site,
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.post('/menus/<menu_id>')
+@permission_required('site_navigation.administrate')
+def menu_update(menu_id):
+    """Update the menu."""
+    menu = _get_menu_or_404(menu_id)
+
+    form = MenuUpdateForm(request.form)
+    if not form.validate():
+        return menu_update_form(menu.id, form)
+
+    name = form.name.data.strip()
+    language_code = form.language_code.data.strip()
+    hidden = form.hidden.data
+
+    menu = navigation_service.update_menu(menu.id, name, language_code, hidden)
+
+    flash_success(gettext('Menu "%(name)s" has been updated.', name=menu.name))
+
+    return redirect_to('.view', menu_id=menu.id)
+
+
 def _get_site_or_404(site_id: SiteID) -> Site:
     site = site_service.find_site(site_id)
 
@@ -110,6 +155,15 @@ def _get_site_or_404(site_id: SiteID) -> Site:
         abort(404)
 
     return site
+
+
+def _get_menu_or_404(menu_id: MenuID) -> Menu:
+    menu = navigation_service.find_menu(menu_id)
+
+    if menu is None:
+        abort(404)
+
+    return menu
 
 
 def _get_menu_aggregate_or_404(menu_id: MenuID) -> MenuAggregate:
