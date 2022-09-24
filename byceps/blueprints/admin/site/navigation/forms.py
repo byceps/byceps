@@ -7,7 +7,7 @@ byceps.blueprints.admin.site.navigation.forms
 """
 
 from flask_babel import lazy_gettext
-from wtforms import BooleanField, StringField
+from wtforms import BooleanField, SelectField, StringField
 from wtforms.validators import InputRequired
 
 from .....util.l10n import LocalizedForm
@@ -26,4 +26,27 @@ class MenuCreateForm(_MenuBaseForm):
 
 
 class MenuUpdateForm(_MenuBaseForm):
+    pass
+
+
+class _ItemBaseForm(LocalizedForm):
+    target_type = SelectField(
+        lazy_gettext('Target type'),
+        [InputRequired()],
+        choices=[
+            ('', '<' + lazy_gettext('choose') + '>'),
+            ('endpoint', lazy_gettext('endpoint')),
+            ('page', lazy_gettext('page')),
+            ('url', lazy_gettext('URL')),
+        ],
+    )
+    target = StringField(lazy_gettext('Target'), validators=[InputRequired()])
+    label = StringField(lazy_gettext('Label'), validators=[InputRequired()])
+    current_page_id = StringField(
+        lazy_gettext('Current page ID'), validators=[InputRequired()]
+    )
+    hidden = BooleanField(lazy_gettext('hidden'))
+
+
+class ItemCreateForm(_ItemBaseForm):
     pass

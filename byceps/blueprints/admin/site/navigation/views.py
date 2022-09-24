@@ -14,6 +14,7 @@ from .....services.site import service as site_service
 from .....services.site.transfer.models import Site, SiteID
 from .....services.site_navigation import service as navigation_service
 from .....services.site_navigation.transfer.models import (
+    ItemTargetType,
     Menu,
     MenuAggregate,
     MenuID,
@@ -23,7 +24,7 @@ from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to
 
-from .forms import MenuCreateForm, MenuUpdateForm
+from .forms import ItemCreateForm, MenuCreateForm, MenuUpdateForm
 
 
 blueprint = create_blueprint('site_navigation_admin', __name__)
@@ -144,6 +145,53 @@ def menu_update(menu_id):
     menu = navigation_service.update_menu(menu.id, name, language_code, hidden)
 
     flash_success(gettext('Menu "%(name)s" has been updated.', name=menu.name))
+
+    return redirect_to('.view', menu_id=menu.id)
+
+
+@blueprint.get('/for_menu/<menu_id>/create')
+@permission_required('site_navigation.administrate')
+@templated
+def item_create_form(menu_id, erroneous_form=None):
+    """Show form to create a menu item."""
+    menu = _get_menu_or_404(menu_id)
+
+    site = site_service.get_site(menu.site_id)
+    brand = brand_service.get_brand(site.brand_id)
+
+    form = erroneous_form if erroneous_form else ItemCreateForm()
+
+    return {
+        'menu': menu,
+        'site': site,
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.post('/for_menu/<menu_id>/create')
+@permission_required('site_navigation.administrate')
+def item_create(menu_id):
+    """Create a menu item."""
+    menu = _get_menu_or_404(menu_id)
+
+    form = ItemCreateForm(request.form)
+    if not form.validate():
+        return item_create_form(menu.id, form)
+
+    target_type = ItemTargetType[form.target_type.data]
+    target = form.target.data.strip()
+    label = form.label.data.strip()
+    current_page_id = form.current_page_id.data.strip()
+    hidden = form.hidden.data
+
+    item = navigation_service.create_item(
+        menu.id, target_type, target, label, current_page_id, hidden=hidden
+    )
+
+    flash_success(
+        gettext('Menu item "%(label)s" has been created.', label=item.label)
+    )
 
     return redirect_to('.view', menu_id=menu.id)
 

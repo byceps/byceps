@@ -1,0 +1,26 @@
+{% extends 'layout/admin/site/navigation.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field, form_field_check %}
+{% set page_title = _('Create menu item') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.view', menu_id=menu.id), _('Menu')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <form action="{{ url_for('.item_create', menu_id=menu.id) }}" method="post">
+    <div class="box">
+      {{ form_field(form.target_type, autofocus='autofocus') }}
+      {{ form_field(form.target) }}
+      {{ form_field(form.label) }}
+      {{ form_field(form.current_page_id) }}
+      {{ form_field_check(form.hidden) }}
+    </div>
+
+    {{ form_buttons(_('Create')) }}
+  </form>
+
+{%- endblock %}
