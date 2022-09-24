@@ -99,6 +99,7 @@ def menu_create(site_id):
     )
 
     flash_success(gettext('Menu "%(name)s" has been created.', name=menu.name))
+
     return redirect_to('.view', menu_id=menu.id)
 
 

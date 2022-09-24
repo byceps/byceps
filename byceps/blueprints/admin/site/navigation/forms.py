@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired
 from .....util.l10n import LocalizedForm
 
 
-class _BaseForm(LocalizedForm):
+class _MenuBaseForm(LocalizedForm):
     name = StringField(lazy_gettext('Name'), validators=[InputRequired()])
     language_code = StringField(
         lazy_gettext('Language code'), validators=[InputRequired()]
@@ -21,5 +21,5 @@ class _BaseForm(LocalizedForm):
     hidden = BooleanField(lazy_gettext('hidden'))
 
 
-class MenuCreateForm(_BaseForm):
+class MenuCreateForm(_MenuBaseForm):
     pass
