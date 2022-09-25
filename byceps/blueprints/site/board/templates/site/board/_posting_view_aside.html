@@ -1,3 +1,4 @@
+{%- from 'macros/misc.html' import render_tag %}
 {%- from 'macros/user_avatar.html' import render_user_avatar %}
 {%- from 'macros/user_badge.html' import render_user_badges %}
 
@@ -5,6 +6,10 @@
     <div class="creator">
       {{ render_user_avatar(posting.creator, size=96, orga=posting.creator.is_orga) }}
     </div>
+
+    {%- if posting.creator.ticket %}
+    <div>{{ render_tag(_('ticket'), class='tag--outlined', icon='ticket', title=(_('Uses a ticket for') ~ ' ' ~ posting.creator.ticket.party_title)) }}</div>
+    {%- endif %}
 
     {%- with badges = posting.creator.badges %}
       {%- if badges %}

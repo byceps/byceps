@@ -5,13 +5,7 @@
 
 
       <div class="user-comment-meta-top">
-        <span class="user-link">
-          {{- render_user_link(posting.creator) -}}
-
-          {%- if posting.creator.ticket %}
-          {{- ' ' }}<span title="{{ _('Uses a ticket for') }} {{ posting.creator.ticket.party_title }}">{{ render_icon('ticket') }}</span>
-          {%- endif -%}
-        </span>
+        <span class="user-link">{{ render_user_link(posting.creator) }}</span>
 
         {%- if posting.creator_id == topic.creator_id %}
         <span>{{ render_tag(_('Topic starter'), class='tag--outlined') }}</span>

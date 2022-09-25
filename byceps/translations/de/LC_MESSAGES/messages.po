@@ -6337,15 +6337,19 @@ msgstr "Diesen Beitrag moderieren"
 msgid "Moderate"
 msgstr "Moderieren"
 
-#: byceps/blueprints/site/board/templates/site/board/_posting_view_meta.html:12
+#: byceps/blueprints/site/board/templates/site/board/_posting_view_aside.html:11
+msgid "ticket"
+msgstr "Ticket"
+
+#: byceps/blueprints/site/board/templates/site/board/_posting_view_aside.html:11
 msgid "Uses a ticket for"
 msgstr "Nutzt ein Ticket für"
 
-#: byceps/blueprints/site/board/templates/site/board/_posting_view_meta.html:17
+#: byceps/blueprints/site/board/templates/site/board/_posting_view_meta.html:11
 msgid "Topic starter"
 msgstr "Threadstarter"
 
-#: byceps/blueprints/site/board/templates/site/board/_posting_view_meta.html:20
+#: byceps/blueprints/site/board/templates/site/board/_posting_view_meta.html:14
 msgid "Permalink to this post"
 msgstr "Permalink zu diesem Beitrag"
 

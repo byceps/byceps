@@ -163,15 +163,12 @@ form.board-posting-create-form-inline .label {
     display: flex;
     flex: 0 0 116px;
     flex-direction: column;
+    row-gap: 0.5rem;
     padding-bottom: 20px;
   }
 
   .user-comment-aside .creator .avatar {
     display: block;
-  }
-
-  .user-comment-aside .user-badges {
-    margin-top: 8px;
   }
 
 }
