@@ -763,6 +763,10 @@ nav.pagination li.current {
   text-shadow: none;
 }
 
+.tag[title] {
+  cursor: help;
+}
+
 
 /* user avatars */
 
