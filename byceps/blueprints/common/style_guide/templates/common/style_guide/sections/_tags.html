@@ -5,12 +5,16 @@
 <p>Just a {{ render_tag('tag') }} to attach to things or to represent state.</p>
 {% endcall %}
 
-  <p>With pre-defined colors:</p>
+  <p>With pre-defined colors and styles:</p>
 
 {% call render_example() %}
 <p>
   {%- for color in ('info', 'success', 'warning', 'danger') %}
   {{ render_tag(color, class='color-{}'.format(color)) }}
   {%- endfor %}
+</p>
+<p>
+  {{ render_tag('outlined', class='tag--outlined') }}
+  {{ render_tag('with icon', icon='success') }}
 </p>
 {% endcall %}
