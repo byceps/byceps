@@ -212,7 +212,7 @@ def get_version(version_id: VersionID) -> Optional[Version]:
     return version
 
 
-def get_versions(page_id: PageID) -> list[Version]:
+def get_versions(page_id: PageID) -> list[DbVersion]:
     """Return all versions of the page, sorted from most recent to oldest."""
     return db.session.scalars(
         select(DbVersion)
@@ -253,7 +253,7 @@ def is_current_version(page_id: PageID, version_id: VersionID) -> bool:
 
 def find_current_version_for_url_path(
     site_id: SiteID, url_path: str
-) -> Optional[Version]:
+) -> Optional[DbVersion]:
     """Return the current version of the page with that URL path for
     that site.
     """
