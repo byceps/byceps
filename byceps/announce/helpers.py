@@ -77,9 +77,7 @@ def _assemble_request_data(
     elif webhook.format == 'weitersager':
         channel = webhook.extra_fields.get('channel')
         if not channel:
-            current_app.logger.warning(
-                f'No channel specified with IRC webhook.'
-            )
+            current_app.logger.warning('No channel specified with IRC webhook.')
 
         return {'channel': channel, 'text': text}
 
@@ -90,13 +88,13 @@ def _assemble_request_data(
         key = webhook.extra_fields.get('key')
         if not key:
             current_app.logger.warning(
-                f'No API key specified with Matrix webhook.'
+                'No API key specified with Matrix webhook.'
             )
 
         room_id = webhook.extra_fields.get('room_id')
         if not room_id:
             current_app.logger.warning(
-                f'No room ID specified with Matrix webhook.'
+                'No room ID specified with Matrix webhook.'
             )
 
         return {'key': key, 'room_id': room_id, 'text': text}

@@ -20,7 +20,7 @@ from ..typing import UserID
 
 def load_permissions() -> None:
     """Load permissions from modules in the permissions package."""
-    pkg_name = f'byceps.permissions'
+    pkg_name = 'byceps.permissions'
     pkg_module = import_module(pkg_name)
     mod_infos = pkgutil.iter_modules(pkg_module.__path__)
     mod_names = {mod_info.name for mod_info in mod_infos}

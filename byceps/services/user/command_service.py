@@ -51,7 +51,7 @@ def initialize_account(
         initiator = None
 
     if user.initialized:
-        raise ValueError(f'Account is already initialized.')
+        raise ValueError('Account is already initialized.')
 
     user.initialized = True
 
