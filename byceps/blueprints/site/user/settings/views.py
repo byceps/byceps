@@ -132,7 +132,6 @@ def change_screen_name():
     if not form.validate():
         return change_screen_name_form(form)
 
-    old_screen_name = current_user.screen_name
     new_screen_name = form.screen_name.data.strip()
     initiator_id = current_user.id
 

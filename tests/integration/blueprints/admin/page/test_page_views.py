@@ -77,7 +77,6 @@ def test_view_current_version(page_admin_client, make_page):
 
 def test_view_version(page_admin_client, make_page):
     version, event = make_page()
-    page_id = event.page_id
 
     url = f'/admin/pages/versions/{version.id}'
     response = page_admin_client.get(url)
