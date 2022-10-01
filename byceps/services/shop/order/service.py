@@ -441,8 +441,6 @@ def _execute_article_creation_actions(
             )
 
             if line_item.article_type == ArticleType.ticket:
-                ticket_quantity = line_item.quantity
-
                 ticket_actions.create_tickets(
                     order,
                     line_item,
@@ -453,8 +451,6 @@ def _execute_article_creation_actions(
                 ticket_quantity_per_bundle = int(
                     article.type_params['ticket_quantity']
                 )
-                bundle_quantity = line_item.quantity
-
                 ticket_bundle_actions.create_ticket_bundles(
                     order,
                     line_item,
