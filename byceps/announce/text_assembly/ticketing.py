@@ -33,9 +33,6 @@ def assemble_text_for_ticket_checked_in(event: TicketCheckedIn) -> str:
 
 @with_locale
 def assemble_text_for_tickets_sold(event: TicketsSold) -> str:
-    initiator_screen_name = get_screen_name_or_fallback(
-        event.initiator_screen_name
-    )
     owner_screen_name = get_screen_name_or_fallback(event.owner_screen_name)
     sale_stats = ticket_service.get_ticket_sale_stats(event.party_id)
 
