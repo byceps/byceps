@@ -42,7 +42,7 @@ def index_for_shop(shop_id):
     storefronts = storefront_service.get_storefronts_for_shop(shop.id)
 
     order_number_prefixes_by_sequence_id = (
-        _get_order_number_prefixes_by_sequence_id(storefronts, shop.id)
+        _get_order_number_prefixes_by_sequence_id(shop.id)
     )
 
     return {
@@ -53,8 +53,7 @@ def index_for_shop(shop_id):
     }
 
 
-def _get_order_number_prefixes_by_sequence_id(storefronts, shop_id):
-    sequence_ids = {sf.order_number_sequence_id for sf in storefronts}
+def _get_order_number_prefixes_by_sequence_id(shop_id):
     sequences = order_sequence_service.get_order_number_sequences_for_shop(
         shop_id
     )
