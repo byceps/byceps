@@ -9,7 +9,6 @@
 import click
 
 from byceps.services.ticketing import attendance_service
-from byceps.services.user import service as user_service
 
 from _util import call_with_app_context
 from _validators import validate_party, validate_user_id

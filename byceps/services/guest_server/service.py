@@ -8,7 +8,6 @@ byceps.services.guest_server.service
 
 from __future__ import annotations
 from typing import Optional
-from uuid import UUID
 
 from sqlalchemy import delete, select
 

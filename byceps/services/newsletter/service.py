@@ -22,7 +22,6 @@ from .dbmodels import (
     SubscriptionUpdate as DbSubscriptionUpdate,
 )
 from .transfer.models import List, ListID, Subscriber
-from .types import SubscriptionState
 
 
 def find_list(list_id: ListID) -> Optional[List]:

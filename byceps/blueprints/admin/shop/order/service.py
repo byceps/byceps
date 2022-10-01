@@ -27,7 +27,6 @@ from .....services.user.dbmodels.user import User as DbUser
 from .....services.user import service as user_service
 from .....services.user.transfer.models import User
 from .....services.user_badge import badge_service as user_badge_service
-from .....typing import UserID
 
 
 @dataclass(frozen=True)

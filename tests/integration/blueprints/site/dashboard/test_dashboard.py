@@ -3,8 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import pytest
-
 from tests.helpers import http_client, log_in_user
 
 

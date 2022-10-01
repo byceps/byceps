@@ -9,7 +9,6 @@ import pytest
 
 from byceps.services.newsletter import command_service
 from byceps.services.newsletter.types import SubscriptionState
-from byceps.services.user import command_service as user_command_service
 
 from tests.helpers import log_in_user
 

@@ -7,8 +7,6 @@ import pytest
 
 from tests.helpers import log_in_user
 
-from .helpers import find_topic
-
 
 @pytest.fixture(scope='package')
 def board_user(make_user):

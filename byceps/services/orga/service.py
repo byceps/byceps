@@ -13,7 +13,6 @@ from ...database import db
 from ...typing import BrandID, UserID
 
 from ..brand.dbmodels.brand import Brand as DbBrand
-from ..brand import service as brand_service
 from ..user import log_service as user_log_service
 from ..user.dbmodels.user import User as DbUser
 

@@ -17,7 +17,7 @@ from ....services.news import channel_service as news_channel_service
 from ....services.news import html_service as news_html_service
 from ....services.news import image_service as news_image_service
 from ....services.news import service as news_item_service
-from ....services.news.transfer.models import BodyFormat, Channel
+from ....services.news.transfer.models import Channel
 from ....services.site import service as site_service
 from ....services.text_diff import service as text_diff_service
 from ....services.user import service as user_service

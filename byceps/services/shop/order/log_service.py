@@ -8,7 +8,7 @@ byceps.services.shop.order.log_service
 
 from __future__ import annotations
 from datetime import datetime
-from typing import Any, Optional, Sequence
+from typing import Optional, Sequence
 
 from sqlalchemy import select
 

@@ -7,13 +7,13 @@ byceps.services.ticketing.attendance_service
 """
 
 from __future__ import annotations
-from collections import Counter, defaultdict
+from collections import Counter
 from datetime import datetime
 from itertools import chain
 
 from sqlalchemy import select
 
-from ...database import db, insert_ignore_on_conflict, upsert
+from ...database import db, insert_ignore_on_conflict
 from ...typing import BrandID, PartyID, UserID
 
 from ..party.dbmodels.party import Party as DbParty

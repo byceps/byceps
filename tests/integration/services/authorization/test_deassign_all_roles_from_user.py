@@ -5,7 +5,6 @@
 
 import pytest
 
-from byceps.services.authorization import service as authorization_service
 from byceps.services.authorization.service import (
     assign_role_to_user,
     create_role,
@@ -13,7 +12,6 @@ from byceps.services.authorization.service import (
     delete_role,
     find_role_ids_for_user,
 )
-from byceps.services.user import command_service as user_command_service
 
 
 def test_deassign_all_roles_from_user(admin_app, user1, user2, roles):

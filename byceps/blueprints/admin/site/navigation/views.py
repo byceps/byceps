@@ -20,7 +20,7 @@ from .....services.site_navigation.transfer.models import (
     MenuID,
 )
 from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_error, flash_success
+from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to
 

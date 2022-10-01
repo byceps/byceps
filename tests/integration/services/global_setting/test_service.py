@@ -3,8 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import pytest
-
 from byceps.services.global_setting import service as settings_service
 from byceps.services.global_setting.transfer.models import GlobalSetting
 

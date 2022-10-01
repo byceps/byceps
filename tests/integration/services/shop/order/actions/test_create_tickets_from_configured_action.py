@@ -16,7 +16,6 @@ from byceps.services.shop.order import log_service as order_log_service
 from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
-from byceps.services.ticketing import ticket_service
 from byceps.services.ticketing.ticket_creation_service import (
     TicketCreationFailed,
 )

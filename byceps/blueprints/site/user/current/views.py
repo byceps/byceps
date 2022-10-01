@@ -6,7 +6,7 @@ byceps.blueprints.site.user.current.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask import abort, g, jsonify, Response
+from flask import g, jsonify, Response
 
 from .....util.framework.blueprint import create_blueprint
 

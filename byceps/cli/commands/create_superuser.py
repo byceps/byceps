@@ -5,7 +5,6 @@
 """
 
 from __future__ import annotations
-from typing import Iterable, Sequence
 
 import click
 from flask.cli import with_appcontext

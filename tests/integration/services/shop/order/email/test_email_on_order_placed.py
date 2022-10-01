@@ -14,7 +14,7 @@ from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.order.email import service as order_email_service
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.order import Order, Orderer
-from byceps.services.shop.shop.transfer.models import Shop, ShopID
+from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.snippet import service as snippet_service
 from byceps.services.snippet.transfer.models import SnippetID

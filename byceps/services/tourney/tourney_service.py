@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Optional
 
 from ...database import db
-from ...typing import PartyID, UserID
+from ...typing import PartyID
 
 from ..party import service as party_service
 

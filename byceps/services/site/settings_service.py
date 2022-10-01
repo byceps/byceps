@@ -10,7 +10,6 @@ from __future__ import annotations
 from typing import Optional
 
 from ...database import db, upsert
-from ...typing import PartyID
 
 from .dbmodels.setting import Setting as DbSetting
 from .transfer.models import SiteID, SiteSetting

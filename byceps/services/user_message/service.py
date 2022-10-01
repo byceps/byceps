@@ -15,7 +15,6 @@ from flask_babel import gettext
 
 from ...typing import UserID
 from ...util.l10n import force_user_locale
-from ...util import templating
 
 from ..email import (
     config_service as email_config_service,

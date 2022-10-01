@@ -3,8 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional
-
 import pytest
 
 from byceps.services.board.dbmodels.posting import Posting as DbPosting

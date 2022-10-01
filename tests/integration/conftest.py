@@ -40,7 +40,6 @@ from byceps.services.ticketing import (
     category_service as ticketing_category_service,
 )
 from byceps.services.ticketing.transfer.models import TicketCategory
-from byceps.services.user import command_service as user_command_service
 from byceps.services.user.transfer.models import User
 from byceps.typing import BrandID, PartyID, UserID
 

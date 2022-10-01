@@ -3,8 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import pytest
-
 from byceps.util.export import serialize_dicts_to_csv, serialize_tuples_to_csv
 
 

@@ -10,7 +10,7 @@ from datetime import datetime
 
 from flask_babel import gettext, lazy_gettext, to_user_timezone, to_utc
 from wtforms import DateField, TimeField
-from wtforms.validators import InputRequired, ValidationError
+from wtforms.validators import InputRequired
 
 from ....util.datetime.range import DateTimeRange
 from ....util.l10n import LocalizedForm

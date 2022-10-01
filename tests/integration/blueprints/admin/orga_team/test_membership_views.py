@@ -3,8 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import pytest
-
 from byceps.services.brand.transfer.models import Brand
 from byceps.services.orga import service as orga_service
 from byceps.services.orga_team import service as orga_team_service

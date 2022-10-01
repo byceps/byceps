@@ -20,8 +20,8 @@ from byceps.services.shop.article.transfer.models import (
 )
 from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.number import OrderNumber
-from byceps.services.shop.order.transfer.order import LineItem, Order, Orderer
-from byceps.services.shop.shop.transfer.models import Shop, ShopID
+from byceps.services.shop.order.transfer.order import LineItem, Order
+from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.site import service as site_service
 from byceps.services.site.transfer.models import Site, SiteID
@@ -29,7 +29,7 @@ from byceps.services.snippet import service as snippet_service
 from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 
-from tests.helpers import create_site, generate_token, http_client, log_in_user
+from tests.helpers import create_site, http_client, log_in_user
 from tests.integration.services.shop.conftest import make_article
 from tests.integration.services.shop.helpers import create_shop_fragment
 

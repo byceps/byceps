@@ -9,7 +9,6 @@ application instance
 from warnings import warn
 
 from byceps.application import create_app
-from byceps import config
 from byceps.database import db
 from byceps.services.brand.dbmodels.brand import Brand
 from byceps.services.party.dbmodels.party import Party

@@ -17,7 +17,7 @@ from ....services.snippet.dbmodels.snippet import (
     Snippet as DbSnippet,
     SnippetVersion as DbSnippetVersion,
 )
-from ....services.snippet import mountpoint_service, service as snippet_service
+from ....services.snippet import service as snippet_service
 from ....services.snippet.transfer.models import (
     Scope,
     SnippetID,

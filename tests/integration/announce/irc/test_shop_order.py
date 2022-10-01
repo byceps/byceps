@@ -17,7 +17,6 @@ from tests.integration.services.shop.conftest import make_orderer
 from .helpers import (
     assert_submitted_data,
     CHANNEL_INTERNAL,
-    CHANNEL_PUBLIC,
     mocked_irc_bot,
     now,
 )

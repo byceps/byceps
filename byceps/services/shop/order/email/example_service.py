@@ -11,7 +11,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional
 
-from flask_babel import force_locale, gettext
+from flask_babel import gettext
 
 from .....config import ConfigurationError
 from .....database import generate_uuid

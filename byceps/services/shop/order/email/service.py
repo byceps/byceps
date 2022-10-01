@@ -10,7 +10,6 @@ Notification e-mails about shop orders
 
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Iterator
 
 from flask_babel import format_currency, format_date, gettext
 

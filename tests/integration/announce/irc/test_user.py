@@ -19,7 +19,6 @@ from byceps.signals import user as user_signals
 from .helpers import (
     assert_submitted_data,
     CHANNEL_INTERNAL,
-    CHANNEL_PUBLIC,
     mocked_irc_bot,
     now,
 )

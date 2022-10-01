@@ -18,7 +18,7 @@ from .....services.consent import (
     consent_service,
     subject_service as consent_subject_service,
 )
-from .....services.consent.transfer.models import Consent, Subject
+from .....services.consent.transfer.models import Subject
 from .....services.newsletter import (
     command_service as newsletter_command_service,
 )

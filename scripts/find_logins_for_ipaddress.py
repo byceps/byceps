@@ -16,7 +16,7 @@ from byceps.database import db
 from byceps.services.user.dbmodels.log import UserLogEntry as DbUserLogEntry
 from byceps.services.user import service as user_service
 from byceps.services.user.transfer.models import User
-from byceps.typing import PartyID, UserID
+from byceps.typing import UserID
 
 from _util import call_with_app_context
 
