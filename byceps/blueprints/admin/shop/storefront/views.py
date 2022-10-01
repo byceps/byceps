@@ -41,9 +41,10 @@ def index_for_shop(shop_id):
 
     storefronts = storefront_service.get_storefronts_for_shop(shop.id)
 
-    order_number_prefixes_by_sequence_id = (
-        _get_order_number_prefixes_by_sequence_id(shop.id)
+    sequences = order_sequence_service.get_order_number_sequences_for_shop(
+        shop_id
     )
+    order_number_prefixes_by_sequence_id = {s.id: s.prefix for s in sequences}
 
     return {
         'shop': shop,
@@ -51,13 +52,6 @@ def index_for_shop(shop_id):
         'storefronts': storefronts,
         'order_number_prefixes_by_sequence_id': order_number_prefixes_by_sequence_id,
     }
-
-
-def _get_order_number_prefixes_by_sequence_id(shop_id):
-    sequences = order_sequence_service.get_order_number_sequences_for_shop(
-        shop_id
-    )
-    return {seq.id: seq.prefix for seq in sequences}
 
 
 @blueprint.get('/<storefront_id>')
