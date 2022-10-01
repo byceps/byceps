@@ -106,9 +106,6 @@ def get_top_attendees_for_brand(brand_id: BrandID) -> list[tuple[UserID, int]]:
     """Return the attendees with the highest number of parties of this
     brand visited.
     """
-    parties = party_service.get_parties_for_brand(brand_id)
-    party_ids = {p.id for p in parties}
-
     top_ticket_attendance_counts = _get_top_ticket_attendees_for_parties(
         brand_id
     )
