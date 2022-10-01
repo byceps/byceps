@@ -26,14 +26,7 @@ from .transfer.models import ArticleToShip
 
 def get_articles_to_ship(shop_id: ShopID) -> Sequence[ArticleToShip]:
     """Return articles that need, or likely need, to be shipped soon."""
-    relevant_order_payment_states = {
-        PaymentState.open,
-        PaymentState.paid,
-    }
-
-    line_item_quantities = list(
-        _find_line_items(shop_id, relevant_order_payment_states)
-    )
+    line_item_quantities = list(_find_line_items(shop_id))
 
     article_numbers = {liq.article_number for liq in line_item_quantities}
     article_descriptions = _get_article_descriptions(article_numbers)
@@ -56,12 +49,8 @@ class LineItemQuantity:
     quantity: int
 
 
-def _find_line_items(
-    shop_id: ShopID, payment_states: set[PaymentState]
-) -> Iterator[LineItemQuantity]:
-    """Return article quantities for the given payment states."""
-    payment_state_names = {ps.name for ps in payment_states}
-
+def _find_line_items(shop_id: ShopID) -> Iterator[LineItemQuantity]:
+    """Return relevant line items with quantities."""
     common_query = db.session \
         .query(DbLineItem) \
         .join(DbOrder) \
