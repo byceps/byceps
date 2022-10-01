@@ -62,7 +62,7 @@ def build_example_placed_order_message_text(
             data
         )
     except Exception as e:
-        raise EmailAssemblyFailed()
+        raise EmailAssemblyFailed(e)
 
     return _render_message(message)
 
@@ -84,7 +84,7 @@ def build_example_paid_order_message_text(shop_id: ShopID, locale: str) -> str:
             )
         )
     except Exception as e:
-        raise EmailAssemblyFailed()
+        raise EmailAssemblyFailed(e)
 
     return _render_message(message)
 
@@ -110,7 +110,7 @@ def build_example_canceled_order_message_text(
             data
         )
     except Exception as e:
-        raise EmailAssemblyFailed()
+        raise EmailAssemblyFailed(e)
 
     return _render_message(message)
 
