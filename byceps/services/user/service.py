@@ -11,9 +11,10 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 from sqlalchemy import select
+from sqlalchemy.orm import Query
 from sqlalchemy.sql import Select
 
-from ...database import db, paginate, Pagination, Query
+from ...database import db, paginate, Pagination
 from ...typing import UserID
 
 from ..user_avatar.dbmodels import (

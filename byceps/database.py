@@ -14,7 +14,6 @@ import uuid
 
 from flask_sqlalchemy import Pagination, SQLAlchemy
 from sqlalchemy.dialects.postgresql import insert, JSONB, UUID
-from sqlalchemy.orm import Query
 from sqlalchemy.sql import Select
 from sqlalchemy.sql.dml import Insert
 from sqlalchemy.sql.schema import Table
