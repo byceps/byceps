@@ -83,7 +83,7 @@ def delete_category(category_id: TourneyCategoryID) -> None:
     category = get_category(category_id)
 
     db.session.query(DbTourneyCategory) \
-        .filter_by(id=category_id) \
+        .filter_by(id=category.id) \
         .delete()
 
     db.session.commit()

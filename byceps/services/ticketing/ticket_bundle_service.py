@@ -100,11 +100,11 @@ def delete_bundle(bundle_id: TicketBundleID) -> None:
     db_bundle = get_bundle(bundle_id)
 
     db.session.query(DbTicket) \
-        .filter_by(bundle_id=bundle_id) \
+        .filter_by(bundle_id=db_bundle.id) \
         .delete()
 
     db.session.query(DbTicketBundle) \
-        .filter_by(id=bundle_id) \
+        .filter_by(id=db_bundle.id) \
         .delete()
 
     db.session.commit()

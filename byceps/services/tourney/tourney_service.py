@@ -86,7 +86,7 @@ def delete_tourney(tourney_id: TourneyID) -> None:
     tourney = get_tourney(tourney_id)
 
     db.session.query(DbTourney) \
-        .filter_by(id=tourney_id) \
+        .filter_by(id=tourney.id) \
         .delete()
 
     db.session.commit()

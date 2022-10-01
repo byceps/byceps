@@ -115,7 +115,7 @@ def check_in_user(party_id, ticket_id):
 
     try:
         event = ticket_user_checkin_service.check_in_user(
-            party_id, ticket.id, initiator_id
+            party.id, ticket.id, initiator_id
         )
     except ticket_exceptions.UserAccountDeleted:
         flash_error(

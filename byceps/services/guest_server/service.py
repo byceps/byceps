@@ -66,7 +66,7 @@ def update_setting(
     """Update the setting for the party."""
     party = party_service.get_party(party_id)
 
-    db_setting = _get_db_setting(party_id) or DbSetting(party_id)
+    db_setting = _get_db_setting(party.id) or DbSetting(party.id)
 
     db_setting.netmask = netmask
     db_setting.gateway = gateway
