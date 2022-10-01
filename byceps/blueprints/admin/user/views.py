@@ -525,7 +525,6 @@ def change_email_address(user_id):
     if not form.validate():
         return change_email_address_form(user.id, form)
 
-    old_email_address = user_service.find_email_address(user.id)
     new_email_address = form.email_address.data.strip()
     verified = False
     initiator_id = g.user.id
