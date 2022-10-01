@@ -459,5 +459,5 @@ def _render_body(item: Item) -> Optional[str]:
     """Render body text to HTML."""
     try:
         return html_service.render_body(item, item.body, item.body_format)
-    except Exception as e:
+    except Exception:
         return None  # Not the best error indicator.

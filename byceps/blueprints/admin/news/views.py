@@ -294,7 +294,7 @@ def image_create(item_id):
             caption=caption,
             attribution=attribution,
         )
-    except UserIdRejected as e:
+    except UserIdRejected:
         abort(400, 'Invalid creator ID')
     except image_service.ImageTypeProhibited as e:
         abort(400, str(e))

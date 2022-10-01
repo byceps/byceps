@@ -130,7 +130,7 @@ def confirm(token):
                 verification_token
             )
         )
-    except email_address_service.EmailAddressConfirmationFailed as e:
+    except email_address_service.EmailAddressConfirmationFailed:
         flash_error(gettext('Email address verification failed.'))
         return redirect_to('authentication_login.log_in_form')
 
@@ -168,7 +168,7 @@ def change(token):
 
     try:
         event = email_address_service.change_email_address(verification_token)
-    except email_address_service.EmailAddressChangeFailed as e:
+    except email_address_service.EmailAddressChangeFailed:
         flash_error(gettext('Email address change failed.'))
         return redirect_to('authentication_login.log_in_form')
 
