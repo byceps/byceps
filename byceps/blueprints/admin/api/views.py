@@ -67,7 +67,7 @@ def create_api_token():
     permissions = set(form.permissions.data)
     description = form.description.data.strip()
 
-    api_token = api_service.create_api_token(
+    api_service.create_api_token(
         creator_id, permissions, description=description
     )
 

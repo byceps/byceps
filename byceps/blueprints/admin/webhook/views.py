@@ -68,7 +68,7 @@ def create():
     description = form.description.data.strip()
     enabled = False
 
-    webhook = webhook_service.create_outgoing_webhook(
+    webhook_service.create_outgoing_webhook(
         event_types,
         event_filters,
         format,

@@ -261,7 +261,7 @@ def membership_create(team_id):
     user = user_service.get_user(form.user_id.data)
     duties = form.duties.data.strip()
 
-    membership = orga_team_service.create_membership(team.id, user.id, duties)
+    orga_team_service.create_membership(team.id, user.id, duties)
 
     flash_success(
         gettext(

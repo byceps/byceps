@@ -317,7 +317,7 @@ def address_create(server_id):
     netmask = _to_ip_address(form.netmask.data.strip())
     gateway = _to_ip_address(form.gateway.data.strip())
 
-    address = guest_server_service.create_address(
+    guest_server_service.create_address(
         server.id, ip_address, hostname, netmask, gateway
     )
 
