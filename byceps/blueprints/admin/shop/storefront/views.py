@@ -144,13 +144,6 @@ def create(shop_id):
         flash_error(gettext('No valid order number sequence was specified.'))
         return create_form(shop_id, form)
 
-    try:
-        item_number = order_sequence_service.generate_order_number(
-            order_number_sequence.id
-        )
-    except order_sequence_service.OrderNumberGenerationFailed as e:
-        abort(500, e.message)
-
     storefront = storefront_service.create_storefront(
         storefront_id,
         shop.id,
