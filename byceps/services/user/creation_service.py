@@ -79,7 +79,7 @@ def create_user(
         legacy_id=legacy_id,
     )
 
-    detail = DbUserDetail(
+    db_detail = DbUserDetail(
         user=db_user,
         first_name=first_name,
         last_name=last_name,
@@ -94,6 +94,7 @@ def create_user(
     )
 
     db.session.add(db_user)
+    db.session.add(db_detail)
 
     try:
         db.session.commit()
