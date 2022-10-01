@@ -251,6 +251,21 @@ def is_current_version(page_id: PageID, version_id: VersionID) -> bool:
     )
 
 
+def find_current_version_for_name(
+    site_id: SiteID, name: str
+) -> Optional[DbVersion]:
+    """Return the current version of the page with that name for that
+    site.
+    """
+    return db.session.execute(
+        select(DbVersion)
+        .join(DbCurrentVersionAssociation)
+        .join(DbPage)
+        .filter(DbPage.site_id == site_id)
+        .filter(DbPage.name == name)
+    ).scalar_one_or_none()
+
+
 def find_current_version_for_url_path(
     site_id: SiteID, url_path: str
 ) -> Optional[DbVersion]:
