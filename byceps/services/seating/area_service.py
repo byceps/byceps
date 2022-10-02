@@ -94,7 +94,7 @@ def _get_areas_with_seat_utilization_query(party_id: PartyID) -> Select:
 
     subquery_occupied_seat_count = select(db.func.count(DbTicket.id)) \
         .filter(DbTicket.revoked == False) \
-        .filter(DbTicket.occupied_seat_id != None) \
+        .filter(DbTicket.occupied_seat_id.is_not(None)) \
         .join(DbSeat) \
         .filter(DbSeat.area_id == area.id) \
         .scalar_subquery()

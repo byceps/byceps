@@ -60,7 +60,7 @@ def _find_line_items(shop_id: ShopID) -> Iterator[LineItemQuantity]:
 
     definitive_line_items = common_query \
         .filter(DbOrder._payment_state == PaymentState.paid.name) \
-        .filter(DbOrder.processed_at == None) \
+        .filter(DbOrder.processed_at.is_(None)) \
         .all()
 
     potential_line_items = common_query \

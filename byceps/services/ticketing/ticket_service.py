@@ -136,7 +136,7 @@ def find_tickets_for_seat_manager(
         .filter(DbTicket.revoked == False) \
         .filter(
             (
-                (DbTicket.seat_managed_by_id == None) &
+                (DbTicket.seat_managed_by_id.is_(None)) &
                 (DbTicket.owned_by_id == user_id)
             ) |
             (DbTicket.seat_managed_by_id == user_id)
@@ -226,7 +226,7 @@ def get_ticket_users_for_party(party_id: PartyID) -> set[UserID]:
         .query(DbTicket.used_by_id) \
         .filter(DbTicket.party_id == party_id) \
         .filter(DbTicket.revoked == False) \
-        .filter(DbTicket.used_by_id != None) \
+        .filter(DbTicket.used_by_id.is_not(None)) \
         .all()
 
     return {row[0] for row in rows}

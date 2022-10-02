@@ -91,7 +91,7 @@ def get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
         .join(DbCategory)
         .filter(DbCategory.party_id == party_id)
         .filter(DbTicket.revoked == False)
-        .filter(DbTicket.used_by_id != None)
+        .filter(DbTicket.used_by_id.is_not(None))
     ).scalars().all()
 
     archived_attendance_rows = db.session.execute(
@@ -150,7 +150,7 @@ def _get_top_ticket_attendees_for_parties(
             user_id_column.distinct(),
             attendance_count,
         ) \
-        .filter(user_id_column != None) \
+        .filter(user_id_column.is_not(None)) \
         .filter(attendance_count > 0) \
         .order_by(attendance_count.desc()) \
         .all()

@@ -717,11 +717,11 @@ def get_orders_for_shop_paginated(
         count_query = count_query.filter(DbOrder.processing_required == True)
 
         if only_processed:
-            items_query = items_query.filter(DbOrder.processed_at != None)
-            count_query = count_query.filter(DbOrder.processed_at != None)
+            items_query = items_query.filter(DbOrder.processed_at.is_not(None))
+            count_query = count_query.filter(DbOrder.processed_at.is_not(None))
         else:
-            items_query = items_query.filter(DbOrder.processed_at == None)
-            count_query = count_query.filter(DbOrder.processed_at == None)
+            items_query = items_query.filter(DbOrder.processed_at.is_(None))
+            count_query = count_query.filter(DbOrder.processed_at.is_(None))
 
     return paginate(
         items_query,

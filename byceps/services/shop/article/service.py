@@ -374,11 +374,11 @@ def get_article_compilation_for_orderable_articles(
         # Select only articles that are available in between the
         # temporal boundaries for this article, if specified.
         .filter(db.or_(
-            DbArticle.available_from == None,
+            DbArticle.available_from.is_(None),
             now >= DbArticle.available_from
         ))
         .filter(db.or_(
-            DbArticle.available_until == None,
+            DbArticle.available_until.is_(None),
             now < DbArticle.available_until
         ))
 
