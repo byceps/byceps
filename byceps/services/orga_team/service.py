@@ -263,14 +263,17 @@ def get_orga_activities_for_user(user_id: UserID) -> set[OrgaActivity]:
             TeamAndDuties(
                 team_title=ms.orga_team.title,
                 duties=ms.duties,
-            ) for ms in memberships
+            )
+            for ms in memberships
         )
 
-    key_func = lambda ms: (ms.user_id, ms.orga_team.party_id)
+    def get_user_and_party(ms: DbMembership) -> tuple[UserID, PartyID]:
+        return ms.user_id, ms.orga_team.party_id
+
     return {
         to_activity(user_id, party_id, ms)
         for (user_id, party_id), ms in groupby(
-            sorted(memberships, key=key_func), key=key_func
+            sorted(memberships, key=get_user_and_party), key=get_user_and_party
         )
     }
 
