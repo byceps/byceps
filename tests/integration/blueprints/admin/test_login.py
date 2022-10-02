@@ -70,9 +70,7 @@ def test_login_fails_lacking_access_permission(client, make_admin):
     password = 'correct horse battery staple'
     permission_ids = set()
 
-    user = make_admin(
-        permission_ids, screen_name=screen_name, password=password
-    )
+    make_admin(permission_ids, screen_name=screen_name, password=password)
 
     assert not list(client.cookie_jar)
 

@@ -58,7 +58,7 @@ def test_create_tickets_with_clashing_generated_codes(
     quantity = 3
 
     with raises(ticket_creation_service.TicketCreationFailed) as excinfo:
-        tickets = ticket_creation_service.create_tickets(
+        ticket_creation_service.create_tickets(
             category.party_id, category.id, ticket_owner.id, quantity
         )
 

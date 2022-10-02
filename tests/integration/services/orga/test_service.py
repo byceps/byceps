@@ -9,7 +9,7 @@ from byceps.services.orga import service as orga_service
 def test_flag_changes(brand, admin_user, user):
     assert not is_orga_for_brand(user.id, brand.id)
 
-    flag = orga_service.add_orga_flag(brand.id, user.id, admin_user.id)
+    orga_service.add_orga_flag(brand.id, user.id, admin_user.id)
 
     assert is_orga_for_brand(user.id, brand.id)
 

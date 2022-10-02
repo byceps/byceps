@@ -26,7 +26,7 @@ def test_existent_user_with_avatar(api_client):
 
 def test_existent_user_without_avatar(api_client):
     email_address = 'user2@users.test'
-    user_id = create_initialized_user('UserWithoutAvatar', email_address)
+    create_initialized_user('UserWithoutAvatar', email_address)
     email_address_hash = hash_email_address(email_address)
 
     response = send_request(api_client, email_address_hash)

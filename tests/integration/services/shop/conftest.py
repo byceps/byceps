@@ -22,10 +22,7 @@ from .helpers import create_article, create_orderer
 @pytest.fixture
 def shop_brand(make_brand, make_email_config) -> Brand:
     brand = make_brand()
-
-    email_config = make_email_config(
-        brand.id, sender_address='noreply@acmecon.test'
-    )
+    make_email_config(brand.id, sender_address='noreply@acmecon.test')
 
     return brand
 

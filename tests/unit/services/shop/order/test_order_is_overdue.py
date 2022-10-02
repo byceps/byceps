@@ -38,7 +38,7 @@ def test_is_overdue(
 ):
     db_order = create_db_order(created_at)
 
-    with freeze_time(datetime(2021, 6, 27, 20, 0, 0)) as now:
+    with freeze_time(datetime(2021, 6, 27, 20, 0, 0)):
         assert is_overdue(db_order) == expected
 
 

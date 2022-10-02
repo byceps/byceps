@@ -50,7 +50,7 @@ def test_remove(admin_app):
     name = 'name3'
     value = 'value3'
 
-    setting = settings_service.create_setting(name, value)
+    settings_service.create_setting(name, value)
     assert settings_service.find_setting(name) is not None
 
     settings_service.remove_setting(name)

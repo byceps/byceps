@@ -70,7 +70,7 @@ def create_item(channel_id, slug, editor_id, *, image_url_path=None):
     body = 'the body'
     body_format = BodyFormat.html
 
-    item = news_service.create_item(
+    news_service.create_item(
         channel_id,
         slug,
         editor_id,

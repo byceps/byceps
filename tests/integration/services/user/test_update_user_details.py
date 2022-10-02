@@ -113,7 +113,7 @@ def test_update_user_real_name(site_app, make_user):
 
     # -------------------------------- #
 
-    event = user_command_service.update_user_details(
+    user_command_service.update_user_details(
         user.id,
         new_first_name,
         new_last_name,
@@ -161,7 +161,7 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
 
     # -------------------------------- #
 
-    event = user_command_service.update_user_details(
+    user_command_service.update_user_details(
         user.id,
         user_detail.first_name,
         user_detail.last_name,

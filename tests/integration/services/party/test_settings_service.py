@@ -64,7 +64,7 @@ def test_remove(party):
     name = 'name3'
     value = 'value3'
 
-    setting = settings_service.create_setting(party_id, name, value)
+    settings_service.create_setting(party_id, name, value)
     assert settings_service.find_setting(party_id, name) is not None
 
     settings_service.remove_setting(party_id, name)

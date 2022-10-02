@@ -64,7 +64,7 @@ def test_remove(brand):
     name = 'name3'
     value = 'value3'
 
-    setting = settings_service.create_setting(brand_id, name, value)
+    settings_service.create_setting(brand_id, name, value)
     assert settings_service.find_setting(brand_id, name) is not None
 
     settings_service.remove_setting(brand_id, name)

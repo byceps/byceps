@@ -24,9 +24,7 @@ from byceps.services.shop.storefront.transfer.models import (
 @pytest.fixture(scope='module')
 def shop(make_brand, make_email_config, make_shop):
     brand = make_brand()
-    email_config = make_email_config(
-        brand.id, sender_address='noreply@acmecon.test'
-    )
+    make_email_config(brand.id, sender_address='noreply@acmecon.test')
 
     return make_shop(brand.id)
 
