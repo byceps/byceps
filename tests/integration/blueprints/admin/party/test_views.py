@@ -51,6 +51,7 @@ def test_create(party_admin_client, brand):
         'max_ticket_quantity': str(max_ticket_quantity),
     }
     response = party_admin_client.post(url, data=form_data)
+    assert response.status_code == 302
 
     party = party_service.find_party(party_id)
     assert party is not None

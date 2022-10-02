@@ -41,6 +41,7 @@ def test_create(site_admin_client, brand):
         'storefront_id': '',
     }
     response = site_admin_client.post(url, data=form_data)
+    assert response.status_code == 302
 
     site = site_service.find_site(site_id)
     assert site is not None

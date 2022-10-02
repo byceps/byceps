@@ -26,6 +26,7 @@ def test_create(board_admin_client, board):
         'description': description,
     }
     response = board_admin_client.post(url, data=form_data)
+    assert response.status_code == 302
 
     category = category_query_service.find_category_by_slug(board.id, slug)
     assert category is not None

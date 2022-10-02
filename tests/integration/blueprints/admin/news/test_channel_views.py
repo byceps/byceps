@@ -36,6 +36,7 @@ def test_create(news_admin_client, brand, site):
         'announcement_site_id': str(announcement_site_id),
     }
     response = news_admin_client.post(url, data=form_data)
+    assert response.status_code == 302
 
     channel = channel_service.find_channel(channel_id)
     assert channel is not None

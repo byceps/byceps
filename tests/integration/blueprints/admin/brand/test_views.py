@@ -37,6 +37,7 @@ def test_create(brand_admin_client):
         'title': title,
     }
     response = brand_admin_client.post(url, data=form_data)
+    assert response.status_code == 302
 
     brand = brand_service.find_brand(brand_id)
     assert brand is not None

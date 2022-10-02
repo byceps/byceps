@@ -42,6 +42,7 @@ def test_create(user_badge_admin_client, brand):
         'featured': 'Y',
     }
     response = user_badge_admin_client.post(url, data=form_data)
+    assert response.status_code == 302
 
     badge = badge_service.find_badge_by_slug(slug)
     assert badge is not None

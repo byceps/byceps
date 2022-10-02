@@ -33,6 +33,7 @@ def test_create_shop(make_brand, shop_admin_client):
 
     url = f'/admin/shop/shop/for_brand/{brand.id}'
     response = shop_admin_client.post(url)
+    assert response.status_code == 204
 
     shop = shop_service.find_shop_for_brand(brand.id)
     assert shop is not None

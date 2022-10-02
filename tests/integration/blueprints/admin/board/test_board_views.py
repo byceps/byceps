@@ -34,6 +34,7 @@ def test_create(board_admin_client, brand):
         'board_id': board_id,
     }
     response = board_admin_client.post(url, data=form_data)
+    assert response.status_code == 302
 
     board = board_service.find_board(board_id)
     assert board is not None
