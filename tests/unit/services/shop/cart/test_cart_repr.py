@@ -32,7 +32,7 @@ def test_cart_filled_repr():
 
     cart = Cart()
     cart.add_item(article1, 5)
-    cart.add_item(article1, 3)
+    cart.add_item(article2, 3)
 
     assert repr(cart) == '<Cart(2 items)>'
 
