@@ -125,7 +125,7 @@ def creator(make_user):
 def category(board):
     slug = 'support'
     title = 'Support'
-    description = f'How can I help you, dear Sir/Madam?'
+    description = 'How can I help you, dear Sir/Madam?'
 
     return category_command_service.create_category(
         board.id, slug, title, description

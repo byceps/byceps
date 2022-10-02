@@ -64,7 +64,7 @@ def test_create_fails_with_deleted_user(
 
 
 def send_request(api_client, api_client_authz_header, party_id, creator_id):
-    url = f'/api/v1/tourney/avatars'
+    url = '/api/v1/tourney/avatars'
 
     headers = [api_client_authz_header]
     with Path('tests/fixtures/images/image.png').open('rb') as image_file:

@@ -85,7 +85,7 @@ def match(api_app):
 def request_comment_creation(
     api_client, api_client_authz_header, match_id, creator_id
 ):
-    url = f'/api/v1/tourney/match_comments'
+    url = '/api/v1/tourney/match_comments'
 
     headers = [api_client_authz_header]
     json_data = {

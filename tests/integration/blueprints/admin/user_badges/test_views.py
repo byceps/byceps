@@ -32,7 +32,7 @@ def test_create(user_badge_admin_client, brand):
 
     assert badge_service.find_badge_by_slug(slug) is None
 
-    url = f'/admin/user_badges/badges'
+    url = '/admin/user_badges/badges'
     form_data = {
         'slug': slug,
         'label': label,

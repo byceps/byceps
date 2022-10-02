@@ -15,7 +15,7 @@ def test_award_badge(api_client, api_client_authz_header, user, admin_user):
     before = awarding_service.get_awardings_of_badge(badge.id)
     assert before == set()
 
-    url = f'/api/v1/user_badges/awardings'
+    url = '/api/v1/user_badges/awardings'
     headers = [api_client_authz_header]
     json_data = {
         'badge_slug': 'supporter',

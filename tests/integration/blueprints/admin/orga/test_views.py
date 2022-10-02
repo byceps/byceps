@@ -43,7 +43,7 @@ def test_export_persons(orga_admin_client, brand):
 
 
 def test_birthdays(orga_admin_client, brand):
-    url = f'/admin/orgas/birthdays'
+    url = '/admin/orgas/birthdays'
     response = orga_admin_client.get(url)
     assert response.status_code == 200
 
