@@ -47,25 +47,3 @@ Connect to the database:
 .. code-block:: sh
 
     $ psql
-
-Load the ``pgcrypto`` extension (only necessary on PostgreSQL versions
-before 13):
-
-.. code-block:: psql
-
-    postgres=# CREATE EXTENSION pgcrypto;
-
-Ensure that the function ``gen_random_uuid()`` is available now:
-
-.. code-block:: psql
-
-    postgres=# select gen_random_uuid();
-
-Expected result (the actual UUID hopefully is different!):
-
-.. code-block:: psql
-
-               gen_random_uuid
-    --------------------------------------
-     b30bd643-d592-44e2-a256-0e0e167ac762
-    (1 row)
