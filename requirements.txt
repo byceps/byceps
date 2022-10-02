@@ -1,5 +1,4 @@
 babel==2.10.3
-backports.zoneinfo;python_version<"3.9"
 bbcode==1.1.0
 blinker==1.5
 click==8.1.3
