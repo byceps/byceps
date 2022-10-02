@@ -21,12 +21,3 @@ register_permissions(
         ('view_history', lazy_gettext("View snippets' history")),
     ],
 )
-
-
-register_permissions(
-    'snippet_mountpoint',
-    [
-        ('create', lazy_gettext('Create snippet mountpoints')),
-        ('delete', lazy_gettext('Delete snippet mountpoints')),
-    ],
-)

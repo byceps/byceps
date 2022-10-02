@@ -123,7 +123,6 @@ def _get_blueprints_admin(app: Flask) -> Iterator[BlueprintReg]:
         (app, 'admin.site',                      '/admin/sites'             ),
         (app, 'admin.site.navigation',           '/admin/sites/navigation'  ),
         (app, 'admin.snippet',                   '/admin/snippets'          ),
-        (app, 'admin.snippet.mountpoint',        '/admin/snippets/mountpoints'  ),
         (app, 'admin.ticketing',                 '/admin/ticketing'         ),
         (app, 'admin.ticketing.category',        '/admin/ticketing/categories'  ),
         (app, 'admin.ticketing.checkin',         '/admin/ticketing/checkin' ),

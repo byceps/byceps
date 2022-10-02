@@ -38,15 +38,3 @@ SnippetType = Enum('SnippetType', ['document', 'fragment'])
 
 
 SnippetVersionID = NewType('SnippetVersionID', UUID)
-
-
-MountpointID = NewType('MountpointID', UUID)
-
-
-@dataclass(frozen=True)
-class Mountpoint:
-    id: MountpointID
-    site_id: SiteID
-    endpoint_suffix: str
-    url_path: str
-    snippet_id: SnippetID

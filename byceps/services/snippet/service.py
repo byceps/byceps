@@ -164,8 +164,8 @@ def delete_snippet(
 ) -> tuple[bool, Optional[SnippetDeleted]]:
     """Delete the snippet and its versions.
 
-    It is expected that no database records (mountpoints, consents,
-    etc.) refer to the snippet anymore.
+    It is expected that no database records (consents, etc.) refer to
+    the snippet anymore.
 
     Return `True` on success, or `False` if an error occurred.
     """

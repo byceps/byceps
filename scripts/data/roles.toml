@@ -235,8 +235,6 @@ id = 'snippet_admin'
 title = 'Snippets verwalten'
 assigned_permissions = [
     'snippet.delete',
-    'snippet_mountpoint.create',
-    'snippet_mountpoint.delete',
 ]
 
 [[roles]]

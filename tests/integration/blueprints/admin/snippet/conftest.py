@@ -28,8 +28,6 @@ def snippet_admin(make_admin):
         'snippet.delete',
         'snippet.view',
         'snippet.view_history',
-        'snippet_mountpoint.create',
-        'snippet_mountpoint.delete',
     }
     admin = make_admin(permission_ids)
     log_in_user(admin.id)

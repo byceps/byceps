@@ -21,12 +21,6 @@
       required_permission='snippet.view',
       icon='snippet')
     .add_item(
-      url_for('snippet_mountpoint_admin.index', site_id=site.id),
-      _('Mountpoints'),
-      id='mountpoints',
-      required_permission='snippet.view',
-      icon='site')
-    .add_item(
       url_for('site_navigation_admin.index_for_site', site_id=site.id),
       _('Navigation'),
       id='site_navigation_admin',

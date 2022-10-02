@@ -64,21 +64,6 @@
               <a href="{{ url_for(endpoint, snippet_id=snippet.id) }}" class="button button--compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
                 {%- endwith %}
               {%- endif %}
-              {%- if snippet.is_document and has_current_user_permission('snippet_mountpoint.create') %}
-              <div class="dropdown">
-                <button class="dropdown-toggle button button--compact"><span>{{ render_icon('chevron-down') }}</span></button>
-                <ol class="dropdown-menu dropdown-menu--right">
-                  {%- with url = url_for('snippet_mountpoint_admin.create_form', snippet_id=snippet.id, site_id=site.id)
-                                 if (scope.type_ == 'site')
-                                 else url_for('snippet_mountpoint_admin.site_select_form', snippet_id=snippet.id) %}
-                  <li><a class="dropdown-item" href="{{ url }}">{{ render_icon('add') }} {{ _('Create mountpoint') }}</a></li>
-                  {%- endwith %}
-                </ol>
-              </div>
-              {%- else %}
-                {# Occupy width of dropdown button to keep edit buttons horizontally aligned. #}
-                <button class="dropdown-toggle button button--compact" style="visibility: hidden;">{{ render_icon('chevron-down') }}</button>
-              {%- endif %}
             </div>
           </td>
         </tr>
