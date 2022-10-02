@@ -11,8 +11,6 @@ from byceps.services.news.transfer.models import BodyFormat, Channel, Item
 
 from tests.helpers import generate_token, log_in_user
 
-from tests.integration.services.news.conftest import make_channel
-
 
 @pytest.fixture(scope='package')
 def news_admin(make_admin):
@@ -36,8 +34,8 @@ def news_admin_client(make_client, admin_app, news_admin):
 
 
 @pytest.fixture
-def channel(brand: Brand, make_channel) -> Channel:
-    return make_channel(brand.id)
+def channel(brand: Brand, make_news_channel) -> Channel:
+    return make_news_channel(brand.id)
 
 
 @pytest.fixture

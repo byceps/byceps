@@ -20,6 +20,11 @@ from byceps.services.brand.transfer.models import Brand
 from byceps.services.email import config_service as email_config_service
 from byceps.services.email.transfer.models import EmailConfig
 from byceps.services.language import service as language_service
+from byceps.services.news import channel_service as news_channel_service
+from byceps.services.news.transfer.models import (
+    Channel as NewsChannel,
+    ChannelID as NewsChannelID,
+)
 from byceps.services.party.transfer.models import Party
 from byceps.services.shop.order import (
     sequence_service as order_sequence_service,
@@ -264,6 +269,24 @@ def make_ticket_category(admin_app: Flask):
 def board(brand: Brand) -> Board:
     board_id = BoardID(generate_token())
     return board_service.create_board(brand.id, board_id)
+
+
+@pytest.fixture
+def make_news_channel():
+    def _wrapper(
+        brand_id: BrandID,
+        channel_id: Optional[NewsChannelID] = None,
+        *,
+        announcement_site_id: Optional[SiteID] = None,
+    ) -> NewsChannel:
+        if channel_id is None:
+            channel_id = NewsChannelID(generate_token())
+
+        return news_channel_service.create_channel(
+            brand_id, channel_id, announcement_site_id=announcement_site_id
+        )
+
+    return _wrapper
 
 
 @pytest.fixture(scope='session')

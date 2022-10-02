@@ -13,8 +13,6 @@ from byceps.services.news.transfer.models import BodyFormat, Channel, Item
 from byceps.services.site.transfer.models import Site
 from byceps.signals import news as news_signals
 
-from tests.integration.services.news.conftest import make_channel
-
 from .helpers import (
     assert_request_data,
     CHANNEL_INTERNAL,
@@ -67,13 +65,13 @@ def test_published_news_item_announced_without_url(
 
 
 @pytest.fixture
-def channel_with_site(brand: Brand, site: Site, make_channel) -> Channel:
-    return make_channel(brand.id, announcement_site_id=site.id)
+def channel_with_site(brand: Brand, site: Site, make_news_channel) -> Channel:
+    return make_news_channel(brand.id, announcement_site_id=site.id)
 
 
 @pytest.fixture
-def channel_without_site(brand: Brand, make_channel) -> Channel:
-    return make_channel(brand.id)
+def channel_without_site(brand: Brand, make_news_channel) -> Channel:
+    return make_news_channel(brand.id)
 
 
 @pytest.fixture

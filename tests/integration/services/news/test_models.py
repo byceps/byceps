@@ -8,8 +8,6 @@ import pytest
 from byceps.services.news import service as news_service
 from byceps.services.news.transfer.models import BodyFormat, Channel
 
-from tests.integration.services.news.conftest import make_channel
-
 
 @pytest.fixture(scope='module')
 def editor(make_user):
@@ -22,8 +20,8 @@ def brand(make_brand):
 
 
 @pytest.fixture
-def channel(brand, make_channel) -> Channel:
-    return make_channel(brand.id)
+def channel(brand, make_news_channel) -> Channel:
+    return make_news_channel(brand.id)
 
 
 @pytest.fixture
