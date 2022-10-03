@@ -9,9 +9,7 @@ from byceps.database import db
 from byceps.events.user_badge import UserBadgeAwarded
 from byceps.services.user import log_service
 from byceps.services.user_badge import awarding_service, badge_service
-from byceps.services.user_badge.dbmodels.awarding import (
-    BadgeAwarding as DbBadgeAwarding,
-)
+from byceps.services.user_badge.dbmodels.awarding import DbBadgeAwarding
 from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
 

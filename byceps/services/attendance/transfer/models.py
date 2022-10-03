@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from typing import Optional
 
 from ....services.seating.dbmodels.seat import DbSeat
-from ....services.user.dbmodels.user import User
+from ....services.user.dbmodels.user import DbUser
 
 
 @dataclass  # Not yet frozen b/c models are not immutable.
@@ -22,5 +22,5 @@ class AttendeeTicket:
 
 @dataclass  # Not yet frozen b/c models are not immutable.
 class Attendee:
-    user: User
+    user: DbUser
     tickets: list[AttendeeTicket]

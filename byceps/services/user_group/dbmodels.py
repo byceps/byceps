@@ -15,10 +15,10 @@ from ...database import db, generate_uuid
 from ...typing import PartyID, UserID
 from ...util.instances import ReprBuilder
 
-from ..user.dbmodels.user import User
+from ..user.dbmodels.user import DbUser
 
 
-class UserGroup(db.Model):
+class DbUserGroup(db.Model):
     """A self-organized group of users."""
 
     __tablename__ = 'user_groups'
@@ -30,7 +30,7 @@ class UserGroup(db.Model):
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), unique=True, nullable=False)
-    creator = db.relationship(User)
+    creator = db.relationship(DbUser)
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     description = db.Column(db.UnicodeText, nullable=True)
 
@@ -59,7 +59,7 @@ class UserGroup(db.Model):
             .build()
 
 
-class Membership(db.Model):
+class DbMembership(db.Model):
     """The assignment of a user to a user group.
 
     A user must not be a member of more than one group per party.
@@ -69,9 +69,9 @@ class Membership(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     group_id = db.Column(db.Uuid, db.ForeignKey('user_groups.id'))
-    group = db.relationship(UserGroup, collection_class=set, backref='memberships')
+    group = db.relationship(DbUserGroup, collection_class=set, backref='memberships')
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    user = db.relationship(User, backref='group_membership')
+    user = db.relationship(DbUser, backref='group_membership')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self) -> str:

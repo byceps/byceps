@@ -11,7 +11,7 @@ from sqlalchemy.ext.orderinglist import ordering_list
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ...user.dbmodels.user import User
+from ...user.dbmodels.user import DbUser
 
 from ..transfer.models import BoardID
 
@@ -37,7 +37,7 @@ class DbCategory(db.Model):
     posting_count = db.Column(db.Integer, default=0, nullable=False)
     last_posting_updated_at = db.Column(db.DateTime)
     last_posting_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    last_posting_updated_by = db.relationship(User)
+    last_posting_updated_by = db.relationship(DbUser)
     hidden = db.Column(db.Boolean, default=False, nullable=False)
 
     board = db.relationship(

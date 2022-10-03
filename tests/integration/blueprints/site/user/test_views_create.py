@@ -20,7 +20,7 @@ from byceps.services.newsletter import (
     command_service as newsletter_command_service,
     service as newsletter_service,
 )
-from byceps.services.user.dbmodels.user import User as DbUser
+from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user import log_service, service as user_service
 from byceps.services.verification_token.dbmodels import Token as DbToken
 from byceps.services.verification_token.transfer.models import (

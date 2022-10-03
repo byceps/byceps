@@ -31,7 +31,7 @@ from byceps.services.newsletter.dbmodels import (
     DbSubscription as DbNewsletterSubscription,
     DbSubscriptionUpdate as DbNewsletterSubscriptionUpdate,
 )
-from byceps.services.user.dbmodels.log import UserLogEntry as DbUserLogEntry
+from byceps.services.user.dbmodels.log import DbUserLogEntry
 from byceps.services.user import service as user_service
 from byceps.services.user_avatar.dbmodels import (
     AvatarSelection as UserAvatarSelection,

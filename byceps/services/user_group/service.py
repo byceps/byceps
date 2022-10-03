@@ -12,7 +12,7 @@ from typing import Optional
 from ...database import db
 from ...typing import PartyID, UserID
 
-from .dbmodels import UserGroup
+from .dbmodels import DbUserGroup
 
 
 def create_group(
@@ -20,9 +20,9 @@ def create_group(
     creator_id: UserID,
     title: str,
     description: Optional[str],
-) -> UserGroup:
+) -> DbUserGroup:
     """Introduce a new group."""
-    group = UserGroup(party_id, creator_id, title, description)
+    group = DbUserGroup(party_id, creator_id, title, description)
 
     db.session.add(group)
     db.session.commit()
@@ -30,6 +30,6 @@ def create_group(
     return group
 
 
-def get_all_groups() -> list[UserGroup]:
+def get_all_groups() -> list[DbUserGroup]:
     """Return all groups."""
-    return db.session.query(UserGroup).all()
+    return db.session.query(DbUserGroup).all()

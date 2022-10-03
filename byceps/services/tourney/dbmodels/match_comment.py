@@ -11,7 +11,7 @@ from datetime import datetime
 from ....database import db, generate_uuid
 from ....typing import UserID
 
-from ...user.dbmodels.user import User
+from ...user.dbmodels.user import DbUser
 
 from ..transfer.models import MatchID
 
@@ -28,15 +28,15 @@ class DbMatchComment(db.Model):
     match = db.relationship(DbMatch)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     created_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    created_by = db.relationship(User, foreign_keys=[created_by_id])
+    created_by = db.relationship(DbUser, foreign_keys=[created_by_id])
     body = db.Column(db.UnicodeText, nullable=False)
     last_edited_at = db.Column(db.DateTime)
     last_edited_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    last_edited_by = db.relationship(User, foreign_keys=[last_edited_by_id])
+    last_edited_by = db.relationship(DbUser, foreign_keys=[last_edited_by_id])
     hidden = db.Column(db.Boolean, default=False, nullable=False)
     hidden_at = db.Column(db.DateTime)
     hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
+    hidden_by = db.relationship(DbUser, foreign_keys=[hidden_by_id])
 
     def __init__(
         self, match_id: MatchID, creator_id: UserID, body: str

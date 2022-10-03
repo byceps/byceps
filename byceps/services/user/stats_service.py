@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 from ...database import db
 
-from .dbmodels.user import User as DbUser
+from .dbmodels.user import DbUser
 
 
 def count_users() -> int:

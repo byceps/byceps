@@ -25,8 +25,8 @@ from ...typing import UserID
 from ..authorization import service as authorization_service
 from ..authorization.transfer.models import RoleID
 
-from .dbmodels.detail import UserDetail as DbUserDetail
-from .dbmodels.user import User as DbUser
+from .dbmodels.detail import DbUserDetail
+from .dbmodels.user import DbUser
 from . import log_service, service as user_service
 from .transfer.log import UserLogEntryData
 from .transfer.models import User

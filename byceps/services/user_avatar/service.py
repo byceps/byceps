@@ -19,7 +19,7 @@ from ...util import upload
 
 from ..image import service as image_service
 from ..image.service import ImageTypeProhibited  # Provide to view functions.
-from ..user.dbmodels.user import User as DbUser
+from ..user.dbmodels.user import DbUser
 from ..user import service as user_service
 
 from .dbmodels import Avatar as DbAvatar, AvatarSelection as DbAvatarSelection

@@ -5,7 +5,7 @@
 
 from byceps.database import db
 from byceps.services.user import command_service as user_command_service
-from byceps.services.user.dbmodels.detail import UserDetail
+from byceps.services.user.dbmodels.detail import DbUserDetail
 
 
 def test_set_and_remove(admin_app, make_user):
@@ -55,14 +55,14 @@ def test_remove_unknown_key_from_empty_extras(admin_app, make_user):
 
 def get_extras(user_id):
     return db.session \
-        .query(UserDetail.extras) \
+        .query(DbUserDetail.extras) \
         .filter_by(user_id=user_id) \
         .scalar()
 
 
 def set_extras_to_empty_dict(user_id):
     detail = db.session \
-        .query(UserDetail) \
+        .query(DbUserDetail) \
         .filter_by(user_id=user_id) \
         .one()
 

@@ -20,8 +20,8 @@ from ..authentication.password import service as password_service
 from ..site.transfer.models import SiteID
 
 from . import email_address_service, log_service
-from .dbmodels.detail import UserDetail as DbUserDetail
-from .dbmodels.user import User as DbUser
+from .dbmodels.detail import DbUserDetail
+from .dbmodels.user import DbUser
 from . import service as user_service
 from .transfer.models import User
 

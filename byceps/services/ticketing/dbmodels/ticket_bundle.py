@@ -13,7 +13,7 @@ from ....database import db, generate_uuid
 from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
-from ...user.dbmodels.user import User
+from ...user.dbmodels.user import DbUser
 
 from ..transfer.models import TicketCategoryID
 
@@ -34,11 +34,11 @@ class DbTicketBundle(db.Model):
     ticket_category = db.relationship(DbCategory)
     ticket_quantity = db.Column(db.Integer, nullable=False)
     owned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
-    owned_by = db.relationship(User, foreign_keys=[owned_by_id])
+    owned_by = db.relationship(DbUser, foreign_keys=[owned_by_id])
     seats_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
-    seats_managed_by = db.relationship(User, foreign_keys=[seats_managed_by_id])
+    seats_managed_by = db.relationship(DbUser, foreign_keys=[seats_managed_by_id])
     users_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
-    users_managed_by = db.relationship(User, foreign_keys=[users_managed_by_id])
+    users_managed_by = db.relationship(DbUser, foreign_keys=[users_managed_by_id])
     label = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(

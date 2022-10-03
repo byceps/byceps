@@ -15,7 +15,7 @@ from sqlalchemy import select
 from ...database import db
 from ...typing import UserID
 
-from .dbmodels.log import UserLogEntry as DbUserLogEntry
+from .dbmodels.log import DbUserLogEntry
 from .transfer.log import UserLogEntry, UserLogEntryData
 
 

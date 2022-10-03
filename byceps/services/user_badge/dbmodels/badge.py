@@ -13,7 +13,7 @@ from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
 
-class Badge(db.Model):
+class DbBadge(db.Model):
     """A global badge that can be awarded to a user."""
 
     __tablename__ = 'user_badges'

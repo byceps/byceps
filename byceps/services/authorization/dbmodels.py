@@ -12,7 +12,7 @@ from ...database import db
 from ...typing import UserID
 from ...util.instances import ReprBuilder
 
-from ..user.dbmodels.user import User
+from ..user.dbmodels.user import DbUser
 
 from .transfer.models import PermissionID, RoleID
 
@@ -70,7 +70,7 @@ class DbUserRole(db.Model):
     __tablename__ = 'authz_user_roles'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(User,
+    user = db.relationship(DbUser,
                            backref=db.backref('user_roles', collection_class=set),
                            collection_class=set)
     role_id = db.Column(db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True)

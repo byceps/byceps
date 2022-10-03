@@ -17,7 +17,7 @@ from ....util.instances import ReprBuilder
 from ...user_avatar.dbmodels import AvatarSelection
 
 
-class User(db.Model):
+class DbUser(db.Model):
     """A user."""
 
     __tablename__ = 'users'

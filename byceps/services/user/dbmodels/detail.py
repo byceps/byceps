@@ -14,13 +14,13 @@ from ....database import db
 from ....util.instances import ReprBuilder
 
 
-class UserDetail(db.Model):
+class DbUserDetail(db.Model):
     """Detailed information about a specific user."""
 
     __tablename__ = 'user_details'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship('User', backref=db.backref('detail', uselist=False))
+    user = db.relationship('DbUser', backref=db.backref('detail', uselist=False))
     first_name = db.Column(db.UnicodeText, nullable=True)
     last_name = db.Column(db.UnicodeText, nullable=True)
     date_of_birth = db.Column(db.Date, nullable=True)

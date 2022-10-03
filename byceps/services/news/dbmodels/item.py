@@ -20,7 +20,7 @@ from ....database import db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ...user.dbmodels.user import User
+from ...user.dbmodels.user import DbUser
 
 from ..transfer.models import BodyFormat, ChannelID
 
@@ -79,7 +79,7 @@ class DbItemVersion(db.Model):
     item = db.relationship(DbItem)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    creator = db.relationship(User)
+    creator = db.relationship(DbUser)
     title = db.Column(db.UnicodeText, nullable=False)
     body = db.Column(db.UnicodeText, nullable=False)
     _body_format = db.Column('body_format', db.UnicodeText, nullable=False)

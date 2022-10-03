@@ -11,7 +11,7 @@ from datetime import datetime
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ...user.dbmodels.user import User
+from ...user.dbmodels.user import DbUser
 
 from ..transfer.models import TourneyID
 
@@ -28,7 +28,7 @@ class DbParticipant(db.Model):
     tourney = db.relationship(DbTourney)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     created_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    created_by = db.relationship(User)
+    created_by = db.relationship(DbUser)
     title = db.Column(db.UnicodeText, nullable=False)
     max_size = db.Column(db.Integer, nullable=True)
 

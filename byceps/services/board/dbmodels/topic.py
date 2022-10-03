@@ -14,7 +14,7 @@ from ....database import db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ...user.dbmodels.user import User
+from ...user.dbmodels.user import DbUser
 
 from ..transfer.models import CategoryID
 
@@ -35,19 +35,19 @@ class DbTopic(db.Model):
     posting_count = db.Column(db.Integer, default=0, nullable=False)
     last_updated_at = db.Column(db.DateTime, default=datetime.utcnow)
     last_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    last_updated_by = db.relationship(User, foreign_keys=[last_updated_by_id])
+    last_updated_by = db.relationship(DbUser, foreign_keys=[last_updated_by_id])
     hidden = db.Column(db.Boolean, default=False, nullable=False)
     hidden_at = db.Column(db.DateTime)
     hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
+    hidden_by = db.relationship(DbUser, foreign_keys=[hidden_by_id])
     locked = db.Column(db.Boolean, default=False, nullable=False)
     locked_at = db.Column(db.DateTime)
     locked_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    locked_by = db.relationship(User, foreign_keys=[locked_by_id])
+    locked_by = db.relationship(DbUser, foreign_keys=[locked_by_id])
     pinned = db.Column(db.Boolean, default=False, nullable=False)
     pinned_at = db.Column(db.DateTime)
     pinned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    pinned_by = db.relationship(User, foreign_keys=[pinned_by_id])
+    pinned_by = db.relationship(DbUser, foreign_keys=[pinned_by_id])
     initial_posting = association_proxy('initial_topic_posting_association', 'posting')
     posting_limited_to_moderators = db.Column(db.Boolean, default=False, nullable=False)
     muted = db.Column(db.Boolean, default=False, nullable=False)

@@ -15,7 +15,7 @@ from ...typing import UserID
 from ..authorization import service as authorization_service
 
 from . import log_service
-from .dbmodels.user import User as DbUser
+from .dbmodels.user import DbUser
 from . import service as user_service
 
 

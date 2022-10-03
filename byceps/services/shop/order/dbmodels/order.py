@@ -18,7 +18,7 @@ from .....database import db, generate_uuid
 from .....typing import UserID
 from .....util.instances import ReprBuilder
 
-from ....user.dbmodels.user import User
+from ....user.dbmodels.user import DbUser
 
 from ...shop.transfer.models import ShopID
 from ...storefront.transfer.models import StorefrontID
@@ -38,7 +38,7 @@ class DbOrder(db.Model):
     storefront_id = db.Column(db.UnicodeText, db.ForeignKey('shop_storefronts.id'), index=True, nullable=False)
     order_number = db.Column(db.UnicodeText, unique=True, nullable=False)
     placed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
-    placed_by = db.relationship(User, foreign_keys=[placed_by_id])
+    placed_by = db.relationship(DbUser, foreign_keys=[placed_by_id])
     company = db.Column(db.UnicodeText, nullable=True)
     first_name = db.Column(db.UnicodeText, nullable=False)
     last_name = db.Column(db.UnicodeText, nullable=False)
@@ -52,7 +52,7 @@ class DbOrder(db.Model):
     _payment_state = db.Column('payment_state', db.UnicodeText, index=True, nullable=False)
     payment_state_updated_at = db.Column(db.DateTime, nullable=True)
     payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=True)
-    payment_state_updated_by = db.relationship(User, foreign_keys=[payment_state_updated_by_id])
+    payment_state_updated_by = db.relationship(DbUser, foreign_keys=[payment_state_updated_by_id])
     cancelation_reason = db.Column(db.UnicodeText, nullable=True)
     processing_required = db.Column(db.Boolean, nullable=False)
     processed_at = db.Column(db.DateTime, nullable=True)

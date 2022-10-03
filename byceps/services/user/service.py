@@ -22,8 +22,8 @@ from ..user_avatar.dbmodels import (
     AvatarSelection as DbAvatarSelection,
 )
 
-from .dbmodels.detail import UserDetail as DbUserDetail
-from .dbmodels.user import User as DbUser
+from .dbmodels.detail import DbUserDetail
+from .dbmodels.user import DbUser
 from .transfer.models import (
     User,
     UserDetail,

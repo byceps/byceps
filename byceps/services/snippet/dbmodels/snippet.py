@@ -18,7 +18,7 @@ from ....database import db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ...user.dbmodels.user import User
+from ...user.dbmodels.user import DbUser
 
 from ..transfer.models import Scope
 
@@ -70,7 +70,7 @@ class DbVersion(db.Model):
     snippet = db.relationship(DbSnippet)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    creator = db.relationship(User)
+    creator = db.relationship(DbUser)
     body = db.Column(db.UnicodeText, nullable=False)
 
     def __init__(self, snippet: DbSnippet, creator_id: UserID, body: str) -> None:

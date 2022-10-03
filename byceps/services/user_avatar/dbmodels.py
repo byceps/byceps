@@ -79,7 +79,7 @@ class AvatarSelection(db.Model):
     __tablename__ = 'user_avatar_selections'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship('User', backref=db.backref('avatar_selection', uselist=False))
+    user = db.relationship('DbUser', backref=db.backref('avatar_selection', uselist=False))
     avatar_id = db.Column(db.Uuid, db.ForeignKey('user_avatars.id'), unique=True, nullable=False)
     avatar = db.relationship(Avatar)
 

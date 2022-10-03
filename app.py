@@ -20,8 +20,8 @@ from byceps.services.shop.order.transfer.order import (
     PaymentState as OrderPaymentState,
 )
 from byceps.services.ticketing.ticket_service import find_ticket_by_code
-from byceps.services.user.dbmodels.detail import UserDetail
-from byceps.services.user.dbmodels.user import User
+from byceps.services.user.dbmodels.detail import DbUserDetail
+from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user.service import find_db_user_by_screen_name
 
 
@@ -59,7 +59,7 @@ def extend_shell_context():
         'OrderPaymentState': OrderPaymentState,
         'Party': Party,
         'find_ticket_by_code': find_ticket_by_code,
-        'User': User,
-        'UserDetail': UserDetail,
+        'DbUser': DbUser,
+        'DbUserDetail': DbUserDetail,
         'find_db_user_by_screen_name': find_db_user_by_screen_name,
     }

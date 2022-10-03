@@ -15,7 +15,7 @@ from ....util.instances import ReprBuilder
 from ..transfer.log import UserLogEntryData
 
 
-class UserLogEntry(db.Model):
+class DbUserLogEntry(db.Model):
     """A log entry regarding a user."""
 
     __tablename__ = 'user_log_entries'

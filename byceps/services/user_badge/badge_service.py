@@ -12,7 +12,7 @@ from typing import Optional
 from ...database import db
 from ...typing import BrandID
 
-from .dbmodels.badge import Badge as DbBadge
+from .dbmodels.badge import DbBadge
 from .transfer.models import Badge, BadgeID
 
 

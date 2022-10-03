@@ -14,7 +14,7 @@ from sqlalchemy import select
 from ...database import db
 from ...typing import UserID
 
-from ..user.dbmodels.user import User as DbUser
+from ..user.dbmodels.user import DbUser
 
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
 from .transfer.models import List, ListID, Subscriber

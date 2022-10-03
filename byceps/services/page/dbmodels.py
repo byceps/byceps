@@ -19,7 +19,7 @@ from ...typing import UserID
 
 from ..language.dbmodels import Language
 from ..site.transfer.models import SiteID
-from ..user.dbmodels.user import User
+from ..user.dbmodels.user import DbUser
 
 
 class DbPage(db.Model):
@@ -75,7 +75,7 @@ class DbVersion(db.Model):
     page = db.relationship(DbPage)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    creator = db.relationship(User)
+    creator = db.relationship(DbUser)
     title = db.Column(db.UnicodeText, nullable=False)
     head = db.Column(db.UnicodeText, nullable=True)
     body = db.Column(db.UnicodeText, nullable=False)

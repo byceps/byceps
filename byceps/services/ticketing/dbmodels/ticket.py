@@ -15,7 +15,7 @@ from ....util.instances import ReprBuilder
 
 from ...seating.dbmodels.seat import DbSeat
 from ...shop.order.transfer.number import OrderNumber
-from ...user.dbmodels.user import User
+from ...user.dbmodels.user import DbUser
 
 from ..transfer.models import TicketCategoryID, TicketCode
 
@@ -47,16 +47,16 @@ class DbTicket(db.Model):
     category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), index=True, nullable=False)
     category = db.relationship(DbCategory)
     owned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
-    owned_by = db.relationship(User, foreign_keys=[owned_by_id])
+    owned_by = db.relationship(DbUser, foreign_keys=[owned_by_id])
     order_number = db.Column(db.UnicodeText, db.ForeignKey('shop_orders.order_number'), index=True, nullable=True)
     seat_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
-    seat_managed_by = db.relationship(User, foreign_keys=[seat_managed_by_id])
+    seat_managed_by = db.relationship(DbUser, foreign_keys=[seat_managed_by_id])
     user_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
-    user_managed_by = db.relationship(User, foreign_keys=[user_managed_by_id])
+    user_managed_by = db.relationship(DbUser, foreign_keys=[user_managed_by_id])
     occupied_seat_id = db.Column(db.Uuid, db.ForeignKey('seats.id'), index=True, nullable=True, unique=True)
     occupied_seat = db.relationship(DbSeat, backref=db.backref('occupied_by_ticket', uselist=False))
     used_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
-    used_by = db.relationship(User, foreign_keys=[used_by_id])
+    used_by = db.relationship(DbUser, foreign_keys=[used_by_id])
     revoked = db.Column(db.Boolean, default=False, nullable=False)
     user_checked_in = db.Column(db.Boolean, default=False, nullable=False)
 
@@ -90,11 +90,11 @@ class DbTicket(db.Model):
         """Return `True` if the user owns this ticket."""
         return self.owned_by_id == user_id
 
-    def get_seat_manager(self) -> User:
+    def get_seat_manager(self) -> DbUser:
         """Return the user that may choose the seat for this ticket."""
         return self.seat_managed_by or self.owned_by
 
-    def get_user_manager(self) -> User:
+    def get_user_manager(self) -> DbUser:
         """Return the user that may choose the user of this ticket."""
         return self.user_managed_by or self.owned_by
 
@@ -119,7 +119,7 @@ class DbTicket(db.Model):
         ) or (self.user_managed_by_id == user_id)
 
     def __repr__(self) -> str:
-        def user(user: User) -> Optional[str]:
+        def user(user: DbUser) -> Optional[str]:
             return user.screen_name if (user is not None) else None
 
         def occupied_seat() -> Optional[str]:

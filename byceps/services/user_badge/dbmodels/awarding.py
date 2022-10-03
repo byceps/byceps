@@ -14,7 +14,7 @@ from ....typing import UserID
 from ..transfer.models import BadgeID
 
 
-class BadgeAwarding(db.Model):
+class DbBadgeAwarding(db.Model):
     """The awarding of a badge to a user."""
 
     __tablename__ = 'user_badge_awardings'

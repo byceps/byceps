@@ -12,7 +12,7 @@ from ....database import db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ...user.dbmodels.user import User
+from ...user.dbmodels.user import DbUser
 
 from .topic import DbTopic
 
@@ -30,12 +30,12 @@ class DbPosting(db.Model):
     body = db.Column(db.UnicodeText, nullable=False)
     last_edited_at = db.Column(db.DateTime)
     last_edited_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    last_edited_by = db.relationship(User, foreign_keys=[last_edited_by_id])
+    last_edited_by = db.relationship(DbUser, foreign_keys=[last_edited_by_id])
     edit_count = db.Column(db.Integer, default=0, nullable=False)
     hidden = db.Column(db.Boolean, default=False, nullable=False)
     hidden_at = db.Column(db.DateTime)
     hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
+    hidden_by = db.relationship(DbUser, foreign_keys=[hidden_by_id])
 
     def __init__(self, topic: DbTopic, creator_id: UserID, body: str) -> None:
         self.topic = topic

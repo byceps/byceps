@@ -11,7 +11,7 @@ from ...typing import BrandID, UserID
 from ...util.instances import ReprBuilder
 
 from ..brand.dbmodels.brand import Brand
-from ..user.dbmodels.user import User
+from ..user.dbmodels.user import DbUser
 
 
 class DbOrgaFlag(db.Model):
@@ -22,7 +22,7 @@ class DbOrgaFlag(db.Model):
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True)
     brand = db.relationship(Brand)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(User)
+    user = db.relationship(DbUser)
 
     def __init__(self, brand_id: BrandID, user_id: UserID) -> None:
         self.brand_id = brand_id

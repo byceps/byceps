@@ -19,8 +19,8 @@ from ..user import log_service as user_log_service, service as user_service
 from ..user.transfer.models import User
 
 from .badge_service import _db_entity_to_badge, get_badge, get_badges
-from .dbmodels.awarding import BadgeAwarding as DbBadgeAwarding
-from .dbmodels.badge import Badge as DbBadge
+from .dbmodels.awarding import DbBadgeAwarding
+from .dbmodels.badge import DbBadge
 from .transfer.models import (
     Badge,
     BadgeAwarding,

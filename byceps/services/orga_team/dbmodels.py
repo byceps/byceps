@@ -13,7 +13,7 @@ from ...typing import PartyID, UserID
 from ...util.instances import ReprBuilder
 
 from ..party.dbmodels.party import Party
-from ..user.dbmodels.user import User
+from ..user.dbmodels.user import DbUser
 
 from .transfer.models import OrgaTeamID
 
@@ -55,7 +55,7 @@ class DbMembership(db.Model):
     orga_team_id = db.Column(db.Uuid, db.ForeignKey('orga_teams.id'), index=True, nullable=False)
     orga_team = db.relationship(DbOrgaTeam, collection_class=set, backref='memberships')
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
-    user = db.relationship(User, collection_class=set, backref='orga_team_memberships')
+    user = db.relationship(DbUser, collection_class=set, backref='orga_team_memberships')
     duties = db.Column(db.UnicodeText, nullable=True)
 
     def __init__(

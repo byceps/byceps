@@ -7,7 +7,7 @@ byceps.services.orga_presence.dbmodels
 """
 
 from ...database import db, generate_uuid
-from ..user.dbmodels.user import User
+from ..user.dbmodels.user import DbUser
 
 
 class DbTimeSlot(db.Model):
@@ -34,7 +34,7 @@ class DbPresence(DbTimeSlot):
     }
 
     orga_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
-    orga = db.relationship(User)
+    orga = db.relationship(DbUser)
 
 
 class DbTask(DbTimeSlot):
