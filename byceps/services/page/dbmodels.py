@@ -22,7 +22,7 @@ from ..site.transfer.models import SiteID
 from ..user.dbmodels.user import User
 
 
-class Page(db.Model):
+class DbPage(db.Model):
     """A content page.
 
     Any page is expected to have at least one version (the initial one).
@@ -63,7 +63,7 @@ class Page(db.Model):
         self.published = False
 
 
-class Version(db.Model):
+class DbVersion(db.Model):
     """A snapshot of a page at a certain time."""
 
     __tablename__ = 'page_versions'
@@ -72,7 +72,7 @@ class Version(db.Model):
     page_id = db.Column(
         db.Uuid, db.ForeignKey('pages.id'), index=True, nullable=False
     )
-    page = db.relationship(Page)
+    page = db.relationship(DbPage)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(User)
@@ -82,7 +82,7 @@ class Version(db.Model):
 
     def __init__(
         self,
-        page: Page,
+        page: DbPage,
         creator_id: UserID,
         title: str,
         head: Optional[str],
@@ -102,18 +102,18 @@ class Version(db.Model):
         return self.id == self.page.current_version.id
 
 
-class CurrentVersionAssociation(db.Model):
+class DbCurrentVersionAssociation(db.Model):
     __tablename__ = 'page_current_versions'
 
     page_id = db.Column(db.Uuid, db.ForeignKey('pages.id'), primary_key=True)
     page = db.relationship(
-        Page, backref=db.backref('current_version_association', uselist=False)
+        DbPage, backref=db.backref('current_version_association', uselist=False)
     )
     version_id = db.Column(
         db.Uuid, db.ForeignKey('page_versions.id'), unique=True, nullable=False
     )
-    version = db.relationship(Version)
+    version = db.relationship(DbVersion)
 
-    def __init__(self, page: Page, version: Version) -> None:
+    def __init__(self, page: DbPage, version: DbVersion) -> None:
         self.page = page
         self.version = version

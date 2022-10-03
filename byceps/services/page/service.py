@@ -19,11 +19,7 @@ from ...services.user import service as user_service
 from ...services.user.transfer.models import User
 from ...typing import UserID
 
-from .dbmodels import (
-    CurrentVersionAssociation as DbCurrentVersionAssociation,
-    Page as DbPage,
-    Version as DbVersion,
-)
+from .dbmodels import DbCurrentVersionAssociation, DbPage, DbVersion
 from .transfer.models import Page, PageAggregate, PageID, Version, VersionID
 
 

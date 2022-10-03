@@ -8,7 +8,7 @@
 
 import click
 
-from byceps.services.page.dbmodels import Version as DbVersion
+from byceps.services.page.dbmodels import DbVersion
 from byceps.services.page import service as page_service
 from byceps.services.site.transfer.models import SiteID
 
