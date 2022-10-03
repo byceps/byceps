@@ -4520,7 +4520,7 @@ msgstr "Das Menü \"%(name)s\" wurde aktualisiert."
 #: byceps/blueprints/admin/site/navigation/views.py:193
 #, python-format
 msgid "Menu item \"%(label)s\" has been created."
-msgstr "Der Menüeintrag \"%(title)s\" wurde angelegt."
+msgstr "Der Menüeintrag \"%(label)s\" wurde angelegt."
 
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:4
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_create_form.html:7
