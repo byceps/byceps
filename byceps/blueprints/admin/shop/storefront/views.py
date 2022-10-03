@@ -10,11 +10,11 @@ from flask import abort, request
 from flask_babel import gettext
 
 from .....services.brand import service as brand_service
-from .....services.shop.catalog import service as catalog_service
-from .....services.shop.order import sequence_service as order_sequence_service
-from .....services.shop.shop import service as shop_service
+from .....services.shop.catalog import catalog_service
+from .....services.shop.order import order_sequence_service
+from .....services.shop.shop import shop_service
 from .....services.shop.shop.transfer.models import Shop, ShopID
-from .....services.shop.storefront import service as storefront_service
+from .....services.shop.storefront import storefront_service
 from .....services.shop.storefront.transfer.models import (
     Storefront,
     StorefrontID,

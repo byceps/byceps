@@ -11,10 +11,10 @@ from flask import abort, url_for
 from flask_babel import gettext
 
 from .....services.brand import service as brand_service
-from .....services.shop.order import log_service, service as order_service
+from .....services.shop.order import order_log_service, order_service
 from .....services.shop.order.transfer.log import OrderLogEntryData
 from .....services.shop.order.transfer.order import PaymentState
-from .....services.shop.shop import service as shop_service
+from .....services.shop.shop import shop_service
 from .....services.shop.shop.transfer.models import ShopID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
@@ -71,7 +71,7 @@ _LATEST_LOG_ENTRIES_EVENT_TYPES = frozenset(
 def _get_latest_log_entries(
     shop_id: ShopID, limit=8
 ) -> list[OrderLogEntryData]:
-    log_entries = log_service.get_latest_entries_for_shop(
+    log_entries = order_log_service.get_latest_entries_for_shop(
         shop_id, _LATEST_LOG_ENTRIES_EVENT_TYPES, limit
     )
     return list(enrich_log_entry_data(log_entries))

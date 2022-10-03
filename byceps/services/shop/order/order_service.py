@@ -23,13 +23,13 @@ from ....typing import UserID
 from ...ticketing.transfer.models import TicketCategoryID
 from ...user import service as user_service
 
-from ..article import service as article_service
+from ..article import article_service
 from ..article.transfer.models import ArticleType
 from ..cart.models import Cart, CartItem
 from ..shop.dbmodels import DbShop
-from ..shop import service as shop_service
+from ..shop import shop_service
 from ..shop.transfer.models import ShopID
-from ..storefront import service as storefront_service
+from ..storefront import storefront_service
 from ..storefront.transfer.models import StorefrontID
 
 from .actions import ticket as ticket_actions
@@ -37,7 +37,7 @@ from .actions import ticket_bundle as ticket_bundle_actions
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
-from . import action_service, log_service, sequence_service
+from . import action_service, order_log_service, order_sequence_service
 from .transfer.log import OrderLogEntryData
 from .transfer.number import OrderNumber
 from .transfer.order import (
@@ -72,10 +72,10 @@ def place_order(
 
     orderer_user = user_service.get_user(orderer.user_id)
 
-    order_number_sequence = sequence_service.get_order_number_sequence(
+    order_number_sequence = order_sequence_service.get_order_number_sequence(
         storefront.order_number_sequence_id
     )
-    order_number = sequence_service.generate_order_number(
+    order_number = order_sequence_service.generate_order_number(
         order_number_sequence.id
     )
 
@@ -109,7 +109,7 @@ def place_order(
 
     # Create log entry in separate step as order ID is not available earlier.
     log_entry_data = {'initiator_id': str(orderer_user.id)}
-    log_service.create_entry('order-placed', order.id, log_entry_data)
+    order_log_service.create_entry('order-placed', order.id, log_entry_data)
 
     event = ShopOrderPlaced(
         occurred_at=order.created_at,
@@ -190,7 +190,7 @@ def add_note(order_id: OrderID, author_id: UserID, text: str) -> None:
         'text': text,
     }
 
-    log_service.create_entry(event_type, order.id, data)
+    order_log_service.create_entry(event_type, order.id, data)
 
 
 def set_invoiced_flag(order_id: OrderID, initiator_id: UserID) -> None:

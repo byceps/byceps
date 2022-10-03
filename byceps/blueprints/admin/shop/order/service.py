@@ -11,12 +11,9 @@ from dataclasses import dataclass
 import dataclasses
 from typing import Iterable, Iterator, Sequence
 
-from .....services.shop.article import service as article_service
+from .....services.shop.article import article_service
 from .....services.shop.article.transfer.models import Article, ArticleNumber
-from .....services.shop.order import (
-    log_service as order_log_service,
-    service as order_service,
-)
+from .....services.shop.order import order_log_service, order_service
 from .....services.shop.order.transfer.log import (
     OrderLogEntry,
     OrderLogEntryData,

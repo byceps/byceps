@@ -17,7 +17,7 @@ from byceps.services.shop.article.transfer.models import (
     ArticleNumber,
     ArticleType,
 )
-from byceps.services.shop.article.service import is_article_available_now
+from byceps.services.shop.article import article_service
 from byceps.services.shop.shop.transfer.models import ShopID
 
 
@@ -40,7 +40,7 @@ def test_is_available_with_start_and_end(now, expected):
     )
 
     with freeze_time(now):
-        assert is_article_available_now(article) == expected
+        assert article_service.is_article_available_now(article) == expected
 
 
 @pytest.mark.parametrize(
@@ -62,7 +62,7 @@ def test_is_available_with_start_and_without_end(now, expected):
     )
 
     with freeze_time(now):
-        assert is_article_available_now(article) == expected
+        assert article_service.is_article_available_now(article) == expected
 
 
 @pytest.mark.parametrize(
@@ -84,7 +84,7 @@ def test_is_available_without_start_and_with_end(now, expected):
     )
 
     with freeze_time(now):
-        assert is_article_available_now(article) == expected
+        assert article_service.is_article_available_now(article) == expected
 
 
 @pytest.mark.parametrize(
@@ -106,7 +106,7 @@ def test_is_available_without_start_and_without_end(now, expected):
     )
 
     with freeze_time(now):
-        assert is_article_available_now(article) == expected
+        assert article_service.is_article_available_now(article) == expected
 
 
 def create_article(

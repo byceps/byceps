@@ -18,8 +18,8 @@ from ....services.brand import service as brand_service
 from ....services.brand.transfer.models import Brand
 from ....services.news import channel_service as news_channel_service
 from ....services.party import service as party_service
-from ....services.shop.shop import service as shop_service
-from ....services.shop.storefront import service as storefront_service
+from ....services.shop.shop import shop_service
+from ....services.shop.storefront import storefront_service
 from ....services.shop.storefront.transfer.models import (
     Storefront,
     StorefrontID,

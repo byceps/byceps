@@ -20,9 +20,9 @@ from ...services.metrics.models import Label, Metric
 from ...services.party.transfer.models import Party
 from ...services.party import service as party_service
 from ...services.seating import seat_service
-from ...services.shop.order import service as order_service
-from ...services.shop.article import service as shop_article_service
-from ...services.shop.shop import service as shop_service
+from ...services.shop.order import order_service
+from ...services.shop.article import article_service as shop_article_service
+from ...services.shop.shop import shop_service
 from ...services.shop.shop.transfer.models import Shop, ShopID
 from ...services.ticketing import ticket_service
 from ...services.user import stats_service as user_stats_service

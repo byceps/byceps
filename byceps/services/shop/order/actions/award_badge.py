@@ -11,7 +11,7 @@ from .....typing import UserID
 from ....user_badge import awarding_service, badge_service
 from ....user_badge.transfer.models import BadgeAwarding
 
-from .. import log_service
+from .. import order_log_service
 from ..transfer.action import ActionParameters
 from ..transfer.order import LineItem, Order, OrderID
 
@@ -40,4 +40,4 @@ def _create_order_log_entry(order_id: OrderID, awarding: BadgeAwarding) -> None:
         'recipient_id': str(awarding.user_id),
     }
 
-    log_service.create_entry(event_type, order_id, data)
+    order_log_service.create_entry(event_type, order_id, data)

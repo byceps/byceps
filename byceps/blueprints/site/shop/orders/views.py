@@ -9,10 +9,10 @@ byceps.blueprints.site.shop.orders.views
 from flask import abort, g, request
 from flask_babel import format_currency, gettext
 
-from .....services.shop.order.email import service as order_email_service
-from .....services.shop.order import service as order_service
+from .....services.shop.order.email import order_email_service
+from .....services.shop.order import order_service
 from .....services.shop.order.transfer.order import PaymentState
-from .....services.shop.storefront import service as storefront_service
+from .....services.shop.storefront import storefront_service
 from .....services.site import service as site_service
 from .....services.snippet.transfer.models import Scope
 from .....signals import shop as shop_signals

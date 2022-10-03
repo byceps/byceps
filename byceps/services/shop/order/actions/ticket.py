@@ -20,7 +20,7 @@ from ....ticketing import (
 )
 from ....ticketing.transfer.models import TicketCategoryID, TicketID
 
-from .. import log_service, service as order_service
+from .. import order_log_service, order_service
 from ..transfer.order import LineItem, Order, OrderID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
@@ -76,7 +76,7 @@ def _create_creation_order_log_entries(
         for ticket in tickets
     ]
 
-    log_service.create_entries(event_type, order_id, datas)
+    order_log_service.create_entries(event_type, order_id, datas)
 
 
 def revoke_tickets(
@@ -108,4 +108,4 @@ def _create_revocation_order_log_entries(
         for ticket in tickets
     ]
 
-    log_service.create_entries(event_type, order_id, datas)
+    order_log_service.create_entries(event_type, order_id, datas)

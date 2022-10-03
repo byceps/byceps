@@ -9,8 +9,8 @@ byceps.blueprints.admin.shop.shipping.views
 from flask import abort
 
 from .....services.brand import service as brand_service
-from .....services.shop.shipping import service as shipping_service
-from .....services.shop.shop import service as shop_service
+from .....services.shop.shipping import shipping_service
+from .....services.shop.shop import shop_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated
 from .....util.views import permission_required

@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.email.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.email.order_email_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Notification e-mails about shop orders
 
@@ -18,9 +18,9 @@ from .....services.email import (
     service as email_service,
 )
 from .....services.email.transfer.models import Message
-from .....services.shop.order import service as order_service
+from .....services.shop.order import order_service
 from .....services.shop.order.transfer.order import Order, OrderID
-from .....services.shop.shop import service as shop_service
+from .....services.shop.shop import shop_service
 from .....services.snippet import service as snippet_service
 from .....services.snippet.service import SnippetNotFound
 from .....services.snippet.transfer.models import Scope

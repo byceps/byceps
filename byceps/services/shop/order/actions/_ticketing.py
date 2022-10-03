@@ -14,7 +14,7 @@ from ....ticketing import category_service
 from ....ticketing.transfer.models import TicketCategoryID
 from ....user import service as user_service
 
-from .. import service as order_service
+from .. import order_service
 from ..transfer.order import OrderID
 
 

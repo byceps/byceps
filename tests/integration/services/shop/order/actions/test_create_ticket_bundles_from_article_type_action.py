@@ -11,8 +11,7 @@ import pytest
 
 from byceps.events.ticketing import TicketsSold
 from byceps.services.shop.article.transfer.models import Article
-from byceps.services.shop.order import log_service as order_log_service
-from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order import order_log_service, order_service
 from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront

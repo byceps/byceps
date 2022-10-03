@@ -12,10 +12,8 @@ from flask import abort, current_app, g
 
 from .....services.brand import service as brand_service
 from .....services.email import config_service as email_config_service
-from .....services.shop.order.email import (
-    example_service as example_order_email_service,
-)
-from .....services.shop.shop import service as shop_service
+from .....services.shop.order.email import order_email_example_service
+from .....services.shop.shop import shop_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated
 from .....util.views import permission_required
@@ -58,11 +56,11 @@ def view_for_shop(shop_id):
 def _get_example_placed_order_message_text(shop_id) -> Optional[str]:
     try:
         return (
-            example_order_email_service.build_example_placed_order_message_text(
+            order_email_example_service.build_example_placed_order_message_text(
                 shop_id, g.user.locale
             )
         )
-    except example_order_email_service.EmailAssemblyFailed as e:
+    except order_email_example_service.EmailAssemblyFailed as e:
         current_app.logger.error(
             f'Could not assemble example email for placed order:\n{e}'
         )
@@ -72,11 +70,11 @@ def _get_example_placed_order_message_text(shop_id) -> Optional[str]:
 def _get_example_paid_order_message_text(shop_id) -> Optional[str]:
     try:
         return (
-            example_order_email_service.build_example_paid_order_message_text(
+            order_email_example_service.build_example_paid_order_message_text(
                 shop_id, g.user.locale
             )
         )
-    except example_order_email_service.EmailAssemblyFailed as e:
+    except order_email_example_service.EmailAssemblyFailed as e:
         current_app.logger.error(
             f'Could not assemble example email for paid order:\n{e}'
         )
@@ -85,10 +83,10 @@ def _get_example_paid_order_message_text(shop_id) -> Optional[str]:
 
 def _get_example_canceled_order_message_text(shop_id) -> Optional[str]:
     try:
-        return example_order_email_service.build_example_canceled_order_message_text(
+        return order_email_example_service.build_example_canceled_order_message_text(
             shop_id, g.user.locale
         )
-    except example_order_email_service.EmailAssemblyFailed as e:
+    except order_email_example_service.EmailAssemblyFailed as e:
         current_app.logger.error(
             f'Could not assemble example email for canceled order:\n{e}'
         )

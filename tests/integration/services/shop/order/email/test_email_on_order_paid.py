@@ -8,8 +8,8 @@ from unittest.mock import patch
 
 import pytest
 
-from byceps.services.shop.order.email import service as order_email_service
-from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order.email import order_email_service
+from byceps.services.shop.order import order_service
 from byceps.services.shop.order.transfer.order import Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront

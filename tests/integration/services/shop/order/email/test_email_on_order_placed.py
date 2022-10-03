@@ -11,8 +11,8 @@ from flask import Flask
 import pytest
 
 from byceps.services.shop.article.transfer.models import Article, ArticleNumber
-from byceps.services.shop.order.email import service as order_email_service
-from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order.email import order_email_service
+from byceps.services.shop.order import order_service
 from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront

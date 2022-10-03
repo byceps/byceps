@@ -5,9 +5,7 @@
 
 import pytest
 
-from byceps.services.shop.article import (
-    sequence_service as article_sequence_service,
-)
+from byceps.services.shop.article import article_sequence_service
 
 
 @pytest.fixture(scope='module')

@@ -12,13 +12,13 @@ from flask import Flask
 import pytest
 
 from byceps.events.shop import ShopOrderPlaced
-from byceps.services.shop.article import service as article_service
+from byceps.services.shop.article import article_service
 from byceps.services.shop.article.transfer.models import (
     Article,
     ArticleID,
     ArticleNumber,
 )
-from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order import order_service
 from byceps.services.shop.order.transfer.number import OrderNumber
 from byceps.services.shop.order.transfer.order import LineItem, Order
 from byceps.services.shop.shop.transfer.models import Shop

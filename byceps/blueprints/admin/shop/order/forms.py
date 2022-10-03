@@ -10,7 +10,7 @@ from flask_babel import lazy_gettext
 from wtforms import BooleanField, RadioField, StringField, TextAreaField
 from wtforms.validators import InputRequired, Length
 
-from .....services.shop.order import service as order_service
+from .....services.shop.order import order_service
 from .....services.shop.order.transfer.order import PAYMENT_METHODS
 from .....util.l10n import LocalizedForm
 

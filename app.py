@@ -15,7 +15,7 @@ from byceps.services.party.dbmodels.party import DbParty
 from byceps.services.shop.article.dbmodels.article import DbArticle
 from byceps.services.shop.order.dbmodels.line_item import DbLineItem
 from byceps.services.shop.order.dbmodels.order import DbOrder
-from byceps.services.shop.order.service import find_order_by_order_number
+from byceps.services.shop.order import order_service
 from byceps.services.shop.order.transfer.order import (
     PaymentState as OrderPaymentState,
 )
@@ -53,7 +53,7 @@ def extend_shell_context():
         'db': db,
         'DbArticle': DbArticle,
         'DbBrand': DbBrand,
-        'find_order_by_order_number': find_order_by_order_number,
+        'find_order_by_order_number': order_service.find_order_by_order_number,
         'DbOrder': DbOrder,
         'DbLineItem': DbLineItem,
         'OrderPaymentState': OrderPaymentState,

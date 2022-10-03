@@ -12,13 +12,13 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from .....services.country import service as country_service
-from .....services.shop.article import service as article_service
+from .....services.shop.article import article_service
 from .....services.shop.article.models.compilation import ArticleCompilation
 from .....services.shop.cart.models import Cart
-from .....services.shop.order.email import service as order_email_service
-from .....services.shop.order import service as order_service
-from .....services.shop.shop import service as shop_service
-from .....services.shop.storefront import service as storefront_service
+from .....services.shop.order.email import order_email_service
+from .....services.shop.order import order_service
+from .....services.shop.shop import shop_service
+from .....services.shop.storefront import storefront_service
 from .....services.site import service as site_service
 from .....services.user import service as user_service
 from .....signals import shop as shop_signals

@@ -8,7 +8,7 @@ import pytest
 import byceps.announce.connections  # Connect signal handlers.
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order import order_service
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.signals import shop as shop_signals
 

@@ -9,9 +9,9 @@ byceps.blueprints.admin.shop.catalog.views
 from flask import abort
 
 from .....services.brand import service as brand_service
-from .....services.shop.catalog import service as catalog_service
+from .....services.shop.catalog import catalog_service
 from .....services.shop.catalog.transfer.models import Catalog, CatalogID
-from .....services.shop.shop import service as shop_service
+from .....services.shop.shop import shop_service
 from .....services.shop.shop.transfer.models import Shop, ShopID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated

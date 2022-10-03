@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order import order_service
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.site import service as site_service
 from byceps.services.snippet import service as snippet_service

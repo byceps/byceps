@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.email.example_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.email.order_email_example_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -20,7 +20,7 @@ from .....typing import BrandID, UserID
 from ....email.transfer.models import Message
 from ....user.transfer.models import User
 
-from ...shop import service as shop_service
+from ...shop import shop_service
 from ...shop.transfer.models import ShopID
 from ...storefront.transfer.models import StorefrontID
 
@@ -34,8 +34,8 @@ from ..transfer.order import (
     PaymentState,
 )
 
-from . import service as shop_order_email_service
-from .service import OrderEmailData
+from . import order_email_service
+from .order_email_service import OrderEmailData
 
 
 EXAMPLE_USER_ID = UserID(generate_uuid())
@@ -58,8 +58,10 @@ def build_example_placed_order_message_text(
     data = _build_email_data(order, shop.brand_id, locale)
 
     try:
-        message = shop_order_email_service._assemble_email_for_incoming_order_to_orderer(
-            data
+        message = (
+            order_email_service._assemble_email_for_incoming_order_to_orderer(
+                data
+            )
         )
     except Exception as e:
         raise EmailAssemblyFailed(e)
@@ -78,10 +80,8 @@ def build_example_paid_order_message_text(shop_id: ShopID, locale: str) -> str:
     data = _build_email_data(order, shop.brand_id, locale)
 
     try:
-        message = (
-            shop_order_email_service._assemble_email_for_paid_order_to_orderer(
-                data
-            )
+        message = order_email_service._assemble_email_for_paid_order_to_orderer(
+            data
         )
     except Exception as e:
         raise EmailAssemblyFailed(e)
@@ -106,8 +106,10 @@ def build_example_canceled_order_message_text(
     data = _build_email_data(order, shop.brand_id, locale)
 
     try:
-        message = shop_order_email_service._assemble_email_for_canceled_order_to_orderer(
-            data
+        message = (
+            order_email_service._assemble_email_for_canceled_order_to_orderer(
+                data
+            )
         )
     except Exception as e:
         raise EmailAssemblyFailed(e)

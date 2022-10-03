@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.shop.order import log_service, service as order_service
+from byceps.services.shop.order import order_log_service, order_service
 from byceps.services.shop.order.transfer.order import PaymentState
 from byceps.util.iterables import find
 
@@ -56,7 +56,7 @@ def test_additional_log_entry_data(order, admin_user):
         additional_log_entry_data=additional_log_entry_data,
     )
 
-    log_entries = log_service.get_entries_for_order(order.id)
+    log_entries = order_log_service.get_entries_for_order(order.id)
     paid_log_entry = find(log_entries, lambda e: e.event_type == 'order-paid')
 
     # Internal properties must not be overridden by additional log entry

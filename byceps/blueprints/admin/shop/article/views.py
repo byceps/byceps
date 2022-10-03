@@ -16,10 +16,7 @@ from flask_babel import gettext, to_user_timezone, to_utc
 
 from .....services.brand import service as brand_service
 from .....services.party import service as party_service
-from .....services.shop.article import (
-    sequence_service as article_sequence_service,
-    service as article_service,
-)
+from .....services.shop.article import article_sequence_service, article_service
 from .....services.shop.article.transfer.models import (
     Article,
     ArticleType,
@@ -29,10 +26,10 @@ from .....services.shop.order import (
     action_registry_service,
     action_service,
     ordered_articles_service,
-    service as order_service,
+    order_service,
 )
 from .....services.shop.order.transfer.order import PaymentState
-from .....services.shop.shop import service as shop_service
+from .....services.shop.shop import shop_service
 from .....services.ticketing import category_service as ticket_category_service
 from .....services.user import service as user_service
 from .....services.user_badge import badge_service

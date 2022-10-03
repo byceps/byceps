@@ -23,8 +23,8 @@ from ....services.authorization.transfer.models import (
 )
 from ....services.country import service as country_service
 from ....services.orga_team import service as orga_team_service
-from ....services.shop.order import service as order_service
-from ....services.shop.shop import service as shop_service
+from ....services.shop.order import order_service
+from ....services.shop.shop import shop_service
 from ....services.site import service as site_service
 from ....services.user import (
     command_service as user_command_service,

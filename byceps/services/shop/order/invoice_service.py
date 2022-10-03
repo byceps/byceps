@@ -14,7 +14,7 @@ from sqlalchemy import select
 from ....database import db
 
 from .dbmodels.invoice import DbInvoice
-from . import log_service
+from . import order_log_service
 from .transfer.invoice import Invoice
 from .transfer.order import OrderID
 
@@ -32,7 +32,7 @@ def add_invoice(
     invoice = _db_entity_to_invoice(db_invoice)
 
     log_entry_data = {'invoice_number': invoice.number}
-    db_log_entry = log_service.build_entry(
+    db_log_entry = order_log_service.build_entry(
         'order-invoice-created', invoice.order_id, log_entry_data
     )
     db.session.add(db_log_entry)

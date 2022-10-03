@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.export.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.export.order_export_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -20,7 +20,7 @@ from flask import current_app
 from .....services.user import service as user_service
 from .....util.templating import load_template
 
-from .. import service as order_service
+from .. import order_service
 from ..transfer.order import Order, OrderID
 
 

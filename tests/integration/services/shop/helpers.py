@@ -7,7 +7,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional
 
-from byceps.services.shop.article import service as article_service
+from byceps.services.shop.article import article_service
 from byceps.services.shop.article.transfer.models import (
     Article,
     ArticleNumber,

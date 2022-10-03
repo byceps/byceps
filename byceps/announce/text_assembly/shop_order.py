@@ -11,7 +11,7 @@ Announce shop order events.
 from flask_babel import gettext
 
 from ...events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
-from ...services.shop.order import service as order_service
+from ...services.shop.order import order_service
 
 from ._helpers import get_screen_name_or_fallback, with_locale
 

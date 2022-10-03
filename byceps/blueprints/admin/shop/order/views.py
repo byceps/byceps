@@ -11,15 +11,15 @@ from flask_babel import gettext
 
 from .....services.brand import service as brand_service
 from .....services.shop.order import (
-    invoice_service as order_invoice_service,
-    log_service as order_log_service,
-    sequence_service as order_sequence_service,
-    service as order_service,
+    invoice_service,
+    order_log_service,
+    order_sequence_service,
+    order_service,
 )
-from .....services.shop.order.email import service as order_email_service
-from .....services.shop.order.export import service as order_export_service
+from .....services.shop.order.email import order_email_service
+from .....services.shop.order.export import order_export_service
 from .....services.shop.order.transfer.order import PaymentState
-from .....services.shop.shop import service as shop_service
+from .....services.shop.shop import shop_service
 from .....services.ticketing import ticket_service
 from .....services.user import service as user_service
 from .....signals import shop as shop_signals
@@ -118,7 +118,7 @@ def view(order_id):
 
     articles_by_item_number = service.get_articles_by_item_number(order)
 
-    invoices = order_invoice_service.get_invoices_for_order(order.id)
+    invoices = invoice_service.get_invoices_for_order(order.id)
 
     log_entries = service.get_enriched_log_entry_data_for_order(order.id)
 

@@ -6,7 +6,7 @@
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.shop.order.email import example_service
+from byceps.services.shop.order.email import order_email_example_service
 
 from tests.helpers import current_user_set
 
@@ -113,8 +113,10 @@ def test_example_placed_order_message_text(
     current_user = get_current_user_for_user(order_admin, locale)
 
     with current_user_set(app, current_user), app.app_context():
-        actual = example_service.build_example_placed_order_message_text(
-            shop.id, locale
+        actual = (
+            order_email_example_service.build_example_placed_order_message_text(
+                shop.id, locale
+            )
         )
 
     assert actual == expected
@@ -189,8 +191,10 @@ def test_example_paid_order_message_text(
     current_user = get_current_user_for_user(order_admin, locale)
 
     with current_user_set(app, current_user), app.app_context():
-        actual = example_service.build_example_paid_order_message_text(
-            shop.id, locale
+        actual = (
+            order_email_example_service.build_example_paid_order_message_text(
+                shop.id, locale
+            )
         )
 
     assert actual == expected
@@ -265,7 +269,7 @@ def test_example_canceled_order_message_text(
     current_user = get_current_user_for_user(order_admin, locale)
 
     with current_user_set(app, current_user), app.app_context():
-        actual = example_service.build_example_canceled_order_message_text(
+        actual = order_email_example_service.build_example_canceled_order_message_text(
             shop.id, locale
         )
 

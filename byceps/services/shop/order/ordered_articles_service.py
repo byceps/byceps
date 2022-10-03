@@ -15,7 +15,7 @@ from ....database import db
 from ..article.transfer.models import ArticleNumber
 
 from .dbmodels.line_item import DbLineItem
-from .service import line_item_to_transfer_object
+from . import order_service
 from .transfer.order import LineItem, PaymentState
 
 
@@ -54,4 +54,4 @@ def get_line_items_for_article(
         .filter_by(article_number=article_number) \
         .all()
 
-    return list(map(line_item_to_transfer_object, db_line_items))
+    return list(map(order_service.line_item_to_transfer_object, db_line_items))

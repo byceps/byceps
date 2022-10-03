@@ -21,9 +21,9 @@ from ....services.board import (
 from ....services.guest_server import service as guest_server_service
 from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Headline as NewsHeadline
-from ....services.shop.order import service as order_service
+from ....services.shop.order import order_service
 from ....services.shop.order.transfer.order import Order
-from ....services.shop.storefront import service as storefront_service
+from ....services.shop.storefront import storefront_service
 from ....services.site import service as site_service
 from ....services.site.transfer.models import Site
 from ....services.ticketing import ticket_service

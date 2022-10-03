@@ -10,8 +10,7 @@ from byceps.database import db
 from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.dbmodels.order import DbOrder
-from byceps.services.shop.order import ordered_articles_service
-from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order import ordered_articles_service, order_service
 from byceps.services.shop.order.transfer.number import OrderNumber
 from byceps.services.shop.order.transfer.order import (
     Order,

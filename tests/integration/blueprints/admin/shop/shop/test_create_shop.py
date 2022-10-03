@@ -5,7 +5,7 @@
 
 import pytest
 
-import byceps.services.shop.shop.service as shop_service
+from byceps.services.shop.shop import shop_service
 
 from tests.helpers import log_in_user
 

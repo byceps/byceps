@@ -6,7 +6,7 @@
 from datetime import datetime
 from uuid import UUID
 
-from byceps.services.shop.order import service as order_service
+from byceps.services.shop.order import order_service
 from byceps.services.shop.order.transfer.number import OrderNumber
 from byceps.services.shop.order.transfer.order import (
     Order,

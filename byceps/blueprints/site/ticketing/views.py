@@ -11,7 +11,7 @@ from flask_babel import gettext
 
 from ....services.orga_team import service as orga_team_service
 from ....services.party import service as party_service
-from ....services.shop.order import service as order_service
+from ....services.shop.order import order_service
 from ....services.ticketing import (
     barcode_service,
     category_service as ticket_category_service,

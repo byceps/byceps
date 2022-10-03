@@ -26,16 +26,14 @@ from byceps.services.news.transfer.models import (
     ChannelID as NewsChannelID,
 )
 from byceps.services.party.transfer.models import Party
-from byceps.services.shop.order import (
-    sequence_service as order_sequence_service,
-)
+from byceps.services.shop.order import order_sequence_service
 from byceps.services.shop.order.transfer.number import (
     OrderNumberSequence,
     OrderNumberSequenceID,
 )
-from byceps.services.shop.shop import service as shop_service
+from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.transfer.models import Shop, ShopID
-from byceps.services.shop.storefront import service as storefront_service
+from byceps.services.shop.storefront import storefront_service
 from byceps.services.shop.storefront.transfer.models import (
     Storefront,
     StorefrontID,
