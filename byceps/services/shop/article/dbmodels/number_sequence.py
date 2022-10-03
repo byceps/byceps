@@ -14,7 +14,7 @@ from .....util.instances import ReprBuilder
 from ...shop.transfer.models import ShopID
 
 
-class ArticleNumberSequence(db.Model):
+class DbArticleNumberSequence(db.Model):
     """A shop-specific, unique article number sequence."""
 
     __tablename__ = 'shop_article_number_sequences'

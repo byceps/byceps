@@ -22,8 +22,8 @@ from ..order.dbmodels.order import Order as DbOrder
 from ..order.transfer.order import PaymentState
 from ..shop.transfer.models import ShopID
 
-from .dbmodels.article import Article as DbArticle
-from .dbmodels.attached_article import AttachedArticle as DbAttachedArticle
+from .dbmodels.article import DbArticle
+from .dbmodels.attached_article import DbAttachedArticle
 from .models.compilation import ArticleCompilation, ArticleCompilationItem
 from .transfer.models import (
     Article,

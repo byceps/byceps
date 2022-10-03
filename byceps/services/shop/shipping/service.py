@@ -11,7 +11,7 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from typing import Iterator, Sequence
 
-from ..article.dbmodels.article import Article as DbArticle
+from ..article.dbmodels.article import DbArticle
 
 from ....database import db
 

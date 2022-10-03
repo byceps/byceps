@@ -10,10 +10,10 @@ from .....database import db, generate_uuid
 
 from ..transfer.models import ArticleNumber
 
-from .article import Article as DbArticle
+from .article import DbArticle
 
 
-class AttachedArticle(db.Model):
+class DbAttachedArticle(db.Model):
     """An article that is attached to another article."""
 
     __tablename__ = 'shop_attached_articles'

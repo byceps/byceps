@@ -12,7 +12,7 @@ from byceps.application import create_app
 from byceps.database import db
 from byceps.services.brand.dbmodels.brand import Brand
 from byceps.services.party.dbmodels.party import Party
-from byceps.services.shop.article.dbmodels.article import Article
+from byceps.services.shop.article.dbmodels.article import DbArticle
 from byceps.services.shop.order.dbmodels.line_item import LineItem
 from byceps.services.shop.order.dbmodels.order import Order
 from byceps.services.shop.order.service import find_order_by_order_number
@@ -51,7 +51,7 @@ def extend_shell_context():
     return {
         'app': app,
         'db': db,
-        'Article': Article,
+        'DbArticle': DbArticle,
         'Brand': Brand,
         'find_order_by_order_number': find_order_by_order_number,
         'Order': Order,

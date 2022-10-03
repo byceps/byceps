@@ -16,7 +16,7 @@ else:
 
 from .....database import db, generate_uuid
 
-from ...article.dbmodels.article import Article as DbArticle
+from ...article.dbmodels.article import DbArticle
 from ...article.transfer.models import ArticleNumber, ArticleType
 
 from .order import Order

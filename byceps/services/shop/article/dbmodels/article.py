@@ -23,7 +23,7 @@ from ...shop.transfer.models import ShopID
 from ..transfer.models import ArticleNumber, ArticleType, ArticleTypeParams
 
 
-class Article(db.Model):
+class DbArticle(db.Model):
     """An article that can be bought."""
 
     __tablename__ = 'shop_articles'
