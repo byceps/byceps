@@ -15,10 +15,10 @@ from ....util.instances import ReprBuilder
 
 from ..transfer.models import ImageID, ItemID
 
-from .item import Item
+from .item import DbItem
 
 
-class Image(db.Model):
+class DbImage(db.Model):
     """An image to illustrate a news item."""
 
     __tablename__ = 'news_images'
@@ -30,7 +30,7 @@ class Image(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     item_id = db.Column(db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False)
-    item = db.relationship(Item, backref='images')
+    item = db.relationship(DbItem, backref='images')
     number = db.Column(db.Integer, nullable=False)
     filename = db.Column(db.UnicodeText, nullable=False)
     alt_text = db.Column(db.UnicodeText, nullable=True)

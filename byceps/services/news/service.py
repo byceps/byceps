@@ -26,12 +26,8 @@ from ..user.transfer.models import User
 
 from .channel_service import _db_entity_to_channel
 from . import html_service
-from .dbmodels.channel import Channel as DbChannel
-from .dbmodels.item import (
-    CurrentVersionAssociation as DbCurrentVersionAssociation,
-    Item as DbItem,
-    ItemVersion as DbItemVersion,
-)
+from .dbmodels.channel import DbChannel
+from .dbmodels.item import DbCurrentVersionAssociation, DbItem, DbItemVersion
 from . import image_service
 from .transfer.models import (
     BodyFormat,

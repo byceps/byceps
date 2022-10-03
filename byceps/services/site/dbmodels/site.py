@@ -14,7 +14,7 @@ from ....util.instances import ReprBuilder
 
 from ...board.transfer.models import BoardID
 from ...brand.dbmodels.brand import Brand
-from ...news.dbmodels.channel import Channel as NewsChannel
+from ...news.dbmodels.channel import DbChannel as DbNewsChannel
 from ...shop.storefront.transfer.models import StorefrontID
 
 from ..transfer.models import SiteID
@@ -46,7 +46,7 @@ class Site(db.Model):
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
     news_channels = db.relationship(
-        NewsChannel,
+        DbNewsChannel,
         secondary=site_news_channels,
         lazy='subquery',
         backref=db.backref('news_channels', lazy=True),

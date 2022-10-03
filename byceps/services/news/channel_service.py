@@ -15,7 +15,7 @@ from ...typing import BrandID
 from ..brand import service as brand_service
 from ..site.transfer.models import SiteID
 
-from .dbmodels.channel import Channel as DbChannel
+from .dbmodels.channel import DbChannel
 from .transfer.models import Channel, ChannelID
 
 
