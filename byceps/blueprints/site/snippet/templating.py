@@ -12,7 +12,7 @@ from typing import Any, Dict, Optional
 from flask import g
 from jinja2 import Template
 
-from ....services.snippet.dbmodels.snippet import SnippetVersion
+from ....services.snippet.dbmodels.snippet import DbVersion
 from ....services.snippet import service as snippet_service
 from ....services.snippet.service import SnippetNotFound
 from ....services.snippet.transfer.models import Scope
@@ -22,7 +22,7 @@ from ....util.templating import load_template
 Context = Dict[str, Any]
 
 
-def get_rendered_snippet_body(version: SnippetVersion) -> str:
+def get_rendered_snippet_body(version: DbVersion) -> str:
     """Return the rendered body of the snippet."""
     template = _load_template_with_globals(version.body)
     return template.render()

@@ -23,7 +23,7 @@ from ...user.dbmodels.user import User
 from ..transfer.models import Scope
 
 
-class Snippet(db.Model):
+class DbSnippet(db.Model):
     """A snippet.
 
     Each snippet is expected to have at least one version (the initial
@@ -60,20 +60,20 @@ class Snippet(db.Model):
             .build()
 
 
-class SnippetVersion(db.Model):
+class DbVersion(db.Model):
     """A snapshot of a snippet at a certain time."""
 
     __tablename__ = 'snippet_versions'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)
-    snippet = db.relationship(Snippet)
+    snippet = db.relationship(DbSnippet)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(User)
     body = db.Column(db.UnicodeText, nullable=False)
 
-    def __init__(self, snippet: Snippet, creator_id: UserID, body: str) -> None:
+    def __init__(self, snippet: DbSnippet, creator_id: UserID, body: str) -> None:
         self.snippet = snippet
         self.creator_id = creator_id
         self.body = body
@@ -93,14 +93,14 @@ class SnippetVersion(db.Model):
             .build()
 
 
-class CurrentVersionAssociation(db.Model):
+class DbCurrentVersionAssociation(db.Model):
     __tablename__ = 'snippet_current_versions'
 
     snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), primary_key=True)
-    snippet = db.relationship(Snippet, backref=db.backref('current_version_association', uselist=False))
+    snippet = db.relationship(DbSnippet, backref=db.backref('current_version_association', uselist=False))
     version_id = db.Column(db.Uuid, db.ForeignKey('snippet_versions.id'), unique=True, nullable=False)
-    version = db.relationship(SnippetVersion)
+    version = db.relationship(DbVersion)
 
-    def __init__(self, snippet: Snippet, version: SnippetVersion) -> None:
+    def __init__(self, snippet: DbSnippet, version: DbVersion) -> None:
         self.snippet = snippet
         self.version = version

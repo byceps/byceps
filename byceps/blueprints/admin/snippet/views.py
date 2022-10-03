@@ -10,9 +10,7 @@ from typing import Optional
 from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
-from ....services.snippet.dbmodels.snippet import (
-    SnippetVersion as DbSnippetVersion,
-)
+from ....services.snippet.dbmodels.snippet import DbVersion
 from ....services.snippet import service as snippet_service
 from ....services.snippet.transfer.models import Scope
 from ....services.text_diff import service as text_diff_service
@@ -313,8 +311,8 @@ def delete_snippet(snippet_id):
 
 
 def _create_html_diff(
-    from_version: DbSnippetVersion,
-    to_version: DbSnippetVersion,
+    from_version: DbVersion,
+    to_version: DbVersion,
     attribute_name: str,
 ) -> Optional[str]:
     """Create an HTML diff between the named attribute's value of each
