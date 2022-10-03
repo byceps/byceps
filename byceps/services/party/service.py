@@ -20,7 +20,7 @@ from ..brand.dbmodels.brand import Brand as DbBrand
 from ..brand import service as brand_service
 
 from .dbmodels.party import Party as DbParty
-from .dbmodels.setting import Setting as DbSetting
+from .dbmodels.setting import DbSetting
 from .transfer.models import Party, PartyWithBrand
 
 

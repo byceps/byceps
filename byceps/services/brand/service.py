@@ -13,7 +13,7 @@ from ...database import db
 from ...typing import BrandID
 
 from .dbmodels.brand import Brand as DbBrand
-from .dbmodels.setting import Setting as DbSetting
+from .dbmodels.setting import DbSetting
 from .transfer.models import Brand
 
 

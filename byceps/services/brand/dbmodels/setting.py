@@ -11,7 +11,7 @@ from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
 
-class Setting(db.Model):
+class DbSetting(db.Model):
     """A brand-specific setting."""
 
     __tablename__ = 'brand_settings'

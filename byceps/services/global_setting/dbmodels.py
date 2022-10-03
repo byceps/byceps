@@ -10,7 +10,7 @@ from ...database import db
 from ...util.instances import ReprBuilder
 
 
-class Setting(db.Model):
+class DbSetting(db.Model):
     """A global setting."""
 
     __tablename__ = 'global_settings'

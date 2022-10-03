@@ -12,7 +12,7 @@ from ....util.instances import ReprBuilder
 from ..transfer.models import SiteID
 
 
-class Setting(db.Model):
+class DbSetting(db.Model):
     """A site-specific setting."""
 
     __tablename__ = 'site_settings'

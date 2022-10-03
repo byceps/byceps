@@ -11,7 +11,7 @@ from typing import Optional
 
 from ...database import db, upsert
 
-from .dbmodels.setting import Setting as DbSetting
+from .dbmodels.setting import DbSetting
 from .transfer.models import SiteID, SiteSetting
 
 

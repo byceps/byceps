@@ -11,7 +11,7 @@ from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
 
-class Setting(db.Model):
+class DbSetting(db.Model):
     """A party-specific setting."""
 
     __tablename__ = 'party_settings'
