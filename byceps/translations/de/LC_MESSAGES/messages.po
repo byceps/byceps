@@ -873,7 +873,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/index.html:14
 #: byceps/blueprints/admin/orga_team/forms.py:18
 #: byceps/blueprints/admin/page/forms.py:25
-#: byceps/blueprints/admin/page/templates/admin/page/compare.html:18
+#: byceps/blueprints/admin/page/templates/admin/page/compare_versions.html:18
 #: byceps/blueprints/admin/party/forms.py:26
 #: byceps/blueprints/admin/seating/forms.py:22
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:30
@@ -894,7 +894,7 @@ msgstr "Titel"
 #: byceps/blueprints/admin/news/forms.py:100
 #: byceps/blueprints/admin/news/templates/admin/news/item_compare_versions.html:20
 #: byceps/blueprints/admin/page/forms.py:27
-#: byceps/blueprints/admin/page/templates/admin/page/compare.html:28
+#: byceps/blueprints/admin/page/templates/admin/page/compare_versions.html:28
 #: byceps/blueprints/admin/shop/order/forms.py:19
 #: byceps/blueprints/admin/snippet/forms.py:18
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_versions.html:18
@@ -2557,7 +2557,7 @@ msgstr "Bild bearbeiten"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_compare_versions.html:5
 #: byceps/blueprints/admin/news/templates/admin/news/item_list_versions.html:41
-#: byceps/blueprints/admin/page/templates/admin/page/compare.html:4
+#: byceps/blueprints/admin/page/templates/admin/page/compare_versions.html:4
 #: byceps/blueprints/admin/page/templates/admin/page/history.html:40
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_versions.html:4
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:40
@@ -3158,7 +3158,7 @@ msgstr "Die Seite \"%(name)s\" konnte nicht gelöscht werden."
 msgid "Page \"%(name)s\" has been deleted."
 msgstr "Die Seite \"%(name)s\" wurde gelöscht."
 
-#: byceps/blueprints/admin/page/templates/admin/page/compare.html:23
+#: byceps/blueprints/admin/page/templates/admin/page/compare_versions.html:23
 msgid "Page header"
 msgstr "Seitenkopf"
 

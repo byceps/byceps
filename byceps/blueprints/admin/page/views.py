@@ -137,10 +137,10 @@ def history(page_id):
     }
 
 
-@blueprint.get('/pages/<uuid:from_version_id>/compare_to/<uuid:to_version_id>')
+@blueprint.get('/versions/<uuid:from_version_id>/compare_to/<uuid:to_version_id>')
 @permission_required('page.view_history')
 @templated
-def compare(from_version_id, to_version_id):
+def compare_versions(from_version_id, to_version_id):
     """Show the difference between two versions."""
     from_version = _get_version(from_version_id)
     to_version = _get_version(to_version_id)

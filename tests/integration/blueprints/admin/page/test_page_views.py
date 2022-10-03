@@ -108,7 +108,7 @@ def test_compare(page_admin_client, page_admin, make_page):
         'Body v2',
     )
 
-    url = f'/admin/pages/pages/{version1.id}/compare_to/{version2.id}'
+    url = f'/admin/pages/versions/{version1.id}/compare_to/{version2.id}'
     response = page_admin_client.get(url)
     assert response.status_code == 200
 

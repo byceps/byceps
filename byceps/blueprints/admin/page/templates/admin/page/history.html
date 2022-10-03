@@ -37,7 +37,7 @@
           <td>{{ render_user_avatar_and_name(users_by_id[version.creator_id], size=20) }}</td>
           <td>
             {%- if previous_version -%}
-            <a href="{{ url_for('.compare', from_version_id=previous_version.id, to_version_id=version.id) }}" title="{{ _('View changes compared to previous version') }}">{{ _('View changes') }}</a>
+            <a href="{{ url_for('.compare_versions', from_version_id=previous_version.id, to_version_id=version.id) }}" title="{{ _('View changes compared to previous version') }}">{{ _('View changes') }}</a>
             {%- endif -%}
           </td>
         </tr>
