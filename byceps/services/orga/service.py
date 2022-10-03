@@ -12,7 +12,7 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import BrandID, UserID
 
-from ..brand.dbmodels.brand import Brand as DbBrand
+from ..brand.dbmodels.brand import DbBrand
 from ..user import log_service as user_log_service
 from ..user.dbmodels.user import DbUser
 

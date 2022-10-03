@@ -12,7 +12,7 @@ from ...database import db, generate_uuid
 from ...typing import PartyID, UserID
 from ...util.instances import ReprBuilder
 
-from ..party.dbmodels.party import Party
+from ..party.dbmodels.party import DbParty
 from ..user.dbmodels.user import DbUser
 
 from .transfer.models import OrgaTeamID
@@ -28,7 +28,7 @@ class DbOrgaTeam(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
-    party = db.relationship(Party)
+    party = db.relationship(DbParty)
     title = db.Column(db.UnicodeText, nullable=False)
 
     def __init__(self, party_id: PartyID, title: str) -> None:

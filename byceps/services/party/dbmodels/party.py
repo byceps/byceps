@@ -13,17 +13,17 @@ from ....database import db
 from ....typing import BrandID, PartyID
 from ....util.instances import ReprBuilder
 
-from ...brand.dbmodels.brand import Brand
+from ...brand.dbmodels.brand import DbBrand
 
 
-class Party(db.Model):
+class DbParty(db.Model):
     """A party."""
 
     __tablename__ = 'parties'
 
     id = db.Column(db.UnicodeText, primary_key=True)
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False)
-    brand = db.relationship(Brand, backref='parties')
+    brand = db.relationship(DbBrand, backref='parties')
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     starts_at = db.Column(db.DateTime, nullable=False)
     ends_at = db.Column(db.DateTime, nullable=False)

@@ -10,8 +10,8 @@ from warnings import warn
 
 from byceps.application import create_app
 from byceps.database import db
-from byceps.services.brand.dbmodels.brand import Brand
-from byceps.services.party.dbmodels.party import Party
+from byceps.services.brand.dbmodels.brand import DbBrand
+from byceps.services.party.dbmodels.party import DbParty
 from byceps.services.shop.article.dbmodels.article import DbArticle
 from byceps.services.shop.order.dbmodels.line_item import DbLineItem
 from byceps.services.shop.order.dbmodels.order import DbOrder
@@ -52,12 +52,12 @@ def extend_shell_context():
         'app': app,
         'db': db,
         'DbArticle': DbArticle,
-        'Brand': Brand,
+        'DbBrand': DbBrand,
         'find_order_by_order_number': find_order_by_order_number,
         'DbOrder': DbOrder,
         'DbLineItem': DbLineItem,
         'OrderPaymentState': OrderPaymentState,
-        'Party': Party,
+        'DbParty': DbParty,
         'find_ticket_by_code': find_ticket_by_code,
         'DbUser': DbUser,
         'DbUserDetail': DbUserDetail,

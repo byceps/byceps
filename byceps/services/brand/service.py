@@ -12,7 +12,7 @@ from typing import Optional
 from ...database import db
 from ...typing import BrandID
 
-from .dbmodels.brand import Brand as DbBrand
+from .dbmodels.brand import DbBrand
 from .dbmodels.setting import DbSetting
 from .transfer.models import Brand
 

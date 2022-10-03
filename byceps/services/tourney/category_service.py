@@ -12,7 +12,7 @@ from typing import Optional
 from ...database import db
 from ...typing import PartyID
 
-from ..party.dbmodels.party import Party as DbParty
+from ..party.dbmodels.party import DbParty
 
 from .dbmodels.tourney_category import DbTourneyCategory
 from .transfer.models import TourneyCategory, TourneyCategoryID

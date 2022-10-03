@@ -13,7 +13,7 @@ from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
 
-class Brand(db.Model):
+class DbBrand(db.Model):
     """A party brand."""
 
     __tablename__ = 'brands'

@@ -13,7 +13,7 @@ from ....typing import BrandID, PartyID
 from ....util.instances import ReprBuilder
 
 from ...board.transfer.models import BoardID
-from ...brand.dbmodels.brand import Brand
+from ...brand.dbmodels.brand import DbBrand
 from ...news.dbmodels.channel import DbChannel as DbNewsChannel
 from ...shop.storefront.transfer.models import StorefrontID
 
@@ -36,7 +36,7 @@ class DbSite(db.Model):
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     server_name = db.Column(db.UnicodeText, unique=True, nullable=False)
     brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False)
-    brand = db.relationship(Brand, backref='sites')
+    brand = db.relationship(DbBrand, backref='sites')
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=True)
     enabled = db.Column(db.Boolean, nullable=False)
     user_account_creation_enabled = db.Column(db.Boolean, nullable=False)

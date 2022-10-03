@@ -16,10 +16,10 @@ from sqlalchemy import select
 from ...database import db, paginate, Pagination
 from ...typing import BrandID, PartyID
 
-from ..brand.dbmodels.brand import Brand as DbBrand
+from ..brand.dbmodels.brand import DbBrand
 from ..brand import service as brand_service
 
-from .dbmodels.party import Party as DbParty
+from .dbmodels.party import DbParty
 from .dbmodels.setting import DbSetting
 from .transfer.models import Party, PartyWithBrand
 
