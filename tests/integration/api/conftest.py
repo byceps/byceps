@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import pytest
 
-from byceps.services.authentication.api import service as api_service
+from byceps.services.authentication.api import authn_api_service
 from byceps.services.authentication.api.transfer.models import ApiToken
 from byceps.services.authorization.transfer.models import PermissionID
 
@@ -28,7 +28,7 @@ def api_client(api_app):
 @pytest.fixture(scope='package')
 def api_token(admin_user) -> ApiToken:
     permissions: set[PermissionID] = set()
-    return api_service.create_api_token(admin_user.id, permissions)
+    return authn_api_service.create_api_token(admin_user.id, permissions)
 
 
 @pytest.fixture(scope='package')

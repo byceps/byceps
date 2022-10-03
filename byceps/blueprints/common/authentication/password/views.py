@@ -10,8 +10,8 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from .....services.authentication.password import (
-    reset_service as password_reset_service,
-    service as password_service,
+    authn_password_reset_service,
+    authn_password_service,
 )
 from .....services.email import (
     config_service as email_config_service,
@@ -62,7 +62,7 @@ def update():
 
     password = form.new_password.data
 
-    password_service.update_password_hash(user.id, password, user.id)
+    authn_password_service.update_password_hash(user.id, password, user.id)
 
     flash_success(gettext('Password has been updated. Please log in again.'))
 
@@ -137,7 +137,7 @@ def request_reset():
 
     sender = _get_sender()
 
-    password_reset_service.prepare_password_reset(
+    authn_password_reset_service.prepare_password_reset(
         user, email_address.address, request.url_root, sender
     )
 
@@ -191,7 +191,7 @@ def reset(token):
 
     password = form.new_password.data
 
-    password_reset_service.reset_password(verification_token, password)
+    authn_password_reset_service.reset_password(verification_token, password)
 
     flash_success(gettext('Password has been updated.'))
 

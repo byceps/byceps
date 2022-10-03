@@ -9,7 +9,7 @@ import pytest
 
 from byceps.database import db
 from byceps.services.authentication.password.dbmodels import DbCredential
-from byceps.services.authentication.session import service as session_service
+from byceps.services.authentication.session import authn_session_service
 from byceps.services.authorization import service as authorization_service
 from byceps.services.brand import settings_service as brand_settings_service
 from byceps.services.consent import (
@@ -132,7 +132,7 @@ def test_create(
     assert_password_credentials_created(user.id)
 
     # Session token should not have been created at this point.
-    session_token = session_service.find_session_token_for_user(user.id)
+    session_token = authn_session_service.find_session_token_for_user(user.id)
     assert session_token is None
 
     # avatar

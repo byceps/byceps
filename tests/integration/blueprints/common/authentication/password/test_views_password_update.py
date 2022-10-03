@@ -5,7 +5,7 @@
 
 from byceps.database import db
 from byceps.services.authentication.password.dbmodels import DbCredential
-from byceps.services.authentication.session import service as session_service
+from byceps.services.authentication.session import authn_session_service
 
 from tests.helpers import http_client, log_in_user
 
@@ -67,7 +67,7 @@ def find_credential(user_id):
 
 
 def find_session_token(user_id):
-    return session_service.find_session_token_for_user(user_id)
+    return authn_session_service.find_session_token_for_user(user_id)
 
 
 def send_request(app, form_data, *, user_id=None):

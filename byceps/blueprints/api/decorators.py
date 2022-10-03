@@ -12,7 +12,7 @@ from typing import Optional
 from flask import abort, request
 from werkzeug.datastructures import WWWAuthenticate
 
-from ...services.authentication.api import service as api_service
+from ...services.authentication.api import authn_api_service
 from ...services.authentication.api.transfer.models import ApiToken
 
 
@@ -42,7 +42,7 @@ def _find_valid_api_token() -> Optional[ApiToken]:
     if request_token is None:
         return None
 
-    return api_service.find_api_token_by_token(request_token)
+    return authn_api_service.find_api_token_by_token(request_token)
 
 
 def _extract_token_from_request() -> Optional[str]:

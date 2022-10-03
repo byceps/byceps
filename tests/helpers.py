@@ -20,7 +20,7 @@ from byceps.database import db
 from byceps.services.authentication.session.models.current_user import (
     CurrentUser,
 )
-from byceps.services.authentication.session import service as session_service
+from byceps.services.authentication.session import authn_session_service
 from byceps.services.authorization import service as authz_service
 from byceps.services.authorization.transfer.models import PermissionID, RoleID
 from byceps.services.board.transfer.models import BoardID
@@ -244,7 +244,7 @@ def http_client(app: Flask, *, user_id: Optional[UserID] = None):
 
 
 def _add_user_credentials_to_session(client, user_id: UserID) -> None:
-    session_token = session_service.find_session_token_for_user(user_id)
+    session_token = authn_session_service.find_session_token_for_user(user_id)
     if session_token is None:
         raise Exception(f'Could not find session token for user ID "{user_id}"')
 
@@ -255,4 +255,4 @@ def _add_user_credentials_to_session(client, user_id: UserID) -> None:
 
 def log_in_user(user_id: UserID) -> None:
     """Authenticate the user to create a session."""
-    session_service.get_session_token(user_id)
+    authn_session_service.get_session_token(user_id)

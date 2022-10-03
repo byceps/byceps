@@ -14,7 +14,7 @@ Sessions will be recreated on demand after successful login.
 
 import click
 
-from byceps.services.authentication.session import service as session_service
+from byceps.services.authentication.session import authn_session_service
 
 from _util import call_with_app_context
 
@@ -23,7 +23,7 @@ from _util import call_with_app_context
 def execute() -> None:
     click.secho('Removing all user sessions ... ', nl=False)
 
-    deleted_total = session_service.delete_all_session_tokens()
+    deleted_total = authn_session_service.delete_all_session_tokens()
     click.secho(f'{deleted_total} sessions removed.', fg='green')
 
 

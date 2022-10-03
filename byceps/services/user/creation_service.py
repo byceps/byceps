@@ -16,7 +16,7 @@ from ...database import db
 from ...events.user import UserAccountCreated
 from ...typing import UserID
 
-from ..authentication.password import service as password_service
+from ..authentication.password import authn_password_service
 from ..site.transfer.models import SiteID
 
 from . import email_address_service, log_service
@@ -125,7 +125,7 @@ def create_user(
     )
 
     # password
-    password_service.create_password_hash(user.id, password)
+    authn_password_service.create_password_hash(user.id, password)
 
     return user, event
 

@@ -14,7 +14,7 @@ from babel import parse_locale
 from flask import session
 
 from ..services.authentication.session.models.current_user import CurrentUser
-from ..services.authentication.session import service as session_service
+from ..services.authentication.session import authn_session_service
 from ..services.user import service as user_service
 from ..services.user.transfer.models import User
 from ..typing import UserID
@@ -50,15 +50,15 @@ def get_current_user(required_permissions: set[str]) -> CurrentUser:
 
     user = _find_user()
     if user is None:
-        return session_service.get_anonymous_current_user(session_locale)
+        return authn_session_service.get_anonymous_current_user(session_locale)
 
     permissions = get_permissions_for_user(user.id)
     if not required_permissions.issubset(permissions):
-        return session_service.get_anonymous_current_user(session_locale)
+        return authn_session_service.get_anonymous_current_user(session_locale)
 
     locale = _get_user_locale(user) or session_locale
 
-    return session_service.get_authenticated_current_user(
+    return authn_session_service.get_authenticated_current_user(
         user, locale, permissions
     )
 
@@ -88,7 +88,7 @@ def _find_user() -> Optional[User]:
         return None
 
     # Validate auth token.
-    if (auth_token is None) or not session_service.is_session_valid(
+    if (auth_token is None) or not authn_session_service.is_session_valid(
         user.id, auth_token
     ):
         # Bad auth token, not logging in.

@@ -9,7 +9,7 @@ byceps.blueprints.admin.api.views
 from flask import current_app, g, request
 from flask_babel import gettext
 
-from ....services.authentication.api import service as api_service
+from ....services.authentication.api import authn_api_service
 from ....services.user import service as user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
@@ -29,7 +29,7 @@ blueprint = create_blueprint('api_admin', __name__)
 def index():
     """Show API access status and issued API tokens."""
     api_enabled = current_app.config['API_ENABLED']
-    api_tokens = api_service.get_all_api_tokens()
+    api_tokens = authn_api_service.get_all_api_tokens()
 
     user_ids = {api_token.creator_id for api_token in api_tokens}
     users = user_service.get_users(user_ids, include_avatars=True)
@@ -67,7 +67,7 @@ def create_api_token():
     permissions = set(form.permissions.data)
     description = form.description.data.strip()
 
-    api_service.create_api_token(
+    authn_api_service.create_api_token(
         creator_id, permissions, description=description
     )
 
@@ -81,6 +81,6 @@ def create_api_token():
 @respond_no_content
 def delete_api_token(api_token_id):
     """Delete an API token."""
-    api_service.delete_api_token(api_token_id)
+    authn_api_service.delete_api_token(api_token_id)
 
     flash_success(gettext('API token has been deleted.'))

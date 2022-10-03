@@ -1,6 +1,6 @@
 """
-byceps.services.authentication.password.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authentication.password.authn_password_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -19,7 +19,7 @@ from ....typing import UserID
 
 from ...user import log_service as user_log_service
 
-from ..session import service as session_service
+from ..session import authn_session_service
 
 from .dbmodels import DbCredential
 
@@ -65,7 +65,7 @@ def update_password_hash(
 
     db.session.commit()
 
-    session_service.delete_session_tokens_for_user(user_id)
+    authn_session_service.delete_session_tokens_for_user(user_id)
 
 
 def is_password_valid_for_user(user_id: UserID, password: str) -> bool:

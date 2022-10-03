@@ -6,7 +6,7 @@
 from pytest import raises
 
 from byceps.services.authentication.exceptions import AuthenticationFailed
-from byceps.services.authentication import service as authn_service
+from byceps.services.authentication import authn_service
 
 
 CORRECT_PASSWORD = 'opensesame'

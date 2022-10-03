@@ -5,7 +5,7 @@
 
 from byceps.database import db
 from byceps.services.authentication.password.dbmodels import DbCredential
-from byceps.services.authentication.password import service as password_service
+from byceps.services.authentication.password import authn_password_service
 from byceps.services.user import log_service
 
 
@@ -23,7 +23,7 @@ def test_update_password_hash(site_app, admin_user, make_user):
 
     # -------------------------------- #
 
-    password_service.update_password_hash(
+    authn_password_service.update_password_hash(
         user_id, 'ReplacementPassw0rd', admin_id
     )
 

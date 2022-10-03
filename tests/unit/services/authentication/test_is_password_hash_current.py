@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.authentication.password import service as password_service
+from byceps.services.authentication.password import authn_password_service
 
 
 @pytest.mark.parametrize(
@@ -39,4 +39,7 @@ from byceps.services.authentication.password import service as password_service
     ],
 )
 def test_is_password_hash_current(password_hash, expected):
-    assert password_service.is_password_hash_current(password_hash) == expected
+    assert (
+        authn_password_service.is_password_hash_current(password_hash)
+        == expected
+    )

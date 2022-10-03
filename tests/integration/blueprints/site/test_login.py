@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.authentication.session import service as session_service
+from byceps.services.authentication.session import authn_session_service
 from byceps.services.user import log_service
 
 
@@ -31,7 +31,7 @@ def test_login_succeeds(site, client, make_user):
     )
     assert len(login_log_entries_before) == 0
 
-    assert session_service.find_recent_login(user.id) is None
+    assert authn_session_service.find_recent_login(user.id) is None
 
     assert not list(client.cookie_jar)
 
@@ -56,7 +56,7 @@ def test_login_succeeds(site, client, make_user):
         'site_id': site.id,
     }
 
-    assert session_service.find_recent_login(user.id) is not None
+    assert authn_session_service.find_recent_login(user.id) is not None
 
     cookies = list(client.cookie_jar)
     assert len(cookies) == 1

@@ -10,8 +10,8 @@ from flask import abort, g, redirect, request
 from flask_babel import gettext
 
 from .....services.authentication.exceptions import AuthenticationFailed
-from .....services.authentication import service as authentication_service
-from .....services.authentication.session import service as session_service
+from .....services.authentication import authn_service
+from .....services.authentication.session import authn_session_service
 from .....signals import auth as auth_signals
 from .....typing import UserID
 from .....util.authorization import get_permissions_for_user
@@ -61,7 +61,7 @@ def log_in():
         abort(401)
 
     try:
-        user = authentication_service.authenticate(screen_name, password)
+        user = authn_service.authenticate(screen_name, password)
     except AuthenticationFailed:
         abort(401)
 
@@ -69,7 +69,7 @@ def log_in():
 
     # Authorization succeeded.
 
-    auth_token, event = session_service.log_in_user(
+    auth_token, event = authn_session_service.log_in_user(
         user.id, request.remote_addr
     )
     user_session.start(user.id, auth_token, permanent=permanent)

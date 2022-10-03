@@ -1,6 +1,6 @@
 """
-byceps.services.authentication.password.reset_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authentication.password.authn_password_reset_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -17,7 +17,7 @@ from ...user.transfer.models import User
 from ...verification_token import service as verification_token_service
 from ...verification_token.transfer.models import VerificationToken
 
-from . import service as password_service
+from . import authn_password_service
 
 
 def prepare_password_reset(
@@ -62,4 +62,4 @@ def reset_password(
 
     verification_token_service.delete_token(verification_token.token)
 
-    password_service.update_password_hash(user.id, password, user.id)
+    authn_password_service.update_password_hash(user.id, password, user.id)

@@ -6,14 +6,14 @@
 from byceps.services.authentication.session.models.current_user import (
     CurrentUser,
 )
-from byceps.services.authentication.session import service as session_service
+from byceps.services.authentication.session import authn_session_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_service
 from byceps.services.user.transfer.models import User
 
 
 def get_current_user_for_user(user: User, locale: str) -> CurrentUser:
-    return session_service.get_authenticated_current_user(
+    return authn_session_service.get_authenticated_current_user(
         user, locale=locale, permissions=frozenset()
     )
 

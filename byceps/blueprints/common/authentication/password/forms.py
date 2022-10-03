@@ -11,7 +11,7 @@ from flask_babel import lazy_gettext
 from wtforms import PasswordField, StringField
 from wtforms.validators import InputRequired, EqualTo, Length, ValidationError
 
-from .....services.authentication.password import service as password_service
+from .....services.authentication.password import authn_password_service
 from .....util.l10n import LocalizedForm
 
 
@@ -67,7 +67,9 @@ class UpdateForm(ResetForm):
         user_id = g.user.id
         password = field.data
 
-        if not password_service.is_password_valid_for_user(user_id, password):
+        if not authn_password_service.is_password_valid_for_user(
+            user_id, password
+        ):
             raise ValidationError(
                 lazy_gettext('The password does not match the current one.')
             )

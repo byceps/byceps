@@ -13,8 +13,8 @@ from typing import Optional
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.authentication.password import service as password_service
-from ....services.authentication.session import service as session_service
+from ....services.authentication.password import authn_password_service
+from ....services.authentication.session import authn_session_service
 from ....services.authorization import service as authorization_service
 from ....services.authorization.transfer.models import (
     Role,
@@ -106,7 +106,7 @@ def view(user_id):
     user = _get_user_for_admin_or_404(user_id)
     db_user = user_service.find_user_with_details(user.id)
 
-    recent_login = session_service.find_recent_login(user.id)
+    recent_login = authn_session_service.find_recent_login(user.id)
     days_since_recent_login = _calculate_days_since(recent_login)
 
     orga_activities = orga_team_service.get_orga_activities_for_user(user.id)
@@ -697,7 +697,9 @@ def set_password(user_id):
     new_password = form.password.data
     initiator_id = g.user.id
 
-    password_service.update_password_hash(user.id, new_password, initiator_id)
+    authn_password_service.update_password_hash(
+        user.id, new_password, initiator_id
+    )
 
     flash_success(
         gettext(
