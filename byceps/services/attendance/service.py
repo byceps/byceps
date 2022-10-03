@@ -15,7 +15,7 @@ from sqlalchemy import select
 from ...database import db, paginate, Pagination
 from ...typing import PartyID, UserID
 
-from ..seating.dbmodels.seat import Seat as DbSeat
+from ..seating.dbmodels.seat import DbSeat
 from ..ticketing.dbmodels.ticket import DbCategory, DbTicket
 from ..user.dbmodels.user import User as DbUser
 from ..user_avatar.dbmodels import AvatarSelection as DbAvatarSelection

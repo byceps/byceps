@@ -13,7 +13,7 @@ from ....database import db, generate_uuid
 from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
-from ...seating.dbmodels.seat import Seat
+from ...seating.dbmodels.seat import DbSeat
 from ...shop.order.transfer.number import OrderNumber
 from ...user.dbmodels.user import User
 
@@ -54,7 +54,7 @@ class DbTicket(db.Model):
     user_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     user_managed_by = db.relationship(User, foreign_keys=[user_managed_by_id])
     occupied_seat_id = db.Column(db.Uuid, db.ForeignKey('seats.id'), index=True, nullable=True, unique=True)
-    occupied_seat = db.relationship(Seat, backref=db.backref('occupied_by_ticket', uselist=False))
+    occupied_seat = db.relationship(DbSeat, backref=db.backref('occupied_by_ticket', uselist=False))
     used_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
     used_by = db.relationship(User, foreign_keys=[used_by_id])
     revoked = db.Column(db.Boolean, default=False, nullable=False)

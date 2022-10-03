@@ -17,8 +17,8 @@ from ...typing import PartyID
 
 from ..ticketing.dbmodels.ticket import DbTicket
 
-from .dbmodels.area import Area as DbArea
-from .dbmodels.seat import Seat as DbSeat
+from .dbmodels.area import DbArea
+from .dbmodels.seat import DbSeat
 from .transfer.models import Area, SeatUtilization
 
 

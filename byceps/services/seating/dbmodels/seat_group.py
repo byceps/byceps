@@ -16,10 +16,10 @@ from ...ticketing.dbmodels.category import DbCategory
 from ...ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from ...ticketing.transfer.models import TicketBundleID, TicketCategoryID
 
-from .seat import Seat
+from .seat import DbSeat
 
 
-class SeatGroup(db.Model):
+class DbSeatGroup(db.Model):
     """A group of seats."""
 
     __tablename__ = 'seat_groups'
@@ -58,18 +58,18 @@ class SeatGroup(db.Model):
             .build()
 
 
-class SeatGroupAssignment(db.Model):
+class DbSeatGroupAssignment(db.Model):
     """The assignment of a seat to a seat group."""
 
     __tablename__ = 'seat_group_assignments'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     group_id = db.Column(db.Uuid, db.ForeignKey('seat_groups.id'), index=True, nullable=False)
-    group = db.relationship(SeatGroup, collection_class=set, backref='assignments')
+    group = db.relationship(DbSeatGroup, collection_class=set, backref='assignments')
     seat_id = db.Column(db.Uuid, db.ForeignKey('seats.id'), unique=True, index=True, nullable=False)
-    seat = db.relationship(Seat, backref=db.backref('assignment', uselist=False))
+    seat = db.relationship(DbSeat, backref=db.backref('assignment', uselist=False))
 
-    def __init__(self, group: SeatGroup, seat: Seat) -> None:
+    def __init__(self, group: DbSeatGroup, seat: DbSeat) -> None:
         self.group = group
         self.seat = seat
 
@@ -81,19 +81,19 @@ class SeatGroupAssignment(db.Model):
             .build()
 
 
-class Occupancy(db.Model):
+class DbOccupancy(db.Model):
     """The occupancy of a seat group."""
 
     __tablename__ = 'seat_group_occupancies'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     seat_group_id = db.Column(db.Uuid, db.ForeignKey('seat_groups.id'), unique=True, index=True, nullable=False)
-    seat_group = db.relationship(SeatGroup, backref=db.backref('occupancy', uselist=False))
+    seat_group = db.relationship(DbSeatGroup, backref=db.backref('occupancy', uselist=False))
     ticket_bundle_id = db.Column(db.Uuid, db.ForeignKey('ticket_bundles.id'), unique=True, index=True, nullable=False)
     ticket_bundle = db.relationship(DbTicketBundle, backref=db.backref('occupied_seat_group', uselist=False))
 
     def __init__(
-        self, seat_group_id: SeatGroup, ticket_bundle_id: TicketBundleID
+        self, seat_group_id: DbSeatGroup, ticket_bundle_id: TicketBundleID
     ) -> None:
         self.seat_group_id = seat_group_id
         self.ticket_bundle_id = ticket_bundle_id

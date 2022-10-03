@@ -22,20 +22,20 @@ from ...ticketing.transfer.models import TicketCategoryID
 
 from ..transfer.models import AreaID
 
-from .area import Area
+from .area import DbArea
 
 
 Point = namedtuple('Point', ['x', 'y'])
 
 
-class Seat(db.Model):
+class DbSeat(db.Model):
     """A seat."""
 
     __tablename__ = 'seats'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     area_id = db.Column(db.Uuid, db.ForeignKey('seating_areas.id'), index=True, nullable=False)
-    area = db.relationship(Area, backref='seats')
+    area = db.relationship(DbArea, backref='seats')
     coord_x = db.Column(db.Integer, nullable=False)
     coord_y = db.Column(db.Integer, nullable=False)
     rotation = db.Column(db.SmallInteger, nullable=True)

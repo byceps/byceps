@@ -18,8 +18,8 @@ from ..ticketing.dbmodels.category import DbCategory as DbTicketCategory
 from ..ticketing.dbmodels.ticket import DbTicket
 from ..ticketing.transfer.models import TicketCategory, TicketCategoryID
 
-from .dbmodels.area import Area as DbArea
-from .dbmodels.seat import Seat as DbSeat
+from .dbmodels.area import DbArea
+from .dbmodels.seat import DbSeat
 from .transfer.models import AreaID, Seat, SeatID, SeatUtilization
 
 

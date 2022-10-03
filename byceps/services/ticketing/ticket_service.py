@@ -16,7 +16,7 @@ from ...database import db, paginate, Pagination
 from ...typing import PartyID, UserID
 
 from ..party import service as party_service
-from ..seating.dbmodels.seat import Seat as DbSeat
+from ..seating.dbmodels.seat import DbSeat
 from ..seating.transfer.models import SeatID
 from ..shop.order.transfer.number import OrderNumber
 from ..user.dbmodels.user import User as DbUser

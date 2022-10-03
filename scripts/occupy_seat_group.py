@@ -10,7 +10,7 @@ from uuid import UUID
 
 import click
 
-from byceps.services.seating.dbmodels.seat_group import SeatGroup as DbSeatGroup
+from byceps.services.seating.dbmodels.seat_group import DbSeatGroup
 from byceps.services.seating import seat_group_service
 from byceps.services.seating.transfer.models import SeatGroupID
 from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle

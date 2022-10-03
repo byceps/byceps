@@ -10,13 +10,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from ....services.seating.dbmodels.seat import Seat
+from ....services.seating.dbmodels.seat import DbSeat
 from ....services.user.dbmodels.user import User
 
 
 @dataclass  # Not yet frozen b/c models are not immutable.
 class AttendeeTicket:
-    seat: Optional[Seat]
+    seat: Optional[DbSeat]
     checked_in: bool
 
 

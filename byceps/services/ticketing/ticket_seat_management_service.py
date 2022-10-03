@@ -10,7 +10,7 @@ from ...database import db
 from ...typing import UserID
 
 # Load `Seat.assignment` backref.
-from ..seating.dbmodels.seat_group import SeatGroup as DbSeatGroup
+from ..seating.dbmodels.seat_group import DbSeatGroup
 from ..seating import seat_service, seat_group_service
 from ..seating.transfer.models import Seat, SeatID
 
