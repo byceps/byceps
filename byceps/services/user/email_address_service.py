@@ -31,7 +31,7 @@ from ..user import (
     service as user_service,
 )
 from ..verification_token import service as verification_token_service
-from ..verification_token.transfer.models import Token
+from ..verification_token.transfer.models import VerificationToken
 
 from . import log_service as user_log_service
 from .transfer.models import User
@@ -93,7 +93,7 @@ class EmailAddressConfirmationFailed(Exception):
 
 
 def confirm_email_address_via_verification_token(
-    verification_token: Token,
+    verification_token: VerificationToken,
 ) -> UserEmailAddressConfirmed:
     """Confirm the email address of the user account assigned with that
     verification token.
@@ -240,7 +240,9 @@ class EmailAddressChangeFailed(Exception):
     pass
 
 
-def change_email_address(verification_token: Token) -> UserEmailAddressChanged:
+def change_email_address(
+    verification_token: VerificationToken,
+) -> UserEmailAddressChanged:
     """Change the email address of the user account assigned with that
     verification token.
     """

@@ -36,9 +36,7 @@ from byceps.services.user import service as user_service
 from byceps.services.user_avatar.dbmodels import (
     AvatarSelection as UserAvatarSelection,
 )
-from byceps.services.verification_token.dbmodels import (
-    DbToken as DbVerificationToken,
-)
+from byceps.services.verification_token.dbmodels import DbVerificationToken
 from byceps.typing import UserID
 
 from _util import call_with_app_context

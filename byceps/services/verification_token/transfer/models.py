@@ -26,7 +26,7 @@ Purpose = Enum(
 
 
 @dataclass(frozen=True)
-class Token:
+class VerificationToken:
     token: str
     created_at: datetime
     user_id: UserID

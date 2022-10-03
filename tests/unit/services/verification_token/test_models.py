@@ -12,7 +12,10 @@ import pytest
 from byceps.services.verification_token import (
     service as verification_token_service,
 )
-from byceps.services.verification_token.transfer.models import Purpose, Token
+from byceps.services.verification_token.transfer.models import (
+    Purpose,
+    VerificationToken,
+)
 
 
 @pytest.mark.parametrize(
@@ -51,7 +54,7 @@ from byceps.services.verification_token.transfer.models import Purpose, Token
     ],
 )
 def test_is_expired(purpose, now, expected):
-    token = Token(
+    token = VerificationToken(
         token='fake',
         created_at=datetime(2014, 11, 26, 17, 44, 53),
         user_id=UUID('b57acf68-c258-4b0a-9f00-bb989b36de8a'),

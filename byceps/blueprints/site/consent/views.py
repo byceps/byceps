@@ -16,7 +16,7 @@ from ....services.consent import consent_service, subject_service
 from ....services.verification_token import (
     service as verification_token_service,
 )
-from ....services.verification_token.transfer.models import Token
+from ....services.verification_token.transfer.models import VerificationToken
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
@@ -102,7 +102,7 @@ def _get_unconsented_subjects_for_user(user_id):
     return subject_service.get_subjects(unconsented_subject_ids)
 
 
-def _get_verification_token_or_404(token_value: str) -> Token:
+def _get_verification_token_or_404(token_value: str) -> VerificationToken:
     verification_token = verification_token_service.find_for_consent_by_token(
         token_value
     )

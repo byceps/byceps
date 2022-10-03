@@ -22,7 +22,7 @@ from byceps.services.newsletter import (
 )
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user import log_service, service as user_service
-from byceps.services.verification_token.dbmodels import DbToken
+from byceps.services.verification_token.dbmodels import DbVerificationToken
 from byceps.services.verification_token.transfer.models import (
     Purpose as TokenPurpose,
 )
@@ -229,7 +229,7 @@ def get_user_count():
 
 def find_verification_token(user_id):
     return db.session \
-        .query(DbToken) \
+        .query(DbVerificationToken) \
         .filter_by(user_id=user_id) \
         .filter_by(_purpose=TokenPurpose.email_address_confirmation.name) \
         .first()

@@ -15,7 +15,7 @@ from ...email.transfer.models import NameAndAddress
 from ...user import service as user_service
 from ...user.transfer.models import User
 from ...verification_token import service as verification_token_service
-from ...verification_token.transfer.models import Token
+from ...verification_token.transfer.models import VerificationToken
 
 from . import service as password_service
 
@@ -54,7 +54,9 @@ def prepare_password_reset(
     email_service.enqueue_email(sender, recipients, subject, body)
 
 
-def reset_password(verification_token: Token, password: str) -> None:
+def reset_password(
+    verification_token: VerificationToken, password: str
+) -> None:
     """Reset the user's password."""
     user = user_service.get_db_user(verification_token.user_id)
 
