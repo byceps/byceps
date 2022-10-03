@@ -16,7 +16,7 @@ from ...services.user import service as user_service
 from ...services.user.transfer.models import User
 from ...typing import UserID
 
-from .dbmodels.match_comment import MatchComment as DbMatchComment
+from .dbmodels.match_comment import DbMatchComment
 from .transfer.models import MatchID, MatchComment, MatchCommentID
 
 

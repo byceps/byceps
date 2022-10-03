@@ -20,7 +20,7 @@ from ...image import service as image_service
 from ...image.service import ImageTypeProhibited  # Provide to view functions.
 from ...user import service as user_service
 
-from .dbmodels import Avatar as DbAvatar
+from .dbmodels import DbAvatar
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)

@@ -15,17 +15,17 @@ from ...user.dbmodels.user import User
 
 from ..transfer.models import TourneyID
 
-from .tourney import Tourney
+from .tourney import DbTourney
 
 
-class Participant(db.Model):
+class DbParticipant(db.Model):
     """One or more players participating in a tourney as a single unit."""
 
     __tablename__ = 'tourney_participants'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     tourney_id = db.Column(db.Uuid, db.ForeignKey('tourneys.id'), index=True, nullable=False)
-    tourney = db.relationship(Tourney)
+    tourney = db.relationship(DbTourney)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     created_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     created_by = db.relationship(User)

@@ -15,7 +15,7 @@ from ....util.instances import ReprBuilder
 from ...party.dbmodels.party import Party
 
 
-class TourneyCategory(db.Model):
+class DbTourneyCategory(db.Model):
     """One of potentially multiple tourney categories for a party."""
 
     __tablename__ = 'tourney_categories'
@@ -27,7 +27,7 @@ class TourneyCategory(db.Model):
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     party = db.relationship(Party,
                             backref=db.backref('tourney_categories',
-                                               order_by='TourneyCategory.position',
+                                               order_by='DbTourneyCategory.position',
                                                collection_class=ordering_list('position', count_from=1)))
     position = db.Column(db.Integer, nullable=False)
     title = db.Column(db.UnicodeText, nullable=False)

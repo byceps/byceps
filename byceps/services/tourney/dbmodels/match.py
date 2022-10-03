@@ -9,7 +9,7 @@ byceps.services.tourney.dbmodels.match
 from ....database import db, generate_uuid
 
 
-class Match(db.Model):
+class DbMatch(db.Model):
     """A match between two opponents."""
 
     __tablename__ = 'tourney_matches'

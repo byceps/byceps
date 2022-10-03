@@ -26,7 +26,7 @@ from ....util.instances import ReprBuilder
 AvatarID = NewType('AvatarID', UUID)
 
 
-class Avatar(db.Model):
+class DbAvatar(db.Model):
     """A tourney-related avatar image uploaded by a user."""
 
     __tablename__ = 'tourney_avatars'

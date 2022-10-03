@@ -15,17 +15,17 @@ from ...user.dbmodels.user import User
 
 from ..transfer.models import MatchID
 
-from .match import Match
+from .match import DbMatch
 
 
-class MatchComment(db.Model):
+class DbMatchComment(db.Model):
     """An immutable comment on a match by one of the opponents."""
 
     __tablename__ = 'tourney_match_comments'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     match_id = db.Column(db.Uuid, db.ForeignKey('tourney_matches.id'), index=True, nullable=False)
-    match = db.relationship(Match)
+    match = db.relationship(DbMatch)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     created_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     created_by = db.relationship(User, foreign_keys=[created_by_id])

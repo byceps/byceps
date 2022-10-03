@@ -15,10 +15,10 @@ from ....util.instances import ReprBuilder
 
 from ..transfer.models import TourneyCategoryID
 
-from .tourney_category import TourneyCategory
+from .tourney_category import DbTourneyCategory
 
 
-class Tourney(db.Model):
+class DbTourney(db.Model):
     """A tournament."""
 
     __tablename__ = 'tourneys'
@@ -37,7 +37,7 @@ class Tourney(db.Model):
         index=True,
         nullable=False,
     )
-    category = db.relationship(TourneyCategory)
+    category = db.relationship(DbTourneyCategory)
     max_participant_count = db.Column(db.Integer, nullable=False)
     starts_at = db.Column(db.DateTime, nullable=False)
 

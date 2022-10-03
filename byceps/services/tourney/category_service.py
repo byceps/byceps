@@ -14,7 +14,7 @@ from ...typing import PartyID
 
 from ..party.dbmodels.party import Party as DbParty
 
-from .dbmodels.tourney_category import TourneyCategory as DbTourneyCategory
+from .dbmodels.tourney_category import DbTourneyCategory
 from .transfer.models import TourneyCategory, TourneyCategoryID
 
 
