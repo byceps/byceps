@@ -52,7 +52,7 @@ def test_announce_page_deleted(app, site, editor):
         'in Site "acmecon-2014-website" gelöscht.'
     )
 
-    fragment_version, _ = page_service.create_page(
+    version, _ = page_service.create_page(
         site.id,
         'old_page',
         LANGUAGE_CODE,
@@ -63,7 +63,7 @@ def test_announce_page_deleted(app, site, editor):
     )
 
     success, event = page_service.delete_page(
-        fragment_version.page_id, initiator_id=editor.id
+        version.page_id, initiator_id=editor.id
     )
 
     assert success
