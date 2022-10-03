@@ -27,7 +27,7 @@ from ..transfer.number import OrderNumber
 from ..transfer.order import PaymentState
 
 
-class Order(db.Model):
+class DbOrder(db.Model):
     """An order for articles, placed by a user."""
 
     __tablename__ = 'shop_orders'

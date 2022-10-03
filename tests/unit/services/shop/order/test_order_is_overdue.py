@@ -9,7 +9,7 @@ from uuid import UUID
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.shop.order.dbmodels.order import Order as DbOrder
+from byceps.services.shop.order.dbmodels.order import DbOrder
 from byceps.services.shop.order.service import _is_overdue as is_overdue
 from byceps.services.shop.order.transfer.number import OrderNumber
 from byceps.services.shop.order.transfer.order import PaymentState

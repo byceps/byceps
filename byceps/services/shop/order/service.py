@@ -34,9 +34,9 @@ from ..storefront.transfer.models import StorefrontID
 
 from .actions import ticket as ticket_actions
 from .actions import ticket_bundle as ticket_bundle_actions
-from .dbmodels.line_item import LineItem as DbLineItem
-from .dbmodels.log import OrderLogEntry as DbOrderLogEntry
-from .dbmodels.order import Order as DbOrder
+from .dbmodels.line_item import DbLineItem
+from .dbmodels.log import DbOrderLogEntry
+from .dbmodels.order import DbOrder
 from . import action_service, log_service, sequence_service
 from .transfer.log import OrderLogEntryData
 from .transfer.number import OrderNumber

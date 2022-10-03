@@ -20,7 +20,7 @@ from .actions.create_ticket_bundles import create_ticket_bundles
 from .actions.create_tickets import create_tickets
 from .actions.revoke_ticket_bundles import revoke_ticket_bundles
 from .actions.revoke_tickets import revoke_tickets
-from .dbmodels.order_action import OrderAction as DbOrderAction
+from .dbmodels.order_action import DbOrderAction
 from .transfer.action import Action, ActionParameters
 from .transfer.order import LineItem, Order, PaymentState
 

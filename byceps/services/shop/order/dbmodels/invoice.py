@@ -13,7 +13,7 @@ from .....database import db, generate_uuid
 from ..transfer.order import OrderID
 
 
-class Invoice(db.Model):
+class DbInvoice(db.Model):
     """An invoice for an order.
 
     Currently used to link numbers and URLs of externally managed

@@ -13,7 +13,7 @@ from sqlalchemy import select
 
 from ....database import db
 
-from .dbmodels.invoice import Invoice as DbInvoice
+from .dbmodels.invoice import DbInvoice
 from . import log_service
 from .transfer.invoice import Invoice
 from .transfer.order import OrderID

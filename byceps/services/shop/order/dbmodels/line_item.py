@@ -19,17 +19,17 @@ from .....database import db, generate_uuid
 from ...article.dbmodels.article import DbArticle
 from ...article.transfer.models import ArticleNumber, ArticleType
 
-from .order import Order
+from .order import DbOrder
 
 
-class LineItem(db.Model):
+class DbLineItem(db.Model):
     """A line item that belongs to an order."""
 
     __tablename__ = 'shop_order_line_items'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     order_number = db.Column(db.UnicodeText, db.ForeignKey('shop_orders.order_number'), index=True, nullable=False)
-    order = db.relationship(Order, backref='line_items')
+    order = db.relationship(DbOrder, backref='line_items')
     article_number = db.Column(db.UnicodeText, db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
     article = db.relationship(DbArticle)
     _article_type = db.Column('article_type', db.UnicodeText, nullable=False)
@@ -43,7 +43,7 @@ class LineItem(db.Model):
 
     def __init__(
         self,
-        order: Order,
+        order: DbOrder,
         article_number: ArticleNumber,
         article_type: ArticleType,
         description: str,

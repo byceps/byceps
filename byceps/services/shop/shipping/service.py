@@ -16,8 +16,8 @@ from ..article.dbmodels.article import DbArticle
 from ....database import db
 
 from ..article.transfer.models import ArticleNumber
-from ..order.dbmodels.line_item import LineItem as DbLineItem
-from ..order.dbmodels.order import Order as DbOrder
+from ..order.dbmodels.line_item import DbLineItem
+from ..order.dbmodels.order import DbOrder
 from ..order.transfer.order import PaymentState
 from ..shop.transfer.models import ShopID
 

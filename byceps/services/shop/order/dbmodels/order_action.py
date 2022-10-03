@@ -22,7 +22,7 @@ from ..transfer.action import ActionParameters
 from ..transfer.order import PaymentState
 
 
-class OrderAction(db.Model):
+class DbOrderAction(db.Model):
     """A procedure to execute when an order for that article is marked
     as paid.
     """

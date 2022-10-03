@@ -17,8 +17,8 @@ from ....typing import UserID
 
 from ..shop.transfer.models import ShopID
 
-from .dbmodels.log import OrderLogEntry as DbOrderLogEntry
-from .dbmodels.order import Order as DbOrder
+from .dbmodels.log import DbOrderLogEntry
+from .dbmodels.order import DbOrder
 from .transfer.log import OrderLogEntry, OrderLogEntryData
 from .transfer.order import OrderID
 

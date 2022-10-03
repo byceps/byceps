@@ -14,7 +14,7 @@ from ....database import db
 
 from ..article.transfer.models import ArticleNumber
 
-from .dbmodels.line_item import LineItem as DbLineItem
+from .dbmodels.line_item import DbLineItem
 from .service import line_item_to_transfer_object
 from .transfer.order import LineItem, PaymentState
 

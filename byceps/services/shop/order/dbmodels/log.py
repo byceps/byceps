@@ -15,7 +15,7 @@ from ..transfer.log import OrderLogEntryData
 from ..transfer.order import OrderID
 
 
-class OrderLogEntry(db.Model):
+class DbOrderLogEntry(db.Model):
     """A log entry regarding an order."""
 
     __tablename__ = 'shop_order_log_entries'
