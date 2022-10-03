@@ -12,7 +12,7 @@ from ....database import db
 from ....typing import UserID
 
 
-class Credential(db.Model):
+class DbCredential(db.Model):
     """A user's login credential."""
 
     __tablename__ = 'authn_credentials'

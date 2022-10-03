@@ -18,7 +18,7 @@ from ....typing import UserID
 
 from ...authorization.transfer.models import PermissionID
 
-from .dbmodels import ApiToken as DbApiToken
+from .dbmodels import DbApiToken
 from .transfer.models import ApiToken
 
 

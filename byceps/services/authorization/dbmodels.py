@@ -17,7 +17,7 @@ from ..user.dbmodels.user import User
 from .transfer.models import PermissionID, RoleID
 
 
-class Role(db.Model):
+class DbRole(db.Model):
     """A role.
 
     Combines one or more permissions.
@@ -42,13 +42,13 @@ class Role(db.Model):
             .build()
 
 
-class RolePermission(db.Model):
+class DbRolePermission(db.Model):
     """The assignment of a permission to a role."""
 
     __tablename__ = 'authz_role_permissions'
 
     role_id = db.Column(db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True)
-    role = db.relationship(Role,
+    role = db.relationship(DbRole,
                            backref=db.backref('role_permissions', collection_class=set, lazy='joined'),
                            collection_class=set)
     permission_id = db.Column(db.UnicodeText, primary_key=True)
@@ -64,7 +64,7 @@ class RolePermission(db.Model):
             .build()
 
 
-class UserRole(db.Model):
+class DbUserRole(db.Model):
     """The assignment of a role to a user."""
 
     __tablename__ = 'authz_user_roles'
@@ -74,7 +74,7 @@ class UserRole(db.Model):
                            backref=db.backref('user_roles', collection_class=set),
                            collection_class=set)
     role_id = db.Column(db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True)
-    role = db.relationship(Role,
+    role = db.relationship(DbRole,
                            backref=db.backref('user_roles', collection_class=set),
                            collection_class=set,
                            lazy='joined')

@@ -19,11 +19,7 @@ from ...typing import UserID
 from ..user import log_service as user_log_service, service as user_service
 from ..user.transfer.models import User
 
-from .dbmodels import (
-    Role as DbRole,
-    RolePermission as DbRolePermission,
-    UserRole as DbUserRole,
-)
+from .dbmodels import DbRole, DbRolePermission, DbUserRole
 from .transfer.models import PermissionID, Role, RoleID
 
 

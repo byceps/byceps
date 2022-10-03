@@ -18,7 +18,7 @@ from ....typing import UserID
 from ...authorization.transfer.models import PermissionID
 
 
-class ApiToken(db.Model):
+class DbApiToken(db.Model):
     """An authentication and authorization token for API clients."""
 
     __tablename__ = 'api_tokens'

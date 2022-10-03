@@ -8,9 +8,7 @@ from unittest.mock import patch
 import pytest
 
 from byceps.database import db
-from byceps.services.authentication.password.dbmodels import (
-    Credential as DbCredential,
-)
+from byceps.services.authentication.password.dbmodels import DbCredential
 from byceps.services.authentication.session import service as session_service
 from byceps.services.authorization import service as authorization_service
 from byceps.services.brand import settings_service as brand_settings_service

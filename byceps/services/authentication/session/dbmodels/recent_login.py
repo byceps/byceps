@@ -12,7 +12,7 @@ from .....database import db
 from .....typing import UserID
 
 
-class RecentLogin(db.Model):
+class DbRecentLogin(db.Model):
     """A user's most recent successful login."""
 
     __tablename__ = 'authn_recent_logins'

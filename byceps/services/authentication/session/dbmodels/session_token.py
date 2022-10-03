@@ -12,7 +12,7 @@ from .....database import db
 from .....typing import UserID
 
 
-class SessionToken(db.Model):
+class DbSessionToken(db.Model):
     """A user's session token."""
 
     __tablename__ = 'authn_session_tokens'

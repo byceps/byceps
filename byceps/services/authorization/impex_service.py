@@ -16,7 +16,7 @@ import rtoml
 
 from ...database import db
 
-from .dbmodels import Role as DbRole
+from .dbmodels import DbRole
 from .transfer.models import PermissionID, RoleID
 from . import service
 

@@ -21,7 +21,7 @@ from ...user import log_service as user_log_service
 
 from ..session import service as session_service
 
-from .dbmodels import Credential as DbCredential
+from .dbmodels import DbCredential
 
 
 PASSWORD_HASH_ITERATIONS = 320000

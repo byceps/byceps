@@ -19,8 +19,8 @@ from ...site.transfer.models import SiteID
 from ...user import log_service as user_log_service, service as user_service
 from ...user.transfer.models import User
 
-from .dbmodels.recent_login import RecentLogin as DbRecentLogin
-from .dbmodels.session_token import SessionToken as DbSessionToken
+from .dbmodels.recent_login import DbRecentLogin
+from .dbmodels.session_token import DbSessionToken
 from .models.current_user import CurrentUser
 
 

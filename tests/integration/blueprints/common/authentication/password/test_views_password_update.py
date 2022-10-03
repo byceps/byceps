@@ -4,9 +4,7 @@
 """
 
 from byceps.database import db
-from byceps.services.authentication.password.dbmodels import (
-    Credential as DbCredential,
-)
+from byceps.services.authentication.password.dbmodels import DbCredential
 from byceps.services.authentication.session import service as session_service
 
 from tests.helpers import http_client, log_in_user

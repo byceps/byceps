@@ -12,14 +12,14 @@ from typing import Callable
 import click
 
 from byceps.database import db
-from byceps.services.authentication.password.dbmodels import Credential
+from byceps.services.authentication.password.dbmodels import DbCredential
 from byceps.services.authentication.session.dbmodels.recent_login import (
-    RecentLogin,
+    DbRecentLogin,
 )
 from byceps.services.authentication.session.dbmodels.session_token import (
-    SessionToken,
+    DbSessionToken,
 )
-from byceps.services.authorization.dbmodels import UserRole
+from byceps.services.authorization.dbmodels import DbUserRole
 from byceps.services.board.dbmodels.last_category_view import (
     LastCategoryView as BoardLastCategoryView,
 )
@@ -100,22 +100,22 @@ def delete_records(
 
 def delete_authn_credentials(user_ids: set[UserID]) -> int:
     """Delete authentication credentials for the given users."""
-    return _execute_delete_for_users_query(Credential, user_ids)
+    return _execute_delete_for_users_query(DbCredential, user_ids)
 
 
 def delete_authn_recent_logins(user_ids: set[UserID]) -> int:
     """Delete recent logins for the given users."""
-    return _execute_delete_for_users_query(RecentLogin, user_ids)
+    return _execute_delete_for_users_query(DbRecentLogin, user_ids)
 
 
 def delete_authn_session_tokens(user_ids: set[UserID]) -> int:
     """Delete session tokens for the given users."""
-    return _execute_delete_for_users_query(SessionToken, user_ids)
+    return _execute_delete_for_users_query(DbSessionToken, user_ids)
 
 
 def delete_authz_user_roles(user_ids: set[UserID]) -> int:
     """Delete authorization role assignments from the given users."""
-    return _execute_delete_for_users_query(UserRole, user_ids)
+    return _execute_delete_for_users_query(DbUserRole, user_ids)
 
 
 def delete_board_category_lastviews(user_ids: set[UserID]) -> int:
