@@ -11,7 +11,7 @@ from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
 
-class Category(db.Model):
+class DbCategory(db.Model):
     """A ticket category."""
 
     __tablename__ = 'ticket_categories'

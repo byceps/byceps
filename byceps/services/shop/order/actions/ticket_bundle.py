@@ -11,7 +11,7 @@ from uuid import UUID
 
 from .....typing import UserID
 
-from ....ticketing.dbmodels.ticket_bundle import TicketBundle
+from ....ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from ....ticketing import (
     category_service as ticket_category_service,
     ticket_bundle_service,
@@ -72,7 +72,7 @@ def create_ticket_bundles(
 
 
 def _create_creation_order_log_entry(
-    order_id: OrderID, ticket_bundle: TicketBundle
+    order_id: OrderID, ticket_bundle: DbTicketBundle
 ) -> None:
     event_type = 'ticket-bundle-created'
 

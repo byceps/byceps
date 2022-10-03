@@ -15,7 +15,7 @@ from ..transfer.log import TicketLogEntryData
 from ..transfer.models import TicketID
 
 
-class TicketLogEntry(db.Model):
+class DbTicketLogEntry(db.Model):
     """A log entry regarding a ticket."""
 
     __tablename__ = 'ticket_log_entries'

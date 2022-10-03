@@ -22,9 +22,9 @@ from ..shop.order.transfer.number import OrderNumber
 from ..user.dbmodels.user import User as DbUser
 
 from . import log_service
-from .dbmodels.category import Category as DbCategory
-from .dbmodels.ticket import Ticket as DbTicket
-from .dbmodels.log import TicketLogEntry as DbTicketLogEntry
+from .dbmodels.category import DbCategory
+from .dbmodels.ticket import DbTicket
+from .dbmodels.log import DbTicketLogEntry
 from . import ticket_code_service
 from .transfer.models import (
     TicketCategoryID,

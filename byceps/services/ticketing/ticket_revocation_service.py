@@ -12,7 +12,7 @@ from typing import Optional
 from ...database import db
 from ...typing import UserID
 
-from .dbmodels.log import TicketLogEntry as DbTicketLogEntry
+from .dbmodels.log import DbTicketLogEntry
 from . import log_service, ticket_seat_management_service
 from . import ticket_service
 from .transfer.models import TicketID

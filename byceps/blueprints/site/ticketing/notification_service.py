@@ -15,13 +15,13 @@ from ....services.email import (
 )
 from ....services.party import service as party_service
 from ....services.site import service as site_service
-from ....services.ticketing.dbmodels.ticket import Ticket
+from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.user import service as user_service
 from ....services.user.transfer.models import User
 from ....util.l10n import force_user_locale
 
 
-def notify_appointed_user(ticket: Ticket, user: User, manager: User) -> None:
+def notify_appointed_user(ticket: DbTicket, user: User, manager: User) -> None:
     party_title = _get_party_title()
 
     with force_user_locale(user):
@@ -41,7 +41,7 @@ def notify_appointed_user(ticket: Ticket, user: User, manager: User) -> None:
     _enqueue_email(user, subject, body)
 
 
-def notify_withdrawn_user(ticket: Ticket, user: User, manager: User) -> None:
+def notify_withdrawn_user(ticket: DbTicket, user: User, manager: User) -> None:
     party_title = _get_party_title()
 
     with force_user_locale(user):
@@ -62,7 +62,7 @@ def notify_withdrawn_user(ticket: Ticket, user: User, manager: User) -> None:
 
 
 def notify_appointed_user_manager(
-    ticket: Ticket, user: User, manager: User
+    ticket: DbTicket, user: User, manager: User
 ) -> None:
     party_title = _get_party_title()
 
@@ -84,7 +84,7 @@ def notify_appointed_user_manager(
 
 
 def notify_withdrawn_user_manager(
-    ticket: Ticket, user: User, manager: User
+    ticket: DbTicket, user: User, manager: User
 ) -> None:
     party_title = _get_party_title()
 
@@ -106,7 +106,7 @@ def notify_withdrawn_user_manager(
 
 
 def notify_appointed_seat_manager(
-    ticket: Ticket, user: User, manager: User
+    ticket: DbTicket, user: User, manager: User
 ) -> None:
     party_title = _get_party_title()
 
@@ -128,7 +128,7 @@ def notify_appointed_seat_manager(
 
 
 def notify_withdrawn_seat_manager(
-    ticket: Ticket, user: User, manager: User
+    ticket: DbTicket, user: User, manager: User
 ) -> None:
     party_title = _get_party_title()
 

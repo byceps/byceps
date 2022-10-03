@@ -20,7 +20,7 @@ from ....services.party.transfer.models import Party
 from ....services.shop.order import log_service as order_log_service
 from ....services.shop.order import service as order_service
 from ....services.site import service as site_service
-from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
+from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.ticketing import attendance_service, ticket_service
 from ....services.user import log_service, service as user_service
 from ....services.user.transfer.log import UserLogEntry, UserLogEntryData

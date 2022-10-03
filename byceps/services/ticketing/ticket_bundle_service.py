@@ -17,9 +17,9 @@ from ...typing import PartyID, UserID
 from ..seating import seat_group_service
 from ..shop.order.transfer.number import OrderNumber
 
-from .dbmodels.category import Category as DbCategory
-from .dbmodels.ticket import Ticket as DbTicket
-from .dbmodels.ticket_bundle import TicketBundle as DbTicketBundle
+from .dbmodels.category import DbCategory
+from .dbmodels.ticket import DbTicket
+from .dbmodels.ticket_bundle import DbTicketBundle
 from .ticket_creation_service import build_tickets, TicketCreationFailed
 from .ticket_revocation_service import build_ticket_revoked_log_entry
 from .transfer.models import TicketBundleID, TicketCategoryID

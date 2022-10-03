@@ -12,8 +12,8 @@ from ....database import db, generate_uuid
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
-from ...ticketing.dbmodels.category import Category
-from ...ticketing.dbmodels.ticket_bundle import TicketBundle
+from ...ticketing.dbmodels.category import DbCategory
+from ...ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from ...ticketing.transfer.models import TicketBundleID, TicketCategoryID
 
 from .seat import Seat
@@ -30,7 +30,7 @@ class SeatGroup(db.Model):
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     ticket_category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), nullable=False)
-    ticket_category = db.relationship(Category)
+    ticket_category = db.relationship(DbCategory)
     seat_quantity = db.Column(db.Integer, nullable=False)
     title = db.Column(db.UnicodeText, nullable=False)
 
@@ -90,7 +90,7 @@ class Occupancy(db.Model):
     seat_group_id = db.Column(db.Uuid, db.ForeignKey('seat_groups.id'), unique=True, index=True, nullable=False)
     seat_group = db.relationship(SeatGroup, backref=db.backref('occupancy', uselist=False))
     ticket_bundle_id = db.Column(db.Uuid, db.ForeignKey('ticket_bundles.id'), unique=True, index=True, nullable=False)
-    ticket_bundle = db.relationship(TicketBundle, backref=db.backref('occupied_seat_group', uselist=False))
+    ticket_bundle = db.relationship(DbTicketBundle, backref=db.backref('occupied_seat_group', uselist=False))
 
     def __init__(
         self, seat_group_id: SeatGroup, ticket_bundle_id: TicketBundleID

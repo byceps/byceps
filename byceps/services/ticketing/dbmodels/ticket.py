@@ -19,11 +19,11 @@ from ...user.dbmodels.user import User
 
 from ..transfer.models import TicketCategoryID, TicketCode
 
-from .category import Category
-from .ticket_bundle import TicketBundle
+from .category import DbCategory
+from .ticket_bundle import DbTicketBundle
 
 
-class Ticket(db.Model):
+class DbTicket(db.Model):
     """A ticket that permits to attend a party and to occupy a seat.
 
     A user can generally occupy multiple seats which is why no database
@@ -43,9 +43,9 @@ class Ticket(db.Model):
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     code = db.Column(db.UnicodeText, index=True, nullable=False)
     bundle_id = db.Column(db.Uuid, db.ForeignKey('ticket_bundles.id'), index=True, nullable=True)
-    bundle = db.relationship(TicketBundle, backref='tickets')
+    bundle = db.relationship(DbTicketBundle, backref='tickets')
     category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), index=True, nullable=False)
-    category = db.relationship(Category)
+    category = db.relationship(DbCategory)
     owned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     owned_by = db.relationship(User, foreign_keys=[owned_by_id])
     order_number = db.Column(db.UnicodeText, db.ForeignKey('shop_orders.order_number'), index=True, nullable=True)
@@ -67,7 +67,7 @@ class Ticket(db.Model):
         category_id: TicketCategoryID,
         owned_by_id: UserID,
         *,
-        bundle: Optional[TicketBundle] = None,
+        bundle: Optional[DbTicketBundle] = None,
         order_number: Optional[OrderNumber] = None,
         used_by_id: Optional[UserID] = None,
     ) -> None:

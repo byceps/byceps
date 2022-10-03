@@ -15,7 +15,7 @@ from sqlalchemy.sql import Select
 from ...database import db, paginate, Pagination
 from ...typing import PartyID
 
-from ..ticketing.dbmodels.ticket import Ticket as DbTicket
+from ..ticketing.dbmodels.ticket import DbTicket
 
 from .dbmodels.area import Area as DbArea
 from .dbmodels.seat import Seat as DbSeat

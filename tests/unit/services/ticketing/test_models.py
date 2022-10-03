@@ -7,7 +7,7 @@ from uuid import UUID
 
 import pytest
 
-from byceps.services.ticketing.dbmodels.ticket import Ticket as DbTicket
+from byceps.services.ticketing.dbmodels.ticket import DbTicket
 
 
 ANY_BUNDLE_ID = UUID('4138fcfb-cc18-45c0-aede-d49a8e279885')

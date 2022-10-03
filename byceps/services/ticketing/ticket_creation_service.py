@@ -16,8 +16,8 @@ from ...typing import PartyID, UserID
 
 from ..shop.order.transfer.number import OrderNumber
 
-from .dbmodels.ticket import Ticket as DbTicket
-from .dbmodels.ticket_bundle import TicketBundle as DbTicketBundle
+from .dbmodels.ticket import DbTicket
+from .dbmodels.ticket_bundle import DbTicketBundle
 from . import ticket_code_service
 from .transfer.models import TicketCategoryID
 

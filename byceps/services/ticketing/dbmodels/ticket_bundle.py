@@ -17,10 +17,10 @@ from ...user.dbmodels.user import User
 
 from ..transfer.models import TicketCategoryID
 
-from .category import Category
+from .category import DbCategory
 
 
-class TicketBundle(db.Model):
+class DbTicketBundle(db.Model):
     """A set of tickets of the same category and with with a common
     owner, seat manager, and user manager, respectively.
     """
@@ -31,7 +31,7 @@ class TicketBundle(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
     ticket_category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), index=True, nullable=False)
-    ticket_category = db.relationship(Category)
+    ticket_category = db.relationship(DbCategory)
     ticket_quantity = db.Column(db.Integer, nullable=False)
     owned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     owned_by = db.relationship(User, foreign_keys=[owned_by_id])

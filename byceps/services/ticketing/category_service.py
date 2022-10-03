@@ -12,8 +12,8 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import PartyID
 
-from .dbmodels.category import Category as DbCategory
-from .dbmodels.ticket import Ticket as DbTicket
+from .dbmodels.category import DbCategory
+from .dbmodels.ticket import DbTicket
 from .transfer.models import TicketCategory, TicketCategoryID
 
 

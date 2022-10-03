@@ -20,11 +20,9 @@ from ..party.dbmodels.party import Party as DbParty
 from ..party import service as party_service
 from ..party.transfer.models import Party
 
-from .dbmodels.archived_attendance import (
-    ArchivedAttendance as DbArchivedAttendance,
-)
-from .dbmodels.category import Category as DbCategory
-from .dbmodels.ticket import Ticket as DbTicket
+from .dbmodels.archived_attendance import DbArchivedAttendance
+from .dbmodels.category import DbCategory
+from .dbmodels.ticket import DbTicket
 
 
 def create_archived_attendance(user_id: UserID, party_id: PartyID) -> None:

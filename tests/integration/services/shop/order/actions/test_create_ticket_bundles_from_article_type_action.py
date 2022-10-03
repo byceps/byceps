@@ -16,7 +16,7 @@ from byceps.services.shop.order import service as order_service
 from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
-from byceps.services.ticketing.dbmodels.ticket import Ticket as DbTicket
+from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing import ticket_service, ticket_bundle_service
 from byceps.services.ticketing.transfer.models import TicketCategory
 from byceps.services.user.transfer.models import User

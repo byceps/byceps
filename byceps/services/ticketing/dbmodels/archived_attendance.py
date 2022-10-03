@@ -13,7 +13,7 @@ from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
 
-class ArchivedAttendance(db.Model):
+class DbArchivedAttendance(db.Model):
     """A user's attendance of a party.
 
     This is a link between a party and a user that attended it.

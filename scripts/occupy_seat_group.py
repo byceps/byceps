@@ -13,7 +13,7 @@ import click
 from byceps.services.seating.dbmodels.seat_group import SeatGroup as DbSeatGroup
 from byceps.services.seating import seat_group_service
 from byceps.services.seating.transfer.models import SeatGroupID
-from byceps.services.ticketing.dbmodels.ticket_bundle import TicketBundle
+from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from byceps.services.ticketing import ticket_bundle_service
 from byceps.services.ticketing.transfer.models import TicketBundleID
 
@@ -38,7 +38,7 @@ def validate_seat_group(ctx, param, seat_group_id_value: str) -> DbSeatGroup:
 
 def validate_ticket_bundle(
     ctx, param, ticket_bundle_id_value: str
-) -> TicketBundle:
+) -> DbTicketBundle:
     try:
         ticket_bundle_id = TicketBundleID(UUID(ticket_bundle_id_value))
     except ValueError as e:

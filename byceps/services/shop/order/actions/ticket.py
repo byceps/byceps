@@ -11,7 +11,7 @@ from uuid import UUID
 
 from .....typing import UserID
 
-from ....ticketing.dbmodels.ticket import Ticket
+from ....ticketing.dbmodels.ticket import DbTicket
 from ....ticketing import (
     category_service as ticket_category_service,
     ticket_creation_service,
@@ -62,7 +62,7 @@ def create_tickets(
 
 
 def _create_creation_order_log_entries(
-    order_id: OrderID, tickets: Sequence[Ticket]
+    order_id: OrderID, tickets: Sequence[DbTicket]
 ) -> None:
     event_type = 'ticket-created'
 
@@ -95,7 +95,7 @@ def revoke_tickets(
 
 
 def _create_revocation_order_log_entries(
-    order_id: OrderID, tickets: Sequence[Ticket], initiator_id: UserID
+    order_id: OrderID, tickets: Sequence[DbTicket], initiator_id: UserID
 ) -> None:
     event_type = 'ticket-revoked'
 

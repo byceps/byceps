@@ -13,7 +13,7 @@ from ....services.party import service as party_service
 from ....services.seating import area_service as seating_area_service
 from ....services.seating import seat_service
 from ....services.seating.transfer.models import Seat, SeatID
-from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
+from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.ticketing import (
     exceptions as ticket_exceptions,
     ticket_seat_management_service,

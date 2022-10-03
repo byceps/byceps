@@ -21,7 +21,7 @@ from .exceptions import (
     TicketCategoryMismatch,
     TicketIsRevoked,
 )
-from .dbmodels.ticket import Ticket as DbTicket
+from .dbmodels.ticket import DbTicket
 from . import ticket_service
 from .transfer.models import TicketID
 

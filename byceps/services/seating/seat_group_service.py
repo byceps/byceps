@@ -13,8 +13,8 @@ from sqlalchemy import select
 from ...database import db
 from ...typing import PartyID
 
-from ..ticketing.dbmodels.ticket import Ticket as DbTicket
-from ..ticketing.dbmodels.ticket_bundle import TicketBundle as DbTicketBundle
+from ..ticketing.dbmodels.ticket import DbTicket
+from ..ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from ..ticketing.transfer.models import TicketBundleID, TicketCategoryID
 
 from .dbmodels.seat import Seat as DbSeat

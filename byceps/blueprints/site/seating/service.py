@@ -12,7 +12,7 @@ from itertools import chain
 from typing import Iterable, Iterator, Optional
 
 from ....services.seating.transfer.models import Seat
-from ....services.ticketing.dbmodels.ticket import Ticket as DbTicket
+from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.ticketing.transfer.models import TicketCode, TicketID
 from ....services.user import service as user_service
 from ....services.user.transfer.models import User

@@ -14,8 +14,8 @@ from sqlalchemy import select
 from ...database import db
 from ...typing import PartyID
 
-from ..ticketing.dbmodels.category import Category as DbTicketCategory
-from ..ticketing.dbmodels.ticket import Ticket as DbTicket
+from ..ticketing.dbmodels.category import DbCategory as DbTicketCategory
+from ..ticketing.dbmodels.ticket import DbTicket
 from ..ticketing.transfer.models import TicketCategory, TicketCategoryID
 
 from .dbmodels.area import Area as DbArea
