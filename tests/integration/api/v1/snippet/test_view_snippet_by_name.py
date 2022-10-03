@@ -12,36 +12,10 @@ from byceps.services.snippet.transfer.models import Scope
 CONTENT_TYPE_JSON = 'application/json'
 
 
-def test_get_snippet_document_by_name(
+def test_get_snippet_by_name(
     scope, admin_user, api_client, api_client_authz_header
 ):
-    snippet_version, _ = snippet_service.create_document(
-        scope, 'colophon', admin_user.id, 'Colophon', 'Made with BYCEPS.'
-    )
-    snippet_name = snippet_version.snippet.name
-
-    response = send_request(
-        api_client, api_client_authz_header, scope, snippet_name
-    )
-
-    assert response.status_code == 200
-    assert response.content_type == CONTENT_TYPE_JSON
-    assert response.mimetype == CONTENT_TYPE_JSON
-
-    response_data = response.json
-    assert response_data['content'] == {
-        'title': 'Colophon',
-        'head': None,
-        'body': 'Made with BYCEPS.',
-    }
-    assert response_data['type'] == 'document'
-    assert response_data['version'] == str(snippet_version.id)
-
-
-def test_get_snippet_fragment_by_name(
-    scope, admin_user, api_client, api_client_authz_header
-):
-    snippet_version, _ = snippet_service.create_fragment(
+    snippet_version, _ = snippet_service.create_snippet(
         scope, 'infos', admin_user.id, 'TBD'
     )
     snippet_name = snippet_version.snippet.name
@@ -58,7 +32,6 @@ def test_get_snippet_fragment_by_name(
     assert response_data['content'] == {
         'body': 'TBD',
     }
-    assert response_data['type'] == 'fragment'
     assert response_data['version'] == str(snippet_version.id)
 
 

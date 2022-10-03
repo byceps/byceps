@@ -31,7 +31,7 @@ def shop_brand(make_brand, make_email_config) -> Brand:
 def email_footer_snippet_id(shop_brand: Brand, admin_user: User) -> SnippetID:
     scope = Scope.for_brand(shop_brand.id)
 
-    version, _ = snippet_service.create_fragment(
+    version, _ = snippet_service.create_snippet(
         scope,
         'email_footer',
         admin_user.id,

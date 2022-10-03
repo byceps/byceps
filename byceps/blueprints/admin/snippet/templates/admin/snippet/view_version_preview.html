@@ -9,9 +9,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/common.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/admin.css') }}">
-{%- if not error_occurred and (type == 'document') and head %}
-{{ head|safe }}
-{%- endif %}
   </head>
   <body style="background-color: transparent; padding: 2rem;">
 
@@ -20,9 +17,6 @@
       <h1>{{ _('Error') }}</h1>
 {{ render_notification('<pre style="white-space: pre-wrap;">%s</pre>'|format(error_message)|safe, category='danger') }}
 {%- else %}
-  {%- if type == 'document' %}
-      <h1>{{ title }}</h1>
-  {%- endif %}
 {{ body|safe }}
 {%- endif %}
     </main>

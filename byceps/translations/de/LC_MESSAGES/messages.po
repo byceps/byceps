@@ -226,25 +226,25 @@ msgstr ""
 "%(initiator_screen_name)s hat Bestellung %(order_number)s von "
 "%(orderer_screen_name)s storniert."
 
-#: byceps/announce/text_assembly/snippet.py:30
+#: byceps/announce/text_assembly/snippet.py:29
 #, python-format
 msgid ""
-"%(initiator_screen_name)s has created snippet %(snippet_type)s "
-"\"%(snippet_name)s\" in scope \"%(scope)s\"."
+"%(initiator_screen_name)s has created snippet \"%(snippet_name)s\" in "
+"scope \"%(scope)s\"."
 msgstr ""
-"%(initiator_screen_name)s hat das Snippet-%(snippet_type)s "
-"\"%(snippet_name)s\" im Scope \"%(scope)s\" angelegt."
+"%(initiator_screen_name)s hat das Snippet \"%(snippet_name)s\" im Scope "
+"\"%(scope)s\" angelegt."
 
-#: byceps/announce/text_assembly/snippet.py:45
+#: byceps/announce/text_assembly/snippet.py:43
 #, python-format
 msgid ""
-"%(initiator_screen_name)s has updated snippet %(snippet_type)s "
-"\"%(snippet_name)s\" in scope \"%(scope)s\"."
+"%(initiator_screen_name)s has updated snippet \"%(snippet_name)s\" in "
+"scope \"%(scope)s\"."
 msgstr ""
-"%(initiator_screen_name)s hat das Snippet-%(snippet_type)s "
-"\"%(snippet_name)s\" im Scope \"%(scope)s\" aktualisiert."
+"%(initiator_screen_name)s hat das Snippet \"%(snippet_name)s\" im Scope "
+"\"%(scope)s\" aktualisiert."
 
-#: byceps/announce/text_assembly/snippet.py:59
+#: byceps/announce/text_assembly/snippet.py:57
 #, python-format
 msgid ""
 "%(initiator_screen_name)s has deleted snippet \"%(snippet_name)s\" in "
@@ -252,14 +252,6 @@ msgid ""
 msgstr ""
 "%(initiator_screen_name)s hat das Snippet \"%(snippet_name)s\" im Scope "
 "\"%(scope)s\" gelöscht."
-
-#: byceps/announce/text_assembly/snippet.py:67
-msgid "document"
-msgstr "Dokument"
-
-#: byceps/announce/text_assembly/snippet.py:68
-msgid "fragment"
-msgstr "Fragment"
 
 #: byceps/announce/text_assembly/ticketing.py:26
 #, python-format
@@ -540,8 +532,7 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/item_create_form.html:23
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_create_form.html:21
 #: byceps/blueprints/admin/site/templates/admin/site/create_form.html:39
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_document_form.html:22
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_fragment_form.html:20
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_form.html:20
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/create_form.html:21
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/create_form.html:21
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/create_form.html:36
@@ -888,8 +879,6 @@ msgstr "Slug"
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:30
 #: byceps/blueprints/admin/shop/catalog/templates/admin/shop/catalog/index_for_shop.html:14
 #: byceps/blueprints/admin/site/forms.py:24
-#: byceps/blueprints/admin/snippet/forms.py:26
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_documents.html:18
 #: byceps/blueprints/admin/ticketing/category/forms.py:18
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:28
 #: byceps/blueprints/admin/tourney/category/forms.py:18
@@ -908,8 +897,7 @@ msgstr "Titel"
 #: byceps/blueprints/admin/page/templates/admin/page/compare.html:28
 #: byceps/blueprints/admin/shop/order/forms.py:19
 #: byceps/blueprints/admin/snippet/forms.py:18
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_documents.html:28
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_fragments.html:18
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_versions.html:18
 #: byceps/blueprints/site/board/forms.py:17
 #: byceps/blueprints/site/user_message/forms.py:18
 msgid "Text"
@@ -1099,8 +1087,8 @@ msgstr "versteckt"
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:15
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:20
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:31
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:64
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:34
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:50
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:26
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/index.html:41
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:43
 #: byceps/blueprints/admin/user_badge/templates/admin/user_badge/view.html:54
@@ -1137,7 +1125,7 @@ msgstr "Verstecken"
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:69
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:59
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:27
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:42
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:33
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:27
 #: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:22
 #: byceps/blueprints/admin/webhook/templates/admin/webhook/index.html:40
@@ -1192,8 +1180,7 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/update_form.html:21
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_update_form.html:21
 #: byceps/blueprints/admin/site/templates/admin/site/update_form.html:30
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/update_document_form.html:22
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/update_fragment_form.html:20
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/update_form.html:20
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/update_form.html:21
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/update_form.html:21
 #: byceps/blueprints/admin/tourney/tourney/templates/admin/tourney/tourney/update_form.html:36
@@ -1230,7 +1217,7 @@ msgstr "Bild-Dateiname"
 #: byceps/blueprints/admin/site/forms.py:74
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:21
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:51
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:34
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:33
 msgid "archived"
 msgstr "archiviert"
 
@@ -1297,7 +1284,7 @@ msgstr "Marke erstellen"
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:26
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:125
 #: byceps/blueprints/admin/snippet/forms.py:17
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:35
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:29
 #: byceps/blueprints/site/seating/templates/site/seating/index.html:21
 #: byceps/blueprints/site/user/settings/templates/site/user/settings/_details_personal.html:10
 msgid "Name"
@@ -1635,8 +1622,7 @@ msgstr "E-Mail"
 
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:55
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_site.html:19
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_document_form.html:7
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_fragment_form.html:7
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_form.html:7
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:5
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:11
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:14
@@ -2476,7 +2462,7 @@ msgstr "Newspost erstellen"
 
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:67
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:30
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:36
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:30
 msgid "Latest change"
 msgstr "Letzte Änderung"
 
@@ -2504,8 +2490,8 @@ msgstr "Bild festgelegt"
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:90
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:43
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:53
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:54
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:68
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:41
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:59
 msgid "View change history"
 msgstr "Änderungshistorie ansehen"
 
@@ -2516,8 +2502,8 @@ msgstr "Änderungshistorie ansehen"
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:31
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:52
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:22
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:37
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:67
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:31
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:58
 #: byceps/blueprints/site/board/templates/macros/board.html:5
 #: byceps/blueprints/site/board/templates/site/board/_posting_view.html:18
 #: byceps/blueprints/site/board/templates/site/board/category_index.html:37
@@ -2573,9 +2559,8 @@ msgstr "Bild bearbeiten"
 #: byceps/blueprints/admin/news/templates/admin/news/item_list_versions.html:41
 #: byceps/blueprints/admin/page/templates/admin/page/compare.html:4
 #: byceps/blueprints/admin/page/templates/admin/page/history.html:40
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_documents.html:4
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_fragments.html:4
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:41
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_versions.html:4
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:40
 msgid "View changes"
 msgstr "Änderungen ansehen"
 
@@ -2601,13 +2586,13 @@ msgstr "Unterschiede"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_list_versions.html:32
 #: byceps/blueprints/admin/page/templates/admin/page/history.html:31
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:32
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:31
 msgid "public"
 msgstr "öffentlich"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_list_versions.html:41
 #: byceps/blueprints/admin/page/templates/admin/page/history.html:40
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:41
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:40
 msgid "View changes compared to previous version"
 msgstr "Änderungen im Vergleich zur vorherigen Version anzeigen"
 
@@ -2658,31 +2643,31 @@ msgstr "Veröffentlichung zurückziehen"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:74
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:39
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:54
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:45
 msgid "Version"
 msgstr "Version"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:78
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:43
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:58
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:49
 msgid "current"
 msgstr "aktuell"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:80
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:45
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:60
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:51
 msgid "outdated"
 msgstr "veraltet"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:81
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:46
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:61
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:52
 msgid "View current version"
 msgstr "Aktuelle Version ansehen"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:87
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:50
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:65
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:56
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:19
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:18
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:69
@@ -2714,7 +2699,7 @@ msgstr "Als Titelbild verwenden"
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:180
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:195
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:64
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:73
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:64
 msgid "Preview"
 msgstr "Vorschau"
 
@@ -2736,7 +2721,7 @@ msgstr "Nicht als Titelbild verwenden?"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version_preview.html:17
 #: byceps/blueprints/admin/page/templates/admin/page/view_version_preview.html:20
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version_preview.html:20
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version_preview.html:17
 #: byceps/blueprints/common/core/templates/macros/forms.html:78
 #: byceps/blueprints/site/page/templates/site/page/error.html:3
 msgid "Error"
@@ -3174,8 +3159,6 @@ msgid "Page \"%(name)s\" has been deleted."
 msgstr "Die Seite \"%(name)s\" wurde gelöscht."
 
 #: byceps/blueprints/admin/page/templates/admin/page/compare.html:23
-#: byceps/blueprints/admin/snippet/forms.py:27
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/compare_documents.html:23
 msgid "Page header"
 msgstr "Seitenkopf"
 
@@ -3191,7 +3174,7 @@ msgid "Version history"
 msgstr "Versionshistorie"
 
 #: byceps/blueprints/admin/page/templates/admin/page/history.html:48
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:50
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:48
 msgid "No versions exist."
 msgstr "Es sind keine Versionen vorhanden."
 
@@ -4606,84 +4589,51 @@ msgstr "kein Forum"
 msgid "no storefront"
 msgstr "kein Storefront"
 
-#: byceps/blueprints/admin/snippet/views.py:211
+#: byceps/blueprints/admin/snippet/views.py:192
 #, python-format
-msgid "Document \"%(name)s\" has been created."
-msgstr "Das Dokument \"%(name)s\" wurde angelegt."
+msgid "Snippet \"%(name)s\" has been created."
+msgstr "Das Snippet \"%(name)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/snippet/views.py:267
+#: byceps/blueprints/admin/snippet/views.py:242
 #, python-format
-msgid "Document \"%(name)s\" has been updated."
-msgstr "Das Dokument \"%(name)s\" wurde aktualisiert."
+msgid "Snippet \"%(name)s\" has been updated."
+msgstr "Das Snippet \"%(name)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/snippet/views.py:353
-#, python-format
-msgid "Fragment \"%(name)s\" has been created."
-msgstr "Das Fragment \"%(name)s\" wurde angelegt."
-
-#: byceps/blueprints/admin/snippet/views.py:403
-#, python-format
-msgid "Fragment \"%(name)s\" has been updated."
-msgstr "Das Fragment \"%(name)s\" wurde aktualisiert."
-
-#: byceps/blueprints/admin/snippet/views.py:464
+#: byceps/blueprints/admin/snippet/views.py:299
 #, python-format
 msgid "Snippet \"%(snippet_name)s\" could not be deleted. Is it still mounted?"
 msgstr ""
 "Das Snippet \"%(snippet_name)s\" konnte nicht gelöscht werden. Ist es "
 "noch gemountet?"
 
-#: byceps/blueprints/admin/snippet/views.py:472
+#: byceps/blueprints/admin/snippet/views.py:307
 #, python-format
 msgid "Snippet \"%(name)s\" has been deleted."
 msgstr "Das Snippet \"%(name)s\" wurde gelöscht."
 
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_document_form.html:4
-msgid "Create document"
-msgstr "Dokument erstellen"
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_fragment_form.html:4
-msgid "Create fragment"
-msgstr "Fragment erstellen"
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:17
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/create_form.html:4
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:16
 msgid "Create snippet"
 msgstr "Snippet erstellen"
 
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:19
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:46
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:20
-msgid "Document"
-msgstr "Dokument"
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:20
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:48
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:22
-msgid "Fragment"
-msgstr "Fragment"
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:28
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:22
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:15
 msgid "Scope"
 msgstr "Scope"
 
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:74
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:59
 msgid "No snippets exist in this scope."
 msgstr "In diesem Scope sind keine Snippets vorhanden."
 
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/update_document_form.html:4
-msgid "Edit document"
-msgstr "Dokument bearbeiten"
-
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/update_fragment_form.html:4
-msgid "Edit fragment"
-msgstr "Fragment bearbeiten"
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/update_form.html:4
+msgid "Edit snippet"
+msgstr "Snippet bearbeiten"
 
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:5
 msgid "View snippet version"
 msgstr "Snippet-Version ansehen"
 
-#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:84
+#: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:75
 msgid "Delete snippet?"
 msgstr "Snippet löschen?"
 

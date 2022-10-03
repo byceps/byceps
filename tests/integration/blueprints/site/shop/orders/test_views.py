@@ -13,7 +13,7 @@ from byceps.services.snippet import service as snippet_service
 
 from tests.helpers import create_site, http_client, log_in_user
 from tests.integration.services.shop.conftest import make_orderer
-from tests.integration.services.shop.helpers import create_shop_fragment
+from tests.integration.services.shop.helpers import create_shop_snippet
 
 
 @pytest.fixture
@@ -130,7 +130,7 @@ def test_view_matching_user_but_different_site_and_shop(
 
 def create_payment_instructions_snippet(shop_id, admin_id):
     body = 'Please pay {{ total_amount }} for order {{ order_number }}!'
-    return create_shop_fragment(shop_id, admin_id, 'payment_instructions', body)
+    return create_shop_snippet(shop_id, admin_id, 'payment_instructions', body)
 
 
 def request_view(app, current_user, order_id):

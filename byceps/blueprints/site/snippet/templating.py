@@ -22,19 +22,10 @@ from ....util.templating import load_template
 Context = Dict[str, Any]
 
 
-def get_snippet_context(version: SnippetVersion) -> Context:
-    """Return the snippet context to insert into the outer template."""
+def get_rendered_snippet_body(version: SnippetVersion) -> str:
+    """Return the rendered body of the snippet."""
     template = _load_template_with_globals(version.body)
-
-    title = version.title
-    head = _render_template(version.head) if version.head else None
-    body = template.render()
-
-    return {
-        'page_title': title,
-        'head': head,
-        'body': body,
-    }
+    return template.render()
 
 
 def render_snippet_as_partial_from_template(

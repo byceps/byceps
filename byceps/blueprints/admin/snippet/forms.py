@@ -13,19 +13,10 @@ from wtforms.validators import InputRequired
 from ....util.l10n import LocalizedForm
 
 
-class FragmentCreateForm(LocalizedForm):
+class CreateForm(LocalizedForm):
     name = StringField(lazy_gettext('Name'), [InputRequired()])
     body = TextAreaField(lazy_gettext('Text'), [InputRequired()])
 
 
-class FragmentUpdateForm(FragmentCreateForm):
-    pass
-
-
-class DocumentCreateForm(FragmentCreateForm):
-    title = StringField(lazy_gettext('Title'), [InputRequired()])
-    head = TextAreaField(lazy_gettext('Page header'))
-
-
-class DocumentUpdateForm(DocumentCreateForm):
+class UpdateForm(CreateForm):
     pass

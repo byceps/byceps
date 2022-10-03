@@ -45,30 +45,14 @@ def global_scope():
 
 
 @pytest.fixture
-def make_document(global_scope: Scope, snippet_admin: User):
-    def _wrapper(
-        name: Optional[str] = None, title: str = 'Title', body: str = 'Body'
-    ) -> tuple[DbSnippetVersion, SnippetCreated]:
-        if name is None:
-            name = generate_token()
-
-        version, event = snippet_service.create_document(
-            global_scope, name, snippet_admin.id, title, body
-        )
-        return version, event
-
-    return _wrapper
-
-
-@pytest.fixture
-def make_fragment(global_scope: Scope, snippet_admin: User):
+def make_snippet(global_scope: Scope, snippet_admin: User):
     def _wrapper(
         name: Optional[str] = None, body: str = 'Body'
     ) -> tuple[DbSnippetVersion, SnippetCreated]:
         if name is None:
             name = generate_token()
 
-        version, event = snippet_service.create_fragment(
+        version, event = snippet_service.create_snippet(
             global_scope, name, snippet_admin.id, body
         )
         return version, event

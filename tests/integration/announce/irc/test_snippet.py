@@ -16,15 +16,13 @@ from .helpers import assert_submitted_data, CHANNEL_INTERNAL, mocked_irc_bot
 EXPECTED_CHANNEL = CHANNEL_INTERNAL
 
 
-def test_announce_snippet_document_created(
-    app, created_document_version_and_event
-):
+def test_announce_snippet_created(app, created_version_and_event):
     expected_text = (
-        'Dr.Schnipsel hat das Snippet-Dokument "overview" '
+        'Dr.Schnipsel hat das Snippet "team_intro" '
         'im Scope "site/acme-2019-website" angelegt.'
     )
 
-    _, event = created_document_version_and_event
+    _, event = created_version_and_event
 
     with mocked_irc_bot() as mock:
         snippet_signals.snippet_created.send(None, event=event)
@@ -32,31 +30,13 @@ def test_announce_snippet_document_created(
     assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)
 
 
-def test_announce_snippet_fragment_created(
-    app, created_fragment_version_and_event
-):
+def test_announce_snippet_updated(app, updated_version_and_event):
     expected_text = (
-        'Dr.Schnipsel hat das Snippet-Fragment "team_intro" '
-        'im Scope "site/acme-2019-website" angelegt.'
-    )
-
-    _, event = created_fragment_version_and_event
-
-    with mocked_irc_bot() as mock:
-        snippet_signals.snippet_created.send(None, event=event)
-
-    assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)
-
-
-def test_announce_snippet_document_updated(
-    app, updated_document_version_and_event
-):
-    expected_text = (
-        'Dr.Schnipsel hat das Snippet-Dokument "overview" '
+        'Dr.Schnipsel hat das Snippet "team_intro" '
         'im Scope "site/acme-2019-website" aktualisiert.'
     )
 
-    _, event = updated_document_version_and_event
+    _, event = updated_version_and_event
 
     with mocked_irc_bot() as mock:
         snippet_signals.snippet_updated.send(None, event=event)
@@ -64,34 +44,18 @@ def test_announce_snippet_document_updated(
     assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)
 
 
-def test_announce_snippet_fragment_updated(
-    app, updated_fragment_version_and_event
-):
+def test_announce_snippet_deleted(app, scope, editor):
     expected_text = (
-        'Dr.Schnipsel hat das Snippet-Fragment "team_intro" '
-        'im Scope "site/acme-2019-website" aktualisiert.'
-    )
-
-    _, event = updated_fragment_version_and_event
-
-    with mocked_irc_bot() as mock:
-        snippet_signals.snippet_updated.send(None, event=event)
-
-    assert_submitted_data(mock, EXPECTED_CHANNEL, expected_text)
-
-
-def test_announce_snippet_fragment_deleted(app, scope, editor):
-    expected_text = (
-        'Dr.Schnipsel hat das Snippet "old_fragment" '
+        'Dr.Schnipsel hat das Snippet "outdated_info" '
         'im Scope "site/acme-2019-website" gelöscht.'
     )
 
-    fragment_version, _ = snippet_service.create_fragment(
-        scope, 'old_fragment', editor.id, 'This is old news. :('
+    version, _ = snippet_service.create_snippet(
+        scope, 'outdated_info', editor.id, 'This is old news. :('
     )
 
     success, event = snippet_service.delete_snippet(
-        fragment_version.snippet_id, initiator_id=editor.id
+        version.snippet_id, initiator_id=editor.id
     )
 
     assert success
@@ -116,48 +80,21 @@ def editor(make_user):
 
 
 @pytest.fixture(scope='module')
-def created_document_version_and_event(scope, editor):
-    name = 'overview'
-    title = 'some title'
-    body = 'some body'
-
-    return snippet_service.create_document(scope, name, editor.id, title, body)
-
-
-@pytest.fixture(scope='module')
-def created_fragment_version_and_event(scope, editor):
+def created_version_and_event(scope, editor):
     name = 'team_intro'
     body = 'some body'
 
-    return snippet_service.create_fragment(scope, name, editor.id, body)
+    return snippet_service.create_snippet(scope, name, editor.id, body)
 
 
 @pytest.fixture(scope='module')
-def updated_document_version_and_event(
-    created_document_version_and_event, editor
-):
-    created_document_version, creation_event = (
-        created_document_version_and_event
-    )
-
-    title = 'another title'
-    body = 'another body'
-
-    return snippet_service.update_document(
-        created_document_version.snippet_id, editor.id, title, body
-    )
-
-
-@pytest.fixture(scope='module')
-def updated_fragment_version_and_event(
-    created_fragment_version_and_event, editor
-):
-    created_fragment_version, creation_event = (
-        created_fragment_version_and_event
+def updated_version_and_event(created_version_and_event, editor):
+    created_version, creation_event = (
+        created_version_and_event
     )
 
     body = 'another body'
 
-    return snippet_service.update_fragment(
-        created_fragment_version.snippet_id, editor.id, body
+    return snippet_service.update_snippet(
+        created_version.snippet_id, editor.id, body
     )

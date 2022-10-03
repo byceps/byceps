@@ -28,14 +28,9 @@ from ....util.views import (
     respond_no_content_with_location,
 )
 
-from ...site.snippet.templating import get_snippet_context
+from ...site.snippet.templating import get_rendered_snippet_body
 
-from .forms import (
-    DocumentCreateForm,
-    DocumentUpdateForm,
-    FragmentCreateForm,
-    FragmentUpdateForm,
-)
+from .forms import CreateForm, UpdateForm
 from .helpers import (
     find_brand_for_scope,
     find_site_for_scope,
@@ -116,13 +111,10 @@ def view_version_preview(snippet_version_id):
     version = find_snippet_version(snippet_version_id)
 
     try:
-        snippet_context = get_snippet_context(version)
+        body = get_rendered_snippet_body(version)
 
         return {
-            'type': version.snippet.type_.name,
-            'title': snippet_context['page_title'],
-            'head': snippet_context['head'],
-            'body': snippet_context['body'],
+            'body': body,
             'error_occurred': False,
         }
     except Exception as e:
@@ -160,18 +152,14 @@ def history(snippet_id):
     }
 
 
-# -------------------------------------------------------------------- #
-# document
-
-
-@blueprint.get('/for_scope/<scope_type>/<scope_name>/documents/create')
+@blueprint.get('/for_scope/<scope_type>/<scope_name>/create')
 @permission_required('snippet.create')
 @templated
-def create_document_form(scope_type, scope_name):
-    """Show form to create a document."""
+def create_form(scope_type, scope_name):
+    """Show form to create a snippet."""
     scope = Scope(scope_type, scope_name)
 
-    form = DocumentCreateForm()
+    form = CreateForm()
 
     brand = find_brand_for_scope(scope)
     site = find_site_for_scope(scope)
@@ -184,174 +172,25 @@ def create_document_form(scope_type, scope_name):
     }
 
 
-@blueprint.post('/for_scope/<scope_type>/<scope_name>/documents')
+@blueprint.post('/for_scope/<scope_type>/<scope_name>')
 @permission_required('snippet.create')
-def create_document(scope_type, scope_name):
-    """Create a document."""
+def create(scope_type, scope_name):
+    """Create a snippet."""
     scope = Scope(scope_type, scope_name)
 
-    form = DocumentCreateForm(request.form)
-
-    name = form.name.data.strip().lower()
-    creator = g.user
-    title = form.title.data.strip()
-    head = form.head.data.strip()
-    body = form.body.data.strip()
-
-    version, event = snippet_service.create_document(
-        scope,
-        name,
-        creator.id,
-        title,
-        body,
-        head=head,
-    )
-
-    flash_success(
-        gettext(
-            'Document "%(name)s" has been created.', name=version.snippet.name
-        )
-    )
-
-    snippet_signals.snippet_created.send(None, event=event)
-
-    return redirect_to('.view_version', snippet_version_id=version.id)
-
-
-@blueprint.get('/documents/<uuid:snippet_id>/update')
-@permission_required('snippet.update')
-@templated
-def update_document_form(snippet_id):
-    """Show form to update a document."""
-    snippet = find_snippet_by_id(snippet_id)
-    current_version = snippet.current_version
-
-    scope = snippet.scope
-
-    form = DocumentUpdateForm(obj=current_version, name=snippet.name)
-
-    brand = find_brand_for_scope(scope)
-    site = find_site_for_scope(scope)
-
-    return {
-        'scope': scope,
-        'form': form,
-        'snippet': snippet,
-        'brand': brand,
-        'site': site,
-    }
-
-
-@blueprint.post('/documents/<uuid:snippet_id>')
-@permission_required('snippet.update')
-def update_document(snippet_id):
-    """Update a document."""
-    form = DocumentUpdateForm(request.form)
-
-    snippet = find_snippet_by_id(snippet_id)
-
-    creator = g.user
-    title = form.title.data.strip()
-    head = form.head.data.strip()
-    body = form.body.data.strip()
-
-    version, event = snippet_service.update_document(
-        snippet.id,
-        creator.id,
-        title,
-        body,
-        head=head,
-    )
-
-    flash_success(
-        gettext(
-            'Document "%(name)s" has been updated.',
-            name=version.snippet.name,
-        )
-    )
-
-    snippet_signals.snippet_updated.send(None, event=event)
-
-    return redirect_to('.view_version', snippet_version_id=version.id)
-
-
-@blueprint.get(
-    '/documents/<uuid:from_version_id>/compare_to/<uuid:to_version_id>'
-)
-@permission_required('snippet.view_history')
-@templated
-def compare_documents(from_version_id, to_version_id):
-    """Show the difference between two document versions."""
-    from_version = find_snippet_version(from_version_id)
-    to_version = find_snippet_version(to_version_id)
-
-    snippet = from_version.snippet
-    scope = snippet.scope
-
-    if from_version.snippet_id != to_version.snippet_id:
-        abort(400, 'The versions do not belong to the same snippet.')
-
-    html_diff_title = _create_html_diff(from_version, to_version, 'title')
-    html_diff_head = _create_html_diff(from_version, to_version, 'head')
-    html_diff_body = _create_html_diff(from_version, to_version, 'body')
-
-    brand = find_brand_for_scope(scope)
-    site = find_site_for_scope(scope)
-
-    return {
-        'snippet': snippet,
-        'scope': scope,
-        'diff_title': html_diff_title,
-        'diff_head': html_diff_head,
-        'diff_body': html_diff_body,
-        'brand': brand,
-        'site': site,
-    }
-
-
-# -------------------------------------------------------------------- #
-# fragment
-
-
-@blueprint.get('/for_scope/<scope_type>/<scope_name>/fragments/create')
-@permission_required('snippet.create')
-@templated
-def create_fragment_form(scope_type, scope_name):
-    """Show form to create a fragment."""
-    scope = Scope(scope_type, scope_name)
-
-    form = FragmentCreateForm()
-
-    brand = find_brand_for_scope(scope)
-    site = find_site_for_scope(scope)
-
-    return {
-        'scope': scope,
-        'form': form,
-        'brand': brand,
-        'site': site,
-    }
-
-
-@blueprint.post('/for_scope/<scope_type>/<scope_name>/fragments')
-@permission_required('snippet.create')
-def create_fragment(scope_type, scope_name):
-    """Create a fragment."""
-    scope = Scope(scope_type, scope_name)
-
-    form = FragmentCreateForm(request.form)
+    form = CreateForm(request.form)
 
     name = form.name.data.strip().lower()
     creator = g.user
     body = form.body.data.strip()
 
-    version, event = snippet_service.create_fragment(
+    version, event = snippet_service.create_snippet(
         scope, name, creator.id, body
     )
 
     flash_success(
         gettext(
-            'Fragment "%(name)s" has been created.', name=version.snippet.name
+            'Snippet "%(name)s" has been created.', name=version.snippet.name
         )
     )
 
@@ -360,17 +199,17 @@ def create_fragment(scope_type, scope_name):
     return redirect_to('.view_version', snippet_version_id=version.id)
 
 
-@blueprint.get('/fragments/<uuid:snippet_id>/update')
+@blueprint.get('/snippets/<uuid:snippet_id>/update')
 @permission_required('snippet.update')
 @templated
-def update_fragment_form(snippet_id):
-    """Show form to update a fragment."""
+def update_form(snippet_id):
+    """Show form to update a snippet."""
     snippet = find_snippet_by_id(snippet_id)
     current_version = snippet.current_version
 
     scope = snippet.scope
 
-    form = FragmentUpdateForm(obj=current_version, name=snippet.name)
+    form = UpdateForm(obj=current_version, name=snippet.name)
 
     brand = find_brand_for_scope(scope)
     site = find_site_for_scope(scope)
@@ -384,24 +223,24 @@ def update_fragment_form(snippet_id):
     }
 
 
-@blueprint.post('/fragments/<uuid:snippet_id>')
+@blueprint.post('/snippets/<uuid:snippet_id>')
 @permission_required('snippet.update')
-def update_fragment(snippet_id):
-    """Update a fragment."""
-    form = FragmentUpdateForm(request.form)
+def update(snippet_id):
+    """Update a snippet."""
+    form = UpdateForm(request.form)
 
     snippet = find_snippet_by_id(snippet_id)
 
     creator = g.user
     body = form.body.data.strip()
 
-    version, event = snippet_service.update_fragment(
+    version, event = snippet_service.update_snippet(
         snippet.id, creator.id, body
     )
 
     flash_success(
         gettext(
-            'Fragment "%(name)s" has been updated.',
+            'Snippet "%(name)s" has been updated.',
             name=version.snippet.name,
         )
     )
@@ -412,12 +251,12 @@ def update_fragment(snippet_id):
 
 
 @blueprint.get(
-    '/fragments/<uuid:from_version_id>/compare_to/<uuid:to_version_id>'
+    '/versions/<uuid:from_version_id>/compare_to/<uuid:to_version_id>'
 )
 @permission_required('snippet.view_history')
 @templated
-def compare_fragments(from_version_id, to_version_id):
-    """Show the difference between two fragment versions."""
+def compare_versions(from_version_id, to_version_id):
+    """Show the difference between two snippet versions."""
     from_version = find_snippet_version(from_version_id)
     to_version = find_snippet_version(to_version_id)
 
@@ -439,10 +278,6 @@ def compare_fragments(from_version_id, to_version_id):
         'brand': brand,
         'site': site,
     }
-
-
-# -------------------------------------------------------------------- #
-# delete
 
 
 @blueprint.delete('/snippets/<uuid:snippet_id>')
@@ -475,10 +310,6 @@ def delete_snippet(snippet_id):
     return url_for(
         '.index_for_scope', scope_type=scope.type_, scope_name=scope.name
     )
-
-
-# -------------------------------------------------------------------- #
-# helpers
 
 
 def _create_html_diff(

@@ -127,9 +127,9 @@ def _assemble_email_for_incoming_order_to_orderer(
 
 def _get_payment_instructions(order: Order) -> str:
     scope = Scope('shop', str(order.shop_id))
-    fragment = _get_snippet_body(scope, 'email_payment_instructions')
+    snippet_content = _get_snippet_body(scope, 'email_payment_instructions')
 
-    template = load_template(fragment)
+    template = load_template(snippet_content)
     return template.render(
         order_id=order.id,
         order_number=order.order_number,

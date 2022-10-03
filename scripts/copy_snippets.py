@@ -10,7 +10,7 @@ import click
 
 from byceps.services.snippet.dbmodels.snippet import SnippetVersion
 from byceps.services.snippet import service as snippet_service
-from byceps.services.snippet.transfer.models import Scope, SnippetType
+from byceps.services.snippet.transfer.models import Scope
 
 from _util import call_with_app_context
 from _validators import validate_site
@@ -54,43 +54,17 @@ def get_snippet_version(
 def copy_snippet(
     target_scope: Scope, snippet_version: SnippetVersion, ctx
 ) -> None:
-    snippet_type = snippet_version.snippet.type_
-
-    if snippet_type == SnippetType.document:
-        create_document(target_scope, snippet_version)
-    elif snippet_type == SnippetType.fragment:
-        create_fragment(target_scope, snippet_version)
-    else:
-        ctx.fail(f"Unknown snippet type '{snippet_type}'.")
+    snippet_service.create_snippet(
+        target_scope,
+        snippet_version.snippet.name,
+        snippet_version.creator_id,
+        snippet_version.body,
+    )
 
     click.secho(
         f'Copied snippet "{snippet_version.snippet.name}" '
         f'to scope "{scope_as_string(target_scope)}".',
         fg='green',
-    )
-
-
-def create_document(
-    target_scope: Scope, snippet_version: SnippetVersion
-) -> None:
-    snippet_service.create_document(
-        target_scope,
-        snippet_version.snippet.name,
-        snippet_version.creator_id,
-        snippet_version.title,
-        snippet_version.body,
-        head=snippet_version.head,
-    )
-
-
-def create_fragment(
-    target_scope: Scope, snippet_version: SnippetVersion
-) -> None:
-    snippet_service.create_fragment(
-        target_scope,
-        snippet_version.snippet.name,
-        snippet_version.creator_id,
-        snippet_version.body,
     )
 
 

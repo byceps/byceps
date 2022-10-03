@@ -1,7 +1,7 @@
 {% extends 'layout/admin/snippet.html' %}
 {% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/forms.html' import form_buttons, form_field %}
-{% set page_title = _('Create document') %}
+{% set page_title = _('Create snippet') %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.index_for_scope', scope_type=scope.type_, scope_name=scope.name), _('Snippets')) }}
@@ -11,11 +11,9 @@
 
   <h1>{{ page_title }}</h1>
 
-  <form action="{{ url_for('.create_document', scope_type=scope.type_, scope_name=scope.name) }}" method="post">
+  <form action="{{ url_for('.create', scope_type=scope.type_, scope_name=scope.name) }}" method="post">
     <div class="box">
       {{ form_field(form.name, maxlength=40, autofocus='autofocus') }}
-      {{ form_field(form.title, maxlength=80) }}
-      {{ form_field(form.head, class='monospace') }}
       {{ form_field(form.body, class='monospace') }}
     </div>
 

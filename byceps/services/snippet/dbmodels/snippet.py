@@ -11,13 +11,8 @@ page.
 """
 
 from datetime import datetime
-from typing import Optional, TYPE_CHECKING
 
 from sqlalchemy.ext.associationproxy import association_proxy
-if TYPE_CHECKING:
-    hybrid_property = property
-else:
-    from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import db, generate_uuid
 from ....typing import UserID
@@ -25,7 +20,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import User
 
-from ..transfer.models import Scope, SnippetType
+from ..transfer.models import Scope
 
 
 class Snippet(db.Model):
@@ -45,35 +40,16 @@ class Snippet(db.Model):
     scope_type = db.Column(db.UnicodeText, nullable=False)
     scope_name = db.Column(db.UnicodeText, nullable=False)
     name = db.Column(db.UnicodeText, index=True, nullable=False)
-    _type = db.Column('type', db.UnicodeText, nullable=False)
     current_version = association_proxy('current_version_association', 'version')
 
-    def __init__(self, scope: Scope, name: str, type_: SnippetType) -> None:
+    def __init__(self, scope: Scope, name: str) -> None:
         self.scope_type = scope.type_
         self.scope_name = scope.name
         self.name = name
-        self.type_ = type_
 
     @property
     def scope(self) -> Scope:
         return Scope(self.scope_type, self.scope_name)
-
-    @hybrid_property
-    def type_(self) -> SnippetType:
-        return SnippetType[self._type]
-
-    @type_.setter
-    def type_(self, type_: SnippetType) -> None:
-        assert type_ is not None
-        self._type = type_.name
-
-    @property
-    def is_document(self) -> bool:
-        return self.type_ == SnippetType.document
-
-    @property
-    def is_fragment(self) -> bool:
-        return self.type_ == SnippetType.fragment
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
@@ -81,7 +57,6 @@ class Snippet(db.Model):
             .add_with_lookup('scope_type') \
             .add_with_lookup('scope_name') \
             .add_with_lookup('name') \
-            .add('type', self._type) \
             .build()
 
 
@@ -96,22 +71,11 @@ class SnippetVersion(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(User)
-    title = db.Column(db.UnicodeText, nullable=True)
-    head = db.Column(db.UnicodeText, nullable=True)
     body = db.Column(db.UnicodeText, nullable=False)
 
-    def __init__(
-        self,
-        snippet: Snippet,
-        creator_id: UserID,
-        title: Optional[str],
-        head: Optional[str],
-        body: str,
-    ) -> None:
+    def __init__(self, snippet: Snippet, creator_id: UserID, body: str) -> None:
         self.snippet = snippet
         self.creator_id = creator_id
-        self.title = title
-        self.head = head
         self.body = body
 
     @property

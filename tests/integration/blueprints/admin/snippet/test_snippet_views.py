@@ -14,8 +14,8 @@ def test_index_for_scope(snippet_admin_client, global_scope):
     assert response.status_code == 200
 
 
-def test_view_current_version(snippet_admin_client, make_document):
-    _, event = make_document()
+def test_view_current_version(snippet_admin_client, make_snippet):
+    _, event = make_snippet()
     snippet_id = event.snippet_id
 
     url = f'/admin/snippets/snippets/{snippet_id}/current_version'
@@ -23,16 +23,16 @@ def test_view_current_version(snippet_admin_client, make_document):
     assert response.status_code == 200
 
 
-def test_view_version(snippet_admin_client, make_document):
-    version, event = make_document()
+def test_view_version(snippet_admin_client, make_snippet):
+    version, event = make_snippet()
 
     url = f'/admin/snippets/versions/{version.id}'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_history(snippet_admin_client, make_document):
-    _, event = make_document()
+def test_history(snippet_admin_client, make_snippet):
+    _, event = make_snippet()
     snippet_id = event.snippet_id
 
     url = f'/admin/snippets/snippets/{snippet_id}/history'
@@ -40,56 +40,29 @@ def test_history(snippet_admin_client, make_document):
     assert response.status_code == 200
 
 
-def test_compare_documents(snippet_admin_client, snippet_admin, make_document):
-    version1, event = make_document()
+def test_compare_versions(snippet_admin_client, snippet_admin, make_snippet):
+    version1, event = make_snippet()
     snippet_id = event.snippet_id
 
-    version2, _ = snippet_service.update_document(
-        snippet_id, snippet_admin.id, 'Title v2', 'Body v2'
-    )
-
-    url = f'/admin/snippets/documents/{version1.id}/compare_to/{version2.id}'
-    response = snippet_admin_client.get(url)
-    assert response.status_code == 200
-
-
-def test_compare_fragments(snippet_admin_client, snippet_admin, make_fragment):
-    version1, event = make_fragment()
-    snippet_id = event.snippet_id
-
-    version2, _ = snippet_service.update_fragment(
+    version2, _ = snippet_service.update_snippet(
         snippet_id, snippet_admin.id, 'Body v2'
     )
 
-    url = f'/admin/snippets/fragments/{version1.id}/compare_to/{version2.id}'
+    url = f'/admin/snippets/versions/{version1.id}/compare_to/{version2.id}'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_create_document_form(
-    snippet_admin_client, global_scope, make_fragment
-):
+def test_create_form(snippet_admin_client, global_scope):
     scope = global_scope
 
-    url = (
-        f'/admin/snippets/for_scope/{scope.type_}/{scope.name}/documents/create'
-    )
+    url = f'/admin/snippets/for_scope/{scope.type_}/{scope.name}/create'
     response = snippet_admin_client.get(url)
     assert response.status_code == 200
 
 
-def test_create_fragment_form(snippet_admin_client, global_scope):
-    scope = global_scope
-
-    url = (
-        f'/admin/snippets/for_scope/{scope.type_}/{scope.name}/fragments/create'
-    )
-    response = snippet_admin_client.get(url)
-    assert response.status_code == 200
-
-
-def test_delete_snippet(snippet_admin_client, make_fragment):
-    _, event = make_fragment()
+def test_delete(snippet_admin_client, make_snippet):
+    _, event = make_snippet()
     snippet_id = event.snippet_id
 
     url = f'/admin/snippets/snippets/{snippet_id}'

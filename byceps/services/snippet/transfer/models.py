@@ -34,7 +34,4 @@ class Scope:
 SnippetID = NewType('SnippetID', UUID)
 
 
-SnippetType = Enum('SnippetType', ['document', 'fragment'])
-
-
 SnippetVersionID = NewType('SnippetVersionID', UUID)

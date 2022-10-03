@@ -13,13 +13,7 @@
   {%- if has_current_user_permission('snippet.create') %}
     <div>
       <div class="button-row button-row--right">
-        <div class="dropdown">
-          <button class="dropdown-toggle button"><span>{{ render_icon('add') }} {{ _('Create snippet') }}</span> {{ render_icon('chevron-down') }}</button>
-          <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('.create_document_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-document') }} {{ _('Document') }}</a></li>
-            <li><a class="dropdown-item" href="{{ url_for('.create_fragment_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('snippet-fragment') }} {{ _('Fragment') }}</a></li>
-          </ol>
-        </div>
+        <a class="button" href="{{ url_for('.create_form', scope_type=scope.type_, scope_name=scope.name) }}">{{ render_icon('add') }} <span>{{ _('Create snippet') }}</span></a>
       </div>
     </div>
   {%- endif %}
@@ -41,14 +35,7 @@
       <tbody>
       {%- for snippet in snippets|sort(attribute='name') %}
         <tr>
-          <td class="nowrap">
-            {%- if snippet.is_document %}
-            {{ render_icon('snippet-document', title=_('Document')) }}
-            {%- elif snippet.is_fragment %}
-            {{ render_icon('snippet-fragment', title=_('Fragment')) }}
-            {%- endif %}
-            <a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}"><strong>{{ snippet.name }}</strong></a>
-          </td>
+          <td class="nowrap"><a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}"><strong>{{ snippet.name }}</strong></a></td>
           <td class="nowrap">
             {%- if has_current_user_permission('snippet.view_history') %}
             {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="{{ _('View change history') }}">{{ snippet.current_version.created_at|datetimeformat }}</a>
@@ -58,13 +45,11 @@
           </td>
           <td>{{ render_user_avatar_and_name(users_by_id[snippet.current_version.creator_id], size=20) }}</td>
           <td>
+            {%- if has_current_user_permission('snippet.update') %}
             <div class="button-row button-row--compact button-row--right">
-              {%- if has_current_user_permission('snippet.update') %}
-                {%- with endpoint = '.update_fragment_form' if snippet.is_fragment else '.update_document_form' %}
-              <a href="{{ url_for(endpoint, snippet_id=snippet.id) }}" class="button button--compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
-                {%- endwith %}
-              {%- endif %}
+              <a href="{{ url_for('.update_form', snippet_id=snippet.id) }}" class="button button--compact" title="{{ _('Edit') }}">{{ render_icon('edit') }}</a>
             </div>
+            {%- endif %}
           </td>
         </tr>
       {%- endfor %}

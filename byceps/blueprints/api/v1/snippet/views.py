@@ -13,7 +13,7 @@ from .....services.snippet.transfer.models import Scope
 from .....util.framework.blueprint import create_blueprint
 from .....util.views import create_empty_json_response
 
-from ....site.snippet.templating import get_snippet_context
+from ....site.snippet.templating import get_rendered_snippet_body
 
 from ...decorators import api_token_required
 
@@ -34,30 +34,11 @@ def get_snippet_by_name(scope_type, scope_name, snippet_name):
     if version is None:
         return create_empty_json_response(404)
 
-    content = _get_content(version)
+    content = {'body': get_rendered_snippet_body(version)}
 
     return jsonify(
         {
-            'type': version.snippet.type_.name,
             'version': version.id,
             'content': content,
         }
     )
-
-
-def _get_content(version):
-    context = get_snippet_context(version)
-
-    content = {
-        'body': context['body'],
-    }
-
-    if version.snippet.is_document:
-        content.update(
-            {
-                'title': context['page_title'],
-                'head': context['head'],
-            }
-        )
-
-    return content

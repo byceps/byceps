@@ -31,7 +31,7 @@ from byceps.typing import UserID
 
 from tests.helpers import create_site, http_client, log_in_user
 from tests.integration.services.shop.conftest import make_article
-from tests.integration.services.shop.helpers import create_shop_fragment
+from tests.integration.services.shop.helpers import create_shop_snippet
 
 
 COMMON_FORM_DATA: dict[str, str] = {
@@ -48,7 +48,7 @@ COMMON_FORM_DATA: dict[str, str] = {
 def shop(make_brand, make_shop, admin_user: User):
     brand = make_brand()
     shop = make_shop(brand.id)
-    snippet_id = create_shop_fragment(
+    snippet_id = create_shop_snippet(
         shop.id, admin_user.id, 'payment_instructions', 'Send all ur moneyz!'
     )
 

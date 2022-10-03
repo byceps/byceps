@@ -26,20 +26,16 @@ def test_current_party_is_considered(party1, party2, make_user):
     name = 'info'
     creator = make_user()
 
-    fragment_info2014_version = create_fragment(
-        scope_site2014, name, creator.id
-    )
-    fragment_info2015_version = create_fragment(
-        scope_site2015, name, creator.id
-    )
+    snippet_info2014_version = create_snippet(scope_site2014, name, creator.id)
+    snippet_info2015_version = create_snippet(scope_site2015, name, creator.id)
 
     actual = snippet_service.find_current_version_of_snippet_with_name(
         scope_site2014, name
     )
 
-    assert actual == fragment_info2014_version
+    assert actual == snippet_info2014_version
 
-    for version in fragment_info2014_version, fragment_info2015_version:
+    for version in snippet_info2014_version, snippet_info2015_version:
         snippet_service.delete_snippet(version.snippet_id)
 
 
@@ -56,7 +52,7 @@ def test_unknown_name(party1):
 # helpers
 
 
-def create_fragment(scope, name, creator_id):
+def create_snippet(scope, name, creator_id):
     body = ''
-    version, _ = snippet_service.create_fragment(scope, name, creator_id, body)
+    version, _ = snippet_service.create_snippet(scope, name, creator_id, body)
     return version

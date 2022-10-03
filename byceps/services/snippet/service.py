@@ -21,88 +21,19 @@ from .dbmodels.snippet import (
     Snippet as DbSnippet,
     SnippetVersion as DbSnippetVersion,
 )
-from .transfer.models import Scope, SnippetID, SnippetType, SnippetVersionID
+from .transfer.models import Scope, SnippetID, SnippetVersionID
 
 
-# -------------------------------------------------------------------- #
-# document
-
-
-def create_document(
-    scope: Scope,
-    name: str,
-    creator_id: UserID,
-    title: str,
-    body: str,
-    *,
-    head: Optional[str] = None,
-) -> tuple[DbSnippetVersion, SnippetCreated]:
-    """Create a document and its initial version, and return that version."""
-    return _create_snippet(
-        scope,
-        name,
-        SnippetType.document,
-        creator_id,
-        body,
-        title=title,
-        head=head,
-    )
-
-
-def update_document(
-    snippet_id: SnippetID,
-    creator_id: UserID,
-    title: str,
-    body: str,
-    *,
-    head: Optional[str] = None,
-) -> tuple[DbSnippetVersion, SnippetUpdated]:
-    """Update document with a new version, and return that version."""
-    return _update_snippet(snippet_id, creator_id, title, head, body)
-
-
-# -------------------------------------------------------------------- #
-# fragment
-
-
-def create_fragment(
+def create_snippet(
     scope: Scope, name: str, creator_id: UserID, body: str
-) -> tuple[DbSnippetVersion, SnippetCreated]:
-    """Create a fragment and its initial version, and return that version."""
-    return _create_snippet(scope, name, SnippetType.fragment, creator_id, body)
-
-
-def update_fragment(
-    snippet_id: SnippetID, creator_id: UserID, body: str
-) -> tuple[DbSnippetVersion, SnippetUpdated]:
-    """Update fragment with a new version, and return that version."""
-    title = None
-    head = None
-
-    return _update_snippet(snippet_id, creator_id, title, head, body)
-
-
-# -------------------------------------------------------------------- #
-# snippet
-
-
-def _create_snippet(
-    scope: Scope,
-    name: str,
-    type_: SnippetType,
-    creator_id: UserID,
-    body: str,
-    *,
-    title: Optional[str] = None,
-    head: Optional[str] = None,
 ) -> tuple[DbSnippetVersion, SnippetCreated]:
     """Create a snippet and its initial version, and return that version."""
     creator = user_service.get_user(creator_id)
 
-    snippet = DbSnippet(scope, name, type_)
+    snippet = DbSnippet(scope, name)
     db.session.add(snippet)
 
-    version = DbSnippetVersion(snippet, creator_id, title, head, body)
+    version = DbSnippetVersion(snippet, creator_id, body)
     db.session.add(version)
 
     current_version_association = DbCurrentVersionAssociation(snippet, version)
@@ -117,19 +48,14 @@ def _create_snippet(
         snippet_id=snippet.id,
         scope=snippet.scope,
         snippet_name=snippet.name,
-        snippet_type=snippet.type_,
         snippet_version_id=version.id,
     )
 
     return version, event
 
 
-def _update_snippet(
-    snippet_id: SnippetID,
-    creator_id: UserID,
-    title: Optional[str],
-    head: Optional[str],
-    body: str,
+def update_snippet(
+    snippet_id: SnippetID, creator_id: UserID, body: str
 ) -> tuple[DbSnippetVersion, SnippetUpdated]:
     """Update snippet with a new version, and return that version."""
     snippet = find_snippet(snippet_id)
@@ -138,7 +64,7 @@ def _update_snippet(
 
     creator = user_service.get_user(creator_id)
 
-    version = DbSnippetVersion(snippet, creator_id, title, head, body)
+    version = DbSnippetVersion(snippet, creator_id, body)
     db.session.add(version)
 
     snippet.current_version = version
@@ -152,7 +78,6 @@ def _update_snippet(
         snippet_id=snippet.id,
         scope=snippet.scope,
         snippet_name=snippet.name,
-        snippet_type=snippet.type_,
         snippet_version_id=version.id,
     )
 
@@ -204,7 +129,6 @@ def delete_snippet(
         snippet_id=snippet_id,
         scope=scope,
         snippet_name=snippet_name,
-        snippet_type=snippet.type_,
     )
 
     return True, event
@@ -287,15 +211,8 @@ def search_snippets(
             .filter(DbSnippet.scope_name == scope.name)
 
     return q \
-            .filter(
-                db.or_(
-                    DbSnippetVersion.title.contains(search_term),
-                    DbSnippetVersion.head.contains(search_term),
-                    DbSnippetVersion.body.contains(search_term),
-                )
-            ) \
+            .filter(DbSnippetVersion.body.contains(search_term)) \
         .all()
-
 
 
 class SnippetNotFound(Exception):

@@ -25,12 +25,12 @@ from byceps.typing import UserID
 from tests.helpers import generate_token
 
 
-def create_shop_fragment(
+def create_shop_snippet(
     shop_id: ShopID, creator_id: UserID, name: str, body: str
 ) -> SnippetID:
     scope = Scope('shop', shop_id)
 
-    version, _ = snippet_service.create_fragment(scope, name, creator_id, body)
+    version, _ = snippet_service.create_snippet(scope, name, creator_id, body)
 
     return version.snippet_id
 
