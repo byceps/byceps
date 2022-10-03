@@ -23,7 +23,7 @@ from ...util.instances import ReprBuilder
 from .transfer.models import IPAddress
 
 
-class Setting(db.Model):
+class DbSetting(db.Model):
     """A party-specific setting for guest servers."""
 
     __tablename__ = 'guest_server_settings'
@@ -88,7 +88,7 @@ class Setting(db.Model):
             .build()
 
 
-class Server(db.Model):
+class DbServer(db.Model):
     """A guest server."""
 
     __tablename__ = 'guest_servers'
@@ -125,14 +125,14 @@ class Server(db.Model):
             .build()
 
 
-class Address(db.Model):
+class DbAddress(db.Model):
     """An guest server's IPv4 address and optional DNS name."""
 
     __tablename__ = 'guest_server_addresses'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     server_id = db.Column(db.Uuid, db.ForeignKey('guest_servers.id'), index=True, nullable=False)
-    server = db.relationship(Server, backref='addresses')
+    server = db.relationship(DbServer, backref='addresses')
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     _ip_address = db.Column('ip_address', postgresql.INET, nullable=True)
     hostname = db.Column(db.UnicodeText, nullable=True)
@@ -141,7 +141,7 @@ class Address(db.Model):
 
     def __init__(
         self,
-        server: Server,
+        server: DbServer,
         *,
         ip_address: Optional[IPAddress] = None,
         hostname: Optional[str] = None,

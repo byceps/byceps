@@ -18,11 +18,7 @@ from ...typing import PartyID, UserID
 from ..party import service as party_service
 from ..user import service as user_service
 
-from .dbmodels import (
-    Address as DbAddress,
-    Server as DbServer,
-    Setting as DbSetting,
-)
+from .dbmodels import DbAddress, DbServer, DbSetting
 from .transfer.models import (
     Address,
     AddressID,
