@@ -25,44 +25,38 @@ def execute(ctx, source_site, target_site, snippet_names) -> None:
     source_scope = Scope.for_site(source_site.id)
     target_scope = Scope.for_site(target_site.id)
 
-    snippet_versions = [
-        get_snippet_version(source_scope, name) for name in snippet_names
-    ]
+    versions = [get_version(source_scope, name) for name in snippet_names]
 
-    for snippet_version in snippet_versions:
-        copy_snippet(target_scope, snippet_version, ctx)
+    for version in versions:
+        copy_snippet(target_scope, version, ctx)
 
     click.secho('Done.', fg='green')
 
 
-def get_snippet_version(
-    source_scope: Scope, snippet_name: str
-) -> SnippetVersion:
-    snippet_version = snippet_service.find_current_version_of_snippet_with_name(
+def get_version(source_scope: Scope, snippet_name: str) -> SnippetVersion:
+    version = snippet_service.find_current_version_of_snippet_with_name(
         source_scope, snippet_name
     )
 
-    if snippet_version is None:
+    if version is None:
         raise click.BadParameter(
             f'Snippet "{snippet_name}" not found '
             f'in scope "{scope_as_string(source_scope)}".'
         )
 
-    return snippet_version
+    return version
 
 
-def copy_snippet(
-    target_scope: Scope, snippet_version: SnippetVersion, ctx
-) -> None:
+def copy_snippet(target_scope: Scope, version: SnippetVersion, ctx) -> None:
     snippet_service.create_snippet(
         target_scope,
-        snippet_version.snippet.name,
-        snippet_version.creator_id,
-        snippet_version.body,
+        version.snippet.name,
+        version.creator_id,
+        version.body,
     )
 
     click.secho(
-        f'Copied snippet "{snippet_version.snippet.name}" '
+        f'Copied snippet "{version.snippet.name}" '
         f'to scope "{scope_as_string(target_scope)}".',
         fg='green',
     )
