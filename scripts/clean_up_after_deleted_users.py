@@ -28,8 +28,8 @@ from byceps.services.board.dbmodels.last_topic_view import (
 )
 from byceps.services.consent.dbmodels.consent import Consent
 from byceps.services.newsletter.dbmodels import (
-    Subscription as NewsletterSubscription,
-    SubscriptionUpdate as NewsletterSubscriptionUpdate,
+    DbSubscription as DbNewsletterSubscription,
+    DbSubscriptionUpdate as DbNewsletterSubscriptionUpdate,
 )
 from byceps.services.user.dbmodels.log import UserLogEntry as DbUserLogEntry
 from byceps.services.user import service as user_service
@@ -135,7 +135,7 @@ def delete_consents(user_ids: set[UserID]) -> int:
 
 def delete_newsletter_subscriptions(user_ids: set[UserID]) -> int:
     """Delete newsletter subscriptions for the given users."""
-    return _execute_delete_for_users_query(NewsletterSubscription, user_ids)
+    return _execute_delete_for_users_query(DbNewsletterSubscription, user_ids)
 
 
 def delete_newsletter_subscription_updates(user_ids: set[UserID]) -> int:

@@ -14,11 +14,7 @@ from sqlalchemy.dialects.postgresql import insert
 from ...database import db
 from ...typing import UserID
 
-from .dbmodels import (
-    List as DbList,
-    Subscription as DbSubscription,
-    SubscriptionUpdate as DbSubscriptionUpdate,
-)
+from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
 from .service import find_list, _db_entity_to_list
 from .transfer.models import List, ListID
 from .types import SubscriptionState

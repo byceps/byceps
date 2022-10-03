@@ -16,11 +16,7 @@ from ...typing import UserID
 
 from ..user.dbmodels.user import User as DbUser
 
-from .dbmodels import (
-    List as DbList,
-    Subscription as DbSubscription,
-    SubscriptionUpdate as DbSubscriptionUpdate,
-)
+from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
 from .transfer.models import List, ListID, Subscriber
 
 

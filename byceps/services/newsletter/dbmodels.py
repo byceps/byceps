@@ -22,7 +22,7 @@ from .transfer.models import ListID
 from .types import SubscriptionState
 
 
-class List(db.Model):
+class DbList(db.Model):
     """A newsletter list users can subscribe to."""
 
     __tablename__ = 'newsletter_lists'
@@ -40,7 +40,7 @@ class List(db.Model):
             .build()
 
 
-class Subscription(db.Model):
+class DbSubscription(db.Model):
     """A user's subscription to a list."""
 
     __tablename__ = 'newsletter_subscriptions'
@@ -49,7 +49,7 @@ class Subscription(db.Model):
     list_id = db.Column(db.UnicodeText, db.ForeignKey('newsletter_lists.id'), primary_key=True)
 
 
-class SubscriptionUpdate(db.Model):
+class DbSubscriptionUpdate(db.Model):
     """A user's declaration on wanting/not wanting to receive
     newsletters from this list.
     """
