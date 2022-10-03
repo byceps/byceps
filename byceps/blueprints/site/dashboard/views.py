@@ -13,7 +13,7 @@ from __future__ import annotations
 from flask import abort, g
 
 from ....services.authentication.session.models.current_user import CurrentUser
-from ....services.board.dbmodels.topic import Topic as DbTopic
+from ....services.board.dbmodels.topic import DbTopic
 from ....services.board import (
     access_control_service as board_access_control_service,
     topic_query_service as board_topic_query_service,

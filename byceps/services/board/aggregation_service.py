@@ -8,9 +8,9 @@ byceps.services.board.aggregation_service
 
 from ...database import db
 
-from .dbmodels.category import Category as DbCategory
-from .dbmodels.posting import Posting as DbPosting
-from .dbmodels.topic import Topic as DbTopic
+from .dbmodels.category import DbCategory
+from .dbmodels.posting import DbPosting
+from .dbmodels.topic import DbTopic
 
 
 def aggregate_category(category: DbCategory) -> None:

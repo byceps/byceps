@@ -15,10 +15,10 @@ from ...user.dbmodels.user import User
 
 from ..transfer.models import BoardID
 
-from .board import Board
+from .board import DbBoard
 
 
-class Category(db.Model):
+class DbCategory(db.Model):
     """A category for topics."""
 
     __tablename__ = 'board_categories'
@@ -41,7 +41,7 @@ class Category(db.Model):
     hidden = db.Column(db.Boolean, default=False, nullable=False)
 
     board = db.relationship(
-        Board,
+        DbBoard,
         backref=db.backref(
             'categories',
             order_by=position,

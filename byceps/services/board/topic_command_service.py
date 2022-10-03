@@ -27,12 +27,9 @@ from ..user import service as user_service
 from ..user.transfer.models import User
 
 from .aggregation_service import aggregate_category, aggregate_topic
-from .dbmodels.category import Category as DbCategory
-from .dbmodels.posting import (
-    InitialTopicPostingAssociation,
-    Posting as DbPosting,
-)
-from .dbmodels.topic import Topic as DbTopic
+from .dbmodels.category import DbCategory
+from .dbmodels.posting import DbInitialTopicPostingAssociation, DbPosting
+from .dbmodels.topic import DbTopic
 from .posting_command_service import update_posting
 from . import topic_query_service
 from .transfer.models import CategoryID, TopicID
@@ -46,7 +43,7 @@ def create_topic(
 
     topic = DbTopic(category_id, creator.id, title)
     posting = DbPosting(topic, creator.id, body)
-    initial_topic_posting_association = InitialTopicPostingAssociation(
+    initial_topic_posting_association = DbInitialTopicPostingAssociation(
         topic, posting
     )
 
@@ -334,7 +331,7 @@ def remove_limit_of_topic_to_announcements(topic_id: TopicID) -> None:
 
 def delete_topic(topic_id: TopicID) -> None:
     """Delete a topic."""
-    db.session.query(InitialTopicPostingAssociation) \
+    db.session.query(DbInitialTopicPostingAssociation) \
         .filter_by(topic_id=topic_id) \
         .delete()
 

@@ -14,17 +14,17 @@ from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import User
 
-from .topic import Topic
+from .topic import DbTopic
 
 
-class Posting(db.Model):
+class DbPosting(db.Model):
     """A posting."""
 
     __tablename__ = 'board_postings'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'), index=True, nullable=False)
-    topic = db.relationship(Topic, backref='postings')
+    topic = db.relationship(DbTopic, backref='postings')
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     body = db.Column(db.UnicodeText, nullable=False)
@@ -37,12 +37,12 @@ class Posting(db.Model):
     hidden_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     hidden_by = db.relationship(User, foreign_keys=[hidden_by_id])
 
-    def __init__(self, topic: Topic, creator_id: UserID, body: str) -> None:
+    def __init__(self, topic: DbTopic, creator_id: UserID, body: str) -> None:
         self.topic = topic
         self.creator_id = creator_id
         self.body = body
 
-    def is_initial_topic_posting(self, topic: Topic) -> bool:
+    def is_initial_topic_posting(self, topic: DbTopic) -> bool:
         return self == topic.initial_posting
 
     def __eq__(self, other) -> bool:
@@ -59,14 +59,14 @@ class Posting(db.Model):
         return builder.build()
 
 
-class InitialTopicPostingAssociation(db.Model):
+class DbInitialTopicPostingAssociation(db.Model):
     __tablename__ = 'board_initial_topic_postings'
 
     topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True)
-    topic = db.relationship(Topic, backref=db.backref('initial_topic_posting_association', uselist=False))
+    topic = db.relationship(DbTopic, backref=db.backref('initial_topic_posting_association', uselist=False))
     posting_id = db.Column(db.Uuid, db.ForeignKey('board_postings.id'), unique=True, nullable=False)
-    posting = db.relationship(Posting)
+    posting = db.relationship(DbPosting)
 
-    def __init__(self, topic: Topic, posting: Posting) -> None:
+    def __init__(self, topic: DbTopic, posting: DbPosting) -> None:
         self.topic = topic
         self.posting = posting

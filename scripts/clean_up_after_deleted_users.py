@@ -21,10 +21,10 @@ from byceps.services.authentication.session.dbmodels.session_token import (
 )
 from byceps.services.authorization.dbmodels import DbUserRole
 from byceps.services.board.dbmodels.last_category_view import (
-    LastCategoryView as BoardLastCategoryView,
+    DbLastCategoryView as DbBoardLastCategoryView,
 )
 from byceps.services.board.dbmodels.last_topic_view import (
-    LastTopicView as BoardLastTopicView,
+    DbLastTopicView as DbBoardLastTopicView,
 )
 from byceps.services.consent.dbmodels.consent import Consent
 from byceps.services.newsletter.dbmodels import (
@@ -120,12 +120,12 @@ def delete_authz_user_roles(user_ids: set[UserID]) -> int:
 
 def delete_board_category_lastviews(user_ids: set[UserID]) -> int:
     """Delete last board category view marks for the given users."""
-    return _execute_delete_for_users_query(BoardLastCategoryView, user_ids)
+    return _execute_delete_for_users_query(DbBoardLastCategoryView, user_ids)
 
 
 def delete_board_topic_lastviews(user_ids: set[UserID]) -> int:
     """Delete last board topic view marks for the given users."""
-    return _execute_delete_for_users_query(BoardLastTopicView, user_ids)
+    return _execute_delete_for_users_query(DbBoardLastTopicView, user_ids)
 
 
 def delete_consents(user_ids: set[UserID]) -> int:

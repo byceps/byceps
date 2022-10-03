@@ -5,8 +5,8 @@
 
 import pytest
 
-from byceps.services.board.dbmodels.posting import Posting as DbPosting
-from byceps.services.board.dbmodels.topic import Topic as DbTopic
+from byceps.services.board.dbmodels.posting import DbPosting
+from byceps.services.board.dbmodels.topic import DbTopic
 from byceps.services.board.transfer.models import Board, Category
 from byceps.services.user.transfer.models import User
 

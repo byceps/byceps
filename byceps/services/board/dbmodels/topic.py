@@ -18,17 +18,17 @@ from ...user.dbmodels.user import User
 
 from ..transfer.models import CategoryID
 
-from .category import Category
+from .category import DbCategory
 
 
-class Topic(db.Model):
+class DbTopic(db.Model):
     """A topic."""
 
     __tablename__ = 'board_topics'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'), index=True, nullable=False)
-    category = db.relationship(Category)
+    category = db.relationship(DbCategory)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     title = db.Column(db.UnicodeText, nullable=False)

@@ -15,9 +15,9 @@ from sqlalchemy.sql import Select
 
 from ...database import db, paginate, Pagination
 
-from .dbmodels.category import Category as DbCategory
-from .dbmodels.posting import Posting as DbPosting
-from .dbmodels.topic import Topic as DbTopic
+from .dbmodels.category import DbCategory
+from .dbmodels.posting import DbPosting
+from .dbmodels.topic import DbTopic
 from .transfer.models import BoardID, CategoryID, TopicID
 
 

@@ -14,17 +14,17 @@ from ....util.instances import ReprBuilder
 
 from ..transfer.models import CategoryID
 
-from .category import Category
+from .category import DbCategory
 
 
-class LastCategoryView(db.Model):
+class DbLastCategoryView(db.Model):
     """The last time a user looked into specific category."""
 
     __tablename__ = 'board_categories_lastviews'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'), primary_key=True)
-    category = db.relationship(Category)
+    category = db.relationship(DbCategory)
     occurred_at = db.Column(db.DateTime, nullable=False)
 
     def __init__(

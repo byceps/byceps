@@ -12,9 +12,9 @@ from typing import Optional
 from ...database import db, upsert, upsert_many
 from ...typing import UserID
 
-from .dbmodels.last_category_view import LastCategoryView
-from .dbmodels.last_topic_view import LastTopicView
-from .dbmodels.topic import Topic as DbTopic
+from .dbmodels.last_category_view import DbLastCategoryView
+from .dbmodels.last_topic_view import DbLastTopicView
+from .dbmodels.topic import DbTopic
 from . import topic_query_service
 from .transfer.models import CategoryID, CategoryWithLastUpdate, TopicID
 
@@ -42,10 +42,10 @@ def contains_category_unseen_postings(
 
 def find_last_category_view(
     user_id: UserID, category_id: CategoryID
-) -> Optional[LastCategoryView]:
+) -> Optional[DbLastCategoryView]:
     """Return the user's last view of the category, or `None` if not found."""
     return db.session \
-        .query(LastCategoryView) \
+        .query(DbLastCategoryView) \
         .filter_by(user_id=user_id, category_id=category_id) \
         .first()
 
@@ -56,7 +56,7 @@ def mark_category_as_just_viewed(
     """Mark the category as last viewed by the user (if logged in) at
     the current time.
     """
-    table = LastCategoryView.__table__
+    table = DbLastCategoryView.__table__
     identifier = {
         'user_id': user_id,
         'category_id': category_id,
@@ -70,7 +70,7 @@ def mark_category_as_just_viewed(
 
 def delete_last_category_views(category_id: CategoryID) -> None:
     """Delete the category's last views."""
-    db.session.query(LastCategoryView) \
+    db.session.query(DbLastCategoryView) \
         .filter_by(category_id=category_id) \
         .delete()
     db.session.commit()
@@ -91,10 +91,10 @@ def contains_topic_unseen_postings(topic: DbTopic, user_id: UserID) -> bool:
 
 def find_last_topic_view(
     user_id: UserID, topic_id: TopicID
-) -> Optional[LastTopicView]:
+) -> Optional[DbLastTopicView]:
     """Return the user's last view of the topic, or `None` if not found."""
     return db.session \
-        .query(LastTopicView) \
+        .query(DbLastTopicView) \
         .filter_by(user_id=user_id, topic_id=topic_id) \
         .first()
 
@@ -113,7 +113,7 @@ def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
     """Mark the topic as last viewed by the user (if logged in) at the
     current time.
     """
-    table = LastTopicView.__table__
+    table = DbLastTopicView.__table__
     identifier = {
         'user_id': user_id,
         'topic_id': topic_id,
@@ -134,7 +134,7 @@ def mark_all_topics_in_category_as_viewed(
     if not topic_ids:
         return
 
-    table = LastTopicView.__table__
+    table = DbLastTopicView.__table__
     replacement = {
         'occurred_at': datetime.utcnow(),
     }
@@ -148,7 +148,7 @@ def mark_all_topics_in_category_as_viewed(
 
 def delete_last_topic_views(topic_id: TopicID) -> None:
     """Delete the topic's last views."""
-    db.session.query(LastTopicView) \
+    db.session.query(DbLastTopicView) \
         .filter_by(topic_id=topic_id) \
         .delete()
     db.session.commit()

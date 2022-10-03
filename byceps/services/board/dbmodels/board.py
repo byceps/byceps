@@ -13,7 +13,7 @@ from ....util.instances import ReprBuilder
 from ..transfer.models import BoardID
 
 
-class Board(db.Model):
+class DbBoard(db.Model):
     """A board."""
 
     __tablename__ = 'boards'

@@ -14,17 +14,17 @@ from ....util.instances import ReprBuilder
 
 from ..transfer.models import TopicID
 
-from .topic import Topic
+from .topic import DbTopic
 
 
-class LastTopicView(db.Model):
+class DbLastTopicView(db.Model):
     """The last time a user looked into specific topic."""
 
     __tablename__ = 'board_topics_lastviews'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True)
-    topic = db.relationship(Topic)
+    topic = db.relationship(DbTopic)
     occurred_at = db.Column(db.DateTime, nullable=False)
 
     def __init__(

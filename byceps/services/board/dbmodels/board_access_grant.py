@@ -19,7 +19,7 @@ from ..transfer.models import BoardID
 BoardAccessGrantID = NewType('BoardAccessGrantID', str)
 
 
-class BoardAccessGrant(db.Model):
+class DbBoardAccessGrant(db.Model):
     """Access to a specific board granted to a user."""
 
     __tablename__ = 'board_access_grants'

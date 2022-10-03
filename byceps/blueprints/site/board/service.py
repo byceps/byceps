@@ -13,8 +13,8 @@ from typing import Optional, Sequence
 from flask import g
 
 from ....services.authentication.session.models.current_user import CurrentUser
-from ....services.board.dbmodels.topic import Topic as DbTopic
-from ....services.board.dbmodels.posting import Posting as DbPosting
+from ....services.board.dbmodels.topic import DbTopic
+from ....services.board.dbmodels.posting import DbPosting
 from ....services.board import (
     last_view_service as board_last_view_service,
     posting_query_service as board_posting_query_service,
