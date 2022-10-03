@@ -12,7 +12,7 @@ from ....typing import BrandID
 from ..transfer.models import SubjectID
 
 
-class BrandRequirement(db.Model):
+class DbBrandRequirement(db.Model):
     """A consent requirement for a brand."""
 
     __tablename__ = 'consent_brand_requirements'

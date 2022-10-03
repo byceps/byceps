@@ -26,7 +26,7 @@ from byceps.services.board.dbmodels.last_category_view import (
 from byceps.services.board.dbmodels.last_topic_view import (
     DbLastTopicView as DbBoardLastTopicView,
 )
-from byceps.services.consent.dbmodels.consent import Consent
+from byceps.services.consent.dbmodels.consent import DbConsent
 from byceps.services.newsletter.dbmodels import (
     DbSubscription as DbNewsletterSubscription,
     DbSubscriptionUpdate as DbNewsletterSubscriptionUpdate,
@@ -130,7 +130,7 @@ def delete_board_topic_lastviews(user_ids: set[UserID]) -> int:
 
 def delete_consents(user_ids: set[UserID]) -> int:
     """Delete consents from the given users."""
-    return _execute_delete_for_users_query(Consent, user_ids)
+    return _execute_delete_for_users_query(DbConsent, user_ids)
 
 
 def delete_newsletter_subscriptions(user_ids: set[UserID]) -> int:

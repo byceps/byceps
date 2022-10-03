@@ -12,7 +12,7 @@ from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
 
-class Subject(db.Model):
+class DbSubject(db.Model):
     """A subject that requires users' consent."""
 
     __tablename__ = 'consent_subjects'

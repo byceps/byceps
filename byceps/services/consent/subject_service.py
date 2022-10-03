@@ -12,9 +12,9 @@ from typing import Optional
 from ...database import db
 from ...typing import BrandID
 
-from .dbmodels.brand_requirement import BrandRequirement as DbBrandRequirement
-from .dbmodels.consent import Consent as DbConsent
-from .dbmodels.subject import Subject as DbSubject
+from .dbmodels.brand_requirement import DbBrandRequirement
+from .dbmodels.consent import DbConsent
+from .dbmodels.subject import DbSubject
 from .transfer.models import Subject, SubjectID
 
 

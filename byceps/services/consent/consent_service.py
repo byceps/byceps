@@ -13,8 +13,8 @@ from typing import Iterable
 from ...database import db
 from ...typing import UserID
 
-from .dbmodels.consent import Consent as DbConsent
-from .dbmodels.subject import Subject as DbSubject
+from .dbmodels.consent import DbConsent
+from .dbmodels.subject import DbSubject
 from .transfer.models import Consent, SubjectID
 
 

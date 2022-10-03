@@ -15,10 +15,10 @@ from ...user.dbmodels.user import DbUser
 
 from ..transfer.models import SubjectID
 
-from .subject import Subject
+from .subject import DbSubject
 
 
-class Consent(db.Model):
+class DbConsent(db.Model):
     """A user's consent to a subject."""
 
     __tablename__ = 'consents'
@@ -26,7 +26,7 @@ class Consent(db.Model):
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     user = db.relationship(DbUser)
     subject_id = db.Column(db.Uuid, db.ForeignKey('consent_subjects.id'), primary_key=True)
-    subject = db.relationship(Subject)
+    subject = db.relationship(DbSubject)
     expressed_at = db.Column(db.DateTime, nullable=False)
 
     def __init__(
