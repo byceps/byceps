@@ -13,7 +13,7 @@ from ...typing import BrandID
 from ...util.instances import ReprBuilder
 
 
-class EmailConfig(db.Model):
+class DbEmailConfig(db.Model):
     """An e-mail configuration."""
 
     __tablename__ = 'email_configs'

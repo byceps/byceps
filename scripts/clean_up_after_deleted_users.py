@@ -37,7 +37,7 @@ from byceps.services.user_avatar.dbmodels import (
     AvatarSelection as UserAvatarSelection,
 )
 from byceps.services.verification_token.dbmodels import (
-    Token as VerificationToken,
+    DbToken as DbVerificationToken,
 )
 from byceps.typing import UserID
 
@@ -166,7 +166,7 @@ def delete_user_log_entries(user_ids: set[UserID]) -> int:
 
 def delete_verification_tokens(user_ids: set[UserID]) -> int:
     """Delete verification tokens for the given users."""
-    return _execute_delete_for_users_query(VerificationToken, user_ids)
+    return _execute_delete_for_users_query(DbVerificationToken, user_ids)
 
 
 def _execute_delete_for_users_query(model, user_ids: set[UserID]) -> int:

@@ -11,7 +11,7 @@ from typing import Any, Optional
 
 from ...database import db
 
-from .dbmodels import OutgoingWebhook as DbOutgoingWebhook
+from .dbmodels import DbOutgoingWebhook
 from .transfer.models import EventFilters, OutgoingWebhook, WebhookID
 
 

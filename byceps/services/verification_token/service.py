@@ -13,7 +13,7 @@ from typing import Optional
 from ...database import db
 from ...typing import UserID
 
-from .dbmodels import Token as DbToken
+from .dbmodels import DbToken
 from .transfer.models import Purpose, Token
 
 

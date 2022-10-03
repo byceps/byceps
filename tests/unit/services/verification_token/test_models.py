@@ -12,7 +12,6 @@ import pytest
 from byceps.services.verification_token import (
     service as verification_token_service,
 )
-from byceps.services.verification_token.transfer.models import Purpose
 from byceps.services.verification_token.transfer.models import Purpose, Token
 
 

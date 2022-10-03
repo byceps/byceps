@@ -9,7 +9,7 @@ byceps.services.language.dbmodels
 from ...database import db
 
 
-class Language(db.Model):
+class DbLanguage(db.Model):
     """A language.
 
     The code can be just `en` or `de`, but also `en-gb` or `de-de`.

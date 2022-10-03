@@ -20,7 +20,7 @@ from ...database import db, generate_uuid
 from .transfer.models import EventFilters
 
 
-class OutgoingWebhook(db.Model):
+class DbOutgoingWebhook(db.Model):
     """An outgoing webhook configuration."""
 
     __tablename__ = 'outgoing_webhooks'

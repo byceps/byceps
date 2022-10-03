@@ -28,7 +28,7 @@ def _generate_token_value():
     return secrets.token_urlsafe()
 
 
-class Token(db.Model):
+class DbToken(db.Model):
     """A private token to authenticate as a certain user for a certain
     action.
     """

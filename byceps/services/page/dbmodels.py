@@ -17,7 +17,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from ...database import db, generate_uuid
 from ...typing import UserID
 
-from ..language.dbmodels import Language
+from ..language.dbmodels import DbLanguage
 from ..site.transfer.models import SiteID
 from ..user.dbmodels.user import DbUser
 
@@ -45,7 +45,7 @@ class DbPage(db.Model):
         index=True,
         nullable=False,
     )
-    language = db.relationship(Language)
+    language = db.relationship(DbLanguage)
     url_path = db.Column(db.UnicodeText, index=True, nullable=False)
     published = db.Column(db.Boolean, nullable=False)
 

@@ -12,7 +12,7 @@ from sqlalchemy import select
 
 from ...database import db
 
-from .dbmodels import Language as DbLanguage
+from .dbmodels import DbLanguage
 from .transfer.models import Language
 
 

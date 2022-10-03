@@ -22,7 +22,7 @@ from byceps.services.newsletter import (
 )
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user import log_service, service as user_service
-from byceps.services.verification_token.dbmodels import Token as DbToken
+from byceps.services.verification_token.dbmodels import DbToken
 from byceps.services.verification_token.transfer.models import (
     Purpose as TokenPurpose,
 )

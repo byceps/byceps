@@ -17,7 +17,7 @@ from sqlalchemy.ext.orderinglist import ordering_list
 
 from ...database import db, generate_uuid
 
-from ..language.dbmodels import Language
+from ..language.dbmodels import DbLanguage
 from ..site.transfer.models import SiteID
 
 from .transfer.models import ItemID, ItemTargetType, MenuID
@@ -40,7 +40,7 @@ class DbMenu(db.Model):
         index=True,
         nullable=False,
     )
-    language = db.relationship(Language)
+    language = db.relationship(DbLanguage)
     hidden = db.Column(db.Boolean, nullable=False)
 
     def __init__(

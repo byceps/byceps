@@ -14,7 +14,7 @@ from sqlalchemy.exc import IntegrityError
 from ...database import db, upsert
 from ...typing import BrandID
 
-from .dbmodels import EmailConfig as DbEmailConfig
+from .dbmodels import DbEmailConfig
 from .transfer.models import EmailConfig, NameAndAddress
 
 
