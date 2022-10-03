@@ -17,7 +17,7 @@ from ..user.dbmodels.detail import UserDetail as DbUserDetail
 from ..user.dbmodels.user import User as DbUser
 from ..user.transfer.models import User, UserID
 
-from .dbmodels import OrgaFlag as DbOrgaFlag
+from .dbmodels import DbOrgaFlag
 from .transfer.models import Birthday
 
 

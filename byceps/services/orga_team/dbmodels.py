@@ -18,7 +18,7 @@ from ..user.dbmodels.user import User
 from .transfer.models import OrgaTeamID
 
 
-class OrgaTeam(db.Model):
+class DbOrgaTeam(db.Model):
     """A group of organizers for a single party."""
 
     __tablename__ = 'orga_teams'
@@ -43,7 +43,7 @@ class OrgaTeam(db.Model):
             .build()
 
 
-class Membership(db.Model):
+class DbMembership(db.Model):
     """The assignment of a user to an organizer team."""
 
     __tablename__ = 'orga_team_memberships'
@@ -53,7 +53,7 @@ class Membership(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     orga_team_id = db.Column(db.Uuid, db.ForeignKey('orga_teams.id'), index=True, nullable=False)
-    orga_team = db.relationship(OrgaTeam, collection_class=set, backref='memberships')
+    orga_team = db.relationship(DbOrgaTeam, collection_class=set, backref='memberships')
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
     user = db.relationship(User, collection_class=set, backref='orga_team_memberships')
     duties = db.Column(db.UnicodeText, nullable=True)

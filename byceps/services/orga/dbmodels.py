@@ -14,7 +14,7 @@ from ..brand.dbmodels.brand import Brand
 from ..user.dbmodels.user import User
 
 
-class OrgaFlag(db.Model):
+class DbOrgaFlag(db.Model):
     """A user's organizer status for a single brand."""
 
     __tablename__ = 'orga_flags'

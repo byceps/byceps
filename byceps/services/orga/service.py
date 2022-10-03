@@ -16,7 +16,7 @@ from ..brand.dbmodels.brand import Brand as DbBrand
 from ..user import log_service as user_log_service
 from ..user.dbmodels.user import User as DbUser
 
-from .dbmodels import OrgaFlag as DbOrgaFlag
+from .dbmodels import DbOrgaFlag
 
 
 def get_person_count_by_brand_id() -> dict[BrandID, int]:

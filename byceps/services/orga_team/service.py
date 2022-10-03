@@ -15,7 +15,7 @@ from sqlalchemy import select
 from ...database import db
 from ...typing import PartyID, UserID
 
-from ..orga.dbmodels import OrgaFlag as DbOrgaFlag
+from ..orga.dbmodels import DbOrgaFlag
 from ..party import service as party_service
 from ..party.transfer.models import PartyID
 from ..user.dbmodels.detail import UserDetail as DbUserDetail
@@ -23,7 +23,7 @@ from ..user.dbmodels.user import User as DbUser
 from ..user import service as user_service
 from ..user.transfer.models import User
 
-from .dbmodels import Membership as DbMembership, OrgaTeam as DbOrgaTeam
+from .dbmodels import DbMembership, DbOrgaTeam
 from .transfer.models import (
     Member,
     Membership,

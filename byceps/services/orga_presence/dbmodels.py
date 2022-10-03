@@ -10,7 +10,7 @@ from ...database import db, generate_uuid
 from ..user.dbmodels.user import User
 
 
-class TimeSlot(db.Model):
+class DbTimeSlot(db.Model):
     """A time slot at a party."""
 
     __tablename__ = 'orga_time_slots'
@@ -26,7 +26,7 @@ class TimeSlot(db.Model):
     ends_at = db.Column(db.DateTime, nullable=False)
 
 
-class Presence(TimeSlot):
+class DbPresence(DbTimeSlot):
     """The scheduled presence of an organizer at a party."""
 
     __mapper_args__ = {
@@ -37,7 +37,7 @@ class Presence(TimeSlot):
     orga = db.relationship(User)
 
 
-class Task(TimeSlot):
+class DbTask(DbTimeSlot):
     """A scheduled task connected to a party."""
 
     __mapper_args__ = {
