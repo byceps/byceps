@@ -12,7 +12,7 @@ from ....database import db
 from ....util.instances import ReprBuilder
 
 # Make shop catalog tables available for database creation.
-from ..catalog.dbmodels import Catalog
+from ..catalog.dbmodels import DbCatalog
 from ..catalog.transfer.models import CatalogID
 from ..order.transfer.number import OrderNumberSequenceID
 from ..shop.transfer.models import ShopID
@@ -20,7 +20,7 @@ from ..shop.transfer.models import ShopID
 from .transfer.models import StorefrontID
 
 
-class Storefront(db.Model):
+class DbStorefront(db.Model):
     """A storefront.
 
     The entrypoint from a site to a shop.

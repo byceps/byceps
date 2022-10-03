@@ -14,7 +14,7 @@ from sqlalchemy import delete, select
 from ....database import db
 from ....typing import BrandID
 
-from .dbmodels import Shop as DbShop
+from .dbmodels import DbShop
 from .transfer.models import Shop, ShopID
 
 

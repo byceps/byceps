@@ -16,11 +16,7 @@ from ....database import db
 from ..article.transfer.models import ArticleNumber
 from ..shop.transfer.models import ShopID
 
-from .dbmodels import (
-    Catalog as DbCatalog,
-    CatalogArticle as DbCatalogArticle,
-    Collection as DbCollection,
-)
+from .dbmodels import DbCatalog, DbCatalogArticle, DbCollection
 from .transfer.models import (
     Catalog,
     CatalogArticleID,

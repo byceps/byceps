@@ -17,7 +17,7 @@ from ..shop.transfer.models import ShopID
 from .transfer.models import CatalogID, CollectionID
 
 
-class Catalog(db.Model):
+class DbCatalog(db.Model):
     """A catalog to offer articles."""
 
     __tablename__ = 'shop_catalogs'
@@ -36,7 +36,7 @@ class Catalog(db.Model):
             .build()
 
 
-class Collection(db.Model):
+class DbCollection(db.Model):
     """A group of articles inside of catalog."""
 
     __tablename__ = 'shop_catalog_collections'
@@ -50,7 +50,7 @@ class Collection(db.Model):
     position = db.Column(db.Integer, nullable=False)
 
     catalog = db.relationship(
-        Catalog,
+        DbCatalog,
         backref=db.backref(
             'collections',
             order_by=position,
@@ -69,7 +69,7 @@ class Collection(db.Model):
             .build()
 
 
-class CatalogArticle(db.Model):
+class DbCatalogArticle(db.Model):
     """The assignment of an article to a collection."""
 
     __tablename__ = 'shop_catalog_articles'
@@ -83,7 +83,7 @@ class CatalogArticle(db.Model):
     position = db.Column(db.Integer, nullable=False)
 
     collection = db.relationship(
-        Collection,
+        DbCollection,
         backref=db.backref(
             'catalog_articles',
             order_by=position,

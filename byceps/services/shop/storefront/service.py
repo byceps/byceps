@@ -17,7 +17,7 @@ from ..catalog.transfer.models import CatalogID
 from ..order.transfer.number import OrderNumberSequenceID
 from ..shop.transfer.models import ShopID
 
-from .dbmodels import Storefront as DbStorefront
+from .dbmodels import DbStorefront
 from .transfer.models import Storefront, StorefrontID
 
 

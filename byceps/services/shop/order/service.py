@@ -26,7 +26,7 @@ from ...user import service as user_service
 from ..article import service as article_service
 from ..article.transfer.models import ArticleType
 from ..cart.models import Cart, CartItem
-from ..shop.dbmodels import Shop as DbShop
+from ..shop.dbmodels import DbShop
 from ..shop import service as shop_service
 from ..shop.transfer.models import ShopID
 from ..storefront import service as storefront_service

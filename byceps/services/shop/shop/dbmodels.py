@@ -15,7 +15,7 @@ from ....util.instances import ReprBuilder
 from .transfer.models import ShopID
 
 
-class Shop(db.Model):
+class DbShop(db.Model):
     """A shop."""
 
     __tablename__ = 'shops'
