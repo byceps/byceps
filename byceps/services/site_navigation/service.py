@@ -14,7 +14,7 @@ from sqlalchemy import select
 from ...database import db
 from ...services.site.transfer.models import SiteID
 
-from .dbmodels import Item as DbItem, Menu as DbMenu
+from .dbmodels import DbItem, DbMenu
 from .transfer.models import (
     Item,
     ItemID,

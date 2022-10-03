@@ -23,7 +23,7 @@ from ..site.transfer.models import SiteID
 from .transfer.models import ItemID, ItemTargetType, MenuID
 
 
-class Menu(db.Model):
+class DbMenu(db.Model):
     """A navigation menu."""
 
     __tablename__ = 'site_nav_menus'
@@ -52,7 +52,7 @@ class Menu(db.Model):
         self.hidden = hidden
 
 
-class Item(db.Model):
+class DbItem(db.Model):
     """An item of a navigation menu."""
 
     __tablename__ = 'site_nav_menu_items'
@@ -65,10 +65,10 @@ class Item(db.Model):
         db.Uuid, db.ForeignKey('site_nav_menus.id'), index=True, nullable=False
     )
     menu = db.relationship(
-        Menu,
+        DbMenu,
         backref=db.backref(
             'items',
-            order_by='byceps.services.site_navigation.dbmodels.Item.position',
+            order_by='byceps.services.site_navigation.dbmodels.DbItem.position',
             collection_class=ordering_list('position', count_from=1),
         ),
     )

@@ -21,7 +21,7 @@ from ..news import channel_service as news_channel_service
 from ..news.transfer.models import ChannelID as NewsChannelID
 from ..shop.storefront.transfer.models import StorefrontID
 
-from .dbmodels.site import Site as DbSite
+from .dbmodels.site import DbSite
 from .dbmodels.setting import DbSetting
 from .transfer.models import Site, SiteID, SiteWithBrand
 

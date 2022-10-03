@@ -27,7 +27,7 @@ site_news_channels = db.Table(
 )
 
 
-class Site(db.Model):
+class DbSite(db.Model):
     """A site."""
 
     __tablename__ = 'sites'
