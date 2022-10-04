@@ -5,7 +5,7 @@
 
 from pathlib import Path
 
-from byceps.services.tourney.avatar import service as avatar_service
+from byceps.services.tourney.avatar import tourney_avatar_service
 
 
 def test_create(api_client, api_client_authz_header, party, user):
@@ -79,7 +79,7 @@ def send_request(api_client, api_client_authz_header, party_id, creator_id):
 
 def tear_down_avatar(response):
     avatar_id = extract_avatar_id(response)
-    avatar_service.delete_avatar_image(avatar_id)
+    tourney_avatar_service.delete_avatar_image(avatar_id)
 
 
 def extract_avatar_id(response) -> str:

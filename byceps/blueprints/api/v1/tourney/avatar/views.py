@@ -9,7 +9,7 @@ byceps.blueprints.api.v1.tourney.avatar.views
 from flask import abort, request
 
 from ......services.party import service as party_service
-from ......services.tourney.avatar import service as avatar_service
+from ......services.tourney.avatar import tourney_avatar_service
 from ......services.user import user_service
 from ......util.framework.blueprint import create_blueprint
 from ......util.image.models import ImageType
@@ -65,12 +65,12 @@ def _create(party_id, creator_id, image):
         abort(400, 'No file to upload has been specified.')
 
     try:
-        return avatar_service.create_avatar_image(
+        return tourney_avatar_service.create_avatar_image(
             party_id, creator_id, image.stream, ALLOWED_IMAGE_TYPES
         )
     except user_service.UserIdRejected:
         abort(400, 'Invalid creator ID')
-    except avatar_service.ImageTypeProhibited as e:
+    except tourney_avatar_service.ImageTypeProhibited as e:
         abort(400, str(e))
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
@@ -82,6 +82,6 @@ def _create(party_id, creator_id, image):
 def delete(avatar_id):
     """Delete the avatar image."""
     try:
-        avatar_service.delete_avatar_image(avatar_id)
+        tourney_avatar_service.delete_avatar_image(avatar_id)
     except ValueError:
         abort(404)

@@ -15,10 +15,10 @@ from ...typing import PartyID
 
 from ..party import service as party_service
 
-from . import category_service
 from .dbmodels.participant import DbParticipant
 from .dbmodels.tourney import DbTourney
 from .dbmodels.tourney_category import DbTourneyCategory
+from . import tourney_category_service
 from .transfer.models import (
     Tourney,
     TourneyCategoryID,
@@ -39,7 +39,7 @@ def create_tourney(
 ) -> Tourney:
     """Create a tourney."""
     party = party_service.get_party(party_id)
-    category = category_service.get_category(category_id)
+    category = tourney_category_service.get_category(category_id)
 
     tourney = DbTourney(
         party.id,
@@ -164,7 +164,7 @@ def _to_tourney_with_category(
     current_participant_count: int = -1,
 ) -> TourneyWithCategory:
     tourney = _db_entity_to_tourney(db_tourney, current_participant_count)
-    category = category_service._db_entity_to_category(db_category)
+    category = tourney_category_service._db_entity_to_category(db_category)
 
     return TourneyWithCategory.from_tourney_and_category(
         tourney, category, current_participant_count

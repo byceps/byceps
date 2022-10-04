@@ -22,7 +22,7 @@ from byceps.services.shop.order.transfer.order import (
 from byceps.services.ticketing.ticket_service import find_ticket_by_code
 from byceps.services.user.dbmodels.detail import DbUserDetail
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user.service import find_db_user_by_screen_name
+from byceps.services.user import user_service
 
 
 app = create_app()
@@ -61,5 +61,5 @@ def extend_shell_context():
         'find_ticket_by_code': find_ticket_by_code,
         'DbUser': DbUser,
         'DbUserDetail': DbUserDetail,
-        'find_db_user_by_screen_name': find_db_user_by_screen_name,
+        'find_db_user_by_screen_name': user_service.find_db_user_by_screen_name,
     }

@@ -10,7 +10,7 @@ from flask_babel import lazy_gettext
 from wtforms import DateField, IntegerField, SelectField, StringField, TimeField
 from wtforms.validators import InputRequired, Length, Optional
 
-from .....services.tourney import category_service
+from .....services.tourney import tourney_category_service
 from .....typing import PartyID
 from .....util.l10n import LocalizedForm
 
@@ -39,7 +39,7 @@ class CreateForm(LocalizedForm):
     )
 
     def set_category_choices(self, party_id: PartyID):
-        categories = category_service.get_categories_for_party(party_id)
+        categories = tourney_category_service.get_categories_for_party(party_id)
         categories.sort(key=lambda category: category.position)
         self.category_id.choices = [
             (category.id, category.title) for category in categories

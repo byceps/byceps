@@ -16,8 +16,8 @@ from pydantic import BaseModel, ValidationError
 
 from .......services.orga_team import service as orga_team_service
 from .......services.tourney import (
-    match_comment_service as comment_service,
-    match_service,
+    tourney_match_comment_service,
+    tourney_match_service,
 )
 from .......services.tourney.transfer.models import (
     Match,
@@ -68,7 +68,9 @@ def get_comments_for_match(match_id):
     """Return the comments on the match."""
     match = _get_match_or_404(match_id)
 
-    comments = comment_service.get_comments(match.id, include_hidden=True)
+    comments = tourney_match_comment_service.get_comments(
+        match.id, include_hidden=True
+    )
 
     party_id = request.args.get('party_id')
     if party_id:
@@ -159,7 +161,7 @@ def create():
     """Create a comment on a match."""
     req = _parse_request(CreateMatchCommentRequest)
 
-    match = match_service.find_match(req.match_id)
+    match = tourney_match_service.find_match(req.match_id)
     if not match:
         abort(400, 'Unknown match ID')
 
@@ -169,7 +171,9 @@ def create():
 
     body = req.body.strip()
 
-    comment = comment_service.create_comment(match.id, creator.id, body)
+    comment = tourney_match_comment_service.create_comment(
+        match.id, creator.id, body
+    )
 
     tourney_signals.match_comment_created.send(None, comment_id=comment.id)
 
@@ -191,7 +195,7 @@ def update(comment_id):
 
     body = req.body.strip()
 
-    comment_service.update_comment(comment.id, editor.id, body)
+    tourney_match_comment_service.update_comment(comment.id, editor.id, body)
 
 
 @blueprint.post('/match_comments/<uuid:comment_id>/flags/hidden')
@@ -207,7 +211,7 @@ def hide(comment_id):
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
-    comment_service.hide_comment(comment.id, initiator.id)
+    tourney_match_comment_service.hide_comment(comment.id, initiator.id)
 
 
 @blueprint.delete('/match_comments/<uuid:comment_id>/flags/hidden')
@@ -223,11 +227,11 @@ def unhide(comment_id):
     if not initiator:
         abort(400, 'Initiator ID does not reference an active user.')
 
-    comment_service.unhide_comment(comment.id, initiator.id)
+    tourney_match_comment_service.unhide_comment(comment.id, initiator.id)
 
 
 def _get_match_or_404(match_id: MatchID) -> Match:
-    match = match_service.find_match(match_id)
+    match = tourney_match_service.find_match(match_id)
 
     if match is None:
         abort(404)
@@ -236,7 +240,7 @@ def _get_match_or_404(match_id: MatchID) -> Match:
 
 
 def _get_comment_or_404(comment_id: MatchCommentID) -> MatchComment:
-    comment = comment_service.find_comment(comment_id)
+    comment = tourney_match_comment_service.find_comment(comment_id)
 
     if comment is None:
         abort(404)

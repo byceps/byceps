@@ -10,7 +10,7 @@ from flask import abort, request
 from flask_babel import gettext
 
 from .....services.party import service as party_service
-from .....services.tourney import category_service
+from .....services.tourney import tourney_category_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
@@ -29,7 +29,7 @@ def index(party_id):
     """List tourney categories for that party."""
     party = _get_party_or_404(party_id)
 
-    categories = category_service.get_categories_for_party(party.id)
+    categories = tourney_category_service.get_categories_for_party(party.id)
 
     return {
         'party': party,
@@ -64,7 +64,7 @@ def create(party_id):
 
     title = form.title.data.strip()
 
-    category = category_service.create_category(party.id, title)
+    category = tourney_category_service.create_category(party.id, title)
 
     flash_success(
         gettext(
@@ -103,7 +103,9 @@ def update(category_id):
     if not form.validate():
         return update_form(category_id, form)
 
-    category_service.update_category(category.id, form.title.data.strip())
+    tourney_category_service.update_category(
+        category.id, form.title.data.strip()
+    )
 
     flash_success(
         gettext(
@@ -122,7 +124,7 @@ def move_up(category_id):
     category = _get_category_or_404(category_id)
 
     try:
-        category_service.move_category_up(category.id)
+        tourney_category_service.move_category_up(category.id)
     except ValueError:
         flash_error(
             gettext(
@@ -146,7 +148,7 @@ def move_down(category_id):
     category = _get_category_or_404(category_id)
 
     try:
-        category_service.move_category_down(category.id)
+        tourney_category_service.move_category_down(category.id)
     except ValueError:
         flash_error(
             gettext(
@@ -172,7 +174,7 @@ def _get_party_or_404(party_id):
 
 
 def _get_category_or_404(category_id):
-    category = category_service.find_category(category_id)
+    category = tourney_category_service.find_category(category_id)
 
     if category is None:
         abort(404)

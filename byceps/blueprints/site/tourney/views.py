@@ -13,8 +13,8 @@ from flask import abort, g
 
 from ....services.party import service as party_service
 from ....services.tourney import (
-    category_service,
-    participant_service,
+    tourney_category_service,
+    tourney_participant_service,
     tourney_service,
 )
 from ....util.framework.blueprint import create_blueprint
@@ -36,7 +36,7 @@ def tourney_index():
     if not party:
         abort(404)
 
-    categories = category_service.get_categories_for_party(party.id)
+    categories = tourney_category_service.get_categories_for_party(party.id)
     tourneys = tourney_service.get_tourneys_for_party(party.id)
 
     categories_with_tourneys = get_categories_with_tourneys(
@@ -73,7 +73,9 @@ def tourney_view(tourney_id):
     if not tourney:
         abort(404)
 
-    participants = participant_service.get_participants_for_tourney(tourney.id)
+    participants = tourney_participant_service.get_participants_for_tourney(
+        tourney.id
+    )
 
     tourney = dataclasses.replace(
         tourney, current_participant_count=len(participants)

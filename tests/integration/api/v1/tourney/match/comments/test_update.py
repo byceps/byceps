@@ -6,13 +6,13 @@
 import pytest
 
 from byceps.services.tourney import (
-    match_comment_service as comment_service,
-    match_service,
+    tourney_match_comment_service,
+    tourney_match_service,
 )
 
 
 def test_update_comment(api_client, api_client_authz_header, comment, user):
-    original_comment = comment_service.get_comment(comment.id)
+    original_comment = tourney_match_comment_service.get_comment(comment.id)
     assert original_comment.body_text == 'Something stupid.'
     assert original_comment.body_html == 'Something stupid.'
     assert original_comment.last_edited_at is None
@@ -24,7 +24,7 @@ def test_update_comment(api_client, api_client_authz_header, comment, user):
 
     assert response.status_code == 204
 
-    updated_comment = comment_service.get_comment(comment.id)
+    updated_comment = tourney_match_comment_service.get_comment(comment.id)
     assert updated_comment.body_text == '[i]This[/i] is better!'
     assert updated_comment.body_html == '<em>This</em> is better!'
     assert updated_comment.last_edited_at is not None
@@ -47,14 +47,14 @@ def test_update_nonexistent_comment(api_client, api_client_authz_header, user):
 
 @pytest.fixture
 def match(api_app):
-    return match_service.create_match()
+    return tourney_match_service.create_match()
 
 
 @pytest.fixture
 def comment(match, user):
     body = 'Something stupid.'
 
-    return comment_service.create_comment(match.id, user.id, body)
+    return tourney_match_comment_service.create_comment(match.id, user.id, body)
 
 
 def request_comment_update(

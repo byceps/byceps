@@ -4,7 +4,7 @@
 """
 
 from byceps.database import generate_uuid
-from byceps.services.user.service import get_sort_key_for_screen_name
+from byceps.services.user.user_service import get_sort_key_for_screen_name
 from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 

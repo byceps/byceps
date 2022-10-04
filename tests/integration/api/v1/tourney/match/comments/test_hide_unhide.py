@@ -6,13 +6,13 @@
 import pytest
 
 from byceps.services.tourney import (
-    match_comment_service as comment_service,
-    match_service,
+    tourney_match_comment_service,
+    tourney_match_service,
 )
 
 
 def test_hide_comment(api_client, api_client_authz_header, admin_user, comment):
-    comment_before = comment_service.get_comment(comment.id)
+    comment_before = tourney_match_comment_service.get_comment(comment.id)
     assert not comment_before.hidden
     assert comment_before.hidden_at is None
     assert comment_before.hidden_by is None
@@ -24,7 +24,7 @@ def test_hide_comment(api_client, api_client_authz_header, admin_user, comment):
     response = api_client.post(url, headers=headers, json=json_data)
     assert response.status_code == 204
 
-    comment_after = comment_service.get_comment(comment.id)
+    comment_after = tourney_match_comment_service.get_comment(comment.id)
     assert comment_after.hidden
     assert comment_after.hidden_at is not None
     assert comment_after.hidden_by is not None
@@ -34,9 +34,9 @@ def test_hide_comment(api_client, api_client_authz_header, admin_user, comment):
 def test_unhide_comment(
     api_client, api_client_authz_header, admin_user, comment
 ):
-    comment_service.hide_comment(comment.id, admin_user.id)
+    tourney_match_comment_service.hide_comment(comment.id, admin_user.id)
 
-    comment_before = comment_service.get_comment(comment.id)
+    comment_before = tourney_match_comment_service.get_comment(comment.id)
     assert comment_before.hidden
     assert comment_before.hidden_at is not None
     assert comment_before.hidden_by is not None
@@ -48,7 +48,7 @@ def test_unhide_comment(
     response = api_client.delete(url, headers=headers, json=json_data)
     assert response.status_code == 204
 
-    comment_after = comment_service.get_comment(comment.id)
+    comment_after = tourney_match_comment_service.get_comment(comment.id)
     assert not comment_after.hidden
     assert comment_after.hidden_at is None
     assert comment_after.hidden_by is None
@@ -59,9 +59,11 @@ def test_unhide_comment(
 
 @pytest.fixture
 def match(api_app, scope='module'):
-    return match_service.create_match()
+    return tourney_match_service.create_match()
 
 
 @pytest.fixture
 def comment(api_app, match, user):
-    return comment_service.create_comment(match.id, user.id, '¡Vámonos!')
+    return tourney_match_comment_service.create_comment(
+        match.id, user.id, '¡Vámonos!'
+    )

@@ -21,7 +21,6 @@ from ....services.news.transfer.models import Channel
 from ....services.site import service as site_service
 from ....services.text_diff import service as text_diff_service
 from ....services.user import user_service
-from ....services.user.service import UserIdRejected
 from ....signals import news as news_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
@@ -294,7 +293,7 @@ def image_create(item_id):
             caption=caption,
             attribution=attribution,
         )
-    except UserIdRejected:
+    except user_service.UserIdRejected:
         abort(400, 'Invalid creator ID')
     except image_service.ImageTypeProhibited as e:
         abort(400, str(e))

@@ -8,8 +8,8 @@ import pytest
 from byceps.database import db
 from byceps.services.tourney.dbmodels.match_comment import DbMatchComment
 from byceps.services.tourney import (
-    match_comment_service as comment_service,
-    match_service,
+    tourney_match_comment_service,
+    tourney_match_service,
 )
 
 
@@ -77,7 +77,7 @@ def test_create_comment_by_unknown_user(
 
 @pytest.fixture
 def match(api_app):
-    return match_service.create_match()
+    return tourney_match_service.create_match()
 
 
 def request_comment_creation(
@@ -101,7 +101,7 @@ def get_comment_id_from_location_header(response):
 
 
 def get_comment(comment_id):
-    return comment_service.get_comment(comment_id)
+    return tourney_match_comment_service.get_comment(comment_id)
 
 
 def get_comment_count_for_match(match_id):
