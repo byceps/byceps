@@ -1,6 +1,6 @@
 """
-byceps.services.board.posting_query_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.board.board_posting_query_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

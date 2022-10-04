@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.board import category_query_service
+from byceps.services.board import board_category_query_service
 
 
 def test_create_form(board_admin_client, board):
@@ -17,7 +17,10 @@ def test_create(board_admin_client, board):
     title = 'Off-Topic'
     description = 'Random stuff'
 
-    assert category_query_service.find_category_by_slug(board.id, slug) is None
+    assert (
+        board_category_query_service.find_category_by_slug(board.id, slug)
+        is None
+    )
 
     url = f'/admin/boards/categories/for_board/{board.id}'
     form_data = {
@@ -28,7 +31,9 @@ def test_create(board_admin_client, board):
     response = board_admin_client.post(url, data=form_data)
     assert response.status_code == 302
 
-    category = category_query_service.find_category_by_slug(board.id, slug)
+    category = board_category_query_service.find_category_by_slug(
+        board.id, slug
+    )
     assert category is not None
     assert category.id is not None
     assert category.slug == slug

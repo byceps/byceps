@@ -16,8 +16,8 @@ from ....services.authentication.session.models.current_user import CurrentUser
 from ....services.board.dbmodels.topic import DbTopic
 from ....services.board.dbmodels.posting import DbPosting
 from ....services.board import (
-    last_view_service as board_last_view_service,
-    posting_query_service as board_posting_query_service,
+    board_last_view_service,
+    board_posting_query_service,
 )
 from ....services.board.transfer.models import CategoryWithLastUpdate
 from ....services.orga_team import orga_team_service

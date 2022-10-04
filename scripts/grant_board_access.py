@@ -8,7 +8,7 @@
 
 import click
 
-from byceps.services.board import access_control_service, board_service
+from byceps.services.board import board_access_control_service, board_service
 from byceps.services.board.transfer.models import Board, BoardID
 
 from _util import call_with_app_context
@@ -30,7 +30,7 @@ def validate_board(ctx, param, board_id_value: str) -> Board:
     'user', metavar='USER_SCREEN_NAME', callback=validate_user_screen_name
 )
 def execute(board, user) -> None:
-    if access_control_service.has_user_access_to_board(user.id, board.id):
+    if board_access_control_service.has_user_access_to_board(user.id, board.id):
         click.secho(
             f'User "{user.screen_name}" already has access '
             f'to board "{board.id}".',
@@ -38,7 +38,7 @@ def execute(board, user) -> None:
         )
         return
 
-    access_control_service.grant_access_to_board(board.id, user.id)
+    board_access_control_service.grant_access_to_board(board.id, user.id)
 
     click.secho(
         f'Access to board "{board.id}" granted '

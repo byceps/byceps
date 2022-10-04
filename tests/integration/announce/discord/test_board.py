@@ -8,9 +8,9 @@ import pytest
 import byceps.announce.connections  # Connect signal handlers.
 from byceps.events.board import BoardPostingCreated, BoardTopicCreated
 from byceps.services.board import (
-    category_command_service,
-    posting_command_service,
-    topic_command_service,
+    board_category_command_service,
+    board_posting_command_service,
+    board_topic_command_service,
 )
 from byceps.services.webhooks import service as webhook_service
 from byceps.signals import board as board_signals
@@ -127,7 +127,7 @@ def category(board):
     title = 'Support'
     description = 'How can I help you, dear Sir/Madam?'
 
-    return category_command_service.create_category(
+    return board_category_command_service.create_category(
         board.id, slug, title, description
     )
 
@@ -137,7 +137,7 @@ def topic(category, creator):
     title = 'Cannot connect to the party network :('
     body = 'I think I did not receive an IP address via DHCP. BUT WHY?!'
 
-    topic, _ = topic_command_service.create_topic(
+    topic, _ = board_topic_command_service.create_topic(
         category.id, creator.id, title, body
     )
 
@@ -146,7 +146,7 @@ def topic(category, creator):
 
 @pytest.fixture(scope='module')
 def posting(topic, creator):
-    posting, _ = posting_command_service.create_posting(
+    posting, _ = board_posting_command_service.create_posting(
         topic.id, creator.id, 'This is nice and all, but check out my website!'
     )
 

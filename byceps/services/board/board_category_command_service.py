@@ -1,6 +1,6 @@
 """
-byceps.services.board.category_command_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.board.board_category_command_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -8,10 +8,10 @@ byceps.services.board.category_command_service
 
 from ...database import db
 
+from . import board_topic_query_service
 from .dbmodels.board import DbBoard
 from .dbmodels.category import DbCategory
 from .transfer.models import BoardID, Category, CategoryID
-from . import topic_query_service
 
 
 def create_category(
@@ -95,7 +95,9 @@ def delete_category(category_id: CategoryID) -> None:
     """Delete category."""
     category = _get_category(category_id)
 
-    topic_ids = topic_query_service.get_all_topic_ids_in_category(category.id)
+    topic_ids = board_topic_query_service.get_all_topic_ids_in_category(
+        category.id
+    )
     if topic_ids:
         raise ValueError(
             f'Category "{category.title}" in board "{category.board_id}" '

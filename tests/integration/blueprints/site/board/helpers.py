@@ -6,11 +6,11 @@
 from typing import Optional
 
 from byceps.services.board import (
-    category_command_service,
-    posting_command_service,
-    posting_query_service,
-    topic_command_service,
-    topic_query_service,
+    board_category_command_service,
+    board_posting_command_service,
+    board_posting_query_service,
+    board_topic_command_service,
+    board_topic_query_service,
 )
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
@@ -43,7 +43,7 @@ def create_category(
     if description is None:
         description = f'Hier geht es um Kategorie {number}'
 
-    return category_command_service.create_category(
+    return board_category_command_service.create_category(
         board_id, slug, title, description
     )
 
@@ -62,7 +62,7 @@ def create_topic(
     if body is None:
         body = f'Inhalt von Thema {number}'
 
-    topic, _ = topic_command_service.create_topic(
+    topic, _ = board_topic_command_service.create_topic(
         category_id, creator_id, title, body
     )
 
@@ -79,7 +79,7 @@ def create_posting(
     if body is None:
         body = f'Inhalt von Beitrag {number}.'
 
-    posting, event = posting_command_service.create_posting(
+    posting, event = board_posting_command_service.create_posting(
         topic_id, creator_id, body
     )
 
@@ -87,8 +87,8 @@ def create_posting(
 
 
 def find_topic(topic_id: TopicID) -> Optional[DbTopic]:
-    return topic_query_service.find_topic_by_id(topic_id)
+    return board_topic_query_service.find_topic_by_id(topic_id)
 
 
 def find_posting(posting_id: PostingID) -> Optional[DbPosting]:
-    return posting_query_service.find_posting_by_id(posting_id)
+    return board_posting_query_service.find_posting_by_id(posting_id)

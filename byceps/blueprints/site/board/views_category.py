@@ -10,9 +10,9 @@ from flask import abort, g, url_for
 from flask_babel import gettext
 
 from ....services.board import (
-    category_query_service as board_category_query_service,
-    last_view_service as board_last_view_service,
-    topic_query_service as board_topic_query_service,
+    board_category_query_service,
+    board_last_view_service,
+    board_topic_query_service,
 )
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated

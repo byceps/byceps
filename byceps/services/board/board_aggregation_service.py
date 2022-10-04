@@ -1,6 +1,6 @@
 """
-byceps.services.board.aggregation_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.board.board_aggregation_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

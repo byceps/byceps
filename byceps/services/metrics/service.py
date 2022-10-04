@@ -12,8 +12,8 @@ from typing import Iterator
 from ...services.brand import brand_service
 from ...services.board import (
     board_service,
-    topic_query_service as board_topic_query_service,
-    posting_query_service as board_posting_query_service,
+    board_posting_query_service,
+    board_topic_query_service,
 )
 from ...services.consent import consent_service
 from ...services.metrics.models import Label, Metric

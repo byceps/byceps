@@ -1,6 +1,6 @@
 """
-byceps.services.board.posting_command_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.board.board_posting_command_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -21,10 +21,12 @@ from ...typing import UserID
 from ..user import user_service
 from ..user.transfer.models import User
 
-from .aggregation_service import aggregate_topic
+from . import (
+    board_aggregation_service,
+    board_posting_query_service,
+    board_topic_query_service,
+)
 from .dbmodels.posting import DbPosting
-from . import posting_query_service
-from . import topic_query_service
 from .transfer.models import PostingID, TopicID
 
 
@@ -32,14 +34,14 @@ def create_posting(
     topic_id: TopicID, creator_id: UserID, body: str
 ) -> tuple[DbPosting, BoardPostingCreated]:
     """Create a posting in that topic."""
-    topic = topic_query_service.get_topic(topic_id)
+    topic = board_topic_query_service.get_topic(topic_id)
     creator = _get_user(creator_id)
 
     posting = DbPosting(topic, creator.id, body)
     db.session.add(posting)
     db.session.commit()
 
-    aggregate_topic(topic)
+    board_aggregation_service.aggregate_topic(topic)
 
     event = BoardPostingCreated(
         occurred_at=posting.created_at,
@@ -106,7 +108,7 @@ def hide_posting(
     posting.hidden_by_id = moderator.id
     db.session.commit()
 
-    aggregate_topic(posting.topic)
+    board_aggregation_service.aggregate_topic(posting.topic)
 
     posting_creator = _get_user(posting.creator_id)
     event = BoardPostingHidden(
@@ -142,7 +144,7 @@ def unhide_posting(
     posting.hidden_by_id = None
     db.session.commit()
 
-    aggregate_topic(posting.topic)
+    board_aggregation_service.aggregate_topic(posting.topic)
 
     posting_creator = _get_user(posting.creator_id)
     event = BoardPostingUnhidden(
@@ -173,7 +175,7 @@ def delete_posting(posting_id: PostingID) -> None:
 
 
 def _get_posting(posting_id: PostingID) -> DbPosting:
-    return posting_query_service.get_posting(posting_id)
+    return board_posting_query_service.get_posting(posting_id)
 
 
 def _get_user(user_id: UserID) -> User:

@@ -9,10 +9,10 @@ byceps.blueprints.site.board._helpers
 from flask import abort, g, url_for
 
 from ....services.board import (
-    access_control_service,
-    category_query_service as board_category_query_service,
-    posting_query_service as board_posting_query_service,
-    topic_query_service as board_topic_query_service,
+    board_access_control_service,
+    board_category_query_service,
+    board_posting_query_service,
+    board_topic_query_service,
 )
 from ....services.site import site_service
 
@@ -76,7 +76,7 @@ def get_posting_or_404(posting_id):
 
 
 def require_board_access(board_id, user_id):
-    has_access = access_control_service.has_user_access_to_board(
+    has_access = board_access_control_service.has_user_access_to_board(
         user_id, board_id
     )
     if not has_access:

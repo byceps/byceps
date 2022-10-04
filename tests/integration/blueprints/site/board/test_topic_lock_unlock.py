@@ -3,9 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.board import (
-    topic_command_service as board_topic_command_service,
-)
+from byceps.services.board import board_topic_command_service
 
 from .helpers import find_topic
 

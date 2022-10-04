@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.board import category_command_service
+from byceps.services.board import board_category_command_service
 
 from tests.helpers import log_in_user
 
@@ -36,6 +36,6 @@ def category(board):
     title = 'Beauty Tips'
     description = 'Make it pretty!'
 
-    return category_command_service.create_category(
+    return board_category_command_service.create_category(
         board.id, slug, title, description
     )

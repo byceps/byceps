@@ -15,11 +15,11 @@ from flask_babel import gettext
 
 from ....services.authentication.session.models.current_user import CurrentUser
 from ....services.board import (
-    category_query_service as board_category_query_service,
-    last_view_service as board_last_view_service,
-    posting_query_service as board_posting_query_service,
-    topic_command_service as board_topic_command_service,
-    topic_query_service as board_topic_query_service,
+    board_category_query_service,
+    board_last_view_service,
+    board_posting_query_service,
+    board_topic_command_service,
+    board_topic_query_service,
 )
 from ....services.board.transfer.models import TopicID
 from ....services.text_markup.service import get_smileys

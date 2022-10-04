@@ -1,6 +1,6 @@
 """
-byceps.services.board.last_view_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.board.board_last_view_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,10 +12,10 @@ from typing import Optional
 from ...database import db, upsert, upsert_many
 from ...typing import UserID
 
+from . import board_topic_query_service
 from .dbmodels.last_category_view import DbLastCategoryView
 from .dbmodels.last_topic_view import DbLastTopicView
 from .dbmodels.topic import DbTopic
-from . import topic_query_service
 from .transfer.models import CategoryID, CategoryWithLastUpdate, TopicID
 
 
@@ -129,7 +129,9 @@ def mark_all_topics_in_category_as_viewed(
     category_id: CategoryID, user_id: UserID
 ) -> None:
     """Mark all topics in the category as viewed."""
-    topic_ids = topic_query_service.get_all_topic_ids_in_category(category_id)
+    topic_ids = board_topic_query_service.get_all_topic_ids_in_category(
+        category_id
+    )
 
     if not topic_ids:
         return

@@ -1,6 +1,6 @@
 """
-byceps.services.board.topic_command_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.board.board_topic_command_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -26,12 +26,14 @@ from ...typing import UserID
 from ..user import user_service
 from ..user.transfer.models import User
 
-from .aggregation_service import aggregate_category, aggregate_topic
+from . import (
+    board_aggregation_service,
+    board_posting_command_service,
+    board_topic_query_service,
+)
 from .dbmodels.category import DbCategory
 from .dbmodels.posting import DbInitialTopicPostingAssociation, DbPosting
 from .dbmodels.topic import DbTopic
-from .posting_command_service import update_posting
-from . import topic_query_service
 from .transfer.models import CategoryID, TopicID
 
 
@@ -52,7 +54,7 @@ def create_topic(
     db.session.add(initial_topic_posting_association)
     db.session.commit()
 
-    aggregate_topic(topic)
+    board_aggregation_service.aggregate_topic(topic)
 
     event = BoardTopicCreated(
         occurred_at=topic.created_at,
@@ -78,7 +80,7 @@ def update_topic(
 
     topic.title = title.strip()
 
-    posting_event = update_posting(
+    posting_event = board_posting_command_service.update_posting(
         topic.initial_posting.id, editor.id, body, commit=False
     )
 
@@ -112,7 +114,7 @@ def hide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicHidden:
     topic.hidden_by_id = moderator.id
     db.session.commit()
 
-    aggregate_topic(topic)
+    board_aggregation_service.aggregate_topic(topic)
 
     topic_creator = _get_user(topic.creator_id)
     return BoardTopicHidden(
@@ -143,7 +145,7 @@ def unhide_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnhidden:
     topic.hidden_by_id = None
     db.session.commit()
 
-    aggregate_topic(topic)
+    board_aggregation_service.aggregate_topic(topic)
 
     topic_creator = _get_user(topic.creator_id)
     return BoardTopicUnhidden(
@@ -291,7 +293,7 @@ def move_topic(
     db.session.commit()
 
     for category in old_category, new_category:
-        aggregate_category(category)
+        board_aggregation_service.aggregate_category(category)
 
     topic_creator = _get_user(topic.creator_id)
     return BoardTopicMoved(
@@ -347,7 +349,7 @@ def delete_topic(topic_id: TopicID) -> None:
 
 
 def _get_topic(topic_id: TopicID) -> DbTopic:
-    return topic_query_service.get_topic(topic_id)
+    return board_topic_query_service.get_topic(topic_id)
 
 
 def _get_user(user_id: UserID) -> User:

@@ -20,9 +20,9 @@ from byceps.events.board import (
     BoardTopicUnpinned,
 )
 from byceps.services.board import (
-    category_command_service,
-    posting_command_service,
-    topic_command_service,
+    board_category_command_service,
+    board_posting_command_service,
+    board_topic_command_service,
 )
 from byceps.signals import board as board_signals
 
@@ -432,7 +432,7 @@ def _create_category(board_id, *, number=1):
     title = f'Kategorie {number}'
     description = f'Hier geht es um Kategorie {number}'
 
-    return category_command_service.create_category(
+    return board_category_command_service.create_category(
         board_id, slug, title, description
     )
 
@@ -442,7 +442,7 @@ def _create_topic(category_id, creator_id, *, number=1, title=None):
         title = f'Thema {number}'
     body = f'Inhalt von Thema {number}'
 
-    topic, _ = topic_command_service.create_topic(
+    topic, _ = board_topic_command_service.create_topic(
         category_id, creator_id, title, body
     )
 
@@ -452,7 +452,7 @@ def _create_topic(category_id, creator_id, *, number=1, title=None):
 def _create_posting(topic_id, creator_id, *, number=1):
     body = f'Inhalt von Beitrag {number}.'
 
-    posting, event = posting_command_service.create_posting(
+    posting, event = board_posting_command_service.create_posting(
         topic_id, creator_id, body
     )
 

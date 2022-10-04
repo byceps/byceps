@@ -12,9 +12,9 @@ from flask import g, redirect, request
 from flask_babel import gettext
 
 from ....services.board import (
-    last_view_service as board_last_view_service,
-    posting_command_service as board_posting_command_service,
-    posting_query_service as board_posting_query_service,
+    board_last_view_service,
+    board_posting_command_service,
+    board_posting_query_service,
 )
 from ....services.text_markup.service import get_smileys
 from ....services.user import user_service

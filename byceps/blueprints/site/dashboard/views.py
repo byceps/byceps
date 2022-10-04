@@ -15,8 +15,8 @@ from flask import abort, g
 from ....services.authentication.session.models.current_user import CurrentUser
 from ....services.board.dbmodels.topic import DbTopic
 from ....services.board import (
-    access_control_service as board_access_control_service,
-    topic_query_service as board_topic_query_service,
+    board_access_control_service,
+    board_topic_query_service,
 )
 from ....services.guest_server import service as guest_server_service
 from ....services.news import news_item_service
