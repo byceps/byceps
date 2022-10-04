@@ -11,10 +11,7 @@ from datetime import date, datetime, timedelta, timezone
 from itertools import groupby
 from typing import Iterator, Sequence
 from uuid import UUID
-try:
-    from zoneinfo import ZoneInfo
-except ImportError:
-    from backports.zoneinfo import ZoneInfo
+from zoneinfo import ZoneInfo
 
 from flask import current_app
 from sqlalchemy import delete
