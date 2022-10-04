@@ -10,7 +10,7 @@ from __future__ import annotations
 from flask import abort, url_for
 from flask_babel import gettext
 
-from .....services.brand import service as brand_service
+from .....services.brand import brand_service
 from .....services.shop.order import order_log_service, order_service
 from .....services.shop.order.transfer.log import OrderLogEntryData
 from .....services.shop.order.transfer.order import PaymentState

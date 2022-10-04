@@ -1,6 +1,6 @@
 """
-byceps.services.brand.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.brand.brand_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

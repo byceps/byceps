@@ -16,8 +16,8 @@ from sqlalchemy import select
 from ...database import db, paginate, Pagination
 from ...typing import BrandID, PartyID
 
+from ..brand import brand_service
 from ..brand.dbmodels.brand import DbBrand
-from ..brand import service as brand_service
 
 from .dbmodels.party import DbParty
 from .dbmodels.setting import DbSetting

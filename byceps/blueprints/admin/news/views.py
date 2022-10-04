@@ -11,7 +11,7 @@ from datetime import date, datetime
 from flask import abort, g, request
 from flask_babel import format_datetime, gettext, to_utc
 
-from ....services.brand import service as brand_service
+from ....services.brand import brand_service
 from ....services.image import service as image_service
 from ....services.news import channel_service as news_channel_service
 from ....services.news import html_service as news_html_service

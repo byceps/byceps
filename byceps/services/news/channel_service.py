@@ -12,7 +12,7 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import BrandID
 
-from ..brand import service as brand_service
+from ..brand import brand_service
 from ..site.transfer.models import SiteID
 
 from .dbmodels.channel import DbChannel

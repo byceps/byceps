@@ -25,7 +25,7 @@ from ...events.board import (
 )
 from ...services.board.transfer.models import TopicID
 from ...services.board import topic_query_service as board_topic_query_service
-from ...services.brand import service as brand_service
+from ...services.brand import brand_service
 
 from ._helpers import get_screen_name_or_fallback, with_locale
 

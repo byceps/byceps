@@ -13,7 +13,7 @@ from datetime import date, datetime
 from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
-from ....services.brand import service as brand_service
+from ....services.brand import brand_service
 from ....services.party import (
     service as party_service,
     settings_service as party_settings_service,

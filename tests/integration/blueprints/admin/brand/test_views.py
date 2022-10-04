@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import byceps.services.brand.service as brand_service
+from byceps.services.brand import brand_service
 import byceps.services.email.config_service as email_config_service
 
 

@@ -9,7 +9,7 @@ byceps.blueprints.admin.shop.order.views
 from flask import abort, g, request, Response
 from flask_babel import gettext
 
-from .....services.brand import service as brand_service
+from .....services.brand import brand_service
 from .....services.shop.order import (
     invoice_service,
     order_log_service,

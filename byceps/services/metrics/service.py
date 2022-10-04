@@ -9,7 +9,7 @@ byceps.metrics.service
 from __future__ import annotations
 from typing import Iterator
 
-from ...services.brand import service as brand_service
+from ...services.brand import brand_service
 from ...services.board import (
     board_service,
     topic_query_service as board_topic_query_service,

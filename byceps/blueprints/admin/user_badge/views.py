@@ -9,7 +9,7 @@ byceps.blueprints.admin.user_badge.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.brand import service as brand_service
+from ....services.brand import brand_service
 from ....services.user import user_service
 from ....services.user_badge import (
     user_badge_awarding_service,

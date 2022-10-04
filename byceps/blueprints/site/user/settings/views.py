@@ -12,7 +12,7 @@ from babel import Locale
 from flask import abort, g, request
 from flask_babel import force_locale, gettext
 
-from .....services.brand import settings_service as brand_settings_service
+from .....services.brand import brand_setting_service
 from .....services.country import service as country_service
 from .....services.newsletter import service as newsletter_service
 from .....services.newsletter.transfer.models import ListID as NewsletterListID
@@ -225,7 +225,7 @@ def _find_newsletter_list_for_brand() -> Optional[NewsletterListID]:
     """Return the newsletter list configured for this brand, or `None`
     if none is configured.
     """
-    value = brand_settings_service.find_setting_value(
+    value = brand_setting_service.find_setting_value(
         g.brand_id, 'newsletter_list_id'
     )
 

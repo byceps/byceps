@@ -9,7 +9,7 @@ byceps.blueprints.admin.site.navigation.views
 from flask import abort, request
 from flask_babel import gettext
 
-from .....services.brand import service as brand_service
+from .....services.brand import brand_service
 from .....services.site import service as site_service
 from .....services.site.transfer.models import Site, SiteID
 from .....services.site_navigation import service as navigation_service

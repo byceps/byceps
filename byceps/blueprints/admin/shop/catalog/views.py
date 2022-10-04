@@ -8,7 +8,7 @@ byceps.blueprints.admin.shop.catalog.views
 
 from flask import abort
 
-from .....services.brand import service as brand_service
+from .....services.brand import brand_service
 from .....services.shop.catalog import catalog_service
 from .....services.shop.catalog.transfer.models import Catalog, CatalogID
 from .....services.shop.shop import shop_service

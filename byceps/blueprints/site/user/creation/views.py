@@ -13,7 +13,7 @@ from typing import Optional
 from flask import abort, g, request
 from flask_babel import gettext
 
-from .....services.brand import settings_service as brand_settings_service
+from .....services.brand import brand_setting_service
 from .....services.consent import (
     consent_service,
     subject_service as consent_subject_service,
@@ -186,7 +186,7 @@ def _find_brand_setting_value(setting_name: str) -> Optional[str]:
     """Return the value configured for this brand and the given setting
     name, or `None` if not configured.
     """
-    return brand_settings_service.find_setting_value(g.brand_id, setting_name)
+    return brand_setting_service.find_setting_value(g.brand_id, setting_name)
 
 
 def _find_site_setting_value(setting_name: str) -> Optional[str]:

@@ -12,7 +12,7 @@ from typing import Any
 
 from flask import g, redirect, url_for
 
-from ....services.brand import service as brand_service
+from ....services.brand import brand_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.user_session import get_current_user
 

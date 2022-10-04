@@ -9,10 +9,7 @@ byceps.blueprints.admin.brand.views
 from flask import abort, request
 from flask_babel import gettext
 
-from ....services.brand import (
-    service as brand_service,
-    settings_service as brand_settings_service,
-)
+from ....services.brand import brand_service, brand_setting_service
 from ....services.email import config_service as email_config_service
 from ....services.orga import service as orga_service
 from ....services.party import service as party_service
@@ -52,7 +49,7 @@ def view(brand_id):
     """Show a brand."""
     brand = _get_brand_or_404(brand_id)
 
-    settings = brand_settings_service.get_settings(brand.id)
+    settings = brand_setting_service.get_settings(brand.id)
     email_config = email_config_service.get_config(brand.id)
 
     return {

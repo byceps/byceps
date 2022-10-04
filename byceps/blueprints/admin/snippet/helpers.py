@@ -9,7 +9,7 @@ byceps.blueprints.admin.snippet.helpers
 from typing import Optional
 from flask import abort
 
-from ....services.brand import service as brand_service
+from ....services.brand import brand_service
 from ....services.brand.transfer.models import Brand
 from ....services.site import service as site_service
 from ....services.site.transfer.models import Site, SiteID

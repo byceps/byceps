@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired, Length, Optional
 from ....util.l10n import LocalizedForm
 
 from ....services.board import board_service
-from ....services.brand import service as brand_service
+from ....services.brand import brand_service
 from ....services.news import channel_service as news_channel_service
 from ....services.party import service as party_service
 from ....services.shop.storefront import storefront_service

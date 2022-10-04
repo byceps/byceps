@@ -11,7 +11,7 @@ from typing import Optional
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.brand import service as brand_service
+from ....services.brand import brand_service
 from ....services.orga import birthday_service as orga_birthday_service
 from ....services.orga import service as orga_service
 from ....services.orga.transfer.models import Birthday

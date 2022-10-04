@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.brand import settings_service
+from byceps.services.brand import brand_setting_service
 from byceps.services.brand.transfer.models import BrandSetting
 
 
@@ -22,9 +22,9 @@ def test_create(brand):
     name = 'name1'
     value = 'value1'
 
-    assert settings_service.find_setting(brand_id, name) is None
+    assert brand_setting_service.find_setting(brand_id, name) is None
 
-    setting = settings_service.create_setting(brand_id, name, value)
+    setting = brand_setting_service.create_setting(brand_id, name, value)
 
     assert setting is not None
     assert setting.brand_id == brand_id
@@ -38,9 +38,9 @@ def test_create_or_update(brand):
     value1 = 'value2a'
     value2 = 'value2b'
 
-    assert settings_service.find_setting(brand_id, name) is None
+    assert brand_setting_service.find_setting(brand_id, name) is None
 
-    created_setting = settings_service.create_or_update_setting(
+    created_setting = brand_setting_service.create_or_update_setting(
         brand_id, name, value1
     )
 
@@ -49,7 +49,7 @@ def test_create_or_update(brand):
     assert created_setting.name == name
     assert created_setting.value == value1
 
-    updated_setting = settings_service.create_or_update_setting(
+    updated_setting = brand_setting_service.create_or_update_setting(
         brand_id, name, value2
     )
 
@@ -64,12 +64,12 @@ def test_remove(brand):
     name = 'name3'
     value = 'value3'
 
-    settings_service.create_setting(brand_id, name, value)
-    assert settings_service.find_setting(brand_id, name) is not None
+    brand_setting_service.create_setting(brand_id, name, value)
+    assert brand_setting_service.find_setting(brand_id, name) is not None
 
-    settings_service.remove_setting(brand_id, name)
+    brand_setting_service.remove_setting(brand_id, name)
 
-    assert settings_service.find_setting(brand_id, name) is None
+    assert brand_setting_service.find_setting(brand_id, name) is None
 
 
 def test_find(brand):
@@ -77,12 +77,12 @@ def test_find(brand):
     name = 'name4'
     value = 'value4'
 
-    setting_before_create = settings_service.find_setting(brand_id, name)
+    setting_before_create = brand_setting_service.find_setting(brand_id, name)
     assert setting_before_create is None
 
-    settings_service.create_setting(brand_id, name, value)
+    brand_setting_service.create_setting(brand_id, name, value)
 
-    setting_after_create = settings_service.find_setting(brand_id, name)
+    setting_after_create = brand_setting_service.find_setting(brand_id, name)
     assert setting_after_create is not None
     assert setting_after_create.brand_id == brand_id
     assert setting_after_create.name == name
@@ -94,19 +94,23 @@ def test_find_value(brand):
     name = 'name5'
     value = 'value5'
 
-    value_before_create = settings_service.find_setting_value(brand_id, name)
+    value_before_create = brand_setting_service.find_setting_value(
+        brand_id, name
+    )
     assert value_before_create is None
 
-    settings_service.create_setting(brand_id, name, value)
+    brand_setting_service.create_setting(brand_id, name, value)
 
-    value_after_create = settings_service.find_setting_value(brand_id, name)
+    value_after_create = brand_setting_service.find_setting_value(
+        brand_id, name
+    )
     assert value_after_create == value
 
 
 def test_get_settings(brand):
     brand_id = BRAND_ID
 
-    all_settings_before_create = settings_service.get_settings(brand_id)
+    all_settings_before_create = brand_setting_service.get_settings(brand_id)
     assert all_settings_before_create == set()
 
     for name, value in {
@@ -114,9 +118,9 @@ def test_get_settings(brand):
         ('name6b', 'value6b'),
         ('name6c', 'value6c'),
     }:
-        settings_service.create_setting(brand_id, name, value)
+        brand_setting_service.create_setting(brand_id, name, value)
 
-    all_settings_after_create = settings_service.get_settings(brand_id)
+    all_settings_after_create = brand_setting_service.get_settings(brand_id)
     assert all_settings_after_create == {
         BrandSetting(brand_id, 'name6a', 'value6a'),
         BrandSetting(brand_id, 'name6b', 'value6b'),
@@ -126,13 +130,13 @@ def test_get_settings(brand):
 
 def teardown_function(func):
     if func is test_create:
-        settings_service.remove_setting(BRAND_ID, 'name1')
+        brand_setting_service.remove_setting(BRAND_ID, 'name1')
     elif func is test_create_or_update:
-        settings_service.remove_setting(BRAND_ID, 'name2')
+        brand_setting_service.remove_setting(BRAND_ID, 'name2')
     elif func is test_find:
-        settings_service.remove_setting(BRAND_ID, 'name4')
+        brand_setting_service.remove_setting(BRAND_ID, 'name4')
     elif func is test_find_value:
-        settings_service.remove_setting(BRAND_ID, 'name5')
+        brand_setting_service.remove_setting(BRAND_ID, 'name5')
     elif func is test_get_settings:
         for name in 'name6a', 'name6b', 'name6c':
-            settings_service.remove_setting(BRAND_ID, name)
+            brand_setting_service.remove_setting(BRAND_ID, name)

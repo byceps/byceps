@@ -11,10 +11,7 @@ from datetime import date, timedelta
 from flask import abort
 
 from ....services.board import board_service
-from ....services.brand import (
-    service as brand_service,
-    settings_service as brand_settings_service,
-)
+from ....services.brand import brand_service, brand_setting_service
 from ....services.consent import subject_service as consent_subject_service
 from ....services.guest_server import service as guest_server_service
 from ....services.news import channel_service as news_channel_service
@@ -121,7 +118,7 @@ def view_brand(brand_id):
         for party in active_parties
     ]
 
-    newsletter_list_id = brand_settings_service.find_setting_value(
+    newsletter_list_id = brand_setting_service.find_setting_value(
         brand.id, 'newsletter_list_id'
     )
     newsletter_list = None
