@@ -10,7 +10,7 @@ from flask import abort
 
 from ....services.brand import brand_service
 from ....services.party import party_service
-from ....services.site import service as site_service
+from ....services.site import site_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required

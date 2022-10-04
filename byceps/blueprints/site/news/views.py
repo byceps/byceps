@@ -13,10 +13,7 @@ from flask import abort, g
 
 from ....services.news import service as news_item_service
 from ....services.news.transfer.models import ChannelID, Item
-from ....services.site import (
-    service as site_service,
-    settings_service as site_settings_service,
-)
+from ....services.site import site_service, site_setting_service
 from ....services.site.transfer.models import SiteID
 from ....util.authorization import has_current_user_permission
 from ....util.framework.blueprint import create_blueprint
@@ -81,7 +78,7 @@ def _get_channel_ids() -> Union[frozenset[ChannelID], set[ChannelID]]:
 
 
 def _get_items_per_page_value() -> int:
-    items_per_page = site_settings_service.find_setting_value(
+    items_per_page = site_setting_service.find_setting_value(
         g.site_id, 'news_items_per_page'
     )
 

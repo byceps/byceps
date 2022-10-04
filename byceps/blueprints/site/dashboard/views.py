@@ -24,7 +24,7 @@ from ....services.news.transfer.models import Headline as NewsHeadline
 from ....services.shop.order import order_service
 from ....services.shop.order.transfer.order import Order
 from ....services.shop.storefront import storefront_service
-from ....services.site import service as site_service
+from ....services.site import site_service
 from ....services.site.transfer.models import Site
 from ....services.ticketing import ticket_service
 from ....services.ticketing.dbmodels.ticket import DbTicket

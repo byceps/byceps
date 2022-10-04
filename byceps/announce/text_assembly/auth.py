@@ -11,7 +11,7 @@ Announce auth events.
 from flask_babel import gettext
 
 from ...events.auth import UserLoggedIn
-from ...services.site import service as site_service
+from ...services.site import site_service
 
 from ._helpers import get_screen_name_or_fallback, with_locale
 

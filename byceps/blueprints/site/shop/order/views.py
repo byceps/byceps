@@ -19,7 +19,7 @@ from .....services.shop.order.email import order_email_service
 from .....services.shop.order import order_service
 from .....services.shop.shop import shop_service
 from .....services.shop.storefront import storefront_service
-from .....services.site import service as site_service
+from .....services.site import site_service
 from .....services.user import user_service
 from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint

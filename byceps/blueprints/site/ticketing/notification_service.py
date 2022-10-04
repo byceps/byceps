@@ -14,7 +14,7 @@ from ....services.email import (
     service as email_service,
 )
 from ....services.party import party_service
-from ....services.site import service as site_service
+from ....services.site import site_service
 from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.user import user_service
 from ....services.user.transfer.models import User

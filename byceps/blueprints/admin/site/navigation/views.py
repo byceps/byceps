@@ -10,7 +10,7 @@ from flask import abort, request
 from flask_babel import gettext
 
 from .....services.brand import brand_service
-from .....services.site import service as site_service
+from .....services.site import site_service
 from .....services.site.transfer.models import Site, SiteID
 from .....services.site_navigation import service as navigation_service
 from .....services.site_navigation.transfer.models import (

@@ -10,7 +10,7 @@ from byceps.services.news import (
     service as news_service,
 )
 from byceps.services.news.transfer.models import BodyFormat
-from byceps.services.site import service as site_service
+from byceps.services.site import site_service
 
 from tests.helpers import create_site, http_client
 

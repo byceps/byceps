@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import byceps.services.site.service as site_service
+from byceps.services.site import site_service
 
 
 def test_index(site_admin_client, site):

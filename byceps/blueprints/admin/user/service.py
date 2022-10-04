@@ -18,7 +18,7 @@ from ....services.newsletter.transfer.models import List as NewsletterList
 from ....services.party import party_service
 from ....services.party.transfer.models import Party
 from ....services.shop.order import order_log_service, order_service
-from ....services.site import service as site_service
+from ....services.site import site_service
 from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.ticketing import attendance_service, ticket_service
 from ....services.user import user_log_service, user_service

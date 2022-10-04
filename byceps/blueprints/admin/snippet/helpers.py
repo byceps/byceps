@@ -11,7 +11,7 @@ from flask import abort
 
 from ....services.brand import brand_service
 from ....services.brand.transfer.models import Brand
-from ....services.site import service as site_service
+from ....services.site import site_service
 from ....services.site.transfer.models import Site, SiteID
 from ....services.snippet.dbmodels.snippet import DbSnippet, DbVersion
 from ....services.snippet import service as snippet_service

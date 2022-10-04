@@ -14,7 +14,7 @@ from ....services.board import (
     posting_query_service as board_posting_query_service,
     topic_query_service as board_topic_query_service,
 )
-from ....services.site import service as site_service
+from ....services.site import site_service
 
 
 def get_board_id():

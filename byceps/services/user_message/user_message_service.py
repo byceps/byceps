@@ -21,7 +21,7 @@ from ..email import (
     service as email_service,
 )
 from ..email.transfer.models import Message
-from ..site import service as site_service
+from ..site import site_service
 from ..site.transfer.models import SiteID
 from ..user import user_service
 from ..user.transfer.models import User

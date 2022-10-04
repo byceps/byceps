@@ -16,7 +16,7 @@ from .....services.consent import (
     consent_service,
     subject_service as consent_subject_service,
 )
-from .....services.site import service as site_service
+from .....services.site import site_service
 from .....services.site.transfer.models import Site
 from .....services.verification_token import (
     service as verification_token_service,

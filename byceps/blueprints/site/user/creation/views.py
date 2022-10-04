@@ -23,10 +23,7 @@ from .....services.newsletter import (
     command_service as newsletter_command_service,
 )
 from .....services.newsletter.transfer.models import ListID as NewsletterListID
-from .....services.site import (
-    settings_service as site_settings_service,
-    service as site_service,
-)
+from .....services.site import site_service, site_setting_service
 from .....services.user import user_creation_service
 from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
@@ -193,4 +190,4 @@ def _find_site_setting_value(setting_name: str) -> Optional[str]:
     """Return the value configured for this site and the given setting
     name, or `None` if not configured.
     """
-    return site_settings_service.find_setting_value(g.site_id, setting_name)
+    return site_setting_service.find_setting_value(g.site_id, setting_name)

@@ -20,7 +20,7 @@ from ...events.user import (
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
-from ...services.site import service as site_service
+from ...services.site import site_service
 
 from ._helpers import get_screen_name_or_fallback, with_locale
 

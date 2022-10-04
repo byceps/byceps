@@ -14,7 +14,7 @@ from flask import g, redirect, url_for
 
 from .... import config
 from ....services.party import party_service
-from ....services.site import service as site_service
+from ....services.site import site_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.user_session import get_current_user
 

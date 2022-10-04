@@ -19,7 +19,7 @@ from ...database import db, paginate, Pagination
 from ...events.news import NewsItemPublished
 from ...typing import UserID
 
-from ..site import service as site_service
+from ..site import site_service
 from ..site.transfer.models import SiteID
 from ..user import user_service
 from ..user.transfer.models import User

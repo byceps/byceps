@@ -24,10 +24,7 @@ from ....services.shop.storefront.transfer.models import (
     Storefront,
     StorefrontID,
 )
-from ....services.site import (
-    service as site_service,
-    settings_service as site_settings_service,
-)
+from ....services.site import site_service, site_setting_service
 from ....services.site.transfer.models import Site, SiteWithBrand
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
@@ -141,7 +138,7 @@ def view(site_id):
         storefront = None
         shop = None
 
-    settings = site_settings_service.get_settings(site.id)
+    settings = site_setting_service.get_settings(site.id)
 
     return {
         'site': site,

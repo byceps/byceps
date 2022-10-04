@@ -23,7 +23,7 @@ from byceps.services.shop.order.transfer.number import OrderNumber
 from byceps.services.shop.order.transfer.order import LineItem, Order
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
-from byceps.services.site import service as site_service
+from byceps.services.site import site_service
 from byceps.services.site.transfer.models import Site, SiteID
 from byceps.services.snippet import service as snippet_service
 from byceps.services.user.transfer.models import User

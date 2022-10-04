@@ -16,7 +16,7 @@ from qrcode.image.svg import SvgPathImage
 from ....services.guest_server import service as guest_server_service
 from ....services.guest_server.transfer.models import Address, Server
 from ....services.party import party_service, party_setting_service
-from ....services.site import service as site_service
+from ....services.site import site_service
 from ....services.site.transfer.models import SiteID
 from ....services.user import user_service
 from ....typing import PartyID

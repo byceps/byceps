@@ -23,7 +23,7 @@ from ....services.board.transfer.models import CategoryWithLastUpdate
 from ....services.orga_team import service as orga_team_service
 from ....services.party import party_service
 from ....services.party.transfer.models import Party
-from ....services.site import settings_service as site_settings_service
+from ....services.site import site_setting_service
 from ....services.ticketing import ticket_service
 from ....services.user import user_service
 from ....services.user_badge import user_badge_awarding_service
@@ -192,7 +192,7 @@ def get_postings_per_page_value() -> int:
 
 
 def _get_site_setting_int_value(key, default_value) -> int:
-    value = site_settings_service.find_setting_value(g.site_id, key)
+    value = site_setting_service.find_setting_value(g.site_id, key)
 
     if value is None:
         return default_value

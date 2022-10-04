@@ -18,7 +18,7 @@ from ....services.news import html_service as news_html_service
 from ....services.news import image_service as news_image_service
 from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Channel
-from ....services.site import service as site_service
+from ....services.site import site_service
 from ....services.text_diff import service as text_diff_service
 from ....services.user import user_service
 from ....signals import news as news_signals
