@@ -20,7 +20,7 @@ from byceps.services.brand.transfer.models import Brand
 from byceps.services.email import email_config_service
 from byceps.services.email.transfer.models import EmailConfig
 from byceps.services.language import service as language_service
-from byceps.services.news import channel_service as news_channel_service
+from byceps.services.news import news_channel_service
 from byceps.services.news.transfer.models import (
     Channel as NewsChannel,
     ChannelID as NewsChannelID,

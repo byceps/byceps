@@ -1,6 +1,6 @@
 """
-byceps.services.news.image_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.news.news_image_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -19,7 +19,7 @@ from ..image import service as image_service
 from ..user import user_service
 
 from .dbmodels.image import DbImage
-from . import service as item_service
+from . import news_item_service
 from .transfer.models import ChannelID, Image, ImageID, ItemID
 
 
@@ -50,7 +50,7 @@ def create_image(
     if creator is None:
         raise user_service.UserIdRejected(creator_id)
 
-    item = item_service.find_item(item_id)
+    item = news_item_service.find_item(item_id)
     if item is None:
         raise ValueError(f'Unknown news item ID "{item_id}".')
 

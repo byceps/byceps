@@ -11,7 +11,7 @@ from typing import Optional, Union
 
 from flask import abort, g
 
-from ....services.news import service as news_item_service
+from ....services.news import news_item_service
 from ....services.news.transfer.models import ChannelID, Item
 from ....services.site import site_service, site_setting_service
 from ....services.site.transfer.models import SiteID

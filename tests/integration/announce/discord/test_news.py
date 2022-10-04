@@ -8,7 +8,7 @@ import pytest
 
 import byceps.announce.connections  # Connect signal handlers.
 from byceps.services.brand.transfer.models import Brand
-from byceps.services.news import service as news_service
+from byceps.services.news import news_item_service
 from byceps.services.news.transfer.models import BodyFormat, Channel, Item
 from byceps.services.site.transfer.models import Site
 from byceps.services.webhooks import service as webhook_service
@@ -30,7 +30,7 @@ def test_published_news_item_announced_with_url(
 
     create_webhooks(item_with_url.channel)
 
-    event = news_service.publish_item(item_with_url.id)
+    event = news_item_service.publish_item(item_with_url.id)
 
     with mocked_webhook_receiver(WEBHOOK_URL) as mock:
         news_signals.item_published.send(None, event=event)
@@ -47,7 +47,7 @@ def test_published_news_item_announced_without_url(
 
     create_webhooks(item_without_url.channel)
 
-    event = news_service.publish_item(item_without_url.id)
+    event = news_item_service.publish_item(item_without_url.id)
 
     with mocked_webhook_receiver(WEBHOOK_URL) as mock:
         news_signals.item_published.send(None, event=event)
@@ -95,7 +95,7 @@ def make_item(make_user):
         body = 'any body'
         body_format = BodyFormat.html
 
-        return news_service.create_item(
+        return news_item_service.create_item(
             channel.id, slug, editor.id, title, body, body_format
         )
 

@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.news import channel_service
+from byceps.services.news import news_channel_service
 
 
 def test_index_for_brand(news_admin_client, brand, channel):
@@ -28,7 +28,7 @@ def test_create(news_admin_client, brand, site):
     channel_id = 'test-channel-2'
     announcement_site_id = site.id
 
-    assert channel_service.find_channel(channel_id) is None
+    assert news_channel_service.find_channel(channel_id) is None
 
     url = f'/admin/news/for_brand/{brand.id}/channels'
     form_data = {
@@ -38,7 +38,7 @@ def test_create(news_admin_client, brand, site):
     response = news_admin_client.post(url, data=form_data)
     assert response.status_code == 302
 
-    channel = channel_service.find_channel(channel_id)
+    channel = news_channel_service.find_channel(channel_id)
     assert channel is not None
     assert channel.id == channel_id
     assert channel.brand_id == brand.id

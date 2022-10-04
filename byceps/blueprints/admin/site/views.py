@@ -16,7 +16,7 @@ from flask_babel import gettext
 from ....services.board import board_service
 from ....services.brand import brand_service
 from ....services.brand.transfer.models import Brand
-from ....services.news import channel_service as news_channel_service
+from ....services.news import news_channel_service
 from ....services.party import party_service
 from ....services.shop.shop import shop_service
 from ....services.shop.storefront import storefront_service

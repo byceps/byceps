@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.news import service as item_service
+from byceps.services.news import news_item_service
 
 
 def test_view(news_admin_client, item):
@@ -13,7 +13,7 @@ def test_view(news_admin_client, item):
 
 
 def test_view_version(news_admin_client, item):
-    version = item_service.get_current_item_version(item.id)
+    version = news_item_service.get_current_item_version(item.id)
     url = f'/admin/news/versions/{version.id}'
     response = news_admin_client.get(url)
     assert response.status_code == 200
@@ -26,7 +26,7 @@ def test_list_versions(news_admin_client, item):
 
 
 def test_compare_versions(news_admin_client, item):
-    version = item_service.get_current_item_version(item.id)
+    version = news_item_service.get_current_item_version(item.id)
     url = f'/admin/news/items/{version.id}/compare_to/{version.id}'
     response = news_admin_client.get(url)
     assert response.status_code == 200
@@ -57,7 +57,7 @@ def test_create(news_admin_client, channel, news_admin):
     location = response.headers['Location']
     item_id = location.rpartition('/')[-1]
 
-    item = item_service.find_item(item_id)
+    item = news_item_service.find_item(item_id)
     assert item is not None
     assert item.id is not None
     assert item.channel.id == channel.id
@@ -86,7 +86,7 @@ def test_publish_later_form(news_admin_client, item):
 
 
 def test_publish_later(news_admin_client, item):
-    item_before = item_service.find_item(item.id)
+    item_before = news_item_service.find_item(item.id)
     assert item_before.published_at is None
     assert not item_before.published
 
@@ -98,13 +98,13 @@ def test_publish_later(news_admin_client, item):
     response = news_admin_client.post(url, data=form_data)
     assert response.status_code == 302
 
-    item_after = item_service.find_item(item.id)
+    item_after = news_item_service.find_item(item.id)
     assert item_after.published_at is not None
     assert item_after.published
 
 
 def test_publish_now(news_admin_client, item):
-    item_before = item_service.find_item(item.id)
+    item_before = news_item_service.find_item(item.id)
     assert item_before.published_at is None
     assert not item_before.published
 
@@ -112,15 +112,15 @@ def test_publish_now(news_admin_client, item):
     response = news_admin_client.post(url)
     assert response.status_code == 204
 
-    item_after = item_service.find_item(item.id)
+    item_after = news_item_service.find_item(item.id)
     assert item_after.published_at is not None
     assert item_after.published
 
 
 def test_unpublish(news_admin_client, item):
-    item_service.publish_item(item.id)
+    news_item_service.publish_item(item.id)
 
-    item_before = item_service.find_item(item.id)
+    item_before = news_item_service.find_item(item.id)
     assert item_before.published_at is not None
     assert item_before.published
 
@@ -128,6 +128,6 @@ def test_unpublish(news_admin_client, item):
     response = news_admin_client.post(url)
     assert response.status_code == 204
 
-    item_after = item_service.find_item(item.id)
+    item_after = news_item_service.find_item(item.id)
     assert item_after.published_at is None
     assert not item_after.published

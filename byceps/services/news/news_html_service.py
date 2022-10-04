@@ -1,6 +1,6 @@
 """
-byceps.services.news.html_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.news.news_html_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Render HTML fragments from news items and images.
 

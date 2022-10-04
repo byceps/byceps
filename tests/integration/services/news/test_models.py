@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.news import service as news_service
+from byceps.services.news import news_item_service
 from byceps.services.news.transfer.models import BodyFormat, Channel
 
 
@@ -35,7 +35,7 @@ def news_item_with_image(channel: Channel, editor):
 
     yield item
 
-    news_service.delete_item(item.id)
+    news_item_service.delete_item(item.id)
 
 
 @pytest.fixture
@@ -44,7 +44,7 @@ def news_item_without_image(channel: Channel, editor):
 
     yield item
 
-    news_service.delete_item(item.id)
+    news_item_service.delete_item(item.id)
 
 
 def test_image_url_with_image(news_item_with_image):
@@ -68,7 +68,7 @@ def create_item(channel_id, slug, editor_id, *, image_url_path=None):
     body = 'the body'
     body_format = BodyFormat.html
 
-    news_service.create_item(
+    news_item_service.create_item(
         channel_id,
         slug,
         editor_id,
@@ -80,4 +80,4 @@ def create_item(channel_id, slug, editor_id, *, image_url_path=None):
 
     # Return aggregated version of item.
     channel_ids = {channel_id}
-    return news_service.find_aggregated_item_by_slug(channel_ids, slug)
+    return news_item_service.find_aggregated_item_by_slug(channel_ids, slug)

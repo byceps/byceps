@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.brand.transfer.models import Brand
-from byceps.services.news import service as item_service
+from byceps.services.news import news_item_service
 from byceps.services.news.transfer.models import BodyFormat, Channel, Item
 
 from tests.helpers import generate_token, log_in_user
@@ -40,7 +40,7 @@ def channel(brand: Brand, make_news_channel) -> Channel:
 
 @pytest.fixture
 def item(channel: Channel, news_admin) -> Item:
-    return item_service.create_item(
+    return news_item_service.create_item(
         channel.id,
         f'save-the-date-{generate_token()}',
         news_admin.id,

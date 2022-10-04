@@ -19,7 +19,7 @@ from ....services.board import (
     topic_query_service as board_topic_query_service,
 )
 from ....services.guest_server import service as guest_server_service
-from ....services.news import service as news_item_service
+from ....services.news import news_item_service
 from ....services.news.transfer.models import Headline as NewsHeadline
 from ....services.shop.order import order_service
 from ....services.shop.order.transfer.order import Order

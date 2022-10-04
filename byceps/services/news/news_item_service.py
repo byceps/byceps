@@ -1,6 +1,6 @@
 """
-byceps.services.news.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.news.news_item_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -24,11 +24,9 @@ from ..site.transfer.models import SiteID
 from ..user import user_service
 from ..user.transfer.models import User
 
-from .channel_service import _db_entity_to_channel
-from . import html_service
 from .dbmodels.channel import DbChannel
 from .dbmodels.item import DbCurrentVersionAssociation, DbItem, DbItemVersion
-from . import image_service
+from . import news_channel_service, news_html_service, news_image_service
 from .transfer.models import (
     BodyFormat,
     ChannelID,
@@ -413,11 +411,11 @@ def get_item_count_by_channel_id() -> dict[ChannelID, int]:
 def _db_entity_to_item(
     db_item: DbItem, *, render_body: Optional[bool] = False
 ) -> Item:
-    channel = _db_entity_to_channel(db_item.channel)
+    channel = news_channel_service._db_entity_to_channel(db_item.channel)
 
     image_url_path = _assemble_image_url_path(db_item)
     images = [
-        image_service._db_entity_to_image(image, channel.id)
+        news_image_service._db_entity_to_image(image, channel.id)
         for image in db_item.images
     ]
 
@@ -454,6 +452,6 @@ def _assemble_image_url_path(db_item: DbItem) -> Optional[str]:
 def _render_body(item: Item) -> Optional[str]:
     """Render body text to HTML."""
     try:
-        return html_service.render_body(item, item.body, item.body_format)
+        return news_html_service.render_body(item, item.body, item.body_format)
     except Exception:
         return None  # Not the best error indicator.

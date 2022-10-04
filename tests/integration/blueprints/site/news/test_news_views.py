@@ -5,10 +5,7 @@
 
 import pytest
 
-from byceps.services.news import (
-    channel_service as news_channel_service,
-    service as news_service,
-)
+from byceps.services.news import news_channel_service, news_item_service
 from byceps.services.news.transfer.models import BodyFormat
 from byceps.services.site import site_service
 
@@ -34,7 +31,7 @@ def unpublished_news_item(news_channel, editor):
     body = 'Well, …'
     body_format = BodyFormat.html
 
-    return news_service.create_item(
+    return news_item_service.create_item(
         news_channel.id, slug, editor.id, title, body, body_format
     )
 
@@ -46,10 +43,10 @@ def published_news_item(news_channel, editor):
     body = 'Kann losgehen.'
     body_format = BodyFormat.html
 
-    item = news_service.create_item(
+    item = news_item_service.create_item(
         news_channel.id, slug, editor.id, title, body, body_format
     )
-    news_service.publish_item(item.id)
+    news_item_service.publish_item(item.id)
     return item
 
 
