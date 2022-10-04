@@ -7,7 +7,7 @@ from datetime import datetime
 
 import pytest
 
-from byceps.services.newsletter import command_service
+from byceps.services.newsletter import newsletter_command_service
 from byceps.services.newsletter.types import SubscriptionState
 
 from tests.helpers import log_in_user
@@ -103,7 +103,7 @@ def newsletter_admin(make_admin):
 
 @pytest.fixture(scope='module')
 def newsletter_list(admin_app):
-    return command_service.create_list('example', 'Example')
+    return newsletter_command_service.create_list('example', 'Example')
 
 
 @pytest.fixture(scope='module')
@@ -144,9 +144,13 @@ def subscribers(make_user, newsletter_list):
             expressed_at = datetime.utcnow()
 
             if state == SubscriptionState.requested:
-                command_service.subscribe(user.id, list_id, expressed_at)
+                newsletter_command_service.subscribe(
+                    user.id, list_id, expressed_at
+                )
             elif state == SubscriptionState.declined:
-                command_service.unsubscribe(user.id, list_id, expressed_at)
+                newsletter_command_service.unsubscribe(
+                    user.id, list_id, expressed_at
+                )
 
 
 @pytest.fixture(scope='package')

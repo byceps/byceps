@@ -15,7 +15,7 @@ from ....services.brand import brand_service, brand_setting_service
 from ....services.consent import consent_subject_service
 from ....services.guest_server import service as guest_server_service
 from ....services.news import news_channel_service
-from ....services.newsletter import service as newsletter_service
+from ....services.newsletter import newsletter_service
 from ....services.orga import birthday_service as orga_birthday_service
 from ....services.orga_team import service as orga_team_service
 from ....services.party import party_service

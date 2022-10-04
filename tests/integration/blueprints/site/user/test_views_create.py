@@ -14,8 +14,8 @@ from byceps.services.authorization import service as authorization_service
 from byceps.services.brand import brand_setting_service
 from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.newsletter import (
-    command_service as newsletter_command_service,
-    service as newsletter_service,
+    newsletter_command_service,
+    newsletter_service,
 )
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user import user_log_service, user_service

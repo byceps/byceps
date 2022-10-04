@@ -11,7 +11,10 @@ from datetime import datetime
 from flask import abort, g
 from flask_babel import gettext
 
-from ....services.newsletter import command_service, service
+from ....services.newsletter import (
+    newsletter_command_service,
+    newsletter_service,
+)
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.views import login_required, respond_no_content
@@ -27,7 +30,7 @@ def subscribe(list_id):
     list_ = _get_list_or_404(list_id)
     expressed_at = datetime.utcnow()
 
-    command_service.subscribe(g.user.id, list_.id, expressed_at)
+    newsletter_command_service.subscribe(g.user.id, list_.id, expressed_at)
 
     flash_success(
         gettext(
@@ -44,7 +47,7 @@ def unsubscribe(list_id):
     list_ = _get_list_or_404(list_id)
     expressed_at = datetime.utcnow()
 
-    command_service.unsubscribe(g.user.id, list_.id, expressed_at)
+    newsletter_command_service.unsubscribe(g.user.id, list_.id, expressed_at)
 
     flash_success(
         gettext(
@@ -55,7 +58,7 @@ def unsubscribe(list_id):
 
 
 def _get_list_or_404(list_id):
-    list_ = service.find_list(list_id)
+    list_ = newsletter_service.find_list(list_id)
 
     if list_ is None:
         abort(404)

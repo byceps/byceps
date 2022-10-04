@@ -13,7 +13,7 @@ from typing import Any, Iterator, Sequence
 from uuid import UUID
 
 from ....services.consent import consent_service, consent_subject_service
-from ....services.newsletter import service as newsletter_service
+from ....services.newsletter import newsletter_service
 from ....services.newsletter.transfer.models import List as NewsletterList
 from ....services.party import party_service
 from ....services.party.transfer.models import Party

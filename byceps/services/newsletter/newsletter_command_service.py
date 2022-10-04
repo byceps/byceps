@@ -1,6 +1,6 @@
 """
-byceps.services.newsletter.command_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.newsletter.newsletter_command_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -15,7 +15,7 @@ from ...database import db
 from ...typing import UserID
 
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
-from .service import find_list, _db_entity_to_list
+from . import newsletter_service
 from .transfer.models import List, ListID
 from .types import SubscriptionState
 
@@ -31,7 +31,7 @@ def create_list(list_id: ListID, title: str) -> List:
     db.session.add(list_)
     db.session.commit()
 
-    return _db_entity_to_list(list_)
+    return newsletter_service._db_entity_to_list(list_)
 
 
 def delete_list(list_id: ListID) -> None:
@@ -89,7 +89,7 @@ def _update_subscription_state(
     state: SubscriptionState,
 ) -> None:
     """Update the user's subscription state for that list."""
-    list_ = find_list(list_id)
+    list_ = newsletter_service.find_list(list_id)
     if list_ is None:
         raise UnknownListId(list_id)
 
