@@ -1,6 +1,6 @@
 """
-byceps.services.webhooks.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.webhooks.webhook_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

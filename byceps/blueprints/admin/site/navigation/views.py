@@ -12,7 +12,7 @@ from flask_babel import gettext
 from .....services.brand import brand_service
 from .....services.site import site_service
 from .....services.site.transfer.models import Site, SiteID
-from .....services.site_navigation import service as navigation_service
+from .....services.site_navigation import site_navigation_service
 from .....services.site_navigation.transfer.models import (
     ItemTargetType,
     Menu,
@@ -39,7 +39,7 @@ def index_for_site(site_id):
 
     brand = brand_service.get_brand(site.brand_id)
 
-    menus = navigation_service.get_menus(site.id)
+    menus = site_navigation_service.get_menus(site.id)
 
     return {
         'site': site,
@@ -99,7 +99,7 @@ def menu_create(site_id):
     language_code = form.language_code.data.strip()
     hidden = form.hidden.data
 
-    menu = navigation_service.create_menu(
+    menu = site_navigation_service.create_menu(
         site.id, name, language_code, hidden=hidden
     )
 
@@ -142,7 +142,7 @@ def menu_update(menu_id):
     language_code = form.language_code.data.strip()
     hidden = form.hidden.data
 
-    menu = navigation_service.update_menu(menu.id, name, language_code, hidden)
+    menu = site_navigation_service.update_menu(menu.id, name, language_code, hidden)
 
     flash_success(gettext('Menu "%(name)s" has been updated.', name=menu.name))
 
@@ -185,7 +185,7 @@ def item_create(menu_id):
     current_page_id = form.current_page_id.data.strip()
     hidden = form.hidden.data
 
-    item = navigation_service.create_item(
+    item = site_navigation_service.create_item(
         menu.id, target_type, target, label, current_page_id, hidden=hidden
     )
 
@@ -206,7 +206,7 @@ def _get_site_or_404(site_id: SiteID) -> Site:
 
 
 def _get_menu_or_404(menu_id: MenuID) -> Menu:
-    menu = navigation_service.find_menu(menu_id)
+    menu = site_navigation_service.find_menu(menu_id)
 
     if menu is None:
         abort(404)
@@ -215,7 +215,7 @@ def _get_menu_or_404(menu_id: MenuID) -> Menu:
 
 
 def _get_menu_aggregate_or_404(menu_id: MenuID) -> MenuAggregate:
-    menu = navigation_service.find_menu_aggregate(menu_id)
+    menu = site_navigation_service.find_menu_aggregate(menu_id)
 
     if menu is None:
         abort(404)

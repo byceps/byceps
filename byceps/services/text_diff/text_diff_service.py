@@ -1,6 +1,6 @@
 """
-byceps.services.text_diff.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.text_diff.text_diff_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

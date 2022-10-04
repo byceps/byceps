@@ -22,7 +22,7 @@ from ....services.board import (
     board_topic_query_service,
 )
 from ....services.board.transfer.models import TopicID
-from ....services.text_markup.service import get_smileys
+from ....services.text_markup import text_markup_service
 from ....services.user import user_service
 from ....signals import board as board_signals
 from ....util.framework.flash import flash_error, flash_success
@@ -134,7 +134,7 @@ def topic_view(topic_id, page):
         context.update(
             {
                 'form': PostingCreateForm(),
-                'smileys': get_smileys(),
+                'smileys': text_markup_service.get_smileys(),
             }
         )
 
@@ -181,7 +181,7 @@ def topic_create_form(category_id, erroneous_form=None):
     return {
         'category': category,
         'form': form,
-        'smileys': get_smileys(),
+        'smileys': text_markup_service.get_smileys(),
     }
 
 
@@ -247,7 +247,7 @@ def topic_update_form(topic_id, erroneous_form=None):
     return {
         'form': form,
         'topic': topic,
-        'smileys': get_smileys(),
+        'smileys': text_markup_service.get_smileys(),
     }
 
 

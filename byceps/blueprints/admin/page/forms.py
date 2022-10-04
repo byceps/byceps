@@ -12,7 +12,7 @@ from wtforms.validators import InputRequired
 
 from ....util.l10n import LocalizedForm
 
-from ....services.language import service as language_service
+from ....services.language import language_service
 
 
 class CreateForm(LocalizedForm):

@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.webhooks import service as webhook_service
+from byceps.services.webhooks import webhook_service
 
 from .helpers import CHANNEL_INTERNAL, CHANNEL_PUBLIC
 

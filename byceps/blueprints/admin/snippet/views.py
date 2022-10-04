@@ -13,7 +13,7 @@ from flask_babel import format_datetime, gettext
 from ....services.snippet.dbmodels.snippet import DbVersion
 from ....services.snippet import snippet_service
 from ....services.snippet.transfer.models import Scope
-from ....services.text_diff import service as text_diff_service
+from ....services.text_diff import text_diff_service
 from ....services.user import user_service
 from ....signals import snippet as snippet_signals
 from ....util.framework.blueprint import create_blueprint

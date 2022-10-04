@@ -13,7 +13,7 @@ from flask import abort, g, request
 from flask_babel import force_locale, gettext
 
 from .....services.brand import brand_setting_service
-from .....services.country import service as country_service
+from .....services.country import country_service
 from .....services.newsletter import newsletter_service
 from .....services.newsletter.transfer.models import ListID as NewsletterListID
 from .....services.user import (

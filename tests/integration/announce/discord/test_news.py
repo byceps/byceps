@@ -11,7 +11,7 @@ from byceps.services.brand.transfer.models import Brand
 from byceps.services.news import news_item_service
 from byceps.services.news.transfer.models import BodyFormat, Channel, Item
 from byceps.services.site.transfer.models import Site
-from byceps.services.webhooks import service as webhook_service
+from byceps.services.webhooks import webhook_service
 from byceps.signals import news as news_signals
 
 from .helpers import assert_request, mocked_webhook_receiver

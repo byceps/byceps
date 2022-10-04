@@ -11,7 +11,7 @@ from flask import g, url_for
 
 from ..page.templating import url_for_site_page
 
-from ....services.site_navigation.service import get_items_for_menu
+from ....services.site_navigation import site_navigation_service
 from ....services.site_navigation.transfer.models import (
     ItemForRendering,
     ItemTargetType,
@@ -30,7 +30,7 @@ def get_nav_menu_items(menu_name: str) -> list[ItemForRendering]:
     if locale_str is None:  # outside of request
         return []
 
-    items = get_items_for_menu(g.site_id, menu_name, locale_str)
+    items = site_navigation_service.get_items_for_menu(g.site_id, menu_name, locale_str)
     return [_to_item_for_rendering(g.site_id, item) for item in items]
 
 

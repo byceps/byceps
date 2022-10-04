@@ -12,7 +12,7 @@ from flask import abort, g, request
 from flask_babel import format_datetime, gettext, to_utc
 
 from ....services.brand import brand_service
-from ....services.image import service as image_service
+from ....services.image import image_service
 from ....services.news import (
     news_channel_service,
     news_html_service,
@@ -21,7 +21,7 @@ from ....services.news import (
 )
 from ....services.news.transfer.models import Channel
 from ....services.site import site_service
-from ....services.text_diff import service as text_diff_service
+from ....services.text_diff import text_diff_service
 from ....services.user import user_service
 from ....signals import news as news_signals
 from ....util.framework.blueprint import create_blueprint

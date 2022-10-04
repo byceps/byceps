@@ -11,7 +11,7 @@ from decimal import Decimal
 from flask import abort, g, request
 from flask_babel import gettext
 
-from .....services.country import service as country_service
+from .....services.country import country_service
 from .....services.shop.article import article_service
 from .....services.shop.article.models.compilation import ArticleCompilation
 from .....services.shop.cart.models import Cart

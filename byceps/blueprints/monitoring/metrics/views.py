@@ -10,7 +10,7 @@ Metrics export for `Prometheus <https://prometheus.io/>`_
 
 from flask import Response
 
-from ....services.metrics import service as metrics_service
+from ....services.metrics import metrics_service
 from ....util.framework.blueprint import create_blueprint
 
 

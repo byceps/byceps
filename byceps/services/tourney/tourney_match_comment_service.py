@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Optional, Sequence
 
 from ...database import db
-from ...services.text_markup import service as text_markup_service
+from ...services.text_markup import text_markup_service
 from ...services.user import user_service
 from ...services.user.transfer.models import User
 from ...typing import UserID

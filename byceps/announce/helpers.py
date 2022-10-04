@@ -14,8 +14,8 @@ from flask import current_app
 import requests
 
 from ..events.base import _BaseEvent
-from ..services.webhooks import service as webhook_service
 from ..services.webhooks.transfer.models import OutgoingWebhook
+from ..services.webhooks import webhook_service
 
 from .events import get_name_for_event
 

@@ -17,8 +17,8 @@ from ...util.image import create_thumbnail
 from ...util.image.models import Dimensions, ImageType
 from ...util import upload
 
-from ..image import service as image_service
-from ..image.service import ImageTypeProhibited  # Provide to view functions.
+from ..image import image_service
+from ..image.image_service import ImageTypeProhibited  # Provide to view functions.
 from ..user.dbmodels.user import DbUser
 from ..user import user_service
 

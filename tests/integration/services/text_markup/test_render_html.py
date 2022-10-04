@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.text_markup.service import render_html
+from byceps.services.text_markup.text_markup_service import render_html
 
 
 def test_auto_url_linking():

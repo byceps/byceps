@@ -1,6 +1,6 @@
 """
-byceps.metrics.service
-~~~~~~~~~~~~~~~~~~~~~~
+byceps.metrics.metrics_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

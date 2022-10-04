@@ -1,6 +1,6 @@
 """
-byceps.services.country.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.country.country_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

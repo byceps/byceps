@@ -16,7 +16,7 @@ from ....services.board import (
     board_posting_command_service,
     board_posting_query_service,
 )
-from ....services.text_markup.service import get_smileys
+from ....services.text_markup import text_markup_service
 from ....services.user import user_service
 from ....signals import board as board_signals
 from ....util.authorization import has_current_user_permission
@@ -59,7 +59,7 @@ def posting_create_form(topic_id, erroneous_form=None):
     return {
         'topic': topic,
         'form': form,
-        'smileys': get_smileys(),
+        'smileys': text_markup_service.get_smileys(),
     }
 
 
@@ -163,7 +163,7 @@ def posting_update_form(posting_id, erroneous_form=None):
     return {
         'form': form,
         'posting': posting,
-        'smileys': get_smileys(),
+        'smileys': text_markup_service.get_smileys(),
     }
 
 

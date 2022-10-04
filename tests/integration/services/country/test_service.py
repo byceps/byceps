@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.country import service as country_service
+from byceps.services.country import country_service
 
 
 @pytest.mark.parametrize(

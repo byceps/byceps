@@ -12,7 +12,7 @@ from byceps.services.board import (
     board_posting_command_service,
     board_topic_command_service,
 )
-from byceps.services.webhooks import service as webhook_service
+from byceps.services.webhooks import webhook_service
 from byceps.signals import board as board_signals
 
 from .helpers import assert_request, mocked_webhook_receiver
