@@ -9,7 +9,7 @@ byceps.services.ticketing.ticket_user_management_service
 from ...database import db
 from ...typing import UserID
 
-from ..user import service as user_service
+from ..user import user_service
 
 from . import log_service
 from .exceptions import (

@@ -21,7 +21,7 @@ from byceps.services.newsletter import (
     service as newsletter_service,
 )
 from byceps.services.user.dbmodels.user import DbUser
-from byceps.services.user import log_service, service as user_service
+from byceps.services.user import user_log_service, user_service
 from byceps.services.verification_token.dbmodels import DbVerificationToken
 from byceps.services.verification_token.transfer.models import (
     Purpose as TokenPurpose,
@@ -240,7 +240,7 @@ def is_subscribed_to_newsletter(user_id, brand_id):
 
 
 def assert_creation_log_entry_created(user_id, site_id):
-    log_entries = log_service.get_entries_of_type_for_user(
+    log_entries = user_log_service.get_entries_of_type_for_user(
         user_id, 'user-created'
     )
     assert len(log_entries) == 1

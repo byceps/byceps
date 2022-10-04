@@ -10,7 +10,7 @@ from flask import current_app, g, request
 from flask_babel import gettext
 
 from ....services.authentication.api import authn_api_service
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated

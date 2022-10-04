@@ -21,7 +21,7 @@ from .....services.shop.order.export import order_export_service
 from .....services.shop.order.transfer.order import PaymentState
 from .....services.shop.shop import shop_service
 from .....services.ticketing import ticket_service
-from .....services.user import service as user_service
+from .....services.user import user_service
 from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_notice, flash_success

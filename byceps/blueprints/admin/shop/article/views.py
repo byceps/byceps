@@ -31,8 +31,8 @@ from .....services.shop.order import (
 from .....services.shop.order.transfer.order import PaymentState
 from .....services.shop.shop import shop_service
 from .....services.ticketing import category_service as ticket_category_service
-from .....services.user import service as user_service
-from .....services.user_badge import badge_service
+from .....services.user import user_service
+from .....services.user_badge import user_badge_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
@@ -602,7 +602,7 @@ def action_create_form_for_badge_awarding(article_id, erroneous_form=None):
     shop = shop_service.get_shop(article.shop_id)
     brand = brand_service.get_brand(shop.brand_id)
 
-    badges = badge_service.get_all_badges()
+    badges = user_badge_service.get_all_badges()
 
     form = (
         erroneous_form if erroneous_form else RegisterBadgeAwardingActionForm()
@@ -623,7 +623,7 @@ def action_create_for_badge_awarding(article_id):
     """Register a badge awarding action for the article."""
     article = _get_article_or_404(article_id)
 
-    badges = badge_service.get_all_badges()
+    badges = user_badge_service.get_all_badges()
 
     form = RegisterBadgeAwardingActionForm(request.form)
     form.set_badge_choices(badges)
@@ -632,7 +632,7 @@ def action_create_for_badge_awarding(article_id):
         return action_create_form_for_badge_awarding(article_id, form)
 
     badge_id = form.badge_id.data
-    badge = badge_service.get_badge(badge_id)
+    badge = user_badge_service.get_badge(badge_id)
 
     action_registry_service.register_badge_awarding(
         article.item_number, badge.id

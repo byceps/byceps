@@ -11,7 +11,7 @@ from pydantic import ValidationError
 
 from .....services.party import service as party_service
 from .....services.ticketing import attendance_service
-from .....services.user import service as user_service
+from .....services.user import user_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.views import respond_no_content
 

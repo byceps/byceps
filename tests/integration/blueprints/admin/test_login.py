@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.authentication.session import authn_session_service
-from byceps.services.user import log_service
+from byceps.services.user import user_log_service
 
 
 @pytest.fixture
@@ -29,7 +29,7 @@ def test_login_succeeds(client, make_admin):
         permission_ids, screen_name=screen_name, password=password
     )
 
-    login_log_entries_before = log_service.get_entries_of_type_for_user(
+    login_log_entries_before = user_log_service.get_entries_of_type_for_user(
         user.id, 'user-logged-in'
     )
     assert len(login_log_entries_before) == 0
@@ -47,7 +47,7 @@ def test_login_succeeds(client, make_admin):
     assert response.status_code == 204
     assert response.location is None
 
-    login_log_entries_after = log_service.get_entries_of_type_for_user(
+    login_log_entries_after = user_log_service.get_entries_of_type_for_user(
         user.id, 'user-logged-in'
     )
     assert len(login_log_entries_after) == 1

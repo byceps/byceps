@@ -16,7 +16,7 @@ from ...util import upload
 from ...util.image.models import Dimensions, ImageType
 
 from ..image import service as image_service
-from ..user import service as user_service
+from ..user import user_service
 
 from .dbmodels.image import DbImage
 from . import service as item_service

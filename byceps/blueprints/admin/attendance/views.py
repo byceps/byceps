@@ -11,7 +11,7 @@ from flask import abort
 from ....services.brand import service as brand_service
 from ....services.party import service as party_service
 from ....services.ticketing import attendance_service
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required

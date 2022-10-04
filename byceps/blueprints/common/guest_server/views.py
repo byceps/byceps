@@ -21,7 +21,7 @@ from ....services.party import (
 )
 from ....services.site import service as site_service
 from ....services.site.transfer.models import SiteID
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....typing import PartyID
 from ....util.authorization import has_current_user_permission
 from ....util.framework.blueprint import create_blueprint

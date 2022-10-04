@@ -3,16 +3,19 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.user_badge import awarding_service, badge_service
+from byceps.services.user_badge import (
+    user_badge_awarding_service,
+    user_badge_service,
+)
 from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
 
 def test_award_badge(api_client, api_client_authz_header, user, admin_user):
-    badge = badge_service.create_badge(
+    badge = user_badge_service.create_badge(
         'supporter', 'Supporter', 'supporter.svg'
     )
 
-    before = awarding_service.get_awardings_of_badge(badge.id)
+    before = user_badge_awarding_service.get_awardings_of_badge(badge.id)
     assert before == set()
 
     url = '/api/v1/user_badges/awardings'
@@ -26,5 +29,5 @@ def test_award_badge(api_client, api_client_authz_header, user, admin_user):
     response = api_client.post(url, headers=headers, json=json_data)
     assert response.status_code == 204
 
-    actual = awarding_service.get_awardings_of_badge(badge.id)
+    actual = user_badge_awarding_service.get_awardings_of_badge(badge.id)
     assert actual == {QuantifiedBadgeAwarding(badge.id, user.id, 1)}

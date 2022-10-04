@@ -23,7 +23,7 @@ from ....services.board import (
 )
 from ....services.board.transfer.models import TopicID
 from ....services.text_markup.service import get_smileys
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....signals import board as board_signals
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated

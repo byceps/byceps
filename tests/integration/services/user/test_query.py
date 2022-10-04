@@ -7,7 +7,7 @@ from uuid import UUID
 
 from pytest import raises
 
-from byceps.services.user import service as user_service
+from byceps.services.user import user_service
 
 
 def test_find_user_by_screen_name_found(admin_app, make_user):

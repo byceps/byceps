@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.user_badge import badge_service
+from byceps.services.user_badge import user_badge_service
 
 
 def test_index(user_badge_admin_client):
@@ -30,7 +30,7 @@ def test_create(user_badge_admin_client, brand):
     image_filename = 'seal-of-resilience.svg'
     description = 'Stay put, get this.'
 
-    assert badge_service.find_badge_by_slug(slug) is None
+    assert user_badge_service.find_badge_by_slug(slug) is None
 
     url = '/admin/user_badges/badges'
     form_data = {
@@ -44,7 +44,7 @@ def test_create(user_badge_admin_client, brand):
     response = user_badge_admin_client.post(url, data=form_data)
     assert response.status_code == 302
 
-    badge = badge_service.find_badge_by_slug(slug)
+    badge = user_badge_service.find_badge_by_slug(slug)
     assert badge is not None
     assert badge.id is not None
     assert badge.slug == slug

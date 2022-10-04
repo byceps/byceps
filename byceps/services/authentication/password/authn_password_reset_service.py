@@ -12,7 +12,7 @@ from ....util.l10n import force_user_locale
 
 from ...email import service as email_service
 from ...email.transfer.models import NameAndAddress
-from ...user import service as user_service
+from ...user import user_service
 from ...user.transfer.models import User
 from ...verification_token import service as verification_token_service
 from ...verification_token.transfer.models import VerificationToken

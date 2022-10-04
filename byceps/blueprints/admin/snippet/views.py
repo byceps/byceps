@@ -14,7 +14,7 @@ from ....services.snippet.dbmodels.snippet import DbVersion
 from ....services.snippet import service as snippet_service
 from ....services.snippet.transfer.models import Scope
 from ....services.text_diff import service as text_diff_service
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....signals import snippet as snippet_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success

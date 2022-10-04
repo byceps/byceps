@@ -25,7 +25,7 @@ from ...services.shop.article import article_service as shop_article_service
 from ...services.shop.shop import shop_service
 from ...services.shop.shop.transfer.models import Shop, ShopID
 from ...services.ticketing import ticket_service
-from ...services.user import stats_service as user_stats_service
+from ...services.user import user_stats_service
 from ...typing import BrandID, PartyID
 
 

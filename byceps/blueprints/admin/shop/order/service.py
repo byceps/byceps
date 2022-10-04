@@ -21,9 +21,9 @@ from .....services.shop.order.transfer.log import (
 from .....services.shop.order.transfer.order import Order, OrderID
 from .....services.ticketing import category_service as ticket_category_service
 from .....services.user.dbmodels.user import DbUser
-from .....services.user import service as user_service
+from .....services.user import user_service
 from .....services.user.transfer.models import User
-from .....services.user_badge import badge_service as user_badge_service
+from .....services.user_badge import user_badge_service
 
 
 @dataclass(frozen=True)

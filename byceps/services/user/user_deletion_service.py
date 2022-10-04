@@ -1,6 +1,6 @@
 """
-byceps.services.user.deletion_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user.user_deletion_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 User account anonymization and removal
 
@@ -14,9 +14,8 @@ from ...typing import UserID
 
 from ..authorization import service as authorization_service
 
-from . import log_service
 from .dbmodels.user import DbUser
-from . import service as user_service
+from . import user_log_service, user_service
 
 
 def delete_account(
@@ -31,7 +30,7 @@ def delete_account(
     user.deleted = True
     _anonymize_account(user)
 
-    log_entry = log_service.build_entry(
+    log_entry = user_log_service.build_entry(
         'user-deleted',
         user.id,
         {

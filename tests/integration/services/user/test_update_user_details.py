@@ -7,9 +7,9 @@ from datetime import date
 
 from byceps.events.user import UserDetailsUpdated
 from byceps.services.user import (
-    command_service as user_command_service,
-    log_service,
-    service as user_service,
+    user_command_service,
+    user_log_service,
+    user_service,
 )
 
 
@@ -43,7 +43,7 @@ def test_update_user_address(site_app, make_user):
         phone_number=old_phone_number,
     )
 
-    log_entries_before = log_service.get_entries_for_user(user.id)
+    log_entries_before = user_log_service.get_entries_for_user(user.id)
     assert len(log_entries_before) == 1  # user creation
 
     # -------------------------------- #
@@ -79,7 +79,7 @@ def test_update_user_address(site_app, make_user):
     assert user_after.detail.street == new_street
     assert user_after.detail.phone_number == new_phone_number
 
-    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    log_entries_after = user_log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 2
 
     details_updated_log_entry = log_entries_after[1]
@@ -108,7 +108,7 @@ def test_update_user_real_name(site_app, make_user):
     )
     user_detail = user_service.get_detail(user.id)
 
-    log_entries_before = log_service.get_entries_for_user(user.id)
+    log_entries_before = user_log_service.get_entries_for_user(user.id)
     assert len(log_entries_before) == 1  # user creation
 
     # -------------------------------- #
@@ -132,7 +132,7 @@ def test_update_user_real_name(site_app, make_user):
     assert user_after.detail.first_name == new_first_name
     assert user_after.detail.last_name == new_last_name
 
-    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    log_entries_after = user_log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 2
 
     details_updated_log_entry = log_entries_after[1]
@@ -156,7 +156,7 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
     )
     user_detail = user_service.get_detail(user.id)
 
-    log_entries_before = log_service.get_entries_for_user(user.id)
+    log_entries_before = user_log_service.get_entries_for_user(user.id)
     assert len(log_entries_before) == 1  # user creation
 
     # -------------------------------- #
@@ -180,7 +180,7 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
     assert user_after.detail.date_of_birth is None
     assert user_after.detail.phone_number == ''
 
-    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    log_entries_after = user_log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 2
 
     details_updated_log_entry = log_entries_after[1]

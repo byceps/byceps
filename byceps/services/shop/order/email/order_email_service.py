@@ -24,7 +24,7 @@ from .....services.shop.shop import shop_service
 from .....services.snippet import service as snippet_service
 from .....services.snippet.service import SnippetNotFound
 from .....services.snippet.transfer.models import Scope
-from .....services.user import service as user_service
+from .....services.user import user_service
 from .....services.user.transfer.models import User
 from .....typing import BrandID
 from .....util.l10n import force_user_locale

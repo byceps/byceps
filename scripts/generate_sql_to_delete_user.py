@@ -16,7 +16,7 @@ from typing import Iterable, Iterator
 
 import click
 
-from byceps.services.user import service as user_service
+from byceps.services.user import user_service
 from byceps.typing import UserID
 
 from _util import call_with_app_context

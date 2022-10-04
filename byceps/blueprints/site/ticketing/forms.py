@@ -15,7 +15,7 @@ from ....services.consent import (
     consent_service,
     subject_service as consent_subject_service,
 )
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....util.l10n import LocalizedForm
 
 

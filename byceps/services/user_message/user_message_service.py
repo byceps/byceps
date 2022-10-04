@@ -1,6 +1,6 @@
 """
-byceps.services.user_message.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user_message.user_message_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Send an e-mail message from one user to another.
 
@@ -23,7 +23,7 @@ from ..email import (
 from ..email.transfer.models import Message
 from ..site import service as site_service
 from ..site.transfer.models import SiteID
-from ..user import service as user_service
+from ..user import user_service
 from ..user.transfer.models import User
 
 

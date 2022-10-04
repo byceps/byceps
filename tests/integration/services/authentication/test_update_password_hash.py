@@ -6,7 +6,7 @@
 from byceps.database import db
 from byceps.services.authentication.password.dbmodels import DbCredential
 from byceps.services.authentication.password import authn_password_service
-from byceps.services.user import log_service
+from byceps.services.user import user_log_service
 
 
 def test_update_password_hash(site_app, admin_user, make_user):
@@ -18,7 +18,7 @@ def test_update_password_hash(site_app, admin_user, make_user):
     password_hash_before = get_password_hash(user_id)
     assert password_hash_before is not None
 
-    log_entries_before = log_service.get_entries_for_user(user_id)
+    log_entries_before = user_log_service.get_entries_for_user(user_id)
     assert len(log_entries_before) == 1  # user creation
 
     # -------------------------------- #
@@ -33,7 +33,7 @@ def test_update_password_hash(site_app, admin_user, make_user):
     assert password_hash_after is not None
     assert password_hash_after != password_hash_before
 
-    log_entries_after = log_service.get_entries_for_user(user_id)
+    log_entries_after = user_log_service.get_entries_for_user(user_id)
     assert len(log_entries_after) == 2
 
     password_updated_log_entry = log_entries_after[1]

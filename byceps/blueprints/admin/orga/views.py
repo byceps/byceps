@@ -15,7 +15,7 @@ from ....services.brand import service as brand_service
 from ....services.orga import birthday_service as orga_birthday_service
 from ....services.orga import service as orga_service
 from ....services.orga.transfer.models import Birthday
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....util.export import serialize_dicts_to_csv
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success

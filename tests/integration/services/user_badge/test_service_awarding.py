@@ -7,8 +7,11 @@ import pytest
 
 from byceps.database import db
 from byceps.events.user_badge import UserBadgeAwarded
-from byceps.services.user import log_service
-from byceps.services.user_badge import awarding_service, badge_service
+from byceps.services.user import user_log_service
+from byceps.services.user_badge import (
+    user_badge_awarding_service,
+    user_badge_service,
+)
 from byceps.services.user_badge.dbmodels.awarding import DbBadgeAwarding
 from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
 
@@ -63,10 +66,12 @@ def test_award_badge_without_initiator(
     user = user1
     badge = badge1
 
-    log_entries_before = log_service.get_entries_for_user(user.id)
+    log_entries_before = user_log_service.get_entries_for_user(user.id)
     assert len(log_entries_before) == 1  # user creation
 
-    _, event = awarding_service.award_badge_to_user(badge.id, user.id)
+    _, event = user_badge_awarding_service.award_badge_to_user(
+        badge.id, user.id
+    )
 
     assert event.__class__ is UserBadgeAwarded
     assert event.initiator_id is None
@@ -76,7 +81,7 @@ def test_award_badge_without_initiator(
     assert event.badge_id == badge.id
     assert event.badge_label == badge.label
 
-    log_entries_after = log_service.get_entries_for_user(user.id)
+    log_entries_after = user_log_service.get_entries_for_user(user.id)
     assert len(log_entries_after) == 2
 
     user_awarding_log_entry = log_entries_after[1]
@@ -91,10 +96,10 @@ def test_award_badge_with_initiator(
 
     badge = badge2
 
-    log_entries_before = log_service.get_entries_for_user(user.id)
+    log_entries_before = user_log_service.get_entries_for_user(user.id)
     assert len(log_entries_before) == 1  # user creation
 
-    _, event = awarding_service.award_badge_to_user(
+    _, event = user_badge_awarding_service.award_badge_to_user(
         badge.id, user.id, initiator_id=admin_user.id
     )
 
@@ -106,7 +111,7 @@ def test_award_badge_with_initiator(
     assert event.badge_id == badge.id
     assert event.badge_label == badge.label
 
-    log_entries_after = log_service.get_entries_for_user(user.id)
+    log_entries_after = user_log_service.get_entries_for_user(user.id)
     assert len(log_entries_after) == 2
 
     user_awarding_log_entry = log_entries_after[1]
@@ -127,14 +132,14 @@ def test_count_awardings(
     badge3,
     awardings_scope,
 ):
-    awarding_service.award_badge_to_user(badge1.id, user1.id)
-    awarding_service.award_badge_to_user(badge1.id, user1.id)
-    awarding_service.award_badge_to_user(badge1.id, user2.id)
-    awarding_service.award_badge_to_user(badge1.id, user3.id)
-    awarding_service.award_badge_to_user(badge3.id, user2.id)
-    awarding_service.award_badge_to_user(badge3.id, user3.id)
+    user_badge_awarding_service.award_badge_to_user(badge1.id, user1.id)
+    user_badge_awarding_service.award_badge_to_user(badge1.id, user1.id)
+    user_badge_awarding_service.award_badge_to_user(badge1.id, user2.id)
+    user_badge_awarding_service.award_badge_to_user(badge1.id, user3.id)
+    user_badge_awarding_service.award_badge_to_user(badge3.id, user2.id)
+    user_badge_awarding_service.award_badge_to_user(badge3.id, user3.id)
 
-    actual = awarding_service.count_awardings()
+    actual = user_badge_awarding_service.count_awardings()
 
     # Remove counts for potential other badges.
     relevant_badge_ids = {badge1.id, badge2.id, badge3.id}
@@ -148,7 +153,9 @@ def test_count_awardings(
 def test_get_awardings_of_unknown_badge(site_app):
     unknown_badge_id = '00000000-0000-0000-0000-000000000000'
 
-    actual = awarding_service.get_awardings_of_badge(unknown_badge_id)
+    actual = user_badge_awarding_service.get_awardings_of_badge(
+        unknown_badge_id
+    )
 
     assert actual == set()
 
@@ -156,7 +163,7 @@ def test_get_awardings_of_unknown_badge(site_app):
 def test_get_awardings_of_unawarded_badge(site_app, badge3):
     badge = badge3
 
-    actual = awarding_service.get_awardings_of_badge(badge.id)
+    actual = user_badge_awarding_service.get_awardings_of_badge(badge.id)
 
     assert actual == set()
 
@@ -166,11 +173,11 @@ def test_get_awardings_of_badge(
 ):
     badge = badge1
 
-    awarding_service.award_badge_to_user(badge.id, user1.id)
-    awarding_service.award_badge_to_user(badge.id, user1.id)
-    awarding_service.award_badge_to_user(badge.id, user2.id)
+    user_badge_awarding_service.award_badge_to_user(badge.id, user1.id)
+    user_badge_awarding_service.award_badge_to_user(badge.id, user1.id)
+    user_badge_awarding_service.award_badge_to_user(badge.id, user2.id)
 
-    actual = awarding_service.get_awardings_of_badge(badge.id)
+    actual = user_badge_awarding_service.get_awardings_of_badge(badge.id)
 
     assert actual == {
         QuantifiedBadgeAwarding(badge.id, user1.id, 2),
@@ -179,4 +186,4 @@ def test_get_awardings_of_badge(
 
 
 def _create_badge(slug, label):
-    return badge_service.create_badge(slug, label, f'{slug}.svg')
+    return user_badge_service.create_badge(slug, label, f'{slug}.svg')

@@ -12,9 +12,9 @@ from flask.cli import with_appcontext
 from ...services.authorization import service as authorization_service
 from ...services.authorization.transfer.models import RoleID
 from ...services.user import (
-    command_service as user_command_service,
-    creation_service as user_creation_service,
-    email_address_service as user_email_address_service,
+    user_command_service,
+    user_creation_service,
+    user_email_address_service,
 )
 from ...services.user.transfer.models import User
 from ...typing import UserID

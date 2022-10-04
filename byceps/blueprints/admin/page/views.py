@@ -15,7 +15,7 @@ from ....services.page.transfer.models import Page, Version, VersionID
 from ....services.site import service as site_service
 from ....services.site.transfer.models import Site, SiteID
 from ....services.text_diff import service as text_diff_service
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....signals import page as page_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success

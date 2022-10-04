@@ -7,8 +7,7 @@ import pytest
 from pytest import raises
 
 from byceps.services.authorization import service as authorization_service
-from byceps.services.user import command_service as user_command_service
-from byceps.services.user import log_service
+from byceps.services.user import user_command_service, user_log_service
 
 
 @pytest.fixture(scope='module')
@@ -60,7 +59,7 @@ def test_initialize_account_as_user(
     user_before = user_command_service._get_user(user.id)
     assert not user_before.initialized
 
-    log_entries_before = log_service.get_entries_for_user(user_before.id)
+    log_entries_before = user_log_service.get_entries_for_user(user_before.id)
     assert len(log_entries_before) == 1  # user creation
 
     role_ids_before = authorization_service.find_role_ids_for_user(user.id)
@@ -75,7 +74,7 @@ def test_initialize_account_as_user(
     user_after = user_command_service._get_user(user.id)
     assert user_after.initialized
 
-    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    log_entries_after = user_log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 3
 
     user_enabled_log_entry = log_entries_after[1]
@@ -103,7 +102,7 @@ def test_initialize_account_as_admin(
     user_before = user_command_service._get_user(user.id)
     assert not user_before.initialized
 
-    log_entries_before = log_service.get_entries_for_user(user_before.id)
+    log_entries_before = user_log_service.get_entries_for_user(user_before.id)
     assert len(log_entries_before) == 1  # user creation
 
     role_ids_before = authorization_service.find_role_ids_for_user(user.id)
@@ -118,7 +117,7 @@ def test_initialize_account_as_admin(
     user_after = user_command_service._get_user(user.id)
     assert user_after.initialized
 
-    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    log_entries_after = user_log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 3
 
     user_enabled_log_entry = log_entries_after[1]
@@ -146,7 +145,7 @@ def test_initialize_already_initialized_account(
     user_before = user_command_service._get_user(user.id)
     assert user_before.initialized
 
-    log_entries_before = log_service.get_entries_for_user(user_before.id)
+    log_entries_before = user_log_service.get_entries_for_user(user_before.id)
     assert len(log_entries_before) == 1  # user creation
 
     # -------------------------------- #
@@ -161,5 +160,5 @@ def test_initialize_already_initialized_account(
     user_after = user_command_service._get_user(user.id)
     assert user_after.initialized  # still initialized
 
-    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    log_entries_after = user_log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 1  # no additional user log entries

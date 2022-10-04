@@ -17,7 +17,7 @@ from werkzeug.security import (
 from ....database import db
 from ....typing import UserID
 
-from ...user import log_service as user_log_service
+from ...user import user_log_service
 
 from ..session import authn_session_service
 

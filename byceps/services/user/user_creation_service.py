@@ -1,6 +1,6 @@
 """
-byceps.services.user.creation_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user.user_creation_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -19,10 +19,10 @@ from ...typing import UserID
 from ..authentication.password import authn_password_service
 from ..site.transfer.models import SiteID
 
-from . import email_address_service, log_service
+from . import user_email_address_service, user_log_service
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
-from . import service as user_service
+from . import user_service
 from .transfer.models import User
 
 
@@ -111,7 +111,7 @@ def create_user(
         log_entry_data['initiator_id'] = str(creator.id)
     if site_id is not None:
         log_entry_data['site_id'] = site_id
-    log_service.create_entry(
+    user_log_service.create_entry(
         'user-created', user.id, log_entry_data, occurred_at=created_at
     )
 
@@ -138,7 +138,7 @@ def request_email_address_confirmation(
     """
     normalized_email_address = _normalize_email_address(email_address)
 
-    email_address_service.send_email_address_confirmation_email_for_site(
+    user_email_address_service.send_email_address_confirmation_email_for_site(
         user, normalized_email_address, site_id
     )
 

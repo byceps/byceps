@@ -23,7 +23,7 @@ from ...events.board import (
 )
 from ...typing import UserID
 
-from ..user import service as user_service
+from ..user import user_service
 from ..user.transfer.models import User
 
 from .aggregation_service import aggregate_category, aggregate_topic

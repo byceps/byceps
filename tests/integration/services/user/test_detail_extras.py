@@ -4,7 +4,7 @@
 """
 
 from byceps.database import db
-from byceps.services.user import command_service as user_command_service
+from byceps.services.user import user_command_service
 from byceps.services.user.dbmodels.detail import DbUserDetail
 
 

@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.user import service as user_service
+from byceps.services.user import user_service
 from byceps.services.verification_token import (
     service as verification_token_service,
 )

@@ -21,11 +21,11 @@ from ....services.shop.order import order_log_service, order_service
 from ....services.site import service as site_service
 from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.ticketing import attendance_service, ticket_service
-from ....services.user import log_service, service as user_service
+from ....services.user import user_log_service, user_service
 from ....services.user.transfer.log import UserLogEntry, UserLogEntryData
 from ....services.user.transfer.models import User
-from ....services.user_avatar import service as avatar_service
-from ....services.user_badge import badge_service as user_badge_service
+from ....services.user_avatar import user_avatar_service
+from ....services.user_badge import user_badge_service as user_badge_service
 from ....typing import PartyID, UserID
 
 
@@ -83,7 +83,7 @@ def get_newsletter_subscription_states(
 
 
 def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
-    log_entries = log_service.get_entries_for_user(user_id)
+    log_entries = user_log_service.get_entries_for_user(user_id)
     log_entries.extend(_fake_avatar_update_log_entries(user_id))
     log_entries.extend(_fake_consent_log_entries(user_id))
     log_entries.extend(
@@ -116,7 +116,7 @@ def _fake_avatar_update_log_entries(
     user_id: UserID,
 ) -> Iterator[UserLogEntry]:
     """Yield the user's avatar updates as volatile log entries."""
-    avatar_updates = avatar_service.get_avatars_uploaded_by_user(user_id)
+    avatar_updates = user_avatar_service.get_avatars_uploaded_by_user(user_id)
 
     for avatar_update in avatar_updates:
         data = {

@@ -19,7 +19,7 @@ from .....services.email import (
 )
 from .....services.email.transfer.models import NameAndAddress
 from .....services.global_setting import service as global_settings_service
-from .....services.user import service as user_service
+from .....services.user import user_service
 from .....services.verification_token import (
     service as verification_token_service,
 )

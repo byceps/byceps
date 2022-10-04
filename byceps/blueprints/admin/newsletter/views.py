@@ -13,7 +13,7 @@ from flask import abort
 
 from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List
-from ....services.user import stats_service as user_stats_service
+from ....services.user import user_stats_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import jsonified, permission_required, textified

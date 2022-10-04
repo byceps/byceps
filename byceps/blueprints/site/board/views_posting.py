@@ -17,7 +17,7 @@ from ....services.board import (
     posting_query_service as board_posting_query_service,
 )
 from ....services.text_markup.service import get_smileys
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....signals import board as board_signals
 from ....util.authorization import has_current_user_permission
 from ....util.framework.flash import flash_error, flash_success

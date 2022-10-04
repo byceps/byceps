@@ -7,7 +7,7 @@ import pytest
 
 from byceps.database import db
 from byceps.services.authorization import service as authorization_service
-from byceps.services.user import service as user_service
+from byceps.services.user import user_service
 from byceps.services.verification_token import (
     service as verification_token_service,
 )

@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 from flask_babel import gettext
 
-from ....services.user import log_service as user_log_service
+from ....services.user import user_log_service
 from ....services.verification_token import (
     service as verification_token_service,
 )

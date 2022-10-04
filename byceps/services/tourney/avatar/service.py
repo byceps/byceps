@@ -18,7 +18,7 @@ from ....util import upload
 
 from ...image import service as image_service
 from ...image.service import ImageTypeProhibited  # Provide to view functions.
-from ...user import service as user_service
+from ...user import user_service
 
 from .dbmodels import DbAvatar
 

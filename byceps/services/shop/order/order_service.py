@@ -21,7 +21,7 @@ from ....events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ....typing import UserID
 
 from ...ticketing.transfer.models import TicketCategoryID
-from ...user import service as user_service
+from ...user import user_service
 
 from ..article import article_service
 from ..article.transfer.models import ArticleType

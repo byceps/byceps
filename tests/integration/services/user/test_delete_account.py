@@ -7,10 +7,10 @@ import pytest
 
 from byceps.services.authorization import service as authorization_service
 from byceps.services.user import (
-    command_service as user_command_service,
-    deletion_service as user_deletion_service,
+    user_command_service,
+    user_deletion_service,
+    user_log_service,
 )
-from byceps.services.user import log_service
 
 
 @pytest.fixture
@@ -60,7 +60,7 @@ def test_delete_account(admin_app, role, make_user):
     assert user_before.detail.phone_number is not None
 
     # log entries
-    log_entries_before = log_service.get_entries_for_user(user_before.id)
+    log_entries_before = user_log_service.get_entries_for_user(user_before.id)
     assert len(log_entries_before) == 2
     assert log_entries_before[1].event_type == 'role-assigned'
 
@@ -97,7 +97,7 @@ def test_delete_account(admin_app, role, make_user):
     assert user_after.avatar_selection is None
 
     # log entries
-    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    log_entries_after = user_log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 3
 
     user_enabled_log_entry = log_entries_after[2]

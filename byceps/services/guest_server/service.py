@@ -16,7 +16,7 @@ from ...events.guest_server import GuestServerRegistered
 from ...typing import PartyID, UserID
 
 from ..party import service as party_service
-from ..user import service as user_service
+from ..user import user_service
 
 from .dbmodels import DbAddress, DbServer, DbSetting
 from .transfer.models import (

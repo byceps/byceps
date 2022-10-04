@@ -20,7 +20,7 @@ from ....services.news import service as news_item_service
 from ....services.news.transfer.models import Channel
 from ....services.site import service as site_service
 from ....services.text_diff import service as text_diff_service
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....services.user.service import UserIdRejected
 from ....signals import news as news_signals
 from ....util.framework.blueprint import create_blueprint

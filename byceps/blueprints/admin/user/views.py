@@ -27,15 +27,15 @@ from ....services.shop.order import order_service
 from ....services.shop.shop import shop_service
 from ....services.site import service as site_service
 from ....services.user import (
-    command_service as user_command_service,
-    creation_service as user_creation_service,
-    deletion_service as user_deletion_service,
-    email_address_service,
-    service as user_service,
-    stats_service as user_stats_service,
+    user_command_service,
+    user_creation_service,
+    user_deletion_service,
+    user_email_address_service,
+    user_service,
+    user_stats_service,
 )
 from ....services.user.transfer.models import UserForAdmin, UserStateFilter
-from ....services.user_badge import awarding_service as badge_awarding_service
+from ....services.user_badge import user_badge_awarding_service
 from ....signals import user as user_signals
 from ....util.authorization import permission_registry
 from ....util.framework.blueprint import create_blueprint
@@ -130,7 +130,7 @@ def view(user_id):
     attended_parties = service.get_attended_parties(user.id)
 
     badges_with_awarding_quantity = (
-        badge_awarding_service.get_badges_awarded_to_user(user.id)
+        user_badge_awarding_service.get_badges_awarded_to_user(user.id)
     )
     badge_count = len(badges_with_awarding_quantity)
 
@@ -585,7 +585,7 @@ def invalidate_email_address(user_id):
     initiator_id = g.user.id
     reason = form.reason.data.strip()
 
-    event = email_address_service.invalidate_email_address(
+    event = user_email_address_service.invalidate_email_address(
         user.id, reason, initiator_id=initiator_id
     )
 

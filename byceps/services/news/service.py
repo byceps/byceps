@@ -21,7 +21,7 @@ from ...typing import UserID
 
 from ..site import service as site_service
 from ..site.transfer.models import SiteID
-from ..user import service as user_service
+from ..user import user_service
 from ..user.transfer.models import User
 
 from .channel_service import _db_entity_to_channel

@@ -4,7 +4,10 @@
 """
 
 import byceps.announce.connections  # Connect signal handlers.
-from byceps.services.user_badge import awarding_service, badge_service
+from byceps.services.user_badge import (
+    user_badge_awarding_service,
+    user_badge_service,
+)
 from byceps.signals import user_badge as user_badge_signals
 
 from .helpers import assert_submitted_data, CHANNEL_INTERNAL, mocked_irc_bot
@@ -18,13 +21,15 @@ def test_user_badge_awarding_announced_without_initiator(app, make_user):
         'Jemand hat das Abzeichen "First Post!" an Erster verliehen.'
     )
 
-    badge = badge_service.create_badge(
+    badge = user_badge_service.create_badge(
         'first-post', 'First Post!', 'first-post.svg'
     )
 
     user = make_user('Erster')
 
-    _, event = awarding_service.award_badge_to_user(badge.id, user.id)
+    _, event = user_badge_awarding_service.award_badge_to_user(
+        badge.id, user.id
+    )
 
     with mocked_irc_bot() as mock:
         user_badge_signals.user_badge_awarded.send(None, event=event)
@@ -39,13 +44,13 @@ def test_user_badge_awarding_announced_with_initiator(
         'Admin hat das Abzeichen "Glanzleistung" an PathFinder verliehen.'
     )
 
-    badge = badge_service.create_badge(
+    badge = user_badge_service.create_badge(
         'glnzlstng', 'Glanzleistung', 'glanz.svg'
     )
 
     user = make_user('PathFinder')
 
-    _, event = awarding_service.award_badge_to_user(
+    _, event = user_badge_awarding_service.award_badge_to_user(
         badge.id, user.id, initiator_id=admin_user.id
     )
 

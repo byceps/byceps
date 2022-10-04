@@ -28,7 +28,7 @@ from ....services.site import service as site_service
 from ....services.site.transfer.models import Site
 from ....services.ticketing import ticket_service
 from ....services.ticketing.dbmodels.ticket import DbTicket
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....typing import UserID
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated

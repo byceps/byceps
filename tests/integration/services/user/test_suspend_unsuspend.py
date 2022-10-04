@@ -5,9 +5,11 @@
 
 import pytest
 
-from byceps.services.user import command_service as user_command_service
-from byceps.services.user import log_service
-from byceps.services.user import service as user_service
+from byceps.services.user import (
+    user_command_service,
+    user_log_service,
+    user_service,
+)
 
 
 @pytest.fixture(scope='module')
@@ -33,7 +35,7 @@ def test_suspend(admin_app, cheater, admin_user):
     user_before = user_service.get_user(user_id)
     assert not user_before.suspended
 
-    log_entries_before = log_service.get_entries_for_user(user_before.id)
+    log_entries_before = user_log_service.get_entries_for_user(user_before.id)
     assert len(log_entries_before) == 1  # user creation
 
     # -------------------------------- #
@@ -45,7 +47,7 @@ def test_suspend(admin_app, cheater, admin_user):
     user_after = user_service.get_user(user_id)
     assert user_after.suspended
 
-    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    log_entries_after = user_log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 2
 
     suspended_log_entry = log_entries_after[1]
@@ -66,7 +68,7 @@ def test_unsuspend(admin_app, remorseful_user, admin_user):
     user_before = user_service.get_user(user_id)
     assert user_before.suspended
 
-    log_entries_before = log_service.get_entries_for_user(user_before.id)
+    log_entries_before = user_log_service.get_entries_for_user(user_before.id)
     assert len(log_entries_before) == 2
 
     # -------------------------------- #
@@ -78,7 +80,7 @@ def test_unsuspend(admin_app, remorseful_user, admin_user):
     user_after = user_service.get_user(user_id)
     assert not user_after.suspended
 
-    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    log_entries_after = user_log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 3
 
     unsuspended_log_entry = log_entries_after[2]

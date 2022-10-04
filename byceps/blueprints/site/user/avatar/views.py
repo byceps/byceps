@@ -10,7 +10,7 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from .....services.image import service as image_service
-from .....services.user_avatar import service as avatar_service
+from .....services.user_avatar import user_avatar_service
 from .....signals import user_avatar as user_avatar_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_notice, flash_success
@@ -46,7 +46,7 @@ def update_form(erroneous_form=None):
     return {
         'form': form,
         'allowed_types': image_type_names,
-        'maximum_dimensions': avatar_service.MAXIMUM_DIMENSIONS,
+        'maximum_dimensions': user_avatar_service.MAXIMUM_DIMENSIONS,
     }
 
 
@@ -80,10 +80,10 @@ def _update(user_id, image):
         abort(400, 'No file to upload has been specified.')
 
     try:
-        avatar_service.update_avatar_image(
+        user_avatar_service.update_avatar_image(
             user_id, image.stream, ALLOWED_IMAGE_TYPES
         )
-    except avatar_service.ImageTypeProhibited as e:
+    except user_avatar_service.ImageTypeProhibited as e:
         abort(400, str(e))
     except FileExistsError:
         abort(409, 'File already exists, not overwriting.')
@@ -96,7 +96,7 @@ def delete():
     user = _get_current_user_or_404()
 
     try:
-        avatar_service.remove_avatar_image(user.id)
+        user_avatar_service.remove_avatar_image(user.id)
     except ValueError:
         # No avatar selected.
         # But that's ok, deletions should be idempotent.

@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 
 import click
 
-from byceps.services.user import log_service as user_log_service
+from byceps.services.user import user_log_service
 
 from _util import call_with_app_context
 

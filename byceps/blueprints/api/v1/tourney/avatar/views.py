@@ -10,7 +10,7 @@ from flask import abort, request
 
 from ......services.party import service as party_service
 from ......services.tourney.avatar import service as avatar_service
-from ......services.user import service as user_service
+from ......services.user import user_service
 from ......util.framework.blueprint import create_blueprint
 from ......util.image.models import ImageType
 from ......util.views import respond_created, respond_no_content

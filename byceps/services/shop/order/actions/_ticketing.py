@@ -12,7 +12,7 @@ from .....typing import UserID
 
 from ....ticketing import category_service
 from ....ticketing.transfer.models import TicketCategoryID
-from ....user import service as user_service
+from ....user import user_service
 
 from .. import order_service
 from ..transfer.order import OrderID

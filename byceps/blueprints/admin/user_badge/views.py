@@ -10,8 +10,11 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from ....services.brand import service as brand_service
-from ....services.user import service as user_service
-from ....services.user_badge import awarding_service, badge_service
+from ....services.user import user_service
+from ....services.user_badge import (
+    user_badge_awarding_service,
+    user_badge_service,
+)
 from ....signals import user_badge as user_badge_signals
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
@@ -33,7 +36,7 @@ blueprint = create_blueprint('user_badge_admin', __name__)
 @templated
 def index():
     """List all badges."""
-    all_badges = badge_service.get_all_badges()
+    all_badges = user_badge_service.get_all_badges()
 
     brands = brand_service.get_all_brands()
     brands_by_id = {brand.id: brand for brand in brands}
@@ -44,7 +47,7 @@ def index():
 
         return brands_by_id[brand_id]
 
-    awarding_counts_by_badge_id = awarding_service.count_awardings()
+    awarding_counts_by_badge_id = user_badge_awarding_service.count_awardings()
 
     badges = [
         {
@@ -76,7 +79,7 @@ def view(badge_id):
     else:
         brand = None
 
-    awardings = awarding_service.get_awardings_of_badge(badge.id)
+    awardings = user_badge_awarding_service.get_awardings_of_badge(badge.id)
     recipient_ids = [awarding.user_id for awarding in awardings]
     recipients = user_service.get_users(recipient_ids, include_avatars=True)
     recipients = list(sorted(recipients, key=lambda r: r.screen_name or ''))
@@ -124,7 +127,7 @@ def create():
     else:
         brand_id = None
 
-    badge = badge_service.create_badge(
+    badge = user_badge_service.create_badge(
         slug,
         label,
         image_filename,
@@ -176,7 +179,7 @@ def update(badge_id):
     brand_id = form.brand_id.data
     featured = form.featured.data
 
-    badge = badge_service.update_badge(
+    badge = user_badge_service.update_badge(
         badge.id, slug, label, description, image_filename, brand_id, featured
     )
 
@@ -232,13 +235,13 @@ def award(user_id):
     if not user:
         abort(401, 'Unknown user ID')
 
-    badge = badge_service.find_badge(badge_id)
+    badge = user_badge_service.find_badge(badge_id)
     if not badge:
         abort(401, 'Unknown badge ID')
 
     initiator_id = g.user.id
 
-    _, event = awarding_service.award_badge_to_user(
+    _, event = user_badge_awarding_service.award_badge_to_user(
         badge_id, user_id, initiator_id=initiator_id
     )
 
@@ -256,7 +259,7 @@ def award(user_id):
 
 
 def _set_badge_ids_on_form(form):
-    badges = badge_service.get_all_badges()
+    badges = user_badge_service.get_all_badges()
     form.set_badge_choices(badges)
 
 
@@ -265,7 +268,7 @@ def _set_badge_ids_on_form(form):
 
 
 def _get_badge_or_404(badge_id):
-    badge = badge_service.find_badge(badge_id)
+    badge = user_badge_service.find_badge(badge_id)
 
     if badge is None:
         abort(404)

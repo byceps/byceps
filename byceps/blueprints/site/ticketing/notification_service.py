@@ -16,7 +16,7 @@ from ....services.email import (
 from ....services.party import service as party_service
 from ....services.site import service as site_service
 from ....services.ticketing.dbmodels.ticket import DbTicket
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....services.user.transfer.models import User
 from ....util.l10n import force_user_locale
 

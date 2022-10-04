@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.user import service as user_service
+from byceps.services.user import user_service
 
 
 @pytest.fixture(scope='module')

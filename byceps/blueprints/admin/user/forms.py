@@ -20,8 +20,7 @@ from wtforms import (
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from ....services.site import service as site_service
-from ....services.user import screen_name_validator
-from ....services.user import service as user_service
+from ....services.user import screen_name_validator, user_service
 from ....util.l10n import LocalizedForm
 
 from ...common.core.forms import ScreenNameValidator

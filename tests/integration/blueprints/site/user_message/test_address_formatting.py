@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.user_message import service as user_message_service
+from byceps.services.user_message import user_message_service
 
 
 def test_recipient_formatting(make_user, site, params):

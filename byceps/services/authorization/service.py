@@ -16,7 +16,7 @@ from sqlalchemy.exc import IntegrityError
 from ...database import db
 from ...typing import UserID
 
-from ..user import log_service as user_log_service, service as user_service
+from ..user import user_log_service, user_service
 from ..user.transfer.models import User
 
 from .dbmodels import DbRole, DbRolePermission, DbUserRole

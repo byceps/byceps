@@ -14,8 +14,7 @@ from wtforms import BooleanField, PasswordField, StringField
 from wtforms.validators import InputRequired, Length, ValidationError
 
 from .....services.consent.transfer.models import Subject, SubjectID
-from .....services.user import screen_name_validator
-from .....services.user import service as user_service
+from .....services.user import screen_name_validator, user_service
 from .....util.l10n import LocalizedForm
 
 from ....common.core.forms import ScreenNameValidator

@@ -17,7 +17,7 @@ except ImportError:
 
 from flask import current_app
 
-from .....services.user import service as user_service
+from .....services.user import user_service
 from .....util.templating import load_template
 
 from .. import order_service

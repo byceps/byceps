@@ -14,7 +14,7 @@ from wtforms import DateField, PasswordField, StringField, TelField
 from wtforms.validators import InputRequired, Length, Optional, ValidationError
 
 from .....services.authentication.password import authn_password_service
-from .....services.user import screen_name_validator, service as user_service
+from .....services.user import screen_name_validator, user_service
 from .....util.l10n import LocalizedForm
 
 from ....common.core.forms import ScreenNameValidator

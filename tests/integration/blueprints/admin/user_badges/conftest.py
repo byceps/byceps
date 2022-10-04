@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.user_badge import badge_service
+from byceps.services.user_badge import user_badge_service
 
 from tests.helpers import log_in_user
 
@@ -35,8 +35,8 @@ def badge():
     label = 'Badge of Beauty'
     image_filename = 'sooo-beautiful.svg'
 
-    badge = badge_service.create_badge(slug, label, image_filename)
+    badge = user_badge_service.create_badge(slug, label, image_filename)
 
     yield badge
 
-    badge_service.delete_badge(badge.id)
+    user_badge_service.delete_badge(badge.id)

@@ -31,10 +31,7 @@ from ....services.shop.shop import shop_service
 from ....services.shop.storefront import storefront_service
 from ....services.site import service as site_service
 from ....services.ticketing import ticket_service
-from ....services.user import (
-    service as user_service,
-    stats_service as user_stats_service,
-)
+from ....services.user import user_service, user_stats_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 from ....util.views import permission_required

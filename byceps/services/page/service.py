@@ -15,7 +15,7 @@ from sqlalchemy import select
 from ...database import db
 from ...events.page import PageCreated, PageDeleted, PageUpdated
 from ...services.site.transfer.models import SiteID
-from ...services.user import service as user_service
+from ...services.user import user_service
 from ...services.user.transfer.models import User
 from ...typing import UserID
 

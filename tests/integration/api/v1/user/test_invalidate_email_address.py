@@ -3,10 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.user import (
-    log_service as user_log_service,
-    service as user_service,
-)
+from byceps.services.user import user_log_service, user_service
 
 
 def test_invalidation_of_initialized_user(

@@ -27,7 +27,7 @@ from .....services.site import (
     settings_service as site_settings_service,
     service as site_service,
 )
-from .....services.user import creation_service as user_creation_service
+from .....services.user import user_creation_service
 from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success

@@ -17,7 +17,7 @@ from .....services.ticketing import (
     ticket_service,
     ticket_user_checkin_service,
 )
-from .....services.user import service as user_service
+from .....services.user import user_service
 from .....signals import ticketing as ticketing_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_notice, flash_success

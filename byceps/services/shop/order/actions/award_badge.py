@@ -8,7 +8,7 @@ byceps.services.shop.order.actions.award_badge
 
 from .....typing import UserID
 
-from ....user_badge import awarding_service, badge_service
+from ....user_badge import user_badge_awarding_service, user_badge_service
 from ....user_badge.transfer.models import BadgeAwarding
 
 from .. import order_log_service
@@ -23,11 +23,13 @@ def award_badge(
     parameters: ActionParameters,
 ) -> None:
     """Award badge to user."""
-    badge = badge_service.get_badge(parameters['badge_id'])
+    badge = user_badge_service.get_badge(parameters['badge_id'])
     user_id = order.placed_by_id
 
     for _ in range(line_item.quantity):
-        awarding, _ = awarding_service.award_badge_to_user(badge.id, user_id)
+        awarding, _ = user_badge_awarding_service.award_badge_to_user(
+            badge.id, user_id
+        )
 
         _create_order_log_entry(order.id, awarding)
 

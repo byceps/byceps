@@ -14,7 +14,7 @@ from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.user.dbmodels.log import DbUserLogEntry
-from byceps.services.user import service as user_service
+from byceps.services.user import user_service
 from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 

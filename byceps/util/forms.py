@@ -12,7 +12,7 @@ from flask_babel import lazy_gettext
 from wtforms import Field, SelectMultipleField
 from wtforms.widgets import CheckboxInput, ListWidget, TextInput
 
-from ..services.user import service as user_service
+from ..services.user import user_service
 from ..services.user.transfer.models import User
 
 

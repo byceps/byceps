@@ -11,7 +11,7 @@ from typing import Iterator
 import click
 
 from byceps.services.ticketing import ticket_service
-from byceps.services.user import service as user_service
+from byceps.services.user import user_service
 from byceps.typing import PartyID
 
 from _util import call_with_app_context

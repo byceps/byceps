@@ -25,8 +25,8 @@ from ....services.party import service as party_service
 from ....services.party.transfer.models import Party
 from ....services.site import settings_service as site_settings_service
 from ....services.ticketing import ticket_service
-from ....services.user import service as user_service
-from ....services.user_badge import awarding_service as badge_awarding_service
+from ....services.user import user_service
+from ....services.user_badge import user_badge_awarding_service
 from ....services.user_badge.transfer.models import Badge
 from ....util.authorization import has_current_user_permission
 from ....typing import BrandID, PartyID, UserID
@@ -153,7 +153,7 @@ def _get_badges_for_users(
     user_ids: set[UserID], brand_id: BrandID
 ) -> dict[UserID, set[Badge]]:
     """Fetch users' badges that are either global or belong to the brand."""
-    badges_by_user_id = badge_awarding_service.get_badges_awarded_to_users(
+    badges_by_user_id = user_badge_awarding_service.get_badges_awarded_to_users(
         user_ids, featured_only=True
     )
 

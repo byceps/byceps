@@ -1,6 +1,6 @@
 """
-byceps.services.user.email_address_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user.user_email_address_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -26,14 +26,11 @@ from ..email import (
 from ..email.transfer.models import NameAndAddress
 from ..site import service as site_service
 from ..site.transfer.models import SiteID
-from ..user import (
-    command_service as user_command_service,
-    service as user_service,
-)
+from ..user import user_command_service, user_service
 from ..verification_token import service as verification_token_service
 from ..verification_token.transfer.models import VerificationToken
 
-from . import log_service as user_log_service
+from . import user_log_service
 from .transfer.models import User
 
 

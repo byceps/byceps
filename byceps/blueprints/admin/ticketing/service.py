@@ -17,7 +17,7 @@ from ....services.ticketing.transfer.log import (
     TicketLogEntryData,
 )
 from ....services.ticketing.transfer.models import TicketID
-from ....services.user import service as user_service
+from ....services.user import user_service
 from ....services.user.transfer.models import User
 
 

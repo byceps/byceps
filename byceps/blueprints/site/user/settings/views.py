@@ -17,9 +17,9 @@ from .....services.country import service as country_service
 from .....services.newsletter import service as newsletter_service
 from .....services.newsletter.transfer.models import ListID as NewsletterListID
 from .....services.user import (
-    command_service as user_command_service,
-    email_address_service,
-    service as user_service,
+    user_command_service,
+    user_email_address_service,
+    user_service,
 )
 from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
@@ -95,7 +95,7 @@ def change_email_address():
 
     new_email_address = form.new_email_address.data.strip()
 
-    email_address_service.send_email_address_change_email_for_site(
+    user_email_address_service.send_email_address_change_email_for_site(
         current_user, new_email_address, g.site_id
     )
 

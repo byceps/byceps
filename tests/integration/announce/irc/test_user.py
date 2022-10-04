@@ -13,7 +13,7 @@ from byceps.events.user import (
     UserEmailAddressInvalidated,
     UserScreenNameChanged,
 )
-from byceps.services.user import deletion_service as user_deletion_service
+from byceps.services.user import user_deletion_service
 from byceps.signals import user as user_signals
 
 from .helpers import (

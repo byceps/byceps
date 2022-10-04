@@ -1,6 +1,6 @@
 """
-byceps.services.user_badge.awarding_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user_badge.user_badge_awarding_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -15,10 +15,9 @@ from ...database import db
 from ...events.user_badge import UserBadgeAwarded
 from ...typing import UserID
 
-from ..user import log_service as user_log_service, service as user_service
+from ..user import user_log_service, user_service
 from ..user.transfer.models import User
 
-from .badge_service import _db_entity_to_badge, get_badge, get_badges
 from .dbmodels.awarding import DbBadgeAwarding
 from .dbmodels.badge import DbBadge
 from .transfer.models import (
@@ -27,6 +26,7 @@ from .transfer.models import (
     BadgeID,
     QuantifiedBadgeAwarding,
 )
+from .user_badge_service import _db_entity_to_badge, get_badge, get_badges
 
 
 def award_badge_to_user(

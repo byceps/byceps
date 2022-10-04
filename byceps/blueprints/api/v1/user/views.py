@@ -9,7 +9,7 @@ byceps.blueprints.api.v1.user.views
 from flask import abort, jsonify, request
 from pydantic import ValidationError
 
-from .....services.user import email_address_service, service as user_service
+from .....services.user import user_email_address_service, user_service
 from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.views import create_empty_json_response
@@ -55,6 +55,8 @@ def invalidate_email_address():
     if user is None:
         abort(404, 'Unknown email address')
 
-    event = email_address_service.invalidate_email_address(user.id, req.reason)
+    event = user_email_address_service.invalidate_email_address(
+        user.id, req.reason
+    )
 
     user_signals.email_address_invalidated.send(None, event=event)

@@ -8,7 +8,7 @@ byceps.blueprints.api.v1.user_avatar.views
 
 from flask import redirect
 
-from .....services.user_avatar import service as user_avatar_service
+from .....services.user_avatar import user_avatar_service
 from .....services.user_avatar.dbmodels import FALLBACK_AVATAR_URL_PATH
 from .....util.framework.blueprint import create_blueprint
 

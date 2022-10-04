@@ -1,6 +1,6 @@
 """
-byceps.services.user_avatar.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user_avatar.user_avatar_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -20,7 +20,7 @@ from ...util import upload
 from ..image import service as image_service
 from ..image.service import ImageTypeProhibited  # Provide to view functions.
 from ..user.dbmodels.user import DbUser
-from ..user import service as user_service
+from ..user import user_service
 
 from .dbmodels import Avatar as DbAvatar, AvatarSelection as DbAvatarSelection
 from .transfer.models import AvatarID, AvatarUpdate

@@ -16,7 +16,7 @@ from ....events.auth import UserLoggedIn
 from ....typing import UserID
 
 from ...site.transfer.models import SiteID
-from ...user import log_service as user_log_service, service as user_service
+from ...user import user_log_service, user_service
 from ...user.transfer.models import User
 
 from .dbmodels.recent_login import DbRecentLogin

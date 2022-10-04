@@ -10,7 +10,7 @@ from ...database import db
 from ...events.ticketing import TicketCheckedIn
 from ...typing import PartyID, UserID
 
-from ..user import service as user_service
+from ..user import user_service
 from ..user.transfer.models import User
 
 from . import log_service

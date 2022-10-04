@@ -6,8 +6,7 @@
 import pytest
 
 from byceps.events.user import UserScreenNameChanged
-from byceps.services.user import command_service as user_command_service
-from byceps.services.user import log_service
+from byceps.services.user import user_command_service, user_log_service
 
 
 @pytest.fixture(scope='module')
@@ -25,7 +24,7 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     user_before = user_command_service._get_user(user_id)
     assert user_before.screen_name == old_screen_name
 
-    log_entries_before = log_service.get_entries_for_user(user_before.id)
+    log_entries_before = user_log_service.get_entries_for_user(user_before.id)
     assert len(log_entries_before) == 1  # user creation
 
     # -------------------------------- #
@@ -46,7 +45,7 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     user_after = user_command_service._get_user(user_id)
     assert user_after.screen_name == new_screen_name
 
-    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    log_entries_after = user_log_service.get_entries_for_user(user_after.id)
     assert len(log_entries_after) == 2
 
     user_enabled_log_entry = log_entries_after[1]
@@ -75,7 +74,7 @@ def test_change_screen_name_without_reason(admin_app, make_user, admin_user):
 
     user_after = user_command_service._get_user(user_id)
 
-    log_entries_after = log_service.get_entries_for_user(user_after.id)
+    log_entries_after = user_log_service.get_entries_for_user(user_after.id)
 
     user_enabled_log_entry = log_entries_after[1]
     assert user_enabled_log_entry.event_type == 'user-screen-name-changed'

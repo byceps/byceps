@@ -11,8 +11,8 @@ Send messages from one user to another.
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
-from ....services.user import service as user_service
-from ....services.user_message import service as user_message_service
+from ....services.user import user_service
+from ....services.user_message import user_message_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
