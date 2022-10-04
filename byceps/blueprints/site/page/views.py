@@ -8,7 +8,7 @@ byceps.blueprints.site.page.views
 
 from flask import abort, g
 
-from ....services.page import service as page_service
+from ....services.page import page_service
 from ....util.framework.blueprint import create_blueprint
 
 from .templating import render_page, url_for_page

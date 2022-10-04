@@ -1,6 +1,6 @@
 """
-byceps.services.page.service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.page.page_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

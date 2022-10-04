@@ -10,7 +10,7 @@ from typing import Optional
 from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
-from ....services.page import service as page_service
+from ....services.page import page_service
 from ....services.page.transfer.models import Page, Version, VersionID
 from ....services.site import site_service
 from ....services.site.transfer.models import Site, SiteID

@@ -6,7 +6,7 @@
 import pytest
 
 import byceps.announce.connections  # Connect signal handlers.
-from byceps.services.page import service as page_service
+from byceps.services.page import page_service
 from byceps.signals import page as page_signals
 
 from .helpers import assert_submitted_data, CHANNEL_INTERNAL, mocked_irc_bot

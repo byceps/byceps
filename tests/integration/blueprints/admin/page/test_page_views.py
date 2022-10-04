@@ -9,7 +9,7 @@ from typing import Optional
 import pytest
 
 from byceps.events.page import PageCreated
-from byceps.services.page import service as page_service
+from byceps.services.page import page_service
 from byceps.services.page.transfer.models import Version
 from byceps.services.site.transfer.models import Site
 from byceps.services.user.transfer.models import User

@@ -9,7 +9,7 @@
 import click
 
 from byceps.services.page.dbmodels import DbVersion
-from byceps.services.page import service as page_service
+from byceps.services.page import page_service
 from byceps.services.site.transfer.models import SiteID
 
 from _util import call_with_app_context
