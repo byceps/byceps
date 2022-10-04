@@ -6,7 +6,6 @@ byceps.services.shop.order.export.order_export_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from datetime import datetime, timezone
 from decimal import Decimal
 from typing import Any, Optional

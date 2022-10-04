@@ -6,7 +6,6 @@ byceps.services.ticketing.ticket_attendance_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from collections import Counter
 from datetime import datetime
 from itertools import chain

@@ -6,7 +6,6 @@ byceps.blueprints.admin.orga_presence.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from collections import defaultdict
 from datetime import datetime
 from typing import Iterable

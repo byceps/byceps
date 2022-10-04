@@ -3,8 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from byceps.events.shop import ShopOrderPaid
 from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.cart.models import Cart

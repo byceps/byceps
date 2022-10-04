@@ -8,7 +8,6 @@ Send messages from one user to another.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from typing import Iterable
 
 from flask import abort, g, redirect, request

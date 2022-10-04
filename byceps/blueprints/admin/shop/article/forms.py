@@ -6,7 +6,6 @@ byceps.blueprints.admin.shop.article.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from datetime import date, datetime, time
 from decimal import Decimal
 from typing import Iterable

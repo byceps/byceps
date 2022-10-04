@@ -6,7 +6,6 @@ byceps.blueprints.admin.ticketing.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from flask import abort, g, request
 from flask_babel import gettext
 

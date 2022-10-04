@@ -6,7 +6,6 @@ byceps.services.orga_team.orga_team_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from itertools import groupby
 from typing import Iterable, Optional, Sequence
 

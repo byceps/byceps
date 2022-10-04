@@ -6,7 +6,6 @@ byceps.services.authentication.session.models.current_user
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from dataclasses import dataclass
 
 from .....services.user.transfer.models import User

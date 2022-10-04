@@ -6,7 +6,6 @@ byceps.services.orga.orga_birthday_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from itertools import islice
 from typing import Iterable, Iterator, Optional
 

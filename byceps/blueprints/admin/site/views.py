@@ -6,7 +6,6 @@ byceps.blueprints.admin.site.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 import dataclasses
 from typing import Iterable, Iterator
 

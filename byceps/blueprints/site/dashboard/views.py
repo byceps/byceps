@@ -8,8 +8,6 @@ Current user's dashboard
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from flask import abort, g
 
 from ....services.authentication.session.models.current_user import CurrentUser

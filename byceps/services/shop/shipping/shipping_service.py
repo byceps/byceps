@@ -6,7 +6,6 @@ byceps.services.shop.shipping.shipping_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from collections import Counter, defaultdict
 from dataclasses import dataclass
 from typing import Iterator, Sequence

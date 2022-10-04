@@ -6,7 +6,6 @@ byceps.services.ticketing.ticket_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from enum import Enum
 from typing import Optional
 

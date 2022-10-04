@@ -2,7 +2,6 @@
 Site-specific code extension
 """
 
-from __future__ import annotations
 from typing import Any
 
 from flask import g

@@ -6,7 +6,6 @@ byceps.services.email.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from dataclasses import dataclass
 from email.utils import formataddr
 from typing import Optional

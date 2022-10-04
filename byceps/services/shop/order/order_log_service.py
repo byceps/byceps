@@ -6,7 +6,6 @@ byceps.services.shop.order.order_log_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from datetime import datetime
 from typing import Optional, Sequence
 

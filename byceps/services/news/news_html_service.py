@@ -8,7 +8,6 @@ Render HTML fragments from news items and images.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from functools import partial
 from typing import Any, Optional
 

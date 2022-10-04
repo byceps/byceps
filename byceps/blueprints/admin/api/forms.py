@@ -6,8 +6,6 @@ byceps.blueprints.admin.api.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 from flask_babel import lazy_gettext
 from wtforms import StringField
 from wtforms.validators import InputRequired, Optional

@@ -6,7 +6,6 @@ byceps.services.webhooks.transfer.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Dict, List, NewType, Optional
 from uuid import UUID

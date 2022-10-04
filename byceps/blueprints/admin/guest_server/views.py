@@ -6,7 +6,6 @@ byceps.blueprints.admin.guest_server.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 import ipaddress
 from typing import Iterable, Optional
 

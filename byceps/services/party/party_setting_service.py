@@ -6,7 +6,6 @@ byceps.services.party.party_setting_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from typing import Optional
 
 from ...database import db, upsert

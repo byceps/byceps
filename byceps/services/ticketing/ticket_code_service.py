@@ -6,7 +6,6 @@ byceps.services.ticketing.ticket_code_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from random import sample
 from string import ascii_uppercase, digits
 

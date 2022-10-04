@@ -8,7 +8,6 @@ Notification e-mails about shop orders
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from dataclasses import dataclass
 
 from flask_babel import format_currency, format_date, gettext

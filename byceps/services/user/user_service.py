@@ -6,7 +6,6 @@ byceps.services.user.user_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from datetime import datetime, timedelta
 from typing import Optional
 

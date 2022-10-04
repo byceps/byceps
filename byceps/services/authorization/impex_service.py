@@ -8,7 +8,6 @@ Import/export
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from pathlib import Path
 from typing import Iterator, Union
 

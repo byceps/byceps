@@ -5,8 +5,6 @@
 API-specific fixtures
 """
 
-from __future__ import annotations
-
 import pytest
 
 from byceps.services.authentication.api import authn_api_service

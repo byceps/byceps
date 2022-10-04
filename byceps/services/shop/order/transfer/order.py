@@ -6,7 +6,6 @@ byceps.services.shop.order.transfer.order
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal

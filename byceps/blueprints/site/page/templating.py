@@ -6,7 +6,6 @@ byceps.blueprints.site.page.templating
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 import sys
 import traceback
 from typing import Any, Dict, Optional, Union

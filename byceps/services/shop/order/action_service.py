@@ -6,7 +6,6 @@ byceps.services.shop.order.action_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from typing import Callable, Optional, Sequence
 from uuid import UUID
 

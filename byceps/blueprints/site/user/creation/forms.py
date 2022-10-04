@@ -6,7 +6,6 @@ byceps.blueprints.site.user.creation.forms
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 import re
 
 from flask_babel import lazy_gettext

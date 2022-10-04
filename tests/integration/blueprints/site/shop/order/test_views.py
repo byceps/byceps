@@ -3,7 +3,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from decimal import Decimal
 from typing import Union
 from unittest.mock import patch

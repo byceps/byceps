@@ -6,7 +6,6 @@ byceps.services.email.email_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from email.message import EmailMessage
 from email.utils import parseaddr
 from smtplib import SMTP

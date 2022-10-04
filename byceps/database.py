@@ -8,7 +8,6 @@ Database utilities.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from typing import Any, Callable, Iterable, Optional, TypeVar
 import uuid
 

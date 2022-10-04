@@ -6,7 +6,6 @@ byceps.blueprints.admin.ticketing.service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
 from typing import Any, Iterable, Iterator, Optional
 from uuid import UUID
 

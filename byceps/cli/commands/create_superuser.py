@@ -4,8 +4,6 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from __future__ import annotations
-
 import click
 from flask.cli import with_appcontext
 
