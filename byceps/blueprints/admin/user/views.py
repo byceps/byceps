@@ -22,7 +22,7 @@ from ....services.authorization.transfer.models import (
     PermissionID,
 )
 from ....services.country import service as country_service
-from ....services.orga_team import service as orga_team_service
+from ....services.orga_team import orga_team_service
 from ....services.shop.order import order_service
 from ....services.shop.shop import shop_service
 from ....services.site import site_service

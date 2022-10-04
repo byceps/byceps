@@ -14,7 +14,7 @@ from typing import Iterable
 from flask import abort, g, request
 from flask_babel import to_utc
 
-from ....services.orga_presence import service as orga_presence_service
+from ....services.orga_presence import orga_presence_service
 from ....services.orga_presence.transfer.models import (
     PartyTimeSlot,
     PresenceTimeSlot,

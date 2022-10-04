@@ -20,7 +20,7 @@ from ....services.board import (
     posting_query_service as board_posting_query_service,
 )
 from ....services.board.transfer.models import CategoryWithLastUpdate
-from ....services.orga_team import service as orga_team_service
+from ....services.orga_team import orga_team_service
 from ....services.party import party_service
 from ....services.party.transfer.models import Party
 from ....services.site import site_setting_service

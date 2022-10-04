@@ -9,7 +9,7 @@ from datetime import date
 from freezegun import freeze_time
 
 from byceps.database import generate_uuid
-from byceps.services.orga import birthday_service
+from byceps.services.orga import orga_birthday_service
 from byceps.services.orga.transfer.models import Birthday
 from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
@@ -40,7 +40,7 @@ def test_sort():
     ]
 
     actual = list(
-        birthday_service.sort_users_by_next_birthday(users_and_birthdays)
+        orga_birthday_service.sort_users_by_next_birthday(users_and_birthdays)
     )
     assert actual == expected
 

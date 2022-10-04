@@ -4,8 +4,8 @@
 """
 
 from byceps.services.brand.transfer.models import Brand
-from byceps.services.orga import service as orga_service
-from byceps.services.orga_team import service as orga_team_service
+from byceps.services.orga import orga_service
+from byceps.services.orga_team import orga_team_service
 
 
 def test_membership_create_form(

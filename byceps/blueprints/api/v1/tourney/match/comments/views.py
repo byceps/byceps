@@ -14,7 +14,7 @@ from typing import Any, Iterator, Optional, Type
 from flask import abort, jsonify, request, url_for
 from pydantic import BaseModel, ValidationError
 
-from .......services.orga_team import service as orga_team_service
+from .......services.orga_team import orga_team_service
 from .......services.tourney import (
     tourney_match_comment_service,
     tourney_match_service,

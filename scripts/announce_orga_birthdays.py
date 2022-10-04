@@ -13,7 +13,7 @@ from uuid import UUID
 import click
 
 from byceps.announce.helpers import call_webhook
-from byceps.services.orga import birthday_service
+from byceps.services.orga import orga_birthday_service
 from byceps.services.webhooks import service as webhook_service
 from byceps.services.webhooks.transfer.models import OutgoingWebhook, WebhookID
 
@@ -39,7 +39,7 @@ def validate_webhook_id(ctx, param, webhook_id_value: str) -> OutgoingWebhook:
 @click.command()
 @click.argument('webhook', callback=validate_webhook_id)
 def execute(webhook: OutgoingWebhook) -> None:
-    users = birthday_service.get_orgas_with_birthday_today()
+    users = orga_birthday_service.get_orgas_with_birthday_today()
 
     for user in users:
         text = f'Happy Birthday, {user.screen_name}!'

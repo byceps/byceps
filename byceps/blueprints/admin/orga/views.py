@@ -12,8 +12,7 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from ....services.brand import brand_service
-from ....services.orga import birthday_service as orga_birthday_service
-from ....services.orga import service as orga_service
+from ....services.orga import orga_birthday_service, orga_service
 from ....services.orga.transfer.models import Birthday
 from ....services.user import user_service
 from ....util.export import serialize_dicts_to_csv

@@ -8,7 +8,7 @@ byceps.blueprints.site.orga_team.service
 
 from flask import g
 
-from ....services.orga_team import service as orga_team_service
+from ....services.orga_team import orga_team_service
 from ....typing import UserID
 
 

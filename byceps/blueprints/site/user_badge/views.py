@@ -8,7 +8,7 @@ byceps.blueprints.site.user_badge.views
 
 from flask import abort, g
 
-from ....services.orga_team import service as orga_team_service
+from ....services.orga_team import orga_team_service
 from ....services.user import user_service
 from ....services.user_badge import (
     user_badge_awarding_service,

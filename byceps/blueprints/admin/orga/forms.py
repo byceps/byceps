@@ -10,7 +10,7 @@ from flask_babel import lazy_gettext
 from wtforms import StringField
 from wtforms.validators import InputRequired, ValidationError
 
-from ....services.orga import service as orga_service
+from ....services.orga import orga_service
 from ....services.user import user_service
 from ....util.l10n import LocalizedForm
 

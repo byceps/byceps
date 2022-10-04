@@ -9,7 +9,7 @@ byceps.blueprints.site.attendance.views
 from flask import abort, g, request
 
 from ....services.attendance import service as attendance_service
-from ....services.orga_team import service as orga_team_service
+from ....services.orga_team import orga_team_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
 

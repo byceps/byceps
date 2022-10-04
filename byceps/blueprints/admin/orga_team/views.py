@@ -9,7 +9,7 @@ byceps.blueprints.admin.orga_team.views
 from flask import abort, request
 from flask_babel import gettext
 
-from ....services.orga_team import service as orga_team_service
+from ....services.orga_team import orga_team_service
 from ....services.party import party_service
 from ....services.user import user_service
 from ....util.framework.blueprint import create_blueprint

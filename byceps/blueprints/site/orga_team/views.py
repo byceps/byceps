@@ -11,7 +11,7 @@ from typing import Iterable, Iterator
 
 from flask import abort, g
 
-from ....services.orga_team import service as orga_team_service
+from ....services.orga_team import orga_team_service
 from ....services.orga_team.transfer.models import PublicOrga
 from ....services.user import user_service
 from ....util.framework.blueprint import create_blueprint

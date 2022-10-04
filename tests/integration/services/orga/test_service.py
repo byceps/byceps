@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.orga import service as orga_service
+from byceps.services.orga import orga_service
 
 
 def test_flag_changes(brand, admin_user, user):

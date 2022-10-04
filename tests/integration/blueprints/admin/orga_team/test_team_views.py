@@ -4,7 +4,7 @@
 """
 
 from byceps.services.brand.transfer.models import Brand
-from byceps.services.orga_team import service as orga_team_service
+from byceps.services.orga_team import orga_team_service
 
 
 def test_teams_for_party(
