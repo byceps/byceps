@@ -21,11 +21,10 @@ from ..seating.transfer.models import SeatID
 from ..shop.order.transfer.number import OrderNumber
 from ..user.dbmodels.user import DbUser
 
-from . import log_service
 from .dbmodels.category import DbCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.log import DbTicketLogEntry
-from . import ticket_code_service
+from . import ticket_code_service, ticket_log_service
 from .transfer.models import (
     TicketCategoryID,
     TicketCode,
@@ -47,7 +46,7 @@ def update_ticket_code(
 
     db_ticket.code = code
 
-    db_log_entry = log_service.build_entry(
+    db_log_entry = ticket_log_service.build_entry(
         'ticket-code-changed',
         db_ticket.id,
         {

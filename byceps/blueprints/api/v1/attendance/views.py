@@ -10,7 +10,7 @@ from flask import abort, request
 from pydantic import ValidationError
 
 from .....services.party import party_service
-from .....services.ticketing import attendance_service
+from .....services.ticketing import ticket_attendance_service
 from .....services.user import user_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.views import respond_no_content
@@ -44,4 +44,4 @@ def create_archived_attendance():
     if not party:
         abort(400, 'Party ID unknown')
 
-    attendance_service.create_archived_attendance(user.id, party.id)
+    ticket_attendance_service.create_archived_attendance(user.id, party.id)

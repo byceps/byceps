@@ -14,7 +14,7 @@ from ....services.party import party_service
 from ....services.shop.order import order_service
 from ....services.ticketing import (
     barcode_service,
-    category_service as ticket_category_service,
+    ticket_category_service,
     ticket_service,
     ticket_seat_management_service,
     ticket_user_management_service,

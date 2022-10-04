@@ -13,7 +13,7 @@ from .....typing import UserID
 
 from ....ticketing.dbmodels.ticket import DbTicket
 from ....ticketing import (
-    category_service as ticket_category_service,
+    ticket_category_service,
     ticket_creation_service,
     ticket_revocation_service,
     ticket_service,

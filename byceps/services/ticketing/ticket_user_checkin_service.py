@@ -13,7 +13,6 @@ from ...typing import PartyID, UserID
 from ..user import user_service
 from ..user.transfer.models import User
 
-from . import log_service
 from .exceptions import (
     TicketBelongsToDifferentParty,
     TicketIsRevoked,
@@ -24,7 +23,7 @@ from .exceptions import (
     UserIdUnknown,
 )
 from .dbmodels.ticket import DbTicket
-from . import ticket_service
+from . import ticket_log_service, ticket_service
 from .transfer.models import TicketID
 
 
@@ -40,7 +39,7 @@ def check_in_user(
 
     db_ticket.user_checked_in = True
 
-    db_log_entry = log_service.build_entry(
+    db_log_entry = ticket_log_service.build_entry(
         'user-checked-in',
         db_ticket.id,
         {
@@ -116,7 +115,7 @@ def revert_user_check_in(ticket_id: TicketID, initiator_id: UserID) -> None:
 
     db_ticket.user_checked_in = False
 
-    db_log_entry = log_service.build_entry(
+    db_log_entry = ticket_log_service.build_entry(
         'user-check-in-reverted',
         db_ticket.id,
         {

@@ -13,7 +13,7 @@ from ...database import db
 from ...typing import UserID
 
 from .dbmodels.log import DbTicketLogEntry
-from . import log_service, ticket_seat_management_service
+from . import ticket_log_service, ticket_seat_management_service
 from . import ticket_service
 from .transfer.models import TicketID
 
@@ -75,4 +75,4 @@ def build_ticket_revoked_log_entry(
     if reason:
         data['reason'] = reason
 
-    return log_service.build_entry('ticket-revoked', ticket_id, data)
+    return ticket_log_service.build_entry('ticket-revoked', ticket_id, data)

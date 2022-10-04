@@ -20,7 +20,7 @@ from ....services.party.transfer.models import Party
 from ....services.shop.order import order_log_service, order_service
 from ....services.site import site_service
 from ....services.ticketing.dbmodels.ticket import DbTicket
-from ....services.ticketing import attendance_service, ticket_service
+from ....services.ticketing import ticket_attendance_service, ticket_service
 from ....services.user import user_log_service, user_service
 from ....services.user.transfer.log import UserLogEntry, UserLogEntryData
 from ....services.user.transfer.models import User
@@ -68,7 +68,7 @@ def _get_parties_by_id(party_ids: set[PartyID]) -> dict[PartyID, Party]:
 
 def get_attended_parties(user_id: UserID) -> list[Party]:
     """Return the parties attended by the user, in order."""
-    attended_parties = attendance_service.get_attended_parties(user_id)
+    attended_parties = ticket_attendance_service.get_attended_parties(user_id)
     attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
     return attended_parties
 

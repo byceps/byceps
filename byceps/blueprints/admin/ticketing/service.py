@@ -11,7 +11,7 @@ from typing import Any, Iterable, Iterator, Optional
 from uuid import UUID
 
 from ....services.seating import seat_service
-from ....services.ticketing import log_service, ticket_service
+from ....services.ticketing import ticket_log_service, ticket_service
 from ....services.ticketing.transfer.log import (
     TicketLogEntry,
     TicketLogEntryData,
@@ -22,7 +22,7 @@ from ....services.user.transfer.models import User
 
 
 def get_log_entries(ticket_id: TicketID) -> Iterator[TicketLogEntryData]:
-    log_entries = log_service.get_entries_for_ticket(ticket_id)
+    log_entries = ticket_log_service.get_entries_for_ticket(ticket_id)
     log_entries.insert(0, _fake_ticket_creation_log_entry(ticket_id))
 
     users_by_id = _get_users_by_id(log_entries)

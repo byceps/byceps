@@ -8,7 +8,7 @@
 
 import click
 
-from byceps.services.ticketing import attendance_service
+from byceps.services.ticketing import ticket_attendance_service
 
 from _util import call_with_app_context
 from _validators import validate_party, validate_user_id
@@ -24,7 +24,7 @@ def execute(user, party) -> None:
         nl=False,
     )
 
-    attendance_service.create_archived_attendance(user.id, party.id)
+    ticket_attendance_service.create_archived_attendance(user.id, party.id)
 
     click.secho('done.', fg='green')
 

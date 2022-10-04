@@ -6,8 +6,8 @@
 import pytest
 
 from byceps.services.ticketing import (
-    log_service,
     ticket_bundle_service as bundle_service,
+    ticket_log_service,
     ticket_service,
 )
 
@@ -21,7 +21,7 @@ def test_revoke_bundle(admin_app, bundle, ticketing_admin):
     for ticket_before in tickets_before:
         assert not ticket_before.revoked
 
-        log_entries_before = log_service.get_entries_for_ticket(
+        log_entries_before = ticket_log_service.get_entries_for_ticket(
             ticket_before.id
         )
         assert len(log_entries_before) == 0
@@ -38,7 +38,9 @@ def test_revoke_bundle(admin_app, bundle, ticketing_admin):
     for ticket_after in tickets_after:
         assert ticket_after.revoked
 
-        log_entries_after = log_service.get_entries_for_ticket(ticket_after.id)
+        log_entries_after = ticket_log_service.get_entries_for_ticket(
+            ticket_after.id
+        )
         assert len(log_entries_after) == 1
 
         ticket_revoked_log_entry = log_entries_after[0]

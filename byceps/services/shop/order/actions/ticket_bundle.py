@@ -12,10 +12,7 @@ from uuid import UUID
 from .....typing import UserID
 
 from ....ticketing.dbmodels.ticket_bundle import DbTicketBundle
-from ....ticketing import (
-    category_service as ticket_category_service,
-    ticket_bundle_service,
-)
+from ....ticketing import ticket_bundle_service, ticket_category_service
 from ....ticketing.transfer.models import TicketBundleID, TicketCategoryID
 
 from .. import order_log_service, order_service

@@ -10,7 +10,7 @@ from flask import abort, request
 from flask_babel import gettext
 
 from .....services.party import party_service
-from .....services.ticketing import category_service
+from .....services.ticketing import ticket_category_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated
@@ -30,7 +30,7 @@ def index(party_id):
     party = _get_party_or_404(party_id)
 
     categories_with_ticket_counts = list(
-        category_service.get_categories_with_ticket_counts_for_party(
+        ticket_category_service.get_categories_with_ticket_counts_for_party(
             party.id
         ).items()
     )
@@ -68,7 +68,7 @@ def create(party_id):
 
     title = form.title.data.strip()
 
-    category = category_service.create_category(party.id, title)
+    category = ticket_category_service.create_category(party.id, title)
 
     flash_success(
         gettext(
@@ -112,7 +112,7 @@ def update(category_id):
 
     title = form.title.data.strip()
 
-    category = category_service.update_category(category.id, title)
+    category = ticket_category_service.update_category(category.id, title)
 
     flash_success(
         gettext('Category "%(title)s" has been updated.', title=category.title)
@@ -131,7 +131,7 @@ def _get_party_or_404(party_id):
 
 
 def _get_category_or_404(category_id):
-    category = category_service.find_category(category_id)
+    category = ticket_category_service.find_category(category_id)
 
     if category is None:
         abort(404)

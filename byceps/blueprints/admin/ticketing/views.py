@@ -13,8 +13,8 @@ from flask_babel import gettext
 from ....services.party import party_service
 from ....services.shop.order import order_service
 from ....services.ticketing import (
-    category_service,
     ticket_bundle_service,
+    ticket_category_service,
     ticket_service,
     ticket_user_management_service,
 )
@@ -49,7 +49,9 @@ def index_for_party(party_id, page):
 
     filter_category_id = request.args.get('category')
     if filter_category_id:
-        filter_category = category_service.find_category(filter_category_id)
+        filter_category = ticket_category_service.find_category(
+            filter_category_id
+        )
     else:
         filter_category = None
 
@@ -88,7 +90,7 @@ def index_for_party(party_id, page):
         filter_checked_in=filter_checked_in,
     )
 
-    categories = category_service.get_categories_for_party(party.id)
+    categories = ticket_category_service.get_categories_for_party(party.id)
 
     return {
         'party': party,

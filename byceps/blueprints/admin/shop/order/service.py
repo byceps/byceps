@@ -19,7 +19,7 @@ from .....services.shop.order.transfer.log import (
     OrderLogEntryData,
 )
 from .....services.shop.order.transfer.order import Order, OrderID
-from .....services.ticketing import category_service as ticket_category_service
+from .....services.ticketing import ticket_category_service
 from .....services.user.dbmodels.user import DbUser
 from .....services.user import user_service
 from .....services.user.transfer.models import User

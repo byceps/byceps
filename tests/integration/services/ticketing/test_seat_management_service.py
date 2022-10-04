@@ -8,9 +8,9 @@ from pytest import raises
 
 from byceps.services.seating import area_service, seat_service
 from byceps.services.ticketing import (
-    log_service,
     ticket_bundle_service,
     ticket_creation_service,
+    ticket_log_service,
     ticket_seat_management_service,
     ticket_service,
 )
@@ -81,7 +81,7 @@ def test_appoint_and_withdraw_seat_manager(admin_app, ticket, ticket_manager):
     )
     assert ticket.seat_managed_by_id == ticket_manager.id
 
-    log_entries_after_appointment = log_service.get_entries_for_ticket(
+    log_entries_after_appointment = ticket_log_service.get_entries_for_ticket(
         ticket.id
     )
     assert len(log_entries_after_appointment) == 1
@@ -103,7 +103,9 @@ def test_appoint_and_withdraw_seat_manager(admin_app, ticket, ticket_manager):
     )
     assert ticket.seat_managed_by_id is None
 
-    log_entries_after_withdrawal = log_service.get_entries_for_ticket(ticket.id)
+    log_entries_after_withdrawal = ticket_log_service.get_entries_for_ticket(
+        ticket.id
+    )
     assert len(log_entries_after_withdrawal) == 2
 
     withdrawal_log_entry = log_entries_after_withdrawal[1]
@@ -124,7 +126,9 @@ def test_occupy_and_release_seat(admin_app, seat1, seat2, ticket):
     )
     assert ticket.occupied_seat_id == seat1.id
 
-    log_entries_after_occupation = log_service.get_entries_for_ticket(ticket.id)
+    log_entries_after_occupation = ticket_log_service.get_entries_for_ticket(
+        ticket.id
+    )
     assert len(log_entries_after_occupation) == 1
 
     occupation_log_entry = log_entries_after_occupation[0]
@@ -141,7 +145,9 @@ def test_occupy_and_release_seat(admin_app, seat1, seat2, ticket):
     )
     assert ticket.occupied_seat_id == seat2.id
 
-    log_entries_after_switch = log_service.get_entries_for_ticket(ticket.id)
+    log_entries_after_switch = ticket_log_service.get_entries_for_ticket(
+        ticket.id
+    )
     assert len(log_entries_after_switch) == 2
 
     switch_log_entry = log_entries_after_switch[1]
@@ -160,7 +166,9 @@ def test_occupy_and_release_seat(admin_app, seat1, seat2, ticket):
     ticket_seat_management_service.release_seat(ticket.id, ticket.owned_by_id)
     assert ticket.occupied_seat_id is None
 
-    log_entries_after_release = log_service.get_entries_for_ticket(ticket.id)
+    log_entries_after_release = ticket_log_service.get_entries_for_ticket(
+        ticket.id
+    )
     assert len(log_entries_after_release) == 3
 
     release_log_entry = log_entries_after_release[2]

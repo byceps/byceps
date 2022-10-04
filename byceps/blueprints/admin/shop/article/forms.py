@@ -29,7 +29,7 @@ from wtforms.validators import (
 )
 
 from .....services.party import party_service
-from .....services.ticketing import category_service as ticket_category_service
+from .....services.ticketing import ticket_category_service
 from .....services.user_badge.transfer.models import Badge
 from .....typing import BrandID
 from .....util.l10n import LocalizedForm

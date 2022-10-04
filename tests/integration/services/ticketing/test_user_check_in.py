@@ -9,8 +9,8 @@ from pytest import raises
 from byceps.database import db
 from byceps.events.ticketing import TicketCheckedIn
 from byceps.services.ticketing import (
-    log_service,
     ticket_creation_service,
+    ticket_log_service,
     ticket_service,
     ticket_user_checkin_service,
 )
@@ -42,7 +42,9 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
 
     assert not ticket_before.user_checked_in
 
-    log_entries_before = log_service.get_entries_for_ticket(ticket_before.id)
+    log_entries_before = ticket_log_service.get_entries_for_ticket(
+        ticket_before.id
+    )
     assert len(log_entries_before) == 0
 
     # -------------------------------- #
@@ -66,7 +68,9 @@ def test_check_in_user(admin_app, party, ticket, ticketing_admin, make_user):
     assert event.user_id == ticket_user.id
     assert event.user_screen_name == ticket_user.screen_name
 
-    log_entries_after = log_service.get_entries_for_ticket(ticket_after.id)
+    log_entries_after = ticket_log_service.get_entries_for_ticket(
+        ticket_after.id
+    )
     assert len(log_entries_after) == 1
 
     ticket_checked_in_log_entry = log_entries_after[0]

@@ -8,9 +8,9 @@ from unittest.mock import patch
 from pytest import raises
 
 from byceps.services.ticketing import (
-    log_service,
     ticket_code_service,
     ticket_creation_service,
+    ticket_log_service,
 )
 
 
@@ -80,5 +80,5 @@ def assert_created_ticket(ticket, expected_category_id, expected_owner_id):
     assert not ticket.revoked
     assert not ticket.user_checked_in
 
-    log_entries = log_service.get_entries_for_ticket(ticket.id)
+    log_entries = ticket_log_service.get_entries_for_ticket(ticket.id)
     assert len(log_entries) == 0

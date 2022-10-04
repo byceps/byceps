@@ -10,8 +10,8 @@ from byceps.services.seating import (
     seat_service,
 )
 from byceps.services.ticketing import (
-    log_service,
     ticket_creation_service,
+    ticket_log_service,
     ticket_revocation_service,
     ticket_seat_management_service,
     ticket_service,
@@ -75,7 +75,9 @@ def test_revoke_ticket(admin_app, ticket, ticketing_admin):
     ticket_before = ticket
     assert not ticket_before.revoked
 
-    log_entries_before = log_service.get_entries_for_ticket(ticket_before.id)
+    log_entries_before = ticket_log_service.get_entries_for_ticket(
+        ticket_before.id
+    )
     assert len(log_entries_before) == 0
 
     # -------------------------------- #
@@ -89,7 +91,9 @@ def test_revoke_ticket(admin_app, ticket, ticketing_admin):
     ticket_after = ticket_service.get_ticket(ticket_id)
     assert ticket_after.revoked
 
-    log_entries_after = log_service.get_entries_for_ticket(ticket_after.id)
+    log_entries_after = ticket_log_service.get_entries_for_ticket(
+        ticket_after.id
+    )
     assert len(log_entries_after) == 1
 
     ticket_revoked_log_entry = log_entries_after[0]
@@ -105,7 +109,7 @@ def test_revoke_tickets(admin_app, tickets, ticketing_admin):
     for ticket_before in tickets_before:
         assert not ticket_before.revoked
 
-        log_entries_before = log_service.get_entries_for_ticket(
+        log_entries_before = ticket_log_service.get_entries_for_ticket(
             ticket_before.id
         )
         assert len(log_entries_before) == 0
@@ -122,7 +126,9 @@ def test_revoke_tickets(admin_app, tickets, ticketing_admin):
     for ticket_after in tickets_after:
         assert ticket_after.revoked
 
-        log_entries_after = log_service.get_entries_for_ticket(ticket_after.id)
+        log_entries_after = ticket_log_service.get_entries_for_ticket(
+            ticket_after.id
+        )
         assert len(log_entries_after) == 1
 
         ticket_revoked_log_entry = log_entries_after[0]
@@ -141,7 +147,7 @@ def test_revoke_ticket_with_seat(
 
     assert ticket.occupied_seat_id == seat.id
 
-    log_entries_before = log_service.get_entries_for_ticket(ticket.id)
+    log_entries_before = ticket_log_service.get_entries_for_ticket(ticket.id)
     event_types_before = {entry.event_type for entry in log_entries_before}
     assert 'seat-released' not in event_types_before
 
@@ -153,7 +159,7 @@ def test_revoke_ticket_with_seat(
 
     assert ticket.occupied_seat_id is None
 
-    log_entries_after = log_service.get_entries_for_ticket(ticket.id)
+    log_entries_after = ticket_log_service.get_entries_for_ticket(ticket.id)
     event_types_after = {entry.event_type for entry in log_entries_after}
     assert 'seat-released' in event_types_after
 
@@ -179,6 +185,6 @@ def test_revoke_tickets_with_seats(
     for ticket in tickets:
         assert ticket.occupied_seat_id is None
 
-        log_entries_after = log_service.get_entries_for_ticket(ticket.id)
+        log_entries_after = ticket_log_service.get_entries_for_ticket(ticket.id)
         event_types_after = {entry.event_type for entry in log_entries_after}
         assert 'seat-released' in event_types_after

@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.ticketing import attendance_service
+from byceps.services.ticketing import ticket_attendance_service
 
 
 @pytest.fixture
@@ -16,7 +16,7 @@ def another_user(make_user):
 def test_create_archived_attendance(
     api_client, api_client_authz_header, party, user
 ):
-    before = attendance_service.get_attended_parties(user.id)
+    before = ticket_attendance_service.get_attended_parties(user.id)
     assert before == []
 
     response = send_request(
@@ -32,7 +32,7 @@ def test_create_archived_attendance_idempotency(
 ):
     user = another_user
 
-    before = attendance_service.get_attended_parties(user.id)
+    before = ticket_attendance_service.get_attended_parties(user.id)
     assert before == []
 
     # First addition. Should add the party.
@@ -65,6 +65,6 @@ def send_request(api_client, api_client_authz_header, user_id, party_id):
 
 
 def assert_attended_party_ids(user_id, expected):
-    parties = attendance_service.get_attended_parties(user_id)
+    parties = ticket_attendance_service.get_attended_parties(user_id)
     actual = [party.id for party in parties]
     assert actual == expected

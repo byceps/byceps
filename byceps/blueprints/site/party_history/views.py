@@ -9,7 +9,7 @@ byceps.blueprints.site.party_history.views
 from flask import abort, g
 
 from ....services.party import party_service
-from ....services.ticketing import attendance_service
+from ....services.ticketing import ticket_attendance_service
 from ....services.user import user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
@@ -43,7 +43,9 @@ def view(party_id):
     ):
         abort(404)
 
-    attendee_ids = attendance_service.get_attendee_ids_for_party(party_id)
+    attendee_ids = ticket_attendance_service.get_attendee_ids_for_party(
+        party_id
+    )
     attendees = user_service.get_users(attendee_ids, include_avatars=True)
     attendees = [attendee for attendee in attendees if not attendee.deleted]
 

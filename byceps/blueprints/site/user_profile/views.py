@@ -11,7 +11,7 @@ from operator import attrgetter
 from flask import abort, g
 
 from ....services.orga_team import orga_team_service
-from ....services.ticketing import attendance_service, ticket_service
+from ....services.ticketing import ticket_attendance_service, ticket_service
 from ....services.user import user_service
 from ....services.user_badge import user_badge_awarding_service
 from ....util.framework.blueprint import create_blueprint
@@ -42,7 +42,7 @@ def view(user_id):
     )
     current_party_tickets = [t for t in _current_party_tickets if not t.revoked]
 
-    attended_parties = attendance_service.get_attended_parties(user.id)
+    attended_parties = ticket_attendance_service.get_attended_parties(user.id)
     attended_parties.sort(key=attrgetter('starts_at'), reverse=True)
 
     return {

@@ -10,7 +10,7 @@ from flask import abort
 
 from ....services.brand import brand_service
 from ....services.party import party_service
-from ....services.ticketing import attendance_service
+from ....services.ticketing import ticket_attendance_service
 from ....services.user import user_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
@@ -48,7 +48,9 @@ def view_for_brand(brand_id):
 
 
 def _get_top_attendees(brand_id):
-    top_attendee_ids = attendance_service.get_top_attendees_for_brand(brand_id)
+    top_attendee_ids = ticket_attendance_service.get_top_attendees_for_brand(
+        brand_id
+    )
 
     top_attendees = _replace_user_ids_with_users(top_attendee_ids)
 

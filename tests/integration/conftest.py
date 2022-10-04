@@ -39,9 +39,7 @@ from byceps.services.shop.storefront.transfer.models import (
     StorefrontID,
 )
 from byceps.services.site.transfer.models import Site, SiteID
-from byceps.services.ticketing import (
-    category_service as ticketing_category_service,
-)
+from byceps.services.ticketing import ticket_category_service
 from byceps.services.ticketing.transfer.models import TicketCategory
 from byceps.services.user.transfer.models import User
 from byceps.typing import BrandID, PartyID, UserID
@@ -258,7 +256,7 @@ def party(make_party, brand: Brand) -> Party:
 @pytest.fixture(scope='session')
 def make_ticket_category(admin_app: Flask):
     def _wrapper(party_id: PartyID, title: str) -> TicketCategory:
-        return ticketing_category_service.create_category(party_id, title)
+        return ticket_category_service.create_category(party_id, title)
 
     return _wrapper
 
