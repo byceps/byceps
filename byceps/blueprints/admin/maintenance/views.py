@@ -11,9 +11,7 @@ from datetime import datetime, timedelta
 from flask_babel import gettext
 
 from ....services.user import user_log_service
-from ....services.verification_token import (
-    service as verification_token_service,
-)
+from ....services.verification_token import verification_token_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated

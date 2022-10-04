@@ -14,8 +14,8 @@ from ...email import email_service
 from ...email.transfer.models import NameAndAddress
 from ...user import user_service
 from ...user.transfer.models import User
-from ...verification_token import service as verification_token_service
 from ...verification_token.transfer.models import VerificationToken
+from ...verification_token import verification_token_service
 
 from . import authn_password_service
 

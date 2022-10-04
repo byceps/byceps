@@ -14,9 +14,7 @@ from .....services.user import (
     user_email_address_service,
     user_service,
 )
-from .....services.verification_token import (
-    service as verification_token_service,
-)
+from .....services.verification_token import verification_token_service
 from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_notice, flash_success

@@ -15,9 +15,7 @@ from .....services.authentication.session import authn_session_service
 from .....services.consent import consent_service, consent_subject_service
 from .....services.site import site_service
 from .....services.site.transfer.models import Site
-from .....services.verification_token import (
-    service as verification_token_service,
-)
+from .....services.verification_token import verification_token_service
 from .....signals import auth as auth_signals
 from .....typing import UserID
 from .....util.framework.blueprint import create_blueprint

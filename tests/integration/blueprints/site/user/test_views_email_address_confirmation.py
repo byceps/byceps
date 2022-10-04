@@ -8,9 +8,7 @@ import pytest
 from byceps.database import db
 from byceps.services.authorization import authz_service
 from byceps.services.user import user_service
-from byceps.services.verification_token import (
-    service as verification_token_service,
-)
+from byceps.services.verification_token import verification_token_service
 
 from tests.helpers import http_client
 

@@ -9,9 +9,7 @@ from uuid import UUID
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.verification_token import (
-    service as verification_token_service,
-)
+from byceps.services.verification_token import verification_token_service
 from byceps.services.verification_token.transfer.models import (
     Purpose,
     VerificationToken,

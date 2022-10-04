@@ -24,8 +24,8 @@ from ..email.transfer.models import NameAndAddress
 from ..site import site_service
 from ..site.transfer.models import SiteID
 from ..user import user_command_service, user_service
-from ..verification_token import service as verification_token_service
 from ..verification_token.transfer.models import VerificationToken
+from ..verification_token import verification_token_service
 
 from . import user_log_service
 from .transfer.models import User
