@@ -18,7 +18,7 @@ from .....services.email import (
     service as email_service,
 )
 from .....services.email.transfer.models import NameAndAddress
-from .....services.global_setting import service as global_settings_service
+from .....services.global_setting import global_setting_service
 from .....services.user import user_service
 from .....services.verification_token import (
     service as verification_token_service,
@@ -156,7 +156,7 @@ def _get_sender() -> NameAndAddress:
         email_config = email_config_service.get_config(g.brand_id)
         return email_config.sender
     elif g.app_mode.is_admin():
-        address_str = global_settings_service.find_setting_value(
+        address_str = global_setting_service.find_setting_value(
             'admin_email_sender'
         )
         if not address_str:

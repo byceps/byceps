@@ -14,7 +14,7 @@ from typing import Iterable
 from flask import abort, g, redirect, request
 from flask_babel import gettext
 
-from ....services.global_setting import service as global_settings_service
+from ....services.global_setting import global_setting_service
 from ....services.guest_server import service as guest_server_service
 from ....services.guest_server.transfer.models import Address
 from ....services.ticketing import ticket_service
@@ -127,9 +127,7 @@ def server_view(server_id):
     if server is None:
         abort(404)
 
-    admin_url_root = global_settings_service.find_setting_value(
-        'admin_url_root'
-    )
+    admin_url_root = global_setting_service.find_setting_value('admin_url_root')
     if not admin_url_root:
         abort(500, 'Admin URL root not configured.')
 
