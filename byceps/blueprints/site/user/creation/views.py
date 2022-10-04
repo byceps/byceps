@@ -14,10 +14,7 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from .....services.brand import brand_setting_service
-from .....services.consent import (
-    consent_service,
-    subject_service as consent_subject_service,
-)
+from .....services.consent import consent_service, consent_subject_service
 from .....services.consent.transfer.models import Subject
 from .....services.newsletter import (
     command_service as newsletter_command_service,

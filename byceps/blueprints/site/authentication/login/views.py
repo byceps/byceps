@@ -12,10 +12,7 @@ from flask_babel import gettext
 from .....services.authentication.exceptions import AuthenticationFailed
 from .....services.authentication import authn_service
 from .....services.authentication.session import authn_session_service
-from .....services.consent import (
-    consent_service,
-    subject_service as consent_subject_service,
-)
+from .....services.consent import consent_service, consent_subject_service
 from .....services.site import site_service
 from .....services.site.transfer.models import Site
 from .....services.verification_token import (

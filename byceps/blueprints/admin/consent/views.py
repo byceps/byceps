@@ -9,7 +9,7 @@ byceps.blueprints.admin.consent.views
 from flask import request
 from flask_babel import gettext
 
-from ....services.consent import subject_service
+from ....services.consent import consent_subject_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
@@ -27,7 +27,7 @@ blueprint = create_blueprint('consent_admin', __name__)
 def index():
     """List consent subjects."""
     subjects_with_consent_counts = (
-        subject_service.get_subjects_with_consent_counts()
+        consent_subject_service.get_subjects_with_consent_counts()
     )
 
     subjects_with_consent_counts = list(subjects_with_consent_counts.items())
@@ -62,7 +62,7 @@ def subject_create():
     checkbox_label = form.checkbox_label.data.strip()
     checkbox_link_target = form.checkbox_link_target.data.strip()
 
-    subject = subject_service.create_subject(
+    subject = consent_subject_service.create_subject(
         subject_name, subject_title, checkbox_label, checkbox_link_target
     )
 

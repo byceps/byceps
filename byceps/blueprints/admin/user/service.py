@@ -12,7 +12,7 @@ from operator import attrgetter
 from typing import Any, Iterator, Sequence
 from uuid import UUID
 
-from ....services.consent import consent_service, subject_service
+from ....services.consent import consent_service, consent_subject_service
 from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List as NewsletterList
 from ....services.party import party_service
@@ -138,7 +138,7 @@ def _fake_consent_log_entries(user_id: UserID) -> Iterator[UserLogEntry]:
     consents = consent_service.get_consents_by_user(user_id)
 
     subject_ids = {consent.subject_id for consent in consents}
-    subjects = subject_service.get_subjects(subject_ids)
+    subjects = consent_subject_service.get_subjects(subject_ids)
     subjects_titles_by_id = {subject.id: subject.title for subject in subjects}
 
     for consent in consents:

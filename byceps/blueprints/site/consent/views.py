@@ -12,7 +12,7 @@ from uuid import UUID
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.consent import consent_service, subject_service
+from ....services.consent import consent_service, consent_subject_service
 from ....services.verification_token import (
     service as verification_token_service,
 )
@@ -75,8 +75,8 @@ def consent(token):
     subject_ids_from_form = set(map(UUID, form.subject_ids.data.split(',')))
 
     try:
-        subject_service.get_subjects(subject_ids_from_form)
-    except subject_service.UnknownSubjectId:
+        consent_subject_service.get_subjects(subject_ids_from_form)
+    except consent_subject_service.UnknownSubjectId:
         flash_error(gettext('Unknown consent subject'))
         return consent_form(token, erroneous_form=form)
 
@@ -91,15 +91,15 @@ def consent(token):
 
 
 def _get_unconsented_subjects_for_user(user_id):
-    required_subject_ids = subject_service.get_subject_ids_required_for_brand(
-        g.brand_id
+    required_subject_ids = (
+        consent_subject_service.get_subject_ids_required_for_brand(g.brand_id)
     )
 
     unconsented_subject_ids = consent_service.get_unconsented_subject_ids(
         user_id, required_subject_ids
     )
 
-    return subject_service.get_subjects(unconsented_subject_ids)
+    return consent_subject_service.get_subjects(unconsented_subject_ids)
 
 
 def _get_verification_token_or_404(token_value: str) -> VerificationToken:

@@ -12,10 +12,7 @@ from byceps.services.authentication.password.dbmodels import DbCredential
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.authorization import service as authorization_service
 from byceps.services.brand import brand_setting_service
-from byceps.services.consent import (
-    consent_service,
-    subject_service as consent_subject_service,
-)
+from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.newsletter import (
     command_service as newsletter_command_service,
     service as newsletter_service,
