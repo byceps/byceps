@@ -12,7 +12,7 @@ from ...database import db
 from ...events.user import UserAccountDeleted
 from ...typing import UserID
 
-from ..authorization import service as authorization_service
+from ..authorization import authz_service
 
 from .dbmodels.user import DbUser
 from . import user_log_service, user_service
@@ -41,7 +41,7 @@ def delete_account(
     db.session.add(log_entry)
 
     # Deassign authorization roles.
-    authorization_service.deassign_all_roles_from_user(
+    authz_service.deassign_all_roles_from_user(
         user.id, initiator.id, commit=False
     )
 

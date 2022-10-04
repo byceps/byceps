@@ -6,7 +6,7 @@
 import pytest
 from pytest import raises
 
-from byceps.services.authorization import service as authorization_service
+from byceps.services.authorization import authz_service
 from byceps.services.user import user_command_service, user_log_service
 
 
@@ -37,7 +37,7 @@ def role(
     uninitialized_user_created_at_party_checkin_by_admin,
     already_initialized_user,
 ):
-    role = authorization_service.create_role('board_user', 'Board User')
+    role = authz_service.create_role('board_user', 'Board User')
 
     yield role
 
@@ -46,9 +46,9 @@ def role(
         uninitialized_user_created_at_party_checkin_by_admin,
         already_initialized_user,
     }:
-        authorization_service.deassign_all_roles_from_user(user.id)
+        authz_service.deassign_all_roles_from_user(user.id)
 
-    authorization_service.delete_role(role.id)
+    authz_service.delete_role(role.id)
 
 
 def test_initialize_account_as_user(
@@ -62,7 +62,7 @@ def test_initialize_account_as_user(
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
     assert len(log_entries_before) == 1  # user creation
 
-    role_ids_before = authorization_service.find_role_ids_for_user(user.id)
+    role_ids_before = authz_service.find_role_ids_for_user(user.id)
     assert role_ids_before == set()
 
     # -------------------------------- #
@@ -87,7 +87,7 @@ def test_initialize_account_as_user(
         'role_id': 'board_user',
     }
 
-    role_ids_after = authorization_service.find_role_ids_for_user(user.id)
+    role_ids_after = authz_service.find_role_ids_for_user(user.id)
     assert role_ids_after == {'board_user'}
 
 
@@ -105,7 +105,7 @@ def test_initialize_account_as_admin(
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
     assert len(log_entries_before) == 1  # user creation
 
-    role_ids_before = authorization_service.find_role_ids_for_user(user.id)
+    role_ids_before = authz_service.find_role_ids_for_user(user.id)
     assert role_ids_before == set()
 
     # -------------------------------- #
@@ -133,7 +133,7 @@ def test_initialize_account_as_admin(
         'role_id': 'board_user',
     }
 
-    role_ids_after = authorization_service.find_role_ids_for_user(user.id)
+    role_ids_after = authz_service.find_role_ids_for_user(user.id)
     assert role_ids_after == {'board_user'}
 
 

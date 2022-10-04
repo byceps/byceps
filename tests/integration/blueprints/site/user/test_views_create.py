@@ -10,7 +10,7 @@ import pytest
 from byceps.database import db
 from byceps.services.authentication.password.dbmodels import DbCredential
 from byceps.services.authentication.session import authn_session_service
-from byceps.services.authorization import service as authorization_service
+from byceps.services.authorization import authz_service
 from byceps.services.brand import brand_setting_service
 from byceps.services.consent import consent_service, consent_subject_service
 from byceps.services.newsletter import (
@@ -140,7 +140,7 @@ def test_create(
     assert user.detail.last_name == 'Protagonist'
 
     # authorization
-    role_ids = authorization_service.find_role_ids_for_user(user.id)
+    role_ids = authz_service.find_role_ids_for_user(user.id)
     assert role_ids == set()
 
     # consents

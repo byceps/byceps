@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.authorization import service as authorization_service
+from byceps.services.authorization import authz_service
 from byceps.services.user import (
     user_command_service,
     user_deletion_service,
@@ -15,14 +15,12 @@ from byceps.services.user import (
 
 @pytest.fixture
 def role():
-    role = authorization_service.create_role('demigod', 'Demigod')
-    authorization_service.assign_permission_to_role(
-        'board.view_hidden', role.id
-    )
+    role = authz_service.create_role('demigod', 'Demigod')
+    authz_service.assign_permission_to_role('board.view_hidden', role.id)
 
     yield role
 
-    authorization_service.delete_role(role.id)
+    authz_service.delete_role(role.id)
 
 
 def test_delete_account(admin_app, role, make_user):
@@ -38,7 +36,7 @@ def test_delete_account(admin_app, role, make_user):
 
     user_id = user.id
 
-    authorization_service.assign_role_to_user(role.id, user_id)
+    authz_service.assign_role_to_user(role.id, user_id)
 
     reason = 'duplicate'
 
@@ -65,8 +63,8 @@ def test_delete_account(admin_app, role, make_user):
     assert log_entries_before[1].event_type == 'role-assigned'
 
     # authorization
-    assert authorization_service.find_role_ids_for_user(user_id) == {'demigod'}
-    assert authorization_service.get_permission_ids_for_user(user_id) == {
+    assert authz_service.find_role_ids_for_user(user_id) == {'demigod'}
+    assert authz_service.get_permission_ids_for_user(user_id) == {
         'board.view_hidden'
     }
 
@@ -108,5 +106,5 @@ def test_delete_account(admin_app, role, make_user):
     }
 
     # authorization
-    assert authorization_service.find_role_ids_for_user(user_id) == set()
-    assert authorization_service.get_permission_ids_for_user(user_id) == set()
+    assert authz_service.find_role_ids_for_user(user_id) == set()
+    assert authz_service.get_permission_ids_for_user(user_id) == set()

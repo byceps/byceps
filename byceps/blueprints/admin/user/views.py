@@ -15,7 +15,7 @@ from flask_babel import gettext
 
 from ....services.authentication.password import authn_password_service
 from ....services.authentication.session import authn_session_service
-from ....services.authorization import service as authorization_service
+from ....services.authorization import authz_service
 from ....services.authorization.transfer.models import (
     Role,
     Permission,
@@ -723,7 +723,7 @@ def view_permissions(user_id):
     user = _get_user_for_admin_or_404(user_id)
 
     user_permission_ids_by_role = (
-        authorization_service.get_permission_ids_by_role_for_user(user.id)
+        authz_service.get_permission_ids_by_role_for_user(user.id)
     )
 
     permissions_by_role = _index_permissions_by_role(
@@ -744,11 +744,11 @@ def manage_roles(user_id):
     """Manage what roles are assigned to the user."""
     user = _get_user_for_admin_or_404(user_id)
 
-    permission_ids_by_role = authorization_service.get_permission_ids_by_role()
+    permission_ids_by_role = authz_service.get_permission_ids_by_role()
 
     permissions_by_role = _index_permissions_by_role(permission_ids_by_role)
 
-    user_role_ids = authorization_service.find_role_ids_for_user(user.id)
+    user_role_ids = authz_service.find_role_ids_for_user(user.id)
 
     return {
         'profile_user': user,
@@ -785,7 +785,7 @@ def role_assign(user_id, role_id):
     role = _get_role_or_404(role_id)
     initiator_id = g.user.id
 
-    authorization_service.assign_role_to_user(
+    authz_service.assign_role_to_user(
         role.id, user.id, initiator_id=initiator_id
     )
 
@@ -807,7 +807,7 @@ def role_deassign(user_id, role_id):
     role = _get_role_or_404(role_id)
     initiator_id = g.user.id
 
-    authorization_service.deassign_role_from_user(
+    authz_service.deassign_role_from_user(
         role.id, user.id, initiator_id=initiator_id
     )
 
@@ -872,7 +872,7 @@ def _get_user_or_404(user_id):
 
 
 def _get_role_or_404(role_id):
-    role = authorization_service.find_role(role_id)
+    role = authz_service.find_role(role_id)
 
     if role is None:
         abort(404)

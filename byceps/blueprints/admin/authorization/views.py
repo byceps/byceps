@@ -8,7 +8,7 @@ byceps.blueprints.admin.authorization.views
 
 from flask import abort
 
-from ....services.authorization import service as authorization_service
+from ....services.authorization import authz_service
 from ....services.user import user_service
 from ....util.authorization import permission_registry
 from ....util.framework.blueprint import create_blueprint
@@ -27,7 +27,7 @@ def permission_index():
     all_permissions = permission_registry.get_registered_permissions()
 
     role_ids_by_permission_id = (
-        authorization_service.get_assigned_roles_for_permissions()
+        authz_service.get_assigned_roles_for_permissions()
     )
 
     permissions_and_roles = [
@@ -44,7 +44,7 @@ def permission_index():
 def role_index():
     """List roles."""
     roles_permissions_users = (
-        authorization_service.get_all_roles_with_permissions_and_users()
+        authz_service.get_all_roles_with_permissions_and_users()
     )
 
     user_ids = {user.id for _, _, users in roles_permissions_users for user in users}
@@ -62,16 +62,14 @@ def role_index():
 @templated
 def role_view(role_id):
     """View role details."""
-    role = authorization_service.find_role(role_id)
+    role = authz_service.find_role(role_id)
 
     if role is None:
         abort(404)
 
     all_permissions = permission_registry.get_registered_permissions()
 
-    role_permission_ids = authorization_service.get_permission_ids_for_role(
-        role.id
-    )
+    role_permission_ids = authz_service.get_permission_ids_for_role(role.id)
 
     permissions = {
         permission
@@ -79,7 +77,7 @@ def role_view(role_id):
         if permission.id in role_permission_ids
     }
 
-    user_ids = authorization_service.find_user_ids_for_role(role.id)
+    user_ids = authz_service.find_user_ids_for_role(role.id)
     users = user_service.get_users(user_ids, include_avatars=True)
 
     return {

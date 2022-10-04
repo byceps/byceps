@@ -9,7 +9,7 @@ from __future__ import annotations
 import click
 from flask.cli import with_appcontext
 
-from ...services.authorization import service as authorization_service
+from ...services.authorization import authz_service
 from ...services.authorization.transfer.models import RoleID
 from ...services.user import (
     user_command_service,
@@ -57,9 +57,9 @@ def _create_user(screen_name: str, email_address: str, password: str) -> User:
 
 
 def _get_role_ids() -> set[RoleID]:
-    return authorization_service.get_all_role_ids()
+    return authz_service.get_all_role_ids()
 
 
 def _assign_roles_to_user(role_ids: set[RoleID], user_id: UserID) -> None:
     for role_id in role_ids:
-        authorization_service.assign_role_to_user(role_id, user_id)
+        authz_service.assign_role_to_user(role_id, user_id)

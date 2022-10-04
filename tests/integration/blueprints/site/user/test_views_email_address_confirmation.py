@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.database import db
-from byceps.services.authorization import service as authorization_service
+from byceps.services.authorization import authz_service
 from byceps.services.user import user_service
 from byceps.services.verification_token import (
     service as verification_token_service,
@@ -42,14 +42,14 @@ def user5(make_user):
 
 @pytest.fixture
 def role(admin_app, site, user1, user2):
-    role = authorization_service.create_role('board_user', 'Board User')
+    role = authz_service.create_role('board_user', 'Board User')
 
     yield role
 
     for user in user1, user2:
-        authorization_service.deassign_all_roles_from_user(user.id)
+        authz_service.deassign_all_roles_from_user(user.id)
 
-    authorization_service.delete_role(role.id)
+    authz_service.delete_role(role.id)
 
 
 def test_valid_token(site_app, user1, role):
@@ -177,7 +177,7 @@ def confirm(app, token):
 
 
 def get_role_ids(user_id):
-    return authorization_service.find_role_ids_for_user(user_id)
+    return authz_service.find_role_ids_for_user(user_id)
 
 
 def create_verification_token(user_id, email_address):

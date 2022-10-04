@@ -11,7 +11,7 @@ from typing import Any, Iterator, Optional
 from flask import Flask
 import pytest
 
-from byceps.services.authorization import service as authz_service
+from byceps.services.authorization import authz_service
 from byceps.services.authorization.transfer.models import PermissionID, RoleID
 from byceps.services.board import board_service
 from byceps.services.board.transfer.models import Board, BoardID

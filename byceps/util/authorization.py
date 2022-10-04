@@ -13,7 +13,7 @@ import pkgutil
 from flask import g
 from flask_babel import LazyString
 
-from ..services.authorization import service as authorization_service
+from ..services.authorization import authz_service
 from ..services.authorization.transfer.models import Permission, PermissionID
 from ..typing import UserID
 
@@ -42,9 +42,7 @@ def get_permissions_for_user(user_id: UserID) -> frozenset[str]:
     registered_permission_ids = (
         permission_registry.get_registered_permission_ids()
     )
-    user_permission_ids = authorization_service.get_permission_ids_for_user(
-        user_id
-    )
+    user_permission_ids = authz_service.get_permission_ids_for_user(user_id)
 
     # Ignore unregistered permission IDs.
     return frozenset(

@@ -5,7 +5,7 @@
 
 import pytest
 
-import byceps.services.authorization.service as authz_service
+from byceps.services.authorization import authz_service
 
 from tests.helpers import log_in_user
 

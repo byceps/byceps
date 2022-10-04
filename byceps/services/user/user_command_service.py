@@ -22,7 +22,7 @@ from ...events.user import (
 )
 from ...typing import UserID
 
-from ..authorization import service as authorization_service
+from ..authorization import authz_service
 from ..authorization.transfer.models import RoleID
 
 from .dbmodels.detail import DbUserDetail
@@ -73,9 +73,7 @@ def _assign_roles(
     user_id: UserID, *, initiator_id: Optional[UserID] = None
 ) -> None:
     board_user_role_name = 'board_user'
-    board_user_role = authorization_service.find_role(
-        RoleID(board_user_role_name)
-    )
+    board_user_role = authz_service.find_role(RoleID(board_user_role_name))
     if board_user_role is None:
         warn(
             f'Role "{board_user_role_name}" not found; '
@@ -83,7 +81,7 @@ def _assign_roles(
         )
         return
 
-    authorization_service.assign_role_to_user(
+    authz_service.assign_role_to_user(
         board_user_role.id, user_id, initiator_id=initiator_id
     )
 

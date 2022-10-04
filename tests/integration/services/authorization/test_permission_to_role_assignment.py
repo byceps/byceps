@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.authorization import service
+from byceps.services.authorization import authz_service
 
 
 PERMISSION_ID = 'board.view_hidden'
@@ -15,19 +15,19 @@ def test_assign_permission_to_role(admin_app, role):
     role_permission_ids_before = get_permission_ids_for_role(role)
     assert PERMISSION_ID not in role_permission_ids_before
 
-    service.assign_permission_to_role(PERMISSION_ID, role.id)
+    authz_service.assign_permission_to_role(PERMISSION_ID, role.id)
 
     role_permission_ids_after = get_permission_ids_for_role(role)
     assert PERMISSION_ID in role_permission_ids_after
 
 
 def test_deassign_permission_from_role(admin_app, role):
-    service.assign_permission_to_role(PERMISSION_ID, role.id)
+    authz_service.assign_permission_to_role(PERMISSION_ID, role.id)
 
     role_permission_ids_before = get_permission_ids_for_role(role)
     assert PERMISSION_ID in role_permission_ids_before
 
-    service.deassign_permission_from_role(PERMISSION_ID, role.id)
+    authz_service.deassign_permission_from_role(PERMISSION_ID, role.id)
 
     role_permission_ids_after = get_permission_ids_for_role(role)
     assert PERMISSION_ID not in role_permission_ids_after
@@ -35,10 +35,10 @@ def test_deassign_permission_from_role(admin_app, role):
 
 @pytest.fixture
 def role():
-    role = service.create_role('demigod', 'Demigod')
+    role = authz_service.create_role('demigod', 'Demigod')
     yield role
-    service.delete_role(role.id)
+    authz_service.delete_role(role.id)
 
 
 def get_permission_ids_for_role(role):
-    return service.get_permission_ids_for_role(role.id)
+    return authz_service.get_permission_ids_for_role(role.id)
