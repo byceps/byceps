@@ -15,7 +15,7 @@ from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
 from .....services.brand import brand_service
-from .....services.party import service as party_service
+from .....services.party import party_service
 from .....services.shop.article import article_sequence_service, article_service
 from .....services.shop.article.transfer.models import (
     Article,

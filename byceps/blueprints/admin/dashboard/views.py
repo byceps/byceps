@@ -18,7 +18,7 @@ from ....services.news import channel_service as news_channel_service
 from ....services.newsletter import service as newsletter_service
 from ....services.orga import birthday_service as orga_birthday_service
 from ....services.orga_team import service as orga_team_service
-from ....services.party import service as party_service
+from ....services.party import party_service
 from ....services.seating import (
     area_service as seating_area_service,
     seat_service,

@@ -15,10 +15,7 @@ from qrcode.image.svg import SvgPathImage
 
 from ....services.guest_server import service as guest_server_service
 from ....services.guest_server.transfer.models import Address, Server
-from ....services.party import (
-    service as party_service,
-    settings_service as party_settings_service,
-)
+from ....services.party import party_service, party_setting_service
 from ....services.site import service as site_service
 from ....services.site.transfer.models import SiteID
 from ....services.user import user_service
@@ -101,7 +98,7 @@ def _sort_addresses(addresses: Iterable[Address]) -> list[Address]:
 
 def _get_site_server_name(party_id: PartyID) -> str:
     """Return the server name of the party's primary site."""
-    primary_party_site_id = party_settings_service.find_setting_value(
+    primary_party_site_id = party_setting_service.find_setting_value(
         party_id, 'primary_party_site_id'
     )
     if not primary_party_site_id:

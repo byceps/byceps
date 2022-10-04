@@ -17,8 +17,8 @@ from ...services.board import (
 )
 from ...services.consent import consent_service
 from ...services.metrics.models import Label, Metric
+from ...services.party import party_service
 from ...services.party.transfer.models import Party
-from ...services.party import service as party_service
 from ...services.seating import seat_service
 from ...services.shop.order import order_service
 from ...services.shop.article import article_service as shop_article_service

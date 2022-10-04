@@ -16,7 +16,7 @@ from ...database import db
 from ...typing import PartyID, UserID
 
 from ..orga.dbmodels import DbOrgaFlag
-from ..party import service as party_service
+from ..party import party_service
 from ..party.transfer.models import PartyID
 from ..user.dbmodels.detail import DbUserDetail
 from ..user.dbmodels.user import DbUser

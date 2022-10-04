@@ -9,7 +9,7 @@ byceps.blueprints.api.v1.attendance.views
 from flask import abort, request
 from pydantic import ValidationError
 
-from .....services.party import service as party_service
+from .....services.party import party_service
 from .....services.ticketing import attendance_service
 from .....services.user import user_service
 from .....util.framework.blueprint import create_blueprint

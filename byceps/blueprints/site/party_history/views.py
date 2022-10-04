@@ -8,7 +8,7 @@ byceps.blueprints.site.party_history.views
 
 from flask import abort, g
 
-from ....services.party import service as party_service
+from ....services.party import party_service
 from ....services.ticketing import attendance_service
 from ....services.user import user_service
 from ....util.framework.blueprint import create_blueprint

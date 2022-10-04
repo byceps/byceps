@@ -9,7 +9,7 @@ byceps.blueprints.admin.tourney.category.views
 from flask import abort, request
 from flask_babel import gettext
 
-from .....services.party import service as party_service
+from .....services.party import party_service
 from .....services.tourney import tourney_category_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success

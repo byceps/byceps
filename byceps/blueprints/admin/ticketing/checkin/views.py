@@ -11,7 +11,7 @@ from datetime import date
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
-from .....services.party import service as party_service
+from .....services.party import party_service
 from .....services.ticketing import (
     exceptions as ticket_exceptions,
     ticket_service,

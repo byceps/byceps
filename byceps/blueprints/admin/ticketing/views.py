@@ -10,7 +10,7 @@ from __future__ import annotations
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.party import service as party_service
+from ....services.party import party_service
 from ....services.shop.order import order_service
 from ....services.ticketing import (
     category_service,

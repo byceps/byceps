@@ -9,7 +9,7 @@ byceps.blueprints.site.seating.views
 from flask import abort, g, request
 from flask_babel import gettext
 
-from ....services.party import service as party_service
+from ....services.party import party_service
 from ....services.seating import area_service as seating_area_service
 from ....services.seating import seat_service
 from ....services.seating.transfer.models import Seat, SeatID

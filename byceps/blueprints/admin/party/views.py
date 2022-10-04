@@ -14,10 +14,7 @@ from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
 from ....services.brand import brand_service
-from ....services.party import (
-    service as party_service,
-    settings_service as party_settings_service,
-)
+from ....services.party import party_service, party_setting_service
 from ....services.ticketing import ticket_service
 from ....services.ticketing.transfer.models import TicketSaleStats
 from ....typing import PartyID
@@ -111,7 +108,7 @@ def view(party_id):
 
     days = party_service.get_party_days(party)
 
-    settings = party_settings_service.get_settings(party.id)
+    settings = party_setting_service.get_settings(party.id)
 
     return {
         'brand': brand,

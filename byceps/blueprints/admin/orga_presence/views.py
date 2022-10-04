@@ -20,7 +20,7 @@ from ....services.orga_presence.transfer.models import (
     PresenceTimeSlot,
     TimeSlot,
 )
-from ....services.party import service as party_service
+from ....services.party import party_service
 from ....services.user.transfer.models import User
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated

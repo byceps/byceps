@@ -15,7 +15,7 @@ from ...database import db
 from ...events.guest_server import GuestServerRegistered
 from ...typing import PartyID, UserID
 
-from ..party import service as party_service
+from ..party import party_service
 from ..user import user_service
 
 from .dbmodels import DbAddress, DbServer, DbSetting

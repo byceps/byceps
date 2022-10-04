@@ -28,7 +28,7 @@ from wtforms.validators import (
     ValidationError,
 )
 
-from .....services.party import service as party_service
+from .....services.party import party_service
 from .....services.ticketing import category_service as ticket_category_service
 from .....services.user_badge.transfer.models import Badge
 from .....typing import BrandID

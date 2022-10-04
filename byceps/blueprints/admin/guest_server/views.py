@@ -19,7 +19,7 @@ from ....services.guest_server.transfer.models import (
     IPAddress,
     Setting,
 )
-from ....services.party import service as party_service
+from ....services.party import party_service
 from ....services.user import user_service
 from ....signals import guest_server as guest_server_signals
 from ....util.export import serialize_tuples_to_csv

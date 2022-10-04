@@ -12,7 +12,7 @@ from datetime import datetime
 from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
 
-from .....services.party import service as party_service
+from .....services.party import party_service
 from .....services.tourney import tourney_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success

@@ -21,7 +21,7 @@ from ....services.board import (
 )
 from ....services.board.transfer.models import CategoryWithLastUpdate
 from ....services.orga_team import service as orga_team_service
-from ....services.party import service as party_service
+from ....services.party import party_service
 from ....services.party.transfer.models import Party
 from ....services.site import settings_service as site_settings_service
 from ....services.ticketing import ticket_service

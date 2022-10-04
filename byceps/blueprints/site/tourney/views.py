@@ -11,7 +11,7 @@ import dataclasses
 
 from flask import abort, g
 
-from ....services.party import service as party_service
+from ....services.party import party_service
 from ....services.tourney import (
     tourney_category_service,
     tourney_participant_service,

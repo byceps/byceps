@@ -15,7 +15,7 @@ from uuid import UUID
 from ....services.consent import consent_service, subject_service
 from ....services.newsletter import service as newsletter_service
 from ....services.newsletter.transfer.models import List as NewsletterList
-from ....services.party import service as party_service
+from ....services.party import party_service
 from ....services.party.transfer.models import Party
 from ....services.shop.order import order_log_service, order_service
 from ....services.site import service as site_service

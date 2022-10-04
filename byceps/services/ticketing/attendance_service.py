@@ -17,7 +17,7 @@ from ...database import db, insert_ignore_on_conflict
 from ...typing import BrandID, PartyID, UserID
 
 from ..party.dbmodels.party import DbParty
-from ..party import service as party_service
+from ..party import party_service
 from ..party.transfer.models import Party
 
 from .dbmodels.archived_attendance import DbArchivedAttendance

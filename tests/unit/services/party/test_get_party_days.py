@@ -7,7 +7,7 @@ from datetime import date, datetime
 
 import pytest
 
-from byceps.services.party import service
+from byceps.services.party import party_service
 from byceps.services.party.transfer.models import Party
 from byceps.typing import BrandID, PartyID
 
@@ -45,7 +45,7 @@ from byceps.typing import BrandID, PartyID
 )
 def test_get_party_days(starts_at, ends_at, expected):
     party = create_party(starts_at, ends_at)
-    assert service.get_party_days(party) == expected
+    assert party_service.get_party_days(party) == expected
 
 
 # helpers

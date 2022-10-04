@@ -5,7 +5,7 @@
 
 from datetime import datetime
 
-import byceps.services.party.service as party_service
+from byceps.services.party import party_service
 
 
 def test_index(party_admin_client, party):

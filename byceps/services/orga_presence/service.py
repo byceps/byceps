@@ -23,7 +23,7 @@ from ...database import db
 from ...typing import PartyID, UserID
 from ...util.datetime.range import create_adjacent_ranges, DateTimeRange
 
-from ..party import service as party_service
+from ..party import party_service
 
 from .dbmodels import DbPresence, DbTask, DbTimeSlot
 from .transfer.models import PresenceTimeSlot, TaskTimeSlot, TimeSlot

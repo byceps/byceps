@@ -11,7 +11,7 @@ Announce user badge events.
 from flask_babel import gettext
 
 from ...events.guest_server import GuestServerRegistered
-from ...services.party import service as party_service
+from ...services.party import party_service
 
 from ._helpers import get_screen_name_or_fallback, with_locale
 

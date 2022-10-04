@@ -8,7 +8,7 @@ byceps.blueprints.api.v1.tourney.avatar.views
 
 from flask import abort, request
 
-from ......services.party import service as party_service
+from ......services.party import party_service
 from ......services.tourney.avatar import tourney_avatar_service
 from ......services.user import user_service
 from ......util.framework.blueprint import create_blueprint

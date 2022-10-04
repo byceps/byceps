@@ -13,7 +13,7 @@ from typing import Optional
 from ...database import db
 from ...typing import PartyID
 
-from ..party import service as party_service
+from ..party import party_service
 
 from .dbmodels.participant import DbParticipant
 from .dbmodels.tourney import DbTourney
