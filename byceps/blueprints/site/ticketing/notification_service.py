@@ -9,10 +9,7 @@ byceps.blueprints.site.ticketing.notification_service
 from flask import g
 from flask_babel import gettext
 
-from ....services.email import (
-    config_service as email_config_service,
-    service as email_service,
-)
+from ....services.email import email_config_service, email_service
 from ....services.party import party_service
 from ....services.site import site_service
 from ....services.ticketing.dbmodels.ticket import DbTicket

@@ -13,10 +13,7 @@ from dataclasses import dataclass
 
 from flask_babel import format_currency, format_date, gettext
 
-from .....services.email import (
-    config_service as email_config_service,
-    service as email_service,
-)
+from .....services.email import email_config_service, email_service
 from .....services.email.transfer.models import Message
 from .....services.shop.order import order_service
 from .....services.shop.order.transfer.order import Order, OrderID

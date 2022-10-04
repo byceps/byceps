@@ -81,7 +81,7 @@ def newsletter_list(brand):
     brand_setting_service.remove_setting(brand.id, name)
 
 
-@patch('byceps.services.email.service.send')
+@patch('byceps.services.email.email_service.send')
 def test_create(
     send_email_mock,
     site_app,
@@ -173,7 +173,7 @@ bitte bestätige deine E-Mail-Adresse indem du diese URL aufrufst: https://www.a
     )
 
 
-@patch('byceps.services.email.service.send')
+@patch('byceps.services.email.email_service.send')
 def test_create_without_newsletter_subscription(
     send_email_mock,
     site_app,

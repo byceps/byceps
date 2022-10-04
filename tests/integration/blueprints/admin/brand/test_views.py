@@ -4,7 +4,7 @@
 """
 
 from byceps.services.brand import brand_service
-import byceps.services.email.config_service as email_config_service
+from byceps.services.email import email_config_service
 
 
 def test_index(brand_admin_client, brand):

@@ -11,7 +11,7 @@ from typing import Optional
 from flask import abort, current_app, g
 
 from .....services.brand import brand_service
-from .....services.email import config_service as email_config_service
+from .....services.email import email_config_service
 from .....services.shop.order.email import order_email_example_service
 from .....services.shop.shop import shop_service
 from .....util.framework.blueprint import create_blueprint

@@ -19,10 +19,7 @@ from ...events.user import (
 from ...typing import UserID
 from ...util.l10n import force_user_locale
 
-from ..email import (
-    config_service as email_config_service,
-    service as email_service,
-)
+from ..email import email_config_service, email_service
 from ..email.transfer.models import NameAndAddress
 from ..site import site_service
 from ..site.transfer.models import SiteID

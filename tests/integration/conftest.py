@@ -17,7 +17,7 @@ from byceps.services.board import board_service
 from byceps.services.board.transfer.models import Board, BoardID
 from byceps.services.brand import brand_service
 from byceps.services.brand.transfer.models import Brand
-from byceps.services.email import config_service as email_config_service
+from byceps.services.email import email_config_service
 from byceps.services.email.transfer.models import EmailConfig
 from byceps.services.language import service as language_service
 from byceps.services.news import channel_service as news_channel_service

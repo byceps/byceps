@@ -10,7 +10,7 @@ from flask_babel import gettext
 
 from ....util.l10n import force_user_locale
 
-from ...email import service as email_service
+from ...email import email_service
 from ...email.transfer.models import NameAndAddress
 from ...user import user_service
 from ...user.transfer.models import User

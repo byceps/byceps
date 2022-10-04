@@ -10,7 +10,7 @@ from flask import abort, request
 from flask_babel import gettext
 
 from ....services.brand import brand_service, brand_setting_service
-from ....services.email import config_service as email_config_service
+from ....services.email import email_config_service
 from ....services.orga import service as orga_service
 from ....services.party import party_service
 from ....util.framework.blueprint import create_blueprint

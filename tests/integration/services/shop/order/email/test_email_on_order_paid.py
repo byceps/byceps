@@ -58,7 +58,7 @@ def order(storefront: Storefront, orderer: Orderer, email_footer_snippet_id):
     order_service.delete_order(order.id)
 
 
-@patch('byceps.services.email.service.send')
+@patch('byceps.services.email.email_service.send')
 def test_email_on_order_paid(
     send_email_mock, site_app, customer: User, order_admin, order
 ):
