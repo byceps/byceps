@@ -13,8 +13,7 @@ from flask import g
 from jinja2 import Template
 
 from ....services.snippet.dbmodels.snippet import DbVersion
-from ....services.snippet import service as snippet_service
-from ....services.snippet.service import SnippetNotFound
+from ....services.snippet import snippet_service
 from ....services.snippet.transfer.models import Scope
 from ....util.templating import load_template
 
@@ -73,7 +72,7 @@ def render_snippet_as_partial(
         if ignore_if_unknown:
             return ''
         else:
-            raise SnippetNotFound(scope, name)
+            raise snippet_service.SnippetNotFound(scope, name)
 
     if context is None:
         context = {}

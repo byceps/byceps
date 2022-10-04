@@ -11,7 +11,7 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.transfer.order import Orderer
 from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront.transfer.models import Storefront
-from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet import snippet_service
 from byceps.services.snippet.transfer.models import Scope, SnippetID
 from byceps.services.user.transfer.models import User
 from byceps.typing import UserID

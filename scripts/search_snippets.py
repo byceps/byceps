@@ -10,7 +10,7 @@ from typing import Optional
 
 import click
 
-from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet import snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.site.transfer.models import Site
 

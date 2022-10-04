@@ -9,7 +9,7 @@
 import click
 
 from byceps.services.snippet.dbmodels.snippet import DbVersion
-from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet import snippet_service
 from byceps.services.snippet.transfer.models import Scope
 
 from _util import call_with_app_context

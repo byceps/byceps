@@ -10,7 +10,7 @@ import pytest
 
 from byceps.events.snippet import SnippetCreated
 from byceps.services.snippet.dbmodels.snippet import DbVersion
-from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet import snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.user.transfer.models import User
 

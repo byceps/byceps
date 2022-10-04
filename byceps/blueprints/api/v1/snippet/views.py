@@ -8,7 +8,7 @@ byceps.blueprints.api.v1.snippet.views
 
 from flask import jsonify
 
-from .....services.snippet import service as snippet_service
+from .....services.snippet import snippet_service
 from .....services.snippet.transfer.models import Scope
 from .....util.framework.blueprint import create_blueprint
 from .....util.views import create_empty_json_response

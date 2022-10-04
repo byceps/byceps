@@ -25,7 +25,7 @@ from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.site import site_service
 from byceps.services.site.transfer.models import Site, SiteID
-from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet import snippet_service
 from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 

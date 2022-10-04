@@ -6,7 +6,7 @@
 import pytest
 
 import byceps.announce.connections  # Connect signal handlers.
-from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet import snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.signals import snippet as snippet_signals
 

@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet import snippet_service
 
 
 def test_index_for_scope(snippet_admin_client, global_scope):

@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet import snippet_service
 from byceps.services.snippet.transfer.models import Scope
 
 

@@ -18,8 +18,7 @@ from .....services.email.transfer.models import Message
 from .....services.shop.order import order_service
 from .....services.shop.order.transfer.order import Order, OrderID
 from .....services.shop.shop import shop_service
-from .....services.snippet import service as snippet_service
-from .....services.snippet.service import SnippetNotFound
+from .....services.snippet import snippet_service
 from .....services.snippet.transfer.models import Scope
 from .....services.user import user_service
 from .....services.user.transfer.models import User
@@ -242,7 +241,7 @@ def _get_snippet_body(scope: Scope, name: str) -> str:
     )
 
     if not version:
-        raise SnippetNotFound(scope, name)
+        raise snippet_service.SnippetNotFound(scope, name)
 
     return version.body.strip()
 

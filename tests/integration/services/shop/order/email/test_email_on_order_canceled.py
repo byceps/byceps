@@ -13,7 +13,7 @@ from byceps.services.shop.order import order_service
 from byceps.services.shop.order.transfer.order import Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
-from byceps.services.snippet import service as snippet_service
+from byceps.services.snippet import snippet_service
 from byceps.services.user.transfer.models import User
 
 from tests.helpers import current_user_set
