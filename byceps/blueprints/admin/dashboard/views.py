@@ -13,7 +13,7 @@ from flask import abort
 from ....services.board import board_service
 from ....services.brand import brand_service, brand_setting_service
 from ....services.consent import consent_subject_service
-from ....services.guest_server import service as guest_server_service
+from ....services.guest_server import guest_server_service
 from ....services.news import news_channel_service
 from ....services.newsletter import newsletter_service
 from ....services.orga import orga_birthday_service

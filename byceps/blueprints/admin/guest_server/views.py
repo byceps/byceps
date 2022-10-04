@@ -13,7 +13,7 @@ from typing import Iterable, Optional
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
-from ....services.guest_server import service as guest_server_service
+from ....services.guest_server import guest_server_service
 from ....services.guest_server.transfer.models import (
     Address,
     IPAddress,
