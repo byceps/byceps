@@ -24,7 +24,7 @@ from ..session import authn_session_service
 from .dbmodels import DbCredential
 
 
-PASSWORD_HASH_ITERATIONS = 320000
+PASSWORD_HASH_ITERATIONS = 390000
 PASSWORD_HASH_METHOD = 'pbkdf2:sha256:%d' % PASSWORD_HASH_ITERATIONS
 
 
