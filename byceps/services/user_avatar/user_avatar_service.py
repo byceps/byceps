@@ -21,7 +21,7 @@ from ..image.image_service import ImageTypeProhibited  # Provide to view functio
 from ..user.dbmodels.user import DbUser
 from ..user import user_service
 
-from .dbmodels import Avatar as DbAvatar, AvatarSelection as DbAvatarSelection
+from .dbmodels import DbAvatar, DbAvatarSelection
 from .transfer.models import AvatarID, AvatarUpdate
 
 

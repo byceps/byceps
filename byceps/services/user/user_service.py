@@ -16,10 +16,7 @@ from sqlalchemy.sql import Select
 from ...database import db, paginate, Pagination
 from ...typing import UserID
 
-from ..user_avatar.dbmodels import (
-    Avatar as DbAvatar,
-    AvatarSelection as DbAvatarSelection,
-)
+from ..user_avatar.dbmodels import DbAvatar, DbAvatarSelection
 
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
