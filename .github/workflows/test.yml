@@ -18,6 +18,19 @@ jobs:
   test:
 
     runs-on: ubuntu-latest
+
+    services:
+      redis:
+        image: redis
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          # Make accessible on localhost.
+          - 6379:6379
+
     strategy:
       fail-fast: false
       matrix:
