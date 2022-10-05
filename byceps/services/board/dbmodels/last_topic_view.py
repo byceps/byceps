@@ -23,7 +23,9 @@ class DbLastTopicView(db.Model):
     __tablename__ = 'board_topics_lastviews'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    topic_id = db.Column(db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True)
+    topic_id = db.Column(
+        db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True
+    )
     topic = db.relationship(DbTopic)
     occurred_at = db.Column(db.DateTime, nullable=False)
 

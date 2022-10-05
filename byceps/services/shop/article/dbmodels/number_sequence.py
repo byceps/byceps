@@ -20,7 +20,9 @@ class DbArticleNumberSequence(db.Model):
     __tablename__ = 'shop_article_number_sequences'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)
+    shop_id = db.Column(
+        db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
+    )
     prefix = db.Column(db.UnicodeText, unique=True, nullable=False)
     value = db.Column(db.Integer, default=0, nullable=False)
 

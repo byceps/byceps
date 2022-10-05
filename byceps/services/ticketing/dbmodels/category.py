@@ -20,7 +20,9 @@ class DbCategory(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    )
     title = db.Column(db.UnicodeText, nullable=False)
 
     def __init__(self, party_id: PartyID, title: str) -> None:

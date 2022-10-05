@@ -20,7 +20,9 @@ class DbBadgeAwarding(db.Model):
     __tablename__ = 'user_badge_awardings'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    badge_id = db.Column(db.Uuid, db.ForeignKey('user_badges.id'), nullable=False)
+    badge_id = db.Column(
+        db.Uuid, db.ForeignKey('user_badges.id'), nullable=False
+    )
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     awarded_at = db.Column(db.DateTime, nullable=False)
 

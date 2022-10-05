@@ -27,7 +27,9 @@ class DbTourney(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    )
     title = db.Column(db.UnicodeText, nullable=False)
     subtitle = db.Column(db.UnicodeText, nullable=True)
     logo_url = db.Column(db.UnicodeText, nullable=True)

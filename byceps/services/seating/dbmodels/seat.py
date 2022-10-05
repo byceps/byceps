@@ -34,12 +34,19 @@ class DbSeat(db.Model):
     __tablename__ = 'seats'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    area_id = db.Column(db.Uuid, db.ForeignKey('seating_areas.id'), index=True, nullable=False)
+    area_id = db.Column(
+        db.Uuid, db.ForeignKey('seating_areas.id'), index=True, nullable=False
+    )
     area = db.relationship(DbArea, backref='seats')
     coord_x = db.Column(db.Integer, nullable=False)
     coord_y = db.Column(db.Integer, nullable=False)
     rotation = db.Column(db.SmallInteger, nullable=True)
-    category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), index=True, nullable=False)
+    category_id = db.Column(
+        db.Uuid,
+        db.ForeignKey('ticket_categories.id'),
+        index=True,
+        nullable=False,
+    )
     category = db.relationship(DbCategory)
     label = db.Column(db.UnicodeText, nullable=True)
     type_ = db.Column('type', db.UnicodeText, nullable=True)

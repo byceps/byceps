@@ -22,17 +22,31 @@ class DbAttachedArticle(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    article_number = db.Column(db.UnicodeText,
-                               db.ForeignKey('shop_articles.item_number'),
-                               nullable=False, index=True)
-    article = db.relationship(DbArticle, foreign_keys=[article_number],
-                              backref=db.backref('articles_attached_to', collection_class=set))
-    quantity = db.Column(db.Integer, db.CheckConstraint('quantity > 0'), nullable=False)
-    attached_to_article_number = db.Column(db.UnicodeText,
-                                           db.ForeignKey('shop_articles.item_number'),
-                                           nullable=False, index=True)
-    attached_to_article = db.relationship(DbArticle, foreign_keys=[attached_to_article_number],
-                                          backref=db.backref('attached_articles', collection_class=set))
+    article_number = db.Column(
+        db.UnicodeText,
+        db.ForeignKey('shop_articles.item_number'),
+        nullable=False,
+        index=True,
+    )
+    article = db.relationship(
+        DbArticle,
+        foreign_keys=[article_number],
+        backref=db.backref('articles_attached_to', collection_class=set),
+    )
+    quantity = db.Column(
+        db.Integer, db.CheckConstraint('quantity > 0'), nullable=False
+    )
+    attached_to_article_number = db.Column(
+        db.UnicodeText,
+        db.ForeignKey('shop_articles.item_number'),
+        nullable=False,
+        index=True,
+    )
+    attached_to_article = db.relationship(
+        DbArticle,
+        foreign_keys=[attached_to_article_number],
+        backref=db.backref('attached_articles', collection_class=set),
+    )
 
     def __init__(
         self,

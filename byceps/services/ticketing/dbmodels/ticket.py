@@ -40,22 +40,52 @@ class DbTicket(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    )
     code = db.Column(db.UnicodeText, index=True, nullable=False)
-    bundle_id = db.Column(db.Uuid, db.ForeignKey('ticket_bundles.id'), index=True, nullable=True)
+    bundle_id = db.Column(
+        db.Uuid, db.ForeignKey('ticket_bundles.id'), index=True, nullable=True
+    )
     bundle = db.relationship(DbTicketBundle, backref='tickets')
-    category_id = db.Column(db.Uuid, db.ForeignKey('ticket_categories.id'), index=True, nullable=False)
+    category_id = db.Column(
+        db.Uuid,
+        db.ForeignKey('ticket_categories.id'),
+        index=True,
+        nullable=False,
+    )
     category = db.relationship(DbCategory)
-    owned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
+    owned_by_id = db.Column(
+        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False
+    )
     owned_by = db.relationship(DbUser, foreign_keys=[owned_by_id])
-    order_number = db.Column(db.UnicodeText, db.ForeignKey('shop_orders.order_number'), index=True, nullable=True)
-    seat_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
+    order_number = db.Column(
+        db.UnicodeText,
+        db.ForeignKey('shop_orders.order_number'),
+        index=True,
+        nullable=True,
+    )
+    seat_managed_by_id = db.Column(
+        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True
+    )
     seat_managed_by = db.relationship(DbUser, foreign_keys=[seat_managed_by_id])
-    user_managed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
+    user_managed_by_id = db.Column(
+        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True
+    )
     user_managed_by = db.relationship(DbUser, foreign_keys=[user_managed_by_id])
-    occupied_seat_id = db.Column(db.Uuid, db.ForeignKey('seats.id'), index=True, nullable=True, unique=True)
-    occupied_seat = db.relationship(DbSeat, backref=db.backref('occupied_by_ticket', uselist=False))
-    used_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True)
+    occupied_seat_id = db.Column(
+        db.Uuid,
+        db.ForeignKey('seats.id'),
+        index=True,
+        nullable=True,
+        unique=True,
+    )
+    occupied_seat = db.relationship(
+        DbSeat, backref=db.backref('occupied_by_ticket', uselist=False)
+    )
+    used_by_id = db.Column(
+        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=True
+    )
     used_by = db.relationship(DbUser, foreign_keys=[used_by_id])
     revoked = db.Column(db.Boolean, default=False, nullable=False)
     user_checked_in = db.Column(db.Boolean, default=False, nullable=False)

@@ -27,7 +27,12 @@ class DbTopic(db.Model):
     __tablename__ = 'board_topics'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'), index=True, nullable=False)
+    category_id = db.Column(
+        db.Uuid,
+        db.ForeignKey('board_categories.id'),
+        index=True,
+        nullable=False,
+    )
     category = db.relationship(DbCategory)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
@@ -48,8 +53,12 @@ class DbTopic(db.Model):
     pinned_at = db.Column(db.DateTime)
     pinned_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     pinned_by = db.relationship(DbUser, foreign_keys=[pinned_by_id])
-    initial_posting = association_proxy('initial_topic_posting_association', 'posting')
-    posting_limited_to_moderators = db.Column(db.Boolean, default=False, nullable=False)
+    initial_posting = association_proxy(
+        'initial_topic_posting_association', 'posting'
+    )
+    posting_limited_to_moderators = db.Column(
+        db.Boolean, default=False, nullable=False
+    )
     muted = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(

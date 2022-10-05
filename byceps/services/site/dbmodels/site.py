@@ -22,8 +22,15 @@ from ..transfer.models import SiteID
 
 site_news_channels = db.Table(
     'site_news_channels',
-    db.Column('site_id', db.UnicodeText, db.ForeignKey('sites.id'), primary_key=True),
-    db.Column('news_channel_id', db.UnicodeText, db.ForeignKey('news_channels.id'), primary_key=True),
+    db.Column(
+        'site_id', db.UnicodeText, db.ForeignKey('sites.id'), primary_key=True
+    ),
+    db.Column(
+        'news_channel_id',
+        db.UnicodeText,
+        db.ForeignKey('news_channels.id'),
+        primary_key=True,
+    ),
 )
 
 
@@ -35,14 +42,25 @@ class DbSite(db.Model):
     id = db.Column(db.UnicodeText, primary_key=True)
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     server_name = db.Column(db.UnicodeText, unique=True, nullable=False)
-    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False)
+    brand_id = db.Column(
+        db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False
+    )
     brand = db.relationship(DbBrand, backref='sites')
-    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=True)
+    party_id = db.Column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=True
+    )
     enabled = db.Column(db.Boolean, nullable=False)
     user_account_creation_enabled = db.Column(db.Boolean, nullable=False)
     login_enabled = db.Column(db.Boolean, nullable=False)
-    board_id = db.Column(db.UnicodeText, db.ForeignKey('boards.id'), index=True, nullable=True)
-    storefront_id = db.Column(db.UnicodeText, db.ForeignKey('shop_storefronts.id'), index=True, nullable=True)
+    board_id = db.Column(
+        db.UnicodeText, db.ForeignKey('boards.id'), index=True, nullable=True
+    )
+    storefront_id = db.Column(
+        db.UnicodeText,
+        db.ForeignKey('shop_storefronts.id'),
+        index=True,
+        nullable=True,
+    )
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
     news_channels = db.relationship(

@@ -46,7 +46,9 @@ class DbSubscription(db.Model):
     __tablename__ = 'newsletter_subscriptions'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    list_id = db.Column(db.UnicodeText, db.ForeignKey('newsletter_lists.id'), primary_key=True)
+    list_id = db.Column(
+        db.UnicodeText, db.ForeignKey('newsletter_lists.id'), primary_key=True
+    )
 
 
 class DbSubscriptionUpdate(db.Model):
@@ -57,7 +59,9 @@ class DbSubscriptionUpdate(db.Model):
     __tablename__ = 'newsletter_subscription_updates'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    list_id = db.Column(db.UnicodeText, db.ForeignKey('newsletter_lists.id'), primary_key=True)
+    list_id = db.Column(
+        db.UnicodeText, db.ForeignKey('newsletter_lists.id'), primary_key=True
+    )
     expressed_at = db.Column(db.DateTime, primary_key=True)
     _state = db.Column('state', db.UnicodeText, nullable=False)
 

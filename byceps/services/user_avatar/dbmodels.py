@@ -11,6 +11,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 from flask import current_app
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:
@@ -79,8 +80,12 @@ class DbAvatarSelection(db.Model):
     __tablename__ = 'user_avatar_selections'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship('DbUser', backref=db.backref('avatar_selection', uselist=False))
-    avatar_id = db.Column(db.Uuid, db.ForeignKey('user_avatars.id'), unique=True, nullable=False)
+    user = db.relationship(
+        'DbUser', backref=db.backref('avatar_selection', uselist=False)
+    )
+    avatar_id = db.Column(
+        db.Uuid, db.ForeignKey('user_avatars.id'), unique=True, nullable=False
+    )
     avatar = db.relationship(DbAvatar)
 
     def __init__(self, user_id: UserID, avatar_id: AvatarID) -> None:

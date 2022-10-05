@@ -19,7 +19,9 @@ class DbOrgaFlag(db.Model):
 
     __tablename__ = 'orga_flags'
 
-    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True)
+    brand_id = db.Column(
+        db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True
+    )
     brand = db.relationship(DbBrand)
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     user = db.relationship(DbUser)

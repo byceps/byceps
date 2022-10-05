@@ -27,9 +27,13 @@ class DbUserGroup(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    )
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), unique=True, nullable=False)
+    creator_id = db.Column(
+        db.Uuid, db.ForeignKey('users.id'), unique=True, nullable=False
+    )
     creator = db.relationship(DbUser)
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     description = db.Column(db.UnicodeText, nullable=True)
@@ -69,7 +73,9 @@ class DbMembership(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     group_id = db.Column(db.Uuid, db.ForeignKey('user_groups.id'))
-    group = db.relationship(DbUserGroup, collection_class=set, backref='memberships')
+    group = db.relationship(
+        DbUserGroup, collection_class=set, backref='memberships'
+    )
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'))
     user = db.relationship(DbUser, backref='group_membership')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

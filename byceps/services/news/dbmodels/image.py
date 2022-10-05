@@ -29,7 +29,9 @@ class DbImage(db.Model):
     id = db.Column(db.Uuid, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
-    item_id = db.Column(db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False)
+    item_id = db.Column(
+        db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False
+    )
     item = db.relationship(DbItem, backref='images')
     number = db.Column(db.Integer, nullable=False)
     filename = db.Column(db.UnicodeText, nullable=False)

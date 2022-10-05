@@ -23,7 +23,9 @@ class DbBadge(db.Model):
     label = db.Column(db.UnicodeText, unique=True, nullable=False)
     description = db.Column(db.UnicodeText, nullable=True)
     image_filename = db.Column(db.UnicodeText, nullable=False)
-    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), nullable=True)
+    brand_id = db.Column(
+        db.UnicodeText, db.ForeignKey('brands.id'), nullable=True
+    )
     featured = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(

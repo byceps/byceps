@@ -22,14 +22,20 @@ class DbParty(db.Model):
     __tablename__ = 'parties'
 
     id = db.Column(db.UnicodeText, primary_key=True)
-    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False)
+    brand_id = db.Column(
+        db.UnicodeText, db.ForeignKey('brands.id'), index=True, nullable=False
+    )
     brand = db.relationship(DbBrand, backref='parties')
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     starts_at = db.Column(db.DateTime, nullable=False)
     ends_at = db.Column(db.DateTime, nullable=False)
     max_ticket_quantity = db.Column(db.Integer, nullable=True)
-    ticket_management_enabled = db.Column(db.Boolean, default=False, nullable=False)
-    seat_management_enabled = db.Column(db.Boolean, default=False, nullable=False)
+    ticket_management_enabled = db.Column(
+        db.Boolean, default=False, nullable=False
+    )
+    seat_management_enabled = db.Column(
+        db.Boolean, default=False, nullable=False
+    )
     canceled = db.Column(db.Boolean, default=False, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 

@@ -17,7 +17,9 @@ class DbSetting(db.Model):
 
     __tablename__ = 'site_settings'
 
-    site_id = db.Column(db.UnicodeText, db.ForeignKey('sites.id'), primary_key=True, index=True)
+    site_id = db.Column(
+        db.UnicodeText, db.ForeignKey('sites.id'), primary_key=True, index=True
+    )
     name = db.Column(db.UnicodeText, primary_key=True)
     value = db.Column(db.UnicodeText)
 

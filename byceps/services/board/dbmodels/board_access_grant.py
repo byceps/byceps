@@ -25,8 +25,12 @@ class DbBoardAccessGrant(db.Model):
     __tablename__ = 'board_access_grants'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    board_id = db.Column(db.UnicodeText, db.ForeignKey('boards.id'), index=True, nullable=False)
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
+    board_id = db.Column(
+        db.UnicodeText, db.ForeignKey('boards.id'), index=True, nullable=False
+    )
+    user_id = db.Column(
+        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False
+    )
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     def __init__(self, board_id: BoardID, user_id: UserID) -> None:

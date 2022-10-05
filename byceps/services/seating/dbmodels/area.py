@@ -25,7 +25,9 @@ class DbArea(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    )
     slug = db.Column(db.UnicodeText, nullable=False)
     title = db.Column(db.UnicodeText, nullable=False)
     image_filename = db.Column(db.UnicodeText, nullable=True)

@@ -25,7 +25,9 @@ class DbConsent(db.Model):
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
     user = db.relationship(DbUser)
-    subject_id = db.Column(db.Uuid, db.ForeignKey('consent_subjects.id'), primary_key=True)
+    subject_id = db.Column(
+        db.Uuid, db.ForeignKey('consent_subjects.id'), primary_key=True
+    )
     subject = db.relationship(DbSubject)
     expressed_at = db.Column(db.DateTime, nullable=False)
 

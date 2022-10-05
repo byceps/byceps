@@ -34,9 +34,13 @@ class DbVerificationToken(db.Model):
 
     __tablename__ = 'verification_tokens'
 
-    token = db.Column(db.UnicodeText, default=_generate_token_value, primary_key=True)
+    token = db.Column(
+        db.UnicodeText, default=_generate_token_value, primary_key=True
+    )
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
+    user_id = db.Column(
+        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False
+    )
     _purpose = db.Column('purpose', db.UnicodeText, index=True, nullable=False)
     data = db.Column(db.JSONB, nullable=True)
 

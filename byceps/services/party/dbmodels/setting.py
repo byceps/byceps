@@ -16,7 +16,9 @@ class DbSetting(db.Model):
 
     __tablename__ = 'party_settings'
 
-    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True)
+    party_id = db.Column(
+        db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True
+    )
     name = db.Column(db.UnicodeText, primary_key=True)
     value = db.Column(db.UnicodeText)
 

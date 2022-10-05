@@ -20,7 +20,9 @@ class DbUserDetail(db.Model):
     __tablename__ = 'user_details'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship('DbUser', backref=db.backref('detail', uselist=False))
+    user = db.relationship(
+        'DbUser', backref=db.backref('detail', uselist=False)
+    )
     first_name = db.Column(db.UnicodeText, nullable=True)
     last_name = db.Column(db.UnicodeText, nullable=True)
     date_of_birth = db.Column(db.Date, nullable=True)

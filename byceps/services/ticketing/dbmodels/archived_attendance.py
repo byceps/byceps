@@ -32,7 +32,9 @@ class DbArchivedAttendance(db.Model):
     __tablename__ = 'user_archived_party_attendances'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True)
+    party_id = db.Column(
+        db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True
+    )
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
 
     def __init__(self, user_id: UserID, party_id: PartyID) -> None:

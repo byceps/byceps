@@ -28,15 +28,27 @@ class DbLineItem(db.Model):
     __tablename__ = 'shop_order_line_items'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    order_number = db.Column(db.UnicodeText, db.ForeignKey('shop_orders.order_number'), index=True, nullable=False)
+    order_number = db.Column(
+        db.UnicodeText,
+        db.ForeignKey('shop_orders.order_number'),
+        index=True,
+        nullable=False,
+    )
     order = db.relationship(DbOrder, backref='line_items')
-    article_number = db.Column(db.UnicodeText, db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
+    article_number = db.Column(
+        db.UnicodeText,
+        db.ForeignKey('shop_articles.item_number'),
+        index=True,
+        nullable=False,
+    )
     article = db.relationship(DbArticle)
     _article_type = db.Column('article_type', db.UnicodeText, nullable=False)
     description = db.Column(db.UnicodeText, nullable=False)
     unit_price = db.Column(db.Numeric(6, 2), nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
-    quantity = db.Column(db.Integer, db.CheckConstraint('quantity > 0'), nullable=False)
+    quantity = db.Column(
+        db.Integer, db.CheckConstraint('quantity > 0'), nullable=False
+    )
     line_amount = db.Column(db.Numeric(7, 2), nullable=False)
     processing_required = db.Column(db.Boolean, nullable=False)
     processing_result = db.Column(db.JSONB, nullable=True)

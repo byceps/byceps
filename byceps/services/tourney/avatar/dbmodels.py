@@ -12,6 +12,7 @@ from typing import NewType, TYPE_CHECKING
 from uuid import UUID
 
 from flask import current_app
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:
@@ -32,7 +33,9 @@ class DbAvatar(db.Model):
     __tablename__ = 'tourney_avatars'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    )
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     _image_type = db.Column('image_type', db.UnicodeText, nullable=False)

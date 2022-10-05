@@ -47,10 +47,16 @@ class DbRolePermission(db.Model):
 
     __tablename__ = 'authz_role_permissions'
 
-    role_id = db.Column(db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True)
-    role = db.relationship(DbRole,
-                           backref=db.backref('role_permissions', collection_class=set, lazy='joined'),
-                           collection_class=set)
+    role_id = db.Column(
+        db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True
+    )
+    role = db.relationship(
+        DbRole,
+        backref=db.backref(
+            'role_permissions', collection_class=set, lazy='joined'
+        ),
+        collection_class=set,
+    )
     permission_id = db.Column(db.UnicodeText, primary_key=True)
 
     def __init__(self, role_id: RoleID, permission_id: PermissionID) -> None:
@@ -70,14 +76,20 @@ class DbUserRole(db.Model):
     __tablename__ = 'authz_user_roles'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(DbUser,
-                           backref=db.backref('user_roles', collection_class=set),
-                           collection_class=set)
-    role_id = db.Column(db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True)
-    role = db.relationship(DbRole,
-                           backref=db.backref('user_roles', collection_class=set),
-                           collection_class=set,
-                           lazy='joined')
+    user = db.relationship(
+        DbUser,
+        backref=db.backref('user_roles', collection_class=set),
+        collection_class=set,
+    )
+    role_id = db.Column(
+        db.UnicodeText, db.ForeignKey('authz_roles.id'), primary_key=True
+    )
+    role = db.relationship(
+        DbRole,
+        backref=db.backref('user_roles', collection_class=set),
+        collection_class=set,
+        lazy='joined',
+    )
 
     def __init__(self, user_id: UserID, role_id: RoleID) -> None:
         self.user_id = user_id

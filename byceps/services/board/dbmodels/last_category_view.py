@@ -23,7 +23,9 @@ class DbLastCategoryView(db.Model):
     __tablename__ = 'board_categories_lastviews'
 
     user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    category_id = db.Column(db.Uuid, db.ForeignKey('board_categories.id'), primary_key=True)
+    category_id = db.Column(
+        db.Uuid, db.ForeignKey('board_categories.id'), primary_key=True
+    )
     category = db.relationship(DbCategory)
     occurred_at = db.Column(db.DateTime, nullable=False)
 

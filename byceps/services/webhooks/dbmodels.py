@@ -25,7 +25,9 @@ class DbOutgoingWebhook(db.Model):
     __tablename__ = 'outgoing_webhooks'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    _event_types = db.Column('event_types', MutableList.as_mutable(db.JSONB), nullable=False)
+    _event_types = db.Column(
+        'event_types', MutableList.as_mutable(db.JSONB), nullable=False
+    )
     event_filters = db.Column(MutableDict.as_mutable(db.JSONB), nullable=True)
     format = db.Column(db.UnicodeText, nullable=False)
     text_prefix = db.Column(db.UnicodeText, nullable=True)

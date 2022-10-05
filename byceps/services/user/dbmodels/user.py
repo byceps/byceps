@@ -26,16 +26,20 @@ class DbUser(db.Model):
     created_at = db.Column(db.DateTime, nullable=False)
     screen_name = db.Column(db.UnicodeText, unique=True, nullable=True)
     email_address = db.Column(db.UnicodeText, unique=True, nullable=True)
-    email_address_verified = db.Column(db.Boolean, default=False, nullable=False)
+    email_address_verified = db.Column(
+        db.Boolean, default=False, nullable=False
+    )
     initialized = db.Column(db.Boolean, default=False, nullable=False)
     suspended = db.Column(db.Boolean, default=False, nullable=False)
     deleted = db.Column(db.Boolean, default=False, nullable=False)
     locale = db.Column(db.UnicodeText, nullable=True)
     legacy_id = db.Column(db.UnicodeText, nullable=True)
 
-    avatar = association_proxy('avatar_selection', 'avatar',
-                               creator=lambda avatar:
-                                    DbAvatarSelection(None, avatar.id))
+    avatar = association_proxy(
+        'avatar_selection',
+        'avatar',
+        creator=lambda avatar: DbAvatarSelection(None, avatar.id),
+    )
 
     def __init__(
         self,

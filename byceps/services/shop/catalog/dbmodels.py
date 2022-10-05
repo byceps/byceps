@@ -23,7 +23,9 @@ class DbCatalog(db.Model):
     __tablename__ = 'shop_catalogs'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)
+    shop_id = db.Column(
+        db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
+    )
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
 
     def __init__(self, shop_id: ShopID, title: str) -> None:
@@ -45,7 +47,9 @@ class DbCollection(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    catalog_id = db.Column(db.Uuid, db.ForeignKey('shop_catalogs.id'), index=True, nullable=False)
+    catalog_id = db.Column(
+        db.Uuid, db.ForeignKey('shop_catalogs.id'), index=True, nullable=False
+    )
     title = db.Column(db.UnicodeText, nullable=False)
     position = db.Column(db.Integer, nullable=False)
 
@@ -78,8 +82,18 @@ class DbCatalogArticle(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    collection_id = db.Column(db.Uuid, db.ForeignKey('shop_catalog_collections.id'), index=True, nullable=False)
-    article_number = db.Column(db.UnicodeText, db.ForeignKey('shop_articles.item_number'), index=True, nullable=False)
+    collection_id = db.Column(
+        db.Uuid,
+        db.ForeignKey('shop_catalog_collections.id'),
+        index=True,
+        nullable=False,
+    )
+    article_number = db.Column(
+        db.UnicodeText,
+        db.ForeignKey('shop_articles.item_number'),
+        index=True,
+        nullable=False,
+    )
     position = db.Column(db.Integer, nullable=False)
 
     collection = db.relationship(

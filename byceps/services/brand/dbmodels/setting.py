@@ -16,7 +16,9 @@ class DbSetting(db.Model):
 
     __tablename__ = 'brand_settings'
 
-    brand_id = db.Column(db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True)
+    brand_id = db.Column(
+        db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True
+    )
     name = db.Column(db.UnicodeText, primary_key=True)
     value = db.Column(db.UnicodeText)
 

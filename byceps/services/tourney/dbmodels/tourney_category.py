@@ -24,11 +24,17 @@ class DbTourneyCategory(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
-    party = db.relationship(DbParty,
-                            backref=db.backref('tourney_categories',
-                                               order_by='DbTourneyCategory.position',
-                                               collection_class=ordering_list('position', count_from=1)))
+    party_id = db.Column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    )
+    party = db.relationship(
+        DbParty,
+        backref=db.backref(
+            'tourney_categories',
+            order_by='DbTourneyCategory.position',
+            collection_class=ordering_list('position', count_from=1),
+        ),
+    )
     position = db.Column(db.Integer, nullable=False)
     title = db.Column(db.UnicodeText, nullable=False)
 

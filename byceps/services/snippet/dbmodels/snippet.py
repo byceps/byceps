@@ -40,7 +40,9 @@ class DbSnippet(db.Model):
     scope_type = db.Column(db.UnicodeText, nullable=False)
     scope_name = db.Column(db.UnicodeText, nullable=False)
     name = db.Column(db.UnicodeText, index=True, nullable=False)
-    current_version = association_proxy('current_version_association', 'version')
+    current_version = association_proxy(
+        'current_version_association', 'version'
+    )
 
     def __init__(self, scope: Scope, name: str) -> None:
         self.scope_type = scope.type_
@@ -66,14 +68,18 @@ class DbVersion(db.Model):
     __tablename__ = 'snippet_versions'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False)
+    snippet_id = db.Column(
+        db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False
+    )
     snippet = db.relationship(DbSnippet)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(DbUser)
     body = db.Column(db.UnicodeText, nullable=False)
 
-    def __init__(self, snippet: DbSnippet, creator_id: UserID, body: str) -> None:
+    def __init__(
+        self, snippet: DbSnippet, creator_id: UserID, body: str
+    ) -> None:
         self.snippet = snippet
         self.creator_id = creator_id
         self.body = body
@@ -96,9 +102,19 @@ class DbVersion(db.Model):
 class DbCurrentVersionAssociation(db.Model):
     __tablename__ = 'snippet_current_versions'
 
-    snippet_id = db.Column(db.Uuid, db.ForeignKey('snippets.id'), primary_key=True)
-    snippet = db.relationship(DbSnippet, backref=db.backref('current_version_association', uselist=False))
-    version_id = db.Column(db.Uuid, db.ForeignKey('snippet_versions.id'), unique=True, nullable=False)
+    snippet_id = db.Column(
+        db.Uuid, db.ForeignKey('snippets.id'), primary_key=True
+    )
+    snippet = db.relationship(
+        DbSnippet,
+        backref=db.backref('current_version_association', uselist=False),
+    )
+    version_id = db.Column(
+        db.Uuid,
+        db.ForeignKey('snippet_versions.id'),
+        unique=True,
+        nullable=False,
+    )
     version = db.relationship(DbVersion)
 
     def __init__(self, snippet: DbSnippet, version: DbVersion) -> None:

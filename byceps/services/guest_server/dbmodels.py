@@ -11,6 +11,7 @@ import ipaddress
 from typing import Optional, TYPE_CHECKING
 
 from sqlalchemy.dialects import postgresql
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:
@@ -28,7 +29,9 @@ class DbSetting(db.Model):
 
     __tablename__ = 'guest_server_settings'
 
-    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True)
+    party_id = db.Column(
+        db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True
+    )
     _netmask = db.Column('netmask', postgresql.INET, nullable=True)
     _gateway = db.Column('gateway', postgresql.INET, nullable=True)
     _dns_server1 = db.Column('dns_server1', postgresql.INET, nullable=True)
@@ -94,7 +97,9 @@ class DbServer(db.Model):
     __tablename__ = 'guest_servers'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    party_id = db.Column(db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False)
+    party_id = db.Column(
+        db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
+    )
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     owner_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
@@ -131,7 +136,9 @@ class DbAddress(db.Model):
     __tablename__ = 'guest_server_addresses'
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    server_id = db.Column(db.Uuid, db.ForeignKey('guest_servers.id'), index=True, nullable=False)
+    server_id = db.Column(
+        db.Uuid, db.ForeignKey('guest_servers.id'), index=True, nullable=False
+    )
     server = db.relationship(DbServer, backref='addresses')
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     _ip_address = db.Column('ip_address', postgresql.INET, nullable=True)

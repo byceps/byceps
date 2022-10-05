@@ -33,7 +33,9 @@ class DbArticle(db.Model):
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
-    shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)
+    shop_id = db.Column(
+        db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
+    )
     item_number = db.Column(db.UnicodeText, unique=True, nullable=False)
     _type = db.Column('type', db.UnicodeText, nullable=False)
     type_params = db.Column(db.JSONB, nullable=True)
@@ -43,10 +45,16 @@ class DbArticle(db.Model):
     available_from = db.Column(db.DateTime, nullable=True)
     available_until = db.Column(db.DateTime, nullable=True)
     total_quantity = db.Column(db.Integer, nullable=False)
-    quantity = db.Column(db.Integer, db.CheckConstraint('quantity >= 0'), nullable=False)
+    quantity = db.Column(
+        db.Integer, db.CheckConstraint('quantity >= 0'), nullable=False
+    )
     max_quantity_per_order = db.Column(db.Integer, nullable=False)
-    not_directly_orderable = db.Column(db.Boolean, default=False, nullable=False)
-    separate_order_required = db.Column(db.Boolean, default=False, nullable=False)
+    not_directly_orderable = db.Column(
+        db.Boolean, default=False, nullable=False
+    )
+    separate_order_required = db.Column(
+        db.Boolean, default=False, nullable=False
+    )
     processing_required = db.Column(db.Boolean, nullable=False)
 
     def __init__(

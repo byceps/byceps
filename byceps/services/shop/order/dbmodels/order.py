@@ -34,10 +34,19 @@ class DbOrder(db.Model):
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
     created_at = db.Column(db.DateTime, nullable=False)
-    shop_id = db.Column(db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False)
-    storefront_id = db.Column(db.UnicodeText, db.ForeignKey('shop_storefronts.id'), index=True, nullable=False)
+    shop_id = db.Column(
+        db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
+    )
+    storefront_id = db.Column(
+        db.UnicodeText,
+        db.ForeignKey('shop_storefronts.id'),
+        index=True,
+        nullable=False,
+    )
     order_number = db.Column(db.UnicodeText, unique=True, nullable=False)
-    placed_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False)
+    placed_by_id = db.Column(
+        db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False
+    )
     placed_by = db.relationship(DbUser, foreign_keys=[placed_by_id])
     company = db.Column(db.UnicodeText, nullable=True)
     first_name = db.Column(db.UnicodeText, nullable=False)
@@ -49,10 +58,16 @@ class DbOrder(db.Model):
     total_amount = db.Column(db.Numeric(7, 2), nullable=False)
     invoice_created_at = db.Column(db.DateTime, nullable=True)
     payment_method = db.Column(db.UnicodeText, nullable=True)
-    _payment_state = db.Column('payment_state', db.UnicodeText, index=True, nullable=False)
+    _payment_state = db.Column(
+        'payment_state', db.UnicodeText, index=True, nullable=False
+    )
     payment_state_updated_at = db.Column(db.DateTime, nullable=True)
-    payment_state_updated_by_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=True)
-    payment_state_updated_by = db.relationship(DbUser, foreign_keys=[payment_state_updated_by_id])
+    payment_state_updated_by_id = db.Column(
+        db.Uuid, db.ForeignKey('users.id'), nullable=True
+    )
+    payment_state_updated_by = db.relationship(
+        DbUser, foreign_keys=[payment_state_updated_by_id]
+    )
     cancelation_reason = db.Column(db.UnicodeText, nullable=True)
     processing_required = db.Column(db.Boolean, nullable=False)
     processed_at = db.Column(db.DateTime, nullable=True)
