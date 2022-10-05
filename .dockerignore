@@ -7,7 +7,6 @@
 .pytest_cache
 .ruff_cache
 .scrutinizer.yml
-.travis.yml
 *.egg-info
 assets
 docs
