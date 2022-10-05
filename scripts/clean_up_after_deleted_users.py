@@ -33,7 +33,7 @@ from byceps.services.newsletter.dbmodels import (
 from byceps.services.user.dbmodels.log import DbUserLogEntry
 from byceps.services.user import user_service
 from byceps.services.user_avatar.dbmodels import (
-    AvatarSelection as UserAvatarSelection,
+    DbAvatarSelection as DbUserAvatarSelection,
 )
 from byceps.services.verification_token.dbmodels import DbVerificationToken
 from byceps.typing import UserID
@@ -146,7 +146,7 @@ def delete_user_avatar_selections(user_ids: set[UserID]) -> int:
     """Delete user avatar selections (but not user avatar records and
     image files at this point) for the given users.
     """
-    return _execute_delete_for_users_query(UserAvatarSelection, user_ids)
+    return _execute_delete_for_users_query(DbUserAvatarSelection, user_ids)
 
 
 def delete_user_log_entries(user_ids: set[UserID]) -> int:
