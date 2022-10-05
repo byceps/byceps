@@ -20,6 +20,20 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: byceps_test
+          POSTGRES_PASSWORD: test
+          POSTGRES_DB: byceps_test
+        options: >-
+          --health-cmd pg_isready
+          --lealth-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+          # Make accessible on localhost.
+          - 5432:5432
+
       redis:
         image: redis
         options: >-
