@@ -1,9 +1,11 @@
 **/__pycache__
 .coverage
 .git
+.github
 .eggs
 .mypy_cache
 .pytest_cache
+.ruff_cache
 .scrutinizer.yml
 .travis.yml
 *.egg-info
