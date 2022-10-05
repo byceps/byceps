@@ -28,7 +28,7 @@ from byceps.services.authentication.password import authn_password_service
         ),
         (
             # matches configured algorithm and iteration count
-            'pbkdf2:sha256:320000$rNGHJHbqxDsNHHJr$e0fd1fe49f3d3aeda97f36af78283d2de557efa270ab6cb281ad6ca9879d7c2c',
+            'pbkdf2:sha256:390000$rNGHJHbqxDsNHHJr$e0fd1fe49f3d3aeda97f36af78283d2de557efa270ab6cb281ad6ca9879d7c2c',
             True,
         ),
         (
