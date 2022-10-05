@@ -45,11 +45,16 @@ Other sites using BYCEPS:
 Code Status
 ===========
 
+|badge_github-action-test|
 |badge_travis-ci_build|
 |badge_scrutinizer-ci_coverage|
 |badge_scrutinizer-ci_quality-score|
 |badge_code-climate_maintainability|
 
+
+.. |badge_github-action-test| image:: https://img.shields.io/github/workflow/status/byceps/byceps/Test/main
+   :alt: Build Status
+   :target: https://github.com/byceps/byceps/actions/workflows/test.yml
 
 .. |badge_travis-ci_build| image:: https://api.travis-ci.com/byceps/byceps.svg?branch=main
    :alt: Build Status
