@@ -8,6 +8,7 @@ on:
       - '*.rst'
   pull_request:
     branches: [ main ]
+    paths-ignore:
       - 'docs/**'
       - '*.rst'
   # Allow manual workflow triggering from the "Actions" tab.
