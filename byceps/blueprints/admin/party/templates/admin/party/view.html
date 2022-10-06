@@ -58,7 +58,7 @@
         <div class="data-label">{{ _('Days') }}</div>
         <div class="data-value">
           {%- for day in days %}
-            {{ render_tag('{:%a}'.format(day)) }}
+            {{ render_tag(day|dateformat('E')) }}
           {%- endfor %}
         </div>
 

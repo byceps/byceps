@@ -22,7 +22,7 @@
         </div>
 
         {%- for day in days %}
-        {{ render_tag('{:%a}'.format(day)) }}
+        {{ render_tag(day|dateformat('E')) }}
         {%- endfor %}
 
         {%- if party.canceled %}
