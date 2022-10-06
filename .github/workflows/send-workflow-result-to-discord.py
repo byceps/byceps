@@ -17,7 +17,7 @@ COLORS = {
 
 def main() -> None:
     args = parse_args()
-    webhook_data = get_webhook_data()
+    webhook_data = get_webhook_data(args.result)
     call_webhook(args.webhook_url, webhook_data)
     print('Webhook called.')
 
