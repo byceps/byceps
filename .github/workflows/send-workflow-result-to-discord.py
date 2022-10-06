@@ -11,8 +11,8 @@ import requests
 
 
 COLORS = {
-    'success': '#3fb950',
-    'failure': '#da3633',
+    'success': '3066993',
+    'failure': '15158332',
 }
 
 
