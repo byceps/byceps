@@ -3,6 +3,7 @@
 """Notify Discord via webhook about workflow result."""
 
 from argparse import ArgumentParser
+import json
 import os
 import subprocess
 
@@ -78,7 +79,13 @@ def get_webhook_data(result: str) -> dict:
 
 
 def call_webhook(url: str, data: dict) -> None:
-    requests.post(url, json=data)
+    print('Request data:')
+    print(json.dumps(data, indent=2))
+
+    response = requests.post(url, json=data)
+
+    print('Response:')
+    print(response)
 
 
 if __name__ == '__main__':
