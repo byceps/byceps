@@ -73,3 +73,10 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+
+    - name: Post result to Discord
+      if: always()
+      env:
+        JOB_RESULT: ${{ job.status }}
+        DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+      run: python ./.github/workflows/send-workflow-result-to-discord.py $JOB_RESULT $DISCORD_WEBHOOK_URL
