@@ -86,6 +86,7 @@ def call_webhook(url: str, data: dict) -> None:
 
     print('Response:')
     print(response)
+    print(response.text)
 
 
 if __name__ == '__main__':
