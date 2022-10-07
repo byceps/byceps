@@ -28,11 +28,7 @@ from byceps.services.user import user_service
 app = create_app()
 
 
-if (
-    app.env == 'development'
-    and app.debug
-    and app.config.get('DEBUG_TOOLBAR_ENABLED', False)
-):
+if app.debug and app.config.get('DEBUG_TOOLBAR_ENABLED', False):
     try:
         from flask_debugtoolbar import DebugToolbarExtension
     except ImportError:
