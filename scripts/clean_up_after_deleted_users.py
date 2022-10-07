@@ -138,7 +138,7 @@ def delete_newsletter_subscriptions(user_ids: set[UserID]) -> int:
 def delete_newsletter_subscription_updates(user_ids: set[UserID]) -> int:
     """Delete newsletter subscription updates for the given users."""
     return _execute_delete_for_users_query(
-        NewsletterSubscriptionUpdate, user_ids
+        DbNewsletterSubscriptionUpdate, user_ids
     )
 
 
