@@ -9,7 +9,7 @@ byceps.services.page.page_service
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from ...database import db
 from ...events.page import PageCreated, PageDeleted, PageUpdated
@@ -120,13 +120,20 @@ def delete_page(
     site_id = db_page.site_id
     page_name = db_page.name
 
-    db.session.delete(db_page.current_version_association)
-
     db_versions = _get_db_versions(page_id)
-    for db_version in db_versions:
-        db.session.delete(db_version)
 
-    db.session.delete(db_page)
+    db.session.execute(
+        delete(DbCurrentVersionAssociation).where(
+            DbCurrentVersionAssociation.page_id == page_id
+        )
+    )
+
+    for db_version in db_versions:
+        db.session.execute(
+            delete(DbVersion).where(DbVersion.id == db_version.id)
+        )
+
+    db.session.execute(delete(DbPage).where(DbPage.id == page_id))
 
     try:
         db.session.commit()

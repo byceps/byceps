@@ -9,6 +9,8 @@ byceps.services.snippet.snippet_service
 from datetime import datetime
 from typing import Optional, Sequence
 
+from sqlalchemy import delete
+
 from ...database import db
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
 from ...services.user import user_service
@@ -103,13 +105,20 @@ def delete_snippet(
     snippet_name = snippet.name
     scope = snippet.scope
 
-    db.session.delete(snippet.current_version_association)
+    db_versions = get_versions(snippet_id)
 
-    versions = get_versions(snippet_id)
-    for version in versions:
-        db.session.delete(version)
+    db.session.execute(
+        delete(DbCurrentVersionAssociation).where(
+            DbCurrentVersionAssociation.snippet_id == snippet_id
+        )
+    )
 
-    db.session.delete(snippet)
+    for db_version in db_versions:
+        db.session.execute(
+            delete(DbVersion).where(DbVersion.id == db_version.id)
+        )
+
+    db.session.execute(delete(DbSnippet).where(DbSnippet.id == snippet_id))
 
     try:
         db.session.commit()
