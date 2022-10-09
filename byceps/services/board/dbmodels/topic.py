@@ -16,7 +16,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import DbUser
 
-from ..transfer.models import CategoryID
+from ..transfer.models import BoardCategoryID
 
 from .category import DbBoardCategory
 
@@ -62,7 +62,7 @@ class DbTopic(db.Model):
     muted = db.Column(db.Boolean, default=False, nullable=False)
 
     def __init__(
-        self, category_id: CategoryID, creator_id: UserID, title: str
+        self, category_id: BoardCategoryID, creator_id: UserID, title: str
     ) -> None:
         self.category_id = category_id
         self.creator_id = creator_id

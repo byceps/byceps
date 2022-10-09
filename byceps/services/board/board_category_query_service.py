@@ -12,10 +12,10 @@ from ...database import db
 
 from .dbmodels.category import DbBoardCategory
 from .transfer.models import (
+    BoardCategory,
+    BoardCategoryID,
+    BoardCategoryWithLastUpdate,
     BoardID,
-    Category,
-    CategoryID,
-    CategoryWithLastUpdate,
 )
 
 
@@ -27,7 +27,9 @@ def count_categories_for_board(board_id: BoardID) -> int:
         .count()
 
 
-def find_category_by_id(category_id: CategoryID) -> Optional[Category]:
+def find_category_by_id(
+    category_id: BoardCategoryID,
+) -> Optional[BoardCategory]:
     """Return the category with that id, or `None` if not found."""
     category = db.session.get(DbBoardCategory, category_id)
 
@@ -37,7 +39,9 @@ def find_category_by_id(category_id: CategoryID) -> Optional[Category]:
     return _db_entity_to_category(category)
 
 
-def find_category_by_slug(board_id: BoardID, slug: str) -> Optional[Category]:
+def find_category_by_slug(
+    board_id: BoardID, slug: str
+) -> Optional[BoardCategory]:
     """Return the category for that board and slug, or `None` if not found."""
     category = db.session \
         .query(DbBoardCategory) \
@@ -51,7 +55,7 @@ def find_category_by_slug(board_id: BoardID, slug: str) -> Optional[Category]:
     return _db_entity_to_category(category)
 
 
-def get_categories(board_id: BoardID) -> Sequence[Category]:
+def get_categories(board_id: BoardID) -> Sequence[BoardCategory]:
     """Return all categories for that board, ordered by position."""
     categories = db.session \
         .query(DbBoardCategory) \
@@ -63,8 +67,8 @@ def get_categories(board_id: BoardID) -> Sequence[Category]:
 
 
 def get_categories_excluding(
-    board_id: BoardID, category_id: CategoryID
-) -> Sequence[Category]:
+    board_id: BoardID, category_id: BoardCategoryID
+) -> Sequence[BoardCategory]:
     """Return all categories for that board except for the specified one."""
     categories = db.session \
         .query(DbBoardCategory) \
@@ -78,7 +82,7 @@ def get_categories_excluding(
 
 def get_categories_with_last_updates(
     board_id: BoardID,
-) -> Sequence[CategoryWithLastUpdate]:
+) -> Sequence[BoardCategoryWithLastUpdate]:
     """Return the categories for that board.
 
     Include the creator of the last posting in each category.
@@ -98,8 +102,8 @@ def get_categories_with_last_updates(
     ]
 
 
-def _db_entity_to_category(category: DbBoardCategory) -> Category:
-    return Category(
+def _db_entity_to_category(category: DbBoardCategory) -> BoardCategory:
+    return BoardCategory(
         category.id,
         category.board_id,
         category.position,
@@ -114,8 +118,8 @@ def _db_entity_to_category(category: DbBoardCategory) -> Category:
 
 def _db_entity_to_category_with_last_update(
     category: DbBoardCategory,
-) -> CategoryWithLastUpdate:
-    return CategoryWithLastUpdate(
+) -> BoardCategoryWithLastUpdate:
+    return BoardCategoryWithLastUpdate(
         category.id,
         category.board_id,
         category.position,

@@ -10,8 +10,8 @@ from dataclasses import dataclass
 from typing import Optional
 
 from ..services.board.transfer.models import (
+    BoardCategoryID,
     BoardID,
-    CategoryID,
     PostingID,
     TopicID,
 )
@@ -86,9 +86,9 @@ class BoardTopicUnpinned(_BoardTopicModerationEvent):
 
 @dataclass(frozen=True)
 class BoardTopicMoved(_BoardTopicModerationEvent):
-    old_category_id: CategoryID
+    old_category_id: BoardCategoryID
     old_category_title: str
-    new_category_id: CategoryID
+    new_category_id: BoardCategoryID
     new_category_title: str
 
 

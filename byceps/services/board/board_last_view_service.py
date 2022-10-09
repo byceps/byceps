@@ -16,7 +16,11 @@ from . import board_topic_query_service
 from .dbmodels.last_category_view import DbLastCategoryView
 from .dbmodels.last_topic_view import DbLastTopicView
 from .dbmodels.topic import DbTopic
-from .transfer.models import CategoryID, CategoryWithLastUpdate, TopicID
+from .transfer.models import (
+    BoardCategoryID,
+    BoardCategoryWithLastUpdate,
+    TopicID,
+)
 
 
 # -------------------------------------------------------------------- #
@@ -24,7 +28,7 @@ from .transfer.models import CategoryID, CategoryWithLastUpdate, TopicID
 
 
 def contains_category_unseen_postings(
-    category: CategoryWithLastUpdate, user_id: UserID
+    category: BoardCategoryWithLastUpdate, user_id: UserID
 ) -> bool:
     """Return `True` if the category contains postings created after the
     last time the user viewed it.
@@ -41,7 +45,7 @@ def contains_category_unseen_postings(
 
 
 def find_last_category_view(
-    user_id: UserID, category_id: CategoryID
+    user_id: UserID, category_id: BoardCategoryID
 ) -> Optional[DbLastCategoryView]:
     """Return the user's last view of the category, or `None` if not found."""
     return db.session \
@@ -51,7 +55,7 @@ def find_last_category_view(
 
 
 def mark_category_as_just_viewed(
-    category_id: CategoryID, user_id: UserID
+    category_id: BoardCategoryID, user_id: UserID
 ) -> None:
     """Mark the category as last viewed by the user (if logged in) at
     the current time.
@@ -68,7 +72,7 @@ def mark_category_as_just_viewed(
     upsert(table, identifier, replacement)
 
 
-def delete_last_category_views(category_id: CategoryID) -> None:
+def delete_last_category_views(category_id: BoardCategoryID) -> None:
     """Delete the category's last views."""
     db.session.query(DbLastCategoryView) \
         .filter_by(category_id=category_id) \
@@ -126,7 +130,7 @@ def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
 
 
 def mark_all_topics_in_category_as_viewed(
-    category_id: CategoryID, user_id: UserID
+    category_id: BoardCategoryID, user_id: UserID
 ) -> None:
     """Mark all topics in the category as viewed."""
     topic_ids = board_topic_query_service.get_all_topic_ids_in_category(

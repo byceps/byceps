@@ -19,7 +19,7 @@ from ...user.transfer.models import User
 BoardID = NewType('BoardID', str)
 
 
-CategoryID = NewType('CategoryID', UUID)
+BoardCategoryID = NewType('BoardCategoryID', UUID)
 
 
 PostingID = NewType('PostingID', UUID)
@@ -36,8 +36,8 @@ class Board:
 
 
 @dataclass(frozen=True)
-class Category:
-    id: CategoryID
+class BoardCategory:
+    id: BoardCategoryID
     board_id: BoardID
     position: int
     slug: str
@@ -49,6 +49,6 @@ class Category:
 
 
 @dataclass(frozen=True)
-class CategoryWithLastUpdate(Category):
+class BoardCategoryWithLastUpdate(BoardCategory):
     last_posting_updated_at: datetime
     last_posting_updated_by: User

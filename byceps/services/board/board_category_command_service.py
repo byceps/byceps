@@ -11,12 +11,12 @@ from ...database import db
 from . import board_topic_query_service
 from .dbmodels.board import DbBoard
 from .dbmodels.category import DbBoardCategory
-from .transfer.models import BoardID, Category, CategoryID
+from .transfer.models import BoardCategory, BoardCategoryID, BoardID
 
 
 def create_category(
     board_id: BoardID, slug: str, title: str, description: str
-) -> Category:
+) -> BoardCategory:
     """Create a category in that board."""
     board = db.session.get(DbBoard, board_id)
     if board is None:
@@ -31,8 +31,8 @@ def create_category(
 
 
 def update_category(
-    category_id: CategoryID, slug: str, title: str, description: str
-) -> Category:
+    category_id: BoardCategoryID, slug: str, title: str, description: str
+) -> BoardCategory:
     """Update the category."""
     category = _get_category(category_id)
 
@@ -45,7 +45,7 @@ def update_category(
     return _db_entity_to_category(category)
 
 
-def hide_category(category_id: CategoryID) -> None:
+def hide_category(category_id: BoardCategoryID) -> None:
     """Hide the category."""
     category = _get_category(category_id)
 
@@ -53,7 +53,7 @@ def hide_category(category_id: CategoryID) -> None:
     db.session.commit()
 
 
-def unhide_category(category_id: CategoryID) -> None:
+def unhide_category(category_id: BoardCategoryID) -> None:
     """Un-hide the category."""
     category = _get_category(category_id)
 
@@ -61,7 +61,7 @@ def unhide_category(category_id: CategoryID) -> None:
     db.session.commit()
 
 
-def move_category_up(category_id: CategoryID) -> None:
+def move_category_up(category_id: BoardCategoryID) -> None:
     """Move a category upwards by one position."""
     category = _get_category(category_id)
 
@@ -76,7 +76,7 @@ def move_category_up(category_id: CategoryID) -> None:
     db.session.commit()
 
 
-def move_category_down(category_id: CategoryID) -> None:
+def move_category_down(category_id: BoardCategoryID) -> None:
     """Move a category downwards by one position."""
     category = _get_category(category_id)
 
@@ -91,7 +91,7 @@ def move_category_down(category_id: CategoryID) -> None:
     db.session.commit()
 
 
-def delete_category(category_id: CategoryID) -> None:
+def delete_category(category_id: BoardCategoryID) -> None:
     """Delete category."""
     category = _get_category(category_id)
 
@@ -108,7 +108,7 @@ def delete_category(category_id: CategoryID) -> None:
     db.session.commit()
 
 
-def _get_category(category_id: CategoryID) -> DbBoardCategory:
+def _get_category(category_id: BoardCategoryID) -> DbBoardCategory:
     category = db.session.get(DbBoardCategory, category_id)
 
     if category is None:
@@ -117,8 +117,8 @@ def _get_category(category_id: CategoryID) -> DbBoardCategory:
     return category
 
 
-def _db_entity_to_category(category: DbBoardCategory) -> Category:
-    return Category(
+def _db_entity_to_category(category: DbBoardCategory) -> BoardCategory:
+    return BoardCategory(
         category.id,
         category.board_id,
         category.position,

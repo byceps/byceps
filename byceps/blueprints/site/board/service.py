@@ -18,7 +18,7 @@ from ....services.board import (
     board_last_view_service,
     board_posting_query_service,
 )
-from ....services.board.transfer.models import CategoryWithLastUpdate
+from ....services.board.transfer.models import BoardCategoryWithLastUpdate
 from ....services.orga_team import orga_team_service
 from ....services.party import party_service
 from ....services.party.transfer.models import Party
@@ -38,7 +38,7 @@ DEFAULT_TOPICS_PER_PAGE = 10
 
 
 def add_unseen_postings_flag_to_categories(
-    categories: Sequence[CategoryWithLastUpdate], user: CurrentUser
+    categories: Sequence[BoardCategoryWithLastUpdate], user: CurrentUser
 ) -> Sequence[CategoryWithLastUpdateAndUnseenFlag]:
     """Add flag to each category stating if it contains postings unseen
     by the user.

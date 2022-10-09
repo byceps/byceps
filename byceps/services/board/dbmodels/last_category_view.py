@@ -12,7 +12,7 @@ from ....database import db
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ..transfer.models import CategoryID
+from ..transfer.models import BoardCategoryID
 
 from .category import DbBoardCategory
 
@@ -30,7 +30,10 @@ class DbLastCategoryView(db.Model):
     occurred_at = db.Column(db.DateTime, nullable=False)
 
     def __init__(
-        self, user_id: UserID, category_id: CategoryID, occurred_at: datetime
+        self,
+        user_id: UserID,
+        category_id: BoardCategoryID,
+        occurred_at: datetime,
     ) -> None:
         self.user_id = user_id
         self.category_id = category_id

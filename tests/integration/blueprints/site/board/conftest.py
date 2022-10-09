@@ -7,7 +7,7 @@ import pytest
 
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
-from byceps.services.board.transfer.models import Board, Category
+from byceps.services.board.transfer.models import Board, BoardCategory
 from byceps.services.user.transfer.models import User
 
 from tests.helpers import log_in_user
@@ -16,17 +16,17 @@ from .helpers import create_category, create_posting, create_topic
 
 
 @pytest.fixture(scope='package')
-def category(board: Board) -> Category:
+def category(board: Board) -> BoardCategory:
     return create_category(board.id, number=1)
 
 
 @pytest.fixture(scope='package')
-def another_category(board: Board) -> Category:
+def another_category(board: Board) -> BoardCategory:
     return create_category(board.id, number=2)
 
 
 @pytest.fixture
-def topic(category: Category, board_poster: User) -> DbTopic:
+def topic(category: BoardCategory, board_poster: User) -> DbTopic:
     return create_topic(category.id, board_poster.id)
 
 

@@ -17,7 +17,7 @@ from ...database import db, paginate, Pagination
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting
 from .dbmodels.topic import DbTopic
-from .transfer.models import BoardID, CategoryID, TopicID
+from .transfer.models import BoardCategoryID, BoardID, TopicID
 
 
 def count_topics_for_board(board_id: BoardID) -> int:
@@ -98,7 +98,7 @@ def paginate_topics(
     )
 
 
-def get_all_topic_ids_in_category(category_id: CategoryID) -> set[TopicID]:
+def get_all_topic_ids_in_category(category_id: BoardCategoryID) -> set[TopicID]:
     """Return the IDs of all topics in the category."""
     rows = db.session \
         .query(DbTopic.id) \
@@ -109,7 +109,7 @@ def get_all_topic_ids_in_category(category_id: CategoryID) -> set[TopicID]:
 
 
 def paginate_topics_of_category(
-    category_id: CategoryID,
+    category_id: BoardCategoryID,
     include_hidden: bool,
     page: int,
     per_page: int,

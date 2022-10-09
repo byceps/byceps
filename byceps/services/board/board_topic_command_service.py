@@ -33,11 +33,11 @@ from . import (
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbInitialTopicPostingAssociation, DbPosting
 from .dbmodels.topic import DbTopic
-from .transfer.models import CategoryID, TopicID
+from .transfer.models import BoardCategoryID, TopicID
 
 
 def create_topic(
-    category_id: CategoryID, creator_id: UserID, title: str, body: str
+    category_id: BoardCategoryID, creator_id: UserID, title: str, body: str
 ) -> tuple[DbTopic, BoardTopicCreated]:
     """Create a topic with an initial posting in that category."""
     creator = _get_user(creator_id)
@@ -277,7 +277,7 @@ def unpin_topic(topic_id: TopicID, moderator_id: UserID) -> BoardTopicUnpinned:
 
 
 def move_topic(
-    topic_id: TopicID, new_category_id: CategoryID, moderator_id: UserID
+    topic_id: TopicID, new_category_id: BoardCategoryID, moderator_id: UserID
 ) -> BoardTopicMoved:
     """Move the topic to another category."""
     topic = _get_topic(topic_id)

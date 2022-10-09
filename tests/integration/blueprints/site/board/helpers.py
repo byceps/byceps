@@ -15,9 +15,9 @@ from byceps.services.board import (
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
 from byceps.services.board.transfer.models import (
+    BoardCategory,
+    BoardCategoryID,
     BoardID,
-    Category,
-    CategoryID,
     PostingID,
     TopicID,
 )
@@ -33,7 +33,7 @@ def create_category(
     slug: Optional[str] = None,
     title: Optional[str] = None,
     description: Optional[str] = None,
-) -> Category:
+) -> BoardCategory:
     if slug is None:
         slug = generate_token()
 
@@ -49,7 +49,7 @@ def create_category(
 
 
 def create_topic(
-    category_id: CategoryID,
+    category_id: BoardCategoryID,
     creator_id: UserID,
     *,
     number: int = 1,

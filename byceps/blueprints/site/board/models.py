@@ -10,19 +10,21 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from ....services.board.transfer.models import CategoryWithLastUpdate
+from ....services.board.transfer.models import BoardCategoryWithLastUpdate
 from ....services.user.transfer.models import User
 from ....services.user_badge.transfer.models import Badge
 from ....typing import UserID
 
 
 @dataclass(frozen=True)
-class CategoryWithLastUpdateAndUnseenFlag(CategoryWithLastUpdate):
+class CategoryWithLastUpdateAndUnseenFlag(BoardCategoryWithLastUpdate):
     contains_unseen_postings: bool
 
     @classmethod
     def from_category_with_last_update(
-        cls, category: CategoryWithLastUpdate, contains_unseen_postings: bool
+        cls,
+        category: BoardCategoryWithLastUpdate,
+        contains_unseen_postings: bool,
     ) -> CategoryWithLastUpdateAndUnseenFlag:
         return cls(
             category.id,

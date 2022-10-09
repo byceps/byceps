@@ -18,7 +18,7 @@ from ....services.board import (
     board_posting_query_service,
     board_topic_query_service,
 )
-from ....services.board.transfer.models import Board, Category
+from ....services.board.transfer.models import Board, BoardCategory
 from ....services.brand import brand_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
@@ -353,7 +353,7 @@ def _get_board_or_404(board_id) -> Board:
     return board
 
 
-def _get_category_or_404(category_id) -> Category:
+def _get_category_or_404(category_id) -> BoardCategory:
     category = board_category_query_service.find_category_by_id(category_id)
 
     if category is None:
