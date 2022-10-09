@@ -20,7 +20,7 @@ from ..seating.transfer.models import SeatID
 from ..shop.order.transfer.number import OrderNumber
 from ..user.dbmodels.user import DbUser
 
-from .dbmodels.category import DbCategory
+from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.log import DbTicketLogEntry
 from . import ticket_code_service, ticket_log_service
@@ -280,7 +280,7 @@ def get_tickets_with_details_for_party_paginated(
     """Return the party's tickets to show on the specified page."""
     items_query = select(DbTicket) \
         .filter(DbTicket.party_id == party_id) \
-        .join(DbCategory) \
+        .join(DbTicketCategory) \
         .options(
             db.joinedload(DbTicket.category),
             db.joinedload(DbTicket.owned_by),
@@ -290,7 +290,7 @@ def get_tickets_with_details_for_party_paginated(
 
     count_query = select(db.func.count(DbTicket.id)) \
         .filter(DbTicket.party_id == party_id) \
-        .join(DbCategory)
+        .join(DbTicketCategory)
 
     if search_term:
         ilike_pattern = f'%{search_term}%'
@@ -301,9 +301,9 @@ def get_tickets_with_details_for_party_paginated(
 
     if filter_category_id:
         items_query = items_query \
-            .filter(DbCategory.id == str(filter_category_id))
+            .filter(DbTicketCategory.id == str(filter_category_id))
         count_query = count_query \
-            .filter(DbCategory.id == str(filter_category_id))
+            .filter(DbTicketCategory.id == str(filter_category_id))
 
     if filter_revoked is not None:
         items_query = items_query \

@@ -17,7 +17,7 @@ else:
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ...ticketing.dbmodels.category import DbCategory
+from ...ticketing.dbmodels.category import DbTicketCategory
 from ...ticketing.transfer.models import TicketCategoryID
 
 from ..transfer.models import AreaID
@@ -47,7 +47,7 @@ class DbSeat(db.Model):
         index=True,
         nullable=False,
     )
-    category = db.relationship(DbCategory)
+    category = db.relationship(DbTicketCategory)
     label = db.Column(db.UnicodeText, nullable=True)
     type_ = db.Column('type', db.UnicodeText, nullable=True)
 

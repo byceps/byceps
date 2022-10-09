@@ -17,7 +17,7 @@ from ...typing import PartyID, UserID
 from ..seating import seat_group_service
 from ..shop.order.transfer.number import OrderNumber
 
-from .dbmodels.category import DbCategory
+from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
 from .ticket_creation_service import build_tickets, TicketCreationFailed
@@ -138,8 +138,8 @@ def get_bundles_for_party_paginated(
 ) -> Pagination:
     """Return the party's ticket bundles to show on the specified page."""
     items_query = select(DbTicketBundle) \
-        .join(DbCategory) \
-        .filter(DbCategory.party_id == party_id) \
+        .join(DbTicketCategory) \
+        .filter(DbTicketCategory.party_id == party_id) \
         .options(
             db.joinedload(DbTicketBundle.ticket_category),
             db.joinedload(DbTicketBundle.owned_by),
@@ -147,8 +147,8 @@ def get_bundles_for_party_paginated(
         .order_by(DbTicketBundle.created_at.desc())
 
     count_query = select(db.func.count(DbTicketBundle.id)) \
-        .join(DbCategory) \
-        .filter(DbCategory.party_id == party_id)
+        .join(DbTicketCategory) \
+        .filter(DbTicketCategory.party_id == party_id)
 
     return paginate(
         items_query, count_query, page, per_page, scalar_result=True

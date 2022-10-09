@@ -17,7 +17,7 @@ from ...user.dbmodels.user import DbUser
 
 from ..transfer.models import TicketCategoryID
 
-from .category import DbCategory
+from .category import DbTicketCategory
 
 
 class DbTicketBundle(db.Model):
@@ -38,7 +38,7 @@ class DbTicketBundle(db.Model):
         index=True,
         nullable=False,
     )
-    ticket_category = db.relationship(DbCategory)
+    ticket_category = db.relationship(DbTicketCategory)
     ticket_quantity = db.Column(db.Integer, nullable=False)
     owned_by_id = db.Column(
         db.Uuid, db.ForeignKey('users.id'), index=True, nullable=False

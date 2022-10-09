@@ -20,7 +20,7 @@ from ..party import party_service
 from ..party.transfer.models import Party
 
 from .dbmodels.archived_attendance import DbArchivedAttendance
-from .dbmodels.category import DbCategory
+from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 
 
@@ -62,7 +62,7 @@ def _get_attended_party_ids(user_id: UserID) -> set[PartyID]:
         .query(DbParty.id) \
         .filter(DbParty.ends_at < datetime.utcnow()) \
         .filter(DbParty.canceled == False) \
-        .join(DbCategory) \
+        .join(DbTicketCategory) \
         .join(DbTicket) \
         .filter(DbTicket.revoked == False) \
         .filter(DbTicket.used_by_id == user_id) \
@@ -85,8 +85,8 @@ def get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
     """Return the party's attendees' IDs."""
     ticket_rows = db.session.execute(
         select(DbTicket.used_by_id)
-        .join(DbCategory)
-        .filter(DbCategory.party_id == party_id)
+        .join(DbTicketCategory)
+        .filter(DbTicketCategory.party_id == party_id)
         .filter(DbTicket.revoked == False)
         .filter(DbTicket.used_by_id.is_not(None))
     ).scalars().all()
@@ -133,7 +133,7 @@ def _get_top_ticket_attendees_for_parties(
 
     attendance_count = db.session \
         .query(
-            db.func.count(DbCategory.party_id.distinct()),
+            db.func.count(DbTicketCategory.party_id.distinct()),
         ) \
         .join(DbParty) \
         .filter(DbParty.brand_id == brand_id) \

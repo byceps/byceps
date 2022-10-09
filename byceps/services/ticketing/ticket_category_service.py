@@ -11,14 +11,14 @@ from typing import Optional, Sequence
 from ...database import db
 from ...typing import PartyID
 
-from .dbmodels.category import DbCategory
+from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .transfer.models import TicketCategory, TicketCategoryID
 
 
 def create_category(party_id: PartyID, title: str) -> TicketCategory:
     """Create a category."""
-    db_category = DbCategory(party_id, title)
+    db_category = DbTicketCategory(party_id, title)
 
     db.session.add(db_category)
     db.session.commit()
@@ -30,7 +30,7 @@ def update_category(
     category_id: TicketCategoryID, title: str
 ) -> TicketCategory:
     """Update a category."""
-    db_category = db.session.get(DbCategory, category_id)
+    db_category = db.session.get(DbTicketCategory, category_id)
 
     if db_category is None:
         raise ValueError(f'Unknown category ID "{category_id}"')
@@ -44,7 +44,7 @@ def update_category(
 
 def delete_category(category_id: TicketCategoryID) -> None:
     """Delete a category."""
-    db.session.query(DbCategory) \
+    db.session.query(DbTicketCategory) \
         .filter_by(id=category_id) \
         .delete()
     db.session.commit()
@@ -53,14 +53,14 @@ def delete_category(category_id: TicketCategoryID) -> None:
 def count_categories_for_party(party_id: PartyID) -> int:
     """Return the number of categories for that party."""
     return db.session \
-        .query(DbCategory) \
+        .query(DbTicketCategory) \
         .filter_by(party_id=party_id) \
         .count()
 
 
 def find_category(category_id: TicketCategoryID) -> Optional[TicketCategory]:
     """Return the category with that ID, or `None` if not found."""
-    db_category = db.session.get(DbCategory, category_id)
+    db_category = db.session.get(DbTicketCategory, category_id)
 
     if db_category is None:
         return None
@@ -81,7 +81,7 @@ def get_category(category_id: TicketCategoryID) -> TicketCategory:
 def get_categories_for_party(party_id: PartyID) -> Sequence[TicketCategory]:
     """Return all categories for that party."""
     db_categories = db.session \
-        .query(DbCategory) \
+        .query(DbTicketCategory) \
         .filter_by(party_id=party_id) \
         .all()
 
@@ -94,14 +94,14 @@ def get_categories_with_ticket_counts_for_party(
     party_id: PartyID,
 ) -> dict[TicketCategory, int]:
     """Return all categories with ticket counts for that party."""
-    category = db.aliased(DbCategory)
+    category = db.aliased(DbTicketCategory)
 
     subquery = db.session \
         .query(
             db.func.count(DbTicket.id)
         ) \
-        .join(DbCategory) \
-        .filter(DbCategory.id == category.id) \
+        .join(DbTicketCategory) \
+        .filter(DbTicketCategory.id == category.id) \
         .filter(DbTicket.revoked == False) \
         .scalar_subquery()
 
@@ -120,7 +120,7 @@ def get_categories_with_ticket_counts_for_party(
     }
 
 
-def _db_entity_to_category(db_category: DbCategory) -> TicketCategory:
+def _db_entity_to_category(db_category: DbTicketCategory) -> TicketCategory:
     return TicketCategory(
         id=db_category.id,
         party_id=db_category.party_id,

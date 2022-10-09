@@ -15,7 +15,8 @@ from ...database import db, paginate, Pagination
 from ...typing import PartyID, UserID
 
 from ..seating.dbmodels.seat import DbSeat
-from ..ticketing.dbmodels.ticket import DbCategory, DbTicket
+from ..ticketing.dbmodels.category import DbTicketCategory
+from ..ticketing.dbmodels.ticket import DbTicket
 from ..user.dbmodels.user import DbUser
 from ..user_avatar.dbmodels import DbUserAvatarSelection
 
@@ -67,13 +68,13 @@ def _get_users_paginated(
         ) \
         .join(DbTicket, DbTicket.used_by_id == DbUser.id) \
         .filter(DbTicket.revoked == False) \
-        .join(DbCategory).filter(DbCategory.party_id == party_id) \
+        .join(DbTicketCategory).filter(DbTicketCategory.party_id == party_id) \
         .order_by('screen_name_lower')
 
     count_query = select(db.func.count(db.distinct(DbUser.id))) \
         .join(DbTicket, DbTicket.used_by_id == DbUser.id) \
         .filter(DbTicket.revoked == False) \
-        .join(DbCategory).filter(DbCategory.party_id == party_id)
+        .join(DbTicketCategory).filter(DbTicketCategory.party_id == party_id)
 
     if search_term:
         items_query = items_query \
