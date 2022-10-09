@@ -6,7 +6,7 @@
 import pytest
 from pytest import raises
 
-from byceps.services.seating import area_service, seat_service
+from byceps.services.seating import seat_service, seating_area_service
 from byceps.services.ticketing import (
     ticket_bundle_service,
     ticket_creation_service,
@@ -26,9 +26,9 @@ import byceps.services.seating.dbmodels.seat_group
 
 @pytest.fixture(scope='module')
 def area(party):
-    area = area_service.create_area(party.id, 'main', 'Main Hall')
+    area = seating_area_service.create_area(party.id, 'main', 'Main Hall')
     yield area
-    area_service.delete_area(area.id)
+    seating_area_service.delete_area(area.id)
 
 
 @pytest.fixture

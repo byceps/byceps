@@ -11,9 +11,9 @@ from flask_babel import gettext
 
 from ....services.party import party_service
 from ....services.seating import (
-    area_service as seating_area_service,
     seat_group_service,
     seat_service,
+    seating_area_service,
 )
 from ....services.ticketing import ticket_category_service
 from ....util.framework.blueprint import create_blueprint

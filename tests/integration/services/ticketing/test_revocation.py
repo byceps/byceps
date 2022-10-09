@@ -5,10 +5,7 @@
 
 import pytest
 
-from byceps.services.seating import (
-    area_service as seating_area_service,
-    seat_service,
-)
+from byceps.services.seating import seat_service, seating_area_service
 from byceps.services.ticketing import (
     ticket_creation_service,
     ticket_log_service,

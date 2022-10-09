@@ -19,10 +19,7 @@ from ....services.newsletter import newsletter_service
 from ....services.orga import orga_birthday_service
 from ....services.orga_team import orga_team_service
 from ....services.party import party_service
-from ....services.seating import (
-    area_service as seating_area_service,
-    seat_service,
-)
+from ....services.seating import seat_service, seating_area_service
 from ....services.shop.order import order_service as shop_order_service
 from ....services.shop.shop import shop_service
 from ....services.shop.storefront import storefront_service
