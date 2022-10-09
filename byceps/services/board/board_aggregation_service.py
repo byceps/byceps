@@ -8,12 +8,12 @@ byceps.services.board.board_aggregation_service
 
 from ...database import db
 
-from .dbmodels.category import DbCategory
+from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting
 from .dbmodels.topic import DbTopic
 
 
-def aggregate_category(category: DbCategory) -> None:
+def aggregate_category(category: DbBoardCategory) -> None:
     """Update the category's count and latest fields."""
     topic_count = db.session \
         .query(DbTopic) \

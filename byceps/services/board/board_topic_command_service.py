@@ -30,7 +30,7 @@ from . import (
     board_posting_command_service,
     board_topic_query_service,
 )
-from .dbmodels.category import DbCategory
+from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbInitialTopicPostingAssociation, DbPosting
 from .dbmodels.topic import DbTopic
 from .transfer.models import CategoryID, TopicID
@@ -286,7 +286,7 @@ def move_topic(
     now = datetime.utcnow()
 
     old_category = topic.category
-    new_category = db.session.get(DbCategory, new_category_id)
+    new_category = db.session.get(DbBoardCategory, new_category_id)
 
     topic.category = new_category
     db.session.commit()

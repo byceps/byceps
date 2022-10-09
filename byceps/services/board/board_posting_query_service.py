@@ -17,7 +17,7 @@ from ...util.iterables import index_of
 from ..user import user_service
 from ..user.transfer.models import User
 
-from .dbmodels.category import DbCategory
+from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting
 from .dbmodels.topic import DbTopic
 from .transfer.models import BoardID, PostingID, TopicID
@@ -27,7 +27,9 @@ def count_postings_for_board(board_id: BoardID) -> int:
     """Return the number of postings for that board."""
     return db.session \
         .query(DbPosting) \
-        .join(DbTopic).join(DbCategory).filter(DbCategory.board_id == board_id) \
+        .join(DbTopic) \
+            .join(DbBoardCategory) \
+                .filter(DbBoardCategory.board_id == board_id) \
         .count()
 
 

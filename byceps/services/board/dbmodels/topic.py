@@ -18,7 +18,7 @@ from ...user.dbmodels.user import DbUser
 
 from ..transfer.models import CategoryID
 
-from .category import DbCategory
+from .category import DbBoardCategory
 
 
 class DbTopic(db.Model):
@@ -33,7 +33,7 @@ class DbTopic(db.Model):
         index=True,
         nullable=False,
     )
-    category = db.relationship(DbCategory)
+    category = db.relationship(DbBoardCategory)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     title = db.Column(db.UnicodeText, nullable=False)

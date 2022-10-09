@@ -14,7 +14,7 @@ from ....util.instances import ReprBuilder
 
 from ..transfer.models import CategoryID
 
-from .category import DbCategory
+from .category import DbBoardCategory
 
 
 class DbLastCategoryView(db.Model):
@@ -26,7 +26,7 @@ class DbLastCategoryView(db.Model):
     category_id = db.Column(
         db.Uuid, db.ForeignKey('board_categories.id'), primary_key=True
     )
-    category = db.relationship(DbCategory)
+    category = db.relationship(DbBoardCategory)
     occurred_at = db.Column(db.DateTime, nullable=False)
 
     def __init__(

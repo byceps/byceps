@@ -10,7 +10,7 @@ from ...database import db
 
 from . import board_topic_query_service
 from .dbmodels.board import DbBoard
-from .dbmodels.category import DbCategory
+from .dbmodels.category import DbBoardCategory
 from .transfer.models import BoardID, Category, CategoryID
 
 
@@ -22,7 +22,7 @@ def create_category(
     if board is None:
         raise ValueError(f'Unknown board ID "{board_id}"')
 
-    category = DbCategory(board.id, slug, title, description)
+    category = DbBoardCategory(board.id, slug, title, description)
     board.categories.append(category)
 
     db.session.commit()
@@ -108,8 +108,8 @@ def delete_category(category_id: CategoryID) -> None:
     db.session.commit()
 
 
-def _get_category(category_id: CategoryID) -> DbCategory:
-    category = db.session.get(DbCategory, category_id)
+def _get_category(category_id: CategoryID) -> DbBoardCategory:
+    category = db.session.get(DbBoardCategory, category_id)
 
     if category is None:
         raise ValueError(f'Unknown category ID "{category_id}"')
@@ -117,7 +117,7 @@ def _get_category(category_id: CategoryID) -> DbCategory:
     return category
 
 
-def _db_entity_to_category(category: DbCategory) -> Category:
+def _db_entity_to_category(category: DbBoardCategory) -> Category:
     return Category(
         category.id,
         category.board_id,

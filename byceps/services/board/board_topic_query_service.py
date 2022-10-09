@@ -14,7 +14,7 @@ from sqlalchemy.sql import Select
 
 from ...database import db, paginate, Pagination
 
-from .dbmodels.category import DbCategory
+from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting
 from .dbmodels.topic import DbTopic
 from .transfer.models import BoardID, CategoryID, TopicID
@@ -24,8 +24,8 @@ def count_topics_for_board(board_id: BoardID) -> int:
     """Return the number of topics for that board."""
     return db.session \
         .query(DbTopic) \
-        .join(DbCategory) \
-            .filter(DbCategory.board_id == board_id) \
+        .join(DbBoardCategory) \
+            .filter(DbBoardCategory.board_id == board_id) \
         .count()
 
 
@@ -69,9 +69,9 @@ def get_recent_topics(
 ) -> list[DbTopic]:
     """Return recent topics in that board."""
     query = _query_topics(include_hidden) \
-        .join(DbCategory) \
-            .filter(DbCategory.board_id == board_id) \
-            .filter(DbCategory.hidden == False) \
+        .join(DbBoardCategory) \
+            .filter(DbBoardCategory.board_id == board_id) \
+            .filter(DbBoardCategory.hidden == False) \
         .order_by(DbTopic.last_updated_at.desc()) \
         .limit(limit)
 
@@ -83,15 +83,15 @@ def paginate_topics(
 ) -> Pagination:
     """Paginate topics in that board."""
     items_query = _query_topics(include_hidden) \
-        .join(DbCategory) \
-            .filter(DbCategory.board_id == board_id) \
-            .filter(DbCategory.hidden == False) \
+        .join(DbBoardCategory) \
+            .filter(DbBoardCategory.board_id == board_id) \
+            .filter(DbBoardCategory.hidden == False) \
         .order_by(DbTopic.last_updated_at.desc())
 
     count_query = _count_topics(include_hidden) \
-        .join(DbCategory) \
-            .filter(DbCategory.board_id == board_id) \
-            .filter(DbCategory.hidden == False)
+        .join(DbBoardCategory) \
+            .filter(DbBoardCategory.board_id == board_id) \
+            .filter(DbBoardCategory.hidden == False)
 
     return paginate(
         items_query, count_query, page, per_page, scalar_result=True

@@ -18,7 +18,7 @@ from ..transfer.models import BoardID
 from .board import DbBoard
 
 
-class DbCategory(db.Model):
+class DbBoardCategory(db.Model):
     """A category for topics."""
 
     __tablename__ = 'board_categories'
