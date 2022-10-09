@@ -11,7 +11,7 @@ from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
 
-class DbArea(db.Model):
+class DbSeatingArea(db.Model):
     """A spatial representation of seats in one part of the party
     location.
 

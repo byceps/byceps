@@ -17,7 +17,7 @@ from ..ticketing.dbmodels.category import DbTicketCategory
 from ..ticketing.dbmodels.ticket import DbTicket
 from ..ticketing.transfer.models import TicketCategory, TicketCategoryID
 
-from .dbmodels.area import DbArea
+from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat
 from .transfer.models import AreaID, Seat, SeatID, SeatUtilization
 
@@ -118,8 +118,8 @@ def count_seats_for_party(party_id: PartyID) -> int:
     """Return the number of seats in seating areas for that party."""
     return db.session \
         .query(DbSeat) \
-        .join(DbArea) \
-        .filter(DbArea.party_id == party_id) \
+        .join(DbSeatingArea) \
+        .filter(DbSeatingArea.party_id == party_id) \
         .count()
 
 

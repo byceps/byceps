@@ -16,14 +16,14 @@ from ...typing import PartyID
 
 from ..ticketing.dbmodels.ticket import DbTicket
 
-from .dbmodels.area import DbArea
+from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat
 from .transfer.models import Area, SeatUtilization
 
 
 def create_area(party_id: PartyID, slug: str, title: str) -> Area:
     """Create an area."""
-    area = DbArea(party_id, slug, title)
+    area = DbSeatingArea(party_id, slug, title)
 
     db.session.add(area)
     db.session.commit()
@@ -33,7 +33,7 @@ def create_area(party_id: PartyID, slug: str, title: str) -> Area:
 
 def delete_area(area_id: str) -> None:
     """Delete an area."""
-    db.session.query(DbArea) \
+    db.session.query(DbSeatingArea) \
         .filter_by(id=area_id) \
         .delete()
     db.session.commit()
@@ -42,7 +42,7 @@ def delete_area(area_id: str) -> None:
 def count_areas_for_party(party_id: PartyID) -> int:
     """Return the number of seating areas for that party."""
     return db.session \
-        .query(DbArea) \
+        .query(DbSeatingArea) \
         .filter_by(party_id=party_id) \
         .count()
 
@@ -50,7 +50,7 @@ def count_areas_for_party(party_id: PartyID) -> int:
 def find_area_for_party_by_slug(party_id: PartyID, slug: str) -> Optional[Area]:
     """Return the area for that party with that slug, or `None` if not found."""
     area = db.session \
-        .query(DbArea) \
+        .query(DbSeatingArea) \
         .filter_by(party_id=party_id) \
         .filter_by(slug=slug) \
         .first()
@@ -76,8 +76,8 @@ def get_areas_with_seat_utilization_paginated(
     """Return areas and their seat utilization for that party, paginated."""
     items_query = _get_areas_with_seat_utilization_query(party_id)
 
-    count_query = select(db.func.count(DbArea.id)) \
-        .filter(DbArea.party_id == party_id)
+    count_query = select(db.func.count(DbSeatingArea.id)) \
+        .filter(DbSeatingArea.party_id == party_id)
 
     return paginate(
         items_query,
@@ -89,7 +89,7 @@ def get_areas_with_seat_utilization_paginated(
 
 
 def _get_areas_with_seat_utilization_query(party_id: PartyID) -> Select:
-    area = db.aliased(DbArea)
+    area = db.aliased(DbSeatingArea)
 
     subquery_occupied_seat_count = select(db.func.count(DbTicket.id)) \
         .filter(DbTicket.revoked == False) \
@@ -112,7 +112,7 @@ def _get_areas_with_seat_utilization_query(party_id: PartyID) -> Select:
 
 
 def _map_areas_with_seat_utilization_row(
-    row: tuple[DbArea, int, int]
+    row: tuple[DbSeatingArea, int, int]
 ) -> tuple[Area, SeatUtilization]:
     area, occupied_seat_count, total_seat_count = row
     utilization = SeatUtilization(
@@ -121,7 +121,7 @@ def _map_areas_with_seat_utilization_row(
     return _db_entity_to_area(area), utilization
 
 
-def _db_entity_to_area(area: DbArea) -> Area:
+def _db_entity_to_area(area: DbSeatingArea) -> Area:
     return Area(
         id=area.id,
         party_id=area.party_id,

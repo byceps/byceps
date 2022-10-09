@@ -19,9 +19,9 @@ from ..ticketing.transfer.models import TicketBundleID, TicketCategoryID
 
 from .dbmodels.seat import DbSeat
 from .dbmodels.seat_group import (
-    DbOccupancy as DbSeatGroupOccupancy,
     DbSeatGroup,
     DbSeatGroupAssignment,
+    DbSeatGroupOccupancy,
 )
 from .transfer.models import SeatID, SeatGroupID
 

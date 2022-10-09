@@ -97,7 +97,7 @@ class DbSeatGroupAssignment(db.Model):
             .build()
 
 
-class DbOccupancy(db.Model):
+class DbSeatGroupOccupancy(db.Model):
     """The occupancy of a seat group."""
 
     __tablename__ = 'seat_group_occupancies'
