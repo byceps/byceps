@@ -30,7 +30,7 @@ _ABSOLUTE_URL_PATH_PREFIX = '/data/global/users/avatars/'
 FALLBACK_AVATAR_URL_PATH = '/static/avatar_fallback.svg'
 
 
-class DbAvatar(db.Model):
+class DbUserAvatar(db.Model):
     """An avatar image uploaded by a user."""
 
     __tablename__ = 'user_avatars'
@@ -74,7 +74,7 @@ class DbAvatar(db.Model):
             .build()
 
 
-class DbAvatarSelection(db.Model):
+class DbUserAvatarSelection(db.Model):
     """The selection of an avatar image to be used for a user."""
 
     __tablename__ = 'user_avatar_selections'
@@ -86,7 +86,7 @@ class DbAvatarSelection(db.Model):
     avatar_id = db.Column(
         db.Uuid, db.ForeignKey('user_avatars.id'), unique=True, nullable=False
     )
-    avatar = db.relationship(DbAvatar)
+    avatar = db.relationship(DbUserAvatar)
 
     def __init__(self, user_id: UserID, avatar_id: AvatarID) -> None:
         self.user_id = user_id

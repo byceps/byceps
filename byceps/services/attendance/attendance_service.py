@@ -17,7 +17,7 @@ from ...typing import PartyID, UserID
 from ..seating.dbmodels.seat import DbSeat
 from ..ticketing.dbmodels.ticket import DbCategory, DbTicket
 from ..user.dbmodels.user import DbUser
-from ..user_avatar.dbmodels import DbAvatarSelection
+from ..user_avatar.dbmodels import DbUserAvatarSelection
 
 from .transfer.models import Attendee, AttendeeTicket
 
@@ -63,7 +63,7 @@ def _get_users_paginated(
         .options(
             db.load_only(DbUser.id, DbUser.screen_name, DbUser.deleted),
             db.joinedload(DbUser.avatar_selection)
-                .joinedload(DbAvatarSelection.avatar),
+                .joinedload(DbUserAvatarSelection.avatar),
         ) \
         .join(DbTicket, DbTicket.used_by_id == DbUser.id) \
         .filter(DbTicket.revoked == False) \

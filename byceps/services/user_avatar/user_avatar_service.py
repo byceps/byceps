@@ -21,7 +21,7 @@ from ..image.image_service import ImageTypeProhibited  # Provide to view functio
 from ..user.dbmodels.user import DbUser
 from ..user import user_service
 
-from .dbmodels import DbAvatar, DbAvatarSelection
+from .dbmodels import DbUserAvatar, DbUserAvatarSelection
 from .transfer.models import AvatarID, AvatarUpdate
 
 
@@ -51,7 +51,7 @@ def update_avatar_image(
             stream, image_type.name, maximum_dimensions, force_square=True
         )
 
-    avatar = DbAvatar(user.id, image_type)
+    avatar = DbUserAvatar(user.id, image_type)
     db.session.add(avatar)
     db.session.commit()
 
@@ -70,7 +70,7 @@ def remove_avatar_image(user_id: UserID) -> None:
     The avatar will be unlinked from the user, but the database record
     as well as the image file itself won't be removed, though.
     """
-    selection = db.session.get(DbAvatarSelection, user_id)
+    selection = db.session.get(DbUserAvatarSelection, user_id)
 
     if selection is None:
         raise ValueError(f'No avatar set for user ID {user_id}.')
@@ -79,10 +79,10 @@ def remove_avatar_image(user_id: UserID) -> None:
     db.session.commit()
 
 
-def get_db_avatar(avatar_id: AvatarID) -> DbAvatar:
+def get_db_avatar(avatar_id: AvatarID) -> DbUserAvatar:
     """Return the avatar with that ID, or raise exception if not found."""
     return db.session.execute(
-        select(DbAvatar)
+        select(DbUserAvatar)
         .filter_by(id=avatar_id)
     ).scalar_one()
 
@@ -90,7 +90,7 @@ def get_db_avatar(avatar_id: AvatarID) -> DbAvatar:
 def get_avatars_uploaded_by_user(user_id: UserID) -> list[AvatarUpdate]:
     """Return the avatars uploaded by the user."""
     avatars = db.session \
-        .query(DbAvatar) \
+        .query(DbUserAvatar) \
         .filter_by(creator_id=user_id) \
         .all()
 
@@ -111,11 +111,11 @@ def get_avatar_urls_for_users(
         return {}
 
     user_ids_and_avatars = db.session.query(
-            DbAvatarSelection.user_id,
-            DbAvatar,
+            DbUserAvatarSelection.user_id,
+            DbUserAvatar,
         ) \
-        .join(DbAvatar) \
-        .filter(DbAvatarSelection.user_id.in_(user_ids)) \
+        .join(DbUserAvatar) \
+        .filter(DbUserAvatarSelection.user_id.in_(user_ids)) \
         .all()
 
     urls_by_user_id = {
@@ -131,8 +131,8 @@ def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> Optional[str]:
     email address, or `None` if not set.
     """
     avatar = db.session \
-        .query(DbAvatar) \
-        .join(DbAvatarSelection) \
+        .query(DbUserAvatar) \
+        .join(DbUserAvatarSelection) \
         .join(DbUser) \
         .filter(db.func.md5(DbUser.email_address) == md5_hash) \
         .one_or_none()

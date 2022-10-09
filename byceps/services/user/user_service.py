@@ -16,7 +16,7 @@ from sqlalchemy.sql import Select
 from ...database import db, paginate, Pagination
 from ...typing import UserID
 
-from ..user_avatar.dbmodels import DbAvatar, DbAvatarSelection
+from ..user_avatar.dbmodels import DbUserAvatar, DbUserAvatarSelection
 
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
@@ -133,19 +133,19 @@ def _get_user_query(
             DbUser.suspended,
             DbUser.deleted,
             DbUser.locale,
-            DbAvatar if include_avatar else db.null(),
+            DbUserAvatar if include_avatar else db.null(),
         )
 
     if include_avatar:
         query = query \
-            .outerjoin(DbAvatarSelection, DbUser.avatar_selection) \
-            .outerjoin(DbAvatar)
+            .outerjoin(DbUserAvatarSelection, DbUser.avatar_selection) \
+            .outerjoin(DbUserAvatar)
 
     return query
 
 
 def _user_row_to_dto(
-    row: tuple[UserID, str, bool, bool, Optional[str], Optional[DbAvatar]]
+    row: tuple[UserID, str, bool, bool, Optional[str], Optional[DbUserAvatar]]
 ) -> User:
     user_id, screen_name, suspended, deleted, locale, avatar = row
     avatar_url = avatar.url if (avatar is not None) else None
@@ -228,7 +228,7 @@ def find_user_for_admin(user_id: UserID) -> Optional[UserForAdmin]:
         .query(DbUser) \
         .options(
             db.joinedload(DbUser.avatar_selection)
-                .joinedload(DbAvatarSelection.avatar),
+                .joinedload(DbUserAvatarSelection.avatar),
             db.joinedload(DbUser.detail)
                 .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
         ) \
@@ -259,7 +259,7 @@ def get_users_for_admin(user_ids: set[UserID]) -> set[UserForAdmin]:
         select(DbUser)
         .options(
             db.joinedload(DbUser.avatar_selection)
-                .joinedload(DbAvatarSelection.avatar),
+                .joinedload(DbUserAvatarSelection.avatar),
             db.joinedload(DbUser.detail)
                 .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
         )
@@ -435,7 +435,7 @@ def get_users_created_since(
         .query(DbUser) \
         .options(
             db.joinedload(DbUser.avatar_selection)
-                .joinedload(DbAvatarSelection.avatar),
+                .joinedload(DbUserAvatarSelection.avatar),
             db.joinedload(DbUser.detail)
                 .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
         ) \
@@ -463,7 +463,7 @@ def get_users_paginated(
     items_query = select(DbUser) \
         .options(
             db.joinedload(DbUser.avatar_selection)
-                .joinedload(DbAvatarSelection.avatar),
+                .joinedload(DbUserAvatarSelection.avatar),
             db.joinedload(DbUser.detail)
                 .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
         ) \

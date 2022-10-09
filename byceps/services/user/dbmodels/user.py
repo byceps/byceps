@@ -14,7 +14,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ...user_avatar.dbmodels import DbAvatarSelection
+from ...user_avatar.dbmodels import DbUserAvatarSelection
 
 
 class DbUser(db.Model):
@@ -38,7 +38,7 @@ class DbUser(db.Model):
     avatar = association_proxy(
         'avatar_selection',
         'avatar',
-        creator=lambda avatar: DbAvatarSelection(None, avatar.id),
+        creator=lambda avatar: DbUserAvatarSelection(None, avatar.id),
     )
 
     def __init__(
