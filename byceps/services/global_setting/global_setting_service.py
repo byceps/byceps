@@ -8,6 +8,8 @@ byceps.services.global_setting.global_setting_service
 
 from typing import Optional
 
+from sqlalchemy import delete, select
+
 from ...database import db, upsert
 
 from .dbmodels import DbSetting
@@ -42,11 +44,7 @@ def remove_setting(name: str) -> None:
 
     Do nothing if no global setting with that name exists.
     """
-    db.session \
-        .query(DbSetting) \
-        .filter_by(name=name) \
-        .delete()
-
+    db.session.execute(delete(DbSetting).where(DbSetting.name == name))
     db.session.commit()
 
 
@@ -74,7 +72,7 @@ def find_setting_value(name: str) -> Optional[str]:
 
 def get_settings() -> set[GlobalSetting]:
     """Return all global settings."""
-    settings = db.session.query(DbSetting).all()
+    settings = db.session.scalars(select(DbSetting)).all()
 
     return {_db_entity_to_global_setting(setting) for setting in settings}
 

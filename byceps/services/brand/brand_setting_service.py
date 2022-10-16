@@ -8,6 +8,8 @@ byceps.services.brand.brand_setting_service
 
 from typing import Optional
 
+from sqlalchemy import delete, select
+
 from ...database import db, upsert
 from ...typing import BrandID
 
@@ -50,9 +52,11 @@ def remove_setting(brand_id: BrandID, name: str) -> None:
 
     Do nothing if no setting with that name exists for the brand.
     """
-    db.session.query(DbSetting) \
-        .filter_by(brand_id=brand_id, name=name) \
-        .delete()
+    db.session.execute(
+        delete(DbSetting)
+        .where(DbSetting.brand_id == brand_id)
+        .where(DbSetting.name == name)
+    )
     db.session.commit()
 
 
@@ -82,10 +86,9 @@ def find_setting_value(brand_id: BrandID, name: str) -> Optional[str]:
 
 def get_settings(brand_id: BrandID) -> set[BrandSetting]:
     """Return all settings for that brand."""
-    settings = db.session \
-        .query(DbSetting) \
-        .filter_by(brand_id=brand_id) \
-        .all()
+    settings = db.session.scalars(
+        select(DbSetting).filter_by(brand_id=brand_id)
+    ).all()
 
     return {_db_entity_to_brand_setting(setting) for setting in settings}
 

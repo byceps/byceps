@@ -8,6 +8,8 @@ byceps.services.party.party_setting_service
 
 from typing import Optional
 
+from sqlalchemy import delete, select
+
 from ...database import db, upsert
 from ...typing import PartyID
 
@@ -50,9 +52,11 @@ def remove_setting(party_id: PartyID, name: str) -> None:
 
     Do nothing if no setting with that name exists for the party.
     """
-    db.session.query(DbSetting) \
-        .filter_by(party_id=party_id, name=name) \
-        .delete()
+    db.session.execute(
+        delete(DbSetting)
+        .where(DbSetting.party_id == party_id)
+        .where(DbSetting.name == name)
+    )
     db.session.commit()
 
 
@@ -82,10 +86,9 @@ def find_setting_value(party_id: PartyID, name: str) -> Optional[str]:
 
 def get_settings(party_id: PartyID) -> set[PartySetting]:
     """Return all settings for that party."""
-    settings = db.session \
-        .query(DbSetting) \
-        .filter_by(party_id=party_id) \
-        .all()
+    settings = db.session.scalars(
+        select(DbSetting).filter_by(party_id=party_id)
+    ).all()
 
     return {_db_entity_to_party_setting(setting) for setting in settings}
 

@@ -8,6 +8,8 @@ byceps.services.site.site_setting_service
 
 from typing import Optional
 
+from sqlalchemy import delete, select
+
 from ...database import db, upsert
 
 from .dbmodels.setting import DbSetting
@@ -49,9 +51,11 @@ def remove_setting(site_id: SiteID, name: str) -> None:
 
     Do nothing if no setting with that name exists for the site.
     """
-    db.session.query(DbSetting) \
-        .filter_by(site_id=site_id, name=name) \
-        .delete()
+    db.session.execute(
+        delete(DbSetting)
+        .where(DbSetting.site_id == site_id)
+        .where(DbSetting.name == name)
+    )
     db.session.commit()
 
 
@@ -81,10 +85,9 @@ def find_setting_value(site_id: SiteID, name: str) -> Optional[str]:
 
 def get_settings(site_id: SiteID) -> set[SiteSetting]:
     """Return all settings for that site."""
-    settings = db.session \
-        .query(DbSetting) \
-        .filter_by(site_id=site_id) \
-        .all()
+    settings = db.session.scalars(
+        select(DbSetting).filter_by(site_id=site_id)
+    ).all()
 
     return {_db_entity_to_site_setting(setting) for setting in settings}
 
