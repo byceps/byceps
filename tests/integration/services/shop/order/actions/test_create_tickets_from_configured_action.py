@@ -107,7 +107,7 @@ def test_create_tickets_with_same_code_fails(
     order: Order,
     order_action,
 ) -> None:
-    generate_ticket_code_mock.side_effect = lambda: 'EQUAL'
+    generate_ticket_code_mock.side_effect = lambda: 'EQUAL'  # noqa: E731
 
     with raises(TicketCreationFailed):
         mark_order_as_paid(order.id, admin_user.id)
@@ -130,7 +130,7 @@ def test_create_tickets_with_temporarily_equal_code_and_retry_succeeds(
     codes = ['EQUAL'] * code_generation_retries * necessary_outer_retries
     codes += ['TICK1', 'TICK2', 'TICK3', 'TICK4']
     codes_iter = iter(codes)
-    generate_ticket_code_mock.side_effect = lambda: next(codes_iter)
+    generate_ticket_code_mock.side_effect = lambda: next(codes_iter)  # noqa: E731
 
     tickets_before_paid = get_tickets_for_order(order)
     assert len(tickets_before_paid) == 0
