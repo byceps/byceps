@@ -50,7 +50,7 @@ def test_team_create_and_delete(
 def test_teams_copy_form_with_target_party_teams(
     orga_team_admin_client, brand: Brand, make_party, make_team
 ) -> None:
-    source_party = make_party(brand.id)
+    _source_party = make_party(brand.id)
     target_party = make_party(brand.id)
 
     make_team(target_party.id, 'Security')
