@@ -181,7 +181,7 @@ def unpublish_item(
     item_id: ItemID,
     *,
     initiator_id: Optional[UserID] = None,
-) -> NewsItemPublished:
+) -> None:
     """Unublish a news item."""
     db_item = _get_db_item(item_id)
 
