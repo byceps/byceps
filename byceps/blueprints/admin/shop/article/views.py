@@ -355,7 +355,6 @@ def create(shop_id, type):
     price = form.price.data
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
     total_quantity = form.total_quantity.data
-    quantity = total_quantity
     max_quantity_per_order = form.max_quantity_per_order.data
 
     if type_ == ArticleType.ticket:
