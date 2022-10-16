@@ -171,7 +171,7 @@ def publish_item(
         initiator_screen_name=initiator.screen_name if initiator else None,
         item_id=item.id,
         channel_id=item.channel.id,
-        published_at=item.published_at,
+        published_at=publish_at,
         title=item.title,
         external_url=external_url,
     )
