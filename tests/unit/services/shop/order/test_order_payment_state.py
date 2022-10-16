@@ -24,9 +24,9 @@ def test_is_open():
     order = create_order_with_payment_state(payment_state)
 
     assert order.payment_state == payment_state
-    assert order.is_open == True
-    assert order.is_canceled == False
-    assert order.is_paid == False
+    assert order.is_open
+    assert not order.is_canceled
+    assert not order.is_paid
 
 
 def test_is_canceled():
@@ -35,9 +35,9 @@ def test_is_canceled():
     order = create_order_with_payment_state(payment_state)
 
     assert order.payment_state == payment_state
-    assert order.is_open == False
-    assert order.is_canceled == True
-    assert order.is_paid == False
+    assert not order.is_open
+    assert order.is_canceled
+    assert not order.is_paid
 
 
 def test_is_paid():
@@ -46,9 +46,9 @@ def test_is_paid():
     order = create_order_with_payment_state(payment_state)
 
     assert order.payment_state == payment_state
-    assert order.is_open == False
-    assert order.is_canceled == False
-    assert order.is_paid == True
+    assert not order.is_open
+    assert not order.is_canceled
+    assert order.is_paid
 
 
 def test_is_canceled_after_paid():
@@ -57,9 +57,9 @@ def test_is_canceled_after_paid():
     order = create_order_with_payment_state(payment_state)
 
     assert order.payment_state == payment_state
-    assert order.is_open == False
-    assert order.is_canceled == True
-    assert order.is_paid == False
+    assert not order.is_open
+    assert order.is_canceled
+    assert not order.is_paid
 
 
 # helpers
