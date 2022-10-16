@@ -12,7 +12,7 @@ from byceps.services.site import site_service
 from byceps.services.snippet import snippet_service
 
 from tests.helpers import create_site, http_client, log_in_user
-from tests.integration.services.shop.conftest import make_orderer
+from tests.integration.services.shop.conftest import make_orderer  # noqa: F401
 from tests.integration.services.shop.helpers import create_shop_snippet
 
 

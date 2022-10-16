@@ -35,7 +35,7 @@ from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 
 from tests.helpers import log_in_user
-from tests.integration.services.shop.conftest import make_article, make_orderer
+from tests.integration.services.shop.conftest import make_article, make_orderer  # noqa: F401
 
 
 @pytest.fixture(scope='package')

@@ -5,7 +5,7 @@
 
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.
+import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
 from byceps.services.page import page_service
 from byceps.signals import page as page_signals
 

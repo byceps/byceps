@@ -5,7 +5,7 @@
 
 from unittest.mock import patch
 
-import byceps.announce.connections  # Connect signal handlers.
+import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
 from byceps.events.ticketing import TicketCheckedIn, TicketsSold
 from byceps.services.ticketing.transfer.models import TicketSaleStats
 from byceps.signals import ticketing as ticketing_signals

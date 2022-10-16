@@ -5,7 +5,7 @@
 
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.
+import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
 from byceps.events.tourney import (
     TourneyParticipantReady,
     TourneyParticipantEliminated,

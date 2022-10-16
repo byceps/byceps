@@ -5,7 +5,7 @@
 
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.
+import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
 from byceps.services.authentication.session import authn_session_service
 from byceps.signals import auth as auth_signals
 

@@ -12,7 +12,7 @@ from ....database import db
 from ....util.instances import ReprBuilder
 
 # Make shop catalog tables available for database creation.
-from ..catalog.dbmodels import DbCatalog
+from ..catalog.dbmodels import DbCatalog  # noqa: F401
 from ..catalog.transfer.models import CatalogID
 from ..order.transfer.number import OrderNumberSequenceID
 from ..shop.transfer.models import ShopID

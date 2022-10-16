@@ -54,7 +54,7 @@ from tests.helpers import (
     http_client,
 )
 
-from .database import set_up_database, tear_down_database
+from .database import set_up_database, tear_down_database  # noqa: F401
 
 
 _CONFIG_PATH_DATA_KEY = 'PATH_DATA'

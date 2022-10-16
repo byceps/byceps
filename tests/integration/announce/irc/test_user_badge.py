@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-import byceps.announce.connections  # Connect signal handlers.
+import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
 from byceps.services.user_badge import (
     user_badge_awarding_service,
     user_badge_service,

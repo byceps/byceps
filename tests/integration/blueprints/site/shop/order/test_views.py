@@ -29,7 +29,7 @@ from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 
 from tests.helpers import create_site, http_client, log_in_user
-from tests.integration.services.shop.conftest import make_article
+from tests.integration.services.shop.conftest import make_article  # noqa: F401
 from tests.integration.services.shop.helpers import create_shop_snippet
 
 

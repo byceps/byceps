@@ -6,7 +6,7 @@
 from flask import Flask
 import pytest
 
-import byceps.announce.connections  # Connect signal handlers.
+import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
 from byceps.services.brand.transfer.models import Brand
 from byceps.services.news import news_item_service
 from byceps.services.news.transfer.models import BodyFormat, Channel, Item

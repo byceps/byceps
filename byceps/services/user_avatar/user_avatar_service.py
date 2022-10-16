@@ -17,7 +17,7 @@ from ...util.image.models import Dimensions, ImageType
 from ...util import upload
 
 from ..image import image_service
-from ..image.image_service import ImageTypeProhibited  # Provide to view functions.
+from ..image.image_service import ImageTypeProhibited  # Provide to view functions.  # noqa: F401
 from ..user.dbmodels.user import DbUser
 from ..user import user_service
 
