@@ -9,6 +9,7 @@ byceps.services.news.news_image_service
 from typing import BinaryIO, Optional
 
 from flask import current_app
+from sqlalchemy import select
 
 from ...database import db, generate_uuid
 from ...typing import UserID
@@ -107,10 +108,9 @@ def _find_highest_number(item_id: ItemID) -> Optional[int]:
     """Return the highest image number for that item, or `None` if the
     item has no images.
     """
-    return db.session \
-        .query(db.func.max(DbImage.number)) \
-        .filter_by(item_id=item_id) \
-        .scalar()
+    return db.session.scalar(
+        select(db.func.max(DbImage.number)).filter_by(item_id=item_id)
+    )
 
 
 def _get_next_available_number(item_id: ItemID) -> int:
@@ -157,10 +157,11 @@ def find_image(image_id: ImageID) -> Optional[Image]:
 
 def _find_db_image(image_id: ImageID) -> Optional[DbImage]:
     """Return the image with that id, or `None` if not found."""
-    return db.session \
-        .query(DbImage) \
-        .options(db.joinedload(DbImage.item).load_only('channel_id')) \
-        .get(image_id)
+    return db.session.scalars(
+        select(DbImage)
+        .filter(DbImage.id == image_id)
+        .options(db.joinedload(DbImage.item).load_only('channel_id'))
+    ).one_or_none()
 
 
 def _db_entity_to_image(db_image: DbImage, channel_id: ChannelID) -> Image:

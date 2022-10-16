@@ -11,7 +11,7 @@ from datetime import datetime
 from functools import partial
 from typing import Optional, Union
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.sql import Select
 
 from ...database import db, paginate, Pagination
@@ -194,18 +194,15 @@ def unpublish_item(
 
 def delete_item(item_id: ItemID) -> None:
     """Delete a news item and its versions."""
-    db.session.query(DbCurrentVersionAssociation) \
-        .filter_by(item_id=item_id) \
-        .delete()
-
-    db.session.query(DbItemVersion) \
-        .filter_by(item_id=item_id) \
-        .delete()
-
-    db.session.query(DbItem) \
-        .filter_by(id=item_id) \
-        .delete()
-
+    db.session.execute(
+        delete(DbCurrentVersionAssociation).where(
+            DbCurrentVersionAssociation.item_id == item_id
+        )
+    )
+    db.session.execute(
+        delete(DbItemVersion).where(DbItemVersion.item_id == item_id)
+    )
+    db.session.execute(delete(DbItem).where(DbItem.id == item_id))
     db.session.commit()
 
 
@@ -221,12 +218,11 @@ def find_item(item_id: ItemID) -> Optional[Item]:
 
 def _find_db_item(item_id: ItemID) -> Optional[DbItem]:
     """Return the item with that id, or `None` if not found."""
-    return db.session.query(DbItem) \
-        .options(
-            db.joinedload(DbItem.channel),
-            db.joinedload(DbItem.images)
-        ) \
-        .get(item_id)
+    return db.session.scalars(
+        select(DbItem)
+        .filter(DbItem.id == item_id)
+        .options(db.joinedload(DbItem.channel), db.joinedload(DbItem.images))
+    ).unique().one_or_none()
 
 
 def _get_db_item(item_id: ItemID) -> DbItem:
@@ -245,21 +241,22 @@ def find_aggregated_item_by_slug(
     """Return the news item identified by that slug in one of the given
     channels, or `None` if not found.
     """
-    query = db.session \
-        .query(DbItem) \
-        .filter(DbItem.channel_id.in_(channel_ids)) \
+    stmt = (
+        select(DbItem)
+        .filter(DbItem.channel_id.in_(channel_ids))
+        .filter_by(slug=slug)
         .options(
             db.joinedload(DbItem.channel),
             db.joinedload(DbItem.current_version_association)
                 .joinedload(DbCurrentVersionAssociation.version),
-            db.joinedload(DbItem.images)
-        ) \
-        .filter_by(slug=slug)
+            db.joinedload(DbItem.images),
+        )
+    )
 
     if published_only:
-        query = query.filter(DbItem.published_at <= datetime.utcnow())
+        stmt = stmt.filter(DbItem.published_at <= datetime.utcnow())
 
-    db_item = query.one_or_none()
+    db_item = db.session.scalars(stmt).unique().one_or_none()
 
     if db_item is None:
         return None
@@ -275,20 +272,18 @@ def get_aggregated_items_paginated(
     published_only: bool = False,
 ) -> Pagination:
     """Return the news items to show on the specified page."""
-    items_query = _get_items_query(channel_ids)
-    count_query = _get_count_query(channel_ids)
+    items_stmt = _get_items_stmt(channel_ids)
+    count_stmt = _get_count_stmt(channel_ids)
 
     if published_only:
-        items_query = items_query \
-            .filter(DbItem.published_at <= datetime.utcnow())
-        count_query = count_query \
-            .filter(DbItem.published_at <= datetime.utcnow())
+        items_stmt = items_stmt.filter(DbItem.published_at <= datetime.utcnow())
+        count_stmt = count_stmt.filter(DbItem.published_at <= datetime.utcnow())
 
     item_mapper = partial(_db_entity_to_item, render_body=True)
 
     return paginate(
-        items_query,
-        count_query,
+        items_stmt,
+        count_stmt,
         page,
         items_per_page,
         scalar_result=True,
@@ -301,12 +296,12 @@ def get_items_paginated(
     channel_ids: set[ChannelID], page: int, items_per_page: int
 ) -> Pagination:
     """Return the news items to show on the specified page."""
-    items_query = _get_items_query(channel_ids)
-    count_query = _get_count_query(channel_ids)
+    items_stmt = _get_items_stmt(channel_ids)
+    count_stmt = _get_count_stmt(channel_ids)
 
     return paginate(
-        items_query,
-        count_query,
+        items_stmt,
+        count_stmt,
         page,
         items_per_page,
         scalar_result=True,
@@ -318,17 +313,17 @@ def get_recent_headlines(
     channel_ids: Union[frozenset[ChannelID], set[ChannelID]], limit: int
 ) -> list[Headline]:
     """Return the most recent headlines."""
-    db_items = db.session \
-        .query(DbItem) \
-        .filter(DbItem.channel_id.in_(channel_ids)) \
+    db_items = db.session.scalars(
+        select(DbItem)
+        .filter(DbItem.channel_id.in_(channel_ids))
         .options(
             db.joinedload(DbItem.current_version_association)
                 .joinedload(DbCurrentVersionAssociation.version)
-        ) \
-        .filter(DbItem.published_at <= datetime.utcnow()) \
-        .order_by(DbItem.published_at.desc()) \
-        .limit(limit) \
-        .all()
+        )
+        .filter(DbItem.published_at <= datetime.utcnow())
+        .order_by(DbItem.published_at.desc())
+        .limit(limit)
+    ).all()
 
     return [
         Headline(
@@ -340,30 +335,33 @@ def get_recent_headlines(
     ]
 
 
-def _get_items_query(channel_ids: set[ChannelID]) -> Select:
-    return select(DbItem) \
-        .filter(DbItem.channel_id.in_(channel_ids)) \
+def _get_items_stmt(channel_ids: set[ChannelID]) -> Select:
+    return (
+        select(DbItem)
+        .filter(DbItem.channel_id.in_(channel_ids))
         .options(
             db.joinedload(DbItem.channel),
             db.joinedload(DbItem.current_version_association)
                 .joinedload(DbCurrentVersionAssociation.version),
-            db.joinedload(DbItem.images)
-        ) \
+            db.joinedload(DbItem.images),
+        )
         .order_by(DbItem.published_at.desc())
+    )
 
 
-def _get_count_query(channel_ids: set[ChannelID]) -> Select:
-    return select(db.func.count(DbItem.id)) \
-        .filter(DbItem.channel_id.in_(channel_ids))
+def _get_count_stmt(channel_ids: set[ChannelID]) -> Select:
+    return select(db.func.count(DbItem.id)).filter(
+        DbItem.channel_id.in_(channel_ids)
+    )
 
 
 def get_item_versions(item_id: ItemID) -> list[DbItemVersion]:
     """Return all item versions, sorted from most recent to oldest."""
-    return db.session \
-        .query(DbItemVersion) \
-        .filter_by(item_id=item_id) \
-        .order_by(DbItemVersion.created_at.desc()) \
-        .all()
+    return db.session.scalars(
+        select(DbItemVersion)
+        .filter_by(item_id=item_id)
+        .order_by(DbItemVersion.created_at.desc())
+    ).all()
 
 
 def get_current_item_version(item_id: ItemID) -> DbItemVersion:
@@ -380,29 +378,25 @@ def find_item_version(version_id: ItemVersionID) -> DbItemVersion:
 
 def has_channel_items(channel_id: ChannelID) -> bool:
     """Return `True` if the channel contains items."""
-    return db.session \
-        .query(
-            db.session
-                .query(DbItem)
-                .join(DbChannel)
-                .filter(DbChannel.id == channel_id)
-                .exists()
-        ) \
-        .scalar()
+    return db.session.scalar(
+        select(
+            select(DbItem)
+            .join(DbChannel)
+            .filter(DbChannel.id == channel_id)
+            .exists()
+        )
+    )
 
 
 def get_item_count_by_channel_id() -> dict[ChannelID, int]:
     """Return news item count (including 0) per channel, indexed by
     channel ID.
     """
-    channel_ids_and_item_counts = db.session \
-        .query(
-            DbChannel.id,
-            db.func.count(DbItem.id)
-        ) \
-        .outerjoin(DbItem) \
-        .group_by(DbChannel.id) \
-        .all()
+    channel_ids_and_item_counts = db.session.execute(
+        select(DbChannel.id, db.func.count(DbItem.id))
+        .outerjoin(DbItem)
+        .group_by(DbChannel.id)
+    ).all()
 
     return dict(channel_ids_and_item_counts)
 

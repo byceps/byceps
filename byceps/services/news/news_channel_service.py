@@ -8,6 +8,8 @@ byceps.services.news.news_channel_service
 
 from typing import Optional, Sequence
 
+from sqlalchemy import delete, select
+
 from ...database import db
 from ...typing import BrandID
 
@@ -57,10 +59,7 @@ def update_channel(
 
 def delete_channel(channel_id: ChannelID) -> None:
     """Delete a news channel."""
-    db.session.query(DbChannel) \
-        .filter_by(id=channel_id) \
-        .delete()
-
+    db.session.execute(delete(DbChannel).where(DbChannel.id == channel_id))
     db.session.commit()
 
 
@@ -95,28 +94,25 @@ def get_channel(channel_id: ChannelID) -> Channel:
 
 def get_channels(channel_ids: set[ChannelID]) -> set[Channel]:
     """Return these channels."""
-    db_channels = db.session \
-        .query(DbChannel) \
-        .filter(DbChannel.id.in_(channel_ids)) \
-        .all()
+    db_channels = db.session.scalars(
+        select(DbChannel).filter(DbChannel.id.in_(channel_ids))
+    ).all()
 
     return {_db_entity_to_channel(db_channel) for db_channel in db_channels}
 
 
 def get_all_channels() -> list[Channel]:
     """Return all channels."""
-    db_channels = db.session.query(DbChannel).all()
+    db_channels = db.session.scalars(select(DbChannel)).all()
 
     return [_db_entity_to_channel(db_channel) for db_channel in db_channels]
 
 
 def get_channels_for_brand(brand_id: BrandID) -> Sequence[Channel]:
     """Return all channels that belong to the brand."""
-    db_channels = db.session \
-        .query(DbChannel) \
-        .filter_by(brand_id=brand_id) \
-        .order_by(DbChannel.id) \
-        .all()
+    db_channels = db.session.scalars(
+        select(DbChannel).filter_by(brand_id=brand_id).order_by(DbChannel.id)
+    ).all()
 
     return [_db_entity_to_channel(db_channel) for db_channel in db_channels]
 
