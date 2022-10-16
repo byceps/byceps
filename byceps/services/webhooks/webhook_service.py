@@ -8,6 +8,8 @@ byceps.services.webhooks.webhook_service
 
 from typing import Any, Optional
 
+from sqlalchemy import delete, select
+
 from ...database import db
 
 from .dbmodels import DbOutgoingWebhook
@@ -75,9 +77,9 @@ def update_outgoing_webhook(
 
 def delete_outgoing_webhook(webhook_id: WebhookID) -> None:
     """Delete the outgoing webhook."""
-    db.session.query(DbOutgoingWebhook) \
-        .filter_by(id=webhook_id) \
-        .delete()
+    db.session.execute(
+        delete(DbOutgoingWebhook).where(DbOutgoingWebhook.id == webhook_id)
+    )
     db.session.commit()
 
 
@@ -98,7 +100,7 @@ def _find_db_webhook(webhook_id: WebhookID) -> Optional[DbOutgoingWebhook]:
 
 def get_all_webhooks() -> list[OutgoingWebhook]:
     """Return all webhooks."""
-    webhooks = db.session.query(DbOutgoingWebhook).all()
+    webhooks = db.session.scalars(select(DbOutgoingWebhook)).all()
 
     return [_db_entity_to_outgoing_webhook(webhook) for webhook in webhooks]
 
@@ -107,10 +109,11 @@ def get_enabled_outgoing_webhooks(event_type: str) -> list[OutgoingWebhook]:
     """Return the configurations for enabled outgoing webhooks for that
     event type.
     """
-    webhooks = db.session.query(DbOutgoingWebhook) \
-        .filter(DbOutgoingWebhook._event_types.contains([event_type])) \
-        .filter_by(enabled=True) \
-        .all()
+    webhooks = db.session.scalars(
+        select(DbOutgoingWebhook)
+        .filter(DbOutgoingWebhook._event_types.contains([event_type]))
+        .filter_by(enabled=True)
+    ).all()
 
     return [_db_entity_to_outgoing_webhook(webhook) for webhook in webhooks]
 

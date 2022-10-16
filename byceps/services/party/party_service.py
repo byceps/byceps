@@ -10,7 +10,7 @@ import dataclasses
 from datetime import date, datetime, timedelta
 from typing import Optional, Union
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from ...database import db, paginate, Pagination
 from ...typing import BrandID, PartyID
@@ -85,28 +85,21 @@ def update_party(
 
 def delete_party(party_id: PartyID) -> None:
     """Delete a party."""
-    db.session.query(DbSetting) \
-        .filter_by(party_id=party_id) \
-        .delete()
-
-    db.session.query(DbParty) \
-        .filter_by(id=party_id) \
-        .delete()
-
+    db.session.execute(delete(DbSetting).where(DbSetting.party_id == party_id))
+    db.session.execute(delete(DbParty).where(DbParty.id == party_id))
     db.session.commit()
 
 
 def count_parties() -> int:
     """Return the number of parties (of all brands)."""
-    return db.session.query(DbParty).count()
+    return db.session.scalar(select(db.func.count(DbParty.id)))
 
 
 def count_parties_for_brand(brand_id: BrandID) -> int:
     """Return the number of parties for that brand."""
-    return db.session \
-        .query(DbParty) \
-        .filter_by(brand_id=brand_id) \
-        .count()
+    return db.session.scalar(
+        select(db.func.count(DbParty.id)).filter_by(brand_id=brand_id)
+    )
 
 
 def find_party(party_id: PartyID) -> Optional[Party]:
@@ -131,17 +124,16 @@ def get_party(party_id: PartyID) -> Party:
 
 def get_all_parties() -> list[Party]:
     """Return all parties."""
-    parties = db.session.query(DbParty).all()
+    parties = db.session.scalars(select(DbParty)).all()
 
     return [_db_entity_to_party(party) for party in parties]
 
 
 def get_all_parties_with_brands() -> list[PartyWithBrand]:
     """Return all parties."""
-    parties = db.session \
-        .query(DbParty) \
-        .options(db.joinedload(DbParty.brand)) \
-        .all()
+    parties = db.session.scalars(
+        select(DbParty).options(db.joinedload(DbParty.brand))
+    ).all()
 
     return [_db_entity_to_party_with_brand(party) for party in parties]
 
@@ -150,19 +142,20 @@ def get_active_parties(
     brand_id: Optional[BrandID] = None, *, include_brands: bool = False
 ) -> list[Union[Party, PartyWithBrand]]:
     """Return active (i.e. non-canceled, non-archived) parties."""
-    query = db.session.query(DbParty)
+    stmt = select(DbParty)
 
     if brand_id is not None:
-        query = query.filter_by(brand_id=brand_id)
+        stmt = stmt.filter_by(brand_id=brand_id)
 
     if include_brands:
-        query = query.options(db.joinedload(DbParty.brand))
+        stmt = stmt.options(db.joinedload(DbParty.brand))
 
-    parties = query \
-        .filter_by(canceled=False) \
-        .filter_by(archived=False) \
-        .order_by(DbParty.starts_at) \
-        .all()
+    parties = db.session.scalars(
+        stmt
+        .filter_by(canceled=False)
+        .filter_by(archived=False)
+        .order_by(DbParty.starts_at)
+    ).all()
 
     if include_brands:
         transform = _db_entity_to_party_with_brand
@@ -174,12 +167,12 @@ def get_active_parties(
 
 def get_archived_parties_for_brand(brand_id: BrandID) -> list[Party]:
     """Return archived parties for that brand."""
-    parties = db.session \
-        .query(DbParty) \
-        .filter_by(brand_id=brand_id) \
-        .filter_by(archived=True) \
-        .order_by(DbParty.starts_at.desc()) \
-        .all()
+    parties = db.session.scalars(
+        select(DbParty)
+        .filter_by(brand_id=brand_id)
+        .filter_by(archived=True)
+        .order_by(DbParty.starts_at.desc())
+    ).all()
 
     return [_db_entity_to_party(party) for party in parties]
 
@@ -189,20 +182,18 @@ def get_parties(party_ids: set[PartyID]) -> list[Party]:
     if not party_ids:
         return []
 
-    parties = db.session \
-        .query(DbParty) \
-        .filter(DbParty.id.in_(party_ids)) \
-        .all()
+    parties = db.session.scalars(
+        select(DbParty).filter(DbParty.id.in_(party_ids))
+    ).all()
 
     return [_db_entity_to_party(party) for party in parties]
 
 
 def get_parties_for_brand(brand_id: BrandID) -> list[Party]:
     """Return the parties for that brand."""
-    parties = db.session \
-        .query(DbParty) \
-        .filter_by(brand_id=brand_id) \
-        .all()
+    parties = db.session.scalars(
+        select(DbParty).filter_by(brand_id=brand_id)
+    ).all()
 
     return [_db_entity_to_party(party) for party in parties]
 
@@ -211,16 +202,17 @@ def get_parties_for_brand_paginated(
     brand_id: BrandID, page: int, per_page: int
 ) -> Pagination:
     """Return the parties for that brand to show on the specified page."""
-    items_query = select(DbParty) \
-        .filter_by(brand_id=brand_id) \
-        .order_by(DbParty.starts_at.desc())
-
-    count_query = select(db.func.count(DbParty.id)) \
+    items_stmt = (
+        select(DbParty)
         .filter_by(brand_id=brand_id)
+        .order_by(DbParty.starts_at.desc())
+    )
+
+    count_stmt = select(db.func.count(DbParty.id)).filter_by(brand_id=brand_id)
 
     return paginate(
-        items_query,
-        count_query,
+        items_stmt,
+        count_stmt,
         page,
         per_page,
         scalar_result=True,
@@ -230,14 +222,11 @@ def get_parties_for_brand_paginated(
 
 def get_party_count_by_brand_id() -> dict[BrandID, int]:
     """Return party count (including 0) per brand, indexed by brand ID."""
-    brand_ids_and_party_counts = db.session \
-        .query(
-            DbBrand.id,
-            db.func.count(DbParty.id)
-        ) \
-        .outerjoin(DbParty) \
-        .group_by(DbBrand.id) \
-        .all()
+    brand_ids_and_party_counts = db.session.execute(
+        select(DbBrand.id, db.func.count(DbParty.id))
+        .outerjoin(DbParty)
+        .group_by(DbBrand.id)
+    ).all()
 
     return dict(brand_ids_and_party_counts)
 

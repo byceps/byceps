@@ -8,6 +8,8 @@ byceps.services.brand.brand_service
 
 from typing import Optional
 
+from sqlalchemy import delete, select
+
 from ...database import db
 from ...typing import BrandID
 
@@ -46,14 +48,8 @@ def update_brand(
 
 def delete_brand(brand_id: BrandID) -> None:
     """Delete a brand."""
-    db.session.query(DbSetting) \
-        .filter_by(brand_id=brand_id) \
-        .delete()
-
-    db.session.query(DbBrand) \
-        .filter_by(id=brand_id) \
-        .delete()
-
+    db.session.execute(delete(DbSetting).where(DbSetting.brand_id == brand_id))
+    db.session.execute(delete(DbBrand).where(DbBrand.id == brand_id))
     db.session.commit()
 
 
@@ -84,27 +80,21 @@ def get_brand(brand_id: BrandID) -> Brand:
 
 def get_all_brands() -> list[Brand]:
     """Return all brands, ordered by title."""
-    brands = db.session \
-        .query(DbBrand) \
-        .order_by(DbBrand.title) \
-        .all()
+    brands = db.session.scalars(select(DbBrand).order_by(DbBrand.title)).all()
 
     return [_db_entity_to_brand(brand) for brand in brands]
 
 
 def get_active_brands() -> set[Brand]:
     """Return active (i.e. non-archived) brands."""
-    brands = db.session \
-        .query(DbBrand) \
-        .filter_by(archived=False) \
-        .all()
+    brands = db.session.scalars(select(DbBrand).filter_by(archived=False)).all()
 
     return {_db_entity_to_brand(brand) for brand in brands}
 
 
 def count_brands() -> int:
     """Return the number of brands."""
-    return db.session.query(DbBrand).count()
+    return db.session.scalar(select(db.func.count(DbBrand.id)))
 
 
 def _db_entity_to_brand(brand: DbBrand) -> Brand:
