@@ -397,10 +397,10 @@ def get_article_compilation_for_orderable_articles(
 
 
 def get_article_compilation_for_single_article(
-    article_id: ArticleID, *, fixed_quantity: Optional[int] = None
+    article_id: ArticleID,
 ) -> ArticleCompilation:
-    """Return a compilation built from just the given article plus the
-    articles attached to it (if any).
+    """Return a compilation built from just the given article (with a
+    quantity of one) plus the articles attached to it (if any).
     """
     db_article = _get_db_article(article_id)
 
@@ -408,7 +408,7 @@ def get_article_compilation_for_single_article(
 
     compilation.append(
         ArticleCompilationItem(
-            _db_entity_to_article(db_article), fixed_quantity=fixed_quantity
+            _db_entity_to_article(db_article), fixed_quantity=1
         )
     )
 

@@ -156,9 +156,7 @@ def order_single_form(article_id, erroneous_form=None):
         }
 
     article_compilation = (
-        article_service.get_article_compilation_for_single_article(
-            article.id, fixed_quantity=1
-        )
+        article_service.get_article_compilation_for_single_article(article.id)
     )
 
     country_names = country_service.get_country_names()
@@ -199,7 +197,6 @@ def order_single_form(article_id, erroneous_form=None):
 def order_single(article_id):
     """Order a single article."""
     article = _get_article_or_404(article_id)
-    quantity = 1
 
     storefront = _get_storefront_or_404()
     shop = shop_service.get_shop(storefront.shop_id)
@@ -213,9 +210,7 @@ def order_single(article_id):
         return order_single_form(article.id)
 
     article_compilation = (
-        article_service.get_article_compilation_for_single_article(
-            article.id, fixed_quantity=quantity
-        )
+        article_service.get_article_compilation_for_single_article(article.id)
     )
 
     user = g.user
