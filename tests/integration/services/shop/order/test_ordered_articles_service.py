@@ -5,6 +5,7 @@
 
 from flask import Flask
 import pytest
+from sqlalchemy import select
 
 from byceps.database import db
 from byceps.services.shop.article.transfer.models import Article
@@ -94,9 +95,8 @@ def place_order(
 def set_payment_state(
     order_number: OrderNumber, payment_state: PaymentState
 ) -> None:
-    order = db.session \
-        .query(DbOrder) \
-        .filter_by(order_number=order_number) \
-        .one_or_none()
+    order = db.session.execute(
+        select(DbOrder).filter_by(order_number=order_number)
+    ).scalar_one()
     order.payment_state = payment_state
     db.session.commit()

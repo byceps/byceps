@@ -9,6 +9,8 @@ byceps.services.shop.order.ordered_articles_service
 from collections import Counter
 from typing import Sequence
 
+from sqlalchemy import select
+
 from ....database import db
 
 from ..article.transfer.models import ArticleNumber
@@ -24,14 +26,14 @@ def count_ordered_articles(
     """Count how often the article has been ordered, grouped by the
     order's payment state.
     """
-    db_line_items = db.session \
-        .query(DbLineItem) \
-        .filter_by(article_number=article_number) \
+    db_line_items = db.session.scalars(
+        select(DbLineItem)
+        .filter_by(article_number=article_number)
         .options(
             db.joinedload(DbLineItem.order),
             db.joinedload(DbLineItem.article),
-        ) \
-        .all()
+        )
+    ).all()
 
     # Ensure every payment state is present in the resulting dictionary,
     # even if no orders of the corresponding payment state exist for the
@@ -48,9 +50,8 @@ def get_line_items_for_article(
     article_number: ArticleNumber,
 ) -> Sequence[LineItem]:
     """Return all line items for that article."""
-    db_line_items = db.session \
-        .query(DbLineItem) \
-        .filter_by(article_number=article_number) \
-        .all()
+    db_line_items = db.session.scalars(
+        select(DbLineItem).filter_by(article_number=article_number)
+    ).all()
 
     return list(map(order_service.line_item_to_transfer_object, db_line_items))

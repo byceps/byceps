@@ -9,6 +9,8 @@ byceps.services.shop.order.action_service
 from typing import Callable, Optional, Sequence
 from uuid import UUID
 
+from sqlalchemy import delete, select
+
 from ....database import db
 from ....typing import UserID
 
@@ -57,19 +59,15 @@ def create_action(
 
 def delete_action(action_id: UUID) -> None:
     """Delete the order action."""
-    db.session.query(DbOrderAction) \
-        .filter_by(id=action_id) \
-        .delete()
-
+    db.session.execute(delete(DbOrderAction).filter_by(id=action_id))
     db.session.commit()
 
 
 def delete_actions_for_article(article_number: ArticleNumber) -> None:
     """Delete all order actions for an article."""
-    db.session.query(DbOrderAction) \
-        .filter_by(article_number=article_number) \
-        .delete()
-
+    db.session.execute(
+        delete(DbOrderAction).filter_by(article_number=article_number)
+    )
     db.session.commit()
 
 
@@ -89,10 +87,9 @@ def find_action(action_id: UUID) -> Optional[Action]:
 
 def get_actions_for_article(article_number: ArticleNumber) -> list[Action]:
     """Return the order actions defined for that article."""
-    db_actions = db.session \
-        .query(DbOrderAction) \
-        .filter_by(article_number=article_number) \
-        .all()
+    db_actions = db.session.scalars(
+        select(DbOrderAction).filter_by(article_number=article_number)
+    ).all()
 
     return [_db_entity_to_action(db_action) for db_action in db_actions]
 
@@ -150,11 +147,11 @@ def _get_actions(
     if not article_numbers:
         return []
 
-    db_actions = db.session \
-        .query(DbOrderAction) \
-        .filter(DbOrderAction.article_number.in_(article_numbers)) \
-        .filter_by(_payment_state=payment_state.name) \
-        .all()
+    db_actions = db.session.scalars(
+        select(DbOrderAction)
+        .filter(DbOrderAction.article_number.in_(article_numbers))
+        .filter_by(_payment_state=payment_state.name)
+    ).all()
 
     return [_db_entity_to_action(db_action) for db_action in db_actions]
 

@@ -12,7 +12,7 @@ from uuid import UUID
 
 from flask import current_app
 from flask_babel import lazy_gettext
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
 from ....database import db, paginate, Pagination
@@ -495,42 +495,32 @@ def delete_order(order_id: OrderID) -> None:
     """Delete an order."""
     order = get_order(order_id)
 
-    db.session.query(DbOrderLogEntry) \
-        .filter_by(order_id=order.id) \
-        .delete()
-
-    db.session.query(DbLineItem) \
-        .filter_by(order_number=order.order_number) \
-        .delete()
-
-    db.session.query(DbOrder) \
-        .filter_by(id=order.id) \
-        .delete()
-
+    db.session.execute(delete(DbOrderLogEntry).filter_by(order_id=order.id))
+    db.session.execute(
+        delete(DbLineItem).filter_by(order_number=order.order_number)
+    )
+    db.session.execute(delete(DbOrder).filter_by(id=order.id))
     db.session.commit()
 
 
 def count_open_orders(shop_id: ShopID) -> int:
     """Return the number of open orders for the shop."""
-    return db.session \
-        .query(DbOrder) \
-        .filter_by(shop_id=shop_id) \
-        .filter_by(_payment_state=PaymentState.open.name) \
-        .count()
+    return db.session.scalar(
+        select(db.func.count(DbOrder.id))
+        .filter_by(shop_id=shop_id)
+        .filter_by(_payment_state=PaymentState.open.name)
+    )
 
 
 def count_orders_per_payment_state(shop_id: ShopID) -> dict[PaymentState, int]:
     """Count orders for the shop, grouped by payment state."""
     counts_by_payment_state = dict.fromkeys(PaymentState, 0)
 
-    rows = db.session \
-        .query(
-            DbOrder._payment_state,
-            db.func.count(DbOrder.id)
-        ) \
-        .filter(DbOrder.shop_id == shop_id) \
-        .group_by(DbOrder._payment_state) \
-        .all()
+    rows = db.session.scalars(
+        select(DbOrder._payment_state, db.func.count(DbOrder.id))
+        .filter(DbOrder.shop_id == shop_id)
+        .group_by(DbOrder._payment_state)
+    ).all()
 
     for payment_state_str, count in rows:
         payment_state = PaymentState[payment_state_str]
@@ -576,11 +566,17 @@ def get_order(order_id: OrderID) -> Order:
 
 def find_order_with_details(order_id: OrderID) -> Optional[Order]:
     """Return the order with that id, or `None` if not found."""
-    db_order = db.session.query(DbOrder) \
-        .options(
-            db.joinedload(DbOrder.line_items),
-        ) \
-        .get(order_id)
+    db_order = (
+        db.session.scalars(
+            select(DbOrder)
+            .options(
+                db.joinedload(DbOrder.line_items),
+            )
+            .filter_by(id=order_id)
+        )
+        .unique()
+        .one_or_none()
+    )
 
     if db_order is None:
         return None
@@ -590,10 +586,9 @@ def find_order_with_details(order_id: OrderID) -> Optional[Order]:
 
 def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
     """Return the order with that order number, or `None` if not found."""
-    db_order = db.session \
-        .query(DbOrder) \
-        .filter_by(order_number=order_number) \
-        .one_or_none()
+    db_order = db.session.execute(
+        select(DbOrder).filter_by(order_number=order_number)
+    ).scalar_one_or_none()
 
     if db_order is None:
         return None
@@ -608,11 +603,15 @@ def get_orders_for_order_numbers(
     if not order_numbers:
         return []
 
-    db_orders = db.session.execute(
-        select(DbOrder)
-        .options(db.joinedload(DbOrder.line_items))
-        .filter(DbOrder.order_number.in_(order_numbers))
-    ).scalars().unique().all()
+    db_orders = (
+        db.session.scalars(
+            select(DbOrder)
+            .options(db.joinedload(DbOrder.line_items))
+            .filter(DbOrder.order_number.in_(order_numbers))
+        )
+        .unique()
+        .all()
+    )
 
     return list(map(_order_to_transfer_object, db_orders))
 
@@ -625,8 +624,9 @@ def get_order_ids_for_order_numbers(
         return {}
 
     order_ids_and_numbers = db.session.execute(
-        select(DbOrder.id, DbOrder.order_number)
-        .filter(DbOrder.order_number.in_(order_numbers))
+        select(DbOrder.id, DbOrder.order_number).filter(
+            DbOrder.order_number.in_(order_numbers)
+        )
     ).all()
 
     return {
@@ -637,14 +637,15 @@ def get_order_ids_for_order_numbers(
 
 def get_order_count_by_shop_id() -> dict[ShopID, int]:
     """Return order count (including 0) per shop, indexed by shop ID."""
-    shop_ids_and_order_counts = db.session \
-        .query(
-            DbShop.id,
-            db.func.count(DbOrder.shop_id)
-        ) \
-        .outerjoin(DbOrder) \
-        .group_by(DbShop.id) \
+    shop_ids_and_order_counts = (
+        db.session.scalars(
+            select(DbShop.id, db.func.count(DbOrder.shop_id))
+            .outerjoin(DbOrder)
+            .group_by(DbShop.id)
+        )
+        .unique()
         .all()
+    )
 
     return dict(shop_ids_and_order_counts)
 
@@ -654,11 +655,15 @@ def get_orders(order_ids: frozenset[OrderID]) -> list[Order]:
     if not order_ids:
         return []
 
-    db_orders = db.session.execute(
-        select(DbOrder)
-        .options(db.joinedload(DbOrder.line_items))
-        .filter(DbOrder.id.in_(order_ids))
-    ).scalars().unique().all()
+    db_orders = (
+        db.session.scalars(
+            select(DbOrder)
+            .options(db.joinedload(DbOrder.line_items))
+            .filter(DbOrder.id.in_(order_ids))
+        )
+        .unique()
+        .all()
+    )
 
     return [_order_to_transfer_object(db_order) for db_order in db_orders]
 
@@ -678,53 +683,66 @@ def get_orders_for_shop_paginated(
     If a payment state is specified, only orders in that state are
     returned.
     """
-    items_query = select(DbOrder) \
-        .options(db.joinedload(DbOrder.line_items)) \
-        .filter_by(shop_id=shop_id) \
+    items_stmt = (
+        select(DbOrder)
+        .options(db.joinedload(DbOrder.line_items))
+        .filter_by(shop_id=shop_id)
         .order_by(DbOrder.created_at.desc())
+    )
 
-    count_query = select(db.func.count(DbOrder.id)) \
-        .filter_by(shop_id=shop_id) \
+    count_stmt = select(db.func.count(DbOrder.id)).filter_by(shop_id=shop_id)
 
     if search_term:
         ilike_pattern = f'%{search_term}%'
-        items_query = items_query \
-            .filter(DbOrder.order_number.ilike(ilike_pattern))
-        count_query = count_query \
-            .filter(DbOrder.order_number.ilike(ilike_pattern))
+        items_stmt = items_stmt.filter(
+            DbOrder.order_number.ilike(ilike_pattern)
+        )
+        count_stmt = count_stmt.filter(
+            DbOrder.order_number.ilike(ilike_pattern)
+        )
 
     if only_payment_state is not None:
-        items_query = items_query.filter_by(_payment_state=only_payment_state.name)
-        count_query = count_query.filter_by(_payment_state=only_payment_state.name)
+        items_stmt = items_stmt.filter_by(
+            _payment_state=only_payment_state.name
+        )
+        count_stmt = count_stmt.filter_by(
+            _payment_state=only_payment_state.name
+        )
 
-        if (only_payment_state == PaymentState.open) and (only_overdue is not None):
+        if (only_payment_state == PaymentState.open) and (
+            only_overdue is not None
+        ):
             now = datetime.utcnow()
 
             if only_overdue:
-                items_query = items_query \
-                    .filter(DbOrder.created_at + OVERDUE_THRESHOLD < now)
-                count_query = items_query \
-                    .filter(DbOrder.created_at + OVERDUE_THRESHOLD < now)
+                items_stmt = items_stmt.filter(
+                    DbOrder.created_at + OVERDUE_THRESHOLD < now
+                )
+                count_stmt = items_stmt.filter(
+                    DbOrder.created_at + OVERDUE_THRESHOLD < now
+                )
             else:
-                items_query = items_query \
-                    .filter(DbOrder.created_at + OVERDUE_THRESHOLD >= now)
-                count_query = items_query \
-                    .filter(DbOrder.created_at + OVERDUE_THRESHOLD >= now)
+                items_stmt = items_stmt.filter(
+                    DbOrder.created_at + OVERDUE_THRESHOLD >= now
+                )
+                count_stmt = items_stmt.filter(
+                    DbOrder.created_at + OVERDUE_THRESHOLD >= now
+                )
 
     if only_processed is not None:
-        items_query = items_query.filter(DbOrder.processing_required == True)
-        count_query = count_query.filter(DbOrder.processing_required == True)
+        items_stmt = items_stmt.filter(DbOrder.processing_required == True)
+        count_stmt = count_stmt.filter(DbOrder.processing_required == True)
 
         if only_processed:
-            items_query = items_query.filter(DbOrder.processed_at.is_not(None))
-            count_query = count_query.filter(DbOrder.processed_at.is_not(None))
+            items_stmt = items_stmt.filter(DbOrder.processed_at.is_not(None))
+            count_stmt = count_stmt.filter(DbOrder.processed_at.is_not(None))
         else:
-            items_query = items_query.filter(DbOrder.processed_at.is_(None))
-            count_query = count_query.filter(DbOrder.processed_at.is_(None))
+            items_stmt = items_stmt.filter(DbOrder.processed_at.is_(None))
+            count_stmt = count_stmt.filter(DbOrder.processed_at.is_(None))
 
     return paginate(
-        items_query,
-        count_query,
+        items_stmt,
+        count_stmt,
         page,
         per_page,
         scalar_result=True,
@@ -735,14 +753,18 @@ def get_orders_for_shop_paginated(
 
 def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
     """Return orders placed by the user."""
-    db_orders = db.session \
-        .query(DbOrder) \
-        .options(
-            db.joinedload(DbOrder.line_items),
-        ) \
-        .filter_by(placed_by_id=user_id) \
-        .order_by(DbOrder.created_at.desc()) \
+    db_orders = (
+        db.session.execute(
+            select(DbOrder)
+            .options(
+                db.joinedload(DbOrder.line_items),
+            )
+            .filter_by(placed_by_id=user_id)
+            .order_by(DbOrder.created_at.desc())
+        )
+        .unique()
         .all()
+    )
 
     return list(map(_order_to_transfer_object, db_orders))
 
@@ -751,26 +773,30 @@ def get_orders_placed_by_user_for_storefront(
     user_id: UserID, storefront_id: StorefrontID
 ) -> list[Order]:
     """Return orders placed by the user through that storefront."""
-    db_orders = db.session \
-        .query(DbOrder) \
-        .options(
-            db.joinedload(DbOrder.line_items),
-        ) \
-        .filter_by(storefront_id=storefront_id) \
-        .filter_by(placed_by_id=user_id) \
-        .order_by(DbOrder.created_at.desc()) \
+    db_orders = (
+        db.session.scalars(
+            select(DbOrder)
+            .options(
+                db.joinedload(DbOrder.line_items),
+            )
+            .filter_by(storefront_id=storefront_id)
+            .filter_by(placed_by_id=user_id)
+            .order_by(DbOrder.created_at.desc())
+        )
+        .unique()
         .all()
+    )
 
     return list(map(_order_to_transfer_object, db_orders))
 
 
 def has_user_placed_orders(user_id: UserID, shop_id: ShopID) -> bool:
     """Return `True` if the user has placed orders in that shop."""
-    orders_total = db.session \
-        .query(DbOrder) \
-        .filter_by(shop_id=shop_id) \
-        .filter_by(placed_by_id=user_id) \
-        .count()
+    orders_total = db.session.scalar(
+        select(db.func.count(DbOrder.id))
+        .filter_by(shop_id=shop_id)
+        .filter_by(placed_by_id=user_id)
+    )
 
     return orders_total > 0
 
@@ -792,10 +818,9 @@ def get_payment_date(order_id: OrderID) -> Optional[datetime]:
     """Return the date the order has been marked as paid, or `None` if
     it has not been paid.
     """
-    return db.session \
-        .query(DbOrder.payment_state_updated_at) \
-        .filter_by(id=order_id) \
-        .scalar()
+    return db.session.scalar(
+        select(DbOrder.payment_state_updated_at).filter_by(id=order_id)
+    )
 
 
 def _order_to_transfer_object(order: DbOrder) -> Order:

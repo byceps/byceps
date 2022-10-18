@@ -8,6 +8,7 @@ byceps.services.shop.order.order_sequence_service
 
 from typing import Optional
 
+from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
 from ....database import db
@@ -44,10 +45,7 @@ def create_order_number_sequence(
 
 def delete_order_number_sequence(sequence_id: OrderNumberSequenceID) -> None:
     """Delete the order number sequence."""
-    db.session.query(DbOrderNumberSequence) \
-        .filter_by(id=sequence_id) \
-        .delete()
-
+    db.session.execute(delete(DbOrderNumberSequence).filter_by(id=sequence_id))
     db.session.commit()
 
 
@@ -55,10 +53,9 @@ def get_order_number_sequence(
     sequence_id: OrderNumberSequenceID,
 ) -> OrderNumberSequence:
     """Return the order number sequence, or raise an exception."""
-    db_sequence = db.session \
-        .query(DbOrderNumberSequence) \
-        .filter_by(id=sequence_id) \
-        .one_or_none()
+    db_sequence = db.session.execute(
+        select(DbOrderNumberSequence).filter_by(id=sequence_id)
+    ).scalar_one_or_none()
 
     if db_sequence is None:
         raise ValueError(f'Unknown order number sequence ID "{sequence_id}"')
@@ -70,10 +67,9 @@ def get_order_number_sequences_for_shop(
     shop_id: ShopID,
 ) -> list[OrderNumberSequence]:
     """Return the order number sequences defined for that shop."""
-    db_sequences = db.session \
-        .query(DbOrderNumberSequence) \
-        .filter_by(shop_id=shop_id) \
-        .all()
+    db_sequences = db.session.scalars(
+        select(DbOrderNumberSequence).filter_by(shop_id=shop_id)
+    ).all()
 
     return [
         _db_entity_to_order_number_sequence(db_sequence)
@@ -94,11 +90,11 @@ def generate_order_number(sequence_id: OrderNumberSequenceID) -> OrderNumber:
     """Generate and reserve an unused, unique order number from this
     sequence.
     """
-    db_sequence = db.session \
-        .query(DbOrderNumberSequence) \
-        .filter_by(id=sequence_id) \
-        .with_for_update() \
-        .one_or_none()
+    db_sequence = db.session.execute(
+        select(DbOrderNumberSequence)
+        .filter_by(id=sequence_id)
+        .with_for_update()
+    ).scalar_one_or_none()
 
     if db_sequence is None:
         raise OrderNumberGenerationFailed(

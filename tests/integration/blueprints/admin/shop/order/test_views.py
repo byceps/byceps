@@ -360,4 +360,4 @@ def assert_payment(
 
 
 def get_order(order_id: OrderID) -> DbOrder:
-    return db.session.query(DbOrder).get(order_id)
+    return db.session.get(DbOrder, order_id)
