@@ -10,7 +10,7 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional, Sequence
 
-from sqlalchemy import select
+from sqlalchemy import delete, select, update
 
 from ....database import db, paginate, Pagination
 
@@ -179,10 +179,9 @@ def attach_article(
 
 def unattach_article(attached_article_id: AttachedArticleID) -> None:
     """Unattach an article from another."""
-    db.session.query(DbAttachedArticle) \
-        .filter_by(id=attached_article_id) \
-        .delete()
-
+    db.session.execute(
+        delete(DbAttachedArticle).filter_by(id=attached_article_id)
+    )
     db.session.commit()
 
 
@@ -190,9 +189,11 @@ def increase_quantity(
     article_id: ArticleID, quantity_to_increase_by: int, *, commit: bool = True
 ) -> None:
     """Increase article quantity by the given value."""
-    db.session.query(DbArticle) \
-        .filter_by(id=article_id) \
-        .update({'quantity': DbArticle.quantity + quantity_to_increase_by})
+    db.session.execute(
+        update(DbArticle)
+        .where(DbArticle.id == article_id)
+        .values(quantity=DbArticle.quantity + quantity_to_increase_by)
+    )
 
     if commit:
         db.session.commit()
@@ -202,9 +203,11 @@ def decrease_quantity(
     article_id: ArticleID, quantity_to_decrease_by: int, *, commit: bool = True
 ) -> None:
     """Decrease article quantity by the given value."""
-    db.session.query(DbArticle) \
-        .filter_by(id=article_id) \
-        .update({'quantity': DbArticle.quantity - quantity_to_decrease_by})
+    db.session.execute(
+        update(DbArticle)
+        .where(DbArticle.id == article_id)
+        .values(quantity=DbArticle.quantity - quantity_to_decrease_by)
+    )
 
     if commit:
         db.session.commit()
@@ -212,10 +215,7 @@ def decrease_quantity(
 
 def delete_article(article_id: ArticleID) -> None:
     """Delete an article."""
-    db.session.query(DbArticle) \
-        .filter_by(id=article_id) \
-        .delete()
-
+    db.session.execute(delete(DbArticle).filter_by(id=article_id))
     db.session.commit()
 
 
@@ -264,14 +264,18 @@ def _get_db_article(article_id: ArticleID) -> DbArticle:
 
 def find_article_with_details(article_id: ArticleID) -> Optional[DbArticle]:
     """Return the article with that ID, or `None` if not found."""
-    return db.session.query(DbArticle) \
+    return db.session.execute(
+        select(DbArticle)
         .options(
-            db.joinedload(DbArticle.articles_attached_to)
-                .joinedload(DbAttachedArticle.article),
-            db.joinedload(DbArticle.attached_articles)
-                .joinedload(DbAttachedArticle.article),
-        ) \
-        .get(article_id)
+            db.joinedload(DbArticle.articles_attached_to).joinedload(
+                DbAttachedArticle.article
+            ),
+            db.joinedload(DbArticle.attached_articles).joinedload(
+                DbAttachedArticle.article
+            ),
+        )
+        .filter_by(id=article_id)
+    ).scalar_one_or_none()
 
 
 def find_attached_article(
@@ -284,8 +288,7 @@ def find_attached_article(
 def get_article_by_number(article_number: ArticleNumber) -> Article:
     """Return the article with that item number."""
     db_article = db.session.execute(
-        select(DbArticle)
-        .filter_by(item_number=article_number)
+        select(DbArticle).filter_by(item_number=article_number)
     ).scalar_one()
 
     return _db_entity_to_article(db_article)
@@ -298,21 +301,20 @@ def get_articles_by_numbers(
     if not article_numbers:
         return list()
 
-    db_articles = db.session \
-        .query(DbArticle) \
-        .filter(DbArticle.item_number.in_(article_numbers)) \
-        .all()
+    db_articles = db.session.scalars(
+        select(DbArticle).filter(DbArticle.item_number.in_(article_numbers))
+    ).all()
 
     return [_db_entity_to_article(db_article) for db_article in db_articles]
 
 
 def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
     """Return all articles for that shop, ordered by article number."""
-    db_articles = db.session \
-        .query(DbArticle) \
-        .filter_by(shop_id=shop_id) \
-        .order_by(DbArticle.item_number) \
-        .all()
+    db_articles = db.session.scalars(
+        select(DbArticle)
+        .filter_by(shop_id=shop_id)
+        .order_by(DbArticle.item_number)
+    ).all()
 
     return [_db_entity_to_article(db_article) for db_article in db_articles]
 
@@ -328,31 +330,30 @@ def get_articles_for_shop_paginated(
 
     Ordered by article number, reversed.
     """
-    items_query = select(DbArticle) \
-        .filter_by(shop_id=shop_id) \
-        .order_by(DbArticle.item_number.desc())
-
-    count_query = select(db.func.count(DbArticle.id)) \
+    items_stmt = (
+        select(DbArticle)
         .filter_by(shop_id=shop_id)
+        .order_by(DbArticle.item_number.desc())
+    )
+
+    count_stmt = select(db.func.count(DbArticle.id)).filter_by(shop_id=shop_id)
 
     if search_term:
         ilike_pattern = f'%{search_term}%'
-        items_query = items_query.filter(
+        items_stmt = items_stmt.filter(
             db.or_(
                 DbArticle.item_number.ilike(ilike_pattern),
                 DbArticle.description.ilike(ilike_pattern),
             )
         )
-        count_query = count_query.filter(
+        count_stmt = count_stmt.filter(
             db.or_(
                 DbArticle.item_number.ilike(ilike_pattern),
                 DbArticle.description.ilike(ilike_pattern),
             )
         )
 
-    return paginate(
-        items_query, count_query, page, per_page, scalar_result=True
-    )
+    return paginate(items_stmt, count_stmt, page, per_page, scalar_result=True)
 
 
 def get_article_compilation_for_orderable_articles(
@@ -364,25 +365,27 @@ def get_article_compilation_for_orderable_articles(
     """
     now = datetime.utcnow()
 
-    db_orderable_articles = (db.session
-        .query(DbArticle)
+    db_orderable_articles = db.session.scalars(
+        select(DbArticle)
         .filter_by(shop_id=shop_id)
         .filter_by(not_directly_orderable=False)
         .filter_by(separate_order_required=False)
-
         # Select only articles that are available in between the
         # temporal boundaries for this article, if specified.
-        .filter(db.or_(
-            DbArticle.available_from.is_(None),
-            now >= DbArticle.available_from
-        ))
-        .filter(db.or_(
-            DbArticle.available_until.is_(None),
-            now < DbArticle.available_until
-        ))
-
+        .filter(
+            db.or_(
+                DbArticle.available_from.is_(None),
+                now >= DbArticle.available_from,
+            )
+        )
+        .filter(
+            db.or_(
+                DbArticle.available_until.is_(None),
+                now < DbArticle.available_until,
+            )
+        )
         .order_by(DbArticle.description)
-        .all())
+    ).all()
 
     compilation = ArticleCompilation()
 
@@ -445,12 +448,12 @@ def get_attachable_articles(article_id: ArticleID) -> list[Article]:
         db_article.id for db_article in db_unattachable_articles
     }
 
-    db_articles = db.session \
-        .query(DbArticle) \
-        .filter_by(shop_id=db_article.shop_id) \
-        .filter(db.not_(DbArticle.id.in_(unattachable_article_ids))) \
-        .order_by(DbArticle.item_number) \
-        .all()
+    db_articles = db.session.scalars(
+        select(DbArticle)
+        .filter_by(shop_id=db_article.shop_id)
+        .filter(db.not_(DbArticle.id.in_(unattachable_article_ids)))
+        .order_by(DbArticle.item_number)
+    ).all()
 
     return [_db_entity_to_article(db_article) for db_article in db_articles]
 
@@ -469,29 +472,32 @@ def sum_ordered_articles_by_payment_state(
     shop_ids: set[ShopID],
 ) -> list[tuple[ShopID, ArticleNumber, str, PaymentState, int]]:
     """Sum ordered articles for those shops, grouped by order payment state."""
-    subquery = db.session \
-        .query(
+    subquery = (
+        select(
             DbLineItem.article_number,
             DbOrder._payment_state.label('payment_state'),
-            db.func.sum(DbLineItem.quantity).label('quantity')
-        ) \
-        .join(DbOrder) \
-        .group_by(DbLineItem.article_number, DbOrder._payment_state) \
+            db.func.sum(DbLineItem.quantity).label('quantity'),
+        )
+        .join(DbOrder)
+        .group_by(DbLineItem.article_number, DbOrder._payment_state)
         .subquery()
+    )
 
-    rows = db.session \
-        .query(
+    rows = db.session.execute(
+        select(
             DbArticle.shop_id,
             DbArticle.item_number,
             DbArticle.description,
             subquery.c.payment_state,
-            subquery.c.quantity
-        ) \
-        .outerjoin(subquery,
-            db.and_(DbArticle.item_number == subquery.c.article_number)) \
-        .filter(DbArticle.shop_id.in_(shop_ids)) \
-        .order_by(DbArticle.item_number, subquery.c.payment_state) \
-        .all()
+            subquery.c.quantity,
+        )
+        .outerjoin(
+            subquery,
+            db.and_(DbArticle.item_number == subquery.c.article_number),
+        )
+        .filter(DbArticle.shop_id.in_(shop_ids))
+        .order_by(DbArticle.item_number, subquery.c.payment_state)
+    ).all()
 
     shop_ids_and_article_numbers_and_descriptions = {
         (row[0], row[1], row[2]) for row in rows

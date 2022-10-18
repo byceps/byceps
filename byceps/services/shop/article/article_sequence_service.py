@@ -8,6 +8,7 @@ byceps.services.shop.article.article_sequence_service
 
 from typing import Optional
 
+from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
 from ....database import db
@@ -49,10 +50,9 @@ def delete_article_number_sequence(
     sequence_id: ArticleNumberSequenceID,
 ) -> None:
     """Delete the article number sequence."""
-    db.session.query(DbArticleNumberSequence) \
-        .filter_by(id=sequence_id) \
-        .delete()
-
+    db.session.execute(
+        delete(DbArticleNumberSequence).filter_by(id=sequence_id)
+    )
     db.session.commit()
 
 
@@ -60,10 +60,9 @@ def get_article_number_sequence(
     sequence_id: ArticleNumberSequenceID,
 ) -> ArticleNumberSequence:
     """Return the article number sequence, or raise an exception."""
-    db_sequence = db.session \
-        .query(DbArticleNumberSequence) \
-        .filter_by(id=sequence_id) \
-        .one_or_none()
+    db_sequence = db.session.execute(
+        select(DbArticleNumberSequence).filter_by(id=sequence_id)
+    ).scalar_one_or_none()
 
     if db_sequence is None:
         raise ValueError(f'Unknown article number sequence ID "{sequence_id}"')
@@ -75,10 +74,9 @@ def get_article_number_sequences_for_shop(
     shop_id: ShopID,
 ) -> list[ArticleNumberSequence]:
     """Return the article number sequences defined for that shop."""
-    db_sequences = db.session \
-        .query(DbArticleNumberSequence) \
-        .filter_by(shop_id=shop_id) \
-        .all()
+    db_sequences = db.session.scalars(
+        select(DbArticleNumberSequence).filter_by(shop_id=shop_id)
+    ).all()
 
     return [
         _db_entity_to_article_number_sequence(db_sequence)
@@ -99,11 +97,11 @@ def generate_article_number(
     sequence_id: ArticleNumberSequenceID,
 ) -> ArticleNumber:
     """Generate and reserve the next article number from this sequence."""
-    db_sequence = db.session \
-        .query(DbArticleNumberSequence) \
-        .filter_by(id=sequence_id) \
-        .with_for_update() \
-        .one_or_none()
+    db_sequence = db.session.execute(
+        select(DbArticleNumberSequence)
+        .filter_by(id=sequence_id)
+        .with_for_update()
+    ).scalar_one_or_none()
 
     if db_sequence is None:
         raise ArticleNumberGenerationFailed(
