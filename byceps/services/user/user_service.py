@@ -10,7 +10,6 @@ from datetime import datetime, timedelta
 from typing import Optional
 
 from sqlalchemy import select
-from sqlalchemy.orm import Query
 from sqlalchemy.sql import Select
 
 from ...database import db, paginate, Pagination
@@ -55,14 +54,14 @@ def find_active_user(
     - the account is currently suspended.
     - the account is marked as deleted.
     """
-    query = _get_user_query(include_avatar)
+    stmt = _get_user_stmt(include_avatar)
 
-    row = query \
-        .filter(DbUser.initialized == True) \
-        .filter(DbUser.suspended == False) \
-        .filter(DbUser.deleted == False) \
-        .filter(DbUser.id == user_id) \
-        .one_or_none()
+    row = db.session.execute(
+        stmt.filter(DbUser.initialized == True)
+        .filter(DbUser.suspended == False)
+        .filter(DbUser.deleted == False)
+        .filter(DbUser.id == user_id)
+    ).one_or_none()
 
     if row is None:
         return None
@@ -79,9 +78,9 @@ def find_user(
 
     Include avatar URL if requested.
     """
-    row = _get_user_query(include_avatar) \
-        .filter(DbUser.id == user_id) \
-        .one_or_none()
+    row = db.session.execute(
+        _get_user_stmt(include_avatar).filter(DbUser.id == user_id)
+    ).one_or_none()
 
     if row is None:
         return None
@@ -114,34 +113,32 @@ def get_users(
     if not user_ids:
         return set()
 
-    query = _get_user_query(include_avatars)
-
-    rows = query \
-        .filter(DbUser.id.in_(frozenset(user_ids))) \
-        .all()
+    rows = db.session.execute(
+        _get_user_stmt(include_avatars)
+        .filter(DbUser.id.in_(frozenset(user_ids)))
+    ).all()
 
     return {_user_row_to_dto(row) for row in rows}
 
 
-def _get_user_query(
-    include_avatar: bool,
-) -> Query:
-    query = db.session \
-        .query(
-            DbUser.id,
-            DbUser.screen_name,
-            DbUser.suspended,
-            DbUser.deleted,
-            DbUser.locale,
-            DbUserAvatar if include_avatar else db.null(),
-        )
+def _get_user_stmt(include_avatar: bool) -> Select:
+    stmt = select(
+        DbUser.id,
+        DbUser.screen_name,
+        DbUser.suspended,
+        DbUser.deleted,
+        DbUser.locale,
+        DbUserAvatar if include_avatar else db.null(),
+    )
 
     if include_avatar:
-        query = query \
-            .outerjoin(DbUserAvatarSelection, DbUser.avatar_selection) \
+        stmt = (
+            stmt
+            .outerjoin(DbUserAvatarSelection, DbUser.avatar_selection)
             .outerjoin(DbUserAvatar)
+        )
 
-    return query
+    return stmt
 
 
 def _user_row_to_dto(
@@ -162,12 +159,11 @@ def _user_row_to_dto(
 
 def find_user_by_email_address(email_address: str) -> Optional[User]:
     """Return the user with that email address, or `None` if not found."""
-    user = db.session \
-        .query(DbUser) \
-        .filter(
+    user = db.session.scalars(
+        select(DbUser).filter(
             db.func.lower(DbUser.email_address) == email_address.lower()
-        ) \
-        .one_or_none()
+        )
+    ).one_or_none()
 
     if user is None:
         return None
@@ -193,23 +189,25 @@ def find_db_user_by_screen_name(
     screen_name: str, *, case_insensitive=False
 ) -> Optional[DbUser]:
     """Return the user with that screen name, or `None` if not found."""
-    query = db.session.query(DbUser)
+    stmt = select(DbUser)
 
     if case_insensitive:
-        query = query.filter(
+        stmt = stmt.filter(
             db.func.lower(DbUser.screen_name) == screen_name.lower()
         )
     else:
-        query = query.filter_by(screen_name=screen_name)
+        stmt = stmt.filter_by(screen_name=screen_name)
 
-    return query.one_or_none()
+    return db.session.scalars(stmt).one_or_none()
 
 
 def find_user_with_details(user_id: UserID) -> Optional[DbUser]:
     """Return the user and its details."""
-    return db.session.query(DbUser) \
-        .options(db.joinedload(DbUser.detail)) \
-        .get(user_id)
+    return db.session.scalars(
+        select(DbUser)
+        .options(db.joinedload(DbUser.detail))
+        .filter_by(id=user_id)
+    ).one_or_none()
 
 
 def get_db_user(user_id: UserID) -> DbUser:
@@ -224,15 +222,18 @@ def get_db_user(user_id: UserID) -> DbUser:
 
 def find_user_for_admin(user_id: UserID) -> Optional[UserForAdmin]:
     """Return the user with that ID, or `None` if not found."""
-    user = db.session \
-        .query(DbUser) \
+    user = db.session.scalars(
+        select(DbUser)
         .options(
-            db.joinedload(DbUser.avatar_selection)
-                .joinedload(DbUserAvatarSelection.avatar),
-            db.joinedload(DbUser.detail)
-                .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
-        ) \
-        .get(user_id)
+            db.joinedload(DbUser.avatar_selection).joinedload(
+                DbUserAvatarSelection.avatar
+            ),
+            db.joinedload(DbUser.detail).load_only(
+                DbUserDetail.first_name, DbUserDetail.last_name
+            ),
+        )
+        .filter_by(id=user_id)
+    ).one_or_none()
 
     if user is None:
         return None
@@ -255,16 +256,22 @@ def get_users_for_admin(user_ids: set[UserID]) -> set[UserForAdmin]:
     if not user_ids:
         return set()
 
-    users = db.session.execute(
-        select(DbUser)
-        .options(
-            db.joinedload(DbUser.avatar_selection)
-                .joinedload(DbUserAvatarSelection.avatar),
-            db.joinedload(DbUser.detail)
-                .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
+    users = (
+        db.session.execute(
+            select(DbUser)
+            .options(
+                db.joinedload(DbUser.avatar_selection).joinedload(
+                    DbUserAvatarSelection.avatar
+                ),
+                db.joinedload(DbUser.detail).load_only(
+                    DbUserDetail.first_name, DbUserDetail.last_name
+                ),
+            )
+            .filter(DbUser.id.in_(frozenset(user_ids)))
         )
-        .filter(DbUser.id.in_(frozenset(user_ids)))
-    ).scalars().all()
+        .scalars()
+        .all()
+    )
 
     return {_db_entity_to_user_for_admin(user) for user in users}
 
@@ -299,10 +306,9 @@ def _db_entity_to_user_for_admin(user: DbUser) -> UserForAdmin:
 
 def find_screen_name(user_id: UserID) -> Optional[str]:
     """Return the user's screen name, if available."""
-    screen_name = db.session \
-        .query(DbUser.screen_name) \
-        .filter_by(id=user_id) \
-        .scalar()
+    screen_name = db.session.scalar(
+        select(DbUser.screen_name).filter_by(id=user_id)
+    )
 
     if screen_name is None:
         return None
@@ -312,10 +318,7 @@ def find_screen_name(user_id: UserID) -> Optional[str]:
 
 def find_email_address(user_id: UserID) -> Optional[str]:
     """Return the user's e-mail address, if set."""
-    return db.session \
-        .query(DbUser.email_address) \
-        .filter_by(id=user_id) \
-        .scalar()
+    return db.session.scalar(select(DbUser.email_address).filter_by(id=user_id))
 
 
 def get_email_address(user_id: UserID) -> str:
@@ -336,8 +339,7 @@ def get_email_address_data(user_id: UserID) -> UserEmailAddress:
         select(
             DbUser.email_address,
             DbUser.email_address_verified,
-        ) \
-        .filter_by(id=user_id)
+        ).filter_by(id=user_id)
     ).one_or_none()
 
     if row is None:
@@ -351,13 +353,12 @@ def get_email_address_data(user_id: UserID) -> UserEmailAddress:
 
 def get_email_addresses(user_ids: set[UserID]) -> set[tuple[UserID, str]]:
     """Return the users' e-mail addresses."""
-    return db.session \
-        .query(
+    return db.session.execute(
+        select(
             DbUser.id,
             DbUser.email_address,
-        ) \
-        .filter(DbUser.id.in_(user_ids)) \
-        .all()
+        ).filter(DbUser.id.in_(user_ids))
+    ).all()
 
 
 def get_detail(user_id: UserID) -> UserDetail:
@@ -415,14 +416,13 @@ def _do_users_matching_filter_exist(
 
     Comparison is done case-insensitively.
     """
-    return db.session \
-        .query(
-            db.session \
-                .query(DbUser) \
-                .filter(db.func.lower(model_attribute) == search_value.lower()) \
-                .exists()
-        ) \
-        .scalar()
+    return db.session.scalar(
+        select(
+            select(DbUser)
+            .filter(db.func.lower(model_attribute) == search_value.lower())
+            .exists()
+        )
+    )
 
 
 def get_users_created_since(
@@ -431,21 +431,24 @@ def get_users_created_since(
     """Return the user accounts created since `delta` ago."""
     filter_starts_at = datetime.utcnow() - delta
 
-    query = db.session \
-        .query(DbUser) \
+    stmt = (
+        select(DbUser)
         .options(
-            db.joinedload(DbUser.avatar_selection)
-                .joinedload(DbUserAvatarSelection.avatar),
-            db.joinedload(DbUser.detail)
-                .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
-        ) \
-        .filter(DbUser.created_at >= filter_starts_at) \
+            db.joinedload(DbUser.avatar_selection).joinedload(
+                DbUserAvatarSelection.avatar
+            ),
+            db.joinedload(DbUser.detail).load_only(
+                DbUserDetail.first_name, DbUserDetail.last_name
+            ),
+        )
+        .filter(DbUser.created_at >= filter_starts_at)
         .order_by(DbUser.created_at.desc())
+    )
 
     if limit is not None:
-        query = query.limit(limit)
+        stmt = stmt.limit(limit)
 
-    users = query.all()
+    users = db.session.scalars(stmt).all()
 
     return [_db_entity_to_user_for_admin(u) for u in users]
 
@@ -460,27 +463,31 @@ def get_users_paginated(
     """Return the users to show on the specified page, optionally
     filtered by search term or flags.
     """
-    items_query = select(DbUser) \
+    items_stmt = (
+        select(DbUser)
         .options(
-            db.joinedload(DbUser.avatar_selection)
-                .joinedload(DbUserAvatarSelection.avatar),
-            db.joinedload(DbUser.detail)
-                .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
-        ) \
+            db.joinedload(DbUser.avatar_selection).joinedload(
+                DbUserAvatarSelection.avatar
+            ),
+            db.joinedload(DbUser.detail).load_only(
+                DbUserDetail.first_name, DbUserDetail.last_name
+            ),
+        )
         .order_by(DbUser.created_at.desc())
+    )
 
-    count_query = select(db.func.count(DbUser.id))
+    count_stmt = select(db.func.count(DbUser.id))
 
-    items_query = _filter_by_state(items_query, state_filter)
-    count_query = _filter_by_state(count_query, state_filter)
+    items_stmt = _filter_by_state(items_stmt, state_filter)
+    count_stmt = _filter_by_state(count_stmt, state_filter)
 
     if search_term:
-        items_query = _filter_by_search_term(items_query, search_term)
-        count_query = _filter_by_search_term(count_query, search_term)
+        items_stmt = _filter_by_search_term(items_stmt, search_term)
+        count_stmt = _filter_by_search_term(count_stmt, search_term)
 
     return paginate(
-        items_query,
-        count_query,
+        items_stmt,
+        count_stmt,
         page,
         per_page,
         scalar_result=True,
@@ -489,36 +496,39 @@ def get_users_paginated(
 
 
 def _filter_by_state(
-    query: Select, state_filter: Optional[UserStateFilter] = None
+    stmt: Select, state_filter: Optional[UserStateFilter] = None
 ) -> Select:
     if state_filter == UserStateFilter.active:
-        return query \
-            .filter_by(initialized=True) \
-            .filter_by(suspended=False) \
+        return (
+            stmt
+            .filter_by(initialized=True)
+            .filter_by(suspended=False)
             .filter_by(deleted=False)
+        )
     elif state_filter == UserStateFilter.uninitialized:
-        return query \
-            .filter_by(initialized=False) \
-            .filter_by(suspended=False) \
+        return (
+            stmt
+            .filter_by(initialized=False)
+            .filter_by(suspended=False)
             .filter_by(deleted=False)
+        )
     elif state_filter == UserStateFilter.suspended:
-        return query \
-            .filter_by(suspended=True) \
+        return (
+            stmt
+            .filter_by(suspended=True)
             .filter_by(deleted=False)
+        )
     elif state_filter == UserStateFilter.deleted:
-        return query \
-            .filter_by(deleted=True)
+        return stmt.filter_by(deleted=True)
     else:
-        return query
+        return stmt
 
 
-def _filter_by_search_term(query: Select, search_term: str) -> Select:
+def _filter_by_search_term(stmt: Select, search_term: str) -> Select:
     terms = search_term.split(' ')
     clauses = map(_generate_search_clauses_for_term, terms)
 
-    return query \
-        .join(DbUserDetail) \
-        .filter(db.and_(*clauses))
+    return stmt.join(DbUserDetail).filter(db.and_(*clauses))
 
 
 def _generate_search_clauses_for_term(search_term: str) -> Select:

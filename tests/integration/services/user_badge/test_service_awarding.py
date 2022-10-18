@@ -4,6 +4,7 @@
 """
 
 import pytest
+from sqlalchemy import delete
 
 from byceps.database import db
 from byceps.events.user_badge import UserBadgeAwarded
@@ -56,7 +57,7 @@ def awardings_scope():
     yield
 
     # Remove badge awardings.
-    db.session.query(DbBadgeAwarding).delete()
+    db.session.execute(delete(DbBadgeAwarding))
     db.session.commit()
 
 

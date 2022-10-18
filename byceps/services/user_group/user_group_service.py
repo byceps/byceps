@@ -8,6 +8,8 @@ byceps.services.user_group.user_group_service
 
 from typing import Optional
 
+from sqlalchemy import select
+
 from ...database import db
 from ...typing import PartyID, UserID
 
@@ -31,4 +33,4 @@ def create_group(
 
 def get_all_groups() -> list[DbUserGroup]:
     """Return all groups."""
-    return db.session.query(DbUserGroup).all()
+    return db.session.scalars(select(DbUserGroup)).all()

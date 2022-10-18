@@ -9,7 +9,7 @@ byceps.services.user.user_log_service
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from ...database import db
 from ...typing import UserID
@@ -48,11 +48,11 @@ def build_entry(
 
 def get_entries_for_user(user_id: UserID) -> list[UserLogEntry]:
     """Return the log entries for that user."""
-    db_entries = db.session.execute(
+    db_entries = db.session.scalars(
         select(DbUserLogEntry)
         .filter_by(user_id=user_id)
         .order_by(DbUserLogEntry.occurred_at)
-    ).scalars().all()
+    ).all()
 
     return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
 
@@ -61,12 +61,12 @@ def get_entries_of_type_for_user(
     user_id: UserID, event_type: str
 ) -> list[UserLogEntry]:
     """Return the log entries of that type for that user."""
-    db_entries = db.session.execute(
+    db_entries = db.session.scalars(
         select(DbUserLogEntry)
         .filter_by(user_id=user_id)
         .filter_by(event_type=event_type)
         .order_by(DbUserLogEntry.occurred_at)
-    ).scalars().all()
+    ).all()
 
     return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
 
@@ -76,12 +76,11 @@ def delete_login_entries(occurred_before: datetime) -> int:
 
     Return the number of deleted log entries.
     """
-    num_deleted = db.session \
-        .query(DbUserLogEntry) \
-        .filter_by(event_type='user-logged-in') \
-        .filter(DbUserLogEntry.occurred_at < occurred_before) \
-        .delete()
-
+    num_deleted = db.session.execute(
+        delete(DbUserLogEntry)
+        .filter_by(event_type='user-logged-in')
+        .filter(DbUserLogEntry.occurred_at < occurred_before)
+    )
     db.session.commit()
 
     return num_deleted

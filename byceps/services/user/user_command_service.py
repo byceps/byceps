@@ -11,6 +11,7 @@ from typing import Any, Optional
 from warnings import warn
 
 from babel import Locale
+from sqlalchemy import select
 
 from ...database import db
 from ...events.user import (
@@ -272,9 +273,7 @@ def update_user_details(
     log_entry_data = {
         'initiator_id': str(initiator.id),
     }
-    _add_if_different(
-        log_entry_data, 'first_name', old_first_name, first_name
-    )
+    _add_if_different(log_entry_data, 'first_name', old_first_name, first_name)
     _add_if_different(log_entry_data, 'last_name', old_last_name, last_name)
     _add_if_different(
         log_entry_data, 'date_of_birth', old_date_of_birth, date_of_birth
@@ -348,10 +347,9 @@ def _get_user(user_id: UserID) -> DbUser:
 
 def _get_user_detail(user_id: UserID) -> DbUserDetail:
     """Return the user's details, or raise an exception."""
-    detail = db.session \
-        .query(DbUserDetail) \
-        .filter_by(user_id=user_id) \
-        .one_or_none()
+    detail = db.session.scalars(
+        select(DbUserDetail).filter_by(user_id=user_id)
+    ).one_or_none()
 
     if detail is None:
         raise ValueError(f"Unknown user ID '{user_id}'")

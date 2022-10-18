@@ -82,17 +82,15 @@ def remove_avatar_image(user_id: UserID) -> None:
 def get_db_avatar(avatar_id: AvatarID) -> DbUserAvatar:
     """Return the avatar with that ID, or raise exception if not found."""
     return db.session.execute(
-        select(DbUserAvatar)
-        .filter_by(id=avatar_id)
+        select(DbUserAvatar).filter_by(id=avatar_id)
     ).scalar_one()
 
 
 def get_avatars_uploaded_by_user(user_id: UserID) -> list[AvatarUpdate]:
     """Return the avatars uploaded by the user."""
-    avatars = db.session \
-        .query(DbUserAvatar) \
-        .filter_by(creator_id=user_id) \
-        .all()
+    avatars = db.session.scalars(
+        select(DbUserAvatar).filter_by(creator_id=user_id)
+    ).all()
 
     return [AvatarUpdate(avatar.created_at, avatar.url) for avatar in avatars]
 
@@ -110,13 +108,14 @@ def get_avatar_urls_for_users(
     if not user_ids:
         return {}
 
-    user_ids_and_avatars = db.session.query(
+    user_ids_and_avatars = db.session.scalars(
+        select(
             DbUserAvatarSelection.user_id,
             DbUserAvatar,
-        ) \
-        .join(DbUserAvatar) \
-        .filter(DbUserAvatarSelection.user_id.in_(user_ids)) \
-        .all()
+        )
+        .join(DbUserAvatar)
+        .filter(DbUserAvatarSelection.user_id.in_(user_ids))
+    ).all()
 
     urls_by_user_id = {
         user_id: avatar.url for user_id, avatar in user_ids_and_avatars
@@ -130,12 +129,12 @@ def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> Optional[str]:
     """Return the URL of the current avatar of the user with that hashed
     email address, or `None` if not set.
     """
-    avatar = db.session \
-        .query(DbUserAvatar) \
-        .join(DbUserAvatarSelection) \
-        .join(DbUser) \
-        .filter(db.func.md5(DbUser.email_address) == md5_hash) \
-        .one_or_none()
+    avatar = db.session.execute(
+        select(DbUserAvatar)
+        .join(DbUserAvatarSelection)
+        .join(DbUser)
+        .filter(db.func.md5(DbUser.email_address) == md5_hash)
+    ).scalar_one_or_none()
 
     if avatar is None:
         return None

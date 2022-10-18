@@ -10,6 +10,8 @@ from collections import defaultdict
 from datetime import datetime
 from typing import Optional
 
+from sqlalchemy import select
+
 from ...database import db
 from ...events.user_badge import UserBadgeAwarded
 from ...typing import UserID
@@ -79,32 +81,26 @@ def count_awardings() -> dict[BadgeID, int]:
     Because a badge can be awarded multiple times to a user, the number
     of awardings does not represent the number of awardees.
     """
-    rows = db.session \
-        .query(
-            DbBadge.id,
-            db.func.count(DbBadgeAwarding.id)
-        ) \
-        .outerjoin(DbBadgeAwarding) \
-        .group_by(DbBadge.id) \
-        .all()
+    rows = db.session.execute(
+        select(DbBadge.id, db.func.count(DbBadgeAwarding.id))
+        .outerjoin(DbBadgeAwarding)
+        .group_by(DbBadge.id)
+    ).all()
 
     return {badge_id: count for badge_id, count in rows}
 
 
 def get_awardings_of_badge(badge_id: BadgeID) -> set[QuantifiedBadgeAwarding]:
     """Return the awardings of this badge."""
-    rows = db.session \
-        .query(
+    rows = db.session.execute(
+        select(
             DbBadgeAwarding.badge_id,
             DbBadgeAwarding.user_id,
-            db.func.count(DbBadgeAwarding.badge_id)
-        ) \
-        .filter(DbBadgeAwarding.badge_id == badge_id) \
-        .group_by(
-            DbBadgeAwarding.badge_id,
-            DbBadgeAwarding.user_id
-        ) \
-        .all()
+            db.func.count(DbBadgeAwarding.badge_id),
+        )
+        .filter(DbBadgeAwarding.badge_id == badge_id)
+        .group_by(DbBadgeAwarding.badge_id, DbBadgeAwarding.user_id)
+    ).all()
 
     return {
         QuantifiedBadgeAwarding(badge_id, user_id, quantity)
@@ -114,26 +110,24 @@ def get_awardings_of_badge(badge_id: BadgeID) -> set[QuantifiedBadgeAwarding]:
 
 def get_badges_awarded_to_user(user_id: UserID) -> dict[Badge, int]:
     """Return all badges that have been awarded to the user (and how often)."""
-    rows = db.session \
-        .query(
-            DbBadgeAwarding.badge_id,
-            db.func.count(DbBadgeAwarding.badge_id)
-        ) \
-        .filter(DbBadgeAwarding.user_id == user_id) \
+    rows = db.session.execute(
+        select(
+            DbBadgeAwarding.badge_id, db.func.count(DbBadgeAwarding.badge_id)
+        )
+        .filter(DbBadgeAwarding.user_id == user_id)
         .group_by(
             DbBadgeAwarding.badge_id,
-        ) \
-        .all()
+        )
+    ).all()
 
     badge_ids_with_awarding_quantity = {row[0]: row[1] for row in rows}
 
     badge_ids = set(badge_ids_with_awarding_quantity.keys())
 
     if badge_ids:
-        badges = db.session \
-            .query(DbBadge) \
-            .filter(DbBadge.id.in_(badge_ids)) \
-            .all()
+        badges = db.session.scalars(
+            select(DbBadge).filter(DbBadge.id.in_(badge_ids))
+        ).all()
     else:
         badges = []
 
@@ -156,10 +150,9 @@ def get_badges_awarded_to_users(
     if not user_ids:
         return {}
 
-    awardings = db.session \
-        .query(DbBadgeAwarding) \
-        .filter(DbBadgeAwarding.user_id.in_(user_ids)) \
-        .all()
+    awardings = db.session.scalars(
+        select(DbBadgeAwarding).filter(DbBadgeAwarding.user_id.in_(user_ids))
+    ).all()
 
     badge_ids = {awarding.badge_id for awarding in awardings}
     badges = get_badges(badge_ids, featured_only=featured_only)
