@@ -10,10 +10,11 @@ from collections import Counter, defaultdict
 from dataclasses import dataclass
 from typing import Iterator, Sequence
 
-from ..article.dbmodels.article import DbArticle
+from sqlalchemy import select
 
 from ....database import db
 
+from ..article.dbmodels.article import DbArticle
 from ..article.transfer.models import ArticleNumber
 from ..order.dbmodels.line_item import DbLineItem
 from ..order.dbmodels.order import DbOrder
@@ -50,21 +51,23 @@ class LineItemQuantity:
 
 def _find_line_items(shop_id: ShopID) -> Iterator[LineItemQuantity]:
     """Return relevant line items with quantities."""
-    common_query = db.session \
-        .query(DbLineItem) \
-        .join(DbOrder) \
-        .filter(DbOrder.shop_id == shop_id) \
-        .options(db.joinedload(DbLineItem.order)) \
+    common_stmt = (
+        select(DbLineItem)
+        .join(DbOrder)
+        .filter(DbOrder.shop_id == shop_id)
+        .options(db.joinedload(DbLineItem.order))
         .filter(DbLineItem.processing_required == True)
+    )
 
-    definitive_line_items = common_query \
-        .filter(DbOrder._payment_state == PaymentState.paid.name) \
-        .filter(DbOrder.processed_at.is_(None)) \
-        .all()
+    definitive_line_items = db.session.scalars(
+        common_stmt.filter(
+            DbOrder._payment_state == PaymentState.paid.name
+        ).filter(DbOrder.processed_at.is_(None))
+    ).all()
 
-    potential_line_items = common_query \
-        .filter(DbOrder._payment_state == PaymentState.open.name) \
-        .all()
+    potential_line_items = db.session.scalars(
+        common_stmt.filter(DbOrder._payment_state == PaymentState.open.name)
+    ).all()
 
     db_line_items = definitive_line_items + potential_line_items
 
@@ -107,11 +110,11 @@ def _get_article_descriptions(
     if not article_numbers:
         return {}
 
-    db_articles = db.session \
-        .query(DbArticle) \
-        .options(db.load_only('item_number', 'description')) \
-        .filter(DbArticle.item_number.in_(article_numbers)) \
-        .all()
+    db_articles = db.session.scalars(
+        select(DbArticle)
+        .options(db.load_only('item_number', 'description'))
+        .filter(DbArticle.item_number.in_(article_numbers))
+    ).all()
 
     return {
         db_article.item_number: db_article.description
