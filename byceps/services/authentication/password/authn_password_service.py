@@ -9,6 +9,7 @@ byceps.services.authentication.password.authn_password_service
 from datetime import datetime
 from typing import Optional
 
+from sqlalchemy import delete
 from werkzeug.security import (
     check_password_hash as _check_password_hash,
     generate_password_hash as _generate_password_hash,
@@ -126,8 +127,8 @@ def _get_credential_for_user(user_id: UserID) -> DbCredential:
 
 def delete_password_hash(user_id: UserID) -> None:
     """Delete user's credentials."""
-    db.session.query(DbCredential) \
-        .filter_by(user_id=user_id) \
-        .delete()
+    db.session.execute(
+        delete(DbCredential).where(DbCredential.user_id == user_id)
+    )
 
     db.session.commit()

@@ -10,6 +10,8 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID, uuid4
 
+from sqlalchemy import delete, select
+
 from ....database import db, insert_ignore_on_conflict, upsert
 from ....events.auth import UserLoggedIn
 from ....typing import UserID
@@ -38,18 +40,16 @@ def get_session_token(user_id: UserID) -> DbSessionToken:
 
     insert_ignore_on_conflict(table, values)
 
-    return db.session \
-        .query(DbSessionToken) \
-        .filter_by(user_id=user_id) \
-        .one()
+    return db.session.execute(
+        select(DbSessionToken).filter_by(user_id=user_id)
+    ).scalar_one()
 
 
 def delete_session_tokens_for_user(user_id: UserID) -> None:
     """Delete all session tokens that belong to the user."""
-    db.session.query(DbSessionToken) \
-        .filter_by(user_id=user_id) \
-        .delete()
-
+    db.session.execute(
+        delete(DbSessionToken).where(DbSessionToken.user_id == user_id)
+    )
     db.session.commit()
 
 
@@ -58,7 +58,7 @@ def delete_all_session_tokens() -> int:
 
     Return the number of records deleted.
     """
-    deleted_total = db.session.query(DbSessionToken).delete()
+    deleted_total = db.session.execute(delete(DbSessionToken))
     db.session.commit()
 
     return deleted_total
@@ -68,10 +68,9 @@ def find_session_token_for_user(user_id: UserID) -> Optional[DbSessionToken]:
     """Return the session token for the user with that ID, or `None` if
     not found.
     """
-    return db.session \
-        .query(DbSessionToken) \
-        .filter_by(user_id=user_id) \
-        .one_or_none()
+    return db.session.execute(
+        select(DbSessionToken).filter_by(user_id=user_id)
+    ).scalar_one_or_none()
 
 
 def is_session_valid(user_id: UserID, auth_token: str) -> bool:
@@ -97,12 +96,13 @@ def _is_token_valid_for_user(token: str, user_id: UserID) -> bool:
     if not user_id:
         raise ValueError('User ID is invalid.')
 
-    subquery = db.session \
-        .query(DbSessionToken) \
-        .filter_by(token=token, user_id=user_id) \
-        .exists()
-
-    return db.session.query(subquery).scalar()
+    return db.session.scalar(
+        select(
+            db.exists()
+            .where(DbSessionToken.token == token)
+            .where(DbSessionToken.user_id == user_id)
+        )
+    )
 
 
 def log_in_user(
@@ -145,10 +145,9 @@ def _create_login_log_entry(
 
 def find_recent_login(user_id: UserID) -> Optional[datetime]:
     """Return the time of the user's most recent login, if found."""
-    recent_login = db.session \
-        .query(DbRecentLogin) \
-        .filter_by(user_id=user_id) \
-        .one_or_none()
+    recent_login = db.session.execute(
+        select(DbRecentLogin).filter_by(user_id=user_id)
+    ).scalar_one_or_none()
 
     if recent_login is None:
         return None

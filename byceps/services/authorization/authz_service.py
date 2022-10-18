@@ -9,7 +9,7 @@ byceps.services.authorization.authz_service
 from collections import defaultdict
 from typing import Iterable, Optional
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
 from ...database import db
@@ -40,14 +40,10 @@ def create_role(
 
 def delete_role(role_id: RoleID) -> None:
     """Delete a role."""
-    db.session.query(DbRolePermission) \
-        .filter_by(role_id=role_id) \
-        .delete()
-
-    db.session.query(DbRole) \
-        .filter_by(id=role_id) \
-        .delete()
-
+    db.session.execute(
+        delete(DbRolePermission).where(DbRolePermission.role_id == role_id)
+    )
+    db.session.execute(delete(DbRole).where(DbRole.id == role_id))
     db.session.commit()
 
 
@@ -63,21 +59,24 @@ def find_role(role_id: RoleID) -> Optional[Role]:
 
 def find_role_ids_for_user(user_id: UserID) -> set[RoleID]:
     """Return the IDs of the roles assigned to the user."""
-    roles = db.session \
-        .query(DbRole) \
-        .join(DbUserRole) \
-        .filter(DbUserRole.user_id == user_id) \
+    roles = (
+        db.session.scalars(
+            select(DbRole)
+            .join(DbUserRole)
+            .filter(DbUserRole.user_id == user_id)
+        )
+        .unique()
         .all()
+    )
 
     return {r.id for r in roles}
 
 
 def find_user_ids_for_role(role_id: RoleID) -> set[UserID]:
     """Return the IDs of the users that have this role assigned."""
-    rows = db.session \
-        .query(DbUserRole.user_id) \
-        .filter(DbUserRole.role_id == role_id) \
-        .all()
+    rows = db.session.scalars(
+        select(DbUserRole.user_id).filter(DbUserRole.role_id == role_id)
+    ).all()
 
     return {row[0] for row in rows}
 
@@ -155,10 +154,7 @@ def deassign_all_roles_from_user(
     user_id: UserID, initiator_id: Optional[UserID] = None, commit: bool = True
 ) -> None:
     """Deassign all roles from the user."""
-    table = DbUserRole.__table__
-    delete_query = table.delete() \
-        .where(table.c.user_id == user_id)
-    db.session.execute(delete_query)
+    db.session.execute(delete(DbUserRole).where(DbUserRole.user_id == user_id))
 
     if commit:
         db.session.commit()
@@ -166,25 +162,25 @@ def deassign_all_roles_from_user(
 
 def _is_role_assigned_to_user(role_id: RoleID, user_id: UserID) -> bool:
     """Determine if the role is assigned to the user or not."""
-    subquery = db.session \
-        .query(DbUserRole) \
-        .filter_by(role_id=role_id) \
-        .filter_by(user_id=user_id) \
-        .exists()
-
-    return db.session.query(subquery).scalar()
+    return db.session.scalar(
+        select(
+            db.exists()
+            .where(DbUserRole.role_id == role_id)
+            .where(DbUserRole.user_id == user_id)
+        )
+    )
 
 
 def get_permission_ids_for_user(user_id: UserID) -> set[PermissionID]:
     """Return the IDs of all permissions the user has through the roles
     assigned to it.
     """
-    role_permissions = db.session \
-        .query(DbRolePermission) \
-        .join(DbRole) \
-        .join(DbUserRole) \
-        .filter(DbUserRole.user_id == user_id) \
-        .all()
+    role_permissions = db.session.scalars(
+        select(DbRolePermission)
+        .join(DbRole)
+        .join(DbUserRole)
+        .filter(DbUserRole.user_id == user_id)
+    ).all()
 
     return {rp.permission_id for rp in role_permissions}
 
@@ -212,23 +208,24 @@ def get_assigned_roles_for_permissions() -> dict[PermissionID, set[RoleID]]:
 
 def get_all_role_ids() -> set[RoleID]:
     """Return all role IDs."""
-    return db.session.execute(
-        select(DbRole.id)
-    ).scalars().all()
+    return db.session.scalars(select(DbRole.id)).all()
 
 
 def get_all_roles_with_permissions_and_users() -> list[
     tuple[Role, set[PermissionID], set[User]]
 ]:
     """Return all roles with titles, permission IDs, and assigned users."""
-    db_roles = db.session.execute(
-        select(DbRole)
-        .options(
-            db.undefer(DbRole.title),
-            db.joinedload(DbRole.user_roles)
-                .joinedload(DbUserRole.user)
+    db_roles = (
+        db.session.scalars(
+            select(DbRole)
+            .options(
+                db.undefer(DbRole.title),
+                db.joinedload(DbRole.user_roles).joinedload(DbUserRole.user),
+            )
         )
-    ).scalars().unique().all()
+        .unique()
+        .all()
+    )
 
     return [
         (
@@ -251,10 +248,11 @@ def get_permission_ids_by_role() -> dict[Role, frozenset[PermissionID]]:
 
     Role titles are undeferred to avoid lots of additional queries.
     """
-    db_roles = db.session.execute(
-        select(DbRole)
-        .options(db.undefer(DbRole.title))
-    ).scalars().unique().all()
+    db_roles = (
+        db.session.scalars(select(DbRole).options(db.undefer(DbRole.title)))
+        .unique()
+        .all()
+    )
 
     role_ids_and_permission_ids = db.session.execute(
         select(DbRolePermission.role_id, DbRolePermission.permission_id)
@@ -271,12 +269,16 @@ def get_permission_ids_by_role_for_user(
 
     Role titles are undeferred to avoid lots of additional queries.
     """
-    db_roles = db.session.execute(
-        select(DbRole)
-        .options(db.undefer(DbRole.title))
-        .join(DbUserRole)
-        .filter(DbUserRole.user_id == user_id)
-    ).scalars().unique().all()
+    db_roles = (
+        db.session.scalars(
+            select(DbRole)
+            .options(db.undefer(DbRole.title))
+            .join(DbUserRole)
+            .filter(DbUserRole.user_id == user_id)
+        )
+        .unique()
+        .all()
+    )
 
     role_ids_and_permission_ids = db.session.execute(
         select(DbRolePermission.role_id, DbRolePermission.permission_id)
@@ -309,10 +311,9 @@ def _index_permission_ids_by_role(
 
 def get_permission_ids_for_role(role_id: RoleID) -> set[PermissionID]:
     """Return the permission IDs assigned to the role."""
-    permission_ids = db.session.execute(
-        select(DbRolePermission.permission_id)
-        .filter_by(role_id=role_id)
-    ).scalars().all()
+    permission_ids = db.session.scalars(
+        select(DbRolePermission.permission_id).filter_by(role_id=role_id)
+    ).all()
 
     return {PermissionID(permission_id) for permission_id in permission_ids}
 

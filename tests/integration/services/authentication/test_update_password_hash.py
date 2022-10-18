@@ -47,5 +47,5 @@ def test_update_password_hash(site_app, admin_user, make_user):
 
 
 def get_password_hash(user_id):
-    credential = db.session.query(DbCredential).get(user_id)
+    credential = db.session.get(DbCredential, user_id)
     return credential.password_hash

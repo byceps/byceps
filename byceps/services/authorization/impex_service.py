@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Iterator, Union
 
 import rtoml
+from sqlalchemy import select
 
 from ...database import db
 
@@ -62,14 +63,14 @@ def export() -> str:
 
 def _collect_roles() -> Iterator[dict[str, Union[str, list[str]]]]:
     """Collect all roles and the permissions assigned to them."""
-    roles = db.session \
-        .query(DbRole) \
+    roles = db.session.scalars(
+        select(DbRole)
         .options(
             db.undefer(DbRole.title),
             db.joinedload(DbRole.role_permissions),
-        ) \
-        .order_by(DbRole.id) \
-        .all()
+        )
+        .order_by(DbRole.id)
+    ).all()
 
     for role in roles:
         permission_ids = [

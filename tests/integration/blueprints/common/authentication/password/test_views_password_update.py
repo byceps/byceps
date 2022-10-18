@@ -63,7 +63,7 @@ def test_when_not_logged_in_endpoint_is_unavailable(site_app, site):
 
 
 def find_credential(user_id):
-    return db.session.query(DbCredential).get(user_id)
+    return db.session.get(DbCredential, user_id)
 
 
 def find_session_token(user_id):

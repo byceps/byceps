@@ -9,6 +9,8 @@ byceps.services.verification_token.verification_token_service
 from datetime import datetime, timedelta
 from typing import Optional
 
+from sqlalchemy import delete, select
+
 from ...database import db
 from ...typing import UserID
 
@@ -51,10 +53,9 @@ def _create_token(
 
 def delete_token(token: str) -> None:
     """Delete the token."""
-    db.session.query(DbVerificationToken) \
-        .filter_by(token=token) \
-        .delete()
-
+    db.session.execute(
+        delete(DbVerificationToken).where(DbVerificationToken.token == token)
+    )
     db.session.commit()
 
 
@@ -63,11 +64,11 @@ def delete_old_tokens(created_before: datetime) -> int:
 
     Return the number of deleted tokens.
     """
-    num_deleted = db.session \
-        .query(DbVerificationToken) \
-        .filter(DbVerificationToken.created_at < created_before) \
-        .delete()
-
+    num_deleted = db.session.execute(
+        delete(DbVerificationToken).where(
+            DbVerificationToken.created_at < created_before
+        )
+    )
     db.session.commit()
 
     return num_deleted
@@ -102,11 +103,11 @@ def find_for_consent_by_token(token_value: str) -> Optional[VerificationToken]:
 def _find_for_purpose_by_token(
     token_value: str, purpose: Purpose
 ) -> Optional[VerificationToken]:
-    token = db.session \
-        .query(DbVerificationToken) \
-        .filter_by(token=token_value) \
-        .filter_by(_purpose=purpose.name) \
-        .first()
+    token = db.session.scalars(
+        select(DbVerificationToken)
+        .filter_by(token=token_value)
+        .filter_by(_purpose=purpose.name)
+    ).first()
 
     if token is None:
         return None
@@ -126,13 +127,12 @@ def _db_entity_to_token(token: DbVerificationToken) -> VerificationToken:
 
 def count_tokens_by_purpose() -> dict[Purpose, int]:
     """Count verification tokens, grouped by purpose."""
-    rows = db.session \
-        .query(
+    rows = db.session.execute(
+        select(
             DbVerificationToken._purpose,
-            db.func.count(DbVerificationToken.token)
-        ) \
-        .group_by(DbVerificationToken._purpose) \
-        .all()
+            db.func.count(DbVerificationToken.token),
+        ).group_by(DbVerificationToken._purpose)
+    ).all()
 
     counts_by_name = dict(rows)
 
