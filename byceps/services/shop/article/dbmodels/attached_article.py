@@ -8,7 +8,7 @@ byceps.services.shop.article.dbmodels.attached_article
 
 from .....database import db, generate_uuid
 
-from ..transfer.models import ArticleNumber
+from ..transfer.models import ArticleID, ArticleNumber
 
 from .article import DbArticle
 
@@ -18,10 +18,14 @@ class DbAttachedArticle(db.Model):
 
     __tablename__ = 'shop_attached_articles'
     __table_args__ = (
+        db.UniqueConstraint('article_id', 'attached_to_article_id'),
         db.UniqueConstraint('article_number', 'attached_to_article_number'),
     )
 
     id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    article_id = db.Column(
+        db.Uuid, db.ForeignKey('shop_articles.id'), nullable=False, index=True
+    )
     article_number = db.Column(
         db.UnicodeText,
         db.ForeignKey('shop_articles.item_number'),
@@ -35,6 +39,9 @@ class DbAttachedArticle(db.Model):
     )
     quantity = db.Column(
         db.Integer, db.CheckConstraint('quantity > 0'), nullable=False
+    )
+    attached_to_article_id = db.Column(
+        db.Uuid, db.ForeignKey('shop_articles.id'), nullable=False, index=True
     )
     attached_to_article_number = db.Column(
         db.UnicodeText,
@@ -50,10 +57,14 @@ class DbAttachedArticle(db.Model):
 
     def __init__(
         self,
+        article_id: ArticleID,
         article_number: ArticleNumber,
         quantity: int,
+        attached_to_article_id: ArticleID,
         attached_to_article_number: ArticleNumber,
     ) -> None:
+        self.article_id = article_id
         self.article_number = article_number
         self.quantity = quantity
+        self.attached_to_article_id = attached_to_article_id
         self.attached_to_article_number = attached_to_article_number
