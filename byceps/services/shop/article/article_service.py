@@ -270,18 +270,22 @@ def _get_db_article(article_id: ArticleID) -> DbArticle:
 
 def find_article_with_details(article_id: ArticleID) -> Optional[DbArticle]:
     """Return the article with that ID, or `None` if not found."""
-    return db.session.execute(
-        select(DbArticle)
-        .options(
-            db.joinedload(DbArticle.articles_attached_to).joinedload(
-                DbAttachedArticle.article
-            ),
-            db.joinedload(DbArticle.attached_articles).joinedload(
-                DbAttachedArticle.article
-            ),
+    return (
+        db.session.execute(
+            select(DbArticle)
+            .options(
+                db.joinedload(DbArticle.articles_attached_to).joinedload(
+                    DbAttachedArticle.article
+                ),
+                db.joinedload(DbArticle.attached_articles).joinedload(
+                    DbAttachedArticle.article
+                ),
+            )
+            .filter_by(id=article_id)
         )
-        .filter_by(id=article_id)
-    ).scalar_one_or_none()
+        .unique()
+        .scalar_one_or_none()
+    )
 
 
 def find_attached_article(
