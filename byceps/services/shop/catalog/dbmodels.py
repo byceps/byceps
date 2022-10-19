@@ -11,7 +11,7 @@ from sqlalchemy.ext.orderinglist import ordering_list
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ..article.transfer.models import ArticleNumber
+from ..article.transfer.models import ArticleID, ArticleNumber
 from ..shop.transfer.models import ShopID
 
 from .transfer.models import CatalogID, CollectionID
@@ -78,6 +78,7 @@ class DbCatalogArticle(db.Model):
 
     __tablename__ = 'shop_catalog_articles'
     __table_args__ = (
+        db.UniqueConstraint('collection_id', 'article_id'),
         db.UniqueConstraint('collection_id', 'article_number'),
     )
 
@@ -87,6 +88,9 @@ class DbCatalogArticle(db.Model):
         db.ForeignKey('shop_catalog_collections.id'),
         index=True,
         nullable=False,
+    )
+    article_id = db.Column(
+        db.Uuid, db.ForeignKey('shop_articles.id'), index=True, nullable=False
     )
     article_number = db.Column(
         db.UnicodeText,
@@ -106,7 +110,11 @@ class DbCatalogArticle(db.Model):
     )
 
     def __init__(
-        self, collection_id: CollectionID, article_number: ArticleNumber
+        self,
+        collection_id: CollectionID,
+        article_id: ArticleID,
+        article_number: ArticleNumber,
     ) -> None:
         self.collection_id = collection_id
+        self.article_id = article_id
         self.article_number = article_number
