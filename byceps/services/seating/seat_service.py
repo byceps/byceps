@@ -94,7 +94,7 @@ def count_occupied_seats_by_category(
             DbTicketCategory.title,
             db.func.count(subquery.c.id)
         ) \
-        .outerjoin(subquery, db.and_(DbTicketCategory.id == subquery.c.category_id)) \
+        .outerjoin(subquery, DbTicketCategory.id == subquery.c.category_id) \
         .filter(DbTicketCategory.party_id == party_id) \
         .group_by(DbTicketCategory.id) \
         .order_by(DbTicketCategory.id) \
