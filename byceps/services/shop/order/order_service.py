@@ -516,7 +516,7 @@ def count_orders_per_payment_state(shop_id: ShopID) -> dict[PaymentState, int]:
     """Count orders for the shop, grouped by payment state."""
     counts_by_payment_state = dict.fromkeys(PaymentState, 0)
 
-    rows = db.session.scalars(
+    rows = db.session.execute(
         select(DbOrder._payment_state, db.func.count(DbOrder.id))
         .filter(DbOrder.shop_id == shop_id)
         .group_by(DbOrder._payment_state)
@@ -638,7 +638,7 @@ def get_order_ids_for_order_numbers(
 def get_order_count_by_shop_id() -> dict[ShopID, int]:
     """Return order count (including 0) per shop, indexed by shop ID."""
     shop_ids_and_order_counts = (
-        db.session.scalars(
+        db.session.execute(
             select(DbShop.id, db.func.count(DbOrder.shop_id))
             .outerjoin(DbOrder)
             .group_by(DbShop.id)

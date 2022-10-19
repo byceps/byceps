@@ -108,7 +108,7 @@ def get_avatar_urls_for_users(
     if not user_ids:
         return {}
 
-    user_ids_and_avatars = db.session.scalars(
+    user_ids_and_avatars = db.session.execute(
         select(
             DbUserAvatarSelection.user_id,
             DbUserAvatar,
