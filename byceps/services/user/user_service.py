@@ -132,11 +132,9 @@ def _get_user_stmt(include_avatar: bool) -> Select:
     )
 
     if include_avatar:
-        stmt = (
-            stmt
-            .outerjoin(DbUserAvatarSelection, DbUser.avatar_selection)
-            .outerjoin(DbUserAvatar)
-        )
+        stmt = stmt.outerjoin(
+            DbUserAvatarSelection, DbUser.id == DbUserAvatarSelection.user_id
+        ).outerjoin(DbUserAvatar)
 
     return stmt
 
