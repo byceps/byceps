@@ -754,7 +754,7 @@ def get_orders_for_shop_paginated(
 def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
     """Return orders placed by the user."""
     db_orders = (
-        db.session.execute(
+        db.session.scalars(
             select(DbOrder)
             .options(
                 db.joinedload(DbOrder.line_items),
