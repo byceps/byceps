@@ -56,7 +56,10 @@ def order_action(
     ticket_quantity_per_bundle: int,
 ) -> None:
     action_registry_service.register_ticket_bundles_creation(
-        article.item_number, ticket_category.id, ticket_quantity_per_bundle
+        article.id,
+        article.item_number,
+        ticket_category.id,
+        ticket_quantity_per_bundle,
     )
 
 

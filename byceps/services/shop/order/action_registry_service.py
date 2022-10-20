@@ -9,7 +9,7 @@ byceps.services.shop.order.action_registry_service
 from ...ticketing.transfer.models import TicketCategoryID
 from ...user_badge.transfer.models import BadgeID
 
-from ..article.transfer.models import ArticleNumber
+from ..article.transfer.models import ArticleID, ArticleNumber
 
 from .transfer.action import ActionParameters
 from .transfer.order import PaymentState
@@ -18,18 +18,23 @@ from . import action_service
 
 
 def register_badge_awarding(
-    article_number: ArticleNumber, badge_id: BadgeID
+    article_id: ArticleID, article_number: ArticleNumber, badge_id: BadgeID
 ) -> None:
     # Award badge to orderer when order is marked as paid.
     params_create = {
         'badge_id': str(badge_id),
     }
     action_service.create_action(
-        article_number, PaymentState.paid, 'award_badge', params_create
+        article_id,
+        article_number,
+        PaymentState.paid,
+        'award_badge',
+        params_create,
     )
 
 
 def register_ticket_bundles_creation(
+    article_id: ArticleID,
     article_number: ArticleNumber,
     ticket_category_id: TicketCategoryID,
     ticket_quantity: int,
@@ -40,6 +45,7 @@ def register_ticket_bundles_creation(
         'ticket_quantity': ticket_quantity,
     }
     action_service.create_action(
+        article_id,
         article_number,
         PaymentState.paid,
         'create_ticket_bundles',
@@ -50,6 +56,7 @@ def register_ticket_bundles_creation(
     # is canceled after being marked as paid.
     params_revoke: ActionParameters = {}
     action_service.create_action(
+        article_id,
         article_number,
         PaymentState.canceled_after_paid,
         'revoke_ticket_bundles',
@@ -58,20 +65,27 @@ def register_ticket_bundles_creation(
 
 
 def register_tickets_creation(
-    article_number: ArticleNumber, ticket_category_id: TicketCategoryID
+    article_id: ArticleID,
+    article_number: ArticleNumber,
+    ticket_category_id: TicketCategoryID,
 ) -> None:
     # Create tickets for order when it is marked as paid.
     params_create = {
         'category_id': str(ticket_category_id),
     }
     action_service.create_action(
-        article_number, PaymentState.paid, 'create_tickets', params_create
+        article_id,
+        article_number,
+        PaymentState.paid,
+        'create_tickets',
+        params_create,
     )
 
     # Revoke tickets that have been created for the order when it is
     # canceled after being marked as paid.
     params_revoke: ActionParameters = {}
     action_service.create_action(
+        article_id,
         article_number,
         PaymentState.canceled_after_paid,
         'revoke_tickets',

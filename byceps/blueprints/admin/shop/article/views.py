@@ -631,7 +631,7 @@ def action_create_for_badge_awarding(article_id):
     badge = user_badge_service.get_badge(badge_id)
 
     action_registry_service.register_badge_awarding(
-        article.item_number, badge.id
+        article.id, article.item_number, badge.id
     )
 
     flash_success(gettext('Action has been added.'))
@@ -683,7 +683,7 @@ def action_create_for_tickets_creation(article_id):
     category = ticket_category_service.get_category(category_id)
 
     action_registry_service.register_tickets_creation(
-        article.item_number, category.id
+        article.id, article.item_number, category.id
     )
 
     flash_success(gettext('Action has been added.'))
@@ -739,7 +739,7 @@ def action_create_for_ticket_bundles_creation(article_id):
     ticket_quantity = form.ticket_quantity.data
 
     action_registry_service.register_ticket_bundles_creation(
-        article.item_number, category.id, ticket_quantity
+        article.id, article.item_number, category.id, ticket_quantity
     )
 
     flash_success(gettext('Action has been added.'))

@@ -14,7 +14,7 @@ from sqlalchemy import delete, select
 from ....database import db
 from ....typing import UserID
 
-from ..article.transfer.models import ArticleNumber
+from ..article.transfer.models import ArticleID, ArticleNumber
 
 from .actions.award_badge import award_badge
 from .actions.create_ticket_bundles import create_ticket_bundles
@@ -43,6 +43,7 @@ PROCEDURES_BY_NAME: dict[str, OrderActionType] = {
 
 
 def create_action(
+    article_id: ArticleID,
     article_number: ArticleNumber,
     payment_state: PaymentState,
     procedure_name: str,
@@ -50,7 +51,7 @@ def create_action(
 ) -> None:
     """Create an order action."""
     db_action = DbOrderAction(
-        article_number, payment_state, procedure_name, parameters
+        article_id, article_number, payment_state, procedure_name, parameters
     )
 
     db.session.add(db_action)
