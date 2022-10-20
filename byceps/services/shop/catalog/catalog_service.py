@@ -12,7 +12,7 @@ from sqlalchemy import delete, select
 
 from ....database import db
 
-from ..article.transfer.models import ArticleID, ArticleNumber
+from ..article.transfer.models import ArticleID
 from ..shop.transfer.models import ShopID
 
 from .dbmodels import DbCatalog, DbCatalogArticle, DbCollection
@@ -182,18 +182,14 @@ def _db_entity_to_collection(db_collection: DbCollection) -> Collection:
 
 
 def add_article_to_collection(
-    article_id: ArticleID,
-    article_number: ArticleNumber,
-    collection_id: CollectionID,
+    article_id: ArticleID, collection_id: CollectionID
 ) -> CatalogArticleID:
     """Add article to collection."""
     db_collection = db.session.get(DbCollection, collection_id)
     if db_collection is None:
         raise ValueError(f'Unknown collection ID "{collection_id}"')
 
-    db_catalog_article = DbCatalogArticle(
-        collection_id, article_id, article_number
-    )
+    db_catalog_article = DbCatalogArticle(collection_id, article_id)
 
     db_collection.catalog_articles.append(db_catalog_article)
     db.session.commit()
