@@ -34,7 +34,7 @@ class DbAttachedArticle(db.Model):
     )
     article = db.relationship(
         DbArticle,
-        foreign_keys=[article_number],
+        foreign_keys=[article_id],
         backref=db.backref('articles_attached_to', collection_class=set),
     )
     quantity = db.Column(
@@ -51,7 +51,7 @@ class DbAttachedArticle(db.Model):
     )
     attached_to_article = db.relationship(
         DbArticle,
-        foreign_keys=[attached_to_article_number],
+        foreign_keys=[attached_to_article_id],
         backref=db.backref('attached_articles', collection_class=set),
     )
 
