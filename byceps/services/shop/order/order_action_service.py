@@ -45,14 +45,13 @@ PROCEDURES_BY_NAME: dict[str, OrderActionType] = {
 
 def create_action(
     article_id: ArticleID,
-    article_number: ArticleNumber,
     payment_state: PaymentState,
     procedure_name: str,
     parameters: ActionParameters,
 ) -> None:
     """Create an order action."""
     db_action = DbOrderAction(
-        article_id, article_number, payment_state, procedure_name, parameters
+        article_id, payment_state, procedure_name, parameters
     )
 
     db.session.add(db_action)

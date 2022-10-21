@@ -48,7 +48,7 @@ def order(
 @pytest.fixture
 def order_action(article: Article, ticket_category: TicketCategory) -> None:
     order_action_registry_service.register_tickets_creation(
-        article.id, article.item_number, ticket_category.id
+        article.id, ticket_category.id
     )
 
 
