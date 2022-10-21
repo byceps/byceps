@@ -59,6 +59,7 @@ def update_avatar_image(
     # Might raise `FileExistsError`.
     upload.store(stream, avatar.path, create_parent_path_if_nonexistent=True)
 
+    user.avatar_id = avatar.id
     user.avatar = avatar
 
     log_entry = user_log_service.build_entry(
@@ -83,10 +84,13 @@ def remove_avatar_image(user_id: UserID, initiator_id: UserID) -> None:
     The avatar will be unlinked from the user, but the database record
     as well as the image file itself won't be removed, though.
     """
-    selection = db.session.get(DbUserAvatarSelection, user_id)
+    user = user_service.get_db_user(user_id)
+    user.avatar_id = None
+
+    selection = db.session.get(DbUserAvatarSelection, user.id)
 
     if selection is None:
-        raise ValueError(f'No avatar set for user ID {user_id}.')
+        raise ValueError(f'No avatar set for user ID {user.id}.')
 
     avatar_id = selection.avatar_id
     filename = selection.avatar.filename
@@ -95,7 +99,7 @@ def remove_avatar_image(user_id: UserID, initiator_id: UserID) -> None:
 
     log_entry = user_log_service.build_entry(
         'user-avatar-removed',
-        user_id,
+        user.id,
         {
             'avatar_id': str(avatar_id),
             'filename': str(filename),

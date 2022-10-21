@@ -29,6 +29,9 @@ class DbUser(db.Model):
     email_address_verified = db.Column(
         db.Boolean, default=False, nullable=False
     )
+    # TODO: Add foreign key constraint after avatar selection
+    # table is removed: `db.ForeignKey('user_avatars.id')`
+    avatar_id = db.Column(db.Uuid, nullable=True)
     initialized = db.Column(db.Boolean, default=False, nullable=False)
     suspended = db.Column(db.Boolean, default=False, nullable=False)
     deleted = db.Column(db.Boolean, default=False, nullable=False)
