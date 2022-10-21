@@ -6,8 +6,11 @@
 import hashlib
 from pathlib import Path
 
-from byceps.services.user import user_command_service, user_creation_service
-from byceps.services.user_avatar import user_avatar_service
+from byceps.services.user import (
+    user_avatar_service,
+    user_command_service,
+    user_creation_service,
+)
 from byceps.util.image.models import ImageType
 
 

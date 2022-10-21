@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from byceps.services.user_avatar import user_avatar_service
+from byceps.services.user import user_avatar_service
 from byceps.util.image.models import ImageType
 
 

@@ -7,7 +7,7 @@ from uuid import UUID
 
 import pytest
 
-from byceps.services.user_avatar.dbmodels import DbUserAvatar
+from byceps.services.user.dbmodels.avatar import DbUserAvatar
 from byceps.typing import UserID
 from byceps.util.image.models import ImageType
 

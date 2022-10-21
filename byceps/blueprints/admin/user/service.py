@@ -20,10 +20,13 @@ from ....services.shop.order import order_log_service, order_service
 from ....services.site import site_service
 from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.ticketing import ticket_attendance_service, ticket_service
-from ....services.user import user_log_service, user_service
 from ....services.user.transfer.log import UserLogEntry, UserLogEntryData
 from ....services.user.transfer.models import User
-from ....services.user_avatar import user_avatar_service
+from ....services.user import (
+    user_avatar_service,
+    user_log_service,
+    user_service,
+)
 from ....services.user_badge import user_badge_service as user_badge_service
 from ....typing import PartyID, UserID
 

@@ -11,10 +11,10 @@ from typing import Iterable, Iterator, Optional
 
 from ...database import db
 
-from ..user_avatar import user_avatar_service
 from ..user.dbmodels.detail import DbUserDetail
 from ..user.dbmodels.user import DbUser
 from ..user.transfer.models import User, UserID
+from ..user import user_avatar_service
 
 from .dbmodels import DbOrgaFlag
 from .transfer.models import Birthday

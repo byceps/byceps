@@ -10,7 +10,7 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from .....services.image import image_service
-from .....services.user_avatar import user_avatar_service
+from .....services.user import user_avatar_service
 from .....signals import user_avatar as user_avatar_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_notice, flash_success

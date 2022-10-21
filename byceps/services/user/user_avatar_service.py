@@ -1,6 +1,6 @@
 """
-byceps.services.user_avatar.user_avatar_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user.user_avatar_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -18,11 +18,11 @@ from ...util import upload
 
 from ..image import image_service
 from ..image.image_service import ImageTypeProhibited  # Provide to view functions.  # noqa: F401
-from ..user.dbmodels.user import DbUser
-from ..user import user_service
 
-from .dbmodels import DbUserAvatar, DbUserAvatarSelection
-from .transfer.models import AvatarID, AvatarUpdate
+from .dbmodels.avatar import DbUserAvatar, DbUserAvatarSelection
+from .dbmodels.user import DbUser
+from .transfer.models import UserAvatarID, UserAvatarUpdate
+from . import user_service
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
@@ -34,7 +34,7 @@ def update_avatar_image(
     allowed_types: set[ImageType],
     *,
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
-) -> AvatarID:
+) -> UserAvatarID:
     """Set a new avatar image for the user.
 
     Raise `ImageTypeProhibited` if the stream data is not of one the
@@ -79,20 +79,20 @@ def remove_avatar_image(user_id: UserID) -> None:
     db.session.commit()
 
 
-def get_db_avatar(avatar_id: AvatarID) -> DbUserAvatar:
+def get_db_avatar(avatar_id: UserAvatarID) -> DbUserAvatar:
     """Return the avatar with that ID, or raise exception if not found."""
     return db.session.execute(
         select(DbUserAvatar).filter_by(id=avatar_id)
     ).scalar_one()
 
 
-def get_avatars_uploaded_by_user(user_id: UserID) -> list[AvatarUpdate]:
+def get_avatars_uploaded_by_user(user_id: UserID) -> list[UserAvatarUpdate]:
     """Return the avatars uploaded by the user."""
     avatars = db.session.scalars(
         select(DbUserAvatar).filter_by(creator_id=user_id)
     ).all()
 
-    return [AvatarUpdate(avatar.created_at, avatar.url) for avatar in avatars]
+    return [UserAvatarUpdate(avatar.created_at, avatar.url) for avatar in avatars]
 
 
 def get_avatar_url_for_user(user_id: UserID) -> Optional[str]:

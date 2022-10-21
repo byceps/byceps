@@ -1,5 +1,5 @@
 """
-byceps.services.user_avatar.dbmodels
+byceps.services.user.dbmodels.avatar
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
@@ -17,12 +17,12 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from ...database import db, generate_uuid
-from ...typing import UserID
-from ...util.image.models import ImageType
-from ...util.instances import ReprBuilder
+from ....database import db, generate_uuid
+from ....typing import UserID
+from ....util.image.models import ImageType
+from ....util.instances import ReprBuilder
 
-from .transfer.models import AvatarID
+from ..transfer.models import UserAvatarID
 
 
 _ABSOLUTE_URL_PATH_PREFIX = '/data/global/users/avatars/'
@@ -88,6 +88,6 @@ class DbUserAvatarSelection(db.Model):
     )
     avatar = db.relationship(DbUserAvatar)
 
-    def __init__(self, user_id: UserID, avatar_id: AvatarID) -> None:
+    def __init__(self, user_id: UserID, avatar_id: UserAvatarID) -> None:
         self.user_id = user_id
         self.avatar_id = avatar_id

@@ -17,8 +17,8 @@ from ...typing import PartyID, UserID
 from ..seating.dbmodels.seat import DbSeat
 from ..ticketing.dbmodels.category import DbTicketCategory
 from ..ticketing.dbmodels.ticket import DbTicket
+from ..user.dbmodels.avatar import DbUserAvatarSelection
 from ..user.dbmodels.user import DbUser
-from ..user_avatar.dbmodels import DbUserAvatarSelection
 
 from .transfer.models import Attendee, AttendeeTicket
 

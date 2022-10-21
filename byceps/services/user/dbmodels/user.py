@@ -14,7 +14,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ...user_avatar.dbmodels import DbUserAvatarSelection
+from .avatar import DbUserAvatarSelection
 
 
 class DbUser(db.Model):

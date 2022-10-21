@@ -10,9 +10,13 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import date, datetime
 from enum import Enum
-from typing import Any, Optional
+from typing import Any, NewType, Optional
+from uuid import UUID
 
 from ....typing import UserID
+
+
+UserAvatarID = NewType('UserAvatarID', UUID)
 
 
 @dataclass(frozen=True)
@@ -72,3 +76,9 @@ UserStateFilter = Enum(
         'deleted',
     ],
 )
+
+
+@dataclass(frozen=True)
+class UserAvatarUpdate:
+    occurred_at: datetime
+    url_path: str

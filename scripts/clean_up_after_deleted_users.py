@@ -30,9 +30,9 @@ from byceps.services.newsletter.dbmodels import (
     DbSubscription as DbNewsletterSubscription,
     DbSubscriptionUpdate as DbNewsletterSubscriptionUpdate,
 )
+from byceps.services.user.dbmodels.avatar import DbUserAvatarSelection
 from byceps.services.user.dbmodels.log import DbUserLogEntry
 from byceps.services.user import user_service
-from byceps.services.user_avatar.dbmodels import DbUserAvatarSelection
 from byceps.services.verification_token.dbmodels import DbVerificationToken
 from byceps.typing import UserID
 
