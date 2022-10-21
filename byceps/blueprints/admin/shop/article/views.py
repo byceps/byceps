@@ -132,7 +132,7 @@ def view(article_id):
         article.item_number
     )
 
-    actions = order_action_service.get_actions_for_article(article.item_number)
+    actions = order_action_service.get_actions_for_article(article.id)
     actions.sort(key=lambda a: a.payment_state.name, reverse=True)
 
     return {
