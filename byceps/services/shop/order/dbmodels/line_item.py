@@ -17,7 +17,7 @@ else:
 from .....database import db, generate_uuid
 
 from ...article.dbmodels.article import DbArticle
-from ...article.transfer.models import ArticleNumber, ArticleType
+from ...article.transfer.models import ArticleID, ArticleNumber, ArticleType
 
 from .order import DbOrder
 
@@ -35,13 +35,16 @@ class DbLineItem(db.Model):
         nullable=False,
     )
     order = db.relationship(DbOrder, backref='line_items')
+    article_id = db.Column(
+        db.Uuid, db.ForeignKey('shop_articles.id'), index=True, nullable=False
+    )
     article_number = db.Column(
         db.UnicodeText,
         db.ForeignKey('shop_articles.item_number'),
         index=True,
         nullable=False,
     )
-    article = db.relationship(DbArticle)
+    article = db.relationship(DbArticle, foreign_keys=[article_number])
     _article_type = db.Column('article_type', db.UnicodeText, nullable=False)
     description = db.Column(db.UnicodeText, nullable=False)
     unit_price = db.Column(db.Numeric(6, 2), nullable=False)
@@ -56,6 +59,7 @@ class DbLineItem(db.Model):
     def __init__(
         self,
         order: DbOrder,
+        article_id: ArticleID,
         article_number: ArticleNumber,
         article_type: ArticleType,
         description: str,
@@ -69,6 +73,7 @@ class DbLineItem(db.Model):
         # because line items are created together with the order – and
         # until the order is created, there is no order number assigned.
         self.order = order
+        self.article_id = article_id
         self.article_number = article_number
         self._article_type = article_type.name
         self.description = description

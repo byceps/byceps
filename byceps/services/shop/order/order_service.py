@@ -158,6 +158,7 @@ def _build_line_items(
 
         yield DbLineItem(
             db_order,
+            article.id,
             article.item_number,
             article.type_,
             article.description,
