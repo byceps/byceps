@@ -11,8 +11,10 @@ from pytest import raises
 
 from byceps.events.ticketing import TicketsSold
 from byceps.services.shop.article.transfer.models import Article
-from byceps.services.shop.order import action_registry_service
-from byceps.services.shop.order import order_log_service
+from byceps.services.shop.order import (
+    order_action_registry_service,
+    order_log_service,
+)
 from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
@@ -45,7 +47,7 @@ def order(
 
 @pytest.fixture
 def order_action(article: Article, ticket_category: TicketCategory) -> None:
-    action_registry_service.register_tickets_creation(
+    order_action_registry_service.register_tickets_creation(
         article.id, article.item_number, ticket_category.id
     )
 

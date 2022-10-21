@@ -22,8 +22,8 @@ from .....services.shop.article.transfer.models import (
     get_article_type_label,
 )
 from .....services.shop.order import (
-    action_registry_service,
-    action_service,
+    order_action_registry_service,
+    order_action_service,
     ordered_articles_service,
     order_service,
 )
@@ -132,7 +132,7 @@ def view(article_id):
         article.item_number
     )
 
-    actions = action_service.get_actions_for_article(article.item_number)
+    actions = order_action_service.get_actions_for_article(article.item_number)
     actions.sort(key=lambda a: a.payment_state.name, reverse=True)
 
     return {
@@ -630,7 +630,7 @@ def action_create_for_badge_awarding(article_id):
     badge_id = form.badge_id.data
     badge = user_badge_service.get_badge(badge_id)
 
-    action_registry_service.register_badge_awarding(
+    order_action_registry_service.register_badge_awarding(
         article.id, article.item_number, badge.id
     )
 
@@ -682,7 +682,7 @@ def action_create_for_tickets_creation(article_id):
     category_id = form.category_id.data
     category = ticket_category_service.get_category(category_id)
 
-    action_registry_service.register_tickets_creation(
+    order_action_registry_service.register_tickets_creation(
         article.id, article.item_number, category.id
     )
 
@@ -738,7 +738,7 @@ def action_create_for_ticket_bundles_creation(article_id):
 
     ticket_quantity = form.ticket_quantity.data
 
-    action_registry_service.register_ticket_bundles_creation(
+    order_action_registry_service.register_ticket_bundles_creation(
         article.id, article.item_number, category.id, ticket_quantity
     )
 
@@ -752,12 +752,12 @@ def action_create_for_ticket_bundles_creation(article_id):
 @respond_no_content
 def action_remove(action_id):
     """Remove the action from the article."""
-    action = action_service.find_action(action_id)
+    action = order_action_service.find_action(action_id)
 
     if action is None:
         abort(404)
 
-    action_service.delete_action(action.id)
+    order_action_service.delete_action(action.id)
 
     flash_success(gettext('Action has been removed.'))
 

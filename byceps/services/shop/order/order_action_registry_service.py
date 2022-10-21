@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.action_registry_service
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.order_action_registry_service
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -14,7 +14,7 @@ from ..article.transfer.models import ArticleID, ArticleNumber
 from .transfer.action import ActionParameters
 from .transfer.order import PaymentState
 
-from . import action_service
+from . import order_action_service
 
 
 def register_badge_awarding(
@@ -24,7 +24,7 @@ def register_badge_awarding(
     params_create = {
         'badge_id': str(badge_id),
     }
-    action_service.create_action(
+    order_action_service.create_action(
         article_id,
         article_number,
         PaymentState.paid,
@@ -44,7 +44,7 @@ def register_ticket_bundles_creation(
         'category_id': str(ticket_category_id),
         'ticket_quantity': ticket_quantity,
     }
-    action_service.create_action(
+    order_action_service.create_action(
         article_id,
         article_number,
         PaymentState.paid,
@@ -55,7 +55,7 @@ def register_ticket_bundles_creation(
     # Revoke ticket bundles that have been created for the order when it
     # is canceled after being marked as paid.
     params_revoke: ActionParameters = {}
-    action_service.create_action(
+    order_action_service.create_action(
         article_id,
         article_number,
         PaymentState.canceled_after_paid,
@@ -73,7 +73,7 @@ def register_tickets_creation(
     params_create = {
         'category_id': str(ticket_category_id),
     }
-    action_service.create_action(
+    order_action_service.create_action(
         article_id,
         article_number,
         PaymentState.paid,
@@ -84,7 +84,7 @@ def register_tickets_creation(
     # Revoke tickets that have been created for the order when it is
     # canceled after being marked as paid.
     params_revoke: ActionParameters = {}
-    action_service.create_action(
+    order_action_service.create_action(
         article_id,
         article_number,
         PaymentState.canceled_after_paid,

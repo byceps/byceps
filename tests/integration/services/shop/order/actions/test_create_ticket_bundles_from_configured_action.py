@@ -10,8 +10,10 @@ import pytest
 
 from byceps.events.ticketing import TicketsSold
 from byceps.services.shop.article.transfer.models import Article
-from byceps.services.shop.order import action_registry_service
-from byceps.services.shop.order import order_log_service
+from byceps.services.shop.order import (
+    order_action_registry_service,
+    order_log_service,
+)
 from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
@@ -55,7 +57,7 @@ def order_action(
     ticket_category: TicketCategory,
     ticket_quantity_per_bundle: int,
 ) -> None:
-    action_registry_service.register_ticket_bundles_creation(
+    order_action_registry_service.register_ticket_bundles_creation(
         article.id,
         article.item_number,
         ticket_category.id,

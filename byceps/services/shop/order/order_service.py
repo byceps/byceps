@@ -36,7 +36,7 @@ from .actions import ticket_bundle as ticket_bundle_actions
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
-from . import action_service, order_log_service, order_sequence_service
+from . import order_action_service, order_log_service, order_sequence_service
 from .transfer.log import OrderLogEntryData
 from .transfer.number import OrderNumber
 from .transfer.order import (
@@ -460,7 +460,7 @@ def _execute_article_creation_actions(
                 )
 
     # based on order action registered for article number
-    action_service.execute_creation_actions(order, initiator_id)
+    order_action_service.execute_creation_actions(order, initiator_id)
 
 
 def _execute_article_revocation_actions(
@@ -476,7 +476,7 @@ def _execute_article_revocation_actions(
             )
 
     # based on order action registered for article number
-    action_service.execute_revocation_actions(order, initiator_id)
+    order_action_service.execute_revocation_actions(order, initiator_id)
 
 
 def update_line_item_processing_result(

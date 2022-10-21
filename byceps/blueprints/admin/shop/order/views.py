@@ -11,7 +11,7 @@ from flask_babel import gettext
 
 from .....services.brand import brand_service
 from .....services.shop.order import (
-    invoice_service,
+    order_invoice_service,
     order_log_service,
     order_sequence_service,
     order_service,
@@ -118,7 +118,7 @@ def view(order_id):
 
     articles_by_item_number = service.get_articles_by_item_number(order)
 
-    invoices = invoice_service.get_invoices_for_order(order.id)
+    invoices = order_invoice_service.get_invoices_for_order(order.id)
 
     log_entries = service.get_enriched_log_entry_data_for_order(order.id)
 
