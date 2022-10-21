@@ -12,11 +12,7 @@ import pytest
 
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article import article_service
-from byceps.services.shop.article.transfer.models import (
-    Article,
-    ArticleID,
-    ArticleNumber,
-)
+from byceps.services.shop.article.transfer.models import Article, ArticleID
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.transfer.number import OrderNumber
 from byceps.services.shop.order.transfer.order import LineItem, Order
@@ -128,7 +124,7 @@ def test_order(
     first_line_item = order.line_items[0]
     assert_line_item(
         first_line_item,
-        article.item_number,
+        article.id,
         article.price,
         article.tax_rate,
         3,
@@ -190,7 +186,7 @@ def test_order_single(
     first_line_item = order.line_items[0]
     assert_line_item(
         first_line_item,
-        article.item_number,
+        article.id,
         article.price,
         article.tax_rate,
         1,
@@ -251,12 +247,12 @@ def assert_order(
 
 def assert_line_item(
     line_item: LineItem,
-    article_item_number: ArticleNumber,
+    article_id: ArticleID,
     unit_price: Decimal,
     tax_rate: Decimal,
     quantity: int,
 ) -> None:
-    assert line_item.article_number == article_item_number
+    assert line_item.article_id == article_id
     assert line_item.unit_price == unit_price
     assert line_item.tax_rate == tax_rate
     assert line_item.quantity == quantity

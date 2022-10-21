@@ -44,7 +44,7 @@ class DbLineItem(db.Model):
         index=True,
         nullable=False,
     )
-    article = db.relationship(DbArticle, foreign_keys=[article_number])
+    article = db.relationship(DbArticle, foreign_keys=[article_id])
     _article_type = db.Column('article_type', db.UnicodeText, nullable=False)
     description = db.Column(db.UnicodeText, nullable=False)
     unit_price = db.Column(db.Numeric(6, 2), nullable=False)

@@ -432,9 +432,7 @@ def _execute_article_creation_actions(
             ArticleType.ticket,
             ArticleType.ticket_bundle,
         ):
-            article = article_service.get_article_by_number(
-                line_item.article_number
-            )
+            article = article_service.get_article(line_item.article_id)
 
             ticket_category_id = TicketCategoryID(
                 UUID(str(article.type_params['ticket_category_id']))
@@ -886,7 +884,7 @@ def line_item_to_transfer_object(
     return LineItem(
         id=db_line_item.id,
         order_number=db_line_item.order_number,
-        article_number=db_line_item.article_number,
+        article_id=db_line_item.article_id,
         article_type=db_line_item.article_type,
         description=db_line_item.description,
         unit_price=db_line_item.unit_price,

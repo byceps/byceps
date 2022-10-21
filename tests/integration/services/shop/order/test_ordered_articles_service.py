@@ -65,9 +65,7 @@ def test_count_ordered_articles(
         order_ids.add(order.id)
         set_payment_state(order.order_number, payment_state)
 
-    totals = ordered_articles_service.count_ordered_articles(
-        article.item_number
-    )
+    totals = ordered_articles_service.count_ordered_articles(article.id)
 
     assert totals == expected
 

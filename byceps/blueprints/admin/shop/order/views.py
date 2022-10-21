@@ -116,7 +116,7 @@ def view(order_id):
 
     brand = brand_service.get_brand(shop.brand_id)
 
-    articles_by_item_number = service.get_articles_by_item_number(order)
+    articles_by_id = service.get_articles_by_id(order)
 
     invoices = order_invoice_service.get_invoices_for_order(order.id)
 
@@ -129,7 +129,7 @@ def view(order_id):
         'brand': brand,
         'order': order,
         'placed_by': placed_by,
-        'articles_by_item_number': articles_by_item_number,
+        'articles_by_id': articles_by_id,
         'invoices': invoices,
         'log_entries': log_entries,
         'PaymentState': PaymentState,

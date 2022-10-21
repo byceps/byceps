@@ -84,7 +84,7 @@ def index_for_shop(shop_id, page):
 
     totals_by_article_number = {
         article.item_number: ordered_articles_service.count_ordered_articles(
-            article.item_number
+            article.id
         )
         for article in articles.items
     }
@@ -128,9 +128,7 @@ def view(article_id):
         ticket_party = None
         ticket_category = None
 
-    totals = ordered_articles_service.count_ordered_articles(
-        article.item_number
-    )
+    totals = ordered_articles_service.count_ordered_articles(article.id)
 
     actions = order_action_service.get_actions_for_article(article.id)
     actions.sort(key=lambda a: a.payment_state.name, reverse=True)
@@ -161,9 +159,7 @@ def view_ordered(article_id):
 
     brand = brand_service.get_brand(shop.brand_id)
 
-    line_items = ordered_articles_service.get_line_items_for_article(
-        article.item_number
-    )
+    line_items = ordered_articles_service.get_line_items_for_article(article.id)
 
     quantity_total = sum(item.quantity for item in line_items)
 

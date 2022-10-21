@@ -15,7 +15,7 @@ from sqlalchemy import select
 from ....database import db
 
 from ..article.dbmodels.article import DbArticle
-from ..article.transfer.models import ArticleNumber
+from ..article.transfer.models import ArticleID
 from ..order.dbmodels.line_item import DbLineItem
 from ..order.dbmodels.order import DbOrder
 from ..order.transfer.order import PaymentState
@@ -28,23 +28,19 @@ def get_articles_to_ship(shop_id: ShopID) -> Sequence[ArticleToShip]:
     """Return articles that need, or likely need, to be shipped soon."""
     line_item_quantities = list(_find_line_items(shop_id))
 
-    article_numbers = {liq.article_number for liq in line_item_quantities}
-    article_descriptions = _get_article_descriptions(article_numbers)
+    article_ids = {liq.article_id for liq in line_item_quantities}
+    article_descriptions = _get_article_descriptions(article_ids)
 
-    articles_to_ship = list(
+    return list(
         _aggregate_ordered_article_quantites(
             line_item_quantities, article_descriptions
         )
     )
 
-    articles_to_ship.sort(key=lambda a: a.article_number)
-
-    return articles_to_ship
-
 
 @dataclass(frozen=True)
 class LineItemQuantity:
-    article_number: ArticleNumber
+    article_id: ArticleID
     payment_state: PaymentState
     quantity: int
 
@@ -73,7 +69,7 @@ def _find_line_items(shop_id: ShopID) -> Iterator[LineItemQuantity]:
 
     for db_line_item in db_line_items:
         yield LineItemQuantity(
-            article_number=db_line_item.article_number,
+            article_id=db_line_item.article_id,
             payment_state=db_line_item.order.payment_state,
             quantity=db_line_item.quantity,
         )
@@ -81,21 +77,21 @@ def _find_line_items(shop_id: ShopID) -> Iterator[LineItemQuantity]:
 
 def _aggregate_ordered_article_quantites(
     line_item_quantities: Sequence[LineItemQuantity],
-    article_descriptions: dict[ArticleNumber, str],
+    article_descriptions: dict[ArticleID, str],
 ) -> Iterator[ArticleToShip]:
     """Aggregate article quantities per payment state."""
-    d: defaultdict[ArticleNumber, Counter] = defaultdict(Counter)
+    d: defaultdict[ArticleID, Counter] = defaultdict(Counter)
 
     for liq in line_item_quantities:
-        d[liq.article_number][liq.payment_state] += liq.quantity
+        d[liq.article_id][liq.payment_state] += liq.quantity
 
-    for article_number, counter in d.items():
-        description = article_descriptions[article_number]
+    for article_id, counter in d.items():
+        description = article_descriptions[article_id]
         quantity_paid = counter[PaymentState.paid]
         quantity_open = counter[PaymentState.open]
 
         yield ArticleToShip(
-            article_number=article_number,
+            article_id=article_id,
             description=description,
             quantity_paid=quantity_paid,
             quantity_open=quantity_open,
@@ -104,19 +100,16 @@ def _aggregate_ordered_article_quantites(
 
 
 def _get_article_descriptions(
-    article_numbers: set[ArticleNumber],
-) -> dict[ArticleNumber, str]:
+    article_ids: set[ArticleID],
+) -> dict[ArticleID, str]:
     """Look up description texts of the specified articles."""
-    if not article_numbers:
+    if not article_ids:
         return {}
 
     db_articles = db.session.scalars(
         select(DbArticle)
-        .options(db.load_only('item_number', 'description'))
-        .filter(DbArticle.item_number.in_(article_numbers))
+        .options(db.load_only('id', 'description'))
+        .filter(DbArticle.id.in_(article_ids))
     ).all()
 
-    return {
-        db_article.item_number: db_article.description
-        for db_article in db_articles
-    }
+    return {db_article.id: db_article.description for db_article in db_articles}

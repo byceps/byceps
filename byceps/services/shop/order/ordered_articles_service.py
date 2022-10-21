@@ -13,22 +13,20 @@ from sqlalchemy import select
 
 from ....database import db
 
-from ..article.transfer.models import ArticleNumber
+from ..article.transfer.models import ArticleID
 
 from .dbmodels.line_item import DbLineItem
 from . import order_service
 from .transfer.order import LineItem, PaymentState
 
 
-def count_ordered_articles(
-    article_number: ArticleNumber,
-) -> dict[PaymentState, int]:
+def count_ordered_articles(article_id: ArticleID) -> dict[PaymentState, int]:
     """Count how often the article has been ordered, grouped by the
     order's payment state.
     """
     db_line_items = db.session.scalars(
         select(DbLineItem)
-        .filter_by(article_number=article_number)
+        .filter_by(article_id=article_id)
         .options(
             db.joinedload(DbLineItem.order),
             db.joinedload(DbLineItem.article),
@@ -46,12 +44,10 @@ def count_ordered_articles(
     return dict(counter)
 
 
-def get_line_items_for_article(
-    article_number: ArticleNumber,
-) -> Sequence[LineItem]:
+def get_line_items_for_article(article_id: ArticleID) -> Sequence[LineItem]:
     """Return all line items for that article."""
     db_line_items = db.session.scalars(
-        select(DbLineItem).filter_by(article_number=article_number)
+        select(DbLineItem).filter_by(article_id=article_id)
     ).all()
 
     return list(map(order_service.line_item_to_transfer_object, db_line_items))

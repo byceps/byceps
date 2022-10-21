@@ -8,12 +8,12 @@ byceps.services.shop.shipping.transfer.models
 
 from dataclasses import dataclass
 
-from ...article.transfer.models import ArticleNumber
+from ...article.transfer.models import ArticleID
 
 
 @dataclass(frozen=True)
 class ArticleToShip:
-    article_number: ArticleNumber
+    article_id: ArticleID
     description: str
     quantity_paid: int
     quantity_open: int

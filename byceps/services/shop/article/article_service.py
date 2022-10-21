@@ -300,15 +300,13 @@ def get_article_by_number(article_number: ArticleNumber) -> Article:
     return _db_entity_to_article(db_article)
 
 
-def get_articles_by_numbers(
-    article_numbers: set[ArticleNumber],
-) -> list[Article]:
-    """Return the articles with those numbers."""
-    if not article_numbers:
+def get_articles(article_ids: set[ArticleID]) -> list[Article]:
+    """Return the articles with those IDs."""
+    if not article_ids:
         return list()
 
     db_articles = db.session.scalars(
-        select(DbArticle).filter(DbArticle.item_number.in_(article_numbers))
+        select(DbArticle).filter(DbArticle.id.in_(article_ids))
     ).all()
 
     return [_db_entity_to_article(db_article) for db_article in db_articles]
@@ -480,12 +478,12 @@ def sum_ordered_articles_by_payment_state(
     """Sum ordered articles for those shops, grouped by order payment state."""
     subquery = (
         select(
-            DbLineItem.article_number,
+            DbLineItem.article_id,
             DbOrder._payment_state.label('payment_state'),
             db.func.sum(DbLineItem.quantity).label('quantity'),
         )
         .join(DbOrder)
-        .group_by(DbLineItem.article_number, DbOrder._payment_state)
+        .group_by(DbLineItem.article_id, DbOrder._payment_state)
         .subquery()
     )
 
@@ -499,7 +497,7 @@ def sum_ordered_articles_by_payment_state(
         )
         .outerjoin(
             subquery,
-            db.and_(DbArticle.item_number == subquery.c.article_number),
+            db.and_(DbArticle.id == subquery.c.article_id),
         )
         .filter(DbArticle.shop_id.in_(shop_ids))
         .order_by(DbArticle.item_number, subquery.c.payment_state)

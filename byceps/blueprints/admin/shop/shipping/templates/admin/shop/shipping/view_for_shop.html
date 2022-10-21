@@ -21,11 +21,13 @@
       <tbody>
         {%- for article_to_ship in articles_to_ship %}
         <tr>
-          <td>{{ article_to_ship.article_number }}</td>
+          {%- with article = articles_by_id[article_to_ship.article_id] %}
+          <td>{{ article.item_number }}</td>
           <td>{{ article_to_ship.description }}</td>
           <td class="number">{{ article_to_ship.quantity_paid }}</td>
           <td class="number">{{ article_to_ship.quantity_open }}</td>
           <td class="number">{{ article_to_ship.quantity_total }}</td>
+          {%- endwith %}
         </tr>
         {%- endfor %}
       </tbody>

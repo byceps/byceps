@@ -122,20 +122,13 @@ def _execute_actions(
     order: Order, payment_state: PaymentState, initiator_id: UserID
 ) -> None:
     """Execute relevant actions for this order in its new payment state."""
-    article_numbers = {
-        line_item.article_number for line_item in order.line_items
-    }
-    articles = article_service.get_articles_by_numbers(article_numbers)
-    article_ids = {article.id for article in articles}
+    article_ids = {line_item.article_id for line_item in order.line_items}
 
     actions = _get_actions(article_ids, payment_state)
     actions_by_article_id = {action.article_id: action for action in actions}
 
     for line_item in order.line_items:
-        article = article_service.get_article_by_number(
-            line_item.article_number
-        )
-        action = actions_by_article_id.get(article.id)
+        action = actions_by_article_id.get(line_item.article_id)
         if action is None:
             continue
 

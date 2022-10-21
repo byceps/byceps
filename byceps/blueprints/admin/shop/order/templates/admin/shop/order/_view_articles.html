@@ -14,7 +14,7 @@
       {%- for line_item in order.line_items|sort(attribute='article_number') %}
       <tr>
         <td class="number">{{ line_item.quantity }}</td>
-        <td class="nowrap">{{ render_article_link(articles_by_item_number[line_item.article_number]) }}</td>
+        <td class="nowrap">{{ render_article_link(articles_by_id[line_item.article_id]) }}</td>
         <td>{{ line_item.description }}</td>
         <td class="number">{{ line_item.unit_price|currencyformat('EUR') }}</td>
       </tr>
