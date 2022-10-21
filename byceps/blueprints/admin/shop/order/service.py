@@ -10,8 +10,6 @@ from dataclasses import dataclass
 import dataclasses
 from typing import Iterable, Iterator, Sequence
 
-from .....services.shop.article import article_service
-from .....services.shop.article.transfer.models import Article, ArticleID
 from .....services.shop.order import order_log_service, order_service
 from .....services.shop.order.transfer.log import (
     OrderLogEntry,
@@ -41,12 +39,6 @@ def extend_order_tuples_with_orderer(
         orderer = orderers_by_id[order.placed_by_id]
         values = dataclasses.astuple(order) + (orderer,)
         yield OrderWithOrderer(*values)
-
-
-def get_articles_by_id(order: Order) -> dict[ArticleID, Article]:
-    article_ids = {line_item.article_id for line_item in order.line_items}
-    articles = article_service.get_articles(article_ids)
-    return {article.id: article for article in articles}
 
 
 def get_enriched_log_entry_data_for_order(

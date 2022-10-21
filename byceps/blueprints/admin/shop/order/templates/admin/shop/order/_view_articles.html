@@ -1,6 +1,3 @@
-{%- from 'macros/admin/shop/article.html' import render_article_link %}
-
-
   <table class="index index--v-centered wide">
     <thead>
       <tr>
@@ -14,7 +11,7 @@
       {%- for line_item in order.line_items|sort(attribute='article_number') %}
       <tr>
         <td class="number">{{ line_item.quantity }}</td>
-        <td class="nowrap">{{ render_article_link(articles_by_id[line_item.article_id]) }}</td>
+        <td class="nowrap"><a href="{{ url_for('shop_article_admin.view', article_id=line_item.article_id) }}" title="{{ line_item.description }}">{{ line_item.article_number }}</a></td>
         <td>{{ line_item.description }}</td>
         <td class="number">{{ line_item.unit_price|currencyformat('EUR') }}</td>
       </tr>
