@@ -13,7 +13,6 @@ from zoneinfo import ZoneInfo
 
 from flask import current_app
 
-from .....services.shop.article import article_service
 from .....services.user import user_service
 from .....util.templating import load_template
 
@@ -42,24 +41,12 @@ def _assemble_context(order: Order) -> dict[str, Any]:
     placed_by = user_service.get_user(order.placed_by_id)
     email_address = user_service.get_email_address(placed_by.id)
 
-    article_ids = {line_item.article_id for line_item in order.line_items}
-    articles = article_service.get_articles(article_ids)
-    article_numbers_by_article_id = {
-        article.id: article.item_number for article in articles
-    }
-
-    line_items_and_article_numbers = []
-    for line_item in order.line_items:
-        article_number = article_numbers_by_article_id[line_item.article_id]
-        line_items_and_article_numbers.append((line_item, article_number))
-    line_items_and_article_numbers.sort(key=lambda x: x[1])
-
     now = datetime.utcnow()
 
     return {
         'order': order,
         'email_address': email_address,
-        'line_items_and_article_numbers': line_items_and_article_numbers,
+        'line_items': order.line_items,
         'now': now,
         'format_export_amount': _format_export_amount,
         'format_export_datetime': _format_export_datetime,

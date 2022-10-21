@@ -885,6 +885,7 @@ def line_item_to_transfer_object(
         id=db_line_item.id,
         order_number=db_line_item.order_number,
         article_id=db_line_item.article_id,
+        article_number=db_line_item.article_number,
         article_type=db_line_item.article_type,
         description=db_line_item.description,
         unit_price=db_line_item.unit_price,

@@ -50,11 +50,11 @@
 			</ORDER_INFO>
 		</ORDER_HEADER>
 		<ORDER_ITEM_LIST>
-		{%- for line_item, article_number in line_items_and_article_numbers %}
+		{%- for line_item in line_items|sort(attribute='article_number') %}
 			<ORDER_ITEM>
 				<LINE_ITEM_ID>{{ loop.index0 }}</LINE_ITEM_ID>
 				<ARTICLE_ID>
-					<SUPPLIER_AID>{{ article_number }}</SUPPLIER_AID>
+					<SUPPLIER_AID>{{ line_item.article_number }}</SUPPLIER_AID>
 					<DESCRIPTION_SHORT>{{ line_item.description }}</DESCRIPTION_SHORT>
 					<DESCRIPTION_LONG></DESCRIPTION_LONG>
 				</ARTICLE_ID>
@@ -69,7 +69,7 @@
 		{%- endfor %}
 		</ORDER_ITEM_LIST>
 		<ORDER_SUMMARY>
-			<TOTAL_ITEM_NUM>{{ line_items_and_article_numbers |length }}</TOTAL_ITEM_NUM>
+			<TOTAL_ITEM_NUM>{{ line_items|length }}</TOTAL_ITEM_NUM>
 			<TOTAL_AMOUNT>{{ format_export_amount(order.total_amount) }}</TOTAL_AMOUNT>
 		</ORDER_SUMMARY>
 	</ORDER>
