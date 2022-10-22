@@ -92,7 +92,10 @@ def get_avatars_uploaded_by_user(user_id: UserID) -> list[UserAvatarUpdate]:
         select(DbUserAvatar).filter_by(creator_id=user_id)
     ).all()
 
-    return [UserAvatarUpdate(avatar.created_at, avatar.url) for avatar in avatars]
+    return [
+        UserAvatarUpdate(avatar.created_at, str(avatar.filename))
+        for avatar in avatars
+    ]
 
 
 def get_avatar_url_for_user(user_id: UserID) -> Optional[str]:

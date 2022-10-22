@@ -81,4 +81,4 @@ UserStateFilter = Enum(
 @dataclass(frozen=True)
 class UserAvatarUpdate:
     occurred_at: datetime
-    url_path: str
+    filename: str

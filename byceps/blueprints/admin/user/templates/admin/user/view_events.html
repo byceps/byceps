@@ -159,7 +159,7 @@
             {{ _(
               '%(initiator)s has <strong>uploaded</strong> a <a href="%(avatar_url_path)s">new avatar image</a>.',
               initiator=render_log_user(log_entry.initiator),
-              avatar_url_path=log_entry.data.url_path,
+              avatar_url_path=log_entry.url_path,
             ) }}
           {%- endcall %}
         {%- elif log_entry.event_type == 'consent-expressed' %}

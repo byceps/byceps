@@ -20,6 +20,9 @@ from ....services.shop.order import order_log_service, order_service
 from ....services.site import site_service
 from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.ticketing import ticket_attendance_service, ticket_service
+from ....services.user.dbmodels.avatar import (
+    get_absolute_url_path as get_absolute_url_path_for_avatar,
+)
 from ....services.user.transfer.log import UserLogEntry, UserLogEntryData
 from ....services.user.transfer.models import User
 from ....services.user import (
@@ -122,8 +125,8 @@ def _fake_avatar_update_log_entries(
 
     for avatar_update in avatar_updates:
         data = {
+            'filename': avatar_update.filename,
             'initiator_id': str(user_id),
-            'url_path': avatar_update.url_path,
         }
 
         yield UserLogEntry(
@@ -253,6 +256,10 @@ def _get_additional_data(
         yield from _get_additional_data_for_user_initiated_log_entry(
             log_entry, users_by_id
         )
+
+    if log_entry.event_type == 'user-avatar-updated':
+        url_path = get_absolute_url_path_for_avatar(log_entry.data['filename'])
+        yield 'url_path', url_path
 
     if log_entry.event_type == 'user-badge-awarded':
         badge = user_badge_service.find_badge(log_entry.data['badge_id'])

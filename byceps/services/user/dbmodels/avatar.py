@@ -65,13 +65,17 @@ class DbUserAvatar(db.Model):
 
     @property
     def url(self) -> str:
-        return _ABSOLUTE_URL_PATH_PREFIX + str(self.filename)
+        return get_absolute_url_path(str(self.filename))
 
     def __repr__(self) -> str:
         return ReprBuilder(self) \
             .add_with_lookup('id') \
             .add('image_type', self.image_type.name) \
             .build()
+
+
+def get_absolute_url_path(filename: str) -> str:
+    return _ABSOLUTE_URL_PATH_PREFIX + str(filename)
 
 
 class DbUserAvatarSelection(db.Model):
