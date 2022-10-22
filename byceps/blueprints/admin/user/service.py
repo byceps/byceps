@@ -228,6 +228,7 @@ def _get_additional_data(
     log_entry: UserLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
     if log_entry.event_type in {
+        'user-avatar-updated',
         'user-created',
         'user-deleted',
         'user-details-updated',
@@ -238,7 +239,6 @@ def _get_additional_data(
         'user-suspended',
         'user-unsuspended',
         'password-updated',
-        'user-avatar-updated',
         'consent-expressed',
         'newsletter-requested',
         'newsletter-declined',

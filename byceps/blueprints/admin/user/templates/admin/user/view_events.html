@@ -27,7 +27,15 @@
   <div class="box">
     <div class="events">
       {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
-        {%- if log_entry.event_type == 'user-created' %}
+        {%- if log_entry.event_type == 'user-avatar-updated' %}
+          {%- call render_log_entry('upload', log_entry.occurred_at) %}
+            {{ _(
+              '%(initiator)s has <strong>uploaded</strong> a <a href="%(avatar_url_path)s">new avatar image</a>.',
+              initiator=render_log_user(log_entry.initiator),
+              avatar_url_path=log_entry.url_path,
+            ) }}
+          {%- endcall %}
+        {%- elif log_entry.event_type == 'user-created' %}
           {%- call render_log_entry('add', log_entry.occurred_at) %}
             {%- if log_entry.site is defined %}
             {{ _(
@@ -152,14 +160,6 @@
             {{ _(
               '%(initiator)s has <strong>set a new password</strong>.',
               initiator=render_log_user(log_entry.initiator),
-            ) }}
-          {%- endcall %}
-        {%- elif log_entry.event_type == 'user-avatar-updated' %}
-          {%- call render_log_entry('upload', log_entry.occurred_at) %}
-            {{ _(
-              '%(initiator)s has <strong>uploaded</strong> a <a href="%(avatar_url_path)s">new avatar image</a>.',
-              initiator=render_log_user(log_entry.initiator),
-              avatar_url_path=log_entry.url_path,
             ) }}
           {%- endcall %}
         {%- elif log_entry.event_type == 'consent-expressed' %}
