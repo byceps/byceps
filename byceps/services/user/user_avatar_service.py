@@ -52,7 +52,7 @@ def update_avatar_image(
             stream, image_type.name, maximum_dimensions, force_square=True
         )
 
-    avatar = DbUserAvatar(user.id, image_type)
+    avatar = DbUserAvatar(image_type)
     db.session.add(avatar)
     db.session.commit()
 

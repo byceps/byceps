@@ -3,12 +3,9 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from uuid import UUID
-
 import pytest
 
 from byceps.services.user.dbmodels.avatar import DbUserAvatar
-from byceps.typing import UserID
 from byceps.util.image.models import ImageType
 
 
@@ -50,5 +47,4 @@ def test_hybrid_image_type_setter(image_type, expected):
 
 
 def create_avatar() -> DbUserAvatar:
-    creator_id = UserID(UUID('a96629ac-b17d-43d8-b93d-ec5a9fe9ba67'))
-    return DbUserAvatar(creator_id, ImageType.jpeg)
+    return DbUserAvatar(ImageType.jpeg)
