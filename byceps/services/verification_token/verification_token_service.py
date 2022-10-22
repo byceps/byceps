@@ -59,6 +59,16 @@ def delete_token(token: str) -> None:
     db.session.commit()
 
 
+def delete_tokens_for_user(user_id: UserID) -> None:
+    """Delete all session tokens that belong to the user."""
+    db.session.execute(
+        delete(DbVerificationToken).where(
+            DbVerificationToken.user_id == user_id
+        )
+    )
+    db.session.commit()
+
+
 def delete_old_tokens(created_before: datetime) -> int:
     """Delete tokens which were created before the given date.
 

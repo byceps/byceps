@@ -12,7 +12,10 @@ from ...database import db
 from ...events.user import UserAccountDeleted
 from ...typing import UserID
 
+from ..authentication.password import authn_password_service
+from ..authentication.session import authn_session_service
 from ..authorization import authz_service
+from ..verification_token import verification_token_service
 
 from .dbmodels.user import DbUser
 from . import user_log_service, user_service
@@ -47,6 +50,10 @@ def delete_account(
 
     db.session.commit()
 
+    authn_session_service.delete_session_tokens_for_user(user.id)
+    authn_password_service.delete_password_hash(user.id)
+    verification_token_service.delete_tokens_for_user(user.id)
+
     return UserAccountDeleted(
         occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
@@ -60,6 +67,7 @@ def _anonymize_account(user: DbUser) -> None:
     """Remove user details from the account."""
     user.screen_name = None
     user.email_address = None
+    user.avatar_id = None
     user.legacy_id = None
 
     # Remove details.
@@ -71,6 +79,8 @@ def _anonymize_account(user: DbUser) -> None:
     user.detail.city = None
     user.detail.street = None
     user.detail.phone_number = None
+    user.detail.internal_comment = None
+    user.detail.extras = None
 
     # Remove avatar association.
     if user.avatar_selection is not None:
