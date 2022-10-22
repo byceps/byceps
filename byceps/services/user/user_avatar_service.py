@@ -77,7 +77,7 @@ def update_avatar_image(
     return avatar.id
 
 
-def remove_avatar_image(user_id: UserID) -> None:
+def remove_avatar_image(user_id: UserID, initiator_id: UserID) -> None:
     """Remove the user's avatar image.
 
     The avatar will be unlinked from the user, but the database record
@@ -88,7 +88,22 @@ def remove_avatar_image(user_id: UserID) -> None:
     if selection is None:
         raise ValueError(f'No avatar set for user ID {user_id}.')
 
+    avatar_id = selection.avatar_id
+    filename = selection.avatar.filename
+
     db.session.delete(selection)
+
+    log_entry = user_log_service.build_entry(
+        'user-avatar-removed',
+        user_id,
+        {
+            'avatar_id': str(avatar_id),
+            'filename': str(filename),
+            'initiator_id': str(initiator_id),
+        },
+    )
+    db.session.add(log_entry)
+
     db.session.commit()
 
 
