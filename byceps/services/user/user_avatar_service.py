@@ -22,7 +22,7 @@ from ..image.image_service import ImageTypeProhibited  # Provide to view functio
 from .dbmodels.avatar import DbUserAvatar, DbUserAvatarSelection
 from .dbmodels.user import DbUser
 from .transfer.models import UserAvatarID, UserAvatarUpdate
-from . import user_service
+from . import user_log_service, user_service
 
 
 MAXIMUM_DIMENSIONS = Dimensions(512, 512)
@@ -32,6 +32,7 @@ def update_avatar_image(
     user_id: UserID,
     stream: BinaryIO,
     allowed_types: set[ImageType],
+    initiator_id: UserID,
     *,
     maximum_dimensions: Dimensions = MAXIMUM_DIMENSIONS,
 ) -> UserAvatarID:
@@ -59,6 +60,18 @@ def update_avatar_image(
     upload.store(stream, avatar.path, create_parent_path_if_nonexistent=True)
 
     user.avatar = avatar
+
+    log_entry = user_log_service.build_entry(
+        'user-avatar-updated',
+        user.id,
+        {
+            'avatar_id': str(avatar.id),
+            'filename': str(avatar.filename),
+            'initiator_id': str(initiator_id),
+        },
+    )
+    db.session.add(log_entry)
+
     db.session.commit()
 
     return avatar.id
