@@ -121,7 +121,7 @@ def get_avatars_uploaded_by_user(user_id: UserID) -> list[UserAvatarUpdate]:
     ).all()
 
     return [
-        UserAvatarUpdate(avatar.created_at, str(avatar.filename))
+        UserAvatarUpdate(avatar.created_at, avatar.id, str(avatar.filename))
         for avatar in avatars
     ]
 
