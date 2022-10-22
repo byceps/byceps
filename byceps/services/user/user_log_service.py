@@ -76,13 +76,14 @@ def delete_login_entries(occurred_before: datetime) -> int:
 
     Return the number of deleted log entries.
     """
-    num_deleted = db.session.execute(
+    result = db.session.execute(
         delete(DbUserLogEntry)
         .filter_by(event_type='user-logged-in')
         .filter(DbUserLogEntry.occurred_at < occurred_before)
     )
     db.session.commit()
 
+    num_deleted = result.rowcount
     return num_deleted
 
 

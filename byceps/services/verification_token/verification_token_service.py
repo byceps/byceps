@@ -74,13 +74,14 @@ def delete_old_tokens(created_before: datetime) -> int:
 
     Return the number of deleted tokens.
     """
-    num_deleted = db.session.execute(
+    result = db.session.execute(
         delete(DbVerificationToken).where(
             DbVerificationToken.created_at < created_before
         )
     )
     db.session.commit()
 
+    num_deleted = result.rowcount
     return num_deleted
 
 

@@ -58,9 +58,10 @@ def delete_all_session_tokens() -> int:
 
     Return the number of records deleted.
     """
-    deleted_total = db.session.execute(delete(DbSessionToken))
+    result = db.session.execute(delete(DbSessionToken))
     db.session.commit()
 
+    num_deleted = result.rowcount
     return deleted_total
 
 
