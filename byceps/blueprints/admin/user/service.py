@@ -25,11 +25,7 @@ from ....services.user.dbmodels.avatar import (
 )
 from ....services.user.transfer.log import UserLogEntry, UserLogEntryData
 from ....services.user.transfer.models import User
-from ....services.user import (
-    user_avatar_service,
-    user_log_service,
-    user_service,
-)
+from ....services.user import user_log_service, user_service
 from ....services.user_badge import user_badge_service as user_badge_service
 from ....typing import PartyID, UserID
 
@@ -89,7 +85,6 @@ def get_newsletter_subscription_states(
 
 def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
     log_entries = user_log_service.get_entries_for_user(user_id)
-    log_entries.extend(_fake_avatar_update_log_entries(user_id))
     log_entries.extend(_fake_consent_log_entries(user_id))
     log_entries.extend(
         _fake_newsletter_subscription_update_log_entries(user_id)
@@ -115,27 +110,6 @@ def get_log_entries(user_id: UserID) -> Iterator[UserLogEntryData]:
         data.update(additional_data)
 
         yield data
-
-
-def _fake_avatar_update_log_entries(
-    user_id: UserID,
-) -> Iterator[UserLogEntry]:
-    """Yield the user's avatar updates as volatile log entries."""
-    avatar_updates = user_avatar_service.get_avatars_uploaded_by_user(user_id)
-
-    for avatar_update in avatar_updates:
-        data = {
-            'filename': avatar_update.filename,
-            'initiator_id': str(user_id),
-        }
-
-        yield UserLogEntry(
-            id=UUID('00000000-0000-0000-0000-000000000001'),
-            occurred_at=avatar_update.occurred_at,
-            event_type='user-avatar-updated',
-            user_id=user_id,
-            data=data,
-        )
 
 
 def _fake_consent_log_entries(user_id: UserID) -> Iterator[UserLogEntry]:
