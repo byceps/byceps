@@ -21,7 +21,7 @@ from ..image.image_service import ImageTypeProhibited  # Provide to view functio
 
 from .dbmodels.avatar import DbUserAvatar, DbUserAvatarSelection
 from .dbmodels.user import DbUser
-from .transfer.models import UserAvatarID, UserAvatarUpdate
+from .transfer.models import UserAvatarID
 from . import user_log_service, user_service
 
 
@@ -112,18 +112,6 @@ def get_db_avatar(avatar_id: UserAvatarID) -> DbUserAvatar:
     return db.session.execute(
         select(DbUserAvatar).filter_by(id=avatar_id)
     ).scalar_one()
-
-
-def get_avatars_uploaded_by_user(user_id: UserID) -> list[UserAvatarUpdate]:
-    """Return the avatars uploaded by the user."""
-    avatars = db.session.scalars(
-        select(DbUserAvatar).filter_by(creator_id=user_id)
-    ).all()
-
-    return [
-        UserAvatarUpdate(avatar.created_at, avatar.id, str(avatar.filename))
-        for avatar in avatars
-    ]
 
 
 def get_avatar_url_for_user(user_id: UserID) -> Optional[str]:
