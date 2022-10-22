@@ -61,7 +61,6 @@ def generate_delete_statements_for_users(
 
 def generate_delete_statements_for_user(user_id: UserID) -> Iterator[str]:
     for table, user_id_column in [
-        ('user_avatars', 'creator_id'),
         ('user_details', 'user_id'),
         ('user_log_entries', 'user_id'),
         ('users', 'id'),
