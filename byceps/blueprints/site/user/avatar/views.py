@@ -11,7 +11,7 @@ from flask_babel import gettext
 
 from .....services.image import image_service
 from .....services.user import user_avatar_service
-from .....signals import user_avatar as user_avatar_signals
+from .....signals import user as user_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_notice, flash_success
 from .....util.image.models import ImageType
@@ -70,7 +70,7 @@ def update():
     _update(user.id, image)
 
     flash_success(gettext('Avatar image has been updated.'), icon='upload')
-    user_avatar_signals.avatar_updated.send(None, user_id=user.id)
+    user_signals.avatar_updated.send(None, user_id=user.id)
 
     return redirect_to('user_settings.view')
 
