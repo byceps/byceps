@@ -27,7 +27,15 @@
   <div class="box">
     <div class="events">
       {%- for log_entry in log_entries|sort(attribute='occurred_at', reverse=True) %}
-        {%- if log_entry.event_type == 'user-avatar-updated' %}
+        {%- if log_entry.event_type == 'user-avatar-removed' %}
+          {%- call render_log_entry('delete', log_entry.occurred_at) %}
+            {{ _(
+              '%(initiator)s has <strong>removed</strong> the <a href="%(avatar_url_path)s">avatar image</a>.',
+              initiator=render_log_user(log_entry.initiator),
+              avatar_url_path=log_entry.url_path,
+            ) }}
+          {%- endcall %}
+        {%- elif log_entry.event_type == 'user-avatar-updated' %}
           {%- call render_log_entry('upload', log_entry.occurred_at) %}
             {{ _(
               '%(initiator)s has <strong>uploaded</strong> a <a href="%(avatar_url_path)s">new avatar image</a>.',

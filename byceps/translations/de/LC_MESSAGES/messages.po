@@ -5572,6 +5572,15 @@ msgstr "%(initiator)s hat ein <strong>neues Passwort gesetzt</strong>."
 #: byceps/blueprints/admin/user/templates/admin/user/view_events.html:159
 #, python-format
 msgid ""
+"%(initiator)s has <strong>removed</strong> the <a "
+"href=\"%(avatar_url_path)s\">avatar image</a>."
+msgstr ""
+"%(initiator)s hat das <a href=\"%(avatar_url_path)s\"> "
+"Avatarbild</a> <strong>entfernt</strong>."
+
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:159
+#, python-format
+msgid ""
 "%(initiator)s has <strong>uploaded</strong> a <a "
 "href=\"%(avatar_url_path)s\">new avatar image</a>."
 msgstr ""

@@ -228,6 +228,7 @@ def _get_additional_data(
     log_entry: UserLogEntry, users_by_id: dict[str, User]
 ) -> Iterator[tuple[str, Any]]:
     if log_entry.event_type in {
+        'user-avatar-removed',
         'user-avatar-updated',
         'user-created',
         'user-deleted',
@@ -257,7 +258,7 @@ def _get_additional_data(
             log_entry, users_by_id
         )
 
-    if log_entry.event_type == 'user-avatar-updated':
+    if log_entry.event_type in {'user-avatar-removed', 'user-avatar-updated'}:
         url_path = get_absolute_url_path_for_avatar(log_entry.data['filename'])
         yield 'url_path', url_path
 
