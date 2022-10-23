@@ -62,7 +62,7 @@ def delete_all_session_tokens() -> int:
     db.session.commit()
 
     num_deleted = result.rowcount
-    return deleted_total
+    return num_deleted
 
 
 def find_session_token_for_user(user_id: UserID) -> Optional[DbSessionToken]:
