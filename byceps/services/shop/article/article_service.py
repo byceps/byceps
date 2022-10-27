@@ -165,10 +165,8 @@ def update_article(
 
 def attach_article(
     article_id_to_attach: ArticleID,
-    article_number_to_attach: ArticleNumber,
     quantity: int,
     article_id_to_attach_to: ArticleID,
-    article_number_to_attach_to: ArticleNumber,
 ) -> None:
     """Attach an article to another article."""
     db_attached_article = DbAttachedArticle(
