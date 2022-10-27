@@ -14,7 +14,7 @@ from typing import Iterator, Optional
 
 from pydantic import BaseModel, ValidationError
 
-from . import creation_service
+from . import user_creation_service
 from .transfer.models import User
 
 
@@ -50,7 +50,7 @@ def parse_user_json(json_data: str) -> UserToImport:
 def import_user(user_to_import: UserToImport) -> User:
     password = secrets.token_urlsafe(24)
 
-    user, _ = creation_service.create_user(
+    user, _ = user_creation_service.create_user(
         user_to_import.screen_name,
         user_to_import.email_address,
         password,

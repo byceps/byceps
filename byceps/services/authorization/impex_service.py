@@ -18,7 +18,7 @@ from ...database import db
 
 from .dbmodels import DbRole
 from .transfer.models import PermissionID, RoleID
-from . import service
+from . import authz_service
 
 
 # -------------------------------------------------------------------- #
@@ -41,11 +41,11 @@ def _create_roles(roles: list[dict[str, Union[str, list[str]]]]) -> None:
         role_id = RoleID(str(role['id']))
         role_title = str(role['title'])
 
-        service.create_role(role_id, role_title)
+        authz_service.create_role(role_id, role_title)
 
         for permission_id_str in role['assigned_permissions']:
             permission_id = PermissionID(permission_id_str)
-            service.assign_permission_to_role(permission_id, role_id)
+            authz_service.assign_permission_to_role(permission_id, role_id)
 
 
 # -------------------------------------------------------------------- #
