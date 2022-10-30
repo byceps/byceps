@@ -81,7 +81,3 @@ def _anonymize_account(user: DbUser) -> None:
     user.detail.phone_number = None
     user.detail.internal_comment = None
     user.detail.extras = None
-
-    # Remove avatar association.
-    if user.avatar_selection is not None:
-        db.session.delete(user.avatar_selection)

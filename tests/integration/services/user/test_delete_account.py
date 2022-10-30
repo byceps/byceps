@@ -78,6 +78,8 @@ def test_delete_account(admin_app, role, make_user):
 
     assert user_after.screen_name is None
     assert user_after.email_address is None
+    assert user_after.avatar_id is None
+    assert user_after.avatar is None
     assert user_after.deleted
     assert user_after.legacy_id is None
 
@@ -90,9 +92,6 @@ def test_delete_account(admin_app, role, make_user):
     assert user_after.detail.city is None
     assert user_after.detail.street is None
     assert user_after.detail.phone_number is None
-
-    # avatar
-    assert user_after.avatar_selection is None
 
     # log entries
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
