@@ -43,7 +43,7 @@ def initialize_account(
 
     This is meant to happen only once at most, and can not be undone.
     """
-    user = _get_user(user_id)
+    db_user = _get_db_user(user_id)
 
     initiator: Optional[User]
     if initiator_id is not None:
@@ -51,23 +51,23 @@ def initialize_account(
     else:
         initiator = None
 
-    if user.initialized:
+    if db_user.initialized:
         raise ValueError('Account is already initialized.')
 
-    user.initialized = True
+    db_user.initialized = True
 
     log_entry_data = {}
     if initiator:
         log_entry_data['initiator_id'] = str(initiator.id)
     log_entry = user_log_service.build_entry(
-        'user-initialized', user.id, log_entry_data
+        'user-initialized', db_user.id, log_entry_data
     )
     db.session.add(log_entry)
 
     db.session.commit()
 
     if assign_roles:
-        _assign_roles(user.id, initiator_id=initiator_id)
+        _assign_roles(db_user.id, initiator_id=initiator_id)
 
 
 def _assign_roles(
@@ -91,14 +91,14 @@ def suspend_account(
     user_id: UserID, initiator_id: UserID, reason: str
 ) -> UserAccountSuspended:
     """Suspend the user account."""
-    user = _get_user(user_id)
+    db_user = _get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
 
-    user.suspended = True
+    db_user.suspended = True
 
     log_entry = user_log_service.build_entry(
         'user-suspended',
-        user.id,
+        db_user.id,
         {
             'initiator_id': str(initiator.id),
             'reason': reason,
@@ -112,8 +112,8 @@ def suspend_account(
         occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+        user_id=db_user.id,
+        user_screen_name=db_user.screen_name,
     )
 
 
@@ -121,14 +121,14 @@ def unsuspend_account(
     user_id: UserID, initiator_id: UserID, reason: str
 ) -> UserAccountUnsuspended:
     """Unsuspend the user account."""
-    user = _get_user(user_id)
+    db_user = _get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
 
-    user.suspended = False
+    db_user.suspended = False
 
     log_entry = user_log_service.build_entry(
         'user-unsuspended',
-        user.id,
+        db_user.id,
         {
             'initiator_id': str(initiator.id),
             'reason': reason,
@@ -142,8 +142,8 @@ def unsuspend_account(
         occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+        user_id=db_user.id,
+        user_screen_name=db_user.screen_name,
     )
 
 
@@ -155,12 +155,12 @@ def change_screen_name(
     reason: Optional[str] = None,
 ) -> UserScreenNameChanged:
     """Change the user's screen name."""
-    user = _get_user(user_id)
+    db_user = _get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
 
-    old_screen_name = user.screen_name
+    old_screen_name = db_user.screen_name
 
-    user.screen_name = new_screen_name
+    db_user.screen_name = new_screen_name
 
     log_entry_data = {
         'old_screen_name': old_screen_name,
@@ -171,7 +171,7 @@ def change_screen_name(
         log_entry_data['reason'] = reason
 
     log_entry = user_log_service.build_entry(
-        'user-screen-name-changed', user.id, log_entry_data
+        'user-screen-name-changed', db_user.id, log_entry_data
     )
     db.session.add(log_entry)
 
@@ -181,7 +181,7 @@ def change_screen_name(
         occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
+        user_id=db_user.id,
         old_screen_name=old_screen_name,
         new_screen_name=new_screen_name,
     )
@@ -196,13 +196,13 @@ def change_email_address(
     reason: Optional[str] = None,
 ) -> UserEmailAddressChanged:
     """Change the user's e-mail address."""
-    user = _get_user(user_id)
+    db_user = _get_db_user(user_id)
     initiator = user_service.get_user(initiator_id)
 
-    old_email_address = user.email_address
+    old_email_address = db_user.email_address
 
-    user.email_address = new_email_address
-    user.email_address_verified = verified
+    db_user.email_address = new_email_address
+    db_user.email_address_verified = verified
 
     log_entry_data = {
         'old_email_address': old_email_address,
@@ -213,7 +213,7 @@ def change_email_address(
         log_entry_data['reason'] = reason
 
     log_entry = user_log_service.build_entry(
-        'user-email-address-changed', user.id, log_entry_data
+        'user-email-address-changed', db_user.id, log_entry_data
     )
     db.session.add(log_entry)
 
@@ -223,16 +223,16 @@ def change_email_address(
         occurred_at=log_entry.occurred_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
-        user_id=user.id,
-        user_screen_name=user.screen_name,
+        user_id=db_user.id,
+        user_screen_name=db_user.screen_name,
     )
 
 
 def update_locale(user_id: UserID, locale: Optional[Locale]) -> None:
     """Change the user's locale."""
-    user = _get_user(user_id)
+    db_user = _get_db_user(user_id)
 
-    user.locale = locale.language if (locale is not None) else None
+    db_user.locale = locale.language if (locale is not None) else None
     db.session.commit()
 
 
@@ -340,7 +340,7 @@ def remove_user_detail_extra(user_id: UserID, key: str) -> None:
     db.session.commit()
 
 
-def _get_user(user_id: UserID) -> DbUser:
+def _get_db_user(user_id: UserID) -> DbUser:
     """Return the user with that ID, or raise an exception."""
     return user_service.get_db_user(user_id)
 
