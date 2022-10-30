@@ -325,14 +325,7 @@ def get_recent_headlines(
         .limit(limit)
     ).all()
 
-    return [
-        Headline(
-            slug=db_item.slug,
-            published_at=db_item.published_at,
-            title=db_item.current_version.title,
-        )
-        for db_item in db_items
-    ]
+    return [_db_entity_to_headline(db_item) for db_item in db_items]
 
 
 def _get_items_stmt(channel_ids: set[ChannelID]) -> Select:
@@ -448,3 +441,11 @@ def _render_body(item: Item) -> Optional[str]:
         return news_html_service.render_body(item, item.body, item.body_format)
     except Exception:
         return None  # Not the best error indicator.
+
+
+def _db_entity_to_headline(db_item: DbItem) -> Headline:
+    return Headline(
+        slug=db_item.slug,
+        published_at=db_item.published_at,
+        title=db_item.current_version.title,
+    )
