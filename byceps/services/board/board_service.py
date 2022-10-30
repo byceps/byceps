@@ -33,9 +33,7 @@ def create_board(brand_id: BrandID, board_id: BoardID) -> Board:
 
 def delete_board(board_id: BoardID) -> None:
     """Delete a board."""
-    db.session.query(DbBoard) \
-        .filter_by(id=board_id) \
-        .delete()
+    db.session.query(DbBoard).filter_by(id=board_id).delete()
 
     db.session.commit()
 
@@ -52,10 +50,7 @@ def find_board(board_id: BoardID) -> Optional[Board]:
 
 def get_boards_for_brand(brand_id: BrandID) -> Sequence[Board]:
     """Return all boards that belong to the brand."""
-    boards = db.session \
-        .query(DbBoard) \
-        .filter_by(brand_id=brand_id) \
-        .all()
+    boards = db.session.query(DbBoard).filter_by(brand_id=brand_id).all()
 
     return [_db_entity_to_board(board) for board in boards]
 

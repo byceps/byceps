@@ -172,10 +172,7 @@ def release_seat_group(seat_group_id: SeatGroupID) -> None:
 
 def count_seat_groups_for_party(party_id: PartyID) -> int:
     """Return the number of seat groups for that party."""
-    return db.session \
-        .query(DbSeatGroup) \
-        .filter_by(party_id=party_id) \
-        .count()
+    return db.session.query(DbSeatGroup).filter_by(party_id=party_id).count()
 
 
 def find_seat_group(seat_group_id: SeatGroupID) -> Optional[DbSeatGroup]:
@@ -190,8 +187,9 @@ def find_seat_group_occupied_by_ticket_bundle(
     or `None` if not found.
     """
     return db.session.execute(
-        select(DbSeatGroupOccupancy.seat_group_id)
-        .filter_by(ticket_bundle_id=ticket_bundle_id)
+        select(DbSeatGroupOccupancy.seat_group_id).filter_by(
+            ticket_bundle_id=ticket_bundle_id
+        )
     ).scalar_one_or_none()
 
 
@@ -200,17 +198,13 @@ def find_occupancy_for_seat_group(
 ) -> Optional[DbSeatGroupOccupancy]:
     """Return the occupancy for that seat group, or `None` if not found."""
     return db.session.execute(
-        select(DbSeatGroupOccupancy)
-        .filter_by(seat_group_id=seat_group_id)
+        select(DbSeatGroupOccupancy).filter_by(seat_group_id=seat_group_id)
     ).scalar_one_or_none()
 
 
 def get_all_seat_groups_for_party(party_id: PartyID) -> Sequence[DbSeatGroup]:
     """Return all seat groups for that party."""
-    return db.session \
-        .query(DbSeatGroup) \
-        .filter_by(party_id=party_id) \
-        .all()
+    return db.session.query(DbSeatGroup).filter_by(party_id=party_id).all()
 
 
 def is_seat_part_of_a_group(seat_id: SeatID) -> bool:

@@ -44,18 +44,15 @@ def update_category(
 
 def delete_category(category_id: TicketCategoryID) -> None:
     """Delete a category."""
-    db.session.query(DbTicketCategory) \
-        .filter_by(id=category_id) \
-        .delete()
+    db.session.query(DbTicketCategory).filter_by(id=category_id).delete()
     db.session.commit()
 
 
 def count_categories_for_party(party_id: PartyID) -> int:
     """Return the number of categories for that party."""
-    return db.session \
-        .query(DbTicketCategory) \
-        .filter_by(party_id=party_id) \
-        .count()
+    return (
+        db.session.query(DbTicketCategory).filter_by(party_id=party_id).count()
+    )
 
 
 def find_category(category_id: TicketCategoryID) -> Optional[TicketCategory]:
@@ -80,10 +77,9 @@ def get_category(category_id: TicketCategoryID) -> TicketCategory:
 
 def get_categories_for_party(party_id: PartyID) -> Sequence[TicketCategory]:
     """Return all categories for that party."""
-    db_categories = db.session \
-        .query(DbTicketCategory) \
-        .filter_by(party_id=party_id) \
-        .all()
+    db_categories = (
+        db.session.query(DbTicketCategory).filter_by(party_id=party_id).all()
+    )
 
     return [
         _db_entity_to_category(db_category) for db_category in db_categories
@@ -96,23 +92,20 @@ def get_categories_with_ticket_counts_for_party(
     """Return all categories with ticket counts for that party."""
     category = db.aliased(DbTicketCategory)
 
-    subquery = db.session \
-        .query(
-            db.func.count(DbTicket.id)
-        ) \
-        .join(DbTicketCategory) \
-        .filter(DbTicketCategory.id == category.id) \
-        .filter(DbTicket.revoked == False) \
+    subquery = (
+        db.session.query(db.func.count(DbTicket.id))
+        .join(DbTicketCategory)
+        .filter(DbTicketCategory.id == category.id)
+        .filter(DbTicket.revoked == False)
         .scalar_subquery()
+    )
 
-    rows = db.session \
-        .query(
-            category,
-            subquery
-        ) \
-        .filter(category.party_id == party_id) \
-        .group_by(category.id) \
+    rows = (
+        db.session.query(category, subquery)
+        .filter(category.party_id == party_id)
+        .group_by(category.id)
         .all()
+    )
 
     return {
         _db_entity_to_category(db_category): ticket_count

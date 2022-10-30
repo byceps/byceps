@@ -99,13 +99,9 @@ def delete_bundle(bundle_id: TicketBundleID) -> None:
     """Delete a bundle and the tickets assigned to it."""
     db_bundle = get_bundle(bundle_id)
 
-    db.session.query(DbTicket) \
-        .filter_by(bundle_id=db_bundle.id) \
-        .delete()
+    db.session.query(DbTicket).filter_by(bundle_id=db_bundle.id).delete()
 
-    db.session.query(DbTicketBundle) \
-        .filter_by(id=db_bundle.id) \
-        .delete()
+    db.session.query(DbTicketBundle).filter_by(id=db_bundle.id).delete()
 
     db.session.commit()
 
@@ -127,28 +123,31 @@ def get_bundle(bundle_id: TicketBundleID) -> DbTicketBundle:
 
 def find_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[DbTicket]:
     """Return all tickets included in this bundle."""
-    return db.session \
-        .query(DbTicket) \
-        .filter(DbTicket.bundle_id == bundle_id) \
-        .all()
+    return (
+        db.session.query(DbTicket).filter(DbTicket.bundle_id == bundle_id).all()
+    )
 
 
 def get_bundles_for_party_paginated(
     party_id: PartyID, page: int, per_page: int
 ) -> Pagination:
     """Return the party's ticket bundles to show on the specified page."""
-    items_query = select(DbTicketBundle) \
-        .join(DbTicketCategory) \
-        .filter(DbTicketCategory.party_id == party_id) \
+    items_query = (
+        select(DbTicketBundle)
+        .join(DbTicketCategory)
+        .filter(DbTicketCategory.party_id == party_id)
         .options(
             db.joinedload(DbTicketBundle.ticket_category),
             db.joinedload(DbTicketBundle.owned_by),
-        ) \
+        )
         .order_by(DbTicketBundle.created_at.desc())
+    )
 
-    count_query = select(db.func.count(DbTicketBundle.id)) \
-        .join(DbTicketCategory) \
+    count_query = (
+        select(db.func.count(DbTicketBundle.id))
+        .join(DbTicketCategory)
         .filter(DbTicketCategory.party_id == party_id)
+    )
 
     return paginate(
         items_query, count_query, page, per_page, scalar_result=True

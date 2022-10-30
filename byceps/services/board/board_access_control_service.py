@@ -44,16 +44,17 @@ def has_user_access_to_board(user_id: UserID, board_id: BoardID) -> bool:
     - if access to the board is generally not restricted, or
     - if an access grant exists for the user and that board.
     """
-    subquery = db.session \
-        .query(DbBoard) \
-        .outerjoin(DbBoardAccessGrant) \
+    subquery = (
+        db.session.query(DbBoard)
+        .outerjoin(DbBoardAccessGrant)
         .filter(
             db.or_(
                 DbBoard.access_restricted == False,
                 DbBoardAccessGrant.user_id == user_id,
             )
-        ) \
-        .filter(DbBoard.id == board_id) \
+        )
+        .filter(DbBoard.id == board_id)
         .exists()
+    )
 
     return db.session.query(subquery).scalar()

@@ -55,30 +55,37 @@ def _get_users_paginated(
     # Drop revoked tickets here already to avoid users without tickets
     # being included in the list.
 
-    items_query = select(
-        DbUser,
-        db.func.lower(DbUser.screen_name).label('screen_name_lower')
-    ) \
-        .distinct() \
+    items_query = (
+        select(
+            DbUser, db.func.lower(DbUser.screen_name).label('screen_name_lower')
+        )
+        .distinct()
         .options(
             db.load_only(DbUser.id, DbUser.screen_name, DbUser.deleted),
             db.joinedload(DbUser.avatar),
-        ) \
-        .join(DbTicket, DbTicket.used_by_id == DbUser.id) \
-        .filter(DbTicket.revoked == False) \
-        .join(DbTicketCategory).filter(DbTicketCategory.party_id == party_id) \
+        )
+        .join(DbTicket, DbTicket.used_by_id == DbUser.id)
+        .filter(DbTicket.revoked == False)
+        .join(DbTicketCategory)
+        .filter(DbTicketCategory.party_id == party_id)
         .order_by('screen_name_lower')
+    )
 
-    count_query = select(db.func.count(db.distinct(DbUser.id))) \
-        .join(DbTicket, DbTicket.used_by_id == DbUser.id) \
-        .filter(DbTicket.revoked == False) \
-        .join(DbTicketCategory).filter(DbTicketCategory.party_id == party_id)
+    count_query = (
+        select(db.func.count(db.distinct(DbUser.id)))
+        .join(DbTicket, DbTicket.used_by_id == DbUser.id)
+        .filter(DbTicket.revoked == False)
+        .join(DbTicketCategory)
+        .filter(DbTicketCategory.party_id == party_id)
+    )
 
     if search_term:
-        items_query = items_query \
-            .filter(DbUser.screen_name.ilike(f'%{search_term}%'))
-        count_query = count_query \
-            .filter(DbUser.screen_name.ilike(f'%{search_term}%'))
+        items_query = items_query.filter(
+            DbUser.screen_name.ilike(f'%{search_term}%')
+        )
+        count_query = count_query.filter(
+            DbUser.screen_name.ilike(f'%{search_term}%')
+        )
 
     return paginate(
         items_query, count_query, page, per_page, scalar_result=True
@@ -88,17 +95,17 @@ def _get_users_paginated(
 def _get_tickets_for_users(
     party_id: PartyID, user_ids: set[UserID]
 ) -> list[DbTicket]:
-    return db.session \
-        .query(DbTicket) \
+    return (
+        db.session.query(DbTicket)
         .options(
             db.joinedload(DbTicket.category),
-            db.joinedload(DbTicket.occupied_seat)
-                .joinedload(DbSeat.area),
-        ) \
-        .filter(DbTicket.party_id == party_id) \
-        .filter(DbTicket.used_by_id.in_(user_ids)) \
-        .filter(DbTicket.revoked == False) \
+            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
+        )
+        .filter(DbTicket.party_id == party_id)
+        .filter(DbTicket.used_by_id.in_(user_ids))
+        .filter(DbTicket.revoked == False)
         .all()
+    )
 
 
 def _index_tickets_by_user_id(

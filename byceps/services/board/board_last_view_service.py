@@ -48,10 +48,11 @@ def find_last_category_view(
     user_id: UserID, category_id: BoardCategoryID
 ) -> Optional[DbLastCategoryView]:
     """Return the user's last view of the category, or `None` if not found."""
-    return db.session \
-        .query(DbLastCategoryView) \
-        .filter_by(user_id=user_id, category_id=category_id) \
+    return (
+        db.session.query(DbLastCategoryView)
+        .filter_by(user_id=user_id, category_id=category_id)
         .first()
+    )
 
 
 def mark_category_as_just_viewed(
@@ -74,9 +75,9 @@ def mark_category_as_just_viewed(
 
 def delete_last_category_views(category_id: BoardCategoryID) -> None:
     """Delete the category's last views."""
-    db.session.query(DbLastCategoryView) \
-        .filter_by(category_id=category_id) \
-        .delete()
+    db.session.query(DbLastCategoryView).filter_by(
+        category_id=category_id
+    ).delete()
     db.session.commit()
 
 
@@ -97,10 +98,11 @@ def find_last_topic_view(
     user_id: UserID, topic_id: TopicID
 ) -> Optional[DbLastTopicView]:
     """Return the user's last view of the topic, or `None` if not found."""
-    return db.session \
-        .query(DbLastTopicView) \
-        .filter_by(user_id=user_id, topic_id=topic_id) \
+    return (
+        db.session.query(DbLastTopicView)
+        .filter_by(user_id=user_id, topic_id=topic_id)
         .first()
+    )
 
 
 def find_topic_last_viewed_at(
@@ -154,7 +156,5 @@ def mark_all_topics_in_category_as_viewed(
 
 def delete_last_topic_views(topic_id: TopicID) -> None:
     """Delete the topic's last views."""
-    db.session.query(DbLastTopicView) \
-        .filter_by(topic_id=topic_id) \
-        .delete()
+    db.session.query(DbLastTopicView).filter_by(topic_id=topic_id).delete()
     db.session.commit()

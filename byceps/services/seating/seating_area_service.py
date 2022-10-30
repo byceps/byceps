@@ -33,27 +33,23 @@ def create_area(party_id: PartyID, slug: str, title: str) -> Area:
 
 def delete_area(area_id: str) -> None:
     """Delete an area."""
-    db.session.query(DbSeatingArea) \
-        .filter_by(id=area_id) \
-        .delete()
+    db.session.query(DbSeatingArea).filter_by(id=area_id).delete()
     db.session.commit()
 
 
 def count_areas_for_party(party_id: PartyID) -> int:
     """Return the number of seating areas for that party."""
-    return db.session \
-        .query(DbSeatingArea) \
-        .filter_by(party_id=party_id) \
-        .count()
+    return db.session.query(DbSeatingArea).filter_by(party_id=party_id).count()
 
 
 def find_area_for_party_by_slug(party_id: PartyID, slug: str) -> Optional[Area]:
     """Return the area for that party with that slug, or `None` if not found."""
-    area = db.session \
-        .query(DbSeatingArea) \
-        .filter_by(party_id=party_id) \
-        .filter_by(slug=slug) \
+    area = (
+        db.session.query(DbSeatingArea)
+        .filter_by(party_id=party_id)
+        .filter_by(slug=slug)
         .first()
+    )
 
     if area is None:
         return None
@@ -76,8 +72,9 @@ def get_areas_with_seat_utilization_paginated(
     """Return areas and their seat utilization for that party, paginated."""
     items_query = _get_areas_with_seat_utilization_query(party_id)
 
-    count_query = select(db.func.count(DbSeatingArea.id)) \
-        .filter(DbSeatingArea.party_id == party_id)
+    count_query = select(db.func.count(DbSeatingArea.id)).filter(
+        DbSeatingArea.party_id == party_id
+    )
 
     return paginate(
         items_query,
@@ -91,24 +88,30 @@ def get_areas_with_seat_utilization_paginated(
 def _get_areas_with_seat_utilization_query(party_id: PartyID) -> Select:
     area = db.aliased(DbSeatingArea)
 
-    subquery_occupied_seat_count = select(db.func.count(DbTicket.id)) \
-        .filter(DbTicket.revoked == False) \
-        .filter(DbTicket.occupied_seat_id.is_not(None)) \
-        .join(DbSeat) \
-        .filter(DbSeat.area_id == area.id) \
+    subquery_occupied_seat_count = (
+        select(db.func.count(DbTicket.id))
+        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.occupied_seat_id.is_not(None))
+        .join(DbSeat)
+        .filter(DbSeat.area_id == area.id)
         .scalar_subquery()
+    )
 
-    subquery_total_seat_count = select(db.func.count(DbSeat.id)) \
-        .filter_by(area_id=area.id) \
+    subquery_total_seat_count = (
+        select(db.func.count(DbSeat.id))
+        .filter_by(area_id=area.id)
         .scalar_subquery()
+    )
 
-    return select(
+    return (
+        select(
             area,
             subquery_occupied_seat_count,
             subquery_total_seat_count,
-        ) \
-        .filter(area.party_id == party_id) \
+        )
+        .filter(area.party_id == party_id)
         .group_by(area.id)
+    )
 
 
 def _map_areas_with_seat_utilization_row(

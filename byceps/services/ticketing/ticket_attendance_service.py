@@ -38,9 +38,9 @@ def create_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
 
 def delete_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
     """Delete the archived attendance of the user at the party."""
-    db.session.query(DbArchivedAttendance) \
-        .filter_by(user_id=user_id, party_id=party_id) \
-        .delete()
+    db.session.query(DbArchivedAttendance).filter_by(
+        user_id=user_id, party_id=party_id
+    ).delete()
     db.session.commit()
 
 
@@ -58,25 +58,27 @@ def get_attended_parties(user_id: UserID) -> list[Party]:
 
 def _get_attended_party_ids(user_id: UserID) -> set[PartyID]:
     """Return the IDs of the non-legacy parties the user has attended."""
-    party_id_rows = db.session \
-        .query(DbParty.id) \
-        .filter(DbParty.ends_at < datetime.utcnow()) \
-        .filter(DbParty.canceled == False) \
-        .join(DbTicketCategory) \
-        .join(DbTicket) \
-        .filter(DbTicket.revoked == False) \
-        .filter(DbTicket.used_by_id == user_id) \
+    party_id_rows = (
+        db.session.query(DbParty.id)
+        .filter(DbParty.ends_at < datetime.utcnow())
+        .filter(DbParty.canceled == False)
+        .join(DbTicketCategory)
+        .join(DbTicket)
+        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.used_by_id == user_id)
         .all()
+    )
 
     return {row[0] for row in party_id_rows}
 
 
 def _get_archived_attendance_party_ids(user_id: UserID) -> set[PartyID]:
     """Return the IDs of the legacy parties the user has attended."""
-    party_id_rows = db.session \
-        .query(DbArchivedAttendance.party_id) \
-        .filter(DbArchivedAttendance.user_id == user_id) \
+    party_id_rows = (
+        db.session.query(DbArchivedAttendance.party_id)
+        .filter(DbArchivedAttendance.user_id == user_id)
         .all()
+    )
 
     return {row[0] for row in party_id_rows}
 
@@ -131,45 +133,48 @@ def _get_top_ticket_attendees_for_parties(
 ) -> list[tuple[UserID, int]]:
     user_id_column = db.aliased(DbTicket).used_by_id
 
-    attendance_count = db.session \
-        .query(
+    attendance_count = (
+        db.session.query(
             db.func.count(DbTicketCategory.party_id.distinct()),
-        ) \
-        .join(DbParty) \
-        .filter(DbParty.brand_id == brand_id) \
-        .join(DbTicket) \
-        .filter(DbTicket.revoked == False) \
-        .filter(DbTicket.used_by_id == user_id_column) \
+        )
+        .join(DbParty)
+        .filter(DbParty.brand_id == brand_id)
+        .join(DbTicket)
+        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.used_by_id == user_id_column)
         .scalar_subquery()
+    )
 
-    return db.session \
-        .query(
+    return (
+        db.session.query(
             user_id_column.distinct(),
             attendance_count,
-        ) \
-        .filter(user_id_column.is_not(None)) \
-        .filter(attendance_count > 0) \
-        .order_by(attendance_count.desc()) \
+        )
+        .filter(user_id_column.is_not(None))
+        .filter(attendance_count > 0)
+        .order_by(attendance_count.desc())
         .all()
+    )
 
 
 def _get_top_archived_attendees_for_parties(
     brand_id: BrandID,
 ) -> list[tuple[UserID, int]]:
-    attendance_count_column = db.func \
-        .count(DbArchivedAttendance.user_id) \
-        .label('attendance_count')
+    attendance_count_column = db.func.count(DbArchivedAttendance.user_id).label(
+        'attendance_count'
+    )
 
-    return db.session \
-        .query(
+    return (
+        db.session.query(
             DbArchivedAttendance.user_id,
             attendance_count_column,
-        ) \
-        .join(DbParty) \
-        .filter(DbParty.brand_id == brand_id) \
-        .group_by(DbArchivedAttendance.user_id) \
-        .order_by(attendance_count_column.desc()) \
+        )
+        .join(DbParty)
+        .filter(DbParty.brand_id == brand_id)
+        .group_by(DbArchivedAttendance.user_id)
+        .order_by(attendance_count_column.desc())
         .all()
+    )
 
 
 def _merge_top_attendance_counts(

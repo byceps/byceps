@@ -25,12 +25,13 @@ from .transfer.models import BoardID, PostingID, TopicID
 
 def count_postings_for_board(board_id: BoardID) -> int:
     """Return the number of postings for that board."""
-    return db.session \
-        .query(DbPosting) \
-        .join(DbTopic) \
-            .join(DbBoardCategory) \
-                .filter(DbBoardCategory.board_id == board_id) \
+    return (
+        db.session.query(DbPosting)
+        .join(DbTopic)
+        .join(DbBoardCategory)
+        .filter(DbBoardCategory.board_id == board_id)
         .count()
+    )
 
 
 def find_posting_by_id(posting_id: PostingID) -> Optional[DbPosting]:
@@ -55,17 +56,20 @@ def paginate_postings(
     per_page: int,
 ) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
-    items_query = select(DbPosting) \
+    items_query = (
+        select(DbPosting)
         .options(
             db.joinedload(DbPosting.topic),
             db.joinedload(DbPosting.last_edited_by).load_only('screen_name'),
             db.joinedload(DbPosting.hidden_by).load_only('screen_name'),
-        ) \
-        .filter_by(topic_id=topic_id) \
-        .order_by(DbPosting.created_at.asc())
-
-    count_query = select(db.func.count(DbPosting.id)) \
+        )
         .filter_by(topic_id=topic_id)
+        .order_by(DbPosting.created_at.asc())
+    )
+
+    count_query = select(db.func.count(DbPosting.id)).filter_by(
+        topic_id=topic_id
+    )
 
     if not include_hidden:
         items_query = items_query.filter_by(hidden=False)
@@ -93,16 +97,12 @@ def calculate_posting_page_number(
     posting: DbPosting, include_hidden: bool, postings_per_page: int
 ) -> int:
     """Return the number of the page the posting should appear on."""
-    query = db.session \
-        .query(DbPosting) \
-        .filter_by(topic_id=posting.topic_id)
+    query = db.session.query(DbPosting).filter_by(topic_id=posting.topic_id)
 
     if not include_hidden:
         query = query.filter_by(hidden=False)
 
-    topic_postings = query \
-        .order_by(DbPosting.created_at.asc()) \
-        .all()
+    topic_postings = query.order_by(DbPosting.created_at.asc()).all()
 
     index = index_of(topic_postings, lambda p: p == posting)
     if index is None:

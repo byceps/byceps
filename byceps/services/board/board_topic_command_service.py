@@ -332,17 +332,13 @@ def remove_limit_of_topic_to_announcements(topic_id: TopicID) -> None:
 
 def delete_topic(topic_id: TopicID) -> None:
     """Delete a topic."""
-    db.session.query(DbInitialTopicPostingAssociation) \
-        .filter_by(topic_id=topic_id) \
-        .delete()
+    db.session.query(DbInitialTopicPostingAssociation).filter_by(
+        topic_id=topic_id
+    ).delete()
 
-    db.session.query(DbPosting) \
-        .filter_by(topic_id=topic_id) \
-        .delete()
+    db.session.query(DbPosting).filter_by(topic_id=topic_id).delete()
 
-    db.session.query(DbTopic) \
-        .filter_by(id=topic_id) \
-        .delete()
+    db.session.query(DbTopic).filter_by(id=topic_id).delete()
 
     db.session.commit()
 

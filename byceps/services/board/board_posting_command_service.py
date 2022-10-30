@@ -166,9 +166,7 @@ def unhide_posting(
 
 def delete_posting(posting_id: PostingID) -> None:
     """Delete a posting."""
-    db.session.query(DbPosting) \
-        .filter_by(id=posting_id) \
-        .delete()
+    db.session.query(DbPosting).filter_by(id=posting_id).delete()
 
     db.session.commit()
 

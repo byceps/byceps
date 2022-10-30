@@ -68,9 +68,7 @@ def create_seats(area_id: AreaID, seats: Iterator[Seat]) -> None:
 
 def delete_seat(seat_id: SeatID) -> None:
     """Delete a seat."""
-    db.session.query(DbSeat) \
-        .filter_by(id=seat_id) \
-        .delete()
+    db.session.query(DbSeat).filter_by(id=seat_id).delete()
     db.session.commit()
 
 
@@ -78,49 +76,50 @@ def count_occupied_seats_by_category(
     party_id: PartyID,
 ) -> list[tuple[TicketCategory, int]]:
     """Count occupied seats for the party, grouped by ticket category."""
-    subquery = db.session \
-        .query(
-            DbSeat.id,
-            DbSeat.category_id
-        ) \
-        .join(DbTicket) \
-        .filter_by(revoked=False) \
+    subquery = (
+        db.session.query(DbSeat.id, DbSeat.category_id)
+        .join(DbTicket)
+        .filter_by(revoked=False)
         .subquery()
+    )
 
-    rows = db.session \
-        .query(
+    rows = (
+        db.session.query(
             DbTicketCategory.id,
             DbTicketCategory.party_id,
             DbTicketCategory.title,
-            db.func.count(subquery.c.id)
-        ) \
-        .outerjoin(subquery, DbTicketCategory.id == subquery.c.category_id) \
-        .filter(DbTicketCategory.party_id == party_id) \
-        .group_by(DbTicketCategory.id) \
-        .order_by(DbTicketCategory.id) \
+            db.func.count(subquery.c.id),
+        )
+        .outerjoin(subquery, DbTicketCategory.id == subquery.c.category_id)
+        .filter(DbTicketCategory.party_id == party_id)
+        .group_by(DbTicketCategory.id)
+        .order_by(DbTicketCategory.id)
         .all()
+    )
 
     return [(TicketCategory(row[0], row[1], row[2]), row[3]) for row in rows]
 
 
 def count_occupied_seats_for_party(party_id: PartyID) -> int:
     """Count occupied seats for the party."""
-    return db.session \
-        .query(DbSeat) \
-        .join(DbTicket) \
-        .join(DbTicketCategory) \
-        .filter(DbTicket.revoked == False) \
-        .filter(DbTicketCategory.party_id == party_id) \
+    return (
+        db.session.query(DbSeat)
+        .join(DbTicket)
+        .join(DbTicketCategory)
+        .filter(DbTicket.revoked == False)
+        .filter(DbTicketCategory.party_id == party_id)
         .count()
+    )
 
 
 def count_seats_for_party(party_id: PartyID) -> int:
     """Return the number of seats in seating areas for that party."""
-    return db.session \
-        .query(DbSeat) \
-        .join(DbSeatingArea) \
-        .filter(DbSeatingArea.party_id == party_id) \
+    return (
+        db.session.query(DbSeat)
+        .join(DbSeatingArea)
+        .filter(DbSeatingArea.party_id == party_id)
         .count()
+    )
 
 
 def get_seat_utilization(party_id: PartyID) -> SeatUtilization:
@@ -166,10 +165,11 @@ def find_seats(seat_ids: set[SeatID]) -> set[Seat]:
     if not seat_ids:
         return set()
 
-    db_seats = db.session \
-        .query(DbSeat) \
-        .filter(DbSeat.id.in_(frozenset(seat_ids))) \
+    db_seats = (
+        db.session.query(DbSeat)
+        .filter(DbSeat.id.in_(frozenset(seat_ids)))
         .all()
+    )
 
     return {_db_entity_to_seat(db_seat) for db_seat in db_seats}
 
