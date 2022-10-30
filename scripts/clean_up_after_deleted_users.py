@@ -30,7 +30,6 @@ from byceps.services.newsletter.dbmodels import (
     DbSubscription as DbNewsletterSubscription,
     DbSubscriptionUpdate as DbNewsletterSubscriptionUpdate,
 )
-from byceps.services.user.dbmodels.avatar import DbUserAvatarSelection
 from byceps.services.user.dbmodels.log import DbUserLogEntry
 from byceps.services.user import user_service
 from byceps.services.verification_token.dbmodels import DbVerificationToken
@@ -66,7 +65,6 @@ def execute(dry_run, user_ids) -> None:
         'newsletter subscription updates',
         delete_newsletter_subscription_updates,
     )
-    delete('user avatar selections', delete_user_avatar_selections)
     delete('user log entries', delete_user_log_entries)
     delete('verification tokens', delete_verification_tokens)
 
@@ -138,13 +136,6 @@ def delete_newsletter_subscription_updates(user_ids: set[UserID]) -> int:
     return _execute_delete_for_users_query(
         DbNewsletterSubscriptionUpdate, user_ids
     )
-
-
-def delete_user_avatar_selections(user_ids: set[UserID]) -> int:
-    """Delete user avatar selections (but not user avatar records and
-    image files at this point) for the given users.
-    """
-    return _execute_delete_for_users_query(DbUserAvatarSelection, user_ids)
 
 
 def delete_user_log_entries(user_ids: set[UserID]) -> int:

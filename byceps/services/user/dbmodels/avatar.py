@@ -18,11 +18,8 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
 from ....database import db, generate_uuid
-from ....typing import UserID
 from ....util.image.models import ImageType
 from ....util.instances import ReprBuilder
-
-from ..transfer.models import UserAvatarID
 
 
 _ABSOLUTE_URL_PATH_PREFIX = '/data/global/users/avatars/'
@@ -74,22 +71,3 @@ class DbUserAvatar(db.Model):
 
 def get_absolute_url_path(filename: str) -> str:
     return _ABSOLUTE_URL_PATH_PREFIX + str(filename)
-
-
-class DbUserAvatarSelection(db.Model):
-    """The selection of an avatar image to be used for a user."""
-
-    __tablename__ = 'user_avatar_selections'
-
-    user_id = db.Column(db.Uuid, db.ForeignKey('users.id'), primary_key=True)
-    user = db.relationship(
-        'DbUser', backref=db.backref('avatar_selection', uselist=False)
-    )
-    avatar_id = db.Column(
-        db.Uuid, db.ForeignKey('user_avatars.id'), unique=True, nullable=False
-    )
-    avatar = db.relationship(DbUserAvatar)
-
-    def __init__(self, user_id: UserID, avatar_id: UserAvatarID) -> None:
-        self.user_id = user_id
-        self.avatar_id = avatar_id
