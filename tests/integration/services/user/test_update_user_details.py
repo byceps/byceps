@@ -69,7 +69,7 @@ def test_update_user_address(site_app, make_user):
     assert event.user_id == user.id
     assert event.user_screen_name == user.screen_name
 
-    user_after = user_command_service._get_user(user.id)
+    user_after = user_service.get_db_user(user.id)
     assert user_after.detail.first_name == new_first_name
     assert user_after.detail.last_name == new_last_name
     assert user_after.detail.date_of_birth == new_date_of_birth
@@ -128,7 +128,7 @@ def test_update_user_real_name(site_app, make_user):
 
     # -------------------------------- #
 
-    user_after = user_command_service._get_user(user.id)
+    user_after = user_service.get_db_user(user.id)
     assert user_after.detail.first_name == new_first_name
     assert user_after.detail.last_name == new_last_name
 
@@ -176,7 +176,7 @@ def test_remove_user_dob_and_phone_number(site_app, make_user):
 
     # -------------------------------- #
 
-    user_after = user_command_service._get_user(user.id)
+    user_after = user_service.get_db_user(user.id)
     assert user_after.detail.date_of_birth is None
     assert user_after.detail.phone_number == ''
 

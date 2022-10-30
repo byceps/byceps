@@ -7,9 +7,9 @@ import pytest
 
 from byceps.services.authorization import authz_service
 from byceps.services.user import (
-    user_command_service,
     user_deletion_service,
     user_log_service,
+    user_service,
 )
 
 
@@ -40,7 +40,7 @@ def test_delete_account(admin_app, role, make_user):
 
     reason = 'duplicate'
 
-    user_before = user_command_service._get_user(user_id)
+    user_before = user_service.get_db_user(user_id)
 
     assert user_before.screen_name == screen_name
     assert user_before.email_address == email_address
@@ -74,7 +74,7 @@ def test_delete_account(admin_app, role, make_user):
 
     # -------------------------------- #
 
-    user_after = user_command_service._get_user(user_id)
+    user_after = user_service.get_db_user(user_id)
 
     assert user_after.screen_name is None
     assert user_after.email_address is None

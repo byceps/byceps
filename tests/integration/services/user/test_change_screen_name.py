@@ -6,7 +6,11 @@
 import pytest
 
 from byceps.events.user import UserScreenNameChanged
-from byceps.services.user import user_command_service, user_log_service
+from byceps.services.user import (
+    user_command_service,
+    user_log_service,
+    user_service,
+)
 
 
 @pytest.fixture(scope='module')
@@ -21,7 +25,7 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
 
     user_id = make_user(old_screen_name).id
 
-    user_before = user_command_service._get_user(user_id)
+    user_before = user_service.get_db_user(user_id)
     assert user_before.screen_name == old_screen_name
 
     log_entries_before = user_log_service.get_entries_for_user(user_before.id)
@@ -42,7 +46,7 @@ def test_change_screen_name_with_reason(admin_app, make_user, admin_user):
     assert event.old_screen_name == old_screen_name
     assert event.new_screen_name == new_screen_name
 
-    user_after = user_command_service._get_user(user_id)
+    user_after = user_service.get_db_user(user_id)
     assert user_after.screen_name == new_screen_name
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
@@ -72,7 +76,7 @@ def test_change_screen_name_without_reason(admin_app, make_user, admin_user):
 
     # -------------------------------- #
 
-    user_after = user_command_service._get_user(user_id)
+    user_after = user_service.get_db_user(user_id)
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
 

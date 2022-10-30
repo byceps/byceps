@@ -6,7 +6,11 @@
 import pytest
 
 from byceps.events.user import UserEmailAddressChanged
-from byceps.services.user import user_command_service, user_log_service
+from byceps.services.user import (
+    user_command_service,
+    user_log_service,
+    user_service,
+)
 
 
 @pytest.fixture(scope='module')
@@ -25,7 +29,7 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
         email_address_verified=True,
     )
 
-    user_before = user_command_service._get_user(user.id)
+    user_before = user_service.get_db_user(user.id)
     assert user_before.email_address == old_email_address
     assert user_before.email_address_verified
 
@@ -46,7 +50,7 @@ def test_change_email_address_with_reason(admin_app, make_user, admin_user):
     assert event.user_id == user.id
     assert event.user_screen_name == user.screen_name
 
-    user_after = user_command_service._get_user(user.id)
+    user_after = user_service.get_db_user(user.id)
     assert user_after.email_address == new_email_address
     assert not user_after.email_address_verified
 
@@ -81,7 +85,7 @@ def test_change_email_address_without_reason(admin_app, make_user, admin_user):
 
     # -------------------------------- #
 
-    user_after = user_command_service._get_user(user.id)
+    user_after = user_service.get_db_user(user.id)
 
     log_entries_after = user_log_service.get_entries_for_user(user_after.id)
 
