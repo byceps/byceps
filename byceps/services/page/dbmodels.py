@@ -19,6 +19,7 @@ from ...typing import UserID
 
 from ..language.dbmodels import DbLanguage
 from ..site.transfer.models import SiteID
+from ..site_navigation.dbmodels import DbMenu
 from ..user.dbmodels.user import DbUser
 
 
@@ -48,6 +49,10 @@ class DbPage(db.Model):
     language = db.relationship(DbLanguage)
     url_path = db.Column(db.UnicodeText, index=True, nullable=False)
     published = db.Column(db.Boolean, nullable=False)
+    nav_menu_id = db.Column(
+        db.Uuid, db.ForeignKey('site_nav_menus.id'), nullable=True
+    )
+    nav_menu = db.relationship(DbMenu)
 
     current_version = association_proxy(
         'current_version_association', 'version'

@@ -321,7 +321,8 @@ def get_pages_for_site_with_current_versions(site_id: SiteID) -> list[DbPage]:
         .filter_by(site_id=site_id)
         .options(
             db.joinedload(DbPage.current_version_association)
-                .joinedload(DbCurrentVersionAssociation.version)
+                .joinedload(DbCurrentVersionAssociation.version),
+            db.joinedload(DbPage.nav_menu),
         )
     ).all()
 

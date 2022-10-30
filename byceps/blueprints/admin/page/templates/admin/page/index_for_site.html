@@ -1,6 +1,7 @@
 {% extends 'layout/admin/page.html' %}
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
+{% from 'macros/misc.html' import render_tag %}
 {% from 'macros/user.html' import render_user_avatar_and_name %}
 {% set page_title = [site.title, _('Pages')] %}
 
@@ -27,6 +28,7 @@
           <th>{{ _('Name') }}</th>
           <th>{{ _('Language') }}</th>
           <th>{{ _('URL path') }}</th>
+          <th>{{ _('Navigation menu') }}</th>
           <th>{{ _('Latest change') }}</th>
           <th>{{ _('by') }}</th>
           <th></th>
@@ -38,6 +40,18 @@
           <td><a href="{{ url_for('.view_current_version', page_id=page.id) }}"><strong>{{ page.name }}</strong></a></td>
           <td>{{ page.language_code }}</td>
           <td class="monospace">{{ page.url_path }}</td>
+          <td>
+            {%- with menu = page.nav_menu %}
+              {%- if menu %}
+            <a href="{{ url_for('site_navigation_admin.view', menu_id=menu.id) }}">{{ menu.name }} ({{ menu.language_code }})</a>
+                {%- if menu.hidden %}
+            {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+                {%- endif %}
+              {%- else %}
+            {{ _('not assigned')|dim }}
+              {%- endif %}
+            {%- endwith %}
+          </td>
           <td class="nowrap">
             {%- if has_current_user_permission('page.view_history') %}
             {{ render_icon('history') }} <a href="{{ url_for('.history', page_id=page.id) }}" title="{{ _('View change history') }}">{{ page.current_version.created_at|datetimeformat }}</a>
