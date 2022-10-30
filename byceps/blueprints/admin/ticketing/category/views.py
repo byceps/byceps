@@ -71,10 +71,7 @@ def create(party_id):
     category = ticket_category_service.create_category(party.id, title)
 
     flash_success(
-        gettext(
-            'Ticket category "%(title)s" has been created.',
-            title=category.title,
-        )
+        gettext('Category "%(title)s" has been created.', title=category.title)
     )
 
     return redirect_to('.index', party_id=party.id)

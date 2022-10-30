@@ -67,10 +67,7 @@ def create(party_id):
     category = tourney_category_service.create_category(party.id, title)
 
     flash_success(
-        gettext(
-            'Category "%(category_title)s" has been created.',
-            category_title=category.title,
-        )
+        gettext('Category "%(title)s" has been created.', title=category.title)
     )
     return redirect_to('.index', party_id=category.party_id)
 
@@ -108,10 +105,7 @@ def update(category_id):
     )
 
     flash_success(
-        gettext(
-            'Category "%(category_title)s" has been updated.',
-            category_title=category.title,
-        )
+        gettext('Category "%(title)s" has been updated.', title=category.title)
     )
     return redirect_to('.index', party_id=category.party_id)
 
@@ -128,15 +122,15 @@ def move_up(category_id):
     except ValueError:
         flash_error(
             gettext(
-                'Category "%(category_title)s" is already at the top.',
-                category_title=category.title,
+                'Category "%(title)s" is already at the top.',
+                title=category.title,
             )
         )
     else:
         flash_success(
             gettext(
-                'Category "%(category_title)s" has been moved upwards by one position.',
-                category_title=category.title,
+                'Category "%(title)s" has been moved upwards by one position.',
+                title=category.title,
             )
         )
 
@@ -153,15 +147,15 @@ def move_down(category_id):
     except ValueError:
         flash_error(
             gettext(
-                'Category "%(category_title)s" is already at the bottom.',
-                category_title=category.title,
+                'Category "%(title)s" is already at the bottom.',
+                title=category.title,
             )
         )
     else:
         flash_success(
             gettext(
-                'Category "%(category_title)s" has been moved downwards by one position.',
-                category_title=category.title,
+                'Category "%(title)s" has been moved downwards by one position.',
+                title=category.title,
             )
         )
 

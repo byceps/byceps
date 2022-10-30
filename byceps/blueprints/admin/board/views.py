@@ -166,10 +166,7 @@ def category_create(board_id):
     )
 
     flash_success(
-        gettext(
-            'Category "%(category_title)s" has been created.',
-            category_title=category.title,
-        )
+        gettext('Category "%(title)s" has been created.', title=category.title)
     )
     return redirect_to('.board_view', board_id=board.id)
 
@@ -214,10 +211,7 @@ def category_update(category_id):
     )
 
     flash_success(
-        gettext(
-            'Category "%(category_title)s" has been updated.',
-            category_title=category.title,
-        )
+        gettext('Category "%(title)s" has been updated.', title=category.title)
     )
     return redirect_to('.board_view', board_id=category.board_id)
 
@@ -232,10 +226,7 @@ def category_hide(category_id):
     board_category_command_service.hide_category(category.id)
 
     flash_success(
-        gettext(
-            'Category "%(category_title)s" has been hidden.',
-            category_title=category.title,
-        )
+        gettext('Category "%(title)s" has been hidden.', title=category.title)
     )
 
 
@@ -250,8 +241,7 @@ def category_unhide(category_id):
 
     flash_success(
         gettext(
-            'Category "%(category_title)s" has been made visible.',
-            category_title=category.title,
+            'Category "%(title)s" has been made visible.', title=category.title
         )
     )
 
@@ -268,15 +258,15 @@ def category_move_up(category_id):
     except ValueError:
         flash_error(
             gettext(
-                'Category "%(category_title)s" is already at the top.',
-                category_title=category.title,
+                'Category "%(title)s" is already at the top.',
+                title=category.title,
             )
         )
     else:
         flash_success(
             gettext(
-                'Category "%(category_title)s" has been moved upwards by one position.',
-                category_title=category.title,
+                'Category "%(title)s" has been moved upwards by one position.',
+                title=category.title,
             )
         )
 
@@ -293,15 +283,15 @@ def category_move_down(category_id):
     except ValueError:
         flash_error(
             gettext(
-                'Category "%(category_title)s" is already at the bottom.',
-                category_title=category.title,
+                'Category "%(title)s" is already at the bottom.',
+                title=category.title,
             )
         )
     else:
         flash_success(
             gettext(
-                'Category "%(category_title)s" has been moved downwards by one position.',
-                category_title=category.title,
+                'Category "%(title)s" has been moved downwards by one position.',
+                title=category.title,
             )
         )
 
@@ -318,15 +308,14 @@ def category_delete(category_id):
     except Exception:
         flash_error(
             gettext(
-                'Category "%(category_title)s" could not be deleted.',
-                category_title=category.title,
+                'Category "%(title)s" could not be deleted.',
+                title=category.title,
             )
         )
     else:
         flash_success(
             gettext(
-                'Category "%(category_title)s" has been deleted.',
-                category_title=category.title,
+                'Category "%(title)s" has been deleted.', title=category.title
             )
         )
 

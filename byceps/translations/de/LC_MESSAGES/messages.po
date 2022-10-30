@@ -909,64 +909,62 @@ msgid "Board with ID \"%(board_id)s\" has been created."
 msgstr "Das Forum mit der ID \"%(board_id)s\" wurde angelegt."
 
 #: byceps/blueprints/admin/board/views.py:169
+#: byceps/blueprints/admin/ticketing/category/views.py:74
 #: byceps/blueprints/admin/tourney/category/views.py:70
 #, python-format
-msgid "Category \"%(category_title)s\" has been created."
-msgstr "Die Kategorie \"%(category_title)s\" wurde angelegt."
+msgid "Category \"%(title)s\" has been created."
+msgstr "Die Kategorie \"%(title)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/board/views.py:217
-#: byceps/blueprints/admin/tourney/category/views.py:111
+#: byceps/blueprints/admin/board/views.py:214
+#: byceps/blueprints/admin/ticketing/category/views.py:115
+#: byceps/blueprints/admin/tourney/category/views.py:108
 #, python-format
-msgid "Category \"%(category_title)s\" has been updated."
-msgstr "Die Kategorie \"%(category_title)s\" wurde aktualisiert."
+msgid "Category \"%(title)s\" has been updated."
+msgstr "Die Kategorie \"%(title)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/board/views.py:235
+#: byceps/blueprints/admin/board/views.py:229
 #, python-format
-msgid "Category \"%(category_title)s\" has been hidden."
-msgstr "Die Kategorie \"%(category_title)s\" wurde versteckt."
+msgid "Category \"%(title)s\" has been hidden."
+msgstr "Die Kategorie \"%(title)s\" wurde versteckt."
 
-#: byceps/blueprints/admin/board/views.py:252
+#: byceps/blueprints/admin/board/views.py:243
 #, python-format
-msgid "Category \"%(category_title)s\" has been made visible."
-msgstr "Die Kategorie \"%(category_title)s\" wurde sichtbar gemacht."
+msgid "Category \"%(title)s\" has been made visible."
+msgstr "Die Kategorie \"%(title)s\" wurde sichtbar gemacht."
 
-#: byceps/blueprints/admin/board/views.py:270
-#: byceps/blueprints/admin/tourney/category/views.py:130
+#: byceps/blueprints/admin/board/views.py:260
+#: byceps/blueprints/admin/tourney/category/views.py:124
 #, python-format
-msgid "Category \"%(category_title)s\" is already at the top."
-msgstr "Die Kategorie \"%(category_title)s\" befindet sich bereits ganz oben."
+msgid "Category \"%(title)s\" is already at the top."
+msgstr "Die Kategorie \"%(title)s\" befindet sich bereits ganz oben."
 
-#: byceps/blueprints/admin/board/views.py:277
-#: byceps/blueprints/admin/tourney/category/views.py:137
+#: byceps/blueprints/admin/board/views.py:267
+#: byceps/blueprints/admin/tourney/category/views.py:131
 #, python-format
-msgid "Category \"%(category_title)s\" has been moved upwards by one position."
-msgstr ""
-"Die Kategorie \"%(category_title)s\" wurde eine Position nach oben "
-"verschoben."
+msgid "Category \"%(title)s\" has been moved upwards by one position."
+msgstr "Die Kategorie \"%(title)s\" wurde eine Position nach oben verschoben."
 
-#: byceps/blueprints/admin/board/views.py:295
-#: byceps/blueprints/admin/tourney/category/views.py:155
+#: byceps/blueprints/admin/board/views.py:285
+#: byceps/blueprints/admin/tourney/category/views.py:149
 #, python-format
-msgid "Category \"%(category_title)s\" is already at the bottom."
-msgstr "Die Kategorie \"%(category_title)s\" befindet sich bereits ganz unten."
+msgid "Category \"%(title)s\" is already at the bottom."
+msgstr "Die Kategorie \"%(title)s\" befindet sich bereits ganz unten."
 
-#: byceps/blueprints/admin/board/views.py:302
-#: byceps/blueprints/admin/tourney/category/views.py:162
+#: byceps/blueprints/admin/board/views.py:292
+#: byceps/blueprints/admin/tourney/category/views.py:156
 #, python-format
-msgid "Category \"%(category_title)s\" has been moved downwards by one position."
-msgstr ""
-"Die Kategorie \"%(category_title)s\" wurde eine Position nach unten "
-"verschoben."
+msgid "Category \"%(title)s\" has been moved downwards by one position."
+msgstr "Die Kategorie \"%(title)s\" wurde eine Position nach unten verschoben."
 
-#: byceps/blueprints/admin/board/views.py:320
+#: byceps/blueprints/admin/board/views.py:310
 #, python-format
-msgid "Category \"%(category_title)s\" could not be deleted."
-msgstr "Die Kategorie \"%(category_title)s\" konnte nicht gelöscht werden."
+msgid "Category \"%(title)s\" could not be deleted."
+msgstr "Die Kategorie \"%(title)s\" konnte nicht gelöscht werden."
 
-#: byceps/blueprints/admin/board/views.py:327
+#: byceps/blueprints/admin/board/views.py:317
 #, python-format
-msgid "Category \"%(category_title)s\" has been deleted."
-msgstr "Die Kategorie \"%(category_title)s\" wurde gelöscht."
+msgid "Category \"%(title)s\" has been deleted."
+msgstr "Die Kategorie \"%(title)s\" wurde gelöscht."
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_create_form.html:6
 #: byceps/blueprints/admin/board/templates/admin/board/board_index_for_brand.html:18
@@ -4671,16 +4669,6 @@ msgid "%(screen_name)s has been assigned as user of ticket %(ticket_code)s."
 msgstr ""
 "%(screen_name)s wurde als Nutzer/in von Ticket %(ticket_code)s "
 "eingetragen."
-
-#: byceps/blueprints/admin/ticketing/category/views.py:74
-#, python-format
-msgid "Ticket category \"%(title)s\" has been created."
-msgstr "Ticket-Kategorie \"%(title)s\" wurde erstellt."
-
-#: byceps/blueprints/admin/ticketing/category/views.py:118
-#, python-format
-msgid "Category \"%(title)s\" has been updated."
-msgstr "Ticket-Kategorie \"%(title)s\" wurde aktualisiert."
 
 #: byceps/blueprints/admin/ticketing/category/templates/admin/ticketing/category/create_form.html:6
 msgid "Create ticket category"
