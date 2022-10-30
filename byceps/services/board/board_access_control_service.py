@@ -49,7 +49,7 @@ def has_user_access_to_board(user_id: UserID, board_id: BoardID) -> bool:
         .outerjoin(DbBoardAccessGrant)
         .filter(
             db.or_(
-                DbBoard.access_restricted == False,
+                DbBoard.access_restricted == False,  # noqa: E712
                 DbBoardAccessGrant.user_id == user_id,
             )
         )

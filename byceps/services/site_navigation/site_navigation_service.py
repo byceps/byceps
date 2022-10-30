@@ -160,7 +160,7 @@ def get_items_for_menu(
         .filter(DbMenu.site_id == site_id)
         .filter(DbMenu.name == name)
         .filter(DbMenu.language_code == language_code)
-        .filter(DbMenu.hidden == False)
+        .filter(DbMenu.hidden == False)  # noqa: E712
     )
 
     return [_db_entity_to_item(db_item) for db_item in db_items]

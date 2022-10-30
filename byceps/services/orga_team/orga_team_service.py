@@ -389,7 +389,7 @@ def get_unassigned_orgas_for_team(team: OrgaTeam) -> set[User]:
     unassigned_orga_ids = set(
         db.session.scalars(
             unassigned_orga_ids_select
-            .filter(DbUser.deleted == False)
+            .filter(DbUser.deleted == False)  # noqa: E712
             .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == party.brand_id)
         ).all()
     )

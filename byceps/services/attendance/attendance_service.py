@@ -65,7 +65,7 @@ def _get_users_paginated(
             db.joinedload(DbUser.avatar),
         )
         .join(DbTicket, DbTicket.used_by_id == DbUser.id)
-        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.revoked == False)  # noqa: E712
         .join(DbTicketCategory)
         .filter(DbTicketCategory.party_id == party_id)
         .order_by('screen_name_lower')
@@ -74,7 +74,7 @@ def _get_users_paginated(
     count_query = (
         select(db.func.count(db.distinct(DbUser.id)))
         .join(DbTicket, DbTicket.used_by_id == DbUser.id)
-        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.revoked == False)  # noqa: E712
         .join(DbTicketCategory)
         .filter(DbTicketCategory.party_id == party_id)
     )
@@ -103,7 +103,7 @@ def _get_tickets_for_users(
         )
         .filter(DbTicket.party_id == party_id)
         .filter(DbTicket.used_by_id.in_(user_ids))
-        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.revoked == False)  # noqa: E712
         .all()
     )
 

@@ -56,9 +56,9 @@ def find_active_user(
     stmt = _get_user_stmt(include_avatar)
 
     row = db.session.execute(
-        stmt.filter(DbUser.initialized == True)
-        .filter(DbUser.suspended == False)
-        .filter(DbUser.deleted == False)
+        stmt.filter(DbUser.initialized == True)  # noqa: E712
+        .filter(DbUser.suspended == False)  # noqa: E712
+        .filter(DbUser.deleted == False)  # noqa: E712
         .filter(DbUser.id == user_id)
     ).one_or_none()
 

@@ -106,7 +106,7 @@ def count_occupied_seats_for_party(party_id: PartyID) -> int:
         db.session.query(DbSeat)
         .join(DbTicket)
         .join(DbTicketCategory)
-        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.revoked == False)  # noqa: E712
         .filter(DbTicketCategory.party_id == party_id)
         .count()
     )

@@ -69,7 +69,7 @@ def get_recent_topics(
         _query_topics(include_hidden)
         .join(DbBoardCategory)
         .filter(DbBoardCategory.board_id == board_id)
-        .filter(DbBoardCategory.hidden == False)
+        .filter(DbBoardCategory.hidden == False)  # noqa: E712
         .order_by(DbTopic.last_updated_at.desc())
         .limit(limit)
     )
@@ -85,7 +85,7 @@ def paginate_topics(
         _query_topics(include_hidden)
         .join(DbBoardCategory)
         .filter(DbBoardCategory.board_id == board_id)
-        .filter(DbBoardCategory.hidden == False)
+        .filter(DbBoardCategory.hidden == False)  # noqa: E712
         .order_by(DbTopic.last_updated_at.desc())
     )
 
@@ -93,7 +93,7 @@ def paginate_topics(
         _count_topics(include_hidden)
         .join(DbBoardCategory)
         .filter(DbBoardCategory.board_id == board_id)
-        .filter(DbBoardCategory.hidden == False)
+        .filter(DbBoardCategory.hidden == False)  # noqa: E712
     )
 
     return paginate(

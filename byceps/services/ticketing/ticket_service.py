@@ -126,7 +126,7 @@ def find_tickets_for_seat_manager(
     return (
         db.session.query(DbTicket)
         .filter(DbTicket.party_id == party_id)
-        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.revoked == False)  # noqa: E712
         .filter(
             (
                 (DbTicket.seat_managed_by_id.is_(None))
@@ -196,7 +196,7 @@ def find_tickets_used_by_user(
         db.session.query(DbTicket)
         .filter(DbTicket.party_id == party_id)
         .filter(DbTicket.used_by_id == user_id)
-        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.revoked == False)  # noqa: E712
         .outerjoin(DbSeat)
         .options(
             db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
@@ -223,7 +223,7 @@ def get_ticket_users_for_party(party_id: PartyID) -> set[UserID]:
     rows = (
         db.session.query(DbTicket.used_by_id)
         .filter(DbTicket.party_id == party_id)
-        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.revoked == False)  # noqa: E712
         .filter(DbTicket.used_by_id.is_not(None))
         .all()
     )
@@ -242,7 +242,7 @@ def select_ticket_users_for_party(
         db.session.query(DbTicket)
         .filter(DbTicket.party_id == party_id)
         .filter(DbTicket.used_by_id == DbUser.id)
-        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.revoked == False)  # noqa: E712
     )
 
     rows = (

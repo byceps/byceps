@@ -24,7 +24,7 @@ def aggregate_category(category: DbBoardCategory) -> None:
 
     posting_query = (
         db.session.query(DbPosting)
-        .filter(DbPosting.hidden == False)
+        .filter(DbPosting.hidden == False)  # noqa: E712
         .join(DbTopic)
         .filter(DbTopic.category_id == category.id)
     )
@@ -32,7 +32,7 @@ def aggregate_category(category: DbBoardCategory) -> None:
     posting_count = posting_query.count()
 
     latest_posting = (
-        posting_query.filter(DbTopic.hidden == False)
+        posting_query.filter(DbTopic.hidden == False)  # noqa: E712
         .order_by(DbPosting.created_at.desc())
         .first()
     )

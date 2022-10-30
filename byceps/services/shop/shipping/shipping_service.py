@@ -52,7 +52,7 @@ def _find_line_items(shop_id: ShopID) -> Iterator[LineItemQuantity]:
         .join(DbOrder)
         .filter(DbOrder.shop_id == shop_id)
         .options(db.joinedload(DbLineItem.order))
-        .filter(DbLineItem.processing_required == True)
+        .filter(DbLineItem.processing_required == True)  # noqa: E712
     )
 
     definitive_line_items = db.session.scalars(

@@ -96,7 +96,7 @@ def get_categories_with_ticket_counts_for_party(
         db.session.query(db.func.count(DbTicket.id))
         .join(DbTicketCategory)
         .filter(DbTicketCategory.id == category.id)
-        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.revoked == False)  # noqa: E712
         .scalar_subquery()
     )
 

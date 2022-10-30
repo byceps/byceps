@@ -61,10 +61,10 @@ def _get_attended_party_ids(user_id: UserID) -> set[PartyID]:
     party_id_rows = (
         db.session.query(DbParty.id)
         .filter(DbParty.ends_at < datetime.utcnow())
-        .filter(DbParty.canceled == False)
+        .filter(DbParty.canceled == False)  # noqa: E712
         .join(DbTicketCategory)
         .join(DbTicket)
-        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.revoked == False)  # noqa: E712
         .filter(DbTicket.used_by_id == user_id)
         .all()
     )
@@ -89,7 +89,7 @@ def get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
         select(DbTicket.used_by_id)
         .join(DbTicketCategory)
         .filter(DbTicketCategory.party_id == party_id)
-        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.revoked == False)  # noqa: E712
         .filter(DbTicket.used_by_id.is_not(None))
     ).all()
 
@@ -140,7 +140,7 @@ def _get_top_ticket_attendees_for_parties(
         .join(DbParty)
         .filter(DbParty.brand_id == brand_id)
         .join(DbTicket)
-        .filter(DbTicket.revoked == False)
+        .filter(DbTicket.revoked == False)  # noqa: E712
         .filter(DbTicket.used_by_id == user_id_column)
         .scalar_subquery()
     )
