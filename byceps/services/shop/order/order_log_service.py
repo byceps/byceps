@@ -62,11 +62,11 @@ def build_entry(
 
 def get_entries_for_order(order_id: OrderID) -> list[OrderLogEntry]:
     """Return the log entries for that order."""
-    db_entries = db.session.execute(
+    db_entries = db.session.scalars(
         select(DbOrderLogEntry)
         .filter_by(order_id=order_id)
         .order_by(DbOrderLogEntry.occurred_at)
-    ).scalars().all()
+    ).all()
 
     return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
 
@@ -75,12 +75,12 @@ def get_entries_of_type_for_order(
     order_id: OrderID, event_type: str
 ) -> list[OrderLogEntry]:
     """Return the log entries of that type for that order."""
-    db_entries = db.session.execute(
+    db_entries = db.session.scalars(
         select(DbOrderLogEntry)
         .filter_by(order_id=order_id)
         .filter_by(event_type=event_type)
         .order_by(DbOrderLogEntry.occurred_at)
-    ).scalars().all()
+    ).all()
 
     return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
 
@@ -92,12 +92,12 @@ def get_entries_by_initiator(
     if not event_types:
         return []
 
-    db_entries = db.session.execute(
+    db_entries = db.session.scalars(
         select(DbOrderLogEntry)
         .filter(DbOrderLogEntry.event_type.in_(event_types))
         .filter(DbOrderLogEntry.data['initiator_id'].astext == str(initiator_id))
         .order_by(DbOrderLogEntry.occurred_at)
-    ).scalars().all()
+    ).all()
 
     return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
 
@@ -109,14 +109,14 @@ def get_latest_entries_for_shop(
     if not event_types:
         return []
 
-    db_entries = db.session.execute(
+    db_entries = db.session.scalars(
         select(DbOrderLogEntry)
         .join(DbOrder)
         .filter(DbOrder.shop_id == shop_id)
         .filter(DbOrderLogEntry.event_type.in_(event_types))
         .order_by(DbOrderLogEntry.occurred_at.desc())
         .limit(limit)
-    ).scalars().all()
+    ).all()
 
     return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
 

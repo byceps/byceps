@@ -81,10 +81,9 @@ def _find_db_catalog(catalog_id: CatalogID) -> Optional[DbCatalog]:
 
 def get_catalogs_for_shop(shop_id: ShopID) -> list[Catalog]:
     """Return all catalogs for that shop."""
-    db_catalogs = db.session.execute(
-        select(DbCatalog)
-        .filter_by(shop_id=shop_id)
-    ).scalars().all()
+    db_catalogs = db.session.scalars(
+        select(DbCatalog).filter_by(shop_id=shop_id)
+    ).all()
 
     return [_db_entity_to_catalog(db_catalog) for db_catalog in db_catalogs]
 
@@ -156,11 +155,11 @@ def _find_db_collection(collection_id: CollectionID) -> Optional[DbCollection]:
 
 def get_collections_for_catalog(catalog_id: CatalogID) -> list[Collection]:
     """Return the catalog's collections."""
-    db_collections = db.session.execute(
+    db_collections = db.session.scalars(
         select(DbCollection)
         .filter_by(catalog_id=catalog_id)
         .order_by(DbCollection.position)
-    ).scalars().all()
+    ).all()
 
     return [
         _db_entity_to_collection(db_collection)

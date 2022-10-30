@@ -119,10 +119,9 @@ def find_storefronts(storefront_ids: set[StorefrontID]) -> list[Storefront]:
     if not storefront_ids:
         return []
 
-    db_storefronts = db.session.execute(
-        select(DbStorefront)
-        .filter(DbStorefront.id.in_(storefront_ids))
-    ).scalars().all()
+    db_storefronts = db.session.scalars(
+        select(DbStorefront).filter(DbStorefront.id.in_(storefront_ids))
+    ).all()
 
     return [
         _db_entity_to_storefront(db_storefront)
@@ -132,9 +131,7 @@ def find_storefronts(storefront_ids: set[StorefrontID]) -> list[Storefront]:
 
 def get_all_storefronts() -> list[Storefront]:
     """Return all storefronts."""
-    db_storefronts = db.session.execute(
-        select(DbStorefront)
-    ).scalars().all()
+    db_storefronts = db.session.scalars(select(DbStorefront)).all()
 
     return [
         _db_entity_to_storefront(db_storefront)
@@ -144,10 +141,9 @@ def get_all_storefronts() -> list[Storefront]:
 
 def get_storefronts_for_shop(shop_id: ShopID) -> set[Storefront]:
     """Return all storefronts for that shop."""
-    rows = db.session.execute(
-        select(DbStorefront)
-        .filter_by(shop_id=shop_id)
-    ).scalars().all()
+    rows = db.session.scalars(
+        select(DbStorefront).filter_by(shop_id=shop_id)
+    ).all()
 
     return {_db_entity_to_storefront(row) for row in rows}
 

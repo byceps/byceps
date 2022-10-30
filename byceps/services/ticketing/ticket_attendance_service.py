@@ -83,18 +83,18 @@ def _get_archived_attendance_party_ids(user_id: UserID) -> set[PartyID]:
 
 def get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
     """Return the party's attendees' IDs."""
-    ticket_rows = db.session.execute(
+    ticket_rows = db.session.scalars(
         select(DbTicket.used_by_id)
         .join(DbTicketCategory)
         .filter(DbTicketCategory.party_id == party_id)
         .filter(DbTicket.revoked == False)
         .filter(DbTicket.used_by_id.is_not(None))
-    ).scalars().all()
+    ).all()
 
-    archived_attendance_rows = db.session.execute(
+    archived_attendance_rows = db.session.scalars(
         select(DbArchivedAttendance.user_id)
         .filter(DbArchivedAttendance.party_id == party_id)
-    ).scalars().all()
+    ).all()
 
     return set(ticket_rows + archived_attendance_rows)
 

@@ -55,9 +55,7 @@ def find_api_token_by_token(token: str) -> Optional[ApiToken]:
 
 def get_all_api_tokens() -> list[ApiToken]:
     """Return all API tokens."""
-    db_api_tokens = db.session.execute(
-        select(DbApiToken)
-    ).scalars().unique().all()
+    db_api_tokens = db.session.scalars(select(DbApiToken)).unique().all()
 
     return [
         _db_entity_to_api_token(db_api_token) for db_api_token in db_api_tokens

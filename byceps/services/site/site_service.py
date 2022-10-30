@@ -148,10 +148,9 @@ def get_sites(site_ids: set[SiteID]) -> list[Site]:
     if not site_ids:
         return []
 
-    db_sites = db.session.execute(
-        select(DbSite)
-        .filter(DbSite.id.in_(site_ids))
-    ).scalars().all()
+    db_sites = db.session.scalars(
+        select(DbSite).filter(DbSite.id.in_(site_ids))
+    ).all()
 
     return [_db_entity_to_site(db_site) for db_site in db_sites]
 

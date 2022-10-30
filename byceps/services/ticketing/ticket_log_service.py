@@ -38,11 +38,11 @@ def build_entry(
 
 def get_entries_for_ticket(ticket_id: TicketID) -> list[TicketLogEntry]:
     """Return the log entries for that ticket."""
-    db_entries = db.session.execute(
+    db_entries = db.session.scalars(
         select(DbTicketLogEntry)
         .filter_by(ticket_id=ticket_id)
         .order_by(DbTicketLogEntry.occurred_at)
-    ).scalars().all()
+    ).all()
 
     return [_db_entity_to_entry(db_entry) for db_entry in db_entries]
 

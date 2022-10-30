@@ -249,20 +249,16 @@ def get_users_for_admin(user_ids: set[UserID]) -> set[UserForAdmin]:
     if not user_ids:
         return set()
 
-    users = (
-        db.session.execute(
-            select(DbUser)
-            .options(
-                db.joinedload(DbUser.avatar),
-                db.joinedload(DbUser.detail).load_only(
-                    DbUserDetail.first_name, DbUserDetail.last_name
-                ),
-            )
-            .filter(DbUser.id.in_(frozenset(user_ids)))
+    users = db.session.scalars(
+        select(DbUser)
+        .options(
+            db.joinedload(DbUser.avatar),
+            db.joinedload(DbUser.detail).load_only(
+                DbUserDetail.first_name, DbUserDetail.last_name
+            ),
         )
-        .scalars()
-        .all()
-    )
+        .filter(DbUser.id.in_(frozenset(user_ids)))
+    ).all()
 
     return {_db_entity_to_user_for_admin(user) for user in users}
 

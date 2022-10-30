@@ -75,7 +75,7 @@ def get_recent_topics(
         .order_by(DbTopic.last_updated_at.desc()) \
         .limit(limit)
 
-    return db.session.execute(query).scalars().all()
+    return db.session.scalars(query).all()
 
 
 def paginate_topics(

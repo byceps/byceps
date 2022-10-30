@@ -224,23 +224,23 @@ def get_orga_teams_for_user_and_party(
     user_id: UserID, party_id: PartyID
 ) -> set[OrgaTeam]:
     """Return the user's memberships in any orga teams of that party."""
-    db_orga_teams = db.session.execute(
+    db_orga_teams = db.session.scalars(
         select(DbOrgaTeam)
         .join(DbMembership)
         .filter(DbMembership.user_id == user_id)
         .filter(DbOrgaTeam.party_id == party_id)
-    ).scalars().all()
+    ).all()
 
     return {_db_entity_to_team(team) for team in db_orga_teams}
 
 
 def get_orga_activities_for_user(user_id: UserID) -> set[OrgaActivity]:
     """Return all orga team activities for that user."""
-    memberships = db.session.execute(
+    memberships = db.session.scalars(
         select(DbMembership)
         .options(db.joinedload(DbMembership.orga_team))
         .filter_by(user_id=user_id)
-    ).scalars().all()
+    ).all()
 
     party_ids = {ms.orga_team.party_id for ms in memberships}
     parties = party_service.get_parties(party_ids)
@@ -374,10 +374,10 @@ def get_unassigned_orgas_for_team(team: OrgaTeam) -> set[User]:
     party = party_service.get_party(team.party_id)
 
     assigned_orga_ids = set(
-        db.session.execute(
+        db.session.scalars(
             select(DbMembership.user_id)
             .filter_by(orga_team_id=team.id)
-        ).scalars().all()
+        ).all()
     )
 
     unassigned_orga_ids_select = select(DbUser.id)
@@ -387,11 +387,11 @@ def get_unassigned_orgas_for_team(team: OrgaTeam) -> set[User]:
             .filter(db.not_(DbUser.id.in_(assigned_orga_ids)))
 
     unassigned_orga_ids = set(
-        db.session.execute(
+        db.session.scalars(
             unassigned_orga_ids_select
             .filter(DbUser.deleted == False)
             .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == party.brand_id)
-        ).scalars().all()
+        ).all()
     )
 
     return user_service.get_users(unassigned_orga_ids)
@@ -422,12 +422,12 @@ def select_orgas_for_party(
     if not user_ids:
         return set()
 
-    rows = db.session.execute(
+    rows = db.session.scalars(
         select(DbMembership.user_id)
         .select_from(DbMembership)
         .filter(DbMembership.user_id.in_(user_ids))
         .join(DbOrgaTeam)
         .filter(DbOrgaTeam.party_id == party_id)
-    ).scalars().all()
+    ).all()
 
     return set(rows)

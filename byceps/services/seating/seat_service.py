@@ -180,13 +180,13 @@ def get_seats_with_tickets_for_area(
     """Return the seats and their associated tickets (if available) for
     that area.
     """
-    db_seats = db.session.execute(
+    db_seats = db.session.scalars(
         select(DbSeat)
         .filter_by(area_id=area_id)
         .options(
             db.joinedload(DbSeat.occupied_by_ticket),
         )
-    ).scalars().all()
+    ).all()
 
     return [
         (_db_entity_to_seat(db_seat), db_seat.occupied_by_ticket)

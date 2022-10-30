@@ -98,20 +98,18 @@ def find_shops(shop_ids: set[ShopID]) -> list[Shop]:
     if not shop_ids:
         return []
 
-    db_shops = db.session.execute(
-        select(DbShop)
-        .filter(DbShop.id.in_(shop_ids))
-    ).scalars().all()
+    db_shops = db.session.scalars(
+        select(DbShop).filter(DbShop.id.in_(shop_ids))
+    ).all()
 
     return [_db_entity_to_shop(db_shop) for db_shop in db_shops]
 
 
 def get_active_shops() -> list[Shop]:
     """Return all shops that are not archived."""
-    db_shops = db.session.execute(
-        select(DbShop)
-        .filter_by(archived=False)
-    ).scalars().all()
+    db_shops = db.session.scalars(
+        select(DbShop).filter_by(archived=False)
+    ).all()
 
     return [_db_entity_to_shop(db_shop) for db_shop in db_shops]
 
