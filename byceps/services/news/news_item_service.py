@@ -309,6 +309,41 @@ def get_items_paginated(
     )
 
 
+def get_headlines_paginated(
+    channel_ids: set[ChannelID],
+    page: int,
+    items_per_page: int,
+    *,
+    published_only: bool = False,
+) -> Pagination:
+    """Return the headlines to show on the specified page."""
+    items_stmt = (
+        select(DbItem)
+        .filter(DbItem.channel_id.in_(channel_ids))
+        .options(
+            db.joinedload(DbItem.current_version_association)
+                .joinedload(DbCurrentVersionAssociation.version)
+        )
+        .order_by(DbItem.published_at.desc())
+    )
+
+    count_stmt = _get_count_stmt(channel_ids)
+
+    if published_only:
+        items_stmt = items_stmt.filter(DbItem.published_at <= datetime.utcnow())
+        count_stmt = count_stmt.filter(DbItem.published_at <= datetime.utcnow())
+
+    return paginate(
+        items_stmt,
+        count_stmt,
+        page,
+        items_per_page,
+        scalar_result=True,
+        unique_result=True,
+        item_mapper=_db_entity_to_headline,
+    )
+
+
 def get_recent_headlines(
     channel_ids: Union[frozenset[ChannelID], set[ChannelID]], limit: int
 ) -> list[Headline]:
@@ -447,5 +482,6 @@ def _db_entity_to_headline(db_item: DbItem) -> Headline:
     return Headline(
         slug=db_item.slug,
         published_at=db_item.published_at,
+        published=db_item.published_at is not None,
         title=db_item.current_version.title,
     )

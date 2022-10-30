@@ -23,6 +23,7 @@ blueprint = create_blueprint('news', __name__)
 
 
 DEFAULT_ITEMS_PER_PAGE = 4
+DEFAULT_HEADLINES_PER_PAGE = 20
 
 
 @blueprint.get('/', defaults={'page': 1})
@@ -40,6 +41,26 @@ def index(page):
 
     return {
         'items': items,
+        'page': page,
+        'per_page': items_per_page,
+    }
+
+
+@blueprint.get('/archive', defaults={'page': 1})
+@blueprint.get('/archive/pages/<int:page>')
+@templated
+def archive(page):
+    """Show a page of news items."""
+    channel_ids = _get_channel_ids()
+    items_per_page = DEFAULT_HEADLINES_PER_PAGE
+    published_only = not _may_current_user_view_drafts()
+
+    headlines = news_item_service.get_headlines_paginated(
+        channel_ids, page, items_per_page, published_only=published_only
+    )
+
+    return {
+        'headlines': headlines,
         'page': page,
         'per_page': items_per_page,
     }

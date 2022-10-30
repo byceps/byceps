@@ -6582,6 +6582,15 @@ msgstr "Weitere Einstellungen"
 msgid "An error has occurred while rendering the news."
 msgstr "Bei der Anzeige der News ist ein Fehler aufgetreten."
 
+#: byceps/blueprints/site/news/templates/site/news/archive.html:5
+#: byceps/blueprints/site/news/templates/site/news/archive.html:9
+msgid "News Archive"
+msgstr "News-Archiv"
+
+#: byceps/blueprints/site/news/templates/site/news/index.html:20
+msgid "Archive"
+msgstr "Archiv"
+
 #: byceps/blueprints/site/newsletter/views.py:36
 #, python-format
 msgid "You have subscribed to newsletter \"%(title)s\"."

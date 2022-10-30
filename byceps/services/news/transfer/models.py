@@ -73,4 +73,5 @@ class Item:
 class Headline:
     slug: str
     published_at: Optional[datetime]
+    published: bool
     title: str
