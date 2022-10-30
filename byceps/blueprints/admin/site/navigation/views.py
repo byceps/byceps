@@ -14,15 +14,17 @@ from .....services.site import site_service
 from .....services.site.transfer.models import Site, SiteID
 from .....services.site_navigation import site_navigation_service
 from .....services.site_navigation.transfer.models import (
+    Item,
+    ItemID,
     ItemTargetType,
     Menu,
     MenuAggregate,
     MenuID,
 )
 from .....util.framework.blueprint import create_blueprint
-from .....util.framework.flash import flash_success
+from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
-from .....util.views import permission_required, redirect_to
+from .....util.views import permission_required, redirect_to, respond_no_content
 
 from .forms import ItemCreateForm, MenuCreateForm, MenuUpdateForm
 
@@ -196,6 +198,56 @@ def item_create(menu_id):
     return redirect_to('.view', menu_id=menu.id)
 
 
+@blueprint.post('/items/<uuid:item_id>/up')
+@permission_required('site_navigation.administrate')
+@respond_no_content
+def item_move_up(item_id):
+    """Move a menu item upwards by one position."""
+    item = _get_item_or_404(item_id)
+
+    try:
+        site_navigation_service.move_item_up(item.id)
+    except ValueError:
+        flash_error(
+            gettext(
+                'Item "%(label)s" is already at the top.',
+                label=item.label,
+            )
+        )
+    else:
+        flash_success(
+            gettext(
+                'Item "%(label)s" has been moved upwards by one position.',
+                label=item.label,
+            )
+        )
+
+
+@blueprint.post('/items/<uuid:item_id>/down')
+@permission_required('site_navigation.administrate')
+@respond_no_content
+def item_move_down(item_id):
+    """Move a menu item downwards by one position."""
+    item = _get_item_or_404(item_id)
+
+    try:
+        site_navigation_service.move_item_down(item.id)
+    except ValueError:
+        flash_error(
+            gettext(
+                'Item "%(label)s" is already at the bottom.',
+                label=item.label,
+            )
+        )
+    else:
+        flash_success(
+            gettext(
+                'Item "%(label)s" has been moved downwards by one position.',
+                label=item.label,
+            )
+        )
+
+
 def _get_site_or_404(site_id: SiteID) -> Site:
     site = site_service.find_site(site_id)
 
@@ -221,3 +273,12 @@ def _get_menu_aggregate_or_404(menu_id: MenuID) -> MenuAggregate:
         abort(404)
 
     return menu
+
+
+def _get_item_or_404(item_id: ItemID) -> Item:
+    item = site_navigation_service.find_item(item_id)
+
+    if item is None:
+        abort(404)
+
+    return item

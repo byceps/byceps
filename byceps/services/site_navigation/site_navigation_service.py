@@ -166,6 +166,68 @@ def get_items_for_menu(
     return [_db_entity_to_item(db_item) for db_item in db_items]
 
 
+def find_item(item_id: ItemID) -> Optional[Item]:
+    """Return the menu item, or `None` if not found."""
+    db_item = _find_db_item(item_id)
+
+    if db_item is None:
+        return None
+
+    return _db_entity_to_item(db_item)
+
+
+def _find_db_item(item_id: ItemID) -> Optional[DbItem]:
+    """Return the menu item, or `None` if not found."""
+    return db.session.get(DbItem, item_id)
+
+
+def _get_db_item(item_id: ItemID) -> DbItem:
+    """Return the menu item.
+
+    Raise error if not found.
+    """
+    db_item = _find_db_item(item_id)
+
+    if db_item is None:
+        raise ValueError('Unknown item ID')
+
+    return db_item
+
+
+def move_item_up(item_id: ItemID) -> Item:
+    """Move a menu item upwards by one position."""
+    item = _get_db_item(item_id)
+
+    item_list = item.menu.items
+
+    if item.position == 1:
+        raise ValueError('Item is already at the top.')
+
+    popped_item = item_list.pop(item.position - 1)
+    item_list.insert(popped_item.position - 2, popped_item)
+
+    db.session.commit()
+
+    return _db_entity_to_item(item)
+
+
+def move_item_down(item_id: ItemID) -> Item:
+    """Move a menu item downwards by one position."""
+    item = _get_db_item(item_id)
+
+    item_list = item.menu.items
+
+    if item.position == len(item_list):
+        raise ValueError('Item is already at the bottom.')
+
+    popped_item = item_list.pop(item.position - 1)
+    item_list.insert(popped_item.position, popped_item)
+
+    db.session.commit()
+
+    return _db_entity_to_item(item)
+
+
 def _db_entity_to_menu(db_menu: DbMenu) -> Menu:
     return Menu(
         id=db_menu.id,

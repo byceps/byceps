@@ -55,6 +55,7 @@
           <th>{{ _('Label') }}</th>
           <th>{{ _('Current page ID') }}</th>
           <th></th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -69,6 +70,17 @@
             {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
             {%- endif -%}
           </td>
+          <td>
+            {%- if has_current_user_permission('site_navigation.administrate') -%}
+            <div class="dropdown">
+              <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
+              <ol class="dropdown-menu">
+                <li><a class="dropdown-item" data-action="item-move-up" href="{{ url_for('.item_move_up', item_id=item.id) }}">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
+                <li><a class="dropdown-item" data-action="item-move-down" href="{{ url_for('.item_move_down', item_id=item.id) }}">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
+              </ol>
+            </div>
+            {%- endif -%}
+          </td>
         </tr>
         {%- endfor %}
       </tbody>
@@ -79,4 +91,13 @@
 
   </div>
 
+{%- endblock %}
+
+{% block scripts %}
+    <script>
+      onDomReady(() => {
+        post_on_click_then_reload('[data-action="item-move-up"]');
+        post_on_click_then_reload('[data-action="item-move-down"]');
+      });
+    </script>
 {%- endblock %}
