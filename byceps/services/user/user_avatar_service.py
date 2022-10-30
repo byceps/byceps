@@ -19,7 +19,7 @@ from ...util import upload
 from ..image import image_service
 from ..image.image_service import ImageTypeProhibited  # Provide to view functions.  # noqa: F401
 
-from .dbmodels.avatar import DbUserAvatar, DbUserAvatarSelection
+from .dbmodels.avatar import DbUserAvatar
 from .dbmodels.user import DbUser
 from .transfer.models import UserAvatarID
 from . import user_log_service, user_service
@@ -60,7 +60,6 @@ def update_avatar_image(
     upload.store(stream, avatar.path, create_parent_path_if_nonexistent=True)
 
     user.avatar_id = avatar.id
-    user.avatar = avatar
 
     log_entry = user_log_service.build_entry(
         'user-avatar-updated',
@@ -87,22 +86,12 @@ def remove_avatar_image(user_id: UserID, initiator_id: UserID) -> None:
     user = user_service.get_db_user(user_id)
     user.avatar_id = None
 
-    selection = db.session.get(DbUserAvatarSelection, user.id)
-
-    if selection is None:
-        raise ValueError(f'No avatar set for user ID {user.id}.')
-
-    avatar_id = selection.avatar_id
-    filename = selection.avatar.filename
-
-    db.session.delete(selection)
-
     log_entry = user_log_service.build_entry(
         'user-avatar-removed',
         user.id,
         {
-            'avatar_id': str(avatar_id),
-            'filename': str(filename),
+            'avatar_id': str(user.avatar_id),
+            'filename': str(user.avatar.filename),
             'initiator_id': str(initiator_id),
         },
     )
@@ -133,11 +122,11 @@ def get_avatar_urls_for_users(
 
     user_ids_and_avatars = db.session.execute(
         select(
-            DbUserAvatarSelection.user_id,
+            DbUser.id,
             DbUserAvatar,
         )
-        .join(DbUserAvatar)
-        .filter(DbUserAvatarSelection.user_id.in_(user_ids))
+        .join(DbUserAvatar, DbUser.avatar_id == DbUserAvatar.id)
+        .filter(DbUser.id.in_(user_ids))
     ).all()
 
     urls_by_user_id = {
@@ -154,7 +143,6 @@ def get_avatar_url_for_md5_email_address_hash(md5_hash: str) -> Optional[str]:
     """
     avatar = db.session.execute(
         select(DbUserAvatar)
-        .join(DbUserAvatarSelection)
         .join(DbUser)
         .filter(db.func.md5(DbUser.email_address) == md5_hash)
     ).scalar_one_or_none()

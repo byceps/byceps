@@ -9,12 +9,10 @@ byceps.services.user.dbmodels.user
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy.ext.associationproxy import association_proxy
-
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from .avatar import DbUserAvatarSelection
+from .avatar import DbUserAvatar
 
 
 class DbUser(db.Model):
@@ -29,20 +27,15 @@ class DbUser(db.Model):
     email_address_verified = db.Column(
         db.Boolean, default=False, nullable=False
     )
-    # TODO: Add foreign key constraint after avatar selection
-    # table is removed: `db.ForeignKey('user_avatars.id')`
-    avatar_id = db.Column(db.Uuid, nullable=True)
+    avatar_id = db.Column(
+        db.Uuid, db.ForeignKey('user_avatars.id'), nullable=True
+    )
+    avatar = db.relationship(DbUserAvatar, foreign_keys=[avatar_id])
     initialized = db.Column(db.Boolean, default=False, nullable=False)
     suspended = db.Column(db.Boolean, default=False, nullable=False)
     deleted = db.Column(db.Boolean, default=False, nullable=False)
     locale = db.Column(db.UnicodeText, nullable=True)
     legacy_id = db.Column(db.UnicodeText, nullable=True)
-
-    avatar = association_proxy(
-        'avatar_selection',
-        'avatar',
-        creator=lambda avatar: DbUserAvatarSelection(None, avatar.id),
-    )
 
     def __init__(
         self,
