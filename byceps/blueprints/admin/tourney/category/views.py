@@ -135,7 +135,8 @@ def move_up(category_id):
     else:
         flash_success(
             gettext(
-                'Category "%(category_title)s" has been moved upwards by one position.'
+                'Category "%(category_title)s" has been moved upwards by one position.',
+                category_title=category.title,
             )
         )
 
@@ -159,7 +160,8 @@ def move_down(category_id):
     else:
         flash_success(
             gettext(
-                'Category "%(category_title)s" has been moved downwards by one position.'
+                'Category "%(category_title)s" has been moved downwards by one position.',
+                category_title=category.title,
             )
         )
 
