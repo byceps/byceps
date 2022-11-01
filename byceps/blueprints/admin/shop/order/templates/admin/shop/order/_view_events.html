@@ -86,6 +86,15 @@
           ) }}
           <blockquote>{{ log_entry.data.text }}</blockquote>
         {%- endcall %}
+      {%- elif log_entry.event_type == 'order-payment-created' %}
+        {%- call render_log_entry('payment', log_entry.occurred_at) %}
+          {{ _(
+            '%(initiator)s has <strong>added a payment</strong> for order <a href="%(order_url)s">%(order_number)s</a>.',
+            initiator=render_log_user(log_entry.initiator),
+            order_url=url_for('shop_order_admin.view', order_id=log_entry.order_id),
+            order_number=log_entry.order_number,
+          ) }}
+        {%- endcall %}
       {%- elif log_entry.event_type == 'order-shipped' %}
         {%- call render_log_entry('shipping', log_entry.occurred_at) %}
           {{ _(

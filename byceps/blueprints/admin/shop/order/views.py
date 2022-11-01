@@ -13,6 +13,7 @@ from .....services.brand import brand_service
 from .....services.shop.order import (
     order_invoice_service,
     order_log_service,
+    order_payment_service,
     order_sequence_service,
     order_service,
 )
@@ -116,6 +117,7 @@ def view(order_id):
 
     brand = brand_service.get_brand(shop.brand_id)
 
+    payments = order_payment_service.get_payments_for_order(order.id)
     invoices = order_invoice_service.get_invoices_for_order(order.id)
 
     log_entries = service.get_enriched_log_entry_data_for_order(order.id)
@@ -127,6 +129,7 @@ def view(order_id):
         'brand': brand,
         'order': order,
         'placed_by': placed_by,
+        'payments': payments,
         'invoices': invoices,
         'log_entries': log_entries,
         'PaymentState': PaymentState,

@@ -64,6 +64,38 @@
         <div class="data-label">{{ _('Date of creation') }}</div>
         <div class="data-value">{{ order.created_at|datetimeformat }}</div>
 
+        <div class="data-label">{{ ngettext('Payment', 'Payments', payments|length) }}</div>
+        <div class="data-value">
+        {%- if payments %}
+          <table class="index index--v-centered wide">
+            <thead>
+              <tr>
+                <th>{{ _('Date of creation') }}</th>
+                <th>{{ _('Payment method') }}</th>
+                <th class="number">{{ _('Amount') }}</th>
+                <th>{{ _('Additional fields') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%- for payment in payments|sort(attribute='created_at') %}
+              <tr>
+                <td>{{ payment.created_at|datetimeformat }}</td>
+                <td>{{ payment.method }}</td>
+                <td class="number">{{ payment.amount|currencyformat('EUR') }}</td>
+                <td class="monospace">
+                  {%- for key, value in payment.additional_data|dictsort(by='key') %}
+                  {{ key }} = {{ value }}{% if not loop.last %}<br>{% endif %}
+                  {%- endfor %}
+                </td>
+              </tr>
+              {%- endfor %}
+            </tbody>
+          </table>
+        {%- else %}
+        {{ _('none')|dim }}
+        {%- endif %}
+        </div>
+
         <div class="data-label">{{ ngettext('Invoice', 'Invoices', invoices|length) }}</div>
         <div class="data-value">
         {%- if invoices %}

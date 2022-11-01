@@ -7,7 +7,7 @@ byceps.services.shop.order.service
 """
 
 from datetime import datetime, timedelta
-from typing import Any, Iterator, Mapping, Optional, Sequence
+from typing import Any, Iterator, Optional, Sequence
 from uuid import UUID
 
 from flask import current_app
@@ -36,7 +36,12 @@ from .actions import ticket_bundle as ticket_bundle_actions
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
-from . import order_action_service, order_log_service, order_sequence_service
+from . import (
+    order_action_service,
+    order_log_service,
+    order_payment_service,
+    order_sequence_service,
+)
 from .transfer.log import OrderLogEntryData
 from .transfer.number import OrderNumber
 from .transfer.order import (
@@ -49,6 +54,7 @@ from .transfer.order import (
     OrderState,
     PaymentState,
 )
+from .transfer.payment import AdditionalPaymentData
 
 
 OVERDUE_THRESHOLD = timedelta(days=14)
@@ -357,7 +363,7 @@ def mark_order_as_paid(
     payment_method: str,
     initiator_id: UserID,
     *,
-    additional_log_entry_data: Optional[Mapping[str, str]] = None,
+    additional_payment_data: Optional[AdditionalPaymentData] = None,
 ) -> ShopOrderPaid:
     """Mark the order as paid."""
     db_order = _get_order_entity(order_id)
@@ -370,6 +376,15 @@ def mark_order_as_paid(
 
     now = datetime.utcnow()
 
+    order_payment_service.add_payment(
+        db_order.id,
+        now,
+        payment_method,
+        db_order.total_amount,
+        initiator_id,
+        additional_payment_data if additional_payment_data is not None else {},
+    )
+
     updated_at = now
     payment_state_from = db_order.payment_state
     payment_state_to = PaymentState.paid
@@ -381,8 +396,8 @@ def mark_order_as_paid(
     # Add required, internally set properties after given additional
     # ones to ensure the former are not overridden by the latter.
     log_entry_data: OrderLogEntryData = {}
-    if additional_log_entry_data is not None:
-        log_entry_data.update(additional_log_entry_data)
+    if additional_payment_data is not None:
+        log_entry_data.update(additional_payment_data)
     log_entry_data.update(
         {
             'initiator_id': str(initiator.id),
@@ -493,6 +508,8 @@ def update_line_item_processing_result(
 def delete_order(order_id: OrderID) -> None:
     """Delete an order."""
     order = get_order(order_id)
+
+    order_payment_service.delete_payments_for_order(order.id)
 
     db.session.execute(delete(DbOrderLogEntry).filter_by(order_id=order.id))
     db.session.execute(

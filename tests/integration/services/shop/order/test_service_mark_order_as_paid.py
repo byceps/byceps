@@ -5,7 +5,11 @@
 
 import pytest
 
-from byceps.services.shop.order import order_log_service, order_service
+from byceps.services.shop.order import (
+    order_log_service,
+    order_payment_service,
+    order_service,
+)
 from byceps.services.shop.order.transfer.order import PaymentState
 from byceps.util.iterables import find
 
@@ -30,6 +34,9 @@ def test_mark_order_as_paid(order, admin_user):
     assert order_before.is_open
     assert not order_before.is_paid
 
+    payments_before = order_payment_service.get_payments_for_order(order.id)
+    assert not payments_before
+
     order_service.mark_order_as_paid(order.id, 'cash', admin_user.id)
 
     order_after = order_service.get_order(order.id)
@@ -38,9 +45,18 @@ def test_mark_order_as_paid(order, admin_user):
     assert not order_after.is_open
     assert order_after.is_paid
 
+    payments_after = order_payment_service.get_payments_for_order(order.id)
+    assert len(payments_after) == 1
 
-def test_additional_log_entry_data(order, admin_user):
-    additional_log_entry_data = {
+    payment = payments_after[0]
+    assert payment.order_id == order.id
+    assert payment.method == 'cash'
+    assert payment.amount == order.total_amount
+    assert payment.additional_data == {}
+
+
+def test_additional_payment_data(order, admin_user):
+    additional_payment_data = {
         # attempts to override internal properties
         'initiator_id': 'fake-initiator-id',
         'former_payment_state': 'random',
@@ -53,7 +69,7 @@ def test_additional_log_entry_data(order, admin_user):
         order.id,
         'cash',
         admin_user.id,
-        additional_log_entry_data=additional_log_entry_data,
+        additional_payment_data=additional_payment_data,
     )
 
     log_entries = order_log_service.get_entries_for_order(order.id)
