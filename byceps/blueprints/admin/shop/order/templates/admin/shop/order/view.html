@@ -80,7 +80,7 @@
               {%- for payment in payments|sort(attribute='created_at') %}
               <tr>
                 <td>{{ payment.created_at|datetimeformat }}</td>
-                <td>{{ payment.method }}</td>
+                <td>{{ render_order_payment_method(payment.method) }}</td>
                 <td class="number">{{ payment.amount|currencyformat('EUR') }}</td>
                 <td class="monospace">
                   {%- for key, value in payment.additional_data|dictsort(by='key') %}
@@ -109,11 +109,6 @@
         {{ _('none')|dim }}
         {%- endif %}
         </div>
-
-        {%- if order.payment_method %}
-        <div class="data-label">{{ _('Payment type') }}</div>
-        <div class="data-value">{{ render_order_payment_method(order.payment_method) }}</div>
-        {%- endif %}
 
         {%- if order.is_canceled %}
         <div class="data-label">{{ _('Reason for cancelation') }}</div>

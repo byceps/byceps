@@ -98,7 +98,6 @@ def index_for_shop(shop_id, page):
         'OrderStateFilter': OrderStateFilter,
         'order_state_filter': order_state_filter,
         'orders': orders,
-        'render_order_payment_method': _find_order_payment_method_label,
     }
 
 
