@@ -4128,11 +4128,11 @@ msgstr "Das Abzeichen \"%(badge)s\" wurde an %(user)s <strong>verliehen</strong>
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:135
 #, python-format
 msgid ""
-"A <a href=\"%(url)s\">ticket bundle</a> with \"%(ticket_quantity)s\" "
-"tickets of category \"%(ticket_category)s\" been created."
+"A <a href=\"%(url)s\">ticket bundle</a> with %(ticket_quantity)s tickets "
+"of category \"%(ticket_category)s\" has been created."
 msgstr ""
-"Ein <a href=\"%(url)s\">Ticketpaket</a> mit \"%(ticket_quantity)s\" "
-"Tickets der Kategorie \"%(ticket_category)s\" wurde erstellt."
+"Ein <a href=\"%(url)s\">Ticketpaket</a> mit %(ticket_quantity)s Tickets "
+"der Kategorie \"%(ticket_category)s\" wurde erstellt."
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:144
 #, python-format

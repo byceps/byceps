@@ -133,7 +133,7 @@
       {%- elif log_entry.event_type == 'ticket-bundle-created' %}
         {%- call render_log_entry('ticket', log_entry.occurred_at) %}
           {{ _(
-            'A <a href="%(url)s">ticket bundle</a> with "%(ticket_quantity)s" tickets of category "%(ticket_category)s" been created.',
+            'A <a href="%(url)s">ticket bundle</a> with %(ticket_quantity)s tickets of category "%(ticket_category)s" has been created.',
             url=url_for('ticketing_admin.view_bundle', bundle_id=log_entry.bundle_id),
             ticket_quantity=log_entry.ticket_quantity,
             ticket_category=log_entry.ticket_category_title|fallback('unknown'),
