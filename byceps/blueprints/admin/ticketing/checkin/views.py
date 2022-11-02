@@ -7,26 +7,33 @@ byceps.blueprints.admin.ticketing.checkin.views
 """
 
 from datetime import date
+from typing import Iterator
 
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
 from .....services.party import party_service
+from .....services.party.transfer.models import Party
 from .....services.shop.order import order_service
 from .....services.shop.shop import shop_service
+from .....services.ticketing.dbmodels.ticket import DbTicket
 from .....services.ticketing import (
     exceptions as ticket_exceptions,
     ticket_service,
     ticket_user_checkin_service,
 )
+from .....services.ticketing.transfer.models import TicketID
 from .....services.user import user_service
+from .....services.user.transfer.models import User
 from .....signals import ticketing as ticketing_signals
+from .....typing import BrandID, PartyID, UserID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_notice, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, respond_no_content
 
 from ...shop.order import service as order_blueprint_service
+from ...shop.order.service import OrderWithOrderer
 
 
 blueprint = create_blueprint('ticketing_checkin_admin', __name__)
@@ -69,12 +76,14 @@ def index(party_id):
     }
 
 
-def _get_latest_date_of_birth_for_checkin():
+def _get_latest_date_of_birth_for_checkin() -> date:
     today = date.today()
     return today.replace(year=today.year - MINIMUM_AGE_IN_YEARS)
 
 
-def _search_tickets(party_id, search_term, limit):
+def _search_tickets(
+    party_id: PartyID, search_term: str, limit: int
+) -> list[DbTicket]:
     page = 1
     per_page = limit
 
@@ -87,7 +96,9 @@ def _search_tickets(party_id, search_term, limit):
     return tickets_pagination.items
 
 
-def _search_orders(brand_id, search_term, limit):
+def _search_orders(
+    brand_id: BrandID, search_term: str, limit: int
+) -> list[OrderWithOrderer]:
     shop = shop_service.find_shop_for_brand(brand_id)
     if shop is None:
         return []
@@ -108,7 +119,7 @@ def _search_orders(brand_id, search_term, limit):
     return orders
 
 
-def _search_users(search_term, limit):
+def _search_users(search_term: str, limit: int) -> list[User]:
     page = 1
     per_page = limit
 
@@ -124,7 +135,9 @@ def _search_users(search_term, limit):
     return users_pagination.items
 
 
-def _get_tickets_for_users(party_id, users):
+def _get_tickets_for_users(
+    party_id: PartyID, users: list[User]
+) -> Iterator[DbTicket]:
     for user in users:
         yield from ticket_service.find_tickets_related_to_user_for_party(
             user.id, party_id
@@ -201,7 +214,7 @@ def revert_user_check_in(ticket_id):
     flash_success(gettext('Check-in has been reverted.'))
 
 
-def _get_party_or_404(party_id):
+def _get_party_or_404(party_id: PartyID) -> Party:
     party = party_service.find_party(party_id)
 
     if party is None:
@@ -210,7 +223,7 @@ def _get_party_or_404(party_id):
     return party
 
 
-def _get_ticket_or_404(ticket_id):
+def _get_ticket_or_404(ticket_id: TicketID) -> DbTicket:
     ticket = ticket_service.find_ticket(ticket_id)
 
     if ticket is None:
