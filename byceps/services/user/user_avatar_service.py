@@ -84,6 +84,10 @@ def remove_avatar_image(user_id: UserID, initiator_id: UserID) -> None:
     as well as the image file itself won't be removed, though.
     """
     user = user_service.get_db_user(user_id)
+
+    if user.avatar_id is None:
+        return
+
     user.avatar_id = None
 
     log_entry = user_log_service.build_entry(
