@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 
 from flask_babel import gettext
 
+from ....services.authentication.session import authn_session_service
 from ....services.user import user_log_service
 from ....services.verification_token import verification_token_service
 from ....util.framework.blueprint import create_blueprint
@@ -81,5 +82,27 @@ def delete_old_verification_tokens():
             'Deleted %(num_deleted)s verification tokens older than %(minimum_age_in_days)s days.',
             num_deleted=num_deleted,
             minimum_age_in_days=minimum_age_in_days,
+        )
+    )
+
+
+@blueprint.post('/delete_all_session_tokens')
+@permission_required('admin.maintain')
+@respond_no_content
+def delete_all_session_tokens():
+    """Log out users by removing their session tokens.
+
+    This is meant to be used when new terms of service are published so
+    users have to log in again and are presented the form to accept the new
+    terms of service.
+
+    Sessions will be recreated on demand after successful login.
+    """
+    num_deleted = authn_session_service.delete_all_session_tokens()
+
+    flash_success(
+        gettext(
+            'Deleted %(num_deleted)s authentication tokens.',
+            num_deleted=num_deleted,
         )
     )

@@ -2176,7 +2176,7 @@ msgstr "Hintergrundjobs"
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: byceps/blueprints/admin/maintenance/views.py:60
+#: byceps/blueprints/admin/maintenance/views.py:61
 #, python-format
 msgid ""
 "Deleted %(num_deleted)s login log entries older than "
@@ -2185,7 +2185,7 @@ msgstr ""
 "%(num_deleted)s Login-Einträge älter als %(minimum_age_in_days)s Tage "
 "wurden gelöscht."
 
-#: byceps/blueprints/admin/maintenance/views.py:80
+#: byceps/blueprints/admin/maintenance/views.py:81
 #, python-format
 msgid ""
 "Deleted %(num_deleted)s verification tokens older than "
@@ -2193,6 +2193,11 @@ msgid ""
 msgstr ""
 "%(num_deleted)s Verification Tokens älter als %(minimum_age_in_days)s "
 "Tage wurden gelöscht."
+
+#: byceps/blueprints/admin/maintenance/views.py:104
+#, python-format
+msgid "Deleted %(num_deleted)s authentication tokens."
+msgstr "%(num_deleted)s Authentifizierungs-Token wurden gelöscht."
 
 #: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:41
 msgid "Verification Tokens"
@@ -2210,13 +2215,29 @@ msgstr "Login-Events"
 msgid "Delete old login events"
 msgstr "Alte Login-Events löschen"
 
-#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:73
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:69
+msgid "User sessions"
+msgstr "Benutzer-Sitzungen"
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:72
+msgid "This will log out all users."
+msgstr "Dies wird alle Benutzer-Sitzungen beenden."
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:74
+msgid "Delete all session tokens"
+msgstr "Alle Benutzer-Sitzungen löschen"
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:84
 msgid "Delete old verification tokens?"
 msgstr "Alte Verification Tokens löschen?"
 
-#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:74
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:85
 msgid "Delete old login events?"
 msgstr "Alte Login-Events löschen?"
+
+#: byceps/blueprints/admin/maintenance/templates/admin/maintenance/index.html:86
+msgid "Delete all session tokens?"
+msgstr "Alle Benutzer-Sitzungen löschen?"
 
 #: byceps/blueprints/admin/more/templates/admin/more/view_brand.html:16
 #: byceps/blueprints/admin/user/templates/admin/user/_view_newsletter.html:3
