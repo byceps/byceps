@@ -1,4 +1,4 @@
-babel==2.10.3
+babel==2.11.0
 bbcode==1.1.0
 blinker==1.5
 click==8.1.3
