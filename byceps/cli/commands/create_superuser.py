@@ -1,4 +1,4 @@
-"""Create a super user with admin privileges.
+"""Create a superuser with admin privileges.
 
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -47,7 +47,10 @@ def create_superuser(screen_name, email_address, password) -> None:
 def _create_user(screen_name: str, email_address: str, password: str) -> User:
     try:
         user, event = user_creation_service.create_user(
-            screen_name, email_address, password
+            screen_name,
+            email_address,
+            password,
+            creation_method='superuser creation command',
         )
         return user
     except ValueError as e:

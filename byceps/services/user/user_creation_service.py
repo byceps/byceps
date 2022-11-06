@@ -46,8 +46,10 @@ def create_user(
     phone_number: Optional[str] = None,
     internal_comment: Optional[str] = None,
     extras: Optional[dict[str, Any]] = None,
+    creation_method: Optional[str] = None,
     creator_id: Optional[UserID] = None,
     site_id: Optional[SiteID] = None,
+    ip_address: Optional[str] = None,
 ) -> tuple[User, UserAccountCreated]:
     """Create a user account and related records."""
     creator: Optional[User]
@@ -106,10 +108,14 @@ def create_user(
 
     # Create log entry in separate step as user ID is not available earlier.
     log_entry_data = {}
+    if creation_method:
+        log_entry_data['creation_method'] = creation_method
     if creator is not None:
         log_entry_data['initiator_id'] = str(creator.id)
-    if site_id is not None:
+    if site_id:
         log_entry_data['site_id'] = site_id
+    if ip_address:
+        log_entry_data['ip_address'] = ip_address
     user_log_service.create_entry(
         'user-created', user.id, log_entry_data, occurred_at=created_at
     )

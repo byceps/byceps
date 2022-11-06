@@ -204,8 +204,10 @@ def create_account():
             password,
             first_name=first_name,
             last_name=last_name,
+            creation_method='admin app',
             creator_id=initiator_id,
             # Do not pass site ID here; the account is not created on a site.
+            ip_address=request.remote_addr,
         )
     except user_creation_service.UserCreationFailed:
         flash_error(

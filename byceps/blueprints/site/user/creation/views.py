@@ -100,7 +100,9 @@ def create():
             password,
             first_name=first_name,
             last_name=last_name,
+            creation_method='site app',
             site_id=g.site_id,
+            ip_address=request.remote_addr,
         )
     except user_creation_service.UserCreationFailed:
         flash_error(

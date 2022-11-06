@@ -64,6 +64,7 @@ def import_user(user_to_import: UserToImport) -> User:
         street=user_to_import.street,
         phone_number=user_to_import.phone_number,
         internal_comment=user_to_import.internal_comment,
+        creation_method='import',
     )
 
     return user

@@ -244,7 +244,11 @@ def assert_creation_log_entry_created(user_id, site_id):
 
     first_log_entry = log_entries[0]
     assert first_log_entry.event_type == 'user-created'
-    assert first_log_entry.data == {'site_id': site_id}
+    assert first_log_entry.data == {
+        'creation_method': 'site app',
+        'ip_address': '127.0.0.1',
+        'site_id': site_id,
+    }
 
 
 def assert_password_credentials_created(user_id):
