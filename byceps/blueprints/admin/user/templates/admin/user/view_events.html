@@ -45,17 +45,21 @@
           {%- endcall %}
         {%- elif log_entry.event_type == 'user-created' %}
           {%- call render_log_entry('add', log_entry.occurred_at) %}
-            {%- if log_entry.site is defined %}
-            {{ _(
-              '%(initiator)s has <strong>created</strong> the account on site "%(site)s".',
-              initiator=(render_log_user(log_entry.initiator) if (log_entry.initiator is defined) else _('Someone')),
-              site=log_entry.site.title,
-            ) }}
-            {%- else %}
             {{ _(
               '%(initiator)s has <strong>created</strong> the account.',
               initiator=(render_log_user(log_entry.initiator) if (log_entry.initiator is defined) else _('Someone')),
             ) }}
+            {%- if log_entry.data %}
+            <blockquote><table>
+              {%- for key, value in log_entry.data|dictsort %}
+                {%- if key != 'initiator_id' %}
+              <tr>
+                <th>{{ key }}</th>
+                <td>{{ value|fallback }}</td>
+              </tr>
+                {%- endif %}
+              {%- endfor %}
+            </table></blockquote>
             {%- endif %}
           {%- endcall %}
         {%- elif log_entry.event_type == 'user-initialized' %}

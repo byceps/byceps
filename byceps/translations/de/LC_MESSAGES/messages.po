@@ -22,12 +22,11 @@ msgstr ""
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:146
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:162
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:71
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:51
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:57
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:65
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:145
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:262
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:280
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:50
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:67
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:147
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:264
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:282
 msgid "Someone"
 msgstr "Jemand"
 
@@ -790,8 +789,8 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/user/templates/admin/user/_view_personal.html:39
 #: byceps/blueprints/admin/user/templates/admin/user/_view_tickets.html:51
 #: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:50
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:126
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:127
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:128
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:129
 #: byceps/blueprints/admin/user/templates/admin/user/view_permissions.html:59
 #: byceps/blueprints/admin/user/templates/macros/admin/user.html:74
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:86
@@ -4006,7 +4005,7 @@ msgid "Total amount"
 msgstr "Gesamtbetrag"
 
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:9
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:233
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:235
 #, python-format
 msgid ""
 "%(initiator)s has <strong>placed</strong> order <a "
@@ -4984,7 +4983,7 @@ msgstr ""
 "gemacht</strong>."
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/_ticket_events.html:134
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:288
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:290
 #, python-format
 msgid "<strong>Unknown event</strong> \"%(event_type)s\" has occurred."
 msgstr "<strong>Unbekanntes Ereignis</strong> \"%(event_type)s\" ist eingetreten."
@@ -5535,41 +5534,32 @@ msgstr ""
 "%(initiator)s hat ein <a href=\"%(avatar_url_path)s\">neues "
 "Avatarbild</a> <strong>hochgeladen</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:49
-#, python-format
-msgid ""
-"%(initiator)s has <strong>created</strong> the account on site "
-"\"%(site)s\"."
-msgstr ""
-"%(initiator)s hat das Benutzerkonto auf Site \"%(site)s\" "
-"<strong>angelegt</strong>."
-
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:55
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:48
 #, python-format
 msgid "%(initiator)s has <strong>created</strong> the account."
 msgstr "%(initiator)s hat das Benutzerkonto <strong>angelegt</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:63
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:65
 #, python-format
 msgid "%(initiator)s has <strong>initialized</strong> the account."
 msgstr "%(initiator)s hat das Benutzerkonto <strong>initialisiert</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:70
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:72
 #, python-format
 msgid "%(initiator)s has <strong>suspended</strong> the account."
 msgstr "%(initiator)s hat das Benutzerkonto <strong>gesperrt</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:78
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:80
 #, python-format
 msgid "%(initiator)s has <strong>unsuspended</strong> the account."
 msgstr "%(initiator)s hat das Benutzerkonto <strong>entsperrt</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:86
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:88
 #, python-format
 msgid "%(initiator)s has <strong>deleted</strong> the account."
 msgstr "%(initiator)s hat das Benutzerkonto <strong>gelöscht</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:95
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:97
 #, python-format
 msgid ""
 "%(user)s has <strong>logged in</strong> from IP address %(ip_address)s on"
@@ -5578,14 +5568,14 @@ msgstr ""
 "%(user)s hat sich von IP-Adresse %(ip_address)s auf Site \"%(site)s\" "
 "<strong>eingeloggt</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:102
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:104
 #, python-format
 msgid "%(user)s has <strong>logged in</strong> from IP address %(ip_address)s."
 msgstr ""
 "%(user)s hat sich von IP-Adresse %(ip_address)s "
 "<strong>eingeloggt</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:111
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:113
 #, python-format
 msgid ""
 "%(initiator)s has <strong>renamed</strong> the account "
@@ -5594,7 +5584,7 @@ msgstr ""
 "%(initiator)s hat das Benutzerkonto von \"%(old_screen_name)s\" in "
 "\"%(new_screen_name)s\" <strong>umbenannt</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:123
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:125
 #, python-format
 msgid ""
 "%(initiator)s has <strong>changed the email address</strong> from "
@@ -5603,7 +5593,7 @@ msgstr ""
 "%(initiator)s hat die <strong>E-Mail-Adresse geändert</strong> von "
 "\"%(old_email_address)s\" zu \"%(new_email_address)s\"."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:135
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:137
 #, python-format
 msgid ""
 "%(user)s has <strong>verified the email address</strong> "
@@ -5612,7 +5602,7 @@ msgstr ""
 "%(user)s hat die E-Mail-Adresse \"%(email_address)s\" "
 "<strong>verifiziert</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:143
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:145
 #, python-format
 msgid ""
 "%(initiator)s has <strong>invalidated the email address</strong> "
@@ -5621,29 +5611,29 @@ msgstr ""
 "%(initiator)s hat die E-Mail-Adresse \"%(email_address)s\" "
 "<strong>invalidiert</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:152
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:154
 #, python-format
 msgid "%(initiator)s has <strong>changed personal data</strong> of \"%(user)s\"."
 msgstr ""
 "%(initiator)s hat die persönlichen Daten des Benutzerkontos \"%(user)s\" "
 "<strong>geändert</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:168
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:170
 #, python-format
 msgid "%(initiator)s has <strong>set a new password</strong>."
 msgstr "%(initiator)s hat ein <strong>neues Passwort gesetzt</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:175
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:177
 #, python-format
 msgid "%(initiator)s has <strong>consented</strong> to \"%(subject)s\"."
 msgstr "%(initiator)s hat \"%(subject)s\" <strong>zugestimmt</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:183
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:185
 #, python-format
 msgid "%(initiator)s has <strong>accepted the privacy policy</strong>."
 msgstr "%(initiator)s hat die <strong>Datenschutzbestimmungen akzeptiert</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:190
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:192
 #, python-format
 msgid ""
 "%(initiator)s has <strong>subscribed</strong> to newsletter "
@@ -5652,7 +5642,7 @@ msgstr ""
 "%(initiator)s hat den Newsletter \"%(newsletter)s\" "
 "<strong>abonniert</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:198
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:200
 #, python-format
 msgid ""
 "%(initiator)s has <strong>unsubscribed</strong> from newsletter "
@@ -5661,7 +5651,7 @@ msgstr ""
 "%(initiator)s hat sich vom Newsletter \"%(newsletter)s\" "
 "<strong>abgemeldet</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:206
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:208
 #, python-format
 msgid ""
 "%(initiator)s has <strong>canceled (after payment)</strong> order <a "
@@ -5671,7 +5661,7 @@ msgstr ""
 "href=\"%(order_url)s\">%(order_number)s</a> <strong>storniert (nach "
 "Bezahlung)</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:215
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:217
 #, python-format
 msgid ""
 "%(initiator)s has <strong>canceled (before payment)</strong> order <a "
@@ -5681,7 +5671,7 @@ msgstr ""
 "href=\"%(order_url)s\">%(order_number)s</a> <strong>storniert (vor "
 "Bezahlung)</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:224
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:226
 #, python-format
 msgid ""
 "%(initiator)s has marked order <a "
@@ -5691,7 +5681,7 @@ msgstr ""
 "href=\"%(order_url)s\">%(order_number)s</a> <strong>als bezahlt "
 "markiert</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:242
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:244
 #, python-format
 msgid ""
 "%(initiator)s has <strong>given orga status</strong> for brand %(brand)s "
@@ -5700,7 +5690,7 @@ msgstr ""
 "%(initiator)s hat an %(user)s\" für die Marke %(brand)s den <strong>Orga-"
 "Status verliehen</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:251
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:253
 #, python-format
 msgid ""
 "%(initiator)s has <strong>removed orga status</strong> for brand "
@@ -5709,21 +5699,21 @@ msgstr ""
 "%(initiator)s hat %(user)s\" für die Marke %(brand)s den <strong>Orga-"
 "Status entzogen</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:260
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:262
 #, python-format
 msgid "%(initiator)s has <strong>given role</strong> \"%(role)s\" to %(user)s."
 msgstr ""
 "%(initiator)s hat %(user)s die Rolle \"%(role)s\" "
 "<strong>zugewiesen</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:269
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:271
 #, python-format
 msgid "%(initiator)s has <strong>taken role</strong> \"%(role)s\" from %(user)s."
 msgstr ""
 "%(initiator)s hat %(user)s die Rolle \"%(role)s\" "
 "<strong>entzogen</strong>."
 
-#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:278
+#: byceps/blueprints/admin/user/templates/admin/user/view_events.html:280
 #, python-format
 msgid ""
 "%(initiator)s has <strong>awarded badge</strong> %(badge_image)s "
