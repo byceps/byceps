@@ -20,6 +20,6 @@ rq==1.11.1
 rq-dashboard==0.6.1
 rtoml==0.8.0
 sqlalchemy==1.4.43
-tenacity==8.0.1
+tenacity==8.1.0
 werkzeug==2.2.2
 wtforms==3.0.1
