@@ -34,7 +34,7 @@ def get_parties_and_tickets(
     user_id: UserID,
 ) -> list[tuple[Party, list[DbTicket]]]:
     """Return tickets the user uses or manages, and the related parties."""
-    tickets = ticket_service.find_tickets_related_to_user(user_id)
+    tickets = ticket_service.get_tickets_related_to_user(user_id)
 
     tickets_by_party_id = _group_tickets_by_party_id(tickets)
 

@@ -45,7 +45,7 @@ def index_mine():
 
     user = g.user
 
-    tickets = ticket_service.find_tickets_related_to_user_for_party(
+    tickets = ticket_service.get_tickets_related_to_user_for_party(
         user.id, party.id
     )
 

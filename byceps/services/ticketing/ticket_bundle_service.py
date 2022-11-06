@@ -121,7 +121,7 @@ def get_bundle(bundle_id: TicketBundleID) -> DbTicketBundle:
     return db_bundle
 
 
-def find_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[DbTicket]:
+def get_tickets_for_bundle(bundle_id: TicketBundleID) -> Sequence[DbTicket]:
     """Return all tickets included in this bundle."""
     return (
         db.session.query(DbTicket).filter(DbTicket.bundle_id == bundle_id).all()

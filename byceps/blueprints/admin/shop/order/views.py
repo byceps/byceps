@@ -121,7 +121,7 @@ def view(order_id):
 
     log_entries = service.get_enriched_log_entry_data_for_order(order.id)
 
-    tickets = ticket_service.find_tickets_created_by_order(order.order_number)
+    tickets = ticket_service.get_tickets_created_by_order(order.order_number)
 
     return {
         'shop': shop,

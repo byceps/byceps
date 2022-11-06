@@ -97,7 +97,7 @@ def find_ticket_by_code(
     )
 
 
-def find_tickets(ticket_ids: set[TicketID]) -> list[DbTicket]:
+def get_tickets(ticket_ids: set[TicketID]) -> list[DbTicket]:
     """Return the tickets with those ids."""
     if not ticket_ids:
         return []
@@ -105,9 +105,7 @@ def find_tickets(ticket_ids: set[TicketID]) -> list[DbTicket]:
     return db.session.query(DbTicket).filter(DbTicket.id.in_(ticket_ids)).all()
 
 
-def find_tickets_created_by_order(
-    order_number: OrderNumber,
-) -> list[DbTicket]:
+def get_tickets_created_by_order(order_number: OrderNumber) -> list[DbTicket]:
     """Return the tickets created by this order (as it was marked as paid)."""
     return (
         db.session.query(DbTicket)
@@ -117,7 +115,7 @@ def find_tickets_created_by_order(
     )
 
 
-def find_tickets_for_seat_manager(
+def get_tickets_for_seat_manager(
     user_id: UserID, party_id: PartyID
 ) -> list[DbTicket]:
     """Return the tickets for that party whose respective seats the user
@@ -141,7 +139,7 @@ def find_tickets_for_seat_manager(
     )
 
 
-def find_tickets_related_to_user(user_id: UserID) -> list[DbTicket]:
+def get_tickets_related_to_user(user_id: UserID) -> list[DbTicket]:
     """Return tickets related to the user."""
     return (
         db.session.query(DbTicket)
@@ -163,7 +161,7 @@ def find_tickets_related_to_user(user_id: UserID) -> list[DbTicket]:
     )
 
 
-def find_tickets_related_to_user_for_party(
+def get_tickets_related_to_user_for_party(
     user_id: UserID, party_id: PartyID
 ) -> list[DbTicket]:
     """Return tickets related to the user for the party."""
@@ -188,7 +186,7 @@ def find_tickets_related_to_user_for_party(
     )
 
 
-def find_tickets_used_by_user(
+def get_tickets_used_by_user(
     user_id: UserID, party_id: PartyID
 ) -> list[DbTicket]:
     """Return the tickets (if any) used by the user for that party."""

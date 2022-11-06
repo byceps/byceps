@@ -139,7 +139,7 @@ def _get_tickets_for_users(
     party_id: PartyID, users: list[User]
 ) -> Iterator[DbTicket]:
     for user in users:
-        yield from ticket_service.find_tickets_related_to_user_for_party(
+        yield from ticket_service.get_tickets_related_to_user_for_party(
             user.id, party_id
         )
 

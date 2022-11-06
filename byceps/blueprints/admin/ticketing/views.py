@@ -276,7 +276,7 @@ def view_bundle(bundle_id):
 
     party = party_service.get_party(bundle.ticket_category.party_id)
 
-    tickets = ticket_bundle_service.find_tickets_for_bundle(bundle.id)
+    tickets = ticket_bundle_service.get_tickets_for_bundle(bundle.id)
 
     return {
         'party': party,

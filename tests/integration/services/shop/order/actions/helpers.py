@@ -15,7 +15,7 @@ from byceps.typing import UserID
 
 
 def get_tickets_for_order(order: Order) -> list[DbTicket]:
-    return ticket_service.find_tickets_created_by_order(order.order_number)
+    return ticket_service.get_tickets_created_by_order(order.order_number)
 
 
 def place_order(

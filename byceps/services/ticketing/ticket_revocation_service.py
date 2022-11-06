@@ -44,7 +44,7 @@ def revoke_tickets(
     reason: Optional[str] = None,
 ) -> None:
     """Revoke the tickets."""
-    db_tickets = ticket_service.find_tickets(ticket_ids)
+    db_tickets = ticket_service.get_tickets(ticket_ids)
 
     # Release seats.
     for db_ticket in db_tickets:

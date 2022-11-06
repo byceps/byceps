@@ -88,7 +88,7 @@ def _get_tickets(user_id: UserID) -> list[DbTicket]:
     if g.party_id is None:
         return []
 
-    return ticket_service.find_tickets_used_by_user(user_id, g.party_id)
+    return ticket_service.get_tickets_used_by_user(user_id, g.party_id)
 
 
 def _get_news_headlines(site: Site) -> list[NewsHeadline]:

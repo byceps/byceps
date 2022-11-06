@@ -87,7 +87,7 @@ def revoke_tickets(
     ticket_ids = {
         TicketID(UUID(ticket_id_str)) for ticket_id_str in ticket_id_strs
     }
-    tickets = ticket_service.find_tickets(ticket_ids)
+    tickets = ticket_service.get_tickets(ticket_ids)
 
     ticket_revocation_service.revoke_tickets(ticket_ids, initiator_id)
 

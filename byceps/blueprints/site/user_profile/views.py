@@ -37,7 +37,7 @@ def view(user_id):
         user.id, g.party_id
     )
 
-    _current_party_tickets = ticket_service.find_tickets_used_by_user(
+    _current_party_tickets = ticket_service.get_tickets_used_by_user(
         user.id, g.party_id
     )
     current_party_tickets = [t for t in _current_party_tickets if not t.revoked]
