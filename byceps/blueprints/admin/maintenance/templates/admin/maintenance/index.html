@@ -43,7 +43,7 @@
     </div>
 
     <table class="index small wide mb">
-      {%- for purpose_name, count in verification_token_counts_by_purpose_name|dictsort(by='key') %}
+      {%- for purpose_name, count in verification_token_counts_by_purpose_name|dictsort %}
       <tr>
         <td>{{ purpose_name }}</td>
         <td class="number">{{ count }}</td>

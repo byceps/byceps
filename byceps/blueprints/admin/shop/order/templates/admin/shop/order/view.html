@@ -83,7 +83,7 @@
                 <td>{{ render_order_payment_method(payment.method) }}</td>
                 <td class="number">{{ payment.amount|currencyformat('EUR') }}</td>
                 <td class="monospace">
-                  {%- for key, value in payment.additional_data|dictsort(by='key') %}
+                  {%- for key, value in payment.additional_data|dictsort %}
                   {{ key }} = {{ value }}{% if not loop.last %}<br>{% endif %}
                   {%- endfor %}
                 </td>

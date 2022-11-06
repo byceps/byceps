@@ -42,7 +42,7 @@
         </tr>
       </thead>
       <tbody>
-      {%- for key, value in settings|dictsort(by='key') %}
+      {%- for key, value in settings|dictsort %}
         <tr>
           <td class="monospace">{{ key }}</td>
           <td class="monospace">{{ value }}</td>
