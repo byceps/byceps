@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.10.3\n"
+"Generated-By: Babel 2.11.0\n"
 
 #: byceps/announce/text_assembly/_helpers.py:18
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_events.html:146
@@ -1535,7 +1535,7 @@ msgstr "Global"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_global.html:19
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/view_subscriptions.html:54
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:31
-#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:49
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:54
 #: byceps/blueprints/admin/user/templates/admin/user/create_account_form.html:8
 #: byceps/blueprints/admin/user/templates/admin/user/index.html:8
 #: byceps/blueprints/admin/user/templates/admin/user/manage_roles.html:6
@@ -1604,6 +1604,7 @@ msgstr "Artikel"
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:31
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:7
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:30
+#: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:49
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:4
 #: byceps/blueprints/admin/user/templates/admin/user/view.html:75
 #: byceps/blueprints/site/core/templates/layout/_current_user_menu_items.html:7
@@ -4771,7 +4772,7 @@ msgstr "Für diese Party sind keine Ticket-Kategorien vorhanden."
 msgid "Edit ticket category"
 msgstr "Ticket-Kategorie bearbeiten"
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:122
+#: byceps/blueprints/admin/ticketing/checkin/views.py:163
 msgid ""
 "The user account assigned to this ticket has been deleted. Check-in "
 "denied."
@@ -4779,7 +4780,7 @@ msgstr ""
 "Das dem Ticket zugewiesene Benutzerkonto ist gelöscht worden. Der Check-"
 "In ist nicht erlaubt."
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:129
+#: byceps/blueprints/admin/ticketing/checkin/views.py:170
 msgid ""
 "The user account assigned to this ticket has been suspended. Check-in "
 "denied."
@@ -4787,7 +4788,7 @@ msgstr ""
 "Das dem Ticket zugewiesene Benutzerkonto ist gesperrt. Der Check-In ist "
 "nicht erlaubt."
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:140
+#: byceps/blueprints/admin/ticketing/checkin/views.py:181
 #, python-format
 msgid ""
 "User <em>%(screen_name)s</em> has been checked in with ticket <a "
@@ -4796,7 +4797,7 @@ msgstr ""
 "Benutzer <em>%(screen_name)s</em> wurde mit Ticket <a "
 "href=\"%(ticket_url)s\">%(ticket_code)s</a> eingecheckt."
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:152
+#: byceps/blueprints/admin/ticketing/checkin/views.py:193
 #, python-format
 msgid ""
 "Ticket <a href=\"%(ticket_url)s\">%(ticket_code)s</a> does not occupy a "
@@ -4805,7 +4806,7 @@ msgstr ""
 "Ticket <a href=\"%(ticket_url)s\">%(ticket_code)s</a> belegt noch keinen "
 "Sitzplatz."
 
-#: byceps/blueprints/admin/ticketing/checkin/views.py:173
+#: byceps/blueprints/admin/ticketing/checkin/views.py:214
 msgid "Check-in has been reverted."
 msgstr "Der Check-In wurde rückgängig gemacht."
 
