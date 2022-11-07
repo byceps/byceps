@@ -614,7 +614,7 @@ def find_order_by_order_number(order_number: OrderNumber) -> Optional[Order]:
 
 def get_orders_for_order_numbers(
     order_numbers: set[OrderNumber],
-) -> Sequence[Order]:
+) -> list[Order]:
     """Return the orders with those order numbers."""
     if not order_numbers:
         return []

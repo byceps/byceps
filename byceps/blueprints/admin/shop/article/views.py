@@ -32,6 +32,7 @@ from .....services.shop.shop import shop_service
 from .....services.ticketing import ticket_category_service
 from .....services.user.transfer.models import User
 from .....services.user import user_service
+from .....services.user.transfer.models import User
 from .....services.user_badge import user_badge_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
@@ -159,6 +160,48 @@ def view_orders(article_id):
     brand = brand_service.get_brand(shop.brand_id)
 
     orders = ordered_articles_service.get_orders_including_article(article.id)
+    users_by_id = _get_orderer_users_by_id(orders)
+
+    def transform(order: Order) -> tuple[Order, User, int]:
+        orderer = users_by_id[order.placed_by_id]
+
+        quantity = sum(
+            line_item.quantity
+            for line_item in order.line_items
+            if line_item.article_id == article.id
+        )
+
+        return order, orderer, quantity
+
+    orders_orderers_quantities = list(map(transform, orders))
+
+    quantity_total = sum(
+        quantity for _, _, quantity in orders_orderers_quantities
+    )
+
+    return {
+        'article': article,
+        'shop': shop,
+        'brand': brand,
+        'quantity_total': quantity_total,
+        'orders_orderers_quantities': orders_orderers_quantities,
+        'now': datetime.utcnow(),
+    }
+
+
+@blueprint.get('/<uuid:article_id>/purchases')
+@permission_required('shop_article.view')
+@templated
+def view_purchases(article_id):
+    """List the purchases for this article, and the corresponding quantities."""
+    article = _get_article_or_404(article_id)
+
+    shop = shop_service.get_shop(article.shop_id)
+    brand = brand_service.get_brand(shop.brand_id)
+
+    orders = ordered_articles_service.get_orders_including_article(
+        article.id, only_payment_state=PaymentState.paid
+    )
     users_by_id = _get_orderer_users_by_id(orders)
 
     def transform(order: Order) -> tuple[Order, User, int]:

@@ -40,6 +40,11 @@
         _('Orders'),
         id='orders',
       )
+      .add_item(
+        url_for('.view_purchases', article_id=article.id),
+        _('Purchases'),
+        id='purchases',
+      )
     , current_tab|default
   )
 }}

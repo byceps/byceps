@@ -7,6 +7,7 @@ byceps.services.shop.order.ordered_articles_service
 """
 
 from collections import Counter
+from typing import Optional
 
 from sqlalchemy import select
 
@@ -44,17 +45,23 @@ def count_ordered_articles(article_id: ArticleID) -> dict[PaymentState, int]:
     return dict(counter)
 
 
-def get_orders_including_article(article_id: ArticleID) -> list[Order]:
-    """Return all orders that contain the article."""
-    db_orders = (
-        db.session.scalars(
-            select(DbOrder)
-            .join(DbLineItem)
-            .filter(DbLineItem.article_id == article_id)
-            .options(db.joinedload(DbOrder.line_items))
-        )
-        .unique()
-        .all()
+def get_orders_including_article(
+    article_id: ArticleID, *, only_payment_state: Optional[PaymentState] = None
+) -> list[Order]:
+    """Return all orders that contain the article.
+
+    Optionally limit to orders of a given payment state.
+    """
+    stmt = (
+        select(DbOrder)
+        .join(DbLineItem)
+        .filter(DbLineItem.article_id == article_id)
+        .options(db.joinedload(DbOrder.line_items))
     )
+
+    if only_payment_state is not None:
+        stmt = stmt.filter(DbOrder._payment_state == only_payment_state.name)
+
+    db_orders = db.session.scalars(stmt).unique().all()
 
     return list(map(order_service._order_to_transfer_object, db_orders))

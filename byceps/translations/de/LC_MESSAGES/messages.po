@@ -1777,6 +1777,7 @@ msgstr[1] "noch nicht aktivierte Benutzer"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:17
 #: byceps/blueprints/admin/news/forms.py:111
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:28
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:26
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:11
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:21
@@ -3510,6 +3511,7 @@ msgstr "Artikel"
 #: byceps/blueprints/admin/shop/article/forms.py:198
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:64
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:31
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:28
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:4
 #: byceps/blueprints/site/shop/order/forms.py:75
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:7
@@ -3529,26 +3531,26 @@ msgstr "Statisches Präfix"
 msgid "Badge"
 msgstr "Abzeichen"
 
-#: byceps/blueprints/admin/shop/article/views.py:322
+#: byceps/blueprints/admin/shop/article/views.py:365
 msgid "No article number sequences are defined for this shop."
 msgstr "Für diesen Shop sind keine Artikelnummer-Sequenzen definiert."
 
-#: byceps/blueprints/admin/shop/article/views.py:335
-#: byceps/blueprints/admin/shop/article/views.py:344
+#: byceps/blueprints/admin/shop/article/views.py:378
+#: byceps/blueprints/admin/shop/article/views.py:387
 msgid "No valid article number sequence was specified."
 msgstr "Es wurde keine gültige Artikelnummer-Sequenz angegeben."
 
-#: byceps/blueprints/admin/shop/article/views.py:399
+#: byceps/blueprints/admin/shop/article/views.py:442
 #, python-format
 msgid "Article \"%(item_number)s\" has been created."
 msgstr "Der Artikel \"%(item_number)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/shop/article/views.py:492
+#: byceps/blueprints/admin/shop/article/views.py:535
 #, python-format
 msgid "Article \"%(description)s\" has been updated."
 msgstr "Der Artikel \"%(description)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/shop/article/views.py:553
+#: byceps/blueprints/admin/shop/article/views.py:596
 #, python-format
 msgid ""
 "Article \"%(article_to_attach_item_number)s\" has been attached "
@@ -3557,7 +3559,7 @@ msgstr ""
 "Der Artikel \"%(article_to_attach_item_number)s\" wurde %(quantity)s mal "
 "an den Artikel \"%(article_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/article/views.py:579
+#: byceps/blueprints/admin/shop/article/views.py:622
 #, python-format
 msgid ""
 "Article \"%(article_item_number)s\" is no longer attached to article "
@@ -3566,17 +3568,17 @@ msgstr ""
 "Artikel \"%(article_item_number)s\" ist nun nicht mehr an Artikel "
 "\"%(attached_to_article_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/article/views.py:635
-#: byceps/blueprints/admin/shop/article/views.py:687
-#: byceps/blueprints/admin/shop/article/views.py:743
+#: byceps/blueprints/admin/shop/article/views.py:678
+#: byceps/blueprints/admin/shop/article/views.py:730
+#: byceps/blueprints/admin/shop/article/views.py:786
 msgid "Action has been added."
 msgstr "Die Aktion wurde hinzugefügt."
 
-#: byceps/blueprints/admin/shop/article/views.py:760
+#: byceps/blueprints/admin/shop/article/views.py:803
 msgid "Action has been removed."
 msgstr "Die Aktion wurde entfernt."
 
-#: byceps/blueprints/admin/shop/article/views.py:803
+#: byceps/blueprints/admin/shop/article/views.py:846
 #, python-format
 msgid ""
 "Article number sequence could not be created. Is prefix \"%(prefix)s\" "
@@ -3585,7 +3587,7 @@ msgstr ""
 "Die Artikelnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/article/views.py:812
+#: byceps/blueprints/admin/shop/article/views.py:855
 #, python-format
 msgid "Article number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Artikelnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
@@ -3814,14 +3816,17 @@ msgid "Quantity ordered"
 msgstr "Anzahl bestellt"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:15
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:13
 msgid "pieces in total"
 msgstr "Stück insgesamt"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:18
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:16
 msgid "As at"
 msgstr "Stand"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:28
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:26
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:26
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:13
@@ -3831,6 +3836,7 @@ msgid "Order number"
 msgstr "Bestellnummer"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:29
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:27
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:11
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:51
 msgid "Orderer"
@@ -3839,6 +3845,19 @@ msgstr "Besteller"
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:46
 msgid "This article has not been ordered yet."
 msgstr "Dieser Artikel wurde noch nicht bestellt."
+
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:6
+#: byceps/blueprints/admin/shop/article/templates/layout/admin/shop/article.html:45
+msgid "Purchases"
+msgstr "Käufe"
+
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:12
+msgid "Quantity purchased"
+msgstr "Anzahl gekauft"
+
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:42
+msgid "This article has not been purchased yet."
+msgstr "Dieser Artikel wurde noch nicht gekauft."
 
 #: byceps/blueprints/admin/shop/article/templates/macros/admin/shop/article.html:15
 msgid "unlimited"
