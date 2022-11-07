@@ -849,6 +849,7 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
     )
 
     line_items = list(map(line_item_to_transfer_object, order.line_items))
+    line_items.sort(key=lambda li: li.article_id)
 
     state = _get_order_state(order)
     is_open = order.payment_state == PaymentState.open
