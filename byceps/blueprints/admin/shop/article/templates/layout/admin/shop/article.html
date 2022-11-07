@@ -1,4 +1,47 @@
 {% extends 'layout/admin/base.html' %}
+{% from 'macros/admin.html' import render_main_tabs %}
 {% set current_page = 'shop_article_admin' %}
 {% set current_page_brand = brand %}
 {% set current_page_shop = shop %}
+
+{% block before_body %}
+
+  <style>
+    .article-head {
+      margin-bottom: var(--inner-gutter);
+    }
+
+    .article-head .title {
+      margin: 0;
+      padding: 0;
+    }
+
+    .article-head .subtitle {
+      font-size: 1.125rem; /* 18px / 16px */
+      opacity: 0.7;
+    }
+  </style>
+
+  <div class="article-head">
+    <h1 class="title">{{ article.item_number }}</h1>
+    <div class="subtitle">{{ article.description }}</div>
+  </div>
+
+{{
+  render_main_tabs(
+    Navigation(None)
+      .add_item(
+        url_for('.view', article_id=article.id),
+        _('Article'),
+        id='article',
+      )
+      .add_item(
+        url_for('.view_orders', article_id=article.id),
+        _('Orders'),
+        id='orders',
+      )
+    , current_tab|default
+  )
+}}
+
+{%- endblock %}

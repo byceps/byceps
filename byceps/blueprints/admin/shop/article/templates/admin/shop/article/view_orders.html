@@ -1,19 +1,15 @@
 {% extends 'layout/admin/shop/article.html' %}
-{% from 'macros/admin.html' import render_backlink %}
 {% from 'macros/admin/shop/order.html' import render_order_link, render_order_payment_state %}
 {% from 'macros/admin/user.html' import render_user_microcard %}
 {% set current_page_shop = shop %}
+{% set current_tab = 'orders' %}
 {% set page_title = [article.description, _('Orders')] %}
-
-{% block before_body %}
-{{ render_backlink(url_for('.view', article_id=article.id), article.item_number) }}
-{%- endblock %}
 
 {% block body %}
 
-  <h1>{{ article.description }}</h1>
+  <h1>{{ _('Orders') }}</h1>
 
-  <div class="row row--space-between mb">
+  <div class="row row--space-between mb mt">
     <div>
       <div class="data-label">{{ _('Quantity ordered') }}</div>
       <div class="data-value"><strong>{{ quantity_total }}</strong> {{ _('pieces in total') }}</div>
