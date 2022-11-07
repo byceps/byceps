@@ -170,20 +170,19 @@ def view_orders(article_id):
     users_by_id = user_service.index_users_by_id(users)
 
     def transform(line_item):
-        quantity = line_item.quantity
         order = orders_by_order_numbers[line_item.order_number]
-        user = users_by_id[order.placed_by_id]
+        orderer = users_by_id[order.placed_by_id]
 
-        return quantity, order, user
+        return order, orderer, line_item.quantity
 
-    quantities_orders_users = list(map(transform, line_items))
+    orders_orderers_quantities = list(map(transform, line_items))
 
     return {
         'article': article,
         'shop': shop,
         'brand': brand,
         'quantity_total': quantity_total,
-        'quantities_orders_users': quantities_orders_users,
+        'orders_orderers_quantities': orders_orderers_quantities,
         'now': datetime.utcnow(),
     }
 

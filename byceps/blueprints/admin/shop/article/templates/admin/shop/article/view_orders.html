@@ -21,22 +21,23 @@
   </div>
 
   <div class="box">
-    {%- if quantities_orders_users %}
+    {%- if orders_orderers_quantities %}
     <table class="index index--v-centered wide">
       <thead>
         <tr>
-          <th>{{ _('Username') }}<br>{{ _('Full name') }}</th>
-          <th class="centered">{{ _('Quantity') }}</th>
-          <th colspan="2">{{ _('Order') }}</th>
+          <th>{{ _('Order number') }}<br>{{ _('Date') }}</th>
+          <th>{{ _('Orderer') }}</th>
+          <th>{{ _('Status') }}</th>
+          <th class="number">{{ _('Quantity') }}</th>
         </tr>
       </thead>
       <tbody>
-      {%- for quantity, order, user in quantities_orders_users|sort(attribute='1.order_number', reverse=True) %}
+      {%- for order, orderer, quantity in orders_orderers_quantities|sort(attribute='0.order_number', reverse=True) %}
         <tr>
-          <td>{{ render_user_microcard(user, full_name='%s %s'|format(order.first_name, order.last_name)) }}</td>
-          <td class="bignumber centered">{{ quantity }}</td>
-          <td>{{ render_order_link(order) }}<br>{{ order.created_at|datetimeformat|dim }}</td>
+          <td class="nowrap"><strong>{{ render_order_link(order) }}</strong><br>{{ order.created_at|datetimeformat|dim }}</td>
+          <td>{{ render_user_microcard(orderer, full_name='%s %s'|format(order.first_name, order.last_name)) }}</td>
           <td>{{ render_order_payment_state(order.payment_state) }}</td>
+          <td class="bignumber number">{{ quantity }}</td>
         </tr>
       {%- endfor %}
       </tbody>
