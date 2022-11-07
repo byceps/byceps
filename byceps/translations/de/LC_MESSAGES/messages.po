@@ -1777,7 +1777,7 @@ msgstr[1] "noch nicht aktivierte Benutzer"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_party.html:17
 #: byceps/blueprints/admin/news/forms.py:111
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:28
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:26
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:28
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:11
 #: byceps/blueprints/site/shop/orders/templates/site/shop/orders/index.html:21
@@ -3511,7 +3511,7 @@ msgstr "Artikel"
 #: byceps/blueprints/admin/shop/article/forms.py:198
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/index_for_shop.html:64
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:31
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:28
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:30
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_articles.html:4
 #: byceps/blueprints/site/shop/order/forms.py:75
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:7
@@ -3816,17 +3816,17 @@ msgid "Quantity ordered"
 msgstr "Anzahl bestellt"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:15
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:13
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:15
 msgid "pieces in total"
 msgstr "Stück insgesamt"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:18
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:16
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:18
 msgid "As at"
 msgstr "Stand"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:28
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:26
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:28
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:10
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:26
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:13
@@ -3836,7 +3836,7 @@ msgid "Order number"
 msgstr "Bestellnummer"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:29
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:27
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:29
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:11
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:51
 msgid "Orderer"
@@ -3847,15 +3847,16 @@ msgid "This article has not been ordered yet."
 msgstr "Dieser Artikel wurde noch nicht bestellt."
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:6
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:10
 #: byceps/blueprints/admin/shop/article/templates/layout/admin/shop/article.html:45
 msgid "Purchases"
 msgstr "Käufe"
 
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:12
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:14
 msgid "Quantity purchased"
 msgstr "Anzahl gekauft"
 
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:42
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:44
 msgid "This article has not been purchased yet."
 msgstr "Dieser Artikel wurde noch nicht gekauft."
 
