@@ -1604,7 +1604,7 @@ msgstr "Artikel"
 #: byceps/blueprints/admin/core/templates/layout/admin/_header_nav_shop.html:31
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:6
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:10
-#: byceps/blueprints/admin/shop/article/templates/layout/admin/shop/article.html:40
+#: byceps/blueprints/admin/shop/article/templates/layout/admin/shop/article.html:41
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:7
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:30
 #: byceps/blueprints/admin/ticketing/checkin/templates/admin/ticketing/checkin/index.html:49
@@ -3504,7 +3504,7 @@ msgstr "Das Ende des Verfügbarkeitszeitraums muss nach dessen Beginn liegen."
 #: byceps/blueprints/admin/shop/article/forms.py:195
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:8
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:36
-#: byceps/blueprints/admin/shop/article/templates/layout/admin/shop/article.html:35
+#: byceps/blueprints/admin/shop/article/templates/layout/admin/shop/article.html:36
 msgid "Article"
 msgstr "Artikel"
 
@@ -3848,7 +3848,7 @@ msgstr "Dieser Artikel wurde noch nicht bestellt."
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:6
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_purchases.html:10
-#: byceps/blueprints/admin/shop/article/templates/layout/admin/shop/article.html:45
+#: byceps/blueprints/admin/shop/article/templates/layout/admin/shop/article.html:46
 msgid "Purchases"
 msgstr "Käufe"
 

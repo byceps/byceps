@@ -5,6 +5,7 @@
 {% set current_page_shop = shop %}
 
 {% block before_body %}
+  {%- if article is defined %}
 
   <style>
     .article-head {
@@ -49,4 +50,5 @@
   )
 }}
 
+  {%- endif %}
 {%- endblock %}
