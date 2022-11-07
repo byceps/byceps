@@ -26,7 +26,6 @@ from .....services.shop.order import (
     order_action_registry_service,
     order_action_service,
     ordered_articles_service,
-    order_service,
 )
 from .....services.shop.order.transfer.order import Order, PaymentState
 from .....services.shop.shop import shop_service
@@ -157,26 +156,27 @@ def view_orders(article_id):
     article = _get_article_or_404(article_id)
 
     shop = shop_service.get_shop(article.shop_id)
-
     brand = brand_service.get_brand(shop.brand_id)
 
-    line_items = ordered_articles_service.get_line_items_for_article(article.id)
-
-    quantity_total = sum(item.quantity for item in line_items)
-
-    order_numbers = {item.order_number for item in line_items}
-    orders = order_service.get_orders_for_order_numbers(order_numbers)
-    orders_by_order_numbers = {order.order_number: order for order in orders}
-
+    orders = ordered_articles_service.get_orders_including_article(article.id)
     users_by_id = _get_orderer_users_by_id(orders)
 
-    def transform(line_item):
-        order = orders_by_order_numbers[line_item.order_number]
+    def transform(order: Order) -> tuple[Order, User, int]:
         orderer = users_by_id[order.placed_by_id]
 
-        return order, orderer, line_item.quantity
+        quantity = sum(
+            line_item.quantity
+            for line_item in order.line_items
+            if line_item.article_id == article.id
+        )
 
-    orders_orderers_quantities = list(map(transform, line_items))
+        return order, orderer, quantity
+
+    orders_orderers_quantities = list(map(transform, orders))
+
+    quantity_total = sum(
+        quantity for _, _, quantity in orders_orderers_quantities
+    )
 
     return {
         'article': article,

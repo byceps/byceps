@@ -7,7 +7,6 @@ byceps.services.shop.order.ordered_articles_service
 """
 
 from collections import Counter
-from typing import Sequence
 
 from sqlalchemy import select
 
@@ -16,8 +15,9 @@ from ....database import db
 from ..article.transfer.models import ArticleID
 
 from .dbmodels.line_item import DbLineItem
+from .dbmodels.order import DbOrder
 from . import order_service
-from .transfer.order import LineItem, PaymentState
+from .transfer.order import Order, PaymentState
 
 
 def count_ordered_articles(article_id: ArticleID) -> dict[PaymentState, int]:
@@ -44,10 +44,17 @@ def count_ordered_articles(article_id: ArticleID) -> dict[PaymentState, int]:
     return dict(counter)
 
 
-def get_line_items_for_article(article_id: ArticleID) -> Sequence[LineItem]:
-    """Return all line items for that article."""
-    db_line_items = db.session.scalars(
-        select(DbLineItem).filter_by(article_id=article_id)
-    ).all()
+def get_orders_including_article(article_id: ArticleID) -> list[Order]:
+    """Return all orders that contain the article."""
+    db_orders = (
+        db.session.scalars(
+            select(DbOrder)
+            .join(DbLineItem)
+            .filter(DbLineItem.article_id == article_id)
+            .options(db.joinedload(DbOrder.line_items))
+        )
+        .unique()
+        .all()
+    )
 
-    return list(map(order_service.line_item_to_transfer_object, db_line_items))
+    return list(map(order_service._order_to_transfer_object, db_orders))

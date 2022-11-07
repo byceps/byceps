@@ -848,7 +848,7 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
         street=order.street,
     )
 
-    line_items = list(map(line_item_to_transfer_object, order.line_items))
+    line_items = list(map(_line_item_to_transfer_object, order.line_items))
     line_items.sort(key=lambda li: li.article_id)
 
     state = _get_order_state(order)
@@ -895,7 +895,7 @@ def _is_overdue(db_order: DbOrder) -> bool:
     return datetime.utcnow() > (db_order.created_at + OVERDUE_THRESHOLD)
 
 
-def line_item_to_transfer_object(
+def _line_item_to_transfer_object(
     db_line_item: DbLineItem,
 ) -> LineItem:
     """Create transfer object from line item database entity."""
