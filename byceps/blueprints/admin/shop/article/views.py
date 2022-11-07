@@ -146,13 +146,11 @@ def view(article_id):
     }
 
 
-@blueprint.get('/<uuid:article_id>/ordered')
+@blueprint.get('/<uuid:article_id>/orders')
 @permission_required('shop_article.view')
 @templated
-def view_ordered(article_id):
-    """List the people that have ordered this article, and the
-    corresponding quantities.
-    """
+def view_orders(article_id):
+    """List the orders for this article, and the corresponding quantities."""
     article = _get_article_or_404(article_id)
 
     shop = shop_service.get_shop(article.shop_id)

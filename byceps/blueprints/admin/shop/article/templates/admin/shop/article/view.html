@@ -42,7 +42,7 @@
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
-            <li><a class="dropdown-item" href="{{ url_for('.view_ordered', article_id=article.id) }}">{{ render_icon('users') }} {{ _('View buyers') }}</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('.view_orders', article_id=article.id) }}">{{ render_icon('users') }} {{ _('View orders') }}</a></li>
           </ol>
         </div>
       </div>

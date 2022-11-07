@@ -3,7 +3,7 @@
 {% from 'macros/admin/shop/order.html' import render_order_link, render_order_payment_state %}
 {% from 'macros/admin/user.html' import render_user_microcard %}
 {% set current_page_shop = shop %}
-{% set page_title = article.description %}
+{% set page_title = [article.description, _('Orders')] %}
 
 {% block before_body %}
 {{ render_backlink(url_for('.view', article_id=article.id), article.item_number) }}
@@ -11,7 +11,7 @@
 
 {% block body %}
 
-  <h1>{{ page_title }}</h1>
+  <h1>{{ article.description }}</h1>
 
   <div class="row row--space-between mb">
     <div>
