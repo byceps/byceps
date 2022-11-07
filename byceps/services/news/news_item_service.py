@@ -6,10 +6,11 @@ byceps.services.news.news_item_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import dataclasses
 from datetime import datetime
 from functools import partial
-from typing import Optional, Union
+from typing import Optional
 
 from sqlalchemy import delete, select
 from sqlalchemy.sql import Select
@@ -345,7 +346,7 @@ def get_headlines_paginated(
 
 
 def get_recent_headlines(
-    channel_ids: Union[frozenset[ChannelID], set[ChannelID]], limit: int
+    channel_ids: frozenset[ChannelID] | set[ChannelID], limit: int
 ) -> list[Headline]:
     """Return the most recent headlines."""
     db_items = db.session.scalars(

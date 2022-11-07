@@ -6,7 +6,8 @@ byceps.blueprints.site.news.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Union
+from __future__ import annotations
+from typing import Optional
 
 from flask import abort, g
 
@@ -88,7 +89,7 @@ def view(slug):
     }
 
 
-def _get_channel_ids() -> Union[frozenset[ChannelID], set[ChannelID]]:
+def _get_channel_ids() -> frozenset[ChannelID] | set[ChannelID]:
     site = site_service.get_site(g.site_id)
 
     if not site.news_channel_ids:

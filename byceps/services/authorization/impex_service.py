@@ -8,8 +8,9 @@ Import/export
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from pathlib import Path
-from typing import Iterator, Union
+from typing import Iterator
 
 import rtoml
 from sqlalchemy import select
@@ -36,7 +37,7 @@ def import_from_file(path: Path) -> int:
     return len(roles)
 
 
-def _create_roles(roles: list[dict[str, Union[str, list[str]]]]) -> None:
+def _create_roles(roles: list[dict[str, str | list[str]]]) -> None:
     for role in roles:
         role_id = RoleID(str(role['id']))
         role_title = str(role['title'])
@@ -61,7 +62,7 @@ def export() -> str:
     return rtoml.dumps(data, pretty=True)
 
 
-def _collect_roles() -> Iterator[dict[str, Union[str, list[str]]]]:
+def _collect_roles() -> Iterator[dict[str, str | list[str]]]:
     """Collect all roles and the permissions assigned to them."""
     roles = db.session.scalars(
         select(DbRole)

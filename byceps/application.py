@@ -6,10 +6,11 @@ byceps.application
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from importlib import import_module
 import os
 from pathlib import Path
-from typing import Any, Callable, Optional, Union
+from typing import Any, Callable, Optional
 
 from flask import abort, current_app, Flask, g
 from flask_babel import Babel
@@ -27,7 +28,7 @@ from .util.templating import SiteTemplateOverridesLoader
 
 def create_app(
     *,
-    config_filename: Optional[Union[Path, str]] = None,
+    config_filename: Optional[Path | str] = None,
     config_overrides: Optional[dict[str, Any]] = None,
 ) -> Flask:
     """Create the actual Flask application."""

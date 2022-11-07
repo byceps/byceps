@@ -6,9 +6,9 @@ byceps.services.shop.cart.models
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from dataclasses import dataclass, field
 from decimal import Decimal
-from typing import Union
 
 from ....util.instances import ReprBuilder
 
@@ -42,7 +42,7 @@ class Cart:
     def get_items(self) -> list[CartItem]:
         return self._items
 
-    def calculate_total_amount(self) -> Union[Decimal, int]:
+    def calculate_total_amount(self) -> Decimal | int:
         return sum(item.line_amount for item in self._items)
 
     def is_empty(self) -> bool:

@@ -3,8 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from decimal import Decimal
-from typing import Union
 from unittest.mock import patch
 
 from flask import Flask
@@ -103,7 +103,7 @@ def test_order(
 
     url = '/shop/order'
     article_quantity_key = f'article_{article.id}'
-    form_data: dict[str, Union[int, str]] = {
+    form_data: dict[str, int | str] = {
         **COMMON_FORM_DATA,
         'company': 'ACME Corp.',
         article_quantity_key: 3,
@@ -168,7 +168,7 @@ def test_order_single(
     log_in_user(orderer_user.id)
 
     url = f'/shop/order_single/{article.id!s}'
-    form_data: dict[str, Union[int, str]] = {
+    form_data: dict[str, int | str] = {
         **COMMON_FORM_DATA,
         'quantity': 1,  # TODO: Test with `3` if limitation is removed.
     }

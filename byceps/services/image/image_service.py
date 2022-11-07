@@ -6,7 +6,8 @@ byceps.services.image.image_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import BinaryIO, Iterable, Union
+from __future__ import annotations
+from typing import BinaryIO, Iterable
 
 from ...util.image import read_dimensions
 from ...util.image.models import Dimensions, ImageType
@@ -23,7 +24,7 @@ def get_image_type_names(types: Iterable[ImageType]) -> frozenset[str]:
 
 
 def determine_image_type(
-    stream: BinaryIO, allowed_types: Union[frozenset[ImageType], set[ImageType]]
+    stream: BinaryIO, allowed_types: frozenset[ImageType] | set[ImageType]
 ) -> ImageType:
     """Extract image type from stream."""
     image_type = guess_type(stream)

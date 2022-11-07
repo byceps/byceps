@@ -6,11 +6,12 @@ tests.helpers
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 from contextlib import contextmanager
 from datetime import date, datetime
 from pathlib import Path
 from secrets import token_hex
-from typing import Any, Iterable, Optional, Union
+from typing import Any, Iterable, Optional
 
 from flask import appcontext_pushed, Flask, g
 
@@ -73,7 +74,7 @@ def generate_token(n: int = 4) -> str:
 
 @contextmanager
 def app_context(
-    *, config_filename: Optional[Union[Path, str]] = CONFIG_FILENAME_TESTING
+    *, config_filename: Optional[Path | str] = CONFIG_FILENAME_TESTING
 ):
     app = create_app(config_filename=config_filename)
 

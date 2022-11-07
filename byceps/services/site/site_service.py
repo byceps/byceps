@@ -6,8 +6,9 @@ byceps.services.site.site_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import dataclasses
-from typing import Callable, Optional, Union
+from typing import Callable, Optional
 
 from sqlalchemy import select
 
@@ -167,7 +168,7 @@ def get_sites_for_brand(brand_id: BrandID) -> set[Site]:
 
 def get_current_sites(
     brand_id: Optional[BrandID] = None, *, include_brands: bool = False
-) -> set[Union[Site, SiteWithBrand]]:
+) -> set[Site | SiteWithBrand]:
     """Return all "current" (i.e. enabled and not archived) sites."""
     query = db.session.query(DbSite)
 
@@ -182,7 +183,7 @@ def get_current_sites(
         .filter_by(archived=False) \
         .all()
 
-    transform: Callable[[DbSite], Union[Site, SiteWithBrand]]
+    transform: Callable[[DbSite], Site | SiteWithBrand]
     if include_brands:
         transform = _db_entity_to_site_with_brand
     else:

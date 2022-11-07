@@ -6,9 +6,10 @@ byceps.blueprints.site.page.templating
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import sys
 import traceback
-from typing import Any, Optional, Union
+from typing import Any, Optional
 
 from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
@@ -23,7 +24,7 @@ from ..snippet.templating import render_snippet_as_partial_from_template
 Context = dict[str, Any]
 
 
-def render_page(page: Page, version: Version) -> Union[str, tuple[str, int]]:
+def render_page(page: Page, version: Version) -> str | tuple[str, int]:
     """Render the page, or an error page if that fails."""
     try:
         context = build_template_context(

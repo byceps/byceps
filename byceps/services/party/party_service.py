@@ -6,9 +6,10 @@ byceps.services.party.party_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from __future__ import annotations
 import dataclasses
 from datetime import date, datetime, timedelta
-from typing import Optional, Union
+from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -140,7 +141,7 @@ def get_all_parties_with_brands() -> list[PartyWithBrand]:
 
 def get_active_parties(
     brand_id: Optional[BrandID] = None, *, include_brands: bool = False
-) -> list[Union[Party, PartyWithBrand]]:
+) -> list[Party | PartyWithBrand]:
     """Return active (i.e. non-canceled, non-archived) parties."""
     stmt = select(DbParty)
 
