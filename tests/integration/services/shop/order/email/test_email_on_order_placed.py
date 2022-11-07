@@ -12,11 +12,9 @@ import pytest
 
 from byceps.services.shop.article.transfer.models import Article, ArticleNumber
 from byceps.services.shop.order.email import order_email_service
-from byceps.services.shop.order import order_service
 from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
-from byceps.services.snippet import snippet_service
 from byceps.services.snippet.transfer.models import SnippetID
 from byceps.services.user.transfer.models import User
 
@@ -86,15 +84,9 @@ def order(
         (article2, 2),
     ]
 
-    order = place_order_with_items(
+    return place_order_with_items(
         storefront.id, orderer, created_at, items_with_quantity
     )
-
-    yield order
-
-    snippet_service.delete_snippet(email_payment_instructions_snippet_id)
-    snippet_service.delete_snippet(email_footer_snippet_id)
-    order_service.delete_order(order.id)
 
 
 @patch('byceps.services.email.email_service.send')

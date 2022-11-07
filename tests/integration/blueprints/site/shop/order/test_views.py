@@ -22,9 +22,7 @@ from byceps.services.shop.order.transfer.number import OrderNumber
 from byceps.services.shop.order.transfer.order import LineItem, Order
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
-from byceps.services.site import site_service
 from byceps.services.site.transfer.models import Site, SiteID
-from byceps.services.snippet import snippet_service
 from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 
@@ -47,13 +45,11 @@ COMMON_FORM_DATA: dict[str, str] = {
 def shop(make_brand, make_shop, admin_user: User):
     brand = make_brand()
     shop = make_shop(brand.id)
-    snippet_id = create_shop_snippet(
+    create_shop_snippet(
         shop.id, admin_user.id, 'payment_instructions', 'Send all ur moneyz!'
     )
 
-    yield shop
-
-    snippet_service.delete_snippet(snippet_id)
+    return shop
 
 
 @pytest.fixture(scope='module')
@@ -70,13 +66,11 @@ def storefront(
 @pytest.fixture(scope='module')
 def site(make_brand, storefront: Storefront):
     brand = make_brand()
-    site = create_site(
+    return create_site(
         SiteID('acmecon-2014-shop-website'),
         brand.id,
         storefront_id=storefront.id,
     )
-    yield site
-    site_service.delete_site(site.id)
 
 
 @pytest.fixture(scope='module')
@@ -91,12 +85,6 @@ def article(make_article, admin_app: Flask, shop: Shop) -> Article:
     return make_article(shop.id, total_quantity=5)
 
 
-@pytest.fixture(scope='module')
-def orderer_user(admin_app: Flask, user: User) -> User:
-    log_in_user(user.id)
-    return user
-
-
 @patch('byceps.signals.shop.order_placed.send')
 @patch('byceps.blueprints.site.shop.order.views.order_email_service')
 def test_order(
@@ -105,10 +93,13 @@ def test_order(
     site_app: Flask,
     site: Site,
     admin_user: User,
-    orderer_user: User,
+    make_user,
     article: Article,
 ):
     assert get_article_quantity(article.id) == 5
+
+    orderer_user = make_user()
+    log_in_user(orderer_user.id)
 
     url = '/shop/order'
     article_quantity_key = f'article_{article.id}'
@@ -159,8 +150,6 @@ def test_order(
             client, order_detail_page_url, order.order_number
         )
 
-    order_service.delete_order(order.id)
-
 
 @patch('byceps.signals.shop.order_placed.send')
 @patch('byceps.blueprints.site.shop.order.views.order_email_service')
@@ -170,10 +159,13 @@ def test_order_single(
     site_app: Flask,
     site: Site,
     admin_user: User,
-    orderer_user: User,
+    make_user,
     article: Article,
 ):
     assert get_article_quantity(article.id) == 5
+
+    orderer_user = make_user()
+    log_in_user(orderer_user.id)
 
     url = f'/shop/order_single/{article.id!s}'
     form_data: dict[str, Union[int, str]] = {
@@ -221,8 +213,6 @@ def test_order_single(
         assert_order_detail_page_works(
             client, order_detail_page_url, order.order_number
         )
-
-    order_service.delete_order(order.id)
 
 
 # helpers

@@ -13,7 +13,6 @@ from byceps.services.shop.order import order_service
 from byceps.services.shop.order.transfer.order import Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
-from byceps.services.snippet import snippet_service
 from byceps.services.user.transfer.models import User
 
 from tests.helpers import current_user_set
@@ -50,12 +49,7 @@ def storefront(
 def order(storefront: Storefront, orderer: Orderer, email_footer_snippet_id):
     created_at = datetime(2014, 11, 5, 23, 32, 9)
 
-    order = place_order_with_items(storefront.id, orderer, created_at, [])
-
-    yield order
-
-    snippet_service.delete_snippet(email_footer_snippet_id)
-    order_service.delete_order(order.id)
+    return place_order_with_items(storefront.id, orderer, created_at, [])
 
 
 @patch('byceps.services.email.email_service.send')

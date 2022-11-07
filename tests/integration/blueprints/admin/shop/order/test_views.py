@@ -154,8 +154,6 @@ def test_cancel_before_paid(
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
 
-    order_service.delete_order(placed_order.id)
-
 
 @patch('byceps.signals.shop.order_canceled.send')
 @patch('byceps.blueprints.admin.shop.order.views.order_email_service')
@@ -199,8 +197,6 @@ def test_cancel_before_paid_without_sending_email(
         orderer_screen_name=orderer_user.screen_name,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
-
-    order_service.delete_order(placed_order.id)
 
 
 @patch('byceps.signals.shop.order_paid.send')
@@ -247,8 +243,6 @@ def test_mark_order_as_paid(
         payment_method='direct_debit',
     )
     order_paid_signal_send_mock.assert_called_once_with(None, event=event)
-
-    order_service.delete_order(placed_order.id)
 
 
 @patch('byceps.signals.shop.order_canceled.send')
@@ -313,8 +307,6 @@ def test_cancel_after_paid(
         orderer_screen_name=orderer_user.screen_name,
     )
     order_canceled_signal_send_mock.assert_called_once_with(None, event=event)
-
-    order_service.delete_order(placed_order.id)
 
 
 # helpers

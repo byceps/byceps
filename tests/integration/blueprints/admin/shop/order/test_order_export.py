@@ -111,9 +111,7 @@ def order(storefront: Storefront, cart: Cart, orderer: Orderer):
         storefront.id, orderer, cart, created_at=created_at
     )
 
-    yield order
-
-    order_service.delete_order(order.id)
+    return order
 
 
 @freeze_time('2015-04-15 07:54:18')  # UTC

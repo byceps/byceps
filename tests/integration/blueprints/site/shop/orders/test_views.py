@@ -98,9 +98,7 @@ def order(make_orderer, storefront1, user1):
 
     order, _ = order_service.place_order(storefront1.id, orderer, cart)
 
-    yield order
-
-    order_service.delete_order(order.id)
+    return order
 
 
 def test_view_matching_user_and_site_and_shop(site1_app, order, user1):

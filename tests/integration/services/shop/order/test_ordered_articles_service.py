@@ -69,9 +69,6 @@ def test_count_ordered_articles(
 
     assert totals == expected
 
-    for order_id in order_ids:
-        order_service.delete_order(order_id)
-
 
 # helpers
 

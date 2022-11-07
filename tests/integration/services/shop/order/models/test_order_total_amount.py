@@ -80,8 +80,6 @@ def test_without_any_items(
 
     assert order.total_amount == Decimal('0.00')
 
-    order_service.delete_order(order.id)
-
 
 def test_with_single_item(
     site_app: Flask, storefront: Storefront, orderer: Orderer, article1: Article
@@ -95,8 +93,6 @@ def test_with_single_item(
     )
 
     assert order.total_amount == Decimal('49.95')
-
-    order_service.delete_order(order.id)
 
 
 def test_with_multiple_items(
@@ -118,8 +114,6 @@ def test_with_multiple_items(
     )
 
     assert order.total_amount == Decimal('206.17')
-
-    order_service.delete_order(order.id)
 
 
 # helpers

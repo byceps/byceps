@@ -130,9 +130,7 @@ def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
 def placed_order(storefront, orderer):
     order, _ = order_service.place_order(storefront.id, orderer, Cart())
 
-    yield order
-
-    order_service.delete_order(order.id)
+    return order
 
 
 @pytest.fixture
