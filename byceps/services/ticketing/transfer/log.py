@@ -8,13 +8,13 @@ byceps.services.ticketing.transfer.log
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any
 from uuid import UUID
 
 from .models import TicketID
 
 
-TicketLogEntryData = Dict[str, Any]
+TicketLogEntryData = dict[str, Any]
 
 
 @dataclass(frozen=True)

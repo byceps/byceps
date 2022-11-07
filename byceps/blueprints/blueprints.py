@@ -6,7 +6,7 @@ byceps.application.blueprints.blueprints
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterator, Optional, Tuple
+from typing import Iterator, Optional
 
 from flask import Flask
 
@@ -14,7 +14,7 @@ from ..config import AppMode
 from ..util.framework.blueprint import get_blueprint
 
 
-BlueprintReg = Tuple[Flask, str, Optional[str]]
+BlueprintReg = tuple[Flask, str, Optional[str]]
 
 
 def register_blueprints(app: Flask, app_mode: AppMode) -> None:

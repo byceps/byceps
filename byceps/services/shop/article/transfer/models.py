@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import Dict, NewType, Optional, Union
+from typing import NewType, Optional, Union
 from uuid import UUID
 
 from flask_babel import lazy_gettext
@@ -53,7 +53,7 @@ def get_article_type_label(article_type: ArticleType) -> str:
     return _ARTICLE_TYPE_LABELS[article_type]
 
 
-ArticleTypeParams = Dict[str, Union[str, int]]
+ArticleTypeParams = dict[str, Union[str, int]]
 
 
 AttachedArticleID = NewType('AttachedArticleID', UUID)

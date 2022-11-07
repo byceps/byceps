@@ -8,13 +8,13 @@ byceps.services.shop.order.transfer.log
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any
 from uuid import UUID
 
 from .order import OrderID
 
 
-OrderLogEntryData = Dict[str, Any]
+OrderLogEntryData = dict[str, Any]
 
 
 @dataclass(frozen=True)

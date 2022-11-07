@@ -6,7 +6,7 @@ byceps.blueprints.site.snippet.templating
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 from flask import g
 from jinja2 import Template
@@ -17,7 +17,7 @@ from ....services.snippet.transfer.models import Scope
 from ....util.templating import load_template
 
 
-Context = Dict[str, Any]
+Context = dict[str, Any]
 
 
 def get_rendered_snippet_body(version: DbVersion) -> str:

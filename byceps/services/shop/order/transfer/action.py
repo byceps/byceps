@@ -7,7 +7,7 @@ byceps.services.shop.order.transfer.action
 """
 
 from dataclasses import dataclass
-from typing import Any, Dict
+from typing import Any
 from uuid import UUID
 
 from ...article.transfer.models import ArticleID
@@ -15,7 +15,7 @@ from ...article.transfer.models import ArticleID
 from .order import PaymentState
 
 
-ActionParameters = Dict[str, Any]
+ActionParameters = dict[str, Any]
 
 
 @dataclass(frozen=True)

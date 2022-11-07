@@ -7,14 +7,14 @@ byceps.services.webhooks.transfer.models
 """
 
 from dataclasses import dataclass
-from typing import Any, Dict, List, NewType, Optional
+from typing import Any, NewType, Optional
 from uuid import UUID
 
 
 WebhookID = NewType('WebhookID', UUID)
 
 
-EventFilters = Dict[str, Optional[Dict[str, List[str]]]]
+EventFilters = dict[str, Optional[dict[str, list[str]]]]
 
 
 @dataclass(frozen=True)

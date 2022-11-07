@@ -8,7 +8,7 @@ byceps.blueprints.site.page.templating
 
 import sys
 import traceback
-from typing import Any, Dict, Optional, Union
+from typing import Any, Optional, Union
 
 from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
@@ -20,7 +20,7 @@ from ....util.templating import load_template
 from ..snippet.templating import render_snippet_as_partial_from_template
 
 
-Context = Dict[str, Any]
+Context = dict[str, Any]
 
 
 def render_page(page: Page, version: Version) -> Union[str, tuple[str, int]]:

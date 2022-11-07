@@ -8,13 +8,13 @@ byceps.services.user.transfer.log
 
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict
+from typing import Any
 from uuid import UUID
 
 from ....typing import UserID
 
 
-UserLogEntryData = Dict[str, Any]
+UserLogEntryData = dict[str, Any]
 
 
 @dataclass(frozen=True)
