@@ -9,6 +9,7 @@ byceps.blueprints.admin.shop.article.views
 import dataclasses
 from datetime import datetime
 from decimal import Decimal
+from typing import Iterable
 
 from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
@@ -27,15 +28,17 @@ from .....services.shop.order import (
     ordered_articles_service,
     order_service,
 )
-from .....services.shop.order.transfer.order import PaymentState
+from .....services.shop.order.transfer.order import Order, PaymentState
 from .....services.shop.shop import shop_service
 from .....services.ticketing import ticket_category_service
+from .....services.user.transfer.models import User
 from .....services.user import user_service
 from .....services.user_badge import user_badge_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
+from .....typing import UserID
 
 from .forms import (
     ArticleCreateForm,
@@ -165,9 +168,7 @@ def view_orders(article_id):
     orders = order_service.get_orders_for_order_numbers(order_numbers)
     orders_by_order_numbers = {order.order_number: order for order in orders}
 
-    user_ids = {order.placed_by_id for order in orders}
-    users = user_service.get_users(user_ids, include_avatars=True)
-    users_by_id = user_service.index_users_by_id(users)
+    users_by_id = _get_orderer_users_by_id(orders)
 
     def transform(line_item):
         order = orders_by_order_numbers[line_item.order_number]
@@ -185,6 +186,12 @@ def view_orders(article_id):
         'orders_orderers_quantities': orders_orderers_quantities,
         'now': datetime.utcnow(),
     }
+
+
+def _get_orderer_users_by_id(orders: Iterable[Order]) -> dict[UserID, User]:
+    user_ids = {order.placed_by_id for order in orders}
+    users = user_service.get_users(user_ids, include_avatars=True)
+    return user_service.index_users_by_id(users)
 
 
 # -------------------------------------------------------------------- #
