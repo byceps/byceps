@@ -146,12 +146,12 @@ def _occupy_seats(seats: Sequence[DbSeat], tickets: Sequence[DbTicket]) -> None:
         ticket.occupied_seat = seat
 
 
-def _sort_seats(seats: Sequence[DbSeat]) -> Sequence[DbSeat]:
+def _sort_seats(seats: Sequence[DbSeat]) -> list[DbSeat]:
     """Create a list of the seats sorted by their respective coordinates."""
     return list(sorted(seats, key=lambda s: (s.coord_x, s.coord_y)))
 
 
-def _sort_tickets(tickets: Sequence[DbTicket]) -> Sequence[DbTicket]:
+def _sort_tickets(tickets: Sequence[DbTicket]) -> list[DbTicket]:
     """Create a list of the tickets sorted by creation time (ascending)."""
     return list(sorted(tickets, key=lambda t: t.created_at))
 
@@ -202,7 +202,7 @@ def find_occupancy_for_seat_group(
     ).scalar_one_or_none()
 
 
-def get_all_seat_groups_for_party(party_id: PartyID) -> Sequence[DbSeatGroup]:
+def get_all_seat_groups_for_party(party_id: PartyID) -> list[DbSeatGroup]:
     """Return all seat groups for that party."""
     return db.session.query(DbSeatGroup).filter_by(party_id=party_id).all()
 

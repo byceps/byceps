@@ -6,7 +6,7 @@ byceps.services.shop.order.actions.ticket
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Any, Sequence
+from typing import Any, Iterable
 from uuid import UUID
 
 from .....typing import UserID
@@ -62,7 +62,7 @@ def create_tickets(
 
 
 def _create_creation_order_log_entries(
-    order_id: OrderID, tickets: Sequence[DbTicket]
+    order_id: OrderID, tickets: Iterable[DbTicket]
 ) -> None:
     event_type = 'ticket-created'
 
@@ -95,7 +95,7 @@ def revoke_tickets(
 
 
 def _create_revocation_order_log_entries(
-    order_id: OrderID, tickets: Sequence[DbTicket], initiator_id: UserID
+    order_id: OrderID, tickets: Iterable[DbTicket], initiator_id: UserID
 ) -> None:
     event_type = 'ticket-revoked'
 

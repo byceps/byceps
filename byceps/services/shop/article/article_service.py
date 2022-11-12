@@ -8,7 +8,7 @@ byceps.services.shop.article.article_service
 
 from datetime import datetime
 from decimal import Decimal
-from typing import Optional, Sequence
+from typing import Iterable, Optional
 
 from sqlalchemy import delete, select, update
 
@@ -310,7 +310,7 @@ def get_articles(article_ids: set[ArticleID]) -> list[Article]:
     return [_db_entity_to_article(db_article) for db_article in db_articles]
 
 
-def get_articles_for_shop(shop_id: ShopID) -> Sequence[Article]:
+def get_articles_for_shop(shop_id: ShopID) -> list[Article]:
     """Return all articles for that shop, ordered by article number."""
     db_articles = db.session.scalars(
         select(DbArticle)
@@ -424,7 +424,7 @@ def get_article_compilation_for_single_article(
 
 def _add_attached_articles(
     compilation: ArticleCompilation,
-    attached_articles: Sequence[DbAttachedArticle],
+    attached_articles: Iterable[DbAttachedArticle],
 ) -> None:
     """Add the attached articles to the compilation."""
     for attached_article in attached_articles:

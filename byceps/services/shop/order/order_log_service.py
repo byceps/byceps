@@ -7,7 +7,7 @@ byceps.services.shop.order.order_log_service
 """
 
 from datetime import datetime
-from typing import Optional, Sequence
+from typing import Iterable, Optional
 
 from sqlalchemy import select
 
@@ -37,7 +37,7 @@ def create_entry(
 
 
 def create_entries(
-    event_type: str, order_id: OrderID, datas: Sequence[OrderLogEntryData]
+    event_type: str, order_id: OrderID, datas: Iterable[OrderLogEntryData]
 ) -> None:
     """Create a sequence of order log entries."""
     db_entries = [build_entry(event_type, order_id, data) for data in datas]

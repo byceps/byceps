@@ -6,7 +6,7 @@ byceps.services.newsletter.newsletter_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterable, Iterator, Optional, Sequence
+from typing import Iterable, Iterator, Optional
 
 from sqlalchemy import select
 
@@ -29,7 +29,7 @@ def find_list(list_id: ListID) -> Optional[List]:
     return _db_entity_to_list(list_)
 
 
-def get_all_lists() -> Sequence[List]:
+def get_all_lists() -> list[List]:
     """Return all lists."""
     lists = db.session.query(DbList).all()
 
@@ -84,7 +84,7 @@ def _get_subscriber_details(user_ids: set[UserID]) -> Iterator[Subscriber]:
 
 def get_subscription_updates_for_user(
     user_id: UserID,
-) -> Sequence[DbSubscriptionUpdate]:
+) -> list[DbSubscriptionUpdate]:
     """Return subscription updates made by the user, for any list."""
     return db.session \
         .query(DbSubscriptionUpdate) \

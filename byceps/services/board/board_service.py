@@ -6,7 +6,7 @@ byceps.services.board.board_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Sequence
+from typing import Optional
 
 from ...database import db
 from ...typing import BrandID
@@ -48,7 +48,7 @@ def find_board(board_id: BoardID) -> Optional[Board]:
     return _db_entity_to_board(board)
 
 
-def get_boards_for_brand(brand_id: BrandID) -> Sequence[Board]:
+def get_boards_for_brand(brand_id: BrandID) -> list[Board]:
     """Return all boards that belong to the brand."""
     boards = db.session.query(DbBoard).filter_by(brand_id=brand_id).all()
 

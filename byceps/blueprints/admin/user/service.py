@@ -8,7 +8,7 @@ byceps.blueprints.admin.user.service
 
 from collections import defaultdict
 from operator import attrgetter
-from typing import Any, Iterator, Sequence
+from typing import Any, Iterable, Iterator
 from uuid import UUID
 
 from ....services.consent import consent_service, consent_subject_service
@@ -52,7 +52,7 @@ def get_parties_and_tickets(
 
 
 def _group_tickets_by_party_id(
-    tickets: Sequence[DbTicket],
+    tickets: Iterable[DbTicket],
 ) -> dict[PartyID, list[DbTicket]]:
     tickets_by_party_id: dict[PartyID, list[DbTicket]] = defaultdict(list)
 

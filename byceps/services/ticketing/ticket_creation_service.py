@@ -6,7 +6,7 @@ byceps.services.ticketing.ticket_creation_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterator, Optional, Sequence
+from typing import Iterator, Optional
 
 from sqlalchemy.exc import IntegrityError
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
@@ -68,7 +68,7 @@ def create_tickets(
     *,
     order_number: Optional[OrderNumber] = None,
     used_by_id: Optional[UserID] = None,
-) -> Sequence[DbTicket]:
+) -> list[DbTicket]:
     """Create a number of tickets of the same category for a single owner."""
     db_tickets = list(
         build_tickets(

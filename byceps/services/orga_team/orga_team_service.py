@@ -7,7 +7,7 @@ byceps.services.orga_team.orga_team_service
 """
 
 from itertools import groupby
-from typing import Iterable, Optional, Sequence
+from typing import Iterable, Optional
 
 from sqlalchemy import select
 
@@ -107,7 +107,7 @@ def _find_db_team(team_id: OrgaTeamID) -> Optional[DbOrgaTeam]:
 
 def get_teams_and_members_for_party(
     party_id: PartyID,
-) -> Sequence[tuple[OrgaTeam, set[Member]]]:
+) -> list[tuple[OrgaTeam, set[Member]]]:
     """Return all orga teams and their corresponding memberships for
     that party.
     """

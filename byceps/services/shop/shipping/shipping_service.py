@@ -8,7 +8,7 @@ byceps.services.shop.shipping.shipping_service
 
 from collections import Counter, defaultdict
 from dataclasses import dataclass
-from typing import Iterator, Sequence
+from typing import Iterator
 
 from sqlalchemy import select
 
@@ -24,7 +24,7 @@ from ..shop.transfer.models import ShopID
 from .transfer.models import ArticleToShip
 
 
-def get_articles_to_ship(shop_id: ShopID) -> Sequence[ArticleToShip]:
+def get_articles_to_ship(shop_id: ShopID) -> list[ArticleToShip]:
     """Return articles that need, or likely need, to be shipped soon."""
     line_item_quantities = list(_find_line_items(shop_id))
 
@@ -76,7 +76,7 @@ def _find_line_items(shop_id: ShopID) -> Iterator[LineItemQuantity]:
 
 
 def _aggregate_ordered_article_quantites(
-    line_item_quantities: Sequence[LineItemQuantity],
+    line_item_quantities: list[LineItemQuantity],
     article_descriptions: dict[ArticleID, str],
 ) -> Iterator[ArticleToShip]:
     """Aggregate article quantities per payment state."""

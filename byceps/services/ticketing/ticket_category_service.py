@@ -6,7 +6,7 @@ byceps.services.ticketing.ticket_category_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Sequence
+from typing import Optional
 
 from ...database import db
 from ...typing import PartyID
@@ -75,7 +75,7 @@ def get_category(category_id: TicketCategoryID) -> TicketCategory:
     return category
 
 
-def get_categories_for_party(party_id: PartyID) -> Sequence[TicketCategory]:
+def get_categories_for_party(party_id: PartyID) -> list[TicketCategory]:
     """Return all categories for that party."""
     db_categories = (
         db.session.query(DbTicketCategory).filter_by(party_id=party_id).all()

@@ -6,7 +6,7 @@ byceps.services.shop.order.order_action_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Callable, Optional, Sequence
+from typing import Callable, Optional
 from uuid import UUID
 
 from sqlalchemy import delete, select
@@ -137,7 +137,7 @@ def _execute_actions(
 
 def _get_actions(
     article_ids: set[ArticleID], payment_state: PaymentState
-) -> Sequence[Action]:
+) -> list[Action]:
     """Return the order actions for those article IDs."""
     if not article_ids:
         return []

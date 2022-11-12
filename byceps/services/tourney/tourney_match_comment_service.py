@@ -7,7 +7,7 @@ byceps.services.tourney.tourney_match_comment_service
 """
 
 from datetime import datetime
-from typing import Optional, Sequence
+from typing import Optional
 
 from ...database import db
 from ...services.text_markup import text_markup_service
@@ -64,7 +64,7 @@ def get_comments(
     match_id: MatchID,
     *,
     include_hidden: bool = False,
-) -> Sequence[MatchComment]:
+) -> list[MatchComment]:
     """Return comments on the match, ordered chronologically."""
     query = db.session \
         .query(DbMatchComment) \

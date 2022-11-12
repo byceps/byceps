@@ -6,7 +6,7 @@ byceps.services.seating.seat_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Iterable, Iterator, Optional, Sequence
+from typing import Iterable, Iterator, Optional
 
 from sqlalchemy import select
 
@@ -176,7 +176,7 @@ def find_seats(seat_ids: set[SeatID]) -> set[Seat]:
 
 def get_seats_with_tickets_for_area(
     area_id: AreaID,
-) -> Sequence[tuple[Seat, Optional[DbTicket]]]:
+) -> list[tuple[Seat, Optional[DbTicket]]]:
     """Return the seats and their associated tickets (if available) for
     that area.
     """

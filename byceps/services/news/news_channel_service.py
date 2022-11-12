@@ -6,7 +6,7 @@ byceps.services.news.news_channel_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Sequence
+from typing import Optional
 
 from sqlalchemy import delete, select
 
@@ -108,7 +108,7 @@ def get_all_channels() -> list[Channel]:
     return [_db_entity_to_channel(db_channel) for db_channel in db_channels]
 
 
-def get_channels_for_brand(brand_id: BrandID) -> Sequence[Channel]:
+def get_channels_for_brand(brand_id: BrandID) -> list[Channel]:
     """Return all channels that belong to the brand."""
     db_channels = db.session.scalars(
         select(DbChannel).filter_by(brand_id=brand_id).order_by(DbChannel.id)

@@ -8,7 +8,7 @@ byceps.blueprints.admin.shop.order.service
 
 from dataclasses import dataclass
 import dataclasses
-from typing import Iterable, Iterator, Sequence
+from typing import Iterable, Iterator
 
 from .....services.shop.order import order_log_service, order_service
 from .....services.shop.order.transfer.log import (
@@ -29,7 +29,7 @@ class OrderWithOrderer(Order):
 
 
 def extend_order_tuples_with_orderer(
-    orders: Sequence[Order],
+    orders: Iterable[Order],
 ) -> Iterator[OrderWithOrderer]:
     orderer_ids = {order.placed_by_id for order in orders}
     orderers = user_service.get_users(orderer_ids, include_avatars=True)

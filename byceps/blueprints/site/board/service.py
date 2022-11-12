@@ -7,7 +7,7 @@ byceps.blueprints.site.board.service
 """
 
 from datetime import datetime
-from typing import Optional, Sequence
+from typing import Iterable, Optional
 
 from flask import g
 
@@ -38,8 +38,8 @@ DEFAULT_TOPICS_PER_PAGE = 10
 
 
 def add_unseen_postings_flag_to_categories(
-    categories: Sequence[BoardCategoryWithLastUpdate], user: CurrentUser
-) -> Sequence[CategoryWithLastUpdateAndUnseenFlag]:
+    categories: Iterable[BoardCategoryWithLastUpdate], user: CurrentUser
+) -> list[CategoryWithLastUpdateAndUnseenFlag]:
     """Add flag to each category stating if it contains postings unseen
     by the user.
     """
@@ -64,7 +64,7 @@ def add_unseen_postings_flag_to_categories(
     return categories_with_flag
 
 
-def add_topic_creators(topics: Sequence[DbTopic]) -> None:
+def add_topic_creators(topics: Iterable[DbTopic]) -> None:
     """Add each topic's creator as topic attribute."""
     creator_ids = {t.creator_id for t in topics}
     creators = user_service.get_users(creator_ids, include_avatars=True)
@@ -74,7 +74,7 @@ def add_topic_creators(topics: Sequence[DbTopic]) -> None:
         topic.creator = creators_by_id[topic.creator_id]
 
 
-def add_topic_unseen_flag(topics: Sequence[DbTopic], user: CurrentUser) -> None:
+def add_topic_unseen_flag(topics: Iterable[DbTopic], user: CurrentUser) -> None:
     """Add `unseen` flag to topics."""
     for topic in topics:
         topic.contains_unseen_postings = (
@@ -86,7 +86,7 @@ def add_topic_unseen_flag(topics: Sequence[DbTopic], user: CurrentUser) -> None:
 
 
 def add_unseen_flag_to_postings(
-    postings: Sequence[DbPosting], last_viewed_at: datetime
+    postings: Iterable[DbPosting], last_viewed_at: datetime
 ) -> None:
     """Add the attribute 'unseen' to each post."""
     for posting in postings:
@@ -109,7 +109,7 @@ def is_posting_unseen(posting: DbPosting, last_viewed_at: datetime) -> bool:
 
 
 def enrich_creators(
-    postings: Sequence[DbPosting],
+    postings: Iterable[DbPosting],
     brand_id: BrandID,
     party_id: Optional[PartyID],
 ) -> None:

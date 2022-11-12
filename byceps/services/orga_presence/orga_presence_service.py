@@ -8,7 +8,7 @@ byceps.services.orga_presence.orga_presence_service
 
 from datetime import date, datetime, timedelta, timezone
 from itertools import groupby
-from typing import Iterator, Sequence
+from typing import Iterable, Iterator
 from uuid import UUID
 from zoneinfo import ZoneInfo
 
@@ -99,7 +99,7 @@ def get_hour_ranges(time_slots: list[TimeSlot]) -> Iterator[DateTimeRange]:
     return create_adjacent_ranges(hour_starts)
 
 
-def _get_hour_starts(dt_ranges: Sequence[DateTimeRange]) -> Iterator[datetime]:
+def _get_hour_starts(dt_ranges: Iterable[DateTimeRange]) -> Iterator[datetime]:
     min_starts_at_utc = _find_earliest_start(dt_ranges)
     max_ends_at_utc = _find_latest_end(dt_ranges)
 
@@ -121,11 +121,11 @@ def _get_hour_starts(dt_ranges: Sequence[DateTimeRange]) -> Iterator[datetime]:
     return (dt.replace(tzinfo=None) for dt in hour_starts)
 
 
-def _find_earliest_start(dt_ranges: Sequence[DateTimeRange]) -> datetime:
+def _find_earliest_start(dt_ranges: Iterable[DateTimeRange]) -> datetime:
     return min(dt_range.start for dt_range in dt_ranges)
 
 
-def _find_latest_end(dt_ranges: Sequence[DateTimeRange]) -> datetime:
+def _find_latest_end(dt_ranges: Iterable[DateTimeRange]) -> datetime:
     return max(dt_range.end for dt_range in dt_ranges)
 
 
@@ -138,7 +138,7 @@ def _generate_hour_starts(start: datetime, end: datetime) -> Iterator[datetime]:
 
 
 def get_days_and_hour_totals(
-    hour_ranges: Sequence[DateTimeRange],
+    hour_ranges: Iterable[DateTimeRange],
 ) -> Iterator[tuple[date, int]]:
     """Yield (day, relevant hours total) pairs."""
 

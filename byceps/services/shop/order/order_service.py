@@ -7,7 +7,7 @@ byceps.services.shop.order.service
 """
 
 from datetime import datetime, timedelta
-from typing import Any, Iterator, Optional, Sequence
+from typing import Any, Iterator, Optional
 from uuid import UUID
 
 from flask import current_app
@@ -767,7 +767,7 @@ def get_orders_for_shop_paginated(
     )
 
 
-def get_orders_placed_by_user(user_id: UserID) -> Sequence[Order]:
+def get_orders_placed_by_user(user_id: UserID) -> list[Order]:
     """Return orders placed by the user."""
     db_orders = (
         db.session.scalars(

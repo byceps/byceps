@@ -7,7 +7,7 @@ byceps.services.snippet.snippet_service
 """
 
 from datetime import datetime
-from typing import Optional, Sequence
+from typing import Optional
 
 from sqlalchemy import delete
 
@@ -143,7 +143,7 @@ def find_snippet(snippet_id: SnippetID) -> Optional[DbSnippet]:
     return db.session.get(DbSnippet, snippet_id)
 
 
-def get_snippets(snippet_ids: set[SnippetID]) -> Sequence[DbSnippet]:
+def get_snippets(snippet_ids: set[SnippetID]) -> list[DbSnippet]:
     """Return these snippets."""
     return db.session \
         .query(DbSnippet) \
@@ -153,7 +153,7 @@ def get_snippets(snippet_ids: set[SnippetID]) -> Sequence[DbSnippet]:
 
 def get_snippets_for_scope_with_current_versions(
     scope: Scope,
-) -> Sequence[DbSnippet]:
+) -> list[DbSnippet]:
     """Return all snippets with their current versions for that scope."""
     return db.session \
         .query(DbSnippet) \
@@ -187,7 +187,7 @@ def find_current_version_of_snippet_with_name(
         .one_or_none()
 
 
-def get_versions(snippet_id: SnippetID) -> Sequence[DbVersion]:
+def get_versions(snippet_id: SnippetID) -> list[DbVersion]:
     """Return all versions of that snippet, sorted from most recent to
     oldest.
     """

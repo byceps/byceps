@@ -6,7 +6,7 @@ byceps.services.board.board_category_query_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from typing import Optional, Sequence
+from typing import Optional
 
 from ...database import db
 
@@ -55,7 +55,7 @@ def find_category_by_slug(
     return _db_entity_to_category(category)
 
 
-def get_categories(board_id: BoardID) -> Sequence[BoardCategory]:
+def get_categories(board_id: BoardID) -> list[BoardCategory]:
     """Return all categories for that board, ordered by position."""
     categories = (
         db.session.query(DbBoardCategory)
@@ -69,7 +69,7 @@ def get_categories(board_id: BoardID) -> Sequence[BoardCategory]:
 
 def get_categories_excluding(
     board_id: BoardID, category_id: BoardCategoryID
-) -> Sequence[BoardCategory]:
+) -> list[BoardCategory]:
     """Return all categories for that board except for the specified one."""
     categories = (
         db.session.query(DbBoardCategory)
@@ -84,7 +84,7 @@ def get_categories_excluding(
 
 def get_categories_with_last_updates(
     board_id: BoardID,
-) -> Sequence[BoardCategoryWithLastUpdate]:
+) -> list[BoardCategoryWithLastUpdate]:
     """Return the categories for that board.
 
     Include the creator of the last posting in each category.
