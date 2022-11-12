@@ -49,7 +49,7 @@ def create_seat_group(
     db.session.add(group)
 
     for seat in seats:
-        assignment = DbSeatGroupAssignment(group, seat)
+        assignment = DbSeatGroupAssignment(group, seat.id)
         db.session.add(assignment)
 
     if commit:
