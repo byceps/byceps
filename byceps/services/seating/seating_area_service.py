@@ -75,7 +75,7 @@ def find_area_for_party_by_slug(
 
 def get_areas_with_seat_utilization(
     party_id: PartyID,
-) -> list[SeatingArea, SeatUtilization]:
+) -> list[tuple[SeatingArea, SeatUtilization]]:
     """Return all areas and their seat utilization for that party."""
     query = _get_areas_with_seat_utilization_query(party_id)
     rows = db.session.execute(query).all()
