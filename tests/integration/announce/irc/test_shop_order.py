@@ -12,8 +12,6 @@ from byceps.services.shop.order import order_service
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.signals import shop as shop_signals
 
-from tests.integration.services.shop.conftest import make_orderer  # noqa: F401
-
 from .helpers import (
     assert_submitted_data,
     CHANNEL_INTERNAL,

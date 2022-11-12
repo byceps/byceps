@@ -25,11 +25,13 @@ from byceps.services.news.transfer.models import (
     ChannelID as NewsChannelID,
 )
 from byceps.services.party.transfer.models import Party
+from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.order import order_sequence_service
 from byceps.services.shop.order.transfer.number import (
     OrderNumberSequence,
     OrderNumberSequenceID,
 )
+from byceps.services.shop.order.transfer.order import Orderer
 from byceps.services.shop.shop import shop_service
 from byceps.services.shop.shop.transfer.models import Shop, ShopID
 from byceps.services.shop.storefront import storefront_service
@@ -53,6 +55,7 @@ from tests.helpers import (
     generate_token,
     http_client,
 )
+from tests.helpers.shop import create_article, create_orderer
 
 from .database import set_up_database, tear_down_database  # noqa: F401
 
@@ -330,5 +333,21 @@ def make_storefront():
         return storefront_service.create_storefront(
             storefront_id, shop_id, order_number_sequence_id, closed=False
         )
+
+    return _wrapper
+
+
+@pytest.fixture(scope='session')
+def make_article():
+    def _wrapper(shop_id: ShopID, **kwargs) -> Article:
+        return create_article(shop_id, **kwargs)
+
+    return _wrapper
+
+
+@pytest.fixture(scope='session')
+def make_orderer():
+    def _wrapper(user_id: UserID) -> Orderer:
+        return create_orderer(user_id)
 
     return _wrapper

@@ -19,7 +19,6 @@ from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.user.transfer.models import User
 
 from tests.helpers import log_in_user
-from tests.integration.services.shop.conftest import make_article  # noqa: F401
 
 
 @pytest.fixture(scope='package')
