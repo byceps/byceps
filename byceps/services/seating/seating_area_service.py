@@ -18,7 +18,7 @@ from ..ticketing.dbmodels.ticket import DbTicket
 
 from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat
-from .transfer.models import Area, SeatUtilization
+from .transfer.models import Area, AreaID, SeatUtilization
 
 
 def create_area(party_id: PartyID, slug: str, title: str) -> Area:
@@ -31,7 +31,7 @@ def create_area(party_id: PartyID, slug: str, title: str) -> Area:
     return _db_entity_to_area(area)
 
 
-def delete_area(area_id: str) -> None:
+def delete_area(area_id: AreaID) -> None:
     """Delete an area."""
     db.session.query(DbSeatingArea).filter_by(id=area_id).delete()
     db.session.commit()
