@@ -9,7 +9,7 @@ from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.snippet.transfer.models import SnippetID
 from byceps.services.user.transfer.models import User
 
-from tests.integration.services.shop.helpers import create_shop_snippet
+from tests.helpers.shop import create_shop_snippet
 
 
 pytest.register_assert_rewrite(f'{__package__}.helpers')

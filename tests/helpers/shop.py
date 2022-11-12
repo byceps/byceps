@@ -1,4 +1,7 @@
 """
+tests.helpers.shop
+~~~~~~~~~~~~~~~~~~
+
 :Copyright: 2014-2022 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
@@ -22,7 +25,7 @@ from byceps.services.ticketing.transfer.models import TicketCategoryID
 from byceps.services.user import user_service
 from byceps.typing import UserID
 
-from tests.helpers import generate_token
+from . import generate_token
 
 
 def create_shop_snippet(

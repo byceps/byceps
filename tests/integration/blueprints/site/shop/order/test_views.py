@@ -27,8 +27,8 @@ from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 
 from tests.helpers import create_site, http_client, log_in_user
+from tests.helpers.shop import create_shop_snippet
 from tests.integration.services.shop.conftest import make_article  # noqa: F401
-from tests.integration.services.shop.helpers import create_shop_snippet
 
 
 COMMON_FORM_DATA: dict[str, str] = {

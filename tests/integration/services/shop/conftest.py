@@ -16,7 +16,7 @@ from byceps.services.snippet.transfer.models import Scope, SnippetID
 from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
 
-from .helpers import create_article, create_orderer
+from tests.helpers.shop import create_article, create_orderer
 
 
 @pytest.fixture
