@@ -15,12 +15,12 @@ from ....typing import PartyID
 from ...ticketing.transfer.models import TicketCategoryID
 
 
-AreaID = NewType('AreaID', UUID)
+SeatingAreaID = NewType('SeatingAreaID', UUID)
 
 
 @dataclass(frozen=True)
-class Area:
-    id: AreaID
+class SeatingArea:
+    id: SeatingAreaID
     party_id: PartyID
     slug: str
     title: str

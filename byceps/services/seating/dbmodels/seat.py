@@ -20,7 +20,7 @@ from ....util.instances import ReprBuilder
 from ...ticketing.dbmodels.category import DbTicketCategory
 from ...ticketing.transfer.models import TicketCategoryID
 
-from ..transfer.models import AreaID
+from ..transfer.models import SeatingAreaID
 
 from .area import DbSeatingArea
 
@@ -53,7 +53,7 @@ class DbSeat(db.Model):
 
     def __init__(
         self,
-        area_id: AreaID,
+        area_id: SeatingAreaID,
         category_id: TicketCategoryID,
         *,
         coord_x: int = 0,

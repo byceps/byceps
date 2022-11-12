@@ -18,10 +18,10 @@ from ..ticketing.dbmodels.ticket import DbTicket
 
 from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat
-from .transfer.models import Area, AreaID, SeatUtilization
+from .transfer.models import SeatingArea, SeatingAreaID, SeatUtilization
 
 
-def create_area(party_id: PartyID, slug: str, title: str) -> Area:
+def create_area(party_id: PartyID, slug: str, title: str) -> SeatingArea:
     """Create an area."""
     area = DbSeatingArea(party_id, slug, title)
 
@@ -31,7 +31,7 @@ def create_area(party_id: PartyID, slug: str, title: str) -> Area:
     return _db_entity_to_area(area)
 
 
-def delete_area(area_id: AreaID) -> None:
+def delete_area(area_id: SeatingAreaID) -> None:
     """Delete an area."""
     db.session.query(DbSeatingArea).filter_by(id=area_id).delete()
     db.session.commit()
@@ -42,7 +42,9 @@ def count_areas_for_party(party_id: PartyID) -> int:
     return db.session.query(DbSeatingArea).filter_by(party_id=party_id).count()
 
 
-def find_area_for_party_by_slug(party_id: PartyID, slug: str) -> Optional[Area]:
+def find_area_for_party_by_slug(
+    party_id: PartyID, slug: str
+) -> Optional[SeatingArea]:
     """Return the area for that party with that slug, or `None` if not found."""
     area = (
         db.session.query(DbSeatingArea)
@@ -59,7 +61,7 @@ def find_area_for_party_by_slug(party_id: PartyID, slug: str) -> Optional[Area]:
 
 def get_areas_with_seat_utilization(
     party_id: PartyID,
-) -> list[Area, SeatUtilization]:
+) -> list[SeatingArea, SeatUtilization]:
     """Return all areas and their seat utilization for that party."""
     query = _get_areas_with_seat_utilization_query(party_id)
     rows = db.session.execute(query).all()
@@ -116,7 +118,7 @@ def _get_areas_with_seat_utilization_query(party_id: PartyID) -> Select:
 
 def _map_areas_with_seat_utilization_row(
     row: tuple[DbSeatingArea, int, int]
-) -> tuple[Area, SeatUtilization]:
+) -> tuple[SeatingArea, SeatUtilization]:
     area, occupied_seat_count, total_seat_count = row
     utilization = SeatUtilization(
         occupied=occupied_seat_count, total=total_seat_count
@@ -124,8 +126,8 @@ def _map_areas_with_seat_utilization_row(
     return _db_entity_to_area(area), utilization
 
 
-def _db_entity_to_area(area: DbSeatingArea) -> Area:
-    return Area(
+def _db_entity_to_area(area: DbSeatingArea) -> SeatingArea:
+    return SeatingArea(
         id=area.id,
         party_id=area.party_id,
         slug=area.slug,

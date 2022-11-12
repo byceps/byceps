@@ -19,11 +19,11 @@ from ..ticketing.transfer.models import TicketCategory, TicketCategoryID
 
 from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat
-from .transfer.models import AreaID, Seat, SeatID, SeatUtilization
+from .transfer.models import Seat, SeatID, SeatingAreaID, SeatUtilization
 
 
 def create_seat(
-    area_id: AreaID,
+    area_id: SeatingAreaID,
     coord_x: int,
     coord_y: int,
     category_id: TicketCategoryID,
@@ -47,7 +47,7 @@ def create_seat(
     return _db_entity_to_seat(db_seat)
 
 
-def create_seats(area_id: AreaID, seats: Iterator[Seat]) -> None:
+def create_seats(area_id: SeatingAreaID, seats: Iterator[Seat]) -> None:
     """Create multiple seats in the same area at once."""
     db_seats = [
         DbSeat(
@@ -175,7 +175,7 @@ def find_seats(seat_ids: set[SeatID]) -> set[Seat]:
 
 
 def get_seats_with_tickets_for_area(
-    area_id: AreaID,
+    area_id: SeatingAreaID,
 ) -> list[tuple[Seat, Optional[DbTicket]]]:
     """Return the seats and their associated tickets (if available) for
     that area.
