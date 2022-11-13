@@ -88,8 +88,6 @@ def remove_avatar_image(user_id: UserID, initiator_id: UserID) -> None:
     if user.avatar_id is None:
         return
 
-    user.avatar_id = None
-
     log_entry = user_log_service.build_entry(
         'user-avatar-removed',
         user.id,
@@ -100,6 +98,9 @@ def remove_avatar_image(user_id: UserID, initiator_id: UserID) -> None:
         },
     )
     db.session.add(log_entry)
+
+    # Remove avatar reference *after* collecting values for log entry.
+    user.avatar_id = None
 
     db.session.commit()
 
