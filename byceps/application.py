@@ -7,6 +7,7 @@ byceps.application
 """
 
 from __future__ import annotations
+from collections.abc import Iterator
 from importlib import import_module
 import os
 from pathlib import Path
@@ -42,10 +43,8 @@ def create_app(
     if config_overrides is not None:
         app.config.from_mapping(config_overrides)
 
-    # Allow database URI to be overriden via environment variable.
-    sqlalchemy_database_uri = os.environ.get('SQLALCHEMY_DATABASE_URI')
-    if sqlalchemy_database_uri:
-        app.config['SQLALCHEMY_DATABASE_URI'] = sqlalchemy_database_uri
+    # Allow configuration values to be overridden by environment variables.
+    app.config.update(_get_config_from_environment())
 
     config.init_app(app)
 
@@ -83,6 +82,14 @@ def create_app(
     _load_announce_signal_handlers()
 
     return app
+
+
+def _get_config_from_environment() -> Iterator[tuple[str, str]]:
+    """Obtain selected config values from environment variables."""
+    for key in ('SQLALCHEMY_DATABASE_URI',):
+        value = os.environ.get(key)
+        if value:
+            yield key, value
 
 
 def _add_static_file_url_rules(app: Flask) -> None:
