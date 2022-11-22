@@ -14,7 +14,7 @@ services:
   byceps-base:
     build: .
     volumes:
-      - .:/home/byceps/app:ro
+      - .:/home/byceps/app
       - ./data:/home/byceps/app/data:rw
     environment:
       BYCEPS_CONFIG: /home/byceps/app/config/docker.py
