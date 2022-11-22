@@ -127,6 +127,7 @@ def _get_areas_with_seat_utilization_query(party_id: PartyID) -> Select:
         )
         .filter(area.party_id == party_id)
         .group_by(area.id)
+        .order_by(area.title)
     )
 
 
