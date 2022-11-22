@@ -1,0 +1,44 @@
+services:
+
+  db:
+    image: "postgres:15"
+    restart: always
+    environment:
+      POSTGRES_DB: byceps
+      POSTGRES_PASSWORD: boioioing
+      POSTGRES_USER: byceps
+
+  redis:
+    image: "redis:7"
+
+  byceps-base:
+    build: .
+    volumes:
+      - .:/home/byceps/app:ro
+      - ./data:/home/byceps/app/data:rw
+    environment:
+      BYCEPS_CONFIG: /home/byceps/app/config/docker.py
+
+  byceps-admin:
+    extends: byceps-base
+    depends_on:
+      - db
+      - redis
+    environment:
+      APP_MODE: admin
+
+  byceps-site:
+    extends: byceps-base
+    depends_on:
+      - db
+      - redis
+    environment:
+      APP_MODE: site
+      SITE_ID: cozylan
+
+  byceps-worker:
+    extends: byceps-base
+    depends_on:
+      - db
+      - redis
+    command: ./worker.py
