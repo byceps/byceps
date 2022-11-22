@@ -42,6 +42,8 @@ def index():
     areas_with_utilization = (
         seating_area_service.get_areas_with_seat_utilization(g.party_id)
     )
+    if not areas_with_utilization:
+        abort(404)
 
     seat_utilizations = [awu[1] for awu in areas_with_utilization]
     total_seat_utilization = seat_service.aggregate_seat_utilizations(
