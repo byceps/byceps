@@ -86,7 +86,11 @@ def create_app(
 
 def _get_config_from_environment() -> Iterator[tuple[str, str]]:
     """Obtain selected config values from environment variables."""
-    for key in ('SQLALCHEMY_DATABASE_URI',):
+    for key in (
+        'APP_MODE',
+        'SITE_ID',
+        'SQLALCHEMY_DATABASE_URI',
+    ):
         value = os.environ.get(key)
         if value:
             yield key, value
