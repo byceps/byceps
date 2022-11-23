@@ -4,8 +4,7 @@ services:
     image: "postgres:15"
     restart: always
     environment:
-      POSTGRES_DB: byceps
-      POSTGRES_PASSWORD: boioioing
+      POSTGRES_PASSWORD: byceps
       POSTGRES_USER: byceps
 
   redis:
@@ -18,6 +17,7 @@ services:
       - ./data:/home/byceps/app/data:rw
     environment:
       BYCEPS_CONFIG: /home/byceps/app/config/docker.py
+      SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://byceps:byceps@db/byceps"
 
   byceps-admin:
     extends: byceps-base
