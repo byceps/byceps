@@ -114,7 +114,9 @@ def update(webhook_id):
         return update_form(webhook.id, form)
 
     event_types = set(form.event_types.data)
-    event_filters = {}
+    # Event filters cannot be edited at the moment,
+    # but at least don't remove them on update.
+    event_filters = webhook.event_filters
     format = form.format.data.strip()
     url = form.url.data.strip()
     text_prefix = form.text_prefix.data.lstrip()  # Allow trailing whitespace.
