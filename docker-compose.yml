@@ -17,6 +17,7 @@ services:
       - ./data:/home/byceps/app/data:rw
     environment:
       BYCEPS_CONFIG: /home/byceps/app/config/docker.py
+      REDIS_URL: "redis://redis/0"
       SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://byceps:byceps@db/byceps"
 
   byceps-admin:

@@ -88,6 +88,8 @@ def _get_config_from_environment() -> Iterator[tuple[str, str]]:
     """Obtain selected config values from environment variables."""
     for key in (
         'APP_MODE',
+        'REDIS_URL',
+        'SECRET_KEY',
         'SITE_ID',
         'SQLALCHEMY_DATABASE_URI',
     ):
