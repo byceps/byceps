@@ -6,17 +6,19 @@ byceps.util.datetime.range
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from collections import namedtuple
+from dataclasses import dataclass
 from datetime import datetime
 from typing import Iterable, Iterator
 
 from ..iterables import pairwise
 
 
-class DateTimeRange(namedtuple('DateTimeRange', ['start', 'end'])):
+@dataclass(frozen=True)
+class DateTimeRange:
     """A date/time range with an inclusive start and an exclusive end."""
 
-    __slots__ = ()
+    start: datetime
+    end: datetime
 
     def contains(self, dt: datetime) -> bool:
         return self.start <= dt < self.end
@@ -33,5 +35,5 @@ class DateTimeRange(namedtuple('DateTimeRange', ['start', 'end'])):
 
 def create_adjacent_ranges(dts: Iterable[datetime]) -> Iterator[DateTimeRange]:
     """Yield adjacent ranges from successive date/time values."""
-    for pair in pairwise(dts):
-        yield DateTimeRange._make(pair)
+    for start, end in pairwise(dts):
+        yield DateTimeRange(start, end)
