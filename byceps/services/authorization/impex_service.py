@@ -64,14 +64,13 @@ def export() -> str:
 
 def _collect_roles() -> Iterator[dict[str, str | list[str]]]:
     """Collect all roles and the permissions assigned to them."""
-    roles = db.session.scalars(
-        select(DbRole)
-        .options(
-            db.undefer(DbRole.title),
-            db.joinedload(DbRole.role_permissions),
+    roles = (
+        db.session.scalars(
+            select(DbRole).options(db.undefer(DbRole.title)).order_by(DbRole.id)
         )
-        .order_by(DbRole.id)
-    ).all()
+        .unique()
+        .all()
+    )
 
     for role in roles:
         permission_ids = [
