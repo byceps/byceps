@@ -20,6 +20,7 @@ for more than a decade.
    installation/index
    running/index
    upgrading/index
+   cli/index
    license
 
 
