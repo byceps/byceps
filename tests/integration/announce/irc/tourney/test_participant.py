@@ -40,9 +40,7 @@ def test_announce_participant_ready(app, tourney, match, participant):
 
 
 def test_announce_participant_eliminated(app, tourney, match, participant):
-    expected_text = (
-        '"Le Supern00bs" ist aus dem Turnier Burrito Blaster (3on3) ausgeschieden.'
-    )
+    expected_text = '"Le Supern00bs" ist aus dem Turnier Burrito Blaster (3on3) ausgeschieden.'
 
     event = TourneyParticipantEliminated(
         occurred_at=now(),

@@ -11,9 +11,7 @@ from .helpers import assert_submitted_data, mocked_irc_bot
 
 
 def test_guest_server_registered(app, party, admin_user, user):
-    expected_text = (
-        'Admin hat einen Gastserver von User für die Party "ACMECon 2014" registriert.'
-    )
+    expected_text = 'Admin hat einen Gastserver von User für die Party "ACMECon 2014" registriert.'
 
     server, event = guest_server_service.create_server(
         party.id, admin_user.id, user.id

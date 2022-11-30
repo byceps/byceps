@@ -86,9 +86,7 @@ def created_version_and_event(scope, editor):
 
 @pytest.fixture(scope='module')
 def updated_version_and_event(created_version_and_event, editor):
-    created_version, creation_event = (
-        created_version_and_event
-    )
+    created_version, creation_event = created_version_and_event
 
     body = 'another body'
 
