@@ -26,20 +26,10 @@ from byceps.services.board import (
 )
 from byceps.signals import board as board_signals
 
-from .helpers import (
-    assert_request_data,
-    assert_submitted_data,
-    CHANNEL_INTERNAL,
-    CHANNEL_PUBLIC,
-    get_submitted_json,
-    mocked_irc_bot,
-    now,
-)
+from .helpers import assert_submitted_data, mocked_irc_bot, now
 
 
 def test_announce_topic_created(app, board, topic, creator):
-    expected_channel1 = CHANNEL_PUBLIC
-    expected_channel2 = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
@@ -61,13 +51,10 @@ def test_announce_topic_created(app, board, topic, creator):
     with mocked_irc_bot() as mock:
         board_signals.topic_created.send(None, event=event)
 
-    actual1, actual2 = get_submitted_json(mock, 2)
-    assert_request_data(actual1, expected_channel1, expected_text)
-    assert_request_data(actual2, expected_channel2, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 def test_announce_topic_hidden(app, board, topic, creator, moderator):
-    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum das Thema '
@@ -92,11 +79,10 @@ def test_announce_topic_hidden(app, board, topic, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.topic_hidden.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channel, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 def test_announce_topic_unhidden(app, board, topic, creator, moderator):
-    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum das Thema '
@@ -121,11 +107,10 @@ def test_announce_topic_unhidden(app, board, topic, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.topic_unhidden.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channel, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 def test_announce_topic_locked(app, board, topic, creator, moderator):
-    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum das Thema '
@@ -150,11 +135,10 @@ def test_announce_topic_locked(app, board, topic, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.topic_locked.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channel, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 def test_announce_topic_unlocked(app, board, topic, creator, moderator):
-    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -179,11 +163,10 @@ def test_announce_topic_unlocked(app, board, topic, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.topic_unlocked.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channel, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 def test_announce_topic_pinned(app, board, topic, creator, moderator):
-    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -208,11 +191,10 @@ def test_announce_topic_pinned(app, board, topic, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.topic_pinned.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channel, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 def test_announce_topic_unpinned(app, board, topic, creator, moderator):
-    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -237,13 +219,12 @@ def test_announce_topic_unpinned(app, board, topic, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.topic_unpinned.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channel, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 def test_announce_topic_moved(
     app, board, category, another_category, topic, creator, moderator
 ):
-    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/topics/{topic.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -272,12 +253,10 @@ def test_announce_topic_moved(
     with mocked_irc_bot() as mock:
         board_signals.topic_moved.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channel, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 def test_announce_posting_created(app, board, posting, creator):
-    expected_channel1 = CHANNEL_PUBLIC
-    expected_channel2 = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
         'TheShadow999 hat im "ACME Entertainment Convention"-Forum '
@@ -302,9 +281,7 @@ def test_announce_posting_created(app, board, posting, creator):
     with mocked_irc_bot() as mock:
         board_signals.posting_created.send(None, event=event)
 
-    actual1, actual2 = get_submitted_json(mock, 2)
-    assert_request_data(actual1, expected_channel1, expected_text)
-    assert_request_data(actual2, expected_channel2, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 def test_announce_posting_created_on_muted_topic(app, board, posting, creator):
@@ -331,7 +308,6 @@ def test_announce_posting_created_on_muted_topic(app, board, posting, creator):
 
 
 def test_announce_posting_hidden(app, board, posting, creator, moderator):
-    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -358,11 +334,10 @@ def test_announce_posting_hidden(app, board, posting, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.posting_hidden.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channel, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 def test_announce_posting_unhidden(app, board, posting, creator, moderator):
-    expected_channel = CHANNEL_INTERNAL
     expected_link = f'http://example.com/board/postings/{posting.id}'
     expected_text = (
         'ElBosso hat im "ACME Entertainment Convention"-Forum '
@@ -389,7 +364,7 @@ def test_announce_posting_unhidden(app, board, posting, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.posting_unhidden.send(None, event=event)
 
-    assert_submitted_data(mock, expected_channel, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 # helpers

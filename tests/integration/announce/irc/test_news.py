@@ -13,20 +13,12 @@ from byceps.services.news.transfer.models import BodyFormat, Channel, Item
 from byceps.services.site.transfer.models import Site
 from byceps.signals import news as news_signals
 
-from .helpers import (
-    assert_request_data,
-    CHANNEL_INTERNAL,
-    CHANNEL_PUBLIC,
-    get_submitted_json,
-    mocked_irc_bot,
-)
+from .helpers import assert_submitted_data, mocked_irc_bot
 
 
 def test_published_news_item_announced_with_url(
     app: Flask, item_with_url: Item
 ) -> None:
-    expected_channel1 = CHANNEL_PUBLIC
-    expected_channel2 = CHANNEL_INTERNAL
     expected_text = (
         'Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
         + 'https://www.acmecon.test/news/zieh-dir-das-mal-rein'
@@ -37,16 +29,12 @@ def test_published_news_item_announced_with_url(
     with mocked_irc_bot() as mock:
         news_signals.item_published.send(None, event=event)
 
-    actual1, actual2 = get_submitted_json(mock, 2)
-    assert_request_data(actual1, expected_channel1, expected_text)
-    assert_request_data(actual2, expected_channel2, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 def test_published_news_item_announced_without_url(
     app: Flask, item_without_url: Item
 ) -> None:
-    expected_channel1 = CHANNEL_PUBLIC
-    expected_channel2 = CHANNEL_INTERNAL
     expected_text = (
         'Die News "Zieh dir auch das mal rein!" wurde veröffentlicht.'
     )
@@ -56,9 +44,7 @@ def test_published_news_item_announced_without_url(
     with mocked_irc_bot() as mock:
         news_signals.item_published.send(None, event=event)
 
-    actual1, actual2 = get_submitted_json(mock, 2)
-    assert_request_data(actual1, expected_channel1, expected_text)
-    assert_request_data(actual2, expected_channel2, expected_text)
+    assert_submitted_data(mock, expected_text)
 
 
 # helpers
