@@ -16,7 +16,7 @@ from byceps.events.user import (
 from byceps.services.user import user_deletion_service
 from byceps.signals import user as user_signals
 
-from .helpers import assert_submitted_data, mocked_irc_bot, now
+from .helpers import assert_submitted_text, mocked_irc_bot, now
 
 
 def test_account_created_announced(app, make_user):
@@ -36,7 +36,7 @@ def test_account_created_announced(app, make_user):
     with mocked_irc_bot() as mock:
         user_signals.account_created.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_account_created_announced_on_site(app, make_user, site):
@@ -59,7 +59,7 @@ def test_account_created_announced_on_site(app, make_user, site):
     with mocked_irc_bot() as mock:
         user_signals.account_created.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_account_created_by_admin_announced(app, make_user):
@@ -80,7 +80,7 @@ def test_account_created_by_admin_announced(app, make_user):
     with mocked_irc_bot() as mock:
         user_signals.account_created.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_screen_name_change_announced(app, make_user):
@@ -103,7 +103,7 @@ def test_screen_name_change_announced(app, make_user):
     with mocked_irc_bot() as mock:
         user_signals.screen_name_changed.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_email_address_changed_announced(app, make_user):
@@ -126,7 +126,7 @@ def test_email_address_changed_announced(app, make_user):
     with mocked_irc_bot() as mock:
         user_signals.email_address_changed.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_email_address_invalidated_announced(app, make_user):
@@ -149,7 +149,7 @@ def test_email_address_invalidated_announced(app, make_user):
     with mocked_irc_bot() as mock:
         user_signals.email_address_invalidated.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_user_details_updated_announced(app, make_user):
@@ -171,7 +171,7 @@ def test_user_details_updated_announced(app, make_user):
     with mocked_irc_bot() as mock:
         user_signals.details_updated.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_suspended_account_announced(app, make_user):
@@ -191,7 +191,7 @@ def test_suspended_account_announced(app, make_user):
     with mocked_irc_bot() as mock:
         user_signals.account_suspended.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_unsuspended_account_announced(app, make_user):
@@ -211,7 +211,7 @@ def test_unsuspended_account_announced(app, make_user):
     with mocked_irc_bot() as mock:
         user_signals.account_unsuspended.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_deleted_account_announced(app, make_user):
@@ -229,4 +229,4 @@ def test_deleted_account_announced(app, make_user):
     with mocked_irc_bot() as mock:
         user_signals.account_deleted.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)

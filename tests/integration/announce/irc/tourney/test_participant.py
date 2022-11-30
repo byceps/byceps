@@ -14,7 +14,7 @@ from byceps.events.tourney import (
 )
 from byceps.signals import tourney as tourney_signals
 
-from ..helpers import assert_submitted_data, mocked_irc_bot, now
+from ..helpers import assert_submitted_text, mocked_irc_bot, now
 
 
 def test_announce_participant_ready(app, tourney, match, participant):
@@ -36,7 +36,7 @@ def test_announce_participant_ready(app, tourney, match, participant):
     with mocked_irc_bot() as mock:
         tourney_signals.participant_ready.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_participant_eliminated(app, tourney, match, participant):
@@ -56,7 +56,7 @@ def test_announce_participant_eliminated(app, tourney, match, participant):
     with mocked_irc_bot() as mock:
         tourney_signals.participant_eliminated.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_participant_warned(app, tourney, match, participant):
@@ -79,7 +79,7 @@ def test_announce_participant_warned(app, tourney, match, participant):
     with mocked_irc_bot() as mock:
         tourney_signals.participant_warned.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_participant_disqualified(app, tourney, match, participant):
@@ -102,7 +102,7 @@ def test_announce_participant_disqualified(app, tourney, match, participant):
     with mocked_irc_bot() as mock:
         tourney_signals.participant_disqualified.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 # helpers

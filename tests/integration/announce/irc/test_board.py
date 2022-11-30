@@ -26,7 +26,7 @@ from byceps.services.board import (
 )
 from byceps.signals import board as board_signals
 
-from .helpers import assert_submitted_data, mocked_irc_bot, now
+from .helpers import assert_submitted_text, mocked_irc_bot, now
 
 
 def test_announce_topic_created(app, board, topic, creator):
@@ -51,7 +51,7 @@ def test_announce_topic_created(app, board, topic, creator):
     with mocked_irc_bot() as mock:
         board_signals.topic_created.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_topic_hidden(app, board, topic, creator, moderator):
@@ -79,7 +79,7 @@ def test_announce_topic_hidden(app, board, topic, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.topic_hidden.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_topic_unhidden(app, board, topic, creator, moderator):
@@ -107,7 +107,7 @@ def test_announce_topic_unhidden(app, board, topic, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.topic_unhidden.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_topic_locked(app, board, topic, creator, moderator):
@@ -135,7 +135,7 @@ def test_announce_topic_locked(app, board, topic, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.topic_locked.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_topic_unlocked(app, board, topic, creator, moderator):
@@ -163,7 +163,7 @@ def test_announce_topic_unlocked(app, board, topic, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.topic_unlocked.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_topic_pinned(app, board, topic, creator, moderator):
@@ -191,7 +191,7 @@ def test_announce_topic_pinned(app, board, topic, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.topic_pinned.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_topic_unpinned(app, board, topic, creator, moderator):
@@ -219,7 +219,7 @@ def test_announce_topic_unpinned(app, board, topic, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.topic_unpinned.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_topic_moved(
@@ -253,7 +253,7 @@ def test_announce_topic_moved(
     with mocked_irc_bot() as mock:
         board_signals.topic_moved.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_posting_created(app, board, posting, creator):
@@ -281,7 +281,7 @@ def test_announce_posting_created(app, board, posting, creator):
     with mocked_irc_bot() as mock:
         board_signals.posting_created.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_posting_created_on_muted_topic(app, board, posting, creator):
@@ -334,7 +334,7 @@ def test_announce_posting_hidden(app, board, posting, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.posting_hidden.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_posting_unhidden(app, board, posting, creator, moderator):
@@ -364,7 +364,7 @@ def test_announce_posting_unhidden(app, board, posting, creator, moderator):
     with mocked_irc_bot() as mock:
         board_signals.posting_unhidden.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 # helpers

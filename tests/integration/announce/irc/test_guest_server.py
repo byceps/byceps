@@ -7,7 +7,7 @@ import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
 from byceps.services.guest_server import guest_server_service
 from byceps.signals import guest_server as guest_server_signals
 
-from .helpers import assert_submitted_data, mocked_irc_bot
+from .helpers import assert_submitted_text, mocked_irc_bot
 
 
 def test_guest_server_registered(app, party, admin_user, user):
@@ -20,4 +20,4 @@ def test_guest_server_registered(app, party, admin_user, user):
     with mocked_irc_bot() as mock:
         guest_server_signals.guest_server_registered.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)

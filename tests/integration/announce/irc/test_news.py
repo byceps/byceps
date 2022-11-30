@@ -13,7 +13,7 @@ from byceps.services.news.transfer.models import BodyFormat, Channel, Item
 from byceps.services.site.transfer.models import Site
 from byceps.signals import news as news_signals
 
-from .helpers import assert_submitted_data, mocked_irc_bot
+from .helpers import assert_submitted_text, mocked_irc_bot
 
 
 def test_published_news_item_announced_with_url(
@@ -29,7 +29,7 @@ def test_published_news_item_announced_with_url(
     with mocked_irc_bot() as mock:
         news_signals.item_published.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_published_news_item_announced_without_url(
@@ -44,7 +44,7 @@ def test_published_news_item_announced_without_url(
     with mocked_irc_bot() as mock:
         news_signals.item_published.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 # helpers

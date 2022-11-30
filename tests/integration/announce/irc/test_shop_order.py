@@ -12,7 +12,7 @@ from byceps.services.shop.order import order_service
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.signals import shop as shop_signals
 
-from .helpers import assert_submitted_data, mocked_irc_bot, now
+from .helpers import assert_submitted_text, mocked_irc_bot, now
 
 
 def test_shop_order_placed_announced(app, placed_order, orderer_user):
@@ -32,7 +32,7 @@ def test_shop_order_placed_announced(app, placed_order, orderer_user):
     with mocked_irc_bot() as mock:
         shop_signals.order_placed.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_shop_order_canceled_announced(
@@ -57,7 +57,7 @@ def test_shop_order_canceled_announced(
     with mocked_irc_bot() as mock:
         shop_signals.order_canceled.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_shop_order_paid_announced(app, paid_order, orderer_user, shop_admin):
@@ -81,7 +81,7 @@ def test_shop_order_paid_announced(app, paid_order, orderer_user, shop_admin):
     with mocked_irc_bot() as mock:
         shop_signals.order_paid.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 # helpers

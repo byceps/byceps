@@ -10,7 +10,7 @@ from byceps.events.ticketing import TicketCheckedIn, TicketsSold
 from byceps.services.ticketing.transfer.models import TicketSaleStats
 from byceps.signals import ticketing as ticketing_signals
 
-from .helpers import assert_submitted_data, mocked_irc_bot, now
+from .helpers import assert_submitted_text, mocked_irc_bot, now
 
 
 def test_ticket_checked_in(app, make_user, admin_user):
@@ -34,7 +34,7 @@ def test_ticket_checked_in(app, make_user, admin_user):
     with mocked_irc_bot() as mock:
         ticketing_signals.ticket_checked_in.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
@@ -66,7 +66,7 @@ def test_single_ticket_sold(
     with mocked_irc_bot() as mock:
         ticketing_signals.tickets_sold.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 @patch('byceps.services.ticketing.ticket_service.get_ticket_sale_stats')
@@ -98,4 +98,4 @@ def test_multiple_tickets_sold(
     with mocked_irc_bot() as mock:
         ticketing_signals.tickets_sold.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)

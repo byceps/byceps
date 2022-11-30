@@ -9,7 +9,7 @@ import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
 from byceps.services.authentication.session import authn_session_service
 from byceps.signals import auth as auth_signals
 
-from .helpers import assert_submitted_data, mocked_irc_bot
+from .helpers import assert_submitted_text, mocked_irc_bot
 
 
 def test_user_logged_in_into_admin_app_announced(app, user):
@@ -20,7 +20,7 @@ def test_user_logged_in_into_admin_app_announced(app, user):
     with mocked_irc_bot() as mock:
         auth_signals.user_logged_in.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_user_logged_in_into_site_app_announced(app, site, user):
@@ -35,7 +35,7 @@ def test_user_logged_in_into_site_app_announced(app, site, user):
     with mocked_irc_bot() as mock:
         auth_signals.user_logged_in.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 # helpers

@@ -10,7 +10,7 @@ from byceps.services.user_badge import (
 )
 from byceps.signals import user_badge as user_badge_signals
 
-from .helpers import assert_submitted_data, mocked_irc_bot
+from .helpers import assert_submitted_text, mocked_irc_bot
 
 
 def test_user_badge_awarding_announced_without_initiator(app, make_user):
@@ -31,7 +31,7 @@ def test_user_badge_awarding_announced_without_initiator(app, make_user):
     with mocked_irc_bot() as mock:
         user_badge_signals.user_badge_awarded.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_user_badge_awarding_announced_with_initiator(
@@ -54,4 +54,4 @@ def test_user_badge_awarding_announced_with_initiator(
     with mocked_irc_bot() as mock:
         user_badge_signals.user_badge_awarded.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)

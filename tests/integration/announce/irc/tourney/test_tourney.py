@@ -14,7 +14,7 @@ from byceps.events.tourney import (
 )
 from byceps.signals import tourney as tourney_signals
 
-from ..helpers import assert_submitted_data, mocked_irc_bot, now
+from ..helpers import assert_submitted_text, mocked_irc_bot, now
 
 
 def test_announce_tourney_started(app, tourney):
@@ -31,7 +31,7 @@ def test_announce_tourney_started(app, tourney):
     with mocked_irc_bot() as mock:
         tourney_signals.tourney_started.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_tourney_paused(app, tourney):
@@ -48,7 +48,7 @@ def test_announce_tourney_paused(app, tourney):
     with mocked_irc_bot() as mock:
         tourney_signals.tourney_paused.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_tourney_canceled(app, tourney):
@@ -65,7 +65,7 @@ def test_announce_tourney_canceled(app, tourney):
     with mocked_irc_bot() as mock:
         tourney_signals.tourney_canceled.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 def test_announce_tourney_finished(app, tourney):
@@ -82,7 +82,7 @@ def test_announce_tourney_finished(app, tourney):
     with mocked_irc_bot() as mock:
         tourney_signals.tourney_finished.send(None, event=event)
 
-    assert_submitted_data(mock, expected_text)
+    assert_submitted_text(mock, expected_text)
 
 
 # helpers

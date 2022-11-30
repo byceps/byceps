@@ -6,6 +6,7 @@
 from contextlib import contextmanager
 from datetime import datetime
 from http import HTTPStatus
+from typing import Any
 
 from requests_mock import Mocker
 
@@ -24,7 +25,13 @@ def mocked_irc_bot():
         yield mock
 
 
-def assert_submitted_data(mock, expected_text: str) -> None:
+def assert_submitted_text(mock, expected_text: str) -> None:
+    expected = {'text': expected_text}
+    assert_submitted_data(mock, expected)
+
+
+def assert_submitted_data(mock, expected: dict[str, Any]) -> None:
     assert mock.call_count == 1
     actual = mock.last_request.json()
-    assert actual['text'] == expected_text
+    for expected_key, expected_value in expected.items():
+        assert actual[expected_key] == expected_value
