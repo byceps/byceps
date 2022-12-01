@@ -67,7 +67,11 @@
   <div class="data-value">{{ order.first_name }} {{ order.last_name }}</div>
 
   <div class="data-label">{{ _('Address') }}</div>
-  <div class="data-value">{{ order.address.street }}</div>
+  <div class="data-value">
+    {{ order.address.street }}<br>
+    {{ order.address.zip_code }} {{ order.address.city }}<br>
+    {{ order.address.country }}
+  </div>
 
   <h2>{{ _('Articles') }}</h2>
 {% include 'site/shop/orders/_articles.html' %}
