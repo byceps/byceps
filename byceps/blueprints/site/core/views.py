@@ -14,11 +14,15 @@ from flask import g, redirect, url_for
 from .... import config
 from ....services.party import party_service
 from ....services.site import site_service
+from ....services.text_markup import text_markup_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.user_session import get_current_user
 
 
 blueprint = create_blueprint('core_site', __name__)
+
+
+blueprint.add_app_template_filter(text_markup_service.render_html, 'bbcode')
 
 
 @blueprint.app_template_global()
