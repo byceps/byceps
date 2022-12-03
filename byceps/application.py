@@ -16,7 +16,7 @@ from typing import Any, Callable, Optional
 from flask import abort, current_app, Flask, g
 from flask_babel import Babel
 import jinja2
-from redis import StrictRedis
+from redis import Redis
 
 from .blueprints.blueprints import register_blueprints
 from . import config, config_defaults
@@ -61,7 +61,7 @@ def create_app(
     db.init_app(app)
 
     # Initialize Redis client.
-    app.redis_client = StrictRedis.from_url(app.config['REDIS_URL'])
+    app.redis_client = Redis.from_url(app.config['REDIS_URL'])
 
     app_mode = config.get_app_mode(app)
 
