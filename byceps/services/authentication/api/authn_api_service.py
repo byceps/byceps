@@ -62,6 +62,29 @@ def get_all_api_tokens() -> list[ApiToken]:
     ]
 
 
+def suspend_api_token(api_token_id: UUID) -> None:
+    """Suspend the API token."""
+    db_api_token = _get_db_api_token(api_token_id)
+    db_api_token.suspended = True
+    db.session.commit()
+
+
+def unsuspend_api_token(api_token_id: UUID) -> None:
+    """Unsuspend the API token."""
+    db_api_token = _get_db_api_token(api_token_id)
+    db_api_token.suspended = False
+    db.session.commit()
+
+
+def _get_db_api_token(api_token_id: UUID) -> DbApiToken:
+    db_api_token = db.session.get(DbApiToken, api_token_id)
+
+    if db_api_token is None:
+        raise ValueError(f"Unknown API token '{api_token_id}'")
+
+    return db_api_token
+
+
 def delete_api_token(api_token_id: UUID) -> None:
     """Delete the API token."""
     db.session.execute(

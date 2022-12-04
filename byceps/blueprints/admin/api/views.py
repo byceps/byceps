@@ -76,11 +76,31 @@ def create_api_token():
     return redirect_to('.index')
 
 
+@blueprint.post('/api_tokens/<uuid:api_token_id>/suspend')
+@permission_required('api.administrate')
+@respond_no_content
+def suspend_api_token(api_token_id):
+    """Suspend the API token."""
+    authn_api_service.suspend_api_token(api_token_id)
+
+    flash_success(gettext('API token has been suspended.'))
+
+
+@blueprint.post('/api_tokens/<uuid:api_token_id>/unsuspend')
+@permission_required('api.administrate')
+@respond_no_content
+def unsuspend_api_token(api_token_id):
+    """Unsuspend the API token."""
+    authn_api_service.unsuspend_api_token(api_token_id)
+
+    flash_success(gettext('API token has been unsuspended.'))
+
+
 @blueprint.delete('/api_tokens/<uuid:api_token_id>')
 @permission_required('api.administrate')
 @respond_no_content
 def delete_api_token(api_token_id):
-    """Delete an API token."""
+    """Delete the API token."""
     authn_api_service.delete_api_token(api_token_id)
 
     flash_success(gettext('API token has been deleted.'))

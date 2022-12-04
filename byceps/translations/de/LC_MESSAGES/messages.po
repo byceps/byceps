@@ -500,6 +500,14 @@ msgid "API token has been created."
 msgstr "API-Token wurde angelegt."
 
 #: byceps/blueprints/admin/api/views.py:86
+msgid "API token has been suspended."
+msgstr "API-Token wurde gesperrt."
+
+#: byceps/blueprints/admin/api/views.py:96
+msgid "API token has been unsuspended."
+msgstr "API-Token wurde entgesperrt."
+
+#: byceps/blueprints/admin/api/views.py:106
 msgid "API token has been deleted."
 msgstr "API-Token wurde gelöscht."
 
@@ -616,15 +624,31 @@ msgstr "Anzeigen"
 msgid "Copy to clipboard"
 msgstr "In Zwischenablage kopieren"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:118
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:119
+msgid "Unsuspend API token"
+msgstr "API-Token entsperren"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:121
+msgid "Suspend API token"
+msgstr "API-Token sperren"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:123
 msgid "Delete API token"
 msgstr "API-Token löschen"
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:128
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:133
 msgid "No API tokens defined."
 msgstr "Es sind keine API-Tokens konfiguriert."
 
-#: byceps/blueprints/admin/api/templates/admin/api/index.html:141
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:146
+msgid "Suspend API token?"
+msgstr "API-Token sperren?"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:147
+msgid "Unsuspend API token?"
+msgstr "API-Token entsperren?"
+
+#: byceps/blueprints/admin/api/templates/admin/api/index.html:148
 msgid "Delete API token?"
 msgstr "API-Token löschen?"
 

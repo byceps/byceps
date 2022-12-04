@@ -115,6 +115,11 @@ code {
       <div>
 
         <div class="button-row button-row--compact button-row--right">
+          {%- if api_token.suspended %}
+          <a class="button button--compact" href="{{ url_for('.unsuspend_api_token', api_token_id=api_token.id) }}" data-action="unsuspend-api-token" title="{{ _('Unsuspend API token') }}">{{ render_icon('enabled') }}</a>
+          {%- else %}
+          <a class="button button--compact" href="{{ url_for('.suspend_api_token', api_token_id=api_token.id) }}" data-action="suspend-api-token" title="{{ _('Suspend API token') }}">{{ render_icon('disabled') }}</a>
+          {%- endif %}
           <a class="button button--compact" href="{{ url_for('.delete_api_token', api_token_id=api_token.id) }}" data-action="delete-api-token" title="{{ _('Delete API token') }}">{{ render_icon('delete') }}</a>
         </div>
 
@@ -138,6 +143,8 @@ code {
   {%- endfor %}
 
   onDomReady(() => {
+    confirmed_post_on_click_then_reload('[data-action="suspend-api-token"]', '{{ _('Suspend API token?') }}');
+    confirmed_post_on_click_then_reload('[data-action="unsuspend-api-token"]', '{{ _('Unsuspend API token?') }}');
     confirmed_delete_on_click_then_reload('[data-action="delete-api-token"]', '{{ _('Delete API token?') }}');
   });
 </script>
