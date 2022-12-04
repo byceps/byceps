@@ -11,7 +11,7 @@ Provide and register custom template filters.
 from flask_babel import gettext
 from jinja2 import pass_eval_context, Undefined
 from jinja2.filters import do_trim
-from markupsafe import Markup
+from markupsafe import escape, Markup
 
 
 @pass_eval_context
@@ -22,16 +22,23 @@ def dim(eval_ctx, value):
 
 
 def _dim(value):
-    return f'<span class="dimmed">{value}</span>'
+    return f'<span class="dimmed">{escape(value)}</span>'
 
 
 @pass_eval_context
 def fallback(eval_ctx, value, fallback=None):
     if not isinstance(value, Undefined) and value:
         result = do_trim(value)
+
+        if eval_ctx.autoescape:
+            result = escape(result)
     else:
         if fallback is None:
             fallback = gettext('not specified')
+
+        if eval_ctx.autoescape:
+            fallback = escape(fallback)
+
         result = _dim(fallback)
 
     return _wrap_markup_on_autoescape(eval_ctx, result)

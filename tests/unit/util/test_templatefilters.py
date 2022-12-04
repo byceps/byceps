@@ -13,43 +13,52 @@ from byceps.util.templatefilters import dim, fallback
 
 def test_dim():
     filters = {'dim': dim}
-    context = {'value': 'not that relevant'}
+    context = {'value': 'not <em>that</em> relevant'}
     actual = render_template('{{ value|dim }}', filters, context)
-    assert actual == '<span class="dimmed">not that relevant</span>'
+    assert (
+        actual
+        == '<span class="dimmed">not &lt;em&gt;that&lt;/em&gt; relevant</span>'
+    )
 
 
 @pytest.mark.parametrize(
     'source, context, expected',
     [
         (
+            # Escape value.
             '{{ value|fallback }}',
-            {'value': 'Hello from the other side.'},
-            'Hello from the other side.',
+            {'value': 'Hello from the <em>other</em> side.'},
+            'Hello from the &lt;em&gt;other&lt;/em&gt; side.',
         ),
         (
+            # Ignore fallback if value is available.
             '{{ value|fallback("goodbye") }}',
-            {'value': 'Hello from the other side.'},
-            'Hello from the other side.',
+            {'value': 'Hello from the <em>other</em> side.'},
+            'Hello from the &lt;em&gt;other&lt;/em&gt; side.',
         ),
         (
+            # Use default fallback if value is empty string.
             '{{ value|fallback }}',
             {'value': ''},
             '<span class="dimmed">not specified</span>',
         ),
         (
+            # Use custom fallback if value is empty string.
             '{{ value|fallback("dunno") }}',
             {'value': ''},
             '<span class="dimmed">dunno</span>',
         ),
         (
+            # Use default fallback if name is undefined.
             '{{ value|fallback }}',
             {},  # `Undefined` in template
             '<span class="dimmed">not specified</span>',
         ),
         (
-            '{{ value|fallback("Nothing here!") }}',
+            # Use custom, escaped fallback if name is undefined.
+            '{{ value|fallback("<b>Nothing</b> here!") }}',
             {},  # `Undefined` in template
-            '<span class="dimmed">Nothing here!</span>',
+            '<span class="dimmed">&lt;b&gt;Nothing&lt;/b&gt; here!</span>',
         ),
     ],
 )
