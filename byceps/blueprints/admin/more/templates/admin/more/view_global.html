@@ -13,6 +13,7 @@
   <div class="grid">
   {%- with items = [
     (_('Permissions'), 'permission', url_for('authorization_admin.role_index'), 'role.view'),
+    (_('Languages'), 'language', url_for('language_admin.index'), 'admin.maintain'),
     (_('Global Snippets'), 'snippet', url_for('snippet_admin.index_for_scope', scope_type='global', scope_name='global'), 'snippet.view'),
     (_('Consents'), 'consent', url_for('consent_admin.index'), 'consent.administrate'),
     (_('Newsletters'), 'email', url_for('newsletter_admin.index'), 'newsletter.view_subscriptions'),
