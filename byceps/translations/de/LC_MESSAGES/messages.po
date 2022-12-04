@@ -1621,7 +1621,7 @@ msgstr "Kataloge"
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/view.html:122
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/_order_form_articles.html:3
 #: byceps/blueprints/site/shop/order/templates/site/shop/order/list_articles.html:14
-#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:72
+#: byceps/blueprints/site/shop/orders/templates/site/shop/orders/view.html:76
 msgid "Articles"
 msgstr "Artikel"
 
@@ -2182,7 +2182,7 @@ msgstr "Einstellungen bearbeiten"
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:118
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:152
 #: byceps/blueprints/site/guest_server/templates/site/guest_server/index.html:165
-#: byceps/util/templatefilters.py:35
+#: byceps/util/templatefilters.py:37
 msgid "not specified"
 msgstr "nicht angegeben"
 
@@ -5899,19 +5899,19 @@ msgstr "Aktiv"
 msgid "Webhook has been created."
 msgstr "Der Webhook wurde erstellt."
 
-#: byceps/blueprints/admin/webhook/views.py:138
+#: byceps/blueprints/admin/webhook/views.py:140
 msgid "Webhook has been updated."
 msgstr "Der Webhook wurde aktualisiert."
 
-#: byceps/blueprints/admin/webhook/views.py:152
+#: byceps/blueprints/admin/webhook/views.py:154
 msgid "Webhook has been removed."
 msgstr "Der Webhook wurde gelöscht."
 
-#: byceps/blueprints/admin/webhook/views.py:166
+#: byceps/blueprints/admin/webhook/views.py:168
 msgid "Webhook call has been successful."
 msgstr "Der Webhook-Aufruf war erfolgreich."
 
-#: byceps/blueprints/admin/webhook/views.py:170
+#: byceps/blueprints/admin/webhook/views.py:172
 msgid "Webhook call failed:"
 msgstr "Der Webhook-Aufruf ist fehlgeschlagen:"
 
@@ -6706,37 +6706,37 @@ msgstr "Party-Historie"
 msgid "There haven't been any parties yet."
 msgstr "Es haben noch keine Partys stattgefunden."
 
-#: byceps/blueprints/site/seating/views.py:97
-#: byceps/blueprints/site/seating/views.py:190
-#: byceps/blueprints/site/seating/views.py:260
+#: byceps/blueprints/site/seating/views.py:99
+#: byceps/blueprints/site/seating/views.py:192
+#: byceps/blueprints/site/seating/views.py:262
 msgid "Seat reservations cannot be changed at this time."
 msgstr "Sitzplatzreservierungen können derzeit nicht verändert werden."
 
-#: byceps/blueprints/site/seating/views.py:165
+#: byceps/blueprints/site/seating/views.py:167
 #, python-format
 msgid "Ticket ID \"%(selected_ticket_id_arg)s\" not found."
 msgstr "Ticket ID \"%(selected_ticket_id_arg)s\" not found."
 
-#: byceps/blueprints/site/seating/views.py:173
+#: byceps/blueprints/site/seating/views.py:175
 #, python-format
 msgid "Ticket \"%(selected_ticket_code)s\" is revoked."
 msgstr "Ticket \"%(selected_ticket_code)s\" wurde widerrufen."
 
-#: byceps/blueprints/site/seating/views.py:203
-#: byceps/blueprints/site/seating/views.py:282
+#: byceps/blueprints/site/seating/views.py:205
+#: byceps/blueprints/site/seating/views.py:284
 #, python-format
 msgid "You are not authorized to manage the seat for ticket %(ticket_code)s."
 msgstr ""
 "Du bist nicht berechtigt, den Sitzplatz für Ticket %(ticket_code)s zu "
 "verwalten."
 
-#: byceps/blueprints/site/seating/views.py:214
+#: byceps/blueprints/site/seating/views.py:216
 #, python-format
 msgid "%(seat_label)s is already occupied."
 msgstr "%(seat_label)s ist bereits belegt."
 
-#: byceps/blueprints/site/seating/views.py:226
-#: byceps/blueprints/site/seating/views.py:295
+#: byceps/blueprints/site/seating/views.py:228
+#: byceps/blueprints/site/seating/views.py:297
 #, python-format
 msgid ""
 "Ticket %(ticket_code)s belongs to a bundle and cannot be managed "
@@ -6745,7 +6745,7 @@ msgstr ""
 "Ticket %(ticket_code)s gehört zu einem Paket und kann nicht einzeln "
 "verwaltet werden."
 
-#: byceps/blueprints/site/seating/views.py:234
+#: byceps/blueprints/site/seating/views.py:236
 #, python-format
 msgid ""
 "Ticket %(ticket_code)s and seat \"%(seat_label)s\" belong to different "
@@ -6754,17 +6754,17 @@ msgstr ""
 "Ticket %(ticket_code)s und %(seat_label)s haben unterschiedliche "
 "Kategorien."
 
-#: byceps/blueprints/site/seating/views.py:245
+#: byceps/blueprints/site/seating/views.py:247
 #, python-format
 msgid "%(seat_label)s has been occupied with ticket %(ticket_code)s."
 msgstr "%(seat_label)s wurde mit Ticket %(ticket_code)s reserviert."
 
-#: byceps/blueprints/site/seating/views.py:268
+#: byceps/blueprints/site/seating/views.py:270
 #, python-format
 msgid "Ticket %(ticket_code)s occupies no seat."
 msgstr "Ticket %(ticket_code)s belegt keinen Sitzplatz."
 
-#: byceps/blueprints/site/seating/views.py:303
+#: byceps/blueprints/site/seating/views.py:305
 #, python-format
 msgid "%(seat_label)s has been released."
 msgstr "%(seat_label)s wurde freigegeben."
