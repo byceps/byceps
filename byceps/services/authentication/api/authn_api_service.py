@@ -63,7 +63,7 @@ def get_all_api_tokens() -> list[ApiToken]:
 
 
 def delete_api_token(api_token_id: UUID) -> None:
-    """Delete user's credentials."""
+    """Delete the API token."""
     db.session.execute(
         delete(DbApiToken)
         .where(DbApiToken.id == api_token_id)
