@@ -9,8 +9,8 @@ Provide and register custom template filters.
 """
 
 from flask_babel import gettext
-from jinja2 import pass_eval_context
-from jinja2.filters import do_default, do_trim
+from jinja2 import pass_eval_context, Undefined
+from jinja2.filters import do_trim
 from markupsafe import Markup
 
 
@@ -27,9 +27,8 @@ def _dim(value):
 
 @pass_eval_context
 def fallback(eval_ctx, value, fallback=None):
-    defaulted = do_trim(do_default(value, '', True))
-    if defaulted:
-        result = value
+    if not isinstance(value, Undefined) and value:
+        result = do_trim(value)
     else:
         if fallback is None:
             fallback = gettext('not specified')
