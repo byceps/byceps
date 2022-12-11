@@ -26,7 +26,7 @@ from . import authz_service
 # import
 
 
-def import_from_file(path: Path) -> int:
+def import_roles(path: Path) -> int:
     """Import roles and their assigned permissions from TOML."""
     data = rtoml.load(path)
 
@@ -53,7 +53,7 @@ def _create_roles(roles: list[dict[str, str | list[str]]]) -> None:
 # export
 
 
-def export() -> str:
+def export_roles() -> str:
     """Export roles and their assigned permissions as TOML."""
     roles = list(_collect_roles())
 

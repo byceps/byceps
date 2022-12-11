@@ -14,4 +14,4 @@ from ...services.authorization import impex_service
 @with_appcontext
 def export_roles() -> None:
     """Export authorization roles."""
-    print(impex_service.export())
+    print(impex_service.export_roles())

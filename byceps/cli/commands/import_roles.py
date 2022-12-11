@@ -20,5 +20,5 @@ from ...services.authorization import impex_service
 def import_roles(data_file: Path) -> None:
     """Import authorization roles."""
     click.echo('Importing roles ... ', nl=False)
-    role_count = impex_service.import_from_file(data_file)
+    role_count = impex_service.import_roles(data_file)
     click.secho(f'done. Imported {role_count} roles.', fg='green')
