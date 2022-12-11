@@ -15,5 +15,6 @@ from ...services.authorization import impex_service
 @with_appcontext
 def import_roles(data_file) -> None:
     """Import authorization roles."""
+    click.echo('Importing roles ... ', nl=False)
     role_count = impex_service.import_from_file(data_file)
-    click.secho(f'Imported {role_count} roles.', fg='green')
+    click.secho(f'done. Imported {role_count} roles.', fg='green')

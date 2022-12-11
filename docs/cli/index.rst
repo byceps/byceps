@@ -51,7 +51,7 @@ file. To import it:
 .. code-block:: sh
 
     (venv)$ BYCEPS_CONFIG=../config/development.py byceps import-roles scripts/data/roles.toml
-    Imported 35 roles.
+    Importing roles ... done. Imported 35 roles.
 
 
 Export Authorization Roles
