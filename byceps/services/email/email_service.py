@@ -52,9 +52,7 @@ def send_email(
     send(sender, recipients, subject, body)
 
 
-def send(
-    sender: str, recipients: list[str], subject: str, body: str
-) -> None:
+def send(sender: str, recipients: list[str], subject: str, body: str) -> None:
     """Assemble and send e-mail."""
     if current_app.config.get('MAIL_SUPPRESS_SEND', False):
         current_app.logger.debug('Suppressing sending of email.')

@@ -14,6 +14,7 @@ from flask_babel import gettext
 try:
     from .smileys import get_smileys
 except ModuleNotFoundError:
+
     def get_smileys():
         return []
 
@@ -21,6 +22,7 @@ except ModuleNotFoundError:
 try:
     from .smileys import replace_smileys as _replace_smileys
 except ModuleNotFoundError:
+
     def _replace_smileys(text):
         return text
 

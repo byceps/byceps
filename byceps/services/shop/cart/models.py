@@ -18,6 +18,7 @@ from ..article.transfer.models import Article
 @dataclass(frozen=True)
 class CartItem:
     """An article with a quantity."""
+
     article: Article
     quantity: int
     line_amount: Decimal = field(init=False)
@@ -26,7 +27,9 @@ class CartItem:
         if self.quantity < 1:
             raise ValueError('Quantity must be a positive number.')
 
-        object.__setattr__(self, 'line_amount', self.article.price * self.quantity)
+        object.__setattr__(
+            self, 'line_amount', self.article.price * self.quantity
+        )
 
 
 class Cart:

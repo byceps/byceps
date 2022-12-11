@@ -31,7 +31,6 @@ db.JSONB = JSONB
 
 
 class Uuid(UUID):
-
     def __init__(self):
         super().__init__(as_uuid=True)
 
