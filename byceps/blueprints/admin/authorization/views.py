@@ -47,7 +47,9 @@ def role_index():
         authz_service.get_all_roles_with_permissions_and_users()
     )
 
-    user_ids = {user.id for _, _, users in roles_permissions_users for user in users}
+    user_ids = {
+        user.id for _, _, users in roles_permissions_users for user in users
+    }
     users = user_service.get_users(user_ids, include_avatars=True)
     users_by_id = user_service.index_users_by_id(users)
 

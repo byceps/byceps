@@ -35,7 +35,6 @@ def validate_user_screen_name(form, field):
 
 
 class OrgaFlagCreateForm(LocalizedForm):
-
     def __init__(self, *args, brand_id=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.brand_id = brand_id

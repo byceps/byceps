@@ -50,7 +50,6 @@ def assemble_articles_order_form(article_compilation):
     """Dynamically extend the order form with one field per article."""
 
     class ArticlesOrderForm(OrderForm):
-
         def get_field_for_article(self, article):
             name = _generate_field_name(article)
             return getattr(self, name)

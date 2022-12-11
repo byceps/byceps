@@ -147,7 +147,9 @@ def _get_additional_data_for_ticket_bundle_created(
     bundle_id = log_entry.data['ticket_bundle_id']
     category_id = log_entry.data['ticket_bundle_category_id']
     ticket_quantity = log_entry.data['ticket_bundle_ticket_quantity']
-    _owner_id = log_entry.data['ticket_bundle_owner_id']  # Available, but currently not used.
+    _owner_id = log_entry.data[
+        'ticket_bundle_owner_id'
+    ]  # Available, but currently not used.
 
     category = ticket_category_service.find_category(category_id)
     category_title = category.title if (category is not None) else None
@@ -180,8 +182,12 @@ def _get_additional_data_for_ticket_created(
 ) -> OrderLogEntryData:
     ticket_id = log_entry.data['ticket_id']
     ticket_code = log_entry.data['ticket_code']
-    _category_id = log_entry.data['ticket_category_id']  # Available, but currently not used.
-    _owner_id = log_entry.data['ticket_owner_id']  # Available, but currently not used.
+    _category_id = log_entry.data[
+        'ticket_category_id'
+    ]  # Available, but currently not used.
+    _owner_id = log_entry.data[
+        'ticket_owner_id'
+    ]  # Available, but currently not used.
 
     return {
         'ticket_id': ticket_id,

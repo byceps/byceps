@@ -144,7 +144,9 @@ def menu_update(menu_id):
     language_code = form.language_code.data.strip()
     hidden = form.hidden.data
 
-    menu = site_navigation_service.update_menu(menu.id, name, language_code, hidden)
+    menu = site_navigation_service.update_menu(
+        menu.id, name, language_code, hidden
+    )
 
     flash_success(gettext('Menu "%(name)s" has been updated.', name=menu.name))
 
