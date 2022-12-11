@@ -30,9 +30,7 @@ def delete_match(match_id: MatchID) -> None:
     if match is None:
         raise ValueError(f'Unknown match ID "{match_id}"')
 
-    db.session.query(DbMatch) \
-        .filter_by(id=match_id) \
-        .delete()
+    db.session.query(DbMatch).filter_by(id=match_id).delete()
 
     db.session.commit()
 

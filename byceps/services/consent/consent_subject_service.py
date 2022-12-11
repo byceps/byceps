@@ -42,10 +42,9 @@ def create_subject(
 
 def get_subjects(subject_ids: set[SubjectID]) -> set[Subject]:
     """Return the subjects."""
-    rows = db.session \
-        .query(DbSubject) \
-        .filter(DbSubject.id.in_(subject_ids)) \
-        .all()
+    rows = (
+        db.session.query(DbSubject).filter(DbSubject.id.in_(subject_ids)).all()
+    )
 
     subjects = {_db_entity_to_subject(row) for row in rows}
 
@@ -71,20 +70,14 @@ def get_subjects_with_consent_counts(
     *, limit_to_subject_ids: Optional[set[SubjectID]] = None
 ) -> dict[Subject, int]:
     """Return subjects and their consent counts."""
-    query = db.session \
-        .query(
-            DbSubject,
-            db.func.count(DbConsent.user_id)
-        ) \
-        .outerjoin(DbConsent)
+    query = db.session.query(
+        DbSubject, db.func.count(DbConsent.user_id)
+    ).outerjoin(DbConsent)
 
     if limit_to_subject_ids is not None:
-        query = query \
-            .filter(DbSubject.id.in_(limit_to_subject_ids))
+        query = query.filter(DbSubject.id.in_(limit_to_subject_ids))
 
-    rows = query \
-        .group_by(DbSubject.id) \
-        .all()
+    rows = query.group_by(DbSubject.id).all()
 
     return {
         _db_entity_to_subject(subject): consent_count
@@ -116,31 +109,32 @@ def create_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
 
 def delete_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
     """Delete a brand requirement."""
-    db.session.query(DbBrandRequirement) \
-        .filter_by(brand_id=brand_id) \
-        .filter_by(subject_id=subject_id) \
-        .delete()
+    db.session.query(DbBrandRequirement).filter_by(brand_id=brand_id).filter_by(
+        subject_id=subject_id
+    ).delete()
 
     db.session.commit()
 
 
 def get_subject_ids_required_for_brand(brand_id: BrandID) -> set[SubjectID]:
     """Return the IDs of the subjects required for the brand."""
-    rows = db.session \
-        .query(DbSubject.id) \
-        .join(DbBrandRequirement) \
-        .filter(DbBrandRequirement.brand_id == brand_id) \
+    rows = (
+        db.session.query(DbSubject.id)
+        .join(DbBrandRequirement)
+        .filter(DbBrandRequirement.brand_id == brand_id)
         .all()
+    )
 
     return {row[0] for row in rows}
 
 
 def get_subjects_required_for_brand(brand_id: BrandID) -> set[Subject]:
     """Return the subjects required for the brand."""
-    rows = db.session \
-        .query(DbSubject) \
-        .join(DbBrandRequirement) \
-        .filter(DbBrandRequirement.brand_id == brand_id) \
+    rows = (
+        db.session.query(DbSubject)
+        .join(DbBrandRequirement)
+        .filter(DbBrandRequirement.brand_id == brand_id)
         .all()
+    )
 
     return {_db_entity_to_subject(row) for row in rows}

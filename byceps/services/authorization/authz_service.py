@@ -217,8 +217,7 @@ def get_all_roles_with_permissions_and_users() -> list[
     """Return all roles with titles, permission IDs, and assigned users."""
     db_roles = (
         db.session.scalars(
-            select(DbRole)
-            .options(
+            select(DbRole).options(
                 db.undefer(DbRole.title),
                 db.joinedload(DbRole.user_roles).joinedload(DbUserRole.user),
             )

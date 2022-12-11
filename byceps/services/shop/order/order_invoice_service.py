@@ -42,8 +42,7 @@ def add_invoice(
 def get_invoices_for_order(order_id: OrderID) -> list[Invoice]:
     """Return the invoices for that order."""
     db_invoices = db.session.scalars(
-        select(DbInvoice)
-        .filter_by(order_id=order_id)
+        select(DbInvoice).filter_by(order_id=order_id)
     ).all()
 
     return [_db_entity_to_invoice(db_invoice) for db_invoice in db_invoices]

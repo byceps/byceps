@@ -130,8 +130,7 @@ def find_menu_aggregate(menu_id: MenuID) -> Optional[MenuAggregate]:
         return None
 
     db_items = db.session.scalars(
-        select(DbItem)
-        .filter(DbItem.menu_id == db_menu.id)
+        select(DbItem).filter(DbItem.menu_id == db_menu.id)
     )
 
     return _db_entity_to_menu_aggregate(db_menu, db_items)

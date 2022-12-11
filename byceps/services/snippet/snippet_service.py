@@ -145,25 +145,26 @@ def find_snippet(snippet_id: SnippetID) -> Optional[DbSnippet]:
 
 def get_snippets(snippet_ids: set[SnippetID]) -> list[DbSnippet]:
     """Return these snippets."""
-    return db.session \
-        .query(DbSnippet) \
-        .filter(DbSnippet.id.in_(snippet_ids)) \
-        .all()
+    return (
+        db.session.query(DbSnippet).filter(DbSnippet.id.in_(snippet_ids)).all()
+    )
 
 
 def get_snippets_for_scope_with_current_versions(
     scope: Scope,
 ) -> list[DbSnippet]:
     """Return all snippets with their current versions for that scope."""
-    return db.session \
-        .query(DbSnippet) \
-        .filter_by(scope_type=scope.type_) \
-        .filter_by(scope_name=scope.name) \
+    return (
+        db.session.query(DbSnippet)
+        .filter_by(scope_type=scope.type_)
+        .filter_by(scope_name=scope.name)
         .options(
-            db.joinedload(DbSnippet.current_version_association)
-                .joinedload(DbCurrentVersionAssociation.version)
-        ) \
+            db.joinedload(DbSnippet.current_version_association).joinedload(
+                DbCurrentVersionAssociation.version
+            )
+        )
         .all()
+    )
 
 
 def find_snippet_version(version_id: SnippetVersionID) -> Optional[DbVersion]:
@@ -177,44 +178,45 @@ def find_current_version_of_snippet_with_name(
     """Return the current version of the snippet with that name in that
     scope, or `None` if not found.
     """
-    return db.session \
-        .query(DbVersion) \
-        .join(DbCurrentVersionAssociation) \
-        .join(DbSnippet) \
-            .filter(DbSnippet.scope_type == scope.type_) \
-            .filter(DbSnippet.scope_name == scope.name) \
-            .filter(DbSnippet.name == name) \
+    return (
+        db.session.query(DbVersion)
+        .join(DbCurrentVersionAssociation)
+        .join(DbSnippet)
+        .filter(DbSnippet.scope_type == scope.type_)
+        .filter(DbSnippet.scope_name == scope.name)
+        .filter(DbSnippet.name == name)
         .one_or_none()
+    )
 
 
 def get_versions(snippet_id: SnippetID) -> list[DbVersion]:
     """Return all versions of that snippet, sorted from most recent to
     oldest.
     """
-    return db.session \
-        .query(DbVersion) \
-        .filter_by(snippet_id=snippet_id) \
-        .order_by(DbVersion.created_at.desc()) \
+    return (
+        db.session.query(DbVersion)
+        .filter_by(snippet_id=snippet_id)
+        .order_by(DbVersion.created_at.desc())
         .all()
+    )
 
 
 def search_snippets(
     search_term: str, scope: Optional[Scope]
 ) -> list[DbVersion]:
     """Search in (the latest versions of) snippets."""
-    q = db.session \
-        .query(DbVersion) \
-        .join(DbCurrentVersionAssociation) \
+    q = (
+        db.session.query(DbVersion)
+        .join(DbCurrentVersionAssociation)
         .join(DbSnippet)
+    )
 
     if scope is not None:
-        q = q \
-            .filter(DbSnippet.scope_type == scope.type_) \
-            .filter(DbSnippet.scope_name == scope.name)
+        q = q.filter(DbSnippet.scope_type == scope.type_).filter(
+            DbSnippet.scope_name == scope.name
+        )
 
-    return q \
-            .filter(DbVersion.body.contains(search_term)) \
-        .all()
+    return q.filter(DbVersion.body.contains(search_term)).all()
 
 
 class SnippetNotFound(Exception):

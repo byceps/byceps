@@ -97,13 +97,9 @@ def update_site(
 
 def delete_site(site_id: SiteID) -> None:
     """Delete a site."""
-    db.session.query(DbSetting) \
-        .filter_by(site_id=site_id) \
-        .delete()
+    db.session.query(DbSetting).filter_by(site_id=site_id).delete()
 
-    db.session.query(DbSite) \
-        .filter_by(id=site_id) \
-        .delete()
+    db.session.query(DbSite).filter_by(id=site_id).delete()
 
     db.session.commit()
 
@@ -158,10 +154,7 @@ def get_sites(site_ids: set[SiteID]) -> list[Site]:
 
 def get_sites_for_brand(brand_id: BrandID) -> set[Site]:
     """Return the sites for that brand."""
-    sites = db.session \
-        .query(DbSite) \
-        .filter_by(brand_id=brand_id) \
-        .all()
+    sites = db.session.query(DbSite).filter_by(brand_id=brand_id).all()
 
     return {_db_entity_to_site(site) for site in sites}
 
@@ -178,10 +171,7 @@ def get_current_sites(
     if include_brands:
         query = query.options(db.joinedload(DbSite.brand))
 
-    sites = query \
-        .filter_by(enabled=True) \
-        .filter_by(archived=False) \
-        .all()
+    sites = query.filter_by(enabled=True).filter_by(archived=False).all()
 
     transform: Callable[[DbSite], Site | SiteWithBrand]
     if include_brands:

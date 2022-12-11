@@ -36,9 +36,7 @@ def create_list(list_id: ListID, title: str) -> List:
 
 def delete_list(list_id: ListID) -> None:
     """Delete a list."""
-    db.session.query(DbList) \
-        .filter_by(id=list_id) \
-        .delete()
+    db.session.query(DbList).filter_by(id=list_id).delete()
 
     db.session.commit()
 

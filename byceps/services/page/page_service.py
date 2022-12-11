@@ -237,8 +237,9 @@ def _get_db_versions(page_id: PageID) -> list[DbVersion]:
 def find_current_version_id(page_id: PageID) -> Optional[VersionID]:
     """Return the ID of current version of the page."""
     return db.session.scalar(
-        select(DbCurrentVersionAssociation.version_id)
-        .filter(DbCurrentVersionAssociation.page_id == page_id)
+        select(DbCurrentVersionAssociation.version_id).filter(
+            DbCurrentVersionAssociation.page_id == page_id
+        )
     )
 
 
@@ -286,8 +287,7 @@ def find_current_version_for_url_path(
 def get_url_paths_by_page_name_for_site(site_id: SiteID) -> dict[str, str]:
     """Return mapping from page names to URL paths for that site."""
     rows = db.session.execute(
-        select(DbPage.name, DbPage.url_path)
-        .filter_by(site_id=site_id)
+        select(DbPage.name, DbPage.url_path).filter_by(site_id=site_id)
     ).all()
 
     return {name: url_path for name, url_path in rows}
@@ -320,8 +320,9 @@ def get_pages_for_site_with_current_versions(site_id: SiteID) -> list[DbPage]:
         select(DbPage)
         .filter_by(site_id=site_id)
         .options(
-            db.joinedload(DbPage.current_version_association)
-                .joinedload(DbCurrentVersionAssociation.version),
+            db.joinedload(DbPage.current_version_association).joinedload(
+                DbCurrentVersionAssociation.version
+            ),
             db.joinedload(DbPage.nav_menu),
         )
     ).all()

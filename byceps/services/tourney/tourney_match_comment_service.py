@@ -66,16 +66,12 @@ def get_comments(
     include_hidden: bool = False,
 ) -> list[MatchComment]:
     """Return comments on the match, ordered chronologically."""
-    query = db.session \
-        .query(DbMatchComment) \
-        .filter_by(match_id=match_id)
+    query = db.session.query(DbMatchComment).filter_by(match_id=match_id)
 
     if not include_hidden:
         query = query.filter_by(hidden=False)
 
-    db_comments = query \
-        .order_by(DbMatchComment.created_at) \
-        .all()
+    db_comments = query.order_by(DbMatchComment.created_at).all()
 
     # creators
     creator_ids = {comment.created_by_id for comment in db_comments}

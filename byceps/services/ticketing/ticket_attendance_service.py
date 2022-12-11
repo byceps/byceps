@@ -94,8 +94,9 @@ def get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
     ).all()
 
     archived_attendance_rows = db.session.scalars(
-        select(DbArchivedAttendance.user_id)
-        .filter(DbArchivedAttendance.party_id == party_id)
+        select(DbArchivedAttendance.user_id).filter(
+            DbArchivedAttendance.party_id == party_id
+        )
     ).all()
 
     return set(ticket_rows + archived_attendance_rows)

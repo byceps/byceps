@@ -50,8 +50,7 @@ def get_subscribers(list_id: ListID) -> Iterable[Subscriber]:
     are currently subscribed to the list.
     """
     subscriber_ids = db.session.scalars(
-        select(DbSubscription.user_id)
-        .filter_by(list_id=list_id)
+        select(DbSubscription.user_id).filter_by(list_id=list_id)
     ).all()
 
     return _get_subscriber_details(set(subscriber_ids))
@@ -62,18 +61,19 @@ def _get_subscriber_details(user_ids: set[UserID]) -> Iterator[Subscriber]:
     if not user_ids:
         return []
 
-    rows = db.session \
-        .query(
+    rows = (
+        db.session.query(
             DbUser.screen_name,
             DbUser.email_address,
-        ) \
-        .filter(DbUser.id.in_(user_ids)) \
-        .filter(DbUser.email_address.is_not(None)) \
-        .filter_by(initialized=True) \
-        .filter_by(email_address_verified=True) \
-        .filter_by(suspended=False) \
-        .filter_by(deleted=False) \
+        )
+        .filter(DbUser.id.in_(user_ids))
+        .filter(DbUser.email_address.is_not(None))
+        .filter_by(initialized=True)
+        .filter_by(email_address_verified=True)
+        .filter_by(suspended=False)
+        .filter_by(deleted=False)
         .all()
+    )
 
     for row in rows:
         yield Subscriber(
@@ -86,10 +86,9 @@ def get_subscription_updates_for_user(
     user_id: UserID,
 ) -> list[DbSubscriptionUpdate]:
     """Return subscription updates made by the user, for any list."""
-    return db.session \
-        .query(DbSubscriptionUpdate) \
-        .filter_by(user_id=user_id) \
-        .all()
+    return (
+        db.session.query(DbSubscriptionUpdate).filter_by(user_id=user_id).all()
+    )
 
 
 def is_subscribed(user_id: UserID, list_id: ListID) -> bool:

@@ -35,9 +35,7 @@ def delete_participant(participant_id: ParticipantID) -> None:
     if participant is None:
         raise ValueError(f'Unknown participant ID "{participant_id}"')
 
-    db.session.query(DbParticipant) \
-        .filter_by(id=participant_id) \
-        .delete()
+    db.session.query(DbParticipant).filter_by(id=participant_id).delete()
 
     db.session.commit()
 
@@ -54,10 +52,9 @@ def find_participant(participant_id: ParticipantID) -> Optional[Participant]:
 
 def get_participants_for_tourney(tourney_id: TourneyID) -> set[Participant]:
     """Return the participants of the tourney."""
-    participants = db.session \
-        .query(DbParticipant) \
-        .filter_by(tourney_id=tourney_id) \
-        .all()
+    participants = (
+        db.session.query(DbParticipant).filter_by(tourney_id=tourney_id).all()
+    )
 
     return {
         _db_entity_to_participant(participant) for participant in participants

@@ -43,8 +43,7 @@ def create_api_token(
 def find_api_token_by_token(token: str) -> Optional[ApiToken]:
     """Return the API token for that token, or nothing if not found."""
     db_api_token = db.session.execute(
-        select(DbApiToken)
-        .filter_by(token=token)
+        select(DbApiToken).filter_by(token=token)
     ).scalar_one_or_none()
 
     if db_api_token is None:

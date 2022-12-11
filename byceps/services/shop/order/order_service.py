@@ -746,8 +746,12 @@ def get_orders_for_shop_paginated(
                 )
 
     if only_processed is not None:
-        items_stmt = items_stmt.filter(DbOrder.processing_required == True)  # noqa: E712
-        count_stmt = count_stmt.filter(DbOrder.processing_required == True)  # noqa: E712
+        items_stmt = items_stmt.filter(
+            DbOrder.processing_required == True  # noqa: E712
+        )
+        count_stmt = count_stmt.filter(
+            DbOrder.processing_required == True  # noqa: E712
+        )
 
         if only_processed:
             items_stmt = items_stmt.filter(DbOrder.processed_at.is_not(None))

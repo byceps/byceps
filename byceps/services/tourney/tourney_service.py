@@ -84,9 +84,7 @@ def delete_tourney(tourney_id: TourneyID) -> None:
     """Delete a tourney."""
     tourney = get_tourney(tourney_id)
 
-    db.session.query(DbTourney) \
-        .filter_by(id=tourney.id) \
-        .delete()
+    db.session.query(DbTourney).filter_by(id=tourney.id).delete()
 
     db.session.commit()
 
@@ -129,13 +127,16 @@ def _get_db_tourney(tourney_id: TourneyID) -> DbTourney:
 
 def get_tourneys_for_party(party_id: PartyID) -> list[TourneyWithCategory]:
     """Return the tourneys for that party."""
-    rows = db.session \
-        .query(DbTourney, DbTourneyCategory, db.func.count(DbParticipant.id)) \
-        .join(DbTourneyCategory) \
-        .join(DbParticipant, isouter=True) \
-        .filter(DbTourney.party_id == party_id) \
-        .group_by(DbTourney.id, DbTourneyCategory) \
+    rows = (
+        db.session.query(
+            DbTourney, DbTourneyCategory, db.func.count(DbParticipant.id)
+        )
+        .join(DbTourneyCategory)
+        .join(DbParticipant, isouter=True)
+        .filter(DbTourney.party_id == party_id)
+        .group_by(DbTourney.id, DbTourneyCategory)
         .all()
+    )
 
     return [_to_tourney_with_category(row[0], row[1], row[2]) for row in rows]
 

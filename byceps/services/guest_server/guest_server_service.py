@@ -76,8 +76,7 @@ def update_setting(
 
 def _get_db_setting(party_id: PartyID) -> Optional[DbSetting]:
     return db.session.execute(
-        select(DbSetting)
-        .filter_by(party_id=party_id)
+        select(DbSetting).filter_by(party_id=party_id)
     ).scalar_one_or_none()
 
 
@@ -172,11 +171,13 @@ def find_server(server_id: ServerID) -> Optional[Server]:
 
 def get_all_servers_for_party(party_id: PartyID) -> list[Server]:
     """Return all servers for the party."""
-    db_servers = db.session.scalars(
-        select(DbServer)
-        .filter_by(party_id=party_id)
-        .join(DbAddress)
-    ).unique().all()
+    db_servers = (
+        db.session.scalars(
+            select(DbServer).filter_by(party_id=party_id).join(DbAddress)
+        )
+        .unique()
+        .all()
+    )
 
     return [_db_entity_to_server(db_server) for db_server in db_servers]
 
@@ -185,12 +186,16 @@ def get_servers_for_owner_and_party(
     owner_id: UserID, party_id: PartyID
 ) -> list[Server]:
     """Return the servers owned by the user for the party."""
-    db_servers = db.session.scalars(
-        select(DbServer)
-        .filter_by(owner_id=owner_id)
-        .filter_by(party_id=party_id)
-        .join(DbAddress)
-    ).unique().all()
+    db_servers = (
+        db.session.scalars(
+            select(DbServer)
+            .filter_by(owner_id=owner_id)
+            .filter_by(party_id=party_id)
+            .join(DbAddress)
+        )
+        .unique()
+        .all()
+    )
 
     return [_db_entity_to_server(db_server) for db_server in db_servers]
 
@@ -209,22 +214,17 @@ def count_servers_for_owner_and_party(
 def delete_server(server_id: ServerID) -> None:
     """Delete a server and its addresses."""
     db.session.execute(
-        delete(DbAddress)
-        .where(DbAddress.server_id == server_id)
+        delete(DbAddress).where(DbAddress.server_id == server_id)
     )
 
-    db.session.execute(
-        delete(DbServer)
-        .where(DbServer.id == server_id)
-    )
+    db.session.execute(delete(DbServer).where(DbServer.id == server_id))
 
     db.session.commit()
 
 
 def _find_db_server(server_id: ServerID) -> Optional[DbServer]:
     return db.session.execute(
-        select(DbServer)
-        .filter_by(id=server_id)
+        select(DbServer).filter_by(id=server_id)
     ).scalar_one_or_none()
 
 
@@ -318,8 +318,7 @@ def update_address(
 
 def _find_db_address(address_id: AddressID) -> Optional[DbAddress]:
     return db.session.execute(
-        select(DbAddress)
-        .filter_by(id=address_id)
+        select(DbAddress).filter_by(id=address_id)
     ).scalar_one_or_none()
 
 

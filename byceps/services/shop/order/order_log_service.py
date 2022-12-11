@@ -95,7 +95,9 @@ def get_entries_by_initiator(
     db_entries = db.session.scalars(
         select(DbOrderLogEntry)
         .filter(DbOrderLogEntry.event_type.in_(event_types))
-        .filter(DbOrderLogEntry.data['initiator_id'].astext == str(initiator_id))
+        .filter(
+            DbOrderLogEntry.data['initiator_id'].astext == str(initiator_id)
+        )
         .order_by(DbOrderLogEntry.occurred_at)
     ).all()
 

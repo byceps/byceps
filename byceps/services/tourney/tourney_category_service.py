@@ -81,9 +81,7 @@ def delete_category(category_id: TourneyCategoryID) -> None:
     """Delete a category."""
     category = get_category(category_id)
 
-    db.session.query(DbTourneyCategory) \
-        .filter_by(id=category.id) \
-        .delete()
+    db.session.query(DbTourneyCategory).filter_by(id=category.id).delete()
 
     db.session.commit()
 
@@ -125,11 +123,12 @@ def _get_db_category(category_id: TourneyCategoryID) -> DbTourneyCategory:
 
 def get_categories_for_party(party_id: PartyID) -> list[TourneyCategory]:
     """Return the categories for this party."""
-    categories = db.session \
-        .query(DbTourneyCategory) \
-        .filter_by(party_id=party_id) \
-        .order_by(DbTourneyCategory.position) \
+    categories = (
+        db.session.query(DbTourneyCategory)
+        .filter_by(party_id=party_id)
+        .order_by(DbTourneyCategory.position)
         .all()
+    )
 
     return [_db_entity_to_category(category) for category in categories]
 

@@ -39,24 +39,19 @@ def consent_to_subjects(
 
 def count_consents_by_subject() -> dict[str, int]:
     """Return the number of given consents per subject."""
-    rows = db.session \
-        .query(
-            DbSubject.name,
-            db.func.count(DbConsent.user_id)
-        ) \
-        .outerjoin(DbConsent) \
-        .group_by(DbSubject.name) \
+    rows = (
+        db.session.query(DbSubject.name, db.func.count(DbConsent.user_id))
+        .outerjoin(DbConsent)
+        .group_by(DbSubject.name)
         .all()
+    )
 
     return dict(rows)
 
 
 def get_consents_by_user(user_id: UserID) -> set[Consent]:
     """Return the consents the user submitted."""
-    consents = db.session \
-        .query(DbConsent) \
-        .filter_by(user_id=user_id) \
-        .all()
+    consents = db.session.query(DbConsent).filter_by(user_id=user_id).all()
 
     return {
         Consent(
@@ -93,12 +88,9 @@ def has_user_consented_to_subject(
     user_id: UserID, subject_id: SubjectID
 ) -> bool:
     """Determine if the user has consented to the subject."""
-    return db.session \
-        .query(
-            db.session
-                .query(DbConsent)
-                .filter_by(user_id=user_id)
-                .filter_by(subject_id=subject_id)
-                .exists()
-        ) \
-        .scalar()
+    return db.session.query(
+        db.session.query(DbConsent)
+        .filter_by(user_id=user_id)
+        .filter_by(subject_id=subject_id)
+        .exists()
+    ).scalar()

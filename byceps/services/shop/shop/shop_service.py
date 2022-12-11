@@ -33,18 +33,14 @@ def create_shop(shop_id: ShopID, brand_id: BrandID, title: str) -> Shop:
 
 def delete_shop(shop_id: ShopID) -> None:
     """Delete a shop."""
-    db.session.execute(
-        delete(DbShop)
-        .where(DbShop.id == shop_id)
-    )
+    db.session.execute(delete(DbShop).where(DbShop.id == shop_id))
     db.session.commit()
 
 
 def find_shop_for_brand(brand_id: BrandID) -> Optional[Shop]:
     """Return the shop for that brand, or `None` if not found."""
     db_shop = db.session.execute(
-        select(DbShop)
-        .filter_by(brand_id=brand_id)
+        select(DbShop).filter_by(brand_id=brand_id)
     ).scalar_one_or_none()
 
     if db_shop is None:

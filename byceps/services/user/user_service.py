@@ -113,8 +113,9 @@ def get_users(
         return set()
 
     rows = db.session.execute(
-        _get_user_stmt(include_avatars)
-        .filter(DbUser.id.in_(frozenset(user_ids)))
+        _get_user_stmt(include_avatars).filter(
+            DbUser.id.in_(frozenset(user_ids))
+        )
     ).all()
 
     return {_user_row_to_dto(row) for row in rows}
@@ -483,24 +484,18 @@ def _filter_by_state(
 ) -> Select:
     if state_filter == UserStateFilter.active:
         return (
-            stmt
-            .filter_by(initialized=True)
+            stmt.filter_by(initialized=True)
             .filter_by(suspended=False)
             .filter_by(deleted=False)
         )
     elif state_filter == UserStateFilter.uninitialized:
         return (
-            stmt
-            .filter_by(initialized=False)
+            stmt.filter_by(initialized=False)
             .filter_by(suspended=False)
             .filter_by(deleted=False)
         )
     elif state_filter == UserStateFilter.suspended:
-        return (
-            stmt
-            .filter_by(suspended=True)
-            .filter_by(deleted=False)
-        )
+        return stmt.filter_by(suspended=True).filter_by(deleted=False)
     elif state_filter == UserStateFilter.deleted:
         return stmt.filter_by(deleted=True)
     else:

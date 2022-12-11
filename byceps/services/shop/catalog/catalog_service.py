@@ -130,8 +130,7 @@ def update_collection(collection_id: CollectionID, title: str) -> Collection:
 def delete_collection(collection_id: CollectionID) -> None:
     """Delete the collection."""
     db.session.execute(
-        delete(DbCollection)
-        .where(DbCollection.id == collection_id)
+        delete(DbCollection).where(DbCollection.id == collection_id)
     )
     db.session.commit()
 
@@ -201,7 +200,8 @@ def remove_article_from_collection(
 ) -> None:
     """Remove article from collection."""
     db.session.execute(
-        delete(DbCatalogArticle)
-        .where(DbCatalogArticle.id == catalog_article_id)
+        delete(DbCatalogArticle).where(
+            DbCatalogArticle.id == catalog_article_id
+        )
     )
     db.session.commit()

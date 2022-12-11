@@ -68,8 +68,7 @@ def update_storefront(
 def delete_storefront(storefront_id: StorefrontID) -> None:
     """Delete a storefront."""
     db.session.execute(
-        delete(DbStorefront)
-        .where(DbStorefront.id == storefront_id)
+        delete(DbStorefront).where(DbStorefront.id == storefront_id)
     )
     db.session.commit()
 

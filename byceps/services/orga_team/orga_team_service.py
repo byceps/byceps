@@ -51,41 +51,31 @@ def create_team(party_id: PartyID, title: str) -> OrgaTeam:
 
 def delete_team(team_id: OrgaTeamID) -> None:
     """Delete the orga team."""
-    db.session.query(DbOrgaTeam) \
-        .filter_by(id=team_id) \
-        .delete()
+    db.session.query(DbOrgaTeam).filter_by(id=team_id).delete()
 
     db.session.commit()
 
 
 def count_teams_for_parties(party_ids: set[PartyID]) -> dict[PartyID, int]:
     """Count orga teams for each party."""
-    rows = db.session \
-        .query(
-            DbOrgaTeam.party_id,
-            db.func.count(DbOrgaTeam.id)
-        ) \
-        .filter(DbOrgaTeam.party_id.in_(party_ids)) \
-        .group_by(DbOrgaTeam.party_id) \
+    rows = (
+        db.session.query(DbOrgaTeam.party_id, db.func.count(DbOrgaTeam.id))
+        .filter(DbOrgaTeam.party_id.in_(party_ids))
+        .group_by(DbOrgaTeam.party_id)
         .all()
+    )
 
     return dict(rows)
 
 
 def count_teams_for_party(party_id: PartyID) -> int:
     """Return the number of orga teams for that party."""
-    return db.session \
-        .query(DbOrgaTeam) \
-        .filter_by(party_id=party_id) \
-        .count()
+    return db.session.query(DbOrgaTeam).filter_by(party_id=party_id).count()
 
 
 def get_teams_for_party(party_id: PartyID) -> set[OrgaTeam]:
     """Return orga teams for that party."""
-    teams = db.session \
-        .query(DbOrgaTeam) \
-        .filter_by(party_id=party_id) \
-        .all()
+    teams = db.session.query(DbOrgaTeam).filter_by(party_id=party_id).all()
 
     return {_db_entity_to_team(team) for team in teams}
 
@@ -111,11 +101,12 @@ def get_teams_and_members_for_party(
     """Return all orga teams and their corresponding memberships for
     that party.
     """
-    teams = db.session \
-        .query(DbOrgaTeam) \
-        .options(db.joinedload(DbOrgaTeam.memberships)) \
-        .filter_by(party_id=party_id) \
+    teams = (
+        db.session.query(DbOrgaTeam)
+        .options(db.joinedload(DbOrgaTeam.memberships))
+        .filter_by(party_id=party_id)
         .all()
+    )
 
     user_ids = {ms.user_id for team in teams for ms in team.memberships}
     users = user_service.get_users(user_ids, include_avatars=True)
@@ -178,29 +169,29 @@ def update_membership(
 
 def delete_membership(membership_id: MembershipID) -> None:
     """Delete the membership."""
-    db.session.query(DbMembership) \
-        .filter_by(id=membership_id) \
-        .delete()
+    db.session.query(DbMembership).filter_by(id=membership_id).delete()
 
     db.session.commit()
 
 
 def count_memberships_for_party(party_id: PartyID) -> int:
     """Return the number of memberships the party's teams have in total."""
-    return db.session \
-        .query(DbMembership) \
-        .join(DbOrgaTeam) \
-        .filter(DbOrgaTeam.party_id == party_id) \
+    return (
+        db.session.query(DbMembership)
+        .join(DbOrgaTeam)
+        .filter(DbOrgaTeam.party_id == party_id)
         .count()
+    )
 
 
 def get_memberships_for_party(party_id: PartyID) -> set[Membership]:
     """Return memberships for that party."""
-    memberships = db.session \
-        .query(DbMembership) \
-        .join(DbOrgaTeam) \
-        .filter(DbOrgaTeam.party_id == party_id) \
+    memberships = (
+        db.session.query(DbMembership)
+        .join(DbOrgaTeam)
+        .filter(DbOrgaTeam.party_id == party_id)
         .all()
+    )
 
     return {_db_entity_to_membership(membership) for membership in memberships}
 
@@ -279,19 +270,19 @@ def get_orga_activities_for_user(user_id: UserID) -> set[OrgaActivity]:
 
 def get_public_orgas_for_party(party_id: PartyID) -> set[PublicOrga]:
     """Return all public orgas for that party."""
-    memberships = db.session \
-        .query(DbMembership) \
-        .join(DbOrgaTeam) \
-        .filter(DbOrgaTeam.party_id == party_id) \
+    memberships = (
+        db.session.query(DbMembership)
+        .join(DbOrgaTeam)
+        .filter(DbOrgaTeam.party_id == party_id)
         .options(
             db.joinedload(DbMembership.orga_team),
+            db.joinedload(DbMembership.user).load_only(DbUser.id),
             db.joinedload(DbMembership.user)
-                .load_only(DbUser.id),
-            db.joinedload(DbMembership.user)
-                .joinedload(DbUser.detail)
-                .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
-        ) \
+            .joinedload(DbUser.detail)
+            .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
+        )
         .all()
+    )
 
     users_by_id = _get_public_orga_users_by_id(memberships)
 
@@ -321,14 +312,11 @@ def _get_public_orga_users_by_id(
 
 def has_team_memberships(team_id: OrgaTeamID) -> bool:
     """Return `True` if the team has memberships."""
-    return db.session \
-        .query(
-            db.session
-                .query(DbMembership)
-                .filter(DbMembership.orga_team_id == team_id)
-                .exists()
-        ) \
-        .scalar()
+    return db.session.query(
+        db.session.query(DbMembership)
+        .filter(DbMembership.orga_team_id == team_id)
+        .exists()
+    ).scalar()
 
 
 def _db_entity_to_membership(membership: DbMembership) -> Membership:
@@ -375,22 +363,24 @@ def get_unassigned_orgas_for_team(team: OrgaTeam) -> set[User]:
 
     assigned_orga_ids = set(
         db.session.scalars(
-            select(DbMembership.user_id)
-            .filter_by(orga_team_id=team.id)
+            select(DbMembership.user_id).filter_by(orga_team_id=team.id)
         ).all()
     )
 
     unassigned_orga_ids_select = select(DbUser.id)
 
     if assigned_orga_ids:
-        unassigned_orga_ids_select = unassigned_orga_ids_select \
-            .filter(db.not_(DbUser.id.in_(assigned_orga_ids)))
+        unassigned_orga_ids_select = unassigned_orga_ids_select.filter(
+            db.not_(DbUser.id.in_(assigned_orga_ids))
+        )
 
     unassigned_orga_ids = set(
         db.session.scalars(
-            unassigned_orga_ids_select
-            .filter(DbUser.deleted == False)  # noqa: E712
-            .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == party.brand_id)
+            unassigned_orga_ids_select.filter(
+                DbUser.deleted == False  # noqa: E712
+            )
+            .join(DbOrgaFlag)
+            .filter(DbOrgaFlag.brand_id == party.brand_id)
         ).all()
     )
 
@@ -401,16 +391,13 @@ def is_orga_for_party(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user is an organizer (i.e. is member of an
     organizer team) of that party.
     """
-    return db.session \
-        .query(
-            db.session
-                .query(DbMembership)
-                .filter(DbMembership.user_id == user_id)
-                .join(DbOrgaTeam)
-                .filter(DbOrgaTeam.party_id == party_id)
-                .exists()
-        ) \
-        .scalar()
+    return db.session.query(
+        db.session.query(DbMembership)
+        .filter(DbMembership.user_id == user_id)
+        .join(DbOrgaTeam)
+        .filter(DbOrgaTeam.party_id == party_id)
+        .exists()
+    ).scalar()
 
 
 def select_orgas_for_party(

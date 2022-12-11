@@ -64,9 +64,7 @@ def paginate(
     offset = (page - 1) * per_page
 
     items_result = db.session.execute(
-        items_query
-        .limit(per_page)
-        .offset(offset)
+        items_query.limit(per_page).offset(offset)
     )
     if scalar_result:
         items_result = items_result.scalars()
@@ -91,9 +89,11 @@ def insert_ignore_on_conflict(table: Table, values: dict[str, Any]) -> None:
     """Insert the record identified by the primary key (specified as
     part of the values), or do nothing on conflict.
     """
-    query = insert(table) \
-        .values(**values) \
+    query = (
+        insert(table)
+        .values(**values)
         .on_conflict_do_nothing(constraint=table.primary_key)
+    )
 
     db.session.execute(query)
     db.session.commit()
@@ -137,8 +137,8 @@ def _build_upsert_query(
     values = identifier.copy()
     values.update(replacement)
 
-    return insert(table) \
-        .values(**values) \
-        .on_conflict_do_update(
-            constraint=table.primary_key,
-            set_=replacement)
+    return (
+        insert(table)
+        .values(**values)
+        .on_conflict_do_update(constraint=table.primary_key, set_=replacement)
+    )

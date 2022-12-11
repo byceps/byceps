@@ -20,36 +20,38 @@ from .dbmodels import DbOrgaFlag
 
 def get_person_count_by_brand_id() -> dict[BrandID, int]:
     """Return organizer count (including 0) per brand, indexed by brand ID."""
-    brand_ids_and_orga_flag_counts = db.session \
-        .query(
-            DbBrand.id,
-            db.func.count(DbOrgaFlag.brand_id)
-        ) \
-        .outerjoin(DbOrgaFlag) \
-        .group_by(DbBrand.id) \
+    brand_ids_and_orga_flag_counts = (
+        db.session.query(DbBrand.id, db.func.count(DbOrgaFlag.brand_id))
+        .outerjoin(DbOrgaFlag)
+        .group_by(DbBrand.id)
         .all()
+    )
 
     return dict(brand_ids_and_orga_flag_counts)
 
 
 def get_orgas_for_brand(brand_id: BrandID) -> list[DbUser]:
     """Return all users flagged as organizers for the brand."""
-    return db.session \
-        .query(DbUser) \
-        .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == brand_id) \
-        .options(db.joinedload(DbUser.detail)) \
+    return (
+        db.session.query(DbUser)
+        .join(DbOrgaFlag)
+        .filter(DbOrgaFlag.brand_id == brand_id)
+        .options(db.joinedload(DbUser.detail))
         .all()
+    )
 
 
 def count_orgas_for_brand(brand_id: BrandID) -> int:
     """Return the number of organizers with the organizer flag set for
     that brand.
     """
-    return db.session \
-        .query(DbUser) \
-        .distinct(DbUser.id) \
-        .join(DbOrgaFlag).filter(DbOrgaFlag.brand_id == brand_id) \
+    return (
+        db.session.query(DbUser)
+        .distinct(DbUser.id)
+        .join(DbOrgaFlag)
+        .filter(DbOrgaFlag.brand_id == brand_id)
         .count()
+    )
 
 
 def add_orga_flag(
@@ -78,10 +80,9 @@ def remove_orga_flag(
     brand_id: BrandID, user_id: UserID, initiator_id: UserID
 ) -> None:
     """Remove the orga flag."""
-    db.session.query(DbOrgaFlag) \
-        .filter_by(brand_id=brand_id) \
-        .filter_by(user_id=user_id) \
-        .delete()
+    db.session.query(DbOrgaFlag).filter_by(brand_id=brand_id).filter_by(
+        user_id=user_id
+    ).delete()
 
     log_entry = user_log_service.build_entry(
         'orgaflag-removed',
@@ -98,8 +99,9 @@ def remove_orga_flag(
 
 def find_orga_flag(brand_id: BrandID, user_id: UserID) -> Optional[DbOrgaFlag]:
     """Return the orga flag for that brand and user, or `None` if not found."""
-    return db.session \
-        .query(DbOrgaFlag) \
-        .filter_by(brand_id=brand_id) \
-        .filter_by(user_id=user_id) \
+    return (
+        db.session.query(DbOrgaFlag)
+        .filter_by(brand_id=brand_id)
+        .filter_by(user_id=user_id)
         .first()
+    )

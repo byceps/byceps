@@ -152,8 +152,7 @@ def get_active_parties(
         stmt = stmt.options(db.joinedload(DbParty.brand))
 
     parties = db.session.scalars(
-        stmt
-        .filter_by(canceled=False)
+        stmt.filter_by(canceled=False)
         .filter_by(archived=False)
         .order_by(DbParty.starts_at)
     ).all()
