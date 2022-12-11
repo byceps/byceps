@@ -57,6 +57,4 @@ class DbParty(db.Model):
         self.max_ticket_quantity = max_ticket_quantity
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .build()
+        return ReprBuilder(self).add_with_lookup('id').build()

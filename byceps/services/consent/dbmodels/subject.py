@@ -36,8 +36,10 @@ class DbSubject(db.Model):
         self.checkbox_link_target = checkbox_link_target
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('name') \
-            .add_with_lookup('title') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add_with_lookup('name')
+            .add_with_lookup('title')
             .build()
+        )

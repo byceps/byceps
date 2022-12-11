@@ -68,12 +68,14 @@ class DbItem(db.Model):
         return self.published_at is not None
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add('channel', self.channel_id) \
-            .add_with_lookup('slug') \
-            .add_with_lookup('published_at') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add('channel', self.channel_id)
+            .add_with_lookup('slug')
+            .add_with_lookup('published_at')
             .build()
+        )
 
 
 class DbItemVersion(db.Model):
@@ -125,11 +127,13 @@ class DbItemVersion(db.Model):
         return self.id == self.item.current_version.id
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('item') \
-            .add_with_lookup('created_at') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add_with_lookup('item')
+            .add_with_lookup('created_at')
             .build()
+        )
 
 
 class DbCurrentVersionAssociation(db.Model):

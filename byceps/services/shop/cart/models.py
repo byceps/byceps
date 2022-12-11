@@ -51,6 +51,4 @@ class Cart:
     def __repr__(self) -> str:
         item_count = len(self._items)
 
-        return ReprBuilder(self) \
-            .add_custom(f'{item_count:d} items') \
-            .build()
+        return ReprBuilder(self).add_custom(f'{item_count:d} items').build()

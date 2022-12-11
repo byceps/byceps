@@ -77,8 +77,10 @@ class DbTourneyAvatar(db.Model):
         return f'/data/parties/{self.party_id}/tourney/avatars/{self.filename}'
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add('party', self.party_id) \
-            .add('image_type', self.image_type.name) \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add('party', self.party_id)
+            .add('image_type', self.image_type.name)
             .build()
+        )

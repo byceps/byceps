@@ -74,9 +74,11 @@ class DbTicketBundle(db.Model):
         self.label = label
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add('id', str(self.id)) \
-            .add('party_id', self.party_id) \
-            .add('category', self.ticket_category.title) \
-            .add_with_lookup('ticket_quantity') \
+        return (
+            ReprBuilder(self)
+            .add('id', str(self.id))
+            .add('party_id', self.party_id)
+            .add('category', self.ticket_category.title)
+            .add_with_lookup('ticket_quantity')
             .build()
+        )

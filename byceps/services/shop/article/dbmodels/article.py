@@ -92,9 +92,11 @@ class DbArticle(db.Model):
         return ArticleType[self._type]
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add('shop', self.shop_id) \
-            .add_with_lookup('item_number') \
-            .add_with_lookup('description') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add('shop', self.shop_id)
+            .add_with_lookup('item_number')
+            .add_with_lookup('description')
             .build()
+        )

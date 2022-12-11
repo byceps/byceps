@@ -65,8 +65,10 @@ class DbVerificationToken(db.Model):
         self._purpose = purpose.name
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('token') \
-            .add('user', self.user.screen_name) \
-            .add('purpose', self.purpose.name) \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('token')
+            .add('user', self.user.screen_name)
+            .add('purpose', self.purpose.name)
             .build()
+        )

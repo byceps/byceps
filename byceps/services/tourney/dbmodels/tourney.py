@@ -63,7 +63,9 @@ class DbTourney(db.Model):
         self.starts_at = starts_at
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('party_id') \
-            .add_with_lookup('title') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('party_id')
+            .add_with_lookup('title')
             .build()
+        )

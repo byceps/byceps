@@ -43,8 +43,10 @@ class DbTourneyCategory(db.Model):
         self.title = title
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('party_id') \
-            .add_with_lookup('title') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add_with_lookup('party_id')
+            .add_with_lookup('title')
             .build()
+        )

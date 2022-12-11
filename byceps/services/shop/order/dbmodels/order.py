@@ -111,9 +111,11 @@ class DbOrder(db.Model):
         self._payment_state = state.name
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add('shop', self.shop_id) \
-            .add_with_lookup('order_number') \
-            .add_custom(self.payment_state.name) \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add('shop', self.shop_id)
+            .add_with_lookup('order_number')
+            .add_custom(self.payment_state.name)
             .build()
+        )

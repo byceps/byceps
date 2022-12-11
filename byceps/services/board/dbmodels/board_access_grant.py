@@ -38,7 +38,9 @@ class DbBoardAccessGrant(db.Model):
         self.user_id = user_id
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('board_id') \
-            .add_with_lookup('user_id') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('board_id')
+            .add_with_lookup('user_id')
             .build()
+        )

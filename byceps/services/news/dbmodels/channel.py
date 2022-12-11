@@ -43,7 +43,9 @@ class DbChannel(db.Model):
         self.announcement_site_id = announcement_site_id
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add('brand', self.brand_id) \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add('brand', self.brand_id)
             .build()
+        )

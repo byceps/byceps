@@ -33,9 +33,7 @@ class DbCatalog(db.Model):
         self.title = title
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .build()
+        return ReprBuilder(self).add_with_lookup('id').build()
 
 
 class DbCollection(db.Model):
@@ -67,10 +65,12 @@ class DbCollection(db.Model):
         self.title = title
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('catalog_id') \
-            .add_with_lookup('title') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('catalog_id')
+            .add_with_lookup('title')
             .build()
+        )
 
 
 class DbCatalogArticle(db.Model):

@@ -23,7 +23,9 @@ class DbSetting(db.Model):
         self.value = value
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('name') \
-            .add_with_lookup('value') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('name')
+            .add_with_lookup('value')
             .build()
+        )

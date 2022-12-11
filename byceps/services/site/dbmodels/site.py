@@ -96,6 +96,4 @@ class DbSite(db.Model):
         self.storefront_id = storefront_id
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .build()
+        return ReprBuilder(self).add_with_lookup('id').build()

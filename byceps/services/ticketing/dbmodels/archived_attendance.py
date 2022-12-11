@@ -42,7 +42,9 @@ class DbArchivedAttendance(db.Model):
         self.party_id = party_id
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add('user_id', str(self.user_id)) \
-            .add('party_id', self.party_id) \
+        return (
+            ReprBuilder(self)
+            .add('user_id', str(self.user_id))
+            .add('party_id', self.party_id)
             .build()
+        )

@@ -86,10 +86,12 @@ class DbTopic(db.Model):
         return self.id == other.id
 
     def __repr__(self) -> str:
-        builder = ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add('category', self.category.title) \
+        builder = (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add('category', self.category.title)
             .add_with_lookup('title')
+        )
 
         if self.hidden:
             builder.add_custom(f'hidden by {self.hidden_by.screen_name}')

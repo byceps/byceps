@@ -39,6 +39,4 @@ class DbEmailConfig(db.Model):
         self.contact_address = contact_address
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('brand_id') \
-            .build()
+        return ReprBuilder(self).add_with_lookup('brand_id').build()

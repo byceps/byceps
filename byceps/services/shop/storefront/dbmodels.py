@@ -56,7 +56,9 @@ class DbStorefront(db.Model):
         self.closed = closed
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('shop_id') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add_with_lookup('shop_id')
             .build()
+        )

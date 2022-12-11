@@ -35,6 +35,4 @@ class DbBrand(db.Model):
         self.image_filename = image_filename
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .build()
+        return ReprBuilder(self).add_with_lookup('id').build()

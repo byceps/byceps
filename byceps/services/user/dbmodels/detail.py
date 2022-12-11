@@ -40,8 +40,10 @@ class DbUserDetail(db.Model):
         return ' '.join(filter(None, names)) or None
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('user_id') \
-            .add_with_lookup('first_name') \
-            .add_with_lookup('last_name') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('user_id')
+            .add_with_lookup('first_name')
+            .add_with_lookup('last_name')
             .build()
+        )

@@ -35,9 +35,7 @@ class DbList(db.Model):
         self.title = title
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .build()
+        return ReprBuilder(self).add_with_lookup('id').build()
 
 
 class DbSubscription(db.Model):
@@ -87,9 +85,11 @@ class DbSubscriptionUpdate(db.Model):
         self._state = state.name
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('user_id') \
-            .add_with_lookup('list_id') \
-            .add_with_lookup('expressed_at') \
-            .add('state', self.state.name) \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('user_id')
+            .add_with_lookup('list_id')
+            .add_with_lookup('expressed_at')
+            .add('state', self.state.name)
             .build()
+        )

@@ -80,9 +80,11 @@ class DbSeat(db.Model):
         self.coord_y = point.y
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add('id', str(self.id)) \
-            .add_with_lookup('area') \
-            .add_with_lookup('category') \
-            .add_with_lookup('label') \
+        return (
+            ReprBuilder(self)
+            .add('id', str(self.id))
+            .add_with_lookup('area')
+            .add_with_lookup('category')
+            .add_with_lookup('label')
             .build()
+        )

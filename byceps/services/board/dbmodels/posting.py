@@ -51,9 +51,11 @@ class DbPosting(db.Model):
         return self.id == other.id
 
     def __repr__(self) -> str:
-        builder = ReprBuilder(self) \
-            .add_with_lookup('id') \
+        builder = (
+            ReprBuilder(self)
+            .add_with_lookup('id')
             .add('topic', self.topic.title)
+        )
 
         if self.hidden:
             builder.add_custom(f'hidden by {self.hidden_by.screen_name}')

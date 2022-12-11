@@ -55,13 +55,15 @@ class DbSeatGroup(db.Model):
         self.title = title
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add('id', str(self.id)) \
-            .add('party', self.party_id) \
-            .add('ticket_category', self.ticket_category.title) \
-            .add_with_lookup('seat_quantity') \
-            .add_with_lookup('title') \
+        return (
+            ReprBuilder(self)
+            .add('id', str(self.id))
+            .add('party', self.party_id)
+            .add('ticket_category', self.ticket_category.title)
+            .add_with_lookup('seat_quantity')
+            .add_with_lookup('title')
             .build()
+        )
 
 
 class DbSeatGroupAssignment(db.Model):
@@ -92,11 +94,13 @@ class DbSeatGroupAssignment(db.Model):
         self.seat_id = seat_id
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add('id', str(self.id)) \
-            .add('group', self.group.title) \
-            .add_with_lookup('seat_id') \
+        return (
+            ReprBuilder(self)
+            .add('id', str(self.id))
+            .add('group', self.group.title)
+            .add_with_lookup('seat_id')
             .build()
+        )
 
 
 class DbSeatGroupOccupancy(db.Model):
@@ -133,7 +137,9 @@ class DbSeatGroupOccupancy(db.Model):
         self.ticket_bundle_id = ticket_bundle_id
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add('seat_group_id', str(self.seat_group_id)) \
-            .add('ticket_bundle_id', str(self.ticket_bundle_id)) \
+        return (
+            ReprBuilder(self)
+            .add('seat_group_id', str(self.seat_group_id))
+            .add('ticket_bundle_id', str(self.ticket_bundle_id))
             .build()
+        )

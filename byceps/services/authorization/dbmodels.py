@@ -37,9 +37,7 @@ class DbRole(db.Model):
         self.title = title
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .build()
+        return ReprBuilder(self).add_with_lookup('id').build()
 
 
 class DbRolePermission(db.Model):
@@ -64,10 +62,12 @@ class DbRolePermission(db.Model):
         self.permission_id = permission_id
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('role_id') \
-            .add_with_lookup('permission_id') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('role_id')
+            .add_with_lookup('permission_id')
             .build()
+        )
 
 
 class DbUserRole(db.Model):
@@ -96,7 +96,9 @@ class DbUserRole(db.Model):
         self.role_id = role_id
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('user') \
-            .add_with_lookup('role') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('user')
+            .add_with_lookup('role')
             .build()
+        )

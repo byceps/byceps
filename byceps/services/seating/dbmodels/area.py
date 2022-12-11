@@ -45,8 +45,10 @@ class DbSeatingArea(db.Model):
         self.image_height = height
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add('id', str(self.id)) \
-            .add('party', self.party_id) \
-            .add_with_lookup('slug') \
+        return (
+            ReprBuilder(self)
+            .add('id', str(self.id))
+            .add('party', self.party_id)
+            .add_with_lookup('slug')
             .build()
+        )

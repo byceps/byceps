@@ -29,7 +29,9 @@ class DbBoard(db.Model):
         self.brand_id = brand_id
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add('brand', self.brand_id) \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add('brand', self.brand_id)
             .build()
+        )

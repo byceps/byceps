@@ -41,9 +41,11 @@ class DbOrderNumberSequence(db.Model):
         self.value = value
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add('shop', self.shop_id) \
-            .add_with_lookup('prefix') \
-            .add_with_lookup('value') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add('shop', self.shop_id)
+            .add_with_lookup('prefix')
+            .add_with_lookup('value')
             .build()
+        )

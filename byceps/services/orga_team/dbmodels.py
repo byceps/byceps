@@ -38,11 +38,13 @@ class DbOrgaTeam(db.Model):
         self.title = title
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('party_id') \
-            .add_with_lookup('title') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add_with_lookup('party_id')
+            .add_with_lookup('title')
             .build()
+        )
 
 
 class DbMembership(db.Model):
@@ -80,8 +82,10 @@ class DbMembership(db.Model):
         self.duties = duties
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('orga_team') \
-            .add_with_lookup('user') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add_with_lookup('orga_team')
+            .add_with_lookup('user')
             .build()
+        )

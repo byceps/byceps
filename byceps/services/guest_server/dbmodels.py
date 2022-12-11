@@ -86,9 +86,7 @@ class DbSetting(db.Model):
         self._dns_server2 = str(ip_address) if ip_address else None
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('party_id') \
-            .build()
+        return ReprBuilder(self).add_with_lookup('party_id').build()
 
 
 class DbServer(db.Model):
@@ -125,9 +123,7 @@ class DbServer(db.Model):
         self.approved = approved
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .build()
+        return ReprBuilder(self).add_with_lookup('id').build()
 
 
 class DbAddress(db.Model):
@@ -195,6 +191,4 @@ class DbAddress(db.Model):
         self._gateway = str(ip_address) if ip_address else None
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .build()
+        return ReprBuilder(self).add_with_lookup('id').build()

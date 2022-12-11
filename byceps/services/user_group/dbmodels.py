@@ -57,10 +57,12 @@ class DbUserGroup(db.Model):
         return len(self.members)
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('party_id') \
-            .add_with_lookup('title') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('party_id')
+            .add_with_lookup('title')
             .build()
+        )
 
 
 class DbMembership(db.Model):
@@ -81,8 +83,10 @@ class DbMembership(db.Model):
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('group') \
-            .add_with_lookup('user') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add_with_lookup('group')
+            .add_with_lookup('user')
             .build()
+        )

@@ -54,12 +54,14 @@ class DbSnippet(db.Model):
         return Scope(self.scope_type, self.scope_name)
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('scope_type') \
-            .add_with_lookup('scope_name') \
-            .add_with_lookup('name') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add_with_lookup('scope_type')
+            .add_with_lookup('scope_name')
+            .add_with_lookup('name')
             .build()
+        )
 
 
 class DbVersion(db.Model):
@@ -92,11 +94,13 @@ class DbVersion(db.Model):
         return self.id == self.snippet.current_version.id
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('snippet') \
-            .add_with_lookup('created_at') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add_with_lookup('snippet')
+            .add_with_lookup('created_at')
             .build()
+        )
 
 
 class DbCurrentVersionAssociation(db.Model):

@@ -69,7 +69,9 @@ class DbUser(db.Model):
         return hash(self.id)
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('screen_name') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add_with_lookup('screen_name')
             .build()
+        )

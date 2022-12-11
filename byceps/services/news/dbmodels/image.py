@@ -61,8 +61,10 @@ class DbImage(db.Model):
         self.attribution = attribution
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('id') \
-            .add_with_lookup('item_id') \
-            .add_with_lookup('number') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('id')
+            .add_with_lookup('item_id')
+            .add_with_lookup('number')
             .build()
+        )

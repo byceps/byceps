@@ -160,12 +160,14 @@ class DbTicket(db.Model):
 
             return f'{{area={seat.area.title!r}, label={seat.label!r}}}'
 
-        return ReprBuilder(self) \
-            .add('id', str(self.id)) \
-            .add('party_id', self.party_id) \
-            .add('code', self.code) \
-            .add('category', self.category.title) \
-            .add('owned_by', user(self.owned_by)) \
-            .add_custom(f'occupied_seat={occupied_seat()}') \
-            .add('used_by', user(self.used_by)) \
+        return (
+            ReprBuilder(self)
+            .add('id', str(self.id))
+            .add('party_id', self.party_id)
+            .add('code', self.code)
+            .add('category', self.category.title)
+            .add('owned_by', user(self.owned_by))
+            .add_custom(f'occupied_seat={occupied_seat()}')
+            .add('used_by', user(self.used_by))
             .build()
+        )

@@ -46,6 +46,4 @@ class DbBadge(db.Model):
         self.featured = featured
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('label') \
-            .build()
+        return ReprBuilder(self).add_with_lookup('label').build()

@@ -44,8 +44,10 @@ class DbParticipant(db.Model):
         self.max_size = max_size
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('tourney') \
-            .add_with_lookup('title') \
-            .add_with_lookup('max_size') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('tourney')
+            .add_with_lookup('title')
+            .add_with_lookup('max_size')
             .build()
+        )

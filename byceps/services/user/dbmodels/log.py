@@ -41,8 +41,10 @@ class DbUserLogEntry(db.Model):
         self.data = data
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_custom(repr(self.event_type)) \
-            .add_with_lookup('user_id') \
-            .add_with_lookup('data') \
+        return (
+            ReprBuilder(self)
+            .add_custom(repr(self.event_type))
+            .add_with_lookup('user_id')
+            .add_with_lookup('data')
             .build()
+        )

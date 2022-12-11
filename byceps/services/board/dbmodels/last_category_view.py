@@ -40,8 +40,10 @@ class DbLastCategoryView(db.Model):
         self.occurred_at = occurred_at
 
     def __repr__(self) -> str:
-        return ReprBuilder(self) \
-            .add_with_lookup('user_id') \
-            .add('category', self.category.title) \
-            .add_with_lookup('occurred_at') \
+        return (
+            ReprBuilder(self)
+            .add_with_lookup('user_id')
+            .add('category', self.category.title)
+            .add_with_lookup('occurred_at')
             .build()
+        )
