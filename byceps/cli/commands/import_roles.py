@@ -27,5 +27,9 @@ _DEFAULT_DATA_FILE = Path('scripts') / 'data' / 'roles.toml'
 def import_roles(data_file: Path) -> None:
     """Import authorization roles."""
     click.echo('Importing roles ... ', nl=False)
-    role_count = impex_service.import_roles(data_file)
-    click.secho(f'done. Imported {role_count} roles.', fg='green')
+    role_counts = impex_service.import_roles(data_file)
+    click.secho('done. ', fg='green', nl=False)
+    click.secho(
+        f'Imported {role_counts.imported} roles, '
+        f'skipped {role_counts.skipped} roles.',
+    )

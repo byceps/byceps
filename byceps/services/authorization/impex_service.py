@@ -9,6 +9,7 @@ Import/export
 """
 
 from __future__ import annotations
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterator
 
@@ -26,27 +27,45 @@ from . import authz_service
 # import
 
 
-def import_roles(path: Path) -> int:
+def import_roles(path: Path) -> ImportedRoleCounts:
     """Import roles and their assigned permissions from TOML."""
     data = rtoml.load(path)
-
     roles = data['roles']
-
-    _create_roles(roles)
-
-    return len(roles)
+    return _create_roles(roles)
 
 
-def _create_roles(roles: list[dict[str, str | list[str]]]) -> None:
+def _create_roles(
+    roles: list[dict[str, str | list[str]]]
+) -> ImportedRoleCounts:
+    imported_roles_count = 0
+    skipped_roles_count = 0
+
     for role in roles:
         role_id = RoleID(str(role['id']))
         role_title = str(role['title'])
 
-        authz_service.create_role(role_id, role_title).unwrap()
+        role_result = authz_service.create_role(role_id, role_title)
+        if role_result.is_ok():
+            imported_roles_count += 1
+        else:
+            # Role exists; skip.
+            skipped_roles_count += 1
+            continue
 
         for permission_id_str in role['assigned_permissions']:
             permission_id = PermissionID(permission_id_str)
             authz_service.assign_permission_to_role(permission_id, role_id)
+
+    return ImportedRoleCounts(
+        imported=imported_roles_count,
+        skipped=skipped_roles_count,
+    )
+
+
+@dataclass(frozen=True)
+class ImportedRoleCounts:
+    imported: int
+    skipped: int
 
 
 # -------------------------------------------------------------------- #
@@ -56,9 +75,7 @@ def _create_roles(roles: list[dict[str, str | list[str]]]) -> None:
 def export_roles() -> str:
     """Export roles and their assigned permissions as TOML."""
     roles = list(_collect_roles())
-
     data = {'roles': roles}
-
     return rtoml.dumps(data, pretty=True)
 
 
