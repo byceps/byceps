@@ -160,7 +160,7 @@ def create_user(
 def create_role_with_permissions_assigned(
     role_id: RoleID, permission_ids: Iterable[PermissionID]
 ) -> None:
-    role = authz_service.create_role(role_id, role_id, ignore_if_exists=True)
+    role = authz_service.create_role(role_id, role_id).unwrap()
 
     for permission_id in permission_ids:
         authz_service.assign_permission_to_role(permission_id, role.id)

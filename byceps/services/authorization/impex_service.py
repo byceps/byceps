@@ -42,7 +42,7 @@ def _create_roles(roles: list[dict[str, str | list[str]]]) -> None:
         role_id = RoleID(str(role['id']))
         role_title = str(role['title'])
 
-        authz_service.create_role(role_id, role_title)
+        authz_service.create_role(role_id, role_title).unwrap()
 
         for permission_id_str in role['assigned_permissions']:
             permission_id = PermissionID(permission_id_str)

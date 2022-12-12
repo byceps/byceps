@@ -14,6 +14,7 @@ from sqlalchemy.exc import IntegrityError
 
 from ...database import db
 from ...typing import UserID
+from ...util.result import Err, Ok, Result
 
 from ..user import user_log_service, user_service
 from ..user.transfer.models import User
@@ -22,9 +23,7 @@ from .dbmodels import DbRole, DbRolePermission, DbUserRole
 from .transfer.models import PermissionID, Role, RoleID
 
 
-def create_role(
-    role_id: RoleID, title: str, *, ignore_if_exists: bool = False
-) -> Role:
+def create_role(role_id: RoleID, title: str) -> Result[Role, IntegrityError]:
     """Create a role."""
     db_role = DbRole(role_id, title)
 
@@ -33,12 +32,10 @@ def create_role(
     try:
         db.session.commit()
     except IntegrityError as e:
-        if ignore_if_exists:
-            db.session.rollback()
-        else:
-            raise e
+        db.session.rollback()
+        return Err(e)
 
-    return _db_entity_to_role(db_role)
+    return Ok(db_role).map(_db_entity_to_role)
 
 
 def delete_role(role_id: RoleID) -> None:

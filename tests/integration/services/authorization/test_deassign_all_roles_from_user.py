@@ -41,9 +41,9 @@ def user2(make_user):
 
 @pytest.fixture
 def roles(user1, user2, admin_user):
-    role1 = authz_service.create_role('demigod', 'Demigod')
-    role2 = authz_service.create_role('pausenclown', 'Pausenclown')
-    role3 = authz_service.create_role('partymeister', 'Partymeister')
+    role1 = authz_service.create_role('demigod', 'Demigod').unwrap()
+    role2 = authz_service.create_role('pausenclown', 'Pausenclown').unwrap()
+    role3 = authz_service.create_role('partymeister', 'Partymeister').unwrap()
 
     authz_service.assign_role_to_user(
         role1.id, user1.id, initiator_id=admin_user.id

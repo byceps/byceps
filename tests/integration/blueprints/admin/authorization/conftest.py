@@ -32,7 +32,7 @@ def role():
     role_id = 'spin_doctor'
     title = 'Dr. Spin'
 
-    role = authz_service.create_role(role_id, title)
+    role = authz_service.create_role(role_id, title).unwrap()
 
     yield role
 

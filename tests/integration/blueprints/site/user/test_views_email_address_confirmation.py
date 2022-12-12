@@ -40,7 +40,7 @@ def user5(make_user):
 
 @pytest.fixture
 def role(admin_app, site, user1, user2):
-    role = authz_service.create_role('board_user', 'Board User')
+    role = authz_service.create_role('board_user', 'Board User').unwrap()
 
     yield role
 

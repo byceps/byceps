@@ -41,7 +41,7 @@ def role(
     uninitialized_user_created_at_party_checkin_by_admin,
     already_initialized_user,
 ):
-    role = authz_service.create_role('board_user', 'Board User')
+    role = authz_service.create_role('board_user', 'Board User').unwrap()
 
     yield role
 

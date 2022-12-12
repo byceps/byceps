@@ -35,7 +35,7 @@ def test_deassign_permission_from_role(admin_app, role):
 
 @pytest.fixture
 def role():
-    role = authz_service.create_role('demigod', 'Demigod')
+    role = authz_service.create_role('demigod', 'Demigod').unwrap()
     yield role
     authz_service.delete_role(role.id)
 
