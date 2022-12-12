@@ -12,9 +12,16 @@ from flask.cli import with_appcontext
 from ...services.authorization import impex_service
 
 
+_DEFAULT_DATA_FILE = Path('scripts') / 'data' / 'roles.toml'
+
+
 @click.command()
-@click.argument(
-    'data_file', type=click.Path(exists=True, dir_okay=False, path_type=Path)
+@click.option(
+    '-f',
+    '--file',
+    'data_file',
+    type=click.Path(exists=True, dir_okay=False, path_type=Path),
+    default=_DEFAULT_DATA_FILE,
 )
 @with_appcontext
 def import_roles(data_file: Path) -> None:

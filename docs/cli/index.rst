@@ -42,15 +42,22 @@ to run BYCEPS in a relational database instance.
 Import Authorization Roles
 ==========================
 
-``byceps import-roles`` imports authorization roles from a file into
-BYCEPS.
+``byceps import-roles`` imports authorization roles from a file in TOML
+format into BYCEPS.
 
-An initial set of roles is provided with BYCEPS in the form of a TOML
-file. To import it:
+By default, an initial set of roles provided with BYCEPS is imported:
 
 .. code-block:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.py byceps import-roles scripts/data/roles.toml
+    (venv)$ BYCEPS_CONFIG=../config/development.py byceps import-roles
+    Importing roles ... done. Imported 35 roles.
+
+Optionally, the file to import from can be specified with the option
+``-f``/``--file``:
+
+.. code-block:: sh
+
+    (venv)$ BYCEPS_CONFIG=../config/development.py byceps import-roles -f custom_roles.toml
     Importing roles ... done. Imported 35 roles.
 
 
