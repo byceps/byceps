@@ -26,9 +26,9 @@ def create_role(
     role_id: RoleID, title: str, *, ignore_if_exists: bool = False
 ) -> Role:
     """Create a role."""
-    role = DbRole(role_id, title)
+    db_role = DbRole(role_id, title)
 
-    db.session.add(role)
+    db.session.add(db_role)
 
     try:
         db.session.commit()
@@ -38,7 +38,7 @@ def create_role(
         else:
             raise e
 
-    return _db_entity_to_role(role)
+    return _db_entity_to_role(db_role)
 
 
 def delete_role(role_id: RoleID) -> None:
@@ -52,17 +52,17 @@ def delete_role(role_id: RoleID) -> None:
 
 def find_role(role_id: RoleID) -> Optional[Role]:
     """Return the role with that id, or `None` if not found."""
-    role = db.session.get(DbRole, role_id)
+    db_role = db.session.get(DbRole, role_id)
 
-    if role is None:
+    if db_role is None:
         return None
 
-    return _db_entity_to_role(role)
+    return _db_entity_to_role(db_role)
 
 
 def find_role_ids_for_user(user_id: UserID) -> set[RoleID]:
     """Return the IDs of the roles assigned to the user."""
-    roles = (
+    db_roles = (
         db.session.scalars(
             select(DbRole)
             .join(DbUserRole)
@@ -72,7 +72,7 @@ def find_role_ids_for_user(user_id: UserID) -> set[RoleID]:
         .all()
     )
 
-    return {r.id for r in roles}
+    return {db_role.id for db_role in db_roles}
 
 
 def find_user_ids_for_role(role_id: RoleID) -> set[UserID]:
@@ -88,9 +88,9 @@ def assign_permission_to_role(
     permission_id: PermissionID, role_id: RoleID
 ) -> None:
     """Assign the permission to the role."""
-    role_permission = DbRolePermission(role_id, permission_id)
+    db_role_permission = DbRolePermission(role_id, permission_id)
 
-    db.session.add(role_permission)
+    db.session.add(db_role_permission)
     db.session.commit()
 
 
@@ -98,12 +98,14 @@ def deassign_permission_from_role(
     permission_id: PermissionID, role_id: RoleID
 ) -> None:
     """Dessign the permission from the role."""
-    role_permission = db.session.get(DbRolePermission, (role_id, permission_id))
+    db_role_permission = db.session.get(
+        DbRolePermission, (role_id, permission_id)
+    )
 
-    if role_permission is None:
+    if db_role_permission is None:
         raise ValueError('Unknown role ID and/or permission ID.')
 
-    db.session.delete(role_permission)
+    db.session.delete(db_role_permission)
     db.session.commit()
 
 
@@ -115,8 +117,8 @@ def assign_role_to_user(
         # Role is already assigned to user. Nothing to do.
         return
 
-    user_role = DbUserRole(user_id, role_id)
-    db.session.add(user_role)
+    db_user_role = DbUserRole(user_id, role_id)
+    db.session.add(db_user_role)
 
     log_entry_data = {'role_id': str(role_id)}
     if initiator_id is not None:
@@ -133,14 +135,14 @@ def deassign_role_from_user(
     role_id: RoleID, user_id: UserID, initiator_id: Optional[UserID] = None
 ) -> None:
     """Deassign the role from the user."""
-    user_role = db.session.get(DbUserRole, (user_id, role_id))
+    db_user_role = db.session.get(DbUserRole, (user_id, role_id))
 
-    if user_role is None:
+    if db_user_role is None:
         raise ValueError(
             f'Unknown role ID "{role_id}" and/or user ID "{user_id}".'
         )
 
-    db.session.delete(user_role)
+    db.session.delete(db_user_role)
 
     log_entry_data = {'role_id': str(role_id)}
     if initiator_id is not None:
@@ -178,14 +180,14 @@ def get_permission_ids_for_user(user_id: UserID) -> set[PermissionID]:
     """Return the IDs of all permissions the user has through the roles
     assigned to it.
     """
-    role_permissions = db.session.scalars(
+    db_role_permissions = db.session.scalars(
         select(DbRolePermission)
         .join(DbRole)
         .join(DbUserRole)
         .filter(DbUserRole.user_id == user_id)
     ).all()
 
-    return {rp.permission_id for rp in role_permissions}
+    return {rp.permission_id for rp in db_role_permissions}
 
 
 def get_assigned_roles_for_permissions() -> dict[PermissionID, set[RoleID]]:
@@ -233,8 +235,8 @@ def get_all_roles_with_permissions_and_users() -> list[
         (
             _db_entity_to_role(db_role),
             {
-                role_permission.permission_id
-                for role_permission in db_role.role_permissions
+                db_role_permission.permission_id
+                for db_role_permission in db_role.role_permissions
             },
             {
                 user_service._db_entity_to_user(db_user)
@@ -320,8 +322,8 @@ def get_permission_ids_for_role(role_id: RoleID) -> set[PermissionID]:
     return {PermissionID(permission_id) for permission_id in permission_ids}
 
 
-def _db_entity_to_role(role: DbRole) -> Role:
+def _db_entity_to_role(db_role: DbRole) -> Role:
     return Role(
-        role.id,
-        role.title,
+        id=db_role.id,
+        title=db_role.title,
     )
