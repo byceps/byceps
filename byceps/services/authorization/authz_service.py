@@ -30,10 +30,13 @@ def create_role(
 
     db.session.add(role)
 
-    if ignore_if_exists:
-        _commit_ignoring_integrity_error()
-    else:
+    try:
         db.session.commit()
+    except IntegrityError as e:
+        if ignore_if_exists:
+            db.session.rollback()
+        else:
+            raise e
 
     return _db_entity_to_role(role)
 
@@ -315,13 +318,6 @@ def get_permission_ids_for_role(role_id: RoleID) -> set[PermissionID]:
     ).all()
 
     return {PermissionID(permission_id) for permission_id in permission_ids}
-
-
-def _commit_ignoring_integrity_error() -> None:
-    try:
-        db.session.commit()
-    except IntegrityError:
-        db.session.rollback()
 
 
 def _db_entity_to_role(role: DbRole) -> Role:
