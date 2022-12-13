@@ -22,12 +22,13 @@ from ...database import db
 @with_appcontext
 def create_database_tables() -> None:
     """Create database tables."""
+    _create_database_tables()
+
+
+def _create_database_tables() -> None:
     click.echo('Creating database tables ... ', nl=False)
-
     _load_dbmodels()
-
     db.create_all()
-
     click.secho('done.', fg='green')
 
 

@@ -17,6 +17,7 @@ from .commands.export_roles import export_roles
 from .commands.generate_secret_key import generate_secret_key
 from .commands.import_roles import import_roles
 from .commands.import_users import import_users
+from .commands.initialize_database import initialize_database
 
 
 @click.group(cls=AppGroup)
@@ -31,5 +32,6 @@ for func in [
     generate_secret_key,
     import_roles,
     import_users,
+    initialize_database,
 ]:
     cli.add_command(func)

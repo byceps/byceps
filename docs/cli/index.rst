@@ -25,6 +25,8 @@ BYCEPS comes with a command-line tool for some tasks.
      - :ref:`Import Authorization Roles`
    * - ``byceps import-users``
      - :ref:`Import Users`
+   * - ``byceps initialize-database``
+     - :ref:`Initialize Database`
 
 
 Create Database Tables
@@ -38,6 +40,8 @@ to run BYCEPS in a relational database instance.
     (venv)$ BYCEPS_CONFIG=../config/development.py byceps create-database-tables
     Creating database tables ... done.
 
+.. note:: :ref:`Initialize Database` covers this.
+
 
 Import Authorization Roles
 ==========================
@@ -50,7 +54,7 @@ By default, an initial set of roles provided with BYCEPS is imported:
 .. code-block:: sh
 
     (venv)$ BYCEPS_CONFIG=../config/development.py byceps import-roles
-    Importing roles ... done. Imported 35 roles.
+    Importing roles ... done. Imported 35 roles, skipped 0 roles.
 
 Optionally, the file to import from can be specified with the option
 ``-f``/``--file``:
@@ -58,7 +62,10 @@ Optionally, the file to import from can be specified with the option
 .. code-block:: sh
 
     (venv)$ BYCEPS_CONFIG=../config/development.py byceps import-roles -f custom_roles.toml
-    Importing roles ... done. Imported 35 roles.
+    Importing roles ... done. Imported 35 roles, skipped 0 roles.
+
+.. note:: :ref:`Initialize Database` covers this (except for the option
+   to provide a custom roles file).
 
 
 Export Authorization Roles
@@ -73,6 +80,28 @@ To export all roles into a TOML file, standard output is redirected
 .. code-block:: sh
 
     (venv)$ BYCEPS_CONFIG=../config/development.py byceps export-roles > exported-roles.toml
+
+
+Initialize Database
+===================
+
+``byceps initialize-database`` prepares a relational database instance
+for running BYCEPS.
+
+It is a convenience command that includes the following steps (making it
+unnecessary to call the covered commands separately):
+
+- Create the database tables. (What :ref:`Create Database Tables` does.)
+- Import authorization roles. (What :ref:`Import Authorization Roles` does.)
+- Register the supported languages.
+
+.. code-block:: sh
+
+    (venv)$ BYCEPS_CONFIG=../config/development.py byceps initialize-database
+    Creating database tables ... done.
+    Importing roles ... done. Imported 35 roles, skipped 0 roles.
+    Adding language "en" ... done.
+    Adding language "de" ... done.
 
 
 Create Superuser
