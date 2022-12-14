@@ -14,19 +14,19 @@ BYCEPS comes with a command-line tool for some tasks.
    * - Command
      - Description
    * - ``byceps create-database-tables``
-     - :ref:`Create Database Tables`
+     - :ref:`Create database tables <Create Database Tables>`
    * - ``byceps create-superuser``
-     - :ref:`Create Superuser`
+     - :ref:`Create superuser <Create Superuser>`
    * - ``byceps export-roles``
-     - :ref:`Export Authorization Roles`
+     - :ref:`Export authorization roles <Export Authorization Roles>`
    * - ``byceps generate-secret-key``
-     - :ref:`Generate Secret Key`
+     - :ref:`Generate secret key <Generate Secret Key>`
    * - ``byceps import-roles``
-     - :ref:`Import Authorization Roles`
+     - :ref:`Import authorization roles <Import Authorization Roles>`
    * - ``byceps import-users``
-     - :ref:`Import Users`
+     - :ref:`Import users <Import Users>`
    * - ``byceps initialize-database``
-     - :ref:`Initialize Database`
+     - :ref:`Initialize database <Initialize Database>`
 
 
 Create Database Tables
@@ -40,7 +40,8 @@ to run BYCEPS in a relational database instance.
     (venv)$ BYCEPS_CONFIG=../config/development.py byceps create-database-tables
     Creating database tables ... done.
 
-.. note:: :ref:`Initialize Database` covers this.
+.. note:: The :ref:`database initialization command <Initialize
+   Database>` covers this command.
 
 
 Import Authorization Roles
@@ -64,8 +65,9 @@ Optionally, the file to import from can be specified with the option
     (venv)$ BYCEPS_CONFIG=../config/development.py byceps import-roles -f custom_roles.toml
     Importing roles ... done. Imported 35 roles, skipped 0 roles.
 
-.. note:: :ref:`Initialize Database` covers this (except for the option
-   to provide a custom roles file).
+.. note:: The :ref:`database initialization command <Initialize
+   Database>` covers this command (except for the option to provide a
+   custom roles file).
 
 
 Export Authorization Roles
@@ -180,7 +182,6 @@ To import it:
       field required (type=value_error.missing)
     [line 3] Imported user imported02.
     [line 4] Imported user imported03.
-
 
 
 Generate Secret Key
