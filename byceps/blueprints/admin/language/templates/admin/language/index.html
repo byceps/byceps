@@ -21,7 +21,7 @@
         {%- for language, locale in languages_and_locales|sort(attribute='0.code') %}
         <tr>
           <td>{{ language.code }}</td>
-          <td>{{ locale.get_display_name(g.user.locale) }}</td>
+          <td>{{ locale.get_display_name(g.user.locale)|fallback(_('unknown')) }}</td>
         </tr>
         {%- endfor %}
       </tbody>

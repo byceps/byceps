@@ -2226,6 +2226,13 @@ msgstr "Sprachcode"
 msgid "Language"
 msgstr "Sprache"
 
+#: byceps/blueprints/admin/language/templates/admin/language/index.html:24
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:93
+#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:102
+#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:41
+msgid "unknown"
+msgstr "unbekannt"
+
 #: byceps/blueprints/admin/language/templates/admin/language/index.html:31
 msgid "No languages defined."
 msgstr "Es sind keine Sprachen definiert."
@@ -3713,12 +3720,6 @@ msgstr "Es sind keine Artikel vorhanden."
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/update_form.html:5
 msgid "Edit article"
 msgstr "Artikel bearbeiten"
-
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:93
-#: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:102
-#: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:41
-msgid "unknown"
-msgstr "unbekannt"
 
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:125
 msgid "ordered"
