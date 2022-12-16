@@ -9,7 +9,7 @@ in the configuration file:
 
 .. code-block:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.py byceps initialize-database
+    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps initialize-database
     Creating database tables ... done.
     Importing roles ... done. Imported 35 roles, skipped 0 roles.
     Adding language "en" ... done.
@@ -20,7 +20,7 @@ user (which will get all available roles assigned):
 
 .. code-block:: sh
 
-    (venv)$ BYCEPS_CONFIG=../config/development.py byceps create-superuser
+    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps create-superuser
     Screen name: Flynn
     Email address: flynn@flynns-arcade.net
     Password:

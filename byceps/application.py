@@ -17,6 +17,7 @@ from flask import abort, current_app, Flask, g
 from flask_babel import Babel
 import jinja2
 from redis import Redis
+import rtoml
 
 from .blueprints.blueprints import register_blueprints
 from . import config, config_defaults
@@ -82,7 +83,13 @@ def _configure(
     app.config.from_object(config_defaults)
 
     if config_filename is not None:
-        app.config.from_pyfile(str(config_filename))
+        if isinstance(config_filename, str):
+            config_filename = Path(config_filename)
+
+        if config_filename.suffix == '.py':
+            app.config.from_pyfile(str(config_filename))
+        else:
+            app.config.from_file(str(config_filename), load=rtoml.load)
     else:
         app.config.from_envvar('BYCEPS_CONFIG')
 

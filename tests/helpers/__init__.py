@@ -34,7 +34,7 @@ from byceps.services.user.transfer.models import User
 from byceps.typing import BrandID, PartyID, UserID
 
 
-CONFIG_FILENAME_TESTING = Path('..') / 'config' / 'testing.py'
+CONFIG_FILENAME_TESTING = Path('..') / 'config' / 'testing.toml'
 
 
 def create_admin_app(

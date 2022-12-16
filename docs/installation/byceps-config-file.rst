@@ -4,16 +4,16 @@ Create BYCEPS Configuration File
 To run BYCEPS, a configuration file is required. Those usually reside in
 ``/config``.
 
-There are two examples, ``development-example.py`` and
-``production-example.py``, that you can use as a base for your specific
-configuration.
+There are two examples, ``development-example.toml`` and
+``production-example.toml``, that you can use as a base for your
+specific configuration.
 
 For starters, create a copy of the development example file to adjust as
 we go along:
 
 .. code-block:: sh
 
-    $ cp config/development-example.py config/development.py
+    $ cp config/development-example.toml config/development.toml
 
 
 Set a Secret Key
