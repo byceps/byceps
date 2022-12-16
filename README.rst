@@ -51,7 +51,7 @@ Code Status
 |badge_code-climate_maintainability|
 
 
-.. |badge_github-action-test| image:: https://img.shields.io/github/workflow/status/byceps/byceps/Test/main
+.. |badge_github-action-test| image:: https://img.shields.io/github/actions/workflow/status/byceps/byceps/test.yml?branch=main
    :alt: Build Status
    :target: https://github.com/byceps/byceps/actions/workflows/test.yml
 
