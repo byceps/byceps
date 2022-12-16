@@ -2124,6 +2124,7 @@ msgid "Register guest server"
 msgstr "Gastserver anmelden"
 
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_index.html:20
+#: byceps/blueprints/admin/language/templates/admin/language/create_form.html:20
 #: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:31
 #: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/create_form.html:48
 #: byceps/blueprints/admin/orga_presence/templates/admin/orga_presence/view.html:68
@@ -2206,18 +2207,29 @@ msgstr "Hintergrundjobs"
 msgid "Maintenance"
 msgstr "Wartung"
 
-#: byceps/blueprints/admin/language/templates/admin/language/index.html:4
-#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:16
-msgid "Languages"
-msgstr "Sprachen"
-
-#: byceps/blueprints/admin/language/templates/admin/language/index.html:16
+#: byceps/blueprints/admin/language/forms.py:17
+#: byceps/blueprints/admin/language/templates/admin/language/index.html:28
 #: byceps/blueprints/admin/page/forms.py:21
 #: byceps/blueprints/admin/site/navigation/forms.py:19
 msgid "Language code"
 msgstr "Sprachcode"
 
-#: byceps/blueprints/admin/language/templates/admin/language/index.html:17
+#: byceps/blueprints/admin/language/views.py:66
+msgid "Language has been added."
+msgstr "Die Sprache wurde hinzugefügt."
+
+#: byceps/blueprints/admin/language/templates/admin/language/create_form.html:5
+#: byceps/blueprints/admin/language/templates/admin/language/create_form.html:8
+#: byceps/blueprints/admin/language/templates/admin/language/index.html:5
+#: byceps/blueprints/admin/more/templates/admin/more/view_global.html:16
+msgid "Languages"
+msgstr "Sprachen"
+
+#: byceps/blueprints/admin/language/templates/admin/language/index.html:16
+msgid "Add language"
+msgstr "Sprache hinzufügen"
+
+#: byceps/blueprints/admin/language/templates/admin/language/index.html:29
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:29
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:56
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:27
@@ -2226,14 +2238,14 @@ msgstr "Sprachcode"
 msgid "Language"
 msgstr "Sprache"
 
-#: byceps/blueprints/admin/language/templates/admin/language/index.html:24
+#: byceps/blueprints/admin/language/templates/admin/language/index.html:36
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:93
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:102
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account.html:41
 msgid "unknown"
 msgstr "unbekannt"
 
-#: byceps/blueprints/admin/language/templates/admin/language/index.html:31
+#: byceps/blueprints/admin/language/templates/admin/language/index.html:43
 msgid "No languages defined."
 msgstr "Es sind keine Sprachen definiert."
 
