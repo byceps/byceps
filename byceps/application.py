@@ -35,18 +35,7 @@ def create_app(
     """Create the actual Flask application."""
     app = Flask('byceps')
 
-    app.config.from_object(config_defaults)
-    if config_filename is not None:
-        app.config.from_pyfile(str(config_filename))
-    else:
-        app.config.from_envvar('BYCEPS_CONFIG')
-    if config_overrides is not None:
-        app.config.from_mapping(config_overrides)
-
-    # Allow configuration values to be overridden by environment variables.
-    app.config.update(_get_config_from_environment())
-
-    config.init_app(app)
+    _configure(app, config_filename, config_overrides)
 
     # Throw an exception when an undefined name is referenced in a template.
     # NB: Set via `app.jinja_options['undefined'] = ` instead of
@@ -82,6 +71,28 @@ def create_app(
     _load_announce_signal_handlers()
 
     return app
+
+
+def _configure(
+    app: Flask,
+    config_filename: Optional[Path | str] = None,
+    config_overrides: Optional[dict[str, Any]] = None,
+) -> None:
+    """Configure application from file, environment variables, and defaults."""
+    app.config.from_object(config_defaults)
+
+    if config_filename is not None:
+        app.config.from_pyfile(str(config_filename))
+    else:
+        app.config.from_envvar('BYCEPS_CONFIG')
+
+    if config_overrides is not None:
+        app.config.from_mapping(config_overrides)
+
+    # Allow configuration values to be overridden by environment variables.
+    app.config.update(_get_config_from_environment())
+
+    config.init_app(app)
 
 
 def _get_config_from_environment() -> Iterator[tuple[str, str]]:
