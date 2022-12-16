@@ -82,6 +82,11 @@ def _configure(
     """Configure application from file, environment variables, and defaults."""
     app.config.from_object(config_defaults)
 
+    if config_filename is None:
+        config_filename = os.environ.get('BYCEPS_CONFIG')
+        if not config_filename:
+            raise config.ConfigurationError('No configuration file specified')
+
     if config_filename is not None:
         if isinstance(config_filename, str):
             config_filename = Path(config_filename)
@@ -90,8 +95,6 @@ def _configure(
             app.config.from_pyfile(str(config_filename))
         else:
             app.config.from_file(str(config_filename), load=rtoml.load)
-    else:
-        app.config.from_envvar('BYCEPS_CONFIG')
 
     if config_overrides is not None:
         app.config.from_mapping(config_overrides)
