@@ -29,9 +29,9 @@ let's generate one in a cryptographically secure way:
 
 Set this value in your configuration file so the line looks like this:
 
-.. code-block:: py
+.. code-block:: toml
 
-    SECRET_KEY = '3ac1c416bfacb82918d56720d1c3104fd96e8b8d4fbee42343ae7512a9ced293'
+    SECRET_KEY = "3ac1c416bfacb82918d56720d1c3104fd96e8b8d4fbee42343ae7512a9ced293"
 
 .. attention:: Do **not** use the above key (or any other key you copied
    from anywhere). Generate **your own** secret key!
