@@ -563,7 +563,7 @@ msgstr "API"
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view_orders.html:30
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:14
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/index_for_shop.html:41
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:21
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:27
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/index_for_shop.html:37
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:37
 #: byceps/blueprints/admin/user/templates/admin/user/_view_orders.html:14
@@ -1238,7 +1238,7 @@ msgstr "Bild-Dateiname"
 #: byceps/blueprints/admin/party/forms.py:65
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:21
 #: byceps/blueprints/admin/party/templates/macros/admin/party.html:57
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:24
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:30
 #: byceps/blueprints/admin/site/forms.py:74
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:21
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:51
@@ -1304,7 +1304,7 @@ msgstr "Marke erstellen"
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:28
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:94
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:11
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:40
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:46
 #: byceps/blueprints/admin/site/navigation/forms.py:17
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:26
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:125
@@ -1353,21 +1353,21 @@ msgstr "Bearbeiten"
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/setting_view.html:11
 #: byceps/blueprints/admin/guest_server/templates/layout/admin/guest_server.html:21
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:88
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:34
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:40
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:119
 msgid "Settings"
 msgstr "Einstellungen"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:43
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:95
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:41
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:47
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:126
 msgid "Value"
 msgstr "Wert"
 
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:56
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:108
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:54
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:60
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:139
 msgid "No settings defined."
 msgstr "Es sind keine Einstellungen vorhanden."
@@ -4423,7 +4423,11 @@ msgid_plural "orders"
 msgstr[0] "Bestellung"
 msgstr[1] "Bestellungen"
 
-#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:26
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:21
+msgid "Currency"
+msgstr "Währung"
+
+#: byceps/blueprints/admin/shop/shop/templates/admin/shop/shop/view.html:32
 #: byceps/blueprints/admin/user/templates/admin/user/index.html:34
 #: byceps/blueprints/admin/user/templates/macros/admin/user.html:66
 msgid "active"

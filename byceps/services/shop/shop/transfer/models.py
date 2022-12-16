@@ -20,5 +20,6 @@ class Shop:
     id: ShopID
     brand_id: BrandID
     title: str
+    currency: str
     archived: bool
     extra_settings: dict[str, Any]

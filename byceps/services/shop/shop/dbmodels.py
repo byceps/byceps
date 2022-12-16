@@ -29,13 +29,17 @@ class DbShop(db.Model):
         nullable=False,
     )
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
+    currency = db.Column(db.UnicodeText, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
     extra_settings = db.Column(MutableDict.as_mutable(db.JSONB))
 
-    def __init__(self, shop_id: ShopID, brand_id: BrandID, title: str) -> None:
+    def __init__(
+        self, shop_id: ShopID, brand_id: BrandID, title: str, currency: str
+    ) -> None:
         self.id = shop_id
         self.brand_id = brand_id
         self.title = title
+        self.currency = currency
 
     def __repr__(self) -> str:
         return ReprBuilder(self).add_with_lookup('id').build()

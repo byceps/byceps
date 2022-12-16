@@ -301,7 +301,7 @@ def make_shop(admin_app: Flask):
         if title is None:
             title = shop_id
 
-        return shop_service.create_shop(shop_id, brand_id, title)
+        return shop_service.create_shop(shop_id, brand_id, title, 'EUR')
 
     return _wrapper
 

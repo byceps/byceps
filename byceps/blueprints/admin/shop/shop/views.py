@@ -127,7 +127,7 @@ def create(brand_id):
     shop_id = brand.id
     title = brand.title
 
-    shop = shop_service.create_shop(shop_id, brand.id, title)
+    shop = shop_service.create_shop(shop_id, brand.id, title, 'EUR')
 
     flash_success(gettext('Shop has been created.'))
     return url_for('.view', shop_id=shop.id)
