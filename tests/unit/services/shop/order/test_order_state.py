@@ -65,7 +65,7 @@ def create_order(
     created_at = datetime.utcnow()
 
     order = order_service._build_order(
-        created_at, shop_id, storefront_id, order_number, orderer
+        created_at, shop_id, storefront_id, order_number, orderer, 'EUR'
     )
     order.payment_state = payment_state
     order.processing_required = processing_required

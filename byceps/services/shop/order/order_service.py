@@ -90,10 +90,10 @@ def place_order(
         created_at = datetime.utcnow()
 
     db_order = _build_order(
-        created_at, shop.id, storefront.id, order_number, orderer
+        created_at, shop.id, storefront.id, order_number, orderer, shop.currency
     )
     db_line_items = list(_build_line_items(cart_items, db_order))
-    db_order.total_amount = cart.calculate_total_amount()
+    db_order._total_amount = cart.calculate_total_amount()
     db_order.processing_required = any(
         db_line_item.processing_required for db_line_item in db_line_items
     )
@@ -135,6 +135,7 @@ def _build_order(
     storefront_id: StorefrontID,
     order_number: OrderNumber,
     orderer: Orderer,
+    currency: str,
 ) -> DbOrder:
     """Build an order."""
     return DbOrder(
@@ -150,6 +151,7 @@ def _build_order(
         orderer.zip_code,
         orderer.city,
         orderer.street,
+        currency,
     )
 
 
@@ -380,7 +382,7 @@ def mark_order_as_paid(
         db_order.id,
         now,
         payment_method,
-        db_order.total_amount,
+        db_order.total_amount.amount,
         initiator_id,
         additional_payment_data if additional_payment_data is not None else {},
     )

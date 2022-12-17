@@ -96,7 +96,9 @@ def _get_payment_instructions(order):
 
     context = {
         'order_number': order.order_number,
-        'total_amount': format_currency(order.total_amount, 'EUR'),
+        'total_amount': format_currency(
+            order.total_amount.amount, order.total_amount.currency
+        ),
     }
 
     return render_snippet_as_partial(

@@ -73,7 +73,7 @@ def create_order_with_payment_state(payment_state: PaymentState) -> Order:
     created_at = datetime.utcnow()
 
     order = order_service._build_order(
-        created_at, shop_id, storefront_id, order_number, orderer
+        created_at, shop_id, storefront_id, order_number, orderer, 'EUR'
     )
     order.payment_state = payment_state
 

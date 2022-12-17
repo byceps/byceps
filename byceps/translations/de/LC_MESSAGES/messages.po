@@ -3976,7 +3976,7 @@ msgstr "Bestellung %(order_number)s wurde als nicht verschickt markiert."
 
 #: byceps/blueprints/admin/shop/order/views.py:291
 #: byceps/blueprints/admin/shop/order/views.py:331
-#: byceps/blueprints/site/shop/orders/views.py:164
+#: byceps/blueprints/site/shop/orders/views.py:166
 msgid ""
 "The order has already been canceled. The payment state cannot be changed "
 "anymore."
@@ -6874,19 +6874,19 @@ msgstr "optional"
 msgid "Place binding order now"
 msgstr "Jetzt kostenpflichtig bestellen"
 
-#: byceps/blueprints/site/shop/orders/views.py:115
-#: byceps/blueprints/site/shop/orders/views.py:143
+#: byceps/blueprints/site/shop/orders/views.py:117
+#: byceps/blueprints/site/shop/orders/views.py:145
 msgid "The order has already been canceled."
 msgstr "Die Bestellung ist bereits storniert worden."
 
-#: byceps/blueprints/site/shop/orders/views.py:120
-#: byceps/blueprints/site/shop/orders/views.py:148
+#: byceps/blueprints/site/shop/orders/views.py:122
+#: byceps/blueprints/site/shop/orders/views.py:150
 msgid "The order has already been paid. You cannot cancel it yourself anymore."
 msgstr ""
 "Die Bestellung ist bereits bezahlt worden. Du kannst sie nicht mehr "
 "selbst stornieren."
 
-#: byceps/blueprints/site/shop/orders/views.py:170
+#: byceps/blueprints/site/shop/orders/views.py:172
 msgid "Order has been canceled."
 msgstr "Die Bestellung wurde storniert."
 
@@ -7021,7 +7021,7 @@ msgstr ""
 
 #: byceps/blueprints/site/ticketing/notification_service.py:164
 #: byceps/services/authentication/password/authn_password_reset_service.py:47
-#: byceps/services/shop/order/email/order_email_service.py:215
+#: byceps/services/shop/order/email/order_email_service.py:217
 #: byceps/services/user/user_email_address_service.py:74
 #: byceps/services/user/user_email_address_service.py:222
 #: byceps/services/user_message/user_message_service.py:106
@@ -7686,23 +7686,23 @@ msgstr "physikalisch"
 msgid "other"
 msgstr "sonstiges"
 
-#: byceps/services/shop/order/order_service.py:825
+#: byceps/services/shop/order/order_service.py:827
 msgid "bank transfer"
 msgstr "Überweisung"
 
-#: byceps/services/shop/order/order_service.py:826
+#: byceps/services/shop/order/order_service.py:828
 msgid "cash"
 msgstr "Barzahlung"
 
-#: byceps/services/shop/order/order_service.py:827
+#: byceps/services/shop/order/order_service.py:829
 msgid "direct debit"
 msgstr "Lastschrift"
 
-#: byceps/services/shop/order/order_service.py:828
+#: byceps/services/shop/order/order_service.py:830
 msgid "free"
 msgstr "kostenlos"
 
-#: byceps/services/shop/order/email/order_email_example_service.py:102
+#: byceps/services/shop/order/email/order_email_example_service.py:103
 msgid "Not paid in time."
 msgstr "Kein fristgerechter Geldeingang feststellbar."
 
@@ -7711,8 +7711,8 @@ msgstr "Kein fristgerechter Geldeingang feststellbar."
 msgid "Your order (%(order_number)s) has been received."
 msgstr "Deine Bestellung (%(order_number)s) ist eingegangen."
 
-#: byceps/services/shop/order/email/order_email_service.py:104
-#: byceps/services/shop/order/email/order_email_service.py:177
+#: byceps/services/shop/order/email/order_email_service.py:106
+#: byceps/services/shop/order/email/order_email_service.py:179
 #, python-format
 msgid ""
 "thank you for your order %(order_number)s on %(order_date)s through our "
@@ -7721,16 +7721,16 @@ msgstr ""
 "vielen Dank für deine Bestellung mit der Nummer %(order_number)s am "
 "%(order_date)s über unsere Website."
 
-#: byceps/services/shop/order/email/order_email_service.py:109
+#: byceps/services/shop/order/email/order_email_service.py:111
 msgid "You have ordered these items:"
 msgstr "Folgende Artikel hast du bestellt:"
 
-#: byceps/services/shop/order/email/order_email_service.py:141
+#: byceps/services/shop/order/email/order_email_service.py:143
 #, python-format
 msgid "Your order (%(order_number)s) has been canceled."
 msgstr "Deine Bestellung (%(order_number)s) ist storniert worden."
 
-#: byceps/services/shop/order/email/order_email_service.py:149
+#: byceps/services/shop/order/email/order_email_service.py:151
 #, python-format
 msgid ""
 "your order %(order_number)s on %(order_date)s has been canceled by us for"
@@ -7739,12 +7739,12 @@ msgstr ""
 "deine Bestellung mit der Nummer %(order_number)s vom %(order_date)s wurde"
 " von uns aus folgendem Grund storniert:"
 
-#: byceps/services/shop/order/email/order_email_service.py:170
+#: byceps/services/shop/order/email/order_email_service.py:172
 #, python-format
 msgid "Your order (%(order_number)s) has been paid."
 msgstr "Deine Bestellung (%(order_number)s) ist bezahlt worden."
 
-#: byceps/services/shop/order/email/order_email_service.py:182
+#: byceps/services/shop/order/email/order_email_service.py:184
 msgid "We have received your payment and have marked your order as paid."
 msgstr ""
 "Wir haben deine Zahlung erhalten und deine Bestellung als bezahlt "

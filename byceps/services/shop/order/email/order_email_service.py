@@ -97,7 +97,9 @@ def _assemble_email_for_incoming_order_to_orderer(
             indentation
             + gettext('Total amount')
             + ': '
-            + format_currency(order.total_amount, 'EUR')
+            + format_currency(
+                order.total_amount.amount, order.total_amount.currency
+            )
         )
         payment_instructions = _get_payment_instructions(order)
         paragraphs = [

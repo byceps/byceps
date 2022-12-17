@@ -56,6 +56,7 @@ def create_db_order(created_at: datetime) -> DbOrder:
         zip_code='n/a',
         city='n/a',
         street='n/a',
+        currency='EUR',
     )
 
     db_order.payment_state = PaymentState.open

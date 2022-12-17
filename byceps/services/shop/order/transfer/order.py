@@ -14,6 +14,7 @@ from typing import NewType, Optional
 from uuid import UUID
 
 from .....typing import UserID
+from .....util.money import Money
 
 from ...article.transfer.models import ArticleID, ArticleNumber, ArticleType
 from ...shop.transfer.models import ShopID
@@ -108,7 +109,7 @@ class Order:
     first_name: str
     last_name: str
     address: Address
-    total_amount: Decimal
+    total_amount: Money
     line_items: list[LineItem]
     payment_method: Optional[str]
     payment_state: PaymentState

@@ -17,6 +17,7 @@ else:
 from .....database import db, generate_uuid
 from .....typing import UserID
 from .....util.instances import ReprBuilder
+from .....util.money import Money
 
 from ....user.dbmodels.user import DbUser
 
@@ -55,7 +56,8 @@ class DbOrder(db.Model):
     zip_code = db.Column(db.UnicodeText, nullable=False)
     city = db.Column(db.UnicodeText, nullable=False)
     street = db.Column(db.UnicodeText, nullable=False)
-    total_amount = db.Column(db.Numeric(7, 2), nullable=False)
+    currency = db.Column(db.UnicodeText, nullable=False)
+    _total_amount = db.Column('total_amount', db.Numeric(7, 2), nullable=False)
     invoice_created_at = db.Column(db.DateTime, nullable=True)
     payment_method = db.Column(db.UnicodeText, nullable=True)
     _payment_state = db.Column(
@@ -86,6 +88,7 @@ class DbOrder(db.Model):
         zip_code: str,
         city: str,
         street: str,
+        currency: str,
     ) -> None:
         self.created_at = created_at
         self.shop_id = shop_id
@@ -99,7 +102,12 @@ class DbOrder(db.Model):
         self.zip_code = zip_code
         self.city = city
         self.street = street
+        self.currency = currency
         self.payment_state = PaymentState.open
+
+    @property
+    def total_amount(self) -> Money:
+        return Money(self._total_amount, self.currency)
 
     @hybrid_property
     def payment_state(self) -> PaymentState:

@@ -79,7 +79,7 @@ def test_without_any_items(
 ):
     order = place_order(storefront.id, orderer, [])
 
-    assert order.total_amount == Decimal('0.00')
+    assert order.total_amount == Money(Decimal('0.00'), 'EUR')
 
 
 def test_with_single_item(
@@ -93,7 +93,7 @@ def test_with_single_item(
         ],
     )
 
-    assert order.total_amount == Decimal('49.95')
+    assert order.total_amount == Money(Decimal('49.95'), 'EUR')
 
 
 def test_with_multiple_items(
@@ -114,7 +114,7 @@ def test_with_multiple_items(
         ],
     )
 
-    assert order.total_amount == Decimal('206.17')
+    assert order.total_amount == Money(Decimal('206.17'), 'EUR')
 
 
 # helpers

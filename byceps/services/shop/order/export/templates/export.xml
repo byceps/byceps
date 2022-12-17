@@ -40,7 +40,7 @@
 						</PARTY>
 					</INVOICE_PARTY>
 				</ORDER_PARTIES>
-				<PRICE_CURRENCY>EUR</PRICE_CURRENCY>
+				<PRICE_CURRENCY>{{ order.total_amount.currency }}</PRICE_CURRENCY>
 				<PAYMENT>
 					<CASH>
 						<PAYMENT_TERM type="unece">10</PAYMENT_TERM>
@@ -70,7 +70,7 @@
 		</ORDER_ITEM_LIST>
 		<ORDER_SUMMARY>
 			<TOTAL_ITEM_NUM>{{ line_items|length }}</TOTAL_ITEM_NUM>
-			<TOTAL_AMOUNT>{{ format_export_amount(order.total_amount) }}</TOTAL_AMOUNT>
+			<TOTAL_AMOUNT>{{ format_export_amount(order.total_amount.amount) }}</TOTAL_AMOUNT>
 		</ORDER_SUMMARY>
 	</ORDER>
 </ORDER_LIST>
