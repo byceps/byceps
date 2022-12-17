@@ -64,14 +64,14 @@ def create_order(
     orderer = create_orderer()
     created_at = datetime.utcnow()
 
-    order = order_service._build_order(
+    db_order = order_service._build_order(
         created_at, shop_id, storefront_id, order_number, orderer, 'EUR'
     )
-    order.payment_state = payment_state
-    order.processing_required = processing_required
-    order.processed_at = created_at if processed else None
+    db_order.payment_state = payment_state
+    db_order.processing_required = processing_required
+    db_order.processed_at = created_at if processed else None
 
-    return order_service._order_to_transfer_object(order)
+    return order_service._order_to_transfer_object(db_order)
 
 
 def create_orderer() -> Orderer:

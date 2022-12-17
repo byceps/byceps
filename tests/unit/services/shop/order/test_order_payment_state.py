@@ -72,12 +72,12 @@ def create_order_with_payment_state(payment_state: PaymentState) -> Order:
     orderer = create_orderer()
     created_at = datetime.utcnow()
 
-    order = order_service._build_order(
+    db_order = order_service._build_order(
         created_at, shop_id, storefront_id, order_number, orderer, 'EUR'
     )
-    order.payment_state = payment_state
+    db_order.payment_state = payment_state
 
-    return order_service._order_to_transfer_object(order)
+    return order_service._order_to_transfer_object(db_order)
 
 
 def create_orderer() -> Orderer:
