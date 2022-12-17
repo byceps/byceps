@@ -96,7 +96,7 @@
           </td>
           <td>{{ article_type_labels_by_type[article.type_] }}</td>
           <td class="nowrap number">
-            {{- article.price|currencyformat('EUR') }}<br>
+            {{- article.price.amount|currencyformat(article.price.currency) }}<br>
             {{- '%s&thinsp;%%'|safe|format(article.tax_rate|tax_rate_as_percentage)|dim -}}
           </td>
           <td class="number bignumber{% if article.quantity == 0 %} dimmed{% endif %}">{{ article.quantity }}</td>

@@ -18,6 +18,7 @@ from byceps.services.shop.storefront.transfer.models import (
     Storefront,
     StorefrontID,
 )
+from byceps.util.money import Money
 
 
 @pytest.fixture(scope='module')
@@ -43,7 +44,7 @@ def article1(make_article, shop: Shop) -> Article:
         shop.id,
         item_number=ArticleNumber('LF-01-A00001'),
         description='Artikel #1',
-        price=Decimal('49.95'),
+        price=Money(Decimal('49.95'), 'EUR'),
     )
 
 
@@ -53,7 +54,7 @@ def article2(make_article, shop: Shop) -> Article:
         shop.id,
         item_number=ArticleNumber('LF-01-A00002'),
         description='Artikel #2',
-        price=Decimal('6.20'),
+        price=Money(Decimal('6.20'), 'EUR'),
     )
 
 
@@ -63,7 +64,7 @@ def article3(make_article, shop: Shop) -> Article:
         shop.id,
         item_number=ArticleNumber('LF-01-A00003'),
         description='Artikel #3',
-        price=Decimal('12.53'),
+        price=Money(Decimal('12.53'), 'EUR'),
     )
 
 

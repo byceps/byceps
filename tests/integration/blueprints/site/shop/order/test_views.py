@@ -120,7 +120,7 @@ def test_order(
         first_line_item,
         article.id,
         article.item_number,
-        article.price,
+        article.price.amount,
         article.tax_rate,
         3,
     )
@@ -184,7 +184,7 @@ def test_order_single(
         first_line_item,
         article.id,
         article.item_number,
-        article.price,
+        article.price.amount,
         article.tax_rate,
         1,
     )

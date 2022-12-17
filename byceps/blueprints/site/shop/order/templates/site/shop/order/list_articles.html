@@ -30,7 +30,7 @@
           {%- endif -%}
         </td>
         <td class="number">{{ item.article.tax_rate|tax_rate_as_percentage }}&thinsp;%</td>
-        <td class="number">{{ item.article.price|currencyformat('EUR') }}</td>
+        <td class="number">{{ item.article.price.amount|currencyformat(item.article.price.currency) }}</td>
       </tr>
         {%- endwith %}
       {%- endfor %}

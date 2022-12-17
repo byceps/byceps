@@ -24,6 +24,7 @@ from byceps.services.snippet.transfer.models import Scope, SnippetID
 from byceps.services.ticketing.transfer.models import TicketCategoryID
 from byceps.services.user import user_service
 from byceps.typing import UserID
+from byceps.util.money import Money
 
 from . import generate_token
 
@@ -45,7 +46,7 @@ def create_article(
     type_: ArticleType = ArticleType.other,
     type_params: Optional[ArticleTypeParams] = None,
     description: Optional[str] = None,
-    price: Optional[Decimal] = None,
+    price: Optional[Money] = None,
     tax_rate: Optional[Decimal] = None,
     available_from: Optional[datetime] = None,
     available_until: Optional[datetime] = None,
@@ -60,7 +61,7 @@ def create_article(
         description = generate_token()
 
     if price is None:
-        price = Decimal('24.95')
+        price = Money(Decimal('24.95'), 'EUR')
 
     if tax_rate is None:
         tax_rate = Decimal('0.19')
@@ -85,7 +86,7 @@ def create_ticket_article(
     *,
     item_number: Optional[ArticleNumber] = None,
     description: Optional[str] = None,
-    price: Optional[Decimal] = None,
+    price: Optional[Money] = None,
     tax_rate: Optional[Decimal] = None,
     available_from: Optional[datetime] = None,
     available_until: Optional[datetime] = None,
@@ -99,7 +100,7 @@ def create_ticket_article(
         description = generate_token()
 
     if price is None:
-        price = Decimal('24.95')
+        price = Money(Decimal('24.95'), 'EUR')
 
     if tax_rate is None:
         tax_rate = Decimal('0.19')
@@ -123,7 +124,7 @@ def create_ticket_bundle_article(
     *,
     item_number: Optional[ArticleNumber] = None,
     description: Optional[str] = None,
-    price: Optional[Decimal] = None,
+    price: Optional[Money] = None,
     tax_rate: Optional[Decimal] = None,
     available_from: Optional[datetime] = None,
     available_until: Optional[datetime] = None,
@@ -137,7 +138,7 @@ def create_ticket_bundle_article(
         description = generate_token()
 
     if price is None:
-        price = Decimal('24.95')
+        price = Money(Decimal('24.95'), 'EUR')
 
     if tax_rate is None:
         tax_rate = Decimal('0.19')

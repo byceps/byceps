@@ -17,6 +17,7 @@ from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.snippet.transfer.models import SnippetID
 from byceps.services.user.transfer.models import User
+from byceps.util.money import Money
 
 from tests.helpers import current_user_set
 
@@ -54,7 +55,7 @@ def article1(make_article, shop: Shop) -> Article:
         shop.id,
         item_number=ArticleNumber('AB-11-A00003'),
         description='Einzelticket, Kategorie Loge',
-        price=Decimal('99.00'),
+        price=Money(Decimal('99.00'), 'EUR'),
     )
 
 
@@ -64,7 +65,7 @@ def article2(make_article, shop: Shop) -> Article:
         shop.id,
         item_number=ArticleNumber('AB-11-A00007'),
         description='T-Shirt, Größe L',
-        price=Decimal('14.95'),
+        price=Money(Decimal('14.95'), 'EUR'),
     )
 
 

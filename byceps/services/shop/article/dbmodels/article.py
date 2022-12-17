@@ -17,6 +17,7 @@ else:
 
 from .....database import db, generate_uuid
 from .....util.instances import ReprBuilder
+from .....util.money import Money
 
 from ...shop.transfer.models import ShopID
 
@@ -40,7 +41,8 @@ class DbArticle(db.Model):
     _type = db.Column('type', db.UnicodeText, nullable=False)
     type_params = db.Column(db.JSONB, nullable=True)
     description = db.Column(db.UnicodeText, nullable=False)
-    price = db.Column(db.Numeric(6, 2), nullable=False)
+    price_amount = db.Column(db.Numeric(6, 2), nullable=False)
+    price_currency = db.Column(db.UnicodeText, nullable=False)
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     available_from = db.Column(db.DateTime, nullable=True)
     available_until = db.Column(db.DateTime, nullable=True)
@@ -63,7 +65,7 @@ class DbArticle(db.Model):
         item_number: ArticleNumber,
         type_: ArticleType,
         description: str,
-        price: Decimal,
+        price: Money,
         tax_rate: Decimal,
         total_quantity: int,
         max_quantity_per_order: int,
@@ -78,7 +80,8 @@ class DbArticle(db.Model):
         self._type = type_.name
         self.type_params = type_params
         self.description = description
-        self.price = price
+        self.price_amount = price.amount
+        self.price_currency = price.currency
         self.tax_rate = tax_rate
         self.available_from = available_from
         self.available_until = available_until
@@ -90,6 +93,10 @@ class DbArticle(db.Model):
     @hybrid_property
     def type_(self) -> ArticleType:
         return ArticleType[self._type]
+
+    @property
+    def price(self) -> Money:
+        return Money(self.price_amount, self.price_currency)
 
     def __repr__(self) -> str:
         return (

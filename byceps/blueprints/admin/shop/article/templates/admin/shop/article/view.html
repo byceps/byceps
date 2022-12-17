@@ -63,7 +63,7 @@
         <div>
 
           <div class="data-label">{{ _('Unit price') }}</div>
-          <div class="data-value" style="font-size: 1.5rem;">{{ article.price|currencyformat('EUR') }}</div>
+          <div class="data-value" style="font-size: 1.5rem;">{{ article.price.amount|currencyformat(article.price.currency) }}</div>
 
         </div>
       </div>

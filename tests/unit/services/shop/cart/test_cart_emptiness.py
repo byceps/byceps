@@ -14,6 +14,7 @@ from byceps.services.shop.article.transfer.models import (
 )
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.shop.transfer.models import ShopID
+from byceps.util.money import Money
 
 
 def test_is_empty_without_items():
@@ -56,7 +57,7 @@ def create_article() -> Article:
         type_=ArticleType.other,
         type_params={},
         description='Cool thing',
-        price=Decimal('1.99'),
+        price=Money(Decimal('1.99'), 'EUR'),
         tax_rate=Decimal('0.19'),
         available_from=None,
         available_until=None,

@@ -28,7 +28,7 @@ class CartItem:
             raise ValueError('Quantity must be a positive number.')
 
         object.__setattr__(
-            self, 'line_amount', self.article.price * self.quantity
+            self, 'line_amount', self.article.price.amount * self.quantity
         )
 
 

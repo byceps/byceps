@@ -168,7 +168,7 @@ def _build_line_items(
             article.item_number,
             article.type_,
             article.description,
-            article.price,
+            article.price.amount,
             article.tax_rate,
             quantity,
             line_amount,

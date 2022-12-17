@@ -32,7 +32,7 @@
 
       <div class="row">
         <div>
-          {{ form_field(form.price, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', suffix='€') }}
+          {{ form_field(form.price_amount, size=7, maxlength=7, style='text-align: right; width: 5.5rem;', suffix=shop.currency) }}
         </div>
         <div>
           {{ form_field(form.tax_rate, list='tax_rates', size=5, maxlength=5, style='text-align: right; width: 5.5rem;', suffix='%') }}

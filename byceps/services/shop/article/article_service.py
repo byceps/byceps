@@ -13,6 +13,7 @@ from typing import Iterable, Optional
 from sqlalchemy import delete, select, update
 
 from ....database import db, paginate, Pagination
+from ....util.money import Money
 
 from ...ticketing.transfer.models import TicketCategoryID
 
@@ -43,7 +44,7 @@ def create_article(
     item_number: ArticleNumber,
     type_: ArticleType,
     description: str,
-    price: Decimal,
+    price: Money,
     tax_rate: Decimal,
     total_quantity: int,
     max_quantity_per_order: int,
@@ -75,7 +76,7 @@ def create_ticket_article(
     shop_id: ShopID,
     item_number: ArticleNumber,
     description: str,
-    price: Decimal,
+    price: Money,
     tax_rate: Decimal,
     total_quantity: int,
     max_quantity_per_order: int,
@@ -105,7 +106,7 @@ def create_ticket_bundle_article(
     shop_id: ShopID,
     item_number: ArticleNumber,
     description: str,
-    price: Decimal,
+    price: Money,
     tax_rate: Decimal,
     total_quantity: int,
     max_quantity_per_order: int,
@@ -136,7 +137,7 @@ def create_ticket_bundle_article(
 def update_article(
     article_id: ArticleID,
     description: str,
-    price: Decimal,
+    price: Money,
     tax_rate: Decimal,
     available_from: Optional[datetime],
     available_until: Optional[datetime],
@@ -149,7 +150,8 @@ def update_article(
     db_article = _get_db_article(article_id)
 
     db_article.description = description
-    db_article.price = price
+    db_article.price_amount = price.amount
+    db_article.price_currency = price.currency
     db_article.tax_rate = tax_rate
     db_article.available_from = available_from
     db_article.available_until = available_until

@@ -39,6 +39,7 @@ from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
 from .....typing import UserID
+from .....util.money import Money
 
 from .forms import (
     ArticleCreateForm,
@@ -259,7 +260,9 @@ def create_form(shop_id, type, erroneous_form=None):
     form = (
         erroneous_form
         if erroneous_form
-        else ArticleCreateForm(price=Decimal('0.0'), tax_rate=Decimal('19.0'))
+        else ArticleCreateForm(
+            price_amount=Decimal('0.0'), tax_rate=Decimal('19.0')
+        )
     )
     form.set_article_number_sequence_choices(article_number_sequences)
 
@@ -292,7 +295,7 @@ def create_ticket_form(shop_id, erroneous_form=None):
         erroneous_form
         if erroneous_form
         else TicketArticleCreateForm(
-            price=Decimal('0.0'), tax_rate=Decimal('19.0')
+            price_amount=Decimal('0.0'), tax_rate=Decimal('19.0')
         )
     )
     form.set_article_number_sequence_choices(article_number_sequences)
@@ -327,7 +330,7 @@ def create_ticket_bundle_form(shop_id, erroneous_form=None):
         erroneous_form
         if erroneous_form
         else TicketBundleArticleCreateForm(
-            price=Decimal('0.0'), tax_rate=Decimal('19.0')
+            price_amount=Decimal('0.0'), tax_rate=Decimal('19.0')
         )
     )
     form.set_article_number_sequence_choices(article_number_sequences)
@@ -395,7 +398,7 @@ def create(shop_id, type):
         abort(500, e.message)
 
     description = form.description.data.strip()
-    price = form.price.data
+    price = Money(form.price_amount.data, shop.currency)
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
     total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
@@ -463,6 +466,7 @@ def update_form(article_id, erroneous_form=None):
     brand = brand_service.get_brand(shop.brand_id)
 
     data = dataclasses.asdict(article)
+    data['price_amount'] = article.price.amount
     if article.available_from:
         available_from_local = to_user_timezone(article.available_from)
         data['available_from_date'] = available_from_local.date()
@@ -489,12 +493,14 @@ def update(article_id):
     """Update an article."""
     article = _get_article_or_404(article_id)
 
+    shop = shop_service.get_shop(article.shop_id)
+
     form = ArticleUpdateForm(request.form)
     if not form.validate():
         return update_form(article_id, form)
 
     description = form.description.data.strip()
-    price = form.price.data
+    price = Money(form.price_amount.data, shop.currency)
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
 
     if form.available_from_date.data and form.available_from_time.data:

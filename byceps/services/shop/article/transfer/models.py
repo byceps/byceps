@@ -15,6 +15,8 @@ from uuid import UUID
 
 from flask_babel import lazy_gettext
 
+from .....util.money import Money
+
 from ...shop.transfer.models import ShopID
 
 
@@ -67,7 +69,7 @@ class Article:
     type_: ArticleType
     type_params: ArticleTypeParams
     description: str
-    price: Decimal
+    price: Money
     tax_rate: Decimal
     available_from: Optional[datetime]
     available_until: Optional[datetime]

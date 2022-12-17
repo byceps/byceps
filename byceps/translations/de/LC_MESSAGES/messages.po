@@ -3585,26 +3585,26 @@ msgstr "Statisches Präfix"
 msgid "Badge"
 msgstr "Abzeichen"
 
-#: byceps/blueprints/admin/shop/article/views.py:365
+#: byceps/blueprints/admin/shop/article/views.py:368
 msgid "No article number sequences are defined for this shop."
 msgstr "Für diesen Shop sind keine Artikelnummer-Sequenzen definiert."
 
-#: byceps/blueprints/admin/shop/article/views.py:378
-#: byceps/blueprints/admin/shop/article/views.py:387
+#: byceps/blueprints/admin/shop/article/views.py:381
+#: byceps/blueprints/admin/shop/article/views.py:390
 msgid "No valid article number sequence was specified."
 msgstr "Es wurde keine gültige Artikelnummer-Sequenz angegeben."
 
-#: byceps/blueprints/admin/shop/article/views.py:442
+#: byceps/blueprints/admin/shop/article/views.py:445
 #, python-format
 msgid "Article \"%(item_number)s\" has been created."
 msgstr "Der Artikel \"%(item_number)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/shop/article/views.py:535
+#: byceps/blueprints/admin/shop/article/views.py:541
 #, python-format
 msgid "Article \"%(description)s\" has been updated."
 msgstr "Der Artikel \"%(description)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/shop/article/views.py:596
+#: byceps/blueprints/admin/shop/article/views.py:602
 #, python-format
 msgid ""
 "Article \"%(article_to_attach_item_number)s\" has been attached "
@@ -3613,7 +3613,7 @@ msgstr ""
 "Der Artikel \"%(article_to_attach_item_number)s\" wurde %(quantity)s mal "
 "an den Artikel \"%(article_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/article/views.py:622
+#: byceps/blueprints/admin/shop/article/views.py:628
 #, python-format
 msgid ""
 "Article \"%(article_item_number)s\" is no longer attached to article "
@@ -3622,17 +3622,17 @@ msgstr ""
 "Artikel \"%(article_item_number)s\" ist nun nicht mehr an Artikel "
 "\"%(attached_to_article_item_number)s\" angehängt."
 
-#: byceps/blueprints/admin/shop/article/views.py:678
-#: byceps/blueprints/admin/shop/article/views.py:730
-#: byceps/blueprints/admin/shop/article/views.py:786
+#: byceps/blueprints/admin/shop/article/views.py:684
+#: byceps/blueprints/admin/shop/article/views.py:736
+#: byceps/blueprints/admin/shop/article/views.py:792
 msgid "Action has been added."
 msgstr "Die Aktion wurde hinzugefügt."
 
-#: byceps/blueprints/admin/shop/article/views.py:803
+#: byceps/blueprints/admin/shop/article/views.py:809
 msgid "Action has been removed."
 msgstr "Die Aktion wurde entfernt."
 
-#: byceps/blueprints/admin/shop/article/views.py:846
+#: byceps/blueprints/admin/shop/article/views.py:852
 #, python-format
 msgid ""
 "Article number sequence could not be created. Is prefix \"%(prefix)s\" "
@@ -3641,7 +3641,7 @@ msgstr ""
 "Die Artikelnummer-Sequenz konnte nicht angelegt werden. Ist das Präfix "
 "\"%(prefix)s\" bereits definiert?"
 
-#: byceps/blueprints/admin/shop/article/views.py:855
+#: byceps/blueprints/admin/shop/article/views.py:861
 #, python-format
 msgid "Article number sequence with prefix \"%(prefix)s\" has been created."
 msgstr "Die Artikelnummer-Sequenz mit dem Präfix \"%(prefix)s\" wurde angelegt."
@@ -5081,7 +5081,7 @@ msgstr "<strong>Unbekanntes Ereignis</strong> \"%(event_type)s\" ist eingetreten
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/appoint_user_form.html:6
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_ticket.html:8
-#: byceps/services/shop/article/transfer/models.py:45
+#: byceps/services/shop/article/transfer/models.py:47
 msgid "Ticket"
 msgstr "Ticket"
 
@@ -5141,7 +5141,7 @@ msgid "Change"
 msgstr "Ändern"
 
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:7
-#: byceps/services/shop/article/transfer/models.py:46
+#: byceps/services/shop/article/transfer/models.py:48
 msgid "Ticket bundle"
 msgstr "Ticketpaket"
 
@@ -7678,11 +7678,11 @@ msgstr "hier kannst du ein neues Passwort festlegen: %(url)s"
 msgid "Image credit"
 msgstr "Bild"
 
-#: byceps/services/shop/article/transfer/models.py:44
+#: byceps/services/shop/article/transfer/models.py:46
 msgid "physical"
 msgstr "physikalisch"
 
-#: byceps/services/shop/article/transfer/models.py:47
+#: byceps/services/shop/article/transfer/models.py:49
 msgid "other"
 msgstr "sonstiges"
 

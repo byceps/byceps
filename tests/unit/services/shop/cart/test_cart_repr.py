@@ -15,6 +15,7 @@ from byceps.services.shop.article.transfer.models import (
 )
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.shop.transfer.models import ShopID
+from byceps.util.money import Money
 
 
 def test_cart_empty_repr():
@@ -43,7 +44,7 @@ def test_cart_filled_repr():
 def create_article(
     item_number: ArticleNumber,
     description: str,
-    price: Decimal,
+    price_amount: Decimal,
     tax_rate: Decimal,
 ) -> Article:
     return Article(
@@ -53,7 +54,7 @@ def create_article(
         type_=ArticleType.other,
         type_params={},
         description=description,
-        price=price,
+        price=Money(price_amount, 'EUR'),
         tax_rate=tax_rate,
         available_from=None,
         available_until=None,

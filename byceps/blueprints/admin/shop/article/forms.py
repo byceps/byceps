@@ -38,7 +38,7 @@ class _ArticleBaseForm(LocalizedForm):
     description = StringField(
         lazy_gettext('Description'), validators=[InputRequired()]
     )
-    price = DecimalField(
+    price_amount = DecimalField(
         lazy_gettext('Unit price'), places=2, validators=[InputRequired()]
     )
     tax_rate = DecimalField(
