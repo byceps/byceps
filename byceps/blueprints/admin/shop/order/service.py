@@ -26,7 +26,7 @@ class OrderWithOrderer(Order):
     placed_by: User
 
 
-def extend_order_tuples_with_orderer(
+def extend_orders_with_orderers(
     orders: Iterable[Order],
 ) -> Iterator[OrderWithOrderer]:
     orderer_ids = {order.placed_by_id for order in orders}

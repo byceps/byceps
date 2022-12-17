@@ -111,7 +111,7 @@ def _search_orders(
     )
 
     orders = list(
-        order_blueprint_service.extend_order_tuples_with_orderer(
+        order_blueprint_service.extend_orders_with_orderers(
             orders_pagination.items
         )
     )
