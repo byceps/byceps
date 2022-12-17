@@ -7,7 +7,6 @@ byceps.blueprints.admin.shop.order.service
 """
 
 from dataclasses import dataclass
-import dataclasses
 from typing import Iterable, Iterator
 
 from .....services.shop.order import order_log_service, order_service
@@ -17,7 +16,6 @@ from .....services.shop.order.transfer.log import (
 )
 from .....services.shop.order.transfer.order import Order, OrderID
 from .....services.ticketing import ticket_category_service
-from .....services.user.dbmodels.user import DbUser
 from .....services.user import user_service
 from .....services.user.transfer.models import User
 from .....services.user_badge import user_badge_service
@@ -25,7 +23,7 @@ from .....services.user_badge import user_badge_service
 
 @dataclass(frozen=True)
 class OrderWithOrderer(Order):
-    placed_by: DbUser
+    placed_by: User
 
 
 def extend_order_tuples_with_orderer(
@@ -36,9 +34,33 @@ def extend_order_tuples_with_orderer(
     orderers_by_id = user_service.index_users_by_id(orderers)
 
     for order in orders:
-        orderer = orderers_by_id[order.placed_by_id]
-        values = dataclasses.astuple(order) + (orderer,)
-        yield OrderWithOrderer(*values)
+        placed_by = orderers_by_id[order.placed_by_id]
+        yield OrderWithOrderer(
+            id=order.id,
+            created_at=order.created_at,
+            shop_id=order.shop_id,
+            storefront_id=order.storefront_id,
+            order_number=order.order_number,
+            placed_by_id=order.placed_by_id,
+            company=order.company,
+            first_name=order.first_name,
+            last_name=order.last_name,
+            address=order.address,
+            total_amount=order.total_amount,
+            line_items=order.line_items,
+            payment_method=order.payment_method,
+            payment_state=order.payment_state,
+            state=order.state,
+            is_open=order.is_open,
+            is_canceled=order.is_canceled,
+            is_paid=order.is_paid,
+            is_invoiced=order.is_invoiced,
+            is_overdue=order.is_overdue,
+            is_processing_required=order.is_processing_required,
+            is_processed=order.is_processed,
+            cancelation_reason=order.cancelation_reason,
+            placed_by=placed_by,
+        )
 
 
 def get_enriched_log_entry_data_for_order(
