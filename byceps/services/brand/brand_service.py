@@ -20,12 +20,12 @@ from .transfer.models import Brand
 
 def create_brand(brand_id: BrandID, title: str) -> Brand:
     """Create a brand."""
-    brand = DbBrand(brand_id, title)
+    db_brand = DbBrand(brand_id, title)
 
-    db.session.add(brand)
+    db.session.add(db_brand)
     db.session.commit()
 
-    return _db_entity_to_brand(brand)
+    return _db_entity_to_brand(db_brand)
 
 
 def update_brand(
@@ -35,15 +35,15 @@ def update_brand(
     archived: bool,
 ) -> Brand:
     """Update a brand."""
-    brand = _get_db_brand(brand_id)
+    db_brand = _get_db_brand(brand_id)
 
-    brand.title = title
-    brand.image_filename = image_filename
-    brand.archived = archived
+    db_brand.title = title
+    db_brand.image_filename = image_filename
+    db_brand.archived = archived
 
     db.session.commit()
 
-    return _db_entity_to_brand(brand)
+    return _db_entity_to_brand(db_brand)
 
 
 def delete_brand(brand_id: BrandID) -> None:
@@ -55,12 +55,12 @@ def delete_brand(brand_id: BrandID) -> None:
 
 def find_brand(brand_id: BrandID) -> Optional[Brand]:
     """Return the brand with that id, or `None` if not found."""
-    brand = _get_db_brand(brand_id)
+    db_brand = _get_db_brand(brand_id)
 
-    if brand is None:
+    if db_brand is None:
         return None
 
-    return _db_entity_to_brand(brand)
+    return _db_entity_to_brand(db_brand)
 
 
 def _get_db_brand(brand_id: BrandID) -> DbBrand:
@@ -80,16 +80,20 @@ def get_brand(brand_id: BrandID) -> Brand:
 
 def get_all_brands() -> list[Brand]:
     """Return all brands, ordered by title."""
-    brands = db.session.scalars(select(DbBrand).order_by(DbBrand.title)).all()
+    db_brands = db.session.scalars(
+        select(DbBrand).order_by(DbBrand.title)
+    ).all()
 
-    return [_db_entity_to_brand(brand) for brand in brands]
+    return [_db_entity_to_brand(db_brand) for db_brand in db_brands]
 
 
 def get_active_brands() -> set[Brand]:
     """Return active (i.e. non-archived) brands."""
-    brands = db.session.scalars(select(DbBrand).filter_by(archived=False)).all()
+    db_brands = db.session.scalars(
+        select(DbBrand).filter_by(archived=False)
+    ).all()
 
-    return {_db_entity_to_brand(brand) for brand in brands}
+    return {_db_entity_to_brand(db_brand) for db_brand in db_brands}
 
 
 def count_brands() -> int:
@@ -97,17 +101,17 @@ def count_brands() -> int:
     return db.session.scalar(select(db.func.count(DbBrand.id)))
 
 
-def _db_entity_to_brand(brand: DbBrand) -> Brand:
+def _db_entity_to_brand(db_brand: DbBrand) -> Brand:
     image_url_path: Optional[str]
-    if brand.image_filename:
-        image_url_path = f'/data/global/brand_images/{brand.image_filename}'
+    if db_brand.image_filename:
+        image_url_path = f'/data/global/brand_images/{db_brand.image_filename}'
     else:
         image_url_path = None
 
     return Brand(
-        id=brand.id,
-        title=brand.title,
-        image_filename=brand.image_filename,
+        id=db_brand.id,
+        title=db_brand.title,
+        image_filename=db_brand.image_filename,
         image_url_path=image_url_path,
-        archived=brand.archived,
+        archived=db_brand.archived,
     )

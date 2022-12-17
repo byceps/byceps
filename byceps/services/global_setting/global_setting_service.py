@@ -18,12 +18,12 @@ from .transfer.models import GlobalSetting
 
 def create_setting(name: str, value: str) -> GlobalSetting:
     """Create a global setting."""
-    setting = DbSetting(name, value)
+    db_setting = DbSetting(name, value)
 
-    db.session.add(setting)
+    db.session.add(db_setting)
     db.session.commit()
 
-    return _db_entity_to_global_setting(setting)
+    return _db_entity_to_global_setting(db_setting)
 
 
 def create_or_update_setting(name: str, value: str) -> GlobalSetting:
@@ -50,12 +50,12 @@ def remove_setting(name: str) -> None:
 
 def find_setting(name: str) -> Optional[GlobalSetting]:
     """Return the global setting with that name, or `None` if not found."""
-    setting = db.session.get(DbSetting, name)
+    db_setting = db.session.get(DbSetting, name)
 
-    if setting is None:
+    if db_setting is None:
         return None
 
-    return _db_entity_to_global_setting(setting)
+    return _db_entity_to_global_setting(db_setting)
 
 
 def find_setting_value(name: str) -> Optional[str]:
@@ -72,13 +72,15 @@ def find_setting_value(name: str) -> Optional[str]:
 
 def get_settings() -> set[GlobalSetting]:
     """Return all global settings."""
-    settings = db.session.scalars(select(DbSetting)).all()
+    db_settings = db.session.scalars(select(DbSetting)).all()
 
-    return {_db_entity_to_global_setting(setting) for setting in settings}
+    return {
+        _db_entity_to_global_setting(db_setting) for db_setting in db_settings
+    }
 
 
-def _db_entity_to_global_setting(setting: DbSetting) -> GlobalSetting:
+def _db_entity_to_global_setting(db_setting: DbSetting) -> GlobalSetting:
     return GlobalSetting(
-        setting.name,
-        setting.value,
+        db_setting.name,
+        db_setting.value,
     )

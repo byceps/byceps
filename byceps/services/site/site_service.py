@@ -44,7 +44,7 @@ def create_site(
     storefront_id: Optional[StorefrontID] = None,
 ) -> Site:
     """Create a site for that party."""
-    site = DbSite(
+    db_site = DbSite(
         site_id,
         title,
         server_name,
@@ -57,10 +57,10 @@ def create_site(
         storefront_id=storefront_id,
     )
 
-    db.session.add(site)
+    db.session.add(db_site)
     db.session.commit()
 
-    return _db_entity_to_site(site)
+    return _db_entity_to_site(db_site)
 
 
 def update_site(
@@ -77,22 +77,22 @@ def update_site(
     archived: bool,
 ) -> Site:
     """Update the site."""
-    site = _get_db_site(site_id)
+    db_site = _get_db_site(site_id)
 
-    site.title = title
-    site.server_name = server_name
-    site.brand_id = brand_id
-    site.party_id = party_id
-    site.enabled = enabled
-    site.user_account_creation_enabled = user_account_creation_enabled
-    site.login_enabled = login_enabled
-    site.board_id = board_id
-    site.storefront_id = storefront_id
-    site.archived = archived
+    db_site.title = title
+    db_site.server_name = server_name
+    db_site.brand_id = brand_id
+    db_site.party_id = party_id
+    db_site.enabled = enabled
+    db_site.user_account_creation_enabled = user_account_creation_enabled
+    db_site.login_enabled = login_enabled
+    db_site.board_id = board_id
+    db_site.storefront_id = storefront_id
+    db_site.archived = archived
 
     db.session.commit()
 
-    return _db_entity_to_site(site)
+    return _db_entity_to_site(db_site)
 
 
 def delete_site(site_id: SiteID) -> None:
@@ -109,35 +109,35 @@ def _find_db_site(site_id: SiteID) -> Optional[DbSite]:
 
 
 def _get_db_site(site_id: SiteID) -> DbSite:
-    site = _find_db_site(site_id)
+    db_site = _find_db_site(site_id)
 
-    if site is None:
+    if db_site is None:
         raise UnknownSiteId(site_id)
 
-    return site
+    return db_site
 
 
 def find_site(site_id: SiteID) -> Optional[Site]:
     """Return the site with that ID, or `None` if not found."""
-    site = _find_db_site(site_id)
+    db_site = _find_db_site(site_id)
 
-    if site is None:
+    if db_site is None:
         return None
 
-    return _db_entity_to_site(site)
+    return _db_entity_to_site(db_site)
 
 
 def get_site(site_id: SiteID) -> Site:
     """Return the site with that ID."""
-    site = _get_db_site(site_id)
-    return _db_entity_to_site(site)
+    db_site = _get_db_site(site_id)
+    return _db_entity_to_site(db_site)
 
 
 def get_all_sites() -> set[Site]:
     """Return all sites."""
-    sites = db.session.query(DbSite).all()
+    db_sites = db.session.query(DbSite).all()
 
-    return {_db_entity_to_site(site) for site in sites}
+    return {_db_entity_to_site(db_site) for db_site in db_sites}
 
 
 def get_sites(site_ids: set[SiteID]) -> list[Site]:
@@ -154,9 +154,9 @@ def get_sites(site_ids: set[SiteID]) -> list[Site]:
 
 def get_sites_for_brand(brand_id: BrandID) -> set[Site]:
     """Return the sites for that brand."""
-    sites = db.session.query(DbSite).filter_by(brand_id=brand_id).all()
+    db_sites = db.session.query(DbSite).filter_by(brand_id=brand_id).all()
 
-    return {_db_entity_to_site(site) for site in sites}
+    return {_db_entity_to_site(db_site) for db_site in db_sites}
 
 
 def get_current_sites(
@@ -171,7 +171,7 @@ def get_current_sites(
     if include_brands:
         query = query.options(db.joinedload(DbSite.brand))
 
-    sites = query.filter_by(enabled=True).filter_by(archived=False).all()
+    db_sites = query.filter_by(enabled=True).filter_by(archived=False).all()
 
     transform: Callable[[DbSite], Site | SiteWithBrand]
     if include_brands:
@@ -179,31 +179,33 @@ def get_current_sites(
     else:
         transform = _db_entity_to_site
 
-    return {transform(site) for site in sites}
+    return {transform(db_site) for db_site in db_sites}
 
 
-def _db_entity_to_site(site: DbSite) -> Site:
-    news_channel_ids = frozenset(channel.id for channel in site.news_channels)
+def _db_entity_to_site(db_site: DbSite) -> Site:
+    news_channel_ids = frozenset(
+        channel.id for channel in db_site.news_channels
+    )
 
     return Site(
-        id=site.id,
-        title=site.title,
-        server_name=site.server_name,
-        brand_id=site.brand_id,
-        party_id=site.party_id,
-        enabled=site.enabled,
-        user_account_creation_enabled=site.user_account_creation_enabled,
-        login_enabled=site.login_enabled,
+        id=db_site.id,
+        title=db_site.title,
+        server_name=db_site.server_name,
+        brand_id=db_site.brand_id,
+        party_id=db_site.party_id,
+        enabled=db_site.enabled,
+        user_account_creation_enabled=db_site.user_account_creation_enabled,
+        login_enabled=db_site.login_enabled,
         news_channel_ids=news_channel_ids,
-        board_id=site.board_id,
-        storefront_id=site.storefront_id,
-        archived=site.archived,
+        board_id=db_site.board_id,
+        storefront_id=db_site.storefront_id,
+        archived=db_site.archived,
     )
 
 
-def _db_entity_to_site_with_brand(site_entity: DbSite) -> SiteWithBrand:
-    site = _db_entity_to_site(site_entity)
-    brand = brand_service._db_entity_to_brand(site_entity.brand)
+def _db_entity_to_site_with_brand(db_site: DbSite) -> SiteWithBrand:
+    site = _db_entity_to_site(db_site)
+    brand = brand_service._db_entity_to_brand(db_site.brand)
 
     site_tuple = dataclasses.astuple(site)
     brand_tuple = (brand,)
@@ -213,10 +215,10 @@ def _db_entity_to_site_with_brand(site_entity: DbSite) -> SiteWithBrand:
 
 def add_news_channel(site_id: SiteID, news_channel_id: NewsChannelID) -> None:
     """Add the news channel to the site."""
-    site = _get_db_site(site_id)
+    db_site = _get_db_site(site_id)
     news_channel = news_channel_service.get_db_channel(news_channel_id)
 
-    site.news_channels.append(news_channel)
+    db_site.news_channels.append(news_channel)
     db.session.commit()
 
 
@@ -224,8 +226,8 @@ def remove_news_channel(
     site_id: SiteID, news_channel_id: NewsChannelID
 ) -> None:
     """Remove the news channel from the site."""
-    site = _get_db_site(site_id)
+    db_site = _get_db_site(site_id)
     news_channel = news_channel_service.get_db_channel(news_channel_id)
 
-    site.news_channels.remove(news_channel)
+    db_site.news_channels.remove(news_channel)
     db.session.commit()

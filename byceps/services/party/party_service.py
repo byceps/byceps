@@ -38,7 +38,7 @@ def create_party(
     max_ticket_quantity: Optional[int] = None,
 ) -> Party:
     """Create a party."""
-    party = DbParty(
+    db_party = DbParty(
         party_id,
         brand_id,
         title,
@@ -47,10 +47,10 @@ def create_party(
         max_ticket_quantity=max_ticket_quantity,
     )
 
-    db.session.add(party)
+    db.session.add(db_party)
     db.session.commit()
 
-    return _db_entity_to_party(party)
+    return _db_entity_to_party(db_party)
 
 
 def update_party(
@@ -65,23 +65,23 @@ def update_party(
     archived: bool,
 ) -> Party:
     """Update a party."""
-    party = db.session.get(DbParty, party_id)
+    db_party = db.session.get(DbParty, party_id)
 
-    if party is None:
+    if db_party is None:
         raise UnknownPartyId(party_id)
 
-    party.title = title
-    party.starts_at = starts_at
-    party.ends_at = ends_at
-    party.max_ticket_quantity = max_ticket_quantity
-    party.ticket_management_enabled = ticket_management_enabled
-    party.seat_management_enabled = seat_management_enabled
-    party.canceled = canceled
-    party.archived = archived
+    db_party.title = title
+    db_party.starts_at = starts_at
+    db_party.ends_at = ends_at
+    db_party.max_ticket_quantity = max_ticket_quantity
+    db_party.ticket_management_enabled = ticket_management_enabled
+    db_party.seat_management_enabled = seat_management_enabled
+    db_party.canceled = canceled
+    db_party.archived = archived
 
     db.session.commit()
 
-    return _db_entity_to_party(party)
+    return _db_entity_to_party(db_party)
 
 
 def delete_party(party_id: PartyID) -> None:
@@ -105,12 +105,12 @@ def count_parties_for_brand(brand_id: BrandID) -> int:
 
 def find_party(party_id: PartyID) -> Optional[Party]:
     """Return the party with that id, or `None` if not found."""
-    party = db.session.get(DbParty, party_id)
+    db_party = db.session.get(DbParty, party_id)
 
-    if party is None:
+    if db_party is None:
         return None
 
-    return _db_entity_to_party(party)
+    return _db_entity_to_party(db_party)
 
 
 def get_party(party_id: PartyID) -> Party:
@@ -125,18 +125,18 @@ def get_party(party_id: PartyID) -> Party:
 
 def get_all_parties() -> list[Party]:
     """Return all parties."""
-    parties = db.session.scalars(select(DbParty)).all()
+    db_parties = db.session.scalars(select(DbParty)).all()
 
-    return [_db_entity_to_party(party) for party in parties]
+    return [_db_entity_to_party(db_party) for db_party in db_parties]
 
 
 def get_all_parties_with_brands() -> list[PartyWithBrand]:
     """Return all parties."""
-    parties = db.session.scalars(
+    db_parties = db.session.scalars(
         select(DbParty).options(db.joinedload(DbParty.brand))
     ).all()
 
-    return [_db_entity_to_party_with_brand(party) for party in parties]
+    return [_db_entity_to_party_with_brand(db_party) for db_party in db_parties]
 
 
 def get_active_parties(
@@ -151,7 +151,7 @@ def get_active_parties(
     if include_brands:
         stmt = stmt.options(db.joinedload(DbParty.brand))
 
-    parties = db.session.scalars(
+    db_parties = db.session.scalars(
         stmt.filter_by(canceled=False)
         .filter_by(archived=False)
         .order_by(DbParty.starts_at)
@@ -162,19 +162,19 @@ def get_active_parties(
     else:
         transform = _db_entity_to_party
 
-    return [transform(party) for party in parties]
+    return [transform(db_party) for db_party in db_parties]
 
 
 def get_archived_parties_for_brand(brand_id: BrandID) -> list[Party]:
     """Return archived parties for that brand."""
-    parties = db.session.scalars(
+    db_parties = db.session.scalars(
         select(DbParty)
         .filter_by(brand_id=brand_id)
         .filter_by(archived=True)
         .order_by(DbParty.starts_at.desc())
     ).all()
 
-    return [_db_entity_to_party(party) for party in parties]
+    return [_db_entity_to_party(db_party) for db_party in db_parties]
 
 
 def get_parties(party_ids: set[PartyID]) -> list[Party]:
@@ -182,20 +182,20 @@ def get_parties(party_ids: set[PartyID]) -> list[Party]:
     if not party_ids:
         return []
 
-    parties = db.session.scalars(
+    db_parties = db.session.scalars(
         select(DbParty).filter(DbParty.id.in_(party_ids))
     ).all()
 
-    return [_db_entity_to_party(party) for party in parties]
+    return [_db_entity_to_party(db_party) for db_party in db_parties]
 
 
 def get_parties_for_brand(brand_id: BrandID) -> list[Party]:
     """Return the parties for that brand."""
-    parties = db.session.scalars(
+    db_parties = db.session.scalars(
         select(DbParty).filter_by(brand_id=brand_id)
     ).all()
 
-    return [_db_entity_to_party(party) for party in parties]
+    return [_db_entity_to_party(db_party) for db_party in db_parties]
 
 
 def get_parties_for_brand_paginated(
@@ -231,18 +231,18 @@ def get_party_count_by_brand_id() -> dict[BrandID, int]:
     return dict(brand_ids_and_party_counts)
 
 
-def _db_entity_to_party(party: DbParty) -> Party:
+def _db_entity_to_party(db_party: DbParty) -> Party:
     return Party(
-        id=party.id,
-        brand_id=party.brand_id,
-        title=party.title,
-        starts_at=party.starts_at,
-        ends_at=party.ends_at,
-        max_ticket_quantity=party.max_ticket_quantity,
-        ticket_management_enabled=party.ticket_management_enabled,
-        seat_management_enabled=party.seat_management_enabled,
-        canceled=party.canceled,
-        archived=party.archived,
+        id=db_party.id,
+        brand_id=db_party.brand_id,
+        title=db_party.title,
+        starts_at=db_party.starts_at,
+        ends_at=db_party.ends_at,
+        max_ticket_quantity=db_party.max_ticket_quantity,
+        ticket_management_enabled=db_party.ticket_management_enabled,
+        seat_management_enabled=db_party.seat_management_enabled,
+        canceled=db_party.canceled,
+        archived=db_party.archived,
     )
 
 

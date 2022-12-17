@@ -26,9 +26,9 @@ def create_entry(
     occurred_at: Optional[datetime] = None,
 ) -> None:
     """Create a user log entry."""
-    entry = build_entry(event_type, user_id, data, occurred_at=occurred_at)
+    db_entry = build_entry(event_type, user_id, data, occurred_at=occurred_at)
 
-    db.session.add(entry)
+    db.session.add(db_entry)
     db.session.commit()
 
 

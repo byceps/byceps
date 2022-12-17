@@ -19,12 +19,12 @@ from .transfer.models import PartySetting
 
 def create_setting(party_id: PartyID, name: str, value: str) -> PartySetting:
     """Create a setting for that party."""
-    setting = DbSetting(party_id, name, value)
+    db_setting = DbSetting(party_id, name, value)
 
-    db.session.add(setting)
+    db.session.add(db_setting)
     db.session.commit()
 
-    return _db_entity_to_party_setting(setting)
+    return _db_entity_to_party_setting(db_setting)
 
 
 def create_or_update_setting(
@@ -64,12 +64,12 @@ def find_setting(party_id: PartyID, name: str) -> Optional[PartySetting]:
     """Return the setting for that party and with that name, or `None`
     if not found.
     """
-    setting = db.session.get(DbSetting, (party_id, name))
+    db_setting = db.session.get(DbSetting, (party_id, name))
 
-    if setting is None:
+    if db_setting is None:
         return None
 
-    return _db_entity_to_party_setting(setting)
+    return _db_entity_to_party_setting(db_setting)
 
 
 def find_setting_value(party_id: PartyID, name: str) -> Optional[str]:
@@ -86,16 +86,18 @@ def find_setting_value(party_id: PartyID, name: str) -> Optional[str]:
 
 def get_settings(party_id: PartyID) -> set[PartySetting]:
     """Return all settings for that party."""
-    settings = db.session.scalars(
+    db_settings = db.session.scalars(
         select(DbSetting).filter_by(party_id=party_id)
     ).all()
 
-    return {_db_entity_to_party_setting(setting) for setting in settings}
+    return {
+        _db_entity_to_party_setting(db_setting) for db_setting in db_settings
+    }
 
 
-def _db_entity_to_party_setting(setting: DbSetting) -> PartySetting:
+def _db_entity_to_party_setting(db_setting: DbSetting) -> PartySetting:
     return PartySetting(
-        setting.party_id,
-        setting.name,
-        setting.value,
+        db_setting.party_id,
+        db_setting.name,
+        db_setting.value,
     )
