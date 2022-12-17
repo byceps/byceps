@@ -18,6 +18,7 @@ from sqlalchemy.exc import IntegrityError
 from ....database import db, paginate, Pagination
 from ....events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ....typing import UserID
+from ....util.money import Money
 
 from ...ticketing.transfer.models import TicketCategoryID
 from ...user import user_service
@@ -854,7 +855,10 @@ def _order_to_transfer_object(order: DbOrder) -> Order:
         street=order.street,
     )
 
-    line_items = list(map(_line_item_to_transfer_object, order.line_items))
+    line_items = [
+        _line_item_to_transfer_object(db_line_item, order.currency)
+        for db_line_item in order.line_items
+    ]
     line_items.sort(key=lambda li: li.article_id)
 
     state = _get_order_state(order)
@@ -902,7 +906,7 @@ def _is_overdue(db_order: DbOrder) -> bool:
 
 
 def _line_item_to_transfer_object(
-    db_line_item: DbLineItem,
+    db_line_item: DbLineItem, currency: str
 ) -> LineItem:
     """Create transfer object from line item database entity."""
     return LineItem(
@@ -912,7 +916,7 @@ def _line_item_to_transfer_object(
         article_number=db_line_item.article_number,
         article_type=db_line_item.article_type,
         description=db_line_item.description,
-        unit_price=db_line_item.unit_price,
+        unit_price=Money(db_line_item.unit_price, currency),
         tax_rate=db_line_item.tax_rate,
         quantity=db_line_item.quantity,
         line_amount=db_line_item.line_amount,

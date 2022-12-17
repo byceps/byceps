@@ -25,6 +25,7 @@ from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.site.transfer.models import Site, SiteID
 from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
+from byceps.util.money import Money
 
 from tests.helpers import create_site, http_client, log_in_user
 from tests.helpers.shop import create_shop_snippet
@@ -120,7 +121,7 @@ def test_order(
         first_line_item,
         article.id,
         article.item_number,
-        article.price.amount,
+        article.price,
         article.tax_rate,
         3,
     )
@@ -184,7 +185,7 @@ def test_order_single(
         first_line_item,
         article.id,
         article.item_number,
-        article.price.amount,
+        article.price,
         article.tax_rate,
         1,
     )
@@ -244,7 +245,7 @@ def assert_line_item(
     line_item: LineItem,
     article_id: ArticleID,
     article_number: ArticleNumber,
-    unit_price: Decimal,
+    unit_price: Money,
     tax_rate: Decimal,
     quantity: int,
 ) -> None:

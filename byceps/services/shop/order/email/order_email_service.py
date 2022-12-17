@@ -86,7 +86,10 @@ def _assemble_email_for_incoming_order_to_orderer(
                     indentation
                     + gettext('Unit price')
                     + ': '
-                    + format_currency(line_item.unit_price, 'EUR'),
+                    + format_currency(
+                        line_item.unit_price.amount,
+                        line_item.unit_price.currency,
+                    ),
                 ]
             )
             for line_item in sorted(

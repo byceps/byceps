@@ -13,7 +13,7 @@
         <td class="number">{{ line_item.quantity }}</td>
         <td class="nowrap"><a href="{{ url_for('shop_article_admin.view', article_id=line_item.article_id) }}" title="{{ line_item.description }}">{{ line_item.article_number }}</a></td>
         <td>{{ line_item.description }}</td>
-        <td class="number">{{ line_item.unit_price|currencyformat('EUR') }}</td>
+        <td class="number">{{ line_item.unit_price.amount|currencyformat(line_item.unit_price.currency) }}</td>
       </tr>
       {%- endfor %}
     </tbody>

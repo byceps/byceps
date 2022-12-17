@@ -90,7 +90,7 @@ class LineItem:
     article_number: ArticleNumber
     article_type: ArticleType
     description: str
-    unit_price: Decimal
+    unit_price: Money
     tax_rate: Decimal
     quantity: int
     line_amount: Decimal

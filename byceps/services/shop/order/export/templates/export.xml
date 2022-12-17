@@ -61,7 +61,7 @@
 				<QUANTITY>{{ line_item.quantity }}</QUANTITY>
 				<ORDER_UNIT>1</ORDER_UNIT>
 				<ARTICLE_PRICE type="gros_list">
-					<PRICE_AMOUNT>{{ format_export_amount(line_item.unit_price) }}</PRICE_AMOUNT>
+					<PRICE_AMOUNT>{{ format_export_amount(line_item.unit_price.amount) }}</PRICE_AMOUNT>
 					<PRICE_LINE_AMOUNT>{{ format_export_amount(line_item.line_amount) }}</PRICE_LINE_AMOUNT>
 					<TAX>{{ '%0.2f'|format(line_item.tax_rate) }}</TAX>
 				</ARTICLE_PRICE>
