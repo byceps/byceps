@@ -50,7 +50,7 @@ def test_mark_order_as_paid(order, admin_user):
     payment = payments_after[0]
     assert payment.order_id == order.id
     assert payment.method == 'cash'
-    assert payment.amount == order.total_amount.amount
+    assert payment.amount == order.total_amount
     assert payment.additional_data == {}
 
 

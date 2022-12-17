@@ -8,12 +8,12 @@ byceps.services.shop.order.order_payment_service
 
 from copy import deepcopy
 from datetime import datetime
-from decimal import Decimal
 
 from sqlalchemy import delete, select
 
 from ....database import db
 from ....typing import UserID
+from ....util.money import Money
 
 from ...user import user_service
 
@@ -27,7 +27,7 @@ def add_payment(
     order_id: OrderID,
     created_at: datetime,
     method: str,
-    amount: Decimal,
+    amount: Money,
     initiator_id: UserID,
     additional_data: AdditionalPaymentData,
 ) -> Payment:
@@ -74,6 +74,6 @@ def _db_entity_to_payment(db_payment: DbPayment) -> Payment:
         order_id=db_payment.order_id,
         created_at=db_payment.created_at,
         method=db_payment.method,
-        amount=db_payment.amount,
+        amount=Money(db_payment.amount, db_payment.currency),
         additional_data=deepcopy(db_payment.additional_data),
     )

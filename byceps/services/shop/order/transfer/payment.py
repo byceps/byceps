@@ -11,6 +11,8 @@ from datetime import datetime
 from decimal import Decimal
 from uuid import UUID
 
+from .....util.money import Money
+
 from .order import OrderID
 
 
@@ -23,5 +25,5 @@ class Payment:
     order_id: OrderID
     created_at: datetime
     method: str
-    amount: Decimal
+    amount: Money
     additional_data: AdditionalPaymentData

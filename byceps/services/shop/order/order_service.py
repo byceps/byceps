@@ -383,7 +383,7 @@ def mark_order_as_paid(
         db_order.id,
         now,
         payment_method,
-        db_order.total_amount.amount,
+        db_order.total_amount,
         initiator_id,
         additional_payment_data if additional_payment_data is not None else {},
     )

@@ -7,9 +7,9 @@ byceps.services.shop.order.dbmodels.payment
 """
 
 from datetime import datetime
-from decimal import Decimal
 
 from .....database import db, generate_uuid
+from .....util.money import Money
 
 from ..transfer.order import OrderID
 from ..transfer.payment import AdditionalPaymentData
@@ -27,6 +27,7 @@ class DbPayment(db.Model):
     created_at = db.Column(db.DateTime, nullable=False)
     method = db.Column(db.UnicodeText, nullable=True)
     amount = db.Column(db.Numeric(7, 2), nullable=False)
+    currency = db.Column(db.UnicodeText, nullable=False)
     additional_data = db.Column(db.JSONB)
 
     def __init__(
@@ -34,11 +35,12 @@ class DbPayment(db.Model):
         order_id: OrderID,
         created_at: datetime,
         method: str,
-        amount: Decimal,
+        amount: Money,
         additional_data: AdditionalPaymentData,
     ) -> None:
         self.order_id = order_id
         self.created_at = created_at
         self.method = method
-        self.amount = amount
+        self.amount = amount.amount
+        self.currency = amount.currency
         self.additional_data = additional_data
