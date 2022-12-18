@@ -3,8 +3,7 @@
 
 {%- with navigation = Navigation(_('Brand'))
     .add_item(
-      url_for('admin_dashboard.view_brand',
-      brand_id=brand.id),
+      url_for('admin_dashboard.view_brand', brand_id=brand.id),
       _('Dashboard'),
       id='admin_dashboard_brand',
       required_permission='brand.view',
