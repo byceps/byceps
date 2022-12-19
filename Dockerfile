@@ -31,6 +31,9 @@ RUN pip install --no-cache-dir --user --requirement requirements.txt
 # Copy the application into the image.
 COPY . .
 
+# Install the `byceps` command.
+RUN pip install -e .
+
 EXPOSE 5000
 EXPOSE 8080
 
