@@ -21,10 +21,8 @@ __pycache__
 # documentation
 /docs/_build
 
-# configs
+# custom configurations
 /config/*
-!/config/development_admin.py
-!/config/development_party.py
-!/config/production_party.py
-!/config/test_admin.py
-!/config/test_site.py
+!/config/development-example.toml
+!/config/production-example.toml
+!/config/testing.toml
