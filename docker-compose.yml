@@ -7,7 +7,6 @@ x-byceps-base: &byceps-base
     - redis
 
 x-byceps-base-env: &byceps-base-env
-    BYCEPS_CONFIG: /home/byceps/config/docker.toml
     REDIS_URL: "redis://redis/0"
     SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://byceps:byceps@db/byceps"
 

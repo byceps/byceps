@@ -84,8 +84,6 @@ def _configure(
 
     if config_filename is None:
         config_filename = os.environ.get('BYCEPS_CONFIG')
-        if not config_filename:
-            raise config.ConfigurationError('No configuration file specified')
 
     if config_filename is not None:
         if isinstance(config_filename, str):
