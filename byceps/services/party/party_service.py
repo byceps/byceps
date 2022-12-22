@@ -36,6 +36,8 @@ def create_party(
     ends_at: datetime,
     *,
     max_ticket_quantity: Optional[int] = None,
+    ticket_management_enabled: bool = False,
+    seat_management_enabled: bool = False,
 ) -> Party:
     """Create a party."""
     db_party = DbParty(
@@ -45,6 +47,8 @@ def create_party(
         starts_at,
         ends_at,
         max_ticket_quantity=max_ticket_quantity,
+        ticket_management_enabled=ticket_management_enabled,
+        seat_management_enabled=seat_management_enabled,
     )
 
     db.session.add(db_party)

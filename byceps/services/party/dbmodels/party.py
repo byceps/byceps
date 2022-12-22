@@ -30,12 +30,8 @@ class DbParty(db.Model):
     starts_at = db.Column(db.DateTime, nullable=False)
     ends_at = db.Column(db.DateTime, nullable=False)
     max_ticket_quantity = db.Column(db.Integer, nullable=True)
-    ticket_management_enabled = db.Column(
-        db.Boolean, default=False, nullable=False
-    )
-    seat_management_enabled = db.Column(
-        db.Boolean, default=False, nullable=False
-    )
+    ticket_management_enabled = db.Column(db.Boolean, nullable=False)
+    seat_management_enabled = db.Column(db.Boolean, nullable=False)
     canceled = db.Column(db.Boolean, default=False, nullable=False)
     archived = db.Column(db.Boolean, default=False, nullable=False)
 
@@ -48,6 +44,8 @@ class DbParty(db.Model):
         ends_at: datetime,
         *,
         max_ticket_quantity: Optional[int] = None,
+        ticket_management_enabled: bool = False,
+        seat_management_enabled: bool = False,
     ) -> None:
         self.id = party_id
         self.brand_id = brand_id
@@ -55,6 +53,8 @@ class DbParty(db.Model):
         self.starts_at = starts_at
         self.ends_at = ends_at
         self.max_ticket_quantity = max_ticket_quantity
+        self.ticket_management_enabled = ticket_management_enabled
+        self.seat_management_enabled = seat_management_enabled
 
     def __repr__(self) -> str:
         return ReprBuilder(self).add_with_lookup('id').build()
