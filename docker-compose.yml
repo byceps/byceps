@@ -1,3 +1,16 @@
+x-byceps-base: &byceps-base
+  build: .
+  volumes:
+    - .:/home/byceps/app
+    - ./data:/home/byceps/app/data:rw
+  depends_on:
+    - db
+    - redis
+  environment:
+    BYCEPS_CONFIG: /home/byceps/app/config/docker.toml
+    REDIS_URL: "redis://redis/0"
+    SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://byceps:byceps@db/byceps"
+
 services:
 
   db:
@@ -12,38 +25,19 @@ services:
   redis:
     image: "redis:7"
 
-  byceps-base:
-    build: .
-    volumes:
-      - .:/home/byceps/app
-      - ./data:/home/byceps/app/data:rw
-    environment:
-      BYCEPS_CONFIG: /home/byceps/app/config/docker.toml
-      REDIS_URL: "redis://redis/0"
-      SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://byceps:byceps@db/byceps"
-
   byceps-admin:
-    extends: byceps-base
-    depends_on:
-      - db
-      - redis
+    <<: *byceps-base
     environment:
       APP_MODE: admin
 
   byceps-site:
-    extends: byceps-base
-    depends_on:
-      - db
-      - redis
+    <<: *byceps-base
     environment:
       APP_MODE: site
       SITE_ID: cozylan
 
   byceps-worker:
-    extends: byceps-base
-    depends_on:
-      - db
-      - redis
+    <<: *byceps-base
     command: ./worker.py
 
   web:
