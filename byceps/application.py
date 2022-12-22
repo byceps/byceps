@@ -102,6 +102,8 @@ def _configure(
     # Allow configuration values to be overridden by environment variables.
     app.config.update(_get_config_from_environment())
 
+    _ensure_required_config_keys(app)
+
     config.init_app(app)
 
 
@@ -117,6 +119,20 @@ def _get_config_from_environment() -> Iterator[tuple[str, str]]:
         value = os.environ.get(key)
         if value:
             yield key, value
+
+
+def _ensure_required_config_keys(app: Flask) -> None:
+    """Ensure the required configuration keys have values."""
+    for key in (
+        'APP_MODE',
+        'REDIS_URL',
+        'SECRET_KEY',
+        'SQLALCHEMY_DATABASE_URI',
+    ):
+        if not app.config.get(key):
+            raise config.ConfigurationError(
+                f'Missing value for configuration key "{key}".'
+            )
 
 
 def _add_static_file_url_rules(app: Flask) -> None:
