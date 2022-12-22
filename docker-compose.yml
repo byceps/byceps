@@ -1,7 +1,6 @@
 x-byceps-base: &byceps-base
   build: .
   volumes:
-    - .:/home/byceps
     - byceps-data:/home/byceps/data:rw
   depends_on:
     - db
