@@ -5,7 +5,8 @@ x-byceps-base: &byceps-base
   depends_on:
     - db
     - redis
-  environment:
+
+x-byceps-base-env: &byceps-base-env
     BYCEPS_CONFIG: /home/byceps/config/docker.toml
     REDIS_URL: "redis://redis/0"
     SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://byceps:byceps@db/byceps"
@@ -27,16 +28,20 @@ services:
   byceps-admin:
     <<: *byceps-base
     environment:
+      <<: *byceps-base-env
       APP_MODE: admin
 
   byceps-site:
     <<: *byceps-base
     environment:
+      <<: *byceps-base-env
       APP_MODE: site
       SITE_ID: cozylan
 
   byceps-worker:
     <<: *byceps-base
+    environment:
+      <<: *byceps-base-env
     command: ./worker.py
 
   web:
