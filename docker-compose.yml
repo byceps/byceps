@@ -42,6 +42,7 @@ services:
     <<: *byceps-base
     environment:
       <<: *byceps-base-env
+      APP_MODE: base
     command: ./worker.py
 
   web:
