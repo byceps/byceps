@@ -2,7 +2,7 @@ x-byceps-base: &byceps-base
   build: .
   volumes:
     - .:/home/byceps/app
-    - ./data:/home/byceps/app/data:rw
+    - byceps-data:/home/byceps/app/data:rw
   depends_on:
     - db
     - redis
@@ -53,4 +53,5 @@ services:
       - "8082:82"
 
 volumes:
+  byceps-data:
   db-data:
