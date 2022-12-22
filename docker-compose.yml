@@ -1,13 +1,13 @@
 x-byceps-base: &byceps-base
   build: .
   volumes:
-    - .:/home/byceps/app
-    - byceps-data:/home/byceps/app/data:rw
+    - .:/home/byceps
+    - byceps-data:/home/byceps/data:rw
   depends_on:
     - db
     - redis
   environment:
-    BYCEPS_CONFIG: /home/byceps/app/config/docker.toml
+    BYCEPS_CONFIG: /home/byceps/config/docker.toml
     REDIS_URL: "redis://redis/0"
     SQLALCHEMY_DATABASE_URI: "postgresql+psycopg2://byceps:byceps@db/byceps"
 
