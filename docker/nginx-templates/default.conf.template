@@ -1,0 +1,69 @@
+server {
+    listen 81 default_server;
+    listen [::]:81 default_server;
+
+    root /var/www/html;
+
+    server_name byceps-admin.example;
+
+    location @byceps {
+        uwsgi_pass byceps-admin:5000;
+        include uwsgi_params;
+        proxy_set_header Host $host;
+    }
+
+    location / {
+        try_files $uri @byceps;
+    }
+
+    location = /favicon.ico {
+        return 404;
+    }
+
+    location ^~ /static/ {
+        alias /var/www/byceps/byceps/static/;
+    }
+
+    location ^~ /data/ {
+        alias /var/www/byceps/data/;
+    }
+
+    location ~ ^/sites/(.+?)/(.+)$ {
+        alias /var/www/byceps/sites/$1/static/$2;
+    }
+}
+
+server {
+    listen 82 default_server;
+    listen [::]:82 default_server;
+
+    root /var/www/html;
+
+    server_name byceps-site.example;
+
+    location @byceps {
+        uwsgi_pass byceps-site:5000;
+        include uwsgi_params;
+        proxy_set_header Host $host;
+    }
+
+    location / {
+        try_files $uri @byceps;
+    }
+
+    location = /favicon.ico {
+        return 404;
+    }
+
+    location ^~ /static/ {
+        alias /var/www/byceps/byceps/static/;
+    }
+
+    location ^~ /data/ {
+        alias /var/www/byceps/data/;
+    }
+
+    location ~ ^/sites/(.+?)/(.+)$ {
+        alias /var/www/byceps/sites/$1/static/$2;
+    }
+}

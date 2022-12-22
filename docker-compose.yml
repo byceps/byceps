@@ -46,5 +46,17 @@ services:
       - redis
     command: ./worker.py
 
+  web:
+    image: nginx
+    volumes:
+      - ./docker/nginx-templates:/etc/nginx/templates
+      - .:/var/www/byceps
+    depends_on:
+      - byceps-admin
+      - byceps-site
+    ports:
+      - "8081:81"
+      - "8082:82"
+
 volumes:
   db-data:
