@@ -121,7 +121,7 @@ Supported Configuration Values
     Logging in will fail if this is set to true and BYCEPS is accessed
     without TLS.
 
-    This can behavior be disabled for development purposes without a
+    This behavior can be disabled for development purposes without a
     TLS-terminating frontend to the BYCEPS application.
 
     Default: ``True`` (set by BYCEPS; `Flask's default
