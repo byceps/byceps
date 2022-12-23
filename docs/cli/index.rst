@@ -209,7 +209,7 @@ A secret key is, among other things, required for login sessions.
 Create Demo Data
 ================
 
-``byceps create-demodata`` insert data for demonstration purposes into
+``byceps create-demodata`` inserts data for demonstration purposes into
 the database.
 
 .. code-block:: sh
