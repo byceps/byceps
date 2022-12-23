@@ -15,6 +15,8 @@ BYCEPS comes with a command-line tool for some tasks.
      - Description
    * - ``byceps create-database-tables``
      - :ref:`Create database tables <Create Database Tables>`
+   * - ``byceps create-demodata``
+     - :ref:`Create examplary data for demonstration purposes <Create Demo Data>`
    * - ``byceps create-superuser``
      - :ref:`Create superuser <Create Superuser>`
    * - ``byceps export-roles``
@@ -202,3 +204,23 @@ A secret key is, among other things, required for login sessions.
 
 .. attention:: Do **not** use the same key for development and
    production environments. Generate **separate** secret keys!
+
+
+Create Demo Data
+================
+
+``byceps create-demodata`` insert data for demonstration purposes into
+the database.
+
+.. code-block:: sh
+
+    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps create-demodata
+    Creating byceps_byceps-admin_run ... done
+    Creating brand ... done.
+    Creating party ... done.
+    Creating board ... done.
+    Creating board categories ... done.
+    Creating shop ... done.
+    Creating shop articles ... done.
+    Creating shop storefront ... done.
+    Creating site ... done.
