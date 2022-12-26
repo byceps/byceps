@@ -8,7 +8,6 @@ byceps.services.shop.order.transfer.payment
 
 from dataclasses import dataclass
 from datetime import datetime
-from decimal import Decimal
 from uuid import UUID
 
 from .....util.money import Money

@@ -8,7 +8,6 @@ from decimal import Decimal
 from byceps.database import generate_uuid
 from byceps.services.shop.article.transfer.models import (
     Article,
-    ArticleNumber,
     ArticleID,
     ArticleNumber,
     ArticleType,
