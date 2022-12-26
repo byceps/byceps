@@ -40,7 +40,7 @@
 						</PARTY>
 					</INVOICE_PARTY>
 				</ORDER_PARTIES>
-				<PRICE_CURRENCY>{{ order.total_amount.currency }}</PRICE_CURRENCY>
+				<PRICE_CURRENCY>{{ order.total_amount.currency.code }}</PRICE_CURRENCY>
 				<PAYMENT>
 					<CASH>
 						<PAYMENT_TERM type="unece">10</PAYMENT_TERM>

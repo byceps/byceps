@@ -3,10 +3,10 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from decimal import Decimal
 from typing import Iterable
 
 from flask import Flask
+from moneyed import EUR, Money
 import pytest
 
 from byceps.services.shop.article.transfer.models import Article, ArticleNumber
@@ -18,7 +18,6 @@ from byceps.services.shop.storefront.transfer.models import (
     Storefront,
     StorefrontID,
 )
-from byceps.util.money import Money
 
 
 @pytest.fixture(scope='module')
@@ -44,7 +43,7 @@ def article1(make_article, shop: Shop) -> Article:
         shop.id,
         item_number=ArticleNumber('LF-01-A00001'),
         description='Artikel #1',
-        price=Money(Decimal('49.95'), 'EUR'),
+        price=Money('49.95', EUR),
     )
 
 
@@ -54,7 +53,7 @@ def article2(make_article, shop: Shop) -> Article:
         shop.id,
         item_number=ArticleNumber('LF-01-A00002'),
         description='Artikel #2',
-        price=Money(Decimal('6.20'), 'EUR'),
+        price=Money('6.20', EUR),
     )
 
 
@@ -64,7 +63,7 @@ def article3(make_article, shop: Shop) -> Article:
         shop.id,
         item_number=ArticleNumber('LF-01-A00003'),
         description='Artikel #3',
-        price=Money(Decimal('12.53'), 'EUR'),
+        price=Money('12.53', EUR),
     )
 
 
@@ -79,7 +78,7 @@ def test_without_any_items(
 ):
     order = place_order(storefront.id, orderer, [])
 
-    assert order.total_amount == Money(Decimal('0.00'), 'EUR')
+    assert order.total_amount == EUR.zero
 
 
 def test_with_single_item(
@@ -93,7 +92,7 @@ def test_with_single_item(
         ],
     )
 
-    assert order.total_amount == Money(Decimal('49.95'), 'EUR')
+    assert order.total_amount == Money('49.95', EUR)
 
 
 def test_with_multiple_items(
@@ -114,7 +113,7 @@ def test_with_multiple_items(
         ],
     )
 
-    assert order.total_amount == Money(Decimal('206.17'), 'EUR')
+    assert order.total_amount == Money('206.17', EUR)
 
 
 # helpers

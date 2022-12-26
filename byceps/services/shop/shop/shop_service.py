@@ -8,6 +8,7 @@ byceps.services.shop.shop.shop_service
 
 from typing import Optional
 
+from moneyed import Currency
 from sqlalchemy import delete, select
 
 from ....database import db
@@ -22,7 +23,7 @@ class UnknownShopId(ValueError):
 
 
 def create_shop(
-    shop_id: ShopID, brand_id: BrandID, title: str, currency: str
+    shop_id: ShopID, brand_id: BrandID, title: str, currency: Currency
 ) -> Shop:
     """Create a shop."""
     db_shop = DbShop(shop_id, brand_id, title, currency)

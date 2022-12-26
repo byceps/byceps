@@ -28,7 +28,7 @@
       <tr>
         <td><strong><a href="{{ url_for('.view', order_id=order.id) }}">{{ order.order_number }}</a></strong></td>
         <td>{{ order.created_at|dateformat }}, {{ order.created_at|timeformat('short') }}</td>
-        <td class="number">{{ order.total_amount.amount|currencyformat(order.total_amount.currency) }}</td>
+        <td class="number">{{ order.total_amount.amount|currencyformat(order.total_amount.currency.code) }}</td>
         <td class="nowrap">{{- render_order_payment_state(order.payment_state) }} {{ render_order_overdue_tag(order) }}</td>
       </tr>
       {%- endfor %}

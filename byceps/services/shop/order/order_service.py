@@ -12,13 +12,13 @@ from uuid import UUID
 
 from flask import current_app
 from flask_babel import lazy_gettext
+from moneyed import Currency, Money
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
 
 from ....database import db, paginate, Pagination
 from ....events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ....typing import UserID
-from ....util.money import Money
 
 from ...ticketing.transfer.models import TicketCategoryID
 from ...user import user_service
@@ -136,7 +136,7 @@ def _build_order(
     storefront_id: StorefrontID,
     order_number: OrderNumber,
     orderer: Orderer,
-    currency: str,
+    currency: Currency,
 ) -> DbOrder:
     """Build an order."""
     return DbOrder(
@@ -906,7 +906,7 @@ def _is_overdue(db_order: DbOrder) -> bool:
 
 
 def _line_item_to_transfer_object(
-    db_line_item: DbLineItem, currency: str
+    db_line_item: DbLineItem, currency: Currency
 ) -> LineItem:
     """Create transfer object from line item database entity."""
     return LineItem(

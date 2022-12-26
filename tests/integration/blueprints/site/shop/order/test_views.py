@@ -8,6 +8,7 @@ from decimal import Decimal
 from unittest.mock import patch
 
 from flask import Flask
+from moneyed import Money
 import pytest
 
 from byceps.events.shop import ShopOrderPlaced
@@ -25,7 +26,6 @@ from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.site.transfer.models import Site, SiteID
 from byceps.services.user.transfer.models import User
 from byceps.typing import UserID
-from byceps.util.money import Money
 
 from tests.helpers import create_site, http_client, log_in_user
 from tests.helpers.shop import create_shop_snippet

@@ -8,6 +8,7 @@ from tempfile import TemporaryDirectory
 from typing import Any, Iterator, Optional
 
 from flask import Flask
+from moneyed import EUR
 import pytest
 
 from byceps.services.authorization import authz_service
@@ -301,7 +302,7 @@ def make_shop(admin_app: Flask):
         if title is None:
             title = shop_id
 
-        return shop_service.create_shop(shop_id, brand_id, title, 'EUR')
+        return shop_service.create_shop(shop_id, brand_id, title, EUR)
 
     return _wrapper
 

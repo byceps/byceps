@@ -8,6 +8,7 @@ from decimal import Decimal
 
 from flask import Flask
 from freezegun import freeze_time
+from moneyed import EUR, Money
 import pytest
 
 from byceps.services.shop.article.transfer.models import Article, ArticleNumber
@@ -17,7 +18,6 @@ from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.user.transfer.models import User
-from byceps.util.money import Money
 
 from tests.helpers import log_in_user
 
@@ -34,7 +34,7 @@ def article_bungalow(make_article, shop: Shop) -> Article:
         shop.id,
         item_number=ArticleNumber('LR-08-A00003'),
         description='LANresort 2015: Bungalow 4 Plätze',
-        price=Money(Decimal('355.00'), 'EUR'),
+        price=Money('355.00', EUR),
         tax_rate=Decimal('0.07'),
     )
 
@@ -45,7 +45,7 @@ def article_guest_fee(make_article, shop: Shop) -> Article:
         shop.id,
         item_number=ArticleNumber('LR-08-A00006'),
         description='Touristische Gästeabgabe (BispingenCard), pauschal für 4 Personen',
-        price=Money(Decimal('6.00'), 'EUR'),
+        price=Money('6.00', EUR),
         tax_rate=Decimal('0.19'),
     )
 
@@ -56,7 +56,7 @@ def article_table(make_article, shop: Shop) -> Article:
         shop.id,
         item_number=ArticleNumber('LR-08-A00002'),
         description='Tisch (zur Miete), 200 x 80 cm',
-        price=Money(Decimal('20.00'), 'EUR'),
+        price=Money('20.00', EUR),
         tax_rate=Decimal('0.19'),
     )
 

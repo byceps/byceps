@@ -9,6 +9,7 @@ from decimal import Decimal
 
 import click
 from flask.cli import with_appcontext
+from moneyed import EUR, Money
 
 from ...services.authorization import authz_service
 from ...services.board import board_category_command_service, board_service
@@ -34,7 +35,6 @@ from ...services.ticketing.transfer.models import TicketCategory
 from ...services.user import user_command_service, user_creation_service
 from ...services.user.transfer.models import User
 from ...typing import BrandID, PartyID, UserID
-from ...util.money import Money
 
 
 @click.command()
@@ -118,7 +118,7 @@ def _create_ticket_category(party_id: PartyID) -> TicketCategory:
 def _create_shop(brand_id: BrandID) -> Shop:
     click.echo('Creating shop ... ', nl=False)
     shop = shop_service.create_shop(
-        ShopID('cozylan'), brand_id, 'CozyLAN Shop', 'EUR'
+        ShopID('cozylan'), brand_id, 'CozyLAN Shop', EUR
     )
     click.secho('done. ', fg='green')
     return shop
@@ -142,7 +142,7 @@ def _create_shop_articles(
         shop_id,
         article_number_ticket,
         f'Ticket "{ticket_category.title}"',
-        Money(Decimal('35.00'), 'EUR'),
+        Money('35.00', EUR),
         Decimal('0.19'),
         120,
         5,
@@ -157,7 +157,7 @@ def _create_shop_articles(
         article_number_merch,
         ArticleType.physical,
         'Sticker Pack',
-        Money(Decimal('5.00'), 'EUR'),
+        Money('5.00', EUR),
         Decimal('0.19'),
         300,
         10,

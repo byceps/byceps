@@ -88,7 +88,7 @@ def _assemble_email_for_incoming_order_to_orderer(
                     + ': '
                     + format_currency(
                         line_item.unit_price.amount,
-                        line_item.unit_price.currency,
+                        line_item.unit_price.currency.code,
                     ),
                 ]
             )
@@ -101,7 +101,7 @@ def _assemble_email_for_incoming_order_to_orderer(
             + gettext('Total amount')
             + ': '
             + format_currency(
-                order.total_amount.amount, order.total_amount.currency
+                order.total_amount.amount, order.total_amount.currency.code
             )
         )
         payment_instructions = _get_payment_instructions(order)

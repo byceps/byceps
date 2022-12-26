@@ -6,6 +6,7 @@
 from datetime import datetime
 from uuid import UUID
 
+from moneyed import EUR
 import pytest
 
 from byceps.services.shop.order import order_service
@@ -65,7 +66,7 @@ def create_order(
     created_at = datetime.utcnow()
 
     db_order = order_service._build_order(
-        created_at, shop_id, storefront_id, order_number, orderer, 'EUR'
+        created_at, shop_id, storefront_id, order_number, orderer, EUR
     )
     db_order.payment_state = payment_state
     db_order.processing_required = processing_required

@@ -97,7 +97,7 @@ def _get_payment_instructions(order):
     context = {
         'order_number': order.order_number,
         'total_amount': format_currency(
-            order.total_amount.amount, order.total_amount.currency
+            order.total_amount.amount, order.total_amount.currency.code
         ),
     }
 

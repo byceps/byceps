@@ -8,6 +8,7 @@ byceps.blueprints.admin.shop.shop.views
 
 from flask import abort, url_for
 from flask_babel import gettext
+from moneyed import EUR
 
 from .....services.brand import brand_service
 from .....services.shop.order import order_log_service, order_service
@@ -127,7 +128,7 @@ def create(brand_id):
     shop_id = brand.id
     title = brand.title
 
-    shop = shop_service.create_shop(shop_id, brand.id, title, 'EUR')
+    shop = shop_service.create_shop(shop_id, brand.id, title, EUR)
 
     flash_success(gettext('Shop has been created.'))
     return url_for('.view', shop_id=shop.id)

@@ -8,6 +8,7 @@ from decimal import Decimal
 from typing import Optional
 
 from freezegun import freeze_time
+from moneyed import EUR, Money
 import pytest
 
 from byceps.database import generate_uuid
@@ -19,7 +20,6 @@ from byceps.services.shop.article.transfer.models import (
 )
 from byceps.services.shop.article import article_service
 from byceps.services.shop.shop.transfer.models import ShopID
-from byceps.util.money import Money
 
 
 @pytest.mark.parametrize(
@@ -120,7 +120,7 @@ def create_article(
         type_=ArticleType.other,
         type_params={},
         description='Cool thing',
-        price=Money(Decimal('1.99'), 'EUR'),
+        price=Money('1.99', EUR),
         tax_rate=Decimal('0.19'),
         available_from=available_from,
         available_until=available_until,

@@ -7,9 +7,16 @@ byceps.services.shop.order.dbmodels.payment
 """
 
 from datetime import datetime
+from typing import TYPE_CHECKING
+
+from moneyed import Currency, get_currency, Money
+
+if TYPE_CHECKING:
+    hybrid_property = property
+else:
+    from sqlalchemy.ext.hybrid import hybrid_property
 
 from .....database import db, generate_uuid
-from .....util.money import Money
 
 from ..transfer.order import OrderID
 from ..transfer.payment import AdditionalPaymentData
@@ -27,7 +34,7 @@ class DbPayment(db.Model):
     created_at = db.Column(db.DateTime, nullable=False)
     method = db.Column(db.UnicodeText, nullable=True)
     amount = db.Column(db.Numeric(7, 2), nullable=False)
-    currency = db.Column(db.UnicodeText, nullable=False)
+    _currency = db.Column('currency', db.UnicodeText, nullable=False)
     additional_data = db.Column(db.JSONB)
 
     def __init__(
@@ -44,3 +51,11 @@ class DbPayment(db.Model):
         self.amount = amount.amount
         self.currency = amount.currency
         self.additional_data = additional_data
+
+    @hybrid_property
+    def currency(self) -> Currency:
+        return get_currency(self._currency)
+
+    @currency.setter
+    def currency(self, currency: Currency) -> None:
+        self._currency = currency.code

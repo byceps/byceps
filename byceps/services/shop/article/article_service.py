@@ -10,10 +10,10 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Iterable, Optional
 
+from moneyed import Money
 from sqlalchemy import delete, select, update
 
 from ....database import db, paginate, Pagination
-from ....util.money import Money
 
 from ...ticketing.transfer.models import TicketCategoryID
 

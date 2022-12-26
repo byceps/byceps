@@ -7,15 +7,14 @@ byceps.services.shop.order.email.order_email_example_service
 """
 
 from datetime import datetime
-from decimal import Decimal
 from typing import Optional
 
 from flask_babel import gettext
+from moneyed import EUR, Money
 
 from .....config import ConfigurationError
 from .....database import generate_uuid
 from .....typing import BrandID, UserID
-from .....util.money import Money
 
 from ....email.transfer.models import Message
 from ....user.transfer.models import User
@@ -138,8 +137,7 @@ def _build_order(
     last_name = 'Ballerwurm'
     address = Address('Germany', '22999', 'Büttenwarder', 'Deichweg 23')
 
-    currency = 'EUR'
-    total_amount = Money(Decimal('42.95'), currency)
+    total_amount = Money('42.95', EUR)
     line_items: list[LineItem] = []
     payment_method = 'bank_transfer'
 

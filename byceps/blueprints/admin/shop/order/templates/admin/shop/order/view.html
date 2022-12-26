@@ -81,7 +81,7 @@
               <tr>
                 <td>{{ payment.created_at|datetimeformat }}</td>
                 <td>{{ render_order_payment_method(payment.method) }}</td>
-                <td class="number">{{ payment.amount.amount|currencyformat(payment.amount.currency) }}</td>
+                <td class="number">{{ payment.amount.amount|currencyformat(payment.amount.currency.code) }}</td>
                 <td class="monospace">
                   {%- for key, value in payment.additional_data|dictsort %}
                   {{ key }} = {{ value }}{% if not loop.last %}<br>{% endif %}

@@ -10,6 +10,8 @@ from datetime import datetime
 from decimal import Decimal
 from typing import Optional, TYPE_CHECKING
 
+from moneyed import Currency, get_currency, Money
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:
@@ -17,7 +19,6 @@ else:
 
 from .....database import db, generate_uuid
 from .....util.instances import ReprBuilder
-from .....util.money import Money
 
 from ...shop.transfer.models import ShopID
 
@@ -42,7 +43,9 @@ class DbArticle(db.Model):
     type_params = db.Column(db.JSONB, nullable=True)
     description = db.Column(db.UnicodeText, nullable=False)
     price_amount = db.Column(db.Numeric(6, 2), nullable=False)
-    price_currency = db.Column(db.UnicodeText, nullable=False)
+    _price_currency = db.Column(
+        'price_currency', db.UnicodeText, nullable=False
+    )
     tax_rate = db.Column(db.Numeric(3, 3), nullable=False)
     available_from = db.Column(db.DateTime, nullable=True)
     available_until = db.Column(db.DateTime, nullable=True)
@@ -93,6 +96,14 @@ class DbArticle(db.Model):
     @hybrid_property
     def type_(self) -> ArticleType:
         return ArticleType[self._type]
+
+    @hybrid_property
+    def price_currency(self) -> Currency:
+        return get_currency(self._price_currency)
+
+    @price_currency.setter
+    def price_currency(self, currency: Currency) -> None:
+        self._price_currency = currency.code
 
     @property
     def price(self) -> Money:

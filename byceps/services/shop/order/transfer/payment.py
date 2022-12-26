@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
-from .....util.money import Money
+from moneyed import Money
 
 from .order import OrderID
 

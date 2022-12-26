@@ -13,6 +13,7 @@ from typing import Iterable
 
 from flask import abort, request
 from flask_babel import gettext, to_user_timezone, to_utc
+from moneyed import Money
 
 from .....services.brand import brand_service
 from .....services.party import party_service
@@ -38,7 +39,6 @@ from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
 from .....typing import UserID
-from .....util.money import Money
 
 from .forms import (
     ArticleCreateForm,

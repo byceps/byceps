@@ -5,6 +5,8 @@
 
 from decimal import Decimal
 
+from moneyed import EUR, Money
+
 from byceps.database import generate_uuid
 from byceps.services.shop.article.transfer.models import (
     Article,
@@ -14,7 +16,6 @@ from byceps.services.shop.article.transfer.models import (
 )
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.shop.transfer.models import ShopID
-from byceps.util.money import Money
 
 
 def test_cart_empty_repr():
@@ -24,10 +25,16 @@ def test_cart_empty_repr():
 
 def test_cart_filled_repr():
     article1 = create_article(
-        ArticleNumber('a-001'), 'Article #1', Decimal('19.99'), Decimal('0.19')
+        ArticleNumber('a-001'),
+        'Article #1',
+        Money('19.99', EUR),
+        Decimal('0.19'),
     )
     article2 = create_article(
-        ArticleNumber('a-002'), 'Article #2', Decimal('24.99'), Decimal('0.19')
+        ArticleNumber('a-002'),
+        'Article #2',
+        Money('24.99', EUR),
+        Decimal('0.19'),
     )
 
     cart = Cart()
@@ -43,7 +50,7 @@ def test_cart_filled_repr():
 def create_article(
     item_number: ArticleNumber,
     description: str,
-    price_amount: Decimal,
+    price: Money,
     tax_rate: Decimal,
 ) -> Article:
     return Article(
@@ -53,7 +60,7 @@ def create_article(
         type_=ArticleType.other,
         type_params={},
         description=description,
-        price=Money(price_amount, 'EUR'),
+        price=price,
         tax_rate=tax_rate,
         available_from=None,
         available_until=None,

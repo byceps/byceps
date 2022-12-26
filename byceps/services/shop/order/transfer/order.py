@@ -13,8 +13,9 @@ from enum import Enum
 from typing import NewType, Optional
 from uuid import UUID
 
+from moneyed import Money
+
 from .....typing import UserID
-from .....util.money import Money
 
 from ...article.transfer.models import ArticleID, ArticleNumber, ArticleType
 from ...shop.transfer.models import ShopID

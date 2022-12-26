@@ -9,11 +9,11 @@ byceps.services.shop.order.order_payment_service
 from copy import deepcopy
 from datetime import datetime
 
+from moneyed import Money
 from sqlalchemy import delete, select
 
 from ....database import db
 from ....typing import UserID
-from ....util.money import Money
 
 from ...user import user_service
 

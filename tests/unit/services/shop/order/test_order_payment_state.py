@@ -6,6 +6,8 @@
 from datetime import datetime
 from uuid import UUID
 
+from moneyed import EUR
+
 from byceps.services.shop.order import order_service
 from byceps.services.shop.order.transfer.number import OrderNumber
 from byceps.services.shop.order.transfer.order import (
@@ -73,7 +75,7 @@ def create_order_with_payment_state(payment_state: PaymentState) -> Order:
     created_at = datetime.utcnow()
 
     db_order = order_service._build_order(
-        created_at, shop_id, storefront_id, order_number, orderer, 'EUR'
+        created_at, shop_id, storefront_id, order_number, orderer, EUR
     )
     db_order.payment_state = payment_state
 

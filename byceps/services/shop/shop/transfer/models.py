@@ -9,6 +9,8 @@ byceps.services.shop.shop.transfer.models
 from dataclasses import dataclass
 from typing import Any, NewType
 
+from moneyed import Currency
+
 from .....typing import BrandID
 
 
@@ -20,6 +22,6 @@ class Shop:
     id: ShopID
     brand_id: BrandID
     title: str
-    currency: str
+    currency: Currency
     archived: bool
     extra_settings: dict[str, Any]

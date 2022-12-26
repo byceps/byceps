@@ -9,6 +9,8 @@ byceps.services.shop.order.dbmodels.order
 from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 
+from moneyed import Currency, get_currency, Money
+
 if TYPE_CHECKING:
     hybrid_property = property
 else:
@@ -17,7 +19,6 @@ else:
 from .....database import db, generate_uuid
 from .....typing import UserID
 from .....util.instances import ReprBuilder
-from .....util.money import Money
 
 from ....user.dbmodels.user import DbUser
 
@@ -56,7 +57,7 @@ class DbOrder(db.Model):
     zip_code = db.Column(db.UnicodeText, nullable=False)
     city = db.Column(db.UnicodeText, nullable=False)
     street = db.Column(db.UnicodeText, nullable=False)
-    currency = db.Column(db.UnicodeText, nullable=False)
+    _currency = db.Column('currency', db.UnicodeText, nullable=False)
     _total_amount = db.Column('total_amount', db.Numeric(7, 2), nullable=False)
     invoice_created_at = db.Column(db.DateTime, nullable=True)
     payment_method = db.Column(db.UnicodeText, nullable=True)
@@ -88,7 +89,7 @@ class DbOrder(db.Model):
         zip_code: str,
         city: str,
         street: str,
-        currency: str,
+        currency: Currency,
     ) -> None:
         self.created_at = created_at
         self.shop_id = shop_id
@@ -103,7 +104,16 @@ class DbOrder(db.Model):
         self.city = city
         self.street = street
         self.currency = currency
+        self._total_amount = currency.zero.amount
         self.payment_state = PaymentState.open
+
+    @hybrid_property
+    def currency(self) -> Currency:
+        return get_currency(self._currency)
+
+    @currency.setter
+    def currency(self, currency: Currency) -> None:
+        self._currency = currency.code
 
     @property
     def total_amount(self) -> Money:

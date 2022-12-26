@@ -20,7 +20,7 @@
     <tr>
       <td class="nowrap"><strong>{{ render_order_link(order) }}</strong><br>{{ order.created_at|datetimeformat|dim }}</td>
       <td>{{ render_user_microcard(order.placed_by, full_name='%s %s'|format(order.first_name, order.last_name)) }}</td>
-      <td class="number">{{ order.total_amount.amount|currencyformat(order.total_amount.currency) }}</td>
+      <td class="number">{{ order.total_amount.amount|currencyformat(order.total_amount.currency.code) }}</td>
       <td>
         {%- if order.is_processing_required %}
           {%- if order.is_processed %}

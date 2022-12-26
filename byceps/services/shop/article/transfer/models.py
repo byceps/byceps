@@ -14,8 +14,7 @@ from typing import NewType, Optional, Union
 from uuid import UUID
 
 from flask_babel import lazy_gettext
-
-from .....util.money import Money
+from moneyed import Money
 
 from ...shop.transfer.models import ShopID
 
