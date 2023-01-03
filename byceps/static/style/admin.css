@@ -377,7 +377,7 @@ h2 small {
 
 @media (max-width: 1080px) {
 
-  table.index.wide {
+  table.index--wide {
     display: block;
     overflow-x: auto;
   }

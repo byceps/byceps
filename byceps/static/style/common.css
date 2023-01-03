@@ -336,6 +336,10 @@ table.index.index--v-centered td {
   vertical-align: middle;
 }
 
+table.index--wide {
+  width: 100%;
+}
+
 table.index .bignumber {
   font-size: 1.5rem;
 }
@@ -346,9 +350,6 @@ table.index .details {
   margin-top: 0.2rem;
 }
 
-table.wide {
-  width: 100%;
-}
 
 /* data display */
 

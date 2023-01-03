@@ -7,8 +7,8 @@
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', filename='style/admin_dashboard.css') }}">
     <style>
-      table.index.small th,
-      table.index.small td {
+      table.index--small th,
+      table.index--small td {
         font-size: 0.6875rem; /* 11px / 16px */
       }
     </style>
@@ -42,7 +42,7 @@
       <div><small class="dimmed">{{ verification_token_total }}</small></div>
     </div>
 
-    <table class="index small wide mb">
+    <table class="index index--small index--wide mb">
       {%- for purpose_name, count in verification_token_counts_by_purpose_name|dictsort %}
       <tr>
         <td>{{ purpose_name }}</td>
