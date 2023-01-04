@@ -11,7 +11,7 @@ from typing import Any, Optional
 from flask import g
 from jinja2 import Template
 
-from ....services.snippet.dbmodels.snippet import DbVersion
+from ....services.snippet.dbmodels import DbVersion
 from ....services.snippet import snippet_service
 from ....services.snippet.transfer.models import Scope
 from ....util.templating import load_template

@@ -1,6 +1,6 @@
 """
-byceps.services.snippet.dbmodels.snippet
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.snippet.dbmodels
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Snippets of database-stored content. Can contain HTML and template
 engine syntax. Can be embedded in other templates or mounted as full
@@ -14,13 +14,13 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....database import db, generate_uuid
-from ....typing import UserID
-from ....util.instances import ReprBuilder
+from ...database import db, generate_uuid
+from ...typing import UserID
+from ...util.instances import ReprBuilder
 
-from ...user.dbmodels.user import DbUser
+from ..user.dbmodels.user import DbUser
 
-from ..transfer.models import Scope
+from .transfer.models import Scope
 
 
 class DbSnippet(db.Model):

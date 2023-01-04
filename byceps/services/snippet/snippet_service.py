@@ -17,7 +17,7 @@ from ...services.user import user_service
 from ...services.user.transfer.models import User
 from ...typing import UserID
 
-from .dbmodels.snippet import DbCurrentVersionAssociation, DbSnippet, DbVersion
+from .dbmodels import DbCurrentVersionAssociation, DbSnippet, DbVersion
 from .transfer.models import Scope, SnippetID, SnippetVersionID
 
 

@@ -8,7 +8,7 @@
 
 import click
 
-from byceps.services.snippet.dbmodels.snippet import DbVersion
+from byceps.services.snippet.dbmodels import DbVersion
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.transfer.models import Scope
 

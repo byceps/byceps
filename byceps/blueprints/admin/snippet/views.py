@@ -10,7 +10,7 @@ from typing import Optional
 from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
-from ....services.snippet.dbmodels.snippet import DbVersion
+from ....services.snippet.dbmodels import DbVersion
 from ....services.snippet import snippet_service
 from ....services.snippet.transfer.models import Scope
 from ....services.text_diff import text_diff_service
