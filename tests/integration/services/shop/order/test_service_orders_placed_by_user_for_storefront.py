@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from moneyed import EUR
 import pytest
 
 from byceps.services.shop.cart.models import Cart
@@ -83,7 +84,7 @@ def test_get_orders_placed_by_user(
 
 
 def place_order(storefront_id: StorefrontID, orderer: Orderer) -> Order:
-    cart = Cart()
+    cart = Cart(EUR)
 
     order, _ = order_service.place_order(storefront_id, orderer, cart)
 

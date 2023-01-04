@@ -19,7 +19,7 @@ from byceps.services.shop.shop.transfer.models import ShopID
 
 
 def test_cart_empty_repr():
-    cart = Cart()
+    cart = Cart(EUR)
     assert repr(cart) == '<Cart(0 items)>'
 
 
@@ -37,7 +37,7 @@ def test_cart_filled_repr():
         Decimal('0.19'),
     )
 
-    cart = Cart()
+    cart = Cart(EUR)
     cart.add_item(article1, 5)
     cart.add_item(article2, 3)
 

@@ -124,7 +124,7 @@ def place_order(
     orderer: Orderer,
     articles: Iterable[tuple[Article, int]],
 ) -> Order:
-    cart = Cart()
+    cart = Cart(EUR)
     for article, quantity in articles:
         cart.add_item(article, quantity)
 

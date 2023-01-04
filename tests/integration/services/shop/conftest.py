@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from moneyed import EUR
 import pytest
 
 from byceps.services.brand.transfer.models import Brand
@@ -62,4 +63,4 @@ def storefront(
 
 @pytest.fixture
 def empty_cart() -> Cart:
-    return Cart()
+    return Cart(EUR)

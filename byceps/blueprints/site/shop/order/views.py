@@ -10,6 +10,7 @@ from decimal import Decimal
 
 from flask import abort, g, request
 from flask_babel import gettext
+from moneyed import Currency
 
 from .....services.country import country_service
 from .....services.shop.article import article_service
@@ -231,7 +232,9 @@ def order_single(article_id):
 
     orderer = form.get_orderer(user.id)
 
-    cart = _create_cart_from_article_compilation(article_compilation)
+    cart = _create_cart_from_article_compilation(
+        shop.currency, article_compilation
+    )
 
     try:
         order = _place_order(storefront.id, orderer, cart)
@@ -263,9 +266,10 @@ def _get_article_or_404(article_id):
 
 
 def _create_cart_from_article_compilation(
+    currency: Currency,
     article_compilation: ArticleCompilation,
 ) -> Cart:
-    cart = Cart()
+    cart = Cart(currency)
 
     for item in article_compilation:
         cart.add_item(item.article, item.fixed_quantity)

@@ -4,6 +4,7 @@
 """
 
 from flask import Flask
+from moneyed import EUR
 import pytest
 from sqlalchemy import select
 
@@ -79,7 +80,7 @@ def place_order(
     article: Article,
     article_quantity: int,
 ) -> Order:
-    cart = Cart()
+    cart = Cart(EUR)
     cart.add_item(article, article_quantity)
 
     order, _ = order_service.place_order(storefront_id, orderer, cart)

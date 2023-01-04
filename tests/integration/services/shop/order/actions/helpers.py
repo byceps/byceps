@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from moneyed import EUR
+
 from byceps.events.shop import ShopOrderPaid
 from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.cart.models import Cart
@@ -23,7 +25,7 @@ def place_order(
     orderer: Orderer,
     articles_with_quantity: list[tuple[Article, int]],
 ) -> Order:
-    cart = Cart()
+    cart = Cart(EUR)
     for article, quantity in articles_with_quantity:
         cart.add_item(article, quantity)
 

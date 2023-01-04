@@ -67,7 +67,7 @@ def cart(
     article_guest_fee: Article,
     article_table: Article,
 ) -> Cart:
-    cart = Cart()
+    cart = Cart(EUR)
 
     cart.add_item(article_bungalow, 1)
     cart.add_item(article_guest_fee, 1)

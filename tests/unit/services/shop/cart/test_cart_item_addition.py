@@ -5,7 +5,8 @@
 
 from decimal import Decimal
 
-from moneyed import EUR, Money
+from moneyed import EUR, Money, USD
+from pytest import raises
 
 from byceps.database import generate_uuid
 from byceps.services.shop.article.transfer.models import (
@@ -18,40 +19,24 @@ from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.shop.transfer.models import ShopID
 
 
-def test_is_empty_without_items():
-    cart = create_empty_cart()
+def test_add_item_with_cart_currency():
+    cart = Cart(EUR)
+    article = create_article()
 
-    assert cart.is_empty()
-
-
-def test_is_empty_with_one_item():
-    cart = create_empty_cart()
-
-    add_item(cart, 1)
+    cart.add_item(article, 1)
 
     assert not cart.is_empty()
 
 
-def test_is_empty_with_multiple_items():
-    cart = create_empty_cart()
+def test_add_item_with_different_currency():
+    cart = Cart(USD)
+    article = create_article()
 
-    add_item(cart, 3)
-    add_item(cart, 1)
-    add_item(cart, 6)
-
-    assert not cart.is_empty()
+    with raises(ValueError):
+        cart.add_item(article, 1)
 
 
 # helpers
-
-
-def create_empty_cart() -> Cart:
-    return Cart(EUR)
-
-
-def add_item(cart: Cart, quantity: int) -> None:
-    article = create_article()
-    cart.add_item(article, quantity)
 
 
 def create_article() -> Article:

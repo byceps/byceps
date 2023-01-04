@@ -7,6 +7,7 @@ from typing import Iterable, Optional
 from unittest.mock import patch
 
 from flask import Flask
+from moneyed import EUR
 import pytest
 
 from byceps.database import db
@@ -321,7 +322,7 @@ def place_order(
     orderer: Orderer,
     quantified_articles: Iterable[tuple[Article, int]],
 ) -> Order:
-    cart = Cart()
+    cart = Cart(EUR)
 
     for article, quantity_to_order in quantified_articles:
         cart.add_item(article, quantity_to_order)

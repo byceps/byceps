@@ -3,6 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from moneyed import EUR
+
 from byceps.services.authentication.session.models.current_user import (
     CurrentUser,
 )
@@ -21,7 +23,7 @@ def get_current_user_for_user(user: User, locale: str) -> CurrentUser:
 def place_order_with_items(
     storefront_id, orderer, created_at=None, items_with_quantity=None
 ):
-    cart = Cart()
+    cart = Cart(EUR)
 
     if items_with_quantity is not None:
         for article, quantity in items_with_quantity:

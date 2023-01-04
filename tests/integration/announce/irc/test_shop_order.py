@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from moneyed import EUR
 import pytest
 
 import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
@@ -118,7 +119,8 @@ def storefront(shop, make_order_number_sequence, make_storefront) -> Storefront:
 
 @pytest.fixture
 def placed_order(storefront, orderer):
-    order, _ = order_service.place_order(storefront.id, orderer, Cart())
+    cart = Cart(EUR)
+    order, _ = order_service.place_order(storefront.id, orderer, cart)
 
     return order
 

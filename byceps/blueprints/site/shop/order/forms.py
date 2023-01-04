@@ -7,6 +7,7 @@ byceps.blueprints.site.shop.order.forms
 """
 
 from flask_babel import lazy_gettext
+from moneyed import EUR
 from wtforms import SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
@@ -55,7 +56,7 @@ def assemble_articles_order_form(article_compilation):
             return getattr(self, name)
 
         def get_cart(self, article_compilation):
-            cart = Cart()
+            cart = Cart(EUR)
             for article, quantity in self.get_cart_items(article_compilation):
                 cart.add_item(article, quantity)
             return cart

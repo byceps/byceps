@@ -10,6 +10,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from decimal import Decimal
 
+from moneyed import Currency
+
 from ....util.instances import ReprBuilder
 
 from ..article.transfer.models import Article
@@ -35,10 +37,17 @@ class CartItem:
 class Cart:
     """A shopping cart."""
 
-    def __init__(self) -> None:
+    def __init__(self, currency: Currency) -> None:
+        self.currency = currency
         self._items: list[CartItem] = []
 
     def add_item(self, article: Article, quantity: int) -> None:
+        article_currency = article.price.currency
+        if article_currency != self.currency:
+            raise ValueError(
+                f'Article currency ({article_currency}) does not match cart currency ({self.currency})'
+            )
+
         item = CartItem(article, quantity)
         self._items.append(item)
 
