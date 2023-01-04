@@ -18,8 +18,14 @@ from ...services.user import user_service
 from ...services.user.transfer.models import User
 from ...typing import UserID
 
-from .dbmodels import DbCurrentVersionAssociation, DbPage, DbVersion
-from .transfer.models import Page, PageAggregate, PageID, Version, VersionID
+from .dbmodels import DbCurrentPageVersionAssociation, DbPage, DbPageVersion
+from .transfer.models import (
+    Page,
+    PageAggregate,
+    PageID,
+    PageVersion,
+    PageVersionID,
+)
 
 
 def create_page(
@@ -32,17 +38,17 @@ def create_page(
     body: str,
     *,
     head: Optional[str] = None,
-) -> tuple[DbVersion, PageCreated]:
+) -> tuple[DbPageVersion, PageCreated]:
     """Create a page and its initial version."""
     creator = user_service.get_user(creator_id)
 
     db_page = DbPage(site_id, name, language_code, url_path)
     db.session.add(db_page)
 
-    db_version = DbVersion(db_page, creator_id, title, head, body)
+    db_version = DbPageVersion(db_page, creator_id, title, head, body)
     db.session.add(db_version)
 
-    db_current_version_association = DbCurrentVersionAssociation(
+    db_current_version_association = DbCurrentPageVersionAssociation(
         db_page, db_version
     )
     db.session.add(db_current_version_association)
@@ -70,7 +76,7 @@ def update_page(
     title: str,
     head: Optional[str],
     body: str,
-) -> tuple[DbVersion, PageUpdated]:
+) -> tuple[DbPageVersion, PageUpdated]:
     """Update page with a new version."""
     db_page = _get_db_page(page_id)
 
@@ -79,7 +85,7 @@ def update_page(
 
     creator = user_service.get_user(creator_id)
 
-    db_version = DbVersion(db_page, creator_id, title, head, body)
+    db_version = DbPageVersion(db_page, creator_id, title, head, body)
     db.session.add(db_version)
 
     db_page.current_version = db_version
@@ -123,14 +129,14 @@ def delete_page(
     db_versions = _get_db_versions(page_id)
 
     db.session.execute(
-        delete(DbCurrentVersionAssociation).where(
-            DbCurrentVersionAssociation.page_id == page_id
+        delete(DbCurrentPageVersionAssociation).where(
+            DbCurrentPageVersionAssociation.page_id == page_id
         )
     )
 
     for db_version in db_versions:
         db.session.execute(
-            delete(DbVersion).where(DbVersion.id == db_version.id)
+            delete(DbPageVersion).where(DbPageVersion.id == db_version.id)
         )
 
     db.session.execute(delete(DbPage).where(DbPage.id == page_id))
@@ -191,9 +197,9 @@ def _get_db_page(page_id: PageID) -> DbPage:
     return db_page
 
 
-def find_version(version_id: VersionID) -> Optional[Version]:
+def find_version(version_id: PageVersionID) -> Optional[PageVersion]:
     """Return the page version, or `None` if not found."""
-    db_version = db.session.get(DbVersion, version_id)
+    db_version = db.session.get(DbPageVersion, version_id)
 
     if db_version is None:
         return None
@@ -201,7 +207,7 @@ def find_version(version_id: VersionID) -> Optional[Version]:
     return _db_entity_to_version(db_version)
 
 
-def get_version(version_id: VersionID) -> Optional[Version]:
+def get_version(version_id: PageVersionID) -> Optional[PageVersion]:
     """Return the page version.
 
     Raise error if not found.
@@ -214,55 +220,55 @@ def get_version(version_id: VersionID) -> Optional[Version]:
     return version
 
 
-def get_versions(page_id: PageID) -> list[DbVersion]:
+def get_versions(page_id: PageID) -> list[DbPageVersion]:
     """Return all versions of the page, sorted from most recent to oldest."""
     return db.session.scalars(
-        select(DbVersion)
+        select(DbPageVersion)
         .filter_by(page_id=page_id)
-        .order_by(DbVersion.created_at.desc())
+        .order_by(DbPageVersion.created_at.desc())
     ).all()
 
 
-def _get_db_versions(page_id: PageID) -> list[DbVersion]:
+def _get_db_versions(page_id: PageID) -> list[DbPageVersion]:
     """Return all versions of that page, sorted from most recent to
     oldest.
     """
     return db.session.scalars(
-        select(DbVersion)
+        select(DbPageVersion)
         .filter_by(page_id=page_id)
-        .order_by(DbVersion.created_at.desc())
+        .order_by(DbPageVersion.created_at.desc())
     ).all()
 
 
-def find_current_version_id(page_id: PageID) -> Optional[VersionID]:
+def find_current_version_id(page_id: PageID) -> Optional[PageVersionID]:
     """Return the ID of current version of the page."""
     return db.session.scalar(
-        select(DbCurrentVersionAssociation.version_id).filter(
-            DbCurrentVersionAssociation.page_id == page_id
+        select(DbCurrentPageVersionAssociation.version_id).filter(
+            DbCurrentPageVersionAssociation.page_id == page_id
         )
     )
 
 
-def is_current_version(page_id: PageID, version_id: VersionID) -> bool:
+def is_current_version(page_id: PageID, version_id: PageVersionID) -> bool:
     """Return `True` if the given version is the current version of the page."""
     return db.session.scalar(
         select(
             db.exists()
-            .where(DbCurrentVersionAssociation.page_id == page_id)
-            .where(DbCurrentVersionAssociation.version_id == version_id)
+            .where(DbCurrentPageVersionAssociation.page_id == page_id)
+            .where(DbCurrentPageVersionAssociation.version_id == version_id)
         )
     )
 
 
 def find_current_version_for_name(
     site_id: SiteID, name: str
-) -> Optional[DbVersion]:
+) -> Optional[DbPageVersion]:
     """Return the current version of the page with that name for that
     site.
     """
     return db.session.execute(
-        select(DbVersion)
-        .join(DbCurrentVersionAssociation)
+        select(DbPageVersion)
+        .join(DbCurrentPageVersionAssociation)
         .join(DbPage)
         .filter(DbPage.site_id == site_id)
         .filter(DbPage.name == name)
@@ -271,13 +277,13 @@ def find_current_version_for_name(
 
 def find_current_version_for_url_path(
     site_id: SiteID, url_path: str
-) -> Optional[DbVersion]:
+) -> Optional[DbPageVersion]:
     """Return the current version of the page with that URL path for
     that site.
     """
     return db.session.execute(
-        select(DbVersion)
-        .join(DbCurrentVersionAssociation)
+        select(DbPageVersion)
+        .join(DbCurrentPageVersionAssociation)
         .join(DbPage)
         .filter(DbPage.site_id == site_id)
         .filter(DbPage.url_path == url_path)
@@ -293,7 +299,7 @@ def get_url_paths_by_page_name_for_site(site_id: SiteID) -> dict[str, str]:
     return {name: url_path for name, url_path in rows}
 
 
-def find_page_aggregate(version_id: VersionID) -> Optional[PageAggregate]:
+def find_page_aggregate(version_id: PageVersionID) -> Optional[PageAggregate]:
     """Return an aggregated page for that version."""
     version = get_version(version_id)
     if version is None:
@@ -321,7 +327,7 @@ def get_pages_for_site_with_current_versions(site_id: SiteID) -> list[DbPage]:
         .filter_by(site_id=site_id)
         .options(
             db.joinedload(DbPage.current_version_association).joinedload(
-                DbCurrentVersionAssociation.version
+                DbCurrentPageVersionAssociation.version
             ),
             db.joinedload(DbPage.nav_menu),
         )
@@ -339,8 +345,8 @@ def _db_entity_to_page(db_page: DbPage) -> Page:
     )
 
 
-def _db_entity_to_version(db_version: DbVersion) -> Version:
-    return Version(
+def _db_entity_to_version(db_version: DbPageVersion) -> PageVersion:
+    return PageVersion(
         id=db_version.id,
         page_id=db_version.page_id,
         created_at=db_version.created_at,

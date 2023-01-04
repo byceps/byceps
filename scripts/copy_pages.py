@@ -8,7 +8,7 @@
 
 import click
 
-from byceps.services.page.dbmodels import DbVersion
+from byceps.services.page.dbmodels import DbPageVersion
 from byceps.services.page import page_service
 from byceps.services.site.transfer.models import SiteID
 
@@ -30,7 +30,7 @@ def execute(ctx, source_site, target_site, page_names) -> None:
     click.secho('Done.', fg='green')
 
 
-def get_version(site_id: SiteID, name: str) -> DbVersion:
+def get_version(site_id: SiteID, name: str) -> DbPageVersion:
     version = page_service.find_current_version_for_name(site_id, name)
 
     if version is None:
@@ -41,7 +41,7 @@ def get_version(site_id: SiteID, name: str) -> DbVersion:
     return version
 
 
-def copy_page(target_site_id: SiteID, version: DbVersion, ctx) -> None:
+def copy_page(target_site_id: SiteID, version: DbPageVersion, ctx) -> None:
     page_service.create_page(
         target_site_id,
         version.page.name,

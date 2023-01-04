@@ -19,7 +19,7 @@ from ...site.transfer.models import SiteID
 PageID = NewType('PageID', UUID)
 
 
-VersionID = NewType('VersionID', UUID)
+PageVersionID = NewType('PageVersionID', UUID)
 
 
 @dataclass(frozen=True)
@@ -33,8 +33,8 @@ class Page:
 
 
 @dataclass(frozen=True)
-class Version:
-    id: VersionID
+class PageVersion:
+    id: PageVersionID
     page_id: PageID
     created_at: datetime
     creator_id: UserID

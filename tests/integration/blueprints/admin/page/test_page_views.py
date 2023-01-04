@@ -9,7 +9,7 @@ import pytest
 
 from byceps.events.page import PageCreated
 from byceps.services.page import page_service
-from byceps.services.page.transfer.models import Version
+from byceps.services.page.transfer.models import PageVersion
 from byceps.services.site.transfer.models import Site
 from byceps.services.user.transfer.models import User
 
@@ -44,7 +44,7 @@ def make_page(site: Site, page_admin: User):
         url_path: Optional[str] = None,
         title: str = 'Title',
         body: str = 'Body',
-    ) -> tuple[Version, PageCreated]:
+    ) -> tuple[PageVersion, PageCreated]:
         if name is None:
             name = generate_token()
 

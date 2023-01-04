@@ -11,7 +11,7 @@ from flask import abort, g, request, url_for
 from flask_babel import format_datetime, gettext
 
 from ....services.page import page_service
-from ....services.page.transfer.models import Page, Version, VersionID
+from ....services.page.transfer.models import Page, PageVersion, PageVersionID
 from ....services.site import site_service
 from ....services.site.transfer.models import Site, SiteID
 from ....services.text_diff import text_diff_service
@@ -167,8 +167,8 @@ def compare_versions(from_version_id, to_version_id):
 
 
 def _create_html_diff(
-    from_version: Version,
-    to_version: Version,
+    from_version: PageVersion,
+    to_version: PageVersion,
     attribute_name: str,
 ) -> Optional[str]:
     """Create an HTML diff between the named attribute's value of each
@@ -340,7 +340,7 @@ def _get_page(page_id) -> Page:
     return page
 
 
-def _get_version(version_id: VersionID) -> Version:
+def _get_version(version_id: PageVersionID) -> PageVersion:
     version = page_service.find_version(version_id)
 
     if version is None:

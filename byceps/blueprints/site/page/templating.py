@@ -15,7 +15,7 @@ from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
 
 from ....services.page import page_service
-from ....services.page.transfer.models import Page, Version
+from ....services.page.transfer.models import Page, PageVersion
 from ....util.templating import load_template
 
 from ..snippet.templating import render_snippet_as_partial_from_template
@@ -24,7 +24,7 @@ from ..snippet.templating import render_snippet_as_partial_from_template
 Context = dict[str, Any]
 
 
-def render_page(page: Page, version: Version) -> str | tuple[str, int]:
+def render_page(page: Page, version: PageVersion) -> str | tuple[str, int]:
     """Render the page, or an error page if that fails."""
     try:
         context = build_template_context(

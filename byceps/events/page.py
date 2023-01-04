@@ -8,7 +8,7 @@ byceps.events.page
 
 from dataclasses import dataclass
 
-from ..services.page.transfer.models import PageID, VersionID
+from ..services.page.transfer.models import PageID, PageVersionID
 from ..services.site.transfer.models import SiteID
 
 from .base import _BaseEvent
@@ -23,12 +23,12 @@ class _PageEvent(_BaseEvent):
 
 @dataclass(frozen=True)
 class PageCreated(_PageEvent):
-    page_version_id: VersionID
+    page_version_id: PageVersionID
 
 
 @dataclass(frozen=True)
 class PageUpdated(_PageEvent):
-    page_version_id: VersionID
+    page_version_id: PageVersionID
 
 
 @dataclass(frozen=True)

@@ -68,7 +68,7 @@ class DbPage(db.Model):
         self.published = False
 
 
-class DbVersion(db.Model):
+class DbPageVersion(db.Model):
     """A snapshot of a page at a certain time."""
 
     __tablename__ = 'page_versions'
@@ -107,7 +107,7 @@ class DbVersion(db.Model):
         return self.id == self.page.current_version.id
 
 
-class DbCurrentVersionAssociation(db.Model):
+class DbCurrentPageVersionAssociation(db.Model):
     __tablename__ = 'page_current_versions'
 
     page_id = db.Column(db.Uuid, db.ForeignKey('pages.id'), primary_key=True)
@@ -117,8 +117,8 @@ class DbCurrentVersionAssociation(db.Model):
     version_id = db.Column(
         db.Uuid, db.ForeignKey('page_versions.id'), unique=True, nullable=False
     )
-    version = db.relationship(DbVersion)
+    version = db.relationship(DbPageVersion)
 
-    def __init__(self, page: DbPage, version: DbVersion) -> None:
+    def __init__(self, page: DbPage, version: DbPageVersion) -> None:
         self.page = page
         self.version = version
