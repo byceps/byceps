@@ -136,7 +136,7 @@ class DbItemVersion(db.Model):
         )
 
 
-class DbCurrentVersionAssociation(db.Model):
+class DbCurrentItemVersionAssociation(db.Model):
     __tablename__ = 'news_item_current_versions'
 
     item_id = db.Column(

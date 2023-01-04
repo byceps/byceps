@@ -25,7 +25,11 @@ from ..user import user_service
 from ..user.transfer.models import User
 
 from .dbmodels.channel import DbChannel
-from .dbmodels.item import DbCurrentVersionAssociation, DbItem, DbItemVersion
+from .dbmodels.item import (
+    DbCurrentItemVersionAssociation,
+    DbItem,
+    DbItemVersion,
+)
 from . import news_channel_service, news_html_service, news_image_service
 from .transfer.models import (
     BodyFormat,
@@ -64,7 +68,7 @@ def create_item(
     )
     db.session.add(db_version)
 
-    db_current_version_association = DbCurrentVersionAssociation(
+    db_current_version_association = DbCurrentItemVersionAssociation(
         db_item, db_version
     )
     db.session.add(db_current_version_association)
@@ -196,8 +200,8 @@ def unpublish_item(
 def delete_item(item_id: ItemID) -> None:
     """Delete a news item and its versions."""
     db.session.execute(
-        delete(DbCurrentVersionAssociation).where(
-            DbCurrentVersionAssociation.item_id == item_id
+        delete(DbCurrentItemVersionAssociation).where(
+            DbCurrentItemVersionAssociation.item_id == item_id
         )
     )
     db.session.execute(
@@ -255,7 +259,7 @@ def find_aggregated_item_by_slug(
         .options(
             db.joinedload(DbItem.channel),
             db.joinedload(DbItem.current_version_association).joinedload(
-                DbCurrentVersionAssociation.version
+                DbCurrentItemVersionAssociation.version
             ),
             db.joinedload(DbItem.images),
         )
@@ -330,7 +334,7 @@ def get_headlines_paginated(
         .filter(DbItem.channel_id.in_(channel_ids))
         .options(
             db.joinedload(DbItem.current_version_association).joinedload(
-                DbCurrentVersionAssociation.version
+                DbCurrentItemVersionAssociation.version
             )
         )
         .order_by(DbItem.published_at.desc())
@@ -362,7 +366,7 @@ def get_recent_headlines(
         .filter(DbItem.channel_id.in_(channel_ids))
         .options(
             db.joinedload(DbItem.current_version_association).joinedload(
-                DbCurrentVersionAssociation.version
+                DbCurrentItemVersionAssociation.version
             )
         )
         .filter(DbItem.published_at <= datetime.utcnow())
@@ -380,7 +384,7 @@ def _get_items_stmt(channel_ids: set[ChannelID]) -> Select:
         .options(
             db.joinedload(DbItem.channel),
             db.joinedload(DbItem.current_version_association).joinedload(
-                DbCurrentVersionAssociation.version
+                DbCurrentItemVersionAssociation.version
             ),
             db.joinedload(DbItem.images),
         )
