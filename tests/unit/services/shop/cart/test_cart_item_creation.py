@@ -23,13 +23,13 @@ from byceps.services.shop.shop.transfer.models import ShopID
 @pytest.mark.parametrize(
     'quantity, expected_line_amount',
     [
-        (1, Decimal('1.99')),
-        (2, Decimal('3.98')),
-        (6, Decimal('11.94')),
+        (1, Money('1.99', EUR)),
+        (2, Money('3.98', EUR)),
+        (6, Money('11.94', EUR)),
     ],
 )
 def test_init_with_positive_quantity(
-    quantity: int, expected_line_amount: Decimal
+    quantity: int, expected_line_amount: Money
 ):
     item = create_item(quantity)
 

@@ -8,7 +8,8 @@ byceps.services.shop.cart.models
 
 from __future__ import annotations
 from dataclasses import dataclass, field
-from decimal import Decimal
+
+from moneyed import Money
 
 from moneyed import Currency
 
@@ -23,14 +24,14 @@ class CartItem:
 
     article: Article
     quantity: int
-    line_amount: Decimal = field(init=False)
+    line_amount: Money = field(init=False)
 
     def __post_init__(self) -> None:
         if self.quantity < 1:
             raise ValueError('Quantity must be a positive number.')
 
         object.__setattr__(
-            self, 'line_amount', self.article.price.amount * self.quantity
+            self, 'line_amount', self.article.price * self.quantity
         )
 
 
@@ -54,8 +55,11 @@ class Cart:
     def get_items(self) -> list[CartItem]:
         return self._items
 
-    def calculate_total_amount(self) -> Decimal | int:
-        return sum(item.line_amount for item in self._items)
+    def calculate_total_amount(self) -> Money:
+        if not self._items:
+            return self.currency.zero
+
+        return sum(item.line_amount for item in self._items)  # type: ignore[return-value]
 
     def is_empty(self) -> bool:
         return not self._items

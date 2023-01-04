@@ -94,7 +94,7 @@ def place_order(
         created_at, shop.id, storefront.id, order_number, orderer, shop.currency
     )
     db_line_items = list(_build_line_items(cart_items, db_order))
-    db_order._total_amount = cart.calculate_total_amount()
+    db_order._total_amount = cart.calculate_total_amount().amount
     db_order.processing_required = any(
         db_line_item.processing_required for db_line_item in db_line_items
     )
@@ -174,7 +174,7 @@ def _build_line_items(
             article.price.amount,
             article.tax_rate,
             quantity,
-            line_amount,
+            line_amount.amount,
             article.processing_required,
         )
 
