@@ -13,7 +13,7 @@ from ....services.brand import brand_service
 from ....services.brand.transfer.models import Brand
 from ....services.site import site_service
 from ....services.site.transfer.models import Site, SiteID
-from ....services.snippet.dbmodels import DbSnippet, DbVersion
+from ....services.snippet.dbmodels import DbSnippet, DbSnippetVersion
 from ....services.snippet import snippet_service
 from ....services.snippet.transfer.models import (
     Scope,
@@ -55,7 +55,7 @@ def find_snippet_by_id(snippet_id: SnippetID) -> DbSnippet:
     return snippet
 
 
-def find_snippet_version(version_id: SnippetVersionID) -> DbVersion:
+def find_snippet_version(version_id: SnippetVersionID) -> DbSnippetVersion:
     version = snippet_service.find_snippet_version(version_id)
 
     if version is None:

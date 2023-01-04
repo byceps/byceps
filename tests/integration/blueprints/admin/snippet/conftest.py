@@ -8,7 +8,7 @@ from typing import Optional
 import pytest
 
 from byceps.events.snippet import SnippetCreated
-from byceps.services.snippet.dbmodels import DbVersion
+from byceps.services.snippet.dbmodels import DbSnippetVersion
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.transfer.models import Scope
 from byceps.services.user.transfer.models import User
@@ -45,7 +45,7 @@ def global_scope():
 def make_snippet(global_scope: Scope, snippet_admin: User):
     def _wrapper(
         name: Optional[str] = None, body: str = 'Body'
-    ) -> tuple[DbVersion, SnippetCreated]:
+    ) -> tuple[DbSnippetVersion, SnippetCreated]:
         if name is None:
             name = generate_token()
 

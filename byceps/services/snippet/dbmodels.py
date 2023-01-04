@@ -64,7 +64,7 @@ class DbSnippet(db.Model):
         )
 
 
-class DbVersion(db.Model):
+class DbSnippetVersion(db.Model):
     """A snapshot of a snippet at a certain time."""
 
     __tablename__ = 'snippet_versions'
@@ -103,7 +103,7 @@ class DbVersion(db.Model):
         )
 
 
-class DbCurrentVersionAssociation(db.Model):
+class DbCurrentSnippetVersionAssociation(db.Model):
     __tablename__ = 'snippet_current_versions'
 
     snippet_id = db.Column(
@@ -119,8 +119,8 @@ class DbCurrentVersionAssociation(db.Model):
         unique=True,
         nullable=False,
     )
-    version = db.relationship(DbVersion)
+    version = db.relationship(DbSnippetVersion)
 
-    def __init__(self, snippet: DbSnippet, version: DbVersion) -> None:
+    def __init__(self, snippet: DbSnippet, version: DbSnippetVersion) -> None:
         self.snippet = snippet
         self.version = version

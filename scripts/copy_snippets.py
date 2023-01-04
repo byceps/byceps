@@ -8,7 +8,7 @@
 
 import click
 
-from byceps.services.snippet.dbmodels import DbVersion
+from byceps.services.snippet.dbmodels import DbSnippetVersion
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.transfer.models import Scope
 
@@ -33,7 +33,7 @@ def execute(ctx, source_site, target_site, snippet_names) -> None:
     click.secho('Done.', fg='green')
 
 
-def get_version(source_scope: Scope, snippet_name: str) -> DbVersion:
+def get_version(source_scope: Scope, snippet_name: str) -> DbSnippetVersion:
     version = snippet_service.find_current_version_of_snippet_with_name(
         source_scope, snippet_name
     )
@@ -47,7 +47,7 @@ def get_version(source_scope: Scope, snippet_name: str) -> DbVersion:
     return version
 
 
-def copy_snippet(target_scope: Scope, version: DbVersion, ctx) -> None:
+def copy_snippet(target_scope: Scope, version: DbSnippetVersion, ctx) -> None:
     snippet_service.create_snippet(
         target_scope,
         version.snippet.name,
