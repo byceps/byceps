@@ -64,11 +64,14 @@ def test_dim():
         ),
     ],
 )
-def test_fallback(source: str, context: dict[str, Any], expected: bool):
+def test_fallback(source: str, context: dict[str, Any], expected: str):
     filters = {'fallback': fallback}
 
     with create_app_with_babel().test_request_context():
         assert render_template(source, filters, context) == expected
+
+
+# helpers
 
 
 def create_app_with_babel() -> Flask:
