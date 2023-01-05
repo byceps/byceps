@@ -75,14 +75,14 @@ def log_in():
 
     form = LogInForm(request.form)
 
-    screen_name = form.screen_name.data.strip()
+    username = form.username.data.strip()
     password = form.password.data
     permanent = form.permanent.data
-    if not all([screen_name, password]):
+    if not all([username, password]):
         abort(401)
 
     try:
-        user = authn_service.authenticate(screen_name, password)
+        user = authn_service.authenticate(username, password)
     except AuthenticationFailed:
         abort(401)
 

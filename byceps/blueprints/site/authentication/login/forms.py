@@ -14,6 +14,6 @@ from .....util.l10n import LocalizedForm
 
 
 class LogInForm(LocalizedForm):
-    screen_name = StringField(lazy_gettext('Username'), [InputRequired()])
+    username = StringField(lazy_gettext('Username'), [InputRequired()])
     password = PasswordField(lazy_gettext('Password'), [InputRequired()])
     permanent = BooleanField()
