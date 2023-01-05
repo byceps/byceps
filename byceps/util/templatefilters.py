@@ -8,10 +8,11 @@ Provide and register custom template filters.
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from flask_babel import gettext
+from flask_babel import format_currency, gettext
 from jinja2 import pass_eval_context, Undefined
 from jinja2.filters import do_trim
 from markupsafe import escape, Markup
+from moneyed import Money
 
 
 @pass_eval_context
@@ -48,11 +49,17 @@ def _wrap_markup_on_autoescape(eval_ctx, value):
     return Markup(value) if eval_ctx.autoescape else value
 
 
+def moneyformat(money: Money) -> str:
+    """Format monetary value with amount and currency."""
+    return format_currency(money.amount, money.currency.code)
+
+
 def register(app):
     """Make functions available as template filters."""
     functions = [
         dim,
         fallback,
+        moneyformat,
     ]
 
     for f in functions:

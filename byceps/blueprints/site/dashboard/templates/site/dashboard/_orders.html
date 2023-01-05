@@ -16,7 +16,7 @@
     {%- for order in open_orders %}
     <tr>
       <td><a class="disguised" href="{{ url_for('shop_orders.view', order_id=order.id) }}">{{ order.order_number }}</a></td>
-      <td class="number">{{ order.total_amount.amount|currencyformat(order.total_amount.currency.code) }}</td>
+      <td class="number">{{ order.total_amount|moneyformat }}</td>
       <td class="nowrap">{{ render_order_payment_state(order.payment_state) }}</td>
     </tr>
     {%- endfor %}
