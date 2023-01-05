@@ -5,6 +5,8 @@
 
 from typing import Any
 
+from flask import Flask
+from flask_babel import Babel
 from jinja2.sandbox import ImmutableSandboxedEnvironment
 import pytest
 
@@ -64,7 +66,15 @@ def test_dim():
 )
 def test_fallback(source: str, context: dict[str, Any], expected: bool):
     filters = {'fallback': fallback}
-    assert render_template(source, filters, context) == expected
+
+    with create_app_with_babel().test_request_context():
+        assert render_template(source, filters, context) == expected
+
+
+def create_app_with_babel() -> Flask:
+    app = Flask(__name__)
+    Babel(app)
+    return app
 
 
 def render_template(
