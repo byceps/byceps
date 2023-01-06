@@ -10,11 +10,11 @@ from datetime import datetime, timedelta
 from typing import Any, Iterator, Optional
 from uuid import UUID
 
-from flask import current_app
 from flask_babel import lazy_gettext
 from moneyed import Currency, Money
 from sqlalchemy import delete, select
 from sqlalchemy.exc import IntegrityError
+import structlog
 
 from ....database import db, paginate, Pagination
 from ....events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
@@ -59,6 +59,9 @@ from .transfer.payment import AdditionalPaymentData
 
 
 OVERDUE_THRESHOLD = timedelta(days=14)
+
+
+log = structlog.get_logger()
 
 
 class OrderFailed(Exception):
@@ -107,7 +110,7 @@ def place_order(
     try:
         db.session.commit()
     except IntegrityError as e:
-        current_app.logger.error('Order %s failed: %s', order_number, e)
+        log.error('Order placement failed', order_number=order_number, exc=e)
         db.session.rollback()
         raise OrderFailed()
 
@@ -126,6 +129,8 @@ def place_order(
         orderer_id=orderer_user.id,
         orderer_screen_name=orderer_user.screen_name,
     )
+
+    log.info('Order placed', shop_order_placed_event=event)
 
     return order, event
 
@@ -350,7 +355,7 @@ def cancel_order(
     if payment_state_to == PaymentState.canceled_after_paid:
         _execute_article_revocation_actions(order, initiator.id)
 
-    return ShopOrderCanceled(
+    event = ShopOrderCanceled(
         occurred_at=updated_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
@@ -359,6 +364,10 @@ def cancel_order(
         orderer_id=orderer_user.id,
         orderer_screen_name=orderer_user.screen_name,
     )
+
+    log.info('Order canceled', shop_order_canceled_event=event)
+
+    return event
 
 
 def mark_order_as_paid(
@@ -418,7 +427,7 @@ def mark_order_as_paid(
 
     _execute_article_creation_actions(order, initiator.id)
 
-    return ShopOrderPaid(
+    event = ShopOrderPaid(
         occurred_at=updated_at,
         initiator_id=initiator.id,
         initiator_screen_name=initiator.screen_name,
@@ -428,6 +437,10 @@ def mark_order_as_paid(
         orderer_screen_name=orderer_user.screen_name,
         payment_method=payment_method,
     )
+
+    log.info('Order paid', shop_order_paid_event=event)
+
+    return event
 
 
 def _update_payment_state(
@@ -520,6 +533,8 @@ def delete_order(order_id: OrderID) -> None:
     )
     db.session.execute(delete(DbOrder).filter_by(id=order.id))
     db.session.commit()
+
+    log.info('Order deleted', order_number=order.order_number)
 
 
 def count_open_orders(shop_id: ShopID) -> int:
