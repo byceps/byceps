@@ -8,4 +8,8 @@ byceps.services.authentication.exceptions
 
 
 class AuthenticationFailed(Exception):
-    pass
+    """User authentication failed"""
+
+
+class WrongPassword(AuthenticationFailed):
+    """User authentication failed due to wrong password"""

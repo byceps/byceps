@@ -13,7 +13,7 @@ from ...typing import UserID
 from ..user import user_service
 from ..user.transfer.models import User
 
-from .exceptions import AuthenticationFailed
+from .exceptions import AuthenticationFailed, WrongPassword
 from .password import authn_password_service
 
 
@@ -39,7 +39,7 @@ def authenticate(screen_name_or_email_address: str, password: str) -> User:
     # Verify credentials.
     if not authn_password_service.is_password_valid_for_user(user.id, password):
         # Password does not match.
-        raise AuthenticationFailed()
+        raise WrongPassword()
 
     authn_password_service.migrate_password_hash_if_outdated(user.id, password)
 

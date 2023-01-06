@@ -5,7 +5,10 @@
 
 from pytest import raises
 
-from byceps.services.authentication.exceptions import AuthenticationFailed
+from byceps.services.authentication.exceptions import (
+    AuthenticationFailed,
+    WrongPassword,
+)
 from byceps.services.authentication import authn_service
 
 
@@ -37,7 +40,7 @@ def test_deleted_user_is_rejected(make_user):
 def test_with_wrong_password_is_rejected(make_user):
     user = create_user(make_user)
 
-    with raises(AuthenticationFailed):
+    with raises(WrongPassword):
         authn_service.authenticate(user.screen_name, WRONG_PASSWORD)
 
 
