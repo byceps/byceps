@@ -2,7 +2,7 @@
 
 """Search in (the latest versions of) snippets.
 
-:Copyright: 2014-2022 Jochen Kupperschmidt
+:Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

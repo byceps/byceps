@@ -2,7 +2,7 @@
 byceps.blueprints.api.v1.user_badge.views
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-:Copyright: 2014-2022 Jochen Kupperschmidt
+:Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

@@ -11,7 +11,7 @@ Run like this (inside a virtual environment)::
 
 Metrics then become available at `http://127.0.0.1/metrics`.
 
-:Copyright: 2014-2022 Jochen Kupperschmidt
+:Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

@@ -1,6 +1,6 @@
 """Populate the database with data for demonstration purposes.
 
-:Copyright: 2014-2022 Jochen Kupperschmidt
+:Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 

@@ -2,7 +2,7 @@
 
 Existing tables will be ignored, and those not existing will be created.
 
-:Copyright: 2014-2022 Jochen Kupperschmidt
+:Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
