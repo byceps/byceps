@@ -5,11 +5,13 @@
 
 from pytest import raises
 
+from byceps.services.authentication import authn_service
 from byceps.services.authentication.exceptions import (
-    AuthenticationFailed,
+    AccountDeleted,
+    AccountNotInitialized,
+    AccountSuspended,
     WrongPassword,
 )
-from byceps.services.authentication import authn_service
 
 
 CORRECT_PASSWORD = 'opensesame'
@@ -19,21 +21,21 @@ WRONG_PASSWORD = '123456'
 def test_uninitialized_user_is_rejected(make_user):
     user = create_user(make_user, initialized=False)
 
-    with raises(AuthenticationFailed):
+    with raises(AccountNotInitialized):
         authn_service.authenticate(user.screen_name, CORRECT_PASSWORD)
 
 
 def test_suspended_user_is_rejected(make_user):
     user = create_user(make_user, suspended=True)
 
-    with raises(AuthenticationFailed):
+    with raises(AccountSuspended):
         authn_service.authenticate(user.screen_name, CORRECT_PASSWORD)
 
 
 def test_deleted_user_is_rejected(make_user):
     user = create_user(make_user, deleted=True)
 
-    with raises(AuthenticationFailed):
+    with raises(AccountDeleted):
         authn_service.authenticate(user.screen_name, CORRECT_PASSWORD)
 
 

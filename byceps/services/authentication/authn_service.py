@@ -8,12 +8,16 @@ byceps.services.authentication.authn_service
 
 from typing import Optional
 
-from ...typing import UserID
-
 from ..user import user_service
 from ..user.transfer.models import User
 
-from .exceptions import AuthenticationFailed, WrongPassword
+from .exceptions import (
+    AccountDeleted,
+    AccountNotInitialized,
+    AccountSuspended,
+    AuthenticationFailed,
+    WrongPassword,
+)
 from .password import authn_password_service
 
 
@@ -23,22 +27,25 @@ def authenticate(screen_name_or_email_address: str, password: str) -> User:
     Return the user object on success, or raise an exception on failure.
     """
     # Look up user by screen name or email address.
-    user_id = _find_user_id_by_screen_name_or_email_address(
+    user = _find_user_by_screen_name_or_email_address(
         screen_name_or_email_address
     )
-    if user_id is None:
+    if user is None:
         # Screen name/email address is unknown.
         raise AuthenticationFailed()
 
-    # Ensure account is initialized, not suspended, and not deleted.
-    user = user_service.find_active_user(user_id)
-    if user is None:
-        # Should not happen as the user has been looked up before.
-        raise AuthenticationFailed()
+    db_user = user_service.get_db_user(user.id)
+    if not db_user.initialized:
+        raise AccountNotInitialized()
+
+    if user.suspended:
+        raise AccountSuspended()
+
+    if user.deleted:
+        raise AccountDeleted()
 
     # Verify credentials.
     if not authn_password_service.is_password_valid_for_user(user.id, password):
-        # Password does not match.
         raise WrongPassword()
 
     authn_password_service.migrate_password_hash_if_outdated(user.id, password)
@@ -46,19 +53,14 @@ def authenticate(screen_name_or_email_address: str, password: str) -> User:
     return user
 
 
-def _find_user_id_by_screen_name_or_email_address(
+def _find_user_by_screen_name_or_email_address(
     screen_name_or_email_address: str,
-) -> Optional[UserID]:
+) -> Optional[User]:
     if '@' in screen_name_or_email_address:
-        user = user_service.find_user_by_email_address(
+        return user_service.find_user_by_email_address(
             screen_name_or_email_address
         )
     else:
-        user = user_service.find_user_by_screen_name(
+        return user_service.find_user_by_screen_name(
             screen_name_or_email_address, case_insensitive=True
         )
-
-    if user is None:
-        return None
-
-    return user.id

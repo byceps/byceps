@@ -8,8 +8,22 @@ byceps.services.authentication.exceptions
 
 
 class AuthenticationFailed(Exception):
-    """User authentication failed"""
+    """User authentication failed."""
+
+
+class AccountNotInitialized(AuthenticationFailed):
+    """User authentication failed because the account has not been
+    initialized yet.
+    """
+
+
+class AccountSuspended(AuthenticationFailed):
+    """User authentication failed because the account is suspended."""
+
+
+class AccountDeleted(AuthenticationFailed):
+    """User authentication failed because the account has been deleted."""
 
 
 class WrongPassword(AuthenticationFailed):
-    """User authentication failed due to wrong password"""
+    """User authentication failed due to wrong password."""
