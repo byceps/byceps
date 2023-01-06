@@ -8,12 +8,13 @@ byceps.blueprints.admin.authentication.login.views
 
 from flask import abort, g, redirect, request
 from flask_babel import gettext
+import structlog
 
 from .....services.authentication.exceptions import AuthenticationFailed
 from .....services.authentication import authn_service
 from .....services.authentication.session import authn_session_service
+from .....services.user.transfer.models import User
 from .....signals import auth as auth_signals
-from .....typing import UserID
 from .....util.authorization import get_permissions_for_user
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_notice, flash_success
@@ -22,6 +23,9 @@ from .....util import user_session
 from .....util.views import redirect_to, respond_no_content
 
 from .forms import LogInForm
+
+
+log = structlog.get_logger()
 
 
 blueprint = create_blueprint('authentication_login_admin', __name__)
@@ -62,10 +66,11 @@ def log_in():
 
     try:
         user = authn_service.authenticate(username, password)
-    except AuthenticationFailed:
+    except AuthenticationFailed as e:
+        log.info('User authentication failed', username=username, error=e)
         abort(401)
 
-    _require_admin_access_permission(user.id)
+    _require_admin_access_permission(user)
 
     # Authorization succeeded.
 
@@ -73,6 +78,10 @@ def log_in():
         user.id, request.remote_addr
     )
     user_session.start(user.id, auth_token, permanent=permanent)
+
+    log.info(
+        'User logged in', user_id=str(user.id), screen_name=user.screen_name
+    )
 
     flash_success(
         gettext(
@@ -84,11 +93,16 @@ def log_in():
     auth_signals.user_logged_in.send(None, event=event)
 
 
-def _require_admin_access_permission(user_id: UserID) -> None:
-    permissions = get_permissions_for_user(user_id)
+def _require_admin_access_permission(user: User) -> None:
+    permissions = get_permissions_for_user(user.id)
     if 'admin.access' not in permissions:
         # The user lacks the admin access permission which is required
         # to enter the admin area.
+        log.info(
+            'Admin authorization failed',
+            user_id=str(user.id),
+            screen_name=user.screen_name,
+        )
         abort(403)
 
 
@@ -104,6 +118,12 @@ def log_out_form():
 def log_out():
     """Log out user by deleting the corresponding cookie."""
     user_session.end()
+
+    log.info(
+        'User logged out',
+        user_id=str(g.user.id),
+        screen_name=g.user.screen_name,
+    )
 
     flash_success(gettext('Successfully logged out.'))
     return redirect_to('.log_in_form')

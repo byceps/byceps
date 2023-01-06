@@ -8,6 +8,7 @@ byceps.blueprints.site.authentication.login.views
 
 from flask import abort, g, redirect, request, url_for
 from flask_babel import gettext
+import structlog
 
 from .....services.authentication.exceptions import AuthenticationFailed
 from .....services.authentication import authn_service
@@ -27,11 +28,10 @@ from .....util.views import redirect_to, respond_no_content
 from .forms import LogInForm
 
 
+log = structlog.get_logger()
+
+
 blueprint = create_blueprint('authentication_login', __name__)
-
-
-# -------------------------------------------------------------------- #
-# log in/out
 
 
 @blueprint.get('/log_in')
@@ -83,7 +83,8 @@ def log_in():
 
     try:
         user = authn_service.authenticate(username, password)
-    except AuthenticationFailed:
+    except AuthenticationFailed as e:
+        log.info('User authentication failed', username=username, error=e)
         abort(401)
 
     if _is_consent_required(user.id):
@@ -103,6 +104,10 @@ def log_in():
         user.id, request.remote_addr, site_id=g.site_id
     )
     user_session.start(user.id, auth_token, permanent=permanent)
+
+    log.info(
+        'User logged in', user_id=str(user.id), screen_name=user.screen_name
+    )
 
     flash_success(
         gettext(
@@ -138,6 +143,12 @@ def log_out_form():
 def log_out():
     """Log out user by deleting the corresponding cookie."""
     user_session.end()
+
+    log.info(
+        'User logged out',
+        user_id=str(g.user.id),
+        screen_name=g.user.screen_name,
+    )
 
     flash_success(gettext('Successfully logged out.'))
     return redirect('/')
