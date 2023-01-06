@@ -15,7 +15,7 @@ from .exceptions import (
     AccountDeleted,
     AccountNotInitialized,
     AccountSuspended,
-    AuthenticationFailed,
+    UsernameUnknown,
     WrongPassword,
 )
 from .password import authn_password_service
@@ -32,7 +32,7 @@ def authenticate(screen_name_or_email_address: str, password: str) -> User:
     )
     if user is None:
         # Screen name/email address is unknown.
-        raise AuthenticationFailed()
+        raise UsernameUnknown()
 
     db_user = user_service.get_db_user(user.id)
     if not db_user.initialized:

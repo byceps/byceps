@@ -10,12 +10,18 @@ from byceps.services.authentication.exceptions import (
     AccountDeleted,
     AccountNotInitialized,
     AccountSuspended,
+    UsernameUnknown,
     WrongPassword,
 )
 
 
 CORRECT_PASSWORD = 'opensesame'
 WRONG_PASSWORD = '123456'
+
+
+def test_unknown_username_is_rejected(make_user):
+    with raises(UsernameUnknown):
+        authn_service.authenticate('unknown-username', 'irrelevant-password')
 
 
 def test_uninitialized_user_is_rejected(make_user):

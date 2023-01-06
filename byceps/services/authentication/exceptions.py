@@ -11,6 +11,10 @@ class AuthenticationFailed(Exception):
     """User authentication failed."""
 
 
+class UsernameUnknown(AuthenticationFailed):
+    """User authentication failed because the username is unknown."""
+
+
 class AccountNotInitialized(AuthenticationFailed):
     """User authentication failed because the account has not been
     initialized yet.
