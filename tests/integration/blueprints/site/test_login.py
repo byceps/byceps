@@ -36,7 +36,7 @@ def test_login_succeeds(site, client, make_user):
     assert not list(client.cookie_jar)
 
     form_data = {
-        'screen_name': screen_name,
+        'username': screen_name,
         'password': password,
     }
 
@@ -69,7 +69,7 @@ def test_login_succeeds(site, client, make_user):
 
 def test_login_fails(client):
     form_data = {
-        'screen_name': 'TotallyUnknownUser',
+        'username': 'TotallyUnknownUser',
         'password': 'TotallyWrongPassword',
     }
 

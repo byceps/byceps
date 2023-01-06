@@ -39,7 +39,7 @@ def test_login_succeeds(client, make_admin):
     assert not list(client.cookie_jar)
 
     form_data = {
-        'screen_name': screen_name,
+        'username': screen_name,
         'password': password,
     }
 
@@ -75,7 +75,7 @@ def test_login_fails_lacking_access_permission(client, make_admin):
     assert not list(client.cookie_jar)
 
     form_data = {
-        'screen_name': screen_name,
+        'username': screen_name,
         'password': password,
     }
 
@@ -85,7 +85,7 @@ def test_login_fails_lacking_access_permission(client, make_admin):
 
 def test_login_fails(client):
     form_data = {
-        'screen_name': 'TotallyUnknownAdmin',
+        'username': 'TotallyUnknownAdmin',
         'password': 'TotallyWrongPassword',
     }
 
