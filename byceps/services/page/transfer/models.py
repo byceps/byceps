@@ -14,6 +14,7 @@ from uuid import UUID
 from ....typing import UserID
 
 from ...site.transfer.models import SiteID
+from ...site_navigation.transfer.models import NavMenuID
 
 
 PageID = NewType('PageID', UUID)
@@ -30,6 +31,7 @@ class Page:
     language_code: str
     url_path: str
     published: bool
+    nav_menu_id: NavMenuID
 
 
 @dataclass(frozen=True)

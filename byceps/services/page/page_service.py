@@ -314,6 +314,7 @@ def find_page_aggregate(version_id: PageVersionID) -> Optional[PageAggregate]:
         language_code=page.language_code,
         url_path=page.url_path,
         published=page.published,
+        nav_menu_id=page.nav_menu_id,
         title=version.title,
         head=version.head,
         body=version.body,
@@ -342,6 +343,7 @@ def _db_entity_to_page(db_page: DbPage) -> Page:
         language_code=db_page.language_code,
         url_path=db_page.url_path,
         published=db_page.published,
+        nav_menu_id=db_page.nav_menu_id,
     )
 
 
