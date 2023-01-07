@@ -145,26 +145,6 @@ def get_menus(site_id: SiteID) -> list[NavMenu]:
     return [_db_entity_to_menu(db_menu) for db_menu in db_menus]
 
 
-def get_items_for_menu(
-    site_id: SiteID, name: str, language_code: str
-) -> list[NavItem]:
-    """Return the items of a menu.
-
-    An empty list is returned if the menu does not exist, is hidden, or
-    contains no visible items.
-    """
-    db_items = db.session.scalars(
-        select(DbNavItem)
-        .join(DbNavMenu)
-        .filter(DbNavMenu.site_id == site_id)
-        .filter(DbNavMenu.name == name)
-        .filter(DbNavMenu.language_code == language_code)
-        .filter(DbNavMenu.hidden == False)  # noqa: E712
-    )
-
-    return [_db_entity_to_item(db_item) for db_item in db_items]
-
-
 def find_item(item_id: NavItemID) -> Optional[NavItem]:
     """Return the menu item, or `None` if not found."""
     db_item = _find_db_item(item_id)
@@ -191,6 +171,26 @@ def _get_db_item(item_id: NavItemID) -> DbNavItem:
         raise ValueError('Unknown item ID')
 
     return db_item
+
+
+def get_items_for_menu(
+    site_id: SiteID, name: str, language_code: str
+) -> list[NavItem]:
+    """Return the items of a menu.
+
+    An empty list is returned if the menu does not exist, is hidden, or
+    contains no visible items.
+    """
+    db_items = db.session.scalars(
+        select(DbNavItem)
+        .join(DbNavMenu)
+        .filter(DbNavMenu.site_id == site_id)
+        .filter(DbNavMenu.name == name)
+        .filter(DbNavMenu.language_code == language_code)
+        .filter(DbNavMenu.hidden == False)  # noqa: E712
+    )
+
+    return [_db_entity_to_item(db_item) for db_item in db_items]
 
 
 def move_item_up(item_id: NavItemID) -> NavItem:
