@@ -1,0 +1,21 @@
+{% from 'macros/icons.html' import render_icon %}
+
+
+{% macro render_subnav() -%}
+  <nav class="subnav">
+    <ol class="tabs tabs--centered">
+{{ caller() }}
+    </ol>
+  </nav>
+{%- endmacro %}
+
+
+{% macro render_subnav_item(url, label, id, current_page_id, icon=None) -%}
+  {%- with is_current = (id == current_page_id) -%}
+    <li>
+      {%- if is_current %}<span class="tabs-tab tabs-tab--current">{% else %}<a class="tabs-tab" href="{{ url }}">{% endif -%}
+      {% if icon %}{{ render_icon(icon) }} {% endif %}{{ label }}
+      {%- if is_current %}</span>{% else %}</a>{% endif -%}
+    </li>
+  {%- endwith %}
+{%- endmacro %}

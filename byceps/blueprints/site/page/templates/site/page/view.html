@@ -1,9 +1,22 @@
 {% extends 'layout/base.html' %}
+{% from 'macros/subnav.html' import render_subnav, render_subnav_item %}
 
 {% block head %}
   {%- if head %}
 {{ head|safe }}
   {%- endif -%}
+{% endblock %}
+
+{% block subnav %}
+
+  {%- if page_nav_items %}
+{%- call render_subnav() %}
+    {%- for item in page_nav_items %}
+      {{ render_subnav_item(item.target, item.label, item.current_page_id, current_page) }}
+    {%- endfor %}
+{%- endcall %}
+  {%- endif %}
+
 {% endblock %}
 
 {% block body %}

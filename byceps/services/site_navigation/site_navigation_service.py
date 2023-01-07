@@ -173,6 +173,22 @@ def _get_db_item(item_id: NavItemID) -> DbNavItem:
     return db_item
 
 
+def get_items_for_menu_id(menu_id: NavMenuID) -> list[NavItem]:
+    """Return the items of a menu.
+
+    An empty list is returned if the menu does not exist, is hidden, or
+    contains no visible items.
+    """
+    db_items = db.session.scalars(
+        select(DbNavItem)
+        .join(DbNavMenu)
+        .filter(DbNavMenu.id == menu_id)
+        .filter(DbNavMenu.hidden == False)  # noqa: E712
+    )
+
+    return [_db_entity_to_item(db_item) for db_item in db_items]
+
+
 def get_items_for_menu(
     site_id: SiteID, name: str, language_code: str
 ) -> list[NavItem]:
