@@ -291,12 +291,9 @@ def get_aggregated_items_paginated(
     count_stmt = _get_count_stmt(channel_ids)
 
     if published_only:
-        items_stmt = items_stmt.filter(
-            DbNewsItem.published_at <= datetime.utcnow()
-        )
-        count_stmt = count_stmt.filter(
-            DbNewsItem.published_at <= datetime.utcnow()
-        )
+        now = datetime.utcnow()
+        items_stmt = items_stmt.filter(DbNewsItem.published_at <= now)
+        count_stmt = count_stmt.filter(DbNewsItem.published_at <= now)
 
     item_mapper = partial(_db_entity_to_item, render_body=True)
 
@@ -350,12 +347,9 @@ def get_headlines_paginated(
     count_stmt = _get_count_stmt(channel_ids)
 
     if published_only:
-        items_stmt = items_stmt.filter(
-            DbNewsItem.published_at <= datetime.utcnow()
-        )
-        count_stmt = count_stmt.filter(
-            DbNewsItem.published_at <= datetime.utcnow()
-        )
+        now = datetime.utcnow()
+        items_stmt = items_stmt.filter(DbNewsItem.published_at <= now)
+        count_stmt = count_stmt.filter(DbNewsItem.published_at <= now)
 
     return paginate(
         items_stmt,
