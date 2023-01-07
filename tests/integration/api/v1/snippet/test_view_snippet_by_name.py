@@ -16,7 +16,7 @@ def test_get_snippet_by_name(
     scope, admin_user, api_client, api_client_authz_header
 ):
     snippet_version, _ = snippet_service.create_snippet(
-        scope, 'infos', admin_user.id, 'TBD'
+        scope, 'infos', 'en', admin_user.id, 'TBD'
     )
     snippet_name = snippet_version.snippet.name
 

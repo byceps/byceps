@@ -79,7 +79,10 @@ def admin_app(make_admin_app) -> Iterator[Flask]:
     app = make_admin_app()
     with app.app_context():
         set_up_database()
-        language_service.create_language('en')
+
+        for code in 'en', 'de':
+            language_service.create_language(code)
+
         yield app
         # tear_down_database()
 

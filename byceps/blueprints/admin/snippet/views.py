@@ -153,11 +153,12 @@ def history(snippet_id):
 @blueprint.get('/for_scope/<scope_type>/<scope_name>/create')
 @permission_required('snippet.create')
 @templated
-def create_form(scope_type, scope_name):
+def create_form(scope_type, scope_name, erroneous_form=None):
     """Show form to create a snippet."""
     scope = Scope(scope_type, scope_name)
 
-    form = CreateForm()
+    form = erroneous_form if erroneous_form else CreateForm()
+    form.set_language_code_choices()
 
     brand = find_brand_for_scope(scope)
     site = find_site_for_scope(scope)
@@ -177,13 +178,18 @@ def create(scope_type, scope_name):
     scope = Scope(scope_type, scope_name)
 
     form = CreateForm(request.form)
+    form.set_language_code_choices()
+
+    if not form.validate():
+        return create_form(scope_type, scope_name, form)
 
     name = form.name.data.strip().lower()
+    language_code = form.language_code.data
     creator = g.user
     body = form.body.data.strip()
 
     version, event = snippet_service.create_snippet(
-        scope, name, creator.id, body
+        scope, name, language_code, creator.id, body
     )
 
     flash_success(

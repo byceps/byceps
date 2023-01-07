@@ -19,6 +19,7 @@ from ...typing import UserID
 from ...util.instances import ReprBuilder
 
 from ..user.dbmodels.user import DbUser
+from ..language.dbmodels import DbLanguage
 
 from .transfer.models import Scope
 
@@ -40,14 +41,22 @@ class DbSnippet(db.Model):
     scope_type = db.Column(db.UnicodeText, nullable=False)
     scope_name = db.Column(db.UnicodeText, nullable=False)
     name = db.Column(db.UnicodeText, index=True, nullable=False)
+    language_code = db.Column(
+        db.UnicodeText,
+        db.ForeignKey('languages.code'),
+        index=True,
+        nullable=False,
+    )
+    language = db.relationship(DbLanguage)
     current_version = association_proxy(
         'current_version_association', 'version'
     )
 
-    def __init__(self, scope: Scope, name: str) -> None:
+    def __init__(self, scope: Scope, name: str, language_code: str) -> None:
         self.scope_type = scope.type_
         self.scope_name = scope.name
         self.name = name
+        self.language_code = language_code
 
     @property
     def scope(self) -> Scope:

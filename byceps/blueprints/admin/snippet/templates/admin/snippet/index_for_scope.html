@@ -27,6 +27,7 @@
       <thead>
         <tr>
           <th>{{ _('Name') }}</th>
+          <th>{{ _('Language') }}</th>
           <th>{{ _('Latest change') }}</th>
           <th>{{ _('by') }}</th>
           <th></th>
@@ -36,6 +37,7 @@
       {%- for snippet in snippets|sort(attribute='name') %}
         <tr>
           <td class="nowrap"><a href="{{ url_for('.view_current_version', snippet_id=snippet.id) }}"><strong>{{ snippet.name }}</strong></a></td>
+          <td>{{ snippet.language_code }}</td>
           <td class="nowrap">
             {%- if has_current_user_permission('snippet.view_history') %}
             {{ render_icon('history') }} <a href="{{ url_for('.history', snippet_id=snippet.id) }}" title="{{ _('View change history') }}">{{ snippet.current_version.created_at|datetimeformat }}</a>

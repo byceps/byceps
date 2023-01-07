@@ -7,15 +7,25 @@ byceps.blueprints.admin.snippet.forms
 """
 
 from flask_babel import lazy_gettext
-from wtforms import StringField, TextAreaField
+from wtforms import SelectField, StringField, TextAreaField
 from wtforms.validators import InputRequired
 
+from ....services.language import language_service
 from ....util.l10n import LocalizedForm
 
 
 class CreateForm(LocalizedForm):
     name = StringField(lazy_gettext('Name'), [InputRequired()])
+    language_code = SelectField(
+        lazy_gettext('Language code'), [InputRequired()]
+    )
     body = TextAreaField(lazy_gettext('Text'), [InputRequired()])
+
+    def set_language_code_choices(self):
+        languages = language_service.get_languages()
+        choices = [(language.code, language.code) for language in languages]
+        choices.sort()
+        self.language_code.choices = choices
 
 
 class UpdateForm(CreateForm):

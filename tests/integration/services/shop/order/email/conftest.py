@@ -28,6 +28,7 @@ def email_payment_instructions_snippet_id(
         shop.id,
         order_admin.id,
         'email_payment_instructions',
+        'de',
         '''
 Bitte überweise den Gesamtbetrag auf folgendes Konto:
 

@@ -54,5 +54,7 @@ def test_unknown_name(party1):
 
 def create_snippet(scope, name, creator_id):
     body = ''
-    version, _ = snippet_service.create_snippet(scope, name, creator_id, body)
+    version, _ = snippet_service.create_snippet(
+        scope, name, 'en', creator_id, body
+    )
     return version

@@ -44,13 +44,15 @@ def global_scope():
 @pytest.fixture
 def make_snippet(global_scope: Scope, snippet_admin: User):
     def _wrapper(
-        name: Optional[str] = None, body: str = 'Body'
+        name: Optional[str] = None,
+        language_code: str = 'en',
+        body: str = 'Body',
     ) -> tuple[DbSnippetVersion, SnippetCreated]:
         if name is None:
             name = generate_token()
 
         version, event = snippet_service.create_snippet(
-            global_scope, name, snippet_admin.id, body
+            global_scope, name, language_code, snippet_admin.id, body
         )
         return version, event
 

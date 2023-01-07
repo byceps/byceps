@@ -51,6 +51,7 @@ def copy_snippet(target_scope: Scope, version: DbSnippetVersion, ctx) -> None:
     snippet_service.create_snippet(
         target_scope,
         version.snippet.name,
+        version.snippet.language_code,
         version.creator_id,
         version.body,
     )

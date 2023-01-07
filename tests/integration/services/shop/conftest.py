@@ -30,6 +30,7 @@ def email_footer_snippet_id(shop_brand: Brand, admin_user: User) -> SnippetID:
     version, _ = snippet_service.create_snippet(
         scope,
         'email_footer',
+        'de',
         admin_user.id,
         '''
 Für Fragen stehen wir gerne zur Verfügung.

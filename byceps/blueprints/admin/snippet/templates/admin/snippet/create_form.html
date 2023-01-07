@@ -14,6 +14,7 @@
   <form action="{{ url_for('.create', scope_type=scope.type_, scope_name=scope.name) }}" method="post">
     <div class="box">
       {{ form_field(form.name, maxlength=40, autofocus='autofocus') }}
+      {{ form_field(form.language_code) }}
       {{ form_field(form.body, class='monospace') }}
     </div>
 

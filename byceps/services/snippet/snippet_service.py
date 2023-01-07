@@ -26,12 +26,12 @@ from .transfer.models import Scope, SnippetID, SnippetVersionID
 
 
 def create_snippet(
-    scope: Scope, name: str, creator_id: UserID, body: str
+    scope: Scope, name: str, language_code: str, creator_id: UserID, body: str
 ) -> tuple[DbSnippetVersion, SnippetCreated]:
     """Create a snippet and its initial version, and return that version."""
     creator = user_service.get_user(creator_id)
 
-    snippet = DbSnippet(scope, name)
+    snippet = DbSnippet(scope, name, language_code)
     db.session.add(snippet)
 
     version = DbSnippetVersion(snippet, creator_id, body)

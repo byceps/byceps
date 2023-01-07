@@ -48,7 +48,7 @@ def test_announce_snippet_deleted(app, scope, editor):
     )
 
     version, _ = snippet_service.create_snippet(
-        scope, 'outdated_info', editor.id, 'This is old news. :('
+        scope, 'outdated_info', 'en', editor.id, 'This is old news. :('
     )
 
     success, event = snippet_service.delete_snippet(
@@ -81,7 +81,7 @@ def created_version_and_event(scope, editor):
     name = 'team_intro'
     body = 'some body'
 
-    return snippet_service.create_snippet(scope, name, editor.id, body)
+    return snippet_service.create_snippet(scope, name, 'en', editor.id, body)
 
 
 @pytest.fixture(scope='module')
