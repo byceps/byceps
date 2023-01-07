@@ -13,14 +13,14 @@ from sqlalchemy import select
 from ...database import db
 from ...services.site.transfer.models import SiteID
 
-from .dbmodels import DbItem, DbMenu
+from .dbmodels import DbNavItem, DbNavMenu
 from .transfer.models import (
-    Item,
-    ItemID,
-    ItemTargetType,
-    Menu,
-    MenuAggregate,
-    MenuID,
+    NavItem,
+    NavItemID,
+    NavItemTargetType,
+    NavMenu,
+    NavMenuAggregate,
+    NavMenuID,
 )
 
 
@@ -30,9 +30,9 @@ def create_menu(
     language_code: str,
     *,
     hidden: bool = False,
-) -> Menu:
+) -> NavMenu:
     """Create a menu."""
-    db_menu = DbMenu(site_id, name, language_code, hidden)
+    db_menu = DbNavMenu(site_id, name, language_code, hidden)
     db.session.add(db_menu)
     db.session.commit()
 
@@ -40,11 +40,11 @@ def create_menu(
 
 
 def update_menu(
-    menu_id: MenuID,
+    menu_id: NavMenuID,
     name: str,
     language_code: str,
     hidden: bool,
-) -> Menu:
+) -> NavMenu:
     """Update a menu."""
     db_menu = _get_db_menu(menu_id)
 
@@ -58,19 +58,19 @@ def update_menu(
 
 
 def create_item(
-    menu_id: MenuID,
-    target_type: ItemTargetType,
+    menu_id: NavMenuID,
+    target_type: NavItemTargetType,
     target: str,
     label: str,
     current_page_id: str,
     *,
-    parent_item_id: Optional[ItemID] = None,
+    parent_item_id: Optional[NavItemID] = None,
     hidden: bool = False,
-) -> Item:
+) -> NavItem:
     """Create a menu item."""
     db_menu = _get_db_menu(menu_id)
 
-    db_item = DbItem(
+    db_item = DbNavItem(
         db_menu.id,
         parent_item_id,
         target_type,
@@ -85,7 +85,7 @@ def create_item(
     return _db_entity_to_item(db_item)
 
 
-def find_menu(menu_id: MenuID) -> Optional[Menu]:
+def find_menu(menu_id: NavMenuID) -> Optional[NavMenu]:
     """Return the menu, or `None` if not found."""
     db_menu = _find_db_menu(menu_id)
 
@@ -95,7 +95,7 @@ def find_menu(menu_id: MenuID) -> Optional[Menu]:
     return _db_entity_to_menu(db_menu)
 
 
-def get_menu(menu_id: MenuID) -> Menu:
+def get_menu(menu_id: NavMenuID) -> NavMenu:
     """Return the menu.
 
     Raise error if not found.
@@ -105,12 +105,12 @@ def get_menu(menu_id: MenuID) -> Menu:
     return _db_entity_to_menu(db_menu)
 
 
-def _find_db_menu(menu_id: MenuID) -> Optional[DbMenu]:
+def _find_db_menu(menu_id: NavMenuID) -> Optional[DbNavMenu]:
     """Return the menu, or `None` if not found."""
-    return db.session.get(DbMenu, menu_id)
+    return db.session.get(DbNavMenu, menu_id)
 
 
-def _get_db_menu(menu_id: MenuID) -> DbMenu:
+def _get_db_menu(menu_id: NavMenuID) -> DbNavMenu:
     """Return the menu.
 
     Raise error if not found.
@@ -123,23 +123,23 @@ def _get_db_menu(menu_id: MenuID) -> DbMenu:
     return db_menu
 
 
-def find_menu_aggregate(menu_id: MenuID) -> Optional[MenuAggregate]:
+def find_menu_aggregate(menu_id: NavMenuID) -> Optional[NavMenuAggregate]:
     """Return the menu aggregate, or `None` if not found."""
     db_menu = _find_db_menu(menu_id)
     if db_menu is None:
         return None
 
     db_items = db.session.scalars(
-        select(DbItem).filter(DbItem.menu_id == db_menu.id)
+        select(DbNavItem).filter(DbNavItem.menu_id == db_menu.id)
     )
 
     return _db_entity_to_menu_aggregate(db_menu, db_items)
 
 
-def get_menus(site_id: SiteID) -> list[Menu]:
+def get_menus(site_id: SiteID) -> list[NavMenu]:
     """Return the menus for this site."""
     db_menus = db.session.scalars(
-        select(DbMenu).filter(DbMenu.site_id == site_id)
+        select(DbNavMenu).filter(DbNavMenu.site_id == site_id)
     )
 
     return [_db_entity_to_menu(db_menu) for db_menu in db_menus]
@@ -147,25 +147,25 @@ def get_menus(site_id: SiteID) -> list[Menu]:
 
 def get_items_for_menu(
     site_id: SiteID, name: str, language_code: str
-) -> list[Item]:
+) -> list[NavItem]:
     """Return the items of a menu.
 
     An empty list is returned if the menu does not exist, is hidden, or
     contains no visible items.
     """
     db_items = db.session.scalars(
-        select(DbItem)
-        .join(DbMenu)
-        .filter(DbMenu.site_id == site_id)
-        .filter(DbMenu.name == name)
-        .filter(DbMenu.language_code == language_code)
-        .filter(DbMenu.hidden == False)  # noqa: E712
+        select(DbNavItem)
+        .join(DbNavMenu)
+        .filter(DbNavMenu.site_id == site_id)
+        .filter(DbNavMenu.name == name)
+        .filter(DbNavMenu.language_code == language_code)
+        .filter(DbNavMenu.hidden == False)  # noqa: E712
     )
 
     return [_db_entity_to_item(db_item) for db_item in db_items]
 
 
-def find_item(item_id: ItemID) -> Optional[Item]:
+def find_item(item_id: NavItemID) -> Optional[NavItem]:
     """Return the menu item, or `None` if not found."""
     db_item = _find_db_item(item_id)
 
@@ -175,12 +175,12 @@ def find_item(item_id: ItemID) -> Optional[Item]:
     return _db_entity_to_item(db_item)
 
 
-def _find_db_item(item_id: ItemID) -> Optional[DbItem]:
+def _find_db_item(item_id: NavItemID) -> Optional[DbNavItem]:
     """Return the menu item, or `None` if not found."""
-    return db.session.get(DbItem, item_id)
+    return db.session.get(DbNavItem, item_id)
 
 
-def _get_db_item(item_id: ItemID) -> DbItem:
+def _get_db_item(item_id: NavItemID) -> DbNavItem:
     """Return the menu item.
 
     Raise error if not found.
@@ -193,7 +193,7 @@ def _get_db_item(item_id: ItemID) -> DbItem:
     return db_item
 
 
-def move_item_up(item_id: ItemID) -> Item:
+def move_item_up(item_id: NavItemID) -> NavItem:
     """Move a menu item upwards by one position."""
     item = _get_db_item(item_id)
 
@@ -210,7 +210,7 @@ def move_item_up(item_id: ItemID) -> Item:
     return _db_entity_to_item(item)
 
 
-def move_item_down(item_id: ItemID) -> Item:
+def move_item_down(item_id: NavItemID) -> NavItem:
     """Move a menu item downwards by one position."""
     item = _get_db_item(item_id)
 
@@ -227,8 +227,8 @@ def move_item_down(item_id: ItemID) -> Item:
     return _db_entity_to_item(item)
 
 
-def _db_entity_to_menu(db_menu: DbMenu) -> Menu:
-    return Menu(
+def _db_entity_to_menu(db_menu: DbNavMenu) -> NavMenu:
+    return NavMenu(
         id=db_menu.id,
         site_id=db_menu.site_id,
         name=db_menu.name,
@@ -237,8 +237,8 @@ def _db_entity_to_menu(db_menu: DbMenu) -> Menu:
     )
 
 
-def _db_entity_to_item(db_item: DbItem) -> Item:
-    return Item(
+def _db_entity_to_item(db_item: DbNavItem) -> NavItem:
+    return NavItem(
         id=db_item.id,
         menu_id=db_item.menu_id,
         position=db_item.position,
@@ -251,12 +251,12 @@ def _db_entity_to_item(db_item: DbItem) -> Item:
 
 
 def _db_entity_to_menu_aggregate(
-    db_menu: DbMenu, db_items: Iterable[DbItem]
-) -> MenuAggregate:
+    db_menu: DbNavMenu, db_items: Iterable[DbNavItem]
+) -> NavMenuAggregate:
     menu = _db_entity_to_menu(db_menu)
     items = [_db_entity_to_item(db_item) for db_item in db_items]
 
-    return MenuAggregate(
+    return NavMenuAggregate(
         id=menu.id,
         site_id=menu.site_id,
         name=menu.name,

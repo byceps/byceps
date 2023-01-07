@@ -14,12 +14,12 @@ from .....services.site import site_service
 from .....services.site.transfer.models import Site, SiteID
 from .....services.site_navigation import site_navigation_service
 from .....services.site_navigation.transfer.models import (
-    Item,
-    ItemID,
-    ItemTargetType,
-    Menu,
-    MenuAggregate,
-    MenuID,
+    NavItem,
+    NavItemID,
+    NavItemTargetType,
+    NavMenu,
+    NavMenuAggregate,
+    NavMenuID,
 )
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
@@ -183,7 +183,7 @@ def item_create(menu_id):
     if not form.validate():
         return item_create_form(menu.id, form)
 
-    target_type = ItemTargetType[form.target_type.data]
+    target_type = NavItemTargetType[form.target_type.data]
     target = form.target.data.strip()
     label = form.label.data.strip()
     current_page_id = form.current_page_id.data.strip()
@@ -259,7 +259,7 @@ def _get_site_or_404(site_id: SiteID) -> Site:
     return site
 
 
-def _get_menu_or_404(menu_id: MenuID) -> Menu:
+def _get_menu_or_404(menu_id: NavMenuID) -> NavMenu:
     menu = site_navigation_service.find_menu(menu_id)
 
     if menu is None:
@@ -268,7 +268,7 @@ def _get_menu_or_404(menu_id: MenuID) -> Menu:
     return menu
 
 
-def _get_menu_aggregate_or_404(menu_id: MenuID) -> MenuAggregate:
+def _get_menu_aggregate_or_404(menu_id: NavMenuID) -> NavMenuAggregate:
     menu = site_navigation_service.find_menu_aggregate(menu_id)
 
     if menu is None:
@@ -277,7 +277,7 @@ def _get_menu_aggregate_or_404(menu_id: MenuID) -> MenuAggregate:
     return menu
 
 
-def _get_item_or_404(item_id: ItemID) -> Item:
+def _get_item_or_404(item_id: NavItemID) -> NavItem:
     item = site_navigation_service.find_item(item_id)
 
     if item is None:

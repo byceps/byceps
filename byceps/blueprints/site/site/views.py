@@ -12,8 +12,8 @@ from ..page.templating import url_for_site_page
 
 from ....services.site_navigation import site_navigation_service
 from ....services.site_navigation.transfer.models import (
-    ItemForRendering,
-    ItemTargetType,
+    NavItemForRendering,
+    NavItemTargetType,
 )
 from ....util.framework.blueprint import create_blueprint
 from ....util.l10n import get_locale_str
@@ -23,7 +23,7 @@ blueprint = create_blueprint('site', __name__)
 
 
 @blueprint.app_template_global()
-def get_nav_menu_items(menu_name: str) -> list[ItemForRendering]:
+def get_nav_menu_items(menu_name: str) -> list[NavItemForRendering]:
     """Make navigation menus accessible to templates."""
     locale_str = get_locale_str()
     if locale_str is None:  # outside of request
@@ -35,10 +35,10 @@ def get_nav_menu_items(menu_name: str) -> list[ItemForRendering]:
     return [_to_item_for_rendering(g.site_id, item) for item in items]
 
 
-def _to_item_for_rendering(site_id: str, item) -> ItemForRendering:
+def _to_item_for_rendering(site_id: str, item) -> NavItemForRendering:
     target = _assemble_target(site_id, item.target_type, item.target)
 
-    return ItemForRendering(
+    return NavItemForRendering(
         target=target,
         label=item.label,
         current_page_id=item.current_page_id,
@@ -47,13 +47,13 @@ def _to_item_for_rendering(site_id: str, item) -> ItemForRendering:
 
 
 def _assemble_target(
-    site_id: str, target_type: ItemTargetType, target: str
+    site_id: str, target_type: NavItemTargetType, target: str
 ) -> str:
-    if target_type == ItemTargetType.endpoint:
+    if target_type == NavItemTargetType.endpoint:
         return url_for(target)
-    elif target_type == ItemTargetType.page:
+    elif target_type == NavItemTargetType.page:
         return url_for_site_page(site_id, target)
-    elif target_type == ItemTargetType.url:
+    elif target_type == NavItemTargetType.url:
         return target
     else:
         raise ValueError('Unknown target type')

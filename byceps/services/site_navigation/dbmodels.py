@@ -20,10 +20,10 @@ from ...database import db, generate_uuid
 from ..language.dbmodels import DbLanguage
 from ..site.transfer.models import SiteID
 
-from .transfer.models import ItemID, ItemTargetType, MenuID
+from .transfer.models import NavItemID, NavItemTargetType, NavMenuID
 
 
-class DbMenu(db.Model):
+class DbNavMenu(db.Model):
     """A navigation menu."""
 
     __tablename__ = 'site_nav_menus'
@@ -52,7 +52,7 @@ class DbMenu(db.Model):
         self.hidden = hidden
 
 
-class DbItem(db.Model):
+class DbNavItem(db.Model):
     """An item of a navigation menu."""
 
     __tablename__ = 'site_nav_menu_items'
@@ -65,10 +65,10 @@ class DbItem(db.Model):
         db.Uuid, db.ForeignKey('site_nav_menus.id'), index=True, nullable=False
     )
     menu = db.relationship(
-        DbMenu,
+        DbNavMenu,
         backref=db.backref(
             'items',
-            order_by='byceps.services.site_navigation.dbmodels.DbItem.position',
+            order_by='byceps.services.site_navigation.dbmodels.DbNavItem.position',
             collection_class=ordering_list('position', count_from=1),
         ),
     )
@@ -87,9 +87,9 @@ class DbItem(db.Model):
 
     def __init__(
         self,
-        menu_id: MenuID,
-        parent_item_id: Optional[ItemID],
-        target_type: ItemTargetType,
+        menu_id: NavMenuID,
+        parent_item_id: Optional[NavItemID],
+        target_type: NavItemTargetType,
         target: str,
         label: str,
         current_page_id: str,
@@ -104,10 +104,10 @@ class DbItem(db.Model):
         self.hidden = hidden
 
     @hybrid_property
-    def target_type(self) -> ItemTargetType:
-        return ItemTargetType[self._target_type]
+    def target_type(self) -> NavItemTargetType:
+        return NavItemTargetType[self._target_type]
 
     @target_type.setter
-    def target_type(self, target_type: ItemTargetType) -> None:
+    def target_type(self, target_type: NavItemTargetType) -> None:
         assert target_type is not None
         self._target_type = target_type.name

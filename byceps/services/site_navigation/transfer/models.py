@@ -15,18 +15,18 @@ from uuid import UUID
 from ...site.transfer.models import SiteID
 
 
-MenuID = NewType('MenuID', UUID)
+NavMenuID = NewType('NavMenuID', UUID)
 
 
-ItemID = NewType('ItemID', UUID)
+NavItemID = NewType('NavItemID', UUID)
 
 
-ItemTargetType = Enum('ItemTargetType', ['endpoint', 'page', 'url'])
+NavItemTargetType = Enum('NavItemTargetType', ['endpoint', 'page', 'url'])
 
 
 @dataclass(frozen=True)
-class Menu:
-    id: MenuID
+class NavMenu:
+    id: NavMenuID
     site_id: SiteID
     name: str
     language_code: str
@@ -34,11 +34,11 @@ class Menu:
 
 
 @dataclass(frozen=True)
-class Item:
-    id: ItemID
-    menu_id: MenuID
+class NavItem:
+    id: NavItemID
+    menu_id: NavMenuID
     position: int
-    target_type: ItemTargetType
+    target_type: NavItemTargetType
     target: str
     label: str
     current_page_id: str
@@ -46,13 +46,13 @@ class Item:
 
 
 @dataclass(frozen=True)
-class ItemForRendering:
+class NavItemForRendering:
     target: str
     label: str
     current_page_id: str
-    children: list[ItemForRendering]
+    children: list[NavItemForRendering]
 
 
 @dataclass(frozen=True)
-class MenuAggregate(Menu):
-    items: list[Item]
+class NavMenuAggregate(NavMenu):
+    items: list[NavItem]

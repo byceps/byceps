@@ -29,7 +29,7 @@ from ...services.shop.storefront.transfer.models import Storefront, StorefrontID
 from ...services.site import site_service
 from ...services.site.transfer.models import Site, SiteID
 from ...services.site_navigation import site_navigation_service
-from ...services.site_navigation.transfer.models import ItemTargetType
+from ...services.site_navigation.transfer.models import NavItemTargetType
 from ...services.ticketing import ticket_category_service
 from ...services.ticketing.transfer.models import TicketCategory
 from ...services.user import user_command_service, user_creation_service
@@ -229,8 +229,12 @@ def _create_pages(site_id: SiteID, creator_id: UserID) -> None:
     nav_main_de = site_navigation_service.create_menu(site_id, 'main', 'de')
 
     site_navigation_service.create_item(
-        nav_main_en.id, ItemTargetType.page, 'imprint', 'Imprint', 'imprint'
+        nav_main_en.id, NavItemTargetType.page, 'imprint', 'Imprint', 'imprint'
     )
     site_navigation_service.create_item(
-        nav_main_de.id, ItemTargetType.page, 'imprint', 'Impressum', 'imprint'
+        nav_main_de.id,
+        NavItemTargetType.page,
+        'imprint',
+        'Impressum',
+        'imprint',
     )
