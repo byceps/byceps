@@ -9,7 +9,11 @@ import pytest
 import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
 from byceps.services.brand.transfer.models import Brand
 from byceps.services.news import news_item_service
-from byceps.services.news.transfer.models import BodyFormat, Channel, Item
+from byceps.services.news.transfer.models import (
+    BodyFormat,
+    NewsChannel,
+    NewsItem,
+)
 from byceps.services.site.transfer.models import Site
 from byceps.services.webhooks import webhook_service
 from byceps.signals import news as news_signals
@@ -21,7 +25,7 @@ WEBHOOK_URL = 'https://webhoooks.test/news'
 
 
 def test_published_news_item_announced_with_url(
-    admin_app: Flask, item_with_url: Item
+    admin_app: Flask, item_with_url: NewsItem
 ) -> None:
     expected_content = (
         '[News] Die News "Zieh dir das rein!" wurde veröffentlicht. '
@@ -39,7 +43,7 @@ def test_published_news_item_announced_with_url(
 
 
 def test_published_news_item_announced_without_url(
-    admin_app: Flask, item_without_url: Item
+    admin_app: Flask, item_without_url: NewsItem
 ) -> None:
     expected_content = (
         '[News] Die News "Zieh dir auch das rein!" wurde veröffentlicht.'
@@ -59,16 +63,18 @@ def test_published_news_item_announced_without_url(
 
 
 @pytest.fixture
-def channel_with_site(brand: Brand, site: Site, make_news_channel) -> Channel:
+def channel_with_site(
+    brand: Brand, site: Site, make_news_channel
+) -> NewsChannel:
     return make_news_channel(brand.id, announcement_site_id=site.id)
 
 
 @pytest.fixture
-def channel_without_site(brand: Brand, make_news_channel) -> Channel:
+def channel_without_site(brand: Brand, make_news_channel) -> NewsChannel:
     return make_news_channel(brand.id)
 
 
-def create_webhooks(channel: Channel) -> None:
+def create_webhooks(channel: NewsChannel) -> None:
     news_channel_ids = [str(channel.id), 'totally-different-id']
     format = 'discord'
     text_prefix = '[News] '
@@ -90,7 +96,7 @@ def create_webhooks(channel: Channel) -> None:
 
 @pytest.fixture
 def make_item(make_user):
-    def _wrapper(channel: Channel, slug: str, title: str) -> Item:
+    def _wrapper(channel: NewsChannel, slug: str, title: str) -> NewsItem:
         editor = make_user()
         body = 'any body'
         body_format = BodyFormat.html
@@ -103,7 +109,7 @@ def make_item(make_user):
 
 
 @pytest.fixture
-def item_with_url(make_item, channel_with_site: Channel) -> Item:
+def item_with_url(make_item, channel_with_site: NewsChannel) -> NewsItem:
     slug = 'zieh-dir-das-rein'
     title = 'Zieh dir das rein!'
 
@@ -111,7 +117,7 @@ def item_with_url(make_item, channel_with_site: Channel) -> Item:
 
 
 @pytest.fixture
-def item_without_url(make_item, channel_without_site: Channel) -> Item:
+def item_without_url(make_item, channel_without_site: NewsChannel) -> NewsItem:
     slug = 'zieh-dir-auch-das-rein'
     title = 'Zieh dir auch das rein!'
 

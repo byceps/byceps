@@ -14,10 +14,10 @@ from ....util.instances import ReprBuilder
 
 from ...site.transfer.models import SiteID
 
-from ..transfer.models import ChannelID
+from ..transfer.models import NewsChannelID
 
 
-class DbChannel(db.Model):
+class DbNewsChannel(db.Model):
     """A channel to which news items can be published."""
 
     __tablename__ = 'news_channels'
@@ -33,7 +33,7 @@ class DbChannel(db.Model):
 
     def __init__(
         self,
-        channel_id: ChannelID,
+        channel_id: NewsChannelID,
         brand_id: BrandID,
         *,
         announcement_site_id: Optional[SiteID] = None,

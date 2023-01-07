@@ -22,12 +22,12 @@ from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import DbUser
 
-from ..transfer.models import BodyFormat, ChannelID
+from ..transfer.models import BodyFormat, NewsChannelID
 
-from .channel import DbChannel
+from .channel import DbNewsChannel
 
 
-class DbItem(db.Model):
+class DbNewsItem(db.Model):
     """A news item.
 
     Each one is expected to have at least one version (the initial one).
@@ -47,7 +47,7 @@ class DbItem(db.Model):
         index=True,
         nullable=False,
     )
-    channel = db.relationship(DbChannel)
+    channel = db.relationship(DbNewsChannel)
     slug = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
     published_at = db.Column(db.DateTime, nullable=True)
     current_version = association_proxy(
@@ -55,7 +55,7 @@ class DbItem(db.Model):
     )
     featured_image_id = db.Column(db.Uuid, nullable=True)
 
-    def __init__(self, channel_id: ChannelID, slug: str) -> None:
+    def __init__(self, channel_id: NewsChannelID, slug: str) -> None:
         self.channel_id = channel_id
         self.slug = slug
 
@@ -78,7 +78,7 @@ class DbItem(db.Model):
         )
 
 
-class DbItemVersion(db.Model):
+class DbNewsItemVersion(db.Model):
     """A snapshot of a news item at a certain time."""
 
     __tablename__ = 'news_item_versions'
@@ -87,7 +87,7 @@ class DbItemVersion(db.Model):
     item_id = db.Column(
         db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False
     )
-    item = db.relationship(DbItem)
+    item = db.relationship(DbNewsItem)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     creator = db.relationship(DbUser)
@@ -98,7 +98,7 @@ class DbItemVersion(db.Model):
 
     def __init__(
         self,
-        item: DbItem,
+        item: DbNewsItem,
         creator_id: UserID,
         title: str,
         body: str,
@@ -136,14 +136,15 @@ class DbItemVersion(db.Model):
         )
 
 
-class DbCurrentItemVersionAssociation(db.Model):
+class DbCurrentNewsItemVersionAssociation(db.Model):
     __tablename__ = 'news_item_current_versions'
 
     item_id = db.Column(
         db.Uuid, db.ForeignKey('news_items.id'), primary_key=True
     )
     item = db.relationship(
-        DbItem, backref=db.backref('current_version_association', uselist=False)
+        DbNewsItem,
+        backref=db.backref('current_version_association', uselist=False),
     )
     version_id = db.Column(
         db.Uuid,
@@ -151,8 +152,8 @@ class DbCurrentItemVersionAssociation(db.Model):
         unique=True,
         nullable=False,
     )
-    version = db.relationship(DbItemVersion)
+    version = db.relationship(DbNewsItemVersion)
 
-    def __init__(self, item: DbItem, version: DbItemVersion) -> None:
+    def __init__(self, item: DbNewsItem, version: DbNewsItemVersion) -> None:
         self.item = item
         self.version = version

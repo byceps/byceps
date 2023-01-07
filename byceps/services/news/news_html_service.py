@@ -19,10 +19,10 @@ import mistletoe
 from ...util.iterables import find
 from ...util.templating import load_template
 
-from .transfer.models import BodyFormat, Image, Item
+from .transfer.models import BodyFormat, NewsImage, NewsItem
 
 
-def render_body(item: Item, raw_body: str, body_format: BodyFormat) -> str:
+def render_body(item: NewsItem, raw_body: str, body_format: BodyFormat) -> str:
     """Render item's raw body to HTML."""
     template = load_template(raw_body)
     render_image = partial(_render_image_by_number, item.images)
@@ -44,7 +44,7 @@ def render_body(item: Item, raw_body: str, body_format: BodyFormat) -> str:
 
 
 def _render_image_by_number(
-    images: list[Image],
+    images: list[NewsImage],
     number: int,
     *,
     width: Optional[int] = None,
@@ -56,7 +56,7 @@ def _render_image_by_number(
     return Markup(html)
 
 
-def _get_image_by_number(images: list[Image], number: int) -> Image:
+def _get_image_by_number(images: list[NewsImage], number: int) -> NewsImage:
     """Return the image with that number."""
     image = find(images, lambda image: image.number == number)
 
@@ -67,7 +67,7 @@ def _get_image_by_number(images: list[Image], number: int) -> Image:
 
 
 def _render_image(
-    image: Image,
+    image: NewsImage,
     *,
     width: Optional[int] = None,
     height: Optional[int] = None,

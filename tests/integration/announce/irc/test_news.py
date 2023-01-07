@@ -9,7 +9,11 @@ import pytest
 import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
 from byceps.services.brand.transfer.models import Brand
 from byceps.services.news import news_item_service
-from byceps.services.news.transfer.models import BodyFormat, Channel, Item
+from byceps.services.news.transfer.models import (
+    BodyFormat,
+    NewsChannel,
+    NewsItem,
+)
 from byceps.services.site.transfer.models import Site
 from byceps.signals import news as news_signals
 
@@ -17,7 +21,7 @@ from .helpers import assert_submitted_text, mocked_irc_bot
 
 
 def test_published_news_item_announced_with_url(
-    app: Flask, item_with_url: Item
+    app: Flask, item_with_url: NewsItem
 ) -> None:
     expected_text = (
         'Die News "Zieh dir das mal rein!" wurde veröffentlicht. '
@@ -33,7 +37,7 @@ def test_published_news_item_announced_with_url(
 
 
 def test_published_news_item_announced_without_url(
-    app: Flask, item_without_url: Item
+    app: Flask, item_without_url: NewsItem
 ) -> None:
     expected_text = (
         'Die News "Zieh dir auch das mal rein!" wurde veröffentlicht.'
@@ -51,18 +55,20 @@ def test_published_news_item_announced_without_url(
 
 
 @pytest.fixture
-def channel_with_site(brand: Brand, site: Site, make_news_channel) -> Channel:
+def channel_with_site(
+    brand: Brand, site: Site, make_news_channel
+) -> NewsChannel:
     return make_news_channel(brand.id, announcement_site_id=site.id)
 
 
 @pytest.fixture
-def channel_without_site(brand: Brand, make_news_channel) -> Channel:
+def channel_without_site(brand: Brand, make_news_channel) -> NewsChannel:
     return make_news_channel(brand.id)
 
 
 @pytest.fixture
 def make_item(make_user):
-    def _wrapper(channel: Channel, slug: str, title: str) -> Item:
+    def _wrapper(channel: NewsChannel, slug: str, title: str) -> NewsItem:
         editor = make_user()
         body = 'any body'
         body_format = BodyFormat.html
@@ -75,7 +81,7 @@ def make_item(make_user):
 
 
 @pytest.fixture
-def item_with_url(make_item, channel_with_site: Channel) -> Item:
+def item_with_url(make_item, channel_with_site: NewsChannel) -> NewsItem:
     slug = 'zieh-dir-das-mal-rein'
     title = 'Zieh dir das mal rein!'
 
@@ -83,7 +89,7 @@ def item_with_url(make_item, channel_with_site: Channel) -> Item:
 
 
 @pytest.fixture
-def item_without_url(make_item, channel_without_site: Channel) -> Item:
+def item_without_url(make_item, channel_without_site: NewsChannel) -> NewsItem:
     slug = 'zieh-dir-auch-das-mal-rein'
     title = 'Zieh dir auch das mal rein!'
 

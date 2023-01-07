@@ -15,24 +15,24 @@ from uuid import UUID
 from ....typing import BrandID, UserID
 
 
-ChannelID = NewType('ChannelID', str)
+NewsChannelID = NewType('NewsChannelID', str)
 
 
-ItemID = NewType('ItemID', UUID)
+NewsItemID = NewType('NewsItemID', UUID)
 
 
-ItemVersionID = NewType('ItemVersionID', UUID)
+NewsItemVersionID = NewType('NewsItemVersionID', UUID)
 
 
-ImageID = NewType('ImageID', UUID)
+NewsImageID = NewType('NewsImageID', UUID)
 
 
 BodyFormat = Enum('BodyFormat', ['html', 'markdown'])
 
 
 @dataclass(frozen=True)
-class Channel:
-    id: ChannelID
+class NewsChannel:
+    id: NewsChannelID
     brand_id: BrandID
     # Should be `SiteID` instead of `str`,
     # but circular imports prevent this.
@@ -41,11 +41,11 @@ class Channel:
 
 
 @dataclass(frozen=True)
-class Image:
-    id: ImageID
+class NewsImage:
+    id: NewsImageID
     created_at: datetime
     creator_id: UserID
-    item_id: ItemID
+    item_id: NewsItemID
     number: int
     filename: str
     url_path: str
@@ -55,9 +55,9 @@ class Image:
 
 
 @dataclass(frozen=True)
-class Item:
-    id: ItemID
-    channel: Channel
+class NewsItem:
+    id: NewsItemID
+    channel: NewsChannel
     slug: str
     published_at: Optional[datetime]
     published: bool
@@ -65,12 +65,12 @@ class Item:
     body: str
     body_format: BodyFormat
     image_url_path: Optional[str]
-    images: list[Image]
-    featured_image_id: Optional[ImageID]
+    images: list[NewsImage]
+    featured_image_id: Optional[NewsImageID]
 
 
 @dataclass(frozen=True)
-class Headline:
+class NewsHeadline:
     slug: str
     published_at: Optional[datetime]
     published: bool

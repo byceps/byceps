@@ -24,26 +24,26 @@ from ..site.transfer.models import SiteID
 from ..user import user_service
 from ..user.transfer.models import User
 
-from .dbmodels.channel import DbChannel
+from .dbmodels.channel import DbNewsChannel
 from .dbmodels.item import (
-    DbCurrentItemVersionAssociation,
-    DbItem,
-    DbItemVersion,
+    DbCurrentNewsItemVersionAssociation,
+    DbNewsItem,
+    DbNewsItemVersion,
 )
 from . import news_channel_service, news_html_service, news_image_service
 from .transfer.models import (
     BodyFormat,
-    ChannelID,
-    Headline,
-    ImageID,
-    Item,
-    ItemID,
-    ItemVersionID,
+    NewsChannelID,
+    NewsHeadline,
+    NewsImageID,
+    NewsItem,
+    NewsItemID,
+    NewsItemVersionID,
 )
 
 
 def create_item(
-    channel_id: ChannelID,
+    channel_id: NewsChannelID,
     slug: str,
     creator_id: UserID,
     title: str,
@@ -51,11 +51,11 @@ def create_item(
     body_format: BodyFormat,
     *,
     image_url_path: Optional[str] = None,
-) -> Item:
+) -> NewsItem:
     """Create a news item, a version, and set the version as the item's
     current one.
     """
-    db_item = DbItem(channel_id, slug)
+    db_item = DbNewsItem(channel_id, slug)
     db.session.add(db_item)
 
     db_version = _create_version(
@@ -68,7 +68,7 @@ def create_item(
     )
     db.session.add(db_version)
 
-    db_current_version_association = DbCurrentItemVersionAssociation(
+    db_current_version_association = DbCurrentNewsItemVersionAssociation(
         db_item, db_version
     )
     db.session.add(db_current_version_association)
@@ -79,7 +79,7 @@ def create_item(
 
 
 def update_item(
-    item_id: ItemID,
+    item_id: NewsItemID,
     slug: str,
     creator_id: UserID,
     title: str,
@@ -87,7 +87,7 @@ def update_item(
     body_format: BodyFormat,
     *,
     image_url_path: Optional[str] = None,
-) -> Item:
+) -> NewsItem:
     """Update a news item by creating a new version of it and setting
     the new version as the current one.
     """
@@ -113,15 +113,17 @@ def update_item(
 
 
 def _create_version(
-    db_item: DbItem,
+    db_item: DbNewsItem,
     creator_id: UserID,
     title: str,
     body: str,
     body_format: BodyFormat,
     *,
     image_url_path: Optional[str] = None,
-) -> DbItemVersion:
-    db_version = DbItemVersion(db_item, creator_id, title, body, body_format)
+) -> DbNewsItemVersion:
+    db_version = DbNewsItemVersion(
+        db_item, creator_id, title, body, body_format
+    )
 
     if image_url_path:
         db_version.image_url_path = image_url_path
@@ -129,7 +131,7 @@ def _create_version(
     return db_version
 
 
-def set_featured_image(item_id: ItemID, image_id: ImageID) -> None:
+def set_featured_image(item_id: NewsItemID, image_id: NewsImageID) -> None:
     """Set an image as featured image."""
     db_item = _get_db_item(item_id)
 
@@ -138,7 +140,7 @@ def set_featured_image(item_id: ItemID, image_id: ImageID) -> None:
 
 
 def publish_item(
-    item_id: ItemID,
+    item_id: NewsItemID,
     *,
     publish_at: Optional[datetime] = None,
     initiator_id: Optional[UserID] = None,
@@ -183,7 +185,7 @@ def publish_item(
 
 
 def unpublish_item(
-    item_id: ItemID,
+    item_id: NewsItemID,
     *,
     initiator_id: Optional[UserID] = None,
 ) -> None:
@@ -197,21 +199,21 @@ def unpublish_item(
     db.session.commit()
 
 
-def delete_item(item_id: ItemID) -> None:
+def delete_item(item_id: NewsItemID) -> None:
     """Delete a news item and its versions."""
     db.session.execute(
-        delete(DbCurrentItemVersionAssociation).where(
-            DbCurrentItemVersionAssociation.item_id == item_id
+        delete(DbCurrentNewsItemVersionAssociation).where(
+            DbCurrentNewsItemVersionAssociation.item_id == item_id
         )
     )
     db.session.execute(
-        delete(DbItemVersion).where(DbItemVersion.item_id == item_id)
+        delete(DbNewsItemVersion).where(DbNewsItemVersion.item_id == item_id)
     )
-    db.session.execute(delete(DbItem).where(DbItem.id == item_id))
+    db.session.execute(delete(DbNewsItem).where(DbNewsItem.id == item_id))
     db.session.commit()
 
 
-def find_item(item_id: ItemID) -> Optional[Item]:
+def find_item(item_id: NewsItemID) -> Optional[NewsItem]:
     """Return the item with that id, or `None` if not found."""
     db_item = _find_db_item(item_id)
 
@@ -221,14 +223,15 @@ def find_item(item_id: ItemID) -> Optional[Item]:
     return _db_entity_to_item(db_item)
 
 
-def _find_db_item(item_id: ItemID) -> Optional[DbItem]:
+def _find_db_item(item_id: NewsItemID) -> Optional[DbNewsItem]:
     """Return the item with that id, or `None` if not found."""
     return (
         db.session.scalars(
-            select(DbItem)
-            .filter(DbItem.id == item_id)
+            select(DbNewsItem)
+            .filter(DbNewsItem.id == item_id)
             .options(
-                db.joinedload(DbItem.channel), db.joinedload(DbItem.images)
+                db.joinedload(DbNewsItem.channel),
+                db.joinedload(DbNewsItem.images),
             )
         )
         .unique()
@@ -236,7 +239,7 @@ def _find_db_item(item_id: ItemID) -> Optional[DbItem]:
     )
 
 
-def _get_db_item(item_id: ItemID) -> DbItem:
+def _get_db_item(item_id: NewsItemID) -> DbNewsItem:
     """Return the item with that id, or raise an exception."""
     db_item = _find_db_item(item_id)
 
@@ -247,26 +250,26 @@ def _get_db_item(item_id: ItemID) -> DbItem:
 
 
 def find_aggregated_item_by_slug(
-    channel_ids: set[ChannelID], slug: str, *, published_only: bool = False
-) -> Optional[Item]:
+    channel_ids: set[NewsChannelID], slug: str, *, published_only: bool = False
+) -> Optional[NewsItem]:
     """Return the news item identified by that slug in one of the given
     channels, or `None` if not found.
     """
     stmt = (
-        select(DbItem)
-        .filter(DbItem.channel_id.in_(channel_ids))
+        select(DbNewsItem)
+        .filter(DbNewsItem.channel_id.in_(channel_ids))
         .filter_by(slug=slug)
         .options(
-            db.joinedload(DbItem.channel),
-            db.joinedload(DbItem.current_version_association).joinedload(
-                DbCurrentItemVersionAssociation.version
+            db.joinedload(DbNewsItem.channel),
+            db.joinedload(DbNewsItem.current_version_association).joinedload(
+                DbCurrentNewsItemVersionAssociation.version
             ),
-            db.joinedload(DbItem.images),
+            db.joinedload(DbNewsItem.images),
         )
     )
 
     if published_only:
-        stmt = stmt.filter(DbItem.published_at <= datetime.utcnow())
+        stmt = stmt.filter(DbNewsItem.published_at <= datetime.utcnow())
 
     db_item = db.session.scalars(stmt).unique().one_or_none()
 
@@ -277,7 +280,7 @@ def find_aggregated_item_by_slug(
 
 
 def get_aggregated_items_paginated(
-    channel_ids: set[ChannelID],
+    channel_ids: set[NewsChannelID],
     page: int,
     items_per_page: int,
     *,
@@ -288,8 +291,12 @@ def get_aggregated_items_paginated(
     count_stmt = _get_count_stmt(channel_ids)
 
     if published_only:
-        items_stmt = items_stmt.filter(DbItem.published_at <= datetime.utcnow())
-        count_stmt = count_stmt.filter(DbItem.published_at <= datetime.utcnow())
+        items_stmt = items_stmt.filter(
+            DbNewsItem.published_at <= datetime.utcnow()
+        )
+        count_stmt = count_stmt.filter(
+            DbNewsItem.published_at <= datetime.utcnow()
+        )
 
     item_mapper = partial(_db_entity_to_item, render_body=True)
 
@@ -305,7 +312,7 @@ def get_aggregated_items_paginated(
 
 
 def get_items_paginated(
-    channel_ids: set[ChannelID], page: int, items_per_page: int
+    channel_ids: set[NewsChannelID], page: int, items_per_page: int
 ) -> Pagination:
     """Return the news items to show on the specified page."""
     items_stmt = _get_items_stmt(channel_ids)
@@ -322,7 +329,7 @@ def get_items_paginated(
 
 
 def get_headlines_paginated(
-    channel_ids: set[ChannelID],
+    channel_ids: set[NewsChannelID],
     page: int,
     items_per_page: int,
     *,
@@ -330,21 +337,25 @@ def get_headlines_paginated(
 ) -> Pagination:
     """Return the headlines to show on the specified page."""
     items_stmt = (
-        select(DbItem)
-        .filter(DbItem.channel_id.in_(channel_ids))
+        select(DbNewsItem)
+        .filter(DbNewsItem.channel_id.in_(channel_ids))
         .options(
-            db.joinedload(DbItem.current_version_association).joinedload(
-                DbCurrentItemVersionAssociation.version
+            db.joinedload(DbNewsItem.current_version_association).joinedload(
+                DbCurrentNewsItemVersionAssociation.version
             )
         )
-        .order_by(DbItem.published_at.desc())
+        .order_by(DbNewsItem.published_at.desc())
     )
 
     count_stmt = _get_count_stmt(channel_ids)
 
     if published_only:
-        items_stmt = items_stmt.filter(DbItem.published_at <= datetime.utcnow())
-        count_stmt = count_stmt.filter(DbItem.published_at <= datetime.utcnow())
+        items_stmt = items_stmt.filter(
+            DbNewsItem.published_at <= datetime.utcnow()
+        )
+        count_stmt = count_stmt.filter(
+            DbNewsItem.published_at <= datetime.utcnow()
+        )
 
     return paginate(
         items_stmt,
@@ -358,95 +369,95 @@ def get_headlines_paginated(
 
 
 def get_recent_headlines(
-    channel_ids: frozenset[ChannelID] | set[ChannelID], limit: int
-) -> list[Headline]:
+    channel_ids: frozenset[NewsChannelID] | set[NewsChannelID], limit: int
+) -> list[NewsHeadline]:
     """Return the most recent headlines."""
     db_items = db.session.scalars(
-        select(DbItem)
-        .filter(DbItem.channel_id.in_(channel_ids))
+        select(DbNewsItem)
+        .filter(DbNewsItem.channel_id.in_(channel_ids))
         .options(
-            db.joinedload(DbItem.current_version_association).joinedload(
-                DbCurrentItemVersionAssociation.version
+            db.joinedload(DbNewsItem.current_version_association).joinedload(
+                DbCurrentNewsItemVersionAssociation.version
             )
         )
-        .filter(DbItem.published_at <= datetime.utcnow())
-        .order_by(DbItem.published_at.desc())
+        .filter(DbNewsItem.published_at <= datetime.utcnow())
+        .order_by(DbNewsItem.published_at.desc())
         .limit(limit)
     ).all()
 
     return [_db_entity_to_headline(db_item) for db_item in db_items]
 
 
-def _get_items_stmt(channel_ids: set[ChannelID]) -> Select:
+def _get_items_stmt(channel_ids: set[NewsChannelID]) -> Select:
     return (
-        select(DbItem)
-        .filter(DbItem.channel_id.in_(channel_ids))
+        select(DbNewsItem)
+        .filter(DbNewsItem.channel_id.in_(channel_ids))
         .options(
-            db.joinedload(DbItem.channel),
-            db.joinedload(DbItem.current_version_association).joinedload(
-                DbCurrentItemVersionAssociation.version
+            db.joinedload(DbNewsItem.channel),
+            db.joinedload(DbNewsItem.current_version_association).joinedload(
+                DbCurrentNewsItemVersionAssociation.version
             ),
-            db.joinedload(DbItem.images),
+            db.joinedload(DbNewsItem.images),
         )
-        .order_by(DbItem.published_at.desc())
+        .order_by(DbNewsItem.published_at.desc())
     )
 
 
-def _get_count_stmt(channel_ids: set[ChannelID]) -> Select:
-    return select(db.func.count(DbItem.id)).filter(
-        DbItem.channel_id.in_(channel_ids)
+def _get_count_stmt(channel_ids: set[NewsChannelID]) -> Select:
+    return select(db.func.count(DbNewsItem.id)).filter(
+        DbNewsItem.channel_id.in_(channel_ids)
     )
 
 
-def get_item_versions(item_id: ItemID) -> list[DbItemVersion]:
+def get_item_versions(item_id: NewsItemID) -> list[DbNewsItemVersion]:
     """Return all item versions, sorted from most recent to oldest."""
     return db.session.scalars(
-        select(DbItemVersion)
+        select(DbNewsItemVersion)
         .filter_by(item_id=item_id)
-        .order_by(DbItemVersion.created_at.desc())
+        .order_by(DbNewsItemVersion.created_at.desc())
     ).all()
 
 
-def get_current_item_version(item_id: ItemID) -> DbItemVersion:
+def get_current_item_version(item_id: NewsItemID) -> DbNewsItemVersion:
     """Return the item's current version."""
     db_item = _get_db_item(item_id)
 
     return db_item.current_version
 
 
-def find_item_version(version_id: ItemVersionID) -> DbItemVersion:
+def find_item_version(version_id: NewsItemVersionID) -> DbNewsItemVersion:
     """Return the item version with that ID, or `None` if not found."""
-    return db.session.get(DbItemVersion, version_id)
+    return db.session.get(DbNewsItemVersion, version_id)
 
 
-def has_channel_items(channel_id: ChannelID) -> bool:
+def has_channel_items(channel_id: NewsChannelID) -> bool:
     """Return `True` if the channel contains items."""
     return db.session.scalar(
         select(
-            select(DbItem)
-            .join(DbChannel)
-            .filter(DbChannel.id == channel_id)
+            select(DbNewsItem)
+            .join(DbNewsChannel)
+            .filter(DbNewsChannel.id == channel_id)
             .exists()
         )
     )
 
 
-def get_item_count_by_channel_id() -> dict[ChannelID, int]:
+def get_item_count_by_channel_id() -> dict[NewsChannelID, int]:
     """Return news item count (including 0) per channel, indexed by
     channel ID.
     """
     channel_ids_and_item_counts = db.session.execute(
-        select(DbChannel.id, db.func.count(DbItem.id))
-        .outerjoin(DbItem)
-        .group_by(DbChannel.id)
+        select(DbNewsChannel.id, db.func.count(DbNewsItem.id))
+        .outerjoin(DbNewsItem)
+        .group_by(DbNewsChannel.id)
     ).all()
 
     return dict(channel_ids_and_item_counts)
 
 
 def _db_entity_to_item(
-    db_item: DbItem, *, render_body: Optional[bool] = False
-) -> Item:
+    db_item: DbNewsItem, *, render_body: Optional[bool] = False
+) -> NewsItem:
     channel = news_channel_service._db_entity_to_channel(db_item.channel)
 
     image_url_path = _assemble_image_url_path(db_item)
@@ -455,7 +466,7 @@ def _db_entity_to_item(
         for image in db_item.images
     ]
 
-    item = Item(
+    item = NewsItem(
         id=db_item.id,
         channel=channel,
         slug=db_item.slug,
@@ -476,7 +487,7 @@ def _db_entity_to_item(
     return item
 
 
-def _assemble_image_url_path(db_item: DbItem) -> Optional[str]:
+def _assemble_image_url_path(db_item: DbNewsItem) -> Optional[str]:
     url_path = db_item.current_version.image_url_path
 
     if not url_path:
@@ -485,7 +496,7 @@ def _assemble_image_url_path(db_item: DbItem) -> Optional[str]:
     return f'/data/global/news_channels/{db_item.channel_id}/{url_path}'
 
 
-def _render_body(item: Item) -> Optional[str]:
+def _render_body(item: NewsItem) -> Optional[str]:
     """Render body text to HTML."""
     try:
         return news_html_service.render_body(item, item.body, item.body_format)
@@ -493,8 +504,8 @@ def _render_body(item: Item) -> Optional[str]:
         return None  # Not the best error indicator.
 
 
-def _db_entity_to_headline(db_item: DbItem) -> Headline:
-    return Headline(
+def _db_entity_to_headline(db_item: DbNewsItem) -> NewsHeadline:
+    return NewsHeadline(
         slug=db_item.slug,
         published_at=db_item.published_at,
         published=db_item.published_at is not None,

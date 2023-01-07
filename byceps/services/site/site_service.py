@@ -18,7 +18,7 @@ from ...typing import BrandID, PartyID
 from ..board.transfer.models import BoardID
 from ..brand import brand_service
 from ..news import news_channel_service
-from ..news.transfer.models import ChannelID as NewsChannelID
+from ..news.transfer.models import NewsChannelID
 from ..shop.storefront.transfer.models import StorefrontID
 
 from .dbmodels.site import DbSite

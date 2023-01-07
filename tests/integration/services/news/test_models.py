@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.news import news_item_service
-from byceps.services.news.transfer.models import BodyFormat, Channel
+from byceps.services.news.transfer.models import BodyFormat, NewsChannel
 
 
 @pytest.fixture(scope='module')
@@ -20,12 +20,12 @@ def brand(make_brand):
 
 
 @pytest.fixture
-def channel(brand, make_news_channel) -> Channel:
+def channel(brand, make_news_channel) -> NewsChannel:
     return make_news_channel(brand.id)
 
 
 @pytest.fixture
-def news_item_with_image(channel: Channel, editor):
+def news_item_with_image(channel: NewsChannel, editor):
     item = create_item(
         channel.id,
         'with-image',
@@ -39,7 +39,7 @@ def news_item_with_image(channel: Channel, editor):
 
 
 @pytest.fixture
-def news_item_without_image(channel: Channel, editor):
+def news_item_without_image(channel: NewsChannel, editor):
     item = create_item(channel.id, 'without-image', editor.id)
 
     yield item

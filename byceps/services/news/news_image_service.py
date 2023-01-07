@@ -19,9 +19,9 @@ from ...util.image.models import Dimensions, ImageType
 from ..image import image_service
 from ..user import user_service
 
-from .dbmodels.image import DbImage
+from .dbmodels.image import DbNewsImage
 from . import news_item_service
-from .transfer.models import ChannelID, Image, ImageID, ItemID
+from .transfer.models import NewsChannelID, NewsImage, NewsImageID, NewsItemID
 
 
 ALLOWED_IMAGE_TYPES = frozenset(
@@ -39,13 +39,13 @@ MAXIMUM_DIMENSIONS = Dimensions(2560, 1440)
 
 def create_image(
     creator_id: UserID,
-    item_id: ItemID,
+    item_id: NewsItemID,
     stream: BinaryIO,
     *,
     alt_text: Optional[str] = None,
     caption: Optional[str] = None,
     attribution: Optional[str] = None,
-) -> Image:
+) -> NewsImage:
     """Create an image for a news item."""
     creator = user_service.find_active_user(creator_id)
     if creator is None:
@@ -62,11 +62,11 @@ def create_image(
         image_dimensions = image_service.determine_dimensions(stream)
         _check_image_dimensions(image_dimensions)
 
-    image_id = ImageID(generate_uuid())
+    image_id = NewsImageID(generate_uuid())
     number = _get_next_available_number(item.id)
     filename = f'{image_id}.{image_type.name}'
 
-    db_image = DbImage(
+    db_image = DbNewsImage(
         image_id,
         creator_id,
         item.id,
@@ -104,16 +104,16 @@ def _check_image_dimensions(image_dimensions: Dimensions) -> None:
         )
 
 
-def _find_highest_number(item_id: ItemID) -> Optional[int]:
+def _find_highest_number(item_id: NewsItemID) -> Optional[int]:
     """Return the highest image number for that item, or `None` if the
     item has no images.
     """
     return db.session.scalar(
-        select(db.func.max(DbImage.number)).filter_by(item_id=item_id)
+        select(db.func.max(DbNewsImage.number)).filter_by(item_id=item_id)
     )
 
 
-def _get_next_available_number(item_id: ItemID) -> int:
+def _get_next_available_number(item_id: NewsItemID) -> int:
     """Return the next available image number for that item."""
     highest_number = _find_highest_number(item_id)
 
@@ -124,12 +124,12 @@ def _get_next_available_number(item_id: ItemID) -> int:
 
 
 def update_image(
-    image_id: ImageID,
+    image_id: NewsImageID,
     *,
     alt_text: Optional[str] = None,
     caption: Optional[str] = None,
     attribution: Optional[str] = None,
-) -> Image:
+) -> NewsImage:
     """Update a news image."""
     db_image = _find_db_image(image_id)
 
@@ -145,7 +145,7 @@ def update_image(
     return _db_entity_to_image(db_image, db_image.item.channel_id)
 
 
-def find_image(image_id: ImageID) -> Optional[Image]:
+def find_image(image_id: NewsImageID) -> Optional[NewsImage]:
     """Return the image with that id, or `None` if not found."""
     db_image = _find_db_image(image_id)
 
@@ -155,19 +155,21 @@ def find_image(image_id: ImageID) -> Optional[Image]:
     return _db_entity_to_image(db_image, db_image.item.channel_id)
 
 
-def _find_db_image(image_id: ImageID) -> Optional[DbImage]:
+def _find_db_image(image_id: NewsImageID) -> Optional[DbNewsImage]:
     """Return the image with that id, or `None` if not found."""
     return db.session.scalars(
-        select(DbImage)
-        .filter(DbImage.id == image_id)
-        .options(db.joinedload(DbImage.item).load_only('channel_id'))
+        select(DbNewsImage)
+        .filter(DbNewsImage.id == image_id)
+        .options(db.joinedload(DbNewsImage.item).load_only('channel_id'))
     ).one_or_none()
 
 
-def _db_entity_to_image(db_image: DbImage, channel_id: ChannelID) -> Image:
+def _db_entity_to_image(
+    db_image: DbNewsImage, channel_id: NewsChannelID
+) -> NewsImage:
     url_path = f'/data/global/news_channels/{channel_id}/{db_image.filename}'
 
-    return Image(
+    return NewsImage(
         id=db_image.id,
         created_at=db_image.created_at,
         creator_id=db_image.creator_id,

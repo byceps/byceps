@@ -19,7 +19,7 @@ from ....services.news import (
     news_image_service,
     news_item_service,
 )
-from ....services.news.transfer.models import Channel
+from ....services.news.transfer.models import NewsChannel
 from ....services.site import site_service
 from ....services.text_diff import text_diff_service
 from ....services.user import user_service
@@ -711,7 +711,7 @@ def _get_brand_or_404(brand_id):
     return brand
 
 
-def _get_channel_or_404(channel_id) -> Channel:
+def _get_channel_or_404(channel_id) -> NewsChannel:
     channel = news_channel_service.find_channel(channel_id)
 
     if channel is None:

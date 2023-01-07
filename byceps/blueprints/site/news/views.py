@@ -12,7 +12,7 @@ from typing import Optional
 from flask import abort, g
 
 from ....services.news import news_item_service
-from ....services.news.transfer.models import ChannelID, Item
+from ....services.news.transfer.models import NewsChannelID, NewsItem
 from ....services.site import site_service, site_setting_service
 from ....services.site.transfer.models import SiteID
 from ....util.authorization import has_current_user_permission
@@ -89,7 +89,7 @@ def view(slug):
     }
 
 
-def _get_channel_ids() -> frozenset[ChannelID] | set[ChannelID]:
+def _get_channel_ids() -> frozenset[NewsChannelID] | set[NewsChannelID]:
     site = site_service.get_site(g.site_id)
 
     if not site.news_channel_ids:
@@ -113,7 +113,7 @@ def _may_current_user_view_drafts() -> bool:
     return has_current_user_permission('news_item.view_draft')
 
 
-def _get_external_url(item: Item) -> Optional[str]:
+def _get_external_url(item: NewsItem) -> Optional[str]:
     announcement_site_id = item.channel.announcement_site_id
     if announcement_site_id is None:
         return None

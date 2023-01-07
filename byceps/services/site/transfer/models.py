@@ -13,7 +13,7 @@ from ....typing import BrandID, PartyID
 
 from ...board.transfer.models import BoardID
 from ...brand.transfer.models import Brand
-from ...news.transfer.models import ChannelID as NewsChannelID
+from ...news.transfer.models import NewsChannelID
 from ...shop.storefront.transfer.models import StorefrontID
 
 

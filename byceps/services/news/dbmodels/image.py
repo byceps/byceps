@@ -13,12 +13,12 @@ from ....database import db
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ..transfer.models import ImageID, ItemID
+from ..transfer.models import NewsImageID, NewsItemID
 
-from .item import DbItem
+from .item import DbNewsItem
 
 
-class DbImage(db.Model):
+class DbNewsImage(db.Model):
     """An image to illustrate a news item."""
 
     __tablename__ = 'news_images'
@@ -32,7 +32,7 @@ class DbImage(db.Model):
     item_id = db.Column(
         db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False
     )
-    item = db.relationship(DbItem, backref='images')
+    item = db.relationship(DbNewsItem, backref='images')
     number = db.Column(db.Integer, nullable=False)
     filename = db.Column(db.UnicodeText, nullable=False)
     alt_text = db.Column(db.UnicodeText, nullable=True)
@@ -41,9 +41,9 @@ class DbImage(db.Model):
 
     def __init__(
         self,
-        image_id: ImageID,
+        image_id: NewsImageID,
         creator_id: UserID,
-        item_id: ItemID,
+        item_id: NewsItemID,
         number: int,
         filename: str,
         *,
