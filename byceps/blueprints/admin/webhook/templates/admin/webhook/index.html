@@ -22,7 +22,7 @@
 
   {%- if webhooks %}
     {%- for webhook in webhooks %}
-  <div class="box" style="border-left: {{ '#55cc00' if webhook.enabled else '#aaaaaa' }} solid 0.25rem;">
+  <div class="box box--marked {{ 'color-success' if webhook.enabled else 'color-disabled' }}">
 
     <div class="row row--space-between">
       <div>

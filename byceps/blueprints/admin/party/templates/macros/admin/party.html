@@ -3,7 +3,7 @@
 
 
 {%- macro render_party(party, days, ticket_sale_stats, show_brand_avatar=True) %}
-  <div class="box" style="border-left: {{ '#ff2222' if party.canceled else ('#aaaaaa' if party.archived else '#55cc00') }} solid 0.25rem;">
+  <div class="box box--marked {{ 'color-danger' if party.canceled else ('color-disabled' if party.archived else 'color-success') }}">
     <div class="row row--space-between">
 
       <div style="width: 40%;">

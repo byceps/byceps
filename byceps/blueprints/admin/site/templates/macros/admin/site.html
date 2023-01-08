@@ -8,7 +8,7 @@
 
 
 {%- macro render_site(site, party_titles_by_id, storefronts_by_id, show_brand_avatar=True) %}
-  <div class="box" style="border-left: {{ '#55cc00' if site.enabled else '#aaaaaa' }} solid 0.25rem;">
+  <div class="box box--marked {{ 'color-success' if site.enabled else 'color-disabled' }}">
     <div class="row row--space-between">
 
       <div style="min-width: 65%;">

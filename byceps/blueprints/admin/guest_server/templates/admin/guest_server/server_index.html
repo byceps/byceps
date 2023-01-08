@@ -25,7 +25,7 @@
 
   {%- if servers %}
     {%- for server in servers|sort(attribute='created_at', reverse=True) %}
-  <a href="{{ url_for('.server_view', server_id=server.id) }}" class="box" style="border-left: {{ '#55cc00' if server.approved else '#ffcc11' }} solid 0.25rem;">
+  <a href="{{ url_for('.server_view', server_id=server.id) }}" class="box box--marked {{ 'color-success' if server.approved else 'color-warning' }}">
 
     <div class="row">
       <div style="flex-basis: 33%;">

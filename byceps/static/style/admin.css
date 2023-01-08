@@ -100,6 +100,30 @@ a.box:hover {
   border-color: #bbbbbb;
 }
 
+.box--marked {
+  border-left: var(--box-marker-color, #cccccc) solid 0.25rem !important;
+}
+
+.box--marked.color-danger {
+  --box-marker-color: var(--color-danger);
+}
+
+.box--marked.color-disabled {
+  --box-marker-color: var(--color-disabled);
+}
+
+.box--marked.color-info {
+  --box-marker-color: var(--color-info);
+}
+
+.box--marked.color-success {
+  --box-marker-color: var(--color-success);
+}
+
+.box--marked.color-warning {
+  --box-marker-color: var(--color-warning);
+}
+
 
 /* header */
 
