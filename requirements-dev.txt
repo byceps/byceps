@@ -4,6 +4,7 @@ black==22.12.0
 Flask-DebugToolbar==0.13.1
 flask-shell-ipython==0.4.1
 mypy==0.991
+ruff>=0.0.215
 sqlalchemy2-stubs==0.0.2a22
 types-freezegun==1.1.10
 types-redis==4.4.0.0
