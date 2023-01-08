@@ -291,17 +291,21 @@ a.box:hover {
   user-select: none;
 }
 
-.main-tab .icon {
-  color: #aaaaaa;
-  margin-right: 0.2rem;
-}
-
 .main-tab:hover {
   border-color: #aaaaaa;
 }
 
 .main-tab--current {
   border-color: #1199ff;
+}
+
+.main-tab .row {
+  column-gap: 0.2rem;
+}
+
+.main-tab .icon {
+  color: #aaaaaa;
+  margin-right: 0.2rem;
 }
 
 .main-tab--current .icon {
