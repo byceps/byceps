@@ -7,7 +7,7 @@
     <div class="row row--space-between">
 
       <div style="width: 40%;">
-        <div class="row">
+        <div class="row" style="margin-bottom: 0.5rem;">
           {%- if show_brand_avatar %}
           <div>
             <div style="margin-right: -0.25rem;">{{ render_brand_avatar(party.brand, '40') }}</div>
@@ -20,6 +20,14 @@
             </a>
           </div>
         </div>
+
+        {%- if party.canceled %}
+        {{ render_tag(pgettext('party', 'canceled'), class='color-danger', icon='disabled') }}
+        {%- endif %}
+
+        {%- if party.archived %}
+        {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
+        {%- endif %}
       </div>
 
       <div style="width: 30%;">
@@ -47,14 +55,9 @@
         {%- if party.ticket_management_enabled %}
         {{ render_tag(_('Ticket management') ~ ' ' ~ _('open'), class='color-success', icon='ticket') }}<br>
         {%- endif %}
+
         {%- if party.seat_management_enabled %}
         {{ render_tag(_('Seat management') ~ ' ' ~ _('open'), class='color-success', icon='seating-area') }}<br>
-        {%- endif %}
-        {%- if party.canceled %}
-        {{ render_tag(pgettext('party', 'canceled'), class='color-danger', icon='disabled') }}
-        {%- endif %}
-        {%- if party.archived %}
-        {{ render_tag(_('archived'), class='color-disabled', icon='archived') }}
         {%- endif %}
       </div>
 
