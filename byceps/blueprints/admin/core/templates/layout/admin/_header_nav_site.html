@@ -25,7 +25,7 @@
       _('Navigation'),
       id='site_navigation_admin',
       required_permission='site.view',
-      icon='site')
+      icon='navigation')
     .add_item(
       url_for('shop_storefront_admin.view', storefront_id=site.storefront_id) if site.storefront_id else '',
       _('Storefront'),
