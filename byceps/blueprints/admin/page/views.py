@@ -30,7 +30,7 @@ from ....util.views import (
 
 from ...site.page.templating import build_template_context
 
-from .forms import CreateForm, UpdateForm
+from .forms import CreateForm, SetNavMenuForm, UpdateForm
 
 
 blueprint = create_blueprint('page_admin', __name__)
@@ -327,6 +327,48 @@ def delete(page_id):
     page_signals.page_deleted.send(None, event=event)
 
     return url_for('.index_for_site', site_id=site_id)
+
+
+@blueprint.get('/pages/<uuid:page_id>/set_nav_menu')
+@permission_required('page.update')
+@templated
+def set_nav_menu_form(page_id, erroneous_form=None):
+    """Show form to set navigation menu for a page."""
+    page = _get_page(page_id)
+
+    site = site_service.get_site(page.site_id)
+
+    form = erroneous_form if erroneous_form else SetNavMenuForm(obj=page)
+    form.set_nav_menu_choices(site.id)
+
+    return {
+        'form': form,
+        'page': page,
+        'site': site,
+    }
+
+
+@blueprint.post('/pages/<uuid:page_id>/set_nav_menu')
+@permission_required('page.update')
+def set_nav_menu(page_id):
+    """Set navigation menu for a page."""
+    page = _get_page(page_id)
+
+    site = site_service.get_site(page.site_id)
+
+    form = SetNavMenuForm(request.form)
+    form.set_nav_menu_choices(site.id)
+
+    if not form.validate():
+        return set_nav_menu_form(page.id, form)
+
+    nav_menu_id = form.nav_menu_id.data or None
+
+    page_service.set_nav_menu_id(page.id, nav_menu_id)
+
+    flash_success(gettext('Page has been updated.'))
+
+    return redirect_to('.view_current_version', page_id=page.id)
 
 
 def _get_site(site_id) -> Site:

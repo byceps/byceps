@@ -14,6 +14,7 @@ from sqlalchemy import delete, select
 from ...database import db
 from ...events.page import PageCreated, PageDeleted, PageUpdated
 from ...services.site.transfer.models import SiteID
+from ...services.site_navigation.transfer.models import NavMenuID
 from ...services.user import user_service
 from ...services.user.transfer.models import User
 from ...typing import UserID
@@ -157,6 +158,14 @@ def delete_page(
     )
 
     return True, event
+
+
+def set_nav_menu_id(page_id: PageID, nav_menu_id: Optional[NavMenuID]) -> None:
+    """Set navigation menu for page."""
+    db_page = _get_db_page(page_id)
+
+    db_page.nav_menu_id = nav_menu_id
+    db.session.commit()
 
 
 def find_page(page_id: PageID) -> Optional[Page]:

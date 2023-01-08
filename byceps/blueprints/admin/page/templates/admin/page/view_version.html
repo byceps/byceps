@@ -8,30 +8,24 @@
 
   <div class="row row--space-between">
     <div>
-
       <h1>{{ page.name }}</h1>
-
     </div>
+    {%- if has_current_user_permission('page.update') -%}
     <div class="column--align-bottom">
-
       <div class="button-row button-row--right">
-
-        {%- if has_current_user_permission('page.update') -%}
         <a class="button" href="{{ url_for('.update_form', page_id=page.id) }}">{{ render_icon('edit') }} <span>{{ _('Edit') }}</span></a>
-        {%- endif -%}
-
-        {%- if has_current_user_permission('page.delete') %}
         <div class="dropdown">
           <button class="dropdown-toggle button"><span>{{ render_icon('chevron-down') }}</span></button>
           <ol class="dropdown-menu dropdown-menu--right">
+            <li><a class="dropdown-item" href="{{ url_for('.set_nav_menu', page_id=page.id) }}">{{ render_icon('navigation') }} <span>{{ _('Set navigation menu') }}</span></a></li>
+            {%- if has_current_user_permission('page.delete') %}
             <li><a class="dropdown-item" data-action="page-delete" href="{{ url_for('.delete', page_id=page.id) }}">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
+            {%- endif %}
           </ol>
         </div>
-        {%- endif %}
-
       </div>
-
     </div>
+    {%- endif -%}
   </div>
 
   <div class="box">

@@ -794,6 +794,7 @@ msgstr "keine Beschreibung vorhanden"
 #: byceps/blueprints/admin/guest_server/templates/admin/guest_server/server_view.html:104
 #: byceps/blueprints/admin/guest_server/templates/macros/admin/guest_server.html:8
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:191
+#: byceps/blueprints/admin/page/forms.py:51
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:163
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:186
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_order_list.html:50
@@ -896,7 +897,7 @@ msgstr "Slug"
 #: byceps/blueprints/admin/news/templates/admin/news/item_compare_versions.html:15
 #: byceps/blueprints/admin/newsletter/templates/admin/newsletter/index.html:14
 #: byceps/blueprints/admin/orga_team/forms.py:18
-#: byceps/blueprints/admin/page/forms.py:24
+#: byceps/blueprints/admin/page/forms.py:26
 #: byceps/blueprints/admin/page/templates/admin/page/compare_versions.html:18
 #: byceps/blueprints/admin/party/forms.py:26
 #: byceps/blueprints/admin/seating/forms.py:22
@@ -917,7 +918,7 @@ msgstr "Titel"
 #: byceps/blueprints/admin/board/forms.py:28
 #: byceps/blueprints/admin/news/forms.py:100
 #: byceps/blueprints/admin/news/templates/admin/news/item_compare_versions.html:20
-#: byceps/blueprints/admin/page/forms.py:26
+#: byceps/blueprints/admin/page/forms.py:28
 #: byceps/blueprints/admin/page/templates/admin/page/compare_versions.html:28
 #: byceps/blueprints/admin/shop/order/forms.py:19
 #: byceps/blueprints/admin/snippet/forms.py:22
@@ -1085,7 +1086,7 @@ msgstr "Position"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:49
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:48
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:52
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:46
 #: byceps/blueprints/admin/site/navigation/forms.py:21
 #: byceps/blueprints/admin/site/navigation/forms.py:48
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:38
@@ -1105,7 +1106,7 @@ msgstr "versteckt"
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:43
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:163
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:66
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:20
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:16
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:31
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:41
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:15
@@ -1150,7 +1151,7 @@ msgstr "Verstecken"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:69
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:59
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:27
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:22
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:33
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:27
 #: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:22
@@ -1200,6 +1201,7 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/orga/templates/admin/orga/create_orgaflag_form.html:21
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_create_form.html:24
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/membership_update_form.html:30
+#: byceps/blueprints/admin/page/templates/admin/page/set_nav_menu_form.html:19
 #: byceps/blueprints/admin/page/templates/admin/page/update_form.html:24
 #: byceps/blueprints/admin/party/templates/admin/party/update_form.html:47
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/update_form.html:55
@@ -1301,7 +1303,7 @@ msgstr "Marke erstellen"
 #: byceps/blueprints/admin/brand/templates/admin/brand/index.html:29
 #: byceps/blueprints/admin/brand/templates/admin/brand/view.html:42
 #: byceps/blueprints/admin/consent/templates/admin/consent/index.html:27
-#: byceps/blueprints/admin/page/forms.py:18
+#: byceps/blueprints/admin/page/forms.py:20
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:28
 #: byceps/blueprints/admin/party/templates/admin/party/view.html:94
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/_view_orderer.html:11
@@ -1972,7 +1974,7 @@ msgstr "Benutzeranmeldung"
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:57
 #: byceps/blueprints/admin/dashboard/templates/admin/dashboard/view_site.html:69
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:51
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:55
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:49
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:62
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:69
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:78
@@ -2211,7 +2213,7 @@ msgstr "Wartung"
 
 #: byceps/blueprints/admin/language/forms.py:17
 #: byceps/blueprints/admin/language/templates/admin/language/index.html:28
-#: byceps/blueprints/admin/page/forms.py:20
+#: byceps/blueprints/admin/page/forms.py:22
 #: byceps/blueprints/admin/site/navigation/forms.py:19
 #: byceps/blueprints/admin/snippet/forms.py:20
 msgid "Language code"
@@ -2234,7 +2236,7 @@ msgstr "Sprache hinzufügen"
 
 #: byceps/blueprints/admin/language/templates/admin/language/index.html:29
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:29
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:41
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:35
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:27
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:28
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:30
@@ -2590,7 +2592,7 @@ msgstr "Bild festgelegt"
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:84
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:90
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:57
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:76
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:70
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:43
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:59
 msgid "View change history"
@@ -2601,7 +2603,7 @@ msgstr "Änderungshistorie ansehen"
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:89
 #: byceps/blueprints/admin/page/templates/admin/page/history.html:22
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:33
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:75
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:69
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/history.html:22
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:32
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:58
@@ -2743,31 +2745,31 @@ msgid "Unpublish"
 msgstr "Veröffentlichung zurückziehen"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:74
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:62
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:56
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:45
 msgid "Version"
 msgstr "Version"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:78
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:66
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:60
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:49
 msgid "current"
 msgstr "aktuell"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:80
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:68
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:62
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:51
 msgid "outdated"
 msgstr "veraltet"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:81
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:69
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:63
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:52
 msgid "View current version"
 msgstr "Aktuelle Version ansehen"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:87
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:73
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:67
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:56
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/index_bundle_for_party.html:19
 #: byceps/blueprints/admin/ticketing/templates/admin/ticketing/view_bundle.html:18
@@ -2799,7 +2801,7 @@ msgstr "Als Titelbild verwenden"
 
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:180
 #: byceps/blueprints/admin/news/templates/admin/news/item_view_version.html:195
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:83
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:77
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:64
 msgid "Preview"
 msgstr "Vorschau"
@@ -3225,21 +3227,28 @@ msgstr "Team entfernen?"
 msgid "Remove person from team?"
 msgstr "Person aus Team entfernen?"
 
-#: byceps/blueprints/admin/page/forms.py:22
+#: byceps/blueprints/admin/page/forms.py:24
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:30
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:44
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:38
 msgid "URL path"
 msgstr "URL-Pfad"
 
-#: byceps/blueprints/admin/page/forms.py:25
+#: byceps/blueprints/admin/page/forms.py:27
 msgid "Header"
 msgstr "Seitenkopf"
+
+#: byceps/blueprints/admin/page/forms.py:42
+#: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:31
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:41
+msgid "Navigation menu"
+msgstr "Navigationsmenü"
 
 #: byceps/blueprints/admin/page/views.py:242
 msgid "Page has been created."
 msgstr "Die Seite wurde erstellt."
 
 #: byceps/blueprints/admin/page/views.py:300
+#: byceps/blueprints/admin/page/views.py:369
 msgid "Page has been updated."
 msgstr "Die Seite wurde aktualisiert."
 
@@ -3273,14 +3282,15 @@ msgstr "Versionshistorie"
 msgid "No versions exist."
 msgstr "Es sind keine Versionen vorhanden."
 
-#: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:31
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:47
-msgid "Navigation menu"
-msgstr "Navigationsmenü"
-
 #: byceps/blueprints/admin/page/templates/admin/page/index_for_site.html:75
 msgid "No pages exist for this site."
 msgstr "Es existieren keine Seiten für diese Site."
+
+#: byceps/blueprints/admin/page/templates/admin/page/set_nav_menu_form.html:4
+#: byceps/blueprints/admin/page/templates/admin/page/set_nav_menu_form.html:12
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:20
+msgid "Set navigation menu"
+msgstr "Navigationsmenü festlegen"
 
 #: byceps/blueprints/admin/page/templates/admin/page/update_form.html:4
 #: byceps/blueprints/admin/page/templates/admin/page/update_form.html:12
@@ -3291,7 +3301,7 @@ msgstr "Seite bearbeiten"
 msgid "View page version"
 msgstr "Seiten-Version ansehen"
 
-#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:94
+#: byceps/blueprints/admin/page/templates/admin/page/view_version.html:88
 msgid "Delete page?"
 msgstr "Seite löschen?"
 

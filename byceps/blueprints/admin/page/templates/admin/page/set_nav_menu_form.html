@@ -1,0 +1,22 @@
+{% extends 'layout/admin/page.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set page_title = [_('Set navigation menu'), site.title] %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.view_current_version', page_id=page.id), page.name) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ _('Set navigation menu') }}</h1>
+
+  <form action="{{ url_for('.set_nav_menu', page_id=page.id) }}" method="post">
+    <div class="box">
+      {{ form_field(form.nav_menu_id, autofocus='autofocus') }}
+    </div>
+
+    {{ form_buttons(_('Save')) }}
+  </form>
+
+{%- endblock %}
