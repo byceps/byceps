@@ -35,30 +35,37 @@
   </div>
 
   <div class="box">
+    <div class="row">
+      <div style="flex-basis: 50%;">
 
-    <div class="data-label">{{ _('Version') }}</div>
-    <div class="data-value">
-      {{- version.id -}}
-      {%- if is_current_version %}
-      {{ render_tag(_('current'), class='color-success') }}
-      {%- else %}
-      {{ render_tag(_('outdated'), class='color-warning') }}<br>
-      <a href="{{ url_for('.view_current_version', page_id=page.id) }}">{{ _('View current version') }}</a>
-      {%- endif %}
+        <div class="data-label">{{ _('Language') }}</div>
+        <div class="data-value">{{ page.language_code }}</div>
+
+        <div class="data-label">{{ _('URL path') }}</div>
+        <div class="data-value monospace">{{ page.url_path }}</div>
+
+      </div>
+      <div style="flex-basis: 50%;">
+
+        <div class="data-label">{{ _('Version') }}</div>
+        <div class="data-value">
+          {{- version.id -}}
+          {%- if is_current_version %}
+          {{ render_tag(_('current'), class='color-success') }}
+          {%- else %}
+          {{ render_tag(_('outdated'), class='color-warning') }}<br>
+          <a href="{{ url_for('.view_current_version', page_id=page.id) }}">{{ _('View current version') }}</a>
+          {%- endif %}
+        </div>
+
+        <div class="data-label">{{ _('Created') }}</div>
+        <div class="data-value">
+          {{ version.created_at|datetimeformat }} {{ _('by') }} {{ render_user_avatar_and_name(creator, size=16) }}<br>
+          <a href="{{ url_for('.history', page_id=page.id) }}">{{ render_icon('history') }} {{ _('View change history') }}</a>
+        </div>
+
+      </div>
     </div>
-
-    <div class="data-label">{{ _('Created') }}</div>
-    <div class="data-value">
-      {{ version.created_at|datetimeformat }} {{ _('by') }} {{ render_user_avatar_and_name(creator, size=16) }}<br>
-      <a href="{{ url_for('.history', page_id=page.id) }}">{{ render_icon('history') }} {{ _('View change history') }}</a>
-    </div>
-
-    <div class="data-label">{{ _('Language') }}</div>
-    <div class="data-value">{{ page.language_code }}</div>
-
-    <div class="data-label">{{ _('URL path') }}</div>
-    <div class="data-value monospace">{{ page.url_path }}</div>
-
   </div>
 
   <h2>{{ _('Preview') }}</h2>
