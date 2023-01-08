@@ -1,4 +1,10 @@
 :root {
+  --color-danger: #ff2222;
+  --color-disabled: #aaaaaa;
+  --color-info: #1199ff;
+  --color-success: #55cc00;
+  --color-warning: #ffcc11;
+
   --dimmed-color: #808080;
   --link-color: #0066c6;
 }
@@ -885,50 +891,50 @@ table.user-badges-list td {
 .button.color-danger,
 .notification.color-danger {
   background-color: #ff9999;
-  border-color: #ff2222;
+  border-color: var(--color-danger);
 }
 
 .button.color-info,
 .notification.color-info {
   background-color: #88ccff;
-  border-color: #1199ff;
+  border-color: var(--color-info);
 }
 
 .button.color-success,
 .notification.color-success {
   background-color: #99ee88;
-  border-color: #55cc00;
+  border-color: var(--color-success);
 }
 
 .button.color-warning,
 .notification.color-warning {
   background-color: #ffe777;
-  border-color: #ffcc11;
+  border-color: var(--color-warning);
 }
 
 .progress-bar.color-danger,
 .tag.color-danger {
-  background-color: #ff2222;
+  background-color: var(--color-danger);
 }
 
 .progress-bar.color-disabled,
 .tag.color-disabled {
-  background-color: #aaaaaa;
+  background-color: var(--color-disabled);
 }
 
 .progress-bar.color-info,
 .tag.color-info {
-  background-color: #1199ff;
+  background-color: var(--color-info);
 }
 
 .progress-bar.color-success,
 .tag.color-success {
-  background-color: #55cc00;
+  background-color: var(--color-success);
 }
 
 .progress-bar.color-warning,
 .tag.color-warning {
-  background-color: #ffcc11;
+  background-color: var(--color-warning);
 }
 
 

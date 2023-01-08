@@ -454,7 +454,7 @@ ul.compact {
 /* tags */
 
 .tag.order-open {
-  background-color: #ffcc11 !important;
+  background-color: var(--color-warning) !important;
 }
 
 .tag.order-canceled-before-paid {
@@ -470,7 +470,7 @@ ul.compact {
 }
 
 .tag.order-waiting-for-shipping {
-  background-color: #1199ff !important;
+  background-color: var(--color-info) !important;
 }
 
 h1 .tag {
