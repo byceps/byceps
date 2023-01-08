@@ -2555,7 +2555,9 @@ msgstr "Newskanal bearbeiten"
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:68
 #: byceps/blueprints/admin/site/templates/macros/admin/site.html:72
 msgid "News channel"
-msgstr "Newskanal"
+msgid_plural "News channels"
+msgstr[0] "Newskanal"
+msgstr[1] "Newskanäle"
 
 #: byceps/blueprints/admin/news/templates/admin/news/channel_view.html:51
 #: byceps/blueprints/admin/news/templates/admin/news/item_create_form.html:6

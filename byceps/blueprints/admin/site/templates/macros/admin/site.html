@@ -10,8 +10,8 @@
 {%- macro render_site(site, party_titles_by_id, storefronts_by_id, show_brand_avatar=True) %}
   <div class="box box--marked {{ 'color-success' if site.enabled else 'color-disabled' }}">
     <div class="row row--space-between">
+      <div style="min-width: 40%;">
 
-      <div style="min-width: 65%;">
         <div class="row">
           {%- if show_brand_avatar %}
           <div>
@@ -51,37 +51,45 @@
           {{ render_icon_tag('archived', _('Site') ~ ' ' ~ _('archived'), 'color-disabled') }}
           {%- endif %}
         </div>
-      </div>
 
-      <div style="min-width: 35%;">
-        <div>
-          {{ render_icon('date', title=_('Party')) }}
+      </div>
+      <div style="min-width: 30%;">
+
+        <div class="data-label">{{ render_icon('date') }} {{ _('Party') }}</div>
+        <div class="data-value">
           {% if site.party_id -%}
           <a href="{{ url_for('admin_dashboard.view_party', party_id=site.party_id) }}" class="disguised">{{ party_titles_by_id[site.party_id] }}</a>
           {%- else -%}
           {{ _('no party')|dim }}
           {%- endif -%}
         </div>
-        <div>
+
+        <div class="data-label">{{ render_icon('news') }} {{ ngettext('News channel', 'News channels', site.news_channel_ids|length) }}</div>
+        <div class="data-value">
           {%- if site.news_channel_ids %}
             {%- for channel_id in site.news_channel_ids|sort -%}
-            {{ render_icon('news', title=_('News channel')) }} <a href="{{ url_for('news_admin.channel_view', channel_id=channel_id) }}" class="disguised">{{ channel_id }}</a>
+            <a href="{{ url_for('news_admin.channel_view', channel_id=channel_id) }}" class="disguised">{{ channel_id }}</a>
               {%- if not loop.last %}<br>{% endif %}
             {%- endfor %}
           {%- else %}
-          {{ render_icon('news', title=_('News channel')) }} {{ _('no news channels')|dim }}
+          {{ _('no news channels')|dim }}
           {%- endif %}
         </div>
-        <div>
-          {{ render_icon('board', title=_('Board')) }}
+
+      </div>
+      <div style="min-width: 30%;">
+
+        <div class="data-label">{{ render_icon('board') }} {{ _('Board') }}</div>
+        <div class="data-value">
           {% if site.board_id -%}
           <a href="{{ url_for('board_admin.board_view', board_id=site.board_id) }}" class="disguised">{{ site.board_id }}</a>
           {%- else -%}
           {{ _('no board')|dim }}
           {%- endif -%}
         </div>
-        <div>
-          {{ render_icon('shop', title=_('Storefront')) }}
+
+        <div class="data-label">{{ render_icon('shop') }} {{ _('Storefront') }}</div>
+        <div class="data-value">
           {% if site.storefront_id -%}
             {%- with storefront = storefronts_by_id[site.storefront_id] %}
           <a href="{{ url_for('shop_storefront_admin.view', storefront_id=storefront.id) }}" class="disguised">{{ storefront.id }}</a>
@@ -90,8 +98,8 @@
           {{ _('no storefront')|dim }}
           {%- endif -%}
         </div>
-      </div>
 
+      </div>
     </div>{# .row #}
   </div>{# .box #}
 {%- endmacro %}
