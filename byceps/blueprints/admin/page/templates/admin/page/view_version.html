@@ -44,6 +44,18 @@
         <div class="data-label">{{ _('URL path') }}</div>
         <div class="data-value monospace">{{ page.url_path }}</div>
 
+        <div class="data-label">{{ _('Navigation menu') }}</div>
+        <div class="data-value">
+        {%- if nav_menu %}
+        <a href="{{ url_for('site_navigation_admin.view', menu_id=nav_menu.id) }}">{{ nav_menu.name }} ({{ nav_menu.language_code }})</a>
+          {%- if nav_menu.hidden %}
+        {{ render_tag(_('hidden'), class='color-disabled', icon='hidden') }}
+          {%- endif %}
+        {%- else %}
+        {{ _('not assigned')|dim }}
+        {%- endif %}
+        </div>
+
       </div>
       <div style="flex-basis: 50%;">
 

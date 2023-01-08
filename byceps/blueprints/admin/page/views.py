@@ -14,6 +14,7 @@ from ....services.page import page_service
 from ....services.page.transfer.models import Page, PageVersion, PageVersionID
 from ....services.site import site_service
 from ....services.site.transfer.models import Site, SiteID
+from ....services.site_navigation import site_navigation_service
 from ....services.text_diff import text_diff_service
 from ....services.user import user_service
 from ....signals import page as page_signals
@@ -79,12 +80,18 @@ def view_version(version_id):
     creator = user_service.get_user(version.creator_id, include_avatar=True)
     is_current_version = page_service.is_current_version(page.id, version.id)
 
+    if page.nav_menu_id:
+        nav_menu = site_navigation_service.get_menu(page.nav_menu_id)
+    else:
+        nav_menu = None
+
     return {
         'page': page,
         'site': site,
         'version': version,
         'creator': creator,
         'is_current_version': is_current_version,
+        'nav_menu': nav_menu,
     }
 
 
