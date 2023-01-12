@@ -23,12 +23,10 @@ BYCEPS distinguishes four scopes:
 
        subgraph cluster_party {
          label="party"
+       }
 
-         subgraph cluster_party {
-           label="site"
-
-           node [color=transparent] "";
-         }
+       subgraph cluster_party {
+         label="site"
        }
      }
    }
@@ -43,9 +41,13 @@ Global
 
 The global scope is the outermost one.
 
-Entities that belong to the global scope include users, roles,
-permissions, user badges, :ref:`brands <scope-brand>`, and optionally
-snippets.
+Entities that belong to the global scope include:
+
+- users
+- roles and permissions
+- user badges
+- :ref:`brands <scope-brand>`
+- global snippets
 
 
 .. _scope-brand:
@@ -57,9 +59,16 @@ A brand is the identity of a series of parties.
 
 Each brand is part of the :ref:`global <scope-global>` scope.
 
-Entities that belong to the brand scope include orga flags, terms of
-service versions, news channels, boards, :ref:`parties <scope-party>`,
-and optionally snippets.
+Entities that belong to the brand scope include:
+
+- email settings
+- orga flags
+- :ref:`parties <scope-party>`
+- :ref:`sites <scope-site>`
+- news channels
+- boards
+- brand-specific snippets
+- terms of service versions
 
 
 .. _scope-party:
@@ -72,8 +81,12 @@ not better situated in the :ref:`site scope <scope-site>`).
 
 Each party belongs to a :ref:`brand <scope-brand>`.
 
-Entities that belong to the party scope include orga teams, shops,
-tickets, seating areas, and :ref:`sites <scope-site>`.
+Entities that belong to the party scope include:
+
+- orga teams
+- shops
+- tickets
+- seating areas
 
 
 .. _scope-site:
@@ -81,8 +94,25 @@ tickets, seating areas, and :ref:`sites <scope-site>`.
 Site
 ----
 
-The site scope is the innermost one.
+The site scope is for entities and settings that belong to a specific
+website.
 
-Each site belongs to a :ref:`party <scope-party>`.
+Each site belongs to a :ref:`brand <scope-brand>`.
 
-Entities that *can* belong to the site scope include snippets.
+Entities that belong to the site scope include:
+
+- server name
+- pages
+- navigation
+- site-specific snippets
+- choice of
+
+  - news channels
+  - forum
+  - storefront
+  - party
+
+- status of
+
+  - user registration
+  - user login
