@@ -46,6 +46,7 @@ Code Status
 ===========
 
 |badge_github-action-test|
+|badge_rtd-build|
 |badge_scrutinizer-ci_coverage|
 |badge_scrutinizer-ci_quality-score|
 |badge_code-climate_maintainability|
@@ -54,6 +55,10 @@ Code Status
 .. |badge_github-action-test| image:: https://img.shields.io/github/actions/workflow/status/byceps/byceps/test.yml?branch=main
    :alt: Build Status
    :target: https://github.com/byceps/byceps/actions/workflows/test.yml
+
+.. |badge_rtd-build| image:: https://readthedocs.org/projects/byceps/badge/?version=latest
+   :alt: Documentation Status
+   :target: https://byceps.readthedocs.io/en/latest/
 
 .. |badge_scrutinizer-ci_coverage| image:: https://scrutinizer-ci.com/g/byceps/byceps/badges/coverage.png?b=main
    :alt: Scrutinizer Code Coverage
