@@ -1,0 +1,17 @@
+# layout: dagre
+
+direction: left
+
+Party: {shape: oval}
+
+Seating: {
+  Area: {shape: oval}
+  Category: {shape: oval}
+  Seat: {shape: oval}
+
+  Seat -> Area
+  Seat -> Category
+}
+
+Seating.Area -> Party
+Seating.Category -> Party

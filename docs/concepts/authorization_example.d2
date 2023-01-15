@@ -1,0 +1,36 @@
+# layout: elk
+
+direction: right
+
+Users: {
+  Alice: {shape: person}
+  Bob: {shape: person}
+  Eve: {shape: person}
+}
+
+Roles: {
+  Guest: {shape: oval}
+  Author: {shape: oval}
+  Moderator: {shape: oval}
+}
+
+Permissions: {
+  View Topic: {shape: oval}
+  Create Topic: {shape: oval}
+  Update Topic: {shape: oval}
+  Hide Topic: {shape: oval}
+}
+
+Users.Alice -> Roles.Guest: has role
+
+Users.Bob -> Roles.Guest: has role
+Users.Bob -> Roles.Author: has role
+
+Users.Eve -> Roles.Guest: has role
+Users.Eve -> Roles.Author: has role
+Users.Eve -> Roles.Moderator: has role
+
+Roles.Guest -> Permissions.View Topic: grants permission
+Roles.Author -> Permissions.Create Topic: grants permission
+Roles.Author -> Permissions.Update Topic: grants permission
+Roles.Moderator -> Permissions.Hide Topic: grants permission

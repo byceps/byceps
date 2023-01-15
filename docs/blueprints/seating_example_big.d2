@@ -1,0 +1,29 @@
+# layout: dagre
+
+direction: right
+
+Categories: {
+  Regular: {shape: oval}
+}
+
+Areas: {
+  Area 1: {
+    Seat Regular: {label: "1200 × Seat Regular"; shape: oval}
+  }
+  Area 2: {
+    Seat Regular: {label: "400 × Seat Regular"; shape: oval}
+    Seat Premium: {label: "150 × Seat Premium"; shape: oval}
+  }
+  Area 3: {
+    Seat Regular: {label: "600 × Seat Regular"; shape: oval}
+    Seat Premium: {label: "250 × Seat Premium"; shape: oval}
+    Seat VIP: {label: "10 × Seat VIP"; shape: oval}
+  }
+}
+
+Areas.Area 1.Seat Regular -> Categories.Regular: has category
+Areas.Area 2.Seat Regular -> Categories.Regular: has category
+Areas.Area 2.Seat Premium -> Categories.Premium: has category
+Areas.Area 3.Seat Regular -> Categories.Regular: has category
+Areas.Area 3.Seat Premium -> Categories.Premium: has category
+Areas.Area 3.Seat VIP -> Categories.VIP: has category
