@@ -5,7 +5,7 @@ Concepts
 .. toctree::
    :maxdepth: 2
 
-   authorization
+   authorization/index
    blueprints
-   scopes
+   scopes/index
    signals
