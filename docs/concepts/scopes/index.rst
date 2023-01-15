@@ -8,28 +8,10 @@ BYCEPS distinguishes four scopes:
 * :ref:`party <scope-party>`
 * :ref:`site <scope-site>`
 
-.. graph:: unnamed
+.. figure:: scopes.png
+   :width: 75%
 
-   color=lightgray
-   fillcolor=white
-   labeljust="l"
-   style=filled
-
-   subgraph cluster_global {
-     label="global"
-
-     subgraph cluster_brand {
-       label="brand"
-
-       subgraph cluster_party {
-         label="party"
-       }
-
-       subgraph cluster_party {
-         label="site"
-       }
-     }
-   }
+   Nesting of scopes
 
 Each entity belongs to exactly one of these scopes.
 

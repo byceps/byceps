@@ -30,7 +30,6 @@ author = 'Jochen Kupperschmidt'
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosectionlabel',
-    'sphinx.ext.graphviz',
 ]
 
 # Add any paths that contain templates here, relative to this directory.

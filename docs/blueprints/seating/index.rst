@@ -12,26 +12,9 @@ seats in a single hall) as well as :ref:`big ones <seating-example-big>`
 Structure
 ---------
 
-.. digraph:: unnamed
+.. figure:: structure.png
 
-   rankdir=BT
-
-   subgraph cluster_seating {
-     color=lightgray
-     fillcolor=lightgray
-     label="Seating"
-     labeljust="l"
-     node [color=white, style=filled]
-     rankdir=LR
-     style=filled
-
-     Seat -> {Area Category}
-   }
-
-   node [color=lightgray, style=filled]
-
-   Area -> Party
-   Category -> Party
+   Relations between entities
 
 Each seat references these two entities:
 
@@ -58,36 +41,9 @@ distinction is made between the seats in it. Thus, a single area as well
 as a single category are sufficient, so every seat belongs to the same
 area and the same category.
 
-.. digraph:: unnamed
+.. figure:: example_small.png
 
-   color=lightgray
-   fillcolor=lightgray
-   labeljust="l"
-   node [color=white, style=filled]
-   rankdir=LR
-   style=filled
-
-   subgraph cluster_categories {
-     label="Categories"
-     node [color=lightgray]
-     style=""
-
-     category_regular [label="Regular"]
-   }
-
-   subgraph cluster_areas {
-     label="Areas"
-
-     subgraph cluster_area1 {
-       label="Area 1"
-
-       seats_area1_regular [label="80 ×\nRegular"]
-
-       seats_area1_regular -> category_regular
-     }
-
-     style=""
-   }
+   Small party example
 
 
 .. _seating-example-big:
@@ -98,57 +54,6 @@ Example: Big Party
 This is a setup for a party that is held in multiple halls and which
 offers seats in multiple price (and feature) ranges.
 
-.. digraph:: unnamed
+.. figure:: example_big.png
 
-   color=lightgray
-   fillcolor=lightgray
-   labeljust="l"
-   node [color=white, style=filled]
-   style=filled
-
-   subgraph cluster_categories {
-     label="Categories"
-     labelloc="b"
-     node [color=lightgray]
-     style=""
-
-     category_vip [label="VIP"]
-     category_premium [label="Premium"]
-     category_regular [label="Regular"]
-   }
-
-   subgraph cluster_areas {
-     label="Areas"
-
-     subgraph cluster_area1 {
-       label="Area 1"
-
-       seats_area1_regular [label="1200 ×\nRegular"]
-
-       seats_area1_regular -> category_regular
-     }
-
-     subgraph cluster_area2 {
-       label="Area 2"
-
-       seats_area2_regular [label="400 ×\nRegular"]
-       seats_area2_premium [label="150 ×\nPremium"]
-
-       seats_area2_regular -> category_regular
-       seats_area2_premium -> category_premium
-     }
-
-     subgraph cluster_area3 {
-       label="Area 3"
-
-       seats_area3_regular [label="600 ×\nRegular"]
-       seats_area3_premium [label="250 ×\nPremium"]
-       seats_area3_vip [label="10 ×\nVIP"]
-
-       seats_area3_regular -> category_regular
-       seats_area3_premium -> category_premium
-       seats_area3_vip -> category_vip
-     }
-
-     style=""
-   }
+   Big party example

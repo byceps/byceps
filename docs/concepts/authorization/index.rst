@@ -7,12 +7,9 @@ User authorization in BYCEPS is based upon permissions and roles.
 Structure
 ---------
 
-.. digraph:: unnamed
+.. figure:: structure.png
 
-   node [color=lightgray, style=filled]
-   rankdir=RL
-
-   User -> Role -> Permission
+   Relations between entities
 
 * A **permission** is a requirement to perform a specific action.
 
@@ -54,45 +51,9 @@ This example demonstrates how board-related permissions can be grouped
 into roles. Those roles are then combined per user to provide the
 permissions that should be granted.
 
-.. digraph:: unnamed
+.. figure:: example.png
 
-   color=lightgray
-   fillcolor=lightgray
-   labeljust="l"
-   node [color=white, style=filled]
-   rankdir=LR
-   style=filled
-
-   subgraph cluster_users {
-       label="Users"
-
-       Alice, Bob, Eve
-   }
-
-   subgraph cluster_roles {
-       label="Roles"
-
-       Guest, Author, Moderator
-   }
-
-   subgraph cluster_permissions {
-       label="Permissions"
-
-       "View Topic"
-       "Create Topic"
-       "Update Topic"
-       "Hide Topic"
-   }
-
-   // users to roles
-   Alice -> {Guest}
-   Bob -> {Guest Author}
-   Eve -> {Guest Author Moderator}
-
-   // roles to permissions
-   Guest -> {"View Topic"}
-   Author -> {"Create Topic" "Update Topic"}
-   Moderator -> {"Hide Topic"}
+   Example
 
 As a result, the users have these roles and permissions:
 
