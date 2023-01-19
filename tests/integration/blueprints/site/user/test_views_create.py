@@ -20,9 +20,7 @@ from byceps.services.newsletter import (
 from byceps.services.user.dbmodels.user import DbUser
 from byceps.services.user import user_log_service, user_service
 from byceps.services.verification_token.dbmodels import DbVerificationToken
-from byceps.services.verification_token.transfer.models import (
-    Purpose as TokenPurpose,
-)
+from byceps.services.verification_token.models import Purpose as TokenPurpose
 
 from tests.helpers import http_client
 

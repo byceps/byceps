@@ -20,7 +20,7 @@ from ..user.models.user import User
 from ..user import user_log_service, user_service
 
 from .dbmodels import DbRole, DbRolePermission, DbUserRole
-from .transfer.models import PermissionID, Role, RoleID
+from .models import PermissionID, Role, RoleID
 
 
 def create_role(role_id: RoleID, title: str) -> Result[Role, IntegrityError]:

@@ -17,7 +17,7 @@ from .....services.email import email_config_service, email_service
 from .....services.email.transfer.models import NameAndAddress
 from .....services.global_setting import global_setting_service
 from .....services.user import user_service
-from .....services.verification_token.transfer.models import VerificationToken
+from .....services.verification_token.models import VerificationToken
 from .....services.verification_token import verification_token_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success

@@ -12,7 +12,7 @@ from moneyed import EUR
 import pytest
 
 from byceps.services.authorization import authz_service
-from byceps.services.authorization.transfer.models import PermissionID, RoleID
+from byceps.services.authorization.models import PermissionID, RoleID
 from byceps.services.board import board_service
 from byceps.services.board.models import Board, BoardID
 from byceps.services.brand import brand_service

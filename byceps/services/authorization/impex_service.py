@@ -18,9 +18,9 @@ from sqlalchemy import select
 
 from ...database import db
 
-from .dbmodels import DbRole
-from .transfer.models import PermissionID, RoleID
 from . import authz_service
+from .dbmodels import DbRole
+from .models import PermissionID, RoleID
 
 
 # -------------------------------------------------------------------- #

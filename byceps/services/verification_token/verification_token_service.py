@@ -15,7 +15,7 @@ from ...database import db
 from ...typing import UserID
 
 from .dbmodels import DbVerificationToken
-from .transfer.models import Purpose, VerificationToken
+from .models import Purpose, VerificationToken
 
 
 def create_for_email_address_change(

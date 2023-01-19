@@ -15,10 +15,10 @@ from sqlalchemy import delete, select
 from ....database import db
 from ....typing import UserID
 
-from ...authorization.transfer.models import PermissionID
+from ...authorization.models import PermissionID
 
 from .dbmodels import DbApiToken
-from .transfer.models import ApiToken
+from .models import ApiToken
 
 
 def create_api_token(

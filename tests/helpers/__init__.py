@@ -20,7 +20,7 @@ from byceps.database import db
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.authentication.session.models import CurrentUser
 from byceps.services.authorization import authz_service
-from byceps.services.authorization.transfer.models import PermissionID, RoleID
+from byceps.services.authorization.models import PermissionID, RoleID
 from byceps.services.board.models import BoardID
 from byceps.services.party import party_service
 from byceps.services.party.transfer.models import Party

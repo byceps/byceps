@@ -14,7 +14,7 @@ from sqlalchemy.ext.mutable import MutableList
 from ....database import db, generate_uuid
 from ....typing import UserID
 
-from ...authorization.transfer.models import PermissionID
+from ...authorization.models import PermissionID
 
 
 class DbApiToken(db.Model):

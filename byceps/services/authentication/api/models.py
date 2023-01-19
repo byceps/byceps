@@ -1,6 +1,6 @@
 """
-byceps.services.authentication.api.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authentication.api.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,9 +11,9 @@ from datetime import datetime
 from typing import Optional
 from uuid import UUID
 
-from .....typing import UserID
+from ....typing import UserID
 
-from ....authorization.transfer.models import PermissionID
+from ...authorization.models import PermissionID
 
 
 @dataclass(frozen=True)

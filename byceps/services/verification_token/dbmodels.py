@@ -19,7 +19,7 @@ from ...database import db
 from ...typing import UserID
 from ...util.instances import ReprBuilder
 
-from .transfer.models import Purpose
+from .models import Purpose
 
 
 def _generate_token_value():

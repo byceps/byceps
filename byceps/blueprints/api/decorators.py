@@ -13,7 +13,7 @@ from flask import abort, request
 from werkzeug.datastructures import WWWAuthenticate
 
 from ...services.authentication.api import authn_api_service
-from ...services.authentication.api.transfer.models import ApiToken
+from ...services.authentication.api.models import ApiToken
 
 
 def api_token_required(func):

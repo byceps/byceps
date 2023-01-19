@@ -8,7 +8,7 @@ import click
 from flask.cli import with_appcontext
 
 from ...services.authorization import authz_service
-from ...services.authorization.transfer.models import RoleID
+from ...services.authorization.models import RoleID
 from ...services.user.models.user import User
 from ...services.user import (
     user_command_service,

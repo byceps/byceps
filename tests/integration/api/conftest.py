@@ -8,8 +8,8 @@ API-specific fixtures
 import pytest
 
 from byceps.services.authentication.api import authn_api_service
-from byceps.services.authentication.api.transfer.models import ApiToken
-from byceps.services.authorization.transfer.models import PermissionID
+from byceps.services.authentication.api.models import ApiToken
+from byceps.services.authorization.models import PermissionID
 
 
 @pytest.fixture(scope='package')

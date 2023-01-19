@@ -15,11 +15,7 @@ from flask_babel import gettext
 from ....services.authentication.password import authn_password_service
 from ....services.authentication.session import authn_session_service
 from ....services.authorization import authz_service
-from ....services.authorization.transfer.models import (
-    Role,
-    Permission,
-    PermissionID,
-)
+from ....services.authorization.models import Role, Permission, PermissionID
 from ....services.country import country_service
 from ....services.orga_team import orga_team_service
 from ....services.shop.order import order_service

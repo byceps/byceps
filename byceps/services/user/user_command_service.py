@@ -24,7 +24,7 @@ from ...events.user import (
 from ...typing import UserID
 
 from ..authorization import authz_service
-from ..authorization.transfer.models import RoleID
+from ..authorization.models import RoleID
 
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser

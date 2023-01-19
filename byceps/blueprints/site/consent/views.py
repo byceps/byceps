@@ -13,7 +13,7 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from ....services.consent import consent_service, consent_subject_service
-from ....services.verification_token.transfer.models import VerificationToken
+from ....services.verification_token.models import VerificationToken
 from ....services.verification_token import verification_token_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
