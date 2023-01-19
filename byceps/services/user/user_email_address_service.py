@@ -20,7 +20,7 @@ from ...typing import UserID
 from ...util.l10n import force_user_locale
 
 from ..email import email_config_service, email_service
-from ..email.transfer.models import NameAndAddress
+from ..email.models import NameAndAddress
 from ..site.models import SiteID
 from ..site import site_service
 from ..user import user_command_service, user_service

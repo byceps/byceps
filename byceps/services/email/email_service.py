@@ -14,7 +14,7 @@ from flask import current_app
 
 from ...util.jobqueue import enqueue
 
-from .transfer.models import Message, NameAndAddress
+from .models import Message, NameAndAddress
 
 
 def parse_address(address_str: str) -> NameAndAddress:

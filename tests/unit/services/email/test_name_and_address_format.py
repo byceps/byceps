@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.email.transfer.models import NameAndAddress
+from byceps.services.email.models import NameAndAddress
 
 
 @pytest.mark.parametrize(

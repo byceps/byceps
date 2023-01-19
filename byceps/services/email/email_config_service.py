@@ -15,7 +15,7 @@ from ...database import db, upsert
 from ...typing import BrandID
 
 from .dbmodels import DbEmailConfig
-from .transfer.models import EmailConfig, NameAndAddress
+from .models import EmailConfig, NameAndAddress
 
 
 class UnknownEmailConfigId(ValueError):

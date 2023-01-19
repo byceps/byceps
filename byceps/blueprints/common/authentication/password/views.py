@@ -14,7 +14,7 @@ from .....services.authentication.password import (
     authn_password_service,
 )
 from .....services.email import email_config_service, email_service
-from .....services.email.transfer.models import NameAndAddress
+from .....services.email.models import NameAndAddress
 from .....services.global_setting import global_setting_service
 from .....services.user import user_service
 from .....services.verification_token.models import VerificationToken

@@ -1,6 +1,6 @@
 """
-byceps.services.email.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.email.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from email.utils import formataddr
 from typing import Optional
 
-from ....typing import BrandID
+from ...typing import BrandID
 
 
 @dataclass(frozen=True)

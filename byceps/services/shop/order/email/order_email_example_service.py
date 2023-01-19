@@ -16,7 +16,7 @@ from .....config import ConfigurationError
 from .....database import generate_uuid
 from .....typing import BrandID, UserID
 
-from ....email.transfer.models import Message
+from ....email.models import Message
 from ....user.models.user import User
 
 from ...shop.models import ShopID
