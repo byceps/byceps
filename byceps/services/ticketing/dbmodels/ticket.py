@@ -17,7 +17,7 @@ from ...seating.dbmodels.seat import DbSeat
 from ...shop.order.transfer.number import OrderNumber
 from ...user.dbmodels.user import DbUser
 
-from ..transfer.models import TicketCategoryID, TicketCode
+from ..models.ticket import TicketCategoryID, TicketCode
 
 from .category import DbTicketCategory
 from .ticket_bundle import DbTicketBundle

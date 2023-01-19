@@ -15,7 +15,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import DbUser
 
-from ..transfer.models import TicketCategoryID
+from ..models.ticket import TicketCategoryID
 
 from .category import DbTicketCategory
 

@@ -13,12 +13,12 @@ from ....services.party import party_service
 from ....services.seating import seat_service, seating_area_service
 from ....services.seating.transfer.models import Seat, SeatID
 from ....services.ticketing.dbmodels.ticket import DbTicket
+from ....services.ticketing.models.ticket import TicketID
 from ....services.ticketing import (
     exceptions as ticket_exceptions,
     ticket_seat_management_service,
     ticket_service,
 )
-from ....services.ticketing.transfer.models import TicketID
 from ....util.authorization import has_current_user_permission
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success

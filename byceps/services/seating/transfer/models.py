@@ -12,7 +12,7 @@ from uuid import UUID
 
 from ....typing import PartyID
 
-from ...ticketing.transfer.models import TicketCategoryID
+from ...ticketing.models.ticket import TicketCategoryID
 
 
 SeatingAreaID = NewType('SeatingAreaID', UUID)

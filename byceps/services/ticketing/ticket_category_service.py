@@ -13,7 +13,7 @@ from ...typing import PartyID
 
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
-from .transfer.models import TicketCategory, TicketCategoryID
+from .models.ticket import TicketCategory, TicketCategoryID
 
 
 def create_category(party_id: PartyID, title: str) -> TicketCategory:

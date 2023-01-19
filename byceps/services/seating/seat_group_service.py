@@ -15,7 +15,7 @@ from ...typing import PartyID
 
 from ..ticketing.dbmodels.ticket import DbTicket
 from ..ticketing.dbmodels.ticket_bundle import DbTicketBundle
-from ..ticketing.transfer.models import TicketBundleID, TicketCategoryID
+from ..ticketing.models.ticket import TicketBundleID, TicketCategoryID
 
 from .dbmodels.seat import DbSeat
 from .dbmodels.seat_group import (

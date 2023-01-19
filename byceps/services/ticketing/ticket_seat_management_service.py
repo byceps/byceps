@@ -21,8 +21,8 @@ from .exceptions import (
     TicketIsRevoked,
 )
 from .dbmodels.ticket import DbTicket
+from .models.ticket import TicketID
 from . import ticket_log_service, ticket_service
-from .transfer.models import TicketID
 
 
 def appoint_seat_manager(

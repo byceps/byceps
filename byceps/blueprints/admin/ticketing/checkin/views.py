@@ -17,12 +17,12 @@ from .....services.party.transfer.models import Party
 from .....services.shop.order import order_service
 from .....services.shop.shop import shop_service
 from .....services.ticketing.dbmodels.ticket import DbTicket
+from .....services.ticketing.models.ticket import TicketID
 from .....services.ticketing import (
     exceptions as ticket_exceptions,
     ticket_service,
     ticket_user_checkin_service,
 )
-from .....services.ticketing.transfer.models import TicketID
 from .....services.user.models.user import User
 from .....services.user import user_service
 from .....signals import ticketing as ticketing_signals

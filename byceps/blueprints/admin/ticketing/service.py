@@ -10,12 +10,12 @@ from typing import Any, Iterable, Iterator, Optional
 from uuid import UUID
 
 from ....services.seating import seat_service
-from ....services.ticketing import ticket_log_service, ticket_service
-from ....services.ticketing.transfer.log import (
+from ....services.ticketing.models.log import (
     TicketLogEntry,
     TicketLogEntryData,
 )
-from ....services.ticketing.transfer.models import TicketID
+from ....services.ticketing.models.ticket import TicketID
+from ....services.ticketing import ticket_log_service, ticket_service
 from ....services.user.models.user import User
 from ....services.user import user_service
 

@@ -15,10 +15,10 @@ from byceps.services.shop.order import order_log_service, order_service
 from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
+from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.ticketing.ticket_creation_service import (
     TicketCreationFailed,
 )
-from byceps.services.ticketing.transfer.models import TicketCategory
 from byceps.services.user.models.user import User
 
 from tests.helpers.shop import create_ticket_article

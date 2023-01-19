@@ -20,9 +20,9 @@ from ..shop.order.transfer.number import OrderNumber
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
+from .models.ticket import TicketBundleID, TicketCategoryID
 from .ticket_creation_service import build_tickets, TicketCreationFailed
 from .ticket_revocation_service import build_ticket_revoked_log_entry
-from .transfer.models import TicketBundleID, TicketCategoryID
 
 
 @retry(

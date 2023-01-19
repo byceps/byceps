@@ -15,7 +15,7 @@ from ...typing import PartyID
 
 from ..ticketing.dbmodels.category import DbTicketCategory
 from ..ticketing.dbmodels.ticket import DbTicket
-from ..ticketing.transfer.models import TicketCategory, TicketCategoryID
+from ..ticketing.models.ticket import TicketCategory, TicketCategoryID
 
 from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat

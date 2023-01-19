@@ -18,7 +18,7 @@ from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
 from ...ticketing.dbmodels.category import DbTicketCategory
-from ...ticketing.transfer.models import TicketCategoryID
+from ...ticketing.models.ticket import TicketCategoryID
 
 from ..transfer.models import SeatingAreaID
 

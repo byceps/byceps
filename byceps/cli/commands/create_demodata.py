@@ -30,8 +30,8 @@ from ...services.site import site_service
 from ...services.site.transfer.models import Site, SiteID
 from ...services.site_navigation import site_navigation_service
 from ...services.site_navigation.transfer.models import NavItemTargetType
+from ...services.ticketing.models.ticket import TicketCategory
 from ...services.ticketing import ticket_category_service
-from ...services.ticketing.transfer.models import TicketCategory
 from ...services.user.models.user import User
 from ...services.user import user_command_service, user_creation_service
 from ...typing import BrandID, PartyID, UserID

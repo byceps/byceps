@@ -7,7 +7,7 @@ import pytest
 
 from byceps.services.party.transfer.models import Party
 from byceps.services.shop.order.transfer.order import Orderer
-from byceps.services.ticketing.transfer.models import TicketCategory
+from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.user.models.user import User
 
 from tests.helpers import generate_token

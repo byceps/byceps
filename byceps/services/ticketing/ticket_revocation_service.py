@@ -12,9 +12,8 @@ from ...database import db
 from ...typing import UserID
 
 from .dbmodels.log import DbTicketLogEntry
-from . import ticket_log_service, ticket_seat_management_service
-from . import ticket_service
-from .transfer.models import TicketID
+from .models.ticket import TicketID
+from . import ticket_log_service, ticket_seat_management_service, ticket_service
 
 
 def revoke_ticket(

@@ -23,7 +23,7 @@ from byceps.services.shop.order.transfer.order import Orderer
 from byceps.services.shop.shop.transfer.models import ShopID
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.transfer.models import Scope, SnippetID
-from byceps.services.ticketing.transfer.models import TicketCategoryID
+from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.services.user import user_service
 from byceps.typing import UserID
 

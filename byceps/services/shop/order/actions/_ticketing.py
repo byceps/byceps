@@ -11,7 +11,7 @@ from .....signals import ticketing as ticketing_signals
 from .....typing import UserID
 
 from ....ticketing import ticket_category_service
-from ....ticketing.transfer.models import TicketCategoryID
+from ....ticketing.models.ticket import TicketCategoryID
 from ....user import user_service
 
 from .. import order_service

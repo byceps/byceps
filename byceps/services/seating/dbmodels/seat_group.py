@@ -14,7 +14,7 @@ from ....util.instances import ReprBuilder
 
 from ...ticketing.dbmodels.category import DbTicketCategory
 from ...ticketing.dbmodels.ticket_bundle import DbTicketBundle
-from ...ticketing.transfer.models import TicketBundleID, TicketCategoryID
+from ...ticketing.models.ticket import TicketBundleID, TicketCategoryID
 
 from ..transfer.models import SeatID
 

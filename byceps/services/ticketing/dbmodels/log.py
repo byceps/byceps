@@ -11,8 +11,8 @@ from datetime import datetime
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ..transfer.log import TicketLogEntryData
-from ..transfer.models import TicketID
+from ..models.log import TicketLogEntryData
+from ..models.ticket import TicketID
 
 
 class DbTicketLogEntry(db.Model):

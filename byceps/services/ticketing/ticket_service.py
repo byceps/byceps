@@ -23,13 +23,13 @@ from ..user.dbmodels.user import DbUser
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket
 from .dbmodels.log import DbTicketLogEntry
-from . import ticket_code_service, ticket_log_service
-from .transfer.models import (
+from .models.ticket import (
     TicketCategoryID,
     TicketCode,
     TicketID,
     TicketSaleStats,
 )
+from . import ticket_code_service, ticket_log_service
 
 
 def update_ticket_code(

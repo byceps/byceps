@@ -12,8 +12,8 @@ from uuid import UUID
 from .....typing import UserID
 
 from ....ticketing.dbmodels.ticket_bundle import DbTicketBundle
+from ....ticketing.models.ticket import TicketBundleID, TicketCategoryID
 from ....ticketing import ticket_bundle_service, ticket_category_service
-from ....ticketing.transfer.models import TicketBundleID, TicketCategoryID
 
 from .. import order_log_service, order_service
 from ..transfer.order import LineItem, Order, OrderID

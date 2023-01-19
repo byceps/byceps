@@ -13,8 +13,8 @@ from sqlalchemy import select
 from ...database import db
 
 from .dbmodels.log import DbTicketLogEntry
-from .transfer.log import TicketLogEntry, TicketLogEntryData
-from .transfer.models import TicketID
+from .models.log import TicketLogEntry, TicketLogEntryData
+from .models.ticket import TicketID
 
 
 def create_entry(

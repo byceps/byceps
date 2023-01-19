@@ -20,7 +20,7 @@ from ....database import db, paginate, Pagination
 from ....events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from ....typing import UserID
 
-from ...ticketing.transfer.models import TicketCategoryID
+from ...ticketing.models.ticket import TicketCategoryID
 from ...user import user_service
 
 from ..article import article_service

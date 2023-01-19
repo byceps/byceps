@@ -1,6 +1,6 @@
 """
-byceps.services.ticketing.transfer.log
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.ticketing.models.log
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import Any
 from uuid import UUID
 
-from .models import TicketID
+from .ticket import TicketID
 
 
 TicketLogEntryData = dict[str, Any]

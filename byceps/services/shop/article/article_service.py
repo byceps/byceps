@@ -15,7 +15,7 @@ from sqlalchemy import delete, select, update
 
 from ....database import db, paginate, Pagination
 
-from ...ticketing.transfer.models import TicketCategoryID
+from ...ticketing.models.ticket import TicketCategoryID
 
 from ..order.dbmodels.line_item import DbLineItem
 from ..order.dbmodels.order import DbOrder

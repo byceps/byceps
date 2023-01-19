@@ -18,7 +18,7 @@ from ....ticketing import (
     ticket_revocation_service,
     ticket_service,
 )
-from ....ticketing.transfer.models import TicketCategoryID, TicketID
+from ....ticketing.models.ticket import TicketCategoryID, TicketID
 
 from .. import order_log_service, order_service
 from ..transfer.order import LineItem, Order, OrderID

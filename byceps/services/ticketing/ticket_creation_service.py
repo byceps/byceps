@@ -18,8 +18,8 @@ from ..shop.order.transfer.number import OrderNumber
 
 from .dbmodels.ticket import DbTicket
 from .dbmodels.ticket_bundle import DbTicketBundle
+from .models.ticket import TicketCategoryID
 from . import ticket_code_service
-from .transfer.models import TicketCategoryID
 
 
 class TicketCreationFailed(Exception):

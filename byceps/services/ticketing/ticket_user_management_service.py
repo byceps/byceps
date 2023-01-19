@@ -17,8 +17,8 @@ from .exceptions import (
     UserAlreadyCheckedIn,
     UserIdUnknown,
 )
+from .models.ticket import TicketID
 from . import ticket_log_service, ticket_service
-from .transfer.models import TicketID
 
 
 def appoint_user_manager(

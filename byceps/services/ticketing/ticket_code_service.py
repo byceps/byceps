@@ -9,7 +9,7 @@ byceps.services.ticketing.ticket_code_service
 from random import sample
 from string import ascii_uppercase, digits
 
-from .transfer.models import TicketCode
+from .models.ticket import TicketCode
 
 
 def generate_ticket_codes(quantity: int) -> set[TicketCode]:
