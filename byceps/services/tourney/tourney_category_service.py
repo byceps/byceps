@@ -14,7 +14,7 @@ from ...typing import PartyID
 from ..party.dbmodels.party import DbParty
 
 from .dbmodels.tourney_category import DbTourneyCategory
-from .transfer.models import TourneyCategory, TourneyCategoryID
+from .models import TourneyCategory, TourneyCategoryID
 
 
 def create_category(party_id: PartyID, title: str) -> TourneyCategory:

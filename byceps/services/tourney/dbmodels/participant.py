@@ -13,7 +13,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import DbUser
 
-from ..transfer.models import TourneyID
+from ..models import TourneyID
 
 from .tourney import DbTourney
 

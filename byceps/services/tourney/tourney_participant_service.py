@@ -11,8 +11,8 @@ from typing import Optional
 from ...database import db
 
 from .dbmodels.participant import DbParticipant
+from .models import Participant, ParticipantID, TourneyID
 from . import tourney_service
-from .transfer.models import Participant, ParticipantID, TourneyID
 
 
 def create_participant(

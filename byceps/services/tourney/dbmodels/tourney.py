@@ -13,7 +13,7 @@ from ....database import db, generate_uuid
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
-from ..transfer.models import TourneyCategoryID
+from ..models import TourneyCategoryID
 
 from .tourney_category import DbTourneyCategory
 

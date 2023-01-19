@@ -16,7 +16,7 @@ from ...services.user import user_service
 from ...typing import UserID
 
 from .dbmodels.match_comment import DbMatchComment
-from .transfer.models import MatchID, MatchComment, MatchCommentID
+from .models import MatchID, MatchComment, MatchCommentID
 
 
 def find_comment(comment_id: MatchCommentID) -> Optional[MatchComment]:

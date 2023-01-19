@@ -1,6 +1,6 @@
 """
-byceps.services.tourney.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.tourney.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,9 +12,9 @@ from datetime import datetime
 from typing import NewType, Optional
 from uuid import UUID
 
-from ....typing import PartyID
+from ...typing import PartyID
 
-from ...user.models.user import User
+from ..user.models.user import User
 
 
 TourneyCategoryID = NewType('TourneyCategoryID', UUID)

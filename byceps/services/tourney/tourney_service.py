@@ -17,13 +17,8 @@ from ..party import party_service
 from .dbmodels.participant import DbParticipant
 from .dbmodels.tourney import DbTourney
 from .dbmodels.tourney_category import DbTourneyCategory
+from .models import Tourney, TourneyCategoryID, TourneyID, TourneyWithCategory
 from . import tourney_category_service
-from .transfer.models import (
-    Tourney,
-    TourneyCategoryID,
-    TourneyID,
-    TourneyWithCategory,
-)
 
 
 def create_tourney(
