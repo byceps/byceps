@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.brand.transfer.models import Brand
+from byceps.services.brand.models import Brand
 from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
 from byceps.services.news import news_item_service
 

@@ -10,7 +10,7 @@ from typing import Optional
 from flask import abort
 
 from ....services.brand import brand_service
-from ....services.brand.transfer.models import Brand
+from ....services.brand.models import Brand
 from ....services.site.models import Site, SiteID
 from ....services.site import site_service
 from ....services.snippet.dbmodels import DbSnippet, DbSnippetVersion

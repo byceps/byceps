@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.services.brand.transfer.models import Brand
+from byceps.services.brand.models import Brand
 from byceps.services.orga_team import orga_team_service
 
 

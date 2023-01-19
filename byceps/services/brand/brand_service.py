@@ -15,7 +15,7 @@ from ...typing import BrandID
 
 from .dbmodels.brand import DbBrand
 from .dbmodels.setting import DbSetting
-from .transfer.models import Brand
+from .models import Brand
 
 
 def create_brand(brand_id: BrandID, title: str) -> Brand:

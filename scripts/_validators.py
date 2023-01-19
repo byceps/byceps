@@ -15,7 +15,7 @@ from uuid import UUID
 import click
 
 from byceps.services.brand import brand_service
-from byceps.services.brand.transfer.models import Brand
+from byceps.services.brand.models import Brand
 from byceps.services.party import party_service
 from byceps.services.party.transfer.models import Party
 from byceps.services.site.models import Site, SiteID

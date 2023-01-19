@@ -16,7 +16,7 @@ from byceps.services.authorization.models import PermissionID, RoleID
 from byceps.services.board import board_service
 from byceps.services.board.models import Board, BoardID
 from byceps.services.brand import brand_service
-from byceps.services.brand.transfer.models import Brand
+from byceps.services.brand.models import Brand
 from byceps.services.email import email_config_service
 from byceps.services.email.transfer.models import EmailConfig
 from byceps.services.language import language_service

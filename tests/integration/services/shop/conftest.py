@@ -6,7 +6,7 @@
 from moneyed import EUR
 import pytest
 
-from byceps.services.brand.transfer.models import Brand
+from byceps.services.brand.models import Brand
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront

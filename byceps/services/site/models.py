@@ -12,7 +12,7 @@ from typing import NewType, Optional
 from ...typing import BrandID, PartyID
 
 from ..board.models import BoardID
-from ..brand.transfer.models import Brand
+from ..brand.models import Brand
 from ..news.models import NewsChannelID
 from ..shop.storefront.models import StorefrontID
 

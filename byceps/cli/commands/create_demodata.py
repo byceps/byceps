@@ -15,7 +15,7 @@ from ...services.authorization import authz_service
 from ...services.board import board_category_command_service, board_service
 from ...services.board.models import Board, BoardID
 from ...services.brand import brand_service
-from ...services.brand.transfer.models import Brand
+from ...services.brand.models import Brand
 from ...services.page import page_service
 from ...services.party import party_service
 from ...services.party.transfer.models import Party

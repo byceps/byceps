@@ -12,7 +12,7 @@ from typing import Optional
 
 from ....typing import BrandID, PartyID
 
-from ...brand.transfer.models import Brand
+from ...brand.models import Brand
 
 
 @dataclass(frozen=True)

@@ -1,6 +1,6 @@
 """
-byceps.services.brand.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.brand.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -9,7 +9,7 @@ byceps.services.brand.transfer.models
 from dataclasses import dataclass
 from typing import Optional
 
-from ....typing import BrandID
+from ...typing import BrandID
 
 
 @dataclass(frozen=True)

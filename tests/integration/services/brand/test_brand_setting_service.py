@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.brand import brand_setting_service
-from byceps.services.brand.transfer.models import BrandSetting
+from byceps.services.brand.models import BrandSetting
 
 
 BRAND_ID = 'value-brand'

@@ -14,7 +14,7 @@ from ...database import db, upsert
 from ...typing import BrandID
 
 from .dbmodels.setting import DbSetting
-from .transfer.models import BrandSetting
+from .models import BrandSetting
 
 
 def create_setting(brand_id: BrandID, name: str, value: str) -> BrandSetting:
