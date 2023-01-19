@@ -18,8 +18,8 @@ from ...util.l10n import force_user_locale
 
 from ..email import email_config_service, email_service
 from ..email.transfer.models import Message
+from ..site.models import SiteID
 from ..site import site_service
-from ..site.transfer.models import SiteID
 from ..user.models.user import User
 from ..user import user_service
 

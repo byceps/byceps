@@ -11,7 +11,7 @@ from typing import Any, Optional
 
 from flask import current_app, Flask
 
-from .services.site.transfer.models import SiteID
+from .services.site.models import SiteID
 
 
 EXTENSION_KEY = 'byceps_config'

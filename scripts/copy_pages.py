@@ -10,7 +10,7 @@ import click
 
 from byceps.services.page.dbmodels import DbPageVersion
 from byceps.services.page import page_service
-from byceps.services.site.transfer.models import SiteID
+from byceps.services.site.models import SiteID
 
 from _util import call_with_app_context
 from _validators import validate_site

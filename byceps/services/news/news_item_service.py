@@ -19,8 +19,8 @@ from ...database import db, paginate, Pagination
 from ...events.news import NewsItemPublished
 from ...typing import UserID
 
+from ..site.models import SiteID
 from ..site import site_service
-from ..site.transfer.models import SiteID
 from ..user.models.user import User
 from ..user import user_service
 

@@ -12,7 +12,7 @@ from ....database import db
 from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
-from ...site.transfer.models import SiteID
+from ...site.models import SiteID
 
 from ..models import NewsChannelID
 

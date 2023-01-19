@@ -18,7 +18,7 @@ from ...database import db, generate_uuid
 from ...typing import UserID
 
 from ..language.dbmodels import DbLanguage
-from ..site.transfer.models import SiteID
+from ..site.models import SiteID
 from ..site_navigation.dbmodels import DbNavMenu
 from ..user.dbmodels.user import DbUser
 

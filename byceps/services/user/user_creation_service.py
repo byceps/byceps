@@ -16,7 +16,7 @@ from ...events.user import UserAccountCreated
 from ...typing import UserID
 
 from ..authentication.password import authn_password_service
-from ..site.transfer.models import SiteID
+from ..site.models import SiteID
 
 from . import user_email_address_service, user_log_service
 from .dbmodels.detail import DbUserDetail

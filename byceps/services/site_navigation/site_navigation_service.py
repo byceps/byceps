@@ -11,10 +11,10 @@ from typing import Iterable, Optional
 from sqlalchemy import select
 
 from ...database import db
-from ...services.site.transfer.models import SiteID
+from ...services.site.models import SiteID
 
 from .dbmodels import DbNavItem, DbNavMenu
-from .transfer.models import (
+from .models import (
     NavItem,
     NavItemID,
     NavItemTargetType,

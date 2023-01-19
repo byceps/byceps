@@ -37,7 +37,7 @@ from byceps.services.shop.storefront.models import (
     StorefrontID,
 )
 from byceps.services.shop.storefront import storefront_service
-from byceps.services.site.transfer.models import Site, SiteID
+from byceps.services.site.models import Site, SiteID
 from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.user.models.user import User

@@ -10,7 +10,7 @@ import pytest
 from byceps.events.page import PageCreated
 from byceps.services.page import page_service
 from byceps.services.page.transfer.models import PageVersion
-from byceps.services.site.transfer.models import Site
+from byceps.services.site.models import Site
 from byceps.services.user.models.user import User
 
 from tests.helpers import generate_token, log_in_user

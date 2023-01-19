@@ -14,7 +14,7 @@ from ...database import db
 from ...typing import BrandID
 
 from ..brand import brand_service
-from ..site.transfer.models import SiteID
+from ..site.models import SiteID
 
 from .dbmodels.channel import DbNewsChannel
 from .models import NewsChannel, NewsChannelID

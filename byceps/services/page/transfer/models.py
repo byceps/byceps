@@ -13,8 +13,8 @@ from uuid import UUID
 
 from ....typing import UserID
 
-from ...site.transfer.models import SiteID
-from ...site_navigation.transfer.models import NavMenuID
+from ...site.models import SiteID
+from ...site_navigation.models import NavMenuID
 
 
 PageID = NewType('PageID', UUID)

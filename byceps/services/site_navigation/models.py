@@ -1,6 +1,6 @@
 """
-byceps.services.site_navigation.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.site_navigation.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,7 +12,7 @@ from enum import Enum
 from typing import NewType
 from uuid import UUID
 
-from ...site.transfer.models import SiteID
+from ..site.models import SiteID
 
 
 NavMenuID = NewType('NavMenuID', UUID)

@@ -11,8 +11,8 @@ from wtforms import SelectField, StringField, TextAreaField
 from wtforms.validators import InputRequired
 
 from ....services.language import language_service
+from ....services.site.models import SiteID
 from ....services.site_navigation import site_navigation_service
-from ....services.site.transfer.models import SiteID
 from ....util.l10n import LocalizedForm
 
 

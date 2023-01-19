@@ -9,7 +9,7 @@ byceps.services.site.dbmodels.setting
 from ....database import db
 from ....util.instances import ReprBuilder
 
-from ..transfer.models import SiteID
+from ..models import SiteID
 
 
 class DbSetting(db.Model):

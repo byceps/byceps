@@ -11,7 +11,7 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from ...site.transfer.models import SiteID
+from ...site.models import SiteID
 
 from ....typing import BrandID
 

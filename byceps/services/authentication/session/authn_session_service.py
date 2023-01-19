@@ -16,7 +16,7 @@ from ....database import db, insert_ignore_on_conflict, upsert
 from ....events.auth import UserLoggedIn
 from ....typing import UserID
 
-from ...site.transfer.models import SiteID
+from ...site.models import SiteID
 from ...user.models.user import User
 from ...user import user_log_service, user_service
 

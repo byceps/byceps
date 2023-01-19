@@ -10,10 +10,9 @@ from flask import abort, request
 from flask_babel import gettext
 
 from .....services.brand import brand_service
+from .....services.site.models import Site, SiteID
 from .....services.site import site_service
-from .....services.site.transfer.models import Site, SiteID
-from .....services.site_navigation import site_navigation_service
-from .....services.site_navigation.transfer.models import (
+from .....services.site_navigation.models import (
     NavItem,
     NavItemID,
     NavItemTargetType,
@@ -21,6 +20,7 @@ from .....services.site_navigation.transfer.models import (
     NavMenuAggregate,
     NavMenuID,
 )
+from .....services.site_navigation import site_navigation_service
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated

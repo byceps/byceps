@@ -18,7 +18,7 @@ from byceps.services.brand import brand_service
 from byceps.services.brand.transfer.models import Brand
 from byceps.services.party import party_service
 from byceps.services.party.transfer.models import Party
-from byceps.services.site.transfer.models import Site, SiteID
+from byceps.services.site.models import Site, SiteID
 from byceps.services.site import site_service
 from byceps.services.user.models.user import User
 from byceps.services.user import user_service

@@ -1,6 +1,6 @@
 """
-byceps.services.site.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.site.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -9,12 +9,12 @@ byceps.services.site.transfer.models
 from dataclasses import dataclass
 from typing import NewType, Optional
 
-from ....typing import BrandID, PartyID
+from ...typing import BrandID, PartyID
 
-from ...board.models import BoardID
-from ...brand.transfer.models import Brand
-from ...news.models import NewsChannelID
-from ...shop.storefront.models import StorefrontID
+from ..board.models import BoardID
+from ..brand.transfer.models import Brand
+from ..news.models import NewsChannelID
+from ..shop.storefront.models import StorefrontID
 
 
 SiteID = NewType('SiteID', str)

@@ -18,9 +18,9 @@ from sqlalchemy.ext.orderinglist import ordering_list
 from ...database import db, generate_uuid
 
 from ..language.dbmodels import DbLanguage
-from ..site.transfer.models import SiteID
+from ..site.models import SiteID
 
-from .transfer.models import NavItemID, NavItemTargetType, NavMenuID
+from .models import NavItemID, NavItemTargetType, NavMenuID
 
 
 class DbNavMenu(db.Model):

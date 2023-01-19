@@ -9,7 +9,7 @@ byceps.events.user
 from dataclasses import dataclass
 from typing import Optional
 
-from ..services.site.transfer.models import SiteID
+from ..services.site.models import SiteID
 from ..typing import UserID
 
 from .base import _BaseEvent

@@ -23,7 +23,7 @@ from ..shop.storefront.models import StorefrontID
 
 from .dbmodels.site import DbSite
 from .dbmodels.setting import DbSetting
-from .transfer.models import Site, SiteID, SiteWithBrand
+from .models import Site, SiteID, SiteWithBrand
 
 
 class UnknownSiteId(Exception):

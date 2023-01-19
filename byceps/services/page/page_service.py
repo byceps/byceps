@@ -13,8 +13,8 @@ from sqlalchemy import delete, select
 
 from ...database import db
 from ...events.page import PageCreated, PageDeleted, PageUpdated
-from ...services.site.transfer.models import SiteID
-from ...services.site_navigation.transfer.models import NavMenuID
+from ...services.site.models import SiteID
+from ...services.site_navigation.models import NavMenuID
 from ...services.user.models.user import User
 from ...services.user import user_service
 from ...typing import UserID

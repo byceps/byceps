@@ -26,10 +26,10 @@ from ...services.shop.shop.models import Shop, ShopID
 from ...services.shop.shop import shop_service
 from ...services.shop.storefront import storefront_service
 from ...services.shop.storefront.models import Storefront, StorefrontID
+from ...services.site.models import Site, SiteID
 from ...services.site import site_service
-from ...services.site.transfer.models import Site, SiteID
+from ...services.site_navigation.models import NavItemTargetType
 from ...services.site_navigation import site_navigation_service
-from ...services.site_navigation.transfer.models import NavItemTargetType
 from ...services.ticketing.models.ticket import TicketCategory
 from ...services.ticketing import ticket_category_service
 from ...services.user.models.user import User

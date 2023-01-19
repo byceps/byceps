@@ -21,8 +21,8 @@ from ...util.l10n import force_user_locale
 
 from ..email import email_config_service, email_service
 from ..email.transfer.models import NameAndAddress
+from ..site.models import SiteID
 from ..site import site_service
-from ..site.transfer.models import SiteID
 from ..user import user_command_service, user_service
 from ..verification_token.models import VerificationToken
 from ..verification_token import verification_token_service

@@ -20,8 +20,8 @@ from ....services.party import party_service
 from ....services.shop.shop import shop_service
 from ....services.shop.storefront.models import Storefront, StorefrontID
 from ....services.shop.storefront import storefront_service
+from ....services.site.models import Site, SiteWithBrand
 from ....services.site import site_service, site_setting_service
-from ....services.site.transfer.models import Site, SiteWithBrand
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated

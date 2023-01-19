@@ -13,7 +13,7 @@ from sqlalchemy import delete, select
 from ...database import db, upsert
 
 from .dbmodels.setting import DbSetting
-from .transfer.models import SiteID, SiteSetting
+from .models import SiteID, SiteSetting
 
 
 def create_setting(site_id: SiteID, name: str, value: str) -> SiteSetting:

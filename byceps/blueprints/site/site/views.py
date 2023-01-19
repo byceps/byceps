@@ -10,11 +10,11 @@ from flask import g, url_for
 
 from ..page.templating import url_for_site_page
 
-from ....services.site_navigation import site_navigation_service
-from ....services.site_navigation.transfer.models import (
+from ....services.site_navigation.models import (
     NavItemForRendering,
     NavItemTargetType,
 )
+from ....services.site_navigation import site_navigation_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.l10n import get_locale_str
 

@@ -17,7 +17,7 @@ from ...brand.dbmodels.brand import DbBrand
 from ...news.dbmodels.channel import DbNewsChannel
 from ...shop.storefront.models import StorefrontID
 
-from ..transfer.models import SiteID
+from ..models import SiteID
 
 
 site_news_channels = db.Table(

@@ -10,7 +10,7 @@ import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
 from byceps.services.brand.transfer.models import Brand
 from byceps.services.news.models import BodyFormat, NewsChannel, NewsItem
 from byceps.services.news import news_item_service
-from byceps.services.site.transfer.models import Site
+from byceps.services.site.models import Site
 from byceps.signals import news as news_signals
 
 from .helpers import assert_submitted_text, mocked_irc_bot
