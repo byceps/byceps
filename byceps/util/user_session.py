@@ -12,8 +12,8 @@ from uuid import UUID
 from babel import parse_locale
 from flask import session
 
-from ..services.authentication.session.models.current_user import CurrentUser
 from ..services.authentication.session import authn_session_service
+from ..services.authentication.session.models import CurrentUser
 from ..services.user.models.user import User
 from ..services.user import user_service
 from ..typing import UserID

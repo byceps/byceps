@@ -11,7 +11,7 @@ from typing import Iterable, Optional
 
 from flask import g
 
-from ....services.authentication.session.models.current_user import CurrentUser
+from ....services.authentication.session.models import CurrentUser
 from ....services.board.dbmodels.topic import DbTopic
 from ....services.board.dbmodels.posting import DbPosting
 from ....services.board import (

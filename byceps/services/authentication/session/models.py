@@ -1,6 +1,6 @@
 """
-byceps.services.authentication.session.models.current_user
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.authentication.session.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -8,7 +8,7 @@ byceps.services.authentication.session.models.current_user
 
 from dataclasses import dataclass
 
-from ....user.models.user import User
+from ...user.models.user import User
 
 
 @dataclass(eq=False, frozen=True)

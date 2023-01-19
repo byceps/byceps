@@ -13,7 +13,7 @@ from typing import Optional
 from flask import abort, g, redirect, request
 from flask_babel import gettext
 
-from ....services.authentication.session.models.current_user import CurrentUser
+from ....services.authentication.session.models import CurrentUser
 from ....services.board import (
     board_category_query_service,
     board_last_view_service,

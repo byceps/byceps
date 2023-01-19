@@ -17,10 +17,8 @@ from flask import appcontext_pushed, Flask, g
 
 from byceps.application import create_app
 from byceps.database import db
-from byceps.services.authentication.session.models.current_user import (
-    CurrentUser,
-)
 from byceps.services.authentication.session import authn_session_service
+from byceps.services.authentication.session.models import CurrentUser
 from byceps.services.authorization import authz_service
 from byceps.services.authorization.transfer.models import PermissionID, RoleID
 from byceps.services.board.models import BoardID

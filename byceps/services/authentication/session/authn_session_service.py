@@ -22,7 +22,7 @@ from ...user import user_log_service, user_service
 
 from .dbmodels.recent_login import DbRecentLogin
 from .dbmodels.session_token import DbSessionToken
-from .models.current_user import CurrentUser
+from .models import CurrentUser
 
 
 def get_session_token(user_id: UserID) -> DbSessionToken:

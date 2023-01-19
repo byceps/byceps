@@ -5,10 +5,8 @@
 
 from moneyed import EUR
 
-from byceps.services.authentication.session.models.current_user import (
-    CurrentUser,
-)
 from byceps.services.authentication.session import authn_session_service
+from byceps.services.authentication.session.models import CurrentUser
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_service
 from byceps.services.user.models.user import User

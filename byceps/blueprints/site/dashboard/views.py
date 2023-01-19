@@ -10,7 +10,7 @@ Current user's dashboard
 
 from flask import abort, g
 
-from ....services.authentication.session.models.current_user import CurrentUser
+from ....services.authentication.session.models import CurrentUser
 from ....services.board.dbmodels.topic import DbTopic
 from ....services.board import (
     board_access_control_service,
