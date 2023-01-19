@@ -1,6 +1,6 @@
 """
-byceps.services.page.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.page.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,10 +11,10 @@ from datetime import datetime
 from typing import NewType, Optional
 from uuid import UUID
 
-from ....typing import UserID
+from ...typing import UserID
 
-from ...site.models import SiteID
-from ...site_navigation.models import NavMenuID
+from ..site.models import SiteID
+from ..site_navigation.models import NavMenuID
 
 
 PageID = NewType('PageID', UUID)

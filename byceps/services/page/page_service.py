@@ -20,7 +20,7 @@ from ...services.user import user_service
 from ...typing import UserID
 
 from .dbmodels import DbCurrentPageVersionAssociation, DbPage, DbPageVersion
-from .transfer.models import (
+from .models import (
     Page,
     PageAggregate,
     PageID,

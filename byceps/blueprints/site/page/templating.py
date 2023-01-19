@@ -14,8 +14,8 @@ from typing import Any, Optional
 from flask import abort, g, render_template, url_for
 from jinja2 import TemplateNotFound
 
+from ....services.page.models import Page, PageVersion
 from ....services.page import page_service
-from ....services.page.transfer.models import Page, PageVersion
 from ....services.site_navigation import site_navigation_service
 from ....util.templating import load_template
 

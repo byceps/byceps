@@ -8,8 +8,8 @@ from typing import Optional
 import pytest
 
 from byceps.events.page import PageCreated
+from byceps.services.page.models import PageVersion
 from byceps.services.page import page_service
-from byceps.services.page.transfer.models import PageVersion
 from byceps.services.site.models import Site
 from byceps.services.user.models.user import User
 
