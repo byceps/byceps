@@ -20,7 +20,7 @@ from ..user import user_service
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting
 from .dbmodels.topic import DbTopic
-from .transfer.models import BoardID, PostingID, TopicID
+from .models import BoardID, PostingID, TopicID
 
 
 def count_postings_for_board(board_id: BoardID) -> int:

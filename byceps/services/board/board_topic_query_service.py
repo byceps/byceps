@@ -17,7 +17,7 @@ from ...database import db, paginate, Pagination
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting
 from .dbmodels.topic import DbTopic
-from .transfer.models import BoardCategoryID, BoardID, TopicID
+from .models import BoardCategoryID, BoardID, TopicID
 
 
 def count_topics_for_board(board_id: BoardID) -> int:

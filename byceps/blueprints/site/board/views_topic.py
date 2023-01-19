@@ -21,7 +21,7 @@ from ....services.board import (
     board_topic_command_service,
     board_topic_query_service,
 )
-from ....services.board.transfer.models import TopicID
+from ....services.board.models import TopicID
 from ....services.text_markup import text_markup_service
 from ....services.user import user_service
 from ....signals import board as board_signals

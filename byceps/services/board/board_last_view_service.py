@@ -16,11 +16,7 @@ from . import board_topic_query_service
 from .dbmodels.last_category_view import DbLastCategoryView
 from .dbmodels.last_topic_view import DbLastTopicView
 from .dbmodels.topic import DbTopic
-from .transfer.models import (
-    BoardCategoryID,
-    BoardCategoryWithLastUpdate,
-    TopicID,
-)
+from .models import BoardCategoryID, BoardCategoryWithLastUpdate, TopicID
 
 
 # -------------------------------------------------------------------- #

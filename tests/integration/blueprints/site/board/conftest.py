@@ -7,7 +7,7 @@ import pytest
 
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
-from byceps.services.board.transfer.models import Board, BoardCategory
+from byceps.services.board.models import Board, BoardCategory
 from byceps.services.user.models.user import User
 
 from tests.helpers import log_in_user

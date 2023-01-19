@@ -11,7 +11,7 @@ from ...typing import UserID
 
 from .dbmodels.board import DbBoard
 from .dbmodels.board_access_grant import DbBoardAccessGrant, BoardAccessGrantID
-from .transfer.models import BoardID
+from .models import BoardID
 
 
 def grant_access_to_board(

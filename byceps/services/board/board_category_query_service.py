@@ -11,7 +11,7 @@ from typing import Optional
 from ...database import db
 
 from .dbmodels.category import DbBoardCategory
-from .transfer.models import (
+from .models import (
     BoardCategory,
     BoardCategoryID,
     BoardCategoryWithLastUpdate,

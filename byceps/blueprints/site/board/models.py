@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
-from ....services.board.transfer.models import BoardCategoryWithLastUpdate
+from ....services.board.models import BoardCategoryWithLastUpdate
 from ....services.user.models.user import User
 from ....services.user_badge.models import Badge
 from ....typing import UserID

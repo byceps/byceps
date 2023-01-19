@@ -14,7 +14,7 @@ import pytest
 from byceps.services.authorization import authz_service
 from byceps.services.authorization.transfer.models import PermissionID, RoleID
 from byceps.services.board import board_service
-from byceps.services.board.transfer.models import Board, BoardID
+from byceps.services.board.models import Board, BoardID
 from byceps.services.brand import brand_service
 from byceps.services.brand.transfer.models import Brand
 from byceps.services.email import email_config_service

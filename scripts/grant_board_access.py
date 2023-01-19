@@ -9,7 +9,7 @@
 import click
 
 from byceps.services.board import board_access_control_service, board_service
-from byceps.services.board.transfer.models import Board, BoardID
+from byceps.services.board.models import Board, BoardID
 
 from _util import call_with_app_context
 from _validators import validate_user_screen_name

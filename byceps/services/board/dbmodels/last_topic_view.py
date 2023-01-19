@@ -12,7 +12,7 @@ from ....database import db
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ..transfer.models import TopicID
+from ..models import TopicID
 
 from .topic import DbTopic
 

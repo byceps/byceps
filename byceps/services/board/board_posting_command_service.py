@@ -26,7 +26,7 @@ from . import (
     board_topic_query_service,
 )
 from .dbmodels.posting import DbPosting
-from .transfer.models import PostingID, TopicID
+from .models import PostingID, TopicID
 
 
 def create_posting(

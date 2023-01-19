@@ -18,7 +18,7 @@ from ....services.board import (
     board_posting_query_service,
     board_topic_query_service,
 )
-from ....services.board.transfer.models import Board, BoardCategory
+from ....services.board.models import Board, BoardCategory
 from ....services.brand import brand_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success

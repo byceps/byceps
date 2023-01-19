@@ -23,7 +23,7 @@ from byceps.services.authentication.session.models.current_user import (
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.authorization import authz_service
 from byceps.services.authorization.transfer.models import PermissionID, RoleID
-from byceps.services.board.transfer.models import BoardID
+from byceps.services.board.models import BoardID
 from byceps.services.party import party_service
 from byceps.services.party.transfer.models import Party
 from byceps.services.shop.storefront.transfer.models import StorefrontID

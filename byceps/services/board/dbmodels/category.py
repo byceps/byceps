@@ -13,7 +13,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import DbUser
 
-from ..transfer.models import BoardID
+from ..models import BoardID
 
 from .board import DbBoard
 

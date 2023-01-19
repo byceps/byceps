@@ -14,7 +14,7 @@ from ...typing import BrandID
 from ..brand import brand_service
 
 from .dbmodels.board import DbBoard
-from .transfer.models import Board, BoardID
+from .models import Board, BoardID
 
 
 def create_board(brand_id: BrandID, board_id: BoardID) -> Board:

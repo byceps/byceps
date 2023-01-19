@@ -13,7 +13,7 @@ from ....database import db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ..transfer.models import BoardID
+from ..models import BoardID
 
 
 BoardAccessGrantID = NewType('BoardAccessGrantID', str)

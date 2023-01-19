@@ -12,7 +12,7 @@ from ....database import db
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ..transfer.models import BoardCategoryID
+from ..models import BoardCategoryID
 
 from .category import DbBoardCategory
 

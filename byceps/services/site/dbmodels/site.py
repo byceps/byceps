@@ -12,7 +12,7 @@ from ....database import db
 from ....typing import BrandID, PartyID
 from ....util.instances import ReprBuilder
 
-from ...board.transfer.models import BoardID
+from ...board.models import BoardID
 from ...brand.dbmodels.brand import DbBrand
 from ...news.dbmodels.channel import DbNewsChannel
 from ...shop.storefront.transfer.models import StorefrontID

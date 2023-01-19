@@ -11,7 +11,7 @@ from ...database import db
 from . import board_topic_query_service
 from .dbmodels.board import DbBoard
 from .dbmodels.category import DbBoardCategory
-from .transfer.models import BoardCategory, BoardCategoryID, BoardID
+from .models import BoardCategory, BoardCategoryID, BoardID
 
 
 def create_category(

@@ -14,7 +14,7 @@ from byceps.services.board import (
 )
 from byceps.services.board.dbmodels.posting import DbPosting
 from byceps.services.board.dbmodels.topic import DbTopic
-from byceps.services.board.transfer.models import (
+from byceps.services.board.models import (
     BoardCategory,
     BoardCategoryID,
     BoardID,

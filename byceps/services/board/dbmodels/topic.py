@@ -16,7 +16,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import DbUser
 
-from ..transfer.models import BoardCategoryID
+from ..models import BoardCategoryID
 
 from .category import DbBoardCategory
 

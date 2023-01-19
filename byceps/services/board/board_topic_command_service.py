@@ -33,7 +33,7 @@ from . import (
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbInitialTopicPostingAssociation, DbPosting
 from .dbmodels.topic import DbTopic
-from .transfer.models import BoardCategoryID, TopicID
+from .models import BoardCategoryID, TopicID
 
 
 def create_topic(

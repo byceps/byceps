@@ -1,6 +1,6 @@
 """
-byceps.services.board.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.board.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,9 +11,9 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-from ....typing import BrandID
+from ...typing import BrandID
 
-from ...user.models.user import User
+from ..user.models.user import User
 
 
 BoardID = NewType('BoardID', str)

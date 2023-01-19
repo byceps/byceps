@@ -11,7 +11,7 @@ from typing import NewType, Optional
 
 from ....typing import BrandID, PartyID
 
-from ...board.transfer.models import BoardID
+from ...board.models import BoardID
 from ...brand.transfer.models import Brand
 from ...news.transfer.models import NewsChannelID
 from ...shop.storefront.transfer.models import StorefrontID

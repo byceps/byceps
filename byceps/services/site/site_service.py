@@ -15,7 +15,7 @@ from sqlalchemy import select
 from ...database import db
 from ...typing import BrandID, PartyID
 
-from ..board.transfer.models import BoardID
+from ..board.models import BoardID
 from ..brand import brand_service
 from ..news import news_channel_service
 from ..news.transfer.models import NewsChannelID

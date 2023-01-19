@@ -9,7 +9,7 @@ byceps.events.board
 from dataclasses import dataclass
 from typing import Optional
 
-from ..services.board.transfer.models import (
+from ..services.board.models import (
     BoardCategoryID,
     BoardID,
     PostingID,

@@ -10,7 +10,7 @@ from ....database import db
 from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
-from ..transfer.models import BoardID
+from ..models import BoardID
 
 
 class DbBoard(db.Model):
