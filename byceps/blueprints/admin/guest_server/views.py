@@ -13,11 +13,7 @@ from flask import abort, g, request, url_for
 from flask_babel import gettext
 
 from ....services.guest_server import guest_server_service
-from ....services.guest_server.transfer.models import (
-    Address,
-    IPAddress,
-    Setting,
-)
+from ....services.guest_server.models import Address, IPAddress, Setting
 from ....services.party import party_service
 from ....services.user import user_service
 from ....signals import guest_server as guest_server_signals

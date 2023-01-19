@@ -21,7 +21,7 @@ from ...database import db, generate_uuid
 from ...typing import PartyID, UserID
 from ...util.instances import ReprBuilder
 
-from .transfer.models import IPAddress
+from .models import IPAddress
 
 
 class DbSetting(db.Model):

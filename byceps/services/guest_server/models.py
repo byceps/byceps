@@ -1,6 +1,6 @@
 """
-byceps.services.guest_server.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.guest_server.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Modified BSD, see LICENSE for details.
@@ -13,7 +13,7 @@ from ipaddress import IPv4Address, IPv6Address
 from typing import NewType, Optional, Union
 from uuid import UUID
 
-from ....typing import PartyID, UserID
+from ...typing import PartyID, UserID
 
 
 IPAddress = Union[IPv4Address, IPv6Address]

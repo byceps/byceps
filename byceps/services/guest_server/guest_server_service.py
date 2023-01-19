@@ -18,7 +18,7 @@ from ..party import party_service
 from ..user import user_service
 
 from .dbmodels import DbAddress, DbServer, DbSetting
-from .transfer.models import (
+from .models import (
     Address,
     AddressID,
     IPAddress,

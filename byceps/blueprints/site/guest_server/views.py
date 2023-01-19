@@ -15,7 +15,7 @@ from flask_babel import gettext
 
 from ....services.global_setting import global_setting_service
 from ....services.guest_server import guest_server_service
-from ....services.guest_server.transfer.models import Address
+from ....services.guest_server.models import Address
 from ....services.ticketing import ticket_service
 from ....signals import guest_server as guest_server_signals
 from ....typing import PartyID
