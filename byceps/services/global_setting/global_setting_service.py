@@ -13,7 +13,7 @@ from sqlalchemy import delete, select
 from ...database import db, upsert
 
 from .dbmodels import DbSetting
-from .transfer.models import GlobalSetting
+from .models import GlobalSetting
 
 
 def create_setting(name: str, value: str) -> GlobalSetting:

@@ -1,6 +1,6 @@
 """
-byceps.services.attendance.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.attendance.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -9,8 +9,8 @@ byceps.services.attendance.transfer.models
 from dataclasses import dataclass
 from typing import Optional
 
-from ....services.seating.dbmodels.seat import DbSeat
-from ....services.user.dbmodels.user import DbUser
+from ...services.seating.dbmodels.seat import DbSeat
+from ...services.user.dbmodels.user import DbUser
 
 
 @dataclass  # Not yet frozen b/c models are not immutable.

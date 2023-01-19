@@ -4,7 +4,7 @@
 """
 
 from byceps.services.global_setting import global_setting_service
-from byceps.services.global_setting.transfer.models import GlobalSetting
+from byceps.services.global_setting.models import GlobalSetting
 
 
 def test_create(admin_app):

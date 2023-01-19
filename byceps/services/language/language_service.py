@@ -11,7 +11,7 @@ from sqlalchemy import select
 from ...database import db
 
 from .dbmodels import DbLanguage
-from .transfer.models import Language
+from .models import Language
 
 
 def create_language(code: str) -> Language:

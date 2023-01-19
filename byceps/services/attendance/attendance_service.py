@@ -19,7 +19,7 @@ from ..ticketing.dbmodels.category import DbTicketCategory
 from ..ticketing.dbmodels.ticket import DbTicket
 from ..user.dbmodels.user import DbUser
 
-from .transfer.models import Attendee, AttendeeTicket
+from .models import Attendee, AttendeeTicket
 
 
 def get_attendees_paginated(
