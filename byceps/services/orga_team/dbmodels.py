@@ -15,7 +15,7 @@ from ...util.instances import ReprBuilder
 from ..party.dbmodels.party import DbParty
 from ..user.dbmodels.user import DbUser
 
-from .transfer.models import OrgaTeamID
+from .models import OrgaTeamID
 
 
 class DbOrgaTeam(db.Model):

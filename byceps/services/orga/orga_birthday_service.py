@@ -17,7 +17,7 @@ from ..user.models.user import User, UserID
 from ..user import user_avatar_service
 
 from .dbmodels import DbOrgaFlag
-from .transfer.models import Birthday
+from .models import Birthday
 
 
 def get_orgas_with_birthday_today() -> set[User]:

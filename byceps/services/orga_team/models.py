@@ -1,6 +1,6 @@
 """
-byceps.services.orga_team.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.orga_team.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -10,10 +10,10 @@ from dataclasses import dataclass
 from typing import NewType, Optional
 from uuid import UUID
 
-from ....typing import PartyID, UserID
+from ...typing import PartyID, UserID
 
-from ...party.transfer.models import Party
-from ...user.models.user import User
+from ..party.transfer.models import Party
+from ..user.models.user import User
 
 
 OrgaTeamID = NewType('OrgaTeamID', UUID)

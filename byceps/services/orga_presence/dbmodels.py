@@ -7,6 +7,7 @@ byceps.services.orga_presence.dbmodels
 """
 
 from ...database import db, generate_uuid
+
 from ..user.dbmodels.user import DbUser
 
 

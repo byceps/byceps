@@ -1,6 +1,6 @@
 """
-byceps.services.orga.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.orga.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -10,8 +10,8 @@ from dataclasses import dataclass
 from datetime import date
 from typing import Optional
 
-from ....util.datetime.calc import calculate_age, calculate_days_until
-from ....util.datetime.monthday import MonthDay
+from ...util.datetime.calc import calculate_age, calculate_days_until
+from ...util.datetime.monthday import MonthDay
 
 
 @dataclass(frozen=True)

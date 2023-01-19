@@ -22,7 +22,7 @@ from ...util.datetime.range import create_adjacent_ranges, DateTimeRange
 from ..party import party_service
 
 from .dbmodels import DbPresence, DbTask, DbTimeSlot
-from .transfer.models import PresenceTimeSlot, TaskTimeSlot, TimeSlot
+from .models import PresenceTimeSlot, TaskTimeSlot, TimeSlot
 
 
 def create_presence(

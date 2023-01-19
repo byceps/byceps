@@ -1,6 +1,6 @@
 """
-byceps.services.orga_presence.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.orga_presence.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,10 +12,10 @@ from datetime import datetime
 from enum import Enum
 from uuid import UUID
 
-from ...party.transfer.models import Party
-from ...user.models.user import User
+from ..party.transfer.models import Party
+from ..user.models.user import User
 
-from ....util.datetime.range import DateTimeRange
+from ...util.datetime.range import DateTimeRange
 
 
 TimeSlotType = Enum('TimeSlotType', ['party', 'presence', 'task'])

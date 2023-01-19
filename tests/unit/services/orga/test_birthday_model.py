@@ -8,7 +8,7 @@ from datetime import date
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.orga.transfer.models import Birthday
+from byceps.services.orga.models import Birthday
 
 
 @pytest.mark.parametrize(
