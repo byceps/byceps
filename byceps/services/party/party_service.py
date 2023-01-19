@@ -21,7 +21,7 @@ from ..brand.dbmodels.brand import DbBrand
 
 from .dbmodels.party import DbParty
 from .dbmodels.setting import DbSetting
-from .transfer.models import Party, PartyWithBrand
+from .models import Party, PartyWithBrand
 
 
 class UnknownPartyId(Exception):

@@ -12,8 +12,8 @@ from typing import Iterator
 from flask import abort, g, request, url_for
 from flask_babel import gettext
 
+from .....services.party.models import Party
 from .....services.party import party_service
-from .....services.party.transfer.models import Party
 from .....services.shop.order import order_service
 from .....services.shop.shop import shop_service
 from .....services.ticketing.dbmodels.ticket import DbTicket
@@ -26,7 +26,7 @@ from .....services.ticketing import (
 from .....services.user.models.user import User
 from .....services.user import user_service
 from .....signals import ticketing as ticketing_signals
-from .....typing import BrandID, PartyID, UserID
+from .....typing import BrandID, PartyID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_notice, flash_success
 from .....util.framework.templating import templated

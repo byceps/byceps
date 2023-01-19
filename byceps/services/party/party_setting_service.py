@@ -14,7 +14,7 @@ from ...database import db, upsert
 from ...typing import PartyID
 
 from .dbmodels.setting import DbSetting
-from .transfer.models import PartySetting
+from .models import PartySetting
 
 
 def create_setting(party_id: PartyID, name: str, value: str) -> PartySetting:

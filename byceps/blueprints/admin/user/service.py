@@ -14,8 +14,8 @@ from uuid import UUID
 from ....services.consent import consent_service, consent_subject_service
 from ....services.newsletter import newsletter_service
 from ....services.newsletter.transfer.models import List as NewsletterList
+from ....services.party.models import Party
 from ....services.party import party_service
-from ....services.party.transfer.models import Party
 from ....services.shop.order import order_log_service, order_service
 from ....services.site import site_service
 from ....services.ticketing.dbmodels.ticket import DbTicket

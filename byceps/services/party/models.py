@@ -1,6 +1,6 @@
 """
-byceps.services.party.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.party.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -10,9 +10,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-from ....typing import BrandID, PartyID
+from ...typing import BrandID, PartyID
 
-from ...brand.models import Brand
+from ..brand.models import Brand
 
 
 @dataclass(frozen=True)

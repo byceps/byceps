@@ -8,8 +8,8 @@ byceps.blueprints.api.v1.ticketing
 
 from flask import abort, jsonify
 
+from .....services.party.models import Party
 from .....services.party import party_service
-from .....services.party.transfer.models import Party
 from .....services.ticketing import ticket_service
 
 from .....typing import PartyID

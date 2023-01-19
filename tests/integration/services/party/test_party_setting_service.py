@@ -5,8 +5,8 @@
 
 import pytest
 
+from byceps.services.party.models import PartySetting
 from byceps.services.party import party_setting_service
-from byceps.services.party.transfer.models import PartySetting
 
 
 PARTY_ID = 'favorite-party'

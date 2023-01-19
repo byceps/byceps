@@ -12,7 +12,7 @@ from datetime import datetime
 from enum import Enum
 from uuid import UUID
 
-from ..party.transfer.models import Party
+from ..party.models import Party
 from ..user.models.user import User
 
 from ...util.datetime.range import DateTimeRange

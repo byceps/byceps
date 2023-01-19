@@ -12,7 +12,7 @@ from uuid import UUID
 
 from ...typing import PartyID, UserID
 
-from ..party.transfer.models import Party
+from ..party.models import Party
 from ..user.models.user import User
 
 

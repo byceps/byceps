@@ -7,8 +7,8 @@ from datetime import date, datetime
 
 import pytest
 
+from byceps.services.party.models import Party
 from byceps.services.party import party_service
-from byceps.services.party.transfer.models import Party
 from byceps.typing import BrandID, PartyID
 
 

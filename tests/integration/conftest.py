@@ -22,7 +22,7 @@ from byceps.services.email.transfer.models import EmailConfig
 from byceps.services.language import language_service
 from byceps.services.news.models import NewsChannel, NewsChannelID
 from byceps.services.news import news_channel_service
-from byceps.services.party.transfer.models import Party
+from byceps.services.party.models import Party
 from byceps.services.shop.article.models import Article
 from byceps.services.shop.order.models.number import (
     OrderNumberSequence,

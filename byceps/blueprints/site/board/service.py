@@ -20,8 +20,8 @@ from ....services.board import (
 )
 from ....services.board.models import BoardCategoryWithLastUpdate
 from ....services.orga_team import orga_team_service
+from ....services.party.models import Party
 from ....services.party import party_service
-from ....services.party.transfer.models import Party
 from ....services.site import site_setting_service
 from ....services.ticketing import ticket_service
 from ....services.user import user_service

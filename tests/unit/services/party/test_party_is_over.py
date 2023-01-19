@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from freezegun import freeze_time
 import pytest
 
-from byceps.services.party.transfer.models import Party
+from byceps.services.party.models import Party
 from byceps.typing import BrandID, PartyID
 
 
