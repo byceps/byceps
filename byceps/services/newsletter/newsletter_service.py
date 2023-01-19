@@ -16,7 +16,7 @@ from ...typing import UserID
 from ..user.dbmodels.user import DbUser
 
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
-from .transfer.models import List, ListID, Subscriber
+from .models import List, ListID, Subscriber
 
 
 def find_list(list_id: ListID) -> Optional[List]:

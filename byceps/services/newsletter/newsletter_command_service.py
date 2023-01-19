@@ -15,8 +15,8 @@ from ...database import db
 from ...typing import UserID
 
 from .dbmodels import DbList, DbSubscription, DbSubscriptionUpdate
+from .models import List, ListID
 from . import newsletter_service
-from .transfer.models import List, ListID
 from .types import SubscriptionState
 
 

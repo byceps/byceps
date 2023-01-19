@@ -18,7 +18,7 @@ from ...database import db
 from ...typing import UserID
 from ...util.instances import ReprBuilder
 
-from .transfer.models import ListID
+from .models import ListID
 from .types import SubscriptionState
 
 

@@ -11,8 +11,8 @@ from operator import attrgetter
 
 from flask import abort
 
+from ....services.newsletter.models import List
 from ....services.newsletter import newsletter_service
-from ....services.newsletter.transfer.models import List
 from ....services.user import user_stats_service
 from ....util.framework.blueprint import create_blueprint
 from ....util.framework.templating import templated
