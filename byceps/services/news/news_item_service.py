@@ -30,8 +30,7 @@ from .dbmodels.item import (
     DbNewsItem,
     DbNewsItemVersion,
 )
-from . import news_channel_service, news_html_service, news_image_service
-from .transfer.models import (
+from .models import (
     BodyFormat,
     NewsChannelID,
     NewsHeadline,
@@ -40,6 +39,7 @@ from .transfer.models import (
     NewsItemID,
     NewsItemVersionID,
 )
+from . import news_channel_service, news_html_service, news_image_service
 
 
 def create_item(

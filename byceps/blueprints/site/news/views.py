@@ -11,8 +11,8 @@ from typing import Optional
 
 from flask import abort, g
 
+from ....services.news.models import NewsChannelID, NewsItem
 from ....services.news import news_item_service
-from ....services.news.transfer.models import NewsChannelID, NewsItem
 from ....services.site import site_service, site_setting_service
 from ....services.site.transfer.models import SiteID
 from ....util.authorization import has_current_user_permission

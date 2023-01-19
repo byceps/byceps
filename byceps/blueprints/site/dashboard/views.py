@@ -17,8 +17,8 @@ from ....services.board import (
     board_topic_query_service,
 )
 from ....services.guest_server import guest_server_service
+from ....services.news.models import NewsHeadline
 from ....services.news import news_item_service
-from ....services.news.transfer.models import NewsHeadline
 from ....services.shop.order import order_service
 from ....services.shop.order.transfer.order import Order
 from ....services.shop.storefront import storefront_service

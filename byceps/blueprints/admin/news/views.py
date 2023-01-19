@@ -13,13 +13,13 @@ from flask_babel import format_datetime, gettext, to_utc
 
 from ....services.brand import brand_service
 from ....services.image import image_service
+from ....services.news.models import NewsChannel
 from ....services.news import (
     news_channel_service,
     news_html_service,
     news_image_service,
     news_item_service,
 )
-from ....services.news.transfer.models import NewsChannel
 from ....services.site import site_service
 from ....services.text_diff import text_diff_service
 from ....services.user import user_service

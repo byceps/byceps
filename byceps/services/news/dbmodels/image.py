@@ -13,7 +13,7 @@ from ....database import db
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ..transfer.models import NewsImageID, NewsItemID
+from ..models import NewsImageID, NewsItemID
 
 from .item import DbNewsItem
 

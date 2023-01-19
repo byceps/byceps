@@ -14,7 +14,7 @@ from ....util.instances import ReprBuilder
 
 from ...site.transfer.models import SiteID
 
-from ..transfer.models import NewsChannelID
+from ..models import NewsChannelID
 
 
 class DbNewsChannel(db.Model):

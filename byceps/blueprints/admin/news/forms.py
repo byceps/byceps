@@ -21,7 +21,7 @@ from wtforms import (
 )
 from wtforms.validators import InputRequired, Length, Optional, Regexp
 
-from ....services.news.transfer.models import BodyFormat
+from ....services.news.models import BodyFormat
 from ....services.site import site_service
 from ....typing import BrandID
 from ....util.l10n import LocalizedForm

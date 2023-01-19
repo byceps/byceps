@@ -20,8 +20,8 @@ from byceps.services.brand.transfer.models import Brand
 from byceps.services.email import email_config_service
 from byceps.services.email.transfer.models import EmailConfig
 from byceps.services.language import language_service
+from byceps.services.news.models import NewsChannel, NewsChannelID
 from byceps.services.news import news_channel_service
-from byceps.services.news.transfer.models import NewsChannel, NewsChannelID
 from byceps.services.party.transfer.models import Party
 from byceps.services.shop.article.transfer.models import Article
 from byceps.services.shop.order import order_sequence_service

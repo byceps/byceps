@@ -17,7 +17,7 @@ from ..brand import brand_service
 from ..site.transfer.models import SiteID
 
 from .dbmodels.channel import DbNewsChannel
-from .transfer.models import NewsChannel, NewsChannelID
+from .models import NewsChannel, NewsChannelID
 
 
 def create_channel(

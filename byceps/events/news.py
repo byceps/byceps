@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import Optional
 
-from ..services.news.transfer.models import NewsChannelID, NewsItemID
+from ..services.news.models import NewsChannelID, NewsItemID
 
 from .base import _BaseEvent
 

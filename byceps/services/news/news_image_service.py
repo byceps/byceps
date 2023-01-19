@@ -20,8 +20,8 @@ from ..image import image_service
 from ..user import user_service
 
 from .dbmodels.image import DbNewsImage
+from .models import NewsChannelID, NewsImage, NewsImageID, NewsItemID
 from . import news_item_service
-from .transfer.models import NewsChannelID, NewsImage, NewsImageID, NewsItemID
 
 
 ALLOWED_IMAGE_TYPES = frozenset(

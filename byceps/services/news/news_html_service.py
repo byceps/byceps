@@ -19,7 +19,7 @@ import mistletoe
 from ...util.iterables import find
 from ...util.templating import load_template
 
-from .transfer.models import BodyFormat, NewsImage, NewsItem
+from .models import BodyFormat, NewsImage, NewsItem
 
 
 def render_body(item: NewsItem, raw_body: str, body_format: BodyFormat) -> str:

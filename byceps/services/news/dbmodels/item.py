@@ -22,7 +22,7 @@ from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import DbUser
 
-from ..transfer.models import BodyFormat, NewsChannelID
+from ..models import BodyFormat, NewsChannelID
 
 from .channel import DbNewsChannel
 

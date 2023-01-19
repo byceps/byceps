@@ -1,6 +1,6 @@
 """
-byceps.services.news.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.news.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -12,7 +12,7 @@ from enum import Enum
 from typing import NewType, Optional
 from uuid import UUID
 
-from ....typing import BrandID, UserID
+from ...typing import BrandID, UserID
 
 
 NewsChannelID = NewType('NewsChannelID', str)
