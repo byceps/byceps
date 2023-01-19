@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.shop.shop.models import Shop
-from byceps.services.snippet.transfer.models import SnippetID
+from byceps.services.snippet.models import SnippetID
 from byceps.services.user.models.user import User
 
 from tests.helpers.shop import create_shop_snippet

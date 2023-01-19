@@ -22,7 +22,7 @@ from .dbmodels import (
     DbSnippet,
     DbSnippetVersion,
 )
-from .transfer.models import Scope, SnippetID, SnippetVersionID
+from .models import Scope, SnippetID, SnippetVersionID
 
 
 def create_snippet(

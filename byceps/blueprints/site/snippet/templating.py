@@ -12,8 +12,8 @@ from flask import g
 from jinja2 import Template
 
 from ....services.snippet.dbmodels import DbSnippetVersion
+from ....services.snippet.models import Scope
 from ....services.snippet import snippet_service
-from ....services.snippet.transfer.models import Scope
 from ....util.templating import load_template
 
 

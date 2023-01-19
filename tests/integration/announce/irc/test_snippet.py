@@ -6,8 +6,8 @@
 import pytest
 
 import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
+from byceps.services.snippet.models import Scope
 from byceps.services.snippet import snippet_service
-from byceps.services.snippet.transfer.models import Scope
 from byceps.signals import snippet as snippet_signals
 
 from .helpers import assert_submitted_text, mocked_irc_bot

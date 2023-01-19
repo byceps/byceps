@@ -11,7 +11,7 @@ Announce snippet events.
 from flask_babel import gettext
 
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
-from ...services.snippet.transfer.models import Scope
+from ...services.snippet.models import Scope
 
 from ._helpers import get_screen_name_or_fallback, with_locale
 

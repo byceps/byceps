@@ -5,8 +5,8 @@
 
 import pytest
 
+from byceps.services.snippet.models import Scope
 from byceps.services.snippet import snippet_service
-from byceps.services.snippet.transfer.models import Scope
 
 
 CONTENT_TYPE_JSON = 'application/json'

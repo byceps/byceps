@@ -21,8 +21,8 @@ from byceps.services.shop.article.models import (
 from byceps.services.shop.article import article_service
 from byceps.services.shop.order.models.order import Orderer
 from byceps.services.shop.shop.models import ShopID
+from byceps.services.snippet.models import Scope, SnippetID
 from byceps.services.snippet import snippet_service
-from byceps.services.snippet.transfer.models import Scope, SnippetID
 from byceps.services.ticketing.models.ticket import TicketCategoryID
 from byceps.services.user import user_service
 from byceps.typing import UserID

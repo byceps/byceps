@@ -21,7 +21,7 @@ from ...util.instances import ReprBuilder
 from ..user.dbmodels.user import DbUser
 from ..language.dbmodels import DbLanguage
 
-from .transfer.models import Scope
+from .models import Scope
 
 
 class DbSnippet(db.Model):

@@ -1,6 +1,6 @@
 """
-byceps.services.snippet.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.snippet.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,9 +11,9 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from ...site.models import SiteID
+from ..site.models import SiteID
 
-from ....typing import BrandID
+from ...typing import BrandID
 
 
 @dataclass(frozen=True)

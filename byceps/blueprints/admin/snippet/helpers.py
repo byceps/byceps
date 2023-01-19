@@ -14,12 +14,8 @@ from ....services.brand.transfer.models import Brand
 from ....services.site.models import Site, SiteID
 from ....services.site import site_service
 from ....services.snippet.dbmodels import DbSnippet, DbSnippetVersion
+from ....services.snippet.models import Scope, SnippetID, SnippetVersionID
 from ....services.snippet import snippet_service
-from ....services.snippet.transfer.models import (
-    Scope,
-    SnippetID,
-    SnippetVersionID,
-)
 from ....typing import BrandID
 
 

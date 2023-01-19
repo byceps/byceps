@@ -17,8 +17,8 @@ from .....services.email.transfer.models import Message
 from .....services.shop.order.models.order import Order, OrderID
 from .....services.shop.order import order_service
 from .....services.shop.shop import shop_service
+from .....services.snippet.models import Scope
 from .....services.snippet import snippet_service
-from .....services.snippet.transfer.models import Scope
 from .....services.user.models.user import User
 from .....services.user import user_service
 from .....typing import BrandID

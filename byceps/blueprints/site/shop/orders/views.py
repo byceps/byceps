@@ -14,7 +14,7 @@ from .....services.shop.order import order_service
 from .....services.shop.order.models.order import PaymentState
 from .....services.shop.storefront import storefront_service
 from .....services.site import site_service
-from .....services.snippet.transfer.models import Scope
+from .....services.snippet.models import Scope
 from .....signals import shop as shop_signals
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_error, flash_success

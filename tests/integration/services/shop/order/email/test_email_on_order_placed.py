@@ -15,7 +15,7 @@ from byceps.services.shop.order.email import order_email_service
 from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.shop.models import Shop
 from byceps.services.shop.storefront.models import Storefront
-from byceps.services.snippet.transfer.models import SnippetID
+from byceps.services.snippet.models import SnippetID
 from byceps.services.user.models.user import User
 
 from tests.helpers import current_user_set
