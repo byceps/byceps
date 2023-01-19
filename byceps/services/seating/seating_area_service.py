@@ -18,7 +18,7 @@ from ..ticketing.dbmodels.ticket import DbTicket
 
 from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat
-from .transfer.models import SeatingArea, SeatingAreaID, SeatUtilization
+from .models import SeatingArea, SeatingAreaID, SeatUtilization
 
 
 def create_area(party_id: PartyID, slug: str, title: str) -> SeatingArea:

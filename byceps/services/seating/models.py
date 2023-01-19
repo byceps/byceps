@@ -1,6 +1,6 @@
 """
-byceps.services.seating.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.seating.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -10,9 +10,9 @@ from dataclasses import dataclass
 from typing import NewType, Optional
 from uuid import UUID
 
-from ....typing import PartyID
+from ...typing import PartyID
 
-from ...ticketing.models.ticket import TicketCategoryID
+from ..ticketing.models.ticket import TicketCategoryID
 
 
 SeatingAreaID = NewType('SeatingAreaID', UUID)

@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from itertools import chain
 from typing import Iterable, Iterator, Optional
 
-from ....services.seating.transfer.models import Seat
+from ....services.seating.models import Seat
 from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.ticketing.models.ticket import TicketCode, TicketID
 from ....services.user.models.user import User

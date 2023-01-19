@@ -19,7 +19,7 @@ from ..ticketing.models.ticket import TicketCategory, TicketCategoryID
 
 from .dbmodels.area import DbSeatingArea
 from .dbmodels.seat import DbSeat
-from .transfer.models import Seat, SeatID, SeatingAreaID, SeatUtilization
+from .models import Seat, SeatID, SeatingAreaID, SeatUtilization
 
 
 def create_seat(

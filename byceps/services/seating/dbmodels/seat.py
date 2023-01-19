@@ -20,7 +20,7 @@ from ....util.instances import ReprBuilder
 from ...ticketing.dbmodels.category import DbTicketCategory
 from ...ticketing.models.ticket import TicketCategoryID
 
-from ..transfer.models import SeatingAreaID
+from ..models import SeatingAreaID
 
 from .area import DbSeatingArea
 

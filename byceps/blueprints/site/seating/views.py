@@ -10,8 +10,8 @@ from flask import abort, g, request
 from flask_babel import gettext
 
 from ....services.party import party_service
+from ....services.seating.models import Seat, SeatID
 from ....services.seating import seat_service, seating_area_service
-from ....services.seating.transfer.models import Seat, SeatID
 from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.ticketing.models.ticket import TicketID
 from ....services.ticketing import (

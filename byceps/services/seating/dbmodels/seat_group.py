@@ -16,7 +16,7 @@ from ...ticketing.dbmodels.category import DbTicketCategory
 from ...ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from ...ticketing.models.ticket import TicketBundleID, TicketCategoryID
 
-from ..transfer.models import SeatID
+from ..models import SeatID
 
 from .seat import DbSeat
 

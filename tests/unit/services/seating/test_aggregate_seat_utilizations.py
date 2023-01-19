@@ -3,8 +3,8 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.services.seating.models import SeatUtilization
 from byceps.services.seating import seat_service
-from byceps.services.seating.transfer.models import SeatUtilization
 
 
 def test_aggregate_seat_utilizations():

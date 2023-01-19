@@ -11,8 +11,8 @@ from ...typing import UserID
 
 # Load `Seat.assignment` backref.
 from ..seating.dbmodels.seat_group import DbSeatGroup  # noqa: F401
+from ..seating.models import Seat, SeatID
 from ..seating import seat_service, seat_group_service
-from ..seating.transfer.models import Seat, SeatID
 
 from .exceptions import (
     SeatChangeDeniedForBundledTicket,

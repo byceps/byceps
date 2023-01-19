@@ -11,8 +11,8 @@ from uuid import UUID
 import click
 
 from byceps.services.seating.dbmodels.seat_group import DbSeatGroup
+from byceps.services.seating.models import SeatGroupID
 from byceps.services.seating import seat_group_service
-from byceps.services.seating.transfer.models import SeatGroupID
 from byceps.services.ticketing.dbmodels.ticket_bundle import DbTicketBundle
 from byceps.services.ticketing.models.ticket import TicketBundleID
 from byceps.services.ticketing import ticket_bundle_service
