@@ -21,8 +21,8 @@ from ...typing import UserID
 
 from ..site import site_service
 from ..site.transfer.models import SiteID
+from ..user.models.user import User
 from ..user import user_service
-from ..user.transfer.models import User
 
 from .dbmodels.channel import DbNewsChannel
 from .dbmodels.item import (

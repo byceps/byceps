@@ -18,7 +18,7 @@ from ...typing import UserID
 from .dbmodels.avatar import DbUserAvatar
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
-from .transfer.models import (
+from .models.user import (
     User,
     UserDetail,
     UserEmailAddress,

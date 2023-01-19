@@ -17,7 +17,7 @@ from .....database import generate_uuid
 from .....typing import BrandID, UserID
 
 from ....email.transfer.models import Message
-from ....user.transfer.models import User
+from ....user.models.user import User
 
 from ...shop import shop_service
 from ...shop.transfer.models import ShopID

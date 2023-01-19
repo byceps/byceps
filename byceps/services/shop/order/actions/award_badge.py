@@ -8,8 +8,8 @@ byceps.services.shop.order.actions.award_badge
 
 from .....typing import UserID
 
+from ....user_badge.models import BadgeAwarding
 from ....user_badge import user_badge_awarding_service, user_badge_service
-from ....user_badge.transfer.models import BadgeAwarding
 
 from .. import order_log_service
 from ..transfer.action import ActionParameters

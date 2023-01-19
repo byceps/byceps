@@ -19,8 +19,8 @@ from .....services.shop.order.transfer.order import Order, OrderID
 from .....services.shop.shop import shop_service
 from .....services.snippet import snippet_service
 from .....services.snippet.transfer.models import Scope
+from .....services.user.models.user import User
 from .....services.user import user_service
-from .....services.user.transfer.models import User
 from .....typing import BrandID
 from .....util.l10n import force_user_locale
 from .....util.templating import load_template

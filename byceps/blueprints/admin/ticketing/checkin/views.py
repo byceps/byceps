@@ -23,8 +23,8 @@ from .....services.ticketing import (
     ticket_user_checkin_service,
 )
 from .....services.ticketing.transfer.models import TicketID
+from .....services.user.models.user import User
 from .....services.user import user_service
-from .....services.user.transfer.models import User
 from .....signals import ticketing as ticketing_signals
 from .....typing import BrandID, PartyID, UserID
 from .....util.framework.blueprint import create_blueprint

@@ -10,8 +10,8 @@ from ...database import db
 from ...events.ticketing import TicketCheckedIn
 from ...typing import PartyID, UserID
 
+from ..user.models.user import User
 from ..user import user_service
-from ..user.transfer.models import User
 
 from .exceptions import (
     TicketBelongsToDifferentParty,

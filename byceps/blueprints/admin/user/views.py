@@ -25,6 +25,7 @@ from ....services.orga_team import orga_team_service
 from ....services.shop.order import order_service
 from ....services.shop.shop import shop_service
 from ....services.site import site_service
+from ....services.user.models.user import UserForAdmin, UserStateFilter
 from ....services.user import (
     user_command_service,
     user_creation_service,
@@ -33,7 +34,6 @@ from ....services.user import (
     user_service,
     user_stats_service,
 )
-from ....services.user.transfer.models import UserForAdmin, UserStateFilter
 from ....services.user_badge import user_badge_awarding_service
 from ....signals import user as user_signals
 from ....util.authorization import permission_registry

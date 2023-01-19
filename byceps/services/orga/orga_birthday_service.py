@@ -13,7 +13,7 @@ from ...database import db
 
 from ..user.dbmodels.detail import DbUserDetail
 from ..user.dbmodels.user import DbUser
-from ..user.transfer.models import User, UserID
+from ..user.models.user import User, UserID
 from ..user import user_avatar_service
 
 from .dbmodels import DbOrgaFlag

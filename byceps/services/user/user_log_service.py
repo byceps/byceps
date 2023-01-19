@@ -15,7 +15,7 @@ from ...database import db
 from ...typing import UserID
 
 from .dbmodels.log import DbUserLogEntry
-from .transfer.log import UserLogEntry, UserLogEntryData
+from .models.log import UserLogEntry, UserLogEntryData
 
 
 def create_entry(

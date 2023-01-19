@@ -11,7 +11,7 @@ from byceps.services.authentication.session.models.current_user import (
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_service
-from byceps.services.user.transfer.models import User
+from byceps.services.user.models.user import User
 
 
 def get_current_user_for_user(user: User, locale: str) -> CurrentUser:

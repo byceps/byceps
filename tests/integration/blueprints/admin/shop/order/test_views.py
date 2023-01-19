@@ -32,7 +32,7 @@ from byceps.services.shop.storefront.transfer.models import (
     Storefront,
     StorefrontID,
 )
-from byceps.services.user.transfer.models import User
+from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
 from tests.helpers import log_in_user

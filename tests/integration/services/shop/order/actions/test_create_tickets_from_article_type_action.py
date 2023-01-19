@@ -19,7 +19,7 @@ from byceps.services.ticketing.ticket_creation_service import (
     TicketCreationFailed,
 )
 from byceps.services.ticketing.transfer.models import TicketCategory
-from byceps.services.user.transfer.models import User
+from byceps.services.user.models.user import User
 
 from tests.helpers.shop import create_ticket_article
 

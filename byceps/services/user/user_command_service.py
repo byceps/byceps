@@ -28,9 +28,9 @@ from ..authorization.transfer.models import RoleID
 
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
+from .models.log import UserLogEntryData
+from .models.user import User
 from . import user_log_service, user_service
-from .transfer.log import UserLogEntryData
-from .transfer.models import User
 
 
 def initialize_account(

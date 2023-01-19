@@ -40,7 +40,7 @@ from byceps.services.shop.storefront.transfer.models import (
 from byceps.services.site.transfer.models import Site, SiteID
 from byceps.services.ticketing import ticket_category_service
 from byceps.services.ticketing.transfer.models import TicketCategory
-from byceps.services.user.transfer.models import User
+from byceps.services.user.models.user import User
 from byceps.typing import BrandID, PartyID, UserID
 
 from tests.helpers import (

@@ -25,8 +25,8 @@ from ....services.party.transfer.models import Party
 from ....services.site import site_setting_service
 from ....services.ticketing import ticket_service
 from ....services.user import user_service
+from ....services.user_badge.models import Badge
 from ....services.user_badge import user_badge_awarding_service
-from ....services.user_badge.transfer.models import Badge
 from ....util.authorization import has_current_user_permission
 from ....typing import BrandID, PartyID, UserID
 

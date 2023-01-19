@@ -1,6 +1,6 @@
 """
-byceps.services.user.transfer.log
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user.models.log
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)

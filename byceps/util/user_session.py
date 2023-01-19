@@ -14,8 +14,8 @@ from flask import session
 
 from ..services.authentication.session.models.current_user import CurrentUser
 from ..services.authentication.session import authn_session_service
+from ..services.user.models.user import User
 from ..services.user import user_service
-from ..services.user.transfer.models import User
 from ..typing import UserID
 
 from .authorization import get_permissions_for_user

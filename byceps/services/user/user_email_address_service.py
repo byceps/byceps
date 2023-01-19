@@ -27,8 +27,8 @@ from ..user import user_command_service, user_service
 from ..verification_token.transfer.models import VerificationToken
 from ..verification_token import verification_token_service
 
+from .models.user import User
 from . import user_log_service
-from .transfer.models import User
 
 
 def send_email_address_confirmation_email_for_site(

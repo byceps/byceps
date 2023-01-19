@@ -14,7 +14,7 @@ from ...database import db
 from ...typing import BrandID
 
 from .dbmodels.badge import DbBadge
-from .transfer.models import Badge, BadgeID
+from .models import Badge, BadgeID
 
 
 def create_badge(

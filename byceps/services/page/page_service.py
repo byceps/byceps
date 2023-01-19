@@ -15,8 +15,8 @@ from ...database import db
 from ...events.page import PageCreated, PageDeleted, PageUpdated
 from ...services.site.transfer.models import SiteID
 from ...services.site_navigation.transfer.models import NavMenuID
+from ...services.user.models.user import User
 from ...services.user import user_service
-from ...services.user.transfer.models import User
 from ...typing import UserID
 
 from .dbmodels import DbCurrentPageVersionAssociation, DbPage, DbPageVersion

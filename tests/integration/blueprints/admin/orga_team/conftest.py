@@ -11,7 +11,7 @@ import pytest
 from byceps.services.orga_team import orga_team_service
 from byceps.services.orga_team.transfer.models import OrgaTeam
 from byceps.services.party.transfer.models import PartyID
-from byceps.services.user.transfer.models import User
+from byceps.services.user.models.user import User
 
 from tests.helpers import generate_token, log_in_user
 

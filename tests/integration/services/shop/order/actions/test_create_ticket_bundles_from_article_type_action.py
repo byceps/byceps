@@ -17,7 +17,7 @@ from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing import ticket_service, ticket_bundle_service
 from byceps.services.ticketing.transfer.models import TicketCategory
-from byceps.services.user.transfer.models import User
+from byceps.services.user.models.user import User
 
 from tests.helpers.shop import create_ticket_bundle_article
 

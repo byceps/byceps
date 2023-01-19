@@ -11,8 +11,8 @@ from dataclasses import dataclass
 from typing import Optional
 
 from ....services.board.transfer.models import BoardCategoryWithLastUpdate
-from ....services.user.transfer.models import User
-from ....services.user_badge.transfer.models import Badge
+from ....services.user.models.user import User
+from ....services.user_badge.models import Badge
 from ....typing import UserID
 
 

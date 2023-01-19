@@ -16,8 +16,8 @@ from ....services.ticketing.transfer.log import (
     TicketLogEntryData,
 )
 from ....services.ticketing.transfer.models import TicketID
+from ....services.user.models.user import User
 from ....services.user import user_service
-from ....services.user.transfer.models import User
 
 
 def get_log_entries(ticket_id: TicketID) -> Iterator[TicketLogEntryData]:

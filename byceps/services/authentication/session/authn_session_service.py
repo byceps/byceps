@@ -17,8 +17,8 @@ from ....events.auth import UserLoggedIn
 from ....typing import UserID
 
 from ...site.transfer.models import SiteID
+from ...user.models.user import User
 from ...user import user_log_service, user_service
-from ...user.transfer.models import User
 
 from .dbmodels.recent_login import DbRecentLogin
 from .dbmodels.session_token import DbSessionToken

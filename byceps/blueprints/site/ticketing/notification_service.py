@@ -13,8 +13,8 @@ from ....services.email import email_config_service, email_service
 from ....services.party import party_service
 from ....services.site import site_service
 from ....services.ticketing.dbmodels.ticket import DbTicket
+from ....services.user.models.user import User
 from ....services.user import user_service
-from ....services.user.transfer.models import User
 from ....util.l10n import force_user_locale
 
 

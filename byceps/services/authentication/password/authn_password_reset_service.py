@@ -12,8 +12,8 @@ from ....util.l10n import force_user_locale
 
 from ...email import email_service
 from ...email.transfer.models import NameAndAddress
+from ...user.models.user import User
 from ...user import user_service
-from ...user.transfer.models import User
 from ...verification_token.transfer.models import VerificationToken
 from ...verification_token import verification_token_service
 

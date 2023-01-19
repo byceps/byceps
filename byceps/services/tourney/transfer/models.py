@@ -14,7 +14,7 @@ from uuid import UUID
 
 from ....typing import PartyID
 
-from ...user.transfer.models import User
+from ...user.models.user import User
 
 
 TourneyCategoryID = NewType('TourneyCategoryID', UUID)

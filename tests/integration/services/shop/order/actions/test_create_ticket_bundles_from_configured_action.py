@@ -20,7 +20,7 @@ from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing import ticket_service, ticket_bundle_service
 from byceps.services.ticketing.transfer.models import TicketCategory
-from byceps.services.user.transfer.models import User
+from byceps.services.user.models.user import User
 
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 

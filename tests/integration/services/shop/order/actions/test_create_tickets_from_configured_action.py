@@ -22,7 +22,7 @@ from byceps.services.ticketing.ticket_creation_service import (
     TicketCreationFailed,
 )
 from byceps.services.ticketing.transfer.models import TicketCategory
-from byceps.services.user.transfer.models import User
+from byceps.services.user.models.user import User
 
 from .helpers import get_tickets_for_order, mark_order_as_paid, place_order
 

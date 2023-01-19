@@ -20,8 +20,8 @@ from ..email import email_config_service, email_service
 from ..email.transfer.models import Message
 from ..site import site_service
 from ..site.transfer.models import SiteID
+from ..user.models.user import User
 from ..user import user_service
-from ..user.transfer.models import User
 
 
 def send_message(

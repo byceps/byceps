@@ -21,8 +21,8 @@ from ..site.transfer.models import SiteID
 from . import user_email_address_service, user_log_service
 from .dbmodels.detail import DbUserDetail
 from .dbmodels.user import DbUser
+from .models.user import User
 from . import user_service
-from .transfer.models import User
 
 
 class UserCreationFailed(Exception):

@@ -19,8 +19,8 @@ from ..party import party_service
 from ..party.transfer.models import PartyID
 from ..user.dbmodels.detail import DbUserDetail
 from ..user.dbmodels.user import DbUser
+from ..user.models.user import User
 from ..user import user_service
-from ..user.transfer.models import User
 
 from .dbmodels import DbMembership, DbOrgaTeam
 from .transfer.models import (

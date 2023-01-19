@@ -12,7 +12,7 @@ from ....database import db, generate_uuid
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
-from ..transfer.log import UserLogEntryData
+from ..models.log import UserLogEntryData
 
 
 class DbUserLogEntry(db.Model):

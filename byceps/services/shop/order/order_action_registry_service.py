@@ -7,7 +7,7 @@ byceps.services.shop.order.order_action_registry_service
 """
 
 from ...ticketing.transfer.models import TicketCategoryID
-from ...user_badge.transfer.models import BadgeID
+from ...user_badge.models import BadgeID
 
 from ..article.transfer.models import ArticleID
 

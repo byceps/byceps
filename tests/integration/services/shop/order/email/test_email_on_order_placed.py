@@ -16,7 +16,7 @@ from byceps.services.shop.order.transfer.order import Order, Orderer
 from byceps.services.shop.shop.transfer.models import Shop
 from byceps.services.shop.storefront.transfer.models import Storefront
 from byceps.services.snippet.transfer.models import SnippetID
-from byceps.services.user.transfer.models import User
+from byceps.services.user.models.user import User
 
 from tests.helpers import current_user_set
 

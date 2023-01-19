@@ -13,7 +13,7 @@ import structlog
 from .....services.authentication.exceptions import AuthenticationFailed
 from .....services.authentication import authn_service
 from .....services.authentication.session import authn_session_service
-from .....services.user.transfer.models import User
+from .....services.user.models.user import User
 from .....signals import auth as auth_signals
 from .....util.authorization import get_permissions_for_user
 from .....util.framework.blueprint import create_blueprint

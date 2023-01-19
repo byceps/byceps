@@ -23,8 +23,8 @@ from ....services.ticketing import ticket_attendance_service, ticket_service
 from ....services.user.dbmodels.avatar import (
     get_absolute_url_path as get_absolute_url_path_for_avatar,
 )
-from ....services.user.transfer.log import UserLogEntry, UserLogEntryData
-from ....services.user.transfer.models import User
+from ....services.user.models.log import UserLogEntry, UserLogEntryData
+from ....services.user.models.user import User
 from ....services.user import user_log_service, user_service
 from ....services.user_badge import user_badge_service as user_badge_service
 from ....typing import PartyID, UserID

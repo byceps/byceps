@@ -16,7 +16,7 @@ from flask import current_app, g, request
 from flask_babel import force_locale, get_locale
 from wtforms import Form
 
-from ..services.user.transfer.models import User
+from ..services.user.models.user import User
 
 
 def get_current_user_locale() -> Optional[str]:

@@ -14,7 +14,7 @@ from byceps.services.user_badge import (
     user_badge_service,
 )
 from byceps.services.user_badge.dbmodels.awarding import DbBadgeAwarding
-from byceps.services.user_badge.transfer.models import QuantifiedBadgeAwarding
+from byceps.services.user_badge.models import QuantifiedBadgeAwarding
 
 
 @pytest.fixture

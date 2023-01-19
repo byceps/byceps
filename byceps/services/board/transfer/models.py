@@ -13,7 +13,7 @@ from uuid import UUID
 
 from ....typing import BrandID
 
-from ...user.transfer.models import User
+from ...user.models.user import User
 
 
 BoardID = NewType('BoardID', str)

@@ -11,8 +11,8 @@ from typing import Optional
 
 from ...database import db
 from ...services.text_markup import text_markup_service
+from ...services.user.models.user import User
 from ...services.user import user_service
-from ...services.user.transfer.models import User
 from ...typing import UserID
 
 from .dbmodels.match_comment import DbMatchComment

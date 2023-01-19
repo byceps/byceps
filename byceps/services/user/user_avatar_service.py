@@ -23,7 +23,7 @@ from ..image.image_service import (
 
 from .dbmodels.avatar import DbUserAvatar
 from .dbmodels.user import DbUser
-from .transfer.models import UserAvatarID
+from .models.user import UserAvatarID
 from . import user_log_service, user_service
 
 

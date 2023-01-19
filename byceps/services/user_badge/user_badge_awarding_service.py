@@ -16,12 +16,12 @@ from ...database import db
 from ...events.user_badge import UserBadgeAwarded
 from ...typing import UserID
 
+from ..user.models.user import User
 from ..user import user_log_service, user_service
-from ..user.transfer.models import User
 
 from .dbmodels.awarding import DbBadgeAwarding
 from .dbmodels.badge import DbBadge
-from .transfer.models import (
+from .models import (
     Badge,
     BadgeAwarding,
     BadgeID,

@@ -11,7 +11,7 @@ from datetime import datetime
 from ....database import db, generate_uuid
 from ....typing import UserID
 
-from ..transfer.models import BadgeID
+from ..models import BadgeID
 
 
 class DbBadgeAwarding(db.Model):

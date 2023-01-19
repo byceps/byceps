@@ -10,7 +10,7 @@ from freezegun import freeze_time
 from byceps.database import generate_uuid
 from byceps.services.orga import orga_birthday_service
 from byceps.services.orga.transfer.models import Birthday
-from byceps.services.user.transfer.models import User
+from byceps.services.user.models.user import User
 from byceps.typing import UserID
 
 

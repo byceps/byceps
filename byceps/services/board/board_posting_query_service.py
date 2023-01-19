@@ -14,8 +14,8 @@ from ...database import db, paginate, Pagination
 from ...typing import UserID
 from ...util.iterables import index_of
 
+from ..user.models.user import User
 from ..user import user_service
-from ..user.transfer.models import User
 
 from .dbmodels.category import DbBoardCategory
 from .dbmodels.posting import DbPosting

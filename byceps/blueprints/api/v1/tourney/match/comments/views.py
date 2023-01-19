@@ -24,8 +24,8 @@ from .......services.tourney.transfer.models import (
     MatchComment,
     MatchCommentID,
 )
+from .......services.user.models.user import User
 from .......services.user import user_service
-from .......services.user.transfer.models import User
 from .......signals import tourney as tourney_signals
 from .......typing import UserID
 from .......util.framework.blueprint import create_blueprint

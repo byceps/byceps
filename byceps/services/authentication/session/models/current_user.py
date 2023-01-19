@@ -8,7 +8,7 @@ byceps.services.authentication.session.models.current_user
 
 from dataclasses import dataclass
 
-from .....services.user.transfer.models import User
+from ....user.models.user import User
 
 
 @dataclass(eq=False, frozen=True)

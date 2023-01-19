@@ -1,6 +1,6 @@
 """
-byceps.services.user_badge.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.user_badge.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import NewType
 from uuid import UUID
 
-from ....typing import BrandID, UserID
+from ...typing import BrandID, UserID
 
 
 BadgeID = NewType('BadgeID', UUID)

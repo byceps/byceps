@@ -20,8 +20,8 @@ from byceps.services.party import party_service
 from byceps.services.party.transfer.models import Party
 from byceps.services.site.transfer.models import Site, SiteID
 from byceps.services.site import site_service
+from byceps.services.user.models.user import User
 from byceps.services.user import user_service
-from byceps.services.user.transfer.models import User
 from byceps.typing import BrandID, PartyID, UserID
 
 

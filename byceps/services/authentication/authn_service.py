@@ -8,8 +8,8 @@ byceps.services.authentication.authn_service
 
 from typing import Optional
 
+from ..user.models.user import User
 from ..user import user_service
-from ..user.transfer.models import User
 
 from .exceptions import (
     AccountDeleted,
