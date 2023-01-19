@@ -9,7 +9,7 @@ Announce page events.
 """
 
 from ...events.page import PageCreated, PageDeleted, PageUpdated
-from ...services.webhooks.transfer.models import OutgoingWebhook
+from ...services.webhooks.models import OutgoingWebhook
 
 from ..helpers import call_webhook
 from ..text_assembly import page

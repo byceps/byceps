@@ -9,7 +9,7 @@ Announce ticketing events.
 """
 
 from ...events.ticketing import TicketCheckedIn, TicketsSold
-from ...services.webhooks.transfer.models import OutgoingWebhook
+from ...services.webhooks.models import OutgoingWebhook
 
 from ..helpers import call_webhook
 from ..text_assembly import ticketing

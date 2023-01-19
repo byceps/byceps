@@ -23,7 +23,7 @@ from ...events.tourney import (
     TourneyParticipantWarned,
     TourneyParticipantDisqualified,
 )
-from ...services.webhooks.transfer.models import OutgoingWebhook
+from ...services.webhooks.models import OutgoingWebhook
 
 from ..helpers import call_webhook
 from ..text_assembly import tourney

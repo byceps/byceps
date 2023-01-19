@@ -9,7 +9,7 @@ Announce user badge events.
 """
 
 from ...events.guest_server import GuestServerRegistered
-from ...services.webhooks.transfer.models import OutgoingWebhook
+from ...services.webhooks.models import OutgoingWebhook
 
 from ..helpers import call_webhook
 from ..text_assembly import guest_server

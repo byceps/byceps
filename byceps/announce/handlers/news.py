@@ -11,7 +11,7 @@ Announce news events.
 from functools import wraps
 
 from ...events.news import NewsItemPublished
-from ...services.webhooks.transfer.models import OutgoingWebhook
+from ...services.webhooks.models import OutgoingWebhook
 from ...util.jobqueue import enqueue_at
 
 from ..helpers import call_webhook, matches_selectors

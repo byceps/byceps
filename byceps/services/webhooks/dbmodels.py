@@ -16,7 +16,7 @@ from sqlalchemy.ext.mutable import MutableDict, MutableList
 
 from ...database import db, generate_uuid
 
-from .transfer.models import EventFilters
+from .models import EventFilters
 
 
 class DbOutgoingWebhook(db.Model):

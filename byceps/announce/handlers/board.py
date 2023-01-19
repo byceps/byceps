@@ -24,7 +24,7 @@ from ...events.board import (
     BoardTopicUnlocked,
     BoardTopicUnpinned,
 )
-from ...services.webhooks.transfer.models import OutgoingWebhook
+from ...services.webhooks.models import OutgoingWebhook
 
 from ..helpers import call_webhook, matches_selectors
 from ..text_assembly import board

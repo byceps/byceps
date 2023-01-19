@@ -13,7 +13,7 @@ from sqlalchemy import delete, select
 from ...database import db
 
 from .dbmodels import DbOutgoingWebhook
-from .transfer.models import EventFilters, OutgoingWebhook, WebhookID
+from .models import EventFilters, OutgoingWebhook, WebhookID
 
 
 def create_outgoing_webhook(
