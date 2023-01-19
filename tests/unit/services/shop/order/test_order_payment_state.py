@@ -8,15 +8,15 @@ from uuid import UUID
 
 from moneyed import EUR
 
-from byceps.services.shop.order import order_service
-from byceps.services.shop.order.transfer.number import OrderNumber
-from byceps.services.shop.order.transfer.order import (
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.order.models.order import (
     Order,
     Orderer,
     PaymentState,
 )
-from byceps.services.shop.shop.transfer.models import ShopID
-from byceps.services.shop.storefront.transfer.models import StorefrontID
+from byceps.services.shop.order import order_service
+from byceps.services.shop.shop.models import ShopID
+from byceps.services.shop.storefront.models import StorefrontID
 from byceps.typing import UserID
 
 

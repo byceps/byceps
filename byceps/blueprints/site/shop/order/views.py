@@ -14,7 +14,7 @@ from moneyed import Currency
 
 from .....services.country import country_service
 from .....services.shop.article import article_service
-from .....services.shop.article.models.compilation import ArticleCompilation
+from .....services.shop.article.models import ArticleCompilation
 from .....services.shop.cart.models import Cart
 from .....services.shop.order.email import order_email_service
 from .....services.shop.order import order_service

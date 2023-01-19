@@ -12,7 +12,7 @@ from wtforms import SelectField, StringField
 from wtforms.validators import InputRequired, Length, Optional
 
 from .....services.shop.cart.models import Cart
-from .....services.shop.order.transfer.order import Orderer
+from .....services.shop.order.models.order import Orderer
 from .....util.l10n import LocalizedForm
 
 

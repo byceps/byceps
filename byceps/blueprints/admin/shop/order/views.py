@@ -19,7 +19,7 @@ from .....services.shop.order import (
 )
 from .....services.shop.order.email import order_email_service
 from .....services.shop.order.export import order_export_service
-from .....services.shop.order.transfer.order import PaymentState
+from .....services.shop.order.models.order import PaymentState
 from .....services.shop.shop import shop_service
 from .....services.ticketing import ticket_service
 from .....services.user import user_service

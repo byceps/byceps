@@ -9,10 +9,10 @@ from unittest.mock import patch
 import pytest
 
 from byceps.services.shop.order.email import order_email_service
+from byceps.services.shop.order.models.order import Orderer
 from byceps.services.shop.order import order_service
-from byceps.services.shop.order.transfer.order import Orderer
-from byceps.services.shop.shop.transfer.models import Shop
-from byceps.services.shop.storefront.transfer.models import Storefront
+from byceps.services.shop.shop.models import Shop
+from byceps.services.shop.storefront.models import Storefront
 from byceps.services.user.models.user import User
 
 from tests.helpers import current_user_set

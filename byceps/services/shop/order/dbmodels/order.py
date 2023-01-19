@@ -22,11 +22,11 @@ from .....util.instances import ReprBuilder
 
 from ....user.dbmodels.user import DbUser
 
-from ...shop.transfer.models import ShopID
-from ...storefront.transfer.models import StorefrontID
+from ...shop.models import ShopID
+from ...storefront.models import StorefrontID
 
-from ..transfer.number import OrderNumber
-from ..transfer.order import PaymentState
+from ..models.number import OrderNumber
+from ..models.order import PaymentState
 
 
 class DbOrder(db.Model):

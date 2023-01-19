@@ -1,6 +1,6 @@
 """
-byceps.services.shop.article.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.article.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -10,13 +10,13 @@ from dataclasses import dataclass
 from datetime import datetime
 from decimal import Decimal
 from enum import Enum
-from typing import NewType, Optional, Union
+from typing import Iterator, NewType, Optional, Union
 from uuid import UUID
 
 from flask_babel import lazy_gettext
 from moneyed import Money
 
-from ...shop.transfer.models import ShopID
+from ..shop.models import ShopID
 
 
 ArticleID = NewType('ArticleID', UUID)
@@ -78,3 +78,33 @@ class Article:
     not_directly_orderable: bool
     separate_order_required: bool
     processing_required: bool
+
+
+class ArticleCompilationItem:
+    def __init__(
+        self, article: Article, *, fixed_quantity: Optional[int] = None
+    ) -> None:
+        if (fixed_quantity is not None) and fixed_quantity < 1:
+            raise ValueError(
+                'Fixed quantity, if given, must be a positive number.'
+            )
+
+        self.article = article
+        self.fixed_quantity = fixed_quantity
+
+    def has_fixed_quantity(self) -> bool:
+        return self.fixed_quantity is not None
+
+
+class ArticleCompilation:
+    def __init__(self) -> None:
+        self._items: list[ArticleCompilationItem] = []
+
+    def append(self, item: ArticleCompilationItem) -> None:
+        self._items.append(item)
+
+    def __iter__(self) -> Iterator[ArticleCompilationItem]:
+        return iter(self._items)
+
+    def is_empty(self) -> bool:
+        return not self._items

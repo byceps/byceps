@@ -23,20 +23,20 @@ from byceps.services.language import language_service
 from byceps.services.news.models import NewsChannel, NewsChannelID
 from byceps.services.news import news_channel_service
 from byceps.services.party.transfer.models import Party
-from byceps.services.shop.article.transfer.models import Article
-from byceps.services.shop.order import order_sequence_service
-from byceps.services.shop.order.transfer.number import (
+from byceps.services.shop.article.models import Article
+from byceps.services.shop.order.models.number import (
     OrderNumberSequence,
     OrderNumberSequenceID,
 )
-from byceps.services.shop.order.transfer.order import Orderer
+from byceps.services.shop.order.models.order import Orderer
+from byceps.services.shop.order import order_sequence_service
+from byceps.services.shop.shop.models import Shop, ShopID
 from byceps.services.shop.shop import shop_service
-from byceps.services.shop.shop.transfer.models import Shop, ShopID
-from byceps.services.shop.storefront import storefront_service
-from byceps.services.shop.storefront.transfer.models import (
+from byceps.services.shop.storefront.models import (
     Storefront,
     StorefrontID,
 )
+from byceps.services.shop.storefront import storefront_service
 from byceps.services.site.transfer.models import Site, SiteID
 from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.ticketing import ticket_category_service

@@ -15,10 +15,10 @@ from byceps.services.party.dbmodels.party import DbParty
 from byceps.services.shop.article.dbmodels.article import DbArticle
 from byceps.services.shop.order.dbmodels.line_item import DbLineItem
 from byceps.services.shop.order.dbmodels.order import DbOrder
-from byceps.services.shop.order import order_service
-from byceps.services.shop.order.transfer.order import (
+from byceps.services.shop.order.models.order import (
     PaymentState as OrderPaymentState,
 )
+from byceps.services.shop.order import order_service
 from byceps.services.ticketing.ticket_service import find_ticket_by_code
 from byceps.services.user.dbmodels.detail import DbUserDetail
 from byceps.services.user.dbmodels.user import DbUser

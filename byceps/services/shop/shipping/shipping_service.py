@@ -15,13 +15,13 @@ from sqlalchemy import select
 from ....database import db
 
 from ..article.dbmodels.article import DbArticle
-from ..article.transfer.models import ArticleID
+from ..article.models import ArticleID
 from ..order.dbmodels.line_item import DbLineItem
 from ..order.dbmodels.order import DbOrder
-from ..order.transfer.order import PaymentState
-from ..shop.transfer.models import ShopID
+from ..order.models.order import PaymentState
+from ..shop.models import ShopID
 
-from .transfer.models import ArticleToShip
+from .models import ArticleToShip
 
 
 def get_articles_to_ship(shop_id: ShopID) -> list[ArticleToShip]:

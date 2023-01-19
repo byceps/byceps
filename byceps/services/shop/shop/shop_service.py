@@ -15,7 +15,7 @@ from ....database import db
 from ....typing import BrandID
 
 from .dbmodels import DbShop
-from .transfer.models import Shop, ShopID
+from .models import Shop, ShopID
 
 
 class UnknownShopId(ValueError):

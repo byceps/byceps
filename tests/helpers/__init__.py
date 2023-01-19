@@ -24,7 +24,7 @@ from byceps.services.authorization.models import PermissionID, RoleID
 from byceps.services.board.models import BoardID
 from byceps.services.party import party_service
 from byceps.services.party.transfer.models import Party
-from byceps.services.shop.storefront.transfer.models import StorefrontID
+from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.site import site_service
 from byceps.services.site.transfer.models import SiteID
 from byceps.services.user.models.user import User

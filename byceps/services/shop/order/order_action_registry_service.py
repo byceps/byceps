@@ -9,10 +9,10 @@ byceps.services.shop.order.order_action_registry_service
 from ...ticketing.models.ticket import TicketCategoryID
 from ...user_badge.models import BadgeID
 
-from ..article.transfer.models import ArticleID
+from ..article.models import ArticleID
 
-from .transfer.action import ActionParameters
-from .transfer.order import PaymentState
+from .models.action import ActionParameters
+from .models.order import PaymentState
 
 from . import order_action_service
 

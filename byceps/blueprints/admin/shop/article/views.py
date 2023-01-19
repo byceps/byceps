@@ -18,7 +18,7 @@ from moneyed import Money
 from .....services.brand import brand_service
 from .....services.party import party_service
 from .....services.shop.article import article_sequence_service, article_service
-from .....services.shop.article.transfer.models import (
+from .....services.shop.article.models import (
     Article,
     ArticleType,
     get_article_type_label,
@@ -28,7 +28,7 @@ from .....services.shop.order import (
     order_action_service,
     ordered_articles_service,
 )
-from .....services.shop.order.transfer.order import Order, PaymentState
+from .....services.shop.order.models.order import Order, PaymentState
 from .....services.shop.shop import shop_service
 from .....services.ticketing import ticket_category_service
 from .....services.user.models.user import User

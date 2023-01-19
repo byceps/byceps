@@ -10,9 +10,9 @@ from flask import abort
 
 from .....services.brand import brand_service
 from .....services.shop.catalog import catalog_service
-from .....services.shop.catalog.transfer.models import Catalog, CatalogID
+from .....services.shop.catalog.models import Catalog, CatalogID
+from .....services.shop.shop.models import Shop, ShopID
 from .....services.shop.shop import shop_service
-from .....services.shop.shop.transfer.models import Shop, ShopID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.templating import templated
 from .....util.views import permission_required

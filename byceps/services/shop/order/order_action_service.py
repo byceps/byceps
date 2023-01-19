@@ -15,7 +15,7 @@ from ....database import db
 from ....typing import UserID
 
 from ..article import article_service
-from ..article.transfer.models import ArticleID
+from ..article.models import ArticleID
 
 from .actions.award_badge import award_badge
 from .actions.create_ticket_bundles import create_ticket_bundles
@@ -23,8 +23,8 @@ from .actions.create_tickets import create_tickets
 from .actions.revoke_ticket_bundles import revoke_ticket_bundles
 from .actions.revoke_tickets import revoke_tickets
 from .dbmodels.order_action import DbOrderAction
-from .transfer.action import Action, ActionParameters
-from .transfer.order import LineItem, Order, PaymentState
+from .models.action import Action, ActionParameters
+from .models.order import LineItem, Order, PaymentState
 
 
 OrderActionType = Callable[[Order, LineItem, UserID, ActionParameters], None]

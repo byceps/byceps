@@ -6,11 +6,11 @@
 from moneyed import EUR
 
 from byceps.events.shop import ShopOrderPaid
-from byceps.services.shop.article.transfer.models import Article
+from byceps.services.shop.article.models import Article
 from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order.models.order import Order, Orderer, OrderID
 from byceps.services.shop.order import order_service
-from byceps.services.shop.order.transfer.order import Order, Orderer, OrderID
-from byceps.services.shop.storefront.transfer.models import StorefrontID
+from byceps.services.shop.storefront.models import StorefrontID
 from byceps.services.ticketing.dbmodels.ticket import DbTicket
 from byceps.services.ticketing import ticket_service
 from byceps.typing import UserID

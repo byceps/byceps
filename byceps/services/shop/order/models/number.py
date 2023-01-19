@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.transfer.number
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.models.number
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -10,7 +10,7 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from ...shop.transfer.models import ShopID
+from ...shop.models import ShopID
 
 
 OrderNumberSequenceID = NewType('OrderNumberSequenceID', UUID)

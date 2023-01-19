@@ -12,14 +12,14 @@ from moneyed import EUR, Money
 import pytest
 
 from byceps.database import generate_uuid
-from byceps.services.shop.article.transfer.models import (
+from byceps.services.shop.article import article_service
+from byceps.services.shop.article.models import (
     Article,
     ArticleID,
     ArticleNumber,
     ArticleType,
 )
-from byceps.services.shop.article import article_service
-from byceps.services.shop.shop.transfer.models import ShopID
+from byceps.services.shop.shop.models import ShopID
 
 
 @pytest.mark.parametrize(

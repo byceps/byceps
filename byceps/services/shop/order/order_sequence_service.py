@@ -13,11 +13,11 @@ from sqlalchemy.exc import IntegrityError
 
 from ....database import db
 
-from ..shop.transfer.models import ShopID
+from ..shop.models import ShopID
 
 from .dbmodels.number_sequence import DbOrderNumberSequence
-from .transfer.number import OrderNumberSequence, OrderNumberSequenceID
-from .transfer.number import OrderNumber
+from .models.number import OrderNumberSequence, OrderNumberSequenceID
+from .models.number import OrderNumber
 
 
 class OrderNumberSequenceCreationFailed(Exception):

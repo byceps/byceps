@@ -9,12 +9,9 @@ byceps.blueprints.admin.shop.order.service
 from dataclasses import dataclass
 from typing import Iterable, Iterator
 
+from .....services.shop.order.models.log import OrderLogEntry, OrderLogEntryData
+from .....services.shop.order.models.order import Order, OrderID
 from .....services.shop.order import order_log_service, order_service
-from .....services.shop.order.transfer.log import (
-    OrderLogEntry,
-    OrderLogEntryData,
-)
-from .....services.shop.order.transfer.order import Order, OrderID
 from .....services.ticketing import ticket_category_service
 from .....services.user.models.user import User
 from .....services.user import user_service

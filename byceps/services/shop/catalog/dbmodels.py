@@ -11,10 +11,10 @@ from sqlalchemy.ext.orderinglist import ordering_list
 from ....database import db, generate_uuid
 from ....util.instances import ReprBuilder
 
-from ..article.transfer.models import ArticleID
-from ..shop.transfer.models import ShopID
+from ..article.models import ArticleID
+from ..shop.models import ShopID
 
-from .transfer.models import CatalogID, CollectionID
+from .models import CatalogID, CollectionID
 
 
 class DbCatalog(db.Model):

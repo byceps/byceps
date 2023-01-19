@@ -15,7 +15,7 @@ from ...database import db, paginate, Pagination
 from ...typing import PartyID, UserID
 
 from ..seating import seat_group_service
-from ..shop.order.transfer.number import OrderNumber
+from ..shop.order.models.number import OrderNumber
 
 from .dbmodels.category import DbTicketCategory
 from .dbmodels.ticket import DbTicket

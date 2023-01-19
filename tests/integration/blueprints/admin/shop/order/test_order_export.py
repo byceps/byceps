@@ -11,12 +11,12 @@ from freezegun import freeze_time
 from moneyed import EUR, Money
 import pytest
 
-from byceps.services.shop.article.transfer.models import Article, ArticleNumber
+from byceps.services.shop.article.models import Article, ArticleNumber
 from byceps.services.shop.cart.models import Cart
+from byceps.services.shop.order.models.order import Order, Orderer
 from byceps.services.shop.order import order_service
-from byceps.services.shop.order.transfer.order import Order, Orderer
-from byceps.services.shop.shop.transfer.models import Shop
-from byceps.services.shop.storefront.transfer.models import Storefront
+from byceps.services.shop.shop.models import Shop
+from byceps.services.shop.storefront.models import Storefront
 from byceps.services.user.models.user import User
 
 from tests.helpers import log_in_user

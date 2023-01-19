@@ -13,11 +13,11 @@ from ....util.instances import ReprBuilder
 
 # Make shop catalog tables available for database creation.
 from ..catalog.dbmodels import DbCatalog  # noqa: F401
-from ..catalog.transfer.models import CatalogID
-from ..order.transfer.number import OrderNumberSequenceID
-from ..shop.transfer.models import ShopID
+from ..catalog.models import CatalogID
+from ..order.models.number import OrderNumberSequenceID
+from ..shop.models import ShopID
 
-from .transfer.models import StorefrontID
+from .models import StorefrontID
 
 
 class DbStorefront(db.Model):

@@ -20,7 +20,7 @@ from ....database import db
 from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
-from .transfer.models import ShopID
+from .models import ShopID
 
 
 class DbShop(db.Model):

@@ -15,7 +15,7 @@ from ....util.instances import ReprBuilder
 from ...board.models import BoardID
 from ...brand.dbmodels.brand import DbBrand
 from ...news.dbmodels.channel import DbNewsChannel
-from ...shop.storefront.transfer.models import StorefrontID
+from ...shop.storefront.models import StorefrontID
 
 from ..transfer.models import SiteID
 

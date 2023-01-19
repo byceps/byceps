@@ -19,14 +19,15 @@ from ...ticketing.models.ticket import TicketCategoryID
 
 from ..order.dbmodels.line_item import DbLineItem
 from ..order.dbmodels.order import DbOrder
-from ..order.transfer.order import PaymentState
-from ..shop.transfer.models import ShopID
+from ..order.models.order import PaymentState
+from ..shop.models import ShopID
 
 from .dbmodels.article import DbArticle
 from .dbmodels.attached_article import DbAttachedArticle
-from .models.compilation import ArticleCompilation, ArticleCompilationItem
-from .transfer.models import (
+from .models import (
     Article,
+    ArticleCompilation,
+    ArticleCompilationItem,
     ArticleID,
     ArticleNumber,
     ArticleType,

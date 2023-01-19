@@ -13,12 +13,12 @@ from sqlalchemy import select
 
 from ....database import db
 
-from ..article.transfer.models import ArticleID
+from ..article.models import ArticleID
 
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.order import DbOrder
+from .models.order import Order, PaymentState
 from . import order_service
-from .transfer.order import Order, PaymentState
 
 
 def count_ordered_articles(article_id: ArticleID) -> dict[PaymentState, int]:

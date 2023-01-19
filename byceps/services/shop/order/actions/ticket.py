@@ -20,8 +20,8 @@ from ....ticketing import (
 )
 from ....ticketing.models.ticket import TicketCategoryID, TicketID
 
+from ..models.order import LineItem, Order, OrderID
 from .. import order_log_service, order_service
-from ..transfer.order import LineItem, Order, OrderID
 
 from ._ticketing import create_tickets_sold_event, send_tickets_sold_event
 

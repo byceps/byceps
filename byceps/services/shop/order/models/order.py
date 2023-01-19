@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.transfer.order
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.models.order
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -17,9 +17,9 @@ from moneyed import Money
 
 from .....typing import UserID
 
-from ...article.transfer.models import ArticleID, ArticleNumber, ArticleType
-from ...shop.transfer.models import ShopID
-from ...storefront.transfer.models import StorefrontID
+from ...article.models import ArticleID, ArticleNumber, ArticleType
+from ...shop.models import ShopID
+from ...storefront.models import StorefrontID
 
 from .number import OrderNumber
 

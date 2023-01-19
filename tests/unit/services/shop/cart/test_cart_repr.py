@@ -8,14 +8,14 @@ from decimal import Decimal
 from moneyed import EUR, Money
 
 from byceps.database import generate_uuid
-from byceps.services.shop.article.transfer.models import (
+from byceps.services.shop.article.models import (
     Article,
     ArticleID,
     ArticleNumber,
     ArticleType,
 )
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.shop.transfer.models import ShopID
+from byceps.services.shop.shop.models import ShopID
 
 
 def test_cart_empty_repr():

@@ -10,7 +10,7 @@ import byceps.announce.connections  # Connect signal handlers.  # noqa: F401
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid, ShopOrderPlaced
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_service
-from byceps.services.shop.storefront.transfer.models import Storefront
+from byceps.services.shop.storefront.models import Storefront
 from byceps.signals import shop as shop_signals
 
 from .helpers import assert_submitted_text, mocked_irc_bot, now

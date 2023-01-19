@@ -5,7 +5,7 @@
 
 import pytest
 
-from byceps.services.shop.storefront.transfer.models import Storefront
+from byceps.services.shop.storefront.models import Storefront
 
 
 @pytest.fixture(scope='module')

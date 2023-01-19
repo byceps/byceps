@@ -18,11 +18,8 @@ from ....services.brand.transfer.models import Brand
 from ....services.news import news_channel_service
 from ....services.party import party_service
 from ....services.shop.shop import shop_service
+from ....services.shop.storefront.models import Storefront, StorefrontID
 from ....services.shop.storefront import storefront_service
-from ....services.shop.storefront.transfer.models import (
-    Storefront,
-    StorefrontID,
-)
 from ....services.site import site_service, site_setting_service
 from ....services.site.transfer.models import Site, SiteWithBrand
 from ....util.framework.blueprint import create_blueprint

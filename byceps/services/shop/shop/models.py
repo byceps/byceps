@@ -1,6 +1,6 @@
 """
-byceps.services.shop.shop.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.shop.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,7 +11,7 @@ from typing import Any, NewType
 
 from moneyed import Currency
 
-from .....typing import BrandID
+from ....typing import BrandID
 
 
 ShopID = NewType('ShopID', str)

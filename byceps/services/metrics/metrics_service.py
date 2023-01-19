@@ -21,8 +21,8 @@ from ...services.party.transfer.models import Party
 from ...services.seating import seat_service
 from ...services.shop.order import order_service
 from ...services.shop.article import article_service as shop_article_service
+from ...services.shop.shop.models import Shop, ShopID
 from ...services.shop.shop import shop_service
-from ...services.shop.shop.transfer.models import Shop, ShopID
 from ...services.ticketing import ticket_service
 from ...services.user import user_stats_service
 from ...typing import BrandID, PartyID

@@ -10,14 +10,14 @@ import pytest
 from pytest import raises
 
 from byceps.database import generate_uuid
-from byceps.services.shop.article.transfer.models import (
+from byceps.services.shop.article.models import (
     Article,
     ArticleID,
     ArticleNumber,
     ArticleType,
 )
 from byceps.services.shop.cart.models import CartItem
-from byceps.services.shop.shop.transfer.models import ShopID
+from byceps.services.shop.shop.models import ShopID
 
 
 @pytest.mark.parametrize(

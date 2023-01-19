@@ -11,7 +11,7 @@ from typing import Optional
 from .....database import db, generate_uuid
 from .....util.instances import ReprBuilder
 
-from ...shop.transfer.models import ShopID
+from ...shop.models import ShopID
 
 
 class DbOrderNumberSequence(db.Model):

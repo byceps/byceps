@@ -11,7 +11,7 @@ from flask_babel import format_currency, gettext
 
 from .....services.shop.order.email import order_email_service
 from .....services.shop.order import order_service
-from .....services.shop.order.transfer.order import PaymentState
+from .....services.shop.order.models.order import PaymentState
 from .....services.shop.storefront import storefront_service
 from .....services.site import site_service
 from .....services.snippet.transfer.models import Scope

@@ -24,28 +24,22 @@ from ...ticketing.models.ticket import TicketCategoryID
 from ...user import user_service
 
 from ..article import article_service
-from ..article.transfer.models import ArticleType
+from ..article.models import ArticleType
 from ..cart.models import Cart, CartItem
 from ..shop.dbmodels import DbShop
+from ..shop.models import ShopID
 from ..shop import shop_service
-from ..shop.transfer.models import ShopID
+from ..storefront.models import StorefrontID
 from ..storefront import storefront_service
-from ..storefront.transfer.models import StorefrontID
 
 from .actions import ticket as ticket_actions
 from .actions import ticket_bundle as ticket_bundle_actions
 from .dbmodels.line_item import DbLineItem
 from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
-from . import (
-    order_action_service,
-    order_log_service,
-    order_payment_service,
-    order_sequence_service,
-)
-from .transfer.log import OrderLogEntryData
-from .transfer.number import OrderNumber
-from .transfer.order import (
+from .models.log import OrderLogEntryData
+from .models.number import OrderNumber
+from .models.order import (
     Address,
     LineItemID,
     Order,
@@ -55,7 +49,13 @@ from .transfer.order import (
     OrderState,
     PaymentState,
 )
-from .transfer.payment import AdditionalPaymentData
+from .models.payment import AdditionalPaymentData
+from . import (
+    order_action_service,
+    order_log_service,
+    order_payment_service,
+    order_sequence_service,
+)
 
 
 OVERDUE_THRESHOLD = timedelta(days=14)

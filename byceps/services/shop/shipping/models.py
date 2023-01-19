@@ -1,6 +1,6 @@
 """
-byceps.services.shop.shipping.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.shipping.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -8,7 +8,7 @@ byceps.services.shop.shipping.transfer.models
 
 from dataclasses import dataclass
 
-from ...article.transfer.models import ArticleID
+from ..article.models import ArticleID
 
 
 @dataclass(frozen=True)

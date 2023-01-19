@@ -10,11 +10,11 @@ from flask import Flask
 from moneyed import EUR, Money
 import pytest
 
-from byceps.services.shop.article.transfer.models import Article, ArticleNumber
+from byceps.services.shop.article.models import Article, ArticleNumber
 from byceps.services.shop.order.email import order_email_service
-from byceps.services.shop.order.transfer.order import Order, Orderer
-from byceps.services.shop.shop.transfer.models import Shop
-from byceps.services.shop.storefront.transfer.models import Storefront
+from byceps.services.shop.order.models.order import Order, Orderer
+from byceps.services.shop.shop.models import Shop
+from byceps.services.shop.storefront.models import Storefront
 from byceps.services.snippet.transfer.models import SnippetID
 from byceps.services.user.models.user import User
 

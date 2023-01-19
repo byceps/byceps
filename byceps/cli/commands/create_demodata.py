@@ -20,12 +20,12 @@ from ...services.page import page_service
 from ...services.party import party_service
 from ...services.party.transfer.models import Party
 from ...services.shop.article import article_sequence_service, article_service
-from ...services.shop.article.transfer.models import ArticleType
+from ...services.shop.article.models import ArticleType
 from ...services.shop.order import order_sequence_service
+from ...services.shop.shop.models import Shop, ShopID
 from ...services.shop.shop import shop_service
-from ...services.shop.shop.transfer.models import Shop, ShopID
 from ...services.shop.storefront import storefront_service
-from ...services.shop.storefront.transfer.models import Storefront, StorefrontID
+from ...services.shop.storefront.models import Storefront, StorefrontID
 from ...services.site import site_service
 from ...services.site.transfer.models import Site, SiteID
 from ...services.site_navigation import site_navigation_service

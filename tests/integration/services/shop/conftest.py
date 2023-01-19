@@ -8,8 +8,8 @@ import pytest
 
 from byceps.services.brand.transfer.models import Brand
 from byceps.services.shop.cart.models import Cart
-from byceps.services.shop.shop.transfer.models import Shop, ShopID
-from byceps.services.shop.storefront.transfer.models import Storefront
+from byceps.services.shop.shop.models import Shop
+from byceps.services.shop.storefront.models import Storefront
 from byceps.services.snippet import snippet_service
 from byceps.services.snippet.transfer.models import Scope, SnippetID
 from byceps.services.user.models.user import User

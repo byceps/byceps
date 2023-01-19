@@ -17,7 +17,7 @@ from ...typing import PartyID, UserID
 from ..party import party_service
 from ..seating.dbmodels.seat import DbSeat
 from ..seating.models import SeatID
-from ..shop.order.transfer.number import OrderNumber
+from ..shop.order.models.number import OrderNumber
 from ..user.dbmodels.user import DbUser
 
 from .dbmodels.category import DbTicketCategory

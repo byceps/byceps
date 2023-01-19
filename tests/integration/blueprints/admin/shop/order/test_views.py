@@ -13,25 +13,22 @@ import pytest
 from byceps.database import db
 from byceps.events.shop import ShopOrderCanceled, ShopOrderPaid
 from byceps.services.shop.article import article_service
-from byceps.services.shop.article.transfer.models import (
+from byceps.services.shop.article.models import (
     Article,
     ArticleID,
     ArticleNumber,
 )
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order.dbmodels.order import DbOrder
-from byceps.services.shop.order import order_service
-from byceps.services.shop.order.transfer.order import (
+from byceps.services.shop.order.models.order import (
     Order,
     Orderer,
     OrderID,
     PaymentState,
 )
-from byceps.services.shop.shop.transfer.models import Shop
-from byceps.services.shop.storefront.transfer.models import (
-    Storefront,
-    StorefrontID,
-)
+from byceps.services.shop.order import order_service
+from byceps.services.shop.shop.models import Shop
+from byceps.services.shop.storefront.models import Storefront, StorefrontID
 from byceps.services.user.models.user import User
 from byceps.typing import UserID
 

@@ -20,9 +20,9 @@ else:
 from .....database import db, generate_uuid
 from .....util.instances import ReprBuilder
 
-from ...shop.transfer.models import ShopID
+from ...shop.models import ShopID
 
-from ..transfer.models import ArticleNumber, ArticleType, ArticleTypeParams
+from ..models import ArticleNumber, ArticleType, ArticleTypeParams
 
 
 class DbArticle(db.Model):

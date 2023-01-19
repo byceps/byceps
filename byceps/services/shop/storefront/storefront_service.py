@@ -12,12 +12,12 @@ from sqlalchemy import delete, select
 
 from ....database import db
 
-from ..catalog.transfer.models import CatalogID
-from ..order.transfer.number import OrderNumberSequenceID
-from ..shop.transfer.models import ShopID
+from ..catalog.models import CatalogID
+from ..order.models.number import OrderNumberSequenceID
+from ..shop.models import ShopID
 
 from .dbmodels import DbStorefront
-from .transfer.models import Storefront, StorefrontID
+from .models import Storefront, StorefrontID
 
 
 class UnknownStorefrontId(ValueError):

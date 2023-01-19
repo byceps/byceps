@@ -18,8 +18,8 @@ else:
 
 from .....database import db, generate_uuid
 
-from ..transfer.order import OrderID
-from ..transfer.payment import AdditionalPaymentData
+from ..models.order import OrderID
+from ..models.payment import AdditionalPaymentData
 
 
 class DbPayment(db.Model):

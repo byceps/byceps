@@ -13,16 +13,16 @@ import pytest
 
 from byceps.events.shop import ShopOrderPlaced
 from byceps.services.shop.article import article_service
-from byceps.services.shop.article.transfer.models import (
+from byceps.services.shop.article.models import (
     Article,
     ArticleID,
     ArticleNumber,
 )
+from byceps.services.shop.order.models.number import OrderNumber
+from byceps.services.shop.order.models.order import LineItem, Order
 from byceps.services.shop.order import order_service
-from byceps.services.shop.order.transfer.number import OrderNumber
-from byceps.services.shop.order.transfer.order import LineItem, Order
-from byceps.services.shop.shop.transfer.models import Shop
-from byceps.services.shop.storefront.transfer.models import Storefront
+from byceps.services.shop.shop.models import Shop
+from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site.transfer.models import Site, SiteID
 from byceps.services.user.models.user import User
 from byceps.typing import UserID

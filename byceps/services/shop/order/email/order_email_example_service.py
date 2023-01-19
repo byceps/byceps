@@ -19,12 +19,12 @@ from .....typing import BrandID, UserID
 from ....email.transfer.models import Message
 from ....user.models.user import User
 
+from ...shop.models import ShopID
 from ...shop import shop_service
-from ...shop.transfer.models import ShopID
-from ...storefront.transfer.models import StorefrontID
+from ...storefront.models import StorefrontID
 
-from ..transfer.number import OrderNumber
-from ..transfer.order import (
+from ..models.number import OrderNumber
+from ..models.order import (
     Address,
     Order,
     OrderID,

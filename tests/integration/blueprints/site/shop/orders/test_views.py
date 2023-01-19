@@ -8,7 +8,7 @@ import pytest
 
 from byceps.services.shop.cart.models import Cart
 from byceps.services.shop.order import order_service
-from byceps.services.shop.storefront.transfer.models import Storefront
+from byceps.services.shop.storefront.models import Storefront
 from byceps.services.site import site_service
 from byceps.services.snippet import snippet_service
 

@@ -10,7 +10,7 @@ from typing import Optional
 
 from .....database import db, generate_uuid
 
-from ..transfer.order import OrderID
+from ..models.order import OrderID
 
 
 class DbInvoice(db.Model):

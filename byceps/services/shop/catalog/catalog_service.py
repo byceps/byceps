@@ -12,11 +12,11 @@ from sqlalchemy import delete, select
 
 from ....database import db
 
-from ..article.transfer.models import ArticleID
-from ..shop.transfer.models import ShopID
+from ..article.models import ArticleID
+from ..shop.models import ShopID
 
 from .dbmodels import DbCatalog, DbCatalogArticle, DbCollection
-from .transfer.models import (
+from .models import (
     Catalog,
     CatalogArticleID,
     CatalogID,

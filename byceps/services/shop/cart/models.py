@@ -15,7 +15,7 @@ from moneyed import Currency
 
 from ....util.instances import ReprBuilder
 
-from ..article.transfer.models import Article
+from ..article.models import Article
 
 
 @dataclass(frozen=True)

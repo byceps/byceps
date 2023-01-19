@@ -16,10 +16,10 @@ else:
 from .....database import db, generate_uuid
 
 from ...article.dbmodels.article import DbArticle
-from ...article.transfer.models import ArticleID
+from ...article.models import ArticleID
 
-from ..transfer.action import ActionParameters
-from ..transfer.order import PaymentState
+from ..models.action import ActionParameters
+from ..models.order import PaymentState
 
 
 class DbOrderAction(db.Model):

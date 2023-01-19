@@ -11,8 +11,8 @@ from datetime import datetime
 from .....database import db, generate_uuid
 from .....util.instances import ReprBuilder
 
-from ..transfer.log import OrderLogEntryData
-from ..transfer.order import OrderID
+from ..models.log import OrderLogEntryData
+from ..models.order import OrderID
 
 
 class DbOrderLogEntry(db.Model):

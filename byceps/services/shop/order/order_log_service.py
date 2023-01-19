@@ -14,12 +14,12 @@ from sqlalchemy import select
 from ....database import db
 from ....typing import UserID
 
-from ..shop.transfer.models import ShopID
+from ..shop.models import ShopID
 
 from .dbmodels.log import DbOrderLogEntry
 from .dbmodels.order import DbOrder
-from .transfer.log import OrderLogEntry, OrderLogEntryData
-from .transfer.order import OrderID
+from .models.log import OrderLogEntry, OrderLogEntryData
+from .models.order import OrderID
 
 
 def create_entry(

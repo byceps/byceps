@@ -18,9 +18,9 @@ from ....typing import UserID
 from ...user import user_service
 
 from .dbmodels.payment import DbPayment
+from .models.payment import AdditionalPaymentData, Payment
+from .models.order import OrderID
 from . import order_log_service
-from .transfer.payment import AdditionalPaymentData, Payment
-from .transfer.order import OrderID
 
 
 def add_payment(

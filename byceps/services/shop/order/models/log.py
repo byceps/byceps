@@ -1,6 +1,6 @@
 """
-byceps.services.shop.order.transfer.payment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.order.models.log
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -8,21 +8,19 @@ byceps.services.shop.order.transfer.payment
 
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Any
 from uuid import UUID
-
-from moneyed import Money
 
 from .order import OrderID
 
 
-AdditionalPaymentData = dict[str, str]
+OrderLogEntryData = dict[str, Any]
 
 
 @dataclass(frozen=True)
-class Payment:
+class OrderLogEntry:
     id: UUID
+    occurred_at: datetime
+    event_type: str
     order_id: OrderID
-    created_at: datetime
-    method: str
-    amount: Money
-    additional_data: AdditionalPaymentData
+    data: OrderLogEntryData

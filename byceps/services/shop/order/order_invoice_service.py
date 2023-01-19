@@ -13,9 +13,9 @@ from sqlalchemy import select
 from ....database import db
 
 from .dbmodels.invoice import DbInvoice
+from .models.invoice import Invoice
+from .models.order import OrderID
 from . import order_log_service
-from .transfer.invoice import Invoice
-from .transfer.order import OrderID
 
 
 def add_invoice(

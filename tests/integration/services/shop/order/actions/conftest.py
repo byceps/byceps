@@ -6,7 +6,7 @@
 import pytest
 
 from byceps.services.party.transfer.models import Party
-from byceps.services.shop.order.transfer.order import Orderer
+from byceps.services.shop.order.models.order import Orderer
 from byceps.services.ticketing.models.ticket import TicketCategory
 from byceps.services.user.models.user import User
 

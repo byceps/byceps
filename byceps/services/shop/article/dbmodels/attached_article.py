@@ -8,7 +8,7 @@ byceps.services.shop.article.dbmodels.attached_article
 
 from .....database import db, generate_uuid
 
-from ..transfer.models import ArticleID
+from ..models import ArticleID
 
 from .article import DbArticle
 

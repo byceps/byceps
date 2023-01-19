@@ -5,12 +5,12 @@
 
 import pytest
 
+from byceps.services.shop.order.models.order import PaymentState
 from byceps.services.shop.order import (
     order_log_service,
     order_payment_service,
     order_service,
 )
-from byceps.services.shop.order.transfer.order import PaymentState
 from byceps.util.iterables import find
 
 

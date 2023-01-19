@@ -11,9 +11,9 @@ from .....typing import UserID
 from ....user_badge.models import BadgeAwarding
 from ....user_badge import user_badge_awarding_service, user_badge_service
 
+from ..models.action import ActionParameters
+from ..models.order import LineItem, Order, OrderID
 from .. import order_log_service
-from ..transfer.action import ActionParameters
-from ..transfer.order import LineItem, Order, OrderID
 
 
 def award_badge(

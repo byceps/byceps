@@ -1,6 +1,6 @@
 """
-byceps.services.shop.catalog.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.shop.catalog.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -10,8 +10,8 @@ from dataclasses import dataclass
 from typing import NewType
 from uuid import UUID
 
-from ...article.transfer.models import ArticleNumber
-from ...shop.transfer.models import ShopID
+from ..article.models import ArticleNumber
+from ..shop.models import ShopID
 
 
 CatalogID = NewType('CatalogID', UUID)

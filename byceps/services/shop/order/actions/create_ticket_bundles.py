@@ -8,8 +8,8 @@ byceps.services.shop.order.actions.create_ticket_bundles
 
 from .....typing import UserID
 
-from ..transfer.action import ActionParameters
-from ..transfer.order import LineItem, Order
+from ..models.action import ActionParameters
+from ..models.order import LineItem, Order
 
 from . import ticket_bundle
 

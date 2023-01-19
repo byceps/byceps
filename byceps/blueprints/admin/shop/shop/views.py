@@ -11,11 +11,11 @@ from flask_babel import gettext
 from moneyed import EUR
 
 from .....services.brand import brand_service
+from .....services.shop.order.models.log import OrderLogEntryData
+from .....services.shop.order.models.order import PaymentState
 from .....services.shop.order import order_log_service, order_service
-from .....services.shop.order.transfer.log import OrderLogEntryData
-from .....services.shop.order.transfer.order import PaymentState
+from .....services.shop.shop.models import ShopID
 from .....services.shop.shop import shop_service
-from .....services.shop.shop.transfer.models import ShopID
 from .....util.framework.blueprint import create_blueprint
 from .....util.framework.flash import flash_success
 from .....util.framework.templating import templated

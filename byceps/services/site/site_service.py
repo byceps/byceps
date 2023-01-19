@@ -19,7 +19,7 @@ from ..board.models import BoardID
 from ..brand import brand_service
 from ..news.models import NewsChannelID
 from ..news import news_channel_service
-from ..shop.storefront.transfer.models import StorefrontID
+from ..shop.storefront.models import StorefrontID
 
 from .dbmodels.site import DbSite
 from .dbmodels.setting import DbSetting
