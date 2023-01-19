@@ -13,7 +13,7 @@ from ....typing import UserID
 
 from ...user.dbmodels.user import DbUser
 
-from ..transfer.models import SubjectID
+from ..models import SubjectID
 
 from .subject import DbSubject
 

@@ -1,6 +1,6 @@
 """
-byceps.services.consent.transfer.models
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+byceps.services.consent.models
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 :Copyright: 2014-2023 Jochen Kupperschmidt
 :License: Revised BSD (see `LICENSE` file for details)
@@ -11,7 +11,7 @@ from datetime import datetime
 from typing import NewType, Optional
 from uuid import UUID
 
-from ....typing import UserID
+from ...typing import UserID
 
 
 SubjectID = NewType('SubjectID', UUID)

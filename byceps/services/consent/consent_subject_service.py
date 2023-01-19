@@ -14,7 +14,7 @@ from ...typing import BrandID
 from .dbmodels.brand_requirement import DbBrandRequirement
 from .dbmodels.consent import DbConsent
 from .dbmodels.subject import DbSubject
-from .transfer.models import Subject, SubjectID
+from .models import Subject, SubjectID
 
 
 # -------------------------------------------------------------------- #

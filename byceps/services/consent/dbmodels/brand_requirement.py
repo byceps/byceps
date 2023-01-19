@@ -9,7 +9,7 @@ byceps.services.consent.dbmodels.brand_requirement
 from ....database import db
 from ....typing import BrandID
 
-from ..transfer.models import SubjectID
+from ..models import SubjectID
 
 
 class DbBrandRequirement(db.Model):

@@ -14,7 +14,7 @@ from ...typing import UserID
 
 from .dbmodels.consent import DbConsent
 from .dbmodels.subject import DbSubject
-from .transfer.models import Consent, SubjectID
+from .models import Consent, SubjectID
 
 
 def consent_to_subject(

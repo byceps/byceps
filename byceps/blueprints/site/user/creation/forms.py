@@ -12,7 +12,7 @@ from flask_babel import lazy_gettext
 from wtforms import BooleanField, PasswordField, StringField
 from wtforms.validators import InputRequired, Length, ValidationError
 
-from .....services.consent.transfer.models import Subject, SubjectID
+from .....services.consent.models import Subject, SubjectID
 from .....services.user import screen_name_validator, user_service
 from .....util.l10n import LocalizedForm
 
