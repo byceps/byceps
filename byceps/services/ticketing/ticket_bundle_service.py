@@ -8,7 +8,7 @@ byceps.services.ticketing.ticket_bundle_service
 
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from tenacity import retry, retry_if_exception_type, stop_after_attempt
 
 from ...database import db, paginate, Pagination
@@ -99,10 +99,8 @@ def delete_bundle(bundle_id: TicketBundleID) -> None:
     """Delete a bundle and the tickets assigned to it."""
     db_bundle = get_bundle(bundle_id)
 
-    db.session.query(DbTicket).filter_by(bundle_id=db_bundle.id).delete()
-
-    db.session.query(DbTicketBundle).filter_by(id=db_bundle.id).delete()
-
+    db.session.execute(delete(DbTicket).filter_by(bundle_id=db_bundle.id))
+    db.session.execute(delete(DbTicketBundle).filter_by(id=db_bundle.id))
     db.session.commit()
 
 
@@ -123,9 +121,9 @@ def get_bundle(bundle_id: TicketBundleID) -> DbTicketBundle:
 
 def get_tickets_for_bundle(bundle_id: TicketBundleID) -> list[DbTicket]:
     """Return all tickets included in this bundle."""
-    return (
-        db.session.query(DbTicket).filter(DbTicket.bundle_id == bundle_id).all()
-    )
+    return db.session.scalars(
+        select(DbTicket).filter(DbTicket.bundle_id == bundle_id)
+    ).all()
 
 
 def get_bundles_for_party_paginated(

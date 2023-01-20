@@ -9,7 +9,7 @@ byceps.services.ticketing.ticket_service
 from enum import Enum
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from ...database import db, paginate, Pagination
 from ...typing import PartyID, UserID
@@ -61,10 +61,8 @@ def update_ticket_code(
 
 def delete_ticket(ticket_id: TicketID) -> None:
     """Delete a ticket and its log entries."""
-    db.session.query(DbTicketLogEntry).filter_by(ticket_id=ticket_id).delete()
-
-    db.session.query(DbTicket).filter_by(id=ticket_id).delete()
-
+    db.session.execute(delete(DbTicketLogEntry).filter_by(ticket_id=ticket_id))
+    db.session.execute(delete(DbTicket).filter_by(id=ticket_id))
     db.session.commit()
 
 
@@ -89,12 +87,9 @@ def find_ticket_by_code(
     """Return the ticket with that code for that party, or `None` if not
     found.
     """
-    return (
-        db.session.query(DbTicket)
-        .filter_by(party_id=party_id)
-        .filter_by(code=code)
-        .one_or_none()
-    )
+    return db.session.execute(
+        select(DbTicket).filter_by(party_id=party_id).filter_by(code=code)
+    ).scalar_one_or_none()
 
 
 def get_tickets(ticket_ids: set[TicketID]) -> list[DbTicket]:
@@ -102,17 +97,18 @@ def get_tickets(ticket_ids: set[TicketID]) -> list[DbTicket]:
     if not ticket_ids:
         return []
 
-    return db.session.query(DbTicket).filter(DbTicket.id.in_(ticket_ids)).all()
+    return db.session.scalars(
+        select(DbTicket).filter(DbTicket.id.in_(ticket_ids))
+    ).all()
 
 
 def get_tickets_created_by_order(order_number: OrderNumber) -> list[DbTicket]:
     """Return the tickets created by this order (as it was marked as paid)."""
-    return (
-        db.session.query(DbTicket)
+    return db.session.scalars(
+        select(DbTicket)
         .filter_by(order_number=order_number)
         .order_by(DbTicket.created_at)
-        .all()
-    )
+    ).all()
 
 
 def get_tickets_for_seat_manager(
@@ -121,8 +117,8 @@ def get_tickets_for_seat_manager(
     """Return the tickets for that party whose respective seats the user
     is entitled to manage.
     """
-    return (
-        db.session.query(DbTicket)
+    return db.session.scalars(
+        select(DbTicket)
         .filter(DbTicket.party_id == party_id)
         .filter(DbTicket.revoked == False)  # noqa: E712
         .filter(
@@ -135,14 +131,13 @@ def get_tickets_for_seat_manager(
         .options(
             db.joinedload(DbTicket.occupied_seat),
         )
-        .all()
-    )
+    ).all()
 
 
 def get_tickets_related_to_user(user_id: UserID) -> list[DbTicket]:
     """Return tickets related to the user."""
-    return (
-        db.session.query(DbTicket)
+    return db.session.scalars(
+        select(DbTicket)
         .filter(
             (DbTicket.owned_by_id == user_id)
             | (DbTicket.seat_managed_by_id == user_id)
@@ -157,16 +152,15 @@ def get_tickets_related_to_user(user_id: UserID) -> list[DbTicket]:
             db.joinedload(DbTicket.used_by),
         )
         .order_by(DbTicket.created_at)
-        .all()
-    )
+    ).all()
 
 
 def get_tickets_related_to_user_for_party(
     user_id: UserID, party_id: PartyID
 ) -> list[DbTicket]:
     """Return tickets related to the user for the party."""
-    return (
-        db.session.query(DbTicket)
+    return db.session.scalars(
+        select(DbTicket)
         .filter(DbTicket.party_id == party_id)
         .filter(
             (DbTicket.owned_by_id == user_id)
@@ -182,16 +176,15 @@ def get_tickets_related_to_user_for_party(
             db.joinedload(DbTicket.used_by),
         )
         .order_by(DbTicket.created_at)
-        .all()
-    )
+    ).all()
 
 
 def get_tickets_used_by_user(
     user_id: UserID, party_id: PartyID
 ) -> list[DbTicket]:
     """Return the tickets (if any) used by the user for that party."""
-    return (
-        db.session.query(DbTicket)
+    return db.session.scalars(
+        select(DbTicket)
         .filter(DbTicket.party_id == party_id)
         .filter(DbTicket.used_by_id == user_id)
         .filter(DbTicket.revoked == False)  # noqa: E712
@@ -200,33 +193,32 @@ def get_tickets_used_by_user(
             db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
         )
         .order_by(DbSeat.coord_x, DbSeat.coord_y)
-        .all()
-    )
+    ).all()
 
 
 def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
     """Return `True` if the user uses any ticket for that party."""
-    q = (
-        db.session.query(DbTicket)
-        .filter_by(party_id=party_id)
-        .filter_by(used_by_id=user_id)
-        .filter_by(revoked=False)
+    return db.session.scalar(
+        select(
+            select(DbTicket)
+            .filter_by(party_id=party_id)
+            .filter_by(used_by_id=user_id)
+            .filter_by(revoked=False)
+            .exists()
+        )
     )
-
-    return db.session.query(q.exists()).scalar()
 
 
 def get_ticket_users_for_party(party_id: PartyID) -> set[UserID]:
     """Return the IDs of the users of tickets for that party."""
-    rows = (
-        db.session.query(DbTicket.used_by_id)
+    user_ids = db.session.scalars(
+        select(DbTicket.used_by_id)
         .filter(DbTicket.party_id == party_id)
         .filter(DbTicket.revoked == False)  # noqa: E712
         .filter(DbTicket.used_by_id.is_not(None))
-        .all()
-    )
+    ).all()
 
-    return {row[0] for row in rows}
+    return set(user_ids)
 
 
 def select_ticket_users_for_party(
@@ -236,27 +228,24 @@ def select_ticket_users_for_party(
     if not user_ids:
         return set()
 
-    q = (
-        db.session.query(DbTicket)
+    stmt = (
+        select(DbTicket)
         .filter(DbTicket.party_id == party_id)
         .filter(DbTicket.used_by_id == DbUser.id)
         .filter(DbTicket.revoked == False)  # noqa: E712
     )
 
-    rows = (
-        db.session.query(DbUser.id)
-        .filter(q.exists())
-        .filter(DbUser.id.in_(user_ids))
-        .all()
-    )
+    user_ids = db.session.scalars(
+        select(DbUser.id).filter(stmt.exists()).filter(DbUser.id.in_(user_ids))
+    ).all()
 
-    return {row[0] for row in rows}
+    return set(user_ids)
 
 
 def get_ticket_with_details(ticket_id: TicketID) -> Optional[DbTicket]:
     """Return the ticket with that id, or `None` if not found."""
-    return (
-        db.session.query(DbTicket)
+    return db.session.scalar(
+        select(DbTicket)
         .options(
             db.joinedload(DbTicket.category),
             db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
@@ -264,7 +253,7 @@ def get_ticket_with_details(ticket_id: TicketID) -> Optional[DbTicket]:
             db.joinedload(DbTicket.seat_managed_by),
             db.joinedload(DbTicket.user_managed_by),
         )
-        .get(ticket_id)
+        .filter_by(id=ticket_id)
     )
 
 
@@ -336,11 +325,10 @@ def get_tickets_with_details_for_party_paginated(
 
 def count_revoked_tickets_for_party(party_id: PartyID) -> int:
     """Return the number of revoked tickets for that party."""
-    return (
-        db.session.query(DbTicket)
+    return db.session.scalar(
+        select(db.func.count(DbTicket.id))
         .filter_by(party_id=party_id)
         .filter_by(revoked=True)
-        .count()
     )
 
 
@@ -348,11 +336,10 @@ def count_sold_tickets_for_party(party_id: PartyID) -> int:
     """Return the number of "sold" (i.e. generated and not revoked)
     tickets for that party.
     """
-    return (
-        db.session.query(DbTicket)
+    return db.session.scalar(
+        select(db.func.count(DbTicket.id))
         .filter_by(party_id=party_id)
         .filter_by(revoked=False)
-        .count()
     )
 
 
@@ -360,11 +347,10 @@ def count_tickets_checked_in_for_party(party_id: PartyID) -> int:
     """Return the number tickets for that party that were used to check
     in their respective user.
     """
-    return (
-        db.session.query(DbTicket)
+    return db.session.scalar(
+        select(db.func.count(DbTicket.id))
         .filter_by(party_id=party_id)
         .filter_by(user_checked_in=True)
-        .count()
     )
 
 

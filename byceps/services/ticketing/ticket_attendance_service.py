@@ -10,7 +10,7 @@ from collections import Counter
 from datetime import datetime
 from itertools import chain
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from ...database import db, insert_ignore_on_conflict
 from ...typing import BrandID, PartyID, UserID
@@ -38,9 +38,11 @@ def create_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
 
 def delete_archived_attendance(user_id: UserID, party_id: PartyID) -> None:
     """Delete the archived attendance of the user at the party."""
-    db.session.query(DbArchivedAttendance).filter_by(
-        user_id=user_id, party_id=party_id
-    ).delete()
+    db.session.execute(
+        delete(DbArchivedAttendance).filter_by(
+            user_id=user_id, party_id=party_id
+        )
+    )
     db.session.commit()
 
 
@@ -58,34 +60,33 @@ def get_attended_parties(user_id: UserID) -> list[Party]:
 
 def _get_attended_party_ids(user_id: UserID) -> set[PartyID]:
     """Return the IDs of the non-legacy parties the user has attended."""
-    party_id_rows = (
-        db.session.query(DbParty.id)
+    party_ids = db.session.scalars(
+        select(DbParty.id)
         .filter(DbParty.ends_at < datetime.utcnow())
         .filter(DbParty.canceled == False)  # noqa: E712
         .join(DbTicketCategory)
         .join(DbTicket)
         .filter(DbTicket.revoked == False)  # noqa: E712
         .filter(DbTicket.used_by_id == user_id)
-        .all()
-    )
+    ).all()
 
-    return {row[0] for row in party_id_rows}
+    return set(party_ids)
 
 
 def _get_archived_attendance_party_ids(user_id: UserID) -> set[PartyID]:
     """Return the IDs of the legacy parties the user has attended."""
-    party_id_rows = (
-        db.session.query(DbArchivedAttendance.party_id)
-        .filter(DbArchivedAttendance.user_id == user_id)
-        .all()
-    )
+    party_ids = db.session.scalars(
+        select(DbArchivedAttendance.party_id).filter(
+            DbArchivedAttendance.user_id == user_id
+        )
+    ).all()
 
-    return {row[0] for row in party_id_rows}
+    return set(party_ids)
 
 
 def get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
     """Return the party's attendees' IDs."""
-    ticket_rows = db.session.scalars(
+    ticket_user_ids = db.session.scalars(
         select(DbTicket.used_by_id)
         .join(DbTicketCategory)
         .filter(DbTicketCategory.party_id == party_id)
@@ -93,13 +94,13 @@ def get_attendee_ids_for_party(party_id: PartyID) -> set[UserID]:
         .filter(DbTicket.used_by_id.is_not(None))
     ).all()
 
-    archived_attendance_rows = db.session.scalars(
+    archived_attendance_user_ids = db.session.scalars(
         select(DbArchivedAttendance.user_id).filter(
             DbArchivedAttendance.party_id == party_id
         )
     ).all()
 
-    return set(ticket_rows + archived_attendance_rows)
+    return set(ticket_user_ids + archived_attendance_user_ids)
 
 
 def get_top_attendees_for_brand(brand_id: BrandID) -> list[tuple[UserID, int]]:
@@ -135,7 +136,7 @@ def _get_top_ticket_attendees_for_parties(
     user_id_column = db.aliased(DbTicket).used_by_id
 
     attendance_count = (
-        db.session.query(
+        select(
             db.func.count(DbTicketCategory.party_id.distinct()),
         )
         .join(DbParty)
@@ -146,16 +147,15 @@ def _get_top_ticket_attendees_for_parties(
         .scalar_subquery()
     )
 
-    return (
-        db.session.query(
+    return db.session.execute(
+        select(
             user_id_column.distinct(),
             attendance_count,
         )
         .filter(user_id_column.is_not(None))
         .filter(attendance_count > 0)
         .order_by(attendance_count.desc())
-        .all()
-    )
+    ).all()
 
 
 def _get_top_archived_attendees_for_parties(
@@ -165,8 +165,8 @@ def _get_top_archived_attendees_for_parties(
         'attendance_count'
     )
 
-    return (
-        db.session.query(
+    return db.session.execute(
+        select(
             DbArchivedAttendance.user_id,
             attendance_count_column,
         )
@@ -174,8 +174,7 @@ def _get_top_archived_attendees_for_parties(
         .filter(DbParty.brand_id == brand_id)
         .group_by(DbArchivedAttendance.user_id)
         .order_by(attendance_count_column.desc())
-        .all()
-    )
+    ).all()
 
 
 def _merge_top_attendance_counts(

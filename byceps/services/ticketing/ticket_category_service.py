@@ -8,6 +8,8 @@ byceps.services.ticketing.ticket_category_service
 
 from typing import Optional
 
+from sqlalchemy import delete, select
+
 from ...database import db
 from ...typing import PartyID
 
@@ -44,14 +46,14 @@ def update_category(
 
 def delete_category(category_id: TicketCategoryID) -> None:
     """Delete a category."""
-    db.session.query(DbTicketCategory).filter_by(id=category_id).delete()
+    db.session.execute(delete(DbTicketCategory).filter_by(id=category_id))
     db.session.commit()
 
 
 def count_categories_for_party(party_id: PartyID) -> int:
     """Return the number of categories for that party."""
-    return (
-        db.session.query(DbTicketCategory).filter_by(party_id=party_id).count()
+    return db.session.scalar(
+        select(db.func.count(DbTicketCategory.id)).filter_by(party_id=party_id)
     )
 
 
@@ -77,9 +79,9 @@ def get_category(category_id: TicketCategoryID) -> TicketCategory:
 
 def get_categories_for_party(party_id: PartyID) -> list[TicketCategory]:
     """Return all categories for that party."""
-    db_categories = (
-        db.session.query(DbTicketCategory).filter_by(party_id=party_id).all()
-    )
+    db_categories = db.session.scalars(
+        select(DbTicketCategory).filter_by(party_id=party_id)
+    ).all()
 
     return [
         _db_entity_to_category(db_category) for db_category in db_categories
@@ -93,19 +95,18 @@ def get_categories_with_ticket_counts_for_party(
     category = db.aliased(DbTicketCategory)
 
     subquery = (
-        db.session.query(db.func.count(DbTicket.id))
+        select(db.func.count(DbTicket.id))
         .join(DbTicketCategory)
         .filter(DbTicketCategory.id == category.id)
         .filter(DbTicket.revoked == False)  # noqa: E712
         .scalar_subquery()
     )
 
-    rows = (
-        db.session.query(category, subquery)
+    rows = db.session.execute(
+        select(category, subquery)
         .filter(category.party_id == party_id)
         .group_by(category.id)
-        .all()
-    )
+    ).all()
 
     return {
         _db_entity_to_category(db_category): ticket_count
