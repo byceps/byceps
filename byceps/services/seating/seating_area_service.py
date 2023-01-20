@@ -8,7 +8,7 @@ byceps.services.seating.seating_area_service
 
 from typing import Optional
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 from sqlalchemy.sql import Select
 
 from ...database import db, paginate, Pagination
@@ -47,30 +47,29 @@ def set_image(
 
 def delete_area(area_id: SeatingAreaID) -> None:
     """Delete an area."""
-    db.session.query(DbSeatingArea).filter_by(id=area_id).delete()
+    db.session.execute(delete(DbSeatingArea).filter_by(id=area_id))
     db.session.commit()
 
 
 def count_areas_for_party(party_id: PartyID) -> int:
     """Return the number of seating areas for that party."""
-    return db.session.query(DbSeatingArea).filter_by(party_id=party_id).count()
+    return db.session.scalar(
+        select(db.func.count(DbSeatingArea.id)).filter_by(party_id=party_id)
+    )
 
 
 def find_area_for_party_by_slug(
     party_id: PartyID, slug: str
 ) -> Optional[SeatingArea]:
     """Return the area for that party with that slug, or `None` if not found."""
-    area = (
-        db.session.query(DbSeatingArea)
-        .filter_by(party_id=party_id)
-        .filter_by(slug=slug)
-        .first()
-    )
+    db_area = db.session.scalars(
+        select(DbSeatingArea).filter_by(party_id=party_id).filter_by(slug=slug)
+    ).first()
 
-    if area is None:
+    if db_area is None:
         return None
 
-    return _db_entity_to_area(area)
+    return _db_entity_to_area(db_area)
 
 
 def get_areas_with_seat_utilization(
@@ -134,20 +133,20 @@ def _get_areas_with_seat_utilization_query(party_id: PartyID) -> Select:
 def _map_areas_with_seat_utilization_row(
     row: tuple[DbSeatingArea, int, int]
 ) -> tuple[SeatingArea, SeatUtilization]:
-    area, occupied_seat_count, total_seat_count = row
+    db_area, occupied_seat_count, total_seat_count = row
     utilization = SeatUtilization(
         occupied=occupied_seat_count, total=total_seat_count
     )
-    return _db_entity_to_area(area), utilization
+    return _db_entity_to_area(db_area), utilization
 
 
-def _db_entity_to_area(area: DbSeatingArea) -> SeatingArea:
+def _db_entity_to_area(db_area: DbSeatingArea) -> SeatingArea:
     return SeatingArea(
-        id=area.id,
-        party_id=area.party_id,
-        slug=area.slug,
-        title=area.title,
-        image_filename=area.image_filename,
-        image_width=area.image_width,
-        image_height=area.image_height,
+        id=db_area.id,
+        party_id=db_area.party_id,
+        slug=db_area.slug,
+        title=db_area.title,
+        image_filename=db_area.image_filename,
+        image_width=db_area.image_width,
+        image_height=db_area.image_height,
     )

@@ -43,133 +43,137 @@ def create_seat_group(
     ):
         raise ValueError("Seats' ticket category IDs do not match the group's.")
 
-    group = DbSeatGroup(party_id, ticket_category_id, seat_quantity, title)
-    db.session.add(group)
+    db_group = DbSeatGroup(party_id, ticket_category_id, seat_quantity, title)
+    db.session.add(db_group)
 
     for seat in seats:
-        assignment = DbSeatGroupAssignment(group, seat.id)
-        db.session.add(assignment)
+        db_assignment = DbSeatGroupAssignment(db_group, seat.id)
+        db.session.add(db_assignment)
 
     db.session.commit()
 
-    return group
+    return db_group
 
 
 def occupy_seat_group(
-    seat_group: DbSeatGroup, ticket_bundle: DbTicketBundle
+    db_seat_group: DbSeatGroup, db_ticket_bundle: DbTicketBundle
 ) -> DbSeatGroupOccupancy:
     """Occupy the seat group with that ticket bundle."""
-    seats = seat_group.seats
-    tickets = ticket_bundle.tickets
+    db_seats = db_seat_group.seats
+    db_tickets = db_ticket_bundle.tickets
 
-    _ensure_group_is_available(seat_group)
-    _ensure_categories_match(seat_group, ticket_bundle)
-    _ensure_quantities_match(seat_group, ticket_bundle)
-    _ensure_actual_quantities_match(seats, tickets)
+    _ensure_group_is_available(db_seat_group)
+    _ensure_categories_match(db_seat_group, db_ticket_bundle)
+    _ensure_quantities_match(db_seat_group, db_ticket_bundle)
+    _ensure_actual_quantities_match(db_seats, db_tickets)
 
-    occupancy = DbSeatGroupOccupancy(seat_group.id, ticket_bundle.id)
-    db.session.add(occupancy)
+    db_occupancy = DbSeatGroupOccupancy(db_seat_group.id, db_ticket_bundle.id)
+    db.session.add(db_occupancy)
 
-    _occupy_seats(seats, tickets)
+    _occupy_seats(db_seats, db_tickets)
 
     db.session.commit()
 
-    return occupancy
+    return db_occupancy
 
 
 def switch_seat_group(
-    occupancy: DbSeatGroupOccupancy, to_group: DbSeatGroup
+    db_occupancy: DbSeatGroupOccupancy, db_to_group: DbSeatGroup
 ) -> None:
     """Switch ticket bundle to another seat group."""
-    ticket_bundle = occupancy.ticket_bundle
-    tickets = ticket_bundle.tickets
-    seats = to_group.seats
+    db_ticket_bundle = db_occupancy.ticket_bundle
+    db_tickets = db_ticket_bundle.tickets
+    db_seats = db_to_group.seats
 
-    _ensure_group_is_available(to_group)
-    _ensure_categories_match(to_group, ticket_bundle)
-    _ensure_quantities_match(to_group, ticket_bundle)
-    _ensure_actual_quantities_match(seats, tickets)
+    _ensure_group_is_available(db_to_group)
+    _ensure_categories_match(db_to_group, db_ticket_bundle)
+    _ensure_quantities_match(db_to_group, db_ticket_bundle)
+    _ensure_actual_quantities_match(db_seats, db_tickets)
 
-    occupancy.seat_group_id = to_group.id
+    db_occupancy.seat_group_id = db_to_group.id
 
-    _occupy_seats(seats, tickets)
+    _occupy_seats(db_seats, db_tickets)
 
     db.session.commit()
 
 
-def _ensure_group_is_available(seat_group: DbSeatGroup) -> None:
+def _ensure_group_is_available(db_seat_group: DbSeatGroup) -> None:
     """Raise an error if the seat group is occupied."""
-    occupancy = find_occupancy_for_seat_group(seat_group.id)
+    occupancy = find_occupancy_for_seat_group(db_seat_group.id)
     if occupancy is not None:
         raise ValueError('Seat group is already occupied.')
 
 
 def _ensure_categories_match(
-    seat_group: DbSeatGroup, ticket_bundle: DbTicketBundle
+    db_seat_group: DbSeatGroup, db_ticket_bundle: DbTicketBundle
 ) -> None:
     """Raise an error if the seat group's and the ticket bundle's
     categories don't match.
     """
-    if seat_group.ticket_category_id != ticket_bundle.ticket_category_id:
+    if db_seat_group.ticket_category_id != db_ticket_bundle.ticket_category_id:
         raise ValueError('Seat and ticket categories do not match.')
 
 
 def _ensure_quantities_match(
-    seat_group: DbSeatGroup, ticket_bundle: DbTicketBundle
+    db_seat_group: DbSeatGroup, db_ticket_bundle: DbTicketBundle
 ) -> None:
     """Raise an error if the seat group's and the ticket bundle's
     quantities don't match.
     """
-    if seat_group.seat_quantity != ticket_bundle.ticket_quantity:
+    if db_seat_group.seat_quantity != db_ticket_bundle.ticket_quantity:
         raise ValueError('Seat and ticket quantities do not match.')
 
 
 def _ensure_actual_quantities_match(
-    seats: Sequence[DbSeat], tickets: Sequence[DbTicket]
+    db_seats: Sequence[DbSeat], db_tickets: Sequence[DbTicket]
 ) -> None:
     """Raise an error if the totals of seats and tickets don't match."""
-    if len(seats) != len(tickets):
+    if len(db_seats) != len(db_tickets):
         raise ValueError(
             'The actual quantities of seats and tickets ' 'do not match.'
         )
 
 
-def _occupy_seats(seats: Sequence[DbSeat], tickets: Sequence[DbTicket]) -> None:
+def _occupy_seats(
+    db_seats: Sequence[DbSeat], db_tickets: Sequence[DbTicket]
+) -> None:
     """Occupy all seats in the group with all tickets from the bundle."""
-    seats = _sort_seats(seats)
-    tickets = _sort_tickets(tickets)
+    db_seats = _sort_seats(db_seats)
+    db_tickets = _sort_tickets(db_tickets)
 
-    for seat, ticket in zip(seats, tickets):
+    for seat, ticket in zip(db_seats, db_tickets):
         ticket.occupied_seat = seat
 
 
-def _sort_seats(seats: Sequence[DbSeat]) -> list[DbSeat]:
+def _sort_seats(db_seats: Sequence[DbSeat]) -> list[DbSeat]:
     """Create a list of the seats sorted by their respective coordinates."""
-    return list(sorted(seats, key=lambda s: (s.coord_x, s.coord_y)))
+    return list(sorted(db_seats, key=lambda s: (s.coord_x, s.coord_y)))
 
 
-def _sort_tickets(tickets: Sequence[DbTicket]) -> list[DbTicket]:
+def _sort_tickets(db_tickets: Sequence[DbTicket]) -> list[DbTicket]:
     """Create a list of the tickets sorted by creation time (ascending)."""
-    return list(sorted(tickets, key=lambda t: t.created_at))
+    return list(sorted(db_tickets, key=lambda t: t.created_at))
 
 
 def release_seat_group(seat_group_id: SeatGroupID) -> None:
     """Release a seat group so it becomes available again."""
-    occupancy = find_occupancy_for_seat_group(seat_group_id)
-    if occupancy is None:
+    db_occupancy = find_occupancy_for_seat_group(seat_group_id)
+    if db_occupancy is None:
         raise ValueError('Seat group is not occupied.')
 
-    for ticket in occupancy.ticket_bundle.tickets:
-        ticket.occupied_seat = None
+    for db_ticket in db_occupancy.ticket_bundle.tickets:
+        db_ticket.occupied_seat = None
 
-    db.session.delete(occupancy)
+    db.session.delete(db_occupancy)
 
     db.session.commit()
 
 
 def count_seat_groups_for_party(party_id: PartyID) -> int:
     """Return the number of seat groups for that party."""
-    return db.session.query(DbSeatGroup).filter_by(party_id=party_id).count()
+    return db.session.scalar(
+        select(db.func.count(DbSeatGroup.id)).filter_by(party_id=party_id)
+    )
 
 
 def find_seat_group(seat_group_id: SeatGroupID) -> Optional[DbSeatGroup]:
@@ -201,13 +205,15 @@ def find_occupancy_for_seat_group(
 
 def get_all_seat_groups_for_party(party_id: PartyID) -> list[DbSeatGroup]:
     """Return all seat groups for that party."""
-    return db.session.query(DbSeatGroup).filter_by(party_id=party_id).all()
+    return db.session.scalars(
+        select(DbSeatGroup).filter_by(party_id=party_id)
+    ).all()
 
 
 def is_seat_part_of_a_group(seat_id: SeatID) -> bool:
     """Return whether or not the seat is part of a seat group."""
-    return db.session.execute(
+    return db.session.scalar(
         select(
             select(DbSeatGroupAssignment).filter_by(seat_id=seat_id).exists()
         )
-    ).scalar_one()
+    )
