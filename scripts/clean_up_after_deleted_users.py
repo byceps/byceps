@@ -9,6 +9,7 @@
 from typing import Callable
 
 import click
+from sqlalchemy import delete
 
 from byceps.database import db
 from byceps.services.authentication.password.dbmodels import DbCredential
@@ -142,11 +143,10 @@ def delete_user_log_entries(user_ids: set[UserID]) -> int:
     """Delete user log entries (except for those that justify the
     deletion) for the given users.
     """
-    return (
-        db.session.query(DbUserLogEntry)
+    return db.session.execute(
+        delete(DbUserLogEntry)
         .filter(DbUserLogEntry.user_id.in_(user_ids))
         .filter(DbUserLogEntry.event_type != 'user-deleted')
-        .delete(synchronize_session=False)
     )
 
 
@@ -157,11 +157,7 @@ def delete_verification_tokens(user_ids: set[UserID]) -> int:
 
 def _execute_delete_for_users_query(model, user_ids: set[UserID]) -> int:
     """Execute (but not commit) deletions, return number of affected rows."""
-    return (
-        db.session.query(model)
-        .filter(model.user_id.in_(user_ids))
-        .delete(synchronize_session=False)
-    )
+    return db.session.execute(delete(model).filter(model.user_id.in_(user_ids)))
 
 
 if __name__ == '__main__':
