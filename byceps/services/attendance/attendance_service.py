@@ -55,7 +55,7 @@ def _get_users_paginated(
     # Drop revoked tickets here already to avoid users without tickets
     # being included in the list.
 
-    items_query = (
+    items_stmt = (
         select(
             DbUser, db.func.lower(DbUser.screen_name).label('screen_name_lower')
         )
@@ -71,7 +71,7 @@ def _get_users_paginated(
         .order_by('screen_name_lower')
     )
 
-    count_query = (
+    count_stmt = (
         select(db.func.count(db.distinct(DbUser.id)))
         .join(DbTicket, DbTicket.used_by_id == DbUser.id)
         .filter(DbTicket.revoked == False)  # noqa: E712
@@ -80,23 +80,21 @@ def _get_users_paginated(
     )
 
     if search_term:
-        items_query = items_query.filter(
+        items_stmt = items_stmt.filter(
             DbUser.screen_name.ilike(f'%{search_term}%')
         )
-        count_query = count_query.filter(
+        count_stmt = count_stmt.filter(
             DbUser.screen_name.ilike(f'%{search_term}%')
         )
 
-    return paginate(
-        items_query, count_query, page, per_page, scalar_result=True
-    )
+    return paginate(items_stmt, count_stmt, page, per_page, scalar_result=True)
 
 
 def _get_tickets_for_users(
     party_id: PartyID, user_ids: set[UserID]
 ) -> list[DbTicket]:
-    return (
-        db.session.query(DbTicket)
+    return db.session.scalars(
+        select(DbTicket)
         .options(
             db.joinedload(DbTicket.category),
             db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
@@ -104,8 +102,7 @@ def _get_tickets_for_users(
         .filter(DbTicket.party_id == party_id)
         .filter(DbTicket.used_by_id.in_(user_ids))
         .filter(DbTicket.revoked == False)  # noqa: E712
-        .all()
-    )
+    ).all()
 
 
 def _index_tickets_by_user_id(
