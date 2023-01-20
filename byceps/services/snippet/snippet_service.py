@@ -9,7 +9,7 @@ byceps.services.snippet.snippet_service
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import delete
+from sqlalchemy import delete, select
 
 from ...database import db
 from ...events.snippet import SnippetCreated, SnippetDeleted, SnippetUpdated
@@ -151,17 +151,17 @@ def find_snippet(snippet_id: SnippetID) -> Optional[DbSnippet]:
 
 def get_snippets(snippet_ids: set[SnippetID]) -> list[DbSnippet]:
     """Return these snippets."""
-    return (
-        db.session.query(DbSnippet).filter(DbSnippet.id.in_(snippet_ids)).all()
-    )
+    return db.session.scalars(
+        select(DbSnippet).filter(DbSnippet.id.in_(snippet_ids))
+    ).all()
 
 
 def get_snippets_for_scope_with_current_versions(
     scope: Scope,
 ) -> list[DbSnippet]:
     """Return all snippets with their current versions for that scope."""
-    return (
-        db.session.query(DbSnippet)
+    return db.session.scalars(
+        select(DbSnippet)
         .filter_by(scope_type=scope.type_)
         .filter_by(scope_name=scope.name)
         .options(
@@ -169,8 +169,7 @@ def get_snippets_for_scope_with_current_versions(
                 DbCurrentSnippetVersionAssociation.version
             )
         )
-        .all()
-    )
+    ).all()
 
 
 def find_snippet_version(
@@ -186,45 +185,45 @@ def find_current_version_of_snippet_with_name(
     """Return the current version of the snippet with that name in that
     scope, or `None` if not found.
     """
-    return (
-        db.session.query(DbSnippetVersion)
+    return db.session.scalars(
+        select(DbSnippetVersion)
         .join(DbCurrentSnippetVersionAssociation)
         .join(DbSnippet)
         .filter(DbSnippet.scope_type == scope.type_)
         .filter(DbSnippet.scope_name == scope.name)
         .filter(DbSnippet.name == name)
-        .one_or_none()
-    )
+    ).one_or_none()
 
 
 def get_versions(snippet_id: SnippetID) -> list[DbSnippetVersion]:
     """Return all versions of that snippet, sorted from most recent to
     oldest.
     """
-    return (
-        db.session.query(DbSnippetVersion)
+    return db.session.scalars(
+        select(DbSnippetVersion)
         .filter_by(snippet_id=snippet_id)
         .order_by(DbSnippetVersion.created_at.desc())
-        .all()
-    )
+    ).all()
 
 
 def search_snippets(
     search_term: str, scope: Optional[Scope]
 ) -> list[DbSnippetVersion]:
     """Search in (the latest versions of) snippets."""
-    q = (
-        db.session.query(DbSnippetVersion)
+    stmt = (
+        select(DbSnippetVersion)
         .join(DbCurrentSnippetVersionAssociation)
         .join(DbSnippet)
     )
 
     if scope is not None:
-        q = q.filter(DbSnippet.scope_type == scope.type_).filter(
+        stmt = stmt.filter(DbSnippet.scope_type == scope.type_).filter(
             DbSnippet.scope_name == scope.name
         )
 
-    return q.filter(DbSnippetVersion.body.contains(search_term)).all()
+    stmt = stmt.filter(DbSnippetVersion.body.contains(search_term))
+
+    return db.session.scalars(stmt).all()
 
 
 class SnippetNotFound(Exception):
