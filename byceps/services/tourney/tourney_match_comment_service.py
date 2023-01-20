@@ -9,6 +9,8 @@ byceps.services.tourney.tourney_match_comment_service
 from datetime import datetime
 from typing import Optional
 
+from sqlalchemy import select
+
 from ...database import db
 from ...services.text_markup import text_markup_service
 from ...services.user.models.user import User
@@ -21,26 +23,26 @@ from .models import MatchID, MatchComment, MatchCommentID
 
 def find_comment(comment_id: MatchCommentID) -> Optional[MatchComment]:
     """Return the comment, or `None` if not found."""
-    comment = db.session.get(DbMatchComment, comment_id)
+    db_comment = db.session.get(DbMatchComment, comment_id)
 
-    if comment is None:
+    if db_comment is None:
         return None
 
     # creator
-    creator = _get_user(comment.created_by_id)
+    creator = _get_user(db_comment.created_by_id)
 
     # last editor
     last_editor = None
-    if comment.last_edited_by_id:
-        last_editor = _get_user(comment.last_edited_by_id)
+    if db_comment.last_edited_by_id:
+        last_editor = _get_user(db_comment.last_edited_by_id)
 
     # moderator
     moderator = None
-    if comment.hidden_by_id:
-        moderator = _get_user(comment.hidden_by_id)
+    if db_comment.hidden_by_id:
+        moderator = _get_user(db_comment.hidden_by_id)
 
     return _db_entity_to_comment(
-        comment,
+        db_comment,
         creator,
         last_editor=last_editor,
         moderator=moderator,
@@ -66,12 +68,14 @@ def get_comments(
     include_hidden: bool = False,
 ) -> list[MatchComment]:
     """Return comments on the match, ordered chronologically."""
-    query = db.session.query(DbMatchComment).filter_by(match_id=match_id)
+    stmt = select(DbMatchComment).filter_by(match_id=match_id)
 
     if not include_hidden:
-        query = query.filter_by(hidden=False)
+        stmt = stmt.filter_by(hidden=False)
 
-    db_comments = query.order_by(DbMatchComment.created_at).all()
+    db_comments = db.session.scalars(
+        stmt.order_by(DbMatchComment.created_at)
+    ).all()
 
     # creators
     creator_ids = {comment.created_by_id for comment in db_comments}
@@ -117,47 +121,47 @@ def create_comment(
     match_id: MatchID, creator_id: UserID, body: str
 ) -> MatchComment:
     """Create a comment on a match."""
-    comment = DbMatchComment(match_id, creator_id, body)
+    db_comment = DbMatchComment(match_id, creator_id, body)
 
-    db.session.add(comment)
+    db.session.add(db_comment)
     db.session.commit()
 
-    return get_comment(comment.id)
+    return get_comment(db_comment.id)
 
 
 def update_comment(
     comment_id: MatchCommentID, editor_id: UserID, body: str
 ) -> MatchComment:
     """Update a comment on a match."""
-    comment = _get_db_comment(comment_id)
+    db_comment = _get_db_comment(comment_id)
 
-    comment.body = body
-    comment.last_edited_at = datetime.utcnow()
-    comment.last_edited_by_id = editor_id
+    db_comment.body = body
+    db_comment.last_edited_at = datetime.utcnow()
+    db_comment.last_edited_by_id = editor_id
 
     db.session.commit()
 
-    return get_comment(comment.id)
+    return get_comment(db_comment.id)
 
 
 def hide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
     """Hide the match comment."""
-    comment = _get_db_comment(comment_id)
+    db_comment = _get_db_comment(comment_id)
 
-    comment.hidden = True
-    comment.hidden_at = datetime.utcnow()
-    comment.hidden_by_id = initiator_id
+    db_comment.hidden = True
+    db_comment.hidden_at = datetime.utcnow()
+    db_comment.hidden_by_id = initiator_id
 
     db.session.commit()
 
 
 def unhide_comment(comment_id: MatchCommentID, initiator_id: UserID) -> None:
     """Un-hide the match comment."""
-    comment = _get_db_comment(comment_id)
+    db_comment = _get_db_comment(comment_id)
 
-    comment.hidden = False
-    comment.hidden_at = None
-    comment.hidden_by_id = None
+    db_comment.hidden = False
+    db_comment.hidden_at = None
+    db_comment.hidden_by_id = None
 
     db.session.commit()
 
@@ -167,12 +171,12 @@ def _get_db_comment(comment_id: MatchCommentID) -> DbMatchComment:
 
     Raise exception if comment ID is unknown.
     """
-    comment = db.session.get(DbMatchComment, comment_id)
+    db_comment = db.session.get(DbMatchComment, comment_id)
 
-    if comment is None:
+    if db_comment is None:
         raise ValueError('Unknown match comment ID')
 
-    return comment
+    return db_comment
 
 
 def _get_user(user_id: UserID) -> User:
@@ -180,24 +184,24 @@ def _get_user(user_id: UserID) -> User:
 
 
 def _db_entity_to_comment(
-    comment: DbMatchComment,
+    db_comment: DbMatchComment,
     creator: User,
     *,
     last_editor: Optional[User],
     moderator: Optional[User],
 ) -> MatchComment:
-    body_html = text_markup_service.render_html(comment.body)
+    body_html = text_markup_service.render_html(db_comment.body)
 
     return MatchComment(
-        comment.id,
-        comment.match_id,
-        comment.created_at,
-        creator,
-        comment.body,
-        body_html,
-        comment.last_edited_at,
-        last_editor,
-        comment.hidden,
-        comment.hidden_at,
-        moderator,
+        id=db_comment.id,
+        match_id=db_comment.match_id,
+        created_at=db_comment.created_at,
+        created_by=creator,
+        body_text=db_comment.body,
+        body_html=body_html,
+        last_edited_at=db_comment.last_edited_at,
+        last_edited_by=last_editor,
+        hidden=db_comment.hidden,
+        hidden_at=db_comment.hidden_at,
+        hidden_by=moderator,
     )

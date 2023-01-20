@@ -8,6 +8,8 @@ byceps.services.tourney.tourney_match_service
 
 from typing import Optional
 
+from sqlalchemy import delete
+
 from ...database import db
 
 from .dbmodels.match import DbMatch
@@ -16,12 +18,12 @@ from .models import Match, MatchID
 
 def create_match() -> Match:
     """Create a match."""
-    match = DbMatch()
+    db_match = DbMatch()
 
-    db.session.add(match)
+    db.session.add(db_match)
     db.session.commit()
 
-    return _db_entity_to_match(match)
+    return _db_entity_to_match(db_match)
 
 
 def delete_match(match_id: MatchID) -> None:
@@ -30,20 +32,19 @@ def delete_match(match_id: MatchID) -> None:
     if match is None:
         raise ValueError(f'Unknown match ID "{match_id}"')
 
-    db.session.query(DbMatch).filter_by(id=match_id).delete()
-
+    db.session.execute(delete(DbMatch).filter_by(id=match.id))
     db.session.commit()
 
 
 def find_match(match_id: MatchID) -> Optional[Match]:
     """Return the match with that id, or `None` if not found."""
-    match = db.session.get(DbMatch, match_id)
+    db_match = db.session.get(DbMatch, match_id)
 
-    if match is None:
+    if db_match is None:
         return None
 
-    return _db_entity_to_match(match)
+    return _db_entity_to_match(db_match)
 
 
-def _db_entity_to_match(match: DbMatch) -> Match:
-    return Match(match.id)
+def _db_entity_to_match(db_match: DbMatch) -> Match:
+    return Match(id=db_match.id)

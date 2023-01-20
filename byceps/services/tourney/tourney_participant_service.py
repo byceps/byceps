@@ -8,6 +8,8 @@ byceps.services.tourney.tourney_participant_service
 
 from typing import Optional
 
+from sqlalchemy import delete, select
+
 from ...database import db
 
 from .dbmodels.participant import DbParticipant
@@ -21,12 +23,12 @@ def create_participant(
     """Create a participant."""
     tourney = tourney_service.get_tourney(tourney_id)
 
-    participant = DbParticipant(tourney.id, title, max_size)
+    db_participant = DbParticipant(tourney.id, title, max_size)
 
-    db.session.add(participant)
+    db.session.add(db_participant)
     db.session.commit()
 
-    return _db_entity_to_participant(participant)
+    return _db_entity_to_participant(db_participant)
 
 
 def delete_participant(participant_id: ParticipantID) -> None:
@@ -35,38 +37,36 @@ def delete_participant(participant_id: ParticipantID) -> None:
     if participant is None:
         raise ValueError(f'Unknown participant ID "{participant_id}"')
 
-    db.session.query(DbParticipant).filter_by(id=participant_id).delete()
-
+    db.session.execute(delete(DbParticipant).filter_by(id=participant.id))
     db.session.commit()
 
 
 def find_participant(participant_id: ParticipantID) -> Optional[Participant]:
     """Return the participant with that id, or `None` if not found."""
-    participant = db.session.get(DbParticipant, participant_id)
+    db_participant = db.session.get(DbParticipant, participant_id)
 
-    if participant is None:
+    if db_participant is None:
         return None
 
-    return _db_entity_to_participant(participant)
+    return _db_entity_to_participant(db_participant)
 
 
 def get_participants_for_tourney(tourney_id: TourneyID) -> set[Participant]:
     """Return the participants of the tourney."""
-    participants = (
-        db.session.query(DbParticipant).filter_by(tourney_id=tourney_id).all()
-    )
+    db_participants = db.session.scalars(
+        select(DbParticipant).filter_by(tourney_id=tourney_id)
+    ).all()
 
     return {
-        _db_entity_to_participant(participant) for participant in participants
+        _db_entity_to_participant(db_participant)
+        for db_participant in db_participants
     }
 
 
-def _db_entity_to_participant(participant: DbParticipant) -> Participant:
-    logo_url = None
-
+def _db_entity_to_participant(db_participant: DbParticipant) -> Participant:
     return Participant(
-        participant.id,
-        participant.tourney_id,
-        participant.title,
-        logo_url,
+        id=db_participant.id,
+        tourney_id=db_participant.tourney_id,
+        title=db_participant.title,
+        logo_url=None,
     )

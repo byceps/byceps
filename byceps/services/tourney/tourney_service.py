@@ -9,6 +9,8 @@ byceps.services.tourney.tourney_service
 from datetime import datetime
 from typing import Optional
 
+from sqlalchemy import delete, select
+
 from ...database import db
 from ...typing import PartyID
 
@@ -35,7 +37,7 @@ def create_tourney(
     party = party_service.get_party(party_id)
     category = tourney_category_service.get_category(category_id)
 
-    tourney = DbTourney(
+    db_tourney = DbTourney(
         party.id,
         title,
         category.id,
@@ -45,10 +47,10 @@ def create_tourney(
         logo_url=logo_url,
     )
 
-    db.session.add(tourney)
+    db.session.add(db_tourney)
     db.session.commit()
 
-    return _db_entity_to_tourney(tourney)
+    return _db_entity_to_tourney(db_tourney)
 
 
 def update_tourney(
@@ -61,37 +63,36 @@ def update_tourney(
     starts_at: datetime,
 ) -> Tourney:
     """Update tourney."""
-    tourney = _get_db_tourney(tourney_id)
+    db_tourney = _get_db_tourney(tourney_id)
 
-    tourney.title = title
-    tourney.subtitle = subtitle
-    tourney.logo_url = logo_url
-    tourney.category_id = category_id
-    tourney.max_participant_count = max_participant_count
-    tourney.starts_at = starts_at
+    db_tourney.title = title
+    db_tourney.subtitle = subtitle
+    db_tourney.logo_url = logo_url
+    db_tourney.category_id = category_id
+    db_tourney.max_participant_count = max_participant_count
+    db_tourney.starts_at = starts_at
 
     db.session.commit()
 
-    return _db_entity_to_tourney(tourney)
+    return _db_entity_to_tourney(db_tourney)
 
 
 def delete_tourney(tourney_id: TourneyID) -> None:
     """Delete a tourney."""
     tourney = get_tourney(tourney_id)
 
-    db.session.query(DbTourney).filter_by(id=tourney.id).delete()
-
+    db.session.execute(delete(DbTourney).filter_by(id=tourney.id))
     db.session.commit()
 
 
 def find_tourney(tourney_id: TourneyID) -> Optional[Tourney]:
     """Return the tourney with that id, or `None` if not found."""
-    tourney = _find_db_tourney(tourney_id)
+    db_tourney = _find_db_tourney(tourney_id)
 
-    if tourney is None:
+    if db_tourney is None:
         return None
 
-    return _db_entity_to_tourney(tourney)
+    return _db_entity_to_tourney(db_tourney)
 
 
 def _find_db_tourney(tourney_id: TourneyID) -> Optional[DbTourney]:
@@ -112,44 +113,44 @@ def get_tourney(tourney_id: TourneyID) -> Tourney:
 
 
 def _get_db_tourney(tourney_id: TourneyID) -> DbTourney:
-    tourney = _find_db_tourney(tourney_id)
+    db_tourney = _find_db_tourney(tourney_id)
 
-    if tourney is None:
+    if db_tourney is None:
         raise ValueError(f'Unknown tourney ID "{tourney_id}"')
 
-    return tourney
+    return db_tourney
 
 
 def get_tourneys_for_party(party_id: PartyID) -> list[TourneyWithCategory]:
     """Return the tourneys for that party."""
-    rows = (
-        db.session.query(
-            DbTourney, DbTourneyCategory, db.func.count(DbParticipant.id)
-        )
+    rows = db.session.execute(
+        select(DbTourney, DbTourneyCategory, db.func.count(DbParticipant.id))
         .join(DbTourneyCategory)
         .join(DbParticipant, isouter=True)
         .filter(DbTourney.party_id == party_id)
         .group_by(DbTourney.id, DbTourneyCategory)
-        .all()
-    )
+    ).all()
 
-    return [_to_tourney_with_category(row[0], row[1], row[2]) for row in rows]
+    return [
+        _to_tourney_with_category(db_tourney, db_category, participant_count)
+        for db_tourney, db_category, participant_count in rows
+    ]
 
 
 def _db_entity_to_tourney(
-    tourney: DbTourney,
+    db_tourney: DbTourney,
     current_participant_count: int = -1,
 ) -> Tourney:
     return Tourney(
-        id=tourney.id,
-        party_id=tourney.party_id,
-        title=tourney.title,
-        subtitle=tourney.subtitle,
-        logo_url=tourney.logo_url,
-        category_id=tourney.category_id,
+        id=db_tourney.id,
+        party_id=db_tourney.party_id,
+        title=db_tourney.title,
+        subtitle=db_tourney.subtitle,
+        logo_url=db_tourney.logo_url,
+        category_id=db_tourney.category_id,
         current_participant_count=current_participant_count,
-        max_participant_count=tourney.max_participant_count,
-        starts_at=tourney.starts_at,
+        max_participant_count=db_tourney.max_participant_count,
+        starts_at=db_tourney.starts_at,
     )
 
 
@@ -158,9 +159,9 @@ def _to_tourney_with_category(
     db_category: DbTourneyCategory,
     current_participant_count: int = -1,
 ) -> TourneyWithCategory:
-    tourney = _db_entity_to_tourney(db_tourney, current_participant_count)
+    db_tourney = _db_entity_to_tourney(db_tourney, current_participant_count)
     category = tourney_category_service._db_entity_to_category(db_category)
 
     return TourneyWithCategory.from_tourney_and_category(
-        tourney, category, current_participant_count
+        db_tourney, category, current_participant_count
     )
