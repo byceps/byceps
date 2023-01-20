@@ -9,6 +9,8 @@ byceps.services.board.board_last_view_service
 from datetime import datetime
 from typing import Optional
 
+from sqlalchemy import delete, select
+
 from ...database import db, upsert, upsert_many
 from ...typing import UserID
 
@@ -32,23 +34,23 @@ def contains_category_unseen_postings(
     if category.last_posting_updated_at is None:
         return False
 
-    last_view = find_last_category_view(user_id, category.id)
+    db_last_view = find_last_category_view(user_id, category.id)
 
-    if last_view is None:
+    if db_last_view is None:
         return True
 
-    return category.last_posting_updated_at > last_view.occurred_at
+    return category.last_posting_updated_at > db_last_view.occurred_at
 
 
 def find_last_category_view(
     user_id: UserID, category_id: BoardCategoryID
 ) -> Optional[DbLastCategoryView]:
     """Return the user's last view of the category, or `None` if not found."""
-    return (
-        db.session.query(DbLastCategoryView)
-        .filter_by(user_id=user_id, category_id=category_id)
-        .first()
-    )
+    return db.session.scalars(
+        select(DbLastCategoryView).filter_by(
+            user_id=user_id, category_id=category_id
+        )
+    ).first()
 
 
 def mark_category_as_just_viewed(
@@ -71,9 +73,9 @@ def mark_category_as_just_viewed(
 
 def delete_last_category_views(category_id: BoardCategoryID) -> None:
     """Delete the category's last views."""
-    db.session.query(DbLastCategoryView).filter_by(
-        category_id=category_id
-    ).delete()
+    db.session.execute(
+        delete(DbLastCategoryView).filter_by(category_id=category_id)
+    )
     db.session.commit()
 
 
@@ -85,20 +87,20 @@ def contains_topic_unseen_postings(topic: DbTopic, user_id: UserID) -> bool:
     """Return `True` if the topic contains postings created after the
     last time the user viewed it.
     """
-    last_viewed_at = find_topic_last_viewed_at(topic.id, user_id)
+    db_last_viewed_at = find_topic_last_viewed_at(topic.id, user_id)
 
-    return last_viewed_at is None or topic.last_updated_at > last_viewed_at
+    return (
+        db_last_viewed_at is None or topic.last_updated_at > db_last_viewed_at
+    )
 
 
 def find_last_topic_view(
     user_id: UserID, topic_id: TopicID
 ) -> Optional[DbLastTopicView]:
     """Return the user's last view of the topic, or `None` if not found."""
-    return (
-        db.session.query(DbLastTopicView)
-        .filter_by(user_id=user_id, topic_id=topic_id)
-        .first()
-    )
+    return db.session.scalars(
+        select(DbLastTopicView).filter_by(user_id=user_id, topic_id=topic_id)
+    ).first()
 
 
 def find_topic_last_viewed_at(
@@ -107,8 +109,8 @@ def find_topic_last_viewed_at(
     """Return the time the topic was last viewed by the user (or
     nothing, if it hasn't been viewed by the user yet).
     """
-    last_view = find_last_topic_view(user_id, topic_id)
-    return last_view.occurred_at if (last_view is not None) else None
+    db_last_view = find_last_topic_view(user_id, topic_id)
+    return db_last_view.occurred_at if (db_last_view is not None) else None
 
 
 def mark_topic_as_just_viewed(topic_id: TopicID, user_id: UserID) -> None:
@@ -152,5 +154,5 @@ def mark_all_topics_in_category_as_viewed(
 
 def delete_last_topic_views(topic_id: TopicID) -> None:
     """Delete the topic's last views."""
-    db.session.query(DbLastTopicView).filter_by(topic_id=topic_id).delete()
+    db.session.execute(delete(DbLastTopicView).filter_by(topic_id=topic_id))
     db.session.commit()

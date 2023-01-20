@@ -25,12 +25,11 @@ from .models import BoardID, PostingID, TopicID
 
 def count_postings_for_board(board_id: BoardID) -> int:
     """Return the number of postings for that board."""
-    return (
-        db.session.query(DbPosting)
+    return db.session.scalar(
+        select(db.func.count(DbPosting.id))
         .join(DbTopic)
         .join(DbBoardCategory)
         .filter(DbBoardCategory.board_id == board_id)
-        .count()
     )
 
 
@@ -41,12 +40,12 @@ def find_posting_by_id(posting_id: PostingID) -> Optional[DbPosting]:
 
 def get_posting(posting_id: PostingID) -> DbPosting:
     """Return the posting with that id."""
-    posting = find_posting_by_id(posting_id)
+    db_posting = find_posting_by_id(posting_id)
 
-    if posting is None:
+    if db_posting is None:
         raise ValueError(f'Unknown posting ID "{posting_id}"')
 
-    return posting
+    return db_posting
 
 
 def paginate_postings(
@@ -56,7 +55,7 @@ def paginate_postings(
     per_page: int,
 ) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
-    items_query = (
+    items_stmt = (
         select(DbPosting)
         .options(
             db.joinedload(DbPosting.topic),
@@ -67,16 +66,16 @@ def paginate_postings(
         .order_by(DbPosting.created_at.asc())
     )
 
-    count_query = select(db.func.count(DbPosting.id)).filter_by(
+    count_stmt = select(db.func.count(DbPosting.id)).filter_by(
         topic_id=topic_id
     )
 
     if not include_hidden:
-        items_query = items_query.filter_by(hidden=False)
-        count_query = count_query.filter_by(hidden=False)
+        items_stmt = items_stmt.filter_by(hidden=False)
+        count_stmt = count_stmt.filter_by(hidden=False)
 
     postings = paginate(
-        items_query, count_query, page, per_page, scalar_result=True
+        items_stmt, count_stmt, page, per_page, scalar_result=True
     )
 
     creator_ids = {posting.creator_id for posting in postings.items}
@@ -97,12 +96,14 @@ def calculate_posting_page_number(
     posting: DbPosting, include_hidden: bool, postings_per_page: int
 ) -> int:
     """Return the number of the page the posting should appear on."""
-    query = db.session.query(DbPosting).filter_by(topic_id=posting.topic_id)
+    stmt = select(DbPosting).filter_by(topic_id=posting.topic_id)
 
     if not include_hidden:
-        query = query.filter_by(hidden=False)
+        stmt = stmt.filter_by(hidden=False)
 
-    topic_postings = query.order_by(DbPosting.created_at.asc()).all()
+    stmt = stmt.order_by(DbPosting.created_at.asc())
+
+    topic_postings = db.session.scalars(stmt).all()
 
     index = index_of(topic_postings, lambda p: p == posting)
     if index is None:
