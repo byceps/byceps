@@ -160,7 +160,9 @@ def _find_db_image(image_id: NewsImageID) -> Optional[DbNewsImage]:
     return db.session.scalars(
         select(DbNewsImage)
         .filter(DbNewsImage.id == image_id)
-        .options(db.joinedload(DbNewsImage.item).load_only('channel_id'))
+        .options(
+            db.joinedload(DbNewsImage.item).load_only(DbNewsImage.channel_id)
+        )
     ).one_or_none()
 
 

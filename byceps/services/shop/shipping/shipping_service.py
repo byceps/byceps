@@ -108,7 +108,7 @@ def _get_article_descriptions(
 
     db_articles = db.session.scalars(
         select(DbArticle)
-        .options(db.load_only('id', 'description'))
+        .options(db.load_only(DbArticle.id, DbArticle.description))
         .filter(DbArticle.id.in_(article_ids))
     ).all()
 

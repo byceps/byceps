@@ -14,6 +14,7 @@ from ...database import db, paginate, Pagination
 from ...typing import UserID
 from ...util.iterables import index_of
 
+from ..user.dbmodels.user import DbUser
 from ..user.models.user import User
 from ..user import user_service
 
@@ -59,8 +60,10 @@ def paginate_postings(
         select(DbPosting)
         .options(
             db.joinedload(DbPosting.topic),
-            db.joinedload(DbPosting.last_edited_by).load_only('screen_name'),
-            db.joinedload(DbPosting.hidden_by).load_only('screen_name'),
+            db.joinedload(DbPosting.last_edited_by).load_only(
+                DbUser.screen_name
+            ),
+            db.joinedload(DbPosting.hidden_by).load_only(DbUser.screen_name),
         )
         .filter_by(topic_id=topic_id)
         .order_by(DbPosting.created_at.asc())
