@@ -10,7 +10,7 @@ from __future__ import annotations
 import dataclasses
 from typing import Callable, Optional
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from ...database import db
 from ...typing import BrandID, PartyID
@@ -97,10 +97,8 @@ def update_site(
 
 def delete_site(site_id: SiteID) -> None:
     """Delete a site."""
-    db.session.query(DbSetting).filter_by(site_id=site_id).delete()
-
-    db.session.query(DbSite).filter_by(id=site_id).delete()
-
+    db.session.execute(delete(DbSetting).filter_by(site_id=site_id))
+    db.session.execute(delete(DbSite).filter_by(id=site_id))
     db.session.commit()
 
 
@@ -135,7 +133,7 @@ def get_site(site_id: SiteID) -> Site:
 
 def get_all_sites() -> set[Site]:
     """Return all sites."""
-    db_sites = db.session.query(DbSite).all()
+    db_sites = db.session.scalars(select(DbSite)).all()
 
     return {_db_entity_to_site(db_site) for db_site in db_sites}
 
@@ -154,7 +152,9 @@ def get_sites(site_ids: set[SiteID]) -> list[Site]:
 
 def get_sites_for_brand(brand_id: BrandID) -> set[Site]:
     """Return the sites for that brand."""
-    db_sites = db.session.query(DbSite).filter_by(brand_id=brand_id).all()
+    db_sites = db.session.scalars(
+        select(DbSite).filter_by(brand_id=brand_id)
+    ).all()
 
     return {_db_entity_to_site(db_site) for db_site in db_sites}
 
@@ -163,15 +163,17 @@ def get_current_sites(
     brand_id: Optional[BrandID] = None, *, include_brands: bool = False
 ) -> set[Site | SiteWithBrand]:
     """Return all "current" (i.e. enabled and not archived) sites."""
-    query = db.session.query(DbSite)
+    stmt = select(DbSite)
 
     if brand_id is not None:
-        query = query.filter_by(brand_id=brand_id)
+        stmt = stmt.filter_by(brand_id=brand_id)
 
     if include_brands:
-        query = query.options(db.joinedload(DbSite.brand))
+        stmt = stmt.options(db.joinedload(DbSite.brand))
 
-    db_sites = query.filter_by(enabled=True).filter_by(archived=False).all()
+    stmt = stmt.filter_by(enabled=True).filter_by(archived=False)
+
+    db_sites = db.session.scalars(stmt).all()
 
     transform: Callable[[DbSite], Site | SiteWithBrand]
     if include_brands:
