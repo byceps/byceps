@@ -6,6 +6,8 @@ byceps.services.consent.brand_requirements_service
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from sqlalchemy import delete
+
 from ...database import db
 from ...typing import BrandID
 
@@ -23,8 +25,9 @@ def create_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
 
 def delete_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
     """Delete a brand requirement."""
-    db.session.query(DbBrandRequirement).filter_by(brand_id=brand_id).filter_by(
-        subject_id=subject_id
-    ).delete()
-
+    db.session.execute(
+        delete(DbBrandRequirement)
+        .filter_by(brand_id=brand_id)
+        .filter_by(subject_id=subject_id)
+    )
     db.session.commit()

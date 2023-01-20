@@ -9,6 +9,8 @@ byceps.services.consent.consent_service
 from datetime import datetime
 from typing import Iterable
 
+from sqlalchemy import select
+
 from ...database import db
 from ...typing import UserID
 
@@ -39,19 +41,20 @@ def consent_to_subjects(
 
 def count_consents_by_subject() -> dict[str, int]:
     """Return the number of given consents per subject."""
-    subject_names_and_consent_counts = (
-        db.session.query(DbSubject.name, db.func.count(DbConsent.user_id))
+    subject_names_and_consent_counts = db.session.execute(
+        select(DbSubject.name, db.func.count(DbConsent.user_id))
         .outerjoin(DbConsent)
         .group_by(DbSubject.name)
-        .all()
-    )
+    ).all()
 
     return dict(subject_names_and_consent_counts)
 
 
 def get_consents_by_user(user_id: UserID) -> set[Consent]:
     """Return the consents the user submitted."""
-    db_consents = db.session.query(DbConsent).filter_by(user_id=user_id).all()
+    db_consents = db.session.scalars(
+        select(DbConsent).filter_by(user_id=user_id)
+    ).all()
 
     return {_db_entity_to_consent(db_consent) for db_consent in db_consents}
 
@@ -89,9 +92,10 @@ def has_user_consented_to_subject(
     user_id: UserID, subject_id: SubjectID
 ) -> bool:
     """Determine if the user has consented to the subject."""
-    return db.session.query(
-        db.session.query(DbConsent)
-        .filter_by(user_id=user_id)
-        .filter_by(subject_id=subject_id)
-        .exists()
-    ).scalar()
+    return db.session.scalar(
+        select(
+            db.exists()
+            .where(DbConsent.user_id == user_id)
+            .where(DbConsent.subject_id == subject_id)
+        )
+    )
