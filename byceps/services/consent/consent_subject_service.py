@@ -17,10 +17,6 @@ from .dbmodels.subject import DbSubject
 from .models import Subject, SubjectID
 
 
-# -------------------------------------------------------------------- #
-# subjects
-
-
 class UnknownSubjectId(ValueError):
     pass
 
@@ -85,37 +81,6 @@ def get_subjects_with_consent_counts(
     }
 
 
-def _db_entity_to_subject(db_subject: DbSubject) -> Subject:
-    return Subject(
-        id=db_subject.id,
-        name=db_subject.name,
-        title=db_subject.title,
-        checkbox_label=db_subject.checkbox_label,
-        checkbox_link_target=db_subject.checkbox_link_target,
-    )
-
-
-# -------------------------------------------------------------------- #
-# brand requirements
-
-
-def create_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
-    """Create a brand requirement."""
-    db_brand_requirement = DbBrandRequirement(brand_id, subject_id)
-
-    db.session.add(db_brand_requirement)
-    db.session.commit()
-
-
-def delete_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
-    """Delete a brand requirement."""
-    db.session.query(DbBrandRequirement).filter_by(brand_id=brand_id).filter_by(
-        subject_id=subject_id
-    ).delete()
-
-    db.session.commit()
-
-
 def get_subject_ids_required_for_brand(brand_id: BrandID) -> set[SubjectID]:
     """Return the IDs of the subjects required for the brand."""
     subject_id_rows = (
@@ -138,3 +103,13 @@ def get_subjects_required_for_brand(brand_id: BrandID) -> set[Subject]:
     )
 
     return {_db_entity_to_subject(db_subject) for db_subject in db_subjects}
+
+
+def _db_entity_to_subject(db_subject: DbSubject) -> Subject:
+    return Subject(
+        id=db_subject.id,
+        name=db_subject.name,
+        title=db_subject.title,
+        checkbox_label=db_subject.checkbox_label,
+        checkbox_link_target=db_subject.checkbox_link_target,
+    )

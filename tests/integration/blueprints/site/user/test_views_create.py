@@ -12,7 +12,11 @@ from byceps.services.authentication.password.dbmodels import DbCredential
 from byceps.services.authentication.session import authn_session_service
 from byceps.services.authorization import authz_service
 from byceps.services.brand import brand_setting_service
-from byceps.services.consent import consent_service, consent_subject_service
+from byceps.services.consent import (
+    brand_requirements_service,
+    consent_service,
+    consent_subject_service,
+)
 from byceps.services.newsletter import (
     newsletter_command_service,
     newsletter_service,
@@ -34,13 +38,13 @@ def terms_consent_subject_id(brand):
         '/terms/',
     )
 
-    consent_subject_service.create_brand_requirement(
+    brand_requirements_service.create_brand_requirement(
         brand.id, consent_subject.id
     )
 
     yield consent_subject.id
 
-    consent_subject_service.delete_brand_requirement(
+    brand_requirements_service.delete_brand_requirement(
         brand.id, consent_subject.id
     )
 
@@ -54,13 +58,13 @@ def privacy_policy_consent_subject_id(brand):
         '/privacy',
     )
 
-    consent_subject_service.create_brand_requirement(
+    brand_requirements_service.create_brand_requirement(
         brand.id, consent_subject.id
     )
 
     yield consent_subject.id
 
-    consent_subject_service.delete_brand_requirement(
+    brand_requirements_service.delete_brand_requirement(
         brand.id, consent_subject.id
     )
 
