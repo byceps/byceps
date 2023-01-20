@@ -39,28 +39,29 @@ def consent_to_subjects(
 
 def count_consents_by_subject() -> dict[str, int]:
     """Return the number of given consents per subject."""
-    rows = (
+    subject_names_and_consent_counts = (
         db.session.query(DbSubject.name, db.func.count(DbConsent.user_id))
         .outerjoin(DbConsent)
         .group_by(DbSubject.name)
         .all()
     )
 
-    return dict(rows)
+    return dict(subject_names_and_consent_counts)
 
 
 def get_consents_by_user(user_id: UserID) -> set[Consent]:
     """Return the consents the user submitted."""
-    consents = db.session.query(DbConsent).filter_by(user_id=user_id).all()
+    db_consents = db.session.query(DbConsent).filter_by(user_id=user_id).all()
 
-    return {
-        Consent(
-            user_id=consent.user_id,
-            subject_id=consent.subject_id,
-            expressed_at=consent.expressed_at,
-        )
-        for consent in consents
-    }
+    return {_db_entity_to_consent(db_consent) for db_consent in db_consents}
+
+
+def _db_entity_to_consent(db_consent: DbConsent) -> Consent:
+    return Consent(
+        user_id=db_consent.user_id,
+        subject_id=db_consent.subject_id,
+        expressed_at=db_consent.expressed_at,
+    )
 
 
 def get_unconsented_subject_ids(

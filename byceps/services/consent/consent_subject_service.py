@@ -32,21 +32,21 @@ def create_subject(
     checkbox_link_target: Optional[str],
 ) -> Subject:
     """Create a new subject."""
-    subject = DbSubject(name, title, checkbox_label, checkbox_link_target)
+    db_subject = DbSubject(name, title, checkbox_label, checkbox_link_target)
 
-    db.session.add(subject)
+    db.session.add(db_subject)
     db.session.commit()
 
-    return _db_entity_to_subject(subject)
+    return _db_entity_to_subject(db_subject)
 
 
 def get_subjects(subject_ids: set[SubjectID]) -> set[Subject]:
     """Return the subjects."""
-    rows = (
+    db_subjects = (
         db.session.query(DbSubject).filter(DbSubject.id.in_(subject_ids)).all()
     )
 
-    subjects = {_db_entity_to_subject(row) for row in rows}
+    subjects = {_db_entity_to_subject(db_subject) for db_subject in db_subjects}
 
     _check_for_unknown_subject_ids(subject_ids, subjects)
 
@@ -77,21 +77,21 @@ def get_subjects_with_consent_counts(
     if limit_to_subject_ids is not None:
         query = query.filter(DbSubject.id.in_(limit_to_subject_ids))
 
-    rows = query.group_by(DbSubject.id).all()
+    db_subjects_and_consent_counts = query.group_by(DbSubject.id).all()
 
     return {
-        _db_entity_to_subject(subject): consent_count
-        for subject, consent_count in rows
+        _db_entity_to_subject(db_subject): consent_count
+        for db_subject, consent_count in db_subjects_and_consent_counts
     }
 
 
-def _db_entity_to_subject(subject: DbSubject) -> Subject:
+def _db_entity_to_subject(db_subject: DbSubject) -> Subject:
     return Subject(
-        id=subject.id,
-        name=subject.name,
-        title=subject.title,
-        checkbox_label=subject.checkbox_label,
-        checkbox_link_target=subject.checkbox_link_target,
+        id=db_subject.id,
+        name=db_subject.name,
+        title=db_subject.title,
+        checkbox_label=db_subject.checkbox_label,
+        checkbox_link_target=db_subject.checkbox_link_target,
     )
 
 
@@ -101,9 +101,9 @@ def _db_entity_to_subject(subject: DbSubject) -> Subject:
 
 def create_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
     """Create a brand requirement."""
-    brand_requirement = DbBrandRequirement(brand_id, subject_id)
+    db_brand_requirement = DbBrandRequirement(brand_id, subject_id)
 
-    db.session.add(brand_requirement)
+    db.session.add(db_brand_requirement)
     db.session.commit()
 
 
@@ -118,23 +118,23 @@ def delete_brand_requirement(brand_id: BrandID, subject_id: SubjectID) -> None:
 
 def get_subject_ids_required_for_brand(brand_id: BrandID) -> set[SubjectID]:
     """Return the IDs of the subjects required for the brand."""
-    rows = (
+    subject_id_rows = (
         db.session.query(DbSubject.id)
         .join(DbBrandRequirement)
         .filter(DbBrandRequirement.brand_id == brand_id)
         .all()
     )
 
-    return {row[0] for row in rows}
+    return {subject_id_row[0] for subject_id_row in subject_id_rows}
 
 
 def get_subjects_required_for_brand(brand_id: BrandID) -> set[Subject]:
     """Return the subjects required for the brand."""
-    rows = (
+    db_subjects = (
         db.session.query(DbSubject)
         .join(DbBrandRequirement)
         .filter(DbBrandRequirement.brand_id == brand_id)
         .all()
     )
 
-    return {_db_entity_to_subject(row) for row in rows}
+    return {_db_entity_to_subject(db_subject) for db_subject in db_subjects}
