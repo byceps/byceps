@@ -9,6 +9,8 @@ byceps.services.orga.orga_birthday_service
 from itertools import islice
 from typing import Iterable, Iterator, Optional
 
+from sqlalchemy import select
+
 from ...database import db
 
 from ..user.dbmodels.detail import DbUserDetail
@@ -45,14 +47,13 @@ def collect_orgas_with_next_birthdays(
 
 def _collect_orgas_with_known_birthdays() -> Iterator[tuple[User, Birthday]]:
     """Yield all organizers whose birthday is known."""
-    users = (
-        db.session.query(DbUser)
+    users = db.session.scalars(
+        select(DbUser)
         .join(DbOrgaFlag)
         .join(DbUserDetail)
         .filter(DbUserDetail.date_of_birth.is_not(None))
         .options(db.joinedload(DbUser.detail))
-        .all()
-    )
+    ).all()
 
     user_ids = {user.id for user in users}
     avatar_urls_by_user_id = user_avatar_service.get_avatar_urls_for_users(
