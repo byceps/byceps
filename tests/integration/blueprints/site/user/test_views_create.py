@@ -5,6 +5,7 @@
 
 from unittest.mock import patch
 
+from sqlalchemy import select
 import pytest
 
 from byceps.database import db
@@ -223,15 +224,15 @@ def find_user(screen_name):
 
 
 def get_user_count():
-    return db.session.query(DbUser).count()
+    return db.session.scalar(select(db.func.count(DbUser.id)))
 
 
 def find_verification_token(user_id):
-    return db.session \
-        .query(DbVerificationToken) \
-        .filter_by(user_id=user_id) \
-        .filter_by(_purpose=TokenPurpose.email_address_confirmation.name) \
-        .first()
+    return db.session.scalars(
+        select(DbVerificationToken)
+        .filter_by(user_id=user_id)
+        .filter_by(_purpose=TokenPurpose.email_address_confirmation.name)
+    ).first()
 
 
 def is_subscribed_to_newsletter(user_id, brand_id):
@@ -254,7 +255,7 @@ def assert_creation_log_entry_created(user_id, site_id):
 
 
 def assert_password_credentials_created(user_id):
-    credential = db.session.query(DbCredential).get(user_id)
+    credential = db.session.get(DbCredential, user_id)
 
     assert credential is not None
     assert credential.password_hash.startswith('pbkdf2:sha256:390000$')

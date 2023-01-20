@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from sqlalchemy import select
 import pytest
 
 from byceps.database import db
@@ -105,7 +106,6 @@ def get_comment(comment_id):
 
 
 def get_comment_count_for_match(match_id):
-    return db.session \
-        .query(DbMatchComment) \
-        .filter_by(match_id=match_id) \
-        .count()
+    return db.session.scalar(
+        select(db.func.count(DbMatchComment.id)).filter_by(match_id=match_id)
+    )
