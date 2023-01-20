@@ -26,18 +26,17 @@ class UnknownListId(Exception):
 
 def create_list(list_id: ListID, title: str) -> List:
     """Create a list."""
-    list_ = DbList(list_id, title)
+    db_list = DbList(list_id, title)
 
-    db.session.add(list_)
+    db.session.add(db_list)
     db.session.commit()
 
-    return newsletter_service._db_entity_to_list(list_)
+    return newsletter_service._db_entity_to_list(db_list)
 
 
 def delete_list(list_id: ListID) -> None:
     """Delete a list."""
-    db.session.query(DbList).filter_by(id=list_id).delete()
-
+    db.session.execute(delete(DbList).filter_by(id=list_id))
     db.session.commit()
 
 
@@ -59,7 +58,6 @@ def subscribe(user_id: UserID, list_id: ListID, expressed_at: datetime) -> None:
         .on_conflict_do_nothing(constraint=table.primary_key)
     )
     db.session.execute(query)
-
     db.session.commit()
 
 
@@ -76,7 +74,6 @@ def unsubscribe(
         .where(DbSubscription.user_id == user_id)
         .where(DbSubscription.list_id == list_id)
     )
-
     db.session.commit()
 
 

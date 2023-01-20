@@ -21,28 +21,28 @@ from .models import List, ListID, Subscriber
 
 def find_list(list_id: ListID) -> Optional[List]:
     """Return the list with that ID, or `None` if not found."""
-    list_ = db.session.get(DbList, list_id)
+    db_list = db.session.get(DbList, list_id)
 
-    if list_ is None:
+    if db_list is None:
         return None
 
-    return _db_entity_to_list(list_)
+    return _db_entity_to_list(db_list)
 
 
 def get_all_lists() -> list[List]:
     """Return all lists."""
-    lists = db.session.query(DbList).all()
+    db_lists = db.session.scalars(select(DbList)).all()
 
-    return [_db_entity_to_list(list_) for list_ in lists]
+    return [_db_entity_to_list(db_list) for db_list in db_lists]
 
 
 def count_subscribers_for_list(list_id: ListID) -> int:
     """Return the number of users that are currently subscribed to that list."""
-    return db.session.execute(
+    return db.session.scalar(
         select(db.func.count())
         .select_from(DbSubscription)
         .filter_by(list_id=list_id)
-    ).scalar_one()
+    )
 
 
 def get_subscribers(list_id: ListID) -> Iterable[Subscriber]:
@@ -61,8 +61,8 @@ def _get_subscriber_details(user_ids: set[UserID]) -> Iterator[Subscriber]:
     if not user_ids:
         return []
 
-    rows = (
-        db.session.query(
+    rows = db.session.execute(
+        select(
             DbUser.screen_name,
             DbUser.email_address,
         )
@@ -72,8 +72,7 @@ def _get_subscriber_details(user_ids: set[UserID]) -> Iterator[Subscriber]:
         .filter_by(email_address_verified=True)
         .filter_by(suspended=False)
         .filter_by(deleted=False)
-        .all()
-    )
+    ).all()
 
     for row in rows:
         yield Subscriber(
@@ -86,24 +85,24 @@ def get_subscription_updates_for_user(
     user_id: UserID,
 ) -> list[DbSubscriptionUpdate]:
     """Return subscription updates made by the user, for any list."""
-    return (
-        db.session.query(DbSubscriptionUpdate).filter_by(user_id=user_id).all()
-    )
+    return db.session.scalars(
+        select(DbSubscriptionUpdate).filter_by(user_id=user_id)
+    ).all()
 
 
 def is_subscribed(user_id: UserID, list_id: ListID) -> bool:
     """Return if the user is subscribed to the list or not."""
-    return db.session.execute(
+    return db.session.scalar(
         select(
             db.exists()
             .where(DbSubscription.user_id == user_id)
             .where(DbSubscription.list_id == list_id)
         )
-    ).scalar_one()
+    )
 
 
-def _db_entity_to_list(list_: DbList) -> List:
+def _db_entity_to_list(db_list: DbList) -> List:
     return List(
-        id=list_.id,
-        title=list_.title,
+        id=db_list.id,
+        title=db_list.title,
     )
