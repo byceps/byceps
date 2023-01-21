@@ -19,9 +19,6 @@ SQLALCHEMY_ECHO = False
 # unreachable, then becomes reachable again.
 SQLALCHEMY_ENGINE_OPTIONS = {'pool_pre_ping': True}
 
-# Disable Flask-SQLAlchemy's tracking of object modifications.
-SQLALCHEMY_TRACK_MODIFICATIONS = False
-
 # job queue
 JOBS_ASYNC = True
 

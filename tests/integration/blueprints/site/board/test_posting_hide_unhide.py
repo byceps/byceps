@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.database import db
 from byceps.services.board import board_posting_command_service
 
 from .helpers import find_posting
@@ -17,6 +18,9 @@ def test_hide_posting(site_app, moderator, moderator_client, posting):
     response = moderator_client.post(url)
 
     assert response.status_code == 204
+
+    db.session.expire_all()
+
     posting_afterwards = find_posting(posting_before.id)
     assert_posting_is_hidden(posting_afterwards, moderator.id)
 
@@ -32,6 +36,9 @@ def test_unhide_posting(site_app, moderator, moderator_client, posting):
     response = moderator_client.delete(url)
 
     assert response.status_code == 204
+
+    db.session.expire_all()
+
     posting_afterwards = find_posting(posting_before.id)
     assert_posting_is_not_hidden(posting_afterwards)
 

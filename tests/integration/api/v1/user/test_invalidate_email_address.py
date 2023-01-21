@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.database import db
 from byceps.services.user import user_log_service, user_service
 
 
@@ -22,6 +23,8 @@ def test_invalidation_of_initialized_user(
 
     response = send_request(api_client, api_client_authz_header, email_address)
     assert response.status_code == 204
+
+    db.session.expire_all()
 
     user_after = user_service.get_db_user(user.id)
     assert not user_after.email_address_verified

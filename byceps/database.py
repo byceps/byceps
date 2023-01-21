@@ -11,8 +11,8 @@ Database utilities.
 from typing import Any, Callable, Iterable, Optional, TypeVar
 import uuid
 
-from flask_sqlalchemy import Pagination, SQLAlchemy
-from sqlalchemy import select
+from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy.pagination import Pagination
 from sqlalchemy.dialects.postgresql import insert, JSONB, UUID
 from sqlalchemy.sql import Select
 from sqlalchemy.sql.dml import Insert
@@ -45,42 +45,21 @@ def generate_uuid() -> uuid.UUID:
 
 
 def paginate(
-    select_stmt: Select,
+    stmt: Select,
     page: int,
     per_page: int,
     *,
     item_mapper: Optional[Mapper] = None,
 ) -> Pagination:
     """Return `per_page` items from page `page`."""
-    if page < 1:
-        page = 1
-
-    if per_page < 1:
-        raise ValueError('The number of items per page must be positive.')
-
-    offset = (page - 1) * per_page
-
-    items = (
-        db.session.scalars(select_stmt.limit(per_page).offset(offset))
-        .unique()
-        .all()
+    pagination = db.paginate(
+        stmt, page=page, per_page=per_page, error_out=False
     )
 
-    item_count = len(items)
-    if page == 1 and item_count < per_page:
-        total = item_count
-    else:
-        total = db.session.scalar(
-            select(db.func.count()).select_from(
-                select_stmt.options(db.lazyload('*')).order_by(None).subquery()
-            )
-        )
-
     if item_mapper is not None:
-        items = [item_mapper(item) for item in items]
+        pagination.items = [item_mapper(item) for item in pagination.items]
 
-    # Intentionally pass no query object.
-    return Pagination(None, page, per_page, total, items)
+    return pagination
 
 
 def insert_ignore_on_conflict(table: Table, values: dict[str, Any]) -> None:

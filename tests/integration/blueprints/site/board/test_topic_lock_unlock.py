@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.database import db
 from byceps.services.board import board_topic_command_service
 
 from .helpers import find_topic
@@ -17,6 +18,9 @@ def test_lock_topic(site_app, moderator, moderator_client, topic):
     response = moderator_client.post(url)
 
     assert response.status_code == 204
+
+    db.session.expire_all()
+
     topic_afterwards = find_topic(topic_before.id)
     assert_topic_is_locked(topic_afterwards, moderator.id)
 
@@ -26,12 +30,17 @@ def test_unlock_topic(site_app, moderator, moderator_client, topic):
 
     board_topic_command_service.lock_topic(topic_before.id, moderator.id)
 
+    db.session.expire_all()
+
     assert_topic_is_locked(topic_before, moderator.id)
 
     url = f'/board/topics/{topic_before.id}/flags/locked'
     response = moderator_client.delete(url)
 
     assert response.status_code == 204
+
+    db.session.expire_all()
+
     topic_afterwards = find_topic(topic_before.id)
     assert_topic_is_not_locked(topic_afterwards)
 

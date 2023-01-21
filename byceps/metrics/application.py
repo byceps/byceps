@@ -27,9 +27,6 @@ def create_app(database_uri):
 
     app.config['SQLALCHEMY_DATABASE_URI'] = database_uri
 
-    # Disable Flask-SQLAlchemy's tracking of object modifications.
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
     # Initialize database.
     db.init_app(app)
 

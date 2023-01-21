@@ -40,6 +40,8 @@ def test_when_logged_in_endpoint_is_available(site_app, site, make_user):
     assert response.status_code == 302
     assert response.location == '/authentication/log_in'
 
+    db.session.expire_all()
+
     credential_after = find_credential(user.id)
     session_token_after = find_session_token(user.id)
 

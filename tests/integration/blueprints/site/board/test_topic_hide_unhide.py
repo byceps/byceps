@@ -3,6 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from byceps.database import db
 from byceps.services.board import board_topic_command_service
 
 from .helpers import find_topic
@@ -17,6 +18,9 @@ def test_hide_topic(site_app, moderator, moderator_client, topic):
     response = moderator_client.post(url)
 
     assert response.status_code == 204
+
+    db.session.expire_all()
+
     topic_afterwards = find_topic(topic_before.id)
     assert_topic_is_hidden(topic_afterwards, moderator.id)
 
@@ -32,6 +36,9 @@ def test_unhide_topic(site_app, moderator, moderator_client, topic):
     response = moderator_client.delete(url)
 
     assert response.status_code == 204
+
+    db.session.expire_all()
+
     topic_afterwards = find_topic(topic_before.id)
     assert_topic_is_not_hidden(topic_afterwards)
 
