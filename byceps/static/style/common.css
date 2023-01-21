@@ -337,6 +337,12 @@ table.index > tbody > tr > td {
   border-width: 1px 0;
 }
 
+table.index.index--higher th,
+table.index.index--higher td {
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+}
+
 table.index.index--v-centered th,
 table.index.index--v-centered td {
   vertical-align: middle;

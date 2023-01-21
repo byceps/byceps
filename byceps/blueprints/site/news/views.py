@@ -24,7 +24,7 @@ blueprint = create_blueprint('news', __name__)
 
 
 DEFAULT_ITEMS_PER_PAGE = 4
-DEFAULT_HEADLINES_PER_PAGE = 20
+DEFAULT_HEADLINES_PER_PAGE = 25
 
 
 @blueprint.get('/', defaults={'page': 1})
