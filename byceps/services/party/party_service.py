@@ -227,7 +227,6 @@ def get_parties_for_brand_paginated(
         count_stmt,
         page,
         per_page,
-        scalar_result=True,
         item_mapper=_db_entity_to_party,
     )
 

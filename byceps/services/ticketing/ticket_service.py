@@ -338,14 +338,7 @@ def get_tickets_with_details_for_party_paginated(
             DbTicket.user_checked_in == (filter_checked_in is FilterMode.select)
         )
 
-    return paginate(
-        items_query,
-        count_query,
-        page,
-        per_page,
-        scalar_result=True,
-        unique_result=True,
-    )
+    return paginate(items_query, count_query, page, per_page)
 
 
 def count_revoked_tickets_for_party(party_id: PartyID) -> int:

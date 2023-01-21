@@ -147,11 +147,4 @@ def get_bundles_for_party_paginated(
         .filter(DbTicketCategory.party_id == party_id)
     )
 
-    return paginate(
-        items_query,
-        count_query,
-        page,
-        per_page,
-        scalar_result=True,
-        unique_result=True,
-    )
+    return paginate(items_query, count_query, page, per_page)

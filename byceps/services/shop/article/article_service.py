@@ -358,7 +358,7 @@ def get_articles_for_shop_paginated(
             )
         )
 
-    return paginate(items_stmt, count_stmt, page, per_page, scalar_result=True)
+    return paginate(items_stmt, count_stmt, page, per_page)
 
 
 def get_article_compilation_for_orderable_articles(

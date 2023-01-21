@@ -478,8 +478,6 @@ def get_users_paginated(
         count_stmt,
         page,
         per_page,
-        scalar_result=True,
-        unique_result=True,
         item_mapper=_db_entity_to_user_for_admin,
     )
 

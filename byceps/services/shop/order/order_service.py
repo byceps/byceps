@@ -783,8 +783,6 @@ def get_orders_for_shop_paginated(
         count_stmt,
         page,
         per_page,
-        scalar_result=True,
-        unique_result=True,
         item_mapper=_order_to_transfer_object,
     )
 

@@ -77,14 +77,7 @@ def paginate_postings(
         items_stmt = items_stmt.filter_by(hidden=False)
         count_stmt = count_stmt.filter_by(hidden=False)
 
-    postings = paginate(
-        items_stmt,
-        count_stmt,
-        page,
-        per_page,
-        scalar_result=True,
-        unique_result=True,
-    )
+    postings = paginate(items_stmt, count_stmt, page, per_page)
 
     creator_ids = {posting.creator_id for posting in postings.items}
     creators_by_id = _get_users_by_id(creator_ids)

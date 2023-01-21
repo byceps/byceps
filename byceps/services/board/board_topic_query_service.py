@@ -101,14 +101,7 @@ def paginate_topics(
         .filter(DbBoardCategory.hidden == False)  # noqa: E712
     )
 
-    return paginate(
-        items_stmt,
-        count_stmt,
-        page,
-        per_page,
-        scalar_result=True,
-        unique_result=True,
-    )
+    return paginate(items_stmt, count_stmt, page, per_page)
 
 
 def get_all_topic_ids_in_category(category_id: BoardCategoryID) -> set[TopicID]:
@@ -140,14 +133,7 @@ def paginate_topics_of_category(
         category_id=category_id
     )
 
-    return paginate(
-        items_stmt,
-        count_stmt,
-        page,
-        per_page,
-        scalar_result=True,
-        unique_result=True,
-    )
+    return paginate(items_stmt, count_stmt, page, per_page)
 
 
 def _select_topics(include_hidden: bool) -> Select:

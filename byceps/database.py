@@ -49,8 +49,6 @@ def paginate(
     page: int,
     per_page: int,
     *,
-    scalar_result: bool = False,
-    unique_result: bool = False,
     item_mapper: Optional[Mapper] = None,
 ) -> Pagination:
     """Return `per_page` items from page `page`."""
@@ -62,14 +60,11 @@ def paginate(
 
     offset = (page - 1) * per_page
 
-    items_result = db.session.execute(
-        items_query.limit(per_page).offset(offset)
+    items = (
+        db.session.scalars(items_query.limit(per_page).offset(offset))
+        .unique()
+        .all()
     )
-    if scalar_result:
-        items_result = items_result.scalars()
-    if unique_result:
-        items_result = items_result.unique()
-    items = items_result.all()
 
     item_count = len(items)
     if page == 1 and item_count < per_page:

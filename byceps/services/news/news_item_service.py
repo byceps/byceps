@@ -302,8 +302,6 @@ def get_aggregated_items_paginated(
         count_stmt,
         page,
         items_per_page,
-        scalar_result=True,
-        unique_result=True,
         item_mapper=item_mapper,
     )
 
@@ -315,14 +313,7 @@ def get_items_paginated(
     items_stmt = _get_items_stmt(channel_ids)
     count_stmt = _get_count_stmt(channel_ids)
 
-    return paginate(
-        items_stmt,
-        count_stmt,
-        page,
-        items_per_page,
-        scalar_result=True,
-        unique_result=True,
-    )
+    return paginate(items_stmt, count_stmt, page, items_per_page)
 
 
 def get_headlines_paginated(
@@ -356,8 +347,6 @@ def get_headlines_paginated(
         count_stmt,
         page,
         items_per_page,
-        scalar_result=True,
-        unique_result=True,
         item_mapper=_db_entity_to_headline,
     )
 
