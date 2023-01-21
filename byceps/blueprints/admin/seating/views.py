@@ -50,29 +50,24 @@ def index_for_party(party_id):
     }
 
 
-@blueprint.get('/parties/<party_id>/areas', defaults={'page': 1})
-@blueprint.get('/parties/<party_id>/areas/pages/<int:page>')
+@blueprint.get('/parties/<party_id>/areas')
 @permission_required('seating.view')
 @templated
-def area_index(party_id, page):
+def area_index(party_id):
     """List seating areas for that party."""
     party = _get_party_or_404(party_id)
 
-    per_page = request.args.get('per_page', type=int, default=15)
     areas_with_utilization = (
-        seating_area_service.get_areas_with_seat_utilization_paginated(
-            party.id, page, per_page
-        )
+        seating_area_service.get_areas_with_seat_utilization(party.id)
     )
 
-    seat_utilizations = [awu[1] for awu in areas_with_utilization.items]
+    seat_utilizations = [awu[1] for awu in areas_with_utilization]
     total_seat_utilization = seat_service.aggregate_seat_utilizations(
         seat_utilizations
     )
 
     return {
         'party': party,
-        'per_page': per_page,
         'areas_with_utilization': areas_with_utilization,
         'total_seat_utilization': total_seat_utilization,
     }

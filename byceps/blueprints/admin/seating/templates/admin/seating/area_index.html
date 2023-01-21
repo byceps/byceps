@@ -2,7 +2,6 @@
 {% from 'macros/admin.html' import render_extra_in_heading %}
 {% from 'macros/icons.html' import render_icon %}
 {% from 'macros/misc.html' import render_progress_bar %}
-{% from 'macros/pagination.html' import render_pagination_nav %}
 {% set current_page_party = party %}
 {% set current_tab = 'areas' %}
 {% set page_title = [_('Areas'), party.title] %}
@@ -11,7 +10,7 @@
 
   <div class="row row--space-between">
     <div>
-      <h1>{{ _('Areas') }} {{ render_extra_in_heading(areas_with_utilization.total) }}</h1>
+      <h1>{{ _('Areas') }} {{ render_extra_in_heading(areas_with_utilization|length) }}</h1>
     </div>
     {%- if has_current_user_permission('seating.administrate') %}
     <div>
@@ -23,7 +22,7 @@
   </div>
 
   <div class="box">
-    {%- if areas_with_utilization.items %}
+    {%- if areas_with_utilization %}
     <table class="index index--v-centered index--wide">
       <thead>
         <tr>
@@ -35,7 +34,7 @@
         </tr>
       </thead>
       <tbody>
-        {%- for area, utilization in areas_with_utilization.items %}
+        {%- for area, utilization in areas_with_utilization|sort(attribute='0.title') %}
         <tr>
           <td>
             <strong>{{ area.title }}</strong><br>
@@ -77,10 +76,5 @@
     <div class="dimmed-box centered">{{ _('No areas exist.') }}</div>
     {%- endif %}
   </div>
-
-{{ render_pagination_nav(areas_with_utilization, '.area_index', {
-  'party_id': party.id,
-  'per_page': per_page,
-}) }}
 
 {%- endblock %}

@@ -9,9 +9,8 @@ byceps.services.seating.seating_area_service
 from typing import Optional
 
 from sqlalchemy import delete, select
-from sqlalchemy.sql import Select
 
-from ...database import db, paginate, Pagination
+from ...database import db
 from ...typing import PartyID
 
 from ..ticketing.dbmodels.ticket import DbTicket
@@ -76,31 +75,6 @@ def get_areas_with_seat_utilization(
     party_id: PartyID,
 ) -> list[tuple[SeatingArea, SeatUtilization]]:
     """Return all areas and their seat utilization for that party."""
-    query = _get_areas_with_seat_utilization_query(party_id)
-    rows = db.session.execute(query).all()
-    return [_map_areas_with_seat_utilization_row(row) for row in rows]
-
-
-def get_areas_with_seat_utilization_paginated(
-    party_id: PartyID, page: int, per_page: int
-) -> Pagination:
-    """Return areas and their seat utilization for that party, paginated."""
-    items_query = _get_areas_with_seat_utilization_query(party_id)
-
-    count_query = select(db.func.count(DbSeatingArea.id)).filter(
-        DbSeatingArea.party_id == party_id
-    )
-
-    return paginate(
-        items_query,
-        count_query,
-        page,
-        per_page,
-        item_mapper=_map_areas_with_seat_utilization_row,
-    )
-
-
-def _get_areas_with_seat_utilization_query(party_id: PartyID) -> Select:
     area = db.aliased(DbSeatingArea)
 
     subquery_occupied_seat_count = (
@@ -118,7 +92,7 @@ def _get_areas_with_seat_utilization_query(party_id: PartyID) -> Select:
         .scalar_subquery()
     )
 
-    return (
+    rows = db.session.execute(
         select(
             area,
             subquery_occupied_seat_count,
@@ -127,17 +101,17 @@ def _get_areas_with_seat_utilization_query(party_id: PartyID) -> Select:
         .filter(area.party_id == party_id)
         .group_by(area.id)
         .order_by(area.title)
-    )
+    ).all()
 
-
-def _map_areas_with_seat_utilization_row(
-    row: tuple[DbSeatingArea, int, int]
-) -> tuple[SeatingArea, SeatUtilization]:
-    db_area, occupied_seat_count, total_seat_count = row
-    utilization = SeatUtilization(
-        occupied=occupied_seat_count, total=total_seat_count
-    )
-    return _db_entity_to_area(db_area), utilization
+    return [
+        (
+            _db_entity_to_area(db_area),
+            SeatUtilization(
+                occupied=occupied_seat_count, total=total_seat_count
+            ),
+        )
+        for db_area, occupied_seat_count, total_seat_count in rows
+    ]
 
 
 def _db_entity_to_area(db_area: DbSeatingArea) -> SeatingArea:
