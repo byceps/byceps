@@ -24,7 +24,7 @@ T = TypeVar('T')
 Mapper = Callable[[F], T]
 
 
-db = SQLAlchemy(session_options={'autoflush': False})
+db = SQLAlchemy()
 
 
 db.JSONB = JSONB
