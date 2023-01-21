@@ -1,7 +1,10 @@
 **/__pycache__
+Dockerfile
 .coverage
+.dockerignore
 .git
 .github
+.gitignore
 .eggs
 .mypy_cache
 .pytest_cache
@@ -9,5 +12,6 @@
 .scrutinizer.yml
 *.egg-info
 assets
+docker
 docs
 venv
