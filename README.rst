@@ -101,21 +101,3 @@ the latter both serve static files and provide SSL encryption.
 .. _uWSGI: https://uwsgi-docs.readthedocs.io/
 .. _Gunicorn: https://gunicorn.org/
 .. _nginx: https://nginx.org/
-
-
-Shell
-=====
-
-The application shell is an interactive command line that gives access to
-BYCEPS' functionality as well as the persisted data.
-
-.. code:: sh
-
-    (venv)$ BYCEPS_CONFIG=../config/development.py flask shell
-
-Installation of an extra package makes the shell easier to use due to features
-like command history and auto-completion:
-
-.. code:: sh
-
-    (venv)$ pip install flask-shell-ipython
