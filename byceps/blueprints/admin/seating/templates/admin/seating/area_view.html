@@ -1,0 +1,49 @@
+{% extends 'layout/admin/seating.html' %}
+{% set current_page_party = party %}
+{% set current_tab = 'areas' %}
+{% set page_title = [_('Area'), area.title] %}
+
+{% macro render_area(area, seats_and_tickets) -%}
+  {%- set avatar_url_fallback = url_for('static', filename='avatar_fallback.svg') %}
+  <div class="area" style="background-color: #111111; background-image: url(/data/parties/{{ area.party_id }}/seating/areas/{{ area.image_filename }}); height: {{ area.image_height }}px; width: {{ area.image_width }}px;">
+    {%- for seat, ticket in seats_and_tickets|sort(attribute='0.coord_y')|sort(attribute='0.coord_x') %}
+    {{ render_seat_with_tooltip(seat, ticket, avatar_url_fallback) }}
+    {%- endfor %}
+  </div>
+{%- endmacro %}
+
+{% macro render_seat_with_tooltip(seat, ticket, avatar_url_fallback) -%}
+    <div id="seat-{{ seat.id }}" class="seat-with-tooltip" style="left: {{ seat.coord_x }}px; top: {{ seat.coord_y }}px;" data-seat-id="{{ seat.id }}" data-label="{{ seat.label }}"
+      {%- if ticket %}
+      {{- ' ' }}data-ticket-id="{{ ticket.id }}"
+        {%- if ticket.user %}
+          {%- with occupier = ticket.user %}
+      {{- ' ' }}data-occupier-avatar="{{ occupier.avatar_url or avatar_url_fallback }}" data-occupier-name="{{ occupier.screen_name }}"
+          {%- endwith %}
+        {%- endif %}
+      {%- endif -%}
+    >
+      <div class="seat{% if seat.type_ %} seat-type--{{ seat.type_ }}{% endif %}{% if ticket %} seat--occupied{% endif %}"{% if seat.rotation %} style="transform: rotate({{ seat.rotation }}deg);"{% endif %}></div>
+    </div>
+{%- endmacro %}
+
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/seating.css') }}">
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ area.title }}</h1>
+
+{{ render_area(area, seats_and_tickets) }}
+
+{%- endblock %}
+
+{% block scripts %}
+    <script src="{{ url_for('static', filename='behavior/seating.js') }}"></script>
+    <script>
+      onDomReady(() => {
+        init_seat_tooltips();
+      });
+    </script>
+{%- endblock %}

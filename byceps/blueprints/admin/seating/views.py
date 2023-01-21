@@ -10,10 +10,12 @@ from flask import abort, request
 from flask_babel import gettext
 
 from ....services.party import party_service
+from ....services.seating.models import SeatingArea, SeatingAreaID
 from ....services.seating import (
     seat_group_service,
     seat_service,
     seating_area_service,
+    seating_area_tickets_service,
 )
 from ....services.ticketing import ticket_category_service
 from ....util.framework.blueprint import create_blueprint
@@ -70,6 +72,30 @@ def area_index(party_id):
         'party': party,
         'areas_with_utilization': areas_with_utilization,
         'total_seat_utilization': total_seat_utilization,
+    }
+
+
+@blueprint.get('/areas/<area_id>')
+@permission_required('seating.view')
+@templated
+def area_view(area_id):
+    """Show seating area."""
+    area = _get_area_or_404(area_id)
+
+    party = party_service.get_party(area.party_id)
+
+    seats_with_tickets = seat_service.get_seats_with_tickets_for_area(area.id)
+
+    users_by_id = seating_area_tickets_service.get_users(seats_with_tickets, [])
+
+    seats_and_tickets = seating_area_tickets_service.get_seats_and_tickets(
+        seats_with_tickets, users_by_id
+    )
+
+    return {
+        'party': party,
+        'area': area,
+        'seats_and_tickets': seats_and_tickets,
     }
 
 
@@ -132,3 +158,12 @@ def _get_party_or_404(party_id):
         abort(404)
 
     return party
+
+
+def _get_area_or_404(area_id: SeatingAreaID) -> SeatingArea:
+    area = seating_area_service.find_area(area_id)
+
+    if area is None:
+        abort(404)
+
+    return area

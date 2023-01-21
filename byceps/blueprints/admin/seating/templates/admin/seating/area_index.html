@@ -37,7 +37,7 @@
         {%- for area, utilization in areas_with_utilization|sort(attribute='0.title') %}
         <tr>
           <td>
-            <strong>{{ area.title }}</strong><br>
+            <a href="{{ url_for('.area_view', area_id=area.id) }}"><strong>{{ area.title }}</strong></a><br>
             {{ area.slug|dim }}
           </td>
           <td>

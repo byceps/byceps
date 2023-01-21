@@ -57,6 +57,16 @@ def count_areas_for_party(party_id: PartyID) -> int:
     )
 
 
+def find_area(area_id: SeatingAreaID) -> Optional[SeatingArea]:
+    """Return the area, or `None` if not found."""
+    db_area = db.session.get(DbSeatingArea, area_id)
+
+    if db_area is None:
+        return None
+
+    return _db_entity_to_area(db_area)
+
+
 def find_area_for_party_by_slug(
     party_id: PartyID, slug: str
 ) -> Optional[SeatingArea]:
