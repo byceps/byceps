@@ -56,7 +56,7 @@ def paginate_postings(
     per_page: int,
 ) -> Pagination:
     """Paginate postings in that topic, as visible for the user."""
-    items_stmt = (
+    stmt = (
         select(DbPosting)
         .options(
             db.joinedload(DbPosting.topic),
@@ -69,15 +69,10 @@ def paginate_postings(
         .order_by(DbPosting.created_at.asc())
     )
 
-    count_stmt = select(db.func.count(DbPosting.id)).filter_by(
-        topic_id=topic_id
-    )
-
     if not include_hidden:
-        items_stmt = items_stmt.filter_by(hidden=False)
-        count_stmt = count_stmt.filter_by(hidden=False)
+        stmt = stmt.filter_by(hidden=False)
 
-    postings = paginate(items_stmt, count_stmt, page, per_page)
+    postings = paginate(stmt, page, per_page)
 
     creator_ids = {posting.creator_id for posting in postings.items}
     creators_by_id = _get_users_by_id(creator_ids)

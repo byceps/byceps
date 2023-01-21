@@ -130,7 +130,7 @@ def get_bundles_for_party_paginated(
     party_id: PartyID, page: int, per_page: int
 ) -> Pagination:
     """Return the party's ticket bundles to show on the specified page."""
-    items_query = (
+    stmt = (
         select(DbTicketBundle)
         .join(DbTicketCategory)
         .filter(DbTicketCategory.party_id == party_id)
@@ -141,10 +141,4 @@ def get_bundles_for_party_paginated(
         .order_by(DbTicketBundle.created_at.desc())
     )
 
-    count_query = (
-        select(db.func.count(DbTicketBundle.id))
-        .join(DbTicketCategory)
-        .filter(DbTicketCategory.party_id == party_id)
-    )
-
-    return paginate(items_query, count_query, page, per_page)
+    return paginate(stmt, page, per_page)

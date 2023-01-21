@@ -55,7 +55,7 @@ def _get_users_paginated(
     # Drop revoked tickets here already to avoid users without tickets
     # being included in the list.
 
-    items_stmt = (
+    stmt = (
         select(
             DbUser, db.func.lower(DbUser.screen_name).label('screen_name_lower')
         )
@@ -71,23 +71,10 @@ def _get_users_paginated(
         .order_by('screen_name_lower')
     )
 
-    count_stmt = (
-        select(db.func.count(db.distinct(DbUser.id)))
-        .join(DbTicket, DbTicket.used_by_id == DbUser.id)
-        .filter(DbTicket.revoked == False)  # noqa: E712
-        .join(DbTicketCategory)
-        .filter(DbTicketCategory.party_id == party_id)
-    )
-
     if search_term:
-        items_stmt = items_stmt.filter(
-            DbUser.screen_name.ilike(f'%{search_term}%')
-        )
-        count_stmt = count_stmt.filter(
-            DbUser.screen_name.ilike(f'%{search_term}%')
-        )
+        stmt = stmt.filter(DbUser.screen_name.ilike(f'%{search_term}%'))
 
-    return paginate(items_stmt, count_stmt, page, per_page)
+    return paginate(stmt, page, per_page)
 
 
 def _get_tickets_for_users(

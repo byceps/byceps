@@ -287,33 +287,24 @@ def get_aggregated_items_paginated(
     published_only: bool = False,
 ) -> Pagination:
     """Return the news items to show on the specified page."""
-    items_stmt = _get_items_stmt(channel_ids)
-    count_stmt = _get_count_stmt(channel_ids)
+    stmt = _get_items_stmt(channel_ids)
 
     if published_only:
         now = datetime.utcnow()
-        items_stmt = items_stmt.filter(DbNewsItem.published_at <= now)
-        count_stmt = count_stmt.filter(DbNewsItem.published_at <= now)
+        stmt = stmt.filter(DbNewsItem.published_at <= now)
 
     item_mapper = partial(_db_entity_to_item, render_body=True)
 
-    return paginate(
-        items_stmt,
-        count_stmt,
-        page,
-        items_per_page,
-        item_mapper=item_mapper,
-    )
+    return paginate(stmt, page, items_per_page, item_mapper=item_mapper)
 
 
 def get_items_paginated(
     channel_ids: set[NewsChannelID], page: int, items_per_page: int
 ) -> Pagination:
     """Return the news items to show on the specified page."""
-    items_stmt = _get_items_stmt(channel_ids)
-    count_stmt = _get_count_stmt(channel_ids)
+    stmt = _get_items_stmt(channel_ids)
 
-    return paginate(items_stmt, count_stmt, page, items_per_page)
+    return paginate(stmt, page, items_per_page)
 
 
 def get_headlines_paginated(
@@ -324,7 +315,7 @@ def get_headlines_paginated(
     published_only: bool = False,
 ) -> Pagination:
     """Return the headlines to show on the specified page."""
-    items_stmt = (
+    stmt = (
         select(DbNewsItem)
         .filter(DbNewsItem.channel_id.in_(channel_ids))
         .options(
@@ -335,19 +326,12 @@ def get_headlines_paginated(
         .order_by(DbNewsItem.published_at.desc())
     )
 
-    count_stmt = _get_count_stmt(channel_ids)
-
     if published_only:
         now = datetime.utcnow()
-        items_stmt = items_stmt.filter(DbNewsItem.published_at <= now)
-        count_stmt = count_stmt.filter(DbNewsItem.published_at <= now)
+        stmt = stmt.filter(DbNewsItem.published_at <= now)
 
     return paginate(
-        items_stmt,
-        count_stmt,
-        page,
-        items_per_page,
-        item_mapper=_db_entity_to_headline,
+        stmt, page, items_per_page, item_mapper=_db_entity_to_headline
     )
 
 
@@ -387,12 +371,6 @@ def _get_items_stmt(channel_ids: set[NewsChannelID]) -> Select:
             db.joinedload(DbNewsItem.images),
         )
         .order_by(DbNewsItem.published_at.desc())
-    )
-
-
-def _get_count_stmt(channel_ids: set[NewsChannelID]) -> Select:
-    return select(db.func.count(DbNewsItem.id)).filter(
-        DbNewsItem.channel_id.in_(channel_ids)
     )
 
 

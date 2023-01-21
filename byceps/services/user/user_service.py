@@ -453,7 +453,7 @@ def get_users_paginated(
     """Return the users to show on the specified page, optionally
     filtered by search term or flags.
     """
-    items_stmt = (
+    stmt = (
         select(DbUser)
         .options(
             db.joinedload(DbUser.detail).load_only(
@@ -464,21 +464,13 @@ def get_users_paginated(
         .order_by(DbUser.created_at.desc())
     )
 
-    count_stmt = select(db.func.count(DbUser.id))
-
-    items_stmt = _filter_by_state(items_stmt, state_filter)
-    count_stmt = _filter_by_state(count_stmt, state_filter)
+    stmt = _filter_by_state(stmt, state_filter)
 
     if search_term:
-        items_stmt = _filter_by_search_term(items_stmt, search_term)
-        count_stmt = _filter_by_search_term(count_stmt, search_term)
+        stmt = _filter_by_search_term(stmt, search_term)
 
     return paginate(
-        items_stmt,
-        count_stmt,
-        page,
-        per_page,
-        item_mapper=_db_entity_to_user_for_admin,
+        stmt, page, per_page, item_mapper=_db_entity_to_user_for_admin
     )
 
 

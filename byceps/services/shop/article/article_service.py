@@ -335,30 +335,22 @@ def get_articles_for_shop_paginated(
 
     Ordered by article number, reversed.
     """
-    items_stmt = (
+    stmt = (
         select(DbArticle)
         .filter_by(shop_id=shop_id)
         .order_by(DbArticle.item_number.desc())
     )
 
-    count_stmt = select(db.func.count(DbArticle.id)).filter_by(shop_id=shop_id)
-
     if search_term:
         ilike_pattern = f'%{search_term}%'
-        items_stmt = items_stmt.filter(
-            db.or_(
-                DbArticle.item_number.ilike(ilike_pattern),
-                DbArticle.description.ilike(ilike_pattern),
-            )
-        )
-        count_stmt = count_stmt.filter(
+        stmt = stmt.filter(
             db.or_(
                 DbArticle.item_number.ilike(ilike_pattern),
                 DbArticle.description.ilike(ilike_pattern),
             )
         )
 
-    return paginate(items_stmt, count_stmt, page, per_page)
+    return paginate(stmt, page, per_page)
 
 
 def get_article_compilation_for_orderable_articles(

@@ -214,21 +214,13 @@ def get_parties_for_brand_paginated(
     brand_id: BrandID, page: int, per_page: int
 ) -> Pagination:
     """Return the parties for that brand to show on the specified page."""
-    items_stmt = (
+    stmt = (
         select(DbParty)
         .filter_by(brand_id=brand_id)
         .order_by(DbParty.starts_at.desc())
     )
 
-    count_stmt = select(db.func.count(DbParty.id)).filter_by(brand_id=brand_id)
-
-    return paginate(
-        items_stmt,
-        count_stmt,
-        page,
-        per_page,
-        item_mapper=_db_entity_to_party,
-    )
+    return paginate(stmt, page, per_page, item_mapper=_db_entity_to_party)
 
 
 def get_party_count_by_brand_id() -> dict[BrandID, int]:

@@ -291,7 +291,7 @@ def get_tickets_with_details_for_party_paginated(
     filter_checked_in: Optional[FilterMode] = None,
 ) -> Pagination:
     """Return the party's tickets to show on the specified page."""
-    items_query = (
+    stmt = (
         select(DbTicket)
         .filter(DbTicket.party_id == party_id)
         .join(DbTicketCategory)
@@ -303,42 +303,24 @@ def get_tickets_with_details_for_party_paginated(
         .order_by(DbTicket.created_at)
     )
 
-    count_query = (
-        select(db.func.count(DbTicket.id))
-        .filter(DbTicket.party_id == party_id)
-        .join(DbTicketCategory)
-    )
-
     if search_term:
         ilike_pattern = f'%{search_term}%'
-        items_query = items_query.filter(DbTicket.code.ilike(ilike_pattern))
-        count_query = count_query.filter(DbTicket.code.ilike(ilike_pattern))
+        stmt = stmt.filter(DbTicket.code.ilike(ilike_pattern))
 
     if filter_category_id:
-        items_query = items_query.filter(
-            DbTicketCategory.id == str(filter_category_id)
-        )
-        count_query = count_query.filter(
-            DbTicketCategory.id == str(filter_category_id)
-        )
+        stmt = stmt.filter(DbTicketCategory.id == str(filter_category_id))
 
     if filter_revoked is not None:
-        items_query = items_query.filter(
-            DbTicket.revoked == (filter_revoked is FilterMode.select)
-        )
-        count_query = count_query.filter(
+        stmt = stmt.filter(
             DbTicket.revoked == (filter_revoked is FilterMode.select)
         )
 
     if filter_checked_in is not None:
-        items_query = items_query.filter(
-            DbTicket.user_checked_in == (filter_checked_in is FilterMode.select)
-        )
-        count_query = count_query.filter(
+        stmt = stmt.filter(
             DbTicket.user_checked_in == (filter_checked_in is FilterMode.select)
         )
 
-    return paginate(items_query, count_query, page, per_page)
+    return paginate(stmt, page, per_page)
 
 
 def count_revoked_tickets_for_party(party_id: PartyID) -> int:

@@ -86,7 +86,7 @@ def paginate_topics(
     board_id: BoardID, include_hidden: bool, page: int, per_page: int
 ) -> Pagination:
     """Paginate topics in that board."""
-    items_stmt = (
+    stmt = (
         _select_topics(include_hidden)
         .join(DbBoardCategory)
         .filter(DbBoardCategory.board_id == board_id)
@@ -94,14 +94,7 @@ def paginate_topics(
         .order_by(DbTopic.last_updated_at.desc())
     )
 
-    count_stmt = (
-        _count_topics(include_hidden)
-        .join(DbBoardCategory)
-        .filter(DbBoardCategory.board_id == board_id)
-        .filter(DbBoardCategory.hidden == False)  # noqa: E712
-    )
-
-    return paginate(items_stmt, count_stmt, page, per_page)
+    return paginate(stmt, page, per_page)
 
 
 def get_all_topic_ids_in_category(category_id: BoardCategoryID) -> set[TopicID]:
@@ -123,17 +116,13 @@ def paginate_topics_of_category(
 
     Pinned topics are returned first.
     """
-    items_stmt = (
+    stmt = (
         _select_topics(include_hidden)
         .filter_by(category_id=category_id)
         .order_by(DbTopic.pinned.desc(), DbTopic.last_updated_at.desc())
     )
 
-    count_stmt = _count_topics(include_hidden).filter_by(
-        category_id=category_id
-    )
-
-    return paginate(items_stmt, count_stmt, page, per_page)
+    return paginate(stmt, page, per_page)
 
 
 def _select_topics(include_hidden: bool) -> Select:
@@ -144,15 +133,6 @@ def _select_topics(include_hidden: bool) -> Select:
         db.joinedload(DbTopic.locked_by),
         db.joinedload(DbTopic.pinned_by),
     )
-
-    if not include_hidden:
-        stmt = stmt.filter_by(hidden=False)
-
-    return stmt
-
-
-def _count_topics(include_hidden: bool) -> Select:
-    stmt = select(db.func.count(DbTopic.id))
 
     if not include_hidden:
         stmt = stmt.filter_by(hidden=False)

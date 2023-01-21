@@ -717,31 +717,19 @@ def get_orders_for_shop_paginated(
     If a payment state is specified, only orders in that state are
     returned.
     """
-    items_stmt = (
+    stmt = (
         select(DbOrder)
         .options(db.joinedload(DbOrder.line_items))
         .filter_by(shop_id=shop_id)
         .order_by(DbOrder.created_at.desc())
     )
 
-    count_stmt = select(db.func.count(DbOrder.id)).filter_by(shop_id=shop_id)
-
     if search_term:
         ilike_pattern = f'%{search_term}%'
-        items_stmt = items_stmt.filter(
-            DbOrder.order_number.ilike(ilike_pattern)
-        )
-        count_stmt = count_stmt.filter(
-            DbOrder.order_number.ilike(ilike_pattern)
-        )
+        stmt = stmt.filter(DbOrder.order_number.ilike(ilike_pattern))
 
     if only_payment_state is not None:
-        items_stmt = items_stmt.filter_by(
-            _payment_state=only_payment_state.name
-        )
-        count_stmt = count_stmt.filter_by(
-            _payment_state=only_payment_state.name
-        )
+        stmt = stmt.filter_by(_payment_state=only_payment_state.name)
 
         if (only_payment_state == PaymentState.open) and (
             only_overdue is not None
@@ -749,42 +737,21 @@ def get_orders_for_shop_paginated(
             now = datetime.utcnow()
 
             if only_overdue:
-                items_stmt = items_stmt.filter(
-                    DbOrder.created_at + OVERDUE_THRESHOLD < now
-                )
-                count_stmt = items_stmt.filter(
-                    DbOrder.created_at + OVERDUE_THRESHOLD < now
-                )
+                stmt = stmt.filter(DbOrder.created_at + OVERDUE_THRESHOLD < now)
             else:
-                items_stmt = items_stmt.filter(
-                    DbOrder.created_at + OVERDUE_THRESHOLD >= now
-                )
-                count_stmt = items_stmt.filter(
+                stmt = stmt.filter(
                     DbOrder.created_at + OVERDUE_THRESHOLD >= now
                 )
 
     if only_processed is not None:
-        items_stmt = items_stmt.filter(
-            DbOrder.processing_required == True  # noqa: E712
-        )
-        count_stmt = count_stmt.filter(
-            DbOrder.processing_required == True  # noqa: E712
-        )
+        stmt = stmt.filter(DbOrder.processing_required == True)  # noqa: E712
 
         if only_processed:
-            items_stmt = items_stmt.filter(DbOrder.processed_at.is_not(None))
-            count_stmt = count_stmt.filter(DbOrder.processed_at.is_not(None))
+            stmt = stmt.filter(DbOrder.processed_at.is_not(None))
         else:
-            items_stmt = items_stmt.filter(DbOrder.processed_at.is_(None))
-            count_stmt = count_stmt.filter(DbOrder.processed_at.is_(None))
+            stmt = stmt.filter(DbOrder.processed_at.is_(None))
 
-    return paginate(
-        items_stmt,
-        count_stmt,
-        page,
-        per_page,
-        item_mapper=_order_to_transfer_object,
-    )
+    return paginate(stmt, page, per_page, item_mapper=_order_to_transfer_object)
 
 
 def get_orders_placed_by_user(user_id: UserID) -> list[Order]:
