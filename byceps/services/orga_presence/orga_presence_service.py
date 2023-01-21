@@ -48,11 +48,15 @@ def delete_time_slot(time_slot_id: UUID) -> None:
 
 def get_presences(party_id: PartyID) -> list[PresenceTimeSlot]:
     """Return all presences for that party."""
-    presences = db.session.scalars(
-        select(DbPresence)
-        .filter_by(party_id=party_id)
-        .options(db.joinedload(DbPresence.orga))
-    ).all()
+    presences = (
+        db.session.scalars(
+            select(DbPresence)
+            .filter_by(party_id=party_id)
+            .options(db.joinedload(DbPresence.orga))
+        )
+        .unique()
+        .all()
+    )
 
     return [_presence_to_time_slot(presence) for presence in presences]
 

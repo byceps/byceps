@@ -136,9 +136,13 @@ def get_all_parties() -> list[Party]:
 
 def get_all_parties_with_brands() -> list[PartyWithBrand]:
     """Return all parties."""
-    db_parties = db.session.scalars(
-        select(DbParty).options(db.joinedload(DbParty.brand))
-    ).all()
+    db_parties = (
+        db.session.scalars(
+            select(DbParty).options(db.joinedload(DbParty.brand))
+        )
+        .unique()
+        .all()
+    )
 
     return [_db_entity_to_party_with_brand(db_party) for db_party in db_parties]
 
@@ -155,11 +159,15 @@ def get_active_parties(
     if include_brands:
         stmt = stmt.options(db.joinedload(DbParty.brand))
 
-    db_parties = db.session.scalars(
-        stmt.filter_by(canceled=False)
-        .filter_by(archived=False)
-        .order_by(DbParty.starts_at)
-    ).all()
+    db_parties = (
+        db.session.scalars(
+            stmt.filter_by(canceled=False)
+            .filter_by(archived=False)
+            .order_by(DbParty.starts_at)
+        )
+        .unique()
+        .all()
+    )
 
     if include_brands:
         transform = _db_entity_to_party_with_brand

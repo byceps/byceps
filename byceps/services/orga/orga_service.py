@@ -33,12 +33,16 @@ def get_person_count_by_brand_id() -> dict[BrandID, int]:
 
 def get_orgas_for_brand(brand_id: BrandID) -> list[DbUser]:
     """Return all users flagged as organizers for the brand."""
-    return db.session.scalars(
-        select(DbUser)
-        .join(DbOrgaFlag)
-        .filter(DbOrgaFlag.brand_id == brand_id)
-        .options(db.joinedload(DbUser.detail))
-    ).all()
+    return (
+        db.session.scalars(
+            select(DbUser)
+            .join(DbOrgaFlag)
+            .filter(DbOrgaFlag.brand_id == brand_id)
+            .options(db.joinedload(DbUser.detail))
+        )
+        .unique()
+        .all()
+    )
 
 
 def count_orgas_for_brand(brand_id: BrandID) -> int:

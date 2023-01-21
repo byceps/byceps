@@ -92,14 +92,18 @@ def get_categories_with_last_updates(
 
     Include the creator of the last posting in each category.
     """
-    db_categories_with_last_update = db.session.scalars(
-        select(DbBoardCategory)
-        .filter_by(board_id=board_id)
-        .filter_by(hidden=False)
-        .options(
-            db.joinedload(DbBoardCategory.last_posting_updated_by),
+    db_categories_with_last_update = (
+        db.session.scalars(
+            select(DbBoardCategory)
+            .filter_by(board_id=board_id)
+            .filter_by(hidden=False)
+            .options(
+                db.joinedload(DbBoardCategory.last_posting_updated_by),
+            )
         )
-    ).all()
+        .unique()
+        .all()
+    )
 
     return [
         _db_entity_to_category_with_last_update(db_category)

@@ -250,16 +250,20 @@ def get_users_for_admin(user_ids: set[UserID]) -> set[UserForAdmin]:
     if not user_ids:
         return set()
 
-    users = db.session.scalars(
-        select(DbUser)
-        .options(
-            db.joinedload(DbUser.avatar),
-            db.joinedload(DbUser.detail).load_only(
-                DbUserDetail.first_name, DbUserDetail.last_name
-            ),
+    users = (
+        db.session.scalars(
+            select(DbUser)
+            .options(
+                db.joinedload(DbUser.avatar),
+                db.joinedload(DbUser.detail).load_only(
+                    DbUserDetail.first_name, DbUserDetail.last_name
+                ),
+            )
+            .filter(DbUser.id.in_(frozenset(user_ids)))
         )
-        .filter(DbUser.id.in_(frozenset(user_ids)))
-    ).all()
+        .unique()
+        .all()
+    )
 
     return {_db_entity_to_user_for_admin(user) for user in users}
 
@@ -434,7 +438,7 @@ def get_users_created_since(
     if limit is not None:
         stmt = stmt.limit(limit)
 
-    users = db.session.scalars(stmt).all()
+    users = db.session.scalars(stmt).unique().all()
 
     return [_db_entity_to_user_for_admin(u) for u in users]
 
@@ -475,6 +479,7 @@ def get_users_paginated(
         page,
         per_page,
         scalar_result=True,
+        unique_result=True,
         item_mapper=_db_entity_to_user_for_admin,
     )
 

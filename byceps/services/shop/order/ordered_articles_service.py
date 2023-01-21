@@ -25,14 +25,18 @@ def count_ordered_articles(article_id: ArticleID) -> dict[PaymentState, int]:
     """Count how often the article has been ordered, grouped by the
     order's payment state.
     """
-    db_line_items = db.session.scalars(
-        select(DbLineItem)
-        .filter_by(article_id=article_id)
-        .options(
-            db.joinedload(DbLineItem.order),
-            db.joinedload(DbLineItem.article),
+    db_line_items = (
+        db.session.scalars(
+            select(DbLineItem)
+            .filter_by(article_id=article_id)
+            .options(
+                db.joinedload(DbLineItem.order),
+                db.joinedload(DbLineItem.article),
+            )
         )
-    ).all()
+        .unique()
+        .all()
+    )
 
     # Ensure every payment state is present in the resulting dictionary,
     # even if no orders of the corresponding payment state exist for the

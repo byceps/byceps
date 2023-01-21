@@ -160,16 +160,20 @@ def get_snippets_for_scope_with_current_versions(
     scope: Scope,
 ) -> list[DbSnippet]:
     """Return all snippets with their current versions for that scope."""
-    return db.session.scalars(
-        select(DbSnippet)
-        .filter_by(scope_type=scope.type_)
-        .filter_by(scope_name=scope.name)
-        .options(
-            db.joinedload(DbSnippet.current_version_association).joinedload(
-                DbCurrentSnippetVersionAssociation.version
+    return (
+        db.session.scalars(
+            select(DbSnippet)
+            .filter_by(scope_type=scope.type_)
+            .filter_by(scope_name=scope.name)
+            .options(
+                db.joinedload(DbSnippet.current_version_association).joinedload(
+                    DbCurrentSnippetVersionAssociation.version
+                )
             )
         )
-    ).all()
+        .unique()
+        .all()
+    )
 
 
 def find_snippet_version(

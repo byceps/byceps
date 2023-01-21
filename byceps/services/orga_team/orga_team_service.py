@@ -236,11 +236,15 @@ def get_orga_teams_for_user_and_party(
 
 def get_orga_activities_for_user(user_id: UserID) -> set[OrgaActivity]:
     """Return all orga team activities for that user."""
-    db_memberships = db.session.scalars(
-        select(DbMembership)
-        .options(db.joinedload(DbMembership.orga_team))
-        .filter_by(user_id=user_id)
-    ).all()
+    db_memberships = (
+        db.session.scalars(
+            select(DbMembership)
+            .options(db.joinedload(DbMembership.orga_team))
+            .filter_by(user_id=user_id)
+        )
+        .unique()
+        .all()
+    )
 
     party_ids = {ms.orga_team.party_id for ms in db_memberships}
     parties = party_service.get_parties(party_ids)
@@ -282,18 +286,22 @@ def get_orga_activities_for_user(user_id: UserID) -> set[OrgaActivity]:
 
 def get_public_orgas_for_party(party_id: PartyID) -> set[PublicOrga]:
     """Return all public orgas for that party."""
-    db_memberships = db.session.scalars(
-        select(DbMembership)
-        .join(DbOrgaTeam)
-        .filter(DbOrgaTeam.party_id == party_id)
-        .options(
-            db.joinedload(DbMembership.orga_team),
-            db.joinedload(DbMembership.user).load_only(DbUser.id),
-            db.joinedload(DbMembership.user)
-            .joinedload(DbUser.detail)
-            .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
+    db_memberships = (
+        db.session.scalars(
+            select(DbMembership)
+            .join(DbOrgaTeam)
+            .filter(DbOrgaTeam.party_id == party_id)
+            .options(
+                db.joinedload(DbMembership.orga_team),
+                db.joinedload(DbMembership.user).load_only(DbUser.id),
+                db.joinedload(DbMembership.user)
+                .joinedload(DbUser.detail)
+                .load_only(DbUserDetail.first_name, DbUserDetail.last_name),
+            )
         )
-    ).all()
+        .unique()
+        .all()
+    )
 
     users_by_id = _get_public_orga_users_by_id(db_memberships)
 

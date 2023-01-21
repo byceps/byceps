@@ -117,83 +117,103 @@ def get_tickets_for_seat_manager(
     """Return the tickets for that party whose respective seats the user
     is entitled to manage.
     """
-    return db.session.scalars(
-        select(DbTicket)
-        .filter(DbTicket.party_id == party_id)
-        .filter(DbTicket.revoked == False)  # noqa: E712
-        .filter(
-            (
-                (DbTicket.seat_managed_by_id.is_(None))
-                & (DbTicket.owned_by_id == user_id)
+    return (
+        db.session.scalars(
+            select(DbTicket)
+            .filter(DbTicket.party_id == party_id)
+            .filter(DbTicket.revoked == False)  # noqa: E712
+            .filter(
+                (
+                    (DbTicket.seat_managed_by_id.is_(None))
+                    & (DbTicket.owned_by_id == user_id)
+                )
+                | (DbTicket.seat_managed_by_id == user_id)
             )
-            | (DbTicket.seat_managed_by_id == user_id)
+            .options(
+                db.joinedload(DbTicket.occupied_seat),
+            )
         )
-        .options(
-            db.joinedload(DbTicket.occupied_seat),
-        )
-    ).all()
+        .unique()
+        .all()
+    )
 
 
 def get_tickets_related_to_user(user_id: UserID) -> list[DbTicket]:
     """Return tickets related to the user."""
-    return db.session.scalars(
-        select(DbTicket)
-        .filter(
-            (DbTicket.owned_by_id == user_id)
-            | (DbTicket.seat_managed_by_id == user_id)
-            | (DbTicket.user_managed_by_id == user_id)
-            | (DbTicket.used_by_id == user_id)
+    return (
+        db.session.scalars(
+            select(DbTicket)
+            .filter(
+                (DbTicket.owned_by_id == user_id)
+                | (DbTicket.seat_managed_by_id == user_id)
+                | (DbTicket.user_managed_by_id == user_id)
+                | (DbTicket.used_by_id == user_id)
+            )
+            .options(
+                db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
+                db.joinedload(DbTicket.occupied_seat).joinedload(
+                    DbSeat.category
+                ),
+                db.joinedload(DbTicket.seat_managed_by),
+                db.joinedload(DbTicket.user_managed_by),
+                db.joinedload(DbTicket.used_by),
+            )
+            .order_by(DbTicket.created_at)
         )
-        .options(
-            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
-            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.category),
-            db.joinedload(DbTicket.seat_managed_by),
-            db.joinedload(DbTicket.user_managed_by),
-            db.joinedload(DbTicket.used_by),
-        )
-        .order_by(DbTicket.created_at)
-    ).all()
+        .unique()
+        .all()
+    )
 
 
 def get_tickets_related_to_user_for_party(
     user_id: UserID, party_id: PartyID
 ) -> list[DbTicket]:
     """Return tickets related to the user for the party."""
-    return db.session.scalars(
-        select(DbTicket)
-        .filter(DbTicket.party_id == party_id)
-        .filter(
-            (DbTicket.owned_by_id == user_id)
-            | (DbTicket.seat_managed_by_id == user_id)
-            | (DbTicket.user_managed_by_id == user_id)
-            | (DbTicket.used_by_id == user_id)
+    return (
+        db.session.scalars(
+            select(DbTicket)
+            .filter(DbTicket.party_id == party_id)
+            .filter(
+                (DbTicket.owned_by_id == user_id)
+                | (DbTicket.seat_managed_by_id == user_id)
+                | (DbTicket.user_managed_by_id == user_id)
+                | (DbTicket.used_by_id == user_id)
+            )
+            .options(
+                db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
+                db.joinedload(DbTicket.occupied_seat).joinedload(
+                    DbSeat.category
+                ),
+                db.joinedload(DbTicket.seat_managed_by),
+                db.joinedload(DbTicket.user_managed_by),
+                db.joinedload(DbTicket.used_by),
+            )
+            .order_by(DbTicket.created_at)
         )
-        .options(
-            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
-            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.category),
-            db.joinedload(DbTicket.seat_managed_by),
-            db.joinedload(DbTicket.user_managed_by),
-            db.joinedload(DbTicket.used_by),
-        )
-        .order_by(DbTicket.created_at)
-    ).all()
+        .unique()
+        .all()
+    )
 
 
 def get_tickets_used_by_user(
     user_id: UserID, party_id: PartyID
 ) -> list[DbTicket]:
     """Return the tickets (if any) used by the user for that party."""
-    return db.session.scalars(
-        select(DbTicket)
-        .filter(DbTicket.party_id == party_id)
-        .filter(DbTicket.used_by_id == user_id)
-        .filter(DbTicket.revoked == False)  # noqa: E712
-        .outerjoin(DbSeat)
-        .options(
-            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
+    return (
+        db.session.scalars(
+            select(DbTicket)
+            .filter(DbTicket.party_id == party_id)
+            .filter(DbTicket.used_by_id == user_id)
+            .filter(DbTicket.revoked == False)  # noqa: E712
+            .outerjoin(DbSeat)
+            .options(
+                db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
+            )
+            .order_by(DbSeat.coord_x, DbSeat.coord_y)
         )
-        .order_by(DbSeat.coord_x, DbSeat.coord_y)
-    ).all()
+        .unique()
+        .all()
+    )
 
 
 def uses_any_ticket_for_party(user_id: UserID, party_id: PartyID) -> bool:
@@ -319,7 +339,12 @@ def get_tickets_with_details_for_party_paginated(
         )
 
     return paginate(
-        items_query, count_query, page, per_page, scalar_result=True
+        items_query,
+        count_query,
+        page,
+        per_page,
+        scalar_result=True,
+        unique_result=True,
     )
 
 

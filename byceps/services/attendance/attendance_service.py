@@ -87,22 +87,33 @@ def _get_users_paginated(
             DbUser.screen_name.ilike(f'%{search_term}%')
         )
 
-    return paginate(items_stmt, count_stmt, page, per_page, scalar_result=True)
+    return paginate(
+        items_stmt,
+        count_stmt,
+        page,
+        per_page,
+        scalar_result=True,
+        unique_result=True,
+    )
 
 
 def _get_tickets_for_users(
     party_id: PartyID, user_ids: set[UserID]
 ) -> list[DbTicket]:
-    return db.session.scalars(
-        select(DbTicket)
-        .options(
-            db.joinedload(DbTicket.category),
-            db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
+    return (
+        db.session.scalars(
+            select(DbTicket)
+            .options(
+                db.joinedload(DbTicket.category),
+                db.joinedload(DbTicket.occupied_seat).joinedload(DbSeat.area),
+            )
+            .filter(DbTicket.party_id == party_id)
+            .filter(DbTicket.used_by_id.in_(user_ids))
+            .filter(DbTicket.revoked == False)  # noqa: E712
         )
-        .filter(DbTicket.party_id == party_id)
-        .filter(DbTicket.used_by_id.in_(user_ids))
-        .filter(DbTicket.revoked == False)  # noqa: E712
-    ).all()
+        .unique()
+        .all()
+    )
 
 
 def _index_tickets_by_user_id(

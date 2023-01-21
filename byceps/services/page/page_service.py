@@ -332,16 +332,20 @@ def find_page_aggregate(version_id: PageVersionID) -> Optional[PageAggregate]:
 
 def get_pages_for_site_with_current_versions(site_id: SiteID) -> list[DbPage]:
     """Return all pages with their current versions for that site."""
-    return db.session.scalars(
-        select(DbPage)
-        .filter_by(site_id=site_id)
-        .options(
-            db.joinedload(DbPage.current_version_association).joinedload(
-                DbCurrentPageVersionAssociation.version
-            ),
-            db.joinedload(DbPage.nav_menu),
+    return (
+        db.session.scalars(
+            select(DbPage)
+            .filter_by(site_id=site_id)
+            .options(
+                db.joinedload(DbPage.current_version_association).joinedload(
+                    DbCurrentPageVersionAssociation.version
+                ),
+                db.joinedload(DbPage.nav_menu),
+            )
         )
-    ).all()
+        .unique()
+        .all()
+    )
 
 
 def _db_entity_to_page(db_page: DbPage) -> Page:

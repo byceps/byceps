@@ -55,15 +55,23 @@ def _find_line_items(shop_id: ShopID) -> Iterator[LineItemQuantity]:
         .filter(DbLineItem.processing_required == True)  # noqa: E712
     )
 
-    definitive_line_items = db.session.scalars(
-        common_stmt.filter(
-            DbOrder._payment_state == PaymentState.paid.name
-        ).filter(DbOrder.processed_at.is_(None))
-    ).all()
+    definitive_line_items = (
+        db.session.scalars(
+            common_stmt.filter(
+                DbOrder._payment_state == PaymentState.paid.name
+            ).filter(DbOrder.processed_at.is_(None))
+        )
+        .unique()
+        .all()
+    )
 
-    potential_line_items = db.session.scalars(
-        common_stmt.filter(DbOrder._payment_state == PaymentState.open.name)
-    ).all()
+    potential_line_items = (
+        db.session.scalars(
+            common_stmt.filter(DbOrder._payment_state == PaymentState.open.name)
+        )
+        .unique()
+        .all()
+    )
 
     db_line_items = definitive_line_items + potential_line_items
 

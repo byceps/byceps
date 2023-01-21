@@ -61,21 +61,25 @@ def find_topic_visible_for_user(
     if not include_hidden:
         stmt = stmt.filter_by(hidden=False)
 
-    return db.session.scalars(stmt).first()
+    return db.session.scalars(stmt).unique().first()
 
 
 def get_recent_topics(
     board_id: BoardID, include_hidden: bool, limit: int
 ) -> list[DbTopic]:
     """Return recent topics in that board."""
-    return db.session.scalars(
-        _select_topics(include_hidden)
-        .join(DbBoardCategory)
-        .filter(DbBoardCategory.board_id == board_id)
-        .filter(DbBoardCategory.hidden == False)  # noqa: E712
-        .order_by(DbTopic.last_updated_at.desc())
-        .limit(limit)
-    ).all()
+    return (
+        db.session.scalars(
+            _select_topics(include_hidden)
+            .join(DbBoardCategory)
+            .filter(DbBoardCategory.board_id == board_id)
+            .filter(DbBoardCategory.hidden == False)  # noqa: E712
+            .order_by(DbTopic.last_updated_at.desc())
+            .limit(limit)
+        )
+        .unique()
+        .all()
+    )
 
 
 def paginate_topics(
@@ -97,7 +101,14 @@ def paginate_topics(
         .filter(DbBoardCategory.hidden == False)  # noqa: E712
     )
 
-    return paginate(items_stmt, count_stmt, page, per_page, scalar_result=True)
+    return paginate(
+        items_stmt,
+        count_stmt,
+        page,
+        per_page,
+        scalar_result=True,
+        unique_result=True,
+    )
 
 
 def get_all_topic_ids_in_category(category_id: BoardCategoryID) -> set[TopicID]:
@@ -129,7 +140,14 @@ def paginate_topics_of_category(
         category_id=category_id
     )
 
-    return paginate(items_stmt, count_stmt, page, per_page, scalar_result=True)
+    return paginate(
+        items_stmt,
+        count_stmt,
+        page,
+        per_page,
+        scalar_result=True,
+        unique_result=True,
+    )
 
 
 def _select_topics(include_hidden: bool) -> Select:

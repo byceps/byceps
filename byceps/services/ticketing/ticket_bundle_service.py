@@ -148,5 +148,10 @@ def get_bundles_for_party_paginated(
     )
 
     return paginate(
-        items_query, count_query, page, per_page, scalar_result=True
+        items_query,
+        count_query,
+        page,
+        per_page,
+        scalar_result=True,
+        unique_result=True,
     )

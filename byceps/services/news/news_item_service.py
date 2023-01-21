@@ -366,18 +366,22 @@ def get_recent_headlines(
     channel_ids: frozenset[NewsChannelID] | set[NewsChannelID], limit: int
 ) -> list[NewsHeadline]:
     """Return the most recent headlines."""
-    db_items = db.session.scalars(
-        select(DbNewsItem)
-        .filter(DbNewsItem.channel_id.in_(channel_ids))
-        .options(
-            db.joinedload(DbNewsItem.current_version_association).joinedload(
-                DbCurrentNewsItemVersionAssociation.version
+    db_items = (
+        db.session.scalars(
+            select(DbNewsItem)
+            .filter(DbNewsItem.channel_id.in_(channel_ids))
+            .options(
+                db.joinedload(
+                    DbNewsItem.current_version_association
+                ).joinedload(DbCurrentNewsItemVersionAssociation.version)
             )
+            .filter(DbNewsItem.published_at <= datetime.utcnow())
+            .order_by(DbNewsItem.published_at.desc())
+            .limit(limit)
         )
-        .filter(DbNewsItem.published_at <= datetime.utcnow())
-        .order_by(DbNewsItem.published_at.desc())
-        .limit(limit)
-    ).all()
+        .unique()
+        .all()
+    )
 
     return [_db_entity_to_headline(db_item) for db_item in db_items]
 

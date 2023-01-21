@@ -173,7 +173,7 @@ def get_current_sites(
 
     stmt = stmt.filter_by(enabled=True).filter_by(archived=False)
 
-    db_sites = db.session.scalars(stmt).all()
+    db_sites = db.session.scalars(stmt).unique().all()
 
     transform: Callable[[DbSite], Site | SiteWithBrand]
     if include_brands:
