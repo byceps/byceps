@@ -11,7 +11,11 @@ from flask_babel import gettext
 
 from ....services.party import party_service
 from ....services.seating.models import Seat, SeatID
-from ....services.seating import seat_service, seating_area_service
+from ....services.seating import (
+    seat_service,
+    seating_area_service,
+    seating_area_tickets_service,
+)
 from ....services.ticketing.dbmodels.ticket import DbTicket
 from ....services.ticketing.models.ticket import TicketID
 from ....services.ticketing import (
@@ -24,8 +28,6 @@ from ....util.framework.blueprint import create_blueprint
 from ....util.framework.flash import flash_error, flash_success
 from ....util.framework.templating import templated
 from ....util.views import login_required, redirect_to, respond_no_content
-
-from . import service
 
 
 blueprint = create_blueprint('seating', __name__)
@@ -72,9 +74,9 @@ def view_area(slug):
 
     seats_with_tickets = seat_service.get_seats_with_tickets_for_area(area.id)
 
-    users_by_id = service.get_users(seats_with_tickets, [])
+    users_by_id = seating_area_tickets_service.get_users(seats_with_tickets, [])
 
-    seats_and_tickets = service.get_seats_and_tickets(
+    seats_and_tickets = seating_area_tickets_service.get_seats_and_tickets(
         seats_with_tickets, users_by_id
     )
 
@@ -130,15 +132,19 @@ def manage_seats_in_area(slug):
     else:
         tickets = []
 
-    users_by_id = service.get_users(seats_with_tickets, tickets)
+    users_by_id = seating_area_tickets_service.get_users(
+        seats_with_tickets, tickets
+    )
 
-    seats_and_tickets = service.get_seats_and_tickets(
+    seats_and_tickets = seating_area_tickets_service.get_seats_and_tickets(
         seats_with_tickets, users_by_id
     )
 
     if seat_management_enabled:
         managed_tickets = list(
-            service.get_managed_tickets(tickets, users_by_id)
+            seating_area_tickets_service.get_managed_tickets(
+                tickets, users_by_id
+            )
         )
     else:
         managed_tickets = []
