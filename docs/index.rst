@@ -22,6 +22,7 @@ for more than a decade.
    upgrading/index
    config/index
    cli/index
+   testing/index
    license
 
 

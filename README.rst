@@ -80,23 +80,6 @@ See `installation instructions
 <https://byceps.readthedocs.io/en/latest/installation/index.html>`_.
 
 
-Testing
-=======
-
-In the activated virtual environment, install the test
-dependencies:
-
-.. code:: sh
-
-    (venv)$ pip install -r requirements-test.txt
-
-Run the tests:
-
-.. code:: sh
-
-    (venv)$ pytest
-
-
 Serving
 =======
 
