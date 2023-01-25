@@ -78,26 +78,3 @@ Installation
 
 See `installation instructions
 <https://byceps.readthedocs.io/en/latest/installation/index.html>`_.
-
-
-Serving
-=======
-
-To spin up a local server (only for development purposes!) for the
-admin app on port 5000 with debugging middleware and in-browser code
-evaluation:
-
-.. code:: sh
-
-    (venv)$ BYCEPS_CONFIG=../config/development.py APP_MODE=admin flask --debug run
-
-In a production environment, it is recommended to have the application
-served by uWSGI_ or Gunicorn_.
-
-It is furthermore recommended to run it locally behind nginx_ and have
-the latter both serve static files and provide SSL encryption.
-
-
-.. _uWSGI: https://uwsgi-docs.readthedocs.io/
-.. _Gunicorn: https://gunicorn.org/
-.. _nginx: https://nginx.org/
