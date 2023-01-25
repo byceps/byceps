@@ -185,7 +185,7 @@ def find_snippet_version(
 
 def find_current_version_of_snippet_with_name(
     scope: Scope, name: str
-) -> DbSnippetVersion:
+) -> Optional[DbSnippetVersion]:
     """Return the current version of the snippet with that name in that
     scope, or `None` if not found.
     """
