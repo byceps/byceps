@@ -18,6 +18,16 @@ The system incorporates experience from almost 25 years of organizing
 LAN parties as well as concepts and source code developed for more than
 a decade.
 
+
+Website
+=======
+
+The official tiny website is at https://byceps.nwsnet.de/.
+
+
+In the Wild
+===========
+
 Parties using BYCEPS:
 
 - Since 2014, BYCEPS is the foundation of the public website and local
@@ -30,16 +40,17 @@ Other sites using BYCEPS:
 - In 2019, the OrgaTalk_ community was launched using BYCEPS as a
   discussion board.
 
-
 .. _LANresort: https://www.lanresort.de/
 .. _LANresort Bostalsee: https://bostalsee.lanresort.de/
 .. _NorthCon: https://www.northcon.de/
 .. _OrgaTalk: https://www.orgatalk.de/
 
 
-:Copyright: 2014-2023 Jochen Kupperschmidt
-:License: Revised BSD (see ``LICENSE`` file for details)
-:Website: https://byceps.nwsnet.de/
+Installation
+============
+
+See `installation instructions
+<https://byceps.readthedocs.io/en/latest/installation/index.html>`_.
 
 
 Code Status
@@ -73,8 +84,17 @@ Code Status
    :target: https://codeclimate.com/github/byceps/byceps
 
 
-Installation
-============
+Author
+======
 
-See `installation instructions
-<https://byceps.readthedocs.io/en/latest/installation/index.html>`_.
+BYCEPS was created, and is developed and maintained, by Jochen
+Kupperschmidt.
+
+
+License
+=======
+
+BYCEPS is licensed under the `BSD 3-Clause "New" or "Revised" License
+<https://choosealicense.com/licenses/bsd-3-clause/>`_.
+
+The license text is provided in the `LICENSE <LICENSE>`_ file.
