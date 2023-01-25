@@ -9,9 +9,13 @@ byceps.application.blueprints.blueprints
 from typing import Iterator, Optional
 
 from flask import Flask
+import structlog
 
 from ..config import AppMode
 from ..util.framework.blueprint import get_blueprint
+
+
+log = structlog.get_logger()
 
 
 BlueprintReg = tuple[Flask, str, Optional[str]]
@@ -34,17 +38,21 @@ def _get_blueprints(app: Flask, app_mode: AppMode) -> Iterator[BlueprintReg]:
 
     if app_mode.is_admin():
         yield from _get_blueprints_admin(app)
+        log.info('Admin blueprints enabled')
     elif app_mode.is_site():
         yield from _get_blueprints_site(app)
+        log.info('Site blueprints enabled')
 
     yield (app, 'monitoring.healthcheck', '/health')
 
     if app.config['METRICS_ENABLED']:
         yield (app, 'monitoring.metrics', '/metrics')
+        log.info('Metrics enabled')
 
     if app_mode.is_admin() or app_mode.is_site():
         if app.config.get('STYLE_GUIDE_ENABLED', False):
             yield (app, 'common.style_guide', '/style_guide')
+            log.info('Style guide enabled')
 
 
 def _get_blueprints_common(app: Flask) -> Iterator[BlueprintReg]:
@@ -156,3 +164,5 @@ def register_api_blueprints(app: Flask) -> None:
 
     api.register_blueprint(api_v1, url_prefix='/v1')
     app.register_blueprint(api, url_prefix='/api')
+
+    log.info('API enabled')

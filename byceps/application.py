@@ -18,6 +18,7 @@ from flask_babel import Babel
 import jinja2
 from redis import Redis
 import rtoml
+import structlog
 
 from .blueprints.blueprints import register_blueprints
 from . import config, config_defaults
@@ -26,6 +27,9 @@ from .util.authorization import has_current_user_permission, load_permissions
 from .util.l10n import get_current_user_locale
 from .util import templatefilters, templatefunctions
 from .util.templating import SiteTemplateOverridesLoader
+
+
+log = structlog.get_logger()
 
 
 def create_app(
@@ -70,6 +74,8 @@ def create_app(
         _init_site_app(app)
 
     _load_announce_signal_handlers()
+
+    log.info('Application created', app_mode=app_mode.name, debug=app.debug)
 
     return app
 
