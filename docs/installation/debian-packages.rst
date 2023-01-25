@@ -20,7 +20,7 @@ On Debian "Bullseye" 11 or Debian "Buster" 10, install these packages:
 
 .. code-block:: sh
 
-    # aptitude install git postgresql python3 python3-dev python3-venv redis-server
+    # aptitude install git nginx postgresql python3 python3-dev python3-venv redis-server
 
 Additional required packages should be suggested for installation by
 the package manager.
