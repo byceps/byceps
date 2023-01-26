@@ -1726,7 +1726,11 @@ msgid_plural "open orders"
 msgstr[0] "offene Bestellung"
 msgstr[1] "offene Bestellungen"
 
-#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:28
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:24
+msgid "No open orders"
+msgstr "Keine offenen Bestellungen"
+
+#: byceps/blueprints/admin/dashboard/templates/admin/dashboard/_active_shops.html:32
 msgid "No active shops"
 msgstr "Keine aktiven Shops"
 
