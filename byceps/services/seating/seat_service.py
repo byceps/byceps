@@ -30,6 +30,7 @@ def create_seat(
     *,
     rotation: Optional[int] = None,
     label: Optional[str] = None,
+    type_: Optional[str] = None,
 ) -> Seat:
     """Create a seat."""
     db_seat = DbSeat(
@@ -39,6 +40,7 @@ def create_seat(
         coord_y=coord_y,
         rotation=rotation,
         label=label,
+        type_=type_,
     )
 
     db.session.add(db_seat)
