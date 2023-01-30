@@ -9,7 +9,7 @@ from moneyed import EUR, Money
 import pytest
 from pytest import raises
 
-from byceps.database import generate_uuid
+from byceps.database import generate_uuid4
 from byceps.services.shop.article.models import (
     Article,
     ArticleID,
@@ -57,7 +57,7 @@ def create_item(quantity: int) -> CartItem:
 
 def create_article() -> Article:
     return Article(
-        id=ArticleID(generate_uuid()),
+        id=ArticleID(generate_uuid4()),
         shop_id=ShopID('any-shop'),
         item_number=ArticleNumber('article-123'),
         type_=ArticleType.other,

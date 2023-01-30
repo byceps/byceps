@@ -3,7 +3,7 @@
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from byceps.database import generate_uuid
+from byceps.database import generate_uuid4
 from byceps.services.user.models.user import User
 from byceps.services.user.user_service import get_sort_key_for_screen_name
 from byceps.typing import UserID
@@ -25,7 +25,7 @@ def test_get_sort_key_for_screen_name():
 
 def create_user(screen_name: str) -> User:
     return User(
-        id=UserID(generate_uuid()),
+        id=UserID(generate_uuid4()),
         screen_name=screen_name,
         suspended=False,
         deleted=False,

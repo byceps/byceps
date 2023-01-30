@@ -8,7 +8,7 @@ byceps.services.tourney.dbmodels.tourney_category
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid4
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
@@ -23,7 +23,7 @@ class DbTourneyCategory(db.Model):
         db.UniqueConstraint('party_id', 'title'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     party_id = db.Column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
     )

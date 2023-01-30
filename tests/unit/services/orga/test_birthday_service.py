@@ -7,7 +7,7 @@ from datetime import date
 
 from freezegun import freeze_time
 
-from byceps.database import generate_uuid
+from byceps.database import generate_uuid4
 from byceps.services.orga.models import Birthday
 from byceps.services.orga import orga_birthday_service
 from byceps.services.user.models.user import User
@@ -49,7 +49,7 @@ def test_sort():
 
 def create_user_and_birthday(date_of_birth: date) -> tuple[User, Birthday]:
     user = User(
-        id=UserID(generate_uuid()),
+        id=UserID(generate_uuid4()),
         screen_name=f'born-{date_of_birth}',
         suspended=False,
         deleted=False,

@@ -9,7 +9,7 @@ byceps.services.user.dbmodels.user
 from datetime import datetime
 from typing import Optional
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid4
 from ....util.instances import ReprBuilder
 
 from .avatar import DbUserAvatar
@@ -20,7 +20,7 @@ class DbUser(db.Model):
 
     __tablename__ = 'users'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     created_at = db.Column(db.DateTime, nullable=False)
     screen_name = db.Column(db.UnicodeText, unique=True, nullable=True)
     email_address = db.Column(db.UnicodeText, unique=True, nullable=True)

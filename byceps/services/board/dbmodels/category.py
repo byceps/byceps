@@ -8,7 +8,7 @@ byceps.services.board.dbmodels.category
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid4
 from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import DbUser
@@ -27,7 +27,7 @@ class DbBoardCategory(db.Model):
         db.UniqueConstraint('board_id', 'title'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     board_id = db.Column(
         db.UnicodeText, db.ForeignKey('boards.id'), index=True, nullable=False
     )

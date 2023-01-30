@@ -8,7 +8,7 @@ byceps.services.shop.order.dbmodels.invoice
 
 from typing import Optional
 
-from .....database import db, generate_uuid
+from .....database import db, generate_uuid4
 
 from ..models.order import OrderID
 
@@ -25,7 +25,7 @@ class DbInvoice(db.Model):
         db.UniqueConstraint('order_id', 'number'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     order_id = db.Column(
         db.Uuid, db.ForeignKey('shop_orders.id'), index=True, nullable=False
     )

@@ -7,7 +7,7 @@ from decimal import Decimal
 
 from moneyed import EUR, Money
 
-from byceps.database import generate_uuid
+from byceps.database import generate_uuid4
 from byceps.services.shop.article.models import (
     Article,
     ArticleID,
@@ -56,7 +56,7 @@ def add_item(cart: Cart, quantity: int) -> None:
 
 def create_article() -> Article:
     return Article(
-        id=ArticleID(generate_uuid()),
+        id=ArticleID(generate_uuid4()),
         shop_id=ShopID('any-shop'),
         item_number=ArticleNumber('article-123'),
         type_=ArticleType.other,

@@ -8,7 +8,7 @@ byceps.services.shop.order.dbmodels.sequence
 
 from typing import Optional
 
-from .....database import db, generate_uuid
+from .....database import db, generate_uuid4
 from .....util.instances import ReprBuilder
 
 from ...shop.models import ShopID
@@ -19,7 +19,7 @@ class DbOrderNumberSequence(db.Model):
 
     __tablename__ = 'shop_order_number_sequences'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     shop_id = db.Column(
         db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
     )

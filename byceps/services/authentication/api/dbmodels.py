@@ -11,7 +11,7 @@ from typing import Optional
 
 from sqlalchemy.ext.mutable import MutableList
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid4
 from ....typing import UserID
 
 from ...authorization.models import PermissionID
@@ -22,7 +22,7 @@ class DbApiToken(db.Model):
 
     __tablename__ = 'api_tokens'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     creator_id = db.Column(db.Uuid, db.ForeignKey('users.id'), nullable=False)
     token = db.Column(db.UnicodeText, nullable=False)

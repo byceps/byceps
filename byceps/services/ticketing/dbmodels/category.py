@@ -6,7 +6,7 @@ byceps.services.ticketing.dbmodels.category
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid4
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
@@ -19,7 +19,7 @@ class DbTicketCategory(db.Model):
         db.UniqueConstraint('party_id', 'title'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     party_id = db.Column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
     )

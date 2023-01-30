@@ -13,7 +13,7 @@ from flask_babel import gettext
 from moneyed import EUR, Money
 
 from .....config import ConfigurationError
-from .....database import generate_uuid
+from .....database import generate_uuid4
 from .....typing import BrandID, UserID
 
 from ....email.models import Message
@@ -37,7 +37,7 @@ from . import order_email_service
 from .order_email_service import OrderEmailData
 
 
-EXAMPLE_USER_ID = UserID(generate_uuid())
+EXAMPLE_USER_ID = UserID(generate_uuid4())
 
 
 class EmailAssemblyFailed(Exception):
@@ -126,7 +126,7 @@ def _build_order(
     is_paid: bool = False,
     cancelation_reason: Optional[str] = None,
 ) -> Order:
-    order_id = OrderID(generate_uuid())
+    order_id = OrderID(generate_uuid4())
     storefront_id = StorefrontID('storefront-1')
     order_number = OrderNumber('AWSM-ORDR-9247')
 

@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from .....database import db, generate_uuid
+from .....database import db, generate_uuid4
 
 from ...article.dbmodels.article import DbArticle
 from ...article.models import ArticleID
@@ -29,7 +29,7 @@ class DbOrderAction(db.Model):
 
     __tablename__ = 'shop_order_actions'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     article_id = db.Column(
         db.Uuid, db.ForeignKey('shop_articles.id'), index=True, nullable=False
     )

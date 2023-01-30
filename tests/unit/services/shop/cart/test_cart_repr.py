@@ -7,7 +7,7 @@ from decimal import Decimal
 
 from moneyed import EUR, Money
 
-from byceps.database import generate_uuid
+from byceps.database import generate_uuid4
 from byceps.services.shop.article.models import (
     Article,
     ArticleID,
@@ -54,7 +54,7 @@ def create_article(
     tax_rate: Decimal,
 ) -> Article:
     return Article(
-        id=ArticleID(generate_uuid()),
+        id=ArticleID(generate_uuid4()),
         shop_id=ShopID('any-shop'),
         item_number=item_number,
         type_=ArticleType.other,

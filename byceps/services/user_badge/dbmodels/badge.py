@@ -8,7 +8,7 @@ byceps.services.user_badge.dbmodels.badge
 
 from typing import Optional
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid4
 from ....typing import BrandID
 from ....util.instances import ReprBuilder
 
@@ -18,7 +18,7 @@ class DbBadge(db.Model):
 
     __tablename__ = 'user_badges'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     slug = db.Column(db.UnicodeText, unique=True, index=True, nullable=False)
     label = db.Column(db.UnicodeText, unique=True, nullable=False)
     description = db.Column(db.UnicodeText, nullable=True)

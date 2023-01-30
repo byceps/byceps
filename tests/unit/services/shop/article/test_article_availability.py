@@ -11,7 +11,7 @@ from freezegun import freeze_time
 from moneyed import EUR, Money
 import pytest
 
-from byceps.database import generate_uuid
+from byceps.database import generate_uuid4
 from byceps.services.shop.article import article_service
 from byceps.services.shop.article.models import (
     Article,
@@ -114,7 +114,7 @@ def create_article(
     available_from: Optional[datetime], available_until: Optional[datetime]
 ) -> Article:
     return Article(
-        id=ArticleID(generate_uuid()),
+        id=ArticleID(generate_uuid4()),
         shop_id=ShopID('any-shop'),
         item_number=ArticleNumber('article-123'),
         type_=ArticleType.other,

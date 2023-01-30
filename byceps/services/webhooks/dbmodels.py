@@ -14,7 +14,7 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.ext.mutable import MutableDict, MutableList
 
-from ...database import db, generate_uuid
+from ...database import db, generate_uuid4
 
 from .models import EventFilters
 
@@ -24,7 +24,7 @@ class DbOutgoingWebhook(db.Model):
 
     __tablename__ = 'outgoing_webhooks'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     _event_types = db.Column(
         'event_types', MutableList.as_mutable(db.JSONB), nullable=False
     )

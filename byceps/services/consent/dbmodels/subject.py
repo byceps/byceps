@@ -8,7 +8,7 @@ byceps.services.consent.dbmodels.subject
 
 from typing import Optional
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid4
 from ....util.instances import ReprBuilder
 
 
@@ -17,7 +17,7 @@ class DbSubject(db.Model):
 
     __tablename__ = 'consent_subjects'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid4, primary_key=True)
     name = db.Column(db.UnicodeText, unique=True, nullable=False)
     title = db.Column(db.UnicodeText, unique=True, nullable=False)
     checkbox_label = db.Column(db.UnicodeText, nullable=False)

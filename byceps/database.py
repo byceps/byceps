@@ -40,7 +40,7 @@ class Uuid(UUID):
 db.Uuid = Uuid
 
 
-def generate_uuid() -> uuid.UUID:
+def generate_uuid4() -> uuid.UUID:
     """Generate a random UUID (Universally Unique IDentifier), version 4."""
     return uuid.uuid4()
 
