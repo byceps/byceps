@@ -111,6 +111,15 @@ def find_area_for_party_by_slug(
     return _db_entity_to_area(db_area)
 
 
+def get_areas_for_party(party_id: PartyID) -> list[SeatingArea]:
+    """Return all areas for that party."""
+    db_areas = db.session.scalars(
+        select(DbSeatingArea).filter_by(party_id=party_id)
+    ).all()
+
+    return [_db_entity_to_area(db_area) for db_area in db_areas]
+
+
 def get_areas_with_seat_utilization(
     party_id: PartyID,
 ) -> list[tuple[SeatingArea, SeatUtilization]]:

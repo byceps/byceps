@@ -25,6 +25,8 @@ BYCEPS comes with a command-line tool for some tasks.
      - :ref:`Generate secret key <Generate Secret Key>`
    * - ``byceps import-roles``
      - :ref:`Import authorization roles <Import Authorization Roles>`
+   * - ``byceps import-seats``
+     - :ref:`Import seats <Import Seats>`
    * - ``byceps import-users``
      - :ref:`Import users <Import Users>`
    * - ``byceps initialize-database``
@@ -148,8 +150,6 @@ Import Users
 ``byceps import-users`` imports basic user accounts from a file in `JSON
 Lines`_ format into BYCEPS.
 
-.. _JSON Lines: https://jsonlines.org/
-
 This functionality exists to support migration from another system to
 BYCEPS.
 
@@ -206,6 +206,38 @@ A secret key is, among other things, required for login sessions.
    production environments. Generate **separate** secret keys!
 
 
+Import Seats
+============
+
+``byceps import-seats`` imports seats from a file in `JSON Lines`_
+format into BYCEPS.
+
+Currently supported fields:
+
+- ``area_title`` (required)
+- ``coord_x`` (required)
+- ``coord_y`` (required)
+- ``rotation``
+- ``category_title`` (required)
+- ``label``
+- ``type_``
+
+Example file:
+
+.. code-block:: json
+
+    {"area_title": "Floor 3", "coord_x": 10, "coord_y": 10, "rotation": 0, "category_title": "Premium", "label": "Seat A-1"}
+    {"area_title": "Floor 3", "coord_x": 25, "coord_y": 10, "rotation": 0, "category_title": "Premium", "label": "Seat A-2"}
+
+To import it:
+
+.. code-block:: sh
+
+    (venv)$ BYCEPS_CONFIG=../config/development.toml byceps import-seats my-party-2023 example-seats.jsonl
+    [line 1] Imported seat (area="Floor 3", x=10, y=10, category="Premium").
+    [line 2] Imported seat (area="Floor 3", x=25, y=10, category="Premium").
+
+
 Create Demo Data
 ================
 
@@ -224,3 +256,6 @@ the database.
     Creating shop articles ... done.
     Creating shop storefront ... done.
     Creating site ... done.
+
+
+.. _JSON Lines: https://jsonlines.org/

@@ -17,6 +17,7 @@ from .commands.create_superuser import create_superuser
 from .commands.export_roles import export_roles
 from .commands.generate_secret_key import generate_secret_key
 from .commands.import_roles import import_roles
+from .commands.import_seats import import_seats
 from .commands.import_users import import_users
 from .commands.initialize_database import initialize_database
 
@@ -33,6 +34,7 @@ for func in [
     export_roles,
     generate_secret_key,
     import_roles,
+    import_seats,
     import_users,
     initialize_database,
 ]:
