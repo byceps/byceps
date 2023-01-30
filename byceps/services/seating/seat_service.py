@@ -47,11 +47,11 @@ def create_seat(
     return _db_entity_to_seat(db_seat)
 
 
-def create_seats(area_id: SeatingAreaID, seats: Iterator[Seat]) -> None:
-    """Create multiple seats in the same area at once."""
+def create_seats(seats: Iterator[Seat]) -> None:
+    """Create multiple seats at once."""
     db_seats = [
         DbSeat(
-            area_id,
+            seat.area_id,
             seat.category_id,
             coord_x=seat.coord_x,
             coord_y=seat.coord_y,
