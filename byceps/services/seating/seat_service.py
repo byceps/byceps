@@ -202,6 +202,7 @@ def get_seats_with_tickets_for_area(
 def _db_entity_to_seat(db_seat: DbSeat) -> Seat:
     return Seat(
         id=db_seat.id,
+        area_id=db_seat.area_id,
         coord_x=db_seat.coord_x,
         coord_y=db_seat.coord_y,
         rotation=db_seat.rotation,

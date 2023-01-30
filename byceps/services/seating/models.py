@@ -35,6 +35,7 @@ SeatID = NewType('SeatID', UUID)
 @dataclass(frozen=True)
 class Seat:
     id: SeatID
+    area_id: SeatingAreaID
     coord_x: int
     coord_y: int
     rotation: Optional[int]
