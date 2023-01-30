@@ -1,4 +1,5 @@
 {% extends 'layout/admin/seating.html' %}
+{% from 'macros/icons.html' import render_icon %}
 {% set current_page_party = party %}
 {% set current_tab = 'areas' %}
 {% set page_title = [_('Area'), area.title] %}
@@ -33,7 +34,18 @@
 
 {% block body %}
 
-  <h1>{{ area.title }}</h1>
+  <div class="row row--space-between">
+    <div>
+      <h1>{{ area.title }}</h1>
+    </div>
+    {%- if has_current_user_permission('seating.administrate') %}
+    <div>
+      <div class="button-row button-row--right">
+        <a class="button" href="{{ url_for('.area_update_form', area_id=area.id) }}">{{ render_icon('edit') }} <span>{{ _('Update') }}</span></a>
+      </div>
+    </div>
+    {%- endif %}
+  </div>
 
 {{ render_area(area, seats_and_tickets) }}
 

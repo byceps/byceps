@@ -45,6 +45,31 @@ def create_area(
     return _db_entity_to_area(db_area)
 
 
+def update_area(
+    area_id: SeatingAreaID,
+    slug: str,
+    title: str,
+    image_filename: Optional[str],
+    image_width: Optional[int],
+    image_height: Optional[int],
+) -> SeatingArea:
+    """Update an area."""
+    db_area = _find_db_area(area_id)
+
+    if db_area is None:
+        raise ValueError(f'Unknown seating area ID "{area_id}"')
+
+    db_area.slug = slug
+    db_area.title = title
+    db_area.image_filename = image_filename
+    db_area.image_width = image_width
+    db_area.image_height = image_height
+
+    db.session.commit()
+
+    return _db_entity_to_area(db_area)
+
+
 def delete_area(area_id: SeatingAreaID) -> None:
     """Delete an area."""
     db.session.execute(delete(DbSeatingArea).filter_by(id=area_id))
@@ -60,12 +85,16 @@ def count_areas_for_party(party_id: PartyID) -> int:
 
 def find_area(area_id: SeatingAreaID) -> Optional[SeatingArea]:
     """Return the area, or `None` if not found."""
-    db_area = db.session.get(DbSeatingArea, area_id)
+    db_area = _find_db_area(area_id)
 
     if db_area is None:
         return None
 
     return _db_entity_to_area(db_area)
+
+
+def _find_db_area(area_id: SeatingAreaID) -> Optional[DbSeatingArea]:
+    return db.session.get(DbSeatingArea, area_id)
 
 
 def find_area_for_party_by_slug(

@@ -23,7 +23,7 @@ from ....util.framework.flash import flash_success
 from ....util.framework.templating import templated
 from ....util.views import permission_required, redirect_to
 
-from .forms import AreaCreateForm
+from .forms import AreaCreateForm, AreaUpdateForm
 
 
 blueprint = create_blueprint('seating_admin', __name__)
@@ -144,6 +144,56 @@ def area_create(party_id):
     )
 
     return redirect_to('.area_index', party_id=party.id)
+
+
+@blueprint.get('/areas/<area_id>/update')
+@permission_required('seating.administrate')
+@templated
+def area_update_form(area_id, erroneous_form=None):
+    """Show form to update a seating area."""
+    area = _get_area_or_404(area_id)
+
+    party = party_service.get_party(area.party_id)
+
+    form = erroneous_form if erroneous_form else AreaUpdateForm(obj=area)
+
+    return {
+        'party': party,
+        'area': area,
+        'form': form,
+    }
+
+
+@blueprint.post('/areas/<area_id>')
+@permission_required('seating.administrate')
+def area_update(area_id):
+    """Update a seating area."""
+    area = _get_area_or_404(area_id)
+
+    form = AreaUpdateForm(request.form)
+    if not form.validate():
+        return area_update_form(area.id, form)
+
+    slug = form.slug.data.strip()
+    title = form.title.data.strip()
+    image_filename = form.image_filename.data.strip()
+    image_width = form.image_width.data
+    image_height = form.image_height.data
+
+    area = seating_area_service.update_area(
+        area.id,
+        slug,
+        title,
+        image_filename=image_filename,
+        image_width=image_width,
+        image_height=image_height,
+    )
+
+    flash_success(
+        gettext('Seating area "%(title)s" has been updated.', title=area.title)
+    )
+
+    return redirect_to('.area_view', area_id=area.id)
 
 
 @blueprint.get('/parties/<party_id>/seat_groups')

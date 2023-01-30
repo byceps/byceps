@@ -1,0 +1,36 @@
+{% extends 'layout/admin/seating.html' %}
+{% from 'macros/admin.html' import render_backlink %}
+{% from 'macros/forms.html' import form_buttons, form_field %}
+{% set current_page_party = party %}
+{% set current_tab = 'areas' %}
+{% set page_title = _('Edit area') %}
+
+{% block before_body %}
+{{ render_backlink(url_for('.area_index', party_id=party.id), _('Areas')) }}
+{%- endblock %}
+
+{% block body %}
+
+  <h1>{{ page_title }}</h1>
+
+  <form action="{{ url_for('.area_update', area_id=area.id) }}" method="post">
+    <div class="box">
+      {{ form_field(form.slug, autofocus='autofocus') }}
+      {{ form_field(form.title) }}
+      <div class="row row--wrap">
+        <div class="column--grow">
+          {{ form_field(form.image_filename) }}
+        </div>
+        <div>
+          {{ form_field(form.image_width, suffix=_('pixels'), style="width: 5rem;") }}
+        </div>
+        <div>
+          {{ form_field(form.image_height, suffix=_('pixels'), style="width: 5rem;") }}
+        </div>
+      </div>
+    </div>
+
+    {{ form_buttons(_('Save')) }}
+  </form>
+
+{%- endblock %}

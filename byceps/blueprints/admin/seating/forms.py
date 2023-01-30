@@ -13,7 +13,7 @@ from wtforms.validators import InputRequired, Length, Optional
 from ....util.l10n import LocalizedForm
 
 
-class AreaCreateForm(LocalizedForm):
+class _AreaFormBase(LocalizedForm):
     slug = StringField(
         lazy_gettext('Slug'),
         validators=[InputRequired(), Length(min=1, max=20)],
@@ -27,3 +27,11 @@ class AreaCreateForm(LocalizedForm):
     )
     image_width = IntegerField(lazy_gettext('Width'), validators=[Optional()])
     image_height = IntegerField(lazy_gettext('Height'), validators=[Optional()])
+
+
+class AreaCreateForm(_AreaFormBase):
+    pass
+
+
+class AreaUpdateForm(_AreaFormBase):
+    pass
