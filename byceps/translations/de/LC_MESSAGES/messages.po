@@ -531,7 +531,7 @@ msgstr "API-Tokens"
 #: byceps/blueprints/admin/orga_team/templates/admin/orga_team/team_create_form.html:21
 #: byceps/blueprints/admin/page/templates/admin/page/create_form.html:24
 #: byceps/blueprints/admin/party/templates/admin/party/create_form.html:44
-#: byceps/blueprints/admin/seating/templates/admin/seating/area_create_form.html:22
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_create_form.html:33
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/_create_form_base.html:48
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/create_number_sequence_form.html:20
 #: byceps/blueprints/admin/shop/order/templates/admin/shop/order/create_number_sequence_form.html:19
@@ -2650,7 +2650,9 @@ msgid "Maximum image dimensions"
 msgstr "Maximale Bildgröße"
 
 #: byceps/blueprints/admin/news/templates/admin/news/image_create_form.html:21
-#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:47
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_create_form.html:25
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_create_form.html:28
+#: byceps/blueprints/admin/seating/templates/admin/seating/area_index.html:46
 #: byceps/blueprints/site/user/avatar/templates/site/user/avatar/update_form.html:15
 msgid "pixels"
 msgstr "Pixel"
@@ -3389,7 +3391,19 @@ msgstr "Ticketverwaltung"
 msgid "Seat management"
 msgstr "Sitzplatzverwaltung"
 
-#: byceps/blueprints/admin/seating/views.py:112
+#: byceps/blueprints/admin/seating/forms.py:26
+msgid "Background image filename"
+msgstr "Hintergrundbild-Dateiname"
+
+#: byceps/blueprints/admin/seating/forms.py:28
+msgid "Width"
+msgstr "Breite"
+
+#: byceps/blueprints/admin/seating/forms.py:29
+msgid "Height"
+msgstr "Höhe"
+
+#: byceps/blueprints/admin/seating/views.py:143
 #, python-format
 msgid "Seating area \"%(title)s\" has been created."
 msgstr "Der Bereich \"%(title)s\" wurde angelegt."

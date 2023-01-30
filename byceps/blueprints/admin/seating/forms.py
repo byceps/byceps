@@ -7,8 +7,8 @@ byceps.blueprints.admin.seating.forms
 """
 
 from flask_babel import lazy_gettext
-from wtforms import StringField
-from wtforms.validators import InputRequired, Length
+from wtforms import IntegerField, StringField
+from wtforms.validators import InputRequired, Length, Optional
 
 from ....util.l10n import LocalizedForm
 
@@ -22,3 +22,8 @@ class AreaCreateForm(LocalizedForm):
         lazy_gettext('Title'),
         validators=[InputRequired(), Length(min=1, max=40)],
     )
+    image_filename = StringField(
+        lazy_gettext('Background image filename'), validators=[Optional()]
+    )
+    image_width = IntegerField(lazy_gettext('Width'), validators=[Optional()])
+    image_height = IntegerField(lazy_gettext('Height'), validators=[Optional()])

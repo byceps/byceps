@@ -20,25 +20,26 @@ from .dbmodels.seat import DbSeat
 from .models import SeatingArea, SeatingAreaID, SeatUtilization
 
 
-def create_area(party_id: PartyID, slug: str, title: str) -> SeatingArea:
+def create_area(
+    party_id: PartyID,
+    slug: str,
+    title: str,
+    *,
+    image_filename: Optional[str] = None,
+    image_width: Optional[int] = None,
+    image_height: Optional[int] = None,
+) -> SeatingArea:
     """Create an area."""
-    db_area = DbSeatingArea(party_id, slug, title)
+    db_area = DbSeatingArea(
+        party_id,
+        slug,
+        title,
+        image_filename=image_filename,
+        image_width=image_width,
+        image_height=image_height,
+    )
 
     db.session.add(db_area)
-    db.session.commit()
-
-    return _db_entity_to_area(db_area)
-
-
-def set_image(
-    area_id: SeatingAreaID, filename: str, width: int, height: int
-) -> SeatingArea:
-    """Set the image for an area."""
-    db_area = db.session.get(DbSeatingArea, area_id)
-    if db_area is None:
-        raise ValueError('Unknown area ID')
-
-    db_area.set_image(filename, width, height)
     db.session.commit()
 
     return _db_entity_to_area(db_area)

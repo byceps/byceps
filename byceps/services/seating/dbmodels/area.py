@@ -6,6 +6,8 @@ byceps.services.seating.dbmodels.area
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Optional
+
 from ....database import db, generate_uuid
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
@@ -34,15 +36,22 @@ class DbSeatingArea(db.Model):
     image_width = db.Column(db.Integer, nullable=True)
     image_height = db.Column(db.Integer, nullable=True)
 
-    def __init__(self, party_id: PartyID, slug: str, title: str) -> None:
+    def __init__(
+        self,
+        party_id: PartyID,
+        slug: str,
+        title: str,
+        *,
+        image_filename: Optional[str] = None,
+        image_width: Optional[int] = None,
+        image_height: Optional[int] = None,
+    ) -> None:
         self.party_id = party_id
         self.slug = slug
         self.title = title
-
-    def set_image(self, filename: str, width: int, height: int) -> None:
-        self.image_filename = filename
-        self.image_width = width
-        self.image_height = height
+        self.image_filename = image_filename
+        self.image_width = image_width
+        self.image_height = image_height
 
     def __repr__(self) -> str:
         return (

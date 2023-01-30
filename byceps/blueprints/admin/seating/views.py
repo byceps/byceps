@@ -126,8 +126,18 @@ def area_create(party_id):
 
     slug = form.slug.data.strip()
     title = form.title.data.strip()
+    image_filename = form.image_filename.data.strip()
+    image_width = form.image_width.data
+    image_height = form.image_height.data
 
-    area = seating_area_service.create_area(party.id, slug, title)
+    area = seating_area_service.create_area(
+        party.id,
+        slug,
+        title,
+        image_filename=image_filename,
+        image_width=image_width,
+        image_height=image_height,
+    )
 
     flash_success(
         gettext('Seating area "%(title)s" has been created.', title=area.title)

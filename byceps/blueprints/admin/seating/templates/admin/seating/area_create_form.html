@@ -17,6 +17,17 @@
     <div class="box">
       {{ form_field(form.slug, autofocus='autofocus') }}
       {{ form_field(form.title) }}
+      <div class="row row--wrap">
+        <div class="column--grow">
+          {{ form_field(form.image_filename) }}
+        </div>
+        <div>
+          {{ form_field(form.image_width, suffix=_('pixels'), style="width: 5rem;") }}
+        </div>
+        <div>
+          {{ form_field(form.image_height, suffix=_('pixels'), style="width: 5rem;") }}
+        </div>
+      </div>
     </div>
 
     {{ form_buttons(_('Create')) }}
