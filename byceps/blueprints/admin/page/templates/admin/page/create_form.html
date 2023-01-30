@@ -15,7 +15,7 @@
     <div class="box">
       {{ form_field(form.name, maxlength=40, autofocus='autofocus') }}
       {{ form_field(form.language_code) }}
-      {{ form_field(form.url_path) }}
+      {{ form_field(form.url_path, prefix='https://' ~ site.server_name) }}
       {{ form_field(form.title, maxlength=80) }}
       {{ form_field(form.head, class='monospace') }}
       {{ form_field(form.body, class='monospace') }}
