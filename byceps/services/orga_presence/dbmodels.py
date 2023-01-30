@@ -6,7 +6,7 @@ byceps.services.orga_presence.dbmodels
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ...database import db, generate_uuid
+from ...database import db, generate_uuid7
 
 from ..user.dbmodels.user import DbUser
 
@@ -20,7 +20,7 @@ class DbTimeSlot(db.Model):
         'polymorphic_identity': 'time_slot',
     }
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     party_id = db.Column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
     )

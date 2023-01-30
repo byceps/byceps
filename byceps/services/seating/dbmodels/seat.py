@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....util.instances import ReprBuilder
 
 from ...ticketing.dbmodels.category import DbTicketCategory
@@ -33,7 +33,7 @@ class DbSeat(db.Model):
 
     __tablename__ = 'seats'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     area_id = db.Column(
         db.Uuid, db.ForeignKey('seating_areas.id'), index=True, nullable=False
     )

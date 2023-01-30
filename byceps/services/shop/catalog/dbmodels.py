@@ -8,7 +8,7 @@ byceps.services.shop.catalog.dbmodels
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....util.instances import ReprBuilder
 
 from ..article.models import ArticleID
@@ -22,7 +22,7 @@ class DbCatalog(db.Model):
 
     __tablename__ = 'shop_catalogs'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     shop_id = db.Column(
         db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
     )
@@ -44,7 +44,7 @@ class DbCollection(db.Model):
         db.UniqueConstraint('catalog_id', 'title'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     catalog_id = db.Column(
         db.Uuid, db.ForeignKey('shop_catalogs.id'), index=True, nullable=False
     )
@@ -81,7 +81,7 @@ class DbCatalogArticle(db.Model):
         db.UniqueConstraint('collection_id', 'article_id'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     collection_id = db.Column(
         db.Uuid,
         db.ForeignKey('shop_catalog_collections.id'),

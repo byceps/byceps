@@ -14,7 +14,7 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ...database import db, generate_uuid
+from ...database import db, generate_uuid7
 from ...typing import UserID
 from ...util.instances import ReprBuilder
 
@@ -37,7 +37,7 @@ class DbSnippet(db.Model):
         db.UniqueConstraint('scope_type', 'scope_name', 'name'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     scope_type = db.Column(db.UnicodeText, nullable=False)
     scope_name = db.Column(db.UnicodeText, nullable=False)
     name = db.Column(db.UnicodeText, index=True, nullable=False)
@@ -78,7 +78,7 @@ class DbSnippetVersion(db.Model):
 
     __tablename__ = 'snippet_versions'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     snippet_id = db.Column(
         db.Uuid, db.ForeignKey('snippets.id'), index=True, nullable=False
     )

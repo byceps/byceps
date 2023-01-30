@@ -11,7 +11,7 @@ from typing import BinaryIO, Optional
 from flask import current_app
 from sqlalchemy import select
 
-from ...database import db, generate_uuid
+from ...database import db, generate_uuid7
 from ...typing import UserID
 from ...util import upload
 from ...util.image.models import Dimensions, ImageType
@@ -62,7 +62,7 @@ def create_image(
         image_dimensions = image_service.determine_dimensions(stream)
         _check_image_dimensions(image_dimensions)
 
-    image_id = NewsImageID(generate_uuid())
+    image_id = NewsImageID(generate_uuid7())
     number = _get_next_available_number(item.id)
     filename = f'{image_id}.{image_type.name}'
 

@@ -9,7 +9,7 @@ byceps.services.board.dbmodels.board_access_grant
 from datetime import datetime
 from typing import NewType
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
@@ -24,7 +24,7 @@ class DbBoardAccessGrant(db.Model):
 
     __tablename__ = 'board_access_grants'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     board_id = db.Column(
         db.UnicodeText, db.ForeignKey('boards.id'), index=True, nullable=False
     )

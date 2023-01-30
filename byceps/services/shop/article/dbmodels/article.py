@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from .....database import db, generate_uuid
+from .....database import db, generate_uuid7
 from .....util.instances import ReprBuilder
 
 from ...shop.models import ShopID
@@ -34,7 +34,7 @@ class DbArticle(db.Model):
         db.CheckConstraint('available_from < available_until'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     shop_id = db.Column(
         db.UnicodeText, db.ForeignKey('shops.id'), index=True, nullable=False
     )

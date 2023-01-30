@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from ...database import db, generate_uuid
+from ...database import db, generate_uuid7
 from ...typing import PartyID, UserID
 from ...util.instances import ReprBuilder
 
@@ -94,7 +94,7 @@ class DbServer(db.Model):
 
     __tablename__ = 'guest_servers'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     party_id = db.Column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
     )
@@ -131,7 +131,7 @@ class DbAddress(db.Model):
 
     __tablename__ = 'guest_server_addresses'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     server_id = db.Column(
         db.Uuid, db.ForeignKey('guest_servers.id'), index=True, nullable=False
     )

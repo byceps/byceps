@@ -8,7 +8,7 @@ byceps.services.seating.dbmodels.seat_group
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
@@ -29,7 +29,7 @@ class DbSeatGroup(db.Model):
         db.UniqueConstraint('party_id', 'title'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     party_id = db.Column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
     )
@@ -71,7 +71,7 @@ class DbSeatGroupAssignment(db.Model):
 
     __tablename__ = 'seat_group_assignments'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     group_id = db.Column(
         db.Uuid, db.ForeignKey('seat_groups.id'), index=True, nullable=False
     )
@@ -108,7 +108,7 @@ class DbSeatGroupOccupancy(db.Model):
 
     __tablename__ = 'seat_group_occupancies'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     seat_group_id = db.Column(
         db.Uuid,
         db.ForeignKey('seat_groups.id'),

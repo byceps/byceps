@@ -9,7 +9,7 @@ byceps.services.ticketing.dbmodels.ticket
 from datetime import datetime
 from typing import Optional
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....typing import PartyID, UserID
 from ....util.instances import ReprBuilder
 
@@ -38,7 +38,7 @@ class DbTicket(db.Model):
         db.UniqueConstraint('party_id', 'code'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     party_id = db.Column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False

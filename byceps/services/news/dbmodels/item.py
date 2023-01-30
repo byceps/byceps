@@ -16,7 +16,7 @@ else:
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
@@ -39,7 +39,7 @@ class DbNewsItem(db.Model):
 
     __tablename__ = 'news_items'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     channel_id = db.Column(
         db.UnicodeText,
@@ -83,7 +83,7 @@ class DbNewsItemVersion(db.Model):
 
     __tablename__ = 'news_item_versions'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     item_id = db.Column(
         db.Uuid, db.ForeignKey('news_items.id'), index=True, nullable=False
     )

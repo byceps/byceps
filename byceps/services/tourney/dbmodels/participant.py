@@ -8,7 +8,7 @@ byceps.services.tourney.dbmodels.participant
 
 from datetime import datetime
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....util.instances import ReprBuilder
 
 from ...user.dbmodels.user import DbUser
@@ -23,7 +23,7 @@ class DbParticipant(db.Model):
 
     __tablename__ = 'tourney_participants'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     tourney_id = db.Column(
         db.Uuid, db.ForeignKey('tourneys.id'), index=True, nullable=False
     )

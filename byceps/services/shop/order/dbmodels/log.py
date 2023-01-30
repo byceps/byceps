@@ -8,7 +8,7 @@ byceps.services.shop.order.dbmodels.log
 
 from datetime import datetime
 
-from .....database import db, generate_uuid
+from .....database import db, generate_uuid7
 from .....util.instances import ReprBuilder
 
 from ..models.log import OrderLogEntryData
@@ -20,7 +20,7 @@ class DbOrderLogEntry(db.Model):
 
     __tablename__ = 'shop_order_log_entries'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     occurred_at = db.Column(db.DateTime, nullable=False)
     event_type = db.Column(db.UnicodeText, index=True, nullable=False)
     order_id = db.Column(

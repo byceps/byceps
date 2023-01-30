@@ -6,7 +6,7 @@ byceps.services.tourney.dbmodels.match
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 
 
 class DbMatch(db.Model):
@@ -14,4 +14,4 @@ class DbMatch(db.Model):
 
     __tablename__ = 'tourney_matches'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)

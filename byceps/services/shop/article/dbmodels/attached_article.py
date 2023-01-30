@@ -6,7 +6,7 @@ byceps.services.shop.article.dbmodels.attached_article
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
-from .....database import db, generate_uuid
+from .....database import db, generate_uuid7
 
 from ..models import ArticleID
 
@@ -21,7 +21,7 @@ class DbAttachedArticle(db.Model):
         db.UniqueConstraint('article_id', 'attached_to_article_id'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     article_id = db.Column(
         db.Uuid, db.ForeignKey('shop_articles.id'), nullable=False, index=True
     )

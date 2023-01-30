@@ -15,7 +15,7 @@ else:
 
 from sqlalchemy.ext.orderinglist import ordering_list
 
-from ...database import db, generate_uuid
+from ...database import db, generate_uuid7
 
 from ..language.dbmodels import DbLanguage
 from ..site.models import SiteID
@@ -29,7 +29,7 @@ class DbNavMenu(db.Model):
     __tablename__ = 'site_nav_menus'
     __table_args__ = (db.UniqueConstraint('site_id', 'name', 'language_code'),)
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     site_id = db.Column(
         db.UnicodeText, db.ForeignKey('sites.id'), index=True, nullable=False
     )
@@ -60,7 +60,7 @@ class DbNavItem(db.Model):
         db.UniqueConstraint('menu_id', 'parent_item_id', 'position'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     menu_id = db.Column(
         db.Uuid, db.ForeignKey('site_nav_menus.id'), index=True, nullable=False
     )

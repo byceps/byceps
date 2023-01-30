@@ -17,6 +17,7 @@ from sqlalchemy.dialects.postgresql import insert, JSONB, UUID
 from sqlalchemy.sql import Select
 from sqlalchemy.sql.dml import Insert
 from sqlalchemy.sql.schema import Table
+from uuid6 import uuid7
 
 
 F = TypeVar('F')
@@ -40,8 +41,13 @@ db.Uuid = Uuid
 
 
 def generate_uuid() -> uuid.UUID:
-    """Generate a random UUID (Universally Unique IDentifier)."""
+    """Generate a random UUID (Universally Unique IDentifier), version 4."""
     return uuid.uuid4()
+
+
+def generate_uuid7() -> uuid.UUID:
+    """Generate a random UUID (Universally Unique IDentifier), version 7."""
+    return uuid7()
 
 
 def paginate(

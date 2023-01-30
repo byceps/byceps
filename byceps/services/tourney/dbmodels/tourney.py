@@ -9,7 +9,7 @@ byceps.services.tourney.dbmodels.tourney
 from datetime import datetime
 from typing import Optional
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....typing import PartyID
 from ....util.instances import ReprBuilder
 
@@ -26,7 +26,7 @@ class DbTourney(db.Model):
         db.UniqueConstraint('category_id', 'title'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     party_id = db.Column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
     )

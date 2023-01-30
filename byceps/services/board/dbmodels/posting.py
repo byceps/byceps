@@ -8,7 +8,7 @@ byceps.services.board.dbmodels.posting
 
 from datetime import datetime
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
@@ -22,7 +22,7 @@ class DbPosting(db.Model):
 
     __tablename__ = 'board_postings'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     topic_id = db.Column(
         db.Uuid, db.ForeignKey('board_topics.id'), index=True, nullable=False
     )

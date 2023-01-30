@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....util.image.models import ImageType
 from ....util.instances import ReprBuilder
 
@@ -32,7 +32,7 @@ class DbUserAvatar(db.Model):
 
     __tablename__ = 'user_avatars'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
     _image_type = db.Column('image_type', db.UnicodeText, nullable=False)
 

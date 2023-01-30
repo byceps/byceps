@@ -8,7 +8,7 @@ byceps.services.tourney.dbmodels.match_comment
 
 from datetime import datetime
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....typing import UserID
 
 from ...user.dbmodels.user import DbUser
@@ -23,7 +23,7 @@ class DbMatchComment(db.Model):
 
     __tablename__ = 'tourney_match_comments'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     match_id = db.Column(
         db.Uuid, db.ForeignKey('tourney_matches.id'), index=True, nullable=False
     )

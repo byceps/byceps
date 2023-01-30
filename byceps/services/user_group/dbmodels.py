@@ -11,7 +11,7 @@ from typing import Optional
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ...database import db, generate_uuid
+from ...database import db, generate_uuid7
 from ...typing import PartyID, UserID
 from ...util.instances import ReprBuilder
 
@@ -26,7 +26,7 @@ class DbUserGroup(db.Model):
         db.UniqueConstraint('party_id', 'title'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     party_id = db.Column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
     )
@@ -73,7 +73,7 @@ class DbMembership(db.Model):
 
     __tablename__ = 'user_group_memberships'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     group_id = db.Column(db.Uuid, db.ForeignKey('user_groups.id'))
     group = db.relationship(
         DbUserGroup, collection_class=set, backref='memberships'

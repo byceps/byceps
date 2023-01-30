@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 
-from .....database import db, generate_uuid
+from .....database import db, generate_uuid7
 
 from ..models.order import OrderID
 from ..models.payment import AdditionalPaymentData
@@ -27,7 +27,7 @@ class DbPayment(db.Model):
 
     __tablename__ = 'shop_payments'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     order_id = db.Column(
         db.Uuid, db.ForeignKey('shop_orders.id'), index=True, nullable=False
     )

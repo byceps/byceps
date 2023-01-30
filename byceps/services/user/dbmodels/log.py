@@ -8,7 +8,7 @@ byceps.services.user.dbmodels.log
 
 from datetime import datetime
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....typing import UserID
 from ....util.instances import ReprBuilder
 
@@ -20,7 +20,7 @@ class DbUserLogEntry(db.Model):
 
     __tablename__ = 'user_log_entries'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     occurred_at = db.Column(db.DateTime, nullable=False)
     event_type = db.Column(db.UnicodeText, index=True, nullable=False)
     user_id = db.Column(

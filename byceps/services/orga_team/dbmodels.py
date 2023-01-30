@@ -8,7 +8,7 @@ byceps.services.orga_team.dbmodels
 
 from typing import Optional
 
-from ...database import db, generate_uuid
+from ...database import db, generate_uuid7
 from ...typing import PartyID, UserID
 from ...util.instances import ReprBuilder
 
@@ -26,7 +26,7 @@ class DbOrgaTeam(db.Model):
         db.UniqueConstraint('party_id', 'title'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     party_id = db.Column(
         db.UnicodeText, db.ForeignKey('parties.id'), index=True, nullable=False
     )
@@ -55,7 +55,7 @@ class DbMembership(db.Model):
         db.UniqueConstraint('orga_team_id', 'user_id'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     orga_team_id = db.Column(
         db.Uuid, db.ForeignKey('orga_teams.id'), index=True, nullable=False
     )

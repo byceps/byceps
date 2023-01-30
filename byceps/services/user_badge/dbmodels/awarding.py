@@ -8,7 +8,7 @@ byceps.services.user_badge.dbmodels.awarding
 
 from datetime import datetime
 
-from ....database import db, generate_uuid
+from ....database import db, generate_uuid7
 from ....typing import UserID
 
 from ..models import BadgeID
@@ -19,7 +19,7 @@ class DbBadgeAwarding(db.Model):
 
     __tablename__ = 'user_badge_awardings'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     badge_id = db.Column(
         db.Uuid, db.ForeignKey('user_badges.id'), nullable=False
     )

@@ -14,7 +14,7 @@ from typing import Optional
 
 from sqlalchemy.ext.associationproxy import association_proxy
 
-from ...database import db, generate_uuid
+from ...database import db, generate_uuid7
 from ...typing import UserID
 
 from ..language.dbmodels import DbLanguage
@@ -35,7 +35,7 @@ class DbPage(db.Model):
         db.UniqueConstraint('site_id', 'language_code', 'url_path'),
     )
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     site_id = db.Column(
         db.UnicodeText, db.ForeignKey('sites.id'), index=True, nullable=False
     )
@@ -73,7 +73,7 @@ class DbPageVersion(db.Model):
 
     __tablename__ = 'page_versions'
 
-    id = db.Column(db.Uuid, default=generate_uuid, primary_key=True)
+    id = db.Column(db.Uuid, default=generate_uuid7, primary_key=True)
     page_id = db.Column(
         db.Uuid, db.ForeignKey('pages.id'), index=True, nullable=False
     )
