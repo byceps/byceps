@@ -20,6 +20,7 @@ from ..image import image_service
 from ..user import user_service
 
 from .dbmodels.image import DbNewsImage
+from .dbmodels.item import DbNewsItem
 from .models import NewsChannelID, NewsImage, NewsImageID, NewsItemID
 from . import news_item_service
 
@@ -161,7 +162,7 @@ def _find_db_image(image_id: NewsImageID) -> Optional[DbNewsImage]:
         select(DbNewsImage)
         .filter(DbNewsImage.id == image_id)
         .options(
-            db.joinedload(DbNewsImage.item).load_only(DbNewsImage.channel_id)
+            db.joinedload(DbNewsImage.item).load_only(DbNewsItem.channel_id)
         )
     ).one_or_none()
 
