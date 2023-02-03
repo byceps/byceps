@@ -1,5 +1,4 @@
 **/__pycache__
-Dockerfile
 .coverage
 .dockerignore
 .git
@@ -12,6 +11,8 @@ Dockerfile
 .scrutinizer.yml
 *.egg-info
 assets
+compose.yaml
 docker
+Dockerfile
 docs
 venv
