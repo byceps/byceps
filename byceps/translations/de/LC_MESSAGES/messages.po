@@ -1680,6 +1680,10 @@ msgstr "Navigation"
 msgid "Storefront"
 msgstr "Storefront"
 
+#: byceps/blueprints/admin/core/templates/macros/text_diff.html:63
+msgid "No differences"
+msgstr "Keine Unterschiede"
+
 #: byceps/blueprints/admin/core/templates/macros/admin/log.html:20
 #: byceps/blueprints/admin/shop/order/forms.py:24
 #: byceps/blueprints/admin/user/forms.py:96
