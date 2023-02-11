@@ -42,7 +42,7 @@ def execute(webhook: OutgoingWebhook) -> None:
     users = orga_birthday_service.get_orgas_with_birthday_today()
 
     for user in users:
-        text = f'Happy Birthday, {user.screen_name}!'
+        text = f'Happy Birthday, {user.screen_name}! 🥳'
         call_webhook(webhook, text)
 
     click.secho('Done.', fg='green')
