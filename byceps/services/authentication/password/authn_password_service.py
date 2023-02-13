@@ -24,8 +24,8 @@ from ..session import authn_session_service
 
 from .dbmodels import DbCredential
 
-
-PASSWORD_HASH_ITERATIONS = 390000
+# https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html#pbkdf2
+PASSWORD_HASH_ITERATIONS = 600000
 PASSWORD_HASH_METHOD = 'pbkdf2:sha256:%d' % PASSWORD_HASH_ITERATIONS
 
 
