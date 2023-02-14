@@ -68,6 +68,12 @@ class _ArticleBaseForm(LocalizedForm):
         lazy_gettext('Maximum quantity per order'),
         validators=[InputRequired()],
     )
+    not_directly_orderable = BooleanField(
+        lazy_gettext('can only be ordered indirectly')
+    )
+    separate_order_required = BooleanField(
+        lazy_gettext('must be ordered separately')
+    )
 
     @staticmethod
     def validate_available_from_date(form, field):
@@ -182,12 +188,7 @@ class TicketBundleArticleCreateForm(ArticleCreateForm):
 
 
 class ArticleUpdateForm(_ArticleBaseForm):
-    not_directly_orderable = BooleanField(
-        lazy_gettext('can only be ordered indirectly')
-    )
-    separate_order_required = BooleanField(
-        lazy_gettext('must be ordered separately')
-    )
+    pass
 
 
 class ArticleAttachmentCreateForm(LocalizedForm):

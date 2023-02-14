@@ -72,6 +72,8 @@ class DbArticle(db.Model):
         tax_rate: Decimal,
         total_quantity: int,
         max_quantity_per_order: int,
+        not_directly_orderable: bool,
+        separate_order_required: bool,
         processing_required: bool,
         *,
         type_params: Optional[ArticleTypeParams] = None,

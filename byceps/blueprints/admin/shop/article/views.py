@@ -418,6 +418,8 @@ def create(shop_id, type):
 
     total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
+    not_directly_orderable = form.not_directly_orderable.data
+    separate_order_required = form.separate_order_required.data
 
     if type_ == ArticleType.ticket:
         article = article_service.create_ticket_article(
@@ -428,6 +430,8 @@ def create(shop_id, type):
             tax_rate,
             total_quantity,
             max_quantity_per_order,
+            not_directly_orderable,
+            separate_order_required,
             form.ticket_category_id.data,
             available_from=available_from_utc,
             available_until=available_until_utc,
@@ -441,6 +445,8 @@ def create(shop_id, type):
             tax_rate,
             total_quantity,
             max_quantity_per_order,
+            not_directly_orderable,
+            separate_order_required,
             form.ticket_category_id.data,
             form.ticket_quantity.data,
             available_from=available_from_utc,
@@ -458,6 +464,8 @@ def create(shop_id, type):
             tax_rate,
             total_quantity,
             max_quantity_per_order,
+            not_directly_orderable,
+            separate_order_required,
             processing_required,
             available_from=available_from_utc,
             available_until=available_until_utc,
