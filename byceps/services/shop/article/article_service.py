@@ -52,6 +52,8 @@ def create_article(
     processing_required: bool,
     *,
     type_params: Optional[ArticleTypeParams] = None,
+    available_from: Optional[datetime] = None,
+    available_until: Optional[datetime] = None,
 ) -> Article:
     """Create an article."""
     db_article = DbArticle(
@@ -65,6 +67,8 @@ def create_article(
         max_quantity_per_order,
         processing_required,
         type_params=type_params,
+        available_from=available_from,
+        available_until=available_until,
     )
 
     db.session.add(db_article)
@@ -82,6 +86,9 @@ def create_ticket_article(
     total_quantity: int,
     max_quantity_per_order: int,
     ticket_category_id: TicketCategoryID,
+    *,
+    available_from: Optional[datetime] = None,
+    available_until: Optional[datetime] = None,
 ) -> Article:
     """Create an article that represents a ticket."""
     type_params: ArticleTypeParams = {
@@ -100,6 +107,8 @@ def create_ticket_article(
         max_quantity_per_order,
         processing_required,
         type_params=type_params,
+        available_from=available_from,
+        available_until=available_until,
     )
 
 
@@ -113,6 +122,9 @@ def create_ticket_bundle_article(
     max_quantity_per_order: int,
     ticket_category_id: TicketCategoryID,
     ticket_quantity: int,
+    *,
+    available_from: Optional[datetime] = None,
+    available_until: Optional[datetime] = None,
 ) -> Article:
     """Create an article that represents a ticket bundle."""
     type_params: ArticleTypeParams = {
@@ -132,6 +144,8 @@ def create_ticket_bundle_article(
         max_quantity_per_order,
         processing_required,
         type_params=type_params,
+        available_from=available_from,
+        available_until=available_until,
     )
 
 

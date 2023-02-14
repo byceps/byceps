@@ -91,6 +91,8 @@ class DbArticle(db.Model):
         self.total_quantity = total_quantity
         self.quantity = total_quantity  # Initialize with total quantity.
         self.max_quantity_per_order = max_quantity_per_order
+        self.not_directly_orderable = not_directly_orderable
+        self.separate_order_required = separate_order_required
         self.processing_required = processing_required
 
     @hybrid_property

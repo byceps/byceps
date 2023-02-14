@@ -399,6 +399,23 @@ def create(shop_id, type):
     description = form.description.data.strip()
     price = Money(form.price_amount.data, shop.currency)
     tax_rate = form.tax_rate.data / TAX_RATE_DISPLAY_FACTOR
+
+    if form.available_from_date.data and form.available_from_time.data:
+        available_from_local = datetime.combine(
+            form.available_from_date.data, form.available_from_time.data
+        )
+        available_from_utc = to_utc(available_from_local)
+    else:
+        available_from_utc = None
+
+    if form.available_until_date.data and form.available_until_time.data:
+        available_until_local = datetime.combine(
+            form.available_until_date.data, form.available_until_time.data
+        )
+        available_until_utc = to_utc(available_until_local)
+    else:
+        available_until_utc = None
+
     total_quantity = form.total_quantity.data
     max_quantity_per_order = form.max_quantity_per_order.data
 
@@ -412,6 +429,8 @@ def create(shop_id, type):
             total_quantity,
             max_quantity_per_order,
             form.ticket_category_id.data,
+            available_from=available_from_utc,
+            available_until=available_until_utc,
         )
     elif type_ == ArticleType.ticket_bundle:
         article = article_service.create_ticket_bundle_article(
@@ -424,6 +443,8 @@ def create(shop_id, type):
             max_quantity_per_order,
             form.ticket_category_id.data,
             form.ticket_quantity.data,
+            available_from=available_from_utc,
+            available_until=available_until_utc,
         )
     else:
         processing_required = type_ == ArticleType.physical
@@ -438,6 +459,8 @@ def create(shop_id, type):
             total_quantity,
             max_quantity_per_order,
             processing_required,
+            available_from=available_from_utc,
+            available_until=available_until_utc,
         )
 
     flash_success(

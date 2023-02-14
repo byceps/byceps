@@ -40,6 +40,16 @@
         </div>
       </div>
 
+      <div class="row">
+        <div>{{ form_field(form.available_from_date) }}</div>
+        <div>{{ form_field(form.available_from_time) }}</div>
+      </div>
+
+      <div class="row">
+        <div>{{ form_field(form.available_until_date) }}</div>
+        <div>{{ form_field(form.available_until_time) }}</div>
+      </div>
+
       {{ form_field(form.total_quantity, type='number', min=0, max=99999, style='width: 5.5rem;') }}
       {{ form_field(form.max_quantity_per_order, type='number', min=1, max=99, style='width: 5.5rem;') }}
 

@@ -49,50 +49,6 @@ class _ArticleBaseForm(LocalizedForm):
             NumberRange(min=Decimal('0.0'), max=Decimal('99.9')),
         ],
     )
-    total_quantity = IntegerField(
-        lazy_gettext('Total quantity'), validators=[InputRequired()]
-    )
-    max_quantity_per_order = IntegerField(
-        lazy_gettext('Maximum quantity per order'),
-        validators=[InputRequired()],
-    )
-
-
-class ArticleCreateForm(_ArticleBaseForm):
-    article_number_sequence_id = SelectField(
-        lazy_gettext('Article number sequence'), validators=[InputRequired()]
-    )
-
-    def set_article_number_sequence_choices(self, sequences):
-        sequences.sort(key=lambda seq: seq.prefix, reverse=True)
-
-        choices = [(str(seq.id), seq.prefix) for seq in sequences]
-        choices.insert(0, ('', '<' + pgettext('sequence', 'none') + '>'))
-        self.article_number_sequence_id.choices = choices
-
-
-class TicketArticleCreateForm(ArticleCreateForm):
-    ticket_category_id = SelectField(
-        lazy_gettext('Ticket category'), [InputRequired()]
-    )
-
-    def set_ticket_category_choices(self, brand_id: BrandID) -> None:
-        self.ticket_category_id.choices = _get_ticket_category_choices(brand_id)
-
-
-class TicketBundleArticleCreateForm(ArticleCreateForm):
-    ticket_category_id = SelectField(
-        lazy_gettext('Ticket category'), [InputRequired()]
-    )
-    ticket_quantity = IntegerField(
-        lazy_gettext('Ticket quantity'), [InputRequired()]
-    )
-
-    def set_ticket_category_choices(self, brand_id: BrandID) -> None:
-        self.ticket_category_id.choices = _get_ticket_category_choices(brand_id)
-
-
-class ArticleUpdateForm(_ArticleBaseForm):
     available_from_date = DateField(
         lazy_gettext('Available from date'), validators=[Optional()]
     )
@@ -105,11 +61,12 @@ class ArticleUpdateForm(_ArticleBaseForm):
     available_until_time = TimeField(
         lazy_gettext('Available until time'), validators=[Optional()]
     )
-    not_directly_orderable = BooleanField(
-        lazy_gettext('can only be ordered indirectly')
+    total_quantity = IntegerField(
+        lazy_gettext('Total quantity'), validators=[InputRequired()]
     )
-    separate_order_required = BooleanField(
-        lazy_gettext('must be ordered separately')
+    max_quantity_per_order = IntegerField(
+        lazy_gettext('Maximum quantity per order'),
+        validators=[InputRequired()],
     )
 
     @staticmethod
@@ -188,6 +145,49 @@ def _validate_availability_range(
                 'The end of the availability period must be after its begin.'
             )
         )
+
+
+class ArticleCreateForm(_ArticleBaseForm):
+    article_number_sequence_id = SelectField(
+        lazy_gettext('Article number sequence'), validators=[InputRequired()]
+    )
+
+    def set_article_number_sequence_choices(self, sequences):
+        sequences.sort(key=lambda seq: seq.prefix, reverse=True)
+
+        choices = [(str(seq.id), seq.prefix) for seq in sequences]
+        choices.insert(0, ('', '<' + pgettext('sequence', 'none') + '>'))
+        self.article_number_sequence_id.choices = choices
+
+
+class TicketArticleCreateForm(ArticleCreateForm):
+    ticket_category_id = SelectField(
+        lazy_gettext('Ticket category'), [InputRequired()]
+    )
+
+    def set_ticket_category_choices(self, brand_id: BrandID) -> None:
+        self.ticket_category_id.choices = _get_ticket_category_choices(brand_id)
+
+
+class TicketBundleArticleCreateForm(ArticleCreateForm):
+    ticket_category_id = SelectField(
+        lazy_gettext('Ticket category'), [InputRequired()]
+    )
+    ticket_quantity = IntegerField(
+        lazy_gettext('Ticket quantity'), [InputRequired()]
+    )
+
+    def set_ticket_category_choices(self, brand_id: BrandID) -> None:
+        self.ticket_category_id.choices = _get_ticket_category_choices(brand_id)
+
+
+class ArticleUpdateForm(_ArticleBaseForm):
+    not_directly_orderable = BooleanField(
+        lazy_gettext('can only be ordered indirectly')
+    )
+    separate_order_required = BooleanField(
+        lazy_gettext('must be ordered separately')
+    )
 
 
 class ArticleAttachmentCreateForm(LocalizedForm):
