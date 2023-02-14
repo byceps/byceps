@@ -49,13 +49,13 @@ def create_article(
     tax_rate: Decimal,
     total_quantity: int,
     max_quantity_per_order: int,
-    not_directly_orderable: bool,
-    separate_order_required: bool,
     processing_required: bool,
     *,
     type_params: Optional[ArticleTypeParams] = None,
     available_from: Optional[datetime] = None,
     available_until: Optional[datetime] = None,
+    not_directly_orderable: bool = False,
+    separate_order_required: bool = False,
 ) -> Article:
     """Create an article."""
     db_article = DbArticle(
@@ -67,12 +67,12 @@ def create_article(
         tax_rate,
         total_quantity,
         max_quantity_per_order,
-        not_directly_orderable,
-        separate_order_required,
         processing_required,
         type_params=type_params,
         available_from=available_from,
         available_until=available_until,
+        not_directly_orderable=not_directly_orderable,
+        separate_order_required=separate_order_required,
     )
 
     db.session.add(db_article)
@@ -89,12 +89,12 @@ def create_ticket_article(
     tax_rate: Decimal,
     total_quantity: int,
     max_quantity_per_order: int,
-    not_directly_orderable: bool,
-    separate_order_required: bool,
     ticket_category_id: TicketCategoryID,
     *,
     available_from: Optional[datetime] = None,
     available_until: Optional[datetime] = None,
+    not_directly_orderable: bool = False,
+    separate_order_required: bool = False,
 ) -> Article:
     """Create an article that represents a ticket."""
     type_params: ArticleTypeParams = {
@@ -111,12 +111,12 @@ def create_ticket_article(
         tax_rate,
         total_quantity,
         max_quantity_per_order,
-        not_directly_orderable,
-        separate_order_required,
         processing_required,
         type_params=type_params,
         available_from=available_from,
         available_until=available_until,
+        not_directly_orderable=not_directly_orderable,
+        separate_order_required=separate_order_required,
     )
 
 
@@ -128,13 +128,13 @@ def create_ticket_bundle_article(
     tax_rate: Decimal,
     total_quantity: int,
     max_quantity_per_order: int,
-    not_directly_orderable: bool,
-    separate_order_required: bool,
     ticket_category_id: TicketCategoryID,
     ticket_quantity: int,
     *,
     available_from: Optional[datetime] = None,
     available_until: Optional[datetime] = None,
+    not_directly_orderable: bool = False,
+    separate_order_required: bool = False,
 ) -> Article:
     """Create an article that represents a ticket bundle."""
     type_params: ArticleTypeParams = {
@@ -152,12 +152,12 @@ def create_ticket_bundle_article(
         tax_rate,
         total_quantity,
         max_quantity_per_order,
-        not_directly_orderable,
-        separate_order_required,
         processing_required,
         type_params=type_params,
         available_from=available_from,
         available_until=available_until,
+        not_directly_orderable=not_directly_orderable,
+        separate_order_required=separate_order_required,
     )
 
 

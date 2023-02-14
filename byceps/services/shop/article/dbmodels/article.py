@@ -72,13 +72,13 @@ class DbArticle(db.Model):
         tax_rate: Decimal,
         total_quantity: int,
         max_quantity_per_order: int,
-        not_directly_orderable: bool,
-        separate_order_required: bool,
         processing_required: bool,
         *,
         type_params: Optional[ArticleTypeParams] = None,
         available_from: Optional[datetime] = None,
         available_until: Optional[datetime] = None,
+        not_directly_orderable: bool = False,
+        separate_order_required: bool = False,
     ) -> None:
         self.shop_id = shop_id
         self.item_number = item_number
