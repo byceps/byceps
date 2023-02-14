@@ -64,7 +64,7 @@ class ArticleCreateForm(_ArticleBaseForm):
     )
 
     def set_article_number_sequence_choices(self, sequences):
-        sequences.sort(key=lambda seq: seq.prefix)
+        sequences.sort(key=lambda seq: seq.prefix, reverse=True)
 
         choices = [(str(seq.id), seq.prefix) for seq in sequences]
         choices.insert(0, ('', '<' + pgettext('sequence', 'none') + '>'))
