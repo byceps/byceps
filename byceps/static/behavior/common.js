@@ -170,7 +170,7 @@ onDomReady(() => {
  */
 function enableCopyToClipboard(triggerElementId) {
   const triggerElement = document.getElementById(triggerElementId);
-  if (triggerElement == null) {
+  if (triggerElement === null) {
     return;
   }
 
