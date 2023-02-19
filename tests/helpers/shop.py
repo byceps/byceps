@@ -84,6 +84,8 @@ def create_article(
         max_quantity_per_order,
         processing_required,
         type_params=type_params,
+        available_from=available_from,
+        available_until=available_until,
     )
 
 
@@ -121,6 +123,8 @@ def create_ticket_article(
         total_quantity,
         max_quantity_per_order,
         ticket_category_id,
+        available_from=available_from,
+        available_until=available_until,
     )
 
 
@@ -160,6 +164,8 @@ def create_ticket_bundle_article(
         max_quantity_per_order,
         ticket_category_id,
         ticket_quantity,
+        available_from=available_from,
+        available_until=available_until,
     )
 
 
