@@ -430,11 +430,11 @@ def create(shop_id, type):
             tax_rate,
             total_quantity,
             max_quantity_per_order,
-            not_directly_orderable,
-            separate_order_required,
             form.ticket_category_id.data,
             available_from=available_from_utc,
             available_until=available_until_utc,
+            not_directly_orderable=not_directly_orderable,
+            separate_order_required=separate_order_required,
         )
     elif type_ == ArticleType.ticket_bundle:
         article = article_service.create_ticket_bundle_article(
@@ -445,12 +445,12 @@ def create(shop_id, type):
             tax_rate,
             total_quantity,
             max_quantity_per_order,
-            not_directly_orderable,
-            separate_order_required,
             form.ticket_category_id.data,
             form.ticket_quantity.data,
             available_from=available_from_utc,
             available_until=available_until_utc,
+            not_directly_orderable=not_directly_orderable,
+            separate_order_required=separate_order_required,
         )
     else:
         processing_required = type_ == ArticleType.physical
@@ -464,11 +464,11 @@ def create(shop_id, type):
             tax_rate,
             total_quantity,
             max_quantity_per_order,
-            not_directly_orderable,
-            separate_order_required,
             processing_required,
             available_from=available_from_utc,
             available_until=available_until_utc,
+            not_directly_orderable=not_directly_orderable,
+            separate_order_required=separate_order_required,
         )
 
     flash_success(
