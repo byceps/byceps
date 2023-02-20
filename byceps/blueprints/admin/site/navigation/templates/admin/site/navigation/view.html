@@ -75,6 +75,7 @@
             <div class="dropdown">
               <button class="dropdown-toggle button button--compact">{{ render_icon('chevron-down') }}</button>
               <ol class="dropdown-menu">
+                <li><a class="dropdown-item" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
                 <li><a class="dropdown-item" data-action="item-move-up" href="{{ url_for('.item_move_up', item_id=item.id) }}">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
                 <li><a class="dropdown-item" data-action="item-move-down" href="{{ url_for('.item_move_down', item_id=item.id) }}">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
               </ol>

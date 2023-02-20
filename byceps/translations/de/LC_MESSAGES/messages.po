@@ -1111,6 +1111,7 @@ msgstr "versteckt"
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/view.html:41
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/view.html:15
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:20
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:78
 #: byceps/blueprints/admin/site/templates/admin/site/view.html:31
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/index_for_scope.html:52
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:26
@@ -1122,13 +1123,13 @@ msgid "Edit"
 msgstr "Bearbeiten"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:61
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:78
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:79
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:44
 msgid "Move up"
 msgstr "Nach oben verschieben"
 
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:62
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:79
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:80
 #: byceps/blueprints/admin/tourney/category/templates/admin/tourney/category/index.html:45
 msgid "Move down"
 msgstr "Nach unten verschieben"
@@ -1207,6 +1208,7 @@ msgstr "Kategorie"
 #: byceps/blueprints/admin/seating/templates/admin/seating/area_update_form.html:33
 #: byceps/blueprints/admin/shop/article/templates/admin/shop/article/update_form.html:47
 #: byceps/blueprints/admin/shop/storefront/templates/admin/shop/storefront/update_form.html:21
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/item_update_form.html:23
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_update_form.html:21
 #: byceps/blueprints/admin/site/templates/admin/site/update_form.html:30
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/update_form.html:20
@@ -4661,37 +4663,42 @@ msgstr "Bezeichnung"
 msgid "Current page ID"
 msgstr "ID der aktuellen Seite"
 
-#: byceps/blueprints/admin/site/navigation/views.py:108
+#: byceps/blueprints/admin/site/navigation/views.py:115
 #, python-format
 msgid "Menu \"%(name)s\" has been created."
 msgstr "Das Menü \"%(name)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/site/navigation/views.py:151
+#: byceps/blueprints/admin/site/navigation/views.py:158
 #, python-format
 msgid "Menu \"%(name)s\" has been updated."
 msgstr "Das Menü \"%(name)s\" wurde aktualisiert."
 
-#: byceps/blueprints/admin/site/navigation/views.py:197
+#: byceps/blueprints/admin/site/navigation/views.py:204
 #, python-format
 msgid "Menu item \"%(label)s\" has been created."
 msgstr "Der Menüeintrag \"%(label)s\" wurde angelegt."
 
-#: byceps/blueprints/admin/site/navigation/views.py:214
+#: byceps/blueprints/admin/site/navigation/views.py:255
+#, python-format
+msgid "Menu item \"%(label)s\" has been updated."
+msgstr "Der Menüeintrag \"%(label)s\" wurde aktualisiert."
+
+#: byceps/blueprints/admin/site/navigation/views.py:272
 #, python-format
 msgid "Item \"%(label)s\" is already at the top."
 msgstr "Der Menüeintrag \"%(label)s\" befindet sich bereits ganz oben."
 
-#: byceps/blueprints/admin/site/navigation/views.py:221
+#: byceps/blueprints/admin/site/navigation/views.py:279
 #, python-format
 msgid "Item \"%(label)s\" has been moved upwards by one position."
 msgstr "Der Menüeintrag \"%(label)s\" wurde eine Position nach oben verschoben."
 
-#: byceps/blueprints/admin/site/navigation/views.py:239
+#: byceps/blueprints/admin/site/navigation/views.py:297
 #, python-format
 msgid "Item \"%(label)s\" is already at the bottom."
 msgstr "Der Menüeintrag \"%(label)s\" befindet sich bereits ganz unten."
 
-#: byceps/blueprints/admin/site/navigation/views.py:246
+#: byceps/blueprints/admin/site/navigation/views.py:304
 #, python-format
 msgid "Item \"%(label)s\" has been moved downwards by one position."
 msgstr "Der Menüeintrag \"%(label)s\" wurde eine Position nach unten verschoben."
@@ -4707,7 +4714,7 @@ msgid "Create menu"
 msgstr "Menü erstellen"
 
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:46
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:89
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:90
 msgid "No menus exist."
 msgstr "Es sind keine Menüs vorhanden."
 
@@ -4717,10 +4724,15 @@ msgid "Create menu item"
 msgstr "Menüeintrag erstellen"
 
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/item_create_form.html:7
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/item_update_form.html:7
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_update_form.html:7
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:4
 msgid "Menu"
 msgstr "Menü"
+
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/item_update_form.html:4
+msgid "Edit menu item"
+msgstr "Menüeintrag bearbeiten"
 
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_update_form.html:4
 msgid "Edit menu"

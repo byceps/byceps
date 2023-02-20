@@ -85,6 +85,28 @@ def create_item(
     return _db_entity_to_item(db_item)
 
 
+def update_item(
+    item_id: NavItemID,
+    target_type: NavItemTargetType,
+    target: str,
+    label: str,
+    current_page_id: str,
+    hidden: bool,
+) -> NavItem:
+    """Update a menu item."""
+    db_item = _get_db_item(item_id)
+
+    db_item.target_type = target_type
+    db_item.target = target
+    db_item.label = label
+    db_item.current_page_id = current_page_id
+    db_item.hidden = hidden
+
+    db.session.commit()
+
+    return _db_entity_to_item(db_item)
+
+
 def find_menu(menu_id: NavMenuID) -> Optional[NavMenu]:
     """Return the menu, or `None` if not found."""
     db_menu = _find_db_menu(menu_id)

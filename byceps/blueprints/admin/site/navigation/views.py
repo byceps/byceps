@@ -6,6 +6,8 @@ byceps.blueprints.admin.site.navigation.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+import dataclasses
+
 from flask import abort, request
 from flask_babel import gettext
 
@@ -26,7 +28,12 @@ from .....util.framework.flash import flash_error, flash_success
 from .....util.framework.templating import templated
 from .....util.views import permission_required, redirect_to, respond_no_content
 
-from .forms import ItemCreateForm, MenuCreateForm, MenuUpdateForm
+from .forms import (
+    ItemCreateForm,
+    ItemUpdateForm,
+    MenuCreateForm,
+    MenuUpdateForm,
+)
 
 
 blueprint = create_blueprint('site_navigation_admin', __name__)
@@ -198,6 +205,57 @@ def item_create(menu_id):
     )
 
     return redirect_to('.view', menu_id=menu.id)
+
+
+@blueprint.get('/items/<uuid:item_id>/update')
+@permission_required('site_navigation.administrate')
+@templated
+def item_update_form(item_id, erroneous_form=None):
+    """Show form to update the menu item."""
+    item = _get_item_or_404(item_id)
+
+    menu = site_navigation_service.get_menu(item.menu_id)
+    site = site_service.get_site(menu.site_id)
+    brand = brand_service.get_brand(site.brand_id)
+
+    data = dataclasses.asdict(item)
+    data['target_type'] = item.target_type.name
+    form = erroneous_form if erroneous_form else ItemUpdateForm(data=data)
+
+    return {
+        'item': item,
+        'menu': menu,
+        'site': site,
+        'brand': brand,
+        'form': form,
+    }
+
+
+@blueprint.post('/items/<uuid:item_id>')
+@permission_required('site_navigation.administrate')
+def item_update(item_id):
+    """Update the menu item."""
+    item = _get_item_or_404(item_id)
+
+    form = ItemUpdateForm(request.form)
+    if not form.validate():
+        return item_update_form(item.id, form)
+
+    target_type = NavItemTargetType[form.target_type.data]
+    target = form.target.data.strip()
+    label = form.label.data.strip()
+    current_page_id = form.current_page_id.data.strip()
+    hidden = form.hidden.data
+
+    item = site_navigation_service.update_item(
+        item.id, target_type, target, label, current_page_id, hidden
+    )
+
+    flash_success(
+        gettext('Menu item "%(label)s" has been updated.', label=item.label)
+    )
+
+    return redirect_to('.view', menu_id=item.menu_id)
 
 
 @blueprint.post('/items/<uuid:item_id>/up')

@@ -50,3 +50,7 @@ class _ItemBaseForm(LocalizedForm):
 
 class ItemCreateForm(_ItemBaseForm):
     pass
+
+
+class ItemUpdateForm(_ItemBaseForm):
+    pass
