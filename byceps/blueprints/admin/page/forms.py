@@ -47,6 +47,6 @@ class SetNavMenuForm(LocalizedForm):
             (str(menu.id), f'{menu.name} ({menu.language_code})')
             for menu in menus
         ]
-        choices.sort()
+        choices.sort(key=lambda choice: choice[1])
         choices.insert(0, ('', '<' + lazy_gettext('none') + '>'))
         self.nav_menu_id.choices = choices
