@@ -1153,6 +1153,7 @@ msgstr "Verstecken"
 #: byceps/blueprints/admin/board/templates/admin/board/board_view.html:69
 #: byceps/blueprints/admin/news/templates/admin/news/channel_index_for_brand.html:59
 #: byceps/blueprints/admin/page/templates/admin/page/view_version.html:22
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:81
 #: byceps/blueprints/admin/snippet/templates/admin/snippet/view_version.html:33
 #: byceps/blueprints/admin/user/templates/admin/user/_view_account_actions.html:27
 #: byceps/blueprints/admin/user/templates/admin/user/delete_account_form.html:22
@@ -4703,6 +4704,11 @@ msgstr "Der Menüeintrag \"%(label)s\" befindet sich bereits ganz unten."
 msgid "Item \"%(label)s\" has been moved downwards by one position."
 msgstr "Der Menüeintrag \"%(label)s\" wurde eine Position nach unten verschoben."
 
+#: byceps/blueprints/admin/site/navigation/views.py:322
+#, python-format
+msgid "Item \"%(label)s\" has been deleted."
+msgstr "Der Menüeintrag \"%(label)s\" wurde gelöscht."
+
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:4
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/menu_create_form.html:7
 msgid "Menus"
@@ -4714,7 +4720,7 @@ msgid "Create menu"
 msgstr "Menü erstellen"
 
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/index_for_site.html:46
-#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:90
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:91
 msgid "No menus exist."
 msgstr "Es sind keine Menüs vorhanden."
 
@@ -4741,6 +4747,10 @@ msgstr "Menü bearbeiten"
 #: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:35
 msgid "Items"
 msgstr "Elemente"
+
+#: byceps/blueprints/admin/site/navigation/templates/admin/site/navigation/view.html:103
+msgid "Delete menu item?"
+msgstr "Menüeintrag löschen?"
 
 #: byceps/blueprints/admin/site/templates/admin/site/_sites.html:29
 msgid "Active sites"

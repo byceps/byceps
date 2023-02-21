@@ -262,7 +262,7 @@ def item_update(item_id):
 @permission_required('site_navigation.administrate')
 @respond_no_content
 def item_move_up(item_id):
-    """Move a menu item upwards by one position."""
+    """Move the menu item upwards by one position."""
     item = _get_item_or_404(item_id)
 
     try:
@@ -287,7 +287,7 @@ def item_move_up(item_id):
 @permission_required('site_navigation.administrate')
 @respond_no_content
 def item_move_down(item_id):
-    """Move a menu item downwards by one position."""
+    """Move the menu item downwards by one position."""
     item = _get_item_or_404(item_id)
 
     try:
@@ -306,6 +306,20 @@ def item_move_down(item_id):
                 label=item.label,
             )
         )
+
+
+@blueprint.delete('/items/<uuid:item_id>')
+@permission_required('site_navigation.administrate')
+@respond_no_content
+def item_delete(item_id):
+    """Remove the menu item."""
+    item = _get_item_or_404(item_id)
+
+    label = item.label
+
+    site_navigation_service.delete_item(item.id)
+
+    flash_success(gettext('Item "%(label)s" has been deleted.', label=label))
 
 
 def _get_site_or_404(site_id: SiteID) -> Site:

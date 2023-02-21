@@ -8,7 +8,7 @@ byceps.services.site_navigation.site_navigation_service
 
 from typing import Iterable, Optional
 
-from sqlalchemy import select
+from sqlalchemy import delete, select
 
 from ...database import db
 from ...services.site.models import SiteID
@@ -105,6 +105,14 @@ def update_item(
     db.session.commit()
 
     return _db_entity_to_item(db_item)
+
+
+def delete_item(item_id: NavItemID) -> None:
+    """Delete a menu item."""
+    db_item = _get_db_item(item_id)
+
+    db.session.execute(delete(DbNavItem).where(DbNavItem.id == db_item.id))
+    db.session.commit()
 
 
 def find_menu(menu_id: NavMenuID) -> Optional[NavMenu]:

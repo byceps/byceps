@@ -78,6 +78,7 @@
                 <li><a class="dropdown-item" href="{{ url_for('.item_update_form', item_id=item.id) }}">{{ render_icon('edit') }} {{ _('Edit') }}</a></li>
                 <li><a class="dropdown-item" data-action="item-move-up" href="{{ url_for('.item_move_up', item_id=item.id) }}">{{ render_icon('arrow-up') }} {{ _('Move up') }}</a></li>
                 <li><a class="dropdown-item" data-action="item-move-down" href="{{ url_for('.item_move_down', item_id=item.id) }}">{{ render_icon('arrow-down') }} {{ _('Move down') }}</a></li>
+                <li><a class="dropdown-item" data-action="item-delete" href="{{ url_for('.item_delete', item_id=item.id) }}">{{ render_icon('delete') }} {{ _('Delete') }}</a></li>
               </ol>
             </div>
             {%- endif -%}
@@ -99,6 +100,7 @@
       onDomReady(() => {
         post_on_click_then_reload('[data-action="item-move-up"]');
         post_on_click_then_reload('[data-action="item-move-down"]');
+        confirmed_delete_on_click_then_reload('[data-action="item-delete"]', '{{ _('Delete menu item?') }}');
       });
     </script>
 {%- endblock %}
