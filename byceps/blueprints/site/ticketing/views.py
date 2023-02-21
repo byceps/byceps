@@ -36,6 +36,9 @@ blueprint = create_blueprint('ticketing', __name__)
 
 @blueprint.app_context_processor
 def inject_ticket_sale_stats() -> dict[str, Any]:
+    if not g.party_id:
+        return {}
+
     ticket_sale_stats = ticket_service.get_ticket_sale_stats(g.party_id)
 
     return {
