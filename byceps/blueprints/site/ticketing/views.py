@@ -6,6 +6,8 @@ byceps.blueprints.site.ticketing.views
 :License: Revised BSD (see `LICENSE` file for details)
 """
 
+from typing import Any
+
 from flask import abort, g, request
 from flask_babel import gettext
 
@@ -30,6 +32,15 @@ from . import notification_service
 
 
 blueprint = create_blueprint('ticketing', __name__)
+
+
+@blueprint.app_context_processor
+def inject_ticket_sale_stats() -> dict[str, Any]:
+    ticket_sale_stats = ticket_service.get_ticket_sale_stats(g.party_id)
+
+    return {
+        'ticket_sale_stats': ticket_sale_stats,
+    }
 
 
 @blueprint.get('/mine')
