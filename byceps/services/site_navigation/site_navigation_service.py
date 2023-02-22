@@ -297,7 +297,9 @@ def _db_entity_to_item(db_item: DbNavItem) -> NavItem:
 
 
 def _db_entities_to_items(db_items: Iterable[DbNavItem]) -> list[NavItem]:
-    return [_db_entity_to_item(db_item) for db_item in db_items]
+    items = [_db_entity_to_item(db_item) for db_item in db_items]
+    items.sort(key=lambda item: item.position)
+    return items
 
 
 def _db_entity_to_menu_aggregate(
